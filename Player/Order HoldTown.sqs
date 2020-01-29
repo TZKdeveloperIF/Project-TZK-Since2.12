@@ -1,0 +1,54 @@
+; args: [unit, pos, [ti, radius]]
+
+_unit = _this select 0
+_pos = _this select 1
+_ti = (_this select 2) select 0
+_radius = 50*( 1 + ((_this select 2) select 1) )
+
+? !(alive _unit) : exit
+? !(alive driver vehicle _unit) : exit
+
+_order = []; _id = -1; call orderNew
+
+_unit groupchat format["Roger, holding %1.", (towns select _ti) select tdName]
+
+_posFlag = getPos ((towns select _ti) select tdFlag)
+
+? ((towns select _ti) select tdSide) != siPlayer : goto "TakeFlag"
+
+#Patrol
+_posMove = [_posFlag, _radius-25, _radius+25] call funcGetRandomPos
+[_unit, _posMove] call funcMove
+
+_timeAbort = time + 5*60
+#CheckPosReached
+  [_unit, _posMove] call funcMove
+  ~5
+  ? !(alive _unit) || time > _timeAbort : exit
+  ? call orderCheck : exit
+  ? ([_posMove, getPos _unit] call funcDistH) > 20 : goto "CheckPosReached"
+
+_timeWait = time + 120
+#Wait
+  ~10
+  ? !(alive _unit) : exit
+  ? call orderCheck : exit
+  ? ((towns select _ti) select tdSide) != siPlayer : goto "TakeFlag"
+  ? time > _timeWait : goto "Patrol"
+  goto "Wait"
+
+#TakeFlag
+_posMove = [_posFlag, 5, 5] call funcGetRandomPos
+
+_timeAbort = time + 5*60
+#CheckFlagReached
+  [_unit, _posMove] call funcMove
+  ~10
+  ? !(alive _unit) || time > _timeAbort : exit
+  ? call orderCheck : exit
+  ? ([_posMove, getPos _unit] call funcDistH) > 10 : goto "CheckFlagReached"
+  
+~30
+? !(alive _unit) : exit
+? call orderCheck : exit
+goto "Patrol"

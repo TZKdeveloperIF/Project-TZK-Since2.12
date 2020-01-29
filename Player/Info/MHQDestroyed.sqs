@@ -1,0 +1,41 @@
+; args: [params]
+
+_value = _this select 0
+
+_giKiller = (_value % GroupsNum)
+_value = _value - _giKiller
+
+_siKiller = (_value % (GroupsNum*10))/(GroupsNum)
+_value = _value - _siKiller*(GroupsNum)
+
+; _siMHQ = _value/(GroupsNum*10)
+_value = _value/(GroupsNum*10)
+_siMHQ = _value % 10
+_value = (_value - _siMHQ)/10
+_isMCV =_value
+
+? PricingMode == 1: costRepairMHQ = 30000
+	
+
+;player globalchat format["MHQDestroyed.sqs: _siMHQ=%1, _siKiller=%2, _giKiller=%3", _siMHQ, _siKiller, _giKiller]
+
+? (siPlayer == siCiv): format["%1 %2 destroyed", sideNames select _siMHQ, ["MHQ", "MCV"] select _isMCV] exec "Player\LogSpectator.sqs"
+
+
+? (siPlayer != _siMHQ): Exit
+
+_text1 = format [ "%1 has been destroyed%2", ["Our MHQ", "One MCV"] select _isMCV, [" by Enemy!", "."] select (_siKiller in [siPlayer, siRes]) ]
+player sidechat _text1
+
+? (_siMHQ == si0): player sidechat format["Cost to repair.: $%1.", costRepairMHQ]
+? (_siMHQ == si1): player sidechat format["Cost to repair.: $%1.", costRepairMHQ]
+
+? (_siMHQ != _siKiller): hint _text1; Exit
+
+_group = (groupMatrix select _siKiller) select _giKiller
+
+_text2 = format["%3 Destroyed by our side: %1 %2", [name leader _group,"AI"] select (_group in (groupAiMatrix select _siKiller)), (groupNameMatrix select _siKiller) select _giKiller, ["MHQ", "MCV"] select _isMCV ]
+player sidechat _text2
+
+
+hint format["%1\n\n%2", _text1, _text2] 

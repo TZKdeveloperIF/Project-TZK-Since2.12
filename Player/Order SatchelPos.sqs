@@ -1,0 +1,91 @@
+; args: [unit, pos, [radius]]
+
+_unit = _this select 0
+_pos = _this select 1
+_radius = 5*( 0 + ((_this select 2) select 0) )
+
+? !(alive _unit) : exit
+? _unit != vehicle _unit : exit
+
+? ("_x == magSatchel" count magazines _unit) == 0 : exit
+
+_order = []; _id = -1; call orderNew
+
+_unit groupchat format["Roger, satcheling area."]
+
+#Start
+
+_timeAbort = time + 5*60
+#MoveArea
+  _unit doMove _pos
+  ~5
+  ? !(alive _unit) || _unit != vehicle _unit : exit
+  ? call orderCheck : exit
+  ? time > _timeAbort : _unit groupchat "Unable to reach area. Satcheling order aborted."; exit
+  _dist = [_pos, getPos _unit] call funcDistH
+  ? _dist > 20 : goto "MoveArea"
+
+#MoveToNextPos
+  _posNext = [_pos, _radius, _radius] call funcGetRandomPos
+  _unit doMove _posNext
+  _timeAbort = time + 60
+   #WaitUntilPosReached
+    ~5
+    ? !(alive _unit) || _unit != vehicle _unit: exit
+    ? call orderCheck : exit
+    ? time > _timeAbort : goto "MoveToNextPos"
+    _dist = [_posNext, getPos _unit] call funcDistH
+    ? _dist > 5 : goto "WaitUntilPosReached"
+   goto "Placesat"
+  
+#Placesat
+  ~2
+  ? !(alive _unit) : exit
+  _PipeBomb = "_x == magSatchel" count magazines _unit
+ ? _PipeBomb == 0 : goto "CheckRearm"
+  _unit fire [weaponPut, magSatchel,magSatchel]
+  
+  
+~1
+  ? !(alive _unit) : exit
+  _unit groupchat "Satchel Placed."
+  _PipeBombAfter = "_x == magSatchel" count magazines _unit
+  ? _PipeBomb == 1 && _PipeBombAfter == 1 : _unit removeMagazine magSatchel
+  _PipeBomb = "_x == magSatchel" count magazines _unit
+ ? _PipeBomb == 0 :goto "CheckRearm"
+  goto "MoveToNextPos"
+
+
+#CheckRearm
+  _type = _unit call funcGetUnitTypeFromObject
+  _rearmData = _unit call funcGetRearmData
+  _mags = _rearmData select 1
+  ? !(magSatchel in _mags) : exit
+  _vs = [getPos _unit, 500, (typesSupport select si0) + (typesSupport select si1), []] call funcGetNearbyVehicles
+  ? count _vs == 0 : _unit groupchat "No support vehicle near. Satcheling order aborted."; exit
+  _distMin = 500
+  _v = objNull
+  { _dist = _unit distance (_x select 0); if (_dist < _distMin) then { _v = (_x select 0); _distMin = _dist } } foreach _vs
+  ? isNull _v : _unit groupchat "No support vehicle near. Satcheling order aborted."; exit
+  
+  _unit groupchat "Moving to support vehicle for more satchels."
+  
+  _timeAbort = time + 5*60
+  #MoveToSupport
+    _posMove = [[0,5], (getDir _v)] call funcVectorRot
+    _posMove = [getPos _v, _posMove] call funcVectorSub
+    _unit doMove _posMove
+    ~5
+    ? !(alive _unit) || _unit != vehicle _unit : exit
+    ? call orderCheck : exit
+    ? !(alive _v) : goto "CheckRearm"
+    ? time > _timeAbort : _unit groupchat "Unable to reach support vehicle. Satcheling order aborted."; exit
+    ? (_unit distance _v) > 10 : goto "MoveToSupport"
+    
+  _unit groupchat "Rearming at support vehicle."
+  [_unit, _v] exec "Player\Rearm.sqs"
+  ~5
+  ? !(alive _unit) : exit
+  goto "Start"
+  
+ 

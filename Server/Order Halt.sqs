@@ -1,0 +1,51 @@
+; args: [unit, si, gi, [wp, dist, dir]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+
+
+_idOrder = ((orderMatrix select _si) select _gi) select 0
+
+#WaitReady
+~2
+? call busyCheck : goto "WaitReady"
+
+_timeCalcPos = 0
+_timeCheckSupport = time + 30 + random 60
+_bCheckDropBomb = true
+
+_sleep = 30
+
+
+#Update
+	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
+	? call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {exit} else {goto "Sleep"}
+	
+	? !(alive _unit) : exit
+	? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+
+	_vehicle = vehicle _unit
+	
+	? _unit != driver _vehicle : goto "Sleep"
+	
+	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 10; goto "Sleep"
+
+	_bCheckDropBomb = !_bCheckDropBomb 
+	? _bCheckDropBomb && _unit == _vehicle && magSatchel in (magazines _unit) : [_unit, _si, _gi] exec "Server\AI_CheckDropBomb.sqs"; _sleep = 10; goto "Sleep"
+	
+
+	[_unit, true] exec "Server\StopAI.sqs"
+	[_unit, _si, _gi] call funcWatch
+	? _unit != _vehicle && !(isNull gunner _vehicle) && isNull (commander _vehicle) : [_unit, _si, _gi] exec "Server\AI_CheckFireGun.sqs"
+  _sleep = 30
+  goto "Sleep"
+  
+	 
+	#Sleep
+	~_sleep
+	
+	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
+	? call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {exit} else {goto "Sleep"}
+  ? call busyCheck : goto "Sleep"
+	goto "Update"

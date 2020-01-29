@@ -1,0 +1,42 @@
+; args: [unit, pos]
+
+_unit = _this select 0
+
+? !(alive _unit) : exit
+? !(alive driver vehicle _unit) : exit
+
+_wps = []
+
+_i = 0
+while "((wpPlayer select _i) select 0) != -1" do { _wps set [_i, (wpPlayer select _i)]; _i=_i+1 }
+
+? (count _wps) < 2 : _unit groupChat "Please define WPs first."; exit
+
+_last = (count _wps) - 1
+
+_unit groupchat format["Roger, patrolling wp0 to wp%1.", _last]
+
+_order = []
+_id = -1
+call orderNew
+
+_circ = false
+? (count _wps) > 2 : if ( ([_wps select 0, _wps select _last] call funcDistH) < ([_wps select _last, _wps select (_last-1)] call funcDistH) ) then { _circ = true }
+
+_i = -1
+_dir = +1
+
+#MoveNextPos
+? _i == 0 : _dir = +1
+? _i == _last && !_circ : _dir = -1
+? _i == _last && _circ : _i = -1
+_i = _i + _dir
+_pos = [_wps select _i, 10, 10] call funcGetRandomPos
+_timeAbort = time + 5*60
+#CheckPosReached
+  [_unit, _pos] call funcMove
+  ~5
+  ? !(alive _unit) || time > _timeAbort : _unit groupChat "Patrol order aborted."; exit
+  ? call orderCheck : exit
+  ? ([_pos, getPos _unit] call funcDistH) > 20 : goto "CheckPosReached"
+goto "MoveNextPos"

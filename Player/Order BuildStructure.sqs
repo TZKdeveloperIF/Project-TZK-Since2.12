@@ -1,0 +1,72 @@
+; args: [unit, pos, [Structure Type, Relative Direction]]
+
+_unit = _this select 0
+_posStruct = _this select 1
+_type = (_this select 2) select 0
+_dirStruct = 15*( 0 + ((_this select 2) select 1) )
+
+? !(alive _unit) : exit
+? _unit != vehicle _unit : if (_unit == driver _unit) then {_unit groupChat "Only allow asking infantry to do this."}; exit
+
+_si = siPlayer; _desc = structDefs select _type
+? _desc select sdOnlyCO : if (groupPlayer != (groupCommander select siPlayer)) then {_unit groupChat "Only allow Commander to build this."; exit}
+
+_ClosestMHQ = ([_posStruct, _si, [[utMHQ0],[utMHQ1]] select _si, []] call funcGetClosestVehicle)
+_ClosestMCV = ([_posStruct, _si, [[utMCVW],[utMCVE]] select _si, []] call funcGetClosestVehicle)
+? _desc select sdOnlyMHQ : if ((_ClosestMHQ select 1) > 150 && (_ClosestMCV select 1) > 150) then {_unit groupChat "The destination is too far from MHQ/MCV to build this."; exit}
+
+_ClosestSup = ([_posStruct, _si, typesSupportPlus select _si, []] call funcGetClosestVehicle)
+? (_ClosestMHQ select 1) > 150 && (_ClosestMCV select 1) > 150 && (_ClosestSup select 1) > 50 : _unit groupChat "The destination is too far from MHQ or Support Vehicles."; exit
+
+
+_order = []; _id = -1; call orderNew
+
+_unit groupChat format["Roger, moving to %1.", _posStruct call funcCalcTownDirDistFromPos]
+
+? ([getPos _unit, _posStruct] call funcDistH) < 25 : goto "BuildStructure"
+_timeAbort = time + 5*60
+#Move
+  [_unit, _posStruct] exec "Player\MovePos.sqs"
+  ~5
+  ? !(alive _unit) : exit
+  ? call orderCheck : exit
+  ? time > _timeAbort : exit
+  ? ([getPos _unit, _posStruct] call funcDistH) > 25 : goto "Move"
+
+#BuildStructure
+doStop _unit
+_ClosestMHQ = ([_posStruct, _si, [[utMHQ0],[utMHQ1]] select _si, []] call funcGetClosestVehicle)
+_ClosestMCV = ([_posStruct, _si, [[utMCVW],[utMCVE]] select _si, []] call funcGetClosestVehicle)
+_ClosestSup = ([_posStruct, _si, typesSupportPlus select _si, []] call funcGetClosestVehicle)
+? (_ClosestMHQ select 1) > 150 && (_ClosestMCV select 1) > 150 && (_ClosestSup select 1) > 50 : _unit groupChat "No MHQ or Support Vehicles nearby."; exit
+
+@!(mutexOrderBuildStructure)
+mutexOrderBuildStructure = true
+
+_radius = _desc select sdMaxRadius
+; CHECK NEAREST STRUCTURE
+_res = [_posStruct] call funcGetNearestStructure
+; player globalchat format["_res=%1", _res]
+_ts = _res select 1
+? _ts == -1 : goto "NoStructFound"
+? (_res select 2) < 0.5*(_radius + ((structDefs select _ts) select sdMaxRadius)) : _unit groupChat "Build pos blocked by structure."; mutexOrderBuildStructure = false; exit
+#NoStructFound
+
+_structsOfSameType = [siPlayer, _type] call funcGetStructures
+_multiplier=1
+? (2 == ((upgMatrix select siPlayer) select upgNumBuildings)): _multiplier=2
+_limit = (_desc select sdLimit)*_multiplier
+? !(count _structsOfSameType < _limit): _unit groupChat format["Structure Limit Reached (%1)", _limit]; mutexOrderBuildStructure = false; exit
+
+
+_cost = _desc select sdCost
+_resources = (groupMoneyMatrix select siPlayer) select giPlayer
+_needed = _cost - _resources
+
+;If more resources are needed then available report an error to player.
+? _needed > 0 : _unit groupChat Format["Not Enough Money.   Need: %1   Cost: %2", _needed, _cost]; mutexOrderBuildStructure = false; exit
+
+[_posStruct, _dirStruct, _type] exec "Player\SendBuildStructure.sqs"
+~5
+mutexOrderBuildStructure = false
+_unit groupChat format ["%1 built. Position %2", _desc select sdName, _posStruct call funcCalcTownDirDistFromPos]

@@ -1,0 +1,18 @@
+; args: [object, isMHQ, isAlive, si]
+
+_object = _this select 0
+_isMCV = _this select 1
+_bAlive = _this select 2
+_si = _this select 3
+
+? _isMCV == 1 : goto "DeleteMCV"
+
+#DeleteStructure
+	[_object, objNull, _si, true, false] exec "Server\StructuresServerRemove.sqs"
+	@(isNull _object)
+	_si exec "Server\CheckWinDestruction.sqs"
+	exit
+
+#DeleteMCV
+? _bAlive == 1 : _object setDamage 1; _si exec "Server\CheckWinDestruction.sqs"; exit
+deleteVehicle _object

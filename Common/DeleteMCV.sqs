@@ -1,0 +1,11 @@
+; args [object, type, si, gi]
+
+_MCV = _this select 0
+_type = _this select 1
+_si = _this select 2
+
+
+~3
+deleteVehicle _MCV
+(unitsBuilt select _si) set [ _type, -1 + ((unitsBuilt select _si) select _type) ]
+if (local LocalServerObject) then { [_si, giCO select _si, -1.5*costRepairMHQ] exec "Server\MoneySpend.sqs" }

@@ -1,0 +1,9 @@
+; args: [vehicle]
+
+_u = _this select 0
+
+@!(mutexFuelVehicle)
+mutexFuelVehicle = true
+pvFuelVehicle = _u; PublicVariable "pvFuelVehicle"
+~sendDelay
+mutexFuelVehicle = false

@@ -1,0 +1,63 @@
+; args: [unit, si, gi, [wp]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+
+_pos = ((wpCO select _si) select (_params select 0))
+
+_idOrder = ((orderMatrix select _si) select _gi) select 0
+
+#WaitReady
+~2
+? call busyCheck : goto "WaitReady"
+
+_timeCheckSupport = time + 30 + random 60
+
+_type = _unit call funcGetUnitTypeFromObject
+
+_isMiner = false
+? _type == (utMiner select _si) : _isMiner = true
+
+_sleep = 30
+_posMove = []
+
+#Update
+	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
+	? call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {exit} else {goto "Sleep"}
+	
+	? !(alive _unit) : exit
+	? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+
+	_vehicle = vehicle _unit
+	
+	? _unit != driver _vehicle : _sleep = 30; goto "Sleep"
+	
+	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 10; goto "Sleep"
+	
+  ? (count _posMove) == 0 : if (_isMiner) then {_posMove = [_pos, 20, 150] call funcGetRandomPos} else {_posMove = [_pos, 50, 150] call funcGetRandomPos}
+	
+  _distToDest = [getPos _unit, _posMove] call funcDistH
+
+	? _distToDest > 10 : goto "Move"
+    _posMove = []
+	  ? _isMiner && _unit == _vehicle : [_unit, false] exec "Server\StopAI.sqs"; [_unit, _si, _gi] call funcWatch; [_unit, _si, _gi] exec "Server\AI_CheckDisableMines.sqs"; _sleep = 10; goto "Sleep"
+    ; not a miner
+    [_unit, true] exec "Server\StopAI.sqs"
+	  [_unit, _si, _gi] call funcWatch
+    _sleep = 30
+    goto "Sleep"
+  
+  #Move
+	? _unit != _vehicle && ( ([getPos _unit, _pos] call funcDistH) < 200 ) : _posMove = getPos _vehicle; [_unit, false] exec "Server\StopAI.sqs"; _sleep = 30; goto "Sleep"
+  [_unit, _posMove] call funcMoveAI
+	_sleep = [30, 0.1*_distToDest] select (_distToDest < 300)
+	 
+	#Sleep
+	~_sleep
+	
+	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
+	? call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {exit} else {goto "Sleep"}
+  ? call busyCheck : goto "Sleep"
+	goto "Update"

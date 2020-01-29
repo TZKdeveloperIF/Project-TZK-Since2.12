@@ -1,0 +1,22 @@
+; args: [value, valuePos]
+
+_value = _this select 0
+_valuePos = _this select 1
+
+
+? (_valuePos == -1): exit
+
+_detections = _value % 100000
+_si = (_value - _detections)/100000
+
+? (_si != siPlayer): exit
+
+_radars = [siPlayer, stComm] call funcGetWorkingStructures
+
+? (count _radars == 0): exit
+
+_pos = [10*(_valuePos % 3000), 10*((_valuePos - (_valuePos % 3000))/3000)]
+
+player sidechat format["Artillery detected (%1 detections). Estimated pos: %2", _detections, _pos call funcCalcMapPos]
+
+_pos exec "Player\SetArtilleryMarker.sqs"

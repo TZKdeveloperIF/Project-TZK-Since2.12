@@ -1,0 +1,22 @@
+; args: [si, giFrom, giTo, amount]
+
+_si = _this select 0
+_giFrom = _this select 1
+_giTo = _this select 2
+_amount = _this select 3
+
+_giList = [_si] call funcGetAIGroupsIndex
+? _giTo in _giList : exit
+@!(mutexMoneyTransfer)
+mutexMoneyTransfer = true
+
+
+_value = _giFrom
+_value = _value + GroupsNum*_giTo
+_value = _value + GroupsNum*GroupsNum*_si
+
+pvMoneyTransfer = _amount; PublicVariable "pvMoneyTransfer"
+pvMoneyTransferGroup = _value; PublicVariable "pvMoneyTransferGroup"
+
+~sendDelay
+mutexMoneyTransfer = false

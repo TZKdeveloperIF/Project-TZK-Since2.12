@@ -1,0 +1,18 @@
+; args: [vehicle, tug, tugslot, tugType]
+
+_vehicle = _this select 0
+_tug = _this select 1
+_slot = _this select 2
+_tugType = _this select 3
+
+_value = _slot + 10*_tugType + 10*10*giPlayer + 10*10*GroupsNum*siPlayer
+
+@!(mutexVehicleAttached)
+mutexVehicleAttached = true
+
+pvVehicleAttachedTug = _tug; PublicVariable "pvVehicleAttachedTug"
+pvVehicleAttachedTugged = _vehicle; PublicVariable "pvVehicleAttachedTugged"
+pvVehicleAttached = _value; PublicVariable "pvVehicleAttached"
+
+~0.5*sendDelay
+mutexVehicleAttached = false

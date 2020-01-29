@@ -1,0 +1,106 @@
+; args: [unit, si, gi, [wp0, wp1, unit types (defined by PatrolLineTypeDefs), duration]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+
+; Get Correct Parameters. Need Pay Attention To Coefficients
+_wp0 = ((wpCO select _si) select (_params select 0)); _pos0 = [_wp0 select 0, _wp0 select 1]
+_wp1 = ((wpCO select _si) select (_params select 1)); _pos1 = [_wp1 select 0, _wp1 select 1]
+_endPoints = [_pos0, _pos1]
+; Define _endPoints in form of this can make them fix positions.
+_indexPatrolType = (_params select 2)
+_duration = 720 * ((_params select 3) + 1)
+
+; Check Whether Unit Fits The Parameters Of The Temporary Order
+
+? (PatrolLineTypeDefs select _indexPatrolType) == "non-AT-Infantry" : 	_typesPatrol = typesInfantryAll - typesInfantryAT;					
+? (PatrolLineTypeDefs select _indexPatrolType) == "AT-Infantry" : 		_typesPatrol = typesInfantryAT;	
+? (PatrolLineTypeDefs select _indexPatrolType) == "Light Tank" : 		_typesPatrol = typesLightTank; 					
+? (PatrolLineTypeDefs select _indexPatrolType) == "Heavy Tank" : 		_typesPatrol = typesHeavyTank; 					
+? (PatrolLineTypeDefs select _indexPatrolType) == "Howitzer" : 			_typesPatrol = typesHowitzer; 						
+? (PatrolLineTypeDefs select _indexPatrolType) == "AT APC" :			_typesPatrol = typesATAPC; 						
+? (PatrolLineTypeDefs select _indexPatrolType) == "AA Vehicle" :		_typesPatrol = typesAAAPC; 						
+? (PatrolLineTypeDefs select _indexPatrolType) == "Kamov" :				_typesPatrol = typesKa50; 							
+? (PatrolLineTypeDefs select _indexPatrolType) == "Cobra\Apac\Hind" :	_typesPatrol = (typesGunshipOrigin+typesGunshipAT) - typesKa50; 	
+? (PatrolLineTypeDefs select _indexPatrolType) == "Infantry" : 			_typesPatrol = typesInfantryAll;										
+? (PatrolLineTypeDefs select _indexPatrolType) == "Tanks" : 			_typesPatrol = typesLightTank+typesHeavyTank+typesHowitzer; 									
+? (PatrolLineTypeDefs select _indexPatrolType) == "APCs" : 				_typesPatrol = typesATAPC+typesAAAPC; 		
+
+_vehicle = vehicle _unit
+_vt = _vehicle call funcGetUnitTypeFromObject
+? !(_vt in _typesPatrol) && _unit != leader group _unit : exit
+? _unit == leader group _unit : if !(_unit == _vehicle && (PatrolLineTypeDefs select _indexPatrolType) in ["AT-Infantry", "Infantry"]) then {exit}
+
+; Check Whether Unit In Another Temporary Order (Except For Set Flight Altitude, Clear Temporary Order, Etc)
+? call temporaryCheck : exit
+
+; Initialize The Order Script
+_timeStart = time; _timeAbort = _timeStart + _duration; _timeUp = _timeStart; _cycle = 30; _loop = 0
+call temporarySet
+
+
+; Wait For Unit Finish Its Busy-Work
+#WaitReady
+~2
+? time > _timeAbort : 	call temporaryClear; exit
+? !call temporaryCheck : exit
+? call busyCheck : goto "WaitReady"
+
+; Main Part Of Temporary Order
+
+_timeCheckSupport = time + 30 + random 60
+_bCheckDropBomb = true
+_second = false
+
+
+_groups = groupMatrix select _si
+#Update
+	_gi = [(group _unit), _groups] call funcGetIndex
+	_vehicle = vehicle _unit
+	? _unit != driver _vehicle : goto "Sleep"
+
+	; check support
+	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _cycle = 10; goto "Sleep"
+
+	; check bomb	
+	_bCheckDropBomb = !_bCheckDropBomb 
+	? _bCheckDropBomb && _unit == _vehicle && magSatchel in (magazines _unit) : [_unit, _si, _gi] exec "Server\AI_CheckDropBomb.sqs"; _cycle = 10; goto "Sleep"
+	
+	; check move
+	
+	_posMove = _endPoints select _second
+	_distToDest = [getPos _unit, _posMove] call funcDistH
+
+	? _distToDest > 50 : goto "Move"
+	[_unit, true] exec "Server\StopAI.sqs"
+	[_unit, _si, _gi] call funcWatch
+	? _unit != _vehicle && !(isNull gunner _vehicle) && isNull (commander _vehicle) : [_unit, _si, _gi] exec "Server\AI_CheckFireGun.sqs"
+	_cycle = 30
+	_second = !_second
+	goto "Sleep"
+
+	#Move
+		_distToDest = _distToDest - (_distToDest % 10)
+		[_unit, _posMove] call funcMoveAI
+		_cycle = [30, 0.1*_distToDest] select (_distToDest < 300)
+		goto "Sleep"
+
+
+
+; End Of File
+#EOF
+call temporaryClear
+exit
+
+
+#Sleep
+_loop = (time-_timeStart)/_cycle; _loop = 1 + _loop - _loop%1
+_timeUp = _loop*_cycle + _timeStart
+
+@ ( time > _timeUp || !call temporaryCheck )
+? !call temporaryCheck : goto "EOF"
+? !(alive _unit) || time > _timeAbort : goto "EOF"
+? call busyCheck : goto "Sleep"
+goto "Update"

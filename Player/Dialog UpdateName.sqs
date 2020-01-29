@@ -1,0 +1,28 @@
+#start
+
+if (nc1<10) then {nc1=36} 
+if (nc1>36) then {nc1=10}
+
+if (nc2<10) then {nc2=36} 
+if (nc2>36) then {nc2=10}
+
+if (nc3<10) then {nc3=36} 
+if (nc3>36) then {nc3=10}
+
+if (nc4<10) then {nc4=36} 
+if (nc4>36) then {nc4=10}
+
+if (nc5<10) then {nc5=36} 
+if (nc5>36) then {nc5=10}
+
+if (nc6<10) then {nc6=36} 
+if (nc6>36) then {nc6=10}
+
+if ((nc1==10) && (nc2!=10 || nc3!=10 || nc4!=10 || nc5!=10 || nc6!=10)) then {nc1=nc2; nc2=nc3; nc3=nc4; nc4=nc5; nc5=nc6; nc6=10; goto "start";}
+
+ctrlSetText[251,nc1 call funcNumberToChar];
+ctrlSetText[252,nc2 call funcNumberToChar];
+ctrlSetText[253,nc3 call funcNumberToChar];
+ctrlSetText[254,nc4 call funcNumberToChar];
+ctrlSetText[255,nc5 call funcNumberToChar];
+ctrlSetText[256,nc6 call funcNumberToChar];

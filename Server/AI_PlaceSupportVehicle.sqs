@@ -1,0 +1,81 @@
+; args: [unit, si, gi]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+
+_support = vehicle _unit
+_ti = -1
+_distEject = 500
+_distApproach = 1500
+
+call busySet
+
+goto "CheckBase"
+#CheckStructs
+_list = repairableStructureMatrix select _si
+? (count _list) == 0 : goto "CheckBase"
+_objRepair = (_list select ((random count _list) - 0.5)) select 0
+_unit doMove ([getPos _objRepair, rangeSupport - 5, rangeSupport - 5] call funcGetRandomPos)
+~30
+? !(alive _unit) || !(alive _support) || _unit != driver _support : goto "Exit"
+goto "CheckStructs"
+
+#CheckBase
+_res = [getPos _support, 300, typesSupport select _si, [_support]] call funcGetNearbyVehicles
+; _c = "isNull driver (_x select 0)" count _res
+_c = count _res
+? _c == 0 : _posMove = [getPos _support, 100, 100] call funcGetRandomPos; goto "Move"
+
+#SelectTown
+_except = []
+#SelectTown_CheckTown
+  _res = [getPos _support, [_si], _except] call funcGetClosestTown
+  _ti = _res select 2
+  ? _ti == -1 : goto "EnemyTown"
+  _posTown = getPos ((towns select _ti) select tdFlag)
+  _res = [_posTown, _distEject, typesSupport select _si, [_support]] call funcGetNearbyVehicles
+  _c = "isNull driver (_x select 0)" count _res
+  ? _c == 0 : _posMove = _posTown; goto "Move"
+  _except set [count _except, _ti]
+  goto "SelectTown_CheckTown"
+#EnemyTown
+  _res = [getPos _support, [siRes, siEnemy select _si], []] call funcGetClosestTown
+  _dist = _res select 1
+  _ti = _res select 2
+  ? _ti == -1 || _dist < _distApproach : goto "Sleep"
+  _posMove = getPos ((towns select _ti) select tdFlag)
+  goto "Move"
+  
+#Move
+[_unit, _posMove] call funcMoveAI
+~30
+? !(alive _unit) || !(alive _support) : goto "Exit"
+? _unit != driver _support : goto "Exit"
+_distToDest = ([getPos _support, _posMove] call funcDistH)
+_res = [_posMove, _distEject, typesSupport select _si, [_support]] call funcGetNearbyVehicles
+_c = "isNull driver (_x select 0)" count _res
+? _ti == -1 : goto "Move_NoTown"
+  ? ((towns select _ti) select tdSide) != _si && _distToDest < _distApproach : goto "Sleep"
+#Move_NoTown
+? _c == 0 && _distToDest < 500 : goto "Exit"
+? _c > 0 : goto "SelectTown"
+goto "Move"
+
+#Sleep
+[_unit, getPos _support] call funcMoveAI
+~5
+? !(alive _unit) || !(alive _support) : goto "Exit"
+[_unit, false] exec "Server\StopAI.sqs"
+~30
+? !(alive _unit) || !(alive _support) : goto "Exit"
+? _unit != driver _support : goto "Exit"
+goto "SelectTown"
+
+#Exit
+  ? !(alive _unit) : exit
+  ? _unit != vehicle _unit : unassignVehicle _unit; _unit action ["EJECT", vehicle _unit]
+  ~2
+  _unit setDamage 1
+  ~2
+  deleteVehicle _unit

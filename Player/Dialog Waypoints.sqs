@@ -1,0 +1,153 @@
+; args: [pos]
+
+_pos = _this select 0
+
+
+_dlg = createDialog "GenericDialog"
+
+_idcAction0Label = IDC+0
+_idcAction0 = IDC+1
+_idcAction1Label = IDC+2
+_idcAction1 = IDC+3
+_idcAction2Label = IDC+4
+_idcAction2 = IDC+5
+_idcAction3Label = IDC+6
+_idcAction3 = IDC+7
+_idcAction4Label = IDC+8
+_idcAction4 = IDC+9
+
+_idcListHeader = IDC+10
+_idcList = IDC+11
+
+btnAction0 = false
+btnAction1 = false
+
+_co = (groupPlayer == (groupCommander select siPlayer))
+
+_index = 0; _gis = []; _groupsAI = groupAiMatrix select siPlayer; _siGroups = groupMatrix select siPlayer; _groupNames = groupNameMatrix select siPlayer
+{ if (_x in _groupsAI) then { _gis set [count _gis, _index] }; _index = _index + 1} foreach _siGroups
+_Superior = false
+{ if ( (["Commander"] + callsigns) select (((aiSetting select siPlayer) select _x) select aisSuperior) == _groupNames select giPlayer ) then { _Superior = true } } forEach _gis
+
+_COcount = (countWPCO/2) - (countWPCO/2)%1
+
+{ ctrlShow [_x, false] } forEach [_idcAction0Label, _idcAction1Label, _idcAction2Label, _idcAction3Label, _idcAction4Label]
+{ ctrlShow [_x, false] } forEach [_idcAction3, _idcAction4]
+
+? _co : { ctrlShow [_x, true] } forEach [_idcAction3, _idcAction4]
+
+ctrlSetText [IDC_TITLE, "Waypoints"]
+ctrlSetText [_idcAction0, "Set"]
+ctrlSetText [_idcAction1, "Clear"]
+ctrlSetText [_idcAction2, "Clear All Player WPs"]
+ctrlSetText [_idcAction3, "Clear All CO WPs"]
+ctrlSetText [_idcAction4, "Order AI groups"]
+
+ctrlSetText [_idcListHeader, "Player Waypoints"]
+? _co || _Superior : ctrlSetText [_idcListHeader, "Commander/Player Waypoints"]
+
+
+_return = "Update"
+goto "Init"
+
+#Update
+  ? !(dialog) : exit
+  ? !(alive player) : closeDialog 0; exit
+
+  ? (btnAction0): btnAction0=false; goto "Set"
+  ? (btnAction1): btnAction1=false; goto "Clear"
+  ? (btnAction2): btnAction2=false; goto "ClearAllPlayer"
+  ? (btnAction3): btnAction3=false; goto "ClearAllCO"
+  ? (btnAction4): btnAction4=false; goto "OrderAI"
+
+  #Skip
+  ~0.2
+  goto "Update"
+
+#Set
+	_sel = lbCurSel _idcList
+	? _sel == -1 : hint "No waypoint selected"; goto "Update"
+	? _co && _sel < countWPCO : [_sel, _pos, siPlayer, giPlayer] exec "Common\SendSetWPCO.sqs"
+	? _co && _sel >= countWPCO : [_sel - countWPCO, _pos] exec "Player\SetWaypoint.sqs"
+	? !_co && _Superior && _sel < countWPCO - _COcount : [_sel + _COcount, _pos, siPlayer, giPlayer] exec "Common\SendSetWPCO.sqs"
+	? !_co && _Superior && _sel >= countWPCO - _COcount : [_sel - countWPCO + _COcount, _pos] exec "Player\SetWaypoint.sqs"
+	? !_co && !_Superior : [_sel, _pos] exec "Player\SetWaypoint.sqs"
+  closeDialog 0
+  exit
+	
+#Clear
+	_sel = lbCurSel _idcList
+	? (_sel == -1): hint "No waypoint selected"; goto "Update"
+	? _co && _sel < countWPCO : [_sel, [-1,-1], siPlayer, giPlayer] exec "Common\SendSetWPCO.sqs"
+	? _co && _sel >= countWPCO : [_sel - countWPCO, [-1,-1]] exec "Player\SetWaypoint.sqs"
+	? !_co && _Superior && _sel < countWPCO - _COcount : [_sel + _COcount, [-1,-1], siPlayer, giPlayer] exec "Common\SendSetWPCO.sqs"	
+	? !_co && _Superior && _sel >= countWPCO - _COcount : [_sel - countWPCO + _COcount, [-1,-1]] exec "Player\SetWaypoint.sqs"
+	? !_co && !_Superior : [_sel, [-1,-1]] exec "Player\SetWaypoint.sqs"
+	~0.2
+	_return = "Update"
+	goto "Init"
+
+#ClearAllPlayer
+	_i = 0
+	#ClearAllPlayer_Next
+	  [_i, [-1,-1]] exec "Player\SetWaypoint.sqs"
+	  _i = _i + 1
+	  ? _i < countWPPlayer : goto "ClearAllPlayer_Next"
+	~0.2
+	_return = "Update"
+	goto "Init"
+
+#ClearAllCO
+	player groupchat "Clearing all CO waypoints ..."
+	_j = 0
+	#ClearAllCO_Check
+	  ? ((_list select _j) select 0) == -1 && ((_list select _j) select 1) == -1 : goto "ClearAllCO_CheckNext"
+	  [_j, [-1,-1], siPlayer, giPlayer] exec "Common\SendSetWPCO.sqs"
+	  ~1
+	  _return = "ClearAllCO_CheckNext"
+	  goto "Init"
+	  #ClearAllCO_CheckNext
+	  _j = _j + 1
+	  ? _j < countWPCO : goto "ClearAllCO_Check"
+	player groupchat "All CO waypoints cleared."
+	goto "Update"
+
+#OrderAI
+  goto "Update"
+  
+#Init
+  lbClear _idcList
+  ? !_co : goto "Init_SkipCO"
+  _list = wpCO select siPlayer
+  _i = 0
+  #InitCommanderWaypoint
+    _posWP = _list select _i
+    _text = ""
+    ? (_posWP select 0) != -1 : _text = format["%1 %2", _posWP call funcCalcMapPos, _posWP call funcCalcTownDirDistFromPos ]
+    lbAdd [ _idcList, format["co%1: %2", _i, _text] ]
+    _i = _i + 1
+    ? _i < countWPCO : goto "InitCommanderWaypoint"
+  #Init_SkipCO
+  
+  ? _co || !_Superior : goto "Init_SkipSuperior"
+  _list = wpCO select siPlayer
+  _i = _COcount
+  #InitSuperiorWaypoint
+    _posWP = _list select _i
+    _text = ""
+    ? (_posWP select 0) != -1 : _text = format["%1 %2", _posWP call funcCalcMapPos, _posWP call funcCalcTownDirDistFromPos ]
+    lbAdd [ _idcList, format["co%1: %2", _i, _text] ]
+    _i = _i + 1
+    ? _i < countWPCO : goto "InitSuperiorWaypoint"
+  #Init_SkipSuperior
+  
+  _i = 0
+  #InitWaypoint
+    _posWP = wpPlayer select _i
+    _text = ""
+    ? (_posWP select 0) != -1 : _text = format["%1 %2", _posWP call funcCalcMapPos, _posWP call funcCalcTownDirDistFromPos ]
+    lbAdd [ _idcList, format["wp%1: %2", _i, _text] ]
+    _i = _i + 1
+    ? _i < countWPPlayer : goto "InitWaypoint"
+
+  goto _return  

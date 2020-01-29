@@ -1,0 +1,15 @@
+; after data initialized and before forcemap canceled
+~4
+music0 = (-0.5 + random count Musics0)
+music1h = (-0.5 + random count Musics1h)
+music10m = (-0.5 + random count Musics10m)
+PublicVariable "music0"; PublicVariable "music1h"; PublicVariable "music10m"; 
+
+? WeatherChosen == 0 : 0.1 SetOvercast 0.0; [] exec "Server\WeatherSunny.sqs"; exit
+? WeatherChosen == 1 : 0.1 SetOvercast 0.2; [0.2] exec "Server\WeatherCloudy.sqs"; exit
+? WeatherChosen == 2 : 0.1 SetOvercast 0.4; [0.4] exec "Server\WeatherOvercast.sqs"; exit
+? WeatherChosen == 3 : 0.1 SetOvercast 0.5; [0.5] exec "Server\WeatherRainy.sqs"; exit
+? WeatherChosen == 4 : 0.1 SetOvercast 0.8; [0.8] exec "Server\WeatherStromy.sqs"; exit
+? WeatherChosen == 5 : 0.1 SetOvercast 0.0; [] exec "Server\WeatherMisty.sqs"; exit
+? WeatherChosen == 6 : 0.1 SetOvercast 0.4; [] exec "Server\WeatherFoggy.sqs"; exit
+? WeatherChosen == 7 : 0.1 SetOvercast 0.0; [0.0] exec "Server\WeatherRandom.sqs"; exit

@@ -1,0 +1,37 @@
+; args: [unit, si, gi]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+
+_pos = (wpCO select _si) select (((call grpSetting) select aisRallyPoint) - 1)
+
+? (_pos select 0) == -1 : exit
+
+call busySet
+
+_timeAbort = time + 10*60
+
+#Update
+_gi = [group _unit, groupMatrix select _si] call funcGetIndex
+  ? ((call grpSetting) select aisRallyPoint) == 0 : goto "Exit"
+  ? !(alive _unit) : goto "Exit"
+  ? _unit != driver vehicle _unit : goto "Exit"
+  ? time > _timeAbort : goto "Exit"
+
+	_distToDest = [getPos _unit, _pos] call funcDistH
+	? _distToDest < 50 : goto "Exit"
+
+  #Move
+  _sleep = [30, 0.1*_distToDest] select (_distToDest < 300)
+	[_unit, _pos] call funcMoveAI
+
+	#Sleep
+	
+	~_sleep
+	
+	goto "Update"
+  
+#Exit
+  call busyClear
+  exit

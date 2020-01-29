@@ -1,0 +1,25 @@
+; args: [si, gi, sendRepeats]
+
+_si = _this select 0
+_gi = _this select 1
+_repeats = _this select 2
+
+@!(mutexMoney)
+mutexMoney = true
+
+_amount = ((groupMoneyMatrix select _si) select _gi)
+_value = _gi
+_value = _value + GroupsNum*_si
+
+[] call format["pvMoney%1 = _amount", indexMoneyMsg]
+[] call format["PublicVariable ""pvMoney%1""", indexMoneyMsg]
+[] call format["pvMoneyGroup%1 = _value", indexMoneyMsg]
+[] call format["PublicVariable ""pvMoneyGroup%1""", indexMoneyMsg]
+indexMoneyMsg = indexMoneyMsg + 1
+? (indexMoneyMsg >= countMoneyMsg): indexMoneyMsg = 0
+
+~(sendDelay/countMoneyMsg)
+
+mutexMoney = false
+
+? (_repeats > 0): [_si, _gi, _repeats - 1] exec "Server\SendMoneyStatus.sqs"

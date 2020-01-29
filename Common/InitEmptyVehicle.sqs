@@ -1,0 +1,8 @@
+; args: [vehicle]
+
+_vehicle = _this select 0
+
+_vehicle addEventHandler ["killed", { _this exec "Common\Event_VehicleDestroyed.sqs" }]
+
+[_vehicle] exec "Common\AddRearmData.sqs"
+; ? !(isNull player): _vehicle addEventHandler ["IncomingMissile" ,{_this exec "Player\Event IncomingMissile.sqs"}]

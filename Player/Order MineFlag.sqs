@@ -1,0 +1,88 @@
+; args: [unit, pos, [ti, radius]]
+
+_unit = _this select 0
+_pos = _this select 1
+_ti = (_this select 2) select 0
+_radius = 5*( 0 + ((_this select 2) select 1) )
+
+? !(alive _unit) : exit
+? _unit != vehicle _unit : exit
+
+? ("_x == magMine" count magazines _unit) == 0 : exit
+
+_order = []; _id = -1; call orderNew
+
+_unit groupChat format["Roger, mining %1.", (towns select _ti) select tdName]
+_posFlag = getPos ((towns select _ti) select tdFlag)
+
+#Start
+
+_timeAbort = time + 5*60
+ 
+  ~5
+  ? !(alive _unit) || _unit != vehicle _unit : exit
+  ? call orderCheck : exit
+  ? time > _timeAbort : _unit groupChat "Unable to reach area. Mining order aborted."; exit
+  
+#MoveToNextPos
+  _posNext = [_posFlag, random _radius, random _radius] call funcGetRandomPos
+  _unit doMove _posNext
+  _timeAbort = time + 60
+  #WaitUntilPosReached
+    ~5
+    ? !(alive _unit) || _unit != vehicle _unit: exit
+    ? call orderCheck : exit
+    ? time > _timeAbort : goto "MoveToNextPos"
+    _dist = [_posNext, getPos _unit] call funcDistH
+    ? _dist > 5 : goto "WaitUntilPosReached"
+  goto "PlaceMine"
+  
+#PlaceMine
+  [getPos _unit, _unit] exec "Common\CleanGround.sqs"
+  ~2
+  ? !(alive _unit) : exit
+  _mines = "_x == magMine" count magazines _unit
+  ? _mines == 0 : goto "CheckRearm"
+  _res = [ getPos _unit, siBoth, vMinerAvoid, [] ] call funcGetClosestVehicle
+  ? (_res select 1) < 8 : _unit groupChat "Vehicle exist. Changing position."; goto "MoveToNextPos"
+  _unit fire [weaponPut, magMine, magMine]
+  ~4
+  ? !(alive _unit) : exit
+  _unit groupChat "Mine Placed."
+  _minesAfter = "_x == magMine" count magazines _unit
+  ? _mines == 1 && _minesAfter == 1 : _unit removeMagazine magMine
+  _mines = "_x == magMine" count magazines _unit
+  ? _mines == 0 : goto "CheckRearm"
+  goto "MoveToNextPos"
+
+#CheckRearm
+  _type = _unit call funcGetUnitTypeFromObject
+  _rearmData = _unit call funcGetRearmData
+  _mags = _rearmData select 1
+  ? !(magMine in _mags) : exit
+  _vs = [getPos _unit, 500, (typesSupport select si0) + (typesSupport select si1), []] call funcGetNearbyVehicles
+  ? count _vs == 0 : _unit groupChat "No support vehicle near. Mining order aborted."; exit
+  _distMin = 500
+  _v = objNull
+  { _dist = _unit distance (_x select 0); if (_dist < _distMin) then { _v = (_x select 0); _distMin = _dist } } foreach _vs
+  ? isNull _v : _unit groupChat "No support vehicle near. Mining order aborted."; exit
+  
+  _unit groupChat "Moving to support vehicle for more mines."
+  
+  _timeAbort = time + 5*60
+  #MoveToSupport
+    _posMove = [[0,5], (getDir _v)] call funcVectorRot
+    _posMove = [getPos _v, _posMove] call funcVectorSub
+    _unit doMove _posMove
+    ~5
+    ? !(alive _unit) || _unit != vehicle _unit : exit
+    ? call orderCheck : exit
+    ? !(alive _v) : goto "CheckRearm"
+    ? time > _timeAbort : _unit groupChat "Unable to reach support vehicle. Mining order aborted."; exit
+    ? (_unit distance _v) > 10 : goto "MoveToSupport"
+    
+  _unit groupChat "Rearming at support vehicle."
+  [_unit, _v] exec "Player\Rearm.sqs"
+  ~5
+  ? !(alive _unit) : exit
+  goto "Start"

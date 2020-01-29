@@ -1,0 +1,10 @@
+; args: [unit, pos, [0]]
+
+_unit = _this select 0
+_pos = _this select 1
+
+? !(alive _unit) : exit
+
+_unit groupchat "Roger. Order cleared and stopped. Waiting for new one."
+_order = []; _id = -1; call orderNew
+doStop _unit

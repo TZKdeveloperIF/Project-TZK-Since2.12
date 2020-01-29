@@ -1,0 +1,12 @@
+; args: [si, gi, blocked]
+
+_si = _this select 0
+_gi = _this select 1
+_blocked = _this select 2
+
+_value = mtBlockedByClient
+_value = _value + (TotalInfoTypes)*_gi
+_value = _value + (TotalInfoTypes*GroupsNum)*_si
+_value = _value + (TotalInfoTypes*GroupsNum*4)*_blocked
+
+pvInfo1 = _value; PublicVariable "pvInfo1"

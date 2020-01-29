@@ -1,0 +1,33 @@
+; args: [ [unit, weapon, muzzle, mode, ammo], si, gi]
+
+
+; Only units local to server and not belong to group of the Server-Player will rearm automatically
+_unit = (_this select 0) select 0
+? !(local _unit) : exit
+? !(isNull player): if (_unit in (units group player)) then {exit}
+
+; Only check if the SecondaryWeapon is out of ammo
+_weapon = (_this select 0) select 1
+? _weapon != (secondaryWeapon _unit) : exit
+
+? _unit in CheckSupportUnits : exit
+
+_si = _this select 1
+_gi = _this select 2
+
+? (group _unit) == (groupMatrix select _si) select _gi : goto "SkipResetGroupIndex"
+
+? (side _unit) != (sides select _si) : exit
+
+_gi = [(group _unit), (groupMatrix select _si)] call funcGetIndex
+? _gi == -1 : exit
+
+#SkipResetGroupIndex
+
+? call busyCheck : exit
+? ((call grpSetting) select aisAutoRearm) == 2 : exit
+
+_heal = [_unit, _si, _gi] call funcCheckRepair
+_rearm = [_unit, _si, _gi] call funcCheckRearm
+? !_heal && !_rearm : exit
+[_unit, _si, _gi, _heal, _rearm] exec "Server\CheckSupportVehicle.sqs"

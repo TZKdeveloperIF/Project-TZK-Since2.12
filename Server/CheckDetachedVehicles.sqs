@@ -1,0 +1,39 @@
+; args: none
+
+
+? count vehicleTuggedServer == 0 : exit
+
+
+; get indexes of Abnormal detached vehicles in vehicleTuggedServer
+_index1 = []
+_i = 0;
+{ if ([getPos _x, positionAttach] call funcDistH < 100) then {_index1 set [count _index1, _i]}; _i=_i+1 } forEach vehicleTuggedServer
+
+_i = 0;
+_abTugged = []; _abTug = []
+{ if (_i in _index1) then {_abTugged set [count _abTugged, vehicleTuggedServer select _i]; _abTug set [count _abTug, vehicleTugServer select _i]} else {vehicleTuggedServer set [_i, objNull]; vehicleTugServer set [_i, objNull]} } forEach vehicleTuggedServer
+
+
+_count = count _abTugged
+? _count == 0 : goto "SkipCorrecting"
+	_i = 0
+	#Loop1
+		~0.3
+		 _index = _count - 1
+		#Loop2
+			? [getPos (_abTugged select _index), positionAttach] call funcDistH >= 100 : _abTugged set [_index, objNull]; _abTug set [_index, objNull]
+			_index = _index - 1
+			? _index > 0 : goto "Loop2"
+
+		_i = _i + 1
+		? _i < 5 : goto "Loop1"
+
+	_i = 0
+	{ _x setPos getPos (_abTug select _i); _i=_i+1 } forEach _abTugged
+#SkipCorrecting
+
+@!(mutexEditvehicleAttached)
+mutexEditvehicleAttached = true
+vehicleTuggedServer = vehicleTuggedServer - [objNull]
+vehicleTugServer = vehicleTugServer - [objNull]
+mutexEditvehicleAttached = false

@@ -1,0 +1,27 @@
+; args: siLose
+
+_siLose = _this
+~2
+? pvGameover != -1 : exit
+
+_mhq = mhq select _siLose
+_siWin = siEnemy select _siLose
+goto "CheckObjects"
+
+#CheckObjects
+	? (alive _mhq): Exit
+	_mcvs = MCV select _siLose
+	? ("alive _x" count _mcvs) > 0 : Exit
+	_index = 0
+	_count = count structsCritcal
+	#CheckStruct
+
+		_structs = [_siLose, structsCritcal select _index] call funcGetWorkingStructures
+		
+		? (count _structs > 0): Exit
+
+		_index = _index + 1
+		? (_index < _count): goto "CheckStruct"
+
+pvGameOver = (0) + 2*4*(_siWin) + 2*4*2*(0)
+PublicVariable "pvGameOver"

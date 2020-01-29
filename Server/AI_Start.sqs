@@ -1,0 +1,84 @@
+; args: [unit, si, gi]
+
+? !(local LocalServerObject) : exit
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+
+; wait for unit/vehicle data
+~5
+
+? !(alive _unit) : exit
+; TODO _unit disableAI "TARGET"
+_unit allowFleeing 0
+;_unit setCombatMode "YELLOW"; _unit setBehaviour "AWARE"; _unit setSpeedMode "FULL"
+_unit setCombatMode (aisCombatModeDefs select ((call grpSetting) select aisCombatMode))
+(group _unit) setBehaviour (aisBehaviourDefs select ((call grpSetting) select aisBehaviour)); _unit setSpeedMode "FULL"
+
+_vehicle = vehicle _unit
+
+; SUPPORT
+? _unit == _vehicle : goto "SkipSupport"
+_typeVehicle = _vehicle call funcGetUnitTypeFromObject
+? _typeVehicle == -1 : format["ERROR: Vehicle type not found in AI_Start.sqs for '%1', treat it as non-support vehicle.", _vehicle] call fDebugLog; goto "SkipSupport"
+? (groupCommander select _si) in (groupAiMatrix select _si) : if (_typeVehicle in (typesSupport select _si) && _unit == driver _vehicle) then {[_unit, _si, _gi] exec "Server\AI_PlaceSupportVehicle.sqs"; exit}
+#SkipSupport
+
+; RALLY 1
+_gi = [group _unit, groupMatrix select _si] call funcGetIndex
+? ((call grpSetting) select aisRallyPoint) == 0 || _unit != driver _vehicle : goto "NoRally"
+[_unit, _si, _gi] exec "Server\AI_MoveToRallyPoint.sqs"
+#WaitRallyReached
+~5
+? !(alive _unit) : exit
+? call busyCheck : goto "WaitRallyReached"
+#NoRally
+
+; BOARD 1
+_gi = [group _unit, groupMatrix select _si] call funcGetIndex
+? _unit != _vehicle || ((call grpSetting) select aisPickupWait) == 0 : goto "NoBoard"
+_timeCheckBoardStart = time
+_posCheckBoardStart = getPos _unit
+#Board
+_gi = [group _unit, groupMatrix select _si] call funcGetIndex
+[_unit, _si, _gi, _posCheckBoardStart] exec "Server\AI_CheckBoardTransport.sqs"
+#WaitBoardReady
+  ~5
+  ? !(alive _unit) : exit
+  ? call busyCheck : goto "WaitBoardReady"
+? ([getPos _unit, _posCheckBoardStart] call funcDistH) < 200 && time < ( _timeCheckBoardStart + ( aisPickupWaitTimeDefs select ((call grpSetting) select aisPickupWait) ) ) : goto "Board"
+#NoBoard
+
+;*************************Second Rally And Board Procedure**************************
+; RALLY 2
+_gi = [group _unit, groupMatrix select _si] call funcGetIndex
+? ((call grpSetting) select aisRallyPoint2) == 0 || _unit != driver _vehicle : goto "NoRally2"
+[_unit, _si, _gi] exec "Server\AI_MoveToRallyPoint2.sqs"
+#WaitRallyReached2
+~5
+? !(alive _unit) : exit
+? call busyCheck : goto "WaitRallyReached2"
+#NoRally2
+
+; BOARD 2
+_gi = [group _unit, groupMatrix select _si] call funcGetIndex
+? _unit != _vehicle || ((call grpSetting) select aisPickupWait2) == 0 : goto "NoBoard2"
+_timeCheckBoardStart = time
+_posCheckBoardStart = getPos _unit
+#Board2
+_gi = [group _unit, groupMatrix select _si] call funcGetIndex
+[_unit, _si, _gi, _posCheckBoardStart] exec "Server\AI_CheckBoardTransport.sqs"
+#WaitBoardReady2
+  ~5
+  ? !(alive _unit) : exit
+  ? call busyCheck : goto "WaitBoardReady2"
+? ([getPos _unit, _posCheckBoardStart] call funcDistH) < 200 && time < ( _timeCheckBoardStart + ( aisPickupWaitTimeDefs select ((call grpSetting) select aisPickupWait2) ) ) : goto "Board2"
+#NoBoard2
+
+#Exit
+_gi = [group _unit, groupMatrix select _si] call funcGetIndex
+_order = (orderMatrix select _si) select _gi
+_script = (orderDefs select (_order select 1)) select 2
+[_unit, _si, _gi, _order select 2] exec format["Server\%1", _script]
+exit

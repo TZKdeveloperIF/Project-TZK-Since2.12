@@ -1,0 +1,50 @@
+; args: [object, new object, si, boolDestruction, boolSecondaryStructure]
+
+_object = _this select 0
+_objectReplacing = _this select 1
+_si = _this select 2
+_bDes = _this select 3
+_bSec = _this select 4
+
+
+? isNull _object : if !(isNull _objectReplacing) then {mutexRepairStructure = false}; exit
+_res = [_object] call funcStructuresServerSearch
+? !(_res select 3) : if (isNull _object) then {"ERROR: _object is null thus this debug msg can be removed" call fDebugLog; deleteVehicle _object; if !(isNull _objectReplacing) then {mutexRepairStructure = false}; exit} else {"ERROR: _object not found in structuresServer when structure is to be deleted. It might remain some rubbish unable to clear during the whole game." call fDebugLog; deleteVehicle _object; if !(isNull _objectReplacing) then {mutexRepairStructure = false}; exit}
+
+#ObjectFound
+_objects = _res select 0
+_type = _res select 1
+? _bSec : goto "SecStructDestroyed"
+? _bDes : goto "Destruction"
+? !(isNull _objectReplacing) : goto "ReplacePrimaryStructure"
+
+
+#DeleteStructure
+; used in Undo or disappear of ruined primstructure
+	{deleteVehicle _x} foreach _objects
+	goto "Quit"
+
+#SecStructDestroyed
+	{ _x setDamage 1 } foreach _objects
+	~10
+	{deleteVehicle _x} foreach _objects
+	goto "Quit"
+	
+#Destruction
+	{deleteVehicle _x} foreach _objects; [_si, _type] exec "Server\Info\DestructionCompleted.sqs"
+	goto "Quit"
+
+#ReplacePrimaryStructure
+	_objects set [0, _objectReplacing]
+	[_objects, _type] exec "Server\StructuresServerAdd.sqs"
+	deleteVehicle _object
+	[_si, _type, _objectReplacing] exec "Common\AddToStructMatrix.sqs"
+	@(isNull _object)
+	{_x setDamage 0} forEach _objects
+	mutexRepairStructure = false
+	goto "Quit"
+
+	
+#Quit	
+	[_si, _type] exec "Server\SendStructMatrixRemove.sqs"
+	exit

@@ -1,0 +1,22 @@
+; args: [acc parameter]
+
+@ (time > 1)
+player globalChat "Time boost will start when 00:01:00. Prepare for your equipment please."
+@ (time > 60)
+; Although BIKI said that skipTime should executed on server, it seems that this script command has only local effect thus must be executed on each client.
+; ? !(local LocalServerObject) : exit
+
+_DLapse = _this select 0
+_IncTime = ((24/_DLapse)/60)
+
+
+; Time acceleration loop
+
+#loop
+
+~.04
+
+skipTime (_IncTime *.04)
+
+goto "loop"
+

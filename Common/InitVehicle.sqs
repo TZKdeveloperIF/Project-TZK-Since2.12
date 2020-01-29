@@ -1,0 +1,45 @@
+; args: [vehicle, type, si, gi]
+
+_vehicle = _this select 0
+_type = _this select 1
+_si = _this select 2
+_gi = _this select 3
+
+; TEST
+; format["DEBUG: InitVehicle.sqs : _vehicle=%1", _vehicle] call fSendTextMsg
+
+; SERVER AND PLAYER
+
+_desc = unitDefs select _type
+
+clearMagazineCargo _vehicle
+clearWeaponCargo _vehicle
+
+_vehicle addEventHandler ["killed", { _this exec "Common\Event_VehicleDestroyed.sqs" }]
+[_vehicle, _si, _desc select udCost] exec "Common\EventAdd_VehicleHit.sqs"
+
+
+
+? isNull player : goto "SkipClient"
+
+; PLAYER ONLY
+
+[_vehicle, _type, _si] call funcInitVehicleMarker
+
+; _vehicle addEventHandler ["Fired", {[_this, LimitWeaponRangeFactor] call <function>}]
+? !(_type in vUnlimitedRange) && !(_type in vDoubledRange) : _vehicle addEventHandler ["Fired",{[_this, 1] call funcFiredEffect}]
+? (_type in vDoubledRange) : _vehicle addEventHandler ["Fired",{[_this, 2] call funcFiredEffect}]
+? (_type in vUnlimitedRange) : _vehicle addEventHandler ["Fired",{[_this, 0] call funcFiredEffect}]
+
+
+
+~0.3
+? _si == siPlayer && _gi == giPlayer : if (count (crew _vehicle) == 0 && time > 30) then { _text = format ["Your empty %1 has arrived.", (unitDefs select _type) select udName ]; hint _text; player groupchat _text }; if (_type in (airTransport select _si)) then { _vehicle exec "Player\InitTransportHeli.sqs" }
+
+#SkipClient
+
+? !(local LocalServerObject) : exit
+
+; SERVER ONLY
+; ? _si == siRes || _gi == giTown : _vehicle addEventHandler ["killed", { _this exec "Server\SendServerTankKilled.sqs" }]
+? _type in (typesHeavyTank + typesLightTank + typesHowitzer + typesATAPC + typesAAAPC + typesGunshipOrigin + typesGunshipAT) : [_vehicle, _si, _gi] exec "Server\EventAdd_Vehicle.sqs"

@@ -1,0 +1,17 @@
+; args: [posStruct, dirStruct, type]
+
+_posStruct = _this select 0
+_dirStruct = _this select 1
+_type = _this select 2
+
+
+@!(mutexBuildStructure)
+mutexBuildStructure = true
+
+pvBuildStruct_PosX = _posStruct Select 0; PublicVariable "pvBuildStruct_PosX"
+pvBuildStruct_PosY = _posStruct Select 1; PublicVariable "pvBuildStruct_PosY"
+pvBuildStruct_Dir = _dirStruct; PublicVariable "pvBuildStruct_Dir"
+pvBuildStruct_Type = _type + 1000*giPlayer + (1000*GroupsNum)*siPlayer; PublicVariable "pvBuildStruct_Type"
+
+~0.5*sendDelay
+mutexBuildStructure = false

@@ -1,0 +1,33 @@
+; args: [Overcast]
+
+~5
+_threshold = "_thresholdDelay = abs ( _delaychange*(_overcastLast - 0.7)/(_overcastLast - _overcast) )"
+_overcastLast = _this select 0; _rainLast = 0
+_fog = 0; _rain = 0
+#Start
+_thresholdDelay = 0
+_overcast = 0.2 + 0.8 * (random 1)
+
+
+if (_overcast > 0.7) then { _rain = random (_overcast - 0.7) } else { _rain = 0 }
+
+_delaychange = (2 + random 6)*60
+_delaychange SetOvercast _overcast
+_delaychange SetRain _rain
+
+? _overcastLast <= 0.7 && _overcast > 0.7 : call _threshold; _thresholdDelay SetOvercast 0.7
+
+
+
+~_thresholdDelay
+
+? _thresholdDelay > 0 && _overcastLast <= 0.7 && _overcast > 0.7: (_delaychange - _thresholdDelay) SetRain _rain; (_delaychange - _thresholdDelay) SetOvercast _overcast
+
+
+
+
+
+_overcastLast = _overcast
+_rainLast = _rain
+~(8 + random 4)*60
+goto "Start"

@@ -1,0 +1,42 @@
+; args: [vehicle, TruckAPC, index, slot, gi, si]
+
+_vehicle = _this select 0
+_tug = _this select 1
+_tugindex = _this select 2
+_tugslot = _this select 3
+_gi = _this select 4
+_si = _this select 5
+
+? (_tugslot == tsCenter): _attachDir = -180; _attachDist = 15
+
+
+
+_vehPos = getPos _vehicle
+_vehicle setPos positionAttach; _vehicle setVelocity [0, 0, 3]
+~0.1
+_vehicle setPos [_vehPos select 0, _vehPos select 1, (_vehPos select 2) + 4]; _vehicle setVelocity [0, 0, 3]
+
+_loop = 0; _TGV = false
+? _vehicle in TownGroupVehicles : _TGV = true
+#Update
+	_velVehicle = [_tug, _vehicle, _attachDist, _attachDir, 0.8, 2, false] call funcUpdateAttaching
+	? isNull(((vehicleAttached select _tugindex) select tsTugged) select _tugslot) || !(alive _tug) || !(alive _vehicle) || !(local _vehicle): goto "Abort"
+	_vehicle setVelocity _velVehicle
+	
+	_distH = [getPos _tug, getPos _vehicle] call funcDistH; _loop = _loop + 1
+	? _distH < 50  && _loop < 40 : goto "SkipResetPos"
+	_vehPos = getPos _vehicle; _velVehicle set [2, 3]
+	_vehicle setPos positionAttach; _vehicle setVelocity _velVehicle
+	~0.01
+	_vehicle setPos _vehPos; _vehicle setVelocity _velVehicle
+	_loop = 0
+	#SkipResetPos
+	~0.1	
+	
+	? _TGV : _res = [getPos _vehicle, [_si], []] call funcGetClosestTown; if ( (_res select 1) > 250 ) then { goto "Abort" }
+	goto "Update"
+
+#Abort
+	((vehicleAttached select _tugindex) select tsTugged) set [_tugslot, objNull]
+	[_vehicle, _gi, _si, _tugslot] exec "Common\SendVehicleDetached.sqs"
+	Exit

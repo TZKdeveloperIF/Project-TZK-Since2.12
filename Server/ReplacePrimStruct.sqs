@@ -1,0 +1,50 @@
+; args: [_objectDestroyed, _type, _si]
+
+_objectDestroyed = _this select 0
+_type = _this select 1
+_si = _this select 2
+
+_model = typeOf _objectDestroyed;
+_pos = getPos _objectDestroyed;
+_dir = getDir _objectDestroyed;
+_temp = _model camCreate _pos;
+_temp setDir _dir;
+_temp setPos _pos;
+_vect = [_pos, getPos _temp] call funcVectorSub;
+_posCorrect = [_pos, _vect] call funcVectorAdd;
+_posCorrect set [2, 0];
+deleteVehicle _temp;
+
+_structDesc = structDefs select _type
+
+_posStruct = _posCorrect
+_posStruct set [2, 0]
+
+_parts = _structDesc select ([sdObjects0, sdObjects1] select (_si == si1))
+
+_objects = []
+
+
+@!(mutexRepairStructure)
+mutexRepairStructure = true
+? isNull _objectDestroyed : mutexRepairStructure = false; exit
+
+_part = _parts select 0
+_object = (_part select 0) createVehicle _posStruct
+_object setDir _dir
+_object setPos _posStruct
+if (isNull gunner _object) then { [_object] exec "Common\AddRearmData.sqs" };
+
+
+[_si, _type] exec "Server\Info\StructReady.sqs"; [_objectDestroyed] exec "Server\primStructsPlacedRemove.sqs"
+[_objectDestroyed, _object, _si, false, false] exec "Server\StructuresServerRemove.sqs"
+
+_objects = [_object]
+
+#ReplaceStructure
+
+{ [_type, _si, [_object], "Repaired"] exec _x } foreach (_structDesc select sdScriptsServer)
+
+{ _group = _x; { _group reveal _x } foreach _objects } foreach (groupAiMatrix select _si)
+
+[_objects select 0, _type, _si, 0] exec "Server\SendStructBuilt.sqs"

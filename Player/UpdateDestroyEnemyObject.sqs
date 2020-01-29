@@ -1,0 +1,82 @@
+; args: [unit]
+
+_unit = _this select 0
+
+#Update
+~30
+? !(alive _unit) || (pvGameOver != -1) : Exit
+? (leader _unit) != player : exit
+
+_vehicle = vehicle _unit
+? (_vehicle == _unit): goto "OnFoot"
+
+#InVehicle
+_commander = commander _vehicle
+_gunner = gunner _vehicle
+_driver = driver _vehicle
+
+? _unit != _gunner : goto "Update"
+? !(isNull _commander) || (_driver == player): goto "Update"
+
+_res = [getPos _unit, siPlayer] call funcGetClosestEnemyObject
+_object = _res select 0
+
+? (_unit distance _object) > 200 : goto "Update"
+
+_weapons = weapons _vehicle
+? (count _weapons) == 0 : goto "Update"
+_unit reveal _object
+_weapon = _weapons select 0
+_unit doTarget _object
+~3
+? !(alive _unit) : exit
+? (leader _unit) != player : exit
+? (_vehicle ammo _weapon) == 0 : goto "Update"
+_unit groupChat "Firing at Enemy Object."
+_vehicle fire _weapon
+goto "Update"
+
+#OnFoot
+? !(unitReady _unit): goto "Update"
+? !(magSatchel in (magazines _unit)): goto "Update"
+
+_res = [getPos _unit, siPlayer] call funcGetClosestEnemyObject
+_object = _res select 0
+
+? ((_unit distance _object) > 200): goto "Update"
+
+_posDrop = [getPos _object, 5, 5] call funcGetRandomPos
+_unit doMove _posDrop
+_unit groupChat "Moving in to drop satchel..."
+
+_count = 10
+_index = 0
+#CheckDropPosReached
+	~5
+	? !(alive _unit): Exit
+? (leader _unit) != player : exit
+	? !(alive _object): goto "Update"
+	? ((_unit distance _object) < 50): goto "DropBomb"
+	_index = _index + 1
+	? (_index < _count): goto "CheckDropPosReached"
+  goto "Update"
+#DropBomb
+~2
+? !(alive _unit): Exit
+? (leader _unit) != player : exit
+? !(alive _object): goto "Update"
+; doStop _unit
+_cBefore = "_x == magSatchel" count (magazines _unit)
+_unit fire [weaponPut, magSatchel, magSatchel]
+~1
+? !(alive _unit) : exit
+? (leader _unit) != player : exit
+_unit action ["SETTIMER"]
+_unit groupChat "Satchel placed at enemy object."
+_cAfter = "_x == magSatchel" count (magazines _unit)
+? _cAfter == 1 && _cBefore == 1 : _unit removeMagazine magSatchel
+#MoveAway
+_posMove = [getPos _object, 100, 100] call funcGetRandomPos
+_unit doMove _posMove
+
+goto "Update"

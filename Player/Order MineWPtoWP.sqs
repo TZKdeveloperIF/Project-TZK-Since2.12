@@ -1,0 +1,88 @@
+; args: [unit, pos, [wp, wp]]
+
+_unit = _this select 0
+_pos = _this select 1
+_wp0 = (wpPlayer select ((_this select 2) select 0))
+_wp1 = (wpPlayer select ((_this select 2) select 1))
+
+? !(alive _unit) : exit
+? _unit != vehicle _unit : exit
+? ("_x == magMine" count magazines _unit) == 0 : exit
+
+? (_wp0 select 0) == -1 || (_wp1 select 0) == -1 : _unit groupChat "WPs not defined"; exit
+
+_dist = [_wp0, _wp1] call funcDistH
+? _dist > 500 : _unit groupChat "WPs to far apart (max 500m)."; exit
+
+_unit groupChat format["Roger, placing mines between waypoints."]
+
+_order = []
+_id = -1
+call orderNew
+
+_i = -1
+_c = _dist/10
+? _c == 0 : _c = 0.5
+_vect = [_wp1, _wp0] call funcVectorSub
+
+#MoveToNextPos
+_i = _i + 1
+? _i > _c : _i = 0
+_pos = [_wp0, [_vect, _i/_c] call funcVectorScale] call funcVectorAdd
+_unit doMove _pos
+_timeAbort = time + 5*60
+#CheckPosReached
+  ~5
+  ? !(alive _unit) || time > _timeAbort  || _unit != vehicle _unit : exit
+  ? call orderCheck : exit
+  ? ([_pos, getPos _unit] call funcDistH) > 10 : goto "CheckPosReached"
+
+#PlaceMine
+  [getPos _unit, _unit] exec "Common\CleanGround.sqs"
+  ~2
+  ? !(alive _unit) : exit
+  _mines = "_x == magMine" count magazines _unit
+  ? _mines == 0 : goto "CheckRearm"
+  _res = [ getPos _unit, siBoth, vMinerAvoid, [] ] call funcGetClosestVehicle
+  ? (_res select 1) < 8 : _unit groupChat "Vehicle exist. Changing position."; goto "MoveToNextPos"
+  _unit fire [weaponPut, magMine, magMine]
+  ~4
+  ? !(alive _unit) : exit
+  _unit groupChat "Mine Placed."
+  _minesAfter = "_x == magMine" count magazines _unit
+  ? _mines == 1 && _minesAfter == 1 : _unit removeMagazine magMine
+  _mines = "_x == magMine" count magazines _unit
+  ? _mines == 0 : goto "CheckRearm"
+  goto "MoveToNextPos"
+
+#CheckRearm
+  _type = _unit call funcGetUnitTypeFromObject
+  _rearmData = _unit call funcGetRearmData
+  _mags = _rearmData select 1
+  ? !(magMine in _mags) : exit
+  _vs = [getPos _unit, 500, (typesSupport select si0) + (typesSupport select si1), []] call funcGetNearbyVehicles
+  ? count _vs == 0 : _unit groupChat "No support vehicle near. Mining order aborted."; exit
+  _distMin = 500
+  _v = objNull
+  { _dist = _unit distance (_x select 0); if (_dist < _distMin) then { _v = (_x select 0); _distMin = _dist } } foreach _vs
+  ? isNull _v : _unit groupChat "No support vehicle near. Mining order aborted."; exit
+  
+  _unit groupChat "Moving to support vehicle for more mines."
+  
+  _timeAbort = time + 5*60
+  #MoveToSupport
+    _posMove = [[0,5], (getDir _v)] call funcVectorRot
+    _posMove = [getPos _v, _posMove] call funcVectorSub
+    _unit doMove _posMove
+    ~5
+    ? !(alive _unit) || _unit != vehicle _unit : exit
+    ? call orderCheck : exit
+    ? !(alive _v) : goto "CheckRearm"
+    ? time > _timeAbort : _unit groupChat "Unable to reach support vehicle. Mining order aborted."; exit
+    ? (_unit distance _v) > 10 : goto "MoveToSupport"
+    
+  _unit groupChat "Rearming at support vehicle."
+  [_unit, _v] exec "Player\Rearm.sqs"
+  ~5
+  ? !(alive _unit) : exit
+  goto "MoveToNextPos"

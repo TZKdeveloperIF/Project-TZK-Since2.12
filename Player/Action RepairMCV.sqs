@@ -1,0 +1,31 @@
+; args: [vehicle, unit, actionID]
+
+_MCV = _this select 0
+
+? (_unit != player): Exit
+? PricingMode == 1: costRepairMHQ = 30000
+? time > 180: costRepairMHQ = 30000
+
+_si = siPlayer
+_gi = giPlayer
+
+
+
+_money = (groupMoneyMatrix select _si) select _gi
+? (_si == si0) && (_money < costRepairMHQ): hint format["Not enough money.\nCost: $%1.\nYou need $%2 more.", costRepairMHQ, costRepairMHQ - _money]; Exit
+
+? (_si == si1) && (_money < costRepairMHQ): hint format["Not enough money.\nCost: $%1.\nYou need $%2 more.", costRepairMHQ, costRepairMHQ - _money]; Exit
+
+hint "Repairing. Please wait..."
+@!(mutexRepairMCV)
+
+mutexRepairMCV = true
+pvRepairMCV = _gi + GroupsNum*_si; PublicVariable "pvRepairMCV"
+pvRepairMCV_object = _MCV; PublicVariable "pvRepairMCV_object"
+
+~4*sendDelay
+mutexRepairMCV = false
+
+exit
+
+

@@ -1,0 +1,10 @@
+; args [vehicle]
+
+_vehicle = _this select 0
+? local _vehicleRearm : [_vehicle] exec "Common\RearmVehicle.sqs"; exit
+
+@!(mutexVehicleMagAdd)
+mutexVehicleMagAdd = true
+pvAddMags = _vehicle; publicVariable "pvAddMags"
+~sendDelay
+mutexVehicleMagAdd = false

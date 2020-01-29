@@ -1,0 +1,13 @@
+; args: [money, si, gi]
+
+_money = _this select 0
+? _money == 0 : Exit
+_si = _this select 1
+_gi = _this select 2
+
+_value = mtScoreMoney
+_value = _value + (TotalInfoTypes)*(_money/10)
+_value = _value + (TotalInfoTypes*1000)*_gi
+_value = _value + (TotalInfoTypes*1000*GroupsNum)*_si
+
+[_value] exec "Server\Info\SendInfoMsg.sqs"

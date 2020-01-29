@@ -1,0 +1,15 @@
+; args: [tug, tugslot]
+
+_tug = _this select 0
+_slot = _this select 1
+
+_value = _slot
+
+@!(mutexDetachVehicle)
+mutexDetachVehicle = true
+
+pvDetachVehicleTug = _tug; PublicVariable "pvDetachVehicleTug"
+pvDetachVehicle = _value; PublicVariable "pvDetachVehicle"
+
+~0.5*sendDelay
+mutexDetachVehicle = false

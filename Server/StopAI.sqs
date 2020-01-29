@@ -1,0 +1,24 @@
+; args: [unit, down]
+
+_unit = _this select 0
+_down = _this select 1
+
+_v = vehicle _unit;
+
+? _unit != _v : goto "Vehicle"
+
+_unit doMove getPos _unit
+~2
+? !(alive _unit) : exit
+doStop _unit
+? _down : _unit setUnitPos "DOWN"
+exit
+
+#Vehicle
+_crew = [commander _v, gunner _v, driver _v];
+_crew = _crew - [objNull];
+
+_pos = getPos _v
+{ if (alive _x && local _x) then { _x doMove _pos } } foreach _crew
+~5
+{ if (alive _x && local _x) then { doStop _x } } foreach _crew

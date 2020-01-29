@@ -1,0 +1,28 @@
+; args [value, object]
+
+_value = _this select 0
+_object = _this select 1
+
+_type = _value % 1000
+_value = _value - _type
+
+_new = (_value % (1000*2))/1000
+_value = _value - _new*1000
+
+_si = _value/(1000*2)
+
+
+? isNull gunner _object : [_object] exec "Common\AddRearmData.sqs"
+
+; only add for non local players since it is already done on server
+? !(local LocalServerObject): [_si, _type, _object] exec "Common\AddToStructMatrix.sqs"
+
+
+_desc = structDefs select _type
+
+{ [_object, _type, _si] exec _x } foreach (_desc select sdScriptsPlayer)
+
+@!(mutexStructBuilt)
+mutexStructBuilt = true
+? (_new == 1): (structsBuilt select _si) set [ _type, 1 + (	(structsBuilt select _si) select _type) ]
+mutexStructBuilt = false

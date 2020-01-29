@@ -1,0 +1,14 @@
+; args: [object, si, length]
+
+_obj = _this select 0
+_si = _this select 1
+_len = _this select 2
+
+@!(mutexQueueLength)
+mutexQueueLength = true
+
+pvQueueLength_Obj = _obj; publicVariable "pvQueueLength_Obj"
+pvQueueLength = _len + maxQ*_si; publicVariable "pvQueueLength"
+
+~0.1
+mutexQueueLength = false

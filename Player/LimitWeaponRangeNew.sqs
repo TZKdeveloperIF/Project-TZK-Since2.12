@@ -1,0 +1,39 @@
+; args: [vehicle, shell, limitWeaponRangeFactor]
+
+_vehicle = _this select 0
+_shell = _this select 1
+_limitWeaponRangeFactor = _this select 2
+
+; No more than 0 meaning no limit.
+? _limitWeaponRangeFactor <= 0 : exit
+? typeOf _shell == ammoMine : exit
+? !(local _shell) : exit
+
+~1
+
+? (siPlayer > 1) : exit
+? ((upgMatrix select siPlayer) select upgLongWeaponRange) == 2 : goto "check2"
+
+#Check
+  ? isNull _shell : exit
+	? (_shell distance _vehicle) > (_limitWeaponRangeFactor * viewDistance) : goto "DeleteShell"
+	~0.1
+	goto "Check"
+
+#DeleteShell
+  ; player globalchat format["Shell deleted, lifetime = %1, distance = %2", _time, _shell distance _vehicle]
+
+  ? !(isNull _shell) : deleteVehicle _shell
+  exit
+
+#Check2
+  ? isNull _shell : exit
+	? (_shell distance _vehicle) > ((_limitWeaponRangeFactor + 1) * viewDistance) : goto "DeleteShell2"
+	~0.1
+	goto "Check2"
+
+#DeleteShell2
+  ; player globalchat format["Shell deleted, lifetime = %1, distance = %2", _time, _shell distance _vehicle]
+
+  ? !(isNull _shell) : deleteVehicle _shell
+  exit

@@ -1,0 +1,30 @@
+; args: [type, driver, gunner, commander, si, gi, giBuyer, factory, sendRepeats]
+
+_type = _this select 0
+_driver = _this select 1
+_gunner = _this select 2
+_commander = _this select 3
+_si = _this select 4
+_gi = _this select 5
+_giBuyer = _this select 6
+_factory = _this select 7
+_repeats = _this select 8
+
+@!(mutexAddUnit)
+mutexAddUnit = true
+
+_value = _type +  TotalUnitTypes *_gi +  TotalUnitTypes *GroupsNum*_giBuyer +  TotalUnitTypes *GroupsNum*GroupsNum*_si +  TotalUnitTypes *GroupsNum*GroupsNum*2*_driver +  TotalUnitTypes *GroupsNum*GroupsNum*2*2*_gunner +  TotalUnitTypes *GroupsNum*GroupsNum*2*2*2*_commander
+
+[] call format["pvAddUnit%1_Factory = _factory", indexUnitAddMsg]
+[] call format["PublicVariable ""pvAddUnit%1_Factory""", indexUnitAddMsg]
+
+[] call format["pvAddUnit%1 = _value", indexUnitAddMsg]
+[] call format["PublicVariable ""pvAddUnit%1""", indexUnitAddMsg]
+
+indexUnitAddMsg = indexUnitAddMsg + 1
+? indexUnitAddMsg >= countUnitAddMsg : indexUnitAddMsg = 0
+
+~(5/countUnitAddMsg)
+
+mutexAddUnit = false
+? _repeats > 0 : [_type, _driver, _gunner, _commander, _si, _gi, _giBuyer, _factory, _repeats - 1] exec "Server\SendAddUnit.sqs"

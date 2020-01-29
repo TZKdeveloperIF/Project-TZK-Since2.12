@@ -1,0 +1,329 @@
+; args: [unit]
+
+_unitTracked = _this select 0
+? isNull _unitTracked : _unitTracked = player
+
+btnLeft = false
+btnRight = false
+btnRear = false
+btnFront = false
+btnFar = false
+btnDriver = false
+btnGunner = false
+btnCommander = false
+btnDisband = false
+btnDisbandAll = false
+btnClearDeadCrew = false
+btnDisembark = false
+btnJoin = false
+btnVehicleJoin = false
+
+_timeLastDialogUpdate = -1
+
+_selLeaderID = -1
+_selMemberID = -1
+_selMember = objNull
+_bNewLeader = false
+_bNewMember = false
+
+_target = objNull
+
+_dir = 0
+iView = 0
+
+_colorSide0 = [0.5,0.5,1, 0.6]
+_colorSide1 = [1,0.5,0.5, 0.6]
+_colorDead = [0.5,0.5,0.5, 0.6]
+
+_ok = createDialog "UnitCamDialog"
+
+_idcShowInfo = IDC+0
+_idcInfo = IDC+1
+_idcTracking = IDC+2
+_idcShowGroups = IDC+3
+_idcLeader = IDC+4
+_idcMember = IDC+5
+_idcGroupBg = IDC+6
+_idcSat = IDC+7
+_idcFront = IDC+8
+_idcLeft = IDC+9
+_idcRight = IDC+10
+_idcRear = IDC+11
+
+_idcDriverBG = IDC+12
+_idcDriver = IDC+13
+_idcGunnerBG = IDC+14
+_idcGunner = IDC+15
+_idcCommanderBG = IDC+16
+_idcCommander = IDC+17
+_idcDisband = IDC+18
+_idcDisbandAll = IDC+19
+_idcClearDeadCrew = IDC+20
+_idcDisembark = IDC+21
+
+
+#External
+{ ctrlShow [_x, true] } foreach [_idcFront, _idcLeft, _idcRight, _idcRear]
+_ref = "HeliHEmpty" camCreate getPos (vehicle _unitTracked)
+
+_cam = "camera" camCreate getPos (vehicle _unitTracked)
+_cam camSetTarget _ref
+_cam cameraEffect ["internal","back"]
+_cam camSetFOV 1
+
+showCinemaBorder false
+
+_iView = iView
+_return = "External_Update"; goto "UpdateDialog"
+
+#External_Update
+	? !dialog || (isNull _unitTracked) || pvGameOver != -1: goto "Exit"
+
+	? _bNewLeader : _bNewLeader = false; _unitTracked = leader ((groupMatrix select siPlayer) select _selLeaderID)
+	? _bNewMember : _bNewMember = false; _unitTracked = _selMember
+
+	_target = vehicle _unitTracked
+	_posTarget = getPos _target
+
+	_offsetCamZ = [4, 2] select (_target == _unitTracked)
+	_offsetCamHorz = [-4, -2] select (_target == _unitTracked)
+
+	_dirCam = _dir + getDir _target
+	_posCamRel = [_offsetCamHorz*sin(_dir + getDir _target), _offsetCamHorz*cos(_dir + getDir _target), _offsetCamZ]
+	_posRef = [50*sin(_dir + getDir _target), 50*cos(_dir + getDir _target), _offsetCamZ]
+
+	_ref setPos ([_posTarget, _posRef] call funcVectorAdd)
+	_cam camSetPos ([_posTarget, _posCamRel] call funcVectorAdd)
+	_cam camCommit 0
+
+	#NoTarget
+
+	? _time > (_timeLastDialogUpdate + 0.2) : _return = "External_Update"; goto "UpdateDialog"
+	goto "External_Update"
+
+#Internal
+{ ctrlShow [_x, false] } foreach [_idcFront, _idcLeft, _idcRight, _idcRear]
+? isNull _unitTracked : goto "Exit"
+(vehicle _unitTracked) switchCamera "internal"
+#Internal_Update
+  ~0.02
+	? !dialog || (isNull _unitTracked) || pvGameOver != -1: goto "Exit"
+	? _time > (_timeLastDialogUpdate + 0.2) : _return = "Internal_Update"; goto "UpdateDialog"
+
+	? _bNewLeader : _bNewLeader = false; _unitTracked = leader ((groupMatrix select siPlayer) select _selLeaderID); goto "Internal"
+	? _bNewMember : _bNewMember = false; _unitTracked = _selMember; goto "Internal"
+
+	goto "Internal_Update"
+
+#Gunner
+{ ctrlShow [_x, false] } foreach [_idcFront, _idcLeft, _idcRight, _idcRear]
+? isNull _unitTracked : goto "Exit"
+(vehicle _unitTracked) switchCamera "gunner"
+#Gunner_Update
+  ~0.02
+	? !dialog || (isNull _unitTracked) || pvGameOver != -1: goto "Exit"
+	? _time > (_timeLastDialogUpdate + 0.2) : _return = "Gunner_Update"; goto "UpdateDialog"
+
+	? _bNewLeader : _bNewLeader = false; _unitTracked = leader ((groupMatrix select siPlayer) select _selLeaderID); goto "Gunner"
+	? _bNewMember : _bNewMember = false; _unitTracked = _selMember; goto "Gunner"
+
+	goto "Gunner_Update"
+
+#UpdateDialog
+	? !(alive player) : goto "Exit"
+	? count ([siPlayer, stSatRec] call funcGetWorkingStructures) == 0 : goto "Exit"
+	ctrlShow [_idcSat, [false, true] select (2 == (upgMatrix select siPlayer) select upgSatCam)]  
+	
+	; INFO
+	ctrlSetText [_idcShowInfo, ["Show Info", "Hide Info"] select bShowInfo]
+	ctrlShow [_idcInfo, bShowInfo]
+	_info = ""
+	? !bShowInfo || (isNull _unitTracked) : goto "SkipInfo"
+	_info = format["Damage: %1\n", damage _unitTracked]
+	? (handsHit _unitTracked) != 0 || !(canStand _unitTracked) : _info = _info + format[" %1 %2\n", ["", "BadAim"] select (handsHit _unitTracked), ["", "NoLegs"] select !(canStand _unitTracked)]
+	_wpns = weapons _unitTracked
+	_info = _info + "Weapons:\n"
+	{ _info = _info + format[" %1 - %2\n", _x, _unitTracked ammo _x] } foreach _wpns
+	_magsSingle = []
+	_mags = magazines _unitTracked
+	_info = _info + "Magazines:\n"
+	{ if (!(_x in _magsSingle)) then { _magsSingle set [count _magsSingle, _x] } } foreach _mags
+	{ _m = _x; _info = _info + format[" %1 - %2\n", _m, "_x == _m" count _mags] } foreach _magsSingle
+  
+  ; INFO VEHICLE
+  _v = vehicle _unitTracked 
+  ? _unitTracked == _v : goto "SkipVehicle"
+  _type = _v call funcGetUnitTypeFromObject
+  ? _type == -1 : goto "SkipVehicle"
+	_info = _info + format["\n%1\n", (unitDefs select _type) select udName]
+	_info = _info + format["Damage: %1\n", damage _v]
+	_wpns = weapons _v
+	_info = _info + "Weapons:\n"
+	{ _info = _info + format[" %1 - %2\n", _x, _v ammo _x] } foreach _wpns
+	_magsSingle = []
+	_mags = magazines _v
+	_info = _info + "Magazines:\n"
+	{ if (!(_x in _magsSingle)) then { _magsSingle set [count _magsSingle, _x] } } foreach _mags
+	{ _m = _x; _info = _info + format[" %1 - %2\n", _m, "_x == _m" count _mags] } foreach _magsSingle
+  #SkipVehicle
+  
+  #SkipInfo
+	ctrlSetText [_idcInfo, _info]
+  
+	ctrlSetText [_idcTracking, [format["%1", _unitTracked], "No Target"] select (isNull _unitTracked) ]
+
+	ctrlSetText [_idcShowGroups, ["Show Groups", "Hide Groups"] select bShowGroups]
+	{ ctrlShow [_x, bShowGroups] } foreach [_idcLeader, _idcMember, _idcGroupBg]
+
+  { ctrlShow [_x, _unitTracked == driver vehicle _unitTracked] } foreach [_idcDriverBG]
+  { ctrlShow [_x, _unitTracked == gunner vehicle _unitTracked] } foreach [_idcGunnerBG]
+  { ctrlShow [_x, _unitTracked == commander vehicle _unitTracked] } foreach [_idcCommanderBG]
+
+; { ctrlShow [_x, alive _unitTracked] } foreach [_idcDisband]
+; { ctrlShow [_x, alive _unitTracked] } foreach [_idcDisbandAll]
+  { ctrlShow [_x, giPlayer == (giCO select siPlayer)] } foreach [_idcDisembark]
+
+  
+	? !bShowGroups : goto "GroupsHidden"
+	_idc = _idcLeader
+	lbClear _idc
+	_siX = siPlayer
+	_giX = 0
+	{ _unit = leader _x; _name = name _unit; if (_x in (groupAiMatrix select _siX)) then {_name="AI"}; _text = format["%1 %2", _name, (groupNameMatrix select _siX) select _giX]; _id = lbAdd [_idc, _text]; if (alive _unit) then {lbSetColor [_idc, _id, _colorSide0]} else {lbSetColor [_idc, _id, _colorDead]}; _giX=_giX+1} foreach (groupMatrix select _siX)
+	; ? ((lbCurSel _idc) == -1): lbSetCurSel [_idc, giPlayer]
+	? ((lbCurSel _idc) != _selLeaderID): _selLeaderID = lbCurSel _idc; _bNewLeader = true
+
+	? _selLeaderID == -1 : goto "NoLeaderSelected"
+	_value = lbValue [_idcLeader, _selLeaderID]
+	_gi = _selLeaderID
+	_group = (groupMatrix select siPlayer) select _gi
+	_leader = leader _group
+	_idc = _idcMember
+	lbClear _idc
+	; _units = units _group - [_leader]
+	_units = units _group
+	{ _name = name _x; _text = format["%1", _x]; _id = lbAdd [_idc, _text]; lbSetColor [_idc, _id, [_colorSide0, _colorSide1] select (_si == si1)]; if ((lbCurSel _idc) == _id) then {_selMember = _x} } foreach _units
+	? ((lbCurSel _idc) != -1) && ((lbCurSel _idc) != _selMemberID): _selMemberID = lbCurSel _idc;	_bNewMember = true
+	#NoLeaderSelected
+	
+	#GroupsHidden
+
+	_timeLastDialogUpdate = _time
+	
+	? (btnLeft): btnLeft=false; goto "Left"
+	? (btnRight): btnRight=false; goto "Right"
+	? (btnRear): btnRear=false; goto "Rear"
+	? (btnFront): btnFront=false; goto "Front"
+	? (btnFar): btnFar=false; goto "SatCam"
+	? iView != _iView && iView > 0 && player != vehicle player : iView = 0; _msg = "1st/gunner mode not yet supported while player is mounted."; hint _msg; player groupchat _msg
+	? iView != _iView : goto "ChangeView"
+	
+	? btnDriver : btnDriver=false; if (!(isNull driver vehicle _unitTracked)) then { _unitTracked = driver vehicle _unitTracked }
+	? btnGunner : btnGunner=false; if (!(isNull gunner vehicle _unitTracked)) then { _unitTracked = gunner vehicle _unitTracked }
+	? btnCommander : btnCommander=false; if (!(isNull commander vehicle _unitTracked)) then { _unitTracked = commander vehicle _unitTracked }
+
+	? btnDisband : btnDisband=false; goto "Disband"
+	? btnDisbandAll : btnDisbandAll=false; goto "DisbandAll"
+	
+	? btnClearDeadCrew : btnClearDeadCrew=false; goto "ClearDeadCrew"
+	? btnDisembark : btnDisembark=false; goto "Disembark"
+	? btnJoin : btnJoin=false; goto "Join"
+	? btnVehicleJoin : btnVehicleJoin=false; goto "VehicleJoin"
+	
+
+	goto _return
+
+#Left
+	_dir = 270
+	goto "External_Update"
+
+#Right
+	_dir = 90
+	goto "External_Update"
+
+#Rear
+	_dir = 180
+	goto "External_Update"
+
+#Front
+	_dir = 0
+	goto "External_Update"
+
+#SatCam
+  unitcamUnit = _unitTracked
+  satcamUnit = _unitTracked
+  satcamPos = getPos _unitTracked
+	? _iView == 0 : _cam cameraEffect["terminate","back"]; camDestroy _cam; deleteVehicle _ref
+	? _iView > 0 : player switchCamera "internal"; player cameraeffect ["terminate","back"]
+	closeDialog 0
+	~0.1
+	[] exec "Player\Dialog SatCam.sqs"
+	exit
+
+#ChangeView
+	? _iView == 0 : _cam cameraEffect["terminate","back"]; camDestroy _cam; deleteVehicle _ref
+	? _iView > 0 : player switchCamera "internal"; player cameraeffect ["terminate","back"]
+  _iView = iView
+  ? _iView == 0 : goto "External"
+  ? _iView == 1 : goto "Internal"
+  ? _iView == 2 : goto "Gunner"
+  goto "Exit"
+
+#Disband
+  ; ? !(alive _unitTracked) : player groupchat "You can't disband dead units."; goto _return
+
+  [[_unitTracked]] exec "Player\DisbandUnits.sqs"
+
+  _crew = crew vehicle _unitTracked
+  _done = false; { if (_unitTracked != _x && !_done) then { _unitTracked = _x; _done=true } } foreach _crew
+  ? !_done : _unitTracked = vehicle _unitTracked
+  
+  ? _iView > 0 : iView = 0; goto "ChangeView"
+  goto _return
+  
+#DisbandAll
+? giPlayer != (giCO select siPlayer) : player groupchat "Disband all units of a group is only allowed for commander."; goto _return
+  ? !(alive _unitTracked) : player groupchat "Selected Unit is not alive."; goto _return
+
+  [[_unitTracked]] exec "Player\DisbandAllUnits.sqs"
+
+  ? _iView > 0 : iView = 0; goto "ChangeView"
+  goto "Exit"
+  
+#ClearDeadCrew
+  [[_unitTracked]] exec "Player\ClearDeadCrew.sqs"
+  goto _return
+  
+#Disembark
+  [[_unitTracked]] exec "Player\SendUnitDisembark.sqs"
+  goto "External_Update"
+ 
+#Join
+	? giPlayer != (giCO select siPlayer) : player groupchat "Join units via Unit Camera is only allowed for commander."; goto _return
+	? !(group _unitTracked in ((groupAiMatrix select si0) + (groupAiMatrix select si1))) : player groupchat "Only allow to ask AI group units to join other groups."; goto _return
+
+	? _unitTracked == leader _unitTracked : player groupchat "AI Group Leader is not allowed to join other groups"; goto _return
+	[_unitTracked] exec "Player\JoinUnit.sqs"
+	? _iView > 0 : iView = 0; goto "ChangeView"
+	goto "Exit"
+ 
+#VehicleJoin
+	? giPlayer != (giCO select siPlayer) : player groupchat "Join units via Unit Camera is only allowed for commander."; goto _return
+		
+	_unitsToJoin = [driver vehicle _unitTracked, gunner vehicle _unitTracked, commander vehicle _unitTracked] - [objNull]; _allowToJoin = true
+	? count _unitsToJoin == 0 : player groupchat "Cargo or Empty Vehicle isn't allowed to join."; goto _return
+	{if !(group _x in ((groupAiMatrix select si0) + (groupAiMatrix select si1)) ) then {_allowToJoin = false}} forEach _unitsToJoin
+	? !_allowToJoin : player groupchat "Only allow to ask AI group units to join other groups. Player's member is in vehicle"; goto _return
+	
+	{if (_x == leader _x) then {_allowToJoin = false}} forEach _unitsToJoin
+	? !_allowToJoin : player groupchat "AI Group Leader is not allowed to join other groups"; goto _return
+
+	_unitsToJoin exec "Player\JoinUnit.sqs"
+	? _iView > 0 : iView = 0; goto "ChangeView"
+	goto "Exit"
+ 
+#Exit
+	? _iView > 0 : (vehicle player) switchCamera "internal"
+	? _iView == 0 : _cam cameraEffect["terminate","back"]; camDestroy _cam; deleteVehicle _ref
+  unitcamUnit = _unitTracked
+	closeDialog 0

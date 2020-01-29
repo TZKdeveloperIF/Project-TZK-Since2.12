@@ -1,0 +1,39 @@
+; args: [unit, si, gi, [unit types (defined by DisengageTypeDefs)]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+
+; Get Correct Parameters. Need Pay Attention To Coefficients
+_indexDisengageType = (_params select 0)
+
+; Check Whether Unit Fits The Parameters Of The Temporary Order
+
+? (DisengageTypeDefs select _indexDisengageType) == "Transport Car" : 	_typesDisengage = typesTransportCar;				
+? (DisengageTypeDefs select _indexDisengageType) == "Transport Ship" : 	_typesDisengage = typesTransportShip; 				
+? (DisengageTypeDefs select _indexDisengageType) == "Transport APC" : 	_typesDisengage = typesTransportAPC; 					
+? (DisengageTypeDefs select _indexDisengageType) == "Transport Heli" : 	_typesDisengage = typesTransportHeli; 				
+? (DisengageTypeDefs select _indexDisengageType) == "Battle Ship" : 	_typesDisengage = typesBattleShip; 					
+? (DisengageTypeDefs select _indexDisengageType) == "Light Tank" : 		_typesDisengage = typesLightTank; 					
+? (DisengageTypeDefs select _indexDisengageType) == "Heavy Tank" : 		_typesDisengage = typesHeavyTank; 					
+? (DisengageTypeDefs select _indexDisengageType) == "Howitzer" : 		_typesDisengage = typesHowitzer; 						
+? (DisengageTypeDefs select _indexDisengageType) == "AT APC" :			_typesDisengage = typesATAPC; 						
+? (DisengageTypeDefs select _indexDisengageType) == "AA Vehicle" :		_typesDisengage = typesAAAPC; 						
+? (DisengageTypeDefs select _indexDisengageType) == "Kamov" :			_typesDisengage = typesKa50; 							
+? (DisengageTypeDefs select _indexDisengageType) == "Cobra\Apac\Hind" :	_typesDisengage = (typesGunshipOrigin+typesGunshipAT) - typesKa50; 								
+? (DisengageTypeDefs select _indexDisengageType) == "Transports" : 		_typesDisengage = typesTransportCar+typesTransportShip+typesTransportAPC+typesTransportHeli;		
+? (DisengageTypeDefs select _indexDisengageType) == "Tanks" : 			_typesDisengage = typesLightTank+typesHeavyTank+typesHowitzer; 									
+? (DisengageTypeDefs select _indexDisengageType) == "APCs" : 			_typesDisengage = typesATAPC+typesAAAPC; 				
+? (DisengageTypeDefs select _indexDisengageType) == "Support APC" : 	_typesDisengage = typesSupportAPC;					
+? (DisengageTypeDefs select _indexDisengageType) == "non-AT-Infantry" : _typesDisengage = typesInfantryAll - typesInfantryAT;					
+? (DisengageTypeDefs select _indexDisengageType) == "AT-Infantry" : 	_typesDisengage = typesInfantryAT;					
+? (DisengageTypeDefs select _indexDisengageType) == "All Infantry" : 	_typesDisengage = typesInfantryAll;					
+
+_vehicle = vehicle _unit
+_vt = _vehicle call funcGetUnitTypeFromObject
+? !(_vt in _typesDisengage) && _unit != leader group _unit : exit
+? _unit == leader group _unit : if !(_unit == _vehicle && (HaltTypeDefs select _indexDisengageType) in ["AT-Infantry", "All Infantry"]) then {exit}
+
+; disable the ability to engage
+_unit disableAI "TARGET"

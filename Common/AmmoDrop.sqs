@@ -1,0 +1,40 @@
+; args: [vehicle, si]
+
+_vehicle = _this select 0
+_si = _this select 1
+
+_cost = 500
+_classchute = "ParachuteC"
+? _si == si0 : _classcrate = "ReammoBoxWest"
+? _si == si1 : _classcrate = "ReammoBoxEast"
+
+_pos = getpos _vehicle
+
+? _pos select 2 < 20 : player GroupChat "Vehicle has to be above 20m"; exit
+
+_money = (groupMoneyMatrix select siPlayer) select giPlayer
+? _cost > _money : player GroupChat format["Not enough money for Ammodrop. ($%1 needed)", _cost]; exit
+
+player GroupChat "Ammocrate released"
+[_cost] exec "Player\SendMoneySpent.sqs"
+
+_crate = _classcrate createVehicle _pos
+_crate setPos [_pos select 0, _pos select 1, ((getpos _vehicle select 2) - 3)]
+_chute = _classchute createVehicle getpos _crate
+
+
+
+#drop
+_newpos = [_pos select 0, _pos select 1, ((getpos _crate select 2) - 0.7)]
+_crate setPos _newpos
+_chute setPos _newpos
+~0.05
+?(getpos _crate select 2) > 1 : goto "drop"
+
+_crate setPos [_pos select 0, _pos select 1, 0]
+
+_crate addAction ["Rearm", "Player\Action Rearm.sqs"]
+_crate setAmmoCargo 0
+RemoveAllWeapons _crate
+
+player GroupChat format["Ammocrate dropped sucessfully at: %1 Cost: $%2", _pos call funcCalcMapPos, _cost]

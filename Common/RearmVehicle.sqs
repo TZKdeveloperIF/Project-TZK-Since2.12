@@ -1,0 +1,26 @@
+; args: [vehicle]
+_v = _this select 0
+? !(local _v) || !(alive _v) : exit
+? (count (magazines _v)) > 0 : format["WARNING: vehicle have mags in MsgVehicleMagsAdd.sqs"] call fDebugLog; exit
+
+_rearmData = _v call funcGetRearmData
+_weapons = _rearmData select 0
+_mags = _rearmData select 1
+? (count _mags) == 0 : exit
+_wpns = weapons _v
+
+? !(local _v) : exit
+
+_matching = true
+_c = count _wpns; _i = 0
+while "_i < _c && _matching" do { if !( (_wpns select _i)in(_weapons) ) then {_matching = false}; _i=_i+1 }
+_c = count _weapons; _i = 0
+while "_i < _c && _matching" do { if !( (_weapons select _i)in(_wpns) ) then {_matching = false}; _i=_i+1 }
+
+if _matching then { { _v addMagazine _x } foreach _mags } else { { _v removeWeapon _x} foreach _wpns; { _v addWeapon _x } foreach _weapons; { _v addMagazine _x } foreach _mags; _v selectWeapon (_weapons select 0) }
+
+? canFire _v : exit
+_v groupChat "Rearm completed. But gun barrel still hurts. Repair it please."
+~90
+? canFire _v : exit
+if (local _v) then { { _v removeMagazines _x } foreach (magazines _v); _v groupChat "Gun barrel not repair. Unable to fire. NEED REPAIR AND REARM!" } else { [_v] exec "Common\SendVehicleMagsRemove.sqs" }

@@ -1,0 +1,136 @@
+_unit = _this select 0
+
+_posStart = getPos _unit
+
+unitSpec = _unit
+; unitSpec = objNull
+
+camSpec = "camera" camCreate getPos _unit
+hhSpec = "HeliHEmpty" camCreate getPos _unit
+hhTracker = "HeliHEmpty" camCreate getPos _unit
+
+camSpec camSetFOV 1
+camSpec camCommand "inertia on"
+
+#Init
+  keyForward = false
+  keyBackward = false
+  keyStrafeLeft = false
+  keyStrafeRight = false
+  keyTurnLeft = false
+  keyTurnRight = false
+  keyReload = false
+  
+  _posOld = getPos _unit
+  _dirOld = getDir _unit
+  _vForward = [sin _dirOld, cos _dirOld]
+  _vRight = [_vForward, 90] call funcVectorRot
+	_velForwardOld = [_vForward, _vel] call funcVectorDot
+	_velRightOld = [_vRight, _vel] call funcVectorDot
+
+  [] exec "Player\Dialog Spectator.sqs"
+  ; [] exec "Player\SpecCam.sqs"
+  
+#Update
+	~0.02
+	? pvGameOver != -1 : goto "GameOver"
+	? !(alive _unit) : goto "WaitUntilAlive"
+
+	; player globalchat format[" %1", [0,1] select keyForward]
+	; player globalchat format["%1 %2", [0,1] select keyStrafeLeft, [0,1] select keyStrafeRight]
+	; player globalchat format[" %1", [0,1] select keyBackward]
+	; player globalchat format["%1 %2", [" ","<"] select keyTurnLeft, [" ",">"] select keyTurnRight]
+
+	_ammo = _unit ammo "Ingram"
+	; player globalchat format["ammo = %1", _ammo]
+	? _ammo > 0 : keyReload = true; player removeMagazines "IngramMag"; player addMagazine "IngramMag"
+	
+	; TODO
+  ; ? keyReload : keyReload = false; _si = [si0, siRes] select (random 1 < 0.5); player globalchat format["_si=%1", _si]; { _x set [tdSide, _si] } foreach towns; si0 exec "Server\CheckWinTowns.sqs"
+  
+	_pos = getPos _unit
+	_dir = getDir _unit
+	_vel = velocity _unit	
+	
+	_posDiff = [_pos, _posOld] call funcVectorSub
+	; player globalchat format["_posDiff = %1", _posDiff]
+	
+	_vForward = [sin _dir, cos _dir]
+	_vRight = [_vForward, 90] call funcVectorRot
+	_velForward = [_vForward, _vel] call funcVectorDot
+	_velRight = [_vRight, _vel] call funcVectorDot
+	
+	; player globalchat format["_velForward = %1", _velForward]
+	; player globalchat format["_velRight = %1", _velRight]
+
+	_trig = 0.1
+	_hyst = 0.1
+	if ( _velForward >  0.2 ) then { keyForward = true } else { keyForward = false  }
+	if ( _velForward < -0.15 ) then { keyBackward = true } else { keyBackward = false  }
+
+	if ( _velRight > 0.25 ) then { keyStrafeRight = true } else { keyStrafeRight = false  }
+	if ( _velRight < -0.25 ) then { keyStrafeLeft = true } else { keyStrafeLeft = false  }
+
+	? (_dir - _dirOld) > 180 : _dirOld = _dirOld + 360
+	? (_dir - _dirOld) < -180 : _dirOld = _dirOld - 360
+	if ( _dir < _dirOld ) then { keyTurnLeft = true } else { keyTurnLeft = false  }
+	if ( _dir > _dirOld ) then { keyTurnRight = true } else { keyTurnRight = false  }
+
+	_posOld = _pos
+	_dirOld = _dir
+	_velForwardOld = _velForward
+	_velRightOld = _velRight
+
+	? ([_posStart, _pos] call funcDistH) > 50 : goto "ResetPos"
+	
+	? (pvDebugVars): pvDebugVars=false; player globalchat format["pvDebugVar1=%1", pvDebugVar1]; player globalchat format["pvDebugVar2=%1", pvDebugVar2]; player globalchat format["pvDebugVar3=%1", pvDebugVar3]
+
+	goto "Update"
+	
+#ResetPos
+  _unit setPos _posStart
+  _unit setVelocity _vel
+
+  _pos = getPos _unit
+  _dir = getDir _unit
+  _vel = velocity _unit
+
+  _vForward = [sin _dir, cos _dir]
+  _vRight = [_vForward, 90] call funcVectorRot
+  _velForward = [_vForward, _vel] call funcVectorDot
+  _velRight = [_vRight, _vel] call funcVectorDot
+
+  _posOld = _pos
+  _dirOld = _dir
+  _velForwardOld = _velForward
+  _velRightOld = _velRight
+
+  goto "Update"
+
+#WaitUntilAlive
+  keyForward = false
+  keyBackward = false
+  keyStrafeLeft = false
+  keyStrafeRight = false
+  keyTurnLeft = false
+  keyTurnRight = false
+  keyReload = false
+
+  player globalchat "Your player unit was killed. You will be back in control when you have respawned."
+  @(alive player)
+  _unit = player
+  _unit setPos _posStart
+  goto "Init"
+  
+#GameOver
+  ~5
+  player switchCamera "internal"
+  player cameraeffect["terminate","back"]
+  forceMap false
+
+  camDestroy camSpec
+  deleteVehicle hhSpec
+  deleteVehicle hhTracker
+
+  [] Exec "Player\PlayGameOverSequence.sqs"
+  exit

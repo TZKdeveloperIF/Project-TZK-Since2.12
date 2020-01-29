@@ -1,0 +1,50 @@
+; args: value of pvOrder
+
+_value = _this
+
+_type = _value % 20
+_value = _value - _type
+
+_param0 = (_value % (20*20))/(20)
+_value = _value - _param0*(20)
+
+_param1 = (_value % (20*20*20))/(20*20)
+_value = _value - _param1*(20*20)
+
+_param2 = (_value % (20*20*20*10))/(20*20*20)
+_value = _value - _param2*(20*20*20)
+
+_gi = (_value % (20*20*20*10*GroupsNum*2))/(20*20*20*10)
+_value = _value - _gi*(20*20*20*10)
+
+_si = _value/(20*20*20*10*GroupsNum*2)
+
+@!(mutexAIGroup)
+mutexAIGroup = true
+? (_gi >= GroupsNum) : goto "OrderAll"
+_id = ((orderMatrix select _si) select _gi) select 0
+(orderMatrix select _si) set [_gi, [_id+1, _type, [_param0, _param1, _param2]]]
+
+? isNull player : mutexAIGroup = false; exit
+? _si != siPlayer : mutexAIGroup = false; exit
+
+_group = (groupMatrix select _si) select _gi
+
+(leader _group) sidechat format["Order Acknowledged, %1", ((orderMatrix select _si) select _gi) call funcGetOrderDesc]; mutexAIGroup = false; exit
+
+#OrderAll
+_groupNames = groupNameMatrix select _si
+_giPlayer = _gi - GroupsNum
+_gis = ([_si] call funcGetAIGroupsIndex); _i = -1; _c = count _gis
+	#OrderAll_Check
+	~0.05
+		_i = _i + 1
+		? !(_i < _c) : mutexAIGroup = false; exit
+		_gi = _gis select _i
+		? ((call grpSetting) select aisLockOrder) == 1 : goto "OrderAll_Check"
+		? (_giPlayer == (giCO select _si)) && !( (["Commander"] + callsigns) select ((call grpSetting) select aisSuperior) in ["Commander", _groupNames select _giPlayer] ) : goto "OrderAll_Check"
+		? (_giPlayer != (giCO select _si)) && (["Commander"] + callsigns) select ((call grpSetting) select aisSuperior) != _groupNames select _giPlayer : goto "OrderAll_Check"
+		_id = ((orderMatrix select _si) select _gi) select 0
+		(orderMatrix select _si) set [_gi, [_id+1, _type, [_param0, _param1, _param2]]]
+		? !(isNull player) : if (_si == siPlayer) then {_group = (groupMatrix select _si) select _gi; (leader _group) sidechat format["Order Acknowledged, %1", ((orderMatrix select _si) select _gi) call funcGetOrderDesc]}
+		goto "OrderAll_Check"

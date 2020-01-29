@@ -1,0 +1,76 @@
+; args: [unit]
+
+_units = _this
+_count = count _units, _index = 0
+_dlg = createDialog "UCJoinDialog"
+_idcJoinList = IDC + 1
+
+
+
+{ _id = lbAdd [_idcJoinList, format["%1", _x] ]; } forEach callsigns
+
+#Update
+  ? !(dialog) : exit
+  ? !(alive player) : closeDialog 0; exit
+	? btnUCJoinExit : btnUCJoinExit  = false; closeDialog 0; exit
+	? btnUCJoinOK : btnUCJoinOK  = false; goto "StartJoin"
+	
+	~0.1
+	goto "Update"
+	
+	
+#StartJoin
+	_group = group (_units select 0); _bLegalJoin = true
+	{ if ( !((group _x) in (groupAIMatrix select siPlayer)) || (_x == leader (group _x)) ) then {_bLegalJoin = false} } forEach _units
+	? !_bLegalJoin : hint "Player's units included in selected units. Join not allowed."; closeDialog 0; exit
+	
+	? lbCurSel _idcJoinList == -1 : player groupChat "None group selected."; goto "Update"
+	
+	_gNameJoin = callsigns select (lbCurSel _idcJoinList)
+	_groupName = groupNameMatrix select siPlayer
+	? !(_gNameJoin in _groupName) : player groupChat "Selected group doesn't exist in this game."; goto "Update"
+	
+	_gi = [_gNameJoin, _groupName] call funcGetIndex
+	? _gi == -1 : player groupChat "Defination conflict between ""Player\JoinUnit.sqs"" and variable ""callsigns"". Please ask mission author to fix this."; closeDialog 0; exit
+	
+	? _group == ((groupMatrix select siPlayer) select _gi) : player groupChat "You're trying to ask AI member to join his group."; goto "Update"
+	
+	
+	_giFrom = [_group, (groupMatrix select siPlayer)] call funcGetIndex
+	_ids = (groupUnitIDMatrix select siPlayer) select _giFrom; _uid = 0; _text = ""
+	_index = 0; _count = count _units; _unitsID = 0
+	while "_uid <= 12 && _index < _count" do { _text = format["%1", _units select _index]; if (_text == (_ids select _uid)) then {_unitsID = _unitsID + 2^_uid; _index = _index + 1}; _uid = _uid + 1; }
+	? _unitsID == 0 : _remoteIDs = []; {_remoteIDs set [count _remoteIDs, _x + " REMOTE"]} forEach _ids; _uid = 0; _index = 0; while "_uid <= 12 && _index < _count" do { _text = format["%1", _units select _index]; if (_text == (_remoteIDs select _uid)) then {_unitsID = _unitsID + 2^_uid; _index = _index + 1}; _uid = _uid + 1; }
+	_unitsID = _unitsID / 4
+
+	_value = _gi + GroupsNum*_giFrom + GroupsNum*GroupsNum*siPlayer + GroupsNum*GroupsNum*2*_unitsID
+
+	? mutexSendJoinApply : player groupChat "Join processing, be patient and don't send apply so frequency please."; goto "Update"
+	mutexSendJoinApply = true
+	pvJoinReply = -1; pvJoinApply = -_value; PublicVariable "pvJoinApply"; pvJoinUnits = (_units select 0); PublicVariable "pvJoinUnits"
+
+
+	@(pvJoinReply != -1)
+	_value = pvJoinReply
+	? 1 != _value % 2 : goto "JoinRefused"
+	
+	~3
+			
+	mutexSendJoinApply = false; closeDialog 0; exit
+	
+
+	#JoinRefused
+
+	_value = _value / 2
+	? 1 == _value : player groupChat format ["Group %1 has too many members (including units to build). Reduce units or ask COMMANDER to disband/cancel some units.", callsigns select _gi]; goto "DONE"
+
+	_value = _value / 2
+	? 1 == _value : player groupChat "Another Join Process is handling on Server. Please try again after a while"; goto "DONE"
+	? 0 == _value : player groupChat "Selected units including player units or AI leader. Illegal join not allowed."; goto "DONE"
+
+
+
+	#DONE
+	mutexSendJoinApply = false
+	~0.1
+	goto "Update"

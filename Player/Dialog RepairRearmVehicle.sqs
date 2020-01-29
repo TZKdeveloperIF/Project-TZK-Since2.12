@@ -1,0 +1,144 @@
+; args: [truck, unit]
+
+_support = _this select 0
+_unit = _this select 1
+
+_vs = [getPos _support, rangeSupport, [], [_support]] call funcGetNearbyVehicles
+? (count _vs) > 0 : _vs = [2, true, _vs] call funcSort
+
+_structs = []
+_type = 0; { _index = 0; _count = count _x; while "_index < _count" do {_obj = _x select _index; if ((alive _obj) && (_support distance _obj) < rangeSupport && ((isNull gunner _obj) || (_obj != gunner _obj))) then { _structs set [count _structs, [_obj, _type]] }; _index = _index + 1 }; _type = _type + 1 } foreach (structMatrix select si0)
+_type = 0; { _index = 0; _count = count _x; while "_index < _count" do {_obj = _x select _index; if ((alive _obj) && (_support distance _obj) < rangeSupport && ((isNull gunner _obj) || (_obj != gunner _obj))) then { _structs set [count _structs, [_obj, _type]] }; _index = _index + 1 }; _type = _type + 1 } foreach (structMatrix select si1)
+
+? ((count _vs) == 0 && (count _structs) == 0): hint "No Nearby Vehicles"; exit
+
+_dlg = createDialog "GenericDialog"
+
+_idcAction0Label = IDC+0
+_idcAction0 = IDC+1
+_idcAction1Label = IDC+2
+_idcAction1 = IDC+3
+_idcAction2Label = IDC+4
+_idcAction2 = IDC+5
+_idcAction3Label = IDC+6
+_idcAction3 = IDC+7
+_idcAction4Label = IDC+8
+_idcAction4 = IDC+9
+
+_idcListHeader = IDC+10
+_idcList = IDC+11
+
+btnAction0 = false
+btnAction1 = false
+btnAction2 = false
+btnAction3 = false
+btnAction4 = false
+
+{ ctrlShow [_x, false] } forEach [ _idcAction0Label, _idcAction1Label, _idcAction2Label, _idcAction3Label, _idcAction4Label ]
+{ ctrlShow [_x, false] } forEach [_idcAction3, _idcAction4]
+
+ctrlSetText [IDC_TITLE, "Repair/Heal/Rearm"]
+ctrlSetText [_idcAction0, "Repair-Heal-(Rearm)"]
+ctrlSetText [_idcAction1, "Repair-Heal"]
+ctrlSetText [_idcAction2, "Rearm"]
+ctrlSetText [_idcListHeader, "Type    Health  Ammo   Crew"]
+
+_i = 0
+_c = count _vs
+#CheckNextVehicle
+  ? !(_i < _c) : goto "VehiclesDone"
+  _v = (_vs select _i) select 0
+  _type = (_vs select _i) select 1
+  _name = (unitDefs select _type) select udName
+  _image = (unitDefs select _type) select udImage
+  
+  _health = 1 - (damage _v)
+  _health = 100*(_health - (_health % 0.01))
+  
+  _ammo = ["NoAmmo", "HasAmmo"] select (someAmmo _v)
+  
+  _crew = crew _v
+  if ( (count _crew) > 0 ) then { _crew = _crew select 0 } else { _crew = "Empty" }
+  
+  _text = format["%1  %2%3  %4  %5", _name, _health, "%", _ammo, _crew];
+  _id = lbAdd [_idcList, _text];
+  ? _image != "" : lbSetPicture [_idcList, _id, _image]
+
+  _i = _i + 1
+  goto "CheckNextVehicle"
+#VehiclesDone
+  
+_i = 0
+_c = count _structs
+#CheckNextStruct
+  ? !(_i < _c) : goto "StructsDone"
+  _v = (_structs select _i) select 0
+  _type = (_structs select _i) select 1
+  _name = (structDefs select _type) select sdName
+  _image = ((structDefs select _type) select sdImage) select siPlayer
+  
+  _health = 1 - (damage _v)
+  _health = 100*(_health - (_health % 0.01))
+  
+  _ammo = ["NoAmmo", "HasAmmo"] select (someAmmo _v)
+  
+  _crew = crew _v
+  if ( (count _crew) > 0 ) then { _crew = _crew select 0 } else { _crew = "Empty" }
+  
+  _text = format["%1  %2%3  %4  %5", _name, _health, "%", _ammo, _crew];
+  _id = lbAdd [_idcList, _text];
+  ? _image != "" : lbSetPicture [_idcList, _id, _image]
+
+  _i = _i + 1
+  goto "CheckNextStruct"
+#StructsDone
+
+; { _id = lbAdd [_idcList, (structDefs select (_x select 1)) select sdName] } foreach _structs
+
+lbSetCurSel [_idcList, 0]
+
+#Update
+  ? !(dialog) : exit
+  ? !(alive _support ) || !(alive _unit) || !(alive player) : closeDialog 0; exit
+
+  ? btnAction0 : btnAction0=false; _perform = "RepairOptRearm"; goto "Perform"
+  ? btnAction1 : btnAction1=false; _perform = "Repair"; goto "Perform"
+  ? btnAction2 : btnAction2=false; _perform = "Rearm"; goto "Perform"
+
+  ~0.2
+  goto "Update"
+
+#Perform
+	_sel = lbCurSel _idcList
+	? _sel == -1 : hint "No vehicle selected"; goto "Update"
+
+  _count = count _vs
+	? _sel >= _count : goto "CheckStructs"
+	_vehicle = (_vs select _sel) select 0
+  goto "SkipStructs"  
+  #CheckStructs
+  _vehicle = (_structs select (_sel - _count)) select 0
+	#SkipStructs
+	? !(alive _vehicle) : hint "Vehicle destroyed"; goto "Update"
+	? (_vehicle distance _support) > rangeSupport : hint "Vehicle out of range"; goto "Update"
+	goto _perform
+
+#RepairOptRearm
+  _rearmData = _vehicle call funcGetRearmData
+  _rearmMags = _rearmData select 1
+  _rearm = false
+  ? (count _rearmMags) == 0 : goto "SkipRearm"
+  _weapons = weapons _vehicle
+  { if ((_vehicle ammo _x) == 0) then { _rearm = true }  } foreach _weapons
+  ? _rearm : [_unit, _support, _vehicle] exec "Player\Rearm.sqs"
+  #SkipRearm
+	[_unit, _support, _vehicle] exec "Player\HealRepair.sqs"
+	goto "Update"
+  
+#Repair
+	[_unit, _support, _vehicle] exec "Player\HealRepair.sqs"
+	goto "Update"
+	
+#Rearm
+	[_unit, _support, _vehicle] exec "Player\Rearm.sqs"
+	goto "Update"

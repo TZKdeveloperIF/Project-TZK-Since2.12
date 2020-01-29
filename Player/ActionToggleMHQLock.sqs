@@ -1,0 +1,21 @@
+; args: [vehicle, unit, idAction]
+
+;player globalchat format ["ToggleMHQLock.sqs: _this=%1", _this]
+
+_mhq = _this Select 0
+_unit = _this Select 1
+_action = _this Select 2
+_si = siPlayer
+
+;player globalchat format ["mhqActions = %1", mhqActions]
+
+_mhq removeAction _action
+mhqActions = mhqActions - [_action]
+
+_locked = locked _mhq
+_textAction = ["Unlock MHQ", "Lock MHQ"] select _locked
+_action = _mhq addAction [_textAction ,"Player\ActionToggleMHQLock.sqs"]
+[_mhq, !_locked] exec "Common\LockVehicle.sqs"
+
+#AddAction
+	mhqActions = mhqActions + [_action]

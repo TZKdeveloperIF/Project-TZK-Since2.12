@@ -1,0 +1,16 @@
+; args: [params]
+
+_value = _this select 0
+
+_gi = _value % GroupsNum; _value = _value - _gi
+_si = (_value % (GroupsNum*4))/(GroupsNum); _value = _value - _si*GroupsNum
+_blocked = _value/(GroupsNum*4)
+
+_group = (groupMatrix select _si) select _gi
+_nameGroup = format["%1 (%2 %3)", name leader _group, sideNames select _si, (groupNameMatrix select _si) select _gi ]
+
+_text = format["%1 %2", _nameGroup, ["Unblocked (player receiving)","Blocked (player NOT receiving)"] select (_blocked == 1)]
+
+? (siPlayer == siCiv): _text exec "Player\LogSpectator.sqs"
+? (siPlayer != siCiv): player globalchat _text
+

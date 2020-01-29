@@ -1,0 +1,58 @@
+; args: [support, si]
+
+_support = _this select 0
+; _si = _this select 1
+
+_object = objNull
+_repair = 0.05
+_range = rangeSupport + 10
+
+
+#Update
+~6
+
+? !(alive _support) : exit
+? !(alive driver _support) : goto "Update"
+
+_unit = driver _support
+_group = group _unit
+
+_si = -1
+_gi = [_group, groupMatrix select si0] call funcGetIndex
+? _gi != -1 : _si = si0; goto "SideSet"
+_gi = [_group, groupMatrix select si1] call funcGetIndex
+? _gi != -1 : _si = si1; goto "SideSet"
+exit
+#SideSet
+
+_list = repairableStructureMatrix select _si
+? (count _list) == 0 : goto "CheckObjects"
+
+_object = objNull
+_type = -1
+_distMin = 100000
+{ _obj =_x select 0; if ( !(isNull _obj) ) then { _dist = (_support distance _obj); if (_dist < _distMin) then { _object = _obj; _type = _x select 2; _distMin = _dist }; } } foreach _list
+
+? isNull _object || _distMin > _range : goto "CheckObjects"
+
+_damage = [_object, _repair, _si] call funcRepairStructure
+? _group in (groupAiMatrix select _si) : goto "Update"
+? (_damage + _repair) < 0 : goto "SideSet"
+? _gi != -1 && _type != -1 : [_damage, _si, _gi, _type] exec "Server\Info\StructRepaired.sqs"
+; those negative _damage will be reset in Server\Info\StructRepaired.sqs
+; ? _damage == 0 && _type != -1 : [_si, _type] exec "Server\Info\StructReady.sqs"; [_object] exec "Server\primStructsPlacedRemove.sqs"
+goto "Update"
+
+#CheckObjects
+_object = objNull
+_index = -1
+_i=0; { if ( ([getPos _support, getPos _x] call funcDistH) < 2*rangeSupport && !(alive _x) ) then { _object = _x; _index = _i }; _i=_i+1 } foreach repairableObjects
+? isNull _object : goto "Update"
+_dmg = repairableObjectsDamage select _index
+? _dmg == 0 : _dmg = 1
+_dmg = _dmg - _repair
+? _dmg < 0 : _dmg = 0
+[_object, _dmg, _si, _gi] exec "Server\SendObjectRepaired.sqs"
+repairableObjectsDamage set [_index, _dmg]
+
+goto "Update"

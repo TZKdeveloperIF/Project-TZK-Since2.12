@@ -1,0 +1,14 @@
+; args: [_type, _si, _objects, <repaired>]
+
+? !(local LocalServerObject) : exit
+
+_type = _this select 0
+_si = _this select 1
+_object = (_this select 2) select 0
+? _si == si0 : _object addEventHandler ["killed", {[_this, si0] exec "Server\Event_StructPrimDestroyed.sqs"}]
+? _si == si1 : _object addEventHandler ["killed", {[_this, si1] exec "Server\Event_StructPrimDestroyed.sqs"}]
+[_object, _si, (structDefs select _type) select sdCost] exec "Server\EventAdd_StructHit.sqs"
+[_object, _si, kaStruct, 200] exec "Server\UpdateKnowsAbout.sqs"
+
+
+? !dev && !((count _this) > 3) : _object setDamage 1

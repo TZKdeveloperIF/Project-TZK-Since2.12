@@ -1,0 +1,13 @@
+; args: [params]
+
+_value = _this select 0
+
+_type = _value % 1000
+_value = _value - _type
+
+_si = _value/1000
+
+_structName = (structDefs select _type) select sdName
+_timestring = [] call funcGetTimeString 
+? (siPlayer == _si ): player sideChat format["%1 %2 Destruction completed. ", _timestring , _structName]
+? (siPlayer == siCiv): format["%1 %2 Destruction completed.", sideNames select _si, _structName] exec "Player\LogSpectator.sqs"

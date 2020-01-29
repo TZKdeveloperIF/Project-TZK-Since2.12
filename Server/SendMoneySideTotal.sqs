@@ -1,0 +1,15 @@
+; args: [si, amount]
+
+_si = _this select 0
+_amount = _this select 1
+
+_value = _amount
+_value = _value + 4000000*_si
+
+@!(mutexSendMoneySide)
+mutexSendMoneySide = true
+
+pvMoneySideTotal = _value; PublicVariable "pvMoneySideTotal"
+
+~sendDelay
+mutexSendMoneySide = false

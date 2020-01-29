@@ -1,0 +1,13 @@
+; args: [vehicle, unit, idAction]
+
+_vehicle = _this select 0
+_unit = _this select 1
+
+? !(alive _vehicle): goto "VehicleDestroyed"
+? (_unit != driver _vehicle): Exit
+
+[_vehicle, _unit] exec "Player\Dialog SetFlightAltitude.sqs"
+Exit
+
+#VehicleDestroyed
+_vehicle removeAction (_this select 2)

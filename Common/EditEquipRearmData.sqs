@@ -1,0 +1,12 @@
+; args: [ object, weapons[], magazines[] ]
+
+_object = _this select 0
+_weapons = _this select 1
+_magazines = _this select 2
+
+_dataSet = false; _try = 0
+#RearmDataCheck
+~1
+_dataSet = [_object, _weapons, _magazines, true] call funcEditRearmData; _try = _try + 1
+? !_dataSet && _try < 100 && alive _object: goto "RearmDataCheck"
+

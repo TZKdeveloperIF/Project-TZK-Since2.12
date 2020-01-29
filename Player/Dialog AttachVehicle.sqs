@@ -1,0 +1,104 @@
+; args: [tug, tugslot, tugType]
+
+_tug = _this select 0
+_tugslot = _this select 1
+_tugType = _this select 2
+
+_allowed = []
+_distMax = 0
+? (_tugType == ttHeli): _distMax = 30; _allowed = [stLight, stShip]
+? (_tugType == ttBoat): _distMax = 50; _allowed = [stLight, stShip, stHeavy, stAir, -1]
+? (_tugType == ttTruck): _distMax = 20; _allowed = [stLight, stShip]
+? (_tugType == ttAPC): _distMax = 20; _allowed = [stLight, stShip, stHeavy, stAir, -1]
+
+_vs = [_tug, _allowed, _distMax] call funcUpdateDialogAttachableVehicles
+? ((count _vs) == 0): hint "No Nearby Vehicles"; exit
+
+_dlg = createDialog "GenericDialog"
+
+_idcAction0Label = IDC+0
+_idcAction0 = IDC+1
+_idcAction1Label = IDC+2
+_idcAction1 = IDC+3
+_idcAction2Label = IDC+4
+_idcAction2 = IDC+5
+_idcAction3Label = IDC+6
+_idcAction3 = IDC+7
+_idcAction4Label = IDC+8
+_idcAction4 = IDC+9
+
+_idcListHeader = IDC+10
+_idcList = IDC+11
+
+btnAction0 = false
+btnAction1 = false
+btnAction2 = false
+btnAction3 = false
+btnAction4 = false
+
+{ ctrlShow [_x, false] } forEach [ _idcAction0Label, _idcAction1Label, _idcAction2Label, _idcAction3Label, _idcAction4Label ]
+{ ctrlShow [_x, false] } forEach [_idcAction1, _idcAction2, _idcAction3, _idcAction4]
+
+ctrlSetText [IDC_TITLE, "Attach vehicle"]
+ctrlSetText [_idcAction0, "Attach"]
+ctrlSetText [_idcListHeader, "Type    Health  Ammo   Crew"]
+
+_vehicle = objNull
+[_vs, _idcList, _vehicle] call funcUpdateDialogAttachVehicleList
+
+
+#Update
+
+? !(dialog) : exit
+? !(alive _tug) : closeDialog 0; exit
+
+_vs = [_tug, _allowed, _distMax] call funcUpdateDialogAttachableVehicles
+[_vs, _idcList, _veh1] call funcUpdateDialogAttachVehicleList
+
+? btnAction0 : btnAction0=false; goto "AttachVehicle"
+
+~0.2
+_sel = lbCurSel _idcList; _vehicle = objNull; if (_sel != -1) then {_vehicle = (_vs select _sel) select 0}
+_veh1 = _vehicle
+goto "Update"
+
+#AttachVehicle
+	? count _vs == 0 : hint "No vehicle available to attach"; goto "Update"
+	_sel = lbCurSel _idcList
+	? (_sel == -1): hint "No vehicle selected"; goto "Update"
+
+	_vehicle = (_vs select _sel) select 0
+	_type = (_vs select _sel) select 1
+
+	_factoryType = (unitDefs select _type) select udFactoryType
+	 
+	? !(_factoryType in _allowed): hint "Vehicle too heavy"; goto "Update"
+	; ? (locked _vehicle): hint "Vehicle Locked\nVehicle must be unlocked"; goto "Update"
+	? !(alive _vehicle): hint "Vehicle destroyed"; goto "Update"
+	
+	; ? (_vehicle == (mhq select si0) && (single == 1)): hint "Single base mode Active"; goto "Update"
+	; ? (_vehicle == (mhq select si1) && (single == 1)): hint "Single base mode Active"; goto "Update"
+
+	_vehicleAttached = false
+	
+	_index = 0
+	_count = count vehicleAttached
+	? (_count == 0): goto "NoneAttached"
+	#CheckAttached
+		_entry = vehicleAttached select _index
+		_tug2 = _entry select tsTug
+		_tugged = (_entry select tsTugged) - [objNull]
+
+		? (_vehicle == _tug2 && (count _tugged) > 0): _vehicleAttached = true
+		? (_vehicle in _tugged): _vehicleAttached = true
+
+		_index = _index + 1
+		? (_index < _count && !_vehicleAttached): goto "CheckAttached"
+	#NoneAttached
+
+	? (_vehicleAttached): hint "Vehicle currently attached"; goto "Update"
+
+	? ((_vehicle distance _tug) > _distMax): hint "Vehicle out of attach range"; goto "Update"
+	
+	[_vehicle, _tug, _tugslot, _tugType] exec "Player\SendVehicleAttached.sqs"
+	closeDialog 0

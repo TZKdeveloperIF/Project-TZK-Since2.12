@@ -1,0 +1,21 @@
+; args: [vehicle, type, si]
+
+_v = _this select 0
+
+_m = ["RKTHunter_Guns", "RKTHunter_Guns", "RKTHunter_Guns"]
+_w = ["RKTHunter_Guns"]
+_m = _m + SpoofMagazines
+~1
+? !(local _v) || !(alive _v) : [_v, _w, _m] exec "Common\EditEquipRearmData.sqs"; exit
+
+
+_mags = magazines _v
+_wpns = weapons _v
+
+{ _v removeMagazine _x} foreach _mags
+{ _v removeWeapon _x} foreach _wpns
+
+{_v addMagazine _x} forEach _m
+{_v addweapon _x} forEach _w
+
+[_v, _w, _m] exec "Common\EditEquipRearmData.sqs"; exit

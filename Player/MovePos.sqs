@@ -1,0 +1,10 @@
+; args: [unit, pos]
+
+_unit = _this select 0
+_pos = _this select 1
+
+? !(alive _unit) : exit
+? !(alive driver vehicle _unit) : exit
+
+_posMove = [_pos, 5, 20] call funcGetRandomPos
+[_unit, _posMove] call funcMove

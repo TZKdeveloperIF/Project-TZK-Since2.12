@@ -1,0 +1,33 @@
+; args [object, type, si, gi]
+
+_MCV = _this select 0
+_type = _this select 1
+_si = _this select 2
+
+_mcvs = MCV select _si
+_added = false; _i = 0; _c = count _mcvs
+while "_i < _c && !_added" do { if ( isNull (_mcvs select _i) ) then { _mcvs set [_i, _MCV]; _added=true }; _i=_i+1 }
+if (!_added) then { _mcvs set [count _mcvs, _MCV] }
+
+
+_MCV say "MCV_Deployed_xj200"
+
+_event = format["[_this, %1, 1] exec ""Common\Event_MHQDestroyed.sqs""", _si]
+_MCV addEventHandler ["killed", _event]
+
+
+_MCV setRepairCargo 0
+_MCV setAmmoCargo 0
+
+? !(local LocalServerObject) : goto "SkipServer"
+
+; SERVER
+[_MCV, _si] exec "Server\UpdateSupportVehicle.sqs"
+
+#SkipServer
+
+? siPlayer != si0 && siPlayer != si1 : exit
+
+; PLAYER
+_MCV addAction ["Heal/Repair", "Player\Action HealRepair.sqs"]
+_MCV addAction ["Rearm", "Player\Action Rearm.sqs"]

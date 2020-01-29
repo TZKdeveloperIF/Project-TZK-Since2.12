@@ -1,0 +1,19 @@
+; args: [shell, Fired-EH Array]
+
+_shot = _this select 0
+_FiredArray = _this select 1
+
+
+; SLX Tank MachineGun Effect
+? (typeOf _shot) in ["CoaxW_xj200","CoaxE_xj200","50calW_xj200","50calE_xj200","Bullet7_6","Bullet12_7"] : [_shot, getPos _shot, getDir _shot, velocity _shot, speed _shot, typeOf _shot, _FiredArray] exec {\TZK_Objects\Scripts\SLXTankMGEffect.sqs}
+
+; Howitzer Main-Gun Effect
+? (_FiredArray select 1) in [{Sprut_2A75_xj200},{Gun155_xj200},{PLA155Gun_xj200}] : TracerCnt = 0; _FiredArray exec {\TZK_Objects\Scripts_CTI\ImpactPointMarker.sqs}; _FiredArray exec {\TZK_Objects\Scripts\TracerM109Gun.sqs}; _FiredArray call loadFile {\TZK_Objects\Scripts\stvol.sqf}
+
+; APC Cannon & Missile Effect
+? "Tank" countType [_FiredArray select 0] > 0 || "Air" countType [_FiredArray select 0] > 0 : _FiredArray exec {\TZK_Objects\Scripts\ffurFired.sqs}; _FiredArray exec {\TZK_Objects\Scripts\ffurMissileFlame.sqs}
+
+; Not Allow To Use Tank-Main-Gun Missile
+? (typeOf _shot) in ["9M112_xj200", "9M120_xj200", "PLA_ATGM125_xj200"] : deleteVehicle _shot; hint "Artillery Missile is to be canceled thus not allowed to use right now."
+
+; EOF

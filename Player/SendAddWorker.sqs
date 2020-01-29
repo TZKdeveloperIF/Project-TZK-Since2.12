@@ -1,0 +1,19 @@
+; args: [unit]
+
+_unit = _this select 0
+
+
+@!(mutexAddWorker)
+mutexAddWorker = true
+
+_money = (groupMoneyMatrix select siPlayer) select giPlayer
+
+? (_money < costWorker): hint "Not enough money"; mutexAddWorker = false; Exit
+
+? !(alive (mhq select siPlayer)) : _res = [getPos _unit, siPlayer, [[utMCVW], [utMCVE]] select siPlayer, []] call funcGetClosestVehicle; if ( (_res select 1)>150 ) then {_unit groupChat "None available MHQ/MCV nearby. Worker not built."; mutexAddWorker = false; Exit}
+
+
+pvAddWorker = siPlayer; PublicVariable "pvAddWorker"
+
+~0.25*sendDelay
+mutexAddWorker = false

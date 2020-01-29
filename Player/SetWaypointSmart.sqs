@@ -1,0 +1,23 @@
+; args: [pos]
+
+_pos = _this select 0
+
+? time < (timeLastWaypointSet + 10) : goto "SetNext"
+
+#ClearAndSetFirst
+  _i = 1
+  _done = false
+  while "_i < countWPPlayer && !_done" do { if ( ((wpPlayer select _i) select 0) != -1 ) then { [_i, [-1,-1]] exec "Player\SetWaypoint.sqs" } else { _done = true }; _i = _i + 1 }
+  [0, _pos] exec "Player\SetWaypoint.sqs"
+  timeLastWaypointSet = time
+  goto "Exit"
+  
+#SetNext
+  _next = -1
+  _i = 1;
+  while "_next == -1 && _i < countWPPlayer" do { if ( ((wpPlayer select _i) select 0) == -1 && ((wpPlayer select _i) select 1) == -1 ) then { _next = _i } ; _i = _i + 1}
+  
+  ? _next != -1 : [_next, _pos] exec "Player\SetWaypoint.sqs"; timeLastWaypointSet = time
+  goto "Exit"
+  
+#Exit

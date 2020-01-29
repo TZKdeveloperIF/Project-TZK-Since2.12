@@ -1,0 +1,14 @@
+; args: [vehicle]
+
+_v = _this select 0
+? !(local _v) || !(alive _v) : exit
+
+#check
+~1200 
+?(player in _v): goto "check"
+?(isengineon _v): goto "check"
+
+	 _v setDamage 1
+
+         deleteVehicle _V
+

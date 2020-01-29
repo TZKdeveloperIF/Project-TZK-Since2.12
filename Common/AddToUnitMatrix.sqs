@@ -1,0 +1,20 @@
+; args : [unit, indexUnitMatrix, si]
+
+_unit = _this select 0
+_indexUnitMatrix = _this select 1
+_si = _this select 2
+
+
+@!(mutexAddToUnitMatrix)
+mutexAddToUnitMatrix = true
+
+_list = ((unitMatrix select _si) select _indexUnitMatrix)
+_i = _this call funcAddToUnitMatrix
+? _i == -1 : mutexAddToUnitMatrix = false; exit
+
+_count = count _list
+? _i < _count : if (alive(_list select _i)) then { _i = _count }
+
+_list set [_i, _unit]
+(unitsBuilt select _si) set [ _indexUnitMatrix, 1 + ((unitsBuilt select _si) select _indexUnitMatrix) ]
+mutexAddToUnitMatrix = false

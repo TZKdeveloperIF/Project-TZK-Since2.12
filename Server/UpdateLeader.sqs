@@ -1,0 +1,14 @@
+; args: [si, gi]
+
+? !(local LocalServerObject) : exit
+
+_si = _this select 0
+_gi = _this select 1
+_group = (groupMatrix select _si) select _gi
+
+#Update
+  @ (alive (leader _group))
+  _leader = leader _group
+  [_leader, _si, kaUnit, -1] exec "Server\UpdateKnowsAbout.sqs"
+  @ !(alive _leader)
+  goto "Update"

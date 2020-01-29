@@ -1,0 +1,33 @@
+; args: [group, type, objectArray]
+? !(Local LocalServerObject):Exit
+
+_group = _this select 0
+_type = _this select 1
+_objects = _this select 2
+
+@!(mutexUndo)
+mutexUndo = true
+
+_index = 0
+_count = count undoList
+
+? (_count == 0): goto "SetUndoEntry"
+
+#CheckUndoEntry
+	_undoEntry = undoList select _index
+
+	? ((_undoEntry select 0) == _group): goto "SetUndoEntry"
+
+	_index = _index + 1
+	? (_index < _count): goto "CheckUndoEntry"
+
+#SetUndoEntry
+
+	undoList set [_index, [_group, _type, _objects]]
+	
+mutexUndo = false
+	
+	~30
+	_object = _objects select 0
+	? !(isNull _object): [_object] exec "Server\RemoveUndoEntry.sqs"
+	Exit

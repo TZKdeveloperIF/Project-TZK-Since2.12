@@ -1,0 +1,29 @@
+; args: [type, si, giBuyer, giJoin, id, repeats]
+
+_type = _this select 0
+_si = _this select 1
+_giBuyer = _this select 2
+_giJoin = _this select 3
+_id = _this select 4
+_repeats = _this select 5
+
+_value = _type
+_value = _value +  TotalUnitTypes *_id
+
+_value2 = _giBuyer + GroupsNum*_giJoin + GroupsNum*GroupsNum*_si
+
+@!(mutexQueueAdd)
+mutexQueueAdd = true
+
+[] call format["pvQueueAddEx%1 = _value2", indexQueueAddMsg]
+[] call format["PublicVariable ""pvQueueAddEx%1""", indexQueueAddMsg]
+[] call format["pvQueueAdd%1 = _value", indexQueueAddMsg]
+[] call format["PublicVariable ""pvQueueAdd%1""", indexQueueAddMsg]
+indexQueueAddMsg = indexQueueAddMsg + 1
+? indexQueueAddMsg >= countQueueMsg : indexQueueAddMsg = 0
+
+~(sendDelay/countQueueMsg)
+
+mutexQueueAdd = false
+
+? _repeats > 0 : [_type, _si, _giBuyer, _giJoin, _id, _repeats - 1] exec "Server\SendQueueAdd.sqs"

@@ -1,0 +1,189 @@
+; args: [none]
+; used for test CTI mission Editing
+
+? isNull player : exit
+? name player != "TZK_Editor" : exit
+boolShowVariable = true
+player globalChat """ShowVariable.sqs"" will be executed only when name player == ""TZK_Editor""."
+player globalChat "Showing player variables..."
+
+player globalChat format ["qPlayer: %1", qPlayer]
+~1
+player globalChat format ["qLen: %1", qLen]
+~1
+player globalChat format ["workerGroups: %1", workerGroups]
+~1
+
+_i=0;_c=count(UnitMatrix select siPlayer)
+player globalChat format ["UnitMatrix: "]
+#UnitMatrix
+? count ((UnitMatrix select siPlayer)select(_i)) <= 0 : _i=_i+1; if (_i<_c) then {goto "UnitMatrix"}
+_list = (UnitMatrix select siPlayer)select(_i); if (count _list > 10) then {_list resize 10}
+player globalChat format ["type %1:   %2",_i, _list]
+~0.5
+_i=_i+1
+?_i<_c:goto"UnitMatrix"
+player globalChat format ["count((UnitMatrix select siPlayer)): %1",count((UnitMatrix select siPlayer))]
+~1
+
+_i=0;_c=count(UnitMatrix select siRes)
+player globalChat format ["UnitMatrixRes: "]
+#UnitMatrixRes
+? count ((UnitMatrix select siRes)select(_i)) <= 0 : _i=_i+1; if (_i<_c) then {goto "UnitMatrixRes"}
+_list = (UnitMatrix select siRes)select(_i); if (count _list > 10) then {_list resize 10}
+player globalChat format ["type %1:   %2",_i, _list]
+~0.5
+_i=_i+1
+?_i<_c:goto"UnitMatrixRes"
+player globalChat format ["count((UnitMatrix select siRes)): %1",count((UnitMatrix select siRes))]
+~1
+
+_i=0;_c=count(UnitMatrix select siCiv)
+player globalChat format ["UnitMatrixCiv: "]
+#UnitMatrixCiv
+? count ((UnitMatrix select siCiv)select(_i)) <= 0 : _i=_i+1; if (_i<_c) then {goto "UnitMatrixCiv"}
+player globalChat format ["type %1:   %2",_i, (UnitMatrix select siCiv)select(_i)]
+~0.5
+_i=_i+1
+?_i<_c:goto"UnitMatrixCiv"
+player globalChat format ["count((UnitMatrix select siCiv)): %1",count((UnitMatrix select siCiv))]
+~1
+
+_i=0;_c=count(StructMatrix select siPlayer)
+player globalChat format ["StructMatrix: "]
+#StructMatrix
+? count ((StructMatrix select siPlayer)select(_i)) <= 0 : _i=_i+1; if (_i<_c) then {goto"StructMatrix"}
+player globalChat format ["type %1:   %2",_i, (StructMatrix select siPlayer)select(_i)]
+~0.5
+_i=_i+1
+?_i<_c:goto"StructMatrix"
+player globalChat format ["count((StructMatrix select siPlayer)): %1",count((StructMatrix select siPlayer))]
+~1
+
+
+_i=0;_c=count(rearmData);if(_c>5)then{_c=5}
+player globalChat format ["rearmData: "]
+#rearmData
+player globalChat format ["%1: %2",_i, (rearmData)select(_i)]
+~0.5
+_i=_i+1
+?_i<_c:goto"rearmData"
+player globalChat format ["count(rearmData): %1",count(rearmData)]
+~1
+
+_i=0;_c=count(vehicleAttached);if(_c>20)then{_c=20}
+player globalChat format ["vehicleAttached: "]
+#vehicleAttached
+player globalChat format ["%1: %2",_i, (vehicleAttached)select(_i)]
+~0.5
+_i=_i+1
+?_i<_c:goto"vehicleAttached"
+player globalChat format ["count(vehicleAttached): %1",count(vehicleAttached)]
+~10
+
+
+? !(local LocalServerObject): player groupChat "not server"; boolShowVariable = false; exit
+player globalChat "Showing server variables..."
+
+;player globalChat format ["StructMatrix: %1", structMatrix]
+~1
+
+_i=0;_c=count(structuresServer);if(_c>20)then{_c=20}
+player globalChat format ["structuresServer: "]
+#structuresServer
+player globalChat format ["%1: %2",_i, (structuresServer)select(_i)]
+~0.5
+_i=_i+1
+?_i<_c:goto"structuresServer"
+player globalChat format ["count(structuresServer): %1",count(structuresServer)]
+~1
+
+_i=0;_c=count(undoList);if(_c>20)then{_c=20}
+player globalChat format ["undoList: "]
+#undoList
+player globalChat format ["%1: %2",_i, (undoList)select(_i)]
+~0.5
+_i=_i+1
+?_i<_c:goto"undoList"
+player globalChat format ["count(undoList): %1",count(undoList)]
+~1
+
+_i=0;_c=count(repairableStructureMatrix select si0);if(_c>20)then{_c=20}
+player globalChat format ["repairableStructureMatrix select si0: "]
+#repairableStructureMatrix0
+player globalChat format ["%1: %2",_i, (repairableStructureMatrix select si0)select(_i)]
+~0.5
+_i=_i+1
+?_i<_c:goto"repairableStructureMatrix0"
+player globalChat format ["count(repairableStructureMatrix select si0): %1",count(repairableStructureMatrix select si0)]
+~1
+
+_i=0;_c=count(repairableStructureMatrix select si1);if(_c>20)then{_c=20}
+player globalChat format ["repairableStructureMatrix select si1: "]
+#repairableStructureMatrix1
+player globalChat format ["%1: %2",_i, (repairableStructureMatrix select si1)select(_i)]
+~0.5
+_i=_i+1
+?_i<_c:goto"repairableStructureMatrix1"
+player globalChat format ["count(repairableStructureMatrix select si1): %1",count(repairableStructureMatrix select si1)]
+~1
+
+_i=0;_c=count(primStructsPlaced);if(_c>20)then{_c=20}
+player globalChat format ["primStructsPlaced: "]
+#primStructsPlaced
+player globalChat format ["%1: %2",_i, (primStructsPlaced)select(_i)]
+~0.5
+_i=_i+1
+?_i<_c:goto"primStructsPlaced"
+player globalChat format ["count(primStructsPlaced): %1",count(primStructsPlaced)]
+~1
+
+player globalChat format ["qidCancel: %1", qidCancel]
+~1
+player globalChat format ["qidNext: %1", qidNext]
+~1
+
+_i=0;_c=count((factoryQueues select si0));if(_c>20)then{_c=20}
+player globalChat format ["(factoryQueues select si0): "]
+#factoryQueuesselectsi0
+player globalChat format ["%1: %2",_i, ((factoryQueues select si0))select(_i)]
+~0.5
+_i=_i+1
+?_i<_c:goto"factoryQueuesselectsi0"
+player globalChat format ["count((factoryQueues select si0)): %1",count((factoryQueues select si0))]
+~1
+
+_i=0;_c=count((factoryQueues select si1));if(_c>20)then{_c=20}
+player globalChat format ["(factoryQueues select si1): "]
+#factoryQueuesselectsi1
+player globalChat format ["%1: %2",_i, ((factoryQueues select si1))select(_i)]
+~0.5
+_i=_i+1
+?_i<_c:goto"factoryQueuesselectsi1"
+player globalChat format ["count((factoryQueues select si1)): %1",count((factoryQueues select si1))]
+~1
+
+_i=0;_c=count(buildingsInUse);if(_c>20)then{_c=20}
+player globalChat format ["buildingsInUse: "]
+#buildingsInUse
+player globalChat format ["%1: %2",_i, (buildingsInUse)select(_i)]
+~0.5
+_i=_i+1
+?_i<_c:goto"buildingsInUse"
+player globalChat format ["count(buildingsInUse): %1",count(buildingsInUse)]
+~1
+
+_i=0;_c=count(TownGroupVehicles);if(_c>20)then{_c=20}
+player globalChat format ["TownGroupVehicles: "]
+#TownGroupVehicles
+player globalChat format ["%1: %2",_i, (TownGroupVehicles)select(_i)]
+~0.5
+_i=_i+1
+?_i<_c:goto"TownGroupVehicles"
+player globalChat format ["count(TownGroupVehicles): %1",count(TownGroupVehicles)]
+~1
+
+player globalChat format ["groupsPatrol: %1", groupsPatrol]
+player globalChat format ["groupPatrolJoinMatrix: %1", groupPatrolJoinMatrix]
+~180
+boolShowVariable = false

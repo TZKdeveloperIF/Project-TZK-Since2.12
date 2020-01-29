@@ -1,0 +1,20 @@
+; args: none
+
+_last = []
+
+#Start
+
+@!(isNull pvEnemy0)
+
+? (pvGameover != -1): Exit
+_enemy = pvEnemy0
+pvEnemy0 = objNull
+
+? _enemy in _last : goto "Start"
+
+_last set [count _last, _enemy]
+? (count _last) > 10 : _last set [0, objNull]; _last = _last - [objNull]
+
+[_enemy] exec "Player\HandleEnemySpotted.sqs"
+
+goto "Start"

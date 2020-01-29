@@ -1,0 +1,11 @@
+#Start
+
+@!(isNull pvTransportTurnOn)
+
+_TransportTurnOn = pvTransportTurnOn
+pvTransportTurnOn = objNull
+
+TransportActivatedVehicles set [ count TransportActivatedVehicles, _TransportTurnOn ]
+
+
+goto "Start"

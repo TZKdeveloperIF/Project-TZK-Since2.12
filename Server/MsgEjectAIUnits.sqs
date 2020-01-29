@@ -1,0 +1,33 @@
+#Start
+
+@!(isNull pvEjectAIUnits)
+
+_transport = pvEjectAIUnits
+pvEjectAIUnits = objNull
+
+_cargos = (crew _transport) - ( [driver _transport, gunner _transport, commander _transport] - [objNull] )
+_units = []
+
+_AIGroups = (groupAIMatrix select si0) + (groupAIMatrix select si1)
+_index = 0; _count = count _AIGroups
+
+#EjectByGroup
+	_group = _AIGroups select _index
+	_units = (units _group) - _cargos; _units = (units _group) - _units
+	
+	_i = 0; _c = count _units
+	? _c == 0 : goto "SkipMembersEject"
+	
+	#EjectMembers
+		_unit = _units select _i
+		? alive _unit && _transport == vehicle _unit : unassignVehicle _unit; _unit action ["Eject", _transport]
+		~0.1
+		_i = _i + 1
+		? _i < _c : goto "EjectMembers"
+	
+	#SkipMembersEject
+	_index = _index + 1
+	? _index < _count : goto "EjectByGroup"
+
+
+goto "Start"

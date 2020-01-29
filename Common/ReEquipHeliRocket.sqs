@@ -1,0 +1,32 @@
+; args: [si]
+_si = _this select 0
+
+? _si == si0 : goto "WEST"
+? _si == si1 : goto "EAST"
+
+#WEST
+
+{[_x, ["ZuniLauncher38"], ["ZuniLauncher38"], false] exec "Common\EditEquipRearmData.sqs"} forEach ((UnitMatrix select _si) select (typesGunshipOrigin select 0));
+{[_x, ["ZuniLauncher38"], ["ZuniLauncher38"], false] exec "Common\EditEquipRearmData.sqs"} forEach ((UnitMatrix select _si) select (typesGunshipAT select 0));
+
+{[_x, ["ZuniLauncher38"], ["ZuniLauncher38"], false] exec "Common\EditEquipRearmData.sqs"} forEach ((UnitMatrix select _si) select (typesGunshipOrigin select 1));
+{[_x, ["ZuniLauncher38"], ["ZuniLauncher38"], false] exec "Common\EditEquipRearmData.sqs"} forEach ((UnitMatrix select _si) select (typesGunshipAT select 1));
+
+{[_x, ["SNEB70Launcher_xj200"], ["SNEB70Launcher_xj200"], false] exec "Common\EditEquipRearmData.sqs"} forEach ((UnitMatrix select _si) select (typesGunshipOrigin select 4));
+{[_x, ["SNEB70Launcher_xj200"], ["SNEB70Launcher_xj200"], false] exec "Common\EditEquipRearmData.sqs"} forEach ((UnitMatrix select _si) select (typesGunshipAT select 4));
+
+{_t = _x; {[_x, ["ZuniLauncher38"], ["ZuniLauncher38"], false] exec "Common\EditEquipRearmData.sqs"} forEach ((UnitMatrix select _si) select _t) } forEach TransportHeliW
+
+exit
+
+#EAST
+
+{[_x, ["Rocket57x40Kamov_xj200"], ["Rocket57x40Kamov_xj200"], false] exec "Common\EditEquipRearmData.sqs"} forEach ((UnitMatrix select _si) select (typesGunshipOrigin select 2));
+{[_x, ["Rocket57x40Kamov_xj200"], ["Rocket57x40Kamov_xj200"], false] exec "Common\EditEquipRearmData.sqs"} forEach ((UnitMatrix select _si) select (typesGunshipAT select 2));
+
+{[_x, ["Rocket57x64"], ["Rocket57x64"], false] exec "Common\EditEquipRearmData.sqs"} forEach ((UnitMatrix select _si) select (typesGunshipOrigin select 3));
+{[_x, ["Rocket57x64"], ["Rocket57x64"], false] exec "Common\EditEquipRearmData.sqs"} forEach ((UnitMatrix select _si) select (typesGunshipAT select 3));
+
+{_t = _x; {[_x, ["Rocket57x192"], ["Rocket57x192"], false] exec "Common\EditEquipRearmData.sqs"} forEach ((UnitMatrix select _si) select _t) } forEach TransportHeliE
+
+; EOF

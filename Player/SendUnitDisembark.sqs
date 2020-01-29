@@ -1,0 +1,14 @@
+; args: [[unit]]
+
+_unit = ( _this select 0 ) select 0
+
+? !(alive _unit) || _unit == (vehicle _unit) : player groupchat "Unit isn't in any vehicles."; exit
+
+_crew = crew _unit
+? count _crew == 0 : player groupchat "Empty vehicles can't disembark."; exit  
+
+_groups = [groupPlayer]
+? giPlayer == giCO select siPlayer : _groups = _groups + (groupAiMatrix select siPlayer)
+? !((group _unit) in _groups) : player groupchat "You are not allowed to order this unit disembark."; exit
+
+pvDisembarkUnit = _unit; PublicVariable "pvDisembarkUnit"

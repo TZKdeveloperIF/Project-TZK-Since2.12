@@ -1,0 +1,57 @@
+; args: [unit, si, gi]
+
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+
+? _unit != driver vehicle _unit : exit
+
+_vehicleUnit = vehicle _unit 
+? _unit != _vehicleUnit : exit
+
+_idOrder = ((orderMatrix select _si) select _gi) select 0
+
+call busySet
+
+#Search
+	? !call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {goto "Exit"}
+	? !call busyCheck : goto "Exit"
+  _mine = nearestObject [[getPos _unit, 0, 10] call funcGetRandomPos, ammoMine]
+  ? isNull _mine : goto "Exit"
+  _pos = getPos _mine
+  goto "MoveToMine"
+
+#MoveToMine
+  [_unit, _pos] call funcMoveAI
+  _timeAbort = time + 2*60
+  #WaitUntilMineReached
+  
+	~2
+	? !call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {goto "Exit"}
+	? !call busyCheck : goto "Exit"
+    ? !(alive _unit) || time > _timeAbort : goto "Exit"
+    ? isNull _mine : goto "Search"
+    ? ([getPos _unit, _pos] call funcDistH) > 10 : goto "WaitUntilMineReached"
+
+  doStop _unit
+  _unit doWatch _mine
+  
+	~2
+	? !call busyCheck : goto "Exit"
+	
+  ? !(alive _unit) : goto "Exit"
+  ? isNull _mine : goto "Search"
+  _unit playMove "CombatToPutDown"
+  
+	~2
+	? !call busyCheck : goto "Exit"
+	
+  ? !(alive _unit) : goto "Exit"
+  ? isNull _mine : goto "Search"
+  deleteVehicle _mine
+  goto "Search"
+
+#Exit
+  call busyClear
+  exit

@@ -1,0 +1,9 @@
+; args: [unit]
+
+_u = _this select 0
+
+@!(mutexEjectUnit)
+mutexEjectUnit = true
+pvEjectUnit = _u; PublicVariable "pvEjectUnit"
+~0.5*sendDelay
+mutexEjectUnit = false

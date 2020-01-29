@@ -1,0 +1,12 @@
+; args: [unit, pos, [wp, radius]]
+
+_unit = _this select 0
+_pos = _this select 1
+_wp = wpPlayer select ((_this select 2) select 0)
+_radius = ((_this select 2) select 1)
+
+? !(alive _unit) : exit
+? _unit != vehicle _unit : exit
+? (_wp select 0) == -1 : _unit groupChat "WP not defined."; exit
+
+[_unit, _wp, [_radius]] exec "Player\Order MinePos.sqs"

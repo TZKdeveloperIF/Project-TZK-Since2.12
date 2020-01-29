@@ -1,0 +1,75 @@
+; args: [pos, units]
+
+_pos = _this select 0
+_units = _this select 1
+
+; add drivers
+; _vs = []
+; { _v = vehicle _x; if (_x != _v) then { _vs set [count _vs, _v] } } foreach _units
+; { _d = driver _x; if ( (group _d) == groupPlayer && !(_d in _units) ) then { _units set [count _units, _d] } } foreach _vs
+
+? (count _units) == 0 : exit
+
+_dlg = createDialog "OrderAIDialog"
+
+_idcOrders = IDC+0
+_idcSendOrder = IDC+6
+_idcPar0Label = IDC+1
+_idcPar0List = IDC+2
+_idcPar1Label = IDC+3
+_idcPar1List = IDC+4
+_idcOrderDesc = IDC+5
+
+_idcPar2Label = IDC+7
+_idcPar2List = IDC+8
+
+
+{ ctrlShow [_x, false] } foreach [_idcPar0Label, _idcPar0List, _idcPar1Label, _idcPar1List, _idcPar2Label, _idcPar2List]
+
+{ _id = lbAdd [_idcOrders, _x select 0] } foreach aiOrders
+
+if (lastOrder != -1) then { lbSetCurSel [_idcOrders, lastOrder] } else { lbSetCurSel [_idcOrders, 0] }
+
+_selectedOrder = -1
+
+#Update
+
+? !(dialog): exit
+? !(alive player) : closeDialog 0; exit
+? (_selectedOrder != lbCurSel _idcOrders) : goto "NewOrderSelected"
+? btnSendOrder : btnSendOrder=false; goto "SendOrder"
+
+~0.2
+goto "Update"
+
+#SendOrder
+  lastOrder = lbCurSel _idcOrders
+  _params = []
+  ? (count (_order select 1)) >= 1 : _params set [0, lbCurSel _idcPar0List]
+  ? (count (_order select 1)) >= 2 : _params set [1, lbCurSel _idcPar1List]
+  ? (count (_order select 1)) >= 3 : _params set [2, lbCurSel _idcPar2List]
+  closeDialog 0
+  ~0.1
+  _order = aiOrders select lastOrder
+  _script = format["Player\%1", _order select 3]
+  ? _order select 2 : [_units, _pos, _params] exec _script; exit
+  { [_x, _pos, _params] exec _script } foreach _units
+  exit
+
+#NewOrderSelected
+  _selectedOrder = lbCurSel _idcOrders
+  _order = aiOrders select _selectedOrder
+  
+  ctrlSetText [_idcOrderDesc, _order select 4]
+  
+  _params = _order select 1
+  
+  { ctrlShow [_x, count _params >= 1] } foreach [_idcPar0Label, _idcPar0List]
+  { ctrlShow [_x, count _params >= 2] } foreach [_idcPar1Label, _idcPar1List]
+  { ctrlShow [_x, count _params >= 3] } foreach [_idcPar2Label, _idcPar2List]
+
+  ? count _params == 0 : goto "Update"
+  ? count _params >= 1 : _par = _params select 0; ctrlSetText [_idcPar0Label, _par select 0]; lbClear _idcPar0List; _i=0; while "_i < (_par select 1)" do { lbAdd [_idcPar0List, _i call (_par select 2)]; _i=_i+1 }; lbSetCurSel [_idcPar0List, _par select 3]
+  ? count _params >= 2 : _par = _params select 1; ctrlSetText [_idcPar1Label, _par select 0]; lbClear _idcPar1List; _i=0; while "_i < (_par select 1)" do { lbAdd [_idcPar1List, _i call (_par select 2)]; _i=_i+1 }; lbSetCurSel [_idcPar1List, _par select 3]
+  ? count _params >= 3 : _par = _params select 2; ctrlSetText [_idcPar2Label, _par select 0]; lbClear _idcPar2List; _i=0; while "_i < (_par select 1)" do { lbAdd [_idcPar2List, _i call (_par select 2)]; _i=_i+1 }; lbSetCurSel [_idcPar2List, _par select 3]
+  goto "Update"

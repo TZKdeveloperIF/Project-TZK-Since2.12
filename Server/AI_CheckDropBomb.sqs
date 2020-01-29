@@ -1,0 +1,49 @@
+; args: [unit, si, gi]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+
+call busySet
+
+#Check
+? !(alive _unit) : goto "Exit"
+? _unit != (vehicle _unit) || !(magSatchel in (magazines _unit)) : goto "Exit"
+
+_res = [getPos _unit, _si] call funcGetClosestEnemyObject
+_object = _res select 0
+
+? (_unit distance _object) > 200 : goto "Exit"
+
+_posDrop = [getPos _object, 5, 5] call funcGetRandomPos
+_unit doMove _posDrop
+
+_timeAbort = time + 2*60
+#CheckDropPosReached
+
+	~5	
+	? !(alive _unit): goto "Exit"
+	? !(alive _object): goto "Check"
+	? time > _timeAbort : goto "Check"
+	? (_unit distance _object) > 10 : goto "CheckDropPosReached"
+
+_cBefore = "_x == magSatchel" count (magazines _unit)
+_unit fire [weaponPut, magSatchel, magSatchel]
+
+	~1
+? !(alive _unit) : goto "Exit"
+_unit action ["SETTIMER"]
+_cAfter = "_x == magSatchel" count (magazines _unit)
+? _cAfter == 1 && _cBefore == 1 : _unit removeMagazine magSatchel
+
+#MoveAway
+_posMove = [getPos _object, 100, 100] call funcGetRandomPos
+_unit doMove _posMove
+
+~30
+	
+goto "Check"
+
+#Exit
+  call busyClear
+  exit

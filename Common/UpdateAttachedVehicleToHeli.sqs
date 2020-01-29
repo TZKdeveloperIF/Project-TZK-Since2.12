@@ -1,0 +1,55 @@
+; args: [vehicle, tug, index, slot, gi, si]
+
+_vehicle = _this select 0
+_tug = _this select 1
+_tugindex = _this select 2
+_tugslot = _this select 3
+_gi = _this select 4
+_si = _this select 5
+
+_attachDist = 20; _speedDamageVert = 10
+
+#WaitForTakeOff
+	~0.1
+	? isNull(((vehicleAttached select _tugindex) select tsTugged) select _tugslot) || !(alive _tug) || !(alive _vehicle) || !(local _vehicle): goto "Abort"
+	? _attachDist > ((getPos _tug) select 2) : goto "WaitForTakeOff"
+#TakeOff
+	_vehPos = getPos _vehicle; _vehicle setPos positionAttach; _vehicle setVelocity [0, 0, 3]
+	~0.1
+	_vehicle setPos [_vehPos select 0, _vehPos select 1, (_vehPos select 2) + 4]; _vehicle setVelocity [0, 0, 3]
+_loop = 0
+#Update
+	_velVehicle = [_tug, _vehicle, _attachDist, 0, 0.9, 0, true] call funcUpdateAttaching
+	? isNull(((vehicleAttached select _tugindex) select tsTugged) select _tugslot) || !(alive _tug) || !(alive _vehicle) || !(local _vehicle): goto "Abort"
+	? ((getPos _tug) select 2) < _attachDist : goto "Abort"
+	_vehicle setVelocity _velVehicle
+	_distH = [getPos _tug, getPos _vehicle] call funcDistH; _loop = _loop + 1
+	? _distH < 50  && _loop < 40 : goto "SkipResetPos"
+	_vehPos = getPos _vehicle; _velVehicle set [2, 3]
+	_vehicle setPos positionAttach; _vehicle setVelocity _velVehicle
+	~0.01
+	_vehicle setPos _vehPos; _vehicle setVelocity _velVehicle
+	_loop = 0
+	#SkipResetPos
+	~0.1	
+	
+	
+	goto "Update"
+
+#Abort
+	((vehicleAttached select _tugindex) select tsTugged) set [_tugslot, objNull]
+	[_vehicle, _gi, _si, _tugslot] exec "Common\SendVehicleDetached.sqs"
+	_velVehicle = velocity _vehicle
+	_velVehicle set [2, (_velVehicle select 2) + 1]
+	_vehicle setVelocity _velVehicle
+	_velVehicle = velocity _vehicle
+
+	#CheckFallDamage
+		~1
+		_speedVert = _velVehicle select 2
+		_speedDiffVert = abs(_speedVert - ((velocity _vehicle) select 2))
+
+		? _speedDiffVert > _speedDamageVert: _damage = 0.25*_speedDiffVert/_speedDamageVert; _vehicle setDamage (_damage + damage _vehicle)
+		_velVehicle = velocity _vehicle
+
+		? ((abs _speedVert) > 5 || ((getPos _vehicle) select 2) > 5): goto "CheckFallDamage"

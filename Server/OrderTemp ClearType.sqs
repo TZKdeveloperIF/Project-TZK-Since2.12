@@ -1,0 +1,39 @@
+; args: [unit, si, gi, [unit types (defined by ClearTypeDefs)]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+
+; Get Correct Parameters. Need Pay Attention To Coefficients
+_indexHaltType = (_params select 0)
+
+; Check Whether Unit Fits The Parameters Of The Temporary Order
+
+? (ClearTypeDefs select _indexHaltType) == "Transport Car" : 	_typesClear = typesTransportCar;				
+? (ClearTypeDefs select _indexHaltType) == "Transport Ship" : 	_typesClear = typesTransportShip; 				
+? (ClearTypeDefs select _indexHaltType) == "Transport APC" : 	_typesClear = typesTransportAPC; 					
+? (ClearTypeDefs select _indexHaltType) == "Transport Heli" : 	_typesClear = typesTransportHeli; 				
+? (ClearTypeDefs select _indexHaltType) == "Battle Ship" : 		_typesClear = typesBattleShip; 					
+? (ClearTypeDefs select _indexHaltType) == "Light Tank" : 		_typesClear = typesLightTank; 					
+? (ClearTypeDefs select _indexHaltType) == "Heavy Tank" : 		_typesClear = typesHeavyTank; 					
+? (ClearTypeDefs select _indexHaltType) == "Howitzer" : 		_typesClear = typesHowitzer; 						
+? (ClearTypeDefs select _indexHaltType) == "AT APC" :			_typesClear = typesATAPC; 						
+? (ClearTypeDefs select _indexHaltType) == "AA Vehicle" :		_typesClear = typesAAAPC; 						
+? (ClearTypeDefs select _indexHaltType) == "Kamov" :			_typesClear = typesKa50; 							
+? (ClearTypeDefs select _indexHaltType) == "Cobra\Apac\Hind" :	_typesClear = (typesGunshipOrigin+typesGunshipAT) - typesKa50; 								
+? (ClearTypeDefs select _indexHaltType) == "Transports" : 		_typesClear = typesTransportCar+typesTransportShip+typesTransportAPC+typesTransportHeli;		
+? (ClearTypeDefs select _indexHaltType) == "Tanks" : 			_typesClear = typesLightTank+typesHeavyTank+typesHowitzer; 									
+? (ClearTypeDefs select _indexHaltType) == "APCs" : 			_typesClear = typesATAPC+typesAAAPC; 				
+? (ClearTypeDefs select _indexHaltType) == "Support APC" : 		_typesClear = typesSupportAPC;					
+? (ClearTypeDefs select _indexHaltType) == "non-AT-Infantry" : 	_typesClear = typesInfantryAll - typesInfantryAT;					
+? (ClearTypeDefs select _indexHaltType) == "AT-Infantry" : 		_typesClear = typesInfantryAT;					
+? (ClearTypeDefs select _indexHaltType) == "All Infantry" : 	_typesClear = typesInfantryAll;					
+
+? (ClearTypeDefs select _indexHaltType) == "All" : call temporaryClear; exit
+_vehicle = vehicle _unit
+_vt = _vehicle call funcGetUnitTypeFromObject
+? !(_vt in _typesClear) : exit
+
+; Clear Temporary Order
+call temporaryClear

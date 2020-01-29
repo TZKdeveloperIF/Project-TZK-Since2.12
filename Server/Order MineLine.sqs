@@ -1,0 +1,92 @@
+; args: [unit, si, gi, [wp, wp]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+_wp0 = ((wpCO select _si) select (_params select 0))
+_wp1 = ((wpCO select _si) select (_params select 1))
+
+_wps = [_wp0, _wp1]
+_posMove = []
+
+_idOrder = ((orderMatrix select _si) select _gi) select 0
+
+#WaitReady
+~2
+? call busyCheck : goto "WaitReady"
+
+_rearmData = _unit call funcGetRearmData
+_hasMines = (magMine in (_rearmData select 1))
+
+_timeCheckSupport = time + 30 + random 60
+
+_sleep = 30
+
+_patrol = false
+
+_mines = "_x == magMine" count magazines _unit
+? _hasMines && _mines == 0 : [_unit, _si, _gi, true] exec "Server\AI_CheckSupport.sqs"; _sleep = 10; goto "Sleep"
+
+#Update
+	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
+	? call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {exit} else {goto "Sleep"}
+	
+	? !(alive _unit) : exit
+	? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+
+	_vehicle = vehicle _unit
+	
+	? _unit != driver _vehicle : goto "Sleep"
+	
+	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 10; goto "Sleep"
+	
+  ? !_hasMines : goto "Patrol"
+  
+  #Mine
+  ? (count _posMove) == 0 : _vect = [_wp1, _wp0] call funcVectorSub; _posMove = [_wp0, [_vect, random 1] call funcVectorScale] call funcVectorAdd
+
+	_distToDest = [getPos _unit, _posMove] call funcDistH
+  
+  ? _distToDest > 10 : goto "Move"
+  
+  ; PUT MINE
+  _mines = "_x == magMine" count magazines _unit
+  doStop _unit
+  _res = [ getPos _unit, siBoth, vMinerAvoid, [] ] call funcGetClosestVehicle
+  ? (_res select 1) > 8 : _unit fire [weaponPut, magMine, magMine]
+  ~4
+  ? !(alive _unit) : exit
+  _minesAfter = "_x == magMine" count magazines _unit
+  ? _mines == 1 && _minesAfter == 1 : _unit removeMagazine magMine
+  _mines = "_x == magMine" count magazines _unit
+  _posMove = []
+  ? _mines == 0 : [_unit, _si, _gi, true] exec "Server\AI_CheckSupport.sqs"; _sleep = 10; goto "Sleep"
+  _sleep = 2
+  goto "Sleep"
+	
+	#Patrol
+	? _unit != _vehicle && ( ([getPos _unit, _wp0] call funcDistH) < 500 || ([getPos _unit, _wp1] call funcDistH) < 500 ) : [_unit, false] exec "Server\StopAI.sqs"; [_unit, _si, _gi] call funcWatch; _sleep = 30; goto "Sleep"
+	
+	? (count _posMove) == 0 : _posMove = [_wps select _patrol, 50, 100] call funcGetRandomPos
+	_distToDest = [getPos _unit, _posMove] call funcDistH
+  
+  ? _distToDest > 10 : goto "Move"
+  _posMove = []
+  _patrol = !_patrol
+  [_unit, false] exec "Server\StopAI.sqs"
+  [_unit, _si, _gi] call funcWatch
+  _sleep = 30
+  goto "Sleep"
+  
+  #Move
+  [_unit, _posMove] call funcMoveAI
+	_sleep = [30, 0.1*_distToDest] select (_distToDest < 300)
+	
+	#Sleep
+	~_sleep
+	
+	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
+	? call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {exit} else {goto "Sleep"}
+  ? call busyCheck : goto "Sleep"
+	goto "Update"

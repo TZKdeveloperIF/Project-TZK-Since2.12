@@ -1,0 +1,69 @@
+; args: [unit, si, gi, [wp, wp, dist]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+_posPickup = ((wpCO select _si) select (_params select 0))
+_posEject = ((wpCO select _si) select (_params select 1))
+_distEject = 100*(1+(_params select 2))
+
+_idOrder = ((orderMatrix select _si) select _gi) select 0
+
+#WaitReady
+~2
+? call busyCheck : goto "WaitReady"
+
+? !(alive _unit) : exit
+
+_sleep = 30
+
+_timeCheckSupport = time + 30 + random 60
+_bCheckDropBomb = true
+
+? _unit == vehicle _unit || _unit != driver vehicle _unit : goto "Patrol"
+
+_type = (vehicle _unit) call funcGetUnitTypeFromObject
+? _type == -1 : goto "Patrol"
+
+? _type in (airTransport select _si) : _this exec "Server\Order TransportDuty Air.sqs"; exit
+? _type in (groundTransport select _si) : _this exec "Server\Order TransportDuty Ground.sqs"; exit
+
+#Patrol
+_posMove = [_posEject, 50, 150] call funcGetRandomPos
+#Patrol_Update
+	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
+	? call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {exit} else {goto "Sleep"}
+	
+	? !(alive _unit) : exit
+	? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+
+	_vehicle = vehicle _unit
+	? _unit != driver _vehicle : _sleep = 30; goto "Sleep"
+	
+	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 10; goto "Sleep"
+	
+  _bCheckDropBomb = !_bCheckDropBomb 
+	? _bCheckDropBomb && _unit == _vehicle && magSatchel in (magazines _unit) : [_unit, _si, _gi] exec "Server\AI_CheckDropBomb.sqs"; _sleep = 30; goto "Sleep"
+
+	_distToDest = [getPos _unit, _posMove] call funcDistH
+
+	? _distToDest > 10 : goto "Move"
+	[_unit, true] exec "Server\StopAI.sqs"
+	[_unit, _si, _gi] call funcWatch
+	? _unit != _vehicle && !(isNull gunner _vehicle) && isNull (commander _vehicle) : [_unit, _si, _gi] exec "Server\AI_CheckFireGun.sqs"
+  _sleep = 30
+  _posMove = [_posEject, 50, 150] call funcGetRandomPos
+  goto "Sleep"
+  
+  #Move
+  [_unit, _posMove] call funcMoveAI
+	_sleep = [30, 0.1*_distToDest] select (_distToDest < 300)
+	 
+	#Sleep
+	~_sleep
+	
+	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
+	? call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {exit} else {goto "Sleep"}
+  ? call busyCheck : goto "Sleep"
+	goto "Patrol_Update"

@@ -1,0 +1,25 @@
+#Start
+
+@(pvCancelBuy != -1)
+
+_value = pvCancelBuy
+
+pvCancelBuy = -1
+
+_type = _value %  TotalUnitTypes 
+_value = (_value - _type) / TotalUnitTypes
+
+_qid = _value % maxQ
+_value = (_value - _qid) / maxQ  
+
+_gi = _value % GroupsNum
+_value = (_value - _gi) / GroupsNum
+
+_si = _value
+
+; player globalchat format["qidCancel = %1", qidCancel]
+[_qid, _si, 0] exec "Server\SendQueueRem.sqs"
+? !( _qid in (qidCancel select _si) ) : [_qid, _si] exec "Server\QIDCancelAdd.sqs"
+
+
+goto "Start"

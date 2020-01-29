@@ -1,0 +1,33 @@
+; args: [_type, _si, _objects]
+
+? !(local LocalServerObject) : exit
+
+_type = _this select 0
+_si = _this select 1
+_object = (_this select 2) select 0
+
+
+
+#Update
+
+_res = [getPos _object, 500, [], [], _si] call funcGetNearbyVehiclesBySide
+_vehicles = []
+{ _vehicles set [count _vehicles, _x select 0] } forEach _res
+
+_num = 0
+_i = 0
+_c = count _vehicles
+#CheckUnit
+  ? !(_i < _c) : goto "FuelCompleted"
+  _u = _vehicles select _i
+  ? (alive _u) && (fuel _u) < 0.8 : if (local _u) then { _u setFuel 1; _u say "AutoRefuel_xj200" } else { [_u] exec "Server\SendFuelVehicle.sqs" }; _num = _num + 1
+  ~1
+  _i = _i + 1
+  goto "CheckUnit"
+
+#FuelCompleted
+? _num > 0 : _object say "AutoRefuel_xj200"
+
+;~( [1, 30 - _num] select (_num < 30 ) )
+~1
+? alive _object && !(isNull _object) : goto "Update"

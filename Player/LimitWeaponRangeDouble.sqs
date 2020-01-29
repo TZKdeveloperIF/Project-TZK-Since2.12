@@ -1,0 +1,26 @@
+; args: [vehicle, shell]
+
+_vehicle = _this select 0
+_shell = _this select 1
+_FiredArray = _this select 2
+
+? typeOf _shell == ammoMine : exit
+? !(local _shell) : exit
+[ _shell, _FiredArray ] exec {Player\FiredEffect.sqs}
+
+~1
+
+? (siPlayer > 1) : exit
+? ((upgMatrix select siPlayer) select upgLongWeaponRange) == 2 : exit
+
+#Check
+  ? isNull _shell : exit
+	? (_shell distance _vehicle) > (2 * viewDistance) : goto "DeleteShell"
+	~0.1
+	goto "Check"
+
+#DeleteShell
+  ; player globalchat format["Shell deleted, lifetime = %1, distance = %2", _time, _shell distance _vehicle]
+
+  ? !(isNull _shell) : deleteVehicle _shell
+  exit

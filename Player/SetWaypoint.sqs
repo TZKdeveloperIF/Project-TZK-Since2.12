@@ -1,0 +1,14 @@
+; args: [wp, pos]
+
+_wp = _this select 0
+_pos = _this select 1
+
+
+; wpPlayer set [_wp, _pos]
+(wpPlayer select _wp) set [0, _pos select 0]
+(wpPlayer select _wp) set [1, _pos select 1]
+
+_marker = format["wp_%1", _wp]
+
+_marker setMarkerPos hiddenMarkerPos
+? (_pos select 0) != -1 && (_pos select 1) != -1 : _marker setMarkerPos _pos

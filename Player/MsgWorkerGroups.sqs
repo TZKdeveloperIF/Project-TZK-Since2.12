@@ -1,0 +1,19 @@
+? (local LocalServerObject) : exit
+#Start
+@(pvWorkerGroup != -1)
+_value = pvWorkerGroup
+_group = pvWorkerGroups
+pvWorkerGroup = -1
+
+_index = _value % 20
+_value = (_value - _index)/20
+
+_si = _value
+
+(workerGroups select _si) set [_index, _group]
+
+_finished = true
+? 3 == count (workerGroups select si0) && 3 == count (workerGroups select si1) : { if (isNull _x) then {_finished = false} } forEach (workerGroups select si0); { if (isNull _x) then {_finished = false} } forEach (workerGroups select si1); if _finished then {exit}
+
+
+goto "Start"

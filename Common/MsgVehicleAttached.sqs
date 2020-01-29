@@ -1,0 +1,15 @@
+#Start
+
+@(pvVehicleAttached != -1)
+
+_value = pvVehicleAttached
+_vehicle = pvVehicleAttachedTugged
+_tug = pvVehicleAttachedTug
+
+pvVehicleAttached = -1
+pvVehicleAttachedTug = objNull
+pvVehicleAttachedTugged = objNull
+
+[_value, _vehicle, _tug] exec "Common\HandleVehicleAttached.sqs"
+
+goto "Start"

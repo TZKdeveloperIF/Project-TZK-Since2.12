@@ -1,0 +1,15 @@
+; args: [objects, type]
+
+_objects = _this select 0
+_type = _this select 1
+
+@!(mutexStructServer)
+mutexStructServer = true
+
+_res = [objNull] call funcStructuresServerSearch
+_index = _res select 2
+_count = count structuresServer
+? _index < _count : if (!isNull (((structuresServer select _index) select 0) select 0)) then { _index = _count }
+
+structuresServer set [_index, [_objects, _type] ]
+mutexStructServer = false

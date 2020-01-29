@@ -1,0 +1,22 @@
+; args: [unit, si, gi, [unit ID]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+
+; Get Correct Parameters. Need Pay Attention To Coefficients
+_uid = (_params select 0)
+
+; Check Whether Unit Fits The Parameters Of The Temporary Order
+? _uid == 0 : call temporaryClear; exit
+
+_ids = (groupUnitIDMatrix select _si) select _gi; _uid = _ids select _uid
+_units = units group _unit; _text = ""; _selectedUnit = objNull
+{ _text = format["%1", _x]; if (_text == _uid) then {_selectedUnit = _x} } forEach _units
+? isNull _selectedUnit : format["ERROR: selected unit not located in OrderTemp MoveUnit.sqs."] call fDebugLog; exit
+_vehicle = vehicle _selectedUnit
+? _vehicle != vehicle _unit : exit
+
+; Clear Temporary Order
+call temporaryClear

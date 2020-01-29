@@ -1,0 +1,65 @@
+; arg: [unit, si, giBuyer]
+
+_unit = _this select 0
+_si = _this select 1
+_giBuyer = _this select 2
+
+_giJoin = _giBuyer
+_repeat = 0
+
+#CheckBuyUnit
+	_money = (groupMoneyMatrix select _si) select _giBuyer; _KeepMin = aisKeepDefs select (((aiSetting select _si) select _giBuyer) select aisKeepMin)
+	? _money <= _KeepMin : exit
+	
+	_slots = maxGroupSize - (count units ((groupMatrix select _si) select _giJoin) + ((groupUnitsBuildingMatrix select _si) select _giJoin))
+	? _slots <= 0 : exit
+	
+	_groupSize = (((aiSetting select _si) select _giJoin) select aisGroupSize)
+	? _groupSize == 1 : exit
+	? _groupSize > 1 && _groupSize < maxGroupSize: _slots = [_si, _giJoin, _groupSize] call funcCalcSlots; if (_slots <= 0) then {exit}
+	
+	_unitsBuy = (unitsBuyAI select _si) select (((aiSetting select _si) select _giJoin) select aisBuy)
+
+	_type = _unitsBuy call funcGetRandomUnitType
+	? _type == -1 : exit
+
+	_unitDesc = unitDefs select _type
+	_cost = _unitDesc select udCost
+	_crew = _unitDesc select udCrew
+	_driver = 0
+	_gunner = 0
+	? (count _crew) == 2 : _costCrew = (unitDefs select (_crew select 1)) select udCost; _driver = 1; _gunner = [0, 1] select ((_crew select 0) > 1); _cost = _cost + _driver*_costCrew + _gunner*_costCrew
+
+	? _slots < (_driver + _gunner) : exit
+	? _money < _cost : exit
+	
+	_factoryType = _unitDesc select udFactoryType		
+	_aisBuyFactoryNum = []; {_aisBuyFactoryNum set [ (_x - 1), ((aiSetting select _si) select _giBuyer) select (call format ["aisBuyFactory%1", _x]) ] } foreach [1,2,3,4]
+	_aisBuyFactoryNumType = []
+	? (count (_aisBuyFactoryNum - [1,2,3,4]) < count _aisBuyFactoryNum) : _aisBuyFactoryNumType set [count _aisBuyFactoryNumType, stBarracks]
+	? (count (_aisBuyFactoryNum - [5,6,7,8]) < count _aisBuyFactoryNum) : _aisBuyFactoryNumType set [count _aisBuyFactoryNumType, stHeavy]
+	? (_factoryType in _aisBuyFactoryNumType) : goto "BuyAtSetFactory"
+	
+#BuyAtOldFashion	
+	 _factory = [_si, _factoryType, true] call funcGetIdleFactory
+	; TODO ? (isNull _factory) : _factory = [_si, _factoryType] call funcGetFactoryWithEmptyQueue
+	 ? (isNull _factory) : exit	
+	[_type, _driver, _gunner, 0, _si, _giJoin, _giBuyer, _factory] exec "Server\BuyUnit.sqs"
+	
+	exit
+	
+#BuyAtSetFactory
+	if (_factoryType == stHeavy) then { _aisBuyFactoryNum = _aisBuyFactoryNum - [0,1,2,3,4]; _i = 0; _c = count _aisBuyFactoryNum; while "_i < _c" do {_aisBuyFactoryNum set [_i, (_aisBuyFactoryNum select _i) - 4]; _i = _i + 1} } else { _aisBuyFactoryNum = _aisBuyFactoryNum - [0,5,6,7,8] }
+
+	_workingFactories = [_si, _factoryType] call funcGetWorkingStructures; _chosenFactories = []
+	{  if (_x <= count _workingFactories) then { _chosenFactories set [count _chosenFactories, _workingFactories select (_x - 1)] } } foreach _aisBuyFactoryNum
+
+	_workingFactories = _chosenFactories; _chosenFactories = []; _idleFactories = [_si, _factoryType, true] call funcGetIdleFactories; 
+	{ if (_x in _workingFactories) then { _chosenFactories set [count _chosenFactories, _x] } } foreach _idleFactories
+
+	? count _chosenFactories == 0 : exit
+	? (_driver + _gunner) > 0 : _slots = _slots / (_driver + _gunner)
+	? count _chosenFactories > _slots : _chosenFactories resize _slots
+	{ [_type, _driver, _gunner, 0, _si, _giJoin, _giBuyer, _x] exec "Server\BuyUnit.sqs" } forEach _chosenFactories
+
+	exit

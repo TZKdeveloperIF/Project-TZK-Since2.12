@@ -1,0 +1,566 @@
+; args: [unit, object, define, costFactor]
+
+_unit = _this select 0
+_object = _this select 1
+_define = _this select 2
+_costFactor = _this select 3
+
+? !(alive _unit) || !(alive _object) : exit
+
+_cost = 100
+_delay = 0.2
+
+? (siPlayer == si0): _notAllowed = si1
+? (siPlayer == si1): _notAllowed = si0
+
+_idcTemplLabel = IDC+0
+_idcBuyTempl = IDC+1
+_idcBuy = IDC+2
+
+btnAddPrim = false
+btnRemPrim = false
+btnAddSec = false
+btnRemSec = false
+btnAddHandgun = false
+btnRemHandgun = false
+btnAddEq = false
+btnRemEq = false
+nCustom = 0
+btnBuyTempl = false
+btnSaveTempl = false
+btnLoadTempl = false
+btnBuy = false
+btnClear = false
+
+#WaitNoDialog
+@!(dialog)
+~0.2
+? dialog : goto "WaitNoDialog"
+
+_dialog = CreateDialog "EquipmentMenu"
+
+_custom = _define || _unit != player
+ctrlSetText [_idcTemplLabel, ["Player Loadouts", "Custom Soldiers"] select _custom ]
+? _define : { ctrlShow [_x, false] } foreach [_idcBuyTempl, _idcBuy]
+	
+_index = 0
+_count = count weaponDefs
+
+#CheckWeapon
+
+	_desc = weaponDefs select _index
+
+	? (_notAllowed == _desc select wdSides): goto "CheckNextWeapon"
+
+	_type = _desc select wdType
+	? (_type == wtPrimary || _type == wtPrimaryOnly): goto "AddPrimary"
+	? (_type == wtHandgun): goto "AddHandgun"
+	? (_type == wtSecondary): goto "AddSecondary"
+	goto "CheckNextWeapon"
+	
+	#AddPrimary
+		_cost = 0; if (count _desc > wdCost) then { _cost=(_desc select wdCost);};
+		_text = format["$%1 %2", _cost, _desc select wdName]
+		_id = lbAdd [IDC_LB_PRIM, _text]
+		lbSetValue [IDC_LB_PRIM, _id, _index]
+		goto "CheckNextWeapon"
+
+	#AddHandgun
+		_cost = 0; if (count _desc > wdCost) then { _cost=(_desc select wdCost);};
+		_text = format["$%1 %2", _cost, _desc select wdName]
+		_id = lbAdd [IDC_LB_HG, _text]
+		lbSetValue [IDC_LB_HG, _id, _index]
+		goto "CheckNextWeapon"
+
+	#AddSecondary
+		_cost = 0; if (count _desc > wdCost) then { _cost=(_desc select wdCost);};
+		_text = format["$%1 %2", _cost, _desc select wdName]
+		_id = lbAdd [IDC_LB_SEC, _text]
+		lbSetValue [IDC_LB_SEC, _id, _index]
+		goto "CheckNextWeapon"
+
+	#CheckNextWeapon
+	_index = _index + 1
+	? (_index < _count): goto "CheckWeapon"
+	
+_typePrim = -1
+_typeHandgun = -1
+_typeSec = -1
+_equipment = [[],[],[]]
+_slots = [isGeneralSlots,isHandgunSlots,isOpticsSlots]
+
+_prim = -1
+_sec = -1
+_handgun = -1
+_primOnly = false
+
+_templLoaded = false
+
+_index = firstEquip
+_count = count equipDefs
+
+#AddEquip
+	_desc = equipDefs select _index
+	? (_notAllowed == _desc select edSides): goto "CheckNextEquip"
+	_cost = 0; if (count _desc > edCost) then { _cost=(_desc select edCost);};
+
+	_text = format["$%1 %2", _cost, _desc select edName]
+	_id = lbAdd [IDC_LB_EQ, _text]
+	lbSetValue [IDC_LB_EQ, _id, _index]
+	#CheckNextEquip
+	_index = _index + 1
+	? (_index < _count): goto "AddEquip"
+
+_templLoaded = true
+? !_custom : goto "UpdateTempl"
+? _custom : goto "UpdateCustom"
+
+_money = (groupMoneyMatrix select siPlayer) select giPlayer
+; goto "UpdateImage"
+
+#Update
+	? !(dialog): goto "CloseDialog"
+	? !(alive _unit) && !(alive _object) : goto "CloseDialog"
+
+	? _templLoaded : goto "UpdateImage"
+
+	; CHECK PRIMARY CHANGE
+	_primLast = _prim
+	_prim = lbCurSel IDC_LB_PRIM
+	? (_prim == -1 || _prim == _primLast): goto "SkipInitPrim"
+		? _primLast != -1 : _type = lbValue [IDC_LB_PRIM, _primLast]; _return = "DefaultAmmoRemovedPrim"; goto "RemoveDefaultAmmo"
+		#DefaultAmmoRemovedPrim
+		_typePrim = lbValue [IDC_LB_PRIM, _prim]
+		_primOnly = (wtPrimaryOnly == ((weaponDefs select _typePrim) select wdType))
+		; ctrlEnable[IDC_LB_SEC, !_primOnly]
+		? (_primOnly && _typeSec != -1): _type=_typeSec; _typeSec=-1; _return = "DefaultAmmoRemovedPrim"; goto "RemoveDefaultAmmo"
+		_ammoList = (weaponDefs select _typePrim) select wdAmmoTypes
+		lbClear IDC_LB_PRIM_AMMO
+		{	_desc=equipDefs select (_x select 0); _cost = 0; if (count _desc > edCost) then { _cost=(_desc select edCost);}; _text=format["$%1 %2", _cost, _desc select edName]; _id = lbAdd [IDC_LB_PRIM_AMMO, _text]; lbSetValue [IDC_LB_PRIM_AMMO, _id, (_x select 0)] } foreach _ammoList
+		lbSetCurSel [IDC_LB_PRIM_AMMO, 0]
+		_type = _typePrim
+		_return = "DefaultAmmoAddedPrim"; goto "AddDefaultAmmo"
+		#DefaultAmmoAddedPrim
+		goto "UpdateImage"
+	#SkipInitPrim
+
+	; CHECK HANDGUN CHANGE
+	_handgunLast = _handgun
+	_handgun = lbCurSel IDC_LB_HG
+	? (_handgun == -1 || _handgun == _handgunLast): goto "SkipInitHandgun"
+		? _handgunLast != -1 : _type = lbValue [IDC_LB_HG, _handgunLast]; _return = "DefaultAmmoRemovedHandgun"; goto "RemoveDefaultAmmo"
+		#DefaultAmmoRemovedHandgun
+		_typeHandgun = lbValue [IDC_LB_HG, _handgun]
+		_ammoList = (weaponDefs select _typeHandgun) select wdAmmoTypes
+		lbClear IDC_LB_HG_AMMO
+		{	_desc=equipDefs select (_x select 0); _cost = 0; if (count _desc > edCost) then { _cost=(_desc select edCost);}; _text=format["$%1 %2", _cost, _desc select edName]; _id = lbAdd [IDC_LB_HG_AMMO, _text]; lbSetValue [IDC_LB_HG_AMMO, _id, (_x select 0)] } foreach _ammoList
+		lbSetCurSel [IDC_LB_HG_AMMO, 0]
+		_type = _typeHandgun
+		_return = "DefaultAmmoAddedHandgun"; goto "AddDefaultAmmo"
+		#DefaultAmmoAddedHandgun
+		goto "UpdateImage"
+	#SkipInitHandgun
+
+	; CHECK SECONDARY CHANGE
+	_primOnly = false
+	? _typePrim != -1 : _primOnly = (((weaponDefs select _typePrim) select wdType) == wtPrimaryOnly)
+
+	? _primOnly && _typeSec != -1 : _type = lbValue [IDC_LB_SEC, _typeSec]; _typeSec = -1; _return = "UpdateImage"; goto "RemoveDefaultAmmo"
+	? _primOnly : goto "SkipInitSec"
+	_secLast = _sec
+	_sec = lbCurSel IDC_LB_SEC
+	? _sec == -1 || _sec == _secLast : goto "SkipInitSec"
+		? _secLast != -1 : _type = lbValue [IDC_LB_SEC, _secLast]; _return = "DefaultAmmoRemovedSec"; goto "RemoveDefaultAmmo"
+		#DefaultAmmoRemovedSec
+		_typeSec = lbValue [IDC_LB_SEC, _sec]
+		_ammoList = (weaponDefs select _typeSec) select wdAmmoTypes
+		lbClear IDC_LB_SEC_AMMO
+		{	_desc=equipDefs select (_x select 0); _cost = 0; if (count _desc > edCost) then { _cost=(_desc select edCost);}; _text=format["$%1 %2", _cost, _desc select edName]; _id = lbAdd [IDC_LB_SEC_AMMO, _text]; lbSetValue [IDC_LB_SEC_AMMO, _id, (_x select 0)] } foreach _ammoList
+		lbSetCurSel [IDC_LB_SEC_AMMO, 0]
+		_type = _typeSec
+		_return = "DefaultAmmoAddedSec"; goto "AddDefaultAmmo"
+		#DefaultAmmoAddedSec
+		goto "UpdateImage"
+	#SkipInitSec
+
+_moneynow = (groupMoneyMatrix select siPlayer) select giPlayer
+_costnow = 0
+_calccost = 0
+
+	if (_typePrim == -1) then { goto "noprimcalccost" }
+	_xx=weaponDefs select _typePrim;
+	? ((count _xx) > wdCost):  _calccost = _calccost + (_xx select wdCost);
+	
+#noprimcalccost
+	if (_typeSec == -1) then { goto "noseccalccost" }
+	_xx=weaponDefs select _typeSec;
+	? ((count _xx) > wdCost):  _calccost = _calccost + (_xx select wdCost);
+	
+#noseccalccost
+	if (_typeHandgun == -1) then { goto "nohandcalccost" }
+	_xx=weaponDefs select _typeHandgun;
+	? ((count _xx) > wdCost):  _calccost = _calccost + (_xx select wdCost);
+	
+#nohandcalccost
+
+		{ _xx = (_x select 0); _myequip=(equipDefs select _xx); if ((count _myequip) > edcost) then { _calccost = _calccost + (_myequip select edcost); } } foreach (_equipment select isGeneral);
+		{ _xx = (_x select 0); _myequip=(equipDefs select _xx); if ((count _myequip) > edcost) then { _calccost = _calccost + (_myequip select edcost); } } foreach (_equipment select isHandgun);
+		{ _xx = (_x select 0); _myequip=(equipDefs select _xx); if ((count _myequip) > edcost) then { _calccost = _calccost + (_myequip select edcost); } } foreach (_equipment select isOptics);
+
+	? _calccost > 0 : _costnow = _costFactor*_calccost; goto "displayed"
+
+#displayed
+	_textplayermoney = format ["$%1", _moneynow]
+	_textplayercost = format ["$%1", _costnow]
+	_textplayermoneydefine = format ["custom"]
+	_textplayercostdefine = format ["none"]
+
+? _define : ctrlSetText [IDC_TEXT_PLAYER_MONEY_EQUIPMENT, _textplayermoneydefine]
+? _define :	ctrlSetText [IDC_TEXT_PLAYER_COST_EQUIPMENT, _textplayercostdefine]
+? !_define : ctrlSetText [IDC_TEXT_PLAYER_MONEY_EQUIPMENT, _textplayermoney]
+? !_define : ctrlSetText [IDC_TEXT_PLAYER_COST_EQUIPMENT, _textplayercost]
+
+	? (btnAddPrim): btnAddPrim=false; _lb = IDC_LB_PRIM_AMMO; goto "AddOneItem"
+	? (btnRemPrim): btnRemPrim=false; _lb = IDC_LB_PRIM_AMMO; goto "RemOneItem"
+	? (btnAddSec): btnAddSec=false; _lb = IDC_LB_SEC_AMMO; goto "AddOneItem"
+	? (btnRemSec): btnRemSec=false; _lb = IDC_LB_SEC_AMMO; goto "RemOneItem"
+	? (btnAddHandgun): btnAddHandgun=false; _lb = IDC_LB_HG_AMMO; goto "AddOneItem"
+	? (btnRemHandgun): btnRemHandgun=false; _lb = IDC_LB_HG_AMMO; goto "RemOneItem"
+	? (btnAddEq): btnAddEq=false; _lb = IDC_LB_EQ; goto "AddOneItem"
+	? (btnRemEq): btnRemEq=false; _lb = IDC_LB_EQ; goto "RemOneItem"
+	? btnSaveTempl && !_custom : btnSaveTempl=false; goto "SaveTempl"
+	? btnSaveTempl && _custom : btnSaveTempl=false; goto "SaveCustom"
+	? btnLoadTempl && !_custom : btnLoadTempl=false; goto "LoadTempl"
+	? btnLoadTempl && _custom : btnLoadTempl=false; goto "LoadCustom"
+	? btnBuyTempl && !_custom : btnBuyTempl=false; goto "BuyTempl"
+	? btnBuyTempl && _custom : btnBuyTempl=false; goto "BuyCustom"
+	? btnClear : btnClear=false; goto "Clear"
+	? btnBuy && !_define : btnBuy=false; goto "Buy"
+
+	~_delay
+	goto "Update"
+
+#UpdateImage
+	_templLoaded = false
+
+	_primOnly = false
+	? _typePrim != -1 : _primOnly = (((weaponDefs select _typePrim) select wdType) == wtPrimaryOnly)
+
+	? (_typePrim == -1): ctrlSetText [IDC_PIC_PRIM, "\dtaExt\equip\emptygun"]; ctrlSetText [IDC_PIC_PRIM_ONLY, ""]
+	? (_typePrim != -1 && _primOnly): ctrlSetText [IDC_PIC_PRIM, ""]; ctrlSetText [IDC_PIC_PRIM_ONLY, (weaponDefs select _typePrim) select wdImage ]
+	? (_typePrim != -1 && !_primOnly): ctrlSetText [IDC_PIC_PRIM, (weaponDefs select _typePrim) select wdImage ]; ctrlSetText [IDC_PIC_PRIM_ONLY, ""]
+
+	? (_typeHandgun == -1): ctrlSetText [IDC_PIC_HG, "\misc\gun_empty"]
+	? (_typeHandgun != -1): ctrlSetText [IDC_PIC_HG, (weaponDefs select _typeHandgun) select wdImage ]
+	
+	? (_typeSec == -1): ctrlSetText [IDC_PIC_SEC, "\dtaExt\equip\emptysec"]
+	? (_typeSec != -1 && !_primOnly): ctrlSetText [IDC_PIC_SEC, (weaponDefs select _typeSec) select wdImage ]
+	? (_typePrim != -1 && _primOnly): ctrlSetText [IDC_PIC_SEC, "" ]
+	
+	[0, true, _equipment select isGeneral] call funcSort
+	_sortDir = true
+	_eqGen4 = 0
+	{ if ((_x select 1) == 4) then { _eqGen4 = _eqGen4 + 1 } } foreach (_equipment select isGeneral)
+	? _eqGen4 == 2 : _sortDir = false
+	[1, _sortDir, _equipment select isGeneral] call funcSort
+
+	[0, true, _equipment select isHandgun] call funcSort
+	[1, true, _equipment select isHandgun] call funcSort
+
+	; GENERAL SLOTS
+	{ ctrlSetText [IDC_PIC_GEN_1+_x, ""] } foreach [0,1,2,3,4,5,6,7,8,9]
+	{ ctrlSetText [IDC_PIC_GEN_2+_x, ""] } foreach [0,1,2,4,5,6,7,8]
+	{ ctrlSetText [IDC_PIC_GEN_3+_x, ""] } foreach [0,1,4,5,6,7]
+	{ ctrlSetText [IDC_PIC_GEN_4+_x, ""] } foreach [0,4,5,6]
+	ctrlSetText [IDC_PIC_GEN_6, ""]
+	ctrlSetText [IDC_PIC_GEN_8, ""]
+
+	_index = 0
+	_count = count (_equipment select isGeneral)
+	_nextFreeSlot = 0
+	? (_count == 0): goto "GeneralEmpty"
+	#CheckSlotGeneral
+		_typeEq = ((_equipment select isGeneral) select _index) select 0
+		_image = (equipDefs select _typeEq) select edImage
+		_sizeEq = (equipDefs select _typeEq) select edSlots
+		? (_sizeEq == 1): ctrlSetText [IDC_PIC_GEN_1 + _nextFreeSlot, _image]; _nextFreeSlot = _nextFreeSlot + _sizeEq
+		? (_sizeEq == 2): if (_nextFreeSlot==3) then { ctrlSetText [IDC_PIC_GEN_1+_nextFreeSlot, "\dtaExt\equip\emptymag"]; _nextFreeSlot = 4 }; ctrlSetText [IDC_PIC_GEN_2 + _nextFreeSlot, _image]; _nextFreeSlot = _nextFreeSlot + _sizeEq
+		? (_sizeEq == 3): if (_nextFreeSlot>1 && _nextFreeSlot<4) then { while "_nextFreeSlot<4" do { ctrlSetText [IDC_PIC_GEN_1+_nextFreeSlot, "\dtaExt\equip\emptymag"]; _nextFreeSlot=_nextFreeSlot+1} }; ctrlSetText [IDC_PIC_GEN_3+_nextFreeSlot, _image]; _nextFreeSlot = _nextFreeSlot + _sizeEq
+		? (_sizeEq == 4): if (_nextFreeSlot>0 && _nextFreeSlot<4) then { while "_nextFreeSlot<4" do { ctrlSetText [IDC_PIC_GEN_1+_nextFreeSlot, "\dtaExt\equip\emptymag"]; _nextFreeSlot=_nextFreeSlot+1} }; ctrlSetText [IDC_PIC_GEN_4+_nextFreeSlot, _image]; _nextFreeSlot = _nextFreeSlot + _sizeEq
+		? (_sizeEq == 6): while "_nextFreeSlot<4" do { ctrlSetText [IDC_PIC_GEN_1+_nextFreeSlot, "\dtaExt\equip\emptymag"]; _nextFreeSlot=_nextFreeSlot+1}; ctrlSetText [IDC_PIC_GEN_6, _image]; _nextFreeSlot = _nextFreeSlot + _sizeEq
+		? (_sizeEq == 8): while "_nextFreeSlot<2" do { ctrlSetText [IDC_PIC_GEN_1+_nextFreeSlot, "\dtaExt\equip\emptymag"]; _nextFreeSlot=_nextFreeSlot+1}; _nextFreeSlot=4; ctrlSetText [IDC_PIC_GEN_8, _image]; _nextFreeSlot = _nextFreeSlot + _sizeEq
+		_index = _index + 1
+		? (_index < _count && _nextFreeSlot < (_slots select isGeneral)): goto "CheckSlotGeneral"
+	#GeneralEmpty
+	while "_nextFreeSlot < (_slots select isGeneral)" do { ctrlSetText [IDC_PIC_GEN_1+_nextFreeSlot, "\dtaExt\equip\emptymag"]; _nextFreeSlot=_nextFreeSlot+1 }
+
+	; HANDGUN SLOTS
+	{ ctrlSetText [IDC_PIC_HG_1+_x, ""] } foreach [0,1,2,3]
+	{ ctrlSetText [IDC_PIC_HG_2+_x, ""] } foreach [0,1,2]
+	{ ctrlSetText [IDC_PIC_HG_3+_x, ""] } foreach [0,1]
+	ctrlSetText [IDC_PIC_HG_4, ""]
+
+	_index = 0
+	_count = count (_equipment select isHandgun)
+	_nextFreeSlot = 0
+	? (_count == 0): goto "HandgunEmpty"
+	#CheckSlotHandgun
+		_typeEq = ((_equipment select isHandgun) select _index) select 0
+		_image = (equipDefs select _typeEq) select edImage
+		_sizeEq = (equipDefs select _typeEq) select edSlots
+		? (_sizeEq == 1): ctrlSetText [IDC_PIC_HG_1 + _nextFreeSlot, _image]; _nextFreeSlot = _nextFreeSlot + _sizeEq
+		? (_sizeEq == 2): ctrlSetText [IDC_PIC_HG_2 + _nextFreeSlot, _image]; _nextFreeSlot = _nextFreeSlot + _sizeEq
+		? (_sizeEq == 3): ctrlSetText [IDC_PIC_HG_3 + _nextFreeSlot, _image]; _nextFreeSlot = _nextFreeSlot + _sizeEq
+		? (_sizeEq == 4): ctrlSetText [IDC_PIC_HG_4, _image]; _nextFreeSlot = _nextFreeSlot + _sizeEq
+		_index = _index + 1
+		? (_index < _count && _nextFreeSlot < (_slots select isHandgun)): goto "CheckSlotHandgun"
+	#HandgunEmpty
+	while "_nextFreeSlot < (_slots select isHandgun)" do { ctrlSetText [IDC_PIC_HG_1+_nextFreeSlot, "\misc\mgun_empty"]; _nextFreeSlot=_nextFreeSlot+1 }
+
+	; OPTICS SLOTS
+	_index = 0
+	_count = count (_equipment select isOptics)
+	_nextFreeSlot = 0
+	? (_count == 0): goto "OpticsEmpty"
+	#CheckSlotOptics
+		_typeEq = ((_equipment select isOptics) select _index) select 0
+		_image = (equipDefs select _typeEq) select edImage
+		_sizeEq = (equipDefs select _typeEq) select edSlots
+		? (_sizeEq == 1): ctrlSetText [IDC_PIC_OPT + _nextFreeSlot, _image]; _nextFreeSlot = _nextFreeSlot + _sizeEq
+		_index = _index + 1
+		? (_index < _count && _nextFreeSlot < (_slots select isOptics)): goto "CheckSlotOptics"
+	#OpticsEmpty
+	while "_nextFreeSlot < (_slots select isOptics)" do { ctrlSetText [IDC_PIC_OPT+_nextFreeSlot, "\dtaext\equip\emptyeq"]; _nextFreeSlot=_nextFreeSlot+1 }
+
+	goto "Update"
+
+#RemoveDefaultAmmo
+	_ammoList = (weaponDefs select _type) select wdAmmoTypes
+	_index = 0
+	_count = count _ammoList
+	? (_count == 0): goto _return
+	#RemoveAmmoType
+		_typeAmmo = (_ammoList select _index) select 0
+		_typeSlot = (equipDefs select _typeAmmo) select edSlotType
+		_list = _equipment select _typeSlot
+		_index2 = 0
+		{ if ((_x select 0) == _typeAmmo) then { _list set [_index2, 0]}; _index2 = _index2 + 1 } foreach _list
+		_list = _list - [0]
+		_equipment set[_typeSlot, _list]
+		
+		_index = _index + 1
+		? (_index < _count): goto "RemoveAmmoType"
+	goto _return
+
+#AddDefaultAmmo
+	_ammoList = (weaponDefs select _type) select wdAmmoTypes
+	_index = 0
+	_count = count _ammoList
+	? (_count == 0): goto _return
+	#AddAmmoType
+		_typeAmmo = (_ammoList select _index) select 0
+		_amount = (_ammoList select _index) select 1
+		_sizeAmmo = (equipDefs select _typeAmmo) select edSlots
+		_typeSlot = (equipDefs select _typeAmmo) select edSlotType
+		? (_amount == 0): goto "CheckNextAmmoType"
+		_index2 = 0
+		#AddAmmo
+			_slotsLeft = _slots select _typeSlot
+			{ _slotsLeft = _slotsLeft - ((equipDefs select (_x select 0)) select edSlots)} foreach (_equipment select _typeSlot)
+			? (_sizeAmmo <= _slotsLeft): (_equipment select _typeSlot) set [count (_equipment select _typeSlot), [_typeAmmo, _sizeAmmo]]
+			_index2 = _index2 + 1
+			? (_index2 < _amount): goto "AddAmmo"
+		#CheckNextAmmoType
+		_index = _index + 1
+		? (_index < _count): goto "AddAmmoType"
+	goto _return
+
+#AddOneItem
+	? (-1 == lbCurSel _lb): goto "Update"
+	_typeAmmo = lbValue [_lb, lbCurSel _lb]
+	_sizeAmmo = (equipDefs select _typeAmmo) select edSlots
+	_typeSlot = (equipDefs select _typeAmmo) select edSlotType
+	_slotsLeft = _slots select _typeSlot
+	{ _slotsLeft = _slotsLeft - ((equipDefs select (_x select 0)) select edSlots)} foreach (_equipment select _typeSlot)
+	? (_sizeAmmo <= _slotsLeft): (_equipment select _typeSlot) set [count (_equipment select _typeSlot), [_typeAmmo, _sizeAmmo]]; goto "UpdateImage"
+	goto "Update"
+
+#RemOneItem
+	? (-1 == lbCurSel _lb): goto "Update"
+	_typeAmmo = lbValue [_lb, lbCurSel _lb]
+	_typeSlot = (equipDefs select _typeAmmo) select edSlotType
+	_list = _equipment select _typeSlot
+	_ammoRemoved = false
+	_index = 0
+	_count = count _list
+	while "_index<_count && !_ammoRemoved" do { if (_typeAmmo == (_list select _index) select 0) then { _list set [_index, 0]; _ammoRemoved = true}; _index = _index + 1 }
+	? (_ammoRemoved):	_list = _list - [0];	_equipment set[_typeSlot, _list]; goto "UpdateImage"
+	goto "Update"
+
+#UpdateTempl
+	lbClear IDC_LB_TEMPLATES
+	_i = 0
+	{ _name = "empty"; if ((count _x) > 0) then { _name = _x select 0 }; lbAdd [IDC_LB_TEMPLATES, format["%1", _name] ]; _i=_i+1 } foreach eqTemplates
+  ? lastTemplate != -1 : lbSetCurSel [IDC_LB_TEMPLATES, lastTemplate]
+	goto "Update"
+
+#UpdateCustom
+	lbClear IDC_LB_TEMPLATES
+	_i = 0
+	{ _name = "empty"; if ((count _x) > 0) then { _name = _x select 0 }; lbAdd [IDC_LB_TEMPLATES, format["cs%1 %2", _i, _name] ]; _i=_i+1 } foreach infCustom
+	goto "Update"
+
+#SaveTempl
+	_id = lbCurSel IDC_LB_TEMPLATES
+	? (_id == -1): hint "No Template Slot Selected"; player groupchat "No Template Slot Selected"; goto "Update"
+
+	_nameTempl = [_typePrim, _typeSec, _equipment select isGeneral] call funcGetEqName
+	(eqTemplates select _id) set[0, _nameTempl]
+	(eqTemplates select _id) set[1, _typePrim]
+	(eqTemplates select _id) set[2, _typeHandgun]
+	(eqTemplates select _id) set[3, _typeSec]
+	(eqTemplates select _id) set[4, []]
+	_slot = isGeneral; ((eqTemplates select _id) select 4) set [_slot, []]; { (((eqTemplates select _id) select 4) select _slot) set [count (((eqTemplates select _id) select 4) select _slot), +_x] } foreach (_equipment select _slot)
+	_slot = isHandgun; ((eqTemplates select _id) select 4) set [_slot, []]; { (((eqTemplates select _id) select 4) select _slot) set [count (((eqTemplates select _id) select 4) select _slot), +_x] } foreach (_equipment select _slot)
+	_slot = isOptics; ((eqTemplates select _id) select 4) set [_slot, []]; { (((eqTemplates select _id) select 4) select _slot) set [count (((eqTemplates select _id) select 4) select _slot), +_x] } foreach (_equipment select _slot)
+
+	_entry = format["%1_%2_LOADOUT_%3_%4", localize "STR_CRCTI_VER", localize "STR_CRCTI_MOD", _id, sideNames select siPlayer]
+
+  unitSetting = "SoldierWB" camCreate [10,10,10]
+	[ unitSetting, ["", _typePrim, _typeSec, _typeHandgun, _equipment] ] call funcEquipTempl
+  unitSetting saveStatus _entry
+  deleteVehicle unitSetting
+
+  lastTemplate = _id
+	goto "UpdateTempl"
+
+#SaveCustom
+	_id = lbCurSel IDC_LB_TEMPLATES
+	? (_id == -1): hint "No Custom Slot Selected"; player groupchat "No Custom Slot Selected"; goto "Update"
+
+	_nameCustom = [_typePrim, _typeSec, _equipment select isGeneral] call funcGetEqName
+	(infCustom select _id) set [0, _nameCustom]
+	(infCustom select _id) set [1, _typePrim]
+	(infCustom select _id) set [2, _typeHandgun]
+	(infCustom select _id) set [3, _typeSec]
+	(infCustom select _id) set [4, []]
+	_slot = isGeneral; ((infCustom select _id) select 4) set [_slot, []]; { (((infCustom select _id) select 4) select _slot) set [count (((infCustom select _id) select 4) select _slot), +_x] } foreach (_equipment select _slot)
+	_slot = isHandgun; ((infCustom select _id) select 4) set [_slot, []]; { (((infCustom select _id) select 4) select _slot) set [count (((infCustom select _id) select 4) select _slot), +_x] } foreach (_equipment select _slot)
+	_slot = isOptics; ((infCustom select _id) select 4) set [_slot, []]; { (((infCustom select _id) select 4) select _slot) set [count (((infCustom select _id) select 4) select _slot), +_x] } foreach (_equipment select _slot)
+
+	_entry = format["%1_%2_SOLDIER_%3_%4", localize "STR_CRCTI_VER", localize "STR_CRCTI_MOD", _id, sideNames select siPlayer]
+
+  unitSetting = "SoldierWB" camCreate [10,10,10]
+	[ unitSetting, ["", _typePrim, _typeSec, _typeHandgun, _equipment] ] call funcEquipTempl
+  unitSetting saveStatus _entry
+  deleteVehicle unitSetting
+
+	; player globalchat format["infCustom = %1", infCustom select _id]
+	goto "UpdateCustom"
+
+#LoadTempl
+	_id = lbCurSel IDC_LB_TEMPLATES
+	? (_id == -1): hint "No Template Selected"; player groupchat "No Template Selected"; goto "Update"
+	? (count(eqTemplates select _id) == 0): hint "Template Not Defined"; player groupchat "Template Not Defined"; goto "Update"
+	_templ = eqTemplates select _id
+	_typePrim = _templ select 1
+	_typeHandgun = _templ select 2
+	_typeSec = _templ select 3
+
+	_equipment = [[],[],[]]
+
+	_slot = isGeneral; { (_equipment select _slot) set [count (_equipment select _slot), +_x]} foreach ((_templ select 4) select _slot)
+	_slot = isHandgun; { (_equipment select _slot) set [count (_equipment select _slot), +_x]} foreach ((_templ select 4) select _slot)
+	_slot = isOptics; { (_equipment select _slot) set [count (_equipment select _slot), +_x]} foreach ((_templ select 4) select _slot)
+	
+	? (_typePrim != -1): _found = false; _index = 0; while "not _found" do { if (_typePrim == lbValue[IDC_LB_PRIM, _index]) then { _found=true; lbSetCurSel [IDC_LB_PRIM, _index]; _prim=_index  }; _index=_index+1 }
+	? (_typeSec != -1): _found = false; _index = 0; while "not _found" do { if (_typeSec == lbValue[IDC_LB_SEC, _index]) then { _found=true; lbSetCurSel [IDC_LB_SEC, _index]; _sec=_index  }; _index=_index+1 }
+	? (_typeHandgun != -1): _found = false; _index = 0; while "not _found" do { if (_typeHandgun == lbValue[IDC_LB_HG, _index]) then { _found=true; lbSetCurSel [IDC_LB_HG, _index]; _handgun=_index  }; _index=_index+1 }
+	_templLoaded = true
+  lastTemplate = _id
+	goto "Update"
+
+#LoadCustom
+	_id = lbCurSel IDC_LB_TEMPLATES
+	? (_id == -1): hint "No Custom  Selected"; player groupchat "No Custom Selected"; goto "Update"
+	? count (infCustom select _id) == 0 : hint "Soldier Not Defined"; player groupchat "Soldier Not Defined"; goto "Update"
+	_templ = infCustom select _id
+	_typePrim = _templ select 1
+	_typeHandgun = _templ select 2
+	_typeSec = _templ select 3
+
+	_equipment = [[],[],[]]
+
+	_slot = isGeneral; { (_equipment select _slot) set [count (_equipment select _slot), +_x]} foreach ((_templ select 4) select _slot)
+	_slot = isHandgun; { (_equipment select _slot) set [count (_equipment select _slot), +_x]} foreach ((_templ select 4) select _slot)
+	_slot = isOptics; { (_equipment select _slot) set [count (_equipment select _slot), +_x]} foreach ((_templ select 4) select _slot)
+	
+	? (_typePrim != -1): _found = false; _index = 0; while "not _found" do { if (_typePrim == lbValue[IDC_LB_PRIM, _index]) then { _found=true; lbSetCurSel [IDC_LB_PRIM, _index]; _prim=_index }; _index=_index+1 }
+	? (_typeSec != -1): _found = false; _index = 0; while "not _found" do { if (_typeSec == lbValue[IDC_LB_SEC, _index]) then { _found=true; lbSetCurSel [IDC_LB_SEC, _index]; _sec=_index }; _index=_index+1 }
+	? (_typeHandgun != -1): _found = false; _index = 0; while "not _found" do { if (_typeHandgun == lbValue[IDC_LB_HG, _index]) then { _found=true; lbSetCurSel [IDC_LB_HG, _index]; _handgun=_index }; _index=_index+1 }
+	_templLoaded = true
+	goto "Update"
+
+#BuyTempl
+	_id = lbCurSel IDC_LB_TEMPLATES
+	? (_id == -1): hint "No Template Selected"; player groupchat "No Template Selected"; goto "Update"
+	? (count(eqTemplates select _id) == 0): hint "Template Not Defined"; player groupchat "Template Not Defined"; goto "Update"
+	btnBuy = true
+	goto "LoadTempl"
+
+#BuyCustom
+	_id = lbCurSel IDC_LB_TEMPLATES
+	? (_id == -1): hint "No Template Selected"; _unit groupchat "No Template Selected"; goto "Update"
+	? (count(infCustom select _id) == 0): hint "Soldier Not Defined"; _unit groupchat "Soldier Not Defined"; goto "Update"
+	btnBuy = true
+	goto "LoadCustom"
+
+#Buy
+	_money = (groupMoneyMatrix select siPlayer) select giPlayer
+	
+; Calculate cost
+	_marinecost=0;
+
+	if (_typePrim == -1) then { goto "noprim" }
+	_xx=weaponDefs select _typePrim;
+	? ((count _xx) > wdCost):  _marinecost = _marinecost + (_xx select wdCost);
+#noprim
+
+
+	if (_typeSec == -1) then { goto "nosec" }
+	_xx=weaponDefs select _typeSec;
+	? ((count _xx) > wdCost):  _marinecost = _marinecost + (_xx select wdCost);
+#nosec
+
+	if (_typeHandgun == -1) then { goto "nohand" }
+	_xx=weaponDefs select _typeHandgun;
+	? ((count _xx) > wdCost):  _marinecost = _marinecost + (_xx select wdCost);
+#nohand
+
+	{ _xx = (_x select 0); _myequip=(equipdefs select _xx); if ((count _myequip) > edCost) then { _marinecost = _marinecost + (_myequip select edCost); } } foreach (_equipment select isGeneral);
+	{ _xx = (_x select 0); _myequip=(equipdefs select _xx); if ((count _myequip) > edCost) then { _marinecost = _marinecost + (_myequip select edCost); } } foreach (_equipment select isHandgun);
+	{ _xx = (_x select 0); _myequip=(equipdefs select _xx); if ((count _myequip) > edCost) then { _marinecost = _marinecost + (_myequip select edCost); } } foreach (_equipment select isOptics);
+
+	_costBuy = _costFactor*_marinecost
+
+	? _money < _costBuy : hint "Not Enough Money"; _unit groupchat "Not Enough Money"; goto "Update"
+	? _costBuy > 0 : [_costBuy] exec "Player\SendMoneySpent.sqs"; _unit groupchat format["Equipment cost: $%1", _costBuy]
+	goto "EquipAndExit"
+
+#Clear
+	_typePrim = -1
+	_primOnly = false
+	_typeHandgun = -1
+	_typeSec = -1
+	_equipment = [[],[],[]]
+	_templLoaded = true
+	goto "Update"
+
+#EquipAndExit
+	[ _unit, ["", _typePrim, _typeSec, _typeHandgun, _equipment] ] call funcEquipTempl
+	goto "CloseDialog"
+
+#CloseDialog
+  ? (dialog): closeDialog 0
+  exit
+

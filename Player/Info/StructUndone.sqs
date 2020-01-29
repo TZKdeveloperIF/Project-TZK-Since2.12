@@ -1,0 +1,13 @@
+; args: [params]
+
+_value = _this select 0
+
+_type = _value % 1000
+_value = _value - _type
+
+_si = _value/1000
+
+@!(mutexStructBuilt)
+mutexStructBuilt = true
+(structsBuilt select _si) set [ _type, -1 + ((structsBuilt select _si) select _type) ]
+mutexStructBuilt = false

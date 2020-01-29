@@ -1,0 +1,144 @@
+; args: [unit, si, gi]
+
+? !(local LocalServerObject) : exit
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+
+_group = (groupMatrix select _si) select _gi
+
+;call busyInit
+;call temporaryInit
+
+? _group == (groupCommander select _si) : _this exec "Server\AI_UpdateCommander.sqs"; exit
+
+_idOrder = -1; _indexCombatMode = 0; _indexBehaviour = 0; _idTemporaryOrder = -1
+
+_unitsStarted = []
+
+? !(alive _unit) : goto "WaitUntilAlive"
+
+[_unit, _si, 200] exec "Common\EventAdd_InfantryKilled.sqs"
+[_unit, _si, _gi] exec "Server\EventAdd_Infantry.sqs"
+[_unit] exec "Common\AddRearmData.sqs"
+
+_posSpawn = getPos _unit
+
+_busyCheckX = "call format[""_x in busy%1%2"", sideNames select _si, _gi]"
+#Update
+	? !(alive _unit): goto "WaitUntilAlive"
+	
+	; check if he has become CO (all players on his side has left the game)
+	? _group == (groupCommander select _si) : [_unit, _si, _gi] exec "Server\AI_UpdateCommander.sqs"; exit
+	
+	; check if some unit has joined to other groups
+	_unitsStarted = _unitsStarted - (_unitsStarted - (units _group))
+	
+	; check for new Temporary order
+	? _idTemporaryOrder == ((orderTempMatrix select _si) select _gi) select 0 : goto "NoNewTemporaryOrder"
+	_idTemporaryOrder = ((orderTempMatrix select _si) select _gi) select 0
+	_order = (orderTempMatrix select _si) select _gi
+	_script = (orderTempDefs select (_order select 1)) select 2
+	{ if (alive _x) then { [_x, _si, _gi, _order select 2] exec format["Server\%1", _script] } } foreach _unitsStarted
+	~1
+	
+	#NoNewTemporaryOrder
+	
+	; check for new order
+	? _idOrder == ((orderMatrix select _si) select _gi) select 0 : goto "NoNewOrder"
+	_idOrder = ((orderMatrix select _si) select _gi) select 0
+	_order = (orderMatrix select _si) select _gi
+	_script = (orderDefs select (_order select 1)) select 2
+	{ if (alive _x) then { [_x, _si, _gi, _order select 2] exec format["Server\%1", _script] } } foreach _unitsStarted
+	
+	#NoNewOrder
+	; start ai for new units
+	_unitsStarted = _unitsStarted - [objNull]
+	_unitsStart = (units _group) - _unitsStarted
+	{ if (alive _x) then { [_x, _si, _gi] exec "Server\AI_Start.sqs"; _unitsStarted set [count _unitsStarted, _x] } } foreach _unitsStart
+	
+	; check for new CombatMode and Behaviour setting
+	? _indexCombatMode == (call grpSetting) select aisCombatMode : goto "SkipCombatMode"
+	_indexCombatMode = (call grpSetting) select aisCombatMode
+	{ if !(call _busyCheckX) then {_x setCombatMode (aisCombatModeDefs select _indexCombatMode)} } foreach _unitsStarted
+	#SkipCombatMode	
+	? _indexBehaviour == (call grpSetting) select aisBehaviour && behaviour _unit == (aisBehaviourDefs select _indexBehaviour) : goto "SkipBehaviour"
+	_indexBehaviour = (call grpSetting) select aisBehaviour
+	_group setBehaviour (aisBehaviourDefs select _indexBehaviour)
+	#SkipBehaviour
+
+	_money = (groupMoneyMatrix select _si) select _gi
+	_KeepMax = aisKeepDefs select ((call grpSetting) select aisKeepMax)
+	_KeepMin = aisKeepDefs select ((call grpSetting) select aisKeepMin)
+	? _money > _KeepMax : _tax = _money - _KeepMax; [_si, _gi, giCO select _si, _tax] exec "Server\MoneyTransfer.sqs"; goto "Sleep"
+	? ((call grpSetting) select aisBuy) > 0 && _money > _KeepMin : [_unit, _si, _gi] exec "Server\AI_CheckBuyUnit.sqs"
+
+	#Sleep
+	~5
+	goto "Update"
+
+#WaitUntilAlive
+	@(alive leader _group)
+	_unit = leader _group
+	[_unit, _si, 200] exec "Common\EventAdd_InfantryKilled.sqs"
+	[_unit, _si, _gi] exec "Server\EventAdd_Infantry.sqs"
+	
+	_money = (groupMoneyMatrix select _si) select _gi
+
+	? _money >= costRespawn : goto "Respawn"
+#WaitMoney
+	_unit setPos [-2000 + _si*100, -2000 + _gi*100, 1000]
+	; _unit setPos [(posCenter select 0) + _si*100, (posCenter select 1) + _gi*100, 1000]
+	_unit setVelocity [0,0,0]
+	~1
+	_money = (groupMoneyMatrix select _si) select _gi
+	? _money < costRespawn : goto "WaitMoney"
+
+#Respawn
+	? costRespawn > 0 : [_si, _gi, costRespawn] exec "Server\MoneySpend.sqs"
+	_objectRespawn = objNull
+	
+	; read data from AI Setting
+	? ((call grpSetting) select aisRespawn) == 0 : goto "RespawnOldFashion"
+	_respawnNum = ((call grpSetting) select aisRespawn) % 4
+	? _respawnNum == 0 : _respawnNum = 4
+	_respawnType = ( ((call grpSetting) select aisRespawn) - _respawnNum ) / 4
+	
+	_ts = structsRespawn select _respawnType	
+	_workingStructures = [_si, _ts] call funcGetWorkingStructures; 
+	
+	if !(count _workingStructures < _respawnNum) then { _objectRespawn = _workingStructures select (_respawnNum - 1); goto "RespawnStruct" }
+	
+	#RespawnOldFashion
+	call format["_objectRespawn = pvRespawnObjectAi%1", _si]
+	? !(alive _objectRespawn) : _objectRespawn = [_objectRespawn, _si] call funcGetNearestRespawnObject
+
+	_ts = _objectRespawn call funcGetStructTypeFromObject
+	? _ts != -1 : goto "RespawnStruct"
+
+#RespawnMHQMCV
+	;_mhq = mhq select siPlayer; 	_dir = getDir _mhq; 	_pos = getPos _mhq
+	_dir = getDir _objectRespawn
+	_pos = getPos _objectRespawn
+	_posRespawn = [(_pos select 0)-(sin _dir)*10,(_pos select 1)-(cos _dir)*10,0]
+	? !(alive _objectRespawn) : _posRespawn = positionRespawn
+	goto "RespawnPosSet"
+
+#RespawnStruct
+	_res = [_objectRespawn, _ts, _si] call funcCalcUnitPlacementPosDir
+	_posRespawn = _res select 0
+	? !(alive _objectRespawn) : _posRespawn = positionRespawn
+
+#RespawnPosSet
+	_unit setVelocity [0,0,0]
+	_unit setPos _posRespawn
+
+	[_unit, _si] exec "Server\EquipGroupLeaderAI.sqs"
+
+	unassignVehicle _unit
+	_posSpawn = getPos _unit
+	
+	[_unit] exec "Common\AddRearmData.sqs"
+
+	goto "Update"

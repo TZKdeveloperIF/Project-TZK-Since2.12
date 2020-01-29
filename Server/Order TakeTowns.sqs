@@ -1,0 +1,51 @@
+; args: [unit, si, gi]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+
+_idOrder = ((orderMatrix select _si) select _gi) select 0
+
+#WaitReady
+~2
+? call busyCheck : goto "WaitReady"
+
+_ti = -1
+_timeCheckSupport = time + 30 + random 60
+_sleep = 30
+
+#Update
+	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
+	? call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {exit} else {goto "Sleep"}
+	
+	? !(alive _unit) : exit
+	? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+
+	? _unit != driver vehicle _unit : _sleep = 30; goto "Sleep"
+	
+	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 10; goto "Sleep"
+	
+	_res = [getPos _unit, _si, []] call funcGetClosestEnemyTown
+	_ti = _res select 0
+	? _ti == -1 : _sleep = 30; goto "Sleep"
+	_posMove = getPos ((towns select _ti) select tdFlag)
+
+	_distToDest = [getPos _unit, _posMove] call funcDistH
+
+	? _distToDest > 10 : goto "Move"
+	[_unit, true] exec "Server\StopAI.sqs"
+	[_unit, _si, _gi] call funcWatch
+  _sleep = 30
+  goto "Sleep"
+
+  #Move
+  [_unit, _posMove] call funcMoveAI
+	_sleep = [30, 0.1*_distToDest] select (_distToDest < 300)
+
+	#Sleep
+	~_sleep
+	
+	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
+	? call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {exit} else {goto "Sleep"}
+  ? call busyCheck : goto "Sleep"
+	goto "Update"

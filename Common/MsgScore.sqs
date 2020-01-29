@@ -1,0 +1,11 @@
+#Start
+
+@(pvScore != -1)
+
+? (pvGameover != -1): Exit
+
+_value = pvScore
+pvScore = -1
+[_value] exec "Common\HandleScore.sqs"
+
+goto "Start"

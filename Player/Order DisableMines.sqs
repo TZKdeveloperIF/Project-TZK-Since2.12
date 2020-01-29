@@ -1,0 +1,55 @@
+; args: [unit, pos, []]
+
+_unit = _this select 0
+_pos = _this select 1
+
+? !(alive _unit) : exit
+? _unit != vehicle _unit: exit
+
+_type = _unit call funcGetUnitTypeFromObject
+
+? _type != (utMiner select siPlayer) : exit
+
+_order = []; _id = -1; call orderNew
+
+_unit groupchat "Roger, moving to area for mine disabling."
+
+_pos = [_pos, 5, 20] call funcGetRandomPos
+_timeAbort = time + 5*60
+#MoveArea
+  _unit doMove _pos
+  ~5
+  ? !(alive _unit) : exit
+  ? call orderCheck : exit
+  ? time > _timeAbort : _unit groupchat "Disable mine order aborted."; exit
+  _dist = [_pos, getPos _unit] call funcDistH
+  ? _dist > 50 : goto "MoveArea"
+
+_unit groupchat "Area reached, searching for mines."
+_timeAbort = time + 2*60
+#Search
+~(5 + random 5)
+? !(alive _unit) : exit
+? call orderCheck : exit
+? time > _timeAbort : _unit groupchat "No mines found. Disable mine order aborted."; exit
+_pos = [getPos _unit, 10, 200] call funcGetRandomPos
+_mine = nearestObject [_pos, ammoMine]
+? isNull _mine : goto "Search"
+
+_pos = getPos _mine
+_timeAbort = time + 2*60
+#MoveToMine
+  _unit doMove _pos
+  ~5
+  ? !(alive _unit) : exit
+  ? call orderCheck : exit
+  ? isNull _mine : goto "Search"
+  ? (_unit distance _mine) > 10 : goto "MoveToMine"
+
+  ~2
+  ? !(alive _unit) : exit
+  _unit playMove "CombatToPutDown"
+  ~2
+  ? !(alive _unit) : exit
+  ? !(isNull _mine) : deleteVehicle _mine; _unit groupchat "Mine disabled."
+  goto "Search"

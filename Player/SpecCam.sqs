@@ -1,0 +1,201 @@
+; args: [posCam]
+
+_bCalcCamPos = (count _this) > 0
+
+_xCam = 0
+_yCam = 0
+_zCam = 0
+
+; _distCam = 10
+; _zCamOffset = 2
+
+_cam = hhSpec
+_cam camSetFOV 1
+_cam switchCamera "internal"
+_cam cameraEffect ["internal", "back"]
+
+; showCinemaBorder false
+
+? isNull unitSpec : posSpecFree = getPos camSpec; _dirCam = getDir camSpec; goto "Free"
+
+#NewTarget
+  _unit = unitSpec
+	player globalchat format["TRACK %1 dmg:%2 wpns:%3", _unit, damage _unit, weapons _unit]
+	_target = vehicle _unit
+  _tv = -1
+  ? _unit != _target : _tv = _target call funcGetUnitTypeFromObject
+  ? _tv != -1 : player globalchat format["       %1 dmg:%2 canfire:%3", (unitDefs select _tv) select udName, damage _target, canFire _target]
+  
+	_speed = 0
+  _speedVert = 0
+	_rot = 0
+
+  _dirCam = getDir _target
+  _zCamOffset = 2.5; _distCam = 10
+  ? _unit != _target : _zCamOffset = 5; _distCam = 20
+	
+  ? !_bCalcCamPos : goto "CamPosSet"
+    _distH = ([(_this select 0), getPos _target] call funcDistH)
+    ? _distH <= 0 : _distH = 0.01
+    _distCam = _distH
+    
+    _distZ = ((_this select 0) select 2) - ((getPos _target) select 2) + ((_this select 0) call funcHASL) - ((getPos _target) call funcHASL)
+    ? _distZ < 0 : _distZ = 0
+    _zCamOffset = _distZ
+    
+    _xDiff = ((getPos _target) select 0) - ((_this select 0) select 0)
+    _yDiff = ((getPos _target) select 1) - ((_this select 0) select 1)
+    _dirCam = (_xDiff atan2 _yDiff)
+
+    _bCalcCamPos = false
+  #CamPosSet
+
+	_timeLast = _time
+	goto "UpdateTrack"
+
+#Free
+  _xCam = posSpecFree select 0
+  _yCam = posSpecFree select 1
+  posSpecFree = []
+  _zCam = 20 + ([_xCam, _yCam] call funcHASL)
+	player globalchat format["FREE CAM"]
+	_speed = 0
+  _speedVert = 0
+	_rot = 0
+	_cam setPos [_xCam, _yCam, _zCam]
+	_cam setDir _dirCam
+	
+	_timeLast = _time
+
+#UpdateFree
+  ~0.01
+	? pvGameOver != -1 || !(alive player) || keyReload : goto "Exit"
+	
+	? !(isNull unitSpec) : goto "NewTarget"
+	? (count posSpecFree) > 0 : goto "Free"
+	
+	_timeDiff = _time - _timeLast
+	? _timeDiff > 0.5 : _timeDiff = 0.5
+	
+  _acc = 20
+  _brake = 10
+  _speedMax = 200
+	? keyForward : _speed = _speed + _acc*_timeDiff
+	? keyBackward : _speed = _speed - _acc*_timeDiff
+  ? !keyForward && !keyBackward : _speed = _speed*(1 - _brake*_timeDiff)
+  ? _speed < -_speedMax : _speed = -_speedMax
+  ? _speed > _speedMax  : _speed =  _speedMax
+	
+  _xCam = _xCam + _speed*_timeDiff*sin(_dirCam)
+	_yCam = _yCam + _speed*_timeDiff*cos(_dirCam)
+
+  _acc = 20
+  _brake = 10
+  _speedVertMax = 100
+	? keyTurnRight : _speedVert = _speedVert + _acc*_timeDiff
+	? keyTurnLeft : _speedVert = _speedVert - _acc*_timeDiff
+  ? !keyTurnRight && !keyTurnLeft : _speedVert = _speedVert*(1 - _brake*_timeDiff)
+  ? _speedVert < -_speedVertMax : _speedVert = -_speedVertMax
+  ? _speedVert > _speedVertMax  : _speedVert =  _speedVertMax
+  _zCam = _zCam + _speedVert*_timeDiff
+  ? _zCam < 0 : _zCam = 0; _speedVert = 0
+	_haslCam = [_xCam, _yCam] call funcHASL
+  ? _zCam < _haslCam : _zCam = _haslCam; _speedVert = 0
+
+  _acc = 90
+  _brake = 10
+  _rotMax = 90
+	? keyStrafeRight : _rot = _rot + _acc*_timeDiff
+	? keyStrafeLeft : _rot = _rot - _acc*_timeDiff
+  ? !keyStrafeRight && !keyStrafeLeft : _rot = _rot*(1 - _brake*_timeDiff)
+  ? _rot < -_rotMax : _rot = -_rotMax
+  ? _rot > _rotMax  : _rot =  _rotMax
+  _dirCam = _dirCam + _rot*_timeDiff
+  
+	_posCam = [_xCam, _yCam, _zCam - _haslCam]
+	_cam setPos _posCam
+	_cam setDir _dirCam
+	
+	; ? keyTurnLeft : [] exec "Player\OpenSpecMenu.sqs"
+
+	; _cam camCommit 0
+
+	_timeLast = _time
+
+	goto "UpdateFree"
+
+#UpdateTrack
+  ~0.01
+	? pvGameOver != -1 || !(alive player) || keyReload : goto "Exit"
+	
+	? (isNull unitSpec) : goto "Free"
+	? _unit != unitSpec : goto "NewTarget"
+	
+	_target = vehicle _unit
+  
+	_posTarget = getPos _target
+  _posTracker = _posTarget
+  
+	_timeDiff = _time - _timeLast
+	? _timeDiff > 0.5 : _timeDiff = 0.5
+	
+  _acc = 20
+  _brake = 10
+  _speedMax = 200
+	? keyForward : _speed = _speed + _acc*_timeDiff
+	? keyBackward : _speed = _speed - _acc*_timeDiff
+  ? !keyForward && !keyBackward : _speed = _speed*(1 - _brake*_timeDiff)
+  ? _speed < -_speedMax : _speed = -_speedMax
+  ? _speed > _speedMax  : _speed =  _speedMax
+  _distCam = _distCam - _speed*_timeDiff
+	? _distCam < 0.01 : _distCam = 0.01
+	? _distCam > 1000 : _distCam = 1000
+
+  _acc = 90
+  _brake = 10
+  _rotMax = 90
+	? keyStrafeRight : _rot = _rot + _acc*_timeDiff
+	? keyStrafeLeft : _rot = _rot - _acc*_timeDiff
+  ? !keyStrafeRight && !keyStrafeLeft : _rot = _rot*(1 - _brake*_timeDiff)
+  ? _rot < -_rotMax : _rot = -_rotMax
+  ? _rot > _rotMax  : _rot =  _rotMax
+  _dirCam = _dirCam + _rot*_timeDiff
+
+  _acc = 20
+  _brake = 10
+  _speedVertMax = 100
+	? keyTurnRight : _speedVert = _speedVert + _acc*_timeDiff
+	? keyTurnLeft : _speedVert = _speedVert - _acc*_timeDiff
+  ? !keyTurnRight && !keyTurnLeft : _speedVert = _speedVert*(1 - _brake*_timeDiff)
+  ? _speedVert < -_speedVertMax : _speedVert = -_speedVertMax
+  ? _speedVert > _speedVertMax  : _speedVert =  _speedVertMax
+  _zCamOffset = _zCamOffset + _speedVert*_timeDiff
+  ? _zCamOffset < 0 : _zCamOffset = 0; _speedVert = 0
+  
+	_xCamRel = _distCam*sin(_dirCam)
+	_yCamRel = _distCam*cos(_dirCam)
+	_zCamRel = - _zCamOffset
+	
+	_posCamRel = [_xCamRel, _yCamRel, _zCamRel]
+	_posCam = [_posTracker, _posCamRel] call funcVectorSub
+
+	_haslTracker = _posTracker call funcHASL
+	_haslCam = _posCam call funcHASL
+	_zCam = (_posCam select 2) + (_haslTracker - _haslCam)
+
+	_posCam set [2, _zCam]
+	
+	_cam setPos _posCam
+	_cam setDir _dirCam
+	
+	_timeLast = _time
+
+	goto "UpdateTrack"
+
+#Exit
+	forceMap false
+	? pvGameOver != -1 : exit
+  ? keyReload : keyReload = false; [_posCam] exec "Player\Dialog Spectator.sqs"
+  ~0.1
+	player switchCamera "internal"
+  exit

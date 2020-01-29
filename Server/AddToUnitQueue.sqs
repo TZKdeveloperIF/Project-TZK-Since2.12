@@ -1,0 +1,53 @@
+; args: [_factory, _type, _driver, _gunner, _commander, _si, _giJoin, _giBuyer]
+
+_factory = _this select 0
+_type = _this select 1
+_driver = _this select 2
+_gunner = _this select 3
+_commander = _this select 4
+_si = _this select 5
+_giJoin = _this select 6
+_giBuyer = _this select 7
+
+_queues = factoryQueues select _si
+_queue = -1
+_i = 0
+_c = count _queues
+_found = false
+while "_i<_c && !_found" do { if ( ((_queues select _i) select 0) == _factory ) then { _queue = (_queues select _i) select 2; _found = true }; _i=_i+1 }
+
+? !_found : "ERROR: factory not found in AddToUnitQueue.sqs" call fDebugLog; mutexBuildingQueue = false; exit
+
+#FactoryFound
+? ( (isNull _factory) || !(alive _factory) ) : "ERROR: factory dont work" call fDebugLog; mutexBuildingQueue = false; exit
+
+_qid = qidNext select _si
+_qidNext = _qid + 1
+? _qidNext >= maxQ : _qidNext = 0
+qidNext set [_si, _qidNext]
+
+[_type, _si, _giBuyer, _giJoin, _qid, 1] exec "Server\SendQueueAdd.sqs"
+; ~0.1
+? count _queue != 1 : goto "AddQueue"
+	@!(mutexbuildingInUse)
+	mutexbuildingInUse = true
+	buildingsInUse set [count buildingsInUse, _factory]
+	mutexbuildingInUse = false
+#AddQueue
+_queue set [count _queue, [_type, _driver, _gunner, _commander, _giJoin, _giBuyer, _qid]]
+
+? _type >= maxUnitTypes : _unitDesc = unitDefs select (utCustom select _si)
+? _type < maxUnitTypes : _unitDesc = unitDefs select _type
+
+_bVehicle = false
+? count (_unitDesc select udCrew) > 0 : _bVehicle = true
+
+? !(_bVehicle): _unitsToBuild = 1
+? (_bVehicle): _unitsToBuild = _driver; _unitsToBuild = _unitsToBuild + _gunner; _unitsToBuild = _unitsToBuild + _commander
+
+_unitsBuilding = ((groupUnitsBuildingMatrix select _si) select _giJoin) + _unitsToBuild
+(groupUnitsBuildingMatrix select _si) set [_giJoin, _unitsBuilding]
+(qidToCancel select _si) set [ _qid, [_giJoin, _unitsToBuild] ]
+
+[_factory, _si, (count _queue) + 1] exec "Server\SendQueueLength.sqs"
+mutexBuildingQueue = false

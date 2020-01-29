@@ -1,0 +1,24 @@
+; args: si
+
+_si = _this
+
+_towns = count towns
+_minutes = 10 - _towns
+? _minutes < 2 : _minutes = 2
+_seconds = _minutes*60
+_interval = 15
+
+#CheckTowns
+	_c = ("(_x select tdSide) == _si" count towns)
+	? _c != _towns : exit
+	? _seconds <= 0 : goto "TownWin"
+	
+	? (_seconds % 60) == 0 : [_seconds/60] exec "Server\Info\TimeUntilTownWin.sqs"
+
+	~_interval
+	_seconds = _seconds - _interval
+	goto "CheckTowns"
+
+#TownWin
+	pvGameOver = (0) + 2*4*(_si) + 2*4*2*(1)
+	PublicVariable "pvGameOver"

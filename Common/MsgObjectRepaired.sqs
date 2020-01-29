@@ -1,0 +1,21 @@
+#Start
+
+@(pvObjectRepaired != -1)
+
+_value = pvObjectRepaired
+_obj = pvObjectRepaired_Object
+pvObjectRepaired = -1
+pvObjectRepaired_Object = objNull
+
+_percent = _value % (200)
+_value = _value - _percent*(1)
+
+_gi = _value % (200*GroupsNum)/(200)
+_value = _value - _gi*(200)
+
+_si = _value/(200*GroupsNum)
+
+? _percent >= 100 : _obj setDamage 0
+? _si == siPlayer && _gi == giPlayer : hint format["Object repaired.\n%1%2", _percent, "%"]
+
+goto "Start"

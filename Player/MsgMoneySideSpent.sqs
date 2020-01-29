@@ -1,0 +1,15 @@
+#Start
+
+@(pvMoneySideSpent != -1)
+
+_value = pvMoneySideSpent
+pvMoneySideSpent = -1
+
+_amount = _value % 4000000
+_value = _value - _amount
+
+_si = _value/4000000
+
+moneySideSpent set [_si, _amount]
+
+goto "Start"

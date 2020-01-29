@@ -1,0 +1,113 @@
+; args: [unit, si, gi, [wp, unit types (defined by MoveTypeDefs), guard radius, direction, duration]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+
+; Get Correct Parameters. Need Pay Attention To Coefficients
+_posCO = ((wpCO select _si) select (_params select 0)); _posGuard = [_posCO select 0, _posCO select 1]
+; Define _posGuard in form of this can make it a fix position.
+_indexMoveType = (_params select 1)
+_radius = 5*(_params select 2)
+_iDir = (_params select 3)
+_duration = 720 * ((_params select 4) + 1)
+
+; Check Whether Unit Fits The Parameters Of The Temporary Order
+
+? (MoveTypeDefs select _indexMoveType) == "Transport Car" : 	_typesMove = typesTransportCar;				
+? (MoveTypeDefs select _indexMoveType) == "Transport Ship" : 	_typesMove = typesTransportShip; 				
+? (MoveTypeDefs select _indexMoveType) == "Transport APC" : 	_typesMove = typesTransportAPC; 					
+? (MoveTypeDefs select _indexMoveType) == "Transport Heli" : 	_typesMove = typesTransportHeli; 				
+? (MoveTypeDefs select _indexMoveType) == "Battle Ship" : 		_typesMove = typesBattleShip; 					
+? (MoveTypeDefs select _indexMoveType) == "Light Tank" : 		_typesMove = typesLightTank; 					
+? (MoveTypeDefs select _indexMoveType) == "Heavy Tank" : 		_typesMove = typesHeavyTank; 					
+? (MoveTypeDefs select _indexMoveType) == "Howitzer" : 			_typesMove = typesHowitzer; 						
+? (MoveTypeDefs select _indexMoveType) == "AT APC" :			_typesMove = typesATAPC; 						
+? (MoveTypeDefs select _indexMoveType) == "AA Vehicle" :		_typesMove = typesAAAPC; 						
+? (MoveTypeDefs select _indexMoveType) == "Kamov" :				_typesMove = typesKa50; 							
+? (MoveTypeDefs select _indexMoveType) == "Cobra\Apac\Hind" :	_typesMove = (typesGunshipOrigin+typesGunshipAT) - typesKa50; 								
+? (MoveTypeDefs select _indexMoveType) == "Transports" : 		_typesMove = typesTransportCar+typesTransportShip+typesTransportAPC+typesTransportHeli;		
+? (MoveTypeDefs select _indexMoveType) == "Tanks" : 			_typesMove = typesLightTank+typesHeavyTank+typesHowitzer; 									
+? (MoveTypeDefs select _indexMoveType) == "APCs" : 				_typesMove = typesATAPC+typesAAAPC; 				
+? (MoveTypeDefs select _indexMoveType) == "Support APC" : 		_typesMove = typesSupportAPC;					
+? (MoveTypeDefs select _indexMoveType) == "non-AT-Infantry" : 	_typesMove = typesInfantryAll - typesInfantryAT;					
+? (MoveTypeDefs select _indexMoveType) == "AT-Infantry" : 		_typesMove = typesInfantryAT;					
+? (MoveTypeDefs select _indexMoveType) == "All Infantry" : 		_typesMove = typesInfantryAll;					
+
+_vehicle = vehicle _unit
+_vt = _vehicle call funcGetUnitTypeFromObject
+? !(_vt in _typesMove) && _unit != leader group _unit : exit
+? _unit == leader group _unit : if !(_unit == _vehicle && (MoveTypeDefs select _indexMoveType) in ["AT-Infantry", "All Infantry"]) then {exit}
+
+; Check Whether Unit In Another Temporary Order (Except For Set Flight Altitude, Clear Temporary Order, Etc)
+? call temporaryCheck : exit
+
+; Initialize The Order Script
+_timeStart = time; _timeAbort = _timeStart + _duration; _timeUp = _timeStart; _cycle = 30; _loop = 0
+call temporarySet
+
+
+; Wait For Unit Finish Its Busy-Work
+#WaitReady
+~2
+? time > _timeAbort : 	call temporaryClear; exit
+? !call temporaryCheck : exit
+? call busyCheck : goto "WaitReady"
+
+; Main Part Of Temporary Order
+_vectRnd = [[0,0], 0, _radius/2] call funcGetRandomPos
+_dir = 0
+? _iDir == 0 : _dir = random 360
+? _iDir != 0 : _dir = (_iDir - 1)*45 - 60 + random 120
+_posMove = [(_posGuard select 0) + _radius*(sin _dir), (_posGuard select 1) + _radius*(cos _dir)]
+_posMove = [_posMove, _vectRnd] call funcVectorAdd
+_timeCheckSupport = time + 30 + random 60
+_bCheckDropBomb = true
+
+
+_groups = groupMatrix select _si
+#Update
+	_gi = [(group _unit), _groups] call funcGetIndex
+	_vehicle = vehicle _unit
+	? _unit != driver _vehicle : goto "Sleep"
+
+	; check support
+	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _cycle = 10; goto "Sleep"
+
+	; check bomb	
+	_bCheckDropBomb = !_bCheckDropBomb 
+	? _bCheckDropBomb && _unit == _vehicle && magSatchel in (magazines _unit) : [_unit, _si, _gi] exec "Server\AI_CheckDropBomb.sqs"; _cycle = 10; goto "Sleep"
+	
+	; check move
+	_distToDest = [getPos _unit, _posMove] call funcDistH
+	? _distToDest > 10 : goto "Move"
+	[_unit, true] exec "Server\StopAI.sqs"
+	[_unit, _si, _gi] call funcWatch
+	? _unit != _vehicle && !(isNull gunner _vehicle) && isNull (commander _vehicle) : [_unit, _si, _gi] exec "Server\AI_CheckFireGun.sqs"
+	_cycle = 30
+	goto "Sleep"
+  
+	#Move
+		_distToDest = _distToDest - (_distToDest % 10)
+		[_unit, _posMove] call funcMoveAI
+		_cycle = [30, 0.1*_distToDest] select (_distToDest < 300)
+		goto "Sleep"
+
+
+
+; End Of File
+#EOF
+call temporaryClear
+exit
+
+
+#Sleep
+_loop = (time-_timeStart)/_cycle; _loop = 1 + _loop - _loop%1
+_timeUp = _loop*_cycle + _timeStart
+
+@ ( time > _timeUp || !call temporaryCheck )
+? !call temporaryCheck : goto "EOF"
+? !(alive _unit) || time > _timeAbort : goto "EOF"
+? call busyCheck : goto "Sleep"
+goto "Update"

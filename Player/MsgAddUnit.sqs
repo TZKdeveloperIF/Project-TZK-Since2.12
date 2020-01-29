@@ -1,0 +1,37 @@
+; args [value, factory]
+
+_value = _this select 0
+_factory = _this select 1
+
+_type = _value %  TotalUnitTypes
+_value = (_value - _type) / TotalUnitTypes
+
+_gi = _value %  GroupsNum
+_value = (_value - _gi) / GroupsNum
+
+_giBuyer = _value %  GroupsNum
+_value = (_value - _giBuyer) / GroupsNum
+
+_si = _value % 2
+_value = (_value - _si) / 2
+
+? _si != siPlayer || _gi != giPlayer : exit
+
+? isNull _factory : format["ERROR: _factory is null in MsgAddUnit.sqs for type %1/%2", _type, (unitDefs select _type) select udName] call fDebugLog; exit
+
+_driver = _value % 2
+_value = (_value - _driver) / 2
+
+_gunner = _value % 2
+_value = (_value - _gunner) / 2
+
+_commander = _value % 2
+
+_ts = _factory call funcGetStructTypeFromObject
+? _ts == -1: "ERROR: _ts is -1 in MsgAddUnit.sqs" call fDebugLog; exit
+
+_res = [_factory, _ts, _si] call funcCalcUnitPlacementPosDir
+_posUnit = _res select 0
+_dirUnit = _res select 1
+
+[_type, _driver, _gunner, _commander, _posUnit, _dirUnit, _si, _gi, grpNull, _giBuyer, 1] exec "Common\AddUnit.sqs"

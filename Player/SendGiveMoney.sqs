@@ -1,0 +1,30 @@
+; args: [si, giFrom, giTo, amount]
+
+_si = _this select 0
+_giFrom = _this select 1
+_giTo = _this select 2
+_amount = _this select 3
+
+; player globalchat format["SendMoneyGive: _si=%1, _giFrom=%2, _giTo=%3, _amount=%4", _si, _giFrom, _giTo, _amount]
+
+; Since TZK_1.10 SendGiveMoney.sqs will only be executed by Dialog Options, so it's unnecessary to ask _amount positive
+; ? _amount <= 0 : exit
+
+_money = (groupMoneyMatrix select _si) select _giFrom
+? _amount > 0 && _money < _amount : exit
+
+
+_value = _giFrom
+_value = _value + GroupsNum*_giTo
+_value = _value + (GroupsNum*GroupsNum)*_si
+
+@!(mutexMoneyGive)
+mutexMoneyGive = true
+_money = (groupMoneyMatrix select _si) select _giFrom
+? _amount > 0 && _money < _amount : mutexMoneyGive = false; exit
+
+pvMoneyGive = _amount; PublicVariable "pvMoneyGive"
+pvMoneyGiveGroup = _value; PublicVariable "pvMoneyGiveGroup"
+
+~(0.5*sendDelay)
+mutexMoneyGive = false

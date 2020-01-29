@@ -1,0 +1,14 @@
+; args: [object, isMHQ, isAlive]
+
+_object = _this select 0
+_isMCV = _this select 1
+_bAlive = _this select 2
+
+@!(mutexDestruction)
+mutexDestruction = true
+
+pvDestruction = ([0,1] select _isMCV) + 2*([0,1] select _bAlive) + 2*2*siPlayer; PublicVariable "pvDestruction"
+pvDestruction_Object = _object; PublicVariable "pvDestruction_Object"
+
+~sendDelay
+mutexDestruction = false

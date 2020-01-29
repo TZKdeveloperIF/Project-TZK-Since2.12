@@ -1,0 +1,51 @@
+
+@( !(isNull (mhq select si0)) && !(isNull (mhq select si1)) )
+
+_mhqAlive = [true, true]
+_mcvAlive = [false, false]
+_intervalCleanupWorld = 10*60
+_timeCleanupWorld = _intervalCleanupWorld
+
+_remind = [timeLimit - 60*60, 10*60, 5*60, 1*60, -10000]
+;_remind = [3*60*60, 10*60, 5*60, 1*60, -10000]
+; TEST _remind = [119*60, 117*60, -10000]
+_ir = 0
+_timeNextRemind = timeLimit - (_remind select _ir)
+
+#Update
+  ~2
+	; ? (pvGameOver != -1): saveGame; Exit
+	? pvGameOver != -1 : exit
+
+	? (timeLimit != 0 && time > timeLimit): goto "TimeLimitReached"
+
+	? _mhqAlive select si0 && !(alive (mhq select si0)) : _mhqAlive set [si0, false]; si0 exec "Server\CheckWinDestruction.sqs"
+	? _mhqAlive select si1 && !(alive (mhq select si1)) : _mhqAlive set [si1, false]; si1 exec "Server\CheckWinDestruction.sqs"
+
+	? !(_mhqAlive select si0) && (alive (mhq select si0)) : _mhqAlive set [si0, true]
+	? !(_mhqAlive select si1) && (alive (mhq select si1)) : _mhqAlive set [si1, true]
+	
+	? (count (MCV select si0)) > 0 && (_mcvAlive select si0) : _mcvAlive set [si0, false]; { if (alive _x) then {_mcvAlive set [si0, true]} } forEach (MCV select si0); if !(_mcvAlive select si0) then { si0 exec "Server\CheckWinDestruction.sqs" }
+	? (count (MCV select si0)) > 0 && !(_mcvAlive select si0) : { if (alive _x) then {_mcvAlive set [si0, true]} } forEach (MCV select si0)
+	
+	? (count (MCV select si1)) > 0 && (_mcvAlive select si1) : _mcvAlive set [si1, false]; { if (alive _x) then {_mcvAlive set [si1, true]} } forEach (MCV select si1); if !(_mcvAlive select si1) then { si1 exec "Server\CheckWinDestruction.sqs" }
+	? (count (MCV select si1)) > 0 && !(_mcvAlive select si1) : { if (alive _x) then {_mcvAlive set [si1, true]} } forEach (MCV select si1)
+	
+	? pvRepairMHQ != -1 : pvRepairMHQ exec "Server\RepairMHQ.sqs"; pvRepairMHQ = -1
+	? pvRepairMCV != -1 : [pvRepairMCV, pvRepairMCV_object] exec "Server\RepairMCV.sqs"; pvRepairMCV = -1; pvRepairMCV_object = objNull
+	; TODO ? time > _timeCleanupWorld : _timeCleanupWorld = _timeCleanupWorld + _intervalCleanupWorld; [] exec "Server\CleanupWorld.sqs"
+
+	? timeLimit != 0 && time > _timeNextRemind : goto "Remind"
+	[] exec "Server\CheckDetachedVehicles.sqs"
+  goto "Update"
+
+#Remind
+  [_remind select _ir] exec "Server\Info\TimeLimitRemind.sqs"
+  _ir = _ir + 1
+  _timeNextRemind = timeLimit - (_remind select _ir)
+  goto "Update"
+  
+#TimeLimitReached
+	pvGameOver = (1) + 2*(0)
+	PublicVariable "pvGameOver"
+	exit

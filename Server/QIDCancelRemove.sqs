@@ -1,0 +1,16 @@
+; args: [qid, si]
+
+_qid = _this select 0
+_si = _this select 1
+
+
+@!(mutexqidCancel)
+mutexqidCancel = true
+qidCancel set [ _si, (qidCancel select _si) - [_qid] ]
+mutexqidCancel = false
+
+exit
+@!(mutexBuildingQueue)
+mutexBuildingQueue = true
+((qidToCancel select _si) select _qid) set [0,-1]; ((qidToCancel select _si) select _qid) set [1,-1];
+mutexBuildingQueue = false

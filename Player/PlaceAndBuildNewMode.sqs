@@ -1,0 +1,126 @@
+; args:  [CVtype, unit, type, align, dist]
+
+_CVtype = _this select 0
+_unit = _this select 1
+_type = _this select 2
+_align = _this select 3
+_distMax = _this select 4
+
+_isMHQMCV = (_CVtype in [utMHQ0,utMHQ1,utMCVW,utMCVE])
+
+_timeout = 20
+
+player groupchat format ["You have %1 seconds to place structure", _timeout]
+
+_timeStart = time
+
+bBuildPlaced = false
+bCancelPlaced = false
+
+_actionBuild = _unit addAction ["Build", "Player\Action Build Placed.sqs"]
+_actionCancel = _unit addAction ["Cancel Build", "Player\Action Cancel Placed.sqs"]
+
+_structDesc = structDefs select _type
+
+_posUnit = getPos _unit
+_dirUnit = getDir _unit
+_dist = _structDesc select sdDist
+_radius = _structDesc select sdMaxRadius
+_posStruct = [(_posUnit Select 0) + _dist*(sin _dirUnit), (_posUnit Select 1) + _dist*(cos _dirUnit), 0]
+
+_parts = _structDesc select ([sdObjects0, sdObjects1] select (siPlayer == si1))
+
+_objects = []
+
+_index = 0
+_count = count _parts
+#CreatePart
+	_part = _parts select _index
+	_posPartRel = _part select 2
+	? (count _posPartRel == 0): _posPartRel = [0,0,0]
+	_posPartX = (_posStruct select 0) + (_posPartRel select 0)*(cos _dirUnit) + (_posPartRel select 1)*(sin _dirUnit)
+	_posPartY = (_posStruct select 1) + (_posPartRel select 1)*(cos _dirUnit) - (_posPartRel select 0)*(sin _dirUnit)
+	_posPart = [ _posPartX, _posPartY, (_posStruct select 2) + (_posPartRel select 2) ]
+	_dirPart = (_dirUnit + (_part select 1)) % 360
+	
+	;_object = (_part select 0) createVehicle _posPart
+	_object = (_part select 0) camCreate _posPart
+	_object setDir _dirPart
+	_object setPos _posPart
+
+	_objects set [count _objects, _object]
+
+	_index = _index + 1
+	? (_index < _count): goto "CreatePart"
+
+#Update
+	_bNearby = [SupNearby, mhqNearby || MCVNearby] select _isMHQMCV
+	; _res = [getPos player, siPlayer, ([ typesSupportPlus, [[utMHQ0,utMCVW], [utMHQ1,utMCVE]] ] select _isMHQMCV) select siPlayer, []] call funcGetClosestVehicle
+	; _distance = _res select 1
+	; ? (_distance > _distMax): goto "Exit"
+	? !_bNearby : goto "Exit"
+	? !(alive _unit): goto "Exit"
+	? (time > (_timeStart + _timeout)): player groupchat "Build canceled (timeout)"; goto "Exit"
+
+	_dirUnit = getDir _unit
+	_posUnit = getPos _unit
+
+	_dirStruct = _dirUnit
+	_posStruct = [(_posUnit Select 0) + _dist*(sin _dirStruct), (_posUnit Select 1) + _dist*(cos _dirStruct), 0]
+
+	? (_align): _res = [siPlayer, _type, _posStruct, _dirStruct] call funcCalcAlignPosDir; _posStruct = _res select 0; _dirStruct = _res select 1
+
+  ; CHECK TOWN FLAG
+  _distance = ([_posStruct, [si0, si1, siRes], []] call funcGetClosestTown) select 1
+  ? _distance < (_radius+50) : hint "Build pos too near town flag."
+
+  ; CHECK VEHICLE
+  _res = [_posStruct, _radius, [], []] call funcGetNearbyVehicles
+  ? (count _res) > 0 : hint "Build pos blocked by vehicle."
+
+  ; CHECK TREES
+  ; ? [_posStruct] call funcInForest : hint "Build pos blocked by trees."
+
+  ; CHECK AREA FLAT
+  ; ? !([_posStruct, _radius, 0.5*_radius] call funcAreaFlat) : hint "Build pos not flat enough."
+
+  ; CHECK NEAREST STRUCTURE
+  _res = [_posStruct] call funcGetNearestStructure
+  _ts = _res select 1
+  ? _ts == -1 : goto "NoStructFound"
+  ? (_res select 2) < 0.5*(_radius + ((structDefs select _ts) select sdMaxRadius)) : hint "Build pos blocked by structure."
+  #NoStructFound
+
+	_index = 0
+	_count = count _parts
+	#SetPartPosDir
+		_part = _parts select _index
+		
+		_posPartRel = _part select 2
+		? (count _posPartRel == 0): _posPartRel = [0,0,0]
+		_posPartX = (_posStruct select 0) + (_posPartRel select 0)*(cos _dirStruct) + (_posPartRel select 1)*(sin _dirStruct)
+		_posPartY = (_posStruct select 1) + (_posPartRel select 1)*(cos _dirStruct) - (_posPartRel select 0)*(sin _dirStruct)
+		_posPart = [ _posPartX, _posPartY, (_posStruct select 2) + (_posPartRel select 2) ]
+		_dirPart = (_dirStruct + (_part select 1)) % 360
+		
+		; ? (_index == 1): player globalchat format ["_posPart=%1", _posPart]
+		
+		_object = _objects select _index
+		_object setDir _dirPart
+		_object setPos _posPart
+
+		_index = _index + 1
+		? (_index < _count): goto "SetPartPosDir"
+		
+	? (bBuildPlaced): [_unit, _type, _posStruct, _dirStruct] exec "Player\BuildStructure.sqs"; goto "Exit"
+	? (bCancelPlaced): player groupchat "Build canceled"; goto "Exit"
+
+	~0.05
+	
+	goto "Update"
+
+#Exit
+	_unit removeAction _actionBuild
+	_unit removeAction _actionCancel
+	{ deleteVehicle _x } foreach _objects
+	Exit

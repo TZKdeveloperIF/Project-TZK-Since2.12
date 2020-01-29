@@ -1,0 +1,18 @@
+; args: [unit, plane]
+
+_unit = _this select 0
+_plane = _this select 1
+_vehicle = vehicle _unit
+
+_distance = _vehicle distance _plane
+? _distance > 1.2*rangeGetPlaneFlyingStatus : _msg = "plane out of range"; exit
+
+_speed = speed _plane
+_speed = _speed - _speed %1
+_alt = (getPos _plane) select 2
+_alt = _alt - _alt %1
+_dir = getDir _plane
+_dir = _dir - _dir %1
+_distance = _distance - _distance % 1
+_unit groupchat format["Speed: %1, Altitude: %2, Direction: %3, Distance: %4", _speed, _alt, _dir, _distance]
+exit

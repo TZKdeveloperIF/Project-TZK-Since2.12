@@ -1,0 +1,11 @@
+~5
+#Start
+_fog = 0.3 + 0.7 * sqrt (random 1)
+_overcast = 0.3 + 0.7 * sqrt (random 1)
+
+_delaychange = (2 + random 6)*60
+if ((random 1) < 0.5) then {_delaychange SetOvercast _overcast} else {_delaychange SetFog _fog}
+
+
+~(8 + random 4)*60
+goto "Start"

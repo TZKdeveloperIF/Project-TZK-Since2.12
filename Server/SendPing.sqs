@@ -1,0 +1,14 @@
+; args: none
+~10
+? !(local LocalServerObject): Exit
+
+_value = 0
+_delay = blockTime/6
+
+#Update
+  ~_delay
+  ? (pvGameover != -1): Exit
+  pvPing = _value
+  PublicVariable "pvPing"
+  _value = _value + 1
+  goto "Update"

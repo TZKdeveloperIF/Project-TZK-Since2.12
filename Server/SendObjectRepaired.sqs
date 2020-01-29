@@ -1,0 +1,14 @@
+; args: [object, damage, si, gi]
+
+_object = _this select 0
+_dmg = _this select 1
+_si = _this select 2
+_gi = _this select 3
+
+_percent = (1 - _dmg)*100
+_percent = _percent - (_percent % 1)
+
+_value = _percent + 200*_gi + 200*GroupsNum*_si
+
+pvObjectRepaired_Object = _object; PublicVariable "pvObjectRepaired_Object"
+pvObjectRepaired = _value; PublicVariable "pvObjectRepaired"

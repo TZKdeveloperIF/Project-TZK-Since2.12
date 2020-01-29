@@ -1,0 +1,135 @@
+; args: [unit, si, gi, [wp, response radius, support radius, damage rate, duration]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+
+; Get Correct Parameters. Need Pay Attention To Coefficients
+_pos = ((wpCO select _si) select (_params select 0))
+_dist = 100*((_params select 1) + 1)
+_radius = 100*((_params select 2) + 1)
+_rate = 0.05 * (_params select 3)
+_duration = 30 * ((_params select 4) + 1)
+
+; Check Whether Unit Fits The Parameters Of The Temporary Order
+? ([getPos _unit, _pos] call funcDistH) > _dist : exit
+_res = [_pos, _si, typesSupport select _si, []] call funcGetClosestVehicle
+? (_res select 1) > _radius : exit
+? damage vehicle _unit < _rate : exit
+
+
+
+
+
+
+
+; Check Whether Unit In Another Temporary Order (Except For Set Flight Altitude, Clear Temporary Order, Etc)
+? call temporaryCheck : exit
+
+; Initialize The Order Script
+_timeStart = time; _timeAbort = _timeStart + _duration; _timeUp = _timeStart; _cycle = 30; _loop = 0
+call temporarySet
+_support = _res select 0
+
+
+; Wait For Unit Finish Its Busy-Work
+#WaitReady
+~2
+? time > _timeAbort : 	call temporaryClear; exit
+? !call temporaryCheck : exit
+? call busyCheck : goto "WaitReady"
+
+; Main Part Of Temporary Order
+
+; Use busy to prevent AI from automatically moving for support in Temporary Repair Order
+call busySet
+
+_groups = groupMatrix select _si
+#Update
+	_gi = [(group _unit), _groups] call funcGetIndex
+	_vehicle = vehicle _unit
+	? _unit != driver _vehicle : goto "Sleep"
+	
+	; MoveToSupport
+	; Check Vehicle Type
+	? _unit != _vehicle : _vt = _vehicle call funcGetUnitTypeFromObject
+	? _unit != _vehicle && _vt == -1 : goto "EOF"
+	? _vt != -1 : if ( ((unitDefs select _vt) select udFactoryType) == stAir ) then { goto "MoveAir" }
+	
+	#MoveGround
+	[_unit, [getPos _support, 10, 10] call funcGetRandomPos] call funcMoveAI
+	_loop = (time-_timeStart)/_cycle*3; _loop = 1 + _loop - _loop%1
+	_timeUp = _loop * _cycle/3 + _timeStart
+	
+	@ ( time > _timeUp || !call temporaryCheck )
+	? !call temporaryCheck : goto "EOF"
+	? !(alive _unit) || _vehicle != (vehicle _unit) || time > _timeAbort : goto "EOF"
+	? !(alive _support) : _res = [_pos, _si, typesSupport select _si, []] call funcGetClosestVehicle; if ((_res select 1) > _radius) then {goto "EOF"} else {_support = _res select 0}
+	
+	? (_vehicle distance _support) > rangeSupport : goto "MoveGround"		
+	goto "SupportReached"
+	
+	#MoveAir
+	_vehicle flyInHeight 200
+	#MoveAir_Check
+	[_unit, getPos _support] call funcMoveAI
+	_loop = (time-_timeStart)/_cycle*6; _loop = 1 + _loop - _loop%1
+	_timeUp = _loop * _cycle/6 + _timeStart
+	
+	@ ( time > _timeUp || !call temporaryCheck )
+	? !call temporaryCheck : goto "EOF"
+	? !(alive _unit) || _vehicle != (vehicle _unit) || time > _timeAbort : goto "EOF"
+	? !(alive _support) : _res = [_pos, _si, typesSupport select _si, []] call funcGetClosestVehicle; if ((_res select 1) > _radius) then {goto "EOF"} else {_support = _res select 0}
+
+	? ([getPos _vehicle, getPos _support] call funcDistH) > 2*rangeSupport || (speed _vehicle) > 20 : goto "MoveAir_Check"
+	#Hover
+	_vehicle flyInHeight 10
+	_posMove = getPos _support
+	[_unit, _posMove] call funcMove
+	
+	_timeRetry = time + _cycle*2		
+	#Hover_Check
+	_loop = (time-_timeStart)/_cycle*6; _loop = 1 + _loop - _loop%1
+	_timeUp = _loop * _cycle/6 + _timeStart
+	
+	@ ( time > _timeUp || !call temporaryCheck )
+	? !call temporaryCheck : goto "EOF"
+	? !(alive _unit) || _vehicle != (vehicle _unit) || time > _timeAbort : goto "EOF"
+	? !(alive _support) : _res = [_pos, _si, typesSupport select _si, []] call funcGetClosestVehicle; if ((_res select 1) > _radius) then {goto "EOF"} else {_support = _res select 0}
+	
+	? time > _timeRetry : goto "MoveAir"
+	? (_unit distance _support) > 2*rangeSupport : goto "Hover_Check"
+	goto "SupportReached"
+
+	#SupportReached
+	doStop _unit
+	_vehicle flyInHeight 200
+	[_unit, _si, _gi, _vehicle, _vt, _support] exec "Server\AI_Heal.sqs"
+	_rearm = [_unit, _si, _gi] call funcCheckRearm
+	? _rearm : [_unit, _si, _gi, _vehicle, _vt, _support] exec "Server\AI_Rearm.sqs"
+	~5
+	? _unit == vehicle _unit : goto "EOF"
+	~30
+		_i = 0
+		#RepairCheck
+		? damage _v < 0.1 : goto "Exit"
+		_i = _i + 1
+		~5
+		? _i < 7 : goto "RepairCheck"
+
+; End Of File
+#EOF
+call busyClear
+call temporaryClear
+exit
+
+
+#Sleep
+_loop = (time-_timeStart)/_cycle; _loop = 1 + _loop - _loop%1
+_timeUp = _loop*_cycle + _timeStart
+
+@ ( time > _timeUp || !call temporaryCheck )
+? !call temporaryCheck : goto "EOF"
+? !(alive _unit) || _vehicle != (vehicle _unit) || time > _timeAbort : goto "EOF"
+goto "Update"

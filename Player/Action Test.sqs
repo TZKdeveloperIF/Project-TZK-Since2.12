@@ -1,0 +1,18 @@
+; args: [vehicle, unit, actionID]
+; this action is used for debugging purposes and is enabled in InitPlayer.sqs
+
+_v = _this select 0
+_u = _this select 1
+_id = _this select 2
+
+_units = units groupPlayer
+format["TOTAL = %1, LOCAL = %2", count _units, "local _x" count _units] call fDebugLog
+exit
+
+; player globalchat format["leader groupTemp0 = %1", leader groupTemp0]
+; player globalchat format["units groupTemp0 = %1", units groupTemp0]
+; deleteVehicle (leader groupTemp0); player globalchat "TEST: leader groupTemp0 deleted"
+; player globalchat format["units groupTemp0 = %1", units groupTemp0]
+player globalchat format["groupTemp0 = %1", groupTemp0]
+
+; (leader groupTemp0) setDamage 1; player globalchat "TEST: leader groupTemp0 killed"

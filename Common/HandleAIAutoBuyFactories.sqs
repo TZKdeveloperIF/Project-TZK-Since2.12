@@ -1,0 +1,27 @@
+; args: [si, gi, setting type, value]
+; _value = 0 means nothing. _value = 1~4 means No._value Barrack, _value = 5~8 means No.(_value - 4) Heavy Factory
+
+_si = _this select 0
+_gi = _this select 1
+_type = _this select 2
+_value = _this select 3
+
+
+_index = 0; _found = false; 
+while "_index < 4 && !_found" do { if ( _type == ([aisBuyFactory1, aisBuyFactory2, aisBuyFactory3, aisBuyFactory4] select _index) ) then {_found = true} else {_index = _index + 1} }
+
+
+_factory = objNull; _factoryType = -1
+? _value == 0 : _factory = objNull
+? _value in [1,2,3,4] : _factoryType = stBarracks; _workingFactories = [_si, _factoryType] call funcGetWorkingStructures; if (_value <= count _workingFactories) then {_factory = _workingFactories select (_value - 1)}
+? _value in [5,6,7,8] : _factoryType = stHeavy; _workingFactories = [_si, _factoryType] call funcGetWorkingStructures; if (_value - 4 <= count _workingFactories) then {_factory = _workingFactories select (_value - 1 - 4)}
+
+
+@!(mutexAIAutoBuyFactory)
+mutexAIAutoBuyFactory = true
+
+; Be aware that the element of aiAutoBuyFactory is [ [], [], [], [] ]
+(((aiAutoBuyFactory select _si) select _gi) select _index) set [ 0, _factory ]
+(((aiAutoBuyFactory select _si) select _gi) select _index) set [ 1, _factoryType ]
+
+mutexAIAutoBuyFactory = false

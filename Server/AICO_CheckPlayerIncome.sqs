@@ -1,0 +1,10 @@
+; arg: [si]
+
+_si = _this select 0
+
+_incomeRatio = 0.1*(count (groupAiMatrix select _si))
+? _incomeRatio < 0.1 : _incomeRatio = 0.1
+? _incomeRatio > 0.4 : _incomeRatio = 0.4
+
+? call format["pvIncomeRatio%1 != _incomeRatio", _si] : call format["pvIncomeRatio%1 = _incomeRatio; PublicVariable ""pvIncomeRatio%1"" ", _si]
+

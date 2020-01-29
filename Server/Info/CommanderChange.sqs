@@ -1,0 +1,10 @@
+; args: [si, gi]
+
+_si = _this select 0
+_gi = _this select 1
+
+_value = mtCommanderChange
+_value = _value + TotalInfoTypes*_gi
+_value = _value + (TotalInfoTypes*GroupsNum)*_si
+
+[_value] exec "Server\Info\SendInfoMsg.sqs"

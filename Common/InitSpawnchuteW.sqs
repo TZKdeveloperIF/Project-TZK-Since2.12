@@ -1,0 +1,15 @@
+; args: [unit, type, si]
+? !(local LocalServerObject):exit
+_unit = _this select 0
+_posunit = getpos _unit;
+_newposunit = [(_posunit  select 0),(_posunit select 1),(_posunit select 2) + 500]; 
+_unit setPos _newposunit;
+_classchute = "pwr_paraW";
+_pos = getpos _unit;
+_chute = _classchute createVehicle _pos;
+_chutepos = [_pos select 0, _pos select 1, (getpos _unit select 2)-425];
+_chute setPos _chutepos;
+_unit moveindriver _chute
+
+
+

@@ -1,0 +1,88 @@
+; args: [unit, si, gi, [wp, radius, duration]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+
+; Get Correct Parameters. Need Pay Attention To Coefficients
+_wp0 = ((wpCO select _si) select (_params select 0)); _pos0 = [_wp0 select 0, _wp0 select 1]
+; Define _endPoints in form of this can make them fix positions.
+_radius = 25*(_params select 1)
+_duration = 180 * ((_params select 2) + 1)
+
+; Check Whether Unit Fits The Parameters Of The Temporary Order
+_vehicle = vehicle _unit
+? _unit != _vehicle : exit
+
+_type = _unit call funcGetUnitTypeFromObject
+_isMiner = false
+? _type == (utMiner select _si) : _isMiner = true
+? !_isMiner : exit
+
+; Check Whether Unit In Another Temporary Order (Except For Set Flight Altitude, Clear Temporary Order, Etc)
+? call temporaryCheck : exit
+
+; Initialize The Order Script
+_timeStart = time; _timeAbort = _timeStart + _duration; _timeUp = _timeStart; _cycle = 30; _loop = 0
+call temporarySet
+
+
+; Wait For Unit Finish Its Busy-Work
+#WaitReady
+~2
+? time > _timeAbort : 	call temporaryClear; exit
+? !call temporaryCheck : exit
+? call busyCheck : goto "WaitReady"
+
+; Main Part Of Temporary Order
+
+_timeCheckSupport = time + 30 + random 60
+_posMove = []
+
+
+_groups = groupMatrix select _si
+#Update
+	_gi = [(group _unit), _groups] call funcGetIndex
+	_vehicle = vehicle _unit
+	? _unit != driver _vehicle : goto "Sleep"
+
+	; check support
+	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _cycle = 10; goto "Sleep"
+
+	? (count _posMove) == 0 : _posMove = [_pos0, 0, _radius] call funcGetRandomPos
+	_distToDest = [getPos _unit, _posMove] call funcDistH
+	? _distToDest > 10 : goto "Move"
+	
+    _posMove = []
+	[_unit, false] exec "Server\StopAI.sqs"
+	[_unit, _si, _gi] call funcWatch
+	[_unit, _si, _gi] exec "Server\AI_CheckDisableMines.sqs"
+	_cycle = 10
+	goto "Sleep"
+
+	
+	#Move
+		_distToDest = _distToDest - (_distToDest % 10)
+		[_unit, _posMove] call funcMoveAI
+		_cycle = [30, 0.1*_distToDest] select (_distToDest < 300)
+		goto "Sleep"
+
+
+
+; End Of File
+#EOF
+call temporaryClear
+call busyClear
+exit
+
+
+#Sleep
+_loop = (time-_timeStart)/_cycle; _loop = 1 + _loop - _loop%1
+_timeUp = _loop*_cycle + _timeStart
+
+@ ( time > _timeUp || !call temporaryCheck )
+? !call temporaryCheck : goto "EOF"
+? !(alive _unit) || time > _timeAbort : goto "EOF"
+? call busyCheck : goto "Sleep"
+goto "Update"

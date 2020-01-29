@@ -1,0 +1,12 @@
+; args: [target, si]
+
+_target = _this select 0
+_si = _this select 1
+
+@!(mutexEnemySpotted)
+mutexEnemySpotted = true
+[] call format["pvEnemy%1 = _target", _si]
+[] call format["PublicVariable ""pvEnemy%1""", _si]
+
+~0.5*sendDelay
+mutexEnemySpotted = false

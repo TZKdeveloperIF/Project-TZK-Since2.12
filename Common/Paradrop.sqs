@@ -1,0 +1,27 @@
+;args: [vehicle]
+_vehicle = _this select 0
+
+;player GroupChat "paradrop.sqs in"
+
+if !(local _vehicle) then {player GroupChat "vehicle not local"}
+? !(local LocalServerObject) : player GroupChat "executed by player"
+
+player GroupChat "Vehicle being paradropped"
+
+_classchute = "ParachuteC"
+;_damage = damage _vehicle
+~0.5
+_pos = getpos _vehicle
+
+_chute = _classchute createVehicle _pos
+#drop
+_chutepos = [_pos select 0, _pos select 1, (getpos _vehicle select 2)]
+_chute setPos _chutepos
+_vehicle setVelocity [0,0,-10]
+~0.05
+?(getpos _vehicle select 2) > 1.5 : goto "drop"
+
+? !(IsNull _chute): deletevehicle _chute
+;_vehicle setDamage _damage
+
+player GroupChat "Vehicle sucessfully landed"

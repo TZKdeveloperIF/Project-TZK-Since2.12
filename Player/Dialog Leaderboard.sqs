@@ -1,0 +1,150 @@
+_dlg = createDialog "LeaderboardDialog"
+
+{ ctrlEnable [_x, true] } foreach [IDC_LB_GROUP, IDC_LB_INFANTRY, IDC_LB_VEHICLE, IDC_LB_MHQ, IDC_LB_STRUCT, IDC_LB_TOWN, IDC_LB_TOTAL, IDC_LB_SIDE, IDC_LB_INFANTRYSIDE, IDC_LB_SOFTSIDE, IDC_LB_ARMORSIDE, IDC_LB_AIRSIDE, IDC_LB_MHQSIDE, IDC_LB_PRIMSIDE, IDC_LB_SECSIDE, IDC_LB_TOWNSIDE, IDC_LB_TOTALSIDE]
+
+_clrW = [0.1, 0.1, 1, 1]
+_clrE = [1, 0.1, 0.1, 1]
+_clr = [ _clrW, _clrE ]
+
+? pvGameOver == -1 && siPlayer == si0 : _show = [si0]
+? pvGameOver == -1 && siPlayer == si1 : _show = [si1]
+? pvGameOver != -1 || siPlayer == siCiv : _show = [si0, si1]
+
+_bShowW = [false, true] select (pvGameOver != -1 || siPlayer != si1)
+_bShowE = [false, true] select (pvGameOver != -1 || siPlayer != si0)
+
+_null = "scalar bool array string 0xfcffffef"
+
+#Update
+
+? !(dialog):Exit
+? !(ctrlVisible IDC_LB_GROUP): exit
+? (pvGameOver == -1) && !(alive player): closeDialog 0; exit
+
+; SCORE
+; _scores format: [score, text, si, scorearray]
+_scores = []
+
+_siX = si0
+_giX = 0
+{ _name = name leader _x; if (_x in (groupAiMatrix select _siX)) then {_name="AI"; if (format ["%1", LeaderNameMatrix] != _null) then {if (((LeaderNameMatrix select _siX) select _giX) != "AI") then {_name="AI ("+((LeaderNameMatrix select _siX) select _giX)+")"}}}; _text = format["%1 %2", _name, (groupNameMatrix select _siX) select _giX]; _scores set [count _scores, [[_siX, _giX] call funcCalcScore, _text, _siX, ((groupScoreMatrix select _siX) select _giX)] ]; _giX=_giX+1} foreach (groupMatrix select _siX)
+_siX = si1
+_giX = 0
+{ _name = name leader _x; if (_x in (groupAiMatrix select _siX)) then {_name="AI"; if (format ["%1", LeaderNameMatrix] != _null) then {if (((LeaderNameMatrix select _siX) select _giX) != "AI") then {_name="AI ("+((LeaderNameMatrix select _siX) select _giX)+")"}}}; _text = format["%1 %2", _name, (groupNameMatrix select _siX) select _giX]; _scores set [count _scores, [[_siX, _giX] call funcCalcScore, _text, _siX, ((groupScoreMatrix select _siX) select _giX)] ]; _giX=_giX+1} foreach (groupMatrix select _siX)
+
+[0, false, _scores] call funcSort
+
+;player globalchat format ["_scores=%1", _scores]
+;player globalchat format ["groupScoreMatrix=%1", groupScoreMatrix]
+_textScores = []
+
+;{ _spacer=""; if (_x select 0 < 1000) then {_spacer=_spacer+ " "}; if (_x select 0 < 100) then {_spacer=_spacer+ " "}; if (_x select 0 < 10) then {_spacer=_spacer+ " "}; _text=format["%1%2%3", _x select 0, _spacer, _x select 1]; _textScores set [count _textScores, [_text, _x select 2]] } foreach _scores
+
+_idc = IDC_LB_GROUP
+lbClear _idc
+{ _si = _x select 2; _id=lbAdd [_idc, _x select 1]; lbSetColor [ _idc, _id, _clr select _si] } foreach _scores
+
+_idc = IDC_LB_INFANTRY
+_scClass = scInfantry
+lbClear _idc
+{ _si = _x select 2; _sc = (_x select 3) select _scClass; _id=lbAdd [ _idc, format["%1", ["",_sc] select (_si in _show)] ]; lbSetColor [_idc, _id, _clr select _si] } foreach _scores
+
+_idc = IDC_LB_VEHICLE
+lbClear _idc
+_scClass = scVehicle
+? pvGameOver == -1 && siPlayer != siCiv : { _si = _x select 2; _sc = (_x select 3) select _scClass; _id=lbAdd [_idc, format["%1", ["", _sc + ((_x select 3) select scMHQ)] select (_si in _show)]]; lbSetColor [_idc, _id, _clr select _si] } foreach _scores
+? pvGameOver != -1 || siPlayer == siCiv : { _si = _x select 2; _sc = (_x select 3) select _scClass; _id=lbAdd [_idc, format["%1", _sc]]; lbSetColor [_idc, _id, _clr select _si] } foreach _scores
+
+_idc = IDC_LB_MHQ
+lbClear _idc
+_scClass = scMHQ
+? pvGameOver != -1 || siPlayer == siCiv : { _si = _x select 2; _sc = (_x select 3) select _scClass; _id=lbAdd [_idc, format["%1", _sc]]; lbSetColor [_idc, _id, _clr select _si] } foreach _scores
+
+_idc = IDC_LB_STRUCT
+lbClear _idc
+_scClass = scStruct
+{ _si = _x select 2; _sc = (_x select 3) select _scClass; _id=lbAdd [ _idc, format["%1", ["",_sc] select (_si in _show)] ]; lbSetColor [_idc, _id, _clr select _si] } foreach _scores
+
+_idc = IDC_LB_TOWN
+lbClear _idc
+_scClass = scTown
+{ _si = _x select 2; _sc = (_x select 3) select _scClass; _id=lbAdd [ _idc, format["%1", ["",_sc] select (_si in _show)] ]; lbSetColor [_idc, _id, _clr select _si] } foreach _scores
+
+_idc = IDC_LB_TOTAL
+lbClear _idc
+{ _si = _x select 2; _sc = _x select 0; _id=lbAdd [ _idc, format["%1", _sc] ]; lbSetColor [_idc, _id, _clr select _si] } foreach _scores
+
+_scoreSide0 = 0
+_scoreSide1 = 0
+{ if (si0 == (_x select 2)) then { _scoreSide0 = _scoreSide0 + (_x select 0) } else { _scoreSide1 = _scoreSide1 + (_x select 0) } } foreach _scores
+
+_scoreSide = [_scoreSide0, _scoreSide1]
+
+_siHigh = si0; WestHigh = 1; PublicVariable "WestHigh"
+_siLow = si1
+? (_scoreSide1 > _scoreSide0): _siHigh = si1, _siLow = si0; WestHigh = 0; PublicVariable "WestHigh"
+
+_idc = IDC_LB_SIDE
+lbClear _idc
+_id = lbAdd [_idc, sideNames select _siHigh]; lbSetColor [_idc, _id, _clr select _siHigh]
+_id = lbAdd [_idc, sideNames select _siLow]; lbSetColor [_idc, _id, _clr select _siLow]
+
+_idc = IDC_LB_INFANTRYSIDE
+_sc = scInfantry
+lbClear _idc
+_total = 0
+{ if ((_x select 2) == _siHigh) then { _total = _total + ((_x select 3) select _sc) } } foreach _scores
+_id = lbAdd [_idc, format ["%1", ["", _total] select (_siHigh in _show) ]]; lbSetColor [_idc, _id, _clr select _siHigh]
+_total = 0
+{ if ((_x select 2) == _siLow) then { _total = _total + ((_x select 3) select _sc) } } foreach _scores
+_id = lbAdd [_idc, format ["%1", ["", _total] select (_siLow in _show)]]; lbSetColor [_idc, _id, _clr select _siLow]
+
+_idc = IDC_LB_VEHICLESIDE
+_sc = scVehicle
+lbClear _idc
+_total = 0
+? pvGameOver == -1 && siPlayer != siCiv : { if ((_x select 2) == _siHigh) then { _total = _total + ((_x select 3) select _sc) + ((_x select 3) select scMHQ) } } foreach _scores
+? pvGameOver != -1 || siPlayer == siCiv : { if ((_x select 2) == _siHigh) then { _total = _total + ((_x select 3) select _sc) } } foreach _scores
+_id = lbAdd [_idc, format ["%1", ["", _total] select (_siHigh in _show)]]; lbSetColor [_idc, _id, _clr select _siHigh]
+_total = 0
+? pvGameOver == -1 && siPlayer != siCiv : { if ((_x select 2) == _siLow) then { _total = _total + ((_x select 3) select _sc) + ((_x select 3) select scMHQ) } } foreach _scores
+? pvGameOver != -1 || siPlayer == siCiv : { if ((_x select 2) == _siLow) then { _total = _total + ((_x select 3) select _sc) } } foreach _scores
+_id = lbAdd [_idc, format ["%1", ["", _total] select (_siLow in _show)]]; lbSetColor [_idc, _id, _clr select _siLow]
+
+_idc = IDC_LB_MHQSIDE
+_sc = scMHQ
+lbClear _idc
+_total = 0
+{ if ((_x select 2) == _siHigh) then { _total = _total + ((_x select 3) select _sc) } } foreach _scores
+? pvGameOver != -1 || siPlayer == siCiv : _id = lbAdd [_idc, format ["%1", _total]]; lbSetColor [_idc, _id, _clr select _siHigh]
+_total = 0
+{ if ((_x select 2) == _siLow) then { _total = _total + ((_x select 3) select _sc) } } foreach _scores
+? pvGameOver != -1 || siPlayer == siCiv : _id = lbAdd [_idc, format ["%1", _total]]; lbSetColor [_idc, _id, _clr select _siLow]
+
+_idc = IDC_LB_STRUCTSIDE
+_sc = scStruct
+lbClear _idc
+_total = 0
+{ if ((_x select 2) == _siHigh) then { _total = _total + ((_x select 3) select _sc) } } foreach _scores
+_id = lbAdd [_idc, format ["%1", ["", _total] select (_siHigh in _show)]]; lbSetColor [_idc, _id, _clr select _siHigh]
+_total = 0
+{ if ((_x select 2) == _siLow) then { _total = _total + ((_x select 3) select _sc) } } foreach _scores
+_id = lbAdd [_idc, format ["%1", ["", _total] select (_siLow in _show)]]; lbSetColor [_idc, _id, _clr select _siLow]
+
+_idc = IDC_LB_TOWNSIDE
+_sc = scTown
+lbClear _idc
+_total = 0
+{ if ((_x select 2) == _siHigh) then { _total = _total + ((_x select 3) select _sc) } } foreach _scores
+_id = lbAdd [_idc, format ["%1", ["", _total] select (_siHigh in _show)]]; lbSetColor [_idc, _id, _clr select _siHigh]
+_total = 0
+{ if ((_x select 2) == _siLow) then { _total = _total + ((_x select 3) select _sc) } } foreach _scores
+_id = lbAdd [_idc, format ["%1", ["", _total] select (_siLow in _show)]]; lbSetColor [_idc, _id, _clr select _siLow]
+
+_idc = IDC_LB_TOTALSIDE
+lbClear _idc
+_id = lbAdd [_idc, format ["%1", _scoreSide select _siHigh]]; lbSetColor [_idc, _id, _clr select _siHigh]
+_id = lbAdd [_idc, format ["%1", _scoreSide select _siLow]]; lbSetColor [_idc, _id, _clr select _siLow]
+
+~0.5
+goto "Update"

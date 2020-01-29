@@ -1,0 +1,17 @@
+; args: [vehicle, gi, si, tugSlot]
+
+_vehicle = _this select 0
+_gi = _this select 1
+_si = _this select 2
+_slot = _this select 3
+
+_value = _slot + 10*(_gi + GroupsNum*_si)
+
+@!(mutexVehicleDetached)
+mutexVehicleDetached = true
+
+pvVehicleDetachedTugged = _vehicle; PublicVariable "pvVehicleDetachedTugged"
+pvVehicleDetached = _value; PublicVariable "pvVehicleDetached"
+
+~0.5*sendDelay
+mutexVehicleDetached = false

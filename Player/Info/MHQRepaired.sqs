@@ -1,0 +1,15 @@
+; args: [params] params defined in Server\Info\MHQRepaired.sqs. It is 10*_si + _isMCV
+
+_value = _this select 0
+
+_si = _value % 10
+_isMCV = (_value - _si)/10
+
+? (siPlayer == siCiv): format["%1 %2 repaired", sideNames select _si, ["MHQ", "MCV"] select _isMCV] exec "Player\LogSpectator.sqs"
+
+? (_si == siPlayer): _text = format ["%1 has been repaired. At Last !!", ["Our MHQ", "One MCV"] select _isMCV]; hint _text; player sidechat _text 
+ 
+
+;player globalchat format ["multiplierwest = %1 and multipliereast = %2"]
+
+exit

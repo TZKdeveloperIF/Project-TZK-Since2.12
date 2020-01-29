@@ -1,0 +1,66 @@
+; args: [unit]
+; unit : group leader at start
+
+? !(local LocalServerObject) : exit
+_unit = _this select 0
+_unit disableAI "TARGET"; _unit disableAI "AUTOTARGET"; _unit disableAI "MOVE"
+~5
+
+_group = group _unit
+
+_si = -1
+? side _unit == sides select si0 : _si = si0
+? side _unit == sides select si1 : _si = si1
+
+_siEnemy = siEnemy select _si
+_aircraft = AggressiveAircrafts select _siEnemy
+_tank = [typesLightTank select _siEnemy, typesHeavyTank select _siEnemy]
+
+~15
+_unit setpos [1,1,1]; _unit setdamage 1
+
+? isNull _group : format["ERROR: _group is NULL at init for %1 temporary AA group", sideNames select _si] call fDebugLog; exit
+
+
+
+
+#Update
+~30
+_tanks = 0; _aircrafts = 0
+
+{ _tanks = _tanks + ((unitsBuilt select _siEnemy) select _x) } foreach _tank
+? _tanks >= 3 : exit
+
+{ _aircrafts = _aircrafts + ((unitsBuilt select _siEnemy) select _x) } foreach _aircraft
+? _aircrafts > 0 : goto "SpawnAA"
+
+? time > 30*60 : exit
+goto "Update"
+
+
+#SpawnAA
+
+
+~1
+[(AASystem select _si) select 0, 1, 1, 0, [getPos (mhq select _si), 500, 500] call funcGetRandomPos, random 360, _si, -1, _group, 0, 0] exec "Common\AddUnit.sqs"
+~1
+[(AASystem select _si) select 0, 1, 1, 0, [getPos (mhq select _si), 500, 500] call funcGetRandomPos, random 360, _si, -1, _group, 0, 0] exec "Common\AddUnit.sqs"
+~1
+[(AASystem select _si) select 0, 1, 1, 0, [getPos (mhq select _si), 500, 500] call funcGetRandomPos, random 360, _si, -1, _group, 0, 0] exec "Common\AddUnit.sqs"
+~1
+[(AASystem select _si) select 1, 1, 1, 0, [getPos (mhq select _si), 500, 500] call funcGetRandomPos, random 360, _si, -1, _group, 0, 0] exec "Common\AddUnit.sqs"
+~1
+[(AASystem select _si) select 1, 1, 1, 0, [getPos (mhq select _si), 500, 500] call funcGetRandomPos, random 360, _si, -1, _group, 0, 0] exec "Common\AddUnit.sqs"
+
+~5
+{ if (_x != vehicle _x) then { [vehicle _x, true] exec "Common\LockVehicle.sqs"; vehicle _x setFuel 0 } } foreach (units _group)
+[_si] exec "Server\Info\TempAACreated.sqs"
+
+ _delay = [900,5] select dev
+~_delay
+{ _v = vehicle _x; if (_v != _x) then {deleteVehicle _v} } forEach (units _group)
+~1
+{deleteVehicle _x} forEach (units _group)
+~1
+[_si] exec "Server\Info\TempAADeleted.sqs"
+exit

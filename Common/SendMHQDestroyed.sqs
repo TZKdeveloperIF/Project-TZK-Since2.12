@@ -1,0 +1,18 @@
+; args: [siMHQ, siKiller, giKiller, (isMCV)]
+
+_siMHQ = _this select 0
+_siKiller = _this select 1
+_giKiller = _this select 2
+_isMCV = 0
+? (count _this) > 3 : _isMCV = _this select 3
+
+_value = mtMHQDestroyed
+if (_siKiller == _siMHQ) then { _value = _value + TotalInfoTypes*_giKiller } else { _value = _value + TotalInfoTypes*0 }
+; if (_siKiller == _siMHQ) then { _value = _value + (TotalInfoTypes*GroupsNum)*_siKiller } else { _value = _value + (TotalInfoTypes*GroupsNum)*siRes }
+_value = _value + (TotalInfoTypes*GroupsNum)*_siKiller
+_value = _value + (TotalInfoTypes*GroupsNum*10)*_siMHQ
+_value = _value + (TotalInfoTypes*GroupsNum*10*10)*_isMCV
+
+? (local LocalServerObject) : [_value] exec "Server\Info\SendInfoMsg.sqs"; exit
+
+pvInfo0 = _value; PublicVariable "pvInfo0"

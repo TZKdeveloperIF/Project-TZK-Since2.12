@@ -1,0 +1,157 @@
+; args: none
+
+_dlg = createDialog "TemporaryAIOrderDialog"
+
+_si = siPlayer
+_gi = -1
+
+btnSendOrder = false; btnTemporaryOrder = false
+
+_idcCurrent = IDC+0
+_idcOrderLabel = IDC+1
+_idcSendOrder = IDC+2
+_idcOrder = IDC+3
+_idcPar0Label = IDC+4
+_idcPar0 = IDC+5
+_idcPar1Label = IDC+6
+_idcPar1 = IDC+7
+_idcPar2Label = IDC+8
+_idcPar2 = IDC+9
+_idcPar3Label = IDC+10
+_idcPar3 = IDC+11
+_idcPar4Label = IDC+12
+_idcPar4 = IDC+13
+
+? (groupPlayer != (groupCommander select _si)) : { ctrlShow [_x, false] } foreach [_idcOrderLabel, _idcSendOrder, _idcOrder]; 
+{ ctrlShow [_x, false] } foreach [_idcPar0Label, _idcPar0, _idcPar1Label, _idcPar1, _idcPar2Label, _idcPar2, _idcPar3Label, _idcPar3, _idcPar4Label, _idcPar4]
+
+_groupNames = groupNameMatrix select _si
+
+_selGroup = -1
+_selOrder = -1
+
+_idcParamLabels = [_idcPar0Label, _idcPar1Label, _idcPar2Label, _idcPar3Label, _idcPar4Label]
+_idcParams = [_idcPar0, _idcPar1, _idcPar2, _idcPar3, _idcPar4]
+
+{ lbAdd [_idcOrder, _x select 0] } foreach orderTempDefs
+
+#Update
+	? !(dialog): exit
+	? !(alive player): closeDialog 0; Exit
+
+	lbClear _idcCurrent
+	_gis = ([_si] call funcGetAIGroupsIndex)
+	{_order = (orderTempMatrix select _si) select _x; _text = _order call funcGetOrderTempDesc; _id = lbAdd [_idcCurrent, format["%1, %2", _groupNames select _x, _text]]; lbSetValue [_idcCurrent, _id, _x]} forEach _gis
+	
+	? _selGroup != lbCurSel _idcCurrent : _selGroup = lbCurSel _idcCurrent; goto "NewGroupSelected"
+
+	? _selOrder != lbCurSel _idcOrder : _selOrder = lbCurSel _idcOrder; goto "NewOrderSelected"
+
+	? btnSendOrder: btnSendOrder = false; goto "SendOrder"
+	? btnReturn : btnReturn = false; goto "CommandAI"
+
+
+
+	~0.2
+	goto "Update"
+
+#NewGroupSelected
+	_gi = lbValue [_idcCurrent, _selGroup]
+
+
+	? (groupPlayer == (groupCommander select _si)) && !( (["Commander"] + callsigns) select ((call grpSetting) select aisSuperior) in ["Commander", _groupNames select giPlayer] ) : { ctrlShow [_x, false] } foreach [_idcOrderLabel, _idcSendOrder, _idcOrder, _idcPar0Label, _idcPar0, _idcPar1Label, _idcPar1, _idcPar2Label, _idcPar2, _idcPar3Label, _idcPar3, _idcPar4Label, _idcPar4]
+	? (groupPlayer == (groupCommander select _si)) && ( (["Commander"] + callsigns) select ((call grpSetting) select aisSuperior) in ["Commander", _groupNames select giPlayer] ) : { ctrlShow [_x, true] } foreach [_idcOrderLabel, _idcSendOrder, _idcOrder]; goto "RefreshOrder"
+	? (groupPlayer != (groupCommander select _si)) && (["Commander"] + callsigns) select ((call grpSetting) select aisSuperior) != _groupNames select giPlayer : { ctrlShow [_x, false] } foreach [_idcOrderLabel, _idcSendOrder, _idcOrder, _idcPar0Label, _idcPar0, _idcPar1Label, _idcPar1, _idcPar2Label, _idcPar2, _idcPar3Label, _idcPar3, _idcPar4Label, _idcPar4]
+	? (groupPlayer != (groupCommander select _si)) && (["Commander"] + callsigns) select ((call grpSetting) select aisSuperior) == _groupNames select giPlayer : { ctrlShow [_x, true] } foreach [_idcOrderLabel, _idcSendOrder, _idcOrder]; goto "RefreshOrder"
+	
+	goto "Update"
+
+#RefreshOrder
+	? _selOrder == -1 : goto "Update"
+	_orderType = _selOrder
+	{ ctrlShow [_x, false] } foreach [_idcPar0Label, _idcPar0, _idcPar1Label, _idcPar1, _idcPar2Label, _idcPar2, _idcPar3Label, _idcPar3, _idcPar4Label, _idcPar4]
+	_paramDefs = (orderTempDefs select _orderType) select 1
+
+	_indexParam = 0
+	_countParams = count _paramDefs
+	? (_countParams == 0): goto "NoRefreshParams"
+	#AddRefreshParamInfo
+		_paramDef = _paramDefs select _indexParam
+
+		ctrlShow [_idcParamLabels select _indexParam, true]
+		ctrlSetText [_idcParamLabels select _indexParam, _paramDef select 0]
+		_count = call (_paramDef select 1)
+		_toText = _paramDef select 2
+		_index = 0
+		ctrlShow [_idcParams select _indexParam, true]
+		lbClear (_idcParams select _indexParam)
+		while "_index < _count" do { lbAdd [_idcParams select _indexParam, _index call _toText]; _index=_index+1 }
+
+		_indexParam = _indexParam + 1
+		? (_indexParam < _countParams): goto "AddRefreshParamInfo"
+	#NoRefreshParams
+
+	goto "Update"
+	
+
+#NewOrderSelected
+	? _selOrder == -1 : goto "Update"
+	_orderType = _selOrder
+	_orderParams = [0,0,0,0,0]
+
+	goto "UpdateParams"
+
+#UpdateParams
+	{ ctrlShow [_x, false] } foreach [_idcPar0Label, _idcPar0, _idcPar1Label, _idcPar1, _idcPar2Label, _idcPar2, _idcPar3Label, _idcPar3, _idcPar4Label, _idcPar4]
+	; { ctrlShow [_x, true] } foreach [_idcOrderLabel, _idcSendOrder, _idcOrder]
+
+	_paramDefs = (orderTempDefs select _orderType) select 1
+
+	_indexParam = 0
+	_countParams = count _paramDefs
+	? (_countParams == 0): goto "NoParams"
+	#AddParamInfo
+		_paramDef = _paramDefs select _indexParam
+
+		ctrlShow [_idcParamLabels select _indexParam, true]
+		ctrlSetText [_idcParamLabels select _indexParam, _paramDef select 0]
+		_count = call (_paramDef select 1)
+		_toText = _paramDef select 2
+		;player globalchat format["_idcLabel=%1, _paramDef select 0=%2", _idcLabel, _paramDef select 0]
+		_index = 0
+		ctrlShow [_idcParams select _indexParam, true]
+		lbClear (_idcParams select _indexParam)
+		while "_index < _count" do { lbAdd [_idcParams select _indexParam, _index call _toText]; _index=_index+1 }
+		lbSetCurSel [_idcParams select _indexParam, _orderParams select _indexParam]
+	
+		_indexParam = _indexParam + 1
+		? (_indexParam < _countParams): goto "AddParamInfo"
+	#NoParams
+
+	goto "Update"
+
+
+
+#SendOrder
+
+  ? _selGroup == -1 : hint "No group selected"; goto "Update"
+  ? _selOrder == -1 : hint "No order selected"; goto "Update"
+
+	_params = [0,0,0,0,0]
+	_paramsSet = true
+	_index = 0
+	{ if ( -1 == lbCurSel (_idcParams select _index)) then { _paramsSet = false }; _index = _index + 1 } foreach ((orderTempDefs select _selOrder) select 1)
+  ? !(_paramsSet): hint "Paramaters not set"; goto "Update"
+	
+	_index = 0
+	{ _params set [_index, lbCurSel (_idcParams select _index)]; _index = _index + 1 } foreach ((orderTempDefs select _selOrder) select 1)
+	_params resize (count ((orderTempDefs select _selOrder) select 1))
+	
+	[_si, _gi, _selOrder, _params] exec "Common\SendAITemporaryOrder.sqs"; goto "Update"
+	
+	
+#CommandAI
+	closeDialog 0
+	~0.1
+	[] exec "Player\Dialog AIGroupOrders.sqs"
+	Exit

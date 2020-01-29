@@ -1,0 +1,60 @@
+; args : none
+; Create main CTI objects by server and make player gain Material Effects by Alt+Tab twice
+
+_posCreate = [-6000, -6000, 30]; exit
+_soldiers = [""]
+_soldiers = ["ResM249LAW_xj200","ResRPKRPG_xj200","ResM24AT_xj200","ResSVDSAT_xj200","ResM16A4AA_xj200","ResAK74MAA_xj200","ResM240_xj200","ResPKM_xj200","ResM60_xj200","ResPK_xj200", "ResM21_xj200","ResSVD_xj200"]
+; _vehicles = ["M1A1_xj200", "M1A2_INQ_xj200", "T80_xj200","T90_xj200","M60_xj200","T72_xj200","M109_Paladin_xj200","2S25_Sprut_SD_xj200","M113_xj200", "BMP_xj200","Vulcan_xj200","ZSU_xj200","M2A2_xj200","BMP2_xj200","Mi17_xj200","Mi17_C_xj200","UH60_xj200", "UH60_C_xj200","MH6_xj200","Mi2NOE_xj200","AH1_xj200","AH1_C_xj200","AH64_xj200","Mi24_xj200","Mi24_C_xj200","Ka50_xj200","A10_xj200","Su25_xj200","C130_xj200", "An12_xj200","QUAD_xj200"]
+_vehicles = [""]
+; _structures = ["Mortar5_W_xj200","CommCenterE_xj200","StaticMG_12mm7_W_xj200","StromHaus1","DVD_v2_LF","BarackeSupports3","DVD_v2_CC","BarackeSupports2","DVD_v2_Bar","DVD_v2_HF", "DVD_v2_AirF","Dach1","FuelStationNew2","DVD_v2_fort","DVD_v2_WoodTower","DVD_v2_ConcreteTower","DVD_v2_gunfort_west","DVD_v2_wall","DVD_v2_roof","DVD_v2_trench","ReammoBoxWest"]
+_structures = [""]
+
+
+@( !(isNull (mhq select si0)) && !(isNull (mhq select si1)) )
+@ (time > 10)
+_groupCreate = groupTemp0
+(_soldiers select 0) createUnit [_posCreate, _groupCreate, "MaterialSoldier=this", 1, "PRIVATE"]
+
+@(!isNull MaterialSoldier)
+[MaterialSoldier] join grpNull
+
+@(group MaterialSoldier != groupTemp0)
+_groupCreate = group MaterialSoldier
+
+_i = 1; _c = count _soldiers
+#LoopSoldiers
+(_soldiers select _i) createUnit [_posCreate, _groupCreate, "", 1, "PRIVATE"]
+_i = _i + 1
+~1
+? _i < _c : goto "LoopSoldiers"
+
+_i = 0; _c = count _vehicles
+#LoopVehicles
+_vehicle = (_vehicles select _i) createVehicle _posCreate;
+MaterialEffectVehicles set [count MaterialEffectVehicles, _vehicle]
+_i = _i + 1
+~25
+? _i < _c : goto "LoopVehicles"
+
+_i = 0; _c = count _structures
+#Loopstructures
+_vehicle = (_structures select _i) createVehicle _posCreate;
+MaterialEffectVehicles set [count MaterialEffectVehicles, _vehicle]
+_i = _i + 1
+~25
+? _i < _c : goto "Loopstructures"
+
+~10
+[] exec "Server\Info\MaterialEffect.sqs"
+exit
+
+; abandoned. If player alt+tab after objects have been deleted, the effects won't work.
+@ (time > 1800)
+
+_i = 0; _c = count MaterialEffectVehicles
+#Loop
+	_v = MaterialEffectVehicles select _i
+	deleteVehicle _v
+	_i = _i + 1
+	~1
+	? _i < _c : goto "Loop"

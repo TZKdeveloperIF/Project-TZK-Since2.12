@@ -1,0 +1,22 @@
+; args: [value, tug]
+
+_value = _this select 0
+_tug = _this select 1
+
+? (isNull _tug): exit
+
+_slot = _value
+
+_res = [_tug] call funcSearchvehicleAttached
+? !(_res select 1) : exit
+
+@!(mutexEditvehicleAttached)
+mutexEditvehicleAttached = true
+
+_tugged = ((vehicleAttached select (_res select 0)) select tsTugged) select _slot
+? (local LocalServerObject) : _i = count vehicleTuggedServer; vehicleTuggedServer set [_i, _tugged]; vehicleTugServer set [_i, _tug]
+
+((vehicleAttached select (_res select 0)) select tsTugged) set [_slot, objNull]
+
+
+mutexEditvehicleAttached = false

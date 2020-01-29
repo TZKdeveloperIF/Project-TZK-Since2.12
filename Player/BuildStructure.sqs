@@ -1,0 +1,66 @@
+; args:  [unit, type, pos, dir, align]
+
+_unit = _this Select 0
+_type = _this Select 1
+_posStruct = _this select 2
+_dirStruct = _this select 3
+_align = _this select 4
+
+_side = side _unit
+_desc = structDefs select _type
+
+_structsOfSameType = [siPlayer, _type] call funcGetStructures
+
+; "more buildings" upgrade will double your buildings 
+_multiplier=1
+? (2 == ((upgMatrix select siPlayer) select upgNumBuildings)): _multiplier=2
+; player globalchat format ["multiplier: %1 numbuildings:%2 XX:%3 ", _multiplier, upgNumBuildings, ((upgMatrix select siPlayer) select upgNumBuildings)]
+_limit=(_desc select sdLimit)*_multiplier
+? !(count _structsOfSameType < _limit): hint format["Structure Limit Reached (%1)", _limit]; Exit
+
+_cost = _desc select sdCost
+_radius = _desc select sdMaxRadius
+
+? (count _posStruct > 0): goto "SkipCalcPos"
+_posUnit = getPos _unit
+_dirUnit = getDir _unit
+_dist = _desc select sdDist
+_posStruct = [(_posUnit Select 0) + _dist*(sin _dirUnit), (_posUnit Select 1) + _dist*(cos _dirUnit)]
+_dirStruct = _dirUnit
+
+? (_align): _res = [siPlayer, _type, _posStruct, _dirStruct] call funcCalcAlignPosDir; _posStruct = _res select 0; _dirStruct = _res select 1
+
+#SkipCalcPos
+
+; CHECK TOWN FLAG
+_distance = ([_posStruct, [si0, si1, siRes], []] call funcGetClosestTown) select 1
+? _distance < (_radius+50) : hint "Build pos too near town flag."; exit
+
+; CHECK VEHICLE
+_res = [_posStruct, _radius, [], []] call funcGetNearbyVehicles
+? (count _res) > 0 : hint "Build pos blocked by vehicle."; exit
+
+; CHECK TREES
+; ? [_posStruct] call funcInForest : hint "Build pos blocked by trees."; exit
+
+; CHECK AREA FLAT
+; ? !([_posStruct, _radius, 0.5*_radius] call funcAreaFlat) : hint "Build pos not flat enough."; exit
+
+; CHECK NEAREST STRUCTURE
+_res = [_posStruct] call funcGetNearestStructure
+; player globalchat format["_res=%1", _res]
+_ts = _res select 1
+? _ts == -1 : goto "NoStructFound"
+? (_res select 2) < 0.5*(_radius + ((structDefs select _ts) select sdMaxRadius)) : hint "Build pos blocked by structure."; exit
+#NoStructFound
+
+_resources = (groupMoneyMatrix select siPlayer) select giPlayer
+_needed = _cost - _resources
+
+;If more resources are needed then available report an error to player.
+? (_needed > 0):Hint Format["Not Enough Money\nNeed: %1\nCost: %2", _needed, _cost];Exit
+
+[_posStruct, _dirStruct, _type] exec "Player\SendBuildStructure.sqs"
+
+;player globalchat format ["BuildGenericStructure.sqs: pvBuildStruct_Type=%1", pvBuildStruct_Type]
+Exit

@@ -1,0 +1,31 @@
+; args: [mhq]
+
+_si = siPlayer
+_mhq = _this select 0
+
+{ _mhq removeAction _x } foreach mhqActions
+mhqActions = []
+
+? !(alive _mhq): goto "Destroyed"
+
+#Alive
+	_action = _mhq addAction ["Unflip MHQ", "Player\UnflipVehicle.sqs"];
+
+	mhqActions = mhqActions + [_action]
+
+	? (groupPlayer != (groupCommander select _si)): Exit
+
+	? _si == si0 : _type = utMHQ0
+	? _si == si1 : _type = utMHQ1
+
+  _textAction = ["Lock MHQ", "Unlock MHQ"] select (locked _mhq)
+	_action = _mhq addAction[_textAction, "Player\ActionToggleMHQLock.sqs"]
+
+	[[_mhq, _type, _si], ["MHQ Build Menu"], 150, true] exec "Player\UpdateFarUnitActions.sqs"
+
+	mhqActions = mhqActions + [_action]
+	Exit
+
+#Destroyed
+	_action = _mhq addAction["Repair MHQ","Player\Action RepairMHQ.sqs"]
+	mhqActions = mhqActions + [_action]

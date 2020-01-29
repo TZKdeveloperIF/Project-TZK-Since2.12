@@ -1,0 +1,16 @@
+#Start
+
+@(pvUpgrade != -1)
+
+_value = pvUpgrade
+
+pvUpgrade = -1
+
+_upg = _value % 100
+_value = _value - _upg
+
+_si = _value/100
+
+[_upg, _si] exec "Server\StartUpgrade.sqs"
+
+goto "Start"

@@ -1,0 +1,141 @@
+; args: [unit, type, si]
+
+? !(local LocalServerObject) : exit
+
+_unit = _this select 0
+_si = _this select 2
+_wander = true
+_range = 200
+_repair = 0.025
+_stuckObject = objNull
+_sleep = 1
+_supportWorker = 2; _weapons = []; _mags = []
+
+#Start
+
+_unit setCombatMode "YELLOW"; _unit setBehaviour "SAFE"; _unit setSpeedMode "FULL"
+_groups = workerGroups select _si
+@!(mutexWorkerJoin)
+mutexWorkerJoin = true
+? !(group _unit in _groups) : [_unit] join (_groups select 0)
+mutexWorkerJoin = false
+
+? ((upgMatrix select _si) select upgWorkers) == 2: goto "Update"
+
+removeAllWeapons _unit
+
+? _si == si0 : { _unit addMagazine "HK" } forEach [1,2,3,4]; _unit addWeapon "HK"
+? _si == si1 : { _unit addMagazine "BizonMag_xj200" } forEach [1,2,3,4]; _unit addWeapon "Bizon_xj200"
+
+
+
+#Update
+	~_sleep
+	? !(alive _unit) : goto "DeadWorker"
+	_found = [getPos _unit, siBoth, [(typesSupportPlus select si0)+[utMHQ0, utMCVW], (typesSupportPlus select si1)+[utMHQ1, utMCVE]] select _si, []] call funcGetClosestVehicle
+	? (_found select 1) < _range : _supportWorker = _supportWorker + 1
+	? _supportWorker > 1 : _supportWorker = 0; _unit setdamage 0; if (((upgMatrix select _si) select upgWorkers) == 2) then { removeAllWeapons _unit; if (((upgMatrix select _si) select upgTL) == 2) then {_mags = magsRespawnAI5 select _si; _weapons = weaponsRespawnAI5 select _si} else {_mags = magsRespawnAI1 select _si; _weapons = weaponsRespawnAI1 select _si}; { _unit addMagazine  _x } forEach _mags; { _unit addWeapon _x } forEach _weapons }
+	; player globalchat format["behaviour = %1", behaviour _unit]
+  ? (behaviour _unit) == "COMBAT" && call format["pvWorkerBehaviour%1 != 0", _si] : _sleep = 30; goto "Update"
+  ? ((groupMoneyMatrix select _si) select (giCO select _si)) <= 0 : _sleep = 30; goto "Update"
+  
+	_index = 0
+	_count = count (repairableStructureMatrix select _si)
+	? _count == 0 : goto "NoObjectFound"
+	#FindObject
+		
+		? !(isNull _stuckObject): _index = (random _count) - 0.5
+
+		_object = ((repairableStructureMatrix select _si) select _index) select 0
+		_damage = ((repairableStructureMatrix select _si) select _index) select 1
+    _type = ((repairableStructureMatrix select _si) select _index) select 2
+    _distMove = (structDefs select _type) select sdMaxRadius
+    ? _distMove > rangeSupport - 5 : _distMove = rangeSupport - 5
+    
+		? !(isNull _object) && _object != _stuckObject && _damage > 0 && (_unit distance _object) < _range : _return = "Update"; goto "MoveToObject"
+
+		_index = _index + 1		
+		? _index < _count : goto "FindObject"
+
+	#NoObjectFound
+  _sleep = 30
+	? _wander : _return = "Update"; goto "Wander"
+	[_unit, false] exec "Server\StopAI.sqs"
+	goto "Update"
+
+
+;If no building need to be repaired wander so all workers are not standing in same area.
+#Wander
+	_wander = false
+
+	_pos = [getPos _unit, 20, 50] call funcGetRandomPos
+	_unit setSpeedMode "FULL"
+	_unit doMove _pos
+
+	goto _return
+
+#MoveToObject
+  _sleep = 6
+	_unit setSpeedMode "FULL"
+	_wander = true
+	_timeAbort = time + 120
+  _posObject = getPos _object
+  
+	#RepeatMoveToBuilding
+    _unit doMove _pos
+		_pos = [_posObject, _distMove, _distMove] call funcGetRandomPos
+
+		~_sleep
+
+		? !(alive _unit) : goto "DeadWorker"
+		? (isNull _object) : goto _return
+
+		_distToObject = [getPos _unit, _posObject] call funcDistH
+		? _distToObject < rangeSupport : goto "ObjectReached"
+
+		? time > _timeAbort : [_si] exec "Server\Info\WorkerStuck.sqs"; doStop _unit; _stuckObject = _object; goto _return
+		goto "RepeatMoveToBuilding"
+
+	#ObjectReached
+	doStop _unit
+	_stuckObject = objNull
+
+	#RepairBuilding
+
+		? !(alive _unit) : goto "DeadWorker"
+		? (isNull _object) : goto _return
+
+		; ? (Random 100 < 40):_unit PlayMove "CombatToMedic";goto "RepairMovePlayed"
+		; ? (Random 100 < 30):_unit PlayMove "HandGunStandToHandGunTakeFlag";goto "RepairMovePlayed"
+		; ? (Random 100 < 30):_unit PlayMove "StandToBinocStand";goto "RepairMovePlayed"
+		; _unit PlayMove "CrouchToBinocCrouch"
+		_unit playMove "CombatToMedic"
+
+		#RepairMovePlayed
+
+		_dmgOld = _damage
+		_damage = [_object, _repair, _si] call funcRepairStructure
+		
+		;player globalchat format ["repairableStructureMatrix=%1", repairableStructureMatrix]
+
+		; object not found
+		? _damage == -1 : goto _return
+
+		;If the building is repaired go back to the main loop.
+		
+		; ? _damage <= 0 : [_si, _type] exec "Server\Info\StructReady.sqs"; [_object] exec "Server\primStructsPlacedRemove.sqs"; goto _return
+		? _damage <= 0 : if (_damage < 0) then {_sleep = 0}; goto _return
+
+    ; wander if not enough money
+    ? _damage == _dmgOld : _return = "Update"; _sleep = 30; goto "Wander"
+    
+		~_sleep
+		goto "RepairBuilding"
+
+#DeadWorker
+	_unit commandMove (position _unit)
+	? _si == si0 : pvWorkers0 = pvWorkers0 - 1; PublicVariable "pvWorkers0"
+	? _si == si1 : pvWorkers1 = pvWorkers1 - 1; PublicVariable "pvWorkers1"
+
+	Exit
+

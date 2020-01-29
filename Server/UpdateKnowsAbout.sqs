@@ -1,0 +1,61 @@
+; args: [unit, si, ka, dist]
+
+? !(Local LocalServerObject) : exit
+
+_unit = _this select 0
+_si = _this select 1
+_kaReport = _this select 2
+_dist = _this select 3
+
+_interval = 20
+_timeLastSent = [-1000,-1000,-1000]
+
+#Update
+	~(_interval/2 + random _interval)
+	? !(alive _unit) : exit
+	
+	_target = vehicle _unit
+
+	#CheckSide0
+	_siEnemy = si0
+	? time < ((_timeLastSent select _siEnemy) + 120) : goto "CheckSide1"
+	? count ([_siEnemy, stComm] call funcGetWorkingStructures) == 0 : goto "CheckSide1"
+	
+	_res = [_target, _si, _siEnemy] call funcUpdateKnowsAbout
+	_kaMax = _res select 0; _group = _res select 1; _groups = _res select 2
+
+	? _kaMax < _kaReport : goto "CheckSide1"
+	? _dist == -1 : goto "SkipRangeCheck0"
+	_bInRange = false
+	{ if ( (_x distance _target) < _dist ) then { _bInRange = true } } foreach (units _group)
+	? !_bInRange : _kaMax = 0
+	#SkipRangeCheck0
+
+	? _kaMax > _kaReport : { _x reveal _target } forEach _groups; [_target, _siEnemy] exec "Server\SendEnemySpotted.sqs"; _timeLastSent set [_siEnemy, time]
+  
+
+	#CheckSide1
+	_kaMax = 0
+	_siEnemy = si1
+	? time < ((_timeLastSent select _siEnemy) + 120) : goto "CheckRes"
+	? count ([_siEnemy, stComm] call funcGetWorkingStructures) == 0 : goto "CheckRes"
+
+	_res = [_target, _si, _siEnemy] call funcUpdateKnowsAbout
+	_kaMax = _res select 0; _group = _res select 1; _groups = _res select 2
+
+	? _kaMax < _kaReport : goto "CheckRes"
+	? _dist == -1 : goto "SkipRangeCheck1"
+	_bInRange = false
+	{ if ( (_x distance _target) < _dist ) then { _bInRange = true } } foreach (units _group)
+	? !_bInRange : _kaMax = 0
+	#SkipRangeCheck1
+
+	? _kaMax > _kaReport : { _x reveal _target } forEach _groups; [_target, _siEnemy] exec "Server\SendEnemySpotted.sqs"; _timeLastSent set [_siEnemy, time]
+
+	#CheckRes
+	; _kaMax = 0
+	; _siEnemy = siRes
+	; { _ka = (_x knowsAbout _target); if ( _ka > _kaMax) then { _kaMax = _ka } } forEach (_enemyGroups select _siEnemy)
+	; ? _kaMax > _kaReport && time > (120 + (_timeLastSent select _siEnemy)): { _x reveal _target } forEach (_enemyGroups select _siEnemy); [_target, _siEnemy] exec "Server\SendEnemySpotted.sqs"; _timeLastSent set [_siEnemy, time]
+
+  goto "Update"

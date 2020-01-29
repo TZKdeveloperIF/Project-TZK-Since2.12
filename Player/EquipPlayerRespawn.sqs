@@ -1,0 +1,157 @@
+; args: [unit, si]
+
+_unit = _this Select 0
+_si = _this Select 1
+
+? ((upgMatrix select siPlayer) select upgTL) == 2: goto "Update"
+
+
+
+randP = random 4 
+numP = randP - (randP mod 1)
+
+? numP == 1: goto "weapon0"
+? numP == 2: goto "weapon1"
+? numP == 3: goto "weapon2"
+
+
+#weapon0
+
+_mags = magsRespawnPlayer select _si
+_weapons = weaponsRespawnPlayer select _si
+
+removeAllWeapons _unit
+{ _unit addMagazine  _x } forEach _mags
+{ _unit addWeapon _x } forEach _weapons
+{ _unit addWeapon _x } forEach weaponsCustom
+_unit selectWeapon (_weapons select 0)
+exit
+
+
+#weapon1
+
+_mags = magsRespawnPlayer1 select _si
+_weapons = weaponsRespawnPlayer1 select _si
+
+removeAllWeapons _unit
+{ _unit addMagazine  _x } forEach _mags
+{ _unit addWeapon _x } forEach _weapons
+{ _unit addWeapon _x } forEach weaponsCustom
+_unit selectWeapon (_weapons select 0)
+exit
+
+
+#weapon2
+
+_mags = magsRespawnPlayer2 select _si
+_weapons = weaponsRespawnPlayer2 select _si
+
+removeAllWeapons _unit
+{ _unit addMagazine  _x } forEach _mags
+{ _unit addWeapon _x } forEach _weapons
+{ _unit addWeapon _x } forEach weaponsCustom
+_unit selectWeapon (_weapons select 0)
+exit
+
+
+
+#Update
+
+;randP = random 8 
+randP = random 2
+numP = randP - (randP mod 1)
+
+? numP == 0: goto "weapon3"
+? numP == 1: goto "weapon4"
+
+? numP == 3: goto "weapon5"
+? numP == 4: goto "weapon6"
+? numP == 5: goto "weapon7"
+? numP == 6: goto "weapon8"
+? numP == 7: goto "weapon9"
+
+#weapon3
+
+_mags = magsRespawnPlayer3 select _si
+_weapons = weaponsRespawnPlayer3 select _si
+
+removeAllWeapons _unit
+{ _unit addMagazine  _x } forEach _mags
+{ _unit addWeapon _x } forEach _weapons
+{ _unit addWeapon _x } forEach weaponsCustom
+_unit selectWeapon (_weapons select 0)
+exit
+
+
+#weapon4
+
+_mags = magsRespawnPlayer4 select _si
+_weapons = weaponsRespawnPlayer4 select _si
+
+removeAllWeapons _unit
+{ _unit addMagazine  _x } forEach _mags
+{ _unit addWeapon _x } forEach _weapons
+{ _unit addWeapon _x } forEach weaponsCustom
+_unit selectWeapon (_weapons select 0)
+exit
+
+
+#weapon5
+
+_mags = magsRespawnPlayer5 select _si
+_weapons = weaponsRespawnPlayer5 select _si
+
+removeAllWeapons _unit
+{ _unit addMagazine  _x } forEach _mags
+{ _unit addWeapon _x } forEach _weapons
+{ _unit addWeapon _x } forEach weaponsCustom
+_unit selectWeapon (_weapons select 0)
+exit
+
+#weapon6
+
+_mags = magsRespawnPlayer6 select _si
+_weapons = weaponsRespawnPlayer6 select _si
+
+removeAllWeapons _unit
+{ _unit addMagazine  _x } forEach _mags
+{ _unit addWeapon _x } forEach _weapons
+{ _unit addWeapon _x } forEach weaponsCustom
+_unit selectWeapon (_weapons select 0)
+exit
+
+#weapon7
+
+_mags = magsRespawnPlayer7 select _si
+_weapons = weaponsRespawnPlayer7 select _si
+
+removeAllWeapons _unit
+{ _unit addMagazine  _x } forEach _mags
+{ _unit addWeapon _x } forEach _weapons
+{ _unit addWeapon _x } forEach weaponsCustom
+_unit selectWeapon (_weapons select 0)
+exit
+
+
+#weapon8
+
+_mags = magsRespawnPlayer8 select _si
+_weapons = weaponsRespawnPlayer8 select _si
+
+removeAllWeapons _unit
+{ _unit addMagazine  _x } forEach _mags
+{ _unit addWeapon _x } forEach _weapons
+{ _unit addWeapon _x } forEach weaponsCustom
+_unit selectWeapon (_weapons select 0)
+exit
+#weapon9
+
+_mags = magsRespawnPlayer9 select _si
+_weapons = weaponsRespawnPlayer9 select _si
+
+removeAllWeapons _unit
+{ _unit addMagazine  _x } forEach _mags
+{ _unit addWeapon _x } forEach _weapons
+{ _unit addWeapon _x } forEach weaponsCustom
+_unit selectWeapon (_weapons select 0)
+exit

@@ -1,0 +1,17 @@
+#Start
+
+@(pvMoneySideTotal != -1)
+
+_value = pvMoneySideTotal
+pvMoneySideTotal = -1
+
+_amount = _value % 4000000
+_value = _value - _amount
+
+_si = _value/4000000
+
+moneySideTotal set [_si, _amount]
+
+;player globalchat format ["Side Income: %1 (%2)", _amount, _si]
+
+goto "Start"

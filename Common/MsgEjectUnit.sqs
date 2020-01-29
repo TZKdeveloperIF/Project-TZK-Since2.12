@@ -1,0 +1,13 @@
+#Start
+
+@!(isNull pvEjectUnit)
+
+_u = pvEjectUnit
+pvEjectUnit = objNull
+
+? !(local _u) : goto "Start"
+
+_v = vehicle _u
+? alive _u && _u != _v : unassignVehicle _u; _u action ["EJECT", _v]
+
+goto "Start"

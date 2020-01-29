@@ -1,0 +1,28 @@
+; args: [[unit]]
+
+_unit = ( _this select 0 ) select 0
+
+_vehicle = vehicle _unit
+_crews = crew _vehicle
+
+
+_i = 0
+_c = count _crews
+#CheckCrew
+  ? !(_i < _c) : exit 
+  _u = _crews select _i; _i=_i+1
+  
+  ~0.1
+  ? (alive _u) : goto "CheckCrew"
+  
+  _dir = random 360
+  _dist = 3
+  _pos = getPos _vehicle
+  _pos set [0, _dist*(sin _dir) + (_pos select 0)]
+  _pos set [1, _dist*(cos _dir) + (_pos select 1)]
+  _u setPos _pos
+  _u setVelocity [sin _dir, cos _dir, 0]
+  
+  ~0.1
+  deleteVehicle _u
+  goto "CheckCrew"

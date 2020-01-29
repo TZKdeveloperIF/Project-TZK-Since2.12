@@ -1,0 +1,17 @@
+#Start
+
+@(pvClearBuy != -1)
+
+_value = pvClearBuy
+
+pvClearBuy = -1
+
+_gi = _value % GroupsNum
+_value = (_value - _gi) / GroupsNum
+
+_si = _value
+
+[_si, _gi] exec "Server\HandleClearBuy.sqs"
+
+
+goto "Start"

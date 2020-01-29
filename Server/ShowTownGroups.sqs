@@ -1,0 +1,29 @@
+@(	(((upgMatrix select si0) select upgTownGroup ) == 1) || (((upgMatrix select si1) select upgTownGroup ) == 1)	)
+
+_c0 = count (townGroups select si0); _c1 = count (townGroups select si1)
+
+
+_i = 0
+ 
+#SetTownGroup0
+? !(_i < _c0) : goto "TownGroup0Set"
+call format ["pvTownGroups_0_%1 = ((townGroups select si0) select %1); PublicVariable ""pvTownGroups_0_%1""", _i]
+_i = _i + 1
+~1
+goto "SetTownGroup0"
+
+#TownGroup0Set
+_i = 0
+
+#SetTownGroup1
+? !(_i < _c1) : goto "TownGroup1Set"
+call format ["pvTownGroups_1_%1 = ((townGroups select si1) select %1); PublicVariable ""pvTownGroups_1_%1""", _i]
+_i = _i + 1
+~1
+goto "SetTownGroup1"
+
+#TownGroup1Set
+
+pvTownGroups = 1; PublicVariable "pvTownGroups"
+
+exit

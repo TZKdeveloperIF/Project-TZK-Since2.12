@@ -1,0 +1,12 @@
+#Start
+
+@!(isNull pvRemoveMags)
+
+_v = pvRemoveMags
+pvRemoveMags = objNull
+
+? !(local _v) || !(alive _v) : goto "Start"
+
+{ _v removeMagazines _x } foreach (magazines _v)
+
+goto "Start"

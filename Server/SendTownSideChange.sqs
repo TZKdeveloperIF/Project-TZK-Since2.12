@@ -1,0 +1,24 @@
+; args: [indexTown, siNew, siLast]
+
+_index = _this select 0
+_siNew = _this select 1
+_siLast = _this select 2
+
+_flag = (towns select _index) select tdFlag
+
+@(!mutexTownSide)
+mutexTownSide = true
+
+pvTownSide = _index
+pvTownSide = pvTownSide + _siNew*100
+pvTownSide = pvTownSide + _siLast*1000
+PublicVariable "pvTownSide"
+
+_flag setFlagTexture (flags select _siNew)
+
+(towns select _index) set [tdSide, _siNew]
+
+? _siNew == si0 || _siNew == si1 : _siNew exec "Server\CheckWinTowns.sqs"
+
+~sendDelay
+mutexTownSide = false

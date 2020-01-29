@@ -1,0 +1,26 @@
+; args: [params]
+
+_value = _this select 0
+
+_type = _value
+
+_value = _this select 1
+
+_giBuyer = _value % GroupsNum
+_value = (_value - _giBuyer)/GroupsNum
+
+_giJoin = _value % GroupsNum
+_value = (_value - _giJoin)/GroupsNum
+
+_si = _value
+
+;player globalchat format["Player\Info\GroupFull.sqs: _type=%1, _si=%2, _giBuyer=%3", _type, _si, _giBuyer]
+
+? _si != siPlayer : exit
+? _giBuyer != giPlayer && _giJoin != giPlayer : exit
+
+? _type >= maxUnitTypes : _unitName = format["cs%1", _type - maxUnitTypes]
+? _type < maxUnitTypes : _unitName = (unitDefs select _type) select udName
+
+_nameGroup = (groupNameMatrix select _si) select _giJoin
+player groupchat format ["Group %1 Full (including units building/queued), Aborting build of %2", _nameGroup, _unitName ]

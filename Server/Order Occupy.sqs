@@ -1,0 +1,145 @@
+; args: [unit, si, gi, [wp, structure types' index, reclaim radius]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+_posReclaim = ((wpCO select _si) select (_params select 0))
+_indexReclaim = _params select 1
+_radius = 50*((_params select 2) + 1)
+
+_idOrder = ((orderMatrix select _si) select _gi) select 0
+
+#WaitReady
+~2
+? call busyCheck : goto "WaitReady"
+
+? !(alive _unit) : exit
+
+_sleep = 1
+
+_timeCheckSupport = time + 30 + random 60
+_bCheckDropBomb = true
+
+#CheckReclaimVehicles
+_rnd = 1
+? !(alive _unit) : exit
+? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+~ _sleep
+_typesReclaim = []; _crewnum = 0; _vehiclesReclaim = []
+
+; structsDefence = [_mortar, _mgFort, _mgTowerWood, _mgTowerConcrete, _mg, _gunf], defined in InitStructureTypes.sqs
+; OccupyTypeDefs = ["All Defense", "Mortar", "MG Fort", "MG Tower", "MG", "Gun Fort"], defined in Init.sqs
+
+? (OccupyTypeDefs select _indexReclaim) == "All Defense" :	_typesReclaim = structsDefence; 	_crewnum = 1;	goto "GetNearbyStructs"
+? (OccupyTypeDefs select _indexReclaim) == "Mortar" :	_typesReclaim = [structsDefence select 0, structsDefence select 6]; 	_crewnum = 1;	goto "GetNearbyStructs"
+? (OccupyTypeDefs select _indexReclaim) == "MG Fort" :	_typesReclaim = [structsDefence select 1]; 	_crewnum = 1;	goto "GetNearbyStructs"
+? (OccupyTypeDefs select _indexReclaim) == "MG Tower" :	_typesReclaim = [structsDefence select 2, structsDefence select 3]; 	_crewnum = 1;	goto "GetNearbyStructs"
+? (OccupyTypeDefs select _indexReclaim) == "MG" :		_typesReclaim = [structsDefence select 4]; 	_crewnum = 1;	goto "GetNearbyStructs"
+? (OccupyTypeDefs select _indexReclaim) == "Gun Fort" :	_typesReclaim = [structsDefence select 5]; 	_crewnum = 1;	goto "GetNearbyStructs"
+#GetNearbyStructs
+_vehicle = vehicle _unit
+? _unit != _vehicle || _crewnum == 0 : goto "Patrol"
+[ _unit, ([_posReclaim, 50, 50] call funcGetRandomPos) ] call funcMoveStand
+_structs = [_posReclaim, _radius, _typesReclaim, [], _si] call funcGetNearbyStructure
+? count _structs == 0 : _sleep = 30; goto "CheckReclaimVehicles"
+_structures = []
+{ if (isNull gunner (_x select 0)) then { _structures set [count _structures, _x] } } foreach _structs
+? count _structures == 0 : _sleep = 30; goto "CheckReclaimVehicles"
+_vehiclesReclaim = [2, true, _structures] call funcSort
+_prio = ["Gunner"]
+goto "ReclaimVehicle"
+
+
+
+#ReclaimVehicle
+  ? !(alive _unit) : exit
+  ? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+  ? !(_unit == driver _vehicle && isNull gunner _vehicle && _crewnum > 1) && _unit != _vehicle : goto "Patrol"
+  
+  ? count _vehiclesReclaim == 0 : _sleep = 30; goto "CheckReclaimVehicles"
+  
+  _reclaimVehicle = (_vehiclesReclaim select ((random _rnd) - 0.5)) select 0
+  _unit doWatch _reclaimVehicle
+  ? (_unit distance _reclaimVehicle) < 10 : goto "Reached"
+  _offset = 0
+  _timeAbort = time + 5*60
+#Move_Check
+  ? ( count ([driver _reclaimVehicle, gunner _reclaimVehicle] - [objNull, _reclaimVehicle]) ) >= 2 : goto "Fail"
+  _offset = _offset + 10
+  _vect = [getPos _unit, getPos _reclaimVehicle] call funcVectorSub
+  _dist = _unit distance _reclaimVehicle
+  ? _dist < 0.1 : _dist = _dist + 10
+  _posMove = [getPos _reclaimVehicle, [_vect, _offset/_dist] call funcVectorScale] call funcVectorAdd
+  _posMove set [2,0]
+  [_unit, _posMove] call funcMoveStand
+
+   ~_dist*0.2
+  ? !(alive _unit) : exit
+  ? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+  ? time > _timeAbort || _offset >= 50 || !(alive _reclaimVehicle) : goto "Fail"
+  ? (_unit distance _reclaimVehicle) > 50 : goto "Move_Check"
+
+#Reached
+~1
+? !(alive _unit) : exit
+? !(alive _reclaimVehicle) : goto "Fail"
+
+_i = 0
+#TrySeat
+  unassignVehicle _unit
+  ? ( count ([driver _reclaimVehicle, gunner _reclaimVehicle] - [objNull, _reclaimVehicle]) ) >= 2 : goto "Fail"
+  _seat = _prio select _i
+  _unit playMove "CombatGetInTank"
+  ~1
+  ? !(alive _unit) : exit
+  ? !(alive _reclaimVehicle) : goto "Fail"
+  call format ["_unit assignAs%1 _reclaimVehicle; _unit moveIn%1 _reclaimVehicle", _seat]
+  ~2
+  ? !(alive _unit) : exit
+  ? !(alive _reclaimVehicle) : goto "Fail"
+  ? _reclaimVehicle == (vehicle _unit) : goto "GetNearbyVehicles"
+  _i = _i + 1
+  ? _i < (count _prio) : goto "TrySeat"
+
+#Fail
+unassignVehicle _unit
+[_unit, ([_posReclaim, 50, 50] call funcGetRandomPos)] call funcMoveStand
+goto "CheckReclaimVehicles"
+
+
+	
+
+
+#Patrol
+_posMove = [_posReclaim, 150, 150] call funcGetRandomPos
+#Patrol_Update
+	? !(alive _unit) : exit
+	? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+
+	? _unit != driver _vehicle : _sleep = 30; goto "Sleep"
+	? isNull gunner _vehicle : [_unit, _posReclaim] call funcMoveAI; _sleep = 30; goto "Sleep"
+	
+	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 10; goto "Sleep"
+	
+	_bCheckDropBomb = !_bCheckDropBomb 
+	? _bCheckDropBomb && _unit == _vehicle && magSatchel in (magazines _unit) : [_unit, _si, _gi] exec "Server\AI_CheckDropBomb.sqs"; _sleep = 30; goto "Sleep"
+
+	_distToDest = [getPos _unit, _posMove] call funcDistH
+
+	? _distToDest > 10 : goto "Move"
+	[_unit, true] exec "Server\StopAI.sqs"
+	[_unit, _si, _gi] call funcWatch
+	? _unit != _vehicle && !(isNull gunner _vehicle) && isNull (commander _vehicle) : [_unit, _si, _gi] exec "Server\AI_CheckFireGun.sqs"
+  _sleep = 30
+  _posMove = [_posReclaim, 150, 150] call funcGetRandomPos
+  goto "Sleep"
+  
+  #Move
+  [_unit, _posMove] call funcMoveAI
+	_sleep = [30, 0.1*_distToDest] select (_distToDest < 300)
+	 
+	#Sleep
+	~_sleep
+  ? call busyCheck : goto "Sleep"
+	goto "Patrol_Update"

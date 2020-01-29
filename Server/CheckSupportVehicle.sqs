@@ -1,0 +1,112 @@
+; args: [unit, si, gi, bool heal, bool rearm]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_heal = _this select 3
+_rearm = _this select 4
+
+? _unit != driver vehicle _unit : exit
+
+_autoRepair = ((call grpSetting) select aisAutoRepair)
+_autoRearm = ((call grpSetting) select aisAutoRearm)
+_autoRepairRange = aisAutoSupportRangeDefs select ((call grpSetting) select aisAutoRepairRange)
+_autoRearmRange = aisAutoSupportRangeDefs select ((call grpSetting) select aisAutoRearmRange)
+
+_v = vehicle _unit 
+_vt = -1
+
+
+  
+#CheckSupportVehicle
+_res = [getPos _v, _si, typesSupport select _si, [_v]] call funcGetClosestVehicle
+_support = _res select 0; _range = 0
+if ((_heal && (_autoRepair != 2)) && (_rearm && (_autoRearm != 2))) then {_range = ( [_autoRepairRange, _autoRearmRange] select (_autoRepairRange < _autoRearmRange) )} else {_range = ( [_autoRepairRange, _autoRearmRange] select (_rearm && (_autoRearm != 2)) )}
+? (_res select 1) < _range : goto "SupportFound"
+
+? !( _heal && (_autoRepair == 0) ) && !( _rearm && (_autoRearm == 0) ) : exit
+_res = [getPos _v, siEnemy select _si, typesSupport select (siEnemy select _si), [_v]] call funcGetClosestVehicle
+_support = _res select 0
+? (_res select 1) < 200 : goto "SupportFound"
+exit
+
+#SupportFound
+
+@!(mutexCheckSupport)
+mutexCheckSupport = true
+? _unit in CheckSupportUnits : mutexCheckSupport = false; exit
+CheckSupportUnits set [count CheckSupportUnits, _unit]
+mutexCheckSupport = false
+
+call busySet
+[_unit, _support] exec "Server\SendMovingToSupport.sqs"
+
+_timeAbort = time + 2*60
+
+? _unit != _v : _vt = _v call funcGetUnitTypeFromObject
+? _unit != _v && _vt == -1 : goto "Exit"
+
+? _vt != -1 : if ( ((unitDefs select _vt) select udFactoryType) == stAir ) then { goto "MoveAir" }
+
+#MoveGround
+  [_unit, [getPos _support, 10, 10] call funcGetRandomPos] call funcMoveAI
+  
+	~10
+	
+  ? !(alive _unit) || _v != (vehicle _unit) || !(alive _support) || time > _timeAbort : goto "Exit"
+	; ? _idOrder != ((orderMatrix select _si) select _gi) select 0 : goto "Exit"
+  ? (_v distance _support) > rangeSupport : goto "MoveGround"
+goto "SupportReached"
+
+#MoveAir
+  _v flyInHeight 150
+#MoveAir_Check
+  [_unit, getPos _support] call funcMoveAI
+  
+	~5
+	
+  ? !(alive _unit) || _v != (vehicle _unit) || !(alive _support) || time > _timeAbort : goto "Exit"
+  ? ([getPos _v, getPos _support] call funcDistH) > 2*rangeSupport || (speed _v) > 40 : goto "MoveAir_Check"
+
+#Hover
+_v flyInHeight 10
+_posMove = getPos _support
+[_unit, _posMove] call funcMoveAI
+_timeRetry = time + 60
+#Hover_Check
+
+	~5
+	
+  ? !(alive _unit) || _v != (vehicle _unit) || !(alive _support) : goto "Exit"
+  ? time > _timeRetry : goto "MoveAir"
+  ? (_unit distance _support) > 2*rangeSupport : goto "Hover_Check"
+goto "SupportReached"
+
+#SupportReached
+doStop _unit
+_v flyInHeight 150
+? _heal : [_unit, _si, _gi, _v, _vt, _support] exec "Server\AI_Heal.sqs"
+? _rearm : [_unit, _si, _gi, _v, _vt, _support] exec "Server\AI_Rearm.sqs"
+
+	~5
+	
+? _unit == vehicle _unit : goto "Exit"
+
+	~30
+	
+	_i = 0
+	#RepairCheck
+	? damage _v < 0.1 || !_heal : goto "Exit"
+	_i = _i + 1
+	
+	~5
+	
+	? _i < 7 : goto "RepairCheck"
+
+#Exit
+  call busyClear
+	@!(mutexCheckSupport)
+	mutexCheckSupport = true
+	CheckSupportUnits = CheckSupportUnits - [_unit, objNull]
+	mutexCheckSupport = false
+  exit

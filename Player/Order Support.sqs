@@ -1,0 +1,128 @@
+; args: [unit, support, forceRearm]
+
+_unit = _this select 0
+_support = _this select 1
+_forceRearm = _this select 2
+
+_rearm = false
+
+_v = vehicle _unit
+? !(alive _unit) : exit
+? !(alive driver vehicle _unit) : exit
+? (speed _support) > 100 : _unit groupchat "Support vehicle moving to fast. Fail to follow it."; exit
+
+_posReturn = getPos _unit
+
+_msg = ""
+_unit groupchat "Roger, moving to support vehicle."
+
+_order = []; _id = -1; call orderNew
+
+_timeAbort = time + 5*60
+
+? _unit == _v : goto "MoveGround"
+
+_tv = _v call funcGetUnitTypeFromObject
+? _tv == -1 : exit
+? ((unitDefs select _tv) select udFactoryType) == stAir : goto "MoveAir"
+
+#MoveGround
+  _posMove = [[0,5], (getDir _support)] call funcVectorRot
+  _posMove = [getPos _support, _posMove] call funcVectorSub
+  [_unit, _posMove] call funcMove
+  ~5
+  ? !(alive _unit) : exit
+  ? call orderCheck : exit
+  ? !(alive _support) : _msg = "Support aborted, support vehicle destroyed."; goto "Abort"
+  ? time > _timeAbort : _msg = "Support aborted."; goto "Abort"
+  ? (_unit distance _support) > rangeSupport : goto "MoveGround"
+goto "CheckPrio"
+  
+#MoveAir
+  _v flyInHeight 150; _unit groupchat "Moving to support vehicle. Flying at 150m altitude. Adjust height/destination when necessary."
+  #MoveAir_Check
+    [_unit, getPos _support] call funcMove
+    ~5
+    ? !(alive _unit) : exit
+    ? call orderCheck : exit
+    ? !(alive _v) || _v != vehicle _unit : _msg = "Support aborted."; goto "Abort"
+    ? !(alive _support) : _msg = "Support aborted, support vehicle destroyed."; goto "Abort"
+    ? time > _timeAbort : _msg = "Support aborted."; goto "Abort"
+    ? ([getPos _v, getPos _support] call funcDistH) > 2*rangeSupport || (speed _v) > 40 : goto "MoveAir_Check"
+
+#Hover
+  _v flyInHeight 10
+  [_unit, getPos _support] call funcMove
+  _timeRetry = time + 30
+  #Hover_Check
+    ~5
+    ? !(alive _unit) : exit
+    ? call orderCheck : exit
+    ? !(alive _v) || _v != vehicle _unit : _msg = "Support aborted."; goto "Abort"
+    ? !(alive _support) : _v flyInHeight 150; _msg = "Support aborted, support vehicle destroyed."; goto "Abort"
+    ? time > _timeRetry : goto "MoveAir"
+    ? (_unit distance _support) > 2*rangeSupport : goto "Hover_Check"
+    ; ? (_unit distance _support) > 0 : goto "Hover_Check"
+
+doStop _unit
+_v flyInHeight 150
+
+goto "CheckPrio"
+
+#CheckPrio
+[_unit, _support] exec "Player\HealRepair.sqs"
+? _forceRearm : [_unit, _support] exec "Player\Rearm.sqs"; goto "Return"
+
+; check if rearm is needed
+
+_v = vehicle _unit
+? _unit != _v : goto "Vehicle"
+#Infantry
+  _wpnPrim = primaryWeapon _unit
+  _wpnSec = secondaryWeapon _unit
+  ? _wpnPrim != "" : if ((_unit ammo _wpnPrim) == 0) then { _rearm = true }
+  ? _wpnSec != "" : if ((_unit ammo _wpnSec) == 0) then { _rearm = true }
+  _rearmData = _unit call funcGetRearmData
+  _rearmMags = _rearmData select 1
+  ? (count _rearmMags) > count (magazines _unit) : _rearm = true
+  ? _rearm : [_unit, _support] exec "Player\Rearm.sqs"
+  goto "Return"
+
+#Vehicle
+  _rearmData = _v call funcGetRearmData
+  _rearmMags = _rearmData select 1
+  ? (count _rearmMags) == 0 : goto "Return"
+  _weapons = weapons _v
+  { if ((_v ammo _x) == 0) then { __rearm = true }  } foreach _weapons
+  ? _rearm : [_unit, _support] exec "Player\Rearm.sqs"
+  goto "Return"
+  
+#Abort
+  ? (alive _unit) && _msg != "" : _unit groupchat _msg
+  ? (alive _unit) : goto "Return"
+  exit
+  
+#Return
+  ? _forceRearm || _rearm : goto "Return_Rearm"
+  
+  ; return after heal/repair only
+  _timeAbort = time + 60
+  #Return_Check
+    ~5
+    ? !(alive _unit) : exit
+    ? (damage _unit) == 0 : goto "Return_Do"
+    ? time < _timeAbort : goto "Return_Check"
+  goto "Return_Do"
+
+  #Return_Rearm
+    ~6
+    ? !(alive _unit) : exit
+    ? _unit == vehicle _unit : goto "Return_Do"
+    ~26
+    ? !(alive _unit) : exit
+    _timeAbort = time + 30
+    goto "Return_Check"
+      
+  #Return_Do
+  ? alive _unit : _unit groupchat "Returning after support."; [_unit, _posReturn] call funcMove
+  
