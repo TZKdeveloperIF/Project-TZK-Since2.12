@@ -1,0 +1,216 @@
+; args: [_type, _si, _objects]
+
+? !(local LocalServerObject) : exit
+
+_typeStructure = _this select 0
+_si = _this select 1
+_factory = (_this select 2) select 0
+
+@!(mutexFacQueues)
+mutexFacQueues = true
+_queues = factoryQueues select _si
+
+_qi = 0
+_c = count _queues
+_found = false
+while "_qi<_c && !_found" do { if (isNull ((_queues select _qi) select 0)) then { _found = true; _qi=_qi-1 }; _qi=_qi+1 }
+
+_queues set [_qi, [_factory, _typeStructure, []] ]
+mutexFacQueues = false
+
+#Wait
+	[_factory, _si, 0] exec "Server\SendQueueLength.sqs"
+	
+	@!(mutexbuildingInUse)
+	mutexbuildingInUse = true
+	buildingsInUse = buildingsInUse - [_factory, objNull]
+	mutexbuildingInUse = false
+	; pvBuildingNotInUse = _factory; PublicVariable "pvBuildingNotInUse"
+
+	_queue = (_queues select _qi) select 2
+	
+	@((count _queue) > 0 || isNull _factory)
+
+	? !(alive _factory) || (isNull _factory): goto "BuildingDestroyed"
+
+	? (count _queue) > 0 : goto "BuildUnits"
+
+	goto "Wait"
+
+#BuildUnits
+
+#BuildNextUnit
+
+	_entry = _queue select 0
+	_type = _entry select 0
+	_driver = _entry select 1
+	_gunner = _entry select 2
+	_commander = _entry select 3
+	_giJoin = _entry select 4
+	_giBuyer = _entry select 5
+	_qid = _entry select 6
+
+	@!(mutexBuildingQueue)
+	mutexBuildingQueue = true
+	_queue set [0, 0]
+	_queue = _queue - [0]
+	(_queues select _qi) set [2, _queue]
+	mutexBuildingQueue = false
+
+	[_factory, _si, (count _queue) + 1] exec "Server\SendQueueLength.sqs"
+
+	? _type >= maxUnitTypes: _unitDesc = unitDefs select (utCustom select _si)
+	? _type < maxUnitTypes : _unitDesc = unitDefs select _type
+
+	_isVehicle = false
+	_mannedUnitTypes = _unitDesc select udCrew
+	? ((count _mannedUnitTypes) > 0): _isVehicle = true
+
+	_cost = _unitDesc select udCost
+	_buildTime = _unitDesc select udBuildTime
+  
+	_crew = 0
+	? !(_isVehicle): goto "SkipVehicleStats"
+	_crewType = _mannedUnitTypes select 1
+	? (_driver == 1): _crew = _crew + 1; _cost = _cost + ((unitDefs select _crewType) select udCost); _buildTime = _buildTime + ((unitDefs select _crewType) select udBuildTime)
+	? (_gunner == 1): _crew = _crew + 1; _cost = _cost + ((unitDefs select _crewType) select udCost); _buildTime = _buildTime + ((unitDefs select _crewType) select udBuildTime)
+	? (_commander == 1): _crew = _crew + 1; _cost = _cost + ((unitDefs select _crewType) select udCost); _buildTime = _buildTime + ((unitDefs select _crewType) select udBuildTime)
+	#SkipVehicleStats
+
+	_unitsToBuild = 0
+	? !(_isVehicle): _unitsToBuild = 1
+	? (_isVehicle): _unitsToBuild = _crew
+
+	_grpJoin = (groupMatrix select _si) select _giJoin
+
+	_grpSize = (count units _grpJoin)
+	? ((_grpSize + _unitsToBuild) > maxGroupSize): goto "GroupFull"
+	
+	@!(mutexEditMoneyMatrix)
+	mutexEditMoneyMatrix = true
+	_money = (groupMoneyMatrix select _si) select _giBuyer
+	? (_money < _cost): mutexEditMoneyMatrix = false; goto "NoMoney"
+
+	? _qid in (qidCancel select _si) : mutexEditMoneyMatrix = false; goto "UnitCanceled"
+
+	; [_si, _giBuyer, _cost] exec "Server\MoneySpend.sqs"
+	[_si, _giBuyer, _cost] call funcMoneySpend
+	
+	[_type, _si, _giBuyer, _giJoin] exec "Server\Info\UnitBuilding.sqs"
+
+	; ~([_buildTime, 5] select dev)
+
+	_timeBuilt = time + ([_buildTime, 5] select dev)
+  @ (time > _timeBuilt) || _qid in (qidCancel select _si)
+
+	? _qid in (qidCancel select _si) : [_si, _giBuyer, -_cost, 0] exec "Server\MoneySpend.sqs"; goto "UnitCanceled"
+
+	[_qid, _si, 0] exec "Server\SendQueueRem.sqs"
+
+	[_si, _giJoin, _unitsToBuild] exec "Server\UnitsReady.sqs"; 
+	? !(alive _factory) || (isNull _factory): goto "BuildingDestroyed"
+
+	? !( ((groupMatrix select _si) select _giJoin) in (groupAiMatrix select _si) ) : [_type, _driver, _gunner, _commander, _si, _giJoin, _giBuyer, _factory, 0] exec "Server\SendAddUnit.sqs"; goto "RemoteAdd"
+	  _res = [_factory, _typeStructure, _si] call funcCalcUnitPlacementPosDir
+	  _posUnit = _res select 0
+	  _dirUnit = _res select 1
+	  [_type, _driver, _gunner, _commander, _posUnit, _dirUnit, _si, _giJoin, grpNull, _giBuyer, 1] exec "Common\AddUnit.sqs"
+    ((groupMatrix select _si) select _giJoin) reveal _factory
+	#RemoteAdd
+	
+	? (count _queue) > 1 : goto "BuildNextUnit"
+	@!(mutexbuildingInUse)
+	mutexbuildingInUse = true
+	buildingsInUse = buildingsInUse - [_factory, objNull]
+	mutexbuildingInUse = false
+	
+	? (count _queue) > 0 : goto "BuildNextUnit"
+
+	goto "Wait"
+
+#GroupFull
+	[_type, _si, _giBuyer, _giJoin] exec "Server\Info\GroupFull.sqs"
+	[_qid, _si, 0] exec "Server\SendQueueRem.sqs"
+	goto "UnitNotBuilt"
+
+#NoMoney
+	[_type, _si, _giBuyer, _giJoin] exec "Server\Info\NoMoneyUnit.sqs"
+	[_qid, _si, 0] exec "Server\SendQueueRem.sqs"
+	goto "UnitNotBuilt"
+
+#UnitCanceled
+	goto "UnitNotBuilt"
+	@!(mutexBuildingQueue)
+	mutexBuildingQueue = true
+	_res = (qidToCancel select _si) select _qid
+	_unitsCanceled = _res select 1
+	? _giJoin == _res select 0 : _unitsBuilding = ((groupUnitsBuildingMatrix select _si) select _giJoin) + _unitsCanceled; (groupUnitsBuildingMatrix select _si) set [_giJoin, _unitsBuilding]
+	mutexBuildingQueue = false
+	goto "UnitNotBuilt"
+
+#UnitNotBuilt
+
+
+	@!(mutexBuildingQueue)
+	mutexBuildingQueue = true
+	_unitsBuilding = ((groupUnitsBuildingMatrix select _si) select _giJoin) - _unitsToBuild
+	(groupUnitsBuildingMatrix select _si) set [_giJoin, _unitsBuilding]
+	mutexBuildingQueue = false
+
+	[_qid, _si] exec "Server\QIDCancelRemove.sqs"
+	
+	? (count _queue) > 1 : goto "BuildNextUnit"
+	@!(mutexbuildingInUse)
+	mutexbuildingInUse = true
+	buildingsInUse = buildingsInUse - [_factory, objNull]
+	mutexbuildingInUse = false
+	
+	? (count _queue) > 0 : goto "BuildNextUnit"
+	goto "Wait"
+
+#BuildingDestroyed
+	? ((count _queue) == 0) && !(isNull _factory) : goto "Wait"
+	? ((count _queue) == 0) && (isNull _factory) : goto "BuildingDeleted"
+
+	_entry = _queue select 0
+	_type = _entry select 0
+	_driver = _entry select 1
+	_gunner = _entry select 2
+	_commander = _entry select 3
+	_giJoin = _entry select 4
+	_giBuyer = _entry select 5
+	_qid = _entry select 6
+
+	? _type >= maxUnitTypes: _unitDesc = unitDefs select (utCustom select _si)
+	? _type < maxUnitTypes : _unitDesc = unitDefs select _type
+
+	_cost = _unitDesc select udCost
+
+	@!(mutexBuildingQueue)
+	mutexBuildingQueue = true
+	_queue set [0, 0]
+	_queue = _queue - [0]
+	(_queues select _qi) set [2, _queue]
+	mutexBuildingQueue = false
+
+	_bVehicle = false
+	? (count ((unitDefs select _type) select udCrew) > 0): _bVehicle = true
+
+	? !(_bVehicle): _unitsToBuild = 1
+	? (_bVehicle): _unitsToBuild = _driver; _unitsToBuild = _unitsToBuild + _gunner; _unitsToBuild = _unitsToBuild + _commander
+
+	@!(mutexBuildingQueue)
+	mutexBuildingQueue = true
+	_unitsBuilding = ((groupUnitsBuildingMatrix select _si) select _giJoin) - _unitsToBuild
+	(groupUnitsBuildingMatrix select _si) set [_giJoin, _unitsBuilding]
+	mutexBuildingQueue = false
+
+
+	[_qid, _si] exec "Server\QIDCancelRemove.sqs"
+	[_qid, _si, 0] exec "Server\SendQueueRem.sqs"
+
+	goto "BuildingDestroyed"
+
+#BuildingDeleted
+	(_queues select _qi) set [2, []]
+	Exit

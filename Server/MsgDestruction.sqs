@@ -1,0 +1,21 @@
+#Start
+
+@(pvDestruction != -1)
+
+_value = pvDestruction
+_object = pvDestruction_Object
+
+pvDestruction = -1
+pvDestruction_Object = objNull
+
+_isMCV = _value % 2
+_value = (_value - _isMCV) / 2
+
+_bAlive = _value % 2
+_value = (_value - _bAlive) / 2
+
+_si = _value
+
+[_object, _isMCV, _bAlive, _si] exec "Server\Destruction.sqs"
+
+goto "Start"

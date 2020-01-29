@@ -1,0 +1,46 @@
+; args: [vehicle, unit]
+
+_vehicle = _this select 0
+_unit = _this select 1
+
+_dlg = createDialog "SetFlightAltitudeDialog"
+
+_idc = IDC_LB_ALTITUDES
+
+btnAction = false
+
+_id = lbAdd [_idc, "3 m (mount possible)"]; lbSetValue [_idc, _id, 3]
+_id = lbAdd [_idc, "5 m (eject possible)"]; lbSetValue [_idc, _id, 5]
+_id = lbAdd [_idc, "10 m"]; lbSetValue [_idc, _id, 10]
+_id = lbAdd [_idc, "20 m"]; lbSetValue [_idc, _id, 20]
+_id = lbAdd [_idc, "30 m"]; lbSetValue [_idc, _id, 30]
+_id = lbAdd [_idc, "40 m"]; lbSetValue [_idc, _id, 40]
+_id = lbAdd [_idc, "50 m"]; lbSetValue [_idc, _id, 50]
+
+_alt = 100
+while "_alt <= maxFlightAltitude + maxFlightAltitudePlus" do { _text = format["%1 m", _alt]; _id = lbAdd [_idc, _text]; lbSetValue [_idc, _id, _alt]; _alt = _alt + 50 }
+
+lbSetCurSel [_idc, lastSetFlightAlt]
+
+#Update
+
+? !(dialog):Exit
+? !(alive _vehicle || !(alive _unit) || !(alive player)): closeDialog 0; Exit
+
+? (btnAction): btnAction=false; goto "SetAltitude"
+
+~0.2
+goto "Update"
+
+#SetAltitude
+	_sel = lbCurSel _idc
+	? (_sel == -1): hint "No altitude selected"; goto "Update"
+
+	_alt = lbValue [_idc, _sel]
+	? _alt > 800 && (((upgMatrix select siPlayer) select upgAltFlight) != 2): hint "Haven't upgraded yet"; goto "Update"
+
+	_vehicle flyInHeight _alt
+	_unit groupChat format ["Flight altitude set to %1 m.", _alt]
+	lastSetFlightAlt = _sel
+	closeDialog 0
+	

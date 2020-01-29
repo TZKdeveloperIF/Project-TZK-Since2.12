@@ -1,0 +1,31 @@
+; args: [unit]
+; unit : group leader at start
+
+_unit = _this select 0
+? !(local LocalServerObject) : exit
+
+? side _unit == sides select si0 : _si = si0
+? side _unit == sides select si1 : _si = si1
+
+@( !(isNull (mhq select si0)) && !(isNull (mhq select si1)) )
+~5
+deleteVehicle _unit
+
+
+exit
+
+
+
+_group = group _unit
+
+@!(isNull _group)
+
+@( !(isNull (mhq select si0)) && !(isNull (mhq select si1)) )
+
+@!(mutexTownWorkerGroups)
+mutexTownWorkerGroups = true
+
+(workerGroups select _si) set [count (workerGroups select _si), _group]
+
+mutexTownWorkerGroups = false
+

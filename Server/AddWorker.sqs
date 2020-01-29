@@ -1,0 +1,43 @@
+; args: [sideIndex]
+
+_si = _this select 0
+_cost = costWorker
+
+? (_si == si0): goto "Side0"
+? (_si == si1): goto "Side1"
+exit
+
+#Side0
+	? !(pvWorkers0 < (maxWorkers select _si)): Exit
+	_mhq = mhq select si0
+	pvWorkers0 = pvWorkers0 + 1;PublicVariable "pvWorkers0"
+	;_gi = [groupCommander select si0, groupMatrix select si0] call funcGetIndex
+	_gi = giCO select si0
+	_ut = utWorkerW
+	goto "DeployWorker"
+
+#Side1
+	? !(pvWorkers1 < (maxWorkers select _si)): Exit
+	_mhq = mhq select si1
+	pvWorkers1 = pvWorkers1 + 1;PublicVariable "pvWorkers1"
+	;_gi = [groupCommander select si1, groupMatrix select si1] call funcGetIndex
+	_gi = giCO select si1
+	_ut = utWorkerE
+	goto "DeployWorker"
+
+#DeployWorker
+	_res = [ getPos leader (groupCommander select _si), _si, [ [utMHQ0, utMCVW], [utMHQ1, utMCVE] ] select _si, [] ] call funcGetClosestVehicle
+	? _gi == -1: format["ERROR: _gi of Commander is -1 in AddWorker.sqs"] call fDebugLog; call format["pvWorkers%1 = pvWorkers%1 - 1;PublicVariable ""pvWorkers%1""", _si]; exit
+	
+	_groups = workerGroups select _si
+	? count _groups == 0 : exit
+	
+	[_si, _gi, _cost] exec "Server\MoneySpend.sqs"
+	
+	@!(mutexWorkerJoin)
+	mutexWorkerJoin = true
+	_membersMin = 12; _i = 0; _j = 0
+	{if (count(units _x) < _membersMin) then {_membersMin = count(units _x); _i = _j}; _j = _j + 1} forEach _groups
+	[_ut, 0, 0, 0, getPos (_res select 0), 0, _si, giWorker, (_groups select _i), 0, 1] exec "Common\AddUnit.sqs"; mutexWorkerJoin = false; exit
+	
+	

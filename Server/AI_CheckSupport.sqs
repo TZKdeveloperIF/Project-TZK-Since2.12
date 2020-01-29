@@ -1,0 +1,16 @@
+; args: [unit, si, gi, forceRearm]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+
+? _unit != driver vehicle _unit : exit
+
+_heal = [_unit, _si, _gi] call funcCheckRepair
+_rearm = [_unit, _si, _gi] call funcCheckRearm
+? (count _this) > 3 : _rearm = true
+
+_autoRepair = ((call grpSetting) select aisAutoRepair)
+_autoRearm = ((call grpSetting) select aisAutoRearm)
+
+? (_heal && (_autoRepair != 2)) || (_rearm && (_autoRearm != 2)) : [_unit, _si, _gi, (_heal && (_autoRepair != 2)), (_rearm && (_autoRearm != 2))] exec "Server\CheckSupportVehicle.sqs"

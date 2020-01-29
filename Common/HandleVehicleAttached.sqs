@@ -1,0 +1,39 @@
+; args: [value, vehicle, tug]
+
+_value = _this select 0
+_vehicle = _this select 1
+_tug = _this select 2
+
+? (isNull _vehicle || isNull _tug): exit
+
+_slot = _value % 10
+_value = _value - _slot
+
+_type = (_value % (10*10))/10
+_value = _value - _type*10
+
+_gi = (_value % (10*10*GroupsNum))/(10*10)
+_value = _value - _gi*(10*10)
+
+_si = _value/(10*10*GroupsNum)
+
+
+_res = [_tug] call funcSearchvehicleAttached
+
+@!(mutexEditvehicleAttached)
+mutexEditvehicleAttached = true
+_index = _res select 0
+_found = _res select 1
+_dead = _res select 2
+? !_found : _index = [count vehicleAttached, _dead] select (_dead != -1); if (alive ((vehicleAttached select _index) select tsTug)) then {_index = count vehicleAttached}; vehicleAttached set [_index, [_tug, [objNull,objNull,objNull]]]
+((vehicleAttached select _index) select tsTugged) set [_slot, _vehicle]
+mutexEditvehicleAttached = false
+
+
+? (siPlayer == _si && giPlayer == _gi): hint "Vehicle Attached"
+
+? !(local _vehicle): exit
+
+? (_type == ttHeli): [_vehicle, _tug, _index, _slot, _gi, _si] exec "Common\UpdateAttachedVehicleToHeli.sqs"
+? (_type == ttBoat): [_vehicle, _tug, _index, _slot, _gi, _si] exec "Common\UpdateAttachedVehicleToBoat.sqs"
+? (_type == ttTruck || _type == ttAPC): [_vehicle, _tug, _index, _slot, _gi, _si] exec "Common\UpdateAttachedVehicleToTruckAPC.sqs"

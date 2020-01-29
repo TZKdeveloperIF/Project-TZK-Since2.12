@@ -1,0 +1,22 @@
+#Start
+
+@(pvBuildStruct_Type != -1)
+
+_value = pvBuildStruct_Type
+pvBuildStruct_Type = -1
+
+_type = _value % 1000
+_value = _value - _type
+
+_gi = (_value % (1000*GroupsNum))/1000
+_value = _value - _gi*1000
+
+_si = _value/(1000*GroupsNum)
+
+_posX = pvBuildStruct_PosX
+_posY = pvBuildStruct_PosY
+_dir = pvBuildStruct_Dir
+
+[_type, _si, _gi, [_posX, _posY, 0], _dir] call fBuildStruct
+
+goto "Start"

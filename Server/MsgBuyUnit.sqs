@@ -1,0 +1,28 @@
+; args: [value, factory]
+
+_value = _this select 0
+_factory = _this select 1
+
+
+_type = _value %  TotalUnitTypes 
+_value = (_value - _type) / TotalUnitTypes
+
+_giJoin = _value % GroupsNum 
+_value = (_value - _giJoin) / GroupsNum 
+
+_giBuyer = _value % GroupsNum
+_value = (_value - _giBuyer) / GroupsNum
+
+_si = _value % 2
+_value = (_value - _si) / 2
+
+_driver = _value % 2
+_value = (_value - _driver) / 2
+
+_gunner = _value % 2
+_value = (_value - _gunner) / 2
+
+_commander = _value % 2
+_value = (_value - _commander) / 2
+
+[_type, _driver, _gunner, _commander, _si, _giJoin, _giBuyer, _factory] exec "Server\BuyUnit.sqs"

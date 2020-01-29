@@ -1,0 +1,22 @@
+; args: [params]
+
+; false call funcUpdateLeaderMarker;
+
+_value = _this select 0
+
+_gi = (_value % GroupsNum)
+_value = _value - _gi
+
+_si = _value/GroupsNum
+
+_group = (groupMatrix select _si) select _gi
+_groupsAI = groupAiMatrix select _si
+
+? _group in _groupsAI : Exit
+
+@!(mutexGroupIsAI)
+mutexGroupIsAI = true
+? time > 60 && _si == siPlayer && groupPlayer == (groupCommander select _si) : player sidechat format["AI group is now under your control: %1", _group]
+
+_groupsAI set [count _groupsAI, _group]
+mutexGroupIsAI = false

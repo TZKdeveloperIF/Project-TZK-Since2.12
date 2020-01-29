@@ -1,0 +1,121 @@
+; args: [unit, si, gi, [wp, helicopter types (defined by LandTypeDefs), land radius, duration]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+
+; Get Correct Parameters. Need Pay Attention To Coefficients
+_posLand = ((wpCO select _si) select (_params select 0))
+_indexLandType = 100*((_params select 1) + 1)
+_radius = 200*((_params select 2) + 1)
+_duration = 30 * ((_params select 3) + 1)
+
+; Check Whether Unit Fits The Parameters Of The Temporary Order
+
+? (LandTypeDefs select _indexReclaim) == "All Helicopters" :	_typesLand = typesTransportHeli + typesGunshipOrigin + typesGunshipAT
+? (LandTypeDefs select _indexReclaim) == "Transport Heli" :		_typesLand = typesTransportHeli
+? (LandTypeDefs select _indexReclaim) == "Gunship" :			_typesLand = typesGunshipOrigin + typesGunshipAT
+_vehicle = vehicle _unit
+? _unit == _vehicle : exit
+_vt = _vehicle call funcGetUnitTypeFromObject
+? !(_vt in _typesLand) : exit
+? ([getPos _unit, _posLand] call funcDistH) > _radius : exit
+
+; Check Whether Unit In Another Temporary Order (Except For Set Flight Altitude, Clear Temporary Order, Etc)
+? call temporaryCheck : exit
+
+; Initialize The Order Script
+_timeStart = time; _timeAbort = _timeStart + _duration; _timeUp = _timeStart; _cycle = 30; _loop = 0
+call temporarySet
+
+
+; Wait For Unit Finish Its Busy-Work
+#WaitReady
+~2
+? time > _timeAbort : 	call temporaryClear; exit
+? !call temporaryCheck : exit
+? call busyCheck : goto "WaitReady"
+
+; Main Part Of Temporary Order
+
+; Use busy to prevent AI from automatically moving for support in Temporary Land Order
+call busySet
+
+_groups = groupMatrix select _si
+#Update
+	_gi = [(group _unit), _groups] call funcGetIndex
+	_helicopter = vehicle _unit
+	? _unit != driver _helicopter : goto "Sleep"
+
+	_flyHeight = 150
+	_helicopter flyInHeight _flyHeight
+	_posMove = [_posLand, 100, 100] call funcGetRandomPos; _posMove set [2, _flyHeight]
+
+	#PrepareLand_Check
+		[_unit, _posMove] call funcMoveAI
+
+		_timeUp = time + 5
+		@ ( time > _timeUp || !call temporaryCheck )
+		? !call temporaryCheck : goto "EOF"
+		? !(alive _unit) || !(alive _helicopter) || _helicopter != (vehicle _unit) || time > _timeAbort : goto "EOF"
+
+		? ([_posMove, getPos _helicopter] call funcDistH) > 200 || (speed _helicopter) > 20 : goto "PrepareLand_Check"
+  
+	#Land
+		_helicopter flyInHeight 50; _posMove set [2, 50]
+		[_unit, _posMove] call funcMoveAI
+		_timeRetry = time + 60
+		#Land_Check
+
+		_timeUp = time + 5
+		@ ( time > _timeUp || !call temporaryCheck )
+		? !call temporaryCheck : goto "EOF"
+		? !(alive _unit) || !(alive _helicopter) || _helicopter != (vehicle _unit) || time > _timeAbort : goto "EOF"
+
+		? time > _timeRetry : goto "Update"
+		? !(unitReady _unit) && !( ([getPos _helicopter, _posMove] call funcDistH) < 50 && (speed _helicopter) < 20 ) : goto "Land_Check"
+
+	doStop _unit
+	_helicopter land "LAND"
+
+	_timeRetry = time + 60
+	#Landed_Check
+
+		_timeUp = time + 5
+		@ ( time > _timeUp || !call temporaryCheck )
+		? !call temporaryCheck : goto "EOF"
+		? !(alive _unit) || !(alive _helicopter) || _helicopter != (vehicle _unit) || time > _timeAbort : goto "EOF"
+
+		? time > _timeRetry : goto "Update"
+		? ((getPos _helicopter) select 2) > 5 : goto "Landed_Check"
+
+	#LandedWait
+		_helicopter engineOn false
+
+		_timeUp = time + 5
+		@ ( time > _timeUp || !call temporaryCheck )
+		? !call temporaryCheck : goto "EOF"
+		? !(alive _unit) || !(alive _helicopter) || _helicopter != (vehicle _unit) || time > _timeAbort : goto "EOF"
+
+		goto "LandedWait"
+
+	_helicopter engineOn true
+
+
+
+; End Of File
+#EOF
+call busyClear
+call temporaryClear
+exit
+
+
+#Sleep
+_loop = (time-_timeStart)/_cycle; _loop = 1 + _loop - _loop%1
+_timeUp = _loop*_cycle + _timeStart
+
+@ ( time > _timeUp || !call temporaryCheck )
+? !call temporaryCheck : goto "EOF"
+? !(alive _unit) || _vehicle != (vehicle _unit) || time > _timeAbort : goto "EOF"
+goto "Update"

@@ -1,0 +1,14 @@
+; args: [params]
+
+_value = _this select 0
+
+_ti = (_value % 20)
+_value = _value - _ti
+
+_si = _value/(20)
+
+;player globalchat format["Player\Info\TownGroupLoss.sqs: _ti=%1, _si=%2", _ti, _si]
+
+? _si != siPlayer : exit
+
+format["No enemy near %1. Town Group hibernates.", (towns select _ti) select tdName] call funcSideMsg

@@ -1,0 +1,52 @@
+; args: none
+
+_unit = player
+
+_vehicle = objNull
+
+_actionOptionsName = "Options"
+_actionOptionsObject = objNull
+_actionOptionsID = -1
+
+#Init
+	? (_unit != vehicle _unit): goto "PlayerInVehicle"
+  goto "PlayerOnFoot"
+  
+#PlayerLeftVehicle
+	? _actionOptionsID != -1 : _actionOptionsObject removeAction _actionOptionsID; _actionOptionsID = -1
+  #PlayerOnFoot
+	  ? _actionOptionsID == -1 : _actionOptionsObject = _unit; _actionOptionsID = _actionOptionsObject addAction [_actionOptionsName, "Player\Action Options.sqs"]
+
+	  @ !(alive _unit) || (_unit != vehicle _unit)
+
+	  ? !(alive _unit) : goto "PlayerDead"
+	  ? _unit != vehicle _unit : goto "PlayerEnteredVehicle"
+	  ? _actionOptionsID != -1 : _actionOptionsObject removeAction _actionOptionsID; _actionOptionsID = -1
+	  goto "PlayerOnFoot"
+
+#PlayerEnteredVehicle
+	? _actionOptionsID != -1 : _actionOptionsObject removeAction _actionOptionsID; _actionOptionsID = -1
+  #PlayerInVehicle
+	  _vehicle = vehicle _unit
+
+	  ? _actionOptionsID == -1 : _actionOptionsObject = _vehicle; _actionOptionsID = _actionOptionsObject addAction [_actionOptionsName, "Player\Action Options.sqs"]
+
+	  @ !(alive _unit) || (_unit == vehicle _unit)
+
+	  ? !(alive _unit) : goto "PlayerDead"
+	  ? _unit == vehicle _unit : goto "PlayerLeftVehicle"
+	  ? _actionOptionsID != -1 : _actionOptionsObject removeAction _actionOptionsID; _actionOptionsID = -1
+    goto "PlayerInVehicle"
+
+#PlayerDead
+
+	? _actionOptionsID != -1 : _actionOptionsObject removeAction _actionOptionsID; _actionOptionsID = -1
+
+	@ (alive player)
+	_unit = player
+  #WaitSpawn
+    ~1
+    ? ((getPos _unit) select 2) > 5 : goto "WaitSpawn"
+
+	goto "PlayerOnFoot"
+

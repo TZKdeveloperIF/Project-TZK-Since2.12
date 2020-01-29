@@ -1,0 +1,35 @@
+; args: [[object, type, name, image, textPos], isMCV] 
+
+_object = (_this select 0) select 0
+_type = (_this select 0) select 1
+_name = (_this select 0) select 2
+_textPos = (_this select 0) select 4
+_isMCV = _this select 1
+
+_timeWait = [5*60, 5] select dev
+_timeDelete = time + _timeWait
+
+? _name == "Worker" : hint "Worker killed."; deleteVehicle _object; exit
+
+? ! _isMCV : call format ["hint ""The structure will disappear in %1 minute(s). 10%2 resource will be recycled. You can click """"UNDO"""" button to cancel this before it finished.""", _timeWait/60, "%"]
+? _isMCV && (alive _object) : call format ["hint ""Selected MCV is still alive. It will set ruined in %1 minute(s) and return %2%3. You can click """"UNDO"""" button to cancel this before it finished.""", _timeWait/60, "$", 0.1*costRepairMHQ]; _bAliveMCV = true
+? _isMCV && !(alive _object) : call format ["hint ""Selected MCV is ruined. It will disappear in %1 minute(s) and return %2%3. You can click """"UNDO"""" button to cancel this before it finished.""", _timeWait/60, "$", 0.05*costRepairMHQ]; _bAliveMCV = false
+
+#Update
+  
+  ~1
+  ? (call format ["Destruction_Undo%1", siPlayer]) : exit
+  ? ! _isMCV && !(alive _object) : call format ["hint ""%1 - %2 is destroyed, destruction failed.""", _name, _textPos]; exit
+  
+  ? _isMCV && _bAliveMCV && !(alive _object) : call format ["hint ""%1 - %2 is destroyed, destruction failed.""", _name, _textPos]; exit
+  ? _isMCV && ! _bAliveMCV && (isNull _object) : call format ["hint ""%1 - %2 is repaired, destruction failed.""", _name, _textPos]; exit
+  
+  ? time < _timeDelete : goto "Update"
+  
+  call format ["hint ""Destruction completed, let's say goodbye to %1 - %2""", _name, _textPos]
+  ? ! _isMCV : _salvage = 0.1*( (structDefs select _type) select sdCost )
+  ? _isMCV && _bAliveMCV : _salvage = 0.1*costRepairMHQ
+  ? _isMCV && ! _bAliveMCV : _salvage = 0.05*costRepairMHQ
+  
+  [-_salvage] exec "Player\SendMoneySpent.sqs"
+  [_object, _isMCV, alive _object] exec "Player\SendDestruction.sqs"

@@ -1,0 +1,18 @@
+; args: [unit, si]
+
+_unit = _this select 0
+_si = _this select 1
+rand = (random 2) - 0.5
+_m = [["KEGAK107Mag_xj200", "KEGAK107Mag_xj200", "KEGAK107Mag_xj200", "KEGAK107Mag_xj200", "9K32Launcher"], ["G36aMag_xj200", "G36aMag_xj200", "G36aMag_xj200", "G36aMag_xj200", "AALauncher"]] select rand
+_w = [["KEGAK107_xj200", "9K32Launcher"], ["G36a_xj200", "AALauncher"]] select rand
+~1
+? !(local _unit) || !(alive _unit) : [_unit, _w, _m] exec "Common\EditEquipRearmData.sqs"; exit
+
+removeAllWeapons _unit
+
+{ _unit addWeapon _x } forEach weaponsCustom
+
+{_unit addMagazine _x} forEach _m
+{_unit addweapon _x} forEach _w
+
+[_unit, _w, _m] exec "Common\EditEquipRearmData.sqs"; exit

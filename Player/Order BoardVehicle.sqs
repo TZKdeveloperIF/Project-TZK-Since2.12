@@ -1,0 +1,56 @@
+; args: [unit, vehicle, prio]
+; prio example: ["Cargo", "Gunner", "Driver"]
+
+_unit = _this select 0
+_v = _this select 1
+_prio = _this select 2
+
+? !(alive _unit) : exit
+? _unit != vehicle _unit : exit
+
+_order = []; _id = -1; call orderNew
+
+_unit groupchat "Roger, boarding vehicle."
+
+_unit doWatch _v
+? (_unit distance _v) < 10 : goto "Reached"
+
+#Move
+_offset = 0
+_timeAbort = time + 5*60
+#Move_Check
+  _offset = _offset + 10
+  _vect = [getPos _unit, getPos _v] call funcVectorSub
+  _dist = _unit distance _v
+  ? _dist < 0.1 : _dist = _dist + 10
+  _posMove = [getPos _v, [_vect, _offset/_dist] call funcVectorScale] call funcVectorAdd
+  _posMove set [2,0]
+  _unit doMove _posMove
+
+   ~_dist*0.2
+  ? !(alive _unit) || !(alive _v) : exit
+  ? call orderCheck : exit
+  ? time > _timeAbort || _offset >= 50 : goto "Fail"
+  ? (_unit distance _v) > 50 : goto "Move_Check"
+
+#Reached
+~1
+? !(alive _unit) || !(alive _v) : exit
+
+_i = 0
+#TrySeat
+  unassignVehicle _unit
+  _seat = _prio select _i
+  _unit playMove "CombatGetInTank"
+  ~1
+  ? !(alive _unit) || !(alive _v) : exit
+  call format ["_unit assignAs%1 _v; _unit moveIn%1 _v", _seat]
+  ~2
+  ? !(alive _unit) || !(alive _v) : unassignVehicle _unit; exit
+  ? _v == (vehicle _unit) : _unit groupChat "Board succeed. Command me 'Return to Formation' or 'Halt' if necessary."; exit
+  _i = _i + 1
+  ? _i < (count _prio) : goto "TrySeat"
+
+#Fail
+[_unit, ([getPos _unit, 50, 50] call funcGetRandomPos)] call funcMove
+_unit groupchat "Unable to board vehicle."

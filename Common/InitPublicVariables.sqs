@@ -1,0 +1,243 @@
+;player globalchat "InitPublicVariables.sqs: Enter"
+
+; VARIABLES SENT BY SERVER AND PLAYERS
+
+; Ver 2.00 Variables
+pvJoinApply = -1; pvJoinReply = -1; pvJoinReceive = -1; pvJoinUnits = objNull; mutexJoinServer = false; mutexSendJoinApply = false
+pvKilledTank = objNull; pvKilledAircraft = objNull; pvKilledBoat = objNull
+pvAfterBurnerON = objNull; pvAfterBurnerOFF = objNull;
+pvNuclearX = 0; pvNuclearY = 0; pvNuclearZ = 0;
+pvAICheck = -1; pvCheckAI = -1
+
+pvTempOrder1 = -1; pvTempOrder2 = -1; mutexSendAITemporary = false; mutexHandleAITemporary = false
+pvEjectAIUnits = objNull; pvClearBuy = -1
+
+mutexTownWorkerGroups = false
+
+
+; Earlier Version Variables
+
+mutexScore = false
+mutexReadScore = false
+pvScore = -1
+
+mutexEditRearmData = false
+mutexAddToUnitMatrix = false
+pvStructMatrixRemove = -1; mutexSendStructMatrixRemove = false; mutexEditStructMatrix = false
+
+pvRespawnObjectAi0 = objNull
+pvRespawnObjectAi1 = objNull
+
+pvWorkerBehaviour0 = 0
+pvWorkerBehaviour1 = 0
+
+pvIncomeRatio0 = 0.7
+pvIncomeRatio1 = 0.7
+pvIncomeRatioPlayer0 = 0.5
+pvIncomeRatioPlayer1 = 0.5
+
+mutexLock = false
+pvLock = objNull
+pvUnlock = objNull
+pvDisembarkUnit = objNull
+pvEjectUnit = objNull; mutexEjectUnit = false
+pvFuelVehicle = objNull
+pvObjectRepaired = -1
+pvObjectRepaired_Object = objNull
+
+mutexTransportTurnOn = false; pvTransportTurnOn = objNull
+mutexTransportTurnOff = false; pvTransportTurnOff = objNull
+
+mutexInitTownGroupVehicles = false
+mutexTextMsg = false
+
+;pvScudSide = -1
+;pvScud = objNull
+
+; VARIABLES SENT BY SERVER
+
+pvWorkers0 = 0
+pvWorkers1 = 0
+
+mutexStructBuilt = false
+pvStructBuilt = -1
+pvStructBuilt_Object = objNull
+
+; pvTownSide format: townIndex + 100*newSide + 1000*oldSide
+mutexTownSide = false
+pvTownSide = -1
+
+mutexAddUnit = false
+countUnitAddMsg = 10
+_i = 0; while "_i<countUnitAddMsg" do { call format["pvAddUnit%1=-1", _i]; call format["pvAddUnit%1_Factory=objNull", _i]; _i=_i+1 }
+
+mutexUnitBuilt = false; indexUnitBuiltMsg = 0; countUnitBuiltMsg = 5
+_i = 0; while "_i<countUnitBuiltMsg" do { call format["pvUnitBuilt%1=-1", _i]; call format["pvUnitBuilt%1_Object=objNull", _i]; _i=_i+1 }
+;pvUnitBuilt0 = -1
+;pvUnitBuilt0_Object = objNull
+;pvUnitBuilt1 = -1
+;pvUnitBuilt1_Object = objNull
+;pvUnitBuilt2 = -1
+;pvUnitBuilt2_Object = objNull
+;pvUnitBuilt3 = -1
+;pvUnitBuilt3_Object = objNull
+;pvUnitBuilt4 = -1
+;pvUnitBuilt4_Object = objNull
+
+mutexQueueAdd = false
+pvQueueAdd0 = -1
+pvQueueAdd1 = -1
+pvQueueAdd2 = -1
+pvQueueAdd3 = -1
+pvQueueAdd4 = -1
+pvQueueAddEx0 = -1
+pvQueueAddEx1 = -1
+pvQueueAddEx2 = -1
+pvQueueAddEx3 = -1
+pvQueueAddEx4 = -1
+mutexQueueRem = false
+pvQueueRem0 = -1
+pvQueueRem1 = -1
+pvQueueRem2 = -1
+pvQueueRem3 = -1
+pvQueueRem4 = -1
+
+mutexQueueLength = false
+pvQueueLength = -1
+pvQueueLength_Obj = objNull
+
+pvCancelBuy = -1
+
+pvRemoveMags = objNull; pvAddMags = objNull; mutexVehicleMagAdd = false; mutexVehicleMagRem = false
+
+; pvMoney format: Used to be amount + 100 000*groupIndex + 10 000 000*side. Now _Group PV added and used to save giFrom, giTo and si, pvMoney are for amount only, so there is no need to limit money less than 100000 in order to avoid amount information's loss in value's passing.
+mutexMoney = false
+_i = 0; while "_i < 10" do { call format["pvMoney%1=-1", _i]; call format["pvMoneyGroup%1=-1", _i]; _i=_i+1 }
+;pvMoney0 = -1
+;pvMoney1 = -1
+;pvMoney2 = -1
+;pvMoney3 = -1
+;pvMoney4 = -1
+;pvMoney5 = -1
+;pvMoney6 = -1
+;pvMoney7 = -1
+;pvMoney8 = -1
+;pvMoney9 = -1
+;pvMoneyGroup0 = -1
+;pvMoneyGroup1 = -1
+;pvMoneyGroup2 = -1
+;pvMoneyGroup3 = -1
+;pvMoneyGroup4 = -1
+;pvMoneyGroup5 = -1
+;pvMoneyGroup6 = -1
+;pvMoneyGroup7 = -1
+;pvMoneyGroup8 = -1
+;pvMoneyGroup9 = -1
+
+mutexMoneyTransfer = false
+pvMoneyTransfer = -1
+pvMoneyTransferGroup = -1
+
+mutexInfo = false
+pvInfo0 = -1; pvInfo1 = -1; pvInfo2 = -1; pvInfo3 = -1
+pvInfoEx0 = -1; pvInfoEx1 = -1; pvInfoEx2 = -1; pvInfoEx3 = -1
+
+mutexAIGroup = false
+mutexSendAIGroup = false; countSendAIGroup = 5; indexSendAIGroupOrder = 0; indexSendAIGroupSetting = 0
+_i = 0; while "_i<countSendAIGroup" do { call format["pvOrder%1=-1", _i]; call format["pvSetting%1=-1", _i]; _i=_i+1 }
+
+pvMoneySideTotal = -1
+pvMoneySideSpent = -1
+
+pvMovingToSupport_Unit = objNull
+pvMovingToSupport_Support = objNull
+
+; pvGameOver values: (draw) + 2*(reasonDraw) + 2*4*(siWinner) + 2*4*2*(reasonWin)
+; 2-draw: 0:noDraw, 1:draw
+; 4-reasonDraw: (ignored if draw=0) 0:timeLimit, 1:TBD, 2:TBD, 3:TBD
+; 2-siWinner: (ignored if draw=1)
+; 4-reasonWin: (ignored if draw=1) 0:destruction, 1:towns, 2:TBD, 3:TBD
+pvGameOver = -1
+
+pvDebugVars = false
+pvDebugVar1 = -1000
+pvDebugVar2 = -1000
+pvDebugVar3 = -1000
+
+;pvTownGroups = -1
+;_i = 0; while "_i < 20" do { call format["pvTownGroups_0_%1 = grpNull", _i]; call format["pvTownGroups_1_%1 = grpNull", _i]; _i=_i+1 }
+;pvTownGroups_0_0 = grpNull; pvTownGroups_0_1 = grpNull; pvTownGroups_0_2 = grpNull; pvTownGroups_0_3 = grpNull; pvTownGroups_0_4 = grpNull
+;pvTownGroups_0_5 = grpNull; pvTownGroups_0_6 = grpNull; pvTownGroups_0_7 = grpNull; pvTownGroups_0_8 = grpNull; pvTownGroups_0_9 = grpNull
+;pvTownGroups_0_10 = grpNull; pvTownGroups_0_11 = grpNull; pvTownGroups_0_12 = grpNull; pvTownGroups_0_13 = grpNull; pvTownGroups_0_14 = grpNull
+;pvTownGroups_0_15 = grpNull; pvTownGroups_0_16 = grpNull; pvTownGroups_0_17 = grpNull; pvTownGroups_0_18 = grpNull; pvTownGroups_0_19 = grpNull
+;pvTownGroups_1_0 = grpNull; pvTownGroups_1_1 = grpNull; pvTownGroups_1_2 = grpNull; pvTownGroups_1_3 = grpNull; pvTownGroups_1_4 = grpNull
+;pvTownGroups_1_5 = grpNull; pvTownGroups_1_6 = grpNull; pvTownGroups_1_7 = grpNull; pvTownGroups_1_8 = grpNull; pvTownGroups_1_9 = grpNull
+;pvTownGroups_1_10 = grpNull; pvTownGroups_1_11 = grpNull; pvTownGroups_1_12 = grpNull; pvTownGroups_1_13 = grpNull; pvTownGroups_1_14 = grpNull
+;pvTownGroups_1_15 = grpNull; pvTownGroups_1_16 = grpNull; pvTownGroups_1_17 = grpNull; pvTownGroups_1_18 = grpNull; pvTownGroups_1_19 = grpNull
+
+;pvWorkerGroup = -1; pvWorkerGroups = grpNull; mutexSendWorkerGroups = false
+
+;mutexReloadScud = false
+
+;VARIABLES SENT BY PLAYERS
+
+mutexGroupIsAI = false
+mutexAddWorker = false
+pvAddWorker = -1
+
+pvBuildStruct_Type = -1
+pvBuildStruct_PosX = 0
+pvBuildStruct_PosY = 0
+pvBuildStruct_Dir = 0
+
+pvUndo = grpNull
+
+mutexBuyUnit = false
+_i = 0; while "_i < 5" do { call format["pvBuyUnit_Type%1=-1", _i]; call format["pvBuyUnit_Factory%1=objNull", _i]; _i=_i+1 }
+
+pvMoneyGive = -1
+pvMoneyGiveGroup = -1
+mutexMoneyGive = false
+pvMoneySpent = -1
+
+pvUpgrade = -1
+
+pvWPCO = -1; pvWPCO_X = -1; pvWPCO_Y = -1; mutexSetWPCO = false
+
+pvArt = -1
+pvArtPos = -1
+
+pvEnemy0 = objNull
+pvEnemy1 = objNull
+
+pvOrder = -1
+pvSetting = -1
+
+mutexEditvehicleAttached = false
+mutexVehicleAttached = false
+pvVehicleAttachedTug = objNull
+pvVehicleAttachedTugged = objNull
+pvVehicleAttached = -1
+
+mutexDetachVehicle = false
+pvDetachVehicle = -1
+pvDetachVehicleTug = objNull
+
+mutexVehicleDetached = false
+pvVehicleDetachedTugged = objNull
+pvVehicleDetached = -1
+
+pvRepairMHQ = -1
+mutexRepairMCV = false
+pvRepairMCV = -1
+pvRepairMCV_object = objNull
+pvPing = -1
+
+pvCO = -1
+
+Destruction_Undo0 = false
+Destruction_Undo1 = false
+
+mutexDestruction = false
+pvDestruction = -1
+pvDestruction_Object = objNull

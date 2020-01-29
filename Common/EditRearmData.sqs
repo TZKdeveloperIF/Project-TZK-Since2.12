@@ -1,0 +1,18 @@
+; args: [object, weapons[], magazines[], bool reset, index]
+
+_obj = _this select 0
+_w = _this select 1
+_m = _this select 2
+_breset = _this select 3
+_i = _this select 4
+
+? _i >= count rearmData : exit
+? _obj != ((rearmData select _i) select 0) : exit
+? !(alive _obj) : exit
+
+? !_breset : _w = ((rearmData select _i) select 1) + _w; _m = ((rearmData select _i) select 2) + _m
+
+@!(mutexEditRearmData)
+mutexEditRearmData = true
+? (alive _obj) : rearmData set [_i, [_obj, _w, _m]]
+mutexEditRearmData = false

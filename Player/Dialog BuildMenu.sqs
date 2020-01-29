@@ -1,0 +1,129 @@
+; args: [CVtype, distance]
+
+_CVtype = _this select 0
+_distMax = _this select 1
+_unit = player
+_si = siPlayer
+
+_isMHQMCV = (_CVtype in [utMHQ0,utMHQ1,utMCVW,utMCVE])
+
+buttonPressedBuild = false
+buttonPressedPlaceBuild = false
+buttonPressedBuy = false
+
+_delay = 0.2
+
+#Init
+
+	openBuildMenu = false
+	_menuOpen = true
+
+	;Create the build menu.
+	_buildMenu = CreateDialog "BuildMenu"
+
+	ctrlSetText [IDC_TEXT_MENU_NAME, "Build Structures"]
+
+	ctrlShow [IDC_BTN_ALIGN, false]
+
+	? !(_isMHQMCV): ctrlShow [IDC_BTN_BUY_BG, false]; ctrlShow [IDC_BTN_BUY, false]
+	? (groupPlayer != (groupCommander select _si)): ctrlShow [IDC_BTN_BUY_BG, false]; ctrlShow [IDC_BTN_BUY, false]
+
+	_index = 0
+	_count = count structDefs
+
+	;Add an entry onto the structure selection combobox.
+	#AddStructures
+
+		_desc = structDefs select _index
+		_name = _desc select sdName
+		_cost = _desc select sdCost
+		_sides = _desc select sdSides
+		_image = (_desc select sdImage) select _si
+		_onlyCO = _desc select sdOnlyCO
+		_onlyMHQ = _desc select sdOnlyMHQ
+		
+		_spacer = ""
+		? (_cost < 100): _spacer = " "
+		? (_cost < 1000): _spacer = _spacer + " "
+		? (_cost < 10000): _spacer = _spacer + " "
+
+		_text = Format["$%1 %2%3", _cost, _spacer, _name]
+
+		? (_si != _sides && _sides != siBoth): goto "Skip"
+
+		? (_onlyMHQ && !_isMHQMCV): goto "Skip"
+		? (_onlyCO && groupPlayer != (groupCommander select _si)): goto "Skip"
+
+		_id = lbAdd[IDC_LB_1, _text]
+		lbSetValue [IDC_LB_1, _id, _index]
+		? _image != "" : lbSetPicture [IDC_LB_1, _id, _image]
+		? (lastSelectedStructType == _index): lbSetCurSel [IDC_LB_1, _id]
+
+		#Skip
+
+		_index = _index + 1
+		? (_index < _count):goto "AddStructures"
+
+	_type = -1
+
+#Update
+	_bNearby = [SupNearby, mhqNearby || MCVNearby] select _isMHQMCV
+	; _res = [getPos player, siPlayer, ([ typesSupportPlus, [[utMHQ0,utMCVW], [utMHQ1,utMCVE]] ] select _isMHQMCV) select siPlayer, []] call funcGetClosestVehicle
+	; _distance = _res select 1
+	; ? (_distance > _distMax): goto "CloseDialog"
+	? !_bNearby : goto "CloseDialog"
+	? !(alive _unit): goto "CloseDialog"
+  
+	;If the value is not 1 then the menu was closed with the ESC key.
+	? !(dialog): goto "CloseDialog"
+
+	_selected = lbCurSel IDC_LB_1
+	? (_selected == -1): _type == -1; goto "NoStructSelected"
+	_type = lbValue[IDC_LB_1, _selected]
+	lastSelectedStructType = _type
+	_cost = (structDefs select _type) select sdCost
+	if (_type in alignTypes) then { ctrlShow [IDC_BTN_ALIGN, true] } else { ctrlShow [IDC_BTN_ALIGN, false] }
+	#NoStructSelected
+
+	_money = (groupMoneyMatrix select _si) select giPlayer
+	_text = format ["$%1", _money]
+	ctrlSetText [IDC_TEXT_PLAYER_MONEY, _text]
+
+	? (_si == si0): _text = format ["Buy Worker $%1 (%2/%3)", costWorker, pvWorkers0, maxWorkers select _si]
+	? (_si == si1): _text = format ["Buy Worker $%1 (%2/%3)", costWorker, pvWorkers1, maxWorkers select _si]
+	ctrlSetText[IDC_BTN_BUY, _text]
+
+	if (alignWalls) then { ctrlSetText [IDC_BTN_ALIGN, "Align Walls: ON"] } else { ctrlSetText [IDC_BTN_ALIGN, "Align Walls: OFF"] }
+
+	? (buttonPressedBuild):goto "BuildStructure"
+	? (buttonPressedPlaceBuild):goto "PlaceBuildStructure"
+	? (buttonPressedBuy):goto "BuyWorker"
+
+	~_delay
+	goto "Update"
+
+#BuyWorker
+	buttonPressedBuy = false
+	? (_money < costWorker): hint "Not enough Money"; goto "Update"
+	[_unit] exec "Player\SendAddWorker.sqs"
+	goto "Update"
+
+#BuildStructure
+	buttonPressedBuild = false
+	? (_type == -1): hint "No structure selected"; goto "Update"
+	? (_money < _cost): hint "Not enough Money"; goto "Update"
+	[_unit, _type, [], 0, alignWalls && ctrlVisible IDC_BTN_ALIGN] exec "Player\BuildStructure.sqs"
+	goto "CloseDialog"
+
+#PlaceBuildStructure
+	buttonPressedPlaceBuild = false
+	? (_type == -1): hint "No structure selected"; goto "Update"
+	? (_money < _cost): hint "Not enough Money"; goto "Update"
+	[_CVtype, _unit, _type, alignWalls && ctrlVisible IDC_BTN_ALIGN, _distMax] exec "Player\PlaceAndBuildNewMode.sqs"
+	goto "CloseDialog"
+
+#CloseDialog
+	buttonPressedBuild = false
+	buttonPressedBuy = false
+	? (dialog): closeDialog 0
+	Exit

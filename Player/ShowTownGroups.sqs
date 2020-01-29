@@ -1,0 +1,24 @@
+? (local LocalServerObject) : exit
+@(pvTownGroups != -1)
+
+_i = 0
+#SetTownGroup0
+
+? !(_i < 20) : goto "TownGroup0Set"
+call format ["if !(isNull pvTownGroups_0_%1) then { (townGroups select si0) set [%1, pvTownGroups_0_%1] }", _i]
+_i = _i + 1
+goto "SetTownGroup0"
+#TownGroup0Set
+
+_i = 0
+#SetTownGroup1
+
+? !(_i < 20) : goto "TownGroup1Set"
+call format ["if !(isNull pvTownGroups_1_%1) then { (townGroups select si1) set [%1, pvTownGroups_1_%1] }", _i]
+_i = _i + 1
+goto "SetTownGroup1"
+#TownGroup1Set
+
+; hint format ["TownGroups Received. \n%1", townGroups]
+
+exit

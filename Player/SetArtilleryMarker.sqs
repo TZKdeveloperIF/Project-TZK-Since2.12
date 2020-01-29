@@ -1,0 +1,16 @@
+; args: pos
+
+_pos = _this
+
+_id = artMarkers select 0
+_marker = format ["Art%1", _id]
+
+artMarkers = artMarkers - [_id]
+artMarkers set [count artMarkers, _id]
+
+_marker setMarkerPos _pos
+
+~(5*60)
+
+_posAfter = getMarkerPos _marker
+? ((_pos select 0) == (_posAfter select 0)) && ((_pos select 1) == (_posAfter select 1)): _marker setMarkerPos hiddenMarkerPos

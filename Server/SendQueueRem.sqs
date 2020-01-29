@@ -1,0 +1,23 @@
+; args: [qid, si, repeats]
+
+_qid = _this select 0
+_si = _this select 1
+_repeats = _this select 2
+
+_value = _qid + maxQ*_si
+
+@!(mutexQueueRem)
+mutexQueueRem = true
+
+[] call format["pvQueueRem%1 = _value", indexQueueRemMsg]
+[] call format["PublicVariable ""pvQueueRem%1""", indexQueueRemMsg]
+indexQueueRemMsg = indexQueueRemMsg + 1
+? indexQueueRemMsg >= countQueueMsg : indexQueueRemMsg = 0
+
+_delay = 0
+? indexQueueRemMsg == 0: _delay = sendDelay
+~_delay
+
+mutexQueueRem = false
+
+? _repeats > 0 : [_qid, _si, _repeats - 1] exec "Server\SendQueueRem.sqs"

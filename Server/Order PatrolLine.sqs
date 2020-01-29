@@ -1,0 +1,64 @@
+; args: [unit, si, gi, [wp, wp]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+_wp0 = ((wpCO select _si) select (_params select 0))
+_wp1 = ((wpCO select _si) select (_params select 1))
+_wps = [_wp0, _wp1]
+
+_idOrder = ((orderMatrix select _si) select _gi) select 0
+
+#WaitReady
+~2
+? call busyCheck : goto "WaitReady"
+
+_second = false
+_timeCheckSupport = time + 30 + random 60
+_bCheckDropBomb = true
+
+_sleep = 30
+_height = (200 + random 100)
+
+_bMoveCorrect = true
+#Update
+	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
+	? call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {exit} else {goto "Sleep"}
+	
+	? !(alive _unit) : exit
+	? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+
+	_vehicle = vehicle _unit
+	
+	? _unit != driver _vehicle : goto "Sleep"
+	
+	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 2; goto "Sleep"
+
+  _bCheckDropBomb = !_bCheckDropBomb 
+	? _bCheckDropBomb && _unit == _vehicle && magSatchel in (magazines _unit) : [_unit, _si, _gi] exec "Server\AI_CheckDropBomb.sqs"; _sleep = 2; goto "Sleep"
+	
+	_posDest = _wps select _second
+;	? _second : _posDest = [_posDest, 800, 800] call funcGetRandomPos; _unit doWatch (_wps select _second)
+	_distToDest = [getPos _unit, _posDest] call funcDistH; _posMove = _posDest
+	? ((call grpSetting) select aisMoveMode) == 1 && _bMoveCorrect: if (_unit == vehicle _unit && _distToDest > 300) then {_vector = [_posDest, getPos _unit] call funcVectorSub; _vector = [_vector, 250/_distToDest] call funcVectorScale; _posMove = [getPos _unit, _vector] call funcVectorAdd; _distToDest = 250}
+	_bMoveCorrect = !_bMoveCorrect
+	? _distToDest > 50 : goto "Move"
+	[_unit, true] exec "Server\StopAI.sqs"
+	[_unit, _si, _gi] call funcWatch
+	? _unit != _vehicle && !(isNull gunner _vehicle) && isNull (commander _vehicle) : [_unit, _si, _gi] exec "Server\AI_CheckFireGun.sqs"
+  _sleep = 30
+  _second = !_second
+  goto "Sleep"
+
+  #Move
+  [_unit, _posMove] call funcMoveAI
+	_sleep = [30, 0.1*_distToDest] select (_distToDest < 300)
+	 
+	#Sleep
+	~_sleep
+	
+	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
+	? call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {exit} else {goto "Sleep"}
+  ? call busyCheck : _sleep = 10; goto "Sleep"
+	goto "Update"

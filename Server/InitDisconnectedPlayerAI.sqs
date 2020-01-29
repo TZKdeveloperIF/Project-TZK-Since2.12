@@ -1,0 +1,12 @@
+; args: [unit, si, gi]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+
+? !(local LocalServerObject) : exit
+
+? !(local _unit) : exit
+
+[_unit, _si] exec "Server\EquipGroupLeaderAI.sqs"
+[_unit, _si, _gi] exec "Server\AI_UpdateLeader.sqs"

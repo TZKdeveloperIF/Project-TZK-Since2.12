@@ -1,0 +1,37 @@
+; args: [value, posX, posY]
+
+_value = _this select 0
+
+_pos = [_this select 1, _this select 2]
+
+_wp = _value % 100
+_value = _value - _wp
+
+_gi = (_value % (100*GroupsNum))/100
+_value = _value - _gi
+
+_si = _value / (100*GroupsNum)
+
+if(_si < 1) then { _si = 0; } else { _si = 1; };
+
+; player globalchat format["WP : wp=%1 gi=%2 si=%3", _wp, _gi, _si]
+((wpCO select _si) select _wp) set [0, _pos select 0]
+((wpCO select _si) select _wp) set [1, _pos select 1]
+
+? isNull player : goto "SkipMarker"
+? siPlayer != _si : goto "SkipMarker"
+
+_marker = format["co_%1", _wp]
+
+_marker setMarkerPos hiddenMarkerPos
+? (_pos select 0) != -1 && (_pos select 1) != -1 : (leader ((groupMatrix select _si) select _gi)) sidechat format["CO waypoint %1 set. %2 %3", _wp, _pos call funcCalcMapPos, _pos call funcCalcTownDirDistFromPos ]; _marker setMarkerPos _pos
+
+
+#SkipMarker
+? !(local LocalServerObject): exit
+
+_orders = (orderMatrix select _si)
+@!(mutexAIGroup)
+mutexAIGroup = true
+{ if (_wp in (_x select 2)) then {_x set [0, (_x select 0) + 1]} } forEach _orders
+mutexAIGroup = false

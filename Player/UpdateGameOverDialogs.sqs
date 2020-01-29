@@ -1,0 +1,47 @@
+; args: none
+
+btnLeaderboard = false
+btnShowStats = false
+
+
+#NoDialog
+	~2
+	? (gameEndType != -1): Exit
+	#Menu
+	_ok = createDialog "GameOverDialog"
+
+	#MenuUpdate
+		~0.2
+
+		? (btnLeaderboard): btnLeaderboard = false; goto "Leaderboard"
+		? (btnShowStats): btnShowStats = false; goto "Stats"
+
+		? (gameEndType != -1): closeDialog 0; Exit
+
+		? !(dialog): goto "NoDialog"
+		goto "MenuUpdate"
+
+#Leaderboard
+	closeDialog 0; 
+	~0.2
+	[] exec "Player\Dialog Leaderboard.sqs"
+
+	#LeaderboardUpdate
+		~0.2
+		? (gameEndType != -1): closeDialog 0; Exit
+		? !(dialog): goto "Menu"
+		goto "LeaderboardUpdate"
+
+#Stats
+	closeDialog 0; 
+	~0.2
+	[siBoth] exec "Player\Dialog Stats.sqs"
+
+	#StatsUpdate
+		~0.2
+		? (gameEndType != -1): closeDialog 0; Exit
+		? !(dialog): goto "Menu"
+		goto "StatsUpdate"
+
+
+

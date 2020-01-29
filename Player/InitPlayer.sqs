@@ -1,0 +1,337 @@
+; args: [unit, si, gi]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+
+forceMap true
+
+;init player functions
+funcCalcAlignPosDir = preprocessFile "Player\CalcAlignPosDir.sqf"
+funcGetOrderDesc = preprocessFile "Player\GetOrderDesc.sqf"
+funcMapClickPlayer = preprocessFile "Player\MapClickPlayer.sqf"
+funcGetQueueLength = preprocessFile "Player\GetQueueLength.sqf"
+funcGetEqName = preprocessFile "Player\GetEqName.sqf"
+funcEquipTempl = preprocessFile "Player\EquipTempl.sqf"
+funcBuildTempl = preprocessFile "Player\BuildTempl.sqf"
+funcSideMsg = preprocessFile "Player\SideMsg.sqf"
+funcMove = preprocessFile "Player\Move.sqf"
+funcPosBullCam = preprocessFile "Player\PosBullCam.sqf"
+funcMappingPlayer = preprocessFile "Player\MappingPlayer.sqf"
+? dev : funcMappingPlayerDev = preprocessFile "Player\MappingPlayerDev.sqf"
+funcMappingHide = preprocessFile "Player\MappingHide.sqf"
+funcCalcUID = preprocessFile "Player\CalcUID.sqf"
+
+funcCheckWhetherSuperior = preprocessFile "Player\CheckWhetherSuperior.sqf"
+funcUpdateDialogBuyUnitsAvailable = preprocessFile "Player\UpdateDialogBuyUnitsAvailable.sqf"
+funcUpdateDialogBuyUnitsFactory = preprocessFile "Player\UpdateDialogBuyUnitsFactory.sqf"
+funcUpdateDialogBuyUnitsGroups = preprocessFile "Player\UpdateDialogBuyUnitsGroups.sqf"
+funcUpdateDialogBuyUnitsQueue = preprocessFile "Player\UpdateDialogBuyUnitsQueue.sqf"
+
+funcUpdateDialogOptionsInit = preprocessFile "Player\UpdateDialogOptionsInit.sqf"
+funcUpdateDialogOptionsUpdate = preprocessFile "Player\UpdateDialogOptionsUpdate.sqf"
+funcUpdateDialogDestruction = preprocessFile "Player\UpdateDialogDestruction.sqf"
+funcUpdateDialogAttachableVehicles = preprocessFile "Player\UpdateDialogAttachableVehicles.sqf"
+funcUpdateDialogAttachVehicleList = preprocessFile "Player\UpdateDialogAttachVehicleList.sqf"
+
+funcGetOrderTempDesc = preprocessFile "Player\GetOrderTempDesc.sqf"
+
+
+structAction = -1
+lastSelectedStructType = -1
+lastSelectedUnitType = -1
+
+aVehiclesWithRepairAction = []
+vehiclesRearming = []
+giMarkersAI = count (groupMatrix select _si)
+
+qPlayer = []
+qLen = []; mutexqLen = false
+lastSelectedFactory = [ [], [] ]
+
+timeLastPing = 30
+bBlockedByClient = false
+
+; eq template entry : [ textDescr, wpnPrim, wpnHandgun, wpnSec, [ [gen0, ..., gen9], [handgun0, ..., hangun3], [optic0, optic1] ] ]
+eqTemplates = []
+_i = 0; while "_i < 5" do { eqTemplates set [_i, [] ]; _i=_i+1 }
+lastTemplate = -1
+
+bMannedDriver = true
+bMannedGunner = true
+bMannedCommander = false
+
+
+alignWalls = false
+
+respawnType = 10
+objectRespawn = objNull
+
+playerSide = side _unit
+groupPlayer = group _unit
+siPlayer = _si
+giPlayer = _gi
+
+unitcamUnit = objNull
+iView = 0
+satcamUnit = objNull
+satcamPos = []
+satcamAlt = viewDistance/4
+SpySatPos0 = []; SpySatPos1 = []; bSpySat = false
+
+reportAll = 0
+reportVehiclesStructs = 1
+reportStructs = 2
+reportNone = 3
+report = reportAll
+
+Destruction_Undo0 = false
+Destruction_Undo1 = false
+
+wpPlayer = []
+_i = 0; while "_i < countWPPlayer" do { wpPlayer set [_i, [-1,-1]]; _i = _i + 1 } 
+timeLastWaypointSet = 0
+
+
+mutexBuildStructure = false; mutexOrderBuildStructure = false
+mutexMoneyStatus = false; mutexMoneySpent = false
+mutexSendCancelBuy = false; mutexqPlayer = false
+KilledTank = []; mutexKilledTankEffect = false
+indexSendBuyUnit = 0; countSendBuyUnit = 4
+
+; MESSAGE HANDLERS (PLAYERS)
+[] exec "Player\MsgAddUnit_0.sqs"
+[] exec "Player\MsgAddUnit_1.sqs"
+[] exec "Player\MsgAddUnit_2.sqs"
+[] exec "Player\MsgAddUnit_3.sqs"
+[] exec "Player\MsgAddUnit_4.sqs"
+[] exec "Player\MsgAddUnit_5.sqs"
+[] exec "Player\MsgAddUnit_6.sqs"
+[] exec "Player\MsgAddUnit_7.sqs"
+[] exec "Player\MsgAddUnit_8.sqs"
+[] exec "Player\MsgAddUnit_9.sqs"
+
+[] exec "Player\MsgQueueAdd_0.sqs"
+[] exec "Player\MsgQueueAdd_1.sqs"
+[] exec "Player\MsgQueueAdd_2.sqs"
+[] exec "Player\MsgQueueAdd_3.sqs"
+[] exec "Player\MsgQueueAdd_4.sqs"
+
+[] exec "Player\MsgQueueRem_0.sqs"
+[] exec "Player\MsgQueueRem_1.sqs"
+[] exec "Player\MsgQueueRem_2.sqs"
+[] exec "Player\MsgQueueRem_3.sqs"
+[] exec "Player\MsgQueueRem_4.sqs"
+
+[] exec "Player\MsgQueueLength.sqs"
+
+[] exec "Player\MsgMovingToSupport.sqs"
+
+? _si == si0: [] exec "Player\MsgEnemySpotted0.sqs"
+? _si == si1: [] exec "Player\MsgEnemySpotted1.sqs"
+
+[] exec "Player\MsgPingServer.sqs"
+
+[] exec "Player\InitGUIControlIDs.sqs"
+[_si] exec "Player\InitMarkers.sqs"
+
+;game has begun after this pause
+~0.1
+
+mapAnimClear
+mapAnimAdd [0, 1.0, posCenter]
+mapAnimCommit
+@mapAnimDone
+
+; TODO - disable for release
+; player addAction ["TEST", "Player\Action Test.sqs"]
+
+onMapSingleClick {[_pos, _units, _alt, _shift] call funcMapClickPlayer}
+
+player groupchat "Waiting for start data ..."
+@( !(isNull (mhq select si0)) && !(isNull (mhq select si1)) )
+player groupchat "Start data received."
+
+[_unit, _si, _gi] exec "Common\PlaceGroupLeader.sqs"
+[_unit, _si, _gi] exec "Player\UpdatePlayer.sqs"
+[_si] exec "Player\UpdateUnitMarkers.sqs"
+[] exec "Player\UpdatePlayerVehicle.sqs"
+[] exec "Player\UpdateOptionsAction.sqs"
+[] exec "Player\UpdatePlayerRepairVehicleAction.sqs"
+[] exec "Player\UpdatePlayerRearmVehicleAction.sqs"
+[maxFlightAltitude, maxFlightAltitudePlus] exec "Player\LimitAltitude.sqs"
+[] exec "Player\UpdatePlayerAirSupportRepairAction.sqs"
+[] exec "Player\UpdatePlayerAirSupportRearmAction.sqs"
+[] exec "Player\UpdatePlayerGetFlyingStatus.sqs"
+
+
+[] exec "Player\MsgJoinUnits.sqs"
+
+
+mapAnimClear
+mapAnimAdd [1.0, 1.0, getPos (mhq select _si)]
+mapAnimCommit
+@mapAnimDone
+; ~1
+; forceMap false
+
+; AI ORDERS
+; aiOrders format: [name, [param0, param1, ...], subdlg, script, description]
+; aiOrders param# format: [nameParam, countParams, funcToText, default]
+
+; unitOrder format:  [unit, idOrder] idOrder is -1 with no current order
+; unitOrder = []
+; orderNew = "{ if ((_x select 0) == _unit) then { _order = _x; _order set [1, 1 + (_order select 1)] } } foreach unitOrder; if (count _order == 0) then { { if (count _order == 0 && !alive(_x select 0)) then { _order = _x; _order set [0, _unit]; _order set [1, 0] } } foreach unitOrder; }; if (count _order == 0) then { _order = [_unit, 0]; unitOrder set [ count unitOrder, _order ] }; _id = _order select 1"
+; orderCheck = "_id != _order select 1"
+; orderClear = "{ if ((_x select 0) == _unit) then { _x set [1, -1] } } foreach unitOrder"
+; orderClear = "_unit exec ""Player\OrderClear.sqs"""
+
+playerOrderID = []; _i = 0; while "_i < 13" do {playerOrderID set [_i, 0]; _i = _i + 1}
+;orderNew = "_ids = (groupUnitIDMatrix select siPlayer) select giPlayer; _matching = false; _id = 2; while ""_id <= 12 && !_matching"" do {_text = format[""%1"", _unit]; if ( _text == (_ids select _id) ) then { _matching = true } else { _id = _id + 1 } }; if (_id > 12) then {hint ""Fail to get UID, order not set. Try again please.""; exit}; _uid = _id; _id = (playerOrderID select _uid) + 1; _uid exec ""Player\OrderNew.sqs"""
+orderNew = "_order = [_unit, siPlayer, giPlayer] call funcCalcUID; if (_order > 12) then {hint ""Fail to get UID, order not set. Try again please.""; exit}; _id = (playerOrderID select _order) + 1; _order exec ""Player\OrderNew.sqs"""
+orderCheck = "_id < playerOrderID select _order"
+mutexUnitOrder = false
+
+
+aiOrders = []
+lastOrder = -1
+_type = 0
+
+; _desc = "Opens up a new dialog where you select the support vehicle to perform support at."
+; aiOrders set [_type, ["Repair/Heal/Rearm...", [], true, "Dialog Support.sqs", _desc] ]; _type = _type + 1
+
+_desc = "Units will move to nearest support vehicle belonging to us if heal, repair or rearm needed."
+aiOrders set [_type, ["Heal & (Rearm)", [], false, "Order Support OptRearm.sqs", _desc] ]; _type = _type + 1
+
+_desc = "Units will move to nearest support vehicle belonging to us and rearm, they will heal and repaiar if needed."
+aiOrders set [_type, ["Rearm & Heal", [], false, "Order Support ForceRearm.sqs", _desc] ]; _type = _type + 1
+
+_desc = "Opens up a new dialog to show all vehicles belonging to us in 100m range near the position clicked. Units will board the chosen vehicle."
+aiOrders set [_type, ["Board...", [], true, "Dialog BoardVehicle.sqs", _desc] ]; _type = _type + 1
+
+_desc = "Units will move to the postion clicked."
+aiOrders set [_type, ["Move", [], false, "Order MovePos.sqs", _desc] ]; _type = _type + 1
+
+_desc = "Units will move to the specified waypoint."
+_param0 = ["Waypoint", countWPPlayer, "format[""wp%1"", _this]", 0]
+aiOrders set [_type, ["Move WP", [_param0], false, "Order MoveWP.sqs", _desc] ]; _type = _type + 1
+
+_desc = "Units will patrol the position clicked using <Radius> as the patrol range."
+_param0 = ["Radius", 10, "format[""%1m"", 50*(_this+1)]", 1]
+aiOrders set [_type, ["Patrol", [_param0], false, "Order PatrolPos.sqs", _desc] ]; _type = _type + 1
+
+_desc = "Units will patrol the selected WP and using <Radius> as the patrol range."
+_param0 = ["Waypoint", countWPPlayer, "format[""wp%1"", _this]", 0]
+_param1 = ["Radius", 10, "format[""%1m"", 50*(_this+1)]", 1]
+aiOrders set [_type, ["Patrol WP", [_param0,_param1], false, "Order PatrolWP.sqs", _desc] ]; _type = _type + 1
+
+_desc = "Units will patrol from wp0 to the last wp.\nThey will do a circular patrol if the last wp is placed closer to wp0 than to the previous wp."
+aiOrders set [_type, ["Patrol WPs", [], false, "Order PatrolWPs.sqs", _desc] ]; _type = _type + 1
+
+_desc = "Drivers of transport vehicles will pickup infantry at START wp and eject cargo at DESTINATION wp, passing all intermediate defined waypoints."
+_param0 = ["START", countWPPlayer, "format[""wp%1"", _this]", 0]
+_param1 = ["DESTINATION", countWPPlayer, "format[""wp%1"", _this]", 1]
+_param2 = ["Eject distance", 5, "format[""%1m"", 200*(_this+1)]", 0]
+aiOrders set [_type, ["Transport Duty", [_param0, _param1, _param2], false, "Order TransportDuty.sqs", _desc] ]; _type = _type + 1
+
+_desc = "Miners will disarm mines near the position clicked."
+aiOrders set [_type, ["Disable Mines", [], false, "Order DisableMines.sqs", _desc] ]; _type = _type + 1
+
+_desc = "Units with mines will place mines near the position clicked.\nMiners will rearm at a nearby support vehicle."
+_param0 = ["Place Radius", 10, "format[""%1m"", 5*(_this)]", 1]
+aiOrders set [_type, ["Mine Pos", [_param0], false, "Order MinePos.sqs", _desc] ]; _type = _type + 1
+
+_desc = "Units with mines will place mines around the selected WP.\nMiners will rearm at a nearby support vehicle."
+_param0 = ["Waypoint", countWPPlayer, "format[""wp%1"", _this]", 0]
+_param1 = ["Place Radius", 10, "format[""%1m"", 5*(_this)]", 1]
+aiOrders set [_type, ["Mine WP", [_param0, _param1], false, "Order MineWP.sqs", _desc] ]; _type = _type + 1
+
+_desc = "Units with mines will place mines between the waypoints, starting at the first waypoint.\nMiners will rearm at a nearby support vehicle."
+_param0 = ["Waypoint", countWPPlayer, "format[""wp%1"", _this]", 0]
+_param1 = ["Waypoint", countWPPlayer, "format[""wp%1"", _this]", 1]
+aiOrders set [_type, ["Mine WP-WP", [_param0, _param1], false, "Order MineWPtoWP.sqs", _desc] ]; _type = _type + 1
+
+_desc = "Specops with satchels will place satchel near the position clicked.\nThey will rearm at a nearby support vehicle."
+_param0 = ["Place Radius", 10, "format[""%1m"", 5*(_this)]", 1]
+aiOrders set [_type, ["Satchel Pos", [_param0], false, "Order SatchelPos.sqs", _desc] ]; _type = _type + 1
+
+_desc = "Specops with satchels will place satchel around the selected WP.\nThey will rearm at a nearby support vehicle."
+_param0 = ["Waypoint", countWPPlayer, "format[""wp%1"", _this]", 0]
+_param1 = ["Place Radius", 10, "format[""%1m"", 5*(_this)]", 1]
+aiOrders set [_type, ["Satchel WP", [_param0, _param1], false, "Order SatchelPos.sqs", _desc] ]; _type = _type + 1
+
+_desc = "Units with mines will place mines at flag."
+_param0 = ["Town", count towns, "format[""%1"", (towns select _this) select tdName]", -1]
+_param1 = ["Mine Radius", 10, "format[""%1m"", 5*(_this)]", 6]
+aiOrders set [_type, ["Mine Town Flag", [_param0, _param1], false, "Order MineFlag.sqs", _desc] ]; _type = _type + 1
+
+_desc = "Units will patrol town and take town back if it is lost."
+_param0 = ["Town", count towns, "format[""%1"", (towns select _this) select tdName]", -1]
+_param1 = ["Patrol Radius", 5, "format[""%1m"", 50*(_this+1)]", 1]
+aiOrders set [_type, ["Hold Town", [_param0, _param1], false, "Order HoldTown.sqs", _desc] ]; _type = _type + 1
+
+_desc = "Units will stop, and their current order will be broken off. It might cost tens of seconds for some complex orders to indeed end.\nBefore @TZK_1.10, clicking map while selecting units can clear their order, but this won't work since 1.10 version."
+aiOrders set [_type, ["Clear Order", [], false, "Clear Order.sqs", _desc] ]; _type = _type + 1
+
+_desc = "Disband selected units."
+aiOrders set [_type, ["Disband", [], true, "DisbandUnits.sqs", _desc] ]; _type = _type + 1
+
+_desc = "Ask your group member get close to the factory out of CC range and help buy units."
+BuyFactoryDefs = ["Barrack", "Light", "Ship", "Heavy", "Air"]
+_param0 = ["Factory Type", count BuyFactoryDefs, "BuyFactoryDefs select _this", 0]
+aiOrders set [_type, ["Buy Units", [_param0], false, "Order BuyUnits.sqs", _desc] ]; _type = _type + 1
+
+_desc = "Ask your group member get close to the destination and help build structure (the position must close enough to MHQ\MCV\Support Vehicle)."
+_param0 = ["Structure Type", count structDefs, "format[""%1"", (structDefs select _this) select sdName]", 0]
+_param1 = ["Angle", 24, "format[""%1%2"", 15*(_this), [["" (N)"", "" (NE)"", "" (E)"", "" (SE)"", "" (S)"", "" (SW)"", "" (W)"", "" (NW)""] select ((_this - (_this mod 3))/3), {}] select (_this mod 3 != 0)]", 0]
+aiOrders set [_type, ["Build Struct", [_param0, _param1], false, "Order BuildStructure.sqs", _desc] ]; _type = _type + 1
+
+_desc = "Ask your group member get close to MHQ (MCV not support yet) to buy workers. Each members will buy workers independently if you send order to multiple units."
+_param0 = ["Workers Num", 10, "format[""%1"", 1+_this]", 0]
+aiOrders set [_type, ["Buy Workers", [_param0], false, "Order BuyWorkers.sqs", _desc] ]; _type = _type + 1
+
+_desc = "Force selected units to join other group. Custom soldiers may perform abnormal when they go rearm after having jointed other groups."
+_param0 = ["Group", count callsigns, "format[""%1"", callsigns select _this]", -1]
+aiOrders set [_type, ["Join", [_param0], true, "Order Join.sqs", _desc] ]; _type = _type + 1
+
+
+[] exec "Player\LoadSettings.sqs"
+~0.1
+[player, siPlayer] exec "Player\EquipPlayerRespawn.sqs"
+
+; flash start pos
+_marker = "Art0"
+_size = getMarkerSize _marker
+_marker setMarkerSize [1,1]
+_i = 0
+#FlashStart
+_marker setMarkerPos ( [getPos (mhq select _si), hiddenMarkerPos] select ((_i % 2) == 0) )
+ ~0.2
+ _i = _i + 1
+ ? _i < 10 : goto "FlashStart"
+
+
+ 
+forceMap false
+~0.1
+[player, player, false, 0] exec "Player\Dialog Equipment.sqs"
+~1
+@ !dialog
+[] exec "Player\DisplayGameInfo.sqs"
+[] exec "Player\InitCommanderUnit.sqs"
+
+~15
+PlayMusic (Musics0 select music0); 0 FadeMusic 0.35
+; hide start pos marker after some time
+~20
+20 FadeMusic 0.09
+_marker setMarkerPos hiddenMarkerPos
+_marker setMarkerSize _size
+
+_westName = []; _groups = groupMatrix select si0; _index = 0; _groupsAI = groupAiMatrix select si0
+{ _westName set [_index, format["%1", [name leader _x, "AI"] select (_x in _groupsAI)] ]; _index=_index+1 } forEach _groups;
+_eastName = []; _groups = groupMatrix select si1; _index = 0; _groupsAI = groupAiMatrix select si1
+{ _eastName set [_index, format["%1", [name leader _x, "AI"] select (_x in _groupsAI)] ]; _index=_index+1 } forEach _groups;
+LeaderNameMatrix = [_westName, _eastName]
+
+; EOF

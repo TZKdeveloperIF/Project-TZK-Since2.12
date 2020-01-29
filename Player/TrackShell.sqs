@@ -1,0 +1,58 @@
+; args: [vehicle, shell]
+
+; player globalchat "TRACK"
+_vehicle = _this select 0
+_shell = _this select 1
+
+_siEnemy = [si0, si1] select (siPlayer == si0)
+
+? ((upgMatrix select _siEnemy) select upgRadarArtillery) != 2: Exit
+
+_radars = [_siEnemy, stComm] call funcGetWorkingStructures
+
+? (count _radars == 0): Exit
+
+_detections = 0
+
+_timeStart = _time
+
+? (isNull _shell): Exit
+; _radarRange = [3000, 1.5*distMaxCCUpgraded] select (((upgMatrix select siPlayer) select upgCCdistance) == 2)
+_distMaxCC = [distMaxCC, (distMaxCC)/10] select (distMaxCC > 999)
+#Update
+	_posShell = getPos _shell
+	; ? (((getPos _shell) select 2) < 20): goto "Skip"
+	
+	{ if ((_x distance _shell) < 15*_distMaxCC) then { _detections = _detections + 1 } } foreach _radars
+
+	#Skip
+	~0.1
+	? !(isNull _shell): goto "Update"
+
+_lifetime = _time - _timeStart
+
+; avoid small arms
+? (_lifetime < 3.2): Exit
+
+? (_detections == 0): Exit
+
+_dist = 1000 - 5*_detections
+? (_dist < 100): _dist = 100
+_dist = random _dist
+
+_dir = random 360
+_posRel = [_dist*sin(_dir), _dist*cos(_dir)]
+
+_posX = ( ((getPos _vehicle) select 0) + (_posRel select 0) ) / 10
+_posY = ( ((getPos _vehicle) select 1) + (_posRel select 1) ) / 10
+
+_posX = _posX - _posX%1
+_posY = _posY - _posY%1
+
+pvArt = _detections + 100000*_siEnemy
+pvArtPos = _posX + 3000*_posY
+
+PublicVariable "pvArtPos"
+PublicVariable "pvArt"
+
+;player globalchat format["Shell removed, lifetime = %1, detections = %2, distance = %3, speed = %4", _time - _timeStart, _detections, [_posShell, _vehicle] call funcCalcDistanceToObject, _speed]

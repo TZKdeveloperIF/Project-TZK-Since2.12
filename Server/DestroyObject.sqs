@@ -1,0 +1,22 @@
+; args: [unit, object]
+
+_unit = _this select 0
+_object = _this select 1
+
+_vehicle = vehicle _unit
+? _unit == _vehicle || _unit != gunner _vehicle : exit
+
+; commanders mess things up
+? !(isNull (commander _vehicle)) : exit
+
+? (_unit distance _object) > 200 : exit
+
+_weapons = weapons _vehicle
+? (count _weapons) == 0 : exit
+_weapon = _weapons select 0
+_unit doTarget _object
+; player globalchat format["%1 FIRE %2", _unit, _object]
+~5
+? !(alive _unit) || !(alive _vehicle) : exit
+? (_vehicle ammo _weapon) == 0 : exit
+_vehicle fire _weapon

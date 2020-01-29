@@ -1,0 +1,21 @@
+; args: [vehicle, type, si]
+
+_plane = _this select 0
+_posveh = getpos _plane;
+_driver = driver _plane;
+
+rnd1 = random 15000 
+rndX = rnd1 - (rnd1 mod 1)
+
+rnd2 = random 15000 
+rndY = rnd2 - (rnd2 mod 1)
+
+
+? (isNull _driver) : Goto "end";
+
+_newposveh = [(_posveh  select 0)+rndX,(_posveh select 1)+rndY,(_posveh select 2) + 900]; 
+_plane setPos _newposveh;
+
+#End
+Exit
+

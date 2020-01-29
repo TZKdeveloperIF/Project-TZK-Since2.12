@@ -1,0 +1,26 @@
+; args: [unit, pos, [start, destination, distEject]]
+
+_unit = _this select 0
+
+_start = (_this select 2)select(0)
+_destination = (_this select 2)select(1)
+
+
+_transp = vehicle _unit
+? !(alive _unit) || _unit == _transp || _unit != driver _transp : exit
+
+
+? _start == _destination : _unit groupchat "START wp should different from DESTINATION wp!"; exit
+? (wpPlayer select(_start))select(0) == -1 : _unit groupchat "START wp isn't set!"; exit
+? (wpPlayer select(_destination))select(0) == -1 : _unit groupchat "DESTINATION wp isn't set!"; exit
+
+
+_vt = _transp call funcGetUnitTypeFromObject
+? _vt == -1 : _unit groupchat "This vehicle can't be recognized by AI as a transport!"; exit
+
+
+_unit groupchat format["Roger, performing transport duty, wp%1 to wp%2", _start, _destination]
+
+? _vt in (airTransport select siPlayer) : _this exec "Player\Order TransportDuty Air.sqs"; exit
+? _vt in (groundTransport select siPlayer) : _this exec "Player\Order TransportDuty Ground.sqs"; exit
+exit

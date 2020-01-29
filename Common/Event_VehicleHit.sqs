@@ -1,0 +1,60 @@
+; args: [[vehicle, source, amount], siUnit, score]
+
+; player globalchat format ["Event_VehicleHit.sqs: _this=%1", _this]
+
+_vehicle = (_this select 0) select 0
+_source = (_this select 0) select 1
+_amount = (_this select 0) select 2
+_siVehicle = _this select 1
+_scoreTotal = _this select 2
+
+~1
+
+_groupSource = group _source
+
+? !(_vehicle in ( mhq + (MCV select si0) + (MCV select si1) )) && (damage _vehicle) > 0.5 && (alive _vehicle) : [_vehicle] exec "Common\CheckDestroyHitVehicle.sqs"
+
+; check and handle disabled vehicle
+_crew = crew _vehicle
+_i = 0; { if (!(alive _x)) then { _crew set [_i, objNull] }; _i = _i + 1 } foreach _crew
+_crew = _crew - [objNull]
+; _crew now only contain alive units
+_unit = objNull
+_group = grpNull
+? (count _crew) > 0 : _unit = _crew select 0; _group = group _unit
+
+? !(alive _vehicle) : { if (local _x) then { unassignVehicle _x; _x action ["eject", _vehicle] } } forEach _crew; goto "CheckScore"
+
+; player globalchat format["canFire = %1", canFire _vehicle]
+? canFire _vehicle || count (magazines _vehicle) == 0 : goto "CheckCanMove"
+#GunDisabled
+{ _vehicle removeMagazines _x } forEach (magazines _vehicle)
+? !(_vehicle in ( mhq + (MCV select si0) + (MCV select si1) )) : [_vehicle] exec "Common\CheckDestroyDisabledVehicle.sqs"
+? _group != groupPlayer && _siVehicle == siRes : { if (local _x) then { unassignVehicle _x; _x action ["eject", _vehicle] } } forEach _crew; goto "CheckCanMove"
+? _group == groupPlayer : _unit groupChat "Vehicle weapons destroyed, need rearm"; goto "CheckCanMove"
+
+#CheckCanMove
+? canMove _vehicle : goto "CheckScore"
+? !(_vehicle in ( mhq + (MCV select si0) + (MCV select si1) )) : [_vehicle] exec "Common\CheckDestroyDisabledVehicle.sqs"
+
+#CheckScore
+_siSource = -1
+_giSource = [_groupSource, groupMatrix select si0] call funcGetIndex
+? _giSource != -1 : _siSource = si0; goto "CheckSendScore"
+
+_giSource = [_groupSource, groupMatrix select si1] call funcGetIndex
+? _giSource != -1 : _siSource = si1; goto "CheckSendScore"
+
+exit
+
+#CheckSendScore
+  _class = scVehicle
+  ? !(isNull _vehicle) && (_vehicle in mhq) : _class = scMHQ
+  
+  ; calc score
+  ? _amount > 1 : _amount = 1
+  _score = _scoreTotal*_amount
+  _score = _score - (_score % 1)
+  ? _score < 1 : _score = 1
+
+	? _siSource != _siVehicle && _scoreTotal > 0 : [_score, _class, _siSource, _giSource] exec "Common\SendScore.sqs"

@@ -1,0 +1,29 @@
+; args [object, type, si, gi]
+
+_MHQ = _this select 0
+_si = _this select 2
+
+mhq set [_si, _MHQ]
+
+
+_event = format["[_this, %1] exec ""Common\Event_MHQDestroyed.sqs""", _si]
+_MHQ addEventHandler ["killed", _event]
+
+
+_MHQ setRepairCargo 0
+_MHQ setAmmoCargo 0
+
+? !(local LocalServerObject) : goto "SkipServer"
+
+; SERVER
+[_MHQ, _si] exec "Server\UpdateSupportVehicle.sqs"
+
+#SkipServer
+
+? siPlayer != si0 && siPlayer != si1 : exit
+
+; PLAYER
+_MHQ addAction ["Heal/Repair", "Player\Action HealRepair.sqs"]
+_MHQ addAction ["Rearm", "Player\Action Rearm.sqs"]
+
+_MHQ say "MCV_Deployed_xj200"

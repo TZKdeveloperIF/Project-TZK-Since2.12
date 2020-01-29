@@ -1,0 +1,21 @@
+; args: [vehicle, type, si]
+
+_v = _this select 0
+
+_m = ["GuidedAT_APC_xj200", "GuidedAT_APC_xj200", "GuidedAT_APC_xj200", "GuidedAT_APC_xj200", "GuidedAT_APC_xj200", "GuidedAT_APC_xj200", "GuidedAT_APC_xj200", "50calE_xj200", "50calE_xj200", "50calE_xj200", "50calE_xj200", "50calE_xj200", "50calE_xj200", "50calE_xj200", "50calE_xj200", "50calE_xj200", "50calE_xj200", "50calE_xj200", "50calE_xj200", "50calE_xj200", "50calE_xj200", "50calE_xj200", "50calE_xj200"]
+_w = ["ATLauncherTank_xj200", "50calE_xj200"]
+
+~1
+? !(local _v) || !(alive _v) : [_v, _w, _m] exec "Common\EditEquipRearmData.sqs"; exit
+
+
+_mags = magazines _v
+_wpns = weapons _v
+
+{ _v removeMagazine _x} foreach _mags
+{ _v removeWeapon _x} foreach _wpns
+{_v addweapon _x} forEach _w
+~15
+{_v addMagazine _x} forEach _m
+
+[_v, _w, _m] exec "Common\EditEquipRearmData.sqs"; exit

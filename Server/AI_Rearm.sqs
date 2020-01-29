@@ -1,0 +1,60 @@
+; args: [unit, si, gi, vehicleRearm, type, truck]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_vehicleRearm = _this select 3
+_type = _this select 4
+_support = _this select 5
+
+? !(alive _unit) || !(alive _vehicleRearm) : exit
+
+? _gi == -1 : _gi = giCO select _si
+_timeRearm = 5
+? _unit != _vehicleRearm : _timeRearm = 30
+
+_rearmData = _vehicleRearm call funcGetRearmData
+_weapons = _rearmData select 0
+_mags = _rearmData select 1
+? (count _mags) == 0 : exit
+
+; CALC COST
+? _type == -1 && _unit != _vehicleRearm : format["ERROR: _type is -1 for vehicle '%1' in AI_Rearm", _vehicleRearm] call fDebugLog; exit
+_cost = 50
+? _type != -1 : _cost = ((unitDefs select _type) select udCost)/10
+? _cost < 50 : _cost = 50
+_cost = _cost - (_cost % 1)
+? _unit == _vehicleRearm : _cost = _cost + 50*("_x == magMine" count _mags)
+_money = (groupMoneyMatrix select _si) select _gi
+? _cost > _money : exit
+
+? _unit != _vehicleRearm : goto "RearmVehicle"
+
+#RearmInfantry
+	? !(local _vehicleRearm) : exit
+  _vehicleRearm setCombatMode "BLUE"
+  ~_timeRearm
+	? !(alive _vehicleRearm) : _vehicleRearm setCombatMode "YELLOW"; exit
+	? !(alive _support) : _vehicleRearm setCombatMode "YELLOW"; exit
+  removeAllWeapons _vehicleRearm
+  ; add custom throw/put
+  { _vehicleRearm addWeapon _x } forEach weaponsCustom
+  ? count (magazines _vehicleRearm) > 0 : format["ERROR: soldier '%1-%2' has mags in AI_Rearm.sqs", _vehicleRearm, typeOf _vehicleRearm] call fDebugLog; _vehicleRearm setCombatMode "YELLOW"; exit
+  { _vehicleRearm addMagazine _x } foreach _mags
+  ? count (weapons _vehicleRearm) > 0 : format["ERROR: soldier '%1-%2' has weapons in AI_Rearm.sqs", _vehicleRearm, typeOf _vehicleRearm] call fDebugLog; _vehicleRearm setCombatMode "YELLOW"; exit
+  { _vehicleRearm addWeapon _x } foreach _weapons
+  _vehicleRearm setCombatMode "YELLOW"
+  ; _vehicleRearm selectWeapon (primaryWeapon _vehicleRearm)
+  goto "RearmEnd"
+
+#RearmVehicle
+  if (local _vehicleRearm) then { { _vehicleRearm removeMagazines _x } foreach (magazines _vehicleRearm) } else { [_vehicleRearm] exec "Common\SendVehicleMagsRemove.sqs" }
+  ~_timeRearm
+  ? !(alive _vehicleRearm) || !(alive _support) : exit
+  ? count (magazines _vehicleRearm) == 0 : [_vehicleRearm] exec "Common\SendVehicleMagsAdd.sqs"
+  goto "RearmEnd"
+
+#RearmEnd
+  ? _cost > 0 : [_si, _gi, _cost] exec "Server\MoneySpend.sqs"
+  exit
+

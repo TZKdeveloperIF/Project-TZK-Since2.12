@@ -1,0 +1,110 @@
+; args: [unit, truck, <vehicle>]
+
+_unit = _this select 0
+_support = _this select 1
+_vehicle = vehicle _unit
+? (count _this) > 2 : _vehicle = _this select 2
+
+_timeHeal = 5; _bIsCrew = (_unit in _support)
+
+? _unit == _vehicle : goto "UnitOnFoot"
+
+#UnitInVehicle
+_type = _vehicle call funcGetUnitTypeFromObject
+? _type == -1 : goto "CheckStruct"
+_cost = (unitDefs select _type) select udCost
+goto "CheckDamage"
+
+#CheckStruct
+_type = _vehicle call funcGetStructTypeFromObject
+? _type == -1 : format["ERROR: object type not found for '%1' in HealRepair.", _vehicle] call fDebugLog; exit
+_cost = (structDefs select _type) select sdCost
+
+#CheckDamage
+_damage = damage _vehicle
+? _damage == 0 : _unit groupChat "No repairs needed."; goto "CheckCrew"
+
+_costRepair = _damage*_cost*factorRepairCost
+_costRepair = _costRepair - (_costRepair % 1)
+? _costRepair < 100 : _costRepair = 100
+_money = (groupMoneyMatrix select siPlayer) select giPlayer
+? _costRepair > _money : goto "NotEnoughCash"
+? _costRepair > 0 : [_costRepair] exec "Player\SendMoneySpent.sqs"
+
+_timeRepair = _damage*_cost*factorRepairTime
+_timeRepair = _timeRepair - (_timeRepair % 1)
+? _timeRepair < 10 : _timeRepair = 10
+? _timeRepair > 60 : _timeRepair = 60
+? dev : _timeRepair = 5
+
+_msg = format["Repairs started, ready in %1s ...", _timeRepair]
+? _unit == player : hint _msg
+_unit groupchat _msg
+_timeRepairsComplete = time + _timeRepair
+#Repair
+	? !_bIsCrew : if !(alive _unit) then {exit}
+	? !(alive _vehicle) : _msg = "Repairs aborted, vehicle destroyed."; goto "RepairsAborted"
+	? !(alive _support) : _msg = "Repairs aborted, support plane destroyed."; goto "RepairsAborted"
+	? (_vehicle distance _support) > 2*rangeSupportPlane : if (([positionAttach, (getPos _vehicle)] call funcDistH) > 100 && ([positionAttach, (getPos _support)] call funcDistH) > 100) then {_msg = "Repairs aborted, support plane out of range"; goto "RepairsAborted"}
+	? (damage _vehicle) > _damage : _msg = "Repairs aborted, vehicle hit."; goto "RepairsAborted"
+	? time > _timeRepairsComplete : goto "RepairsComplete"
+
+	; _lastText = _text
+	; _text = format ["Reparing Vehicle %1%2", 100 - (100*(_damageVirtual - (_damageVirtual % 0.01))), "%"]
+	; ? (_unit == player && _text != _lastText): titleText [_text, "PLAIN", 0.05]
+	~1
+	goto "Repair"
+
+#RepairsComplete
+	_vehicle setDamage 0
+	_msg = format["Repairs complete. $%1", _costRepair]
+  ? _unit == player : hint _msg
+  _unit groupchat _msg
+
+#CheckCrew
+_crew = crew _vehicle
+_c = count _crew
+_i = 0
+#HealCrew
+  ? !(_i < _c ): exit
+  _u = _crew select _i
+	? !(alive _u ) || (damage _u) == 0 : _i = _i + 1; goto "HealCrew"
+	? !(alive _support): exit
+
+  _msg = "Healing started ..."
+  ? _u == player : hint _msg
+  ? _u != player : _u groupchat _msg
+	~_timeHeal
+  ? !(alive _support) : exit
+  ? !(alive _u) : _i = _i + 1; goto "HealCrew"
+	_u setDamage 0
+  _msg = "Healing complete."
+  ? _u == player : hint _msg
+  ? _u != player : _u groupchat _msg
+
+  _i = _i + 1
+  goto "HealCrew"
+  exit
+
+#UnitOnFoot
+	? !(alive _unit) || (damage _unit) == 0 : exit
+  _msg = "Healing started ..."
+  ? _unit == player : hint _msg
+  _unit groupchat _msg
+	~_timeHeal
+	? !(alive _unit): exit
+	_unit setDamage 0
+  _msg = "Healing Complete."
+  ? _unit == player : hint _msg
+  _unit groupchat _msg
+  exit
+
+#RepairsAborted
+  ? _unit == player : hint _msg
+  _unit groupchat _msg
+  exit
+  
+#NotEnoughCash
+	_text = format["Not enough cash. Need $%1.", _costRepair]
+	_unit groupchat _text
+  exit

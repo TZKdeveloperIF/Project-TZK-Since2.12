@@ -1,0 +1,51 @@
+; args: [unit, si, gi, vehicleHeal, type, support]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_vehicleHeal = _this select 3
+_type = _this select 4
+_support = _this select 5
+
+_timeHeal = 5
+_cost = 0
+? _unit == _vehicleHeal : goto "UnitOnFoot"
+
+#UnitInVehicle
+_type = _vehicleHeal call funcGetUnitTypeFromObject
+? _type == -1 : format["ERROR: _type is -1 for vehicle '%1' in AI_Heal", _vehicleHeal] call fDebugLog; exit
+_damage = damage _vehicleHeal
+
+; CALC COST
+_cost = (unitDefs select _type) select udCost
+
+; CALC REPAIR TIME
+_timeRepair = _damage*_cost*factorRepairTime
+? _timeRepair < 10 : _timeRepair = 10
+? _timeRepair > 60 : _timeRepair = 60
+
+~_timeRepair
+? !(alive _vehicleHeal) || !(alive _support) || (damage _vehicleHeal) > _damage : exit
+
+_vehicleHeal setDamage 0
+
+_crew = crew _vehicleHeal
+_c = count _crew
+_i = 0
+#HealCrew
+  ? !(_i < _c) : exit
+  _u = _crew select _i
+	? !(alive _u) || (damage _u) == 0 : _i = _i + 1; goto "HealCrew"
+	~_timeHeal
+  ? !(alive _support) : exit
+  ? !(alive _u) : _i = _i + 1; goto "HealCrew"
+	_u setDamage 0
+  _i = _i + 1
+  goto "HealCrew"
+  exit
+
+#UnitOnFoot
+	~_timeHeal
+	? !(alive _vehicleHeal) || !(alive _support) : exit
+	_unit setDamage 0
+  exit

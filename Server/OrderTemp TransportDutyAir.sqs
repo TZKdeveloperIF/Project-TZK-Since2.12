@@ -1,0 +1,188 @@
+; args: [unit, si, gi, [wp, wp, dist, transport type (defined by TransportDutyTypeDefs), duration]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+
+; Get Correct Parameters. Need Pay Attention To Coefficients
+_posPickup = ((wpCO select _si) select (_params select 0))
+_posEject = ((wpCO select _si) select (_params select 1))
+_distEject = 50*((_params select 2) + 1)
+
+_duration = 180 * ((_params select 4) + 1)
+
+; Initialize The Order Script
+_timeStart = time; _timeAbort = _timeStart + _duration; _timeUp = _timeStart; _cycle = 30; _loop = 0
+call temporarySet
+_waitloop = 0
+
+
+; Wait For Unit Finish Its Busy-Work
+#WaitReady
+~2
+? time > _timeAbort : 	call temporaryClear; exit
+? !call temporaryCheck : exit
+? call busyCheck : goto "WaitReady"
+
+; Main Part Of Temporary Order
+
+; Use busy to prevent AI from automatically moving for support in Temporary Transport Order
+call busySet
+
+_groups = groupMatrix select _si
+#Update
+	_gi = [(group _unit), _groups] call funcGetIndex
+	_transp = vehicle _unit
+	? _unit != driver _transp : goto "Sleep"
+	
+	_posPickup set [2, 150]; _posEject set [2, 150]
+
+	_distToPickup = [getPos _transp, _posPickup] call funcDistH
+	_crew = call Cargo_transp
+	? _distToPickup > 200 && _crew > 2 : goto "MoveEject"
+	? _distToPickup < 200 && _crew > 10 : goto "MoveOut"
+	? _distToPickup < 200 && ((getPos _transp) select 2) < 5 : _posMove = [_posPickup, 50, 50] call funcGetRandomPos; goto "WaitForCargo"
+	? _distToPickup < 200 && ((getPos _transp) select 2) > 5 : _posMove = [_posPickup, 50, 50] call funcGetRandomPos; goto "PrepareLand"
+	
+	#MovePickup
+		_transp flyInHeight 150 + random 50
+		[_transp] exec "Common\SendTransportTurnOn.sqs"
+		_posMove = [_posPickup, 50, 50] call funcGetRandomPos
+		[_unit, _posMove] call funcMoveAI
+		
+	_timeRepeat = time + 60
+	#MovePickup_Check
+	
+		_timeUp = time + 10
+		@ ( time > _timeUp || !call temporaryCheck )
+		? !call temporaryCheck : goto "EOF"
+		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
+  
+		? time > _timeRepeat : [_unit, _posMove] call funcMoveAI; _timeRepeat = time + 60
+		? ([_posMove, getPos _transp] call funcDistH) > 200 : goto "MovePickup_Check"
+
+	call busyClear
+	[_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"
+	#WaitSupportDone
+	
+		_timeUp = time + 5
+		@ ( time > _timeUp || !call temporaryCheck )
+		? !call temporaryCheck : goto "EOF"
+		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
+		
+		? (damage _transp) < 0.1 : call busyClear
+		? call busyCheck : goto "WaitSupportDone"
+
+	call busySet
+	#PrepareLand
+		_transp flyInHeight 150
+		
+	#PrepareLand_Check
+		[_unit, _posMove] call funcMoveAI
+	
+		_timeUp = time + 5
+		@ ( time > _timeUp || !call temporaryCheck )
+		? !call temporaryCheck : goto "EOF"
+		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
+		
+		? ([_posMove, getPos _transp] call funcDistH) > 200 || (speed _transp) > 20 : goto "PrepareLand_Check"
+
+	#Land
+		_transp flyInHeight 50
+		[_unit, _posMove] call funcMoveAI
+		
+	_timeRetry = time + 60
+	#Land_Check
+	
+		_timeUp = time + 5
+		@ ( time > _timeUp || !call temporaryCheck )
+		? !call temporaryCheck : goto "EOF"
+		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
+		
+		? time > _timeRetry : goto "PrepareLand"
+		? !(unitReady _unit) && !( ([getPos _transp, _posMove] call funcDistH) < 50 && (speed _transp) < 20 ) : goto "Land_Check"
+
+	doStop _unit
+	_transp land "LAND"
+	_timeRetry = time + 60
+	#Landed_Check
+	
+		_timeUp = time + 5
+		@ ( time > _timeUp || !call temporaryCheck )
+		? !call temporaryCheck : goto "EOF"
+		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
+		
+		? time > _timeRetry : goto "PrepareLand"
+		? ((getPos _transp) select 2) > 5 : goto "Landed_Check"
+
+	#WaitForCargo
+		_transp engineOn false
+		[_transp] exec "Common\SendTransportTurnOn.sqs"
+		
+		_timeUp = time + 30
+		@ ( time > _timeUp || !call temporaryCheck )
+		? !call temporaryCheck : goto "EOF"
+		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
+
+		_waitloop = _waitloop + 1; if ( _waitloop > 5 ) then { goto "MoveOut" }
+		? call Cargo_transp > 10 || ( (_type in TransportHindE) && call Cargo_transp >= 8 ) || ( (_type in (TransportSmallHeliW+TransportSmallHeliE)) && call Cargo_transp >= 5 ): goto "MoveOut"
+		? ((getPos _transp) select 2) > 5 : goto "PrepareLand"
+		? call Cargo_transp < 4 : goto "WaitForCargo"
+		? call Cargo_transp > _crew : _crew = call Cargo_transp; goto "WaitForCargo"
+
+	#MoveOut
+		_waitloop = 0
+		_transp flyInHeight 40
+		_posMove = [_posEject, 50, 50] call funcGetRandomPos
+		[_unit, _posMove] call funcMoveAI
+		
+		; wait for take off
+		_timeUp = time + 30
+		@ ( time > _timeUp || !call temporaryCheck )
+		? !call temporaryCheck : goto "EOF"
+		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
+
+	#MoveEject
+		[_transp] exec "Common\SendTransportTurnOff.sqs"
+		_transp flyInHeight 150 + random 50
+		_posMove = [_posEject, 50, 50] call funcGetRandomPos
+		[_unit, _posMove] call funcMoveAI
+		
+	_timeRepeat = time + 60
+	#MoveEject_Check
+	
+		_timeUp = time + 5
+		@ ( time > _timeUp || !call temporaryCheck )
+		? !call temporaryCheck : goto "EOF"
+		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
+
+		? time > _timeRepeat : [_unit, _posMove] call funcMoveAI; _timeRepeat = time + 60
+		? ([_posMove, getPos _transp] call funcDistH) > _distEject : goto "MoveEject_Check"
+
+	[_transp, _si] exec "Common\EjectAllCargo.sqs"
+	
+		_timeUp = time + 10
+		@ ( time > _timeUp || !call temporaryCheck )
+		? !call temporaryCheck : goto "EOF"
+		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
+		
+	goto "MovePickup"
+
+
+
+; End Of File
+#EOF
+call busyClear
+call temporaryClear
+exit
+
+
+#Sleep
+_loop = (time-_timeStart)/_cycle; _loop = 1 + _loop - _loop%1
+_timeUp = _loop*_cycle + _timeStart
+
+@ ( time > _timeUp || !call temporaryCheck )
+? !call temporaryCheck : goto "EOF"
+? !(alive _unit) || _vehicle != (vehicle _unit) || time > _timeAbort : goto "EOF"
+goto "Update"

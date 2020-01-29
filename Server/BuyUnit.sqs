@@ -1,0 +1,28 @@
+; args: [typeUnit, driver, gunner, commander, si, giJoin, giBuyer, oFactory]
+
+_type = _this select 0
+_driver = _this select 1
+_gunner = _this select 2
+_commander = _this select 3
+_si = _this select 4
+_giJoin = _this select 5
+_giBuyer = _this select 6
+_factory = _this select 7
+
+
+_bVehicle = false
+? _type < maxUnitTypes : if (count ((unitDefs select _type) select udCrew) > 0) then { _bVehicle = true }
+_unitsToBuild = 0
+? !(_bVehicle): _unitsToBuild = 1
+? (_bVehicle): _unitsToBuild = _driver; _unitsToBuild = _unitsToBuild + _gunner; _unitsToBuild = _unitsToBuild + _commander
+
+@!(mutexBuildingQueue)
+mutexBuildingQueue = true
+
+_unitsInProgress = ((groupUnitsBuildingMatrix select _si) select _giJoin)
+_size = (count units ((groupMatrix select _si) select _giJoin)) + _unitsInProgress
+? ((_unitsToBuild + _size) > maxGroupSize): [_type, _si, _giBuyer, _giJoin] exec "Server\Info\GroupFull.sqs"; mutexBuildingQueue = false; exit
+
+? (isNull _factory || !(alive _factory)): player globalchat "TODO: send factory destroyed message"; mutexBuildingQueue = false; exit
+
+[_factory, _type, _driver, _gunner, _commander, _si, _giJoin, _giBuyer] exec "Server\AddToUnitQueue.sqs"

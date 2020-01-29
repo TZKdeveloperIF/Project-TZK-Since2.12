@@ -1,0 +1,24 @@
+; args: gi
+
+_gi = _this
+
+_value = _gi + siPlayer * GroupsNum
+pvAICheck = -1; pvCheckAI = _value; publicVariable "pvCheckAI"
+
+@(pvAICheck != -1)
+_value = pvAICheck
+pvAICheck = -1
+
+_gi = _value % GroupsNum
+_si = ((_value - _gi) / GroupsNum) % 2
+_isAI = (_value - _gi - _si * GroupsNum) % (2 * GroupsNum)
+
+? _isAI == 0 || _si != siPlayer : exit
+
+_group = (groupMatrix select _si) select _gi
+_groupsAI = groupAiMatrix select _si
+
+@!(mutexGroupIsAI)
+mutexGroupIsAI = true
+? !(_group in _groupsAI) : _groupsAI set [count _groupsAI, _group]
+mutexGroupIsAI = false

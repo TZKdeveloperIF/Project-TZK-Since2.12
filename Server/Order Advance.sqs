@@ -1,0 +1,85 @@
+; args: [unit, si, gi, [wp, distPerMinute]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+
+_pos = ((wpCO select _si) select (_params select 0))
+_distPerMin = 100*(1 + (_params select 1))
+
+_idOrder = ((orderMatrix select _si) select _gi) select 0
+
+#WaitReady
+~2
+? call busyCheck : goto "WaitReady"
+
+_timeCheckSupport = time + 30 + random 60
+_bCheckFireGun = false
+_bCheckDropBomb = true
+
+_isMiner = false
+_type = _unit call funcGetUnitTypeFromObject
+? _type == (utMiner select _si) : _isMiner = true
+_bCheckMines = true
+
+_sleep = 30
+
+_timeNextStep = time
+; ? _unit != vehicle _unit : _timeNextStep = _timeNextStep + 60
+
+#Update
+	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
+	? call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {exit} else {goto "Sleep"}
+	
+	? !(alive _unit) : exit
+	? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+
+	_vehicle = vehicle _unit
+	
+	? _unit != driver _vehicle : _sleep = 30; goto "Sleep"
+	
+	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 30; goto "Sleep"
+
+  _bCheckDropBomb = !_bCheckDropBomb 
+	? _bCheckDropBomb && _unit == _vehicle && magSatchel in (magazines _unit) : [_unit, _si, _gi] exec "Server\AI_CheckDropBomb.sqs"; _sleep = 5; goto "Sleep"
+	
+  _bCheckMines = !_bCheckMines
+	? _isMiner && _unit == _vehicle && _bCheckMines : [_unit, _si, _gi] exec "Server\AI_CheckDisableMines.sqs"; _sleep = 5; goto "Sleep"
+	
+  #CheckStep
+  ? time < _timeNextStep : goto "NoStep"
+    _timeNextStep = _timeNextStep + 60
+
+    ; calc new pos
+    _dist = [getPos _unit, _pos] call funcDistH
+    ? _dist < _distPerMin : _posMove = [_pos, 20, 50] call funcGetRandomPos; goto "NoStep"
+    _vect = [_pos, getPos _unit] call funcVectorSub
+    
+    ; player globalchat format["_distPerMin/_dist = %1", _distPerMin/_dist ]
+
+    _posMove = [getPos _unit, [_vect, _distPerMin/_dist] call funcVectorScale] call funcVectorAdd
+    _posMove = [_posMove, 20, 50] call funcGetRandomPos
+  #NoStep
+
+	_distToDest = [getPos _unit, _posMove] call funcDistH
+
+	? _distToDest > 10 : goto "Move"
+	[_unit, true] exec "Server\StopAI.sqs"
+	_gunner = gunner _vehicle
+  _sleep = 30
+	? _unit != _vehicle && !(isNull _gunner) && isNull(commander _vehicle) : [_gunner, _si, _gi] exec "Server\AI_CheckFireGun.sqs"; goto "Sleep"
+	[_unit, _si, _gi] call funcWatch
+  goto "Sleep"
+
+  #Move
+	[_unit, _posMove] call funcMoveAI
+	_sleep = [30, 0.1*_distToDest] select (_distToDest < 300)
+
+	#Sleep
+	~_sleep
+	
+	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
+	? call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {exit} else {goto "Sleep"}
+  ? call busyCheck : goto "Sleep"
+	goto "Update"

@@ -1,0 +1,45 @@
+; args: [unit, pos, [Amount of Workers to Buy]]
+
+_unit = _this select 0
+_pos = _this select 1
+_amount = ((_this select 2) select 0) + 1
+
+
+if (groupPlayer != (groupCommander select siPlayer)) then {_unit groupChat "Only allow Commander to buy workers."; exit}
+? !(alive _unit) : exit
+? _unit != vehicle _unit : if (_unit == driver _unit) then {_unit groupChat "Only allow asking infantry to do this."}; exit
+_si = siPlayer
+_mhq = mhq select _si
+_res = [getPos _unit, _si, [[utMHQ0],[utMHQ1]] select _si, []] call funcGetClosestVehicle
+? (_res select 1) > 1200 : _unit groupChat "MHQ too far away from me. Abort to buy workers."; exit
+
+
+_order = []; _id = -1; call orderNew
+
+_posMHQ = getPos (_res select 0)
+_unit groupChat format["Roger, moving to %1 - %2.", "MHQ", _posMHQ call funcCalcTownDirDistFromPos]
+
+? ([getPos _unit, _posMHQ] call funcDistH) < 150 : goto "Buy"
+_timeAbort = time + 5*60
+#Move
+  [_unit, _posMHQ] exec "Player\MovePos.sqs"
+  ~5
+  ? !(alive _unit) : exit
+  ? call orderCheck : exit
+  ? time > _timeAbort : exit
+  ? ([getPos _unit, _posMHQ] call funcDistH) > 150 : goto "Move"
+
+#Buy
+doStop _unit
+_object = (_res select 0)
+? !alive _object || isNull _object : _unit groupChat "MHQ is unavailable. Abort buying workers."; exit
+
+_i = 1
+#Loop
+[_unit] exec "Player\SendAddWorker.sqs"
+_i = _i + 1
+? _i > _amount : exit
+~1
+goto "Loop"
+
+; EOF

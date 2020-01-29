@@ -1,0 +1,24 @@
+; args: [vehicle, pos, unit]
+
+_vehicle = _this select 0
+_unit = _this select 2
+
+? isNull player : exit
+? (group _unit) != groupPlayer : exit
+
+_idAlt = -1
+? _unit != player && _unit == (driver _vehicle) : _idAlt = _vehicle addAction ["Set Flight Altitude", "Player\Action SetFlightAltitude.sqs"]
+_idEject = -1
+
+? _unit == player : goto "Wait"
+
+#Reveal
+ _unit reveal _vehicle
+ ~0.01
+ ? (alive _unit) && _unit == (driver _vehicle) : goto "Reveal"
+
+#Wait
+@((driver _vehicle) != _unit)
+
+? _idAlt != -1 : _vehicle removeAction _idAlt
+? _idEject != -1 : _vehicle removeAction _idEject

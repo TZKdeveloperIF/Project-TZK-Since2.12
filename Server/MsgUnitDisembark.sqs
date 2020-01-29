@@ -1,0 +1,25 @@
+#Start
+
+@!(isNull pvDisembarkUnit)
+
+_u = pvDisembarkUnit
+pvDisembarkUnit = objNull
+
+? !(local _u) : goto "Start"
+
+_v = vehicle _u; _driver = driver _v; _gunner = gunner _v
+_pos = getPos _v
+[_v, _driver, _gunner] doMove _pos
+doStop [_v, _driver, _gunner]
+
+_i = 0
+#LowSpeed
+~1
+[_v, _driver, _gunner] doMove _pos
+doStop [_v, _driver, _gunner]
+_i = _i + 1
+? speed _v > 20 && _i < 5 : goto "LowSpeed"
+
+? alive _u && _u != _v : unassignVehicle _u; _u action ["EJECT", _v]
+
+goto "Start"

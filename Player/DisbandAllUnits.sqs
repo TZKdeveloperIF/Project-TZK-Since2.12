@@ -1,0 +1,63 @@
+; args: [[unit tracked]]
+
+_unitselect = (_this select 0) select 0
+_groups = [groupPlayer]
+_dlg = createDialog "DisbandGroupDialog"
+
+	btnDisbandGroupLeader = false
+	btnDisbandGroupOK = false
+	btnDisbandGroupExit = false
+	btnDisbandGroupInf = false
+	btnDisbandGroupGunner = false
+
+#Update
+	? !(dialog) : exit
+	? !(alive player) : closeDialog 0; exit
+		? btnDisbandGroupLeader : closeDialog 0; goto "BeginDisbandGroup"
+		? btnDisbandGroupOK : closeDialog 0; goto "BeginDisbandGroup"
+		? btnDisbandGroupExit : btnDisbandGroupExit  = false; closeDialog 0; exit
+		? btnDisbandGroupInf : closeDialog 0; goto "BeginDisbandGroup"
+		? btnDisbandGroupGunner : closeDialog 0; goto "BeginDisbandGroup"
+~0.1
+goto "Update"
+
+#BeginDisbandGroup
+? (group _unitselect) in ((workerGroups select siPlayer) + (townGroups select siPlayer)) : player groupchat "Not allowed to disband town or worker groups"; exit
+player groupchat "Process started: disbanding group of selected unit....";
+
+	_members = units _unitselect; _units = []
+	
+	? btnDisbandGroupLeader : _units = _members; btnDisbandGroupLeader = false
+	? btnDisbandGroupOK : _units = _members - [leader _unitselect]; btnDisbandGroupOK = false
+	? btnDisbandGroupInf : { if (_x == vehicle _x) then {_units set [count _units, _x]} } forEach _members; btnDisbandGroupInf = false
+	? btnDisbandGroupGunner : { if (_x == vehicle _x || _x != gunner vehicle _x) then {_units set [count _units, _x]} } forEach _members; btnDisbandGroupGunner = false
+
+	~1
+	? giPlayer == giCO select siPlayer : _groups = _groups + (groupAiMatrix select siPlayer)
+
+	_num = 0; _i = 0; _c = count _units
+	#CheckUnit
+  	? !(_i < _c) : goto "EventDone" 
+  		_u = _units select _i
+  		_i = _i + 1
+
+		? !(alive _u) : player groupchat "Won't disband dead unit... You earn: 0$."; goto "CheckUnit"
+		? !((group _u) in _groups) : player groupchat "Disband failed on group-changed-unit."; goto "CheckUnit"
+		? _u == vehicle _u && _u != leader group _u: goto "SkipKill"
+
+		_u setDamage 1
+		~1
+
+		#SkipKill
+		~1
+		? _u != leader _u : deleteVehicle _u
+		_num = _num + 1
+		[-_costcalc] exec "Player\SendMoneySpent.sqs"
+	goto "CheckUnit"
+
+#EventDone
+
+player groupchat format ["GroupSize before process start: %1, number of disbanded untis: %2. Leader%3 alive.", count _members, _num, [" not", ""] select (alive leader group _unitselect)]
+
+#Exit
+exit

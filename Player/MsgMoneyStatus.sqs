@@ -1,0 +1,26 @@
+; args: [amount, value]
+
+_amount = _this select 0
+_value = _this select 1
+
+
+_gi = _value % GroupsNum
+_value = (_value - _gi)/GroupsNum
+
+_si = _value
+
+;player globalchat format["MsgMoneyStatus.sqs: _amount=%1, _si=%2, _gi=%3", _amount, _si, _gi]
+
+? _gi < 0 : exit
+? _si == si0 || _si == si1 : goto "Set"
+"ERROR: _si not si0 or si1 in MsgMoneyChange.sqs" call fDebugLog
+exit
+
+#Set
+@!(mutexMoneyStatus)
+mutexMoneyStatus = true
+? (groupMoneyMatrix select _si)select(_gi) == _amount : mutexMoneyStatus = false; Exit
+? (siPlayer == _si) && (giPlayer == _gi): player groupchat format ["You have $%1", _amount]
+
+? local LocalServerObject : mutexMoneyStatus = false; Exit
+(groupMoneyMatrix select _si) set [_gi, _amount]; mutexMoneyStatus = false

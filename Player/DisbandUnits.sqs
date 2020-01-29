@@ -1,0 +1,49 @@
+; args: [units]
+
+_units = _this select 0
+? count _units > 1 : _unitsToRemove = []; {if !(_x in units player) then { _unitsToRemove set [count _unitsToRemove, _x] } } forEach _units; _units = _units - _unitsToRemove
+
+_groups = [groupPlayer]
+? giPlayer == giCO select siPlayer : _groups = _groups + (groupAiMatrix select siPlayer) + (workerGroups select siPlayer); goto "SkipSuperiorCheck"
+
+_index = 0; _gis = []; _groupsAI = groupAiMatrix select siPlayer; _siGroups = groupMatrix select siPlayer; _groupNames = groupNameMatrix select siPlayer
+{ if (_x in _groupsAI) then { _gis set [count _gis, _index] }; _index = _index + 1} foreach _siGroups
+{ if ( (["Commander"] + callsigns) select (((aiSetting select siPlayer) select _x) select aisSuperior) == _groupNames select giPlayer ) then { _groups = _groups + [_siGroups select _x] } } forEach _gis
+
+#SkipSuperiorCheck
+
+; player globalchat format["_groups = %1", _groups]
+
+_i = 0
+_c = count _units
+#CheckUnit
+  ? !(_i < _c) : exit 
+  _u = _units select _i; _i=_i+1
+  
+; ? !(alive _u) : player groupchat "You can't disband dead units."; goto "CheckUnit"
+
+  _crew = crew _u
+  ; player globalchat format["crew _u = %1", crew _u]
+  
+  ? giPlayer != (giCO select siPlayer) && count _crew == 0 : player groupchat "Only commanders can disband empty vehicles."; goto "CheckUnit"
+
+  ; non-empty vehicle
+  ? count _crew > 0 && !(_u in _crew) : player groupchat "You can't disband non-empty vehicles."; goto "CheckUnit"
+
+  ; empty vehicle
+  ? count _crew == 0 && (_u in ( mhq + (MCV select si0) + (MCV select si1) )) : player groupchat "You can't disband MHQ/MCV."; goto "CheckUnit"
+  ? count _crew == 0 : player groupchat "Disbanding vehicle."; goto "SkipKill"
+
+  ; check if unit is a non-leader in allowed groups
+  ? !((group _u) in _groups) : player groupchat "You are not allowed to disband this unit."; goto "CheckUnit"
+; ? _u == leader _u : player groupchat "You can't disband group leaders."; goto "CheckUnit"
+
+  ? _u == vehicle _u && _u != leader _u: player groupchat "Disbanding unit."; goto "SkipKill"
+  player groupchat "Disbanding unit."
+  _u setDamage 1
+  ~1
+  #SkipKill
+  ~1
+  ? _u == leader _u && !((group _u) in (workerGroups select siPlayer)) : player groupchat "Leader has been killed but won't be deleted."; goto "CheckUnit"
+  deleteVehicle _u
+  goto "CheckUnit"

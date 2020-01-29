@@ -1,0 +1,181 @@
+; args: [unit, si, gi, [wp, wp, dist, transport type (defined by TransportDutyTypeDefs), duration]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+
+; Get Correct Parameters. Need Pay Attention To Coefficients
+_posPickup = ((wpCO select _si) select (_params select 0))
+_posEject = ((wpCO select _si) select (_params select 1))
+_distEject = 50*((_params select 2) + 1)
+_indexTranspType = 1*(_params select 3)
+_duration = 180 * ((_params select 4) + 1)
+
+; Check Whether Unit Fits The Parameters Of The Temporary Order
+
+? (TransportDutyTypeDefs select _indexTranspType) == "Car" :			_typesTransp = [TransportCarW, TransportCarE] select _si;
+? (TransportDutyTypeDefs select _indexTranspType) == "Truck" :			_typesTransp = [TransportTruckW, TransportTruckE] select _si;
+? (TransportDutyTypeDefs select _indexTranspType) == "Zodiac" :			_typesTransp = [TransportZodiacW, TransportZodiacE] select _si;
+? (TransportDutyTypeDefs select _indexTranspType) == "Ship" :			_typesTransp = [TransportShipW, TransportShipE] select _si;
+? (TransportDutyTypeDefs select _indexTranspType) == "APC" : 			_typesTransp = [Transport6APCW+Transport8APCW, Transport6APCE+Transport8APCE] select _si;
+? (TransportDutyTypeDefs select _indexTranspType) == "Land" : 			_typesTransp = [Transport6APCW+Transport8APCW+TransportShipW+TransportZodiacW+TransportTruckW+TransportCarW, Transport6APCE+Transport8APCE+TransportShipE+TransportZodiacE+TransportTruckE+TransportCarE] select _si;
+? (TransportDutyTypeDefs select _indexTranspType) == "Transport Heli" :	_typesTransp = [TransportHeliW, TransportHeliE] select _si;
+? (TransportDutyTypeDefs select _indexTranspType) == "Mi24" :			_typesTransp = [[], TransportHindE] select _si;
+_vehicle = vehicle _unit
+? _unit == _vehicle : exit
+_vt = _vehicle call funcGetUnitTypeFromObject
+? !(_vt in _typesTransp) : exit
+
+; Check Whether Unit In Another Temporary Order (Except For Set Flight Altitude, Clear Temporary Order, Etc)
+? call temporaryCheck : exit
+
+; Initialize The Order Script
+? (TransportDutyTypeDefs select _indexTranspType) in ["Transport Heli", "Mi24"] : _this exec "Server\OrderTemp TransportDutyAir.sqs"; exit
+_timeStart = time; _timeAbort = _timeStart + _duration; _timeUp = _timeStart; _cycle = 30; _loop = 0
+call temporarySet
+
+
+; Wait For Unit Finish Its Busy-Work
+#WaitReady
+~2
+? time > _timeAbort : 	call temporaryClear; exit
+? !call temporaryCheck : exit
+? call busyCheck : goto "WaitReady"
+
+; Main Part Of Temporary Order
+
+; Use busy to prevent AI from automatically moving for support in Temporary Transport Order
+call busySet
+
+_groups = groupMatrix select _si
+#Update
+	_gi = [(group _unit), _groups] call funcGetIndex
+	_transp = vehicle _unit
+	? _unit != driver _transp : goto "Sleep"
+	
+	_distToPickup = [getPos _transp, _posPickup] call funcDistH
+	_crew = call Cargo_transp
+	? _distToPickup > 200 && _crew > 2 : goto "MoveEject"
+	? _distToPickup < 200 && _crew > 10 : goto "MoveEject"
+
+	#MovePickup
+		[_transp] exec "Common\SendTransportTurnOn.sqs"
+		_posMove = [_posPickup, 20, 20] call funcGetRandomPos
+		[_unit, _posMove] call funcMoveAI
+		_unit doWatch _posPickup
+		
+	_timeRepeat = time + 60
+	#MovePickup_Check
+	
+		_timeUp = time + 10
+		@ ( time > _timeUp || !call temporaryCheck )
+		? !call temporaryCheck : goto "EOF"
+		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
+
+		? time > _timeRepeat : [_unit, _posMove] call funcMoveAI; _timeRepeat = time + 60
+		? call Cargo_transp >= 4 : goto "MoveEject"
+		? ([_posMove, getPos _transp] call funcDistH) > 200 : goto "MovePickup_Check"
+
+	call busyClear
+	[_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"
+	#WaitSupportDone
+	
+		_timeUp = time + 5
+		@ ( time > _timeUp || !call temporaryCheck )
+		? !call temporaryCheck : goto "EOF"
+		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
+		
+		? (damage _transp) < 0.1 : call busyClear
+		? call busyCheck : goto "WaitSupportDone"
+	? ([getPos _transp, _posPickup] call funcDistH) > 200 : goto "MovePickup"
+	
+	call busySet
+	#MovePickup_WaitReady
+		[_unit, getPos _transp] call funcMoveAI
+		
+		_timeUp = time + 2
+		@ ( time > _timeUp || !call temporaryCheck )
+		? !call temporaryCheck : goto "EOF"
+		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
+		
+		? !(unitReady _unit) : goto "MovePickup_WaitReady"
+		
+	doStop (vehicle _unit)
+	#WaitForCargo
+		[_transp] exec "Common\SendTransportTurnOn.sqs"
+		_unit doWatch _posPickup
+		
+		_timeUp = time + 30
+		@ ( time > _timeUp || !call temporaryCheck )
+		? !call temporaryCheck : goto "EOF"
+		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
+	  
+		? call Cargo_transp > 10 || ( (_type in (TransportCarW + TransportCarE)) && call Cargo_transp+1 > CarogCar ) || ( (_type in (TransportShipW + TransportZodiacW + TransportZodiacE + Transport6APCW + Transport6APCE)) && call Cargo_transp+1 > Cargo6APC ) || ( (_type in (Transport8APCW + Transport8APCE)) && call Cargo_transp+1 > Cargo8APC ) || ( (_type in TransportShipE) && call Cargo_transp+1 > CargoShipE ) : goto "MoveEject"
+		? call Cargo_transp < 4 : goto "WaitForCargo"
+		? call Cargo_transp > _crew : _crew = call Cargo_transp; goto "WaitForCargo"
+  
+	#MoveEject
+		_posMove = [_posEject, 20, 20] call funcGetRandomPos
+		[_transp] exec "Common\SendTransportTurnOff.sqs"
+		[_unit, _posMove] call funcMoveAI
+		_unit doWatch _posEject
+		
+	_timeRepeat = time + 60
+	#MoveEject_Check
+		_timeUp = time + 5
+		@ ( time > _timeUp || !call temporaryCheck )
+		? !call temporaryCheck : goto "EOF"
+		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
+
+		? time > _timeRepeat : [_unit, _posMove] call funcMoveAI; _timeRepeat = time + 60
+		? ([_posMove, getPos _transp] call funcDistH) > _distEject : goto "MoveEject_Check"
+
+	#MoveEject_WaitReady
+		[_unit, getPos _transp] call funcMoveAI
+		
+		_timeUp = time + 2
+		@ ( time > _timeUp || !call temporaryCheck )
+		? !call temporaryCheck : goto "EOF"
+		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
+		
+		? !(unitReady _unit) : goto "MoveEject_WaitReady"
+		
+	doStop (vehicle _unit)
+	#WaitStopped
+		[_unit, getPos _transp] call funcMoveAI
+		
+		_timeUp = time + 2
+		@ ( time > _timeUp || !call temporaryCheck )
+		? !call temporaryCheck : goto "EOF"
+		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
+		
+		? (speed _transp) > 5 : goto "WaitStopped"
+
+		
+	[_transp, _si] exec "Common\EjectAllCargo.sqs"
+		
+		_timeUp = time + 10
+		@ ( time > _timeUp || !call temporaryCheck )
+		? !call temporaryCheck : goto "EOF"
+		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
+		
+	goto "MovePickup"
+
+
+
+; End Of File
+#EOF
+call busyClear
+call temporaryClear
+exit
+
+
+#Sleep
+_loop = (time-_timeStart)/_cycle; _loop = 1 + _loop - _loop%1
+_timeUp = _loop*_cycle + _timeStart
+
+@ ( time > _timeUp || !call temporaryCheck )
+? !call temporaryCheck : goto "EOF"
+? !(alive _unit) || _vehicle != (vehicle _unit) || time > _timeAbort : goto "EOF"
+goto "Update"

@@ -1,0 +1,10 @@
+; args: uid
+
+_uid = _this
+
+~0.2
+
+@!(mutexUnitOrder)
+mutexUnitOrder = true
+playerOrderID set [_uid, (playerOrderID select _uid) + 1]
+mutexUnitOrder = false

@@ -1,0 +1,20 @@
+; args: [unit, pos]
+
+_unit = _this select 0
+_pos = _this select 1
+
+? !(alive _unit) : exit
+? !(alive driver vehicle _unit) : exit
+
+_order = []; _id = -1; call orderNew
+
+_unit groupchat "Roger, moving to position."
+
+_timeAbort = time + 5*60
+#Move
+  [_unit, _pos] exec "Player\MovePos.sqs"
+  ~5
+  ? !(alive _unit) : exit
+  ? call orderCheck : exit
+  ? time > _timeAbort : exit
+  ? ([getPos _unit, _pos] call funcDistH) > 20 : goto "Move"

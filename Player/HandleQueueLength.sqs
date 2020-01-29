@@ -1,0 +1,19 @@
+; args:[value, factory]
+
+_value = _this select 0
+_obj = _this select 1
+
+_len = _value % maxQ
+_value = _value - _len
+_si = _value / maxQ
+
+? _si != siPlayer : exit
+
+@!(mutexqLen)
+mutexqLen = true
+_found = false
+_i = 0
+_c = count qLen
+while "_i<_c && !_found" do { if ( _obj == ((qLen select _i) select 0) ) then { (qLen select _i) set [1, _len]; _found = true }; _i=_i+1 }
+? !_found : qLen set [count qLen, [_obj, _len]]
+mutexqLen = false

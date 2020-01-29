@@ -1,0 +1,49 @@
+; args: [type, driver, gunner, commander, pos, dir, si, gi, groupJoin, giBuyer, sendRepeats]
+
+_type = _this select 0
+_driver = _this select 1
+_gunner = _this select 2
+_commander = _this select 3
+_pos = _this select 4
+_dir = _this select 5
+_si = _this select 6
+_gi = _this select 7
+_group = _this select 8
+_giBuyer = _this select 9
+_sendRepeats = _this select 10
+
+? _type >= maxUnitTypes : [_type, _pos, _dir, _si, _gi, _group, _giBuyer] call fAddSoldier; exit
+
+? _type < 0 || _type >= (count unitDefs) : format["ERROR: _type is out of range (%1) in AddUnit.sqs", _type] call fDebugLog; exit
+
+_desc = unitDefs select _type
+
+? count (_desc select udCrew) == 0 : [_type, _pos, _dir, _si, _gi, _group, _giBuyer] call fAddSoldier; exit
+
+; must be a vehicle if we got here
+
+_vehicle = [_type, _pos, _dir, _si, _gi, _giBuyer, _sendRepeats] call fAddVehicle
+
+? isNull _vehicle : format["ERROR: _vehicle is NULL in AddUnit.sqs"] call fDebugLog; exit
+
+_typeCrew = (_desc select udCrew) select 1
+
+? _driver == 0 : goto "SkipDriver"
+~0.1
+_crew = [_typeCrew, _pos, _dir, _si, _gi, _group, _giBuyer] call fAddSoldier
+? alive _crew && alive _vehicle : _crew moveInDriver _vehicle
+#SkipDriver
+
+? _gunner == 0 : goto "SkipGunner"
+~0.1
+_crew = [_typeCrew, _pos, _dir, _si, _gi, _group, _giBuyer] call fAddSoldier
+? alive _crew && alive _vehicle : _crew moveInGunner _vehicle
+#SkipGunner
+
+? _commander == 0 : goto "SkipCommander"
+~0.1
+_crew = [_typeCrew, _pos, _dir, _si, _gi, _group, _giBuyer] call fAddSoldier
+? alive _crew && alive _vehicle : _crew moveInCommander _vehicle
+#SkipCommander
+
+; TODO	if (_driver == 0 && _gunner == 0 && _commander == 0) then { _vehicle setPos (getPos _vehicle) };

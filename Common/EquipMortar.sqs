@@ -1,0 +1,18 @@
+; args: [unit, typeUnit, siUnit]
+
+_unit = _this select 0
+; _type = _this select 1
+_si = _this select 2
+_m = ["Mortar_xj200", "Mortar_xj200", "Mortar_xj200", "Mortar_xj200", "Mortar_xj200"]
+_w = ["M16_xj200"]
+~1
+? !(local _unit) || !(alive _unit) : [_unit, _w, _m] exec "Common\EditEquipRearmData.sqs"; exit
+
+removeAllWeapons _unit
+
+{ _unit addWeapon _x } forEach weaponsCustom
+
+{_unit addMagazine _x} forEach _m
+{_unit addweapon _x} forEach _w
+
+[_unit, _w, _m] exec "Common\EditEquipRearmData.sqs"; exit

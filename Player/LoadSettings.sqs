@@ -1,0 +1,38 @@
+
+unitSetting = "SoldierWB" camCreate [10,10,10]
+
+; NUMBERED AI MARKERS
+bNumberedAI = false
+_entry = format["%1_NumberedAI", localize "STR_CRCTI_VER"]
+? unitSetting loadStatus _entry : bNumberedAI = ((count magazines unitSetting) > 1)
+
+; ENEMY REPORT LEVEL
+report = reportAll
+_entry = format["%1_EnemyReportLevel", localize "STR_CRCTI_VER"]
+? unitSetting loadStatus _entry : report = (count magazines unitSetting) - 1
+
+; CUSTOM LOADOUTS
+_i = 0
+_c = count eqTemplates
+#CheckLoadout
+  _entry = format["%1_%2_LOADOUT_%3_%4", localize "STR_CRCTI_VER", localize "STR_CRCTI_MOD", _i, sideNames select siPlayer]
+  ? !(unitSetting loadStatus _entry) : goto "CheckNextLoadout"
+  _templ = unitSetting call funcBuildTempl
+  ? count _templ > 0 : eqTemplates set [_i, _templ]
+  #CheckNextLoadout
+  _i=_i+1
+  ? _i < _c : goto "CheckLoadout"
+
+; CUSTOM SOLDIERS
+_i = 0
+_c = count infCustom
+#CheckCustom
+  _entry = format["%1_%2_SOLDIER_%3_%4", localize "STR_CRCTI_VER", localize "STR_CRCTI_MOD", _i, sideNames select siPlayer]
+  ? !(unitSetting loadStatus _entry) : goto "CheckNextCustom"
+  _templ = unitSetting call funcBuildTempl
+  ? count _templ > 0 : infCustom set [_i, _templ]
+  #CheckNextCustom
+  _i=_i+1
+  ? _i < _c : goto "CheckCustom"
+
+deleteVehicle unitSetting

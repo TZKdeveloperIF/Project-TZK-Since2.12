@@ -1,0 +1,52 @@
+; args: none
+; removes ammo, weapons, destroyed vehicles
+
+_typeCount = count typesCleanup
+
+_timeStart = _time
+
+#Start
+
+_structs = []
+_si = si0; {_structs = _structs + ((structMatrix select _si) select _x)} foreach structsRespawn
+_si = si1; {_structs = _structs + ((structMatrix select _si) select _x)} foreach structsRespawn
+
+_poses = []
+{ if !(isNull _x) then { _pos = getPos _x; _poses set [count _poses, [_pos, [0,50,0]] call funcVectorAdd]; _poses set [count _poses, [_pos, [0,-50,0]] call funcVectorAdd]; _poses set [count _poses, [_pos, [50,0,0]] call funcVectorAdd]; _poses set [count _poses, [_pos, [-50,0,0]] call funcVectorAdd] } } foreach _structs
+{ _pos = getPos (_x select tdFlag); _poses set [count _poses, [_pos, [0,50,0]] call funcVectorAdd]; _poses set [count _poses, [_pos, [0,-50,0]] call funcVectorAdd]; _poses set [count _poses, [_pos, [50,0,0]] call funcVectorAdd]; _poses set [count _poses, [_pos, [-50,0,0]] call funcVectorAdd] } foreach towns
+
+_posIndex = 0
+_posCount = count _poses
+
+? (_posCount == 0): Exit
+
+#NextPosStart
+  _pos = _poses select _posIndex
+  _typeIndex = 0
+
+  #NextTypeStart
+    _objectName = typesCleanup select _typeIndex
+
+    #NextObject
+      _object = nearestObject [_pos, _objectName]
+      ? (isNull _object): goto "NextType"
+      ? (_typeIndex > 1 && alive _object) || _object in ( mhq + (MCV select si0) + (MCV select si1) ) : goto "NextType"
+
+      ; _leader = false
+      ; { if (_object == leader _x) then { _leader = true } } foreach (groupMatrix select si0)
+      ; { if (_object == leader _x) then { _leader = true } } foreach (groupMatrix select si1)
+      ; ? _leader : goto "NextType"
+      
+      _pos = getPos _object
+      deleteVehicle _object
+      ~0.05
+      goto "NextObject"
+
+    #NextType
+    _typeIndex = _typeIndex + 1
+    ? (_typeIndex < _typeCount): goto "NextTypeStart"
+
+  _posIndex = _posIndex + 1
+  ? (_posIndex < _posCount): goto "NextPosStart"
+
+#Exit

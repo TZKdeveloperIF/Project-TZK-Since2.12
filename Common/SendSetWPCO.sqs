@@ -1,0 +1,20 @@
+; args: [wp, pos, si, gi]
+
+_wp = _this select 0
+_pos = _this select 1
+_si = _this select 2
+_gi = _this select 3
+
+@!(mutexSetWPCO)
+mutexSetWPCO = true
+pvWPCO = _wp + 100*_gi + 100*GroupsNum*_si
+pvWPCO_X = _pos select 0
+pvWPCO_Y = _pos select 1
+
+PublicVariable "pvWPCO_X";
+PublicVariable "pvWPCO_Y";
+PublicVariable "pvWPCO";
+
+? local LocalServerObject : ((wpCO select _si) select _wp) set [0, _pos select 0]; ((wpCO select _si) select _wp) set [1, _pos select 1]
+~sendDelay
+mutexSetWPCO = false

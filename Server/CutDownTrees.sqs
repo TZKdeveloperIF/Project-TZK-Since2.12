@@ -1,0 +1,30 @@
+; args: pos
+
+_pos = _this
+
+_cut = []
+
+_i = 0
+_c = 1000
+#CheckPos
+  ? !(_i < _c) : goto "Cut"
+  _posCut = ([_pos, 0 , 100] call funcGetRandomPos)
+  _i = _i + 1
+  
+  _obj = nearestObject [_posCut, ""]
+  ? !(isNull _obj ) && !(_obj in _cut) && ((getPos _obj ) select 2) > 5 : _cut set [count _cut, _obj]
+  ~0.5
+  goto "CheckPos"
+
+#Cut
+~1
+_i = 0
+_c = count _cut
+#CheckObject
+  ; TEST ? !(_i < _c) : player globalchat format["CUT DONE %1 (%2 objects killed)", time, _c]; exit
+  ? !(_i < _c) : exit
+  _obj = _cut select _i
+  _i = _i + 1
+  ? alive _obj : _obj setDamage 1
+  ~1
+  goto "CheckObject"

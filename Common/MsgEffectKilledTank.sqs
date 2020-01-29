@@ -1,0 +1,12 @@
+; args: [vehicle]
+; This script used to set as a message script. But be aware, allowing all client PublishVariable and not setting a mutex with delay may cause severe bandwidth problem.
+
+#Start
+
+@( !isNull pvKilledTank )
+_vehicle = pvKilledTank
+pvKilledTank = objNull
+
+[_vehicle] exec {\TZK_Objects\Scripts_CTI\csla_burn_HeavyArmouredUnits.sqs}
+
+goto "Start"

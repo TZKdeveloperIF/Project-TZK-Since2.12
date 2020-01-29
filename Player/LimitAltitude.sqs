@@ -1,0 +1,57 @@
+; args: [maxAltitude, maxAltitudePlus]
+
+_max = _this select 0
+_maxP = _this select 1
+
+#check
+? ((upgMatrix select siPlayer) select upgAltFlight) == 2: goto "CheckAlt2"
+
+#Wait
+@ (((getPos player) select 2) > (_max - 50))
+
+;player globalchat "player near max alt"
+
+#CheckAlt
+	~0.1
+	_vehicle = vehicle player
+	_alt = (getPos player) select 2
+
+	? (_alt < (_max - 50)): goto "Wait"
+	? (_alt < _max): goto "CheckAlt"
+
+	
+_vel = velocity _vehicle
+_vel set [2, -5]
+? (_alt > (_max + 20)): _vel set [2, -40]
+? (_alt > (_max + 50)): _vel set [2, -100]
+? (_alt > (_max + 100)): _vel set [2, -200]
+_vehicle setVelocity _vel
+
+;player globalchat "velocity set"
+~0.5
+goto "check"
+
+#Wait2
+
+@ (((getPos player) select 2) > (_max - 50 + _maxP))
+
+
+
+#CheckAlt2
+	~0.1
+	_vehicle = vehicle player
+	_alt = (getPos player) select 2
+
+	? (_alt < (_max -50 + _maxP)): goto "Wait2"
+	? (_alt < (_max + _maxP)): goto "CheckAlt2"
+
+_vel = velocity _vehicle
+_vel set [2, -5]
+? (_alt > (_max + 20 + _maxP)): _vel set [2, -40]
+? (_alt > (_max + 50 + _maxP)): _vel set [2, -100]
+? (_alt > (_max + 100 + _maxP)): _vel set [2, -200]
+_vehicle setVelocity _vel
+
+;player globalchat "velocity set"
+~0.5
+goto "CheckAlt2"

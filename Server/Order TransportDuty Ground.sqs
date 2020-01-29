@@ -1,0 +1,130 @@
+; args: [unit, si, gi, [wp, wp, dist]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+_posPickup = ((wpCO select _si) select (_params select 0))
+_posEject = ((wpCO select _si) select (_params select 1))
+_distEject = 200*(1+(_params select 2))
+
+_idOrder = ((orderMatrix select _si) select _gi) select 0
+
+#WaitReady
+~2
+? call busyCheck : goto "WaitReady"
+
+? !(alive _unit) : exit
+
+_sleep = 30
+
+_timeCheckSupport = time + 30 + random 60
+
+? _unit == vehicle _unit || _unit != driver vehicle _unit : goto "Patrol"
+_type = (vehicle _unit) call funcGetUnitTypeFromObject
+? _type == -1 : goto "Patrol"
+? !(_type in (groundTransport select _si)) : goto "Patrol"
+
+#TransportDuty
+_transp = vehicle _unit
+_unit disableAI "TARGET"
+
+_distToPickup = [getPos _transp, _posPickup] call funcDistH
+_crew = call Cargo_transp
+? _distToPickup > 200 && _crew > 2 : goto "MoveEject"
+? _distToPickup < 200 && _crew > 10 : goto "MoveEject"
+
+#MovePickup
+[_transp] exec "Common\SendTransportTurnOn.sqs"
+_posMove = [_posPickup, 20, 20] call funcGetRandomPos
+[_unit, _posMove] call funcMoveAI
+_timeRepeat = time + 60
+_unit doWatch _posPickup
+#MovePickup_Check
+  ~10
+	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
+	? call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {exit} else {goto "MovePickup_Check"}
+  ? !(alive _unit) : exit
+  ? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+  ? !(alive _transp) || _transp != (vehicle _unit) : goto "Patrol"
+  ? time > _timeRepeat : [_unit, _posMove] call funcMoveAI; _timeRepeat = time + 60
+  ? call Cargo_transp >= 4 : goto "MoveEject"
+  ? ([_posMove, getPos _transp] call funcDistH) > 200 : goto "MovePickup_Check"
+
+[_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"
+#WaitSupportDone
+  ~5
+	? call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {exit} else {goto "WaitSupportDone"}
+  ? !(alive _unit) : exit
+  ? (damage _transp) < 0.1 : call busyClear
+  ? call busyCheck : goto "WaitSupportDone"
+  ? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+  ? !(alive _transp) || _transp != (vehicle _unit) : goto "Patrol"
+? ([getPos _transp, _posPickup] call funcDistH) > 200 : goto "MovePickup"
+
+#MovePickup_WaitReady
+  ; [_unit, getPos _transp] call funcMoveAI
+  ~2
+	? call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {exit} else {goto "MovePickup_WaitReady"}
+  ? !(unitReady _unit) : goto "MovePickup_WaitReady"
+doStop (vehicle _unit)
+
+#WaitForCargo
+  [_transp] exec "Common\SendTransportTurnOn.sqs"
+  _unit doWatch _posPickup
+  ~30
+  
+	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
+	? call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {exit} else {goto "WaitForCargo"}
+  
+  ? !(alive _unit) : exit
+  ? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+  ? !(alive _transp) || _transp != (vehicle _unit) : goto "Patrol"
+  ? call Cargo_transp > 10 || ( (_type in (TransportCarW + TransportCarE)) && call Cargo_transp+1 > CarogCar ) || ( (_type in (TransportShipW + TransportZodiacW + TransportZodiacE + Transport6APCW + Transport6APCE)) && call Cargo_transp+1 > Cargo6APC ) || ( (_type in (Transport8APCW + Transport8APCE)) && call Cargo_transp+1 > Cargo8APC ) || ( (_type in TransportShipE) && call Cargo_transp+1 > CargoShipE ) : goto "MoveEject"
+  ? call Cargo_transp < 4 : goto "WaitForCargo"
+  ? call Cargo_transp > _crew : _crew = call Cargo_transp; goto "WaitForCargo"
+  
+#MoveEject
+_posMove = [_posEject, 20, 20] call funcGetRandomPos
+[_transp] exec "Common\SendTransportTurnOff.sqs"
+[_unit, _posMove] call funcMoveAI
+_unit doWatch _posEject
+_timeRepeat = time + 60
+#MoveEject_Check
+  ~5
+  
+	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
+	? call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {exit} else {goto "MoveEject_Check"}
+  
+  ? !(alive _unit) : exit
+  ? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+  ? !(alive _transp) || _transp != (vehicle _unit) : goto "Patrol"
+  ? time > _timeRepeat : [_unit, _posMove] call funcMoveAI; _timeRepeat = time + 60
+  ? ([_posMove, getPos _transp] call funcDistH) > _distEject : goto "MoveEject_Check"
+
+#MoveEject_WaitReady
+  [_unit, getPos _transp] call funcMoveAI
+  ~2
+	? call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {exit} else {goto "MoveEject_WaitReady"}
+  ? !(unitReady _unit) : goto "MoveEject_WaitReady"
+doStop (vehicle _unit)
+
+#WaitStopped
+  ; [_unit, getPos _transp] call funcMoveAI
+  ~2
+	? call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {exit} else {goto "WaitStopped"}
+  ? (speed _transp) > 5 : goto "WaitStopped"
+
+[_transp, _si] exec "Common\EjectAllCargo.sqs"
+~10
+  ? !(alive _unit) : exit
+  ? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+  ? !(alive _transp) || _transp != (vehicle _unit) : goto "Patrol"
+goto "MovePickup"
+
+
+#Patrol
+  ? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+  _this exec "Server\Order TransportDuty.sqs"
+  exit
+

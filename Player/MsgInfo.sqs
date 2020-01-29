@@ -1,0 +1,11 @@
+_value = _this select 0
+_value2 = _this select 1
+
+_msgType = _value % TotalInfoTypes
+while "_msgType < 0" do { _msgType = _msgType + TotalInfoTypes }
+_value = (_value - _msgType)/TotalInfoTypes
+
+_scriptShort = (infoDefs select _msgType) select 0
+_script = format ["Player\Info\%1", _scriptShort]
+
+[_value, _value2] exec _script

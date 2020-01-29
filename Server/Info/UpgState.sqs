@@ -1,0 +1,26 @@
+; args: [si, upg, state]
+
+_si = _this select 0
+_upg = _this select 1
+_state = _this select 2
+
+_value = mtUpgState
+_value = _value + TotalInfoTypes*_upg
+_value = _value + (TotalInfoTypes*100)*_state
+_value = _value + (TotalInfoTypes*100*3)*_si
+
+[_value] exec "Server\Info\SendInfoMsg.sqs"
+
+? upgCCdistance == _upg && _state == 2 : CCdistMax set [_si, distMaxCCUpgraded]
+
+? upgGunshipRocket == _upg && _state == 2 : [_si] exec "Common\ReEquipHeliRocket.sqs"
+
+? ((upgMatrix select _si) select upgWorkers) == 2: maxWorkers set [_si, 20]
+
+? ((upgMatrix select _si) select upgRedTopRange) == 2: [_si, _upg] call loadFile "Common\ReEquip4xAA.sqf"
+
+? ((upgMatrix select _si) select upgRedTopMagazines) == 2: [_si, _upg] call loadFile "Common\ReEquip4xAA.sqf"
+
+? ((upgMatrix select _si) select upgPlaneAfterBurner) == 2: if (isNull player) then {exit} else { if (_si == siPlayer) then {bAfterBurner = true} }
+
+? ((upgMatrix select _si) select upgSpoofMissile) == 2: if (isNull player) then {exit} else { if (_si == siPlayer) then {bSpoofMissile = true} }

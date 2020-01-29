@@ -1,0 +1,31 @@
+; args: [unit, pos, radius]
+
+_unit = _this select 0
+_pos = _this select 1
+_radius = _this select 2
+
+? !(alive _unit) : exit
+? !(alive driver vehicle _unit) : exit
+
+_order = []; _id = -1; call orderNew
+
+_unit groupChat "Roger, patrolling area."
+
+#GetRandomPos
+_posMove = [_pos, _radius-25, _radius+25] call funcGetRandomPos
+_timeAbort = time + 5*60
+
+#Move
+  [_unit, _posMove] call funcMove
+  ~10
+  ? !(alive _unit) || time > _timeAbort : _unit groupChat "Patrol order aborted."; exit
+  ? call orderCheck : exit
+  ? ([_posMove, getPos _unit] call funcDistH) > 20 : goto "Move"
+
+_timeWait = time + 60 + _radius/4
+#Wait
+  ~10
+  ? !(alive _unit) : exit
+  ? call orderCheck : exit
+  ? time > _timeWait : goto "GetRandomPos"
+  goto "Wait"

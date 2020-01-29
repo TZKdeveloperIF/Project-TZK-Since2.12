@@ -1,0 +1,42 @@
+; args: none
+
+_unit = player
+
+_vehicle = objNull
+
+_actionName = "Air Rearm"
+_actionID = -1
+
+#Init
+	? (_unit != vehicle _unit): goto "PlayerEnteredVehicle"
+
+#PlayerOnFoot
+
+	? (_actionID != -1): _vehicle removeAction _actionID; _actionID = -1
+
+	@ !(alive _unit) || (_unit != vehicle _unit)
+
+	? !(alive _unit): goto "PlayerDead"
+	
+#PlayerEnteredVehicle
+	_vehicle = vehicle _unit
+	#CheckAction
+		~2
+		? !(alive _unit): goto "PlayerDead"
+		? (_vehicle != vehicle _unit): goto "PlayerOnFoot"
+		_found = [getPos _vehicle, siBoth, (planeSupport select si0) + (planeSupport select si1), [_vehicle]] call funcGetClosestVehicle
+		? (_found select 1) > rangeSupportPlane && _actionID != -1 : _vehicle removeAction _actionID; _actionID = -1
+		? (_found select 1) < rangeSupportPlane && _actionID == -1 && (speed (_found select 0) > 120) : _actionID = _vehicle addAction [_actionName, "Player\Action RearmAtPlane.sqs"]
+
+		goto "CheckAction"
+
+#PlayerDead
+
+	? (_actionID != -1): _vehicle removeAction _actionID; _actionID = -1
+
+	@ (alive player)
+
+	_unit = player
+
+	goto "PlayerOnFoot"
+

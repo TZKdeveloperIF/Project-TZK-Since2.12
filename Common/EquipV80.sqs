@@ -1,0 +1,21 @@
+; args: [vehicle, type, si]
+
+_v = _this select 0
+
+_m = [(magazines _v) - ["Rocket57x40Kamov_xj200"], ((magazines _v) - ["Rocket57x40Kamov_xj200"]) + ["Rocket57x40Kamov_xj200"]] select (((upgMatrix select (_this select 2)) select upgGunshipRocket) == 2)
+_w = [(weapons _v) - ["Rocket57x40Kamov_xj200"], ((weapons _v) - ["Rocket57x40Kamov_xj200"]) + ["Rocket57x40Kamov_xj200"]] select (((upgMatrix select (_this select 2)) select upgGunshipRocket) == 2)
+
+~1
+? !(local _v) || !(alive _v) : [_v, _w, _m] exec "Common\EditEquipRearmData.sqs"; exit
+
+
+_mags = magazines _v
+_wpns = weapons _v
+
+{ _v removeMagazine _x} foreach _mags
+{ _v removeWeapon _x} foreach _wpns
+
+{_v addMagazine _x} forEach _m
+{_v addweapon _x} forEach _w
+
+[_v, _w, _m] exec "Common\EditEquipRearmData.sqs"; exit

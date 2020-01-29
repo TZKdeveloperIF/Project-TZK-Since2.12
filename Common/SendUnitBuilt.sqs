@@ -1,0 +1,37 @@
+; args: [type, si, giJoin, giBuyer, unit, sendRepeats]
+
+_type = _this select 0
+_si = _this select 1
+_giJoin = _this select 2
+_giBuyer = _this select 3
+_unit = _this select 4
+_repeats = _this select 5
+
+? _giJoin < 0 : _giJoin = 0
+? _giBuyer < 0 : _giBuyer = 0
+
+_try = 0
+#WaitVehicleBuilt
+? !isNull _unit || _try > 100: goto "VehicleCreated"
+_try = _try + 1
+~0.1
+goto "WaitVehicleBuilt"
+
+#VehicleCreated
+@!(mutexUnitBuilt)
+mutexUnitBuilt = true
+
+_value = _type +  TotalUnitTypes *_giJoin +  TotalUnitTypes *GroupsNum*_giBuyer +  TotalUnitTypes *GroupsNum*GroupsNum*_si
+
+[] call format["pvUnitBuilt%1_Object = _unit", indexUnitBuiltMsg]
+[] call format["PublicVariable ""pvUnitBuilt%1_Object""", indexUnitBuiltMsg]
+
+[] call format["pvUnitBuilt%1 = _value", indexUnitBuiltMsg]
+[] call format["PublicVariable ""pvUnitBuilt%1""", indexUnitBuiltMsg]
+indexUnitBuiltMsg = indexUnitBuiltMsg + 1
+? indexUnitBuiltMsg >= countUnitBuiltMsg : indexUnitBuiltMsg = 0
+
+~(sendDelay/countUnitBuiltMsg)
+
+mutexUnitBuilt = false
+? _repeats > 0 : [_type, _si, _giJoin, _giBuyer, _unit, _repeats - 1] exec "Common\SendUnitBuilt.sqs"

@@ -1,0 +1,13 @@
+; args: [unit, support]
+
+_unit = _this select 0
+_support = _this select 1
+
+@!(mutexMovingToSupport)
+mutexMovingToSupport = true
+
+pvMovingToSupport_Support = _support; PublicVariable "pvMovingToSupport_Support"
+pvMovingToSupport_Unit = _unit; PublicVariable "pvMovingToSupport_Unit"
+
+~sendDelay
+mutexMovingToSupport = false

@@ -1,0 +1,14 @@
+; args: [object, si, cost]
+
+_object = _this select 0
+_si = _this select 1
+_cost = _this select 2
+
+; calc score
+_score = _cost*0.001
+_score = _score - (_score % 1)
+? _cost > 0 && _score < 1 : _score = 1
+
+_event = format["[_this, %1, %2] exec ""Server\Event_StructHit.sqs""", _si, _score]
+
+_object addEventHandler ["hit", _event]

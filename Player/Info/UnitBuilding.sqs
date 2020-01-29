@@ -1,0 +1,26 @@
+; args: [params]
+
+_value = _this select 0
+
+_type = _value
+
+_value = _this select 1
+
+_giBuyer = _value % GroupsNum
+_value = (_value - _giBuyer)/GroupsNum
+
+_giJoin = _value % GroupsNum
+_value = (_value - _giJoin)/GroupsNum
+
+_si = _value
+
+; player globalchat format["_type=%1, _si=%2, _giBuyer=%3", _type, _si, _giBuyer]
+
+? (_si != siPlayer): Exit
+? (_giBuyer != giPlayer) && (_giJoin != giPlayer): Exit
+
+? _type >= maxUnitTypes : _unitName = format["cs%1", _type - maxUnitTypes]
+? _type < maxUnitTypes : _unitName = (unitDefs select _type) select udName
+
+
+player groupchat format ["Building %1", _unitName ]

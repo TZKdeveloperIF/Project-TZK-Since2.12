@@ -1,0 +1,38 @@
+; args [si, structure type]
+
+_si = _this select 0
+_type = _this select 1
+
+
+@!(mutexAIGroup)
+mutexAIGroup = true
+
+_gi = 0; _index = 0
+
+forEach (aiAutoBuyFactory select _si)
+_gi = 0
+{
+_x = (aiAutoBuyFactory select _si) select _gi, fromat [ [],[],[],[] ]
+_index = 0
+forEach _x
+	_x = ((aiAutoBuyFactory select _si) select _gi) select _index; format [obj, type], means data coming from last time setting, and now obj is dead.
+	if ( _x select 1 == _type && (!alive (_x select 0) || isNull (_x select 0)) ) then {[_si, _gi, [aisBuyFactory1, aisBuyFactory2, aisBuyFactory3, aisBuyFactory4] select _index, 0] exec "Common\SendAIGroupSetting.sqs"}
+	if ( _x select 1 == _type && (!alive (_x select 0) || isNull (_x select 0)) )
+		
+		
+	_index = _index + 1
+_gi = _gi + 1
+} 
+
+
+
+
+
+
+
+
+
+
+exit
+
+	[_si, _gi + GroupsNum, aisPickupWait, 0] exec "Common\SendAIGroupSetting.sqs"

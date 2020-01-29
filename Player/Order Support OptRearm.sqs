@@ -1,0 +1,48 @@
+; args: [unit, pos, [0]]
+
+_unit = _this select 0
+_pos = _this select 1
+
+? !(alive _unit) : exit
+
+_need = false
+
+_v = vehicle _unit
+? _unit != _v : goto "Vehicle"
+
+#Infantry
+  ? (damage _unit) > 0 : goto "FindSupport"
+  _wpnPrim = primaryWeapon _unit
+  _wpnSec = secondaryWeapon _unit
+  ? _wpnPrim != "" : if ((_unit ammo _wpnPrim) == 0) then { _need = true }
+  ? _wpnSec != "" : if ((_unit ammo _wpnSec) == 0) then { _need = true }
+  ? _need : goto "FindSupport"
+  _rearmData = _unit call funcGetRearmData
+  _rearmMags = _rearmData select 1
+  ? (count _rearmMags) > count (magazines _unit) : goto "FindSupport"
+  _unit groupchat "I'm fine."
+  exit
+  
+#Vehicle
+  ? !(alive _v) : exit
+  ? (_v == vehicle player) : exit
+  ? (damage _v) > 0 : goto "FindSupport"
+  { if ( (alive _x) && (damage _x) > 0 ) then { _need = true } } foreach (crew _v)
+  ? _need : goto "FindSupport"
+  _type = _v call funcGetUnitTypeFromObject
+  _rearmData = _v call funcGetRearmData
+  _rearmMags = _rearmData select 1
+  ? (count _rearmMags) == 0 : _unit groupchat "I'm fine."; exit
+  _weapons = weapons _v
+  { if ((_v ammo _x) == 0) then { _need = true }  } foreach _weapons
+  ? _need : goto "FindSupport"
+  _unit groupchat "I'm fine."
+  exit
+
+#FindSupport
+_vs = [_pos, 500, (typesSupportPlus select siPlayer) + ([[utMHQ0, utMCVW], [utMHQ1, utMCVE]] select siPlayer), [_v]] call funcGetNearbyVehicles
+_vs = [2, true, _vs] call funcSort
+
+? (count _vs) == 0 : _unit groupchat "No support vehicles in that area."; exit
+
+[_unit, (_vs select 0) select 0, false] exec "Player\Order Support.sqs"

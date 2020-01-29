@@ -1,0 +1,56 @@
+; args: [units, pos, [index of group in full callsigns]]
+
+_units = _this select 0
+_unitsToRemove = []; {if !(_x in units player) then { _unitsToRemove set [count _unitsToRemove, _x] } } forEach _units; _units = _units - _unitsToRemove
+; _unitsToRemove = []; {if ((_x call funcGetUnitTypeFromObject) > maxUnitTypes) then { _unitsToRemove set [count _unitsToRemove, _x] } } forEach _units; _units = _units - _unitsToRemove
+? count _units == 0 : player groupChat "Selected units are all belong to other groups!"; exit
+
+_giJoin = (_this select 2) select 0
+_gNameJoin = callsigns select _giJoin
+
+_groupName = groupNameMatrix select siPlayer
+
+? !(_gNameJoin in _groupName) : player groupChat "Selected group doesn't exist in this game."; exit
+? _gNameJoin == (_groupName select giPlayer) : player groupChat "You're trying to ask your members to join your group."; exit
+
+
+_gi = [_gNameJoin, _groupName] call funcGetIndex
+? _gi == -1 : player groupChat "Defination conflict between ""Player\Order Join.sqs"" and variable ""callsigns"". Please ask mission author to fix this."; exit
+
+
+
+_ids = (groupUnitIDMatrix select siPlayer) select giPlayer; _uid = 0; _text = ""
+_index = 0; _count = count _units; _unitsID = 0; _JoinUnitIDs = []
+while "_uid <= 12 && _index < _count" do { _text = format["%1", _units select _index]; if (_text == (_ids select _uid)) then {_unitsID = _unitsID + 2^_uid; _JoinUnitIDs = _JoinUnitIDs + [_uid]; _index = _index + 1}; _uid = _uid + 1; }
+_unitsID = _unitsID / 4
+_value = _gi + GroupsNum*giPlayer + GroupsNum*GroupsNum*siPlayer + GroupsNum*GroupsNum*2*_unitsID
+
+
+
+? mutexSendJoinApply : player groupChat "Join processing, be patient and don't send apply so frequency please."; exit
+mutexSendJoinApply = true
+pvJoinReply = -1; pvJoinApply = _value; PublicVariable "pvJoinApply"
+
+@(pvJoinReply != -1)
+_value = pvJoinReply
+? 1 != _value % 2 : goto "JoinRefused"
+{ _x exec {Player\OrderNew.sqs} } forEach _JoinUnitIDs
+
+	~3
+	goto "DONE"
+
+
+#JoinRefused
+
+_value = _value / 2
+? 1 == _value : player groupChat format ["Group %1 has too many members (including units to build). Reduce numbers of units or ask COMMANDER to disband/cancel some units.", callsigns select _gi]; goto "DONE"
+
+_value = _value / 2
+; sure _value is 1 now
+player groupChat "Another Join Process is handling on Server. Please try again after a while"; goto "DONE"
+
+
+
+#DONE
+? !local LocalServerObject : { if !(_x in (units groupPlayer)) then {_x removeAllEventHandlers "Killed"} } forEach _units
+mutexSendJoinApply = false; exit

@@ -1,0 +1,19 @@
+; args: [score, class, si, gi]
+
+_score = _this select 0
+_class = _this select 1
+_si = _this select 2
+_gi = _this select 3
+
+_value = _score
+_value = _value + (4000)*_class
+_value = _value + (4000*10)*_gi
+_value = _value + (4000*10*GroupsNum)*_si
+
+@!(mutexScore)
+mutexScore = true
+
+pvScore = _value; PublicVariable "pvScore"
+
+~sendDelay
+mutexScore = false

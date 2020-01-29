@@ -1,0 +1,88 @@
+; args: [units, pos, params]
+
+_units = _this select 0
+_pos = _this select 1
+_params = _this select 2
+
+? count _units == 0 : exit
+
+_vs = [_pos, 200, (typesSupport select si0) + (typesSupport select si1), []] call funcGetNearbyVehicles
+_vs = [2, true, _vs] call funcSort
+
+; _i=0; { if (locked _x) then { _vs set [_i, objNull] }; _i=_i+1 } foreach _vs
+; _vs = _vs - [objNull]
+? count _vs == 0 : (_units select 0) groupchat "No nearby support vehicles"; exit
+
+_dlg = createDialog "GenericDialog"
+
+_idcAction0Label = IDC+0
+_idcAction0 = IDC+1
+_idcAction1Label = IDC+2
+_idcAction1 = IDC+3
+_idcAction2Label = IDC+4
+_idcAction2 = IDC+5
+_idcAction3Label = IDC+6
+_idcAction3 = IDC+7
+_idcAction4Label = IDC+8
+_idcAction4 = IDC+9
+
+_idcListHeader = IDC+10
+_idcList = IDC+11
+
+btnAction0 = false
+btnAction1 = false
+btnAction2 = false
+btnAction3 = false
+btnAction4 = false
+
+{ ctrlShow [_x, false] } forEach [ _idcAction0Label, _idcAction1Label, _idcAction2Label, _idcAction3Label, _idcAction4Label ]
+{ ctrlShow [_x, false] } forEach [_idcAction3, _idcAction4]
+
+ctrlSetText [IDC_TITLE, "Repair/Heal/Rearm"]
+ctrlSetText [_idcAction0, "Repair-Heal-(Rearm)"]
+ctrlSetText [_idcAction1, "Repair-Heal"]
+ctrlSetText [_idcAction2, "Rearm"]
+ctrlSetText [_idcListHeader, "Type    Health  Crew"]
+
+_i = 0
+_c = count _vs
+#InitNext
+  _v = (_vs select _i) select 0
+  _type = (_vs select _i) select 1
+  _name = (unitDefs select _type) select udName
+  _image = (unitDefs select _type) select udImage
+  
+  _health = 1 - (damage _v)
+  _health = 100*(_health - (_health % 0.01))
+  
+  _crew = crew _v
+  if ( (count _crew) > 0 ) then { _crew = _crew select 0 } else { _crew = "Empty" }
+  
+  _text = format["%1  %2%3  %4", _name, _health, "%", _crew];
+  _id = lbAdd [_idcList, _text];
+  ? _image != "" : lbSetPicture [_idcList, _id, _image]
+
+  #InitSkip
+  _i = _i + 1
+  ? _i < _c : goto "InitNext"
+
+lbSetCurSel [_idcList, 0]
+
+#Update
+  ? !(dialog) : exit
+  ? !(alive player) : closeDialog 0; exit
+
+  ? (btnAction0): btnAction0=false; _prio = [1, 2]; goto "Support"
+  ? (btnAction1): btnAction1=false; _prio = [1, 0]; goto "Support"
+  ? (btnAction2): btnAction2=false; _prio = [0, 1]; goto "Support"
+
+  #Skip
+  ~0.2
+  goto "Update"
+
+#Support
+  _vehicle = (_vs select (lbCurSel _idcList)) select 0
+  ? !(alive _vehicle) : hint "Support vehicle destroyed"; goto "Update"
+  { [_x, _vehicle, _prio] exec "Player\Order Support.sqs" } foreach _units
+  closedialog 0
+  exit

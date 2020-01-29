@@ -1,0 +1,38 @@
+; args: [pvRepairMCV, pvRepairMCV_object]
+
+_pvRepairMCV = _this select 0
+_MCV = _this select 1
+_gi = _pvRepairMCV % GroupsNum
+_si = (_pvRepairMCV - _gi)/GroupsNum
+
+? isNull _MCV : exit
+
+
+? PricingMode == 1: costRepairMHQ = 30000
+? time > 180: costRepairMHQ = 30000
+	
+
+_money = (groupMoneyMatrix select _si) select _gi
+
+? _si == si1 && _money < costRepairMHQ : exit
+? _si == si0 && _money < costRepairMHQ : exit
+
+? _si == si1: [_si, _gi, costRepairMHQ] exec "Server\MoneySpend.sqs"
+? _si == si0: [_si, _gi, costRepairMHQ] exec "Server\MoneySpend.sqs"
+
+
+_pos = getPos _MCV
+_dir = getDir _MCV
+_MCV setPos positionAttach
+~0.1
+deleteVehicle _MCV
+~0.2
+? _si == si0 : _res = [utMCVW, _pos, _dir, si0, -1, 0, 2] call fAddVehicle
+? _si == si1 : _res = [utMCVE, _pos, _dir, si1, -1, 0, 2] call fAddVehicle
+_MCVnew = _res
+~1
+_MCVnew setPos _pos
+
+
+
+[_si, 1] exec "Server\Info\MHQRepaired.sqs"

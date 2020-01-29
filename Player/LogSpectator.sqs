@@ -1,0 +1,9 @@
+; args: text
+
+_msg = _this
+_timestring = [] call funcGetTimeString
+
+player globalchat _msg
+
+_text = format["%1 %2", _timestring, _msg]
+logSpec set [count logSpec, _text]

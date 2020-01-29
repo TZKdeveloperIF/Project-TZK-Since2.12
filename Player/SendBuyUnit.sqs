@@ -1,0 +1,31 @@
+; args: [nType, nDriver, nGunner, nCommander, giJoin, oFactory]
+
+;player globalchat format["_this=%1", _this]
+
+_type = _this select 0
+_driver = _this select 1
+_gunner = _this select 2
+_commander = _this select 3
+_giJoin = _this select 4
+_factory = _this select 5
+
+_value = _type
+_value = _value +  TotalUnitTypes *_giJoin
+_value = _value + ( TotalUnitTypes *GroupsNum)*giPlayer
+_value = _value + ( TotalUnitTypes *GroupsNum*GroupsNum)*siPlayer
+_value = _value + ( TotalUnitTypes *GroupsNum*GroupsNum*2)*_driver
+_value = _value + ( TotalUnitTypes *GroupsNum*GroupsNum*2*2)*_gunner
+_value = _value + ( TotalUnitTypes *GroupsNum*GroupsNum*2*2*2)*_commander
+
+
+@!(mutexBuyUnit)
+mutexBuyUnit = true
+
+? (isNull _factory): mutexBuyUnit = false; exit
+call format["pvBuyUnit_Factory%1 = _factory", indexSendBuyUnit]; call format["PublicVariable ""pvBuyUnit_Factory%1""", indexSendBuyUnit]
+call format["pvBuyUnit_Type%1 = _value", indexSendBuyUnit]; call format["PublicVariable ""pvBuyUnit_Type%1""", indexSendBuyUnit]
+indexSendBuyUnit = indexSendBuyUnit + 1
+? indexSendBuyUnit >= countSendBuyUnit : indexSendBuyUnit = 0
+
+~(sendDelay/countSendBuyUnit)
+mutexBuyUnit = false

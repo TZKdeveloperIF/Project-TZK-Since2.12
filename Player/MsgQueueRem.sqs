@@ -1,0 +1,22 @@
+; args: value
+
+_value = _this
+
+_qid = _value % maxQ
+_value = _value - _qid
+
+_si = _value/maxQ
+
+? _si != siPlayer : exit
+
+@!(mutexqPlayer)
+mutexqPlayer = true
+_found = false
+_i = 0
+_c = count qPlayer
+while "_i<_c && !_found" do { if ( _qid == ((qPlayer select _i) select 0) ) then { qPlayer set [_i, -1]; _found = true }; _i=_i+1 }
+
+qPlayer = qPlayer - [-1]
+
+; player globalchat format["qPlayer = %1", qPlayer]
+mutexqPlayer = false

@@ -1,0 +1,18 @@
+; args: [value]
+
+_value = _this select 0
+
+_type = _value % 1000
+_si = (_value - _type) / 1000
+
+? _si < 0 : format ["_si is %1 in HandleStructMatrixRemove.sqs", _si] call fDebugLog; exit
+? _type < 0 : format ["_type is %1 in HandleStructMatrixRemove.sqs", _type] call fDebugLog; exit
+~30
+@!(mutexEditStructMatrix)
+mutexEditStructMatrix = true
+
+_structArray = structMatrix select _si
+? count((_structArray select _type) - [objNull]) < count(_structArray select _type) : _structArray set [_type, (_structArray select _type) - [objNull]]
+
+
+mutexEditStructMatrix = false

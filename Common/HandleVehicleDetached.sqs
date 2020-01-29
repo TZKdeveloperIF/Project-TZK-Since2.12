@@ -1,0 +1,34 @@
+; args: [value, vehicle]
+
+_value = _this select 0
+_vehicle = _this select 1
+
+? (isNull _vehicle): exit
+
+_slot = _value % 10
+_value = (_value - _slot) / 10
+
+_gi = _value % GroupsNum
+_value = _value - _gi
+
+_si = _value/GroupsNum
+
+[_vehicle, _slot] call funcSearchvehicleAttached
+
+
+? (siPlayer == _si && giPlayer == _gi): goto "detached"
+exit
+
+#detached
+? (getpos _vehicle) select 2 > 30: goto "paradrop"
+
+hint "Vehicle Detached"
+exit
+
+#paradrop
+hint "Vehicle Being paradropped"
+~1
+
+[_vehicle] exec "Common\Paradrop.sqs"
+
+exit

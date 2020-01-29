@@ -1,0 +1,52 @@
+#Start
+
+@(pvTownSide != -1)
+
+;player globalchat format["pvTownSide_Town = %1", pvTownSide]
+
+_value = pvTownSide
+pvTownSide = -1
+
+_index = _value % 100
+_value = _value - _index
+
+_si = (_value % 1000)/100
+_value = _value - _si*100
+
+_lastSide = _value/1000
+
+_townDesc = towns select _index
+_town = _townDesc select 0
+
+;player globalchat format["_si = %1, _lastSide = %2", _si, _lastSide]
+
+(towns select _index) set [tdSide, _si]
+
+? _si == siPlayer || _lastSide == siPlayer || siPlayer == siCiv : goto "ChangeMarker"
+
+goto "Start"
+
+#ChangeMarker
+
+	_marker = Format["Town_%1", _index]
+
+	; color
+	? (_si == siPlayer): _marker SetMarkerColor "colorGreen"
+	? (_si != siPlayer): _marker SetMarkerColor "colorBlack"
+	? (siPlayer == siCiv && _si == si0): _marker SetMarkerColor "colorBlue"
+	? (siPlayer == siCiv && _si == si1): _marker SetMarkerColor "colorRed"
+
+	; marker type
+	; ? (_si == siRes || _lastSide == siRes): _marker SetMarkerType "flag1"
+	; ? (_si != siRes && _lastSide != siRes): _marker SetMarkerType "flag"
+
+	_towns = [0,0,0]
+	{ _si2 = (_x select tdSide); _towns set [_si2, (_towns select _si2) + 1] } foreach towns
+	
+	; announce
+	? (siPlayer != siCiv) && (_si == siPlayer): format["%1 WON from %2. (controlling %3 towns)", _townDesc select 1, sideNames select _lastSide, _towns select siPlayer] call funcSideMsg
+	? (siPlayer != siCiv) && (_si != siPlayer): format["%1 LOST. (controlling %2 towns)", _townDesc select 1, _towns select siPlayer] call funcSideMsg
+	
+	? (siPlayer == siCiv): format["%1 won %2. W/E:%3/%4", sideNames select _si, _townDesc select tdName, _towns select si0, _towns select si1] exec "Player\LogSpectator.sqs"
+
+goto "Start"

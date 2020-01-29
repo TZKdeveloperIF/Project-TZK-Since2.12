@@ -1,0 +1,21 @@
+; args: [vehicle]
+
+_v = _this select 0
+
+; player globalchat format["CheckDestroyDisabledVehicle.sqs Entered: _v = %1", _v]
+
+_timeDestroy = time + ([10*60, 2*60] select dev)
+
+#Update
+	~30
+	? !(alive _v) : exit
+	? canFire _v && canMove _v : exit
+  ? _v in ( mhq + (MCV select si0) + (MCV select si1) ) : exit
+
+  ? time < _timeDestroy : goto "Update"
+
+? !(isNull player) : if ( player in _v ) then { hint "Vehicle will explode shortly ..." } 
+{ if (alive _x) then { unassignVehicle _x } } forEach (crew _v)
+~(5 + (random 5))
+_v setDamage 1
+

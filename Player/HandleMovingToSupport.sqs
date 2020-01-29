@@ -1,0 +1,25 @@
+; args: [unit, support]
+
+_unit = _this select 0
+_support = _this select 1
+
+? (side _unit) != playerSide : exit
+
+_vehicle = vehicle _unit
+_type = _vehicle call funcGetUnitTypeFromObject
+_typeSupport = _support call funcGetUnitTypeFromObject
+
+? _typeSupport == -1 : exit
+? _type == -1: goto "MsgLeader"
+
+_msg = format["Moving to Support, %1 @ %2 -> %3 @ %4", (unitDefs select _type) select udName, (getPos _vehicle) call funcCalcMapPos, (unitDefs select _typeSupport) select udName, (getPos _support) call funcCalcMapPos ]
+_unit sidechat _msg
+exit
+
+
+#MsgLeader
+? _unit != (leader _unit) : exit
+
+_msg = format["Moving to Support, %1 @ %2 -> %3 @ %4", "Leader", (getPos _vehicle) call funcCalcMapPos, (unitDefs select _typeSupport) select udName, (getPos _support) call funcCalcMapPos ]
+_unit sidechat _msg
+exit

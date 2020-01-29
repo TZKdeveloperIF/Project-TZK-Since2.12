@@ -1,0 +1,19 @@
+; args:  [idObject1,idObject2, ...]
+; turn on IDs in mission editor to find out IDs of bridge objects
+
+? !(local LocalServerObject) : exit
+
+repairableObjects = []
+repairableObjectsDamage = []
+
+_i = 0
+_c = count _this
+
+#AddObject
+	? !(_i < _c) : exit
+	_obj = object (_this select _i)
+	repairableObjects set [_i, _obj]
+	repairableObjectsDamage set [_i, 0]
+	_i = _i + 1
+	goto "AddObject"
+

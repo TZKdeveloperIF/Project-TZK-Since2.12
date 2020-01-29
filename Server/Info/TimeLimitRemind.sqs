@@ -1,0 +1,9 @@
+; args: [seconds]
+
+_sec = _this select 0
+
+_value = mtTimeLimitRemind
+
+_value = _value + TotalInfoTypes*_sec
+
+[_value] exec "Server\Info\SendInfoMsg.sqs"

@@ -1,0 +1,43 @@
+; args: [value, unit]
+
+_value = _this select 0
+_unit = _this select 1
+
+_type = _value %  TotalUnitTypes 
+_value = _value - _type
+
+_gi = (_value % ( TotalUnitTypes *GroupsNum))/ TotalUnitTypes 
+_value = _value - _gi* TotalUnitTypes 
+
+_giBuyer = (_value % ( TotalUnitTypes *GroupsNum*GroupsNum))/( TotalUnitTypes *GroupsNum)
+_value = _value - _giBuyer* TotalUnitTypes *GroupsNum
+
+_si = _value/( TotalUnitTypes *GroupsNum*GroupsNum)
+
+? isNull _unit : format["ERROR: _unit is null in MsgUnitBuilt.sqs for type %1/%2", _type, (unitDefs select _type) select udName] call fDebugLog; exit
+; player globalchat format ["MsgUnitBuilt.sqs: _type=%1 _si=%2 _gi=%3 _unit=%4", _type, _si, _gi , _unit]
+
+_indexUnitMatrix = _type
+? _type >= maxUnitTypes : _indexUnitMatrix = utCustom select _si
+
+? _si == siPlayer : groupPlayer reveal _unit
+
+? _unit in ((unitMatrix select _si) select _indexUnitMatrix) : exit
+
+[_unit, _indexUnitMatrix, _si] exec "Common\AddToUnitMatrix.sqs"
+
+_desc = unitDefs select _indexUnitMatrix
+
+? siPlayer == siCiv && (_desc select udFactoryType) == stAir : format["%1 built %2", sideNames select _si, _desc select udName] exec "Player\LogSpectator.sqs"
+
+_bIsVehicle = (count (_desc select udCrew) > 0)
+? _bIsVehicle : [_unit, _type, _si, _gi] exec "Common\InitVehicle.sqs"
+? !_bIsVehicle : [_unit, _type, _si, _gi] exec "Common\InitInfantry.sqs"
+~1
+{ [_unit, _type, _si, _gi] exec _x } foreach (_desc select udScripts)
+
+; ? _si == siPlayer && _gi == giPlayer : player globalchat format["group %1 = %2", _unit, group _unit]
+; player globalchat format["(groupMatrix select _si) select _gi = %1", (groupMatrix select _si) select _gi]
+; ? (_si == siPlayer): groupPlayer reveal _unit
+
+[_unit] exec "Common\AddRearmData.sqs"

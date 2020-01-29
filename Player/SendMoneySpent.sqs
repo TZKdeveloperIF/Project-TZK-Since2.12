@@ -1,0 +1,13 @@
+; args: [amount]
+
+_amount = _this select 0
+
+_value = _amount + 10000
+_value = _value + (20000)*giPlayer
+_value = _value + (20000*GroupsNum)*siPlayer
+
+@!(mutexMoneySpent)
+mutexMoneySpent = true
+pvMoneySpent = _value; PublicVariable "pvMoneySpent"
+~(0.5*sendDelay)
+mutexMoneySpent = false

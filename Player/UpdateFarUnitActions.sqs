@@ -1,0 +1,89 @@
+; args: [[object, typeUnit, siUnit], ["action1", "action2", ...], actionDistance, onlyCO]
+
+;player globalchat format["_this=%1", _this]
+
+
+_object = (_this select 0) select 0
+_type = (_this select 0) select 1
+_si = (_this select 0) select 2
+_actionNames = _this select 1
+_actionDistance = _this select 2
+_actionIDs = []
+_actionsAdded = false
+_onlyCO = _this select 3
+
+_unit = player
+_delay = 0.5
+
+#Update
+	; player globalchat format["unitsFarAction select _type: %1", unitsFarAction select _type]
+	~_delay
+
+	; ? (isNull _object): goto "RemoveActionsAndExit"
+	? !(alive _object): goto "RemoveActionsAndExit"
+	? (_onlyCO && groupPlayer != (groupCommander select siPlayer)): goto "RemoveActionsAndExit"
+	? !(alive _unit): goto "RemoveActionsAndWaitUntilAlive"
+  
+	; add/remove actions
+	_delay = 10
+	? (_unit distance _object) < (100+_actionDistance): _delay = 0.5
+	? (!_actionsAdded) && (_unit distance _object <= _actionDistance) && (_unit == vehicle _unit) && isNull (unitsFarAction select _type): goto "AddActions"
+	? (_actionsAdded) && ((_unit distance _object > _actionDistance) || (_unit != vehicle _unit)): goto "RemoveActions"
+
+	? (_actionsAdded && structAction in _actionIDs): goto "PerformAction"
+	
+	goto "Update"
+
+#AddActions
+	{ _id = _unit AddAction [_x, "Player\ActionStructure.sqs"]; _actionIDs = _actionIDs + [_id] } foreach _actionNames
+	_actionsAdded = true
+  unitsFarAction set [_type, _object]
+	goto "Update"
+
+#RemoveActions
+	{ _unit removeAction _x } foreach _actionIDs
+	_actionIDs = []
+	_actionsAdded = false
+  ? _object == (unitsFarAction select _type) : unitsFarAction set [_type, objNull]
+	goto "Update"
+
+#RemoveActionsAndExit
+	{ _unit removeAction _x } foreach _actionIDs
+	_actionIDs = []
+	_actionsAdded = false
+  ? _object == (unitsFarAction select _type) : unitsFarAction set [_type, objNull]
+	Exit
+
+#RemoveActionsAndWaitUntilAlive
+	{ _unit removeAction _x } foreach _actionIDs
+	_actionIDs = []
+	_actionsAdded = false
+  ? _object == (unitsFarAction select _type) : unitsFarAction set [_type, objNull]
+	@(alive player)
+	_unit = player; _delay = 0.5
+	goto "Update"
+
+#PerformAction
+	
+	;player globalchat format["#PerformAction", _this]
+
+	_index = 0
+	_count = count _actionIDs
+	#FindAction
+		? (structAction == (_actionIDs select _index)): goto "ActionFound"
+		_index = _index + 1
+		? (_index < _count): goto "FindAction"
+
+	structAction = -1
+	"ERROR: action not found in UpdateFarUnitActions.sqs" call fDebugLog
+	goto "Update"
+
+	#ActionFound
+
+	structAction = -1
+	_script = format ["Player\ActionFar %1.sqs", _actionNames select _index]
+
+	;player globalchat format["#ActionFound _script=%1", _script]
+
+	[_object, _type, _si, _actionDistance] exec _script
+	goto "Update"

@@ -1,0 +1,29 @@
+#Start
+
+@(pvMoneyGive != -1)
+
+_amount = pvMoneyGive
+_value = pvMoneyGiveGroup
+
+pvMoneyGive = -1
+pvMoneyGiveGroup = -1
+
+
+
+_giFrom = _value % GroupsNum
+_value = (_value - _giFrom) / GroupsNum
+
+_giTo = _value % GroupsNum
+_value = (_value - _giTo) / GroupsNum
+
+_si = _value
+
+;player globalchat format["MsgGiveMoney.sqs: _si=%1, _giFrom=%2, _giTo=%3, _amount=%4", _si, _giFrom, _giTo, _amount]
+
+; ? ((groupMoneyMatrix select _si) select _giFrom) < _amount: goto "Start"
+
+? _giFrom == _giTo && _giFrom == giCO select _si: _giList = [_si] call funcGetAIGroupsIndex; {[_si, _giFrom, _x, _amount] exec "Server\MoneyTransfer.sqs"} forEach _giList; goto "Start"
+
+[_si, _giFrom, _giTo, _amount] exec "Server\MoneyTransfer.sqs"
+
+goto "Start"

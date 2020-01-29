@@ -1,0 +1,169 @@
+; args: [si]
+
+_si = _this select 0
+
+hiddenMarkerPos = [-1000, -1000]
+
+;player globalchat format["InitMarkers.sqs: _si=%1", _si]
+
+; HIDE RESPAWN MARKERS
+"Respawn_West" setMarkerType "empty"
+"Respawn_East" setMarkerType "empty"
+"Respawn_Guerrila" setMarkerType "empty"
+
+; TOWN SIDE/AREA MARKERS
+_index = 0
+_count = count towns
+#InitTownMarker
+	_town = (towns select _index) select 0
+	_marker = format["Town_%1", _index]
+	_marker setMarkerType "flag1"
+	_marker setMarkerColor "colorBlack"
+	_marker setMarkerPos getPos _town
+
+	_index = _index + 1
+	? (_index < _count): goto "InitTownMarker"
+
+#HideTownMarker
+	_marker = format["Town_%1", _index]
+	_marker setMarkerPos hiddenMarkerPos
+
+	_index = _index + 1
+	? (_index < 20): goto "HideTownMarker"
+
+; VEHICLE MARKERS
+vehicleMarkerMapping = [ [], [], [], [], [] ]
+_i = 0
+maxVehicleMarkers = 200
+
+#HideVehicleMarker
+	
+	_marker = format["Vehicle_%1_%2", si0, _i]
+	_marker setMarkerPos hiddenMarkerPos
+	_marker setMarkerColor (["ColorGreen", "ColorRed", "", "", "ColorBlue"] select _si)
+	(vehicleMarkerMapping select si0) set [_i, objNull]
+	
+	_marker = format["Vehicle_%1_%2", si1, _i]
+	_marker setMarkerPos hiddenMarkerPos
+	_marker setMarkerColor (["ColorRed", "ColorGreen", "", "", "ColorRed"] select _si)
+	(vehicleMarkerMapping select si1) set [_i, objNull]
+	
+	_marker = format["Vehicle_%1_%2", siRes, _i]
+	_marker setMarkerPos hiddenMarkerPos
+	_marker setMarkerColor "ColorBlack"
+	(vehicleMarkerMapping select siRes) set [_i, objNull]
+
+	_marker = format["Vehicle_%1_%2", siCiv, _i]
+	_marker setMarkerPos hiddenMarkerPos
+	_marker setMarkerColor "ColorGrey_xj200"
+	(vehicleMarkerMapping select siCiv) set [_i, objNull]
+
+	_i = _i + 1
+	? _i < maxVehicleMarkers : goto "HideVehicleMarker"
+		
+; LEADER MARKERS
+_i = 0
+_count = count callsigns
+#HideTeamMarker
+	_marker = format["%1%2", callsigns select _i, si0]
+	_marker SetMarkerType "empty"
+	_marker setMarkerSize [0.60,0.60]
+	_marker SetMarkerPos hiddenMarkerPos
+	_marker setMarkerColor "ColorBlue"
+
+	_marker = format["%1%2", callsigns select _i, si1]
+	_marker SetMarkerType "empty"
+	_marker setMarkerSize [0.60,0.60]
+	_marker SetMarkerPos hiddenMarkerPos
+	? _si == si1 : _marker setMarkerColor "ColorBlue"
+	? _si == siCiv : _marker setMarkerColor "ColorRed"
+
+	_i = _i + 1
+	? (_i < _count):goto "HideTeamMarker"
+
+; GROUP MEMBER MARKERS
+_gi = 0
+#HideUnitMarkersGroup
+  _index = 0
+  #HideUnitMarker
+	  _marker = Format["GroupUnit_0_%1_%2", _gi, _index]
+	  _marker setMarkerSize [0.70,0.70]
+	  _marker setMarkerPos hiddenMarkerPos
+	  ? _si == siCiv : _marker setMarkerColor "ColorBlue"
+	  ? _si == si0 && _gi == giPlayer : _marker setMarkerColor "ColorRed"
+  	
+	  _marker = Format["GroupUnit_1_%1_%2", _gi, _index]
+	  _marker setMarkerSize [0.70,0.70]
+	  _marker setMarkerPos hiddenMarkerPos
+	  ? _si == siCiv : _marker setMarkerColor "ColorRed"
+	  ? _si == si1 && _gi == giPlayer : _marker setMarkerColor "ColorRed"
+
+	  _index = _index + 1
+	  ? (_index < 11): goto "HideUnitMarker"
+
+	_gi = _gi + 1
+	? _gi < (count callsigns) : goto "HideUnitMarkersGroup"
+
+; NUMBERED PLAYER AI MARKERS
+{ _m = format["PlayerUnit_%1", _x]; _m setMarkerPos hiddenMarkerPos; _m setMarkerSize [0.7,0.7] } foreach [2,3,4,5,6,7,8,9,10,11,12]
+
+; TOWN UNIT MARKERS
+_i = 0
+#HideTownUnitMarkers
+  _j = 0
+  #HideTownUnitMarker
+	  _marker = Format["TownUnit_0_%1_%2", _i, _j]
+	  _marker setMarkerSize [0.70,0.70]
+	  _marker setMarkerPos hiddenMarkerPos
+	  ? _si == siCiv : _marker setMarkerColor "ColorCyan_xj200"
+	  ? _si == si0 : _marker setMarkerColor "ColorDarkPurple_xj200"
+  	
+	  _marker = Format["TownUnit_1_%1_%2", _i, _j]
+	  _marker setMarkerSize [0.70,0.70]
+	  _marker setMarkerPos hiddenMarkerPos
+	  ? _si == siCiv : _marker setMarkerColor "ColorYellow"
+	  ? _si == si1 : _marker setMarkerColor "ColorDarkPurple_xj200"
+
+	  _j = _j + 1
+	  ? (_j < 12): goto "HideTownUnitMarker"
+
+	_i = _i + 1
+	? (_i < 20): goto "HideTownUnitMarkers"
+
+; WORKER MARKERS
+_i = 0
+#HideWorkerMarkers
+  _j = 0
+  #HideWorkerMarker
+	  _marker = Format["Worker_0_%1_%2", _i, _j]
+	  _marker setMarkerSize [0.70,0.70]
+	  _marker setMarkerPos hiddenMarkerPos
+	  ? _si == siCiv : _marker setMarkerColor "ColorGreenAlpha"
+	  ? _si == si0 : _marker setMarkerColor "ColorCyan_xj200"
+  	
+	  _marker = Format["Worker_1_%1_%2", _i, _j]
+	  _marker setMarkerSize [0.70,0.70]
+	  _marker setMarkerPos hiddenMarkerPos
+	  ? _si == siCiv : _marker setMarkerColor "ColorOrange_xj200"
+	  ? _si == si1 : _marker setMarkerColor "ColorCyan_xj200"
+
+	  _j = _j + 1
+	  ? (_j < 12): goto "HideWorkerMarker"
+
+	_i = _i + 1
+	? (_i < 3): goto "HideWorkerMarkers"
+
+; WAYPOINTS
+_i = 0; while "_i < countWPCO" do { format["co_%1", _i] setMarkerPos hiddenMarkerPos; _i = _i + 1 } 
+_i = 0; while "_i < countWPPlayer" do { format["wp_%1", _i] setMarkerPos hiddenMarkerPos; _i = _i + 1 } 
+
+
+; ARTILLERY
+artMarkers = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
+{ format["Art%1", _x] setMarkerPos hiddenMarkerPos } foreach artMarkers
+
+; Enemy Spotted
+enemyMarkers = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
+{ format["EnemySpotted_%1", _x] setMarkerPos hiddenMarkerPos } foreach enemyMarkers
+
+_i = 1; while "_i <= 28" do { _j = 1; while "_j <= 6" do { _k = 1; while "_k <= 6" do {call format [{"nm_%1_%2_%3" setMarkerPos hiddenMarkerPos},_i,_j,_k] ; _k = _k + 1 }; _j = _j + 1 } ; _i = _i + 1 } 

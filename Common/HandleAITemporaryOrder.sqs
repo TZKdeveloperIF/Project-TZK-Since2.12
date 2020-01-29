@@ -1,0 +1,30 @@
+; args [value1, value2]
+
+_value1 = _this select 0
+_value2 = _this select 1
+
+_type = _value1 % TempOrderNum; _value1 = (_value1 - _type)/TempOrderNum
+_pars = _value1 % TempParamNum; _value1 = (_value1 - _pars)/TempParamNum
+_gi = 	_value1 % GroupsNum; 	_value1 = (_value1 - _gi)/GroupsNum
+_si = 	_value1
+
+_params = []
+
+? _pars > 0 : _params set [0, _value2 % TempParam0]; _value2 = (_value2 - (_value2 % TempParam0)) / TempParam0
+? _pars > 1 : _params set [1, _value2 % TempParam1]; _value2 = (_value2 - (_value2 % TempParam1)) / TempParam1
+? _pars > 2 : _params set [2, _value2 % TempParam2]; _value2 = (_value2 - (_value2 % TempParam2)) / TempParam2
+? _pars > 3 : _params set [3, _value2 % TempParam3]; _value2 = (_value2 - (_value2 % TempParam3)) / TempParam3
+? _pars > 4 : _params set [4, _value2 % TempParam4]; _value2 = (_value2 - (_value2 % TempParam4)) / TempParam4
+
+@!(mutexHandleAITemporary)
+mutexHandleAITemporary = true
+
+_id = ((orderTempMatrix select _si) select _gi) select 0
+(orderTempMatrix select _si) set [_gi, [_id+1, _type, _params]]
+
+? isNull player : mutexHandleAITemporary = false; exit
+? _si != siPlayer : mutexHandleAITemporary = false; exit
+
+_group = (groupMatrix select _si) select _gi
+
+(leader _group) sidechat format["Temporary Order Received, %1", ((orderTempMatrix select _si) select _gi) call funcGetOrderTempDesc]; mutexHandleAITemporary = false; exit

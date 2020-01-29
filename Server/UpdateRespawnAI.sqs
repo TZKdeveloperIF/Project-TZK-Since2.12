@@ -1,0 +1,17 @@
+; args: [si]
+
+_si = _this select 0
+
+@( !(isNull (mhq select si0)) && !(isNull (mhq select si1)) )
+
+_mhq = mhq select _si
+
+_objectRespawn = objNull
+
+call format["pvRespawnObjectAi%1 = _mhq; PublicVariable ""pvRespawnObjectAi%1""; _objectRespawn = pvRespawnObjectAi%1", _si]
+
+#Update
+	~10
+	? call format["pvRespawnObjectAi%1 != _objectRespawn", _si] : call format["_objectRespawn = pvRespawnObjectAi%1", _si]
+	? !(alive _objectRespawn) : _objectRespawn = [_objectRespawn, _si] call funcGetNearestRespawnObject; call format["pvRespawnObjectAi%1 = _objectRespawn; PublicVariable ""pvRespawnObjectAi%1""", _si]
+	goto "Update"

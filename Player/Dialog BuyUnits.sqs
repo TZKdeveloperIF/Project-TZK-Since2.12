@@ -1,0 +1,246 @@
+; args: [_factory, _type]
+
+_factory = _this select 0
+_typeFactory = _this select 1
+
+_typeUnit = -1
+_typeFactoryLast = -1
+_timeUpdateFactoryList = 0
+_factories = []
+_si = siPlayer
+
+_controlCenters = [siPlayer, stComm] call funcGetWorkingStructures
+
+_remote = false
+? (isNull _factory): _remote = true
+? (_remote && (count _controlCenters) == 0): Hint "No Working Comm Center"; Exit
+
+_unit = player
+_delay = 0.2
+
+
+
+
+_nameFactory = "Buy Units"
+
+nShow = 2
+_nShow = nShow
+
+_qPlayer = []
+
+? (!_remote): _nameFactory = (structDefs select _typeFactory) select sdName
+
+_groups = groupMatrix select siPlayer
+_groupsAI = groupAiMatrix select siPlayer
+_groupNames = groupNameMatrix select siPlayer
+_groupsMoney = groupMoneyMatrix select siPlayer
+
+_idcGroups = IDC_LB+1
+_idcGroupsLabel = IDC_TEXT+1
+_idcGroupsBG = IDC_BG+1
+_idcInUse = IDC_TEXT+2
+_idcMoney = IDC_TEXT+3
+_idcShowLabel = IDC_TEXT+4
+_idcShowInfBG = IDC_BG+2
+_idcShowInf = IDC_BTN+1
+_idcShowVehBG = IDC_BG+3
+_idcShowVeh = IDC_BTN+2
+_idcShowBothBG = IDC_BG+4
+_idcShowBoth = IDC_BTN+3
+_idcBuyBG = IDC_BG+6
+_idcBuy = IDC_BTN+5
+_idcDriverBG = IDC_BG+7
+_idcDriver = IDC_BTN+6
+_idcGunnerBG = IDC_BG+8
+_idcGunner = IDC_BTN+7
+_idcCommanderBG = IDC_BG+9
+_idcCommander = IDC_BTN+8
+_idcBuyMannedBG = IDC_BG+10
+_idcBuyManned = IDC_BTN+9
+_idcFactoryLabel = IDC_TEXT+5
+_idcFactoryBG = IDC_BG+11
+_idcFactory = IDC_LB+10
+_idcUnits = IDC_LB+2
+_idcCancel = IDC_BTN+10
+_idcClear = IDC_BTN+11
+_idcQueue = IDC_LB+3
+
+_idcBuy4BG = IDC_BG+12
+_idcBuy4 = IDC_BTN+11
+_idcBuyFullBG = IDC_BG+13
+_idcBuyFull = IDC_BTN+12
+_idcBuy3BG = IDC_BG+14
+_idcBuy3 = IDC_BTN+13
+_idcBuy5BG = IDC_BG+15
+_idcBuy5 = IDC_BTN+14
+
+#InitMenu
+
+	_dialog = CreateDialog "FactoryMenu"
+
+	ctrlSetText [IDC_TITLE, _nameFactory]
+
+	{ ctrlShow [_x, false] } foreach [ _idcGroups, _idcGroupsLabel, _idcGroupsBG ]
+	{ ctrlShow [_x, _remote] } foreach [ _idcShowInf, _idcShowVeh, _idcShowBoth ]
+	{ ctrlShow [_x, false] } foreach [ _idcBuy, _idcBuyBG, _idcBuy4BG, _idcBuy4, _idcBuyFullBG, _idcBuyFull, _idcBuy3BG, _idcBuy3, _idcBuy5BG, _idcBuy5 ]
+	{ ctrlShow [_x, false] } foreach [ _idcBuyManned, _idcBuyMannedBG, _idcDriver, _idcDriverBG, _idcGunner, _idcGunnerBG, _idcCOmmander, _idcCommanderBG ]
+	
+	? !_remote : { ctrlShow [_x, false] } foreach [ _idcShowLabel, _idcShowInf, _idcShowInfBG, _idcShowVeh, _idcShowVehBG, _idcShowBoth, _idcShowBothBG, _idcFactory, _idcFactoryBG, _idcFactoryLabel ]
+
+	_selectedGroup = giPlayer
+	_selectedUnit = -1
+	_lastSelQID = -1
+	? (_remote): _lastWorkingFactoryTypes = []; goto "Update"
+	
+	[_idcUnits, _nShow, [_typeFactory], []] call funcUpdateDialogBuyUnitsAvailable
+
+		
+#Update
+	_controlCenters = [siPlayer, stComm] call funcGetWorkingStructures
+	? _remote && (count _controlCenters) == 0 : goto "CloseDialog"
+	? !(alive _unit): goto "CloseDialog"
+	? !_remote && !(alive _factory): goto "CloseDialog"
+	? !(dialog): goto "CloseDialog"
+	
+	? !_remote : _qLen = _factory call funcGetQueueLength; if (_qLen > 0) then { ctrlSetText[_idcInUse, format["Q %1", _qLen] ] } else { ctrlSetText[_idcInUse, ""] }
+	
+	_money = _groupsMoney select giPlayer
+	_text = format ["$%1", _money]
+	ctrlSetText [_idcMoney, _text]
+
+	? _remote : ctrlShow [_idcShowInfBG, _nShow == 0]; ctrlShow [_idcShowVehBG, _nShow == 1]; ctrlShow [_idcShowBothBG, _nShow == 2]
+	? _remote : _lastWorkingFactoryTypes = [_idcUnits, _nShow, [], _lastWorkingFactoryTypes] call funcUpdateDialogBuyUnitsAvailable
+	? _nShow != nShow : _nShow = nShow
+
+	_lastSelQID = -1
+	? (lbCurSel _idcQueue) < (lbSize _idcQueue) : _lastSelQID = lbValue [_idcQueue, lbCurSel _idcQueue]
+	? (count _qPlayer) != (count qPlayer) : _qPlayer = [_idcQueue, _lastSelQID] call funcUpdateDialogBuyUnitsQueue
+
+	#InitGroupList
+	_gis = ([_si] call funcGetAIGroupsIndex)
+	_Superior = _gis call funcCheckWhetherSuperior
+
+	? (groupPlayer == (groupCommander select siPlayer)) || _Superior : ctrlShow [_idcGroupsLabel, true]; ctrlShow [_idcGroups, true]; ctrlShow [_idcGroupsBG, true]
+	? !(ctrlVisible _idcGroups): goto "CheckUnitSelected"
+	? ((lbCurSel _idcGroups) >= 0): _selectedGroup = lbCurSel _idcGroups
+	[_idcGroups] call funcUpdateDialogBuyUnitsGroups
+	lbSetCurSel [_idcGroups, _selectedGroup]
+
+	; #CheckFactoriesChanged
+	#CheckUnitSelected
+	_selectedUnit = lbCurSel _idcUnits
+	? !(_selectedUnit < lbSize _idcUnits) : _selectedUnit = -1
+	? (_selectedUnit >= 0): goto "UnitSelected"
+	{ ctrlShow [_x, false] } foreach [ _idcBuy, _idcBuyBG, _idcBuy4BG, _idcBuy4, _idcBuyFullBG, _idcBuyFull, _idcBuy3BG, _idcBuy3, _idcBuy5BG, _idcBuy5 ]
+	{ ctrlShow [_x, false] } foreach [ _idcBuyManned, _idcBuyMannedBG, _idcDriver, _idcDriverBG, _idcGunner, _idcGunnerBG, _idcCommander, _idcCommanderBG ]
+	lbClear _idcFactory
+	goto "NoUnitSelected"
+
+	#UnitSelected
+	_typeUnit = lbValue[_idcUnits, _selectedUnit]
+	lastSelectedUnitType = _typeUnit
+	? _typeUnit >= maxUnitTypes : _cost = costCustom; _manning = []; _typeFactory = stBarracks; goto "UnitSelectedCustom"
+	_cost = (unitDefs select _typeUnit) select udCost; _manning = (unitDefs select _typeUnit) select udCrew; _typeFactory = (unitDefs select _typeUnit) select udFactoryType
+	#UnitSelectedCustom
+	_bVehicle = (count _manning > 0)
+	? (_bVehicle): goto "InitVehicleControls"
+	
+	#InitInfantryControls
+	ctrlSetText [_idcBuy, "Buy"]
+	{ ctrlShow [_x, true] } foreach [_idcBuy, _idcBuyBG, _idcBuy4BG, _idcBuy4, _idcBuyFullBG, _idcBuyFull, _idcBuy3BG, _idcBuy3, _idcBuy5BG, _idcBuy5]
+	{ ctrlShow [_x, false] } foreach [_idcBuyManned, _idcBuyMannedBG, _idcDriver, _idcDriverBG, _idcGunner, _idcGunnerBG, _idcCommander, _idcCommanderBG ]
+	goto "InitFactoryList"
+
+	#InitVehicleControls
+	_crewSlots = _manning select 0
+	_crewType = _manning select 1
+	ctrlSetText [_idcBuy, "Buy Empty"]
+	{ ctrlShow [_x, true] } foreach [_idcBuy, _idcBuyBG, _idcBuyManned, _idcBuyMannedBG ]; { ctrlShow [_x, false] } foreach [_idcBuy4BG, _idcBuy4, _idcBuyFullBG, _idcBuyFull, _idcBuy3BG, _idcBuy3, _idcBuy5BG, _idcBuy5]
+	
+	? _crewSlots == 1 : ctrlShow [_idcDriver, true]; ctrlShow [_idcGunner, false]; ctrlShow [_idcCommander, false]
+	? _crewSlots == 2 : ctrlShow [_idcDriver, true]; ctrlShow [_idcGunner, true]; ctrlShow [_idcCommander, false]
+	? _crewSlots == 3 : ctrlShow [_idcDriver, true]; ctrlShow [_idcGunner, true]; ctrlShow [_idcCommander, true]
+
+	ctrlShow [_idcDriverBG, ctrlVisible _idcDriver && bMannedDriver]
+	ctrlShow [_idcGunnerBG, ctrlVisible _idcGunner && bMannedGunner]
+	ctrlShow [_idcCommanderBG, ctrlVisible _idcCommander && bMannedCommander]
+
+	_crewType = _manning select 1
+	_costManned = _cost
+	? (ctrlVisible _idcDriver && bMannedDriver): _costManned = _costManned + ((unitDefs select _crewType) select udCost)
+	? (ctrlVisible _idcGunner && bMannedGunner): _costManned = _costManned + ((unitDefs select _crewType) select udCost)
+	? (ctrlVisible _idcCommander && bMannedCommander): _costManned = _costManned + ((unitDefs select _crewType) select udCost)
+	
+	ctrlShow [_idcBuyManned, true]
+	ctrlShow [_idcBuyMannedBG, true]
+	ctrlSetText [_idcBuyManned, format["Buy Manned $%1", _costManned]]
+
+	#InitFactoryList
+	? !_remote || _typeFactory == -1: goto "NoUnitSelected"
+	? _typeFactory != _typeFactoryLast || time > _timeUpdateFactoryList : _res = [_idcFactory, _idcFactoryLabel, _typeFactory, _typeFactoryLast] call funcUpdateDialogBuyUnitsFactory; _factories = _res select 0; _factoryIndex = _res select 1; _timeUpdateFactoryList = time + 0.5
+
+
+	#NoUnitSelected
+	_typeFactoryLast = _typeFactory; 
+
+	? bFactoryBuy : bFactoryBuy = false; goto "Buy"
+	? bFactoryBuyManned : bFactoryBuyManned = false; goto "BuyManned"
+	? bCancel : bCancel = false; goto "Cancel"
+	? bClear : bClear = false; goto "Clear"
+
+	~_delay
+	goto "Update"
+
+#Buy
+	? (_typeUnit == -1): Hint "No Unit Selected"; goto "Update"
+	? groupPlayer != (groupCommander select siPlayer) && _selectedGroup != giPlayer : if !((_groups select _selectedGroup) in _groupsAI) then {Hint "Only Commander can buy units for player"; goto "Update"}; if ((["Commander"] + callsigns) select ( ((aiSetting select _si) select _selectedGroup) select aisSuperior ) != _groupNames select giPlayer) then {Hint "You are not the superior of this AI group"; goto "Update"}
+	? _typeUnit >= maxUnitTypes && _selectedGroup != giPlayer : hint "Custom soldiers can only be bought for player group"; goto "Update"
+	? (_money < _cost): Hint format["Not Enough Money\nCost %1\nNeed %2", _cost, _cost - _money]; goto "Update"
+	_size = count units ((groupMatrix select _si) select _selectedGroup)
+	? (!_bVehicle && !(_size < maxGroupSize)): Hint format["Group Full\nMax Size: %1\nCurrent Size: %2", maxGroupSize, _size]; goto "Update"
+	? _remote && _factoryIndex == -1: Hint "No Factory Selected"; goto "Update"
+	? _remote: _factory = _factories select _factoryIndex
+	[_typeUnit, 0, 0, 0, _selectedGroup, _factory] exec "Player\SendBuyUnit.sqs"
+	? bFactoryBuy4 : {[_typeUnit, 0, 0, 0, _selectedGroup, _factory] exec "Player\SendBuyUnit.sqs"} forEach [1,2,3]
+	? bFactoryBuy3 : {[_typeUnit, 0, 0, 0, _selectedGroup, _factory] exec "Player\SendBuyUnit.sqs"} forEach [1,2]
+	? bFactoryBuy5 : {[_typeUnit, 0, 0, 0, _selectedGroup, _factory] exec "Player\SendBuyUnit.sqs"} forEach [1,2,3,4]
+	? bFactoryBuyFull : _i = 1; while "_i<(maxGroupSize-_size)" do {_i = _i + 1; [_typeUnit, 0, 0, 0, _selectedGroup, _factory] exec "Player\SendBuyUnit.sqs"}
+	bFactoryBuy4 = false; bFactoryBuyFull = false; bFactoryBuy3 = false; bFactoryBuy5 = false
+	goto "Update"
+
+#BuyManned
+	? (_typeUnit == -1): Hint "No Unit Selected"; goto "Update"
+	? groupPlayer != (groupCommander select siPlayer) && _selectedGroup != giPlayer : if !((_groups select _selectedGroup) in _groupsAI) then {Hint "Only Commander can buy units for player"; goto "Update"}; if ((["Commander"] + callsigns) select ( ((aiSetting select _si) select _selectedGroup) select aisSuperior ) != _groupNames select giPlayer) then {Hint "You are not the superior of this AI group"; goto "Update"}
+	? (_money < _costManned): Hint format["Not Enough Money\nCost %1\nNeed %2", _costManned, _costManned - _money]; goto "Update"
+	_unitsToBuild = 0
+	_driver = 0
+	? (_crewSlots > 0 && bMannedDriver): _driver = 1; _unitsToBuild = _unitsToBuild + 1
+	_gunner = 0
+	? (_crewSlots > 1 && bMannedGunner): _gunner = 1; _unitsToBuild = _unitsToBuild + 1
+	_commander = 0
+	? (_crewSlots > 2 && bMannedCommander): _commander = 1; _unitsToBuild = _unitsToBuild + 1
+
+	_size = count units ((groupMatrix select _si) select _selectedGroup)
+	? ((_size + _unitsToBuild) > maxGroupSize): Hint format["Group Full\nMax Size: %1\nCurrent Size: %2", maxGroupSize, _size]; goto "Update"
+
+	? _remote && _factoryIndex == -1: Hint "No Factory Selected"; goto "Update"
+	? _remote: _factory = _factories select _factoryIndex
+
+	[_typeUnit, _driver, _gunner, _commander, _selectedGroup, _factory] exec "Player\SendBuyUnit.sqs"
+	goto "Update"
+
+#Cancel
+	_lastSelQID = -1
+	? (lbCurSel _idcQueue) < (lbSize _idcQueue) : _lastSelQID = lbValue [_idcQueue, lbCurSel _idcQueue]
+	? _lastSelQID != -1 : [_lastSelQID, 0] exec "Player\SendCancelBuy.sqs"
+	goto "Update"
+	
+#Clear
+	? count _qPlayer > 0 : [] exec "Player\SendClearBuy.sqs"
+	goto "Update"
+	
+#CloseDialog
+	bFactoryBuy = false; bFactoryBuy4 = false; bFactoryBuyFull = false; bFactoryBuy3 = false; bFactoryBuy5 = false
+	bFactoryBuyManned = false
+	? (dialog): closeDialog 0
+	Exit

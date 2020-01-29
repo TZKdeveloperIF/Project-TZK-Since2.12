@@ -1,0 +1,75 @@
+; args : none
+
+_totalIncome = [startMoney select si0, startMoney select si1]
+
+[si0, _totalIncome select si0] exec "Server\SendMoneySideTotal.sqs"
+[si1, _totalIncome select si1] exec "Server\SendMoneySideTotal.sqs"
+
+[si0, moneySpent select si0] exec "Server\SendMoneySideSpent.sqs"
+[si1, moneySpent select si1] exec "Server\SendMoneySideSpent.sqs"
+
+_countGroups = [count (groupMatrix select si0), count (groupMatrix select si1)]
+_moneyPerScore = 10
+_timeNext = 60
+_income = 0
+
+#Update
+~1
+? !(time > _timeNext || pvGameOver != -1) : goto "Update"
+_timeNext=_timeNext+60
+
+? (pvGameOver != -1): goto "SendAndExit"
+
+_incomeTowns = [0,0]
+
+{ _si = (_x select tdSide); _val = (_x select tdValue); if (_si != siRes) then { _incomeTowns set [_si, (_incomeTowns select _si) + _val*incomex ] } } forEach towns
+
+_totalIncome set[si0, (_totalIncome select si0) + (_incomeTowns select si0)]
+_totalIncome set[si1, (_totalIncome select si1) + (_incomeTowns select si1)]
+
+_si = si0
+_playerIncome = 0; _aiIncome = 0
+_playerGroups = (groupMatrix select _si) - [groupCommander select _si] - (groupAiMatrix select _si)
+? (count _playerGroups) == 0 : goto "NoPlayersSide0"
+  _playerIncome = (_incomeTowns select _si)*(1-pvIncomeRatio0)*pvIncomeRatioPlayer0 / (count _playerGroups)
+  _playerIncome = _playerIncome - (_playerIncome % 1)
+#NoPlayersSide0
+_aiGroups = (groupAiMatrix select _si)
+? (count _aiGroups) == 0 : goto "NoAIteamsSide0"
+  _aiIncome = (_incomeTowns select _si)*(1-pvIncomeRatio0)*(1-pvIncomeRatioPlayer0) / (count _aiGroups)
+  _aiIncome = _aiIncome - (_aiIncome % 1)
+#NoAIteamsSide0
+_commanderIncome = (_incomeTowns select _si) - _playerIncome*(count _playerGroups) - _aiIncome*(count _aiGroups)
+_gi = 0
+{ _bonus = _moneyPerScore*((scoreMoney select _si) select _gi); _totalIncome set [_si, (_totalIncome select _si) + _bonus]; if (_x in ( (groupAiMatrix select _si) - [groupCommander select _si] ) ) then {_income = _aiIncome;} else { _income = ([_playerIncome, _commanderIncome] select (_x == (groupCommander select _si))); }; [_si, _gi, _income + _bonus, 0] exec "Server\MoneyAdd.sqs"; [_bonus, _si, _gi] exec "Server\Info\ScoreMoney.sqs"; (scoreMoney select _si) set [_gi, 0]; _gi = _gi + 1 } forEach (groupMatrix select _si)
+
+_si = si1
+_playerIncome = 0; _aiIncome = 0
+_playerGroups = (groupMatrix select _si) - [groupCommander select _si] - (groupAiMatrix select _si)
+? (count _playerGroups) == 0 : goto "NoPlayersSide1"
+  _playerIncome = (_incomeTowns select _si)*(1-pvIncomeRatio1)*pvIncomeRatioPlayer1 / (count _playerGroups)
+  _playerIncome = _playerIncome - (_playerIncome % 1)
+#NoPlayersSide1
+_aiGroups = (groupAiMatrix select _si)
+? (count _aiGroups) == 0 : goto "NoAIteamsSide1"
+  _aiIncome = (_incomeTowns select _si)*(1-pvIncomeRatio1)*(1-pvIncomeRatioPlayer1) / (count _aiGroups)
+  _aiIncome = _aiIncome - (_aiIncome % 1)
+#NoAIteamsSide1
+_commanderIncome = (_incomeTowns select _si) - _playerIncome*(count _playerGroups) - _aiIncome*(count _aiGroups)
+_gi = 0
+{ _bonus = _moneyPerScore*((scoreMoney select _si) select _gi); _totalIncome set [_si, (_totalIncome select _si) + _bonus]; if (_x in ( (groupAiMatrix select _si) - [groupCommander select _si] ) ) then {_income = _aiIncome;} else { _income = ([_playerIncome, _commanderIncome] select (_x == (groupCommander select _si))); }; [_si, _gi, _income + _bonus, 0] exec "Server\MoneyAdd.sqs"; [_bonus, _si, _gi] exec "Server\Info\ScoreMoney.sqs"; (scoreMoney select _si) set [_gi, 0]; _gi = _gi + 1 } forEach (groupMatrix select _si)
+
+~2
+@!(mutexEditMoneyMatrix)
+[si0, _totalIncome select si0] exec "Server\SendMoneySideTotal.sqs";	[si1, _totalIncome select si1] exec "Server\SendMoneySideTotal.sqs"
+[si0, moneySpent select si0] exec "Server\SendMoneySideSpent.sqs";		[si1, moneySpent select si1] exec "Server\SendMoneySideSpent.sqs"
+
+goto "Update"
+
+#SendAndExit
+	[si0, _totalIncome select si0] exec "Server\SendMoneySideTotal.sqs"
+	[si1, _totalIncome select si1] exec "Server\SendMoneySideTotal.sqs"
+
+	[si0, moneySpent select si0] exec "Server\SendMoneySideSpent.sqs"
+	[si1, moneySpent select si1] exec "Server\SendMoneySideSpent.sqs"
+

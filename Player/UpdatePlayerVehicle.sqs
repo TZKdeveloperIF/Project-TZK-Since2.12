@@ -1,0 +1,34 @@
+; args: none
+
+_unit = player
+
+_vehicle = objNull
+
+#Init
+	? (_unit != vehicle _unit): goto "PlayerEnteredVehicle"
+
+#PlayerOnFoot
+	@ !(alive _unit) || (_unit != vehicle _unit)
+	? !(alive _unit): goto "PlayerDead"
+
+#PlayerEnteredVehicle
+	_vehicle = vehicle _unit
+	? _vehicle in TownGroupVehicles : (vehicle _unit) setdamage 1; hint "Big brother is watching you."
+	_ehTrack = _vehicle addEventHandler ["Fired",{ [_this select 0, nearestObject[_this select 0, _this select 4] ] exec "Player\TrackShell.sqs" }]
+	; _ehLimit = _vehicle addEventHandler ["Fired",{ [_this select 0, nearestObject[_this select 0, _this select 4] ] exec "Player\LimitWeaponRange.sqs" }]
+	
+	@ !(alive _unit) || (_unit == vehicle _unit)
+
+	unassignVehicle _unit
+	; _vehicle removeEventHandler ["Fired", _ehLimit]
+	_vehicle removeEventHandler ["Fired", _ehTrack]
+	_vehicle = objNull
+	bTrackBullet = false
+	? !(alive _unit): goto "PlayerDead"
+	goto "PlayerOnFoot"
+
+#PlayerDead
+	@ (alive player)
+	_unit = player
+	goto "PlayerOnFoot"
+

@@ -1,0 +1,23 @@
+; args: [_type, _si, _objects, <repaired>]
+; This script should keep pace with Server\InitPrimaryStructure.sqs when updating
+
+? !(local LocalServerObject) : exit
+
+_type = _this select 0
+_si = _this select 1
+_object = (_this select 2) select 0; _objects = (_this select 2); _additionalObjects = _objects - [_object]
+? _si == si0 : _object addEventHandler ["killed", {[_this, si0] exec "Server\Event_StructPrimDestroyed.sqs"}]
+? _si == si1 : _object addEventHandler ["killed", {[_this, si1] exec "Server\Event_StructPrimDestroyed.sqs"}]
+{ _x addEventHandler ["killed", "_this exec {Server\Event_DefenceTowerDestroyed.sqs}"]} forEach _additionalObjects
+{ [_x, _si, (structDefs select _type) select sdCost] exec "Server\EventAdd_StructHit.sqs" }  forEach _objects
+[_object, _si, kaStruct, 200] exec "Server\UpdateKnowsAbout.sqs"
+
+
+? !( !dev && !((count _this) > 3) ) : exit
+
+
+removeAllWeapons _object
+~0.5
+_object setDamage 1
+
+; EOF

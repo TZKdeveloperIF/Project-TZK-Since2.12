@@ -1,0 +1,10 @@
+; args: [vehicle, unit, idAction]
+
+_vehicle = _this select 0
+_unit = _this select 1
+_id = _this select 2
+
+? !(alive _vehicle): _vehicle removeAction _id
+? _unit != driver _vehicle : _unit groupchat "Ammo Drop failed, unit must be pilot of vehicle."; exit
+
+[_vehicle, siPlayer] exec "Common\AmmoDrop.sqs"

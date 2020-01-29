@@ -1,0 +1,9 @@
+; args: [unit, si, gi]
+
+_unit = _this select 0
+_si = _this select 1
+
+@!(mutexTemporary)
+mutexTemporary = true
+call format["temporary%1 = temporary%1 - [_unit, objNull]", sideNames select _si]
+mutexTemporary = false

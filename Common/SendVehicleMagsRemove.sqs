@@ -1,0 +1,9 @@
+; args [vehicle]
+
+_vehicle = _this select 0
+
+@!(mutexVehicleMagRem)
+mutexVehicleMagRem = true
+pvRemoveMags = _vehicle; publicVariable "pvRemoveMags"
+~sendDelay
+mutexVehicleMagRem = false

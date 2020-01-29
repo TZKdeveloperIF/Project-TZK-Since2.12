@@ -1,0 +1,16 @@
+; args: [params]
+
+_value = _this select 0
+
+_gi = (_value % GroupsNum)
+_value = _value - _gi
+
+_si = _value/GroupsNum
+
+_group = (groupMatrix select _si) select _gi
+groupCommander set [_si, _group]
+giCO set [_si, _gi]
+
+? (siPlayer == _si && giPlayer == _gi): _text = "You are now the Commander GOD HELP US"; player groupchat _text; hint _text
+? (siPlayer == _si && giPlayer != _gi): _text = format["All Hail The New Commander: %1 %2", [name leader _group,"AI"] select (_group in (groupAiMatrix select _si)), (groupNameMatrix select _si) select _gi ]; player sidechat _text, hint _text
+? (siPlayer == siCiv): format["New %1 Commander: %2 %3", sideNames select _si, [name leader _group,"AI"] select (_group in (groupAiMatrix select _si)), (groupNameMatrix select _si) select _gi ] exec "Player\LogSpectator.sqs"

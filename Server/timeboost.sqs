@@ -1,0 +1,14 @@
+#loop
+
+? ((Daytime >=20.6) || (Daytime <=3.6)): goto "Nacht"
+? ((Daytime >=3.6) || (Daytime <=20.6)): goto "Tag"
+
+#Tag
+~2
+skiptime 0.00967
+goto "loop"
+
+#Nacht
+~2
+skiptime 0.06667
+goto "loop"

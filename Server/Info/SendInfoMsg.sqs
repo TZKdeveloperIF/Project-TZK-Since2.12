@@ -1,0 +1,19 @@
+; args: [value, value2]
+
+_value = _this select 0
+_value2 = -1
+? count (_this) == 2: _value2 = _this select 1
+
+@!(mutexInfo)
+mutexInfo = true
+
+? _value2 != -1 : [] call format["pvInfoEx%1 = _value2", indexInfoMsg]
+? _value2 != -1 : [] call format["PublicVariable ""pvInfoEx%1""", indexInfoMsg]
+[] call format["pvInfo%1 = _value", indexInfoMsg]
+[] call format["PublicVariable ""pvInfo%1""", indexInfoMsg]
+indexInfoMsg = indexInfoMsg + 1
+? (indexInfoMsg >= countInfoMsg): indexInfoMsg = 0
+
+~(sendDelay/countInfoMsg)
+
+mutexInfo = false

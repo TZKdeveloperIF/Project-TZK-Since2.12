@@ -1,0 +1,185 @@
+; args: [unit, si, gi, [wp, vehicle types' index, reclaim radius]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+_posReclaim = ((wpCO select _si) select (_params select 0))
+_indexReclaim = _params select 1
+_radius = 50*((_params select 2) + 1)
+
+_idOrder = ((orderMatrix select _si) select _gi) select 0
+
+#WaitReady
+~2
+? call busyCheck : goto "WaitReady"
+
+? !(alive _unit) : exit
+
+_sleep = 1
+
+_timeCheckSupport = time + 30 + random 60
+_bCheckDropBomb = true
+
+#CheckReclaimVehicles
+_rnd = 1
+? !(alive _unit) : exit
+? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+~ _sleep
+_typesReclaim = []; _crewnum = 0; _vehiclesReclaim = []
+
+? (ReclaimTypeDefs select _indexReclaim) == "Transport Car" : 		_typesReclaim = typesTransportCar;	_crewnum = 1; 	goto "GetNearbyVehicles"
+? (ReclaimTypeDefs select _indexReclaim) == "Transport Ship" : 		_typesReclaim = typesTransportShip; _crewnum = 1;	goto "GetNearbyVehicles"
+? (ReclaimTypeDefs select _indexReclaim) == "Transport APC" : 		_typesReclaim = typesTransportAPC; 	_crewnum = 1;	goto "GetNearbyVehicles"
+? (ReclaimTypeDefs select _indexReclaim) == "Transport Heli" : 		_typesReclaim = typesTransportHeli; _crewnum = 1;	goto "GetNearbyVehicles"
+? (ReclaimTypeDefs select _indexReclaim) == "Battle Ship" : 		_typesReclaim = typesBattleShip; 	_crewnum = 2;	goto "GetNearbyVehicles"
+? (ReclaimTypeDefs select _indexReclaim) == "Light Tank" : 			_typesReclaim = typesLightTank; 	_crewnum = 2;	goto "GetNearbyVehicles"
+? (ReclaimTypeDefs select _indexReclaim) == "Heavy Tank" : 			_typesReclaim = typesHeavyTank; 	_crewnum = 2;	goto "GetNearbyVehicles"
+? (ReclaimTypeDefs select _indexReclaim) == "Howitzer" : 			_typesReclaim = typesHowitzer; 		_crewnum = 2;	goto "GetNearbyVehicles"
+? (ReclaimTypeDefs select _indexReclaim) == "AT APC" :				_typesReclaim = typesATAPC; 		_crewnum = 2;	goto "GetNearbyVehicles"
+? (ReclaimTypeDefs select _indexReclaim) == "AA Vehicle" :			_typesReclaim = typesAAAPC; 		_crewnum = 2;	goto "GetNearbyVehicles"
+? (ReclaimTypeDefs select _indexReclaim) == "Kamov" :				_typesReclaim = typesKa50; 			_crewnum = 1;	goto "GetNearbyVehicles"
+? (ReclaimTypeDefs select _indexReclaim) == "Cobra\Apac\Hind" :	_typesReclaim = (typesGunshipOrigin+typesGunshipAT) - typesKa50; 	_crewnum = 2;	goto "GetNearbyVehicles"
+
+? (ReclaimTypeDefs select _indexReclaim) == "Transports" : _typesReclaim = typesTransportCar+typesTransportShip+typesTransportAPC+typesTransportHeli; _crewnum = 1;	goto "GetNearbyVehicles"
+? (ReclaimTypeDefs select _indexReclaim) == "Tanks" : 	_typesReclaim = typesLightTank+typesHeavyTank+typesHowitzer; 	_crewnum = 2;	goto "GetNearbyVehicles"
+? (ReclaimTypeDefs select _indexReclaim) == "APCs" : 	_typesReclaim = typesATAPC+typesAAAPC; 			_crewnum = 2;	goto "GetNearbyVehicles"
+? (ReclaimTypeDefs select _indexReclaim) == "Support APC" : 		_typesReclaim = typesSupportAPC;	_crewnum = 1;	goto "GetNearbyVehicles"
+
+
+; too much param1(more than 10) needs higher value in Send/Msg workshop
+
+
+#GetNearbyVehicles
+_vehicle = vehicle _unit
+? _crewnum == 0 : goto "Patrol"
+_vt = _vehicle call funcGetUnitTypeFromObject
+? !(_vt in _typesReclaim && _unit == driver _vehicle && isNull gunner _vehicle && _crewnum > 1) && _unit != _vehicle : goto "Patrol"
+
+[ _unit, ([_posReclaim, 50, 50] call funcGetRandomPos) ] call funcMoveStand
+
+_vehicles = [_posReclaim, _radius, _typesReclaim, [], _si] call funcGetNearbyVehiclesBySide
+? count _vehicles == 0 : _sleep = 30; goto "CheckReclaimVehicles"
+_prio = [ ["Gunner", "Driver"], ["Driver"] ] select (_crewnum == 1)
+? _crewnum == 2 : goto "TwoCrew"
+#OneCrew
+{ if (isNull driver (_x select 0)) then { _vehiclesReclaim set [count _vehiclesReclaim, _x] } } foreach _vehicles
+goto "ReclaimVehicle"
+
+#TwoCrew
+{ if ( ( count ([driver (_x select 0), gunner (_x select 0)] - [objNull, (_x select 0)]) ) < 2 && ( driver (_x select 0) in units group _unit || gunner (_x select 0) in units group _unit ) ) then { _vehiclesReclaim set [count _vehiclesReclaim, _x] } } foreach _vehicles
+_rnd = [count _vehiclesReclaim, 1] select (count _vehiclesReclaim < 1)
+_vehicles = _vehicles - _vehiclesReclaim
+{ if ( isNull driver (_x select 0) && isNull gunner (_x select 0) ) then { _vehiclesReclaim set [count _vehiclesReclaim, _x] } } foreach _vehicles
+
+#ReclaimVehicle
+  ? !(alive _unit) : exit
+  ? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+  ? !(_vt in _typesReclaim && _unit == driver _vehicle && isNull gunner _vehicle && _crewnum > 1) && _unit != _vehicle : goto "Patrol"
+  
+  ? count _vehiclesReclaim == 0 : _sleep = 30; goto "CheckReclaimVehicles"
+  ? _vt in _typesReclaim : goto "MoveToReclaimArea"
+  
+  _reclaimVehicle = (_vehiclesReclaim select ((random _rnd) - 0.5)) select 0
+  _unit doWatch _reclaimVehicle
+  ? (_unit distance _reclaimVehicle) < 10 : goto "Reached"
+  _offset = 0
+  _timeAbort = time + 5*60
+#Move_Check
+  ? ( count ([driver _reclaimVehicle, gunner _reclaimVehicle] - [objNull, _reclaimVehicle]) ) >= 2 : goto "Fail"
+  _offset = _offset + 10
+  _vect = [getPos _unit, getPos _reclaimVehicle] call funcVectorSub
+  _dist = _unit distance _reclaimVehicle
+  ? _dist < 0.1 : _dist = _dist + 10
+  _posMove = [getPos _reclaimVehicle, [_vect, _offset/_dist] call funcVectorScale] call funcVectorAdd
+  _posMove set [2,0]
+  [_unit, _posMove] call funcMoveStand
+
+   ~_dist*0.2
+  ? !(alive _unit) : exit
+  ? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+  ? time > _timeAbort || _offset >= 50 || !(alive _reclaimVehicle) : goto "Fail"
+  ? (_unit distance _reclaimVehicle) > 50 : goto "Move_Check"
+
+#Reached
+~1
+? !(alive _unit) : exit
+? !(alive _reclaimVehicle) : goto "Fail"
+
+_i = 0
+#TrySeat
+  unassignVehicle _unit
+  ? ( count ([driver _reclaimVehicle, gunner _reclaimVehicle] - [objNull, _reclaimVehicle]) ) >= 2 : goto "Fail"
+  _seat = _prio select _i
+  _unit playMove "CombatGetInTank"
+  ~1
+  ? !(alive _unit) : exit
+  ? !(alive _reclaimVehicle) : goto "Fail"
+  call format ["_unit assignAs%1 _reclaimVehicle; _unit moveIn%1 _reclaimVehicle", _seat]
+  ~2
+  ? !(alive _unit) : exit
+  ? !(alive _reclaimVehicle) : goto "Fail"
+  ? _reclaimVehicle == (vehicle _unit) : goto "GetNearbyVehicles"
+  _i = _i + 1
+  ? _i < (count _prio) : goto "TrySeat"
+
+#Fail
+unassignVehicle _unit
+[_unit, ([_posReclaim, 50, 50] call funcGetRandomPos)] call funcMoveStand
+goto "CheckReclaimVehicles"
+
+
+#MoveToReclaimArea
+	? !(alive _unit) : exit
+	? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+	? vehicle _unit != _vehicle : goto "GetNearbyVehicles"
+	_unit doMove _posReclaim
+	~10
+	? ([_posReclaim, getPos _unit] call funcDistH) > 100 : goto "MoveToReclaimArea"
+	
+	_unit commandMove (getPos _unit)
+	~1
+	doStop _unit
+#WaitForCrew
+	? !(alive _unit) : exit
+	? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+	? vehicle _unit != _vehicle : goto "GetNearbyVehicles"
+	
+	? !(_vt in _typesReclaim && _unit == driver _vehicle && isNull gunner _vehicle && _crewnum > 1) && _unit != _vehicle : goto "Patrol"
+	~10
+	doStop _unit; goto "WaitForCrew"
+	
+
+
+#Patrol
+_posMove = [_posReclaim, 150, 150] call funcGetRandomPos
+#Patrol_Update
+	? !(alive _unit) : exit
+	? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+
+	? _unit != driver _vehicle : _sleep = 30; goto "Sleep"
+	? isNull gunner _vehicle : [_unit, _posReclaim] call funcMoveAI; _sleep = 30; goto "Sleep"
+	
+	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 10; goto "Sleep"
+	
+	_bCheckDropBomb = !_bCheckDropBomb 
+	? _bCheckDropBomb && _unit == _vehicle && magSatchel in (magazines _unit) : [_unit, _si, _gi] exec "Server\AI_CheckDropBomb.sqs"; _sleep = 30; goto "Sleep"
+
+	_distToDest = [getPos _unit, _posMove] call funcDistH
+
+	? _distToDest > 10 : goto "Move"
+	[_unit, true] exec "Server\StopAI.sqs"
+	[_unit, _si, _gi] call funcWatch
+	? _unit != _vehicle && !(isNull gunner _vehicle) && isNull (commander _vehicle) : [_unit, _si, _gi] exec "Server\AI_CheckFireGun.sqs"
+  _sleep = 30
+  _posMove = [_posReclaim, 150, 150] call funcGetRandomPos
+  goto "Sleep"
+  
+  #Move
+  [_unit, _posMove] call funcMoveAI
+	_sleep = [30, 0.1*_distToDest] select (_distToDest < 300)
+	 
+	#Sleep
+	~_sleep
+  ? call busyCheck : goto "Sleep"
+	goto "Patrol_Update"

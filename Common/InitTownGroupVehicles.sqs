@@ -1,0 +1,21 @@
+; args: [vehicle, type, si]
+
+_vehicle = _this select 0
+
+
+? local _vehicle : _vehicle lock true
+
+@!(mutexInitTownGroupVehicles)
+mutexInitTownGroupVehicles = true
+
+_added = false; _i = 0; _c = count TownGroupVehicles
+while "_i < _c && !_added" do { if ( !(alive(TownGroupVehicles select _i)) ) then { TownGroupVehicles set [_i, _vehicle]; _added=true }; _i=_i+1 }
+if (!_added) then { TownGroupVehicles set [count TownGroupVehicles, _vehicle] }
+
+
+mutexInitTownGroupVehicles = false
+
+? !local _vehicle : exit
+
+~10
+_vehicle lock true

@@ -1,0 +1,13 @@
+; args: string
+
+_group = groupTemp0
+_init = format["player globalchat ""%1""; unitMsg=this", _this]
+
+@!(mutexTextMsg)
+mutexTextMsg = true
+
+"Civilian" createUnit [getPos leader _group, _group, _init]
+deleteVehicle unitMsg
+
+~sendDelay
+mutexTextMsg = false

@@ -1,0 +1,13 @@
+; args: [vehicle, si, cost]
+
+_vehicle = _this select 0
+_si = _this select 1
+_gi = _this select 2
+
+? !(_si in [si0, si1]) : exit
+; ? !( ((groupMatrix select _si) select _gi) in (groupAiMatrix select _si) ) : exit
+
+? _gi == giTown || _gi == giWorker : exit
+
+_event = format["[_this, %1, %2] exec ""Server\Event_VehicleHit.sqs""", _si, _gi]
+_vehicle addEventHandler ["Hit", _event]

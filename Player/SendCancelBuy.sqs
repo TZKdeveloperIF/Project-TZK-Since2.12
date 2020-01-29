@@ -1,0 +1,12 @@
+; args: [id, type]
+
+_id = _this select 0
+_type = _this select 1
+
+_value = _type
+_value = _value +  TotalUnitTypes *_id
+_value = _value + ( TotalUnitTypes *maxQ)*giPlayer
+_value = _value + ( TotalUnitTypes *maxQ*GroupsNum)*siPlayer
+
+; This script starts by "Cancel" BUTTON in Dialog BuyUnits.sqs, thus SHOULD NOT set mutex for it.
+pvCancelBuy = _value; PublicVariable "pvCancelBuy"

@@ -1,0 +1,46 @@
+; args: value of pvSetting
+
+_value = _this
+
+_type = _value % 40
+_value = _value - _type
+
+_setting = (_value % (40*30))/(40)
+_value = _value - _setting*(40)
+
+_gi = (_value % (40*30*GroupsNum*2))/(40*30)
+_value = _value - _gi*(40*30)
+
+_si = _value/(40*30*GroupsNum*2)
+@!(mutexAIGroup)
+mutexAIGroup = true
+? (_gi >= GroupsNum) : goto "SettingAll"
+(call grpSetting) set [_type, _setting]
+; ? (local LocalServerObject) : if (_type in [aisBuyFactory1, aisBuyFactory2, aisBuyFactory3, aisBuyFactory4]) then {[_si, _gi, _type, _setting] exec "Common\HandleAIAutoBuyFactories.sqs"}
+
+? isNull player : mutexAIGroup = false; exit
+? _si != siPlayer : mutexAIGroup = false; exit
+
+_group = (groupMatrix select _si) select _gi
+_nameType = (aiSettingDefs select _type) select 0
+_nameSetting = ((aiSettingDefs select _type) select 1) select _setting
+
+(leader _group) sidechat format["Alteration Acknowledged, %1 set %2", _nameType, _nameSetting]; mutexAIGroup = false; exit
+
+#SettingAll
+_groupNames = groupNameMatrix select _si
+_giPlayer = _gi - GroupsNum
+_gis = ([_si] call funcGetAIGroupsIndex); _i = -1; _c = count _gis
+	#SettingAll_Check
+	~0.05
+		_i = _i + 1
+		? !(_i < _c) : mutexAIGroup = false; exit
+		_gi = _gis select _i
+		? ((call grpSetting) select _type) == _setting : goto "SettingAll_Check"
+		? ((call grpSetting) select aisLockSetting) == 1 && _type != aisLockSetting : goto "SettingAll_Check"
+		? (_giPlayer == (giCO select _si)) && !( (["Commander"] + callsigns) select ((call grpSetting) select aisSuperior) in ["Commander", _groupNames select _giPlayer] ) : goto "SettingAll_Check"
+		? (_giPlayer != (giCO select _si)) && (["Commander"] + callsigns) select ((call grpSetting) select aisSuperior) != _groupNames select _giPlayer : goto "SettingAll_Check"
+		(call grpSetting) set [_type, _setting]
+	;	? (local LocalServerObject) : if (_setting in [aisBuyFactory1, aisBuyFactory2, aisBuyFactory3, aisBuyFactory4]) then {[_si, _gi, _setting, _type] exec "Common\HandleAIAutoBuyFactories.sqs"}
+		? !(isNull player) : if (_si == siPlayer) then {_group = (groupMatrix select _si) select _gi; _nameType = (aiSettingDefs select _type) select 0; _nameSetting = ((aiSettingDefs select _type) select 1) select _setting; (leader _group) sidechat format["Alteration Acknowledged, %1 set %2", _nameType, _nameSetting]}
+		goto "SettingAll_Check"

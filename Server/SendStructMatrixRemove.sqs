@@ -1,0 +1,14 @@
+; args: [si,type]
+
+_si = _this select 0;
+_type = _this select 1
+
+_value = _type + 1000*_si
+
+@!(mutexSendStructMatrixRemove)
+mutexSendStructMatrixRemove = true
+
+pvStructMatrixRemove = _value; PublicVariable "pvStructMatrixRemove"
+
+~sendDelay
+mutexSendStructMatrixRemove = false

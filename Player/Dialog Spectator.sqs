@@ -1,0 +1,395 @@
+; args: [posCam]
+
+; _ref = "HeliHEmpty" camCreate [0,0,0]
+
+_cam = camSpec
+_tracker = hhTracker
+_cam camSetTarget _tracker
+showCinemaBorder false
+
+btnLeaderboard = false
+btnShowStats = false
+btnLeft = false
+btnRight = false
+btnRear = false
+btnFront = false
+btnNear = false
+btnFar = false
+btnTop = false
+btnNorth = false
+btnSouth = false
+btnWest = false
+btnEast = false
+btnUseNVG = false
+
+_offsetZ = 1.5
+_distSmoothCam = 200
+_timeLastDialogUpdate = -1
+
+_selLeaderID = -1
+_selMemberID = -1
+_selMember = objNull
+_bNewLeader = false
+_bNewMember = false
+_bNewTarget = false
+_bMapMode = false
+
+_camAngleHorz = 180
+_camAngleVert = 15
+_camDistanceValue = 2
+
+? isNull unitSpec : unitSpec = player; goto "CamPosSet"
+
+? (count _this) == 0 : goto "CamPosSet"
+
+  _distH = ([(_this select 0), getPos unitSpec] call funcDistH)
+  ? _distH <= 0 : _distH = 0.0001
+  _distZ = ((_this select 0) select 2) - ((getPos unitSpec) select 2) + ((_this select 0) call funcHASL) - ((getPos unitSpec) call funcHASL)
+  ? _distZ <= 0 : _distZ = 0.0001
+  _xDiff = ((getPos unitSpec) select 0) - ((_this select 0) select 0)
+  _yDiff = ((getPos unitSpec) select 1) - ((_this select 0) select 1)
+  ; ? _yDiff == 0 : _yDiff = 0.0001
+  ; _xDiff = 0
+  ; _yDiff = 0
+  _dirDiff = (getDir vehicle unitSpec) - (_xDiff atan2 _yDiff)
+  
+  ; player globalchat format["_distH=%1, _distZ=%2, _dirDiff=%3", _distH, _distZ, _dirDiff]
+
+  _camAngleHorz = 180 + _dirDiff
+  ? _camAngleHorz < 0 : _camAngleHorz = _camAngleHorz + 360
+  ? _camAngleHorz > 360 : _camAngleHorz = _camAngleHorz - 360
+  _camAngleVert = atan ( _distZ/_distH )
+  _camDistanceValue = ln sqrt(_distH^2 + _distZ^2)
+
+#CamPosSet
+
+_target = objNull
+_targetPrevious = objNull
+_unitTracked = unitSpec
+_tracker setDir getDir vehicle _unitTracked
+
+
+_colorSide0 = [0.5,0.5,1, 0.6]
+_colorSide1 = [1,0.5,0.5, 0.6]
+_colorDead = [0.5,0.5,0.5, 0.6]
+
+#EnterCam
+	_ok = createDialog "SpecDialog"
+
+	{ ctrlShow [_x, false] } foreach [IDC_LB_LOG, IDC_BG_LOG, IDC_INFO, IDC_LB_GROUPLEADERS, IDC_LB_GROUPMEMBERS, IDC_BG_GROUPS, IDC_BTN_NORTH, IDC_BTN_SOUTH, IDC_BTN_WEST, IDC_BTN_EAST]
+
+	sliderSetRange [IDC_SL_ANGLEVERT, 0, 89]
+	sliderSetSpeed [IDC_SL_ANGLEVERT, 15, 15]
+	sliderSetPosition [IDC_SL_ANGLEVERT, _camAngleVert]
+	
+	sliderSetRange [IDC_SL_ANGLEHORZ, 0, 360]
+	sliderSetSpeed [IDC_SL_ANGLEHORZ, 45, 45]
+	sliderSetPosition [IDC_SL_ANGLEHORZ, _camAngleHorz]
+
+	sliderSetRange [IDC_SL_DISTANCE, 0, 7]
+	sliderSetSpeed [IDC_SL_DISTANCE, 0.5, 0.5]
+	sliderSetPosition [IDC_SL_DISTANCE, _camDistanceValue]
+
+	{ lbAdd [IDC_LB_LOG, _x] } foreach logSpec
+	_logIndex = count logSpec
+	_timeLastSetCam = _time
+
+  _unitTracked = unitSpec
+	_bNewTarget = true
+  _posTracker = getPos (vehicle _unitTracked)
+  _posTracker set [2, (_posTracker select 2) + _offsetZ]
+  _tracker setPos _posTracker
+  _posTrackerLast = _posTracker
+  
+	_cam cameraEffect ["internal","front"]
+
+#UpdateCam
+ ~0.01
+
+	? !dialog || pvGameOver != -1 : forceMap false; bShowMap = false; goto "Exit"
+	
+	? (!_bNewLeader): goto "NoLeaderChange"
+		_value = lbValue [IDC_LB_GROUPLEADERS, _selLeaderID]
+		_gi = _value % 15; _value = _value - _gi; _si = _value/15
+		_group = (groupMatrix select _si) select _gi
+		_unitTracked = leader _group
+		_targetPrevious = _target
+		_target = vehicle _unitTracked
+		? ( (isNull _targetPrevious) || ((_targetPrevious distance _target) > _distSmoothCam)): _posTracker = getPos _target; _posTracker set [2, (_posTracker select 2) + _offsetZ]; _tracker setPos _posTracker; _posTrackerLast = _posTracker
+		_bNewLeader = false
+		_bNewTarget = true
+	#NoLeaderChange
+
+	? (!_bNewMember): goto "NoMemberChange"
+		_unitTracked = _selMember
+		_targetPrevious = _target
+		_target = vehicle _unitTracked
+		? ( (isNull _targetPrevious) || ((_targetPrevious distance _target) > _distSmoothCam)): _posTracker = getPos _target; _posTracker set [2, (_posTracker select 2) + _offsetZ]; _tracker setPos _posTracker; _posTrackerLast = _posTracker
+		_bNewMember = false
+		_bNewTarget = true
+	#NoMemberChange
+
+	? (ctrlVisible IDC_SL_ANGLEHORZ): _camAngleHorz = sliderPosition IDC_SL_ANGLEHORZ
+	? (ctrlVisible IDC_SL_ANGLEVERT): _camAngleVert = sliderPosition IDC_SL_ANGLEVERT
+	? (ctrlVisible IDC_SL_DISTANCE): _camDistanceValue = sliderPosition IDC_SL_DISTANCE; _camDistance = exp (_camDistanceValue)
+
+	? (isNull _unitTracked): goto "UpdateCam_NoTarget"
+	_target = vehicle _unitTracked
+
+	_posTarget = getPos _target
+	; _ref setPos _posTarget
+	_errorZ = 0
+	; _errorZ = _ref distance _target
+	;player globalchat format["_errorZ = %1", _errorZ]
+	_posTarget set [2, (_posTarget select 2) + _errorZ + _offsetZ]
+	;_posTarget set [2, (_posTarget select 2) + _offsetZ]
+
+	_vTrackerToTarget = [_posTarget, _posTrackerLast] call funcVectorSub
+	_scale = 20 - abs(speed _target)
+	? (_scale < 10): _scale = 10
+	_timeDiff = _time - _timeLastSetCam
+	_scale = _scale*(0.01/_timeDiff)
+	_vDispTracker = [_vTrackerToTarget, 1/_scale] call funcVectorScale
+	_posTracker = [_posTrackerLast, _vDispTracker] call funcVectorAdd
+	? ((_posTracker select 2) < _offsetZ): _posTracker set [2, _offsetZ]
+	_tracker setPos _posTracker
+	_posTrackerLast = _posTracker
+
+	
+	? (bLockDir): goto "DirLocked"
+	_dirTarget = getDir _target
+	_dirDiff = (getDir _tracker) - _dirTarget
+	? (_dirDiff > 180): _dirDiff = _dirDiff - 360
+	? (_dirDiff < -180): _dirDiff = _dirDiff + 360
+	? (_dirDiff > 10): _tracker setDir ((10-_dirDiff) + getDir _tracker)
+	? (_dirDiff < -10): _tracker setDir ((-10-_dirDiff) + getDir _tracker)
+	#DirLocked
+
+	_posCamX = _camDistance*sin(-_camAngleHorz) - _camDistance*sin(-_camAngleHorz)*sin(_camAngleVert)
+	_posCamY = _camDistance*cos(-_camAngleHorz) - _camDistance*cos(-_camAngleHorz)*sin(_camAngleVert)
+	_posCamZ = _camDistance*sin(_camAngleVert)
+	_cam camSetRelPos [_posCamX, _posCamY, _posCamZ]
+	;if (_bNewTarget) then  { _bNewTarget = false; if (!(isNull _targetPrevious) && ((_targetPrevious distance _target) < _distSmoothCam)) then { _cam camCommit 0.2 } else { _cam camCommit 0 } } else { _cam camCommit 0.2 }
+	_cam camCommit 0
+
+	#UpdateCam_NoTarget
+	_timeLastSetCam = _time
+
+	? ((ctrlVisible IDC_TEXT_TRACKING || ctrlVisible IDC_TEXT_TRACKINGBOTTOM) && _time > (_timeLastDialogUpdate + 0.2)): goto "UpdateDialog"
+	goto "UpdateCam"
+
+#UpdateDialog
+	{ ctrlShow [_x, bShowAll || _bMapMode] } foreach [IDC_BTN_SHOWLOG, IDC_BTN_SHOWINFO, IDC_BTN_SHOWGROUPS, IDC_BTN_LEADERBOARD, IDC_BTN_STATS, IDC_BTN_SHOWMAP]
+  ctrlShow [IDC_TEXT_TRACKING, bShowAll || _bMapMode]
+  ctrlShow [IDC_TEXT_TRACKINGBOTTOM, !bShowAll && !_bMapMode]
+  ctrlShow [IDC_TEXT_GAMETIME, bShowAll || _bMapMode]
+  ctrlShow [IDC_TEXT_GAMETIMEBOTTOM, !bShowAll && !_bMapMode]
+	
+	ctrlSetText [[IDC_TEXT_GAMETIME, IDC_TEXT_GAMETIMEBOTTOM] select (!bShowAll && !_bMapMode), [] call funcGetTimeString ]
+	
+	? (count logSpec > _logIndex): lbAdd [IDC_LB_LOG, logSpec select _logIndex]; _logIndex = _logIndex + 1
+
+	ctrlSetText [[IDC_TEXT_TRACKING, IDC_TEXT_TRACKINGBOTTOM] select (!bShowAll && !_bMapMode), [format["%1", _unitTracked], "No Target"] select (isNull _unitTracked) ]
+
+	ctrlSetText [IDC_BTN_SHOWLOG, ["Show Log", "Hide Log"] select bShowLog]
+	{ ctrlShow [_x, bShowLog && (ctrlVisible IDC_BTN_SHOWLOG)] } foreach [IDC_LB_LOG, IDC_BG_LOG]
+
+	ctrlSetText [IDC_BTN_SHOWINFO, ["Show Info", "Hide Info"] select bShowInfo]
+	{ ctrlShow [_x, bShowInfo && (ctrlVisible IDC_BTN_SHOWINFO)] } foreach [IDC_INFO]
+
+	ctrlSetText [IDC_BTN_SHOWMAP, ["Show Map", "Hide Map"] select _bMapMode]
+
+	ctrlSetText [IDC_BTN_SHOWGROUPS, ["Show Groups", "Hide Groups"] select bShowGroups]
+	{ ctrlShow [_x, bShowGroups && (ctrlVisible IDC_BTN_SHOWGROUPS)] } foreach [IDC_LB_GROUPLEADERS, IDC_LB_GROUPMEMBERS, IDC_BG_GROUPS]
+
+	ctrlSetText [IDC_BTN_SHOWALL, ["Show All", "Hide All"] select bShowAll]
+	{ ctrlShow [_x, bShowAll && !_bMapMode] } foreach [IDC_SL_ANGLEHORZ, IDC_SL_ANGLEVERT, IDC_SL_DISTANCE, IDC_BTN_LOCKDIR, IDC_BTN_LEFT, IDC_BTN_TOP, IDC_BTN_RIGHT, IDC_BTN_REAR, IDC_BTN_FRONT, IDC_BTN_NEAR, IDC_BTN_FAR, IDC_BTN_UseNVG]
+
+	ctrlSetText [IDC_BTN_LOCKDIR, ["Lock Dir", "Unlock Dir"] select bLockDir]
+
+	; INFO
+	ctrlSetText [IDC_SHOWINFO, ["Show Info", "Hide Info"] select bShowInfo]
+	ctrlShow [IDC_INFO, bShowInfo]
+	_info = ""
+	? !bShowInfo || (isNull _unitTracked) : goto "SkipInfo"
+	_info = format["Damage: %1\n", damage _unitTracked]
+	? (handsHit _unitTracked) != 0 || !(canStand _unitTracked) : _info = _info + format[" %1 %2\n", ["", "BadAim"] select (handsHit _unitTracked), ["", "NoLegs"] select !(canStand _unitTracked)]
+	_wpns = weapons _unitTracked
+	_info = _info + "Weapons:\n"
+	{ _info = _info + format[" %1 - %2\n", _x, _unitTracked ammo _x] } foreach _wpns
+	_magsSingle = []
+	_mags = magazines _unitTracked
+	_info = _info + "Magazines:\n"
+	{ if (!(_x in _magsSingle)) then { _magsSingle set [count _magsSingle, _x] } } foreach _mags
+	{ _m = _x; _info = _info + format[" %1 - %2\n", _m, "_x == _m" count _mags] } foreach _magsSingle
+  
+  ; INFO VEHICLE
+  _v = vehicle _unitTracked 
+  ? _unitTracked == _v : goto "SkipVehicle"
+  _type = _v call funcGetUnitTypeFromObject
+  ? _type == -1 : goto "SkipVehicle"
+	_info = _info + format["\n%1\n", (unitDefs select _type) select udName]
+	_info = _info + format["Damage: %1\n", damage _v]
+	_wpns = weapons _v
+	_info = _info + "Weapons:\n"
+	{ _info = _info + format[" %1 - %2\n", _x, _v ammo _x] } foreach _wpns
+	_magsSingle = []
+	_mags = magazines _v
+	_info = _info + "Magazines:\n"
+	{ if (!(_x in _magsSingle)) then { _magsSingle set [count _magsSingle, _x] } } foreach _mags
+	{ _m = _x; _info = _info + format[" %1 - %2\n", _m, "_x == _m" count _mags] } foreach _magsSingle
+  #SkipVehicle
+  
+  #SkipInfo
+	ctrlSetText [IDC_INFO, _info]
+
+	? !bShowGroups: goto "GroupsHidden"
+	_idc = IDC_LB_GROUPLEADERS
+	lbClear _idc
+	_siX = si0
+	_giX = 0
+	{ _unit = leader _x; _name = name _unit; if (_x in (groupAiMatrix select _siX)) then {_name="AI"}; _text = format["%1 %2", _name, (groupNameMatrix select _siX) select _giX]; _id = lbAdd [_idc, _text]; if (alive _unit) then {lbSetColor [_idc, _id, _colorSide0]} else {lbSetColor [_idc, _id, _colorDead]}; lbSetValue [_idc, _id, 15*_siX+_giX]; _giX=_giX+1} foreach (groupMatrix select _siX)
+	_siX = si1
+	_giX = 0
+	{ _unit = leader _x; _name = name _unit; if (_x in (groupAiMatrix select _siX)) then {_name="AI"}; _text = format["%1 %2", _name, (groupNameMatrix select _siX) select _giX]; _id = lbAdd [_idc, _text]; if (alive _unit) then {lbSetColor [_idc, _id, _colorSide1]} else {lbSetColor [_idc, _id, _colorDead]}; lbSetValue [_idc, _id, 15*_siX+_giX]; _giX=_giX+1} foreach (groupMatrix select _siX)
+	? ((lbCurSel _idc) != -1 && (lbCurSel _idc) != _selLeaderID): _selLeaderID = lbCurSel _idc;	_bNewLeader = true
+
+	? (_selLeaderID == -1): goto "NoLeaderSelected"
+	_value = lbValue [IDC_LB_GROUPLEADERS, _selLeaderID]
+	_gi = _value % 15; _value = _value - _gi; _si = _value/15
+	_group = (groupMatrix select _si) select _gi
+	_leader = leader _group
+	_idc = IDC_LB_GROUPMEMBERS
+	lbClear _idc
+	; _units = units _group - [_leader]
+	_units = units _group
+	{ _name = name _x; _text = format["%1", _x]; _id = lbAdd [_idc, _text]; lbSetColor [_idc, _id, [_colorSide0,_colorSide1] select (_si == si1)]; if ((lbCurSel _idc) == _id) then {_selMember = _x} } foreach _units
+	? ((lbCurSel _idc) != -1 && (lbCurSel _idc) != _selMemberID): _selMemberID = lbCurSel _idc;	_bNewMember = true
+	#NoLeaderSelected
+	
+	#GroupsHidden
+
+	_timeLastDialogUpdate = _time
+	
+	? (btnLeaderboard): btnLeaderboard=false; [] exec "Player\Dialog Leaderboard.sqs"
+	? (btnShowStats): btnShowStats=false; [siBoth] exec "Player\Dialog Stats.sqs"
+	? (btnLeft): btnLeft=false; goto "Left"
+	? (btnRight): btnRight=false; goto "Right"
+	? (btnRear): btnRear=false; goto "Rear"
+	? (btnFront): btnFront=false; goto "Front"
+	? (btnNear): btnNear=false; goto "Near"
+	? (btnFar): btnFar=false; goto "Far"
+	? (btnTop): btnTop=false; goto "Top"
+	? (btnNorth): btnNorth=false; goto "North"
+	? (btnSouth): btnSouth=false; goto "South"
+	? (btnWest): btnWest=false; goto "West"
+	? (btnEast): btnEast=false; goto "East"
+	? (btnUseNVG) : btnUseNVG = false; goto "NVGoggle"
+
+	? bShowMap && !_bMapMode : bShowMap = false; goto "EnterMapMode"
+	? bShowMap && _bMapMode : bShowMap = false; goto "ExitMapMode"
+  ? _bMapMode && !(isNull _target) : _posMap = getPos _cam; mapAnimAdd [0, 1, _posMap]; mapAnimCommit
+
+  goto "UpdateCam"
+
+#EnterMapMode
+	{ ctrlShow [_x, false] } foreach [IDC_SL_ANGLEHORZ, IDC_SL_ANGLEVERT, IDC_SL_DISTANCE, IDC_BTN_LOCKDIR, IDC_BTN_LEFT, IDC_BTN_TOP, IDC_BTN_RIGHT, IDC_BTN_REAR, IDC_BTN_FRONT, IDC_BTN_NEAR, IDC_BTN_FAR, IDC_BTN_SHOWALL]
+	{ ctrlShow [_x, true] } foreach [IDC_BTN_NORTH, IDC_BTN_SOUTH, IDC_BTN_WEST, IDC_BTN_EAST]
+	forceMap true
+	_posMap = getPos _cam
+	mapAnimAdd [0, 1, _posMap]
+	mapAnimCommit
+	_bMapMode = true
+	goto "UpdateCam"
+
+#ExitMapMode
+	{ ctrlShow [_x, false] } foreach [IDC_BTN_NORTH, IDC_BTN_SOUTH, IDC_BTN_WEST, IDC_BTN_EAST]
+	{ ctrlShow [_x, true] } foreach [IDC_BTN_SHOWALL]
+  forceMap false
+	_bMapMode = false
+	goto "UpdateCam"
+  
+#Left
+	sliderSetPosition [IDC_SL_ANGLEVERT, 15]
+	? bLockDir: _tracker setDir (90 + getDir _target); sliderSetPosition [IDC_SL_ANGLEHORZ, 180]
+	? !bLockDir: sliderSetPosition [IDC_SL_ANGLEHORZ, 90]
+	goto "UpdateCam"
+
+#Right
+	sliderSetPosition [IDC_SL_ANGLEVERT, 15]
+	? bLockDir: _tracker setDir (-90 + getDir _target); sliderSetPosition [IDC_SL_ANGLEHORZ, 180]
+	? !bLockDir: sliderSetPosition [IDC_SL_ANGLEHORZ, 270]
+	goto "UpdateCam"
+
+#Top
+	? bLockDir: _tracker setDir (180 + getDir _target); sliderSetPosition [IDC_SL_ANGLEHORZ, 180]; sliderSetPosition [IDC_SL_ANGLEVERT, 80]
+	? !bLockDir: sliderSetPosition [IDC_SL_ANGLEHORZ, 180]; sliderSetPosition [IDC_SL_ANGLEVERT, 80]
+	goto "UpdateCam"
+
+#Rear
+	sliderSetPosition [IDC_SL_ANGLEVERT, 15]
+	? bLockDir: _tracker setDir (0 + getDir _target); sliderSetPosition [IDC_SL_ANGLEHORZ, 180]
+	? !bLockDir: sliderSetPosition [IDC_SL_ANGLEHORZ, 180]
+	goto "UpdateCam"
+
+#Front
+	sliderSetPosition [IDC_SL_ANGLEVERT, 15]
+	? bLockDir: _tracker setDir (180 + getDir _target); sliderSetPosition [IDC_SL_ANGLEHORZ, 180]
+	? !bLockDir: sliderSetPosition [IDC_SL_ANGLEHORZ, 0]
+	goto "UpdateCam"
+
+#Near
+	sliderSetPosition [IDC_SL_DISTANCE, 2]
+	goto "UpdateCam"
+
+#Far
+	sliderSetPosition [IDC_SL_DISTANCE, 4]
+	goto "UpdateCam"
+
+#North
+  _posMap set [1, (_posMap select 1) + 4000]
+  goto "MoveMap"
+
+#South
+  _posMap set [1, (_posMap select 1) - 4000]
+  goto "MoveMap"
+
+#West
+  _posMap set [0, (_posMap select 0) - 4000]
+  goto "MoveMap"
+
+#East
+  _posMap set [0, (_posMap select 0) + 4000]
+  goto "MoveMap"
+
+#MoveMap
+  _unitTracked = objNull
+	_cam camSetPos _posMap
+	_cam camCommit 0
+	mapAnimAdd [0, 1, _posMap]
+	mapAnimCommit
+	goto "UpdateCam"
+
+#Exit
+  ? dialog : closeDialog 0
+	forceMap false
+  unitSpec = _unitTracked
+  ; ? isNull unitSpec : unitSpec = player
+  ? pvGameOver == -1 : [getPos _cam] exec "Player\SpecCam.sqs"
+  exit
+
+#NVGoggle
+  ? dialog : closeDialog 0
+	forceMap false
+  unitSpec = _unitTracked
+  ? pvGameOver != -1 : exit
+  _cam cameraEffect["terminate","back"]
+  _posPlayer = getPos player; _dirPlayer = getDir player
+  _NVGtext = "You have 5 second to put on/take off your NVGoggles. However, NVGoggles effect will disappear when using FREE CAM mode."
+  hint _NVGtext; player groupChat _NVGtext
+  player removeWeapon "NVGoggles"
+  player addWeapon "NVGoggles"
+  ~5
+  player setPos _posPlayer; player setDir _dirPlayer
+  [] exec "Player\Dialog Spectator.sqs"
+  exit

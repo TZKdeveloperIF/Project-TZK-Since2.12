@@ -1,0 +1,22 @@
+; args: [si, gi, type, setting]
+
+_si = _this select 0
+_gi = _this select 1
+_type = _this select 2
+_setting = _this select 3
+
+_value = _type
+_value = _value + (40)*_setting
+_value = _value + (40*30)*_gi
+_value = _value + (40*30*GroupsNum*2)*_si
+
+@!(mutexSendAIGroup)
+mutexSendAIGroup = true
+
+call format["pvSetting%1 = _value", indexSendAIGroupSetting]
+call format["PublicVariable ""pvSetting%1""", indexSendAIGroupSetting]
+indexSendAIGroupSetting = indexSendAIGroupSetting + 1
+? indexSendAIGroupSetting >= countSendAIGroup : indexSendAIGroupSetting = 0
+
+~(sendDelay/countSendAIGroup)
+mutexSendAIGroup = false

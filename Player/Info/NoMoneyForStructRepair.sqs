@@ -1,0 +1,12 @@
+; args: [params]
+
+_value = _this select 0
+
+_type = _value % 100
+_value = _value - _type
+
+_si = _value/(100)
+
+_structName = (structDefs select _type) select sdName
+
+? siPlayer == _si : format["Not enough money to repair '%1'.", _structName] call funcSideMsg

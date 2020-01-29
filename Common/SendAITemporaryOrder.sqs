@@ -1,0 +1,31 @@
+; args: [si, gi, orderType, params]
+
+_si = _this select 0
+_gi = _this select 1
+_type = _this select 2
+_params = _this select 3
+
+
+; TempOrderNum = 30; TempParamNum = 10; TempParam0 = 30; TempParam1 = 30; TempParam2 = 20; TempParam3 = 20; TempParam4 = 20;
+
+_pars = count _params
+
+_value1 = _type + TempOrderNum * _pars + TempOrderNum*TempParamNum * _gi + TempOrderNum*TempParamNum*GroupsNum * _si
+
+_value2 = 0
+? _pars > 0 : _value2 = _value2 + (_params select 0)
+? _pars > 1 : _value2 = _value2 + (_params select 1) * TempParam0
+? _pars > 2 : _value2 = _value2 + (_params select 2) * TempParam0*TempParam1
+? _pars > 3 : _value2 = _value2 + (_params select 3) * TempParam0*TempParam1*TempParam2
+? _pars > 4 : _value2 = _value2 + (_params select 4) * TempParam0*TempParam1*TempParam2*TempParam3
+
+
+
+@!(mutexSendAITemporary)
+mutexSendAITemporary = true
+
+pvTempOrder2 = _value2; PublicVariable "pvTempOrder2"
+pvTempOrder1 = _value1; PublicVariable "pvTempOrder1"
+
+~sendDelay
+mutexSendAITemporary = false

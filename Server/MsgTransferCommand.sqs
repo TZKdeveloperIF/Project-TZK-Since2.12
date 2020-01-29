@@ -1,0 +1,21 @@
+#Start
+
+@(pvCO != -1)
+
+_value = pvCO
+
+pvCO = -1
+
+_gi = _value % GroupsNum
+_si = (_value - _gi)/GroupsNum
+
+; player globalchat format["MsgTransferCommand.sqs: _si=%1, _gi=%2", _si, _gi]
+
+_group = (groupMatrix select _si) select _gi
+? (_group in (groupAiMatrix select _si)): goto "Start"
+
+groupCommander set [_si, _group]
+giCO set [_si, _gi]
+[_si, _gi] exec "Server\Info\CommanderChange.sqs"
+
+goto "Start"

@@ -1,0 +1,15 @@
+; args: [vehicle, ...]
+
+; player globalchat format ["Event_VehicleDestroyed.sqs: _this=%1", _this]
+
+_vehicle = _this select 0
+
+_KilledTankGameLogic = objNull
+; ? "Tank" countType [_vehicle] > 0 : _pos = getPos _vehicle; _KilledTankGameLogic = "Logic" createVehicle [(_pos select 0)-100000,(_pos select 1)-100000, _pos select 2]
+
+; ? _vehicle in ( mhq + (MCV select si0) + (MCV select si1) ) : [_siUnit, _siKiller, _giKiller] exec "Common\SendMHQDestroyed.sqs"; Exit
+? _vehicle in ( mhq + (MCV select si0) + (MCV select si1) ) : exit
+
+[_vehicle, deleteUnitDelay, _KilledTankGameLogic] exec "Common\DeleteUnitAfterDelay.sqs"
+
+; EOF

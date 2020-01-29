@@ -1,0 +1,11 @@
+; args: [vehicle, unit, idAction]
+
+_vehicle = _this select 0
+_unit = _this select 1
+
+? (_unit != player): Exit
+
+_found = [getPos _vehicle, siBoth, (typesSupportPlus select si0) + (typesSupportPlus select si1) + [utMHQ0, utMHQ1, utMCVW, utMCVE], [_vehicle]] call funcGetClosestVehicle
+
+? (_found select 1) > rangeSupport: hint "No support vehicle in range"; Exit
+[_unit, _found select 0] exec "Player\Rearm.sqs"

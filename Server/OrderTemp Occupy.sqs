@@ -1,0 +1,130 @@
+; args: [unit, si, gi, [wp, structure types (defined by OccupyTypeDefs), occupy radius, duration]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+
+; Get Correct Parameters. Need Pay Attention To Coefficients
+_posOccupy = ((wpCO select _si) select (_params select 0))
+_indexOccupy = (_params select 1)
+_radius = 50*((_params select 2) + 1)
+_duration = 30 * ((_params select 3) + 1)
+
+; Check Whether Unit Fits The Parameters Of The Temporary Order
+? _unit != vehicle _unit : exit
+
+; Check Whether Unit In Another Temporary Order (Except For Set Flight Altitude, Clear Temporary Order, Etc)
+? call temporaryCheck : exit
+
+; Initialize The Order Script
+_timeStart = time; _timeAbort = _timeStart + _duration; _timeUp = _timeStart; _cycle = 30; _loop = 0
+call temporarySet
+
+
+; Wait For Unit Finish Its Busy-Work
+#WaitReady
+~2
+? time > _timeAbort : 	call temporaryClear; exit
+? !call temporaryCheck : exit
+? call busyCheck : goto "WaitReady"
+
+; Main Part Of Temporary Order
+
+; Use busy to prevent AI from automatically moving for support in Temporary Occupy Order
+call busySet
+
+_typesOccupy = []; _crewnum = 0; 
+
+; Using structsOccupiable arrays defined in InitStructureTypes.sqs
+; OccupyTypeDefs = ["All Defense", "Mortar", "MG Ground", "MG Tower", "M46", "M46 Art", "Gun Fort"], defined in Init.sqs
+
+? (OccupyTypeDefs select _indexOccupy) == "All Defense" :	_typesOccupy = structsOccupiableMortar + structsOccupiableMGGround + structsOccupiableMGTower + structsOccupiableGunfort + structsOccupiableM46 + structsOccupiableM46Art
+? (OccupyTypeDefs select _indexOccupy) == "Mortar" :		_typesOccupy = structsOccupiableMortar
+? (OccupyTypeDefs select _indexOccupy) == "MG Ground" :		_typesOccupy = structsOccupiableMGGround
+? (OccupyTypeDefs select _indexOccupy) == "MG Tower" :		_typesOccupy = structsOccupiableMGTower
+? (OccupyTypeDefs select _indexOccupy) == "M46" :			_typesOccupy = structsOccupiableM46
+? (OccupyTypeDefs select _indexOccupy) == "M46 Art" :		_typesOccupy = structsOccupiableM46Art
+? (OccupyTypeDefs select _indexOccupy) == "Gun Fort" :		_typesOccupy = structsOccupiableGunfort
+
+_groups = groupMatrix select _si
+#Update
+	_gi = [(group _unit), _groups] call funcGetIndex
+	_vehicle = vehicle _unit
+	? _unit != _vehicle : goto "EOF"
+
+	[ _unit, ([_posOccupy, _radius/2, _radius/2] call funcGetRandomPos) ] call funcMoveStand
+	_structs = [_posOccupy, _radius, _typesOccupy, [], _si] call funcGetNearbyStructure
+	? count _structs == 0 : goto "Sleep"
+
+	_structures = []; _rnd = 1
+	{ if (isNull gunner (_x select 0)) then { _structures set [count _structures, _x] } } foreach _structs
+	? count _structures == 0 : goto "Sleep"
+	_structuresOccupy = [2, true, _structures] call funcSort
+	_prio = ["Gunner"]
+
+	_occupyStructure = (_structuresOccupy select ((random _rnd) - 0.5)) select 0
+	_unit doWatch _occupyStructure
+	? (_unit distance _occupyStructure) < 10 : goto "Reached"
+
+	_offset = 0
+	_timeMoveAbort = time + 5*60
+	#Move_Check
+		? isNull _occupyStructure : goto "Fail"
+		_offset = _offset + 10
+		_vect = [getPos _unit, getPos _occupyStructure] call funcVectorSub
+		_dist = _unit distance _occupyStructure
+		? _dist < 0.1 : _dist = _dist + 1
+		_posMove = [getPos _occupyStructure, [_vect, _offset/_dist] call funcVectorScale] call funcVectorAdd
+		_posMove set [2,0]
+		[_unit, _posMove] call funcMoveStand
+
+		_timeUp = time + _dist*0.2
+		@ ( time > _timeUp || !call temporaryCheck )
+		? !call temporaryCheck : goto "EOF"
+		? !(alive _unit) || _vehicle != (vehicle _unit) || time > _timeAbort : goto "EOF"
+
+		? time > _timeMoveAbort || _offset >= 50 || !(alive _occupyStructure) : goto "Fail"
+		? (_unit distance _occupyStructure) > 50 : goto "Move_Check"
+
+	#Reached
+
+	_i = 0
+	#TrySeat
+		unassignVehicle _unit
+		? isNull _occupyStructure : goto "Fail"
+		_seat = _prio select _i
+	;	_unit playMove "CombatGetInTank"
+		~1
+		? !alive _unit || !call temporaryCheck: goto "EOF"
+		? !(alive _occupyStructure) : goto "Fail"
+		call format ["_unit assignAs%1 _occupyStructure; _unit moveIn%1 _occupyStructure", _seat]
+		~2
+		? !alive _unit || !call temporaryCheck: goto "EOF"
+		? !(alive _occupyStructure) : goto "Fail"
+		? _occupyStructure == (vehicle _unit) : goto "EOF"
+		_i = _i + 1
+		? _i < (count _prio) : goto "TrySeat"
+
+	#Fail
+		unassignVehicle _unit
+		[ _unit, ([_posOccupy, _radius/2, _radius/2] call funcGetRandomPos) ] call funcMoveStand
+		goto "Update"
+
+
+
+; End Of File
+#EOF
+call busyClear
+call temporaryClear
+exit
+
+
+#Sleep
+_loop = (time-_timeStart)/_cycle; _loop = 1 + _loop - _loop%1
+_timeUp = _loop*_cycle + _timeStart
+
+@ ( time > _timeUp || !call temporaryCheck )
+? !call temporaryCheck : goto "EOF"
+? !(alive _unit) || _vehicle != (vehicle _unit) || time > _timeAbort : goto "EOF"
+goto "Update"

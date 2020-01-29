@@ -1,0 +1,11 @@
+; Player client creates Visual Effects and Server creates explosions.
+
+#Start
+@(pvNuclearZ != 0)
+_pos = [pvNuclearX, pvNuclearY, pvNuclearZ]
+pvNuclearX = 0; pvNuclearY = 0; pvNuclearZ = 0
+
+? !isNull player : [_pos] exec {\TZK_Objects\Scripts\TomahawkDrop.sqs}
+? local LocalServerObject : _pos exec {\TZK_Objects\Scripts\TomahawkExploded.sqs}
+
+goto "Start"

@@ -1,0 +1,12 @@
+#Start
+
+@(pvVehicleDetached != -1)
+
+_value = pvVehicleDetached
+_vehicle = pvVehicleDetachedTugged
+
+pvVehicleDetached = -1
+pvVehicleDetachedTugged = objNull
+
+[_value, _vehicle] exec "Common\HandleVehicleDetached.sqs"
+goto "Start"

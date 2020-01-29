@@ -1,0 +1,23 @@
+; args: [_type, _si, _objects]
+
+? !(local LocalServerObject) : exit
+
+_type = _this select 0
+_si = _this select 1
+_objects = _this select 2
+_v = _objects select 0
+_pos = getpos _v
+_pos2 = getpos _v
+#check
+~10
+?(IsNull _v): goto "check"
+?(alive _v): goto "check"
+
+#info
+? (siPlayer == _si ): player sideChat format ["Air Radar DESTROYED AT POSITION: %1 %2", _pos call funcCalcMapPos, _pos2 call funcCalcTownDirDistFromPos]
+~30
+goto "check"
+exit
+
+
+

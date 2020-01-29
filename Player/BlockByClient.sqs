@@ -1,0 +1,24 @@
+; args: none
+
+disableUserInput true
+
+hint "You are BLOCKED.\nYou are NOT Receiving."
+
+[siPlayer, giPlayer, 1] exec "Player\SendBlockedByClient.sqs"
+
+#WaitForData
+	groupPlayer setCombatMode "BLUE"
+	~1
+	? (time > (timeLastPing + blockTime)): goto "WaitForData"
+
+~blockTime
+? (time > (timeLastPing + blockTime)): goto "WaitForData"
+
+groupPlayer setCombatMode "YELLOW"
+
+disableUserInput false
+hint "You are UNBLOCKED.\nYou are Receiving."
+
+[siPlayer, giPlayer, 0] exec "Player\SendBlockedByClient.sqs"
+
+bBlockedByClient = false

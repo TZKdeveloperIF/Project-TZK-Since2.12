@@ -1,0 +1,12 @@
+; args: [vehicle, type, si]
+
+_plane = _this select 0
+_posveh = getpos _plane;
+_driver = driver _plane;
+
+? (isNull _driver) : Goto "end";
+
+_newposveh = [(_posveh  select 0),(_posveh select 1),(_posveh select 2) + 900]; 
+_plane setPos _newposveh;
+
+

@@ -1,0 +1,10 @@
+#Start
+
+@(pvJoinReceive != -1)
+
+_value = pvJoinReceive
+pvJoinReceive = -1
+
+[_value] exec "Player\HandleJoinUnits.sqs"
+
+goto "Start"

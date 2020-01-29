@@ -1,0 +1,15 @@
+; args: [vehicle, lock]
+
+_v = _this select 0
+_lock = _this select 1
+
+? local _v : _v lock _lock; exit
+
+@!(mutexLock)
+mutexLock = true
+
+? _lock : pvLock = _v; PublicVariable "pvLock"
+? !_lock : pvUnlock = _v; PublicVariable "pvUnlock"
+
+~sendDelay
+mutexLock = false

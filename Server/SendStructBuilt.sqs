@@ -1,0 +1,15 @@
+; args: [object, type, si, new]
+
+_object = _this select 0
+_type = _this select 1
+_si = _this select 2
+_new = _this select 3
+
+@!(mutexStructBuilt)
+mutexStructBuilt = true
+
+pvStructBuilt_Object = _object; PublicVariable "pvStructBuilt_Object"
+pvStructBuilt = _type + 1000*_new + (1000*2)*_si; PublicVariable "pvStructBuilt"
+
+~sendDelay
+mutexStructBuilt = false

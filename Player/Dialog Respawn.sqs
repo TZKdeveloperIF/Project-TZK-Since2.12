@@ -1,0 +1,46 @@
+; args [timeRespawn]
+_timeRespawn = _this select 0
+
+_menu = createDialog "RespawnMenu"
+
+_idc = IDC+0
+
+_delay = 0.2
+
+#Update
+	_list = []
+
+	_mhq = mhq select siPlayer
+	? alive _mhq : _list = [[_mhq, "MHQ"]]
+	
+	_MCVs = MCV select siPlayer
+	? ("alive _x " count _MCVs) > 0: {  if (alive _x) then { _list set [ count _list, [_x, "MCV"] ] }  } foreach _MCVs
+	
+	_i = 0
+	_c = count structsRespawn
+	#CheckStructType
+		_ts = structsRespawn select _i
+		_name = structDefs select _ts select sdName
+		_structs = [siPlayer, _ts] call funcGetWorkingStructures
+		{ _list set [count _list, [_x, _name] ] } foreach _structs
+		_i = _i + 1
+		? _i < _c : goto "CheckStructType"
+	
+  lbClear _idc
+  { _id = lbAdd [ _idc, format["%1  %2", _x select 1, (getPos (_x select 0)) call funcCalcTownDirDistFromPos] ]; if ((_x select 0) == objectRespawn) then { lbSetCurSel [_idc, _id] } } foreach _list
+
+	_timeLeft = _timeRespawn - time
+	_timeLeftDisplay = _timeLeft - (_timeLeft % 1)
+	_textStatus = format ["Returning in %1 seconds", _timeLeftDisplay]
+	ctrlSetText [IDC_TITLE, _textStatus]
+
+	~_delay
+	
+	? (lbCurSel _idc) != -1 : objectRespawn = (_list select (lbCurSel _idc)) select 0
+	? (isNull objectRespawn || !(alive objectRespawn) ) : lbSetCurSel [_idc, 0]
+
+	_timeLeft = _timeLeft - _delay
+
+	? _timeLeft < 0 || pvGameOver != -1 : closeDialog 0; exit
+	? !dialog : exit
+	goto "Update"

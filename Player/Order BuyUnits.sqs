@@ -1,0 +1,40 @@
+; args: [unit, pos, [Factory Type in Parameter Form]]
+
+_unit = _this select 0
+_pos = _this select 1
+_theTypeParameter = (_this select 2) select 0; _factoryType = [stBarracks, stLight, stShip, stHeavy, stAir] select _theTypeParameter
+
+
+
+? !(alive _unit) : exit
+? _unit != vehicle _unit : if (_unit == driver _unit) then {_unit groupChat "Only allow asking infantry to do this."}; exit
+_si = siPlayer
+_res = [_pos, _si, _factoryType] call funcGetClosestStructure
+? (_res select 1) > 400 : _unit groupChat "None such kind of factories in 400 meters to the position you clicked. Check again please."; exit
+
+
+_order = []; _id = -1; call orderNew
+
+_posFactory = getPos (_res select 0)
+_unit groupChat format["Roger, moving to %1 - %2.", (structDefs select _factoryType) select sdName, _posFactory call funcCalcTownDirDistFromPos]
+
+? ([getPos _unit, _posFactory] call funcDistH) < 25 : goto "Buy"
+_timeAbort = time + 5*60
+#Move
+  [_unit, _posFactory] exec "Player\MovePos.sqs"
+  ~5
+  ? !(alive _unit) : exit
+  ? call orderCheck : exit
+  ? time > _timeAbort : exit
+  ? ([getPos _unit, _posFactory] call funcDistH) > 25 : goto "Move"
+
+#Buy
+doStop _unit
+_object = (_res select 0)
+? !alive _object || isNull _object : _unit groupChat "Factory is unavailable. Abort buying units."; exit
+
+; The scripts' name must keep pace with actual scripts in Player folder and the "BuyFactoryDefs" defined in "Init.sqs"
+; BuyFactoryDefs = ["Barrack", "Light", "Ship", "Heavy", "Air"]
+_scriptLists = ["Buy Infantry", "Buy Light Vehicles", "Buy Ships", "Buy Heavy Vehicles", "Buy Aircraft"]
+_script = format ["Player\ActionFar %1.sqs", _scriptLists select _theTypeParameter]
+[_object, _factoryType, _si] exec _script

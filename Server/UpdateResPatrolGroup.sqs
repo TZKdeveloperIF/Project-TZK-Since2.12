@@ -1,0 +1,102 @@
+; args: [unit, tanks, timePatrol]
+
+? !(local LocalServerObject) : exit
+_unit = _this select 0
+_unit disableAI "TARGET"; _unit disableAI "AUTOTARGET"; _unit disableAI "MOVE"
+
+~5
+
+_tanks = _this select 1
+_timePatrol = (60*(Random 60))
+
+_Destr = (30*(Random 4))
+
+_timeDestroy = (_Destr*60)
+
+
+_si = siRes
+_group = group _unit
+
+; DELETE UNIT AND POSSIBLE CREW
+_crew = crew _unit
+_i = 0
+_c = count _crew
+#CheckCrew
+  ? !(_i < _c) : goto "DeleteUnit"
+  _u = _crew select _i
+  _i = _i + 1
+
+  ? _u == _unit : goto "CheckCrew"
+  unassignVehicle _u 
+  _u action ["eject", _unit]
+  ~1
+  deleteVehicle _u  
+  goto "CheckCrew"
+#DeleteUnit
+~1
+deleteVehicle _unit
+
+? isNull _group : format["ERROR: _group is NULL for RES patrol group"] call fDebugLog; exit
+
+@!(mutexInitResGroups)
+mutexInitResGroups = true
+_list = groupMatrix select _si
+_list set [count _list, _group]
+;_gi = [_group, _list] call funcGetIndex
+groupsPatrol set [count groupsPatrol, _group]
+groupPatrolJoinMatrix set [count groupPatrolJoinMatrix, 0]
+mutexInitResGroups = false
+
+@( !(isNull (mhq select si0)) && !(isNull (mhq select si1)) )
+
+_posStart = [] call funcUpdateResStartPos
+   
+~10
+_posPatrol = _posStart
+
+_i = 0
+#InitAddTank
+  _i = _i + 1
+  ? _i > _tanks : goto "TanksAdded"
+  _type = -1
+  while "_type == -1" do { _type = (armorTown select _si) call funcGetRandomUnitType }
+  _pos = [_posStart, 10, 20] call funcGetRandomPos
+  [_type, 1, 1, 0, _pos, random 360, _si, -1, _group, 0, 0] exec "Common\AddUnit.sqs"
+  ~1
+  goto "InitAddTank"
+#TanksAdded
+
+_town = objNull
+
+; Use mutexInitResGroups to let server only ask one patrol group move in a short time. Aiming to reduce server's workload.
+#Update
+	mutexInitResGroups = false
+	  ~(120 - 15 + random 30)
+	@!(mutexInitResGroups)
+	mutexInitResGroups = true
+
+	? (count (units _group)) == 0 : goto "Update"
+
+  _group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "NORMAL"
+  
+  ; TODO { _x disableAI "TARGET" } foreach (units _group)
+
+	? time < _timePatrol : goto "Patrol"
+	? time > _timeDestroy : goto "Destroy"
+	_res = [-1,0]
+	{ if (_x == driver vehicle _x) then { _res = [getPos _x, siRes, []] call funcGetClosestEnemyTown; if ((_res select 0) != -1) then { _flag = (towns select (_res select 0)) select tdFlag; _x doMove ([getPos _flag,4, 4] call funcGetRandomPos) } } } forEach (units _group)
+	? (_res select 0) != -1 : goto "Update"
+
+
+#Patrol
+	? time < 60*10 : goto "Update"
+	_posOld = _posPatrol
+	_posPatrol = [_posOld] call funcUpdateResPatrolPos
+
+	{ if (_x == driver vehicle _x) then { _x doMove ([_posPatrol, 10, 20] call funcGetRandomPos) } } foreach (units _group)
+		; player globalchat Format ["UpdatePatrollingResTank.sqs: Patrol: _posPatrol=%1", _posPatrol]
+		goto "Update"
+
+#Destroy
+	[_group] call funcUpdateResPatrolDestroy
+	goto "Update"

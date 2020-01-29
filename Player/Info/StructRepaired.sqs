@@ -1,0 +1,19 @@
+; args: [params]
+
+_value = _this select 0
+_value2 = _this select 1
+
+_percent = _value % 101
+_value = (_value - _percent) / 101
+
+_gi = _value % GroupsNum
+_value = (_value - _gi) / GroupsNum
+
+_si = _value
+_type = _value2
+
+_structName = (structDefs select _type) select sdName
+
+; player globalchat format["StructRepaired.sqs: _percent=%1, _si=%2, _gi=%3, , _type=%4", _percent, _si, _gi, _type]
+
+? (siPlayer == _si && giPlayer == _gi): hint format["Repairing %1%2\n%3", _percent, "%", _structName]

@@ -1,0 +1,55 @@
+; args: none
+
+_si = si0
+_groups = groupMatrix select _si
+_countGroups = count _groups
+_countPlayers = count ((groupMatrix select _si) - (groupAiMatrix select _si))
+? _countGroups == 0 : goto "Side0Empty"
+_startMoney = startMoney select _si
+_startMoneyPlayer = startMoneyPlayer select _si
+while "_countPlayers*_startMoneyPlayer > 0.5*_startMoney" do { _startMoneyPlayer = 0.5*_startMoneyPlayer }
+_startMoneyPlayer = _startMoneyPlayer - (_startMoneyPlayer % 1)
+_moneyRequest = moneyRequest select _si
+_index = 0
+#InitSide0Money
+	_group = _groups select _index
+	? _group == (groupCommander select _si) : _commanderIndex = _index; goto "SkipGroupSide0"
+	? _group in (groupAiMatrix select _si) : goto "SkipGroupSide0"
+	
+	[_si, _index, _startMoneyPlayer, 1] exec "Server\MoneyAdd.sqs"
+	_startMoney = _startMoney - _startMoneyPlayer
+
+	#SkipGroupSide0
+  _moneyRequest set [_index, 0]
+
+	_index = _index + 1
+	? (_index < _countGroups): goto "InitSide0Money"
+[_si, _commanderIndex, _startMoney, 1] exec "Server\MoneyAdd.sqs"
+#Side0Empty
+
+_si = si1
+_groups = groupMatrix select _si
+_countGroups = count _groups
+_countPlayers = count ((groupMatrix select _si) - (groupAiMatrix select _si))
+? _countGroups == 0 : goto "Side1Empty"
+_startMoney = startMoney select _si
+_startMoneyPlayer = startMoneyPlayer select _si
+while "_countPlayers*_startMoneyPlayer > 0.5*_startMoney" do { _startMoneyPlayer = 0.5*_startMoneyPlayer }
+_startMoneyPlayer = _startMoneyPlayer - (_startMoneyPlayer % 1)
+_moneyRequest = moneyRequest select _si
+_index = 0
+#InitSide1Money
+	_group = _groups select _index
+	? _group == (groupCommander select _si) : _commanderIndex = _index; goto "SkipGroupSide1"
+	? _group in (groupAiMatrix select _si) : goto "SkipGroupSide1"
+	
+	[_si, _index, _startMoneyPlayer, 1] exec "Server\MoneyAdd.sqs"
+	_startMoney = _startMoney - _startMoneyPlayer
+
+	#SkipGroupSide1
+  _moneyRequest set [_index, 0]
+
+	_index = _index + 1
+	? (_index < _countGroups): goto "InitSide1Money"
+[_si, _commanderIndex, _startMoney, 1] exec "Server\MoneyAdd.sqs"
+#Side1Empty

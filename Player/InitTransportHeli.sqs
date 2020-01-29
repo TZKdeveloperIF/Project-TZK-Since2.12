@@ -1,0 +1,11 @@
+; args: vehicle
+
+_vehicle = _this
+
+? !(local _vehicle) : exit
+
+~2.5
+doStop _vehicle
+? !(isNull driver _vehicle) : driver _vehicle groupChat "Heli engine OFF. Waiting your order."; driver _vehicle action ["ENGINE OFF",_vehicle]
+~0.5
+_vehicle engineOn false

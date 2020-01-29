@@ -1,0 +1,48 @@
+; args: [group]
+
+;player globalchat "Entered UndoStructure.sqs"
+
+? !(Local LocalServerObject):Exit
+
+_group = _this select 0
+
+_si = -1
+? _group in (groupMatrix select si0) : _si = si0
+? _group in (groupMatrix select si1) : _si = si1
+? _si == -1 : "ERROR: _si not si0 or si1 in UndoStructure.sqs" call fDebugLog; exit
+_gi = [_group, groupMatrix select _si] call funcGetIndex
+? _gi < 0 : format ["_gi is %1 in UndoStructure.sqs, _si is %2", _gi, _si] call fDebugLog; exit
+
+
+_i = 0
+_c = count undoList
+
+#FindUndoEntry
+	_undoEntry = undoList select _i
+	? (_undoEntry select 0) == _group && (count _undoEntry) == 3 : goto "PerformUndo"
+	_i = _i + 1
+	? _i < _c : goto "FindUndoEntry"
+	exit
+
+#PerformUndo
+	_type = _undoEntry select 1
+	_objects = _undoEntry select 2
+	_cost = (structDefs select _type) select sdCost
+	
+	[_objects select 0, objNull, _si, false, false] exec "Server\StructuresServerRemove.sqs"
+
+	@!(mutexUndo)
+	mutexUndo = true
+	undoList set [_i, [_group]]
+	mutexUndo = false
+	
+	; {deleteVehicle _x} foreach _objects
+	@(isNull (_objects select 0))
+
+	[_type, _si] exec "Server\Info\StructUndone.sqs"
+
+	[_si, _gi, -_cost] exec "Server\MoneySpend.sqs"
+	
+	; [_si, _type] exec "Server\SendStructMatrixRemove.sqs"
+
+	exit

@@ -1,0 +1,40 @@
+; args: [upg, si]
+
+_upg = _this select 0
+_si = _this select 1
+
+_controlCenters = [_si, stComm] call funcGetWorkingStructures
+
+? (count _controlCenters) == 0 : exit
+
+? ((upgMatrix select _si) select _upg) != 0 : exit
+
+; _gi = [groupCommander select _si, groupMatrix select _si] call funcGetIndex
+_gi = giCO select _si
+
+? _gi == -1 : exit
+
+_minutes = (upgDefs select _upg) select 2
+_cost = (upgDefs select _upg) select 1
+
+_money = (groupMoneyMatrix select _si) select _gi
+
+? _money < _cost : exit
+
+[_si, _gi, _cost] exec "Server\MoneySpend.sqs"
+
+(upgMatrix select _si) set [_upg, 1]
+
+[_si, _upg, 1] exec "Server\Info\UpgState.sqs"
+
+_timeStart = time
+#CheckControlCenters
+	~5
+	_controlCenters = [_si, stComm] call funcGetWorkingStructures
+
+	? (count _controlCenters) == 0 : (upgMatrix select _si) set [_upg, 0]; [_si, _upg, 0] exec "Server\Info\UpgState.sqs"; exit
+
+	? time < (_timeStart + 60*_minutes) : goto "CheckControlCenters"
+
+(upgMatrix select _si) set [_upg, 2]
+[_si, _upg, 2] exec "Server\Info\UpgState.sqs"

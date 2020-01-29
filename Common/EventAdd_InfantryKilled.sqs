@@ -1,0 +1,14 @@
+; args: [unit, si, cost]
+
+_unit = _this select 0
+_si = _this select 1
+_cost = _this select 2
+
+; calc score
+_score = _cost/100
+_score = _score - (_score % 1)
+? _cost > 0 && _score < 1 : _score = 1
+
+_event = format["[_this, %1, %2] exec ""Common\Event_InfantryKilled.sqs""", _si, _score]
+
+_unit addEventHandler ["killed", _event]

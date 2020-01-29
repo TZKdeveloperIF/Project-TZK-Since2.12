@@ -1,0 +1,203 @@
+; args: [unit, si, gi, [wp, vehicle types' index, reclaim radius]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+_posBoard = ((wpCO select _si) select (_params select 0))
+_indexBoard = _params select 1
+_radius = 50*((_params select 2) + 1)
+
+_idOrder = ((orderMatrix select _si) select _gi) select 0
+
+#WaitReady
+~2
+? call busyCheck : goto "WaitReady"
+
+? !(alive _unit) : exit
+
+_sleep = 1
+
+_timeCheckSupport = time + 30 + random 60
+_bCheckDropBomb = true
+
+#CheckBoardVehicles
+_rnd = 1
+? !(alive _unit) : exit
+? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+~ _sleep
+_typesBoard = []; _crewnum = 0
+
+; BoardTypeDefs should be defined in Init.sqs, combine with this order
+? (BoardTypeDefs select _indexBoard) == "Car" :		_typesBoard = [TransportCarW, TransportCarE] select _si;		_crewnum = CarogCar; 	goto "GetNearbyVehicles"
+? (BoardTypeDefs select _indexBoard) == "Truck" :	_typesBoard = [TransportTruckW, TransportTruckE] select _si;	_crewnum = CargoTruck; 	goto "GetNearbyVehicles"
+? (BoardTypeDefs select _indexBoard) == "Zodiac" :	_typesBoard = [TransportZodiacW, TransportZodiacE] select _si;	_crewnum = CargoZodiac; goto "GetNearbyVehicles"
+? (BoardTypeDefs select _indexBoard) == "Ship" :	_typesBoard = [TransportShipW, TransportShipE] select _si; 		_crewnum = [CargoShipW, CargoShipE] select _si;	goto "GetNearbyVehicles"
+? (BoardTypeDefs select _indexBoard) == "APC" : 	_typesBoard = [Transport6APCW+Transport8APCW, Transport6APCE+Transport8APCE] select _si; 	_crewnum = Cargo8APC;	goto "GetNearbyVehicles"
+? (BoardTypeDefs select _indexBoard) == "Heli" :	_typesBoard = [TransportHeliW+TransportSmallHeliW, TransportHeliE+TransportSmallHeliE+TransportHindE] select _si;		_crewnum = CargoHeli;	goto "GetNearbyVehicles"
+? (BoardTypeDefs select _indexBoard) == "Plane" :	_typesBoard = [TransportPlaneW, TransportPlaneE] select _si;		_crewnum = CargoPlane;	goto "GetNearbyVehicles"
+
+#GetNearbyVehicles
+_vehicle = vehicle _unit
+? _crewnum == 0 : goto "Patrol"
+_vt = _vehicle call funcGetUnitTypeFromObject
+? !(_vt in _typesBoard && _unit == driver _vehicle) && _unit != _vehicle : goto "Patrol"
+? _vt in _typesBoard : goto "MoveToPickupArea"
+
+[ _unit, ([_posBoard, 50, 50] call funcGetRandomPos) ] call funcMoveStand
+
+_res = [_posBoard, _radius] call funcGetNearbyTransports
+_transports = []
+_boardTransp = objNull
+
+_i = 0; _c = count _res
+	#SetTransp
+	? _i >= _c : goto "TranspSet"
+	_v = (_res select _i) select 0; _vType = (_v call funcGetUnitTypeFromObject); _i = _i + 1
+	? !(_vType in _typesBoard) : 	goto "SetTransp"
+	? (isNull driver _v) : 			goto "SetTransp"
+	? (damage _v) > 0.5 || ((getPos _v) select 2) > 5 || (speed _v) > 1 : 		goto "SetTransp"
+	? _vType in (TransportHeliW + TransportHeliE) : 	if ( call Cargo_v >= 12 ) 	then { goto "SetTransp" }
+	? _vType in (TransportPlaneW + TransportPlaneE) : 	if ( call Cargo_v >= 60 ) 	then { goto "SetTransp" }
+	? _vType in (TransportSmallHeliW+TransportSmallHeliE) : if ( call Cargo_v >= 5 ) then { goto "SetTransp" }
+	? _vType in TransportHindE : 						if ( call Cargo_v >= 8 ) 	then { goto "SetTransp" }
+	? _vType in (TransportTruckW + TransportTruckE) : 	if ( call Cargo_v >= 12 ) 	then { goto "SetTransp" }
+	? _vType in (Transport8APCW + Transport8APCE) : 	if ( call Cargo_v >= 8 ) 	then { goto "SetTransp" }
+	? _vType in (TransportCarW + TransportCarE) : 		if ( call Cargo_v >= 3 ) 	then { goto "SetTransp" }
+	? _vType in TransportShipE : 						if ( call Cargo_v >= 10 ) 	then { goto "SetTransp" }
+	? _vType in (TransportShipW + TransportZodiacW + TransportZodiacE + Transport6APCW + Transport6APCE) : if ( call Cargo_v >= 6 ) 	then { goto "SetTransp" }
+	_transports set [count _transports, _v]; goto "SetTransp"
+	
+	#TranspSet
+	? count _transports == 0 : _sleep = 30; goto "CheckBoardVehicles"
+
+
+  ? !(alive _unit) : exit
+  ? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+  ? !(_vt in _typesBoard && _unit == driver _vehicle) && _unit != _vehicle : goto "Patrol"
+  
+
+  
+  _boardTransp = _transports select (random (count _transports) - 0.5)
+  _unit doWatch _boardTransp
+  ? (_unit distance _boardTransp) < 10 : goto "Reached"
+  _offset = 0
+  _timeAbort = time + 5*60
+#Move_Check
+  ? !(count (crew _boardTransp - [driver _boardTransp, gunner _boardTransp, commander _boardTransp]) < _crewnum) : goto "Fail"
+  _offset = _offset + 10
+  _vect = [getPos _unit, getPos _boardTransp] call funcVectorSub
+  _dist = _unit distance _boardTransp
+  ? _dist < 0.1 : _dist = _dist + 10
+  _posMove = [getPos _boardTransp, [_vect, _offset/_dist] call funcVectorScale] call funcVectorAdd
+  _posMove set [2,0]
+  [_unit, _posMove] call funcMoveStand
+
+   ~_dist*0.2
+  ? !(alive _unit) : exit
+  ? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+  ? time > _timeAbort || _offset >= 50 || !(alive _boardTransp) : goto "Fail"
+  ? (_unit distance _boardTransp) > 50 : goto "Move_Check"
+
+#Reached
+~1
+? !(alive _unit) : exit
+? !(alive _boardTransp) : goto "Fail"
+
+
+_unit playMove "CombatGetInTank"
+~1
+? !(alive _unit) : exit
+_unit assignAsCargo _boardTransp
+_unit moveInCargo _boardTransp
+~1
+? !(alive _unit) || _boardTransp != vehicle _unit : goto "Fail"
+
+#BoardSucceed
+  call busySet
+  _timeAbort = time + 10*60
+  #WaitInCargo_Check
+  ~5
+  ? !(alive _unit) || !(alive _boardTransp) : goto "Exit"
+  ? time > _timeAbort && (speed _boardTransp) < 2 && ((getPos _boardTransp) select 2) < 2 : goto "GetOut"
+  ? _boardTransp == (vehicle _unit) : goto "WaitInCargo_Check"
+  goto "Exit"
+
+#GetOut
+  unassignVehicle _unit
+  _unit action ["eject", _boardTransp]
+  #WaitOut
+    ~5
+    ? !(alive _unit) || !(alive _boardTransp) : goto "Exit"
+    ? _unit != (vehicle _unit) : goto "WaitOut"
+  goto "Exit"
+
+
+#Fail
+? !(alive _unit) : exit
+unassignVehicle _unit
+[_unit, ([_posBoard, 50, 50] call funcGetRandomPos)] call funcMoveStand
+goto "CheckBoardVehicles"
+
+
+#MoveToPickupArea
+	? !(alive _unit) : exit
+	? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+	? vehicle _unit != _vehicle : goto "GetNearbyVehicles"
+	_unit doMove _posBoard
+	~10
+	? ([_posBoard, getPos _unit] call funcDistH) > 100 : goto "MoveToPickupArea"
+	
+	_unit commandMove (getPos _unit)
+	~1
+	doStop _unit
+#WaitForCrew
+	? !(alive _unit) : exit
+	? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+	? vehicle _unit != _vehicle : goto "GetNearbyVehicles"
+	
+	? !(_vt in _typesBoard && _unit == driver _vehicle) && _unit != _vehicle : goto "Patrol"
+	~10
+	doStop _unit; goto "WaitForCrew"
+	
+
+
+#Patrol
+_posMove = [_posBoard, 150, 150] call funcGetRandomPos
+#Patrol_Update
+	? !(alive _unit) : exit
+	? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+
+	? _unit != driver _vehicle : _sleep = 30; goto "Sleep"
+	? isNull gunner _vehicle : [_unit, _posBoard] call funcMoveAI; _sleep = 30; goto "Sleep"
+	
+	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 10; goto "Sleep"
+	
+	_bCheckDropBomb = !_bCheckDropBomb 
+	? _bCheckDropBomb && _unit == _vehicle && magSatchel in (magazines _unit) : [_unit, _si, _gi] exec "Server\AI_CheckDropBomb.sqs"; _sleep = 30; goto "Sleep"
+
+	_distToDest = [getPos _unit, _posMove] call funcDistH
+
+	? _distToDest > 10 : goto "Move"
+	[_unit, true] exec "Server\StopAI.sqs"
+	[_unit, _si, _gi] call funcWatch
+	? _unit != _vehicle && !(isNull gunner _vehicle) && isNull (commander _vehicle) : [_unit, _si, _gi] exec "Server\AI_CheckFireGun.sqs"
+  _sleep = 30
+  _posMove = [_posBoard, 150, 150] call funcGetRandomPos
+  goto "Sleep"
+  
+  #Move
+  [_unit, _posMove] call funcMoveAI
+	_sleep = [30, 0.1*_distToDest] select (_distToDest < 300)
+	 
+	#Sleep
+	~_sleep
+  ? call busyCheck : goto "Sleep"
+	goto "Patrol_Update"
+  
+  
+#Exit
+  unassignVehicle _unit
+  call busyClear
+  
+? _idOrder == ((orderMatrix select _si) select _gi) select 0 : goto "WaitReady"

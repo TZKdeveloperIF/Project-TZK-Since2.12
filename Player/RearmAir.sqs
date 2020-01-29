@@ -1,0 +1,98 @@
+; args: [unit, truck, <vehicle>]
+
+_unit = _this select 0
+_support = _this select 1
+_vehicle = vehicle _unit
+? (count _this) > 2 : _vehicle = _this select 2
+
+
+? (_vehicle distance _support) > 2*rangeSupportPlane : _msg = "support plane out of range"; goto "Exit"
+
+? _unit == player && _unit == _vehicle : [_unit, _support, false, 1] exec "Player\Dialog Equipment.sqs"; Exit
+
+_msg = ""
+_unitRearm = _unit
+_timeRearm = 5
+? _unit != _vehicle : _unitRearm = _vehicle; _timeRearm = 30
+? _unitRearm in vehiclesRearming : _msg = "Rearm not started, rearm of vehicle already in progress."; if (_unit == player) then {hint _msg}; _unit groupchat _msg; exit
+
+; player globalchat format["_type=%1  unit: %2", _type, (unitDefs select _type) select udName ]
+
+_type = _unitRearm call funcGetUnitTypeFromObject
+? (_type in vDoubleRearmTime): _timeRearm = 60
+? (_type in vTripleRearmTime): _timeRearm = 90
+? (_type in vSixfoldRearmTime): _timeRearm = 30*6
+? dev : _timeRearm = 5
+
+
+? _type == -1 : goto "CheckStruct"
+; TODO ? _type == (utCustom select siPlayer) && _unit == _vehicle : [_unit, _support, false, 1] exec "Player\Dialog Equipment.sqs"; exit
+_cost = (unitDefs select _type) select udCost
+goto "GetRearmData"
+
+#CheckStruct
+_type = _unitRearm call funcGetStructTypeFromObject
+? _type == -1 : format["ERROR: object type not found for %1/%2 in Rearm.sqs", _unitRearm, typeOf _unitRearm] call fDebugLog; exit
+_cost = (structDefs select _type) select sdCost
+
+#GetRearmData
+_rearmData = _unitRearm call funcGetRearmData
+_weapons = _rearmData select 0
+_mags = _rearmData select 1
+? (count _mags) == 0 : _msg = "Unit is not armed."; goto "Exit"
+? !(canFire _vehicle) : _unit groupChat "Gun barrel badly hurt. Better repair as well."
+
+; CALC REARM COST
+_cost = _cost/10
+_cost = _cost - (_cost % 1)
+? _cost < 50 : _cost = 50
+? _unit == _unitRearm : _cost = _cost + 50*("_x == magMine" count _mags)
+_money = (groupMoneyMatrix select siPlayer) select giPlayer
+? _cost > _money : _msg = format["Not enough money for rearm. ($%1 needed)", _cost]; goto "Exit"
+
+? _unit != _unitRearm : goto "RearmVehicle"
+
+#RearmInfantry
+	? !(local _unitRearm) : _msg = "Rearm failed. Soldier is not local."; goto "Exit"
+  ; TODO _unitRearm setCombatMode "BLUE"
+  ~_timeRearm
+	? !(alive _unitRearm) : _msg = ""; goto "Exit"
+	; TODO ? !(alive _support) : _msg = "Rearm failed, support plane destroyed."; _unitRearm setCombatMode "YELLOW"; goto "Exit"
+	? !(alive _support) : _msg = "Rearm failed, support plane destroyed."; goto "Exit"
+  removeAllWeapons _unitRearm
+  ; add custom throw/put
+  { _unitRearm addWeapon _x } forEach weaponsCustom
+  ? count (magazines _unitRearm) > 0 : format["ERROR: soldier '%1-%2' has mags in Rearm.sqs", _unitRearm, typeOf _unitRearm] call fDebugLog; exit
+  { _unitRearm addMagazine _x } foreach _mags
+  ? count (weapons _unitRearm) > 0 : format["ERROR: soldier '%1-%2' has weapons in Rearm.sqs", _unitRearm, typeOf _unitRearm] call fDebugLog; exit
+  { _unitRearm addWeapon _x } foreach _weapons
+  ; TODO _unitRearm setCombatMode "YELLOW"
+  goto "RearmEnd"
+
+#RearmVehicle
+  if (local _unitRearm) then { { _unitRearm removeMagazines _x } foreach (magazines _unitRearm) } else { [_unitRearm] exec "Common\SendVehicleMagsRemove.sqs" }
+  vehiclesRearming set [count vehiclesRearming, _unitRearm]
+  _msg = format["Rearm started, ready in %1s ...", _timeRearm]
+  ? _unit == player : hint _msg
+  _unit groupchat _msg
+  _timeComplete = time + _timeRearm
+  #Loop
+	 _unitRearm say "Rearming_xj200";
+	~5
+  	? !(alive _unitRearm) : _msg = "Rearm failed. Vehicle destroyed."; goto "Exit"
+  	? !(alive _support) : _msg = "Rearm failed. Support plane destroyed."; goto "Exit"
+	  ? (_unitRearm distance _support) > 2*rangeSupportPlane : if (([positionAttach, (getPos _unitRearm)] call funcDistH) > 100 && ([positionAttach, (getPos _support)] call funcDistH) > 100) then {_msg = "Rearm failed. Support plane out of range."; goto "Exit"}
+	  ? time < _timeComplete : goto "Loop"
+
+  ? count (magazines _unitRearm) == 0 : [_unitRearm] exec "Common\SendVehicleMagsAdd.sqs"
+  ? (_type in vSixfoldRearmTime) : _unitRearm say "NuclearMissileReady_xj200"
+
+#RearmEnd
+  ? _cost > 0 : [_cost] exec "Player\SendMoneySpent.sqs"
+  _msg = format["Rearm Complete. $%1", _cost]
+
+#Exit
+  ? _msg != "" && _unit == player : hint _msg
+  ? _msg != "" : _unit groupchat _msg
+	? _unit != _unitRearm : vehiclesRearming = vehiclesRearming - [_unitRearm]
+	exit

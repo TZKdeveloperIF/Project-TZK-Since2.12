@@ -1,0 +1,1658 @@
+; unitDefs defines all buildable units
+
+; IMPORTANT: all vehicles must have a non empty crew array
+; Must wait till stShip has been defined
+@(InitStructureReady)
+unitDefs = []
+
+udName = 0
+udCost = 1
+udSide = 2
+udBuildTime = 3
+udModel = 4
+udImage = 5
+udFactoryType = 6
+udCrew = 7
+udMarkerType = 8
+udScripts = 9
+
+; knowsAbout level for infantry and vehicle enemy reports
+kaUnit = 1
+
+; VEHICLE MARKERS
+
+_mBike = "Bike_Marker_xj200"
+_mCar = "Car_Marker_xj200"
+_mTruck = "Truck_Marker_xj200"
+_mBoat= "Boat_Marker_xj200"
+_mAPC = "APC_Marker_xj200"
+_mTank = "Tank_Marker_xj200"
+_mHowitzer = "Howitzer_Marker_xj200"
+_mHeli = "Helicopter_Marker_xj200"
+_mPlane = "Plane_Marker_xj200"
+_mSupport = "RepairVehicle_Marker_xj200"
+_mSupportPlane = "RepairStructure_Marker_xj200"
+_mAmmo = "AmmoVehicle_Marker_xj200"
+_mFuel = "FuelVehicle_Marker_xj200"
+_mMHQ = "MedicStructure_Marker_xj200"
+_mMCV = "MedicVehicle_Marker_xj200"
+_mAA = "AAVehicle_Marker_xj200"
+_quad ="Dot"
+
+; _costSupportAPC = 1500
+
+countInfCustom = 10
+
+_price = [400, 800] select PricingMode
+costCustom = _price
+
+maxUnitTypes = 250 - countInfCustom
+TotalUnitTypes = maxUnitTypes + countInfCustom
+
+_type = 0
+
+; WEST
+_si = si0
+
+; INFANTRY WEST
+_st = stBarracks
+
+unitDefs set [_type, ["Worker", costWorker, _si, 10, "SoldierWAA", "isaa", -1, [], "", ["Server\UpdateWorker.sqs"]] ]
+utWorkerW = _type
+_type = _type + 1
+
+_price = [50, 100] select PricingMode
+unitDefs set [_type, ["M16", _price, _si, 10, "SoldierWB", "ivojak", _st, [], "", ["Common\EquipM16.sqs"]] ]
+_soldierW = _type
+_type = _type + 1
+			
+_price = [50, 100] select PricingMode
+unitDefs set [_type, ["M16GL", _price, _si, 10, "SoldierWG", "igrenadier", _st, [], "", []] ]
+_type = _type + 1
+
+_price = [75, 150] select PricingMode
+unitDefs set [_type, ["MM1", _price, _si, 10, "HeavyGW", "igrenadier", _st, [], "", []] ]
+_MM1W = _type
+_type = _type + 1
+
+_price = [100, 200] select PricingMode
+unitDefs set [_type, ["M60", _price, _si, 10, "SoldierWMG", "ismg", _st, [], "", []] ]
+_soldierMGW = _type
+_type = _type + 1
+
+_price = [100, 200] select PricingMode
+unitDefs set [_type, ["Sniper", _price, _si, 10, "SoldierWSniper", "isniper", _st, [], "", []] ]
+_sniperW = _type
+_type = _type + 1
+
+_price = [125, 250] select PricingMode
+unitDefs set [_type, ["Mortar", _price, _si, 10, "SoldierWMortar", "igrenadier", _st, [], "", ["Common\EquipMortar.sqs"]] ]
+_MortarW = _type
+_type = _type + 1
+
+_price = [150, 300] select PricingMode
+unitDefs set [_type, ["LAW Soldier", _price, _si, 10, "SoldierWLAW", "islaw", _st, [], "", ["Common\EquipRPG2ai.sqs"]] ]
+_soldierLAWW = _type
+_type = _type + 1
+
+_price = [250, 500] select PricingMode
+unitDefs set [_type, ["LAW Sniper", _price, _si, 10, "LAWSniperW_xj200", "islaw", _st, [], "", ["Common\EquipRPGai.sqs"]] ]
+_soldierLAWW2 = _type
+_type = _type + 1
+
+_price = [250, 500] select PricingMode
+unitDefs set [_type, ["AT Soldier", _price, _si, 10, "SoldierWAT", "isat", _st, [], "", ["Common\EquipAT2ai.sqs"]] ]
+_soldierATW = _type
+_type = _type + 1
+
+_price = [400, 800] select PricingMode
+unitDefs set [_type, ["AT Sniper", _price, _si, 10, "ATSniperW_xj200", "isat", _st, [], "", ["Common\EquipATai.sqs"]] ]
+_soldierATW2 = _type
+_type = _type + 1
+
+_price = [400, 800] select PricingMode
+unitDefs set [_type, ["Stinger", _price, _si, 10, "SoldierWAA", "isaa", _st, [], "", ["Common\EquipAAai.sqs"]] ]
+_soldierAAW = _type
+_type = _type + 1
+
+_price = [150, 300] select PricingMode
+unitDefs set [_type, ["Saboteur", _price, _si, 10, "SoldierWSaboteurDay", "isaboteur", _st, [], "", ["Common\EquipSpec.sqs"]] ]
+_bomberW = _type
+_type = _type + 1
+
+_price = [200, 400] select PricingMode
+unitDefs set [_type, ["Miner", _price, _si, 10, "SoldierWMiner", "iminer", _st, [], "", ["Common\EquipMiner.sqs"]] ]
+_minerW = _type
+_type = _type + 1
+
+_price = [50, 100] select PricingMode
+unitDefs set [_type, ["Medic", _price, _si, 10, "SoldierWMedic", "imedic", _st, [], "", ["Common\EquipMedicW.sqs"]] ]
+_medicW = _type
+_type = _type + 1
+
+_price = [50, 100] select PricingMode
+unitDefs set [_type, ["Crew", _price, _si, 10, "SoldierWCrew", "icrew", _st, [], "", ["Common\EquipCrewPilotW.sqs"]] ]
+_crewW = _type
+_type = _type + 1
+
+_price = [50, 100] select PricingMode
+unitDefs set [_type, ["Pilot", _price, _si, 10, "SoldierWPilot", "ipilot", _st, [], "", ["Common\EquipCrewPilotW.sqs"]] ]
+_pilotW = _type
+_type = _type + 1
+
+_price = [400, 800] select PricingMode
+unitDefs set [_type, ["Custom", _price, _si, 10, "SoldierWSaboteurDay", "isaboteur", -1, [], "", []] ]
+_customW = _type
+_type = _type + 1
+
+
+
+
+; LIGHT WEST
+_st = stLight
+
+_price = [50, 100] select PricingMode
+unitDefs set [_type, ["Soldier (M16)", _price, _si, 10, "SoldierWB", "ivojak", _st, [], "", ["Common\EquipM16.sqs"]] ]
+_soldierWL = _type
+_type = _type + 1
+
+_price = [250, 500] select PricingMode
+unitDefs set [_type, ["QUAD", _price, _si, 20, "QUAD_xj200", "\GST_KawaP\KPpict", _st, [1, _soldierW], _mBike, []] ]
+_type = _type + 1
+
+_price = [400, 800] select PricingMode
+unitDefs set [_type, ["Jeep", _price, _si, 20, "Jeep_xj200", "ijeepMUTT", _st, [1, _soldierW], _mCar, ["Common\EquipCargoCar.sqs"]] ]
+_jeepW = _type
+_type = _type + 1
+
+_price = [700, 1400] select PricingMode
+unitDefs set [_type, ["Jeep Ammo", _price, _si, 20, "Jeep_xj200", "ijeepMUTT", _st, [1, _soldierW], _mAmmo, ["Common\InitAmmojeep.sqs"]] ]
+_jeepaW = _type
+_type = _type + 1
+
+_price = [400, 800] select PricingMode
+unitDefs set [_type, ["HMMWV", _price, _si, 30, "HMMWV_xj200", "\humr\ihmmwv", _st, [1, _soldierW], _mCar, []] ]
+_hummerW = _type
+_type = _type + 1
+
+_price = [500, 1000] select PricingMode
+unitDefs set [_type, ["HMMWV M2", _price, _si, 30, "HMMWV_M2wS_xj200", "\FK_HMMWV\ihmmwv_f.paa", -1, [2, _soldierW], _mCar, []] ]
+_hummerW2 = _type
+_type = _type + 1
+
+_price = [800, 1600] select PricingMode
+unitDefs set [_type, ["HMMWV TOW", _price, _si, 30, "HMMMV_TOW2A_xj200", "\MCAR_humvee\ihmmwv", -1, [2, _soldierW], _mCar, []] ]
+_hummerW3 = _type
+_type = _type + 1
+
+_price = [500, 800] select PricingMode
+unitDefs set [_type, ["5t Truck", _price, _si, 30, "Truck5t_xj200", "itruck5t", _st, [1, _soldierW], _mTruck, ["Common\EquipCargoTruck.sqs"]] ]
+_truckW = _type
+_type = _type + 1
+
+_price = [1000, 2000] select PricingMode
+unitDefs set [_type, ["Support 5t Truck", _price, _si, 30, "Truck5tRepair_xj200", "itruck5trepair", _st, [1, _soldierW], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
+_supportTruckW = _type
+_type = _type + 1
+
+_price = [1000, 2000] select PricingMode
+unitDefs set [_type, ["Support 5t Truck - miner", _price, _si, 30, "Truck5tRepair_xj200", "itruck5trepair", _st, [1, _minerW], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
+_supportTruckW2 = _type
+_type = _type + 1
+
+_price = [500, 1000] select PricingMode
+unitDefs set [_type, ["Fuel 5t Truck", _price, _si, 30, "Truck5TRefuel", "iTruck5tfuel", _st, [1, _soldierW], _mTruck, ["Common\InitFuelTruck.sqs"]] ]
+_type = _type + 1
+
+;_price = [90000, 180000] select PricingMode
+;unitDefs set [_type, ["Scud-D", _price, _si, 180, "ScudW_xj200", "iscud", _st, [1, _soldierW], _mTruck, ["Common\InitScud.sqs"]] ]
+;_type = _type + 1
+
+_price = [1400, 2800] select PricingMode
+unitDefs set [_type, ["Support M113", _price, _si, 30, "M113Ambul_xj200", "im113_ambu", _st, [1, _soldierW], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
+_supportAPCW1 = _type
+_type = _type + 1
+
+_price = [1400, 2800] select PricingMode
+unitDefs set [_type, ["Support M113 + miner", _price, _si, 30, "M113Ambul_xj200", "im113_ambu", _st, [1, _minerW], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
+_supportAPCWminer1 = _type
+_type = _type + 1
+
+_price = [300, 600] select PricingMode
+unitDefs set [_type, ["Jet Ski", _price, _si, 30, "PCSFWjetski", "\PCjetski\skimage.paa", _st, [1, _bomberW], _mBike, ["Common\Equipjetski.sqs"]] ]
+_jetskiW = _type
+_type = _type + 1
+
+_price = [500, 1000] select PricingMode
+unitDefs set [_type, ["Zodiac", _price, _si, 30, "ZodiacW_xj200", "ipbr", _st, [1, _bomberW], _mBoat, ["Common\EquipCargoTruck.sqs"]] ]
+_zodiacW = _type
+_type = _type + 1
+
+
+_price = [700, 1400] select PricingMode
+unitDefs set [_type, ["Patrol Boat Tug", _price, _si, 30, "GunBoatW_xj200", "ipbr", _st, [2, _soldierW], _mBoat, ["Common\EquipCargoTruck.sqs","Common\EquipBoatWmg.sqs"]] ]
+_boatW = _type
+_type = _type + 1
+
+_price = [1500, 3000] select PricingMode
+unitDefs set [_type, ["Patrol Boat HE/AP gun", _price, _si, 30, "GunBoatW_xj200", "ipbr", _st, [2, _soldierW], _mBoat, ["Common\EquipCargoTruck.sqs"]] ]
+_boatW2 = _type
+_type = _type + 1
+
+_price = [1500, 3000] select PricingMode
+unitDefs set [_type, ["Patrol Boat 30mm gun", _price, _si, 30, "GunBoatW_xj200", "ipbr", _st, [2, _soldierW], _mBoat, ["Common\EquipCargoTruck.sqs", "Common\EquipBoatW.sqs"]] ]
+_boatW3 = _type
+_type = _type + 1
+
+_price = [1200, 2400] select PricingMode
+unitDefs set [_type, ["Patrol Boat Sup", _price, _si, 30, "GunBoatW_xj200", "ipbr", _st, [2, _soldierW], _mSupport, ["Common\InitSupportVehicle.sqs","Common\EquipBoatWmg.sqs"]] ]
+_boatsupW = _type
+_type = _type + 1
+
+_price = [2000, 4000] select PricingMode
+unitDefs set [_type, ["Patrol Boat Custom", _price, _si, 30, "GunBoatW_Custom_xj200", "ipbr", -1, [2, _soldierW], _mBoat, ["Common\EquipCargoTruck.sqs"]] ]
+_boatCustomW = _type
+_type = _type + 1
+
+_price = [3500, 7000] select PricingMode
+;unitDefs set [_type, ["Patrol Boat FFAR", _price, _si, 30, "GunBoatW_xj200", "ipbr", _st, [2, _soldierW], _mAPC, ["Common\EquipCargoTruck.sqs","Common\EquipM2A2farr.sqs"]] ]
+;_boatdW = _type
+;_type = _type + 1
+
+_price = [7500, 15000] select PricingMode
+;unitDefs set [_type, ["Patrol Boat AT", _price, _si, 30, "GunBoatW_xj200", "ipbr", _st, [2, _soldierW], _mAPC, ["Common\EquipCargoTruck.sqs","Common\EquipM2AT.sqs"]] ]
+;_boatatW = _type
+;_type = _type + 1
+
+_price = [3500, 7000] select PricingMode
+;unitDefs set [_type, ["Patrol Boat AA", _price, _si, 30, "GunBoatW_xj200", "ipbr", _st, [2, _soldierW], _mAA, ["Common\EquipCargoTruck.sqs","Common\EquipM2A2_AA1.sqs"]] ]
+;_boataaW = _type
+;_type = _type + 1
+
+
+; SHIPYARD WEST
+_st = stShip
+
+_price = [50, 100] select PricingMode
+unitDefs set [_type, ["Soldier (M16)", _price, _si, 10, "SoldierWB", "ivojak", _st, [], "", ["Common\EquipM16.sqs"]] ]
+_soldierWS = _type
+_type = _type + 1
+
+_price = [300, 600] select PricingMode
+unitDefs set [_type, ["Jet Ski", _price, _si, 30, "PCSFWjetski", "\PCjetski\skimage.paa", _st, [1, _bomberW], _mBike, ["Common\Equipjetski.sqs"]] ]
+_jetskiWsh = _type
+_type = _type + 1
+
+_price = [500, 1000] select PricingMode
+unitDefs set [_type, ["Zodiac", _price, _si, 30, "ZodiacW_xj200", "ipbr", _st, [1, _bomberW], _mBoat, ["Common\EquipCargoTruck.sqs"]] ]
+_zodiacShipW = _type
+_type = _type + 1
+
+
+_price = [700, 1400] select PricingMode
+unitDefs set [_type, ["Patrol Boat Tug", _price, _si, 30, "GunBoatW_xj200", "ipbr", _st, [2, _soldierW], _mBoat, ["Common\EquipCargoTruck.sqs","Common\EquipBoatWmg.sqs"]] ]
+_shipW = _type
+_type = _type + 1
+
+_price = [1500, 3000] select PricingMode
+unitDefs set [_type, ["Patrol Boat HE/AP gun", _price, _si, 30, "GunBoatW_xj200", "ipbr", _st, [2, _soldierW], _mBoat, ["Common\EquipCargoTruck.sqs"]] ]
+_shipW2 = _type
+_type = _type + 1
+
+_price = [1500, 3000] select PricingMode
+unitDefs set [_type, ["Patrol Boat 30mm gun", _price, _si, 30, "GunBoatW_xj200", "ipbr", _st, [2, _soldierW], _mBoat, ["Common\EquipCargoTruck.sqs", "Common\EquipBoatW.sqs"]] ]
+_shipW3 = _type
+_type = _type + 1
+
+_price = [1200, 2400] select PricingMode
+unitDefs set [_type, ["Patrol Boat Sup", _price, _si, 30, "GunBoatW_xj200", "ipbr", _st, [2, _soldierW], _mSupport, ["Common\InitSupportVehicle.sqs","Common\EquipBoatWmg.sqs"]] ]
+_shipsupW = _type
+_type = _type + 1
+
+_price = [2000, 4000] select PricingMode
+unitDefs set [_type, ["Patrol Boat Custom", _price, _si, 30, "GunBoatW_Custom_xj200", "ipbr", -1, [2, _soldierW], _mBoat, ["Common\EquipCargoTruck.sqs"]] ]
+_shipCustomW = _type
+_type = _type + 1
+
+_price = [3500, 7000] select PricingMode
+;unitDefs set [_type, ["Patrol Boat FFAR", _price, _si, 30, "GunBoatW_xj200", "ipbr", _st, [2, _soldierW], _mAPC, ["Common\EquipCargoTruck.sqs","Common\EquipM2A2farr.sqs"]] ]
+;_shipdW = _type
+;_type = _type + 1
+
+_price = [7500, 15000] select PricingMode
+;unitDefs set [_type, ["Patrol Boat AT", _price, _si, 30, "GunBoatW_xj200", "ipbr", _st, [2, _soldierW], _mAPC, ["Common\EquipCargoTruck.sqs","Common\EquipM2AT.sqs"]] ]
+;_shipatW = _type
+;_type = _type + 1
+
+_price = [3500, 7000] select PricingMode
+;unitDefs set [_type, ["Patrol Boat AA", _price, _si, 30, "GunBoatW_xj200", "ipbr", _st, [2, _soldierW], _mAA, ["Common\EquipCargoTruck.sqs","Common\EquipM2A2_AA1.sqs"]] ]
+;_shipaaW = _type
+;_type = _type + 1
+
+
+; HEAVY WEST
+_st = stHeavy
+
+_price = [50, 100] select PricingMode
+unitDefs set [_type, ["Soldier (M16)", _price, _si, 10, "SoldierWB", "ivojak", _st, [], "", ["Common\EquipM16.sqs"]] ]
+_soldierWH = _type
+_type = _type + 1
+
+_price = [1400, 2800] select PricingMode
+unitDefs set [_type, ["Support M113", _price, _si, 30, "M113Ambul_xj200", "im113_ambu", _st, [1, _soldierW], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
+_supportAPCW = _type
+_type = _type + 1
+
+_price = [1400, 2800] select PricingMode
+unitDefs set [_type, ["Support M113 + miner", _price, _si, 30, "M113Ambul_xj200", "im113_ambu", _st, [1, _minerW], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
+_supportAPCWminer = _type
+_type = _type + 1
+
+_price = [500, 1000] select PricingMode
+unitDefs set [_type, ["M113", _price, _si, 30, "M113_xj200", "im113", _st, [2, _soldierW], _mAPC, []] ]
+_m113W = _type
+_type = _type + 1
+
+_price = [1800, 3600] select PricingMode
+unitDefs set [_type, ["M2A2 30mm/AT", _price, _si, 30, "M2A2_AA_xj200", "\M2A2\im2a2", _st, [3, _crewW], _mAPC, ["Common\EquipM2AT_standard.sqs"]] ]
+_m2a2W = _type
+_type = _type + 1
+
+_price = [3500, 7000] select PricingMode
+unitDefs set [_type, ["M2A2 FFAR", _price, _si, 30, "M2A2_AA_xj200", "\M2A2\im2a2", _st, [3, _crewW], _mAPC, ["Common\EquipM2A2farr.sqs"]] ]
+_m2a2d = _type
+_type = _type + 1
+
+_price = [7500, 15000] select PricingMode
+unitDefs set [_type, ["M2A2 AT", _price, _si, 30, "M2A2_AA_xj200", "\M2A2\im2a2", _st, [3, _crewW], _mAPC, ["Common\EquipM2AT.sqs"]] ] 
+_m2a2at = _type
+_type = _type + 1
+
+_price = [1500, 3000] select PricingMode
+unitDefs set [_type, ["Vulcan", _price, _si, 30, "Vulcan_xj200", "\VULCAN\ivulcan", _st, [2, _crewW], _mAA, []] ]
+_vulcanW = _type
+_type = _type + 1
+
+_price = [2000, 4000] select PricingMode
+unitDefs set [_type, ["M113 Cannon", _price, _si, 30, "M113_AA_xj200", "\VULCAN\ivulcan", _st, [2, _crewW], _mAA, ["Common\EquipM2A2_AA2.sqs"]] ]
+_m113Cannon = _type
+_type = _type + 1
+
+_price = [3500, 7000] select PricingMode
+unitDefs set [_type, ["M2A2 AA", _price, _si, 30, "M2A2_AA_xj200", "\VULCAN\ivulcan", _st, [3, _crewW], _mAA, ["Common\EquipM2A2_AA1.sqs"]] ]
+_m2a2aa = _type
+_type = _type + 1
+
+_price = [8000, 16000] select PricingMode
+unitDefs set [_type, ["4xAA", _price, _si, 30, "Vulcan_xj200", "\VULCAN\ivulcan", _st, [2, _crewW], _mAA, ["Common\EquipDefAA.sqs"]] ]
+_vulcanW2 = _type
+_type = _type + 1
+_price = [8000, 16000] select PricingMode
+unitDefs set [_type, ["4xAA(4km)", _price, _si, 30, "Vulcan_xj200", "\VULCAN\ivulcan", -1, [2, _crewW], _mAA, ["Common\EquipDefAA2.sqs"]] ]
+_vulcanW3 = _type
+_type = _type + 1
+
+_price = [2000, 4000] select PricingMode
+unitDefs set [_type, ["M60", _price, _si, 30, "M60_xj200", "im60", _st, [3, _crewW], _mTank, []] ]
+_m60W = _type
+_type = _type + 1
+
+_price = [3500, 7000] select PricingMode
+unitDefs set [_type, ["M60A3", _price, _si, 60, "M1_xj200", "iabrams", -1, [3, _crewW], _mTank, []] ]
+_m1W = _type
+_type = _type + 1
+
+_price = [5000, 10000] select PricingMode
+unitDefs set [_type, ["M1A1", _price, _si, 60, "M1A1_xj200", "iabrams", _st, [3, _crewW], _mTank, []] ]
+_m1a1W = _type
+_type = _type + 1
+
+_price = [5000, 10000] select PricingMode
+unitDefs set [_type, ["M1A2 SEP", _price, _si, 60, "M1A2_INQ_xj200", "\TZK_Objects\Texture\M1A2_INQ.paa", _st, [3, _crewW], _mTank, []] ]
+_m1a2sepW = _type
+_type = _type + 1
+
+_price = [5000, 10000] select PricingMode
+unitDefs set [_type, ["Leopard 2A6", _price, _si, 60, "Leo2A6_xj200", "\BWMOD_Leo2A6\pic\leopic.paa", _st, [3, _crewW], _mTank, []] ]
+_leo2a6W = _type
+_type = _type + 1
+
+_price = [7500, 15000] select PricingMode
+unitDefs set [_type, ["M109 (Fixed Turret)", _price, _si, 60, "M109_Assault_xj200", "\TZK_Objects\Texture\DKMM_M109A6G.paa", _st, [3, _crewW], _mHowitzer, []] ]
+_m109W = _type
+_type = _type + 1
+
+_price = [25000, 50000] select PricingMode
+unitDefs set [_type, ["M1A1 Art", _price, _si, 90, "M1A1_Art_xj200", "iabrams", _st, [3, _crewW], _mTank,  []] ]
+_m1a1artW = _type
+_type = _type + 1
+
+_price = [25000, 50000] select PricingMode
+unitDefs set [_type, ["M109 Art", _price, _si, 90, "M109_Art_xj200", "\TZK_Objects\Texture\Paladin.paa", -1, [3, _crewW], _mHowitzer,  []] ]
+_m109artW = _type
+_type = _type + 1
+
+_price = [1.5*costRepairMHQ, 3.0*costRepairMHQ] select PricingMode
+unitDefs set [_type, ["MCV West", _price, _si, 120, "MCVW_xj200", "im113_ambu", -1, [1, _soldierW], _mMCV,  ["Common\InitMCV.sqs"]] ]
+utMCVW = _type
+_type = _type + 1
+
+_price = [1400, 3000] select PricingMode
+unitDefs set [_type, ["MHQ West", 1500, _si, 10, "MHQW_xj200", "im113_ambu", -1, [1, _crewW], _mMHQ, ["Common\InitMHQ.sqs"]] ]
+utMHQ0 = _type
+_type = _type + 1
+
+
+
+; AIR WEST
+_st = stAir
+
+_price = [50, 100] select PricingMode
+unitDefs set [_type, ["Soldier (M16)", _price, _si, 10, "SoldierWB", "ivojak", _st, [], "", ["Common\EquipM16.sqs"]] ]
+_soldierWA = _type
+_type = _type + 1
+
+_price = [3000, 6000] select PricingMode
+unitDefs set [_type, ["MH-6", _price, _si, 30, "MH6_Bas_xj200", "\bas_lbs\imh6.paa", _st, [1, _pilotW], _mHeli, []] ]
+_mh6j = _type
+_type = _type + 1
+
+
+_price = [4000, 8000] select PricingMode
+unitDefs set [_type, ["UH60 (Tug)", _price, _si, 60, "UH60_C_xj200", "iuh60", _st, [1, _pilotW], _mHeli, ["Common\EquipUH60.sqs"]] ]
+_uh60W = _type
+_type = _type + 1
+
+
+_price = [5000, 10000] select PricingMode
+unitDefs set [_type, ["Support UH60", _price, _si, 60, "UH60_C_xj200", "iuh60", stAir, [1, _pilotW], _mSupport, ["Common\InitSupportVehicle.sqs", "Common\EquipUH60.sqs", "Common\InitAmmoDrop.sqs"]] ]
+_uh60supW = _type
+_type = _type + 1
+
+_price = [7000, 14000] select PricingMode
+unitDefs set [_type, ["UH60 30mm gun", _price, _si, 60, "UH60_MG_C_xj200", "iuh60", _st, [2, _pilotW], _mHeli, ["Common\EquipUH60.sqs"]] ]
+_uh60W30 = _type
+_type = _type + 1
+
+
+_price = [7000, 14000] select PricingMode
+unitDefs set [_type, ["UH60 2xLGB", _price, _si, 60, "UH60_LGB_C_xj200", "iuh60", _st, [1, _pilotW], _mHeli, ["Common\EquipUH60.sqs"]] ]
+_uh60WL = _type
+_type = _type + 1
+_price = [10000, 20000] select PricingMode
+unitDefs set [_type, ["UH60 30mm MG", _price, _si, 60, "UH60MG_C_xj200", "iuh60", _st, [2, _pilotW], _mHeli, ["Common\EquipUH60.sqs"]] ]
+_uh60WMG2 = _type
+_type = _type + 1
+
+; _price = [14000, 28000] select PricingMode
+; unitDefs set [_type, ["UH60 14xBombs", _price, _si, 60, "UH60_LGB_xj200", "iuh60", _st, [1, _pilotW], _mHeli, [ "Common\EquipChoperbombs.sqs"]] ]
+; _uh60bombs = _type
+; _type = _type + 1
+
+_price = [5000, 10000] select PricingMode
+unitDefs set [_type, ["C-130 Hercules", _price, _si, 60, "C130_xj200", "\TZK_Objects\Texture\C130.paa", _st, [2, _pilotW], _mPlane, ["Common\InitSpawnPlane.sqs"]] ]
+_c130W = _type
+_type = _type + 1
+
+_price = [20000, 40000] select PricingMode
+unitDefs set [_type, ["AH1 AT/30mm", _price, _si, 90, "AH1_C_xj200", "\TZK_Objects\Texture\Vit_AH1W.paa", _st, [2, _pilotW], _mHeli, ["Common\EquipAH1.sqs"]] ]
+_ah1W = _type
+_type = _type + 1
+
+_price = [22000, 44000] select PricingMode
+unitDefs set [_type, ["AH64 AT/30mm", _price, _si, 90, "AH64_xj200", "\APAC\iah64", _st, [2, _pilotW], _mHeli, ["Common\EquipAH64.sqs"]] ]
+_ah64W = _type
+_type = _type + 1
+
+_price = [25000, 50000] select PricingMode
+unitDefs set [_type, ["Tiger HOT/30mm", _price, _si, 90, "Tiger_HOT3_xj200", "\BWMOD_Tiger\pictureRMK.paa", _st, [2, _pilotW], _mHeli, ["Common\EquipTiger.sqs"]] ]
+_tigerW = _type
+_type = _type + 1
+
+_price = [25000, 50000] select PricingMode
+unitDefs set [_type, ["AH1 AT/30mm", _price, _si, 90, "AH1_AT_xj200", "icobra", _st, [2, _pilotW], _mHeli, ["Common\EquipAH1.sqs"]] ]
+_ah1W2 = _type
+_type = _type + 1
+
+_price = [25000, 50000] select PricingMode
+unitDefs set [_type, ["AH64 AT/30mm", _price, _si, 90, "AH64_AT_xj200", "\APAC\iah64", _st, [2, _pilotW], _mHeli, ["Common\EquipAH64.sqs"]] ]
+_ah64W2 = _type
+_type = _type + 1
+
+_price = [28000, 56000] select PricingMode
+unitDefs set [_type, ["Tiger PARS3/30mm", _price, _si, 90, "Tiger_PARS3_xj200", "\BWMOD_Tiger\pictureRMK.paa", _st, [2, _pilotW], _mHeli, ["Common\EquipTiger.sqs"]] ]
+_tigerW2 = _type
+_type = _type + 1
+
+
+_price = [5000, 10000] select PricingMode
+unitDefs set [_type, ["C130 Support", _price, _si, 60, "C130_Support_xj200", "\TZK_Objects\Texture\C130.paa", _st, [1, _pilotW], _mSupport, ["Common\InitSpawnPlane.sqs", "Common\InitSupportVehicle.sqs"]] ]
+_c130supportW = _type
+_type = _type + 1
+
+_price = [10000, 20000] select PricingMode
+unitDefs set [_type, ["A10 GUN", _price, _si, 90, "A10_xj200", "ia10", _st, [1, _pilotW], _mPlane, ["Common\EquipA10Gun.sqs", "Common\InitSpawnPlane.sqs"]] ]
+_a10gun = _type
+_type = _type + 1
+
+_price = [12000, 24000] select PricingMode
+unitDefs set [_type, ["A10 4xLGB/GUN", _price, _si, 90, "A10_LGB_xj200", "ia10", _st, [1, _pilotW], _mPlane, ["Common\EquipA10LGB4.sqs", "Common\InitSpawnPlane.sqs"]] ]
+_a10LGB4 = _type
+_type = _type + 1
+
+_price = [14000, 28000] select PricingMode
+unitDefs set [_type, ["A10 14xBombs/GUN", _price, _si, 90, "A10_xj200", "ia10", _st, [1, _pilotW], _mPlane, ["Common\EquipA10bombs.sqs", "Common\InitSpawnPlane.sqs"]] ]
+_a10bombs = _type
+_type = _type + 1
+
+_price = [20000, 40000] select PricingMode
+unitDefs set [_type, ["A10 AT/30mm", _price, _si, 90, "A10_xj200", "ia10", _st, [1, _pilotW], _mPlane, ["Common\EquipA10AT.sqs", "Common\InitSpawnPlane.sqs"]] ]
+_a10 = _type
+_type = _type + 1
+
+_price = [20000, 40000] select PricingMode
+unitDefs set [_type, ["A10 8xLGB/30mm", _price, _si, 90, "A10_LGB_xj200", "ia10", _st, [1, _pilotW], _mPlane, ["Common\EquipA10LGB8.sqs", "Common\InitSpawnPlane.sqs"]] ]
+_a10LGB8 = _type
+_type = _type + 1
+
+_price = [25000, 50000] select PricingMode
+unitDefs set [_type, ["A10 4xAA/GUN", _price, _si, 90, "A10_xj200", "ia10", _st, [1, _pilotW], _mPlane, ["Common\EquipA10AA.sqs", "Common\InitSpawnPlane.sqs"]] ]
+_a10AA = _type
+_type = _type + 1
+
+_price = [30000, 60000] select PricingMode
+unitDefs set [_type, ["A10 FFAR", _price, _si, 90, "A10_FFAR_xj200", "ia10", _st, [1, _pilotW], _mPlane, ["Common\InitSpawnPlane.sqs"]] ]
+_a10FFAR = _type
+_type = _type + 1
+
+_price = [45000, 90000] select PricingMode
+unitDefs set [_type, ["A10 Base Buster", _price, _si, 90, "A10_Buster_xj200", "ia10", _st, [1, _pilotW], _mPlane, ["Common\InitSpawnPlane.sqs"]] ]
+_a10BB = _type
+_type = _type + 1
+
+_price = [90000, 180000] select PricingMode
+unitDefs set [_type, ["A10 Tomahawk", _price, _si, 90, "A10_Tomahawk_xj200", "ia10", _st, [1, _pilotW], _mPlane, ["Common\InitSpawnPlane.sqs"]] ]
+_a10Tomahawk = _type
+_type = _type + 1
+
+
+
+; EAST
+_si = si1
+
+; INFANTRY EAST
+_st = stBarracks
+
+
+unitDefs set [_type, ["Worker", costWorker, _si, 10, "SoldierEAA", "isaa", -1, [], "", ["Server\UpdateWorker.sqs"]] ]
+utWorkerE = _type
+_type = _type + 1
+
+_price = [50, 100] select PricingMode
+unitDefs set [_type, ["AK74", _price, _si, 10, "SoldierEB", "ivojak", _st, [], "", []] ]
+_soldierE = _type
+_type = _type + 1
+
+_price = [50, 100] select PricingMode
+unitDefs set [_type, ["AK74GL", _price, _si, 10, "SoldierEG", "igrenadier", _st, [], "", []] ]
+_type = _type + 1
+
+_price = [75, 150] select PricingMode
+unitDefs set [_type, ["6G30", _price, _si, 10, "HeavyGrenadier", "igrenadier", _st, [], "", []] ]
+_6G30E = _type
+_type = _type + 1
+
+_price = [100, 200] select PricingMode
+unitDefs set [_type, ["PK", _price, _si, 10, "SoldierEMG", "ismg", _st, [], "", []] ]
+_soldierMGE = _type
+_type = _type + 1
+
+_price = [100, 200] select PricingMode
+unitDefs set [_type, ["Sniper", _price, _si, 10, "SoldierESniper", "isniper", _st, [], "", []] ]
+_sniperE = _type
+_type = _type + 1
+
+_price = [125, 250] select PricingMode
+unitDefs set [_type, ["KSVK", _price, _si, 10, "SoldierEB", "isniper", _st, [], "", ["Common\EquipKSVK.sqs"]] ]
+_KSVKE = _type
+_type = _type + 1
+
+_price = [150, 300] select PricingMode
+unitDefs set [_type, ["RPG Soldier", _price, _si, 10, "SoldierELAW", "islaw", _st, [], "", ["Common\EquipRPG2ai.sqs"]] ]
+_soldierLAWE = _type
+_type = _type + 1
+
+_price = [250, 500] select PricingMode
+unitDefs set [_type, ["RPG Sniper", _price, _si, 10, "RPGSniperW_xj200", "islaw", _st, [], "", ["Common\EquipRPGai.sqs"]] ]
+_soldierLAWE2 = _type
+_type = _type + 1
+
+_price = [250, 500] select PricingMode
+unitDefs set [_type, ["AT Soldier", _price, _si, 10, "SoldierEAT", "isat", _st, [], "", ["Common\EquipAT2ai.sqs"]] ]
+_soldierATE = _type
+_type = _type + 1
+
+_price = [400, 800] select PricingMode
+unitDefs set [_type, ["AT Sniper", _price, _si, 10, "ATSniperE_xj200", "isat", _st, [], "", ["Common\EquipATai.sqs"]] ]
+_soldierATE2 = _type
+_type = _type + 1
+
+_price = [400, 800] select PricingMode
+unitDefs set [_type, ["Strela", _price, _si, 10, "SoldierEAA", "isaa", _st, [], "", ["Common\EquipAAai.sqs"]] ]
+_soldierAAE = _type
+_type = _type + 1
+
+_price = [150, 300] select PricingMode
+unitDefs set [_type, ["Saboteur", _price, _si, 10, "SoldierESaboteurBizon", "isaboteur", _st, [], "", ["Common\EquipSpec.sqs"]] ]
+_bomberE = _type
+_type = _type + 1
+
+_price = [200, 400] select PricingMode
+unitDefs set [_type, ["Miner", _price, _si, 10, "SoldierEMiner", "iminer", _st, [], "", ["Common\EquipMiner.sqs"]] ]
+_minerE = _type
+_type = _type + 1
+
+_price = [50, 100] select PricingMode
+unitDefs set [_type, ["Medic", _price, _si, 10, "SoldierEMedic", "imedic", _st, [], "", []] ]
+_medicE = _type
+_type = _type + 1
+
+_price = [50, 100] select PricingMode
+unitDefs set [_type, ["Crew", _price, _si, 10, "SoldierECrew", "icrew", _st, [], "", []] ]
+_crewE = _type
+_type = _type + 1
+
+_price = [50, 100] select PricingMode
+unitDefs set [_type, ["Pilot", _price, _si, 10, "SoldierEPilot", "ipilot", _st, [], "", []] ]
+_pilotE = _type
+_type = _type + 1
+
+_price = [400, 800] select PricingMode
+unitDefs set [_type, ["Custom", _price, _si, 10, "SoldierESaboteurBizon", "isaboteur", -1, [], "", []] ]
+_customE = _type
+_type = _type + 1
+
+
+
+; LIGHT EAST
+_st = stLight
+
+_price = [50, 100] select PricingMode
+unitDefs set [_type, ["Soldier (AK74)", _price, _si, 10, "SoldierEB", "ivojak", _st, [], "", []] ]
+_soldierEL = _type
+_type = _type + 1
+
+_price = [250, 500] select PricingMode
+unitDefs set [_type, ["QUAD", _price, _si, 20, "QUAD_xj200", "\GST_KawaP\KPpict", _st, [1, _soldierE], _mBike, []] ]
+_type = _type + 1
+
+_price = [400,800] select PricingMode
+unitDefs set [_type, ["UAZ", _price, _si, 20, "UAZ_xj200", "iuaz", _st, [1, _soldierE], _mCar, ["Common\EquipCargoCar.sqs"]] ]
+_uazE = _type
+_type = _type + 1
+
+_price = [700, 1400] select PricingMode
+unitDefs set [_type, ["UAZ Ammo", _price, _si, 20, "UAZ_xj200", "iuaz", _st, [1, _soldierE], _mAmmo, ["Common\InitAmmojeep.sqs"]] ]
+_uazaE = _type
+_type = _type + 1
+
+_price = [400, 800] select PricingMode
+unitDefs set [_type, ["BRDM", _price, _si, 30, "BRDM_xj200", "\BRMD\ibrmd", _st, [1, _soldierE], _mCar, []] ]
+_brdmE = _type
+_type = _type + 1
+
+_price = [500, 1000] select PricingMode
+unitDefs set [_type, ["BRDM PK", _price, _si, 30, "BRDM_PK_xj200", "\TZK_Objects\Texture\BRDMPK.paa", -1, [2, _soldierE], _mCar, []] ]
+_brdmE2 = _type
+_type = _type + 1
+
+_price = [800, 1600] select PricingMode
+unitDefs set [_type, ["BRDM Gaskin", _price, _si, 30, "BRDM_Gaskin_xj200", "\mcar_gaskin\sa9\hudi_sa9.paa", -1, [2, _soldierE], _mCar, []] ]
+_brdmE3 = _type
+_type = _type + 1
+
+_price = [500, 1000] select PricingMode
+unitDefs set [_type, ["Ural", _price, _si, 30, "Ural_xj200", "iural", _st, [1, _soldierE], _mTruck, ["Common\EquipCargoTruck.sqs"]] ]
+_truckE = _type
+_type = _type + 1
+
+_price = [1000, 2000] select PricingMode
+unitDefs set [_type, ["Support Ural", _price, _si, 30, "UralRepair_xj200", "iuralrepair", _st, [1, _soldierE], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
+_supportTruckE = _type
+_type = _type + 1
+
+_price = [1000, 2000] select PricingMode
+unitDefs set [_type, ["Support Ural-miner", _price, _si, 30, "UralRepair_xj200", "iuralrepair", _st, [1, _minerE], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
+_supportTruckE2 = _type
+_type = _type + 1
+
+_price = [500, 1000] select PricingMode
+unitDefs set [_type, ["Fuel Ural", _price, _si, 30, "UralRefuel", "iuralfuel", _st, [1, _soldierE], _mTruck, ["Common\InitFuelTruck.sqs"]] ]
+_type = _type + 1
+
+;_price = [90000, 180000] select PricingMode
+;unitDefs set [_type, ["Scud-D", _price, _si, 180, "ScudE_xj200", "iscud", _st, [1, _soldierE], _mTruck, ["Common\InitScud.sqs"]] ]
+;_type = _type + 1
+
+_price = [1400, 3000] select PricingMode
+unitDefs set [_type, ["Support BMP", _price, _si, 30, "BMPAmbul_xj200", "ibmp_abu", _st, [1, _soldierE], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
+_supportAPCE1 = _type
+_type = _type + 1
+
+_price = [1400, 3000] select PricingMode
+unitDefs set [_type, ["Support BMP + miner", _price, _si, 30, "BMPAmbul_xj200", "ibmp_abu", _st, [1, _minerE], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
+_supportAPCEminer1 = _type
+_type = _type + 1
+
+_price = [300, 600] select PricingMode
+unitDefs set [_type, ["Jet Ski", _price, _si, 30, "PCSFjetski", "\PCjetski\skimage.paa", _st, [1, _bomberE], _mBike, ["Common\Equipjetski.sqs"]] ]
+_jetskiE = _type
+_type = _type + 1
+
+_price = [500, 1000] select PricingMode
+unitDefs set [_type, ["Zodiac", _price, _si, 30, "ZodiacE_xj200", "ipbr", _st, [1, _bomberE], _mBoat, ["Common\EquipCargoTruck.sqs"]] ]
+_zodiacE = _type
+_type = _type + 1
+
+_price = [700, 1400] select PricingMode
+unitDefs set [_type, ["Patrol Boat Tug", _price, _si, 30, "GunBoatE_xj200", "ipbr", _st, [2, _soldierE], _mBoat, ["Common\EquipCargoTruck.sqs","Common\EquipBoatEmg.sqs"]] ]
+_boatE = _type
+_type = _type + 1
+
+_price = [1500, 3000] select PricingMode
+unitDefs set [_type, ["Patrol Boat HE/AP gun", _price, _si, 30, "GunBoatE_xj200", "ipbr", _st, [2, _soldierE], _mBoat, ["Common\EquipCargoTruck.sqs"]] ]
+_boatE2 = _type
+_type = _type + 1
+
+_price = [1500, 3000] select PricingMode
+unitDefs set [_type, ["Patrol Boat 30mm gun", _price, _si, 30, "GunBoatE_xj200", "ipbr", _st, [2, _soldierE], _mBoat, ["Common\EquipCargoTruck.sqs", "Common\EquipBoatE.sqs"]] ]
+_boatE3 = _type
+_type = _type + 1
+
+_price = [1200, 2400] select PricingMode
+unitDefs set [_type, ["Patrol Boat Sup", _price, _si, 30, "GunBoatE_xj200", "ipbr", _st, [2, _soldierE], _mSupport, ["Common\InitSupportVehicle.sqs","Common\EquipBoatEmg.sqs"]] ]
+_boatsupE = _type
+_type = _type + 1
+
+_price = [2000, 4000] select PricingMode
+unitDefs set [_type, ["Patrol Boat Custom", _price, _si, 30, "GunBoatE_Custom_xj200", "ipbr", -1, [2, _soldierE], _mBoat, ["Common\EquipCargoTruck.sqs"]] ]
+_boatCustomE = _type
+_type = _type + 1
+
+_price = [3500, 7000] select PricingMode
+;unitDefs set [_type, ["Patrol Boat Rocket", _price, _si, 30, "GunBoatE_xj200", "ipbr", _st, [2, _soldierE], _mAPC, ["Common\EquipCargoTruck.sqs","Common\EquipBMP2farr.sqs"]] ]
+;_boatdE = _type
+;_type = _type + 1
+
+_price = [7500, 15000] select PricingMode
+;unitDefs set [_type, ["Patrol Boat AT", _price, _si, 30, "GunBoatE_xj200", "ipbr", _st, [2, _soldierE], _mAPC, ["Common\EquipCargoTruck.sqs","Common\EquipBMPAT.sqs"]] ]
+;_boatatE = _type
+;_type = _type + 1
+
+_price = [3500, 7000] select PricingMode
+;unitDefs set [_type, ["Patrol Boat AA", _price, _si, 30, "GunBoatE_xj200", "ipbr", _st, [2, _soldierE], _mAA, ["Common\EquipCargoTruck.sqs","Common\EquipBMP_AA1.sqs"]] ]
+;_boataaE = _type
+;_type = _type + 1
+
+
+; SHIPYARD EAST
+_st = stShip
+
+_price = [50, 100] select PricingMode
+unitDefs set [_type, ["Soldier (AK74)", _price, _si, 10, "SoldierEB", "ivojak", _st, [], "", []] ]
+_soldierES = _type
+_type = _type + 1
+
+_price = [300, 600] select PricingMode
+unitDefs set [_type, ["Jet Ski", _price, _si, 30, "PCSFjetski", "\PCjetski\skimage.paa", _st, [1, _bomberE], _mBike, ["Common\Equipjetski.sqs"]] ]
+_jetskiEsh = _type
+_type = _type + 1
+
+_price = [500, 1000] select PricingMode
+unitDefs set [_type, ["Zodiac", _price, _si, 30, "ZodiacE_xj200", "ipbr", _st, [1, _bomberE], _mBoat, ["Common\EquipCargoTruck.sqs"]] ]
+_zodiacShipE = _type
+_type = _type + 1
+
+_price = [700, 1400] select PricingMode
+unitDefs set [_type, ["Patrol Boat Tug", _price, _si, 30, "GunBoatE_xj200", "ipbr", _st, [2, _soldierE], _mBoat, ["Common\EquipCargoTruck.sqs","Common\EquipBoatEmg.sqs"]] ]
+_shipE = _type
+_type = _type + 1
+
+_price = [1500, 3000] select PricingMode
+unitDefs set [_type, ["Patrol Boat HE/AP gun", _price, _si, 30, "GunBoatE_xj200", "ipbr", _st, [2, _soldierE], _mBoat, ["Common\EquipCargoTruck.sqs"]] ]
+_shipE2 = _type
+_type = _type + 1
+
+_price = [1500, 3000] select PricingMode
+unitDefs set [_type, ["Patrol Boat 30mm gun", _price, _si, 30, "GunBoatE_xj200", "ipbr", _st, [2, _soldierE], _mBoat, ["Common\EquipCargoTruck.sqs", "Common\EquipBoatE.sqs"]] ]
+_shipE3 = _type
+_type = _type + 1
+
+_price = [1200, 2400] select PricingMode
+unitDefs set [_type, ["Patrol Boat Sup", _price, _si, 30, "GunBoatE_xj200", "ipbr", _st, [2, _soldierE], _mSupport, ["Common\InitSupportVehicle.sqs","Common\EquipBoatEmg.sqs"]] ]
+_shipsupE = _type
+_type = _type + 1
+
+_price = [2000, 4000] select PricingMode
+unitDefs set [_type, ["Patrol Boat Custom", _price, _si, 30, "GunBoatE_Custom_xj200", "ipbr", -1, [2, _soldierE], _mBoat, ["Common\EquipCargoTruck.sqs"]] ]
+_shipCustomE = _type
+_type = _type + 1
+
+_price = [3500, 7000] select PricingMode
+;unitDefs set [_type, ["Patrol Boat Rocket", _price, _si, 30, "GunBoatE_xj200", "ipbr", _st, [2, _soldierE], _mAPC, ["Common\EquipCargoTruck.sqs","Common\EquipBMP2farr.sqs"]] ]
+;_shipdE = _type
+;_type = _type + 1
+
+_price = [7500, 15000] select PricingMode
+;unitDefs set [_type, ["Patrol Boat AT", _price, _si, 30, "GunBoatE_xj200", "ipbr", _st, [2, _soldierE], _mAPC, ["Common\EquipCargoTruck.sqs","Common\EquipBMPAT.sqs"]] ]
+;_shipatE = _type
+;_type = _type + 1
+
+_price = [3500, 7000] select PricingMode
+;unitDefs set [_type, ["Patrol Boat AA", _price, _si, 30, "GunBoatE_xj200", "ipbr", _st, [2, _soldierE], _mAA, ["Common\EquipCargoTruck.sqs","Common\EquipBMP_AA1.sqs"]] ]
+;_shipaaE = _type
+;_type = _type + 1
+
+
+
+; HEAVY EAST
+_st = stHeavy
+
+_price = [50, 100] select PricingMode
+unitDefs set [_type, ["Soldier (AK74)", _price, _si, 10, "SoldierEB", "ivojak", _st, [], "", []] ]
+_soldierEH = _type
+_type = _type + 1
+
+_price = [1400, 3000] select PricingMode
+unitDefs set [_type, ["Support BMP", _price, _si, 30, "BMPAmbul_xj200", "ibmp_abu", _st, [1, _soldierE], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
+_supportAPCE = _type
+_type = _type + 1
+
+_price = [1400, 3000] select PricingMode
+unitDefs set [_type, ["Support BMP + miner", _price, _si, 30, "BMPAmbul_xj200", "ibmp_abu", _st, [1, _minerE], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
+_supportAPCEminer = _type
+_type = _type + 1
+
+_price = [800, 1600] select PricingMode
+unitDefs set [_type, ["BMP", _price, _si, 30, "BMP_xj200", "ibmp", _st, [3, _crewE], _mAPC, []] ]
+_bmpE = _type
+_type = _type + 1
+
+_price = [1800, 3600] select PricingMode
+unitDefs set [_type, ["BMP2 30mm/AT", _price, _si, 30, "BMP2_AA_xj200", "ibmp", _st, [3, _crewE], _mAPC, ["Common\EquipBMP_standard.sqs"]] ]
+_bmp2E = _type
+_type = _type + 1
+
+_price = [3500, 7000] select PricingMode
+unitDefs set [_type, ["BMP2 Rocket", _price, _si, 30, "BMP2_AA_xj200", "ibmp", _st, [3, _crewE], _mAPC, ["Common\EquipBMP2farr.sqs"]] ]
+_bmp2d = _type
+_type = _type + 1
+
+_price = [7500, 15000] select PricingMode
+unitDefs set [_type, ["BMP2 AT", _price, _si, 30, "BMP2_AA_xj200", "ibmp", _st, [3, _crewE], _mAPC, ["Common\EquipBMPAT.sqs"]] ]
+_bmp2at = _type
+_type = _type + 1
+
+_price = [1500, 2000] select PricingMode
+unitDefs set [_type, ["Shilka", _price, _si, 30, "ZSU_xj200", "izsu", _st, [2, _crewE], _mAA, []] ]
+_shilkaE = _type
+_type = _type + 1
+
+_price = [2000, 4000] select PricingMode
+unitDefs set [_type, ["BMP2 Cannon", _price, _si, 30, "BMP2_AA_xj200", "izsu", _st, [2, _crewE], _mAA, ["Common\EquipBMP_AA2.sqs"]] ]
+_bmp2Cannon = _type
+_type = _type + 1
+
+_price = [3500, 4000] select PricingMode
+unitDefs set [_type, ["BMP2 AA", _price, _si, 30, "BMP2_AA_xj200", "izsu", _st, [2, _crewE], _mAA, ["Common\EquipBMP_AA1.sqs"]] ]
+_bmp2aa = _type
+_type = _type + 1
+
+_price = [8000, 16000] select PricingMode
+unitDefs set [_type, ["4xAA", _price, _si, 30, "ZSU_xj200", "izsu", _st, [3, _crewE], _mAA, ["Common\EquipDefAA.sqs"]] ]
+_shilkaE2 = _type
+_type = _type + 1
+_price = [8000, 16000] select PricingMode
+unitDefs set [_type, ["4xAA(4km)", _price, _si, 30, "ZSU_xj200", "izsu", -1, [3, _crewE], _mAA, ["Common\EquipDefAA2.sqs"]] ]
+_shilkaE3 = _type
+_type = _type + 1
+
+_price = [2000, 4000] select PricingMode
+unitDefs set [_type, ["T72", _price, _si, 30, "T72_xj200", "it72", _st, [3, _crewE], _mTank, []] ]
+_t72E = _type
+_type = _type + 1
+
+_price = [3500, 7000] select PricingMode
+unitDefs set [_type, ["T72A", _price, _si, 60, "T80_xj200", "it80", -1, [3, _crewE], _mTank, []] ]
+_t_80E = _type
+_type = _type + 1
+
+_price = [5000, 10000] select PricingMode
+unitDefs set [_type, ["T80", _price, _si, 60, "T80_xj200", "it80", _st, [3, _crewE], _mTank, []] ]
+_t80E = _type
+_type = _type + 1
+
+_price = [5000, 10000] select PricingMode
+unitDefs set [_type, ["T90", _price, _si, 60, "T90_xj200", "\TZK_Objects\Texture\T90.paa", _st, [3, _crewE], _mTank, []] ]
+_t90E = _type
+_type = _type + 1
+
+_price = [5000, 10000] select PricingMode
+unitDefs set [_type, ["ZTZ-99G", _price, _si, 60, "ZTZ99_xj200", "\TZK_Objects\Texture\ZTZ99.paa", _st, [3, _crewE], _mTank, []] ]
+_ztz99E = _type
+_type = _type + 1
+
+_price = [7500, 15000] select PricingMode
+unitDefs set [_type, ["PLZ-05 (Fixed Turret)", _price, _si, 60, "PLZ05_Assault_xj200", "\TZK_Objects\Texture\PLZ05.paa", _st, [3, _crewW], _mHowitzer, []] ]
+_plz05E = _type
+_type = _type + 1
+
+_price = [25000, 50000] select PricingMode
+unitDefs set [_type, ["T80 Art", _price, _si, 90, "T80_Art_xj200", "it80", _st, [3, _crewE], _mTank, []] ]
+_t80artE = _type
+_type = _type + 1
+
+_price = [25000, 50000] select PricingMode
+unitDefs set [_type, ["PLZ-05 Art", _price, _si, 90, "PLZ05_Art_xj200", "\TZK_Objects\Texture\PLZ05.paa", -1, [3, _crewW], _mHowitzer,  []] ]
+_plz05artE = _type
+_type = _type + 1
+
+_price = [1.5*costRepairMHQ, 3.0*costRepairMHQ] select PricingMode
+unitDefs set [_type, ["MCV East", _price, _si, 120, "MCVE_xj200", "ibmp_abu", -1, [1, _soldierE], _mMCV,  ["Common\InitMCV.sqs"]] ]
+utMCVE = _type
+_type = _type + 1
+
+_price = [1400, 3000] select PricingMode
+unitDefs set [_type, ["MHQ East", 1500, _si, 10, "MHQE_xj200", "ibmp_abu", -1, [1, _crewE], _mMHQ, ["Common\InitMHQ.sqs"]] ]
+utMHQ1 = _type
+_type = _type + 1
+
+
+
+; AIR EAST
+_st = stAir
+
+_price = [50, 100] select PricingMode
+unitDefs set [_type, ["Soldier (AK74)", _price, _si, 10, "SoldierEB", "ivojak", _st, [], "", []] ]
+_soldierEA = _type
+_type = _type + 1
+
+_price = [3000, 6000] select PricingMode
+unitDefs set [_type, ["Mi-2", _price, _si, 30, "Mi2NOE_xj200", "\TZK_Objects\Texture\Mi2.paa", _st, [1, _pilotE], _mHeli, []] ]
+_mi2E = _type
+_type = _type + 1
+
+_price = [4000, 8000] select PricingMode
+unitDefs set [_type, ["Mi17 (tug)", _price, _si, 60, "Mi17_C_xj200", "imi17", _st, [1, _pilotE], _mHeli, ["Common\EquipMi17.sqs"]] ]
+_mi17E = _type
+_type = _type + 1
+
+_price = [5000, 10000] select PricingMode
+unitDefs set [_type, ["Mi17 support", _price, _si, 60, "Mi17_C_xj200", "imi17", _st, [1, _pilotE], _mSupport, ["Common\InitSupportVehicle.sqs", "Common\EquipMi17.sqs", "Common\InitAmmoDrop.sqs"]] ]
+_mi17supE = _type
+_type = _type + 1
+
+_price = [7000, 14000] select PricingMode
+unitDefs set [_type, ["Mi17 30mm gun", _price, _si, 60, "Mi17_MG_C_xj200", "imi17", _st, [1, _pilotE], _mHeli, ["Common\EquipMi17.sqs"]] ]
+_mi17E30 = _type
+_type = _type + 1
+
+_price = [7000, 14000] select PricingMode
+unitDefs set [_type, ["Mi17 2xLGB", _price, _si, 60, "Mi17_LGB_C_xj200", "imi17", _st, [1, _pilotE], _mHeli, ["Common\EquipMi17.sqs"]] ]
+_mi17EL = _type
+_type = _type + 1
+
+; _price = [14000, 28000] select PricingMode
+; unitDefs set [_type, ["Mi17 14xbombs", _price, _si, 60, "Mi17_LGB_xj200", "imi17", _st, [1, _pilotE], _mHeli, [ "Common\EquipChoperbombs.sqs"]] ]
+; _mi17bombs = _type
+; _type = _type + 1
+
+_price = [5000, 1000] select PricingMode
+unitDefs set [_type, ["An-12 Redstar", _price, _si, 60, "An12_xj200", "\TZK_Objects\Texture\an12.paa", _st, [1, _pilotE], _mPlane, ["Common\InitSpawnPlane.sqs"]] ]
+_an12E = _type
+_type = _type + 1
+
+_price = [25000, 50000] select PricingMode
+unitDefs set [_type, ["V80 AT/30mm", _price, _si, 90, "Ka50_xj200", "player\Ka50.paa", _st, [1, _pilotE], _mHeli, ["Common\EquipV80.sqs"]] ]
+_v80E = _type
+_type = _type + 1
+
+_price = [28000, 56000] select PricingMode
+unitDefs set [_type, ["Mi24 AT/30mm", _price, _si, 90, "Mi24_C_xj200", "\TZK_Objects\Texture\RHS_Mi24V.paa", _st, [2, _pilotE], _mHeli, ["Common\EquipMi24.sqs"]] ]
+_mi24E = _type
+_type = _type + 1
+
+_price = [28000, 56000] select PricingMode
+unitDefs set [_type, ["V80 AT/30mm", _price, _si, 90, "Ka50_AT_xj200", "player\Ka50.paa", _st, [1, _pilotE], _mHeli, ["Common\EquipV80.sqs"]] ]
+_v80E2 = _type
+_type = _type + 1
+
+_price = [30000, 60000] select PricingMode
+unitDefs set [_type, ["Mi24 AT/30mm", _price, _si, 90, "Mi24_AT_xj200", "imi24", _st, [2, _pilotE], _mHeli, ["Common\EquipMi24.sqs"]] ]
+_mi24E2 = _type
+_type = _type + 1
+
+
+_price = [5000, 10000] select PricingMode
+unitDefs set [_type, ["An-12 Support", _price, _si, 60, "An12_Support_xj200", "\TZK_Objects\Texture\an12.paa", _st, [1, _pilotE], _mSupport, ["Common\InitSpawnPlane.sqs", "Common\InitSupportVehicle.sqs"]] ]
+_an12supportE = _type
+_type = _type + 1
+
+_price = [10000, 20000] select PricingMode
+unitDefs set [_type, ["Su25 GUN", _price, _si, 90, "Su25_xj200", "\Su25\isu25", _st, [1, _pilotE], _mPlane, ["Common\EquipSu25Gun.sqs", "Common\InitSpawnPlane.sqs"]] ]
+_su25gun = _type
+_type = _type + 1
+
+_price = [12000, 22000] select PricingMode
+unitDefs set [_type, ["Su25 4xLGB/GUN", _price, _si, 90, "Su25_LGB_xj200", "\Su25\isu25", _st, [1, _pilotE], _mPlane, ["Common\EquipSu25LGB4.sqs", "Common\InitSpawnPlane.sqs"]] ]
+_su25LGB4 = _type
+_type = _type + 1
+
+_price = [14000, 28000] select PricingMode
+unitDefs set [_type, ["Su25 14xBombs/GUN", _price, _si, 90, "Su25_xj200", "\Su25\isu25", _st, [1, _pilotE], _mPlane, ["Common\EquipSu25bombs.sqs", "Common\InitSpawnPlane.sqs"]] ]
+_su25bombs = _type
+_type = _type + 1
+
+_price = [20000, 40000] select PricingMode
+unitDefs set [_type, ["Su25 AT/30mm", _price, _si, 90, "Su25_xj200", "\Su25\isu25", _st, [1, _pilotE], _mPlane, ["Common\EquipSu25AT.sqs", "Common\InitSpawnPlane.sqs"]] ]
+_su25 = _type
+_type = _type + 1
+
+_price = [20000, 40000] select PricingMode
+unitDefs set [_type, ["Su25 LGB/30mm", _price, _si, 90, "Su25_LGB_xj200", "\Su25\isu25", _st, [1, _pilotE], _mPlane, ["Common\EquipSu25LGB8.sqs", "Common\InitSpawnPlane.sqs"]] ]
+_su25LGB8 = _type
+_type = _type + 1
+
+_price = [25000, 50000] select PricingMode
+unitDefs set [_type, ["Su25 4xAA/GUN", _price, _si, 90, "Su25_xj200", "\Su25\isu25", _st, [1, _pilotE], _mPlane, ["Common\EquipSu25AA.sqs", "Common\InitSpawnPlane.sqs"]] ]
+_su25AA = _type
+_type = _type + 1
+
+_price = [30000, 60000] select PricingMode
+unitDefs set [_type, ["Su25 Rocket", _price, _si, 90, "Su25_Rocket_xj200", "\Su25\isu25", _st, [1, _pilotE], _mPlane, ["Common\InitSpawnPlane.sqs"]] ]
+_su25Rocket = _type
+_type = _type + 1
+
+_price = [45000, 90000] select PricingMode
+unitDefs set [_type, ["Su25 Base Buster", _price, _si, 90, "Su25_Buster_xj200", "\Su25\isu25", _st, [1, _pilotE], _mPlane, ["Common\InitSpawnPlane.sqs"]] ]
+_su25BB = _type
+_type = _type + 1
+
+_price = [90000, 180000] select PricingMode
+unitDefs set [_type, ["Su25 Raduga", _price, _si, 90, "Su25_Raduga_xj200", "\Su25\isu25", _st, [1, _pilotE], _mPlane, ["Common\InitSpawnPlane.sqs"]] ]
+_su25Raduga = _type
+_type = _type + 1
+
+
+; RESISTANCE
+_si = siRes
+_st = -1
+
+; INFANTRY RES
+
+
+unitDefs set [_type, ["Soldier", 50, _si, 0, "SoldierGG", "ivojak", _st, [], "", ["Common\InitSpawnchute.sqs"]] ]
+_soldierggr = _type
+_type = _type + 1
+
+unitDefs set [_type, ["Medic", 50, _si, 0, "SoldierGMedic", "imedic", _st, [], "", ["Common\InitSpawnchute.sqs"]] ]
+_medicR = _type
+_type = _type + 1
+
+unitDefs set [_type, ["Crew", 50, _si, 0, "SoldierGCrew", "icrew", _st, [], "", []] ]
+_crewR = _type
+_type = _type + 1
+
+unitDefs set [_type, ["PK", 100, _si, 0, "SoldierGMG", "ismg", _st, [], "", ["Common\InitSpawnchute.sqs","Common\EquipResMG.sqs"]] ]
+_soldierMGR = _type
+_type = _type + 1
+
+unitDefs set [_type, ["Sniper", 100, _si, 0, "SoldierGSniper", "isniper", _st, [], "", ["Common\InitSpawnchute.sqs","Common\EquipResSniper.sqs"]] ]
+_sniperR = _type
+_type = _type + 1
+
+unitDefs set [_type, ["RPG", 250, _si, 0, "SoldierGLAW", "islaw", _st, [], "", ["Common\InitSpawnchute.sqs","Common\EquipResistanceRPG.sqs"]] ]
+_soldierLAWR = _type
+_type = _type + 1
+
+unitDefs set [_type, ["AT4", 400, _si, 10, "SoldierGAT", "isat", _st, [], "", ["Common\InitSpawnchute.sqs","Common\EquipResistanceAT.sqs"]] ]
+_soldierATR = _type
+_type = _type + 1
+
+unitDefs set [_type, ["Strela", 400, _si, 10, "SoldierGAA", "isaa", _st, [], "", ["Common\InitSpawnchute.sqs","Common\EquipResistanceAA.sqs"]] ]
+_soldierAAR = _type
+_type = _type + 1
+
+unitDefs set [_type, ["Officer", 2000, _si, 10, "OfficerG", "ivojak", _st, [], "", ["Common\InitSpawnchute.sqs"]] ]
+_officerR = _type
+_type = _type + 1
+
+
+; ARMOR RES
+
+
+unitDefs set [_type, ["RES HUNTER", 5000, _si, 90, "RKTHunterGAG", "\Su25\isu25", _st, [1, _crewR], _mPlane, ["Common\InitSpawnPlaneRes.sqs","Common\EquipResPlanebombs.sqs"]] ]
+_planeatR = _type
+_type = _type + 1
+
+unitDefs set [_type, ["RES HUNTER", 5000, _si, 90, "RKTHunterBAG", "\Su25\isu25", _st, [1, _crewR], _mPlane, ["Common\InitSpawnPlaneRes.sqs","Common\EquipResPlanegun.sqs"]] ]
+_planeatR2 = _type
+_type = _type + 1
+
+unitDefs set [_type, ["T72 Res", 3000, _si, 0, "T72Res", "it72", _st, [3, _crewR], _mTank, ["Common\EquipTownVehicles.sqs"]] ]
+_t72R = _type
+_type = _type + 1
+
+unitDefs set [_type, ["T80 Res", 5000, _si, 0, "T80Res_xj200", "it80", _st, [3, _crewR], _mTank, ["Common\EquipTownVehicles.sqs"]] ]
+_t80R = _type
+_type = _type + 1
+
+
+; VEHICLE CIV
+_si = siCIV
+_st = -1
+
+unitDefs set [_type, ["Bike", 100, _si, 0, "Kolo", "\Kolo\ikolo", _st, [1, _crewR], _mBike, []] ]
+_bikeC = _type
+_type = _type + 1
+
+unitDefs set [_type, ["Motorcycle", 200, _si, 0, "Jawa", "\o\vehl\ijawa", _st, [1, _crewR], _mBike, []] ]
+_motorC = _type
+_type = _type + 1
+
+
+
+
+
+? _type > maxUnitTypes : player globalchat format["Max unit types (%1) exceeded: %1", maxUnitTypes, _type]
+
+; PLAYER CUSTOM INFANTRY
+infCustom = []
+_i = 0; while "_i < countInfCustom" do { infCustom set [_i, [] ]; _i=_i+1 }
+utCustom = [_customW, _customE]
+
+
+; TOWN UNITS
+
+_si = si0
+
+unitDefs set [_type, ["M60 Town", 100, _si, 10, "SoldierWMG", "ismg", _st, [], "", ["Common\InitSpawnchuteW.sqs"]] ]
+_soldierMGW1 = _type
+_type = _type + 1
+
+unitDefs set [_type, ["Sniper Town", 100, _si, 10, "SoldierWSniper", "isniper", _st, [], "", ["Common\InitSpawnchuteW.sqs"]] ]
+_sniperW1 = _type
+_type = _type + 1
+
+unitDefs set [_type, ["LAW Town", 250, _si, 10, "LAWSniperW_xj200", "islaw", _st, [], "", ["Common\InitSpawnchuteW.sqs","Common\EquipRPGai.sqs"]] ]
+_soldierLAWW1 = _type
+_type = _type + 1
+
+unitDefs set [_type, ["Carl Gustav Town", 400, _si, 10, "ATSniperW_xj200", "isat", _st, [], "", ["Common\InitSpawnchuteW.sqs","Common\EquipATai.sqs"]] ]
+_soldierATW1 = _type
+_type = _type + 1
+
+unitDefs set [_type, ["Stinger Town", 400, _si, 10, "SoldierWAA", "isaa", _st, [], "", ["Common\InitSpawnchuteW.sqs","Common\EquipAAai.sqs"]] ]
+_soldierAAW1 = _type
+_type = _type + 1
+
+
+unitDefs set [_type, ["M2A2 AT Town", 2000, _si, 30, "M2A2_AA_Town_xj200", "\M2A2\im2a2", _st, [3, _crewW], _mAPC, ["Common\EquipTownM2A2_AT.sqs", "Common\InitTownGroupVehicles.sqs"]] ] 
+_m2a2townat = _type
+_type = _type + 1
+
+unitDefs set [_type, ["M2A2 AA Town", 2000, _si, 30, "M2A2_AA_Town_xj200", "\M2A2\im2a2", _st, [3, _crewW], _mAA, ["Common\EquipTownM2A2_AA.sqs", "Common\InitTownGroupVehicles.sqs"]] ]
+_m2a2townaad = _type
+_type = _type + 1
+
+unitDefs set [_type, ["M1A1 Town", 5000, _si, 60, "M1A1_xj200", "iabrams", _st, [3, _crewW], _mTank, ["Common\EquipTownVehicles.sqs", "Common\InitTownGroupVehicles.sqs"]] ]
+_m1a1townW = _type
+_type = _type + 1
+unitDefs set [_type, ["AH64 Town", 6000, _si, 90, "AH64_AT_xj200", "\APAC\iah64", _st, [2, _pilotW], _mHeli, ["Common\EquipTownVehicles.sqs", "Common\InitTownGroupVehicles.sqs"]] ]
+_ah64townW2 = _type
+_type = _type + 1
+
+_price = [1500, 3000] select PricingMode
+unitDefs set [_type, ["Vulcan Base", _price, _si, 30, "Vulcan_xj200", "\VULCAN\ivulcan", -2, [2, _crewW], _mAA, []] ]
+_vulcanBaseW = _type
+_type = _type + 1
+
+_price = [8000, 16000] select PricingMode
+unitDefs set [_type, ["4xAA Base", _price, _si, 30, "Vulcan_xj200", "\VULCAN\ivulcan", -2, [2, _crewW], _mAA, ["Common\EquipDefAA.sqs"]] ]
+_vulcanBaseW2 = _type
+_type = _type + 1
+
+
+
+_si = si1
+
+unitDefs set [_type, ["PK Town", 150, _si, 10, "SoldierEMG", "ismg", _st, [], "", ["Common\InitSpawnchuteE.sqs"]] ]
+_soldierMGE1 = _type
+_type = _type + 1
+
+unitDefs set [_type, ["Sniper Town", 150, _si, 10, "SoldierESniper", "isniper", _st, [], "", ["Common\InitSpawnchuteE.sqs"]] ]
+_sniperE1 = _type
+_type = _type + 1
+
+unitDefs set [_type, ["RPG Town", 250, _si, 10, "RPGSniperW_xj200", "islaw", _st, [], "", ["Common\InitSpawnchuteE.sqs","Common\EquipRPGai.sqs"]] ]
+_soldierLAWE1 = _type
+_type = _type + 1
+
+unitDefs set [_type, ["AT4 Town", 400, _si, 10, "ATSniperE_xj200", "isat", _st, [], "", ["Common\InitSpawnchuteE.sqs","Common\EquipATai.sqs"]] ]
+_soldierATE1 = _type
+_type = _type + 1
+
+unitDefs set [_type, ["Strela Town", 400, _si, 10, "SoldierEAA", "isaa", _st, [], "", ["Common\InitSpawnchuteE.sqs"]] ]
+_soldierAAE1 = _type
+_type = _type + 1
+
+
+unitDefs set [_type, ["BMP2 AT Town", 2000, _si, 30, "BMP2_AA_Town_xj200", "ibmp", _st, [3, _crewE], _mAPC, ["Common\EquipTownBMP2_AT.sqs", "Common\InitTownGroupVehicles.sqs"]] ]
+_bmp2townat = _type
+_type = _type + 1
+
+unitDefs set [_type, ["BMP2 AA Town", 2000, _si, 30, "BMP2_AA_Town_xj200", "ibmp", _st, [3, _crewE], _mAA, ["Common\EquipTownBMP2_AA.sqs", "Common\InitTownGroupVehicles.sqs"]] ]
+_bmp2townaad = _type
+_type = _type + 1
+
+unitDefs set [_type, ["T80 Town", 5000, _si, 60, "T80_xj200", "it80", _st, [3, _crewE], _mTank, ["Common\EquipTownVehicles.sqs", "Common\InitTownGroupVehicles.sqs"]] ]
+_t80townE = _type
+_type = _type + 1
+unitDefs set [_type, ["Mi24 Town", 8000, _si, 90, "Mi24_AT_C_xj200", "imi24", _st, [2, _pilotE], _mHeli, ["Common\EquipTownVehicles.sqs", "Common\InitTownGroupVehicles.sqs"]] ]
+_mi24townE2 = _type
+_type = _type + 1
+
+_price = [1500, 2000] select PricingMode
+unitDefs set [_type, ["Shilka Base", _price, _si, 30, "ZSU_xj200", "izsu", -2, [2, _crewE], _mAA, []] ]
+_shilkaBaseE = _type
+_type = _type + 1
+
+_price = [8000, 16000] select PricingMode
+unitDefs set [_type, ["4xAA Base", _price, _si, 30, "ZSU_xj200", "izsu", -2, [3, _crewE], _mAA, ["Common\EquipDefAA.sqs"]] ]
+_shilkaBaseE2 = _type
+_type = _type + 1
+
+
+
+
+infTown = [ [], [], [] ]
+infTownH = [ [], [], [] ]
+armorTown = [ [], [], [] ]
+armorTownH = [ [], [], [] ]
+armorTownHIsle = [ [], [], [] ]
+;planeTown = [ [], [], [] ]
+airTown = [ [], [], [] ]
+
+_si = si0
+infTown set [_si, [ [_soldierLAWW1, 1], [_soldierATW1, 1], [_soldierAAW1, 0.5],[_soldierMGW1, 0.1] ] ]
+infTownH set [_si, [ [_soldierAAW1, 1] ] ]
+armorTown set [_si, [ [_m2a2townat, 1], [_m2a2townaad,1] ] ]
+armorTownH set [_si, [ [_m1a1townW, 1] ] ]
+armorTownHIsle set [_si, [ [_m1a1townW, 1], [_ah64townW2, 1]] ]
+
+
+_si = si1
+infTown set [_si, [ [_soldierLAWE1, 1], [_soldierATE1, 1], [_soldierAAE1, 0.5], [ _soldierMGE1, 0.1] ] ]
+infTownH set [_si, [ [_soldierAAE1, 1] ] ]
+armorTown set [_si, [ [_bmp2townat, 1], [_bmp2townaad,1] ] ]
+armorTownH set [_si, [ [_t80townE, 1] ] ]
+armorTownHIsle set [_si, [ [_t80townE, 1], [_mi24townE2, 1]] ]
+
+
+_si = siRes
+infTown set [_si, [ [_medicR, 0.1], [_sniperR, 0.1], [_soldierMGR, 0.1], [_soldierLAWR, 1], [_soldierATR, 1], [_soldierAAR, 1] ] ]
+armorTown set [_si, [ [_t80R, 1] ] ]
+airTown set [_si, [ [_planeatR, 1] ,[_planeatR2, 1] ] ]
+
+
+
+civTown = [_motorC, _motorC, _bikeC]
+
+
+; AI UNITS - units bought by ai leaders, this must match aisBuy in aiSettingDefs in init.sqs
+
+unitsBuyAI = [ [], [] ]
+_i = 0
+
+utbNone = _i
+_list = []
+(unitsBuyAI select si0) set [_i, _list]
+_list = []
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+utbSoldier = _i
+_list = [ [_soldierW, 1] ]
+(unitsBuyAI select si0) set [_i, _list]
+_list = [ [_soldierE, 1] ]
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+
+utbinfMGSnip = _i
+_list = [[_soldierMGW, 1],[_sniperW, 0.5] ]
+(unitsBuyAI select si0) set [_i, _list]
+_list = [ [_soldierMGE, 1],[_sniperE, 0.5] ]
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+
+utbinfRPGLAW = _i
+_list = [[_soldierLAWW, 1] ]
+(unitsBuyAI select si0) set [_i, _list]
+_list = [ [_soldierLAWE, 1] ]
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+utbinfRPGLAW2 = _i
+_list = [[_soldierLAWW2, 1] ]
+(unitsBuyAI select si0) set [_i, _list]
+_list = [ [_soldierLAWE2, 1] ]
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+utbinfRPGLAW3 = _i
+_list = [ [_soldierLAWW, 1], [_soldierLAWW2, 0.5] ]
+(unitsBuyAI select si0) set [_i, _list]
+_list = [ [_soldierLAWE, 1], [_soldierLAWE2, 0.5] ]
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+utbinfAt = _i
+_list = [[_soldierLAWW, 1], [_soldierATW, 1] ]
+(unitsBuyAI select si0) set [_i, _list]
+_list = [ [_soldierLAWE, 1], [_soldierATE, 1] ]
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+utbinfAt2 = _i
+_list = [[_soldierLAWW2, 1], [_soldierATW2, 1] ]
+(unitsBuyAI select si0) set [_i, _list]
+_list = [ [_soldierLAWE2, 1], [_soldierATE2, 1] ]
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+utbinfAt3 = _i
+_list = [ [_soldierLAWW2, 0.5], [_soldierATW2, 0.5], [_soldierLAWW, 1], [_soldierATW, 1] ]
+(unitsBuyAI select si0) set [_i, _list]
+_list = [ [_soldierLAWE2, 0.5], [_soldierATE2, 0.5], [_soldierLAWE, 1], [_soldierATE, 1] ]
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+utbAA = _i
+_list = [ [_soldierAAW, 0.5] ]
+(unitsBuyAI select si0) set [_i, _list]
+_list = [ [_soldierAAE, 0.5] ]
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+utbinfAASnip = _i
+_list = [[_sniperW, 0.5], [_soldierAAW, 1] ]
+(unitsBuyAI select si0) set [_i, _list]
+_list = [ [_sniperE, 0.5], [_soldierAAE, 1] ]
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+utbinfAAATSnip = _i
+_list = [ [_soldierLAWW2, 1], [_soldierATW2, 1], [_soldierAAW, 1] ]
+(unitsBuyAI select si0) set [_i, _list]
+_list = [ [_soldierLAWE2, 1], [_soldierATE2, 1], [_soldierAAE, 1] ]
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+utbInfMixed = _i
+_list = [ [_medicW, 0.1], [_sniperW, 0.5], [_bomberW, 1], [_soldierAAW, 0.5], [_soldierMGW, 1], [_soldierLAWW, 1], [_soldierATW, 1], [_soldierLAWW2, 1], [_soldierATW2, 1] ]
+(unitsBuyAI select si0) set [_i, _list]
+_list = [ [_medicE, 0.1], [_sniperE, 0.5], [_bomberE, 1], [_soldierAAE, 0.5], [_soldierMGE, 1], [_soldierLAWE, 1], [_soldierATE, 1], [_soldierLAWE2, 1], [_soldierATE2, 1] ]
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+utbTanksMixed = _i
+_list = [ [_m60W, 0.5], [_vulcanW2, 0.5], [_m2a2at, 0.5], [_m2a2aa, 0.5], [_m1W, 1], [_m1a1W, 1], [_m1a2sepW, 1], [_leo2a6W, 1] ]
+(unitsBuyAI select si0) set [_i, _list]
+_list = [ [_t72E, 0.5], [_shilkaE2, 0.5], [_bmp2at, 0.5], [_bmp2aa, 0.5], [_t_80E, 1], [_t80E, 1], [_t90E, 1], [_ztz99E, 1] ]
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+utbTanksL = _i
+_list = [ [_m60W, 0.5], [_m1W, 0.5] ]
+(unitsBuyAI select si0) set [_i, _list]
+_list = [ [_t72E, 0.5], [_t_80E, 0.5] ]
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+utbTanksHeavy = _i
+_list = [ [_m1a1W, 1] ]
+(unitsBuyAI select si0) set [_i, _list]
+_list = [ [_t80E, 1] ]
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+utbTanksAT = _i
+_list = [ [_m2a2at, 0.5] ]
+(unitsBuyAI select si0) set [_i, _list]
+_list = [ [_bmp2at, 0.5] ]
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+utbAAHeavy = _i
+_list = [ [_vulcanW2, 0.3] ]
+(unitsBuyAI select si0) set [_i, _list]
+_list = [ [_shilkaE2, 0.3] ]
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+utbAAvehicles = _i
+_list = [ [_vulcanW, 0.5], [_m2a2aa, 0.5], [_m113Cannon, 0.5] ]
+(unitsBuyAI select si0) set [_i, _list]
+_list = [ [_shilkaE, 0.5], [_bmp2aa, 0.5], [_bmp2Cannon, 0.5] ]
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+utbBombers = _i
+_list = [ [_bomberW, 1] ]
+(unitsBuyAI select si0) set [_i, _list]
+_list = [ [_bomberE, 1] ]
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+utbminers = _i
+_list = [ [_minerW, 1] ]
+(unitsBuyAI select si0) set [_i, _list]
+_list = [ [_minerE, 1] ]
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+utbtransl = _i
+_list = [ [_m2a2W, 1] ]
+(unitsBuyAI select si0) set [_i, _list]
+_list = [ [_bmp2E, 1] ]
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+utbtransa = _i
+_list = [ [_uh60W, 0.5], [_uh60supW, 0.8] ]
+(unitsBuyAI select si0) set [_i, _list]
+_list = [ [_mi17E, 0.5], [_mi17supE, 0.8] ]
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+utbSupport = _i
+_list = [ [_supportAPCW, 1], [_supportTruckW, 0.1] ]
+(unitsBuyAI select si0) set [_i, _list]
+_list = [ [_supportAPCE, 1], [_supportTruckE, 0.1] ]
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+utbPlane = _i
+_list = [ [_a10, 1] ]
+(unitsBuyAI select si0) set [_i, _list]
+_list = [ [_su25, 1] ]
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+utbGunship1 = _i
+_list = [ [_ah1W2, 1] ]
+(unitsBuyAI select si0) set [_i, _list]
+_list = [ [_v80E2, 1] ]
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+utbGunship2 = _i
+_list = [ [_ah64W2, 1] ]
+(unitsBuyAI select si0) set [_i, _list]
+_list = [ [_mi24E2, 1] ]
+(unitsBuyAI select si1) set [_i, _list]
+_i = _i + 1
+
+
+; EXTRA START VEHICLES
+; will not be placed when no players exist on side
+; entry format: [type, posRelMhq]
+vehiclesStart = []
+? ( (param1 % 20) in [0,5,10,13]) : goto "lowres"
+? ( (param1 % 20) in [1,6,16,18]) : goto "lowres"
+? ( (param1 % 20) in [2,7,11,14]) : goto "midres"
+? ( (param1 % 20) in [3,8,17,19]) : goto "hires"
+? ( (param1 % 20) in [4,9,12,15]) : goto "hires2"
+
+
+
+
+#lowres
+vehiclesStart set [si0, [ [ _truckW, [0, -25]],[_hummerW, [20, -40]], [ _jeepW, [0, -40]] ] ]
+vehiclesStart set [si1, [ [ _truckE, [0, -25]],[  _brdmE, [20, -40]],  [ _uazE, [0, -40]] ] ]
+goto "next"
+
+#midres
+vehiclesStart set [si0, [ [ _truckW, [0, -25]],[_hummerW, [20, -40]], [ _supportTruckW, [0, -40]] ] ]
+vehiclesStart set [si1, [ [ _truckE, [0, -25]],[  _brdmE, [20, -40]], [ _supportTruckE, [0, -40]] ] ]
+goto "next"
+
+#hires
+vehiclesStart set [si0, [ [ _truckW, [0, -25]],[_hummerW, [20, -40]], [ _supportAPCW, [-20, -25]],  [ _supportTruckW, [20, -25]]  ] ]
+vehiclesStart set [si1, [ [ _truckE, [0, -25]],[  _brdmE, [20, -40]], [ _supportAPCE, [-20, -25]],  [ _supportTruckE, [20, -25]]  ] ]
+goto "next"
+
+#hires2
+vehiclesStart set [si0, [ [ _truckW, [0, -25]],[_hummerW, [20, -40]], [ _supportAPCW, [-20, -25]], [ _supportAPCW, [20, -25]], [ _m2a2d, [0, -50]], [ _supportTruckW, [40, -25]]  ] ]
+vehiclesStart set [si1, [ [ _truckE, [0, -25]],[  _brdmE, [20, -40]], [ _supportAPCE, [-20, -25]], [ _supportAPCE, [20, -25]], [ _bmp2d, [0, -50]], [ _supportTruckE, [40, -25]]  ] ]
+goto "next"
+
+#next
+
+; CLASSIFY VEHICLES FOR MORE APPLICATION
+; TRANSPORT VEHICLES
+; AI groups will use (board) these if using PickupWait Settings
+; define which vehicles have the Eject function
+; AI CO will only buy first type of air types for transport missions.
+airTransport = [[], []]
+groundTransport = [[], []]
+driverAssigned = [[], []]
+TransportCarW = [ _jeepW, _jeepaW, _hummerW, _hummerW2, _hummerW3 ];	TransportCarE = [ _uazE, _uazaE, _brdmE, _brdmE2, _brdmE3 ];			CarogCar = 3
+TransportTruckW = [ _truckW ];								TransportTruckE = [ _truckE ];														CargoTruck = 12
+TransportShipE = [_boatE,_boatsupE,_boatE2,_boatE3,_boatCustomE,_boatdE,_boatatE,_boataaE,_shipE,_shipsupE,_shipE2,_shipE3,_shipCustomE,_shipdE,_shipatE,_shipaaE]; CargoShipE = 10
+TransportShipW = [_boatW,_boatsupW,_boatW2,_boatW3,_boatCustomW,_boatdW,_boatatW,_boataaW,_shipW,_shipsupW,_shipW2,_shipW3,_shipCustomW,_shipdW,_shipatW,_shipaaW]; CargoShipW = 6
+TransportZodiacW = [ _zodiacW, _zodiacShipW ];				TransportZodiacE = [ _zodiacE, _zodiacShipE ];										CargoZodiac = 6
+Transport6APCW = [ _m2a2W, _m2a2aa, _m2a2at, _m2a2d ];		Transport6APCE = [ _bmp2E, _bmp2aa, _bmp2at, _bmp2d, _bmp2Cannon ];					Cargo6APC = 6
+Transport8APCW = [ _m113W, _m113Cannon ]; 					Transport8APCE = [ _bmpE ]; 			TransportHindE = [ _mi24E, _mi24E2 ];		Cargo8APC = 8
+TransportHeliW = [ _uh60W, _uh60supW, _uh60W30,_uh60WMG2,_uh60WL ]; 	TransportHeliE = [ _mi17E, _mi17supE, _mi17E30,_mi17EL ];				CargoHeli = 12
+TransportSmallHeliW = [ _mh6j ]; 							TransportSmallHeliE = [ _mi2E ];
+TransportPlaneW = [ _c130W, _c130supportW ]; 				TransportPlaneE = [ _an12E, _an12supportE ];										CargoPlane = 60
+TransportActivatedVehicles = []
+
+_si = si0
+airTransport set [ _si, TransportHeliW + TransportSmallHeliW + TransportPlaneW ]
+groundTransport set [ _si, TransportCarW + TransportTruckW + TransportShipW + TransportZodiacW + Transport6APCW + Transport8APCW ]
+_si = si1
+airTransport set [ _si, TransportHeliE + TransportSmallHeliE + TransportHindE + TransportPlaneE ]
+groundTransport set [ _si, TransportCarE + TransportTruckE + TransportShipE + TransportZodiacE + Transport6APCE + Transport8APCE ]
+
+; SUPPORT VEHICLES
+; AI units will get close to them for heal, repair and rearm. planeSupport defines support planes used in plane's support
+typesSupport = [ [_supportAPCW1,_supportAPCWminer1,_supportTruckW,_supportTruckW2,_boatsupW,_shipsupW,_supportAPCW,_supportAPCWminer,_uh60supW], [_supportAPCE1, _supportAPCEminer1,_supportTruckE,_supportTruckE2,_boatsupE,_shipsupE,_supportAPCE, _supportAPCEminer,_mi17supE] ]
+typesSupportPlus = [ [], [] ]; typesSupportPlus set [0, (typesSupport select 0) + [_c130supportW] ]; typesSupportPlus set [1, (typesSupport select 1) + [_an12supportE] ]
+planeSupport = [ [_c130supportW], [_an12supportE] ]
+typesMHQ = [utMHQ0, utMHQ1]; typesHQ = []
+
+; Units Type. These classifications are used for new orders and temporary orders as a category parameter.
+; typesPlane is also used in a script for planes belonging to same side to get each other's flying parameters.
+typesTransportCar = TransportCarW + TransportCarE + TransportTruckW + TransportTruckE
+typesTransportShip = TransportShipE + TransportShipW + TransportZodiacW + TransportZodiacE
+typesTransportAPC = Transport6APCW + Transport6APCE + Transport8APCW + Transport8APCE
+typesTransportHeli = TransportHeliW + TransportHeliE + TransportSmallHeliW + TransportSmallHeliE
+typesSupportAPC = [ _supportAPCW, _supportAPCWminer, _supportAPCW1, _supportAPCWminer1, _supportAPCE, _supportAPCEminer, _supportAPCE1, _supportAPCEminer1 ]
+typesBattleShip = (TransportShipE+TransportShipW) - ((typesSupport select 0)+(typesSupport select 1))
+typesHowitzer = [ _m109W, _plz05E ]
+typesHeavyTank = [ _m1a1W, _m1a2sepW, _leo2a6W, _t80E, _t90E, _ztz99E ]
+typesLightTank = [ _m60W, _m1W, _t72E, _t_80E]
+typesATAPC = [ _m2a2at, _bmp2at ]
+typesAAAPC = [ _vulcanW2, _vulcanw3, _m2a2aa, _m113Cannon, _vulcanW, _shilkaE2, _shilkaE3, _bmp2aa, _bmp2Cannon, _shilkaE ]
+typesGunshipOrigin = [_ah1W, _ah64W, _v80E, _mi24E, _tigerW]
+typesGunshipAT = [_ah1W2, _ah64W2, _v80E2, _mi24E2, _tigerW2]
+typesKa50 = [ _v80E, _v80E2 ]
+typesPlane =[ _c130supportW, _a10gun, _a10LGB4, _a10bombs, _a10, _a10FFAR, _a10LGB8, _a10AA, _a10BB, _a10Tomahawk, _an12supportE, _su25gun, _su25LGB4, _su25bombs, _su25, _su25Rocket, _su25LGB8, _su25AA, _su25BB, _su25Raduga, _c130W, _an12E ]
+typesInfantryAll = [_soldierW, _MM1W, _soldierMGW, _sniperW, _MortarW, _soldierLAWW, _soldierLAWW2, _soldierATW, _soldierATW2, _soldierAAW, _bomberW, _minerW, _medicW, _crewW, _pilotW, _soldierWL,_soldierWS,_soldierWH,_soldierWA,	_soldierE, _6G30E, _soldierMGE, _sniperE, _KSVKE, _soldierLAWE, _soldierLAWE2, _soldierATE, _soldierATE2, _soldierAAE, _bomberE, _minerE, _medicE, _crewE, _pilotE, _soldierEL,_soldierES,_soldierEH,_soldierEA ]
+typesInfantryAT = [_soldierLAWW, _soldierLAWW2, _soldierATW, _soldierATW2, _soldierAAW, _soldierLAWE, _soldierLAWE2, _soldierATE, _soldierATE2, _soldierAAE]
+
+; AIRCRAFTS WITH WEAPONS
+AggressiveAircrafts = [ [], [] ]
+AggressiveAircrafts set [ si0, [_uh60W30,_uh60WMG2, _uh60WL, _ah1W, _ah64W, _tigerW, _ah1W2, _ah64W2, _tigerW2, _a10gun,  _a10LGB4,  _a10bombs,  _a10,  _a10LGB8,  _a10AA,  _a10FFAR,	 _a10BB, _a10Tomahawk] ]
+AggressiveAircrafts set [ si1, [_mi17E30, _mi17EL, _v80E, _mi24E, _v80E2, _mi24E2, _su25gun, _su25LGB4, _su25bombs, _su25, _su25LGB8, _su25AA, _su25Rocket, _su25BB, _su25Raduga] ]
+; AA System
+AASystem = [ [_vulcanBaseW, _vulcanBaseW2], [_shilkaBaseE, _shilkaBaseE2] ]
+
+; VEHICLES WITH UNLIMITED/SPECIAL WEAPON RANGE
+vUnlimitedRange = [_m1a1artW, _m109artW, _t80artE, _plz05artE, _vulcanW2, _vulcanBaseW2, _shilkaE2, _shilkaBaseE2]
+vDoubledRange = [_vulcanW, _shilkaE, _m2a2aa, _bmp2aa, _m113Cannon, _bmp2Cannon, _vulcanw3, _shilkaE3, _boatW3, _boatE3, _shipW3, _shipE3, _vulcanBaseW, _shilkaBaseE, _boataaW, _shipaaW, _boataaE, _shipaaE]
+
+; VEHICLES WITH LONGER REARM TIME
+vDoubleRearmTime = [_m1a1artW, _m109artW, _t80artE, _plz05artE, _ah1W, _ah1W2, _ah64W, _ah64W2, _tigerW, _tigerW2, _mi24E, _mi24E2, _a10, _a10FFAR, _a10LGB8, _su25, _su25Rocket, _su25LGB8]
+vTripleRearmTime = [_v80E, _v80E2, _a10BB, _su25BB]
+vSixfoldRearmTime = [_a10Tomahawk, _su25Raduga]
+
+; VEHICLES CAN CAUSE MINE EXPLOSION
+vMinerAvoid = (typesSupportAPC + typesLightTank + typesHeavyTank + typesHowitzer + typesTransportAPC - typesAAAPC) + typesAAAPC + typesPlane + [_t80R, utMCVW, utMCVE, utMHQ0, utMHQ1]
+
+; VEHICLES USED FOR EXTEND AIR RADAR
+vRadarAir = [ [_vulcanW, _vulcanW2, _vulcanw3, _vulcanBaseW, _vulcanBaseW2], [_shilkaE, _shilkaE2, _shilkaE3, _shilkaBaseE, _shilkaBaseE2] ]
+
+; VEHICLES Equipping RedTop
+vRedTop = [ [_vulcanW2, _vulcanBaseW2, _a10AA], [_shilkaE2, _shilkaBaseE2, _su25AA] ]
+
+
+utSoldier = [_soldierW, _soldierE]
+utMiner = [_minerW, _minerE]
+unitMatrix = [ [], [], [], [], [] ]
+unitsBuilt = [ [], [], [], [], [] ]
+unitsFarAction = []
+
+_index = 0
+_count = count unitDefs
+#AddEmptyUnitArray
+	(unitMatrix select si0) set [_index, []]	
+	(unitMatrix select si1) set [_index, []]	
+	(unitMatrix select siRes) set [_index, []]
+	(unitMatrix select siCIV) set [_index, []]
+
+	(unitsBuilt select si0) set [_index, 0]	
+	(unitsBuilt select si1) set [_index, 0]	
+	(unitsBuilt select siRes) set [_index, 0]
+	(unitsBuilt select siCIV) set [_index, 0]
+
+	unitsFarAction set [_index, objNull]
+	
+	_index = _index + 1
+	? (_index < _count): goto "AddEmptyUnitArray"
+
+
+; rearmData entry format: [object, [weapon1, weapon2, ... ], [mag1, mag2, ...] ]
+; this array will be filled automatically during game when units are built
+rearmData = []
+
+; CLEANUP - mags, weapons and vehicles
+typesCleanup = ["WeaponHolder", "SecondaryWeaponHolder"]
+{ if ( count (_x select udCrew) > 0 ) then { typesCleanup set [count typesCleanup, _x select udModel] } } foreach unitDefs
+
+; TOWN GROUP VEHICLES
+TownGroupVehicles = []

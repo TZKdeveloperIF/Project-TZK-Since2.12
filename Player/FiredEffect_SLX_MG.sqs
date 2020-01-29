@@ -1,0 +1,32 @@
+; args: [shell]
+
+_shell = _this select 0
+
+_position	= getPos _shell
+_direction	= getDir _shell
+_velocity	= velocity _shell
+_speed 		= speed _shell
+
+
+? alive _shell : _sta = _time
+
+
+_mx = 0.16;  _upd = _time; _period = 0.01; 
+#loop
+_sta = _time
+? alive _shell : _position = getpos _shell; _velocity = velocity _shell; _speed = speed _shell; _direction = getdir _shell
+~_period
+_upd=_time
+? alive _shell : goto "loop"
+
+
+_position=[(_position select 0)+((sin _direction)*((_upd-_sta)*(_speed*_mx))),(_position select 1)+((cos _direction)*((_upd-_sta)*(_speed*_mx))),(_position select 2)+(((_velocity select 2)*.02))];
+_vel = {[-((_velocity select 0)*(0.02+random 0.08)),-((_velocity select 1)*(0.02+random 0.08)),-((_velocity select 2)*(0.02+random 0.08))]}
+
+; Hit effects
+_p={drop [{cl_basic},{},{Billboard},2,0.5+random 0.8,_position,[(random (_speed*.003333))-(random (_speed*.003333)),(random (_speed*.003333))-(random (_speed*.003333)),random (_speed*.01)],2,1.28,1,1,[0.2,4,6+random 1],[[.85,.73,.57,0.4+random .2],[.83,.84,.78,0.05+random 0.2],[.65,.64,.61,0.04+random .02],[.65,.64,.61,0.04+random .02],[.65,.64,.61,0]],[(random 1)-(random 1),(random 1)-(random 1),(random 1)-(random 1)],0,0,{},{},{}]}
+_d={drop [{cl_basic},{},{Billboard},2,1+random 1,[(_position select 0),(_position select 1),-0.4],[0,0,2.5+(random 1)],2,25,1,1,[.2,(_speed*(.001-random .0005))],[[.85,.73,.57,1],[.85,.73,.57,0]],[0],0,0,{},{},{}]}
+_d2={drop [{cl_basic},{},{Billboard},2,0.3+random 0.4,[(_position select 0),(_position select 1),-0.5],[(random (_speed*.0005))-(random (_speed*.0005)),(random (_speed*.0005))-(random (_speed*.0005)),3+(random 2)],2,25,1,1,[.2,(_speed*(.001111-random .0005))],[[.7,.6,.4,1],[.85,.73,.57,0]],[0],0,0,{},{},{}]}
+if ((_position select 2) < 6) then {_position=[(_position select 0),(_position select 1),0];call _d;call _d2;call _p;call _p}else{_mx=.05; _position=[(_position select 0)-((sin _direction)*((_upd-_sta)*(_speed*_mx))),(_position select 1)-((cos _direction)*((_upd-_sta)*(_speed*_mx))),(_position select 2)-(((_velocity select 2)*.0083333))]; _p2w={drop [{cl_basic},{},{Billboard},2,1+(_speed*.00125)+(random (_speed*.0005)),_position,call _vel,2,1.28,1,1,[.2,_speed*.002,_speed*.002,_speed*.002,_speed*.002,_speed*.002,_speed*(.002-random .01)],[[.85,.73,.57,0.1+random .1],[.83,.84,.78,0.04+random 0.1],[.65,.64,.61,0.03+random .02],[.65,.64,.61,0.03+random .02],[.65,.64,.61,0]],[(random 1)-(random 1),(random 1)-(random 1),(random 1)-(random 1)],0,0,{},{},{}]}; call _p2w; call _p2w; call _p2w}
+
+; EOF

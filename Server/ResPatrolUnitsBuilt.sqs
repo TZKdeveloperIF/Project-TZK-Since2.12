@@ -1,0 +1,12 @@
+; args: [giPatrol, crew]
+
+_giPatrol = _this select 0
+_crew = _this select 1
+
+
+~1
+@!(mutexAddResPatrol)
+mutexAddResPatrol = true
+_ResPatrolUnitsBuilding = (groupPatrolJoinMatrix select _giPatrol) - _crew
+groupPatrolJoinMatrix set [_giPatrol, _ResPatrolUnitsBuilding]
+mutexAddResPatrol = false

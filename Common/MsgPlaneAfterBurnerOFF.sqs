@@ -1,0 +1,11 @@
+; Effects won't work on dedicated server.
+? local LocalServerObject && isNull player : exit
+
+#Start
+@!(isNull pvAfterBurnerOFF)
+_plane = pvAfterBurnerOFF; pvAfterBurnerOFF = objNull
+
+; The parameters of "setobjecttexture" rely on the defination of plane.
+? !local _plane : {_plane setobjecttexture[0, ""]; _plane setobjecttexture[1, ""]}
+
+goto "Start"

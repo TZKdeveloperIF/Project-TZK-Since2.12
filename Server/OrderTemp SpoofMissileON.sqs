@@ -1,0 +1,28 @@
+; args: [unit, si, gi, [aircraft types (defined by SpoofTypeDefs)]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+
+; Get Correct Parameters. Need Pay Attention To Coefficients
+_indexLandType = (_params select 0)
+
+; Check Whether Unit Fits The Parameters Of The Temporary Order
+; SpoofTypeDefs = ["Transport Heli", "Original Gunship", "AT Gunship", "All Helicopters", "Planes", "All Aircrafts"]
+? (SpoofTypeDefs select _indexReclaim) == "Transport Heli" :		_typesSpoofMissile = typesTransportHeli
+? (SpoofTypeDefs select _indexReclaim) == "Original Gunship" :		_typesSpoofMissile = typesGunshipOrigin
+? (SpoofTypeDefs select _indexReclaim) == "AT Gunship" :			_typesSpoofMissile = typesGunshipAT
+? (SpoofTypeDefs select _indexReclaim) == "All Helicopters" :		_typesSpoofMissile = typesTransportHeli + typesGunshipOrigin + typesGunshipAT
+? (SpoofTypeDefs select _indexReclaim) == "Planes" :				_typesSpoofMissile = typesPlane
+? (SpoofTypeDefs select _indexReclaim) == "All Aircrafts" :			_typesSpoofMissile = typesTransportHeli + typesGunshipOrigin + typesGunshipAT + typesPlane
+
+_vehicle = vehicle _unit
+? _unit == _vehicle || _unit != driver _vehicle : exit
+_vt = _vehicle call funcGetUnitTypeFromObject
+? !(_type in _typesSpoofMissile) : exit
+
+
+; Main Part Of Temporary Order
+? ((upgMatrix select _si) select upgSpoofMissile) != 2 : exit
+_vehicle removeMagazines {SpoofSwitch_xj200}

@@ -1,0 +1,29 @@
+; args: [unit, si, gi, [height (defined by HeightDefs), aircraft types (defined by SetFlightAltitudeTypeDefs)]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+
+; Get Correct Parameters. Need Pay Attention To Coefficients
+_height = HeightDefs select (_params select 0)
+_indexLandType = (_params select 1)
+
+; Check Whether Unit Fits The Parameters Of The Temporary Order
+; SetFlightAltitudeTypeDefs = ["Transport Heli", "Original Gunship", "AT Gunship", "All Helicopters", "Planes", "All Aircrafts"]
+? (SetFlightAltitudeTypeDefs select _indexReclaim) == "Transport Heli" :		_typesSetFlightAltitude = typesTransportHeli
+? (SetFlightAltitudeTypeDefs select _indexReclaim) == "Original Gunship" :		_typesSetFlightAltitude = typesGunshipOrigin
+? (SetFlightAltitudeTypeDefs select _indexReclaim) == "AT Gunship" :			_typesSetFlightAltitude = typesGunshipAT
+? (SetFlightAltitudeTypeDefs select _indexReclaim) == "All Helicopters" :		_typesSetFlightAltitude = typesTransportHeli + typesGunshipOrigin + typesGunshipAT
+? (SetFlightAltitudeTypeDefs select _indexReclaim) == "Planes" :				_typesSetFlightAltitude = typesPlane
+? (SetFlightAltitudeTypeDefs select _indexReclaim) == "All Aircrafts" :			_typesSetFlightAltitude = typesTransportHeli + typesGunshipOrigin + typesGunshipAT + typesPlane
+
+_vehicle = vehicle _unit
+? _unit == _vehicle || _unit != driver _vehicle : exit
+_vt = _vehicle call funcGetUnitTypeFromObject
+? !(_type in _typesSetFlightAltitude) : exit
+
+
+; Main Part Of Temporary Order
+? _height > maxFlightAltitude : if ( ((upgMatrix select _si) select upgAltFlight) != 2 ) then {exit}
+_vehicle flyInHeight _height

@@ -1,0 +1,13 @@
+; args: [si]
+
+_si = _this select 0
+
+_i = 0
+_c = count upgDefs
+
+#CheckNextUpgrade
+	? !(_i < _c): exit
+	? ((upgMatrix select _si) select _i) == 0 : [_i, _si] exec "Server\StartUpgrade.sqs"; exit
+	_i = _i + 1
+	goto "CheckNextUpgrade"
+

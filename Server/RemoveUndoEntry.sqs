@@ -1,0 +1,21 @@
+; args: [object]
+
+? !(Local LocalServerObject):Exit
+
+_object = _this select 0
+
+@!(mutexUndo)
+mutexUndo = true
+_index = 0
+_count = count undoList
+
+? (_count == 0): mutexUndo = false; Exit
+
+#FindUndoEntry
+	_undoEntry = undoList select _index
+
+	? (count _undoEntry) == 3: if (_object in (_undoEntry select 2)) then { undoList set [_index, [_undoEntry select 0]]; mutexUndo = false; Exit }
+
+	_index = _index + 1
+	? (_index < _count): goto "FindUndoEntry"
+mutexUndo = false

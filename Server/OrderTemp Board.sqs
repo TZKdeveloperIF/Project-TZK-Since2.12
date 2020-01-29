@@ -1,0 +1,158 @@
+; args: [unit, si, gi, [wp, transport types (defined by BoardTypeDefs), board radius, duration]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+
+; Get Correct Parameters. Need Pay Attention To Coefficients
+_posBoard = ((wpCO select _si) select (_params select 0))
+_indexBoard = (_params select 1)
+_radius = 50*((_params select 2) + 1)
+_duration = 30 * ((_params select 3) + 1)
+
+; Check Whether Unit Fits The Parameters Of The Temporary Order
+? _unit != vehicle _unit : exit
+
+; Check Whether Unit In Another Temporary Order (Except For Set Flight Altitude, Clear Temporary Order, Etc)
+? call temporaryCheck : exit
+
+; Initialize The Order Script
+_timeStart = time; _timeAbort = _timeStart + _duration; _timeUp = _timeStart; _cycle = 30; _loop = 0
+call temporarySet
+
+
+; Wait For Unit Finish Its Busy-Work
+#WaitReady
+~2
+? time > _timeAbort : 	call temporaryClear; exit
+? !call temporaryCheck : exit
+? call busyCheck : goto "WaitReady"
+
+; Main Part Of Temporary Order
+
+; Use busy to prevent AI from automatically moving for support in Temporary Board Order
+call busySet
+
+_typesBoard = []; _crewnum = 0
+
+? (BoardTypeDefs select _indexBoard) == "Car" :		_typesBoard = [TransportCarW, TransportCarE] select _si;		_crewnum = CarogCar;
+? (BoardTypeDefs select _indexBoard) == "Truck" :	_typesBoard = [TransportTruckW, TransportTruckE] select _si;	_crewnum = CargoTruck;
+? (BoardTypeDefs select _indexBoard) == "Zodiac" :	_typesBoard = [TransportZodiacW, TransportZodiacE] select _si;	_crewnum = CargoZodiac;
+? (BoardTypeDefs select _indexBoard) == "Ship" :	_typesBoard = [TransportShipW, TransportShipE] select _si; 		_crewnum = [CargoShipW, CargoShipE] select _si;
+? (BoardTypeDefs select _indexBoard) == "APC" : 	_typesBoard = [Transport6APCW+Transport8APCW, Transport6APCE+Transport8APCE] select _si; 	_crewnum = Cargo8APC;
+? (BoardTypeDefs select _indexBoard) == "Heli" :	_typesBoard = [TransportHeliW+TransportSmallHeliW, TransportHeliE+TransportSmallHeliE+TransportHindE] select _si;					_crewnum = CargoHeli;
+? (BoardTypeDefs select _indexBoard) == "Plane" :	_typesBoard = [TransportPlaneW, TransportPlaneE] select _si;	_crewnum = CargoPlane;
+
+_groups = groupMatrix select _si
+#Update
+	_gi = [(group _unit), _groups] call funcGetIndex
+	_vehicle = vehicle _unit
+	? _unit != _vehicle : goto "EOF"
+
+	[ _unit, ([_posBoard, _radius/2, _radius/2] call funcGetRandomPos) ] call funcMoveStand
+	_res = [_posBoard, _radius] call funcGetNearbyTransports
+	? count _res == 0 : goto "Sleep"
+
+	_transports = []; _boardTransp = objNull; _i = 0; _c = count _res
+	#SetTransp
+		? _i >= _c : goto "TranspSet"
+		_v = (_res select _i) select 0; _vt = (_v call funcGetUnitTypeFromObject); _i = _i + 1
+		? !(_vt in _typesBoard) : 	goto "SetTransp"
+		? (isNull driver _v) : 			goto "SetTransp"
+		? (damage _v) > 0.5 || ((getPos _v) select 2) > 5 || (speed _v) > 1 : 		goto "SetTransp"
+		? _vt in (TransportHeliW + TransportHeliE) : 	if ( call Cargo_v >= 12 ) 	then { goto "SetTransp" }
+		? _vt in (TransportPlaneW + TransportPlaneE) : 	if ( call Cargo_v >= 60 ) 	then { goto "SetTransp" }
+		? _vt in (TransportSmallHeliW + TransportSmallHeliE) : if ( call Cargo_v >= 5 ) then { goto "SetTransp" }
+		? _vt in TransportHindE : 						if ( call Cargo_v >= 8 ) 	then { goto "SetTransp" }
+		? _vt in (TransportTruckW + TransportTruckE) : 	if ( call Cargo_v >= 12 ) 	then { goto "SetTransp" }
+		? _vt in (Transport8APCW + Transport8APCE) : 	if ( call Cargo_v >= 8 ) 	then { goto "SetTransp" }
+		? _vt in (TransportCarW + TransportCarE) : 		if ( call Cargo_v >= 3 ) 	then { goto "SetTransp" }
+		? _vt in TransportShipE : 						if ( call Cargo_v >= 10 ) 	then { goto "SetTransp" }
+		? _vt in (TransportShipW + TransportZodiacW + TransportZodiacE + Transport6APCW + Transport6APCE) : if ( call Cargo_v >= 6 ) 	then { goto "SetTransp" }
+		_transports set [count _transports, _v]; goto "SetTransp"
+	
+	#TranspSet
+	? count _transports == 0 : goto "Sleep"
+
+	_boardTransp = _transports select (random (count _transports) - 0.5)
+	_unit doWatch _boardTransp
+	? (_unit distance _boardTransp) < 10 : goto "Reached"
+
+	_offset = 0
+	_timeMoveAbort = time + 5*60
+	#Move_Check
+		? !(count (crew _boardTransp - [driver _boardTransp, gunner _boardTransp, commander _boardTransp]) < _crewnum) : goto "Fail"
+		_offset = _offset + 10
+		_vect = [getPos _unit, getPos _boardTransp] call funcVectorSub
+		_dist = _unit distance _boardTransp
+		? _dist < 0.1 : _dist = _dist + 1
+		_posMove = [getPos _boardTransp, [_vect, _offset/_dist] call funcVectorScale] call funcVectorAdd
+		_posMove set [2,0]
+		[_unit, _posMove] call funcMoveStand
+
+		_timeUp = time + _dist*0.2
+		@ ( time > _timeUp || !call temporaryCheck )
+		? !call temporaryCheck : goto "EOF"
+		? !(alive _unit) || _vehicle != (vehicle _unit) || time > _timeAbort : goto "EOF"
+
+		? time > _timeMoveAbort || _offset >= 50 || !(alive _boardTransp) : goto "Fail"
+		? (_unit distance _boardTransp) > 50 : goto "Move_Check"
+
+	#Reached
+	_unit playMove "CombatGetInTank"
+	~1
+	? !alive _unit || !call temporaryCheck: goto "EOF"
+	_unit assignAsCargo _boardTransp
+	_unit moveInCargo _boardTransp
+	~1
+	? !(alive _unit) || _boardTransp != vehicle _unit : goto "Fail"
+
+	#BoardSucceed
+	;	call busySet
+		_timeBoardAbort = time + 10*60
+		#WaitInCargo_Check
+		~5
+		? !(alive _unit) || !(alive _boardTransp) : goto "Quit"
+		? time > _timeBoardAbort && (speed _boardTransp) < 2 && ((getPos _boardTransp) select 2) < 2 : goto "GetOut"
+		? _boardTransp == (vehicle _unit) : goto "WaitInCargo_Check"
+		goto "Quit"
+
+	#GetOut
+		unassignVehicle _unit
+		_unit action ["eject", _boardTransp]
+		  #WaitOut
+			~5
+			? !(alive _unit) || !(alive _boardTransp) : goto "Quit"
+			? _unit != (vehicle _unit) : goto "WaitOut"
+		goto "Quit"
+
+
+	#Fail
+	? !(alive _unit) : exit
+	unassignVehicle _unit
+	[_unit, ([_posBoard, 50, 50] call funcGetRandomPos)] call funcMoveStand
+	goto "Update"
+
+
+
+; End Of File
+#EOF
+call busyClear
+call temporaryClear
+exit
+
+
+#Sleep
+_loop = (time-_timeStart)/_cycle; _loop = 1 + _loop - _loop%1
+_timeUp = _loop*_cycle + _timeStart
+
+@ ( time > _timeUp || !call temporaryCheck )
+? !call temporaryCheck : goto "EOF"
+? !(alive _unit) || _vehicle != (vehicle _unit) || time > _timeAbort : goto "EOF"
+goto "Update"
+
+#Quit
+unassignVehicle _unit
+? ([getPos _unit, _posMove] call funcDistH) < 50 && call temporaryCheck && time < _timeAbort : goto "Sleep"
+goto "EOF"

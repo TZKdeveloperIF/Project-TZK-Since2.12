@@ -1,0 +1,188 @@
+; args: none
+
+; only done when dialog is opened the first time
+? (count satcamPos) == 0 : satcamUnit = player; satcamPos = getPos player
+
+_unitTracked = satcamUnit
+_posTarget = satcamPos
+_alt = satcamAlt
+
+_tracker = "HeliHEmpty" camCreate [_posTarget select 0, _posTarget select 1, 0]
+
+_cam = "camera" camCreate [_posTarget select 0, (_posTarget select 1) - 10, _alt]
+_cam camSetDir 0
+_cam camSetFOV 1
+_cam camCommand "inertia on"
+_cam cameraEffect ["internal","back"]
+_cam camSetTarget _tracker
+
+showCinemaBorder false
+
+btnWest = false
+btnEast = false
+btnSouth = false
+btnNorth = false
+
+btnUnit = false
+
+_timeLastDialogUpdate = -1
+
+_selLeaderID = -1
+_selMemberID = -1
+_selMember = objNull
+_bNewLeader = false
+_bNewMember = false
+_bNewTarget = false
+
+_colorDead = [0.5,0.5,0.5, 0.6]
+
+? (2 == (upgMatrix select siPlayer) select upgSatCamZoom): goto "zoom"
+
+_ok = createDialog "SatCamDialog"
+sliderSetRange [IDC_SL_DISTANCE, 100, viewDistance/2]
+; sliderSetRange [IDC_SL_DISTANCE, 20, viewDistance/2]
+sliderSetSpeed [IDC_SL_DISTANCE, 100, 100]
+sliderSetPosition [IDC_SL_DISTANCE, _alt]
+
+goto "skip"
+
+#zoom
+
+_ok = createDialog "SatCamDialog"
+sliderSetRange [IDC_SL_DISTANCE, 15, viewDistance/2]
+; sliderSetRange [IDC_SL_DISTANCE, 20, viewDistance/2]
+sliderSetSpeed [IDC_SL_DISTANCE, 100, 100]
+sliderSetPosition [IDC_SL_DISTANCE, _alt]
+
+#skip
+
+goto "UpdateDialog"
+
+#UpdateCam
+  ~0.01
+
+	? !(dialog) : forceMap false; bShowMap = false; goto "Exit"
+	? (pvGameOver != -1): forceMap false; goto "Exit"
+	
+	? (!_bNewLeader): goto "NoLeaderChange"
+		_group = (groupMatrix select siPlayer) select _selLeaderID
+		_unitTracked = leader _group
+		
+		_bNewLeader = false
+		_bNewTarget = true
+	#NoLeaderChange
+
+	? (!_bNewMember): goto "NoMemberChange"
+		_unitTracked = _selMember
+		
+		_bNewMember = false
+		_bNewTarget = true
+	#NoMemberChange
+
+	_alt = sliderPosition IDC_SL_DISTANCE
+	
+	? !(isNull _unitTracked) : _posTarget = getPos (vehicle _unitTracked)
+	
+	_tracker setPos [_posTarget select 0, _posTarget select 1, 0]; call format ["SpySatPos%1 = getPos _tracker", siPlayer]
+	_cam camSetPos [_posTarget select 0, (_posTarget select 1) - 10, _alt]
+	_cam camCommit 0
+
+	? (_time > (_timeLastDialogUpdate + 0.2)): goto "UpdateDialog"
+	goto "UpdateCam"
+
+#UpdateDialog
+
+	? count ([siPlayer, stSatRec] call funcGetWorkingStructures) == 0 : goto "Exit"
+
+	ctrlSetText [IDC_TEXT_TRACKING, [format["%1", _unitTracked], "No Target"] select (isNull _unitTracked) ]
+
+	ctrlSetText [IDC_BTN_SHOWGROUPS, ["Show Groups", "Hide Groups"] select bShowGroups]
+	{ ctrlShow [_x, bShowGroups] } foreach [IDC_LB_GROUPLEADERS, IDC_LB_GROUPMEMBERS, IDC_BG_GROUPS]
+
+	_text = format["%1 %2", (getPos _tracker) call funcCalcMapPos, (getPos _tracker) call funcCalcTownDirDistFromPos]
+	ctrlSetText [IDC_TEXT_MAPPOS, _text]
+	ctrlSetText [IDC_BTN_SHOWMAP, ["Show Map", "Hide Map"] select bShowMap]
+
+	? !bShowGroups: goto "GroupsHidden"
+	_idc = IDC_LB_GROUPLEADERS
+	lbClear _idc
+	_siX = siPlayer
+	_giX = 0
+	{ _unit = leader _x; _name = name _unit; if (_x in (groupAiMatrix select _siX)) then {_name="AI"}; _text = format["%1 %2", _name, (groupNameMatrix select _siX) select _giX]; _id = lbAdd [_idc, _text]; if (alive _unit) then {lbSetColor [_idc, _id, _colorWest]} else {lbSetColor [_idc, _id, _colorDead]}; _giX=_giX+1} foreach (groupMatrix select _siX)
+	; ? ((lbCurSel _idc) == -1): lbSetCurSel [_idc, giPlayer]
+	? ((lbCurSel _idc) != _selLeaderID): _selLeaderID = lbCurSel _idc; _bNewLeader = true
+
+	? (_selLeaderID == -1): goto "NoLeaderSelected"
+	_value = lbValue [IDC_LB_GROUPLEADERS, _selLeaderID]
+	_gi = _selLeaderID
+	_group = (groupMatrix select siPlayer) select _gi
+	_leader = leader _group
+	_idc = IDC_LB_GROUPMEMBERS
+	lbClear _idc
+	; _units = units _group - [_leader]
+	_units = units _group
+	{ _name = name _x; _text = format["%1", _x]; _id = lbAdd [_idc, _text]; if (alive _x) then {lbSetColor [_idc, _id, [_colorWest,_colorEast] select (_si == si1)]} else {lbSetColor [_idc, _id, _colorDead]}; if ((lbCurSel _idc) == _id) then {_selMember = _x} } foreach _units
+	? ((lbCurSel _idc) != -1) && ((lbCurSel _idc) != _selMemberID): _selMemberID = lbCurSel _idc;	_bNewMember = true
+	#NoLeaderSelected
+	
+	#GroupsHidden
+
+	_timeLastDialogUpdate = _time
+	
+	? (btnNorth): btnNorth=false; goto "North"
+	? (btnWest): btnWest=false; goto "West"
+	? (btnEast): btnEast=false; goto "East"
+	? (btnSouth): btnSouth=false; goto "South"
+	
+	? (btnUnit) : btnUnit=false; goto "Unit"
+	? (btnSpy) : btnSpy=false; call format ["PublicVariable {SpySatPos%1}", siPlayer]
+	
+	if (bShowMap) then {forceMap true; mapAnimAdd [0.2, 1, getPos _cam]; mapAnimCommit} else {forceMap false}
+
+	goto "UpdateCam"
+
+#North
+	_unitTracked = objNull
+	bShowGroups = false
+	_posTarget set [1, (_posTarget select 1) + _alt]
+	goto "UpdateCam"
+
+#West
+	_unitTracked = objNull
+	bShowGroups = false
+	_posTarget set [0, (_posTarget select 0) - _alt]
+	goto "UpdateCam"
+
+#East
+	_unitTracked = objNull
+	bShowGroups = false
+	_posTarget set [0, (_posTarget select 0) + _alt]
+	goto "UpdateCam"
+
+#South
+	_unitTracked = objNull
+	bShowGroups = false
+	_posTarget set [1, (_posTarget select 1) - _alt]
+	goto "UpdateCam"
+	
+#Unit
+  satcamUnit = _unitTracked
+  satcamAlt = _alt
+  satcamPos = _posTarget
+	closeDialog 0
+	deleteVehicle _tracker
+	_cam cameraEffect["terminate","back"]
+	camDestroy _cam
+	forceMap false; bShowMap = false
+	~0.1
+	[ [_unitTracked, unitcamUnit] select (isNull _unitTracked) ] exec "Player\Dialog UnitCam.sqs"
+	exit
+
+#Exit
+  satcamUnit = _unitTracked
+  satcamAlt = _alt
+  satcamPos = _posTarget
+	closeDialog 0
+	deleteVehicle _tracker
+	_cam cameraEffect["terminate","back"]
+	camDestroy _cam

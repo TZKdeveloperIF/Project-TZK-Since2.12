@@ -1,0 +1,22 @@
+; args: [object, type, si, gi]
+
+_v = _this select 0
+_t = _this select 1
+_si = _this select 2
+
+; ALL
+_v setRepairCargo 0
+_v setAmmoCargo 0
+
+? !(local LocalServerObject) : goto "SkipServer"
+
+; SERVER
+[_v, _si] exec "Server\UpdateSupportVehicle.sqs"
+
+#SkipServer
+
+? siPlayer != si0 && siPlayer != si1 : exit
+
+; PLAYER
+_v addAction ["Heal/Repair", "Player\Action HealRepair.sqs"]
+_v addAction ["Rearm", "Player\Action Rearm.sqs"]

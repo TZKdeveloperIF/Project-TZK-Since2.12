@@ -1,0 +1,120 @@
+; infoDefs defines info messages
+ 
+infoDefs = []
+
+; entry format ["script", "info string 1", "info string 2", ....])
+; script "Player\Info 
+
+_type = 0
+
+mtUnitBuilding = _type
+infoDefs set [_type, ["UnitBuilding.sqs"] ]
+_type = _type + 1
+
+mtNoMoneyUnit = _type
+infoDefs set [_type, ["NoMoneyUnit.sqs"] ]
+_type = _type + 1
+
+mtGroupFull = _type
+infoDefs set [_type, ["GroupFull.sqs"] ]
+_type = _type + 1
+
+mtGroupIsAI = _type
+infoDefs set [_type, ["GroupIsAi.sqs"] ]
+_type = _type + 1
+
+mtCommanderChange = _type
+infoDefs set [_type, ["CommanderChange.sqs"] ]
+_type = _type + 1
+
+mtStructRepaired = _type
+infoDefs set [_type, ["StructRepaired.sqs"] ]
+_type = _type + 1
+
+mtStructReady = _type
+infoDefs set [_type, ["StructReady.sqs"] ]
+_type = _type + 1
+
+mtStructDestroyed = _type
+infoDefs set [_type, ["StructDestroyed.sqs"] ]
+_type = _type + 1
+
+mtNoMoneyForStructRepair = _type
+infoDefs set [_type, ["NoMoneyForStructRepair.sqs"] ]
+_type = _type + 1
+
+mtUpgState = _type
+infoDefs set [_type, ["UpgState.sqs"] ]
+_type = _type + 1
+
+mtStructUndone = _type
+infoDefs set [_type, ["StructUndone.sqs"] ]
+_type = _type + 1
+
+mtWaypointSet = _type
+infoDefs set [_type, ["WaypointSet.sqs"] ]
+_type = _type + 1
+
+mtMHQDestroyed = _type
+infoDefs set [_type, ["MHQDestroyed.sqs"] ]
+_type = _type + 1
+
+mtWorkerStuck = _type
+infoDefs set [_type, ["WorkerStuck.sqs"] ]
+_type = _type + 1
+
+; mtOrderAck = _type
+; infoDefs set [_type, ["OrderAck.sqs"] ]
+; _type = _type + 1
+
+; mtSettingAck = _type
+; infoDefs set [_type, ["SettingAck.sqs"] ]
+; _type = _type + 1
+
+mtTimeLimitRemind = _type
+infoDefs set [_type, ["TimeLimitRemind.sqs"] ]
+_type = _type + 1
+
+mtTimeUntilTownWin = _type
+infoDefs set [_type, ["TimeUntilTownWin.sqs"] ]
+_type = _type + 1
+
+mtMHQRepaired = _type
+infoDefs set [_type, ["MHQRepaired.sqs"] ]
+_type = _type + 1
+
+mtBlockedByClient = _type
+infoDefs set [_type, ["BlockedByClient.sqs"] ]
+_type = _type + 1
+
+mtScoreMoney = _type
+infoDefs set [_type, ["ScoreMoney.sqs"] ]
+_type = _type + 1
+
+mtTownGroupLoss = _type
+infoDefs set [_type, ["TownGroupLoss.sqs"] ]
+_type = _type + 1
+mtTownGroupHibernate = _type
+infoDefs set [_type, ["TownGroupHibernate.sqs"] ]
+_type = _type + 1
+mtTownGroupSpawn = _type
+infoDefs set [_type, ["TownGroupSpawn.sqs"] ]
+_type = _type + 1
+
+mtScudReloaded = _type
+infoDefs set [_type, ["ScudReloaded.sqs"] ]
+_type = _type + 1
+
+mtTempAACreated = _type
+infoDefs set [_type, ["TempAACreated.sqs"] ]
+_type = _type + 1
+
+mtTempAADeleted = _type
+infoDefs set [_type, ["TempAADeleted.sqs"] ]
+_type = _type + 1
+
+mtDestructionCompleted = _type
+infoDefs set [_type, ["DestructionCompleted.sqs"] ]
+_type = _type + 1
+
+? (_type >= TotalInfoTypes): format["ERROR: Exceeded maximum number (%1 > %2) of Info message types", _type, TotalInfoTypes] call fDebugLog

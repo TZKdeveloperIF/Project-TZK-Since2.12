@@ -1,0 +1,28 @@
+; args: [qid, si]
+
+_qid = _this select 0
+_si = _this select 1
+
+
+@!(mutexqidCancel)
+mutexqidCancel = true
+_inCheck = !( _qid in (qidCancel select _si) )
+? _inCheck : (qidCancel select _si) set [count (qidCancel select _si), _qid]
+mutexqidCancel = false
+
+
+exit
+? !_inCheck : exit
+_res = (qidToCancel select _si) select _qid
+_giJoin = _res select 0
+_unitsToCancel = _res select 1
+? _unitsToCancel == -1 : exit
+
+@!(mutexBuildingQueue)
+mutexBuildingQueue = true
+
+_unitsBuilding = ((groupUnitsBuildingMatrix select _si) select _giJoin) - _unitsToCancel
+(groupUnitsBuildingMatrix select _si) set [_giJoin, _unitsBuilding]
+
+
+mutexBuildingQueue = false

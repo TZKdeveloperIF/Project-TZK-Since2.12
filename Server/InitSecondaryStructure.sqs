@@ -1,0 +1,12 @@
+; args: [_type, _si, _objects]
+
+? !(local LocalServerObject) : exit
+
+_type = _this select 0
+_si = _this select 1
+_objects = _this select 2
+
+? (_si == si0): { _x addEventHandler ["killed", {[_this, si0] exec "Server\Event_StructSecDestroyed.sqs"}] } foreach _objects
+? (_si == si1): { _x addEventHandler ["killed", {[_this, si1] exec "Server\Event_StructSecDestroyed.sqs"}] } foreach _objects
+{ [_x, _si, (structDefs select _type) select sdCost] exec "Server\EventAdd_StructHit.sqs" }  forEach _objects
+

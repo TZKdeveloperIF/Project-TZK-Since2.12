@@ -1,0 +1,10 @@
+#Start
+@(pvQueueLength != -1)
+
+_value = pvQueueLength
+_obj = pvQueueLength_Obj
+pvQueueLength = -1
+
+[_value, _obj] exec "Player\HandleQueueLength.sqs"
+
+goto "Start"

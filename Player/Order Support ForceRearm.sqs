@@ -1,0 +1,22 @@
+; args: [unit, pos, [0]]
+
+_unit = _this select 0
+_pos = _this select 1
+
+? !(alive _unit) : exit
+_v = vehicle _unit
+? (_v == vehicle player) : exit
+
+? _unit == _v : goto "SkipArmedCheck"
+  _rearmData = _v call funcGetRearmData
+  _rearmMags = _rearmData select 1
+  ? (count _rearmMags) == 0 : _unit groupchat "My vehicle is not armed."; exit
+#SkipArmedCheck
+
+#FindSupport
+_vs = [_pos, 500, (typesSupportPlus select siPlayer) + ([[utMHQ0, utMCVW], [utMHQ1, utMCVE]] select siPlayer), [_v]] call funcGetNearbyVehicles
+_vs = [2, true, _vs] call funcSort
+
+? (count _vs) == 0 : _unit groupchat "No support vehicles in that area."; exit
+
+[_unit, (_vs select 0) select 0, true] exec "Player\Order Support.sqs"

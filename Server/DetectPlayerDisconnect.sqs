@@ -1,0 +1,74 @@
+; args: [group, si, gi]
+
+_group = _this select 0
+_si = _this select 1
+_gi = _this select 2
+
+? !(local LocalServerObject) : exit
+
+; @(local leader _group)
+
+#CheckDisconnect
+  ~30
+  _leader = leader _group
+  ? !(local _leader) : goto "CheckDisconnect"
+~5
+
+_leader = leader _group
+? alive _leader : goto "SkipKill"
+_leader setDamage 0
+~1
+_leader setDamage 1
+#SkipKill
+ 
+#CheckGroupLocal
+~1
+_groupLocal = true
+{ if (!(local _x)) then { _groupLocal = false } } foreach (units _group)
+? !_groupLocal : goto "CheckGroupLocal"
+~10
+
+(pingTimes select _si) set [_gi, -1]
+? pvGameOver != -1 : exit
+
+;player globalchat format["Player Disconnected: _group=%1, _si=%2, _gi=%3", _group, _si, _gi]
+
+_groups = groupMatrix select _si
+_groupsAI = groupAiMatrix select _si
+? !(_group in _groupsAI): _groupsAI set [count _groupsAI, _groups select _gi]
+
+[_si, _gi] exec "Server\Info\GroupIsAI.sqs"
+
+; unassignVehicle (leader _group)
+
+? (_group != (groupCommander select _si)): goto "NoCommanderChange"
+	_playerFound = false
+	_index = 0
+	_count = count _groups
+	while "!_playerFound && _index < _count" do { _grp = _groups select _index; if !(_grp in _groupsAI) then { _playerFound=true }; _index=_index+1 }
+	? _playerFound: _giCommander = _index - 1
+	? !_playerFound: _giCommander = 0
+	groupCommander set [_si, _groups select _giCommander]
+	giCO set [_si, _giCommander]
+	[_si, _giCommander] exec "Server\Info\CommanderChange.sqs"
+	_unit = leader _group
+	_vehicle = vehicle _unit
+	? alive _unit && _unit != _vehicle : unassignVehicle _unit; _unit action ["EJECT", _vehicle]
+	; ~0.5
+	; ? (_si == si0): { unassignVehicle _x; _x action ["EJECT", mhqWest]} foreach (crew mhqWest)
+	; ? (_si == si1): { unassignVehicle _x; _x action ["EJECT", mhqEast]} foreach (crew mhqEast)
+	; ~0.5
+	; ? (_si == si0 && !lockWestMHQ): lockWestMHQ = true; PublicVariable "lockWestMHQ"
+	; ? (_si == si1 && !lockEastMHQ): lockEastMHQ = true; PublicVariable "lockEastMHQ"
+#NoCommanderChange
+
+_money = (groupMoneyMatrix select _si) select _gi
+[_si, _gi, -_money, 0] exec "Server\MoneyAdd.sqs"
+[_si, giCO select _si, _money, 0] exec "Server\MoneyAdd.sqs"
+
+_unit = leader _group
+
+? (alive _unit) && time < 5*60 : _unit setPos (getPos (mhq select _si))
+_vehicle = vehicle _unit; _commander = commander _vehicle
+? !(isNull _commander) : unassignVehicle _commander; _commander action ["EJECT", _vehicle]
+[_unit, _si, _gi] exec "Server\InitDisconnectedPlayerAI.sqs"

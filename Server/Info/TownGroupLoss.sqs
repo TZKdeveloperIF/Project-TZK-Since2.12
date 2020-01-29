@@ -1,0 +1,10 @@
+; args: [ti, si]
+
+_ti = _this select 0
+_si = _this select 1
+
+_value = mtTownGroupLoss
+_value = _value + (TotalInfoTypes)*_ti
+_value = _value + (TotalInfoTypes*20)*_si
+
+[_value] exec "Server\Info\SendInfoMsg.sqs"

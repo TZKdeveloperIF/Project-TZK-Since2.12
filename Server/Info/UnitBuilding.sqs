@@ -1,0 +1,13 @@
+; args: [typeInf, sideIndex, groupIndexBuyer, groupIndexJoin]
+
+_type = _this select 0
+_si = _this select 1
+_giBuyer = _this select 2
+_giJoin = _this select 3
+
+_value = mtUnitBuilding
+_value = _value + TotalInfoTypes*_type
+
+_value2 = _giBuyer + GroupsNum*_giJoin + GroupsNum*GroupsNum*_si
+
+[_value, _value2] exec "Server\Info\SendInfoMsg.sqs"

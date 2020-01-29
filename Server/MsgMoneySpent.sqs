@@ -1,0 +1,19 @@
+#Start
+
+@(pvMoneySpent != -1)
+
+_value = pvMoneySpent
+
+pvMoneySpent = -1
+
+_amount = _value % 20000
+_value = _value - _amount
+
+_gi = (_value % (20000*GroupsNum))/20000
+_value = _value - _gi*20000
+
+_si = _value/(20000*GroupsNum)
+
+[_si, _gi, _amount - 10000] exec "Server\MoneySpend.sqs"
+
+goto "Start"

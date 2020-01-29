@@ -1,0 +1,244 @@
+;player globalchat "InitServer.sqs Entered"
+;DEFINE CONSTANT POINTER FOR FUNCTION
+;TG0 = townGroups select si0; TG1 = townGroups select si1; WG0 = workerGroups select si0; WG1 = workerGroups select si1; GM0 = groupMatrix select si0; GM1 = groupMatrix select si1
+{deleteVehicle (leader _x)} forEach (workerGroups select si0); {deleteVehicle (leader _x)} forEach (workerGroups select si1)
+
+fBuildStruct = preprocessFile "Server\BuildStruct.sqf"
+funcRepairStructure = preprocessFile "Server\RepairStructure.sqf"
+funcCalcStructurePosDir = preprocessFile "Server\CalcStructurePosDir.sqf"
+funcCalcBuilderPosDir = preprocessFile "Server\CalcBuilderPosDir.sqf"
+;funcCalNormalDistribution = preprocessFile "Server\CalNormalDistribution.sqf"
+funcGetIdleFactory = preprocessFile "Server\GetIdleFactory.sqf"
+funcGetIdleFactories = preprocessFile "Server\GetIdleFactories.sqf"
+funcGetFactoryWithEmptyQueue = preprocessFile "Server\GetFactoryWithEmptyQueue.sqf"
+funcGetSmallestAiGroup = preprocessFile "Server\GetSmallestAiGroup.sqf"
+funcMoneyAdd = preprocessFile "Server\MoneyAdd.sqf"
+funcMoneySpend = preprocessFile "Server\MoneySpend.sqf"
+funcMoneyTransfer = preprocessFile "Server\MoneyTransfer.sqf"
+
+funcWatch = preprocessFile "Server\Watch.sqf"
+funcMoveAI = preprocessFile "Server\MoveAI.sqf"
+funcMoveCommand = preprocessFile "Server\MoveCommand.sqf"
+funcMoveStand = preprocessFile "Server\MoveStand.sqf"
+funcTomahawkExplosion = preprocessFile "Server\TomahawkExplosion.sqf"
+funcGetNearbyTransports = preprocessFile "Server\GetNearbyTransports.sqf"
+funcCalcSlots = preprocessFile "Server\CalcSlots.sqf"
+; funcStructuresServerAdd = preprocessFile "Server\StructuresServerAdd.sqf"
+funcStructuresServerSearch = preprocessFile "Server\StructuresServerSearch.sqf"
+funcAddToRepairList = preprocessFile "Server\AddToRepairList.sqf"
+funcCheckTGSpawn = preprocessFile "Server\CheckTGSpawn.sqf"
+funcCheckRepair = preprocessFile "Server\AI_CheckRepair.sqf"
+funcCheckRearm = preprocessFile "Server\AI_CheckRearm.sqf"
+funcUpdateKnowsAbout = preprocessFile "Server\UpdateKnowsAbout.sqf"
+funcUpdateTownCheckUnits = preprocessFile "Server\UpdateTownCheckUnits.sqf"
+
+funcAddServerUnit = preprocessFile "Server\AddServerUnit.sqf"
+funcUpdateResStartPos = preprocessFile "Server\UpdateResStartPos.sqf"
+funcUpdateResPatrolPos = preprocessFile "Server\UpdateResPatrolPos.sqf"
+funcUpdateResPatrolDestroy = preprocessFile "Server\UpdateResPatrolDestroy.sqf"
+funcAssignJoinAI = preprocessFile "Server\AssignJoinAI.sqf"
+
+busyInit = "call format[""busy%1 = []"", sideNames select _si]"
+busySet = 	"call format[""[_unit,_si] exec """"Server\BusySet.sqs""""""]"
+busyClear = "call format[""[_unit,_si] exec """"Server\BusyClear.sqs""""""]"
+busyCheck = "call format[""_unit in busy%1"", sideNames select _si]"
+mutexBusy = false
+
+temporaryInit = "call format[""temporary%1 = []"", sideNames select _si]"
+temporarySet = 	"call format[""[_unit,_si] exec """"Server\TemporarySet.sqs""""""]"
+temporaryClear = "call format[""[_unit,_si] exec """"Server\TemporaryClear.sqs""""""]"
+temporaryCheck = "call format[""_unit in temporary%1"", sideNames select _si]"
+mutexTemporary = false
+
+_si = si0
+call busyInit; call temporaryInit
+_si = si1
+call busyInit; call temporaryInit
+
+
+MaterialEffectVehicles = []; mutexMEV = false
+
+CheckSupportUnits = []; mutexCheckSupport = false
+
+CCdistMax = [distMaxCC, distMaxCC]
+
+repairableStructureMatrix = [ [], [] ]; mutexRepStructMatrix = false; mutexRepairStructure = false
+structuresServer = []; mutexStructServer = false
+primStructsPlaced = []; mutexPlacedPrimStructs = false
+factoryQueues = [ [], [] ]; mutexFacQueues = false
+buildingsInUse = []; mutexbuildingInUse = false
+undoList = []; mutexUndo = false
+mutexServerTankKilled = false
+
+startMoney = [[40000, 40000],[80000, 80000]] select PricingMode
+? (dev): startMoney = [800000, 800000]
+startMoneyPlayer = [1000, 1000]
+? (dev): startMoneyPlayer = [2000, 2000]
+moneySpent = [0, 0]
+moneyRequest = [[],[]]
+indexMoneyMsg = 0
+countMoneyMsg = 10
+indexInfoMsg = 0
+countInfoMsg = 4
+qidNext = [0,0]
+qidCancel = [[],[]]
+qidToCancel = [[],[]]
+
+timeCheckSupport = 120
+ratioAttackEnemy = ([0.70, 0.70] select dev)
+
+countQueueMsg = 5
+indexQueueAddMsg = 0
+indexQueueRemMsg = 0
+indexUnitAddMsg = 0
+mutexBuildingQueue = false
+mutexEditMoneyMatrix = false
+mutexMovingToSupport = false
+mutexSendMoneySide = false
+mutexEnemySpotted = false
+mutexqidCancel = false
+mutexFuelVehicle = false
+
+scoreMoney = [[],[]]
+groupsPatrol = []; groupPatrolJoinMatrix = []; mutexInitResGroups = false
+
+mutexAddResPatrol = false
+mutexWorkerJoin = false
+
+; mutexAIAutoBuyFactory = false
+
+; MESSAGE HANDLERS (SERVER ONLY)
+[] exec "Server\MsgBuildStructure.sqs"
+[] exec "Server\MsgUndo.sqs"
+[] exec "Server\MsgAddWorker.sqs"
+[] exec "Server\MsgBuyUnit0.sqs"
+[] exec "Server\MsgBuyUnit1.sqs"
+[] exec "Server\MsgBuyUnit2.sqs"
+[] exec "Server\MsgBuyUnit3.sqs"
+[] exec "Server\MsgBuyUnit4.sqs"
+[] exec "Server\MsgCancelBuy.sqs"
+[] exec "Server\MsgMoneySpent.sqs"
+[] exec "Server\MsgGiveMoney.sqs"
+[] exec "Server\MsgUpgrade.sqs"
+[] exec "Server\MsgTransferCommand.sqs"
+[] exec "Server\MsgDestruction.sqs"
+[] exec "Server\MsgUnitDisembark.sqs"
+[] exec "Server\MsgJoin.sqs"
+[] exec "Server\MsgCheckAI.sqs"
+[] exec "Server\MsgClearBuy.sqs"
+[] exec "Server\MsgEjectAIUnits.sqs"
+
+? !(isNull player): forceMap true
+? !(isNull player): [] exec "Player\InitClient.sqs"
+
+pingTimes = [[], []]
+blockedPlayers = [[], []]
+_si = si0; _gi = 0; { (pingTimes select _si) set [_gi, -1]; (blockedPlayers select _si) set [_gi, false]; _gi = _gi + 1} foreach (groupMatrix select _si)
+_si = si1; _gi = 0; { (pingTimes select _si) set [_gi, -1]; (blockedPlayers select _si) set [_gi, false]; _gi = _gi + 1} foreach (groupMatrix select _si)
+
+;game has begun after this pause
+~2
+
+; NOTE: locality of players must be determined after game start on server
+_index = 0
+_groups = groupMatrix select si0
+_groupsAI = []
+_count = count _groups
+? (_count == 0): goto "CheckGroupSide0Empty"
+#CheckGroupSide0
+	_leader = leader (_groups select _index)
+	? ( local _leader && !(player == _leader) ): _groupsAI set [count _groupsAI, group _leader]; [_leader, si0, _index] exec "Server\InitLeaderAI.sqs"
+	? !(local _leader): [group _leader, si0, _index] exec "Server\DetectPlayerDisconnect.sqs"
+  (scoreMoney select si0) set [_index, 0]
+	[si0, _index] exec "Server\UpdateLeader.sqs"
+	_index = _index + 1
+	? (_index < _count): goto "CheckGroupSide0"
+#CheckGroupSide0Empty
+groupAiMatrix set [si0, _groupsAI]
+
+_index = 0
+_groups = groupMatrix select si1
+_groupsAI = []
+_count = count _groups
+? (_count == 0): goto "CheckGroupSide1Empty"
+#CheckGroupSide1
+	_leader = leader (_groups select _index)
+	? ( local _leader && !(player == _leader) ): _groupsAI set [count _groupsAI, group _leader]; [_leader, si1, _index] exec "Server\InitLeaderAI.sqs"
+	? !(local _leader): [group _leader, si1, _index] exec "Server\DetectPlayerDisconnect.sqs"
+  (scoreMoney select si1) set [_index, 0]
+	[si1, _index] exec "Server\UpdateLeader.sqs"
+	_index = _index + 1
+	? (_index < _count): goto "CheckGroupSide1"
+#CheckGroupSide1Empty
+groupAiMatrix set [si1, _groupsAI]
+
+_spec0exists = false
+? !(isNull Spec0): _spec0exists = true
+if (_spec0exists && (local Spec0) && player != Spec0) then { Spec0 disableAI "TARGET"; Spec0 disableAI "AUTOTARGET"; Spec0 disableAI "MOVE"; deleteVehicle Spec0 }
+
+_spec1exists = false
+? !(isNull Spec1): _spec1exists = true
+if (_spec1exists && (local Spec1) && player != Spec1) then { Spec1 disableAI "TARGET"; Spec1 disableAI "AUTOTARGET"; Spec1 disableAI "MOVE"; deleteVehicle Spec1 }
+
+_spec2exists = false
+? !(isNull Spec2): _spec2exists = true
+if (_spec2exists && (local Spec2) && player != Spec2) then { Spec2 disableAI "TARGET"; Spec2 disableAI "AUTOTARGET"; Spec2 disableAI "MOVE"; deleteVehicle Spec2 }
+
+_spec3exists = false
+? !(isNull Spec3): _spec3exists = true
+if (_spec3exists && (local Spec3) && player != Spec3) then { Spec3 disableAI "TARGET"; Spec3 disableAI "AUTOTARGET"; Spec3 disableAI "MOVE"; deleteVehicle Spec3 }
+
+_spec4exists = false
+? !(isNull Spec4): _spec4exists = true
+if (_spec4exists && (local Spec4) && player != Spec4) then { Spec4 disableAI "TARGET"; Spec4 disableAI "AUTOTARGET"; Spec4 disableAI "MOVE"; deleteVehicle Spec4 }
+
+_spec5exists = false
+? !(isNull Spec5): _spec5exists = true
+if (_spec5exists && (local Spec5) && player != Spec5) then { Spec5 disableAI "TARGET"; Spec5 disableAI "AUTOTARGET"; Spec5 disableAI "MOVE"; deleteVehicle Spec5 }
+
+_spec6exists = false
+? !(isNull Spec6): _spec6exists = true
+if (_spec6exists && (local Spec6) && player != Spec6) then { Spec6 disableAI "TARGET"; Spec6 disableAI "AUTOTARGET"; Spec6 disableAI "MOVE"; deleteVehicle Spec6 }
+
+_spec7exists = false
+? !(isNull Spec7): _spec7exists = true
+if (_spec7exists && (local Spec7) && player != Spec7) then { Spec7 disableAI "TARGET"; Spec7 disableAI "AUTOTARGET"; Spec7 disableAI "MOVE"; deleteVehicle Spec7 }
+
+_spec8exists = false
+? !(isNull Spec8): _spec8exists = true
+if (_spec8exists && (local Spec8) && player != Spec8) then { Spec8 disableAI "TARGET"; Spec8 disableAI "AUTOTARGET"; Spec8 disableAI "MOVE"; deleteVehicle Spec8 }
+
+_spec9exists = false
+? !(isNull Spec9): _spec9exists = true
+if (_spec9exists && (local Spec9) && player != Spec9) then { Spec9 disableAI "TARGET"; Spec9 disableAI "AUTOTARGET"; Spec9 disableAI "MOVE"; deleteVehicle Spec9 }
+
+
+;pvDebugVars = true; PublicVariable "pvDebugVars"
+
+[] exec "Server\GenerateStartPositions.sqs"
+
+; send AI groups
+_try = 0
+{ _gi = [_x, groupMatrix select si0] call funcGetIndex; while "_try < 10 && _gi == -1" do {_gi = [_x, groupMatrix select si0] call funcGetIndex;_try = _try + 1}; [si0, _gi] exec "Server\Info\GroupIsAI.sqs" } foreach (groupAiMatrix select si0)
+_try = 0
+{ _gi = [_x, groupMatrix select si1] call funcGetIndex; while "_try < 10 && _gi == -1" do {_gi = [_x, groupMatrix select si1] call funcGetIndex;_try = _try + 1}; [si1, _gi] exec "Server\Info\GroupIsAI.sqs" } foreach (groupAiMatrix select si1)
+
+_si = si0
+? !dev && count (groupMatrix select _si) == count (groupAiMatrix select _si) : startMoney set [_si, 10*(startMoney select _si)]; goto "Money0Set"
+? !dev && ((groupMatrix select _si) select 0) in (groupAiMatrix select _si) : startMoney set [_si, 2.5*(startMoney select _si)]
+#Money0Set
+_si = si1
+? !dev && count (groupMatrix select _si) == count (groupAiMatrix select _si) : startMoney set [_si, 10*(startMoney select _si)]; goto "Money1Set"
+? !dev && ((groupMatrix select _si) select 0) in (groupAiMatrix select _si) : startMoney set [_si, 2.5*(startMoney select _si)]
+#Money1Set
+
+[] exec "Server\SendStartMoney.sqs"
+[si0] exec "Server\UpdateRespawnAI.sqs"
+[si1] exec "Server\UpdateRespawnAI.sqs"
+[] exec "Server\UpdateIncome.sqs"
+[] exec "Server\UpdateServer.sqs"
+[] exec "Server\SendPing.sqs"
+; [] exec "Server\ShowTownGroups.sqs"
+[] exec "Server\MaterialEffectVehicles.sqs"
+
+; TODO [] exec "\detector\start.sqs"

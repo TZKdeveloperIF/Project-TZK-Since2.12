@@ -1,0 +1,328 @@
+; structDefs defines all buildable structures
+ 
+alignDefs = []
+; adCenter = 0; adWidth = 1
+
+alignTypes = []
+
+structDefs = []
+
+sdName = 0
+sdCost = 1
+sdSides = 2
+sdImage = 3
+sdOnlyCO = 4
+sdOnlyMHQ = 5
+sdLimit = 6
+sdMaxRadius = 7
+sdDist = 8
+sdObjects0 = 9
+sdObjects1 = 10
+sdScriptsServer = 11
+sdScriptsPlayer = 12
+
+; knowsAbout level for enemy structure reports
+kaStruct = 1
+
+; object format: [oName, nRot, aPos]
+
+_type = 0
+
+
+
+_price = [2000, 3000] select PricingMode
+_objects = [["StromHaus1", 270, []]]
+_image = ["Player\maptower.jpg", "Player\maptower.jpg"]
+structDefs set [_type, ["Air Radar - 4000m range", _price, siBoth, _image, false, false, 10, 5, 15, _objects, _objects, ["Server\InitPrimaryStructure.sqs"], []] ]
+stradarair = _type
+_type = _type + 1
+
+
+_price = [2000, 4000] select PricingMode
+_objects = [["StromHaus1", 270, []]]
+_image = ["Player\maptower.jpg", "Player\maptower.jpg"]
+structDefs set [_type, ["Map Marker Tower", _price, siBoth, _image, false, false, 4, 5, 15, _objects, _objects, ["Server\InitPrimaryStructure.sqs"], []] ]
+stradar = _type
+_type = _type + 1
+
+_price = [2000, 4000] select PricingMode
+_objects = [["StromHaus1", 270, []]]
+_image = ["Player\camtower.jpg", "Player\camtower.jpg"]
+structDefs set [_type, ["Unit Camera Tower", _price, siBoth, _image, false, false, 4, 5, 15, _objects, _objects, ["Server\InitPrimaryStructure.sqs"], []] ]
+stSatRec = _type
+_type = _type + 1
+
+
+_price = [2000, 4000] select PricingMode
+_objects = [["DVD_v2_LF", 0, []], ["BarackeSupports3",0, []]]
+_image = ["Player\LightVehicleFactory.jpg", "Player\LightVehicleFactory.jpg"]
+structDefs set [_type, ["Light Vehicle Factory", _price, siBoth, _image, true, true, 2, 10, 20, _objects, _objects, ["Server\InitPrimaryStructure.sqs", "Server\InitUnitFactory.sqs"], ["Player\InitLightVehicleFactory.sqs" ]] ]
+stLight = _type
+_type = _type + 1
+
+
+_price = [2000, 4000] select PricingMode
+_objects = [["DVD_v2_CC", 0, []], ["BarackeSupports2",0, [0,-0.6,-3]]]
+_image = ["Player\CommCenter.jpg", "Player\CommCenter.jpg"]
+structDefs set [_type, ["Command Center", _price, siBoth, _image, true, true, 2, 5, 20, _objects, _objects, ["Server\InitPrimaryStructure.sqs"], []] ]
+stComm = _type
+_type = _type + 1
+
+_price = [4000, 8000] select PricingMode
+_objects = [["DVD_v2_Bar", 180, []]]
+_image = ["Player\Barracks.jpg", "Player\Barracks.jpg"]
+structDefs set [_type, ["Barracks", _price, siBoth, _image, true, true, 2, 10, 20, _objects, _objects, ["Server\InitPrimaryStructure.sqs", "Server\InitUnitFactory.sqs"], ["Player\InitBarracks.sqs" ]] ]
+stBarracks = _type
+_type = _type + 1
+
+_price = [8000, 16000] select PricingMode
+_objects = [["DVD_v2_HF", 0, [1,0,0]]]
+_image = ["Player\HeavyVehicleFactory.jpg","Player\HeavyVehicleFactory.jpg"]
+structDefs set [_type, ["Heavy Vehicle Factory", _price, siBoth, _image, true, true, 2, 10, 20, _objects, _objects, ["Server\InitPrimaryStructure.sqs", "Server\InitUnitFactory.sqs"], ["Player\InitHeavyVehicleFactory.sqs" ]] ]
+stHeavy = _type
+_type = _type + 1
+
+_price = [16000, 32000] select PricingMode
+_objects = [["DVD_v2_AirF", 0, [0,0,0]]]
+_image = ["Player\AircraftFactory.jpg","Player\AircraftFactory.jpg"]
+structDefs set [_type, ["Aircraft Factory", _price, siBoth, _image, true, true, 2, 20, 35, _objects, _objects, ["Server\InitPrimaryStructure.sqs", "Server\InitUnitFactory.sqs"], ["Player\InitAircraftFactory.sqs" ]] ]
+stAir = _type
+_type = _type + 1
+
+
+_price = [1000, 2000] select PricingMode
+_objects = [["Dach1", 180, [0,0,0]]]
+_image = ["Player\Shipyard.jpg", "Player\Shipyard.jpg"]
+structDefs set [_type, ["Shipyard", _price, siBoth, _image, false, false, 2, 10, 20, _objects, _objects, ["Server\InitPrimaryStructure.sqs", "Server\InitUnitFactory.sqs"], ["Player\InitShipyardFactory.sqs" ]] ]
+stShip = _type
+InitStructureReady = true
+_type = _type + 1
+
+_price = [1500, 3000] select PricingMode
+_objects = [["FuelStationNew2", 180, [0,0,0]]]
+_image = ["Player\FuelStation.jpg", "Player\FuelStation.jpg"]
+structDefs set [_type, ["Fuel Station", _price, siBoth, _image, false, false, 5, 10, 20, _objects, _objects, ["Server\InitSecondaryStructure.sqs",  "Server\InitFuelStation.sqs"], []] ]
+_fuelStation = _type
+_type = _type + 1
+
+_price = [4500, 9000] select PricingMode
+_objects0 = [["Mortar5_W_xj200", 0, [0,5,0.1]],["CommCenterW_xj200",0,[15,0,0]]]
+_objects1 = [["Mortar5_E_xj200", 0, [0,5,0.1]],["CommCenterE_xj200",0,[15,0,0]]]
+_image = ["Player\Mortar.jpg","Player\Mortar.jpg"]
+structDefs set [_type, ["Mortar 60mm", _price, siBoth, _image, false, true, 6, 2, 10, _objects0, _objects1, ["Server\InitStructureDefenceTower.sqs"], []] ]
+_mortar = _type
+_type = _type + 1
+
+_price = [6000, 12000] select PricingMode
+_objects0 = [["Mortar6_W_xj200", 0, [0,5,0.1]],["CommCenterW_xj200",0,[15,0,0]]]
+_objects1 = [["Mortar6_E_xj200", 0, [0,5,0.1]],["CommCenterE_xj200",0,[15,0,0]]]
+_image = ["Player\Mortar.jpg","Player\Mortar.jpg"]
+structDefs set [_type, ["Mortar 60mm+", _price, siBoth, _image, false, true, 6, 2, 10, _objects0, _objects1, ["Server\InitStructureDefenceTower.sqs"], []] ]
+_mortar2 = _type
+_type = _type + 1
+
+_price = [3000, 6000] select PricingMode
+_objects0 = [["M46_W_DKMM_xj200", 0, []]]
+_objects1 = [["M46_E_DKMM_xj200", 0, []]]
+_image = ["\dkmm_m46\m46.paa","\dkmm_m46\m46.paa"]
+structDefs set [_type, ["M46 Fieldgun", _price, siBoth, _image, false, false, 15, 2, 25, _objects0, _objects1, ["Server\InitStructureDefenceTower.sqs"], []] ]
+_m46 = _type
+_type = _type + 1
+
+_price = [15000, 30000] select PricingMode
+_objects0 = [["M46_W_DKMM_Art_xj200", 0, []]]
+_objects1 = [["M46_E_DKMM_Art_xj200", 0, []]]
+_image = ["\dkmm_m46\m46.paa","\dkmm_m46\m46.paa"]
+structDefs set [_type, ["M46 Art", _price, siBoth, _image, false, false, 15, 2, 25, _objects0, _objects1, ["Server\InitStructureDefenceTower.sqs"], []] ]
+_m46Art = _type
+_type = _type + 1
+
+_price = [500, 1000] select PricingMode
+_objects0 = [["StaticMG_12mm7_W_xj200", 0, [1.4,1.3,2.0]], ["DVD_v2_fort", 0, []]]
+_objects1 = [["StaticMG_12mm7_E_xj200", 0, [1.4,1.3,2.0]], ["DVD_v2_fort", 0, []]]
+_image = ["Player\MGFort.jpg","Player\MGFort.jpg"]
+structDefs set [_type, ["MG Fort", _price, siBoth, _image, false, false, 20, 2, 15, _objects0, _objects1, ["Server\InitSecondaryStructure.sqs"], []] ]
+_mgFort = _type
+_type = _type + 1
+
+_price = [600, 1200] select PricingMode
+_objects0 = [["StaticMG_12mm7_W_xj200", 0, [0,0,6]], ["DVD_v2_WoodTower", 0, []]]
+_objects1 = [["StaticMG_12mm7_E_xj200", 0, [0,0,6]], ["DVD_v2_WoodTower", 0, []]]
+_image = ["Player\MGTowerW.jpg","Player\MGTowerW.jpg"]
+structDefs set [_type, ["MG Tower", _price, siBoth, _image, false, false, 20, 2, 10, _objects0, _objects1, ["Server\InitSecondaryStructure.sqs"], []] ]
+_mgTowerWood = _type
+_type = _type + 1
+
+_price = [600, 1200] select PricingMode
+_objects0 = [["StaticMG_12mm7_W_xj200", 0, [0,2,7]], ["DVD_v2_ConcreteTower", 180, []]]
+_objects1 = [["StaticMG_12mm7_E_xj200", 0, [0,2,7]], ["DVD_v2_ConcreteTower", 180, []]]
+_image = ["Player\MGTowerC.jpg","Player\MGTowerC.jpg"]
+structDefs set [_type, ["MG Tower", _price, siBoth, _image, false, false, 20, 2, 10, _objects0, _objects1, ["Server\InitSecondaryStructure.sqs"], []] ]
+_mgTowerConcrete = _type
+_type = _type + 1
+
+_price = [300, 600] select PricingMode
+_objects0 = [["StaticMG_12mm7_W_xj200", 0, []]]
+_objects1 = [["StaticMG_12mm7_E_xj200", 0, []]]
+_image = ["Player\MG.jpg","Player\MG.jpg"]
+structDefs set [_type, ["MG 12.7mm", _price, siBoth, _image, false, false, 25, 2, 5, _objects0, _objects1, ["Server\InitSecondaryStructure.sqs"], []] ]
+_mg = _type
+_type = _type + 1
+
+_price = [1000, 1000] select PricingMode
+_objects0 = [["DVD_v2_gunfort_west", 0, []]]
+_objects1 = [["DVD_v2_gunfort_east", 0, []]]
+_image = ["Player\gunfort.jpg","Player\gunfort.jpg"]
+structDefs set [_type, ["Gunfort", _price, siBoth, _image, false, false, 15, 2, 25, _objects0, _objects1, ["Server\InitSecondaryStructure.sqs"], []] ]
+_gunf = _type
+_type = _type + 1
+
+_price = [300, 600] select PricingMode
+_objects = [["DVD_v2_wall", 90, [0,0,0]]]
+_image = ["Player\WallH.jpg","Player\WallH.jpg"]
+structDefs set [_type, ["Wall", _price, siBoth, _image, false, false, 75, 0.5, 15, _objects, _objects, ["Server\InitSecondaryStructure.sqs"], []] ]
+_wall = _type
+alignTypes set [count alignTypes, _type]; alignDefs set [ count alignDefs, [[0,0], 9.9] ]
+_type = _type + 1
+
+_price = [100, 200] select PricingMode
+_objects = [["DVD_v2_wall", 90, [0,0,-3.5]]]
+_image = ["Player\WallL.jpg","Player\WallL.jpg"]
+structDefs set [_type, ["Wall Low", _price, siBoth, _image, false, false, 75, 0.5, 15, _objects, _objects, ["Server\InitSecondaryStructure.sqs"], []] ]
+_walls = _type
+alignTypes set [count alignTypes, _type]; alignDefs set [ count alignDefs, [[0,0], 9.9] ]
+_type = _type + 1
+
+_price = [500, 1000] select PricingMode
+_objects = [ ["DVD_v2_roof", 0, [0,0,4.5]] ]
+_image = ["Player\Roof.jpg","Player\Roof.jpg"]
+structDefs set [_type, ["Roof", _price, siBoth, _image, true, false, 30, 1, 20, _objects, _objects, ["Server\InitSecondaryStructure.sqs"], []] ]
+_roof = _type
+_type = _type + 1
+
+_price = [600, 1200] select PricingMode
+_objects = [ ["DVD_v2_roof", 0, [0,0,9]] ]
+_image = ["Player\Roof.jpg","Player\Roof.jpg"]
+structDefs set [_type, ["Roof High", _price, siBoth, _image, true, false, 30, 1, 20, _objects, _objects, ["Server\InitSecondaryStructure.sqs"], []] ]
+_roofHigh = _type
+_type = _type + 1
+
+_price = [200, 400] select PricingMode
+_objects = [ ["DVD_v2_trench", 0, [0,0,0]] ]
+_image = ["Player\Trench.jpg","Player\Trench.jpg"]
+structDefs set [_type, ["Tank Trench", _price, siBoth, _image, true, false, 50, 5, 20, _objects, _objects, ["Server\InitSecondaryStructure.sqs"], []] ]
+_type = _type + 1
+
+_price = [20, 40] select PricingMode
+_objects = [["DVD_v2_sandbag", 90, []]]
+_image = ["Player\Sandbags.jpg","Player\Sandbags.jpg"]
+structDefs set [_type, ["Sand Bags", _price, siBoth, _image, false, false, 100, 1, 10, _objects, _objects, ["Server\InitSecondaryStructure.sqs"], []] ]
+_tanktr = _type
+alignTypes set [count alignTypes, _type]; alignDefs set [ count alignDefs, [[0,0], 2.2] ]
+_type = _type + 1
+
+_price = [50, 100] select PricingMode
+_objects = [["Wire", 0, []]]
+_image = ["Player\Wire.jpg","Player\Wire.jpg"]
+structDefs set [_type, ["Tank Trap", _price, siBoth, _image, false, false, 100, 1, 10, _objects, _objects, ["Server\InitSecondaryStructure.sqs"], []] ]
+_tankt = _type
+alignTypes set [count alignTypes, _type]; alignDefs set [ count alignDefs, [[0,0], 6] ]
+_type = _type + 1
+
+_price = [20, 40] select PricingMode
+;_objects = [["WireFence", 0, []]]
+;_image = ["Player\fence.jpg","Player\fence.jpg"]
+;structDefs set [_type, ["Wire fence", _price, siBoth, _image, false, true, 100, 2, 10, _objects, _objects, ["Server\InitSecondaryStructure.sqs"], []] ]
+;alignTypes set [count alignTypes, _type]; alignDefs set [ count alignDefs, [[0,0], 8] ]
+;_type = _type + 1
+
+_price = [500, 1000] select PricingMode
+_objects0 = [["ReammoBoxWest", 0, []]]
+_objects1 = [["ReammoBoxEast", 0, []]]
+_image = ["Player\ammoCr.jpg","Player\ammoCr.jpg"]
+structDefs set [_type, ["Ammo Crate", _price, siBoth, _image, false, false, 10, 5, 8, _objects0, _objects1, ["Server\InitSecondaryStructure.sqs"], ["Common\InitAmmocrate.sqs"]] ]
+_ammocrate = _type
+_type = _type + 1
+
+_price = [100, 200] select PricingMode
+_objects = [["heliH", 0, []]]
+_image = ["Player\HeliH.jpg","Player\HeliH.jpg"]
+structDefs set [_type, ["Heli H", _price, siBoth, _image, false, false, 20, 5, 15, _objects, _objects, ["Server\InitSecondaryStructure.sqs"], []] ]
+_heliH = _type
+_type = _type + 1
+
+structMatrix = [ [], [] ]
+structsBuilt = [ [], [] ]
+
+_index = 0
+_count = count structDefs
+
+#InitStructs
+	(structMatrix select si0) set [_index, []]	
+	(structMatrix select si1) set [_index, []]	
+
+	(structsBuilt select si0) set [_index, 0]	
+	(structsBuilt select si1) set [_index, 0]	
+
+	_index = _index + 1
+	? (_index < _count): goto "InitStructs"
+
+structsRespawn = [stComm, stBarracks, stLight, stHeavy, stAir]
+structsCritcal = [stComm, stBarracks, stLight, stHeavy, stAir]
+structsDestroy = [stComm, stBarracks, stLight, stHeavy, stAir, stShip, stradarair, stradar, stSatRec]
+structsFactory = [stBarracks, stLight, stHeavy, stAir, stShip]
+
+structsDefence = [_mortar, _mgFort, _mgTowerWood, _mgTowerConcrete, _mg, _gunf, _mortar2, _m46, _m46Art]
+structsOccupiableMortar = [_mortar, _mortar2]
+structsOccupiableMGGround = [_mg, _mgFort]
+structsOccupiableMGTower = [_mgTowerWood, _mgTowerConcrete]
+structsOccupiableGunfort = [_gunf]
+structsOccupiableM46 = [_m46]
+structsOccupiableM46Art = [_m46Art]
+
+; do server stuff only
+? !(local LocalServerObject) : Exit
+
+; BASE TEMPLATES
+
+; format [type, timeBuild, posRelMhq, dirBuilder]
+; dirBuilder is the direction the builder faces when building the structure
+
+bdType = 0
+bdTime = 1
+bdPos = 2
+bdDir = 3
+
+baseDefs = []
+
+_base = []
+_prims = []
+_prims set [count _prims, [stHeavy, 0.5, [-18, -60], 90] ]
+_prims set [count _prims, [stHeavy, 0.5, [0, -80], 0] ]
+_prims set [count _prims, [stHeavy, 0.5, [20, -60], 270] ]
+_prims set [count _prims, [stHeavy, 0.5, [7, 25], 180] ]
+_prims set [count _prims, [stLight, 0.5, [-9, 24.5], 90] ]
+_prims set [count _prims, [stComm, 2, [21, 24], 0] ]
+_prims set [count _prims, [stradar, 2, [30, 30], 0] ]
+_prims set [count _prims, [stSatRec, 2, [30, 40], 0] ]
+_prims set [count _prims, [stradarair, 2, [50, 50], 0] ]
+_prims set [count _prims, [stBarracks, 5, [-6.5, 0], 0] ]
+_prims set [count _prims, [stBarracks, 5, [6.5, 0], 0] ]
+_prims set [count _prims, [stAir, 5, [0, -60], 180] ]
+_base set [0, _prims]
+
+_secs = []
+_secs set [count _secs, [_wall, 5, [-15.2, 15], 270] ]
+_secs set [count _secs, [_wall, 5, [-15.2, 5], 270] ]
+_secs set [count _secs, [_wall, 5, [-15.2, -5], 270] ]
+_secs set [count _secs, [_wall, 5, [15.2, 10], 90] ]
+_secs set [count _secs, [_wall, 5, [15.2, 0], 90] ]
+_secs set [count _secs, [_wall, 5, [15.2, -10], 90] ]
+_secs set [count _secs, [_wall, 5, [0, -8.4], 180] ]
+_secs set [count _secs, [_heliH, 10, [50, 20], 90] ]
+_secs set [count _secs, [_heliH, 10, [50, -20], 90] ]
+_secs set [count _secs, [_heliH, 10, [-50, 20], 270] ]
+_secs set [count _secs, [_heliH, 10, [-50, -20], 270] ]
+_base set [1, _secs]
+
+baseDefs set [count baseDefs, _base]

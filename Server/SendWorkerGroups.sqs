@@ -1,0 +1,17 @@
+; args: [si, index, group]
+
+_si = _this select 0
+_index = _this select 1
+_group = _this select 2
+
+
+_value = _index + 20*_si
+
+@!(mutexSendWorkerGroups)
+mutexSendWorkerGroups = true
+
+pvWorkerGroups = _group; PublicVariable "pvWorkerGroups"
+pvWorkerGroup = _value; PublicVariable "pvWorkerGroup"
+
+~sendDelay
+mutexSendWorkerGroups = false

@@ -1,0 +1,55 @@
+; args: [si, upgrade type]
+
+_si = _this select 0
+_upg = _this select 1
+
+? upgRedTopRange == _upg : goto "Range"
+? upgRedTopMagazines == _upg : goto "Magazine"
+
+#Range
+_vehicleTypes = vRedTop select _si
+_i = 0; _ci = count _vehicleTypes
+	#VehiclesRange
+	_type = _vehicleTypes select _i
+	_vehicles = (UnitMatrix select _si) select _type
+	_j = 0; _cj = count _vehicles
+		#VehicleRange
+		_unit = _vehicles select _j
+		_rearmData = _unit call funcGetRearmData; _w = _rearmData select 0; _m = _rearmData select 1
+		_index = 0; { if (_x in ["RedTop_26_xj200","RedTop_30_xj200"]) then {_w set [_index, "RedTop_40_xj200"]}; _index = _index + 1 } forEach _w
+		_index = 0; { if (_x in ["RedTop_26_xj200","RedTop_30_xj200"]) then {_m set [_index, "RedTop_40_xj200"]}; _index = _index + 1 } forEach _m
+		[_unit, _w, _m, true] exec "Common\EditEquipRearmData.sqs"
+		
+		_j = _j + 1
+		? _j < _cj : goto "VehicleRange"
+	
+	_i = _i + 1
+	? _i < _ci : goto "VehiclesRange"
+goto "Quit"
+
+#Magazine
+_vehicleTypes = vRedTop select _si
+_i = 0; _ci = count _vehicleTypes
+	#VehiclesMagazine
+	_type = _vehicleTypes select _i
+	_vehicles = (UnitMatrix select _si) select _type
+	_j = 0; _cj = count _vehicles
+		#VehicleMagazine
+		_unit = _vehicles select _j
+		_rearmData = _unit call funcGetRearmData; _w = _rearmData select 0; _m = _rearmData select 1
+		_mDouble = []
+		{ if (_x in ["RedTop_26_xj200","RedTop_30_xj200","RedTop_40_xj200"]) then {_mDouble = _mDouble + [_x]} } forEach _m
+		_m = _m + _mDouble
+		[_unit, _w, _m, true] exec "Common\EditEquipRearmData.sqs"
+		
+		_j = _j + 1
+		? _j < _cj : goto "VehicleMagazine"
+	
+	_i = _i + 1
+	? _i < _ci : goto "VehiclesMagazine"
+goto "Quit"
+
+#Quit
+exit
+
+; EOF

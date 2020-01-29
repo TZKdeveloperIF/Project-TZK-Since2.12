@@ -1,0 +1,25 @@
+; args: [[unit, killer], si, (isMCV)]
+
+; player globalchat format ["Event_MHQDestroyed.sqs: _this=%1", _this]
+
+_mhq = (_this select 0) select 0
+_killer = (_this select 0) select 1
+_siMHQ = _this select 1
+_isMCV = 0
+? count _this > 2 : _isMCV = _this select 2
+
+_groupKiller = group _killer
+
+_siKiller = -1
+_giKiller = [_groupKiller, groupMatrix select si0] call funcGetIndex
+? (_giKiller != -1): _siKiller = si0; goto "Send"
+
+_giKiller = [_groupKiller, groupMatrix select si1] call funcGetIndex
+? (_giKiller != -1): _siKiller = si1; goto "Send"
+
+_siKiller = siRes; goto "Send"
+exit
+
+#Send
+
+[_siMHQ, _siKiller, _giKiller, _isMCV] exec "Common\SendMHQDestroyed.sqs"; Exit

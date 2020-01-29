@@ -1,0 +1,11 @@
+; Effects won't work on dedicated server.
+? local LocalServerObject && isNull player : exit
+
+#Start
+@!(isNull pvAfterBurnerON)
+_plane = pvAfterBurnerON; pvAfterBurnerON = objNull
+
+; The parameters of "setobjecttexture" rely on the defination of plane.
+? !local _plane : if (("A10_Base_xj200" countType [_plane]) == 1) then {_plane setobjecttexture[0, "\TZK_Objects\burner.paa"]; _plane setobjecttexture[1, "\TZK_Objects\burner.paa"]} else {_plane setobjecttexture[0, "\TZK_Objects\flame.paa"]; _plane setobjecttexture[1, "\TZK_Objects\flame.paa"]}
+
+goto "Start"

@@ -1,0 +1,15 @@
+; args: [unit]
+
+~0.1
+? !(local LocalServerObject): Exit
+
+_unit = _this select 0
+
+_unit disableAI "TARGET"; _unit disableAI "AUTOTARGET"; _unit disableAI "MOVE"
+
+#Start
+@!(alive _unit)
+;player globalchat "Temp Leader Died"
+_unit setDamage 0
+goto "Start"
+

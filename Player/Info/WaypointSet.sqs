@@ -1,0 +1,10 @@
+; args: [params]
+
+_value = _this select 0
+
+_gi = _value % GroupsNum
+_si = (_value - _gi)/GroupsNum
+
+;player globalchat format["_type=%1, _si=%2, _groupBuyer=%3", _type, _si, _groupBuyer]
+
+? (_si == siPlayer && _gi==giPlayer): player groupchat format ["Waypoint Set"]

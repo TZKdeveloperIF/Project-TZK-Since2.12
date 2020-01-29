@@ -1,0 +1,33 @@
+; args: [[object, source, amount], siStruct, score]
+
+; player globalchat format ["Event_VehicleHit.sqs: _this=%1", _this]
+
+
+
+_object = (_this select 0) select 0
+_source = (_this select 0) select 1
+_amount = (_this select 0) select 2
+_siStruct = _this select 1
+_scoreTotal = _this select 2
+
+_groupSource = group _source
+
+? ( typeof _object == "Dum08"): _object setdamage 1
+
+_siSource = -1
+_giSource = [_groupSource, groupMatrix select si0] call funcGetIndex
+? _giSource != -1 : _siSource = si0; goto "CheckSendScore"
+
+_giSource = [_groupSource, groupMatrix select si1] call funcGetIndex
+? _giSource != -1 : _siSource = si1; goto "CheckSendScore"
+
+exit
+
+#CheckSendScore
+  ; calc score
+  ? _amount > 1 : _amount = 1
+  _score = _scoreTotal*_amount
+  _score = _score - (_score % 1)
+  ? _score < 1 : _score = 1
+
+	? _siSource != _siStruct && _scoreTotal > 0 : [_score, scStruct, _siSource, _giSource] exec "Common\SendScore.sqs"

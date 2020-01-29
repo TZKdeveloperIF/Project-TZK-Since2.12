@@ -1,0 +1,136 @@
+; args: [unit, si, gi, Start Position]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_posCheckBoardStart = _this select 3
+
+call busySet
+
+#CheckAir
+_typesTransport = airTransport select _si
+? (count _typesTransport) == 0 : goto "CheckGround"
+_res = [getPos _unit, 500] call funcGetNearbyTransports
+_transports = []
+_transp = objNull
+
+_i = 0; _c = count _res
+	#SetAir
+	? _i >= _c : goto "AirSet"
+	_v = (_res select _i) select 0; _vt = (_v call funcGetUnitTypeFromObject); _i = _i + 1
+	? !(_vt in _typesTransport) : 	goto "SetAir"
+	? (isNull driver _v) : 			goto "SetAir"
+	? (damage _v) > 0.5 || ((getPos _v) select 2) > 5 || (speed _v) > 1 : 		goto "SetAir"
+	? _vt in (TransportHeliW + TransportHeliE) : 	if ( call Cargo_v >= 12 ) 	then { goto "SetAir" }
+	? _vt in (TransportPlaneW + TransportPlaneE) : 	if ( call Cargo_v >= 60 ) 	then { goto "SetAir" }
+	? _vt in (TransportSmallHeliW + TransportSmallHeliE) : if ( call Cargo_v >= 5 ) then { goto "SetAir" }
+	? _vt in TransportHindE : 						if ( call Cargo_v >= 8 ) 	then { goto "SetAir" }
+	_transports set [count _transports, _v]; goto "SetAir"
+	
+	#AirSet
+	? (count _transports) == 0 : goto "CheckGround"
+	_transp = _transports select (random (count _transports) - 0.5)
+	goto "GetIn"
+
+
+#CheckGround
+_typesTransport = groundTransport select _si
+? (count _typesTransport) == 0 : goto "NoneFound"
+_res = [getPos _unit, 500] call funcGetNearbyTransports
+_transports = []
+_transp = objNull
+
+_i = 0; _c = count _res
+	#SetGround
+	? _i >= _c : goto "GroundSet"
+	_v = (_res select _i) select 0; _vt = (_v call funcGetUnitTypeFromObject); _i = _i + 1
+	? !(_vt in _typesTransport) : 	goto "SetGround"
+	? (isNull driver _v) : 			goto "SetGround"
+	? (damage _v) > 0.5 || ((getPos _v) select 2) > 5 || (speed _v) > 1 : 		goto "SetGround"
+	? _vt in (TransportTruckW + TransportTruckE) : 	if ( call Cargo_v >= 12 ) 	then { goto "SetGround" }
+	? _vt in (Transport8APCW + Transport8APCE) : 	if ( call Cargo_v >= 8 ) 	then { goto "SetGround" }
+	? _vt in (TransportCarW + TransportCarE) : 		if ( call Cargo_v >= 3 ) 	then { goto "SetGround" }
+	? _vt in TransportShipE : 						if ( call Cargo_v >= 10 ) 	then { goto "SetGround" }
+	? _vt in (TransportShipW + TransportZodiacW + TransportZodiacE + Transport6APCW + Transport6APCE) : if ( call Cargo_v >= 6 ) 	then { goto "SetGround" }
+	_transports set [count _transports, _v]; goto "SetGround"
+	
+	#GroundSet
+	? (count _transports) == 0 : goto "NoneFound"
+	_transp = _transports select (random (count _transports) - 0.5)
+	goto "GetIn"
+
+
+
+#NoneFound
+_unit doMove ([_posCheckBoardStart, 50, 100] call funcGetRandomPos)
+
+~10
+	
+goto "Exit"
+
+#GetIn
+_offset = 0
+_unit doWatch _transp
+; _unit globalchat format["%1 GETTING IN AS CARGO IN %2", _unit, _transp]
+_timeAbort = time + 2*60
+#GetIn_Check
+  _offset = _offset + 10
+  _vect = [getPos _unit, getPos _transp] call funcVectorSub
+  _dist = (_unit distance _transp)
+  ? _dist < 0.1 : _dist = _dist + 10
+  _posMove = [getPos _transp, [_vect, _offset/_dist] call funcVectorScale] call funcVectorAdd
+  _posMove set [2,0]
+  _unit doMove _posMove
+  
+~_dist*0.1
+
+  ? !(alive _unit) || !(alive _transp) || (speed _transp) > 5 || ((getPos _transp) select 2) > 5 || !(_transp in TransportActivatedVehicles) || time > _timeAbort || _offset >= 50 : goto "Exit"
+  ? (_unit distance _transp) > 50 : goto "GetIn_Check"
+  
+~2
+	
+? !(alive _unit) : goto "Exit"
+_unit playMove "CombatGetInTank"
+
+~1
+	
+? !(alive _unit) : goto "Exit"
+_unit assignAsCargo _transp
+_unit moveInCargo _transp
+
+~1
+	
+? !(alive _unit) || _transp != vehicle _unit : goto "Exit"
+goto "WaitInCargo"
+
+#WaitInCargo
+  ; _unit globalchat format["%1 WAITING IN CARGO IN %2", _unit, _transp]
+  ; doStop _unit
+  _timeAbort = time + 10*60
+  #WaitInCargo_Check
+  
+~5
+	
+  ? !(alive _unit) || !(alive _transp) : goto "Exit"
+  ? time > _timeAbort && (speed _transp) < 2 && ((getPos _transp) select 2) < 2 : goto "GetOut"
+  ? _transp == (vehicle _unit) : goto "WaitInCargo_Check"
+  ; _unit globalchat format["%1 DISEMBARKED %2", _unit, _transp]
+  goto "Exit"
+
+#GetOut
+  ; _unit sidechat format["GETTING OUT OF %1", _transp]
+  unassignVehicle _unit
+  _unit action ["eject", _transp]
+  #WaitOut
+  
+~5
+	
+    ? !(alive _unit) || !(alive _transp) : goto "Exit"
+    ? _unit != (vehicle _unit) : goto "WaitOut"
+  ; _unit sidechat format["OUT OF %1", _transp]
+  goto "Exit"
+  
+#Exit
+  unassignVehicle _unit
+  call busyClear
+

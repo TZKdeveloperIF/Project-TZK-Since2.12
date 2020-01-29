@@ -1,0 +1,26 @@
+; args: [MCV]
+
+_si = siPlayer
+_MCV = _this select 0
+
+{ _MCV removeAction _x } foreach MCVActions
+MCVActions = []
+
+? !(alive _MCV): goto "Destroyed"
+
+#Alive
+	_action = _MCV addAction ["Unflip MCV", "Player\UnflipVehicle.sqs"];
+
+	MCVActions = MCVActions + [_action]
+
+	? (groupPlayer != (groupCommander select _si)): Exit
+
+	? _si == si0 : _type = utMCVW
+	? _si == si1 : _type = utMCVE
+
+	[[_MCV, _type, _si], ["MCV Build Menu"], 150, true] exec "Player\UpdateFarUnitActions.sqs"
+	Exit
+
+#Destroyed
+	_action = _MCV addAction["Repair MCV","Player\Action RepairMCV.sqs"]
+	MCVActions = MCVActions + [_action]

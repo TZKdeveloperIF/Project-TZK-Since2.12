@@ -1,0 +1,14 @@
+#Start
+
+@(pvCheckAI != -1)
+_value = pvCheckAI
+pvCheckAI = -1
+
+_gi = _value % GroupsNum
+_si = ((_value - _gi) / GroupsNum) % 2
+_isAI = [0,1] select ( ((groupMatrix select _si) select _gi) in (groupAIMatrix select _si) )
+
+
+pvAICheck = _value + _isAI * 2 * GroupsNum; publicVariable "pvAICheck"
+
+goto "Start"

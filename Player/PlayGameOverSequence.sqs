@@ -1,0 +1,274 @@
+; args: none
+
+forceMap false
+
+closeDialog 0
+~0.5
+
+_value = pvGameOver
+
+; pvGameOver values: (draw) + 2*(reasonDraw) + 2*4*(siWinner) + 2*4*2*(reasonWin)
+; 2-draw: 0:noDraw, 1:draw
+; 4-reasonDraw: (ignored if draw=0) 0:timeLimit, 1:TBD, 2:TBD, 3:TBD
+; 2-siWinner: (ignored if draw=1)
+; 4-reasonWin: (ignored if draw=1) 0:destruction, 1:towns, 2:TBD, 3:TBD
+
+_draw = (_value % (2))/(1)
+_value = _value - _draw*(1)
+
+_drawReason = (_value % (2*4))/(2)
+_value = _value - _drawReason*(2)
+
+_siWinner = (_value % (2*4*2))/(2*4)
+_value = _value - _siWinner*(2*4)
+
+_winReason = (_value % (2*4*2*4))/(2*4*2)
+_value = _value - _winReason*(2*4*2)
+
+? (_draw == 0): goto "SideWins"
+
+_siWinner = -1
+
+#Draw
+	_textResult = "DRAW"
+	? (_drawReason == 0): _textReason = format ["Time Limit (%1h)", timeLimit/(60*60) ]
+	_siLoser = si0
+	_siWinner = si1
+	_mhqLoser = mhq select _siLoser
+	_mhqWinner = mhq select _siWinner
+	_textLoser= sideNames select _siLoser
+	_textWinner= sideNames select _siWinner
+	"1" ObjStatus "FAILED"
+	"2" ObjStatus "FAILED"
+	_gameEndType = 2
+	goto "Start"
+
+#SideWins
+	_siLoser = siEnemy select _siWinner
+	_textResult = format ["%1 Wins", sideNames select _siWinner]
+	_mhqWinner = mhq select _siWinner
+	_mhqLoser = mhq select _siLoser
+	_textWinner= sideNames select _siWinner
+	_textLoser= sideNames select _siLoser
+
+	? (_winReason == 0): _textReason = "Destruction"
+	? (_winReason == 1): _textReason = "All Towns"
+	
+	? (siPlayer == _siWinner || siPlayer == siCiv) && _winReason == 0 : "1" objStatus "DONE"
+	? (siPlayer == _siWinner || siPlayer == siCiv) && _winReason == 1 : "2" objStatus "DONE"
+	? siPlayer == _siLoser : "1" objStatus "FAILED"; "2" objStatus "FAILED"
+
+	_gameEndType = _siWinner
+
+	goto "Start"
+
+#Start
+
+; disableUserInput true
+playSound "alarm"
+TitleText[Format ["%1 - %2", _textResult, _textReason], "PLAIN", 2]
+playMusic ["rtrack1a",0]
+
+showCinemaBorder false
+
+_return = "BasesCalculated"
+goto "CalculateBases"
+#BasesCalculated
+~10
+[] exec "Player\UpdateGameOverDialogs.sqs"
+
+_cam = "camera" camCreate getPos player
+_cam cameraEffect["Internal","Back"]
+_cam camSetFOV 1
+
+; disableUserInput false
+
+#CircleLoserMHQ
+	_target = _mhqLoser
+	_textPos = (getPos _target) call funcCalcTownDirDistFromPos
+	TitleText[Format ["\n\n\n%1 MHQ - %2", _textLoser, _textPos], "PLAIN DOWN", 2]
+	_dist = 50
+	_return = "CircleLoserMCVs"
+	goto "CircleTarget"
+
+#CircleLoserMCVs
+	_index = 0
+	_mcvsLoser = MCV select _siLoser; _mcvsLoser = _mcvsLoser - [objNull]
+	_count = count _mcvsLoser; if (_count == 0) then { goto "CircleLoserBases" }
+#CircleLoserMCV
+	_pos = getPos (_mcvsLoser select _index)
+	_textPos = _pos call funcCalcTownDirDistFromPos
+	TitleText[Format ["\n\n\n%1 MCV %2 - %3", _textLoser, _index+1, _textPos], "PLAIN DOWN", 2]
+	_dist = 100
+	_target = _pos
+	_return = "CircleNextLoserMCV"
+	goto "CircleTarget"
+	#CircleNextLoserMCV
+	_index = _index + 1
+	? (_index < _count): goto "CircleLoserMCV"
+	
+#CircleLoserBases
+_index = 0
+_count = count _basesLoser
+? (_count == 0): goto "CircleWinnerMHQ"
+#CircleLoserBase
+	_pos = _basesLoser select _index
+	_textPos = _pos call funcCalcTownDirDistFromPos
+	TitleText[Format ["\n\n\n%1 Base %2 - %3", _textLoser, _index+1, _textPos], "PLAIN DOWN", 2]
+	_dist = 100
+	_target = _pos
+	_return = "CircleNextLoserBase"
+	goto "CircleTarget"
+	#CircleNextLoserBase
+	_index = _index + 1
+	? (_index < _count): goto "CircleLoserBase"
+
+#CircleWinnerMHQ
+	_target = _mhqWinner
+	_textPos = (getPos _target) call funcCalcTownDirDistFromPos
+	TitleText[Format ["\n\n\n%1 MHQ - %2", _textWinner, _textPos], "PLAIN DOWN", 2]
+	_dist = 50
+	_return = "CircleWinnerMCVs"
+	goto "CircleTarget"
+	
+#CircleWinnerMCVs
+	_index = 0
+	_mcvsWinner = MCV select _siWinner; _mcvsWinner = _mcvsWinner - [objNull]
+	_count = count _mcvsWinner; if (_count == 0) then { goto "CircleWinnerBases" }
+#CircleWinnerMCV
+	_pos = getPos (_mcvsWinner select _index)
+	_textPos = _pos call funcCalcTownDirDistFromPos
+	TitleText[Format ["\n\n\n%1 MCV %2 - %3", _textWinner, _index+1, _textPos], "PLAIN DOWN", 2]
+	_dist = 100
+	_target = _pos
+	_return = "CircleNextWinnerMCV"
+	goto "CircleTarget"
+	#CircleNextWinnerMCV
+	_index = _index + 1
+	? (_index < _count): goto "CircleWinnerMCV"
+
+#CircleWinnerBases
+_index = 0
+_count = count _basesWinner
+? (_count == 0): goto "End"
+#CircleWinnerBase
+	_pos = _basesWinner select _index
+	_textPos = _pos call funcCalcTownDirDistFromPos
+	TitleText[Format ["\n\n\n%1 Base %2 - %3", _textWinner, _index+1, _textPos], "PLAIN DOWN", 2]
+	_dist = 100
+	_target = _pos
+	_return = "CircleNextWinnerBase"
+	goto "CircleTarget"
+	#CircleNextWinnerBase
+	_index = _index + 1
+	? (_index < _count): goto "CircleWinnerBase"
+
+#End
+	~1
+	gameEndType = _gameEndType
+	~1
+	[] exec "Player\Dialog Leaderboard.sqs"
+	_timeEnd = time + 10
+	
+	@(time > _timeEnd)
+	closeDialog 0
+	~1
+	@!(boolShowVariable)
+	forceEnd
+	Exit
+
+#CircleTarget
+	_cam camSetTarget _target
+	_dir = 0
+	_pos = [-_dist*(sin _dir), -_dist*(cos _dir), _dist/2]
+	_cam camSetRelPos _pos
+	_cam camCommit 0
+	@(camCommitted _cam)
+	~0.5
+	#CircleTargetNext
+		_pos = [-_dist*(sin _dir), -_dist*(cos _dir), _dist/2]
+		_cam camSetRelPos _pos
+		_cam camCommit 2
+		@(camCommitted _cam)
+		_dir = _dir + 90
+		~2
+		? (_dir < 360): goto "CircleTargetNext"
+	goto _return
+
+#CalculateBases
+	_basesLoser = []
+	_basesWinner = []
+
+	_structTypes = structMatrix select _siLoser
+	_return2 = "LoserBasesGenerated"
+	goto "GenerateBases"
+	#LoserBasesGenerated
+	_basesLoser = _bases	
+
+	_structTypes = structMatrix select _siWinner
+	_return2 = "WinnerBasesGenerated"
+	goto "GenerateBases"
+	#WinnerBasesGenerated
+	_basesWinner = _bases	
+
+	goto _return
+
+#GenerateBases
+	_bases = []
+	_poses = []
+	_indexType = 0
+	_countTypes = count structDefs
+
+	#CheckType
+		_structs = _structTypes select _indexType
+		_structs = _structs - [objNull]
+
+		_bPrimStruct = (structDefs select _indexType) select sdOnlyMHQ
+		_indexStruct = 0
+		_countStructs = count _structs
+		? (!_bPrimStruct || _countStructs == 0): goto "CheckNextType"
+		#CheckNextStruct
+			_struct = _structs select _indexStruct
+
+			_baseFound=false
+			{ if ((_struct distance (_x select 0)) < 300) then { _x set [count _x, _struct]; _baseFound=true } } foreach _bases
+			
+			? !(_baseFound): _bases set [count _bases, [_struct]]
+
+			_indexStruct = _indexStruct + 1
+			? (_indexStruct < _countStructs): goto "CheckNextStruct"
+
+		#CheckNextType
+		_indexType = _indexType + 1
+		? (_indexType < _countTypes): goto "CheckType"
+
+	_indexBase = 0
+	_countBases = count _bases
+	? (_countBases == 0): goto _return2
+	#NextBase
+		_structs = _bases select _indexBase
+		
+		_indexStruct = 0
+		_countStructs = count _structs
+		#NextStruct
+			
+			_struct = _structs select _indexStruct
+			_pos = getPos ((_bases select _indexBase) select _indexStruct)
+			_structs set [_indexStruct, _pos]
+
+			_indexStruct = _indexStruct + 1
+			? (_indexStruct < _countStructs): goto "NextStruct"
+
+		_baseX = 0
+		_baseY = 0
+		{ _baseX = _baseX + (_x select 0); _baseY = _baseY + (_x select 1) } foreach _structs
+
+		_baseX = _baseX/_countStructs
+		_baseY = _baseY/_countStructs
+
+		_bases set [_indexBase, [_baseX, _baseY]]
+
+		_indexBase = _indexBase + 1
+		? (_indexBase < _countBases): goto "NextBase"
+
+	goto _return2
