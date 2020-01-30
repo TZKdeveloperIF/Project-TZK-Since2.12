@@ -11,7 +11,7 @@ exit
 	? !(pvWorkers0 < (maxWorkers select _si)): Exit
 	_mhq = mhq select si0
 	pvWorkers0 = pvWorkers0 + 1;PublicVariable "pvWorkers0"
-	;_gi = [groupCommander select si0, groupMatrix select si0] call funcGetIndex
+	;_gi = ( groupMatrix select si0 ) find ( groupCommander select si0 )
 	_gi = giCO select si0
 	_ut = utWorkerW
 	goto "DeployWorker"
@@ -20,7 +20,7 @@ exit
 	? !(pvWorkers1 < (maxWorkers select _si)): Exit
 	_mhq = mhq select si1
 	pvWorkers1 = pvWorkers1 + 1;PublicVariable "pvWorkers1"
-	;_gi = [groupCommander select si1, groupMatrix select si1] call funcGetIndex
+	;_gi = ( groupMatrix select si1 ) find ( groupCommander select si1 )
 	_gi = giCO select si1
 	_ut = utWorkerE
 	goto "DeployWorker"

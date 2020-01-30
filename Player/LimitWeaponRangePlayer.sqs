@@ -1,0 +1,50 @@
+; args: Fired_EventHandler_Array
+
+_vehicle = _this select 0;
+_weapon  = _this select 1;
+_muzzle  = _this select 2;
+_mode    = _this select 3;
+_ammo    = _this select 4;
+
+_shell = nearestObject [_vehicle, _ammo]
+? typeOf _shell == ammoMine : exit
+? !(local _shell) : exit
+
+; Special Treatment for Infantry Mortar
+? _ammo != "MortarShell": goto "SkipMortarCheck"
+? !(_mode in ["M16MortarLauncher_TZK_xj200","AK47MortarLauncher_TZK_xj200","AK74MortarLauncher_TZK_xj200"]): goto "SkipMortarCheck"
+	; Important. Don't forget the return value of "speed" is km/h
+	_position = getPos _shell; _velocity = velocity _shell; _dir = vectorDir _shell; _scale = 3.6 * 70/(speed _shell);
+	deleteVehicle _shell
+	_velocity = [_velocity, _scale] call funcVectorScale
+	_shell = createShell ["MortarShell", _position, _velocity, _vehicle, objNull]; _shell setVectorDirAndUp [_dir, [0,0,1]]
+#SkipMortarCheck
+
+~1
+
+? (siPlayer > 1) : exit
+? ((upgMatrix select siPlayer) select upgLongWeaponRange) == 2 : goto "check2"
+
+#Check
+  ? isNull _shell : exit
+	? (_shell distance _vehicle) > viewDistance : goto "DeleteShell"
+	~0.1
+	goto "Check"
+
+#DeleteShell
+  ; player globalchat format["Shell deleted, lifetime = %1, distance = %2", _time, _shell distance _vehicle]
+
+  ? !(isNull _shell) : deleteVehicle _shell
+  exit
+
+#Check2
+  ? isNull _shell : exit
+	? (_shell distance _vehicle) > (2 * viewDistance) : goto "DeleteShell2"
+	~0.1
+	goto "Check2"
+
+#DeleteShell2
+  ; player globalchat format["Shell deleted, lifetime = %1, distance = %2", _time, _shell distance _vehicle]
+
+  ? !(isNull _shell) : deleteVehicle _shell
+  exit

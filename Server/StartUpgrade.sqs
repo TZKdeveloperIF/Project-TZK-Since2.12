@@ -9,7 +9,7 @@ _controlCenters = [_si, stComm] call funcGetWorkingStructures
 
 ? ((upgMatrix select _si) select _upg) != 0 : exit
 
-; _gi = [groupCommander select _si, groupMatrix select _si] call funcGetIndex
+; _gi = ( groupMatrix select _si ) find ( groupCommander select _si )
 _gi = giCO select _si
 
 ? _gi == -1 : exit

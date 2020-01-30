@@ -1,6 +1,6 @@
 ; args: [unit, si, gi]
 
-? !(local LocalServerObject) : exit
+? !isServer : exit
 
 _unit = _this select 0
 _si = _this select 1
@@ -26,7 +26,7 @@ _typeVehicle = _vehicle call funcGetUnitTypeFromObject
 #SkipSupport
 
 ; RALLY 1
-_gi = [group _unit, groupMatrix select _si] call funcGetIndex
+_gi = ( groupMatrix select _si ) find ( group _unit )
 ? ((call grpSetting) select aisRallyPoint) == 0 || _unit != driver _vehicle : goto "NoRally"
 [_unit, _si, _gi] exec "Server\AI_MoveToRallyPoint.sqs"
 #WaitRallyReached
@@ -36,12 +36,12 @@ _gi = [group _unit, groupMatrix select _si] call funcGetIndex
 #NoRally
 
 ; BOARD 1
-_gi = [group _unit, groupMatrix select _si] call funcGetIndex
+_gi = ( groupMatrix select _si ) find ( group _unit )
 ? _unit != _vehicle || ((call grpSetting) select aisPickupWait) == 0 : goto "NoBoard"
 _timeCheckBoardStart = time
 _posCheckBoardStart = getPos _unit
 #Board
-_gi = [group _unit, groupMatrix select _si] call funcGetIndex
+_gi = ( groupMatrix select _si ) find ( group _unit )
 [_unit, _si, _gi, _posCheckBoardStart] exec "Server\AI_CheckBoardTransport.sqs"
 #WaitBoardReady
   ~5
@@ -52,7 +52,7 @@ _gi = [group _unit, groupMatrix select _si] call funcGetIndex
 
 ;*************************Second Rally And Board Procedure**************************
 ; RALLY 2
-_gi = [group _unit, groupMatrix select _si] call funcGetIndex
+_gi = ( groupMatrix select _si ) find ( group _unit )
 ? ((call grpSetting) select aisRallyPoint2) == 0 || _unit != driver _vehicle : goto "NoRally2"
 [_unit, _si, _gi] exec "Server\AI_MoveToRallyPoint2.sqs"
 #WaitRallyReached2
@@ -62,12 +62,12 @@ _gi = [group _unit, groupMatrix select _si] call funcGetIndex
 #NoRally2
 
 ; BOARD 2
-_gi = [group _unit, groupMatrix select _si] call funcGetIndex
+_gi = ( groupMatrix select _si ) find ( group _unit )
 ? _unit != _vehicle || ((call grpSetting) select aisPickupWait2) == 0 : goto "NoBoard2"
 _timeCheckBoardStart = time
 _posCheckBoardStart = getPos _unit
 #Board2
-_gi = [group _unit, groupMatrix select _si] call funcGetIndex
+_gi = ( groupMatrix select _si ) find ( group _unit )
 [_unit, _si, _gi, _posCheckBoardStart] exec "Server\AI_CheckBoardTransport.sqs"
 #WaitBoardReady2
   ~5
@@ -77,7 +77,7 @@ _gi = [group _unit, groupMatrix select _si] call funcGetIndex
 #NoBoard2
 
 #Exit
-_gi = [group _unit, groupMatrix select _si] call funcGetIndex
+_gi = ( groupMatrix select _si ) find ( group _unit )
 _order = (orderMatrix select _si) select _gi
 _script = (orderDefs select (_order select 1)) select 2
 [_unit, _si, _gi, _order select 2] exec format["Server\%1", _script]

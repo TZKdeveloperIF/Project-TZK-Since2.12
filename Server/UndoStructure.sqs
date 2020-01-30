@@ -2,7 +2,7 @@
 
 ;player globalchat "Entered UndoStructure.sqs"
 
-? !(Local LocalServerObject):Exit
+? !isServer:Exit
 
 _group = _this select 0
 
@@ -10,7 +10,7 @@ _si = -1
 ? _group in (groupMatrix select si0) : _si = si0
 ? _group in (groupMatrix select si1) : _si = si1
 ? _si == -1 : "ERROR: _si not si0 or si1 in UndoStructure.sqs" call fDebugLog; exit
-_gi = [_group, groupMatrix select _si] call funcGetIndex
+_gi = ( groupMatrix select _si ) find ( _group )
 ? _gi < 0 : format ["_gi is %1 in UndoStructure.sqs, _si is %2", _gi, _si] call fDebugLog; exit
 
 

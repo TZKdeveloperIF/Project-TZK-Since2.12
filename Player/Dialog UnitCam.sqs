@@ -143,34 +143,35 @@ _return = "External_Update"; goto "UpdateDialog"
 	? (handsHit _unitTracked) != 0 || !(canStand _unitTracked) : _info = _info + format[" %1 %2\n", ["", "BadAim"] select (handsHit _unitTracked), ["", "NoLegs"] select !(canStand _unitTracked)]
 	_wpns = weapons _unitTracked
 	_info = _info + "Weapons:\n"
-	{ _info = _info + format[" %1 - %2\n", _x, _unitTracked ammo _x] } foreach _wpns
+	{ _str1 = format["%1", _x] call funcStringWithoutVersion; _str2 = format["%1", _unitTracked ammo _x] call funcStringWithoutVersion; _info = _info + format[" %1 - %2\n", _str1, _str2] } foreach _wpns
 	_magsSingle = []
 	_mags = magazines _unitTracked
 	_info = _info + "Magazines:\n"
 	{ if (!(_x in _magsSingle)) then { _magsSingle set [count _magsSingle, _x] } } foreach _mags
-	{ _m = _x; _info = _info + format[" %1 - %2\n", _m, "_x == _m" count _mags] } foreach _magsSingle
+	{ _m = _x; _str1 = format["%1", _m] call funcStringWithoutVersion; _str2 = format["%1", "_x == _m" count _mags] call funcStringWithoutVersion; _info = _info + format[" %1 - %2\n", _str1, _str2] } foreach _magsSingle
   
-  ; INFO VEHICLE
+  ; INFO VEHICLE/Structure
   _v = vehicle _unitTracked 
-  ? _unitTracked == _v : goto "SkipVehicle"
-  _type = _v call funcGetUnitTypeFromObject
-  ? _type == -1 : goto "SkipVehicle"
-	_info = _info + format["\n%1\n", (unitDefs select _type) select udName]
+  ? _unitTracked == _v : goto "SkipRefresh"
+  _type = _v call funcGetUnitTypeFromObject; _bVehicle = true
+  ? _type == -1 : _bVehicle = false; _type = _v call funcGetStructTypeFromObject
+  ? _type == -1 : goto "SkipRefresh"
+	if (_bVehicle) then {_info = _info + format["\n%1\n", (unitDefs select _type) select udName]} else {_info = _info + format["\n%1\n", (structDefs select _type) select sdName]}
 	_info = _info + format["Damage: %1\n", damage _v]
 	_wpns = weapons _v
 	_info = _info + "Weapons:\n"
-	{ _info = _info + format[" %1 - %2\n", _x, _v ammo _x] } foreach _wpns
+	{ _str1 = format["%1", _x] call funcStringWithoutVersion; _str2 = format["%1", _v ammo _x] call funcStringWithoutVersion; _info = _info + format[" %1 - %2\n", _str1, _str2] } foreach _wpns
 	_magsSingle = []
 	_mags = magazines _v
 	_info = _info + "Magazines:\n"
 	{ if (!(_x in _magsSingle)) then { _magsSingle set [count _magsSingle, _x] } } foreach _mags
-	{ _m = _x; _info = _info + format[" %1 - %2\n", _m, "_x == _m" count _mags] } foreach _magsSingle
-  #SkipVehicle
+	{ _m = _x; _str1 = format["%1", _m] call funcStringWithoutVersion; _str2 = format["%1", "_x == _m" count _mags] call funcStringWithoutVersion; _info = _info + format[" %1 - %2\n", _str1, _str2] } foreach _magsSingle
+  #SkipRefresh
   
   #SkipInfo
 	ctrlSetText [_idcInfo, _info]
   
-	ctrlSetText [_idcTracking, [format["%1", _unitTracked], "No Target"] select (isNull _unitTracked) ]
+	ctrlSetText [_idcTracking, [(format["%1", _unitTracked])call funcStringWithoutVersion, "No Target"] select (isNull _unitTracked) ]
 
 	ctrlSetText [_idcShowGroups, ["Show Groups", "Hide Groups"] select bShowGroups]
 	{ ctrlShow [_x, bShowGroups] } foreach [_idcLeader, _idcMember, _idcGroupBg]

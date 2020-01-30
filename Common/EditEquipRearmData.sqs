@@ -1,12 +1,15 @@
-; args: [ object, weapons[], magazines[] ]
+; args: [ object, weapons[], magazines[], (bool reset) ]
 
 _object = _this select 0
 _weapons = _this select 1
 _magazines = _this select 2
 
+_breset = true
+? count _this > 3 : _breset = _this select 3
+
 _dataSet = false; _try = 0
 #RearmDataCheck
 ~1
-_dataSet = [_object, _weapons, _magazines, true] call funcEditRearmData; _try = _try + 1
+_dataSet = [_object, _weapons, _magazines, _breset] call funcEditRearmData; _try = _try + 1
 ? !_dataSet && _try < 100 && alive _object: goto "RearmDataCheck"
 

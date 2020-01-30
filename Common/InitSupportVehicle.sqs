@@ -8,7 +8,7 @@ _si = _this select 2
 _v setRepairCargo 0
 _v setAmmoCargo 0
 
-? !(local LocalServerObject) : goto "SkipServer"
+? !isServer : goto "SkipServer"
 
 ; SERVER
 [_v, _si] exec "Server\UpdateSupportVehicle.sqs"

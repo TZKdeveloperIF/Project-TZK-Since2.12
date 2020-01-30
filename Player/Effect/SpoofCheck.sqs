@@ -1,0 +1,34 @@
+; args: [target, ammo, whoFired]
+_target = _this select 0; _ammo = _this select 1; _shooter = _this select 2
+_missile = nearestobject [_shooter, _ammo]
+? !local _target : goto "Quit"
+? "_x=={SpoofSwitch_xj200}" count magazines _target > 0 : goto "Quit"
+
+_countMags = {"_x=={SpoofCount_xj200}" count magazines _target}; _mags = call _countMags
+? _mags == 0 : goto "Quit"
+
+_timeAbort = time + 10
+#Check
+@( (_time > 10 && time > _timeAbort) || _mags > "_x=={SpoofCount_xj200}" count magazines _target)
+? _time > 10 : goto "Quit"
+? _missile distance _target > 400: _timeAbort = time + 0.33; goto "Check"
+
+_NetWorkID = NetworkID _target; _code = format ["[UnitById %1] exec {Player\Effect\SpoofFlare.sqs}", _NetWorkID]; publicExec _code
+
+
+; create flare effect
+_count =0
+
+#LaunchLoop
+drop["kouleSvetlo","","Billboard",0.05,6,[-.2,-1,1.1],[-14-random 6,- random 2,0],0,1.8,1,0,[1],[[1,1,0.3,1]],[0,1],0,0, "\TZK_Objects\Scripts\IncomingMissile\SpoofSmokes.sqs","",_target] 
+
+drop["kouleSvetlo","","Billboard",0.05,6,[.2,-1,1.1],[14+random 6,- random 2,0],0,1.8,1,0,[1],[[1,1,0.3,1]],[0,1],0,0, "\TZK_Objects\Scripts\IncomingMissile\SpoofSmokes.sqs","",_target]
+
+_count = _count + 1
+~0.1
+?(_count<5):goto "LaunchLoop"
+
+#Quit
+exit
+
+; EOF

@@ -10,11 +10,16 @@ _object = _this select 0
 @!(mutexEditRearmData)
 mutexEditRearmData = true
 
+? time < 5 * 60 : _index = count rearmDataObj; goto "SetList"
 _index = _object call funcAddRearmData
-? _index == -1 : mutexEditRearmData = false; exit
+? _index == -2 : mutexEditRearmData = false; exit
 
-_count = count rearmData
-? _index < count(rearmData) : if (alive ((rearmData select _index)select 0)) then { _index = _count }
+_count = count rearmDataObj
+? _index == -1 : _index = _count
+? _index < _count : if (alive (rearmDataObj select _index)) then { _index = _count }
 
-rearmData set [ _index, [_object, weapons _object, magazines _object] ]
+#SetList
+rearmDataObj set [ _index, _object ]; rearmDataEquip set [ _index, [weapons _object, magazines _object] ]
 mutexEditRearmData = false
+
+; EOF

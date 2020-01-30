@@ -1,0 +1,19 @@
+; args: [_object, _type, _si]
+
+_type = _this select 1
+_si = _this select 2
+_object = _this select 0
+
+; Check Mortar. Fired_EH will limit the range, provide the marker and correct mortar's speed when player in gunner.
+? "Mortar5_Pack_Base_xj200" countType [_object] > 0: _object addEventHandler ["Fired", "[_this, 1] call funcFiredEH_Mortar"]; exit
+
+; Check M46. Treat it as common vehicle
+? "M46_W_xj200" countType [_object] == 0 : goto "SkipM46"
+_limitWeaponRangeFactor = 1
+? "M46_W_Art_xj200" countType [_object] > 0 : _limitWeaponRangeFactor = 0
+_object addEventHandler ["Fired",{[_this, 0] call funcFiredEffect}]; exit
+
+#SkipM46
+exit
+
+; EOF

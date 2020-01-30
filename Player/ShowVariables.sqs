@@ -82,7 +82,7 @@ player globalChat format ["count(vehicleAttached): %1",count(vehicleAttached)]
 ~10
 
 
-? !(local LocalServerObject): player groupChat "not server"; boolShowVariable = false; exit
+? !isServer: player groupChat "not server"; boolShowVariable = false; exit
 player globalChat "Showing server variables..."
 
 ;player globalChat format ["StructMatrix: %1", structMatrix]

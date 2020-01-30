@@ -19,7 +19,7 @@ _MCV addEventHandler ["killed", _event]
 _MCV setRepairCargo 0
 _MCV setAmmoCargo 0
 
-? !(local LocalServerObject) : goto "SkipServer"
+? !isServer : goto "SkipServer"
 
 ; SERVER
 [_MCV, _si] exec "Server\UpdateSupportVehicle.sqs"

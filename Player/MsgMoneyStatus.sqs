@@ -22,5 +22,5 @@ mutexMoneyStatus = true
 ? (groupMoneyMatrix select _si)select(_gi) == _amount : mutexMoneyStatus = false; Exit
 ? (siPlayer == _si) && (giPlayer == _gi): player groupchat format ["You have $%1", _amount]
 
-? local LocalServerObject : mutexMoneyStatus = false; Exit
+? isServer : mutexMoneyStatus = false; Exit
 (groupMoneyMatrix select _si) set [_gi, _amount]; mutexMoneyStatus = false

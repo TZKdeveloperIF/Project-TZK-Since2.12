@@ -1,0 +1,33 @@
+; args: [vehicle]
+_vehicle = _this select 0
+
+_booleStringTransport = "_vehicle in TransportActivatedVehicles"; _booleTransport = call _booleStringTransport
+
+Radio001 setTriggerText " "; Radio001 setTriggerStatements ["this", "", ""];
+Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", "[] exec {Player\Dialog TZK_Mission_Setting.sqs}", ""];
+Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""];
+Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""];
+Radio005 setTriggerText " "; Radio005 setTriggerStatements ["this", "", ""];
+Radio006 setTriggerText " "; Radio006 setTriggerStatements ["this", "", ""];
+Radio007 setTriggerText " "; Radio007 setTriggerStatements ["this", "", ""];
+Radio008 setTriggerText "Eject All Cargo"; Radio008 setTriggerStatements ["this", "[vehicle player, siPlayer] exec {Player\EjectAllCargo.sqs}", ""];
+Radio009 setTriggerText "Eject One Cargo"; Radio009 setTriggerStatements ["this", "[vehicle player, siPlayer] exec {Player\EjectOneCargo.sqs}", ""];
+if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", "[vehicle player] exec {Common\SendTransportTurnOff.sqs}", ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", "[vehicle player] exec {Common\SendTransportTurnOn.sqs}", ""];	};
+
+
+~1
+#Refresh
+~0.05
+; In OFP/Arma can't compare booleans directly. Use (A && !B) || (!A && B) here, and use !_boolean to refresh.
+
+_booleRefreshTransport = (_booleTransport && !(call _booleStringTransport)) || (!_booleTransport && (call _booleStringTransport))
+? _booleRefreshTransport : if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", "[vehicle player] exec {Common\SendTransportTurnOff.sqs}", ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", "[vehicle player] exec {Common\SendTransportTurnOn.sqs}", ""];	}
+
+? _booleRefreshTransport : _booleTransport = call _booleStringTransport
+
+_timeRefresh = time + 1
+@(time > _timeRefresh || boole_Refresh_Radio)
+? boole_Refresh_Radio : boole_Refresh_Radio = false
+? _vehicle == vehicle player : goto "Refresh"
+
+; EOF

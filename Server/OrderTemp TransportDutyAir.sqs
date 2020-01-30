@@ -32,7 +32,7 @@ call busySet
 
 _groups = groupMatrix select _si
 #Update
-	_gi = [(group _unit), _groups] call funcGetIndex
+	_gi = ( _groups ) find ( (group _unit) )
 	_transp = vehicle _unit
 	? _unit != driver _transp : goto "Sleep"
 	

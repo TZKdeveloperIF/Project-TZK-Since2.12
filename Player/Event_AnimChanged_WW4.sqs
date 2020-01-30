@@ -1,0 +1,14 @@
+; args: Animchanged-Array
+; The AnimChanged-EH is available since version 1.99.
+; This script is used for fixing bugs that in ww4-anims player can run and sprint when equipping secondary weapon even though legs badly hurt and can't stand.
+
+_unit = _this select 0
+_anim = _this select 1
+
+? canStand _unit : exit
+? !(_anim in ["weaponwalkf", "weaponwalklf", "weaponwalkrf", "weaponwalkl", "weaponwalkr", "weaponwalklb", "weaponwalkrb", "weaponrunf", "weaponrunlf", "weaponrunrf"]) : exit
+
+hint {You can't run or spring but only walk right now since your legs are badly hurt. Press "F" (default key) to switch to walk mode.}
+_unit playMove "WeaponCrouching"
+
+; EOF

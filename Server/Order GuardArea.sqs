@@ -43,7 +43,7 @@ _bMoveCorrect = true
   ? time < _timeCalcPos : goto "CheckMove"
   _timeCalcPos = time + 120
   _c = count units _unit
-  _i = [_unit, units _unit] call funcGetIndex
+  _i = ( units _unit ) find ( _unit )
   ? _iDir == 0 : _dir = _i*360/_c
   ? _iDir != 0 : _dir = (_iDir - 1)*45 - 60 + _i*120/_c
   _posDest = [(_pos select 0) + _dist*(sin _dir), (_pos select 1) + _dist*(cos _dir)]

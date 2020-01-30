@@ -13,6 +13,6 @@ _value = _value + (TotalInfoTypes*GroupsNum)*_siKiller
 _value = _value + (TotalInfoTypes*GroupsNum*10)*_siMHQ
 _value = _value + (TotalInfoTypes*GroupsNum*10*10)*_isMCV
 
-? (local LocalServerObject) : [_value] exec "Server\Info\SendInfoMsg.sqs"; exit
+? isServer : [_value] exec "Server\Info\SendInfoMsg.sqs"; exit
 
 pvInfo0 = _value; PublicVariable "pvInfo0"

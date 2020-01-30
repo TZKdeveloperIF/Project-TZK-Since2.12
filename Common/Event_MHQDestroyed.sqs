@@ -11,10 +11,10 @@ _isMCV = 0
 _groupKiller = group _killer
 
 _siKiller = -1
-_giKiller = [_groupKiller, groupMatrix select si0] call funcGetIndex
+_giKiller = ( groupMatrix select si0 ) find ( _groupKiller )
 ? (_giKiller != -1): _siKiller = si0; goto "Send"
 
-_giKiller = [_groupKiller, groupMatrix select si1] call funcGetIndex
+_giKiller = ( groupMatrix select si1 ) find ( _groupKiller )
 ? (_giKiller != -1): _siKiller = si1; goto "Send"
 
 _siKiller = siRes; goto "Send"

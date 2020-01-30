@@ -10,8 +10,8 @@ _timeDead = 0
   [_unit, siPlayer, 200] exec "Common\EventAdd_InfantryKilled.sqs"
 	[_unit] exec "Player\AddPlayerActions.sqs"
 	; The AnimChanged-EH is available since 1.99
-	; _unit addEventHandler ["AnimChanged", "_this exec {Player\Event_AnimChanged_WW4.sqs}"]
-	_unit addEventHandler ["Fired",{ [_this select 0, nearestObject[_this select 0, _this select 4] ] exec "Player\LimitWeaponRange.sqs" }]
+	_unit addEventHandler ["AnimChanged", "_this exec {Player\Event_AnimChanged_WW4.sqs}"]
+	_unit addEventHandler ["Fired",{ _this exec "Player\LimitWeaponRangePlayer.sqs" }]
 
 	_posOld = positionRespawn; _posNow = positionRespawn; _timeOld = -3600; _timeNow = -3600;
 	_unitsStart = []; _unitsStarted = []
@@ -43,7 +43,7 @@ _timeDead = 0
 	? ((groupPlayer != (groupCommander select siPlayer)) && isCommander): isCommander = false
 	
 	_mhqPos = getPos _mhq
-	_mhqNearby = [false, true] select ( ([_posNow, _mhqPos] call funcDistH) < 150 )
+	_mhqNearby = [false, true] select ( ([_posNow, _mhqPos] call funcDistH) < 150 ); if (!alive _mhq) then {_mhqNearby = false}
 	? !_mhqNearby : if ( ([positionAttach, getPos _mhq] call funcDistH) > 100 ) then {mhqNearby = false}
 	? _mhqNearby: mhqNearby = true
 ; 	mhqNearby = [false, true] select ( ( ([_posNow, siPlayer, [[utMHQ0],[utMHQ1]] select siPlayer, []] call funcGetClosestVehicle) select 1 ) < 150 )
@@ -55,7 +55,9 @@ _timeDead = 0
 	;? -1 != (vehicle player) call funcGetUnitTypeFromObject && !local vehicle player : if (player in [driver vehicle player, gunner vehicle player, commander vehicle player]) then {player action ["Eject", vehicle player]}
 	? -1 != (vehicle player) call funcGetUnitTypeFromObject && !local vehicle player : if (player == commander vehicle player) then {player action ["Eject", vehicle player]}
 	
-	setViewDistance viewDistance
+	setViewDistance viewDistance; showGPS boole_Show_GPS
+;	player sidechat format ["%1", group player]
+;	? time mod 10 > 5 : player globalchat format ["%1", (workerGroups select 0)+(townGroups select 0)]; hint format ["%1", (workerGroups select 1)+(townGroups select 1)]
 	goto "Update"
 
 
@@ -125,8 +127,8 @@ _timeDead = 0
 	[_unit] exec "Player\AddPlayerActions.sqs"
 
 	; The AnimChanged-EH is available since 1.99
-	; _unit addEventHandler ["AnimChanged", "_this exec {Player\Event_AnimChanged_WW4.sqs}"]
-	_unit addEventHandler ["Fired",{ [_this select 0, nearestObject[_this select 0, _this select 4] ] exec "Player\LimitWeaponRange.sqs" }]
+	_unit addEventHandler ["AnimChanged", "_this exec {Player\Event_AnimChanged_WW4.sqs}"]
+	_unit addEventHandler ["Fired",{ _this exec "Player\LimitWeaponRangePlayer.sqs" }]
 
 	_posOld = _posRespawn
 	_posNow = _posRespawn

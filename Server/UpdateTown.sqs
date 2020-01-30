@@ -1,7 +1,7 @@
 ; args: [trigger, trigger_thislist]
 
 ;Only run this on the server.
-? !(Local LocalServerObject): Exit
+? !isServer: Exit
 
 _trigger = _this select 0
 _thislist = _this select 1
@@ -62,7 +62,7 @@ _lastSide = _lastSetSide
   _score = _score - (_score % 1)
   ? _score < 1 : _score = 1
 
-  { _gi = [_x, groupMatrix select _si] call funcGetIndex; if (_gi != -1) then { [_score, scTown, _si, _gi] exec "Common\SendScore.sqs" } } foreach (_groups select _si)
+  { _gi = ( groupMatrix select _si ) find ( _x ); if (_gi != -1) then { [_score, scTown, _si, _gi] exec "Common\SendScore.sqs" } } foreach (_groups select _si)
   
   #SkipScore
 

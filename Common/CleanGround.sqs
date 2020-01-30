@@ -38,7 +38,7 @@ _countPos = 10
     _objectsRemoved = _objectsRemoved + 1
     ? (_objectsRemoved >= 1000): goto "ExitDisplayLast"
     ? ((_objectsRemoved % 100) != 0): goto "NoMessage"
-    ? !(local LocalServerObject): _unit groupchat Format["Removed %1 objects ...", _objectsRemoved]
+    ? !isServer: _unit groupchat Format["Removed %1 objects ...", _objectsRemoved]
     #NoMessage
     ~0.05
     goto "NextObject"
@@ -57,5 +57,5 @@ _countPos = 10
 Exit
 
 #ExitDisplayLast
-? !(local LocalServerObject): _unit groupchat Format["Removed %1 objects. (last type removed '%2')", _objectsRemoved, _typeName]
+? !isServer: _unit groupchat Format["Removed %1 objects. (last type removed '%2')", _objectsRemoved, _typeName]
 Exit

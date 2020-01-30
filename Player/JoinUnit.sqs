@@ -30,13 +30,13 @@ _idcJoinList = IDC + 1
 	_groupName = groupNameMatrix select siPlayer
 	? !(_gNameJoin in _groupName) : player groupChat "Selected group doesn't exist in this game."; goto "Update"
 	
-	_gi = [_gNameJoin, _groupName] call funcGetIndex
+	_gi = ( _groupName ) find ( _gNameJoin )
 	? _gi == -1 : player groupChat "Defination conflict between ""Player\JoinUnit.sqs"" and variable ""callsigns"". Please ask mission author to fix this."; closeDialog 0; exit
 	
 	? _group == ((groupMatrix select siPlayer) select _gi) : player groupChat "You're trying to ask AI member to join his group."; goto "Update"
 	
 	
-	_giFrom = [_group, (groupMatrix select siPlayer)] call funcGetIndex
+	_giFrom = ( (groupMatrix select siPlayer) ) find ( _group )
 	_ids = (groupUnitIDMatrix select siPlayer) select _giFrom; _uid = 0; _text = ""
 	_index = 0; _count = count _units; _unitsID = 0
 	while "_uid <= 12 && _index < _count" do { _text = format["%1", _units select _index]; if (_text == (_ids select _uid)) then {_unitsID = _unitsID + 2^_uid; _index = _index + 1}; _uid = _uid + 1; }

@@ -24,13 +24,13 @@ _si = _value/(100*3)
 
 ? upgCCdistance == _upg && _state == 2 : distMaxCC = distMaxCCUpgraded
 
-? upgGunshipRocket == _upg && _state == 2 && !(local LocalServerObject) : [_si] exec "Common\ReEquipHeliRocket.sqs"
+? upgGunshipRocket == _upg && _state == 2 && !isServer : [_si] exec "Common\ReEquipHeliRocket.sqs"
 
 ? upgWorkers == _upg && _state == 2 : maxWorkers set [_si, 20]
 
-? upgRedTopRange == _upg && _state == 2 && !(local LocalServerObject) : [_si, _upg] call loadFile "Common\ReEquip4xAA.sqf"
+? upgRedTopRange == _upg && _state == 2 && !isServer : [_si, _upg] call loadFile "Common\ReEquip4xAA.sqf"
 
-? upgRedTopMagazines == _upg && _state == 2 && !(local LocalServerObject) : [_si, _upg] call loadFile "Common\ReEquip4xAA.sqf"
+? upgRedTopMagazines == _upg && _state == 2 && !isServer : [_si, _upg] call loadFile "Common\ReEquip4xAA.sqf"
 
 ? upgPlaneAfterBurner == _upg && _state == 2 : bAfterBurner = true
 

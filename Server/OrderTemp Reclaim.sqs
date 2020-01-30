@@ -59,7 +59,7 @@ call busySet
 
 _groups = groupMatrix select _si
 #Update
-	_gi = [(group _unit), _groups] call funcGetIndex
+	_gi = ( _groups ) find ( (group _unit) )
 	_vehicle = vehicle _unit
 	_vt = _vehicle call funcGetUnitTypeFromObject
 	? _unit != _vehicle : if ((_crewnum == 1 && !isNull driver _vehicle) || (!isNull gunner _vehicle && !isNull driver _vehicle)) then {goto "EOF"}

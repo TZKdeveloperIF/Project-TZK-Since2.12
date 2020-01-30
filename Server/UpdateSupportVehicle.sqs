@@ -18,9 +18,9 @@ _unit = driver _support
 _group = group _unit
 
 _si = -1
-_gi = [_group, groupMatrix select si0] call funcGetIndex
+_gi = ( groupMatrix select si0 ) find ( _group )
 ? _gi != -1 : _si = si0; goto "SideSet"
-_gi = [_group, groupMatrix select si1] call funcGetIndex
+_gi = ( groupMatrix select si1 ) find ( _group )
 ? _gi != -1 : _si = si1; goto "SideSet"
 exit
 #SideSet

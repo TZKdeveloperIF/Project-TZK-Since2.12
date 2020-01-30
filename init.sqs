@@ -52,8 +52,8 @@ TotalInfoTypes = 100
 ; "TotalInfoTypes" could be defined in "InitInfoMsgTypes" as well.
 ; cautious: number in OFP is "Single" so it's necessary to make sure the value of "value" less than 15,000,000
 
-Cargo_v = "count (crew _v - [driver _v, gunner _v, commander _v])"
-Cargo_transp = "count (crew _transp - [driver _transp, gunner _transp, commander _transp])"
+Cargo_v = "count (crew _v - [driver _v, gunner _v, commander _v])"; Cargo_transp = "count (crew _transp - [driver _transp, gunner _transp, commander _transp])"
+Volume_transp = {call (typeOf _transp GetVehicleParam "transportSoldier")}
 grpSetting = "((aiSetting select _si) select _gi)"
 Musics0=["Track1","Track2","Track3","Track4","Track5","Track6","Track7","Track8","Track9","Track11","Track12","Track15","Track16","Frost","RTrack1a","RTrack4","RTrack5","RTrack8","RTrack9","RTrack10"]
 music0=0
@@ -132,9 +132,9 @@ upgAltFlight = _type; 			upgDefs set [_type, ["1500m Flight Altitude", [30000, 1
 
 upgVehicleAirRadar = _type; 	upgDefs set [_type, ["Vulcan/Shilka AirRadar", [8000, 100] select dev, [2, 0] select dev]]; _type=_type+1
 
-upgRedTopRange = _type; 		upgDefs set [_type, ["4xAA Missile Range", [8000, 100] select dev, [2, 0] select dev]]; _type=_type+1
+upgRedTopRange = _type; 		upgDefs set [_type, ["4xAA 4000m Missile", [8000, 100] select dev, [2, 0] select dev]]; _type=_type+1
 
-upgRedTopMagazines = _type; 	upgDefs set [_type, ["4xAA Double Mags", [8000, 100] select dev, [2, 0] select dev]]; _type=_type+1
+upgRedTopMagazines = _type; 	upgDefs set [_type, ["4xAA 2x Magazines", [8000, 100] select dev, [2, 0] select dev]]; _type=_type+1
 
 
 ; upgMatrix entry format: 0=not begun, 1=in progress, 2=upgraded
@@ -830,7 +830,7 @@ townGroups = [ [], [] ]
 workerGroups = [ [groupWorker00, groupWorker01, groupWorker02], [groupWorker10, groupWorker11, groupWorker12] ]
 timeReinforceTown = 3*60
 
-? (local LocalServerObject): [_bool_Infantry_Mode, _bool_NeutralTown_Mode, _bool_SEMod_Mode] exec "Server\InitServer.sqs"
-? !(local LocalServerObject): [] exec "Player\InitClient.sqs"
+? isServer: [_bool_Infantry_Mode, _bool_NeutralTown_Mode, _bool_SEMod_Mode] exec "Server\InitServer.sqs"
+? !isServer: [] exec "Player\InitClient.sqs"
 
 ;player globalchat "init.sqs Exit"

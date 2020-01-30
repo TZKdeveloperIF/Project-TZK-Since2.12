@@ -38,7 +38,7 @@ _vehicle addEventHandler ["killed", { _this exec "Common\Event_VehicleDestroyed.
 
 #SkipClient
 
-? !(local LocalServerObject) : exit
+? !isServer : exit
 
 ; SERVER ONLY
 ; ? _si == siRes || _gi == giTown : _vehicle addEventHandler ["killed", { _this exec "Server\SendServerTankKilled.sqs" }]

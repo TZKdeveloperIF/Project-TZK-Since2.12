@@ -1,0 +1,10 @@
+; args: none
+
+? ((upgMatrix select siPlayer) select upgTraceSpecialShell) != 2: hint "Trace Special Shell must be upgraded first!"; exit
+? ((upgMatrix select siPlayer) select upgSatCam) != 2: hint "Satellite Camera must be upgraded first!"; exit
+? count ([siPlayer, stSatRec] call funcGetWorkingStructures) == 0 : Hint "Need Working Unit Camera Receiver"; exit
+bTrackBullet = true
+
+? !boole_Refresh_Radio : boole_Refresh_Radio = true
+
+; EOF

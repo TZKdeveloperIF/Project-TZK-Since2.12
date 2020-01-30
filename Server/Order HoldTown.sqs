@@ -45,7 +45,7 @@ _bMoveCorrect = true
   _timeCalcPos = time + 120
   ? (random 1) < 0.2 : _posDest = [_posFlag, 10, 10] call funcGetRandomPos; goto "CheckMove"
   _c = count units _unit
-  _i = [_unit, units _unit] call funcGetIndex
+  _i = ( units _unit ) find ( _unit )
   ? _iDir == 0 : _dir = _i*360/_c
   ? _iDir != 0 : _dir = (_iDir - 1)*45 - 60 + _i*120/_c
   _posDest = [(_posFlag select 0) + _dist*(sin _dir), (_posFlag select 1) + _dist*(cos _dir)]

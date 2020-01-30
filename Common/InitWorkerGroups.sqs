@@ -2,7 +2,7 @@
 ; unit : group leader at start
 
 _unit = _this select 0
-? !(local LocalServerObject) : exit
+? !isServer : exit
 
 ? side _unit == sides select si0 : _si = si0
 ? side _unit == sides select si1 : _si = si1
