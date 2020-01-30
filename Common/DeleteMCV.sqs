@@ -8,4 +8,4 @@ _si = _this select 2
 ~3
 deleteVehicle _MCV
 (unitsBuilt select _si) set [ _type, -1 + ((unitsBuilt select _si) select _type) ]
-if (local LocalServerObject) then { [_si, giCO select _si, -1.5*costRepairMHQ] exec "Server\MoneySpend.sqs" }
+if isServer then { [_si, giCO select _si, -1.5*costRepairMHQ] exec "Server\MoneySpend.sqs" }

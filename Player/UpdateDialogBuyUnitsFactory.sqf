@@ -21,7 +21,7 @@ lbClear _idcFactory;
 	lbAdd [ _idcFactory, format["%1 %2", _textPos, _textQ] ] 
 } foreach _factories;
 
-_index = [_typeFactory, lastSelectedFactory select 0] call funcGetIndex;
+_index = ( lastSelectedFactory select 0 ) find ( _typeFactory );
 _factoryIndex = -1;
 if (_index == -1) then {lbSetCurSel [_idcFactory, 0]; _factoryIndex = 0} else
 {
@@ -33,7 +33,7 @@ if (_index == -1) then {lbSetCurSel [_idcFactory, 0]; _factoryIndex = 0} else
 	if (_typeFactoryLast == _typeFactory) then {_factoryIndex = _selectedFactoryIndex} else
 	{
 		_lastSelectedFactory = (lastSelectedFactory select 1) select _index;
-			_factoryIndex = [_lastSelectedFactory, _factories] call funcGetIndex;
+			_factoryIndex = ( _factories ) find ( _lastSelectedFactory );
 		if (_factoryIndex != -1) then {lbSetCurSel [_idcFactory, _factoryIndex]} else {lbSetCurSel [_idcFactory, 0]; _factoryIndex = 0};
 	};
 };

@@ -74,7 +74,7 @@ _idcParams = [_idcPar0, _idcPar1, _idcPar2]
 	? (groupPlayer == (groupCommander select _si)) : { ctrlShow [_x, true] } foreach [_idcOrderLabel, _idcSendOrder, _idcOrder]; _i = 0; while "_i < _cSettings" do { ctrlEnable [_idcSetting+_i, true]; _i=_i+1 }; goto "RefreshOrder"
 	_Superior = false; { if ( (["Commander"] + callsigns) select (((aiSetting select _si) select _x) select aisSuperior) == _groupNames select giPlayer ) then {_Superior = true} } forEach _gis
 	? _Superior : { ctrlShow [_x, true] } foreach [_idcOrderLabel, _idcSendOrder, _idcOrder]; _i = 0; while "_i < _cSettings" do { ctrlEnable [_idcSetting+_i, true]; _i=_i+1 }; goto "RefreshOrder"
-	? _Superior : { ctrlShow [_x, false] } foreach [_idcOrderLabel, _idcSendOrder, _idcOrder, _idcPar0Label, _idcPar0, _idcPar1Label, _idcPar1, _idcPar2Label, _idcPar2]; _i = 0; while "_i < _cSettings" do { ctrlEnable [_idcSetting+_i, false]; _i=_i+1 }; goto "Update"
+	? !_Superior : { ctrlShow [_x, false] } foreach [_idcOrderLabel, _idcSendOrder, _idcOrder, _idcPar0Label, _idcPar0, _idcPar1Label, _idcPar1, _idcPar2Label, _idcPar2]; _i = 0; while "_i < _cSettings" do { ctrlEnable [_idcSetting+_i, false]; _i=_i+1 }; goto "Update"
 
 	#SelectedOneGroup
 	; _order = (orderMatrix select _si) select _gi

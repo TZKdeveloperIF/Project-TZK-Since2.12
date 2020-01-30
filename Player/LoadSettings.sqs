@@ -35,4 +35,28 @@ _c = count infCustom
   _i=_i+1
   ? _i < _c : goto "CheckCustom"
 
+
+; TZK Mission Setting
+	_booleMatrix = [booleSettingEffects, booleSettingFunctions, booleSettingActions]
+	_i = 0; _Column = 3
+	#LoadBooleColumn
+	_entry = format["TZK_Mission_Setting_%1", _i]
+	? !(unitSetting loadStatus _entry) : goto "LoadNextBoole"
+	
+	_booleans = _booleMatrix select _i
+	_j = 0; _Line = 12
+		#LoadBooleLine
+		? _j < (count _booleans) : call ((_booleans select _j) + format ["= %1", (magazinesBooleRecording select _j) in (magazines unitSetting)])
+		
+		_j = _j + 1
+		? _j < _Line : goto "LoadBooleLine"
+	
+	#LoadNextBoole
+	_i = _i + 1
+	? _i < _Column : goto "LoadBooleColumn"
+	
+	
+	
 deleteVehicle unitSetting
+
+; EOF

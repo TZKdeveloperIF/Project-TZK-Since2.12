@@ -132,8 +132,11 @@ indexSendBuyUnit = 0; countSendBuyUnit = 4
 
 [] exec "Player\MsgPingServer.sqs"
 
-[] exec "Player\InitGUIControlIDs.sqs"
+
 [_si] exec "Player\InitMarkers.sqs"
+
+; Dynamic Creating Triggers, for Game-End and Radio
+[] exec "Player\DynamicInitializationTrigger.sqs"
 
 ;game has begun after this pause
 ~0.1
@@ -322,7 +325,7 @@ forceMap false
 
 ~15
 PlayMusic (Musics0 select music0); 0 FadeMusic 0.35
-; hide start pos marker after some time
+; Hide start pos marker after some time
 ~20
 20 FadeMusic 0.09
 _marker setMarkerPos hiddenMarkerPos

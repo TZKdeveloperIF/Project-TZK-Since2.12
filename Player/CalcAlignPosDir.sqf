@@ -6,7 +6,7 @@ private ["_posStruct", "_dirStruct", "_res", "_objectNearest", "_width", "_posNe
 _posStruct = _this select 2;
 _dirStruct = _this select 3;
 
-_width = (alignDefs select ([_this select 1, alignTypes] call funcGetIndex)) select 1;
+_width = (alignDefs select (( alignTypes ) find ( _this select 1 ))) select 1;
 _res = [_posStruct, _this select 0, _this select 1] call funcGetClosestStructure;
 _objectNearest = _res select 0;
 

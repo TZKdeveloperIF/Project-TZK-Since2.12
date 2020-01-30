@@ -9,12 +9,15 @@ _si = _this select 2
 mutexAddToUnitMatrix = true
 
 _list = ((unitMatrix select _si) select _indexUnitMatrix)
+? time < 5 * 60 : _i = count _list; goto "SetList"
+
 _i = _this call funcAddToUnitMatrix
 ? _i == -1 : mutexAddToUnitMatrix = false; exit
 
 _count = count _list
 ? _i < _count : if (alive(_list select _i)) then { _i = _count }
 
+#SetList
 _list set [_i, _unit]
 (unitsBuilt select _si) set [ _indexUnitMatrix, 1 + ((unitsBuilt select _si) select _indexUnitMatrix) ]
 mutexAddToUnitMatrix = false

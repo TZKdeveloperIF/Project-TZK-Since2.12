@@ -1,0 +1,33 @@
+; Dynamic Initialization is applied since TZK_3.00 in 2.01 OFP or more advanced version. With the help of new commands' support, huge definations in mission.sqm can be moved and make missions' transplant much more easily.
+
+; args: none
+
+; Triggers. The "createTrigger" command in 2.01 is global thus only ask server to do this.
+
+; Game-End Triggers. If player is Server then not do this.
+; ? isServer: goto "SkipEndTriggers"
+; skip end triggers in 2.12 missions
+goto "SkipEndTriggers"
+_end = createTrigger ["EmptyDetector", [0,0,0]]; _end setTriggerArea [0, 0, 0, false]; _end setTriggerActivation ["NONE", "PRESENT", true]; _end setTriggerType "END1"; _end setTriggerText "WestWins"; _end setTriggerStatements ["gameEndType == 0", "", ""]
+_end = createTrigger ["EmptyDetector", [0,0,0]]; _end setTriggerArea [0, 0, 0, false]; _end setTriggerActivation ["NONE", "PRESENT", true]; _end setTriggerType "END2"; _end setTriggerText "EastWins"; _end setTriggerStatements ["gameEndType == 1", "", ""]
+_end = createTrigger ["EmptyDetector", [0,0,0]]; _end setTriggerArea [0, 0, 0, false]; _end setTriggerActivation ["NONE", "PRESENT", true]; _end setTriggerType "END3"; _end setTriggerText "Draw";     _end setTriggerStatements ["gameEndType == 2", "", ""]
+
+#SkipEndTriggers
+; Radio Triggers
+@(time > 10)
+Radio001 = createTrigger ["EmptyDetector", [0,0,0]]; Radio001 setTriggerArea [0, 0, 0, false]; Radio001 setTriggerActivation ["ALPHA", "PRESENT", true]
+Radio002 = createTrigger ["EmptyDetector", [0,0,0]]; Radio002 setTriggerArea [0, 0, 0, false]; Radio002 setTriggerActivation ["BRAVO", "PRESENT", true]
+Radio003 = createTrigger ["EmptyDetector", [0,0,0]]; Radio003 setTriggerArea [0, 0, 0, false]; Radio003 setTriggerActivation ["CHARLIE", "PRESENT", true]
+Radio004 = createTrigger ["EmptyDetector", [0,0,0]]; Radio004 setTriggerArea [0, 0, 0, false]; Radio004 setTriggerActivation ["DELTA", "PRESENT", true]
+Radio005 = createTrigger ["EmptyDetector", [0,0,0]]; Radio005 setTriggerArea [0, 0, 0, false]; Radio005 setTriggerActivation ["ECHO", "PRESENT", true]
+Radio006 = createTrigger ["EmptyDetector", [0,0,0]]; Radio006 setTriggerArea [0, 0, 0, false]; Radio006 setTriggerActivation ["FOXTROT", "PRESENT", true]
+Radio007 = createTrigger ["EmptyDetector", [0,0,0]]; Radio007 setTriggerArea [0, 0, 0, false]; Radio007 setTriggerActivation ["GOLF", "PRESENT", true]
+Radio008 = createTrigger ["EmptyDetector", [0,0,0]]; Radio008 setTriggerArea [0, 0, 0, false]; Radio008 setTriggerActivation ["HOTEL", "PRESENT", true]
+Radio009 = createTrigger ["EmptyDetector", [0,0,0]]; Radio009 setTriggerArea [0, 0, 0, false]; Radio009 setTriggerActivation ["INDIA", "PRESENT", true]
+Radio000 = createTrigger ["EmptyDetector", [0,0,0]]; Radio000 setTriggerArea [0, 0, 0, false]; Radio000 setTriggerActivation ["JULIET", "PRESENT", true]
+if (siPlayer != siCiv) then {[vehicle player] exec "Player\Radio\Radio_Update_Vehicle.sqs"} else {call loadFile "Player\Radio\Radio_Update_Vehicle_Common.sqf"}
+
+exit
+#SkipTrigger
+
+; EOF

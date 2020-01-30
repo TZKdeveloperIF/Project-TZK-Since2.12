@@ -1,22 +1,11 @@
 // arguments: object
 // return: [ [wpn, ...], [mag, ...] ] ([[],[]] if not found)
 
-private [ "_return", "_found", "_i", "_c" ];
+private [ "_return", "_i" ];
 
 _return = [ [], [] ];
 
-_found = false;
-_i = 0;
-_c = count rearmData;
+_i = rearmDataObj find _this;
+if (_i != -1) then {_return set [0, (rearmDataEquip select _i) select 0]; _return set [1, (rearmDataEquip select _i) select 1]};
 
-while "!_found && _i < _c" do
-{
-  if (_this == ((rearmData select _i) select 0)) then
-  {
-    _found = true;
-    _return set [0, (rearmData select _i) select 1];
-    _return set [1, (rearmData select _i) select 2];
-  };
-  _i = _i + 1;
-};
 _return

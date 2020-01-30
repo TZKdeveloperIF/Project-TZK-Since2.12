@@ -70,7 +70,7 @@ moneySideSpent = [0, 0]
 
 
 ; ================================================================================TZK_3.00 Block================================================================================
-; 2.01 commands used. String in game will display without "_x200"
+; 2.01 commands used. String in game will display without "__xj200"
 funcStringWithoutVersion = preprocessFile {Player\StringWithoutVersion.sqf}
 ; 2.01 commands used. Controlling Fire Effects
 funcFiredEffect = preprocessFile "Player\FiredEffect.sqf"
@@ -84,7 +84,7 @@ boole_Local_Cannon_Tracer = false
 boole_Global_Cannon_Tracer = true
 boole_Local_Shell_Tracer = false
 boole_Global_Shell_Tracer = true
-boole_Dead_Tank_Burning = true
+boole_Dead_Tank_Burning = false
 boole_Nuclear_Effect = false
 
 boole_Show_GPS = false
@@ -108,7 +108,9 @@ _missionSettingEffects set [count _missionSettingEffects, ["Local  Cannon Tracer
 _missionSettingEffects set [count _missionSettingEffects, ["Global Cannon Tracer [OFF]", "Global Cannon Tracer  [ON]"]]
 _missionSettingEffects set [count _missionSettingEffects, ["Local  Shell  Tracer [OFF]", "Local  Shell  Tracer  [ON]"]]
 _missionSettingEffects set [count _missionSettingEffects, ["Global Shell  Tracer [OFF]", "Global Shell  Tracer  [ON]"]]
-_missionSettingEffects set [count _missionSettingEffects, ["Dead Tank Burning    [OFF]", "Dead Tank Burning     [ON]"]]
+
+;_missionSettingEffects set [count _missionSettingEffects, ["Dead Tank Burning    [OFF]", "Dead Tank Burning     [ON]"]]
+_missionSettingEffects set [count _missionSettingEffects, []]
 _missionSettingEffects set [count _missionSettingEffects, ["Nuclear Effect       [OFF]", "Nuclear Effect        [ON]"]]
 booleSettingEffects = [ {boole_Local_Bullet_Tracer}, {boole_Global_Bullet_Tracer}, {boole_Local_Cannon_Tracer}, {boole_Global_Cannon_Tracer}, {boole_Local_Shell_Tracer}, {boole_Global_Shell_Tracer}, {boole_Dead_Tank_Burning}, {boole_Nuclear_Effect} ]
 
@@ -128,8 +130,8 @@ booleSettingActions = [ {boole_ShowAction_TransportEject}, {boole_ShowAction_Att
 magazinesBooleRecording = ["M16", "M4", "AK47", "AK74", "M21", "SVDDragunov", "Flare", "FlareGreen", "FlareRed", "FlareYellow",  "TokarevMag", "CZ75Mag"]
 
 ; It would be better if define these "Rapid_Rearm" in InitEquipmentTypes. However some launchers aren't planned to be added into CTI right now.
-RapidRearmSecWeapons = [{CarlGustavLauncher},{AT4Launcher},{LAWLauncher},{RPGLauncher},{AALauncher},{9K32Launcher},{HyperLauncher_x200},{Kasapanos}, {SMAWLauncher_x200},{RPG16dLauncher_x200},{JavelinLauncher_x200}]
-RapidRearmSecMagazines = [{CarlGustavLauncher},{AT4Launcher},{LAWLauncher},{RPGLauncher},{AALauncher},{9K32Launcher},[{CarlGustavLauncher},{AT4Launcher}] select _si,{Kasapanos}, {SMAW_AT_x200},{RPG16d_AT_x200},{JavelinLauncher_Weak_Mag_x200}]
+RapidRearmSecWeapons = [{CarlGustavLauncher},{AT4Launcher},{LAWLauncher},{RPGLauncher},{AALauncher},{9K32Launcher},{HyperLauncher__xj200},{Kasapanos}, {SMAWLauncher__xj200},{RPG16dLauncher__xj200},{JavelinLauncher__xj200}]
+RapidRearmSecMagazines = [{CarlGustavLauncher},{AT4Launcher},{LAWLauncher},{RPGLauncher},{AALauncher},{9K32Launcher},[{CarlGustavLauncher},{AT4Launcher}] select _si,{Kasapanos}, {SMAW_AT__xj200},{RPG16d_AT__xj200},{JavelinLauncher_Weak_Mag__xj200}]
 
 
 [] exec "Player\MsgEffectKilledAircraft.sqs"; [] exec "Player\MsgEffectKilledBoat.sqs";

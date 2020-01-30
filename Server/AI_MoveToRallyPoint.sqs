@@ -13,7 +13,7 @@ call busySet
 _timeAbort = time + 10*60
 
 #Update
-_gi = [group _unit, groupMatrix select _si] call funcGetIndex
+_gi = ( groupMatrix select _si ) find ( group _unit )
   ? ((call grpSetting) select aisRallyPoint) == 0 : goto "Exit"
   ? !(alive _unit) : goto "Exit"
   ? _unit != driver vehicle _unit : goto "Exit"

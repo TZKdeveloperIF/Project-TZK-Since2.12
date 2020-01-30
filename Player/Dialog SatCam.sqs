@@ -94,7 +94,7 @@ goto "UpdateDialog"
 
 	? count ([siPlayer, stSatRec] call funcGetWorkingStructures) == 0 : goto "Exit"
 
-	ctrlSetText [IDC_TEXT_TRACKING, [format["%1", _unitTracked], "No Target"] select (isNull _unitTracked) ]
+	ctrlSetText [IDC_TEXT_TRACKING, [(format["%1", _unitTracked]) call funcStringWithoutVersion, "No Target"] select (isNull _unitTracked) ]
 
 	ctrlSetText [IDC_BTN_SHOWGROUPS, ["Show Groups", "Hide Groups"] select bShowGroups]
 	{ ctrlShow [_x, bShowGroups] } foreach [IDC_LB_GROUPLEADERS, IDC_LB_GROUPMEMBERS, IDC_BG_GROUPS]

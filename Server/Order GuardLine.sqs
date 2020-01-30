@@ -46,7 +46,7 @@ _bMoveCorrect = true
   _timeCalcPos = time + 60
   _c = count units _unit
   ? _c == 1 : _c = 2
-  _i = [_unit, units _unit] call funcGetIndex
+  _i = ( units _unit ) find ( _unit )
 	_posDest = [_wp0, [_vect, _i/(_c-1)] call funcVectorScale] call funcVectorAdd
 	_posDest = [_posDest, _vectRnd] call funcVectorAdd
 

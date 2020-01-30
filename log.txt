@@ -1,0 +1,48 @@
+================================Bugs Fixing================================
+Player\UpdatePlayer
+The boolean "_mhqNearby" should be false if MHQ not alive.
+
+
+================================Adjustment================================
+Common\InitUnitTypes
+Set Special AT soldiers using common soldier model(not sniper model whose sensitivity and camouflage is much stronger).
+
+
+================================Applying 3.00 Settings================================
+All files must use the postfix "_xj200".
+
+
+description.ext
+Standarize the text and add definitions of "TZK_Setting" dialog there.
+
+Init.sqs
+Add string Volume_transp there.
+
+Scripts including "GetIndex" and "LocalServerObject"
+isServer and find applied.
+
+UnitMatrix and RearmData
+They're applying new system to be searched. And they'll fill elements in the end of array on beginning.
+
+
+Radios...
+Player\UpdateUnitMarkers.sqs
+Replaced make it available to reset group leader's name
+
+Player\UpdatePlayerVehicle.sqs
+Entrance of Radio System and displaying switch of T80 are added.
+
+Player\Radio\Radio_Update...
+They're moved into Player\Radio folder.
+The radiio for plane is limited since no AB magazine's definition.
+
+Player\DynamicInitializationTrigger.sqs
+Set Radio Triggers. Path in 2.12 using Player\Radio\ now. Game End Triggers are not added.
+
+Common\InitUnitTypes
+Add Radio Vehicles type list.. Custom car/ship is not allowed to be bought.
+
+
+Strings...
+Player\Dialog UnitCam, SatCam, Spectator
+Applying String substract commands.

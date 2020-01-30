@@ -4,7 +4,7 @@ _vehicle = _this select 0
 ;player GroupChat "paradrop.sqs in"
 
 if !(local _vehicle) then {player GroupChat "vehicle not local"}
-? !(local LocalServerObject) : player GroupChat "executed by player"
+? !isServer : player GroupChat "executed by player"
 
 player GroupChat "Vehicle being paradropped"
 

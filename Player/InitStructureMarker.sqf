@@ -22,7 +22,7 @@ while "_i<maxStructureMarkers && !_done" do
 	{
 		_m setMarkerType _mt;
 		_m setMarkerSize [0.8, 0.8];
-		if (_mt in ["Sign_Marker_xj300", "Tower_Marker_xj300"]) then { _m setMarkerSize [0.5,0.5] };
+		if (_mt in ["Sign_Marker_xj200", "Tower_Marker_xj200"]) then { _m setMarkerSize [0.5,0.5] };
 		(StructureMarkerMapping select _si) set [_i, _structure];
 		_i = _i + 1;
 	};

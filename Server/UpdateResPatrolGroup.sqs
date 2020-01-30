@@ -1,6 +1,6 @@
 ; args: [unit, tanks, timePatrol]
 
-? !(local LocalServerObject) : exit
+? !isServer : exit
 _unit = _this select 0
 _unit disableAI "TARGET"; _unit disableAI "AUTOTARGET"; _unit disableAI "MOVE"
 
@@ -42,7 +42,7 @@ deleteVehicle _unit
 mutexInitResGroups = true
 _list = groupMatrix select _si
 _list set [count _list, _group]
-;_gi = [_group, _list] call funcGetIndex
+;_gi = ( _list ) find ( _group )
 groupsPatrol set [count groupsPatrol, _group]
 groupPatrolJoinMatrix set [count groupPatrolJoinMatrix, 0]
 mutexInitResGroups = false

@@ -46,7 +46,7 @@ _typesBoard = []; _crewnum = 0
 
 _groups = groupMatrix select _si
 #Update
-	_gi = [(group _unit), _groups] call funcGetIndex
+	_gi = ( _groups ) find ( (group _unit) )
 	_vehicle = vehicle _unit
 	? _unit != _vehicle : goto "EOF"
 

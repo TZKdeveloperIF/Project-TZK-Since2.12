@@ -11,7 +11,14 @@ _gi = _this select 2
 _pos = getPos (mhq select _si)
 _dir = getDir (mhq select _si)
 
+
 _dist = (10 + _gi*5)
 _unit playMove "Combat"
 _unit setPos [(_pos Select 0) + _dist*sin(_dir + 90), (_pos Select 1) + _dist*cos(_dir + 90), 0]
 _unit setDir _dir
+
+; 2.01 setting. Make initialize simpler in mission.sqm
+~1
+_unit allowdammage true
+
+; EOF

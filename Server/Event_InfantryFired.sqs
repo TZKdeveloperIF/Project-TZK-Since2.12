@@ -19,7 +19,7 @@ _gi = _this select 2
 
 ? (side _unit) != (sides select _si) : exit
 
-_gi = [(group _unit), (groupMatrix select _si)] call funcGetIndex
+_gi = ( (groupMatrix select _si) ) find ( (group _unit) )
 ? _gi == -1 : exit
 
 #SkipResetGroupIndex

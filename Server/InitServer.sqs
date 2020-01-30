@@ -219,9 +219,9 @@ if (_spec9exists && (local Spec9) && player != Spec9) then { Spec9 disableAI "TA
 
 ; send AI groups
 _try = 0
-{ _gi = [_x, groupMatrix select si0] call funcGetIndex; while "_try < 10 && _gi == -1" do {_gi = [_x, groupMatrix select si0] call funcGetIndex;_try = _try + 1}; [si0, _gi] exec "Server\Info\GroupIsAI.sqs" } foreach (groupAiMatrix select si0)
+{ _gi = ( groupMatrix select si0 ) find ( _x ); while "_try < 10 && _gi == -1" do {_gi = ( groupMatrix select si0 ) find ( _x );_try = _try + 1}; [si0, _gi] exec "Server\Info\GroupIsAI.sqs" } foreach (groupAiMatrix select si0)
 _try = 0
-{ _gi = [_x, groupMatrix select si1] call funcGetIndex; while "_try < 10 && _gi == -1" do {_gi = [_x, groupMatrix select si1] call funcGetIndex;_try = _try + 1}; [si1, _gi] exec "Server\Info\GroupIsAI.sqs" } foreach (groupAiMatrix select si1)
+{ _gi = ( groupMatrix select si1 ) find ( _x ); while "_try < 10 && _gi == -1" do {_gi = ( groupMatrix select si1 ) find ( _x );_try = _try + 1}; [si1, _gi] exec "Server\Info\GroupIsAI.sqs" } foreach (groupAiMatrix select si1)
 
 _si = si0
 ? !dev && count (groupMatrix select _si) == count (groupAiMatrix select _si) : startMoney set [_si, 10*(startMoney select _si)]; goto "Money0Set"

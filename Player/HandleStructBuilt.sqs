@@ -15,7 +15,7 @@ _si = _value/(1000*2)
 ? isNull gunner _object : [_object] exec "Common\AddRearmData.sqs"
 
 ; only add for non local players since it is already done on server
-? !(local LocalServerObject): [_si, _type, _object] exec "Common\AddToStructMatrix.sqs"
+? !isServer: [_si, _type, _object] exec "Common\AddToStructMatrix.sqs"
 
 
 _desc = structDefs select _type

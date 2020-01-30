@@ -39,10 +39,10 @@ _group = grpNull
 
 #CheckScore
 _siSource = -1
-_giSource = [_groupSource, groupMatrix select si0] call funcGetIndex
+_giSource = ( groupMatrix select si0 ) find ( _groupSource )
 ? _giSource != -1 : _siSource = si0; goto "CheckSendScore"
 
-_giSource = [_groupSource, groupMatrix select si1] call funcGetIndex
+_giSource = ( groupMatrix select si1 ) find ( _groupSource )
 ? _giSource != -1 : _siSource = si1; goto "CheckSendScore"
 
 exit

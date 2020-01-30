@@ -14,7 +14,7 @@ _groupName = groupNameMatrix select siPlayer
 ? _gNameJoin == (_groupName select giPlayer) : player groupChat "You're trying to ask your members to join your group."; exit
 
 
-_gi = [_gNameJoin, _groupName] call funcGetIndex
+_gi = ( _groupName ) find ( _gNameJoin )
 ? _gi == -1 : player groupChat "Defination conflict between ""Player\Order Join.sqs"" and variable ""callsigns"". Please ask mission author to fix this."; exit
 
 
@@ -52,5 +52,5 @@ player groupChat "Another Join Process is handling on Server. Please try again a
 
 
 #DONE
-? !local LocalServerObject : { if !(_x in (units groupPlayer)) then {_x removeAllEventHandlers "Killed"} } forEach _units
+? !isServer : { if !(_x in (units groupPlayer)) then {_x removeAllEventHandlers "Killed"} } forEach _units
 mutexSendJoinApply = false; exit

@@ -13,7 +13,7 @@ _MHQ addEventHandler ["killed", _event]
 _MHQ setRepairCargo 0
 _MHQ setAmmoCargo 0
 
-? !(local LocalServerObject) : goto "SkipServer"
+? !isServer : goto "SkipServer"
 
 ; SERVER
 [_MHQ, _si] exec "Server\UpdateSupportVehicle.sqs"
