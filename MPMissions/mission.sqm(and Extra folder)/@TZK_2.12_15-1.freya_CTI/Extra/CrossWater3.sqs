@@ -1,0 +1,31 @@
+;Last modified 1/26/3
+;Workaround the the bridge bug.  Use to to warp a unit to the other side.  Also handy for river crossing points.
+;Script usage:  [Unit,Town] exec "SetTownSide.sqs"
+
+_units = _this Select 0
+_bridgeDestination = _this Select 1
+
+_count = 0
+_totalUnits = Count _units
+
+#MoveUnit
+
+? damage (object 30313) > 0.99: exit
+? damage (object 30314) > 0.99: exit
+? damage (object 30315) > 0.99: exit
+? damage (object 30316) > 0.99: exit
+? damage (object 30317) > 0.99: exit
+? damage (object 30318) > 0.99: exit
+? damage (object 30319) > 0.99: exit
+? damage (object 30320) > 0.99: exit
+? damage (object 30321) > 0.99: exit
+? damage (object 30302) > 0.99: exit
+
+	_unit = _units Select _count
+	_position = GetPos _unit
+	_count = _count + 1
+
+	;Don't transport aircraft.
+	? (_position Select 2 < 3):_unit SetPos GetMarkerPos _bridgeDestination
+	? (_count < _totalUnits):goto "MoveUnit"
+
