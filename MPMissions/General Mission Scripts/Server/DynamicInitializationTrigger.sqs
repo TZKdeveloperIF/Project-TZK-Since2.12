@@ -1,0 +1,26 @@
+; Dynamic Initialization is applied since TZK_3.00 in 2.01 OFP or more advanced version. With the help of new commands' support, huge definations in mission.sqm can be moved and make missions' transplant much more easily.
+
+; args: none
+
+; Triggers. The "createTrigger" is global, but in remote clients it's default 50-radius and no-effect trigger unless be set on those clients.
+
+; Game-End Triggers
+_end = createTrigger ["EmptyDetector", [0,0,0]]; _end setTriggerArea [0, 0, 0, false]; _end setTriggerActivation ["NONE", "PRESENT", true]; _end setTriggerType "END1"; _end setTriggerText "WestWins"; _end setTriggerStatements ["gameEndType == 0", "", ""]
+_end = createTrigger ["EmptyDetector", [0,0,0]]; _end setTriggerArea [0, 0, 0, false]; _end setTriggerActivation ["NONE", "PRESENT", true]; _end setTriggerType "END2"; _end setTriggerText "EastWins"; _end setTriggerStatements ["gameEndType == 1", "", ""]
+_end = createTrigger ["EmptyDetector", [0,0,0]]; _end setTriggerArea [0, 0, 0, false]; _end setTriggerActivation ["NONE", "PRESENT", true]; _end setTriggerType "END3"; _end setTriggerText "Draw";     _end setTriggerStatements ["gameEndType == 2", "", ""]
+
+; Town Flag Triggers
+@ (count towns > 0 && time > 10)
+_count = count towns; _index = 0
+
+#SetTownTriggers
+_town = towns select _index; _flag = _town select 0
+; format: [flag,"Name",value,side]
+call format [{ Trig%1 = createTrigger [{EmptyDetector}, getPos _flag]; Trig%1 setTriggerArea [10,10,0,false]; Trig%1 setTriggerActivation [{ANY}, {PRESENT}, false]; Trig%1 setTriggerStatements [{true}, {[Trig%1, thislist] exec {Server\UpdateTown.sqs}}, {}] }, _index]
+
+_index = _index + 1
+? _index < _count : goto "SetTownTriggers"
+
+#SkipTrigger
+
+; EOF

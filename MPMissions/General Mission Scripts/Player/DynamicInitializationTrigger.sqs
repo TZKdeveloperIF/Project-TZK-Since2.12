@@ -5,9 +5,7 @@
 ; Triggers. The "createTrigger" command in 2.01 is global thus only ask server to do this.
 
 ; Game-End Triggers. If player is Server then not do this.
-; ? isServer: goto "SkipEndTriggers"
-; skip end triggers in 2.12 missions
-goto "SkipEndTriggers"
+? isServer: goto "SkipEndTriggers"
 _end = createTrigger ["EmptyDetector", [0,0,0]]; _end setTriggerArea [0, 0, 0, false]; _end setTriggerActivation ["NONE", "PRESENT", true]; _end setTriggerType "END1"; _end setTriggerText "WestWins"; _end setTriggerStatements ["gameEndType == 0", "", ""]
 _end = createTrigger ["EmptyDetector", [0,0,0]]; _end setTriggerArea [0, 0, 0, false]; _end setTriggerActivation ["NONE", "PRESENT", true]; _end setTriggerType "END2"; _end setTriggerText "EastWins"; _end setTriggerStatements ["gameEndType == 1", "", ""]
 _end = createTrigger ["EmptyDetector", [0,0,0]]; _end setTriggerArea [0, 0, 0, false]; _end setTriggerActivation ["NONE", "PRESENT", true]; _end setTriggerType "END3"; _end setTriggerText "Draw";     _end setTriggerStatements ["gameEndType == 2", "", ""]

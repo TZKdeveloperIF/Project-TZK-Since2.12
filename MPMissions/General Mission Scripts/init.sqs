@@ -1,8 +1,7 @@
 ; args : none
 
-dev = false
 debug = true
-_bool_Infantry_Mode = false; _bool_NeutralTown_Mode = false; _bool_SEMod_Mode = false
+_boole_Infantry_Mode = boole_Infantry_Mode; _boole_NeutralTown_Mode = false; _boole_SEMod_Mode = false
 
 ; CONSTANTS
 si0 = 0
@@ -221,7 +220,7 @@ groupCommander set [_si, (groupMatrix select _si) select 0]
 InitStructureReady = false
 
 _initUnitTypes = "Common\InitUnitTypes.sqs"; _initStructureTypes = "Common\InitStructureTypes.sqs"
-? _bool_Infantry_Mode : _initUnitTypes = "Common\InitUnitTypes_Infantry_Mode.sqs"; _initStructureTypes = "Common\InitStructureTypes_Infantry_Mode.sqs"
+? _boole_Infantry_Mode : _initUnitTypes = "Common\InitUnitTypes_Infantry_Mode.sqs"; _initStructureTypes = "Common\InitStructureTypes_Infantry_Mode.sqs"
 [] exec "Common\InitPublicVariables.sqs"
 [] exec _initStructureTypes
 [] exec _initUnitTypes
@@ -825,12 +824,10 @@ posCenter = [_posX/_c, _posY/_c]
 
 
 
-townGroups = [ [], [] ]
-; workerGroups = [ [], [] ]
-workerGroups = [ [groupWorker00, groupWorker01, groupWorker02], [groupWorker10, groupWorker11, groupWorker12] ]
+
 timeReinforceTown = 3*60
 
-? isServer: [_bool_Infantry_Mode, _bool_NeutralTown_Mode, _bool_SEMod_Mode] exec "Server\InitServer.sqs"
+? isServer: [_boole_Infantry_Mode, _boole_NeutralTown_Mode, _boole_SEMod_Mode] exec "Server\InitServer.sqs"
 ? !isServer: [] exec "Player\InitClient.sqs"
 
 ;player globalchat "init.sqs Exit"

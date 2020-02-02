@@ -1,0 +1,40 @@
+======================================Adjustment======================================
+--Mission.sqm
+Since mission.sqm is unique, differences in Init.sqs such as "dev" ,"boole_Infantry_Mode" and "setTerrainGrid" should be initialized in mission.sqm and decouple with general scripts(like Init.sqs).
+All mission.sqm are adding definition of "dev" and "boole_Infantry_Mode" since 2.12C. Two special grid missions in "ctilica" island have extra "setTerrainGrid".
+
+And they're applying standardized format as in 3.00 missions, applying 2.01 Arma Resistance commands. The array variables "townGroups" and "workerGroups" hence should be stated in mission.sqm too.
+
+
+mission.sqm
+In "addOns[]" the TZK addons should be "TZK_Objects_210a", "TZK_Markers_200",
+AddOns requirement still need including those weapon addons, since the mission using CfgWeapons classes from their config.cpp directly. Those addons only work as repository of models and textures don't have to be listed here.
+In definition of "resistance_Center" the initialization of "dev", "boole_Infantry_Mode", "townGroups" and "workerGroups" are added. "setTerrainGrid" are added in 2 special missions as mentioned above.
+
+Init.sqs
+The "_boole_Infantry_Mode" is using boole_Infantry_Mode. Definition of "dev", "townGroups" and "workerGroups" are moved into mission.sqm.
+
+Common\DebugLog.sqf
+Since the "LocalServerObject" is removed, the object who "saveStatus" debug info should be "resistance_Center".
+
+Player\DynamicInitialization...
+Applying new missions settings. In marker scripts structure markers added as well, this might cause problem. In this version structures won't initialize their marker and Mapping *.sqf functions won't display structures markers.
+
+Server\InitServer, DynamicInitialization...
+Copy and Paste.
+
+Server\UpdateTownGroup..., UpdateResPatrolGroup, UpdateAASystem.sqs
+They're started by new groups dynamically created by "createGroup" thus need to be modified as well.
+
+ShowTownGroups.sqs, InitTownGroups.sqs, SendWorkerGroups.sqs, MsgWorkerGroups.sqs
+They are removed. In new scripts the "publicExec" is applied. But if "publicExec" work badly these old broadcasting system might be recovered.
+
+Common\SendTextMsg
+They're edited to use leader to gain the group.
+
+
+
+--Water Level
+In some islands the water is too shallow for AI driving ships. Applying "setWaterLevel" command in 2.01 without editing *.wrp island files can't solve this problem. The sea level does raised but ship drove by AI still move slowly, and the map displaying doesn't changed after having activated this command. 
+; ? (format ["%1", GetWorld]) in ["lipovac", "ctilica"] : setWaterLevel 20 ------no use.
+

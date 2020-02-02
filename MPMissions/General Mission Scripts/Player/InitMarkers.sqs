@@ -2,14 +2,15 @@
 
 _si = _this select 0
 
-hiddenMarkerPos = [-1000, -1000]
+; hiddenMarkerPos = [-1000, -1000]
+@(MarkersCreated)
 
 ;player globalchat format["InitMarkers.sqs: _si=%1", _si]
 
 ; HIDE RESPAWN MARKERS
-"Respawn_West" setMarkerType "empty"
-"Respawn_East" setMarkerType "empty"
-"Respawn_Guerrila" setMarkerType "empty"
+; "Respawn_West" setMarkerType "empty"
+; "Respawn_East" setMarkerType "empty"
+; "Respawn_Guerrila" setMarkerType "empty"
 
 ; TOWN SIDE/AREA MARKERS
 _index = 0
@@ -24,17 +25,17 @@ _count = count towns
 	_index = _index + 1
 	? (_index < _count): goto "InitTownMarker"
 
-#HideTownMarker
-	_marker = format["Town_%1", _index]
-	_marker setMarkerPos hiddenMarkerPos
-
-	_index = _index + 1
-	? (_index < 20): goto "HideTownMarker"
+;	#HideTownMarker
+;		_marker = format["Town_%1", _index]
+;		_marker setMarkerPos hiddenMarkerPos
+;	
+;		_index = _index + 1
+;		? (_index < _count): goto "HideTownMarker"
 
 ; VEHICLE MARKERS
 vehicleMarkerMapping = [ [], [], [], [], [] ]
 _i = 0
-maxVehicleMarkers = 200
+maxVehicleMarkers = 150
 
 #HideVehicleMarker
 	
@@ -60,6 +61,30 @@ maxVehicleMarkers = 200
 
 	_i = _i + 1
 	? _i < maxVehicleMarkers : goto "HideVehicleMarker"
+	
+	; Hide RES Extra Vehicle Markers
+	while "_i < 200" do {_marker = format["Vehicle_%1_%2", siRes, _i]; _marker setMarkerPos hiddenMarkerPos; _marker setMarkerColor "ColorBlack"; _i = _i + 1}
+	
+; Structure MARKERS
+; StructureMarkerMapping need only 2 rows
+StructureMarkerMapping = [ [], [] ]
+_i = 0
+maxStructureMarkers = 50
+
+#HideStructureMarker
+	
+	_marker = format["Structure_%1_%2", si0, _i]
+	_marker setMarkerPos hiddenMarkerPos
+	_marker setMarkerColor (["ColorCyan_xj200", "ColorOrange_xj200", "", "", "ColorCyan_xj200"] select _si)
+	(StructureMarkerMapping select si0) set [_i, objNull]
+	
+	_marker = format["Structure_%1_%2", si1, _i]
+	_marker setMarkerPos hiddenMarkerPos
+	_marker setMarkerColor (["ColorOrange_xj200", "ColorCyan_xj200", "", "", "ColorOrange_xj200"] select _si)
+	(StructureMarkerMapping select si1) set [_i, objNull]
+	
+	_i = _i + 1
+	? _i < maxStructureMarkers : goto "HideStructureMarker"
 		
 ; LEADER MARKERS
 _i = 0
