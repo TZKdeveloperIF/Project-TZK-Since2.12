@@ -3,6 +3,10 @@
 ;TG0 = townGroups select si0; TG1 = townGroups select si1; WG0 = workerGroups select si0; WG1 = workerGroups select si1; GM0 = groupMatrix select si0; GM1 = groupMatrix select si1
 {deleteVehicle (leader _x)} forEach (workerGroups select si0); {deleteVehicle (leader _x)} forEach (workerGroups select si1)
 
+; local bool variable of game mode. On server they should be global
+_boole_Infantry_Mode = _this select 0; _boole_NeutralTown_Mode = _this select 1; _boole_SEMod_Mode = _this select 2;
+boole_Infantry_Mode = _boole_Infantry_Mode; boole_NeutralTown_Mode = _boole_NeutralTown_Mode; boole_SEMod_Mode = _boole_SEMod_Mode
+
 fBuildStruct = preprocessFile "Server\BuildStruct.sqf"
 funcRepairStructure = preprocessFile "Server\RepairStructure.sqf"
 funcCalcStructurePosDir = preprocessFile "Server\CalcStructurePosDir.sqf"
@@ -35,6 +39,7 @@ funcUpdateTownCheckUnits = preprocessFile "Server\UpdateTownCheckUnits.sqf"
 funcAddServerUnit = preprocessFile "Server\AddServerUnit.sqf"
 funcUpdateResStartPos = preprocessFile "Server\UpdateResStartPos.sqf"
 funcUpdateResPatrolPos = preprocessFile "Server\UpdateResPatrolPos.sqf"
+funcUpdateResPatrolTowns = preprocessFile "Server\UpdateResPatrolTowns.sqf"
 funcUpdateResPatrolDestroy = preprocessFile "Server\UpdateResPatrolDestroy.sqf"
 funcAssignJoinAI = preprocessFile "Server\AssignJoinAI.sqf"
 
@@ -239,6 +244,8 @@ _si = si1
 [] exec "Server\UpdateServer.sqs"
 [] exec "Server\SendPing.sqs"
 ; [] exec "Server\ShowTownGroups.sqs"
-[] exec "Server\MaterialEffectVehicles.sqs"
+; [] exec "Server\MaterialEffectVehicles.sqs"
+[] exec "Server\DynamicInitializationTrigger.sqs"
+[] exec "Server\DynamicInitializationGroup.sqs"
 
 ; TODO [] exec "\detector\start.sqs"

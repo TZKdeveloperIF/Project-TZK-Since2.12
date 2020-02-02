@@ -1,4 +1,5 @@
 ; args: [unit, si, gi]
+; Since TZK_3.00 and TZK_2.12 common functions/message handlers for both player and spectator are intergraded in "Player\InitClient.sqs"
 
 _unit = _this select 0
 _si = _this select 1
@@ -133,6 +134,9 @@ indexSendBuyUnit = 0; countSendBuyUnit = 4
 [] exec "Player\MsgPingServer.sqs"
 
 
+; DynamicInitializationMarker works equivalently as InitMarkers, but rely on 2.01 supported command thus separated into 2 scripts.
+MarkersCreated = false
+[] exec {Player\DynamicInitializationMarker.sqs}
 [_si] exec "Player\InitMarkers.sqs"
 
 ; Dynamic Creating Triggers, for Game-End and Radio

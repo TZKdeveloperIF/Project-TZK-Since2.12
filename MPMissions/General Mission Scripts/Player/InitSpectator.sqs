@@ -1,4 +1,5 @@
-;player globalchat "InitSpectator.sqs Enter"
+; args: unit
+; Since TZK_3.00 and TZK_2.12 common functions/message handlers for both player and spectator are intergraded in "Player\InitClient.sqs"
 
 _unit = _this
 ? (_unit != player): player globalchat "Exiting InitSpectator.sqs"; Exit
@@ -24,6 +25,9 @@ bShowAll = true
 bLockDir = true
 logSpec = []
 
+; DynamicInitializationMarker works equivalently as InitMarkers, but rely on 2.01 supported command thus separated into 2 scripts.
+MarkersCreated = false
+[] exec {Player\DynamicInitializationMarker.sqs}
 [siPlayer] exec "Player\InitMarkers.sqs"
 
 ; Dynamic Creating Triggers, for Game-End and Radio
