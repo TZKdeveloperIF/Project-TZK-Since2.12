@@ -79,14 +79,16 @@ _dirSide1 = -1
 
 #PlaceSides
 	; player globalchat format["%1 retries", _retries]
+	_vector = [_posSide1, _posSide0] call funcVectorSub; _dir = 0
+	? (_vector select 0) != 0 && (_vector select 1) != 0 : _dir = (_vector select 0) atan2 (_vector select 1)
 	
 	? _dirSide0 == -1 : _dirSide0 = random 360
-	_res0 = [utMHQ0, _posSide0, _dirSide0, si0, -1, 0, 5] call fAddVehicle
+	_res0 = [utMHQ0, _posSide0, _dir, si0, -1, 0, 5] call fAddVehicle
 	
 	? _dirSide1 == -1 : _dirSide1 = random 360
-	_res1 = [utMHQ1, _posSide1, _dirSide1, si1, -1, 0, 5] call fAddVehicle
+	_res1 = [utMHQ1, _posSide1, _dir + 180, si1, -1, 0, 5] call fAddVehicle
 
-  [ [_posSide0, _dirSide0], [_posSide1, _dirSide1] ] exec "Server\PlaceStartVehicles.sqs"
+  [ [_posSide0, _dir], [_posSide1, _dir + 180] ] exec "Server\PlaceStartVehicles.sqs"
   
   [_res0, true] exec "Common\LockVehicle.sqs"
   [_res1, true] exec "Common\LockVehicle.sqs"

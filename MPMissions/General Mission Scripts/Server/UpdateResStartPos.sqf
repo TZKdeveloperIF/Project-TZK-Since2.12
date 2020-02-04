@@ -4,7 +4,7 @@
 
 private [ "_index", "_count", "_found", "_posStart"];
 
-_index = 0; _count = 100000; _found = false;
+_index = 0; _count = 112; _found = false;
 _posStart = posCenter;
 
 

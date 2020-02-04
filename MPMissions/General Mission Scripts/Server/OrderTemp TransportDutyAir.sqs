@@ -58,7 +58,7 @@ _groups = groupMatrix select _si
 		@ ( time > _timeUp || !call temporaryCheck )
 		? !call temporaryCheck : goto "EOF"
 		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
-  
+
 		? time > _timeRepeat : [_unit, _posMove] call funcMoveAI; _timeRepeat = time + 60
 		? ([_posMove, getPos _transp] call funcDistH) > 200 : goto "MovePickup_Check"
 
@@ -126,7 +126,7 @@ _groups = groupMatrix select _si
 		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
 
 		_waitloop = _waitloop + 1; if ( _waitloop > 5 ) then { goto "MoveOut" }
-		? call Cargo_transp > 10 || ( (_type in TransportHindE) && call Cargo_transp >= 8 ) || ( (_type in (TransportSmallHeliW+TransportSmallHeliE)) && call Cargo_transp >= 5 ): goto "MoveOut"
+		? call Cargo_transp > call Volume_transp - 2 : goto "MoveOut"
 		? ((getPos _transp) select 2) > 5 : goto "PrepareLand"
 		? call Cargo_transp < 4 : goto "WaitForCargo"
 		? call Cargo_transp > _crew : _crew = call Cargo_transp; goto "WaitForCargo"

@@ -17,15 +17,12 @@ _transp = objNull
 _i = 0; _c = count _res
 	#SetAir
 	? _i >= _c : goto "AirSet"
-	_v = (_res select _i) select 0; _vt = (_v call funcGetUnitTypeFromObject); _i = _i + 1
+	_transp = (_res select _i) select 0; _vt = (_transp call funcGetUnitTypeFromObject); _i = _i + 1
 	? !(_vt in _typesTransport) : 	goto "SetAir"
-	? (isNull driver _v) : 			goto "SetAir"
-	? (damage _v) > 0.5 || ((getPos _v) select 2) > 5 || (speed _v) > 1 : 		goto "SetAir"
-	? _vt in (TransportHeliW + TransportHeliE) : 	if ( call Cargo_v >= 12 ) 	then { goto "SetAir" }
-	? _vt in (TransportPlaneW + TransportPlaneE) : 	if ( call Cargo_v >= 60 ) 	then { goto "SetAir" }
-	? _vt in (TransportSmallHeliW + TransportSmallHeliE) : if ( call Cargo_v >= 5 ) then { goto "SetAir" }
-	? _vt in TransportHindE : 						if ( call Cargo_v >= 8 ) 	then { goto "SetAir" }
-	_transports set [count _transports, _v]; goto "SetAir"
+	? (isNull driver _transp) : 			goto "SetAir"
+	? (damage _transp) > 0.5 || ((getPos _transp) select 2) > 5 || (speed _transp) > 1 : 		goto "SetAir"
+	? call Cargo_transp >= call Volume_transp : goto "SetAir"
+	_transports set [count _transports, _transp]; goto "SetAir"
 	
 	#AirSet
 	? (count _transports) == 0 : goto "CheckGround"
@@ -43,16 +40,12 @@ _transp = objNull
 _i = 0; _c = count _res
 	#SetGround
 	? _i >= _c : goto "GroundSet"
-	_v = (_res select _i) select 0; _vt = (_v call funcGetUnitTypeFromObject); _i = _i + 1
+	_transp = (_res select _i) select 0; _vt = (_transp call funcGetUnitTypeFromObject); _i = _i + 1
 	? !(_vt in _typesTransport) : 	goto "SetGround"
-	? (isNull driver _v) : 			goto "SetGround"
-	? (damage _v) > 0.5 || ((getPos _v) select 2) > 5 || (speed _v) > 1 : 		goto "SetGround"
-	? _vt in (TransportTruckW + TransportTruckE) : 	if ( call Cargo_v >= 12 ) 	then { goto "SetGround" }
-	? _vt in (Transport8APCW + Transport8APCE) : 	if ( call Cargo_v >= 8 ) 	then { goto "SetGround" }
-	? _vt in (TransportCarW + TransportCarE) : 		if ( call Cargo_v >= 3 ) 	then { goto "SetGround" }
-	? _vt in TransportShipE : 						if ( call Cargo_v >= 10 ) 	then { goto "SetGround" }
-	? _vt in (TransportShipW + TransportZodiacW + TransportZodiacE + Transport6APCW + Transport6APCE) : if ( call Cargo_v >= 6 ) 	then { goto "SetGround" }
-	_transports set [count _transports, _v]; goto "SetGround"
+	? (isNull driver _transp) : 			goto "SetGround"
+	? (damage _transp) > 0.5 || ((getPos _transp) select 2) > 5 || (speed _transp) > 1 : 		goto "SetGround"
+	? call Cargo_transp >= call Volume_transp : goto "SetGround"
+	_transports set [count _transports, _transp]; goto "SetGround"
 	
 	#GroundSet
 	? (count _transports) == 0 : goto "NoneFound"

@@ -1,10 +1,12 @@
 ; args: none
-; Groups created in-game via InitServer. Using publicExec to make clients record town/worker groups.
+; Groups created in-game via InitServer. Using publicExec or "Init" parameter of "createUnit" to make clients record town/worker groups.
+; The type of soldier is good to indicate its group types. SoldierWB/SoldierEB for town groups; SoldierWG/SoldierEG for worker groups.
 
 ; ==================================Town Groups==================================
 ; Condition about towns, if necessary. Number of town groups should rely on number of towns.
 ; Towns should have been sorted in init.sqs, however sqs works parallely thus not sure. This is a trial.
 
+_groupScript = ";this exec {Player\Msg\SetGroups.sqs}"
 _index = 0; _count = count towns
 #TownGroups
 	_town = towns select _index; _flag = _town select 0; _income = _town select 2
@@ -12,22 +14,29 @@ _index = 0; _count = count towns
 	
 	; Be cautious to set string correctly
 	; it is recommend to add more parameters in towns[] defined in mission.sqm, to help decide which script(s) should be used
-	; Side must used as a parameter. An empty group created by "createGroup" return the "unknown" side.
+	; Side must used as a parameter. An empty group created by "createGroup" return the "unknown" side. However editor can still use "format" and "substr" to gain the first 4 letters and hence gain the side.
 
 	_script = "{Server\UpdateTownGroup.sqs}"
 	? _income < 0 : _script = "{Server\UpdateTownGroup3.sqs}"
-	call format ["[_westTG, _index, west] exec %1", _script]; call format ["[_eastTG, _index, east] exec %1", _script]
+	call format ["[_westTG, _index, west] exec %1; [_eastTG, _index, east] exec %1", _script]
+	
+	_initW = (format ["leaderTG0%1=this", _index]) + _groupScript; _initE = (format ["leaderTG1%1=this", _index]) + _groupScript
+	{SoldierWB} createUnit [[-1000,0000,1000], _westTG, _initW]; {SoldierEB} createUnit [[-1000,1000,1000], _eastTG, _initE]
+	_protect = format ["leaderTG0%1 allowdammage false; leaderTG1%1 allowdammage false", _index]; call _protect
+	(townGroups select 0) set [count (townGroups select 0), _westTG]; (townGroups select 1) set [count (townGroups select 1), _eastTG]
 
 	_script = "{Server\UpdateTownGroupRes.sqs}"
 	; ? _income >= 1000 : _script = "{Server\UpdateTownGroupRes2.sqs}"
 	call format ["[_resTG, _index] exec %1", _script]
 
-	(townGroups select 0) set [count (townGroups select 0), _westTG]; (townGroups select 1) set [count (townGroups select 1), _eastTG]
-
 	? _income < 1000 : goto "SkipExtraTownGroups"
 	_westTG = createGroup west; _eastTG = createGroup east
 	_script = "{Server\UpdateTownGroup4.sqs}"
 	call format ["[_westTG, _index, west] exec %1", _script]; call format ["[_eastTG, _index, east] exec %1", _script]
+	
+	_initW = (format ["leaderTG0%1=this", _index + _count]) + _groupScript; _initE = (format ["leaderTG1%1=this", _index + _count]) + _groupScript
+	{SoldierWB} createUnit [[-1000,0000,1000], _westTG, _initW]; {SoldierEB} createUnit [[-1000,1000,1000], _eastTG, _initE]
+	_protect = format ["leaderTG0%1 allowdammage false; leaderTG1%1 allowdammage false", _index]; call _protect
 	(townGroups select 0) set [count (townGroups select 0), _westTG]; (townGroups select 1) set [count (townGroups select 1), _eastTG]
 
 	#SkipExtraTownGroups
@@ -55,6 +64,11 @@ _index = _index + 1
 _index = 0; _count = 3
 #WorkerGroups
 	_westWG = createGroup west; _eastWG = createGroup east
+	
+	_initW = (format ["leaderWG0%1=this", _index]) + _groupScript; _initE = (format ["leaderWG1%1=this", _index]) + _groupScript
+	{SoldierWG} createUnit [[-1000,0000,1000], _westWG, _initW]; {SoldierEG} createUnit [[-1000,1000,1000], _eastWG, _initE]
+	_protect = format ["leaderWG0%1 allowdammage false; leaderWG1%1 allowdammage false", _index]; call _protect
+	
 	(workerGroups select 0) set [count (workerGroups select 0), _westWG]; (workerGroups select 1) set [count (workerGroups select 1), _eastWG]
 
 	_index = _index + 1
@@ -77,58 +91,22 @@ _groupAA0=createGroup west; _groupAA1=createGroup east
 
 
 
-;===============================Broadcasting Groups==============================
-; maybe need time condition
-; publicExec equivalent to "public call the string", thus the string must be correctly defined
-
-_index = 0; _count = count (townGroups select 0)
-#TGLeaderW
-_group = (townGroups select 0) select _index; _init = format ["leaderTG0_%1 = this", _index]; _protect = format ["leaderTG0_%1 allowdammage false", _index]
-{SoldierWB} createUnit [[-1000,0000,1000], _group, _init]; call _protect
-_index = _index + 1
-? _index < _count : goto "TGLeaderW"
-
-_index = 0; _count = count (townGroups select 1)
-#TGLeaderE
-_group = (townGroups select 1) select _index; _init = format ["leaderTG1_%1 = this", _index]; _protect = format ["leaderTG1_%1 allowdammage false", _index]
-{SoldierEB} createUnit [[-1000,1000,1000], _group, _init]; call _protect
-_index = _index + 1
-? _index < _count : goto "TGLeaderE"
-
-_index = 0; _count = count (workerGroups select 0)
-#WGLeaderW
-_group = (workerGroups select 0) select _index; _init = format ["leaderWG0_%1 = this", _index]; _protect = format ["leaderWG0_%1 allowdammage false", _index]
-{SoldierWB} createUnit [[-1000,0000,1000], _group, _init]; call _protect
-_index = _index + 1
-? _index < _count : goto "WGLeaderW"
-
-_index = 0; _count = count (workerGroups select 1)
-#WGLeaderE
-_group = (workerGroups select 1) select _index; _init = format ["leaderWG1_%1 = this", _index]; _protect = format ["leaderWG1_%1 allowdammage false", _index]
-{SoldierEB} createUnit [[-1000,1000,1000], _group, _init]; call _protect
-_index = _index + 1
-? _index < _count : goto "WGLeaderE"
-
-
-
-_codeTG0 = format ["_index = 0; _count = %1; ", count (townGroups select 0)] + "while {_index < _count} do {(townGroups select 0) set [count (townGroups select 0), group (call format [{leaderTG0_%1},_index])]; _index = _index + 1}"
-_codeTG1 = format ["_index = 0; _count = %1; ", count (townGroups select 1)] + "while {_index < _count} do {(townGroups select 1) set [count (townGroups select 1), group (call format [{leaderTG1_%1},_index])]; _index = _index + 1}"
-_codeWG0 = format ["_index = 0; _count = %1; ", count (workerGroups select 0)] + "while {_index < _count} do {(workerGroups select 0) set [count (workerGroups select 0), group (call format [{leaderWG0_%1},_index])]; _index = _index + 1}"
-_codeWG1 = format ["_index = 0; _count = %1; ", count (workerGroups select 1)] + "while {_index < _count} do {(workerGroups select 1) set [count (workerGroups select 1), group (call format [{leaderWG1_%1},_index])]; _index = _index + 1}"
-
-_codeTemp0 = "groupTemp0 = leader leaderTemp0"
-_codeTemp1 = "groupTemp1 = leader leaderTemp1"
-
-publicExec _codeWG0; publicExec _codeWG1
-publicExec _codeTG0; publicExec _codeTG1
-publicExec _codeTemp0; publicExec _codeTemp1
-
-@(time > 10)
-_index = 0; _count = count (workerGroups select 0); while {_index < _count} do {(call format [{leaderWG0_%1},_index]) allowdammage true; deleteVehicle (call format [{leaderWG0_%1},_index]); _index = _index + 1}
-_index = 0; _count = count (workerGroups select 1); while {_index < _count} do {(call format [{leaderWG1_%1},_index]) allowdammage true; deleteVehicle (call format [{leaderWG1_%1},_index]); _index = _index + 1}
-
-@( ((upgMatrix select si0) select upgTownGroup ) == 2 || ((upgMatrix select si1) select upgTownGroup ) == 2 )
-_index = 0; _count = count (townGroups select 0); while {_index < _count} do {(call format [{leaderTG0_%1},_index]) allowdammage true; deleteVehicle (call format [{leaderTG0_%1},_index]); _index = _index + 1}
-_index = 0; _count = count (townGroups select 1); while {_index < _count} do {(call format [{leaderTG1_%1},_index]) allowdammage true; deleteVehicle (call format [{leaderTG1_%1},_index]); _index = _index + 1}
+;===============================Clean Up Group Leaders==============================
+~3*60
+_i = 0; _c = 3
+#CleanWGLeader
+	call format ["leaderWG0%1 allowdammage true; deleteVehicle leaderWG0%1; leaderWG0%1 = nil", _i]
+	call format ["leaderWG1%1 allowdammage true; deleteVehicle leaderWG1%1; leaderWG1%1 = nil", _i]
+	_i = _i + 1
+	~0.1
+	? _i < _c : goto "CleanWGLeader"
+	
+_i = 0; _c = (count towns) * 2
+#CleanTGLeader
+	? !isNull (call format ["leaderTG0%1", _i]) : call format ["leaderTG0%1 allowdammage true; deleteVehicle leaderTG0%1; leaderTG0%1 = nil", _i]
+	? !isNull (call format ["leaderTG1%1", _i]) : call format ["leaderTG1%1 allowdammage true; deleteVehicle leaderTG1%1; leaderTG1%1 = nil", _i]
+	_i = _i + 1
+	~0.1
+	? _i < _c : goto "CleanTGLeader"
 
 ;EOF

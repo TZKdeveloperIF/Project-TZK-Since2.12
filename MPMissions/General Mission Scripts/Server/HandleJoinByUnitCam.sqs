@@ -39,7 +39,7 @@ pvJoinReply = _value; publicVariable "pvJoinReply"
 
 ? _busy == 1 : exit
 ? _allow == 0 : mutexJoinServer = false; exit
-_groupJoin = call format ["groupJoin%1", _si]; _leaderJoin = call format ["leaderJoin%1", _si]
+_leaderJoin = call format ["leaderJoin%1", _si]; _groupJoin = group _leaderJoin
 
 
 	{_leaderJoin reveal _x} forEach _unitsToJoin

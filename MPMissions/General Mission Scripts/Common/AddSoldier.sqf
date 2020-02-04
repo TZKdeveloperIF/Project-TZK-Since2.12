@@ -20,7 +20,7 @@ _unit = objNull;
 
 _joinNull = false;
 _groupCreate = grpNull;
-if ( (_si == si0 || _si == si1) && (_gi in [-1, giTown, giWorker]) && isNull _group ) then { call format["_groupCreate = groupTemp%1", _si]; _joinNull = true };
+if ( (_si == si0 || _si == si1) && (_gi in [-1, giTown, giWorker]) && isNull _group ) then { call format["_groupCreate = group leaderTemp%1", _si]; _joinNull = true };
 if ( (_si == si0 || _si == si1) && !(_gi in [-1, giTown, giWorker]) ) then { _groupCreate = (groupMatrix select _si) select _gi };
 if ( !(isNull _group )) then { _groupCreate = _group };
 if (isNull _groupCreate) then { _err = true; format["ERROR: _groupCreate is NULL in AddSoldier.sqf"] call fDebugLog };

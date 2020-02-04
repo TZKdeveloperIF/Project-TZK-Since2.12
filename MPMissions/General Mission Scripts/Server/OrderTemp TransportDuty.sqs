@@ -21,7 +21,7 @@ _duration = 180 * ((_params select 4) + 1)
 ? (TransportDutyTypeDefs select _indexTranspType) == "APC" : 			_typesTransp = [Transport6APCW+Transport8APCW, Transport6APCE+Transport8APCE] select _si;
 ? (TransportDutyTypeDefs select _indexTranspType) == "Land" : 			_typesTransp = [Transport6APCW+Transport8APCW+TransportShipW+TransportZodiacW+TransportTruckW+TransportCarW, Transport6APCE+Transport8APCE+TransportShipE+TransportZodiacE+TransportTruckE+TransportCarE] select _si;
 ? (TransportDutyTypeDefs select _indexTranspType) == "Transport Heli" :	_typesTransp = [TransportHeliW, TransportHeliE] select _si;
-? (TransportDutyTypeDefs select _indexTranspType) == "Mi24" :			_typesTransp = [[], TransportHindE] select _si;
+? (TransportDutyTypeDefs select _indexTranspType) == "Tiger/Mi24" :			_typesTransp = [TransportTigerW, TransportHindE] select _si;
 _vehicle = vehicle _unit
 ? _unit == _vehicle : exit
 _vt = _vehicle call funcGetUnitTypeFromObject
@@ -111,7 +111,7 @@ _groups = groupMatrix select _si
 		? !call temporaryCheck : goto "EOF"
 		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
 	  
-		? call Cargo_transp > 10 || ( (_type in (TransportCarW + TransportCarE)) && call Cargo_transp+1 > CarogCar ) || ( (_type in (TransportShipW + TransportZodiacW + TransportZodiacE + Transport6APCW + Transport6APCE)) && call Cargo_transp+1 > Cargo6APC ) || ( (_type in (Transport8APCW + Transport8APCE)) && call Cargo_transp+1 > Cargo8APC ) || ( (_type in TransportShipE) && call Cargo_transp+1 > CargoShipE ) : goto "MoveEject"
+		? call Cargo_transp > call Volume_transp - 2 && call Cargo_transp > 0: goto "MoveEject"
 		? call Cargo_transp < 4 : goto "WaitForCargo"
 		? call Cargo_transp > _crew : _crew = call Cargo_transp; goto "WaitForCargo"
   

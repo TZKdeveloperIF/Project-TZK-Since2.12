@@ -5,9 +5,16 @@
 ; Triggers. The "createTrigger" is global, but in remote clients it's default 50-radius and no-effect trigger unless be set on those clients.
 
 ; Game-End Triggers
-_end = createTrigger ["EmptyDetector", [0,0,0]]; _end setTriggerArea [0, 0, 0, false]; _end setTriggerActivation ["NONE", "PRESENT", true]; _end setTriggerType "END1"; _end setTriggerText "WestWins"; _end setTriggerStatements ["gameEndType == 0", "", ""]
-_end = createTrigger ["EmptyDetector", [0,0,0]]; _end setTriggerArea [0, 0, 0, false]; _end setTriggerActivation ["NONE", "PRESENT", true]; _end setTriggerType "END2"; _end setTriggerText "EastWins"; _end setTriggerStatements ["gameEndType == 1", "", ""]
-_end = createTrigger ["EmptyDetector", [0,0,0]]; _end setTriggerArea [0, 0, 0, false]; _end setTriggerActivation ["NONE", "PRESENT", true]; _end setTriggerType "END3"; _end setTriggerText "Draw";     _end setTriggerStatements ["gameEndType == 2", "", ""]
+_end = createTrigger ["EmptyDetector", [0,0,0]]; _end setTriggerArea [0, 0, 0, false]; _end setTriggerActivation ["NONE", "PRESENT", true]; _end setTriggerType "END1"; _end setTriggerText "WestWins"; _end setTriggerStatements ["gameEndType == 0", "", ""]; pvGameEndTrigger0 = _end
+_end = createTrigger ["EmptyDetector", [0,0,0]]; _end setTriggerArea [0, 0, 0, false]; _end setTriggerActivation ["NONE", "PRESENT", true]; _end setTriggerType "END2"; _end setTriggerText "EastWins"; _end setTriggerStatements ["gameEndType == 1", "", ""]; pvGameEndTrigger1 = _end
+_end = createTrigger ["EmptyDetector", [0,0,0]]; _end setTriggerArea [0, 0, 0, false]; _end setTriggerActivation ["NONE", "PRESENT", true]; _end setTriggerType "END3"; _end setTriggerText "Draw";     _end setTriggerStatements ["gameEndType == 2", "", ""]; pvGameEndTrigger2 = _end
+
+publicVariable "pvGameEndTrigger0"; publicVariable "pvGameEndTrigger1"; publicVariable "pvGameEndTrigger2"
+
+; Radio Triggers for players
+{call format ["Radio00%1 = createTrigger [{EmptyDetector}, [0,0,0]]", _x]} forEach [0,1,2,3,4,5,6,7,8,9]
+{call format ["publicVariable {Radio00%1}", _x]} forEach [0,1,2,3,4,5,6,7,8,9]
+
 
 ; Town Flag Triggers
 @ (count towns > 0 && time > 10)
