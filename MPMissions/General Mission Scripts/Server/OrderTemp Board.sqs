@@ -34,15 +34,17 @@ call temporarySet
 ; Use busy to prevent AI from automatically moving for support in Temporary Board Order
 call busySet
 
-_typesBoard = []; _crewnum = 0
+_typesBoard = [];
 
-? (BoardTypeDefs select _indexBoard) == "Car" :		_typesBoard = [TransportCarW, TransportCarE] select _si;		_crewnum = CarogCar;
-? (BoardTypeDefs select _indexBoard) == "Truck" :	_typesBoard = [TransportTruckW, TransportTruckE] select _si;	_crewnum = CargoTruck;
-? (BoardTypeDefs select _indexBoard) == "Zodiac" :	_typesBoard = [TransportZodiacW, TransportZodiacE] select _si;	_crewnum = CargoZodiac;
-? (BoardTypeDefs select _indexBoard) == "Ship" :	_typesBoard = [TransportShipW, TransportShipE] select _si; 		_crewnum = [CargoShipW, CargoShipE] select _si;
-? (BoardTypeDefs select _indexBoard) == "APC" : 	_typesBoard = [Transport6APCW+Transport8APCW, Transport6APCE+Transport8APCE] select _si; 	_crewnum = Cargo8APC;
-? (BoardTypeDefs select _indexBoard) == "Heli" :	_typesBoard = [TransportHeliW+TransportSmallHeliW, TransportHeliE+TransportSmallHeliE+TransportHindE] select _si;					_crewnum = CargoHeli;
-? (BoardTypeDefs select _indexBoard) == "Plane" :	_typesBoard = [TransportPlaneW, TransportPlaneE] select _si;	_crewnum = CargoPlane;
+? (BoardTypeDefs select _indexBoard) == "Car" :		_typesBoard = [TransportCarW, TransportCarE] select _si;
+? (BoardTypeDefs select _indexBoard) == "Truck" :	_typesBoard = [TransportTruckW, TransportTruckE] select _si;
+? (BoardTypeDefs select _indexBoard) == "Zodiac" :	_typesBoard = [TransportZodiacW, TransportZodiacE] select _si;
+? (BoardTypeDefs select _indexBoard) == "Ship" :	_typesBoard = [TransportShipW, TransportShipE] select _si;
+? (BoardTypeDefs select _indexBoard) == "APC" : 	_typesBoard = [Transport6APCW+Transport8APCW, Transport6APCE+Transport8APCE] select _si;
+? (BoardTypeDefs select _indexBoard) == "RepairTruck" : _typesBoard = [TransportRepairTruckW, TransportRepairTruckE] select _si;
+? (BoardTypeDefs select _indexBoard) == "SupportAPC" : 	_typesBoard = [TransportSupAPCW, TransportSupAPCE] select _si;
+? (BoardTypeDefs select _indexBoard) == "Heli" :	_typesBoard = [TransportHeliW+TransportSmallHeliW+TransportTigerW, TransportHeliE+TransportSmallHeliE+TransportHindE] select _si;
+? (BoardTypeDefs select _indexBoard) == "Plane" :	_typesBoard = [TransportPlaneW, TransportPlaneE] select _si;
 
 _groups = groupMatrix select _si
 #Update
@@ -54,40 +56,32 @@ _groups = groupMatrix select _si
 	_res = [_posBoard, _radius] call funcGetNearbyTransports
 	? count _res == 0 : goto "Sleep"
 
-	_transports = []; _boardTransp = objNull; _i = 0; _c = count _res
+	_transports = []; _transp = objNull; _i = 0; _c = count _res
 	#SetTransp
 		? _i >= _c : goto "TranspSet"
-		_v = (_res select _i) select 0; _vt = (_v call funcGetUnitTypeFromObject); _i = _i + 1
+		_transp = (_res select _i) select 0; _vt = (_transp call funcGetUnitTypeFromObject); _i = _i + 1
 		? !(_vt in _typesBoard) : 	goto "SetTransp"
-		? (isNull driver _v) : 			goto "SetTransp"
-		? (damage _v) > 0.5 || ((getPos _v) select 2) > 5 || (speed _v) > 1 : 		goto "SetTransp"
-		? _vt in (TransportHeliW + TransportHeliE) : 	if ( call Cargo_v >= 12 ) 	then { goto "SetTransp" }
-		? _vt in (TransportPlaneW + TransportPlaneE) : 	if ( call Cargo_v >= 60 ) 	then { goto "SetTransp" }
-		? _vt in (TransportSmallHeliW + TransportSmallHeliE) : if ( call Cargo_v >= 5 ) then { goto "SetTransp" }
-		? _vt in TransportHindE : 						if ( call Cargo_v >= 8 ) 	then { goto "SetTransp" }
-		? _vt in (TransportTruckW + TransportTruckE) : 	if ( call Cargo_v >= 12 ) 	then { goto "SetTransp" }
-		? _vt in (Transport8APCW + Transport8APCE) : 	if ( call Cargo_v >= 8 ) 	then { goto "SetTransp" }
-		? _vt in (TransportCarW + TransportCarE) : 		if ( call Cargo_v >= 3 ) 	then { goto "SetTransp" }
-		? _vt in TransportShipE : 						if ( call Cargo_v >= 10 ) 	then { goto "SetTransp" }
-		? _vt in (TransportShipW + TransportZodiacW + TransportZodiacE + Transport6APCW + Transport6APCE) : if ( call Cargo_v >= 6 ) 	then { goto "SetTransp" }
-		_transports set [count _transports, _v]; goto "SetTransp"
-	
+		? (isNull driver _transp) : 			goto "SetTransp"
+		? (damage _transp) > 0.5 || ((getPos _transp) select 2) > 5 || (speed _transp) > 1 : 		goto "SetTransp"
+		? call Cargo_transp >= call Volume_transp : goto "SetTransp"
+		_transports set [count _transports, _transp]; goto "SetTransp"
+
 	#TranspSet
 	? count _transports == 0 : goto "Sleep"
 
-	_boardTransp = _transports select (random (count _transports) - 0.5)
-	_unit doWatch _boardTransp
-	? (_unit distance _boardTransp) < 10 : goto "Reached"
+	_transp = _transports select (random (count _transports) - 0.5)
+	_unit doWatch _transp
+	? (_unit distance _transp) < 10 : goto "Reached"
 
 	_offset = 0
 	_timeMoveAbort = time + 5*60
 	#Move_Check
-		? !(count (crew _boardTransp - [driver _boardTransp, gunner _boardTransp, commander _boardTransp]) < _crewnum) : goto "Fail"
+		? call Cargo_transp >= call Volume_transp : goto "Fail"
 		_offset = _offset + 10
-		_vect = [getPos _unit, getPos _boardTransp] call funcVectorSub
-		_dist = _unit distance _boardTransp
+		_vect = [getPos _unit, getPos _transp] call funcVectorSub
+		_dist = _unit distance _transp
 		? _dist < 0.1 : _dist = _dist + 1
-		_posMove = [getPos _boardTransp, [_vect, _offset/_dist] call funcVectorScale] call funcVectorAdd
+		_posMove = [getPos _transp, [_vect, _offset/_dist] call funcVectorScale] call funcVectorAdd
 		_posMove set [2,0]
 		[_unit, _posMove] call funcMoveStand
 
@@ -96,34 +90,34 @@ _groups = groupMatrix select _si
 		? !call temporaryCheck : goto "EOF"
 		? !(alive _unit) || _vehicle != (vehicle _unit) || time > _timeAbort : goto "EOF"
 
-		? time > _timeMoveAbort || _offset >= 50 || !(alive _boardTransp) : goto "Fail"
-		? (_unit distance _boardTransp) > 50 : goto "Move_Check"
+		? time > _timeMoveAbort || _offset >= 50 || !(alive _transp) : goto "Fail"
+		? (_unit distance _transp) > 50 : goto "Move_Check"
 
 	#Reached
 	_unit playMove "CombatGetInTank"
 	~1
 	? !alive _unit || !call temporaryCheck: goto "EOF"
-	_unit assignAsCargo _boardTransp
-	_unit moveInCargo _boardTransp
+	_unit assignAsCargo _transp
+	_unit moveInCargo _transp
 	~1
-	? !(alive _unit) || _boardTransp != vehicle _unit : goto "Fail"
+	? !(alive _unit) || _transp != vehicle _unit : goto "Fail"
 
 	#BoardSucceed
 	;	call busySet
 		_timeBoardAbort = time + 10*60
 		#WaitInCargo_Check
 		~5
-		? !(alive _unit) || !(alive _boardTransp) : goto "Quit"
-		? time > _timeBoardAbort && (speed _boardTransp) < 2 && ((getPos _boardTransp) select 2) < 2 : goto "GetOut"
-		? _boardTransp == (vehicle _unit) : goto "WaitInCargo_Check"
+		? !(alive _unit) || !(alive _transp) : goto "Quit"
+		? time > _timeBoardAbort && (speed _transp) < 2 && ((getPos _transp) select 2) < 2 : goto "GetOut"
+		? _transp == (vehicle _unit) : goto "WaitInCargo_Check"
 		goto "Quit"
 
 	#GetOut
 		unassignVehicle _unit
-		_unit action ["eject", _boardTransp]
+		_unit action ["eject", _transp]
 		  #WaitOut
 			~5
-			? !(alive _unit) || !(alive _boardTransp) : goto "Quit"
+			? !(alive _unit) || !(alive _transp) : goto "Quit"
 			? _unit != (vehicle _unit) : goto "WaitOut"
 		goto "Quit"
 

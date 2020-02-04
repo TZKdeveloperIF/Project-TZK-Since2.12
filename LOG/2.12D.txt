@@ -1,0 +1,81 @@
+======================================Bug Fixing======================================
+The 2.12C MPMissions caused "no-response" server once. What have been modified in 2.12C are mostly about mission.sqm and create-Group, Marker and Trigger.
+The group is the most suspicious. When first trying using "createGroup" in making TZK_3.00 missions the server often crashed because of mis-use of that command.
+Triggers might cause problems as well. In 2.12B server crashed(and auto-restarted by *.bat) twice in 2 days. 2.12B added the radio controlling syatem which relying on the triggers.
+
+The dedicated server using no more than 300MB memories, thus insufficient memory might not be one of the reasons. But it's not a bad idea trying to make use of "nil" to undefine variables.
+
+
+Server\DynamicInitializationGroup.sqs
+Town and Worker Groups using a leader to broadcast the group info. The script is placed in Player\Msg folder. The leader will be deleted after 3 minutes and variables will be undefined by nil.
+
+groupTemp and groupJoin
+They're using their leader to gain the group.
+
+Player\InitClient.sqs
+Initialize the "mutexRecordTownWorkerGroups" and execute the "Player\Msg\CleanUpGroups.sqs", the latter using nil to undefine variables.
+
+
+Server\DynamicInitializationTrigger.sqs
+Broadcast triggers
+Player\DynamicInitializationTrigger.sqs
+Execute another message scripts and wait till received triggers
+
+
+
+======================================Adjustment======================================
+--Radio
+Common\InitStructureTypes.sqs
+The type of ammo crates should be global for searching, when using radio rapid rearm function.
+"stAmmoCrate = _type"
+Common\InitUnitTypes.sqs
+The type of ammo Jeep/UAZ should be global too. It's optional to use anothe array like those "Radio..." but not be applied in this version.
+
+
+
+--Res Random Patrol Positions
+Server\GetAvailablePatrolPosition.sqs
+Copy and Paste
+
+Server\InitServer
+Add the execution of GetAvailablePatrolPosition.sqs
+
+Server\UpdateReStartPos.sqf
+Use random index of PatrolPositions to gain patrol position. Those positions are gained with flat, sea and forest checking thus only need to test whether they're close to player's towns.
+
+--Res Start Patrol Positions
+Server\UpdateReStartPos
+Only ask searching 112 times, not 100000 times.
+
+
+
+--Transport System
+The usage of "Volume_transp" string, which is relying on "getVehicleParam", applied, for AI to judge the volume of a vehicle.
+This modify might be the reason causing endless loop. The server used to be "FPS 0-1" when having used "pickup wait".
+
+Common\InitUnitTypes.sqs
+It's unnecessary to define global variables like "CargoCar" any longer. They're removed.
+Transport "Tiger" Helicopter is added.
+RepairTruck and SupportAPC is added into "groundTransport", AI will board them at "Pick Up Wait". The vehicle's UserActions need MOD's supporting thus not be added in "Board" (temporary) order. Players can use "Radio Controlling System" to control RepairTruck and SupportAPC.
+
+Player\Order TransportDuty Air/Ground
+Applied.
+Server\Order TransportDuty Air/Ground
+Applied
+
+Server\OrderTemp Board.sqs
+Add judgement of transport vehicle type "RepairTruck" and "SupportAPC". They're not listed in Init.sqs thus won't appear actually.
+Rename the name of local variable to apply the string for calling. "Volume_transp" is applied here.
+
+Server\OrderTemp TransportDuty(Air).sqs
+Add Tiger Helicopter and applying "Volume_transp".
+
+
+
+
+--Start MHQ direction
+Since the mission.sqm re-writed in form of applying 2.01 features, the direction of game logic are removed. Thus the init MHQ direction is changed.
+Actually it's a method asking 2 MHQ looking at each other.
+
+Server\GenerateStartPositions.sqs
+Using 2 start position to gain the direction. The command "atan2" is applied.

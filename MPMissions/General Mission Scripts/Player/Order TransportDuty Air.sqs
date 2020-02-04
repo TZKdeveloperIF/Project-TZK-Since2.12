@@ -111,9 +111,7 @@ _timeRetry = time + 60
   [_transp] exec "Common\SendTransportTurnOn.sqs"
   ? ((getPos _transp) select 2) > 5 : goto "PrepareLand"
   ? ([_pos, getPos _transp] call funcDistH) > 200 : _msg = "I'm too far from START wp. Transport duty aborted."; goto "Exit"  
-  ? call Cargo_transp > 10 : goto "MoveOut"
-  ? (_type in TransportHindE) && call Cargo_transp >= 8 : goto "MoveOut"
-  ? (_type in TransportSmallHeliW+TransportSmallHeliE) && call Cargo_transp >= 5 : goto "MoveOut" 
+  ? call Cargo_transp > call Volume_transp - 2 && call Cargo_transp > 0 : goto "MoveOut"
   ? call Cargo_transp < 4 : goto "WaitForCargo_Check"  
   ? call Cargo_transp > _crew : _crew = call Cargo_transp; goto "WaitForCargo_Check"
 

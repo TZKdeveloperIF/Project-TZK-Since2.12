@@ -194,7 +194,7 @@ _type = _type + 1
 _price = [700, 1400] select PricingMode
 unitDefs set [_type, ["Jeep Ammo", _price, _si, 20, "Jeep_xj200", "ijeepMUTT", _st, [1, _soldierW], _mAmmo, ["Common\InitAmmojeep.sqs"]] ]
 unitTypeArray set [_type, (unitDefs select _type) select udModel]
-_jeepaW = _type
+jeepaW = _type
 _type = _type + 1
 
 _price = [400, 800] select PricingMode
@@ -816,7 +816,7 @@ _type = _type + 1
 _price = [700, 1400] select PricingMode
 unitDefs set [_type, ["UAZ Ammo", _price, _si, 20, "UAZ_xj200", "iuaz", _st, [1, _soldierE], _mAmmo, ["Common\InitAmmojeep.sqs"]] ]
 unitTypeArray set [_type, (unitDefs select _type) select udModel]
-_uazaE = _type
+uazaE = _type
 _type = _type + 1
 
 _price = [400, 800] select PricingMode
@@ -1776,27 +1776,27 @@ goto "next"
 airTransport = [[], []]
 groundTransport = [[], []]
 driverAssigned = [[], []]
-TransportCarW = [ _jeepW, _jeepaW, _hummerW, _hummerW2, _hummerW3 ];	TransportCarE = [ _uazE, _uazaE, _brdmE, _brdmE2, _brdmE3 ];			CarogCar = 3
-TransportTruckW = [ _truckW ];								TransportTruckE = [ _truckE ];														CargoTruck = 12
-TransportShipE = [_boatE,_boatsupE,_boatE2,_boatE3,_boatCustomE,_boatdE,_boatatE,_boataaE,_shipE,_shipsupE,_shipE2,_shipE3,_shipCustomE,_shipdE,_shipatE,_shipaaE]; CargoShipE = 10
-TransportShipW = [_boatW,_boatsupW,_boatW2,_boatW3,_boatCustomW,_boatdW,_boatatW,_boataaW,_shipW,_shipsupW,_shipW2,_shipW3,_shipCustomW,_shipdW,_shipatW,_shipaaW]; CargoShipW = 6
-TransportZodiacW = [ _zodiacW, _zodiacShipW ];				TransportZodiacE = [ _zodiacE, _zodiacShipE ];										CargoZodiac = 6
-Transport6APCW = [ _m2a2W, _m2a2aa, _m2a2at, _m2a2d ];		Transport6APCE = [ _bmp2E, _bmp2aa, _bmp2at, _bmp2d, _bmp2Cannon ];					Cargo6APC = 6
-Transport8APCW = [ _m113W, _m113Cannon ]; 					Transport8APCE = [ _bmpE ]; 			TransportHindE = [ _mi24E, _mi24E2 ];		Cargo8APC = 8
-TransportHeliW = [ _uh60W, _uh60supW, _uh60W30,_uh60WMG2,_uh60WL ]; 	TransportHeliE = [ _mi17E, _mi17supE, _mi17E30,_mi17EL ];				CargoHeli = 12
-TransportSmallHeliW = [ _mh6j ]; 							TransportSmallHeliE = [ _mi2E ];
-TransportPlaneW = [ _c130W, _c130supportW ]; 				TransportPlaneE = [ _an12E, _an12supportE ];										CargoPlane = 60
-
-
-
+TransportCarW = [ _jeepW, jeepaW, _hummerW, _hummerW2, _hummerW3 ];	TransportCarE = [ _uazE, uazaE, _brdmE, _brdmE2, _brdmE3 ];
+TransportTruckW = [ _truckW ];								TransportTruckE = [ _truckE ];
+TransportShipE = [_boatE,_boatsupE,_boatE2,_boatE3,_boatCustomE,_boatdE,_boatatE,_boataaE,_shipE,_shipsupE,_shipE2,_shipE3,_shipCustomE,_shipdE,_shipatE,_shipaaE];
+TransportShipW = [_boatW,_boatsupW,_boatW2,_boatW3,_boatCustomW,_boatdW,_boatatW,_boataaW,_shipW,_shipsupW,_shipW2,_shipW3,_shipCustomW,_shipdW,_shipatW,_shipaaW];
+TransportZodiacW = [ _zodiacW, _zodiacShipW ];				TransportZodiacE = [ _zodiacE, _zodiacShipE ];
+Transport6APCW = [ _m2a2W, _m2a2aa, _m2a2at, _m2a2d ];		Transport6APCE = [ _bmp2E, _bmp2aa, _bmp2at, _bmp2d, _bmp2Cannon ];
+Transport8APCW = [ _m113W, _m113Cannon ]; 					Transport8APCE = [ _bmpE ];
+TransportHeliW = [ _uh60W, _uh60supW, _uh60W30,_uh60WMG2,_uh60WL ]; 	TransportHeliE = [ _mi17E, _mi17supE, _mi17E30,_mi17EL ];
+TransportSmallHeliW = [ _mh6j ]; TransportSmallHeliE = [ _mi2E ]; TransportTigerW = [_tigerW, _tigerW2]; TransportHindE = [ _mi24E, _mi24E2 ];
+TransportPlaneW = [ _c130W, _c130supportW ]; 				TransportPlaneE = [ _an12E, _an12supportE ];
+TransportRepairTruckW = [_supportTruckW, _supportTruckW2]; 		TransportRepairTruckE = [_supportTruckE, _supportTruckE2];
+TransportSupAPCW = [_supportAPCW, _supportAPCWminer, _supportAPCW1, _supportAPCWminer1]
+TransportSupAPCE = [_supportAPCE, _supportAPCEminer, _supportAPCE1, _supportAPCEminer1]
 TransportActivatedVehicles = []
 
 _si = si0
 airTransport set [ _si, TransportHeliW + TransportSmallHeliW + TransportPlaneW ]
-groundTransport set [ _si, TransportCarW + TransportTruckW + TransportShipW + TransportZodiacW + Transport6APCW + Transport8APCW ]
+groundTransport set [ _si, TransportCarW + TransportTruckW + TransportShipW + TransportZodiacW + Transport6APCW + Transport8APCW + TransportRepairTruckW + TransportSupAPCW ]
 _si = si1
 airTransport set [ _si, TransportHeliE + TransportSmallHeliE + TransportHindE + TransportPlaneE ]
-groundTransport set [ _si, TransportCarE + TransportTruckE + TransportShipE + TransportZodiacE + Transport6APCE + Transport8APCE ]
+groundTransport set [ _si, TransportCarE + TransportTruckE + TransportShipE + TransportZodiacE + Transport6APCE + Transport8APCE + TransportRepairTruckE + TransportSupAPCE ]
 
 ; SUPPORT VEHICLES
 ; AI units will get close to them for heal, repair and rearm. planeSupport defines support planes used in plane's support

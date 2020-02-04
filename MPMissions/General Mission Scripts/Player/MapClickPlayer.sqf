@@ -15,7 +15,7 @@ _processed = false;
 // TODO - remove
 // format["HEJ %1", name player] call funcSideMsg;
 // [playerSide, "hq"] globalchat "GLOBAL";
-// (leader groupTemp0) sidechat "TEST";
+
 // (leader grpNull) sidechat "TEST";
 // player globalchat format["HighObjects = %1", [_pos, 10, 200] call funcHighObjects];
 // player globalchat format["InForest = %1", [_pos] call funcInForest];

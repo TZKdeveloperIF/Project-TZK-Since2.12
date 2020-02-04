@@ -1,0 +1,19 @@
+; args: none
+
+PatrolPositions = []
+_c = 50; _i = -_c
+
+#GetRows
+_j = -_c
+	#GetPositions
+	_x = (posCenter select 0) + 100*_i; _y = (posCenter select 1) + 100*_j
+	if ([[_x, _y]] call funcStartPos) then {PatrolPositions set [count PatrolPositions, [_x, _y]]}
+	_j = _j + 1
+	~ 0.05
+	? _j < _c : goto "GetPositions"
+	
+_i = _i + 1
+
+? _i < _c : goto "GetRows"
+
+; EOF

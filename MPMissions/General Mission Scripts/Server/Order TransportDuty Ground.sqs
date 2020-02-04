@@ -80,7 +80,7 @@ doStop (vehicle _unit)
   ? !(alive _unit) : exit
   ? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
   ? !(alive _transp) || _transp != (vehicle _unit) : goto "Patrol"
-  ? call Cargo_transp > 10 || ( (_type in (TransportCarW + TransportCarE)) && call Cargo_transp+1 > CarogCar ) || ( (_type in (TransportShipW + TransportZodiacW + TransportZodiacE + Transport6APCW + Transport6APCE)) && call Cargo_transp+1 > Cargo6APC ) || ( (_type in (Transport8APCW + Transport8APCE)) && call Cargo_transp+1 > Cargo8APC ) || ( (_type in TransportShipE) && call Cargo_transp+1 > CargoShipE ) : goto "MoveEject"
+  ? call Cargo_transp > call Volume_transp - 2 && call Cargo_transp > 0 : goto "MoveEject"
   ? call Cargo_transp < 4 : goto "WaitForCargo"
   ? call Cargo_transp > _crew : _crew = call Cargo_transp; goto "WaitForCargo"
   
