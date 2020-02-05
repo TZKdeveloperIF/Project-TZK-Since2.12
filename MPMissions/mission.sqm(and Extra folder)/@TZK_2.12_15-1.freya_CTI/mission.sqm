@@ -3,42 +3,58 @@ class Mission
 {
 	addOns[]=
 	{
-		"6g30",
-		"ah64",
-		"bis_resistance",
-		"bis_weaponpack",
-		"bizon",
-		"brdm",
-		"ch47d",
-		"g36a",
-		"hmmwv",
-		"mm1",
+		"6G30",
+		"AH64",
+		"BIS_Resistance",
+		"BIS_WeaponPack",
+		"Bizon",
+		"Brdm",
+		"Ch47D",
+		"G36a",
+		"HMMWV",
+		"MM1",
 		"oh58",
-		"su25",
-		"vulcan",
-		"xms",
-		"bradley",
-		"bmp2",
-		"kolo",
-		"hunter",
+		"Su25",
+		"Vulcan",
+		"XMS",
+		"Bradley",
+		"BMP2",
+		"KOLO",
+		"Hunter",
 		"pwr_parachute_fix",
 		"cwkzodiac",
 		"baracken",
+		"kegak107",
 		"ctiobjects02",
+		"PackMortar",
 		"aek919k",
+		"VNgroza1gl",
+		"vngroza1",
+		"VNgroza1scope",
+		"VNgroza1sscope",
+		"VNgroza1s",
+		"JahSG551",
+		"SniperKSVK",
+		"KYL_KASAP",
 		"dvd_v2_addon",
-		"gst_kawaP",
-		"rktmod",
+		"mVss",
+		"RFSVUa",
+		"eudef_mp5sd6soldier",
+		"GST_KawaP",
+		"RKTMod",
+		"pcjetski",
 		"editorupdate102",
 		"TZK_Objects_210a",
 		"TZK_Markers_200",
+		"Mi2NO",
 		"JAM_Magazines", "JAM_Sounds", "C8X_RUSS", "C8X_Magazines", "ICP_weaponpack", "LSR_uswp",
-		"psy_mcar",
+		"psy_mcar", "INQ_M1A2", "M109A6", "CoCHWK_2S19", "mfm_cit_sprutsd",
 		"freya"
 	};
 	addOnsAuto[]=
 	{
-		"TZK_Objects_210a"
+		"TZK_Objects_210a",
+		"bis_resistance"
 	};
 	randomSeed=42499;
 	class Intel
@@ -55,7 +71,7 @@ class Mission
 	};
 	class Groups
 	{
-		items=49;
+		items=113;
 		class Item0
 		{
 			side="GUER";
@@ -71,7 +87,7 @@ class Mission
 					leader=1;
 					skill=0.200000;
 					text="resistance_Center";
-					init="dev = false; boole_Infantry_Mode = false; gameEndType = -1; towns=[]; townGroups = [ [], [] ]; workerGroups = [ [], [] ]; startLocsRandom=[]; startLocsFixed=[]; startLocsCoop=[]; [35986,35755,35418, 36324,35988,35757,35467, 30313,30314,30315,30316,30317,30318,30319,30320,30321,30302, 57844,57845,57846,57847,57848,57849, 57900,57901,57902,57903, 56067,56068,56069, 59913,59914, 55320,55204,55073, 55607,55451,55321,55205, 54379,54381,54382,54383, 54437,54438,54439, 60017,60019,60020,60021,60022,60023,60024,60025,60026,60027,60028, 56421,56267,56128,55958,55791,55627, 55464,55331,55211,55098, 54765,54545,54213,53936,53721, 60073,60074,60075,60076,60077,60078,60079,60080,60081,60082,60083, 18452,18453,18454,18455,18456,18457,18458,18459,18460,18461, 18484,18485,18486,18487,18488,18489,18490,18491, 1039,1040,1041,1042,1043,1044,1045,1046,1047,1048,1049, 1092,1093,1094,1095,1096, 6768,6769,6770,6771,6772,6773,6774] exec {Server\InitRepairableObjects.sqs}; [] exec {Server\UpdateWeather.sqs}";
+					init="dev = false; boole_Infantry_Mode = false; gameEndType = -1; towns=[]; townGroups = [ [], [] ]; workerGroups = [ [], [] ]; startLocsRandom=[]; startLocsFixed=[]; startLocsCoop=[]; [] exec {Server\InitRepairableObjects.sqs}; [] exec {Server\UpdateWeather.sqs}";
 				};
 			};
 		};
@@ -83,15 +99,15 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={-1000.000000,0.000000,0.000000};
-					id=0;
+					position[]={2424.584961,19.980000,11878.597656};
+					id=2;
 					side="WEST";
 					vehicle="CommanderW_xj200";
 					player="PLAY CDG";
 					leader=1;
 					rank="CAPTAIN";
 					skill=1.000000;
-					init="GroupAlpha0=group this; this allowdammage false";
+					init="GroupAlpha0=group this";
 				};
 			};
 		};
@@ -103,15 +119,15 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={-1000.000000,0.000000,0.000000};
-					id=0;
+					position[]={2429.076660,19.980000,11878.507813};
+					id=3;
 					side="WEST";
 					vehicle="LeaderW_xj200";
 					player="PLAY CDG";
 					leader=1;
 					rank="CAPTAIN";
 					skill=1.000000;
-					init="GroupBravo0=group this; this allowdammage false";
+					init="GroupBravo0=group this";
 				};
 			};
 		};
@@ -123,15 +139,15 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={-1000.000000,0.000000,0.000000};
-					id=0;
+					position[]={2432.953125,19.980000,11878.353516};
+					id=4;
 					side="WEST";
 					vehicle="LeaderW_xj200";
 					player="PLAY CDG";
 					leader=1;
 					rank="CAPTAIN";
 					skill=1.000000;
-					init="GroupCharlie0=group this; this allowdammage false";
+					init="GroupCharlie0=group this";
 				};
 			};
 		};
@@ -143,15 +159,15 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={-1000.000000,0.000000,0.000000};
-					id=0;
+					position[]={2436.996094,19.980000,11878.480469};
+					id=5;
 					side="WEST";
 					vehicle="LeaderW_xj200";
 					player="PLAY CDG";
 					leader=1;
 					rank="CAPTAIN";
 					skill=1.000000;
-					init="GroupDelta0=group this; this allowdammage false";
+					init="GroupDelta0=group this";
 				};
 			};
 		};
@@ -163,15 +179,15 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={-1000.000000,0.000000,0.000000};
-					id=0;
+					position[]={2441.079590,19.980000,11878.585938};
+					id=6;
 					side="WEST";
 					vehicle="LeaderW_xj200";
 					player="PLAY CDG";
 					leader=1;
 					rank="CAPTAIN";
 					skill=1.000000;
-					init="GroupEcho0=group this; this allowdammage false";
+					init="GroupEcho0=group this";
 				};
 			};
 		};
@@ -183,15 +199,16 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={-1000.000000,0.000000,0.000000};
-					id=0;
+					position[]={2445.121582,19.980000,11878.501953};
+					special="NONE";
+					id=7;
 					side="WEST";
 					vehicle="LeaderW_xj200";
 					player="PLAY CDG";
 					leader=1;
 					rank="CAPTAIN";
 					skill=1.000000;
-					init="GroupFoxtrot0=group this; this allowdammage false";
+					init="GroupFoxtrot0=group this";
 				};
 			};
 		};
@@ -203,155 +220,163 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={-1000.000000,0.000000,0.000000};
-					id=0;
+					position[]={2451.146729,19.980000,11878.695313};
+					special="NONE";
+					id=8;
 					side="WEST";
 					vehicle="LeaderW_xj200";
 					player="PLAY CDG";
 					leader=1;
 					rank="CAPTAIN";
 					skill=1.000000;
-					init="GroupGolf0=group this; this allowdammage false";
+					init="GroupGolf0=group this";
 				};
 			};
 		};
 		class Item8
 		{
-			side="WEST";
+			side="EAST";
 			class Vehicles
 			{
 				items=1;
 				class Item0
 				{
-					position[]={-1000.000000,0.000000,0.000000};
-					id=0;
-					side="WEST";
-					vehicle="LeaderW_xj200";
+					position[]={1491.638428,28.830219,4753.986328};
+					special="NONE";
+					id=9;
+					side="EAST";
+					vehicle="CommanderE_xj200";
 					player="PLAY CDG";
 					leader=1;
 					rank="CAPTAIN";
 					skill=1.000000;
-					init="GroupHotel0=group this; this allowdammage false";
+					init="GroupAlpha1=group this";
 				};
 			};
 		};
 		class Item9
 		{
-			side="WEST";
+			side="EAST";
 			class Vehicles
 			{
 				items=1;
 				class Item0
 				{
-					position[]={-1000.000000,0.000000,0.000000};
-					id=0;
-					side="WEST";
-					vehicle="LeaderW_xj200";
+					position[]={1494.687256,28.900900,4753.942383};
+					special="NONE";
+					id=10;
+					side="EAST";
+					vehicle="LeaderE_xj200";
 					player="PLAY CDG";
 					leader=1;
 					rank="CAPTAIN";
 					skill=1.000000;
-					init="GroupKilo0=group this; this allowdammage false";
+					init="GroupBravo1=group this";
 				};
 			};
 		};
 		class Item10
 		{
-			side="WEST";
+			side="EAST";
 			class Vehicles
 			{
 				items=1;
 				class Item0
 				{
-					position[]={-1000.000000,0.000000,0.000000};
-					id=0;
-					side="WEST";
-					vehicle="LeaderW_xj200";
+					position[]={1498.573975,28.993330,4753.875977};
+					special="NONE";
+					id=11;
+					side="EAST";
+					vehicle="LeaderE_xj200";
 					player="PLAY CDG";
 					leader=1;
 					rank="CAPTAIN";
 					skill=1.000000;
-					init="GroupNovember0=group this; this allowdammage false";
+					init="GroupCharlie1=group this";
 				};
 			};
 		};
 		class Item11
 		{
-			side="WEST";
+			side="EAST";
 			class Vehicles
 			{
 				items=1;
 				class Item0
 				{
-					position[]={-1000.000000,0.000000,0.000000};
-					id=0;
-					side="WEST";
-					vehicle="LeaderW_xj200";
+					position[]={1501.784912,29.021151,4753.912109};
+					special="NONE";
+					id=12;
+					side="EAST";
+					vehicle="LeaderE_xj200";
 					player="PLAY CDG";
 					leader=1;
 					rank="CAPTAIN";
 					skill=1.000000;
-					init="GroupYankee0=group this; this allowdammage false";
+					init="GroupDelta1=group this";
 				};
 			};
 		};
 		class Item12
 		{
-			side="WEST";
+			side="EAST";
 			class Vehicles
 			{
 				items=1;
 				class Item0
 				{
-					position[]={-1000.000000,0.000000,0.000000};
-					id=0;
-					side="WEST";
-					vehicle="LeaderW_xj200";
+					position[]={1505.238037,29.039446,4753.900391};
+					special="NONE";
+					id=13;
+					side="EAST";
+					vehicle="LeaderE_xj200";
 					player="PLAY CDG";
 					leader=1;
 					rank="CAPTAIN";
 					skill=1.000000;
-					init="GroupZulu0=group this; this allowdammage false";
+					init="GroupEcho1=group this";
 				};
 			};
 		};
 		class Item13
 		{
-			side="WEST";
+			side="EAST";
 			class Vehicles
 			{
 				items=1;
 				class Item0
 				{
-					position[]={-1000.000000,0.000000,0.000000};
-					id=0;
-					side="WEST";
-					vehicle="LeaderW_xj200";
+					position[]={1508.310303,29.073278,4753.814453};
+					special="NONE";
+					id=14;
+					side="EAST";
+					vehicle="LeaderE_xj200";
 					player="PLAY CDG";
 					leader=1;
 					rank="CAPTAIN";
 					skill=1.000000;
-					init="GroupTwo0=group this; this allowdammage false";
+					init="GroupFoxtrot1=group this";
 				};
 			};
 		};
 		class Item14
 		{
-			side="WEST";
+			side="EAST";
 			class Vehicles
 			{
 				items=1;
 				class Item0
 				{
-					position[]={-1000.000000,0.000000,0.000000};
-					id=0;
-					side="WEST";
-					vehicle="LeaderW_xj200";
+					position[]={1512.506592,29.089672,4753.825195};
+					special="NONE";
+					id=1;
+					side="EAST";
+					vehicle="LeaderE_xj200";
 					player="PLAY CDG";
 					leader=1;
 					rank="CAPTAIN";
 					skill=1.000000;
-					init="GroupThree0=group this; this allowdammage false";
+					init="GroupGolf1=group this";
 				};
 			};
 		};
@@ -363,79 +388,34 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={-1000.000000,0.000000,0.000000};
-					id=0;
+					position[]={1860.768311,14.176714,4637.842773};
+					id=15;
 					side="WEST";
 					vehicle="LeaderW_xj200";
-					player="PLAY CDG";
 					leader=1;
-					rank="CAPTAIN";
 					skill=1.000000;
-					init="GroupBuffalo0=group this; this allowdammage false";
+					fuel=0.900000;
+					init="groupTemp0=group this; leaderTemp0 = this; [this] exec ""Server\KeepTempLeaderAlive.sqs""";
+				};
+			};
+			class Waypoints
+			{
+				items=1;
+				class Item0
+				{
+					position[]={1860.768311,14.176714,4637.842773};
+					id=15;
+					type="HOLD";
+					combatMode="YELLOW";
+					combat="AWARE";
+					class Effects
+					{
+					};
+					showWP="NEVER";
 				};
 			};
 		};
 		class Item16
-		{
-			side="WEST";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					position[]={-1000.000000,0.000000,0.000000};
-					id=0;
-					side="WEST";
-					vehicle="LeaderW_xj200";
-					player="PLAY CDG";
-					leader=1;
-					rank="CAPTAIN";
-					skill=1.000000;
-					init="GroupConvoy0=group this; this allowdammage false";
-				};
-			};
-		};
-		class Item17
-		{
-			side="WEST";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					position[]={-1000.000000,0.000000,0.000000};
-					id=0;
-					side="WEST";
-					vehicle="LeaderW_xj200";
-					player="PLAY CDG";
-					leader=1;
-					rank="CAPTAIN";
-					skill=1.000000;
-					init="GroupGuardian0=group this; this allowdammage false";
-				};
-			};
-		};
-		class Item18
-		{
-			side="WEST";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					position[]={-1000.000000,0.000000,0.000000};
-					id=0;
-					side="WEST";
-					vehicle="LeaderW_xj200";
-					player="PLAY CDG";
-					leader=1;
-					rank="CAPTAIN";
-					skill=1.000000;
-					init="GroupFox0=group this; this allowdammage false";
-				};
-			};
-		};
-		class Item19
 		{
 			side="EAST";
 			class Vehicles
@@ -443,15 +423,94 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={-1000.000000,0.000000,1000.000000};
-					id=0;
+					position[]={1218.239990,15.554798,4533.276855};
+					azimut=180.000000;
+					special="NONE";
+					id=16;
 					side="EAST";
-					vehicle="CommanderE_xj200";
+					vehicle="LeaderE_xj200";
+					leader=1;
+					skill=1.000000;
+					init="groupTemp1=group this; leaderTemp1 = this; [this] exec ""Server\KeepTempLeaderAlive.sqs""";
+				};
+			};
+			class Waypoints
+			{
+				items=1;
+				class Item0
+				{
+					position[]={1218.239990,15.554798,4533.276855};
+					id=16;
+					type="HOLD";
+					combatMode="YELLOW";
+					combat="AWARE";
+					class Effects
+					{
+					};
+					showWP="NEVER";
+				};
+			};
+		};
+		class Item17
+		{
+			side="CIV";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					presence=0.000000;
+					position[]={1511.255371,35.725651,4614.422363};
+					azimut=35.000000;
+					special="NONE";
+					id=18;
+					side="CIV";
+					vehicle="Civilian";
 					player="PLAY CDG";
 					leader=1;
-					rank="CAPTAIN";
-					skill=1.000000;
-					init="GroupAlpha1=group this; this allowdammage false";
+					skill=0.600000;
+					init="Spec1=this";
+				};
+			};
+		};
+		class Item18
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={9618.523438,1.793249,12349.648438};
+					id=19;
+					side="LOGIC";
+					vehicle="Logic";
+					leader=1;
+					skill=0.600000;
+					text="rep";
+					init="[35986,35755,35418, 36324,35988,35757,35467, 30313,30314,30315,30316,30317,30318,30319,30320,30321,30302, 57844,57845,57846,57847,57848,57849, 57900,57901,57902,57903, 56067,56068,56069, 59913,59914, 55320,55204,55073, 55607,55451,55321,55205, 54379,54381,54382,54383, 54437,54438,54439, 60017,60019,60020,60021,60022,60023,60024,60025,60026,60027,60028, 56421,56267,56128,55958,55791,55627, 55464,55331,55211,55098, 54765,54545,54213,53936,53721, 60073,60074,60075,60076,60077,60078,60079,60080,60081,60082,60083, 18452,18453,18454,18455,18456,18457,18458,18459,18460,18461, 18484,18485,18486,18487,18488,18489,18490,18491, 1039,1040,1041,1042,1043,1044,1045,1046,1047,1048,1049, 1092,1093,1094,1095,1096, 6768,6769,6770,6771,6772,6773,6774] exec ""Server\InitRepairableObjects.sqs""; [] exec""Server\UpdateWeather.sqs""";
+				};
+			};
+		};
+		class Item19
+		{
+			side="CIV";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					presence=0.000000;
+					position[]={1369.024780,33.851341,4660.654297};
+					azimut=35.000000;
+					special="NONE";
+					id=17;
+					side="CIV";
+					vehicle="Civilian";
+					player="PLAY CDG";
+					leader=1;
+					skill=0.600000;
+					init="Spec0=this";
 				};
 			};
 		};
@@ -463,15 +522,16 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={-1000.000000,0.000000,1000.000000};
-					id=0;
+					position[]={1515.994873,29.073891,4753.959961};
+					special="NONE";
+					id=20;
 					side="EAST";
 					vehicle="LeaderE_xj200";
 					player="PLAY CDG";
 					leader=1;
 					rank="CAPTAIN";
 					skill=1.000000;
-					init="GroupBravo1=group this; this allowdammage false";
+					init="GroupHotel1=group this";
 				};
 			};
 		};
@@ -483,115 +543,118 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={-1000.000000,0.000000,1000.000000};
-					id=0;
+					position[]={1519.287842,29.000677,4754.337891};
+					special="NONE";
+					id=21;
 					side="EAST";
 					vehicle="LeaderE_xj200";
 					player="PLAY CDG";
 					leader=1;
 					rank="CAPTAIN";
 					skill=1.000000;
-					init="GroupCharlie1=group this; this allowdammage false";
+					init="GroupKilo1=group this";
 				};
 			};
 		};
 		class Item22
 		{
-			side="EAST";
+			side="WEST";
 			class Vehicles
 			{
 				items=1;
 				class Item0
 				{
-					position[]={-1000.000000,0.000000,1000.000000};
-					id=0;
-					side="EAST";
-					vehicle="LeaderE_xj200";
+					position[]={2457.993408,19.980000,11878.792969};
+					special="NONE";
+					id=22;
+					side="WEST";
+					vehicle="LeaderW_xj200";
 					player="PLAY CDG";
 					leader=1;
 					rank="CAPTAIN";
 					skill=1.000000;
-					init="GroupDelta1=group this; this allowdammage false";
+					init="GroupHotel0=group this";
 				};
 			};
 		};
 		class Item23
 		{
-			side="EAST";
+			side="WEST";
 			class Vehicles
 			{
 				items=1;
 				class Item0
 				{
-					position[]={-1000.000000,0.000000,1000.000000};
-					id=0;
-					side="EAST";
-					vehicle="LeaderE_xj200";
+					position[]={2463.480469,19.980000,11879.320313};
+					special="NONE";
+					id=23;
+					side="WEST";
+					vehicle="LeaderW_xj200";
 					player="PLAY CDG";
 					leader=1;
 					rank="CAPTAIN";
 					skill=1.000000;
-					init="GroupEcho1=group this; this allowdammage false";
+					init="GroupKilo0=group this";
 				};
 			};
 		};
 		class Item24
 		{
-			side="EAST";
+			side="GUER";
 			class Vehicles
 			{
 				items=1;
 				class Item0
 				{
-					position[]={-1000.000000,0.000000,1000.000000};
-					id=0;
-					side="EAST";
-					vehicle="LeaderE_xj200";
-					player="PLAY CDG";
+					position[]={6989.207031,58.272778,7496.260742};
+					azimut=95.677200;
+					special="NONE";
+					id=24;
+					side="GUER";
+					vehicle="T80Res";
 					leader=1;
-					rank="CAPTAIN";
 					skill=1.000000;
-					init="GroupFoxtrot1=group this; this allowdammage false";
+					init="[this, 1, 5 + random 10] exec ""Server\UpdateResPatrolGroup.sqs""";
 				};
 			};
 		};
 		class Item25
 		{
-			side="EAST";
+			side="GUER";
 			class Vehicles
 			{
 				items=1;
 				class Item0
 				{
-					position[]={-1000.000000,0.000000,1000.000000};
-					id=0;
-					side="EAST";
-					vehicle="LeaderE_xj200";
-					player="PLAY CDG";
+					position[]={9007.106445,60.900246,11083.511719};
+					azimut=95.677200;
+					special="NONE";
+					id=25;
+					side="GUER";
+					vehicle="T80Res";
 					leader=1;
-					rank="CAPTAIN";
 					skill=1.000000;
-					init="GroupGolf1=group this; this allowdammage false";
+					init="[this, 1, 5 + random 10] exec ""Server\UpdateResPatrolGroup.sqs""";
 				};
 			};
 		};
 		class Item26
 		{
-			side="EAST";
+			side="WEST";
 			class Vehicles
 			{
 				items=1;
 				class Item0
 				{
-					position[]={-1000.000000,0.000000,1000.000000};
-					id=0;
-					side="EAST";
-					vehicle="LeaderE_xj200";
-					player="PLAY CDG";
+					position[]={7797.663574,69.974998,9475.793945};
+					azimut=419.721191;
+					special="NONE";
+					id=26;
+					side="WEST";
+					vehicle="LeaderW_xj200";
 					leader=1;
-					rank="CAPTAIN";
 					skill=1.000000;
-					init="GroupHotel1=group this; this allowdammage false";
+					init="[this] exec ""Server\UpdateTownGroup.sqs""";
 				};
 			};
 		};
@@ -603,399 +666,19 @@ class Mission
 				items=1;
 				class Item0
 				{
-					position[]={-1000.000000,0.000000,1000.000000};
-					id=0;
+					position[]={7762.372559,71.521591,9399.568359};
+					azimut=-204.391693;
+					special="NONE";
+					id=27;
 					side="EAST";
 					vehicle="LeaderE_xj200";
-					player="PLAY CDG";
 					leader=1;
-					rank="CAPTAIN";
 					skill=1.000000;
-					init="GroupKilo1=group this; this allowdammage false";
+					init="[this] exec ""Server\UpdateTownGroup.sqs""";
 				};
 			};
 		};
 		class Item28
-		{
-			side="EAST";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					position[]={-1000.000000,0.000000,1000.000000};
-					id=0;
-					side="EAST";
-					vehicle="LeaderE_xj200";
-					player="PLAY CDG";
-					leader=1;
-					rank="CAPTAIN";
-					skill=1.000000;
-					init="GroupNovember1=group this; this allowdammage false";
-				};
-			};
-		};
-		class Item29
-		{
-			side="EAST";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					position[]={-1000.000000,0.000000,1000.000000};
-					id=0;
-					side="EAST";
-					vehicle="LeaderE_xj200";
-					player="PLAY CDG";
-					leader=1;
-					rank="CAPTAIN";
-					skill=1.000000;
-					init="GroupYankee1=group this; this allowdammage false";
-				};
-			};
-		};
-		class Item30
-		{
-			side="EAST";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					position[]={-1000.000000,0.000000,1000.000000};
-					id=0;
-					side="EAST";
-					vehicle="LeaderE_xj200";
-					player="PLAY CDG";
-					leader=1;
-					rank="CAPTAIN";
-					skill=1.000000;
-					init="GroupZulu1=group this; this allowdammage false";
-				};
-			};
-		};
-		class Item31
-		{
-			side="EAST";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					position[]={-1000.000000,0.000000,1000.000000};
-					id=0;
-					side="EAST";
-					vehicle="LeaderE_xj200";
-					player="PLAY CDG";
-					leader=1;
-					rank="CAPTAIN";
-					skill=1.000000;
-					init="GroupTwo1=group this; this allowdammage false";
-				};
-			};
-		};
-		class Item32
-		{
-			side="EAST";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					position[]={-1000.000000,0.000000,1000.000000};
-					id=0;
-					side="EAST";
-					vehicle="LeaderE_xj200";
-					player="PLAY CDG";
-					leader=1;
-					rank="CAPTAIN";
-					skill=1.000000;
-					init="GroupThree1=group this; this allowdammage false";
-				};
-			};
-		};
-		class Item33
-		{
-			side="EAST";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					position[]={-1000.000000,0.000000,1000.000000};
-					id=0;
-					side="EAST";
-					vehicle="LeaderE_xj200";
-					player="PLAY CDG";
-					leader=1;
-					rank="CAPTAIN";
-					skill=1.000000;
-					init="GroupBuffalo1=group this; this allowdammage false";
-				};
-			};
-		};
-		class Item34
-		{
-			side="EAST";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					position[]={-1000.000000,0.000000,1000.000000};
-					id=0;
-					side="EAST";
-					vehicle="LeaderE_xj200";
-					player="PLAY CDG";
-					leader=1;
-					rank="CAPTAIN";
-					skill=1.000000;
-					init="GroupConvoy1=group this; this allowdammage false";
-				};
-			};
-		};
-		class Item35
-		{
-			side="EAST";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					position[]={-1000.000000,0.000000,1000.000000};
-					id=0;
-					side="EAST";
-					vehicle="LeaderE_xj200";
-					player="PLAY CDG";
-					leader=1;
-					rank="CAPTAIN";
-					skill=1.000000;
-					init="GroupGuardian1=group this; this allowdammage false";
-				};
-			};
-		};
-		class Item36
-		{
-			side="EAST";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					position[]={-1000.000000,0.000000,1000.000000};
-					id=0;
-					side="EAST";
-					vehicle="LeaderE_xj200";
-					player="PLAY CDG";
-					leader=1;
-					rank="CAPTAIN";
-					skill=1.000000;
-					init="GroupFox1=group this; this allowdammage false";
-				};
-			};
-		};
-		class Item37
-		{
-			side="CIV";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					presence=0.000000;
-					position[]={0,0,3370.000000};
-					id=0;
-					side="CIV";
-					vehicle="Civilian";
-					player="PLAY CDG";
-					leader=1;
-					skill=0.200000;
-					init="this allowdammage false; Spec0=this";
-				};
-			};
-		};
-		class Item38
-		{
-			side="CIV";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					presence=0.000000;
-					position[]={0,0,3380.000000};
-					id=0;
-					side="CIV";
-					vehicle="Civilian";
-					player="PLAY CDG";
-					leader=1;
-					skill=0.200000;
-					init="this allowdammage false; Spec1=this";
-				};
-			};
-		};
-		class Item39
-		{
-			side="CIV";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					presence=0.000000;
-					position[]={0,0,3390.000000};
-					id=0;
-					side="CIV";
-					vehicle="Civilian";
-					player="PLAY CDG";
-					leader=1;
-					skill=0.200000;
-					init="this allowdammage false; Spec2=this";
-				};
-			};
-		};
-		class Item40
-		{
-			side="CIV";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					presence=0.000000;
-					position[]={0,0,3400.000000};
-					id=0;
-					side="CIV";
-					vehicle="Civilian";
-					player="PLAY CDG";
-					leader=1;
-					skill=0.200000;
-					init="this allowdammage false; Spec3=this";
-				};
-			};
-		};
-		class Item41
-		{
-			side="CIV";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					presence=0.000000;
-					position[]={0,0,3410.000000};
-					id=0;
-					side="CIV";
-					vehicle="Civilian";
-					player="PLAY CDG";
-					leader=1;
-					skill=0.200000;
-					init="this allowdammage false; Spec4=this";
-				};
-			};
-		};
-		class Item42
-		{
-			side="CIV";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					presence=0.000000;
-					position[]={0,0,3420.000000};
-					id=0;
-					side="CIV";
-					vehicle="Civilian";
-					player="PLAY CDG";
-					leader=1;
-					skill=0.200000;
-					init="this allowdammage false; Spec5=this";
-				};
-			};
-		};
-		class Item43
-		{
-			side="CIV";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					presence=0.000000;
-					position[]={0,0,3430.000000};
-					id=0;
-					side="CIV";
-					vehicle="Civilian";
-					player="PLAY CDG";
-					leader=1;
-					skill=0.200000;
-					init="this allowdammage false; Spec6=this";
-				};
-			};
-		};
-		class Item44
-		{
-			side="CIV";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					presence=0.000000;
-					position[]={0,0,3440.000000};
-					id=0;
-					side="CIV";
-					vehicle="Civilian";
-					player="PLAY CDG";
-					leader=1;
-					skill=0.200000;
-					init="this allowdammage false; Spec7=this";
-				};
-			};
-		};
-		class Item45
-		{
-			side="CIV";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					presence=0.000000;
-					position[]={0,0,3450.000000};
-					id=0;
-					side="CIV";
-					vehicle="Civilian";
-					player="PLAY CDG";
-					leader=1;
-					skill=0.200000;
-					init="this allowdammage false; Spec8=this";
-				};
-			};
-		};
-		class Item46
-		{
-			side="CIV";
-			class Vehicles
-			{
-				items=1;
-				class Item0
-				{
-					presence=0.000000;
-					position[]={0,0,3460.000000};
-					id=0;
-					side="CIV";
-					vehicle="Civilian";
-					player="PLAY CDG";
-					leader=1;
-					skill=0.200000;
-					init="this allowdammage false; Spec9=this";
-				};
-			};
-		};
-		class Item47
 		{
 			side="LOGIC";
 			class Vehicles
@@ -1006,7 +689,7 @@ class Mission
 					position[]={10140.299805,29.969999,2671.307129};
 					azimut=-73.869682;
 					special="NONE";
-					id=0;
+					id=28;
 					side="LOGIC";
 					vehicle="Logic";
 					leader=1;
@@ -1015,7 +698,7 @@ class Mission
 				};
 			};
 		};
-		class Item48
+		class Item29
 		{
 			side="LOGIC";
 			class Vehicles
@@ -1026,12 +709,1725 @@ class Mission
 					position[]={9641.417969,37.016804,10356.922852};
 					azimut=-167.645493;
 					special="NONE";
-					id=0;
+					id=29;
 					side="LOGIC";
 					vehicle="Logic";
 					leader=1;
 					skill=0.600000;
 					text="FixStart_0";
+				};
+			};
+		};
+		class Item30
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={4349.378418,69.974998,6592.734375};
+					special="NONE";
+					id=42;
+					side="GUER";
+					vehicle="SoldierGB";
+					leader=1;
+					rank="SERGEANT";
+					skill=1.000000;
+					init="[this, 3 + random 3, 1, 10] exec ""Server\UpdateTownGroupRes.sqs""";
+				};
+			};
+		};
+		class Item31
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={6234.349121,94.994995,6387.871582};
+					special="NONE";
+					id=43;
+					side="GUER";
+					vehicle="SoldierGB";
+					leader=1;
+					rank="SERGEANT";
+					skill=1.000000;
+					init="[this, 3 + random 3, 1, 10] exec ""Server\UpdateTownGroupRes.sqs""";
+				};
+			};
+		};
+		class Item32
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={10410.092773,49.994999,7841.413086};
+					special="NONE";
+					id=44;
+					side="GUER";
+					vehicle="SoldierGB";
+					leader=1;
+					rank="SERGEANT";
+					skill=1.000000;
+					init="[this, 3 + random 3, 1, 10] exec ""Server\UpdateTownGroupRes.sqs""";
+				};
+			};
+		};
+		class Item33
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={9321.578125,29.969999,3853.826416};
+					special="NONE";
+					id=45;
+					side="GUER";
+					vehicle="SoldierGB";
+					leader=1;
+					rank="SERGEANT";
+					skill=1.000000;
+					init="[this, 3 + random 3, 1, 10] exec ""Server\UpdateTownGroupRes.sqs""";
+				};
+			};
+		};
+		class Item34
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={7214.027832,9.990000,2771.608887};
+					azimut=204.537308;
+					special="NONE";
+					id=46;
+					side="GUER";
+					vehicle="SoldierGB";
+					leader=1;
+					rank="SERGEANT";
+					skill=1.000000;
+					init="[this, 3 + random 3, 1, 10] exec ""Server\UpdateTownGroupRes.sqs""";
+				};
+			};
+		};
+		class Item35
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={6671.848145,54.989998,4988.417480};
+					azimut=81.121681;
+					special="NONE";
+					id=47;
+					side="GUER";
+					vehicle="SoldierGB";
+					leader=1;
+					rank="SERGEANT";
+					skill=1.000000;
+					init="[this, 3 + random 3, 1, 10] exec ""Server\UpdateTownGroupRes.sqs""";
+				};
+			};
+		};
+		class Item36
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={8458.323242,54.989998,6400.879395};
+					special="NONE";
+					id=48;
+					side="GUER";
+					vehicle="SoldierGB";
+					leader=1;
+					rank="SERGEANT";
+					skill=1.000000;
+					init="[this, 3 + random 3, 1, 10] exec ""Server\UpdateTownGroupRes.sqs""";
+				};
+			};
+		};
+		class Item37
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={7697.317871,69.699463,9436.689453};
+					special="NONE";
+					id=49;
+					side="GUER";
+					vehicle="SoldierGB";
+					leader=1;
+					rank="SERGEANT";
+					skill=1.000000;
+					init="[this, 3 + random 3, 1, 10] exec ""Server\UpdateTownGroupRes.sqs""";
+				};
+			};
+		};
+		class Item38
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={6120.268066,9.990000,8438.129883};
+					azimut=-97.932701;
+					special="NONE";
+					id=50;
+					side="GUER";
+					vehicle="SoldierGB";
+					leader=1;
+					rank="SERGEANT";
+					skill=1.000000;
+					init="[this, 3 + random 3, 1, 10] exec ""Server\UpdateTownGroupRes.sqs""";
+				};
+			};
+		};
+		class Item39
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={4864.358887,76.500000,9694.910156};
+					special="NONE";
+					id=51;
+					side="GUER";
+					vehicle="SoldierGB";
+					leader=1;
+					rank="SERGEANT";
+					skill=1.000000;
+					init="[this, 3 + random 3, 1, 10] exec ""Server\UpdateTownGroupRes.sqs""";
+				};
+			};
+		};
+		class Item40
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={10657.748047,39.959999,9384.554688};
+					special="NONE";
+					id=52;
+					side="GUER";
+					vehicle="SoldierGB";
+					leader=1;
+					rank="SERGEANT";
+					skill=1.000000;
+					init="[this, 3 + random 3, 1, 10] exec ""Server\UpdateTownGroupRes.sqs""";
+				};
+			};
+		};
+		class Item41
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={7068.971680,49.994999,11374.425781};
+					azimut=-59.563232;
+					special="NONE";
+					id=53;
+					side="GUER";
+					vehicle="SoldierGB";
+					leader=1;
+					rank="SERGEANT";
+					skill=1.000000;
+					init="[this, 3 + random 3, 1, 10] exec ""Server\UpdateTownGroupRes.sqs""";
+				};
+			};
+		};
+		class Item42
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={6237.383789,9.990000,8330.668945};
+					azimut=120.419479;
+					special="NONE";
+					id=54;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup.sqs""";
+				};
+			};
+		};
+		class Item43
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={6217.976563,9.990000,8462.367188};
+					azimut=-296.785706;
+					special="NONE";
+					id=55;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup.sqs""";
+				};
+			};
+		};
+		class Item44
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={4937.117676,76.500000,9646.425781};
+					azimut=440.193848;
+					special="NONE";
+					id=56;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup.sqs""";
+				};
+			};
+		};
+		class Item45
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={4911.139160,76.493866,9582.047852};
+					azimut=-155.595001;
+					special="NONE";
+					id=57;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup.sqs""";
+				};
+			};
+		};
+		class Item46
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={10579.088867,39.959999,9366.889648};
+					azimut=229.171997;
+					special="NONE";
+					id=58;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup.sqs""";
+				};
+			};
+		};
+		class Item47
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={10678.677734,40.528519,9325.704102};
+					azimut=-155.595001;
+					special="NONE";
+					id=59;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup.sqs""";
+				};
+			};
+		};
+		class Item48
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={7119.670898,49.994999,11433.608398};
+					azimut=362.838898;
+					special="NONE";
+					id=60;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup.sqs""";
+				};
+			};
+		};
+		class Item49
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={7123.248047,49.994999,11358.211914};
+					azimut=-231.772888;
+					special="NONE";
+					id=61;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup.sqs""";
+				};
+			};
+		};
+		class Item50
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={4451.637207,70.098778,6603.775391};
+					azimut=408.629700;
+					special="NONE";
+					id=62;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup.sqs""";
+				};
+			};
+		};
+		class Item51
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={4440.681152,69.974998,6499.527344};
+					azimut=-200.083374;
+					special="NONE";
+					id=63;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup.sqs""";
+				};
+			};
+		};
+		class Item52
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={6352.165039,94.994995,6407.939453};
+					azimut=59.514359;
+					special="NONE";
+					id=64;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup.sqs""";
+				};
+			};
+		};
+		class Item53
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={6320.684570,97.183846,6323.817871};
+					azimut=-155.595001;
+					special="NONE";
+					id=65;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup.sqs""";
+				};
+			};
+		};
+		class Item54
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={10334.682617,49.994999,7896.150391};
+					azimut=346.716553;
+					special="NONE";
+					id=66;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup.sqs""";
+				};
+			};
+		};
+		class Item55
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={10271.543945,62.633602,7823.479492};
+					azimut=-155.595001;
+					special="NONE";
+					id=67;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup.sqs""";
+				};
+			};
+		};
+		class Item56
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={9275.676758,29.969999,3780.028076};
+					azimut=229.171997;
+					special="NONE";
+					id=68;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup.sqs""";
+				};
+			};
+		};
+		class Item57
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={9324.940430,29.969999,3764.059814};
+					azimut=-262.199890;
+					special="NONE";
+					id=69;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup.sqs""";
+				};
+			};
+		};
+		class Item58
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={7077.758301,9.990000,2837.066650};
+					azimut=278.001129;
+					special="NONE";
+					id=70;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup.sqs""";
+				};
+			};
+		};
+		class Item59
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={7304.952637,9.990000,2832.339111};
+					azimut=45.619263;
+					special="NONE";
+					id=71;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup.sqs""";
+				};
+			};
+		};
+		class Item60
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={6574.722656,54.989998,5026.893066};
+					azimut=324.625549;
+					special="NONE";
+					id=72;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup.sqs""";
+				};
+			};
+		};
+		class Item61
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={6616.561523,54.989998,4927.016113};
+					azimut=-155.595001;
+					special="NONE";
+					id=73;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup.sqs""";
+				};
+			};
+		};
+		class Item62
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={8556.899414,54.989998,6473.444336};
+					azimut=370.017700;
+					special="NONE";
+					id=74;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup.sqs""";
+				};
+			};
+		};
+		class Item63
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={8599.106445,59.019428,6324.777344};
+					azimut=129.995407;
+					special="NONE";
+					id=75;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup.sqs""";
+				};
+			};
+		};
+		class Item64
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={1492.123779,31.028967,4742.265625};
+					special="NONE";
+					id=76;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					player="PLAY CDG";
+					leader=1;
+					rank="CAPTAIN";
+					skill=1.000000;
+					init="GroupNovember1=group this";
+				};
+			};
+		};
+		class Item65
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={1495.171631,31.096523,4742.221680};
+					special="NONE";
+					id=77;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					player="PLAY CDG";
+					leader=1;
+					rank="CAPTAIN";
+					skill=1.000000;
+					init="GroupYankee1=group this";
+				};
+			};
+		};
+		class Item66
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={1499.058350,31.184290,4742.155273};
+					special="NONE";
+					id=78;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					player="PLAY CDG";
+					leader=1;
+					rank="CAPTAIN";
+					skill=1.000000;
+					init="GroupZulu1=group this";
+				};
+			};
+		};
+		class Item67
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={2422.468994,19.980000,11867.384766};
+					id=79;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					player="PLAY CDG";
+					leader=1;
+					rank="CAPTAIN";
+					skill=1.000000;
+					init="GroupNovember0=group this";
+				};
+			};
+		};
+		class Item68
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={2426.960205,19.980000,11867.294922};
+					id=80;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					player="PLAY CDG";
+					leader=1;
+					rank="CAPTAIN";
+					skill=1.000000;
+					init="GroupYankee0=group this";
+				};
+			};
+		};
+		class Item69
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={2430.837158,19.980000,11867.140625};
+					id=81;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					player="PLAY CDG";
+					leader=1;
+					rank="CAPTAIN";
+					skill=1.000000;
+					init="GroupZulu0=group this";
+				};
+			};
+		};
+		class Item70
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={7611.584961,64.792671,4091.713867};
+					azimut=95.677200;
+					special="NONE";
+					id=82;
+					side="GUER";
+					vehicle="T80Res";
+					leader=1;
+					skill=1.000000;
+					init="[this, 1, 5 + random 10] exec ""Server\UpdateResPatrolGroup.sqs""";
+				};
+			};
+		};
+		class Item71
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={2990.585449,103.393661,8968.755859};
+					azimut=95.677200;
+					special="NONE";
+					id=83;
+					side="GUER";
+					vehicle="T80Res";
+					leader=1;
+					skill=1.000000;
+					init="[this, 1, 5 + random 10] exec ""Server\UpdateResPatrolGroup.sqs""";
+				};
+			};
+		};
+		class Item72
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={5414.207520,73.540321,4995.676270};
+					azimut=95.677200;
+					special="NONE";
+					id=84;
+					side="GUER";
+					vehicle="T80Res";
+					leader=1;
+					skill=1.000000;
+					init="[this, 1, 5 + random 10] exec ""Server\UpdateResPatrolGroup.sqs""";
+				};
+			};
+		};
+		class Item73
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={2507.114502,79.880447,7356.907715};
+					azimut=95.677200;
+					special="NONE";
+					id=85;
+					side="GUER";
+					vehicle="T80Res";
+					leader=1;
+					skill=1.000000;
+					init="[this, 1, 5 + random 10] exec ""Server\UpdateResPatrolGroup.sqs""";
+				};
+			};
+		};
+		class Item74
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={5385.791504,19.980000,11903.793945};
+					special="NONE";
+					id=87;
+					side="GUER";
+					vehicle="SoldierGB";
+					leader=1;
+					rank="SERGEANT";
+					skill=1.000000;
+					init="[this, 3 + random 3, 1, 10] exec ""Server\UpdateTownGroupRes.sqs""";
+				};
+			};
+		};
+		class Item75
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={5537.760742,15.841841,11741.351563};
+					azimut=59.514400;
+					special="NONE";
+					id=88;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup2.sqs""";
+				};
+			};
+		};
+		class Item76
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={5442.603027,22.506248,11747.479492};
+					azimut=-155.595001;
+					special="NONE";
+					id=89;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup2.sqs""";
+				};
+			};
+		};
+		class Item77
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={3572.100098,9.990000,2539.437012};
+					special="NONE";
+					id=91;
+					side="GUER";
+					vehicle="SoldierGB";
+					leader=1;
+					rank="SERGEANT";
+					skill=1.000000;
+					init="[this, 3 + random 3, 1, 10] exec ""Server\UpdateTownGroupRes.sqs""";
+				};
+			};
+		};
+		class Item78
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={3613.702393,9.990000,2526.229248};
+					azimut=59.514400;
+					special="NONE";
+					id=92;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup2.sqs""";
+				};
+			};
+		};
+		class Item79
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={3542.137695,9.990000,2516.330811};
+					azimut=-155.595001;
+					special="NONE";
+					id=93;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup2.sqs""";
+				};
+			};
+		};
+		class Item80
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={2449.575928,19.980000,11867.835938};
+					id=96;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					player="PLAY CDG";
+					leader=1;
+					rank="CAPTAIN";
+					skill=1.000000;
+					init="GroupBuffalo0=group this";
+				};
+			};
+		};
+		class Item81
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={2455.834229,19.980000,11867.519531};
+					id=97;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					player="PLAY CDG";
+					leader=1;
+					rank="CAPTAIN";
+					skill=1.000000;
+					init="GroupGuardian0=group this";
+				};
+			};
+		};
+		class Item82
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={2461.857422,19.980000,11867.484375};
+					id=98;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					player="PLAY CDG";
+					leader=1;
+					rank="CAPTAIN";
+					skill=1.000000;
+					init="GroupConvoy0=group this";
+				};
+			};
+		};
+		class Item83
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={2439.938721,19.980000,11867.271484};
+					id=94;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					player="PLAY CDG";
+					leader=1;
+					rank="CAPTAIN";
+					skill=1.000000;
+					init="GroupTwo0=group this";
+				};
+			};
+		};
+		class Item84
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={2444.768066,19.980000,11868.082031};
+					id=95;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					player="PLAY CDG";
+					leader=1;
+					rank="CAPTAIN";
+					skill=1.000000;
+					init="GroupThree0=group this";
+				};
+			};
+		};
+		class Item85
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={2467.062256,19.980000,11867.513672};
+					id=99;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					player="PLAY CDG";
+					leader=1;
+					rank="CAPTAIN";
+					skill=1.000000;
+					init="GroupFox0=group this";
+				};
+			};
+		};
+		class Item86
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={1545.641357,31.415678,4741.549805};
+					special="NONE";
+					id=105;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					player="PLAY CDG";
+					leader=1;
+					rank="CAPTAIN";
+					skill=1.000000;
+					init="GroupFox1=group this";
+				};
+			};
+		};
+		class Item87
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={1513.440186,31.290850,4741.417969};
+					special="NONE";
+					id=101;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					player="PLAY CDG";
+					leader=1;
+					rank="CAPTAIN";
+					skill=1.000000;
+					init="GroupThree1=group this";
+				};
+			};
+		};
+		class Item88
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={1520.158936,31.243099,4741.930664};
+					special="NONE";
+					id=102;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					player="PLAY CDG";
+					leader=1;
+					rank="CAPTAIN";
+					skill=1.000000;
+					init="GroupBuffalo1=group this";
+				};
+			};
+		};
+		class Item89
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={1506.530029,31.213312,4741.838867};
+					special="NONE";
+					id=100;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					player="PLAY CDG";
+					leader=1;
+					rank="CAPTAIN";
+					skill=1.000000;
+					init="GroupTwo1=group this";
+				};
+			};
+		};
+		class Item90
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={1528.254639,31.259630,4742.061523};
+					special="NONE";
+					id=103;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					player="PLAY CDG";
+					leader=1;
+					rank="CAPTAIN";
+					skill=1.000000;
+					init="GroupGuardian1=group this";
+				};
+			};
+		};
+		class Item91
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={1536.106201,31.285158,4742.125977};
+					special="NONE";
+					id=104;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					player="PLAY CDG";
+					leader=1;
+					rank="CAPTAIN";
+					skill=1.000000;
+					init="GroupConvoy1=group this";
+				};
+			};
+		};
+		class Item92
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={3814.445068,213.773773,8003.789063};
+					azimut=-89.227997;
+					special="NONE";
+					id=107;
+					side="GUER";
+					vehicle="SoldierGB";
+					leader=1;
+					rank="SERGEANT";
+					skill=1.000000;
+					init="[this, 3 + random 3, 1, 10] exec ""Server\UpdateTownGroupRes.sqs""";
+				};
+			};
+		};
+		class Item93
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={3826.880859,216.543045,8031.981934};
+					azimut=33.392899;
+					special="NONE";
+					id=108;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup3.sqs""";
+				};
+			};
+		};
+		class Item94
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={3858.224854,216.917755,8019.653320};
+					azimut=-230.373993;
+					special="NONE";
+					id=109;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateTownGroup3.sqs""";
+				};
+			};
+		};
+		class Item95
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={1860.768311,14.176714,4637.842773};
+					id=110;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					leader=1;
+					skill=1.000000;
+					fuel=0.900000;
+					init="[this] exec ""Server\UpdateAASystem.sqs""";
+				};
+			};
+		};
+		class Item96
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={1218.239990,15.554798,4533.276855};
+					azimut=180.000000;
+					special="NONE";
+					id=111;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					leader=1;
+					skill=1.000000;
+					init="[this] exec ""Server\UpdateAASystem.sqs""";
+				};
+			};
+		};
+		class Item97
+		{
+			side="CIV";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					presence=0.000000;
+					position[]={1369.024780,33.851341,4660.654297};
+					azimut=35.000000;
+					special="NONE";
+					id=112;
+					side="CIV";
+					vehicle="Civilian";
+					player="PLAY CDG";
+					leader=1;
+					skill=0.600000;
+					init="Spec2=this";
+				};
+			};
+		};
+		class Item98
+		{
+			side="CIV";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					presence=0.000000;
+					position[]={1369.024780,33.851341,4660.654297};
+					azimut=35.000000;
+					special="NONE";
+					id=113;
+					side="CIV";
+					vehicle="Civilian";
+					player="PLAY CDG";
+					leader=1;
+					skill=0.600000;
+					init="Spec3=this";
+				};
+			};
+		};
+		class Item99
+		{
+			side="CIV";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					presence=0.000000;
+					position[]={1369.024780,33.851341,4660.654297};
+					azimut=35.000000;
+					special="NONE";
+					id=114;
+					side="CIV";
+					vehicle="Civilian";
+					player="PLAY CDG";
+					leader=1;
+					skill=0.600000;
+					init="Spec4=this";
+				};
+			};
+		};
+		class Item100
+		{
+			side="CIV";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					presence=0.000000;
+					position[]={1369.024780,33.851341,4660.654297};
+					azimut=35.000000;
+					special="NONE";
+					id=115;
+					side="CIV";
+					vehicle="Civilian";
+					player="PLAY CDG";
+					leader=1;
+					skill=0.600000;
+					init="Spec5=this";
+				};
+			};
+		};
+		class Item101
+		{
+			side="CIV";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					presence=0.000000;
+					position[]={1369.024780,33.851341,4660.654297};
+					azimut=35.000000;
+					special="NONE";
+					id=116;
+					side="CIV";
+					vehicle="Civilian";
+					player="PLAY CDG";
+					leader=1;
+					skill=0.600000;
+					init="Spec6=this";
+				};
+			};
+		};
+		class Item102
+		{
+			side="CIV";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					presence=0.000000;
+					position[]={1369.024780,33.851341,4660.654297};
+					azimut=35.000000;
+					special="NONE";
+					id=117;
+					side="CIV";
+					vehicle="Civilian";
+					player="PLAY CDG";
+					leader=1;
+					skill=0.600000;
+					init="Spec7=this";
+				};
+			};
+		};
+		class Item103
+		{
+			side="CIV";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					presence=0.000000;
+					position[]={1369.024780,33.851341,4660.654297};
+					azimut=35.000000;
+					special="NONE";
+					id=118;
+					side="CIV";
+					vehicle="Civilian";
+					player="PLAY CDG";
+					leader=1;
+					skill=0.600000;
+					init="Spec8=this";
+				};
+			};
+		};
+		class Item104
+		{
+			side="CIV";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					presence=0.000000;
+					position[]={1369.024780,33.851341,4660.654297};
+					azimut=35.000000;
+					special="NONE";
+					id=119;
+					side="CIV";
+					vehicle="Civilian";
+					player="PLAY CDG";
+					leader=1;
+					skill=0.600000;
+					init="Spec9=this";
+				};
+			};
+		};
+		class Item105
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={1860.768311,14.176714,4637.842773};
+					special="NONE";
+					id=125;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					leader=1;
+					skill=1.000000;
+					init="groupJoin0=group this; leaderJoin0=this; [this] exec ""Server\KeepTempLeaderAlive.sqs""";
+				};
+			};
+			class Waypoints
+			{
+				items=1;
+				class Item0
+				{
+					position[]={1860.768311,14.176714,4637.842773};
+					id=125;
+					type="HOLD";
+					combatMode="YELLOW";
+					combat="AWARE";
+					class Effects
+					{
+					};
+					showWP="NEVER";
+				};
+			};
+		};
+		class Item106
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={1218.239990,15.554798,4533.276855};
+					special="NONE";
+					id=126;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					leader=1;
+					skill=1.000000;
+					init="groupJoin1=group this; leaderJoin1=this; [this] exec ""Server\KeepTempLeaderAlive.sqs""";
+				};
+			};
+			class Waypoints
+			{
+				items=1;
+				class Item0
+				{
+					position[]={1218.239990,15.554798,4533.276855};
+					id=126;
+					type="HOLD";
+					combatMode="YELLOW";
+					combat="AWARE";
+					class Effects
+					{
+					};
+					showWP="NEVER";
+				};
+			};
+		};
+		class Item107
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={1860.768311,14.176714,4637.842773};
+					special="NONE";
+					id=127;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					leader=1;
+					skill=1.000000;
+					init="groupWorker00=group this";
+				};
+			};
+		};
+		class Item108
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={1218.239990,15.554798,4533.276855};
+					special="NONE";
+					id=128;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					leader=1;
+					skill=1.000000;
+					init="groupWorker10=group this";
+				};
+			};
+		};
+		class Item109
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={1860.768311,14.176714,4637.842773};
+					special="NONE";
+					id=129;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					leader=1;
+					skill=1.000000;
+					init="groupWorker01=group this";
+				};
+			};
+		};
+		class Item110
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={1218.239990,15.554798,4533.276855};
+					special="NONE";
+					id=130;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					leader=1;
+					skill=1.000000;
+					init="groupWorker11=group this";
+				};
+			};
+		};
+		class Item111
+		{
+			side="WEST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={1860.768311,14.176714,4637.842773};
+					special="NONE";
+					id=131;
+					side="WEST";
+					vehicle="LeaderW_xj200";
+					leader=1;
+					skill=1.000000;
+					init="groupWorker02=group this";
+				};
+			};
+		};
+		class Item112
+		{
+			side="EAST";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={1218.239990,15.554798,4533.276855};
+					special="NONE";
+					id=132;
+					side="EAST";
+					vehicle="LeaderE_xj200";
+					leader=1;
+					skill=1.000000;
+					init="groupWorker12=group this";
 				};
 			};
 		};
@@ -1043,7 +2439,7 @@ class Mission
 		{
 			position[]={4408.951660,69.974998,6593.323730};
 			special="NONE";
-			id=0;
+			id=30;
 			side="EMPTY";
 			vehicle="FlagCarrier";
 			skill=0.200000;
@@ -1054,7 +2450,7 @@ class Mission
 		{
 			position[]={6241.693848,94.994995,6392.964355};
 			special="NONE";
-			id=0;
+			id=31;
 			side="EMPTY";
 			vehicle="FlagCarrier";
 			skill=0.200000;
@@ -1065,7 +2461,7 @@ class Mission
 		{
 			position[]={7760.696777,70.255241,9438.676758};
 			special="NONE";
-			id=0;
+			id=32;
 			side="EMPTY";
 			vehicle="FlagCarrier";
 			skill=0.200000;
@@ -1076,7 +2472,7 @@ class Mission
 		{
 			position[]={6175.104980,9.990000,8461.852539};
 			special="NONE";
-			id=0;
+			id=33;
 			side="EMPTY";
 			vehicle="FlagCarrier";
 			skill=0.200000;
@@ -1087,7 +2483,7 @@ class Mission
 		{
 			position[]={10369.502930,49.994999,7848.728516};
 			special="NONE";
-			id=0;
+			id=34;
 			side="EMPTY";
 			vehicle="FlagCarrier";
 			skill=0.200000;
@@ -1098,7 +2494,7 @@ class Mission
 		{
 			position[]={8507.191406,54.989998,6430.164551};
 			special="NONE";
-			id=0;
+			id=35;
 			side="EMPTY";
 			vehicle="FlagCarrier";
 			skill=0.200000;
@@ -1109,7 +2505,7 @@ class Mission
 		{
 			position[]={4901.475098,76.500000,9645.938477};
 			special="NONE";
-			id=0;
+			id=36;
 			side="EMPTY";
 			vehicle="FlagCarrier";
 			skill=0.200000;
@@ -1120,7 +2516,7 @@ class Mission
 		{
 			position[]={10585.382813,39.959999,9379.938477};
 			special="NONE";
-			id=0;
+			id=37;
 			side="EMPTY";
 			vehicle="FlagCarrier";
 			skill=0.200000;
@@ -1131,7 +2527,7 @@ class Mission
 		{
 			position[]={6656.538086,54.989998,4951.596191};
 			special="NONE";
-			id=0;
+			id=38;
 			side="EMPTY";
 			vehicle="FlagCarrier";
 			skill=0.200000;
@@ -1142,7 +2538,7 @@ class Mission
 		{
 			position[]={7094.500000,49.994999,11401.580078};
 			special="NONE";
-			id=0;
+			id=39;
 			side="EMPTY";
 			vehicle="FlagCarrier";
 			skill=0.200000;
@@ -1153,7 +2549,7 @@ class Mission
 		{
 			position[]={9315.468750,29.969999,3808.853516};
 			special="NONE";
-			id=0;
+			id=40;
 			side="EMPTY";
 			vehicle="FlagCarrier";
 			skill=0.200000;
@@ -1164,7 +2560,7 @@ class Mission
 		{
 			position[]={7191.224121,9.990000,2823.014404};
 			special="NONE";
-			id=0;
+			id=41;
 			side="EMPTY";
 			vehicle="FlagCarrier";
 			skill=0.200000;
@@ -1175,7 +2571,7 @@ class Mission
 		{
 			position[]={5461.642090,19.980000,11867.728516};
 			special="NONE";
-			id=0;
+			id=86;
 			side="EMPTY";
 			vehicle="FlagCarrier";
 			skill=0.200000;
@@ -1186,7 +2582,7 @@ class Mission
 		{
 			position[]={3574.877441,9.990000,2505.273438};
 			special="NONE";
-			id=0;
+			id=90;
 			side="EMPTY";
 			vehicle="FlagCarrier";
 			skill=0.200000;
@@ -1197,7 +2593,7 @@ class Mission
 		{
 			position[]={3847.437500,218.017975,7997.317383};
 			special="NONE";
-			id=0;
+			id=106;
 			side="EMPTY";
 			vehicle="FlagCarrier";
 			skill=0.200000;
@@ -1377,8 +2773,263 @@ class Mission
 	};
 	class Sensors
 	{
-		items=6;
+		items=24;
 		class Item0
+		{
+			position[]={10113.454102,1.793249,12322.296875};
+			a=0.000000;
+			b=0.000000;
+			repeating=1;
+			type="END1";
+			age="UNKNOWN";
+			text="WestWins";
+			name="WestWins";
+			expCond="gameEndType == 0";
+			class Effects
+			{
+			};
+		};
+		class Item1
+		{
+			position[]={10113.454102,1.793249,12125.685547};
+			a=0.000000;
+			b=0.000000;
+			repeating=1;
+			type="END2";
+			age="UNKNOWN";
+			text="EastWins";
+			name="EastWins";
+			expCond="gameEndType == 1";
+			class Effects
+			{
+			};
+		};
+		class Item2
+		{
+			position[]={10113.454102,1.793249,11929.074219};
+			a=0.000000;
+			b=0.000000;
+			repeating=1;
+			type="END3";
+			age="UNKNOWN";
+			text="Draw";
+			name="Draw";
+			expCond="gameEndType == 2";
+			class Effects
+			{
+			};
+		};
+		class Item3
+		{
+			position[]={4408.721191,69.974998,6594.334961};
+			a=10.000000;
+			b=10.000000;
+			activationBy="ANY";
+			age="UNKNOWN";
+			name="trig1";
+			expCond="true";
+			expActiv="[trig1, thislist] exec ""Server\UpdateTown.sqs""";
+			class Effects
+			{
+			};
+		};
+		class Item4
+		{
+			position[]={6240.964355,94.994995,6393.884277};
+			a=10.000000;
+			b=10.000000;
+			activationBy="ANY";
+			age="UNKNOWN";
+			name="trig2";
+			expCond="true";
+			expActiv="[trig2, thislist] exec ""Server\UpdateTown.sqs""";
+			class Effects
+			{
+			};
+		};
+		class Item5
+		{
+			position[]={7760.604980,70.223663,9439.766602};
+			a=10.000000;
+			b=10.000000;
+			activationBy="ANY";
+			age="UNKNOWN";
+			name="trig3";
+			expCond="true";
+			expActiv="[trig3, thislist] exec ""Server\UpdateTown.sqs""";
+			class Effects
+			{
+			};
+		};
+		class Item6
+		{
+			position[]={6174.252441,9.990000,8462.086914};
+			a=10.000000;
+			b=10.000000;
+			activationBy="ANY";
+			age="UNKNOWN";
+			name="trig4";
+			expCond="true";
+			expActiv="[trig4, thislist] exec ""Server\UpdateTown.sqs""";
+			class Effects
+			{
+			};
+		};
+		class Item7
+		{
+			position[]={10369.245117,49.994999,7849.767578};
+			a=10.000000;
+			b=10.000000;
+			activationBy="ANY";
+			age="UNKNOWN";
+			name="trig5";
+			expCond="true";
+			expActiv="[trig5, thislist] exec ""Server\UpdateTown.sqs""";
+			class Effects
+			{
+			};
+		};
+		class Item8
+		{
+			position[]={8507.090820,54.989998,6430.934570};
+			a=10.000000;
+			b=10.000000;
+			activationBy="ANY";
+			age="UNKNOWN";
+			name="trig6";
+			expCond="true";
+			expActiv="[trig6, thislist] exec ""Server\UpdateTown.sqs""";
+			class Effects
+			{
+			};
+		};
+		class Item9
+		{
+			position[]={4901.248535,76.500000,9646.840820};
+			a=10.000000;
+			b=10.000000;
+			activationBy="ANY";
+			age="UNKNOWN";
+			name="trig7";
+			expCond="true";
+			expActiv="[trig7, thislist] exec ""Server\UpdateTown.sqs""";
+			class Effects
+			{
+			};
+		};
+		class Item10
+		{
+			position[]={10584.670898,39.959999,9380.625977};
+			a=10.000000;
+			b=10.000000;
+			activationBy="ANY";
+			age="UNKNOWN";
+			name="trig8";
+			expCond="true";
+			expActiv="[trig8, thislist] exec ""Server\UpdateTown.sqs""";
+			class Effects
+			{
+			};
+		};
+		class Item11
+		{
+			position[]={6655.826172,54.989998,4952.283691};
+			a=10.000000;
+			b=10.000000;
+			activationBy="ANY";
+			age="UNKNOWN";
+			name="trig9";
+			expCond="true";
+			expActiv="[trig9, thislist] exec ""Server\UpdateTown.sqs""";
+			class Effects
+			{
+			};
+		};
+		class Item12
+		{
+			position[]={7093.788086,49.994999,11402.267578};
+			a=10.000000;
+			b=10.000000;
+			activationBy="ANY";
+			age="UNKNOWN";
+			name="trig10";
+			expCond="true";
+			expActiv="[trig10, thislist] exec ""Server\UpdateTown.sqs""";
+			class Effects
+			{
+			};
+		};
+		class Item13
+		{
+			position[]={9314.756836,29.969999,3809.541016};
+			a=10.000000;
+			b=10.000000;
+			activationBy="ANY";
+			age="UNKNOWN";
+			name="trig11";
+			expCond="true";
+			expActiv="[trig11, thislist] exec ""Server\UpdateTown.sqs""";
+			class Effects
+			{
+			};
+		};
+		class Item14
+		{
+			position[]={7190.511230,9.990000,2823.701904};
+			a=10.000000;
+			b=10.000000;
+			activationBy="ANY";
+			age="UNKNOWN";
+			name="trig12";
+			expCond="true";
+			expActiv="[trig12, thislist] exec ""Server\UpdateTown.sqs""";
+			class Effects
+			{
+			};
+		};
+		class Item15
+		{
+			position[]={5460.913574,19.980000,11868.648438};
+			a=10.000000;
+			b=10.000000;
+			activationBy="ANY";
+			age="UNKNOWN";
+			name="trig13";
+			expCond="true";
+			expActiv="[trig13, thislist] exec ""Server\UpdateTown.sqs""";
+			class Effects
+			{
+			};
+		};
+		class Item16
+		{
+			position[]={3574.148438,9.990000,2506.193359};
+			a=10.000000;
+			b=10.000000;
+			activationBy="ANY";
+			age="UNKNOWN";
+			name="trig14";
+			expCond="true";
+			expActiv="[trig14, thislist] exec ""Server\UpdateTown.sqs""";
+			class Effects
+			{
+			};
+		};
+		class Item17
+		{
+			position[]={3848.138672,218.187607,7998.004883};
+			a=10.000000;
+			b=10.000000;
+			activationBy="ANY";
+			age="UNKNOWN";
+			name="trig18";
+			expCond="true";
+			expActiv="[trig18, thislist] exec ""Server\UpdateTown.sqs""";
+			class Effects
+			{
+			};
+		};
+		class Item18
 		{
 			position[]={6174.937012,9.999908,8154.274902};
 			a=5.000000;
@@ -1392,7 +3043,7 @@ class Mission
 			{
 			};
 		};
-		class Item1
+		class Item19
 		{
 			position[]={6175.041504,9.999908,8246.391602};
 			a=5.000000;
@@ -1406,7 +3057,7 @@ class Mission
 			{
 			};
 		};
-		class Item2
+		class Item20
 		{
 			position[]={6425.009277,9.999908,8154.310547};
 			a=5.000000;
@@ -1420,7 +3071,7 @@ class Mission
 			{
 			};
 		};
-		class Item3
+		class Item21
 		{
 			position[]={6425.033691,9.999908,8245.791016};
 			a=5.000000;
@@ -1434,7 +3085,7 @@ class Mission
 			{
 			};
 		};
-		class Item4
+		class Item22
 		{
 			position[]={8602.659180,14.989908,7425.051758};
 			a=5.000000;
@@ -1448,7 +3099,7 @@ class Mission
 			{
 			};
 		};
-		class Item5
+		class Item23
 		{
 			position[]={8996.166992,14.989908,7424.976074};
 			a=5.000000;
