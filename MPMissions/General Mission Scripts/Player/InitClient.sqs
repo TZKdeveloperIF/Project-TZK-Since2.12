@@ -134,8 +134,11 @@ RapidRearmSecWeapons = [{CarlGustavLauncher},{AT4Launcher},{LAWLauncher},{RPGLau
 RapidRearmSecMagazines = [{CarlGustavLauncher},{AT4Launcher},{LAWLauncher},{RPGLauncher},{AALauncher},{9K32Launcher},[{CarlGustavLauncher},{AT4Launcher}] select _si,{Kasapanos}, {SMAW_AT__xj200},{RPG16d_AT__xj200},{JavelinLauncher_Weak_Mag__xj200}]
 
 
-[] exec "Player\MsgEffectKilledAircraft.sqs"; [] exec "Player\MsgEffectKilledBoat.sqs";
-FindSucceedUnit = 0;
+; [] exec "Player\MsgEffectKilledAircraft.sqs"; [] exec "Player\MsgEffectKilledBoat.sqs";
+; Above line should work basing on 3.00 mod.
+
+[] exec {Player\DynamicInitializationMarker.sqs}
+[] exec "Player\DynamicInitializationTrigger.sqs"
 ; ================================================================================TZK_3.00 Block================================================================================
 
 ; ================================================================================Some Functions================================================================================

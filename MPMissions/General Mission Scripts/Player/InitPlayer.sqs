@@ -134,14 +134,6 @@ indexSendBuyUnit = 0; countSendBuyUnit = 4
 [] exec "Player\MsgPingServer.sqs"
 
 
-; DynamicInitializationMarker works equivalently as InitMarkers, but rely on 2.01 supported command thus separated into 2 scripts.
-MarkersCreated = false
-[] exec {Player\DynamicInitializationMarker.sqs}
-[_si] exec "Player\InitMarkers.sqs"
-
-; Dynamic Creating Triggers, for Game-End and Radio
-[] exec "Player\DynamicInitializationTrigger.sqs"
-
 ;game has begun after this pause
 ~0.1
 

@@ -1,7 +1,6 @@
 ; args: none
 ; Markers must be stated in orders. Later created marker will cover those created earlier.
-; MarkersCreated should be stated in initPlayer.sqs or earlier, make sure it defined before initmarker.sqs start.
-hiddenMarkerPos = [-1000, -1000]; MarkersCreated = false
+hiddenMarkerPos = [-1000, -1000]
 
 ; Markers defined here, but initialized in InitMarkers. Definations like type, color, etc may lack or repeat thus please be cautious. Of course its possbile to combine 2 scripts but remain separated can remind editors of editing history.
 
@@ -106,7 +105,11 @@ _i = 0; _count = count callsigns
 	_marker = format["%1%2", callsigns select _i, si1]; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerText format["%1", callsigns select _i]; _marker setMarkerType "Dot"
 	_i = _i + 1
 	? (_i < _count):goto "LeaderMarker"
+	
 
-MarkersCreated = true
+_si = sides find (side player)
+? _si == -1 : _si = siCiv
+[_si] exec "Player\InitMarkers.sqs"
+
 
 ; EOF

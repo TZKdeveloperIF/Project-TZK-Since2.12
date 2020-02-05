@@ -1,0 +1,27 @@
+; args: [unit]
+; unit : group leader at start
+
+_unit = _this select 0
+_group = group _unit
+
+; "sides" initialized by Init.sqs, however init.sqs executed AFTER mission.sqm.
+; ? side _group == [west, east, resistance] select si0 : _si = si0
+; ? side _group == [west, east, resistance] select si1 : _si = si1
+
+
+@( count townGroups > 0 )
+~1
+? side _group == sides select si0 : _si = si0
+? side _group == sides select si1 : _si = si1
+; this step getting _si must be executed after init.sqs. the "@" will be passed only when townGroups has been defined.
+; the _unit will soon be killed by server script, and "side" (dead unit) will retrun civilian, thus use side group instead
+
+@(time > 15)
+? isNull _group : "ERROR: _group is NULL at init for RES town group" call fDebugLog; exit
+
+@!(mutexTownWorkerGroups)
+mutexTownWorkerGroups = true
+
+(townGroups select _si) set [count (townGroups select _si), _group]
+
+mutexTownWorkerGroups = false

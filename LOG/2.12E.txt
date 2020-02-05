@@ -1,0 +1,38 @@
+======================================Bug Fixing======================================
+The 2.12C and 2.12D are failure. The problem probably because of modifying mission.sqm and applying createGroup, Marker and Trigger. 2.12B introducing Radio Triggers only, and server crashed twice. However 2.12B work stable if not including these 2 times crash.
+
+2.12E is a trial recovering groups/sensors of mission.sqm, remaining only marker's dynamic initialization, and using "resistance_center" to take the localserverobject's place.
+
+The game-end trigger can be created when pvGameOver isn't -1 but not on game start. The AddOns requirement, those groups/vehicles sharing same "id = 0" and sharing same name markers might cause problem as well. These can be references in later versions.
+
+
+mission.sqm
+recover mission.sqm in 2.12B version, transplant new markers and replace the resistance_Center. Self-Training has "dev = true". Island on ussr/kolguev2 and high grid in ctilica are deleted in 2.12E version.
+The leader of GroupTemp has extra "LeaderTemp" statements.
+
+Server\KeepTempLeaderAlive.sqs
+Using "allowDammage false" instead.
+
+Init.sqs
+Add the definition of workerGroups.
+
+Server\UpdateTownGroups..., UpdateReSPatrolGroups..., UpdateAASystem.sqs
+They should recover old format to fit old group settings
+
+
+Common\InitTownGroups.sqs
+Recover.
+
+Server\UpdateTown.sqs
+Format is common thus don't have to recover.
+
+
+Player\DynamicInitializationMarker, InitMarker.sqs
+Using DynamicInitializationMarker to exec InitMarker. They're intergrated into "InitClient.sqs".
+
+Player\DynamicInitializationTrigger.sqs
+Need Radio Triggers only.
+Server\DynamicInitializationTrigger.sqs
+No initialization.
+Server\DynamicInitializationGroup.sqs
+No initialization.
