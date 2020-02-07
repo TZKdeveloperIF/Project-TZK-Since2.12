@@ -22,10 +22,10 @@ _shell = nearestObject [_vehicle, _ammo]; _effectShell = objNull;
 _booleShell = false; _sizeOfShell = 0;
 if (_weapon in ["Gun73"]) then {_booleShell = true; _sizeOfShell = 73};
 if (_weapon in ["Gun105"]) then {_booleShell = true; _sizeOfShell = 105};
-if (_weapon in ["M1Gun__xj200","M12Gun__xj200","LeoGun__xj200","Gun120"]) then {_booleShell = true; _sizeOfShell = 120};
-if (_weapon in ["T80Gun__xj200","T90Gun__xj200","PLAGun__xj200","Gun125", "Sprut_2A75__xj200"]) then {_booleShell = true; _sizeOfShell = 125};
-if (_weapon in ["Gun130__xj200"]) then {_booleShell = true; _sizeOfShell = 130};
-if (_weapon in ["Gun155__xj200","PLA155Gun__xj200"]) then {_booleShell = true; _sizeOfShell = 155};
+if (_weapon in ["M1Gun_xj200","M12Gun_xj200","LeoGun_xj200","Gun120"]) then {_booleShell = true; _sizeOfShell = 120};
+if (_weapon in ["T80Gun_xj200","T90Gun_xj200","PLAGun_xj200","Gun125", "Sprut_2A75_xj200"]) then {_booleShell = true; _sizeOfShell = 125};
+if (_weapon in ["Gun130_xj200"]) then {_booleShell = true; _sizeOfShell = 130};
+if (_weapon in ["Gun155_xj200","PLA155Gun_xj200"]) then {_booleShell = true; _sizeOfShell = 155};
 
 if (local _shell) then {
 
@@ -59,12 +59,12 @@ if (local _shell) then {
 if (!isNull _effectShell) then {
 	// SLX MG Hit Effect
 	_type = typeOf _shell;
-	if ( _type in ["CoaxW__xj200","CoaxE__xj200","50calW__xj200","50calE__xj200","Bullet7_6","Bullet12_7"] ) then {
+	if ( _type in ["CoaxW_xj200","CoaxE_xj200","50calW_xj200","50calE_xj200","Bullet7_6","Bullet12_7"] ) then {
 		if ((boole_Local_Bullet_Tracer && local _shell) || (boole_Global_Bullet_Tracer && !local _shell)) then {[_effectShell] exec {Player\FiredEffect_SLX_MG.sqs}};
 	};
 
 	// FFUR Cannon Tracer Effect
-	if ( _weapon in ["MachineGun30","MachineGun30W","M197__xj200","VulcanCannon__xj200","Cannon_20HE__xj200","Cannon_20AP__xj200","RMKHETiger_DVD__xj200","RMKAPTiger_DVD__xj200",  "MachineGun30E","ZsuCannon","Cannon30_Kamov__xj200","CannonE_20HE__xj200","CannonE_20AP__xj200",  "MachineGun30A10","MachineGun30A10Burst","RKTHunter_Guns","Cannon_Heli__xj200","Cannon_30APHE__xj200"] ) then {
+	if ( _weapon in ["MachineGun30","MachineGun30W","M197_xj200","VulcanCannon_xj200","Cannon_20HE_xj200","Cannon_20AP_xj200","RMKHETiger_DVD_xj200","RMKAPTiger_DVD_xj200",  "MachineGun30E","ZsuCannon","Cannon30_Kamov_xj200","CannonE_20HE_xj200","CannonE_20AP_xj200",  "MachineGun30A10","MachineGun30A10Burst","RKTHunter_Guns","Cannon_Heli_xj200","Cannon_30APHE_xj200"] ) then {
 		if ((boole_Local_Cannon_Tracer && local _shell) || (boole_Global_Cannon_Tracer && !local _shell)) then {[_effectShell, _weapon] exec {Player\FiredEffect_FFUR_Cannon.sqs}};
 	};
 	
