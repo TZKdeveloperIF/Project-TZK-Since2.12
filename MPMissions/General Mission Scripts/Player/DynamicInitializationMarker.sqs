@@ -106,6 +106,15 @@ _i = 0; _count = count callsigns
 	_i = _i + 1
 	? (_i < _count):goto "LeaderMarker"
 	
+_marker = "Respawn_west"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerColor "ColorBlue";  _marker setMarkerType "Start";
+_marker = "Respawn_east"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerColor "ColorRed";  _marker setMarkerType "Start";
+_marker = "Respawn_guerrila"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerColor "ColorBlack";  _marker setMarkerType "Start";
+_marker = "Respawn_civilian"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerColor "ColorWhite";  _marker setMarkerType "Start";
+_marker = "Respawn_vehicle_west"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerColor "ColorBlue";  _marker setMarkerType "Start";
+_marker = "Respawn_vehicle_east"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerColor "ColorRed";  _marker setMarkerType "Start";
+_marker = "Respawn_vehicle_guerrila"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerColor "ColorBlack";  _marker setMarkerType "Start";
+_marker = "Respawn_vehicle_civilian"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerColor "ColorWhite";  _marker setMarkerType "Start";
+	
 
 _si = sides find (side player)
 ? _si == -1 : _si = siCiv
