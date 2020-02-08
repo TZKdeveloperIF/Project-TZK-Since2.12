@@ -10,6 +10,7 @@ _timeWait = [5*60, 5] select dev
 _timeDelete = time + _timeWait
 
 ? _name == "Worker" : hint "Worker killed."; deleteVehicle _object; exit
+? _type in structsShelter : hint "Structure destroyed. It'll disappear soon."; _object setDamage 1; _salvage = 0.1*( (structDefs select _type) select sdCost ); [-_salvage] exec "Player\SendMoneySpent.sqs"; exit
 
 ? ! _isMCV : call format ["hint ""The structure will disappear in %1 minute(s). 10%2 resource will be recycled. You can click """"UNDO"""" button to cancel this before it finished.""", _timeWait/60, "%"]
 ? _isMCV && (alive _object) : call format ["hint ""Selected MCV is still alive. It will set ruined in %1 minute(s) and return %2%3. You can click """"UNDO"""" button to cancel this before it finished.""", _timeWait/60, "$", 0.1*costRepairMHQ]; _bAliveMCV = true

@@ -1,0 +1,40 @@
+======================================Bug Fixing======================================
+Player\UpdateUnitMarkers.sqs
+After having turned to #ResetLeaderMarker, the spectator should return to #UpdateSpectator, not #Update.
+
+
+======================================Adjustment======================================
+--Respawn
+Having studied "https://forums.bohemia.net/forums/topic/177209-ofpacwa-facts-myths-findings-experiments-prototypes-tutorials/?page=5&tab=comments#comment-3367239" by RozekPoland the author decide to fill protections of this in TZK missions. Some related settings about description.ext are modified as well.
+
+Player\DynamicInitializationMarker.sqs
+Those markers for "Respawn" is necessary for "respawn = 3".
+
+Mission Root Folder
+Add 3 empty scripts onPlayerRespawn.sqs, onPlayerResurrect.sqs and onflare.sqs.
+
+Description.ext
+Set "onLoadMissionTime = 1". However this seems is the default value thus make no sense.
+
+
+--Killed Tank Effect
+Creating Game-Logic in 2.10 MPMissions won't cause lags, proved. But effect will. The reason may because the scripts, using remote wreck object for "drop", and the sensor used for height getting is created by "createVehicle" and isn't deleted when script ends.
+
+
+--CIV Dialog
+Player\Dialog Spectator.sqs
+Add "Radio" info in NVG text.
+
+
+--Destruction
+Common\InitStructureTypes.sqs
+Add structsShelter definitions including wall, roof, tank trap, ammo crate, heli H, etc.
+
+Player\UpdateDialogDestruction.sqf
+Add structsShelter.
+
+Player\Waiting For Destruction.sqs
+If the type is in structsShelter, they'll be broken directly and gain 10% salvage.
+
+--mission.sqm
+Set all units using same ID, and delete all waypoints.

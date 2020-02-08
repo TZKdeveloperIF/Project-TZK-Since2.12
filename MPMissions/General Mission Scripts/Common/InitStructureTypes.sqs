@@ -211,13 +211,14 @@ _price = [200, 400] select PricingMode
 _objects = [ ["DVD_v2_trench", 0, [0,0,0]] ]
 _image = ["Player\Trench.jpg","Player\Trench.jpg"]
 structDefs set [_type, ["Tank Trench", _price, siBoth, _image, true, false, 50, 5, 20, _objects, _objects, ["Server\InitSecondaryStructure.sqs"], []] ]
+_tanktr = _type
 _type = _type + 1
 
 _price = [20, 40] select PricingMode
 _objects = [["DVD_v2_sandbag", 90, []]]
 _image = ["Player\Sandbags.jpg","Player\Sandbags.jpg"]
 structDefs set [_type, ["Sand Bags", _price, siBoth, _image, false, false, 100, 1, 10, _objects, _objects, ["Server\InitSecondaryStructure.sqs"], []] ]
-_tanktr = _type
+_sandbag = _type
 alignTypes set [count alignTypes, _type]; alignDefs set [ count alignDefs, [[0,0], 2.2] ]
 _type = _type + 1
 
@@ -273,6 +274,7 @@ structsDestroy = [stComm, stBarracks, stLight, stHeavy, stAir, stShip, stradarai
 structsFactory = [stBarracks, stLight, stHeavy, stAir, stShip]
 
 structsDefence = [_mortar, _mgFort, _mgTowerWood, _mgTowerConcrete, _mg, _gunf, _mortar2, _m46, _m46Art]
+structsShelter = [_wall, _walls, _roof, _roofHigh, _tanktr, _tankt, _sandbag, stAmmoCrate, _heliH]
 structsOccupiableMortar = [_mortar, _mortar2]
 structsOccupiableMGGround = [_mg, _mgFort]
 structsOccupiableMGTower = [_mgTowerWood, _mgTowerConcrete]
