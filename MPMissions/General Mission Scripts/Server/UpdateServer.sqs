@@ -15,7 +15,7 @@ _timeNextRemind = timeLimit - (_remind select _ir)
 #Update
   ~2
 	; ? (pvGameOver != -1): saveGame; Exit
-	? pvGameOver != -1 : exit
+	? pvGameOver != -1 : [] exec "Common\Dynamic\TriggerGameEnd.sqs"; exit
 
 	? (timeLimit != 0 && time > timeLimit): goto "TimeLimitReached"
 
@@ -48,4 +48,5 @@ _timeNextRemind = timeLimit - (_remind select _ir)
 #TimeLimitReached
 	pvGameOver = (1) + 2*(0)
 	PublicVariable "pvGameOver"
+	[] exec "Common\Dynamic\TriggerGameEnd.sqs"
 	exit

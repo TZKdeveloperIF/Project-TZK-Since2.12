@@ -25,7 +25,7 @@ _timeDead = 0
 
 	; ? (pvDebugVars): pvDebugVars=false; player globalchat format["pvDebugVar1=%1", pvDebugVar1]; player globalchat format["pvDebugVar2=%1", pvDebugVar2]; player globalchat format["pvDebugVar3=%1", pvDebugVar3]
 
-	? pvGameOver != -1 : [] exec "Player\PlayGameOverSequence.sqs"; if (name player == "TZK_Editor") then {[] exec "Player\ShowVariables.sqs"}; Exit
+	? pvGameOver != -1 : [] exec "Player\PlayGameOverSequence.sqs"; [] exec "Common\Dynamic\TriggerGameEnd.sqs"; Exit
 
 	? time > (timeLastPing + blockTime) && !bBlockedByClient : bBlockedByClient = true; [] exec "Player\BlockByClient.sqs"
 	
@@ -79,7 +79,7 @@ _timeDead = 0
 
 	@(alive player) || (pvGameOver != -1)
 
-	? pvGameOver != -1 : [] exec "Player\PlayGameOverSequence.sqs"; exit
+	? pvGameOver != -1 : [] exec "Player\PlayGameOverSequence.sqs"; [] exec "Common\Dynamic\TriggerGameEnd.sqs"; exit
 
 	_unit = player
 	removeAllWeapons _unit

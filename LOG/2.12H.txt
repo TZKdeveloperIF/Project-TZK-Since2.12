@@ -1,0 +1,26 @@
+======================================Adjustment======================================
+--Res Patrol Position
+Server crashed frequently since "Server\GetAvailablePatrolPosition.sqs" applied. In 2.12G the PatrolPositions isn't be applied for patrol position but server keep on crashing. 
+It's possible because of rough design creating patrol position, or too long array. Remove it's execution first.
+
+--mission.sqm
+2.12E stable with dynamic creating markers. 2.12H will test dynamic triggers.
+
+Game-End triggers:
+
+Common\Dynamic\TriggerGameEnd.sqs
+3 Game End Triggers are created here, not created on start.
+
+Server\UpdateServer.sqs
+When time limit reached, or when pvGameOver != -1 in main loop, execute the "Common\Dynamic\TriggerGameEnd.sqs".
+
+Player\UpdatePlayer.sqs
+When pvGameOver != -1, execute the "Common\Dynamic\TriggerGameEnd.sqs".
+
+
+Town Flag Triggers:
+Recover them in Server\DynamicInitializationTrigger.sqs
+
+
+Bugs in mission.sqm:
+Triggers above are removed in mission.sqm. Missions in Nogova, Hellden and Freya have teleport bridge. The names of those markers for destination are changed in 2.12E by mistake, they're recovered in this time. The initialization in mission.sqm used to be defined by another game logic as well, and repairable objects' ID defined there for those teleport bridges. They're standardized this time as well.
