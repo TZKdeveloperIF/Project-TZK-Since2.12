@@ -1,39 +1,24 @@
-; args: [unit, infantry, tanks, interval]
-; unit : group leader at start
-; infantry : number of initial infantry units defending town
-; tanks : number of initial tanks defending town
-; interval : reinforce interval in minutes
+; args: [group, townIndex]
 
-? !isServer : exit
-_unit = _this select 0
-_unit disableAI "TARGET"; _unit disableAI "AUTOTARGET"; _unit disableAI "MOVE"
-~5
-
+_group = _this select 0; _ti = _this select 1
 _si = siRes
-_group = group _unit
 
-_inf = _this select 1
+_inf = 3 + random 3
 _tanks = 1 * restanksx
 _interval = (7 - restanksx) *60
 _patrol = 0
 
 _distSpawn = viewDistance + 500
 
-_res = [getPos _unit, [siRes], []] call funcGetClosestTown;
-_flag = (_res select 0) select tdFlag
+_flag = (towns select _ti) select tdFlag
 _posFlag = getPos _flag
-_ti = _res select 2
-
-;deleteVehicle _unit
-_unit setpos [1,1,1]; _unit setdamage 1
-
 ? isNull _group : format["ERROR: _group is NULL at init for RES town group in '%1'", (towns select _ti) select tdName] call fDebugLog; exit
 
 @!(mutexInitResGroups)
 mutexInitResGroups = true
 _list = groupMatrix select _si
 _list set [count _list, _group]
-;_gi = ( _list ) find ( _group )
+
 mutexInitResGroups = false
 
 @( !(isNull (mhq select si0)) && !(isNull (mhq select si1)) )

@@ -822,9 +822,8 @@ posCenter = [_posX/_c, _posY/_c]
 
 
 
-
-
-workerGroups = [ [groupWorker00, groupWorker01, groupWorker02], [groupWorker10, groupWorker11, groupWorker12] ]
+townGroups=[ [], [] ]; workerGroups = [ [], [] ]
+mutexDynamicInitializeGroups = false; [] exec "Common\Dynamic\GroupsClear.sqs"
 timeReinforceTown = 3*60
 
 ? isServer: [_boole_Infantry_Mode, _boole_NeutralTown_Mode, _boole_SEMod_Mode] exec "Server\InitServer.sqs"

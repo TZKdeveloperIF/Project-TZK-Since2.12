@@ -1,23 +1,17 @@
-; args: [unit]
-; unit : group leader at start
+; args: [group]
 
 ? !isServer : exit
-_unit = _this select 0
-_unit disableAI "TARGET"; _unit disableAI "AUTOTARGET"; _unit disableAI "MOVE"
-~5
+@(time > 5)
+_group = _this select 0
+_name = substr [format ["%1", _group], 0, 4]; _si = -1
 
-_group = group _unit
-
-_si = -1
-? side _unit == sides select si0 : _si = si0
-? side _unit == sides select si1 : _si = si1
+? _name == sideNames select si0 : _si = si0
+? _name == sideNames select si1 : _si = si1
 
 _siEnemy = siEnemy select _si
 _aircraft = AggressiveAircrafts select _siEnemy
 _tank = [typesLightTank select _siEnemy, typesHeavyTank select _siEnemy]
 
-~15
-_unit setpos [1,1,1]; _unit setdamage 1
 
 ? isNull _group : format["ERROR: _group is NULL at init for %1 temporary AA group", sideNames select _si] call fDebugLog; exit
 
@@ -29,12 +23,12 @@ _unit setpos [1,1,1]; _unit setdamage 1
 _tanks = 0; _aircrafts = 0
 
 { _tanks = _tanks + ((unitsBuilt select _siEnemy) select _x) } foreach _tank
-? _tanks >= 3 : exit
+? _tanks >= 3 : goto "Quit"
 
 { _aircrafts = _aircrafts + ((unitsBuilt select _siEnemy) select _x) } foreach _aircraft
 ? _aircrafts > 0 : goto "SpawnAA"
 
-? time > 30*60 : exit
+? time > 30*60 : goto "Quit"
 goto "Update"
 
 
@@ -63,4 +57,9 @@ goto "Update"
 {deleteVehicle _x} forEach (units _group)
 ~1
 [_si] exec "Server\Info\TempAADeleted.sqs"
-exit
+goto "Quit"
+
+#Quit
+deleteGroup _group
+
+;EOF
