@@ -11,7 +11,7 @@ _lastMissionSettings = [ [], [], [] ]; _booleMatrix = [booleSettingEffects, bool
 
 ; Show text in dev for debugging
 ? !dev : _i = 1; _c = 3; while "_i <= _c" do { ctrlShow [IDC + _i, false]; _i = _i + 1 }
-
+? dev: hint format ["%1", workerGroups]; player globalChat format ["%1", townGroups select siPlayer]
 
 #Update
 	? !(dialog): goto "Quit"

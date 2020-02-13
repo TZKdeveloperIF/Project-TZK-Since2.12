@@ -1,54 +1,9 @@
 ; args: none
-; Groups created in-game via InitServer. Using publicExec or "Init" parameter of "createUnit" to make clients record town/worker groups.
-; The type of soldier is good to indicate its group types. SoldierWB/SoldierEB for town groups; SoldierWG/SoldierEG for worker groups.
-
-; Skip this script in 2.12E MPMissions
-exit
-
-; ==================================Town Groups==================================
-; Condition about towns, if necessary. Number of town groups should rely on number of towns.
-; Towns should have been sorted in init.sqs, however sqs works parallely thus not sure. This is a trial.
-
-_groupScript = ";this exec {Player\Msg\SetGroups.sqs}"
-_index = 0; _count = count towns
-#TownGroups
-	_town = towns select _index; _flag = _town select 0; _income = _town select 2
-	_westTG = createGroup west; _eastTG = createGroup east; _resTG = createGroup resistance
-	
-	; Be cautious to set string correctly
-	; it is recommend to add more parameters in towns[] defined in mission.sqm, to help decide which script(s) should be used
-	; Side must used as a parameter. An empty group created by "createGroup" return the "unknown" side. However editor can still use "format" and "substr" to gain the first 4 letters and hence gain the side.
-
-	_script = "{Server\UpdateTownGroup.sqs}"
-	? _income < 0 : _script = "{Server\UpdateTownGroup3.sqs}"
-	call format ["[_westTG, _index, west] exec %1; [_eastTG, _index, east] exec %1", _script]
-	
-	_initW = (format ["leaderTG0%1=this", _index]) + _groupScript; _initE = (format ["leaderTG1%1=this", _index]) + _groupScript
-	{SoldierWB} createUnit [[-1000,0000,1000], _westTG, _initW]; {SoldierEB} createUnit [[-1000,1000,1000], _eastTG, _initE]
-	_protect = format ["leaderTG0%1 allowdammage false; leaderTG1%1 allowdammage false", _index]; call _protect
-	(townGroups select 0) set [count (townGroups select 0), _westTG]; (townGroups select 1) set [count (townGroups select 1), _eastTG]
-
-	_script = "{Server\UpdateTownGroupRes.sqs}"
-	; ? _income >= 1000 : _script = "{Server\UpdateTownGroupRes2.sqs}"
-	call format ["[_resTG, _index] exec %1", _script]
-
-	? _income < 1000 : goto "SkipExtraTownGroups"
-	_westTG = createGroup west; _eastTG = createGroup east
-	_script = "{Server\UpdateTownGroup4.sqs}"
-	call format ["[_westTG, _index, west] exec %1", _script]; call format ["[_eastTG, _index, east] exec %1", _script]
-	
-	_initW = (format ["leaderTG0%1=this", _index + _count]) + _groupScript; _initE = (format ["leaderTG1%1=this", _index + _count]) + _groupScript
-	{SoldierWB} createUnit [[-1000,0000,1000], _westTG, _initW]; {SoldierEB} createUnit [[-1000,1000,1000], _eastTG, _initE]
-	_protect = format ["leaderTG0%1 allowdammage false; leaderTG1%1 allowdammage false", _index]; call _protect
-	(townGroups select 0) set [count (townGroups select 0), _westTG]; (townGroups select 1) set [count (townGroups select 1), _eastTG]
-
-	#SkipExtraTownGroups
-	_index = _index + 1
-	? _index < _count : goto "TownGroups"
-	
-; Towns is the list including flagCarrier, Name, income, etc
-; Ask each town use groups as their own TG. Index used as town index in scripts.
-; It is possbile to ask TG execute special script depending on their income. NT mission can in this way considering design a parameter to switch NT mode ON/OFF.
+; Town and Worker Groups are displayed on map, thus they're defined in mission.sqm, not created in-game and broadcasted.
+; Temporary group and join group should be global, and are placed in mission.sqm as well.
+; Res town groups and patrol groups can be created by the server. So do AA groups.
+; Pre-defined west/east town groups should be attached to flagCarriers. Redundant groups should be deleted and insufficient groups should be created, and those created group remain NOT broadcasted.
+; For broadcasting, publicExec or "Init" parameter of "createUnit" is available.
 
 
 ; =================================Patrol Groups=================================
@@ -63,53 +18,76 @@ _index = _index + 1
 ? _index < _count : goto "ResPatrolGroups"
 
 
-; =================================Worker Groups=================================
-_index = 0; _count = 3
-#WorkerGroups
-	_westWG = createGroup west; _eastWG = createGroup east
-	
-	_initW = (format ["leaderWG0%1=this", _index]) + _groupScript; _initE = (format ["leaderWG1%1=this", _index]) + _groupScript
-	{SoldierWG} createUnit [[-1000,0000,1000], _westWG, _initW]; {SoldierEG} createUnit [[-1000,1000,1000], _eastWG, _initE]
-	_protect = format ["leaderWG0%1 allowdammage false; leaderWG1%1 allowdammage false", _index]; call _protect
-	
-	(workerGroups select 0) set [count (workerGroups select 0), _westWG]; (workerGroups select 1) set [count (workerGroups select 1), _eastWG]
-
-	_index = _index + 1
-	? _index < _count : goto "WorkerGroups"
-
-
 ; ===============================Functional Groups===============================
-; maybe need time condition
-
-groupTemp0=createGroup west; groupTemp1=createGroup east
-groupJoin0=createGroup west; groupJoin1=createGroup east
-{SoldierWB} createUnit [[-1000,0000,1000], groupTemp0, {leaderTemp0=this}]; leaderTemp0 allowdammage false
-{SoldierWB} createUnit [[-1000,0000,1000], groupJoin0, {leaderJoin0=this}]; leaderJoin0 allowdammage false
-{SoldierEB} createUnit [[-1000,1000,1000], groupTemp1, {leaderTemp1=this}]; leaderTemp1 allowdammage false
-{SoldierEB} createUnit [[-1000,1000,1000], groupJoin1, {leaderJoin1=this}]; leaderJoin1 allowdammage false
 
 _groupAA0=createGroup west; _groupAA1=createGroup east
-[_groupAA0, west] exec {Server\UpdateAASystem.sqs}
-[_groupAA1, east] exec {Server\UpdateAASystem.sqs};
+[_groupAA0] exec {Server\UpdateAASystem.sqs}
+[_groupAA1] exec {Server\UpdateAASystem.sqs};
 
 
+; ==================================Town Groups==================================
+; Groups are recorded in init.sqs thus have to wait unitl game started. 
+; Number of town groups should rely on number of towns.
 
-;===============================Clean Up Group Leaders==============================
-~3*60
-_i = 0; _c = 3
-#CleanWGLeader
-	call format ["leaderWG0%1 allowdammage true; deleteVehicle leaderWG0%1; leaderWG0%1 = nil", _i]
-	call format ["leaderWG1%1 allowdammage true; deleteVehicle leaderWG1%1; leaderWG1%1 = nil", _i]
-	_i = _i + 1
-	~0.1
-	? _i < _c : goto "CleanWGLeader"
+~2
+
+_index = 0; _count = count towns
+#TownGroups
+	_town = towns select _index; _flag = _town select 0; _income = _town select 2
 	
-_i = 0; _c = (count towns) * 2
-#CleanTGLeader
-	? !isNull (call format ["leaderTG0%1", _i]) : call format ["leaderTG0%1 allowdammage true; deleteVehicle leaderTG0%1; leaderTG0%1 = nil", _i]
-	? !isNull (call format ["leaderTG1%1", _i]) : call format ["leaderTG1%1 allowdammage true; deleteVehicle leaderTG1%1; leaderTG1%1 = nil", _i]
-	_i = _i + 1
-	~0.1
-	? _i < _c : goto "CleanTGLeader"
+	if (_index < count (townGroups select si0)) then {_westTG = (townGroups select si0) select _index} else {_westTG = createGroup west}
+	if (_index < count (townGroups select si1)) then {_eastTG = (townGroups select si1) select _index} else {_eastTG = createGroup east}
+	_resTG = createGroup resistance
+	
+	; An empty group created by "createGroup" return the "unknown" side. However editor can still use "format" and "substr" to gain the first 4 letters and hence gain the side.
+
+	_script = "{Server\UpdateTownGroup.sqs}"
+	? _income < 0 : _script = "{Server\UpdateTownGroup3.sqs}"
+	call format ["[_westTG, _index, west] exec %1; [_eastTG, _index, east] exec %1", _script]
+
+	_script = "{Server\UpdateTownGroupRes.sqs}"
+	; ? _income >= 1000 : _script = "{Server\UpdateTownGroupRes2.sqs}"
+	call format ["[_resTG, _index] exec %1", _script]
+
+	_index = _index + 1
+	? _index < _count : goto "TownGroups"
+	
+; Towns is the list including flagCarrier, Name, income, etc
+; Ask each town use groups as their own TG. Index used as town index in scripts.
+; It is possbile to ask TG execute special script depending on their income. NT mission can in this way considering design a parameter to switch NT mode ON/OFF.
+
+_indexExtra = 0
+#ExtraTownGroups
+	_town = towns select _indexExtra; _flag = _town select 0; _income = _town select 2
+	
+	? _income < 1000 : goto "SkipExtraTownGroups"
+	if (_index < count (townGroups select si0)) then {_westTG = (townGroups select si0) select _index} else {_westTG = createGroup west}
+	if (_index < count (townGroups select si1)) then {_eastTG = (townGroups select si1) select _index} else {_eastTG = createGroup east}
+	
+	_script = "{Server\UpdateTownGroup4.sqs}"
+	call format ["[_westTG, _index, west] exec %1", _script]; call format ["[_eastTG, _index, east] exec %1", _script]
+	_index = _index + 1
+
+	#SkipExtraTownGroups
+	_indexExtra = _indexExtra + 1
+	? _indexExtra < _count : goto "ExtraTownGroups"
+	
+_indexRemoveTG = _index
+
+; =============================Clean up Leaders and Groups============================
+~2
+{deleteVehicle (units _x select 0)} forEach (workerGroups select 0)
+{deleteVehicle (units _x select 0)} forEach (workerGroups select 1)
+
+_index = _indexRemoveTG
+while "_index < count (townGroups select si0)" do { {deleteVehicle _x} forEach units ((townGroups select si0) select _index); _index = _index + 1 }
+_index = _indexRemoveTG
+while "_index < count (townGroups select si1)" do { {deleteVehicle _x} forEach units ((townGroups select si1) select _index); _index = _index + 1 }
+~2
+_index = _indexRemoveTG
+while "_index < count (townGroups select si0)" do { deleteGroup ((townGroups select si0) select _index); _index = _index + 1 }
+_index = _indexRemoveTG
+while "_index < count (townGroups select si1)" do { deleteGroup ((townGroups select si1) select _index); _index = _index + 1 }
+
 
 ;EOF

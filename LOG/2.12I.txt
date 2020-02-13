@@ -1,0 +1,45 @@
+======================================Adjustment======================================
+--mission.sqm
+2.12H stable with dynamic creating triggers. Groups need to be broadcasted if created in-game, thus TG for west/east are still be placed in mission.sqm. 22*2 TG groups are pre-set, and if there're more TG requirement, publicExec is possible to be applied. Groups of units placed in mission.sqm is delete-able by deleteGroup, thus those redundant groups can be removed later.
+Res TG and patrol groups can be created in-game. Their units don't have to display to players.
+
+Unlike "towns" whose elements is added by vehicle, groups info can't be added directly into townGroups/workerGroups. They are asked to start an script, which should wait a mutex boolean meaning Init.sqs finished, because playable groups' ID are set there. That mutex will also be deleted later(by setting it "nil").
+
+
+mission.sqm
+Groups
+Place 46 playable groups, 4 functional groups, 22*2 TG groups, 3*2 worker groups and 2 logic for start position.
+The number of groups is 103.
+
+Vehicles
+Their names(text) are removed.
+Their ID start from 200.
+!! This setting might cause problem!!
+
+Some Islands
+Recover Cricon, kolguev, ussr, twkm MPMissions.
+Fix marker's name for teleporter in ussr.
+
+
+Init.sqs
+Define the townGroups and workerGroups. Define the mutexDynamicInitializeGroups and execute the "Common\Dynamic\GroupsClear.sqs"
+
+Common\Dynamic\Groups...
+They're started by mission.sqm or init.sqs to record Groups, remove grpNull elements and undefine the mutexDynamicInitializeGroups.
+
+Server\DynamicInitializationGroup.sqs
+The townGroups is defined in init.sqs, thus the part of TG have to wait until game start. The creation of Town Groups is removed. TG will be first picked up from townGroups and, if insufficient townGroups elements, TG will be created in-game but won't be broadcasted yet. Redundant groups will be deleted by server. Those grpNull elements not removed in players' clients yet, either.
+
+Server\UpdateAASystem.sqs
+New-created group without units will return "unknown" for the side command, thus use the group's name to judge its side. Group always using 4 letters to identify its side, i.e., guer, civl. The comparing of strings in OFP is case-insensitive thus editors can use substr in 2.01 to gain group's side from its name.
+
+Server\UpdateResPatrolGroup.sqs, UpdateTownGroup[1-4].sqs, UPdateTownGroupRes[1-2]
+Use group as parameter. Since many town groups are defined in mission.sqm, the leader of west/east town groups should be deleted. The sentence is set after TG upgraded.
+
+Common\InitTownGroup.sqs
+Removed.
+
+Server\GenerateStartPosition.sqs
+Add a condition to standardize the start position by their y-coordinate. With this design it's unnecessary to place "FixStart_0" at notrh.
+
+
