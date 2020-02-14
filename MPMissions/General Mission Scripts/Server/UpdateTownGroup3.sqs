@@ -1,23 +1,39 @@
-; args: [group, townIndex, side]
+; args: [unit]
+; unit : group leader at start
 
-_group = _this select 0; _ti = _this select 1, _side = _this select 2
+_unit = _this select 0
+[_unit] exec "Common\InitTownGroups.sqs"
+? !isServer : exit
+_unit disableAI "TARGET"; _unit disableAI "AUTOTARGET"; _unit disableAI "MOVE"
+~5
+
+_group = group _unit
 
 _distSpawn = viewDistance + 1500
 _cLast = 0
 
 _si = -1
-? _side == sides select si0 : _si = si0
-? _side == sides select si1 : _si = si1
+? side _unit == sides select si0 : _si = si0
+? side _unit == sides select si1 : _si = si1
 
 timeReinforceTown = 45
 
 #Init
-_flag = (towns select _ti) select tdFlag
+_res = [getPos _unit, [siRes], []] call funcGetClosestTown
+_flag = (_res select 0) select tdFlag
 _posFlag = getPos _flag
+_ti = _res select 2
 ? _si == -1 : format["ERROR: _si == -1 set in UpdateTownGroup.sqs for %1", (towns select _ti) select tdName] call fDebugLog; exit
-_siLast = (towns select _ti) select tdSide
+_siLast = (_res select 0) select tdSide
+
+;deleteVehicle _unit
+_unit setpos [1,1,1]; _unit setdamage 1
+
 ? isNull _group : format["ERROR: _group is NULL at init for %1 town group in '%1'", sideNames select _si, (towns select _ti) select tdName] call fDebugLog; exit
 
+; (townGroups select _si) set [count (townGroups select _si), _group]
+
+; player globalchat format["townGroups: %1 - %2", count (townGroups select si0), count (townGroups select si1)]
 
 _timeReinforce = time + timeReinforceTown
 _bCheckSupport = true
@@ -26,7 +42,6 @@ _unitsSupport = []; _unitsSupporting = []
 _unitsInfantry = []; _unitsVehicle = []
 
 @(((upgMatrix select _si) select upgTownGroup ) == 2)
-{deleteVehicle _x} forEach units _group
 
 
 #Update
