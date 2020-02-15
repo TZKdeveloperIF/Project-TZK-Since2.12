@@ -6,23 +6,11 @@
 ; For broadcasting, publicExec or "Init" parameter of "createUnit" is available.
 
 
-; =================================Patrol Groups=================================
-_count = (count towns) / 2.5; _index = 0
-; Set number of patrol group at about 40% of town numbers.
-
-#ResPatrolGroups
-_patrolGroup = createGroup resistance
-[_patrolGroup] exec "Server\UpdateResPatrolGroup.sqs"
-
-_index = _index + 1
-? _index < _count : goto "ResPatrolGroups"
-
-
 ; ===============================Functional Groups===============================
 
-_groupAA0=createGroup west; _groupAA1=createGroup east
-[_groupAA0] exec {Server\UpdateAASystem.sqs}
-[_groupAA1] exec {Server\UpdateAASystem.sqs};
+; _groupAA0=createGroup west; _groupAA1=createGroup east
+; [_groupAA0] exec {Server\UpdateAASystem.sqs}
+; [_groupAA1] exec {Server\UpdateAASystem.sqs};
 
 
 ; ==================================Town Groups==================================
@@ -31,13 +19,13 @@ _groupAA0=createGroup west; _groupAA1=createGroup east
 
 ~2
 
-_index = 0; _count = count towns; _westTG = grpNull; _eastTG = grpNull
+_index = 0; _count = count towns; _westTG = grpNull; _eastTG = grpNull; _resTG = grpNull
 #TownGroups
 	_town = towns select _index; _flag = _town select 0; _income = _town select 2
 	
 	if (_index < count (townGroups select si0)) then {_westTG = (townGroups select si0) select _index} else {_westTG = createGroup west}
 	if (_index < count (townGroups select si1)) then {_eastTG = (townGroups select si1) select _index} else {_eastTG = createGroup east}
-	_resTG = createGroup resistance
+	if (_index < count (townGroups select siRes)) then {_resTG = (townGroups select siRes) select _index} else {_resTG = createGroup resistance}
 	
 	; An empty group created by "createGroup" return the "unknown" side. However editor can still use "format" and "substr" to gain the first 4 letters and hence gain the side.
 
@@ -73,6 +61,21 @@ _indexExtra = 0
 	? _indexExtra < _count : goto "ExtraTownGroups"
 	
 _indexRemoveTG = _index
+
+
+; =================================Patrol Groups=================================
+_count = (count towns) / 2.5; _index = 0; _patrolGroup = grpNull
+; Set number of patrol group at about 40% of town numbers.
+
+#ResPatrolGroups
+	if (_index < count patrolGroups) then {_patrolGroup = patrolGroups select _index} else {_patrolGroup = createGroup resistance}
+	[_patrolGroup] exec "Server\UpdateResPatrolGroup.sqs"
+
+	_index = _index + 1
+	? _index < _count : goto "ResPatrolGroups"
+
+
+exit
 
 ; =============================Clean up Leaders and Groups============================
 ~2

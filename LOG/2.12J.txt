@@ -1,0 +1,42 @@
+======================================Adjustment======================================
+--mission.sqm
+2.12I cause no-response server again. The reason might be "discontinuous“ id between groups and vehicles, or the application of "createGroup".
+
+Those closed playable roles is deleted in games thus the author think discontinuous can lightly be the problem. 
+
+2.12J will try pre-set enough groups without using createGroup. Groups won't be removed by deleteGroup as well, to prove discontinuous ID stable. Leaders will still be deleted by deleteVehicle.
+
+
+Groups
+0: Res Group with init information.
+1-18, 19-36, 37-46: playable roles
+47-50: groupTemp and group Join
+51-75: 25 Preset west TG
+76-100: 25 Preset east TG
+101-125: 25 Preset guer TG
+126-135: 10 Presed guer patrol group
+136-143: 4*2 Preset worker group
+144,145: Start Position
+So class Groups should set Items = 146
+
+
+Init.sqs
+Add an array "groupName". The format of its element are all string. They're the first 4 letters(in UPPER case) of group's name, which indicating the side. The comparison of string in OFP is case-insensitive.
+This array can be used to judge a group's side. The "side" of a group might return "unknown", e.g. a new created group by "createGroup". With the help of "substr" editors can gain the actual side by the name of a group.
+
+"townGroups" is enlarged to 3 rows. "patrolGroups" is defined.
+
+
+Common\Dynamic\GroupsPatrol.sqs
+Add element into patrolGroups directly.
+
+Common\Dynamic\GroupsClear.sqs
+Set patrolGroups = nil and not to resize townGroups and workerGroups.
+
+Server\DynamicInitializationGroup.sqs
+Res Patrol Groups not be created but be picked up from patrolGroups, like TG do.
+Res Town Groups not created as well.
+
+Not to create AA groups(for trial. Not to use createGroup in 2.12J).
+
+Not to remove redundant groups and members.
