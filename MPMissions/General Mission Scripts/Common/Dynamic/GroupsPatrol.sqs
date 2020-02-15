@@ -5,11 +5,8 @@
 mutexDynamicInitializeGroups = true
 
 _group = _this select 0
-_name = substr [format ["%1", _group], 0, 4]
 
-_si = groupName find _name
-
-_groups = townGroups select _si
+_groups = patrolGroups
 _groups set [count _groups, _group]
 
 mutexDynamicInitializeGroups = false
