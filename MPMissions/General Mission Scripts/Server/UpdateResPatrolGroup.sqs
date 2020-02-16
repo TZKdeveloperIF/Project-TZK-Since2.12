@@ -44,7 +44,7 @@ _town = objNull
 ; Use mutexInitResGroups to let server only ask one patrol group move in a short time. Aiming to reduce server's workload.
 #Update
 	mutexInitResGroups = false
-	  ~(120 - 15 + random 30)
+	  ~ 120
 	@!(mutexInitResGroups)
 	mutexInitResGroups = true
 
@@ -58,7 +58,10 @@ _town = objNull
 	? time > _timeDestroy : goto "Destroy"
 	_res = [-1,0]
 	{ if (_x == driver vehicle _x) then { _res = [getPos _x, siRes, []] call funcGetClosestEnemyTown; if ((_res select 0) != -1) then { _flag = (towns select (_res select 0)) select tdFlag; _x doMove ([getPos _flag,4, 4] call funcGetRandomPos) } } } forEach (units _group)
-	? (_res select 0) != -1 : goto "Update"
+	
+;	? (_res select 0) != -1 : goto "Update"
+; Not allow go patrol if no enemy town.
+	goto "Update"
 
 
 #Patrol
@@ -72,5 +75,22 @@ _town = objNull
 		goto "Update"
 
 #Destroy
-	[_group] call funcUpdateResPatrolDestroy
+;	[_group] call funcUpdateResPatrolDestroy
+	_units = units _group; _count = count _units; _index = 0
+	#DestroyUnits
+	_unit = _units select _index
+
+	_res1 = [getPos _unit, si0] call funcGetClosestEnemyObject;
+	_res0 = [getPos _unit, si1] call funcGetClosestEnemyObject;
+	_comparison = (_res0 select 1) < (_res1 select 1); _object = [_res1 select 0, _res0 select 0] select _comparison; _distance = [_res1 select 1, _res0 select 1] select _comparison
+
+	_comparison = ( _distance < (1 + time/3600)*viewDistance )
+	? _comparison : if (_unit == driver vehicle _unit) then { _unit doMove ([getPos _object, 50, 100] call funcGetRandomPos) }; if ( _unit != vehicle _unit && _unit == gunner vehicle _unit && (_unit distance _object) < 200) then { [_unit, _object] exec "Server\DestroyObject.sqs" };
+	? !_comparison && _unit == driver vehicle _unit: _res0 = [getPos _unit, siRes, []] call funcGetClosestEnemyTown; if ((_res0 select 0) != -1) then { _flag = (towns select (_res0 select 0)) select tdFlag; _unit doMove ([getPos _flag, 4, 4] call funcGetRandomPos) };
+
+	_index = _index + 1
+	? _index < _count : goto "DestroyUnits"
+
 	goto "Update"
+
+; EOF

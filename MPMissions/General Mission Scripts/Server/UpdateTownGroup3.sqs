@@ -46,7 +46,11 @@ _unitsInfantry = []; _unitsVehicle = []
 #Patrol
   _group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "NORMAL"
   ; CHECK HIBERNATE
-  _hibernate = !([_si, _flag, _distSpawn] call funcCheckTGSpawn)
+  _hibernate = true
+  { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach (groupMatrix select (siEnemy select _si))
+  { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach (townGroups select (siEnemy select _si))
+  { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach ( (groupMatrix select siRes) - groupsPatrol )
+  { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach groupsPatrol
   ? _hibernate : goto "Hibernate"
   
 	_c = count (units _group)
@@ -128,7 +132,14 @@ _unitsInfantry = []; _unitsVehicle = []
   
 #CheckSpawn
   ~10
-  _hibernate = !([_si, _flag, _distSpawn] call funcCheckTGSpawn)
+  _hibernate = true
+  { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach (groupMatrix select (siEnemy select _si))
+  ? !_hibernate : goto "Spawn"
+  { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach (townGroups select (siEnemy select _si))
+  ? !_hibernate : goto "Spawn"
+  { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach groupsPatrol
+  ? !_hibernate : goto "Spawn"
+  { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach ( (groupMatrix select siRes) - groupsPatrol )
   ? !_hibernate : goto "Spawn"
 	? time > _timeReinforce && _unitsSpawn < 12 : _timeReinforce = time + timeReinforceTown; _unitsSpawn = _unitsSpawn + 1
   goto "CheckSpawn"
