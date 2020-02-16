@@ -25,7 +25,9 @@ mutexInitResGroups = false
 ~10
 
 #CheckSpawn
-  _spawn = [_si, _flag, _distSpawn] call funcCheckTGSpawn
+  _spawn = false
+  { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _spawn = true } } foreach (units _g) } foreach (groupMatrix select si0)
+  { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _spawn = true } } foreach (units _g) } foreach (groupMatrix select si1)
   ? _spawn : goto "Spawn"
   ~10
   goto "CheckSpawn"

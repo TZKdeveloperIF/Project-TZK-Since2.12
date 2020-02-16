@@ -1,0 +1,22 @@
+======================================Adjustment======================================
+2.12J seems proved discontinous ID won't cause problem, but creaate/delete Group will.
+However server no-response again, with only oversea ppls. The server's FPS is low in some situation, it might be the problem.
+
+Discontinous ID should be edited, if server FPS no less than 30 but no-response again.
+
+
+
+--Remove some sentences using SQF
+UpdateTownGroup3.sqs, UpdateTownGroupRes(1-2).sqs
+Actually those checking spawn/hibernate SQF might not causing problems. The problem should be too many RES/AI units.
+
+
+
+
+Server\UpdateResPatrolGroup.sqs
+Server somehow crashed after having played long. The reason might because res will go patrol after long. So the loop won't go patrol after time is big enough.
+For those destroying tanks, they shouldn't use SQF as well.
+
+
+======================================Bug Fixing======================================
+There're 2 redundant items in Everon and Malden mission.sqm. Removed.
