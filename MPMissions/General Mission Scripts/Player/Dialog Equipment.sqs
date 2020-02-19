@@ -183,33 +183,11 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
 		goto "UpdateImage"
 	#SkipInitSec
 
-_moneynow = (groupMoneyMatrix select siPlayer) select giPlayer
-_costnow = 0
-_calccost = 0
+	_moneynow = (groupMoneyMatrix select siPlayer) select giPlayer
+	_costnow = 0
+	? _costFactor > 0 : _costnow = [_typePrim, _typeSec, _typeHandgun, _equipment, _unit, false] call loadFile "Player\SQF\EquipmentCalculateCost.sqf"
+	_costnow = _costFactor*_costnow
 
-	if (_typePrim == -1) then { goto "noprimcalccost" }
-	_xx=weaponDefs select _typePrim;
-	? ((count _xx) > wdCost):  _calccost = _calccost + (_xx select wdCost);
-	
-#noprimcalccost
-	if (_typeSec == -1) then { goto "noseccalccost" }
-	_xx=weaponDefs select _typeSec;
-	? ((count _xx) > wdCost):  _calccost = _calccost + (_xx select wdCost);
-	
-#noseccalccost
-	if (_typeHandgun == -1) then { goto "nohandcalccost" }
-	_xx=weaponDefs select _typeHandgun;
-	? ((count _xx) > wdCost):  _calccost = _calccost + (_xx select wdCost);
-	
-#nohandcalccost
-
-		{ _xx = (_x select 0); _myequip=(equipDefs select _xx); if ((count _myequip) > edcost) then { _calccost = _calccost + (_myequip select edcost); } } foreach (_equipment select isGeneral);
-		{ _xx = (_x select 0); _myequip=(equipDefs select _xx); if ((count _myequip) > edcost) then { _calccost = _calccost + (_myequip select edcost); } } foreach (_equipment select isHandgun);
-		{ _xx = (_x select 0); _myequip=(equipDefs select _xx); if ((count _myequip) > edcost) then { _calccost = _calccost + (_myequip select edcost); } } foreach (_equipment select isOptics);
-
-	? _calccost > 0 : _costnow = _costFactor*_calccost; goto "displayed"
-
-#displayed
 	_textplayermoney = format ["$%1", _moneynow]
 	_textplayercost = format ["$%1", _costnow]
 	_textplayermoneydefine = format ["custom"]
@@ -257,44 +235,21 @@ _calccost = 0
 	? (_typeSec != -1 && !_primOnly): ctrlSetText [IDC_PIC_SEC, (weaponDefs select _typeSec) select wdImage ]
 	? (_typePrim != -1 && _primOnly): ctrlSetText [IDC_PIC_SEC, "" ]
 	
-	[0, true, _equipment select isGeneral] call funcSort
-	_sortDir = true
-	_eqGen4 = 0
-	{ if ((_x select 1) == 4) then { _eqGen4 = _eqGen4 + 1 } } foreach (_equipment select isGeneral)
-	? _eqGen4 == 2 : _sortDir = false
-	[1, _sortDir, _equipment select isGeneral] call funcSort
-
-	[0, true, _equipment select isHandgun] call funcSort
-	[1, true, _equipment select isHandgun] call funcSort
-
 	; GENERAL SLOTS
-	{ ctrlSetText [IDC_PIC_GEN_1+_x, ""] } foreach [0,1,2,3,4,5,6,7,8,9]
-	{ ctrlSetText [IDC_PIC_GEN_2+_x, ""] } foreach [0,1,2,4,5,6,7,8]
-	{ ctrlSetText [IDC_PIC_GEN_3+_x, ""] } foreach [0,1,4,5,6,7]
-	{ ctrlSetText [IDC_PIC_GEN_4+_x, ""] } foreach [0,4,5,6]
-	ctrlSetText [IDC_PIC_GEN_6, ""]
-	ctrlSetText [IDC_PIC_GEN_8, ""]
-
-	_index = 0
-	_count = count (_equipment select isGeneral)
-	_nextFreeSlot = 0
-	? (_count == 0): goto "GeneralEmpty"
-	#CheckSlotGeneral
-		_typeEq = ((_equipment select isGeneral) select _index) select 0
-		_image = (equipDefs select _typeEq) select edImage
-		_sizeEq = (equipDefs select _typeEq) select edSlots
-		? (_sizeEq == 1): ctrlSetText [IDC_PIC_GEN_1 + _nextFreeSlot, _image]; _nextFreeSlot = _nextFreeSlot + _sizeEq
-		? (_sizeEq == 2): if (_nextFreeSlot==3) then { ctrlSetText [IDC_PIC_GEN_1+_nextFreeSlot, "\dtaExt\equip\emptymag"]; _nextFreeSlot = 4 }; ctrlSetText [IDC_PIC_GEN_2 + _nextFreeSlot, _image]; _nextFreeSlot = _nextFreeSlot + _sizeEq
-		? (_sizeEq == 3): if (_nextFreeSlot>1 && _nextFreeSlot<4) then { while "_nextFreeSlot<4" do { ctrlSetText [IDC_PIC_GEN_1+_nextFreeSlot, "\dtaExt\equip\emptymag"]; _nextFreeSlot=_nextFreeSlot+1} }; ctrlSetText [IDC_PIC_GEN_3+_nextFreeSlot, _image]; _nextFreeSlot = _nextFreeSlot + _sizeEq
-		? (_sizeEq == 4): if (_nextFreeSlot>0 && _nextFreeSlot<4) then { while "_nextFreeSlot<4" do { ctrlSetText [IDC_PIC_GEN_1+_nextFreeSlot, "\dtaExt\equip\emptymag"]; _nextFreeSlot=_nextFreeSlot+1} }; ctrlSetText [IDC_PIC_GEN_4+_nextFreeSlot, _image]; _nextFreeSlot = _nextFreeSlot + _sizeEq
-		? (_sizeEq == 6): while "_nextFreeSlot<4" do { ctrlSetText [IDC_PIC_GEN_1+_nextFreeSlot, "\dtaExt\equip\emptymag"]; _nextFreeSlot=_nextFreeSlot+1}; ctrlSetText [IDC_PIC_GEN_6, _image]; _nextFreeSlot = _nextFreeSlot + _sizeEq
-		? (_sizeEq == 8): while "_nextFreeSlot<2" do { ctrlSetText [IDC_PIC_GEN_1+_nextFreeSlot, "\dtaExt\equip\emptymag"]; _nextFreeSlot=_nextFreeSlot+1}; _nextFreeSlot=4; ctrlSetText [IDC_PIC_GEN_8, _image]; _nextFreeSlot = _nextFreeSlot + _sizeEq
-		_index = _index + 1
-		? (_index < _count && _nextFreeSlot < (_slots select isGeneral)): goto "CheckSlotGeneral"
-	#GeneralEmpty
-	while "_nextFreeSlot < (_slots select isGeneral)" do { ctrlSetText [IDC_PIC_GEN_1+_nextFreeSlot, "\dtaExt\equip\emptymag"]; _nextFreeSlot=_nextFreeSlot+1 }
+	[0, true, _equipment select isGeneral] call funcSort
+	[1, true, _equipment select isGeneral] call funcSort
+	_count = count (_equipment select isGeneral); _sortDir = true; _mSize = 0
+	? _count > 0 : _mSize = ((_equipment select isGeneral) select (_count-1)) select 1
+	? _mSize in [5, 4] : _sortDir = false
+	? _mSize == 3 && _sortDir && _count > 1 : if ( (((_equipment select isGeneral) select (_count-2)) select 1) != 3 ) then {_sortDir = false}
+	? !_sortDir : [1, _sortDir, _equipment select isGeneral] call funcSort
+	
+	[_equipment select isGeneral] call loadFile "Player\SQF\EquipmentUpdateImageGeneral.sqf"
 
 	; HANDGUN SLOTS
+	[0, true, _equipment select isHandgun] call funcSort
+	[1, true, _equipment select isHandgun] call funcSort
+	
 	{ ctrlSetText [IDC_PIC_HG_1+_x, ""] } foreach [0,1,2,3]
 	{ ctrlSetText [IDC_PIC_HG_2+_x, ""] } foreach [0,1,2]
 	{ ctrlSetText [IDC_PIC_HG_3+_x, ""] } foreach [0,1]
@@ -415,20 +370,21 @@ _calccost = 0
 	? (_id == -1): hint "No Template Slot Selected"; player groupchat "No Template Slot Selected"; goto "Update"
 
 	_nameTempl = [_typePrim, _typeSec, _equipment select isGeneral] call funcGetEqName
-	(eqTemplates select _id) set[0, _nameTempl]
-	(eqTemplates select _id) set[1, _typePrim]
-	(eqTemplates select _id) set[2, _typeHandgun]
-	(eqTemplates select _id) set[3, _typeSec]
-	(eqTemplates select _id) set[4, []]
-	_slot = isGeneral; ((eqTemplates select _id) select 4) set [_slot, []]; { (((eqTemplates select _id) select 4) select _slot) set [count (((eqTemplates select _id) select 4) select _slot), +_x] } foreach (_equipment select _slot)
-	_slot = isHandgun; ((eqTemplates select _id) select 4) set [_slot, []]; { (((eqTemplates select _id) select 4) select _slot) set [count (((eqTemplates select _id) select 4) select _slot), +_x] } foreach (_equipment select _slot)
-	_slot = isOptics; ((eqTemplates select _id) select 4) set [_slot, []]; { (((eqTemplates select _id) select 4) select _slot) set [count (((eqTemplates select _id) select 4) select _slot), +_x] } foreach (_equipment select _slot)
-
+	_templ = eqTemplates select _id
+	_templ set[0, _nameTempl]
+	_templ set[1, _typePrim]
+	_templ set[2, _typeHandgun]
+	_templ set[3, _typeSec]
+	_templ set[4, []]
+	_slot = isGeneral; (_templ select 4) set [_slot, []]; { ((_templ select 4) select _slot) set [count ((_templ select 4) select _slot), +_x] } foreach (_equipment select _slot)
+	_slot = isHandgun; (_templ select 4) set [_slot, []]; { ((_templ select 4) select _slot) set [count ((_templ select 4) select _slot), +_x] } foreach (_equipment select _slot)
+	_slot = isOptics; (_templ select 4) set [_slot, []]; { ((_templ select 4) select _slot) set [count ((_templ select 4) select _slot), +_x] } foreach (_equipment select _slot)
+	? ((_templ select 1) == -1 && (_templ select 2) == -1 && (_templ select 3) == -1 && count ((_templ select 4) select isGeneral) + count ((_templ select 4) select isHandgun) + count ((_templ select 4) select isOptics) == 0 ) : _templ resize 0
+	
 	_entry = format["%1_%2_LOADOUT_%3_%4", localize "STR_CRCTI_VER", localize "STR_CRCTI_MOD", _id, sideNames select siPlayer]
-
   unitSetting = "SoldierWB" camCreate [10,10,10]
 	[ unitSetting, ["", _typePrim, _typeSec, _typeHandgun, _equipment] ] call funcEquipTempl
-  unitSetting saveStatus _entry
+  if (count _templ > 0) then {unitSetting saveStatus _entry} else {deleteStatus _entry}
   deleteVehicle unitSetting
 
   lastTemplate = _id
@@ -439,20 +395,22 @@ _calccost = 0
 	? (_id == -1): hint "No Custom Slot Selected"; player groupchat "No Custom Slot Selected"; goto "Update"
 
 	_nameCustom = [_typePrim, _typeSec, _equipment select isGeneral] call funcGetEqName
-	(infCustom select _id) set [0, _nameCustom]
-	(infCustom select _id) set [1, _typePrim]
-	(infCustom select _id) set [2, _typeHandgun]
-	(infCustom select _id) set [3, _typeSec]
-	(infCustom select _id) set [4, []]
-	_slot = isGeneral; ((infCustom select _id) select 4) set [_slot, []]; { (((infCustom select _id) select 4) select _slot) set [count (((infCustom select _id) select 4) select _slot), +_x] } foreach (_equipment select _slot)
-	_slot = isHandgun; ((infCustom select _id) select 4) set [_slot, []]; { (((infCustom select _id) select 4) select _slot) set [count (((infCustom select _id) select 4) select _slot), +_x] } foreach (_equipment select _slot)
-	_slot = isOptics; ((infCustom select _id) select 4) set [_slot, []]; { (((infCustom select _id) select 4) select _slot) set [count (((infCustom select _id) select 4) select _slot), +_x] } foreach (_equipment select _slot)
+	_templ = infCustom select _id
+	_templ set [0, _nameCustom]
+	_templ set [1, _typePrim]
+	_templ set [2, _typeHandgun]
+	_templ set [3, _typeSec]
+	_templ set [4, []]
+	_slot = isGeneral; (_templ select 4) set [_slot, []]; { ((_templ select 4) select _slot) set [count ((_templ select 4) select _slot), +_x] } foreach (_equipment select _slot)
+	_slot = isHandgun; (_templ select 4) set [_slot, []]; { ((_templ select 4) select _slot) set [count ((_templ select 4) select _slot), +_x] } foreach (_equipment select _slot)
+	_slot = isOptics; (_templ select 4) set [_slot, []]; { ((_templ select 4) select _slot) set [count ((_templ select 4) select _slot), +_x] } foreach (_equipment select _slot)
+	? ((_templ select 1) == -1 && (_templ select 2) == -1 && (_templ select 3) == -1 && count ((_templ select 4) select isGeneral) + count ((_templ select 4) select isHandgun) + count ((_templ select 4) select isOptics) == 0 ) : _templ resize 0
 
 	_entry = format["%1_%2_SOLDIER_%3_%4", localize "STR_CRCTI_VER", localize "STR_CRCTI_MOD", _id, sideNames select siPlayer]
 
   unitSetting = "SoldierWB" camCreate [10,10,10]
 	[ unitSetting, ["", _typePrim, _typeSec, _typeHandgun, _equipment] ] call funcEquipTempl
-  unitSetting saveStatus _entry
+  if (count _templ > 0) then {unitSetting saveStatus _entry} else {deleteStatus _entry}
   deleteVehicle unitSetting
 
 	; player globalchat format["infCustom = %1", infCustom select _id]
@@ -518,33 +476,12 @@ _calccost = 0
 #Buy
 	_money = (groupMoneyMatrix select siPlayer) select giPlayer
 	
-; Calculate cost
-	_marinecost=0;
+	_costnow = 0
+	? _costFactor > 0 : _costnow = [_typePrim, _typeSec, _typeHandgun, _equipment, _unit, true] call loadFile "Player\SQF\EquipmentCalculateCost.sqf"
+	_costBuy = _costFactor*_costnow
 
-	if (_typePrim == -1) then { goto "noprim" }
-	_xx=weaponDefs select _typePrim;
-	? ((count _xx) > wdCost):  _marinecost = _marinecost + (_xx select wdCost);
-#noprim
-
-
-	if (_typeSec == -1) then { goto "nosec" }
-	_xx=weaponDefs select _typeSec;
-	? ((count _xx) > wdCost):  _marinecost = _marinecost + (_xx select wdCost);
-#nosec
-
-	if (_typeHandgun == -1) then { goto "nohand" }
-	_xx=weaponDefs select _typeHandgun;
-	? ((count _xx) > wdCost):  _marinecost = _marinecost + (_xx select wdCost);
-#nohand
-
-	{ _xx = (_x select 0); _myequip=(equipdefs select _xx); if ((count _myequip) > edCost) then { _marinecost = _marinecost + (_myequip select edCost); } } foreach (_equipment select isGeneral);
-	{ _xx = (_x select 0); _myequip=(equipdefs select _xx); if ((count _myequip) > edCost) then { _marinecost = _marinecost + (_myequip select edCost); } } foreach (_equipment select isHandgun);
-	{ _xx = (_x select 0); _myequip=(equipdefs select _xx); if ((count _myequip) > edCost) then { _marinecost = _marinecost + (_myequip select edCost); } } foreach (_equipment select isOptics);
-
-	_costBuy = _costFactor*_marinecost
-
-	? _money < _costBuy : hint "Not Enough Money"; _unit groupchat "Not Enough Money"; goto "Update"
-	? _costBuy > 0 : [_costBuy] exec "Player\SendMoneySpent.sqs"; _unit groupchat format["Equipment cost: $%1", _costBuy]
+	? _money < _costBuy && _costBuy > 0: hint "Not Enough Money"; _unit groupchat "Not Enough Money"; goto "Update"
+	[_costBuy] exec "Player\SendMoneySpent.sqs"; _unit groupchat format["Equipment cost: $%1", _costBuy]
 	goto "EquipAndExit"
 
 #Clear
@@ -558,6 +495,7 @@ _calccost = 0
 
 #EquipAndExit
 	[ _unit, ["", _typePrim, _typeSec, _typeHandgun, _equipment] ] call funcEquipTempl
+	? _costFactor == 0 : [_typePrim, _typeSec, _typeHandgun, _equipment] call loadFile "Player\SQF\EquipmentRecordPurchase.sqf"
 	goto "CloseDialog"
 
 #CloseDialog

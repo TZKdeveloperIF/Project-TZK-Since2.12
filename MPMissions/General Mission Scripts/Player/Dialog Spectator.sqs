@@ -203,7 +203,7 @@ _colorDead = [0.5,0.5,0.5, 0.6]
 	{ ctrlShow [_x, bShowGroups && (ctrlVisible IDC_BTN_SHOWGROUPS)] } foreach [IDC_LB_GROUPLEADERS, IDC_LB_GROUPMEMBERS, IDC_BG_GROUPS]
 
 	ctrlSetText [IDC_BTN_SHOWALL, ["Show All", "Hide All"] select bShowAll]
-	{ ctrlShow [_x, bShowAll && !_bMapMode] } foreach [IDC_SL_ANGLEHORZ, IDC_SL_ANGLEVERT, IDC_SL_DISTANCE, IDC_BTN_LOCKDIR, IDC_BTN_LEFT, IDC_BTN_TOP, IDC_BTN_RIGHT, IDC_BTN_REAR, IDC_BTN_FRONT, IDC_BTN_NEAR, IDC_BTN_FAR, IDC_BTN_UseNVG]
+	{ ctrlShow [_x, bShowAll && !_bMapMode] } foreach [IDC_SL_ANGLEHORZ, IDC_SL_ANGLEVERT, IDC_SL_DISTANCE, IDC_BTN_LOCKDIR, IDC_BTN_LEFT, IDC_BTN_TOP, IDC_BTN_RIGHT, IDC_BTN_REAR, IDC_BTN_FRONT, IDC_BTN_NEAR, IDC_BTN_FAR, IDC_BTN_UseNVG, IDC_BTN_QUIT]
 
 	ctrlSetText [IDC_BTN_LOCKDIR, ["Lock Dir", "Unlock Dir"] select bLockDir]
 
@@ -286,6 +286,7 @@ _colorDead = [0.5,0.5,0.5, 0.6]
 	? (btnWest): btnWest=false; goto "West"
 	? (btnEast): btnEast=false; goto "East"
 	? (btnUseNVG) : btnUseNVG = false; goto "NVGoggle"
+	? (btnQuit) : btnQuit = false; goto "Quit"
 
 	? bShowMap && !_bMapMode : bShowMap = false; goto "EnterMapMode"
 	? bShowMap && _bMapMode : bShowMap = false; goto "ExitMapMode"
@@ -380,17 +381,18 @@ _colorDead = [0.5,0.5,0.5, 0.6]
   exit
 
 #NVGoggle
-  ? dialog : closeDialog 0
+	player addWeapon "NVGoggles"
+	player action ["nvgoggles"]
+	goto "UpdateCam"
+  
+#Quit
+	? dialog : closeDialog 0
 	forceMap false
-  unitSpec = _unitTracked
-  ? pvGameOver != -1 : exit
-  _cam cameraEffect["terminate","back"]
-  _posPlayer = getPos player; _dirPlayer = getDir player
-  _NVGtext = "You have 5 second to put on/take off your NVGoggles, or calling 0-0-2 radio. However, NVGoggles effect will disappear when using FREE CAM mode."
-  hint _NVGtext; player groupChat _NVGtext
-  player removeWeapon "NVGoggles"
-  player addWeapon "NVGoggles"
-  ~5
-  player setPos _posPlayer; player setDir _dirPlayer
-  [] exec "Player\Dialog Spectator.sqs"
-  exit
+	unitSpec = _unitTracked
+	? pvGameOver != -1 : exit
+	_cam cameraEffect["terminate","back"]
+	
+	_text = "You are free to call radio now. 0-0-2 to change settings. 0-0-0 to return spectator mode."
+	hint _text; player groupChat _text
+	exit
+  
