@@ -2,6 +2,9 @@
 ;Workaround the the bridge bug.  Use to to warp a unit to the other side.  Also handy for river crossing points.
 ;Script usage:  [Unit,Town] exec "SetTownSide.sqs"
 
+@(time > 10)
+? time < 60 : exit
+
 _units = _this Select 0
 _bridgeDestination = _this Select 1
 
