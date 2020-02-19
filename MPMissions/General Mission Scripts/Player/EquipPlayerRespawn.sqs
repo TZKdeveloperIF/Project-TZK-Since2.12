@@ -25,7 +25,7 @@ removeAllWeapons _unit
 { _unit addWeapon _x } forEach _weapons
 { _unit addWeapon _x } forEach weaponsCustom
 _unit selectWeapon (_weapons select 0)
-exit
+goto "Quit"
 
 
 #weapon1
@@ -38,7 +38,7 @@ removeAllWeapons _unit
 { _unit addWeapon _x } forEach _weapons
 { _unit addWeapon _x } forEach weaponsCustom
 _unit selectWeapon (_weapons select 0)
-exit
+goto "Quit"
 
 
 #weapon2
@@ -51,7 +51,7 @@ removeAllWeapons _unit
 { _unit addWeapon _x } forEach _weapons
 { _unit addWeapon _x } forEach weaponsCustom
 _unit selectWeapon (_weapons select 0)
-exit
+goto "Quit"
 
 
 
@@ -80,7 +80,7 @@ removeAllWeapons _unit
 { _unit addWeapon _x } forEach _weapons
 { _unit addWeapon _x } forEach weaponsCustom
 _unit selectWeapon (_weapons select 0)
-exit
+goto "Quit"
 
 
 #weapon4
@@ -93,7 +93,7 @@ removeAllWeapons _unit
 { _unit addWeapon _x } forEach _weapons
 { _unit addWeapon _x } forEach weaponsCustom
 _unit selectWeapon (_weapons select 0)
-exit
+goto "Quit"
 
 
 #weapon5
@@ -106,7 +106,7 @@ removeAllWeapons _unit
 { _unit addWeapon _x } forEach _weapons
 { _unit addWeapon _x } forEach weaponsCustom
 _unit selectWeapon (_weapons select 0)
-exit
+goto "Quit"
 
 #weapon6
 
@@ -118,7 +118,7 @@ removeAllWeapons _unit
 { _unit addWeapon _x } forEach _weapons
 { _unit addWeapon _x } forEach weaponsCustom
 _unit selectWeapon (_weapons select 0)
-exit
+goto "Quit"
 
 #weapon7
 
@@ -130,7 +130,7 @@ removeAllWeapons _unit
 { _unit addWeapon _x } forEach _weapons
 { _unit addWeapon _x } forEach weaponsCustom
 _unit selectWeapon (_weapons select 0)
-exit
+goto "Quit"
 
 
 #weapon8
@@ -143,7 +143,7 @@ removeAllWeapons _unit
 { _unit addWeapon _x } forEach _weapons
 { _unit addWeapon _x } forEach weaponsCustom
 _unit selectWeapon (_weapons select 0)
-exit
+goto "Quit"
 #weapon9
 
 _mags = magsRespawnPlayer9 select _si
@@ -154,4 +154,10 @@ removeAllWeapons _unit
 { _unit addWeapon _x } forEach _weapons
 { _unit addWeapon _x } forEach weaponsCustom
 _unit selectWeapon (_weapons select 0)
-exit
+goto "Quit"
+
+
+#Quit
+[_weapons, _mags] call loadFile "Player\SQF\EquipmentRecordRespawn.sqf"
+
+; EOF

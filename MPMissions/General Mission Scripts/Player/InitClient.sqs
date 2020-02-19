@@ -42,6 +42,14 @@ funcGetTimeString = preprocessFile "Player\GetTimeString.sqf"
 funcInitVehicleMarker = preprocessFile "Player\InitVehicleMarker.sqf"
 funcInitStructureMarker = preprocessFile "Player\InitStructureMarker.sqf"
 
+funcGetEqName = preprocessFile "Player\GetEqName.sqf"
+funcEquipTempl = preprocessFile "Player\EquipTempl.sqf"
+funcBuildTempl = preprocessFile "Player\BuildTempl.sqf"
+; eq template entry : [ textDescr, wpnPrim, wpnHandgun, wpnSec, [ [gen0, ..., gen9], [handgun0, ..., hangun3], [optic0, optic1] ] ]
+eqTemplates = []
+_i = 0; while "_i < 5" do { eqTemplates set [_i, [] ]; _i=_i+1 }
+lastTemplate = -1
+
 ; MESSAGE HANDLERS (Clients)
 [] exec "Player\MsgMoneyStatus0.sqs"
 [] exec "Player\MsgMoneyStatus1.sqs"
@@ -154,7 +162,8 @@ isCommander = false; booleShowVariable = false
 
 
 
-
-
+;game has begun after this pause
+~0.1
+[] exec "Player\LoadSettings.sqs"
 
 ; EOF

@@ -9,6 +9,8 @@ _gi = _this select 2
 ; ? (group _unit) in ((townGroups select _si) + (workerGroups select _si)) : exit
 ? _gi == giTown || _gi == giWorker : exit
 
+? !local _unit : exit
+
 _event = format["if (local (_this select 0)) then {[_this, %1, %2] exec ""Server\Event_InfantryFired.sqs""}", _si, _gi]
 _unit addEventHandler ["Fired", _event]
 

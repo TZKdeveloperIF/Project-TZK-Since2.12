@@ -250,11 +250,11 @@ defValueParam2 = 1 + 8*0 + 1300;
 #define IDC_LB_EQ 366
 
 #define IDC_PIC_GEN_1 400
-#define IDC_PIC_GEN_2 410
+#define IDC_PIC_GEN_2 411
 #define IDC_PIC_GEN_3 420
-#define IDC_PIC_GEN_4 430
-#define IDC_PIC_GEN_6 440
-#define IDC_PIC_GEN_8 441
+#define IDC_PIC_GEN_4 428
+#define IDC_PIC_GEN_5 435
+#define IDC_PIC_GEN_6 441
 #define IDC_PIC_HG_1 450
 #define IDC_PIC_HG_2 454
 #define IDC_PIC_HG_3 458
@@ -348,6 +348,7 @@ defValueParam2 = 1 + 8*0 + 1300;
 #define IDC_INFO 933
 #define IDC_UNIT 934
 #define IDC_BTN_UseNVG 935
+#define IDC_BTN_QUIT 935
 
 #define IDC_SL_ZVIEW 947
 #define IDC_SL_ROTATION 948
@@ -1005,7 +1006,7 @@ class BuildMenu: Menu {
 		y = 0.07;
 		idc = -1;
 		w = 0.1;
-		text = "Your Cash:";
+		text = "Cash:";
 	};
 	class Money: DataText {
 		idc = IDC_TEXT_PLAYER_MONEY;
@@ -1256,7 +1257,16 @@ class EquipmentMenu: Menu {
 	movingEnable = true;
 	controlsBackground[] = {EquipmentBackgroundWindow};
 	objects[] = { };
-	controls[] = {Equipment_MoneyStatus, Equipment_Money, Equipment_CostStatus, Equipment_Cost, PrimaryLabel, Primary, PrimaryAmmo, AddPrimaryAmmo, RemovePrimaryAmmo, HandgunLabel, Handgun, HandgunAmmo, AddHandgunAmmo, RemoveHandgunAmmo, SecondaryLabel, Secondary, SecondaryAmmo, AddSecondaryAmmo, RemoveSecondaryAmmo, EquipmentLabel, Equipment, AddEquipment, RemoveEquipment, TemplatesLabel, TemplateList, SaveTemplate, LoadTemplate, BuyTemplate, Clear, Buy, Exit, PrimaryImage, SecondaryImage, PrimaryOnlyImage, GeneralImage_0_1, GeneralImage_0_2, GeneralImage_0_3, GeneralImage_0_4, GeneralImage_1_1, GeneralImage_1_2, GeneralImage_1_3, GeneralImage_2_1, GeneralImage_2_2, GeneralImage_3_1, GeneralImage_4_1, GeneralImage_4_2, GeneralImage_4_3, GeneralImage_4_4, GeneralImage_5_1, GeneralImage_5_2, GeneralImage_5_3, GeneralImage_5_4, GeneralImage_6_1, GeneralImage_6_2, GeneralImage_6_3, GeneralImage_6_4, GeneralImage_7_1, GeneralImage_7_2, GeneralImage_7_3, GeneralImage_8_1, GeneralImage_8_2, GeneralImage_9_1, GeneralImage_2_8, GeneralImage_4_6, HandgunImage, HandgunImage_0_1, HandgunImage_0_2, HandgunImage_0_3, HandgunImage_0_4, HandgunImage_1_1, HandgunImage_1_2, HandgunImage_1_3, HandgunImage_2_1, HandgunImage_2_2, HandgunImage_3_1, OpticsFirstImage, OpticsSecondImage};
+	controls[] = {
+		Equipment_MoneyStatus, Equipment_Money, Equipment_CostStatus, Equipment_Cost, PrimaryLabel, Primary, PrimaryAmmo, AddPrimaryAmmo, RemovePrimaryAmmo, HandgunLabel, Handgun, HandgunAmmo, AddHandgunAmmo, RemoveHandgunAmmo, SecondaryLabel, Secondary, SecondaryAmmo, AddSecondaryAmmo, RemoveSecondaryAmmo, EquipmentLabel, Equipment, AddEquipment, RemoveEquipment, TemplatesLabel, TemplateList, SaveTemplate, LoadTemplate, BuyTemplate, Clear, Buy, Exit,
+		PrimaryImage, SecondaryImage, PrimaryOnlyImage, OpticsFirstImage, OpticsSecondImage,
+		GeneralImage_0_1, GeneralImage_1_1, GeneralImage_2_1, GeneralImage_3_1, GeneralImage_4_1, GeneralImage_5_1, GeneralImage_6_1, GeneralImage_7_1, GeneralImage_8_1,  GeneralImage_9_1, GeneralImage_10_1,
+		GeneralImage_0_2, GeneralImage_1_2, GeneralImage_2_2, GeneralImage_3_2, GeneralImage_4_2, GeneralImage_5_2, GeneralImage_6_2, GeneralImage_7_2, GeneralImage_8_2,
+		GeneralImage_0_3, GeneralImage_1_3, GeneralImage_2_3, GeneralImage_4_3, GeneralImage_5_3, GeneralImage_6_3, GeneralImage_7_3,
+		GeneralImage_0_4, GeneralImage_1_4, GeneralImage_4_4, GeneralImage_5_4, GeneralImage_6_4,
+		GeneralImage_0_5, GeneralImage_5_5, GeneralImage_4_6, 
+		HandgunImage, HandgunImage_0_1, HandgunImage_0_2, HandgunImage_0_3, HandgunImage_0_4, HandgunImage_1_1, HandgunImage_1_2, HandgunImage_1_3, HandgunImage_2_1, HandgunImage_2_2, HandgunImage_3_1
+	};
 
 	class EquipmentBackgroundWindow: BackgroundWindow {
 		x = 0.0;
@@ -1264,50 +1274,43 @@ class EquipmentMenu: Menu {
 		w = 1.0;
 		h = 0.65;
 	};
-
-  	class Equipment_MoneyStatus: Label
- 		{
-  			idc = -1;
-  			x = 0.5015
-  			y = 0.0035;
-  			w = 0.0865
-  			h = 0.03
-				text = "Your Cash:";
-				colorBackground[] = COLOR_DATA_TEXT;
-				colorText[] = {0.686, 0.686, 0.686, 0.775};
-		};
-
- 		class Equipment_Money: DataText
- 		{
-  			idc = IDC_TEXT_PLAYER_MONEY_EQUIPMENT;
-  			x = 0.588
-  			y = 0.0035;
-  			w = 0.052
-  			h = 0.03
- 				colorBackground[] = COLOR_DATA_TEXT;
- 				colorText[] = {0.686, 0.686, 0.686, 0.775};
+  	class Equipment_MoneyStatus: Label {
+		idc = -1;
+		x = 0.5015
+		y = 0.0035;
+		w = 0.0865
+		h = 0.03
+		text = "Cash:";
+		colorBackground[] = COLOR_DATA_TEXT;
+		colorText[] = {0.686, 0.686, 0.686, 0.775};
+	};
+	class Equipment_Money: DataText {
+		idc = IDC_TEXT_PLAYER_MONEY_EQUIPMENT;
+		x = 0.565
+		y = 0.0035;
+		w = 0.075
+		h = 0.03
+		colorBackground[] = COLOR_DATA_TEXT;
+		colorText[] = {0.686, 0.686, 0.686, 0.775};
   	};
-  	class Equipment_CostStatus: Label
- 		{
-  			idc = -1;
-  			x = 0.358
-  			y = 0.0035;
-  			w = 0.1
-  			h = 0.03
-				text = "Your Cost:";
-				colorBackground[] = COLOR_DATA_TEXT;
-				colorText[] = {0.686, 0.686, 0.686, 0.775};
-		};
-
- 		class Equipment_Cost: DataText
- 		{
-  			idc = IDC_TEXT_PLAYER_COST_EQUIPMENT;
-  			x = 0.458
-  			y = 0.0035;
-  			w = 0.04
-  			h = 0.03
- 				colorBackground[] = COLOR_DATA_TEXT;
- 				colorText[] = {0.686, 0.686, 0.686, 0.775};
+  	class Equipment_CostStatus: Label {
+		idc = -1;
+		x = 0.358
+		y = 0.0035;
+		w = 0.1
+		h = 0.03
+		text = "Cost:";
+		colorBackground[] = COLOR_DATA_TEXT;
+		colorText[] = {0.686, 0.686, 0.686, 0.775};
+	};
+	class Equipment_Cost: DataText {
+		idc = IDC_TEXT_PLAYER_COST_EQUIPMENT;
+		x = 0.426
+		y = 0.0035;
+		w = 0.075
+		h = 0.03
+		colorBackground[] = COLOR_DATA_TEXT;
+		colorText[] = {0.686, 0.686, 0.686, 0.775};
   	};
 
 	class PrimaryLabel: Label {
@@ -1565,6 +1568,15 @@ class EquipmentMenu: Menu {
 		w = 4*W_SLOT;
 		h = H_SLOT;
 	};
+	class GeneralImage_0_5: Image {
+		idc = 0 + IDC_PIC_GEN_5;
+		x = X_INV-2*W_SLOT;
+		y = Y_INV+1.6*H_SLOT;
+		w = 5*W_SLOT;
+		h = H_SLOT;
+	};
+
+
 	class GeneralImage_1_1: Image {
 		idc = 1 + IDC_PIC_GEN_1;
 		x = X_INV-1*W_SLOT;
@@ -1586,6 +1598,15 @@ class EquipmentMenu: Menu {
 		w = 3*W_SLOT;
 		h = H_SLOT;
 	};
+	class GeneralImage_1_4: Image {
+		idc = 1 + IDC_PIC_GEN_4;
+		x = X_INV-W_SLOT;
+		y = Y_INV+1.6*H_SLOT;
+		w = 4*W_SLOT;
+		h = H_SLOT;
+	};
+
+
 	class GeneralImage_2_1: Image {
 		idc = 2 + IDC_PIC_GEN_1;
 		x = X_INV;
@@ -1600,6 +1621,14 @@ class EquipmentMenu: Menu {
 		w = 2*W_SLOT;
 		h = H_SLOT;
 	};
+	class GeneralImage_2_3: Image {
+		idc = 2 + IDC_PIC_GEN_3;
+		x = X_INV;
+		y = Y_INV+1.6*H_SLOT;
+		w = 3*W_SLOT;
+		h = H_SLOT;
+	};
+
 	class GeneralImage_3_1: Image {
 		idc = 3 + IDC_PIC_GEN_1;
 		x = X_INV+W_SLOT;
@@ -1607,6 +1636,21 @@ class EquipmentMenu: Menu {
 		w = W_SLOT;
 		h = H_SLOT;
 	};
+	class GeneralImage_3_2: Image {
+		idc = 3 + IDC_PIC_GEN_2;
+		x = X_INV+W_SLOT;
+		y = Y_INV+1.6*H_SLOT;
+		w = 2*W_SLOT;
+		h = H_SLOT;
+	};
+	class GeneralImage_10_1: Image {
+		idc = 10 + IDC_PIC_GEN_1;
+		x = X_INV+2*W_SLOT;
+		y = Y_INV+1.6*H_SLOT;
+		w = W_SLOT;
+		h = H_SLOT;
+	};
+
 	class GeneralImage_4_1: Image {
 		idc = 4 + IDC_PIC_GEN_1;
 		x = X_INV-3*W_SLOT;
@@ -1635,6 +1679,14 @@ class EquipmentMenu: Menu {
 		w = 4*W_SLOT;
 		h = H_SLOT;
 	};
+	class GeneralImage_4_6: Image {
+		idc = IDC_PIC_GEN_6;
+		x = X_INV-3*W_SLOT;
+		y = Y_INV+2.7*H_SLOT;
+		w = 6*W_SLOT;
+		h = H_SLOT;
+	};
+
 	class GeneralImage_5_1: Image {
 		idc = 5 + IDC_PIC_GEN_1;
 		x = X_INV-2*W_SLOT;
@@ -1663,6 +1715,14 @@ class EquipmentMenu: Menu {
 		w = 4*W_SLOT;
 		h = H_SLOT;
 	};
+	class GeneralImage_5_5: Image {
+		idc = 5 + IDC_PIC_GEN_5;
+		x = X_INV-2*W_SLOT;
+		y = Y_INV+2.7*H_SLOT;
+		w = 5*W_SLOT;
+		h = H_SLOT;
+	};
+
 	class GeneralImage_6_1: Image {
 		idc = 6 + IDC_PIC_GEN_1;
 		x = X_INV-1*W_SLOT;
@@ -1691,6 +1751,7 @@ class EquipmentMenu: Menu {
 		w = 4*W_SLOT;
 		h = H_SLOT;
 	};
+
 	class GeneralImage_7_1: Image {
 		idc = 7 + IDC_PIC_GEN_1;
 		x = X_INV-0*W_SLOT;
@@ -1731,20 +1792,6 @@ class EquipmentMenu: Menu {
 		x = X_INV+2*W_SLOT;
 		y = Y_INV+2.7*H_SLOT;
 		w = W_SLOT;
-		h = H_SLOT;
-	};
-	class GeneralImage_4_6: Image {
-		idc = IDC_PIC_GEN_6;
-		x = X_INV-3*W_SLOT;
-		y = Y_INV+2.7*H_SLOT;
-		w = 6*W_SLOT;
-		h = H_SLOT;
-	};
-	class GeneralImage_2_8: Image {
-		idc = IDC_PIC_GEN_8;
-		x = X_INV-4*W_SLOT;
-		y = Y_INV+2.7*H_SLOT;
-		w = 8*W_SLOT;
 		h = H_SLOT;
 	};
 
@@ -2579,7 +2626,7 @@ class SpecDialog: Menu {
 	movingEnable = true;
 	controlsBackground[] = {LogBg, GroupsBg};
 	objects[] = { };
-	controls[] = {Tracking, TrackingBottom, ShowLog, ShowInfo, GameTime, GameTimeBottom, Log, Info, Leaderboard, Stats, ShowMap, ShowGroups, GroupLeaders, GroupMembers, AngleVert, Distance, AngleHorz, Front, Left, Top, Right, Near, Rear, Far, LockDir, North, West, East, South, ShowAll, UseNVG};
+	controls[] = {Tracking, TrackingBottom, ShowLog, ShowInfo, GameTime, GameTimeBottom, Log, Info, Leaderboard, Stats, ShowMap, ShowGroups, GroupLeaders, GroupMembers, AngleVert, Distance, AngleHorz, Front, Left, Top, Right, Near, Rear, Far, LockDir, North, West, East, South, ShowAll, UseNVG, Quit};
 
 	class Tracking: Text {
 		idc = IDC_TEXT_TRACKING;
@@ -2704,14 +2751,21 @@ class SpecDialog: Menu {
 		text = "";
 		action = "bShowMap = !bShowMap; btnShowMap = true";
 	};
-
 	class UseNVG: Button {
 		idc = IDC_BTN_UseNVG;
 		x = 0.3;
 		y = 0.92;
 		w = 0.1;
-		text = "NVGoggles";
+		text = "NVG";
 		action = "btnUseNVG = true";
+	};
+	class Quit: Button {
+		idc = IDC_BTN_QUIT;
+		x = 0.3;
+		y = 0.88;
+		w = 0.1;
+		text = "Quit";
+		action = "btnQuit = true";
 	};
 
 	class ShowGroups: Button {
