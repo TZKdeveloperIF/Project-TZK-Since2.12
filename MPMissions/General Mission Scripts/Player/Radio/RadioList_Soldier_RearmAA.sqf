@@ -39,7 +39,9 @@ if ((_found select 1) > rangeSupport) then {hint "No Rearm Vehicle Nearby."} els
 		
 		if (_cost >= 0 && _cost > _money) then {hint "Not Enough Money."} else {
 			if (_reEquip) then {_unit removeMagazines _wpnSec; _unit removeWeapon _wpnSec};
-			_unit addMagazine _magazine; _unit addWeapon _weapon;
+			unitContainer = "SecondaryWeaponHolder" camCreate getPos _unit; unitContainer addMagazineCargo [_magazine, 1];
+			_unit action ["TAKE MAGAZINE", unitContainer, 0, 0, _magazine];
+			if (_reEquip) then {_unit addWeapon _weapon}; unitContainer = nil;
 			[_cost] exec "Player\SendMoneySpent.sqs"; player groupChat format ["Rapid Rearm completed. Cost: $%1", _cost];
 			RespawnWeapon = RespawnW; RespawnMagazine = RespawnM; RespawnAmmunition = RespawnA; 
 		};
