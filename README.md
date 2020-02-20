@@ -1,5 +1,5 @@
 # The Project
-TZK_3 is basing on @TZK_2.10 mod with TZK_2.11A MPMissions, applying 2.01 Arma Resistance by [4RTehch]. However TZK_3 missions cause no-response server by unknown reason, thus the project TZK_2.12 are only MPMissions using @TZK_2.10 MOD bot not @TZK_3.00, and Missions are upgrading by adding new essentials gradually. Up till 2.12H, many essentials are added and parts of problems are found. They're recorded in "LOG" folder and will be summarized in future.
+TZK_3 is basing on @TZK_2.10 mod with TZK_2.11A MPMissions, applying 2.01 Arma Resistance by [4RTech]. However TZK_3 missions cause no-response server by unknown reason, thus the project TZK_2.12 are only MPMissions using @TZK_2.10 MOD bot not @TZK_3.00, and Missions are upgrading by adding new essentials gradually. Up till 2.12H, many essentials are added and parts of problems are found. They're recorded in "LOG" folder and will be summarized in future.
 # Gain MPMissions from Scripts Directory
 It's strongly recommended to use batch processing to copy files and make PBOs. The MakePBO of Mikero Tools is powerful.
 1. "xcopy" all files from "General Mission Scripts" to each folders in "mission.sqm(and Extra folder)".
