@@ -5,7 +5,7 @@
 _v = pvRemoveMags
 pvRemoveMags = objNull
 
-? !(local _v) || !(alive _v) : goto "Start"
+? !( (local _v) || (!isNull gunner _v && local gunner _v) ) || !(alive _v) : goto "Start"
 
 { _v removeMagazines _x } foreach (magazines _v)
 

@@ -20,17 +20,14 @@ _mags = _rearmData select 1
 
 ; CALC COST
 ? _type == -1 && _unit != _vehicleRearm : format["ERROR: _type is -1 for vehicle '%1' in AI_Rearm", _vehicleRearm] call fDebugLog; exit
-_cost = 50
-? _type != -1 : _cost = ((unitDefs select _type) select udCost)/10
-? _cost < 50 : _cost = 50
-_cost = _cost - (_cost % 1)
-? _unit == _vehicleRearm : _cost = _cost + 50*("_x == magMine" count _mags)
 _money = (groupMoneyMatrix select _si) select _gi
-? _cost > _money : exit
 
 ? _unit != _vehicleRearm : goto "RearmVehicle"
 
 #RearmInfantry
+	_cost = [_unit, _weapons, _mags] call loadFile "Common\SQF\CalRearmCost.sqf"
+	? _cost > _money : exit
+	
 	? !(local _vehicleRearm) : exit
   _vehicleRearm setCombatMode "BLUE"
   ~_timeRearm
@@ -48,6 +45,12 @@ _money = (groupMoneyMatrix select _si) select _gi
   goto "RearmEnd"
 
 #RearmVehicle
+	_cost = 50
+	? _type != -1 : _cost = ((unitDefs select _type) select udCost)/10
+	? _cost < 50 : _cost = 50
+	_cost = _cost - (_cost % 1)
+	? _cost > _money : exit
+
   if (local _vehicleRearm) then { { _vehicleRearm removeMagazines _x } foreach (magazines _vehicleRearm) } else { [_vehicleRearm] exec "Common\SendVehicleMagsRemove.sqs" }
   ~_timeRearm
   ? !(alive _vehicleRearm) || !(alive _support) : exit
