@@ -12,6 +12,13 @@ _alt = _this select 2;
 _shift = _this select 3;
 _processed = false;
 
+// move player
+if (!_processed && _alt && _shift) then
+{
+	player setPos _pos;
+  _processed = true;
+};
+
 // move cam
 if (!_processed && !_alt && !_shift) then
 {

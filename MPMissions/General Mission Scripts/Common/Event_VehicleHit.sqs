@@ -28,7 +28,7 @@ _group = grpNull
 ; player globalchat format["canFire = %1", canFire _vehicle]
 ? canFire _vehicle || count (magazines _vehicle) == 0 : goto "CheckCanMove"
 #GunDisabled
-{ _vehicle removeMagazines _x } forEach (magazines _vehicle)
+? format ["%1", (typeOf _vehicle) GetVehicleParam "simulation"] == "tank" : { _vehicle removeMagazines _x } forEach (magazines _vehicle)
 ? !(_vehicle in ( mhq + (MCV select si0) + (MCV select si1) )) : [_vehicle] exec "Common\CheckDestroyDisabledVehicle.sqs"
 ? _group != groupPlayer && _siVehicle == siRes : { if (local _x) then { unassignVehicle _x; _x action ["eject", _vehicle] } } forEach _crew; goto "CheckCanMove"
 ? _group == groupPlayer : _unit groupChat "Vehicle weapons destroyed, need rearm"; goto "CheckCanMove"

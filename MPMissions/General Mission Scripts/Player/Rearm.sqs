@@ -43,16 +43,14 @@ _mags = _rearmData select 1
 ? !(canFire _vehicle) : _unit groupChat "Gun barrel badly hurt. Better repair as well."
 
 ; CALC REARM COST
-_cost = _cost/10
-_cost = _cost - (_cost % 1)
-? _cost < 50 : _cost = 50
-? _unit == _unitRearm : _cost = _cost + 50*("_x == magMine" count _mags)
 _money = (groupMoneyMatrix select siPlayer) select giPlayer
-? _cost > _money : _msg = format["Not enough money for rearm. ($%1 needed)", _cost]; goto "Exit"
 
 ? _unit != _unitRearm : goto "RearmVehicle"
 
 #RearmInfantry
+	_cost = [_unit, _weapons, _mags] call loadFile "Common\SQF\CalRearmCost.sqf"
+	? _cost > _money : _msg = format["Not enough money for rearm. ($%1 needed)", _cost]; goto "Exit"
+	
 	? !(local _unitRearm) : _msg = "Rearm failed. Soldier is not local."; goto "Exit"
   ; TODO _unitRearm setCombatMode "BLUE"
   ~_timeRearm
@@ -70,6 +68,11 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
   goto "RearmEnd"
 
 #RearmVehicle
+	_cost = _cost/10
+	_cost = _cost - (_cost % 1)
+	? _cost < 50 : _cost = 50
+	? _cost > _money : _msg = format["Not enough money for rearm. ($%1 needed)", _cost]; goto "Exit"
+
   if (local _unitRearm) then { { _unitRearm removeMagazines _x } foreach (magazines _unitRearm) } else { [_unitRearm] exec "Common\SendVehicleMagsRemove.sqs" }
   vehiclesRearming set [count vehiclesRearming, _unitRearm]
   _msg = format["Rearm started, ready in %1s ...", _timeRearm]
