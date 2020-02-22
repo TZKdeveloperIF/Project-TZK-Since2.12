@@ -36,7 +36,9 @@ _bMoveCorrect = true
 	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 2; goto "Sleep"
 
   _bCheckDropBomb = !_bCheckDropBomb 
-	? _bCheckDropBomb && _unit == _vehicle && magSatchel in (magazines _unit) : [_unit, _si, _gi] exec "Server\AI_CheckDropBomb.sqs"; _sleep = 2; goto "Sleep"
+	_magazines = []
+	? _bCheckDropBomb && _unit == _vehicle: _magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf"
+	? _bCheckDropBomb && _unit == _vehicle && "_x in MagzinesSatchel" count _magazines > 0 : [_unit, _si, _gi] exec "Server\AI_CheckDropBomb.sqs"; _sleep = 2; goto "Sleep"
 	
 	_posDest = _wps select _second
 ;	? _second : _posDest = [_posDest, 800, 800] call funcGetRandomPos; _unit doWatch (_wps select _second)

@@ -7,8 +7,9 @@ _gi = _this select 2
 call busySet
 
 #Check
-? !(alive _unit) : goto "Exit"
-? _unit != (vehicle _unit) || !(magSatchel in (magazines _unit)) : goto "Exit"
+? !(alive _unit) || _unit != (vehicle _unit) : goto "Exit"
+_magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
+? ("_x in MagzinesSatchel" count _magazines) == 0 : goto "Exit"
 
 _res = [getPos _unit, _si] call funcGetClosestEnemyObject
 _object = _res select 0
@@ -27,14 +28,17 @@ _timeAbort = time + 2*60
 	? time > _timeAbort : goto "Check"
 	? (_unit distance _object) > 10 : goto "CheckDropPosReached"
 
-_cBefore = "_x == magSatchel" count (magazines _unit)
-_unit fire [weaponPut, magSatchel, magSatchel]
+_C4Mag = magSatchel
+_magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
+? magPistolSatchel in _magazines : _C4Mag = magPistolSatchel
+_cBefore = "_x == _C4Mag" count _magazines
+_unit fire [weaponPut, _C4Mag,_C4Mag]
 
 	~1
 ? !(alive _unit) : goto "Exit"
 _unit action ["SETTIMER"]
-_cAfter = "_x == magSatchel" count (magazines _unit)
-? _cAfter == 1 && _cBefore == 1 : _unit removeMagazine magSatchel
+_cAfter = "_x == _C4Mag" count magazines _unit
+? _cAfter == 1 && _cBefore == 1 : _unit removeMagazine _C4Mag
 
 #MoveAway
 _posMove = [getPos _object, 100, 100] call funcGetRandomPos

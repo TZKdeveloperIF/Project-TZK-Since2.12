@@ -42,7 +42,9 @@ _timeNextStep = time
 	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 30; goto "Sleep"
 
   _bCheckDropBomb = !_bCheckDropBomb 
-	? _bCheckDropBomb && _unit == _vehicle && magSatchel in (magazines _unit) : [_unit, _si, _gi] exec "Server\AI_CheckDropBomb.sqs"; _sleep = 5; goto "Sleep"
+	_magazines = []
+	? _bCheckDropBomb && _unit == _vehicle: _magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf"
+	? _bCheckDropBomb && _unit == _vehicle && "_x in MagzinesSatchel" count _magazines > 0 : [_unit, _si, _gi] exec "Server\AI_CheckDropBomb.sqs"; _sleep = 5; goto "Sleep"
 	
   _bCheckMines = !_bCheckMines
 	? _isMiner && _unit == _vehicle && _bCheckMines : [_unit, _si, _gi] exec "Server\AI_CheckDisableMines.sqs"; _sleep = 5; goto "Sleep"
