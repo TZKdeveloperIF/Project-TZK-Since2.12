@@ -17,7 +17,7 @@ _idOrder = ((orderMatrix select _si) select _gi) select 0
 ? call busyCheck : goto "WaitReady"
 
 _rearmData = _unit call funcGetRearmData
-_hasMines = (magMine in (_rearmData select 1))
+_hasMines = false; { if (_x in (_rearmData select 1)) then {_hasMines = true} } forEach MagzinesMine
 
 _timeCheckSupport = time + 30 + random 60
 
@@ -25,7 +25,8 @@ _sleep = 30
 
 _patrol = false
 
-_mines = "_x == magMine" count magazines _unit
+_magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
+_mines = "_x in MagzinesMine" count _magazines
 ? _hasMines && _mines == 0 : [_unit, _si, _gi, true] exec "Server\AI_CheckSupport.sqs"; _sleep = 10; goto "Sleep"
 
 #Update
@@ -51,19 +52,25 @@ _mines = "_x == magMine" count magazines _unit
   ? _distToDest > 10 : goto "Move"
   
   ; PUT MINE
-  _mines = "_x == magMine" count magazines _unit
-  doStop _unit
-  _res = [ getPos _unit, siBoth, vMinerAvoid, [] ] call funcGetClosestVehicle
-  ? (_res select 1) > 8 : _unit fire [weaponPut, magMine, magMine]
-  ~4
-  ? !(alive _unit) : exit
-  _minesAfter = "_x == magMine" count magazines _unit
-  ? _mines == 1 && _minesAfter == 1 : _unit removeMagazine magMine
-  _mines = "_x == magMine" count magazines _unit
-  _posMove = []
-  ? _mines == 0 : [_unit, _si, _gi, true] exec "Server\AI_CheckSupport.sqs"; _sleep = 10; goto "Sleep"
-  _sleep = 2
-  goto "Sleep"
+	_MineMagazine = magMine
+	? magPistolMine in _magazines : _MineMagazine = magPistolMine
+	_mines = "_x == _MineMagazine" count _magazines
+	doStop _unit
+	_res = [ getPos _unit, siBoth, vMinerAvoid, [] ] call funcGetClosestVehicle
+	? (_res select 1) > 8 : _unit fire [weaponPut, _MineMagazine, _MineMagazine]
+	
+	~4
+	? !(alive _unit) : exit
+	_minesAfter = "_x == _MineMagazine" count magazines _unit
+	? _mines == 1 && _minesAfter == 1 : _unit removeMagazine _MineMagazine
+	
+	_magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
+	_mines = "_x in MagzinesMine" count _magazines
+	
+	_posMove = []
+	? _mines == 0 : [_unit, _si, _gi, true] exec "Server\AI_CheckSupport.sqs"; _sleep = 10; goto "Sleep"
+	_sleep = 2
+	goto "Sleep"
 	
 	#Patrol
 	? _unit != _vehicle && ( ([getPos _unit, _wp0] call funcDistH) < 500 || ([getPos _unit, _wp1] call funcDistH) < 500 ) : [_unit, false] exec "Server\StopAI.sqs"; [_unit, _si, _gi] call funcWatch; _sleep = 30; goto "Sleep"
