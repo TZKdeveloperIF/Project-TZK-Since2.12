@@ -7,7 +7,11 @@ _radius = 5*( 0 + ((_this select 2) select 0) )
 ? !(alive _unit) : exit
 ? _unit != vehicle _unit : exit
 
-? ("_x == magSatchel" count magazines _unit) == 0 : exit
+_rearmData = _unit call funcGetRearmData
+_mags = _rearmData select 1
+_hasC4 = false; { if (_x in _mags) then {_hasC4 = true} } forEach MagzinesSatchel
+_magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
+? ("_x in MagzinesSatchel" count _magazines) == 0 && !_hasC4 : exit
 
 _order = []; _id = -1; call orderNew
 
@@ -41,26 +45,29 @@ _timeAbort = time + 5*60
 #Placesat
   ~2
   ? !(alive _unit) : exit
-  _PipeBomb = "_x == magSatchel" count magazines _unit
- ? _PipeBomb == 0 : goto "CheckRearm"
-  _unit fire [weaponPut, magSatchel,magSatchel]
+	_magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
+	_cBefore = "_x in MagzinesSatchel" count _magazines
+	? _cBefore == 0 : goto "CheckRearm"
+	_C4Mag = magSatchel
+	? magPistolSatchel in _magazines : _C4Mag = magPistolSatchel
+	_cBefore = "_x == _C4Mag" count _magazines
+	_unit fire [weaponPut, _C4Mag,_C4Mag]
   
   
 ~1
-  ? !(alive _unit) : exit
-  _unit groupchat "Satchel Placed."
-  _PipeBombAfter = "_x == magSatchel" count magazines _unit
-  ? _PipeBomb == 1 && _PipeBombAfter == 1 : _unit removeMagazine magSatchel
-  _PipeBomb = "_x == magSatchel" count magazines _unit
- ? _PipeBomb == 0 :goto "CheckRearm"
+	? !(alive _unit) : exit
+	_unit groupchat "Satchel Placed."
+	_C4After = "_x == _C4Mag" count magazines _unit
+	? _cBefore == 1 && _C4After == 1 : _unit removeMagazine _C4Mag
+	
+	_magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
+	_cBefore = "_x in MagzinesSatchel" count _magazines
+	? _cBefore == 0 :goto "CheckRearm"
   goto "MoveToNextPos"
 
 
 #CheckRearm
-  _type = _unit call funcGetUnitTypeFromObject
-  _rearmData = _unit call funcGetRearmData
-  _mags = _rearmData select 1
-  ? !(magSatchel in _mags) : exit
+  ? !_hasC4 : exit
   _vs = [getPos _unit, 500, (typesSupport select si0) + (typesSupport select si1), []] call funcGetNearbyVehicles
   ? count _vs == 0 : _unit groupchat "No support vehicle near. Satcheling order aborted."; exit
   _distMin = 500

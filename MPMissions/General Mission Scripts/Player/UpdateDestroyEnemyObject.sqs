@@ -38,7 +38,8 @@ goto "Update"
 
 #OnFoot
 ? !(unitReady _unit): goto "Update"
-? !(magSatchel in (magazines _unit)): goto "Update"
+_magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
+? ("_x in MagzinesSatchel" count _magazines) == 0: goto "Update"
 
 _res = [getPos _unit, siPlayer] call funcGetClosestEnemyObject
 _object = _res select 0
@@ -66,15 +67,19 @@ _index = 0
 ? (leader _unit) != player : exit
 ? !(alive _object): goto "Update"
 ; doStop _unit
-_cBefore = "_x == magSatchel" count (magazines _unit)
-_unit fire [weaponPut, magSatchel, magSatchel]
+
+	_magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
+	_C4Mag = magSatchel
+	? magPistolSatchel in _magazines : _C4Mag = magPistolSatchel
+	_cBefore = "_x == _C4Mag" count _magazines
+	_unit fire [weaponPut, _C4Mag,_C4Mag]
 ~1
 ? !(alive _unit) : exit
 ? (leader _unit) != player : exit
 _unit action ["SETTIMER"]
 _unit groupChat "Satchel placed at enemy object."
-_cAfter = "_x == magSatchel" count (magazines _unit)
-? _cAfter == 1 && _cBefore == 1 : _unit removeMagazine magSatchel
+_cAfter = "_x == _C4Mag" count (magazines _unit)
+? _cAfter == 1 && _cBefore == 1 : _unit removeMagazine _C4Mag
 #MoveAway
 _posMove = [getPos _object, 100, 100] call funcGetRandomPos
 _unit doMove _posMove
