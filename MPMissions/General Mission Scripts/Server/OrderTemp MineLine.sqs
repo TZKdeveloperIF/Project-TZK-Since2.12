@@ -17,7 +17,7 @@ _vehicle = vehicle _unit
 ? _unit != _vehicle : exit
 
 _rearmData = _unit call funcGetRearmData
-_hasMines = (magMine in (_rearmData select 1))
+_hasMines = false; { if (_x in (_rearmData select 1)) then {_hasMines = true} } forEach MagzinesMine
 ? !_hasMines : exit
 
 ; Check Whether Unit In Another Temporary Order (Except For Set Flight Altitude, Clear Temporary Order, Etc)
@@ -50,26 +50,31 @@ _groups = groupMatrix select _si
 	? _unit != driver _vehicle : goto "Sleep"
 
 	; check support
-	_mines = "_x == magMine" count magazines _unit
+	_magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
+	_mines = "_x in MagzinesMine" count _magazines
 	? time > _timeCheckSupport || _mines == 0 : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _cycle = 10; goto "Sleep"
 
 	? (count _posMove) == 0 : _vect = [_wp1, _wp0] call funcVectorSub; _posMove = [_wp0, [_vect, random 1] call funcVectorScale] call funcVectorAdd
 	_distToDest = [getPos _unit, _posMove] call funcDistH
 	? _distToDest > 10 : goto "Move"
 	
-	_mines = "_x == magMine" count magazines _unit
+	_MineMagazine = magMine
+	? magPistolMine in _magazines : _MineMagazine = magPistolMine
+	_mines = "_x == _MineMagazine" count _magazines
 	doStop _unit
 	_res = [ getPos _unit, siBoth, vMinerAvoid, [] ] call funcGetClosestVehicle
-	? (_res select 1) > 8 : _unit fire [weaponPut, magMine, magMine]
+	? (_res select 1) > 8 : _unit fire [weaponPut, _MineMagazine, _MineMagazine]
 	
 		_timeUp = time + 4
 		@ ( time > _timeUp || !call temporaryCheck )
 		? !call temporaryCheck : goto "EOF"
 		? !(alive _unit) || time > _timeAbort : goto "EOF"
 		
-	_minesAfter = "_x == magMine" count magazines _unit
-	? _mines == 1 && _minesAfter == 1 : _unit removeMagazine magMine
-	_mines = "_x == magMine" count magazines _unit
+	_minesAfter = "_x == _MineMagazine" count magazines _unit
+	? _mines == 1 && _minesAfter == 1 : _unit removeMagazine _MineMagazine
+	
+	_magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
+	_mines = "_x in MagzinesMine" count _magazines
 	_posMove = []
 	? _mines == 0 : [_unit, _si, _gi, true] exec "Server\AI_CheckSupport.sqs"; _cycle = 10; goto "Sleep"
 	_cycle = 2; goto "Sleep"

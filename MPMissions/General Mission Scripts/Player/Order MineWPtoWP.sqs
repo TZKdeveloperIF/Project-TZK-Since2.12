@@ -7,7 +7,12 @@ _wp1 = (wpPlayer select ((_this select 2) select 1))
 
 ? !(alive _unit) : exit
 ? _unit != vehicle _unit : exit
-? ("_x == magMine" count magazines _unit) == 0 : exit
+
+_rearmData = _unit call funcGetRearmData
+_mags = _rearmData select 1
+_hasMines = false; { if (_x in _mags) then {_hasMines = true} } forEach MagzinesMine
+_magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
+? ("_x in MagzinesMine" count _magazines) == 0 && !_hasMines : exit
 
 ? (_wp0 select 0) == -1 || (_wp1 select 0) == -1 : _unit groupChat "WPs not defined"; exit
 
@@ -41,25 +46,32 @@ _timeAbort = time + 5*60
   [getPos _unit, _unit] exec "Common\CleanGround.sqs"
   ~2
   ? !(alive _unit) : exit
-  _mines = "_x == magMine" count magazines _unit
+  
+	_magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
+	_mines = "_x in MagzinesMine" count _magazines
   ? _mines == 0 : goto "CheckRearm"
   _res = [ getPos _unit, siBoth, vMinerAvoid, [] ] call funcGetClosestVehicle
   ? (_res select 1) < 8 : _unit groupChat "Vehicle exist. Changing position."; goto "MoveToNextPos"
-  _unit fire [weaponPut, magMine, magMine]
-  ~4
-  ? !(alive _unit) : exit
-  _unit groupChat "Mine Placed."
-  _minesAfter = "_x == magMine" count magazines _unit
-  ? _mines == 1 && _minesAfter == 1 : _unit removeMagazine magMine
-  _mines = "_x == magMine" count magazines _unit
-  ? _mines == 0 : goto "CheckRearm"
+  
+	_MineMagazine = magMine
+	? magPistolMine in _magazines : _MineMagazine = magPistolMine
+	_mines = "_x == _MineMagazine" count _magazines
+	_unit fire [weaponPut, _MineMagazine, _MineMagazine]
+	~4
+	? !(alive _unit) : exit
+	_unit groupChat "Mine Placed."
+	
+  _minesAfter = "_x == _MineMagazine" count magazines _unit
+  ? _mines == 1 && _minesAfter == 1 : _unit removeMagazine _MineMagazine
+  
+	_magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
+	_mines = "_x in MagzinesMine" count _magazines
+	? _mines == 0 : goto "CheckRearm"
   goto "MoveToNextPos"
 
 #CheckRearm
-  _type = _unit call funcGetUnitTypeFromObject
-  _rearmData = _unit call funcGetRearmData
-  _mags = _rearmData select 1
-  ? !(magMine in _mags) : exit
+  ? !_hasMines : exit
+  
   _vs = [getPos _unit, 500, (typesSupport select si0) + (typesSupport select si1), []] call funcGetNearbyVehicles
   ? count _vs == 0 : _unit groupChat "No support vehicle near. Mining order aborted."; exit
   _distMin = 500
