@@ -5,6 +5,7 @@ private [ "_x", "_wpns", "_mags", "_wpn", "_i", "_remove", "_typePrim", "_typeSe
 
 _wpns = weapons _this;
 _mags = magazines _this;
+{ if (_this hasWeapon _x) then {_wpns set [count _wpns, _x]} } forEach weaponThrowPutList;
 
 _typePrim = -1;
 _typeSec = -1;
