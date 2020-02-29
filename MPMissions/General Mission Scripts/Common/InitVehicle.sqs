@@ -23,6 +23,7 @@ _vehicle addEventHandler ["killed", { _this exec "Common\Event_VehicleDestroyed.
 ? isNull player : goto "SkipClient"
 
 ; PLAYER ONLY
+? (typeOf _vehicle) in [{A10_Tomahawk_xj200}, {Su25_Raduga_xj200}] : _vehicle say {NuclearMissileReady_xj200}
 
 [_vehicle, _type, _si] call funcInitVehicleMarker
 

@@ -10,8 +10,8 @@ _costFactor = _this select 3
 _cost = 100
 _delay = 0.2
 
-? (siPlayer == si0): _notAllowed = si1
-? (siPlayer == si1): _notAllowed = si0
+? (siPlayer == si0): _notAllowed = [si1, siRes]
+? (siPlayer == si1): _notAllowed = [si0, siRes]
 
 _idcTemplLabel = IDC+0
 _idcBuyTempl = IDC+1
@@ -50,7 +50,7 @@ _count = count weaponDefs
 
 	_desc = weaponDefs select _index
 
-	? (_notAllowed == _desc select wdSides): goto "CheckNextWeapon"
+	? ((_desc select wdSides) in _notAllowed): goto "CheckNextWeapon"
 
 	_type = _desc select wdType
 	? (_type == wtPrimary || _type == wtPrimaryOnly): goto "AddPrimary"
@@ -101,7 +101,7 @@ _count = count equipDefs
 
 #AddEquip
 	_desc = equipDefs select _index
-	? (_notAllowed == _desc select edSides): goto "CheckNextEquip"
+	? ((_desc select edSides) in _notAllowed): goto "CheckNextEquip"
 	_cost = 0; if (count _desc > edCost) then { _cost=(_desc select edCost);};
 
 	_text = format["$%1 %2", _cost, _desc select edName]
