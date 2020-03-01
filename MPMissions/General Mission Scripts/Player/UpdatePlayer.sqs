@@ -53,7 +53,7 @@ _timeDead = 0
 
 	;? !isNull gunner vehicle player : if (group gunner vehicle player != groupplayer) then {gunner vehicle player setPos [_posNow select 0, _posNow select 1, (_posNow select 2) + 4]}
 	;? -1 != (vehicle player) call funcGetUnitTypeFromObject && !local vehicle player : if (player in [driver vehicle player, gunner vehicle player, commander vehicle player]) then {player action ["Eject", vehicle player]}
-	? -1 != (vehicle player) call funcGetUnitTypeFromObject && !local vehicle player : if (player == commander vehicle player) then {player action ["Eject", vehicle player]}
+	? -1 != (vehicle player) call funcGetUnitTypeFromObject && !local vehicle player : if (player == commander vehicle player && !dev) then {player action ["Eject", vehicle player]}
 	
 	setViewDistance viewDistance; showGPS boole_Show_GPS
 ;	player sidechat format ["%1", group player]

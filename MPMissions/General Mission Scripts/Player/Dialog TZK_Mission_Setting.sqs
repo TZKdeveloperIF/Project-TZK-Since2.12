@@ -11,7 +11,6 @@ _lastMissionSettings = [ [], [], [] ]; _booleMatrix = [booleSettingEffects, bool
 
 ; Show text in dev for debugging
 ? !dev : _i = 1; _c = 3; while "_i <= _c" do { ctrlShow [IDC + _i, false]; _i = _i + 1 }
-? dev: hint format ["%1", workerGroups]; player globalChat format ["%1", townGroups select siPlayer]
 
 #Update
 	? !(dialog): goto "Quit"
@@ -28,7 +27,7 @@ _lastMissionSettings = [ [], [], [] ]; _booleMatrix = [booleSettingEffects, bool
 	_i = _i + 1
 	? _i < _Column : goto "LoopColumn"
 	
-	? dev: ctrlSetText [IDC + 1, format["%1", group leaderTemp0]]; ctrlSetText [IDC + 2, format["%1", group leaderWG11]]; ctrlSetText [IDC + 3, format["%1", group leaderTG00]]
+	? dev: ctrlSetText [IDC + 1, format["%1", groupTemp0]]; ctrlSetText [IDC + 2, format["%1", groupTemp1]]; ctrlSetText [IDC + 3, format["%1", groupJoin0]]
 
 	~0.2
 	goto "Update"
