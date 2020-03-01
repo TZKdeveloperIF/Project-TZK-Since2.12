@@ -21,13 +21,14 @@ removeAllWeapons _unit
 _typePrim = _custom select 1
 _typeHandgun = _custom select 2
 _typeSec = _custom select 3
-_equipment = _custom select 4
+_typeBinocular = _custom select 4
+_typeNVG = _custom select 5
+_equipment = _custom select 6
 
 _cost = 0;
 { _cost = _cost + ((equipDefs select (_x select 0)) select edcost) } foreach (_equipment select isGeneral)
 { _cost = _cost + ((equipDefs select (_x select 0)) select edcost) } foreach (_equipment select isHandgun)
-{ _cost = _cost + ((equipDefs select (_x select 0)) select edcost) } foreach (_equipment select isOptics)
-{ if (_x != -1) then {_cost = _cost + ((weaponDefs select _x) select wdcost)} } forEach [_typePrim, _typeSec, _typeHandgun]
+{ if (_x != -1) then {_cost = _cost + ((weaponDefs select _x) select wdcost)} } forEach [_typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG]
 ? _cost > 0 && _cost > ((groupMoneyMatrix select siPlayer) select giPlayer) : _unit groupChat "Insufficient fund. Unequipped yet."; goto "SkipEquipping"
 
 { _unit addWeapon _x } forEach weaponsCustom
@@ -38,7 +39,8 @@ _cost = 0;
 ? _typePrim != -1 : _weapon = ((weaponDefs select _typePrim) select wdObject); _unit addWeapon _weapon; _unit selectWeapon _weapon
 ? _typeSec != -1 : _weapon = ((weaponDefs select _typeSec) select wdObject); _unit addWeapon _weapon
 ? _typeHandgun != -1 : _weapon = ((weaponDefs select _typeHandgun) select wdObject); _unit addWeapon _weapon
-{ _unit addWeapon ((equipDefs select (_x select 0)) select edObject)} foreach (_equipment select isOptics)
+? _typeBinocular != -1 : _weapon = ((weaponDefs select _typeBinocular) select wdObject); _unit addWeapon _weapon
+? _typeNVG != -1 : _weapon = ((weaponDefs select _typeNVG) select wdObject); _unit addWeapon _weapon
 [_cost] exec "Player\SendMoneySpent.sqs"; _unit groupChat format ["Equipping completed. Cost $%1", _cost]
 
 #SkipEquipping

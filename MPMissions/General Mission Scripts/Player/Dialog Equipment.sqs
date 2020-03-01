@@ -23,6 +23,8 @@ btnAddSec = false
 btnRemSec = false
 btnAddHandgun = false
 btnRemHandgun = false
+btnAddOptics = false
+btnRemOptics = false
 btnAddEq = false
 btnRemEq = false
 nCustom = 0
@@ -56,6 +58,8 @@ _count = count weaponDefs
 	? (_type == wtPrimary || _type == wtPrimaryOnly): goto "AddPrimary"
 	? (_type == wtHandgun): goto "AddHandgun"
 	? (_type == wtSecondary): goto "AddSecondary"
+	? (_type == wtBinocular): goto "AddOptics"
+	? (_type == wtNVG): goto "AddOptics"
 	goto "CheckNextWeapon"
 	
 	#AddPrimary
@@ -79,15 +83,20 @@ _count = count weaponDefs
 		lbSetValue [IDC_LB_SEC, _id, _index]
 		goto "CheckNextWeapon"
 
+	#AddOptics
+		_cost = 0; if (count _desc > wdCost) then { _cost=(_desc select wdCost);};
+		_text = format["$%1 %2", _cost, _desc select wdName]
+		_id = lbAdd [IDC_LB_Opt, _text]
+		lbSetValue [IDC_LB_Opt, _id, _index]
+		goto "CheckNextWeapon"
+
 	#CheckNextWeapon
 	_index = _index + 1
 	? (_index < _count): goto "CheckWeapon"
 	
-_typePrim = -1
-_typeHandgun = -1
-_typeSec = -1
+_typePrim = -1; _typeHandgun = -1; _typeSec = -1; _typeBinocular = -1; _typeNVG = -1
 _equipment = [[],[],[]]
-_slots = [isGeneralSlots,isHandgunSlots,isOpticsSlots]
+_slots = [isGeneralSlots,isHandgunSlots, -1]
 
 _prim = -1
 _sec = -1
@@ -185,7 +194,7 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
 
 	_moneynow = (groupMoneyMatrix select siPlayer) select giPlayer
 	_costnow = 0
-	? _costFactor > 0 : _costnow = [_typePrim, _typeSec, _typeHandgun, _equipment, _unit, false] call loadFile "Player\SQF\EquipmentCalculateCost.sqf"
+	? _costFactor > 0 : _costnow = [_typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG, _equipment, _unit, false] call loadFile "Player\SQF\EquipmentCalculateCost.sqf"
 	_costnow = _costFactor*_costnow
 
 	_textplayermoney = format ["$%1", _moneynow]
@@ -206,6 +215,8 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
 	? (btnRemHandgun): btnRemHandgun=false; _lb = IDC_LB_HG_AMMO; goto "RemOneItem"
 	? (btnAddEq): btnAddEq=false; _lb = IDC_LB_EQ; goto "AddOneItem"
 	? (btnRemEq): btnRemEq=false; _lb = IDC_LB_EQ; goto "RemOneItem"
+	? (btnAddOptics): btnAddOptics=false; _lb = IDC_LB_Opt; goto "AddOneItem"
+	? (btnRemOptics): btnRemOptics=false; _lb = IDC_LB_Opt; goto "RemOneItem"
 	? btnSaveTempl && !_custom : btnSaveTempl=false; goto "SaveTempl"
 	? btnSaveTempl && _custom : btnSaveTempl=false; goto "SaveCustom"
 	? btnLoadTempl && !_custom : btnLoadTempl=false; goto "LoadTempl"
@@ -234,6 +245,11 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
 	? (_typeSec == -1): ctrlSetText [IDC_PIC_SEC, "\dtaExt\equip\emptysec"]
 	? (_typeSec != -1 && !_primOnly): ctrlSetText [IDC_PIC_SEC, (weaponDefs select _typeSec) select wdImage ]
 	? (_typePrim != -1 && _primOnly): ctrlSetText [IDC_PIC_SEC, "" ]
+	
+	? (_typeBinocular == -1): ctrlSetText [IDC_PIC_OPT + 0, "\dtaext\equip\emptyeq"]
+	? (_typeBinocular != -1): ctrlSetText [IDC_PIC_OPT + 0, (weaponDefs select _typeBinocular) select wdImage ]
+	? (_typeNVG == -1): ctrlSetText [IDC_PIC_OPT + 1, "\dtaext\equip\emptyeq"]
+	? (_typeNVG != -1): ctrlSetText [IDC_PIC_OPT + 1, (weaponDefs select _typeNVG) select wdImage ]
 	
 	; GENERAL SLOTS
 	[0, true, _equipment select isGeneral] call funcSort
@@ -271,21 +287,6 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
 		? (_index < _count && _nextFreeSlot < (_slots select isHandgun)): goto "CheckSlotHandgun"
 	#HandgunEmpty
 	while "_nextFreeSlot < (_slots select isHandgun)" do { ctrlSetText [IDC_PIC_HG_1+_nextFreeSlot, "\misc\mgun_empty"]; _nextFreeSlot=_nextFreeSlot+1 }
-
-	; OPTICS SLOTS
-	_index = 0
-	_count = count (_equipment select isOptics)
-	_nextFreeSlot = 0
-	? (_count == 0): goto "OpticsEmpty"
-	#CheckSlotOptics
-		_typeEq = ((_equipment select isOptics) select _index) select 0
-		_image = (equipDefs select _typeEq) select edImage
-		_sizeEq = (equipDefs select _typeEq) select edSlots
-		? (_sizeEq == 1): ctrlSetText [IDC_PIC_OPT + _nextFreeSlot, _image]; _nextFreeSlot = _nextFreeSlot + _sizeEq
-		_index = _index + 1
-		? (_index < _count && _nextFreeSlot < (_slots select isOptics)): goto "CheckSlotOptics"
-	#OpticsEmpty
-	while "_nextFreeSlot < (_slots select isOptics)" do { ctrlSetText [IDC_PIC_OPT+_nextFreeSlot, "\dtaext\equip\emptyeq"]; _nextFreeSlot=_nextFreeSlot+1 }
 
 	goto "Update"
 
@@ -333,6 +334,9 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
 #AddOneItem
 	? (-1 == lbCurSel _lb): goto "Update"
 	_typeAmmo = lbValue [_lb, lbCurSel _lb]
+	
+	? IDC_LB_Opt == _lb: _typeSlot = (weaponDefs select _typeAmmo) select wdType; if (_typeSlot == wtNVG) then {_typeNVG = _typeAmmo} else {_typeBinocular = _typeAmmo}; goto "UpdateImage"
+	
 	_sizeAmmo = (equipDefs select _typeAmmo) select edSlots
 	_typeSlot = (equipDefs select _typeAmmo) select edSlotType
 	_slotsLeft = _slots select _typeSlot
@@ -343,6 +347,9 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
 #RemOneItem
 	? (-1 == lbCurSel _lb): goto "Update"
 	_typeAmmo = lbValue [_lb, lbCurSel _lb]
+	
+	? IDC_LB_Opt == _lb: _typeSlot = (weaponDefs select _typeAmmo) select wdType; if (_typeSlot == wtNVG) then {_typeNVG = -1} else {_typeBinocular = -1}; goto "UpdateImage"
+	
 	_typeSlot = (equipDefs select _typeAmmo) select edSlotType
 	_list = _equipment select _typeSlot
 	_ammoRemoved = false
@@ -375,15 +382,16 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
 	_templ set[1, _typePrim]
 	_templ set[2, _typeHandgun]
 	_templ set[3, _typeSec]
-	_templ set[4, []]
-	_slot = isGeneral; (_templ select 4) set [_slot, []]; { ((_templ select 4) select _slot) set [count ((_templ select 4) select _slot), +_x] } foreach (_equipment select _slot)
-	_slot = isHandgun; (_templ select 4) set [_slot, []]; { ((_templ select 4) select _slot) set [count ((_templ select 4) select _slot), +_x] } foreach (_equipment select _slot)
-	_slot = isOptics; (_templ select 4) set [_slot, []]; { ((_templ select 4) select _slot) set [count ((_templ select 4) select _slot), +_x] } foreach (_equipment select _slot)
-	? ((_templ select 1) == -1 && (_templ select 2) == -1 && (_templ select 3) == -1 && count ((_templ select 4) select isGeneral) + count ((_templ select 4) select isHandgun) + count ((_templ select 4) select isOptics) == 0 ) : _templ resize 0
+	_templ set[4, _typeBinocular]
+	_templ set[5, _typeNVG]
+	_templ set[6, []]
+	_slot = isGeneral; (_templ select 6) set [_slot, []]; { ((_templ select 6) select _slot) set [count ((_templ select 6) select _slot), +_x] } foreach (_equipment select _slot)
+	_slot = isHandgun; (_templ select 6) set [_slot, []]; { ((_templ select 6) select _slot) set [count ((_templ select 6) select _slot), +_x] } foreach (_equipment select _slot)
+	? ((_templ select 1) == -1 && (_templ select 2) == -1 && (_templ select 3) == -1 && (_templ select 4) == -1 && (_templ select 5) == -1 && count ((_templ select 6) select isGeneral) + count ((_templ select 6) select isHandgun) == 0 ) : _templ resize 0
 	
 	_entry = format["%1_%2_LOADOUT_%3_%4", localize "STR_CRCTI_VER", localize "STR_CRCTI_MOD", _id, sideNames select siPlayer]
   unitSetting = "SoldierWB" camCreate [10,10,10]
-	[ unitSetting, ["", _typePrim, _typeSec, _typeHandgun, _equipment] ] call funcEquipTempl
+	[ unitSetting, ["", _typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG, _equipment] ] call funcEquipTempl
   if (count _templ > 0) then {unitSetting saveStatus _entry} else {deleteStatus _entry}
   deleteVehicle unitSetting
 
@@ -400,16 +408,17 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
 	_templ set [1, _typePrim]
 	_templ set [2, _typeHandgun]
 	_templ set [3, _typeSec]
-	_templ set [4, []]
-	_slot = isGeneral; (_templ select 4) set [_slot, []]; { ((_templ select 4) select _slot) set [count ((_templ select 4) select _slot), +_x] } foreach (_equipment select _slot)
-	_slot = isHandgun; (_templ select 4) set [_slot, []]; { ((_templ select 4) select _slot) set [count ((_templ select 4) select _slot), +_x] } foreach (_equipment select _slot)
-	_slot = isOptics; (_templ select 4) set [_slot, []]; { ((_templ select 4) select _slot) set [count ((_templ select 4) select _slot), +_x] } foreach (_equipment select _slot)
-	? ((_templ select 1) == -1 && (_templ select 2) == -1 && (_templ select 3) == -1 && count ((_templ select 4) select isGeneral) + count ((_templ select 4) select isHandgun) + count ((_templ select 4) select isOptics) == 0 ) : _templ resize 0
+	_templ set[4, _typeBinocular]
+	_templ set[5, _typeNVG]
+	_templ set[6, []]
+	_slot = isGeneral; (_templ select 6) set [_slot, []]; { ((_templ select 6) select _slot) set [count ((_templ select 6) select _slot), +_x] } foreach (_equipment select _slot)
+	_slot = isHandgun; (_templ select 6) set [_slot, []]; { ((_templ select 6) select _slot) set [count ((_templ select 6) select _slot), +_x] } foreach (_equipment select _slot)
+	? ((_templ select 1) == -1 && (_templ select 2) == -1 && (_templ select 3) == -1 && (_templ select 4) == -1 && (_templ select 5) == -1 && count ((_templ select 6) select isGeneral) + count ((_templ select 6) select isHandgun) == 0 ) : _templ resize 0
 
 	_entry = format["%1_%2_SOLDIER_%3_%4", localize "STR_CRCTI_VER", localize "STR_CRCTI_MOD", _id, sideNames select siPlayer]
 
   unitSetting = "SoldierWB" camCreate [10,10,10]
-	[ unitSetting, ["", _typePrim, _typeSec, _typeHandgun, _equipment] ] call funcEquipTempl
+	[ unitSetting, ["", _typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG, _equipment] ] call funcEquipTempl
   if (count _templ > 0) then {unitSetting saveStatus _entry} else {deleteStatus _entry}
   deleteVehicle unitSetting
 
@@ -427,9 +436,8 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
 
 	_equipment = [[],[],[]]
 
-	_slot = isGeneral; { (_equipment select _slot) set [count (_equipment select _slot), +_x]} foreach ((_templ select 4) select _slot)
-	_slot = isHandgun; { (_equipment select _slot) set [count (_equipment select _slot), +_x]} foreach ((_templ select 4) select _slot)
-	_slot = isOptics; { (_equipment select _slot) set [count (_equipment select _slot), +_x]} foreach ((_templ select 4) select _slot)
+	_slot = isGeneral; { (_equipment select _slot) set [count (_equipment select _slot), +_x]} foreach ((_templ select 6) select _slot)
+	_slot = isHandgun; { (_equipment select _slot) set [count (_equipment select _slot), +_x]} foreach ((_templ select 6) select _slot)
 	
 	? (_typePrim != -1): _found = false; _index = 0; while "not _found" do { if (_typePrim == lbValue[IDC_LB_PRIM, _index]) then { _found=true; lbSetCurSel [IDC_LB_PRIM, _index]; _prim=_index  }; _index=_index+1 }
 	? (_typeSec != -1): _found = false; _index = 0; while "not _found" do { if (_typeSec == lbValue[IDC_LB_SEC, _index]) then { _found=true; lbSetCurSel [IDC_LB_SEC, _index]; _sec=_index  }; _index=_index+1 }
@@ -449,9 +457,8 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
 
 	_equipment = [[],[],[]]
 
-	_slot = isGeneral; { (_equipment select _slot) set [count (_equipment select _slot), +_x]} foreach ((_templ select 4) select _slot)
-	_slot = isHandgun; { (_equipment select _slot) set [count (_equipment select _slot), +_x]} foreach ((_templ select 4) select _slot)
-	_slot = isOptics; { (_equipment select _slot) set [count (_equipment select _slot), +_x]} foreach ((_templ select 4) select _slot)
+	_slot = isGeneral; { (_equipment select _slot) set [count (_equipment select _slot), +_x]} foreach ((_templ select 6) select _slot)
+	_slot = isHandgun; { (_equipment select _slot) set [count (_equipment select _slot), +_x]} foreach ((_templ select 6) select _slot)
 	
 	? (_typePrim != -1): _found = false; _index = 0; while "not _found" do { if (_typePrim == lbValue[IDC_LB_PRIM, _index]) then { _found=true; lbSetCurSel [IDC_LB_PRIM, _index]; _prim=_index }; _index=_index+1 }
 	? (_typeSec != -1): _found = false; _index = 0; while "not _found" do { if (_typeSec == lbValue[IDC_LB_SEC, _index]) then { _found=true; lbSetCurSel [IDC_LB_SEC, _index]; _sec=_index }; _index=_index+1 }
@@ -477,7 +484,7 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
 	_money = (groupMoneyMatrix select siPlayer) select giPlayer
 	
 	_costnow = 0
-	? _costFactor > 0 : _costnow = [_typePrim, _typeSec, _typeHandgun, _equipment, _unit, true] call loadFile "Player\SQF\EquipmentCalculateCost.sqf"
+	? _costFactor > 0 : _costnow = [_typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG, _equipment, _unit, true] call loadFile "Player\SQF\EquipmentCalculateCost.sqf"
 	_costBuy = _costFactor*_costnow
 
 	? _money < _costBuy && _costBuy > 0: hint "Not Enough Money"; _unit groupchat "Not Enough Money"; goto "Update"
@@ -485,17 +492,15 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
 	goto "EquipAndExit"
 
 #Clear
-	_typePrim = -1
+	_typePrim = -1; _typeHandgun = -1; _typeSec = -1; _typeBinocular = -1; _typeNVG = -1
 	_primOnly = false
-	_typeHandgun = -1
-	_typeSec = -1
 	_equipment = [[],[],[]]
 	_templLoaded = true
 	goto "Update"
 
 #EquipAndExit
-	[ _unit, ["", _typePrim, _typeSec, _typeHandgun, _equipment] ] call funcEquipTempl
-	? _costFactor == 0 : [_typePrim, _typeSec, _typeHandgun, _equipment] call loadFile "Player\SQF\EquipmentRecordPurchase.sqf"
+	[ _unit, ["", _typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG, _equipment] ] call funcEquipTempl
+	? _costFactor == 0 : [_typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG, _equipment] call loadFile "Player\SQF\EquipmentRecordPurchase.sqf"
 	goto "CloseDialog"
 
 #CloseDialog

@@ -1,21 +1,15 @@
-private ["_typePrim", "_typeSec", "_typeHandgun", "_equipment", "_unit", "_boolPurchase", "_mags0", "_mags1", "_mags2", "_magTypes", "_salvage", "_charge", "_weapons", "_optics", "_weaponTypes", "_magazinesArray", "_index", "_count", "_magazinesList", "_ammunitionList", "_volumeList", "_index2"];
+private ["_typePrim", "_typeSec", "_typeHandgun", "_typeBinocular", "_typeNVG", "_equipment", "_unit", "_boolPurchase", "_mags0", "_mags1", "_magTypes", "_salvage", "_charge", "_weapons", "_weaponTypes", "_magazinesArray", "_index", "_count", "_magazinesList", "_ammunitionList", "_volumeList", "_index2"];
 
 RespawnW = RespawnWeapon + [-1]; RespawnM = RespawnMagazine + [-1]; RespawnA = RespawnAmmunition + [-1];
 
-_typePrim = _this select 0; _typeSec = _this select 1; _typeHandgun = _this select 2; _equipment = _this select 3; _unit = _this select 4; _boolPurchase = _this select 5;
-_mags0 = _equipment select 0; _mags1 = _equipment select 1; _mags2 = _equipment select 2;
-_magTypes = []; { _magTypes = _magTypes + [_x select 0] } forEach (_mags0 + _mags1 + _mags2);
+_typePrim = _this select 0; _typeSec = _this select 1; _typeHandgun = _this select 2; _typeBinocular = _this select 3; _typeNVG = _this select 4; _equipment = _this select 5; _unit = _this select 6; _boolPurchase = _this select 7;
+_mags0 = _equipment select 0; _mags1 = _equipment select 1;
+_magTypes = []; { _magTypes = _magTypes + [_x select 0] } forEach (_mags0 + _mags1);
 _salvage = 0; _charge = 0;
-
-_weapons = weapons _unit; _optics = [];
-			if (false) then {
-{ if (call format ["%1", _x GetWeaponParam "isBinocular"] + call format ["%1", _x GetWeaponParam "isNVG"] > 0) then {_optics set [count _optics, _x]} } forEach _weapons;
-			};
-_weapons = _weapons - _optics;
 
 _weaponTypes = []; { if ((weaponSearch find _x) != -1) then {_weaponTypes set [count _weaponTypes, weaponSearch find _x]} } forEach _weapons;
 {
-	if !(_x in [_typePrim, _typeSec, _typeHandgun]) then {
+	if !(_x in [_typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG]) then {
 		_salvage = _salvage + ([_x] call loadFile "Player\SQF\EquipmentRespawnWeapon.sqf");
 	};
 } forEach _weaponTypes; _weapons = nil;
@@ -27,7 +21,7 @@ while "_index < _count" do {
 	_magazinesList set [_index2, _magazine]; _ammunitionList set [_index2, _ammunition]; _volumeList set [_index2, _volume];
 	_index = _index + 2;
 };
-{_index2 = count _magazinesList; _magazinesList set [_index2, _x]; _ammunitionList set [_index2, 1]; _volumeList set [_index2, 1]} forEach _optics; _magazinesArray = nil;
+_magazinesArray = nil;
 
 _index = 0; _count = count _magazinesList; 
 while "_index < _count" do {
@@ -48,7 +42,7 @@ while "_index < _count" do {
 	if (!(_x in _weaponTypes) && _x != -1) then {
 		_charge = _charge + ((weaponDefs select _x) select wdcost);
 	};
-} forEach [_typePrim, _typeSec, _typeHandgun];
+} forEach [_typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG];
 {
 	if (!((equipSearch select _x) in _magazinesList) && _x != -1) then {
 		_charge = _charge + ((equipDefs select _x) select edcost);

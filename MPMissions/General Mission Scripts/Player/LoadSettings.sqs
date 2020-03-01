@@ -18,7 +18,7 @@ _c = count eqTemplates
   _entry = format["%1_%2_LOADOUT_%3_%4", localize "STR_CRCTI_VER", localize "STR_CRCTI_MOD", _i, sideNames select siPlayer]
   ? !(unitSetting loadStatus _entry) : goto "CheckNextLoadout"
   _templ = unitSetting call funcBuildTempl
-  ? count _templ > 0 : if !((_templ select 1) == -1 && (_templ select 2) == -1 && (_templ select 3) == -1 && count ((_templ select 4) select isGeneral) + count ((_templ select 4) select isHandgun) + count ((_templ select 4) select isOptics) == 0 ) then {eqTemplates set [_i, _templ]}
+  ? count _templ > 0 : if !((_templ select 1) == -1 && (_templ select 2) == -1 && (_templ select 3) == -1 && (_templ select 4) == -1 && (_templ select 5) == -1 && count ((_templ select 6) select isGeneral) + count ((_templ select 6) select isHandgun) == 0 ) then {eqTemplates set [_i, _templ]}
   #CheckNextLoadout
   _i=_i+1
   ? _i < _c : goto "CheckLoadout"
@@ -30,7 +30,7 @@ _c = count infCustom
   _entry = format["%1_%2_SOLDIER_%3_%4", localize "STR_CRCTI_VER", localize "STR_CRCTI_MOD", _i, sideNames select siPlayer]
   ? !(unitSetting loadStatus _entry) : goto "CheckNextCustom"
   _templ = unitSetting call funcBuildTempl
-  ? count _templ > 0 : if !((_templ select 1) == -1 && (_templ select 2) == -1 && (_templ select 3) == -1 && count ((_templ select 4) select isGeneral) + count ((_templ select 4) select isHandgun) + count ((_templ select 4) select isOptics) == 0 ) then {infCustom set [_i, _templ]}
+  ? count _templ > 0 : if !((_templ select 1) == -1 && (_templ select 2) == -1 && (_templ select 3) == -1 && (_templ select 4) == -1 && (_templ select 5) == -1 && count ((_templ select 6) select isGeneral) + count ((_templ select 6) select isHandgun) == 0 ) then {infCustom set [_i, _templ]}
   #CheckNextCustom
   _i=_i+1
   ? _i < _c : goto "CheckCustom"

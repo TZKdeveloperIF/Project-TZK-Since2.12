@@ -248,6 +248,7 @@ defValueParam2 = 1 + 8*0 + 1300;
 #define IDC_PIC_HG 363
 #define IDC_PIC_OPT 364
 #define IDC_LB_EQ 366
+#define IDC_LB_Opt 367
 
 #define IDC_PIC_GEN_1 400
 #define IDC_PIC_GEN_2 411
@@ -1265,7 +1266,8 @@ class EquipmentMenu: Menu {
 		GeneralImage_0_3, GeneralImage_1_3, GeneralImage_2_3, GeneralImage_4_3, GeneralImage_5_3, GeneralImage_6_3, GeneralImage_7_3,
 		GeneralImage_0_4, GeneralImage_1_4, GeneralImage_4_4, GeneralImage_5_4, GeneralImage_6_4,
 		GeneralImage_0_5, GeneralImage_5_5, GeneralImage_4_6, 
-		HandgunImage, HandgunImage_0_1, HandgunImage_0_2, HandgunImage_0_3, HandgunImage_0_4, HandgunImage_1_1, HandgunImage_1_2, HandgunImage_1_3, HandgunImage_2_1, HandgunImage_2_2, HandgunImage_3_1
+		HandgunImage, HandgunImage_0_1, HandgunImage_0_2, HandgunImage_0_3, HandgunImage_0_4, HandgunImage_1_1, HandgunImage_1_2, HandgunImage_1_3, HandgunImage_2_1, HandgunImage_2_2, HandgunImage_3_1,
+		AddOptics, RemoveOptics, OpticsList
 	};
 
 	class EquipmentBackgroundWindow: BackgroundWindow {
@@ -1424,6 +1426,29 @@ class EquipmentMenu: Menu {
 		text = "-";
 		action = "btnRemSec = true";
 	};
+	class AddOptics: Button {
+		x = 0.71;
+		y = 0.33;
+		w = 0.04;
+		h = 0.04;
+		text = "+";
+		action = "btnAddOptics = true";
+	};
+	class RemoveOptics: Button {
+		x = 0.71;
+		y = 0.37;
+		w = 0.04;
+		h = 0.04;
+		text = "-";
+		action = "btnRemOptics = true";
+	};
+	class OpticsList: ListBox {
+		idc = IDC_LB_Opt;
+		x = 0.75;
+		y = 0.33;
+		w = 0.25;
+		h = 0.09;
+	};
 
 	class EquipmentLabel: Label {
 		x = 0.75;
@@ -1435,13 +1460,13 @@ class EquipmentMenu: Menu {
 	class Equipment: ListBox {
 		idc = IDC_LB_EQ;
 		x = 0.75;
-		y = 0.33;
+		y = 0.42;
 		w = 0.25;
-		h = 0.3;
+		h = 0.21;
 	};
 	class AddEquipment: Button {
 		x = 0.71;
-		y = 0.33;
+		y = 0.42;
 		w = 0.04;
 		h = 0.04;
 		text = "+";
@@ -1449,7 +1474,7 @@ class EquipmentMenu: Menu {
 	};
 	class RemoveEquipment: Button {
 		x = 0.71;
-		y = 0.37;
+		y = 0.46;
 		w = 0.04;
 		h = 0.04;
 		text = "-";
