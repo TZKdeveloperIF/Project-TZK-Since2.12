@@ -401,9 +401,14 @@ equipSearch set [_type, (equipDefs select _type) select edObject]
 _atHRiffle = _type
 _type = _type + 1
 
-equipDefs set [_type, ["Rifle Mortar", siBoth, isGeneral, 2, "Mortar", "\dtaExt\equip\m\m_mortar",15 ]] 
+equipDefs set [_type, ["Rifle Mortar", siBoth, isGeneral, 2, "MortarM16_xj200", "\dtaExt\equip\m\m_mortar",15 ]] 
 equipSearch set [_type, (equipDefs select _type) select edObject]
 _atM16Mortar = _type
+_type = _type + 1
+
+equipDefs set [_type, ["Rifle Mortar", siBoth, isGeneral, 2, "Mortar", "\dtaExt\equip\m\m_mortar",15 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atM4Mortar = _type
 _type = _type + 1
 
 equipDefs set [_type, ["Rifle Mortar", siBoth, isGeneral, 2, "MortarAK74_xj200", "\dtaExt\equip\m\m_mortar",15 ]] 
@@ -537,11 +542,11 @@ _type = _type + 1
 weaponDefs set [_type, ["M16 M203", -1, wtPrimary, "M16GrenadeLauncher_TZK_xj200", "\dtaExt\equip\w\w_m16", [] ,0]] 
 weaponSearch set [_type, (weaponDefs select _type) select wdObject]
 _type = _type + 1
-weaponDefs set [_type, ["M4", -1, wtPrimary, "M4", "\dtaExt\equip\w\w_m4", [[_atM4,4],[_atM16Mortar,0]],0 ]] 
+weaponDefs set [_type, ["M4", -1, wtPrimary, "M4", "\dtaExt\equip\w\w_m4", [[_atM4,4],[_atM4Mortar,0]],0 ]] 
 weaponSearch set [_type, (weaponDefs select _type) select wdObject]
 _type = _type + 1
 
-weaponDefs set [_type, ["XMS", si0, wtPrimary, "XMS", "\XMS\w_XMS", [[_atM4,4],[_atM16Mortar,0]],15 ]] 
+weaponDefs set [_type, ["XMS", si0, wtPrimary, "XMS", "\XMS\w_XMS", [[_atM4,4],[_atM4Mortar,0]],15 ]] 
 weaponSearch set [_type, (weaponDefs select _type) select wdObject]
 _type = _type + 1
 
