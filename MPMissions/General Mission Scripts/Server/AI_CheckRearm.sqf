@@ -26,8 +26,8 @@ if (_unit == driver vehicle _unit) then
 		if (_wpnSec != "") then
 		{
 		//	if ((_unit ammo _wpnSec) == 0) then { _rearm = true };
-		// Be cautious!! It's Case-Sensitive when using STRING array to check whether unit has a specific magazine/weapon. The east infantry AA weapon is "9K32" but not "9k32". TZK defined the "9k32In4_xj200" ammo whose name is lower-case. Aiming to let editor realize this knowledge, the "9k32In4_xj200" is remained and not plan to rewrite as upper case.
-			_SecondaryWeaponMagazines = ["LAWLauncher","CarlGustavLauncher","AALauncher","RPGLauncher","AT4Launcher","9K32Launcher"] + ["CarlGustavIn4_xj200","AAIn4_xj200","AT4In4_xj200","9k32In4_xj200"];
+		// Be cautious!! It's Case-Sensitive when using STRING array to check whether unit has a specific magazine/weapon. The east infantry AA weapon is "9K32" but not "9k32". TZK defined the "9k32In4_v2_xj200" ammo whose name is lower-case. Aiming to let editor realize this knowledge, the "9k32In4_v2_xj200" is remained and not plan to rewrite as upper case.
+			_SecondaryWeaponMagazines = ["LAWLauncher","CarlGustavLauncher","AALauncher","RPGLauncher","AT4Launcher","9K32Launcher"] + ["CarlGustavIn4_v2_xj200","AAIn4_v2_xj200","AT4In4_v2_xj200","9k32In4_v2_xj200"];
 			_magazines = magazines _unit;
 		//	_magazines = _magazines - (_magazines - _SecondaryWeaponMagazines);
 		//	if ( ((_unit ammo _wpnSec) + (count _magazines)) <= 1 ) then { _rearm = true };
