@@ -1,0 +1,15 @@
+; Effects won't work on dedicated server.
+? isServer && isNull player : exit
+
+#Start
+@!(isNull pvAfterBurnerON)
+_plane = pvAfterBurnerON; pvAfterBurnerON = objNull
+
+BurningPlanes set [count BurningPlanes, _plane]
+~0.1
+; The parameters of "setObjectTexture" rely on the defination of plane.
+? ("A10_Base_xj200" countType [_plane]) > 0: [_plane] exec "Player\Effect\AfterBurner\EffectA10.sqs"
+? ("Su25_Base_xj200" countType [_plane]) > 0: [_plane] exec "Player\Effect\AfterBurner\EffectSu25.sqs"
+
+
+goto "Start"

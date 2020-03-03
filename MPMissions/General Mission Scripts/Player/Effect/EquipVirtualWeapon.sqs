@@ -1,0 +1,23 @@
+; args: [ vehicle, magazines[], cost ]
+
+_vehicle = _this select 0
+_magazines = _this select 1
+_cost = _this select 2
+
+? !local _vehicle : _vehicle groupChat "Only allow to equip local vehicle. I'm remote to you."; exit
+
+
+
+
+_groupsMoney = groupMoneyMatrix select siPlayer
+_money = _groupsMoney select giPlayer
+
+? _cost > _money : _vehicle groupChat "Insufficient Fonds"; exit
+
+[_cost] exec "Player\SendMoneySpent.sqs"
+{_vehicle addMagazine _x} forEach _magazines
+? ("_x == {VirtualWeaponInfantry_xj200}" count weapons _vehicle) == 0 : _vehicle addWeapon {VirtualWeaponInfantry_xj200}
+
+? !boole_Refresh_Radio : boole_Refresh_Radio = true
+
+; EOF
