@@ -1,0 +1,27 @@
+;_______________________;;_______________________; SMOKE - ORIGINALNI SCRIPT ;_______________________;;_______________________;
+
+;_______________________; DEF. VARIABLES ;_______________________;
+;___; FORWARDED
+_posDrop = _this Select 0
+_velocity = _this Select 1
+_lifeTime = _this Select 2
+_object = _this Select 3
+_add = _this Select 4
+
+;___; COUNTED
+_delay = 0.3
+_lifeTicks = _lifeTime / _delay
+_lifeTick = _lifeTicks
+
+;_______________________; DROP ;_______________________;
+#Begin
+~_delay
+
+? boole_Dead_Tank_Burning : Drop ["cl_basic", "", "Billboard", 1, 10 + _add, [(_posDrop Select 0)+(Random 0.5), (_posDrop Select 1)+(Random 0.5), (_posDrop Select 2)+(Random 0.5)], _velocity, 1, 0.005, 0.0042, 0.7, [0.2,10], [[0,0,0,0], [0.3,0.3,0.3,1 * _lifeTick/_lifeTicks], [0.8,0.8,0.8,0.1 * _lifeTick/_lifeTicks], [0.8,0.8,0.8,0]], [0,1,0,1,0,1], 0.2, 0.2, "", "", _object]
+
+_lifeTick = _lifeTick - 1
+
+?_lifeTick > 0 : Goto "Begin"
+
+;_______________________;;_______________________; EXIT ;_______________________;;_______________________;
+Exit

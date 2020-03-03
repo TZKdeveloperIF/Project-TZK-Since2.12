@@ -1,0 +1,22 @@
+; args: [plane, position]
+
+_plane = _this select 0
+_position = _this select 1
+
+_x = _position select 0; _y = _position select 1
+
+? !isNull player && local _plane : player Sidechat "Impact"
+
+_count = 0
+_k = 100; _k2 = _k/2
+
+#Buster
+_count = _count + 1
+_Rndx = Random _k; _Rndx2 = _Rndx -_k2
+_Rndy = Random _k; _Rndy2 = _Rndy -_k2
+
+_LaserGuidedBomb = createShell ["TimeBomb", [_x + _Rndx2,_y + _Rndy2, 0], [0,0,0], _plane, objNull];
+~0.3
+? _count > 40 : exit
+goto "Buster"
+exit

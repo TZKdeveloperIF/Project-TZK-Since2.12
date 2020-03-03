@@ -1,0 +1,17 @@
+; args: [target, ammo, whoFired]
+
+_target = _this select 0
+_ammo = _this select 1
+_source = _this select 2
+
+?( !alive _target ):exit
+?( !isengineon _target ):exit
+
+
+_distance = _target distance _source
+_distance = _distance - _distance%1
+
+
+
+? player in crew _target : playSound "IncomingWarningAir_xj200"
+_target vehicleChat format ["Missile %2 Fired From Distance:  %1m", _distance, _ammo ]

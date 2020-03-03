@@ -10,7 +10,7 @@ _vehicle = objNull
 
 #PlayerOnFoot
 	[vehicle _unit] exec "Player\Radio\Radio_Update_Vehicle.sqs"
-	? !isNull _t80 : [_t80, true] exec {Player\T80DrumDisplaySwitch.sqs}; _t80 = objNull
+	? !isNull _t80 : [_t80, true] exec {Player\Effect\T80DrumDisplaySwitch.sqs}; _t80 = objNull
 	@ !(alive _unit) || (_unit != vehicle _unit)
 	? !(alive _unit): goto "PlayerDead"
 
@@ -21,7 +21,7 @@ _vehicle = objNull
 	; _ehLimit = _vehicle addEventHandler ...
 	
 	[_vehicle] exec "Player\Radio\Radio_Update_Vehicle.sqs"
-	? typeOf _vehicle in ["T80_TZK_xj200", "T80Res_TZK_xj200"] : _t80 = _vehicle; [_t80, false] exec {Player\T80DrumDisplaySwitch.sqs}
+	? typeOf _vehicle in ["T80_TZK_xj200", "T80Res_TZK_xj200"] : _t80 = _vehicle; [_t80, false] exec {Player\Effect\T80DrumDisplaySwitch.sqs}
 	
 	@ !(alive _unit) || (_unit == vehicle _unit)
 

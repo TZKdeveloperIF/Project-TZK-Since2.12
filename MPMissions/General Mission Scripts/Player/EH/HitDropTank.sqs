@@ -1,0 +1,72 @@
+; args: Hit_EH_Array
+; script is from Tank_1.2N.pbo
+
+_tank = _this select 0
+_st = getdammage _tank
+
+? (0.2 < _st ) and (_st < 0.5) : goto "1"
+? (0.5 < _st ) and (_st < 0.9) : goto "2"
+? (0.9 < _st) : goto "3"
+exit
+
+#1
+drop ["cl_fire","","Billboard",1,0.5,[random 1, random 1, random 1],[0,0,0],0,1,1,0,[0,3],[[1,1,1,1],[1,1,1,1],[1,1,1,1],[1,1,1,1]],[0,1,0,1],0,0,"","", _tank]
+_ob1 = "FXExploArmor1" createVehicle [(getpos _tank) select 0, (getpos _tank) select 1, ((getpos _tank) select 2) +2]
+_ob2 = "FXExploArmor2" createVehicle  [(getpos _tank) select 0, (getpos _tank) select 1, ((getpos _tank) select 2) +2]
+_ob1 setVelocity  [(random 6)-3, (random 6)-3, random 5]
+_ob2 setVelocity  [(random 6)-3, (random 6)-3, random 5]
+~3
+deletevehicle _ob1
+deletevehicle _ob2
+exit
+
+#2
+drop ["cl_fire","","Billboard",1,0.5,[0,0,0],[random 1,random 1, random 1],0,1,1,0,[0,3],[[1,1,1,1],[1,1,1,1],[1,1,1,1],[1,1,1,1]],[0,1,0,1],0,0,"","", _tank]
+_ob1 = "FXExploArmor1" createVehicle [(getpos _tank) select 0, (getpos _tank) select 1, ((getpos _tank) select 2) +2]
+_ob2 = "FXExploArmor2" createVehicle  [(getpos _tank) select 0, (getpos _tank) select 1, ((getpos _tank) select 2) +2]
+_ob3 = "FXExploArmor3" createVehicle  [(getpos _tank) select 0, (getpos _tank) select 1, ((getpos _tank) select 2) +2]
+_ob1 setVelocity  [(random 6)-3, (random 6)-3, random 5]
+_ob2 setVelocity  [(random 6)-3, (random 6)-3, random 5]
+_ob3 setVelocity  [(random 6)-3, (random 6)-3, random 5]
+~3
+deletevehicle _ob1
+deletevehicle _ob2
+deletevehicle _ob3
+exit
+
+#3
+drop ["cl_fire","","Billboard",1,0.5,[0,0,0],[0,0,0],0,1,1,0,[0,3],[[1,1,1,1],[1,1,1,1],[1,1,1,1],[1,1,1,1]],[0,1,0,1],0,0,"","", _tank]
+_ob1 = "FXExploArmor1" createVehicle [(getpos _tank) select 0, (getpos _tank) select 1, ((getpos _tank) select 2) +2]
+_ob2 = "FXExploArmor2" createVehicle  [(getpos _tank) select 0, (getpos _tank) select 1, ((getpos _tank) select 2) +2]
+_ob3 = "FXExploArmor3" createVehicle [(getpos _tank) select 0, (getpos _tank) select 1, ((getpos _tank) select 2) +2]
+_ob4 = "FXExploArmor3" createVehicle  [(getpos _tank) select 0, (getpos _tank) select 1, ((getpos _tank) select 2) +2]
+_ob5 = "FXExploArmor4" createVehicle  [(getpos _tank) select 0, (getpos _tank) select 1, ((getpos _tank) select 2) +2]
+_ob6 = "FXExploArmor4" createVehicle  [(getpos _tank) select 0, (getpos _tank) select 1, ((getpos _tank) select 2) +2]
+_ob1 setVelocity  [(random 6)-3, (random 6)-3, random 5]
+_ob2 setVelocity  [(random 6)-3, (random 6)-3, random 5]
+_ob3 setVelocity [(random 6)-3, (random 6)-3, random 5]
+_ob4 setVelocity  [(random 6)-3, (random 6)-3, random 5]
+_ob5 setVelocity  [(random 6)-3, (random 6)-3, random 5]
+_ob6 setVelocity  [(random 6)-3, (random 6)-3, random 5]
+
+~3
+deletevehicle _ob1
+deletevehicle _ob2
+deletevehicle _ob3
+deletevehicle _ob4
+deletevehicle _ob5
+deletevehicle _ob6
+_tank setdammage 1
+
+~5
+_cmd = commander _tank
+_dir = random 360; _dist = 3
+_pos = getPos _tank
+_pos set [0, _dist*(sin _dir) + (_pos select 0)]; _pos set [1, _dist*(cos _dir) + (_pos select 1)];
+_cmd setPos _pos
+_cmd setVelocity [sin _dir, cos _dir, 0]
+
+~5
+(commander _tank) setdammage 1
+
+; EOF
