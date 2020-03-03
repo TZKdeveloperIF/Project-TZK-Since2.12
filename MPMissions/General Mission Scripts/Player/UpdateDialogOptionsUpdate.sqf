@@ -91,4 +91,4 @@ if (call format["pvWorkerBehaviour%1 != lbCurSel _idcWorkerBehaviour", siPlayer]
 // UPGRADES
 _index = 0; _upgState = upgMatrix select siPlayer;
 lbClear _idcUpgradeList;
-{ _id=lbAdd [_idcUpgradeList, format["%1 $%2 %3min", _x select 0, _x select 1, _x select 2] ]; lbSetPicture[_idcUpgradeList, _id, ["Images\square_empty.paa", "Images\square_yellow.paa", "Images\square_green.paa"] select (_upgState select _index)]; _index=_index+1} forEach upgDefs;
+{ _id=lbAdd [_idcUpgradeList, format["%1 $%2 %3min", _x select 0, _x select 1, _x select 2] ]; lbSetPicture[_idcUpgradeList, _id, ["\TZK_Pictures\Icon\square_empty.paa", "\TZK_Pictures\Icon\square_yellow.paa", "\TZK_Pictures\Icon\square_green.paa"] select (_upgState select _index)]; _index=_index+1} forEach upgDefs;
