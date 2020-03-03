@@ -17,6 +17,10 @@ clearWeaponCargo _vehicle
 
 _vehicle addEventHandler ["killed", { _this exec "Common\Event_VehicleDestroyed.sqs" }]
 [_vehicle, _si, _desc select udCost] exec "Common\EventAdd_VehicleHit.sqs"
+; ? "M109A6G_Base_xj200" countType [_vehicle] > 0 || "PLZ05_VME_Base_xj200" countType [_vehicle] > 0: if (local _vehicle) then {_vehicle animate [{suspension}, 0.5]}
+? "Plane" countType [_vehicle] > 0 : _vehicle addEventHandler ["Fired", { _this exec "Player\EH\FiredPlaneMissile.sqs"} ]
+? "Air" countType [_vehicle] > 0: _vehicle addEventHandler ["GetOut", { _this exec "Common\EH\GetOutAircraft.sqs" }]
+? "Air" countType [_vehicle] > 0 : _vehicle addEventHandler ["IncomingMissile", { _this exec "Player\Effect\SpoofMissile.sqs"} ]
 
 
 
@@ -24,13 +28,18 @@ _vehicle addEventHandler ["killed", { _this exec "Common\Event_VehicleDestroyed.
 
 ; PLAYER ONLY
 ? (typeOf _vehicle) in [{A10_Tomahawk_xj200}, {Su25_Raduga_xj200}] : _vehicle say {NuclearMissileReady_xj200}
-
+? typeOf _vehicle in ["T80_TZK_xj200", "T80Res_TZK_xj200"]: [_vehicle, true] exec "Player\Effect\T80DrumDisplaySwitch.sqs"
 [_vehicle, _type, _si] call funcInitVehicleMarker
 
 ; _vehicle addEventHandler ["Fired", {[_this, LimitWeaponRangeFactor] call <function>}]
 ? !(_type in vUnlimitedRange) && !(_type in vDoubledRange) : _vehicle addEventHandler ["Fired",{[_this, 1] call funcFiredEffect}]
 ? (_type in vDoubledRange) : _vehicle addEventHandler ["Fired",{[_this, 2] call funcFiredEffect}]
 ? (_type in vUnlimitedRange) : _vehicle addEventHandler ["Fired",{[_this, 0] call funcFiredEffect}]
+
+? "Tank" countType [_vehicle] > 0: [_vehicle, _type] exec "Player\EH\AddTankHit.sqs"
+? "Tank" countType [_vehicle] > 0: [_vehicle, _type] exec "Player\EH\AddTankIncoming.sqs"
+? "Air" countType [_vehicle] > 0: [_vehicle, _type] exec "Player\EH\AddAirIncoming.sqs"
+
 
 
 

@@ -1,0 +1,26 @@
+; args: IncomingMissile_EH_Array
+; script is from Tank_1.2N.pbo
+
+_array = _this
+_tank = _array select 0
+
+? !local _tank: exit
+? !(player in _tank): exit
+
+_ammo = _array select 1
+_enemy = _array select 2
+_missile = nearestobject [_enemy, _ammo]
+
+_StringEnemy = format ["%1", _enemy]
+_StringAmmo = format ["%1", _ammo]
+_StringMissile = format ["%1", _missile]
+
+_StringEnemy = _StringEnemy call funcStringWithoutVersion
+_StringAmmo = _StringAmmo call funcStringWithoutVersion
+_StringMissile = _StringMissile call funcStringWithoutVersion
+
+player groupchat format ["%1, %2, %3", _StringEnemy, _StringAmmo, _StringMissile]
+
+hint "missile !!!"
+
+; EOF

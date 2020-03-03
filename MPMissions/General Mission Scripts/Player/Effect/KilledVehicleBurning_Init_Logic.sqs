@@ -1,0 +1,25 @@
+; args: [Logic Object, Vehicle Name]
+; The X Coordinates of Logic has a correction to avoid creating near an actual object thus will spawn at ideal coordinate accurately.
+; The vehicle name depends on the MOD version. It's wise to make it same with the type(class) name of the actual vehicle and being including in Logic Objects' name. "Format" can be applied easily basing on this setting.
+
+_logic = _this select 0
+_name = _this select 1
+
+_pos = getPos _logic
+_x = -(_pos select 0)
+_y = (_pos select 1)
+_z = (_pos select 2)
+
+_killedTank = nearestObject [ [_x, _y, _z], _name ]
+
+? isServer: if (isNull player) then {goto "DeleteDelay"}
+
+? !isNull _killedTank && !alive _killedTank : [_killedTank] exec {Player\Effect\Killed_csla_burn_Unit_Heavy.sqs}
+? !isServer : exit
+
+#DeleteDelay
+~ 60 * 5
+? !isNull _logic : deleteVehicle _logic
+? !isNull _killedTank : deleteVehicle _killedTank
+
+; EOF

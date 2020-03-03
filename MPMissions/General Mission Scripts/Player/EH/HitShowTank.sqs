@@ -1,0 +1,15 @@
+; args: [unit, causedBy, damage]
+
+_tank = _this select 0
+
+? !(local _tank) || !(alive _tank) : exit
+? isNull player : exit
+
+? count(crew _tank) > 0 && count (units group player) == count ((units group player) - (crew _tank)) : exit
+
+_timestring = [] call funcGetTimeString
+_name = "VEHICLE"
+? "M113" countType [_tank] > 0 || "BMP" countType [_tank] > 0 || "ZSU" countType [_tank] > 0: _name = "APC"
+player GroupChat format ["Time : %1 , %3 DAMAGE REPORT                           : %2", _timestring, damage _tank, _name]
+
+exit
