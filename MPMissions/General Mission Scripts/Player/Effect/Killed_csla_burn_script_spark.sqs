@@ -1,26 +1,28 @@
-;_______________________;;_______________________; SPARK - ORIGINALNI SCRIPT ;_______________________;;_______________________;
 
-;_______________________; DEF. VARIABLES ;_______________________;
-;___; FORWARDED
 _posDrop = _this Select 0
 _velocity = _this Select 1
 _lifeTime = _this Select 2
 _object = _this Select 3
 
-;___; COUNTED
+_sensor = "EmptyDetector" camCreate [0,0,0]
+_sensor setPosASL getPosASL _object
+
+
 _delay = 0.05
+_frequent = 1/_delay; _frequent = _frequent - (_frequent % 1)
 _lifeTicks = _lifeTime / _delay
 _lifeTick = _lifeTicks
 
-;_______________________; DROP ;_______________________;
 #Begin
 ~_delay
 
-?(Random _lifeTicks) < _lifeTick && boole_Dead_Tank_Burning: Drop ["cl_fire", "", "Billboard", 1, Random 5, _posDrop, [(_velocity Select 0) + Random 1, (_velocity Select 1) + Random 1, (_velocity Select 2) + Random 1], 1, 0.005, 0.0042, 0.2, [Random 0.05], [[1,1,1,1],[0,0,0,0]], [0,1,0], 0.5, 0.5, "", "", _object]
+?(Random _lifeTicks) < _lifeTick && boole_Dead_Tank_Burning: Drop ["cl_fire", "", "Billboard", 1, Random 5, _posDrop, [(_velocity Select 0) + Random 1, (_velocity Select 1) + Random 1, (_velocity Select 2) + Random 1], 1, 0.005, 0.0042, 0.2, [Random 0.05], [[1,1,1,1],[0,0,0,0]], [0,1,0], 0.5, 0.5, "", "", _sensor]
 
 _lifeTick = _lifeTick - 1
 
+? _lifeTick % (30 * _frequent) == 0: if !(isNull _object) then {_sensor setPosASL getPosASL _object} else {goto "Quit"}
 ?_lifeTick > 0 : Goto "Begin"
 
-;_______________________;;_______________________; EXIT ;_______________________;;_______________________;
+#Quit
+deleteVehicle _sensor
 Exit
