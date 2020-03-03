@@ -23,8 +23,7 @@ _vt = _vehicle call funcGetUnitTypeFromObject
 ? _vt in RadioTypesGunships : [_vehicle] exec "Player\Radio\Radio_Update_Vehicle_Gunship.sqs"; exit
 
 ; Plane with AfterBurner in TZK is only allowed to be A10/Su25
-; Hided after upgraded to 3.00 version.
-; ? _vt in RadioTypesPlane : [_vehicle] exec "Player\Radio\Radio_Update_Vehicle_Plane.sqs"; exit
+? _vt in RadioTypesPlane : [_vehicle] exec "Player\Radio\Radio_Update_Vehicle_Plane.sqs"; exit
 
 ; Transport Land Vehicles. Ship will enter script above thus won't reach here.
 ? _vt in (typesTransportCar + typesTransportAPC) : [_vehicle] exec "Player\Radio\Radio_Update_Vehicle_TransportLand.sqs"; exit
