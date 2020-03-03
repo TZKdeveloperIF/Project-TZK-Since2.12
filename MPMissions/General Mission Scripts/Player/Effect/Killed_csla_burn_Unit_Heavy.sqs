@@ -53,9 +53,8 @@ _d = _d + 4.8
 ? _nasrat == 1 : goto "Quit"
 
 ;_______________________; FIRE && SMOKE ;_______________________;
-;@ Speed _vehicle < 2
-~5
-~0.0001+(Random 10)
+@ Speed _vehicle < 2
+~0.0001+(Random 10)+5
 [[(Random 1), (Random 1), (Random -2)], [0,0,0], (300 + (Random 300)), _vehicle, 10] Exec "Player\Effect\Killed_csla_burn_script_smoke.sqs"
 [(240 + (Random 70)), 3, _vehicle] Exec "Player\Effect\Killed_csla_burn_script_fire.sqs"
 [[(Random 1), (Random 1), (Random -2)], [0,0,0], (240 + (Random 70)), _vehicle] Exec "Player\Effect\Killed_csla_burn_script_spark.sqs"
