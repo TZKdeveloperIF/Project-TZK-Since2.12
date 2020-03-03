@@ -1,0 +1,12 @@
+; args: [Plane]
+
+_plane = _this select 0
+_plane setObjectTexture[0, "\TZK_Tex\burner.paa"]; _plane setObjectTexture[1, "\TZK_Tex\burner.paa"]
+
+#Loop
+? !alive _plane : exit
+
+? "_x=={AfterBurnerSwitch_xj200}" count magazines _plane == 0 && isEngineOn _plane : _plane say "A10AfterBurning_xj200"
+? !(_plane in BurningPlanes) : _plane setObjectTexture[0, ""]; _plane setObjectTexture[1, ""]; exit
+~1
+goto "Loop"

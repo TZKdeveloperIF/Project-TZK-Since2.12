@@ -20,7 +20,7 @@ Radio009 setTriggerText " "; Radio009 setTriggerStatements ["this", "", ""];
 _booleAfterBurner = ("A10_Base_xj200" countType [_vehicle] > 0) || ("Su25_Base_xj200" countType [_vehicle] > 0)
 ? _booleAfterBurner : _booleStringAfterBurnerON = "bAfterBurner && ""_x=={AfterBurnerSwitch_xj200}"" count magazines _vehicle > 0"; _booleABON = call _booleStringAfterBurnerON
 ? _booleAfterBurner : _booleStringAfterBurnerOFF = " ""_x=={AfterBurnerSwitch_xj200}"" count magazines _vehicle == 0 && count magazines _vehicle > 0"; _booleABOFF = call _booleStringAfterBurnerOFF
-if (_booleABON) then {Radio000 setTriggerText "AfterBurner ON"; Radio000 setTriggerStatements ["this", "vehicle player removeMagazines {AfterBurnerSwitch_xj200}; vehicle player exec {\TZK_Objects\Scripts\AfterBurner\Start.sqs} ", ""]};
+if (_booleABON) then {Radio000 setTriggerText "AfterBurner ON"; Radio000 setTriggerStatements ["this", "vehicle player removeMagazines {AfterBurnerSwitch_xj200}; vehicle player exec {Player\Effect\AfterBurner\Start.sqs} ", ""]};
 if (_booleABOFF) then {Radio000 setTriggerText "AfterBurner OFF"; Radio000 setTriggerStatements ["this", "vehicle player addMagazine {AfterBurnerSwitch_xj200}", ""]};
 
 
@@ -32,7 +32,7 @@ if (_booleABOFF) then {Radio000 setTriggerText "AfterBurner OFF"; Radio000 setTr
 ? call _booleStringSpoofON : Radio001 setTriggerText "SpoofMissile ON"; Radio001 setTriggerStatements ["this", "vehicle player removeMagazines {SpoofSwitch_xj200}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true}", ""]
 ? call _booleStringSpoofOFF : Radio001 setTriggerText "SpoofMissile OFF"; Radio001 setTriggerStatements ["this", "vehicle player addMagazine {SpoofSwitch_xj200}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true}", ""]
 
-? call _booleStringAfterBurnerON : Radio000 setTriggerText "AfterBurner ON"; Radio000 setTriggerStatements ["this", "vehicle player removeMagazines {AfterBurnerSwitch_xj200}; vehicle player exec {\TZK_Objects\Scripts\AfterBurner\Start.sqs} ", ""]
+? call _booleStringAfterBurnerON : Radio000 setTriggerText "AfterBurner ON"; Radio000 setTriggerStatements ["this", "vehicle player removeMagazines {AfterBurnerSwitch_xj200}; vehicle player exec {Player\Effect\AfterBurner\Start.sqs} ", ""]
 ? call _booleStringAfterBurnerOFF : Radio000 setTriggerText "AfterBurner OFF"; Radio000 setTriggerStatements ["this", "vehicle player addMagazine {AfterBurnerSwitch_xj200}", ""]
 
 _timeRefresh = time + 1

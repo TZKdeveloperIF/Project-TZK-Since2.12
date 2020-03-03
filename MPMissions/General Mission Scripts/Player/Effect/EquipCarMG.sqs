@@ -1,0 +1,20 @@
+; args: [ vehicle, magazines[], cost, weapons[] ]
+
+_vehicle = _this select 0
+_magazines = _this select 1
+_cost = _this select 2
+
+? ( ([getPos _vehicle, siPlayer, (typesSupportPlus select siPlayer)+([[utMHQ0, utMCVW], [utMHQ1, utMCVE]] select siPlayer), []] call funcGetClosestVehicle) select 1 ) > 25 : _vehicle groupChat "No Support Vehicle Nearby."; exit
+
+? !local _vehicle : _vehicle groupChat "Only allow to equip local vehicle. I'm remote to you."; exit
+
+_groupsMoney = groupMoneyMatrix select siPlayer
+_money = _groupsMoney select giPlayer
+
+? _cost > _money : _vehicle groupChat "Insufficient Fonds"; exit
+
+[_cost] exec "Player\SendMoneySpent.sqs"
+{_vehicle addMagazine _x} forEach _magazines
+
+_weapons = _this select 3
+{ if !(_x in weapons _vehicle) then {_vehicle addWeapon _x} } forEach _weapons
