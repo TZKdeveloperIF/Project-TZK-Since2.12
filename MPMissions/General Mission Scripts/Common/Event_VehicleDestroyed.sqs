@@ -6,6 +6,7 @@ _vehicle = _this select 0
 
 ? "Air" countType [_vehicle] > 0: pvKilledAircraft = _vehicle; publicVariable "pvKilledAircraft"
 ? "Ship" countType [_vehicle] > 0: pvKilledBoat = _vehicle; publicVariable "pvKilledBoat"
+? "Tank" countType [_vehicle] > 0: pvKilledTank = _vehicle; publicVariable "pvKilledTank"
 
 ; _KilledTankGameLogic = objNull
 ; ? "Tank" countType [_vehicle] > 0 : if !("M109_Base_xj200" countType [_vehicle] > 0 || "PLZ05_VME_Base_xj200" countType [_vehicle] > 0) then {_pos = getPos _vehicle; _logicName = format ["KilledTankLogic_%1", typeOf _vehicle]; _KilledTankGameLogic = _logicName createVehicle [(_pos select 0)-100000,(_pos select 1)-100000, _pos select 2]}
