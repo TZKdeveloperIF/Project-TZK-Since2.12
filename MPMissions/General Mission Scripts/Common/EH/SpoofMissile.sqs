@@ -25,10 +25,10 @@ _timeAbort = time + 10
 ; Mag cost and deflect missile
 ? local _target : _target removeMagazine "SpoofCount_xj200"
 ? !isNull player: if ( (driver _target) in units group player ) then {(driver _target) groupChat format ["%1 Spoof Chance left", "_x=={SpoofCount_xj200}" count magazines _target]}; if (player == driver _target) then {hint format ["%1 Spoof Chance left", "_x=={SpoofCount_xj200}" count magazines _target]};
-_dirchange = 1.57 + 1.57*(speed _target)/200
 
+? !local _missile : goto "Quit"
 
-_vel = velocity _missile
+_dirchange = 1.57 + 1.57*(speed _target)/200; _vel = velocity _missile
 _newvel = [_vel, _dirchange] call funcRandomRotation3D
 
 ; 2.01 command "setVectorDirAndUp"
