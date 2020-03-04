@@ -16,7 +16,7 @@ if (local _bullet) then {
 		if (_actualAmmo in ["LAW","RPG"]) then {_speed = 30};
 		if (_actualAmmo in ["CarlGustav","AT4", "CarlGustavNoGuide","AT4NoGuide"]) then {_speed = 0};
 		if (_actualAmmo in ["Grenade"]) then {_speed = 60};
-		if (_actualAmmo in ["MortarShell"]) then {_speed = 200}; if (player in _vehicle) then {_speed = 70};
+		if (_actualAmmo in ["MortarShell"]) then {_speed = 200; if (player in _vehicle) then {_speed = 70}};
 		_velocity = [_velocity, _speed / (_velocity call funcVectorLength)] call funcVectorScale;
 		_bullet = createShell [_actualAmmo, _position, _velocity, _vehicle, objNull];
 		_bullet setVectorDirAndUp [_direction, [0,0,1]];

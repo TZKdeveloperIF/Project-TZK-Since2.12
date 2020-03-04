@@ -35,6 +35,7 @@ _vehicle addEventHandler ["killed", { _this exec "Common\Event_VehicleDestroyed.
 ? (_type in vUnlimitedRange) : _vehicle addEventHandler ["Fired",{[_this, 0] call funcFiredEffect}]
 
 ? "Tank" countType [_vehicle] > 0: [_vehicle, _type] exec "Player\EH\AddTankHit.sqs"
+
 ? "Tank" countType [_vehicle] > 0: [_vehicle, _type] exec "Player\EH\AddTankIncoming.sqs"
 ? "Air" countType [_vehicle] > 0: [_vehicle, _type] exec "Player\EH\AddAirIncoming.sqs"
 
