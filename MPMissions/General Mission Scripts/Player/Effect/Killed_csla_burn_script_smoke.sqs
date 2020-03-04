@@ -20,7 +20,7 @@ _lifeTick = _lifeTicks
 
 _lifeTick = _lifeTick - 1
 
-? _lifeTick % (30 * _frequent) == 0: if !(isNull _object) then {_sensor setPosASL getPosASL _object} else {goto "Quit"}
+? _lifeTick % (30 * _frequent) < 1: if !(isNull _object) then {_sensor setPosASL getPosASL _object} else {goto "Quit"}
 ?_lifeTick > 0 : Goto "Begin"
 
 #Quit
