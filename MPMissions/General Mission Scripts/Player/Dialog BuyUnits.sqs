@@ -92,7 +92,7 @@ _idcBuy5 = IDC_BTN+14
 	_lastSelQID = -1
 	? (_remote): _lastWorkingFactoryTypes = []; goto "Update"
 	
-	[_idcUnits, _nShow, [_typeFactory], []] call funcUpdateDialogBuyUnitsAvailable
+	[_idcUnits, _nShow, [_typeFactory], []] call funcUpdateDialogBuyUnitsAvailable; _typeFactory = 2^_typeFactory
 
 		
 #Update
@@ -139,7 +139,7 @@ _idcBuy5 = IDC_BTN+14
 	#UnitSelected
 	_typeUnit = lbValue[_idcUnits, _selectedUnit]
 	lastSelectedUnitType = _typeUnit
-	? _typeUnit >= maxUnitTypes : _cost = costCustom; _manning = []; _typeFactory = stBarracks; goto "UnitSelectedCustom"
+	? _typeUnit >= maxUnitTypes : _cost = costCustom; _manning = []; _typeFactory = 2^stBarracks; goto "UnitSelectedCustom"
 	_cost = (unitDefs select _typeUnit) select udCost; _manning = (unitDefs select _typeUnit) select udCrew; _typeFactory = (unitDefs select _typeUnit) select udFactoryType
 	#UnitSelectedCustom
 	_bVehicle = (count _manning > 0)

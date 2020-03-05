@@ -63,7 +63,7 @@ _giJoin = _giList select ((random (count _giList)) - 0.5)
 	? _slots < (_driver + _gunner) : exit
 	? _money < _cost : exit
 	
-	_factoryType = _unitDesc select udFactoryType
+	_factoryType = _unitDesc select udFactoryType; _factoryType = _factoryType call funcBinaryDigit; _factoryType = _factoryType select ((count _factoryType) - 1)
 	_factory = [_si, _factoryType, false] call funcGetIdleFactory
 	; TODO ? (isNull _factory) : _factory = [_si, _factoryType] call funcGetFactoryWithEmptyQueue
 	? (isNull _factory) : exit
