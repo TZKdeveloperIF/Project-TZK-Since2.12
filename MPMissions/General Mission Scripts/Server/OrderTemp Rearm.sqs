@@ -55,7 +55,7 @@ _groups = groupMatrix select _si
 	; Check Vehicle Type
 	? _unit != _vehicle : _vt = _vehicle call funcGetUnitTypeFromObject
 	? _unit != _vehicle && _vt == -1 : goto "EOF"
-	? _vt != -1 : if ( ((unitDefs select _vt) select udFactoryType) == stAir ) then { goto "MoveAir" }
+	? _vt != -1 : if ( "Air" countType [_vehicle] > 0 ) then { goto "MoveAir" }
 	
 	#MoveGround
 	[_unit, [getPos _support, 10, 10] call funcGetRandomPos] call funcMoveAI

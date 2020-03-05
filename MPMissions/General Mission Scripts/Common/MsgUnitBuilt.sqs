@@ -28,7 +28,7 @@ _indexUnitMatrix = _type
 
 _desc = unitDefs select _indexUnitMatrix
 
-? siPlayer == siCiv && (_desc select udFactoryType) == stAir : format["%1 built %2", sideNames select _si, _desc select udName] exec "Player\LogSpectator.sqs"
+? siPlayer == siCiv && "Air" countType [_unit] > 0: format["%1 built %2", sideNames select _si, _desc select udName] exec "Player\LogSpectator.sqs"
 
 _bIsVehicle = (count (_desc select udCrew) > 0)
 ? _bIsVehicle : [_unit, _type, _si, _gi] exec "Common\InitVehicle.sqs"

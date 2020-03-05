@@ -11,8 +11,7 @@ _duration = 6 * ((_params select 0) + 1)
 ; Check Whether Unit Fits The Parameters Of The Temporary Order
 _vehicle = vehicle _unit
 ? _unit == _vehicle : exit
-_vt = _vehicle call funcGetUnitTypeFromObject
-? ((unitDefs select _vt) select udFactoryType) == stAir : exit
+? "Air" countType [_vehicle] > 0: exit
 
 ; Check Whether Unit In Another Temporary Order (Except For Set Flight Altitude, Clear Temporary Order, Etc)
 ? call temporaryCheck : _vehicle engineOn false; exit

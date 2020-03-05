@@ -22,9 +22,7 @@ _timeAbort = time + 5*60
 
 ? _unit == _v : goto "MoveGround"
 
-_tv = _v call funcGetUnitTypeFromObject
-? _tv == -1 : exit
-? ((unitDefs select _tv) select udFactoryType) == stAir : goto "MoveAir"
+? "Air" countType [_v] > 0: goto "MoveAir"
 
 #MoveGround
   _posMove = [[0,5], (getDir _support)] call funcVectorRot
