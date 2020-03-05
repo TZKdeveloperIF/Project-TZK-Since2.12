@@ -1,7 +1,7 @@
 // args: [IDC, IDC Label, typeFactory, typeFactoryLast]
 // return: factories
 
-private ["_idcFactory", "_idcFactoryLabel", "_typeFactory", "_factoryTypes", "_factories", "_aTypeOfFac", "_x", "_textPos", "_textQ", "_qLen",
+private ["_idcFactory", "_idcFactoryLabel", "_typeFactory", "_factoryTypes", "_factories", "_aTypeOfFac", "_factoryTypeIndex", "_x", "_textPos", "_textQ", "_qLen",
 "_index", "_factoryIndex", "_selectedFactoryIndex", "_typeFactoryLast", "_lastSelectedFactory"];
 
 _idcFactory = _this select 0;
@@ -11,16 +11,17 @@ _typeFactoryLast = _this select 3;
 
 // ctrlSetText [_idcFactoryLabel, (structDefs select _typeFactory) select sdName];
 _factoryTypes = _typeFactory call funcBinaryDigit; _factories = [];
+lbClear _idcFactory;
 {
 	_aTypeOfFac = [siPlayer, _x] call funcGetWorkingStructuresWithinCCRange; _factories = _factories + _aTypeOfFac;
-	lbClear _idcFactory;
+	_factoryTypeIndex = _x;
 	{
 		_textPos = (getPos _x) call funcCalcTownDirDistFromPos;
 		_textQ="";
 		_qLen = _x call funcGetQueueLength;
 		if (_qLen > 0) then { _textQ = format["Q %1", _qLen] };
 		_lbFac = lbAdd [ _idcFactory, format["%1 %2", _textPos, _textQ] ];
-		lbSetPicture [_idcFactory, _lbFac, (structDefs select _x) select sdImage];
+		lbSetPicture [_idcFactory, _lbFac, ((structDefs select _factoryTypeIndex) select sdImage) select siPlayer];
 	} foreach _aTypeOfFac;
 } forEach _factoryTypes;
 

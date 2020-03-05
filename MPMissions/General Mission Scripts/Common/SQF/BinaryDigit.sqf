@@ -1,9 +1,10 @@
-private ["_value", "_array", "_digit", "_integral", "_decimal", "_array2", "_index"];
+private ["_value", "_array", "_digit", "_integral", "_array2", "_index"];
 
 _value = _this; _array = [];
 
 while "_value > 0" do {
-	_digit = log _value / log 2; _integral = _digit % 1; _decimal = _digit - _integral; _decimal = [0,1] select _decimal; _digit = _integral + _decimal;
+	_digit = log _value / log 2; _integral = _digit - _digit % 1;
+	if (_value >= 2^(_integral + 1)) then {_digit = _integral + 1} else {_digit = _integral};
 	_array set [count _array, _digit]; _value = _value - 2^_digit;
 };
 if (count _array > 0) then {
