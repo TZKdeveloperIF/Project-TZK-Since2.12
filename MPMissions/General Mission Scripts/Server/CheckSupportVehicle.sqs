@@ -46,7 +46,7 @@ _timeAbort = time + 2*60
 ? _unit != _v : _vt = _v call funcGetUnitTypeFromObject
 ? _unit != _v && _vt == -1 : goto "Exit"
 
-? _vt != -1 : if ( ((unitDefs select _vt) select udFactoryType) == stAir ) then { goto "MoveAir" }
+? _vt != -1 : if ( "Air" countType [_v] > 0 ) then { goto "MoveAir" }
 
 #MoveGround
   [_unit, [getPos _support, 10, 10] call funcGetRandomPos] call funcMoveAI

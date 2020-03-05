@@ -1,21 +1,20 @@
-// args: [tug, allowed, distMax]
+// args: [tug, massLimit, distMax]
 // return: vehicles[], format [vehicle, type, distance]
 
-private ["_tug", "_allowed", "_distMax", "_index", "_count", "_vs", "_vehicles", 
-"_x", "_type", "_factoryType", "_vehicleAttached", "_entry", "_tug2", "_tugged"];
+private ["_tug", "_massLimit", "_distMax", "_index", "_count", "_vs", "_vehicles", 
+"_x", "_mass", "_vehicleAttached", "_entry", "_tug2", "_tugged"];
 
 
 _tug = _this select 0;
-_allowed = _this select 1;
+_massLimit = _this select 1;
 _distMax = _this select 2;
 
 _vs = [getPos _tug, _distMax, [], [_tug]] call funcGetNearbyVehicles; _vehicles = [];
 
 {
 	_vehicle = _x select 0;
-	_type = _x select 1;
-	_factoryType = (unitDefs select _type) select udFactoryType;
-	if (_factoryType in _allowed) then
+	_mass = getMass _vehicle;
+	if (_mass < _massLimit) then
 	{
 		if (alive _vehicle) then
 		{

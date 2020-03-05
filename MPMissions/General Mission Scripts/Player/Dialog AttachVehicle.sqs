@@ -4,14 +4,13 @@ _tug = _this select 0
 _tugslot = _this select 1
 _tugType = _this select 2
 
-_allowed = []
-_distMax = 0
-? (_tugType == ttHeli): _distMax = 30; _allowed = [stLight, stShip]
-? (_tugType == ttBoat): _distMax = 50; _allowed = [stLight, stShip, stHeavy, stAir, -1]
-? (_tugType == ttTruck): _distMax = 20; _allowed = [stLight, stShip]
-? (_tugType == ttAPC): _distMax = 20; _allowed = [stLight, stShip, stHeavy, stAir, -1]
+_massLimit = 1000000; _distMax = 0
+? (_tugType == ttHeli): _distMax = 30; _massLimit = 6000
+? (_tugType == ttBoat): _distMax = 50;
+? (_tugType == ttTruck): _distMax = 20; _massLimit = 9999
+? (_tugType == ttAPC): _distMax = 20; 
 
-_vs = [_tug, _allowed, _distMax] call funcUpdateDialogAttachableVehicles
+_vs = [_tug, _massLimit, _distMax] call funcUpdateDialogAttachableVehicles
 ? ((count _vs) == 0): hint "No Nearby Vehicles"; exit
 
 _dlg = createDialog "GenericDialog"
@@ -52,7 +51,7 @@ _vehicle = objNull
 ? !(dialog) : exit
 ? !(alive _tug) : closeDialog 0; exit
 
-_vs = [_tug, _allowed, _distMax] call funcUpdateDialogAttachableVehicles
+_vs = [_tug, _massLimit, _distMax] call funcUpdateDialogAttachableVehicles
 [_vs, _idcList, _veh1] call funcUpdateDialogAttachVehicleList
 
 ? btnAction0 : btnAction0=false; goto "AttachVehicle"
@@ -68,12 +67,6 @@ goto "Update"
 	? (_sel == -1): hint "No vehicle selected"; goto "Update"
 
 	_vehicle = (_vs select _sel) select 0
-	_type = (_vs select _sel) select 1
-
-	_factoryType = (unitDefs select _type) select udFactoryType
-	 
-	? !(_factoryType in _allowed): hint "Vehicle too heavy"; goto "Update"
-	; ? (locked _vehicle): hint "Vehicle Locked\nVehicle must be unlocked"; goto "Update"
 	? !(alive _vehicle): hint "Vehicle destroyed"; goto "Update"
 	
 	; ? (_vehicle == (mhq select si0) && (single == 1)): hint "Single base mode Active"; goto "Update"
