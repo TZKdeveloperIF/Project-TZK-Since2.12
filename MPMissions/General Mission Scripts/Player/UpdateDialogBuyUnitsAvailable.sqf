@@ -24,11 +24,6 @@ if ((count _workingFactoryTypes) == 0) then
 		{
 			_workingFactoryTypes = _workingFactoryTypes + [_type];
 		};
-		if (count (lastSelectedFactory select 0) < count _types) then
-		{
-			(lastSelectedFactory select 0) set [count (lastSelectedFactory select 0), _type];
-			(lastSelectedFactory select 1) set [count (lastSelectedFactory select 1), objNull];
-		};
 		_index = _index + 1;
 	};
 };
@@ -54,7 +49,7 @@ if ((count (_workingFactoryTypes - _lastWorkingFactoryTypes) != 0 || count (_las
 	{
 		_unitDesc = unitDefs select _index;
 		_sideUnit = _unitDesc select udSide;
-		if ( (_sideUnit == siPlayer) && ((_unitDesc select udFactoryType) in _workingFactoryTypes) ) then
+		if ( (_sideUnit == siPlayer) && [(_unitDesc select udFactoryType) call funcBinaryDigit, _workingFactoryTypes] call funcArrayOverlap ) then
 		{
 			_name = _unitDesc select udName;
 			_cost = _unitDesc select udCost;
