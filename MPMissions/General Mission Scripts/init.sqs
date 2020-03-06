@@ -331,7 +331,7 @@ _type = _type + 1
 
 
 aisBuy = _type
-aiSettingDefs set [_type, ["Auto-Buy", ["none", "Soldier", "MG/Snipers", "LAW/RPG-Infantry", "LAW/RPG+M21/SVD", "LAW/RPG-Mixed", "AT-Infantry", "AT+M21/SVD", "AT-mixed", "AA-Infantry", "AA/Snipers", "AA/AT-Sniper", "Infantry-Mixed", "Armor Mixed", "T72/M60", "Armor-Heavy", "M2A2/BMP2-AT", "AA-Heavy", "AA-Vehicles", "Saboteurs", "Miners", "Transp-Land", "Transp-Air", "Support Vehicles", "Planes", "AH1/V80", "M82/KSVK"], 0, "Auto-Buy"] ]
+aiSettingDefs set [_type, ["Auto-Buy", ["none", "Soldier", "MG/Snipers", "LAW/RPG-Infantry", "LAW/RPG+M21/SVD", "LAW/RPG-Mixed", "AT-Infantry", "AT+M21/SVD", "AT-mixed", "AA-Infantry", "AA/Snipers", "AA/AT-Sniper", "Infantry-Mixed", "Armor Mixed", "T72/M60", "Armor-Heavy", "M2A2/BMP2-AT", "AA-Heavy", "AA-Vehicles", "Saboteurs", "Miners", "Transp-Land", "Transp-Air", "Support Vehicles", "Planes", "Mortar", "M82/KSVK"], 0, "Auto-Buy"] ]
 _type = _type + 1
 
 BuyFactory = ["No Struct", "1# Barrack", "2# Barrack", "3# Barrack", "4# Barrack", "1# Heavy", "2# Heavy", "3# Heavy", "4# Heavy" ]
@@ -791,12 +791,8 @@ vehicleTuggedServer = []; vehicleTugServer = []
 [] exec "Common\MsgUnitBuilt_3.sqs"
 [] exec "Common\MsgUnitBuilt_4.sqs"
 [] exec "Common\MsgObjectRepaired.sqs"
-;[] exec "Common\MsgScudOperation.sqs"
 [] exec "Common\MsgStructMatrixRemove.sqs"
 
-; ? !isNull player : [] exec "Common\MsgEffectKilledTank.sqs"; [] exec "Common\MsgEffectKilledAircraft.sqs"; [] exec "Common\MsgEffectKilledBoat.sqs";
-; ? !isNull player : [] exec "Common\MsgPlaneAfterBurnerON.sqs"; [] exec "Common\MsgPlaneAfterBurnerOFF.sqs";
-; [] exec "Common\MsgNuclearMissileExploded.sqs"
 [] exec "Common\MsgAITemporaryOrder.sqs"
 
 

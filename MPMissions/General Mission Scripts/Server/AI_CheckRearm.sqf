@@ -13,30 +13,24 @@ _rearm = false;
 if (_unit == driver vehicle _unit) then
 {
 	_v = vehicle _unit;
-	if (_unit == _v) then
-	{
+	if (_unit == _v) then {
 		_wpnPrim = primaryWeapon _unit;
 		_wpnSec = secondaryWeapon _unit;
-		if (_wpnPrim != "") then
-		{
-		//	if ((_unit ammo _wpnPrim) == 0) then { _rearm = true };
-		// 	The "ammo" command using muzzleName as parameter. Guns with multi-muzzles will meet problems here. Use the count of magazines instead before we have commands returning muzzleName.
-			if ((count magazines _unit) < 3) then {_rearm = true};
+		_magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
+		if (_wpnSec != "") then {
+			_validMags = [_wpnSec] call loadFile "Common\SQF\WeaponValidMags.sqf";
+			if !([_magazines, _validMags] call funcArrayOverlap) then {_rearm = true};
+		} else {
+			if (_wpnPrim != "") then {
+				_validMags = [_wpnPrim] call loadFile "Common\SQF\WeaponValidMags.sqf";
+				if !([_magazines, _validMags] call funcArrayOverlap) then {_rearm = true};
+			} else {
+				if (count _magazines < 1) then {_rearm = true};
+			};
 		};
-		if (_wpnSec != "") then
-		{
-		//	if ((_unit ammo _wpnSec) == 0) then { _rearm = true };
-		// Be cautious!! It's Case-Sensitive when using STRING array to check whether unit has a specific magazine/weapon. The east infantry AA weapon is "9K32" but not "9k32". TZK defined the "9k32In4_v2_xj200" ammo whose name is lower-case. Aiming to let editor realize this knowledge, the "9k32In4_v2_xj200" is remained and not plan to rewrite as upper case.
-			_SecondaryWeaponMagazines = ["LAWLauncher","CarlGustavLauncher","AALauncher","RPGLauncher","AT4Launcher","9K32Launcher"] + ["CarlGustavIn4_v2_xj200","AAIn4_v2_xj200","AT4In4_v2_xj200","9k32In4_v2_xj200"];
-			_magazines = magazines _unit;
-		//	_magazines = _magazines - (_magazines - _SecondaryWeaponMagazines);
-		//	if ( ((_unit ammo _wpnSec) + (count _magazines)) <= 1 ) then { _rearm = true };
-			if ( ((_unit ammo _wpnSec) + ({_x in _SecondaryWeaponMagazines} count _magazines)) <= 1 ) then { _rearm = true };
-		};
-		// Do not check if soldier is out of Satchel or Mine. The result of secondaryWeapon is rely on particular weapons thus should be edit if soldiers' weapons redefined.
-	}
-	else
-	{
+// It's sase-inensitive when comparing strings, but it's cASe-seNsItiVE when applying "in" or "find" to strings.
+// Do not check if soldier is out of Satchel or Mine. The result of secondaryWeapon is rely on particular weapons thus should be edit if soldiers' weapons redefined.
+	} else {
 		_rearmData = _v call funcGetRearmData;
 		_rearmMags = _rearmData select 1;
 		if ((count _rearmMags) > 0) then
