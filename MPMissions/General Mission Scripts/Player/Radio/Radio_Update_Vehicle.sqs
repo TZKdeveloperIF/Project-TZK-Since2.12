@@ -9,7 +9,7 @@ _vehicle = _this select 0
 #CheckVehicle
 _vt = _vehicle call funcGetUnitTypeFromObject
 ? _vt == -1 : goto "CheckStructure"
-? _vt in RadioTypesCustonCarShips : if ("Ship" countType [_vehicle] > 0) then {[_vehicle] exec "Player\Radio\Radio_Update_Vehicle_CustomShip.sqs"} else {[_vehicle] exec "Player\Radio\Radio_Update_Vehicle_CustomCar.sqs"}; exit
+? _vt in RadioTypesCustomCarShips : if ("Ship" countType [_vehicle] > 0) then {[_vehicle] exec "Player\Radio\Radio_Update_Vehicle_CustomShip.sqs"} else {[_vehicle] exec "Player\Radio\Radio_Update_Vehicle_CustomCar.sqs"}; exit
 ? _vt in RadioTypesArtUnits : [_vehicle] exec "Player\Radio\Radio_Update_Vehicle_Art.sqs"; exit
 ? _vt in RadioTypesShips : [_vehicle] exec "Player\Radio\Radio_Update_Vehicle_Ship.sqs"; exit
 
