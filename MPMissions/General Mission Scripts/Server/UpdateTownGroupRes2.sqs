@@ -23,12 +23,15 @@ mutexInitResGroups = false
 
 @( !(isNull (mhq select si0)) && !(isNull (mhq select si1)) )
 ~10
+; Init Spawn Activate by Start Position
+? FixStart_0 distance _flag < _distSpawn || FixStart_1 distance _flag < _distSpawn: goto "Spawn"
 
 #CheckSpawn
+	? call format ["pvResTownSpawn%1", _ti]: [format ["pvResTownSpawn%1", _ti], 60] exec "Common\DeleteVariableAfterDelay.sqs"; goto "Spawn"
   _spawn = false
-  { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _spawn = true } } foreach (units _g) } foreach (groupMatrix select si0)
-  { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _spawn = true } } foreach (units _g) } foreach (groupMatrix select si1)
-  ? _spawn : goto "Spawn"
+  { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _spawn = true } } foreach (units _g) } foreach (groupAiMatrix select si0)
+  { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _spawn = true } } foreach (units _g) } foreach (groupAiMatrix select si1)
+  ? _spawn: call format ["pvResTownSpawn%1 = true", _ti]; call format ["publicVariable {pvResTownSpawn%1}", _ti]; [format ["pvResTownSpawn%1", _ti], 60] exec "Common\DeleteVariableAfterDelay.sqs"; goto "Spawn"
   ~10
   goto "CheckSpawn"
 
