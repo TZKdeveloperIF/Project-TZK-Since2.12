@@ -46,12 +46,14 @@ _unitsInfantry = []; _unitsVehicle = []
 #Patrol
   _group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "NORMAL"
   ; CHECK HIBERNATE
+	? call format ["pvTownSpawn%1", _ti]: call format ["pvTownSpawn%1 = false", _ti]; goto "SkipHibernateCheck"
   _hibernate = true
-  { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach (groupMatrix select (siEnemy select _si))
+  { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach (groupAiMatrix select (siEnemy select _si))
   { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach (townGroups select (siEnemy select _si))
   { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach ( (groupMatrix select siRes) - groupsPatrol )
   { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach groupsPatrol
   ? _hibernate : goto "Hibernate"
+	#SkipHibernateCheck
   
 	_c = count (units _group)
 	? _c < _cLast : [_ti, _si] exec "Server\Info\TownGroupLoss.sqs"
@@ -91,11 +93,13 @@ _unitsInfantry = []; _unitsVehicle = []
   { _v = vehicle _x; if (_v != _x) then {deleteVehicle _v} } forEach (units _group)
   ~1
   {deleteVehicle _x} forEach (units _group)
+	call format ["pvTownSpawn%1 = false", _ti]
   
 #CheckSpawn
   ~10
+	? call format ["pvTownSpawn%1", _ti]: call format ["pvTownSpawn%1 = false", _ti]; goto "Spawn"
   _hibernate = true
-  { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach (groupMatrix select (siEnemy select _si))
+  { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach (groupAiMatrix select (siEnemy select _si))
   ? !_hibernate : goto "Spawn"
   { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach (townGroups select (siEnemy select _si))
   ? !_hibernate : goto "Spawn"
