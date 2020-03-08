@@ -9,7 +9,7 @@ forceMap true
 
 ;init spectator functions
 funcMapClickSpectator = preprocessFile "Player\MapClickSpectator.sqf"
-funcMappingSpectator = preprocessFile "Player\MappingSpectator.sqf"
+funcMappingSpectator = preprocessFile "Player\Marker\MappingSpectator.sqf"
 
 ; MESSAGE HANDLERS (Spectators)
 ; All are included in InitClient.sqs
@@ -40,7 +40,7 @@ player groupchat "Waiting for start data ..."
 @( !(isNull (mhq select si0)) && !(isNull (mhq select si1)) )
 player groupchat "Start data received."
 
-[siPlayer] exec "Player\UpdateUnitMarkers.sqs"
+[] exec "Player\Marker\SpectatorMarker.sqs"
 
 forceMap false
 

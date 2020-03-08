@@ -65,9 +65,9 @@ if (!_processed && (count _units) == 0) then
   // unit cam
   if (!_processed && !_alt && _shift && count ([siPlayer, stSatRec] call funcGetWorkingStructures) > 0) then
   {
-    _res = [siPlayer, _pos] call funcGetClosestUnit;
+    _res = [siPlayer, _pos] call funcGetClosestUnit; _marker = (_res select 0) call loadFile "Common\SQF\GetUnitMarker.sqf";
 	_emptyvehicles = [_pos, siPlayer, [], []] call funcGetClosestVehicleEmpty;
-    if ( (_res select 1) < 50 && (group (_res select 0)) in ((groupMatrix select siPlayer) + (townGroups select siPlayer) + (workerGroups select siPlayer)) ) then
+    if ( ([getMarkerPos _marker, _pos] call funcDistH < 50 || (_res select 1) < 50) && (group (_res select 0)) in ((groupMatrix select siPlayer) + (townGroups select siPlayer) + (workerGroups select siPlayer)) ) then
     {
       if ( (_emptyvehicles select 1) < 3 ) then
       {

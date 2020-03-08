@@ -1,0 +1,80 @@
+; args: [si]
+_si = _this select 0
+_siEnemy = siEnemy select _si
+
+; Wait until markers initialized.
+@(time > 10)
+_boolHide = true
+
+#Update
+	~1
+	? (0 == count ([_si, stradar] call funcGetWorkingStructures)): call funcHideMarkers; goto "HideSleep"
+	
+	_radars = [_si, stradarair] call funcGetWorkingStructures
+	? ((upgMatrix select _si) select upgVehicleAirRadar) == 2: {_j = _x; {if (alive _x) then {_radars set [count _radars, _x]}} forEach ((UnitMatrix select _si) select _j)} forEach (vRadarAir select _si)
+	
+	? count _radars == 0: goto "SkipAircraffts"
+	_boolHide = false
+	_i = 0;
+	#EnemyAircraft
+	_v = (vehicleMarkerMapping select _siEnemy) select _i;
+	_m = format["Vehicle_%1_%2", _siEnemy, _i];
+	_inrange = false
+	? !alive _v: goto "EnemyAirChecked"
+	? 50 < ((getPos _v) select 2): {if ((_v distance _x) < 4000) then {_inrange = true}} foreach _radars
+		#EnemyAirChecked
+		if (_inrange) then {_m setMarkerPos getPos _v} else {_m setMarkerPos hiddenMarkerPos}
+	_i = _i + 1
+	? _i < maxVehicleMarkers: goto "EnemyAircraft"
+	
+	_i = 0;
+	#ResAircraft
+	_v = (vehicleMarkerMapping select siRes) select _i;
+	_m = format["Vehicle_%1_%2", siRes, _i];
+	_inrange = false
+	? !alive _v: goto "ResAirChecked"
+	? 50 < ((getPos _v) select 2): {if ((_v distance _x) < 4000) then {_inrange = true}} foreach _radars
+		#ResAirChecked
+		if (_inrange) then {_m setMarkerPos getPos _v} else {_m setMarkerPos hiddenMarkerPos}
+	_i = _i + 1
+	? _i < maxVehicleMarkers: goto "ResAircraft"
+	#SkipAircraffts
+	
+	? !bSpySat: goto "SkipSpySat"
+	_boolHide = false; _SpySatPos = [SpySatPos0, SpySatPos1] select _si;
+	_i = 0;
+	#EnemyVehicle
+	_v = (vehicleMarkerMapping select _siEnemy) select _i;
+	_m = format["Vehicle_%1_%2", _siEnemy, _i];
+	_inrange = false
+	? alive _v: if (([getPos _v, _SpySatPos] call funcDistH) < (2*viewDistance)) then {_inrange = true}
+		if (_inrange) then {_m setMarkerPos getPos _v} else {_m setMarkerPos hiddenMarkerPos}
+	_i = _i + 1
+	? _i < maxVehicleMarkers: goto "EnemyVehicle"
+	
+	_i = 0;
+	#ResVehicle
+	_v = (vehicleMarkerMapping select siRes) select _i;
+	_m = format["Vehicle_%1_%2", siRes, _i];
+	_inrange = false
+	? alive _v: if (([getPos _v, _SpySatPos] call funcDistH) < (2*viewDistance)) then {_inrange = true}
+		if (_inrange) then {_m setMarkerPos getPos _v} else {_m setMarkerPos hiddenMarkerPos}
+	_i = _i + 1
+	? _i < maxVehicleMarkers: goto "ResVehicle"
+	#SkipSpySat
+	
+	? count _radars > 0 && bSpySat: goto "Update"
+	? _boolHide: goto "SkipHideMarkers"
+	_siEnemy = siEnemy select _si;
+	_i = 0; while "_i < maxVehicleMarkers" do {format["Vehicle_%1_%2", _siEnemy, _i] setMarkerPos hiddenMarkerPos; _i = _i + 1}
+	_i = 0; while "_i < maxVehicleMarkers" do {format["Vehicle_%1_%2", siRes, _i] setMarkerPos hiddenMarkerPos; _i = _i + 1}
+	_boolHide = true
+	#SkipHideMarkers
+	
+	goto "Update"
+#HideSleep
+	~0.5
+	? (0 == count ([_si, stradar] call funcGetWorkingStructures)): goto "HideSleep"
+	goto "Update"
+	
+; EOF

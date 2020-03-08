@@ -17,6 +17,7 @@ _groupsAI = groupAiMatrix select _si
 @!(mutexGroupIsAI)
 mutexGroupIsAI = true
 ? time > 60 && _si == siPlayer && groupPlayer == (groupCommander select _si) : player sidechat format["AI group is now under your control: %1", _group]
+? time > 60 && _si in [siPlayer, siCiv]: Format ["%1%2", (groupNameMatrix select _si) select _gi, _si] setMarkerText format ["%1", (groupNameMatrix select _si) select _gi]
 
 _groupsAI set [count _groupsAI, _group]
 mutexGroupIsAI = false
