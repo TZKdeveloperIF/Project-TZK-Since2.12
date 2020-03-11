@@ -1,0 +1,14 @@
+; args: [vehicle, type]
+
+_vehicle = _this select 0
+_type = _this select 1
+
+? !(_type in typesHeavyTank || (typeOf _vehicle) in ["M1A1_Art_xj200", "T80_Art_xj200"]): exit
+
+_event = ""
+
+? !isNull player: _event = _event + "_this exec {Player\EH\IncomingTankAlert.sqs};"
+
+_vehicle addEventHandler ["IncomingMissile", _event]
+
+; EOF

@@ -4,6 +4,7 @@ _unit = _this;
 _group = group _unit; _groupName = format ["%1", _group];
 _sideName = substr [_groupName, 0, 4]; _si = groupName find _sideName;
 _unitName = format ["%1", _unit]; _size = sizeofstr _unitName;
+if (!local _unit) then {_size = _size - sizeofstr " REMOTE"; _unitName = substr [_unitName, 0, _size]};
 _playerName = ""; if (substr [_unitName, _size - 1, _size] == ")") then {_playerName = " (" + (name _unit) + ")"};
 _id = substr [_unitName, 1 + sizeofstr _groupName, _size - sizeofstr _playerName];
 

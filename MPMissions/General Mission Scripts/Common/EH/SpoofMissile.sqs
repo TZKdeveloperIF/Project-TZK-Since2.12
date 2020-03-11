@@ -1,7 +1,7 @@
 ; args: [target, ammo, whoFired]
 _target = _this select 0; _ammo = _this select 1; _shooter = _this select 2
 _missile = nearestobject [_shooter, _ammo]
-? !local _target || !local _missile : goto "Quit"
+? !local _target && !local _missile : goto "Quit"
 ? "_x=={SpoofSwitch_xj200}" count magazines _target > 0 : goto "Quit"
 
 ; this script can be applied directly in 2.01 only, since it uses some 2.01 commands.
@@ -19,7 +19,7 @@ _timeAbort = time + 10
 ; can't spoof missile fired very close
 ? _timeAbort < time || _missile distance _target < 250 : goto "Quit"
 
-; Check if Spoof chanse left
+; Check if Spoof chance left
 ? "_x=={SpoofCount_xj200}" count magazines _target == 0 : goto "Quit"
 
 ; Mag cost and deflect missile
