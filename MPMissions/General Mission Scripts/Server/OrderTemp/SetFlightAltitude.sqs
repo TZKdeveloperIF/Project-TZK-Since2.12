@@ -7,16 +7,16 @@ _params = _this select 3
 
 ; Get Correct Parameters. Need Pay Attention To Coefficients
 _height = HeightDefs select (_params select 0)
-_indexLandType = (_params select 1)
+_typeIndex = (_params select 1)
 
 ; Check Whether Unit Fits The Parameters Of The Temporary Order
 ; SetFlightAltitudeTypeDefs = ["Transport Heli", "Original Gunship", "AT Gunship", "All Helicopters", "Planes", "All Aircrafts"]
-? (SetFlightAltitudeTypeDefs select _indexReclaim) == "Transport Heli" :		_typesSetFlightAltitude = typesTransportHeli
-? (SetFlightAltitudeTypeDefs select _indexReclaim) == "Original Gunship" :		_typesSetFlightAltitude = typesGunshipOrigin
-? (SetFlightAltitudeTypeDefs select _indexReclaim) == "AT Gunship" :			_typesSetFlightAltitude = typesGunshipAT
-? (SetFlightAltitudeTypeDefs select _indexReclaim) == "All Helicopters" :		_typesSetFlightAltitude = typesTransportHeli + typesGunshipOrigin + typesGunshipAT
-? (SetFlightAltitudeTypeDefs select _indexReclaim) == "Planes" :				_typesSetFlightAltitude = typesPlane
-? (SetFlightAltitudeTypeDefs select _indexReclaim) == "All Aircrafts" :			_typesSetFlightAltitude = typesTransportHeli + typesGunshipOrigin + typesGunshipAT + typesPlane
+? (SetFlightAltitudeTypeDefs select _typeIndex) == "Transport Heli" :		_typesSetFlightAltitude = typesTransportHeli
+? (SetFlightAltitudeTypeDefs select _typeIndex) == "Original Gunship" :		_typesSetFlightAltitude = typesGunshipOrigin
+? (SetFlightAltitudeTypeDefs select _typeIndex) == "AT Gunship" :			_typesSetFlightAltitude = typesGunshipAT
+? (SetFlightAltitudeTypeDefs select _typeIndex) == "All Helicopters" :		_typesSetFlightAltitude = typesTransportHeli + typesGunshipOrigin + typesGunshipAT
+? (SetFlightAltitudeTypeDefs select _typeIndex) == "Planes" :				_typesSetFlightAltitude = typesPlane
+? (SetFlightAltitudeTypeDefs select _typeIndex) == "All Aircrafts" :		_typesSetFlightAltitude = typesTransportHeli + typesGunshipOrigin + typesGunshipAT + typesPlane
 
 _vehicle = vehicle _unit
 ? _unit == _vehicle || _unit != driver _vehicle : exit

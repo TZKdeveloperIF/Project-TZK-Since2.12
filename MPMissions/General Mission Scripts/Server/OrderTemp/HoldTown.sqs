@@ -8,30 +8,30 @@ _params = _this select 3
 ; Get Correct Parameters. Need Pay Attention To Coefficients
 _ti = _params select 0
 ; Define _posGuard in form of this can make it a fix position.
-_indexHoldTownType = (_params select 1)
+_typeIndex = (_params select 1)
 _radius = 50*((_params select 2) + 1)
 _iDir = (_params select 3)
 _duration = 720 * ((_params select 4) + 1)
 
 ; Check Whether Unit Fits The Parameters Of The Temporary Order
 
-? (HoldTownTypeDefs select _indexHoldTownType) == "non-AT-Infantry" : 	_typesHold = typesInfantryAll - typesInfantryAT;					
-? (HoldTownTypeDefs select _indexHoldTownType) == "AT-Infantry" : 		_typesHold = typesInfantryAT;	
-? (HoldTownTypeDefs select _indexHoldTownType) == "Light Tank" : 		_typesHold = typesLightTank; 					
-? (HoldTownTypeDefs select _indexHoldTownType) == "Heavy Tank" : 		_typesHold = typesHeavyTank; 					
-? (HoldTownTypeDefs select _indexHoldTownType) == "Howitzer" : 			_typesHold = typesHowitzer; 						
-? (HoldTownTypeDefs select _indexHoldTownType) == "AT APC" :			_typesHold = typesATAPC; 						
-? (HoldTownTypeDefs select _indexHoldTownType) == "AA Vehicle" :		_typesHold = typesAAAPC; 						
-? (HoldTownTypeDefs select _indexHoldTownType) == "Kamov" :				_typesHold = typesKa50; 							
-? (HoldTownTypeDefs select _indexHoldTownType) == "Cobra\Apac\Hind" :	_typesHold = (typesGunshipOrigin+typesGunshipAT) - typesKa50; 	
-? (HoldTownTypeDefs select _indexHoldTownType) == "Infantry" : 			_typesHold = typesInfantryAll;										
-? (HoldTownTypeDefs select _indexHoldTownType) == "Tanks" : 			_typesHold = typesLightTank+typesHeavyTank+typesHowitzer; 									
-? (HoldTownTypeDefs select _indexHoldTownType) == "APCs" : 				_typesHold = typesATAPC+typesAAAPC; 		
+? (HoldTownTypeDefs select _typeIndex) == "non-AT-Infantry" : 	_typesHold = typesInfantryAll - typesInfantryAT;					
+? (HoldTownTypeDefs select _typeIndex) == "AT-Infantry" : 		_typesHold = typesInfantryAT;	
+? (HoldTownTypeDefs select _typeIndex) == "Light Tank" : 		_typesHold = typesLightTank; 					
+? (HoldTownTypeDefs select _typeIndex) == "Heavy Tank" : 		_typesHold = typesHeavyTank; 					
+? (HoldTownTypeDefs select _typeIndex) == "Howitzer" : 			_typesHold = typesHowitzer; 						
+? (HoldTownTypeDefs select _typeIndex) == "AT APC" :			_typesHold = typesATAPC; 						
+? (HoldTownTypeDefs select _typeIndex) == "AA Vehicle" :		_typesHold = typesAAAPC; 						
+? (HoldTownTypeDefs select _typeIndex) == "Kamov" :				_typesHold = typesKa50; 							
+? (HoldTownTypeDefs select _typeIndex) == "Cobra\Apac\Hind" :	_typesHold = (typesGunshipOrigin+typesGunshipAT) - typesKa50; 	
+? (HoldTownTypeDefs select _typeIndex) == "Infantry" : 			_typesHold = typesInfantryAll;										
+? (HoldTownTypeDefs select _typeIndex) == "Tanks" : 			_typesHold = typesLightTank+typesHeavyTank+typesHowitzer; 									
+? (HoldTownTypeDefs select _typeIndex) == "APCs" : 				_typesHold = typesATAPC+typesAAAPC; 		
 
 _vehicle = vehicle _unit
 _vt = _vehicle call funcGetUnitTypeFromObject
 ? !(_vt in _typesHold) && _unit != leader group _unit : exit
-? _unit == leader group _unit : if !(_unit == _vehicle && (HoldTownTypeDefs select _indexHoldTownType) in ["AT-Infantry", "Infantry"]) then {exit}
+? _unit == leader group _unit : if !(_unit == _vehicle && (HoldTownTypeDefs select _typeIndex) in ["AT-Infantry", "Infantry"]) then {exit}
 
 ; Check Whether Unit In Another Temporary Order (Except For Set Flight Altitude, Clear Temporary Order, Etc)
 ? call temporaryCheck : exit

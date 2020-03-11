@@ -15,12 +15,12 @@ _value = _value + (TotalInfoTypes*100*3)*_si
 
 ? upgGunshipRocket == _upg && _state == 2 : [_si] exec "Common\ReEquipHeliRocket.sqs"
 
-? ((upgMatrix select _si) select upgWorkers) == 2: maxWorkers set [_si, 20]
+? upgWorkers == _upg && _state == 2: maxWorkers set [_si, 20]
 
-? ((upgMatrix select _si) select upgRedTopRange) == 2: [_si, _upg] call loadFile "Common\ReEquip4xAA.sqf"
+? upgRedTopRange == _upg && _state == 2: [_si, _upg, "4xAA"] exec "Common\ReEquip\ReEquip.sqs"
 
-? ((upgMatrix select _si) select upgRedTopMagazines) == 2: [_si, _upg] call loadFile "Common\ReEquip4xAA.sqf"
+? upgRedTopMagazines == _upg && _state == 2: [_si, _upg, "4xAA"] exec "Common\ReEquip\ReEquip.sqs"
 
-? ((upgMatrix select _si) select upgPlaneAfterBurner) == 2: if (isNull player) then {exit} else { if (_si == siPlayer) then {bAfterBurner = true} }
+? upgPlaneAfterBurner == _upg && _state == 2: if (isNull player) then {exit} else { if (_si == siPlayer) then {bAfterBurner = true} }
 
-? ((upgMatrix select _si) select upgSpoofMissile) == 2: if (isNull player) then {exit} else { if (_si == siPlayer) then {bSpoofMissile = true} }
+? upgSpoofMissile == _upg && _state == 2: if (isNull player) then {exit} else { if (_si == siPlayer) then {bSpoofMissile = true} }

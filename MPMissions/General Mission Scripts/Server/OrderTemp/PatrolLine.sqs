@@ -10,28 +10,28 @@ _wp0 = ((wpCO select _si) select (_params select 0)); _pos0 = [_wp0 select 0, _w
 _wp1 = ((wpCO select _si) select (_params select 1)); _pos1 = [_wp1 select 0, _wp1 select 1]
 _endPoints = [_pos0, _pos1]
 ; Define _endPoints in form of this can make them fix positions.
-_indexPatrolType = (_params select 2)
+_typeIndex = (_params select 2)
 _duration = 720 * ((_params select 3) + 1)
 
 ; Check Whether Unit Fits The Parameters Of The Temporary Order
 
-? (PatrolLineTypeDefs select _indexPatrolType) == "non-AT-Infantry" : 	_typesPatrol = typesInfantryAll - typesInfantryAT;					
-? (PatrolLineTypeDefs select _indexPatrolType) == "AT-Infantry" : 		_typesPatrol = typesInfantryAT;	
-? (PatrolLineTypeDefs select _indexPatrolType) == "Light Tank" : 		_typesPatrol = typesLightTank; 					
-? (PatrolLineTypeDefs select _indexPatrolType) == "Heavy Tank" : 		_typesPatrol = typesHeavyTank; 					
-? (PatrolLineTypeDefs select _indexPatrolType) == "Howitzer" : 			_typesPatrol = typesHowitzer; 						
-? (PatrolLineTypeDefs select _indexPatrolType) == "AT APC" :			_typesPatrol = typesATAPC; 						
-? (PatrolLineTypeDefs select _indexPatrolType) == "AA Vehicle" :		_typesPatrol = typesAAAPC; 						
-? (PatrolLineTypeDefs select _indexPatrolType) == "Kamov" :				_typesPatrol = typesKa50; 							
-? (PatrolLineTypeDefs select _indexPatrolType) == "Cobra\Apac\Hind" :	_typesPatrol = (typesGunshipOrigin+typesGunshipAT) - typesKa50; 	
-? (PatrolLineTypeDefs select _indexPatrolType) == "Infantry" : 			_typesPatrol = typesInfantryAll;										
-? (PatrolLineTypeDefs select _indexPatrolType) == "Tanks" : 			_typesPatrol = typesLightTank+typesHeavyTank+typesHowitzer; 									
-? (PatrolLineTypeDefs select _indexPatrolType) == "APCs" : 				_typesPatrol = typesATAPC+typesAAAPC; 		
+? (PatrolLineTypeDefs select _typeIndex) == "non-AT-Infantry" : 	_typesPatrol = typesInfantryAll - typesInfantryAT;					
+? (PatrolLineTypeDefs select _typeIndex) == "AT-Infantry" : 		_typesPatrol = typesInfantryAT;	
+? (PatrolLineTypeDefs select _typeIndex) == "Light Tank" : 		_typesPatrol = typesLightTank; 					
+? (PatrolLineTypeDefs select _typeIndex) == "Heavy Tank" : 		_typesPatrol = typesHeavyTank; 					
+? (PatrolLineTypeDefs select _typeIndex) == "Howitzer" : 			_typesPatrol = typesHowitzer; 						
+? (PatrolLineTypeDefs select _typeIndex) == "AT APC" :			_typesPatrol = typesATAPC; 						
+? (PatrolLineTypeDefs select _typeIndex) == "AA Vehicle" :		_typesPatrol = typesAAAPC; 						
+? (PatrolLineTypeDefs select _typeIndex) == "Kamov" :				_typesPatrol = typesKa50; 							
+? (PatrolLineTypeDefs select _typeIndex) == "Cobra\Apac\Hind" :	_typesPatrol = (typesGunshipOrigin+typesGunshipAT) - typesKa50; 	
+? (PatrolLineTypeDefs select _typeIndex) == "Infantry" : 			_typesPatrol = typesInfantryAll;										
+? (PatrolLineTypeDefs select _typeIndex) == "Tanks" : 			_typesPatrol = typesLightTank+typesHeavyTank+typesHowitzer; 									
+? (PatrolLineTypeDefs select _typeIndex) == "APCs" : 				_typesPatrol = typesATAPC+typesAAAPC; 		
 
 _vehicle = vehicle _unit
 _vt = _vehicle call funcGetUnitTypeFromObject
 ? !(_vt in _typesPatrol) && _unit != leader group _unit : exit
-? _unit == leader group _unit : if !(_unit == _vehicle && (PatrolLineTypeDefs select _indexPatrolType) in ["AT-Infantry", "Infantry"]) then {exit}
+? _unit == leader group _unit : if !(_unit == _vehicle && (PatrolLineTypeDefs select _typeIndex) in ["AT-Infantry", "Infantry"]) then {exit}
 
 ; Check Whether Unit In Another Temporary Order (Except For Set Flight Altitude, Clear Temporary Order, Etc)
 ? call temporaryCheck : exit

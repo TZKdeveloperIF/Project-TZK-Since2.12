@@ -2,12 +2,16 @@
 
 ; VARIABLES SENT BY SERVER AND PLAYERS
 
+; Ver 2.12 v02 pvKilled
+_i = 0; _c = 5; while "_i < _c" do {call format ["pvKilledTank%1 = objNull", _i]; _i = _i + 1}; indexKilledTank = 0; mutexKilledTank = false
+pvKilledAircraft = objNull; pvKilledBoat = objNull
+; Ver 2.12 v02 mutex ReEquip
+mutexReEquip = false
 ; Ver 2.12T town spawn/hibernate variables
-_i = 0; _c = count towns; while "_i < _c" do {call format ["pvTownSpawn%1 = false; pvResTownSpawn%1 = false", _i]; _i = _i + 1}; 
-
+_i = 0; _c = count towns; while "_i < _c" do {call format ["pvTownSpawn%1 = false; pvResTownSpawn%1 = false", _i]; _i = _i + 1}
 ; Ver 2.00 Variables
 pvJoinApply = -1; pvJoinReply = -1; pvJoinReceive = -1; pvJoinUnits = objNull; mutexJoinServer = false; mutexSendJoinApply = false
-pvKilledTank = objNull; pvKilledAircraft = objNull; pvKilledBoat = objNull
+
 pvAfterBurnerON = objNull; pvAfterBurnerOFF = objNull;
 pvNuclearX = 0; pvNuclearY = 0; pvNuclearZ = 0;
 pvAICheck = -1; pvCheckAI = -1

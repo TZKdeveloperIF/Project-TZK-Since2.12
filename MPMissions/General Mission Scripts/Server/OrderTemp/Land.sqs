@@ -7,15 +7,15 @@ _params = _this select 3
 
 ; Get Correct Parameters. Need Pay Attention To Coefficients
 _posLand = ((wpCO select _si) select (_params select 0))
-_indexLandType = 100*((_params select 1) + 1)
+_typeIndex = 100*((_params select 1) + 1)
 _radius = 200*((_params select 2) + 1)
 _duration = 30 * ((_params select 3) + 1)
 
 ; Check Whether Unit Fits The Parameters Of The Temporary Order
 
-? (LandTypeDefs select _indexReclaim) == "All Helicopters" :	_typesLand = typesTransportHeli + typesGunshipOrigin + typesGunshipAT
-? (LandTypeDefs select _indexReclaim) == "Transport Heli" :		_typesLand = typesTransportHeli
-? (LandTypeDefs select _indexReclaim) == "Gunship" :			_typesLand = typesGunshipOrigin + typesGunshipAT
+? (LandTypeDefs select _typeIndex) == "All Helicopters" :	_typesLand = typesTransportHeli + typesGunshipOrigin + typesGunshipAT
+? (LandTypeDefs select _typeIndex) == "Transport Heli" :		_typesLand = typesTransportHeli
+? (LandTypeDefs select _typeIndex) == "Gunship" :			_typesLand = typesGunshipOrigin + typesGunshipAT
 _vehicle = vehicle _unit
 ? _unit == _vehicle : exit
 _vt = _vehicle call funcGetUnitTypeFromObject

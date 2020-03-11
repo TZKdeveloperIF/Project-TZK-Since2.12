@@ -6,35 +6,35 @@ _gi = _this select 2
 _params = _this select 3
 
 ; Get Correct Parameters. Need Pay Attention To Coefficients
-_indexHaltType = (_params select 0)
+_typeIndex = (_params select 0)
 _duration = 720 * ((_params select 1) + 1)
 
 ; Check Whether Unit Fits The Parameters Of The Temporary Order
 
-? (HaltTypeDefs select _indexHaltType) == "Transport Car" : 	_typesHalt = typesTransportCar;				
-? (HaltTypeDefs select _indexHaltType) == "Transport Ship" : 	_typesHalt = typesTransportShip; 				
-? (HaltTypeDefs select _indexHaltType) == "Transport APC" : 	_typesHalt = typesTransportAPC; 					
-? (HaltTypeDefs select _indexHaltType) == "Transport Heli" : 	_typesHalt = typesTransportHeli; 				
-? (HaltTypeDefs select _indexHaltType) == "Battle Ship" : 		_typesHalt = typesBattleShip; 					
-? (HaltTypeDefs select _indexHaltType) == "Light Tank" : 		_typesHalt = typesLightTank; 					
-? (HaltTypeDefs select _indexHaltType) == "Heavy Tank" : 		_typesHalt = typesHeavyTank; 					
-? (HaltTypeDefs select _indexHaltType) == "Howitzer" : 			_typesHalt = typesHowitzer; 						
-? (HaltTypeDefs select _indexHaltType) == "AT APC" :			_typesHalt = typesATAPC; 						
-? (HaltTypeDefs select _indexHaltType) == "AA Vehicle" :		_typesHalt = typesAAAPC; 						
-? (HaltTypeDefs select _indexHaltType) == "Kamov" :				_typesHalt = typesKa50; 							
-? (HaltTypeDefs select _indexHaltType) == "Cobra\Apac\Hind" :	_typesHalt = (typesGunshipOrigin+typesGunshipAT) - typesKa50; 								
-? (HaltTypeDefs select _indexHaltType) == "Transports" : 		_typesHalt = typesTransportCar+typesTransportShip+typesTransportAPC+typesTransportHeli;		
-? (HaltTypeDefs select _indexHaltType) == "Tanks" : 			_typesHalt = typesLightTank+typesHeavyTank+typesHowitzer; 									
-? (HaltTypeDefs select _indexHaltType) == "APCs" : 				_typesHalt = typesATAPC+typesAAAPC; 				
-? (HaltTypeDefs select _indexHaltType) == "Support APC" : 		_typesHalt = typesSupportAPC;					
-? (HaltTypeDefs select _indexHaltType) == "non-AT-Infantry" : 	_typesHalt = typesInfantryAll - typesInfantryAT;					
-? (HaltTypeDefs select _indexHaltType) == "AT-Infantry" : 		_typesHalt = typesInfantryAT;					
-? (HaltTypeDefs select _indexHaltType) == "All Infantry" : 		_typesHalt = typesInfantryAll;					
+? (HaltTypeDefs select _typeIndex) == "Transport Car" : 	_typesHalt = typesTransportCar;				
+? (HaltTypeDefs select _typeIndex) == "Transport Ship" : 	_typesHalt = typesTransportShip; 				
+? (HaltTypeDefs select _typeIndex) == "Transport APC" : 	_typesHalt = typesTransportAPC; 					
+? (HaltTypeDefs select _typeIndex) == "Transport Heli" : 	_typesHalt = typesTransportHeli; 				
+? (HaltTypeDefs select _typeIndex) == "Battle Ship" : 		_typesHalt = typesBattleShip; 					
+? (HaltTypeDefs select _typeIndex) == "Light Tank" : 		_typesHalt = typesLightTank; 					
+? (HaltTypeDefs select _typeIndex) == "Heavy Tank" : 		_typesHalt = typesHeavyTank; 					
+? (HaltTypeDefs select _typeIndex) == "Howitzer" : 			_typesHalt = typesHowitzer; 						
+? (HaltTypeDefs select _typeIndex) == "AT APC" :			_typesHalt = typesATAPC; 						
+? (HaltTypeDefs select _typeIndex) == "AA Vehicle" :		_typesHalt = typesAAAPC; 						
+? (HaltTypeDefs select _typeIndex) == "Kamov" :				_typesHalt = typesKa50; 							
+? (HaltTypeDefs select _typeIndex) == "Cobra\Apac\Hind" :	_typesHalt = (typesGunshipOrigin+typesGunshipAT) - typesKa50; 								
+? (HaltTypeDefs select _typeIndex) == "Transports" : 		_typesHalt = typesTransportCar+typesTransportShip+typesTransportAPC+typesTransportHeli;		
+? (HaltTypeDefs select _typeIndex) == "Tanks" : 			_typesHalt = typesLightTank+typesHeavyTank+typesHowitzer; 									
+? (HaltTypeDefs select _typeIndex) == "APCs" : 				_typesHalt = typesATAPC+typesAAAPC; 				
+? (HaltTypeDefs select _typeIndex) == "Support APC" : 		_typesHalt = typesSupportAPC;					
+? (HaltTypeDefs select _typeIndex) == "non-AT-Infantry" : 	_typesHalt = typesInfantryAll - typesInfantryAT;					
+? (HaltTypeDefs select _typeIndex) == "AT-Infantry" : 		_typesHalt = typesInfantryAT;					
+? (HaltTypeDefs select _typeIndex) == "All Infantry" : 		_typesHalt = typesInfantryAll;					
 
 _vehicle = vehicle _unit
 _vt = _vehicle call funcGetUnitTypeFromObject
 ? !(_vt in _typesHalt) && _unit != leader group _unit : exit
-? _unit == leader group _unit : if !(_unit == _vehicle && (HaltTypeDefs select _indexHaltType) in ["AT-Infantry", "All Infantry"]) then {exit}
+? _unit == leader group _unit : if !(_unit == _vehicle && (HaltTypeDefs select _typeIndex) in ["AT-Infantry", "All Infantry"]) then {exit}
 
 ; Check Whether Unit In Another Temporary Order (Except For Set Flight Altitude, Clear Temporary Order, Etc)
 ? call temporaryCheck : exit

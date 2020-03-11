@@ -1,8 +1,8 @@
 ; args: [vehicle, type, si]
 
-_v = _this select 0; _a = ""; _c = ["VulcanCannon_xj200", "ZsuCannon"] select (_this select 2)
-if (viewDistance == 1300) then { _a = "RedTop_26_xj200" } else { _a = "RedTop_30_xj200" }; _m = [_a, _c]; _w = [_a, _c]
-? ((upgMatrix select (_this select 2)) select upgRedTopRange) == 2 : _a = "RedTop_40_xj200"; _m = [_a, _c]; _w = [_a, _c]
+_v = _this select 0; _a = ""
+if (viewDistance == 1300) then { _a = "RedTop_26_xj200" } else { _a = "RedTop_30_xj200" }; _m = [_a]; _w = [_a]
+? ((upgMatrix select (_this select 2)) select upgRedTopRange) == 2 : _a = "RedTop_40_xj200"; _m = [_a]; _w = [_a]
 ? ((upgMatrix select (_this select 2)) select upgRedTopMagazines) == 2 : _m = _m + [_a]
 
 ~1

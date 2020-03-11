@@ -5,7 +5,7 @@ _siEnemy = siEnemy select _si
 ; Wait until markers initialized.
 @(time > 10)
 _boolHide = true
-
+? dev: exit
 #Update
 	~1
 	? (0 == count ([_si, stradar] call funcGetWorkingStructures)): call funcHideMarkers; goto "HideSleep"

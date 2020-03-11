@@ -9,19 +9,19 @@ _params = _this select 3
 _posPickup = ((wpCO select _si) select (_params select 0))
 _posEject = ((wpCO select _si) select (_params select 1))
 _distEject = 50*((_params select 2) + 1)
-_indexTranspType = 1*(_params select 3)
+_typeIndex = 1*(_params select 3)
 _duration = 180 * ((_params select 4) + 1)
 
 ; Check Whether Unit Fits The Parameters Of The Temporary Order
 
-? (TransportDutyTypeDefs select _indexTranspType) == "Car" :			_typesTransp = [TransportCarW, TransportCarE] select _si;
-? (TransportDutyTypeDefs select _indexTranspType) == "Truck" :			_typesTransp = [TransportTruckW, TransportTruckE] select _si;
-? (TransportDutyTypeDefs select _indexTranspType) == "Zodiac" :			_typesTransp = [TransportZodiacW, TransportZodiacE] select _si;
-? (TransportDutyTypeDefs select _indexTranspType) == "Ship" :			_typesTransp = [TransportShipW, TransportShipE] select _si;
-? (TransportDutyTypeDefs select _indexTranspType) == "APC" : 			_typesTransp = [Transport6APCW+Transport8APCW, Transport6APCE+Transport8APCE] select _si;
-? (TransportDutyTypeDefs select _indexTranspType) == "Land" : 			_typesTransp = [Transport6APCW+Transport8APCW+TransportShipW+TransportZodiacW+TransportTruckW+TransportCarW, Transport6APCE+Transport8APCE+TransportShipE+TransportZodiacE+TransportTruckE+TransportCarE] select _si;
-? (TransportDutyTypeDefs select _indexTranspType) == "Transport Heli" :	_typesTransp = [TransportHeliW, TransportHeliE] select _si;
-? (TransportDutyTypeDefs select _indexTranspType) == "Tiger/Mi24" :			_typesTransp = [TransportTigerW, TransportHindE] select _si;
+? (TransportDutyTypeDefs select _typeIndex) == "Car" :			_typesTransp = [TransportCarW, TransportCarE] select _si;
+? (TransportDutyTypeDefs select _typeIndex) == "Truck" :			_typesTransp = [TransportTruckW, TransportTruckE] select _si;
+? (TransportDutyTypeDefs select _typeIndex) == "Zodiac" :			_typesTransp = [TransportZodiacW, TransportZodiacE] select _si;
+? (TransportDutyTypeDefs select _typeIndex) == "Ship" :			_typesTransp = [TransportShipW, TransportShipE] select _si;
+? (TransportDutyTypeDefs select _typeIndex) == "APC" : 			_typesTransp = [Transport6APCW+Transport8APCW, Transport6APCE+Transport8APCE] select _si;
+? (TransportDutyTypeDefs select _typeIndex) == "Land" : 			_typesTransp = [Transport6APCW+Transport8APCW+TransportShipW+TransportZodiacW+TransportTruckW+TransportCarW, Transport6APCE+Transport8APCE+TransportShipE+TransportZodiacE+TransportTruckE+TransportCarE] select _si;
+? (TransportDutyTypeDefs select _typeIndex) == "Transport Heli" :	_typesTransp = [TransportHeliW, TransportHeliE] select _si;
+? (TransportDutyTypeDefs select _typeIndex) == "Tiger/Mi24" :			_typesTransp = [TransportTigerW, TransportHindE] select _si;
 _vehicle = vehicle _unit
 ? _unit == _vehicle : exit
 _vt = _vehicle call funcGetUnitTypeFromObject
@@ -31,7 +31,7 @@ _vt = _vehicle call funcGetUnitTypeFromObject
 ? call temporaryCheck : exit
 
 ; Initialize The Order Script
-? (TransportDutyTypeDefs select _indexTranspType) in ["Transport Heli", "Mi24"] : _this exec "Server\OrderTemp TransportDutyAir.sqs"; exit
+? (TransportDutyTypeDefs select _typeIndex) in ["Transport Heli", "Mi24"] : _this exec "Server\OrderTemp\TransportDutyAir.sqs"; exit
 _timeStart = time; _timeAbort = _timeStart + _duration; _timeUp = _timeStart; _cycle = 30; _loop = 0
 call temporarySet
 
