@@ -55,7 +55,7 @@ _timeDead = 0
 	;? -1 != (vehicle player) call funcGetUnitTypeFromObject && !local vehicle player : if (player in [driver vehicle player, gunner vehicle player, commander vehicle player]) then {player action ["Eject", vehicle player]}
 	? -1 != (vehicle player) call funcGetUnitTypeFromObject && !local vehicle player : if (player == commander vehicle player && !dev) then {player action ["Eject", vehicle player]}
 	
-	setViewDistance viewDistance; showGPS boole_Show_GPS
+	setViewDistance viewDistance; showGPS boole_Show_GPS; showPad boole_Show_Pad
 ;	player sidechat format ["%1", group player]
 ;	? time mod 10 > 5 : player globalchat format ["%1", (workerGroups select 0)+(townGroups select 0)]; hint format ["%1", (workerGroups select 1)+(townGroups select 1)]
 	goto "Update"

@@ -8,37 +8,37 @@ _params = _this select 3
 ; Get Correct Parameters. Need Pay Attention To Coefficients
 _posCO = ((wpCO select _si) select (_params select 0)); _posGuard = [_posCO select 0, _posCO select 1]
 ; Define _posGuard in form of this can make it a fix position.
-_indexMoveType = (_params select 1)
+_typeIndex = (_params select 1)
 _radius = 5*(_params select 2)
 _iDir = (_params select 3)
 _duration = 720 * ((_params select 4) + 1)
 
 ; Check Whether Unit Fits The Parameters Of The Temporary Order
 
-? (MoveTypeDefs select _indexMoveType) == "Transport Car" : 	_typesMove = typesTransportCar;				
-? (MoveTypeDefs select _indexMoveType) == "Transport Ship" : 	_typesMove = typesTransportShip; 				
-? (MoveTypeDefs select _indexMoveType) == "Transport APC" : 	_typesMove = typesTransportAPC; 					
-? (MoveTypeDefs select _indexMoveType) == "Transport Heli" : 	_typesMove = typesTransportHeli; 				
-? (MoveTypeDefs select _indexMoveType) == "Battle Ship" : 		_typesMove = typesBattleShip; 					
-? (MoveTypeDefs select _indexMoveType) == "Light Tank" : 		_typesMove = typesLightTank; 					
-? (MoveTypeDefs select _indexMoveType) == "Heavy Tank" : 		_typesMove = typesHeavyTank; 					
-? (MoveTypeDefs select _indexMoveType) == "Howitzer" : 			_typesMove = typesHowitzer; 						
-? (MoveTypeDefs select _indexMoveType) == "AT APC" :			_typesMove = typesATAPC; 						
-? (MoveTypeDefs select _indexMoveType) == "AA Vehicle" :		_typesMove = typesAAAPC; 						
-? (MoveTypeDefs select _indexMoveType) == "Kamov" :				_typesMove = typesKa50; 							
-? (MoveTypeDefs select _indexMoveType) == "Cobra\Apac\Hind" :	_typesMove = (typesGunshipOrigin+typesGunshipAT) - typesKa50; 								
-? (MoveTypeDefs select _indexMoveType) == "Transports" : 		_typesMove = typesTransportCar+typesTransportShip+typesTransportAPC+typesTransportHeli;		
-? (MoveTypeDefs select _indexMoveType) == "Tanks" : 			_typesMove = typesLightTank+typesHeavyTank+typesHowitzer; 									
-? (MoveTypeDefs select _indexMoveType) == "APCs" : 				_typesMove = typesATAPC+typesAAAPC; 				
-? (MoveTypeDefs select _indexMoveType) == "Support APC" : 		_typesMove = typesSupportAPC;					
-? (MoveTypeDefs select _indexMoveType) == "non-AT-Infantry" : 	_typesMove = typesInfantryAll - typesInfantryAT;					
-? (MoveTypeDefs select _indexMoveType) == "AT-Infantry" : 		_typesMove = typesInfantryAT;					
-? (MoveTypeDefs select _indexMoveType) == "All Infantry" : 		_typesMove = typesInfantryAll;					
+? (MoveTypeDefs select _typeIndex) == "Transport Car" : 	_typesMove = typesTransportCar;				
+? (MoveTypeDefs select _typeIndex) == "Transport Ship" : 	_typesMove = typesTransportShip; 				
+? (MoveTypeDefs select _typeIndex) == "Transport APC" : 	_typesMove = typesTransportAPC; 					
+? (MoveTypeDefs select _typeIndex) == "Transport Heli" : 	_typesMove = typesTransportHeli; 				
+? (MoveTypeDefs select _typeIndex) == "Battle Ship" : 		_typesMove = typesBattleShip; 					
+? (MoveTypeDefs select _typeIndex) == "Light Tank" : 		_typesMove = typesLightTank; 					
+? (MoveTypeDefs select _typeIndex) == "Heavy Tank" : 		_typesMove = typesHeavyTank; 					
+? (MoveTypeDefs select _typeIndex) == "Howitzer" : 			_typesMove = typesHowitzer; 						
+? (MoveTypeDefs select _typeIndex) == "AT APC" :			_typesMove = typesATAPC; 						
+? (MoveTypeDefs select _typeIndex) == "AA Vehicle" :		_typesMove = typesAAAPC; 						
+? (MoveTypeDefs select _typeIndex) == "Kamov" :				_typesMove = typesKa50; 							
+? (MoveTypeDefs select _typeIndex) == "Cobra\Apac\Hind" :	_typesMove = (typesGunshipOrigin+typesGunshipAT) - typesKa50; 								
+? (MoveTypeDefs select _typeIndex) == "Transports" : 		_typesMove = typesTransportCar+typesTransportShip+typesTransportAPC+typesTransportHeli;		
+? (MoveTypeDefs select _typeIndex) == "Tanks" : 			_typesMove = typesLightTank+typesHeavyTank+typesHowitzer; 									
+? (MoveTypeDefs select _typeIndex) == "APCs" : 				_typesMove = typesATAPC+typesAAAPC; 				
+? (MoveTypeDefs select _typeIndex) == "Support APC" : 		_typesMove = typesSupportAPC;					
+? (MoveTypeDefs select _typeIndex) == "non-AT-Infantry" : 	_typesMove = typesInfantryAll - typesInfantryAT;					
+? (MoveTypeDefs select _typeIndex) == "AT-Infantry" : 		_typesMove = typesInfantryAT;					
+? (MoveTypeDefs select _typeIndex) == "All Infantry" : 		_typesMove = typesInfantryAll;					
 
 _vehicle = vehicle _unit
 _vt = _vehicle call funcGetUnitTypeFromObject
 ? !(_vt in _typesMove) && _unit != leader group _unit : exit
-? _unit == leader group _unit : if !(_unit == _vehicle && (MoveTypeDefs select _indexMoveType) in ["AT-Infantry", "All Infantry"]) then {exit}
+? _unit == leader group _unit : if !(_unit == _vehicle && (MoveTypeDefs select _typeIndex) in ["AT-Infantry", "All Infantry"]) then {exit}
 
 ; Check Whether Unit In Another Temporary Order (Except For Set Flight Altitude, Clear Temporary Order, Etc)
 ? call temporaryCheck : exit

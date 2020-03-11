@@ -94,7 +94,7 @@ boole_Global_Shell_Tracer = true
 boole_Dead_Tank_Burning = true
 boole_Nuclear_Effect = false
 
-boole_Show_GPS = false
+boole_Show_GPS = false; boole_Show_Pad = true
 boole_Mark_Player_Name = false
 
 boole_ShowAction_TransportEject = true
@@ -123,7 +123,8 @@ booleSettingEffects = [ {boole_Local_Bullet_Tracer}, {boole_Global_Bullet_Tracer
 
 _missionSettingFunctions set [count _missionSettingFunctions, ["Show GPS             [OFF]", "Show GPS              [ON]"]]
 _missionSettingFunctions set [count _missionSettingFunctions, ["Mark Player Name     [OFF]", "Mark Player Name      [ON]"]]
-booleSettingFunctions = [ {boole_Show_GPS}, {boole_Mark_Player_Name} ]
+_missionSettingFunctions set [count _missionSettingFunctions, ["Show Pad             [OFF]", "Show Pad              [ON]"]]
+booleSettingFunctions = [ {boole_Show_GPS}, {boole_Mark_Player_Name}, {boole_Show_Pad} ]
 
 _missionSettingActions set [count _missionSettingActions, ["Show Transport/Eject [OFF]", "Show Transport/Eject  [ON]"]]
 _missionSettingActions set [count _missionSettingActions, ["Show Attach          [OFF]", "Show Attach           [ON]"]]
@@ -142,6 +143,7 @@ RapidRearmSecMagazines = [{CarlGustavLauncher},{AT4Launcher},{LAWLauncher},{RPGL
 
 
 [] exec "Player\Effect\Killed_Msg_Aircraft.sqs"; [] exec "Player\Effect\Killed_Msg_Boat.sqs";
+_i = 0; _count = 5; while "_i < _count" do {call format [{[] exec "Player\Effect\Killed_Msg_Tank%1.sqs"}, _i]; _i = _i + 1}
 [] exec "Player\Effect\PlaneAB_Msg_ON.sqs"; [] exec "Player\Effect\PlaneAB_Msg_OFF.sqs"; BurningPlanes = [];
 
 [] exec {Player\DynamicInitializationMarker.sqs}

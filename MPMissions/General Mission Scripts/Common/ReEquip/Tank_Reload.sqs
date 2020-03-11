@@ -1,0 +1,31 @@
+; args: [vehicle bool reload sabot]
+; In this script we assume that the first 2 magazines of weapon are always the "sabot" and the "heat", and the weapon has only 1 muzzle whose name same as weapon's.
+
+_veh = _this select 0; _bReloadSabot = _this select 1
+? !local _veh: exit
+
+_mainGuns = ["Gun73", "Gun105", "Gun120", "M1Gun_xj200", "M12Gun_xj200", "T80Gun_xj200", "T90Gun_xj200", "LeoGun_xj200", "PLAGun_xj200", "Gun155_xj200", "Gun130_xj200"]
+_weapons = weapons _veh
+? !([_weapons, _mainGuns] call funcArrayOverlap): exit
+
+_j = 0; _cj = count _weapons
+#CheckWeapons
+	_wea = _weapons select _j
+	? !(_wea in _mainGuns): goto "WeaponChecked"
+	_magazines = call format ["%1", _wea GetWeaponParamArray "magazines"];
+	_magToBeHide = _magazines select _bReloadSabot; _magToBeReload = _magazines select !_bReloadSabot
+	
+	_mArray = magazinesArray _veh
+	_indexToBeHide = _mArray find _magToBeHide; _ammoToBeHide = 0
+	? _indexToBeHide != -1: _ammoToBeHide = _mArray select (_indexToBeHide + 1)
+	_indexToBeReload = _mArray find _magToBeReload; _ammoToBeReload = 0
+	? _indexToBeReload != -1: _ammoToBeReload = _mArray select (_indexToBeReload + 1)
+
+	_aArray = _veh ammoarray _wea
+	? (_aArray select 0) == _magToBeHide && _ammoToBeHide > 0 && _ammoToBeReload > 0: _veh removeMagazine _magToBeHide; _veh removeMagazine _magToBeReload; _veh addMagazinePrecise [_magToBeReload, _ammoToBeReload]; _veh addMagazinePrecise [_magToBeHide, _ammoToBeHide]
+	
+	#WeaponChecked
+	_j = _j + 1
+	? _j < _cj: goto "CheckWeapons"
+	
+; EOF

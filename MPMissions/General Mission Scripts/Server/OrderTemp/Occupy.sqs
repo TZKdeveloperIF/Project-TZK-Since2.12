@@ -7,7 +7,7 @@ _params = _this select 3
 
 ; Get Correct Parameters. Need Pay Attention To Coefficients
 _posOccupy = ((wpCO select _si) select (_params select 0))
-_indexOccupy = (_params select 1)
+_typeIndex = (_params select 1)
 _radius = 50*((_params select 2) + 1)
 _duration = 30 * ((_params select 3) + 1)
 
@@ -39,13 +39,13 @@ _typesOccupy = []; _crewnum = 0;
 ; Using structsOccupiable arrays defined in InitStructureTypes.sqs
 ; OccupyTypeDefs = ["All Defense", "Mortar", "MG Ground", "MG Tower", "M46", "M46 Art", "Gun Fort"], defined in Init.sqs
 
-? (OccupyTypeDefs select _indexOccupy) == "All Defense" :	_typesOccupy = structsOccupiableMortar + structsOccupiableMGGround + structsOccupiableMGTower + structsOccupiableGunfort + structsOccupiableM46 + structsOccupiableM46Art
-? (OccupyTypeDefs select _indexOccupy) == "Mortar" :		_typesOccupy = structsOccupiableMortar
-? (OccupyTypeDefs select _indexOccupy) == "MG Ground" :		_typesOccupy = structsOccupiableMGGround
-? (OccupyTypeDefs select _indexOccupy) == "MG Tower" :		_typesOccupy = structsOccupiableMGTower
-? (OccupyTypeDefs select _indexOccupy) == "M46" :			_typesOccupy = structsOccupiableM46
-? (OccupyTypeDefs select _indexOccupy) == "M46 Art" :		_typesOccupy = structsOccupiableM46Art
-? (OccupyTypeDefs select _indexOccupy) == "Gun Fort" :		_typesOccupy = structsOccupiableGunfort
+? (OccupyTypeDefs select _typeIndex) == "All Defense" :	_typesOccupy = structsOccupiableMortar + structsOccupiableMGGround + structsOccupiableMGTower + structsOccupiableGunfort + structsOccupiableM46 + structsOccupiableM46Art
+? (OccupyTypeDefs select _typeIndex) == "Mortar" :		_typesOccupy = structsOccupiableMortar
+? (OccupyTypeDefs select _typeIndex) == "MG Ground" :		_typesOccupy = structsOccupiableMGGround
+? (OccupyTypeDefs select _typeIndex) == "MG Tower" :		_typesOccupy = structsOccupiableMGTower
+? (OccupyTypeDefs select _typeIndex) == "M46" :			_typesOccupy = structsOccupiableM46
+? (OccupyTypeDefs select _typeIndex) == "M46 Art" :		_typesOccupy = structsOccupiableM46Art
+? (OccupyTypeDefs select _typeIndex) == "Gun Fort" :		_typesOccupy = structsOccupiableGunfort
 
 _groups = groupMatrix select _si
 #Update

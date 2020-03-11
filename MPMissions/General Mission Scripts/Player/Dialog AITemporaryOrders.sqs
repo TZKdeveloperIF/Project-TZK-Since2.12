@@ -42,6 +42,7 @@ _idcParams = [_idcPar0, _idcPar1, _idcPar2, _idcPar3, _idcPar4]
 	lbClear _idcCurrent
 	_gis = ([_si] call funcGetAIGroupsIndex)
 	{_order = (orderTempMatrix select _si) select _x; _text = _order call funcGetOrderTempDesc; _id = lbAdd [_idcCurrent, format["%1, %2", _groupNames select _x, _text]]; lbSetValue [_idcCurrent, _id, _x]} forEach _gis
+	? count _gis > 0 : _id = lbAdd [_idcCurrent, "ALL"]; lbSetValue [_idcCurrent, _id, -1]
 	
 	? _selGroup != lbCurSel _idcCurrent : _selGroup = lbCurSel _idcCurrent; goto "NewGroupSelected"
 
@@ -58,7 +59,16 @@ _idcParams = [_idcPar0, _idcPar1, _idcPar2, _idcPar3, _idcPar4]
 #NewGroupSelected
 	_gi = lbValue [_idcCurrent, _selGroup]
 
+	? _gi != -1 : goto "SelectedOneGroup"
 
+	? (groupPlayer == (groupCommander select _si)) : { ctrlShow [_x, true] } foreach [_idcOrderLabel, _idcSendOrder, _idcOrder]; goto "RefreshOrder"
+	
+	_Superior = false; { if ( (["Commander"] + callsigns) select (((aiSetting select _si) select _x) select aisSuperior) == _groupNames select giPlayer ) then {_Superior = true} } forEach _gis
+	? _Superior : { ctrlShow [_x, true] } foreach [_idcOrderLabel, _idcSendOrder, _idcOrder]; goto "RefreshOrder"
+	
+	? !_Superior : { ctrlShow [_x, false] } foreach [_idcOrderLabel, _idcSendOrder, _idcOrder, _idcPar0Label, _idcPar0, _idcPar1Label, _idcPar1, _idcPar2Label, _idcPar2, _idcPar3Label, _idcPar3, _idcPar4Label, _idcPar4]; goto "Update"
+
+	#SelectedOneGroup
 	? (groupPlayer == (groupCommander select _si)) && !( (["Commander"] + callsigns) select ((call grpSetting) select aisSuperior) in ["Commander", _groupNames select giPlayer] ) : { ctrlShow [_x, false] } foreach [_idcOrderLabel, _idcSendOrder, _idcOrder, _idcPar0Label, _idcPar0, _idcPar1Label, _idcPar1, _idcPar2Label, _idcPar2, _idcPar3Label, _idcPar3, _idcPar4Label, _idcPar4]
 	? (groupPlayer == (groupCommander select _si)) && ( (["Commander"] + callsigns) select ((call grpSetting) select aisSuperior) in ["Commander", _groupNames select giPlayer] ) : { ctrlShow [_x, true] } foreach [_idcOrderLabel, _idcSendOrder, _idcOrder]; goto "RefreshOrder"
 	? (groupPlayer != (groupCommander select _si)) && (["Commander"] + callsigns) select ((call grpSetting) select aisSuperior) != _groupNames select giPlayer : { ctrlShow [_x, false] } foreach [_idcOrderLabel, _idcSendOrder, _idcOrder, _idcPar0Label, _idcPar0, _idcPar1Label, _idcPar1, _idcPar2Label, _idcPar2, _idcPar3Label, _idcPar3, _idcPar4Label, _idcPar4]
@@ -146,6 +156,7 @@ _idcParams = [_idcPar0, _idcPar1, _idcPar2, _idcPar3, _idcPar4]
 	_index = 0
 	{ _params set [_index, lbCurSel (_idcParams select _index)]; _index = _index + 1 } foreach ((orderTempDefs select _selOrder) select 1)
 	_params resize (count ((orderTempDefs select _selOrder) select 1))
+	? _gi == -1 : [_si, giPlayer + GroupsNum, _selOrder, _params] exec "Common\SendAITemporaryOrder.sqs"; goto "Update"
 	
 	[_si, _gi, _selOrder, _params] exec "Common\SendAITemporaryOrder.sqs"; goto "Update"
 	
