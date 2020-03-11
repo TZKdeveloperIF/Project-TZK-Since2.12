@@ -14,19 +14,7 @@ _timeAbort = time + 10
 ? _missile distance _target > 400: _timeAbort = time + 0.33; goto "Check"
 
 _NetWorkID = NetworkID _target; _code = format ["[UnitById %1] exec {Player\Effect\SpoofFlare.sqs}", _NetWorkID]; publicExec _code
-
-
-; create flare effect
-_count =0
-
-#LaunchLoop
-drop["kouleSvetlo","","Billboard",0.05,6,[-.2,-1,1.1],[-14-random 6,- random 2,0],0,1.8,1,0,[1],[[1,1,0.3,1]],[0,1],0,0, "Player\Effect\SpoofSmokes.sqs","",_target] 
-
-drop["kouleSvetlo","","Billboard",0.05,6,[.2,-1,1.1],[14+random 6,- random 2,0],0,1.8,1,0,[1],[[1,1,0.3,1]],[0,1],0,0, "Player\Effect\SpoofSmokes.sqs","",_target]
-
-_count = _count + 1
-~0.1
-?(_count<5):goto "LaunchLoop"
+[_target] exec {Player\Effect\SpoofFlare.sqs}
 
 #Quit
 exit
