@@ -16,8 +16,10 @@ _idOrder = ((orderMatrix select _si) select _gi) select 0
 ~2
 ? call busyCheck : goto "WaitReady"
 
-_rearmData = _unit call funcGetRearmData
-_hasMines = false; { if (_x in (_rearmData select 1)) then {_hasMines = true} } forEach MagzinesMine
+_i = rearmDataObj find _unit
+? _i == -1: _weapons = []; _mags = []
+? _i != -1: _weapons = (rearmDataEquip select _i) select 0; _mags = (rearmDataEquip select _i) select 1
+_hasMines = false; { if (_x in _mags) then {_hasMines = true} } forEach MagzinesMine
 
 _timeCheckSupport = time + 30 + random 60
 

@@ -124,10 +124,12 @@ lbSetCurSel [_idcList, 0]
 	goto _perform
 
 #RepairOptRearm
-  _rearmData = _vehicle call funcGetRearmData
-  _rearmMags = _rearmData select 1
+	_i = rearmDataObj find _vehicle
+	? _i == -1: _weapons = []; _mags = []
+	? _i != -1: _weapons = (rearmDataEquip select _i) select 0; _mags = (rearmDataEquip select _i) select 1
+
   _rearm = false
-  ? (count _rearmMags) == 0 : goto "SkipRearm"
+  ? (count _mags) == 0 : goto "SkipRearm"
   _weapons = weapons _vehicle
   { if ((_vehicle ammo _x) == 0) then { _rearm = true }  } foreach _weapons
   ? _rearm : [_unit, _support, _vehicle] exec "Player\Rearm.sqs"

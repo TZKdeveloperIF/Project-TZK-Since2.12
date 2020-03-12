@@ -11,7 +11,8 @@ _object = _this select 0
 mutexEditRearmData = true
 
 ? time < 5 * 60 : _index = count rearmDataObj; goto "SetList"
-_index = _object call funcAddRearmData
+_index = -2
+? alive _object: _index = rearmDataObj find objNull
 ? _index == -2 : mutexEditRearmData = false; exit
 
 _count = count rearmDataObj

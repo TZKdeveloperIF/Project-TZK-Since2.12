@@ -13,9 +13,9 @@ _support = _this select 5
 _timeRearm = 5
 ? _unit != _vehicleRearm : _timeRearm = 30
 
-_rearmData = _vehicleRearm call funcGetRearmData
-_weapons = _rearmData select 0
-_mags = _rearmData select 1
+_i = rearmDataObj find _vehicleRearm
+? _i == -1: _weapons = []; _mags = []
+? _i != -1: _weapons = (rearmDataEquip select _i) select 0; _mags = (rearmDataEquip select _i) select 1
 ? (count _mags) == 0 : exit
 
 ; CALC COST

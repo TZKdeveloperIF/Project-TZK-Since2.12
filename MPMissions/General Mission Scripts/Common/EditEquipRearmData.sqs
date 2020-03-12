@@ -10,6 +10,11 @@ _breset = true
 _dataSet = false; _try = 0
 #RearmDataCheck
 ~1
-_dataSet = [_object, _weapons, _magazines, _breset] call funcEditRearmData; _try = _try + 1
+_i = rearmDataObj find _object
+_dataSet = _i != -1; _try = _try + 1
 ? !_dataSet && _try < 100 && alive _object: goto "RearmDataCheck"
 
+? !_dataSet: exit
+[_object, _weapons, _magazines, _breset, _i] exec "Common\EditRearmdata.sqs"
+
+; EOF
