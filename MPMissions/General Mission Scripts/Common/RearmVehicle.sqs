@@ -3,9 +3,10 @@ _v = _this select 0
 ? !(local _v) || !(alive _v) : exit
 ? (count (magazines _v)) > 0 : format["WARNING: vehicle have mags in MsgVehicleMagsAdd.sqs"] call fDebugLog; exit
 
-_rearmData = _v call funcGetRearmData
-_weapons = _rearmData select 0
-_mags = _rearmData select 1
+_i = rearmDataObj find _v
+? _i == -1: exit
+_weapons = (rearmDataEquip select _i) select 0
+_mags = (rearmDataEquip select _i) select 1
 ? (count _mags) == 0 : exit
 _wpns = weapons _v
 

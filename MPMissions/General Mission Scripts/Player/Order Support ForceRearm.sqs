@@ -8,9 +8,10 @@ _v = vehicle _unit
 ? (_v == vehicle player) : exit
 
 ? _unit == _v : goto "SkipArmedCheck"
-  _rearmData = _v call funcGetRearmData
-  _rearmMags = _rearmData select 1
-  ? (count _rearmMags) == 0 : _unit groupchat "My vehicle is not armed."; exit
+	_i = rearmDataObj find _v
+	? _i == -1: _weapons = []; _mags = []
+	? _i != -1: _weapons = (rearmDataEquip select _i) select 0; _mags = (rearmDataEquip select _i) select 1
+	? (count _mags) == 0 : _unit groupchat "My vehicle is not armed."; exit
 #SkipArmedCheck
 
 #FindSupport

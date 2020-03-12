@@ -28,17 +28,17 @@ _type = _unitRearm call funcGetUnitTypeFromObject
 ? _type == -1 : goto "CheckStruct"
 ; TODO ? _type == (utCustom select siPlayer) && _unit == _vehicle : [_unit, _support, false, 1] exec "Player\Dialog Equipment.sqs"; exit
 _cost = (unitDefs select _type) select udCost
-goto "GetRearmData"
+goto "CheckData"
 
 #CheckStruct
 _type = _unitRearm call funcGetStructTypeFromObject
 ? _type == -1 : format["ERROR: object type not found for %1/%2 in Rearm.sqs", _unitRearm, typeOf _unitRearm] call fDebugLog; exit
 _cost = (structDefs select _type) select sdCost
 
-#GetRearmData
-_rearmData = _unitRearm call funcGetRearmData
-_weapons = _rearmData select 0
-_mags = _rearmData select 1
+#CheckData
+_i = rearmDataObj find _unitRearm
+? _i == -1: _weapons = []; _mags = []
+? _i != -1: _weapons = (rearmDataEquip select _i) select 0; _mags = (rearmDataEquip select _i) select 1
 ? (count _mags) == 0 : _msg = "Unit is not armed."; goto "Exit"
 ? !(canFire _vehicle) : _unit groupChat "Gun barrel badly hurt. Better repair as well."
 

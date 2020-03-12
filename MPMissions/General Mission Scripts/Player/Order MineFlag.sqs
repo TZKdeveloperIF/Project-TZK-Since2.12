@@ -8,8 +8,10 @@ _radius = 5*( 0 + ((_this select 2) select 1) )
 ? !(alive _unit) : exit
 ? _unit != vehicle _unit : exit
 
-_rearmData = _unit call funcGetRearmData
-_mags = _rearmData select 1
+_i = rearmDataObj find _unit
+? _i == -1: _weapons = []; _mags = []
+? _i != -1: _weapons = (rearmDataEquip select _i) select 0; _mags = (rearmDataEquip select _i) select 1
+
 _hasMines = false; { if (_x in _mags) then {_hasMines = true} } forEach MagzinesMine
 _magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
 ? ("_x in MagzinesMine" count _magazines) == 0 && !_hasMines : exit

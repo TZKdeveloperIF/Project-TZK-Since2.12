@@ -16,8 +16,10 @@ _duration = 180 * ((_params select 2) + 1)
 _vehicle = vehicle _unit
 ? _unit != _vehicle : exit
 
-_rearmData = _unit call funcGetRearmData
-_hasMines = false; { if (_x in (_rearmData select 1)) then {_hasMines = true} } forEach MagzinesMine
+_i = rearmDataObj find _unit
+? _i == -1: _weapons = []; _mags = []
+? _i != -1: _weapons = (rearmDataEquip select _i) select 0; _mags = (rearmDataEquip select _i) select 1
+_hasMines = false; { if (_x in _mags) then {_hasMines = true} } forEach MagzinesMine
 ? !_hasMines : exit
 
 ; Check Whether Unit In Another Temporary Order (Except For Set Flight Altitude, Clear Temporary Order, Etc)
