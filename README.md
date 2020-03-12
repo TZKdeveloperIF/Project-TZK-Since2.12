@@ -10,4 +10,4 @@ It's strongly recommended to use batch processing to copy files and make PBOs. T
 2. Package each folders in "mission.sqm(and Extra folder)" to PBO files.  
 In old version MPMissions some pictures like .paa or .JPG are placed in missions' folder. They aren't uploaded to github, and hence files won't be included in source codes and pictures won't display in YOUR missions, but the game is able to play without them. Since 2.12S MPMissions read pictures from MOD (I moved them out of the mission), and MPMissions folder on github include scripts only.
 # Topic on BI forum
-https://forums.bohemia.net/forums/topic/227553-tzk_301-cti-modmissions/
+https://forums.bohemia.net/forums/topic/227553-tzk-cti-modmissions/
