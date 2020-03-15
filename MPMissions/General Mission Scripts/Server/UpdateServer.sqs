@@ -36,7 +36,7 @@ _timeNextRemind = timeLimit - (_remind select _ir)
 	; TODO ? time > _timeCleanupWorld : _timeCleanupWorld = _timeCleanupWorld + _intervalCleanupWorld; [] exec "Server\CleanupWorld.sqs"
 
 	? timeLimit != 0 && time > _timeNextRemind : goto "Remind"
-	[] exec "Server\CheckDetachedVehicles.sqs"
+	; [] exec "Server\CheckDetachedVehicles.sqs"
   goto "Update"
 
 #Remind

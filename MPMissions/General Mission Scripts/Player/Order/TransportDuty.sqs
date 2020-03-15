@@ -21,6 +21,6 @@ _vt = _transp call funcGetUnitTypeFromObject
 
 _unit groupchat format["Roger, performing transport duty, wp%1 to wp%2", _start, _destination]
 
-? _vt in (airTransport select siPlayer) : _this exec "Player\Order TransportDuty Air.sqs"; exit
-? _vt in (groundTransport select siPlayer) : _this exec "Player\Order TransportDuty Ground.sqs"; exit
+? _vt in (airTransport select siPlayer) : _this exec "Player\Order\TransportDuty Air.sqs"; exit
+? _vt in (groundTransport select siPlayer) : _this exec "Player\Order\TransportDuty Ground.sqs"; exit
 exit

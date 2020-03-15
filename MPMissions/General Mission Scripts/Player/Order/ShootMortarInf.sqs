@@ -1,0 +1,65 @@
+; args: [unit, marker, target]
+
+_unit = _this select 0
+_marker = _this select 1
+_target = _this select 2
+
+#PrepareToMove
+? _unit distance _target < 450: goto "PrePareToAttack"
+	_unit groupChat "Too far away. Moving to get close enough (about 400 meters)."; _timeStart = time; _timeHint = _timeStart + 5*60; 
+	_hint = {["I've been running for %1 minutes. Distance %2 meters now.", (_timeHint -_timeStart)/60, (_unit distance _target) - (_unit distance _target)%1]}
+#CheckPosReached
+	_vector = [getPos _target, getPos _unit] call funcVectorSub; _dist = (_unit distance _target) - 400
+	_vector = [_vector, _dist/(_dist+400)] call funcVectorScale; _destination = [getPos _unit, _vector] call funcVectorAdd
+	_unit doMove _destination
+	~5
+	? call orderCheck : goto "Exit"
+	? !(alive _unit) || _unit != vehicle _unit: goto "Exit"
+	? time > _timeHint: call format _hint; _timeHint = _timeHint + 5*60
+	? _unit distance _target > 450 : goto "CheckPosReached"
+#PrePareToAttack
+	_unit groupChat "Target in range. Prepare to attack.";
+	doStop _unit
+	#AttackCheck
+		? _unit distance _target > 450: goto "PrepareToMove"
+		_magazines = _unit call LoadFile "Common\SQF\GetNotEmptyMags.sqf"; _weapons = weapons _unit
+		? !([["M16MortarLauncher_TZK_xj200", "AK74MortarLauncher_TZK_xj200"], _magazines] call funcArrayOverlap): goto "CheckRearm"
+		? !([["M16MortarLauncher_TZK_xj200", "AK74MortarLauncher_TZK_xj200"], _weapons] call funcArrayOverlap): goto "CheckRearm"
+		_weapon = ["M16MortarLauncher_TZK_xj200", "AK74MortarLauncher_TZK_xj200"] select siPlayer
+		? !(_unit hasWeapon _weapon): _weapon = ["M16MortarLauncher_TZK_xj200", "AK74MortarLauncher_TZK_xj200"] select (siEnemy select siPlayer)
+		_unit reveal _target
+		~0.1
+		_unit doTarget _target
+		~5
+		_unit fire _weapon
+		~0.1
+		? call orderCheck : goto "Exit"
+		? !(alive _unit) || _unit != vehicle _unit: goto "Exit"
+	goto "AttackCheck"
+#CheckRearm
+	_magData = (_unit call funcGetRearmData) select 1
+	? !([["M16MortarLauncher_TZK_xj200", "AK74MortarLauncher_TZK_xj200"], _magData] call funcArrayOverlap): _unit groupChat "I'm not mortar soldier. Can't go rearm."; goto "Exit"
+	_vs = [getPos _unit, 500, (typesSupport select si0) + (typesSupport select si1), []] call funcGetNearbyVehicles
+	? count _vs == 0 : _unit groupChat "No support vehicle near. Magazines exhausted. Order aborted."; goto "Exit"
+	_distMin = 500; _sup = objNull
+	{ _dist = _unit distance (_x select 0); if (_dist < _distMin) then { _sup = (_x select 0); _distMin = _dist } } foreach _vs
+	? isNull _sup : _unit groupChat "No support vehicle near. Magazines exhausted. Order aborted."; goto "Exit"
+	_unit groupChat "Moving to support vehicle for more magazines."
+
+	_timeAbort = time + 5*60
+	#MoveToSupport
+		_posMove = [[0,5], (getDir _sup)] call funcVectorRot
+		_posMove = [getPos _sup, _posMove] call funcVectorSub
+		_unit doMove _posMove
+		~5
+		? !(alive _unit) || _unit != vehicle _unit : goto "Exit"
+		? call orderCheck : goto "Exit"
+		? !(alive _sup) : goto "CheckRearm"
+		? time > _timeAbort : _unit groupChat "Unable to reach support vehicle. Order aborted."; goto "Exit"
+		? (_unit distance _sup) > 10 : goto "MoveToSupport"
+	_unit groupChat "Rearming at support vehicle."; [_unit, _sup] exec "Player\Rearm.sqs"
+	~5 + 1
+	goto "PrepareToMove"
+
+#Exit
+	exit

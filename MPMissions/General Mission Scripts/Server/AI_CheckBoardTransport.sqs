@@ -17,7 +17,15 @@ _transp = objNull
 _i = 0; _c = count _res
 	#SetAir
 	? _i >= _c : goto "AirSet"
-	_transp = (_res select _i) select 0; _vt = (_transp call funcGetUnitTypeFromObject); _i = _i + 1
+	_transp = (_res select _i) select 0; 
+		_className = typeOf _transp; _found = false; _array = +unitTypeArray
+		#CheckType
+		_vt = _array find _className
+		? _vt == -1: goto "TypeChecked"
+		? _transp in ((unitMatrix select si0) select _vt) || _transp in ((unitMatrix select si1) select _vt) || _transp in ((unitMatrix select siRes) select _vt) || _transp in ((unitMatrix select siCiv) select _vt): _found = true
+		? !_found: _array select [_vt, ""]; goto "CheckType"
+		#TypeChecked
+		_i = _i + 1
 	? !(_vt in _typesTransport) : 	goto "SetAir"
 	? (isNull driver _transp) : 			goto "SetAir"
 	? (damage _transp) > 0.5 || ((getPos _transp) select 2) > 5 || (speed _transp) > 1 : 		goto "SetAir"
@@ -40,7 +48,15 @@ _transp = objNull
 _i = 0; _c = count _res
 	#SetGround
 	? _i >= _c : goto "GroundSet"
-	_transp = (_res select _i) select 0; _vt = (_transp call funcGetUnitTypeFromObject); _i = _i + 1
+	_transp = (_res select _i) select 0; 
+		_className = typeOf _transp; _found = false; _array = +unitTypeArray
+		#CheckType
+		_vt = _array find _className
+		? _vt == -1: goto "TypeChecked"
+		? _transp in ((unitMatrix select si0) select _vt) || _transp in ((unitMatrix select si1) select _vt) || _transp in ((unitMatrix select siRes) select _vt) || _transp in ((unitMatrix select siCiv) select _vt): _found = true
+		? !_found: _array select [_vt, ""]; goto "CheckType"
+		#TypeChecked
+		_i = _i + 1
 	? !(_vt in _typesTransport) : 	goto "SetGround"
 	? (isNull driver _transp) : 			goto "SetGround"
 	? (damage _transp) > 0.5 || ((getPos _transp) select 2) > 5 || (speed _transp) > 1 : 		goto "SetGround"

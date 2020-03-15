@@ -19,7 +19,13 @@ _i = rearmDataObj find _vehicleRearm
 ? (count _mags) == 0 : exit
 
 ; CALC COST
-_type = _vehicleRearm call funcGetUnitTypeFromObject
+	_className = typeOf _vehicleRearm; _found = false; _array = +unitTypeArray
+	#CheckType
+	_type = _array find _className
+	? _type == -1: goto "TypeChecked"
+	? _vehicleRearm in ((unitMatrix select si0) select _type) || _vehicleRearm in ((unitMatrix select si1) select _type) || _vehicleRearm in ((unitMatrix select siRes) select _type) || _vehicleRearm in ((unitMatrix select siCiv) select _type): _found = true
+	? !_found: _array select [_type, ""]; goto "CheckType"
+	#TypeChecked
 ? _type == -1 && _unit != _vehicleRearm : format["ERROR: _type is -1 for vehicle '%1' in AI_Rearm", _vehicleRearm] call fDebugLog; exit
 
 ? _unit != _vehicleRearm : goto "RearmVehicle"

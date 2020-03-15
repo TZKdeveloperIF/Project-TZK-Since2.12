@@ -83,6 +83,6 @@ lbSetCurSel [_idcList, 0]
 #Support
   _vehicle = (_vs select (lbCurSel _idcList)) select 0
   ? !(alive _vehicle) : hint "Support vehicle destroyed"; goto "Update"
-  { [_x, _vehicle, _prio] exec "Player\Order Support.sqs" } foreach _units
+  { [_x, _vehicle, _prio] exec "Player\Order\Support.sqs" } foreach _units
   closedialog 0
   exit

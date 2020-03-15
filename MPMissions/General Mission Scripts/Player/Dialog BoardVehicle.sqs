@@ -86,6 +86,6 @@ lbSetCurSel [_idcList, 0]
   _vehicle = (_vs select (lbCurSel _idcList)) select 0
   ? !(alive _vehicle) : hint "Vehicle destroyed"; goto "Update"
   ? locked _vehicle : hint "Vehicle is locked"; goto "Update"
-  { [_x, _vehicle, _prio] exec "Player\Order BoardVehicle.sqs" } foreach _units
+  { [_x, _vehicle, _prio] exec "Player\Order\BoardVehicle.sqs" } foreach _units
   closedialog 0
   exit

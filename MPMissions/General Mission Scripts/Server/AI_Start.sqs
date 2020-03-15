@@ -20,7 +20,13 @@ _vehicle = vehicle _unit
 
 ; SUPPORT
 ? _unit == _vehicle : goto "SkipSupport"
-_typeVehicle = _vehicle call funcGetUnitTypeFromObject
+	_className = typeOf _vehicle; _found = false; _array = +unitTypeArray
+	#CheckType
+	_typeVehicle = _array find _className
+	? _typeVehicle == -1: goto "TypeChecked"
+	? _vehicle in ((unitMatrix select si0) select _typeVehicle) || _vehicle in ((unitMatrix select si1) select _typeVehicle) || _vehicle in ((unitMatrix select siRes) select _typeVehicle) || _vehicle in ((unitMatrix select siCiv) select _typeVehicle): _found = true
+	? !_found: _array select [_typeVehicle, ""]; goto "CheckType"
+	#TypeChecked
 ? _typeVehicle == -1 : format["ERROR: Vehicle type not found in AI_Start.sqs for '%1', treat it as non-support vehicle.", _vehicle] call fDebugLog; goto "SkipSupport"
 ? (groupCommander select _si) in (groupAiMatrix select _si) : if (_typeVehicle in (typesSupport select _si) && _unit == driver _vehicle) then {[_unit, _si, _gi] exec "Server\AI_PlaceSupportVehicle.sqs"; exit}
 #SkipSupport

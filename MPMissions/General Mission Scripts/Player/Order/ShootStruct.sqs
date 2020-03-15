@@ -1,0 +1,40 @@
+; args: [unit, marker, target, structure type]
+
+_unit = _this select 0
+_marker = _this select 1
+_target = _this select 2
+_type = _this select 3
+
+#CheckDistance
+_vehicle = vehicle _unit; _distLimit = viewDistance; _hint = "Target is out of the structure's ability. Order aborted."
+? _type in structsOccupiableMortar: _distLimit = 500 * (structsOccupiableMortar find _type) + 500
+? (upgMatrix select siPlayer) select upgLongWeaponRange == 2: _distLimit = 2*viewDistance; _hint = "Target is outside 2×viewDistance. Order aborted."
+? _type in structsOccupiableM46Art: _distLimit = 10000; _hint = "Target is very far. Probably can't hit it directly."
+? _unit distance _target > _distLimit: _unit groupChat _hint; exit
+? _unit distance _target < _distLimit && _unit distance _target > viewDistance: _unit groupChat "Target is far. Probably missing."
+? _unit distance _target < 50: _unit groupChat "Target too close. This will be suicide. Order aborted."; exit
+#PrePareToAttack
+	_unit groupChat "Prepare to attack.";
+	_weapon = (weapons _vehicle) select 0
+	#AttackCheck
+		? _unit distance _target > _distLimit: goto "CheckDistance"
+		? _vehicle ammo _weapon == 0: goto "CheckRearm"
+		_vehicle reveal _target
+		~0.1
+		_vehicle doTarget _target
+		~5
+		_vehicle fire _weapon
+		~0.1
+		? call orderCheck : goto "Exit"
+		? !(alive _unit) || _vehicle != vehicle _unit: goto "Exit"
+	goto "AttackCheck"
+#CheckRearm
+	_vs = [getPos _unit, 50, (typesSupport select si0) + (typesSupport select si1), []] call funcGetNearbyVehicles
+	? count _vs == 0 : _unit groupChat "No support vehicle near. Magazines exhausted. Order aborted."; goto "Exit"
+	_sup = (_vs select 0) select 0
+	_unit groupChat "Rearming at support vehicle."; [_unit, _sup] exec "Player\Rearm.sqs"
+	~30 + 1
+	goto "PrePareToAttack"
+
+#Exit
+	exit

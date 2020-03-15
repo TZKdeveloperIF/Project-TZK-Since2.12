@@ -1,0 +1,28 @@
+; args: [unit, pos, [target]]
+
+_unit = _this select 0
+_pos = _this select 1
+_marker = format ["TargetP_%1", (_this select 2) select 0]; _target = call _marker
+
+_order = []; _id = -1; call orderNew
+? !(alive _unit) : exit
+
+_vehicle = vehicle _unit
+? _unit != gunner _vehicle: exit
+? (getMarkerPos _marker) select 0 < 0: _unit groupChat "Target not set. Order aborted."; exit
+
+? _unit != _vehicle: goto "CheckVehicle"
+exit
+; However "fire" command is useless for infantry. Thus exit it for soldiers.
+; _magData = (_unit call funcGetRearmData) select 1
+; _weapons = weapons _unit
+; ? [["M16MortarLauncher_TZK_xj200", "AK74MortarLauncher_TZK_xj200"], _weapons + _magData] call funcArrayOverlap: [_unit, _marker, _target] exec "Player\Order\ShootMortarInf.sqs"; exit
+
+#CheckVehicle
+_type = _vehicle call funcGetUnitTypeFromObject
+? _type in (typesHeavyTank + typesLightTank + typesHowitzer) || (typeOf _vehicle) in ["M1A1_Art_xj200", "T80_Art_xj200"]: [_unit, _marker, _target] exec "Player\Order\ShootTank.sqs"; exit
+
+? _type == -1: _type = _vehicle call funcGetStructTypeFromObject
+? _type in (structsOccupiableMortar + structsOccupiableM46 + structsOccupiableM46Art): [_unit, _marker, _target, _type] exec "Player\Order\ShootStruct.sqs"; exit
+
+; EOF

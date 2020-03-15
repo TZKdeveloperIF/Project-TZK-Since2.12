@@ -33,11 +33,18 @@ exit
 	? count _groups == 0 : exit
 	
 	[_si, _gi, _cost] exec "Server\MoneySpend.sqs"
+	_veh = _res select 0; _pos = getPos _veh
+	_i = 0; _c = count vehicleAttached; _found = false
+	#CheckMHQTugged
+		? _i >= _c || _found: goto "MHQTuggedCheck"
+		_entry = vehicleAttached select _i
+		? _veh in (_entry select tsTugged): _found = true; _pos = getPos (_entry select tsTug)
+		_i = _i + 1
+		goto "CheckMHQTugged"
+	#MHQTuggedCheck
 	
 	@!(mutexWorkerJoin)
 	mutexWorkerJoin = true
 	_membersMin = 12; _i = 0; _j = 0
 	{if (count(units _x) < _membersMin) then {_membersMin = count(units _x); _i = _j}; _j = _j + 1} forEach _groups
-	[_ut, 0, 0, 0, getPos (_res select 0), 0, _si, giWorker, (_groups select _i), 0, 1] exec "Common\AddUnit.sqs"; mutexWorkerJoin = false; exit
-	
-	
+	[_ut, 0, 0, 0, _pos, 0, _si, giWorker, (_groups select _i), 0, 1] exec "Common\AddUnit.sqs"; mutexWorkerJoin = false; exit
