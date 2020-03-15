@@ -43,9 +43,17 @@ call busySet
 
 _timeAbort = time + 2*60
 
-? _unit != _v : _vt = _v call funcGetUnitTypeFromObject
+? _unit == _v: goto "SkipTypeCheck"
+	_className = typeOf _v; _found = false; _array = +unitTypeArray
+	#CheckType
+	_vt = _array find _className
+	? _vt == -1: goto "TypeChecked"
+	? _v in ((unitMatrix select si0) select _vt) || _v in ((unitMatrix select si1) select _vt) || _v in ((unitMatrix select siRes) select _vt) || _v in ((unitMatrix select siCiv) select _vt): _found = true
+	? !_found: _array select [_vt, ""]; goto "CheckType"
+	#TypeChecked
 ? _unit != _v && _vt == -1 : goto "Exit"
 
+#SkipTypeCheck
 ? _vt != -1 : if ( "Air" countType [_v] > 0 ) then { goto "MoveAir" }
 
 #MoveGround

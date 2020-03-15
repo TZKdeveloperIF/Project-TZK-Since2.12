@@ -7,6 +7,6 @@ _radius = ((_this select 2) select 1)
 
 ? !(alive _unit) : exit
 ? _unit != vehicle _unit : exit
-? (_wp select 0) == -1 : _unit groupchat "WP not defined."; exit
+? (_wp select 0) == -1 : _unit groupChat "WP not defined."; exit
 
-[_unit, _wp, [_radius]] exec "Player\Order SatchelPos.sqs"
+[_unit, _wp, [_radius]] exec "Player\Order\MinePos.sqs"

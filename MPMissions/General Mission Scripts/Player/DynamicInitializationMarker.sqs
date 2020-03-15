@@ -12,6 +12,13 @@ _i = 0; _count = count towns;
 	_marker = format["Town_%1", _i]; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Flag1"; _marker setMarkerSize [1.25,1.25]
 	_i = _i + 1
 	? _i < _count : goto "FlagMarker"
+	
+_i = 0; _count = 10
+#TargetMarker
+	_marker = Format["TargetP_%1", _i]; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Destroy"; _marker setMarkerColor "ColorYellow"; _marker setMarkerSize [0.6,0.6]; _marker setMarkerText format ["Target %1", _i]
+	_marker = Format["TargetS_%1", _i]; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Destroy"; _marker setMarkerColor "ColorRed"; _marker setMarkerSize [0.6,0.6]; _marker setMarkerText format ["Target %1", _i]
+	_i = _i + 1
+	? _i < _count : goto "TargetMarker"
 
 _i = 0
 maxStructureMarkers = 50; mutexMarkerStructure = false

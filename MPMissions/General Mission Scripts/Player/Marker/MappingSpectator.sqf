@@ -100,8 +100,8 @@ if (time % 30 > 28.5) then {
 	{
 		_i = 0;
 		while "_i < maxStructureMarkers" do {
-			_v = (StructureMarkerMapping select _x) select _i
-			_m = format["Structure_%1_%2", _x, _i]
+			_v = (StructureMarkerMapping select _x) select _i;
+			_m = format["Structure_%1_%2", _x, _i];
 			if (isNull _v) then {_m setMarkerPos hiddenMarkerPos};
 			_i = _i + 1;
 		};
