@@ -1,0 +1,13 @@
+; args: [objectOld, objectNew]
+
+_objectold = _this select 0
+_objectnew = _this select 1
+
+@!(mutexStructServer)
+mutexStructServer = true
+
+_i = structServer find _objectold
+? _i == -1: _i = count structServer; "ERROR: _object not found in structuresServerEdit when structure is to be deleted. It might remain some rubbish unable to clear during the whole game." call fDebugLog
+structServer set [_i, _objectnew]
+
+mutexStructServer = false

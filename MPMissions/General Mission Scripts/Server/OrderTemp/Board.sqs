@@ -63,7 +63,7 @@ _groups = groupMatrix select _si
 		? !(_vt in _typesBoard) : 	goto "SetTransp"
 		? (isNull driver _transp) : 			goto "SetTransp"
 		? (damage _transp) > 0.5 || ((getPos _transp) select 2) > 5 || (speed _transp) > 1 : 		goto "SetTransp"
-		? call Cargo_transp >= call Volume_transp : goto "SetTransp"
+		? _transp call funcGetCargoNum >= (_transp call funcGetTranspVol) : goto "SetTransp"
 		_transports set [count _transports, _transp]; goto "SetTransp"
 
 	#TranspSet
@@ -76,7 +76,7 @@ _groups = groupMatrix select _si
 	_offset = 0
 	_timeMoveAbort = time + 5*60
 	#Move_Check
-		? call Cargo_transp >= call Volume_transp : goto "Fail"
+		? _transp call funcGetCargoNum >= (_transp call funcGetTranspVol) : goto "Fail"
 		_offset = _offset + 10
 		_vect = [getPos _unit, getPos _transp] call funcVectorSub
 		_dist = _unit distance _transp

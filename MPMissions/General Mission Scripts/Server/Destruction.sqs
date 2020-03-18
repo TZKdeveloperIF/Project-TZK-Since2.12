@@ -8,7 +8,9 @@ _si = _this select 3
 ? _isMCV == 1 : goto "DeleteMCV"
 
 #DeleteStructure
-	[_object, objNull, _si, true, false] exec "Server\StructuresServerRemove.sqs"
+	_i = structServer find _object
+	? _i != -1: _type = structsServer select _i select 1; [_si, _type] exec "Server\Info\DestructionCompleted.sqs"
+	[_object] exec "Server\StructuresServerClear.sqs"
 	@(isNull _object)
 	_si exec "Server\CheckWinDestruction.sqs"
 	exit

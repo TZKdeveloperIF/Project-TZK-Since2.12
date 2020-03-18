@@ -16,7 +16,7 @@ _vectRnd = [[0,0], 0, 25] call funcGetRandomPos
 _flag = (towns select _ti) select tdFlag
 _posFlag = getPos _flag
 
-_idOrder = ((orderMatrix select _si) select _gi) select 0
+_order = orderMatrix select _si select _gi; _idOrder = _order select 0
 _timeCalcPos = 0
 
 #WaitReady
@@ -27,12 +27,13 @@ _timeCheckSupport = time + 30 + random 60
 _sleep = 30
 
 _bMoveCorrect = true
+_setting = aiSetting select _si select _gi
 #Update
 	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
-	? call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {exit} else {goto "Sleep"}
+	? call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Sleep"}
 	
 	? !(alive _unit) : exit
-	? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+	? _idOrder != _order select 0 : exit
 
 	_vehicle = vehicle _unit
 
@@ -53,7 +54,7 @@ _bMoveCorrect = true
 	
 	#CheckMove
 	_distToDest = [getPos _unit, _posDest] call funcDistH; _posMove = _posDest
-	? ((call grpSetting) select aisMoveMode) == 1 && _bMoveCorrect: if (_unit == vehicle _unit && _distToDest > 300) then {_vector = [_posDest, getPos _unit] call funcVectorSub; _vector = [_vector, 250/_distToDest] call funcVectorScale; _posMove = [getPos _unit, _vector] call funcVectorAdd; _distToDest = 250}
+	? (_setting select aisMoveMode) == 1 && _bMoveCorrect: if (_unit == vehicle _unit && _distToDest > 300) then {_vector = [_posDest, getPos _unit] call funcVectorSub; _vector = [_vector, 250/_distToDest] call funcVectorScale; _posMove = [getPos _unit, _vector] call funcVectorAdd; _distToDest = 250}
 	_bMoveCorrect = !_bMoveCorrect
 	? _distToDest > 10 : goto "Move"
 	[_unit, true] exec "Server\StopAI.sqs"
@@ -69,6 +70,6 @@ _bMoveCorrect = true
 	~_sleep
 	
 	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
-	? call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {exit} else {goto "Sleep"}
+	? call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Sleep"}
   ? call busyCheck : _sleep = 10; goto "Sleep"
 	goto "Update"

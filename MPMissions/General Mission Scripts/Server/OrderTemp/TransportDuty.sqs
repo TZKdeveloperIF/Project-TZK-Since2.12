@@ -55,7 +55,7 @@ _groups = groupMatrix select _si
 	? _unit != driver _transp : goto "Sleep"
 	
 	_distToPickup = [getPos _transp, _posPickup] call funcDistH
-	_crew = call Cargo_transp
+	_crew = _transp call funcGetCargoNum
 	? _distToPickup > 200 && _crew > 2 : goto "MoveEject"
 	? _distToPickup < 200 && _crew > 10 : goto "MoveEject"
 
@@ -74,7 +74,7 @@ _groups = groupMatrix select _si
 		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
 
 		? time > _timeRepeat : [_unit, _posMove] call funcMoveAI; _timeRepeat = time + 60
-		? call Cargo_transp >= 4 : goto "MoveEject"
+		? _transp call funcGetCargoNum >= 4 : goto "MoveEject"
 		? ([_posMove, getPos _transp] call funcDistH) > 200 : goto "MovePickup_Check"
 
 	call busyClear
@@ -111,9 +111,9 @@ _groups = groupMatrix select _si
 		? !call temporaryCheck : goto "EOF"
 		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
 	  
-		? call Cargo_transp > call Volume_transp - 2 && call Cargo_transp > 0: goto "MoveEject"
-		? call Cargo_transp < 4 : goto "WaitForCargo"
-		? call Cargo_transp > _crew : _crew = call Cargo_transp; goto "WaitForCargo"
+		? _transp call funcGetCargoNum > (_transp call funcGetTranspVol) - 2 && _transp call funcGetCargoNum > 0: goto "MoveEject"
+		? _transp call funcGetCargoNum < 4 : goto "WaitForCargo"
+		? _transp call funcGetCargoNum > _crew : _crew = _transp call funcGetCargoNum; goto "WaitForCargo"
   
 	#MoveEject
 		_posMove = [_posEject, 20, 20] call funcGetRandomPos

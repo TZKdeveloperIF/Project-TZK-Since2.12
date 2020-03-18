@@ -9,14 +9,12 @@ _type = _this select 2
 mutexRepStructMatrix = true
 
 _list = repairableStructureMatrix select _si
-_index = _this call funcAddToRepairList
-
-_found = false
-_count = count _list
-while "_index < _count && !_found" do { if (isNull ((_list select _index)select(0))) then { _found = true } else { _index = _index + 1} }
-; ? _index < _count : if !(isNull ((_list select _index)select(0))) then { _index = _count }
+_index = _list call funcFindNullForward
+? _index == -1: _index = count _list
 
 _damageRate = 1
 ? _type in structsDefence : _damageRate = 0.24
-_list set [_index, [_object, _damageRate, _type] ]
+_list set [_index, _object]
+(repairableStructureInfo select _si) set [_index, [_damageRate, _type]]
+
 mutexRepStructMatrix = false

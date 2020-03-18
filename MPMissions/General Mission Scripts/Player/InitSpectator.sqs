@@ -4,7 +4,6 @@
 _unit = _this
 ? (_unit != player): player globalchat "Exiting InitSpectator.sqs"; Exit
 
-player addWeapon "NVGoggles"
 forceMap true
 
 ;init spectator functions
@@ -18,7 +17,7 @@ funcMappingSpectator = preprocessFile "Player\Marker\MappingSpectator.sqf"
 playerSide = civilian
 siPlayer = siCiv
 
-
+bFreeMode = false
 
 bShowLog = false
 bShowAll = true
@@ -45,9 +44,7 @@ player groupchat "Start data received."
 forceMap false
 
 ; add weapon used for reload detection
-_unit addWeapon "Ingram"
-{ _unit addMagazine "IngramMag" } forEach [1]
-_unit selectWeapon "Ingram"
+_unit addWeapon "Ingram"; { _unit addMagazine "IngramMag" } forEach [1]; _unit selectWeapon "Ingram"; player addWeapon "NVGoggles"
 
 [_unit] exec "Player\UpdateSpectator.sqs"
 

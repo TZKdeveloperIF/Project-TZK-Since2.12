@@ -25,20 +25,38 @@ _gi = ( groupMatrix select si1 ) find ( _group )
 exit
 #SideSet
 
-_list = repairableStructureMatrix select _si
-? (count _list) == 0 : goto "CheckObjects"
+_repairObjList = repairableStructureMatrix select _si; _repairInfoList = repairableStructureInfo select _si
+? (count _repairObjList) == 0 : goto "CheckObjects"
 
 _object = objNull
 _type = -1
 _distMin = 100000
-{ _obj =_x select 0; if ( !(isNull _obj) ) then { _dist = (_support distance _obj); if (_dist < _distMin) then { _object = _obj; _type = _x select 2; _distMin = _dist }; } } foreach _list
+{ _obj =_x; if ( !(isNull _obj) ) then { _dist = (_support distance _obj); if (_dist < _distMin) then { _object = _obj; _distMin = _dist }; } } foreach _repairObjList
 
 ? isNull _object || _distMin > _range : goto "CheckObjects"
 
-_damage = [_object, _repair, _si] call funcRepairStructure
+		@!(mutexRepairStructure)
+		mutexRepairStructure = true
+		
+		; search next structure immediately if this one has been repaired.
+		_index = _repairObjList find _object
+		? _index == -1: mutexRepairStructure = false; goto "SideSet"
+		_damage = _repairInfoList select _index select 0
+		? _damage <= 0: mutexRepairStructure = false; goto "SideSet"
+		_type = _repairInfoList select _index select 1; _cost = structDefs select _type select sdCost; _cost = 0.1*_cost*_value; _cost = _cost - (_cost % 1)
+		? _object in primStructsPlaced: _cost = 0
+		? _cost >  groupMoneyMatrix select _si select (giCO select _si): [_si, _type] exec "Server\Info\NoMoneyForStructRepair.sqs"; mutexRepairStructure = false; goto "Update"
+			
+			[_si, giCO select _si, _cost] exec "Server\MoneySpend.sqs"; _damage = _damage - _repair
+			(_repairInfoList select _index) set [0, _damage]
+			? _damage <= 0: [_object, _type, _si] exec "Server\ReplacePrimStruct.sqs"; _repairObjList set [_index, objNull]
+		
+		mutexRepairStructure = false
+
 ? _group in (groupAiMatrix select _si) : goto "Update"
-? (_damage + _repair) < 0 : goto "SideSet"
+
 ? _gi != -1 && _type != -1 : [_damage, _si, _gi, _type] exec "Server\Info\StructRepaired.sqs"
+
 ; those negative _damage will be reset in Server\Info\StructRepaired.sqs
 ; ? _damage == 0 && _type != -1 : [_si, _type] exec "Server\Info\StructReady.sqs"; [_object] exec "Server\primStructsPlacedRemove.sqs"
 goto "Update"

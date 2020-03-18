@@ -8,10 +8,10 @@ _rearm = _this select 4
 
 ? _unit != driver vehicle _unit : exit
 
-_autoRepair = ((call grpSetting) select aisAutoRepair)
-_autoRearm = ((call grpSetting) select aisAutoRearm)
-_autoRepairRange = aisAutoSupportRangeDefs select ((call grpSetting) select aisAutoRepairRange)
-_autoRearmRange = aisAutoSupportRangeDefs select ((call grpSetting) select aisAutoRearmRange)
+_autoRepair = (aiSetting select _si select _gi select aisAutoRepair)
+_autoRearm = (aiSetting select _si select _gi select aisAutoRearm)
+_autoRepairRange = aisAutoSupportRangeDefs select (aiSetting select _si select _gi select aisAutoRepairRange)
+_autoRearmRange = aisAutoSupportRangeDefs select (aiSetting select _si select _gi select aisAutoRearmRange)
 
 _v = vehicle _unit 
 _vt = -1
@@ -35,7 +35,9 @@ exit
 @!(mutexCheckSupport)
 mutexCheckSupport = true
 ? _unit in CheckSupportUnits : mutexCheckSupport = false; exit
-CheckSupportUnits set [count CheckSupportUnits, _unit]
+_indexOfUnit = CheckSupportUnits find objNull
+? _indexOfUnit == -1: _indexOfUnit = count CheckSupportUnits
+CheckSupportUnits set [_indexOfUnit, _unit]
 mutexCheckSupport = false
 
 call busySet
@@ -62,7 +64,6 @@ _timeAbort = time + 2*60
 	~10
 	
   ? !(alive _unit) || _v != (vehicle _unit) || !(alive _support) || time > _timeAbort : goto "Exit"
-	; ? _idOrder != ((orderMatrix select _si) select _gi) select 0 : goto "Exit"
   ? (_v distance _support) > rangeSupport : goto "MoveGround"
 goto "SupportReached"
 
@@ -115,6 +116,6 @@ _v flyInHeight 150
   call busyClear
 	@!(mutexCheckSupport)
 	mutexCheckSupport = true
-	CheckSupportUnits = CheckSupportUnits - [_unit, objNull]
+	CheckSupportUnits set [_indexOfUnit, objNull]
 	mutexCheckSupport = false
   exit

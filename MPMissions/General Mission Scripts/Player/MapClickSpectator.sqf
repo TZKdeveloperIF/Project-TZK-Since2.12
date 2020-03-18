@@ -16,7 +16,8 @@ _processed = false;
 if (!_processed && _alt && _shift) then
 {
 	player setPos _pos;
-  _processed = true;
+	player groupChat format ["Move to new position %1.", _pos call funcCalcMapPos];
+	_processed = true;
 };
 
 // move cam

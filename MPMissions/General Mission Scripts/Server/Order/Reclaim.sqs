@@ -8,7 +8,7 @@ _posReclaim = ((wpCO select _si) select (_params select 0))
 _indexReclaim = _params select 1
 _radius = 50*((_params select 2) + 1)
 
-_idOrder = ((orderMatrix select _si) select _gi) select 0
+_order = orderMatrix select _si select _gi; _idOrder = _order select 0
 
 #WaitReady
 ~2
@@ -24,7 +24,7 @@ _bCheckDropBomb = true
 #CheckReclaimVehicles
 _rnd = 1
 ? !(alive _unit) : exit
-? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+? _idOrder != _order select 0 : exit
 ~ _sleep
 _typesReclaim = []; _crewnum = 0; _vehiclesReclaim = []
 
@@ -74,7 +74,7 @@ _vehicles = _vehicles - _vehiclesReclaim
 
 #ReclaimVehicle
   ? !(alive _unit) : exit
-  ? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+  ? _idOrder != _order select 0 : exit
   ? !(_vt in _typesReclaim && _unit == driver _vehicle && isNull gunner _vehicle && _crewnum > 1) && _unit != _vehicle : goto "Patrol"
   
   ? count _vehiclesReclaim == 0 : _sleep = 30; goto "CheckReclaimVehicles"
@@ -97,7 +97,7 @@ _vehicles = _vehicles - _vehiclesReclaim
 
    ~_dist*0.2
   ? !(alive _unit) : exit
-  ? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+  ? _idOrder != _order select 0 : exit
   ? time > _timeAbort || _offset >= 50 || !(alive _reclaimVehicle) : goto "Fail"
   ? (_unit distance _reclaimVehicle) > 50 : goto "Move_Check"
 
@@ -131,7 +131,7 @@ goto "CheckReclaimVehicles"
 
 #MoveToReclaimArea
 	? !(alive _unit) : exit
-	? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+	? _idOrder != _order select 0 : exit
 	? vehicle _unit != _vehicle : goto "GetNearbyVehicles"
 	_unit doMove _posReclaim
 	~10
@@ -142,7 +142,7 @@ goto "CheckReclaimVehicles"
 	doStop _unit
 #WaitForCrew
 	? !(alive _unit) : exit
-	? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+	? _idOrder != _order select 0 : exit
 	? vehicle _unit != _vehicle : goto "GetNearbyVehicles"
 	
 	? !(_vt in _typesReclaim && _unit == driver _vehicle && isNull gunner _vehicle && _crewnum > 1) && _unit != _vehicle : goto "Patrol"
@@ -155,7 +155,7 @@ goto "CheckReclaimVehicles"
 _posMove = [_posReclaim, 150, 150] call funcGetRandomPos
 #Patrol_Update
 	? !(alive _unit) : exit
-	? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+	? _idOrder != _order select 0 : exit
 
 	? _unit != driver _vehicle : _sleep = 30; goto "Sleep"
 	? isNull gunner _vehicle : [_unit, _posReclaim] call funcMoveAI; _sleep = 30; goto "Sleep"

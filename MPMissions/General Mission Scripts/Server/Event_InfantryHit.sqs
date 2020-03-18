@@ -25,7 +25,7 @@ _gi = ( (groupMatrix select _si) ) find ( (group _unit) )
 #SkipResetGroupIndex
 
 ? call busyCheck : exit
-? ((call grpSetting) select aisAutoRepair) == 2 : exit
+? (aiSetting select _si select _gi select aisAutoRepair) == 2 : exit
 
 _heal = [_unit, _si, _gi] call funcCheckRepair
 ? !_heal : exit

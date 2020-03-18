@@ -38,9 +38,9 @@ _gis = ([_si] call funcGetAIGroupsIndex); _i = -1; _c = count _gis
 		_i = _i + 1
 		? !(_i < _c) : mutexHandleAITemporary = false; exit
 		_gi = _gis select _i
-		? ((call grpSetting) select aisLockOrder) == 1 : goto "OrderAll_Check"
-		? (_giPlayer == (giCO select _si)) && !( (["Commander"] + callsigns) select ((call grpSetting) select aisSuperior) in ["Commander", _groupNames select _giPlayer] ) : goto "OrderAll_Check"
-		? (_giPlayer != (giCO select _si)) && (["Commander"] + callsigns) select ((call grpSetting) select aisSuperior) != _groupNames select _giPlayer : goto "OrderAll_Check"
+		? (aiSetting select _si select _gi select aisLockOrder) == 1 : goto "OrderAll_Check"
+		? (_giPlayer == (giCO select _si)) && !( (["Commander"] + callsigns) select (aiSetting select _si select _gi select aisSuperior) in ["Commander", _groupNames select _giPlayer] ) : goto "OrderAll_Check"
+		? (_giPlayer != (giCO select _si)) && (["Commander"] + callsigns) select (aiSetting select _si select _gi select aisSuperior) != _groupNames select _giPlayer : goto "OrderAll_Check"
 		_id = ((orderTempMatrix select _si) select _gi) select 0
 		(orderTempMatrix select _si) set [_gi, [_id+1, _type, _params]]
 		? !(isNull player) : if (_si == siPlayer) then {_group = (groupMatrix select _si) select _gi; (leader _group) sidechat format["Temporary Order Received, %1", ((orderTempMatrix select _si) select _gi) call funcGetOrderTempDesc]}

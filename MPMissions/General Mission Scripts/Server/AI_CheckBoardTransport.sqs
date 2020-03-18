@@ -29,7 +29,7 @@ _i = 0; _c = count _res
 	? !(_vt in _typesTransport) : 	goto "SetAir"
 	? (isNull driver _transp) : 			goto "SetAir"
 	? (damage _transp) > 0.5 || ((getPos _transp) select 2) > 5 || (speed _transp) > 1 : 		goto "SetAir"
-	? call Cargo_transp >= call Volume_transp : goto "SetAir"
+	? _transp call funcGetCargoNum >= (_transp call funcGetTranspVol) : goto "SetAir"
 	_transports set [count _transports, _transp]; goto "SetAir"
 	
 	#AirSet
@@ -60,7 +60,7 @@ _i = 0; _c = count _res
 	? !(_vt in _typesTransport) : 	goto "SetGround"
 	? (isNull driver _transp) : 			goto "SetGround"
 	? (damage _transp) > 0.5 || ((getPos _transp) select 2) > 5 || (speed _transp) > 1 : 		goto "SetGround"
-	? call Cargo_transp >= call Volume_transp : goto "SetGround"
+	? _transp call funcGetCargoNum >= (_transp call funcGetTranspVol) : goto "SetGround"
 	_transports set [count _transports, _transp]; goto "SetGround"
 	
 	#GroundSet

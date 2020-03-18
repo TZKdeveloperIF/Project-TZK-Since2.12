@@ -44,7 +44,7 @@ while "_i<_c" do
 };
 // if( dev && !isNull player) then{ player globalChat format["%1 - %2",_objects, _type] };
 
-[_si, _type, _objects select 0] exec "Common\AddToStructMatrix.sqs";
+[_si, _type, _objects select 0] exec "Server\AddToStructMatrix.sqs";
 
 [_objects, _type] exec "Server\StructuresServerAdd.sqs";
 
@@ -55,8 +55,6 @@ while "_i<_c" do
 [(groupMatrix select _si) select _gi, _type, _objects] exec "Server\InsertIntoUndoList.sqs";
 
 { _group = _x; { _group reveal _x } foreach _objects } foreach (groupAiMatrix select _si);
-
-[_objects select 0, _type, _si, 1] exec "Server\SendStructBuilt.sqs";
 
 [_si, _gi, _desc select sdCost] exec "Server\MoneySpend.sqs";
 

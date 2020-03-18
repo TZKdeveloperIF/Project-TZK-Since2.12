@@ -15,7 +15,7 @@ goto "CheckBase"
 #CheckStructs
 _list = repairableStructureMatrix select _si
 ? (count _list) == 0 : goto "CheckBase"
-_objRepair = (_list select ((random count _list) - 0.5)) select 0
+_objRepair = _list select ((random count _list) - 0.5)
 _unit doMove ([getPos _objRepair, rangeSupport - 5, rangeSupport - 5] call funcGetRandomPos)
 ~30
 ? !(alive _unit) || !(alive _support) || _unit != driver _support : goto "Exit"

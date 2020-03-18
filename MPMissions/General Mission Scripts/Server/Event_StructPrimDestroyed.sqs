@@ -7,11 +7,10 @@ _minutesDestroyed = 0
 
 _si exec "Server\CheckWinDestruction.sqs"
 
-_res = [_object] call funcStructuresServerSearch
+_i = structServer find _object
+? _i == -1: "ERROR: _object not found in structServer when structure destroyed. It might remain some rubbish unable to clear during the whole game. This structure is fail to be repaired." call fDebugLog; exit
 
-? !(_res select 3) : "ERROR: _object not found in structuresServer when structure destroyed. It might remain some rubbish unable to clear during the whole game." call fDebugLog
-
-_type = _res select 1
+_type = structsServer select _i select 1
 ? !(_object in primStructsPlaced): [_si, _type] exec "Server\Info\StructDestroyed.sqs"
 
 [_object, _si, _type] exec "Server\AddToRepairList.sqs"
@@ -20,14 +19,17 @@ _lastDamage = 1
 #CheckRepaired
 	~30
 	
-	_damage = [_object, 0, _si] call funcRepairStructure		
-	? _damage == -1 : exit
+	? isNull _object : exit
+	_index = _repairObjList find _object
+	? _index == -1: exit
+	_damage = _repairInfoList select _index select 0
+	? _damage <= 0: exit
 	? isNull _object : exit
 	? _damage < _lastDamage : _lastDamage = _damage; goto "CheckRepaired"
-	; ? (damage _object) == 0 : Exit
+	
 	_minutesDestroyed	= _minutesDestroyed + 0.5
 
 	? _minutesDestroyed < 10 : goto "CheckRepaired"
 
 #DeleteStructure
-	[_object, objNull, _si, false, false] exec "Server\StructuresServerRemove.sqs"
+	[_object] exec "Server\StructuresServerClear.sqs"

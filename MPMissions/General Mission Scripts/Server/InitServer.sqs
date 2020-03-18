@@ -7,52 +7,18 @@
 _boole_Infantry_Mode = _this select 0; _boole_NeutralTown_Mode = _this select 1; _boole_SEMod_Mode = _this select 2;
 boole_Infantry_Mode = _boole_Infantry_Mode; boole_NeutralTown_Mode = _boole_NeutralTown_Mode; boole_SEMod_Mode = _boole_SEMod_Mode
 
-fBuildStruct = preprocessFile "Server\BuildStruct.sqf"
-funcRepairStructure = preprocessFile "Server\RepairStructure.sqf"
-funcCalcStructurePosDir = preprocessFile "Server\CalcStructurePosDir.sqf"
-funcCalcBuilderPosDir = preprocessFile "Server\CalcBuilderPosDir.sqf"
-;funcCalNormalDistribution = preprocessFile "Server\CalNormalDistribution.sqf"
-funcGetIdleFactory = preprocessFile "Server\GetIdleFactory.sqf"
-funcGetIdleFactories = preprocessFile "Server\GetIdleFactories.sqf"
-funcGetFactoryWithEmptyQueue = preprocessFile "Server\GetFactoryWithEmptyQueue.sqf"
-funcGetSmallestAiGroup = preprocessFile "Server\GetSmallestAiGroup.sqf"
-funcMoneyAdd = preprocessFile "Server\MoneyAdd.sqf"
-funcMoneySpend = preprocessFile "Server\MoneySpend.sqf"
-funcMoneyTransfer = preprocessFile "Server\MoneyTransfer.sqf"
+[] exec "Server\InitFunctions.sqs"
 
-funcWatch = preprocessFile "Server\Watch.sqf"
-funcMoveAI = preprocessFile "Server\MoveAI.sqf"
-funcMoveCommand = preprocessFile "Server\MoveCommand.sqf"
-funcMoveStand = preprocessFile "Server\MoveStand.sqf"
-
-funcGetNearbyTransports = preprocessFile "Server\GetNearbyTransports.sqf"
-funcCalcSlots = preprocessFile "Server\CalcSlots.sqf"
-; funcStructuresServerAdd = preprocessFile "Server\StructuresServerAdd.sqf"
-funcStructuresServerSearch = preprocessFile "Server\StructuresServerSearch.sqf"
-funcAddToRepairList = preprocessFile "Server\AddToRepairList.sqf"
-funcCheckTGSpawn = preprocessFile "Server\CheckTGSpawn.sqf"
-funcCheckRepair = preprocessFile "Server\AI_CheckRepair.sqf"
-funcCheckRearm = preprocessFile "Server\AI_CheckRearm.sqf"
-funcUpdateKnowsAbout = preprocessFile "Server\UpdateKnowsAbout.sqf"
-funcUpdateTownCheckUnits = preprocessFile "Server\UpdateTownCheckUnits.sqf"
-
-funcAddServerUnit = preprocessFile "Server\AddServerUnit.sqf"
-funcUpdateResStartPos = preprocessFile "Server\UpdateResStartPos.sqf"
-funcUpdateResPatrolPos = preprocessFile "Server\UpdateResPatrolPos.sqf"
-funcUpdateResPatrolTowns = preprocessFile "Server\UpdateResPatrolTowns.sqf"
-funcUpdateResPatrolDestroy = preprocessFile "Server\UpdateResPatrolDestroy.sqf"
-funcAssignJoinAI = preprocessFile "Server\AssignJoinAI.sqf"
-
-busyInit = "call format[""busy%1 = []"", sideNames select _si]"
-busySet = 	"call format[""[_unit,_si] exec """"Server\BusySet.sqs""""""]"
-busyClear = "call format[""[_unit,_si] exec """"Server\BusyClear.sqs""""""]"
-busyCheck = "call format[""_unit in busy%1"", sideNames select _si]"
+busyInit = "call format[{busy%1 = []}, sideNames select _si]"
+busySet = 	"call format[{[_unit,_si] exec {Server\BusySet.sqs}}]"
+busyClear = "call format[{[_unit,_si] exec {Server\BusyClear.sqs}}]"
+busyCheck = "call format[{_unit in busy%1}, sideNames select _si]"
 mutexBusy = false
 
-temporaryInit = "call format[""temporary%1 = []"", sideNames select _si]"
-temporarySet = 	"call format[""[_unit,_si] exec """"Server\TemporarySet.sqs""""""]"
-temporaryClear = "call format[""[_unit,_si] exec """"Server\TemporaryClear.sqs""""""]"
-temporaryCheck = "call format[""_unit in temporary%1"", sideNames select _si]"
+temporaryInit = "call format[{temporary%1 = []}, sideNames select _si]"
+temporarySet = 	"call format[{[_unit,_si] exec {Server\TemporarySet.sqs}}]"
+temporaryClear = "call format[{[_unit,_si] exec {Server\TemporaryClear.sqs}}]"
+temporaryCheck = "call format[{_unit in temporary%1}, sideNames select _si]"
 mutexTemporary = false
 
 _si = si0
@@ -61,14 +27,14 @@ _si = si1
 call busyInit; call temporaryInit
 
 
-MaterialEffectVehicles = []; mutexMEV = false
+
 
 CheckSupportUnits = []; mutexCheckSupport = false
 
 CCdistMax = [distMaxCC, distMaxCC]
 
-repairableStructureMatrix = [ [], [] ]; mutexRepStructMatrix = false; mutexRepairStructure = false
-structuresServer = []; mutexStructServer = false
+repairableStructureMatrix = [ [], [] ]; repairableStructureInfo = [ [], [] ]; mutexRepStructMatrix = false; mutexRepairStructure = false
+structServer = []; structsServer = []; mutexStructServer = false
 primStructsPlaced = []; mutexPlacedPrimStructs = false
 factoryQueues = [ [], [] ]; mutexFacQueues = false
 buildingsInUse = []; mutexbuildingInUse = false

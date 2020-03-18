@@ -26,6 +26,8 @@ _unitsStarted = []
 _posSpawn = getPos _unit
 
 _busyCheckX = "call format[""_x in busy%1%2"", sideNames select _si, _gi]"
+_order = orderMatrix select _si select _gi; _orderTemp = orderTempMatrix select _si select _gi; 
+_buyFacSet = []; _setting = aiSetting select _si select _gi
 #Update
 	? !(alive _unit): goto "WaitUntilAlive"
 	
@@ -36,19 +38,17 @@ _busyCheckX = "call format[""_x in busy%1%2"", sideNames select _si, _gi]"
 	_unitsStarted = _unitsStarted - (_unitsStarted - (units _group))
 	
 	; check for new Temporary order
-	? _idTemporaryOrder == ((orderTempMatrix select _si) select _gi) select 0 : goto "NoNewTemporaryOrder"
-	_idTemporaryOrder = ((orderTempMatrix select _si) select _gi) select 0
-	_order = (orderTempMatrix select _si) select _gi
-	_script = (orderTempDefs select (_order select 1)) select 2
-	{ if (alive _x) then { [_x, _si, _gi, _order select 2] exec format["Server\%1", _script] } } foreach _unitsStarted
+	? _idTemporaryOrder == _orderTemp select 0 : goto "NoNewTemporaryOrder"
+	_idTemporaryOrder = _orderTemp select 0
+	_script = (orderTempDefs select (_orderTemp select 1)) select 2
+	{ if (alive _x) then { [_x, _si, _gi, _orderTemp select 2] exec format["Server\%1", _script] } } foreach _unitsStarted
 	~1
 	
 	#NoNewTemporaryOrder
 	
 	; check for new order
-	? _idOrder == ((orderMatrix select _si) select _gi) select 0 : goto "NoNewOrder"
-	_idOrder = ((orderMatrix select _si) select _gi) select 0
-	_order = (orderMatrix select _si) select _gi
+	? _idOrder == _order select 0 : goto "NoNewOrder"
+	_idOrder = _order select 0
 	_script = (orderDefs select (_order select 1)) select 2
 	{ if (alive _x) then { [_x, _si, _gi, _order select 2] exec format["Server\%1", _script] } } foreach _unitsStarted
 	
@@ -59,20 +59,19 @@ _busyCheckX = "call format[""_x in busy%1%2"", sideNames select _si, _gi]"
 	{ if (alive _x) then { [_x, _si, _gi] exec "Server\AI_Start.sqs"; _unitsStarted set [count _unitsStarted, _x] } } foreach _unitsStart
 	
 	; check for new CombatMode and Behaviour setting
-	? _indexCombatMode == (call grpSetting) select aisCombatMode : goto "SkipCombatMode"
-	_indexCombatMode = (call grpSetting) select aisCombatMode
+	? _indexCombatMode == _setting select aisCombatMode : goto "SkipCombatMode"
+	_indexCombatMode = _setting select aisCombatMode
 	{ if !(call _busyCheckX) then {_x setCombatMode (aisCombatModeDefs select _indexCombatMode)} } foreach _unitsStarted
 	#SkipCombatMode	
-	? _indexBehaviour == (call grpSetting) select aisBehaviour && behaviour _unit == (aisBehaviourDefs select _indexBehaviour) : goto "SkipBehaviour"
-	_indexBehaviour = (call grpSetting) select aisBehaviour
+	? _indexBehaviour == _setting select aisBehaviour && behaviour _unit == (aisBehaviourDefs select _indexBehaviour) : goto "SkipBehaviour"
+	_indexBehaviour = _setting select aisBehaviour
 	_group setBehaviour (aisBehaviourDefs select _indexBehaviour)
 	#SkipBehaviour
 
 	_money = (groupMoneyMatrix select _si) select _gi
-	_KeepMax = aisKeepDefs select ((call grpSetting) select aisKeepMax)
-	_KeepMin = aisKeepDefs select ((call grpSetting) select aisKeepMin)
+	_KeepMax = aisKeepDefs select (_setting select aisKeepMax)
 	? _money > _KeepMax : _tax = _money - _KeepMax; [_si, _gi, giCO select _si, _tax] exec "Server\MoneyTransfer.sqs"; goto "Sleep"
-	? ((call grpSetting) select aisBuy) > 0 && _money > _KeepMin : [_unit, _si, _gi] exec "Server\AI_CheckBuyUnit.sqs"
+	? (_setting select aisBuy) > 0: goto "CheckBuyUnit"
 
 	#Sleep
 	~5
@@ -100,10 +99,10 @@ _busyCheckX = "call format[""_x in busy%1%2"", sideNames select _si, _gi]"
 	_objectRespawn = objNull
 	
 	; read data from AI Setting
-	? ((call grpSetting) select aisRespawn) == 0 : goto "RespawnOldFashion"
-	_respawnNum = ((call grpSetting) select aisRespawn) % 4
+	? (_setting select aisRespawn) == 0 : goto "RespawnOldFashion"
+	_respawnNum = (_setting select aisRespawn) % 4
 	? _respawnNum == 0 : _respawnNum = 4
-	_respawnType = ( ((call grpSetting) select aisRespawn) - _respawnNum ) / 4
+	_respawnType = ( (_setting select aisRespawn) - _respawnNum ) / 4
 	
 	_ts = structsRespawn select _respawnType	
 	_workingStructures = [_si, _ts] call funcGetWorkingStructures; 
@@ -142,3 +141,59 @@ _busyCheckX = "call format[""_x in busy%1%2"", sideNames select _si, _gi]"
 	[_unit] exec "Common\AddRearmData.sqs"
 
 	goto "Update"
+	
+#CheckBuyUnit
+	_KeepMin = aisKeepDefs select (_setting select aisKeepMin)
+	? _money <= _KeepMin: goto "Sleep"
+	_slots = maxGroupSize - (count units _group + ((groupUnitsBuildingMatrix select _si) select _gi))
+	? _slots <= 0: goto "Sleep"
+	_groupSize = (_setting select aisGroupSize)
+	? _groupSize == 1: goto "Sleep"
+	? _groupSize > 1 && _groupSize < maxGroupSize: _slots = [_si, _gi, _groupSize] call funcCalcSlots; if (_slots <= 0) then {goto "Sleep"}
+	
+	_unitsBuy = (unitsBuyAI select _si) select (_setting select aisBuy)
+	_type = _unitsBuy call funcGetRandomUnitType
+	? _type == -1: goto "Sleep"
+	
+	_unitDesc = unitDefs select _type
+	_cost = _unitDesc select udCost
+	_crew = _unitDesc select udCrew
+	_driver = 0
+	_gunner = 0
+	? (count _crew) == 2 : _costCrew = (unitDefs select (_crew select 1)) select udCost; _driver = 1; _gunner = [0, 1] select ((_crew select 0) > 1); _cost = _cost + _driver*_costCrew + _gunner*_costCrew
+	? _slots < (_driver + _gunner): goto "Sleep"
+	? _money < _cost: goto "Sleep"
+	
+	_factoryType = _unitDesc select udFactoryType; _factoryType = _factoryType call funcBinaryDigit
+	{_buyFacSet set [ (_x - 1), _setting select (call format ["aisBuyFactory%1", _x]) ] } foreach [1,2,3,4]
+	_buyFacTypes = []
+	? ([[1,2,3,4],_buyFacSet] call funcArrayOverlap): _buyFacTypes set [count _buyFacTypes, stBarracks]
+	? ([[5,6,7,8],_buyFacSet] call funcArrayOverlap): _buyFacTypes set [count _buyFacTypes, stHeavy]
+	? ([_factoryType, _buyFacTypes] call funcArrayOverlap) : goto "BuyAtSetFactory"
+	#BuyAtOldFashion
+		_factories = []
+		{_factories = _factories + ([_si, _x, true] call funcGetIdleFactories)} forEach _factoryType
+		? count _factories > 0: [_type, _driver, _gunner, 0, _si, _gi, _gi, _factories select (random (count _factories) - 0.5)] exec "Server\BuyUnit.sqs"
+		_factories = nil; _buyFacTypes resize 0; _buyFacTypes = nil
+		goto "Sleep"
+	
+	#BuyAtSetFactory
+		_barracks = +((structMatrix select _si) select stBarracks); _barracks = _barracks - [objNull]
+		_heavys = +((structMatrix select _si) select stHeavy); _heavys = _heavys - [objNull]
+		_buyFactories = []
+		_i = 0; 
+		#SetSelectedFactories
+			_set = _buyFacSet select _i
+			? _set > 0 && _set <= 4: _set = _set - 1; if (count _barracks > _set) then {_fac = _barracks select _set; if (alive _fac && !(_fac in _buyFactories)) then {	_buyFactories set [count _buyFactories, _fac]}}
+			? _set > 4: _set = _set - 5; if (count _heavys > _set) then {_fac = _heavys select _set; if (alive _fac && !(_fac in _buyFactories)) then {	_buyFactories set [count _buyFactories, _fac]}}
+			_i = _i + 1
+			? _i < 4: goto "SetSelectedFactories"
+		? count _buyFactories > 0: {_i = 0; if (_x in buildingsInUse) then {_buyFactories set [_i, objNull]}; _i = _i + 1} forEach _buyFactories
+		? "!isNull _x" count _buyFactories == 0: goto "Bought"
+		_buyFactories = _buyFactories - [objNull]
+		? (_driver + _gunner) > 0 : _slots = _slots / (_driver + _gunner); _slots = _slots % 1
+		? count _buyFactories > _slots : _buyFactories resize _slots
+		{ [_type, _driver, _gunner, 0, _si, _gi, _gi, _x] exec "Server\BuyUnit.sqs" } forEach _buyFactories
+	#Bought
+	_barracks = nil; _heavys = nil; _buyFactories resize 0; _buyFactories = nil; _buyFacTypes resize 0; _buyFacTypes = nil
+	goto "Sleep"
