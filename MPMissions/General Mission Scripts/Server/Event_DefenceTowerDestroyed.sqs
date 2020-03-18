@@ -1,10 +1,11 @@
 ; args: Killed-EH array
 
 _object = _this select 0
-_res = [_object] call funcStructuresServerSearch
-? !(_res select 3) : object setDamage 1; exit
 
-_objects = _res select 0
+_objects = [_object]
+_i = structServer find _object
+? _i != -1: _objects = _objects + (structsServer select _i select 0)
+
 {_x setDamage 1} forEach _objects
 
 ; EOF

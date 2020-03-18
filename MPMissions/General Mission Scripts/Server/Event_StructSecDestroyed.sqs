@@ -3,4 +3,10 @@
 _object = (_this select 0) select 0
 _si = _this select 1
 
-[_object, objNull, _si, false, true] exec "Server\StructuresServerRemove.sqs"
+_objects = [_object]
+_i = structServer find _object
+? _i != -1: _objects = _objects + (structsServer select _i select 0)
+
+{ _x setDamage 1 } forEach _objects
+~10
+{deleteVehicle _x} forEach _objects

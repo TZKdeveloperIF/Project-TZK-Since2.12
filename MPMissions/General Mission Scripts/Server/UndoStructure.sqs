@@ -28,15 +28,13 @@ _c = count undoList
 	_type = _undoEntry select 1
 	_objects = _undoEntry select 2
 	_cost = (structDefs select _type) select sdCost
-	
-	[_objects select 0, objNull, _si, false, false] exec "Server\StructuresServerRemove.sqs"
 
 	@!(mutexUndo)
 	mutexUndo = true
 	undoList set [_i, [_group]]
 	mutexUndo = false
 	
-	; {deleteVehicle _x} foreach _objects
+	{deleteVehicle _x} foreach _objects
 	@(isNull (_objects select 0))
 
 	[_type, _si] exec "Server\Info\StructUndone.sqs"

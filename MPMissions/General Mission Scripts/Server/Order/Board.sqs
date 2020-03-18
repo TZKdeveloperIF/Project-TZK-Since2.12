@@ -8,7 +8,7 @@ _posBoard = ((wpCO select _si) select (_params select 0))
 _indexBoard = _params select 1
 _radius = 50*((_params select 2) + 1)
 
-_idOrder = ((orderMatrix select _si) select _gi) select 0
+_order = orderMatrix select _si select _gi; _idOrder = _order select 0
 
 #WaitReady
 ~2
@@ -24,7 +24,7 @@ _bCheckDropBomb = true
 #CheckBoardVehicles
 _rnd = 1
 ? !(alive _unit) : exit
-? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+? _idOrder != _order select 0 : exit
 ~ _sleep
 _typesBoard = []; _crewnum = 0
 
@@ -57,15 +57,15 @@ _i = 0; _c = count _res
 	? !(_vType in _typesBoard) : 	goto "SetTransp"
 	? (isNull driver _v) : 			goto "SetTransp"
 	? (damage _v) > 0.5 || ((getPos _v) select 2) > 5 || (speed _v) > 1 : 		goto "SetTransp"
-	? _vType in (TransportHeliW + TransportHeliE) : 	if ( call Cargo_v >= 12 ) 	then { goto "SetTransp" }
-	? _vType in (TransportPlaneW + TransportPlaneE) : 	if ( call Cargo_v >= 60 ) 	then { goto "SetTransp" }
-	? _vType in (TransportSmallHeliW+TransportSmallHeliE) : if ( call Cargo_v >= 5 ) then { goto "SetTransp" }
-	? _vType in TransportHindE : 						if ( call Cargo_v >= 8 ) 	then { goto "SetTransp" }
-	? _vType in (TransportTruckW + TransportTruckE) : 	if ( call Cargo_v >= 12 ) 	then { goto "SetTransp" }
-	? _vType in (Transport8APCW + Transport8APCE) : 	if ( call Cargo_v >= 8 ) 	then { goto "SetTransp" }
-	? _vType in (TransportCarW + TransportCarE) : 		if ( call Cargo_v >= 3 ) 	then { goto "SetTransp" }
-	? _vType in TransportShipE : 						if ( call Cargo_v >= 10 ) 	then { goto "SetTransp" }
-	? _vType in (TransportShipW + TransportZodiacW + TransportZodiacE + Transport6APCW + Transport6APCE) : if ( call Cargo_v >= 6 ) 	then { goto "SetTransp" }
+	? _vType in (TransportHeliW + TransportHeliE) : 	if ( _v call funcGetCargoNum >= 12 ) 	then { goto "SetTransp" }
+	? _vType in (TransportPlaneW + TransportPlaneE) : 	if ( _v call funcGetCargoNum >= 60 ) 	then { goto "SetTransp" }
+	? _vType in (TransportSmallHeliW+TransportSmallHeliE) : if ( _v call funcGetCargoNum >= 5 ) then { goto "SetTransp" }
+	? _vType in TransportHindE : 						if ( _v call funcGetCargoNum >= 8 ) 	then { goto "SetTransp" }
+	? _vType in (TransportTruckW + TransportTruckE) : 	if ( _v call funcGetCargoNum >= 12 ) 	then { goto "SetTransp" }
+	? _vType in (Transport8APCW + Transport8APCE) : 	if ( _v call funcGetCargoNum >= 8 ) 	then { goto "SetTransp" }
+	? _vType in (TransportCarW + TransportCarE) : 		if ( _v call funcGetCargoNum >= 3 ) 	then { goto "SetTransp" }
+	? _vType in TransportShipE : 						if ( _v call funcGetCargoNum >= 10 ) 	then { goto "SetTransp" }
+	? _vType in (TransportShipW + TransportZodiacW + TransportZodiacE + Transport6APCW + Transport6APCE) : if ( _v call funcGetCargoNum >= 6 ) 	then { goto "SetTransp" }
 	_transports set [count _transports, _v]; goto "SetTransp"
 	
 	#TranspSet
@@ -73,7 +73,7 @@ _i = 0; _c = count _res
 
 
   ? !(alive _unit) : exit
-  ? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+  ? _idOrder != _order select 0 : exit
   ? !(_vt in _typesBoard && _unit == driver _vehicle) && _unit != _vehicle : goto "Patrol"
   
 
@@ -95,7 +95,7 @@ _i = 0; _c = count _res
 
    ~_dist*0.2
   ? !(alive _unit) : exit
-  ? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+  ? _idOrder != _order select 0 : exit
   ? time > _timeAbort || _offset >= 50 || !(alive _boardTransp) : goto "Fail"
   ? (_unit distance _boardTransp) > 50 : goto "Move_Check"
 
@@ -142,7 +142,7 @@ goto "CheckBoardVehicles"
 
 #MoveToPickupArea
 	? !(alive _unit) : exit
-	? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+	? _idOrder != _order select 0 : exit
 	? vehicle _unit != _vehicle : goto "GetNearbyVehicles"
 	_unit doMove _posBoard
 	~10
@@ -153,7 +153,7 @@ goto "CheckBoardVehicles"
 	doStop _unit
 #WaitForCrew
 	? !(alive _unit) : exit
-	? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+	? _idOrder != _order select 0 : exit
 	? vehicle _unit != _vehicle : goto "GetNearbyVehicles"
 	
 	? !(_vt in _typesBoard && _unit == driver _vehicle) && _unit != _vehicle : goto "Patrol"
@@ -166,7 +166,7 @@ goto "CheckBoardVehicles"
 _posMove = [_posBoard, 150, 150] call funcGetRandomPos
 #Patrol_Update
 	? !(alive _unit) : exit
-	? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+	? _idOrder != _order select 0 : exit
 
 	? _unit != driver _vehicle : _sleep = 30; goto "Sleep"
 	? isNull gunner _vehicle : [_unit, _posBoard] call funcMoveAI; _sleep = 30; goto "Sleep"
@@ -202,4 +202,4 @@ _posMove = [_posBoard, 150, 150] call funcGetRandomPos
   unassignVehicle _unit
   call busyClear
   
-? _idOrder == ((orderMatrix select _si) select _gi) select 0 : goto "WaitReady"
+? _idOrder == _order select 0 : goto "WaitReady"

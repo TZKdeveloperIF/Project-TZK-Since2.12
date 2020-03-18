@@ -15,7 +15,7 @@ if (_gi == giTown || _gi == giWorker) then
 }
 else
 {
-	_damageRate = ((call grpSetting) select aisAutoRepairDamage) * 0.05;
+	_damageRate = (((aiSetting select _si) select _gi) select aisAutoRepairDamage) * 0.05;
 };
 
 if (_unit == driver vehicle _unit) then

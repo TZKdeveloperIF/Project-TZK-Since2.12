@@ -10,12 +10,13 @@ _gi = _this select 2
 _vehicleUnit = vehicle _unit 
 ? _unit != _vehicleUnit : exit
 
-_idOrder = ((orderMatrix select _si) select _gi) select 0
+_order = orderMatrix select _si select _gi
+_idOrder = _order select 0
 
 call busySet
 
 #Search
-	? !call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {goto "Exit"}
+	? !call temporaryCheck : if (_idOrder != _order select 0) then {goto "Exit"}
 	? !call busyCheck : goto "Exit"
   _mine = nearestObject [[getPos _unit, 0, 10] call funcGetRandomPos, ammoMine]
   ? isNull _mine : goto "Exit"
@@ -28,7 +29,7 @@ call busySet
   #WaitUntilMineReached
   
 	~2
-	? !call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {goto "Exit"}
+	? !call temporaryCheck : if (_idOrder != _order select 0) then {goto "Exit"}
 	? !call busyCheck : goto "Exit"
     ? !(alive _unit) || time > _timeAbort : goto "Exit"
     ? isNull _mine : goto "Search"

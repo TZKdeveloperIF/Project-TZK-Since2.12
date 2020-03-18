@@ -8,7 +8,7 @@ _params = _this select 3
 _pos = ((wpCO select _si) select (_params select 0))
 _distPerMin = 100*(1 + (_params select 1))
 
-_idOrder = ((orderMatrix select _si) select _gi) select 0
+_order = orderMatrix select _si select _gi; _idOrder = _order select 0
 
 #WaitReady
 ~2
@@ -30,10 +30,10 @@ _timeNextStep = time
 
 #Update
 	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
-	? call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {exit} else {goto "Sleep"}
+	? call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Sleep"}
 	
 	? !(alive _unit) : exit
-	? _idOrder != ((orderMatrix select _si) select _gi) select 0 : exit
+	? _idOrder != _order select 0 : exit
 
 	_vehicle = vehicle _unit
 	
@@ -82,6 +82,6 @@ _timeNextStep = time
 	~_sleep
 	
 	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
-	? call temporaryCheck : if (_idOrder != ((orderMatrix select _si) select _gi) select 0) then {exit} else {goto "Sleep"}
+	? call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Sleep"}
   ? call busyCheck : goto "Sleep"
 	goto "Update"

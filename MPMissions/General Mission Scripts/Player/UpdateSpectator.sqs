@@ -1,6 +1,6 @@
 _unit = _this select 0
 
-_posStart = getPos _unit
+_posStart = getPos _unit; _posFreeMove = _posStart
 
 unitSpec = _unit
 ; unitSpec = objNull
@@ -35,6 +35,7 @@ camSpec camCommand "inertia on"
 	~0.02
 	? pvGameOver != -1 : goto "GameOver"
 	? !(alive _unit) : goto "WaitUntilAlive"
+	? bFreeMode: goto "SleepFreeMode"
 
 	; player globalchat format[" %1", [0,1] select keyForward]
 	; player globalchat format["%1 %2", [0,1] select keyStrafeLeft, [0,1] select keyStrafeRight]
@@ -122,6 +123,17 @@ camSpec camCommand "inertia on"
   _unit = player
   _unit setPos _posStart
   goto "Init"
+
+	#SleepFreeMode
+		_unit setPos _posFreeMove; camSpec setPos _posFreeMove
+		#FreeModeLoop
+			? time % 1 > 0.8: setViewDistance viewDistance; showGPS boole_Show_GPS; showPad boole_Show_Pad; removeAllWeapons _unit
+			~0.1
+			? _unit != vehicle _unit: _unit action ["Eject", vehicle _unit]
+			? bFreeMode: goto "FreeModeLoop"
+		_posFreeMove = getPos _unit
+		_unit addWeapon "Ingram"; { _unit addMagazine "IngramMag" } forEach [1]; _unit selectWeapon "Ingram"; player addWeapon "NVGoggles"
+	goto "Update"
   
 #GameOver
   ~5

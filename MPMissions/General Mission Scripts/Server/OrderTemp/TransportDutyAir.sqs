@@ -39,7 +39,7 @@ _groups = groupMatrix select _si
 	_posPickup set [2, 150]; _posEject set [2, 150]
 
 	_distToPickup = [getPos _transp, _posPickup] call funcDistH
-	_crew = call Cargo_transp
+	_crew = _transp call funcGetCargoNum
 	? _distToPickup > 200 && _crew > 2 : goto "MoveEject"
 	? _distToPickup < 200 && _crew > 10 : goto "MoveOut"
 	? _distToPickup < 200 && ((getPos _transp) select 2) < 5 : _posMove = [_posPickup, 50, 50] call funcGetRandomPos; goto "WaitForCargo"
@@ -126,10 +126,10 @@ _groups = groupMatrix select _si
 		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
 
 		_waitloop = _waitloop + 1; if ( _waitloop > 5 ) then { goto "MoveOut" }
-		? call Cargo_transp > call Volume_transp - 2 : goto "MoveOut"
+		? _transp call funcGetCargoNum > (_transp call funcGetTranspVol) - 2 : goto "MoveOut"
 		? ((getPos _transp) select 2) > 5 : goto "PrepareLand"
-		? call Cargo_transp < 4 : goto "WaitForCargo"
-		? call Cargo_transp > _crew : _crew = call Cargo_transp; goto "WaitForCargo"
+		? _transp call funcGetCargoNum < 4 : goto "WaitForCargo"
+		? _transp call funcGetCargoNum > _crew : _crew = _transp call funcGetCargoNum; goto "WaitForCargo"
 
 	#MoveOut
 		_waitloop = 0

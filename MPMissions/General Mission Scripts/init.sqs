@@ -52,8 +52,6 @@ TotalInfoTypes = 100
 ; "TotalInfoTypes" could be defined in "InitInfoMsgTypes" as well.
 ; cautious: number in OFP is "Single" so it's necessary to make sure the value of "value" less than 15,000,000
 
-Cargo_v = "count (crew _v - [driver _v, gunner _v, commander _v])"; Cargo_transp = "count (crew _transp - [driver _transp, gunner _transp, commander _transp])"
-Volume_transp = {call (typeOf _transp GetVehicleParam "transportSoldier")}
 grpSetting = "((aiSetting select _si) select _gi)"
 Musics0=["Track1","Track2","Track3","Track4","Track5","Track6","Track7","Track8","Track9","Track11","Track12","Track15","Track16","Frost","RTrack1a","RTrack4","RTrack5","RTrack8","RTrack9","RTrack10"]
 music0=0
@@ -236,66 +234,7 @@ tdValue = 2
 tdSide = 3
 
 ; init functions (stuff that return values)
-fAddSoldier = preprocessFile "Common\AddSoldier.sqf"
-fAddVehicle = preprocessFile "Common\AddVehicle.sqf"
-funcGetClosestTown = preprocessFile "Common\GetClosestTown.sqf"
-funcGetClosestEnemyTown = preprocessFile "Common\GetClosestEnemyTown.sqf"
-funcCalcDistanceToObject = preprocessFile "Common\CalcDistanceToObject.sqf"
-funcDistH = preprocessFile "Common\DistH.sqf"
-
-funcGetStructures = preprocessFile "Common\GetStructures.sqf"
-funcGetClosestStructure = preprocessFile "Common\GetClosestStructure.sqf"
-funcGetNearestStructure = preprocessFile "Common\GetNearestStructure.sqf"
-funcGetWorkingStructures = preprocessFile "Common\GetWorkingStructures.sqf"
-funcGetWorkingStructuresWithinCCRange = preprocessFile "Player\GetWorkingStructuresWithinCCRange.sqf"
-funcCalcUnitPlacementPosDir = preprocessFile "Common\CalcUnitPlacementPosDir.sqf"
-; funcCountStructures = preprocessFile "Common\CountStructures.sqf"
-funcCountUnits = preprocessFile "Common\CountUnits.sqf"
-funcSort = preprocessFile "Common\Sort.sqf"
-funcGetNearbySoldiers = preprocessFile "Common\GetNearbySoldiers.sqf"
-funcGetNearbyVehicles = preprocessFile "Common\GetNearbyVehicles.sqf"
-funcGetNearbyVehiclesBySide = preprocessFile "Common\GetNearbyVehiclesBySide.sqf"
-funcGetNearbyStructure = preprocessFile "Common\GetNearbyStructure.sqf"
-funcGetClosestVehicle = preprocessFile "Common\GetClosestVehicle.sqf"
-funcGetClosestVehicleEmpty = preprocessFile "Common\GetClosestVehicleEmpty.sqf"
-funcGetRandomPos = preprocessFile "Common\GetRandomPos.sqf"
-funcVectorAdd = preprocessFile "Common\VectorAdd.sqf"
-funcVectorSub = preprocessFile "Common\VectorSub.sqf"
-funcVectorScale = preprocessFile "Common\VectorScale.sqf"
-funcVectorDot = preprocessFile "Common\VectorDot.sqf"
-funcVectorCross = preprocessFile "Common\VectorCross.sqf"
-funcVectorLength = preprocessFile "Common\VectorLength.sqf"
-funcVectorRot = preprocessFile "Common\VectorRot.sqf"
-funcGetClosestEnemyObject = preprocessFile "Common\GetClosestEnemyObject.sqf"
-funcGetClosestUnit = preprocessFile "Common\GetClosestUnit.sqf"
-funcGetRandomUnitType = preprocessFile "Common\GetRandomUnitType.sqf"
-funcGetUnitTypeFromObject = preprocessFile "Common\GetUnitTypeFromObject.sqf"
-funcGetStructTypeFromObject = preprocessFile "Common\GetStructTypeFromObject.sqf"
-funcAddToUnitMatrix = preprocessFile "Common\AddToUnitMatrix.sqf"
-funcAddToStructMatrix = preprocessFile "Common\AddToStructMatrix.sqf"
-
-
-funcGetRearmData = preprocessFile "Common\GetRearmData.sqf"
-funcHASL = preprocessFile "Common\HASL.sqf"
-funcPosNearSea = preprocessFile "Common\PosNearSea.sqf"
-funcHighObjects = preprocessFile "Common\HighObjects.sqf"
-funcInForest = preprocessFile "Common\InForest.sqf"
-funcBaseArea = preprocessFile "Common\BaseArea.sqf"
-funcStartPos = preprocessFile "Common\StartPos.sqf"
-funcAreaFlat = preprocessFile "Common\AreaFlat.sqf"
-funcGetNearestRespawnObject = preprocessFile "Common\GetNearestRespawnObject.sqf"
-fSendTextMsg = preprocessFile "Common\SendTextMsg.sqf"
-fDebugLog = preprocessFile "Common\DebugLog.sqf"
-funcSearchvehicleAttached = preprocessFile "Common\SearchvehicleAttached.sqf"
-funcUpdateAttaching = preprocessFile "Common\UpdateAttaching.sqf"
-funcGetAIGroupsIndex = preprocessFile "Common\GetAIGroupsIndex.sqf"
-
-funcVectorRot3D = preprocessFile "Common\VectorRot3D.sqf"
-funcRandomRotation3D = preprocessFile "Common\RandomRotation3D.sqf"
-
-funcArrayOverlap = preprocessFile "Common\SQF\ArrayOverlap.sqf"
-funcBinaryDigit = preprocessFile "Common\SQF\BinaryDigit.sqf"
-funcBoolEqual = preprocessFile "Common\SQF\BoolEqual.sqf"
+[] exec "Common\InitFunctions.sqs"
 
 ; AI GROUP SETTINGS
 ; setting definition entry format: [ name, [s0, s1, ...], default ]

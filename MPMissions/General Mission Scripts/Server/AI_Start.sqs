@@ -13,8 +13,9 @@ _gi = _this select 2
 ; TODO _unit disableAI "TARGET"
 _unit allowFleeing 0
 ;_unit setCombatMode "YELLOW"; _unit setBehaviour "AWARE"; _unit setSpeedMode "FULL"
-_unit setCombatMode (aisCombatModeDefs select ((call grpSetting) select aisCombatMode))
-(group _unit) setBehaviour (aisBehaviourDefs select ((call grpSetting) select aisBehaviour)); _unit setSpeedMode "FULL"
+_setting = aiSetting select _si select _gi
+_unit setCombatMode (aisCombatModeDefs select (_setting select aisCombatMode))
+(group _unit) setBehaviour (aisBehaviourDefs select (_setting select aisBehaviour)); _unit setSpeedMode "FULL"
 
 _vehicle = vehicle _unit
 
@@ -33,7 +34,7 @@ _vehicle = vehicle _unit
 
 ; RALLY 1
 _gi = ( groupMatrix select _si ) find ( group _unit )
-? ((call grpSetting) select aisRallyPoint) == 0 || _unit != driver _vehicle : goto "NoRally"
+? (_setting select aisRallyPoint) == 0 || _unit != driver _vehicle : goto "NoRally"
 [_unit, _si, _gi] exec "Server\AI_MoveToRallyPoint.sqs"
 #WaitRallyReached
 ~5
@@ -43,7 +44,7 @@ _gi = ( groupMatrix select _si ) find ( group _unit )
 
 ; BOARD 1
 _gi = ( groupMatrix select _si ) find ( group _unit )
-? _unit != _vehicle || ((call grpSetting) select aisPickupWait) == 0 : goto "NoBoard"
+? _unit != _vehicle || (_setting select aisPickupWait) == 0 : goto "NoBoard"
 _timeCheckBoardStart = time
 _posCheckBoardStart = getPos _unit
 #Board
@@ -53,13 +54,13 @@ _gi = ( groupMatrix select _si ) find ( group _unit )
   ~5
   ? !(alive _unit) : exit
   ? call busyCheck : goto "WaitBoardReady"
-? ([getPos _unit, _posCheckBoardStart] call funcDistH) < 200 && time < ( _timeCheckBoardStart + ( aisPickupWaitTimeDefs select ((call grpSetting) select aisPickupWait) ) ) : goto "Board"
+? ([getPos _unit, _posCheckBoardStart] call funcDistH) < 200 && time < ( _timeCheckBoardStart + ( aisPickupWaitTimeDefs select (_setting select aisPickupWait) ) ) : goto "Board"
 #NoBoard
 
 ;*************************Second Rally And Board Procedure**************************
 ; RALLY 2
 _gi = ( groupMatrix select _si ) find ( group _unit )
-? ((call grpSetting) select aisRallyPoint2) == 0 || _unit != driver _vehicle : goto "NoRally2"
+? (_setting select aisRallyPoint2) == 0 || _unit != driver _vehicle : goto "NoRally2"
 [_unit, _si, _gi] exec "Server\AI_MoveToRallyPoint2.sqs"
 #WaitRallyReached2
 ~5
@@ -69,7 +70,7 @@ _gi = ( groupMatrix select _si ) find ( group _unit )
 
 ; BOARD 2
 _gi = ( groupMatrix select _si ) find ( group _unit )
-? _unit != _vehicle || ((call grpSetting) select aisPickupWait2) == 0 : goto "NoBoard2"
+? _unit != _vehicle || (_setting select aisPickupWait2) == 0 : goto "NoBoard2"
 _timeCheckBoardStart = time
 _posCheckBoardStart = getPos _unit
 #Board2
@@ -79,7 +80,7 @@ _gi = ( groupMatrix select _si ) find ( group _unit )
   ~5
   ? !(alive _unit) : exit
   ? call busyCheck : goto "WaitBoardReady2"
-? ([getPos _unit, _posCheckBoardStart] call funcDistH) < 200 && time < ( _timeCheckBoardStart + ( aisPickupWaitTimeDefs select ((call grpSetting) select aisPickupWait2) ) ) : goto "Board2"
+? ([getPos _unit, _posCheckBoardStart] call funcDistH) < 200 && time < ( _timeCheckBoardStart + ( aisPickupWaitTimeDefs select (_setting select aisPickupWait2) ) ) : goto "Board2"
 #NoBoard2
 
 #Exit

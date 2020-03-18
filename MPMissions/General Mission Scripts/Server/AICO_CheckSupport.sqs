@@ -14,7 +14,7 @@ _objRepair = objNull
 ; check structures
 _list = repairableStructureMatrix select _si
 ? (count _list) == 0 : goto "CheckVehicles"
-_objRepair = (_list select ((random count _list) - 0.5)) select 0
+_objRepair = _list select ((random count _list) - 0.5)
 goto "FindSupport"
 
 #CheckVehicles

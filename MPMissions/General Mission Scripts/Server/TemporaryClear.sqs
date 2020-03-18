@@ -5,5 +5,7 @@ _si = _this select 1
 
 @!(mutexTemporary)
 mutexTemporary = true
-call format["temporary%1 = temporary%1 - [_unit, objNull]", sideNames select _si]
+_list = call format ["temporary%1", sideNames select _si]
+_i = _list find _unit
+? _i != -1: _list set [_i, objNull]
 mutexTemporary = false

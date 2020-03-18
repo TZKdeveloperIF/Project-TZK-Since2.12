@@ -28,7 +28,7 @@ removeAllWeapons _unit
 ? _si == si1 : { _unit addMagazine "BizonMag_xj200" } forEach [1,2,3,4]; _unit addWeapon "Bizon_xj200"
 
 
-
+_repairObjList = repairableStructureMatrix select _si; _repairInfoList = repairableStructureInfo select _si
 #Update
 	~_sleep
 	? !(alive _unit) : goto "DeadWorker"
@@ -40,17 +40,17 @@ removeAllWeapons _unit
   ? ((groupMoneyMatrix select _si) select (giCO select _si)) <= 0 : _sleep = 30; goto "Update"
   
 	_index = 0
-	_count = count (repairableStructureMatrix select _si)
+	_count = count _repairObjList
 	? _count == 0 : goto "NoObjectFound"
 	#FindObject
-		
 		? !(isNull _stuckObject): _index = (random _count) - 0.5
 
-		_object = ((repairableStructureMatrix select _si) select _index) select 0
-		_damage = ((repairableStructureMatrix select _si) select _index) select 1
-    _type = ((repairableStructureMatrix select _si) select _index) select 2
-    _distMove = (structDefs select _type) select sdMaxRadius
-    ? _distMove > rangeSupport - 5 : _distMove = rangeSupport - 5
+		_object = _repairObjList select _index
+		_damage = _repairInfoList select _index select 0
+		_type = _repairInfoList select _index select 1
+		
+		_distMove = (structDefs select _type) select sdMaxRadius
+		? _distMove > rangeSupport - 5 : _distMove = rangeSupport - 5
     
 		? !(isNull _object) && _object != _stuckObject && _damage > 0 && (_unit distance _object) < _range : _return = "Update"; goto "MoveToObject"
 
@@ -110,25 +110,25 @@ removeAllWeapons _unit
 		; ? (Random 100 < 30):_unit PlayMove "StandToBinocStand";goto "RepairMovePlayed"
 		; _unit PlayMove "CrouchToBinocCrouch"
 		_unit playMove "CombatToMedic"
+		; #RepairMovePlayed
 
-		#RepairMovePlayed
-
-		_dmgOld = _damage
-		_damage = [_object, _repair, _si] call funcRepairStructure
+		@!(mutexRepairStructure)
+		mutexRepairStructure = true
 		
-		;player globalchat format ["repairableStructureMatrix=%1", repairableStructureMatrix]
-
-		; object not found
-		? _damage == -1 : goto _return
-
-		;If the building is repaired go back to the main loop.
+		; search next structure immediately if this one has been repaired.
+		_index = _repairObjList find _object
+		? _index == -1: _sleep = 0; mutexRepairStructure = false; goto _return
+		_damage = _repairInfoList select _index select 0
+		? _damage <= 0: _sleep = 0; mutexRepairStructure = false; goto _return
+		_type = _repairInfoList select _index select 1; _cost = structDefs select _type select sdCost; _cost = 0.1*_cost*_value; _cost = _cost - (_cost % 1)
+		? _object in primStructsPlaced: _cost = 0
+		? _cost >  groupMoneyMatrix select _si select (giCO select _si): [_si, _type] exec "Server\Info\NoMoneyForStructRepair.sqs"; _return = "Update"; _sleep = 30; mutexRepairStructure = false; goto "Wander"
+			
+			[_si, giCO select _si, _cost] exec "Server\MoneySpend.sqs"; _damage = _damage - _repair
+			(_repairInfoList select _index) set [0, _damage]
+			? _damage <= 0: [_object, _type, _si] exec "Server\ReplacePrimStruct.sqs"; _repairObjList set [_index, objNull]
 		
-		; ? _damage <= 0 : [_si, _type] exec "Server\Info\StructReady.sqs"; [_object] exec "Server\primStructsPlacedRemove.sqs"; goto _return
-		? _damage <= 0 : if (_damage < 0) then {_sleep = 0}; goto _return
-
-    ; wander if not enough money
-    ? _damage == _dmgOld : _return = "Update"; _sleep = 30; goto "Wander"
-    
+		mutexRepairStructure = false
 		~_sleep
 		goto "RepairBuilding"
 

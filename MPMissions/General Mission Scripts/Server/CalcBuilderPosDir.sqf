@@ -13,8 +13,7 @@ _dist = _structDesc select sdDist;
 _rot = _structDesc select sdRot;
 _offset = _structDesc select sdOffset;
 
-_posBuilder = [(_pos Select 0) - _dist*(sin (_dir - _rot)) - _offset*(sin (_dir+90)),
-							 (_pos Select 1) - _dist*(cos (_dir - _rot)) - _offset*(cos (_dir+90))];
+_posBuilder = [(_pos Select 0) - _dist*(sin (_dir - _rot)) - _offset*(sin (_dir+90)), (_pos Select 1) - _dist*(cos (_dir - _rot)) - _offset*(cos (_dir+90))];
 _dirBuilder = (_dir + 360 - _rot) mod 360;
 
 [_posBuilder, _dirBuilder]

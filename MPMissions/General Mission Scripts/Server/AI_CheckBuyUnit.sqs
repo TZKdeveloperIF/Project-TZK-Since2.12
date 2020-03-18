@@ -42,7 +42,7 @@ _repeat = 0
 	
 #BuyAtOldFashion
 	_factoryType = _factoryType select ((count _factoryType) - 1)
-	 _factory = [_si, _factoryType, true] call funcGetIdleFactory
+	 _factory = [_si, _factoryType, true] call funcGetIdleFactories; if (count _factory == 0) then {_factory = objNull} else {_factory = _factory select 0}
 	 ? (isNull _factory) : exit	
 	[_type, _driver, _gunner, 0, _si, _giJoin, _giBuyer, _factory] exec "Server\BuyUnit.sqs"
 	
