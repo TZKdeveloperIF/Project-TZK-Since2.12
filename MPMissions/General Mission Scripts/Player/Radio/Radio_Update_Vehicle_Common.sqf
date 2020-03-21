@@ -9,8 +9,4 @@ Radio006 setTriggerText " "; Radio006 setTriggerStatements ["this", "", ""];
 Radio007 setTriggerText " "; Radio007 setTriggerStatements ["this", "", ""];
 Radio008 setTriggerText " "; Radio008 setTriggerStatements ["this", "", ""];
 Radio009 setTriggerText " "; Radio009 setTriggerStatements ["this", "", ""];
-if (siPlayer != siCiv) then {
-	Radio000 setTriggerText "Refresh Radio List"; Radio000 setTriggerStatements ["this", "[vehicle player] exec {Player\Radio\Radio_Update_Vehicle.sqs}", ""];
-} else {
-	Radio000 setTriggerText "Return to Spectator Mode"; Radio000 setTriggerStatements ["this", "[] exec {Player\Radio\RadioList_Spectator_Return.sqs}", ""];
-};
+Radio000 setTriggerText "Refresh Radio List"; Radio000 setTriggerStatements ["this", "[vehicle player] exec {Player\Radio\Radio_Update_Vehicle.sqs}", ""];

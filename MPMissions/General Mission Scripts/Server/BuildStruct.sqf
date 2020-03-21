@@ -58,4 +58,6 @@ while "_i<_c" do
 
 [_si, _gi, _desc select sdCost] exec "Server\MoneySpend.sqs";
 
+if (_type in structsDestroy) then {(_objects select 0) exec "Server\StructDestoryAdd.sqs"};
+
 _objects

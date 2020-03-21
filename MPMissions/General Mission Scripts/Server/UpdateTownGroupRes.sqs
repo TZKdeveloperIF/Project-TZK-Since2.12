@@ -22,7 +22,8 @@ _list set [count _list, _group]
 mutexInitResGroups = false
 
 @( !(isNull (mhq select si0)) && !(isNull (mhq select si1)) )
-~10
+~12
+; wait patrol group initialized.
 ; Init Spawn Activate by Start Position
 ? FixStart_0 distance _flag < _distSpawn || FixStart_1 distance _flag < _distSpawn: goto "Spawn"
 
@@ -69,25 +70,28 @@ _i = 0
 #SpawnNoTanks
 
 ? _patrol == 0 : goto "SpawnNoPatrol"
+
+@!(mutexAddResPatrol)
+mutexAddResPatrol = true
+
 _i = 0
 #SpawnAddPatrol
-	; find smallest patrol group
-	@!(mutexAddResPatrol)
-	mutexAddResPatrol = true
-	_groupPatrol = grpNull
-	_unitsMin = 12; _gi = 0; _giPatrol = 0
-	{ _unitCount = (count units _x); if (_unitCount < _unitsMin) then { _groupPatrol = _x; _giPatrol = _gi; _unitsMin = _unitCount }; _gi = _gi + 1 } forEach groupsPatrol
-	? (isNull _groupPatrol) || _unitsMin > 10 : mutexAddResPatrol = false; goto "SpawnNoPatrol"
+	_groupPatrol = groupsPatrol select _i
+	_units = units _groupPatrol; _slots = (12 - count _units)/2; _slots = _slots - _slots % 1; _j = 0
+	#SpawnPatrolTank
+		? _j >= _slots || _patrol <= 0: goto "CheckNextGroup"
 		_type = -1
 		while "_type == -1" do { _type = (armorTown select _si) call funcGetRandomUnitType }
 		_pos = [_posFlag, 150, 150] call funcGetRandomPos
-		_vehicle = [_type, 1, 1, 0, _pos, random 360, _si, -1, _groupPatrol, 0, 0] call funcAddServerUnit
-		
-		_timeAbort = time + 5
-		@ (!isNull _vehicle || time > _timeAbort)
+		[_type, 1, 1, 0, _pos, random 360, _si, -1, _groupPatrol, 0, 0] exec "Common\AddUnit.sqs"
+		~1
+		_j = _j + 1; _patrol = _patrol - 1
+		goto "SpawnPatrolTank"
+	#CheckNextGroup
 	_i = _i + 1
-	mutexAddResPatrol = false
-	? _i < _patrol : goto "SpawnAddPatrol"
+	? _i < count groupsPatrol && _patrol > 0: goto "SpawnAddPatrol"
+~10
+mutexAddResPatrol = false
 #SpawnNoPatrol
 
 _timePatrol = 0

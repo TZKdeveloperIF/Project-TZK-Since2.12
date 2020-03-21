@@ -20,4 +20,6 @@ mutexGroupIsAI = true
 ? time > 60 && _si in [siPlayer, siCiv]: Format ["%1%2", (groupNameMatrix select _si) select _gi, _si] setMarkerText format ["%1", (groupNameMatrix select _si) select _gi]
 
 _groupsAI set [count _groupsAI, _group]
+_name = format ["%1", _group]; _name = substr [_name, 5, sizeofstr _name]
+_marker = Format ["%1%2", _name, _si]; _marker setMarkerText _name
 mutexGroupIsAI = false

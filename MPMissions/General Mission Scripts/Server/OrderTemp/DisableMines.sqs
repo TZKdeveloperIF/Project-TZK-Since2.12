@@ -48,7 +48,7 @@ _groups = groupMatrix select _si
 	? _unit != driver _vehicle : goto "Sleep"
 
 	; check support
-	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _cycle = 10; goto "Sleep"
+	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _cycle = 20; goto "Sleep"
 
 	? (count _posMove) == 0 : _posMove = [_pos0, 0, _radius] call funcGetRandomPos
 	_distToDest = [getPos _unit, _posMove] call funcDistH

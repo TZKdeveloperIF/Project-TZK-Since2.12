@@ -37,7 +37,7 @@ _giJoin = _giList select ((random (count _giList)) - 0.5)
     ? _slots > 2 : _unitsBuy = ((unitsBuyAI select _si) select utbinfAt)
     goto "TypesSelected"
   #NotTransportDuty
-  _utbHeavy = [utbTanksHeavy, utbinfAt3] select dev
+  _utbHeavy = [utbTanksHeavy, utbinfAt3] select (dev && (getWorld == "eden"))
   ? _giJoin in [_giBuyer, _giBuyer + 1, _giBuyer + 2] && time < 600 : goto "Exit"
   ? _giJoin == _giBuyer : _unitsBuy = (unitsBuyAI select _si) select utbTanksHeavy; goto "TypesSelected"
   ? (((orderMatrix select _si) select _giJoin) select 1) == orderPatrolLine : _unitsBuy = (unitsBuyAI select _si) select utbTanksHeavy; goto "TypesSelected"  

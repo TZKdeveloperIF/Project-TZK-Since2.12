@@ -39,7 +39,7 @@ _setting = aiSetting select _si select _gi
 
 	? _unit != driver _vehicle : goto "Sleep"
 
-	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 2; goto "Sleep"
+	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 10; goto "Sleep"
 
   ? time < _timeCalcPos : goto "CheckMove"
 	? ((towns select _ti) select tdSide) != _si && (random 1) < 0.8 : _timeCalcPos = time + 60; _posDest = [_posFlag, 5, 5] call funcGetRandomPos; goto "CheckMove"

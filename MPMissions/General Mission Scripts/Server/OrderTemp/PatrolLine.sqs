@@ -62,13 +62,12 @@ _groups = groupMatrix select _si
 	? _unit != driver _vehicle : goto "Sleep"
 
 	; check support
-	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _cycle = 10; goto "Sleep"
+	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _cycle = 20; goto "Sleep"
 
 	; check bomb	
 	_bCheckDropBomb = !_bCheckDropBomb 
 	_magazines = []
-	? _bCheckDropBomb && _unit == _vehicle: _magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf"
-	? _bCheckDropBomb && _unit == _vehicle && "_x in MagzinesSatchel" count _magazines > 0 : [_unit, _si, _gi] exec "Server\AI_CheckDropBomb.sqs"; _cycle = 10; goto "Sleep"
+	? _bCheckDropBomb && _unit == _vehicle: if ("_x in MagzinesSatchel" count magazines _unit > 0) then {[_unit, _si, _gi] exec "Server\AI_CheckDropBomb.sqs"; _cycle = 20; goto "Sleep"}
 	
 	; check move
 	

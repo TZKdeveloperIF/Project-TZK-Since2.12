@@ -36,12 +36,11 @@ _setting = aiSetting select _si select _gi
 	
 	? _unit != driver _vehicle : goto "Sleep"
 	
-	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 2; goto "Sleep"
+	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 20; goto "Sleep"
 
   _bCheckDropBomb = !_bCheckDropBomb 
 	_magazines = []
-	? _bCheckDropBomb && _unit == _vehicle: _magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf"
-	? _bCheckDropBomb && _unit == _vehicle && "_x in MagzinesSatchel" count _magazines > 0 : [_unit, _si, _gi] exec "Server\AI_CheckDropBomb.sqs"; _sleep = 2; goto "Sleep"
+	? _bCheckDropBomb && _unit == _vehicle: if ("_x in MagzinesSatchel" count magazines _unit > 0) then {[_unit, _si, _gi] exec "Server\AI_CheckDropBomb.sqs"; _sleep = 20; goto "Sleep"}
 	
   ? time < _timeCalcPos : goto "CheckMove"
   _timeCalcPos = time + 120
@@ -72,5 +71,5 @@ _setting = aiSetting select _si select _gi
 	
 	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
 	? call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Sleep"}
-  ? call busyCheck : _sleep = 10; goto "Sleep"
+  ? call busyCheck : _sleep = 20; goto "Sleep"
 	goto "Update"

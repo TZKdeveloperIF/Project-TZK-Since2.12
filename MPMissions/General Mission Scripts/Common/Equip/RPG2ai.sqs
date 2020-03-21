@@ -3,7 +3,7 @@
 _unit = _this select 0
 ; _type = _this select 1
 _si = _this select 2
-_m = [["M16", "M16", "M16", "M16", "LAWLauncher", "LAWLauncher", "LAWLauncher", magPistolSatchel], ["AK74", "AK74", "AK74", "AK74", "RPGLauncher", "RPGLauncher", "RPGLauncher", magPistolSatchel]] select _si
+_m = [["M16", "M16", magPistolSatchel, "LAWLauncher", "LAWLauncher", "LAWLauncher"], ["AK74", "AK74", magPistolSatchel, "RPGLauncher", "RPGLauncher", "RPGLauncher"]] select _si
 _w = [["M16", "LAWLauncher", "Put"], ["AK74", "RPGLauncher", "Put"]] select _si
 ~1
 ? !(local _unit) || !(alive _unit) : [_unit, _w, _m] exec "Common\EditEquipRearmData.sqs"; exit

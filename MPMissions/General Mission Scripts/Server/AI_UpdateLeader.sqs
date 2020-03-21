@@ -8,9 +8,6 @@ _gi = _this select 2
 
 _group = (groupMatrix select _si) select _gi
 
-;call busyInit
-;call temporaryInit
-
 ? _group == (groupCommander select _si) : _this exec "Server\AI_UpdateCommander.sqs"; exit
 
 _idOrder = -1; _indexCombatMode = 0; _indexBehaviour = 0; _idTemporaryOrder = -1
@@ -167,9 +164,9 @@ _buyFacSet = []; _setting = aiSetting select _si select _gi
 	_factoryType = _unitDesc select udFactoryType; _factoryType = _factoryType call funcBinaryDigit
 	{_buyFacSet set [ (_x - 1), _setting select (call format ["aisBuyFactory%1", _x]) ] } foreach [1,2,3,4]
 	_buyFacTypes = []
-	? ([[1,2,3,4],_buyFacSet] call funcArrayOverlap): _buyFacTypes set [count _buyFacTypes, stBarracks]
-	? ([[5,6,7,8],_buyFacSet] call funcArrayOverlap): _buyFacTypes set [count _buyFacTypes, stHeavy]
-	? ([_factoryType, _buyFacTypes] call funcArrayOverlap) : goto "BuyAtSetFactory"
+	? "_x in [1,2,3,4]" count _buyFacSet > 0:: _buyFacTypes set [count _buyFacTypes, stBarracks]
+	? "_x in [5,6,7,8]" count _buyFacSet > 0:: _buyFacTypes set [count _buyFacTypes, stHeavy]
+	? "_x in _factoryType" count _buyFacTypes > 0: goto "BuyAtSetFactory"
 	#BuyAtOldFashion
 		_factories = []
 		{_factories = _factories + ([_si, _x, true] call funcGetIdleFactories)} forEach _factoryType

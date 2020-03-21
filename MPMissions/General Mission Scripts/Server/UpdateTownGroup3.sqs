@@ -230,7 +230,7 @@ _unitsInfantry = []; _unitsVehicle = []
 	? (_heal || _rearm) && !(_u in (_unitsSupport + _unitsSupporting)) : _unitsSupport set [count _unitsSupport, _u]; goto "Support_CheckUnit"
 	? (_heal || _rearm) && (_u in _unitsSupporting) : _unitsSupporting = _unitsSupporting - [_u, objNull]; _unitsSupport set [count _unitsSupport, _u]; goto "Support_CheckUnit"
 	? !_heal && !_rearm : _unitsSupport - [_u, objNull]; _unitsSupporting = _unitsSupporting - [_u, objNull]
-	
+	~2
     goto "Support_CheckUnit"
     
     #Support_Perform

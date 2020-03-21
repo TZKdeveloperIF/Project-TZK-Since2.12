@@ -27,7 +27,7 @@ _lastMissionSettings = [ [], [], [] ]; _booleMatrix = [booleSettingEffects, bool
 	_i = _i + 1
 	? _i < _Column : goto "LoopColumn"
 	
-	? dev: ctrlSetText [IDC + 1, format["%1", ""]]; ctrlSetText [IDC + 2, format["%1", ([si0, stHeavy, true] call funcGetIdleFactories)]]; ctrlSetText [IDC + 3, ([si0, stbarracks, false] call funcGetIdleFactories)]
+	? dev: ctrlSetText [IDC + 1, format["%1", ""]]; ctrlSetText [IDC + 2, format["%1", (groupMatrix select si0 select 1) knowsAbout player]]; ctrlSetText [IDC + 3, format ["%1", player knowsAbout (units (groupMatrix select si0 select 1) select 0)]]
 
 	~0.2
 	goto "Update"
