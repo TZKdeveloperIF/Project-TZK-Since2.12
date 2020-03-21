@@ -19,7 +19,7 @@ _order = orderMatrix select _si select _gi; _idOrder = _order select 0
 _i = rearmDataObj find _unit
 ? _i == -1: _weapons = []; _mags = []
 ? _i != -1: _weapons = (rearmDataEquip select _i) select 0; _mags = (rearmDataEquip select _i) select 1
-_hasMines = false; { if (_x in _mags) then {_hasMines = true} } forEach MagzinesMine
+_hasMines = magMine in _mags
 
 _timeCheckSupport = time + 30 + random 60
 
@@ -28,7 +28,7 @@ _sleep = 30
 _patrol = false
 
 _magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
-_mines = "_x in MagzinesMine" count _magazines
+_mines = "_x == magMine" count _magazines
 ? _hasMines && _mines == 0 : [_unit, _si, _gi, true] exec "Server\AI_CheckSupport.sqs"; _sleep = 10; goto "Sleep"
 
 #Update
@@ -55,7 +55,7 @@ _mines = "_x in MagzinesMine" count _magazines
   
   ; PUT MINE
 	_MineMagazine = magMine
-	? magPistolMine in _magazines : _MineMagazine = magPistolMine
+;	? magPistolMine in _magazines : _MineMagazine = magPistolMine
 	_mines = "_x == _MineMagazine" count _magazines
 	doStop _unit
 	_res = [ getPos _unit, siBoth, vMinerAvoid, [] ] call funcGetClosestVehicle
@@ -67,7 +67,7 @@ _mines = "_x in MagzinesMine" count _magazines
 	? _mines == 1 && _minesAfter == 1 : _unit removeMagazine _MineMagazine
 	
 	_magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
-	_mines = "_x in MagzinesMine" count _magazines
+	_mines = "_x == magMine" count _magazines
 	
 	_posMove = []
 	? _mines == 0 : [_unit, _si, _gi, true] exec "Server\AI_CheckSupport.sqs"; _sleep = 10; goto "Sleep"

@@ -44,67 +44,68 @@ _tanks = nil
 #Update
 	~ 120
 	
-	? (count (units _group)) == 0 : goto "Update"
+	? (count (units _group)) == 0: goto "Update"
 	_group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "NORMAL"
-
+	
 	? time < _timePatrol : goto "Patrol"
 	? time > _timeDestroy : goto "Destroy"
+	
+	; Take Town New Mode
+	#TakeTownMode
+	_res = [_posPatrol, siRes, []] call funcGetClosestEnemyTown;
+	? (_res select 0) != -1: _flag = (towns select (_res select 0)) select tdFlag; _posPatrol = getPos _flag; {_x doMove ([_posPatrol,4,4] call funcGetRandomPos)} forEach (units _group)
+	_posPatrol = getPos ((units _group) select 0)
+	goto "Update"
 	
 ; TakeTown
 _units = units _group; _ci = count _units; _i = 0
 #TakeTownCheckUnit
-	? _i >= _ci: _units resize 0; goto "Update"
+	? _i >= _ci: _units = nil; goto "Update"
 	_unit = _units select _i
 	? _unit != driver vehicle _unit: _i = _i + 1; goto "TakeTownCheckUnit"
-	_j = 0; _cj = count towns; _distance = 100000; _ti = -1
-	#TakeTownCheckFlag
-		_town = towns select _j
-		? (_town select tdSide) != siRes: if (_unit distance (_town select tdFlag) < _distance) then {_ti = _j; _distance = _unit distance (_town select tdFlag)}
-		_j = _j + 1
-		? _j < _cj: goto "TakeTownCheckFlag"
-	? _ti != -1: _unit doMove getPos ((towns select _ti) select tdFlag)
 	
+	_res = [getPos _unit, siRes, []] call funcGetClosestEnemyTown;
+	? (_res select 0) != -1: _flag = (towns select (_res select 0)) select tdFlag; _unit doMove ([getPos _flag,4, 4] call funcGetRandomPos)
+	
+	~2
 	_i = _i + 1
 	goto "TakeTownCheckUnit"
+	
 
 #Patrol
 	? time < ([60*10, 60*0] select dev): goto "Update"
-	_posOld = _posPatrol
-	_i = 0; _ci = 112; _found = false
-	#PatrolPosTry
-		_posPatrol = [posCenter, 0, 5000] call funcGetRandomPos
-		? ([_posPatrol] call funcStartPos): _found = true
-		_i = _i + 1
-		~0.1
-		? _i < _ci: goto "PatrolPosTry"
-	? !_found: _posPatrol = _posOld
-	
+	_posPatrol = [_posPatrol, 100, 100] call funcGetRandomPos
+;	_posOld = _posPatrol
+;	_posPatrol = [_posOld] call funcUpdateResPatrolPos
 	{ if (_x == driver vehicle _x) then { _x doMove ([_posPatrol, 10, 20] call funcGetRandomPos) } } foreach (units _group)
 	goto "Update"
 
 #Destroy
-_objects = +mhq + (MCV select si0) + (MCV select si1)
-{ _objects = _objects + ((structMatrix select si0) select _x) } foreach structsDestroy
-{ _objects = _objects + ((structMatrix select si1) select _x) } foreach structsDestroy
-_objects = _objects - [objNull]
+
+	_res1 = [_posPatrol, si0] call funcGetClosestEnemyObject;
+	_res0 = [_posPatrol, si1] call funcGetClosestEnemyObject;
+	_object = [_res1 select 0, _res0 select 0] select ((_res0 select 1) < (_res1 select 1));
+	? (_res0 select 1) > (1 + time/3600)*viewDistance && (_res1 select 1) > (1 + time/3600)*viewDistance: goto "TakeTownMode"
+	{	if (_x == driver vehicle _x) then { _x doMove ([getPos _object, 50, 100] call funcGetRandomPos) };	if ( _x != vehicle _x && _x == gunner vehicle _x && (_x distance _object) < 200) then { [_x, _object] exec "Server\DestroyObject.sqs" }	} forEach units _group
+	_posPatrol = getPos _object
+	goto "Update"
+	
+	
 
 	_units = units _group; _ci = count _units; _i = 0; _takeTownUnits = []
 	#DestroyUnits
 	_unit = _units select _i
 	
-	_j = 0; _cj = count _objects; _distance = 100000; _ti = -1
 	#DestroyCheckObj
-		_obj = _objects select _j
-		? _unit distance _obj < _distance: _ti = _j; _distance = _unit distance _obj
-		_j = _j + 1
-		? _j < _cj: goto "DestroyCheckObj"
-	_comparison = ( _distance < (1 + time/3600)*viewDistance )
-	? _comparison : if (_unit == driver vehicle _unit) then { _unit doMove ([getPos _object, 50, 100] call funcGetRandomPos) }; if ( _unit != vehicle _unit && _unit == gunner vehicle _unit && (_unit distance _object) < 200) then { [_unit, _object] exec "Server\DestroyObject.sqs" };
-	? !_comparison && _unit == driver vehicle _unit: _takeTownUnits set [count _takeTownUnits, _unit]
-	_i = _i + 1
-	? _i < _ci : goto "DestroyUnits"
-	
-	? count _takeTownUnits > 0: _units = +_takeTownUnits; _ci = count _units; _i = 0; _objects resize 0; _takeTownUnits resize 0; goto "TakeTownCheckUnit"
-	_objects resize 0; _takeTownUnits resize 0; _units resize 0; goto "Update"
+		_obj = (vehicle _unit) call loadFile "Server\SQF\ClosestStructure.sqf"; _dist = _unit distance _obj; _comparison = alive _obj && _dist < (1 + time/3600)*viewDistance
+		? _comparison: if (_unit == driver vehicle _unit) then {_unit doMove ([getPos _obj, 50, 100] call funcGetRandomPos)}; if (_unit != vehicle _unit && _unit == gunner vehicle _unit && (_unit distance _obj) < 200) then {[_unit, _obj] exec "Server\DestroyObject.sqs"};
+		? !_comparison && _unit == driver vehicle _unit: _takeTownUnits set [count _takeTownUnits, _unit]
+		
+		~2
+		_i = _i + 1
+		? _i < _ci : goto "DestroyUnits"
+		
+	? count _takeTownUnits > 0: _units = +_takeTownUnits; _ci = count _units; _i = 0; _takeTownUnits = nil; goto "TakeTownCheckUnit"
+	_takeTownUnits = nil; _units = nil; goto "Update"
 	
 ; EOF

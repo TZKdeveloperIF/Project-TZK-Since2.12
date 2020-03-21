@@ -184,6 +184,7 @@ _colorDead = [0.5,0.5,0.5, 0.6]
   ctrlShow [IDC_TEXT_TRACKINGBOTTOM, !bShowAll && !_bMapMode]
   ctrlShow [IDC_TEXT_GAMETIME, bShowAll || _bMapMode]
   ctrlShow [IDC_TEXT_GAMETIMEBOTTOM, !bShowAll && !_bMapMode]
+	ctrlShow [IDC_BTN_QUIT, false]
 	
 	ctrlSetText [[IDC_TEXT_GAMETIME, IDC_TEXT_GAMETIMEBOTTOM] select (!bShowAll && !_bMapMode), [] call funcGetTimeString ]
 	
@@ -203,7 +204,8 @@ _colorDead = [0.5,0.5,0.5, 0.6]
 	{ ctrlShow [_x, bShowGroups && (ctrlVisible IDC_BTN_SHOWGROUPS)] } foreach [IDC_LB_GROUPLEADERS, IDC_LB_GROUPMEMBERS, IDC_BG_GROUPS]
 
 	ctrlSetText [IDC_BTN_SHOWALL, ["Show All", "Hide All"] select bShowAll]
-	{ ctrlShow [_x, bShowAll && !_bMapMode] } foreach [IDC_SL_ANGLEHORZ, IDC_SL_ANGLEVERT, IDC_SL_DISTANCE, IDC_BTN_LOCKDIR, IDC_BTN_LEFT, IDC_BTN_TOP, IDC_BTN_RIGHT, IDC_BTN_REAR, IDC_BTN_FRONT, IDC_BTN_NEAR, IDC_BTN_FAR, IDC_BTN_UseNVG, IDC_BTN_QUIT]
+	{ ctrlShow [_x, bShowAll && !_bMapMode] } foreach [IDC_SL_ANGLEHORZ, IDC_SL_ANGLEVERT, IDC_SL_DISTANCE, IDC_BTN_LOCKDIR, IDC_BTN_LEFT, IDC_BTN_TOP, IDC_BTN_RIGHT, IDC_BTN_REAR, IDC_BTN_FRONT, IDC_BTN_NEAR, IDC_BTN_FAR, IDC_BTN_UseNVG]
+	; , IDC_BTN_QUIT
 
 	ctrlSetText [IDC_BTN_LOCKDIR, ["Lock Dir", "Unlock Dir"] select bLockDir]
 
@@ -391,11 +393,11 @@ _colorDead = [0.5,0.5,0.5, 0.6]
 	unitSpec = _unitTracked
 	? pvGameOver != -1 : exit
 
-;	_cam cameraEffect["terminate","back"]
-;	_cam camCommit 0
-;	~0.1
-	_cam camCommand "manual off"
-	player cameraEffect["terminate","back"]
+	_cam cameraEffect["terminate","back"]
+	_cam camCommit 0
+	~0.1
+;	_cam camCommand "manual off"
+;	player cameraEffect["terminate","back"]
 	
 	_text = "You are free to call radio now. 0-0-2 to change settings. 0-0-0 to return spectator mode."
 	hint _text; player groupChat _text

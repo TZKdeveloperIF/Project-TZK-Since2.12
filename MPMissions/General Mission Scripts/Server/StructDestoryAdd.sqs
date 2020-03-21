@@ -1,0 +1,9 @@
+; args: object
+@!(mutexResDestStruct)
+mutexResDestStruct = true
+_i = ResDestroyStruct find objNull
+? _i == -1: _i = count ResDestroyStruct
+ResDestroyStruct set [_i, _this]
+mutexResDestStruct = true
+
+; EOF

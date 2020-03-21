@@ -9,23 +9,25 @@ boole_Infantry_Mode = _boole_Infantry_Mode; boole_NeutralTown_Mode = _boole_Neut
 
 [] exec "Server\InitFunctions.sqs"
 
-busyInit = "call format[{busy%1 = []}, sideNames select _si]"
-busySet = 	"call format[{[_unit,_si] exec {Server\BusySet.sqs}}]"
-busyClear = "call format[{[_unit,_si] exec {Server\BusyClear.sqs}}]"
-busyCheck = "call format[{_unit in busy%1}, sideNames select _si]"
-mutexBusy = false
+;busyInit = "call format[{busy%1 = []}, sideNames select _si]"
+;busySet = 	"call format[{[_unit,_si] exec {Server\BusySet.sqs}}]"
+;busyClear = "call format[{[_unit,_si] exec {Server\BusyClear.sqs}}]"
+;busyCheck = "call format[{_unit in busy%1}, sideNames select _si]"
+;mutexBusy = false
 
-temporaryInit = "call format[{temporary%1 = []}, sideNames select _si]"
-temporarySet = 	"call format[{[_unit,_si] exec {Server\TemporarySet.sqs}}]"
-temporaryClear = "call format[{[_unit,_si] exec {Server\TemporaryClear.sqs}}]"
-temporaryCheck = "call format[{_unit in temporary%1}, sideNames select _si]"
-mutexTemporary = false
+;temporaryInit = "call format[{temporary%1 = []}, sideNames select _si]"
+;temporarySet = 	"call format[{[_unit,_si] exec {Server\TemporarySet.sqs}}]"
+;temporaryClear = "call format[{[_unit,_si] exec {Server\TemporaryClear.sqs}}]"
+;temporaryCheck = "call format[{_unit in temporary%1}, sideNames select _si]"
+;mutexTemporary = false
 
-_si = si0
-call busyInit; call temporaryInit
-_si = si1
-call busyInit; call temporaryInit
-
+; _si = si0
+; call busyInit; call temporaryInit
+; _si = si1
+; call busyInit; call temporaryInit
+busySet = "_unit setSkill (skill _unit) - 0.0002"; busyClear = "_unit setSkill (skill _unit) + 0.0002"; busyCheck = "(skill _unit) < 0.9999"
+temporarySet = "_unit setSkill (skill _unit) - 0.0001"; temporaryClear = "_unit setSkill (skill _unit) + 0.0001"; temporaryCheck = "(skill _unit) == 0.9999"
+ResDestroyStruct = []; mutexResDestStruct = false
 
 
 

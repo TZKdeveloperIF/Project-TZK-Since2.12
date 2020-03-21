@@ -19,11 +19,11 @@ if (_unit == driver vehicle _unit) then
 		_magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
 		if (_wpnSec != "") then {
 			_validMags = [_wpnSec] call loadFile "Common\SQF\WeaponValidMags.sqf";
-			if !([_magazines, _validMags] call funcArrayOverlap) then {_rearm = true};
+			if ("_x in _validMags" count _magazines == 0) then {_rearm = true};
 		} else {
 			if (_wpnPrim != "") then {
 				_validMags = [_wpnPrim] call loadFile "Common\SQF\WeaponValidMags.sqf";
-				if !([_magazines, _validMags] call funcArrayOverlap) then {_rearm = true};
+				if ("_x in _validMags" count _magazines == 0) then {_rearm = true};
 			} else {
 				if (count _magazines < 1) then {_rearm = true};
 			};
