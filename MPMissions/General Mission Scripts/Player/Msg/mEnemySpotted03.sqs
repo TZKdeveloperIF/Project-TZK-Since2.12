@@ -1,0 +1,19 @@
+; args: none
+
+#Start
+
+@!(isNull pvEnemy03)
+
+? (pvGameover != -1): Exit
+_enemy = pvEnemy03
+pvEnemy03 = objNull
+
+? _enemy in EnemySpottedList : goto "Start"
+_index = EnemySpottedList find objNull
+? _index == -1: _index = count EnemySpottedList
+EnemySpottedList set [_index, _enemy]
+? (count EnemySpottedList) > 20 : EnemySpottedList set [(random 20) - 0.5, objNull]
+
+[_enemy] exec "Player\HandleEnemySpotted.sqs"
+
+goto "Start"

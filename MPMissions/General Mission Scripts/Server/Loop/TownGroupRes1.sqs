@@ -1,0 +1,78 @@
+; args: [_group, _ti, _timePatrol, _timeReinforce]
+
+_group = _this select 0; _ti = _this select 1; _timePatrol = _this select 2; _timeReinforce = _this select 3
+
+_si = siRes
+_interval = (7 - restanksx) *60
+_distSpawn = viewDistance + 500
+_flag = (towns select _ti) select tdFlag
+_posFlag = getPos _flag
+
+#Update
+~30
+? _time > 3*60: goto "NextLoop"
+	? time > _timeReinforce && ((towns select _ti) select tdSide) == siRes : goto "Reinforce"
+	? (count (units _group)) == 0 : goto "Update"
+	? ((towns Select _ti) select tdSide) != siRes : goto "TakeFlag"
+	? time > _timePatrol : goto "Patrol"
+	{ if ( alive _x && unitReady _x ) then { doStop _x } } foreach units _group
+	{ if (alive _x) then { _x doWatch ([getPos _x, 200, 200] call funcGetRandomPos) } } foreach units _group
+	goto "Update"
+
+#Patrol
+  _group setCombatMode "RED"; _group setBehaviour "STEALTH"; _group setSpeedMode "NORMAL"
+  ; TODO { _x disableAI "TARGET" } foreach (units _group)
+
+  ; player globalchat format["Patrol: %1", (towns select _ti) select tdName]
+	_timePatrol = time + 3*60
+	{ if ((random 1) < 0.5 && _x == driver vehicle _x) then { _x doMove ([getPos _flag, 50, 150] call funcGetRandomPos) } } foreach units _group
+	goto "Update"
+
+#TakeFlag
+	{ if ((random 1) < 0.5 && _x == driver vehicle _x) then { _x doMove ([getPos _flag, 4, 4] call funcGetRandomPos) } } foreach units _group
+	goto "Update"
+
+#Reinforce
+  _timeReinforce = time + _interval
+	? count (units _group) < 8 : goto "AddInf"
+	? count (units _group) <= 10 : goto "AddTank"
+	goto "SendOutTanks"
+
+#AddInf
+  _type = -1
+  while "_type == -1" do { _type = (infTown select _si) call funcGetRandomUnitType }
+  _pos = [_posFlag, 150, 150] call funcGetRandomPos
+  [_type, 0, 0, 0, _pos, random 360, _si, -1, _group, 0, 0] exec "Common\AddUnit.sqs"
+  ; player globalchat format["AddInf: %1", (towns select _ti) select tdName]
+  goto "Patrol"
+  
+#AddTank
+  _type = -1
+  while "_type == -1" do { _type = (armorTown select _si) call funcGetRandomUnitType }
+  _pos = [_posFlag, 12, 13] call funcGetRandomPos
+  [_type, 1, 1, 0, _pos, random 360, _si, -1, _group, 0, 0] exec "Common\AddUnit.sqs"
+  ; player globalchat format["AddTank: %1", (towns select _ti) select tdName]
+  goto "Patrol"
+
+#SendOutTanks
+	_tanksInGroup = []
+	{ _v = vehicle _x; if (_x != _v && !(_v in _tanksInGroup) ) then { _tanksInGroup set [count _tanksInGroup, _v] } } forEach units _group
+	; player globalchat format["SendOutTanks: %1", (towns select _ti) select tdName]
+	_i = 0
+	#NextTank
+	@!(mutexAddResPatrol)
+	mutexAddResPatrol = true
+		_tank = _tanksInGroup select _i
+		_groupPatrol = grpNull
+		_unitsMin = 12; _gi = 0
+		{ _unitCount = (count units _x); if (_unitCount < _unitsMin) then { _groupPatrol = _x; _unitsMin = _unitCount }; _gi = _gi + 1 } forEach groupsPatrol
+		_units = units _group - (crew _tank)
+		? _unitsMin <= 10 && !(isNull _groupPatrol) && count _units > 0 : (crew _tank) join _groupPatrol
+		_i = _i + 1
+		
+	mutexAddResPatrol = false
+    ? _i < (count _tanksInGroup) : goto "NextTank"
+goto "Patrol"
+
+#NextLoop
+	[_group, _ti, _timePatrol, _timeReinforce] exec "Server\Loop\TownGroupRes1.sqs"

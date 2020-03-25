@@ -69,7 +69,7 @@ _count = (count towns) / 2.5; _index = 0; _patrolGroup = grpNull
 
 #ResPatrolGroups
 	if (_index < count patrolGroups) then {_patrolGroup = patrolGroups select _index} else {_patrolGroup = createGroup resistance}
-	[_patrolGroup] exec "Server\UpdateResPatrolGroup.sqs"
+	[_patrolGroup] exec "Server\Start\ResPatrolGroup.sqs"
 
 	_index = _index + 1
 	? _index < _count : goto "ResPatrolGroups"

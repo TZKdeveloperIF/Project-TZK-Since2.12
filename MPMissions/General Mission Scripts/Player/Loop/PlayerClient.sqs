@@ -1,0 +1,112 @@
+; args: [_posOld, _posNow, _timeOld, _timeNow, _unitsStart, _unitsStarted]
+_posOld = _this select 0; _posNow = _this select 1; _timeOld = _this select 2; _timeNow = _this select 3; _unitsStart = _this select 4; _unitsStarted = _this select 5
+_unit = player
+#Update
+	~1
+	? _time > 5*60: [_posOld, _posNow, _timeOld, _timeNow, _unitsStart, _unitsStarted] exec "Player\Loop\PlayerClient.sqs"; exit
+
+	_mhq = mhq select siPlayer
+	_mcvs = MCV select siPlayer
+
+	? pvGameOver != -1 : [] exec "Player\PlayGameOverSequence.sqs"; [] exec "Common\Dynamic\TriggerGameEnd.sqs"; Exit
+
+	? time > (timeLastPing + blockTime) && !bBlockedByClient : bBlockedByClient = true; [] exec "Player\BlockByClient.sqs"
+	
+	? !(alive _unit): goto "WaitUntilAlive"
+	_posNow = getPos player; _timeNow = time
+	_distance = [_posOld, _posNow] call funcDistH
+	? ([_posOld, positionRespawn] call funcDistH) < 100 || ([positionRespawn, _posNow] call funcDistH) < 100 : _distance = 0
+	? _timeNow - _timeOld > 0.5 && _distance/(_timeNow - _timeOld) > 600 : (vehicle _unit) setdamage 1; hint "Big brother is watching you."; player globalChat "Big brother is watching you."
+	_posOld = _posNow; _timeOld = _timeNow
+	_unitsStart = (units group player) - [player] - (_unitsStarted)
+	{[_x] exec "Player\UpdateDestroyEnemyObject.sqs"} forEach _unitsStart
+	_unitsStarted = _unitsStarted + _unitsStart - [objNull]
+	
+	? ((groupPlayer == (groupCommander select siPlayer)) && !isCommander): isCommander = true
+	? ((groupPlayer != (groupCommander select siPlayer)) && isCommander): isCommander = false
+	
+	_mhqPos = getPos _mhq
+	_mhqNearby = [false, true] select ( ([_posNow, _mhqPos] call funcDistH) < 150 ); if (!alive _mhq) then {_mhqNearby = false}
+	? !_mhqNearby : if ( ([positionAttach, getPos _mhq] call funcDistH) > 100 ) then {mhqNearby = false}
+	? _mhqNearby: mhqNearby = true
+; 	mhqNearby = [false, true] select ( ( ([_posNow, siPlayer, [[utMHQ0],[utMHQ1]] select siPlayer, []] call funcGetClosestVehicle) select 1 ) < 150 )
+	MCVNearby = [false, true] select ( ( ([_posNow, siPlayer, [[utMCVW],[utMCVE]] select siPlayer, []] call funcGetClosestVehicle) select 1 ) < 150 )
+	SupNearby = [false, true] select ( ( ([_posNow, siPlayer, typesSupportPlus select siPlayer, []] call funcGetClosestVehicle) select 1 ) < 50 )
+	? mhqNearby : MCVNearby = false; SupNearby = false
+
+	? -1 != (vehicle player) call funcGetUnitTypeFromObject && !local vehicle player : if (player == commander vehicle player && !dev) then {player action ["Eject", vehicle player]}
+	
+	setViewDistance viewDistance; showGPS boole_Show_GPS; showPad boole_Show_Pad
+	goto "Update"
+
+
+#WaitUntilAlive
+	_timeRespawn = time + 30
+	
+	forceMap true
+
+	closeDialog 0
+	~1
+	[_timeRespawn] exec "Player\Dialog Respawn.sqs"
+	
+	_index = 0
+	#RemoveAction
+		_unit removeAction _index
+		_index = _index + 1
+		? (_index < 10):goto "RemoveAction"
+
+	@(alive player) || (pvGameOver != -1)
+
+	? pvGameOver != -1 : [] exec "Player\PlayGameOverSequence.sqs"; [] exec "Common\Dynamic\TriggerGameEnd.sqs"; exit
+
+	_unit = player
+	removeAllWeapons _unit
+	[_unit, siPlayer, 200] exec "Common\EventAdd_InfantryKilled.sqs"
+
+	_money = (groupMoneyMatrix select siPlayer) select giPlayer
+
+	? _money >= costRespawn : goto "Respawn"
+	#WaitMoney
+		_unit setPos [-2000 + _si*100, -2000 + _gi*100, 1000]
+		_unit setVelocity [0,0,0]
+		~1
+		_money = (groupMoneyMatrix select siPlayer) select giPlayer
+		? _money < costRespawn : goto "WaitMoney"
+	
+	#Respawn
+		? costRespawn > 0 : [costRespawn] exec "Player\SendMoneySpent.sqs"
+		? !(alive objectRespawn) : objectRespawn = [objectRespawn, siPlayer] call funcGetNearestRespawnObject
+
+		_ts = objectRespawn call funcGetStructTypeFromObject
+		? _ts != -1 : goto "RespawnStruct"
+	
+	#RespawnMHQMCV
+		_dir = getDir objectRespawn
+		_pos = getPos objectRespawn
+		_posRespawn = [(_pos select 0)-(sin _dir)*10,(_pos select 1)-(cos _dir)*10,0]
+		? !(alive objectRespawn) || isNull objectRespawn: _posRespawn = positionRespawn
+		goto "RespawnPosSet"
+  
+	#RespawnStruct
+		_res = [objectRespawn, _ts, siPlayer] call funcCalcUnitPlacementPosDir
+		_posRespawn = _res select 0
+		? !(alive objectRespawn) || isNull objectRespawn: _posRespawn = positionRespawn
+	
+	#RespawnPosSet
+		_unit setVelocity [0,0,0]
+		_unit setPos _posRespawn
+
+	forceMap false
+
+	[_unit, siPlayer] exec "Player\EquipPlayerRespawn.sqs"
+
+	[_unit] exec "Player\AddPlayerActions.sqs"
+
+	; The AnimChanged-EH is available since 1.99
+	_unit addEventHandler ["AnimChanged", "_this exec {Player\Event_AnimChanged_WW4.sqs}"]
+	_unit addEventHandler ["Fired",{ _this exec "Player\LimitWeaponRangePlayer.sqs" }]
+
+	_posOld = _posRespawn
+	_posNow = _posRespawn
+	goto "Update"
+

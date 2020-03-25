@@ -23,24 +23,24 @@ _vt = _vehicle call funcGetUnitTypeFromObject
 ? ([getPos _unit, _posLand] call funcDistH) > _radius : exit
 
 ; Check Whether Unit In Another Temporary Order (Except For Set Flight Altitude, Clear Temporary Order, Etc)
-? call temporaryCheck : exit
+? _unit call temporaryCheck : exit
 
 ; Initialize The Order Script
 _timeStart = time; _timeAbort = _timeStart + _duration; _timeUp = _timeStart; _cycle = 30; _loop = 0
-call temporarySet
+_unit call temporarySet
 
 
 ; Wait For Unit Finish Its Busy-Work
 #WaitReady
-~2
-? time > _timeAbort : 	call temporaryClear; exit
-? !call temporaryCheck : exit
-? call busyCheck : goto "WaitReady"
+~5
+? time > _timeAbort : 	_unit call temporaryClear; exit
+? !_unit call temporaryCheck : exit
+? _unit call busyCheck : goto "WaitReady"
 
 ; Main Part Of Temporary Order
 
 ; Use busy to prevent AI from automatically moving for support in Temporary Land Order
-call busySet
+_unit call busySet
 
 _groups = groupMatrix select _si
 #Update
@@ -56,8 +56,8 @@ _groups = groupMatrix select _si
 		[_unit, _posMove] call funcMoveAI
 
 		_timeUp = time + 5
-		@ ( time > _timeUp || !call temporaryCheck )
-		? !call temporaryCheck : goto "EOF"
+		@ ( time > _timeUp || !_unit call temporaryCheck )
+		? !_unit call temporaryCheck : goto "EOF"
 		? !(alive _unit) || !(alive _helicopter) || _helicopter != (vehicle _unit) || time > _timeAbort : goto "EOF"
 
 		? ([_posMove, getPos _helicopter] call funcDistH) > 200 || (speed _helicopter) > 20 : goto "PrepareLand_Check"
@@ -69,8 +69,8 @@ _groups = groupMatrix select _si
 		#Land_Check
 
 		_timeUp = time + 5
-		@ ( time > _timeUp || !call temporaryCheck )
-		? !call temporaryCheck : goto "EOF"
+		@ ( time > _timeUp || !_unit call temporaryCheck )
+		? !_unit call temporaryCheck : goto "EOF"
 		? !(alive _unit) || !(alive _helicopter) || _helicopter != (vehicle _unit) || time > _timeAbort : goto "EOF"
 
 		? time > _timeRetry : goto "Update"
@@ -83,8 +83,8 @@ _groups = groupMatrix select _si
 	#Landed_Check
 
 		_timeUp = time + 5
-		@ ( time > _timeUp || !call temporaryCheck )
-		? !call temporaryCheck : goto "EOF"
+		@ ( time > _timeUp || !_unit call temporaryCheck )
+		? !_unit call temporaryCheck : goto "EOF"
 		? !(alive _unit) || !(alive _helicopter) || _helicopter != (vehicle _unit) || time > _timeAbort : goto "EOF"
 
 		? time > _timeRetry : goto "Update"
@@ -94,8 +94,8 @@ _groups = groupMatrix select _si
 		_helicopter engineOn false
 
 		_timeUp = time + 5
-		@ ( time > _timeUp || !call temporaryCheck )
-		? !call temporaryCheck : goto "EOF"
+		@ ( time > _timeUp || !_unit call temporaryCheck )
+		? !_unit call temporaryCheck : goto "EOF"
 		? !(alive _unit) || !(alive _helicopter) || _helicopter != (vehicle _unit) || time > _timeAbort : goto "EOF"
 
 		goto "LandedWait"
@@ -106,8 +106,8 @@ _groups = groupMatrix select _si
 
 ; End Of File
 #EOF
-call busyClear
-call temporaryClear
+_unit call busyClear
+_unit call temporaryClear
 exit
 
 
@@ -115,7 +115,7 @@ exit
 _loop = (time-_timeStart)/_cycle; _loop = 1 + _loop - _loop%1
 _timeUp = _loop*_cycle + _timeStart
 
-@ ( time > _timeUp || !call temporaryCheck )
-? !call temporaryCheck : goto "EOF"
+@ ( time > _timeUp || !_unit call temporaryCheck )
+? !_unit call temporaryCheck : goto "EOF"
 ? !(alive _unit) || _vehicle != (vehicle _unit) || time > _timeAbort : goto "EOF"
 goto "Update"

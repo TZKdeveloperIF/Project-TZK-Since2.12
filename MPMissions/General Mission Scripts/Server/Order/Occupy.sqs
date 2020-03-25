@@ -8,11 +8,12 @@ _posReclaim = ((wpCO select _si) select (_params select 0))
 _indexReclaim = _params select 1
 _radius = 50*((_params select 2) + 1)
 
-_order = orderMatrix select _si select _gi; _idOrder = _order select 0
+_order = orderMatrix select _si select _gi; _idOrder = _order select 0; _script = (orderDefs select (_order select 1)) select 2
 
 #WaitReady
-~2
-? call busyCheck : goto "WaitReady"
+~5
+? _idOrder != _order select 0: exit
+? _unit call busyCheck : goto "WaitReady"
 
 ? !(alive _unit) : exit
 
@@ -142,5 +143,5 @@ _posMove = [_posReclaim, 150, 150] call funcGetRandomPos
 	 
 	#Sleep
 	~_sleep
-  ? call busyCheck : goto "Sleep"
+  ? _unit call busyCheck : goto "Sleep"
 	goto "Patrol_Update"

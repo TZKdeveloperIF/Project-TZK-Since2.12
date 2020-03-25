@@ -14,21 +14,21 @@ _duration = 180 * ((_params select 4) + 1)
 
 ; Initialize The Order Script
 _timeStart = time; _timeAbort = _timeStart + _duration; _timeUp = _timeStart; _cycle = 30; _loop = 0
-call temporarySet
+_unit call temporarySet
 _waitloop = 0
 
 
 ; Wait For Unit Finish Its Busy-Work
 #WaitReady
-~2
-? time > _timeAbort : 	call temporaryClear; exit
-? !call temporaryCheck : exit
-? call busyCheck : goto "WaitReady"
+~5
+? time > _timeAbort : 	_unit call temporaryClear; exit
+? !_unit call temporaryCheck : exit
+? _unit call busyCheck : goto "WaitReady"
 
 ; Main Part Of Temporary Order
 
 ; Use busy to prevent AI from automatically moving for support in Temporary Transport Order
-call busySet
+_unit call busySet
 
 _groups = groupMatrix select _si
 #Update
@@ -55,26 +55,26 @@ _groups = groupMatrix select _si
 	#MovePickup_Check
 	
 		_timeUp = time + 10
-		@ ( time > _timeUp || !call temporaryCheck )
-		? !call temporaryCheck : goto "EOF"
+		@ ( time > _timeUp || !_unit call temporaryCheck )
+		? !_unit call temporaryCheck : goto "EOF"
 		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
 
 		? time > _timeRepeat : [_unit, _posMove] call funcMoveAI; _timeRepeat = time + 60
 		? ([_posMove, getPos _transp] call funcDistH) > 200 : goto "MovePickup_Check"
 
-	call busyClear
+_unit call busyClear
 	[_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"
 	#WaitSupportDone
 	
 		_timeUp = time + 5
-		@ ( time > _timeUp || !call temporaryCheck )
-		? !call temporaryCheck : goto "EOF"
+		@ ( time > _timeUp || !_unit call temporaryCheck )
+		? !_unit call temporaryCheck : goto "EOF"
 		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
 		
-		? (damage _transp) < 0.1 : call busyClear
-		? call busyCheck : goto "WaitSupportDone"
+		? (damage _transp) < 0.1 : _unit call busyClear
+		? _unit call busyCheck : goto "WaitSupportDone"
 
-	call busySet
+	_unit call busySet
 	#PrepareLand
 		_transp flyInHeight 150
 		
@@ -82,8 +82,8 @@ _groups = groupMatrix select _si
 		[_unit, _posMove] call funcMoveAI
 	
 		_timeUp = time + 5
-		@ ( time > _timeUp || !call temporaryCheck )
-		? !call temporaryCheck : goto "EOF"
+		@ ( time > _timeUp || !_unit call temporaryCheck )
+		? !_unit call temporaryCheck : goto "EOF"
 		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
 		
 		? ([_posMove, getPos _transp] call funcDistH) > 200 || (speed _transp) > 20 : goto "PrepareLand_Check"
@@ -96,8 +96,8 @@ _groups = groupMatrix select _si
 	#Land_Check
 	
 		_timeUp = time + 5
-		@ ( time > _timeUp || !call temporaryCheck )
-		? !call temporaryCheck : goto "EOF"
+		@ ( time > _timeUp || !_unit call temporaryCheck )
+		? !_unit call temporaryCheck : goto "EOF"
 		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
 		
 		? time > _timeRetry : goto "PrepareLand"
@@ -109,8 +109,8 @@ _groups = groupMatrix select _si
 	#Landed_Check
 	
 		_timeUp = time + 5
-		@ ( time > _timeUp || !call temporaryCheck )
-		? !call temporaryCheck : goto "EOF"
+		@ ( time > _timeUp || !_unit call temporaryCheck )
+		? !_unit call temporaryCheck : goto "EOF"
 		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
 		
 		? time > _timeRetry : goto "PrepareLand"
@@ -121,8 +121,8 @@ _groups = groupMatrix select _si
 		[_transp] exec "Common\SendTransportTurnOn.sqs"
 		
 		_timeUp = time + 30
-		@ ( time > _timeUp || !call temporaryCheck )
-		? !call temporaryCheck : goto "EOF"
+		@ ( time > _timeUp || !_unit call temporaryCheck )
+		? !_unit call temporaryCheck : goto "EOF"
 		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
 
 		_waitloop = _waitloop + 1; if ( _waitloop > 5 ) then { goto "MoveOut" }
@@ -139,8 +139,8 @@ _groups = groupMatrix select _si
 		
 		; wait for take off
 		_timeUp = time + 30
-		@ ( time > _timeUp || !call temporaryCheck )
-		? !call temporaryCheck : goto "EOF"
+		@ ( time > _timeUp || !_unit call temporaryCheck )
+		? !_unit call temporaryCheck : goto "EOF"
 		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
 
 	#MoveEject
@@ -153,8 +153,8 @@ _groups = groupMatrix select _si
 	#MoveEject_Check
 	
 		_timeUp = time + 5
-		@ ( time > _timeUp || !call temporaryCheck )
-		? !call temporaryCheck : goto "EOF"
+		@ ( time > _timeUp || !_unit call temporaryCheck )
+		? !_unit call temporaryCheck : goto "EOF"
 		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
 
 		? time > _timeRepeat : [_unit, _posMove] call funcMoveAI; _timeRepeat = time + 60
@@ -163,8 +163,8 @@ _groups = groupMatrix select _si
 	[_transp, _si] exec "Common\EjectAllCargo.sqs"
 	
 		_timeUp = time + 10
-		@ ( time > _timeUp || !call temporaryCheck )
-		? !call temporaryCheck : goto "EOF"
+		@ ( time > _timeUp || !_unit call temporaryCheck )
+		? !_unit call temporaryCheck : goto "EOF"
 		? !(alive _unit) || !(alive _transp) || _transp != (vehicle _unit) || time > _timeAbort : goto "EOF"
 		
 	goto "MovePickup"
@@ -172,9 +172,8 @@ _groups = groupMatrix select _si
 
 
 ; End Of File
-#EOF
-call busyClear
-call temporaryClear
+#EOF_unit call busyClear
+_unit call temporaryClear
 exit
 
 
@@ -182,7 +181,7 @@ exit
 _loop = (time-_timeStart)/_cycle; _loop = 1 + _loop - _loop%1
 _timeUp = _loop*_cycle + _timeStart
 
-@ ( time > _timeUp || !call temporaryCheck )
-? !call temporaryCheck : goto "EOF"
+@ ( time > _timeUp || !_unit call temporaryCheck )
+? !_unit call temporaryCheck : goto "EOF"
 ? !(alive _unit) || _vehicle != (vehicle _unit) || time > _timeAbort : goto "EOF"
 goto "Update"

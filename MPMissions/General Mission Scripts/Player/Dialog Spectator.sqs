@@ -76,7 +76,7 @@ _colorDead = [0.5,0.5,0.5, 0.6]
 #EnterCam
 	_ok = createDialog "SpecDialog"
 
-	{ ctrlShow [_x, false] } foreach [IDC_LB_LOG, IDC_BG_LOG, IDC_INFO, IDC_LB_GROUPLEADERS, IDC_LB_GROUPMEMBERS, IDC_BG_GROUPS, IDC_BTN_NORTH, IDC_BTN_SOUTH, IDC_BTN_WEST, IDC_BTN_EAST]
+	{ ctrlShow [_x, false] } foreach [IDC_LB_LOG, IDC_BG_LOG, IDC_INFO, IDC_LB_GROUPLEADERS, IDC_LB_GROUPMEMBERS, IDC_BG_GROUPS, IDC_BTN_NORTH, IDC_BTN_SOUTH, IDC_BTN_WEST, IDC_BTN_EAST, IDC_BTN_QUIT]
 
 	sliderSetRange [IDC_SL_ANGLEVERT, 0, 89]
 	sliderSetSpeed [IDC_SL_ANGLEVERT, 15, 15]
@@ -184,7 +184,6 @@ _colorDead = [0.5,0.5,0.5, 0.6]
   ctrlShow [IDC_TEXT_TRACKINGBOTTOM, !bShowAll && !_bMapMode]
   ctrlShow [IDC_TEXT_GAMETIME, bShowAll || _bMapMode]
   ctrlShow [IDC_TEXT_GAMETIMEBOTTOM, !bShowAll && !_bMapMode]
-	ctrlShow [IDC_BTN_QUIT, false]
 	
 	ctrlSetText [[IDC_TEXT_GAMETIME, IDC_TEXT_GAMETIMEBOTTOM] select (!bShowAll && !_bMapMode), [] call funcGetTimeString ]
 	

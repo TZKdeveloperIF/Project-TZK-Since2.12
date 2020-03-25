@@ -9,7 +9,7 @@ _pos = (wpCO select _si) select ((_setting select aisRallyPoint) - 1)
 
 ? (_pos select 0) == -1 : exit
 
-call busySet
+_unit call busySet
 
 _timeAbort = time + 10*60
 
@@ -34,5 +34,5 @@ _gi = ( groupMatrix select _si ) find ( group _unit )
 	goto "Update"
   
 #Exit
-  call busyClear
+  _unit call busyClear
   exit

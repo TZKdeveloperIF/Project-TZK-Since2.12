@@ -8,6 +8,7 @@ _gi = _this select 3
 ? !(alive _unit) : exit
 
 ? isServer : [_unit, _si, kaUnit, -1] exec "Server\UpdateKnowsAbout.sqs"
+? !isServer: [_unit, _si, kaUnit, -1] exec "Player\UpdateKnowsAbout.sqs"
 
 ? _type >= maxUnitTypes : _cost = (unitDefs select (utCustom select _si)) select udCost
 ? _type < maxUnitTypes : _cost = (unitDefs select _type) select udCost

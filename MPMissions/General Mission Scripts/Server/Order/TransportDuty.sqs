@@ -8,11 +8,12 @@ _posPickup = ((wpCO select _si) select (_params select 0))
 _posEject = ((wpCO select _si) select (_params select 1))
 _distEject = 100*(1+(_params select 2))
 
-_order = orderMatrix select _si select _gi; _idOrder = _order select 0
+_order = orderMatrix select _si select _gi; _idOrder = _order select 0; _script = (orderDefs select (_order select 1)) select 2
 
 #WaitReady
 ~2
-? call busyCheck : goto "WaitReady"
+? _idOrder != _order select 0: exit
+? _unit call busyCheck : goto "WaitReady"
 
 ? !(alive _unit) : exit
 
@@ -33,7 +34,7 @@ _type = (vehicle _unit) call funcGetUnitTypeFromObject
 _posMove = [_posEject, 50, 150] call funcGetRandomPos
 #Patrol_Update
 	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
-	? call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Sleep"}
+	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Sleep"}
 	
 	? !(alive _unit) : exit
 	? _idOrder != _order select 0 : exit
@@ -65,6 +66,6 @@ _posMove = [_posEject, 50, 150] call funcGetRandomPos
 	~_sleep
 	
 	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
-	? call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Sleep"}
-  ? call busyCheck : goto "Sleep"
+	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Sleep"}
+  ? _unit call busyCheck : goto "Sleep"
 	goto "Patrol_Update"

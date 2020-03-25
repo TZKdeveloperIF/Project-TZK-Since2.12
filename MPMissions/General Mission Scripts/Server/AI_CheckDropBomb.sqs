@@ -4,7 +4,7 @@ _unit = _this select 0
 _si = _this select 1
 _gi = _this select 2
 
-call busySet
+_unit call busySet
 
 #Check
 ? !(alive _unit) || _unit != (vehicle _unit) : goto "Exit"
@@ -49,5 +49,5 @@ _unit doMove _posMove
 goto "Check"
 
 #Exit
-  call busyClear
+  _unit call busyClear
   exit

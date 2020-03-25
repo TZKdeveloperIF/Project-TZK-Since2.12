@@ -1,0 +1,33 @@
+; args: [_unit, _si, _ka, _dist, _timeLastSent]
+_interval = 20
+~(_interval/2 + random _interval)
+
+_unit = _this select 0
+_si = _this select 1
+_kaReport = _this select 2
+_dist = _this select 3
+_timeLastSent = _this select 4
+
+	? !(alive _unit) : exit
+	_target = vehicle _unit
+	_groups0 = (groupAiMatrix select si0) + (townGroups select si0) + (workerGroups select si0)
+	_groups1 = (groupAiMatrix select si1) + (townGroups select si1) + (workerGroups select si1)
+	
+	#CheckSide0
+	_siEnemy = si0
+	? time < ((_timeLastSent select _siEnemy) + 120): goto "CheckSide1"
+	? count ([_siEnemy, stComm] call funcGetWorkingStructures) == 0 : goto "CheckSide1"
+	_res = [_target, _si, _groups0] call funcUpdateKnowsAbout
+	_kaMax = _res select 0; _group = _res select 1
+	? _kaMax > _kaReport : { _x reveal _target } forEach _groups0; [_target, _siEnemy] exec "Common\Msg\sEnemySpotted.sqs"; _timeLastSent set [_siEnemy, time]
+	
+	#CheckSide1
+	_siEnemy = si1
+	? time < ((_timeLastSent select _siEnemy) + 120): goto "NextLoop"
+	? count ([_siEnemy, stComm] call funcGetWorkingStructures) == 0 : goto "NextLoop"
+	_res = [_target, _si, _groups1] call funcUpdateKnowsAbout
+	_kaMax = _res select 0; _group = _res select 1
+	? _kaMax > _kaReport : { _x reveal _target } forEach _groups1; [_target, _siEnemy] exec "Common\Msg\sEnemySpotted.sqs"; _timeLastSent set [_siEnemy, time]
+	
+#NextLoop
+	[_unit, _si, _ka, _dist, _timeLastSent] exec "Server\Loop\KnowsAboutResUnit.sqs"; exit

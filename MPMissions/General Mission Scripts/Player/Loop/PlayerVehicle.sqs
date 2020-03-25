@@ -1,0 +1,38 @@
+; args: [t80 tank]
+_t80 = _this select 0
+_unit = player
+
+? (_unit != vehicle _unit): goto "PlayerEnteredVehicle"
+
+#PlayerOnFoot
+	? _time > 5*60: [_t80] exec "Player\Loop\PlayerVehicle.sqs"; exit
+	
+	[vehicle _unit] exec "Player\Radio\Radio_Update_Vehicle.sqs"
+	? !isNull _t80 : [_t80, true] exec {Player\Effect\T80DrumDisplaySwitch.sqs}; _t80 = objNull
+	@ !(alive _unit) || (_unit != vehicle _unit)
+	? !(alive _unit): goto "PlayerDead"
+
+#PlayerEnteredVehicle
+	_vehicle = vehicle _unit
+	? _vehicle in TownGroupVehicles : (vehicle _unit) setdamage 1; hint "Big brother is watching you."
+	_ehTrack = _vehicle addEventHandler ["Fired",{ [_this select 0, nearestObject[_this select 0, _this select 4] ] exec "Player\TrackShell.sqs" }]
+	; _ehLimit = _vehicle addEventHandler ...
+	
+	[_vehicle] exec "Player\Radio\Radio_Update_Vehicle.sqs"
+	? typeOf _vehicle in ["T80_TZK_xj200", "T80Res_TZK_xj200"] : _t80 = _vehicle; [_t80, false] exec {Player\Effect\T80DrumDisplaySwitch.sqs}
+	
+	@ !(alive _unit) || (_unit == vehicle _unit)
+
+	unassignVehicle _unit
+	; _vehicle removeEventHandler ["Fired", _ehLimit]
+	_vehicle removeEventHandler ["Fired", _ehTrack]
+	_vehicle = objNull
+	bTrackBullet = false
+	? !(alive _unit): goto "PlayerDead"
+	goto "PlayerOnFoot"
+
+#PlayerDead
+	@ (alive player)
+	_unit = player
+	goto "PlayerOnFoot"
+

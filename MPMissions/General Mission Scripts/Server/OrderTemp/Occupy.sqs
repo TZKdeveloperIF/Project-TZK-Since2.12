@@ -15,24 +15,24 @@ _duration = 30 * ((_params select 3) + 1)
 ? _unit != vehicle _unit : exit
 
 ; Check Whether Unit In Another Temporary Order (Except For Set Flight Altitude, Clear Temporary Order, Etc)
-? call temporaryCheck : exit
+? _unit call temporaryCheck : exit
 
 ; Initialize The Order Script
 _timeStart = time; _timeAbort = _timeStart + _duration; _timeUp = _timeStart; _cycle = 30; _loop = 0
-call temporarySet
+_unit call temporarySet
 
 
 ; Wait For Unit Finish Its Busy-Work
 #WaitReady
-~2
-? time > _timeAbort : 	call temporaryClear; exit
-? !call temporaryCheck : exit
-? call busyCheck : goto "WaitReady"
+~5
+? time > _timeAbort : 	_unit call temporaryClear; exit
+? !_unit call temporaryCheck : exit
+? _unit call busyCheck : goto "WaitReady"
 
 ; Main Part Of Temporary Order
 
 ; Use busy to prevent AI from automatically moving for support in Temporary Occupy Order
-call busySet
+_unit call busySet
 
 _typesOccupy = []; _crewnum = 0; 
 
@@ -80,8 +80,8 @@ _groups = groupMatrix select _si
 		[_unit, _posMove] call funcMoveStand
 
 		_timeUp = time + _dist*0.2
-		@ ( time > _timeUp || !call temporaryCheck )
-		? !call temporaryCheck : goto "EOF"
+		@ ( time > _timeUp || !_unit call temporaryCheck )
+		? !_unit call temporaryCheck : goto "EOF"
 		? !(alive _unit) || _vehicle != (vehicle _unit) || time > _timeAbort : goto "EOF"
 
 		? time > _timeMoveAbort || _offset >= 50 || !(alive _occupyStructure) : goto "Fail"
@@ -96,11 +96,11 @@ _groups = groupMatrix select _si
 		_seat = _prio select _i
 	;	_unit playMove "CombatGetInTank"
 		~1
-		? !alive _unit || !call temporaryCheck: goto "EOF"
+		? !alive _unit || !_unit call temporaryCheck: goto "EOF"
 		? !(alive _occupyStructure) : goto "Fail"
 		call format ["_unit assignAs%1 _occupyStructure; _unit moveIn%1 _occupyStructure", _seat]
 		~2
-		? !alive _unit || !call temporaryCheck: goto "EOF"
+		? !alive _unit || !_unit call temporaryCheck: goto "EOF"
 		? !(alive _occupyStructure) : goto "Fail"
 		? _occupyStructure == (vehicle _unit) : goto "EOF"
 		_i = _i + 1
@@ -115,8 +115,8 @@ _groups = groupMatrix select _si
 
 ; End Of File
 #EOF
-call busyClear
-call temporaryClear
+_unit call busyClear
+_unit call temporaryClear
 exit
 
 
@@ -124,7 +124,7 @@ exit
 _loop = (time-_timeStart)/_cycle; _loop = 1 + _loop - _loop%1
 _timeUp = _loop*_cycle + _timeStart
 
-@ ( time > _timeUp || !call temporaryCheck )
-? !call temporaryCheck : goto "EOF"
+@ ( time > _timeUp || !_unit call temporaryCheck )
+? !_unit call temporaryCheck : goto "EOF"
 ? !(alive _unit) || _vehicle != (vehicle _unit) || time > _timeAbort : goto "EOF"
 goto "Update"

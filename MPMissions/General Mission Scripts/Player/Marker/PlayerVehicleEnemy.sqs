@@ -7,6 +7,7 @@ _siEnemy = siEnemy select _si
 _boolHide = true
 ? dev: exit
 #Update
+	? _time > 30: [_si] exec "Player\Marker\PlayerVehicleEnemy.sqs"; exit
 	~1
 	? (0 == count ([_si, stradar] call funcGetWorkingStructures)): call funcHideMarkers; goto "HideSleep"
 	

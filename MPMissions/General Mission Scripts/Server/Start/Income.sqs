@@ -1,0 +1,11 @@
+_totalIncome = [startMoney select si0, startMoney select si1]
+
+[si0, _totalIncome select si0] exec "Server\SendMoneySideTotal.sqs"
+[si1, _totalIncome select si1] exec "Server\SendMoneySideTotal.sqs"
+
+[si0, moneySpent select si0] exec "Server\SendMoneySideSpent.sqs"
+[si1, moneySpent select si1] exec "Server\SendMoneySideSpent.sqs"
+
+_timeNext = 60
+
+[_totalIncome, _timeNext] exec "Server\Loop\Income.sqs"
