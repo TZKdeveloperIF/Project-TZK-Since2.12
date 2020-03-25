@@ -8,12 +8,13 @@ _posPickup = ((wpCO select _si) select (_params select 0))
 _posEject = ((wpCO select _si) select (_params select 1))
 _distEject = 200*(1+(_params select 2))
 
-_order = orderMatrix select _si select _gi; _idOrder = _order select 0
+_order = orderMatrix select _si select _gi; _idOrder = _order select 0; _script = (orderDefs select (_order select 1)) select 2
 _waitloop = 0
 
 #WaitReady
-~2
-? call busyCheck : goto "WaitReady"
+~5
+? _idOrder != _order select 0: exit
+? _unit call busyCheck : goto "WaitReady"
 
 ? !(alive _unit) : exit
 
@@ -50,7 +51,7 @@ _timeRepeat = time + 60
 #MovePickup_Check
   ~10
 	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
-	? call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "MovePickup_Check"}
+	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "MovePickup_Check"}
   ? !(alive _unit) : exit
   ? _idOrder != _order select 0 : exit
   ? !(alive _transp) || _transp != (vehicle _unit) : goto "Patrol"
@@ -60,10 +61,10 @@ _timeRepeat = time + 60
 [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"
 #WaitSupportDone
   ~5
-	? call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "WaitSupportDone"}
+	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "WaitSupportDone"}
   ? !(alive _unit) : exit
-  ? (damage _transp) < 0.1 : call busyClear
-  ? call busyCheck : goto "WaitSupportDone"
+  ? (damage _transp) < 0.1 : _unit call busyClear
+  ? _unit call busyCheck : goto "WaitSupportDone"
   ? _idOrder != _order select 0 : exit
   ? !(alive _transp) || _transp != (vehicle _unit) : goto "Patrol"
 
@@ -72,7 +73,7 @@ _transp flyInHeight (400 + random 100)
 #PrepareLand_Check
   [_unit, _posMove] call funcMoveAI
   ~5
-	? call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "PrepareLand_Check"}
+	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "PrepareLand_Check"}
   ? !(alive _unit) : exit
   ? _idOrder != _order select 0 : exit
   ? !(alive _transp) || _transp != (vehicle _unit) : goto "Patrol"
@@ -84,7 +85,7 @@ _transp flyInHeight 50
 _timeRetry = time + 60
 #Land_Check
   ~5
-	? call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Land_Check"}
+	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Land_Check"}
   ? !(alive _unit) : exit
   ? _idOrder != _order select 0 : exit
   ? !(alive _transp) || _transp != (vehicle _unit) : goto "Patrol"
@@ -96,7 +97,7 @@ _transp land "LAND"
 _timeRetry = time + 60
 #Landed_Check
   ~5
-	? call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Landed_Check"}
+	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Landed_Check"}
   ? !(alive _unit) : exit
   ? _idOrder != _order select 0 : exit
   ? !(alive _transp) || _transp != (vehicle _unit) : goto "Patrol"
@@ -107,7 +108,7 @@ _timeRetry = time + 60
   _transp engineOn false
   [_transp] exec "Common\SendTransportTurnOn.sqs"
   ~30
-	? call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "WaitForCargo"}
+	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "WaitForCargo"}
 	
   _waitloop = _waitloop + 1; if ( _waitloop > 5 ) then { goto "MoveOut" }
   ? !(alive _unit) : exit
@@ -136,7 +137,7 @@ _posMove = [_posEject, 50, 50] call funcGetRandomPos
 _timeRepeat = time + 60
 #MoveEject_Check
   ~5
-	? call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "MoveEject_Check"}
+	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "MoveEject_Check"}
   
   ? !(alive _unit) : exit
   ? _idOrder != _order select 0 : exit

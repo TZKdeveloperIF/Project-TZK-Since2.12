@@ -6,7 +6,7 @@ _gi = _this select 2
 
 ; player globalchat format["AICO_CheckSupport entered, %1", _si]
 
-call busySet
+_unit call busySet
 
 #CheckSupport
 _objRepair = objNull
@@ -116,6 +116,6 @@ unassignVehicle _unit
 #Exit
 ? _unit != vehicle _unit : goto "MoveToEjectPos"
 unassignVehicle _unit
-call busyClear
+_unit call busyClear
 ; player globalchat format["AICO_CheckSupport left, %1", _si]
 exit

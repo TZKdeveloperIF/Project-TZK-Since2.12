@@ -6,6 +6,7 @@ _siEnemy = siEnemy select _si
 @(time > 10)
 ? dev: exit
 #Update
+	? _time > 30: [_si] exec "Player\Marker\PlayerStruct.sqs"; exit
 	~30
 	_structs = StructureMarkerMapping select _si; _i = 0
 	

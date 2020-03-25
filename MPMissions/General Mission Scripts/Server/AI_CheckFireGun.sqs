@@ -22,7 +22,7 @@ _unit reveal _object
 _weapon = _weapons select 0
 ? (_vehicle ammo _weapon) == 0 : exit
 
-call busySet
+_unit call busySet
 
 _gunner disableAI "TARGET"
 _gunner doTarget _object
@@ -33,5 +33,5 @@ _gunner doTarget _object
 _vehicle fire _weapon
 
 #Exit
-call busyClear
+_unit call busyClear
 exit

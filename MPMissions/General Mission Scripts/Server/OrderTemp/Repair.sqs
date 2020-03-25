@@ -25,25 +25,25 @@ _res = [_pos, _si, typesSupport select _si, []] call funcGetClosestVehicle
 
 
 ; Check Whether Unit In Another Temporary Order (Except For Set Flight Altitude, Clear Temporary Order, Etc)
-? call temporaryCheck : exit
+? _unit call temporaryCheck : exit
 
 ; Initialize The Order Script
 _timeStart = time; _timeAbort = _timeStart + _duration; _timeUp = _timeStart; _cycle = 30; _loop = 0
-call temporarySet
+_unit call temporarySet
 _support = _res select 0
 
 
 ; Wait For Unit Finish Its Busy-Work
 #WaitReady
-~2
-? time > _timeAbort : 	call temporaryClear; exit
-? !call temporaryCheck : exit
-? call busyCheck : goto "WaitReady"
+~5
+? time > _timeAbort : 	_unit call temporaryClear; exit
+? !_unit call temporaryCheck : exit
+? _unit call busyCheck : goto "WaitReady"
 
 ; Main Part Of Temporary Order
 
 ; Use busy to prevent AI from automatically moving for support in Temporary Repair Order
-call busySet
+_unit call busySet
 
 _groups = groupMatrix select _si
 #Update
@@ -62,8 +62,8 @@ _groups = groupMatrix select _si
 	_loop = (time-_timeStart)/_cycle*3; _loop = 1 + _loop - _loop%1
 	_timeUp = _loop * _cycle/3 + _timeStart
 	
-	@ ( time > _timeUp || !call temporaryCheck )
-	? !call temporaryCheck : goto "EOF"
+	@ ( time > _timeUp || !_unit call temporaryCheck )
+	? !_unit call temporaryCheck : goto "EOF"
 	? !(alive _unit) || _vehicle != (vehicle _unit) || time > _timeAbort : goto "EOF"
 	? !(alive _support) : _res = [_pos, _si, typesSupport select _si, []] call funcGetClosestVehicle; if ((_res select 1) > _radius) then {goto "EOF"} else {_support = _res select 0}
 	
@@ -77,8 +77,8 @@ _groups = groupMatrix select _si
 	_loop = (time-_timeStart)/_cycle*6; _loop = 1 + _loop - _loop%1
 	_timeUp = _loop * _cycle/6 + _timeStart
 	
-	@ ( time > _timeUp || !call temporaryCheck )
-	? !call temporaryCheck : goto "EOF"
+	@ ( time > _timeUp || !_unit call temporaryCheck )
+	? !_unit call temporaryCheck : goto "EOF"
 	? !(alive _unit) || _vehicle != (vehicle _unit) || time > _timeAbort : goto "EOF"
 	? !(alive _support) : _res = [_pos, _si, typesSupport select _si, []] call funcGetClosestVehicle; if ((_res select 1) > _radius) then {goto "EOF"} else {_support = _res select 0}
 
@@ -93,8 +93,8 @@ _groups = groupMatrix select _si
 	_loop = (time-_timeStart)/_cycle*6; _loop = 1 + _loop - _loop%1
 	_timeUp = _loop * _cycle/6 + _timeStart
 	
-	@ ( time > _timeUp || !call temporaryCheck )
-	? !call temporaryCheck : goto "EOF"
+	@ ( time > _timeUp || !_unit call temporaryCheck )
+	? !_unit call temporaryCheck : goto "EOF"
 	? !(alive _unit) || _vehicle != (vehicle _unit) || time > _timeAbort : goto "EOF"
 	? !(alive _support) : _res = [_pos, _si, typesSupport select _si, []] call funcGetClosestVehicle; if ((_res select 1) > _radius) then {goto "EOF"} else {_support = _res select 0}
 	
@@ -120,8 +120,8 @@ _groups = groupMatrix select _si
 
 ; End Of File
 #EOF
-call busyClear
-call temporaryClear
+_unit call busyClear
+_unit call temporaryClear
 exit
 
 
@@ -129,7 +129,7 @@ exit
 _loop = (time-_timeStart)/_cycle; _loop = 1 + _loop - _loop%1
 _timeUp = _loop*_cycle + _timeStart
 
-@ ( time > _timeUp || !call temporaryCheck )
-? !call temporaryCheck : goto "EOF"
+@ ( time > _timeUp || !_unit call temporaryCheck )
+? !_unit call temporaryCheck : goto "EOF"
 ? !(alive _unit) || _vehicle != (vehicle _unit) || time > _timeAbort : goto "EOF"
 goto "Update"

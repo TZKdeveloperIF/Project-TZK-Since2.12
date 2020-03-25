@@ -9,7 +9,7 @@ _params = _this select 3
 _uid = (_params select 0)
 
 ; Check Whether Unit Fits The Parameters Of The Temporary Order
-? _uid == 0 : call temporaryClear; exit
+? _uid == 0 : _unit call temporaryClear; exit
 
 _ids = (groupUnitIDMatrix select _si) select _gi; _uid = _ids select _uid
 _units = units group _unit; _text = ""; _selectedUnit = objNull
@@ -19,4 +19,4 @@ _vehicle = vehicle _selectedUnit
 ? _vehicle != vehicle _unit : exit
 
 ; Clear Temporary Order
-call temporaryClear
+_unit call temporaryClear

@@ -30,10 +30,10 @@ _typeIndex = (_params select 0)
 ? (ClearTypeDefs select _typeIndex) == "AT-Infantry" : 		_typesClear = typesInfantryAT;					
 ? (ClearTypeDefs select _typeIndex) == "All Infantry" : 	_typesClear = typesInfantryAll;					
 
-? (ClearTypeDefs select _typeIndex) == "All" : call temporaryClear; exit
+? (ClearTypeDefs select _typeIndex) == "All" : _unit call temporaryClear; exit
 _vehicle = vehicle _unit
 _vt = _vehicle call funcGetUnitTypeFromObject
 ? !(_vt in _typesClear) : exit
 
 ; Clear Temporary Order
-call temporaryClear
+_unit call temporaryClear

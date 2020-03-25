@@ -15,24 +15,24 @@ _duration = 30 * ((_params select 3) + 1)
 ? _unit != vehicle _unit : exit
 
 ; Check Whether Unit In Another Temporary Order (Except For Set Flight Altitude, Clear Temporary Order, Etc)
-? call temporaryCheck : exit
+? _unit call temporaryCheck : exit
 
 ; Initialize The Order Script
 _timeStart = time; _timeAbort = _timeStart + _duration; _timeUp = _timeStart; _cycle = 30; _loop = 0
-call temporarySet
+_unit call temporarySet
 
 
 ; Wait For Unit Finish Its Busy-Work
 #WaitReady
-~2
-? time > _timeAbort : 	call temporaryClear; exit
-? !call temporaryCheck : exit
-? call busyCheck : goto "WaitReady"
+~5
+? time > _timeAbort : 	_unit call temporaryClear; exit
+? !_unit call temporaryCheck : exit
+? _unit call busyCheck : goto "WaitReady"
 
 ; Main Part Of Temporary Order
 
 ; Use busy to prevent AI from automatically moving for support in Temporary Board Order
-call busySet
+_unit call busySet
 
 _typesBoard = [];
 
@@ -86,8 +86,8 @@ _groups = groupMatrix select _si
 		[_unit, _posMove] call funcMoveStand
 
 		_timeUp = time + _dist*0.2
-		@ ( time > _timeUp || !call temporaryCheck )
-		? !call temporaryCheck : goto "EOF"
+		@ ( time > _timeUp || !_unit call temporaryCheck )
+		? !_unit call temporaryCheck : goto "EOF"
 		? !(alive _unit) || _vehicle != (vehicle _unit) || time > _timeAbort : goto "EOF"
 
 		? time > _timeMoveAbort || _offset >= 50 || !(alive _transp) : goto "Fail"
@@ -96,14 +96,14 @@ _groups = groupMatrix select _si
 	#Reached
 	_unit playMove "CombatGetInTank"
 	~1
-	? !alive _unit || !call temporaryCheck: goto "EOF"
+	? !alive _unit || !_unit call temporaryCheck: goto "EOF"
 	_unit assignAsCargo _transp
 	_unit moveInCargo _transp
 	~1
 	? !(alive _unit) || _transp != vehicle _unit : goto "Fail"
 
 	#BoardSucceed
-	;	call busySet
+	;	_unit call busySet
 		_timeBoardAbort = time + 10*60
 		#WaitInCargo_Check
 		~5
@@ -132,8 +132,8 @@ _groups = groupMatrix select _si
 
 ; End Of File
 #EOF
-call busyClear
-call temporaryClear
+_unit call busyClear
+_unit call temporaryClear
 exit
 
 
@@ -141,12 +141,12 @@ exit
 _loop = (time-_timeStart)/_cycle; _loop = 1 + _loop - _loop%1
 _timeUp = _loop*_cycle + _timeStart
 
-@ ( time > _timeUp || !call temporaryCheck )
-? !call temporaryCheck : goto "EOF"
+@ ( time > _timeUp || !_unit call temporaryCheck )
+? !_unit call temporaryCheck : goto "EOF"
 ? !(alive _unit) || _vehicle != (vehicle _unit) || time > _timeAbort : goto "EOF"
 goto "Update"
 
 #Quit
 unassignVehicle _unit
-? ([getPos _unit, _posMove] call funcDistH) < 50 && call temporaryCheck && time < _timeAbort : goto "Sleep"
+? ([getPos _unit, _posMove] call funcDistH) < 50 && _unit call temporaryCheck && time < _timeAbort : goto "Sleep"
 goto "EOF"

@@ -1,0 +1,14 @@
+; args: none
+? siPlayer == siCiv : exit
+~60 + random(10)
+_group = group player; _si = siPlayer; _siEnemy = siEnemy select siPlayer
+_distSpawnRes = viewDistance + 500; _distSpawnEnemy = viewDistance + 1500; _boolEnemyTG = false
+_townNumber = count towns
+_timeCheckRes = time + 10; _timeEnemyS = time + 10; _timeEnemyH = time + 60;
+
+; Remove res towns close to start position
+_i = 0; while "_i < _townNumber" do {if ((townsflag select _i) distance FixStart_0 < _distSpawnRes) then {townsRes set [_i, -1]; call format ["pvResTownSpawn%1 = nil", _i]}; _i=_i+1}
+_i = 0; while "_i < _townNumber" do {if ((townsflag select _i) distance FixStart_1 < _distSpawnRes) then {townsRes set [_i, -1]; call format ["pvResTownSpawn%1 = nil", _i]}; _i=_i+1}
+townsRes = townsRes - [-1]
+
+[_timeCheckRes, _timeEnemyS, _timeEnemyH, _boolEnemyTG] exec "Player\Loop\PlayerGroupUnits.sqs"

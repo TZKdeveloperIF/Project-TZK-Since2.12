@@ -13,11 +13,11 @@ _vehicleUnit = vehicle _unit
 _order = orderMatrix select _si select _gi
 _idOrder = _order select 0
 
-call busySet
+_unit call busySet
 
 #Search
-	? !call temporaryCheck : if (_idOrder != _order select 0) then {goto "Exit"}
-	? !call busyCheck : goto "Exit"
+	? !_unit call temporaryCheck : if (_idOrder != _order select 0) then {goto "Exit"}
+	? !_unit call busyCheck : goto "Exit"
   _mine = nearestObject [[getPos _unit, 0, 10] call funcGetRandomPos, ammoMine]
   ? isNull _mine : goto "Exit"
   _pos = getPos _mine
@@ -29,8 +29,8 @@ call busySet
   #WaitUntilMineReached
   
 	~2
-	? !call temporaryCheck : if (_idOrder != _order select 0) then {goto "Exit"}
-	? !call busyCheck : goto "Exit"
+	? !_unit call temporaryCheck : if (_idOrder != _order select 0) then {goto "Exit"}
+	? !_unit call busyCheck : goto "Exit"
     ? !(alive _unit) || time > _timeAbort : goto "Exit"
     ? isNull _mine : goto "Search"
     ? ([getPos _unit, _pos] call funcDistH) > 10 : goto "WaitUntilMineReached"
@@ -39,14 +39,14 @@ call busySet
   _unit doWatch _mine
   
 	~2
-	? !call busyCheck : goto "Exit"
+	? !_unit call busyCheck : goto "Exit"
 	
   ? !(alive _unit) : goto "Exit"
   ? isNull _mine : goto "Search"
   _unit playMove "CombatToPutDown"
   
 	~2
-	? !call busyCheck : goto "Exit"
+	? !_unit call busyCheck : goto "Exit"
 	
   ? !(alive _unit) : goto "Exit"
   ? isNull _mine : goto "Search"
@@ -54,5 +54,5 @@ call busySet
   goto "Search"
 
 #Exit
-  call busyClear
+  _unit call busyClear
   exit

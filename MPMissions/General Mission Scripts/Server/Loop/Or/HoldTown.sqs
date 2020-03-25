@@ -1,0 +1,70 @@
+; args: [_this array of Order, intermediate status of Order]
+
+_unit = _this select 0 select 0
+_si = _this select 0 select 1
+_gi = _this select 0 select 2
+
+_sleep = _this select 1 select 0
+_order = orderMatrix select _si select _gi; _idOrder = _order select 0; _script = (orderDefs select (_order select 1)) select 2
+~_sleep
+? _idOrder != _order select 0: exit
+_sleep = 30
+? _unit call temporaryCheck: _this exec format["Server\Loop\Or\%1", _script]; exit
+? _unit call busyCheck: _this exec format["Server\Loop\Or\%1", _script]; exit
+
+_params = _this select 0 select 3
+_ti = _params select 0
+_dist = 50*((_params select 1) + 1)
+_iDir = _params select 2
+
+_timeCalcPos = _this select 1 select 1
+_timeCheckSupport = _this select 1 select 2
+_bCheckDropBomb = _this select 1 select 3
+_bMoveCorrect = _this select 1 select 4
+_setting = aiSetting select _si select _gi
+
+_vectRnd = [[0,0], 0, 25] call funcGetRandomPos
+
+_flag = (towns select _ti) select tdFlag
+_posFlag = getPos _flag
+	
+	? !(alive _unit) : exit
+	? _idOrder != _order select 0 : exit
+
+	_vehicle = vehicle _unit
+
+	? _unit != driver _vehicle : goto "NextLoop"
+
+	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 10; goto "NextLoop"
+
+	_bCheckDropBomb = !_bCheckDropBomb
+	? _bCheckDropBomb && _unit == _vehicle: if ("_x in MagzinesSatchel" count magazines _unit > 0) then {[_unit, _si, _gi] exec "Server\AI_CheckDropBomb.sqs"; _sleep = 20; goto "NextLoop"}
+
+	? time < _timeCalcPos : goto "CheckMove"
+	? ((towns select _ti) select tdSide) != _si && (random 1) < 0.8 : _timeCalcPos = time + 60; _posDest = [_posFlag, 5, 5] call funcGetRandomPos; goto "CheckMove"
+	_timeCalcPos = time + 120
+	? (random 1) < 0.2 : _posDest = [_posFlag, 10, 10] call funcGetRandomPos; goto "CheckMove"
+	_c = count units _unit
+	_i = ( units _unit ) find ( _unit )
+	? _iDir == 0 : _dir = _i*360/_c
+	? _iDir != 0 : _dir = (_iDir - 1)*45 - 60 + _i*120/_c
+	_posDest = [(_posFlag select 0) + _dist*(sin _dir), (_posFlag select 1) + _dist*(cos _dir)]
+	_posDest = [_posDest, _vectRnd] call funcVectorAdd
+	
+	#CheckMove
+		_distToDest = [getPos _unit, _posDest] call funcDistH; _posMove = _posDest
+		? (_setting select aisMoveMode) == 1 && _bMoveCorrect: if (_unit == vehicle _unit && _distToDest > 300) then {_vector = [_posDest, getPos _unit] call funcVectorSub; _vector = [_vector, 250/_distToDest] call funcVectorScale; _posMove = [getPos _unit, _vector] call funcVectorAdd; _distToDest = 250}
+		_bMoveCorrect = !_bMoveCorrect
+		? _distToDest > 10 : goto "Move"
+		[_unit, true] exec "Server\StopAI.sqs"
+		[_unit, _si, _gi] call funcWatch
+		_sleep = 30
+	goto "NextLoop"
+
+	#Move
+		[_unit, _posMove] call funcMoveAI
+		_sleep = [30, 0.1*_distToDest] select (_distToDest < 300)
+
+#NextLoop
+	[_this select 0, [_sleep, _timeCalcPos, _timeCheckSupport, _bCheckDropBomb, _bMoveCorrect]] exec format["Server\Loop\Or\%1", _script]
+	exit

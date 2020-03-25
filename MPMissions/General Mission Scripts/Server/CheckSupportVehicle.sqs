@@ -40,7 +40,7 @@ _indexOfUnit = CheckSupportUnits find objNull
 CheckSupportUnits set [_indexOfUnit, _unit]
 mutexCheckSupport = false
 
-call busySet
+_unit call busySet
 [_unit, _support] exec "Server\SendMovingToSupport.sqs"
 
 _timeAbort = time + 2*60
@@ -113,7 +113,7 @@ _v flyInHeight 150
 	? _i < 7 : goto "RepairCheck"
 
 #Exit
-  call busyClear
+  _unit call busyClear
 	@!(mutexCheckSupport)
 	mutexCheckSupport = true
 	CheckSupportUnits set [_indexOfUnit, objNull]

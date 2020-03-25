@@ -1,11 +1,11 @@
-; args: [si]
-_si = _this select 0
-_boole_Mark_Player_Name = false
+; args: [si, _boole_Mark_Player_Name]
+_si = _this select 0; _boole_Mark_Player_Name = _this select 1
 
 ; Wait until AI leaders identified.
 @(time > 10)
 
 #Update
+	? _time > 30: [_si, _boole_Mark_Player_Name] exec "Player\Marker\PlayerUnits.sqs"; exit
 	? !([_boole_Mark_Player_Name, boole_Mark_Player_Name] call funcBoolEqual): goto "ResetLeaderMarker"
 	~0.5
 	? (0 == count ([_si, stradar] call funcGetWorkingStructures)): call funcHideMarkers; goto "HideSleep"
@@ -22,9 +22,9 @@ _boole_Mark_Player_Name = false
 
 	_i = 0; _c = count (groupMatrix select _si)
 	#ResetMarker
-		_marker = Format ["%1%2", (groupNameMatrix select _si) select _i, _si];
-		? !( ((groupMatrix select _si) select _i) in (groupAiMatrix select _si) ) : _marker setMarkerText format ["%1", [(groupNameMatrix select _si) select _i, name leader ((groupMatrix select _si) select _i)] select boole_Mark_Player_Name]
-		? ((groupMatrix select _si) select _i) in (groupAiMatrix select _si) : _marker setMarkerText format ["%1", (groupNameMatrix select _si) select _i]
+		_marker = Format ["%1%2", groupNameMatrix select _si select _i, _si];
+		? !( (groupMatrix select _si select _i) in (groupAiMatrix select _si) ) : _marker setMarkerText format ["%1", [groupNameMatrix select _si select _i, name leader (groupMatrix select _si select _i) + "(" + (groupNameMatrix select _si select _i) + ")"] select boole_Mark_Player_Name]; _marker setMarkerColor (["ColorBlue", "ColorOrange_xj200"] select boole_Mark_Player_Name)
+		? (groupMatrix select _si select _i) in (groupAiMatrix select _si) : _marker setMarkerText format ["%1", groupNameMatrix select _si select _i]
 		_i = _i + 1
 		? (_i < _c):goto "ResetMarker"
 	goto "Update"

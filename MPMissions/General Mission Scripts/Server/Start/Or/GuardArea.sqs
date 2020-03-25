@@ -1,0 +1,21 @@
+; args: [unit, si, gi, [wp, dist, dir]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+
+_order = orderMatrix select _si select _gi; _idOrder = _order select 0; _script = (orderDefs select (_order select 1)) select 2
+_sleep = 0
+#WaitReady
+~_sleep
+? _idOrder != _order select 0: exit
+? _unit call busyCheck: _sleep = 5; goto "WaitReady"
+
+_sleep = 0
+_timeCalcPos = 0
+_timeCheckSupport = time + 30 + random 60
+_bCheckDropBomb = true
+_bMoveCorrect = true
+
+	[_this, [_sleep, _timeCalcPos, _timeCheckSupport, _bCheckDropBomb, _bMoveCorrect]] exec format["Server\Loop\Or\%1", _script]
+	exit

@@ -1,0 +1,31 @@
+; args: [_unit, _si, _ka, _dist, _timeLastSent]
+_interval = 20
+~(_interval/2 + random _interval)
+
+_unit = _this select 0
+_si = _this select 1
+_kaReport = _this select 2
+_dist = _this select 3
+_timeLastSent = _this select 4
+
+_siEnemy = siEnemy select _si
+
+	? !(alive _unit) : exit
+	_target = vehicle _unit
+	_groups = (groupAiMatrix select _siEnemy) + (townGroups select _siEnemy) + (workerGroups select _siEnemy)
+	
+	? time < (_timeLastSent + 120): goto "NextLoop"
+	? count ([_siEnemy, stComm] call funcGetWorkingStructures) == 0 : goto "NextLoop"
+	_res = [_target, _si, _groups] call funcUpdateKnowsAbout
+	_kaMax = _res select 0; _group = _res select 1
+	? _kaMax < _kaReport : goto "NextLoop"
+	? _dist == -1 : goto "SkipRangeCheck"
+	
+	_bInRange = false
+	{ if ( (_x distance _target) < _dist ) then { _bInRange = true } } foreach (units _group)
+	? !_bInRange : _kaMax = 0
+	#SkipRangeCheck
+
+	? _kaMax > _kaReport : { _x reveal _target } forEach _groups; [_target, _siEnemy] exec "Common\Msg\sEnemySpotted.sqs"; _timeLastSent = time
+#NextLoop
+	[_unit, _si, _ka, _dist, _timeLastSent] exec "Server\Loop\KnowsAboutMutualUnit.sqs"; exit

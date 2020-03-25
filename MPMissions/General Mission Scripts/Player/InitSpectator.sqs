@@ -39,13 +39,13 @@ player groupchat "Waiting for start data ..."
 @( !(isNull (mhq select si0)) && !(isNull (mhq select si1)) )
 player groupchat "Start data received."
 
-[] exec "Player\Marker\SpectatorMarker.sqs"
+[false] exec "Player\Marker\SpectatorMarker.sqs"
 
 forceMap false
 
 ; add weapon used for reload detection
 _unit addWeapon "Ingram"; { _unit addMagazine "IngramMag" } forEach [1]; _unit selectWeapon "Ingram"; player addWeapon "NVGoggles"
 
-[_unit] exec "Player\UpdateSpectator.sqs"
+[_unit] exec "Player\Start\Spectator.sqs"
 
 ; [] exec "Player\DisplayGameInfo.sqs"

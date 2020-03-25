@@ -23,7 +23,6 @@ funcGetFactoryWithEmptyQueue = preprocessFile "Server\GetFactoryWithEmptyQueue.s
 funcGetNearbyTransports = {private ["_x", "_posOrigin", "_distMax", "_pos", "_vehicles", "_distance"];_posOrigin = _this select 0;_distMax = _this select 1;_vehicles = [];{if !(isNull _x) then{_pos = getPos _x;_distance = [_pos, _posOrigin] call funcDistH;if (alive _x && _distance < _distMax ) then{_vehicles set [count _vehicles, [_x, _distance]];}}} forEach TransportActivatedVehicles;_vehicles}
 
 funcUpdateTownCheckUnits = {private [ "_units", "_groups", "_index", "_count", "_unit", "_pos", "_x", "_group" ];_units = [0,0,0];_groups = [ [], [], [] ];_index = 0;_count = count _this;while "_index < _count" do{_unit = _this select _index;_pos = getPos _unit;if ((_pos select 2) < 3) then{{if ( (side _unit) == (sides select _x) ) then{_units set [_x, (_units select _x) + 1];_group = group _unit;if !(_group in (_groups select _x)) then{(_groups select _x) set [count (_groups select _x), _group]};};} forEach [si0, si1, siRes];};_index = _index + 1;};[_units, _groups]}
-funcUpdateResStartPos = preprocessFile "Server\UpdateResStartPos.sqf"
 
 funcAssignJoinAI = preprocessFile "Server\AssignJoinAI.sqf"
 
@@ -50,5 +49,4 @@ funcUpdateKnowsAbout = preprocessFile "Server\UpdateKnowsAbout.sqf"
 funcUpdateTownCheckUnits = preprocessFile "Server\UpdateTownCheckUnits.sqf"
 
 funcAddServerUnit = preprocessFile "Server\AddServerUnit.sqf"
-funcUpdateResStartPos = preprocessFile "Server\UpdateResStartPos.sqf"
 funcAssignJoinAI = preprocessFile "Server\AssignJoinAI.sqf"

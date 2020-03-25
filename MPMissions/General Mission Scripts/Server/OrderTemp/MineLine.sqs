@@ -23,19 +23,19 @@ _hasMines = magMine in _mags
 ? !_hasMines : exit
 
 ; Check Whether Unit In Another Temporary Order (Except For Set Flight Altitude, Clear Temporary Order, Etc)
-? call temporaryCheck : exit
+? _unit call temporaryCheck : exit
 
 ; Initialize The Order Script
 _timeStart = time; _timeAbort = _timeStart + _duration; _timeUp = _timeStart; _cycle = 30; _loop = 0
-call temporarySet
+_unit call temporarySet
 
 
 ; Wait For Unit Finish Its Busy-Work
 #WaitReady
-~2
-? time > _timeAbort : 	call temporaryClear; exit
-? !call temporaryCheck : exit
-? call busyCheck : goto "WaitReady"
+~5
+? time > _timeAbort : 	_unit call temporaryClear; exit
+? !_unit call temporaryCheck : exit
+? _unit call busyCheck : goto "WaitReady"
 
 ; Main Part Of Temporary Order
 
@@ -68,8 +68,8 @@ _groups = groupMatrix select _si
 	? (_res select 1) > 8 : _unit fire [weaponPut, _MineMagazine, _MineMagazine]
 	
 		_timeUp = time + 4
-		@ ( time > _timeUp || !call temporaryCheck )
-		? !call temporaryCheck : goto "EOF"
+		@ ( time > _timeUp || !_unit call temporaryCheck )
+		? !_unit call temporaryCheck : goto "EOF"
 		? !(alive _unit) || time > _timeAbort : goto "EOF"
 		
 	_minesAfter = "_x == _MineMagazine" count magazines _unit
@@ -91,7 +91,7 @@ _groups = groupMatrix select _si
 
 ; End Of File
 #EOF
-call temporaryClear
+_unit call temporaryClear
 exit
 
 
@@ -99,8 +99,8 @@ exit
 _loop = (time-_timeStart)/_cycle; _loop = 1 + _loop - _loop%1
 _timeUp = _loop*_cycle + _timeStart
 
-@ ( time > _timeUp || !call temporaryCheck )
-? !call temporaryCheck : goto "EOF"
+@ ( time > _timeUp || !_unit call temporaryCheck )
+? !_unit call temporaryCheck : goto "EOF"
 ? !(alive _unit) || time > _timeAbort : goto "EOF"
-? call busyCheck : goto "Sleep"
+? _unit call busyCheck : goto "Sleep"
 goto "Update"

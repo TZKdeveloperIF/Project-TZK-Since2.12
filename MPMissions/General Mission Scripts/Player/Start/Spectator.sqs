@@ -1,0 +1,34 @@
+_unit = _this select 0
+
+_posStart = getPos _unit; _posFreeMove = _posStart
+
+unitSpec = _unit
+; unitSpec = objNull
+
+camSpec = "camera" camCreate getPos _unit
+hhSpec = "HeliHEmpty" camCreate getPos _unit
+hhTracker = "HeliHEmpty" camCreate getPos _unit
+
+camSpec camSetFOV 1
+camSpec camCommand "inertia on"
+
+#Init
+  keyForward = false
+  keyBackward = false
+  keyStrafeLeft = false
+  keyStrafeRight = false
+  keyTurnLeft = false
+  keyTurnRight = false
+  keyReload = false
+  
+  _posOld = getPos _unit
+  _dirOld = getDir _unit
+  _vForward = [sin _dirOld, cos _dirOld]
+  _vRight = [_vForward, 90] call funcVectorRot
+	_velForwardOld = [_vForward, _vel] call funcVectorDot
+	_velRightOld = [_vRight, _vel] call funcVectorDot
+
+  [] exec "Player\Dialog Spectator.sqs"
+  ; [] exec "Player\SpecCam.sqs"
+
+	[_unit, _posOld, _dirOld, _posStart, _posFreeMove] exec "Player\Loop\Spectator.sqs"
