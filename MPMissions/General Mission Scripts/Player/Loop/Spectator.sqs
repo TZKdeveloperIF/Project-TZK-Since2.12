@@ -1,5 +1,6 @@
-; args: [_unit, _posOld, _dirOld, _posStart, _posFreeMove] exec "Player\Loop\Spectator.sqs"
-_unit = _this select 0; _posOld = _this select 1; _dirOld = _this select 2; _posStart = _this select 3; _posFreeMove = _this select 4
+; args: [_unit, _sensorOld, _dirOld, _sensorStart, _sensorFreeMove]
+_unit = _this select 0; _sensorOld = _this select 1; _dirOld = _this select 2; _sensorStart = _this select 3; _sensorFreeMove = _this select 4
+_posOld = getPos _sensorOld; _posStart = getPos _sensorStart; _posFreeMove = getPos _sensorFreeMove
 goto "Update"
 
 #Init
@@ -23,7 +24,7 @@ goto "Update"
   
 #Update
 	~0.02
-	? _time > 30: [_unit, _posOld, _dirOld, _posStart, _posFreeMove] exec "Player\Loop\Spectator.sqs"; exit
+	? _time > 30: [_unit, _sensorOld, _dirOld, _sensorStart, _sensorFreeMove] exec "Player\Loop\Spectator.sqs"; exit
 	? pvGameOver != -1 : goto "GameOver"
 	? !(alive _unit) : goto "WaitUntilAlive"
 	? bFreeMode: goto "SleepFreeMode"

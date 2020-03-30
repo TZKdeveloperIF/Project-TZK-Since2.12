@@ -24,7 +24,7 @@ _si = _value/(100*3)
 
 ? upgCCdistance == _upg && _state == 2 : distMaxCC = distMaxCCUpgraded
 
-? upgGunshipRocket == _upg && _state == 2 && !isServer : [_si] exec "Common\ReEquipHeliRocket.sqs"
+? upgGunshipRocket == _upg && _state == 2 && !isServer : [_si, _upg, "HeliRocket"] exec "Common\ReEquip\ReEquip.sqs"
 
 ? upgWorkers == _upg && _state == 2 : maxWorkers set [_si, 20]
 

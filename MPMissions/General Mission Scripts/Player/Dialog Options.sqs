@@ -141,7 +141,7 @@ goto "Update"
 ;      _granted = false;
 ;      call format [{_granted = grant_%1_%2_%3},siPlayer,_index,giPlayer]; _grantedx = true;
 ;      ? ((_amount <= 500) and (((groupMoneyMatrix select siPlayer) select giPlayer) < 500) and (((groupMatrix select siPlayer) select _index) == _groupCommander)): _granted = true;
-;	? (_granted): [siPlayer, _index, giPlayer, _amount] exec "Player\SendGiveMoney.sqs"
+;	? (_granted): [siPlayer, _index, giPlayer, _amount] exec "Player\Msg\sGiveMoney.sqs"
 ;      ? (! _granted): hint "Permission Denied!"; _grantedx = false;
 ;	goto "Update"
 
@@ -154,14 +154,14 @@ goto "Update"
 	_amount = lbValue [_idcTransferAmount, lbCurSel _idcTransferAmount]
 	? _amount == 114514 : _amount = ( _money % 100 )
 	? _amount == 50000 : _amount = _money
-	[siPlayer, giPlayer, _index, _amount] exec "Player\SendGiveMoney.sqs"
+	[siPlayer, giPlayer, _index, _amount] exec "Player\Msg\sGiveMoney.sqs"
 	goto "Update"
 	
 #GiveMoneyToAI
 	_amount = lbValue [_idcTransferAmount, lbCurSel _idcTransferAmount]
 	? _amount == 114514 : _amount = ( _money % 100 )
 	? _amount == 50000 : _amount = _money / count(_groupsAI) - ( ( _money / count(_groupsAI) ) % 1 )
-	[siPlayer, giPlayer, giPlayer, _amount] exec "Player\SendGiveMoney.sqs"
+	[siPlayer, giPlayer, giPlayer, _amount] exec "Player\Msg\sGiveMoney.sqs"
 	goto "Update"
 
 #GiveMoneyToAll
@@ -169,7 +169,7 @@ goto "Update"
 	? _amount == 114514 : _amount = ( _money % 100 )
 	? _amount == 50000 : _amount = _money / count(_groups - [_groupCommander]) - ( ( _money / count(_groups - [_groupCommander]) ) % 1 )
 	_amount = - _amount
-	[siPlayer, giPlayer, giPlayer, _amount] exec "Player\SendGiveMoney.sqs"
+	[siPlayer, giPlayer, giPlayer, _amount] exec "Player\Msg\sGiveMoney.sqs"
 	goto "Update"
 
 
@@ -182,7 +182,7 @@ goto "Update"
 	_amount = lbValue [_idcTransferAmount, lbCurSel _idcTransferAmount]
 	? _amount == 114514 : _amount = ( (_groupsMoney select _index) % 100 )
 	? _amount == 50000 : _amount = (_groupsMoney select _index)
-	[siPlayer, giPlayer, _index, -_amount] exec "Player\SendGiveMoney.sqs"
+	[siPlayer, giPlayer, _index, -_amount] exec "Player\Msg\sGiveMoney.sqs"
 	goto "Update"
 	
 ;#DisbandUnit

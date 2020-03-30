@@ -25,6 +25,7 @@ _posStart = [] call loadFile "Server\SQF\ResStartPos.sqf"
    
 ~10
 _posPatrol = _posStart
+_sensor = "EmptyDetector" camCreate _posPatrol
 
 _i = 0
 #InitAddTank
@@ -39,4 +40,4 @@ _i = 0
 #TanksAdded
 
 ["mutexInitResGroups", 60] exec "Common\DeleteVariableAfterDelay.sqs"
-[_group, _timePatrol, _timeDestroy, _posPatrol] exec "Server\Loop\ResPatrolGroup.sqs"
+[_group, _timePatrol, _timeDestroy, _sensor] exec "Server\Loop\ResPatrolGroup.sqs"

@@ -1,0 +1,12 @@
+; Weather
+? WeatherChosen == 0 : 0.1 SetOvercast 0.0; [] exec "Common\Weather\Sunny.sqs"
+? WeatherChosen == 1 : 0.1 SetOvercast 0.2; [0.2] exec "Common\Weather\Cloudy.sqs"
+? WeatherChosen == 2 : 0.1 SetOvercast 0.4; [0.4] exec "Common\Weather\Overcast.sqs"
+? WeatherChosen == 3 : 0.1 SetOvercast 0.5; [0.5] exec "Common\Weather\Rainy.sqs"
+? WeatherChosen == 4 : 0.1 SetOvercast 0.8; [0.8] exec "Common\Weather\Stromy.sqs"
+? WeatherChosen == 5 : 0.1 SetOvercast 0.0; [] exec "Common\Weather\Misty.sqs"
+? WeatherChosen == 6 : 0.1 SetOvercast 0.4; [] exec "Common\Weather\Foggy.sqs"
+? WeatherChosen == 7 : 0.1 SetOvercast 0.0; [0.0] exec "Common\Weather\Random.sqs"
+
+; Time Boost
+? ZeroTime == 4: [] exec "Common\Loop\TimeBoost.sqs"

@@ -1,9 +1,10 @@
-; args: [_posOld, _posNow, _timeOld, _timeNow, _unitsStart, _unitsStarted]
-_posOld = _this select 0; _posNow = _this select 1; _timeOld = _this select 2; _timeNow = _this select 3; _unitsStart = _this select 4; _unitsStarted = _this select 5
-_unit = player
+; args: [_sensorOld, _sensorNow, _timeOld, _timeNow]
+_sensorOld = _this select 0; _sensorNow = _this select 1; _timeOld = _this select 2; _timeNow = _this select 3
+_posOld = getPos _sensorOld; _posNow = getPos _sensorNow
+_unit = player; _unitsStarted = units group player
 #Update
 	~1
-	? _time > 5*60: [_posOld, _posNow, _timeOld, _timeNow, _unitsStart, _unitsStarted] exec "Player\Loop\PlayerClient.sqs"; exit
+	? _time > 5*60: [_sensorOld, _sensorNow, _timeOld, _timeNow] exec "Player\Loop\PlayerClient.sqs"; exit
 
 	_mhq = mhq select siPlayer
 	_mcvs = MCV select siPlayer
@@ -13,11 +14,11 @@ _unit = player
 	? time > (timeLastPing + blockTime) && !bBlockedByClient : bBlockedByClient = true; [] exec "Player\BlockByClient.sqs"
 	
 	? !(alive _unit): goto "WaitUntilAlive"
-	_posNow = getPos player; _timeNow = time
+	_posNow = getPos player; _sensorNow setPos _posNow; _timeNow = time
 	_distance = [_posOld, _posNow] call funcDistH
 	? ([_posOld, positionRespawn] call funcDistH) < 100 || ([positionRespawn, _posNow] call funcDistH) < 100 : _distance = 0
 	? _timeNow - _timeOld > 0.5 && _distance/(_timeNow - _timeOld) > 600 : (vehicle _unit) setdamage 1; hint "Big brother is watching you."; player globalChat "Big brother is watching you."
-	_posOld = _posNow; _timeOld = _timeNow
+	_posOld = _posNow; _sensorOld setPos _posOld; _timeOld = _timeNow
 	_unitsStart = (units group player) - [player] - (_unitsStarted)
 	{[_x] exec "Player\UpdateDestroyEnemyObject.sqs"} forEach _unitsStart
 	_unitsStarted = _unitsStarted + _unitsStart - [objNull]

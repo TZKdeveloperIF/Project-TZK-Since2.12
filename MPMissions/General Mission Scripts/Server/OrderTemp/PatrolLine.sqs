@@ -15,26 +15,26 @@ _duration = 720 * ((_params select 3) + 1)
 
 ; Check Whether Unit Fits The Parameters Of The Temporary Order
 
-? (PatrolLineTypeDefs select _typeIndex) == "non-AT-Infantry" : 	_typesPatrol = typesInfantryAll - typesInfantryAT;					
-? (PatrolLineTypeDefs select _typeIndex) == "AT-Infantry" : 		_typesPatrol = typesInfantryAT;	
-? (PatrolLineTypeDefs select _typeIndex) == "Light Tank" : 		_typesPatrol = typesLightTank; 					
-? (PatrolLineTypeDefs select _typeIndex) == "Heavy Tank" : 		_typesPatrol = typesHeavyTank; 					
-? (PatrolLineTypeDefs select _typeIndex) == "Howitzer" : 			_typesPatrol = typesHowitzer; 						
-? (PatrolLineTypeDefs select _typeIndex) == "AT APC" :			_typesPatrol = typesATAPC; 						
-? (PatrolLineTypeDefs select _typeIndex) == "AA Vehicle" :		_typesPatrol = typesAAAPC; 						
-? (PatrolLineTypeDefs select _typeIndex) == "Kamov" :				_typesPatrol = typesKa50; 							
-? (PatrolLineTypeDefs select _typeIndex) == "Cobra\Apac\Hind" :	_typesPatrol = (typesGunshipOrigin+typesGunshipAT) - typesKa50; 	
-? (PatrolLineTypeDefs select _typeIndex) == "Infantry" : 			_typesPatrol = typesInfantryAll;										
-? (PatrolLineTypeDefs select _typeIndex) == "Tanks" : 			_typesPatrol = typesLightTank+typesHeavyTank+typesHowitzer; 									
-? (PatrolLineTypeDefs select _typeIndex) == "APCs" : 				_typesPatrol = typesATAPC+typesAAAPC; 		
+? (PatrolLineTypeDefs select _typeIndex) == "non-AT-Infantry": 	_typesPatrol = typesInfantryAll - typesInfantryAT;					
+? (PatrolLineTypeDefs select _typeIndex) == "AT-Infantry": 		_typesPatrol = typesInfantryAT;	
+? (PatrolLineTypeDefs select _typeIndex) == "Light Tank": 		_typesPatrol = typesLightTank; 					
+? (PatrolLineTypeDefs select _typeIndex) == "Heavy Tank": 		_typesPatrol = typesHeavyTank; 					
+? (PatrolLineTypeDefs select _typeIndex) == "Howitzer": 			_typesPatrol = typesHowitzer; 						
+? (PatrolLineTypeDefs select _typeIndex) == "AT APC":			_typesPatrol = typesATAPC; 						
+? (PatrolLineTypeDefs select _typeIndex) == "AA Vehicle":		_typesPatrol = typesAAAPC; 						
+? (PatrolLineTypeDefs select _typeIndex) == "Kamov":				_typesPatrol = typesKa50; 							
+? (PatrolLineTypeDefs select _typeIndex) == "Cobra\Apac\Hind":	_typesPatrol = (typesGunshipOrigin+typesGunshipAT) - typesKa50; 	
+? (PatrolLineTypeDefs select _typeIndex) == "Infantry": 			_typesPatrol = typesInfantryAll;										
+? (PatrolLineTypeDefs select _typeIndex) == "Tanks": 			_typesPatrol = typesLightTank+typesHeavyTank+typesHowitzer; 									
+? (PatrolLineTypeDefs select _typeIndex) == "APCs": 				_typesPatrol = typesATAPC+typesAAAPC; 		
 
 _vehicle = vehicle _unit
 _vt = _vehicle call funcGetUnitTypeFromObject
-? !(_vt in _typesPatrol) && _unit != leader group _unit : exit
-? _unit == leader group _unit : if !(_unit == _vehicle && (PatrolLineTypeDefs select _typeIndex) in ["AT-Infantry", "Infantry"]) then {exit}
+? !(_vt in _typesPatrol) && _unit != leader group _unit: exit
+? _unit == leader group _unit: if !(_unit == _vehicle && (PatrolLineTypeDefs select _typeIndex) in ["AT-Infantry", "Infantry"]) then {exit}
 
 ; Check Whether Unit In Another Temporary Order (Except For Set Flight Altitude, Clear Temporary Order, Etc)
-? _unit call temporaryCheck : exit
+? _unit call temporaryCheck: exit
 
 ; Initialize The Order Script
 _timeStart = time; _timeAbort = _timeStart + _duration; _timeUp = _timeStart; _cycle = 30; _loop = 0
@@ -44,9 +44,9 @@ _unit call temporarySet
 ; Wait For Unit Finish Its Busy-Work
 #WaitReady
 ~5
-? time > _timeAbort : 	_unit call temporaryClear; exit
-? !_unit call temporaryCheck : exit
-? _unit call busyCheck : goto "WaitReady"
+? time > _timeAbort: 	_unit call temporaryClear; exit
+? !(_unit call temporaryCheck): exit
+? _unit call busyCheck: goto "WaitReady"
 
 ; Main Part Of Temporary Order
 
@@ -59,10 +59,10 @@ _groups = groupMatrix select _si
 #Update
 	_gi = ( _groups ) find ( (group _unit) )
 	_vehicle = vehicle _unit
-	? _unit != driver _vehicle : goto "Sleep"
+	? _unit != driver _vehicle: goto "Sleep"
 
 	; check support
-	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _cycle = 20; goto "Sleep"
+	? time > _timeCheckSupport: _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _cycle = 20; goto "Sleep"
 
 	; check bomb	
 	_bCheckDropBomb = !_bCheckDropBomb 
@@ -74,10 +74,10 @@ _groups = groupMatrix select _si
 	_posMove = _endPoints select _second
 	_distToDest = [getPos _unit, _posMove] call funcDistH
 
-	? _distToDest > 50 : goto "Move"
+	? _distToDest > 50: goto "Move"
 	[_unit, true] exec "Server\StopAI.sqs"
 	[_unit, _si, _gi] call funcWatch
-	? _unit != _vehicle && !(isNull gunner _vehicle) && isNull (commander _vehicle) : [_unit, _si, _gi] exec "Server\AI_CheckFireGun.sqs"
+	? _unit != _vehicle && !(isNull gunner _vehicle) && isNull (commander _vehicle): [_unit, _si, _gi] exec "Server\AI_CheckFireGun.sqs"
 	_cycle = 30
 	_second = !_second
 	goto "Sleep"
@@ -100,8 +100,8 @@ exit
 _loop = (time-_timeStart)/_cycle; _loop = 1 + _loop - _loop%1
 _timeUp = _loop*_cycle + _timeStart
 
-@ ( time > _timeUp || !_unit call temporaryCheck )
-? !_unit call temporaryCheck : goto "EOF"
-? !(alive _unit) || time > _timeAbort : goto "EOF"
-? _unit call busyCheck : goto "Sleep"
+@ ( time > _timeUp || !(_unit call temporaryCheck) )
+? !(_unit call temporaryCheck): goto "EOF"
+? !(alive _unit) || time > _timeAbort: goto "EOF"
+? _unit call busyCheck: goto "Sleep"
 goto "Update"

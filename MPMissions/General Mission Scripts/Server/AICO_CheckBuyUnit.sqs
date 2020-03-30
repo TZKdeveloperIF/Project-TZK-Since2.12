@@ -4,8 +4,8 @@ _unit = _this select 0
 _si = _this select 1
 _giBuyer = _this select 2
 
-_giList = [_si] call funcGetAIGroupsIndex
-_giJoin = _giList select ((random (count _giList)) - 0.5)
+_giList = [_si] call funcGetAIGroupsIndex; _c = count _giList; if (_c > 9) then {_c = 9}
+_giJoin = _giList select ((random _c) - 0.5)
 
 ; { if ( _x != (leader _x) && _x == (vehicle _x) ) then { deleteVehicle _x } } foreach (units ((groupMatrix select _si) select _giJoin))
 

@@ -50,16 +50,7 @@ _i = 0; while "_i < 5" do { eqTemplates set [_i, [] ]; _i=_i+1 }
 lastTemplate = -1
 
 ; MESSAGE HANDLERS (Clients)
-[] exec "Player\MsgMoneyStatus0.sqs"
-[] exec "Player\MsgMoneyStatus1.sqs"
-[] exec "Player\MsgMoneyStatus2.sqs"
-[] exec "Player\MsgMoneyStatus3.sqs"
-[] exec "Player\MsgMoneyStatus4.sqs"
-[] exec "Player\MsgMoneyStatus5.sqs"
-[] exec "Player\MsgMoneyStatus6.sqs"
-[] exec "Player\MsgMoneyStatus7.sqs"
-[] exec "Player\MsgMoneyStatus8.sqs"
-[] exec "Player\MsgMoneyStatus9.sqs"
+_i = 0; while "_i < 10" do {call format [{[] exec "Player\Msg\mMoneyStatus%1.sqs"}, _i]; _i = _i + 1}
 
 [] exec "Player\MsgInfo0.sqs"; [] exec "Player\MsgInfo1.sqs"; [] exec "Player\MsgInfo2.sqs"; [] exec "Player\MsgInfo3.sqs"
 

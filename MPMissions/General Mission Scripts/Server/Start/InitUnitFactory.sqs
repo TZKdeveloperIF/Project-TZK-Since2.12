@@ -94,7 +94,7 @@ mutexFacQueues = false
 	? _qid in (qidCancel select _si) : mutexEditMoneyMatrix = false; goto "UnitCanceled"
 	
 	(groupMoneyMatrix select _si) set [_giBuyer, -_cost + ((groupMoneyMatrix select _si) select _giBuyer)]
-	[_si, _giBuyer, 0] exec "Server\SendMoneyStatus.sqs"
+	[_si, _giBuyer, 0] exec "Server\Msg\sMoneyStatus.sqs"
 	moneySpent set [_si, _cost + (moneySpent select _si)]
 	mutexEditMoneyMatrix = false
 	

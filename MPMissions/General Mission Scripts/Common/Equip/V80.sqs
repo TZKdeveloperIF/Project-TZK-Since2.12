@@ -2,8 +2,8 @@
 
 _v = _this select 0
 
-_m = [(magazines _v) - ["Rocket57x40Kamov_xj200"], ((magazines _v) - ["Rocket57x40Kamov_xj200"]) + ["Rocket57x40Kamov_xj200"]] select (((upgMatrix select (_this select 2)) select upgGunshipRocket) == 2)
-_w = [(weapons _v) - ["Rocket57x40Kamov_xj200"], ((weapons _v) - ["Rocket57x40Kamov_xj200"]) + ["Rocket57x40Kamov_xj200"]] select (((upgMatrix select (_this select 2)) select upgGunshipRocket) == 2)
+_m = [(magazines _v) - ["Rocket57x40Kamov"], ((magazines _v) - ["Rocket57x40Kamov"]) + ["Rocket57x40Kamov"]] select (((upgMatrix select (_this select 2)) select upgGunshipRocket) == 2)
+_w = [(weapons _v) - ["Rocket57x40Kamov"], ((weapons _v) - ["Rocket57x40Kamov"]) + ["Rocket57x40Kamov"]] select (((upgMatrix select (_this select 2)) select upgGunshipRocket) == 2)
 
 ~1
 ? !(local _v) || !(alive _v) : [_v, _w, _m] exec "Common\EditEquipRearmData.sqs"; exit

@@ -7,8 +7,6 @@ _i = 0; _c = 5; while "_i < _c" do {call format ["pvKilledTank%1 = objNull", _i]
 pvKilledAircraft = objNull; pvKilledBoat = objNull
 ; Ver 2.12 v02 mutex ReEquip
 mutexReEquip = false
-; Ver 2.12T town spawn/hibernate variables
-_i = 0; _c = count towns; while "_i < _c" do {call format ["pvTownSpawn%1 = false; pvResTownSpawn%1 = false", _i]; _i = _i + 1}
 ; Ver 2.00 Variables
 pvJoinApply = -1; pvJoinReply = -1; pvJoinReceive = -1; pvJoinUnits = objNull; mutexJoinServer = false; mutexSendJoinApply = false
 
@@ -119,27 +117,7 @@ pvRemoveMags = objNull; pvAddMags = objNull; mutexVehicleMagAdd = false; mutexVe
 
 ; pvMoney format: Used to be amount + 100 000*groupIndex + 10 000 000*side. Now _Group PV added and used to save giFrom, giTo and si, pvMoney are for amount only, so there is no need to limit money less than 100000 in order to avoid amount information's loss in value's passing.
 mutexMoney = false
-_i = 0; while "_i < 10" do { call format["pvMoney%1=-1", _i]; call format["pvMoneyGroup%1=-1", _i]; _i=_i+1 }
-;pvMoney0 = -1
-;pvMoney1 = -1
-;pvMoney2 = -1
-;pvMoney3 = -1
-;pvMoney4 = -1
-;pvMoney5 = -1
-;pvMoney6 = -1
-;pvMoney7 = -1
-;pvMoney8 = -1
-;pvMoney9 = -1
-;pvMoneyGroup0 = -1
-;pvMoneyGroup1 = -1
-;pvMoneyGroup2 = -1
-;pvMoneyGroup3 = -1
-;pvMoneyGroup4 = -1
-;pvMoneyGroup5 = -1
-;pvMoneyGroup6 = -1
-;pvMoneyGroup7 = -1
-;pvMoneyGroup8 = -1
-;pvMoneyGroup9 = -1
+_i = 0; while "_i < 10" do {call format["pvMoney%1 = -1; pvMoneyGroup%1 = -1", _i]; _i = _i + 1}
 
 mutexMoneyTransfer = false
 pvMoneyTransfer = -1
@@ -202,8 +180,7 @@ pvUndo = grpNull
 mutexBuyUnit = false
 _i = 0; while "_i < 5" do { call format["pvBuyUnit_Type%1=-1", _i]; call format["pvBuyUnit_Factory%1=objNull", _i]; _i=_i+1 }
 
-pvMoneyGive = -1
-pvMoneyGiveGroup = -1
+pvMoneyGive = -1; pvMoneyGiveGroup = -1
 mutexMoneyGive = false
 pvMoneySpent = -1
 
@@ -214,11 +191,7 @@ pvWPCO = -1; pvWPCO_X = -1; pvWPCO_Y = -1; mutexSetWPCO = false
 pvArt = -1
 pvArtPos = -1
 
-_i = 0; _c = 5; while "_i < _c" do {call format ["pvEnemy0%1 = objNull", _i]; _i = _i + 1}
-_i = 0; _c = 5; while "_i < _c" do {call format ["pvEnemy1%1 = objNull", _i]; _i = _i + 1}
-indexSendEnemySpotted = 0
-; pvEnemy0 = objNull
-; pvEnemy1 = objNull
+pvEnemy0 = objNull; pvEnemy1 = objNull
 
 pvOrder = -1
 pvSetting = -1

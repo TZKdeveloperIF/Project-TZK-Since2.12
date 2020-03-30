@@ -17,7 +17,7 @@ _si = _value
 
 @!(mutexReadScore)
 mutexReadScore = true
-(scoreMoney select _si) set [_gi, ((scoreMoney select _si) select _gi) + _score]
-_score = (((groupScoreMatrix select _si) select _gi) select _class) + _score
-((groupScoreMatrix select _si) select _gi) set [_class, _score]
+(scoreMoney select _si) set [_gi, (scoreMoney select _si select _gi) + _score]
+_score = (groupScoreMatrix select _si select _gi select _class) + _score
+(groupScoreMatrix select _si select _gi) set [_class, _score]
 mutexReadScore = false

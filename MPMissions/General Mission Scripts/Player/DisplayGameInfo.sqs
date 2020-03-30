@@ -1,6 +1,5 @@
 ; args : none
 
-
 _textSP = ["Random", "Fix", localize "STR_0_START_0", localize "STR_0_START_1"] select fixedStartPos
 ? timeLimit == 0 : _textTimeLimit = "None"
 ? timeLimit > 0 : _textTimeLimit = format["%1 hours", timeLimit/(60*60)]
@@ -16,7 +15,6 @@ _timeleft = format["%1 min", _timeleft - _timel]
 ? (restanksx == 3) : _textIncome = "MEDIUM RESISTANNCE"
 ? (restanksx == 4) : _textIncome = "HEAVY RESISTANCE"
 ? (restanksx == 5) : _textIncome = "DOOM"
-
 
 ~2
 
@@ -34,5 +32,8 @@ _info = format["Don`t cry just play or disconnect\n\nGame Style:\n\nTime Left: %
 ;titleText [_info, "PLAIN DOWN", 2]
 hint _info
 
-@ (time > 10 + 1)
-? localize "STR_MISSION_NAME" == "crCTI_@TZK_3.00" : player globalChat "Radio System available since TZK_3.00. Use 0-0-2 to open the Setting Interface."
+_info = "Radio System available since TZK_2.12. You're free to press 0-0 to call channels in different vehicles. Press 0-0-2 to open the Setting Interface."
+? ZeroTime == 4: _info = _info + " Time boost will start when 00:01:00. Prepare for your equipment please."
+
+@ (time > 5)
+_info call funcSideMsg

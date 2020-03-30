@@ -1,14 +1,17 @@
 ; args: [si, giFrom, giTo, amount]
-? (_this select 1) == (_this select 2) : exit
+_si = _this select 0; _giFrom = _this select 1; _giTo = _this select 2; _amount = _this select 3
+? _giFrom == _giTo: exit
+
 @!(mutexEditMoneyMatrix)
 mutexEditMoneyMatrix = true
 
-? !(( ((_this select 3) <= (groupMoneyMatrix select (_this select 0)) select (_this select 1)) && ((_this select 3) > 0) ) || ( (-(_this select 3) <= (groupMoneyMatrix select (_this select 0)) select (_this select 2)) && ((_this select 3) < 0) )): mutexEditMoneyMatrix = false; exit
+? _amount > 0: if (_amount > (groupMoneyMatrix select _si select _giFrom)) then {mutexEditMoneyMatrix = false; exit}
+? _amount < 0: if (-_amount > (groupMoneyMatrix select _si select _giTo)) then {mutexEditMoneyMatrix = false; exit}
 
-(groupMoneyMatrix select (_this select 0)) set [_this select 1, -(_this select 3) + ((groupMoneyMatrix select (_this select 0)) select (_this select 1))];
-(groupMoneyMatrix select (_this select 0)) set [_this select 2,  (_this select 3) + ((groupMoneyMatrix select (_this select 0)) select (_this select 2))];
-? ((_this select 3) != 0): [_this select 0, _this select 1, 0] exec "Server\SendMoneyStatus.sqs"; [_this select 0, _this select 2, 0] exec "Server\SendMoneyStatus.sqs";
+(groupMoneyMatrix select _si) set [_giFrom, -_amount + (groupMoneyMatrix select _si select _giFrom)]
+(groupMoneyMatrix select _si) set [_giTo,  _amount + (groupMoneyMatrix select _si select _giTo)]
+? _amount != 0: [_si, _giFrom, 0] exec "Server\Msg\sMoneyStatus.sqs"; [_si, _giTo, 0] exec "Server\Msg\sMoneyStatus.sqs"
 
-[_this select 0, _this select 1, _this select 2, _this select 3] exec "Server\SendMoneyTransferred.sqs";
+[_si, _giFrom, _giTo, _amount] exec "Server\SendMoneyTransferred.sqs"
 
-mutexEditMoneyMatrix = false;
+mutexEditMoneyMatrix = false

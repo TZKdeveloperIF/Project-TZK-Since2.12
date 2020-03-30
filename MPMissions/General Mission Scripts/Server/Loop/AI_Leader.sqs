@@ -1,4 +1,4 @@
-; args: [_unit, _si, _gi, _unitsStarted, _unitsStart, _idTemporaryOrder, _idOrder, _indexCombatMode, _indexBehaviour]
+; args: [_unit, _si, _gi, _idTemporaryOrder, _idOrder, _indexCombatMode, _indexBehaviour]
 
 _unit = _this select 0
 _si = _this select 1
@@ -8,16 +8,17 @@ _group = (groupMatrix select _si) select _gi
 
 ? _group == (groupCommander select _si) : _this exec "Server\AI_UpdateCommander.sqs"; exit
 
-_unitsStarted = _this select 3
-_unitsStart = _this select 4
-_idTemporaryOrder = _this select 5
-_idOrder = _this select 6
-_indexCombatMode = _this select 7
-_indexBehaviour = _this select 8
+_idTemporaryOrder = _this select 3
+_idOrder = _this select 4
+_indexCombatMode = _this select 5
+_indexBehaviour = _this select 6
 
 ; Refresh members' order script when each new loop started.
 _order = orderMatrix select _si select _gi; _orderTemp = orderTempMatrix select _si select _gi; _order set [0, (_order select 0) + 1]
 _buyFacSet = []; _setting = aiSetting select _si select _gi
+
+_unitsStarted = units _group
+~5
 #Update
 	? !(alive _unit): goto "WaitUntilAlive"
 	
@@ -64,8 +65,8 @@ _buyFacSet = []; _setting = aiSetting select _si select _gi
 	? (_setting select aisBuy) > 0: goto "CheckBuyUnit"
 
 	#Sleep
+	? _time > 2*60: [_unit, _si, _gi, _idTemporaryOrder, _idOrder, _indexCombatMode, _indexBehaviour] exec "Server\Loop\AI_Leader.sqs"; exit
 	~5
-	? _time > 3*60: [_unit, _si, _gi, _unitsStarted, _unitsStart, _idTemporaryOrder, _idOrder, _indexCombatMode, _indexBehaviour] exec "Server\Loop\AI_Leader.sqs"; exit
 	goto "Update"
 
 #WaitUntilAlive
@@ -73,6 +74,7 @@ _buyFacSet = []; _setting = aiSetting select _si select _gi
 	_unit = leader _group
 	[_unit, _si, 200] exec "Common\EventAdd_InfantryKilled.sqs"
 	[_unit, _si, _gi] exec "Server\EventAdd_Infantry.sqs"
+	[_unit, _si, kaUnit, -1] exec "Server\Start\KnowsAbout.sqs"
 	
 	_money = (groupMoneyMatrix select _si) select _gi
 

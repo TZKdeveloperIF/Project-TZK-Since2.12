@@ -5,10 +5,10 @@ _unit = _this select 0
 _si = _this select 1
 _gi = _this select 2
 
-? _unit != driver vehicle _unit : exit
+? _unit != driver vehicle _unit: exit
 
 _vehicleUnit = vehicle _unit 
-? _unit != _vehicleUnit : exit
+? _unit != _vehicleUnit: exit
 
 _order = orderMatrix select _si select _gi
 _idOrder = _order select 0
@@ -16,10 +16,10 @@ _idOrder = _order select 0
 _unit call busySet
 
 #Search
-	? !_unit call temporaryCheck : if (_idOrder != _order select 0) then {goto "Exit"}
-	? !_unit call busyCheck : goto "Exit"
+	? !(_unit call temporaryCheck): if (_idOrder != _order select 0) then {goto "Exit"}
+	? !(_unit call busyCheck): goto "Exit"
   _mine = nearestObject [[getPos _unit, 0, 10] call funcGetRandomPos, ammoMine]
-  ? isNull _mine : goto "Exit"
+  ? isNull _mine: goto "Exit"
   _pos = getPos _mine
   goto "MoveToMine"
 
@@ -29,27 +29,27 @@ _unit call busySet
   #WaitUntilMineReached
   
 	~2
-	? !_unit call temporaryCheck : if (_idOrder != _order select 0) then {goto "Exit"}
-	? !_unit call busyCheck : goto "Exit"
-    ? !(alive _unit) || time > _timeAbort : goto "Exit"
-    ? isNull _mine : goto "Search"
-    ? ([getPos _unit, _pos] call funcDistH) > 10 : goto "WaitUntilMineReached"
+	? !(_unit call temporaryCheck): if (_idOrder != _order select 0) then {goto "Exit"}
+	? !(_unit call busyCheck): goto "Exit"
+    ? !(alive _unit) || time > _timeAbort: goto "Exit"
+    ? isNull _mine: goto "Search"
+    ? ([getPos _unit, _pos] call funcDistH) > 10: goto "WaitUntilMineReached"
 
   doStop _unit
   _unit doWatch _mine
   
 	~2
-	? !_unit call busyCheck : goto "Exit"
+	? !(_unit call busyCheck): goto "Exit"
 	
-  ? !(alive _unit) : goto "Exit"
-  ? isNull _mine : goto "Search"
+  ? !(alive _unit): goto "Exit"
+  ? isNull _mine: goto "Search"
   _unit playMove "CombatToPutDown"
   
 	~2
-	? !_unit call busyCheck : goto "Exit"
+	? !(_unit call busyCheck): goto "Exit"
 	
-  ? !(alive _unit) : goto "Exit"
-  ? isNull _mine : goto "Search"
+  ? !(alive _unit): goto "Exit"
+  ? isNull _mine: goto "Search"
   deleteVehicle _mine
   goto "Search"
 

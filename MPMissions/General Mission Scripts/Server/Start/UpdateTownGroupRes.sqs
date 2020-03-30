@@ -6,6 +6,7 @@ _si = siRes
 _inf = 3 + random 3
 _tanks = 1 * restanksx
 _interval = (7 - restanksx) *60
+? restanksx == 5: _interval = 3*60
 _patrol = 0
 
 _distSpawn = viewDistance + 500
@@ -28,13 +29,12 @@ mutexInitResGroups = false
 ? FixStart_0 distance _flag < _distSpawn || FixStart_1 distance _flag < _distSpawn: goto "Spawn"
 
 #CheckSpawn
-	? call format ["pvResTownSpawn%1", _ti]: [format ["pvResTownSpawn%1", _ti], 60] exec "Common\DeleteVariableAfterDelay.sqs"; goto "Spawn"
-  _spawn = false
-  { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _spawn = true } } foreach (units _g) } foreach (groupAiMatrix select si0)
-  { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _spawn = true } } foreach (units _g) } foreach (groupAiMatrix select si1)
-  ? _spawn: call format ["pvResTownSpawn%1 = true", _ti]; call format ["publicVariable {pvResTownSpawn%1}", _ti]; [format ["pvResTownSpawn%1", _ti], 60] exec "Common\DeleteVariableAfterDelay.sqs"; goto "Spawn"
-  ~10
-  goto "CheckSpawn"
+	_spawn = false
+	{ _g = _x; { if ((_x distance _flag) < _distSpawn) then { _spawn = true } } foreach (units _g) } foreach (groupMatrix select si0)
+	{ _g = _x; { if ((_x distance _flag) < _distSpawn) then { _spawn = true } } foreach (units _g) } foreach (groupMatrix select si1)
+	? _spawn: goto "Spawn"
+	~10
+	goto "CheckSpawn"
 
 #Spawn
 _infExtra = time/_interval; _infExtra = _infExtra - (_infExtra % 1)
