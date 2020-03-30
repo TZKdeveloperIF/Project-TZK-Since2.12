@@ -14,16 +14,16 @@ _duration = 180 * ((_params select 2) + 1)
 
 ; Check Whether Unit Fits The Parameters Of The Temporary Order
 _vehicle = vehicle _unit
-? _unit != _vehicle : exit
+? _unit != _vehicle: exit
 
 _i = rearmDataObj find _unit
 ? _i == -1: _weapons = []; _mags = []
 ? _i != -1: _weapons = (rearmDataEquip select _i) select 0; _mags = (rearmDataEquip select _i) select 1
 _hasMines = magMine in _mags
-? !_hasMines : exit
+? !_hasMines: exit
 
 ; Check Whether Unit In Another Temporary Order (Except For Set Flight Altitude, Clear Temporary Order, Etc)
-? _unit call temporaryCheck : exit
+? _unit call temporaryCheck: exit
 
 ; Initialize The Order Script
 _timeStart = time; _timeAbort = _timeStart + _duration; _timeUp = _timeStart; _cycle = 30; _loop = 0
@@ -33,9 +33,9 @@ _unit call temporarySet
 ; Wait For Unit Finish Its Busy-Work
 #WaitReady
 ~5
-? time > _timeAbort : 	_unit call temporaryClear; exit
-? !_unit call temporaryCheck : exit
-? _unit call busyCheck : goto "WaitReady"
+? time > _timeAbort: 	_unit call temporaryClear; exit
+? !(_unit call temporaryCheck): exit
+? _unit call busyCheck: goto "WaitReady"
 
 ; Main Part Of Temporary Order
 
@@ -49,36 +49,36 @@ _groups = groupMatrix select _si
 #Update
 	_gi = ( _groups ) find ( (group _unit) )
 	_vehicle = vehicle _unit
-	? _unit != driver _vehicle : goto "Sleep"
+	? _unit != driver _vehicle: goto "Sleep"
 
 	; check support
 	_magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
 	_mines = "_x == magMine" count _magazines
-	? time > _timeCheckSupport || _mines == 0 : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _cycle = 20; goto "Sleep"
+	? time > _timeCheckSupport || _mines == 0: _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _cycle = 20; goto "Sleep"
 
-	? (count _posMove) == 0 : _vect = [_wp1, _wp0] call funcVectorSub; _posMove = [_wp0, [_vect, random 1] call funcVectorScale] call funcVectorAdd
+	? (count _posMove) == 0: _vect = [_wp1, _wp0] call funcVectorSub; _posMove = [_wp0, [_vect, random 1] call funcVectorScale] call funcVectorAdd
 	_distToDest = [getPos _unit, _posMove] call funcDistH
-	? _distToDest > 10 : goto "Move"
+	? _distToDest > 10: goto "Move"
 	
 	_MineMagazine = magMine
-;	? magPistolMine in _magazines : _MineMagazine = magPistolMine
+;	? magPistolMine in _magazines: _MineMagazine = magPistolMine
 	_mines = "_x == _MineMagazine" count _magazines
 	doStop _unit
 	_res = [ getPos _unit, siBoth, vMinerAvoid, [] ] call funcGetClosestVehicle
-	? (_res select 1) > 8 : _unit fire [weaponPut, _MineMagazine, _MineMagazine]
+	? (_res select 1) > 8: _unit fire [weaponPut, _MineMagazine, _MineMagazine]
 	
 		_timeUp = time + 4
-		@ ( time > _timeUp || !_unit call temporaryCheck )
-		? !_unit call temporaryCheck : goto "EOF"
-		? !(alive _unit) || time > _timeAbort : goto "EOF"
+		@ ( time > _timeUp || !(_unit call temporaryCheck) )
+		? !(_unit call temporaryCheck): goto "EOF"
+		? !(alive _unit) || time > _timeAbort: goto "EOF"
 		
 	_minesAfter = "_x == _MineMagazine" count magazines _unit
-	? _mines == 1 && _minesAfter == 1 : _unit removeMagazine _MineMagazine
+	? _mines == 1 && _minesAfter == 1: _unit removeMagazine _MineMagazine
 	
 	_magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
 	_mines = "_x == magMine" count _magazines
 	_posMove = []
-	? _mines == 0 : [_unit, _si, _gi, true] exec "Server\AI_CheckSupport.sqs"; _cycle = 20; goto "Sleep"
+	? _mines == 0: [_unit, _si, _gi, true] exec "Server\AI_CheckSupport.sqs"; _cycle = 20; goto "Sleep"
 	_cycle = 2; goto "Sleep"
 	
 	#Move
@@ -99,8 +99,8 @@ exit
 _loop = (time-_timeStart)/_cycle; _loop = 1 + _loop - _loop%1
 _timeUp = _loop*_cycle + _timeStart
 
-@ ( time > _timeUp || !_unit call temporaryCheck )
-? !_unit call temporaryCheck : goto "EOF"
-? !(alive _unit) || time > _timeAbort : goto "EOF"
-? _unit call busyCheck : goto "Sleep"
+@ ( time > _timeUp || !(_unit call temporaryCheck) )
+? !(_unit call temporaryCheck): goto "EOF"
+? !(alive _unit) || time > _timeAbort: goto "EOF"
+? _unit call busyCheck: goto "Sleep"
 goto "Update"

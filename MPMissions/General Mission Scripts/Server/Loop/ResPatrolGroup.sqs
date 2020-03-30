@@ -1,11 +1,14 @@
-; args: [group, timePatrol, timeDestroy, posPatrol]
+; args: [group, timePatrol, timeDestroy, sensor]
 
 _group = _this select 0
 _timePatrol = _this select 1
 _timeDestroy = _this select 2
-_posPatrol = _this select 3
+_sensor = _this select 3
+_posPatrol = getPos _sensor
 
 ~ 120
+@!mutexResPatrolScript
+mutexResPatrolScript = true
 ? (count (units _group)) == 0: goto "NextLoop"
 _group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "NORMAL"
 ? time < _timePatrol : goto "Patrol"
@@ -30,7 +33,7 @@ _group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "N
 	
 #Patrol
 	? time < ([60*10, 60*0] select dev): goto "NextLoop"
-	_posPatrol = _posPatrol call loadFile "Server\SQF\ResPatrolPos.sqf"
+	_posPatrol = _posPatrol call loadFile "Server\SQF\ResPatrolPos.sqf"; _sensor setPos _posPatrol
 	{ if (_x == driver vehicle _x) then { _x doMove ([_posPatrol, 10, 20] call funcGetRandomPos) } } foreach (units _group)
 	goto "NextLoop"
 
@@ -54,5 +57,6 @@ _group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "N
 	goto "NextLoop"
 	
 #NextLoop
-	[_group, _timePatrol, _timeDestroy, _posPatrol] exec "Server\Loop\ResPatrolGroup.sqs"
+	mutexResPatrolScript = false
+	[_group, _timePatrol, _timeDestroy, _sensor] exec "Server\Loop\ResPatrolGroup.sqs"
 	exit

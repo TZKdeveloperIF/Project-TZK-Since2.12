@@ -7,8 +7,8 @@ _unit = player
 	_unit addEventHandler ["AnimChanged", "_this exec {Player\Event_AnimChanged_WW4.sqs}"]
 	_unit addEventHandler ["Fired",{ _this exec "Player\LimitWeaponRangePlayer.sqs" }]
 
-	_posOld = positionRespawn; _posNow = positionRespawn; _timeOld = -3600; _timeNow = -3600;
-	_unitsStart = []; _unitsStarted = []
+	_sensorOld = "EmptyDetector" camCreate getPos player; _sensorNow = "EmptyDetector" camCreate getPos player
+	_timeOld = -3600; _timeNow = -3600
 	
 	@( !(isNull (mhq select si0)) && !(isNull (mhq select si1)) )
-	[_posOld, _posNow, _timeOld, _timeNow, _unitsStart, _unitsStarted] exec "Player\Loop\PlayerClient.sqs"
+	[_sensorOld, _sensorNow, _timeOld, _timeNow] exec "Player\Loop\PlayerClient.sqs"

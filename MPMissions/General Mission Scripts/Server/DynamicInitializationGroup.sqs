@@ -6,12 +6,6 @@
 ; For broadcasting, publicExec or "Init" parameter of "createUnit" is available.
 
 
-; ===============================Functional Groups===============================
-
-; _groupAA0=createGroup west; _groupAA1=createGroup east
-; [_groupAA0] exec {Server\UpdateAASystem.sqs}
-; [_groupAA1] exec {Server\UpdateAASystem.sqs};
-
 
 ; ==================================Town Groups==================================
 ; Groups are recorded in init.sqs thus have to wait unitl game started. 
@@ -29,12 +23,12 @@ _index = 0; _count = count towns; _westTG = grpNull; _eastTG = grpNull; _resTG =
 	
 	; An empty group created by "createGroup" return the "unknown" side. However editor can still use "format" and "substr" to gain the first 4 letters and hence gain the side.
 
-	_script = "{Server\UpdateTownGroup.sqs}"
-	? _income < 0 : _script = "{Server\UpdateTownGroup3.sqs}"
+	_script = "{Server\Start\TownGroup1.sqs}"
+	? _income < 0 : _script = "{Server\Start\TownGroup3.sqs}"
 	call format ["[_westTG, _index, west] exec %1; [_eastTG, _index, east] exec %1", _script]
 
-	_script = "{Server\UpdateTownGroupRes.sqs}"
-	; ? _income >= 1000 : _script = "{Server\UpdateTownGroupRes2.sqs}"
+	_script = "{Server\Start\TownGroupRes1.sqs}"
+	; ? _income >= 1000 : _script = "{Server\Start\TownGroupRes2.sqs}"
 	call format ["[_resTG, _index] exec %1", _script]
 
 	_index = _index + 1
@@ -73,6 +67,10 @@ _count = (count towns) / 2.5; _index = 0; _patrolGroup = grpNull
 
 	_index = _index + 1
 	? _index < _count : goto "ResPatrolGroups"
+
+; ===============================Functional Groups===============================
+; script here should start after a delay, if they applied "createGroup" command. This command should be executed after groups' ID are set, or game may crash.
+west exec {Server\AASystem.sqs}; east exec {Server\AASystem.sqs}
 
 
 exit

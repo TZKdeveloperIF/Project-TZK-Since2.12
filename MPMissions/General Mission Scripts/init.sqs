@@ -81,7 +81,8 @@ WeatherChosen = (param2 % 100) % 8
 ZeroTime = ( (param2 % 100) - WeatherChosen ) / 8
 viewDistance = param2 - (param2 % 100)
 SkipTime ([0,9,15,21,0] select ZeroTime)
-? ZeroTime == 4 : [60] exec "Common\TimeSkip.sqs"
+[] exec "Common\TimeWeather.sqs"
+
 PricingMode = 0
 setViewDistance viewDistance
 ;player globalchat format ["fixedStartPos=%1, timeLimit=%2, maxGroupSize=%3, viewDistance=%4" ,fixedStartPos, timeLimit, maxGroupSize, viewDistance]
@@ -97,12 +98,11 @@ upgTL = _type; 					upgDefs set [_type, ["Update Leader Weapons", [4000, 100] se
 upgTownGroup = _type; 			upgDefs set [_type, ["Town Groups", [4000, 100] select dev, [1, 0] select dev]]; _type=_type+1
 
 upgTownGroupb = _type; 			upgDefs set [_type, ["Town Groups Armor", [15000, 100] select dev, [3, 0] select dev]]; _type=_type+1
-_TGHcost = 60000 + 5000*restanksx
-upgTownGroupH = _type; 			upgDefs set [_type, ["Town Armors Heavy", [_TGHcost, 100] select dev, [5, 0] select dev]]; _type=_type+1
+
+upgTownGroupH = _type; 			upgDefs set [_type, ["Town Armors Heavy", [60000 + 5000*restanksx, 100] select dev, [5, 0] select dev]]; _type=_type+1
 
 upgRadarArtillery = _type; 		upgDefs set [_type, ["Artillery Radar", [5000, 100] select dev, [2, 0] select dev]]; _type=_type+1
 
-; upgLongWeaponRange = _type; 	upgDefs set [_type, ["Double Range Weapons", [30000, 100] select dev, [3, 0] select dev]]; _type=_type+1
 upgLongWeaponRange = _type; 	upgDefs set [_type, [format["%1m Range Weapons", 2*viewDistance], [30000, 100] select dev, [3, 0] select dev]]; _type=_type+1
 
 ; upgCCdistance = _type; 		upgDefs set [_type, [format[ "%1m CC range ", distMaxCCUpgraded ], [20000, 100] select dev, [3, 0] select dev]]; _type=_type+1

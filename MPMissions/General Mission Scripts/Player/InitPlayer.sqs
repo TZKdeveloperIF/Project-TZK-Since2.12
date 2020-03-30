@@ -119,11 +119,8 @@ indexSendBuyUnit = 0; countSendBuyUnit = 4
 
 [] exec "Player\MsgMovingToSupport.sqs"
 
-; ? _si == si0: [] exec "Player\MsgEnemySpotted0.sqs"
-; ? _si == si1: [] exec "Player\MsgEnemySpotted1.sqs"
-? _si == si0: _i = 0; _c = 5; while "_i < _c" do {call format [{[] exec "Player\Msg\mEnemySpotted0%1.sqs"}, _i]; _i = _i + 1}
-? _si == si1: _i = 0; _c = 5; while "_i < _c" do {call format [{[] exec "Player\Msg\mEnemySpotted1%1.sqs"}, _i]; _i = _i + 1}
-EnemySpottedList = []
+? _si == si0: [] exec "Player\Msg\mEnemySpotted0.sqs"
+? _si == si1: [] exec "Player\Msg\mEnemySpotted1.sqs"
 
 [] exec "Player\MsgPingServer.sqs"
 
@@ -157,7 +154,7 @@ player groupchat "Start data received."
 
 [] exec "Player\Start\PlayerClient.sqs"
 [] exec "Player\Start\PlayerVehicle.sqs"
-[] exec "Player\Start\PlayerGroupUnits.sqs"
+
 [_si, false] exec "Player\Marker\PlayerUnits.sqs"; [_si] exec "Player\Marker\PlayerVehicleEnemy.sqs"; [_si] exec "Player\Marker\PlayerStruct.sqs"
 
 [] exec "Player\MsgJoinUnits.sqs"

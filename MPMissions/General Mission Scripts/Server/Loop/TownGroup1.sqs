@@ -1,9 +1,10 @@
-; args: [_group, _ti, _si, _cLast, _siLast, _timeReinforce, _unitsSpawn, _support, _unitsSupport, _unitsSupporting, _unitsInfantry, _unitsVehicle]
+; args: [_group, _ti, _si, _cLast, _siLast, _timeReinforce, _unitsSpawn, _support, _hibernate]
 
 _group = _this select 0; _ti = _this select 1; _si = _this select 2
 _cLast = _this select 3; _siLast = _this select 4; _timeReinforce = _this select 5; _unitsSpawn = _this select 6
-_support = _this select 7; _unitsSupport = _this select 8; _unitsSupporting = _this select 9; _unitsInfantry = _this select 10; _unitsVehicle = _this select 11
-_hibernate = _this select 12
+_support = _this select 7; _hibernate = _this select 8
+
+_unitsSupport = []; _unitsSupporting = []
 
 _distSpawn = viewDistance + 1500
 _flag = (towns select _ti) select tdFlag
@@ -12,7 +13,7 @@ _posFlag = getPos _flag
 ? _hibernate: goto "CheckSpawn"
 #Update
 ~30
-? _time > 3*60: goto "NextLoop"
+? _time > 3*60 && count _unitsSupport == 0: goto "NextLoop"
 	; check if town taken (won)
 	_siTown = (towns Select _ti) select tdSide
 	? _siTown == _si && _siLast != _si : _timeReinforce = time + timeReinforceTown
@@ -28,14 +29,12 @@ _posFlag = getPos _flag
 #Patrol
   _group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "NORMAL"
   ; CHECK HIBERNATE
-	? call format ["pvTownSpawn%1", _ti]: call format ["pvTownSpawn%1 = false", _ti]; goto "SkipHibernateCheck"
   _hibernate = true
-  { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach (groupAiMatrix select (siEnemy select _si))
+  { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach (groupMatrix select (siEnemy select _si))
   { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach (townGroups select (siEnemy select _si))
   { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach ( (groupMatrix select siRes) - groupsPatrol )
   { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach groupsPatrol
   ? _hibernate : goto "Hibernate"
-	#SkipHibernateCheck
 	
 	_c = count (units _group)
 	? _c < _cLast : [_ti, _si] exec "Server\Info\TownGroupLoss.sqs"
@@ -113,14 +112,12 @@ _posFlag = getPos _flag
   { _v = vehicle _x; if (_v != _x) then {deleteVehicle _v} } forEach (units _group)
   ~1
   {deleteVehicle _x} forEach (units _group)
-	call format ["pvTownSpawn%1 = false", _ti]
   
 #CheckSpawn
 ~10
 ? _time > 3*60: goto "NextLoop"
-	? call format ["pvTownSpawn%1", _ti]: call format ["pvTownSpawn%1 = false", _ti]; goto "Spawn"
   _hibernate = true
-  { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach (groupAiMatrix select (siEnemy select _si))
+  { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach (groupMatrix select (siEnemy select _si))
   ? !_hibernate : goto "Spawn"
   { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach (townGroups select (siEnemy select _si))
   ? !_hibernate : goto "Spawn"
@@ -230,4 +227,4 @@ _posFlag = getPos _flag
   goto "Patrol"
   
 #NextLoop
-	[_group, _ti, _si, _cLast, _siLast, _timeReinforce, _unitsSpawn, _support, _unitsSupport, _unitsSupporting, _unitsInfantry, _unitsVehicle] exec "Server\Loop\TownGroup1.sqs"
+	[_group, _ti, _si, _cLast, _siLast, _timeReinforce, _unitsSpawn, _support, _hibernate] exec "Server\Loop\TownGroup1.sqs"

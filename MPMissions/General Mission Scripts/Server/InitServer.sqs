@@ -9,26 +9,13 @@ boole_Infantry_Mode = _boole_Infantry_Mode; boole_NeutralTown_Mode = _boole_Neut
 
 [] exec "Server\InitFunctions.sqs"
 
-busyInit = "call format[{busy%1 = []}, sideNames select _si]"
-busySet = 	"call format[{[_this,_si] exec {Server\BusySet.sqs}}]"
-busyClear = "call format[{[_this,_si] exec {Server\BusyClear.sqs}}]"
-busyCheck = "call format[{_this in busy%1}, sideNames select _si]"
-mutexBusy = false
+busyInit = "call format[{busy%1 = []}, sideNames select _si]"; busySet = "call format[{[_this,_si] exec {Server\BusySet.sqs}}]"; busyClear = "call format[{[_this,_si] exec {Server\BusyClear.sqs}}]"; busyCheck = "call format[{_this in busy%1}, sideNames select _si]"; mutexBusy = false
+temporaryInit = "call format[{temporary%1 = []}, sideNames select _si]"; temporarySet = "call format[{[_this,_si] exec {Server\TemporarySet.sqs}}]"; temporaryClear = "call format[{[_this,_si] exec {Server\TemporaryClear.sqs}}]"; temporaryCheck = "call format[{_this in temporary%1}, sideNames select _si]"; mutexTemporary = false
+_si = si0; call busyInit; call temporaryInit; _si = si1; call busyInit; call temporaryInit
 
-temporaryInit = "call format[{temporary%1 = []}, sideNames select _si]"
-temporarySet = 	"call format[{[_this,_si] exec {Server\TemporarySet.sqs}}]"
-temporaryClear = "call format[{[_this,_si] exec {Server\TemporaryClear.sqs}}]"
-temporaryCheck = "call format[{_this in temporary%1}, sideNames select _si]"
-mutexTemporary = false
-
-_si = si0
-call busyInit; call temporaryInit
-_si = si1
-call busyInit; call temporaryInit
-;busySet = "_this setSkill (skill _this) - 0.0002"; busyClear = "_this setSkill (skill _this) + 0.0002"; busyCheck = "(skill _this) < 0.9999"
-;temporarySet = "_this setSkill (skill _this) - 0.0001"; temporaryClear = "_this setSkill (skill _this) + 0.0001"; temporaryCheck = "(skill _this) == 0.9999"
+; busySet = "_this setSkill (skill _this) - 0.0002"; busyClear = "_this setSkill (skill _this) + 0.0002"; busyCheck = "(skill _this) < 0.9999"
+; temporarySet = "_this setSkill (skill _this) - 0.0001"; temporaryClear = "_this setSkill (skill _this) + 0.0001"; temporaryCheck = "(skill _this) == 0.9999"
 ResDestroyStruct = []; mutexResDestStruct = false
-
 
 
 CheckSupportUnits = []; mutexCheckSupport = false
@@ -73,7 +60,7 @@ mutexqidCancel = false
 mutexFuelVehicle = false
 
 scoreMoney = [[],[]]
-groupsPatrol = []; groupPatrolJoinMatrix = []; mutexInitResGroups = false
+groupsPatrol = []; groupPatrolJoinMatrix = []; mutexInitResGroups = false; mutexResPatrolScript = false
 
 mutexAddResPatrol = false
 mutexWorkerJoin = false
@@ -91,7 +78,7 @@ mutexWorkerJoin = false
 [] exec "Server\MsgBuyUnit4.sqs"
 [] exec "Server\MsgCancelBuy.sqs"
 [] exec "Server\MsgMoneySpent.sqs"
-[] exec "Server\MsgGiveMoney.sqs"
+[] exec "Server\Msg\mGiveMoney.sqs"
 [] exec "Server\MsgUpgrade.sqs"
 [] exec "Server\MsgTransferCommand.sqs"
 [] exec "Server\MsgDestruction.sqs"
@@ -121,9 +108,8 @@ _count = count _groups
 #CheckGroupSide0
 	_leader = leader (_groups select _index)
 	? ( local _leader && !(player == _leader) ): _groupsAI set [count _groupsAI, group _leader]; [_leader, si0, _index] exec "Server\InitLeaderAI.sqs"
-	? !(local _leader): [group _leader, si0, _index] exec "Server\DetectPlayerDisconnect.sqs"
-  (scoreMoney select si0) set [_index, 0]
-	[si0, _index] exec "Server\UpdateLeader.sqs"
+	? !(local _leader): [group _leader, si0, _index] exec "Server\Loop\DetectPlayerDisconnect.sqs"
+		(scoreMoney select si0) set [_index, 0]
 	_index = _index + 1
 	? (_index < _count): goto "CheckGroupSide0"
 #CheckGroupSide0Empty
@@ -137,9 +123,8 @@ _count = count _groups
 #CheckGroupSide1
 	_leader = leader (_groups select _index)
 	? ( local _leader && !(player == _leader) ): _groupsAI set [count _groupsAI, group _leader]; [_leader, si1, _index] exec "Server\InitLeaderAI.sqs"
-	? !(local _leader): [group _leader, si1, _index] exec "Server\DetectPlayerDisconnect.sqs"
-  (scoreMoney select si1) set [_index, 0]
-	[si1, _index] exec "Server\UpdateLeader.sqs"
+	? !(local _leader): [group _leader, si1, _index] exec "Server\Loop\DetectPlayerDisconnect.sqs"
+		(scoreMoney select si1) set [_index, 0]
 	_index = _index + 1
 	? (_index < _count): goto "CheckGroupSide1"
 #CheckGroupSide1Empty
@@ -214,3 +199,10 @@ _si = si1
 
 [] exec "Server\DynamicInitializationTrigger.sqs"
 [] exec "Server\DynamicInitializationGroup.sqs"
+
+; after data initialized and before forcemap canceled
+~2
+music0 = (-0.5 + random count Musics0)
+music1h = (-0.5 + random count Musics1h)
+music10m = (-0.5 + random count Musics10m)
+PublicVariable "music0"; PublicVariable "music1h"; PublicVariable "music10m"; 

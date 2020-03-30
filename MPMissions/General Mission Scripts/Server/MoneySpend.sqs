@@ -1,7 +1,11 @@
 ; args: [si, gi, amount]
+_si = _this select 0; _gi = _this select 1; _amount = _this select 2
+
 @!(mutexEditMoneyMatrix)
 mutexEditMoneyMatrix = true
-(groupMoneyMatrix select (_this select 0)) set [_this select 1, -(_this select 2) + ((groupMoneyMatrix select (_this select 0)) select (_this select 1))];
-[_this select 0, _this select 1, 0] exec "Server\SendMoneyStatus.sqs";
-moneySpent set [_this select 0, (_this select 2) + (moneySpent select (_this select 0))];
-mutexEditMoneyMatrix = false;
+
+(groupMoneyMatrix select _si) set [_gi, -_amount + (groupMoneyMatrix select _si select _gi)]
+[_si, _gi, 0] exec "Server\Msg\sMoneyStatus.sqs"
+moneySpent set [_si, _amount + (moneySpent select _si)]
+
+mutexEditMoneyMatrix = false

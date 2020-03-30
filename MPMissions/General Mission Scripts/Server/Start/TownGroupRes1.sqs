@@ -1,0 +1,99 @@
+; args: [group, townIndex]
+
+_group = _this select 0; _ti = _this select 1
+_si = siRes
+
+_inf = 3 + random 3
+_tanks = 1 * restanksx
+_interval = (7 - restanksx) *60
+? restanksx == 5: _interval = 3*60
+_patrol = 0
+
+_distSpawn = viewDistance + 500
+
+_flag = (towns select _ti) select tdFlag
+_posFlag = getPos _flag
+? isNull _group : format["ERROR: _group is NULL at init for RES town group in '%1'", (towns select _ti) select tdName] call fDebugLog; exit
+
+@!(mutexInitResGroups)
+mutexInitResGroups = true
+_list = groupMatrix select _si
+_list set [count _list, _group]
+
+mutexInitResGroups = false
+
+@( !(isNull (mhq select si0)) && !(isNull (mhq select si1)) )
+~12
+; wait patrol group initialized.
+; Init Spawn Activate by Start Position
+? FixStart_0 distance _flag < _distSpawn || FixStart_1 distance _flag < _distSpawn: goto "Spawn"
+
+#CheckSpawn
+	_spawn = false
+	{ _g = _x; { if ((_x distance _flag) < _distSpawn) then { _spawn = true } } foreach (units _g) } foreach (groupMatrix select si0)
+	{ _g = _x; { if ((_x distance _flag) < _distSpawn) then { _spawn = true } } foreach (units _g) } foreach (groupMatrix select si1)
+	? _spawn: goto "Spawn"
+	~10
+	goto "CheckSpawn"
+
+#Spawn
+_infExtra = time/_interval; _infExtra = _infExtra - (_infExtra % 1)
+_inf = _inf + _infExtra
+? _inf > 8 : _tanks = _tanks + _inf - 8; _inf = 8
+? _tanks > 2 : _patrol = _patrol + _tanks - 2; _tanks = 2
+? isNull _group : format["ERROR: _group is NULL at spawn for RES town group in '%1'", (towns select _ti) select tdName] call fDebugLog
+
+? _inf == 0 : goto "SpawnNoInf"
+_i = 0
+#SpawnAddInf
+  _type = -1
+  while "_type == -1" do { _type = (infTown select _si) call funcGetRandomUnitType }
+  _pos = [_posFlag, 100, 100] call funcGetRandomPos
+  [_type, 0, 0, 0, _pos, random 360, _si, -1, _group, 0, 0] exec "Common\AddUnit.sqs"
+  ~1
+  _i = _i + 1
+  ? _i < _inf : goto "SpawnAddInf"
+#SpawnNoInf
+
+? _tanks == 0 : goto "SpawnNoTanks"
+_i = 0
+#SpawnAddTank
+		_type = -1
+		while "_type == -1" do { _type = (armorTown select _si) call funcGetRandomUnitType }
+		_pos = [_posFlag, 150, 150] call funcGetRandomPos
+		_vehicle = [_type, 1, 1, 0, _pos, random 360, _si, -1, _group, 0, 0] call funcAddServerUnit
+		
+		_timeAbort = time + 5
+		@ (!isNull _vehicle || time > _timeAbort)
+	_i = _i + 1
+	? _i < _tanks : goto "SpawnAddTank"
+#SpawnNoTanks
+
+? _patrol == 0 : goto "SpawnNoPatrol"
+
+@!(mutexAddResPatrol)
+mutexAddResPatrol = true
+
+_i = 0
+#SpawnAddPatrol
+	_groupPatrol = groupsPatrol select _i
+	_units = units _groupPatrol; _slots = (12 - count _units)/2; _slots = _slots - _slots % 1; _j = 0
+	#SpawnPatrolTank
+		? _j >= _slots || _patrol <= 0: goto "CheckNextGroup"
+		_type = -1
+		while "_type == -1" do { _type = (armorTown select _si) call funcGetRandomUnitType }
+		_pos = [_posFlag, 150, 150] call funcGetRandomPos
+		[_type, 1, 1, 0, _pos, random 360, _si, -1, _groupPatrol, 0, 0] exec "Common\AddUnit.sqs"
+		~1
+		_j = _j + 1; _patrol = _patrol - 1
+		goto "SpawnPatrolTank"
+	#CheckNextGroup
+	_i = _i + 1
+	? _i < count groupsPatrol && _patrol > 0: goto "SpawnAddPatrol"
+~10
+mutexAddResPatrol = false
+#SpawnNoPatrol
+
+_timePatrol = 0
+_timeReinforce = time + _interval
+[_group, _ti, _timePatrol, _timeReinforce] exec "Server\Loop\TownGroupRes1.sqs"

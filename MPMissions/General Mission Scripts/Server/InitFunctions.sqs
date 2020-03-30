@@ -9,7 +9,7 @@ funcCheckRepair = preprocessFile "Server\AI_CheckRepair.sqf"
 funcCheckRearm = preprocessFile "Server\AI_CheckRearm.sqf"
 funcMoveAI = {private [ "_x", "_unit", "_pos", "_v", "_crew" ];_unit = _this select 0;_pos = _this select 1;_v = vehicle _unit;if ( _unit == _v ) then{if(([getPos _unit, _pos] call funcDistH) > 500)then{_unit setUnitPos "UP"}else{_unit setUnitPos "AUTO"};_unit doMove _pos}else{_crew = [commander _v, gunner _v, driver _v];_crew = _crew - [objNull];{ if (alive _x && local _x) then { _x doMove _pos } } foreach _crew};}
 funcMoveStand = preprocessFile "Server\MoveStand.sqf"
-funcUpdateKnowsAbout = {private ["_target", "_si", "_kaMax", "_group", "_groups", "_ka", "_x"];_target = _this select 0;_si = _this select 1;_groups = _this select 2;_kaMax = 0;_group = grpNull;{ _ka = (_x knowsAbout _target); if ( _ka > _kaMax) then { _kaMax = _ka; _group = _x } } forEach _groups;[_kaMax, _group]}
+funcBiggestKA = preprocessFile "Server\SQF\BiggestKA.sqf"
 funcWatch = {private [ "_x", "_unit", "_si", "_gi", "_v", "_crew", "_iWatch", "_pos", "_posWatch", "_dir" ];_unit = _this select 0;_si = _this select 1;_gi = _this select 2;_iWatch = ((aiSetting select _si) select _gi) select aisWatch; _v = vehicle _unit;_pos = getPos _v;_crew = [commander _v, gunner _v, driver _v];_crew = _crew - [objNull];if (_iWatch == 0) then {_dir = random 360} else {_dir = 45*(_iWatch - 1};_posWatch = [(_pos select 0) + 200*(sin _dir), (_pos select 1) + 200*(cos _dir)];{ _x doWatch _posWatch } foreach _crew;}
 
 funcAddServerUnit = preprocessFile "Server\AddServerUnit.sqf"
@@ -37,7 +37,7 @@ funcGetIdleFactory = preprocessFile "Server\GetIdleFactory.sqf"
 funcGetIdleFactories = preprocessFile "Server\GetIdleFactories.sqf"
 funcGetFactoryWithEmptyQueue = preprocessFile "Server\GetFactoryWithEmptyQueue.sqf"
 
-funcWatch = preprocessFile "Server\Watch.sqf"
+funcWatch = preprocessFile "Server\SQF\Watch.sqf"
 
 funcGetNearbyTransports = preprocessFile "Server\GetNearbyTransports.sqf"
 funcCalcSlots = preprocessFile "Server\CalcSlots.sqf"
@@ -45,7 +45,7 @@ funcFindNullForward = {private ["_c", "_i", "_found"];_c = count _this; _i = _c;
 funcCheckTGSpawn = preprocessFile "Server\CheckTGSpawn.sqf"
 funcCheckRepair = preprocessFile "Server\AI_CheckRepair.sqf"
 funcCheckRearm = preprocessFile "Server\AI_CheckRearm.sqf"
-funcUpdateKnowsAbout = preprocessFile "Server\UpdateKnowsAbout.sqf"
+funcBiggestKA = preprocessFile "Server\SQF\BiggestKA.sqf"
 funcUpdateTownCheckUnits = preprocessFile "Server\UpdateTownCheckUnits.sqf"
 
 funcAddServerUnit = preprocessFile "Server\AddServerUnit.sqf"
