@@ -77,4 +77,4 @@ _unit assignAsCargo _transp; _unit moveInCargo _transp
 ? !(alive _unit) || _transp != vehicle _unit: unassignVehicle _unit; goto "NoneFound"
 
 _timeAbort = time + 10*60
-[_unit, _timeAbort] exec "Server\Loop\AI_CheckRide.sqs"
+[_unit, _si, _timeAbort] exec "Server\Loop\AI_CheckRide.sqs"
