@@ -321,9 +321,6 @@ _posY = 0
 { _posX = _posX + ((getPos (_x select tdFlag)) select 0); _posY = _posY + ((getPos (_x select tdFlag)) select 1) } foreach towns
 posCenter = [_posX/_c, _posY/_c]
 
-townsflag = []; townsHibernate = []; townsSpawn = []; townsRes = []; _c = count towns; _i = 0
-? ! isNull player: while "_i < _c" do {townsflag set [_i, (towns select _i) select tdFlag]; townsSpawn set [_i, _i]; townsRes set [_i, _i]; _i = _i + 1}
-
 townGroups=[ [], [], [] ]; workerGroups = [ [], [] ]; patrolGroups = []
 mutexDynamicInitializeGroups = false; [] exec "Common\Dynamic\GroupsClear.sqs"
 timeReinforceTown = 3*60

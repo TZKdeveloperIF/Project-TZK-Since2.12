@@ -19,7 +19,7 @@ goto "Update"
 	_velForwardOld = [_vForward, _vel] call funcVectorDot
 	_velRightOld = [_vRight, _vel] call funcVectorDot
 
-  [] exec "Player\Dialog Spectator.sqs"
+  [] exec "Player\Dialog\Spectator.sqs"
   ; [] exec "Player\SpecCam.sqs"
   
 #Update
@@ -117,13 +117,13 @@ goto "Update"
   goto "Init"
 
 	#SleepFreeMode
-		_unit setPos _posFreeMove; camSpec setPos _posFreeMove
+		_unit setPos _posFreeMove
 		#FreeModeLoop
 			? time % 1 > 0.8: setViewDistance viewDistance; showGPS boole_Show_GPS; showPad boole_Show_Pad; removeAllWeapons _unit
 			~0.1
 			? _unit != vehicle _unit: _unit action ["Eject", vehicle _unit]
 			? bFreeMode: goto "FreeModeLoop"
-		_posFreeMove = getPos _unit
+		_posFreeMove = getPos _unit; _sensorFreeMove setPos _posFreeMove
 		_unit addWeapon "Ingram"; { _unit addMagazine "IngramMag" } forEach [1]; _unit selectWeapon "Ingram"; player addWeapon "NVGoggles"
 	goto "Update"
   

@@ -9,6 +9,7 @@ _boole_Mark_Player_Name = _this select 0
 	? _time > 30: [_boole_Mark_Player_Name] exec "Player\Marker\SpectatorMarker.sqs"; exit
 	? !([_boole_Mark_Player_Name, boole_Mark_Player_Name] call funcBoolEqual): goto "ResetLeaderMarker"
 	~0.5
+	? !btnMarker: exit
 	call funcMappingSpectator
 	goto "UpdateSpectator"
 	

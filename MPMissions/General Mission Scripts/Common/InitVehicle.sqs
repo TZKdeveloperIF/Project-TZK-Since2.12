@@ -12,7 +12,7 @@ _desc = unitDefs select _type
 clearMagazineCargo _vehicle; 
 clearWeaponCargo _vehicle
 
-_vehicle addEventHandler ["killed", { _this exec "Common\Event_VehicleDestroyed.sqs" }]
+_vehicle addEventHandler ["killed", {_this exec "Common\Event_VehicleDestroyed.sqs"}]
 [_vehicle, _si, _desc select udCost] exec "Common\EventAdd_VehicleHit.sqs"
 ; ? "M109A6G_Base_xj200" countType [_vehicle] > 0 || "PLZ05_VME_Base_xj200" countType [_vehicle] > 0: if (local _vehicle) then {_vehicle animate [{suspension}, 0.5]}
 ? typeOf _vehicle in ["HMMMV_TOW2A_v2_xj200", "BRDM_Gaskin_v2_xj200", "GunBoatW_Custom_v2_xj200", "GunBoatE_Custom_v2_xj200"]: _vehicle addEventHandler ["Fired", "_this call loadFile {Player\EH\FiredImitated.sqf}" ]
@@ -21,7 +21,7 @@ _vehicle addEventHandler ["killed", { _this exec "Common\Event_VehicleDestroyed.
 
 ; "IncomingMissile" EH must be added to all clients. Although it is a global EH, it should be added to the client who fires missile. The command can be empty, but EH can't be omitted.
 ? "Air" countType [_vehicle] > 0 : [_vehicle, _type] exec "Common\EH\AddAirIncoming.sqs"
-? "Tank" countType [_vehicle] > 0: [_vehicle, _type] exec "Common\EH\AddTankIncoming.sqs"
+? "Tank" countType [_vehicle] > 0: if (_si != siRes) then {[_vehicle, _type] exec "Common\EH\AddTankIncoming.sqs"}
 
 ? isNull player : goto "SkipClient"
 
@@ -46,5 +46,4 @@ _vehicle addEventHandler ["killed", { _this exec "Common\Event_VehicleDestroyed.
 ? !isServer : exit
 
 ; SERVER ONLY
-; ? _si == siRes || _gi == giTown : _vehicle addEventHandler ["killed", { _this exec "Server\SendServerTankKilled.sqs" }]
 ? _type in (typesHeavyTank + typesLightTank + typesHowitzer + typesATAPC + typesAAAPC + typesGunshipOrigin + typesGunshipAT) : [_vehicle, _si, _gi] exec "Server\EventAdd_Vehicle.sqs"

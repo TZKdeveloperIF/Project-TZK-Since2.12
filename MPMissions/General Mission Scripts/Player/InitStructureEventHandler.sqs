@@ -5,7 +5,7 @@ _si = _this select 2
 _object = _this select 0
 
 ; Check Mortar. Fired_EH will limit the range, provide the marker and correct mortar's speed when player in gunner.
-? "PackMortar_Base_v2_xj200" countType [_object] > 0: _object addEventHandler ["Fired", "[_this, 1] call funcFiredEH_Mortar"]; exit
+? "PackMortar_Base_v2_xj200" countType [_object] > 0: _object addEventHandler ["Fired", "[_this, 1] call funcFiredMortar"]; exit
 
 ; Check M46. Treat it as common vehicle
 ? "M46_W_v2_xj200" countType [_object] == 0 : goto "SkipM46"

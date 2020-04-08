@@ -14,6 +14,6 @@ _pos = getPos _v;
 _crew = [commander _v, gunner _v, driver _v];
 _crew = _crew - [objNull];
 
-if (_iWatch == 0) then {_dir = random 360} else {_dir = 45*(_iWatch - 1};
+if (_iWatch == 0) then {_dir = random 360} else {_dir = 45*(_iWatch - 1)};
 _posWatch = [(_pos select 0) + 200*(sin _dir), (_pos select 1) + 200*(cos _dir)];
 { _x doWatch _posWatch } foreach _crew;

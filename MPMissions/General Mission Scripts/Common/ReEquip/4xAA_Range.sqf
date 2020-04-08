@@ -10,7 +10,7 @@ while "_i < _ci" do {
 		_rearmData = _unit call funcGetRearmData; _w = _rearmData select 0; _m = _rearmData select 1;
 		_k = 0; _ck = count _w; while "_k < _ck" do {if ((_w select _k) in ["RedTop_26_xj200","RedTop_30_xj200"]) then {_w set [_k, "RedTop_40_xj200"]}; _k = _k + 1};
 		_k = 0; _ck = count _m; while "_k < _ck" do {if ((_m select _k) in ["RedTop_26_xj200","RedTop_30_xj200"]) then {_m set [_k, "RedTop_40_xj200"]}; _k = _k + 1};
-		[_unit, _w, _m, true] exec "Common\EditEquipRearmData.sqs";
+		[_unit, _w, _m, _types select _i, 2, true] exec "Common\EditEquipRearmData.sqs";
 		
 		if (local _unit) then {
 			_mArray = magazinesArray _unit; _k = 0; _ck = count _mArray;

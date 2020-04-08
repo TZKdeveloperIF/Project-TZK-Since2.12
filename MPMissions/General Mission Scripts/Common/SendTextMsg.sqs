@@ -1,4 +1,6 @@
 ; args: string
+; sending stuff through createUnit is expensive both on cpu and bw
+; only use this function for rare/important stuff like broadcast of debug info
 
 _group = group leaderTemp0
 _init = format["player globalchat ""%1""; unitMsg=this", _this]

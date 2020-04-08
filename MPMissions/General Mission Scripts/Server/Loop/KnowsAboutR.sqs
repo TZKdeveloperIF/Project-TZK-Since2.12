@@ -1,4 +1,4 @@
-; args: [_unit, _si, _ka, _dist, _timeLastSent0, _timeLastSent1]
+; args: [_unit, _si, _kaReport, _dist, _timeLastSent0, _timeLastSent1]
 _interval = 20
 
 _unit = _this select 0
@@ -35,4 +35,4 @@ _groups1 = (groupMatrix select si1) + (townGroups select si1) + (workerGroups se
 	
 	goto "Update"
 #NextLoop
-	[_unit, _si, _ka, _dist, _timeLastSent0, _timeLastSent1] exec "Server\Loop\KnowsAboutR.sqs"; exit
+	[_unit, _si, _kaReport, _dist, _timeLastSent0, _timeLastSent1] exec "Server\Loop\KnowsAboutR.sqs"; exit

@@ -34,16 +34,17 @@ _count = count _groups
 
 
 ; Common Initialization for Both Player and Spectator
-funcCalcMapPos = preprocessFile "Player\CalcMapPos.sqf"
-funcCalcTownDirDistFromPos = preprocessFile "Player\CalcTownDirDistFromPos.sqf"
-funcCalcScore = preprocessFile "Player\CalcScore.sqf"
-funcGetTimeString = preprocessFile "Player\GetTimeString.sqf"
+funcCalcMapPos = preprocessFile "Player\SQF\CalcMapPos.sqf"
+funcCalcScore = preprocessFile "Player\SQF\CalcScore.sqf"
+funcCalcTownDirDistFromPos = preprocessFile "Player\SQF\CalcTownDirDistFromPos.sqf"
 
-funcInitVehicleMarker = preprocessFile "Player\InitVehicleMarker.sqf"
+funcGetEqName = preprocessFile "Player\SQF\GetEqName.sqf"
+funcGetTimeString = preprocessFile "Player\SQF\GetTimeString.sqf"
 
-funcGetEqName = preprocessFile "Player\GetEqName.sqf"
-funcEquipTempl = preprocessFile "Player\EquipTempl.sqf"
-funcBuildTempl = preprocessFile "Player\BuildTempl.sqf"
+funcInitVehicleMarker = preprocessFile "Player\SQF\InitVehicleMarker.sqf"
+
+funcEquipTempl = preprocessFile "Player\SQF\EquipTempl.sqf"
+funcBuildTempl = preprocessFile "Player\SQF\BuildTempl.sqf"
 ; eq template entry : [ textDescr, wpnPrim, wpnHandgun, wpnSec, [ [gen0, ..., gen9], [handgun0, ..., hangun3], [optic0, optic1] ] ]
 eqTemplates = []
 _i = 0; while "_i < 5" do { eqTemplates set [_i, [] ]; _i=_i+1 }
@@ -51,15 +52,14 @@ lastTemplate = -1
 
 ; MESSAGE HANDLERS (Clients)
 _i = 0; while "_i < 10" do {call format [{[] exec "Player\Msg\mMoneyStatus%1.sqs"}, _i]; _i = _i + 1}
+_i = 0; while "_i < 4" do {call format [{[] exec "Player\Msg\mInfo%1.sqs"}, _i]; _i = _i + 1}
 
-[] exec "Player\MsgInfo0.sqs"; [] exec "Player\MsgInfo1.sqs"; [] exec "Player\MsgInfo2.sqs"; [] exec "Player\MsgInfo3.sqs"
-
-[] exec "Player\MsgMoneySideTotal.sqs"
-[] exec "Player\MsgMoneySideSpent.sqs"
-[] exec "Player\MsgMoneyTransferred.sqs"
-[] exec "Player\MsgSetTownSide.sqs"
-[] exec "Player\MsgStructBuilt.sqs"
-[] exec "Player\MsgArtilleryShellDetected.sqs"
+[] exec "Player\Msg\mMoneySideTotal.sqs"
+[] exec "Player\Msg\mMoneySideSpent.sqs"
+[] exec "Player\Msg\mMoneyTransferred.sqs"
+[] exec "Player\Msg\mSetTownSide.sqs"
+[] exec "Player\Msg\mStructBuilt.sqs"
+[] exec "Player\Msg\mArtilleryShellDetected.sqs"
 
 
 moneySideTotal = [0, 0]
@@ -69,10 +69,10 @@ moneySideSpent = [0, 0]
 
 ; ================================================================================TZK_3.00 Block================================================================================
 ; 2.01 commands used. String in game will display without "_xj200"
-funcStringWithoutVersion = preprocessFile {Player\StringWithoutVersion.sqf}
+funcStringWithoutVersion = preprocessFile {Player\SQF\StringWithoutVersion.sqf}
 ; 2.01 commands used. Controlling Fire Effects
-funcFiredEffect = preprocessFile "Player\FiredEffect.sqf"
-funcFiredEH_Mortar = preprocessFile "Player\FiredEH_Mortar.sqf"
+funcFiredEffect = preprocessFile "Player\EH\FiredEffect.sqf"
+funcFiredMortar = preprocessFile "Player\EH\FiredMortar.sqf"
 
 boole_Refresh_Radio = false; Page_Radio = 0; Page_Radio_CustomCar = 0; Page_Radio_CustomShip = 0;
 

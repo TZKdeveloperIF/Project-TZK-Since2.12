@@ -22,12 +22,12 @@ _MCV setAmmoCargo 0
 ? !isServer : goto "SkipServer"
 
 ; SERVER
-[_MCV, _si] exec "Server\UpdateSupportVehicle.sqs"
+[_MCV, _si] exec "Server\Start\SupportVeh.sqs"
 
 #SkipServer
 
 ? siPlayer != si0 && siPlayer != si1 : exit
 
 ; PLAYER
-_MCV addAction ["Heal/Repair", "Player\Action HealRepair.sqs"]
-_MCV addAction ["Rearm", "Player\Action Rearm.sqs"]
+_MCV addAction ["Heal/Repair", "Player\Action\HealRepair.sqs"]
+_MCV addAction ["Rearm", "Player\Action\Rearm.sqs"]

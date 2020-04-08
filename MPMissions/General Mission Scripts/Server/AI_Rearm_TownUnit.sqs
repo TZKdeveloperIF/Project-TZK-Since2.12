@@ -13,20 +13,10 @@ _support = _this select 5
 _timeRearm = 5
 ? _unit != _vehicleRearm : _timeRearm = 30
 
-_i = rearmDataObj find _vehicleRearm
-? _i == -1: _weapons = []; _mags = []
-? _i != -1: _weapons = (rearmDataEquip select _i) select 0; _mags = (rearmDataEquip select _i) select 1
+_rearmData = _vehicleRearm call funcGetRearmData
+_weapons = _rearmData select 0
+_mags = _rearmData select 1
 ? (count _mags) == 0 : exit
-
-; CALC COST
-	_className = typeOf _vehicleRearm; _found = false; _array = +unitTypeArray
-	#CheckType
-	_type = _array find _className
-	? _type == -1: goto "TypeChecked"
-	? _vehicleRearm in ((unitMatrix select si0) select _type) || _vehicleRearm in ((unitMatrix select si1) select _type) || _vehicleRearm in ((unitMatrix select siRes) select _type) || _vehicleRearm in ((unitMatrix select siCiv) select _type): _found = true
-	? !_found: _array select [_type, ""]; goto "CheckType"
-	#TypeChecked
-? _type == -1 && _unit != _vehicleRearm : format["ERROR: _type is -1 for vehicle '%1' in AI_Rearm", _vehicleRearm] call fDebugLog; exit
 
 ? _unit != _vehicleRearm : goto "RearmVehicle"
 

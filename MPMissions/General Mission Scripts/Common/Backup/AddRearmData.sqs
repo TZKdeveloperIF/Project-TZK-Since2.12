@@ -1,0 +1,26 @@
+; args: [object]
+
+_object = _this select 0
+
+; wait for weapon/mag changes
+~5+1
+; Howerver equipping scirpts' effect will broadcast but it might cost long times. 6 secs usually enough but not always.
+
+
+@!(mutexEditRearmData)
+mutexEditRearmData = true
+
+? time < 5 * 60 : _index = count rearmDataObj; goto "SetList"
+_index = -2
+? alive _object: _index = rearmDataObj find objNull
+? _index == -2 : mutexEditRearmData = false; exit
+
+_count = count rearmDataObj
+? _index == -1 : _index = _count
+? _index < _count : if (alive (rearmDataObj select _index)) then { _index = _count }
+
+#SetList
+rearmDataObj set [ _index, _object ]; rearmDataEquip set [ _index, [weapons _object, magazines _object] ]
+mutexEditRearmData = false
+
+; EOF

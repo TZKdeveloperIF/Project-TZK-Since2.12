@@ -28,7 +28,7 @@ _actionID = -1
 
 		_found = [getPos _vehicle, siBoth, typesPlane, [_vehicle]] call funcGetClosestVehicle
 		? (_found select 1) > rangeGetPlaneFlyingStatus && _actionID != -1 : _vehicle removeAction _actionID; _actionID = -1
-		? (_found select 1) < rangeGetPlaneFlyingStatus && _actionID == -1 && speed (_found select 0) >120 && _vt in (typesTransportHeli + typesGunshipAT + typesGunshipOrigin + typesPlane) : _actionID = _vehicle addAction [_actionName, "Player\Action PlaneFlyingStatus.sqs"]
+		? (_found select 1) < rangeGetPlaneFlyingStatus && _actionID == -1 && speed (_found select 0) >120 && _vt in (typesTransportHeli + typesGunshipAT + typesGunshipOrigin + typesPlane) : _actionID = _vehicle addAction [_actionName, "Player\Action\PlaneFlyingStatus.sqs"]
 
 		goto "CheckAction"
 

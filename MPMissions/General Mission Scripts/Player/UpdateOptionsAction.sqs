@@ -15,7 +15,7 @@ _actionOptionsID = -1
 #PlayerLeftVehicle
 	? _actionOptionsID != -1 : _actionOptionsObject removeAction _actionOptionsID; _actionOptionsID = -1
   #PlayerOnFoot
-	  ? _actionOptionsID == -1 : _actionOptionsObject = _unit; _actionOptionsID = _actionOptionsObject addAction [_actionOptionsName, "Player\Action Options.sqs"]
+	  ? _actionOptionsID == -1 : _actionOptionsObject = _unit; _actionOptionsID = _actionOptionsObject addAction [_actionOptionsName, "Player\Action\Options.sqs"]
 
 	  @ !(alive _unit) || (_unit != vehicle _unit)
 
@@ -29,7 +29,7 @@ _actionOptionsID = -1
   #PlayerInVehicle
 	  _vehicle = vehicle _unit
 
-	  ? _actionOptionsID == -1 : _actionOptionsObject = _vehicle; _actionOptionsID = _actionOptionsObject addAction [_actionOptionsName, "Player\Action Options.sqs"]
+	  ? _actionOptionsID == -1 : _actionOptionsObject = _vehicle; _actionOptionsID = _actionOptionsObject addAction [_actionOptionsName, "Player\Action\Options.sqs"]
 
 	  @ !(alive _unit) || (_unit == vehicle _unit)
 

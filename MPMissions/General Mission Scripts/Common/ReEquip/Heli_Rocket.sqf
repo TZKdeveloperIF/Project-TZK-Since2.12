@@ -16,7 +16,7 @@ while "_i < _ci" do {
 	
 	while "_j < _cj" do {
 		_unit = _vehicles select _j;
-		[_unit, [_theWeapon], [_theWeapon], false] exec "Common\EditEquipRearmData.sqs";
+		[_unit, [_theWeapon], [_theWeapon], _types select _i, 2, false] exec "Common\EditEquipRearmData.sqs";
 		
 		if (local _unit) then {
 			_unit addMagazine _theWeapon; _unit addWeapon _theWeapon;

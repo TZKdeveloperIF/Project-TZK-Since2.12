@@ -6,100 +6,23 @@
 
 <h2><a name="Main"></a></h2>
 <p>
-The "@TZK" CTI missions are modified basing on "CRCTI_1.0_@RES2C3C8-irParaZ", also called as "XR mission". The author is IF, an excellent CTI commander and editor from China.<br>
-Mission version: TZK_3.00<br>
-Since TZK_3.00 the 2.01(by [4RTech], https://forums.bohemia.net/forums/topic/215749-unofficial-patch-arma-resistance-201/) is applied, and either 1.99 nor 1.96 supported any longer. The last version of TZK supporting 1.96/1.99 is 2.10(mod) and 2.11A(missions, using 2.10 mod).<br>
-Mods, missions and notes can be found at http://clanshout.co.uk/IF/. Google drive inconvenient for me to use.<br>
+Mission version: TZK_2.12<br>
+The last version of TZK supporting 1.96/1.99 is 2.10(mod) and 2.11A(missions, using 2.10 mod).<br>
+Mods, missions and notes can be found at http://bit.ly/OFP196TZK/.<br>
 My E-mail address: IFtheTZK@hotmail.com. Any feedbacks are welcomed.<br>
-<br>
-Main works of each version (bugs fixing and setting balancing not list here):<br>
-@TZK_2.12<br>
-Hard to describe them here. Check notes packed in mod or from http://clanshout.co.uk/IF/.<br>
-<br>
-@TZK_2.10<br>
-- Using Game-Logic to create global killed-burn-effect in MP game.<br>
-- Standarize sounds of tanks and howitzer. Set howitzers having the fixed turret thus make them not balance-breaker. Allow M1A1's crew having radar. Reset the speed of M1A1/T80/T90 using the parameter from ORIGINAL OFP.<br>
-- Edit models modified from ORIGINAL OFP to avoid them shining in dark.<br>
-- Edit models of M1A2/T90/Leo2A6/ZTZ99, delete the axis of gun-recoil (so do Leo's osa_poklop_driver). The type of Animations has only "Rotation" thus must using long radius to create translation effect, however vertex far from the model will cause the vehicle much more easier to be locked by TAB.<br>
-- Combine ww4 anims with TZK. Add Satchel and Mine stored in pistol magazine, strengthen sniper-AT-soldiers and the upgrade "Leader Weapon".<br>
-- Recover the usage of C130 and An12. The model of C17 and IL76 are too rough.<br>
-- Optimize the rearm system trying to avoid bugs happening on local vehicles having remote gunner.<br>
-- Add Tiger Gunship for WEST. Deleted the Howitzer Art unit and add M46 fieldgun with an Art M46, pricing $15000 and should be repaired after having built it.<br>
-- Set new spawn TG vehicles' position closing to flag.<br>
-- Ask the server to record structures' RearmData since all structures are local to Server.<br>
-- Add Structure Markers. Total number of vehicles' markers reduce to 150. Add High Roof structure. Set EnemySpotted Markers of infantry and structure using corresponding marker.<br>
-- Add "Buy" and "Build" in player-group-command. Player can ask his team members to help buy units and build structures.<br>
-<br>
-@TZK_2.00<br>
-- Transplant some kinds of effect into TZK mission. However CfgMaterials effect isn't ideal enough.<br>
-- Edit some models to fix their bugs (unable to turn Commander Turret, for example) and use new models for some units.<br>
-- Add some upgrades and tends to add more, aiming to let commander select fit kinds of upgrades freely (at least more flexible) to organize unique army.<br>
-- Add temporary order system to make commander avalible to control the exact units in AI's group.<br>
-- Add Join function so that units can be passed among groups freely.<br>
-- Optimize the mission setting.<br>
-- Some ideas are inspired by SE the mod of TZK_1.10. Special thank to Escobar, Mac_Evil_Remi and Dr.Strangelove.<br>
-<br>
-@TZK_1.10<br>
-- Add EventHandlers to Server units thus they'll go for supply once out of ammo or damaged more than 20%.<br>
-- Use SQF, mutex and pointer to optimize the mission setting.<br>
-- Check all "PublicVariable" broadcasting system, add necessary mutex, use constants for some carry system and split some large number into two variable since the number type in OFP script is single precision floating-point number.<br>
-- Adjust the armor of AT-gunships, fix the bug MG don't attack them. Raise the $3500 vehicle AA maxLeadSpeed to nearly unlimited.<br>
-- Design a quite ideal attach system.<br>
-<br>
-@TZK_1.02<br>
-- Fix the income bug of EAST side.<br>
-- Enhance the Buying-Factory system.<br>
-<br>
-@TZK_1.01<br>
-- Use UserActions to activate CTI-actions. This step is not worthless because the script commands "addActions" has less parameters than "UserActions", however it decreases the independence of CTI missions, making them much more rely on AddOn. But sacrifice is necessary unless those script commands powerful enough like in ARMA.).<br>
-- Learn how factories work and optimize it.<br>
-<br>
-@TZK_1.00(beta version)<br>
-- Make the critical TZK AddOn to fit the TZK mission. Many objects are redefined and some functions are removed from the mission and transplanted tothe AddOn (e.g. use "UserActions" instead of "addActions". <br>
-- Trim some setting and fix some bugs of XR.<br>
-- Enhance the T80 crew protection.<br>
-- Raise AT-gunships armor 1.6 times to their original version in OFP (adjusted in later version). Raise the maxLeadSpeed of $3500 AA vehicle's missile to 300km/h.<br>
-- Add 4-slot AT/AA magazines to group leader as upgraded leader weapon.<br>
-- Add some purchasable rifle to player and their custom soldiers.<br>
-- Remove the $14000 bomb helicopter since most AA vehicle hasn't enough maxElev.<br>
-- Make a further differentiation to RES strength, make DOOM harder and cancel upgrades' different price refering to RES. Set RES patrol groups attack base only when they distance structures/MHQ within 1x viweDistance. Stop RES patrol group moving in first 10 mins.<br>
-- Try to design a more reasonable Attach/Detach script. There is a bug in OFP that tanks/APCs have problem with their position/velocity script commands. Editors must struggle with this.<br>
-- Lock vehicles belonging to town group. Make town group visuable to players. Combine FFAR and AA into one APC, reduce its radar and missile to 1.5x viewDistance (AA built by Heavy Factory is 2.0x viewDistance). Raise vehicle number of TGA/TGH. Make town groups working as XR script wish (the script of XR has bugs thus TG units won't patrol, herbinate and supply).<br>
-- Enhance the function of Unit Camera. Make it possible to select empty vehicle with untis nearby, which need players to overlap the mouse to vehicle marker precisely. Add two buttons for commander to ask AI disembark and clear dead crew in vehicle. Allow players select the group leader independently in upper-right list.<br>
-- Allow players select the group leader independently in upper-right list of Sat-Cam dialog as well. Add a botton for player to return to Unit-Cam dialog.<br>
-- Make good use of "@" and mutex thus make it possible to raise maxGroupSize to 12.<br>
-- Add a "Transport" switch to transport vehicles and ask AI to calculate whether a transport has empty seat to board.<br>
-- Raise number of CO waypoint to 20.<br>
-- Raise the precision of Money System and allow players owning money more than 99,999.<br>
-- Make the weapon limit range from 2500m to 2x viewDistance and set most vehicles' radar rely on viewDistance. Mines won't be limited by this any longer.<br>
-- Add weather system into CTI. The weather (rain or fog) will affect the visual-viewDistance, that is, radar may be influenced but weapon limit range won't.<br>
-- Add start and remind music into CTI using original OFP music. Add time select to CTI.<br>
-- Set gunships/planes' rearm time to 60 secs, Ka50 and base-buster plane need 90 secs to rearm. Add sounds and text as hint of rearm progress.<br>
-- Add the support plane, make it possible to repair/rearm using the support plane. Add a GetFlyingStatus action to get speed, height and direction of the plane nearby.<br>
-- Add more AI settions including Auto-buy Factory, Respawn Pos, Auto-Repair/Rearm, CombatMode/Behaviour, Superior.<br>
-- Add the Destruction system, allow commander to destruct structures covered by Command Center. The 10000m CC range upgrade is valid to destruction.<br>
-- Add a combo box for commander to control income rate.<br>
-- Add board order for player group command.<br>
-- Adjust AICO behavior.<br>
-- Add purple, orange, cyan as marker color.<br>
-- Add more markers in mission.sqm to show more vehicles.<br>
-- Add Reclaim, Occupy, Board, Land Helicopter Order.<br>
-- Add a temporary AA group to protect one side from another side who starts with gunship.<br>
-- Add 8 Spectators and enable their night-visual.<br>
-- Add bullet track to Art units. Need satellite camera upgrade.<br>
-- Add Mortar structure to CTI. Only MHQ can bulid it. Pricing $4500.<br>
-- Allow players build structures near MHQ.<br>
-- Make critical bridges of some island teleporter, add markers for them, and set them repairable.<br>
-- Set fuel station and refuel truck auto-refuel vehicles nearby.<br>
-- Set AT soldiers equipping M16/AK74, use sniper model to more expensive units and equipping M21/SVD.<br>
-- Set miners avoid mining under vehicles.<br>
-<br>
-<br>
+</p>
+<h6>
+The "TZK" is the MOD/MPMissions of CTI, which is developed basing on<br>
+"CRCTI_1.0_@RES2C3C8-irParaZ"
+The author optimized the design of CTI basing on his personal comprehension about CTI, added many practical functions (e.g. "join" system, which allow players passing their members to other groups) and fixed discovered bugs. Since TZK_2.00, inspired by the "SE" mod of TZK, the author added some units and upgrades. And since TZK_2.12 the 2.01 Arma:Resistance is applied, which allows the author to design some MP-stable visual effects, edit strings, precisely check units ammunition, design radio channel as an enhancement of the action list, etc.
+</h6>
+<br><br>
+<p>
 <a href="#Help_Player">Player Help</a><br>
 <br>
 <a href="#Help_Spectator">Spectator Help</a><br>
 <br>
-Old fashion CTI notes are listed <a href="#Old_Notes">here</a>. Nowadays some contents are outdated and don't fit CTI missions any longer.<br>
+Old fashion CTI notes are listed <a href="#Old_Notes">here</a>. Nowadays some contents are outdated and don't fit TZK any longer.<br>
 </p>
 <hr>
 

@@ -7,6 +7,8 @@ _value = _value - _ti
 
 _si = _value/(20)
 
-? _si != siPlayer: if !(_ti in townsSpawn) then {townsSpawn set [count townsSpawn, _ti]}; townsHibernate = townsHibernate - [_ti]; exit
+? _si != siPlayer && siPlayer != siCiv: exit
 
-format["Enemy approaching %1. Town Group Spawn.", (towns select _ti) select tdName] call funcSideMsg
+? _si == siPlayer: format["Enemy approaching %1. Town Group Spawn.", (towns select _ti) select tdName] call funcSideMsg
+
+_marker = format["TownHibernate%1", _ti]; _marker setMarkerPos hiddenMarkerPos

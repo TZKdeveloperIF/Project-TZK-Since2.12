@@ -36,7 +36,7 @@ _c = count _units
 ; player globalchat format["AICO_CheckSupport, _objRepair = %1", _objRepair]
 ? _unit != vehicle _unit : _support = vehicle _unit; goto "RepairMove"
 _support = objNull
-_res = [ getPos _unit, 300, [(typesSupport select _si) select 0], [] ] call funcGetNearbyVehicles
+_res = [ getPos _unit, 300, [(typesSupport select _si) select 3], [] ] call funcGetNearbyVehicles
 _list = []
 { if ( isNull driver (_x select 0) ) then { _list set [count _list, (_x select 0)] } } foreach _res
 ? (count _list) == 0 : goto "Exit"
@@ -76,22 +76,16 @@ _heal = false
 _rearm = false
 ? (damage _objRepair) > 0 : _heal = true
 { if ((damage _x) > 0) then { _heal = true } } foreach (crew _objRepair)
-	_className = typeOf _objRepair; _found = false; _array = +unitTypeArray
-	#CheckType
-	_type = _array find _className
-	? _type == -1: goto "TypeChecked"
-	? _objRepair in ((unitMatrix select si0) select _type) || _objRepair in ((unitMatrix select si1) select _type) || _objRepair in ((unitMatrix select siRes) select _type) || _objRepair in ((unitMatrix select siCiv) select _type): _found = true
-	? !_found: _array select [_type, ""]; goto "CheckType"
-	#TypeChecked
-_i = rearmDataObj find _objRepair
-? _i == -1: _weapons = []; _mags = []
-? _i != -1: _weapons = (rearmDataEquip select _i) select 0; _mags = (rearmDataEquip select _i) select 1
+_rearmData = _objRepair call funcGetRearmData
+_weapons = _rearmData select 0
+_mags = _rearmData select 1
 ? (count _mags) == 0 : _rearm = false; goto "SkipRearm"
 _weapons = weapons _objRepair
 { if ((_objRepair ammo _x) == 0) then { _rearm = true }  } foreach _weapons
 #SkipRearm
-? _heal : [_unit, _si, _gi, _objRepair, _type, _support] exec "Server\AI_Heal.sqs"
-? _rearm : [_unit, _si, _gi, _objRepair, _type, _support] exec "Server\AI_Rearm.sqs"
+_vt = _objRepair call funcGetUnitTypeFromObject
+? _heal : [_unit, _si, _gi, _objRepair, _vt, _support] exec "Server\AI_Heal.sqs"
+? _rearm : [_unit, _si, _gi, _objRepair, _vt, _support] exec "Server\AI_Rearm.sqs"
 
 #RepairWait
 

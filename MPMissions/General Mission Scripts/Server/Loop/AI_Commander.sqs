@@ -7,7 +7,7 @@ _prims = _this select 8; _indexNextPrim = _this select 9; _timeNextPrim = _this 
 _timeCheckBuildSec = _this select 13; _objSec = _this select 14; _timeCheckPlayerIncome = _this select 15; _timeCheckNextUpgrade = _this select 16
 _timeCheckEjectDrivers = _this select 17; _timeCheckSupport = _this select 18; _timeCheckOrders = _this select 19; _currentOrder = _this select 20
 _posStart = _this select 21; _dirBase = _this select 22; _giFixOrder = _this select 23; _townsTotal = _this select 24; _townsCentral = _this select 25
-_unitsStarted = _this select 26; _sleep = _this select 27; _giPatrol = _this select 28; _bTakeTown = _this select 29; _bDestroy = _this select 30
+_unitsStarted = _this select 26; _sleep = _this select 27; _giPatrol = _this select 28; _bTakeTown = _this select 29
 
 _group = (groupMatrix select _si) select _gi
 _mhq = mhq select _si
@@ -17,7 +17,7 @@ _order = orderMatrix select _si select _gi; _idOrder = _order select 0
 #Update
 	~_sleep
 	_sleep = 5
-	? _time > 3*60: [_unit, _si, _gi, _posIdle, _posMove, _returnMove, _base, _factorBuildTime, _prims, _indexNextPrim, _timeNextPrim, _costNextPrim, _secs, _timeCheckBuildSec, _objSec, _timeCheckPlayerIncome, _timeCheckNextUpgrade, _timeCheckEjectDrivers, _timeCheckSupport, _timeCheckOrders, _currentOrder, _posStart, _dirBase, _giFixOrder, _townsTotal, _townsCentral, _unitsStarted, _sleep, _giPatrol, _bTakeTown, _bDestroy] exec "Server\Loop\AI_Commander.sqs"; exit
+	? _time > 3*60: [_unit, _si, _gi, _posIdle, _posMove, _returnMove, _base, _factorBuildTime, _prims, _indexNextPrim, _timeNextPrim, _costNextPrim, _secs, _timeCheckBuildSec, _objSec, _timeCheckPlayerIncome, _timeCheckNextUpgrade, _timeCheckEjectDrivers, _timeCheckSupport, _timeCheckOrders, _currentOrder, _posStart, _dirBase, _giFixOrder, _townsTotal, _townsCentral, _unitsStarted, _sleep, _giPatrol, _bTakeTown] exec "Server\Loop\AI_Commander.sqs"; exit
 	? !(alive _unit): goto "WaitUntilAlive"
 
 	; check for new order
@@ -146,11 +146,24 @@ _order = orderMatrix select _si select _gi; _idOrder = _order select 0
 
 #PrepareToTakeFirstTown
 	_currentOrder = "TakeFirstTown"
-	_timeCheckOrders = time + 5*60
+;	_timeCheckOrders = time + 5*60
+	_timeCheckOrders = time + 5*60*1000
 	~(random 10)
 	[0, getPos _mhq, _si, _gi] exec "Common\SendSetWPCO.sqs"
 	~0.4
-	[_si, _gi + GroupsNum, orderPatrolArea, [0,2]] exec "Common\SendAIGroupOrder.sqs"; [_si, _gi + GroupsNum, aisKeepMax, 13] exec "Common\SendAIGroupSetting.sqs"
+;	_res = [getPos _mhq, _si, [0,1,13,14,15]] call funcGetClosestEnemyTown  	  
+	_res = [getPos (mhq select (siEnemy select _si)), _si, [0,1,13,14,15]] call funcGetClosestEnemyTown  	  
+	_ti = _res select 0
+;	[9, getPos (mhq select (siEnemy select _si)), _si, _gi] exec "Common\SendSetWPCO.sqs"
+	[9, getPos (towns select _ti select tdFlag), _si, _gi] exec "Common\SendSetWPCO.sqs"
+	[_si, _gi + GroupsNum, aisKeepMax, 13] exec "Common\SendAIGroupSetting.sqs"
+;	[_si, _gi + GroupsNum, aisAutoRepair, 2] exec "Common\SendAIGroupSetting.sqs"
+;	[_si, _gi + GroupsNum, aisAutoRearm, 2] exec "Common\SendAIGroupSetting.sqs"
+	[_si, _gi + GroupsNum, orderTakeHoldTowns, [4,0]] exec "Common\SendAIGroupOrder.sqs"
+;	[_si, _gi + GroupsNum, orderHoldTown, [_ti,1,0]] exec "Common\SendAIGroupOrder.sqs"
+;	[_si, _gi + GroupsNum, orderPatrolArea, [9,0]] exec "Common\SendAIGroupOrder.sqs"
+;	[_si, _gi + GroupsNum, orderGuardArea, [9,0]] exec "Common\SendAIGroupOrder.sqs"
+	[_si, _gi + GroupsNum, aisPickupWait1, 0] exec "Common\SendAIGroupSetting.sqs"
 	goto "Update"
 
 #TakeFirstTown
@@ -161,7 +174,7 @@ _order = orderMatrix select _si select _gi; _idOrder = _order select 0
 	_ti = _res select 0
 	
 	[_si, _gi + GroupsNum, orderHoldTown, [_ti,1,0]] exec "Common\SendAIGroupOrder.sqs"
-	[_si, _gi + GroupsNum, aisPickupWait, 0] exec "Common\SendAIGroupSetting.sqs"
+	[_si, _gi + GroupsNum, aisPickupWait1, 0] exec "Common\SendAIGroupSetting.sqs"
 	goto "Update"
 
 #CheckFirstTownTaken
@@ -213,16 +226,12 @@ _order = orderMatrix select _si select _gi; _idOrder = _order select 0
 	goto "Update"
   
 #DestroyEnemy
-  _currentOrder = "DestroyEnemy"
+	_currentOrder = "DestroyEnemy"
 	_timeCheckOrders = time + 5*60
 	? !(alive _mhq) || (("(_x select tdSide) == _si" count towns)/_townsTotal) <= ratioAttackEnemy : goto "TakeHoldTowns"
-  _res = [getPos _mhq, _si]  call funcGetClosestEnemyObject
-  _object = _res select 0
-  ? isNull _object : goto "Update"
-	; Sometimes AI may won't go to base directly. Ask AI go to town to fix this(trial)
-	_town0List = [ getPos _object, [_si], [] ] call funcGetClosestTown
-	? _bDestroy: _object = (_town0List select 0) select 0
-	_bDestroy = ! _bDestroy
+	_res = [getPos _mhq, _si]  call funcGetClosestEnemyObject
+	_object = _res select 0
+	? isNull _object : goto "Update"
 	[9, getPos _object, _si, _gi] exec "Common\SendSetWPCO.sqs"
 	~1
 	; _giList = [_si] call funcGetAIGroupsIndex

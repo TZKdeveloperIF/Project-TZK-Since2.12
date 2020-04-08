@@ -12,18 +12,11 @@ _cost = 0
 ? _unit == _vehicleHeal : goto "UnitOnFoot"
 
 #UnitInVehicle
-	_className = typeOf _vehicleHeal; _found = false; _array = +unitTypeArray
-	#CheckType
-	_type = _array find _className
-	? _type == -1: goto "TypeChecked"
-	? _vehicleHeal in ((unitMatrix select si0) select _type) || _vehicleHeal in ((unitMatrix select si1) select _type) || _vehicleHeal in ((unitMatrix select siRes) select _type) || _vehicleHeal in ((unitMatrix select siCiv) select _type): _found = true
-	? !_found: _array select [_type, ""]; goto "CheckType"
-	#TypeChecked
-? _type == -1 : format["ERROR: _type is -1 for vehicle '%1' in AI_Heal", _vehicleHeal] call fDebugLog; exit
 _damage = damage _vehicleHeal
 
 ; CALC COST
-_cost = (unitDefs select _type) select udCost
+_vt = _vehicleHeal call funcGetUnitTypeFromObject
+_cost = (unitDefs select _vt) select udCost
 
 ; CALC REPAIR TIME
 _timeRepair = _damage*_cost*factorRepairTime

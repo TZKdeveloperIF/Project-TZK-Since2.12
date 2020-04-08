@@ -100,7 +100,7 @@ _repairObjList = repairableStructureMatrix select _si; _repairInfoList = repaira
 		_type = _repairInfoList select _index select 1; _cost = structDefs select _type select sdCost; _cost = 0.1*_cost*_repair; _cost = _cost - (_cost % 1)
 		? _object in primStructsPlaced: _cost = 0
 		? _cost >  groupMoneyMatrix select _si select (giCO select _si): [_si, _type] exec "Server\Info\NoMoneyForStructRepair.sqs"; _return = "Update"; _sleep = 30; mutexRepairStructure = false; goto "Wander"
-			hint format ["%1", _cost]
+
 			[_si, giCO select _si, _cost] exec "Server\MoneySpend.sqs"; _damage = _damage - _repair
 			(_repairInfoList select _index) set [0, _damage]
 			? _damage <= 0: [_object, _type, _si] exec "Server\ReplacePrimStruct.sqs"; _repairObjList set [_index, objNull]

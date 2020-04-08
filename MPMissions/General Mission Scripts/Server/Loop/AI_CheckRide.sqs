@@ -1,0 +1,25 @@
+; args: [_unit, _timeAbort]
+
+_unit = _this select 0; _timeAbort = _this select 1
+_transp = vehicle _unit
+
+#WaitInCargo
+? _time > 2*60: [_unit, _timeAbort] exec "Server\Loop\AI_CheckRide.sqs"; exit
+~5
+	? !(alive _unit) || !(alive _transp) : goto "Quit"
+	? time > _timeAbort && (speed _transp) < 2 && ((getPos _transp) select 2) < 2 : goto "GetOut"
+	? _transp == (vehicle _unit) : goto "WaitInCargo"
+	goto "Quit"
+
+#GetOut
+	unassignVehicle _unit
+	_unit action ["Eject", _transp]
+	
+#WaitOut
+~5
+	? !(alive _unit) || !(alive _transp) : goto "Quit"
+	? _unit != (vehicle _unit) : goto "WaitOut"
+
+#Quit
+	unassignVehicle _unit
+	_unit call busyClear

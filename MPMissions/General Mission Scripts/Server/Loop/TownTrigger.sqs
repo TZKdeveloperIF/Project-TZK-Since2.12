@@ -1,29 +1,18 @@
-; args: trigger
+; args: [_trigger, _lastSetSide, _lastSide]
 
-_trigger = _this
-_thislist = list _trigger
-
-_distFlag = 10
-
-; find closest flag and init stuff
+_trigger = _this select 0; _lastSetSide = _this select 1; _lastSide = _this select 2
 
 _pos = getPos _trigger
-_res = [_pos, [siRes], []] call funcGetClosestTown
-_townDesc = _res select 0
-
-_flag = _townDesc select tdFlag
+_res = [_pos, [si0,si1,siRes], []] call funcGetClosestTown
 _indexTown = _res select 2
 
-_lastSetSide = _townDesc select tdSide
-_lastSide = _lastSetSide
-
 #Update
-? _time > 3*60: _trigger exec {Server\Loop\TownTrigger.sqs}; exit
-	~2
+? _time > 3*60: [_trigger, _lastSetSide, _lastSide] exec {Server\Loop\TownTrigger.sqs}; exit
+	~3
 	_timeCheck = time + 19 - (time%20)
 	@ (time > _timeCheck)
 
-	_res = _thislist call funcUpdateTownCheckUnits
+	_res = (list _trigger) call funcUpdateTownCheckUnits
 	_units = _res select 0
 	_groups = _res select 1
 

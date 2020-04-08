@@ -8,20 +8,14 @@ _index = 0
 _count = count towns
 #InitTownMarker
 	_town = (towns select _index) select 0
+	_marker = format["TownHibernate%1", _index]
+	_marker setMarkerShape "ELLIPSE"; _marker setMarkerColor "ColorGreenAlpha"; _marker setMarkerSize [150,150]
+
 	_marker = format["Town_%1", _index]
-	_marker setMarkerType "flag1"
-	_marker setMarkerColor "colorBlack"
-	_marker setMarkerPos getPos _town
+	_marker setMarkerType "Flag1"; _marker setMarkerColor "ColorBlack"; _marker setMarkerSize [1.25,1.25]; _marker setMarkerPos getPos _town
 
 	_index = _index + 1
 	? (_index < _count): goto "InitTownMarker"
-
-;	#HideTownMarker
-;		_marker = format["Town_%1", _index]
-;		_marker setMarkerPos hiddenMarkerPos
-;	
-;		_index = _index + 1
-;		? (_index < _count): goto "HideTownMarker"
 
 ; VEHICLE MARKERS
 vehicleMarkerMapping = [ [], [], [], [], [] ]
