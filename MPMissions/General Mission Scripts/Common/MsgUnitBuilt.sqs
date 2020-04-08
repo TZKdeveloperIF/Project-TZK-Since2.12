@@ -40,4 +40,4 @@ _bIsVehicle = (count (_desc select udCrew) > 0)
 ; player globalchat format["(groupMatrix select _si) select _gi = %1", (groupMatrix select _si) select _gi]
 ; ? (_si == siPlayer): groupPlayer reveal _unit
 
-? _si == siRes: if (count (unitDefs select _type select udCrew) != 0) then {[_unit, _type] exec "Common\AddRearmData.sqs"}
+? _si != siCiv: [_unit, _type] exec "Common\AddRearmData.sqs"
