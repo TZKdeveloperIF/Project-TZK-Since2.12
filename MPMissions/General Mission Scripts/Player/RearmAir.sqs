@@ -8,7 +8,7 @@ _vehicle = vehicle _unit
 
 ? (_vehicle distance _support) > 2*rangeSupportPlane : _msg = "support plane out of range"; goto "Exit"
 
-? _unit == player && _unit == _vehicle : [_unit, _support, false, 1] exec "Player\Dialog Equipment.sqs"; Exit
+? _unit == player && _unit == _vehicle : [_unit, _support, false, 1] exec "Player\Dialog\Equipment.sqs"; Exit
 
 _msg = ""
 _unitRearm = _unit
@@ -26,7 +26,7 @@ _type = _unitRearm call funcGetUnitTypeFromObject
 
 
 ? _type == -1 : goto "CheckStruct"
-; TODO ? _type == (utCustom select siPlayer) && _unit == _vehicle : [_unit, _support, false, 1] exec "Player\Dialog Equipment.sqs"; exit
+; TODO ? _type == (utCustom select siPlayer) && _unit == _vehicle : [_unit, _support, false, 1] exec "Player\Dialog\Equipment.sqs"; exit
 _cost = (unitDefs select _type) select udCost
 goto "CheckData"
 
@@ -36,9 +36,9 @@ _type = _unitRearm call funcGetStructTypeFromObject
 _cost = (structDefs select _type) select sdCost
 
 #CheckData
-_i = rearmDataObj find _unitRearm
-? _i == -1: _weapons = []; _mags = []
-? _i != -1: _weapons = (rearmDataEquip select _i) select 0; _mags = (rearmDataEquip select _i) select 1
+_rearmData = _unitRearm call funcGetRearmData
+_weapons = _rearmData select 0
+_mags = _rearmData select 1
 ? (count _mags) == 0 : _msg = "Unit is not armed."; goto "Exit"
 ? !(canFire _vehicle) : _unit groupChat "Gun barrel badly hurt. Better repair as well."
 

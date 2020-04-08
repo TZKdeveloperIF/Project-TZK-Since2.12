@@ -17,9 +17,9 @@ _order = orderMatrix select _si select _gi; _idOrder = _order select 0; _script 
 ? _idOrder != _order select 0: exit
 ? _unit call busyCheck : goto "WaitReady"
 
-_i = rearmDataObj find _unit
-? _i == -1: _weapons = []; _mags = []
-? _i != -1: _weapons = (rearmDataEquip select _i) select 0; _mags = (rearmDataEquip select _i) select 1
+_rearmData = _objRepair call funcGetRearmData
+_weapons = _rearmData select 0
+_mags = _rearmData select 1
 _hasMines = magMine in _mags
 
 _timeCheckSupport = time + 30 + random 60

@@ -38,11 +38,12 @@ _setting = aiSetting select _si select _gi
   
   _bCheckDropBomb = !_bCheckDropBomb 
 	_magazines = []
-	? _bCheckDropBomb && _unit == _vehicle: if ("_x in MagzinesSatchel" count magazines _unit > 0) then {[_unit, _si, _gi] exec "Server\AI_CheckDropBomb.sqs"; _sleep = 20; goto "Sleep"}
+	? _bCheckDropBomb && _unit == _vehicle: if (magSatchel in (magazines _unit)) then {[_unit, _si, _gi] exec "Server\AI_CheckDropBomb.sqs"; _sleep = 20; goto "Sleep"}
 	
   ? time < _timePatrol : goto "SkipNewPos"
   _timePatrol = _timePatrol + _dist + random 120
-  _posDest = [_pos, _dist - 50, _dist + 50] call funcGetRandomPos
+;	_posDest = [_pos, _dist - 50, _dist + 50] call funcGetRandomPos
+	_dir = random 360; _posDest = [(_pos select 0) + _dist*(sin _dir), (_pos select 1) + _dist*(cos _dir)]
   #SkipNewPos
 	
 	_distToDest = [getPos _unit, _posDest] call funcDistH; _posMove = _posDest

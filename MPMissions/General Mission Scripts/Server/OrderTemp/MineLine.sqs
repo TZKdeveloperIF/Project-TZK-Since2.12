@@ -16,9 +16,9 @@ _duration = 180 * ((_params select 2) + 1)
 _vehicle = vehicle _unit
 ? _unit != _vehicle: exit
 
-_i = rearmDataObj find _unit
-? _i == -1: _weapons = []; _mags = []
-? _i != -1: _weapons = (rearmDataEquip select _i) select 0; _mags = (rearmDataEquip select _i) select 1
+_rearmData = _objRepair call funcGetRearmData
+_weapons = _rearmData select 0
+_mags = _rearmData select 1
 _hasMines = magMine in _mags
 ? !_hasMines: exit
 

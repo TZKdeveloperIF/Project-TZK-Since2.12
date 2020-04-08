@@ -13,11 +13,11 @@ _booleStringSpoofOFF = """_x=={SpoofSwitch_xj200}"" count magazines _vehicle == 
 if (_booleSpoofON) then {Radio001 setTriggerText "SpoofMissile ON"; Radio001 setTriggerStatements ["this", "vehicle player removeMagazines {SpoofSwitch_xj200}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true}", ""]};
 if (_booleSpoofOFF) then {Radio001 setTriggerText "SpoofMissile OFF"; Radio001 setTriggerStatements ["this", "vehicle player addMagazine {SpoofSwitch_xj200}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true}", ""]};
 
-Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", "[] exec {Player\Dialog TZK_Mission_Setting.sqs}", ""];
+Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", "[] exec {Player\Dialog\TZK_Mission_Setting.sqs}", ""];
 if (call _booleStringSwitchDriver) then {Radio003 setTriggerText "To driver's seat"; Radio003 setTriggerStatements ["this", "(vehicle player) exec {Player\SwitchToDriver.sqs}", ""]} else {Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""]};
 if (call _booleStringSwitchGunner) then {Radio004 setTriggerText "To gunner's seat"; Radio004 setTriggerStatements ["this", "(vehicle player) exec {Player\SwitchToGunner.sqs}", ""]} else {Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""]};
 ? "Plane" countType [_vehicle] == 0 && call (typeOf _vehicle GetVehicleParam "transportSoldier") > 8: Radio005 setTriggerText "Attach/Detach Center Vehicle"; Radio005 setTriggerStatements ["this", "[vehicle player, tsCenter, ttHeli] exec {Player\AttachDetachVehicle.sqs}", ""];
-Radio006 setTriggerText "Get Plane Status"; Radio006 setTriggerStatements ["this", "[vehicle player, player] exec {Player\Action PlaneFlyingStatus.sqs}", ""];
+Radio006 setTriggerText "Get Plane Status"; Radio006 setTriggerStatements ["this", "[vehicle player, player] exec {Player\Action\PlaneFlyingStatus.sqs}", ""];
 Radio007 setTriggerText "Eject AI Units"; Radio007 setTriggerStatements ["this", "[vehicle player, siPlayer] exec {Player\EjectAIUnits.sqs}", ""];
 Radio008 setTriggerText "Eject All Cargo"; Radio008 setTriggerStatements ["this", "[vehicle player, siPlayer] exec {Player\EjectAllCargo.sqs}", ""];
 Radio009 setTriggerText "Eject One Cargo"; Radio009 setTriggerStatements ["this", "[vehicle player, siPlayer] exec {Player\EjectOneCargo.sqs}", ""];

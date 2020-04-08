@@ -80,17 +80,17 @@ _v = vehicle _unit
   _wpnSec = secondaryWeapon _unit
   ? _wpnPrim != "" : if ((_unit ammo _wpnPrim) == 0) then { _rearm = true }
   ? _wpnSec != "" : if ((_unit ammo _wpnSec) == 0) then { _rearm = true }
-	_i = rearmDataObj find _unit
-	? _i == -1: _weapons = []; _mags = []
-	? _i != -1: _weapons = (rearmDataEquip select _i) select 0; _mags = (rearmDataEquip select _i) select 1
+_rearmData = _unit call funcGetRearmData
+_weapons = _rearmData select 0
+_mags = _rearmData select 1
 	? (count _mags) > count (magazines _unit) : _rearm = true
   ? _rearm : [_unit, _support] exec "Player\Rearm.sqs"
   goto "Return"
 
 #Vehicle
-	_i = rearmDataObj find _v
-	? _i == -1: _weapons = []; _mags = []
-	? _i != -1: _weapons = (rearmDataEquip select _i) select 0; _mags = (rearmDataEquip select _i) select 1
+_rearmData = _v call funcGetRearmData
+_weapons = _rearmData select 0
+_mags = _rearmData select 1
 	? (count _mags) == 0 : goto "Return"
   _weapons = weapons _v
   { if ((_v ammo _x) == 0) then { _rearm = true }  } foreach _weapons

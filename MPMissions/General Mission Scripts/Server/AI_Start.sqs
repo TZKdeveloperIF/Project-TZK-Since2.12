@@ -13,78 +13,77 @@ _gi = _this select 2
 ; TODO _unit disableAI "TARGET"
 _unit allowFleeing 0
 ;_unit setCombatMode "YELLOW"; _unit setBehaviour "AWARE"; _unit setSpeedMode "FULL"
-_setting = aiSetting select _si select _gi
-_unit setCombatMode (aisCombatModeDefs select (_setting select aisCombatMode))
-(group _unit) setBehaviour (aisBehaviourDefs select (_setting select aisBehaviour)); _unit setSpeedMode "FULL"
+_unit setCombatMode (aisCombatModeDefs select (aiSetting select _si select _gi select aisCombatMode))
+(group _unit) setBehaviour (aisBehaviourDefs select (aiSetting select _si select _gi select aisBehaviour)); _unit setSpeedMode "FULL"
 
 _vehicle = vehicle _unit
 
 ; SUPPORT
 ? _unit == _vehicle : goto "SkipSupport"
-	_className = typeOf _vehicle; _found = false; _array = +unitTypeArray
-	#CheckType
-	_typeVehicle = _array find _className
-	? _typeVehicle == -1: goto "TypeChecked"
-	? _vehicle in ((unitMatrix select si0) select _typeVehicle) || _vehicle in ((unitMatrix select si1) select _typeVehicle) || _vehicle in ((unitMatrix select siRes) select _typeVehicle) || _vehicle in ((unitMatrix select siCiv) select _typeVehicle): _found = true
-	? !_found: _array select [_typeVehicle, ""]; goto "CheckType"
-	#TypeChecked
-? _typeVehicle == -1 : format["ERROR: Vehicle type not found in AI_Start.sqs for '%1', treat it as non-support vehicle.", _vehicle] call fDebugLog; goto "SkipSupport"
-? (groupCommander select _si) in (groupAiMatrix select _si) : if (_typeVehicle in (typesSupport select _si) && _unit == driver _vehicle) then {[_unit, _si, _gi] exec "Server\AI_PlaceSupportVehicle.sqs"; exit}
+_vt = _vehicle call funcGetUnitTypeFromObject
+? _vt == -1 : format["ERROR: Vehicle type not found in AI_Start.sqs for '%1', treat it as non-support vehicle.", _vehicle] call fDebugLog; goto "SkipSupport"
+? (groupCommander select _si) in (groupAiMatrix select _si) : if (_vt in (typesSupport select _si) && _unit == driver _vehicle) then {[_unit, _si, _gi] exec "Server\AI_PlaceSupportVehicle.sqs"; exit}
 #SkipSupport
 
 ; RALLY 1
-_gi = ( groupMatrix select _si ) find ( group _unit )
-? (_setting select aisRallyPoint) == 0 || _unit != driver _vehicle : goto "NoRally"
-[_unit, _si, _gi] exec "Server\AI_MoveToRallyPoint.sqs"
-#WaitRallyReached
-~5
-? !(alive _unit) : exit
-? _unit call busyCheck : goto "WaitRallyReached"
-#NoRally
+_gi = (groupMatrix select _si) find (group _unit)
+? (aiSetting select _si select _gi select aisRallyPoint1) == 0 || _unit != driver _vehicle : goto "NoRally1"
+? !(_unit call busyCheck): _unit call busySet
+[_unit, _si, _gi, time + 10*60, aisRallyPoint1] exec "Server\Loop\AI_RallyPoint.sqs"
+#WaitRallyReached1
+	~5
+	? !(alive _unit) : exit
+	? _unit call busyCheck : goto "WaitRallyReached1"
+#NoRally1
 
 ; BOARD 1
-_gi = ( groupMatrix select _si ) find ( group _unit )
-? _unit != _vehicle || (_setting select aisPickupWait) == 0 : goto "NoBoard"
+_gi = (groupMatrix select _si) find (group _unit)
+? _unit != _vehicle || (aiSetting select _si select _gi select aisPickupWait1) == 0 : goto "NoBoard1"
 _timeCheckBoardStart = time
 _posCheckBoardStart = getPos _unit
-#Board
-_gi = ( groupMatrix select _si ) find ( group _unit )
-[_unit, _si, _gi, _posCheckBoardStart] exec "Server\AI_CheckBoardTransport.sqs"
-#WaitBoardReady
-  ~5
-  ? !(alive _unit) : exit
-  ? _unit call busyCheck : goto "WaitBoardReady"
-? ([getPos _unit, _posCheckBoardStart] call funcDistH) < 200 && time < ( _timeCheckBoardStart + ( aisPickupWaitTimeDefs select (_setting select aisPickupWait) ) ) : goto "Board"
-#NoBoard
+#Board1
+? !(_unit call busyCheck): _unit call busySet
+[_unit, _si, _gi, _posCheckBoardStart select 0, _posCheckBoardStart select 1, _timeCheckBoardStart, aisPickupWait1] exec "Server\Loop\AI_CheckBoard.sqs"
+#WaitBoardReady1
+	~5
+	? !(alive _unit) : exit
+	? _unit call busyCheck : goto "WaitBoardReady1"
+? time > _timeCheckBoardStart + (aisPickupWaitTimeDefs select (aiSetting select _si select (( groupMatrix select _si) find (group _unit)) select aisPickupWait1)): goto "NoBoard1"
+? ([getPos _unit, _posCheckBoardStart] call funcDistH) > 200: goto "NoBoard1"
+goto "Board1"
+#NoBoard1
 
 ;*************************Second Rally And Board Procedure**************************
 ; RALLY 2
-_gi = ( groupMatrix select _si ) find ( group _unit )
-? (_setting select aisRallyPoint2) == 0 || _unit != driver _vehicle : goto "NoRally2"
-[_unit, _si, _gi] exec "Server\AI_MoveToRallyPoint2.sqs"
+_gi = (groupMatrix select _si) find (group _unit)
+? (aiSetting select _si select _gi select aisRallyPoint2) == 0 || _unit != driver _vehicle : goto "NoRally2"
+? !(_unit call busyCheck): _unit call busySet
+[_unit, _si, _gi, time + 10*60, aisRallyPoint2] exec "Server\Loop\AI_RallyPoint.sqs"
 #WaitRallyReached2
-~5
-? !(alive _unit) : exit
-? _unit call busyCheck : goto "WaitRallyReached2"
+	~5
+	? !(alive _unit) : exit
+	? _unit call busyCheck : goto "WaitRallyReached2"
 #NoRally2
 
 ; BOARD 2
-_gi = ( groupMatrix select _si ) find ( group _unit )
-? _unit != _vehicle || (_setting select aisPickupWait2) == 0 : goto "NoBoard2"
+_gi = (groupMatrix select _si) find (group _unit)
+? _unit != _vehicle || (aiSetting select _si select _gi select aisPickupWait2) == 0 : goto "NoBoard2"
 _timeCheckBoardStart = time
 _posCheckBoardStart = getPos _unit
 #Board2
-_gi = ( groupMatrix select _si ) find ( group _unit )
-[_unit, _si, _gi, _posCheckBoardStart] exec "Server\AI_CheckBoardTransport.sqs"
+? !(_unit call busyCheck): _unit call busySet
+[_unit, _si, _gi, _posCheckBoardStart select 0, _posCheckBoardStart select 1, _timeCheckBoardStart, aisPickupWait2] exec "Server\Loop\AI_CheckBoard.sqs"
 #WaitBoardReady2
-  ~5
-  ? !(alive _unit) : exit
-  ? _unit call busyCheck : goto "WaitBoardReady2"
-? ([getPos _unit, _posCheckBoardStart] call funcDistH) < 200 && time < ( _timeCheckBoardStart + ( aisPickupWaitTimeDefs select (_setting select aisPickupWait2) ) ) : goto "Board2"
+	~5
+	? !(alive _unit) : exit
+	? _unit call busyCheck : goto "WaitBoardReady2"
+? time > _timeCheckBoardStart + (aisPickupWaitTimeDefs select (aiSetting select _si select (( groupMatrix select _si) find (group _unit)) select aisPickupWait2)): goto "NoBoard2"
+? ([getPos _unit, _posCheckBoardStart] call funcDistH) > 200: goto "NoBoard2"
+goto "Board2"
 #NoBoard2
 
 #Exit
-_gi = ( groupMatrix select _si ) find ( group _unit )
+_gi = (groupMatrix select _si) find (group _unit)
 _order = (orderMatrix select _si) select _gi
 _script = (orderDefs select (_order select 1)) select 2
 [_unit, _si, _gi, _order select 2] exec format["Server\Order\%1", _script]

@@ -11,7 +11,7 @@ mutexMarkerStructure = true
 _index = _structs find objNull
 ? _index == -1: _index = count _structs
 
-_mt = (structDefs select _structureType) select sdMarkerType;
+_mt = structMarker select _structureType;
 ? _mt == "": goto "Quit"
 
 _m = format["Structure_%1_%2", _si, _index];

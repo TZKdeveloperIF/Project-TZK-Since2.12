@@ -8,31 +8,34 @@ _gi = _this select 2
 forceMap true
 
 ;init player functions
-funcCalcAlignPosDir = preprocessFile "Player\CalcAlignPosDir.sqf"
-funcGetOrderDesc = preprocessFile "Player\GetOrderDesc.sqf"
-funcMapClickPlayer = preprocessFile "Player\MapClickPlayer.sqf"
-funcGetQueueLength = preprocessFile "Player\GetQueueLength.sqf"
-funcSideMsg = preprocessFile "Player\SideMsg.sqf"
-funcMove = preprocessFile "Player\Move.sqf"
-funcPosBullCam = preprocessFile "Player\PosBullCam.sqf"
+funcCalcAlignPosDir = preprocessFile "Player\SQF\CalcAlignPosDir.sqf"
+funcCalcUID = preprocessFile "Player\SQF\CalcUID.sqf"
+
+funcGetOrderDesc = preprocessFile "Player\SQF\GetOrderDesc.sqf"
+funcGetOrderTempDesc = preprocessFile "Player\SQF\GetOrderTempDesc.sqf"
+funcGetQueueLength = preprocessFile "Player\SQF\GetQueueLength.sqf"
+
+funcMapClickPlayer = preprocessFile "Player\SQF\MapClickPlayer.sqf"
+funcSideMsg = preprocessFile "Player\SQF\SideMsg.sqf"
+funcMove = preprocessFile "Player\SQF\Move.sqf"
+funcPosBullCam = preprocessFile "Player\SQF\PosBullCam.sqf"
 funcMappingUnitsPlayer = preprocessFile "Player\Marker\MappingUnitsPlayer.sqf"
 ? dev : funcMappingPlayerDev = preprocessFile "Player\Marker\MappingPlayerDev.sqf"
 funcHideMarkers = preprocessFile "Player\Marker\HideMarkers.sqf"
-funcCalcUID = preprocessFile "Player\CalcUID.sqf"
 
-funcCheckWhetherSuperior = preprocessFile "Player\CheckWhetherSuperior.sqf"
-funcUpdateDialogBuyUnitsAvailable = preprocessFile "Player\UpdateDialogBuyUnitsAvailable.sqf"
-funcUpdateDialogBuyUnitsFactory = preprocessFile "Player\UpdateDialogBuyUnitsFactory.sqf"
-funcUpdateDialogBuyUnitsGroups = preprocessFile "Player\UpdateDialogBuyUnitsGroups.sqf"
-funcUpdateDialogBuyUnitsQueue = preprocessFile "Player\UpdateDialogBuyUnitsQueue.sqf"
+funcCheckWhetherSuperior = preprocessFile "Player\SQF\CheckWhetherSuperior.sqf"
 
-funcUpdateDialogOptionsInit = preprocessFile "Player\UpdateDialogOptionsInit.sqf"
-funcUpdateDialogOptionsUpdate = preprocessFile "Player\UpdateDialogOptionsUpdate.sqf"
-funcUpdateDialogDestruction = preprocessFile "Player\UpdateDialogDestruction.sqf"
-funcUpdateDialogAttachableVehicles = preprocessFile "Player\UpdateDialogAttachableVehicles.sqf"
-funcUpdateDialogAttachVehicleList = preprocessFile "Player\UpdateDialogAttachVehicleList.sqf"
+funcDialog_BuyUnitsAvailable = preprocessFile "Player\SQF\Dialog_BuyUnitsAvailable.sqf"
+funcDialog_BuyUnitsFactory = preprocessFile "Player\SQF\Dialog_BuyUnitsFactory.sqf"
+funcDialog_BuyUnitsGroups = preprocessFile "Player\SQF\Dialog_BuyUnitsGroups.sqf"
+funcDialog_BuyUnitsQueue = preprocessFile "Player\SQF\Dialog_BuyUnitsQueue.sqf"
+funcDialog_Options_Init = preprocessFile "Player\SQF\Dialog_Options_Init.sqf"
+funcDialog_Options_Update = preprocessFile "Player\SQF\Dialog_Options_Update.sqf"
+funcDialog_Destruction = preprocessFile "Player\SQF\Dialog_Destruction.sqf"
+funcDialog_AttachableVehicles = preprocessFile "Player\SQF\Dialog_AttachableVehicles.sqf"
+funcDialog_AttachVehicleList = preprocessFile "Player\SQF\Dialog_AttachVehicleList.sqf"
 
-funcGetOrderTempDesc = preprocessFile "Player\GetOrderTempDesc.sqf"
+funcGetWorkingStructuresWithinCCRange = preprocessFile "Player\SQF\GetWorkingStructuresWithinCCRange.sqf"
 
 
 structAction = -1
@@ -92,37 +95,17 @@ mutexSendCancelBuy = false; mutexqPlayer = false
 indexSendBuyUnit = 0; countSendBuyUnit = 4
 
 ; MESSAGE HANDLERS (PLAYERS)
-[] exec "Player\MsgAddUnit_0.sqs"
-[] exec "Player\MsgAddUnit_1.sqs"
-[] exec "Player\MsgAddUnit_2.sqs"
-[] exec "Player\MsgAddUnit_3.sqs"
-[] exec "Player\MsgAddUnit_4.sqs"
-[] exec "Player\MsgAddUnit_5.sqs"
-[] exec "Player\MsgAddUnit_6.sqs"
-[] exec "Player\MsgAddUnit_7.sqs"
-[] exec "Player\MsgAddUnit_8.sqs"
-[] exec "Player\MsgAddUnit_9.sqs"
+_i = 0; _count = 10; while "_i < _count" do {call Format[{[] exec "Player\Msg\mAddUnit%1.sqs"}, _i]; _i = _i + 1}
 
-[] exec "Player\MsgQueueAdd_0.sqs"
-[] exec "Player\MsgQueueAdd_1.sqs"
-[] exec "Player\MsgQueueAdd_2.sqs"
-[] exec "Player\MsgQueueAdd_3.sqs"
-[] exec "Player\MsgQueueAdd_4.sqs"
+_i = 0; _count = 5; while "_i < _count" do {call Format[{[] exec "Player\Msg\mQueueAdd%1.sqs"; [] exec "Player\Msg\mQueueRem%1.sqs"}, _i]; _i = _i + 1}
+[] exec "Player\Msg\mQueueLength.sqs"
 
-[] exec "Player\MsgQueueRem_0.sqs"
-[] exec "Player\MsgQueueRem_1.sqs"
-[] exec "Player\MsgQueueRem_2.sqs"
-[] exec "Player\MsgQueueRem_3.sqs"
-[] exec "Player\MsgQueueRem_4.sqs"
-
-[] exec "Player\MsgQueueLength.sqs"
-
-[] exec "Player\MsgMovingToSupport.sqs"
+[] exec "Player\Msg\mMovingToSupport.sqs"
 
 ? _si == si0: [] exec "Player\Msg\mEnemySpotted0.sqs"
 ? _si == si1: [] exec "Player\Msg\mEnemySpotted1.sqs"
 
-[] exec "Player\MsgPingServer.sqs"
+[] exec "Player\Msg\mPingServer.sqs"
 
 _i = 0; _count = 10; while "_i < _count" do {call Format["TargetP_%1 = {HeliHEmpty} camCreate [0,0,0]", _i]; _i = _i + 1}
 
@@ -135,7 +118,7 @@ mapAnimCommit
 @mapAnimDone
 
 ; TODO - disable for release
-; player addAction ["TEST", "Player\Action Test.sqs"]
+; player addAction ["TEST", "Player\Action\Test.sqs"]
 
 onMapSingleClick {[_pos, _units, _alt, _shift] call funcMapClickPlayer}
 
@@ -157,7 +140,7 @@ player groupchat "Start data received."
 
 [_si, false] exec "Player\Marker\PlayerUnits.sqs"; [_si] exec "Player\Marker\PlayerVehicleEnemy.sqs"; [_si] exec "Player\Marker\PlayerStruct.sqs"
 
-[] exec "Player\MsgJoinUnits.sqs"
+[] exec "Player\Msg\mJoinUnits.sqs"
 
 
 mapAnimClear
@@ -190,7 +173,7 @@ lastOrder = -1
 _type = 0
 
 ; _desc = "Opens up a new dialog where you select the support vehicle to perform support at."
-; aiOrders set [_type, ["Repair/Heal/Rearm...", [], true, "Dialog Support.sqs", _desc] ]; _type = _type + 1
+; aiOrders set [_type, ["Repair/Heal/Rearm...", [], true, "Dialog\Support.sqs", _desc] ]; _type = _type + 1
 
 _desc = "Units will move to nearest support vehicle belonging to us if heal, repair or rearm needed."
 aiOrders set [_type, ["Heal & (Rearm)", [], false, "Order\Support OptRearm.sqs", _desc] ]; _type = _type + 1
@@ -199,7 +182,7 @@ _desc = "Units will move to nearest support vehicle belonging to us and rearm, t
 aiOrders set [_type, ["Rearm & Heal", [], false, "Order\Support ForceRearm.sqs", _desc] ]; _type = _type + 1
 
 _desc = "Opens up a new dialog to show all vehicles belonging to us in 100m range near the position clicked. Units will board the chosen vehicle."
-aiOrders set [_type, ["Board...", [], true, "Dialog BoardVehicle.sqs", _desc] ]; _type = _type + 1
+aiOrders set [_type, ["Board...", [], true, "Dialog\BoardVehicle.sqs", _desc] ]; _type = _type + 1
 
 _desc = "Units will move to the postion clicked."
 aiOrders set [_type, ["Move", [], false, "Order\MovePos.sqs", _desc] ]; _type = _type + 1
@@ -317,7 +300,7 @@ _marker setMarkerPos ( [getPos (mhq select _si), hiddenMarkerPos] select ((_i % 
  
 forceMap false
 ~0.1
-[player, player, false, 0] exec "Player\Dialog Equipment.sqs"
+[player, player, false, 0] exec "Player\Dialog\Equipment.sqs"
 ~1
 @ !dialog
 [] exec "Player\DisplayGameInfo.sqs"

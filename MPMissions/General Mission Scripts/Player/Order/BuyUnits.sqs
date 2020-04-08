@@ -36,5 +36,5 @@ _object = (_res select 0)
 ; The scripts' name must keep pace with actual scripts in Player folder and the "BuyFactoryDefs" defined in "Init.sqs"
 ; BuyFactoryDefs = ["Barrack", "Light", "Ship", "Heavy", "Air"]
 _scriptLists = ["Buy Infantry", "Buy Light Vehicles", "Buy Ships", "Buy Heavy Vehicles", "Buy Aircraft"]
-_script = format ["Player\ActionFar %1.sqs", _scriptLists select _theTypeParameter]
+_script = format ["Player\ActionFar\%1.sqs", _scriptLists select _theTypeParameter]
 [_object, _factoryType, _si] exec _script

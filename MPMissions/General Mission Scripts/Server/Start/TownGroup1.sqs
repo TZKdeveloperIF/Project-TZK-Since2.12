@@ -20,7 +20,6 @@ _siLast = (towns select _ti) select tdSide
 
 
 _timeReinforce = time + timeReinforceTown
-_unitsSpawn = 0
 _bCheckSupport = true
 _support = objNull
 _hibernate = false
@@ -28,4 +27,4 @@ _hibernate = false
 @(((upgMatrix select _si) select upgTownGroup ) == 2)
 {deleteVehicle _x} forEach units _group
 
-[_group, _ti, _si, _cLast, _siLast, _timeReinforce, _unitsSpawn, _support, _hibernate] exec "Server\Loop\TownGroup1.sqs"
+[_group, _ti, _si, _cLast, _siLast, _timeReinforce, _bCheckSupport, _support, _hibernate] exec "Server\Loop\TownGroup1.sqs"

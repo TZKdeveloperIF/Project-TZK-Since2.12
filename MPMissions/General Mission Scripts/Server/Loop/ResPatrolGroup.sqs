@@ -11,9 +11,10 @@ _posPatrol = getPos _sensor
 mutexResPatrolScript = true
 ? (count (units _group)) == 0: goto "NextLoop"
 _group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "NORMAL"
+
 ? time < _timePatrol : goto "Patrol"
 ? time > _timeDestroy : goto "Destroy"
-	
+
 #TakeTown
 	_res = [-1,0]
 	_units = units _group; _count = count _units; _index = 0

@@ -5,8 +5,8 @@ _si = _this select 1
 
 @!(mutexEnemySpotted)
 mutexEnemySpotted = true
-[] call format["pvEnemy%1 = _target", _si]
-[] call format["PublicVariable ""pvEnemy%1""", _si]
+
+[] call format["pvEnemy%1 = _target; PublicVariable {pvEnemy%1}", _si]
 
 ~sendDelay
 mutexEnemySpotted = false

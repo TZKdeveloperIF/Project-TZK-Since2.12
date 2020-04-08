@@ -19,5 +19,5 @@ mutexGroupIsAI = true
 
 _groupsAI set [count _groupsAI, _group]
 _name = format ["%1", _group]; _name = substr [_name, 5, sizeofstr _name]
-_marker = Format ["%1%2", _name, _si]; _marker setMarkerText _name; _marker setMarkerColor "ColorBlue"
+_marker = Format ["%1%2", _name, _si]; _marker setMarkerText _name; if (siPlayer != siCiv) then {_marker setMarkerColor "ColorBlue"}
 mutexGroupIsAI = false

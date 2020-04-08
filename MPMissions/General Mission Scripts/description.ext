@@ -350,6 +350,7 @@ defValueParam2 = 1 + 8*0 + 1300;
 #define IDC_UNIT 934
 #define IDC_BTN_UseNVG 935
 #define IDC_BTN_QUIT 936
+#define IDC_BTN_MARK 937
 
 #define IDC_SL_ZVIEW 947
 #define IDC_SL_ROTATION 948
@@ -2651,7 +2652,7 @@ class SpecDialog: Menu {
 	movingEnable = true;
 	controlsBackground[] = {LogBg, GroupsBg};
 	objects[] = { };
-	controls[] = {Tracking, TrackingBottom, ShowLog, ShowInfo, GameTime, GameTimeBottom, Log, Info, Leaderboard, Stats, ShowMap, ShowGroups, GroupLeaders, GroupMembers, AngleVert, Distance, AngleHorz, Front, Left, Top, Right, Near, Rear, Far, LockDir, North, West, East, South, ShowAll, UseNVG, Quit};
+	controls[] = {Tracking, TrackingBottom, ShowLog, ShowInfo, GameTime, GameTimeBottom, Log, Info, Leaderboard, Stats, ShowMap, ShowGroups, GroupLeaders, GroupMembers, AngleVert, Distance, AngleHorz, Front, Left, Top, Right, Near, Rear, Far, LockDir, North, West, East, South, ShowAll, UseNVG, Quit, MarkerBG, Marker};
 
 	class Tracking: Text {
 		idc = IDC_TEXT_TRACKING;
@@ -2791,6 +2792,18 @@ class SpecDialog: Menu {
 		w = 0.1;
 		text = "Quit";
 		action = "btnQuit = true";
+	};
+	class Marker: Quit {
+		idc = IDC_BTN_MARK;
+		y = 0.84;
+		text = "Marker";
+		action = "btnMarker = !btnMarker; if !btnMarker then {call loadFile {Player\Marker\HideSpectator.sqf}} else {[boole_Mark_Player_Name] exec {Player\Marker\SpectatorMarker.sqs}}";
+	};
+	class MarkerBG: SelectedBG {
+		idc = IDC_BTN_MARK + 1;
+		x = 0.3;
+		y = 0.84;
+		w = 0.1;
 	};
 
 	class ShowGroups: Button {

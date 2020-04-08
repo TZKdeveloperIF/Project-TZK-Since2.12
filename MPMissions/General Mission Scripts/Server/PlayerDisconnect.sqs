@@ -19,7 +19,7 @@ _groupLocal = true
 { if (!(local _x)) then { _groupLocal = false } } foreach (units _group)
 ? !_groupLocal : goto "CheckGroupLocal"
 ~10
-
+{_x removeMagazines magPistolSatchel} forEach (units _group)
 (pingTimes select _si) set [_gi, -1]
 ? pvGameOver != -1 : exit
 

@@ -1,0 +1,82 @@
+; args: []
+
+_dlg = createDialog "GenericDialog"
+
+_idcAction0Label = IDC+0
+_idcAction0 = IDC+1
+_idcAction1Label = IDC+2
+_idcAction1 = IDC+3
+_idcAction2Label = IDC+4
+_idcAction2 = IDC+5
+_idcAction3Label = IDC+6
+_idcAction3 = IDC+7
+_idcAction4Label = IDC+8
+_idcAction4 = IDC+9
+
+_idcListHeader = IDC+10
+_idcList = IDC+11
+
+btnAction0 = false
+btnAction1 = false
+btnAction2 = false
+btnAction3 = false
+btnAction4 = false
+
+{ ctrlShow [_x, false] } forEach [ _idcAction0Label, _idcAction1Label, _idcAction2Label, _idcAction3Label, _idcAction4Label ]
+{ ctrlShow [_x, false] } forEach [_idcAction3, _idcAction4]
+
+ctrlSetText [IDC_TITLE, "Destruction"]
+ctrlSetText [_idcAction0, "Delete Structure Worker"]
+ctrlSetText [_idcAction1, "Delete MCV"]
+ctrlSetText [_idcAction2, "Undo"]
+ctrlSetText [_idcListHeader, "Struct & worker must be in working CC's range."]
+
+
+_res = [_idcList, _idcAction4Label] call funcDialog_Destruction
+_structsDisp = _res select 0; _MCVs = _res select 1
+
+lbSetCurSel [_idcList, 0]
+
+#Undo_Check
+  ? (call format ["Destruction_Undo%1", siPlayer]) : { ctrlEnable [_x, false] } forEach [_idcAction0, _idcAction1, _idcAction2]; goto "Undo_Sleep"
+
+#Update
+  ? !(dialog) : exit
+  ? !(alive player) : closeDialog 0; exit
+
+	_res = [_idcList, _idcAction4Label] call funcDialog_Destruction
+	_structsDisp = _res select 0; _MCVs = _res select 1
+	
+  ? (btnAction0): btnAction0=false; goto "DeleteStructure"
+  ? (btnAction1): btnAction1=false; goto "DeleteMCV"
+  ? (btnAction2): btnAction2=false; goto "Undo"
+
+  #Skip
+  ~0.2
+  goto "Update"
+
+#DeleteStructure
+	? count _structsDisp == 0 : hint "No items available"; goto "Update"
+	_factory = (_structsDisp select (lbCurSel _idcList)) select 0
+	? _factory in _MCVs : hint "MCV isn't structure."; goto "Update"
+	? !(alive _factory) && ( (_structsDisp select (lbCurSel _idcList)) select 2 ) == "Worker": hint "Worker has been killed. Select another one."; goto "Update"
+	? !(alive _factory) : hint "Structure destroyed, need repair first."; goto "Update"
+	[_structsDisp select (lbCurSel _idcList), false] exec "Player\Waiting For Destruction.sqs"; goto "Update"
+  
+#DeleteMCV
+	? count _structsDisp == 0 : hint "No items available"; goto "Update"
+	_factory = (_structsDisp select (lbCurSel _idcList)) select 0
+	? !(_factory in _MCVs) : hint "Structure isn't MCV."; goto "Update"
+	[_structsDisp select (lbCurSel _idcList), true] exec "Player\Waiting For Destruction.sqs"; goto "Update"
+
+#Undo
+  call format ["Destruction_Undo%1 = true", siPlayer]; publicVariable call format ["""Destruction_Undo%1""", siPlayer]
+  hint "Undo in process..."; { ctrlEnable [_x, false] } forEach [_idcAction0, _idcAction1, _idcAction2]
+  ~3
+  call format ["Destruction_Undo%1 = false", siPlayer]; publicVariable call format ["""Destruction_Undo%1""", siPlayer]
+  hint "Undo done. All destructing process halt."; { ctrlEnable [_x, true] } forEach [_idcAction0, _idcAction1, _idcAction2]
+  goto "Update"
+  
+#Undo_Sleep
+~1
+{ ctrlEnable [_x, true] } forEach [_idcAction0, _idcAction1, _idcAction2]; goto "Undo_Check"

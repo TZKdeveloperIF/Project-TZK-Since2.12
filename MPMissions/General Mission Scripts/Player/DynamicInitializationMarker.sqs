@@ -9,7 +9,8 @@ _marker setMarkerText "Mod Version: @TZK_2.12. Check ""Notes"" for more info."
 
 _i = 0; _count = count towns;
 #FlagMarker
-	_marker = format["Town_%1", _i]; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Flag1"; _marker setMarkerSize [1.25,1.25]
+	_marker = format["TownHibernate%1", _i]; createMarker [_marker, hiddenMarkerPos]
+	_marker = format["Town_%1", _i]; createMarker [_marker, hiddenMarkerPos]
 	_i = _i + 1
 	? _i < _count : goto "FlagMarker"
 	

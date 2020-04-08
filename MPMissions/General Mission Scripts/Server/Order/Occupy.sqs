@@ -125,7 +125,7 @@ _posMove = [_posReclaim, 150, 150] call funcGetRandomPos
 	
 	_bCheckDropBomb = !_bCheckDropBomb 
 	_magazines = []
-	? _bCheckDropBomb && _unit == _vehicle: if ("_x in MagzinesSatchel" count magazines _unit > 0) then {[_unit, _si, _gi] exec "Server\AI_CheckDropBomb.sqs"; _sleep = 20; goto "Sleep"}
+	? _bCheckDropBomb && _unit == _vehicle: if (magSatchel in (magazines _unit)) then {[_unit, _si, _gi] exec "Server\AI_CheckDropBomb.sqs"; _sleep = 20; goto "Sleep"}
 
 	_distToDest = [getPos _unit, _posMove] call funcDistH
 

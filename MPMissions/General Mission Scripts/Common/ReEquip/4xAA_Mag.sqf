@@ -11,7 +11,7 @@ while "_i < _ci" do {
 		_mDouble = [];
 		{if (_x in ["RedTop_26_xj200","RedTop_30_xj200","RedTop_40_xj200"]) then {_mDouble set [count _mDouble, _x]}} forEach _m;
 		_m = _m + _mDouble;
-		[_unit, _w, _m, true] exec "Common\EditEquipRearmData.sqs";
+		[_unit, _w, _m, _types select _i, 2, true] exec "Common\EditEquipRearmData.sqs";
 		
 		if (local _unit) then {{_unit addMagazine _x} forEach _mDouble};
 		_j = _j + 1;

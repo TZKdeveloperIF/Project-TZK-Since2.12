@@ -1,0 +1,8 @@
+; args: [unit, si, type]
+
+_unit = _this select 0; _si = _this select 1; _type = _this select 2
+
+? _type == -1: exit
+_list = unitMatrix select _si select _type
+_i = _list find _unit
+? _i != -1: _list set [_i, objNull]

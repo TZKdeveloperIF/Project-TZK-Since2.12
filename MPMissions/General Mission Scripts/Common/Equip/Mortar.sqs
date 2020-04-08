@@ -1,18 +1,17 @@
-; args: [unit, typeUnit, siUnit]
+; args: [vehicle, type, si]
 
-_unit = _this select 0
-; _type = _this select 1
+_v = _this select 0; _t = _this select 1
 _si = _this select 2
 _m = [["M16", "M16", "M16MortarLauncher_TZK_xj200", "M16MortarLauncher_TZK_xj200", "M16MortarLauncher_TZK_xj200", "M16MortarLauncher_TZK_xj200"], ["AK74", "AK74", "AK74MortarLauncher_TZK_xj200", "AK74MortarLauncher_TZK_xj200", "AK74MortarLauncher_TZK_xj200", "AK74MortarLauncher_TZK_xj200"]] select _si
 _w = [["M16MortarLauncher_TZK_xj200"], ["AK74MortarLauncher_TZK_xj200"]] select _si
 ~1
-? !(local _unit) || !(alive _unit) : [_unit, _w, _m] exec "Common\EditEquipRearmData.sqs"; exit
+? !(local _v) || !(alive _v) : [_v, _w, _m, _t, 1] exec "Common\EditEquipRearmData.sqs"; exit
 
-removeAllWeapons _unit
+removeAllWeapons _v
 
-{ _unit addWeapon _x } forEach weaponsCustom
+{ _v addWeapon _x } forEach weaponsCustom
 
-{_unit addMagazine _x} forEach _m
-{_unit addweapon _x} forEach _w
+{_v addMagazine _x} forEach _m
+{_v addweapon _x} forEach _w
 
-[_unit, _w, _m] exec "Common\EditEquipRearmData.sqs"; exit
+[_v, _w, _m, _t, 1] exec "Common\EditEquipRearmData.sqs"; exit

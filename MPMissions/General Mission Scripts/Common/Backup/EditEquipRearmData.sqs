@@ -1,0 +1,20 @@
+; args: [ object, weapons[], magazines[], (bool reset) ]
+
+_object = _this select 0
+_weapons = _this select 1
+_magazines = _this select 2
+
+_breset = true
+? count _this > 3 : _breset = _this select 3
+
+_dataSet = false; _try = 0
+#RearmDataCheck
+~1
+_i = rearmDataObj find _object
+_dataSet = _i != -1; _try = _try + 1
+? !_dataSet && _try < 100 && alive _object: goto "RearmDataCheck"
+
+? !_dataSet: exit
+[_object, _weapons, _magazines, _breset, _i] exec "Common\EditRearmdata.sqs"
+
+; EOF

@@ -8,7 +8,7 @@ _timeDead = 0
 	[_unit] exec "Player\AddPlayerActions.sqs"
 	; The AnimChanged-EH is available since 1.99
 	_unit addEventHandler ["AnimChanged", "_this exec {Player\Event_AnimChanged_WW4.sqs}"]
-	_unit addEventHandler ["Fired",{ _this exec "Player\LimitWeaponRangePlayer.sqs" }]
+	_unit addEventHandler ["Fired",{ _this exec "Player\Effect\LimitWeaponRangePlayer.sqs" }]
 
 	_posOld = positionRespawn; _posNow = positionRespawn; _timeOld = -3600; _timeNow = -3600;
 	_unitsStart = []; _unitsStarted = []
@@ -66,7 +66,7 @@ _timeDead = 0
 
 	closeDialog 0
 	~1
-	[_timeRespawn] exec "Player\Dialog Respawn.sqs"
+	[_timeRespawn] exec "Player\Dialog\Respawn.sqs"
 	
 	_index = 0
 	#RemoveAction
@@ -125,7 +125,7 @@ _timeDead = 0
 
 	; The AnimChanged-EH is available since 1.99
 	_unit addEventHandler ["AnimChanged", "_this exec {Player\Event_AnimChanged_WW4.sqs}"]
-	_unit addEventHandler ["Fired",{ _this exec "Player\LimitWeaponRangePlayer.sqs" }]
+	_unit addEventHandler ["Fired",{ _this exec "Player\Effect\LimitWeaponRangePlayer.sqs" }]
 
 	_posOld = _posRespawn
 	_posNow = _posRespawn

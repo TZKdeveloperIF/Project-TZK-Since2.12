@@ -7,10 +7,10 @@ _type = 0
 aisPickupWaitTimeDefs = [0, 120, 240, 360, 480, 600, 720, 840, 960, 1080, 1800, 3600, 5940]; aisPickupWaitTimeDisp = []
 { aisPickupWaitTimeDisp set [ count aisPickupWaitTimeDisp, call format["%3%2%1%3", "min", _x/60, """" ] ] } foreach aisPickupWaitTimeDefs
 aisPickupWaitTimeDisp set [0, "Don't use"]
-aisRallyPoint = _type
+aisRallyPoint1 = _type
 aiSettingDefs set [_type, ["Rally Point 1#", ["None", "co0", "co1", "co2", "co3", "co4", "co5", "co6", "co7", "co8", "co9", "co10", "co11", "co12", "co13", "co14", "co15", "co16", "co17", "co18", "co19"], 0, "Rally Points and Pickup Wait Setting"] ]
 _type = _type + 1
-aisPickupWait = _type
+aisPickupWait1 = _type
 aiSettingDefs set [_type, ["Pickup Wait 1#", aisPickupWaitTimeDisp, 1, ""] ]
 _type = _type + 1
 aisRallyPoint2 = _type
