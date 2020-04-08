@@ -6,7 +6,7 @@ _object = _this select 0
 ~5+1
 ; Howerver equipping scirpts' effect will broadcast but it might cost long times. 6 seconds usually enough but not always.
 
-? count _this == 0: goto "TraditionalMethod"
+? count _this == 1: goto "TraditionalMethod"
 _type = _this select 1
 ? _type < 0 || _type >= maxUnitTypes: goto "TraditionalMethod"
 
