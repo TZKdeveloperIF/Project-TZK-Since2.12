@@ -1,3 +1,7 @@
+### 2.12 v08_v3
+Missed ")" in **Watch.sqf**.  
+"busyClear" require defined "_si" in scripts, and this is missed in **Server\Loop\AI_CheckRide.sqs**.  
+
 ## 2.12 v08
 Remove portable satchel in server scripts.
 + Remove the usage of portable satchel in AI_CheckDropBomb. In order scripts only check whether AI have "magSatchel".
@@ -14,11 +18,11 @@ Adjust Res and Town Groups.
 		+ Markers are available to CIV as well.
 	+ When hibernate, TG will receive reinforce as general. When reinforce ready, TG will return to the hibernate check and do nothing but just halt.
 
-Adjust the LOOP design.
-The author found the "crash" (not no-response) problem become more frequent when applying loop design. 
+Adjust the LOOP design.  
+The author found the "crash" (not no-response) problem become more frequent when applying loop design.   
 After having add delay on the beginning of loop scripts the problem solved. Probably the release of last script cost some time.
 
-The script of AI_Commander still use old design without loop.
+The script of AI_Commander still use old design without loop.  
 Adjust the way AICO buy units in dev mode (dev ON in training MPMissions in everon and Freya_CTI island).
 
 Adjust of AICO
@@ -27,8 +31,8 @@ Adjust of AICO
 	+ They still have to be asked go to the closest town to enemy MHQ.
 	+ Old design using a bool variable, which is binary. New design use a number and adjust the design into ternary.
 
-*(This part is the by-product of researching "no-response" problem. Modifications here aiming to improve the mission. Although they probably don't relate to that problem, they're valid for some improvements and thus are remained.)*
-The author use "setFriend" command of 2.01 and found the "no-response" won't appear if nobody killing each other.
+*(This part is the by-product of researching "no-response" problem. Modifications here aiming to improve the mission. Although they probably don't relate to that problem, they're valid for some improvements and thus are remained.)*  
+The author use "setFriend" command of 2.01 and found the "no-response" won't appear if nobody killing each other.  
 The reason is no one will attack by portable satchel. However, the author used to thought the reason is because of too long unitMatrix/RearmData array.
 + The adjust of UnitMatrix is abandoned.
 + The adjust of RearmData is remained. Traditional design use a long array to record ALL units created in CTI.
@@ -45,20 +49,20 @@ The reason is no one will attack by portable satchel. However, the author used t
 	+ Adjust **EditEquipRearmData.sqs** and **EditRearmdata.sqs** to fit new design.
 	+ Adjust **GetRearmData** to fit new design. Many scripts using SQS syntax to get RearmData are recovered to use SQF as well.
 	
-Adjust the briefing.html. Parts of texts using handwriting.
-Remove the reducing of DOOM.
-Use "EffectBullet0_xj200" bullet for Fired Effects instead of Bizon bullet.
-Recover those functions from string to SQF. No obvious signs that string is better than SQF and help solving "no-response" problem.
-Fix the bug in dialog Equipment that missed loading Binocular and NVG.
-Removed the hint when worker repairing structures set in v07.
-Set Town Triggers' scripts as loop design. Attention, the "closestTown"'s side shouldn't be assigned as "siRes" only like before.
-Remove some SQS syntax searching unit's type. Recover the usage of SQF.
-Fix the "buy better NVG" channel. The binocular and NVG is removed from magazines and be treated as weapons in equipment system, but this script didn't adjusted.
-Fix the KnowsAbout scripts using wrong variable name.
-Set RallyPoint and PickupWait of AI as loop design. The number of their setting is passed in as a parameter. Set PickupWait don't keep on doing busySet and busyClear.
-In dialog spectator, the carrying system using 15 for groups and thus causing bug. It's adjusted and using "GroupsNum" now.
-Set a bool for CIV to turn ON/OFF the markers displaying. This bool can be set by marker in dialog or by 0-0-9 channel in 1st mode.
-Managed to realize the 1st mode. "switchCamera", "cameraeffect" and delay is necessary.
+Adjust the briefing.html. Parts of texts using handwriting.  
+Remove the reducing of DOOM.  
+Use "EffectBullet0_xj200" bullet for Fired Effects instead of Bizon bullet.  
+Recover those functions from string to SQF. No obvious signs that string is better than SQF and help solving "no-response" problem.  
+Fix the bug in dialog Equipment that missed loading Binocular and NVG.  
+Removed the hint when worker repairing structures set in v07.  
+Set Town Triggers' scripts as loop design. Attention, the "closestTown"'s side shouldn't be assigned as "siRes" only like before.  
+Remove some SQS syntax searching unit's type. Recover the usage of SQF.  
+Fix the "buy better NVG" channel. The binocular and NVG is removed from magazines and be treated as weapons in equipment system, but this script didn't adjusted.  
+Fix the KnowsAbout scripts using wrong variable name.  
+Set RallyPoint and PickupWait of AI as loop design. The number of their setting is passed in as a parameter. Set PickupWait don't keep on doing busySet and busyClear.  
+In dialog spectator, the carrying system using 15 for groups and thus causing bug. It's adjusted and using "GroupsNum" now.  
+Set a bool for CIV to turn ON/OFF the markers displaying. This bool can be set by marker in dialog or by 0-0-9 channel in 1st mode.  
+Managed to realize the 1st mode. "switchCamera", "cameraeffect" and delay is necessary.  
 
 Next step the author will mainly research the Server FPS. And the author now know how to test misisons better.
 ## 2.12 v07
@@ -66,23 +70,23 @@ Fix bug of money abnormal
 + The problem is because the script of Worker and SupportVehicle used undefined variable, which cause calculated money undefined.
 + This problem exist in the EventHandler of prim structure as well.
 
-Set the loop design don't pass array. Not verified, but array in OFP is mostly assigned by pointer. Maybe passing array to new script will cause some variable unreleased.
+Set the loop design don't pass array. Not verified, but array in OFP is mostly assigned by pointer. Maybe passing array to new script will cause some variable unreleased.  
 Use sensor to pass the position info.
 + PlayerClient.sqs, Spectator.sqs, Income, KnowsAboutR, ResPatrolGroup.sqs, Server.sqs and TownGroup.
 
-<s>Reduce the strength of doom mode.</s> This is abandoned in v08.
-<s>Ask AICO only buy for the first 9 groups</s> This is abandoned in v08.
-Remove the "distributed computing" of knowsAbout and towns' hibernate/spawn.
+<s>Reduce the strength of doom mode.</s> This is abandoned in v08.  
+<s>Ask AICO only buy for the first 9 groups</s> This is abandoned in v08.  
+Remove the "distributed computing" of knowsAbout and towns' hibernate/spawn.  
 Adjust files.
 + Remove original scripts which had been modified into "loop" mode. Fill up 1-4 TG script.
 + Move SQF files into "SQF" folder.
 + Move mostly Action and Dialog files into subfolder. However some of them is defined and used by the MOD (in UserActions) and can't adjust their path here.
 + Move some effect and event script into "EH" folder.
 
-Remove some unused initialization info in mission.sqm. Remove the execution of time and weather, they're general and should be executed by **Init.sqs**.
+Remove some unused initialization info in mission.sqm. Remove the execution of time and weather, they're general and should be executed by **Init.sqs**.  
 Set the rocket upgrade edit those built helicopters.
 <s>Edit the magazines of 5 infantrys.</s> This is removed in v08, since portable satchel is proved caused the "no-response" problem.
-Adjust the color of players' leader marker. Using color red.
+Adjust the color of players' leader marker. Using color red.  
 + In groupIsAI the color of AI leader should be recovered to blue.
 
 ## 2.12 v06
@@ -112,18 +116,18 @@ Happened to discover that the cycling script, keep on using "goto", will lag the
 Create "Start" and "Loop" folder for scripts.
 + resistance patrol groups.
 	+ **DynamicInitializationGroup** execute the script in Start folder.
-		+ Recover the script design, remove those trial settings in recent versions.
-		  Using loadFile to gain start pos and patrol pos. Set SQF roll position at most 112 times.
-		  In destroy part the group will halt for a period, if enemy structure is far away and all towns is occupying by resistance.
-		  In destroy and take town part the "forEach" is abandoned and "goto" with 2s delay is applied for all units of group.
+		+ Recover the script design, remove those trial settings in recent versions.  
+		  Using loadFile to gain start pos and patrol pos. Set SQF roll position at most 112 times.  
+		  In destroy part the group will halt for a period, if enemy structure is far away and all towns is occupying by resistance.  
+		  In destroy and take town part the "forEach" is abandoned and "goto" with 2s delay is applied for all units of group.  
 			+ Probably delay is necessary, or server might crash.
 		+ Create a new script **Common\DelayMove.sqs** for resistance tank in destroy part. They'll first shoot then move, to make their attacking base more precisely.
 
-Apply the loop design for other scripts. However this can't completely raise server FPS to keep mostly at about 60.
-New design, with only resistance patrol groups, can keep FPS at about 60. If AI's 18×2 groups doing simple order the FPS is still high, but complex order still will reduce it.
+Apply the loop design for other scripts. However this can't completely raise server FPS to keep mostly at about 60.  
+New design, with only resistance patrol groups, can keep FPS at about 60. If AI's 18×2 groups doing simple order the FPS is still high, but complex order still will reduce it.  
 Delay is necessary for loop scripts in the beginning, to make old ones exit and release resources.
-+ AI Order scripts.
-*Abandoned. They'll be restart if leader update the order.*
++ AI Order scripts.  
+  *Abandoned. They'll be restart if leader update the order.*
 + AI Leader scripts
 	+ Pass status to new script every 3 minutes.
 + <c>AICO script.</c>
@@ -135,7 +139,7 @@ Delay is necessary for loop scripts in the beginning, to make old ones exit and 
 + Server script
 	+ UpdateServer, UpdateIncome
 
-Those cycling scripts on Player client should be modified as well. Some player's game often crash, and the reason might related to cycling script.
+Those cycling scripts on Player client should be modified as well. Some player's game often crash, and the reason might related to cycling script.  
 Besides, the camera of spectator become not smooth when game started for a while, and the reason may be same.
 	+ UpdatePlayer(Spectator)，UpdatePlayerVehicle。
 	+ Marker scripts.
@@ -148,10 +152,10 @@ Server FPS will decrease with the increasing of players' number. Try to decouple
 Set unit as the parameter of string of busy and temporary.
 + *This cause brackets required by "not" command, or error occur. This bug is fixed in v06.*
 
-Add group name in the end of leader marker when choosing displaying player's name, and the color is set to be orange.
-Add IDC of NVG and QUIT button of spectator in **InitGUIControlIDs.sqs**.
-Recover the model of T80_TZK.
-Move those codes of AI Order and Setting from **Init.sqs** to individual script in Common.
+Add group name in the end of leader marker when choosing displaying player's name, and the color is set to be orange.  
+Add IDC of NVG and QUIT button of spectator in **InitGUIControlIDs.sqs**.  
+Recover the model of T80_TZK.  
+Move those codes of AI Order and Setting from **Init.sqs** to individual script in Common.  
 ## 2.12 v04
 Dialog TZK Setting
 + The "_last" array should response to the change of some options.
@@ -173,7 +177,7 @@ String and SQF files.
 	+ The dot product of vector don't support 3D-vector. This is fixed.
 	+ String can receive parameters as well. Some of them are modified in this way.
 
-Structures Design.
+Structures Design.  
 This adjust is aiming for optimize auto-buy.
 + The very first principle: Although mostly structures won't explode and died again like vehicles when being *setDamage 0*, we should still insist using new object replace ruined old one.
 + StructMatrix
