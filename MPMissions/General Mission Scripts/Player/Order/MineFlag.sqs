@@ -16,7 +16,9 @@ _hasMines = false; { if (_x in _mags) then {_hasMines = true} } forEach Magzines
 _magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
 ? ("_x in MagzinesMine" count _magazines) == 0 && !_hasMines : exit
 
-_order = []; _id = -1; call orderNew
+_uid = [_unit, siPlayer, giPlayer] call funcCalcUID
+? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
+_id = (playerOrderID select _uid) + 1; [_uid, _id] exec "Player\Order\New.sqs"
 
 _unit groupChat format["Roger, mining %1.", (towns select _ti) select tdName]
 _posFlag = getPos ((towns select _ti) select tdFlag)

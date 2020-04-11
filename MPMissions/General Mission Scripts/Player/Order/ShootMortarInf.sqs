@@ -4,6 +4,10 @@ _unit = _this select 0
 _marker = _this select 1
 _target = _this select 2
 
+_uid = [_unit, siPlayer, giPlayer] call funcCalcUID
+? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
+_id = (playerOrderID select _uid) + 1; [_uid, _id] exec "Player\Order\New.sqs"
+
 #PrepareToMove
 ? _unit distance _target < 450: goto "PrePareToAttack"
 	_unit groupChat "Too far away. Moving to get close enough (about 400 meters)."; _timeStart = time; _timeHint = _timeStart + 5*60; 
@@ -33,6 +37,7 @@ _target = _this select 2
 		~5
 		_unit fire _weapon
 		~0.1
+		_vehicle doWatch (getPos _target)
 		? call orderCheck : goto "Exit"
 		? !(alive _unit) || _unit != vehicle _unit: goto "Exit"
 	goto "AttackCheck"

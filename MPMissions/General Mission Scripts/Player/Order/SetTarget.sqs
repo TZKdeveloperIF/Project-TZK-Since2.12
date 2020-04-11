@@ -6,6 +6,6 @@ _marker = format ["TargetP_%1", (_this select 2) select 0]; _target = call _mark
 _bSet = ((_this select 2) select 1) == 0
 
 ? !_bSet: _marker setMarkerPos hiddenMarkerPos; _target setPos hiddenMarkerPos
-? _bSet: _marker setMarkerPos _pos; _target setPos _pos
+? _bSet: _marker setMarkerPos _pos; _target setPos _pos; _target setDamage 0
 
 ; EOF

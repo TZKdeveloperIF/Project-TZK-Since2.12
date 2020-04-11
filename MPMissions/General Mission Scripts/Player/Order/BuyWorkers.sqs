@@ -14,7 +14,9 @@ _res = [getPos _unit, _si, [[utMHQ0],[utMHQ1]] select _si, []] call funcGetClose
 ? (_res select 1) > 1200 : _unit groupChat "MHQ too far away from me. Abort to buy workers."; exit
 
 
-_order = []; _id = -1; call orderNew
+_uid = [_unit, siPlayer, giPlayer] call funcCalcUID
+? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
+_id = (playerOrderID select _uid) + 1; [_uid, _id] exec "Player\Order\New.sqs"
 
 _posMHQ = getPos (_res select 0)
 _unit groupChat format["Roger, moving to %1 - %2.", "MHQ", _posMHQ call funcCalcTownDirDistFromPos]

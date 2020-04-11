@@ -1,19 +1,12 @@
 // args: [unit, si, gi]
 // return: whether need rearm
-private ["_unit", "_rearm", "_v", "_x", "_wpnPrim", "_wpnSec", "_rearmData", "_rearmMags", "_weapons"];
-private ["_SecondaryWeaponMagazines", "_magazines", "_sabots", "_guns", "_index"];
-private ["_si", "_gi"];
+private ["_unit", "_si", "_gi", "_rearm", "_v"];
+_unit = _this select 0; _si = _this select 1; _gi = _this select 2;
+_rearm = false; _v = vehicle _unit;
 
-_unit = _this select 0;
-_si = _this select 1;
-_gi = _this select 2;
-
-_rearm = false;
-
-if (_unit == driver vehicle _unit) then
-{
-	_v = vehicle _unit;
+if (_unit == driver _v) then {
 	if (_unit == _v) then {
+		private ["_wpnPrim", "_wpnSec", "_magazines", "_validMags"];
 		_wpnPrim = primaryWeapon _unit;
 		_wpnSec = secondaryWeapon _unit;
 		_magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
@@ -28,32 +21,23 @@ if (_unit == driver vehicle _unit) then
 				if (count _magazines < 1) then {_rearm = true};
 			};
 		};
-// It's sase-inensitive when comparing strings, but it's cASe-seNsItiVE when applying "in" or "find" to strings.
-// Do not check if soldier is out of Satchel or Mine. The result of secondaryWeapon is rely on particular weapons thus should be edit if soldiers' weapons redefined.
+			// It's sase-inensitive when comparing strings, but it's cASe-seNsItiVE when applying "in" or "find" to strings.
+			// Do not check if soldier is out of Satchel or Mine. The result of secondaryWeapon is rely on particular weapons thus should be edit if soldiers' weapons redefined.
 	} else {
+		private ["_rearmData", "_rearmMags", "_weapons"];
 		_rearmData = _v call funcGetRearmData;
 		_rearmMags = _rearmData select 1;
-		if ((count _rearmMags) > 0) then
-		{
+		if ((count _rearmMags) > 0) then {
 			_weapons = weapons _v;
-			{ if ((_v ammo _x) == 0) then { _rearm = true };  } foreach _weapons;
-			if !(_rearm) then
-			{
-				_sabots = ["Heat120","M1Sabot_xj200","M12Sabot_xj200","T80Sabot_xj200","T90Sabot_xj200","LeoSabot_xj200","PLASabot_xj200","DKMM_Gun155AP_xj200","Sprut_3VBM17_xj200"];
-				_guns   = ["Gun120", "M1Gun_xj200",  "M12Gun_xj200",  "T80Gun_xj200",  "T90Gun_xj200",  "LeoGun_xj200",  "PLAGun_xj200",  "Gun155_xj200",       "Sprut_2A75_xj200"];
-				_index = 0;
-				while "!_rearm && _index < count _sabots" do
-				{
-					if ( (_sabots select _index) in _rearmMags ) then
-					{
-						if ("_x == (_sabots select _index)" count (magazines _v) < 1) then {_rearm = true};
-						if ((_v ammo (_guns select _index)) < (((aiSetting select _si) select _gi) select aisAutoRearmSabot)) then {_rearm = true};
-					};
-					_index = _index + 1;
-				};
-			};
-		};
-		// Do not check if vehicle is out of a magazine, such as Sabot/Heat to Tank Gun.
-	};
-};
+			{if ((_v ammo _x) == 0) then {_rearm = true}} foreach _weapons;
+			if !(_rearm) then {
+				private ["_vt", "_gun", "_sabotMag", "_magazines"];
+				_vt = _v call funcGetUnitTypeFromObject;
+				if (_vt in (typesLightTank + typesHeavyTank + typesHowitzer) && _gi >= 0 && _gi < (GroupsNum - 2)) then {
+					_gun = (_rearmData select 0 select 0); _sabotMag = (call format ["%1", _gun GetWeaponParamArray "magazines"]) select 0;
+			// This design require the gun use itself as its muzzle, and the sabot magazine is in the 1st element of its "magazines[]" parameter.
+					_magazines = magazinesArray _v;
+					if !(_sabotMag in _magazines) then {_rearm = true} else {
+						if ((_magazines select (_magazines find _sabotMag) + 1) < (aiSetting select _si select _gi select aisAutoRearmSabot)) then {_rearm = true}
+}	}	}	}	}	};
 _rearm

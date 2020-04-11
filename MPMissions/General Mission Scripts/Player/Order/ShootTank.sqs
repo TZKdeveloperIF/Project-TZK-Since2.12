@@ -4,6 +4,12 @@ _unit = _this select 0
 _marker = _this select 1
 _target = _this select 2
 
+_uid = [_unit, siPlayer, giPlayer] call funcCalcUID
+? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
+_id = (playerOrderID select _uid) + 1; [_uid, _id] exec "Player\Order\New.sqs"
+
+_boolFirst = true
+
 #CheckDistance
 _vehicle = vehicle _unit; _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is outside viewDistance. Order aborted."
 ? (upgMatrix select siPlayer) select upgLongWeaponRange == 2: _distLimit = 2*viewDistance; _hint = "Target is outside 2×viewDistance. Order aborted."
@@ -24,18 +30,28 @@ _vehicle = vehicle _unit; _posOrdered = getPos _vehicle; _distLimit = viewDistan
 #PrePareToAttack
 	_unit groupChat "In position. Prepare to attack.";
 	doStop _unit; driver _vehicle action ["ENGINE OFF", _vehicle]; _vehicle engineOn false	
-	_weapon = (weapons _vehicle) select 0
+	_weapon = (weapons _vehicle) select 0; _reloadMagazine = false
 	#AttackCheck
 		? _unit distance _target > _distLimit: goto "CheckDistance"
 		? _vehicle ammo _weapon == 0: goto "CheckRearm"
 		_vehicle reveal _target
 		~0.1
 		_vehicle doTarget _target
-		~5
-		_vehicle fire _weapon
+		
+		; delay must be correctly assigned for "fire" command.
+		_ammoArray = _vehicle ammoArray _weapon
+		_delay = call format ["%1", (_ammoArray select 0) GetWeaponParam "reloadTime"] + 1
+		? _boolFirst: _reloadMagazine = true; _vehicle removeMagazine (_ammoArray select 0);
 		~0.1
+		? _boolFirst: _boolFirst = false; _vehicle addMagazinePrecise _ammoArray
+		? _reloadMagazine: _delay = call format ["%1", _weapon GetWeaponParam "magazineReloadTime"] + _delay; _reloadMagazine = false
+		~_delay
 		? call orderCheck : goto "Exit"
 		? !(alive _unit) || _vehicle != vehicle _unit: goto "Exit"
+		? ((_vehicle ammoArray _weapon) select 1) == 1: _reloadMagazine = true
+		_vehicle fire _weapon
+		~0.1
+		_vehicle doWatch (getPos _target)
 	goto "AttackCheck"
 #CheckRearm
 	_vs = [getPos _unit, 1500, (typesSupport select si0) + (typesSupport select si1), []] call funcGetNearbyVehicles

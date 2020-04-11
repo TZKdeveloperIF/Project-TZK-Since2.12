@@ -1,0 +1,12 @@
+; args: [uid, id]
+
+_uid = _this select 0
+? count _this == 1: _id = (playerOrderID select _uid) + 1
+? count _this > 1: _id = _this select 1
+
+~0.2
+
+@!(mutexUnitOrder)
+mutexUnitOrder = true
+playerOrderID set [_uid, _id]
+mutexUnitOrder = false

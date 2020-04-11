@@ -19,7 +19,9 @@ _ClosestSup = ([_posStruct, _si, typesSupportPlus select _si, []] call funcGetCl
 ? (_ClosestMHQ select 1) > 150 && (_ClosestMCV select 1) > 150 && (_ClosestSup select 1) > 50 : _unit groupChat "The destination is too far from MHQ or Support Vehicles."; exit
 
 
-_order = []; _id = -1; call orderNew
+_uid = [_unit, siPlayer, giPlayer] call funcCalcUID
+? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
+_id = (playerOrderID select _uid) + 1; [_uid, _id] exec "Player\Order\New.sqs"
 
 _unit groupChat format["Roger, moving to %1.", _posStruct call funcCalcTownDirDistFromPos]
 

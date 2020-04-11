@@ -107,7 +107,7 @@ _i = 0; _count = 5; while "_i < _count" do {call Format[{[] exec "Player\Msg\mQu
 
 [] exec "Player\Msg\mPingServer.sqs"
 
-_i = 0; _count = 10; while "_i < _count" do {call Format["TargetP_%1 = {HeliHEmpty} camCreate [0,0,0]", _i]; _i = _i + 1}
+_i = 0; _count = 10; while "_i < _count" do {call Format["TargetP_%1 = {HeliH} camCreate [0,0,0]", _i]; _i = _i + 1}
 
 ;game has begun after this pause
 ~0.1
@@ -154,17 +154,8 @@ mapAnimCommit
 ; aiOrders format: [name, [param0, param1, ...], subdlg, script, description]
 ; aiOrders param# format: [nameParam, countParams, funcToText, default]
 
-; unitOrder format:  [unit, idOrder] idOrder is -1 with no current order
-; unitOrder = []
-; orderNew = "{ if ((_x select 0) == _unit) then { _order = _x; _order set [1, 1 + (_order select 1)] } } foreach unitOrder; if (count _order == 0) then { { if (count _order == 0 && !alive(_x select 0)) then { _order = _x; _order set [0, _unit]; _order set [1, 0] } } foreach unitOrder; }; if (count _order == 0) then { _order = [_unit, 0]; unitOrder set [ count unitOrder, _order ] }; _id = _order select 1"
-; orderCheck = "_id != _order select 1"
-; orderClear = "{ if ((_x select 0) == _unit) then { _x set [1, -1] } } foreach unitOrder"
-; orderClear = "_unit exec ""Player\OrderClear.sqs"""
-
 playerOrderID = []; _i = 0; while "_i < 13" do {playerOrderID set [_i, 0]; _i = _i + 1}
-;orderNew = "_ids = (groupUnitIDMatrix select siPlayer) select giPlayer; _matching = false; _id = 2; while ""_id <= 12 && !_matching"" do {_text = format[""%1"", _unit]; if ( _text == (_ids select _id) ) then { _matching = true } else { _id = _id + 1 } }; if (_id > 12) then {hint ""Fail to get UID, order not set. Try again please.""; exit}; _uid = _id; _id = (playerOrderID select _uid) + 1; _uid exec ""Player\OrderNew.sqs"""
-orderNew = "_order = [_unit, siPlayer, giPlayer] call funcCalcUID; if (_order > 12) then {hint ""Fail to get UID, order not set. Try again please.""; exit}; _id = (playerOrderID select _order) + 1; _order exec ""Player\OrderNew.sqs"""
-orderCheck = "_id < playerOrderID select _order"
+orderCheck = "_id < playerOrderID select _uid"
 mutexUnitOrder = false
 
 
@@ -246,7 +237,7 @@ _param1 = ["Patrol Radius", 5, "format[""%1m"", 50*(_this+1)]", 1]
 aiOrders set [_type, ["Hold Town", [_param0, _param1], false, "Order\HoldTown.sqs", _desc] ]; _type = _type + 1
 
 _desc = "Units will stop, and their current order will be broken off. It might cost tens of seconds for some complex orders to indeed end.\nBefore @TZK_1.10, clicking map while selecting units can clear their order, but this won't work since 1.10 version."
-aiOrders set [_type, ["Clear Order", [], false, "Clear Order.sqs", _desc] ]; _type = _type + 1
+aiOrders set [_type, ["Clear Order", [], false, "Order\Clear.sqs", _desc] ]; _type = _type + 1
 
 _desc = "Disband selected units."
 aiOrders set [_type, ["Disband", [], true, "DisbandUnits.sqs", _desc] ]; _type = _type + 1

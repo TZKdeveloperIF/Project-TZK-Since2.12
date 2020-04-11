@@ -16,7 +16,9 @@ _wps = []
 ? _start < _destination : _i = _start; while "_i <= _destination" do { _wps set [count(_wps), (wpPlayer select _i)]; _i=_i+1 }
 ? _start > _destination : _i = _start; while "_i >= _destination" do { _wps set [count(_wps), (wpPlayer select _i)]; _i=_i-1 }
 
-_order = []; _id = -1; call orderNew
+_uid = [_unit, siPlayer, giPlayer] call funcCalcUID
+? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
+_id = (playerOrderID select _uid) + 1; [_uid, _id] exec "Player\Order\New.sqs"
 
 _i = -1
 _dir = +1

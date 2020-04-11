@@ -22,9 +22,9 @@ _dist = [_wp0, _wp1] call funcDistH
 
 _unit groupChat format["Roger, placing mines between waypoints."]
 
-_order = []
-_id = -1
-call orderNew
+_uid = [_unit, siPlayer, giPlayer] call funcCalcUID
+? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
+_id = (playerOrderID select _uid) + 1; [_uid, _id] exec "Player\Order\New.sqs"
 
 _i = -1
 _c = _dist/10
