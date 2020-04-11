@@ -4,7 +4,10 @@ _unit = _this select 0
 _pos = _this select 1
 _marker = format ["TargetP_%1", (_this select 2) select 0]; _target = call _marker
 
-_order = []; _id = -1; call orderNew
+_uid = [_unit, siPlayer, giPlayer] call funcCalcUID
+? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
+_id = (playerOrderID select _uid) + 1; [_uid, _id] exec "Player\Order\New.sqs"
+
 ? !(alive _unit) : exit
 
 _vehicle = vehicle _unit

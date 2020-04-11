@@ -13,7 +13,9 @@ _res = [_pos, _si, _factoryType] call funcGetClosestStructure
 ? (_res select 1) > 400 : _unit groupChat "None such kind of factories in 400 meters to the position you clicked. Check again please."; exit
 
 
-_order = []; _id = -1; call orderNew
+_uid = [_unit, siPlayer, giPlayer] call funcCalcUID
+? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
+_id = (playerOrderID select _uid) + 1; [_uid, _id] exec "Player\Order\New.sqs"
 
 _posFactory = getPos (_res select 0)
 _unit groupChat format["Roger, moving to %1 - %2.", (structDefs select _factoryType) select sdName, _posFactory call funcCalcTownDirDistFromPos]

@@ -1,3 +1,45 @@
+### 2.12 v08_v5
+Adjust the PlayerOrder matrix.
++ **Clear Order.sqs** is placed under Order folder.
++ Adjust the way scripts initialize Order and OrderNew works.
+	+ The string orderNew isn't applied any longer.
+		+ Calculate the uid first, then write corresponding (id+1) into **Order\New.sqs**.
+		+ The **Order\New.sqs** will write passed id or current id + 1, depends on how many parameters are passed in. This will prevent same series scripts write different id.
+	+ The orderCheck uses uid to gain the id.
+
+Adjust the "shoot target" command.
++ The initialization of order should be executed in concrete scripts but not the starting script.
++ Make further exploration of this design.
+	+ HeliHEmpty isn't a good target. AI can't see it and thus can't aim exactly even though "reveal" is applied. And AI can't detect the change of its position.
+		+ Not verified yet, but this probably is same for game-logic, since it has same simulation and model.
+		+ Use HeliH instead. And set its damage 0 when reset its position.
+	+ The "fire" command is legal, if its 2nd parameter (of weapon) match its 1st one (of vehicle). However "actual fire" require more (i.e., the existence of gunner and the loaded magazine). This make the "fire" command sometimes deviate the "actual fire". Furthermore, if the "fire" command is executed at the moment unable to "actual fire", the AI will aim down (depends on the "minElev" of that weapon), and when the frame able to "actual fire" comes, AI will shoot immediately, which is possible hurt itself.
+		+ Apply 2.01 command to gain "reloadTime" of a magazine (actually this is a mode parameter).
+		+ For reloading magazine's situation. the magazineReloadTime of a weapon should be gained (actually this is a muzzle parameter).
+		+ There's another known special situation. If a vehicle is "addMagazine" by script without a gunner, it'll cost many time to load that magazine (probably the reloadTime is equal to a "skill = 0" gunner). If "fire" command is executed when reloading, AI will miss this shoot, and may hurt itself.
+			+ Apply 2.01 command to remove current magazine (which will make the weapon "unloaded") and add that magazine to weapon again.
+				+ The "ammoArray" command will return the name and ammunition of *current* magazine, and "addMagazinePrecise" can return the magazine precisely.
+		+ Of course the design should exit the script just before "fire" if gunner seat is empty.
+	+ doWatch objNull can remove the effect of "doTarget". doWatch the position of the target (HeliH here) can improve this design.
+		
+Fix the bug in **EquipmentCalculateCost.sqf** which missed defining weapons _unit.
+
+_setting = aiSetting select _si select _gi still report error. Maybe in AI_CheckBoard the gi is "find" and cause the error. Adjust the design.
+
+Add the design of "Infantry Mode", remove tanks more expensive than $1800 and aircrafts more expensive than $5000. Edit res armor as "BMPRes". Make it impossible to upgrade TGH.
+Ask AICO_CheckBuyUnit check the bool of infantry mode.
+
+Adjust "Server\CheckRearm.sqf". In script the "Gun" and "Sabot" aren't pre-defined.
++ The vehicle must have a type of "light tank, heavy tank or howitzer (not art tanks which only equip heat but not sabot).
++ Use some 2.01 command to gain its "sabot" magazine. Some priori assumption is required, i.e., the main gun is the 1st weapon and the sabot is its 1st magazine.
++ Only when gi is legal will the script check aiSetting. In old design the illegal parameter giTown is passed in and thus report the error.
+
+Fix the bug that spectator don't create game-end trigger.
+
+Remove some unnecessary scripts.
+### 2.12 v08_v4
+Fix bug in **AddRearmData.sqs**. The condition of "_this" 's count should be compared with 1 not 0.
+Fix bug in **MsgUnitBuilt.sqs**. The wrong setting cause only siRes set data into the array.
 ### 2.12 v08_v3
 Missed ")" in **Watch.sqf**.  
 "busyClear" require defined "_si" in scripts, and this is missed in **Server\Loop\AI_CheckRide.sqs**.  

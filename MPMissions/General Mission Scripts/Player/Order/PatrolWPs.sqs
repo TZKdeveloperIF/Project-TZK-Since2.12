@@ -16,9 +16,9 @@ _last = (count _wps) - 1
 
 _unit groupchat format["Roger, patrolling wp0 to wp%1.", _last]
 
-_order = []
-_id = -1
-call orderNew
+_uid = [_unit, siPlayer, giPlayer] call funcCalcUID
+? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
+_id = (playerOrderID select _uid) + 1; [_uid, _id] exec "Player\Order\New.sqs"
 
 _circ = false
 ? (count _wps) > 2 : if ( ([_wps select 0, _wps select _last] call funcDistH) < ([_wps select _last, _wps select (_last-1)] call funcDistH) ) then { _circ = true }

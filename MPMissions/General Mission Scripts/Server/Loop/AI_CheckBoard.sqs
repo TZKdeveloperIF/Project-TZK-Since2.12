@@ -49,7 +49,7 @@ _transports = []; _transp = objNull; _i = 0; _c = count _res
 #NoneFound
 _unit doMove ([_posCheckBoardStart, 50, 100] call funcGetRandomPos)
 ~5
-_gi = ( groupMatrix select _si ) find ( group _unit ); _setting = aiSetting select _si select _gi
+if (alive _unit) then {_gi = (groupMatrix select _si) find (group _unit)}; _setting = aiSetting select _si select _gi
 ? time > _timeCheckBoardStart + (aisPickupWaitTimeDefs select (_setting select _ais)): _unit call busyClear; exit
 [_unit, _si, _gi, _posCheckBoardStart select 0, _posCheckBoardStart select 1, _timeCheckBoardStart, _ais] exec "Server\Loop\AI_CheckBoard.sqs"; exit
 

@@ -14,7 +14,9 @@ _hasC4 = false; { if (_x in _mags) then {_hasC4 = true} } forEach MagzinesSatche
 _magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
 ? ("_x in MagzinesSatchel" count _magazines) == 0 && !_hasC4 : exit
 
-_order = []; _id = -1; call orderNew
+_uid = [_unit, siPlayer, giPlayer] call funcCalcUID
+? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
+_id = (playerOrderID select _uid) + 1; [_uid, _id] exec "Player\Order\New.sqs"
 
 _unit groupchat format["Roger, satcheling area."]
 

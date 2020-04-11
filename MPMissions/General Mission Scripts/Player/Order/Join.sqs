@@ -34,7 +34,7 @@ pvJoinReply = -1; pvJoinApply = _value; PublicVariable "pvJoinApply"
 @(pvJoinReply != -1)
 _value = pvJoinReply
 ? 1 != _value % 2 : goto "JoinRefused"
-{ _x exec {Player\OrderNew.sqs} } forEach _JoinUnitIDs
+{ [_x] exec {Player\Order\New.sqs} } forEach _JoinUnitIDs
 
 	~3
 	goto "DONE"

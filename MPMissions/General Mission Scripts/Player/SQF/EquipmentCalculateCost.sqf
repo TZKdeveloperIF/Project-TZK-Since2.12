@@ -1,13 +1,13 @@
 private ["_typePrim", "_typeSec", "_typeHandgun", "_typeBinocular", "_typeNVG", "_equipment", "_unit", "_boolPurchase", "_mags0", "_mags1", "_magTypes", "_salvage", "_charge", "_weapons", "_weaponTypes", "_magazinesArray", "_index", "_count", "_magazinesList", "_ammunitionList", "_volumeList", "_index2"];
 
-RespawnW = RespawnWeapon + [-1]; RespawnM = RespawnMagazine + [-1]; RespawnA = RespawnAmmunition + [-1];
+RespawnW = +RespawnWeapon; RespawnM = +RespawnMagazine; RespawnA = +RespawnAmmunition;
 
 _typePrim = _this select 0; _typeSec = _this select 1; _typeHandgun = _this select 2; _typeBinocular = _this select 3; _typeNVG = _this select 4; _equipment = _this select 5; _unit = _this select 6; _boolPurchase = _this select 7;
 _mags0 = _equipment select 0; _mags1 = _equipment select 1;
 _magTypes = []; { _magTypes = _magTypes + [_x select 0] } forEach (_mags0 + _mags1);
 _salvage = 0; _charge = 0;
 
-_weaponTypes = []; { if ((weaponSearch find _x) != -1) then {_weaponTypes set [count _weaponTypes, weaponSearch find _x]} } forEach _weapons;
+_weapons = weapons _unit; _weaponTypes = []; { if ((weaponSearch find _x) != -1) then {_weaponTypes set [count _weaponTypes, weaponSearch find _x]} } forEach _weapons;
 {
 	if !(_x in [_typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG]) then {
 		_salvage = _salvage + ([_x] call loadFile "Player\SQF\EquipmentRespawnWeapon.sqf");
