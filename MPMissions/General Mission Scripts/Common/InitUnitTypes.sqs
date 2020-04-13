@@ -229,7 +229,7 @@ _supportTruckW2 = _type
 _type = _type + 1
 
 _price = [500, 1000] select PricingMode
-unitDefs set [_type, ["Fuel 5t Truck", _price, _si, 30, "Truck5TRefuel", "iTruck5tfuel", 2^_st, [1, _soldierW], _mTruck, ["Common\InitFuelTruck.sqs"]] ]
+unitDefs set [_type, ["Fuel 5t Truck", _price, _si, 30, "Truck5tRefuel", "iTruck5tfuel", 2^_st, [1, _soldierW], _mTruck, ["Common\InitFuelTruck.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _type = _type + 1
 
