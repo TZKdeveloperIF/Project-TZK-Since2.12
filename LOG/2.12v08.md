@@ -1,3 +1,5 @@
+### 2.12 v08_v6
+Change Truck5TRefuel in **InitUnitTypes.sqs** to Truck5tRefuel, for the function "GetUnitTypeFromObject" applying find command, which is cASe-seNsItiVE.
 ### 2.12 v08_v5
 Adjust the PlayerOrder matrix.
 + **Clear Order.sqs** is placed under Order folder.
