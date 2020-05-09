@@ -112,7 +112,7 @@ _delay = 0.2
 	buttonPressedBuild = false
 	? (_type == -1): hint "No structure selected"; goto "Update"
 	? (_money < _cost): hint "Not enough Money"; goto "Update"
-	[_unit, _type, [], 0, [], alignWalls && ctrlVisible IDC_BTN_ALIGN] exec "Player\BuildStructure.sqs"
+	[_unit, _type, [], 0, alignWalls && ctrlVisible IDC_BTN_ALIGN] exec "Player\BuildStructure.sqs"
 	goto "CloseDialog"
 
 #PlaceBuildStructure
