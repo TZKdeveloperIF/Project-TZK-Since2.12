@@ -19,7 +19,7 @@ _unit = player
 	; _ehLimit = _vehicle addEventHandler ...
 	
 	[_vehicle] exec "Player\Radio\Radio_Update_Vehicle.sqs"
-	? typeOf _vehicle in ["T80_TZK_xj200", "T80Res_TZK_xj200"] : _t80 = _vehicle; [_t80, false] exec {Player\Effect\T80DrumDisplaySwitch.sqs}
+	? "T80_TZK_Base_xj200" countType [_vehicle] > 0 || "T80Res_TZK_xj200" countType [_vehicle] > 0: _t80 = _vehicle; [_t80, false] exec {Player\Effect\T80DrumDisplaySwitch.sqs}
 	
 	@ !(alive _unit) || (_unit == vehicle _unit)
 

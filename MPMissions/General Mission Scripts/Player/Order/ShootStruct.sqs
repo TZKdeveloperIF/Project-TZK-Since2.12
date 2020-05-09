@@ -9,11 +9,11 @@ _uid = [_unit, siPlayer, giPlayer] call funcCalcUID
 ? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
 _id = (playerOrderID select _uid) + 1; [_uid, _id] exec "Player\Order\New.sqs"
 
-_boolFirst = true
+
 
 #CheckDistance
 _vehicle = vehicle _unit; _distLimit = viewDistance; _hint = "Target is out of the structure's ability. Order aborted."
-? _type in structsOccupiableMortar: _distLimit = 500 * (structsOccupiableMortar find _type) + 500
+? _type in structsOccupiableMortar: _distLimit = 500 * (structsOccupiableMortar find _type) + 500; _boolFirst = true
 ? (upgMatrix select siPlayer) select upgLongWeaponRange == 2: _distLimit = 2*viewDistance; _hint = "Target is outside 2×viewDistance. Order aborted."
 ? _type in structsOccupiableM46Art: _distLimit = 10000; _hint = "Target is very far. Probably can't hit it directly."
 ? _unit distance _target > _distLimit: _unit groupChat _hint; exit

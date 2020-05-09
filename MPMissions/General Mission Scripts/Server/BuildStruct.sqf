@@ -4,7 +4,7 @@
 private [
   "_type", "_si", "_gi", "_pos", "_dir", "_objects", "_desc", "_parts", "_i", "_c",
   "_part", "_posPartRel", "_posPartX", "_posPartY", "_posPart", "_dirPart", "_obj",
-  "_group", "_x"
+  "_group", "_x", "_up"
 ];
 
 _type = _this select 0;

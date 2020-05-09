@@ -39,7 +39,7 @@ goto "Update"
 #OnFoot
 ? !(unitReady _unit): goto "Update"
 _magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
-? ("_x in MagzinesSatchel" count _magazines) == 0: goto "Update"
+? ("_x == magSatchel" count _magazines) == 0: goto "Update"
 
 _res = [getPos _unit, siPlayer] call funcGetClosestEnemyObject
 _object = _res select 0
@@ -70,7 +70,6 @@ _index = 0
 
 	_magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
 	_C4Mag = magSatchel
-	? magPistolSatchel in _magazines : _C4Mag = magPistolSatchel
 	_cBefore = "_x == _C4Mag" count _magazines
 	_unit fire [weaponPut, _C4Mag,_C4Mag]
 ~1

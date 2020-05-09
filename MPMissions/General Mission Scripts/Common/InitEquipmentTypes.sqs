@@ -22,7 +22,7 @@ isBinocularSlot = 0; isNVGSlot = 1;
 magMine = "Mine"; magPistolMine = "Mine_Pistol_xj200"; MagzinesMine = [magMine, magPistolMine]
 magHandGrenade = "HandGrenade"
 ammoMine = "Mine"
-magSatchel = "PipeBomb"; magPistolSatchel = "PipeBomb_Pistol_xj200"; MagzinesSatchel = [magSatchel, magPistolSatchel]
+magSatchel = "PipeBomb"
 magTimeBomb = "TimeBomb"
 weaponPut = "Put"
 weaponsCustom = []
@@ -50,10 +50,10 @@ magsRespawnPlayer2 = [ ["EUDEF_MP5SD6_MAG_v2_xj200", "EUDEF_MP5SD6_MAG_v2_xj200"
 
 
 weaponsRespawnPlayer3 = [ ["SG551_xj200", "HyperLauncher_xj200", "Binocular", "NVG_statF_xj200"], ["VALPSO_xj200", "HyperLauncher_xj200", "Binocular", "NVG_statF_xj200"] ]
-magsRespawnPlayer3 = [ ["SG551_Mag_xj200", "SG551_Mag_xj200", "CarlGustavIn4_v2_xj200", "AAIn4_v2_xj200", magPistolSatchel, magPistolSatchel, magPistolMine, "Medkit_xj200"], ["VAL_Mag_xj200", "VAL_Mag_xj200", "AT4In4_v2_xj200", "9k32In4_v2_xj200", magPistolSatchel, magPistolSatchel, magPistolMine, "Medkit_xj200"] ]
+magsRespawnPlayer3 = [ ["SG551_Mag_xj200", "SG551_Mag_xj200", "CarlGustavIn4_v2_xj200", "AAIn4_v2_xj200", magPistolMine, "Medkit_xj200"], ["VAL_Mag_xj200", "VAL_Mag_xj200", "AT4In4_v2_xj200", "9k32In4_v2_xj200", magPistolMine, "Medkit_xj200"] ]
 
 weaponsRespawnPlayer4 = [ ["M249SPW_ACOG_SD_xj200", "HyperLauncher_xj200", "Binocular", "NVG_statF_xj200"], ["RPK74M_1P29_SD_xj200", "HyperLauncher_xj200", "Binocular", "NVG_statF_xj200"] ]
-magsRespawnPlayer4 = [ ["M249SPW_SD_Mag_xj200", "CarlGustavIn4_v2_xj200", "AAIn4_v2_xj200", magPistolSatchel, magPistolSatchel, magPistolMine, "Medkit_xj200"], ["RPK74_SD_Mag_xj200", "RPK74_SD_Mag_xj200", "AT4In4_v2_xj200", "9k32In4_v2_xj200", magPistolSatchel, magPistolSatchel, magPistolMine, "Medkit_xj200"] ]
+magsRespawnPlayer4 = [ ["M249SPW_SD_Mag_xj200", "CarlGustavIn4_v2_xj200", "AAIn4_v2_xj200", magPistolMine, "Medkit_xj200"], ["RPK74_SD_Mag_xj200", "RPK74_SD_Mag_xj200", "AT4In4_v2_xj200", "9k32In4_v2_xj200", magPistolMine, "Medkit_xj200"] ]
 
 weaponsRespawnPlayer5 = [ ["M21", "CarlGustavLauncher", "Binocular", "NVG_stat_xj200"], ["SVDDragunov", "AT4Launcher", "Binocular", "NVG_stat_xj200"] ]
 magsRespawnPlayer5 = [ ["M21", "M21", "M21", "M21", "CarlGustavLauncher"], ["SVDDragunov", "SVDDragunov", "SVDDragunov", "SVDDragunov", "AT4Launcher"] ]
@@ -489,9 +489,6 @@ equipSearch set [_type, (equipDefs select _type) select edObject]
 _type = _type + 1
 
 equipDefs set [_type, ["Medkit", siBoth, isHandgun, 1, "Medkit_xj200", "\data\sanita_02",50 ]] 
-equipSearch set [_type, (equipDefs select _type) select edObject]
-_type = _type + 1
-equipDefs set [_type, ["Portable Satchel", siBoth, isHandgun, 1, magPistolSatchel, "\dtaExt\equip\m\m_PipeBomb",100 ]] 
 equipSearch set [_type, (equipDefs select _type) select edObject]
 _type = _type + 1
 equipDefs set [_type, ["Portable Mine", siBoth, isHandgun, 1, magPistolMine, "\dtaExt\equip\m\m_mine",100 ]] 

@@ -8,8 +8,6 @@ _uid = [_unit, siPlayer, giPlayer] call funcCalcUID
 ? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
 _id = (playerOrderID select _uid) + 1; [_uid, _id] exec "Player\Order\New.sqs"
 
-_boolFirst = true
-
 #CheckDistance
 _vehicle = vehicle _unit; _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is outside viewDistance. Order aborted."
 ? (upgMatrix select siPlayer) select upgLongWeaponRange == 2: _distLimit = 2*viewDistance; _hint = "Target is outside 2×viewDistance. Order aborted."
@@ -41,9 +39,6 @@ _vehicle = vehicle _unit; _posOrdered = getPos _vehicle; _distLimit = viewDistan
 		; delay must be correctly assigned for "fire" command.
 		_ammoArray = _vehicle ammoArray _weapon
 		_delay = call format ["%1", (_ammoArray select 0) GetWeaponParam "reloadTime"] + 1
-		? _boolFirst: _reloadMagazine = true; _vehicle removeMagazine (_ammoArray select 0);
-		~0.1
-		? _boolFirst: _boolFirst = false; _vehicle addMagazinePrecise _ammoArray
 		? _reloadMagazine: _delay = call format ["%1", _weapon GetWeaponParam "magazineReloadTime"] + _delay; _reloadMagazine = false
 		~_delay
 		? call orderCheck : goto "Exit"

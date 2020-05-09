@@ -16,8 +16,6 @@ goto "Update"
   _dirOld = getDir _unit
   _vForward = [sin _dirOld, cos _dirOld]
   _vRight = [_vForward, 90] call funcVectorRot
-	_velForwardOld = [_vForward, _vel] call funcVectorDot
-	_velRightOld = [_vRight, _vel] call funcVectorDot
 
   [] exec "Player\Dialog\Spectator.sqs"
   ; [] exec "Player\SpecCam.sqs"
@@ -71,8 +69,6 @@ goto "Update"
 
 	_posOld = _pos
 	_dirOld = _dir
-	_velForwardOld = _velForward
-	_velRightOld = _velRight
 
 	? ([_posStart, _pos] call funcDistH) > 50 : goto "ResetPos"
 	
@@ -96,8 +92,6 @@ goto "Update"
 
   _posOld = _pos
   _dirOld = _dir
-  _velForwardOld = _velForward
-  _velRightOld = _velRight
 
   goto "Update"
 
