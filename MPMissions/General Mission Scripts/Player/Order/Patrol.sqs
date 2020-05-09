@@ -15,12 +15,12 @@ _unit groupChat "Roger, patrolling area."
 
 #GetRandomPos
 _posMove = [_pos, _radius-25, _radius+25] call funcGetRandomPos
-_timeAbort = time + 5*60
+_timeAbort = time + 60*60
 
 #Move
   [_unit, _posMove] call funcMove
   ~10
-  ? !(alive _unit) || time > _timeAbort : _unit groupChat "Patrol order aborted."; exit
+  ? !(alive _unit) || time > _timeAbort: _unit groupChat "Having patroled for 1 hour. Order aborted."; exit
   ? call orderCheck : exit
   ? ([_posMove, getPos _unit] call funcDistH) > 20 : goto "Move"
 

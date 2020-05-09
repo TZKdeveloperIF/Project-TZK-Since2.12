@@ -27,7 +27,7 @@ _vehicle addEventHandler ["killed", {_this exec "Common\Event_VehicleDestroyed.s
 
 ; PLAYER ONLY
 ? (typeOf _vehicle) in [{A10_Tomahawk_xj200}, {Su25_Raduga_xj200}] : _vehicle say {NuclearMissileReady_xj200}
-? typeOf _vehicle in ["T80_TZK_xj200", "T80Res_TZK_xj200"]: [_vehicle, true] exec "Player\Effect\T80DrumDisplaySwitch.sqs"
+? "T80_TZK_Base_xj200" countType [_vehicle] > 0 || "T80Res_TZK_xj200" countType [_vehicle] > 0: [_vehicle, true] exec "Player\Effect\T80DrumDisplaySwitch.sqs"
 [_vehicle, _type, _si] call funcInitVehicleMarker
 
 ; _vehicle addEventHandler ["Fired", {[_this, LimitWeaponRangeFactor] call <function>}]

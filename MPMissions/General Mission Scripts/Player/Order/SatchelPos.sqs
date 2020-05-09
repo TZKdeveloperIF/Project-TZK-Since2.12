@@ -10,9 +10,9 @@ _radius = 5*( 0 + ((_this select 2) select 0) )
 _rearmData = _unit call funcGetRearmData
 _weapons = _rearmData select 0
 _mags = _rearmData select 1
-_hasC4 = false; { if (_x in _mags) then {_hasC4 = true} } forEach MagzinesSatchel
+_hasC4 = false; if (magSatchel in _mags) then {_hasC4 = true}
 _magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
-? ("_x in MagzinesSatchel" count _magazines) == 0 && !_hasC4 : exit
+? ("_x == magSatchel" count _magazines) == 0 && !_hasC4 : exit
 
 _uid = [_unit, siPlayer, giPlayer] call funcCalcUID
 ? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
@@ -49,10 +49,9 @@ _timeAbort = time + 5*60
   ~2
   ? !(alive _unit) : exit
 	_magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
-	_cBefore = "_x in MagzinesSatchel" count _magazines
+	_cBefore = "_x == magSatchel" count _magazines
 	? _cBefore == 0 : goto "CheckRearm"
 	_C4Mag = magSatchel
-	? magPistolSatchel in _magazines : _C4Mag = magPistolSatchel
 	_cBefore = "_x == _C4Mag" count _magazines
 	_unit fire [weaponPut, _C4Mag,_C4Mag]
   
@@ -64,7 +63,7 @@ _timeAbort = time + 5*60
 	? _cBefore == 1 && _C4After == 1 : _unit removeMagazine _C4Mag
 	
 	_magazines = _unit call loadFile "Common\SQF\GetNotEmptyMags.sqf";
-	_cBefore = "_x in MagzinesSatchel" count _magazines
+	_cBefore = "_x == magSatchel" count _magazines
 	? _cBefore == 0 :goto "CheckRearm"
   goto "MoveToNextPos"
 

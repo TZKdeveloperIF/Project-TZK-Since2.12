@@ -17,11 +17,12 @@ _duration = 30 * ((_params select 4) + 1)
 _res = [_pos, _si, typesSupport select _si, []] call funcGetClosestVehicle
 ? (_res select 1) > _radius: exit
 
-_sabots = ["Heat120","M1Sabot_xj200","M12Sabot_xj200","T80Sabot_xj200","T90Sabot_xj200","LeoSabot_xj200","PLASabot_xj200","DKMM_Gun155AP_xj200","Sprut_3VBM17_xj200"];
-_guns   = ["Gun120", "M1Gun_xj200",  "M12Gun_xj200",  "T80Gun_xj200",  "T90Gun_xj200",  "LeoGun_xj200",  "PLAGun_xj200",  "Gun155_xj200",       "Sprut_2A75_xj200"];
-_index = 0; _rearm = false; _vehicle = vehicle _unit; _weapons = weapons _vehicle; _vt = _vehicle call funcGetUnitTypeFromObject
-? !(_vt in typesLightTank + typesHeavyTank + typesHowitzer): _rearm = true
-while "!_rearm && _index < count _sabots" do { if ( (_guns select _index) in _weapons ) then { if ( "_x == (_sabots select _index)" count (magazines _vehicle) < 1 || (_vehicle ammo (_guns select _index)) < _sabot ) then {_rearm = true} }; _index = _index + 1 };
+_rearm = false; _vehicle = vehicle _unit; _weapons = weapons _vehicle; _vt = _vehicle call funcGetUnitTypeFromObject
+? !(_vt in (typesLightTank + typesHeavyTank + typesHowitzer) && _gi >= 0 && _gi < (GroupsNum - 2)): _rearm = true
+
+; This design require the gun use itself as its muzzle, and the sabot magazine is in the 1st element of its "magazines[]" parameter.
+? !_rearm: _rearmData = _vehicle call funcGetRearmData; _gun = (_rearmData select 0 select 0); _sabotMag = (call format ["%1", _gun GetWeaponParamArray "magazines"]) select 0; _magazines = magazinesArray _vehicle; if !(_sabotMag in _magazines) then {_rearm = true} else { if ((_magazines select (_magazines find _sabotMag) + 1) < _sabot) then {_rearm = true} }
+
 ? !_rearm: exit
 
 ; Check Whether Unit In Another Temporary Order (Except For Set Flight Altitude, Clear Temporary Order, Etc)

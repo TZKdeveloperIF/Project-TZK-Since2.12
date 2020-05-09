@@ -32,11 +32,11 @@ _dir = +1
 ? _i == _last && _circ : _i = -1
 _i = _i + _dir
 _pos = [_wps select _i, 10, 10] call funcGetRandomPos
-_timeAbort = time + 5*60
+_timeAbort = time + 60*60
 #CheckPosReached
   [_unit, _pos] call funcMove
   ~5
-  ? !(alive _unit) || time > _timeAbort : _unit groupChat "Patrol order aborted."; exit
+  ? !(alive _unit) || time > _timeAbort: _unit groupChat "Having patroled for 1 hour. Order aborted."; exit
   ? call orderCheck : exit
   ? ([_pos, getPos _unit] call funcDistH) > 20 : goto "CheckPosReached"
 goto "MoveNextPos"
