@@ -14,8 +14,8 @@ if (_booleSpoofOFF) then {Radio001 setTriggerText "SpoofMissile OFF"; Radio001 s
 
 Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", "[] exec {Player\Dialog\TZK_Mission_Setting.sqs}", ""];
 
-if (call _booleStringSwitchDriver) then {Radio003 setTriggerText "To driver's seat"; Radio003 setTriggerStatements ["this", "(vehicle player) exec {Player\SwitchToDriver.sqs}", ""]} else {Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""]};
-if (call _booleStringSwitchGunner) then {Radio004 setTriggerText "To gunner's seat"; Radio004 setTriggerStatements ["this", "(vehicle player) exec {Player\SwitchToGunner.sqs}", ""]} else {Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""]};
+if (call _booleStringSwitchDriver) then {Radio003 setTriggerText "To driver's seat"; Radio003 setTriggerStatements ["this", "(vehicle player) exec {Player\Action\SwitchToDriver.sqs}", ""]} else {Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""]};
+if (call _booleStringSwitchGunner) then {Radio004 setTriggerText "To gunner's seat"; Radio004 setTriggerStatements ["this", "(vehicle player) exec {Player\Action\SwitchToGunner.sqs}", ""]} else {Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""]};
 Radio005 setTriggerText " "; Radio005 setTriggerStatements ["this", "", ""];
 Radio006 setTriggerText "Get Plane Status"; Radio006 setTriggerStatements ["this", "[vehicle player, player] exec {Player\Action\PlaneFlyingStatus.sqs}", ""];
 
@@ -26,9 +26,9 @@ Radio000 setTriggerText " "; Radio000 setTriggerStatements ["this", "", ""];
 _transportGunship = call (typeOf _vehicle GetVehicleParam "transportSoldier") > 0
 ? !_transportGunship : goto "SkipTransportInit"
 _booleStringTransport = "_vehicle in TransportActivatedVehicles"; _booleTransport = call _booleStringTransport
-Radio007 setTriggerText "Eject AI Units"; Radio007 setTriggerStatements ["this", "[vehicle player, siPlayer] exec {Player\EjectAIUnits.sqs}", ""];
-Radio008 setTriggerText "Eject All Cargo"; Radio008 setTriggerStatements ["this", "[vehicle player, siPlayer] exec {Player\EjectAllCargo.sqs}", ""];
-Radio009 setTriggerText "Eject One Cargo"; Radio009 setTriggerStatements ["this", "[vehicle player, siPlayer] exec {Player\EjectOneCargo.sqs}", ""];
+Radio007 setTriggerText "Eject AI Units"; Radio007 setTriggerStatements ["this", "[vehicle player, siPlayer] exec {Player\Action\EjectAIUnits.sqs}", ""];
+Radio008 setTriggerText "Eject All Cargo"; Radio008 setTriggerStatements ["this", "[vehicle player, siPlayer] exec {Player\Action\EjectAllCargo.sqs}", ""];
+Radio009 setTriggerText "Eject One Cargo"; Radio009 setTriggerStatements ["this", "[vehicle player, siPlayer] exec {Player\Action\EjectOneCargo.sqs}", ""];
 if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", "[vehicle player] exec {Common\SendTransportTurnOff.sqs}", ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", "[vehicle player] exec {Common\SendTransportTurnOn.sqs}", ""];	};
 #SkipTransportInit
 
@@ -42,8 +42,8 @@ if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn O
 
 _booleRefreshSwitchDriver = (_booleSwitchDriver && !(call _booleStringSwitchDriver)) || (!_booleSwitchDriver && (call _booleStringSwitchDriver))
 _booleRefreshSwitchGunner = (_booleSwitchGunner && !(call _booleStringSwitchGunner)) || (!_booleSwitchGunner && (call _booleStringSwitchGunner))
-? _booleRefreshSwitchDriver : if (call _booleStringSwitchDriver) then {Radio003 setTriggerText "To driver's seat"; Radio003 setTriggerStatements ["this", "(vehicle player) exec {Player\SwitchToDriver.sqs}", ""]} else {Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""]}
-? _booleRefreshSwitchGunner : if (call _booleStringSwitchGunner) then {Radio004 setTriggerText "To gunner's seat"; Radio004 setTriggerStatements ["this", "(vehicle player) exec {Player\SwitchToGunner.sqs}", ""]} else {Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""]}
+? _booleRefreshSwitchDriver : if (call _booleStringSwitchDriver) then {Radio003 setTriggerText "To driver's seat"; Radio003 setTriggerStatements ["this", "(vehicle player) exec {Player\Action\SwitchToDriver.sqs}", ""]} else {Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""]}
+? _booleRefreshSwitchGunner : if (call _booleStringSwitchGunner) then {Radio004 setTriggerText "To gunner's seat"; Radio004 setTriggerStatements ["this", "(vehicle player) exec {Player\Action\SwitchToGunner.sqs}", ""]} else {Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""]}
 
 ? _booleRefreshSwitchDriver : _booleSwitchDriver = call _booleStringSwitchDriver
 ? _booleRefreshSwitchGunner : _booleSwitchGunner = call _booleStringSwitchGunner

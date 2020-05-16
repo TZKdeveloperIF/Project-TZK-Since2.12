@@ -18,7 +18,7 @@ _res = [_pos, _si, typesSupport select _si, []] call funcGetClosestVehicle
 ? (_res select 1) > _radius: exit
 
 _rearm = false; _vehicle = vehicle _unit; _weapons = weapons _vehicle; _vt = _vehicle call funcGetUnitTypeFromObject
-? !(_vt in (typesLightTank + typesHeavyTank + typesHowitzer) && _gi >= 0 && _gi < (GroupsNum - 2)): _rearm = true
+? !(_vt in (typesLightTank + typesHeavyTank) && _gi >= 0 && _gi < (GroupsNum - 2)): _rearm = true
 
 ; This design require the gun use itself as its muzzle, and the sabot magazine is in the 1st element of its "magazines[]" parameter.
 ? !_rearm: _rearmData = _vehicle call funcGetRearmData; _gun = (_rearmData select 0 select 0); _sabotMag = (call format ["%1", _gun GetWeaponParamArray "magazines"]) select 0; _magazines = magazinesArray _vehicle; if !(_sabotMag in _magazines) then {_rearm = true} else { if ((_magazines select (_magazines find _sabotMag) + 1) < _sabot) then {_rearm = true} }

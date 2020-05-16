@@ -1,0 +1,12 @@
+; args: [vehicle]
+
+_v = _this select 0
+
+_i = (typeOf _v GetVehicleParamArray "hiddenSelections") find "m01"
+
+; _name = substr [(typeOf _v), 0, 4]
+? typeOf _v == "M270MLRS_COC_xj200": _j = 0; while "_j < 12" do {_v setObjectTexture [_i + _j, "\TZK_Tex\COC\M270\tube.paa"]; _j = _j + 1}
+? typeOf _v == "M270MLRS_RCWC49_xj200": _j = 0; while "_j < 12" do {_v setObjectTexture [_i + _j, "\TZK_Tex\M29064mm\tube.paa"]; _j = _j + 1}
+? typeOf _v == "TOS1_TZK_xj200": _j = 0; while "_j < 30" do {_v setObjectTexture [_i + _j, "\TZK_Tex\DKM\M109\tost2.pac"]; _j = _j + 1}; [_v, "\TZK_Tex\DKM\"] exec "Player\Effect\RSC_Numbers.sqs"
+
+; EOF

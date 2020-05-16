@@ -1,0 +1,25 @@
+; args: [object, initSpeed of magazine, name]
+
+_object = _this select 0
+_speed = _this select 1
+_name = _this select 2
+
+_strSpeed = format ["%1", _speed/10 - (_speed/10)%1 + ([0,1] select (_speed%10 >= 5))]
+? _speed < 100: _strSpeed = "0" + _strSpeed
+? _speed < 1000: _strSpeed = "0" + _strSpeed
+
+_i = (typeOf _object GetVehicleParamArray "hiddenSelections") find "TZK_Grad1"
+{_object setObjectTexture [_i, format ["\TZK_Tex\Grad\%1%2_%3.paa", _name, _strSpeed, _x]]; _i = _i + 1} forEach ["A", "B", "C", "D", "E", "F"]
+
+
+_mainWeapon = (typeOf _object GetVehicleParamArray "weapons") select 0
+_ammoArray = _object ammoArray _mainWeapon
+? count _ammoArray == 0: hint "Abnormal weapon/magazine status. Magazine not switch. Try it again or report to the author.", exit
+_magName = _ammoArray select 0; _size = sizeOfStr _magName; _strSpeed = format ["%1", _speed]
+? _speed < 100: _strSpeed = "0" + _strSpeed
+? _speed < 1000: _strSpeed = "0" + _strSpeed
+_newMag = substr [_magName, 0, _size - 10] + _strSpeed + "_xj200"
+
+_object removeMagazine _magName; _object addMagazinePrecise [_newMag, _ammoArray select 1]
+
+; EOF

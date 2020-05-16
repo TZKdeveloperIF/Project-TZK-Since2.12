@@ -281,7 +281,10 @@ vehicleTuggedServer = []; vehicleTugServer = []
 [] exec "Common\MsgLock.sqs"
 [] exec "Common\MsgUnlock.sqs"
 [] exec "Common\MsgVehicleMagsRemove.sqs"
-[] exec "Common\MsgVehicleMagsAdd.sqs"
+
+{ [] exec format ["Common\Msg\mRearmVehGeneral%1.sqs", _x] } forEach [0,1,2,3,4]
+
+
 [] exec "Common\MsgEjectUnit.sqs"
 [] exec "Common\MsgFuelVehicle.sqs"
 [] exec "Common\MsgTransportTurnOn.sqs"

@@ -7,15 +7,22 @@ _gi = _this select 3
 
 ; SERVER AND PLAYER
 
-_desc = unitDefs select _type
+clearMagazineCargo _vehicle; clearWeaponCargo _vehicle
+_desc = unitDefs select _type; _typeName = typeOf _vehicle
 
-clearMagazineCargo _vehicle; 
-clearWeaponCargo _vehicle
-
+; Killed and Hit Event
 _vehicle addEventHandler ["killed", {_this exec "Common\Event_VehicleDestroyed.sqs"}]
 [_vehicle, _si, _desc select udCost] exec "Common\EventAdd_VehicleHit.sqs"
-; ? "M109A6G_Base_xj200" countType [_vehicle] > 0 || "PLZ05_VME_Base_xj200" countType [_vehicle] > 0: if (local _vehicle) then {_vehicle animate [{suspension}, 0.5]}
-? typeOf _vehicle in ["HMMMV_TOW2A_v2_xj200", "BRDM_Gaskin_v2_xj200", "GunBoatW_Custom_v2_xj200", "GunBoatE_Custom_v2_xj200"]: _vehicle addEventHandler ["Fired", "_this call loadFile {Player\EH\FiredImitated.sqf}" ]
+
+; Engine Event and Suspension
+? _typeName in ["M1A2_INQ_xj200", "ZTZ99_xj200", "TOS1_TZK_xj200"] || _type in typesHowitzer: if (local _vehicle) then {_vehicle animate [{suspension}, 0.5]}; _vehicle addEventHandler ["Engine", "if (_this select 1) Then {[_this select 0, [{Suspension}]] exec {Common\EH\Tank_Acc_Sus.sqs}}"]
+
+; Rocket and Howitzer Deploy
+? _typeName == "TOS1_TZK_xj200" || _type in typesHowitzer: [_vehicle, false] exec "Player\Effect\DeployVehicle.sqs"
+
+; Fired Event
+? _typeName in ["HMMMV_TOW2A_v2_xj200", "BRDM_Gaskin_v2_xj200", "GunBoatW_Custom_v2_xj200", "GunBoatE_Custom_v2_xj200"]: _vehicle addEventHandler ["Fired", "_this call loadFile {Player\EH\FiredImitated.sqf}" ]
+? _type in typesRocketLauncher: _vehicle addEventHandler ["Fired", "_this exec {Player\EH\Fired_DKM_FAE220.sqs}"]
 ? "Plane" countType [_vehicle] > 0 : _vehicle addEventHandler ["Fired", { _this exec "Player\EH\FiredPlaneMissile.sqs"} ]
 ? "Air" countType [_vehicle] > 0: _vehicle addEventHandler ["GetOut", { _this exec "Common\EH\GetOutAircraft.sqs" }]
 
@@ -23,11 +30,13 @@ _vehicle addEventHandler ["killed", {_this exec "Common\Event_VehicleDestroyed.s
 ? "Air" countType [_vehicle] > 0 : [_vehicle, _type] exec "Common\EH\AddAirIncoming.sqs"
 ? "Tank" countType [_vehicle] > 0: if (_si != siRes) then {[_vehicle, _type] exec "Common\EH\AddTankIncoming.sqs"}
 
-? isNull player : goto "SkipClient"
 
+? isNull player : goto "SkipClient"
 ; PLAYER ONLY
-? (typeOf _vehicle) in [{A10_Tomahawk_xj200}, {Su25_Raduga_xj200}] : _vehicle say {NuclearMissileReady_xj200}
+
+? _typeName in [{A10_Tomahawk_xj200}, {Su25_Raduga_xj200}] : _vehicle say {NuclearMissileReady_xj200}
 ? "T80_TZK_Base_xj200" countType [_vehicle] > 0 || "T80Res_TZK_xj200" countType [_vehicle] > 0: [_vehicle, true] exec "Player\Effect\T80DrumDisplaySwitch.sqs"
+? _type in typesRocketLauncher: [_vehicle] exec "Player\Effect\RocketVehicleDisplay.sqs"
 [_vehicle, _type, _si] call funcInitVehicleMarker
 
 ; _vehicle addEventHandler ["Fired", {[_this, LimitWeaponRangeFactor] call <function>}]
