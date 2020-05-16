@@ -1,0 +1,20 @@
+; args: [rocket, vehicle]
+
+_rocket = _this select 0; _vehicle = _this select 1
+
+#loop
+_pos = getPos _rocket; _vel = velocity _rocket
+~0.1
+? !isNull _rocket: goto "loop"
+
+? ((_pos select 0) - (getPos _vehicle select 0))^2 + ((_pos select 1) - (getPos _vehicle select 1))^2 < 250^2: (gunner _vehicle) vehicleradio "dkmm_M_dud", _vehicle vehiclechat "Round dud, too close for warhead to prime", exit
+
+; MP broadcast
+_logic = "ExplodeLogic_Rocket_xj200" createVehicle _pos; [_logic, 10] exec "Common\DeleteUnitAfterDelay.sqs"
+
+; [_pos, _vel] exec "\TZK_Objects\Scripts\TOS\TOS_Impact.sqs", exit
+
+; Create Actual Shell
+
+
+; EOF

@@ -55,13 +55,10 @@ Private ["_sensor"];
 _sensor = "EmptyDetector" camCreate [0,0,0];
 _calcH = {Private["_result"]; _sensor SetPos [_p Select 0, _p Select 1, 0]; _result = GetPos _sensor Select 2; _result};
 
-?Format["%1",HDSIN ] == _null: HDSIN = Call {Private["_i","_result"]; _result = []; _i = 0; While "_i < 50" Do {_result = _result + [Sin (7.2*_i)*15]; _i = _i+1;}; _result}
-?Format["%1",HDCOS ] == _null: HDCOS = Call {Private["_i","_result"]; _result = []; _i = 0; While "_i < 50" Do {_result = _result + [Cos (7.2*_i)*15]; _i = _i + 1}; _result}
+_hdColorDust   = [[0.784314, 0.772549, 0.717647, 0.5], [0.784314, 0.772549, 0.717647, 0.3], [0.784314, 0.772549, 0.717647, 0.1], [0.784314, 0.772549, 0.717647, 0]]
+_hdColorWater = [[0.8,0.8,0.9,0],[0.9,0.9,1,0.7],[0.8,0.8,0.9,0],[0.8,0.8,0.9,0]]
 
-HDCOLORDUST   = [[0.784314, 0.772549, 0.717647, 0.5], [0.784314, 0.772549, 0.717647, 0.3], [0.784314, 0.772549, 0.717647, 0.1], [0.784314, 0.772549, 0.717647, 0]]
-HDCOLORWATER = [[0.8,0.8,0.9,0],[0.9,0.9,1,0.7],[0.8,0.8,0.9,0],[0.8,0.8,0.9,0]]
-
-_color = HDCOLORDUST
+_color = _hdColorDust
 _shape = "cl_basic"
 
 _radius = 20
@@ -83,12 +80,12 @@ Drop [_shape , "" , "Billboard" , 120 , 3 , [_x + (_xs * (_radius + 3)), _y + (_
 
 _d = _d + 4.8 
 
-? Abs(_vehicle Call _calcH) < 3: _color = HDCOLORWATER; _shape = "cl_water"; _nasrat = 1
+? Abs(_vehicle Call _calcH) < 3: _color = _hdColorWater; _shape = "cl_water"; _nasrat = 1
 
 ? (_d < 361) : Goto "loop4"
 #SkipExplode
 
-? Abs(_vehicle Call _calcH) < 3: _color = HDCOLORWATER; _shape = "cl_water"; _nasrat = 1
+? Abs(_vehicle Call _calcH) < 3: _color = _hdColorWater; _shape = "cl_water"; _nasrat = 1
 ? _nasrat == 1 : goto "Quit"
 
 ;_______________________; FIRE && SMOKE ;_______________________;

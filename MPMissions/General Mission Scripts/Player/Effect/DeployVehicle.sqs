@@ -1,0 +1,11 @@
+; args: [vehicle, status deploy]
+
+_vehicle = _this select 0; _deploy = [0, 1] select (_this select 1)
+
+? !local _vehicle: exit
+
+? "M109A6G_xj200" countType [_vehicle] > 0: [_vehicle, _deploy] exec "Player\Effect\DeployM109A6G.sqs"; exit
+? "PLZ05_TZK_xj200" countType [_vehicle] > 0: [_vehicle, _deploy] exec "Player\Effect\DeployPLZ05.sqs"; exit
+? "TOS1_TZK_xj200" countType [_vehicle] > 0: [_vehicle, _deploy] exec "Player\Effect\DeployTOS1.sqs"; exit
+
+; EOF

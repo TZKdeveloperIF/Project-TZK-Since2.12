@@ -66,6 +66,10 @@ moneySideTotal = [0, 0]
 moneySideSpent = [0, 0]
 [] exec "Player\InitGUIControlIDs.sqs"
 
+; ================================================================================TZK_4.0.0 Block================================================================================
+HDSIN = call {private["_i","_result"]; _result = []; _i = 0; while "_i < 50" do {_result = _result + [sin (7.2*_i)*15]; _i = _i+1}; _result}
+HDCOS = call {private["_i","_result"]; _result = []; _i = 0; while "_i < 50" do {_result = _result + [cos (7.2*_i)*15]; _i = _i+1}; _result}
+; ================================================================================TZK_4.0.0 Block================================================================================
 
 ; ================================================================================TZK_3.00 Block================================================================================
 ; 2.01 commands used. String in game will display without "_xj200"
@@ -75,6 +79,7 @@ funcFiredEffect = preprocessFile "Player\EH\FiredEffect.sqf"
 funcFiredMortar = preprocessFile "Player\EH\FiredMortar.sqf"
 
 boole_Refresh_Radio = false; Page_Radio = 0; Page_Radio_CustomCar = 0; Page_Radio_CustomShip = 0;
+Page_Radio_Artillery = 0; 
 
 boole_Local_Bullet_Tracer = false
 boole_Global_Bullet_Tracer = true
@@ -84,6 +89,8 @@ boole_Local_Shell_Tracer = false
 boole_Global_Shell_Tracer = true
 boole_Dead_Tank_Burning = true
 boole_Nuclear_Effect = false
+boole_Rocket_Impact = true
+boole_Rocket_Launch = true
 
 boole_Show_GPS = false; boole_Show_Pad = true
 boole_Mark_Player_Name = false
@@ -108,9 +115,11 @@ _missionSettingEffects set [count _missionSettingEffects, ["Local  Shell  Tracer
 _missionSettingEffects set [count _missionSettingEffects, ["Global Shell  Tracer [OFF]", "Global Shell  Tracer  [ON]"]]
 
 _missionSettingEffects set [count _missionSettingEffects, ["Dead Tank Burning    [OFF]", "Dead Tank Burning     [ON]"]]
-;_missionSettingEffects set [count _missionSettingEffects, []]
 _missionSettingEffects set [count _missionSettingEffects, ["Nuclear Effect       [OFF]", "Nuclear Effect        [ON]"]]
-booleSettingEffects = [ {boole_Local_Bullet_Tracer}, {boole_Global_Bullet_Tracer}, {boole_Local_Cannon_Tracer}, {boole_Global_Cannon_Tracer}, {boole_Local_Shell_Tracer}, {boole_Global_Shell_Tracer}, {boole_Dead_Tank_Burning}, {boole_Nuclear_Effect} ]
+_missionSettingEffects set [count _missionSettingEffects, ["Rocket Impact Effect [OFF]", "Rocket Impact Effect  [ON]"]]
+_missionSettingEffects set [count _missionSettingEffects, ["Rocket Launch Smoke  [OFF]", "Rocket Impact Smoke   [ON]"]]
+
+booleSettingEffects = [ {boole_Local_Bullet_Tracer}, {boole_Global_Bullet_Tracer}, {boole_Local_Cannon_Tracer}, {boole_Global_Cannon_Tracer}, {boole_Local_Shell_Tracer}, {boole_Global_Shell_Tracer}, {boole_Dead_Tank_Burning}, {boole_Nuclear_Effect}, {boole_Rocket_Impact}, {boole_Rocket_Launch} ]
 
 _missionSettingFunctions set [count _missionSettingFunctions, ["Show GPS             [OFF]", "Show GPS              [ON]"]]
 _missionSettingFunctions set [count _missionSettingFunctions, ["Mark Player Name     [OFF]", "Mark Player Name      [ON]"]]

@@ -54,7 +54,7 @@ _money = (groupMoneyMatrix select _si) select _gi
   if (local _vehicleRearm) then { { _vehicleRearm removeMagazines _x } foreach (magazines _vehicleRearm) } else { [_vehicleRearm] exec "Common\SendVehicleMagsRemove.sqs" }
   ~_timeRearm
   ? !(alive _vehicleRearm) || !(alive _support) : exit
-  ? count (magazines _vehicleRearm) == 0 : [_vehicleRearm] exec "Common\SendVehicleMagsAdd.sqs"
+  ? count (magazines _vehicleRearm) == 0 : [_vehicleRearm] exec "Common\Msg\sRearmVehGeneral.sqs"
   goto "RearmEnd"
 
 #RearmEnd

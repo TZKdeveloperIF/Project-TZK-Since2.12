@@ -1,0 +1,20 @@
+; args: [vehicle, phase]
+
+_vehicle = _this select 0
+_phase = _this select 1
+
+_i = 0 
+_animations = ["backdoor","sidedoor","shovL","shovR","BoxL","BoxR","Clamp"]
+_delays= [0.5, 1, 0, 1, 0, 1, 0]
+
+? _phase == 0: _vehicle removeweapon "Gun155_xj200"; goto "deploy"
+_vehicle setfuel 0
+
+#deploy
+	_vehicle animate [(_animations select _i), _phase]
+	~(_delays select _i)
+	? _i < (count _animations)-1: _i = _i + 1; goto "deploy"
+	
+	? _phase == 0: _vehicle setfuel 1; exit
+	_vehicle addweapon "Gun155_xj200"
+	exit

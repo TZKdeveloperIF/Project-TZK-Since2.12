@@ -1,0 +1,88 @@
+; args: logic object
+
+_posShell = getPos _this
+
+; _dum = "DKMM_TOS_detsound" createvehicle _posShell
+
+_clr1 = [0.1,0.1,0.1,.9]
+_clr2 = [0.6,0.6,0.6,0.7]
+_clr3 = [1,1,0, 0.05]
+_clr4 = [1,1,0.5,0.8]
+_clr5 = [0.6,0.6,0.6,0.05]
+_clr6 = [ [0.9,0.9,0.9,0.6],[0.9,0.9,0.9,0.6],[0.9,0.9,0.9,0.6],[0.9,0.9,0.9,0.3],[0.9,0.9,0.9,0.05] ]
+
+_dx = (_posShell select 0) 
+_dy = (_posShell select 1) 
+_dz = (_posShell select 2) + 3 
+
+_splash = [ _dx, _dy, _dz - 0 ]
+_splash2 = [ _dx , _dy , _dz - 0 + 5  ]
+_splash3 = [ _dx, _dy, 1 ]
+_vsplash = [0, 0, 0]
+
+
+; initial cloud
+_i = 5
+#loop1
+_i = _i + 1
+_dx = _dx
+_dy = _dy
+_dz = _dz  
+
+drop ["cl_fire", "", "Billboard", 2, 5, _splash , _vsplash , 1, .2, .157, .03, [0.3 *  _i , 5 * _i ], [_clr4,_clr4,_clr3], [0], .1, .2, "", "", ""]
+drop ["cl_fire", "", "Billboard", 2, 5, _splash2 , [0 + 6,0 + 6 ,0 - 2] , 1, .2, .157, .03, [0.3 *  _i , 5 * _i ], [_clr4,_clr4,_clr3], [0], .1, .2, "", "", ""]
+drop ["cl_fire", "", "Billboard", 2, 5, _splash2 , [0 - 6,0 - 6 ,0 - 2] , 1, .2, .157, .03, [0.3 *  _i , 5 * _i ], [_clr4,_clr4,_clr3], [0], .1, .2, "", "", ""]
+drop ["missilesmoke", "", "Billboard", 2, 12, _splash, [0 ,0 ,6], 1, .2, .157, .03, [_i*2 , _i*5 ], [_clr1,_clr2, _clr5], [0], .1, .2, "", "", ""]
+drop ["missilesmoke", "", "Billboard", 2, 12, _splash, [ -6 , -6,7], 1, .2, .157, .03, [_i*2 , _i*5 ], [_clr1,_clr2, _clr5], [0], .1, .2, "", "", ""]
+drop ["missilesmoke", "", "Billboard", 2, 12, _splash, [ +6 , +6,7], 1, .2, .157, .03, [_i*2 , _i*5 ], [_clr1,_clr2, _clr5], [0], .1, .2, "", "", ""]
+
+? _i < 20 : goto "loop1"
+
+; shockwave on ground
+_i = 0
+
+#loop2
+_v = [HDSIN select _i, HDCOS select _i, 0]
+_v2 =  [(HDSIN select _i)-1, (HDCOS select _i)-1, 1.5]
+_v3 =  [(HDSIN select _i)+10, (HDCOS select _i)+10, 0]
+_v4 =  [(HDSIN select _i)*2, (HDCOS select _i)*2, 0]
+drop ["cl_fire","", "Billboard", 4, 3, _splash3 , _v, 0, .2, .157, .001,[1.2, _i / 2], [ _clr4 , _clr4 , _clr3], [0], .1, .2, "", "", ""] 
+drop ["cl_basic","", "Billboard", 4, 3, _splash3 , _v2, 0, .2, .157, .001,[1.2, _i / 2], [ _clr1 , _clr1, _clr5], [0], .1, .2, "", "", ""] 
+drop ["cl_basic","", "Billboard", 4, 3, _splash3 , _v3, 0, .2, .157, .001,[1.2, 3], [ _clr2 , _clr2, _clr5], [0], .1, .2, "", "", ""] 
+drop ["cl_basic","", "Billboard", 4, 3, _splash3 , _v4, 0, .2, .157, .001,[1.2, 5], [ _clr4 , _clr4, _clr5], [0], .1, .2, "", "", ""] 
+? _i < 49 : _i = _i + 1 , goto "loop2"
+
+
+; shockwave in air
+drop ["\TZK_Objects\Model\SW.p3d", "", "Billboard", 2, 1, _splash3, [0,0,0] , 1, .2, .157, .03, [5 , 250 ], _clr6, [0], .1, .2, "", "", ""]
+
+
+
+
+
+;insertion of shells
+
+_dx = (_splash2 select 0) 
+_dy = (_splash2 select 1) 
+_dz = 0 
+_i = 0
+#loop3
+_dp1 = [ _dx + random 40 , _dy + random 40 , _dz ]
+_dp2 = [ _dx - random 40 , _dy + random 40 , _dz ]
+_dp3 = [ _dx + random 40 , _dy - random 40 , _dz ]
+_dp4 = [ _dx - random 40 , _dy - random 40 , _dz ]
+; _dum = "DKMM_subbomb" createvehicle _dp1
+; _dum = "DKMM_subbomb" createvehicle _dp2
+; _dum = "DKMM_subbomb" createvehicle _dp3
+; _dum = "DKMM_subbomb" createvehicle _dp4
+~0.1
+? (_i < 10) : _i = _i + 1 , goto "loop3"
+
+? !boole_Rocket_Impact: exit
+; mushroom cloud
+_dx = (_posShell select 0) 
+_dy = (_posShell select 1) 
+_dz = (_posShell select 2) + 3 
+[_splash3] exec "Player\Effect\MushroomCloud_DKM.sqs"
+exit
+
