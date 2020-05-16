@@ -15,7 +15,7 @@ _value = _value - _gi*(200)
 
 _si = _value/(200*GroupsNum)
 
-? _percent >= 100 : _obj setDamage 0
+? _percent >= 100: _obj setDamage 0; _percent = 100
 ? _si == siPlayer && _gi == giPlayer : hint format["Object repaired.\n%1%2", _percent, "%"]
 
 goto "Start"

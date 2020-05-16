@@ -1,3 +1,7 @@
+### 2.12 v09_v2
+Fix the bug in radio channel updating of Support Vehicles. The bug cause script exit if vehicle is support type but not land vehicle.  
+Fix the bug of self-medic script path in radio channel. 
+Optimize the way repairing object (original island objects like bridge).
 ## 2.12 v09
 Create markers for respawn on server. Bug of respawn type sometimes occur thus do this.  
 Use countType to judge whether T80's model is TZK style in **InitVehicle.sqs** and **PlayerVehicle.sqs**.  
