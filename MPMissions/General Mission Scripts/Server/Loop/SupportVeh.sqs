@@ -61,15 +61,19 @@ _distMin = 100000
 goto "Update"
 
 #CheckObjects
-_object = objNull
-_index = -1
-_i=0; { if ( ([getPos _support, getPos _x] call funcDistH) < 2*rangeSupport && !(alive _x) ) then { _object = _x; _index = _i }; _i=_i+1 } foreach repairableObjects
+_object = objNull; _distMin = 100000; _index = -1
+_i=0; { if !(alive _x) Then {_dist = ([getPos _support, getPos _x] call funcDistH); if (_dist < _distMin) Then {_object = _x; _index = _i; _distMin = _dist}}; _i = _i + 1 } forEach repairableObjects
 ? isNull _object : goto "Update"
-_dmg = repairableObjectsDamage select _index
-? _dmg == 0 : _dmg = 1
-_dmg = _dmg - _repair
-? _dmg < 0 : _dmg = 0
-[_object, _dmg, _si, _gi] exec "Server\SendObjectRepaired.sqs"
-repairableObjectsDamage set [_index, _dmg]
+
+		@!(mutexRepairStructure)
+		mutexRepairStructure = true
+			? alive _object: mutexRepairStructure = false; goto "Update"
+			_dmg = repairableObjectsDamage select _index
+			? _dmg == 0: _dmg = 1
+			_dmg = _dmg - _repair
+			? _dmg <= 0: _dmg = 0; _object setDamage 0
+			[_object, _dmg, _si, _gi] exec "Server\SendObjectRepaired.sqs"
+			repairableObjectsDamage set [_index, _dmg]
+		mutexRepairStructure = false
 
 goto "Update"

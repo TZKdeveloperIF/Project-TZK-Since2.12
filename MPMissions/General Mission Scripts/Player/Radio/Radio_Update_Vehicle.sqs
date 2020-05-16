@@ -14,7 +14,7 @@ _vt = _vehicle call funcGetUnitTypeFromObject
 ? _vt in RadioTypesShips : [_vehicle] exec "Player\Radio\Radio_Update_Vehicle_Ship.sqs"; exit
 
 ; Helis all can attach and support Heli is special in drop ammo crate. Support Plane is more a transport plane. Support Ship nothing to specialize.
-? _vt in (RadioTypesSupport + [utMCVW, utMCVE, utMHQ0, utMHQ1]): if ("Land" countType [_vehicle] > 0) then {[_vehicle] exec "Player\Radio\Radio_Update_Vehicle_SupportLand.sqs"}; exit
+? _vt in (RadioTypesSupport + [utMCVW, utMCVE, utMHQ0, utMHQ1]): if ("Land" countType [_vehicle] > 0) then {[_vehicle] exec "Player\Radio\Radio_Update_Vehicle_SupportLand.sqs"; exit}
 
 ; Transport Helis and Planes are similar. Support Heli is special in drop ammo crate.
 ? _vt in RadioTypesTransportPlane + RadioTypesTransportHeli : [_vehicle] exec "Player\Radio\Radio_Update_Vehicle_TransportAir.sqs"; exit
