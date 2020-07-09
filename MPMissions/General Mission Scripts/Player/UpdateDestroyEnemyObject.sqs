@@ -22,6 +22,7 @@ _res = [getPos _unit, siPlayer] call funcGetClosestEnemyObject
 _object = _res select 0
 
 ? (_unit distance _object) > 200 : goto "Update"
+? _unit in PlayerShootingUnits: goto "Update"
 
 _weapons = weapons _vehicle
 ? (count _weapons) == 0 : goto "Update"

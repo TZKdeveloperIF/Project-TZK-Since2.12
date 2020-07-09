@@ -21,7 +21,7 @@ _duration = 180 * ((_params select 4) + 1)
 ? (TransportDutyTypeDefs select _typeIndex) == "APC": 			_typesTransp = [Transport6APCW+Transport8APCW, Transport6APCE+Transport8APCE] select _si;
 ? (TransportDutyTypeDefs select _typeIndex) == "Land": 			_typesTransp = [Transport6APCW+Transport8APCW+TransportShipW+TransportZodiacW+TransportTruckW+TransportCarW, Transport6APCE+Transport8APCE+TransportShipE+TransportZodiacE+TransportTruckE+TransportCarE] select _si;
 ? (TransportDutyTypeDefs select _typeIndex) == "Transport Heli":	_typesTransp = [TransportHeliW, TransportHeliE] select _si;
-? (TransportDutyTypeDefs select _typeIndex) == "Tiger/Mi24":			_typesTransp = [TransportTigerW, TransportHindE] select _si;
+? (TransportDutyTypeDefs select _typeIndex) == "Mi24":			_typesTransp = [[], TransportHindE] select _si;
 _vehicle = vehicle _unit
 ? _unit == _vehicle: exit
 _vt = _vehicle call funcGetUnitTypeFromObject

@@ -1,7 +1,8 @@
-; args: [upg, si]
+; args: [upg, si, gi]
 
 _upg = _this select 0
 _si = _this select 1
+_gi = _this select 2
 
 _controlCenters = [_si, stComm] call funcGetWorkingStructures
 
@@ -9,7 +10,7 @@ _controlCenters = [_si, stComm] call funcGetWorkingStructures
 
 ? ((upgMatrix select _si) select _upg) != 0 : exit
 
-_gi = giCO select _si
+; _gi = giCO select _si
 
 ? _gi == -1 : exit
 

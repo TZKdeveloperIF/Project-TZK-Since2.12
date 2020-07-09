@@ -4,8 +4,8 @@ _found = [getPos _unit, siBoth, (typesSupportPlus select si0) + (typesSupportPlu
 if ((_found select 1) > rangeSupport) then {_found = [getPos _unit, siPlayer, stAmmoCrate] call funcGetClosestStructure};
 if ((_found select 1) > rangeSupport) then {_found = [getPos _unit, siEnemy select siPlayer, stAmmoCrate] call funcGetClosestStructure};
 if ((_found select 1) > rangeSupport) then {hint "No Rearm Vehicle Nearby."} else {
-	if ("NVG_statF_xj200" in weapons _unit) then {hint "You are equipping the better NVG."} else {
-		_NVGs = ["NVGoggles", "NVG_stat_xj200", "NVG_statF_xj200"]; _nvgOptics = "NVG_statF_xj200";
+	if ("NVG_statF_xj400" in weapons _unit) then {hint "You are equipping the better NVG."} else {
+		_NVGs = ["NVGoggles", "NVG_stat_xj400", "NVG_statF_xj400"]; _nvgOptics = "NVG_statF_xj400";
 		
 		_index = weaponSearch find _nvgOptics;
 		if (_index != -1) then {_costO = weaponDefs select _index select wdcost}; if (_costO != 0) then {{_unit removeWeapon _x} forEach _NVGs; _unit addWeapon _nvgOptics};

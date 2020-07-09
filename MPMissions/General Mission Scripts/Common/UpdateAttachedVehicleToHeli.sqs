@@ -14,21 +14,21 @@ _attachDist = 20; _speedDamageVert = 10
 	? isNull(((vehicleAttached select _tugindex) select tsTugged) select _tugslot) || !(alive _tug) || !(alive _vehicle) || !(local _vehicle): goto "Abort"
 	? _attachDist > ((getPos _tug) select 2) : goto "WaitForTakeOff"
 #TakeOff
-	_vehPos = getPos _vehicle; _vehicle setPos positionAttach; _vehicle setVelocity [0, 0, 3]
+	_vehPos = getPosASL _vehicle; _vehicle setPosASL positionAttach; _vehicle setVelocity [0, 0, 3]
 	~0.1
-	_vehicle setPos [_vehPos select 0, _vehPos select 1, (_vehPos select 2) + 4]; _vehicle setVelocity [0, 0, 3]
+	_vehicle setPosASL [_vehPos select 0, _vehPos select 1, (_vehPos select 2) + 4]; _vehicle setVelocity [0, 0, 3]
 _loop = 0
 #Update
 	_velVehicle = [_tug, _vehicle, _attachDist, 0, 0.9, 0, true] call funcUpdateAttaching
 	? isNull(((vehicleAttached select _tugindex) select tsTugged) select _tugslot) || !(alive _tug) || !(alive _vehicle) || !(local _vehicle): goto "Abort"
 	? ((getPos _tug) select 2) < _attachDist : goto "Abort"
 	_vehicle setVelocity _velVehicle
-	_distH = [getPos _tug, getPos _vehicle] call funcDistH; _loop = _loop + 1
+	_distH = [getPosASL _tug, getPosASL _vehicle] call funcDistH; _loop = _loop + 1
 	? _distH < 50  && _loop < 40 : goto "SkipResetPos"
-	_vehPos = getPos _vehicle; _velVehicle set [2, 3]
-	_vehicle setPos positionAttach; _vehicle setVelocity _velVehicle
+	_vehPos = getPosASL _vehicle; _velVehicle set [2, 3]
+	_vehicle setPosASL positionAttach; _vehicle setVelocity _velVehicle
 	~0.01
-	_vehicle setPos _vehPos; _vehicle setVelocity _velVehicle
+	_vehicle setPosASL _vehPos; _vehicle setVelocity _velVehicle
 	_loop = 0
 	#SkipResetPos
 	~0.1	

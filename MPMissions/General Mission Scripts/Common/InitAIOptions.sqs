@@ -203,7 +203,7 @@ orderDefs set [_type, ["Disable Mines", [_param0], "DisableMines.sqs"] ]
 _type = _type + 1
 
 ;orderReclaim = _type
-;ReclaimTypeDefs = ["Transport Car", "Transport Ship", "Transport APC", "Transport Heli", "Battle Ship", "Light Tank", "Heavy Tank", "Howitzer", "AT APC", "AA Vehicle", "Kamov", "Cobra\Apac\Hind", "Transports", "Tanks", "APCs", "Support APC"]
+;ReclaimTypeDefs = ["Transport Car", "Transport Ship", "Transport APC", "Transport Heli", "Battle Ship", "Light Tank", "Heavy Tank", "Artillery", "AT APC", "AA Vehicle", "Kamov", "Cobra\Apac\Hind", "Transports", "Tanks", "APCs", "Support APC"]
 ;_param0 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
 ;_param1 = [ "Vehicle type", "count ReclaimTypeDefs", "format [""%1"", ReclaimTypeDefs select _this ]" ]
 ;_param2 = [ "Reciaim Radius", "10", "format [""%1m"", 50*(_this+1)]" ]
@@ -211,7 +211,7 @@ _type = _type + 1
 ;_type = _type + 1
 
 ;orderOccupy = _type
-;OccupyTypeDefs = ["All Defense", "Mortar", "MG Ground", "MG Tower", "M46", "M46 Art", "Gun Fort"]
+;OccupyTypeDefs = ["All Defense", "Mortar", "MG Ground", "MG Tower", "Howitzer", "Howitzer Art", "Gun Fort"]
 ;_param0 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
 ;_param1 = [ "Structure type", "count OccupyTypeDefs", "format [""%1"", OccupyTypeDefs select _this ]" ]
 ;_param2 = [ "Occupy Radius", "10", "format [""%1m"", 50*(_this+1)]" ]
@@ -259,7 +259,7 @@ orderTempDefs = []
 _type = 0
 
 orderTempClearType = _type
-ClearTypeDefs = ["Transport Car", "Transport Ship", "Transport APC", "Transport Heli", "Battle Ship", "Light Tank", "Heavy Tank", "Howitzer", "AT APC", "AA Vehicle", "Kamov", "Cobra\Apac\Hind", "Transports", "Tanks", "APCs", "Support APC", "non-AT-Infantry", "AT-Infantry", "All Infantry", "All"]
+ClearTypeDefs = ["Transport Car", "Transport Ship", "Transport APC", "Transport Heli", "Battle Ship", "Light Tank", "Heavy Tank", "Artillery", "AT APC", "AA Vehicle", "Kamov", "Cobra\Apac\Hind", "Transports", "Tanks", "APCs", "Support APC", "non-AT-Infantry", "AT-Infantry", "All Infantry", "All"]
 _param0 = [ "Unit type", "count ClearTypeDefs", "format [""%1"", ClearTypeDefs select _this ]" ]
 orderTempDefs set [_type, ["ClearOrder(Type)", [_param0], "OrderTemp\ClearType.sqs"] ]
 _type = _type + 1
@@ -288,7 +288,7 @@ orderTempDefs set [_type, ["Rearm", [_param0, _param1, _param2, _param3, _param4
 _type = _type + 1
 
 orderTempReclaim = _type
-ReclaimTypeDefs = ["Transport Car", "Transport Ship", "Transport APC", "Transport Heli", "Battle Ship", "Light Tank", "Heavy Tank", "Howitzer", "AT APC", "AA Vehicle", "Kamov", "Cobra\Apac\Hind", "Transports", "Tanks", "APCs", "Support APC"]
+ReclaimTypeDefs = ["Transport Car", "Transport Ship", "Transport APC", "Transport Heli", "Battle Ship", "Light Tank", "Heavy Tank", "Artillery", "AT APC", "AA Vehicle", "Kamov", "Cobra\Apac\Hind", "Transports", "Tanks", "APCs", "Support APC"]
 ReclaimPrioDefs = ["Driver", "Gunner"]
 _param0 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
 _param1 = [ "Vehicle type", "count ReclaimTypeDefs", "format [""%1"", ReclaimTypeDefs select _this ]" ]
@@ -299,7 +299,7 @@ orderTempDefs set [_type, ["Reclaim", [_param0, _param1, _param2, _param3, _para
 _type = _type + 1
 
 orderTempOccupy = _type
-OccupyTypeDefs = ["All Defense", "Mortar", "MG Ground", "MG Tower", "M46", "M46 Art", "Gun Fort"]
+OccupyTypeDefs = ["All Defense", "Mortar", "MG Ground", "MG Tower", "Howitzer", "Howitzer Art", "Gun Fort"]
 _param0 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
 _param1 = [ "Structure type", "count OccupyTypeDefs", "format [""%1"", OccupyTypeDefs select _this ]" ]
 _param2 = [ "Occupy Radius", "20", "format [""%1m"", 50*(_this+1)]" ]
@@ -340,7 +340,7 @@ orderTempDefs set [_type, ["Spoof Missile ON", [_param0], "OrderTemp\SpoofMissil
 _type = _type + 1
 
 orderTempTransportDuty = _type
-TransportDutyTypeDefs = ["Car", "Truck", "Zodiac", "Ship", "APC", "Land", "Transport Heli", "Tiger/Mi24"]
+TransportDutyTypeDefs = ["Car", "Truck", "Zodiac", "Ship", "APC", "Land", "Transport Heli", "Mi24"]
 _param0 = [ "Pickup Pos", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
 _param1 = [ "Eject Pos", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
 _param2 = [ "Eject Distance", "20", "format [""%1m"", 50*(_this+1)]" ]
@@ -350,7 +350,7 @@ orderTempDefs set [_type, ["Transport Duty", [_param0, _param1, _param2, _param3
 _type = _type + 1
 
 orderTempMoveType = _type
-MoveTypeDefs = ["Transport Car", "Transport Ship", "Transport APC", "Transport Heli", "Battle Ship", "Light Tank", "Heavy Tank", "Howitzer", "AT APC", "AA Vehicle", "Kamov", "Cobra\Apac\Hind", "Transports", "Tanks", "APCs", "Support APC", "non-AT-Infantry", "AT-Infantry", "All Infantry"]
+MoveTypeDefs = ["Transport Car", "Transport Ship", "Transport APC", "Transport Heli", "Battle Ship", "Light Tank", "Heavy Tank", "Artillery", "AT APC", "AA Vehicle", "Kamov", "Cobra\Apac\Hind", "Transports", "Tanks", "APCs", "Support APC", "non-AT-Infantry", "AT-Infantry", "All Infantry"]
 _param0 = [ "Position", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
 _param1 = [ "Unit type", "count MoveTypeDefs", "format [""%1"", MoveTypeDefs select _this ]" ]
 _param2 = [ "Guard Radius", "20", "format [""%1m"", 5*_this]" ]
@@ -369,7 +369,7 @@ orderTempDefs set [_type, ["Move(Unit)", [_param0, _param1, _param2, _param3, _p
 _type = _type + 1
 
 orderTempHaltType = _type
-HaltTypeDefs = ["Transport Car", "Transport Ship", "Transport APC", "Transport Heli", "Battle Ship", "Light Tank", "Heavy Tank", "Howitzer", "AT APC", "AA Vehicle", "Kamov", "Cobra\Apac\Hind", "Transports", "Tanks", "APCs", "Support APC", "non-AT-Infantry", "AT-Infantry", "All Infantry"]
+HaltTypeDefs = ["Transport Car", "Transport Ship", "Transport APC", "Transport Heli", "Battle Ship", "Light Tank", "Heavy Tank", "Artillery", "AT APC", "AA Vehicle", "Kamov", "Cobra\Apac\Hind", "Transports", "Tanks", "APCs", "Support APC", "non-AT-Infantry", "AT-Infantry", "All Infantry"]
 _param0 = [ "Unit type", "count HaltTypeDefs", "format [""%1"", HaltTypeDefs select _this ]" ]
 _param1 = [ "Duration", "20", "format [""%1min"", 12*(_this+1)]" ]
 orderTempDefs set [_type, ["Halt(Type)", [_param0, _param1], "OrderTemp\HaltType.sqs"] ]
@@ -387,7 +387,7 @@ orderTempDefs set [_type, ["Tanks EngineOFF", [_param0], "OrderTemp\TanksEngineO
 _type = _type + 1
 
 orderTempDisengageType = _type
-DisengageTypeDefs = ["Transport Car", "Transport Ship", "Transport APC", "Transport Heli", "Battle Ship", "Light Tank", "Heavy Tank", "Howitzer", "AT APC", "AA Vehicle", "Kamov", "Cobra\Apac\Hind", "Transports", "Tanks", "APCs", "Support APC", "non-AT-Infantry", "AT-Infantry", "All Infantry"]
+DisengageTypeDefs = ["Transport Car", "Transport Ship", "Transport APC", "Transport Heli", "Battle Ship", "Light Tank", "Heavy Tank", "Artillery", "AT APC", "AA Vehicle", "Kamov", "Cobra\Apac\Hind", "Transports", "Tanks", "APCs", "Support APC", "non-AT-Infantry", "AT-Infantry", "All Infantry"]
 _param0 = [ "Unit type", "count DisengageTypeDefs", "format [""%1"", DisengageTypeDefs select _this ]" ]
 orderTempDefs set [_type, ["Disengage(Type)", [_param0], "OrderTemp\DisengageType.sqs"] ]
 _type = _type + 1
@@ -398,7 +398,7 @@ orderTempDefs set [_type, ["Disengage(Unit)", [_param0], "OrderTemp\DisengageUni
 _type = _type + 1
 
 orderTempHoldTown = _type
-HoldTownTypeDefs = ["non-AT-Infantry", "AT-Infantry", "Light Tank", "Heavy Tank", "Howitzer", "AT APC", "AA Vehicle", "Kamov", "Cobra\Apac\Hind", "Infantry", "Tanks", "APCs"]
+HoldTownTypeDefs = ["non-AT-Infantry", "AT-Infantry", "Light Tank", "Heavy Tank", "Artillery", "AT APC", "AA Vehicle", "Kamov", "Cobra\Apac\Hind", "Infantry", "Tanks", "APCs"]
 _param0 = [ "Town", "count towns", "(towns select _this) select 1" ]
 _param1 = [ "Unit type", "count HoldTownTypeDefs", "format [""%1"", HoldTownTypeDefs select _this ]" ]
 _param2 = [ "Defend Distance", "10", "format [""%1m"", 50*(_this+1)]" ]
@@ -408,7 +408,7 @@ orderTempDefs set [_type, ["HoldTown", [_param0, _param1, _param2, _param3, _par
 _type = _type + 1
 
 orderTempPatrolLine = _type
-PatrolLineTypeDefs = ["non-AT-Infantry", "AT-Infantry", "Light Tank", "Heavy Tank", "Howitzer", "AT APC", "AA Vehicle", "Kamov", "Cobra\Apac\Hind", "Infantry", "Tanks", "APCs"]
+PatrolLineTypeDefs = ["non-AT-Infantry", "AT-Infantry", "Light Tank", "Heavy Tank", "Artillery", "AT APC", "AA Vehicle", "Kamov", "Cobra\Apac\Hind", "Infantry", "Tanks", "APCs"]
 _param0 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
 _param1 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
 _param2 = [ "Unit type", "count PatrolLineTypeDefs", "format [""%1"", PatrolLineTypeDefs select _this ]" ]
@@ -425,19 +425,45 @@ _type = _type + 1
 
 orderTempDisableMines = _type
 _param0 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
-_param1 = [ "Search Radius", "20", "format [""%1m"", 25*_this]" ]
+_param1 = [ "Search Radius", "20", "format [""%1m"", 25*(_this+1)]" ]
 _param2 = [ "Duration", "20", "format [""%1min"", 3*(_this+1)]" ]
 orderTempDefs set [_type, ["Disable Mines", [_param0, _param1, _param2], "OrderTemp\DisableMines.sqs"] ]
 _type = _type + 1
 
 orderTempChangeAmmo = _type
-ChangeAmmoTypeDefs = ["Light Tank", "Heavy Tank", "Howitzer", "All"]
+ChangeAmmoTypeDefs = ["Light Tank", "Heavy Tank", "All"]
 _param0 = [ "Unit type", "count ChangeAmmoTypeDefs", "format [""%1"", ChangeAmmoTypeDefs select _this ]" ]
 _param1 = [ "Ammo", "2", "format [""%1"", [""Sabot"",""Heat""] select _this]" ]
 orderTempDefs set [_type, ["Change Ammo", [_param0, _param1], "OrderTemp\ChangeAmmo.sqs"] ]
 _type = _type + 1
 
+orderTempSwitchMagazine = _type
+ArtilleryMagazineSpeedList = [80, 120, 180, 300, 400, 500, 600, 700, 800, 900, 1000, 1200, 1500]
+ArtilleryTypeDefs = ["Howitzer Vehicle", "Rocket Launcher", "Mortar Structure", "Howitzer Structure", "Vehicles", "Structures", "ALL"]
+_param0 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
+_param1 = [ "Response Radius", "20", "format [""%1m"", 100*(_this+1)]" ]
+_param2 = [ "Unit Type", "count ArtilleryTypeDefs", "ArtilleryTypeDefs select _this" ]
+_param3 = [ "InitSpeed", "count ArtilleryMagazineSpeedList", "format [""%1"", ArtilleryMagazineSpeedList select _this ]" ]
+_param4 = [ "Curved", "2", "[{false},{true}] select _this" ]
+orderTempDefs set [_type, ["Switch Magazine", [_param0, _param1, _param2, _param3, _param4], "OrderTemp\SwitchMagazine.sqs"] ]
+_type = _type + 1
 
+orderTempDeployVehicle = _type
+_param0 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
+_param1 = [ "Response Radius", "20", "format [""%1m"", 100*(_this+1)]" ]
+_param2 = [ "Unit Type", "count [{Howitzer Vehicle}, {Rocket Launcher}, {ALL}]", "[{Howitzer Vehicle}, {Rocket Launcher}, {ALL}] select _this" ]
+_param3 = [ "Deploy", "2", "[{OFF},{ON}] select _this" ]
+orderTempDefs set [_type, ["Deploy Vehicle", [_param0, _param1, _param2, _param3], "OrderTemp\DeployVehicle.sqs"] ]
+_type = _type + 1
+
+orderTempShootTarget = _type
+_param0 = [ "Attack Pos", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
+_param1 = [ "Radius", "20", "format [""%1m"", 5*(_this+1)]" ]
+_param2 = [ "Unit Type", "count ([{Light Tank}, {Heavy Tank}] + ArtilleryTypeDefs)", "([{Light Tank}, {Heavy Tank}] + ArtilleryTypeDefs) select _this" ]
+_param3 = [ "Target", "countTargetMarkers", "format [""%1"", _this ]" ]
+_param4 = [ "Dispersion", "20", "format [""%1m"", 10*_this]" ]
+orderTempDefs set [_type, ["Shoot Target", [_param0, _param1, _param2, _param3, _param4], "OrderTemp\ShootTarget.sqs"] ]
+_type = _type + 1
 
 
 ; orderTemp entry format: [orderTempID, orderTempType, [param0, param1, ...]]

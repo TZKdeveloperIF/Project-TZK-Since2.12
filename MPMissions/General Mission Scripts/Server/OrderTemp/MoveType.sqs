@@ -14,31 +14,31 @@ _iDir = (_params select 3)
 _duration = 720 * ((_params select 4) + 1)
 
 ; Check Whether Unit Fits The Parameters Of The Temporary Order
-
-? (MoveTypeDefs select _typeIndex) == "Transport Car": 	_typesMove = typesTransportCar;				
-? (MoveTypeDefs select _typeIndex) == "Transport Ship": 	_typesMove = typesTransportShip; 				
-? (MoveTypeDefs select _typeIndex) == "Transport APC": 	_typesMove = typesTransportAPC; 					
-? (MoveTypeDefs select _typeIndex) == "Transport Heli": 	_typesMove = typesTransportHeli; 				
-? (MoveTypeDefs select _typeIndex) == "Battle Ship": 		_typesMove = typesBattleShip; 					
-? (MoveTypeDefs select _typeIndex) == "Light Tank": 		_typesMove = typesLightTank; 					
-? (MoveTypeDefs select _typeIndex) == "Heavy Tank": 		_typesMove = typesHeavyTank; 					
-? (MoveTypeDefs select _typeIndex) == "Howitzer": 			_typesMove = typesHowitzer; 						
-? (MoveTypeDefs select _typeIndex) == "AT APC":			_typesMove = typesATAPC; 						
-? (MoveTypeDefs select _typeIndex) == "AA Vehicle":		_typesMove = typesAAAPC; 						
-? (MoveTypeDefs select _typeIndex) == "Kamov":				_typesMove = typesKa50; 							
-? (MoveTypeDefs select _typeIndex) == "Cobra\Apac\Hind":	_typesMove = (typesGunshipOrigin+typesGunshipAT) - typesKa50; 								
-? (MoveTypeDefs select _typeIndex) == "Transports": 		_typesMove = typesTransportCar+typesTransportShip+typesTransportAPC+typesTransportHeli;		
-? (MoveTypeDefs select _typeIndex) == "Tanks": 			_typesMove = typesLightTank+typesHeavyTank+typesHowitzer; 									
-? (MoveTypeDefs select _typeIndex) == "APCs": 				_typesMove = typesATAPC+typesAAAPC; 				
-? (MoveTypeDefs select _typeIndex) == "Support APC": 		_typesMove = typesSupportAPC;					
-? (MoveTypeDefs select _typeIndex) == "non-AT-Infantry": 	_typesMove = typesInfantryAll - typesInfantryAT;					
-? (MoveTypeDefs select _typeIndex) == "AT-Infantry": 		_typesMove = typesInfantryAT;					
-? (MoveTypeDefs select _typeIndex) == "All Infantry": 		_typesMove = typesInfantryAll;					
+_typeIndex = MoveTypeDefs select _typeIndex
+? _typeIndex == "Transport Car": 	_typesMove = typesTransportCar;				
+? _typeIndex == "Transport Ship": 	_typesMove = typesTransportShip; 				
+? _typeIndex == "Transport APC": 	_typesMove = typesTransportAPC; 					
+? _typeIndex == "Transport Heli": 	_typesMove = typesTransportHeli; 				
+? _typeIndex == "Battle Ship": 		_typesMove = typesBattleShip; 					
+? _typeIndex == "Light Tank": 		_typesMove = typesLightTank; 					
+? _typeIndex == "Heavy Tank": 		_typesMove = typesHeavyTank; 					
+? _typeIndex == "Artillery": 			_typesMove = typesHowitzer+typesRocketLauncher; 						
+? _typeIndex == "AT APC":			_typesMove = typesATAPC; 						
+? _typeIndex == "AA Vehicle":		_typesMove = typesAAAPC; 						
+? _typeIndex == "Kamov":				_typesMove = typesKa50; 							
+? _typeIndex == "Cobra\Apac\Hind":	_typesMove = (typesGunshipOrigin+typesGunshipAT) - typesKa50; 								
+? _typeIndex == "Transports": 		_typesMove = typesTransportCar+typesTransportShip+typesTransportAPC+typesTransportHeli;		
+? _typeIndex == "Tanks": 			_typesMove = typesLightTank+typesHeavyTank+typesHowitzer+typesRocketLauncher; 									
+? _typeIndex == "APCs": 				_typesMove = typesATAPC+typesAAAPC; 				
+? _typeIndex == "Support APC": 		_typesMove = typesSupportAPC;					
+? _typeIndex == "non-AT-Infantry": 	_typesMove = typesInfantryAll - typesInfantryAT;					
+? _typeIndex == "AT-Infantry": 		_typesMove = typesInfantryAT;					
+? _typeIndex == "All Infantry": 		_typesMove = typesInfantryAll;					
 
 _vehicle = vehicle _unit
 _vt = _vehicle call funcGetUnitTypeFromObject
 ? !(_vt in _typesMove) && _unit != leader group _unit: exit
-? _unit == leader group _unit: if !(_unit == _vehicle && (MoveTypeDefs select _typeIndex) in ["AT-Infantry", "All Infantry"]) then {exit}
+? _unit == leader group _unit: if !(_unit == _vehicle && _typeIndex in ["AT-Infantry", "All Infantry"]) then {exit}
 
 ; Check Whether Unit In Another Temporary Order (Except For Set Flight Altitude, Clear Temporary Order, Etc)
 ? _unit call temporaryCheck: exit

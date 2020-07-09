@@ -8,7 +8,7 @@ _ammo = _this select 4;
 
 _bullet = nearestObject [_vehicle, _ammo];
 if (local _bullet) then {
-	if !(_ammo in ["Ammo_12mm7_xj200"]) then {
+	if !(_ammo in ["Ammo_12mm7_xj400"]) then {
 		_size = sizeofstr _ammo; _startPos = sizeofstr "Virtual"; _actualAmmo = substr [_ammo, _startPos, _size];
 		_actualAmmo = _actualAmmo call funcStringWithoutVersion;
 		_position = getPos _bullet; _direction = vectorDir _bullet; _velocity = velocity _bullet;

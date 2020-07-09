@@ -47,7 +47,7 @@ _indexExtra = 0
 	if (_index < count (townGroups select si1)) then {_eastTG = (townGroups select si1) select _index} else {_eastTG = createGroup east}
 	
 	_script = "{Server\Start\TownGroup4.sqs}"
-	call format ["[_westTG, _index, west] exec %1", _script]; call format ["[_eastTG, _index, east] exec %1", _script]
+	call format ["[_westTG, _indexExtra, west] exec %1", _script]; call format ["[_eastTG, _indexExtra, east] exec %1", _script]
 	_index = _index + 1
 
 	#SkipExtraTownGroups

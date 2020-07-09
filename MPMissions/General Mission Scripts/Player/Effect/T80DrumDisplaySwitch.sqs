@@ -3,15 +3,14 @@
 _t80 = _this select 0
 _show = _this select 1
 
-_index = (typeOf _t80 GetVehicleParamArray "hiddenSelections") find "drum"
+_path = ""
+? TheWorld == "D": _path = "\TZK_Texture_4_0_0\desert\"
+? TheWorld == "G": _path = "\TZK_Texture_4_0_0\sov_htnk\"
+? TheWorld == "W": _path = "\TZK_Texture_4_0_0\snow\"
 
-? !_show : {_t80 setObjectTexture [_x + _index, ""]} forEach [1,2,3,4,5]; exit
-
-_path = "tank_04_"
-_t80 setObjectTexture [1 + _index, _path + "bednyuvalce_.pac"]
-_t80 setObjectTexture [2 + _index, _path + "krabic_back.pac"]
-_t80 setObjectTexture [3 + _index, _path + "krabic_sidet.pac"]
-_t80 setObjectTexture [4 + _index, _path + "v_lec_norm.pac"]
-_t80 setObjectTexture [5 + _index, _path + "v_lec_side.paa"]
+_size = sizeofstr "tex_";
+_array = ["bednyuvalce_.pac", "krabic_back.pac", "krabic_sidet.pac", "v_lec_norm.pac", "v_lec_side.paa"]
+_i = 0; {_array set [_i, "tex_tank_04_" + _x]; _i = _i + 1} forEach _array
+{_index = (typeOf _t80 GetVehicleParamArray "hiddenSelections") find _x; _t80 setObjectTexture [_index, ["", _path + substr [_x, _size, sizeofstr _x]] select _show]} forEach _array
 
 ; EOF

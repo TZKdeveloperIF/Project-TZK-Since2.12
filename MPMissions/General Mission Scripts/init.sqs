@@ -33,13 +33,12 @@ blockTime = 60
 costRespawn = 0
 factorRepairCost = 0.1
 factorRepairTime = 0.02
-distMaxCC = 200
-distMaxCCUpgraded = 10000
+distMaxCC = 200; distMaxCCUpgraded = 10000; CCdistMax = [distMaxCC, distMaxCC]
 iInitNew = 99
 bShowGroups = false
 bShowInfo = false
 bShowMap = false
-SpoofMagazines = ["SpoofSwitch_xj200", "SpoofCount_xj200", "SpoofCount_xj200", "SpoofCount_xj200", "SpoofCount_xj200", "SpoofCount_xj200", "SpoofCount_xj200", "SpoofCount_xj200", "SpoofCount_xj200"]
+SpoofMagazines = ["SpoofSwitch_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400"]
 positionAttach = [-1000, -1000, 100]; positionRespawn = [-1000, -1000, 10]
 
 callsigns = ["Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel", "Kilo", "November", "Yankee", "Zulu", "Two", "Three", "Buffalo", "Guardian", "Convoy", "Fox" ]
@@ -105,8 +104,8 @@ upgRadarArtillery = _type; 		upgDefs set [_type, ["Artillery Radar", [5000, 100]
 
 upgLongWeaponRange = _type; 	upgDefs set [_type, [format["%1m Range Weapons", 2*viewDistance], [30000, 100] select dev, [3, 0] select dev]]; _type=_type+1
 
-; upgCCdistance = _type; 		upgDefs set [_type, [format[ "%1m CC range ", distMaxCCUpgraded ], [20000, 100] select dev, [3, 0] select dev]]; _type=_type+1
-upgCCdistance = _type; 			upgDefs set [_type, ["10000m CC Range", [20000, 100] select dev, [3, 0] select dev]]; _type=_type+1
+upgCCdistance = _type; 		upgDefs set [_type, [format[ "%1m CC range", distMaxCCUpgraded ], [20000, 100] select dev, [3, 0] select dev]]; _type=_type+1
+; upgCCdistance = _type; 			upgDefs set [_type, ["10000m CC Range", [20000, 100] select dev, [3, 0] select dev]]; _type=_type+1
 
 upgNumBuildings = _type; 		upgDefs set [_type, ["More Buildings", [20000, 100] select dev, [3, 0] select dev]]; _type=_type+1
 
@@ -217,6 +216,7 @@ groupCommander set [_si, (groupMatrix select _si) select 0]
 	? _i < _c : goto "InitSide1Groups"
 #Side1Empty
 InitStructureReady = false
+[] exec "Common\Init\TheWorld.sqs"
 
 _initUnitTypes = "Common\InitUnitTypes.sqs"; _initStructureTypes = "Common\InitStructureTypes.sqs"
 ; ? _boole_Infantry_Mode : _initUnitTypes = "Common\InitUnitTypes_Infantry_Mode.sqs"; _initStructureTypes = "Common\InitStructureTypes_Infantry_Mode.sqs"
@@ -239,8 +239,7 @@ tdSide = 3
 [] exec "Common\InitAIOptions.sqs"
 
 ; WAYPOINTS
-countWPPlayer = 10
-countWPCO = 20
+countWPPlayer = 10; countWPCO = 20; countTargetMarkers = 10
 wpCO = [[],[]]
 _i = 0; while "_i < countWPCO" do { (wpCO select si0) set [_i, [-1,-1]]; _i = _i + 1 } 
 _i = 0; while "_i < countWPCO" do { (wpCO select si1) set [_i, [-1,-1]]; _i = _i + 1 }

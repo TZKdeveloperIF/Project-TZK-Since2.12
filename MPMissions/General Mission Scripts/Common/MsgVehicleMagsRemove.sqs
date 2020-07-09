@@ -8,5 +8,6 @@ pvRemoveMags = objNull
 ? !( (local _v) || (!isNull gunner _v && local gunner _v) ) || !(alive _v) : goto "Start"
 
 { _v removeMagazines _x } foreach (magazines _v)
+_v groupChat "Magazines removed. Waiting for Rearm..."
 
 goto "Start"

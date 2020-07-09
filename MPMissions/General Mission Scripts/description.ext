@@ -25,7 +25,7 @@ textsParam1[] = {
 "Rnd,x1,vLow,None", "Rnd,x1,Low ,None", "Rnd,x1,Mid ,None", "Rnd,x1,High,None", "Rnd,x1,DOOM,None", "Rnd,x2,vLow,None", "Rnd,x2,Low ,None", "Rnd,x2,Mid ,None", "Rnd,x2,High,None", "Rnd,x2,DOOM,None",
 "W-N,x1,vLow,None", "W-N,x1,Mid ,None", "W-N,x1,DOOM,None", "W-S,x1,vLow,None", "W-S,x1,Mid ,None", "W-S,x1,DOOM,None", "W-N,x2,Low ,None", "W-N,x2,High,None", "W-S,x2,Low ,None", "W-S,x2,High,None",
 };
-defValueParam1 = 1;
+defValueParam1 = 2;
 
 // titleParam2 = "GS,VD, Time";
 titleParam2 = "Weather,Time,VD";
@@ -133,20 +133,6 @@ defValueParam2 = 1 + 8*0 + 1300;
 // Predefined controls
 #define IDC_OK						1
 #define IDC_CANCEL				2
-
-// Colors
-#define COLOR_MENU_BG {0.5,0.5,0.5,0.75}
-#define COLOR_BTN_BG {0.8,0.8,0.8,1}
-#define COLOR_BTN_TEXT {0,0,0,1}
-#define COLOR_TITLE_BG {0,0,0,1}
-#define COLOR_TITLE_TEXT {1,1,1,1}
-#define COLOR_LABEL_TEXT {0.2,0.2,0.2,1}
-#define COLOR_DATA_BG {0.7,0.7,0.7,1}
-#define COLOR_DATA_TEXT {0,0,0,0.84}
-#define COLOR_SELECTED_BG {0.2,0.2,0.2,1}
-#define COLOR_SELECTED_TEXT {1,1,0.2,1}
-#define COLOR_CLICKABLE_BG {0.55,0.55,0.55,1}
-#define COLOR_LB_TEXT {0.3,0.3,0.3,1}
 
 
 // Control IDs
@@ -381,6 +367,116 @@ defValueParam2 = 1 + 8*0 + 1300;
 #define IDC_PLAYER_ORDER_PAR1 1207
 
 
+// https://community.bistudio.com/wiki/Arma:_GUI_Configuration#Control_Types for Control Types (CT_...)
+// https://community.bistudio.com/wiki/Arma:_GUI_Configuration#Control_Styles for Control Styles (ST_...)
+
+// Colors
+#define COLOR_MENU_BG {0.5,0.5,0.5,0.75}
+#define COLOR_BTN_BG {0.8,0.8,0.8,1}
+#define COLOR_BTN_TEXT {0,0,0,1}
+#define COLOR_TITLE_BG {0,0,0,1}
+#define COLOR_TITLE_TEXT {1,1,1,1}
+#define COLOR_LABEL_TEXT {0.2,0.2,0.2,1}
+#define COLOR_DATA_BG {0.7,0.7,0.7,1}
+#define COLOR_DATA_TEXT {0,0,0,0.84}
+#define COLOR_SELECTED_BG {0.2,0.2,0.2,1}
+#define COLOR_SELECTED_TEXT {1,1,0.2,1}
+#define COLOR_SELECTED_TEXT_L {0.686, 0.686, 0.686, 1}
+#define COLOR_CLICKABLE_BG {0.55,0.55,0.55,1}
+#define COLOR_CLICKABLE_BG_L {0.372,0.372,0.372,1}
+#define COLOR_LB_TEXT {0.3,0.3,0.3,1}
+
+// ==================================== Refering the SP Mission: "INFERNO KOLGUJEV". ====================================
+// #define FontM "tahomaB36"
+// #define FontHTML "CourierNewB64"
+#define COLOR_TZK_MENU_BG_1 {0.5, 0.5, 0.5, 0.35}
+#define COLOR_TZK_MENU_BG_2 {0.8, 0.8, 0.8, 0.15}
+#define COLOR_TZK_MENU_BG_3 {0.8, 0.8, 0.8, 0.55}
+class RscText {
+	type = CT_STATIC;
+	idc = -1;
+	style = ST_CENTER;
+	colorBackground[] = {0, 0, 0, 0};
+	colorText[] = {1, 1, 1, 1};
+	font = FontM;
+	sizeEx = 0.02;
+};
+class RscMulti {
+	type = CT_STATIC;
+	idc = -1;
+	style = ST_MULTI;
+	colorBackground[] = {0, 0, 0, 0};
+	colorText[] = {0, 0, 0, 1};
+	font = FontHTML;
+	sizeEx = 0.02;
+	lineSpacing = 1;
+	text = "";
+};
+class RscButton1 {
+	type = CT_BUTTON;
+	idc = -1;
+	style = ST_CENTER;
+	colorText[] = {0, 0, 0, 1};
+	font = FontHTML;
+	sizeEx = 0.018;
+	soundPush[] = {, 0.2, 1};
+	soundClick[] = {"ui\ui_ok", 0.2, 1};
+	soundEscape[] = {"ui\ui_cc", 0.2, 1};
+	default = false;
+};
+class RscCombo {
+	style = ST_CENTER;
+	idc = -1;
+	colorSelect[] = {1.0, 1.0, 0.2, 1.0};
+	colorSelectBackground[] = {1.0, 1.0, 0.0, 1.0};
+	colorText[] = {0.12,0.10,0.20,1.0};
+	colorBackground[] = {1, 1, 1, 0.5};
+	font = FontHTML;
+	sizeEx = 0.019;
+	rowHeight = 0.06;
+	type = CT_COMBO;
+	wholeHeight = 0.3;
+};
+
+class TZK_BackGround_0: RscText {
+	colorBackground[] = COLOR_TZK_MENU_BG_1;
+	text = "";
+	x = 0.1;
+	y = 0.1;
+	w = 0.85;
+	h = 0.75;
+};
+class TZK_BackGround_1: RscText {
+	colorBackground[] = COLOR_TZK_MENU_BG_2;
+	text = "";
+	x = 0.12;
+	y = 0.14;
+	w = 0.25;	// w = 0.245; 0.05 less
+	h = 0.70;	// h = 0.682; 0.08 less
+};
+class TZK_Frame_0: RscText {
+	style = ST_FRAME;
+	colorText[] = {1, 1, 1, 0.7};
+	text = "  TZK Mission Setting";
+	font = FontHTML;
+	sizeEx = 0.030;
+	x = 0.1;
+	y = 0.082;	//0.018 less for sizeEx 0.030
+	w = 0.85;
+	h = 0.768;
+};
+class TZK_Frame_1: RscText {
+	style = ST_FRAME;
+	colorText[] = {0, 0, 0, 0.7};
+	text = "  Effects";
+	font = FontHTML;
+	sizeEx = 0.020;
+	x = 0.12;
+	y = 0.13;	// 0.01 less for sizeEx 0.020
+	w = 0.25;
+	h = 0.71;
+};
+
 class Picture_BLG {
 	type = CT_STATIC;
 	idc = -1;
@@ -391,7 +487,6 @@ class Picture_BLG {
 	SizeEX = 0.04
 	text =;
 };
-
 class Text {
 	type = CT_STATIC;
 	idc = IDC_UNDEFINED;
@@ -406,7 +501,6 @@ class Text {
 	w = 0.25;
 	h = 0.04;
 };
-
 class ActiveText {
 	idc = IDC_UNDEFINED;
 	type = CT_ACTIVETEXT;
@@ -421,7 +515,6 @@ class ActiveText {
 	soundEscape[] = {"ui\ui_cc",0.2,1};
 	default = 0;
 };
-
 class TextField: Text {
 	type = CT_STATIC;
 	idc = IDC_UNDEFINED;
@@ -446,7 +539,6 @@ class ComboBoxBG: Text {
 	w = 0.25;
 	h = 0.04;
 };
-
 class ComboBox {
 	type = CT_COMBO;
 	wholeHeight = 0.4;
@@ -465,7 +557,6 @@ class ComboBox {
 	h = 0.04;
 };
 
-
 class Frame: Text {
 	idc = -1;
 	style = ST_FRAME;
@@ -473,20 +564,17 @@ class Frame: Text {
 	//colorBackground[] = COLOR_LABEL_TEXT;
 	text =;
 };
-
 class ListBoxBG: Text {
 	colorBackground[] = COLOR_CLICKABLE_BG;
 };
-
 class ListBox {
 	type = CT_LISTBOX;
 	style = ST_LEFT;
 	idc = IDC_UNDEFINED;
 
-	colorText[] = {0.2, 0.2, 0.2, 1};
-	colorBackground[] = {0.5,0.5,0.5,1};
-	colorSelect[] = {0.686, 0.686, 0.686, 1};
-	colorSelectBackGround[] = {0.372, 0.372, 0.372, 1};
+	colorText[] = COLOR_LABEL_TEXT;
+	colorSelect[] = COLOR_SELECTED_TEXT_L;
+	colorSelectBackGround[] = COLOR_CLICKABLE_BG_L;
 
 	font = DEFAULTFONT;
 	sizeEx = 0.025;
@@ -494,17 +582,14 @@ class ListBox {
 	w = 0.1
 	h = 0.06
 };
-
 class Title: Text {
 	font = DEFAULTFONT;
 	colorText[] = COLOR_TITLE_TEXT;
 };
-
 class Label: Text {
 	font = DEFAULTFONT;
 	colorText[] = COLOR_DATA_TEXT;
 };
-
 class Image: Text {
 	style = ST_PICTURE;
 	font = DEFAULTFONT;
@@ -513,13 +598,11 @@ class Image: Text {
 	SizeEX = 0.04
 	text = "";
 };
-
 class DataText: Text {
 	font = DEFAULTFONT;
 	colorText[] = COLOR_DATA_TEXT;
 	//colorBackground[] = COLOR_DATA_BG;
 };
-
 class ButtonBG: Text {
 	colorText[] = COLOR_DATA_TEXT;
 	colorBackground[] = COLOR_CLICKABLE_BG;
@@ -528,7 +611,6 @@ class ButtonBG: Text {
 	w = 0.25;
 	h = 0.04;
 };
-
 class SelectedBG: Text {
 	colorText[] = {0,0,0,0};
 	colorBackground[] = COLOR_SELECTED_TEXT;
@@ -537,7 +619,6 @@ class SelectedBG: Text {
 	w = 0.25;
 	h = 0.04;
 };
-
 class Button {
 	type = CT_BUTTON;
 	idc = IDC_UNDEFINED;
@@ -555,7 +636,6 @@ class Button {
 	w = 0.25;
 	h = 0.04;
 };
-
 class Checkbox {
 	type = CT_CHECKBOXES;
 	idc = IDC_UNDEFINED;
@@ -573,7 +653,6 @@ class Checkbox {
 	w = 0.25;
 	h = 0.04;
 };
-
 class SliderVert {
 	type = CT_SLIDER;
 	idc = IDC_UNDEFINED;
@@ -585,7 +664,6 @@ class SliderVert {
 	w = 0.04;
 	h = 0.20;
 };
-
 class SliderHorz {
 	type = CT_SLIDER;
 	idc = IDC_UNDEFINED;
@@ -613,7 +691,6 @@ class Menu {
 		h = 0.7;
 	};
 };
-
 class RespawnMenu: Menu {
 	idd = -1;
 	movingEnable = true;
@@ -654,11 +731,9 @@ class RespawnMenu: Menu {
 	};
 }
 
-
 #define col1 0
 #define col2 0.35
 #define col3 0.65
-
 class FactoryMenu: Menu {
 	idd = -1;
 	movingEnable = true;
@@ -984,7 +1059,6 @@ class FactoryMenu: Menu {
 	};
 
 };
-
 class BuildMenu: Menu {
 	idd = -1;
 	movingEnable = true;
@@ -1092,7 +1166,6 @@ class BuildMenu: Menu {
 		h = 0.7;
 	};
 };
-
 class StatsDialog: Menu {
 	idd = -1;
 	movingEnable = true;
@@ -1914,7 +1987,6 @@ class EquipmentMenu: Menu {
 	};
 };
 
-
 class GenericDialog: Menu {
 	idd = -1;
 	movingEnable = true;
@@ -2040,7 +2112,6 @@ class GenericDialog: Menu {
 	};
 
 };
-
 class LeaderboardDialog: Menu {
 	idd = -1;
 	movingEnable = true;
@@ -2211,7 +2282,6 @@ class LeaderboardDialog: Menu {
 		action = "closeDialog 0";
 	};
 };
-
 class OptionsDialog: Menu {
 	idd = -1;
 	movingEnable = true;
@@ -2622,7 +2692,6 @@ class OptionsDialog: Menu {
 		action = "btnSpySat = true";
 	};
 };
-
 class GameOverDialog: Menu {
 	idd = -1;
 	movingEnable = true;
@@ -2646,7 +2715,6 @@ class GameOverDialog: Menu {
 		action = "btnShowStats = true";
 	};
 };
-
 class SpecDialog: Menu {
 	idd = -1;
 	movingEnable = true;
@@ -2983,7 +3051,6 @@ class SpecDialog: Menu {
 		action = "bShowAll = !bShowAll";
 	};
 };
-
 class UnitCamDialog: Menu {
 	idd = -1;
 	movingEnable = true;
@@ -3240,7 +3307,6 @@ class UnitCamDialog: Menu {
 		action = "closeDialog 0";
 	};
 };
-
 class SatCamDialog: Menu {
 	idd = -1;
 	movingEnable = true;
@@ -3388,7 +3454,6 @@ class SatCamDialog: Menu {
 		action = "btnSpy = true";
 	};
 };
-
 class TemporaryAIOrderDialog: Menu {
 	idd = -1;
 	movingEnable = true;
@@ -3556,7 +3621,6 @@ class TemporaryAIOrderDialog: Menu {
 	};
 };
 
-
 class CommandAIDialog: Menu {
 	idd = -1;
 	movingEnable = true;
@@ -3593,7 +3657,6 @@ class CommandAIDialog: Menu {
 		w = 0.6;
 		h = 0.30
 	};
-
 class SettingLabel: Label {
 	SizeEx = 0.021;
 };
@@ -4038,7 +4101,6 @@ class SettingComboBox: ComboBox {
 		action = "closeDialog 0"
 	};
 };
-
 class CommandPlayerDialog: Menu {
 	idd = -1;
 	movingEnable = true;
@@ -4136,7 +4198,6 @@ class CommandPlayerDialog: Menu {
 	};
 
 };
-
 class SetFlightAltitudeDialog: Menu {
 	idd = -1;
 	movingEnable = true;
@@ -4182,131 +4243,6 @@ class SetFlightAltitudeDialog: Menu {
 	};
 
 };
-
-class OrderAIDialog: Menu {
-	idd = -1;
-	movingEnable = true;
-	controlsBackground[] = {OrderAIDialogBackgroundWindow};
-	objects[] = { };
-	controls[] = { OrderAITitle, OrderDescTitle, OrderDesc, OrdersLabel, SendOrder, Orders, Param0Label, Param0, Param1Label, Param1, Exit, Param2Label, Param2 };
-
-	class OrderAIDialogBackgroundWindow: BackgroundWindow {
-		x = 0.2
-		y = 0.0
-		w = 0.8
-		h = 0.68
-	};
-
-	class OrderAITitle: Title {
-		style = ST_CENTER;
-		x = 0.3;
-		y = 0.0;
-		w = 0.6;
-		text = "Order selected AI";
-	};
-
-	class OrderDescTitle: Label {
-		style = ST_LEFT;
-		x = 0.2;
-		y = 0.06;
-		w = 0.3;
-		text = "Order Description";
-	};
-
-	class OrderDesc: TextField {
-		idc = IDC+5;
-		x = 0.2;
-		y = 0.1;
-		w = 0.3;
-		h = 0.57;
-	};
-
-	class OrdersLabel: Label {
-		style = ST_LEFT;
-		x = 0.5;
-		y = 0.06;
-		w = 0.1;
-		text = "Order";
-	};
-
-	class SendOrder: Button {
-		idc = IDC+6;
-		x = 0.6;
-		y = 0.06;
-		w = 0.1;
-		text = "Issue";
-		action = "btnSendOrder = true";
-	};
-
-	class Orders: ListBox {
-		idc = IDC+0;
-		x = 0.5;
-		y = 0.1;
-		w = 0.2;
-		h = 0.57;
-	};
-
-	class Param0Label: Label {
-		idc = IDC+1;
-		style = ST_CENTER;
-		x = 0.7;
-		y = 0.06;
-		w = 0.15;
-		text = "UNDEFINED";
-	};
-
-	class Param0: ListBox {
-		idc = IDC+2;
-		x = 0.7;
-		y = 0.1;
-		w = 0.15;
-		h = 0.57;
-	};
-
-	class Param1Label: Label {
-		idc = IDC+3;
-		style = ST_CENTER;
-		x = 0.85;
-		y = 0.06;
-		w = 0.15;
-		text = "UNDEFINED";
-	};
-
-	class Param1: ListBox {
-		idc = IDC+4;
-		x = 0.85;
-		y = 0.1;
-		w = 0.15;
-		h = 0.30;
-	};
-
-	class Param2Label: Label {
-		idc = IDC+7;
-		style = ST_CENTER;
-		x = 0.85;
-		y = 0.42;
-		w = 0.15;
-		text = "UNDEFINED";
-	};
-
-	class Param2: ListBox {
-		idc = IDC+8;
-		x = 0.85;
-		y = 0.46;
-		w = 0.15;
-		h = 0.21;
-	};
-
-	class Exit: Button {
-		x = 0.95
-		y = 0.0
-		w = 0.05
-		text = "Exit"
-		action = "closeDialog 0"
-	};
-
-};
-
 class DisbandGroupDialog: Menu {
 	idd = -1;
 	movingEnable = true;
@@ -4384,7 +4320,6 @@ class DisbandGroupDialog: Menu {
 		};
 
 };
-
 class UCJoinDialog: Menu {
 	idd = -1;
 	movingEnable = true;
@@ -4440,7 +4375,6 @@ class UCJoinDialog: Menu {
   	};
 
 };
-
 class CleanMapDialog: Menu {
 	idd = -1;
 	movingEnable = true;
@@ -4493,7 +4427,7 @@ class CleanMapDialog: Menu {
 
 };
 
-class RscEdit	 {
+class RscEdit {
 	type = CT_EDIT;
 	idc = -1;
 	style = ST_LEFT;
@@ -4578,113 +4512,60 @@ class TrackBull {
 	};
 };
 class TZK_Setting_Dialog {
-	// Refering the SP Mission: "INFERNO KOLGUJEV".
-	class RscText {
-		type = CT_STATIC;
-		idc = -1;
-		style = ST_CENTER;
-		colorBackground[] = {0, 0, 0, 0};
-		colorText[] = {1, 1, 1, 1};
-		font = FontM;
-		sizeEx = 0.02;
-	};
-
 	idd = -1;
 	movingEnable = true;
 	controlsBackground[] = { BackGround_0_Base, BackGround_1_Left, BackGround_1_Mid, BackGround_1_Right, Frame_1_Left , Frame_1_Mid, Frame_0_Base, Frame_1_Right };
-	class BackGround_0_Base: RscText {
-		colorBackground[] = {0.5, 0.5, 0.5, 0.35};
+	class BackGround_0_Base: TZK_BackGround_0 {
+		colorBackground[] = COLOR_TZK_MENU_BG_1;
 		text = "";
 		x = 0.1;
 		y = 0.1;
 		w = 0.85;
 		h = 0.75;
 	};
-	class BackGround_1_Left: RscText {
-		colorBackground[] = {0.8, 0.8, 0.8, 0.15};
+	class BackGround_1_Left: TZK_BackGround_1 {
+		colorBackground[] = COLOR_TZK_MENU_BG_2;
 		text = "";
 		x = 0.12;
 		y = 0.14;
 		w = 0.25;	// w = 0.245; 0.05 less
 		h = 0.70;	// h = 0.682; 0.08 less
 	};
-	class BackGround_1_Mid: RscText {
-		colorBackground[] = {0.8, 0.8, 0.8, 0.15};
-		text = "";
+	class BackGround_1_Mid: BackGround_1_Left {
 		x = 0.40;	// 0.03 more
-		y = 0.14;
-		w = 0.25;
-		h = 0.70;
 	};
-	class BackGround_1_Right: RscText {
-		colorBackground[] = {0.8, 0.8, 0.8, 0.15};
-		text = "";
+	class BackGround_1_Right: BackGround_1_Left {
 		x = 0.68;	// 0.03 more
-		y = 0.14;
-		w = 0.25;
-		h = 0.70;
 	};
-	class Frame_0_Base: RscText {
-		style = ST_FRAME;
+	class Frame_0_Base: TZK_Frame_0 {
 		colorText[] = {1, 1, 1, 0.7};
 		text = "  TZK Mission Setting";
-		font = FontHTML;
-		sizeEx = 0.030;
 		x = 0.1;
 		y = 0.082;	//0.018 less for sizeEx 0.030
 		w = 0.85;
 		h = 0.768;
 	};
-	class Frame_1_Left: RscText {
-		style = ST_FRAME;
+	class Frame_1_Left: TZK_Frame_1 {
 		colorText[] = {0, 0, 0, 0.6};
 		text = "  Effects";
-		font = FontHTML;
-		sizeEx = 0.020;
 		x = 0.12;
 		y = 0.13;	// 0.01 less for sizeEx 0.020
 		w = 0.25;
 		h = 0.71;
 	};
-	class Frame_1_Mid: RscText {
-		style = ST_FRAME;
-		colorText[] = {0, 0, 0, 0.6};
+	class Frame_1_Mid: Frame_1_Left {
 		text = "  Functions";
-		font = FontHTML;
-		sizeEx = 0.020;
 		x = 0.40;
-		y = 0.13;
-		w = 0.25;
-		h = 0.71;
 	};
-	class Frame_1_Right: RscText {
-		style = ST_FRAME;
-		colorText[] = {0, 0, 0, 0.6};
+	class Frame_1_Right: Frame_1_Left {
 		text = "  Actions";
-		font = FontHTML;
-		sizeEx = 0.020;
 		x = 0.68;
-		y = 0.13;
-		w = 0.25;
-		h = 0.71;
 	};
 	objects[] = {};
 	controls[] = { Exit, Text1, Text2, Text3,
 	Combo_L_00, Combo_L_01, Combo_L_02, Combo_L_03, Combo_L_04, Combo_L_05, Combo_L_06, Combo_L_07, Combo_L_08, Combo_L_09, Combo_L_10, Combo_L_11,
 	Combo_M_00, Combo_M_01, Combo_M_02, Combo_M_03, Combo_M_04, Combo_M_05, Combo_M_06, Combo_M_07, Combo_M_08, Combo_M_09, Combo_M_10, Combo_M_11,
 	Combo_R_00, Combo_R_01, Combo_R_02, Combo_R_03, Combo_R_04, Combo_R_05, Combo_R_06, Combo_R_07, Combo_R_08, Combo_R_09, Combo_R_10, Combo_R_11, };
-	class RscButton1 {
-		type = CT_BUTTON;
-		idc = -1;
-		style = ST_CENTER;
-		colorText[] = {0, 0, 0, 1};
-		font = FontHTML;
-		sizeEx = 0.018;
-		soundPush[] = {, 0.2, 1};
-		soundClick[] = {"ui\ui_ok", 0.2, 1};
-		soundEscape[] = {"ui\ui_cc", 0.2, 1};
-		default = false;
-	};
 	class Exit: RscButton1 {
 		x = 0.90;
 		y = 0.1;
@@ -4712,19 +4593,6 @@ class TZK_Setting_Dialog {
 		x = 0.70;
 	};
 
-	class RscCombo {
-		style = ST_CENTER;
-		idc = -1;
-		colorSelect[] = {1.0, 1.0, 0.2, 1.0};
-		colorSelectBackground[] = {1.0, 1.0, 0.0, 1.0};
-		colorText[] = {0.12,0.10,0.20,1.0};
-		colorBackground[] = {1, 1, 1, 0.5};
-		font = FontHTML;
-		sizeEx = 0.019;
-		rowHeight = 0.06;
-		type = CT_COMBO;
-		wholeHeight = 0.3;
-	};
 	class Combo_L_00: RscCombo {
 		idc = IDC + 100;
 		x = 0.14;
@@ -4879,6 +4747,173 @@ class TZK_Setting_Dialog {
 	class Combo_R_11: Combo_R_00 {
 		idc = IDC + 311;
 		y = 0.72;
+	};
+};
+
+
+class TZK_ListBox: ListBox {
+//	colorText[] = {0.9, 0.3, 0.0, 1};
+};
+class TZK_OrderAIDialog: Menu {
+	idd = -1;
+	movingEnable = true;
+	objects[] = {};
+
+	controlsBackground[] = { TZK_OrderAIDialog_BackGround_0, TZK_OrderAIDialog_BackGround_1
+		, TZK_OrderAIDialog_Frame_1_MiddleLeft, TZK_OrderAIDialog_Frame_0, 
+	};
+	class TZK_OrderAIDialog_BackGround_0: TZK_BackGround_0 {
+		x = 0.001;
+		y = 0.03;
+		w = 1 - 2*0.001;
+		h = 0.671 - 0.03;
+	};
+	class TZK_OrderAIDialog_Frame_0: TZK_Frame_0 {
+		text = "  Order Selected AI";
+		colorText[] = {0,0,0,1};
+		x = 0.001;
+		y = 0.015;
+		w = 1 - 2*0.001;
+		h = 0.671 - 0.015;
+	};
+	class TZK_OrderAIDialog_BackGround_1: TZK_BackGround_1 {
+		colorBackground[] = COLOR_TZK_MENU_BG_3;
+		x = 0.00;
+		y = 0.1;
+		w = 1.00-0.00;
+		h = 0.671 - 0.1;
+	};
+	class TZK_OrderAIDialog_Frame_1_MiddleLeft: TZK_Frame_1 {
+		text = "  Order Description";
+		x = 0.20;
+		y = 0.1 - 0.01;
+		w = 0.40-0.20;
+		h = 0.671 - (0.1 - 0.01);
+	};
+	
+
+	controls[] = {SendOrderBG1, SendOrderBG2, OrderDesc, OrdersLabel, SendOrder1, Orders, Param0Label, Param0, Param1Label, Param1, Exit, Param2Label, Param2, OrdersLabel2, SendOrder2, Orders2 };
+	class OrderDesc: RscMulti {
+		style = ST_MULTI + ST_NO_RECT;
+		colorText[] = {0.9, 0.1, 0.2, 1};
+		idc = IDC+5;
+		x = 0.20 + 0.005;
+		y = 0.1 + 0.01;
+		w = 0.40-0.20 - 2*0.005;
+		h = 0.671 - (0.1 + 0.01);
+	};
+	
+	class OrdersLabel: Label {
+		style = ST_LEFT;
+		x = 0.40;
+		y = 0.06;
+		w = 0.1;
+		text = "Order";
+	};
+	class Orders: TZK_ListBox {
+		idc = IDC+0;
+		x = 0.40;
+		y = 0.1;
+		w = 0.2;
+		h = 0.57;
+	};
+	class Param0Label: Label {
+		idc = IDC+1;
+		style = ST_CENTER;
+		x = 0.60;
+		y = 0.06;
+		w = 0.20;
+		text = "UNDEFINED";
+	};
+	class Param0: TZK_ListBox {
+		idc = IDC+2;
+		x = 0.60;
+		y = 0.1;
+		w = 0.20;
+		h = 0.57;
+	};
+	class Param1Label: Label {
+		idc = IDC+3;
+		style = ST_CENTER;
+		x = 0.80;
+		y = 0.06;
+		w = 0.20;
+		text = "UNDEFINED";
+	};
+	class Param1: TZK_ListBox {
+		idc = IDC+4;
+		x = 0.80;
+		y = 0.1;
+		w = 0.20;
+		h = 0.30;
+	};
+	class Param2Label: Label {
+		idc = IDC+7;
+		style = ST_CENTER;
+		x = 0.80;
+		y = 0.42;
+		w = 0.20;
+		text = "UNDEFINED";
+	};
+	class Param2: TZK_ListBox {
+		idc = IDC+8;
+		x = 0.80;
+		y = 0.46;
+		w = 0.20;
+		h = 0.21;
+	};
+	class Exit: RscButton1 {
+		x = 0.95;
+		y = 0.03;
+		w = 0.05;
+		h = 0.03;
+		text = "Exit"
+		action = "closeDialog 0"
+	};
+
+	class SendOrder1: Button {
+		idc = IDC+11;
+		x = 0.40+0.06+0.07;
+		y = 0.06;
+		w = 0.07;
+		text = "Issue";
+		action = "btnSendOrder = true";
+	};
+	class OrdersLabel2: Label {
+		style = ST_LEFT;
+		x = 0.0;
+		y = 0.06;
+		w = 0.2;
+		text = "Extend Order";
+	};
+	class SendOrder2: Button {
+		idc = IDC+12;
+		x = 0.40+0.06;
+		y = 0.06;
+		w = 0.07;
+		text = "Issue";
+		action = "btnSendOrder2 = true";
+	};
+	class Orders2: TZK_ListBox {
+		idc = IDC+6;
+		x = 0.0;
+		y = 0.1;
+		w = 0.2;
+		h = 0.57;
+	};
+	class SendOrderBG1: ButtonBG {
+		colorBackground[] = COLOR_SELECTED_TEXT;
+		idc = IDC+9;
+		x = 0.40+0.06+0.07;
+		y = 0.06;
+		w = 0.07;
+	};
+	class SendOrderBG2: ButtonBG {
+		colorBackground[] = COLOR_SELECTED_TEXT;
+		idc = IDC+10;
+		x = 0.40+0.06;
+		y = 0.06;
+		w = 0.07;
 	};
 };
 

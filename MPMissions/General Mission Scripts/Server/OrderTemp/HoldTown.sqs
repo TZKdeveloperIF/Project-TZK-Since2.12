@@ -19,13 +19,13 @@ _duration = 720 * ((_params select 4) + 1)
 ? (HoldTownTypeDefs select _typeIndex) == "AT-Infantry": 		_typesHold = typesInfantryAT;	
 ? (HoldTownTypeDefs select _typeIndex) == "Light Tank": 		_typesHold = typesLightTank; 					
 ? (HoldTownTypeDefs select _typeIndex) == "Heavy Tank": 		_typesHold = typesHeavyTank; 					
-? (HoldTownTypeDefs select _typeIndex) == "Howitzer": 			_typesHold = typesHowitzer; 						
+? (HoldTownTypeDefs select _typeIndex) == "Artillery": 			_typesHold = typesHowitzer+typesRocketLauncher; 						
 ? (HoldTownTypeDefs select _typeIndex) == "AT APC":			_typesHold = typesATAPC; 						
 ? (HoldTownTypeDefs select _typeIndex) == "AA Vehicle":		_typesHold = typesAAAPC; 						
 ? (HoldTownTypeDefs select _typeIndex) == "Kamov":				_typesHold = typesKa50; 							
 ? (HoldTownTypeDefs select _typeIndex) == "Cobra\Apac\Hind":	_typesHold = (typesGunshipOrigin+typesGunshipAT) - typesKa50; 	
 ? (HoldTownTypeDefs select _typeIndex) == "Infantry": 			_typesHold = typesInfantryAll;										
-? (HoldTownTypeDefs select _typeIndex) == "Tanks": 			_typesHold = typesLightTank+typesHeavyTank+typesHowitzer; 									
+? (HoldTownTypeDefs select _typeIndex) == "Tanks": 			_typesHold = typesLightTank+typesHeavyTank+typesHowitzer+typesRocketLauncher; 									
 ? (HoldTownTypeDefs select _typeIndex) == "APCs": 				_typesHold = typesATAPC+typesAAAPC; 		
 
 _vehicle = vehicle _unit

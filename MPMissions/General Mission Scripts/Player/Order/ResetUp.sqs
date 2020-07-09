@@ -1,0 +1,18 @@
+; args: [unit, pos, indexes[status]]
+
+_unit = _this select 0
+_status = _this select 2 select 0
+
+_vehicle = vehicle _unit
+? _unit == _vehicle || _unit != gunner _vehicle: exit
+; LOCAL gunner here.
+
+_vt = _vehicle call funcGetStructTypeFromObject
+? _vt == -1: exit
+
+_bool = (_status == 0)
+; _vehicle setDir getDir _vehicle
+if _bool then {_vehicle setVectorUp [0,0,1]} else {_vehicle setVectorUp (getPos _vehicle call funcVectorUp)}
+_vehicle setPosASL getPosASL _vehicle
+
+; EOF

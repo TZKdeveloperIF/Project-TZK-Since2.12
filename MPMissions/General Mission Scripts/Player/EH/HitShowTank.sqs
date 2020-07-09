@@ -7,9 +7,14 @@ _tank = _this select 0
 
 ? count(crew _tank) > 0 && count (units group player) == count ((units group player) - (crew _tank)) : exit
 
-_timestring = [] call funcGetTimeString
 _name = "VEHICLE"
 ? "M113" countType [_tank] > 0 || "BMP" countType [_tank] > 0 || "ZSU" countType [_tank] > 0: _name = "APC"
-player GroupChat format ["Time : %1 , %3 DAMAGE REPORT                           : %2", _timestring, damage _tank, _name]
+
+~0.05
+; Necessary delay. The "damage" obtained immediately on the moment "Hit EH" triggered is not completed value.
+
+_timestring = [] call funcGetTimeString
+_damage = damage _tank; _damage = _damage - _damage % 0.01
+player GroupChat format ["Time : %1 , %3 DAMAGE REPORT                           : %2", _timestring, _damage, _name]
 
 exit

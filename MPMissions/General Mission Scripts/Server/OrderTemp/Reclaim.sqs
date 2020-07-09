@@ -22,13 +22,13 @@ _typesReclaim = []; _crewnum = 0;
 ? (ReclaimTypeDefs select _typeIndex) == "Battle Ship": 		_typesReclaim = typesBattleShip; 				_crewnum = 2;	
 ? (ReclaimTypeDefs select _typeIndex) == "Light Tank": 		_typesReclaim = typesLightTank; 				_crewnum = 2;	
 ? (ReclaimTypeDefs select _typeIndex) == "Heavy Tank": 		_typesReclaim = typesHeavyTank; 				_crewnum = 2;	
-? (ReclaimTypeDefs select _typeIndex) == "Howitzer": 			_typesReclaim = typesHowitzer; 					_crewnum = 2;	
+? (ReclaimTypeDefs select _typeIndex) == "Artillery": 			_typesReclaim = typesHowitzer+typesRocketLauncher; 					_crewnum = 2;	
 ? (ReclaimTypeDefs select _typeIndex) == "AT APC":				_typesReclaim = typesATAPC; 					_crewnum = 2;	
 ? (ReclaimTypeDefs select _typeIndex) == "AA Vehicle":			_typesReclaim = typesAAAPC; 					_crewnum = 2;	
 ? (ReclaimTypeDefs select _typeIndex) == "Kamov":				_typesReclaim = typesKa50; 						_crewnum = 1;	
 ? (ReclaimTypeDefs select _typeIndex) == "Cobra\Apac\Hind":	_typesReclaim = (typesGunshipOrigin+typesGunshipAT) - typesKa50; 							_crewnum = 2;	
 ? (ReclaimTypeDefs select _typeIndex) == "Transports": 		_typesReclaim = typesTransportCar+typesTransportShip+typesTransportAPC+typesTransportHeli;	_crewnum = 1;	
-? (ReclaimTypeDefs select _typeIndex) == "Tanks": 				_typesReclaim = typesLightTank+typesHeavyTank+typesHowitzer; 								_crewnum = 2;	
+? (ReclaimTypeDefs select _typeIndex) == "Tanks": 				_typesReclaim = typesLightTank+typesHeavyTank+typesHowitzer+typesRocketLauncher; 								_crewnum = 2;	
 ? (ReclaimTypeDefs select _typeIndex) == "APCs": 				_typesReclaim = typesATAPC+typesAAAPC; 			_crewnum = 2;	
 ? (ReclaimTypeDefs select _typeIndex) == "Support APC": 		_typesReclaim = typesSupportAPC;				_crewnum = 1;	
 

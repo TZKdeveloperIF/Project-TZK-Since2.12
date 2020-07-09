@@ -4,8 +4,8 @@ hiddenMarkerPos = [-1000, -1000]
 
 ; Markers defined here, but initialized in InitMarkers. Definations like type, color, etc may lack or repeat thus please be cautious. Of course its possbile to combine 2 scripts but remain separated can remind editors of editing history.
 
-_marker = "TZK_Info"; createMarker [_marker, [2560,1024] ]; _marker setMarkerSize [0,0]; _marker setMarkerColor "ColorDarkPurple_xj200";  _marker setMarkerType "Warning"; 
-_marker setMarkerText "Mod Version: @TZK_2.12. Check ""Notes"" for more info."
+_marker = "TZK_Info"; createMarker [_marker, [2560,1024] ]; _marker setMarkerSize [0,0]; _marker setMarkerColor "ColorDarkPurple_xj400";  _marker setMarkerType "Warning"; 
+_marker setMarkerText "Mod Version: @TZK_4.0.0. Check ""Notes"" for more info."
 
 _i = 0; _count = count towns;
 #FlagMarker
@@ -14,12 +14,12 @@ _i = 0; _count = count towns;
 	_i = _i + 1
 	? _i < _count : goto "FlagMarker"
 	
-_i = 0; _count = 10
+_i = 0
 #TargetMarker
 	_marker = Format["TargetP_%1", _i]; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Destroy"; _marker setMarkerColor "ColorYellow"; _marker setMarkerSize [0.6,0.6]; _marker setMarkerText format ["Target %1", _i]
-	_marker = Format["TargetS_%1", _i]; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Destroy"; _marker setMarkerColor "ColorRed"; _marker setMarkerSize [0.6,0.6]; _marker setMarkerText format ["Target %1", _i]
+	_marker = Format["TargetS_%1", _i]; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Destroy"; _marker setMarkerColor "ColorOrange_xj400"; _marker setMarkerSize [0.6,0.6]; _marker setMarkerText format ["Target %1", _i]
 	_i = _i + 1
-	? _i < _count : goto "TargetMarker"
+	? _i < countTargetMarkers : goto "TargetMarker"
 
 _i = 0
 maxStructureMarkers = 50; mutexMarkerStructure = false
@@ -59,7 +59,7 @@ _marker = "ImpactPoint_0"; createMarker [_marker, hiddenMarkerPos]; _marker setM
 _marker = "ImpactPoint_1"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Destroy"; _marker setMarkerColor "ColorYellow"; _marker setMarkerSize [0.40,0.40]
 _marker = "ImpactPoint_2"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Destroy"; _marker setMarkerColor "ColorGreen"; _marker setMarkerSize [0.40,0.40]
 _marker = "ImpactPoint_3"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Destroy"; _marker setMarkerColor "ColorBlue"; _marker setMarkerSize [0.40,0.40]
-_marker = "ImpactPoint_4"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Destroy"; _marker setMarkerColor "ColorDarkPurple_xj200"; _marker setMarkerSize [0.40,0.40]
+_marker = "ImpactPoint_4"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Destroy"; _marker setMarkerColor "ColorDarkPurple_xj400"; _marker setMarkerSize [0.40,0.40]
 
 
 _i = 0

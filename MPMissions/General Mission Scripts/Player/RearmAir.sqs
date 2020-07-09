@@ -19,9 +19,10 @@ _timeRearm = 5
 ; player globalchat format["_type=%1  unit: %2", _type, (unitDefs select _type) select udName ]
 
 _type = _vehicleRearm call funcGetUnitTypeFromObject
-? (_type in vDoubleRearmTime): _timeRearm = 60
-? (_type in vTripleRearmTime): _timeRearm = 90
+? (_type in vDoubleRearmTime): _timeRearm = 30*2
+? (_type in vTripleRearmTime): _timeRearm = 30*3
 ? (_type in vSixfoldRearmTime): _timeRearm = 30*6
+? (_type in vTenfoldRearmTime): _timeRearm = 30*10
 ? dev : _timeRearm = 5
 
 
@@ -80,7 +81,7 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
   _unit groupchat _msg
   _timeComplete = time + _timeRearm
   #Loop
-	 _vehicleRearm say "Rearming_xj200";
+	 _vehicleRearm say "Rearming_xj400";
 	~5
   	? !(alive _vehicleRearm) : _msg = "Rearm failed. Vehicle destroyed."; goto "Exit"
   	? !(alive _support) : _msg = "Rearm failed. Support plane destroyed."; goto "Exit"
@@ -88,7 +89,7 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
 	  ? time < _timeComplete : goto "Loop"
 
   ? count (magazines _vehicleRearm) == 0 : [_vehicleRearm] exec "Common\Msg\sRearmVehGeneral.sqs"
-  ? (_type in vSixfoldRearmTime) : _vehicleRearm say "NuclearMissileReady_xj200"
+  ? (_type in vSixfoldRearmTime) : _vehicleRearm say "NuclearMissileReady_xj400"
 
 #RearmEnd
   ? _cost > 0 : [_cost] exec "Player\SendMoneySpent.sqs"

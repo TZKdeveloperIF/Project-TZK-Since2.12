@@ -46,6 +46,9 @@ _group = createGroup _side
 { if (_x != vehicle _x) then { [vehicle _x, true] exec "Common\LockVehicle.sqs"; vehicle _x setFuel 0 } } foreach (units _group)
 [_si] exec "Server\Info\TempAACreated.sqs"
 
+; Remain AA group for AI Comm.
+? (groupCommander select _si) in (groupAiMatrix select _si): exit
+
  _delay = [900,5] select dev
 ~_delay
 { _v = vehicle _x; if (_v != _x) then {deleteVehicle _v} } forEach (units _group)

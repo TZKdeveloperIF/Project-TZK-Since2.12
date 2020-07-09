@@ -21,9 +21,9 @@ _shell = nearestObject [_vehicle, _ammo];
 if (local _shell) then {
 	if (player == gunner _vehicle) then {
 		_scale = 0;
-		if (_weapon == "Mortar_500m_xj200") then {_scale = 80};
-		if (_weapon == "Mortar_1000m_xj200") then {_scale = 120};
-		if (_weapon == "Mortar_1500m_xj200") then {_scale = 140};
+		if (_weapon == "Mortar_500m_xj400") then {_scale = 80};
+		if (_weapon == "Mortar_1000m_xj400") then {_scale = 120};
+		if (_weapon == "Mortar_1500m_xj400") then {_scale = 140};
 		
 		if (_scale > 0) then {
 		// Important. Don't forget the return value of "speed" is km/h

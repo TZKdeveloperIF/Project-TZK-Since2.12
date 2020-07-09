@@ -72,7 +72,7 @@ HDCOS = call {private["_i","_result"]; _result = []; _i = 0; while "_i < 50" do 
 ; ================================================================================TZK_4.0.0 Block================================================================================
 
 ; ================================================================================TZK_3.00 Block================================================================================
-; 2.01 commands used. String in game will display without "_xj200"
+; 2.01 commands used. String in game will display without "_xj400"
 funcStringWithoutVersion = preprocessFile {Player\SQF\StringWithoutVersion.sqf}
 ; 2.01 commands used. Controlling Fire Effects
 funcFiredEffect = preprocessFile "Player\EH\FiredEffect.sqf"
@@ -117,7 +117,7 @@ _missionSettingEffects set [count _missionSettingEffects, ["Global Shell  Tracer
 _missionSettingEffects set [count _missionSettingEffects, ["Dead Tank Burning    [OFF]", "Dead Tank Burning     [ON]"]]
 _missionSettingEffects set [count _missionSettingEffects, ["Nuclear Effect       [OFF]", "Nuclear Effect        [ON]"]]
 _missionSettingEffects set [count _missionSettingEffects, ["Rocket Impact Effect [OFF]", "Rocket Impact Effect  [ON]"]]
-_missionSettingEffects set [count _missionSettingEffects, ["Rocket Launch Smoke  [OFF]", "Rocket Impact Smoke   [ON]"]]
+_missionSettingEffects set [count _missionSettingEffects, ["Rocket Launch Smoke  [OFF]", "Rocket Launch Smoke   [ON]"]]
 
 booleSettingEffects = [ {boole_Local_Bullet_Tracer}, {boole_Global_Bullet_Tracer}, {boole_Local_Cannon_Tracer}, {boole_Global_Cannon_Tracer}, {boole_Local_Shell_Tracer}, {boole_Global_Shell_Tracer}, {boole_Dead_Tank_Burning}, {boole_Nuclear_Effect}, {boole_Rocket_Impact}, {boole_Rocket_Launch} ]
 
@@ -138,8 +138,8 @@ booleSettingActions = [ {boole_ShowAction_TransportEject}, {boole_ShowAction_Att
 magazinesBooleRecording = ["M16", "M4", "AK47", "AK74", "M21", "SVDDragunov", "Flare", "FlareGreen", "FlareRed", "FlareYellow",  "TokarevMag", "CZ75Mag"]
 
 ; It would be better if define these "Rapid_Rearm" in InitEquipmentTypes. However some launchers aren't planned to be added into CTI right now.
-RapidRearmSecWeapons = [{CarlGustavLauncher},{AT4Launcher},{LAWLauncher},{RPGLauncher},{AALauncher},{9K32Launcher},{HyperLauncher_xj200},{Kasapanos}, {SMAWLauncher_xj200},{RPG16dLauncher_xj200},{JavelinLauncher_xj200}]
-RapidRearmSecMagazines = [{CarlGustavLauncher},{AT4Launcher},{LAWLauncher},{RPGLauncher},{AALauncher},{9K32Launcher},[{CarlGustavLauncher},{AT4Launcher}] select _si,{Kasapanos}, {SMAW_AT_xj200},{RPG16d_AT_xj200},{JavelinLauncher_Weak_Mag_xj200}]
+RapidRearmSecWeapons = [{CarlGustavLauncher},{AT4Launcher},{LAWLauncher},{RPGLauncher},{AALauncher},{9K32Launcher},{HyperLauncher_xj400},{Kasapanos}, {SMAWLauncher_xj400},{RPG16dLauncher_xj400},{JavelinLauncher_xj400}]
+RapidRearmSecMagazines = [{CarlGustavLauncher},{AT4Launcher},{LAWLauncher},{RPGLauncher},{AALauncher},{9K32Launcher},[{CarlGustavLauncher},{AT4Launcher}] select _si,{Kasapanos}, {SMAW_AT_xj400},{RPG16d_AT_xj400},{JavelinLauncher_Weak_Mag_xj400}]
 
 
 [] exec "Player\Effect\Killed_Msg_Aircraft.sqs"; [] exec "Player\Effect\Killed_Msg_Boat.sqs";

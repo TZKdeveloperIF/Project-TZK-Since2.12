@@ -15,6 +15,6 @@ PublicVariable "pvWPCO_X";
 PublicVariable "pvWPCO_Y";
 PublicVariable "pvWPCO";
 
-? isServer : ((wpCO select _si) select _wp) set [0, _pos select 0]; ((wpCO select _si) select _wp) set [1, _pos select 1]
+? isServer && _wp < countWPCO: ((wpCO select _si) select _wp) set [0, _pos select 0]; ((wpCO select _si) select _wp) set [1, _pos select 1]
 ~sendDelay
 mutexSetWPCO = false
