@@ -22,7 +22,7 @@ _si = _value/(100*3)
 ? (_state == 2): player sidechat format ["Upgrade Complete: %1", (upgDefs select _upg) select 0]
 
 
-? upgCCdistance == _upg && _state == 2 : distMaxCC = distMaxCCUpgraded
+? upgCCdistance == _upg && _state == 2 : CCdistMax set [_si, distMaxCCUpgraded]
 
 ? upgGunshipRocket == _upg && _state == 2 && !isServer : [_si, _upg, "HeliRocket"] exec "Common\ReEquip\ReEquip.sqs"
 

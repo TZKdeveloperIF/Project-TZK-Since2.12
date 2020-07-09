@@ -1,7 +1,7 @@
 ; args: [vehicle]
 _vehicle = _this select 0
 
-_booleStringMedic = "{_x=={Medkit_xj200}} count magazines player > 0 && damage player > 0.01"
+_booleStringMedic = "{_x=={Medkit_xj400}} count magazines player > 0 && damage player > 0.01"
 _booleMedic = call _booleStringMedic
 _mhqNearby = mhqNearby
 _SupNearby = SupNearby
@@ -10,7 +10,7 @@ _SupNearby = SupNearby
 ? isCommander : Radio001 setTriggerText "Call back MHQ"; Radio001 setTriggerStatements ["this", "[] exec {Player\Radio\RadioList_Soldier_CallBackMHQ.sqs}", ""];
 Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", "[] exec {Player\Dialog\TZK_Mission_Setting.sqs}", ""];
 
-if (call _booleStringMedic) then {	Radio003 setTriggerText "Self-Medic"; Radio003 setTriggerStatements ["this", "if ({_x=={Medkit_xj200}} count magazines player > 0) then { player exec {Player\Action\SelfMedic.sqs} } else {hint {You aren't carrying any Medkit.}}", ""];	} else {	Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""];	};
+if (call _booleStringMedic) then {	Radio003 setTriggerText "Self-Medic"; Radio003 setTriggerStatements ["this", "if ({_x=={Medkit_xj400}} count magazines player > 0) then { player exec {Player\Action\SelfMedic.sqs} } else {hint {You aren't carrying any Medkit.}}", ""];	} else {	Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""];	};
 
 if (mhqNearby) then {	Radio004 setTriggerText "MHQ Build Menu"; Radio004 setTriggerStatements ["this", "if (mhqNearby) then {[utMHQ0,150] exec {Player\Dialog\BuildMenu.sqs}} else {hint {MHQ too far away.}}", ""];	} else {	Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""];	};
 
@@ -28,7 +28,7 @@ Radio000 setTriggerText "Rearm RPG"; Radio000 setTriggerStatements ["this", "[pl
 ~0.05
 ; In OFP/Arma can't compare booleans directly. Use (A && !B) || (!A && B) here, and use !_boolean to refresh.
 _booleRefreshMedic = (_booleMedic && !(call _booleStringMedic)) || (!_booleMedic && (call _booleStringMedic))
-? _booleRefreshMedic : if (call _booleStringMedic) then {	Radio003 setTriggerText "Self-Medic"; Radio003 setTriggerStatements ["this", "if ({_x=={Medkit_xj200}} count magazines player > 0) then { player exec {Player\Action\SelfMedic.sqs} } else {hint {You aren't carrying any Medkit.}}", ""];	} else {	Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""];	}
+? _booleRefreshMedic : if (call _booleStringMedic) then {	Radio003 setTriggerText "Self-Medic"; Radio003 setTriggerStatements ["this", "if ({_x=={Medkit_xj400}} count magazines player > 0) then { player exec {Player\Action\SelfMedic.sqs} } else {hint {You aren't carrying any Medkit.}}", ""];	} else {	Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""];	}
 
 _booleRefreshMHQNearby = (_mhqNearby && !mhqNearby) || (!_mhqNearby && mhqNearby)
 ? _booleRefreshMHQNearby : if (mhqNearby) then {	Radio004 setTriggerText "MHQ Build Menu"; Radio004 setTriggerStatements ["this", "if (mhqNearby) then {[utMHQ0,150] exec {Player\Dialog\BuildMenu.sqs}} else {hint {MHQ too far away.}}", ""];	} else {	Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""];	}

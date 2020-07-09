@@ -5,7 +5,7 @@ private ["_idcMoney", "_idcScore", "_idcIncomeRatio", "_idcIncomeRatioPlayer", "
 "_groups", "_groupsName", "_groupsMoney", "_groupsAI", "_groupCommander", 
 "_texts", "_index", "_count", 
 "_id", "_x", "_money", "_moneySide", "_score", "_groupCount", "_place", "_siX", "_giX", "_scoreX", "_incomeRatio", "_selectedIncome", "_incomeRatioPlayer",
-"_townCount", "_towns", "_income", "_players", "_aileaders", "_incomePlayer", "_incomeAiLeaders", "_incomeCommander", "_upgState"];
+"_townCount", "_towns", "_income", "_factor", "_players", "_aileaders", "_incomePlayer", "_incomeAiLeaders", "_incomeCommander", "_upgState"];
 
 _idcMoney = _this select 0;
 _idcScore = _this select 1;
@@ -65,7 +65,8 @@ _townCount = count towns; _towns = 0; _income = 0;
 ctrlSetText [_idcTowns, format["Towns: %1 of %2", _towns, _townCount]];
 
 // INCOME
-_income = _income*incomex;
+_factor = 1; if (time > 60*90) Then {_factor = 1.2}; if (time > 60*150) Then {_factor = 1.5};
+_income = _income*incomex*_factor;
 _players = count ((groupMatrix select siPlayer) - [groupCommander select siPlayer] - (groupAiMatrix select siPlayer)); _aileaders = count (groupAiMatrix select siPlayer);
 _incomePlayer = 0; _incomeAiLeaders = 0;
 if (_players > 0) then {_incomePlayer = _income*(1-_incomeRatio)*_incomeRatioPlayer/_players; _incomePlayer = _incomePlayer - (_incomePlayer % 1)};
@@ -91,4 +92,4 @@ if (call format["pvWorkerBehaviour%1 != lbCurSel _idcWorkerBehaviour", siPlayer]
 // UPGRADES
 _index = 0; _upgState = upgMatrix select siPlayer;
 lbClear _idcUpgradeList;
-{ _id=lbAdd [_idcUpgradeList, format["%1 $%2 %3min", _x select 0, _x select 1, _x select 2] ]; lbSetPicture[_idcUpgradeList, _id, ["\TZK_Pictures\Icon\square_empty.paa", "\TZK_Pictures\Icon\square_yellow.paa", "\TZK_Pictures\Icon\square_green.paa"] select (_upgState select _index)]; _index=_index+1} forEach upgDefs;
+{ _id=lbAdd [_idcUpgradeList, format["%1 $%2 %3min", _x select 0, _x select 1, _x select 2] ]; lbSetPicture[_idcUpgradeList, _id, ["\TZK_Texture_4_0_0\CTI_Image\Icon\square_empty.paa", "\TZK_Texture_4_0_0\CTI_Image\Icon\square_yellow.paa", "\TZK_Texture_4_0_0\CTI_Image\Icon\square_green.paa"] select (_upgState select _index)]; _index=_index+1} forEach upgDefs;

@@ -1,0 +1,52 @@
+; args: [unit, si, gi, [WayPoint, Response Radius, unit types (defined by ArtilleryMagazineSpeedList), initSpeed list, curved or not (for Mortar structure ONLY)]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+
+; Get Correct Parameters. Need Pay Attention To Coefficients
+_pos = ((wpCO select _si) select (_params select 0))
+_radius = 100*((_params select 1) + 1)
+_typeIndex = (_params select 2)
+_speed = ArtilleryMagazineSpeedList select (_params select 3)
+_curved = [false, true] select (_params select 4)
+
+; Check Whether Unit Fits The Parameters Of The Temporary Order
+; ArtilleryTypeDefs = ["Howitzer Vehicle", "Rocket Launcher", "Mortar Structure", "Howitzer Structure", "Vehicles", "Structures", "ALL"]
+_typeIndex = ArtilleryTypeDefs select _typeIndex;   _bVeh = false; _bStruct = false
+? _typeIndex == "Howitzer Vehicle":		_bVeh = true; 		_orderTypes = typesHowitzer;
+? _typeIndex == "Rocket Launcher":		_bVeh = true; 		_orderTypes = typesRocketLauncher;
+? _typeIndex == "Mortar Structure":		_bStruct = true;	_orderTypes = structsOccupiableMortar;
+? _typeIndex == "Howitzer Structure": 	_bStruct = true;	_orderTypes = structsOccupiableHowitzer + structsOccupiableArtHowitzer;
+? _typeIndex == "Vehicles":				_bVeh = true;		_orderTypes = typesHowitzer + typesRocketLauncher;
+? _typeIndex == "Structures":			_bStruct = true; 	_orderTypes = structsOccupiableMortar + structsOccupiableHowitzer + structsOccupiableArtHowitzer;
+? _typeIndex == "ALL":		_bVeh = true; _bStruct = true; 	_orderTypes = typesHowitzer + typesRocketLauncher + structsOccupiableMortar + structsOccupiableHowitzer + structsOccupiableArtHowitzer;
+
+? ([getPos _unit, _pos] call funcDistH) > _radius && _pos select 0 > 0: exit
+_vehicle = vehicle _unit
+? _unit == _vehicle || _unit != gunner _vehicle || !local _vehicle: exit
+
+? !_bVeh: goto "VehicleChecked"
+_vt = _vehicle call funcGetUnitTypeFromObject
+? _vt == -1: if !_bStruct then {exit} else {goto "VehicleChecked"}
+? !(_vt in _orderTypes): exit
+? _vt in typesHowitzer: _magSeries = {H}; if (_speed >= 900) then {_speed = 930}; if ("M109A6G_xj400" countType [_vehicle] > 0 && _speed >= 800) then {_speed = 827}
+? _vt in typesRocketLauncher: _magSeries = {MLRS}; if ("TOS1_TZK_xj400" == typeOf _vehicle) then {_magSeries = {T}; if (_speed > 500) then {_speed = 500}};
+goto "StructureChecked"
+
+#VehicleChecked
+? !_bStruct: goto "StructureChecked"
+_vt = _vehicle call funcGetStructTypeFromObject
+? _vt == -1: exit
+? !(_vt in _orderTypes): exit
+? _vt in structsOccupiableMortar: _magSeries = {M}; if (_speed > 180) then {_speed = 180}; if !_curved then {_speed = 200 + (_this select 2 select 0); if (_speed > 202) then {_speed = 202}};
+? _vt in (structsOccupiableHowitzer + structsOccupiableArtHowitzer): _magSeries = {M}; if (_speed > 600) then {_speed = 712; if ("D30_xj400" == typeOf _vehicle) then {_speed = 690}};
+
+#StructureChecked
+? format ["%1", _magSeries] == "scalar bool array string 0xfcffffef": exit
+
+; Main Part Of Temporary Order
+[_vehicle, _speed, _magSeries] exec {Common\ReEquip\SwitchMagPreset.sqs}
+
+; EOF

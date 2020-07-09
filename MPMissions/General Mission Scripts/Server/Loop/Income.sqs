@@ -11,8 +11,8 @@ _income = 0; _incomeTowns = [0,0]
 _timeNext = _timeNext + 60
 
 ? pvGameOver != -1: goto "SendAndExit"
-
-{ _si = (_x select tdSide); _val = (_x select tdValue); if (_si != siRes) then {_incomeTowns set [_si, (_incomeTowns select _si) + _val*incomex]} } forEach towns
+_factor = 1; if (time > 60*90) Then {_factor = 1.2}; if (time > 60*150) Then {_factor = 1.5}
+{ _si = (_x select tdSide); _val = (_x select tdValue); if (_si != siRes) then {_incomeTowns set [_si, (_incomeTowns select _si) + _val*incomex*_factor]} } forEach towns
 
 _totalIncome set[si0, (_totalIncome select si0) + (_incomeTowns select si0)]; _totalIncome set[si1, (_totalIncome select si1) + (_incomeTowns select si1)]
 

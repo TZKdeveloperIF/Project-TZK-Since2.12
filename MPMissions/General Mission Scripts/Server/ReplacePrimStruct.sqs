@@ -37,6 +37,7 @@ if (isNull gunner _object) then { [_object] exec "Common\AddRearmData.sqs" };
 [_si, _type] exec "Server\Info\StructReady.sqs"; [_objectDestroyed] exec "Server\primStructsPlacedRemove.sqs"
 
 _objects = [_object]
+[_objects, _type] exec "Server\ResetStructureUp.sqs";
 
 #ReplaceStructure
 

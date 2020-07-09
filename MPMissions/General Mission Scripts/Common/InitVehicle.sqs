@@ -1,58 +1,37 @@
 ; args: [vehicle, type, si, gi]
-
-_vehicle = _this select 0
-_type = _this select 1
-_si = _this select 2
-_gi = _this select 3
+_vehicle = _this select 0; _type = _this select 1; _si = _this select 2; _gi = _this select 3
+_desc = unitDefs select _type; _typeName = typeOf _vehicle
+_this exec "Common\InitVehicle_Stable.sqs"
 
 ; SERVER AND PLAYER
 
-clearMagazineCargo _vehicle; clearWeaponCargo _vehicle
-_desc = unitDefs select _type; _typeName = typeOf _vehicle
-
-; Killed and Hit Event
-_vehicle addEventHandler ["killed", {_this exec "Common\Event_VehicleDestroyed.sqs"}]
-[_vehicle, _si, _desc select udCost] exec "Common\EventAdd_VehicleHit.sqs"
-
 ; Engine Event and Suspension
-? _typeName in ["M1A2_INQ_xj200", "ZTZ99_xj200", "TOS1_TZK_xj200"] || _type in typesHowitzer: if (local _vehicle) then {_vehicle animate [{suspension}, 0.5]}; _vehicle addEventHandler ["Engine", "if (_this select 1) Then {[_this select 0, [{Suspension}]] exec {Common\EH\Tank_Acc_Sus.sqs}}"]
-
-; Rocket and Howitzer Deploy
-? _typeName == "TOS1_TZK_xj200" || _type in typesHowitzer: [_vehicle, false] exec "Player\Effect\DeployVehicle.sqs"
+; ? _typeName in ["T80_TZK_xj400", "T90ms_xj400", "ZTZ99_xj400", "T90_xj400"]
+? _type in typesHeavyTank && _si == si1: _vehicle addEventHandler ["Engine", "if (_this select 1) Then {[_this select 0, [{Suspension}]] exec {Common\EH\Tank_Acc_Sus.sqs}}"]
+; this should use vehicle param.
 
 ; Fired Event
-? _typeName in ["HMMMV_TOW2A_v2_xj200", "BRDM_Gaskin_v2_xj200", "GunBoatW_Custom_v2_xj200", "GunBoatE_Custom_v2_xj200"]: _vehicle addEventHandler ["Fired", "_this call loadFile {Player\EH\FiredImitated.sqf}" ]
-? _type in typesRocketLauncher: _vehicle addEventHandler ["Fired", "_this exec {Player\EH\Fired_DKM_FAE220.sqs}"]
-? "Plane" countType [_vehicle] > 0 : _vehicle addEventHandler ["Fired", { _this exec "Player\EH\FiredPlaneMissile.sqs"} ]
-? "Air" countType [_vehicle] > 0: _vehicle addEventHandler ["GetOut", { _this exec "Common\EH\GetOutAircraft.sqs" }]
+? _typeName == "2S6_DKM_xj400": _vehicle addEventHandler ["Fired", "_this exec {Player\EH\Fired_2S6.sqs}"]
+? _typeName == "M270_M29064_xj400": _vehicle addEventHandler ["Fired", "_this exec {Player\EH\Fired_M270.sqs}; _this exec {Player\ImpactPointMarker.sqs}"]
+? _typeName == "TOS1_TZK_xj400": _vehicle addEventHandler ["Fired", "_this exec {Player\EH\Fired_TOS1.sqs}; _this exec {Player\ImpactPointMarker.sqs}"]
+? _type in (typesHowitzer + typesHeavyTank): _vehicle addEventHandler ["Fired", "_this exec {\TZK_Objects\Scripts\gunrec.sqs}"]
+? _type in (typesHowitzer + typesRocketLauncher + RadioTypesArtUnits): _vehicle addEventHandler ["Fired", format [{ [_this select 0, nearestObject[_this select 0, _this select 4], %1 ] exec "Common\EH\TrackShell.sqs" }, _si]]
 
-; "IncomingMissile" EH must be added to all clients. Although it is a global EH, it should be added to the client who fires missile. The command can be empty, but EH can't be omitted.
-? "Air" countType [_vehicle] > 0 : [_vehicle, _type] exec "Common\EH\AddAirIncoming.sqs"
-? "Tank" countType [_vehicle] > 0: if (_si != siRes) then {[_vehicle, _type] exec "Common\EH\AddTankIncoming.sqs"}
-
+; Long last animation
+? _typeName in ["2S6_DKM_xj400", "ZSU_MNF_xj400"] && local _vehicle: _vehicle animate ["rot_radar", 1]
 
 ? isNull player : goto "SkipClient"
 ; PLAYER ONLY
+? "Helicopter" countType [_vehicle] > 0: [_vehicle] exec "Player\Effect\DustHelicopter.sqs"
+; Rocket Launcher
 
-? _typeName in [{A10_Tomahawk_xj200}, {Su25_Raduga_xj200}] : _vehicle say {NuclearMissileReady_xj200}
-? "T80_TZK_Base_xj200" countType [_vehicle] > 0 || "T80Res_TZK_xj200" countType [_vehicle] > 0: [_vehicle, true] exec "Player\Effect\T80DrumDisplaySwitch.sqs"
-? _type in typesRocketLauncher: [_vehicle] exec "Player\Effect\RocketVehicleDisplay.sqs"
-[_vehicle, _type, _si] call funcInitVehicleMarker
-
-; _vehicle addEventHandler ["Fired", {[_this, LimitWeaponRangeFactor] call <function>}]
-? !(_type in vUnlimitedRange) && !(_type in vDoubledRange) : _vehicle addEventHandler ["Fired",{[_this, 1] call funcFiredEffect}]
-? (_type in vDoubledRange) : _vehicle addEventHandler ["Fired",{[_this, 2] call funcFiredEffect}]
-? (_type in vUnlimitedRange) : _vehicle addEventHandler ["Fired",{[_this, 0] call funcFiredEffect}]
-
-? "Tank" countType [_vehicle] > 0: [_vehicle, _type] exec "Player\EH\AddTankHit.sqs"
-
-
-~0.3
-? _si == siPlayer && _gi == giPlayer : if (count (crew _vehicle) == 0 && time > 30) then { _text = format ["Your empty %1 has arrived.", (unitDefs select _type) select udName ]; hint _text; player groupchat _text }; if (_type in (airTransport select _si)) then { _vehicle exec "Player\InitTransportHeli.sqs" }
+; Texture
+? TheWorld != "C": [_vehicle, _type] exec "Common\InitVehicle_Texture.sqs"
 
 #SkipClient
 
 ? !isServer : exit
 
 ; SERVER ONLY
-? _type in (typesHeavyTank + typesLightTank + typesHowitzer + typesATAPC + typesAAAPC + typesGunshipOrigin + typesGunshipAT) : [_vehicle, _si, _gi] exec "Server\EventAdd_Vehicle.sqs"
+
+; EOF

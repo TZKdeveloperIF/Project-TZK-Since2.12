@@ -10,7 +10,7 @@ while "_i < _ci" do {
 	_vehicles = (UnitMatrix select _si) select (_types select _i); _j = 0; _cj = count _vehicles;
 	
 	_theWeapon = ["ZuniLauncher38", "Rocket57x192"] select _si;
-	if ((_types select _i) in [typesGunshipOrigin select 4, typesGunshipAT select 4]) then {_theWeapon = "SNEB70Launcher_xj200"};
+	if ((_types select _i) in [typesGunshipOrigin select 4, typesGunshipAT select 4]) then {_theWeapon = "SNEB70Launcher_xj400"};
 	if ((_types select _i) in [typesGunshipOrigin select 2, typesGunshipAT select 2]) then {_theWeapon = "Rocket57x40Kamov"};
 	if ((_types select _i) in [typesGunshipOrigin select 3, typesGunshipAT select 3]) then {_theWeapon = "Rocket57x64"};
 	

@@ -19,13 +19,13 @@ _duration = 720 * ((_params select 3) + 1)
 ? (PatrolLineTypeDefs select _typeIndex) == "AT-Infantry": 		_typesPatrol = typesInfantryAT;	
 ? (PatrolLineTypeDefs select _typeIndex) == "Light Tank": 		_typesPatrol = typesLightTank; 					
 ? (PatrolLineTypeDefs select _typeIndex) == "Heavy Tank": 		_typesPatrol = typesHeavyTank; 					
-? (PatrolLineTypeDefs select _typeIndex) == "Howitzer": 			_typesPatrol = typesHowitzer; 						
+? (PatrolLineTypeDefs select _typeIndex) == "Artillery": 			_typesPatrol = typesHowitzer+typesRocketLauncher; 						
 ? (PatrolLineTypeDefs select _typeIndex) == "AT APC":			_typesPatrol = typesATAPC; 						
 ? (PatrolLineTypeDefs select _typeIndex) == "AA Vehicle":		_typesPatrol = typesAAAPC; 						
 ? (PatrolLineTypeDefs select _typeIndex) == "Kamov":				_typesPatrol = typesKa50; 							
 ? (PatrolLineTypeDefs select _typeIndex) == "Cobra\Apac\Hind":	_typesPatrol = (typesGunshipOrigin+typesGunshipAT) - typesKa50; 	
 ? (PatrolLineTypeDefs select _typeIndex) == "Infantry": 			_typesPatrol = typesInfantryAll;										
-? (PatrolLineTypeDefs select _typeIndex) == "Tanks": 			_typesPatrol = typesLightTank+typesHeavyTank+typesHowitzer; 									
+? (PatrolLineTypeDefs select _typeIndex) == "Tanks": 			_typesPatrol = typesLightTank+typesHeavyTank+typesHowitzer+typesRocketLauncher; 									
 ? (PatrolLineTypeDefs select _typeIndex) == "APCs": 				_typesPatrol = typesATAPC+typesAAAPC; 		
 
 _vehicle = vehicle _unit

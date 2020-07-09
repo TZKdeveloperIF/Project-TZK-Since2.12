@@ -2,14 +2,14 @@
 _target = _this select 0; _ammo = _this select 1; _shooter = _this select 2
 _missile = nearestobject [_shooter, _ammo]
 ? !local _target : goto "Quit"
-? "_x=={SpoofSwitch_xj200}" count magazines _target > 0 : goto "Quit"
+? "_x=={SpoofSwitch_xj400}" count magazines _target > 0 : goto "Quit"
 
-_countMags = {"_x=={SpoofCount_xj200}" count magazines _target}; _mags = call _countMags
+_countMags = {"_x=={SpoofCount_xj400}" count magazines _target}; _mags = call _countMags
 ? _mags == 0 : goto "Quit"
 
 _timeAbort = time + 10
 #Check
-@( (_time > 10 && time > _timeAbort) || _mags > "_x=={SpoofCount_xj200}" count magazines _target)
+@( (_time > 10 && time > _timeAbort) || _mags > "_x=={SpoofCount_xj400}" count magazines _target)
 ? _time > 10 : goto "Quit"
 ? _missile distance _target > 400: _timeAbort = time + 0.33; goto "Check"
 

@@ -17,13 +17,13 @@ _typeIndex = (_params select 0)
 ? (DisengageTypeDefs select _typeIndex) == "Battle Ship" : 		_typesDisengage = typesBattleShip; 					
 ? (DisengageTypeDefs select _typeIndex) == "Light Tank" : 		_typesDisengage = typesLightTank; 					
 ? (DisengageTypeDefs select _typeIndex) == "Heavy Tank" : 		_typesDisengage = typesHeavyTank; 					
-? (DisengageTypeDefs select _typeIndex) == "Howitzer" : 		_typesDisengage = typesHowitzer; 						
+? (DisengageTypeDefs select _typeIndex) == "Artillery" : 		_typesDisengage = typesHowitzer+typesRocketLauncher; 						
 ? (DisengageTypeDefs select _typeIndex) == "AT APC" :			_typesDisengage = typesATAPC; 						
 ? (DisengageTypeDefs select _typeIndex) == "AA Vehicle" :		_typesDisengage = typesAAAPC; 						
 ? (DisengageTypeDefs select _typeIndex) == "Kamov" :			_typesDisengage = typesKa50; 							
 ? (DisengageTypeDefs select _typeIndex) == "Cobra\Apac\Hind" :	_typesDisengage = (typesGunshipOrigin+typesGunshipAT) - typesKa50; 								
 ? (DisengageTypeDefs select _typeIndex) == "Transports" : 		_typesDisengage = typesTransportCar+typesTransportShip+typesTransportAPC+typesTransportHeli;		
-? (DisengageTypeDefs select _typeIndex) == "Tanks" : 			_typesDisengage = typesLightTank+typesHeavyTank+typesHowitzer; 									
+? (DisengageTypeDefs select _typeIndex) == "Tanks" : 			_typesDisengage = typesLightTank+typesHeavyTank+typesHowitzer+typesRocketLauncher; 									
 ? (DisengageTypeDefs select _typeIndex) == "APCs" : 			_typesDisengage = typesATAPC+typesAAAPC; 				
 ? (DisengageTypeDefs select _typeIndex) == "Support APC" : 		_typesDisengage = typesSupportAPC;					
 ? (DisengageTypeDefs select _typeIndex) == "non-AT-Infantry" : _typesDisengage = typesInfantryAll - typesInfantryAT;					

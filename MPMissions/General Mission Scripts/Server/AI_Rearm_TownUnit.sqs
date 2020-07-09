@@ -12,6 +12,10 @@ _support = _this select 5
 
 _timeRearm = 5
 ? _unit != _vehicleRearm : _timeRearm = 30
+? (_type in vDoubleRearmTime): _timeRearm = 30*2
+? (_type in vTripleRearmTime): _timeRearm = 30*3
+? (_type in vSixfoldRearmTime): _timeRearm = 30*6
+? (_type in vTenfoldRearmTime): _timeRearm = 30*10
 
 _rearmData = _vehicleRearm call funcGetRearmData
 _weapons = _rearmData select 0

@@ -1,7 +1,7 @@
 ; args: Plane
 
 _plane = _this
-? "Su25_Base_v2_xj200" countType [_plane] > 0: goto "SU25"
+? "Su25_Base_xj400" countType [_plane] > 0: goto "SU25"
 
 pvAfterBurnerON = _plane; publicVariable "pvAfterBurnerON"
 
@@ -22,7 +22,7 @@ _plane setfuel _newfuel
 
 ~0.1
 ; See if switch turned off
-? "_x=={AfterBurnerSwitch_xj200}" count magazines _plane == 0 : goto "A10Loop"
+? "_x=={AfterBurnerSwitch_xj400}" count magazines _plane == 0 : goto "A10Loop"
 goto "Quit"
 
 #SU25
@@ -45,12 +45,12 @@ _plane setfuel _newfuel
 
 ~0.1
 ; See if switch turned off
-? "_x=={AfterBurnerSwitch_xj200}" count magazines _plane == 0 : goto "SU25Loop"
+? "_x=={AfterBurnerSwitch_xj400}" count magazines _plane == 0 : goto "SU25Loop"
 goto "Quit"
 
 #Quit
 ; Script possible be stopped for turning off engine. Need to add magazines to change the UA/radio condition.
-_plane addMagazine {AfterBurnerSwitch_xj200}; pvAfterBurnerOFF = _plane; publicVariable "pvAfterBurnerOFF"
+_plane addMagazine {AfterBurnerSwitch_xj400}; pvAfterBurnerOFF = _plane; publicVariable "pvAfterBurnerOFF"
 
 exit
 

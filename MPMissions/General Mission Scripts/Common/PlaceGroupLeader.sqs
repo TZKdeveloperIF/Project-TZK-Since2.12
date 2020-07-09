@@ -21,4 +21,11 @@ _unit setDir _dir
 ~1
 _unit allowdammage true
 
+~10
+#FixStartPosBug
+? _unit distance (mhq select _si) < 1000: exit
+_unit setPos [(_pos Select 0) + _dist*sin(_dir + 90), (_pos Select 1) + _dist*cos(_dir + 90), 0]
+~1
+goto "FixStartPosBug"
+
 ; EOF

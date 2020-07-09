@@ -1,10 +1,11 @@
-; args: [unit, pos]
+; args: [unit, pos, (wp index)]
 
 _unit = _this select 0
 _pos = _this select 1
+? count _this > 2: _pos = wpPlayer select (_this select (count _this) - 1)
 
-? !(alive _unit) : exit
-? !(alive driver vehicle _unit) : exit
+? !(alive _unit): exit
+? !(alive driver vehicle _unit): exit
 
 _uid = [_unit, siPlayer, giPlayer] call funcCalcUID
 ? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
@@ -12,11 +13,12 @@ _id = (playerOrderID select _uid) + 1; [_uid, _id] exec "Player\Order\New.sqs"
 
 _unit groupchat "Roger, moving to position."
 
-_timeAbort = time + 5*60
+_timeAbort = time + 2*60*60; _timeMove = time - 1
 #Move
-  [_unit, _pos] exec "Player\MovePos.sqs"
-  ~5
-  ? !(alive _unit) : exit
-  ? call orderCheck : exit
-  ? time > _timeAbort : exit
-  ? ([getPos _unit, _pos] call funcDistH) > 20 : goto "Move"
+	? _pos select 0 < 0 || _pos select 1 < 0: _unit groupChat "WP not defined, order abort.", exit
+	? time > _timeMove: [_unit, _pos] exec "Player\MovePos.sqs", _timeMove = time + 30
+	~5
+	? !(alive _unit): exit
+	? call orderCheck: exit
+	? time > _timeAbort: _unit groupChat "Having been running for 2 hours. Unable to reach the destination. Order Abort.", exit
+	? ([getPos _unit, _pos] call funcDistH) > 20: goto "Move"

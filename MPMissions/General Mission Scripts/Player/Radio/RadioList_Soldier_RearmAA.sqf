@@ -6,7 +6,7 @@ if ((_found select 1) > rangeSupport) then {_found = [getPos _unit, siEnemy sele
 if ((_found select 1) > rangeSupport) then {hint "No Rearm Vehicle Nearby."} else {
 	_wpnSec = (secondaryWeapon _unit) call funcStringWithoutVersion; _reEquip = true;
 	if !(_wpnSec in [{AALauncher},{9K32Launcher},{HyperLauncher}]) then {_weapon = [{AALauncher},{9K32Launcher}] select siPlayer; _magazine = _weapon} else {
-		_weapon = _wpnSec; _magazine = _weapon; if (_magazine == {HyperLauncher}) then {_magazine = {AALauncher},{9K32Launcher}] select siPlayer}; _reEquip = false;
+		_weapon = _wpnSec; _magazine = _weapon; if (_magazine == {HyperLauncher}) then {_magazine = [{AALauncher},{9K32Launcher}] select siPlayer}; _reEquip = false;
 	};
 	_wpnSec = secondaryWeapon _unit; _exclude = _wpnSec; if (!_reEquip) then {_exclude = ""};
 	if (([_unit, false, _exclude] call loadFile "Player\SQF\SlotCalculate.sqf") < 6) then {hint "You're equipping too many magazines."} else {

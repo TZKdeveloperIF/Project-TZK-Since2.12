@@ -5,7 +5,7 @@ _type = _this select 1
 
 _event = "_this exec {Player\EH\HitShowTank.sqs};"
 
-? _type in typesHeavyTank || (typeOf _vehicle) in ["M1A1_Art_xj200", "T80_Art_xj200"]: _event = _event + "_this exec {Player\EH\HitDropTank.sqs};"
+? _type in typesHeavyTank || (typeOf _vehicle) in ["M1A1_Art_xj400", "T80_Art_xj400"]: _event = _event + "_this exec {Player\EH\HitDropTank.sqs};"
 
 _vehicle addEventHandler ["hit", _event]
 

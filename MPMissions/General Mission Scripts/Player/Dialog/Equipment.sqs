@@ -374,7 +374,7 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
 
 #SaveTempl
 	_id = lbCurSel IDC_LB_TEMPLATES
-	? (_id == -1): hint "No Template Slot Selected"; player groupchat "No Template Slot Selected"; goto "Update"
+	? (_id == -1): hint "No Template Slot Selected"; player groupChat "No Template Slot Selected"; goto "Update"
 
 	_nameTempl = [_typePrim, _typeSec, _equipment select isGeneral] call funcGetEqName
 	_templ = eqTemplates select _id
@@ -400,7 +400,7 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
 
 #SaveCustom
 	_id = lbCurSel IDC_LB_TEMPLATES
-	? (_id == -1): hint "No Custom Slot Selected"; player groupchat "No Custom Slot Selected"; goto "Update"
+	? (_id == -1): hint "No Custom Slot Selected"; player groupChat "No Custom Slot Selected"; goto "Update"
 
 	_nameCustom = [_typePrim, _typeSec, _equipment select isGeneral] call funcGetEqName
 	_templ = infCustom select _id
@@ -427,8 +427,8 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
 
 #LoadTempl
 	_id = lbCurSel IDC_LB_TEMPLATES
-	? (_id == -1): hint "No Template Selected"; player groupchat "No Template Selected"; goto "Update"
-	? (count(eqTemplates select _id) == 0): hint "Template Not Defined"; player groupchat "Template Not Defined"; goto "Update"
+	? (_id == -1): hint "No Template Selected"; player groupChat "No Template Selected"; goto "Update"
+	? (count(eqTemplates select _id) == 0): hint "Template Not Defined"; player groupChat "Template Not Defined"; goto "Update"
 	_templ = eqTemplates select _id
 	_typePrim = _templ select 1
 	_typeHandgun = _templ select 2
@@ -450,8 +450,8 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
 
 #LoadCustom
 	_id = lbCurSel IDC_LB_TEMPLATES
-	? (_id == -1): hint "No Custom  Selected"; player groupchat "No Custom Selected"; goto "Update"
-	? count (infCustom select _id) == 0 : hint "Soldier Not Defined"; player groupchat "Soldier Not Defined"; goto "Update"
+	? (_id == -1): hint "No Custom  Selected"; player groupChat "No Custom Selected"; goto "Update"
+	? count (infCustom select _id) == 0 : hint "Soldier Not Defined"; player groupChat "Soldier Not Defined"; goto "Update"
 	_templ = infCustom select _id
 	_typePrim = _templ select 1
 	_typeHandgun = _templ select 2
@@ -472,15 +472,15 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
 
 #BuyTempl
 	_id = lbCurSel IDC_LB_TEMPLATES
-	? (_id == -1): hint "No Template Selected"; player groupchat "No Template Selected"; goto "Update"
-	? (count(eqTemplates select _id) == 0): hint "Template Not Defined"; player groupchat "Template Not Defined"; goto "Update"
+	? (_id == -1): hint "No Template Selected"; player groupChat "No Template Selected"; goto "Update"
+	? (count(eqTemplates select _id) == 0): hint "Template Not Defined"; player groupChat "Template Not Defined"; goto "Update"
 	btnBuy = true
 	goto "LoadTempl"
 
 #BuyCustom
 	_id = lbCurSel IDC_LB_TEMPLATES
-	? (_id == -1): hint "No Template Selected"; _unit groupchat "No Template Selected"; goto "Update"
-	? (count(infCustom select _id) == 0): hint "Soldier Not Defined"; _unit groupchat "Soldier Not Defined"; goto "Update"
+	? (_id == -1): hint "No Template Selected"; _unit groupChat "No Template Selected"; goto "Update"
+	? (count(infCustom select _id) == 0): hint "Soldier Not Defined"; _unit groupChat "Soldier Not Defined"; goto "Update"
 	btnBuy = true
 	goto "LoadCustom"
 
@@ -491,8 +491,8 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
 	? _costFactor > 0 : _costnow = [_typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG, _equipment, _unit, true] call loadFile "Player\SQF\EquipmentCalculateCost.sqf"
 	_costBuy = _costFactor*_costnow
 
-	? _money < _costBuy && _costBuy > 0: hint "Not Enough Money"; _unit groupchat "Not Enough Money"; goto "Update"
-	[_costBuy] exec "Player\SendMoneySpent.sqs"; _unit groupchat format["Equipment cost: $%1", _costBuy]
+	? _money < _costBuy && _costBuy > 0: hint "Not Enough Money"; _unit groupChat "Not Enough Money"; goto "Update"
+	[_costBuy] exec "Player\SendMoneySpent.sqs"; _unit groupChat format["Equipment cost: $%1", _costBuy]
 	goto "EquipAndExit"
 
 #Clear
