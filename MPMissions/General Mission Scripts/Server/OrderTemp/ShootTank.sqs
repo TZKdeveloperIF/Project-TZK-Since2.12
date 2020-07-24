@@ -5,7 +5,7 @@ _attackPos = _this select 3; _radius = _this select 4
 _target = _this select 5; _dispersion = _this select 6
 _type = _this select 7
 
-_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _actualTarget = {Target_TZK_xj400} camCreate getPosASL _target; _actualTarget allowDammage false
+_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _actualTarget = typeOf _target camCreate getPosASL _target; _actualTarget allowDammage false
 #CheckDistance
 _distLimit = viewDistance; 
 ? (upgMatrix select _si) select upgLongWeaponRange == 2: _distLimit = 2*viewDistance; 

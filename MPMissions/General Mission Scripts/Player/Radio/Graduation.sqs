@@ -7,6 +7,9 @@ _strSpeed = format ["%1", _speed/10 - (_speed/10)%1 + ([0,1] select (_speed%10 >
 ? _speed < 100: _strSpeed = "0" + _strSpeed
 ? _speed < 1000: _strSpeed = "0" + _strSpeed
 _i = (typeOf _vehicle GetVehicleParamArray "hiddenSelections") find "TZK_Grad1"
-{_vehicle setObjectTexture [_i, format ["\TZK_Texture_4_0_0\Grad\%1%2_%3.paa", _name, _strSpeed, _x]]; _i = _i + 1} forEach ["A", "B", "C", "D", "E", "F"]
+
+_gradPath = "\TZK_Texture_4_0_0"
+? bool_TZK_Vanilla_Mode: _gradPath = "\TZK_Objects\Texture", if (_name != "M") Then {exit}
+{_vehicle setObjectTexture [_i, format [_gradPath + "\Grad\%1%2_%3.paa", _name, _strSpeed, _x]]; _i = _i + 1} forEach ["A", "B", "C", "D", "E", "F"]
 
 ; EOF

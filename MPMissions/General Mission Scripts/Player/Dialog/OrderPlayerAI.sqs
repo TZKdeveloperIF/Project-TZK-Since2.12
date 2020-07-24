@@ -20,7 +20,7 @@ _idcPar2List = IDC+8
 
 { ctrlShow [_x, false] } forEach [_idcPar0Label, _idcPar0List, _idcPar1Label, _idcPar1List, _idcPar2Label, _idcPar2List, _idcButtonBG1, _idcButtonBG2]
 
-{ _id = lbAdd [_idcOrders1, _x select 0] } forEach aiOrders1; { _id = lbAdd [_idcOrders2, _x select 0] } forEach aiOrders2
+{ _id = lbAdd [_idcOrders1, (_x select 0) call funcLocStr] } forEach aiOrders1; { _id = lbAdd [_idcOrders2, (_x select 0) call funcLocStr] } forEach aiOrders2
 if (lastOrder1 != -1) Then { lbSetCurSel [_idcOrders1, lastOrder1] }; if (lastOrder2 != -1) Then { lbSetCurSel [_idcOrders2, lastOrder2] }
 _selectedOrder1 = lastOrder1; _selectedOrder2 = lastOrder2
 ? lastOrderList > 0: call format ["_selectedOrder%1 = -1", lastOrderList]
@@ -59,7 +59,7 @@ goto "Update"
 	{ ctrlShow [_x, false] } forEach [_idcButtonBG1, _idcButtonBG2]; { ctrlEnable [_x, false] } forEach [_idcButton1, _idcButton2]
 	call format ["ctrlShow [_idcButtonBG%1, true]; ctrlEnable [_idcButton%1, true]", _i]
 
-	_desc = _order select 4; if (substr[_desc, 0, 1] == "$") Then {_desc = localize substr[_desc, 1, sizeofstr _desc]}; ctrlSetText [_idcOrderDesc, _desc]
+	ctrlSetText [_idcOrderDesc, (_order select 4) call funcLocStr]
 
 	_params = _order select 1
 

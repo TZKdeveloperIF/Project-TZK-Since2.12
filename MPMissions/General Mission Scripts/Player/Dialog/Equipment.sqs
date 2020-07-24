@@ -145,7 +145,7 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
 		? (_primOnly && _typeSec != -1): _type=_typeSec; _typeSec=-1; _return = "DefaultAmmoRemovedPrim"; goto "RemoveDefaultAmmo"
 		_ammoList = (weaponDefs select _typePrim) select wdAmmoTypes
 		lbClear IDC_LB_PRIM_AMMO
-		{	_desc=equipDefs select (_x select 0); _cost = 0; if (count _desc > edCost) then { _cost=(_desc select edCost);}; _text=format["$%1 %2", _cost, _desc select edName]; _id = lbAdd [IDC_LB_PRIM_AMMO, _text]; lbSetValue [IDC_LB_PRIM_AMMO, _id, (_x select 0)] } foreach _ammoList
+		{_desc=equipDefs select (_x select 0); if !((_desc select edSides) in _notAllowed) Then {_cost = 0; if (count _desc > edCost) then { _cost=(_desc select edCost);}; _text=format["$%1 %2", _cost, _desc select edName]; _id = lbAdd [IDC_LB_PRIM_AMMO, _text]; lbSetValue [IDC_LB_PRIM_AMMO, _id, (_x select 0)]} } foreach _ammoList
 		lbSetCurSel [IDC_LB_PRIM_AMMO, 0]
 		_type = _typePrim
 		_return = "DefaultAmmoAddedPrim"; goto "AddDefaultAmmo"
@@ -162,7 +162,7 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
 		_typeHandgun = lbValue [IDC_LB_HG, _handgun]
 		_ammoList = (weaponDefs select _typeHandgun) select wdAmmoTypes
 		lbClear IDC_LB_HG_AMMO
-		{	_desc=equipDefs select (_x select 0); _cost = 0; if (count _desc > edCost) then { _cost=(_desc select edCost);}; _text=format["$%1 %2", _cost, _desc select edName]; _id = lbAdd [IDC_LB_HG_AMMO, _text]; lbSetValue [IDC_LB_HG_AMMO, _id, (_x select 0)] } foreach _ammoList
+		{_desc=equipDefs select (_x select 0); if !((_desc select edSides) in _notAllowed) Then {_cost = 0; if (count _desc > edCost) then { _cost=(_desc select edCost);}; _text=format["$%1 %2", _cost, _desc select edName]; _id = lbAdd [IDC_LB_HG_AMMO, _text]; lbSetValue [IDC_LB_HG_AMMO, _id, (_x select 0)]} } foreach _ammoList
 		lbSetCurSel [IDC_LB_HG_AMMO, 0]
 		_type = _typeHandgun
 		_return = "DefaultAmmoAddedHandgun"; goto "AddDefaultAmmo"
@@ -184,7 +184,7 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
 		_typeSec = lbValue [IDC_LB_SEC, _sec]
 		_ammoList = (weaponDefs select _typeSec) select wdAmmoTypes
 		lbClear IDC_LB_SEC_AMMO
-		{	_desc=equipDefs select (_x select 0); _cost = 0; if (count _desc > edCost) then { _cost=(_desc select edCost);}; _text=format["$%1 %2", _cost, _desc select edName]; _id = lbAdd [IDC_LB_SEC_AMMO, _text]; lbSetValue [IDC_LB_SEC_AMMO, _id, (_x select 0)] } foreach _ammoList
+		{_desc=equipDefs select (_x select 0); if !((_desc select edSides) in _notAllowed) Then {_cost = 0; if (count _desc > edCost) then { _cost=(_desc select edCost);}; _text=format["$%1 %2", _cost, _desc select edName]; _id = lbAdd [IDC_LB_SEC_AMMO, _text]; lbSetValue [IDC_LB_SEC_AMMO, _id, (_x select 0)]} } foreach _ammoList
 		lbSetCurSel [IDC_LB_SEC_AMMO, 0]
 		_type = _typeSec
 		_return = "DefaultAmmoAddedSec"; goto "AddDefaultAmmo"
