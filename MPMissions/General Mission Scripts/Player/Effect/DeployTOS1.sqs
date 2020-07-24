@@ -1,0 +1,41 @@
+; args: [vehicle, status deploy]
+
+_vehicle = _this select 0; _deploy = _this select 1
+
+_i = 0; _aName = ["stf","stL","stR"]; _aTime= [0.5, 0, 3]
+? _deploy == 0: goto "drive"
+
+commandstop (driver _vehicle)
+(driver _vehicle) action ["ENGINEOFF", _vehicle]; (commander _vehicle) action ["LIGHTOFFOFF", _vehicle]
+_vehicle setfuel 0
+_vehicle groupchat "Preparing vehicle..."
+~1
+#Deploy
+	_vehicle animate [(_aName select _i), _deploy]
+	~(_aTime select _i)
+	? _i < (count _aName)-1: _i = _i + 1, goto "Deploy"
+	
+	_vehicle setobjecttexture [3 , ""]; _vehicle setobjecttexture [4 , ""]
+	~1
+	_vehicle addweapon "FAE220Launcher_xj400"
+	_vehicle removeweapon "NoGun_xj400"
+	_vehicle groupchat "Ready to fire"
+exit
+
+
+#drive
+_vehicle addweapon "NoGun_xj400"
+_vehicle removeweapon "FAE220Launcher_xj400"
+
+~1
+_vehicle setobjecttexture [3 , "\TZK_Texture_4_0_0\DKMM\Arty\tost2.pac"]; _vehicle setobjecttexture [4 , "\TZK_Texture_4_0_0\DKMM\Arty\tost2.pac"]
+_vehicle groupchat "Launcher secured..."
+~1
+#Pack
+	_vehicle animate [(_aName select _i), _deploy]
+	~(_aTime select _i)
+	? _i < (count _aName)-1: _i = _i + 1, goto "Pack"
+_vehicle setfuel 1
+_vehicle groupchat "Ready for movement"
+
+exit

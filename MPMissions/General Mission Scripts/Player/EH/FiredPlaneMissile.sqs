@@ -1,13 +1,13 @@
 ; args: Fired-EH Array
 
 _ammo = _this select 4
-? _ammo == "tomahawk_xj200": playsound {NuclearMissileLaunched_xj200}
+? _ammo == "tomahawk_xj400": playsound {NuclearMissileLaunched_xj400}
 
-_plane = _this select 0
-_shell = nearestObject [_plane, _ammo]
+_vehicle = _this select 0
+_shell = nearestObject [_vehicle, _ammo]
 ? !local _shell : exit
 
-? !(_ammo in ["LaserGuidedBomb_xj200", "LaserGuidedBomb", "tomahawk_xj200"]): exit
+? !(_ammo in ["LaserGuidedBomb_xj400", "LaserGuidedBomb", "tomahawk_xj400"]): exit
 
 #Check
 _pos = getPos _shell
@@ -15,8 +15,8 @@ _pos = getPos _shell
 ? alive _shell && _ammo == typeOf _shell : goto "Check"
 
 _x = _pos Select 0; _y = _pos Select 1; _z = _pos Select 2;
-? _ammo == "tomahawk_xj200": _logicName = "ExplodeLogic_Nuclear_xj200"; _logic = _logicName createVehicle [-_x, _y, _z]; [_plane, _pos] exec "Player\Effect\ExplosionTomahawk.sqs"; exit
+? _ammo == "tomahawk_xj400": _logicName = "ExplodeLogic_Nuclear_xj400"; _logic = _logicName createVehicle [-_x, _y, _z]; [_vehicle, _pos] exec "Player\Effect\ExplosionTomahawk.sqs"; exit
 
-? _ammo in ["LaserGuidedBomb_xj200", "LaserGuidedBomb"]: [_plane, _pos] exec "Player\Effect\ExplosionBuster.sqs"; exit
+? _ammo in ["LaserGuidedBomb_xj400", "LaserGuidedBomb"]: if ("A10_Buster_xj400" countType [_vehicle] > 0 || "Su25_Buster_xj400" countType [_vehicle] > 0) then {[_vehicle, _pos] exec "Player\Effect\ExplosionBuster.sqs"}; exit
 
 ; EOF

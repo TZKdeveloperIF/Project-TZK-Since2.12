@@ -18,7 +18,7 @@ _unit call busySet
 #Search
 	? !(_unit call temporaryCheck): if (_idOrder != _order select 0) then {goto "Exit"}
 	? !(_unit call busyCheck): goto "Exit"
-  _mine = nearestObject [[getPos _unit, 0, 10] call funcGetRandomPos, ammoMine]
+  _mine = nearestObjectDistance [[getPos _unit, 0, 10] call funcGetRandomPos, ammoMine, viewDistance/10]
   ? isNull _mine: goto "Exit"
   _pos = getPos _mine
   goto "MoveToMine"

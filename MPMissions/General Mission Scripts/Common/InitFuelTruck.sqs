@@ -18,13 +18,13 @@ _c = count _vehicles
 #CheckUnit
   ? !(_i < _c) : goto "FuelCompleted"
   _u = _vehicles select _i
-  ? (alive _u) && (fuel _u) < 0.8 : if (local _u) then { _u setFuel 1; _u say "AutoRefuel_xj200" } else { [_u] exec "Common\SendFuelVehicle.sqs" }; _num = _num + 1
+  ? (alive _u) && (fuel _u) < 0.8 : if (local _u) then { _u setFuel 1; _u say "AutoRefuel_xj400" } else { [_u] exec "Common\SendFuelVehicle.sqs" }; _num = _num + 1
   ~1
   _i = _i + 1
   goto "CheckUnit"
 
 #FuelCompleted
-? _num > 0 : _truck say "AutoRefuel_xj200"
+? _num > 0 : _truck say "AutoRefuel_xj400"
 
 ;~( [1, 30 - _num] select (_num < 30 ) )
 ~30

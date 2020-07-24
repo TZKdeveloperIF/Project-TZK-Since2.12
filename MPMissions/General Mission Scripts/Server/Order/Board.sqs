@@ -35,7 +35,7 @@ _typesBoard = []; _crewnum = 0
 ? (BoardTypeDefs select _indexBoard) == "Zodiac" :	_typesBoard = [TransportZodiacW, TransportZodiacE] select _si;	_crewnum = CargoZodiac; goto "GetNearbyVehicles"
 ? (BoardTypeDefs select _indexBoard) == "Ship" :	_typesBoard = [TransportShipW, TransportShipE] select _si; 		_crewnum = [CargoShipW, CargoShipE] select _si;	goto "GetNearbyVehicles"
 ? (BoardTypeDefs select _indexBoard) == "APC" : 	_typesBoard = [Transport6APCW+Transport8APCW, Transport6APCE+Transport8APCE] select _si; 	_crewnum = Cargo8APC;	goto "GetNearbyVehicles"
-? (BoardTypeDefs select _indexBoard) == "Heli" :	_typesBoard = [TransportHeliW+TransportSmallHeliW, TransportHeliE+TransportSmallHeliE+TransportHindE] select _si;		_crewnum = CargoHeli;	goto "GetNearbyVehicles"
+? (BoardTypeDefs select _indexBoard) == "Heli" :	_typesBoard = [TransportHeliW+TransportirNOHeliW, TransportHeliE+TransportirNOHeliE+TransportHindE] select _si;		_crewnum = CargoHeli;	goto "GetNearbyVehicles"
 ? (BoardTypeDefs select _indexBoard) == "Plane" :	_typesBoard = [TransportPlaneW, TransportPlaneE] select _si;		_crewnum = CargoPlane;	goto "GetNearbyVehicles"
 
 #GetNearbyVehicles
@@ -58,15 +58,7 @@ _i = 0; _c = count _res
 	? !(_vType in _typesBoard) : 	goto "SetTransp"
 	? (isNull driver _v) : 			goto "SetTransp"
 	? (damage _v) > 0.5 || ((getPos _v) select 2) > 5 || (speed _v) > 1 : 		goto "SetTransp"
-	? _vType in (TransportHeliW + TransportHeliE) : 	if ( _v call funcGetCargoNum >= 12 ) 	then { goto "SetTransp" }
-	? _vType in (TransportPlaneW + TransportPlaneE) : 	if ( _v call funcGetCargoNum >= 60 ) 	then { goto "SetTransp" }
-	? _vType in (TransportSmallHeliW+TransportSmallHeliE) : if ( _v call funcGetCargoNum >= 5 ) then { goto "SetTransp" }
-	? _vType in TransportHindE : 						if ( _v call funcGetCargoNum >= 8 ) 	then { goto "SetTransp" }
-	? _vType in (TransportTruckW + TransportTruckE) : 	if ( _v call funcGetCargoNum >= 12 ) 	then { goto "SetTransp" }
-	? _vType in (Transport8APCW + Transport8APCE) : 	if ( _v call funcGetCargoNum >= 8 ) 	then { goto "SetTransp" }
-	? _vType in (TransportCarW + TransportCarE) : 		if ( _v call funcGetCargoNum >= 3 ) 	then { goto "SetTransp" }
-	? _vType in TransportShipE : 						if ( _v call funcGetCargoNum >= 10 ) 	then { goto "SetTransp" }
-	? _vType in (TransportShipW + TransportZodiacW + TransportZodiacE + Transport6APCW + Transport6APCE) : if ( _v call funcGetCargoNum >= 6 ) 	then { goto "SetTransp" }
+	? (_v call funcGetCargoNum) >= (_v call funcGetTranspVol): goto "SetTransp"
 	_transports set [count _transports, _v]; goto "SetTransp"
 	
 	#TranspSet

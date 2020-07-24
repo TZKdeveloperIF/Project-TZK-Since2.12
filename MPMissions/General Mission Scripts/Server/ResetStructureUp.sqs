@@ -1,0 +1,18 @@
+; args: [objects, type]
+_objects = _this select 0; _type = _this select 1
+; Some models' definition cause their [0,0,1] sloped (for their vertices of model use "on surface" or "keep height" property), like Air Factory model in older version, while some others' don't. They must be excluded here, when necessary.
+
+? !( _type in (structsDestroy + structsOccupiableMortar + structsOccupiableGunfort + structsOccupiableHowitzer + structsOccupiableArtHowitzer) ): exit
+
+;~0.001
+_i = 0; _c = count _objects;
+#Reset
+	_obj = _objects select _i
+	_pos = getPosASL _obj
+	_up = _pos call funcVectorUp
+	
+	_obj setVectorUp _up
+	_obj setPosASL _pos
+
+	_i = _i + 1
+	? _i < _c: goto "Reset"

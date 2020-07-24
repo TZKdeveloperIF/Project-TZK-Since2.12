@@ -2,7 +2,7 @@
 _vehicle = _this select 0
 _className = typeOf _vehicle
 
-? _className == "T80Res_TZK_xj200" || _className == "T80Res_xj200": _pos = getPos _vehicle; _logicName = format ["KilledTankLogic_%1", _className]; _KilledTankGameLogic = _logicName createVehicle [-(_pos select 0),(_pos select 1), _pos select 2]; exit
+? _className == "T80Res_TZK_xj400": _pos = getPos _vehicle; _logicName = format ["KilledTankLogic_%1", _className]; _KilledTankGameLogic = _logicName createVehicle [-(_pos select 0),(_pos select 1), _pos select 2]; exit
 
 @!(mutexKilledTank)
 mutexKilledTank = true
@@ -13,11 +13,5 @@ call format["PublicVariable {pvKilledTank%1}", indexKilledTank]
 indexKilledTank = (indexKilledTank + 1) % 5
 ~(sendDelay / 5)
 mutexKilledTank = false
-
-exit
-
-; _KilledTankGameLogic = objNull
-; ? "Tank" countType [_vehicle] > 0 : if !("M109_Base_xj200" countType [_vehicle] > 0 || "PLZ05_VME_Base_xj200" countType [_vehicle] > 0) then {_pos = getPos _vehicle; _logicName = format ["KilledTankLogic_%1", typeOf _vehicle]; _KilledTankGameLogic = _logicName createVehicle [(_pos select 0)-100000,(_pos select 1)-100000, _pos select 2]}
-; ? "Tank" countType [_vehicle] > 0 : _pos = getPos _vehicle; _KilledTankGameLogic = "Logic" createVehicle [(_pos select 0)-100000,(_pos select 1)-100000, _pos select 2]
 
 ; EOF

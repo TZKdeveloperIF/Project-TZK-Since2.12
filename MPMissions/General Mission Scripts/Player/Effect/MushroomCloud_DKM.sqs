@@ -1,0 +1,29 @@
+_splash3 = _this select 0
+_dx = (_splash3 select 0) 
+_dy = (_splash3 select 1) 
+_dz = 10
+_i = 0
+_vx = 0
+_vy = 0
+_vz = 0
+_dz1 = 0
+_clr = [[0.1,0.1,0.1,0.9],[0.25,0.25,0.25,0.6],[0.35,0.35,0.35,0.5],[0.45,0.45,0.45,0.05]]
+_dia = [8,9,6,5,8,4,4,5,4,5,7,12,20,25,29,15,5,80]
+
+_p = 0
+#n1
+	#n2
+		_vx = ((HDSIN select _i) / 20) * (_dia select _p)
+		_vy = ((HDCOS select _i) / 20) * (_dia select _p)
+		_vz =  _p * 2
+
+drop ["missilesmoke", "", "Billboard", 2, 25 - _p, [_dx , _dy , _dz1], [_vx , _vy , _vz] , 1, .2, .157, .03, [15 , 50 + _p ], _clr, [0], .1, .2, "", "", ""]
+		? _p < 10: _i = _i + 4
+		? _p >= 10 :  _i = _i + 1
+	? _i < 49:  goto "n2"
+_dz1 = _dz + _p
+_p = _p + 1
+_i = 0
+? _p < 15: goto "n1"
+
+exit

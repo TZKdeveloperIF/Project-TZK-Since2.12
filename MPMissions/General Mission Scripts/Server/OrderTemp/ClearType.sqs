@@ -17,13 +17,13 @@ _typeIndex = (_params select 0)
 ? (ClearTypeDefs select _typeIndex) == "Battle Ship" : 		_typesClear = typesBattleShip; 					
 ? (ClearTypeDefs select _typeIndex) == "Light Tank" : 		_typesClear = typesLightTank; 					
 ? (ClearTypeDefs select _typeIndex) == "Heavy Tank" : 		_typesClear = typesHeavyTank; 					
-? (ClearTypeDefs select _typeIndex) == "Howitzer" : 		_typesClear = typesHowitzer; 						
+? (ClearTypeDefs select _typeIndex) == "Artillery" : 		_typesClear = typesHowitzer + typesRocketLauncher; 						
 ? (ClearTypeDefs select _typeIndex) == "AT APC" :			_typesClear = typesATAPC; 						
 ? (ClearTypeDefs select _typeIndex) == "AA Vehicle" :		_typesClear = typesAAAPC; 						
 ? (ClearTypeDefs select _typeIndex) == "Kamov" :			_typesClear = typesKa50; 							
 ? (ClearTypeDefs select _typeIndex) == "Cobra\Apac\Hind" :	_typesClear = (typesGunshipOrigin+typesGunshipAT) - typesKa50; 								
 ? (ClearTypeDefs select _typeIndex) == "Transports" : 		_typesClear = typesTransportCar+typesTransportShip+typesTransportAPC+typesTransportHeli;		
-? (ClearTypeDefs select _typeIndex) == "Tanks" : 			_typesClear = typesLightTank+typesHeavyTank+typesHowitzer; 									
+? (ClearTypeDefs select _typeIndex) == "Tanks" : 			_typesClear = typesLightTank+typesHeavyTank+typesHowitzer+typesRocketLauncher; 									
 ? (ClearTypeDefs select _typeIndex) == "APCs" : 			_typesClear = typesATAPC+typesAAAPC; 				
 ? (ClearTypeDefs select _typeIndex) == "Support APC" : 		_typesClear = typesSupportAPC;					
 ? (ClearTypeDefs select _typeIndex) == "non-AT-Infantry" : 	_typesClear = typesInfantryAll - typesInfantryAT;					

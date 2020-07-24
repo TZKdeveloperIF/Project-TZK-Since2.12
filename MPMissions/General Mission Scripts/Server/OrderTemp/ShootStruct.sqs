@@ -1,0 +1,75 @@
+; args: [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, _vt]
+
+_unit = _this select 0; _si = _this select 1; _gi = _this select 2
+; _attackPos = _this select 3; _radius = _this select 4
+_target = _this select 5; _dispersion = _this select 6
+_type = _this select 7
+
+_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _actualTarget = typeOf _target camCreate getPosASL _target; _actualTarget allowDammage false
+#CheckDistance
+_distLimit = viewDistance; 
+? (upgMatrix select _si) select upgLongWeaponRange == 2: _distLimit = 2*viewDistance; 
+? _type in structsOccupiableArtHowitzer: _distLimit = 10000; 
+? _unit distance _target > _distLimit: exit
+? _unit distance _target < 50: exit
+
+#PrePareToAttack
+	[_unit, true] exec "Server\StopAI.sqs"
+	_weapon = (_typeName GetVehicleParamArray "weapons") select 0
+	? !(_vehicle hasWeapon _weapon): goto "EOF"
+	_weapons = (weapons _vehicle) - [_weapon]; {_vehicle removeWeapon _x} forEach _weapons; {_vehicle addWeapon _x} forEach _weapons
+	_vehicle reveal _actualTarget
+	_vehicle doTarget _actualTarget
+	~3
+	; Delay for turning the turret. It'll be good to obtain proper value by the angle's difference, however no way to compute this in OFP.
+	_ammunition = -1
+	; The applying of "_ammunition" will invalid magazines containing only 1 shot. If wish to use such a magazine, adjust this script manually.
+	#AttackCheck
+		_posTarget = [getPos _target, 0, _dispersion] call funcGetRandomPos; _posTarget set [2,0]; _actualTarget setPos _posTarget
+		? _unit distance _target > _distLimit: goto "CheckDistance"
+		? _vehicle ammo _weapon == 0: _magazines = _vehicle call loadFile "Common\SQF\GetNotEmptyMags.sqf"; _validMags = [_weapon] call loadFile "Common\SQF\WeaponValidMags.sqf"; if ("_x in _validMags" count _magazines == 0) Then {goto "CheckRearm"};
+		_vehicle reveal _actualTarget
+		~0.1
+		_vehicle doTarget _actualTarget
+		
+		; delay must be correctly assigned for "fire" command.
+		_ammoArray = _vehicle ammoArray _weapon
+		? count _ammoArray > 0: _delay = call format ["%1", (_ammoArray select 0) GetWeaponParam "reloadTime"]*1.2 + 1
+		? count _ammoArray == 0: _validMags = [_weapon] call loadFile "Common\SQF\WeaponValidMags.sqf"; _delay = call format ["%1", (_validMags select 0) GetWeaponParam "reloadTime"] + 1
+	;	? _boolFirst && count _ammoArray > 0: _reloadMagazine = true; _vehicle removeMagazine (_ammoArray select 0);
+		~0.1
+	;	? _boolFirst && count _ammoArray > 0: _boolFirst = false; _vehicle addMagazinePrecise _ammoArray
+		? _reloadMagazine: _delay = call format ["%1", _weapon GetWeaponParam "magazineReloadTime"] + _delay; _reloadMagazine = false
+		~_delay
+		? !(_unit call temporaryCheck): goto "EOF"
+		? !(alive _unit) || _vehicle != vehicle _unit: goto "EOF"
+		_ammoArray = _vehicle ammoArray _weapon
+		? count _ammoArray > 0 && local gunner _vehicle: if (_ammoArray select 1 == 1) Then {_reloadMagazine = true}; if (_ammoArray select 1 > 0) Then {if ((_ammoArray select 1 != _ammunition) || (_ammoArray select 1 == 1)) Then {_ammunition = _ammoArray select 1; _vehicle fire _weapon}} else {goto "EOF"}
+		? count _ammoArray == 0: goto "EOF"
+		~0.1
+		_vehicle doWatch (getPos _actualTarget)
+	goto "AttackCheck"
+#CheckRearm
+	_vs = [getPos _unit, 50, (typesSupport select si0) + (typesSupport select si1), []] call funcGetNearbyVehicles
+	? count _vs == 0: goto "EOF"
+	_sup = (_vs select 0) select 0
+	_gi = (groupMatrix select _si) find ( (group _unit) )
+	_speed = -1; _mag = "";
+	_magazines = magazines _vehicle; _validMags = [_weapon] call loadFile "Common\SQF\WeaponValidMags.sqf"; {if (_x in _validMags) Then {_mag = _x}} forEach _magazines
+	? _mag != "": _speed = substr [_mag, sizeofstr(_mag) - sizeofstr("xxxx_xj400"), sizeofstr(_mag) - sizeofstr("_xj400")]; if !(substr [_speed, 0, 1] in ["0","1","2","3"]) then {_speed = -1} else {_speed = call _speed}; _delay = [0,3] select (_speed > 0)
+	[_unit, _si, _gi, _vehicle, _type, _sup] exec "Server\AI_Rearm.sqs"; [_unit, true] exec "Server\StopAI.sqs"
+	#WaitRearmComplete
+		~5
+		? !(_unit call temporaryCheck): goto "EOF"
+		? !(alive _unit) || _vehicle != vehicle _unit: goto "EOF"
+		? !someAmmo _vehicle: goto "WaitRearmComplete"
+	~_delay + 1
+	? _speed > 0: [_vehicle, _speed] exec {Common\ReEquip\SwitchMagPreset.sqs}
+	goto "PrePareToAttack"
+
+; End Of File
+#EOF
+_unit call busyClear
+_unit call temporaryClear
+deleteVehicle _actualTarget
+exit
