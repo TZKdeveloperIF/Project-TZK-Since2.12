@@ -72,7 +72,7 @@ _type = _type + 1
 
 
 _price = [2000, 4000] select PricingMode
-_objects = [["LF_xj400", 0, []], ["BarackeSupports3",0, []]]
+_objects = [["LF_xj400", 0, []]]
 _image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\LightVehicleFactory.jpg", "\TZK_Texture_4_0_0\CTI_Image\Struct\LightVehicleFactory.jpg"]
 structDefs set [_type, ["Light Vehicle Factory", _price, siBoth, _image, true, true, 2, 10, 35, _objects, _objects, ["Server\InitPrimaryStructure.sqs", "Server\InitUnitFactory.sqs"], ["Player\InitLightVehicleFactory.sqs", "Player\Marker\InitStructureMarker.sqs"]]  ]
 structMarker set [_type, _mLight]
@@ -81,7 +81,7 @@ _type = _type + 1
 
 
 _price = [2000, 4000] select PricingMode
-_objects = [["CC_xj400", 0, []], ["BarackeSupports2",0, [0,-0.6,-3]]]
+_objects = [["CC_xj400", 0, []]]
 _image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\CommCenter.jpg", "\TZK_Texture_4_0_0\CTI_Image\Struct\CommCenter.jpg"]
 structDefs set [_type, ["Command Center", _price, siBoth, _image, true, true, 2, 5, 20, _objects, _objects, ["Server\InitPrimaryStructure.sqs"], ["Player\Marker\InitStructureMarker.sqs"]]  ]
 structMarker set [_type, _mCC]
@@ -105,7 +105,7 @@ stHeavy = _type
 _type = _type + 1
 
 _price = [16000, 32000] select PricingMode
-_objects = [["AirF_xj400", 0, [0,0,0]]]
+_objects = [["AirF_Green_xj400", 0, [0,0,0]]]
 _image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\AircraftFactory.jpg","\TZK_Texture_4_0_0\CTI_Image\Struct\AircraftFactory.jpg"]
 structDefs set [_type, ["Aircraft Factory", _price, siBoth, _image, true, true, 2, 20, 35, _objects, _objects, ["Server\InitPrimaryStructure.sqs", "Server\InitUnitFactory.sqs"], ["Player\InitAircraftFactory.sqs", "Player\Marker\InitStructureMarker.sqs"]]  ]
 structMarker set [_type, _mAir]
@@ -133,7 +133,7 @@ _type = _type + 1
 _price = [4500, 9000] select PricingMode
 _objects0 = [["M252Mortar_TZK_xj400", 0, [0,5,0.1]]]
 _objects1 = [["M252Mortar_TZK_E_xj400", 0, [0,5,0.1]]]
-_image = ["\TZK_Texture_4_0_0\icon\iM252.paa","\TZK_Texture_4_0_0\icon\iM252.paa"]
+_image = ["\TZK_Objects\Texture\icon\iM252.paa","\TZK_Objects\Texture\icon\iM252.paa"]
 structDefs set [_type, ["Mortar 60mm", _price, siBoth, _image, false, false, 6, 2, 10, _objects0, _objects1, ["Server\InitStructureDefenceTower.sqs"], ["Player\InitStructureEventHandler.sqs", "Player\Marker\InitStructureMarker.sqs"]]  ]
 structMarker set [_type, _mMortar]
 _mortar1 = _type
@@ -262,6 +262,14 @@ structMarker set [_type, ""]
 _tanktr = _type
 _type = _type + 1
 
+_price = [600, 1200] select PricingMode
+_objects = [ ["ArtPlain_xj400", 0, [0,0,0]] ]
+_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\Roof.jpg","\TZK_Texture_4_0_0\CTI_Image\Struct\Roof.jpg"]
+structDefs set [_type, ["Artillery Plain", _price, siBoth, _image, true, false, 12, 15, 15, _objects, _objects, ["Server\InitSecondaryStructure.sqs"], []]  ]
+structMarker set [_type, ""]
+_artPlain = _type
+_type = _type + 1
+
 _price = [20, 40] select PricingMode
 _objects = [["sandbag_xj400", 90, []]]
 _image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\Sandbags.jpg","\TZK_Texture_4_0_0\CTI_Image\Struct\Sandbags.jpg"]
@@ -327,7 +335,7 @@ structsDestroy = [stComm, stBarracks, stLight, stHeavy, stAir, stShip, stradarai
 structsFactory = [stBarracks, stLight, stHeavy, stAir, stShip]
 
 structsDefence = [_mgFort, _mgTowerWood, _mgTowerConcrete, _mg, _gunf, _mortar1, _m119, _d30, _m119Art, _d30Art]
-structsShelter = [_wall, _walls, _roof, _roofHigh, _tanktr, _tankt, _sandbag, stAmmoCrate, _heliH]
+structsShelter = [_wall, _walls, _roof, _roofHigh, _tanktr, _artPlain, _tankt, _sandbag, stAmmoCrate, _heliH]
 structsOccupiableMortar = [_mortar1]
 structsOccupiableMGGround = [_mg, _mgFort]
 structsOccupiableMGTower = [_mgTowerWood, _mgTowerConcrete]
@@ -336,7 +344,7 @@ structsOccupiableHowitzer = [_m119, _d30]
 structsOccupiableArtHowitzer = [_m119Art, _d30Art]
 
 ; do server stuff only
-? !isServer : Exit
+? !isServer: goto "SkipServer"
 
 ; BASE TEMPLATES
 
@@ -381,3 +389,53 @@ _secs set [count _secs, [_heliH, 10, [-50, -20], 270] ]
 _base set [1, _secs]
 
 baseDefs set [count baseDefs, _base]
+#SkipServer
+
+? bool_TZK_Vanilla_Mode: goto "VanillaMode"
+goto "AdjustStructDefinition"
+#VanillaMode
+; Remove baracken/dvd_v2 structures.
+{structDefs select _x set [sdSides, -1]} forEach [_m119, _d30, _m119Art, _d30Art, _mgTowerConcrete, _gunf, _roof, _roofHigh, _tanktr, _artPlain]
+{_entry = _x, {_str = _entry select sdImage select _x, if (substr [_str, 0, sizeofstr "\TZK_Texture_4_0_0\"] == "\TZK_Texture_4_0_0\") Then {_entry select sdImage set [_x, "\TZK_Objects\" + substr [_str, sizeofstr "\TZK_Texture_4_0_0\", sizeofstr _str]]}} forEach [0,1]} forEach structDefs
+structDefs select _mgTowerWood set [sdImage, ["\TZK_Objects\CTI_Image\Struct\MGTower.jpg","\TZK_Objects\CTI_Image\Struct\MGTower.jpg"]]
+
+{structDefs select stradar set [_x, [["Houseplechbud", 270, []]]  ]} forEach [sdObjects0, sdObjects1]
+{structDefs select stSatRec set [_x, [["Houseplechbud", 270, []]]  ]} forEach [sdObjects0, sdObjects1]
+{structDefs select stradarair set [_x, [["Houseplechbud", 270, []]]  ]} forEach [sdObjects0, sdObjects1]
+
+{structDefs select stBarracks set [_x, [["Housebudova4", 90, []]]  ]} forEach [sdObjects0, sdObjects1]
+{structDefs select stLight set [_x, [["Housebouda3", 180, []]]  ]} forEach [sdObjects0, sdObjects1]
+{structDefs select stHeavy set [_x, [["Housegaraz_s_tankem", 0, [1,0,0]]]  ]} forEach [sdObjects0, sdObjects1]
+{structDefs select stAir set [_x, [["Hangar_Hall", 0, [-9,0,0]]]  ]} forEach [sdObjects0, sdObjects1]
+{structDefs select stComm set [_x, [["Housebudova5", 270, []]]  ]} forEach [sdObjects0, sdObjects1]
+{structDefs select stShip set [_x, [["Houseammostore2", 0, []]]  ]} forEach [sdObjects0, sdObjects1]
+
+structDefs select _mgFort set [sdObjects0, [["M2StaticMG", 0, [1.4,1.3,2.0]], ["Fortress1", 0, []]]  ]
+structDefs select _mgFort set [sdObjects1, [["M2StaticMGE", 0, [1.4,1.3,2.0]], ["Fortress1", 0, []]]  ]
+structDefs select _mgTowerWood set [sdObjects0, [["M2StaticMG", 0, [0,0.5,7]], ["ViewTower", 0, []]]  ]
+structDefs select _mgTowerWood set [sdObjects1, [["M2StaticMGE", 0, [0,0.5,7]], ["ViewTower", 0, []]]  ]
+structDefs select _mg set [sdObjects0, [["M2StaticMG", 0, []]]  ]
+structDefs select _mg set [sdObjects1, [["M2StaticMGE", 0, []]]  ]
+
+{structDefs select _wall set [_x, [["Fortress1", 0, []], ["Fortress1", 0, [0,0,2.0]]]  ]} forEach [sdObjects0, sdObjects1]; structDefs select _wall set [sdName, "Fortress High"]
+{structDefs select _walls set [_x, [["Fortress1", 0, []]]  ]} forEach [sdObjects0, sdObjects1]; structDefs select _walls set [sdName, "Fortress"]
+{structDefs select _sandbag set [_x, [["FenceWood", 90, []]]  ]} forEach [sdObjects0, sdObjects1]
+
+exit
+
+#AdjustStructDefinition
+? bool_TZK_Vanilla_Mode: exit
+@(time > 120 || TheWorld == "D" || TheWorld == "W")
+? TheWorld == "C" || TheWorld == "G": exit
+
+_boolWinter = TheWorld == "W"
+
+; Redefine Structures. Those simulatiion "building" CfgVehicles nested classes objects don't support "setObjectTexture" command and have to design models for them.
+_objects = [[ ["AirF_xj400", "AirF_Grey_xj400"] select _boolWinter, 0, [0,0,0]]]
+{(structDefs select _x) set [sdObjects0, _objects], (structDefs select _x) set [sdObjects1, _objects]} forEach [stAir]
+
+{_objects = structDefs select _x select sdObjects0, _name = _objects select 0 select 0, _newName = substr [_name, 0, sizeofstr _name - 6] + (["_Desert", "_Grey"] select _boolWinter) + "_xj400", (_objects select 0) set [0, _newName], (structDefs select _x) set [sdObjects0, _objects], (structDefs select _x) set [sdObjects1, _objects]} forEach [stradarair, stradar, stSatRec, stLight, stComm, stBarracks, stHeavy, stShip, _wall, _walls, _roof, _roofHigh, _tanktr, _artPlain]
+
+{_t = _x, {_objects = structDefs select _t select _x, _name = _objects select ((count _objects) - 1) select 0, _newName = substr [_name, 0, sizeofstr _name - 6] + (["_Desert", "_Grey"] select _boolWinter) + "_xj400", (_objects select ((count _objects) - 1)) set [0, _newName], (structDefs select _t) set [_x, _objects]} forEach [sdObjects0, sdObjects1] } forEach [_mgTowerWood, _mgTowerConcrete, _gunf]
+
+; EOF

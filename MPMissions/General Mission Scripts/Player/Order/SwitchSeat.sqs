@@ -33,8 +33,12 @@ mutexSwitchSeat = true
 
 ? _seat == "Cargo": if ((_vehicle call funcGetCargoNum) >= _volume) then {mutexSwitchSeat = false; exit}
 
-unassignVehicle _unit; _unit setPosASL getPosASL _vehicle
-? !isNull _target: unassignVehicle _target; _target setPosASL getPosASL _vehicle
+; unassignVehicle _unit; _unit setPosASL getPosASL _vehicle
+; ? !isNull _target: unassignVehicle _target; _target setPosASL getPosASL _vehicle
+unassignVehicle _unit; _unit action ["EJECT", _vehicle]
+? !isNull _target: unassignVehicle _target; _target action ["EJECT", _vehicle]
+@(_unit == vehicle _unit)
+@(!isNull _target && _target == vehicle _target || isNull _target)
 call format ["_unit assignAs%1 _vehicle; _unit moveIn%1 _vehicle", _seat]
 ? !isNull _target: call format ["_target assignAs%1 _vehicle; _target moveIn%1 _vehicle", _oldSeat]
 

@@ -10,16 +10,16 @@ _uid = [_unit, siPlayer, giPlayer] call funcCalcUID
 ? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
 _id = (playerOrderID select _uid) + 1; [_uid, _id] exec "Player\Order\New.sqs"
 
-_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _actualTarget = {Target_TZK_xj400} camCreate getPosASL _target; _actualTarget allowDammage false
+_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _actualTarget = typeOf _target camCreate getPosASL _target; _actualTarget allowDammage false
 ? !(_unit in PlayerShootingUnits): PlayerShootingUnits set [_uid, _unit]
 #CheckDistance
 _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is outside viewDistance. Order aborted."
-? (upgMatrix select siPlayer) select upgLongWeaponRange == 2: _distLimit = 2*viewDistance; _hint = "Target is outside 2×viewDistance. Order aborted."
+? (upgMatrix select siPlayer) select upgLongWeaponRange == 2: _distLimit = 2*viewDistance; _hint = "Target is outside 2xviewDistance. Order aborted."
 ? _typeName in ["M1A1_Art_xj400", "T80_Art_xj400"]: _distLimit = 10000; _hint = "Target is very far. Probably can't hit it directly."
 ? _unit distance _target > _distLimit: _unit groupChat _hint; goto "Exit"
 ? _unit distance _target < _distLimit && _unit distance _target > viewDistance: _unit groupChat "Target is far. Probably missing."
 #PrepareToMove
-? ([getPos _unit, _posOrdered] call funcDistH) < 30: goto "PrePareToAttack"
+? ([getPos _unit, _posOrdered] call funcDistH) < 30: _unit doMove _posOrdered, goto "PrePareToAttack"
 	_unit groupChat "Moving to attacking position."; _timeStart = time; _timeHint = _timeStart + 5*60; 
 	_hint = ["I've been running for %1 minutes. Distance %2 meters now.", (_timeHint -_timeStart)/60, (_unit distance _target) - (_unit distance _target)%1]
 	? _typeName in ["TOS1_TZK_xj400", "M109A6G_xj400", "PLZ05_TZK_xj400"] && fuel _vehicle == 0: [_vehicle, 0] exec {Player\Effect\DeployChange.sqs}
@@ -32,14 +32,14 @@ _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is out
 	? ([getPos _unit, _posOrdered] call funcDistH) > 30: goto "CheckPosReached"
 #PrePareToAttack
 	_unit groupChat "In position. Prepare to attack.";
-	doStop _unit; driver _vehicle action ["ENGINE OFF", _vehicle]; _vehicle engineOn false
+	driver _vehicle action ["ENGINE OFF", _vehicle]; _vehicle engineOn false
 	_vehicle reveal _actualTarget
 	_vehicle doTarget _actualTarget
 	
 	_weapon = (_typeName GetVehicleParamArray "weapons") select 0
 	_delay = 3
 	; Delay for turning the turret. It'll be good to obtain proper value by the angle's difference, however no way to compute this in OFP.
-	? _typeName in ["TOS1_TZK_xj400", "M109A6G_xj400", "PLZ05_TZK_xj400"] && fuel _vehicle > 0: [_vehicle, 1] exec {Player\Effect\DeployChange.sqs}; _delay = 8
+	? _typeName in ["TOS1_TZK_xj400", "M109A6G_xj400", "PLZ05_TZK_xj400"]: [_vehicle, 1] exec {Player\Effect\DeployChange.sqs}; _delay = [5, 8] select (fuel _vehicle > 0)
 	~_delay
 	
 	? !(_vehicle hasWeapon _weapon): _unit groupChat "No proper weapon. Order aborted. Rearm me or help me to deploy, sir."; goto "Exit"

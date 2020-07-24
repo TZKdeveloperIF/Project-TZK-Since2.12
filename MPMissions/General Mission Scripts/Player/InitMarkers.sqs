@@ -1,7 +1,8 @@
 ; args: [si]
-
 _si = _this select 0
 
+_colorPurple = "ColorDarkPurple_xj400"; _colorOrange = "ColorOrange_xj400"; _colorCyan = "ColorCyan_xj400"; _colorGrey = "ColorGrey_xj400"
+; ? bool_TZK_Vanilla_Mode: _colorPurple = "ColorBlack", _colorOrange = "ColorRedAlpha", _colorCyan = "ColorGreenAlpha", _colorGrey = "ColorWhite"
 
 ; TOWN SIDE/AREA MARKERS
 _index = 0
@@ -41,7 +42,7 @@ maxVehicleMarkers = 150
 
 	_marker = format["Vehicle_%1_%2", siCiv, _i]
 	_marker setMarkerPos hiddenMarkerPos
-	_marker setMarkerColor "ColorGrey_xj400"
+	_marker setMarkerColor _colorGrey
 	(vehicleMarkerMapping select siCiv) set [_i, objNull]
 
 	_i = _i + 1
@@ -60,12 +61,12 @@ maxStructureMarkers = 50
 	
 	_marker = format["Structure_%1_%2", si0, _i]
 	_marker setMarkerPos hiddenMarkerPos
-	_marker setMarkerColor (["ColorCyan_xj400", "ColorOrange_xj400", "", "", "ColorCyan_xj400"] select _si)
+	_marker setMarkerColor ([_colorCyan, _colorOrange, "", "", _colorCyan] select _si)
 	(StructureMarkerMapping select si0) set [_i, objNull]
 	
 	_marker = format["Structure_%1_%2", si1, _i]
 	_marker setMarkerPos hiddenMarkerPos
-	_marker setMarkerColor (["ColorOrange_xj400", "ColorCyan_xj400", "", "", "ColorOrange_xj400"] select _si)
+	_marker setMarkerColor ([_colorOrange, _colorCyan, "", "", _colorOrange] select _si)
 	(StructureMarkerMapping select si1) set [_i, objNull]
 	
 	_i = _i + 1
@@ -125,14 +126,14 @@ _i = 0
 	  _marker = Format["TownUnit_0_%1_%2", _i, _j]
 	  _marker setMarkerSize [0.70,0.70]
 	  _marker setMarkerPos hiddenMarkerPos
-	  ? _si == siCiv : _marker setMarkerColor "ColorCyan_xj400"
-	  ? _si == si0 : _marker setMarkerColor "ColorDarkPurple_xj400"
+	  ? _si == siCiv : _marker setMarkerColor _colorCyan
+	  ? _si == si0 : _marker setMarkerColor _colorPurple
   	
 	  _marker = Format["TownUnit_1_%1_%2", _i, _j]
 	  _marker setMarkerSize [0.70,0.70]
 	  _marker setMarkerPos hiddenMarkerPos
 	  ? _si == siCiv : _marker setMarkerColor "ColorYellow"
-	  ? _si == si1 : _marker setMarkerColor "ColorDarkPurple_xj400"
+	  ? _si == si1 : _marker setMarkerColor _colorPurple
 
 	  _j = _j + 1
 	  ? (_j < 12): goto "HideTownUnitMarker"
@@ -149,13 +150,13 @@ _i = 0
 	  _marker setMarkerSize [0.70,0.70]
 	  _marker setMarkerPos hiddenMarkerPos
 	  ? _si == siCiv : _marker setMarkerColor "ColorGreenAlpha"
-	  ? _si == si0 : _marker setMarkerColor "ColorCyan_xj400"
+	  ? _si == si0 : _marker setMarkerColor _colorCyan
   	
 	  _marker = Format["Worker_1_%1_%2", _i, _j]
 	  _marker setMarkerSize [0.70,0.70]
 	  _marker setMarkerPos hiddenMarkerPos
-	  ? _si == siCiv : _marker setMarkerColor "ColorOrange_xj400"
-	  ? _si == si1 : _marker setMarkerColor "ColorCyan_xj400"
+	  ? _si == siCiv : _marker setMarkerColor _colorOrange
+	  ? _si == si1 : _marker setMarkerColor _colorCyan
 
 	  _j = _j + 1
 	  ? (_j < 12): goto "HideWorkerMarker"

@@ -65,7 +65,7 @@ if (!isNull _effectShell) then {
 	};
 
 	// FFUR Cannon Tracer Effect
-	if ( _weapon in ["MachineGun30","MachineGun30W","M197_xj400","VulcanCannon","VulcanCannon_xj400","Cannon_20HE_xj400","Cannon_20AP_xj400", "RMKHETiger_DVD_xj400","RMKAPTiger_DVD_xj400", "MachineGun30E","ZsuCannon","Cannon30_Kamov_xj400","CannonE_20HE_xj400","CannonE_20AP_xj400",  "MachineGun30A10","MachineGun30A10Burst","RKTHunter_Guns","Cannon_Heli_xj400","Cannon_30APHE_xj400"] ) then {
+	if ( _weapon in ["MachineGun30","MachineGun30W","M197_xj400","VulcanCannon","VulcanCannon_xj400","Cannon_20HE_xj400","Cannon_20AP_xj400", "RMKHETiger_DVD_xj400","RMKAPTiger_DVD_xj400", "MachineGun30E","ZsuCannon","Cannon30_Kamov_xj400","CannonE_20HE_xj400","CannonE_20AP_xj400",  "MachineGun30A10","MachineGun30A10Burst","RKTHunter_Guns_xj400","Cannon_Heli_xj400","Cannon_30APHE_xj400"] ) then {
 		if ((boole_Local_Cannon_Tracer && local _shell) || (boole_Global_Cannon_Tracer && !local _shell)) then {[_effectShell, _weapon] exec {Player\Effect\Fired_FFUR_Cannon.sqs}};
 	};
 	// The cannon of Tunguska won't be triggered here. The vehicle using multiple launching system thus requiring pre-calculating.
