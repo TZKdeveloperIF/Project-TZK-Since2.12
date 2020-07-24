@@ -1,0 +1,12 @@
+_t = _this
+_col = [[.5,.5,.5,.15],[.5,.5,.5,.1],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
+_i = 0 
+_s = false
+_p = [getpos _t select 0,getpos _t select 1,-.6]
+#loop
+	_v = [HDSIN select _i, HDCOS select _i, 0]
+	drop ["cl_basic","", "Billboard", 4, 3,_p, _v, 0, .2, .157, .001,[1.2,1.8], _col, [0], .1, .2, "", "", ""] 
+	? _i < 49 : _i = _i + 1,goto "loop"
+	~.1
+	? !_s : _s = true, _i = 0, goto "loop"
+	exit

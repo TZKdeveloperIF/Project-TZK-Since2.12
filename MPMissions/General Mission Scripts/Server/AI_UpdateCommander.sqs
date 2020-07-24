@@ -83,7 +83,7 @@ _giPatrol = _gi; _bTakeTown=false; _nDestroy=0
 	_money = (groupMoneyMatrix select _si) select _gi
 
 	? _money > 500 : [_unit, _si, _gi] exec "Server\AICO_CheckBuyUnit.sqs"; [_si, _gi, _giPatrol, 500] exec "Server\MoneyTransfer.sqs"
-	? time > _timeCheckNextUpgrade : [_si] exec "Server\AICO_CheckUpgrade.sqs"; _timeCheckNextUpgrade = time + ([5*60, 60] select dev)
+	? time > _timeCheckNextUpgrade : [_si, _gi] exec "Server\AICO_CheckUpgrade.sqs"; _timeCheckNextUpgrade = time + ([5*60, 60] select dev)
 	? time > _timeCheckOrders : goto _currentOrder
 
 	? _unit call busyCheck : goto "Update"

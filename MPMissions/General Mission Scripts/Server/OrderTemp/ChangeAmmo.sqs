@@ -9,11 +9,10 @@ _params = _this select 3
 _typeIndex = (_params select 0)
 
 ; Check Whether Unit Fits The Parameters Of The Temporary Order
-; ChangeAmmoTypeDefs = ["Light Tank", "Heavy Tank", "Howitzer", "All"]
+; ChangeAmmoTypeDefs = ["Light Tank", "Heavy Tank", "All"]
 ? (ChangeAmmoTypeDefs select _typeIndex) == "Light Tank" :		_typesChangeAmmo = typesLightTank
 ? (ChangeAmmoTypeDefs select _typeIndex) == "Heavy Tank" :		_typesChangeAmmo = typesHeavyTank
-? (ChangeAmmoTypeDefs select _typeIndex) == "Howitzer" :		_typesChangeAmmo = typesHowitzer
-? (ChangeAmmoTypeDefs select _typeIndex) == "All" :				_typesChangeAmmo = typesLightTank + typesHeavyTank + typesHowitzer
+? (ChangeAmmoTypeDefs select _typeIndex) == "All" :				_typesChangeAmmo = typesLightTank + typesHeavyTank
 
 _vehicle = vehicle _unit
 ? _unit == _vehicle || _unit != gunner _vehicle : exit

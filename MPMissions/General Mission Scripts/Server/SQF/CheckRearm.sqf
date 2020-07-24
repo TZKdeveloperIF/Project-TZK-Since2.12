@@ -33,7 +33,7 @@ if (_unit == driver _v) then {
 			if !(_rearm) then {
 				private ["_vt", "_gun", "_sabotMag", "_magazines"];
 				_vt = _v call funcGetUnitTypeFromObject;
-				if (_vt in (typesLightTank + typesHeavyTank + typesHowitzer) && _gi >= 0 && _gi < (GroupsNum - 2)) then {
+				if (_vt in (typesLightTank + typesHeavyTank) && _gi >= 0 && _gi < (GroupsNum - 2)) then {
 					_gun = (_rearmData select 0 select 0); _sabotMag = (call format ["%1", _gun GetWeaponParamArray "magazines"]) select 0;
 			// This design require the gun use itself as its muzzle, and the sabot magazine is in the 1st element of its "magazines[]" parameter.
 					_magazines = magazinesArray _v;

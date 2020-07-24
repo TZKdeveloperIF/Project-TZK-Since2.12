@@ -39,7 +39,7 @@ while "_index < _count" do
 _CommandCenters = (structMatrix select siPlayer) select stComm;
 { if !(alive _x) then {_CommandCenters = _CommandCenters - [_x]} } forEach _CommandCenters;
 _workers = [];
-{ _workers = _workers + ([getPos _x, distMaxCC, [[utWorkerW], [utWorkerE]] select siPlayer, [], siPlayer] call funcGetNearbySoldiers) } forEach _CommandCenters;
+{ _workers = _workers + ([getPos _x, CCdistMax select siPlayer, [[utWorkerW], [utWorkerE]] select siPlayer, [], siPlayer] call funcGetNearbySoldiers) } forEach _CommandCenters;
 _engineers = [];
 { if !( (_x select 0) in _engineers ) then { _engineers set [count _engineers, _x select 0] } } forEach _workers;
 {

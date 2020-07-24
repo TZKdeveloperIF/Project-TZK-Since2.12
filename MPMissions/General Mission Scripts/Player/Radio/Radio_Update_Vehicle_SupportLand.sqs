@@ -8,13 +8,13 @@ Radio001 setTriggerText " "; Radio001 setTriggerStatements ["this", "", ""];
 Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", "[] exec {Player\Dialog\TZK_Mission_Setting.sqs}", ""];
 Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""];
 Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""];
-? "Truck" countType [_vehicle] > 0 : Radio005 setTriggerText "Attach/Detach Center Vehicle"; Radio005 setTriggerStatements ["this", "[vehicle player, tsCenter, ttTruck] exec {Player\AttachDetachVehicle.sqs}", ""];
-? "Truck" countType [_vehicle] == 0: Radio005 setTriggerText "Attach/Detach Center Vehicle"; Radio005 setTriggerStatements ["this", "[vehicle player, tsCenter, ttAPC] exec {Player\AttachDetachVehicle.sqs}", ""];
+? "Truck" countType [_vehicle] > 0 : Radio005 setTriggerText "Attach/Detach Center Vehicle"; Radio005 setTriggerStatements ["this", "[vehicle player, tsCenter, ttTruck] exec {Player\Action\AttachDetachVehicle.sqs}", ""];
+? "Truck" countType [_vehicle] == 0: Radio005 setTriggerText "Attach/Detach Center Vehicle"; Radio005 setTriggerStatements ["this", "[vehicle player, tsCenter, ttAPC] exec {Player\Action\AttachDetachVehicle.sqs}", ""];
 
 Radio006 setTriggerText " "; Radio006 setTriggerStatements ["this", "", ""];
 Radio007 setTriggerText " "; Radio007 setTriggerStatements ["this", "", ""];
-Radio008 setTriggerText "Eject All Cargo"; Radio008 setTriggerStatements ["this", "[vehicle player, siPlayer] exec {Player\EjectAllCargo.sqs}", ""];
-Radio009 setTriggerText "Eject One Cargo"; Radio009 setTriggerStatements ["this", "[vehicle player, siPlayer] exec {Player\EjectOneCargo.sqs}", ""];
+Radio008 setTriggerText "Eject All Cargo"; Radio008 setTriggerStatements ["this", "[vehicle player, siPlayer] exec {Player\Action\EjectAllCargo.sqs}", ""];
+Radio009 setTriggerText "Eject One Cargo"; Radio009 setTriggerStatements ["this", "[vehicle player, siPlayer] exec {Player\Action\EjectOneCargo.sqs}", ""];
 if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", "[vehicle player] exec {Common\SendTransportTurnOff.sqs}", ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", "[vehicle player] exec {Common\SendTransportTurnOn.sqs}", ""];	};
 
 

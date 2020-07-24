@@ -34,7 +34,7 @@ _timeAbort = time + 5*60
   ? !(alive _unit) : exit
   ? call orderCheck : exit
   ? !(alive _support) : _msg = "Support aborted, support vehicle destroyed."; goto "Abort"
-  ? time > _timeAbort : _msg = "Support aborted."; goto "Abort"
+  ? time > _timeAbort : _msg = "Cost too much time. Support aborted."; goto "Abort"
   ? (_unit distance _support) > rangeSupport : goto "MoveGround"
 goto "CheckPrio"
   
@@ -47,7 +47,7 @@ goto "CheckPrio"
     ? call orderCheck : exit
     ? !(alive _v) || _v != vehicle _unit : _msg = "Support aborted."; goto "Abort"
     ? !(alive _support) : _msg = "Support aborted, support vehicle destroyed."; goto "Abort"
-    ? time > _timeAbort : _msg = "Support aborted."; goto "Abort"
+    ? time > _timeAbort : _msg = "Cost too much time. Support aborted."; goto "Abort"
     ? ([getPos _v, getPos _support] call funcDistH) > 2*rangeSupport || (speed _v) > 40 : goto "MoveAir_Check"
 
 #Hover

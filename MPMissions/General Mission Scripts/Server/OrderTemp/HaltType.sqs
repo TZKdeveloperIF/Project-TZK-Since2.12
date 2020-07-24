@@ -18,13 +18,13 @@ _duration = 720 * ((_params select 1) + 1)
 ? (HaltTypeDefs select _typeIndex) == "Battle Ship": 		_typesHalt = typesBattleShip; 					
 ? (HaltTypeDefs select _typeIndex) == "Light Tank": 		_typesHalt = typesLightTank; 					
 ? (HaltTypeDefs select _typeIndex) == "Heavy Tank": 		_typesHalt = typesHeavyTank; 					
-? (HaltTypeDefs select _typeIndex) == "Howitzer": 			_typesHalt = typesHowitzer; 						
+? (HaltTypeDefs select _typeIndex) == "Artillery": 			_typesHalt = typesHowitzer+typesRocketLauncher; 						
 ? (HaltTypeDefs select _typeIndex) == "AT APC":			_typesHalt = typesATAPC; 						
 ? (HaltTypeDefs select _typeIndex) == "AA Vehicle":		_typesHalt = typesAAAPC; 						
 ? (HaltTypeDefs select _typeIndex) == "Kamov":				_typesHalt = typesKa50; 							
 ? (HaltTypeDefs select _typeIndex) == "Cobra\Apac\Hind":	_typesHalt = (typesGunshipOrigin+typesGunshipAT) - typesKa50; 								
 ? (HaltTypeDefs select _typeIndex) == "Transports": 		_typesHalt = typesTransportCar+typesTransportShip+typesTransportAPC+typesTransportHeli;		
-? (HaltTypeDefs select _typeIndex) == "Tanks": 			_typesHalt = typesLightTank+typesHeavyTank+typesHowitzer; 									
+? (HaltTypeDefs select _typeIndex) == "Tanks": 			_typesHalt = typesLightTank+typesHeavyTank+typesHowitzer+typesRocketLauncher; 									
 ? (HaltTypeDefs select _typeIndex) == "APCs": 				_typesHalt = typesATAPC+typesAAAPC; 				
 ? (HaltTypeDefs select _typeIndex) == "Support APC": 		_typesHalt = typesSupportAPC;					
 ? (HaltTypeDefs select _typeIndex) == "non-AT-Infantry": 	_typesHalt = typesInfantryAll - typesInfantryAT;					

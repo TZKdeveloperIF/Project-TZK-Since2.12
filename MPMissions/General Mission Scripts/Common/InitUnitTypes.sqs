@@ -21,22 +21,23 @@ kaUnit = 1
 
 ; VEHICLE MARKERS
 
-_mBike = "Bike_Marker_xj200"
-_mCar = "Car_Marker_xj200"
-_mTruck = "Truck_Marker_xj200"
-_mBoat= "Boat_Marker_xj200"
-_mAPC = "APC_Marker_xj200"
-_mTank = "Tank_Marker_xj200"
-_mHowitzer = "Howitzer_Marker_xj200"
-_mHeli = "Helicopter_Marker_xj200"
-_mPlane = "Plane_Marker_xj200"
-_mSupport = "RepairVehicle_Marker_xj200"
-_mSupportPlane = "RepairStructure_Marker_xj200"
-_mAmmo = "AmmoVehicle_Marker_xj200"
-_mFuel = "FuelVehicle_Marker_xj200"
-_mMHQ = "MedicStructure_Marker_xj200"
-_mMCV = "MedicVehicle_Marker_xj200"
-_mAA = "AAVehicle_Marker_xj200"
+_mBike = "Bike_Marker_xj400"
+_mCar = "Car_Marker_xj400"
+_mTruck = "Truck_Marker_xj400"
+_mBoat= "Boat_Marker_xj400"
+_mAPC = "APC_Marker_xj400"
+_mTank = "Tank_Marker_xj400"
+_mMLRS = "Rocket_Marker_xj400"
+_mHowitzer = "Howitzer_Marker_xj400"
+_mHeli = "Helicopter_Marker_xj400"
+_mPlane = "Plane_Marker_xj400"
+_mSupport = "RepairVehicle_Marker_xj400"
+_mSupportPlane = "RepairStructure_Marker_xj400"
+_mAmmo = "AmmoVehicle_Marker_xj400"
+_mFuel = "FuelVehicle_Marker_xj400"
+_mMHQ = "MedicStructure_Marker_xj400"
+_mMCV = "MedicVehicle_Marker_xj400"
+_mAA = "AAVehicle_Marker_xj400"
 _quad ="Dot"
 
 ; _costSupportAPC = 1500
@@ -57,114 +58,115 @@ _si = si0
 ; INFANTRY WEST
 _st = stBarracks
 
-unitDefs set [_type, ["Worker", costWorker, _si, 10, "SoldierWAA", "isaa", -1, [], "", ["Server\Start\Worker.sqs"]] ]
+unitDefs set [_type, ["Worker", costWorker, _si, 10, "SoldierWAA_xj400", "isaa", -1, [], "", ["Server\Start\Worker.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 utWorkerW = _type
 _type = _type + 1
 
 _price = [50, 100] select PricingMode
-unitDefs set [_type, ["M16", _price, _si, 10, "SoldierWB", "ivojak", 2^_st, [], "", []] ]
+unitDefs set [_type, ["M16", _price, _si, 10, "SoldierWB_xj400", "ivojak", 2^_st, [], "", []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierW = _type
 _type = _type + 1
 
 _price = [50, 100] select PricingMode
-unitDefs set [_type, ["M16GL", _price, _si, 10, "SoldierWG", "igrenadier", 2^_st, [], "", ["Common\Equip\GL.sqs"]] ]
+unitDefs set [_type, ["M16GL", _price, _si, 10, "SoldierWG_xj400", "igrenadier", 2^_st, [], "", ["Common\Equip\GL.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
+_soldierGLW = _type
 _type = _type + 1
 
 _price = [75, 150] select PricingMode
-unitDefs set [_type, ["MM1", _price, _si, 10, "HeavyGW", "igrenadier", 2^_st, [], "", []] ]
+unitDefs set [_type, ["MM1", _price, _si, 10, "HeavyGW_xj400", "igrenadier", 2^_st, [], "", []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _MM1W = _type
 _type = _type + 1
 
 _price = [100, 200] select PricingMode
-unitDefs set [_type, ["M60", _price, _si, 10, "SoldierWMG", "ismg", 2^_st, [], "", []] ]
+unitDefs set [_type, ["M60", _price, _si, 10, "SoldierWMG_xj400", "ismg", 2^_st, [], "", []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierMGW = _type
 _type = _type + 1
 
 _price = [100, 200] select PricingMode
-unitDefs set [_type, ["Sniper", _price, _si, 10, "SoldierWSniper", "isniper", 2^_st, [], "", []] ]
+unitDefs set [_type, ["Sniper", _price, _si, 10, "SoldierWSniper_xj400", "isniper", 2^_st, [], "", []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _sniperW = _type
 _type = _type + 1
 
 _price = [125, 250] select PricingMode
-unitDefs set [_type, ["Mortar", _price, _si, 10, "SoldierWMortar", "igrenadier", 2^_st, [], "", ["Common\Equip\Mortar.sqs"]] ]
+unitDefs set [_type, ["Mortar", _price, _si, 10, "SoldierWMortar_xj400", "igrenadier", 2^_st, [], "", ["Common\Equip\Mortar.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _MortarW = _type
 _type = _type + 1
 
 _price = [125, 250] select PricingMode
-unitDefs set [_type, ["M82A1", _price, _si, 10, "SoldierWB", "isniper", 2^_st, [], "", ["Common\Equip\M82.sqs"]] ]
+unitDefs set [_type, ["M82A1", _price, _si, 10, "SoldierWB_xj400", "isniper", 2^_st, [], "", ["Common\Equip\M82.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _M82A1W = _type
 _type = _type + 1
 
 _price = [150, 300] select PricingMode
-unitDefs set [_type, ["LAW Soldier", _price, _si, 10, "SoldierWLAW", "islaw", 2^_st, [], "", ["Common\Equip\RPG2ai.sqs"]] ]
+unitDefs set [_type, ["LAW Soldier", _price, _si, 10, "SoldierWLAW_xj400", "islaw", 2^_st, [], "", ["Common\Equip\RPG2ai.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierLAWW = _type
 _type = _type + 1
 
 _price = [250, 500] select PricingMode
-unitDefs set [_type, ["LAW Sniper", _price, _si, 10, "SoldierWLAW", "islaw", 2^_st, [], "", ["Common\Equip\RPGai.sqs"]] ]
+unitDefs set [_type, ["LAW Sniper", _price, _si, 10, "SoldierWLAW_xj400", "islaw", 2^_st, [], "", ["Common\Equip\RPGai.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierLAWW2 = _type
 _type = _type + 1
 
 _price = [180, 360] select PricingMode
-unitDefs set [_type, ["AT Soldier", _price, _si, 10, "SoldierWAT", "isat", 2^_st, [], "", ["Common\Equip\AT2ai.sqs"]] ]
+unitDefs set [_type, ["AT Soldier", _price, _si, 10, "SoldierWAT_xj400", "isat", 2^_st, [], "", ["Common\Equip\AT2ai.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierATW = _type
 _type = _type + 1
 
 _price = [280, 560] select PricingMode
-unitDefs set [_type, ["AT Sniper", _price, _si, 10, "SoldierWAT", "isat", 2^_st, [], "", ["Common\Equip\ATai.sqs"]] ]
+unitDefs set [_type, ["AT Sniper", _price, _si, 10, "SoldierWAT_xj400", "isat", 2^_st, [], "", ["Common\Equip\ATai.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierATW2 = _type
 _type = _type + 1
 
 _price = [250, 500] select PricingMode
-unitDefs set [_type, ["Stinger", _price, _si, 10, "SoldierWAA", "isaa", 2^_st, [], "", ["Common\Equip\AAai.sqs"]] ]
+unitDefs set [_type, ["Stinger", _price, _si, 10, "SoldierWAA_xj400", "isaa", 2^_st, [], "", ["Common\Equip\AAai.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierAAW = _type
 _type = _type + 1
 
 _price = [150, 300] select PricingMode
-unitDefs set [_type, ["Saboteur", _price, _si, 10, "SoldierWSaboteurDay", "isaboteur", 2^_st, [], "", ["Common\Equip\Spec.sqs"]] ]
+unitDefs set [_type, ["Saboteur", _price, _si, 10, "SoldierWSaboteurDay_xj400", "isaboteur", 2^_st, [], "", ["Common\Equip\Spec.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _bomberW = _type
 _type = _type + 1
 
 _price = [200, 400] select PricingMode
-unitDefs set [_type, ["Miner", _price, _si, 10, "SoldierWMiner", "iminer", 2^_st, [], "", ["Common\Equip\Miner.sqs"]] ]
+unitDefs set [_type, ["Miner", _price, _si, 10, "SoldierWMiner_xj400", "iminer", 2^_st, [], "", ["Common\Equip\Miner.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _minerW = _type
 _type = _type + 1
 
 _price = [50, 100] select PricingMode
-unitDefs set [_type, ["Medic", _price, _si, 10, "SoldierWMedic", "imedic", 2^_st, [], "", []] ]
+unitDefs set [_type, ["Medic", _price, _si, 10, "SoldierWMedic_xj400", "imedic", 2^_st, [], "", []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _medicW = _type
 _type = _type + 1
 
 _price = [50, 100] select PricingMode
-unitDefs set [_type, ["Crew", _price, _si, 10, "SoldierWCrew", "icrew", 2^stBarracks + 2^stLight + 2^stShip + 2^stHeavy, [], "", []] ]
+unitDefs set [_type, ["Crew", _price, _si, 10, "SoldierWCrew_xj400", "icrew", 2^stBarracks + 2^stLight + 2^stShip + 2^stHeavy, [], "", []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _crewW = _type
 _type = _type + 1
 
 _price = [50, 100] select PricingMode
-unitDefs set [_type, ["Pilot", _price, _si, 10, "SoldierWPilot", "ipilot", 2^stBarracks + 2^stAir, [], "", []] ]
+unitDefs set [_type, ["Pilot", _price, _si, 10, "SoldierWPilot_xj400", "ipilot", 2^stBarracks + 2^stAir, [], "", []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _pilotW = _type
 _type = _type + 1
 
 _price = [150, 300] select PricingMode
-unitDefs set [_type, ["Custom", _price, _si, 10, "SoldierWSaboteurDay", "isaboteur", -1, [], "", []] ]
+unitDefs set [_type, ["Custom", _price, _si, 10, "SoldierWSaboteurDay_xj400", "isaboteur", -1, [], "", []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _customW = _type
 _type = _type + 1
@@ -176,54 +178,55 @@ _type = _type + 1
 _st = stLight
 
 _price = [250, 500] select PricingMode
-unitDefs set [_type, ["QUAD", _price, _si, 20, "QUAD_xj200", "\GST_KawaP\KPpict", 2^_st, [1, _soldierW], _mBike, []] ]
+unitDefs set [_type, ["QUAD", _price, _si, 20, "QUAD_xj400", "\GST_KawaP\KPpict", 2^_st, [1, _soldierW], _mBike, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
+_quadW = _type
 _type = _type + 1
 
 _price = [400, 800] select PricingMode
-unitDefs set [_type, ["Jeep", _price, _si, 20, "Jeep_xj200", "ijeepMUTT", 2^_st, [1, _soldierW], _mCar, ["Common\Equip\CargoCar.sqs"]] ]
+unitDefs set [_type, ["Jeep", _price, _si, 20, "Jeep_xj400", "ijeepMUTT", 2^_st, [1, _soldierW], _mCar, ["Common\Equip\CargoCar.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _jeepW = _type
 _type = _type + 1
 
 _price = [700, 1400] select PricingMode
-unitDefs set [_type, ["Jeep Ammo", _price, _si, 20, "Jeep_xj200", "ijeepMUTT", 2^_st, [1, _soldierW], _mAmmo, ["Common\InitAmmojeep.sqs"]] ]
+unitDefs set [_type, ["Jeep Ammo", _price, _si, 20, "Jeep_xj400", "ijeepMUTT", 2^_st, [1, _soldierW], _mAmmo, ["Common\InitAmmojeep.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 jeepaW = _type
 _type = _type + 1
 
 _price = [400, 800] select PricingMode
-unitDefs set [_type, ["HMMWV", _price, _si, 30, "HMMWV_xj200", "\humr\ihmmwv", 2^_st, [1, _soldierW], _mCar, []] ]
+unitDefs set [_type, ["HMMWV", _price, _si, 30, "HMMWV_xj400", "\humr\ihmmwv", 2^_st, [1, _soldierW], _mCar, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _hummerW = _type
 _type = _type + 1
 
 _price = [500, 1000] select PricingMode
-unitDefs set [_type, ["HMMWV M2", _price, _si, 30, "HMMWV_M2wS_v2_xj200", "\FK_HMMWV\ihmmwv_f.paa", 2^_st, [2, _soldierW], _mCar, []] ]
+unitDefs set [_type, ["HMMWV M2", _price, _si, 30, "HMMWV_M2wS_xj400", "\TZK_Texture_4_0_0\icon\iHMMWV_M2wS.paa", 2^_st, [2, _soldierW], _mCar, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _hummerW2 = _type
 _type = _type + 1
 
 _price = [800, 1600] select PricingMode
-unitDefs set [_type, ["HMMWV TOW", _price, _si, 30, "HMMMV_TOW2A_v2_xj200", "\MCAR_humvee\ihmmwv", 2^_st, [2, _soldierW], _mCar, []] ]
+unitDefs set [_type, ["HMMWV (TOW-2A)", _price, _si, 30, "HMMMV_TOW2A_xj400", "\TZK_Texture_4_0_0\icon\iHMMWV_TOW2A.paa", 2^_st, [2, _soldierW], _mCar, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _hummerW3 = _type
 _type = _type + 1
 
 _price = [500, 800] select PricingMode
-unitDefs set [_type, ["5t Truck", _price, _si, 30, "Truck5t_xj200", "itruck5t", 2^_st, [1, _soldierW], _mTruck, ["Common\Equip\CargoTruck.sqs"]] ]
+unitDefs set [_type, ["5t Truck", _price, _si, 30, "Truck5t_xj400", "itruck5t", 2^_st, [1, _soldierW], _mTruck, ["Common\Equip\CargoTruck.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _truckW = _type
 _type = _type + 1
 
 _price = [1000, 2000] select PricingMode
-unitDefs set [_type, ["Support 5t Truck", _price, _si, 30, "Truck5tRepair_v2_xj200", "itruck5trepair", 2^_st, [1, _soldierW], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
+unitDefs set [_type, ["Support 5t Truck", _price, _si, 30, "Truck5tRepair_xj400", "itruck5trepair", 2^_st, [1, _soldierW], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _supportTruckW = _type
 _type = _type + 1
 
 _price = [1000, 2000] select PricingMode
-unitDefs set [_type, ["Support 5t Truck - miner", _price, _si, 30, "Truck5tRepair_v2_xj200", "itruck5trepair", 2^_st, [1, _minerW], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
+unitDefs set [_type, ["Support 5t Truck - miner", _price, _si, 30, "Truck5tRepair_xj400", "itruck5trepair", 2^_st, [1, _minerW], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _supportTruckW2 = _type
 _type = _type + 1
@@ -234,44 +237,44 @@ if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitType
 _type = _type + 1
 
 _price = [300, 600] select PricingMode
-unitDefs set [_type, ["Jet Ski", _price, _si, 30, "PCSFWjetski_xj200", "\TZK_AddOnsCopied\PCJet\skimage.paa", 2^stLight + 2^stShip, [1, _bomberW], _mBike, ["Common\Equip\jetski.sqs"]] ]
+unitDefs set [_type, ["Jet Ski", _price, _si, 30, "PCSFWjetski_xj400", "\TZK_Texture_4_0_0\icon\iJetSki.paa", 2^stLight + 2^stShip, [1, _bomberW], _mBike, ["Common\Equip\jetski.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _jetskiW = _type
 _type = _type + 1
 
 _price = [500, 1000] select PricingMode
-unitDefs set [_type, ["Zodiac", _price, _si, 30, "ZodiacW_v2_xj200", "ipbr", 2^stLight + 2^stShip, [1, _bomberW], _mBoat, ["Common\Equip\CargoTruck.sqs"]] ]
+unitDefs set [_type, ["Zodiac", _price, _si, 30, "ZodiacW_xj400", "ipbr", 2^stLight + 2^stShip, [1, _bomberW], _mBoat, ["Common\Equip\CargoTruck.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _zodiacW = _type
 _type = _type + 1
 
 
 _price = [700, 1400] select PricingMode
-unitDefs set [_type, ["Patrol Boat Tug", _price, _si, 30, "GunBoatW_v2_xj200", "ipbr", 2^stLight + 2^stShip, [2, _soldierW], _mBoat, ["Common\Equip\CargoTruck.sqs","Common\Equip\BoatWmg.sqs"]] ]
+unitDefs set [_type, ["Patrol Boat Tug", _price, _si, 30, "GunBoatW_xj400", "ipbr", 2^stLight + 2^stShip, [2, _soldierW], _mBoat, ["Common\Equip\CargoTruck.sqs","Common\Equip\BoatWmg.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _boatW = _type
 _type = _type + 1
 
 _price = [1500, 3000] select PricingMode
-unitDefs set [_type, ["Patrol Boat HE/AP gun", _price, _si, 30, "GunBoatW_v2_xj200", "ipbr", 2^stLight + 2^stShip, [2, _soldierW], _mBoat, ["Common\Equip\CargoTruck.sqs"]] ]
+unitDefs set [_type, ["Patrol Boat HE/AP gun", _price, _si, 30, "GunBoatW_xj400", "ipbr", 2^stLight + 2^stShip, [2, _soldierW], _mBoat, ["Common\Equip\CargoTruck.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _boatW2 = _type
 _type = _type + 1
 
 _price = [1500, 3000] select PricingMode
-unitDefs set [_type, ["Patrol Boat 30mm gun", _price, _si, 30, "GunBoatW_v2_xj200", "ipbr", 2^stLight + 2^stShip, [2, _soldierW], _mBoat, ["Common\Equip\CargoTruck.sqs", "Common\Equip\BoatW.sqs"]] ]
+unitDefs set [_type, ["Patrol Boat 30mm gun", _price, _si, 30, "GunBoatW_xj400", "ipbr", 2^stLight + 2^stShip, [2, _soldierW], _mBoat, ["Common\Equip\CargoTruck.sqs", "Common\Equip\BoatW.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _boatW3 = _type
 _type = _type + 1
 
 _price = [1200, 2400] select PricingMode
-unitDefs set [_type, ["Patrol Boat Sup", _price, _si, 30, "GunBoatW_v2_xj200", "ipbr", 2^stLight + 2^stShip, [2, _soldierW], _mSupport, ["Common\InitSupportVehicle.sqs","Common\Equip\BoatWmg.sqs"]] ]
+unitDefs set [_type, ["Patrol Boat Sup", _price, _si, 30, "GunBoatW_xj400", "ipbr", 2^stLight + 2^stShip, [2, _soldierW], _mSupport, ["Common\InitSupportVehicle.sqs","Common\Equip\BoatWmg.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _boatsupW = _type
 _type = _type + 1
 
 _price = [2000, 4000] select PricingMode
-unitDefs set [_type, ["Patrol Boat Custom", _price, _si, 30, "GunBoatW_Custom_v2_xj200", "ipbr", 2^stLight + 2^stShip, [2, _soldierW], _mBoat, ["Common\Equip\CargoTruck.sqs"]] ]
+unitDefs set [_type, ["Patrol Boat Custom", _price, _si, 30, "GunBoatW_Custom_xj400", "ipbr", 2^stLight + 2^stShip, [2, _soldierW], _mBoat, ["Common\Equip\CargoTruck.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _boatCustomW = _type
 _type = _type + 1
@@ -281,115 +284,121 @@ _type = _type + 1
 _st = stHeavy
 
 _price = [1400, 2800] select PricingMode
-unitDefs set [_type, ["Support M113", _price, _si, 30, "M113Ambul_xj200", "im113_ambu", 2^stHeavy + 2^stLight, [1, _soldierW], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
+unitDefs set [_type, ["Support M113", _price, _si, 30, "M113Ambul_xj400", "im113_ambu", 2^stHeavy + 2^stLight, [1, _soldierW], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _supportAPCW = _type
 _type = _type + 1
 
 _price = [1400, 2800] select PricingMode
-unitDefs set [_type, ["Support M113 + miner", _price, _si, 30, "M113Ambul_xj200", "im113_ambu", 2^stHeavy + 2^stLight, [1, _minerW], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
+unitDefs set [_type, ["Support M113 + miner", _price, _si, 30, "M113Ambul_xj400", "im113_ambu", 2^stHeavy + 2^stLight, [1, _minerW], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _supportAPCWminer = _type
 _type = _type + 1
 
 _price = [500, 1000] select PricingMode
-unitDefs set [_type, ["M113", _price, _si, 30, "M113_xj200", "im113", 2^_st, [2, _soldierW], _mAPC, []] ]
+unitDefs set [_type, ["M113", _price, _si, 30, "M113_xj400", "im113", 2^_st, [2, _soldierW], _mAPC, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _m113W = _type
 _type = _type + 1
 
 _price = [1800, 3600] select PricingMode
-unitDefs set [_type, ["M2A2 30mm/AT", _price, _si, 30, "M2A2_AA_xj200", "\M2A2\im2a2", 2^_st, [3, _crewW], _mAPC, ["Common\Equip\M2AT_standard.sqs"]] ]
+unitDefs set [_type, ["M2A2 30mm/AT", _price, _si, 30, "M2A2_AA_xj400", "\M2A2\im2a2", 2^_st, [3, _crewW], _mAPC, ["Common\Equip\M2AT_standard.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _m2a2W = _type
 _type = _type + 1
 
 _price = [3500, 7000] select PricingMode
-unitDefs set [_type, ["M2A2 FFAR", _price, _si, 30, "M2A2_AA_xj200", "\M2A2\im2a2", 2^_st, [3, _crewW], _mAPC, ["Common\Equip\M2A2farr.sqs"]] ]
+unitDefs set [_type, ["M2A2 FFAR", _price, _si, 30, "M2A2_AA_xj400", "\M2A2\im2a2", 2^_st, [3, _crewW], _mAPC, ["Common\Equip\M2A2farr.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _m2a2d = _type
 _type = _type + 1
 
 _price = [7500, 15000] select PricingMode
-unitDefs set [_type, ["M2A2 AT", _price, _si, 30, "M2A2_AA_xj200", "\M2A2\im2a2", 2^_st, [3, _crewW], _mAPC, ["Common\Equip\M2AT.sqs"]] ]
+unitDefs set [_type, ["M2A2 AT", _price, _si, 30, "M2A2_AA_xj400", "\M2A2\im2a2", 2^_st, [3, _crewW], _mAPC, ["Common\Equip\M2AT.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _m2a2at = _type
 _type = _type + 1
 
 _price = [1500, 3000] select PricingMode
-unitDefs set [_type, ["Vulcan", _price, _si, 30, "Vulcan_xj200", "\VULCAN\ivulcan", 2^_st, [2, _crewW], _mAA, []] ]
+unitDefs set [_type, ["Vulcan", _price, _si, 30, "Vulcan_xj400", "\VULCAN\ivulcan", 2^_st, [2, _crewW], _mAA, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _vulcanW = _type
 _type = _type + 1
 
 _price = [2000, 4000] select PricingMode
-unitDefs set [_type, ["M113 Cannon", _price, _si, 30, "M113_AA_xj200", "\VULCAN\ivulcan", 2^_st, [2, _crewW], _mAA, ["Common\Equip\M2A2_AA2.sqs"]] ]
+unitDefs set [_type, ["M113 Cannon", _price, _si, 30, "Vulcan_TZK_xj400", "\VULCAN\ivulcan", 2^_st, [2, _crewW], _mAA, ["Common\Equip\M2A2_AA2.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
-_m113Cannon = _type
+_vulcanTransp = _type
 _type = _type + 1
 
 _price = [3500, 7000] select PricingMode
-unitDefs set [_type, ["M2A2 AA", _price, _si, 30, "M2A2_AA_xj200", "\VULCAN\ivulcan", 2^_st, [3, _crewW], _mAA, ["Common\Equip\M2A2_AA1.sqs"]] ]
+unitDefs set [_type, ["M2A2 AA", _price, _si, 30, "M2A2_AA_xj400", "\VULCAN\ivulcan", 2^_st, [3, _crewW], _mAA, ["Common\Equip\M2A2_AA1.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _m2a2aa = _type
 _type = _type + 1
 
 _price = [8000, 16000] select PricingMode
-unitDefs set [_type, ["4xAA", _price, _si, 30, "Vulcan_xj200", "\VULCAN\ivulcan", 2^_st, [2, _crewW], _mAA, ["Common\Equip\DefAA.sqs"]] ]
+unitDefs set [_type, ["4xAA", _price, _si, 30, "Vulcan_TZK_xj400", "\VULCAN\ivulcan", 2^_st, [2, _crewW], _mAA, ["Common\Equip\DefAA.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _vulcanW2 = _type
 _type = _type + 1
 
 _price = [2000, 4000] select PricingMode
-unitDefs set [_type, ["M60", _price, _si, 30, "M60_xj200", "im60", 2^_st, [3, _crewW], _mTank, []] ]
+unitDefs set [_type, ["M60", _price, _si, 30, "M60_xj400", "im60", 2^_st, [3, _crewW], _mTank, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _m60W = _type
 _type = _type + 1
 
 _price = [5000, 10000] select PricingMode
-unitDefs set [_type, ["M1A1", _price, _si, 60, "M1A1_xj200", "iabrams", 2^_st, [3, _crewW], _mTank, []] ]
+unitDefs set [_type, ["M1A1", _price, _si, 60, "M1A1_xj400", "iabrams", 2^_st, [3, _crewW], _mTank, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _m1a1W = _type
 _type = _type + 1
 
 _price = [5000, 10000] select PricingMode
-unitDefs set [_type, ["M1A2 SEP", _price, _si, 60, "M1A2_INQ_xj200", "\TZK_Objects\Texture\M1A2_INQ.paa", 2^_st, [3, _crewW], _mTank, []] ]
+unitDefs set [_type, ["M1A2 SEP", _price, _si, 60, "M1A2_INQ_xj400", "\TZK_Texture_4_0_0\icon\iM1A2.paa", 2^_st, [3, _crewW], _mTank, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _m1a2sepW = _type
 _type = _type + 1
 
 _price = [5000, 10000] select PricingMode
-unitDefs set [_type, ["Leopard 2A6", _price, _si, 60, "Leo2A6_xj200", "\BWMOD_Leo2A6\pic\leopic.paa", 2^_st, [3, _crewW], _mTank, []] ]
+unitDefs set [_type, ["Leopard 2A6", _price, _si, 60, "Leo2A6_xj400", "\TZK_Texture_4_0_0\icon\iLeo2A6.paa", 2^_st, [3, _crewW], _mTank, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _leo2a6W = _type
 _type = _type + 1
 
 _price = [7500, 15000] select PricingMode
-unitDefs set [_type, ["M109 (Limited Turret)", _price, _si, 60, "M109A6G_Lim_xj200", "\TZK_Objects\Texture\DKMM_M109A6G.paa", 2^_st, [3, _crewW], _mHowitzer, []] ]
+unitDefs set [_type, ["M109A6-G", _price, _si, 60, "M109A6G_xj400", "\TZK_Texture_4_0_0\icon\iM109A6G.paa", 2^_st, [3, _crewW], _mHowitzer, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _m109W = _type
 _type = _type + 1
 
 _price = [25000, 50000] select PricingMode
-unitDefs set [_type, ["M1A1 Art", _price, _si, 90, "M1A1_Art_xj200", "iabrams", 2^_st, [3, _crewW], _mTank,  []] ]
+unitDefs set [_type, ["M270 MLRS", _price, _si, 60, "M270_M29064_xj400", "\TZK_Texture_4_0_0\icon\iM270.paa", 2^_st, [3, _crewW], _mMLRS, []] ]
+if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
+_m270W = _type
+_type = _type + 1
+
+_price = [25000, 50000] select PricingMode
+unitDefs set [_type, ["M1A1 Art", _price, _si, 90, "M1A1_Art_xj400", "iabrams", 2^_st, [3, _crewW], _mTank,  []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _m1a1artW = _type
 _type = _type + 1
 
 _price = [25000, 50000] select PricingMode
-unitDefs set [_type, ["M109 Art", _price, _si, 90, "M109_Art_xj200", "\TZK_Objects\Texture\Paladin.paa", -1, [3, _crewW], _mHowitzer,  []] ]
+unitDefs set [_type, ["M109 Art", _price, _si, 90, "M109A6G_Art_xj400", "\TZK_Texture_4_0_0\icon\iM109A6G.paa", -1, [3, _crewW], _mHowitzer,  []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _m109artW = _type
 _type = _type + 1
 
 _price = [1.5*costRepairMHQ, 3.0*costRepairMHQ] select PricingMode
-unitDefs set [_type, ["MCV West", _price, _si, 120, "MCVW_xj200", "im113_ambu", -1, [1, _soldierW], _mMCV,  ["Common\InitMCV.sqs"]] ]
+unitDefs set [_type, ["MCV West", _price, _si, 120, "MCVW_xj400", "im113_ambu", -1, [1, _soldierW], _mMCV,  ["Common\InitMCV.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 utMCVW = _type
 _type = _type + 1
 
 _price = [1400, 3000] select PricingMode
-unitDefs set [_type, ["MHQ West", 1500, _si, 10, "MHQW_xj200", "im113_ambu", -1, [1, _crewW], _mMHQ, ["Common\InitMHQ.sqs"]] ]
+unitDefs set [_type, ["MHQ West", 1500, _si, 10, "MHQW_xj400", "im113_ambu", -1, [1, _crewW], _mMHQ, ["Common\InitMHQ.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 utMHQ0 = _type
 _type = _type + 1
@@ -400,139 +409,145 @@ _type = _type + 1
 _st = stAir
 
 _price = [3000, 6000] select PricingMode
-unitDefs set [_type, ["MH-6", _price, _si, 30, "MH6_Bas_xj200", "\bas_lbs\imh6.paa", 2^_st, [1, _pilotW], _mHeli, []] ]
+unitDefs set [_type, ["MH-6 (no radar)", _price, _si, 30, "MH6_Bas_irNo_xj400", "\TZK_Texture_4_0_0\icon\imh6.paa", 2^_st, [1, _pilotW], _mHeli, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
-_mh6j = _type
+_irNO_mh6 = _type
 _type = _type + 1
 
 _price = [4000, 8000] select PricingMode
-unitDefs set [_type, ["UH60 (Tug)", _price, _si, 60, "UH60_C_xj200", "iuh60", 2^_st, [1, _pilotW], _mHeli, ["Common\Equip\UH60.sqs"]] ]
+unitDefs set [_type, ["UH60 (no radar)", _price, _si, 60, "UH60_xj400", "iuh60", 2^_st, [1, _pilotW], _mHeli, []] ]
+if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
+_irNO_uh60 = _type
+_type = _type + 1
+
+_price = [4000, 8000] select PricingMode
+unitDefs set [_type, ["UH60 (Tug)", _price, _si, 60, "UH60_CSLA_xj400", "iuh60", 2^_st, [1, _pilotW], _mHeli, ["Common\Equip\UH60.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _uh60W = _type
 _type = _type + 1
 
 _price = [5000, 10000] select PricingMode
-unitDefs set [_type, ["Support UH60", _price, _si, 60, "UH60_C_xj200", "iuh60", 2^_st, [1, _pilotW], _mSupport, ["Common\InitSupportVehicle.sqs", "Common\Equip\UH60.sqs", "Common\InitAmmoDrop.sqs"]] ]
+unitDefs set [_type, ["Support UH60", _price, _si, 60, "UH60_CSLA_xj400", "iuh60", 2^_st, [1, _pilotW], _mSupport, ["Common\InitSupportVehicle.sqs", "Common\Equip\UH60.sqs", "Common\InitAmmoDrop.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _uh60supW = _type
 _type = _type + 1
 
 _price = [7000, 14000] select PricingMode
-unitDefs set [_type, ["UH60 30mm gun", _price, _si, 60, "UH60_MG_C_xj200", "iuh60", 2^_st, [2, _pilotW], _mHeli, ["Common\Equip\UH60.sqs"]] ]
+unitDefs set [_type, ["UH60 30mm gun", _price, _si, 60, "UH60_CSLA_MG_xj400", "iuh60", 2^_st, [2, _pilotW], _mHeli, ["Common\Equip\UH60.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _uh60W30 = _type
 _type = _type + 1
 
 _price = [7000, 14000] select PricingMode
-unitDefs set [_type, ["UH60 2xLGB", _price, _si, 60, "UH60_LGB_C_xj200", "iuh60", 2^_st, [1, _pilotW], _mHeli, ["Common\Equip\UH60.sqs"]] ]
+unitDefs set [_type, ["UH60 2xLGB", _price, _si, 60, "UH60_CSLA_LGB_xj400", "iuh60", 2^_st, [1, _pilotW], _mHeli, ["Common\Equip\UH60.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _uh60WL = _type
 _type = _type + 1
 
 _price = [10000, 20000] select PricingMode
-unitDefs set [_type, ["UH60 30mm MG", _price, _si, 60, "UH60MG_C_xj200", "iuh60", 2^_st, [2, _pilotW], _mHeli, ["Common\Equip\UH60.sqs"]] ]
+unitDefs set [_type, ["UH60 30mm MG", _price, _si, 60, "UH60MG_CSLA_xj400", "iuh60", 2^_st, [2, _pilotW], _mHeli, ["Common\Equip\UH60.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _uh60WMG2 = _type
 _type = _type + 1
 
 _price = [5000, 10000] select PricingMode
-unitDefs set [_type, ["C-130 Hercules", _price, _si, 60, "C130_xj200", "\TZK_Objects\Texture\C130.paa", 2^_st, [2, _pilotW], _mPlane, ["Common\InitSpawnPlane.sqs"]] ]
+unitDefs set [_type, ["C-130 Hercules", _price, _si, 60, "C130_xj400", "\TZK_Texture_4_0_0\icon\iC130.paa", 2^_st, [2, _pilotW], _mPlane, ["Common\InitSpawnPlane.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _c130W = _type
 _type = _type + 1
 
 _price = [20000, 40000] select PricingMode
-unitDefs set [_type, ["AH1 AT/30mm", _price, _si, 90, "AH1_C_xj200", "\TZK_Objects\Texture\Vit_AH1W.paa", 2^_st, [2, _pilotW], _mHeli, ["Common\Equip\AH1.sqs"]] ]
+unitDefs set [_type, ["AH1W", _price, _si, 90, "AH1W_Vit_xj400", "\TZK_Texture_4_0_0\icon\iAH1W_vit.paa", 2^_st, [2, _pilotW], _mHeli, ["Common\Equip\AH1.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _ah1W = _type
 _type = _type + 1
 
 _price = [22000, 44000] select PricingMode
-unitDefs set [_type, ["AH64 AT/30mm", _price, _si, 90, "AH64_xj200", "\APAC\iah64", 2^_st, [2, _pilotW], _mHeli, ["Common\Equip\AH64.sqs"]] ]
+unitDefs set [_type, ["AH64", _price, _si, 90, "AH64_MPIV_xj400", "\APAC\iah64", 2^_st, [2, _pilotW], _mHeli, ["Common\Equip\AH64.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _ah64W = _type
 _type = _type + 1
 
 _price = [25000, 50000] select PricingMode
-unitDefs set [_type, ["Tiger HOT/30mm", _price, _si, 90, "Tiger_HOT3_xj200", "\BWMOD_Tiger\pictureRMK.paa", 2^_st, [2, _pilotW], _mHeli, ["Common\Equip\Tiger.sqs"]] ]
+unitDefs set [_type, ["Tiger HOT", _price, _si, 90, "Tiger_HOT3_xj400", "\TZK_Texture_4_0_0\icon\iTigerRMK.paa", 2^_st, [2, _pilotW], _mHeli, ["Common\Equip\Tiger.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _tigerW = _type
 _type = _type + 1
 
 _price = [25000, 50000] select PricingMode
-unitDefs set [_type, ["AH1 AT/30mm", _price, _si, 90, "AH1_AT_xj200", "icobra", 2^_st, [2, _pilotW], _mHeli, ["Common\Equip\AH1.sqs"]] ]
+unitDefs set [_type, ["AH1W AT", _price, _si, 90, "AH1W_Vit_AT_xj400", "\TZK_Texture_4_0_0\icon\iAH1W_vit.paa", 2^_st, [2, _pilotW], _mHeli, ["Common\Equip\AH1.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _ah1W2 = _type
 _type = _type + 1
 
 _price = [25000, 50000] select PricingMode
-unitDefs set [_type, ["AH64 AT/30mm", _price, _si, 90, "AH64_AT_xj200", "\APAC\iah64", 2^_st, [2, _pilotW], _mHeli, ["Common\Equip\AH64.sqs"]] ]
+unitDefs set [_type, ["AH64 AT", _price, _si, 90, "AH64_MPIV_AT_xj400", "\APAC\iah64", 2^_st, [2, _pilotW], _mHeli, ["Common\Equip\AH64.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _ah64W2 = _type
 _type = _type + 1
 
 _price = [28000, 56000] select PricingMode
-unitDefs set [_type, ["Tiger PARS3/30mm", _price, _si, 90, "Tiger_PARS3_xj200", "\BWMOD_Tiger\pictureRMK.paa", 2^_st, [2, _pilotW], _mHeli, ["Common\Equip\Tiger.sqs"]] ]
+unitDefs set [_type, ["Tiger PARS3", _price, _si, 90, "Tiger_PARS3_xj400", "\TZK_Texture_4_0_0\icon\iTigerRMK.paa", 2^_st, [2, _pilotW], _mHeli, ["Common\Equip\Tiger.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _tigerW2 = _type
 _type = _type + 1
 
 _price = [5000, 10000] select PricingMode
-unitDefs set [_type, ["C130 Support", _price, _si, 60, "C130_Support_xj200", "\TZK_Objects\Texture\C130.paa", 2^_st, [1, _pilotW], _mSupport, ["Common\InitSpawnPlane.sqs", "Common\InitSupportVehicle.sqs"]] ]
+unitDefs set [_type, ["C130 Support", _price, _si, 60, "C130_Support_xj400", "\TZK_Texture_4_0_0\icon\iC130.paa", 2^_st, [1, _pilotW], _mSupport, ["Common\InitSpawnPlane.sqs", "Common\InitSupportVehicle.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _c130supportW = _type
 _type = _type + 1
 
 _price = [5000, 10000] select PricingMode
-unitDefs set [_type, ["A10 GUN", _price, _si, 90, "A10_AAOnly_v2_xj200", "ia10", 2^_st, [1, _pilotW], _mPlane, ["Common\Equip\A10Gun.sqs", "Common\InitSpawnPlane.sqs"]] ]
+unitDefs set [_type, ["A10 GUN", _price, _si, 90, "A10_AAOnly_xj400", "ia10", 2^_st, [1, _pilotW], _mPlane, ["Common\Equip\A10Gun.sqs", "Common\InitSpawnPlane.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _a10gun = _type
 _type = _type + 1
 
 _price = [12000, 24000] select PricingMode
-unitDefs set [_type, ["A10 4xLGB/GUN", _price, _si, 90, "A10_LGB_v2_xj200", "ia10", 2^_st, [1, _pilotW], _mPlane, ["Common\Equip\A10LGB4.sqs", "Common\InitSpawnPlane.sqs"]] ]
+unitDefs set [_type, ["A10 4xLGB/GUN", _price, _si, 90, "A10_LGB_xj400", "ia10", 2^_st, [1, _pilotW], _mPlane, ["Common\Equip\A10LGB4.sqs", "Common\InitSpawnPlane.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _a10LGB4 = _type
 _type = _type + 1
 
 _price = [14000, 28000] select PricingMode
-unitDefs set [_type, ["A10 14xBombs/GUN", _price, _si, 90, "A10_v2_xj200", "ia10", 2^_st, [1, _pilotW], _mPlane, ["Common\Equip\A10bombs.sqs", "Common\InitSpawnPlane.sqs"]] ]
+unitDefs set [_type, ["A10 14xBombs/GUN", _price, _si, 90, "A10_xj400", "ia10", 2^_st, [1, _pilotW], _mPlane, ["Common\Equip\A10bombs.sqs", "Common\InitSpawnPlane.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _a10bombs = _type
 _type = _type + 1
 
 _price = [20000, 40000] select PricingMode
-unitDefs set [_type, ["A10 AT/30mm", _price, _si, 90, "A10_v2_xj200", "ia10", 2^_st, [1, _pilotW], _mPlane, ["Common\Equip\A10AT.sqs", "Common\InitSpawnPlane.sqs"]] ]
+unitDefs set [_type, ["A10 AT/30mm", _price, _si, 90, "A10_xj400", "ia10", 2^_st, [1, _pilotW], _mPlane, ["Common\Equip\A10AT.sqs", "Common\InitSpawnPlane.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _a10 = _type
 _type = _type + 1
 
 _price = [20000, 40000] select PricingMode
-unitDefs set [_type, ["A10 8xLGB/30mm", _price, _si, 90, "A10_LGB_v2_xj200", "ia10", 2^_st, [1, _pilotW], _mPlane, ["Common\Equip\A10LGB8.sqs", "Common\InitSpawnPlane.sqs"]] ]
+unitDefs set [_type, ["A10 8xLGB/30mm", _price, _si, 90, "A10_LGB_xj400", "ia10", 2^_st, [1, _pilotW], _mPlane, ["Common\Equip\A10LGB8.sqs", "Common\InitSpawnPlane.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _a10LGB8 = _type
 _type = _type + 1
 
 _price = [25000, 50000] select PricingMode
-unitDefs set [_type, ["A10 4xAA/GUN", _price, _si, 90, "A10_v2_xj200", "ia10", 2^_st, [1, _pilotW], _mPlane, ["Common\Equip\A10AA.sqs", "Common\InitSpawnPlane.sqs"]] ]
+unitDefs set [_type, ["A10 4xAA/GUN", _price, _si, 90, "A10_xj400", "ia10", 2^_st, [1, _pilotW], _mPlane, ["Common\Equip\A10AA.sqs", "Common\InitSpawnPlane.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _a10AA = _type
 _type = _type + 1
 
 _price = [30000, 60000] select PricingMode
-unitDefs set [_type, ["A10 FFAR", _price, _si, 90, "A10_FFAR_v2_xj200", "ia10", 2^_st, [1, _pilotW], _mPlane, ["Common\InitSpawnPlane.sqs"]] ]
+unitDefs set [_type, ["A10 FFAR", _price, _si, 90, "A10_FFAR_xj400", "ia10", 2^_st, [1, _pilotW], _mPlane, ["Common\InitSpawnPlane.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _a10FFAR = _type
 _type = _type + 1
 
 _price = [45000, 90000] select PricingMode
-unitDefs set [_type, ["A10 Base Buster", _price, _si, 90, "A10_Buster_v2_xj200", "ia10", 2^_st, [1, _pilotW], _mPlane, ["Common\InitSpawnPlane.sqs"]] ]
+unitDefs set [_type, ["A10 Base Buster", _price, _si, 90, "A10_Buster_xj400", "ia10", 2^_st, [1, _pilotW], _mPlane, ["Common\InitSpawnPlane.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _a10BB = _type
 _type = _type + 1
 
 _price = [90000, 180000] select PricingMode
-unitDefs set [_type, ["A10 Tomahawk", _price, _si, 90, "A10_Tomahawk_v2_xj200", "ia10", 2^_st, [1, _pilotW], _mPlane, ["Common\InitSpawnPlane.sqs"]] ]
+unitDefs set [_type, ["A10 Tomahawk", _price, _si, 90, "A10_Tomahawk_xj400", "ia10", 2^_st, [1, _pilotW], _mPlane, ["Common\InitSpawnPlane.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _a10Tomahawk = _type
 _type = _type + 1
@@ -546,114 +561,115 @@ _si = si1
 _st = stBarracks
 
 
-unitDefs set [_type, ["Worker", costWorker, _si, 10, "SoldierEAA", "isaa", -1, [], "", ["Server\Start\Worker.sqs"]] ]
+unitDefs set [_type, ["Worker", costWorker, _si, 10, "SoldierEAA_xj400", "isaa", -1, [], "", ["Server\Start\Worker.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 utWorkerE = _type
 _type = _type + 1
 
 _price = [50, 100] select PricingMode
-unitDefs set [_type, ["AK74", _price, _si, 10, "SoldierEB", "ivojak", 2^_st, [], "", []] ]
+unitDefs set [_type, ["AK74", _price, _si, 10, "SoldierEB_xj400", "ivojak", 2^_st, [], "", []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierE = _type
 _type = _type + 1
 
 _price = [50, 100] select PricingMode
-unitDefs set [_type, ["AK74GL", _price, _si, 10, "SoldierEG", "igrenadier", 2^_st, [], "", ["Common\Equip\GL.sqs"]] ]
+unitDefs set [_type, ["AK74GL", _price, _si, 10, "SoldierEG_xj400", "igrenadier", 2^_st, [], "", ["Common\Equip\GL.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
+_soldierGLE = _type
 _type = _type + 1
 
 _price = [75, 150] select PricingMode
-unitDefs set [_type, ["6G30", _price, _si, 10, "HeavyGrenadier", "igrenadier", 2^_st, [], "", []] ]
+unitDefs set [_type, ["6G30", _price, _si, 10, "HeavyGrenadier_xj400", "igrenadier", 2^_st, [], "", []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _6G30E = _type
 _type = _type + 1
 
 _price = [100, 200] select PricingMode
-unitDefs set [_type, ["PK", _price, _si, 10, "SoldierEMG", "ismg", 2^_st, [], "", []] ]
+unitDefs set [_type, ["PK", _price, _si, 10, "SoldierEMG_xj400", "ismg", 2^_st, [], "", []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierMGE = _type
 _type = _type + 1
 
 _price = [100, 200] select PricingMode
-unitDefs set [_type, ["Sniper", _price, _si, 10, "SoldierESniper", "isniper", 2^_st, [], "", []] ]
+unitDefs set [_type, ["Sniper", _price, _si, 10, "SoldierESniper_xj400", "isniper", 2^_st, [], "", []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _sniperE = _type
 _type = _type + 1
 
 _price = [125, 250] select PricingMode
-unitDefs set [_type, ["Mortar", _price, _si, 10, "SoldierEB", "igrenadier", _st, [], "", ["Common\Equip\Mortar.sqs"]] ]
+unitDefs set [_type, ["Mortar", _price, _si, 10, "SoldierEB_xj400", "igrenadier", _st, [], "", ["Common\Equip\Mortar.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _MortarE = _type
 _type = _type + 1
 
 _price = [125, 250] select PricingMode
-unitDefs set [_type, ["KSVK", _price, _si, 10, "SoldierEB", "isniper", 2^_st, [], "", ["Common\Equip\KSVK.sqs"]] ]
+unitDefs set [_type, ["KSVK", _price, _si, 10, "SoldierEB_xj400", "isniper", 2^_st, [], "", ["Common\Equip\KSVK.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _KSVKE = _type
 _type = _type + 1
 
 _price = [150, 300] select PricingMode
-unitDefs set [_type, ["RPG Soldier", _price, _si, 10, "SoldierELAW", "islaw", 2^_st, [], "", ["Common\Equip\RPG2ai.sqs"]] ]
+unitDefs set [_type, ["RPG Soldier", _price, _si, 10, "SoldierELAW_xj400", "islaw", 2^_st, [], "", ["Common\Equip\RPG2ai.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierLAWE = _type
 _type = _type + 1
 
 _price = [250, 500] select PricingMode
-unitDefs set [_type, ["RPG Sniper", _price, _si, 10, "SoldierELAW", "islaw", 2^_st, [], "", ["Common\Equip\RPGai.sqs"]] ]
+unitDefs set [_type, ["RPG Sniper", _price, _si, 10, "SoldierELAW_xj400", "islaw", 2^_st, [], "", ["Common\Equip\RPGai.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierLAWE2 = _type
 _type = _type + 1
 
 _price = [180, 360] select PricingMode
-unitDefs set [_type, ["AT Soldier", _price, _si, 10, "SoldierEAT", "isat", 2^_st, [], "", ["Common\Equip\AT2ai.sqs"]] ]
+unitDefs set [_type, ["AT Soldier", _price, _si, 10, "SoldierEAT_xj400", "isat", 2^_st, [], "", ["Common\Equip\AT2ai.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierATE = _type
 _type = _type + 1
 
 _price = [280, 560] select PricingMode
-unitDefs set [_type, ["AT Sniper", _price, _si, 10, "SoldierEAT", "isat", 2^_st, [], "", ["Common\Equip\ATai.sqs"]] ]
+unitDefs set [_type, ["AT Sniper", _price, _si, 10, "SoldierEAT_xj400", "isat", 2^_st, [], "", ["Common\Equip\ATai.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierATE2 = _type
 _type = _type + 1
 
 _price = [250, 500] select PricingMode
-unitDefs set [_type, ["Strela", _price, _si, 10, "SoldierEAA", "isaa", 2^_st, [], "", ["Common\Equip\AAai.sqs"]] ]
+unitDefs set [_type, ["Strela", _price, _si, 10, "SoldierEAA_xj400", "isaa", 2^_st, [], "", ["Common\Equip\AAai.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierAAE = _type
 _type = _type + 1
 
 _price = [150, 300] select PricingMode
-unitDefs set [_type, ["Saboteur", _price, _si, 10, "SoldierESaboteurBizon", "isaboteur", 2^_st, [], "", ["Common\Equip\Spec.sqs"]] ]
+unitDefs set [_type, ["Saboteur", _price, _si, 10, "SoldierESaboteurBizon_xj400", "isaboteur", 2^_st, [], "", ["Common\Equip\Spec.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _bomberE = _type
 _type = _type + 1
 
 _price = [200, 400] select PricingMode
-unitDefs set [_type, ["Miner", _price, _si, 10, "SoldierEMiner", "iminer", 2^_st, [], "", ["Common\Equip\Miner.sqs"]] ]
+unitDefs set [_type, ["Miner", _price, _si, 10, "SoldierEMiner_xj400", "iminer", 2^_st, [], "", ["Common\Equip\Miner.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _minerE = _type
 _type = _type + 1
 
 _price = [50, 100] select PricingMode
-unitDefs set [_type, ["Medic", _price, _si, 10, "SoldierEMedic", "imedic", 2^_st, [], "", []] ]
+unitDefs set [_type, ["Medic", _price, _si, 10, "SoldierEMedic_xj400", "imedic", 2^_st, [], "", []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _medicE = _type
 _type = _type + 1
 
 _price = [50, 100] select PricingMode
-unitDefs set [_type, ["Crew", _price, _si, 10, "SoldierECrew", "icrew", 2^stBarracks + 2^stLight + 2^stShip + 2^stHeavy, [], "", []] ]
+unitDefs set [_type, ["Crew", _price, _si, 10, "SoldierECrew_xj400", "icrew", 2^stBarracks + 2^stLight + 2^stShip + 2^stHeavy, [], "", []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _crewE = _type
 _type = _type + 1
 
 _price = [50, 100] select PricingMode
-unitDefs set [_type, ["Pilot", _price, _si, 10, "SoldierEPilot", "ipilot", 2^stBarracks + 2^stAir, [], "", []] ]
+unitDefs set [_type, ["Pilot", _price, _si, 10, "SoldierEPilot_xj400", "ipilot", 2^stBarracks + 2^stAir, [], "", []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _pilotE = _type
 _type = _type + 1
 
 _price = [150, 300] select PricingMode
-unitDefs set [_type, ["Custom", _price, _si, 10, "SoldierESaboteurBizon", "isaboteur", -1, [], "", []] ]
+unitDefs set [_type, ["Custom", _price, _si, 10, "SoldierESaboteurBizon_xj400", "isaboteur", -1, [], "", []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _customE = _type
 _type = _type + 1
@@ -664,54 +680,55 @@ _type = _type + 1
 _st = stLight
 
 _price = [250, 500] select PricingMode
-unitDefs set [_type, ["QUAD", _price, _si, 20, "QUAD_xj200", "\GST_KawaP\KPpict", 2^_st, [1, _soldierE], _mBike, []] ]
+unitDefs set [_type, ["QUAD", _price, _si, 20, "QUAD_xj400", "\GST_KawaP\KPpict", 2^_st, [1, _soldierE], _mBike, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
+_quadE = _type
 _type = _type + 1
 
 _price = [400,800] select PricingMode
-unitDefs set [_type, ["UAZ", _price, _si, 20, "UAZ_xj200", "iuaz", 2^_st, [1, _soldierE], _mCar, ["Common\Equip\CargoCar.sqs"]] ]
+unitDefs set [_type, ["UAZ", _price, _si, 20, "UAZ_xj400", "iuaz", 2^_st, [1, _soldierE], _mCar, ["Common\Equip\CargoCar.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _uazE = _type
 _type = _type + 1
 
 _price = [700, 1400] select PricingMode
-unitDefs set [_type, ["UAZ Ammo", _price, _si, 20, "UAZ_xj200", "iuaz", 2^_st, [1, _soldierE], _mAmmo, ["Common\InitAmmojeep.sqs"]] ]
+unitDefs set [_type, ["UAZ Ammo", _price, _si, 20, "UAZ_xj400", "iuaz", 2^_st, [1, _soldierE], _mAmmo, ["Common\InitAmmojeep.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 uazaE = _type
 _type = _type + 1
 
 _price = [400, 800] select PricingMode
-unitDefs set [_type, ["BRDM", _price, _si, 30, "BRDM_xj200", "\BRMD\ibrmd", 2^_st, [1, _soldierE], _mCar, []] ]
+unitDefs set [_type, ["BRDM", _price, _si, 30, "BRDM_xj400", "\BRMD\ibrmd", 2^_st, [1, _soldierE], _mCar, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _brdmE = _type
 _type = _type + 1
 
 _price = [500, 1000] select PricingMode
-unitDefs set [_type, ["BRDM PK", _price, _si, 30, "BRDM_PK_v2_xj200", "\TZK_Objects\Texture\BRDMPK.paa", 2^_st, [2, _soldierE], _mCar, []] ]
+unitDefs set [_type, ["BRDM PK", _price, _si, 30, "BRDM_PK_xj400", "\TZK_Texture_4_0_0\icon\iBRDMPK.paa", 2^_st, [2, _soldierE], _mCar, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _brdmE2 = _type
 _type = _type + 1
 
 _price = [800, 1600] select PricingMode
-unitDefs set [_type, ["BRDM Gaskin", _price, _si, 30, "BRDM_Gaskin_v2_xj200", "\mcar_gaskin\sa9\hudi_sa9.paa", 2^_st, [2, _soldierE], _mCar, []] ]
+unitDefs set [_type, ["BRDM Gaskin", _price, _si, 30, "BRDM2_MNF_xj400", "\TZK_Texture_4_0_0\icon\ibrdm2.paa", 2^_st, [2, _soldierE], _mCar, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _brdmE3 = _type
 _type = _type + 1
 
 _price = [500, 1000] select PricingMode
-unitDefs set [_type, ["Ural", _price, _si, 30, "Ural_xj200", "iural", 2^_st, [1, _soldierE], _mTruck, ["Common\Equip\CargoTruck.sqs"]] ]
+unitDefs set [_type, ["Ural", _price, _si, 30, "Ural_xj400", "iural", 2^_st, [1, _soldierE], _mTruck, ["Common\Equip\CargoTruck.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _truckE = _type
 _type = _type + 1
 
 _price = [1000, 2000] select PricingMode
-unitDefs set [_type, ["Support Ural", _price, _si, 30, "UralRepair_v2_xj200", "iuralrepair", 2^_st, [1, _soldierE], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
+unitDefs set [_type, ["Support Ural", _price, _si, 30, "UralRepair_xj400", "iuralrepair", 2^_st, [1, _soldierE], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _supportTruckE = _type
 _type = _type + 1
 
 _price = [1000, 2000] select PricingMode
-unitDefs set [_type, ["Support Ural-miner", _price, _si, 30, "UralRepair_v2_xj200", "iuralrepair", 2^_st, [1, _minerE], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
+unitDefs set [_type, ["Support Ural-miner", _price, _si, 30, "UralRepair_xj400", "iuralrepair", 2^_st, [1, _minerE], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _supportTruckE2 = _type
 _type = _type + 1
@@ -722,43 +739,43 @@ if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitType
 _type = _type + 1
 
 _price = [300, 600] select PricingMode
-unitDefs set [_type, ["Jet Ski", _price, _si, 30, "PCSFEjetski_xj200", "\TZK_AddOnsCopied\PCJet\skimage.paa", 2^stLight + 2^stShip, [1, _bomberE], _mBike, ["Common\Equip\jetski.sqs"]] ]
+unitDefs set [_type, ["Jet Ski", _price, _si, 30, "PCSFEjetski_xj400", "\TZK_Texture_4_0_0\icon\iJetSki.paa", 2^stLight + 2^stShip, [1, _bomberE], _mBike, ["Common\Equip\jetski.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _jetskiE = _type
 _type = _type + 1
 
 _price = [500, 1000] select PricingMode
-unitDefs set [_type, ["Zodiac", _price, _si, 30, "ZodiacE_v2_xj200", "ipbr", 2^stLight + 2^stShip, [1, _bomberE], _mBoat, ["Common\Equip\CargoTruck.sqs"]] ]
+unitDefs set [_type, ["Zodiac", _price, _si, 30, "ZodiacE_xj400", "ipbr", 2^stLight + 2^stShip, [1, _bomberE], _mBoat, ["Common\Equip\CargoTruck.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _zodiacE = _type
 _type = _type + 1
 
 _price = [700, 1400] select PricingMode
-unitDefs set [_type, ["Patrol Boat Tug", _price, _si, 30, "GunBoatE_v2_xj200", "ipbr", 2^stLight + 2^stShip, [2, _soldierE], _mBoat, ["Common\Equip\CargoTruck.sqs","Common\Equip\BoatEmg.sqs"]] ]
+unitDefs set [_type, ["Patrol Boat Tug", _price, _si, 30, "GunBoatE_xj400", "ipbr", 2^stLight + 2^stShip, [2, _soldierE], _mBoat, ["Common\Equip\CargoTruck.sqs","Common\Equip\BoatEmg.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _boatE = _type
 _type = _type + 1
 
 _price = [1500, 3000] select PricingMode
-unitDefs set [_type, ["Patrol Boat HE/AP gun", _price, _si, 30, "GunBoatE_v2_xj200", "ipbr", 2^stLight + 2^stShip, [2, _soldierE], _mBoat, ["Common\Equip\CargoTruck.sqs"]] ]
+unitDefs set [_type, ["Patrol Boat HE/AP gun", _price, _si, 30, "GunBoatE_xj400", "ipbr", 2^stLight + 2^stShip, [2, _soldierE], _mBoat, ["Common\Equip\CargoTruck.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _boatE2 = _type
 _type = _type + 1
 
 _price = [1500, 3000] select PricingMode
-unitDefs set [_type, ["Patrol Boat 30mm gun", _price, _si, 30, "GunBoatE_v2_xj200", "ipbr", 2^stLight + 2^stShip, [2, _soldierE], _mBoat, ["Common\Equip\CargoTruck.sqs", "Common\Equip\BoatE.sqs"]] ]
+unitDefs set [_type, ["Patrol Boat 30mm gun", _price, _si, 30, "GunBoatE_xj400", "ipbr", 2^stLight + 2^stShip, [2, _soldierE], _mBoat, ["Common\Equip\CargoTruck.sqs", "Common\Equip\BoatE.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _boatE3 = _type
 _type = _type + 1
 
 _price = [1200, 2400] select PricingMode
-unitDefs set [_type, ["Patrol Boat Sup", _price, _si, 30, "GunBoatE_v2_xj200", "ipbr", 2^stLight + 2^stShip, [2, _soldierE], _mSupport, ["Common\InitSupportVehicle.sqs","Common\Equip\BoatEmg.sqs"]] ]
+unitDefs set [_type, ["Patrol Boat Sup", _price, _si, 30, "GunBoatE_xj400", "ipbr", 2^stLight + 2^stShip, [2, _soldierE], _mSupport, ["Common\InitSupportVehicle.sqs","Common\Equip\BoatEmg.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _boatsupE = _type
 _type = _type + 1
 
 _price = [2000, 4000] select PricingMode
-unitDefs set [_type, ["Patrol Boat Custom", _price, _si, 30, "GunBoatE_Custom_v2_xj200", "ipbr", 2^stLight + 2^stShip, [2, _soldierE], _mBoat, ["Common\Equip\CargoTruck.sqs"]] ]
+unitDefs set [_type, ["Patrol Boat Custom", _price, _si, 30, "GunBoatE_Custom_xj400", "ipbr", 2^stLight + 2^stShip, [2, _soldierE], _mBoat, ["Common\Equip\CargoTruck.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _boatCustomE = _type
 _type = _type + 1
@@ -768,115 +785,121 @@ _type = _type + 1
 _st = stHeavy
 
 _price = [1400, 3000] select PricingMode
-unitDefs set [_type, ["Support BMP", _price, _si, 30, "BMPAmbul_xj200", "ibmp_abu", 2^stHeavy + 2^stLight, [1, _soldierE], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
+unitDefs set [_type, ["Support BMP", _price, _si, 30, "BMPAmbul_xj400", "ibmp_abu", 2^stHeavy + 2^stLight, [1, _soldierE], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _supportAPCE = _type
 _type = _type + 1
 
 _price = [1400, 3000] select PricingMode
-unitDefs set [_type, ["Support BMP + miner", _price, _si, 30, "BMPAmbul_xj200", "ibmp_abu", 2^stHeavy + 2^stLight, [1, _minerE], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
+unitDefs set [_type, ["Support BMP + miner", _price, _si, 30, "BMPAmbul_xj400", "ibmp_abu", 2^stHeavy + 2^stLight, [1, _minerE], _mSupport, ["Common\InitSupportVehicle.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _supportAPCEminer = _type
 _type = _type + 1
 
 _price = [800, 1600] select PricingMode
-unitDefs set [_type, ["BMP", _price, _si, 30, "BMP_xj200", "ibmp", 2^_st, [3, _crewE], _mAPC, []] ]
+unitDefs set [_type, ["BMP", _price, _si, 30, "BMP_xj400", "ibmp", 2^_st, [3, _crewE], _mAPC, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _bmpE = _type
 _type = _type + 1
 
 _price = [1800, 3600] select PricingMode
-unitDefs set [_type, ["BMP2 30mm/AT", _price, _si, 30, "BMP2_AA_xj200", "ibmp", 2^_st, [3, _crewE], _mAPC, ["Common\Equip\BMP_standard.sqs"]] ]
+unitDefs set [_type, ["BMP2 30mm/AT", _price, _si, 30, "BMP2_AA_xj400", "ibmp", 2^_st, [3, _crewE], _mAPC, ["Common\Equip\BMP_standard.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _bmp2E = _type
 _type = _type + 1
 
 _price = [3500, 7000] select PricingMode
-unitDefs set [_type, ["BMP2 Rocket", _price, _si, 30, "BMP2_AA_xj200", "ibmp", 2^_st, [3, _crewE], _mAPC, ["Common\Equip\BMP2farr.sqs"]] ]
+unitDefs set [_type, ["BMP2 Rocket", _price, _si, 30, "BMP2_AA_xj400", "ibmp", 2^_st, [3, _crewE], _mAPC, ["Common\Equip\BMP2farr.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _bmp2d = _type
 _type = _type + 1
 
 _price = [7500, 15000] select PricingMode
-unitDefs set [_type, ["BMP2 AT", _price, _si, 30, "BMP2_AA_xj200", "ibmp", 2^_st, [3, _crewE], _mAPC, ["Common\Equip\BMPAT.sqs"]] ]
+unitDefs set [_type, ["BMP2 AT", _price, _si, 30, "BMP2_AA_xj400", "ibmp", 2^_st, [3, _crewE], _mAPC, ["Common\Equip\BMPAT.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _bmp2at = _type
 _type = _type + 1
 
 _price = [1500, 2000] select PricingMode
-unitDefs set [_type, ["Shilka", _price, _si, 30, "ZSU_xj200", "izsu", 2^_st, [2, _crewE], _mAA, []] ]
+unitDefs set [_type, ["Shilka", _price, _si, 30, "ZSU_xj400", "izsu", 2^_st, [2, _crewE], _mAA, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _shilkaE = _type
 _type = _type + 1
 
 _price = [2000, 4000] select PricingMode
-unitDefs set [_type, ["BMP2 Cannon", _price, _si, 30, "BMP2_AA_xj200", "izsu", 2^_st, [2, _crewE], _mAA, ["Common\Equip\BMP_AA2.sqs"]] ]
+unitDefs set [_type, ["BMP2 Cannon", _price, _si, 30, "BMP2_AA_xj400", "izsu", 2^_st, [2, _crewE], _mAA, ["Common\Equip\BMP_AA2.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _bmp2Cannon = _type
 _type = _type + 1
 
 _price = [3500, 4000] select PricingMode
-unitDefs set [_type, ["BMP2 AA", _price, _si, 30, "BMP2_AA_xj200", "izsu", 2^_st, [2, _crewE], _mAA, ["Common\Equip\BMP_AA1.sqs"]] ]
+unitDefs set [_type, ["BMP2 AA", _price, _si, 30, "BMP2_AA_xj400", "izsu", 2^_st, [2, _crewE], _mAA, ["Common\Equip\BMP_AA1.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _bmp2aa = _type
 _type = _type + 1
 
 _price = [8000, 16000] select PricingMode
-unitDefs set [_type, ["4xAA", _price, _si, 30, "ZSU_xj200", "izsu", 2^_st, [3, _crewE], _mAA, ["Common\Equip\DefAA.sqs"]] ]
+unitDefs set [_type, ["Tunguska", _price, _si, 30, "2S6_DKM_xj400", "\TZK_Texture_4_0_0\icon\i2s6.paa", 2^_st, [3, _crewE], _mAA, ["Common\Equip\Tunguska.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
-_shilkaE2 = _type
+_tunguskaE = _type
 _type = _type + 1
 
 _price = [2000, 4000] select PricingMode
-unitDefs set [_type, ["T72", _price, _si, 30, "T72_xj200", "it72", 2^_st, [3, _crewE], _mTank, []] ]
+unitDefs set [_type, ["T72", _price, _si, 30, "T72_xj400", "it72", 2^_st, [3, _crewE], _mTank, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _t72E = _type
 _type = _type + 1
 
 _price = [5000, 10000] select PricingMode
-unitDefs set [_type, ["T80", _price, _si, 60, "T80_TZK_xj200", "it80", 2^_st, [3, _crewE], _mTank, []] ]
+unitDefs set [_type, ["T80", _price, _si, 60, "T80_TZK_xj400", "it80", 2^_st, [3, _crewE], _mTank, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _t80E = _type
 _type = _type + 1
 
 _price = [5000, 10000] select PricingMode
-unitDefs set [_type, ["T90", _price, _si, 60, "T90_xj200", "\TZK_Objects\Texture\T90.paa", 2^_st, [3, _crewE], _mTank, []] ]
+unitDefs set [_type, ["T90ms", _price, _si, 60, "T90ms_xj400", "\TZK_Texture_4_0_0\icon\iT90ms.paa", 2^_st, [3, _crewE], _mTank, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _t90E = _type
 _type = _type + 1
 
 _price = [5000, 10000] select PricingMode
-unitDefs set [_type, ["ZTZ-99G", _price, _si, 60, "ZTZ99_xj200", "\TZK_Objects\Texture\ZTZ99.paa", 2^_st, [3, _crewE], _mTank, []] ]
+unitDefs set [_type, ["ZTZ-99G", _price, _si, 60, "ZTZ99_xj400", "\TZK_Texture_4_0_0\icon\iZTZ99.paa", 2^_st, [3, _crewE], _mTank, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _ztz99E = _type
 _type = _type + 1
 
 _price = [7500, 15000] select PricingMode
-unitDefs set [_type, ["PLZ-05 (Limited Turret)", _price, _si, 60, "PLZ05_Lim_xj200", "\TZK_Objects\Texture\PLZ05.paa", 2^_st, [3, _crewW], _mHowitzer, []] ]
+unitDefs set [_type, ["PLZ-05", _price, _si, 60, "PLZ05_TZK_xj400", "\TZK_Texture_4_0_0\icon\iPLZ05.paa", 2^_st, [3, _crewW], _mHowitzer, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _plz05E = _type
 _type = _type + 1
 
 _price = [25000, 50000] select PricingMode
-unitDefs set [_type, ["T80 Art", _price, _si, 90, "T80_Art_xj200", "it80", 2^_st, [3, _crewE], _mTank, []] ]
+unitDefs set [_type, ["TOS-1 Buratino", _price, _si, 60, "TOS1_TZK_xj400", "\TZK_Texture_4_0_0\icon\iTOS_1.paa", 2^_st, [3, _crewW], _mMLRS, []] ]
+if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
+_tos1E = _type
+_type = _type + 1
+
+_price = [25000, 50000] select PricingMode
+unitDefs set [_type, ["T80 Art", _price, _si, 90, "T80_Art_xj400", "it80", 2^_st, [3, _crewE], _mTank, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _t80artE = _type
 _type = _type + 1
 
 _price = [25000, 50000] select PricingMode
-unitDefs set [_type, ["PLZ-05 Art", _price, _si, 90, "PLZ05_Art_xj200", "\TZK_Objects\Texture\PLZ05.paa", -1, [3, _crewW], _mHowitzer,  []] ]
+unitDefs set [_type, ["PLZ-05 Art", _price, _si, 90, "PLZ05_Art_xj400", "\TZK_Texture_4_0_0\icon\iPLZ05.paa", -1, [3, _crewW], _mHowitzer,  []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _plz05artE = _type
 _type = _type + 1
 
 _price = [1.5*costRepairMHQ, 3.0*costRepairMHQ] select PricingMode
-unitDefs set [_type, ["MCV East", _price, _si, 120, "MCVE_xj200", "ibmp_abu", -1, [1, _soldierE], _mMCV,  ["Common\InitMCV.sqs"]] ]
+unitDefs set [_type, ["MCV East", _price, _si, 120, "MCVE_xj400", "ibmp_abu", -1, [1, _soldierE], _mMCV,  ["Common\InitMCV.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 utMCVE = _type
 _type = _type + 1
 
 _price = [1400, 3000] select PricingMode
-unitDefs set [_type, ["MHQ East", 1500, _si, 10, "MHQE_xj200", "ibmp_abu", -1, [1, _crewE], _mMHQ, ["Common\InitMHQ.sqs"]] ]
+unitDefs set [_type, ["MHQ East", 1500, _si, 10, "MHQE_xj400", "ibmp_abu", -1, [1, _crewE], _mMHQ, ["Common\InitMHQ.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 utMHQ1 = _type
 _type = _type + 1
@@ -887,121 +910,133 @@ _type = _type + 1
 _st = stAir
 
 _price = [3000, 6000] select PricingMode
-unitDefs set [_type, ["Mi-2", _price, _si, 30, "Mi2NOE_xj200", "\TZK_Objects\Texture\Mi2.paa", 2^_st, [1, _pilotE], _mHeli, []] ]
+unitDefs set [_type, ["Mi-2 (no radar)", _price, _si, 30, "Mi2NOE_irNo_xj400", "\TZK_Texture_4_0_0\icon\iMi2.paa", 2^_st, [1, _pilotE], _mHeli, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
-_mi2E = _type
+_irNO_mi2 = _type
 _type = _type + 1
 
 _price = [4000, 8000] select PricingMode
-unitDefs set [_type, ["Mi17 (tug)", _price, _si, 60, "Mi17_C_xj200", "imi17", 2^_st, [1, _pilotE], _mHeli, ["Common\Equip\Mi17.sqs"]] ]
+unitDefs set [_type, ["Mi17 (no radar)", _price, _si, 60, "Mi17_xj400", "imi17", 2^_st, [1, _pilotE], _mHeli, []] ]
+if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
+_irNO_mi17 = _type
+_type = _type + 1
+
+_price = [4000, 8000] select PricingMode
+unitDefs set [_type, ["Mi17 (tug)", _price, _si, 60, "Mi17_owp_xj400", "imi17", 2^_st, [1, _pilotE], _mHeli, ["Common\Equip\Mi17.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _mi17E = _type
 _type = _type + 1
 
 _price = [5000, 10000] select PricingMode
-unitDefs set [_type, ["Mi17 support", _price, _si, 60, "Mi17_C_xj200", "imi17", 2^_st, [1, _pilotE], _mSupport, ["Common\InitSupportVehicle.sqs", "Common\Equip\Mi17.sqs", "Common\InitAmmoDrop.sqs"]] ]
+unitDefs set [_type, ["Mi17 support", _price, _si, 60, "Mi17_owp_xj400", "imi17", 2^_st, [1, _pilotE], _mSupport, ["Common\InitSupportVehicle.sqs", "Common\Equip\Mi17.sqs", "Common\InitAmmoDrop.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _mi17supE = _type
 _type = _type + 1
 
 _price = [7000, 14000] select PricingMode
-unitDefs set [_type, ["Mi17 30mm gun", _price, _si, 60, "Mi17_MG_C_xj200", "imi17", 2^_st, [1, _pilotE], _mHeli, ["Common\Equip\Mi17.sqs"]] ]
+unitDefs set [_type, ["Mi17 30mm gun", _price, _si, 60, "Mi17_owp_MG_xj400", "imi17", 2^_st, [1, _pilotE], _mHeli, ["Common\Equip\Mi17.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _mi17E30 = _type
 _type = _type + 1
 
 _price = [7000, 14000] select PricingMode
-unitDefs set [_type, ["Mi17 2xLGB", _price, _si, 60, "Mi17_LGB_C_xj200", "imi17", 2^_st, [1, _pilotE], _mHeli, ["Common\Equip\Mi17.sqs"]] ]
+unitDefs set [_type, ["Mi17 2xLGB", _price, _si, 60, "Mi17_owp_LGB_xj400", "imi17", 2^_st, [1, _pilotE], _mHeli, ["Common\Equip\Mi17.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _mi17EL = _type
 _type = _type + 1
 
-_price = [5000, 1000] select PricingMode
-unitDefs set [_type, ["An-12 Redstar", _price, _si, 60, "An12_xj200", "\TZK_Objects\Texture\an12.paa", 2^_st, [1, _pilotE], _mPlane, ["Common\InitSpawnPlane.sqs"]] ]
+_price = [10000, 20000] select PricingMode
+unitDefs set [_type, ["Mi17 30mm MG", _price, _si, 60, "Mi17_owp_PKT_xj400", "imi17", 2^_st, [2, _pilotW], _mHeli, ["Common\Equip\Mi17.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
-_an12E = _type
+_mi17EMG2 = _type
+_type = _type + 1
+
+_price = [5000, 1000] select PricingMode
+unitDefs set [_type, ["An-72 Coaler", _price, _si, 60, "AN72_xj400", "\TZK_Texture_4_0_0\icon\iAN72.paa", 2^_st, [2, _pilotE], _mPlane, ["Common\InitSpawnPlane.sqs"]] ]
+if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
+_an72E = _type
 _type = _type + 1
 
 _price = [25000, 50000] select PricingMode
-unitDefs set [_type, ["V80 AT/30mm", _price, _si, 90, "Ka50_xj200", "\TZK_Objects\Texture\Ka50.paa", 2^_st, [1, _pilotE], _mHeli, ["Common\Equip\V80.sqs"]] ]
+unitDefs set [_type, ["V80", _price, _si, 90, "Ka50_xj400", "\TZK_Texture_4_0_0\icon\iKa50.paa", 2^_st, [1, _pilotE], _mHeli, ["Common\Equip\V80.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _v80E = _type
 _type = _type + 1
 
 _price = [28000, 56000] select PricingMode
-unitDefs set [_type, ["Mi24 AT/30mm", _price, _si, 90, "Mi24_C_xj200", "\TZK_Objects\Texture\RHS_Mi24V.paa", 2^_st, [2, _pilotE], _mHeli, ["Common\Equip\Mi24.sqs"]] ]
+unitDefs set [_type, ["Mi24", _price, _si, 90, "Mi24_RHS_xj400", "\TZK_Texture_4_0_0\icon\iMi24_RHS", 2^_st, [2, _pilotE], _mHeli, ["Common\Equip\Mi24.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _mi24E = _type
 _type = _type + 1
 
 _price = [28000, 56000] select PricingMode
-unitDefs set [_type, ["V80 AT/30mm", _price, _si, 90, "Ka50_AT_xj200", "\TZK_Objects\Texture\Ka50.paa", 2^_st, [1, _pilotE], _mHeli, ["Common\Equip\V80.sqs"]] ]
+unitDefs set [_type, ["V80 AT", _price, _si, 90, "Ka50_AT_xj400", "\TZK_Texture_4_0_0\icon\iKa50.paa", 2^_st, [1, _pilotE], _mHeli, ["Common\Equip\V80.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _v80E2 = _type
 _type = _type + 1
 
 _price = [30000, 60000] select PricingMode
-unitDefs set [_type, ["Mi24 AT/30mm", _price, _si, 90, "Mi24_AT_xj200", "imi24", 2^_st, [2, _pilotE], _mHeli, ["Common\Equip\Mi24.sqs"]] ]
+unitDefs set [_type, ["Mi24 AT", _price, _si, 90, "Mi24_RHS_AT_xj400", "\TZK_Texture_4_0_0\icon\iMi24_RHS", 2^_st, [2, _pilotE], _mHeli, ["Common\Equip\Mi24.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _mi24E2 = _type
 _type = _type + 1
 
 _price = [5000, 10000] select PricingMode
-unitDefs set [_type, ["An-12 Support", _price, _si, 60, "An12_Support_xj200", "\TZK_Objects\Texture\an12.paa", 2^_st, [1, _pilotE], _mSupport, ["Common\InitSpawnPlane.sqs", "Common\InitSupportVehicle.sqs"]] ]
+unitDefs set [_type, ["An-72 Support", _price, _si, 60, "AN72_Support_xj400", "\TZK_Texture_4_0_0\icon\iAN72.paa", 2^_st, [2, _pilotE], _mSupport, ["Common\InitSpawnPlane.sqs", "Common\InitSupportVehicle.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
-_an12supportE = _type
+_an72supportE = _type
 _type = _type + 1
 
 _price = [8000, 16000] select PricingMode
-unitDefs set [_type, ["Su25 GUN", _price, _si, 90, "Su25_AAOnly_v2_xj200", "\Su25\isu25", 2^_st, [1, _pilotE], _mPlane, ["Common\Equip\Su25Gun.sqs", "Common\InitSpawnPlane.sqs"]] ]
+unitDefs set [_type, ["Su25 GUN", _price, _si, 90, "Su25_AAOnly_xj400", "\Su25\isu25", 2^_st, [1, _pilotE], _mPlane, ["Common\Equip\Su25Gun.sqs", "Common\InitSpawnPlane.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _su25gun = _type
 _type = _type + 1
 
 _price = [12000, 22000] select PricingMode
-unitDefs set [_type, ["Su25 4xLGB/GUN", _price, _si, 90, "Su25_LGB_v2_xj200", "\Su25\isu25", 2^_st, [1, _pilotE], _mPlane, ["Common\Equip\Su25LGB4.sqs", "Common\InitSpawnPlane.sqs"]] ]
+unitDefs set [_type, ["Su25 4xLGB/GUN", _price, _si, 90, "Su25_LGB_xj400", "\Su25\isu25", 2^_st, [1, _pilotE], _mPlane, ["Common\Equip\Su25LGB4.sqs", "Common\InitSpawnPlane.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _su25LGB4 = _type
 _type = _type + 1
 
 _price = [14000, 28000] select PricingMode
-unitDefs set [_type, ["Su25 14xBombs/GUN", _price, _si, 90, "Su25_v2_xj200", "\Su25\isu25", 2^_st, [1, _pilotE], _mPlane, ["Common\Equip\Su25bombs.sqs", "Common\InitSpawnPlane.sqs"]] ]
+unitDefs set [_type, ["Su25 14xBombs/GUN", _price, _si, 90, "Su25_xj400", "\Su25\isu25", 2^_st, [1, _pilotE], _mPlane, ["Common\Equip\Su25bombs.sqs", "Common\InitSpawnPlane.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _su25bombs = _type
 _type = _type + 1
 
 _price = [20000, 40000] select PricingMode
-unitDefs set [_type, ["Su25 AT/30mm", _price, _si, 90, "Su25_v2_xj200", "\Su25\isu25", 2^_st, [1, _pilotE], _mPlane, ["Common\Equip\Su25AT.sqs", "Common\InitSpawnPlane.sqs"]] ]
+unitDefs set [_type, ["Su25 AT/30mm", _price, _si, 90, "Su25_xj400", "\Su25\isu25", 2^_st, [1, _pilotE], _mPlane, ["Common\Equip\Su25AT.sqs", "Common\InitSpawnPlane.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _su25 = _type
 _type = _type + 1
 
 _price = [20000, 40000] select PricingMode
-unitDefs set [_type, ["Su25 LGB/30mm", _price, _si, 90, "Su25_LGB_v2_xj200", "\Su25\isu25", 2^_st, [1, _pilotE], _mPlane, ["Common\Equip\Su25LGB8.sqs", "Common\InitSpawnPlane.sqs"]] ]
+unitDefs set [_type, ["Su25 LGB/30mm", _price, _si, 90, "Su25_LGB_xj400", "\Su25\isu25", 2^_st, [1, _pilotE], _mPlane, ["Common\Equip\Su25LGB8.sqs", "Common\InitSpawnPlane.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _su25LGB8 = _type
 _type = _type + 1
 
 _price = [25000, 50000] select PricingMode
-unitDefs set [_type, ["Su25 4xAA/GUN", _price, _si, 90, "Su25_v2_xj200", "\Su25\isu25", 2^_st, [1, _pilotE], _mPlane, ["Common\Equip\Su25AA.sqs", "Common\InitSpawnPlane.sqs"]] ]
+unitDefs set [_type, ["Su25 4xAA/GUN", _price, _si, 90, "Su25_xj400", "\Su25\isu25", 2^_st, [1, _pilotE], _mPlane, ["Common\Equip\Su25AA.sqs", "Common\InitSpawnPlane.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _su25AA = _type
 _type = _type + 1
 
 _price = [30000, 60000] select PricingMode
-unitDefs set [_type, ["Su25 Rocket", _price, _si, 90, "Su25_Rocket_v2_xj200", "\Su25\isu25", 2^_st, [1, _pilotE], _mPlane, ["Common\InitSpawnPlane.sqs"]] ]
+unitDefs set [_type, ["Su25 Rocket", _price, _si, 90, "Su25_Rocket_xj400", "\Su25\isu25", 2^_st, [1, _pilotE], _mPlane, ["Common\InitSpawnPlane.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _su25Rocket = _type
 _type = _type + 1
 
 _price = [45000, 90000] select PricingMode
-unitDefs set [_type, ["Su25 Base Buster", _price, _si, 90, "Su25_Buster_v2_xj200", "\Su25\isu25", 2^_st, [1, _pilotE], _mPlane, ["Common\InitSpawnPlane.sqs"]] ]
+unitDefs set [_type, ["Su25 Base Buster", _price, _si, 90, "Su25_Buster_xj400", "\Su25\isu25", 2^_st, [1, _pilotE], _mPlane, ["Common\InitSpawnPlane.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _su25BB = _type
 _type = _type + 1
 
 _price = [90000, 180000] select PricingMode
-unitDefs set [_type, ["Su25 Raduga", _price, _si, 90, "Su25_Raduga_v2_xj200", "\Su25\isu25", 2^_st, [1, _pilotE], _mPlane, ["Common\InitSpawnPlane.sqs"]] ]
+unitDefs set [_type, ["Su25 Raduga", _price, _si, 90, "Su25_Raduga_xj400", "\Su25\isu25", 2^_st, [1, _pilotE], _mPlane, ["Common\InitSpawnPlane.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _su25Raduga = _type
 _type = _type + 1
@@ -1014,47 +1049,47 @@ _st = -1
 ; INFANTRY RES
 
 
-unitDefs set [_type, ["Soldier", 50, _si, 0, "SoldierGG", "ivojak", _st, [], "", ["Common\InitSpawnchute.sqs"]] ]
+unitDefs set [_type, ["Soldier", 50, _si, 0, "SoldierGG_xj400", "ivojak", _st, [], "", ["Common\InitSpawnchute.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierggr = _type
 _type = _type + 1
 
-unitDefs set [_type, ["Medic", 50, _si, 0, "SoldierGMedic", "imedic", _st, [], "", ["Common\InitSpawnchute.sqs"]] ]
+unitDefs set [_type, ["Medic", 50, _si, 0, "SoldierGMedic_xj400", "imedic", _st, [], "", ["Common\InitSpawnchute.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _medicR = _type
 _type = _type + 1
 
-unitDefs set [_type, ["Crew", 50, _si, 0, "SoldierGCrew", "icrew", _st, [], "", []] ]
+unitDefs set [_type, ["Crew", 50, _si, 0, "SoldierGCrew_xj400", "icrew", _st, [], "", []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _crewR = _type
 _type = _type + 1
 
-unitDefs set [_type, ["PK", 100, _si, 0, "SoldierGMG", "ismg", _st, [], "", ["Common\InitSpawnchute.sqs","Common\Equip\ResMG.sqs"]] ]
+unitDefs set [_type, ["PK", 100, _si, 0, "SoldierGMG_xj400", "ismg", _st, [], "", ["Common\InitSpawnchute.sqs","Common\Equip\ResMG.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierMGR = _type
 _type = _type + 1
 
-unitDefs set [_type, ["Sniper", 100, _si, 0, "SoldierGSniper", "isniper", _st, [], "", ["Common\InitSpawnchute.sqs","Common\Equip\ResSniper.sqs"]] ]
+unitDefs set [_type, ["Sniper", 100, _si, 0, "SoldierGSniper_xj400", "isniper", _st, [], "", ["Common\InitSpawnchute.sqs","Common\Equip\ResSniper.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _sniperR = _type
 _type = _type + 1
 
-unitDefs set [_type, ["RPG", 250, _si, 0, "SoldierGLAW", "islaw", _st, [], "", ["Common\InitSpawnchute.sqs","Common\Equip\ResistanceRPG.sqs"]] ]
+unitDefs set [_type, ["RPG", 250, _si, 0, "SoldierGLAW_xj400", "islaw", _st, [], "", ["Common\InitSpawnchute.sqs","Common\Equip\ResistanceRPG.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierLAWR = _type
 _type = _type + 1
 
-unitDefs set [_type, ["AT4", 280, _si, 10, "SoldierGAT", "isat", _st, [], "", ["Common\InitSpawnchute.sqs","Common\Equip\ResistanceAT.sqs"]] ]
+unitDefs set [_type, ["AT4", 280, _si, 10, "SoldierGAT_xj400", "isat", _st, [], "", ["Common\InitSpawnchute.sqs","Common\Equip\ResistanceAT.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierATR = _type
 _type = _type + 1
 
-unitDefs set [_type, ["Strela", 250, _si, 10, "SoldierGAA", "isaa", _st, [], "", ["Common\InitSpawnchute.sqs","Common\Equip\ResistanceAA.sqs"]] ]
+unitDefs set [_type, ["Strela", 250, _si, 10, "SoldierGAA_xj400", "isaa", _st, [], "", ["Common\InitSpawnchute.sqs","Common\Equip\ResistanceAA.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierAAR = _type
 _type = _type + 1
 
-unitDefs set [_type, ["Officer", 2000, _si, 10, "OfficerG", "ivojak", _st, [], "", ["Common\InitSpawnchute.sqs"]] ]
+unitDefs set [_type, ["Officer", 2000, _si, 10, "OfficerG_xj400", "ivojak", _st, [], "", ["Common\InitSpawnchute.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _officerR = _type
 _type = _type + 1
@@ -1078,7 +1113,7 @@ if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitType
 _t72R = _type
 _type = _type + 1
 
-unitDefs set [_type, ["T80 Res", 5000, _si, 0, "T80Res_TZK_xj200", "it80", _st, [3, _crewR], _mTank, ["Common\Equip\TownVehicles.sqs"]] ]
+unitDefs set [_type, ["T80 Res", 5000, _si, 0, "T80Res_TZK_xj400", "it80", _st, [3, _crewR], _mTank, ["Common\Equip\TownVehicles.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _t80R = _type
 _type = _type + 1
@@ -1088,12 +1123,12 @@ _type = _type + 1
 _si = siCIV
 _st = -1
 
-unitDefs set [_type, ["Bike", 100, _si, 0, "Kolo_xj200", "\Kolo\ikolo", _st, [1, _crewR], _mBike, []] ]
+unitDefs set [_type, ["Bike", 100, _si, 0, "Kolo_xj400", "\Kolo\ikolo", _st, [1, _crewR], _mBike, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _bikeC = _type
 _type = _type + 1
 
-unitDefs set [_type, ["Motorcycle", 200, _si, 0, "Jawa_xj200", "\o\vehl\ijawa", _st, [1, _crewR], _mBike, []] ]
+unitDefs set [_type, ["Motorcycle", 200, _si, 0, "Jawa_xj400", "\o\vehl\ijawa", _st, [1, _crewR], _mBike, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _motorC = _type
 _type = _type + 1
@@ -1114,59 +1149,59 @@ utCustom = [_customW, _customE]
 
 _si = si0
 
-unitDefs set [_type, ["M60 Town", 100, _si, 10, "SoldierWMG", "ismg", _st, [], "", ["Common\InitSpawnchuteW.sqs"]] ]
+unitDefs set [_type, ["M60 Town", 100, _si, 10, "SoldierWMG_xj400", "ismg", _st, [], "", ["Common\InitSpawnchuteW.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierMGW1 = _type
 _type = _type + 1
 
-unitDefs set [_type, ["Sniper Town", 100, _si, 10, "SoldierWSniper", "isniper", _st, [], "", ["Common\InitSpawnchuteW.sqs"]] ]
+unitDefs set [_type, ["Sniper Town", 100, _si, 10, "SoldierWSniper_xj400", "isniper", _st, [], "", ["Common\InitSpawnchuteW.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _sniperW1 = _type
 _type = _type + 1
 
-unitDefs set [_type, ["LAW Town", 250, _si, 10, "SoldierWLAW", "islaw", _st, [], "", ["Common\InitSpawnchuteW.sqs","Common\Equip\RPGai.sqs"]] ]
+unitDefs set [_type, ["LAW Town", 250, _si, 10, "SoldierWLAW_xj400", "islaw", _st, [], "", ["Common\InitSpawnchuteW.sqs","Common\Equip\RPGai.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierLAWW1 = _type
 _type = _type + 1
 
-unitDefs set [_type, ["Carl Gustav Town", 400, _si, 10, "SoldierWAT", "isat", _st, [], "", ["Common\InitSpawnchuteW.sqs","Common\Equip\ATai.sqs"]] ]
+unitDefs set [_type, ["Carl Gustav Town", 400, _si, 10, "SoldierWAT_xj400", "isat", _st, [], "", ["Common\InitSpawnchuteW.sqs","Common\Equip\ATai.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierATW1 = _type
 _type = _type + 1
 
-unitDefs set [_type, ["Stinger Town", 400, _si, 10, "SoldierWAA", "isaa", _st, [], "", ["Common\InitSpawnchuteW.sqs","Common\Equip\AAai.sqs"]] ]
+unitDefs set [_type, ["Stinger Town", 400, _si, 10, "SoldierWAA_xj400", "isaa", _st, [], "", ["Common\InitSpawnchuteW.sqs","Common\Equip\AAai.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierAAW1 = _type
 _type = _type + 1
 
 
-unitDefs set [_type, ["M2A2 AT Town", 2000, _si, 30, "M2A2_AA_Town_xj200", "\M2A2\im2a2", _st, [3, _crewW], _mAPC, ["Common\Equip\TownM2A2_AT.sqs", "Common\InitTownGroupVehicles.sqs"]] ]
+unitDefs set [_type, ["M2A2 AT Town", 2000, _si, 30, "M2A2_AA_Town_xj400", "\M2A2\im2a2", _st, [3, _crewW], _mAPC, ["Common\Equip\TownM2A2_AT.sqs", "Common\InitTownGroupVehicles.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _m2a2townat = _type
 _type = _type + 1
 
-unitDefs set [_type, ["M2A2 AA Town", 2000, _si, 30, "M2A2_AA_Town_xj200", "\M2A2\im2a2", _st, [3, _crewW], _mAA, ["Common\Equip\TownM2A2_AA.sqs", "Common\InitTownGroupVehicles.sqs"]] ]
+unitDefs set [_type, ["M2A2 AA Town", 2000, _si, 30, "M2A2_AA_Town_xj400", "\M2A2\im2a2", _st, [3, _crewW], _mAA, ["Common\Equip\TownM2A2_AA.sqs", "Common\InitTownGroupVehicles.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _m2a2townaad = _type
 _type = _type + 1
 
-unitDefs set [_type, ["M1A1 Town", 5000, _si, 60, "M1A1_xj200", "iabrams", _st, [3, _crewW], _mTank, ["Common\Equip\TownVehicles.sqs", "Common\InitTownGroupVehicles.sqs"]] ]
+unitDefs set [_type, ["M1A1 Town", 5000, _si, 60, "M1A1_xj400", "iabrams", _st, [3, _crewW], _mTank, ["Common\Equip\TownVehicles.sqs", "Common\InitTownGroupVehicles.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _m1a1townW = _type
 _type = _type + 1
-unitDefs set [_type, ["AH64 Town", 6000, _si, 90, "AH64_AT_xj200", "\APAC\iah64", _st, [2, _pilotW], _mHeli, ["Common\Equip\TownVehicles.sqs", "Common\InitTownGroupVehicles.sqs"]] ]
+unitDefs set [_type, ["AH64 Town", 6000, _si, 90, "AH64_AT_xj400", "\APAC\iah64", _st, [2, _pilotW], _mHeli, ["Common\Equip\TownVehicles.sqs", "Common\InitTownGroupVehicles.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _ah64townW2 = _type
 _type = _type + 1
 
 _price = [1500, 3000] select PricingMode
-unitDefs set [_type, ["Vulcan Base", _price, _si, 30, "Vulcan_xj200", "\VULCAN\ivulcan", -2, [2, _crewW], _mAA, []] ]
+unitDefs set [_type, ["Vulcan Base", _price, _si, 30, "Vulcan_xj400", "\VULCAN\ivulcan", -2, [2, _crewW], _mAA, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _vulcanBaseW = _type
 _type = _type + 1
 
 _price = [8000, 16000] select PricingMode
-unitDefs set [_type, ["4xAA Base", _price, _si, 30, "Vulcan_xj200", "\VULCAN\ivulcan", -2, [2, _crewW], _mAA, ["Common\Equip\DefAA.sqs"]] ]
+unitDefs set [_type, ["4xAA Base", _price, _si, 30, "Vulcan_TZK_xj400", "\VULCAN\ivulcan", -2, [2, _crewW], _mAA, ["Common\Equip\DefAA.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _vulcanBaseW2 = _type
 _type = _type + 1
@@ -1175,61 +1210,61 @@ _type = _type + 1
 
 _si = si1
 
-unitDefs set [_type, ["PK Town", 150, _si, 10, "SoldierEMG", "ismg", _st, [], "", ["Common\InitSpawnchuteE.sqs"]] ]
+unitDefs set [_type, ["PK Town", 150, _si, 10, "SoldierEMG_xj400", "ismg", _st, [], "", ["Common\InitSpawnchuteE.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierMGE1 = _type
 _type = _type + 1
 
-unitDefs set [_type, ["Sniper Town", 150, _si, 10, "SoldierESniper", "isniper", _st, [], "", ["Common\InitSpawnchuteE.sqs"]] ]
+unitDefs set [_type, ["Sniper Town", 150, _si, 10, "SoldierESniper_xj400", "isniper", _st, [], "", ["Common\InitSpawnchuteE.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _sniperE1 = _type
 _type = _type + 1
 
-unitDefs set [_type, ["RPG Town", 250, _si, 10, "SoldierELAW", "islaw", _st, [], "", ["Common\InitSpawnchuteE.sqs","Common\Equip\RPGai.sqs"]] ]
+unitDefs set [_type, ["RPG Town", 250, _si, 10, "SoldierELAW_xj400", "islaw", _st, [], "", ["Common\InitSpawnchuteE.sqs","Common\Equip\RPGai.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierLAWE1 = _type
 _type = _type + 1
 
-unitDefs set [_type, ["AT4 Town", 400, _si, 10, "SoldierEAT", "isat", _st, [], "", ["Common\InitSpawnchuteE.sqs","Common\Equip\ATai.sqs"]] ]
+unitDefs set [_type, ["AT4 Town", 400, _si, 10, "SoldierEAT_xj400", "isat", _st, [], "", ["Common\InitSpawnchuteE.sqs","Common\Equip\ATai.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierATE1 = _type
 _type = _type + 1
 
-unitDefs set [_type, ["Strela Town", 400, _si, 10, "SoldierEAA", "isaa", _st, [], "", ["Common\InitSpawnchuteE.sqs"]] ]
+unitDefs set [_type, ["Strela Town", 400, _si, 10, "SoldierEAA_xj400", "isaa", _st, [], "", ["Common\InitSpawnchuteE.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _soldierAAE1 = _type
 _type = _type + 1
 
 
-unitDefs set [_type, ["BMP2 AT Town", 2000, _si, 30, "BMP2_AA_Town_xj200", "ibmp", _st, [3, _crewE], _mAPC, ["Common\Equip\TownBMP2_AT.sqs", "Common\InitTownGroupVehicles.sqs"]] ]
+unitDefs set [_type, ["BMP2 AT Town", 2000, _si, 30, "BMP2_AA_Town_xj400", "ibmp", _st, [3, _crewE], _mAPC, ["Common\Equip\TownBMP2_AT.sqs", "Common\InitTownGroupVehicles.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _bmp2townat = _type
 _type = _type + 1
 
-unitDefs set [_type, ["BMP2 AA Town", 2000, _si, 30, "BMP2_AA_Town_xj200", "ibmp", _st, [3, _crewE], _mAA, ["Common\Equip\TownBMP2_AA.sqs", "Common\InitTownGroupVehicles.sqs"]] ]
+unitDefs set [_type, ["BMP2 AA Town", 2000, _si, 30, "BMP2_AA_Town_xj400", "ibmp", _st, [3, _crewE], _mAA, ["Common\Equip\TownBMP2_AA.sqs", "Common\InitTownGroupVehicles.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _bmp2townaad = _type
 _type = _type + 1
 
-unitDefs set [_type, ["T80 Town", 5000, _si, 60, "T80_TZK_xj200", "it80", _st, [3, _crewE], _mTank, ["Common\Equip\TownVehicles.sqs", "Common\InitTownGroupVehicles.sqs"]] ]
+unitDefs set [_type, ["T80 Town", 5000, _si, 60, "T80_TZK_xj400", "it80", _st, [3, _crewE], _mTank, ["Common\Equip\TownVehicles.sqs", "Common\InitTownGroupVehicles.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _t80townE = _type
 _type = _type + 1
-unitDefs set [_type, ["Mi24 Town", 8000, _si, 90, "Mi24_AT_C_xj200", "imi24", _st, [2, _pilotE], _mHeli, ["Common\Equip\TownVehicles.sqs", "Common\InitTownGroupVehicles.sqs"]] ]
+unitDefs set [_type, ["Mi24 Town", 8000, _si, 90, "Mi24_RHS_AT_xj400", "imi24", _st, [2, _pilotE], _mHeli, ["Common\Equip\TownVehicles.sqs", "Common\InitTownGroupVehicles.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _mi24townE2 = _type
 _type = _type + 1
 
 _price = [1500, 2000] select PricingMode
-unitDefs set [_type, ["Shilka Base", _price, _si, 30, "ZSU_xj200", "izsu", -2, [2, _crewE], _mAA, []] ]
+unitDefs set [_type, ["Shilka Base", _price, _si, 30, "ZSU_xj400", "izsu", -2, [2, _crewE], _mAA, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _shilkaBaseE = _type
 _type = _type + 1
 
 _price = [8000, 16000] select PricingMode
-unitDefs set [_type, ["4xAA Base", _price, _si, 30, "ZSU_xj200", "izsu", -2, [3, _crewE], _mAA, ["Common\Equip\DefAA.sqs"]] ]
+unitDefs set [_type, ["Tunguska Base", _price, _si, 30, "2S6_DKM_xj400", "\TZK_Texture_4_0_0\icon\i2s6.paa", -2, [3, _crewE], _mAA, ["Common\Equip\Tunguska.sqs"]] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
-_shilkaBaseE2 = _type
+_tunguskaBaseE = _type
 _type = _type + 1
 
 
@@ -1370,7 +1405,7 @@ _i = _i + 1
 utbTanksMixed = _i
 _list = [ [_m60W, 0.5], [_vulcanW2, 0.5], [_m2a2at, 0.5], [_m2a2aa, 0.5], [_m1a1W, 1], [_m1a2sepW, 1], [_leo2a6W, 1] ]
 (unitsBuyAI select si0) set [_i, _list]
-_list = [ [_t72E, 0.5], [_shilkaE2, 0.5], [_bmp2at, 0.5], [_bmp2aa, 0.5], [_t80E, 1], [_t90E, 1], [_ztz99E, 1] ]
+_list = [ [_t72E, 0.5], [_tunguskaE, 0.5], [_bmp2at, 0.5], [_bmp2aa, 0.5], [_t80E, 1], [_t90E, 1], [_ztz99E, 1] ]
 (unitsBuyAI select si1) set [_i, _list]
 _i = _i + 1
 
@@ -1398,12 +1433,12 @@ _i = _i + 1
 utbAAHeavy = _i
 _list = [ [_vulcanW2, 0.3] ]
 (unitsBuyAI select si0) set [_i, _list]
-_list = [ [_shilkaE2, 0.3] ]
+_list = [ [_tunguskaE, 0.3] ]
 (unitsBuyAI select si1) set [_i, _list]
 _i = _i + 1
 
 utbAAvehicles = _i
-_list = [ [_vulcanW, 0.5], [_m2a2aa, 0.5], [_m113Cannon, 0.5] ]
+_list = [ [_vulcanW, 0.5], [_m2a2aa, 0.5], [_vulcanTransp, 0.5] ]
 (unitsBuyAI select si0) set [_i, _list]
 _list = [ [_shilkaE, 0.5], [_bmp2aa, 0.5], [_bmp2Cannon, 0.5] ]
 (unitsBuyAI select si1) set [_i, _list]
@@ -1469,6 +1504,7 @@ _i = _i + 1
 ; EXTRA START VEHICLES
 ; will not be placed when no players exist on side
 ; entry format: [type, posRelMhq]
+? bool_TZK_Vanilla_Mode: _hummerW3 = _hummerW, _brdmE3 = _brdmE
 vehiclesStart = []
 ? ( (param1 % 20) in [0,5,10,13]) : goto "lowres"
 ? ( (param1 % 20) in [1,6,16,18]) : goto "lowres"
@@ -1515,27 +1551,27 @@ TransportShipE = [_boatE,_boatsupE,_boatE2,_boatE3,_boatCustomE];
 TransportShipW = [_boatW,_boatsupW,_boatW2,_boatW3,_boatCustomW];
 TransportZodiacW = [ _zodiacW ];				TransportZodiacE = [ _zodiacE ];
 Transport6APCW = [ _m2a2W, _m2a2aa, _m2a2at, _m2a2d ];		Transport6APCE = [ _bmp2E, _bmp2aa, _bmp2at, _bmp2d, _bmp2Cannon ];
-Transport8APCW = [ _m113W, _m113Cannon ]; 					Transport8APCE = [ _bmpE ];
-TransportHeliW = [ _uh60W, _uh60supW, _uh60W30,_uh60WMG2,_uh60WL ]; 	TransportHeliE = [ _mi17E, _mi17supE, _mi17E30,_mi17EL ];
-TransportSmallHeliW = [ _mh6j ]; TransportSmallHeliE = [ _mi2E ]; TransportTigerW = [_tigerW, _tigerW2]; TransportHindE = [ _mi24E, _mi24E2 ];
-TransportPlaneW = [ _c130W, _c130supportW ]; 				TransportPlaneE = [ _an12E, _an12supportE ];
+Transport8APCW = [ _m113W, _vulcanTransp, _vulcanW2 ]; 					Transport8APCE = [ _bmpE ];
+TransportHeliW = [ _uh60W, _uh60supW, _uh60W30,_uh60WMG2,_uh60WL ]; 	TransportHeliE = [ _mi17E, _mi17supE, _mi17E30, _mi17EL, _mi17EMG2 ];
+TransportirNOHeliW = [_irNO_mh6, _irNO_uh60]; TransportirNOHeliE = [_irNO_mi2, _irNO_mi17]; TransportHindE = [ _mi24E, _mi24E2 ];
+TransportPlaneW = [ _c130W, _c130supportW ]; 				TransportPlaneE = [ _an72E, _an72supportE ];
 TransportRepairTruckW = [_supportTruckW, _supportTruckW2]; 		TransportRepairTruckE = [_supportTruckE, _supportTruckE2];
 TransportSupAPCW = [_supportAPCW, _supportAPCWminer]
 TransportSupAPCE = [_supportAPCE, _supportAPCEminer]
 TransportActivatedVehicles = []
 
 _si = si0
-airTransport set [ _si, TransportHeliW + TransportSmallHeliW + TransportPlaneW ]
+airTransport set [ _si, TransportHeliW + TransportirNOHeliW + TransportPlaneW ]
 groundTransport set [ _si, TransportCarW + TransportTruckW + TransportShipW + TransportZodiacW + Transport6APCW + Transport8APCW + TransportRepairTruckW + TransportSupAPCW ]
 _si = si1
-airTransport set [ _si, TransportHeliE + TransportSmallHeliE + TransportHindE + TransportPlaneE ]
+airTransport set [ _si, TransportHeliE + TransportirNOHeliE + TransportHindE + TransportPlaneE ]
 groundTransport set [ _si, TransportCarE + TransportTruckE + TransportShipE + TransportZodiacE + Transport6APCE + Transport8APCE + TransportRepairTruckE + TransportSupAPCE ]
 
 ; SUPPORT VEHICLES
 ; AI units will get close to them for heal, repair and rearm. planeSupport defines support planes used in plane's support
 typesSupport = [ [_supportTruckW,_supportTruckW2,_boatsupW,_supportAPCW,_supportAPCWminer,_uh60supW], [_supportTruckE,_supportTruckE2,_boatsupE,_supportAPCE, _supportAPCEminer,_mi17supE] ]
-typesSupportPlus = [ [], [] ]; typesSupportPlus set [0, (typesSupport select 0) + [_c130supportW] ]; typesSupportPlus set [1, (typesSupport select 1) + [_an12supportE] ]
-planeSupport = [ [_c130supportW], [_an12supportE] ]
+typesSupportPlus = [ [], [] ]; typesSupportPlus set [0, (typesSupport select 0) + [_c130supportW] ]; typesSupportPlus set [1, (typesSupport select 1) + [_an72supportE] ]
+planeSupport = [ [_c130supportW], [_an72supportE] ]
 typesMHQ = [utMHQ0, utMHQ1]; typesHQ = []
 
 ; Units Type. These classifications are used for new orders and temporary orders as a category parameter.
@@ -1543,18 +1579,18 @@ typesMHQ = [utMHQ0, utMHQ1]; typesHQ = []
 typesTransportCar = TransportCarW + TransportCarE + TransportTruckW + TransportTruckE
 typesTransportShip = TransportShipE + TransportShipW + TransportZodiacW + TransportZodiacE
 typesTransportAPC = Transport6APCW + Transport6APCE + Transport8APCW + Transport8APCE
-typesTransportHeli = TransportHeliW + TransportHeliE + TransportSmallHeliW + TransportSmallHeliE
+typesTransportHeli = TransportHeliW + TransportHeliE + TransportirNOHeliW + TransportirNOHeliE
 typesSupportAPC = [ _supportAPCW, _supportAPCWminer, _supportAPCE, _supportAPCEminer ]
 typesBattleShip = (TransportShipE+TransportShipW) - ((typesSupport select 0)+(typesSupport select 1))
-typesHowitzer = [ _m109W, _plz05E ]
+typesHowitzer = [ _m109W, _plz05E, _m109artW, _plz05artE ]; typesRocketLauncher = [_m270W, _tos1E]
 typesHeavyTank = [ _m1a1W, _m1a2sepW, _leo2a6W, _t80E, _t90E, _ztz99E ]
 typesLightTank = [ _m60W, _t72E]
 typesATAPC = [ _m2a2at, _bmp2at ]
-typesAAAPC = [ _vulcanW2, _m2a2aa, _m113Cannon, _vulcanW, _shilkaE2, _bmp2aa, _bmp2Cannon, _shilkaE ]
+typesAAAPC = [ _vulcanW2, _m2a2aa, _vulcanTransp, _vulcanW, _tunguskaE, _bmp2aa, _bmp2Cannon, _shilkaE ]
 typesGunshipOrigin = [_ah1W, _ah64W, _v80E, _mi24E, _tigerW]
 typesGunshipAT = [_ah1W2, _ah64W2, _v80E2, _mi24E2, _tigerW2]
 typesKa50 = [ _v80E, _v80E2 ]
-typesPlane =[ _c130supportW, _a10gun, _a10LGB4, _a10bombs, _a10, _a10FFAR, _a10LGB8, _a10AA, _a10BB, _a10Tomahawk, _an12supportE, _su25gun, _su25LGB4, _su25bombs, _su25, _su25Rocket, _su25LGB8, _su25AA, _su25BB, _su25Raduga, _c130W, _an12E ]
+typesPlane =[ _c130supportW, _a10gun, _a10LGB4, _a10bombs, _a10, _a10FFAR, _a10LGB8, _a10AA, _a10BB, _a10Tomahawk, _an72supportE, _su25gun, _su25LGB4, _su25bombs, _su25, _su25Rocket, _su25LGB8, _su25AA, _su25BB, _su25Raduga, _c130W, _an72E ]
 typesGunPlane = [_a10gun, _su25gun]
 typesInfantryAll = [_soldierW, _MM1W, _soldierMGW, _sniperW, _MortarW, _M82A1W, _soldierLAWW, _soldierLAWW2, _soldierATW, _soldierATW2, _soldierAAW, _bomberW, _minerW, _medicW, _crewW, _pilotW, _soldierE, _6G30E, _soldierMGE, _sniperE, _MortarE, _KSVKE, _soldierLAWE, _soldierLAWE2, _soldierATE, _soldierATE2, _soldierAAE, _bomberE, _minerE, _medicE, _crewE, _pilotE]
 typesInfantryAT = [_soldierLAWW, _soldierLAWW2, _soldierATW, _soldierATW2, _soldierAAW, _soldierLAWE, _soldierLAWE2, _soldierATE, _soldierATE2, _soldierAAE]
@@ -1562,27 +1598,28 @@ typesInfantryAT = [_soldierLAWW, _soldierLAWW2, _soldierATW, _soldierATW2, _sold
 ; AIRCRAFTS WITH WEAPONS
 AggressiveAircrafts = [ [], [] ]
 AggressiveAircrafts set [ si0, [_uh60W30,_uh60WMG2, _uh60WL, _ah1W, _ah64W, _tigerW, _ah1W2, _ah64W2, _tigerW2, _a10gun,  _a10LGB4,  _a10bombs,  _a10,  _a10LGB8,  _a10AA,  _a10FFAR,	 _a10BB, _a10Tomahawk] ]
-AggressiveAircrafts set [ si1, [_mi17E30, _mi17EL, _v80E, _mi24E, _v80E2, _mi24E2, _su25gun, _su25LGB4, _su25bombs, _su25, _su25LGB8, _su25AA, _su25Rocket, _su25BB, _su25Raduga] ]
+AggressiveAircrafts set [ si1, [_mi17E30, _mi17EL, _mi17EMG2, _v80E, _mi24E, _v80E2, _mi24E2, _su25gun, _su25LGB4, _su25bombs, _su25, _su25LGB8, _su25AA, _su25Rocket, _su25BB, _su25Raduga] ]
 ; AA System
-AASystem = [ [_vulcanBaseW, _vulcanBaseW2], [_shilkaBaseE, _shilkaBaseE2] ]
+AASystem = [ [_vulcanBaseW, _vulcanBaseW2], [_shilkaBaseE, _tunguskaBaseE] ]
 
 ; VEHICLES WITH UNLIMITED/SPECIAL WEAPON RANGE
-vUnlimitedRange = [_m1a1artW, _m109artW, _t80artE, _plz05artE, _vulcanW2, _vulcanBaseW2, _shilkaE2, _shilkaBaseE2]
-vDoubledRange = [_vulcanW, _shilkaE, _m2a2aa, _bmp2aa, _m113Cannon, _bmp2Cannon, _boatW3, _boatE3, _vulcanBaseW, _shilkaBaseE]
+vUnlimitedRange = [_m1a1artW, _m109artW, _t80artE, _plz05artE, _vulcanW2, _vulcanBaseW2, _tunguskaE, _tunguskaBaseE]
+vDoubledRange = [_vulcanW, _shilkaE, _m2a2aa, _bmp2aa, _vulcanTransp, _bmp2Cannon, _boatW3, _boatE3, _vulcanBaseW, _shilkaBaseE]
 
 ; VEHICLES WITH LONGER REARM TIME
 vDoubleRearmTime = [_m1a1artW, _m109artW, _t80artE, _plz05artE, _ah1W, _ah1W2, _ah64W, _ah64W2, _tigerW, _tigerW2, _mi24E, _mi24E2, _a10, _a10FFAR, _a10LGB8, _su25, _su25Rocket, _su25LGB8]
 vTripleRearmTime = [_v80E, _v80E2, _a10BB, _su25BB]
 vSixfoldRearmTime = [_a10Tomahawk, _su25Raduga]
+vTenfoldRearmTime = [_m270W, _tos1E]
 
 ; VEHICLES CAN CAUSE MINE EXPLOSION
 vMinerAvoid = (typesSupportAPC + typesLightTank + typesHeavyTank + typesHowitzer + typesTransportAPC - typesAAAPC) + typesAAAPC + typesPlane + [_t80R, utMCVW, utMCVE, utMHQ0, utMHQ1]
 
 ; VEHICLES USED FOR EXTEND AIR RADAR
-vRadarAir = [ [_vulcanW, _vulcanW2, _vulcanBaseW, _vulcanBaseW2], [_shilkaE, _shilkaE2, _shilkaBaseE, _shilkaBaseE2] ]
+vRadarAir = [ [_vulcanW, _vulcanW2, _vulcanBaseW, _vulcanBaseW2], [_shilkaE, _tunguskaE, _shilkaBaseE, _tunguskaBaseE] ]
 
 ; VEHICLES Equipping RedTop
-vRedTop = [ [_vulcanW2, _vulcanBaseW2, _a10AA], [_shilkaE2, _shilkaBaseE2, _su25AA] ]
+vRedTop = [ [_vulcanW2, _vulcanBaseW2, _a10AA], [_tunguskaE, _tunguskaBaseE, _su25AA] ]
 
 
 utSoldier = [_soldierW, _soldierE]
@@ -1616,11 +1653,6 @@ _count = count unitDefs
 	_index = _index + 1
 	? (_index < _count): goto "AddEmptyUnitArray"
 
-
-; CLEANUP - mags, weapons and vehicles
-typesCleanup = ["WeaponHolder", "SecondaryWeaponHolder"]
-{ if ( count (_x select udCrew) > 0 ) then { typesCleanup set [count typesCleanup, _x select udModel] } } foreach unitDefs
-
 ; TOWN GROUP VEHICLES
 TownGroupVehicles = []
 
@@ -1629,11 +1661,64 @@ RadioTypesCustomCarShips = [_hummerW2, _brdmE2, _hummerW3, _brdmE3, _boatCustomW
 RadioTypesArtUnits = [_m1a1artW, _m109artW, _t80artE, _plz05artE]
 RadioTypesShips = TransportShipW + TransportShipE
 RadioTypesSupport = (typesSupportPlus select 0) + (typesSupportPlus select 1)
-RadioTypesTransportPlane = [ _c130supportW, _an12supportE, _c130W, _an12E ]
+RadioTypesTransportPlane = [ _c130supportW, _an72supportE, _c130W, _an72E ]
 RadioTypesPlane = typesPlane - RadioTypesTransportPlane
-RadioTypesTransportHeli = TransportHeliW + TransportHeliE + TransportSmallHeliW + TransportSmallHeliE
+RadioTypesTransportHeli = TransportHeliW + TransportHeliE + TransportirNOHeliW + TransportirNOHeliE
 RadioTypesGunships = typesGunshipOrigin + typesGunshipAT
 
-? boole_Infantry_Mode: [] exec "Common\Init\InfantryMode.sqs"; exit
+? boole_Infantry_Mode: [] exec "Common\Init\InfantryMode.sqs"
+? bool_ExtentArmor_Mode: _i = 0, _names = ["M1A1_TZK_Gun_ExtentArmor_xj400", "M1A2_TZK_Gun_ExtentArmor_xj400", "Leo2A6_Gun_ExtentArmor_xj400", "T80_TZK_Gun_ExtentArmor_xj400", "T90ms_Gun_ExtentArmor_xj400", "ZTZ99_Gun_ExtentArmor_xj400"], {_model = unitDefs select _x select udModel, _j = unitTypeArray find _model, unitTypeArray set [_j, _names select _i], unitDefs select _x set [udModel, _names select _i], _i = _i + 1} forEach typesHeavyTank
+
+? bool_TZK_Vanilla_Mode: goto "VanillaMode"
+goto "SkipVanilla"
+#VanillaMode
+; need action to take place of UA
+; SVU-A weapon, hyplerlauncher, and other equipments in "Equip" series.
+; remove units from addons including "cwkzodiac", "GST_KawaP", "RKTMod".
+
+{ unitDefs select _x set [udFactoryType, -1] } forEach [_soldierGLW, _soldierGLE, _MortarW, _MortarE, _M82A1W, _KSVKE, _quadW, _quadE, _hummerW2, _hummerW3, _brdmE2, _brdmE3, _jetskiW, _jetskiE, _zodiacW, _zodiacE, _boatW2, _boatE2, _vulcanTransp, _bmp2Cannon,  _m1a2sepW, _leo2a6W, _m109W, _m270W, _t90E, _ztz99E, _plz05E, _tos1E,  _irNO_mh6, _irNO_uh60, _uh60WMG2, _c130W, _tigerW, _tigerW2, _c130supportW, _irNO_mi2, _irNO_mi17, _mi17EMG2, _an72E, _an72supportE]
+
+_i = 0; {_desc = _x, if (count (_desc select udCrew) == 0) Then {_str = _desc select udModel, _size = sizeofstr _str, if (substr [_str, _size - 6, _size] == "_xj400") Then {_str = substr [_str, 0, _size - 6]}, _desc set [udModel, _str]; unitTypeArray set [_i, _str]}, _i = _i + 1 } forEach unitDefs
+{_desc = unitDefs select _x, _str = _desc select udModel, _size = sizeofstr _str, if (substr [_str, _size - 6, _size] == "_xj400") Then {_str = substr [_str, 0, _size - 6] + "_Vanilla" + "_xj400"}, _desc set [udModel, _str]; unitTypeArray set [_x, _str] } forEach ([_jeepW, jeepaW, _hummerW, _truckW, _supportTruckW, _supportTruckW2, _supportAPCW, _supportAPCWminer, _m113W, _m2a2W, _m2a2d, _m2a2at, _m2a2aa, utMCVW, utMHQ0, _uazE, uazaE, _brdmE, _truckE, _supportTruckE, _supportTruckE2, _supportAPCE, _supportAPCEminer, _bmpE, _bmp2E, _bmp2d, _bmp2at, _bmp2Cannon, _bmp2aa, utMCVE, utMHQ1] + typesPlane)
+
+; {unitDefs select _x set [udModel, "Bradley"]; unitTypeArray set [_x, "Bradley"]} forEach [_m2a2W, _m2a2d, _m2a2at, _m2a2aa,  _m2a2townat, _m2a2townaad]
+; {unitDefs select _x set [udModel, "BMP2"]; unitTypeArray set [_x, "BMP2"]} forEach [_bmp2E, _bmp2d, _bmp2at, _bmp2aa,  _bmp2townat, _bmp2townaad]
+
+unitDefs select _m60W set [udCost, (unitDefs select _m60W select udCost)/2]
+{unitDefs select _x set [udCost, (unitDefs select _x select udCost)*4/5]; unitDefs select _x set [udModel, "M1Abrams"]; unitTypeArray set [_x, "M1Abrams"]} forEach [_m1a1W, _m1a1artW,  _m1a1townW]
+unitDefs select _t72E set [udCost, (unitDefs select _t72E select udCost)*3/4]
+{unitDefs select _x set [udCost, (unitDefs select _x select udCost)/2]; unitDefs select _x set [udModel, "T80"]; unitTypeArray set [_x, "T80"]} forEach [_t80E, _t80artE,  _t80townE]
+unitDefs select _t80R set [udModel, "T80Res"]; unitTypeArray set [_t80R, "T80Res"]
+{unitDefs select _x set [udModel, "Vulcan"]; unitTypeArray set [_x, "Vulcan"]} forEach [_vulcanBaseW, _vulcanBaseW2, _vulcanW, _vulcanW2]
+{unitDefs select _x set [udModel, "ZSU"]; unitTypeArray set [_x, "ZSU"]} forEach [_shilkaBaseE, _tunguskaBaseE, _shilkaE, _tunguskaE]
+unitDefs select _tunguskaE set [udName, "4xAA"]; unitDefs select _tunguskaE set [udImage, "izsu"]
+
+unitDefs select _ah1W set [udModel, "AH1_xj400"]; unitTypeArray set [_ah1W, "AH1_xj400"]; unitDefs select _ah1W set [udName, "AH1"]; unitDefs select _ah1W set [udImage, "icobra"]
+unitDefs select _ah1W2 set [udModel, "AH1_AT_xj400"]; unitTypeArray set [_ah1W2, "AH1_AT_xj400"]; unitDefs select _ah1W2 set [udName, "AH1 AT"]; unitDefs select _ah1W2 set [udImage, "icobra"]
+unitDefs select _ah64W set [udModel, "AH64_xj400"]; unitTypeArray set [_ah64W, "AH64_xj400"]
+unitDefs select _ah64W2 set [udModel, "AH64_AT_xj400"]; unitTypeArray set [_ah64W2, "AH64_AT_xj400"]
+unitDefs select _ah64townW2 set [udModel, "AH64_xj400"]; unitTypeArray set [_ah64townW2, "AH64_xj400"]
+unitDefs select _v80E set [udModel, "Ka50_xj400"]; unitTypeArray set [_v80E, "Ka50_xj400"]; unitDefs select _v80E set [udImage, "\TZK_Objects\CTI_Image\Veh\ka50.paa"]
+unitDefs select _v80E2 set [udModel, "Ka50_AT_xj400"]; unitTypeArray set [_v80E2, "Ka50_AT_xj400"]; unitDefs select _v80E2 set [udImage, "\TZK_Objects\CTI_Image\Veh\ka50.paa"]
+unitDefs select _mi24E set [udModel, "Mi24_xj400"]; unitTypeArray set [_mi24E, "Mi24_xj400"]; unitDefs select _mi24E set [udImage, "imi24"]
+unitDefs select _mi24E2 set [udModel, "Mi24_AT_xj400"]; unitTypeArray set [_mi24E2, "Mi24_AT_xj400"]; unitDefs select _mi24E2 set [udImage, "imi24"]
+unitDefs select _mi24townE2 set [udModel, "Mi24_xj400"]; unitTypeArray set [_mi24townE2, "Mi24_xj400"]; unitDefs select _mi24townE2 set [udImage, "imi24"]
+{unitDefs select _x set [udModel, "Mi17_Vanilla_xj400"]; unitTypeArray set [_x, "Mi17_Vanilla_xj400"]} forEach [_mi17E, _mi17supE]
+{unitDefs select _x set [udModel, "UH60_Vanilla_xj400"]; unitTypeArray set [_x, "UH60_Vanilla_xj400"]} forEach [_uh60W, _uh60supW]
+unitDefs select _mi17E30 set [udModel, "Mi17_MG_Vanilla_xj400"]; unitTypeArray set [_mi17E30, "Mi17_MG_Vanilla_xj400"]
+unitDefs select _uh60W30 set [udModel, "UH60_MG_Vanilla_xj400"]; unitTypeArray set [_uh60W30, "UH60_MG_Vanilla_xj400"]
+unitDefs select _mi17EL set [udModel, "Mi17_LGB_Vanilla_xj400"]; unitTypeArray set [_mi17EL, "Mi17_LGB_Vanilla_xj400"]
+unitDefs select _uh60WL set [udModel, "UH60_LGB_Vanilla_xj400"]; unitTypeArray set [_uh60WL, "UH60_LGB_Vanilla_xj400"]
+
+{unitDefs select _x set [udModel, "Su25_xj400"]; unitTypeArray set [_x, "Su25_xj400"]} forEach [_planeatR, _planeatR2]
+
+
+
+#SkipVanilla
+
+
+; CLEANUP - mags, weapons and vehicles. (Added by TZK_4.0.0) Should be placed in the bottom of file.
+typesCleanup = ["WeaponHolder", "SecondaryWeaponHolder"]
+{ if ( count (_x select udCrew) > 0 ) then { typesCleanup set [count typesCleanup, _x select udModel] } } forEach unitDefs
 
 ; EOF

@@ -4,16 +4,16 @@ _type = _this select 1
 _si = _this select 2
 _object = _this select 0
 
-; Check Mortar. Fired_EH will limit the range, provide the marker and correct mortar's speed when player in gunner.
-? "PackMortar_Base_v2_xj200" countType [_object] > 0: _object addEventHandler ["Fired", "[_this, 1] call funcFiredMortar"]; exit
+; Artillery Detecting 
+? !isServer && _type in (structsOccupiableArtHowitzer + structsOccupiableHowitzer + structsOccupiableMortar): _object addEventHandler ["Fired", format [{ [_this select 0, nearestObject[_this select 0, _this select 4], %1 ] exec "Common\EH\TrackShell.sqs" }, _si]]
 
-; Check M46. Treat it as common vehicle
-? "M46_W_v2_xj200" countType [_object] == 0 : goto "SkipM46"
-_limitWeaponRangeFactor = 1
-? "M46_W_Art_v2_xj200" countType [_object] > 0 : _limitWeaponRangeFactor = 0
-_object addEventHandler ["Fired",{[_this, 0] call funcFiredEffect}]; exit
+? _type in structsOccupiableArtHowitzer: _object addEventHandler ["Fired",{[_this, 0] call funcFiredEffect}]; exit
+? _type in structsOccupiableHowitzer + structsOccupiableMortar: _object addEventHandler ["Fired",{[_this, 1] call funcFiredEffect; _this exec "Player\ImpactPointMarker.sqs"}]; exit
 
-#SkipM46
+_object addEventHandler ["Fired",{[_this, 1] call funcFiredEffect}]
 exit
+
+; Check Mortar. Fired_EH will limit the range, provide the marker and correct mortar's speed when player in gunner.
+; ? "PackMortar_Base_xj400" countType [_object] > 0: _object addEventHandler ["Fired", "[_this, 1] call funcFiredMortar"]; exit
 
 ; EOF

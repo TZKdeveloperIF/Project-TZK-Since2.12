@@ -42,6 +42,7 @@ while "_i<_c" do
 
 	_i=_i+1;
 };
+[_objects, _type] exec "Server\ResetStructureUp.sqs";
 // if( dev && !isNull player) then{ player globalChat format["%1 - %2",_objects, _type] };
 
 [_si, _type, _objects select 0] exec "Server\AddToStructMatrix.sqs";

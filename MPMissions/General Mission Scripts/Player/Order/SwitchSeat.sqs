@@ -1,0 +1,48 @@
+; args: [unit, pos, indexes [Seat Name]]
+
+_unit = _this select 0
+_pos = _this select 1
+_seat = ["Driver", "Gunner", "Cargo"] select (_this select 2 select 0)
+
+_vehicle = vehicle _unit
+? _unit == _vehicle: exit
+? !local _vehicle: exit
+
+? _seat != "Cargo": goto "SwitchNotCargo"
+_volume = _vehicle call funcGetTranspVol
+? (_vehicle call funcGetCargoNum) >= _volume: exit
+_target = objNull; goto "StartSwitch"
+
+#SwitchNotCargo
+? _unit == (call format ["%1 _vehicle", _seat]): exit
+? 1 != call format ["%1", typeOf _vehicle GetVehicleParam format ["has%1", _seat]]: exit
+_target = (call format ["%1 _vehicle", _seat])
+? !isNull _target && !local _target: exit
+
+#StartSwitch
+_oldSeat = "Cargo"
+? _unit == driver _vehicle: _oldSeat = "Driver"
+? _unit == gunner _vehicle: _oldSeat = "Gunner"
+? _unit == commander _vehicle: _oldSeat = "Commander"
+
+; Necessary Delay. Other members in the group might receive same order as well. Wait for their scripts exit.
+~0.5
+
+@!mutexSwitchSeat
+mutexSwitchSeat = true
+
+? _seat == "Cargo": if ((_vehicle call funcGetCargoNum) >= _volume) then {mutexSwitchSeat = false; exit}
+
+; unassignVehicle _unit; _unit setPosASL getPosASL _vehicle
+; ? !isNull _target: unassignVehicle _target; _target setPosASL getPosASL _vehicle
+unassignVehicle _unit; _unit action ["EJECT", _vehicle]
+? !isNull _target: unassignVehicle _target; _target action ["EJECT", _vehicle]
+@(_unit == vehicle _unit)
+@(!isNull _target && _target == vehicle _target || isNull _target)
+call format ["_unit assignAs%1 _vehicle; _unit moveIn%1 _vehicle", _seat]
+? !isNull _target: call format ["_target assignAs%1 _vehicle; _target moveIn%1 _vehicle", _oldSeat]
+
+mutexSwitchSeat = false; exit
+_unit groupChat format ["Switch succeed to %1 seat.", _seat]
+
+; EOF

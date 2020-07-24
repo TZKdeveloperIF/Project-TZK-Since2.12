@@ -9,7 +9,7 @@ while "_i < _ci" do {
 		_unit = _vehicles select _j;
 		_rearmData = _unit call funcGetRearmData; _w = _rearmData select 0; _m = _rearmData select 1;
 		_mDouble = [];
-		{if (_x in ["RedTop_26_xj200","RedTop_30_xj200","RedTop_40_xj200"]) then {_mDouble set [count _mDouble, _x]}} forEach _m;
+		{if (_x in ["RedTop_26_xj400","RedTop_30_xj400","RedTop_40_xj400", "9M311_26_xj400","9M311_30_xj400","9M311_40_xj400"]) then {_mDouble set [count _mDouble, _x]}} forEach _m;
 		_m = _m + _mDouble;
 		[_unit, _w, _m, _types select _i, 2, true] exec "Common\EditEquipRearmData.sqs";
 		

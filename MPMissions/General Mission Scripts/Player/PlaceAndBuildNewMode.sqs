@@ -41,14 +41,14 @@ _count = count _parts
 	_posPartX = (_posStruct select 0) + (_posPartRel select 0)*(cos _dirUnit) + (_posPartRel select 1)*(sin _dirUnit)
 	_posPartY = (_posStruct select 1) + (_posPartRel select 1)*(cos _dirUnit) - (_posPartRel select 0)*(sin _dirUnit)
 	_posPart = [ _posPartX, _posPartY, (_posStruct select 2) + (_posPartRel select 2) ]
-	_dirPart = (_dirUnit + (_part select 1)) % 360
+	_dirPart = (_dirUnit + (_part select 1)) % 360; _upPart = _posPart call funcVectorUp
 	
-	;_object = (_part select 0) createVehicle _posPart
-	_object = (_part select 0) camCreate _posPart
-	_object setDir _dirPart
-	_object setPos _posPart
+	;_obj = (_part select 0) createVehicle _posPart
+	_obj = (_part select 0) camCreate _posPart
+	_obj setDir _dirPart; _obj setVectorUp _upPart
+	_obj setPos _posPart
 
-	_objects set [count _objects, _object]
+	_objects set [count _objects, _obj]
 
 	_index = _index + 1
 	? (_index < _count): goto "CreatePart"
@@ -101,13 +101,13 @@ _count = count _parts
 		_posPartX = (_posStruct select 0) + (_posPartRel select 0)*(cos _dirStruct) + (_posPartRel select 1)*(sin _dirStruct)
 		_posPartY = (_posStruct select 1) + (_posPartRel select 1)*(cos _dirStruct) - (_posPartRel select 0)*(sin _dirStruct)
 		_posPart = [ _posPartX, _posPartY, (_posStruct select 2) + (_posPartRel select 2) ]
-		_dirPart = (_dirStruct + (_part select 1)) % 360
+		_dirPart = (_dirStruct + (_part select 1)) % 360; _upPart = _posPart call funcVectorUp
 		
 		; ? (_index == 1): player globalchat format ["_posPart=%1", _posPart]
 		
-		_object = _objects select _index
-		_object setDir _dirPart
-		_object setPos _posPart
+		_obj = _objects select _index
+		_obj setDir _dirPart; _obj setVectorUp _upPart
+		_obj setPos _posPart
 
 		_index = _index + 1
 		? (_index < _count): goto "SetPartPosDir"

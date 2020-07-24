@@ -14,15 +14,15 @@ _si = _value/(100*3)
 
 (upgMatrix select _si) set [_upg, _state]
 
-? (siPlayer == siCiv && _state == 2): format["%1 upgraded %2.", sideNames select _si, (upgDefs select _upg) select 0] exec "Player\LogSpectator.sqs"
+? (siPlayer == siCiv && _state == 2): format["%1 upgraded %2.", sideNames select _si, (upgDefs select _upg select 0) call funcLocStr] exec "Player\LogSpectator.sqs"
 
 ? (_si != siPlayer): Exit
 
-? (_state == 1): player sidechat format ["Upgrade Started: %1", (upgDefs select _upg) select 0]
-? (_state == 2): player sidechat format ["Upgrade Complete: %1", (upgDefs select _upg) select 0]
+? (_state == 1): player sidechat format ["Upgrade Started: %1", (upgDefs select _upg select 0) call funcLocStr]
+? (_state == 2): player sidechat format ["Upgrade Complete: %1", (upgDefs select _upg select 0) call funcLocStr]
 
 
-? upgCCdistance == _upg && _state == 2 : distMaxCC = distMaxCCUpgraded
+? upgCCdistance == _upg && _state == 2 : CCdistMax set [_si, distMaxCCUpgraded]
 
 ? upgGunshipRocket == _upg && _state == 2 && !isServer : [_si, _upg, "HeliRocket"] exec "Common\ReEquip\ReEquip.sqs"
 

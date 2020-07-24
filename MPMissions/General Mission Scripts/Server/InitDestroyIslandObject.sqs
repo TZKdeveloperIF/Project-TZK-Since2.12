@@ -1,0 +1,13 @@
+; args: objects' id array ([start index 1, end index 1, ..., start index n, end index n])
+? !isServer: exit
+
+_i = 0; _c = count _this
+#Loop1
+	? _i + 2 > _c: exit
+	_a = _this select _i; _b = _this select _i + 1; _j = 0
+	#Loop2
+		object (_a + _j) setDammage 1
+		_j = _j + 1
+		? _a + _j <= _b: goto "Loop2"
+	_i = _i + 2
+	goto "Loop1"

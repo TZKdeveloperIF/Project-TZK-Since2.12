@@ -33,13 +33,12 @@ blockTime = 60
 costRespawn = 0
 factorRepairCost = 0.1
 factorRepairTime = 0.02
-distMaxCC = 200
-distMaxCCUpgraded = 10000
+distMaxCC = 200; distMaxCCUpgraded = 10000; CCdistMax = [distMaxCC, distMaxCC]
 iInitNew = 99
 bShowGroups = false
 bShowInfo = false
 bShowMap = false
-SpoofMagazines = ["SpoofSwitch_xj200", "SpoofCount_xj200", "SpoofCount_xj200", "SpoofCount_xj200", "SpoofCount_xj200", "SpoofCount_xj200", "SpoofCount_xj200", "SpoofCount_xj200", "SpoofCount_xj200"]
+SpoofMagazines = ["SpoofSwitch_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400"]
 positionAttach = [-1000, -1000, 100]; positionRespawn = [-1000, -1000, 10]
 
 callsigns = ["Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel", "Kilo", "November", "Yankee", "Zulu", "Two", "Three", "Buffalo", "Guardian", "Convoy", "Fox" ]
@@ -101,38 +100,37 @@ upgTownGroupb = _type; 			upgDefs set [_type, ["Town Groups Armor", [15000, 100]
 
 upgTownGroupH = _type; 			upgDefs set [_type, ["Town Armors Heavy", [60000 + 5000*restanksx, 100] select dev, [5, 0] select dev]]; _type=_type+1
 
-upgRadarArtillery = _type; 		upgDefs set [_type, ["Artillery Radar", [5000, 100] select dev, [2, 0] select dev]]; _type=_type+1
+upgRadarArtillery = _type; 		upgDefs set [_type, ["$STR_TZK_Upg_ArtilleryRadar", [5000, 100] select dev, [2, 0] select dev]]; _type=_type+1
 
-upgLongWeaponRange = _type; 	upgDefs set [_type, [format["%1m Range Weapons", 2*viewDistance], [30000, 100] select dev, [3, 0] select dev]]; _type=_type+1
+upgLongWeaponRange = _type; 	upgDefs set [_type, ["$STR_TZK_Upg_WeaponRange", [30000, 100] select dev, [3, 0] select dev]]; _type=_type+1
 
-; upgCCdistance = _type; 		upgDefs set [_type, [format[ "%1m CC range ", distMaxCCUpgraded ], [20000, 100] select dev, [3, 0] select dev]]; _type=_type+1
-upgCCdistance = _type; 			upgDefs set [_type, ["10000m CC Range", [20000, 100] select dev, [3, 0] select dev]]; _type=_type+1
+upgCCdistance = _type; 			upgDefs set [_type, ["$STR_TZK_Upg_CCRange", [20000, 100] select dev, [3, 0] select dev]]; _type=_type+1
 
-upgNumBuildings = _type; 		upgDefs set [_type, ["More Buildings", [20000, 100] select dev, [3, 0] select dev]]; _type=_type+1
+upgNumBuildings = _type; 		upgDefs set [_type, ["$STR_TZK_Upg_MoreBuilding", [20000, 100] select dev, [3, 0] select dev]]; _type=_type+1
 
-upgSatCam = _type; 				upgDefs set [_type, ["Satellite Camera", [35000, 100] select dev, [5, 0] select dev]]; _type=_type+1
+upgSatCam = _type; 				upgDefs set [_type, ["$STR_TZK_Upg_Satellite", [35000, 100] select dev, [5, 0] select dev]]; _type=_type+1
 
-upgSatCamZoom = _type; 			upgDefs set [_type, ["Satellite Camera Zoom", [20000, 100] select dev, [1, 0] select dev]]; _type=_type+1
+upgSatCamZoom = _type; 			upgDefs set [_type, ["$STR_TZK_Upg_SatZoom", [20000, 100] select dev, [1, 0] select dev]]; _type=_type+1
 
-upgSpySat = _type; 				upgDefs set [_type, ["Spy Satellite", [95000, 100] select dev, [6, 0] select dev]]; _type=_type+1
+upgSpySat = _type; 				upgDefs set [_type, ["$STR_TZK_Upg_SpySate", [95000, 100] select dev, [6, 0] select dev]]; _type=_type+1
 
-upgTraceSpecialShell = _type; 	upgDefs set [_type, ["Trace Special Shell", [10000, 100] select dev, [2, 0] select dev]]; _type=_type+1
+upgTraceSpecialShell = _type; 	upgDefs set [_type, ["$STR_TZK_Upg_TraceShell", [10000, 100] select dev, [2, 0] select dev]]; _type=_type+1
 
-upgWorkers = _type; 			upgDefs set [_type, ["Upgrade Workers", [5000, 100] select dev, [2, 0] select dev]]; _type=_type+1
+upgWorkers = _type; 			upgDefs set [_type, ["$STR_TZK_Upg_Worker", [5000, 100] select dev, [2, 0] select dev]]; _type=_type+1
 
-upgGunshipRocket = _type; 		upgDefs set [_type, ["Helicopter Rockets", [25000, 100] select dev, [3, 0] select dev]]; _type=_type+1
+upgGunshipRocket = _type; 		upgDefs set [_type, ["$STR_TZK_Upg_HeliRocket", [25000, 100] select dev, [3, 0] select dev]]; _type=_type+1
 
-upgPlaneAfterBurner = _type; 	upgDefs set [_type, ["Plane After Burner", [20000, 100] select dev, [3, 0] select dev]]; _type=_type+1
+upgPlaneAfterBurner = _type; 	upgDefs set [_type, ["$STR_TZK_Upg_AfterBurner", [20000, 100] select dev, [3, 0] select dev]]; _type=_type+1
 
-upgSpoofMissile = _type; 		upgDefs set [_type, ["Aircraft Spoof Missile", [20000, 100] select dev, [3, 0] select dev]]; _type=_type+1
+upgSpoofMissile = _type; 		upgDefs set [_type, ["$STR_TZK_Upg_SpoofMissile", [20000, 100] select dev, [3, 0] select dev]]; _type=_type+1
 
-upgAltFlight = _type; 			upgDefs set [_type, ["1500m Flight Altitude", [30000, 100] select dev, [3, 0] select dev]]; _type=_type+1
+upgAltFlight = _type; 			upgDefs set [_type, ["$STR_TZK_Upg_FlightAlt", [30000, 100] select dev, [3, 0] select dev]]; _type=_type+1
 
-upgVehicleAirRadar = _type; 	upgDefs set [_type, ["Vulcan/Shilka AirRadar", [8000, 100] select dev, [2, 0] select dev]]; _type=_type+1
+upgVehicleAirRadar = _type; 	upgDefs set [_type, ["$STR_TZK_Upg_AAAirRadar", [8000, 100] select dev, [2, 0] select dev]]; _type=_type+1
 
-upgRedTopRange = _type; 		upgDefs set [_type, ["4xAA 4000m Missile", [8000, 100] select dev, [2, 0] select dev]]; _type=_type+1
+upgRedTopRange = _type; 		upgDefs set [_type, ["$STR_TZK_Upg_4000mMissile", [8000, 100] select dev, [2, 0] select dev]]; _type=_type+1
 
-upgRedTopMagazines = _type; 	upgDefs set [_type, ["4xAA 2x Magazines", [8000, 100] select dev, [2, 0] select dev]]; _type=_type+1
+upgRedTopMagazines = _type; 	upgDefs set [_type, ["$STR_TZK_Upg_2xMagazines", [8000, 100] select dev, [2, 0] select dev]]; _type=_type+1
 
 
 ; upgMatrix entry format: 0=not begun, 1=in progress, 2=upgraded
@@ -217,6 +215,7 @@ groupCommander set [_si, (groupMatrix select _si) select 0]
 	? _i < _c : goto "InitSide1Groups"
 #Side1Empty
 InitStructureReady = false
+[] exec "Common\Init\TheWorld.sqs"
 
 _initUnitTypes = "Common\InitUnitTypes.sqs"; _initStructureTypes = "Common\InitStructureTypes.sqs"
 ; ? _boole_Infantry_Mode : _initUnitTypes = "Common\InitUnitTypes_Infantry_Mode.sqs"; _initStructureTypes = "Common\InitStructureTypes_Infantry_Mode.sqs"
@@ -239,8 +238,7 @@ tdSide = 3
 [] exec "Common\InitAIOptions.sqs"
 
 ; WAYPOINTS
-countWPPlayer = 10
-countWPCO = 20
+countWPPlayer = 10; countWPCO = 20; countTargetMarkers = 10
 wpCO = [[],[]]
 _i = 0; while "_i < countWPCO" do { (wpCO select si0) set [_i, [-1,-1]]; _i = _i + 1 } 
 _i = 0; while "_i < countWPCO" do { (wpCO select si1) set [_i, [-1,-1]]; _i = _i + 1 }
@@ -281,7 +279,10 @@ vehicleTuggedServer = []; vehicleTugServer = []
 [] exec "Common\MsgLock.sqs"
 [] exec "Common\MsgUnlock.sqs"
 [] exec "Common\MsgVehicleMagsRemove.sqs"
-[] exec "Common\MsgVehicleMagsAdd.sqs"
+
+{ [] exec format ["Common\Msg\mRearmVehGeneral%1.sqs", _x] } forEach [0,1,2,3,4]
+
+
 [] exec "Common\MsgEjectUnit.sqs"
 [] exec "Common\MsgFuelVehicle.sqs"
 [] exec "Common\MsgTransportTurnOn.sqs"

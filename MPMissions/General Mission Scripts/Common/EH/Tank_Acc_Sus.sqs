@@ -1,0 +1,27 @@
+; args: [vehicle, animations[]]
+
+_vehicle = _this select 0
+_animations = _this select 1
+
+? !local _vehicle: exit
+
+_speedOld = 0
+#check
+	_speedNow = speed _vehicle
+	? (_speedNow < 0.6 && _speedNow > -0.6) : goto "break"
+	_factor = (_speedNow - _speedOld)/9
+	{_vehicle animate [_x, 0.5 + _factor]} forEach _animations
+	~0.1
+	_speedOld = _speedNow
+	goto "check"
+#break 
+	{_vehicle animate [_x, 0.5]} forEach _animations
+	? !isEngineOn _vehicle : goto "end"
+	_speedOld = 0
+	?(speed _vehicle > 0.6 || speed _vehicle < -0.6): goto "check"
+	~0.1
+	goto "break"
+
+#end
+
+exit

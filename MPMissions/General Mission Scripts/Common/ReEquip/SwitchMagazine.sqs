@@ -1,0 +1,13 @@
+; args: [vehicle, oldMag, newMag]
+_vehicle = _this select 0
+? !local _vehicle: exit
+
+_oldMag = _this select 1; _newMag = _this select 2
+
+_magazinesArray = magazinesArray _vehicle; _i = 0; _c = count _magazinesArray; _ammunition = []
+while "_i < _c" do {if (_oldMag == _magazinesArray select _i) then {_ammunition set [count _ammunition, _magazinesArray select _i + 1]}; _i = _i + 2}
+
+_vehicle removeMagazines _oldMag
+{ if (_x > 0) then {_vehicle addMagazinePrecise [_newMag, _x]} } forEach _ammunition
+
+; EOF

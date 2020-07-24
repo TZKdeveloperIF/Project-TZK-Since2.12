@@ -15,17 +15,19 @@ _unit = player
 #PlayerEnteredVehicle
 	_vehicle = vehicle _unit
 	? _vehicle in TownGroupVehicles : (vehicle _unit) setdamage 1; hint "Big brother is watching you."
-	_ehTrack = _vehicle addEventHandler ["Fired",{ [_this select 0, nearestObject[_this select 0, _this select 4] ] exec "Player\TrackShell.sqs" }]
+	_boolTrack = true; _type1 = _vehicle call funcGetUnitTypeFromObject; _type2 = _vehicle call funcGetStructTypeFromObject
+	? _type1 in (typesHowitzer + typesRocketLauncher + RadioTypesArtUnits) || _type2 in (structsOccupiableArtHowitzer + structsOccupiableHowitzer + structsOccupiableMortar): _boolTrack = false
+	? _boolTrack: _ehTrack = _vehicle addEventHandler ["Fired", format[ {[_this select 0, nearestObject[_this select 0, _this select 4], %1] exec "Common\EH\TrackShell.sqs"}, siPlayer]]
 	; _ehLimit = _vehicle addEventHandler ...
 	
 	[_vehicle] exec "Player\Radio\Radio_Update_Vehicle.sqs"
-	? "T80_TZK_Base_xj200" countType [_vehicle] > 0 || "T80Res_TZK_xj200" countType [_vehicle] > 0: _t80 = _vehicle; [_t80, false] exec {Player\Effect\T80DrumDisplaySwitch.sqs}
+	? "T80_TZK_xj400" countType [_vehicle] > 0 || "T80Res_TZK_xj400" countType [_vehicle] > 0: _t80 = _vehicle; [_t80, false] exec {Player\Effect\T80DrumDisplaySwitch.sqs}
 	
 	@ !(alive _unit) || (_unit == vehicle _unit)
 
 	unassignVehicle _unit
 	; _vehicle removeEventHandler ["Fired", _ehLimit]
-	_vehicle removeEventHandler ["Fired", _ehTrack]
+	? _boolTrack: _vehicle removeEventHandler ["Fired", _ehTrack]
 	_vehicle = objNull
 	bTrackBullet = false
 	? !(alive _unit): goto "PlayerDead"

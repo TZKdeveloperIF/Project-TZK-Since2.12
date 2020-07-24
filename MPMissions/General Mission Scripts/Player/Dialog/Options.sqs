@@ -79,8 +79,8 @@ _currentAiRespawn = _res select 0; _respawnObjects = _res select 1
 _money = _groupsMoney select giPlayer
 _groupCommander = (groupCommander select siPlayer)
 ; DISABLE stuff for NON-commanders
-_isCommander = groupPlayer == _groupCommander
-ctrlEnable [_idcAIRespawn, _isCommander]; ctrlEnable [_idcIncomeRatio, _isCommander]; ctrlEnable [_idcIncomeRatioPlayer, _isCommander]; ctrlShow [_idcUpgradeStart, _isCommander]; ctrlEnable [_idcTransferCommandGroup, _isCommander]; ctrlShow [_idcTransferCommand, _isCommander]; ctrlEnable [_idcWorkerBehaviour, _isCommander]; ctrlShow [_idcDestruction, _isCommander]; ctrlShow [_idcGiveMoneyToAI, _isCommander]; ctrlShow [_idcGiveMoneyToALL, _isCommander]; ctrlShow [_idcTakeMoney, _isCommander]
+_isCommander = groupPlayer == _groupCommander; _isAIcommander = _groupCommander in _groupsAI
+ctrlEnable [_idcAIRespawn, _isCommander]; ctrlEnable [_idcIncomeRatio, _isCommander]; ctrlEnable [_idcIncomeRatioPlayer, _isCommander]; ctrlShow [_idcUpgradeStart, _isCommander || _isAIcommander]; ctrlEnable [_idcTransferCommandGroup, _isCommander]; ctrlShow [_idcTransferCommand, _isCommander]; ctrlEnable [_idcWorkerBehaviour, _isCommander]; ctrlShow [_idcDestruction, _isCommander]; ctrlShow [_idcGiveMoneyToAI, _isCommander]; ctrlShow [_idcGiveMoneyToALL, _isCommander]; ctrlShow [_idcTakeMoney, _isCommander]
 ? !_isCommander : _gis = ([siPlayer] call funcGetAIGroupsIndex); _Superior = _gis call funcCheckWhetherSuperior; if (_Superior && lbCurSel _idcTransferGroup != -1) then {ctrlShow [_idcTakeMoney, ( ( (["Commander"] + callsigns) select ( ( (aiSetting select siPlayer) select lbCurSel _idcTransferGroup ) select aisSuperior ) ) == _groupsName select giPlayer) || ( (_groups select (lbCurSel _idcTransferGroup)) == _groupCommander )]}
 
 ctrlShow [_idcNumberedAI, bNumberedAI]

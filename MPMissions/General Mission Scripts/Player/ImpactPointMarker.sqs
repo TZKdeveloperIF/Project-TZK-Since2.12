@@ -2,23 +2,25 @@
 ; The number of ImpactPoint is 5, which is defined in Mission.sqm. If Editors wish to change it be aware not to forget to adjust anyone of them.
 
 _vehicle = _this select 0
-? isNull player : exit
-? !((gunner _vehicle) in (units group player)) && !local _vehicle : exit
-? ((upgMatrix select siPlayer) select upgTraceSpecialShell) != 2 : exit
-? (0 == count ([siPlayer, stradar] call funcGetWorkingStructures)) : exit
+? isNull player: exit
+? !((gunner _vehicle) in (units group player)) && !local _vehicle: exit
+; If the server is created by a player (namely not dedicated), this script will work for all server-local tanks including AI group vehicles.
+
+? ((upgMatrix select siPlayer) select upgTraceSpecialShell) != 2: exit
+? (0 == count ([siPlayer, stradar] call funcGetWorkingStructures)): exit
 _bullet = nearestobject [_this select 0,_this select 4]
-? !local _bullet : exit
+? !local _bullet: exit
 
 #loop
-_pos = getPos _bullet
+_pos = getPosASL _bullet
 ~0.01
-? !isNull _bullet : goto "loop"
+? !isNull _bullet: goto "loop"
 
-
+_distH = [getPosASL _vehicle, _pos] call funcDistH; _distH = _distH - _distH mod 1
 _marker = objNull
-call format ["_marker = {ImpactPoint_%1}; _marker setMarkerPos _pos", ImpactPointIndex]
+call format ["_marker = {ImpactPoint_%1}; _marker setMarkerPos _pos; _marker setMarkerText {%2m}", ImpactPointIndex, _distH]
 ImpactPointIndex = ImpactPointIndex + 1
-? ImpactPointIndex > 4 : ImpactPointIndex = 0
+? ImpactPointIndex > 4: ImpactPointIndex = 0
 
 ~60
-? (_pos select 0) == ((getMarkerPos _marker) select 0) : _marker setMarkerPos hiddenMarkerPos
+? (_pos select 0) == ((getMarkerPos _marker) select 0): _marker setMarkerPos hiddenMarkerPos; _marker setMarkerText ""
