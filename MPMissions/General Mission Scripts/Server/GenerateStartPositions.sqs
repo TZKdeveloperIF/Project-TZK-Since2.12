@@ -13,7 +13,7 @@ _fixStart0 = FixStart_0; _fixStart1 = FixStart_1;
 _y0 = (getPos FixStart_0) select 1; _y1 = (getPos FixStart_1) select 1
 ? _y0 < _y1: _fixStart0 = FixStart_1; _fixStart1 = FixStart_0
 _y0 = nil; _y1 = nil
-
+? fixedStartPos == 0: _array = [_distMin, _fixStart0, _fixStart1] call loadFile "Server\SQF\StartPosition.sqf", _posSide0 = _array select 0, _posSide1 = _array select 1, goto "Check"
 #Generate
 ~0.001
 

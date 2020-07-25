@@ -25,7 +25,7 @@ mutexInitResGroups = false
 ~12
 ; wait patrol group initialized.
 ; Init Spawn Activate by Start Position
-? FixStart_0 distance _flag < _distSpawn || FixStart_1 distance _flag < _distSpawn: goto "Spawn"
+? (mhq select si0) distance _flag < _distSpawn || (mhq select si1) distance _flag < _distSpawn: goto "Spawn"
 
 #CheckSpawn
 	_spawn = false
