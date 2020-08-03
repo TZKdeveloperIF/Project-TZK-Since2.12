@@ -14,28 +14,30 @@ _weapons = weapons _unit; _weaponTypes = []; { if ((weaponSearch find _x) != -1)
 	};
 } forEach _weaponTypes; _weapons = nil;
 
-_magazinesArray = magazinesarray _unit; _index = 0; _count = count _magazinesArray; _magazinesList = []; _ammunitionList = []; _volumeList = []; _index2 = 0;
-while "_index < _count" do {
-	_magazine = _magazinesArray select _index; _ammunition = _magazinesArray select (_index + 1); _volume = call format ["%1", _magazine GetWeaponParam "count"];
-	_index2 = _magazinesList find _magazine; if (_index2 == -1) then {_index2 = count _magazinesList} else {_ammunition = _ammunition + (_ammunitionList select _index2)};
-	_magazinesList set [_index2, _magazine]; _ammunitionList set [_index2, _ammunition]; _volumeList set [_index2, _volume];
-	_index = _index + 2;
-};
-_magazinesArray = nil;
-
-_index = 0; _count = count _magazinesList; 
-while "_index < _count" do {
-	_magazine = _magazinesList select _index; _magazineType = equipSearch find _magazine;
-	if (_magazineType != -1) then {
-		_difference = (_ammunitionList select _index) - ("_x == _magazineType" count _magTypes)*(_volumeList select _index);
-		if (_difference > 0) then {
-			_difference = [_magazineType, _difference] call loadFile "Player\SQF\EquipmentRespawnAmmunition.sqf";
-		};
-		_magCount = _difference; if ((_volumeList select _index) != 0) then {_magCount = _difference / (_volumeList select _index)};
-		_cost = _magCount * ((equipDefs select _magazineType) select edcost);
-		if (_cost > 0) then {_salvage = _salvage + _cost} else {_charge = _charge - _cost};
+if !bool_TZK_199_Mode Then {
+	_magazinesArray = magazinesarray _unit; _index = 0; _count = count _magazinesArray; _magazinesList = []; _ammunitionList = []; _volumeList = []; _index2 = 0;
+	while "_index < _count" do {
+		_magazine = _magazinesArray select _index; _ammunition = _magazinesArray select (_index + 1); _volume = call format ["%1", _magazine GetWeaponParam "count"];
+		_index2 = _magazinesList find _magazine; if (_index2 == -1) then {_index2 = count _magazinesList} else {_ammunition = _ammunition + (_ammunitionList select _index2)};
+		_magazinesList set [_index2, _magazine]; _ammunitionList set [_index2, _ammunition]; _volumeList set [_index2, _volume];
+		_index = _index + 2;
 	};
-	_index = _index + 1;
+	_magazinesArray = nil;
+
+	_index = 0; _count = count _magazinesList; 
+	while "_index < _count" do {
+		_magazine = _magazinesList select _index; _magazineType = equipSearch find _magazine;
+		if (_magazineType != -1) then {
+			_difference = (_ammunitionList select _index) - ("_x == _magazineType" count _magTypes)*(_volumeList select _index);
+			if (_difference > 0) then {
+				_difference = [_magazineType, _difference] call loadFile "Player\SQF\EquipmentRespawnAmmunition.sqf";
+			};
+			_magCount = _difference; if ((_volumeList select _index) != 0) then {_magCount = _difference / (_volumeList select _index)};
+			_cost = _magCount * ((equipDefs select _magazineType) select edcost);
+			if (_cost > 0) then {_salvage = _salvage + _cost} else {_charge = _charge - _cost};
+		};
+		_index = _index + 1;
+	};
 };
 
 {

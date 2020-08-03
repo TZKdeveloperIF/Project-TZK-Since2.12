@@ -1,0 +1,22 @@
+; args: [Number of channel]
+; Sensor in mission.sqm is GLOBAL. Aiming to have local effect extra designs must be applied.
+? isNull player: exit
+
+_value = time
+call format ["pvRadio%1%2 = _value; publicVariable {pvRadio%1%2}", groupNameMatrix select siPlayer select giPlayer, siPlayer]
+pvRadioAct = _this select 0; publicVariable {pvRadioAct}
+
+@(_time > 10 || call format ["pvRadio%1%2 < 0", groupNameMatrix select siPlayer select giPlayer, siPlayer])
+? _time > 10: goto "Quit"
+@!mutexRadioAct
+mutexRadioAct = true
+? call format ["pvRadio%1%2 == -114514", groupNameMatrix select siPlayer select giPlayer, siPlayer]: goto "Quit"
+call format ["pvRadio%1%2 = -114514", groupNameMatrix select siPlayer select giPlayer, siPlayer]
+[_this select 0] exec {Player\Radio\Radio_199_Exe.sqs}
+mutexRadioAct = false
+
+exit
+
+#Quit
+exit
+player globalChat format ["Radio halt. Value is %1, _value is %2", call format ["pvRadio%1%2", groupNameMatrix select siPlayer select giPlayer, siPlayer], _value]

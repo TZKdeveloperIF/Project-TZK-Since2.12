@@ -8,8 +8,8 @@ _vehicle = _this select 0
 
 ? "Air" countType [_vehicle] > 0: pvKilledAircraft = _vehicle; publicVariable "pvKilledAircraft"
 ? "Ship" countType [_vehicle] > 0: pvKilledBoat = _vehicle; publicVariable "pvKilledBoat"
-? "Tank" countType [_vehicle] > 0: [_vehicle] exec "Common\Msg\sKilledTank.sqs"
-
+? "Tank" countType [_vehicle] > 0: [_vehicle] exec "Common\Msg\sKilledTank.sqs", _vehicle setDammage 1
+; Use set damage 1 to blacken tank simulation.
 
 ? _vehicle in ( mhq + (MCV select si0) + (MCV select si1) ) : exit
 

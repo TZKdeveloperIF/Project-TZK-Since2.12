@@ -32,7 +32,8 @@ _dirchange = 1.57 + 1.57*(speed _target)/200; _vel = velocity _missile
 _newvel = [_vel, _dirchange] call funcRandomRotation3D
 
 ; 2.01 command "setVectorDirAndUp"
-_missile setVectorDirAndUp [_newvel,[0,0,1]]; _missile setVelocity _newvel
+? !bool_TZK_199_Mode: _missile setVectorDirAndUp [_newvel,[0,0,1]]
+_missile setVelocity _newvel
 
 #Quit
 exit

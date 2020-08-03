@@ -50,8 +50,6 @@ _unitsStarted = (units _group) - [_unit]
 
 _order = orderMatrix select _si select _gi; _idOrder = _order select 0
 
-; _posStart exec "Server\CutDownTrees.sqs"
-
 ? !(alive _unit): goto "WaitUntilAlive"
 
 _unit setCombatMode "YELLOW"; _unit setBehaviour "AWARE"; _unit setSpeedMode "FULL"
@@ -359,4 +357,3 @@ _c = count _units
   _unit setCombatMode "YELLOW"; _unit setBehaviour "AWARE"; _unit setSpeedMode "FULL"
 
 	goto "Update"
-	

@@ -70,7 +70,8 @@ moneySideSpent = [0, 0]
 HDSIN = call {private["_i","_result"]; _result = []; _i = 0; while "_i < 50" do {_result = _result + [sin (7.2*_i)*15]; _i = _i+1}; _result}
 HDCOS = call {private["_i","_result"]; _result = []; _i = 0; while "_i < 50" do {_result = _result + [cos (7.2*_i)*15]; _i = _i+1}; _result}
 ; 2.01 string commands used for Chinese language "Pin Yin" supporting.
-funcLocStr = preprocessFile {Player\SQF\LocalizeString.sqf}
+funcLocStr = if !bool_TZK_199_Mode Then {preprocessFile {Player\SQF\LocalizeString.sqf}} Else {"_this"}
+? bool_TZK_199_Mode: bool_TZK_RadioReceive_199 = false, hint_countdown_TZK_RadioReceive_199 = 3
 ; ================================================================================TZK_4.0.0 Block================================================================================
 
 ; ================================================================================TZK_3.00 Block================================================================================

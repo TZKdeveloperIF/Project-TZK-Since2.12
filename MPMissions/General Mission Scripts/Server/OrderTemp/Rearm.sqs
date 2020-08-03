@@ -21,7 +21,8 @@ _rearm = false; _vehicle = vehicle _unit; _weapons = weapons _vehicle; _vt = _ve
 ? !(_vt in (typesLightTank + typesHeavyTank) && _gi >= 0 && _gi < (GroupsNum - 2)): _rearm = true
 
 ; This design require the gun use itself as its muzzle, and the sabot magazine is in the 1st element of its "magazines[]" parameter.
-? !_rearm: _rearmData = _vehicle call funcGetRearmData; _gun = (_rearmData select 0 select 0); _sabotMag = (call format ["%1", _gun GetWeaponParamArray "magazines"]) select 0; _magazines = magazinesArray _vehicle; if !(_sabotMag in _magazines) then {_rearm = true} else { if ((_magazines select (_magazines find _sabotMag) + 1) < _sabot) then {_rearm = true} }
+? !_rearm && !bool_TZK_199_Mode: _rearmData = _vehicle call funcGetRearmData; _gun = (_rearmData select 0 select 0); _sabotMag = (call format ["%1", _gun GetWeaponParamArray "magazines"]) select 0; _magazines = magazinesArray _vehicle; if !(_sabotMag in _magazines) then {_rearm = true} else { if ((_magazines select (_magazines find _sabotMag) + 1) < _sabot) then {_rearm = true} }
+? !_rearm && bool_TZK_199_Mode: _rearm = [_vehicle, _si, _gi] call funcCheckRearm
 
 ? !_rearm: exit
 

@@ -41,13 +41,12 @@ kaStruct = 1
 
 ; object format: [oName, nRot, aPos]
 
-_type = 0
-
-
+_type = 0; _texPath = "\TZK_Texture_4_0_0"
+? bool_TZK_Vanilla_Mode: _texPath = "\TZK_Objects"
 
 _price = [2000, 3000] select PricingMode
 _objects = [["StromHaus1_xj400", 270, []]]
-_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\maptower.jpg", "\TZK_Texture_4_0_0\CTI_Image\Struct\maptower.jpg"]
+_image = [_texPath + "\CTI_Image\Struct\maptower.jpg", _texPath + "\CTI_Image\Struct\maptower.jpg"]
 structDefs set [_type, ["Air Radar - 4000m range", _price, siBoth, _image, false, false, 10, 5, 15, _objects, _objects, ["Server\InitPrimaryStructure.sqs"], ["Player\Marker\InitStructureMarker.sqs"]]  ]
 structMarker set [_type, _mRadar]
 stradarair = _type
@@ -56,7 +55,7 @@ _type = _type + 1
 
 _price = [2000, 4000] select PricingMode
 _objects = [["StromHaus1_xj400", 270, []]]
-_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\maptower.jpg", "\TZK_Texture_4_0_0\CTI_Image\Struct\maptower.jpg"]
+_image = [_texPath + "\CTI_Image\Struct\maptower.jpg", _texPath + "\CTI_Image\Struct\maptower.jpg"]
 structDefs set [_type, ["Map Marker Tower", _price, siBoth, _image, false, false, 4, 5, 15, _objects, _objects, ["Server\InitPrimaryStructure.sqs"], ["Player\Marker\InitStructureMarker.sqs"]]  ]
 structMarker set [_type, _mRadar]
 stradar = _type
@@ -64,7 +63,7 @@ _type = _type + 1
 
 _price = [2000, 4000] select PricingMode
 _objects = [["StromHaus1_xj400", 270, []]]
-_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\camtower.jpg", "\TZK_Texture_4_0_0\CTI_Image\Struct\camtower.jpg"]
+_image = [_texPath + "\CTI_Image\Struct\camtower.jpg", _texPath + "\CTI_Image\Struct\camtower.jpg"]
 structDefs set [_type, ["Unit Camera Tower", _price, siBoth, _image, false, false, 4, 5, 15, _objects, _objects, ["Server\InitPrimaryStructure.sqs"], ["Player\Marker\InitStructureMarker.sqs"]]  ]
 structMarker set [_type, _mRadar]
 stSatRec = _type
@@ -73,7 +72,7 @@ _type = _type + 1
 
 _price = [2000, 4000] select PricingMode
 _objects = [["LF_xj400", 0, []]]
-_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\LightVehicleFactory.jpg", "\TZK_Texture_4_0_0\CTI_Image\Struct\LightVehicleFactory.jpg"]
+_image = [_texPath + "\CTI_Image\Struct\LightVehicleFactory.jpg", _texPath + "\CTI_Image\Struct\LightVehicleFactory.jpg"]
 structDefs set [_type, ["Light Vehicle Factory", _price, siBoth, _image, true, true, 2, 10, 35, _objects, _objects, ["Server\InitPrimaryStructure.sqs", "Server\InitUnitFactory.sqs"], ["Player\InitLightVehicleFactory.sqs", "Player\Marker\InitStructureMarker.sqs"]]  ]
 structMarker set [_type, _mLight]
 stLight = _type
@@ -82,7 +81,7 @@ _type = _type + 1
 
 _price = [2000, 4000] select PricingMode
 _objects = [["CC_xj400", 0, []]]
-_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\CommCenter.jpg", "\TZK_Texture_4_0_0\CTI_Image\Struct\CommCenter.jpg"]
+_image = [_texPath + "\CTI_Image\Struct\CommCenter.jpg", _texPath + "\CTI_Image\Struct\CommCenter.jpg"]
 structDefs set [_type, ["Command Center", _price, siBoth, _image, true, true, 2, 5, 20, _objects, _objects, ["Server\InitPrimaryStructure.sqs"], ["Player\Marker\InitStructureMarker.sqs"]]  ]
 structMarker set [_type, _mCC]
 stComm = _type
@@ -90,7 +89,7 @@ _type = _type + 1
 
 _price = [4000, 8000] select PricingMode
 _objects = [["Bar_xj400", 180, []]]
-_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\Barracks.jpg", "\TZK_Texture_4_0_0\CTI_Image\Struct\Barracks.jpg"]
+_image = [_texPath + "\CTI_Image\Struct\Barracks.jpg", _texPath + "\CTI_Image\Struct\Barracks.jpg"]
 structDefs set [_type, ["Barracks", _price, siBoth, _image, true, true, 2, 10, 20, _objects, _objects, ["Server\InitPrimaryStructure.sqs", "Server\InitUnitFactory.sqs"], ["Player\InitBarracks.sqs", "Player\Marker\InitStructureMarker.sqs"]]  ]
 structMarker set [_type, _mBarrack]
 stBarracks = _type
@@ -98,7 +97,7 @@ _type = _type + 1
 
 _price = [8000, 16000] select PricingMode
 _objects = [["HF_xj400", 0, [1,0,0]]]
-_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\HeavyVehicleFactory.jpg","\TZK_Texture_4_0_0\CTI_Image\Struct\HeavyVehicleFactory.jpg"]
+_image = [_texPath + "\CTI_Image\Struct\HeavyVehicleFactory.jpg",_texPath + "\CTI_Image\Struct\HeavyVehicleFactory.jpg"]
 structDefs set [_type, ["Heavy Vehicle Factory", _price, siBoth, _image, true, true, 2, 10, 20, _objects, _objects, ["Server\InitPrimaryStructure.sqs", "Server\InitUnitFactory.sqs"], ["Player\InitHeavyVehicleFactory.sqs", "Player\Marker\InitStructureMarker.sqs"]]  ]
 structMarker set [_type, _mHeavy]
 stHeavy = _type
@@ -106,7 +105,7 @@ _type = _type + 1
 
 _price = [16000, 32000] select PricingMode
 _objects = [["AirF_Green_xj400", 0, [0,0,0]]]
-_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\AircraftFactory.jpg","\TZK_Texture_4_0_0\CTI_Image\Struct\AircraftFactory.jpg"]
+_image = [_texPath + "\CTI_Image\Struct\AircraftFactory.jpg",_texPath + "\CTI_Image\Struct\AircraftFactory.jpg"]
 structDefs set [_type, ["Aircraft Factory", _price, siBoth, _image, true, true, 2, 20, 35, _objects, _objects, ["Server\InitPrimaryStructure.sqs", "Server\InitUnitFactory.sqs"], ["Player\InitAircraftFactory.sqs", "Player\Marker\InitStructureMarker.sqs"]]  ]
 structMarker set [_type, _mAir]
 stAir = _type
@@ -115,16 +114,24 @@ _type = _type + 1
 
 _price = [1000, 2000] select PricingMode
 _objects = [["Dach1_xj400", 180, [0,0,0]]]
-_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\Shipyard.jpg", "\TZK_Texture_4_0_0\CTI_Image\Struct\Shipyard.jpg"]
+_image = [_texPath + "\CTI_Image\Struct\Shipyard.jpg", _texPath + "\CTI_Image\Struct\Shipyard.jpg"]
 structDefs set [_type, ["Shipyard", _price, siBoth, _image, false, false, 2, 10, 20, _objects, _objects, ["Server\InitPrimaryStructure.sqs", "Server\InitUnitFactory.sqs"], ["Player\InitShipyardFactory.sqs", "Player\Marker\InitStructureMarker.sqs"]]  ]
 structMarker set [_type, _mShip]
 stShip = _type
 InitStructureReady = true
 _type = _type + 1
 
+_price = [500, 1000] select PricingMode
+_objects = [["MASH", 180, []]]
+_image = ["sanita_02.paa", "sanita_02.paa"]
+structDefs set [_type, ["Field Hospital", _price, -1, _image, false, false, 10, 4, 15, _objects, _objects, ["Server\InitPrimaryStructure.sqs"], ["Player\Marker\InitStructureMarker.sqs"]] ]
+structMarker set [_type, "MedicVehicle_Marker_xj400"]
+stHosp = _type
+_type = _type + 1
+
 _price = [1500, 3000] select PricingMode
 _objects = [["FuelStationNew2", 180, [0,0,0]]]
-_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\FuelStation.jpg", "\TZK_Texture_4_0_0\CTI_Image\Struct\FuelStation.jpg"]
+_image = [_texPath + "\CTI_Image\Struct\FuelStation.jpg", _texPath + "\CTI_Image\Struct\FuelStation.jpg"]
 structDefs set [_type, ["Fuel Station", _price, siBoth, _image, false, false, 5, 10, 20, _objects, _objects, ["Server\InitSecondaryStructure.sqs",  "Server\InitFuelStation.sqs"], ["Player\Marker\InitStructureMarker.sqs"]]  ]
 structMarker set [_type, "FuelStructure_Marker_xj400"]
 _fuelStation = _type
@@ -142,7 +149,7 @@ _type = _type + 1
 _price = [1500, 3000] select PricingMode
 _objects0 = [["m119_xj400", 0, []]]
 _objects1 = []
-_image = ["\TZK_Texture_4_0_0\icon\iM119.paa",""]
+_image = [_texPath + "\icon\iM119.paa",""]
 structDefs set [_type, ["M119 105mm Howitzer", _price, si0, _image, false, false, 15, 2, 10, _objects0, _objects1, ["Server\InitStructureDefenceTower.sqs"], ["Player\InitStructureEventHandler.sqs", "Player\Marker\InitStructureMarker.sqs"]]  ]
 structMarker set [_type, _mHowitzer]
 _m119 = _type
@@ -151,7 +158,7 @@ _type = _type + 1
 _price = [2500, 5000] select PricingMode
 _objects0 = []
 _objects1 = [["D30_xj400", 0, []]]
-_image = ["","\TZK_Texture_4_0_0\icon\iD30A.paa"]
+_image = ["",_texPath + "\icon\iD30A.paa"]
 structDefs set [_type, ["D30-A Howitzer", _price, si1, _image, false, false, 15, 2, 10, _objects0, _objects1, ["Server\InitStructureDefenceTower.sqs"], ["Player\InitStructureEventHandler.sqs", "Player\Marker\InitStructureMarker.sqs"]]  ]
 structMarker set [_type, _mHowitzer]
 _d30 = _type
@@ -160,7 +167,7 @@ _type = _type + 1
 _price = [9000, 18000] select PricingMode
 _objects0 = [["m119_xj400", 0, []]]
 _objects1 = []
-_image = ["\TZK_Texture_4_0_0\icon\iM119.paa",""]
+_image = [_texPath + "\icon\iM119.paa",""]
 structDefs set [_type, ["M119 Art", _price, si0, _image, false, false, 15, 2, 10, _objects0, _objects1, ["Server\InitStructureDefenceTower.sqs"], ["Player\InitStructureEventHandler.sqs", "Player\Marker\InitStructureMarker.sqs"]]  ]
 structMarker set [_type, _mHowitzer]
 _m119Art = _type
@@ -169,7 +176,7 @@ _type = _type + 1
 _price = [15000, 30000] select PricingMode
 _objects0 = []
 _objects1 = [["D30_xj400", 0, []]]
-_image = ["","\TZK_Texture_4_0_0\icon\iD30A.paa"]
+_image = ["",_texPath + "\icon\iD30A.paa"]
 structDefs set [_type, ["D30-A Art", _price, si1, _image, false, false, 15, 2, 10, _objects0, _objects1, ["Server\InitStructureDefenceTower.sqs"], ["Player\InitStructureEventHandler.sqs", "Player\Marker\InitStructureMarker.sqs"]]  ]
 structMarker set [_type, _mHowitzer]
 _d30Art = _type
@@ -178,7 +185,7 @@ _type = _type + 1
 _price = [500, 1000] select PricingMode
 _objects0 = [["M2StaticMG_W_xj400", 0, [1.4,1.3,2.0]], ["fort_xj400", 0, []]]
 _objects1 = [["M2StaticMG_E_xj400", 0, [1.4,1.3,2.0]], ["fort_xj400", 0, []]]
-_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\MGFort.jpg","\TZK_Texture_4_0_0\CTI_Image\Struct\MGFort.jpg"]
+_image = [_texPath + "\CTI_Image\Struct\MGFort.jpg",_texPath + "\CTI_Image\Struct\MGFort.jpg"]
 structDefs set [_type, ["MG Fort", _price, siBoth, _image, false, false, 20, 2, 15, _objects0, _objects1, ["Server\InitSecondaryStructure.sqs"], ["Player\Marker\InitStructureMarker.sqs"]]  ]
 structMarker set [_type, _mMG]
 _mgFort = _type
@@ -187,7 +194,7 @@ _type = _type + 1
 _price = [600, 1200] select PricingMode
 _objects0 = [["M2StaticMG_W_xj400", 0, [0,0,6]], ["WoodTower_xj400", 0, []]]
 _objects1 = [["M2StaticMG_E_xj400", 0, [0,0,6]], ["WoodTower_xj400", 0, []]]
-_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\MGTowerW.jpg","\TZK_Texture_4_0_0\CTI_Image\Struct\MGTowerW.jpg"]
+_image = [_texPath + "\CTI_Image\Struct\MGTowerW.jpg",_texPath + "\CTI_Image\Struct\MGTowerW.jpg"]
 structDefs set [_type, ["MG Tower", _price, siBoth, _image, false, false, 20, 2, 10, _objects0, _objects1, ["Server\InitSecondaryStructure.sqs"], ["Player\Marker\InitStructureMarker.sqs"]]  ]
 structMarker set [_type, _mMG]
 _mgTowerWood = _type
@@ -196,7 +203,7 @@ _type = _type + 1
 _price = [600, 1200] select PricingMode
 _objects0 = [["M2StaticMG_W_xj400", 0, [0,2,7]], ["ConcreteTower_xj400", 180, []]]
 _objects1 = [["M2StaticMG_E_xj400", 0, [0,2,7]], ["ConcreteTower_xj400", 180, []]]
-_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\MGTowerC.jpg","\TZK_Texture_4_0_0\CTI_Image\Struct\MGTowerC.jpg"]
+_image = [_texPath + "\CTI_Image\Struct\MGTowerC.jpg",_texPath + "\CTI_Image\Struct\MGTowerC.jpg"]
 structDefs set [_type, ["MG Tower", _price, siBoth, _image, false, false, 20, 2, 10, _objects0, _objects1, ["Server\InitSecondaryStructure.sqs"], ["Player\Marker\InitStructureMarker.sqs"]]  ]
 structMarker set [_type, _mMG]
 _mgTowerConcrete = _type
@@ -205,7 +212,7 @@ _type = _type + 1
 _price = [300, 600] select PricingMode
 _objects0 = [["M2StaticMG_W_xj400", 0, []]]
 _objects1 = [["M2StaticMG_E_xj400", 0, []]]
-_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\MG.jpg","\TZK_Texture_4_0_0\CTI_Image\Struct\MG.jpg"]
+_image = [_texPath + "\CTI_Image\Struct\MG.jpg",_texPath + "\CTI_Image\Struct\MG.jpg"]
 structDefs set [_type, ["MG 12.7mm", _price, siBoth, _image, false, false, 25, 2, 5, _objects0, _objects1, ["Server\InitSecondaryStructure.sqs"], ["Player\Marker\InitStructureMarker.sqs"]]  ]
 structMarker set [_type, _mMG]
 _mg = _type
@@ -214,7 +221,7 @@ _type = _type + 1
 _price = [1000, 1000] select PricingMode
 _objects0 = [["gunfort_west_xj400", 0, []]]
 _objects1 = [["gunfort_east_xj400", 0, []]]
-_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\gunfort.jpg","\TZK_Texture_4_0_0\CTI_Image\Struct\gunfort.jpg"]
+_image = [_texPath + "\CTI_Image\Struct\gunfort.jpg",_texPath + "\CTI_Image\Struct\gunfort.jpg"]
 structDefs set [_type, ["Gunfort", _price, siBoth, _image, false, false, 15, 2, 25, _objects0, _objects1, ["Server\InitSecondaryStructure.sqs"], ["Player\Marker\InitStructureMarker.sqs"]]  ]
 structMarker set [_type, ""]
 _gunf = _type
@@ -222,7 +229,7 @@ _type = _type + 1
 
 _price = [300, 600] select PricingMode
 _objects = [["wall_xj400", 90, [0,0,0]]]
-_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\WallH.jpg","\TZK_Texture_4_0_0\CTI_Image\Struct\WallH.jpg"]
+_image = [_texPath + "\CTI_Image\Struct\WallH.jpg",_texPath + "\CTI_Image\Struct\WallH.jpg"]
 structDefs set [_type, ["Wall", _price, siBoth, _image, false, false, 75, 0.5, 15, _objects, _objects, ["Server\InitSecondaryStructure.sqs"], []]  ]
 structMarker set [_type, ""]
 _wall = _type
@@ -231,7 +238,7 @@ _type = _type + 1
 
 _price = [100, 200] select PricingMode
 _objects = [["wall_xj400", 90, [0,0,-3.5]]]
-_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\WallL.jpg","\TZK_Texture_4_0_0\CTI_Image\Struct\WallL.jpg"]
+_image = [_texPath + "\CTI_Image\Struct\WallL.jpg",_texPath + "\CTI_Image\Struct\WallL.jpg"]
 structDefs set [_type, ["Wall Low", _price, siBoth, _image, false, false, 75, 0.5, 15, _objects, _objects, ["Server\InitSecondaryStructure.sqs"], []]  ]
 structMarker set [_type, ""]
 _walls = _type
@@ -240,7 +247,7 @@ _type = _type + 1
 
 _price = [500, 1000] select PricingMode
 _objects = [ ["roof_xj400", 0, [0,0,4.5]] ]
-_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\Roof.jpg","\TZK_Texture_4_0_0\CTI_Image\Struct\Roof.jpg"]
+_image = [_texPath + "\CTI_Image\Struct\Roof.jpg",_texPath + "\CTI_Image\Struct\Roof.jpg"]
 structDefs set [_type, ["Roof", _price, siBoth, _image, true, false, 30, 1, 20, _objects, _objects, ["Server\InitSecondaryStructure.sqs"], []]  ]
 structMarker set [_type, ""]
 _roof = _type
@@ -248,7 +255,7 @@ _type = _type + 1
 
 _price = [600, 1200] select PricingMode
 _objects = [ ["roof_xj400", 0, [0,0,9]] ]
-_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\Roof.jpg","\TZK_Texture_4_0_0\CTI_Image\Struct\Roof.jpg"]
+_image = [_texPath + "\CTI_Image\Struct\Roof.jpg",_texPath + "\CTI_Image\Struct\Roof.jpg"]
 structDefs set [_type, ["Roof High", _price, siBoth, _image, true, false, 30, 1, 20, _objects, _objects, ["Server\InitSecondaryStructure.sqs"], []]  ]
 structMarker set [_type, ""]
 _roofHigh = _type
@@ -256,7 +263,7 @@ _type = _type + 1
 
 _price = [200, 400] select PricingMode
 _objects = [ ["trench_xj400", 0, [0,0,0]] ]
-_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\Trench.jpg","\TZK_Texture_4_0_0\CTI_Image\Struct\Trench.jpg"]
+_image = [_texPath + "\CTI_Image\Struct\Trench.jpg",_texPath + "\CTI_Image\Struct\Trench.jpg"]
 structDefs set [_type, ["Tank Trench", _price, siBoth, _image, true, false, 50, 5, 20, _objects, _objects, ["Server\InitSecondaryStructure.sqs"], []]  ]
 structMarker set [_type, ""]
 _tanktr = _type
@@ -264,7 +271,7 @@ _type = _type + 1
 
 _price = [600, 1200] select PricingMode
 _objects = [ ["ArtPlain_xj400", 0, [0,0,0]] ]
-_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\Roof.jpg","\TZK_Texture_4_0_0\CTI_Image\Struct\Roof.jpg"]
+_image = [_texPath + "\CTI_Image\Struct\Roof.jpg",_texPath + "\CTI_Image\Struct\Roof.jpg"]
 structDefs set [_type, ["Artillery Plain", _price, siBoth, _image, true, false, 12, 15, 15, _objects, _objects, ["Server\InitSecondaryStructure.sqs"], []]  ]
 structMarker set [_type, ""]
 _artPlain = _type
@@ -272,7 +279,7 @@ _type = _type + 1
 
 _price = [20, 40] select PricingMode
 _objects = [["sandbag_xj400", 90, []]]
-_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\Sandbags.jpg","\TZK_Texture_4_0_0\CTI_Image\Struct\Sandbags.jpg"]
+_image = [_texPath + "\CTI_Image\Struct\Sandbags.jpg",_texPath + "\CTI_Image\Struct\Sandbags.jpg"]
 structDefs set [_type, ["Sand Bags", _price, siBoth, _image, false, false, 100, 1, 10, _objects, _objects, ["Server\InitSecondaryStructure.sqs"], []]  ]
 structMarker set [_type, ""]
 _sandbag = _type
@@ -281,7 +288,7 @@ _type = _type + 1
 
 _price = [50, 100] select PricingMode
 _objects = [["Wire", 0, []]]
-_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\Wire.jpg","\TZK_Texture_4_0_0\CTI_Image\Struct\Wire.jpg"]
+_image = [_texPath + "\CTI_Image\Struct\Wire.jpg",_texPath + "\CTI_Image\Struct\Wire.jpg"]
 structDefs set [_type, ["Tank Trap", _price, siBoth, _image, false, false, 100, 1, 10, _objects, _objects, ["Server\InitSecondaryStructure.sqs"], []]  ]
 structMarker set [_type, ""]
 _tankt = _type
@@ -290,7 +297,7 @@ _type = _type + 1
 
 _price = [20, 40] select PricingMode
 ;_objects = [["WireFence", 0, []]]
-;_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\fence.jpg","\TZK_Texture_4_0_0\CTI_Image\Struct\fence.jpg"]
+;_image = [_texPath + "\CTI_Image\Struct\fence.jpg",_texPath + "\CTI_Image\Struct\fence.jpg"]
 ;structDefs set [_type, ["Wire fence", _price, siBoth, _image, false, true, 100, 2, 10, _objects, _objects, ["Server\InitSecondaryStructure.sqs"], []]  ]
 structMarker set [_type, ""]
 ;alignTypes set [count alignTypes, _type]; alignDefs set [ count alignDefs, [[0,0], 8] ]
@@ -299,7 +306,7 @@ structMarker set [_type, ""]
 _price = [500, 1000] select PricingMode
 _objects0 = [["ReammoBoxWest", 0, []]]
 _objects1 = [["ReammoBoxEast", 0, []]]
-_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\ammoCr.jpg","\TZK_Texture_4_0_0\CTI_Image\Struct\ammoCr.jpg"]
+_image = [_texPath + "\CTI_Image\Struct\ammoCr.jpg",_texPath + "\CTI_Image\Struct\ammoCr.jpg"]
 structDefs set [_type, ["Ammo Crate", _price, siBoth, _image, false, false, 10, 5, 8, _objects0, _objects1, ["Server\InitSecondaryStructure.sqs"], ["Common\InitAmmocrate.sqs"]]  ]
 structMarker set [_type, ""]
 stAmmoCrate = _type
@@ -307,7 +314,7 @@ _type = _type + 1
 
 _price = [100, 200] select PricingMode
 _objects = [["heliH", 0, []]]
-_image = ["\TZK_Texture_4_0_0\CTI_Image\Struct\HeliH.jpg","\TZK_Texture_4_0_0\CTI_Image\Struct\HeliH.jpg"]
+_image = [_texPath + "\CTI_Image\Struct\HeliH.jpg",_texPath + "\CTI_Image\Struct\HeliH.jpg"]
 structDefs set [_type, ["Heli H", _price, siBoth, _image, false, false, 20, 5, 15, _objects, _objects, ["Server\InitSecondaryStructure.sqs"], ["Player\Marker\InitStructureMarker.sqs"]]  ]
 structMarker set [_type, "HeliH_Marker_xj400"]
 _heliH = _type
@@ -329,7 +336,7 @@ _count = count structDefs
 	_index = _index + 1
 	? (_index < _count): goto "InitStructs"
 
-structsRespawn = [stComm, stBarracks, stLight, stHeavy, stAir]
+structsRespawn = [stComm, stBarracks, stLight, stHeavy, stAir, stHosp]
 structsCritcal = [stComm, stBarracks, stLight, stHeavy, stAir]
 structsDestroy = [stComm, stBarracks, stLight, stHeavy, stAir, stShip, stradarair, stradar, stSatRec]
 structsFactory = [stBarracks, stLight, stHeavy, stAir, stShip]
@@ -344,7 +351,7 @@ structsOccupiableHowitzer = [_m119, _d30]
 structsOccupiableArtHowitzer = [_m119Art, _d30Art]
 
 ; do server stuff only
-? !isServer: goto "SkipServer"
+? !isServer: goto "SkipBase"
 
 ; BASE TEMPLATES
 
@@ -357,6 +364,7 @@ bdPos = 2
 bdDir = 3
 
 baseDefs = []
+? bool_TZK_199_Mode: goto "KaosMFBase"
 
 _base = []
 _prims = []
@@ -389,14 +397,43 @@ _secs set [count _secs, [_heliH, 10, [-50, -20], 270] ]
 _base set [1, _secs]
 
 baseDefs set [count baseDefs, _base]
-#SkipServer
+goto "SkipBase"
+#KaosMFBase
+
+_base = []
+_prims = []
+_prims set [count _prims, [stHeavy, 0, [-5, 11], 180] ]
+_prims set [count _prims, [stradar, 2, [30, 30], 0] ]
+_prims set [count _prims, [stSatRec, 2, [30, 40], 0] ]
+_prims set [count _prims, [stradarair, 2, [50, 50], 0] ]
+_prims set [count _prims, [stLight, 2, [7, 0], 180] ]
+_prims set [count _prims, [stComm, 2, [-12, 0.5], 90] ]
+_prims set [count _prims, [stBarracks, 5, [-12, -11.5], 0] ]
+_prims set [count _prims, [stBarracks, 5, [-1, -18], 270] ]
+_prims set [count _prims, [_mortar1, 5, [20, -40], 180] ]
+_prims set [count _prims, [_mortar1, 5, [30, -30], 90] ]
+_prims set [count _prims, [_mgFort, 5, [-35.2, -5], 270] ]
+_prims set [count _prims, [_mgFort, 5, [35.2, -10], 90] ]
+_prims set [count _prims, [stHeavy, 30, [-23, -10], 90] ]
+_prims set [count _prims, [stAir, 40, [60, 0], 90] ]
+_prims set [count _prims, [_heliH, 40, [50, 20], 90] ]
+_prims set [count _prims, [_heliH, 40, [50, -20], 90] ]
+_prims set [count _prims, [_heliH, 40, [-50, 20], 270] ]
+_prims set [count _prims, [_heliH, 40, [-50, -20], 270] ]
+_base set [0, _prims]
+
+_secs = []
+_base set [1, _secs]
+baseDefs set [count baseDefs, _base]
+_type = _type + 1
+
+#SkipBase
 
 ? bool_TZK_Vanilla_Mode: goto "VanillaMode"
 goto "AdjustStructDefinition"
 #VanillaMode
 ; Remove baracken/dvd_v2 structures.
 {structDefs select _x set [sdSides, -1]} forEach [_m119, _d30, _m119Art, _d30Art, _mgTowerConcrete, _gunf, _roof, _roofHigh, _tanktr, _artPlain]
-{_entry = _x, {_str = _entry select sdImage select _x, if (substr [_str, 0, sizeofstr "\TZK_Texture_4_0_0\"] == "\TZK_Texture_4_0_0\") Then {_entry select sdImage set [_x, "\TZK_Objects\" + substr [_str, sizeofstr "\TZK_Texture_4_0_0\", sizeofstr _str]]}} forEach [0,1]} forEach structDefs
 structDefs select _mgTowerWood set [sdImage, ["\TZK_Objects\CTI_Image\Struct\MGTower.jpg","\TZK_Objects\CTI_Image\Struct\MGTower.jpg"]]
 
 {structDefs select stradar set [_x, [["Houseplechbud", 270, []]]  ]} forEach [sdObjects0, sdObjects1]
@@ -420,6 +457,17 @@ structDefs select _mg set [sdObjects1, [["M2StaticMGE", 0, []]]  ]
 {structDefs select _wall set [_x, [["Fortress1", 0, []] ]  ]} forEach [sdObjects0, sdObjects1]; structDefs select _wall set [sdName, "Fortress High"]
 {structDefs select _walls set [_x, [["Fortress1", 0, [0,0,-2.0]] ]  ]} forEach [sdObjects0, sdObjects1]; structDefs select _walls set [sdName, "Fortress"]
 {structDefs select _sandbag set [_x, [["FenceWood", 90, []]]  ]} forEach [sdObjects0, sdObjects1]
+
+? !bool_TZK_199_Mode: goto "SkipACWADef"
+structDefs select stHeavy set [sdOnlyCO, false]
+structDefs select stAir set [sdOnlyCO, false]
+
+structDefs select stHosp set [sdSides, _siBoth]
+_entry = structDefs select _wall; _entry set [sdName, "Concrete Wall High"]; _entry set [sdObjects0, [["MFCTI116WestLargeWall", 0, [0,0,1]], ["MFCTI116WestLargeWall", 0, [0,0.2,0]], ["MFCTI116WestLargeWall", 0, [0,-0.2,0]]] ]; _entry set [sdObjects1, [["MFCTI116EastLargeWall", 0, [0,0,1]], ["MFCTI116EastLargeWall", 0, [0,0.2,0]], ["MFCTI116EastLargeWall", 0, [0,-0.2,0]]] ];
+alignDefs select (alignTypes find _wall) set [1, 5.6]
+_entry = structDefs select _walls; _entry set [sdName, "Concrete Wall Low"]; _entry set [sdObjects0, [["MFCTI116WestLargeWall", 0, [0,0,-1.8]]] ]; _entry set [sdObjects1, [["MFCTI116EastLargeWall", 0, [0,0,-1.8]]] ];
+alignDefs select (alignTypes find _walls) set [1, 5.6]
+#SkipACWADef
 
 exit
 

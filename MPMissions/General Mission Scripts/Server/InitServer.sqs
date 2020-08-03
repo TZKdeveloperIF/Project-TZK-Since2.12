@@ -4,8 +4,6 @@
 {deleteVehicle (leader _x)} forEach (workerGroups select si0); {deleteVehicle (leader _x)} forEach (workerGroups select si1)
 
 ; local bool variable of game mode. On server they should be global
-_boole_Infantry_Mode = _this select 0; _boole_NeutralTown_Mode = _this select 1; _boole_SEMod_Mode = _this select 2;
-boole_Infantry_Mode = _boole_Infantry_Mode; boole_NeutralTown_Mode = _boole_NeutralTown_Mode; boole_SEMod_Mode = _boole_SEMod_Mode
 
 [] exec "Server\InitFunctions.sqs"
 
@@ -64,7 +62,7 @@ mutexWorkerJoin = false
 
 _targetObject = {Target_TZK_xj400}
 ; ? bool_TZK_Vanilla_Mode: _targetObject = "HeliH"
-_i = 0; countTargetMarkers = 10; while "_i < countTargetMarkers" do {call Format["TargetS_%1%2 = _targetObject camCreate [0,0,0]; TargetS_%1%2 allowDammage false; TargetS_%1%3 = _targetObject camCreate [0,0,0]; TargetS_%1%3 allowDammage false", _i, si0, si1]; _i = _i + 1}
+_i = 0; countTargetMarkers = 10; while "_i < countTargetMarkers" do {call Format["TargetS_%1%2 = _targetObject camCreate [0,0,0]; TargetS_%1%2 exec {Common\Command\allowDamageFalse.sqs}; TargetS_%1%3 = _targetObject camCreate [0,0,0]; TargetS_%1%3 exec {Common\Command\allowDamageFalse.sqs}", _i, si0, si1]; _i = _i + 1}
 ; Should better use camCreate than createVehicle. Its position don't have to be broadcast.
 
 ; mutexAIAutoBuyFactory = false
@@ -89,6 +87,7 @@ _i = 0; countTargetMarkers = 10; while "_i < countTargetMarkers" do {call Format
 [] exec "Server\MsgCheckAI.sqs"
 [] exec "Server\MsgClearBuy.sqs"
 [] exec "Server\MsgEjectAIUnits.sqs"
+; ? bool_TZK_199_Mode: [] exec "Server\Msg\mRadioChannel.sqs"
 
 ? !(isNull player): forceMap true
 ? !(isNull player): [] exec "Player\InitClient.sqs"
@@ -186,10 +185,12 @@ _try = 0
 _si = si0
 ? !dev && count (groupMatrix select _si) == count (groupAiMatrix select _si): startMoney set [_si, 10*(startMoney select _si)], if ((groupMatrix select (siEnemy select _si) select 0) in (groupAiMatrix select (siEnemy select _si))) Then {startMoney set [_si, 0.5*(startMoney select _si)]}, goto "Money0Set"
 ? !dev && (groupMatrix select _si select 0) in (groupAiMatrix select _si): startMoney set [_si, 10*0.5*(startMoney select _si)], startMoneyPlayer set [_si, 14*(startMoneyPlayer select _si)]
+? bool_TZK_199_Mode && !dev && (groupMatrix select _si select 0) in (groupAiMatrix select _si): startMoney set [_si, 57500]
 #Money0Set
 _si = si1
 ? !dev && count (groupMatrix select _si) == count (groupAiMatrix select _si): startMoney set [_si, 10*(startMoney select _si)], if ((groupMatrix select (siEnemy select _si) select 0) in (groupAiMatrix select (siEnemy select _si))) Then {startMoney set [_si, 0.5*(startMoney select _si)]}, goto "Money1Set"
 ? !dev && (groupMatrix select _si select 0) in (groupAiMatrix select _si): startMoney set [_si, 10*0.5*(startMoney select _si)], startMoneyPlayer set [_si, 14*(startMoneyPlayer select _si)]
+? bool_TZK_199_Mode && !dev && (groupMatrix select _si select 0) in (groupAiMatrix select _si): startMoney set [_si, 57500]
 #Money1Set
 
 [] exec "Server\SendStartMoney.sqs"
@@ -211,3 +212,4 @@ music10m = (-0.5 + random count Musics10m)
 PublicVariable "music0"; PublicVariable "music1h"; PublicVariable "music10m"; 
 
 ; west setFriend [east,1]; west setFriend [resistance,1]; east setFriend [west,1]; east setFriend [resistance,1]; resistance setFriend [west,1]; resistance setFriend [east,1]
+? bool_TZK_199_Mode: {[_x] exec "Common\KeepTempLeaderAlive.sqs"} forEach [leaderTemp0, leaderJoin0, leaderTemp1, leaderJoin1]

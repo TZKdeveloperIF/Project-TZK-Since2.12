@@ -5,7 +5,7 @@ _unit = _this select 0; _si = _this select 1; _gi = _this select 2
 _target = _this select 5; _dispersion = _this select 6
 _type = _this select 7
 
-_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _actualTarget = typeOf _target camCreate getPosASL _target; _actualTarget allowDammage false
+_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _actualTarget = typeOf _target camCreate getPosASL _target; _actualTarget exec {Common\Command\allowDamageFalse.sqs}
 #CheckDistance
 _distLimit = viewDistance; 
 ? (upgMatrix select _si) select upgLongWeaponRange == 2: _distLimit = 2*viewDistance; 
@@ -15,7 +15,7 @@ _distLimit = viewDistance;
 
 #PrePareToAttack
 	[_unit, true] exec "Server\StopAI.sqs"
-	_weapon = (_typeName GetVehicleParamArray "weapons") select 0
+	_weapon = (_vehicle call funcVehParamWeapons) select 0
 	? !(_vehicle hasWeapon _weapon): goto "EOF"
 	_weapons = (weapons _vehicle) - [_weapon]; {_vehicle removeWeapon _x} forEach _weapons; {_vehicle addWeapon _x} forEach _weapons
 	_vehicle reveal _actualTarget
@@ -27,6 +27,8 @@ _distLimit = viewDistance;
 	#AttackCheck
 		_posTarget = [getPos _target, 0, _dispersion] call funcGetRandomPos; _posTarget set [2,0]; _actualTarget setPos _posTarget
 		? _unit distance _target > _distLimit: goto "CheckDistance"
+		? bool_TZK_199_Mode: goto "Mode199"
+		
 		? _vehicle ammo _weapon == 0: _magazines = _vehicle call loadFile "Common\SQF\GetNotEmptyMags.sqf"; _validMags = [_weapon] call loadFile "Common\SQF\WeaponValidMags.sqf"; if ("_x in _validMags" count _magazines == 0) Then {goto "CheckRearm"};
 		_vehicle reveal _actualTarget
 		~0.1
@@ -36,9 +38,7 @@ _distLimit = viewDistance;
 		_ammoArray = _vehicle ammoArray _weapon
 		? count _ammoArray > 0: _delay = call format ["%1", (_ammoArray select 0) GetWeaponParam "reloadTime"]*1.2 + 1
 		? count _ammoArray == 0: _validMags = [_weapon] call loadFile "Common\SQF\WeaponValidMags.sqf"; _delay = call format ["%1", (_validMags select 0) GetWeaponParam "reloadTime"] + 1
-	;	? _boolFirst && count _ammoArray > 0: _reloadMagazine = true; _vehicle removeMagazine (_ammoArray select 0);
 		~0.1
-	;	? _boolFirst && count _ammoArray > 0: _boolFirst = false; _vehicle addMagazinePrecise _ammoArray
 		? _reloadMagazine: _delay = call format ["%1", _weapon GetWeaponParam "magazineReloadTime"] + _delay; _reloadMagazine = false
 		~_delay
 		? !(_unit call temporaryCheck): goto "EOF"
@@ -46,6 +46,27 @@ _distLimit = viewDistance;
 		_ammoArray = _vehicle ammoArray _weapon
 		? count _ammoArray > 0 && local gunner _vehicle: if (_ammoArray select 1 == 1) Then {_reloadMagazine = true}; if (_ammoArray select 1 > 0) Then {if ((_ammoArray select 1 != _ammunition) || (_ammoArray select 1 == 1)) Then {_ammunition = _ammoArray select 1; _vehicle fire _weapon}} else {goto "EOF"}
 		? count _ammoArray == 0: goto "EOF"
+		goto "AttackDone"
+		
+		#Mode199
+		
+		? _vehicle ammo _weapon == 0: if !(someAmmo _vehicle) Then {goto "CheckRearm"};
+		_vehicle reveal _actualTarget
+		~0.1
+		_vehicle doTarget _actualTarget
+		
+		; delay must be correctly assigned for "fire" command.
+		_ammoOld = _vehicle ammo _weapon
+		_delay = ( ([0,5] select (_ammoOld == 25 && "M252Mortar_TZK_xj400" countType [_vehicle] > 0) ) + ([0,3] select ("M252Mortar_TZK_xj400" countType [_vehicle] > 0)) )*1.2 + 1
+		~0.1
+		? _reloadMagazine: _delay = ([0,5] select (_ammoOld == 25 && "M252Mortar_TZK_xj400" countType [_vehicle] > 0) ) + _delay; _reloadMagazine = false
+		~_delay
+		? !(_unit call temporaryCheck): goto "EOF"
+		? !(alive _unit) || _vehicle != vehicle _unit: goto "EOF"
+		_ammoNow = _vehicle ammo _weapon
+		? _ammoNow > 0 && local gunner _vehicle: if (_ammoNow == 1) Then {_reloadMagazine = true}; if (_ammoNow != _ammunition || _ammoNow == 1) Then {_ammunition = _ammoNow, _vehicle fire _weapon}
+		? _ammoNow == 0: if (_ammoOld == 0) Then {goto "EOF"}
+		
 		~0.1
 		_vehicle doWatch (getPos _actualTarget)
 	goto "AttackCheck"
@@ -55,8 +76,9 @@ _distLimit = viewDistance;
 	_sup = (_vs select 0) select 0
 	_gi = (groupMatrix select _si) find ( (group _unit) )
 	_speed = -1; _mag = "";
-	_magazines = magazines _vehicle; _validMags = [_weapon] call loadFile "Common\SQF\WeaponValidMags.sqf"; {if (_x in _validMags) Then {_mag = _x}} forEach _magazines
-	? _mag != "": _speed = substr [_mag, sizeofstr(_mag) - sizeofstr("xxxx_xj400"), sizeofstr(_mag) - sizeofstr("_xj400")]; if !(substr [_speed, 0, 1] in ["0","1","2","3"]) then {_speed = -1} else {_speed = call _speed}; _delay = [0,3] select (_speed > 0)
+	? !bool_TZK_199_Mode: _magazines = magazines _vehicle; _validMags = [_weapon] call loadFile "Common\SQF\WeaponValidMags.sqf"; {if (_x in _validMags) Then {_mag = _x}} forEach _magazines
+	? _mag != "": _speed = substr [_mag, sizeofstr(_mag) - sizeofstr("xxxx_xj400"), sizeofstr(_mag) - sizeofstr("_xj400")]; if !(substr [_speed, 0, 1] in ["0","1","2","3"]) then {_speed = -1} else {_speed = call _speed};
+	_delay = [0,3] select (_speed > 0)
 	[_unit, _si, _gi, _vehicle, _type, _sup] exec "Server\AI_Rearm.sqs"; [_unit, true] exec "Server\StopAI.sqs"
 	#WaitRearmComplete
 		~5

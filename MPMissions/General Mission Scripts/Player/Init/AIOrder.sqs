@@ -131,9 +131,9 @@ _param0 = ["InitSpeed", count ArtilleryMagazineSpeedList, "format [{%1 m/s}, Art
 _param1 = ["Curved", 2, {["False", "True"] select _this}, 1]
 aiOrders2 set [_type, ["Switch Magazine", [_param0, _param1], false, "Order\SwitchMagazine.sqs", _desc] ]; _type = _type + 1
 
-_desc = "$STR_TZK_PlayerOrderDesc_VectorUp"
+_desc = "Change the VectorUp (normal vector, or say the down-up direction) of defending structure. Not available for 1.99 version."
 _param0 = ["Vector", 3, {["Upright", "Sloped"] select _this}, 0]
-aiOrders2 set [_type, ["$STR_TZK_PlayerOrderName_VectorUp", [_param0], false, "Order\ResetUp.sqs", _desc] ]; _type = _type + 1
+aiOrders2 set [_type, ["Adjust VectorUp", [_param0], false, "Order\ResetUp.sqs", _desc] ]; _type = _type + 1
 
 _desc = "Ask your member go to buy custom equipment.\n\nThe template will be loaded from your Custom Soldier records.\n\nIf the soldier is not a saboteur, extra $50 is charged."
 _param0 = ["Equipment", 10, "format [""cs%1"", _this]", 0]

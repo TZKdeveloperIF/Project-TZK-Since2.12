@@ -26,7 +26,13 @@ goto "Update"
 
 
 #SpawnAA
-_group = createGroup _side
+? !bool_TZK_199_Mode: _group = createGroup _side, _aaGroupUnit = objNull
+? bool_TZK_199_Mode: _leader = ([leaderTemp0, leaderTemp1] select _si), (["SoldierWB", "SoldierEB"] select _si) createUnit [getPos _leader, group _leader, "AAGroupUnit = this", 1, "PRIVATE"], _aaGroupUnit = AAGroupUnit
+~0.5
+? bool_TZK_199_Mode: [_aaGroupUnit] join grpNull
+~0.5
+? bool_TZK_199_Mode: _group = group _aaGroupUnit, [_aaGroupUnit] exec "Common\KeepTempLeaderAlive.sqs"
+
 ~1
 ? isNull _group : format["ERROR: _group is NULL at init for %1 temporary AA group", _side] call fDebugLog; exit
 
@@ -47,18 +53,20 @@ _group = createGroup _side
 [_si] exec "Server\Info\TempAACreated.sqs"
 
 ; Remain AA group for AI Comm.
-? (groupCommander select _si) in (groupAiMatrix select _si): exit
+? (groupCommander select _si) in (groupAiMatrix select _si) && !dev: exit
 
- _delay = [900,5] select dev
+ _delay = [900,15] select dev
 ~_delay
-{ _v = vehicle _x; if (_v != _x) then {deleteVehicle _v} } forEach (units _group)
+{ _v = vehicle _x; if (_v != _x) then {deleteVehicle _v} } forEach (units _group - [_aaGroupUnit])
 ~1
-{deleteVehicle _x} forEach (units _group)
+{deleteVehicle _x} forEach (units _group - [_aaGroupUnit])
 ~1
 [_si] exec "Server\Info\TempAADeleted.sqs"
 goto "Quit"
 
 #Quit
-? !isNull _group: deleteGroup _group
+? !isNull _group: if (bool_TZK_199_Mode) Then {deleteGroup _group} Else {[_aaGroupUnit] join group _leader}
+~1
+? bool_TZK_199_Mode: deleteVehicle _aaGroupUnit
 
 ;EOF

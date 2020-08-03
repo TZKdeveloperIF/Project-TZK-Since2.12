@@ -18,9 +18,9 @@ _pos = getPosASL _bullet
 
 _distH = [getPosASL _vehicle, _pos] call funcDistH; _distH = _distH - _distH mod 1
 _marker = objNull
-call format ["_marker = {ImpactPoint_%1}; _marker setMarkerPos _pos; _marker setMarkerText {%2m}", ImpactPointIndex, _distH]
+call format ["_marker = {ImpactPoint_%1}; _marker setMarkerPos _pos; if !bool_TZK_199_Mode Then {_marker setMarkerText {%2m}}", ImpactPointIndex, _distH]
 ImpactPointIndex = ImpactPointIndex + 1
 ? ImpactPointIndex > 4: ImpactPointIndex = 0
 
 ~60
-? (_pos select 0) == ((getMarkerPos _marker) select 0): _marker setMarkerPos hiddenMarkerPos; _marker setMarkerText ""
+? (_pos select 0) == ((getMarkerPos _marker) select 0): _marker setMarkerPos hiddenMarkerPos; if !bool_TZK_199_Mode Then {_marker setMarkerText ""}

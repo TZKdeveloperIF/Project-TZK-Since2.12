@@ -4,8 +4,9 @@ _v = _this select 0
 
 ? (count (magazines _v)) > 0 : format["WARNING: vehicle %1 have mags when going to rearm", _v] call fDebugLog; exit
 
-_name = substr [(typeOf _v), 0, 4]; _bDeploy = false
-? _name in ["M109", "PLZ0", "TOS1"]: _bDeploy = true
+_bDeploy = false
+? !bool_TZK_199_Mode: _name = substr [(typeOf _v), 0, 4]
+? !bool_TZK_199_Mode && _name in ["M109", "PLZ0", "TOS1"]: _bDeploy = true
 
 
 _rearmData = _v call funcGetRearmData
@@ -27,4 +28,5 @@ if (_matching || _bDeploy) then { { _v addMagazine _x } foreach _mags } else { {
 _v groupChat "Rearm completed. But gun barrel still hurts. Repair it please."
 ~90
 ? canFire _v : exit
-if (local _v && format ["%1", (typeOf _v) GetVehicleParam "simulation"] == "tank") then { { _v removeMagazines _x } foreach (magazines _v); _v groupChat "Gun barrel not repair. Unable to fire. NEED REPAIR AND REARM!" } else { [_v] exec "Common\SendVehicleMagsRemove.sqs" }
+? !bool_TZK_199_Mode: if (local _v && format ["%1", (typeOf _v) GetVehicleParam "simulation"] == "tank") then { { _v removeMagazines _x } foreach (magazines _v); _v groupChat "Gun barrel not repair. Unable to fire. NEED REPAIR AND REARM!" } else { [_v] exec "Common\SendVehicleMagsRemove.sqs" }
+? bool_TZK_199_Mode: if (local _v && !canFire _v) then { { _v removeMagazines _x } foreach (magazines _v); _v groupChat "Gun barrel not repair. Unable to fire. NEED REPAIR AND REARM!" } else { [_v] exec "Common\SendVehicleMagsRemove.sqs" }

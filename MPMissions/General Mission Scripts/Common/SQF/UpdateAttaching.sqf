@@ -14,12 +14,17 @@ _bHeli = _this select 6;
 _vehPos = getPos _vehicle; _tugPos = getPos _tug;
 _tugDir = getDir _tug; _vehDir = getDir _vehicle;
 _dirDiff = _vehDir - _tugDir; if (_dirDiff > 180) then {_dirDiff = _dirDiff - 360}; if (_dirDiff < -180) then {_dirDiff = _dirDiff + 360};
-_dir = vectorDir _vehicle; _up = _vehPos call funcVectorUp;
-if (_dirDiff > 5)	 then {_dir = [_dir, _up, +1] call funcVectorRot3D};
-if (_dirDiff < -5)	 then {_dir = [_dir, _up, -1] call funcVectorRot3D}; // The degree here is anticlockwise unlike "direction" of OFP.
 
-_vehicle setVectorDirAndUp [_dir, [0,0,1]]; _vehicle setVectorUp _up;
+if !bool_TZK_199_Mode Then {
+	_dir = vectorDir _vehicle; _up = _vehPos call funcVectorUp;
+	if (_dirDiff > 5)	 then {_dir = [_dir, _up, +1] call funcVectorRot3D};
+	if (_dirDiff < -5)	 then {_dir = [_dir, _up, -1] call funcVectorRot3D}; // The degree here is anticlockwise unlike "direction" of OFP.
 
+	_vehicle setVectorDirAndUp [_dir, [0,0,1]]; _vehicle setVectorUp _up;
+} Else {
+	if (_dirDiff > 5)	 then {_vehicle setDir (-1 + _vehDir)};
+	if (_dirDiff < -5)	 then {_vehicle setDir (1 + _vehDir)};
+};
 
 _posAttach = [(_tugPos select 0) + _attachDist*sin(_tugDir+_attachDir), (_tugPos select 1) + _attachDist*cos(_tugDir+_attachDir), 0];
 if _bHeli then {_posAttach = [_tugPos select 0, _tugPos select 1, (_tugPos select 2) - _attachDist]};

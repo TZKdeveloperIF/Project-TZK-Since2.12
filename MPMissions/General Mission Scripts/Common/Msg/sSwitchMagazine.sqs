@@ -1,0 +1,13 @@
+; args [vehicle, Speed]
+_vehicle = _this select 0; _speed = _this select 1
+
+@!(mutexSwitchMagVeh)
+mutexSwitchMagVeh = true
+
+pvSwitchMagVeh = _vehicle; publicVariable "pvSwitchMagVeh"
+pvSwitchMagSpeed = _speed; publicVariable "pvSwitchMagSpeed"
+~sendDelay
+
+mutexSwitchMagVeh = false
+
+; EOF

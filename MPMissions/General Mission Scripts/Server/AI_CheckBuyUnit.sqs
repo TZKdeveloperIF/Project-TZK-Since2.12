@@ -41,6 +41,7 @@ _repeat = 0
 	? "_x in _factoryType" count _aisBuyFactoryNumType > 0: goto "BuyAtSetFactory"
 	
 #BuyAtOldFashion
+	? count _factoryType == 0: exit
 	_factoryType = _factoryType select ((count _factoryType) - 1)
 	 _factory = [_si, _factoryType, true] call funcGetIdleFactories; if (count _factory == 0) then {_factory = objNull} else {_factory = _factory select 0}
 	 ? (isNull _factory) : exit	

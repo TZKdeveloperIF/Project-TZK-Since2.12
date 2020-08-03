@@ -69,7 +69,6 @@ _giJoin = _giList select ((random _c) - 0.5)
 	
 	_factoryType = _unitDesc select udFactoryType; _factoryType = _factoryType call funcBinaryDigit; _factoryType = _factoryType select ((count _factoryType) - 1)
 	_factory = [_si, _factoryType, false] call funcGetIdleFactories; if (count _factory == 0) then {_factory = objNull} else {_factory = _factory select 0}
-	; TODO ? (isNull _factory) : _factory = [_si, _factoryType] call funcGetFactoryWithEmptyQueue
 	? (isNull _factory) : exit
 	[_type, _driver, _gunner, 0, _si, _giJoin, _giBuyer, _factory] exec "Server\BuyUnit.sqs"
 

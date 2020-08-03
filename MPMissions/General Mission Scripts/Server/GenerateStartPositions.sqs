@@ -5,7 +5,7 @@
 _distMin = 3000
 _players = [ (count (groupMatrix select si0)) - (count (groupAiMatrix select si0)), (count (groupMatrix select si1)) - (count (groupAiMatrix select si1)) ]
 _playerCO = [ !((groupCommander select si0) in (groupAiMatrix select si0)), !((groupCommander select si1) in (groupAiMatrix select si1)) ]
-? !(_playerCO select 0) && !(_playerCO select 1): fixedStartPos = 0
+? !(_playerCO select 0) && !(_playerCO select 1) || bool_TZK_199_Mode && fixedStartPos == 1: fixedStartPos = 0
 _retries = 0
 
 ; Standardize the start position, make sure the FixStart_0 at North.

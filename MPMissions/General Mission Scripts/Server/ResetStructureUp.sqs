@@ -3,6 +3,7 @@ _objects = _this select 0; _type = _this select 1
 ; Some models' definition cause their [0,0,1] sloped (for their vertices of model use "on surface" or "keep height" property), like Air Factory model in older version, while some others' don't. They must be excluded here, when necessary.
 
 ? !( _type in (structsDestroy + structsOccupiableMortar + structsOccupiableGunfort + structsOccupiableHowitzer + structsOccupiableArtHowitzer) ): exit
+? bool_TZK_199_Mode: exit
 
 ;~0.001
 _i = 0; _c = count _objects;

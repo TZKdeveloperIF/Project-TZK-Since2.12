@@ -16,7 +16,12 @@ _namesGen = []; _objGen = [];
 
 _namePrim = ""; _cMagsPrim = 0;
 if (_prim != -1) then {
-	_namePrim = (weaponDefs select _prim) select wdName; _validMags = [(weaponDefs select _prim) select wdObject] call loadFile "Common\SQF\WeaponValidMags.sqf";
+	_namePrim = (weaponDefs select _prim) select wdName;
+	if !bool_TZK_199_Mode Then {
+		_validMags = [(weaponDefs select _prim) select wdObject] call loadFile "Common\SQF\WeaponValidMags.sqf"
+	} Else {
+		_validMags = [(weaponDefs select _prim) select wdObject] call loadFile "Common\SQF\WeaponValidEquip.sqf"
+	};
 	_n = 0; _c = count _objGen;
 	while "_n < _c" do {
 		if ((_objGen select _n) in _validMags) then {
@@ -31,7 +36,12 @@ if (_prim != -1) then {
 
 _nameSec = ""; _cMagsSec = 0;
 if (_sec != -1) then {
-	_nameSec = (weaponDefs select _sec) select wdName; _validMags = [(weaponDefs select _sec) select wdObject] call loadFile "Common\SQF\WeaponValidMags.sqf";
+	_nameSec = (weaponDefs select _sec) select wdName;
+	if !bool_TZK_199_Mode Then {
+		_validMags = [(weaponDefs select _sec) select wdObject] call loadFile "Common\SQF\WeaponValidMags.sqf"
+	} Else {
+		_validMags = [(weaponDefs select _sec) select wdObject] call loadFile "Common\SQF\WeaponValidEquip.sqf"
+	};
 	_n = 0; _c = count _objGen;
 	while "_n < _c" do {
 		if ((_objGen select _n) in _validMags) then {

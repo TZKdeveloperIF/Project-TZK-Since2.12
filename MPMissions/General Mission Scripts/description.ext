@@ -2294,7 +2294,7 @@ class OptionsDialog: Menu {
 	OptionsTimeLabel, OptionsGameTime,
 	MemberMarkersLabel, MemberMarkers,
 	TransferLabel, TransferTarget, TransferAmount,Transfer, TransferAIs, TransferAll, TransferTake, AICheck,
-	BuyUnits, CustomSoldiers, CommandAI, CommandTemporary, ShowStats, UnitCam, SatCam, SpySatBG, SpySat,
+	BuyUnits, CustomSoldiers, CommandAI, CommandTemporary, ShowStats, UnitCam, SatCam, SpySatBG, SpySat, RadioONBG, RadioONBtn,
 	IncomeRatioLabel, IncomeRatio, IncomeRatioPlayer, CommanderLabel, Commander, CommanderTransfer,
 	WorkerBehaviourLabel, WorkerBehaviour, AIRespawnLabel, AIRespawn,
 	UpgradesLabel, Upgrades, Upgrade, Exit, HiddenDefault };
@@ -2690,6 +2690,23 @@ class OptionsDialog: Menu {
 		w = 0.18;
 		text = "Spy Satellite...";
 		action = "btnSpySat = true";
+	};
+
+	class RadioONBG: SelectedBG {
+		idc = IDC + 24
+		x = 0.80;
+		y = 0.0;
+		w = 0.15;
+		h = 0.03;
+	};
+	class RadioONBtn: Button {
+		idc = IDC + 25
+		x = 0.80;
+		y = 0.0;
+		w = 0.15;
+		h = 0.03;
+		text = "Receive Radio";
+		action = "btnRadioON = true";
 	};
 };
 class GameOverDialog: Menu {

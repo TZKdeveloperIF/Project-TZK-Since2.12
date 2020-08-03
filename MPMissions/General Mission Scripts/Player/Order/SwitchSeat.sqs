@@ -15,7 +15,7 @@ _target = objNull; goto "StartSwitch"
 
 #SwitchNotCargo
 ? _unit == (call format ["%1 _vehicle", _seat]): exit
-? 1 != call format ["%1", typeOf _vehicle GetVehicleParam format ["has%1", _seat]]: exit
+? 1 != ([_vehicle, _seat] call funcVehParamHasSeat): exit
 _target = (call format ["%1 _vehicle", _seat])
 ? !isNull _target && !local _target: exit
 
