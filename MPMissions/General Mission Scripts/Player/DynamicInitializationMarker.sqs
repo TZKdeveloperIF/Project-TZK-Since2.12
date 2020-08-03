@@ -6,6 +6,11 @@ hiddenMarkerPos = [-1000, -1000]
 _colorPurple = "ColorDarkPurple_xj400"; _colorOrange = "ColorOrange_xj400"
 ; ? bool_TZK_Vanilla_Mode: _colorPurple = "ColorBlack", _colorOrange = "ColorRedAlpha"
 
+
+maxVehicleMarkers = 150
+maxStructureMarkers = 50; mutexMarkerStructure = false
+? bool_TZK_199_Mode: goto "SkipCreation"
+
 _marker = "TZK_Info"; createMarker [_marker, [2560,1024] ]; _marker setMarkerSize [0,0]; _marker setMarkerColor _colorPurple;  _marker setMarkerType "Warning"; 
 _marker setMarkerText "Mod Version: @TZK_4.0.0. Check ""Notes"" for more info."
 
@@ -24,7 +29,6 @@ _i = 0
 	? _i < countTargetMarkers : goto "TargetMarker"
 
 _i = 0
-maxStructureMarkers = 50; mutexMarkerStructure = false
 #StructureMarker
 	_marker = format["Structure_%1_%2", si0, _i]; 	createMarker [_marker, hiddenMarkerPos]
 	_marker = format["Structure_%1_%2", si1, _i]; 	createMarker [_marker, hiddenMarkerPos]
@@ -65,7 +69,6 @@ _marker = "ImpactPoint_4"; createMarker [_marker, hiddenMarkerPos]; _marker setM
 
 
 _i = 0
-maxVehicleMarkers = 150
 #VehicleMarker
 	_marker = format["Vehicle_%1_%2", si0, _i]; 	createMarker [_marker, hiddenMarkerPos];
 	_marker = format["Vehicle_%1_%2", si1, _i]; 	createMarker [_marker, hiddenMarkerPos];
@@ -125,10 +128,9 @@ _marker = "Respawn_vehicle_east"; createMarker [_marker, hiddenMarkerPos]; _mark
 _marker = "Respawn_vehicle_guerrila"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerColor "ColorBlack";  _marker setMarkerType "Start";
 _marker = "Respawn_vehicle_civilian"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerColor "ColorWhite";  _marker setMarkerType "Start";
 	
-
+#SkipCreation
 _si = sides find (side player)
 ? _si == -1 : _si = siCiv
 [_si] exec "Player\InitMarkers.sqs"
-
 
 ; EOF

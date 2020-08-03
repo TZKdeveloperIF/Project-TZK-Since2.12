@@ -24,6 +24,7 @@ _type = _vehicleRearm call funcGetUnitTypeFromObject
 ? (_type in vSixfoldRearmTime): _timeRearm = 30*6
 ? (_type in vTenfoldRearmTime): _timeRearm = 30*10
 ? dev : _timeRearm = 5
+? bool_TZK_199_Mode && _timeRearm > 30: _timeRearm = 30
 
 
 ? _type == -1 : goto "CheckStruct"
@@ -74,19 +75,23 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
 	? _cost < 50 : _cost = 50
 	? _cost > _money : _msg = format["Not enough money for rearm. ($%1 needed)", _cost]; goto "Exit"
 
-  if (local _vehicleRearm) then { { _vehicleRearm removeMagazines _x } foreach (magazines _vehicleRearm) } else { [_vehicleRearm] exec "Common\SendVehicleMagsRemove.sqs" }
-  vehiclesRearming set [count vehiclesRearming, _vehicleRearm]
-  _msg = format["Rearm started, ready in %1s ...", _timeRearm]
-  ? _unit == player : hint _msg
-  _unit groupChat _msg
-  _timeComplete = time + _timeRearm
-  #Loop
-	 _vehicleRearm say "Rearming_xj400";
-	~5
-  	? !(alive _vehicleRearm) : _msg = "Rearm failed. Vehicle destroyed."; goto "Exit"
-  	? !(alive _support) : _msg = "Rearm failed. Support vehicle destroyed."; goto "Exit"
-	  ? (_vehicleRearm distance _support) > 4*rangeSupport : if (([positionAttach, (getPos _vehicleRearm)] call funcDistH) > 100 && ([positionAttach, (getPos _support)] call funcDistH) > 100) then {_msg = "Rearm failed. Support vehicle out of range."; goto "Exit"}
-	  ? time < _timeComplete : goto "Loop"
+	if (local _vehicleRearm) then { { _vehicleRearm removeMagazines _x } foreach (magazines _vehicleRearm) } else { [_vehicleRearm] exec "Common\SendVehicleMagsRemove.sqs" }
+	vehiclesRearming set [count vehiclesRearming, _vehicleRearm]
+	_msg = format["Rearm started, ready in %1s ...", _timeRearm]
+	? _unit == player : hint _msg
+	_unit groupChat _msg
+	_timeComplete = time + _timeRearm
+	_text = "Rearming "
+	? player in _vehicleRearm: hint _text
+	#Loop
+		 _vehicleRearm say "Rearming_xj400";
+		~5
+		? !(alive _vehicleRearm) : _msg = "Rearm failed. Vehicle destroyed."; goto "Exit"
+		? !(alive _support) : _msg = "Rearm failed. Support vehicle destroyed."; goto "Exit"
+		? (_vehicleRearm distance _support) > 4*rangeSupport : if (([positionAttach, (getPos _vehicleRearm)] call funcDistH) > 100 && ([positionAttach, (getPos _support)] call funcDistH) > 100) then {_msg = "Rearm failed. Support vehicle out of range."; goto "Exit"}
+		_text = _text + "."
+		? player in _vehicleRearm: hint _text
+		? time < _timeComplete : goto "Loop"
 
   ? count (magazines _vehicleRearm) == 0 : [_vehicleRearm] exec "Common\Msg\sRearmVehGeneral.sqs"
   ? (_type in vSixfoldRearmTime) : _vehicleRearm say "NuclearMissileReady_xj400"

@@ -13,8 +13,8 @@ _driver moveInGunner _this
 
 _timeAbort = time + 5
 @(_driver == gunner _this || time > _timeAbort)
-; The result of "GetVehicleParam" is undefined type thus not allow to compute/compare it directly. Need to "call" or use "format" first.
-; However this command is no use here. Although assigned, player switched to gunner still can't be the leader of the car.
+; The result of "Get...Param" is undefined type thus not allow to compute/compare it directly. Need to "call" or use "format" first.
+; However this command is no use here. Although assigned, player switched to gunner still can't be the leader of the car. Actually requires all units "EJECT".
 ; ? call (typeOf _vehicle GetVehicleParam "driverIsCommander") == 1 : _driver assignAsDriver _vehicle
 ? !boole_Refresh_Radio : boole_Refresh_Radio = true
 

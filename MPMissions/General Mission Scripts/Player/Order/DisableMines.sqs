@@ -35,7 +35,7 @@ _timeAbort = time + 2*60
 ? call orderCheck: exit
 ? time > _timeAbort: _unit groupchat "No mines found. Disable mine order aborted."; exit
 _pos = [getPos _unit, 10, 200] call funcGetRandomPos
-_mine = nearestObjectDistance [_pos, ammoMine, viewDistance/10]
+_mine = if !bool_TZK_199_Mode Then {nearestObjectDistance [_pos, ammoMine, viewDistance/10]} Else {nearestObject [_pos, ammoMine]}
 ? isNull _mine: goto "Search"
 
 _pos = getPos _mine

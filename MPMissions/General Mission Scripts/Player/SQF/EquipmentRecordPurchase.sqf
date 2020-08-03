@@ -12,7 +12,7 @@ _magTypes = []; { _magTypes = _magTypes + [_x select 0] } forEach (_mags0 + _mag
 
 {
 	_mt = _x;
-	if (!(_mt in RespawnMagazine) && _mt != -1) then {
+	if (!(_mt in RespawnMagazine) && _mt != -1 && !bool_TZK_199_Mode) then {
 		_ammunition = ("_x == _mt" count _magTypes)*(call format ["%1", (equipSearch select _mt) GetWeaponParam "count"]);
 		RespawnMagazine set [count RespawnMagazine, _mt]; RespawnAmmunition set [count RespawnAmmunition, _ammunition];
 	};

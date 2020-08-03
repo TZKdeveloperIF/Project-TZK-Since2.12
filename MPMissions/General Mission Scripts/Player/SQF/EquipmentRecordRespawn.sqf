@@ -10,7 +10,7 @@ _weapons = _this select 0; _mags = _this select 1;
 
 {
 	_mag = _x; _mt = equipSearch find _mag;
-	if (!(_mt in RespawnMagazine) && _mt != -1) then {
+	if (!(_mt in RespawnMagazine) && _mt != -1 && !bool_TZK_199_Mode) then {
 		_ammunition = ("_x == _mag" count _mags)*(call format ["%1", _mag GetWeaponParam "count"]);
 		RespawnMagazine set [ count RespawnMagazine, _mt ];
 		RespawnAmmunition set [ count RespawnAmmunition, _ammunition ];

@@ -1,0 +1,18 @@
+; args: [unit]
+
+~0.1
+
+_unit = _this select 0
+? !local _unit: Exit
+
+_unit disableAI "TARGET"; _unit disableAI "AUTOTARGET"; _unit disableAI "MOVE"
+
+? !bool_TZK_199_Mode: _unit allowDammage false, exit
+
+#KeepAlive
+@(!alive _unit)
+? isNull _unit: exit
+_unit setDammage 0
+goto "KeepAlive"
+
+; EOF

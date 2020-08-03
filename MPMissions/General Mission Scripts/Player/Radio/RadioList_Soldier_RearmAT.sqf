@@ -18,7 +18,7 @@ if ((_found select 1) > rangeSupport) then {hint "No Rearm Vehicle Nearby."} els
 			_index = weaponSearch find _wpnSec;
 			if (_index != -1) then {_salvage = _salvage + ([_index] call loadFile "Player\SQF\EquipmentRespawnWeapon.sqf")};
 			_index = equipSearch find _wpnSec;
-			if (_index != -1) then {
+			if (_index != -1 && !bool_TZK_199_Mode) then {
 				_magazinesArray = magazinesarray _unit; _magIndex = 0; _count = count _magazinesArray;
 				while "_magIndex < _count" do {
 					if ((_magazinesArray select _magIndex) == _wpnSec) then {

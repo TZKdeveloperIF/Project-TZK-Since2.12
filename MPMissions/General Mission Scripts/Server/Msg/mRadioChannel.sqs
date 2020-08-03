@@ -1,0 +1,12 @@
+#Start
+@(pvRadioAct != -1)
+
+~0.5
+_value = 1000000; _var = ""
+
+{if (call ("pvRadio" + _x + format ["%1", si0] + " > 0 &&" + "pvRadio" + _x + format ["%1", si0] + "< _value")) Then {call ("_value = " + "pvRadio" + _x + format ["%1", si0] + "; _var = " + format ["{%1}", "pvRadio" + _x + format ["%1", si0]])}} forEach callsigns
+{if (call ("pvRadio" + _x + format ["%1", si1] + " > 0 &&" + "pvRadio" + _x + format ["%1", si1] + "< _value")) Then {call ("_value = " + "pvRadio" + _x + format ["%1", si1] + "; _var = " + format ["{%1}", "pvRadio" + _x + format ["%1", si1]])}} forEach callsigns
+{if (call ("pvRadio" + _x + format ["%1", siCiv] + " > 0 &&" + "pvRadio" + _x + format ["%1", siCiv] + "< _value")) Then {call ("_value = " + "pvRadio" + _x + format ["%1", siCiv] + "; _var = " + format ["{%1}", "pvRadio" + _x + format ["%1", siCiv]])}} forEach callsigns
+
+pvRadioAct = -1; call format ["%1 = -1; publicVariable {%1}", _var]
+goto "Start"

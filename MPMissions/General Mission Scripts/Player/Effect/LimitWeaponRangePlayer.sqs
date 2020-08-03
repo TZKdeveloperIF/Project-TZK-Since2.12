@@ -14,10 +14,11 @@ _shell = nearestObject [_vehicle, _ammo]
 ? _ammo != "MortarShell": goto "SkipMortarCheck"
 ? !(_mode in ["M16MortarLauncher_TZK_xj400","AK47MortarLauncher_TZK_xj400","AK74MortarLauncher_TZK_xj400"]): goto "SkipMortarCheck"
 	; Important. Don't forget the return value of "speed" is km/h
-	_position = getPos _shell; _velocity = velocity _shell; _dir = vectorDir _shell; _scale = 3.6 * 70/(speed _shell);
-	deleteVehicle _shell
+	_position = getPos _shell; _velocity = velocity _shell; _scale = 3.6 * 70/(speed _shell);
 	_velocity = [_velocity, _scale] call funcVectorScale
-	_shell = createShell ["MortarShell", _position, _velocity, _vehicle, objNull]; _shell setVectorDirAndUp [_dir, [0,0,1]]
+	_shell setVelocity _velocity
+;	? bool_TZK_199_Mode: _shell setVelocity _velocity
+;	? !bool_TZK_199_Mode: _dir =  _shell, deleteVehicle _shell, _shell = createShell ["MortarShell", _position, _velocity, _vehicle, objNull]; _shell  [_dir, [0,0,1]]
 #SkipMortarCheck
 
 ~1

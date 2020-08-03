@@ -10,7 +10,7 @@ _uid = [_unit, siPlayer, giPlayer] call funcCalcUID
 ? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
 _id = (playerOrderID select _uid) + 1; [_uid, _id] exec "Player\Order\New.sqs"
 
-_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _actualTarget = typeOf _target camCreate getPosASL _target; _actualTarget allowDammage false
+_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _actualTarget = typeOf _target camCreate getPosASL _target; _actualTarget exec {Common\Command\allowDamageFalse.sqs}
 ? !(_unit in PlayerShootingUnits): PlayerShootingUnits set [_uid, _unit]
 #CheckDistance
 _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is outside viewDistance. Order aborted."
@@ -36,7 +36,7 @@ _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is out
 	_vehicle reveal _actualTarget
 	_vehicle doTarget _actualTarget
 	
-	_weapon = (_typeName GetVehicleParamArray "weapons") select 0
+	_weapon = (_vehicle call funcVehParamWeapons) select 0
 	_delay = 3
 	; Delay for turning the turret. It'll be good to obtain proper value by the angle's difference, however no way to compute this in OFP.
 	? _typeName in ["TOS1_TZK_xj400", "M109A6G_xj400", "PLZ05_TZK_xj400"]: [_vehicle, 1] exec {Player\Effect\DeployChange.sqs}; _delay = [5, 8] select (fuel _vehicle > 0)
@@ -50,6 +50,8 @@ _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is out
 	#AttackCheck
 		_posTarget = [getPos _target, 0, _dispersion] call funcGetRandomPos; _posTarget set [2,0]; _actualTarget setPos _posTarget
 		? _unit distance _target > _distLimit: goto "CheckDistance"
+		? bool_TZK_199_Mode: goto "Mode199"
+		
 		? _vehicle ammo _weapon == 0: _magazines = _vehicle call loadFile "Common\SQF\GetNotEmptyMags.sqf"; _validMags = [_weapon] call loadFile "Common\SQF\WeaponValidMags.sqf"; if ("_x in _validMags" count _magazines == 0) Then {goto "CheckRearm"};
 		_vehicle reveal _actualTarget
 		~0.1
@@ -67,6 +69,28 @@ _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is out
 		_ammoArray = _vehicle ammoArray _weapon
 		? count _ammoArray > 0: if (_ammoArray select 1 == 1) Then {_reloadMagazine = true}; if (_ammoArray select 1 > 0) Then {if ((_ammoArray select 1 != _ammunition) || (_ammoArray select 1 == 1)) Then {_ammunition = _ammoArray select 1; _vehicle fire _weapon}} else {_unit groupChat "Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."; goto "Exit"}
 		? count _ammoArray == 0: _unit groupChat "Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."; goto "Exit"
+		goto "AttackDone"
+		
+		#Mode199
+		
+		? _vehicle ammo _weapon == 0: if !(someAmmo _vehicle) Then {goto "CheckRearm"};
+		_vehicle reveal _actualTarget
+		~0.1
+		_vehicle doTarget _actualTarget
+		
+		; delay must be correctly assigned for "fire" command.
+		_ammoOld = _vehicle ammo _weapon
+		_delay = ( ([0,8] select (true) ) + ([0,0] select (true)) )*1.2 + 1
+		~0.1
+		? _reloadMagazine: _delay = ([0,5] select (true) ) + _delay; _reloadMagazine = false
+		~_delay
+		? call orderCheck : goto "Exit"
+		? !(alive _unit) || _vehicle != vehicle _unit: goto "Exit"
+		_ammoNow = _vehicle ammo _weapon
+		? _ammoNow > 0: if (_ammoNow == 1) Then {_reloadMagazine = true}; if (_ammoNow != _ammunition || _ammoNow == 1) Then {_ammunition = _ammoNow, _vehicle fire _weapon}
+		? _ammoNow == 0: if (_ammoOld == 0) Then {_unit groupChat "Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."; goto "Exit"}
+		
+		#AttackDone
 		~0.1
 		_vehicle doWatch (getPos _actualTarget)
 	goto "AttackCheck"
@@ -91,8 +115,9 @@ _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is out
 		? time > _timeAbort: _unit groupChat "Cost too much time. Unable to reach support vehicle. Order aborted."; goto "Exit"
 		? (_unit distance _sup) > 30: goto "MoveToSupport"
 	_speed = -1; _mag = "";
-	_magazines = magazines _vehicle; _validMags = [_weapon] call loadFile "Common\SQF\WeaponValidMags.sqf"; {if (_x in _validMags) Then {_mag = _x}} forEach _magazines
-	? _mag != "": _speed = substr [_mag, sizeofstr(_mag) - sizeofstr("xxxx_xj400"), sizeofstr(_mag) - sizeofstr("_xj400")]; if !(substr [_speed, 0, 1] in ["0","1","2","3"]) then {_speed = -1} else {_speed = call _speed}; _delay = [0,3] select (_speed > 0)
+	? !bool_TZK_199_Mode: _magazines = magazines _vehicle; _validMags = [_weapon] call loadFile "Common\SQF\WeaponValidMags.sqf"; {if (_x in _validMags) Then {_mag = _x}} forEach _magazines
+	? _mag != "": _speed = substr [_mag, sizeofstr(_mag) - sizeofstr("xxxx_xj400"), sizeofstr(_mag) - sizeofstr("_xj400")]; if !(substr [_speed, 0, 1] in ["0","1","2","3"]) then {_speed = -1} else {_speed = call _speed};
+	_delay = [0,3] select (_speed > 0)
 	_unit groupChat "Rearming at support vehicle."; [_unit, _sup] exec "Player\Rearm.sqs"; doStop _unit
 	#WaitRearmComplete
 		~5

@@ -49,9 +49,9 @@ _timeRepairsComplete = time + _timeRepair
 	? (damage _vehicle) > _damage : _msg = "Repairs aborted, vehicle hit."; goto "RepairsAborted"
 	? time > _timeRepairsComplete : goto "RepairsComplete"
 
-	; _lastText = _text
-	; _text = format ["Reparing Vehicle %1%2", 100 - (100*(_damageVirtual - (_damageVirtual % 0.01))), "%"]
-	; ? (_unit == player && _text != _lastText): titleText [_text, "PLAIN", 0.05]
+	_damageVirtual = (damage _vehicle)/_timeRepair * (_timeRepair - _time)
+	_text = format ["Reparing Vehicle %1%2", 100 - (100*(_damageVirtual - (_damageVirtual % 0.01))), "%"]
+	? player in _vehicle: titleText [_text, "PLAIN DOWN", 0.05]
 	~1
 	goto "Repair"
 

@@ -38,7 +38,12 @@ funcCalcDistanceToObject = {[_this select 0, getPos (_this select 1)] call funcD
 funcCalcUnitPlacementPosDir = preprocessFile "Common\SQF\CalcUnitPlacementPosDir.sqf"
 funcCountUnits = preprocessFile "Common\SQF\CountUnits.sqf"
 funcGetCargoNum = "count (crew _this - [driver _this, gunner _this, commander _this])"
-funcGetTranspVol = "call (typeOf _this GetVehicleParam {transportSoldier})"
+funcGetTranspVol = if !bool_TZK_199_Mode Then {"call (typeOf _this GetVehicleParam {transportSoldier})"} Else {preprocessFile "Common\SQF\GetTranspVol.sqf"}
+funcVehParamHasSeat = if !bool_TZK_199_Mode Then { {call format ["%1", typeOf (_this select 0) GetVehicleParam format ["has%1", _this select 1]]} } Else {preprocessFile "Common\SQF\VehParamHasSeat.sqf"}
+funcVehParamWeapons = if !bool_TZK_199_Mode Then { {typeof _this GetVehicleParamArray "weapons"} } Else {preprocessFile "Common\SQF\VehParamWeapons.sqf"}
+funcVehParamMagazines = if !bool_TZK_199_Mode Then { {typeof _this GetVehicleParamArray "magazines"} } Else {preprocessFile "Common\SQF\VehParamMagazines.sqf"}
+funcVehParamweaponSlots = if !bool_TZK_199_Mode Then { {call format ["%1", typeOf _this GetVehicleParam "weaponSlots"]} } Else {preprocessFile "Common\SQF\VehParamweaponSlots.sqf"}
+
 
 funcGetClosestTown = preprocessFile "Common\SQF\GetClosestTown.sqf"
 funcGetClosestEnemyTown = preprocessFile "Common\SQF\GetClosestEnemyTown.sqf"

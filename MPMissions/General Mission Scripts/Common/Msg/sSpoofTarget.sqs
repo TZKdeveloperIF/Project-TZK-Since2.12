@@ -1,0 +1,12 @@
+; args [vehicle]
+_vehicle = _this select 0
+
+@!(mutexSpoofTarget)
+mutexSpoofTarget = true
+
+pvSpoofTarget = _vehicle, publicVariable "pvSpoofTarget"
+~sendDelay
+
+mutexSpoofTarget = false
+
+; EOF

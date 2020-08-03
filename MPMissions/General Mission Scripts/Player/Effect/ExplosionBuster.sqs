@@ -15,7 +15,8 @@ _count = _count + 1
 _Rndx = Random _k; _Rndx2 = _Rndx -_k2
 _Rndy = Random _k; _Rndy2 = _Rndy -_k2
 
-_LaserGuidedBomb = createShell ["TimeBomb", [_x + _Rndx2,_y + _Rndy2, 0], [0,0,0], _plane, objNull];
+? !bool_TZK_199_Mode: _LaserGuidedBomb = createShell ["TimeBomb", [_x + _Rndx2,_y + _Rndy2, 0], [0,0,0], _plane, objNull];
+? bool_TZK_199_Mode: _LaserGuidedBomb = "TimeBomb" camCreate [_x + _Rndx2,_y + _Rndy2, 0]
 ~0.3
 ? _count > 40 : exit
 goto "Buster"

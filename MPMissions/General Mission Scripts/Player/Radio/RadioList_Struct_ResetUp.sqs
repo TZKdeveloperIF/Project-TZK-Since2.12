@@ -1,6 +1,8 @@
 ; args: [vehicle]
 _vehicle = _this select 0
 
+? bool_TZK_199_Mode: player sideChat "(set)Vector... commands are only available in 2.01 version but not 1.96 OFP or 1.99 ACWA. Order Aborted.", exit
+
 _bool = (1 != VectorUp _vehicle select 2)
 ; _vehicle setDir getDir _vehicle
 if _bool then {_vehicle setVectorUp [0,0,1]} else {_vehicle setVectorUp (getPos _vehicle call funcVectorUp)}

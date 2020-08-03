@@ -20,11 +20,13 @@ _limitWeaponRangeFactor = _this select 1;
 _shell = nearestObject [_vehicle, _ammo]; _effectShell = objNull;
 
 _booleShell = false; _sizeOfShell = 0;
-if (_weapon in ["Gun73"]) then {_booleShell = true; _sizeOfShell = 73};
-if (_weapon in ["Gun105", "Gun105_xj400"]) then {_booleShell = true; _sizeOfShell = 105};
-if (_weapon in ["M1Gun_xj400","M12Gun_xj400","LeoGun_xj400","Gun120"]) then {_booleShell = true; _sizeOfShell = 120};
+if (_weapon in ["Gun73", "MFCTI116BMP1Gun"]) then {_booleShell = true; _sizeOfShell = 73};
+if (_weapon in ["M252Launcher"]) then {_booleShell = true; _sizeOfShell = 81};
+if (_weapon in ["Gun105", "Gun105_xj400", "MFCTI116M60Gun","MFCTI116M60A3Gun","MFCTI116M1Gun"]) then {_booleShell = true; _sizeOfShell = 105};
+if (_weapon in ["M1Gun_xj400","M12Gun_xj400","LeoGun_xj400","Gun120", ,"MFCTI116M1A1Gun"]) then {_booleShell = true; _sizeOfShell = 120};
 if (_weapon in ["Gun122_xj400"]) then {_booleShell = true; _sizeOfShell = 122};
-if (_weapon in ["T80Gun_xj400","T90Gun_xj400","T90msGun_xj400","PLAGun_xj400","Gun125", "Sprut_2A75_xj400"]) then {_booleShell = true; _sizeOfShell = 125};
+if (_weapon in ["T80Gun_xj400","T90Gun_xj400","T90msGun_xj400","PLAGun_xj400","Gun125", "Sprut_2A75_xj400", 
+				"MFCTI116T72Gun","MFCTI116T72BGun","MFCTI116T80Gun","MFCTI116T80BGun","MFCTI116T80UGun"]) then {_booleShell = true; _sizeOfShell = 125};
 if (_weapon in ["Gun130_xj400"]) then {_booleShell = true; _sizeOfShell = 130};
 if (_weapon in ["Gun155_xj400","PLA155Gun_xj400"]) then {_booleShell = true; _sizeOfShell = 155};
 
@@ -44,13 +46,13 @@ if (local _shell) then {
 } else {
 	if (boole_Global_Bullet_Tracer || boole_Global_Cannon_Tracer || boole_Global_Shell_Tracer) then
 	{
-		_position = getPos _shell; _velocity = velocity _shell; _dir = vectorDir _shell;
+		_position = getPos _shell; _velocity = velocity _shell; // _dir =  _shell;
 
 		// Because Sabot, Heat, Missile, etc, will detonate bullet, thus it's necessary to create effect away from actual ammo when they're shell or missile.
 		if (_booleShell) then {_x = _position select 0; _y = _position select 1; _z = _position select 2; _position = [_x, _y, _z + 1000]};
 
 		_effectShell = "EffectBullet0_xj400" camCreate _position;
-		_effectShell setVectorDirAndUp [_dir, [0,0,1]];
+	//	_effectShell  [_dir, [0,0,1]];
 		_effectShell setVelocity _velocity;
 	};
 };
@@ -60,7 +62,7 @@ if (local _shell) then {
 if (!isNull _effectShell) then {
 	// SLX MG Hit Effect
 	_type = typeOf _shell;
-	if ( _type in ["CoaxW_xj400","CoaxE_xj400","50calW_xj400","50calE_xj400","Bullet7_6","Bullet12_7"] ) then {
+	if ( _type in ["CoaxW_xj400","CoaxE_xj400","50calW_xj400","50calE_xj400","Bullet7_6","Bullet12_7", "MFCTI116Bullet12_7","MFCTI116Bullet7_6"] ) then {
 		if ((boole_Local_Bullet_Tracer && local _shell) || (boole_Global_Bullet_Tracer && !local _shell)) then {[_effectShell] exec {Player\Effect\Fired_SLX_MG.sqs}};
 	};
 

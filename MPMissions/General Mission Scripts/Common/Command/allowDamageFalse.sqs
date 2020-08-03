@@ -1,0 +1,14 @@
+; args: vehicle
+
+_vehicle = _this
+? !local _vehicle: Exit
+
+? !bool_TZK_199_Mode: _vehicle allowDammage false, exit
+
+#KeepAlive
+@(damage _vehicle > 0 || isNull _vehicle)
+? isNull _vehicle: exit
+_vehicle setDammage 0
+goto "KeepAlive"
+
+; EOF

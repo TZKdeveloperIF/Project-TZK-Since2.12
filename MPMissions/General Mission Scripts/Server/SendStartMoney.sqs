@@ -1,59 +1,36 @@
 ; args: none
-
-_si = si0
-_groups = groupMatrix select _si
-_countGroups = count _groups
-_countPlayers = count ((groupMatrix select _si) - (groupAiMatrix select _si))
-? _countGroups == 0 : goto "Side0Empty"
-_startMoney = startMoney select _si
-_startMoneyPlayer = startMoneyPlayer select _si
-while "_countPlayers*_startMoneyPlayer > 0.5*_startMoney" do { _startMoneyPlayer = 0.5*_startMoneyPlayer }
-? !dev && (groupMatrix select _si select 0) in (groupAiMatrix select _si): if (_countPlayers > 0) Then {_startMoneyPlayer = 0.5*_startMoney/_countPlayers}
-? !dev && _startMoneyPlayer > 8000: _startMoneyPlayer = 8000
-_startMoneyPlayer = _startMoneyPlayer - (_startMoneyPlayer % 1)
-_moneyRequest = moneyRequest select _si
-_index = 0
-#InitSide0Money
-	_group = _groups select _index
-	? _group == (groupCommander select _si) : _commanderIndex = _index; goto "SkipGroupSide0"
-	? _group in (groupAiMatrix select _si) : goto "SkipGroupSide0"
+_i = 0; _siArray = [si0, si1]; _c = count _siArray
+#Loop
+	_si = _siArray select _i
+	_groups = groupMatrix select _si
+	_countGroups = count _groups
+	_countPlayers = count ((groupMatrix select _si) - (groupAiMatrix select _si))
+	? _countGroups == 0 : goto "SideEmpty"
 	
-	[_si, _index, _startMoneyPlayer, 1] exec "Server\MoneyAdd.sqs"
-	_startMoney = _startMoney - _startMoneyPlayer
+	_startMoney = startMoney select _si
+	_startMoneyPlayer = startMoneyPlayer select _si
+	? !dev && (groupMatrix select _si select 0) in (groupAiMatrix select _si): if (_countPlayers > 0) Then {_startMoneyPlayer = 0.5*_startMoney/_countPlayers}
+	? !dev && _startMoneyPlayer > 8000: _startMoneyPlayer = 8000
+	? bool_TZK_199_Mode: _startMoneyPlayer = 2000
+	while "_countPlayers*_startMoneyPlayer > 0.5*_startMoney" do { _startMoneyPlayer = 0.5*_startMoneyPlayer }
 
-	#SkipGroupSide0
-  _moneyRequest set [_index, 0]
+	_startMoneyPlayer = _startMoneyPlayer - (_startMoneyPlayer % 1)
+	_moneyRequest = moneyRequest select _si
+	_index = 0
+	#InitSideMoney
+		_group = _groups select _index
+		? _group == (groupCommander select _si) : _commanderIndex = _index; goto "SkipGroupSide"
+		? _group in (groupAiMatrix select _si) : goto "SkipGroupSide"
+		
+		[_si, _index, _startMoneyPlayer, 1] exec "Server\MoneyAdd.sqs"
+		_startMoney = _startMoney - _startMoneyPlayer
 
-	_index = _index + 1
-	? (_index < _countGroups): goto "InitSide0Money"
-[_si, _commanderIndex, _startMoney, 1] exec "Server\MoneyAdd.sqs"
-#Side0Empty
+		#SkipGroupSide
+		_moneyRequest set [_index, 0]
 
-_si = si1
-_groups = groupMatrix select _si
-_countGroups = count _groups
-_countPlayers = count ((groupMatrix select _si) - (groupAiMatrix select _si))
-? _countGroups == 0 : goto "Side1Empty"
-_startMoney = startMoney select _si
-_startMoneyPlayer = startMoneyPlayer select _si
-while "_countPlayers*_startMoneyPlayer > 0.5*_startMoney" do { _startMoneyPlayer = 0.5*_startMoneyPlayer }
-? !dev && (groupMatrix select _si select 0) in (groupAiMatrix select _si): if (_countPlayers > 0) Then {_startMoneyPlayer = 0.5*_startMoney/_countPlayers}
-? !dev && _startMoneyPlayer > 8000: _startMoneyPlayer = 8000
-_startMoneyPlayer = _startMoneyPlayer - (_startMoneyPlayer % 1)
-_moneyRequest = moneyRequest select _si
-_index = 0
-#InitSide1Money
-	_group = _groups select _index
-	? _group == (groupCommander select _si) : _commanderIndex = _index; goto "SkipGroupSide1"
-	? _group in (groupAiMatrix select _si) : goto "SkipGroupSide1"
-	
-	[_si, _index, _startMoneyPlayer, 1] exec "Server\MoneyAdd.sqs"
-	_startMoney = _startMoney - _startMoneyPlayer
-
-	#SkipGroupSide1
-  _moneyRequest set [_index, 0]
-
-	_index = _index + 1
-	? (_index < _countGroups): goto "InitSide1Money"
-[_si, _commanderIndex, _startMoney, 1] exec "Server\MoneyAdd.sqs"
-#Side1Empty
+		_index = _index + 1
+		? (_index < _countGroups): goto "InitSideMoney"
+	[_si, _commanderIndex, _startMoney, 1] exec "Server\MoneyAdd.sqs"
+	#SideEmpty
+	_i = _i + 1
+	? _i < _c: goto "Loop"

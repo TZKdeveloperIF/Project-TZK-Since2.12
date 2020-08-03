@@ -6,7 +6,8 @@ _vehicle = _this select 0; _speed = _this select 1
 ; Make sure the Gunner is LOCAL.
 ; ==================== MP weapon/magazine controlling. ====================
 
-_mainWeapon = (typeOf _vehicle GetVehicleParamArray "weapons") select 0
+_mainWeapon = (_vehicle call funcVehParamWeapons) select 0
+? bool_TZK_199_Mode: goto "Ver199"
 
 _magazines = magazines _vehicle; _validMags = [_mainWeapon] call loadFile "Common\SQF\WeaponValidMags.sqf"; 
 _oldMags = []; {if (_x in _validMags && !(_x in _oldMags)) then {_oldMags set [count _oldMags, _x]}} forEach _magazines
@@ -23,5 +24,10 @@ _newMag = substr [_oldMag, 0, _size - 10] + _strSpeed + "_xj400"
 ; Both Gunner and Vehicle is LOCAL here.
 [_vehicle, _oldMag, _newMag] exec "Common\ReEquip\SwitchMagazine.sqs"; exit
 ; ==================== MP weapon/magazine controlling. ====================
+
+#Ver199
+? !local _vehicle: { if (_x != "MachineGun12_7_xj400") Then {_vehicle removeMagazines _x} } forEach (magazines _vehicle), _this exec "Common\Msg\sSwitchMagazine.sqs", exit
+; Both Gunner and Vehicle is LOCAL here.
+[_vehicle, 0, _speed] exec "Common\ReEquip\SwitchMagazine.sqs"; exit
 
 ; EOF

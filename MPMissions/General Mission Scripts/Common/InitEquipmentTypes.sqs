@@ -562,6 +562,7 @@ _type = _type + 1
 
 weaponDefs set [_type, ["G36", si0, wtPrimary, "G36a", "\G36a\w_g36", [[_atG36,4]],50 ]] 
 weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtG36a = _type
 _type = _type + 1
 
 weaponDefs set [_type, ["HK", si0, wtPrimary, "HK", "\dtaExt\equip\w\w_hk", [[_atHK,4]],30]] 
@@ -770,6 +771,7 @@ _type = _type + 1
 
 weaponDefs set [_type, ["Remigton", -1, wtPrimary, "HuntingRifle", "\O_wp\w_remigton", [[_atHRiffle,4]],100 ]] 
 weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtRemigton = _type
 _type = _type + 1
 
 weaponDefs set [_type, ["Kasapanos", siBoth, wtSecondary, "KasaThrow_xj400", "\TZK_Texture_4_0_0\Picture\kyl_kasapanos.jpg", [[_kasap,3]],40 ]] 
@@ -812,8 +814,10 @@ weaponDefs select _wtM161 set [wdObject, "M16"]; weaponSearch set [_wtM161, "M16
 _entry = weaponDefs select _wtM2031; _entry set [wdObject, "M16GrenadeLauncher"]; weaponSearch set [_wtM2031, "M16GrenadeLauncher"]; _entry set [wdName, "M16 M203"]; _entry set [wdImage, "\dtaExt\equip\w\w_m16grenadelauncher.paa"]; _entry set [wdAmmoTypes, [[_atM16,4],[_atGrenade,3],[_atFlare,0],[_atFlareGreen,0],[_atFlareRed,0],[_atFlareYellow,0]] ];_entry set [wdcost,5]
 weaponDefs select _wtAK741 set [wdObject, "AK74"]; weaponSearch set [_wtAK741, "AK74"]; weaponDefs select _wtAK741 set [wdAmmoTypes, [[_atAK74,4]]]
 _entry = weaponDefs select _wtAK74GL; _entry set [wdObject, "AK74GrenadeLauncher"]; weaponSearch set [_wtAK74GL, "AK74GrenadeLauncher"]; _entry set [wdName, "AK74 GP25"]; _entry set [wdImage, "\dtaExt\equip\w\w_ak74grenadelauncher.paa"]; _entry set [wdAmmoTypes, [[_atAK74,4],[_atGrenade,3],[_atFlare,0],[_atFlareGreen,0],[_atFlareRed,0],[_atFlareYellow,0]] ];_entry set [wdcost,5]
-{weaponDefs select _x set [wdSides, -1]} forEach [_wtMP5, _wtSG551, _wtM24, _wtM82, _wtM249SPW, _wtM249SPWSD, _wtM240M145, _wtM260e4, _wtGroza, _wtSVUA, _wtVSS, _wtVAL, _wtKSVK, _wtSVDS, _wtRPK74, _wtRPK74SD, _wtPKM, _wtAEK919, _wtKasap]
+{weaponDefs select _x set [wdSides, -1]} forEach [_wtMP5, _wtSG551, _wtM24, _wtM82, _wtM249SPW, _wtM249SPWSD, _wtM240M145, _wtM260e4, _wtAK107, _wtGroza, _wtSVUA, _wtVSS, _wtVAL, _wtKSVK, _wtSVDS, _wtRPK74, _wtRPK74SD, _wtPKM, _wtAEK919, _wtKasap]
 ; weaponDefs select _wtNVGOrigin set [wdSides, siBoth]
+weaponDefs select _wtG36a set [wdSides, siBoth]
+weaponDefs select _wtRemigton set [wdSides, siBoth]
 
 {equipDefs select _x set [edSides, -1]} forEach [_atM16MortarForAI, _atAK74MortarForAI]
 {equipDefs select _x set [edObject, "Mortar"]} forEach [_atM16Mortar, _atAK74Mortar]

@@ -20,7 +20,7 @@ while "_i < _ci" do {
 		};
 		[_unit, _w, _m, _types select _i, 2, true] exec "Common\EditEquipRearmData.sqs";
 		
-		if (local _unit) then {
+		if (local _unit && !bool_TZK_199_Mode) then {
 			_mArray = magazinesArray _unit; _k = 0; _ck = count _mArray;
 			while "_k < _ck" do {
 				if ((_mArray select _k) in ["RedTop_26_xj400","RedTop_30_xj400"]) then {

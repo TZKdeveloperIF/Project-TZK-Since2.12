@@ -3,8 +3,14 @@
 _si = _this select 0
 
 _incomeRatio = 0.1*(count (groupAiMatrix select _si))
-? _incomeRatio < 0.1 : _incomeRatio = 0.1
-? _incomeRatio > 0.1 : _incomeRatio = 0.1
+
+_numberOfPlayer = (count (groupMatrix select _si)) - (count (groupAiMatrix select _si))
+? _numberOfPlayer > 9: _numberOfPlayer = 9
+_incomeRatio = 0.1 * (10 - _numberOfPlayer)
+
+
+? _incomeRatio < 0.1 && !bool_TZK_199_Mode: _incomeRatio = 0.1
+? _incomeRatio > 0.1 && !bool_TZK_199_Mode: _incomeRatio = 0.1
 
 ? call format["pvIncomeRatio%1 != _incomeRatio", _si] : call format["pvIncomeRatio%1 = _incomeRatio; PublicVariable ""pvIncomeRatio%1"" ", _si]
 

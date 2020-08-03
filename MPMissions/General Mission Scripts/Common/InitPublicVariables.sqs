@@ -1,6 +1,9 @@
 ;player globalchat "InitPublicVariables.sqs: Enter"
 
 ; VARIABLES SENT BY SERVER AND PLAYERS
+; Ver 4.0.0.10 spoof/magazine vehicle. They're using 2.01 commands but modified for 1.99 version missions.
+? bool_TZK_199_Mode: pvSpoofTarget = objNull, pvSwitchMagVeh = objNull, pvSwitchMagSpeed = -1, mutexSpoofTarget = false, mutexSwitchMagVeh = false
+; ? bool_TZK_199_Mode: {call ("pvRadio" + _x + format ["%1", si0] + " = -1;" + "pvRadio" + _x + format ["%1", si1] + " = -1;" + "pvRadio" + _x + format ["%1", siCiv] + " = -1;")} forEach callsigns, pvRadioAct = -1; mutexRadioAct = false
 
 ; Ver 2.12 v02 pvKilled
 _i = 0; _c = 5; while "_i < _c" do {call format ["pvKilledTank%1 = objNull", _i]; _i = _i + 1}; indexKilledTank = 0; mutexKilledTank = false

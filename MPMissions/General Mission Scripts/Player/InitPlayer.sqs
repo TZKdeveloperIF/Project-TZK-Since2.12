@@ -110,7 +110,7 @@ _i = 0; _count = 5; while "_i < _count" do {call Format[{[] exec "Player\Msg\mQu
 
 _targetObject = {Target_TZK_xj400}
 ; ? bool_TZK_Vanilla_Mode: _targetObject = "HeliH"
-_i = 0; countTargetMarkers = 10; while "_i < countTargetMarkers" do {call Format["TargetP_%1 = _targetObject camCreate [0,0,0]; TargetP_%1 allowDammage false", _i]; _i = _i + 1}
+_i = 0; countTargetMarkers = 10; while "_i < countTargetMarkers" do {call Format["TargetP_%1 = _targetObject camCreate [0,0,0]; TargetP_%1 exec {Common\Command\allowDamageFalse.sqs}", _i]; _i = _i + 1}
 ; Should better use camCreate than createVehicle. Its position don't have to be broadcast.
 
 ;game has begun after this pause
