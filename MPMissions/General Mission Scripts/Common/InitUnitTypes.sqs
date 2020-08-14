@@ -881,19 +881,19 @@ _t72_BE = _type
 _type = _type + 1
 
 _price = [5000, 10000] select PricingMode
-unitDefs set [_type, ["T80", _price, _si, 60, "T80_TZK_xj400", "it80", 2^_st, [3, _crewE], _mTank, []] ]
+unitDefs set [_type, ["T80", _price, _si, 60, "T80U_TZK_xj400", "it80", 2^_st, [3, _crewE], _mTank, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _t80E = _type
 _type = _type + 1
 
 _price = [5000, 10000] select PricingMode
-unitDefs set [_type, ["T90ms", _price, _si, 60, "T90ms_xj400", "\TZK_Texture_4_0_0\icon\iT90ms.paa", 2^_st, [3, _crewE], _mTank, []] ]
+unitDefs set [_type, ["T90ms", _price, _si, 60, "T90ms_TZK_xj400", "\TZK_Texture_4_0_0\icon\iT90ms.paa", 2^_st, [3, _crewE], _mTank, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _t90E = _type
 _type = _type + 1
 
 _price = [5000, 10000] select PricingMode
-unitDefs set [_type, ["ZTZ-99G", _price, _si, 60, "ZTZ99_xj400", "\TZK_Texture_4_0_0\icon\iZTZ99.paa", 2^_st, [3, _crewE], _mTank, []] ]
+unitDefs set [_type, ["ZTZ-99G", _price, _si, 60, "ZTZ99_TZK_xj400", "\TZK_Texture_4_0_0\icon\iZTZ99.paa", 2^_st, [3, _crewE], _mTank, []] ]
 if ((unitDefs select _type select udModel) in unitTypeArray) then {_i = unitTypeArray find (unitDefs select _type select udModel); _list = unitTypeData select _i; _list set [count _list, _type]} else {unitTypeData set [_type, [_type]]}; unitTypeArray set [_type, unitDefs select _type select udModel]
 _ztz99E = _type
 _type = _type + 1
@@ -1439,9 +1439,9 @@ _list = [ [_medicE, 0.1], [_sniperE, 0.5], [_bomberE, 1], [_soldierAAE, 0.5], [_
 _i = _i + 1
 
 utbTanksMixed = _i
-_list = [ [_m60W, 0.5], [_vulcanW2, 0.5], [_m2a2at, 0.5], [_m2a2aa, 0.5], [_m1a1W, 1], [_m1a2sepW, 1], [_leo2a6W, 1] ]
+_list = [ [_m60W, 0.5], [_m60A3W, 0.5], [_m2a2W, 0.5], [_m3a2W, 0.5], [_m1a1W, 1], [_m1a2sepW, 1] ]
 (unitsBuyAI select si0) set [_i, _list]
-_list = [ [_t72E, 0.5], [_tunguskaE, 0.5], [_bmp2at, 0.5], [_bmp2aa, 0.5], [_t80E, 1], [_t90E, 1], [_ztz99E, 1] ]
+_list = [ [_t72E, 0.5], [_t72_AE, 0.5], [_t72_BE, 0.5], [_bmp2E, 0.5], [_bmp2_EE, 0.5], [_t80E, 1], [_t90E, 1], [_ztz99E, 1] ]
 (unitsBuyAI select si1) set [_i, _list]
 _i = _i + 1
 
@@ -1541,11 +1541,16 @@ _i = _i + 1
 ; will not be placed when no players exist on side
 ; entry format: [type, posRelMhq]
 vehiclesStart = []
-? ( (param1 % 20) in [0,5,10,13]) : goto "lowres"
-? ( (param1 % 20) in [1,6,16,18]) : goto "lowres"
-? ( (param1 % 20) in [2,7,11,14]) : goto "midres"
-? ( (param1 % 20) in [3,8,17,19]) : goto "hires"
-? ( (param1 % 20) in [4,9,12,15]) : goto "hires2"
+; ? ( (param1 % 20) in [0,5,10,13]) : goto "lowres"
+; ? ( (param1 % 20) in [1,6,16,18]) : goto "lowres"
+; ? ( (param1 % 20) in [2,7,11,14]) : goto "midres"
+; ? ( (param1 % 20) in [3,8,17,19]) : goto "hires"
+; ? ( (param1 % 20) in [4,9,12,15]) : goto "hires2"
+? restanksx == 1: goto "lowres"
+? restanksx == 2: goto "lowres"
+? restanksx == 3: goto "midres"
+? restanksx == 4: goto "hires"
+? restanksx == 5: goto "hires2"
 
 
 
@@ -1701,154 +1706,10 @@ RadioTypesPlane = typesPlane - RadioTypesTransportPlane
 RadioTypesTransportHeli = TransportHeliW + TransportHeliE + TransportirNOHeliW + TransportirNOHeliE
 RadioTypesGunships = typesGunshipOrigin + typesGunshipAT
 
-? boole_Infantry_Mode: [] exec "Common\Init\InfantryMode.sqs"
+? boole_Infantry_Mode: call loadFile "Common\Init\InfantryMode.sqf", (upgDefs select upgTownGroupH) set [1, 999999]
 ? bool_ExtentArmor_Mode: _i = 0, _names = ["M1A1_TZK_Gun_ExtentArmor_xj400", "M1A2_TZK_Gun_ExtentArmor_xj400", "Leo2A6_Gun_ExtentArmor_xj400", "T80_TZK_Gun_ExtentArmor_xj400", "T90ms_Gun_ExtentArmor_xj400", "ZTZ99_Gun_ExtentArmor_xj400"], {_model = unitDefs select _x select udModel, _j = unitTypeArray find _model, unitTypeArray set [_j, _names select _i], unitDefs select _x set [udModel, _names select _i], _i = _i + 1} forEach typesHeavyTank
 
-? bool_TZK_Vanilla_Mode: goto "VanillaMode"
-goto "SkipVanilla"
-#VanillaMode
-; need action to take place of UA
-; SVU-A weapon, hyplerlauncher, and other equipments in "Equip" series.
-; remove units from addons including "cwkzodiac", "GST_KawaP", "RKTMod".
-
-{ unitDefs select _x set [udFactoryType, -1] } forEach [_M82A1W, _KSVKE, _quadW, _quadE, _hummerW2, _hummerW3, _brdmE2, _brdmE3, _jetskiW, _jetskiE, _zodiacW, _zodiacE, _boatW2, _boatE2, _vulcanTransp, _bmp2Cannon,  _m1a2sepW, _leo2a6W, _m109W, _m270W, _t90E, _ztz99E, _plz05E, _tos1E,  _irNO_mh6, _irNO_uh60, _uh60WMG2, _c130W, _tigerW, _tigerW2, _c130supportW, _irNO_mi2, _irNO_mi17, _mi17EMG2, _an72E, _an72supportE]
-
-? !bool_TZK_199_Mode: _i = 0; {_desc = _x, if (count (_desc select udCrew) == 0) Then {_str = _desc select udModel, _size = sizeofstr _str, if (substr [_str, _size - 6, _size] == "_xj400") Then {_str = substr [_str, 0, _size - 6]}, _desc set [udModel, _str]; unitTypeArray set [_i, _str]}, _i = _i + 1 } forEach unitDefs
-? !bool_TZK_199_Mode: {_desc = unitDefs select _x, _str = _desc select udModel, _size = sizeofstr _str, if (substr [_str, _size - 6, _size] == "_xj400") Then {_str = substr [_str, 0, _size - 6] + "_Vanilla" + "_xj400"}, _desc set [udModel, _str]; unitTypeArray set [_x, _str] } forEach ([_jeepW, jeepaW, _hummerW, _truckW, _supportTruckW, _supportTruckW2, _supportAPCW, _supportAPCWminer, _m113W, _m2a2W, _m3a2W, _m2a2d, _m2a2at, _m2a2aa, _m2a2townat, _m2a2townaad, utMCVW, utMHQ0, _uazE, uazaE, _brdmE, _truckE, _supportTruckE, _supportTruckE2, _supportAPCE, _supportAPCEminer, _bmpE, _bmp2E, _bmp2_EE, _bmp2d, _bmp2at, _bmp2Cannon, _bmp2aa, _bmp2townat, _bmp2townaad, utMCVE, utMHQ1] + typesPlane)
-
-? !bool_TZK_199_Mode: goto "Skip199ReDef"
-; Hide custom ship.
-{ unitDefs select _x set [udFactoryType, -1] } forEach [_boatCustomW, _boatCustomE]
-
-; Clumsy redefine soldiers and vehicles.
-{_str = "SoldierWAA", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [utWorkerW, _soldierAAW, _soldierAAW1]
-{_str = "SoldierWB", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_soldierW, _MortarW]
-{_str = "SoldierWG", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_soldierGLW]
-{_str = "HeavyGW", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_MM1W]
-{_str = "SoldierWMG", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_soldierMGW, _soldierMGW1]
-{_str = "SoldierWSniper", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_sniperW, _sniperW1]
-{_str = "SoldierWLAW", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_soldierLAWW, _soldierLAWW2, _soldierLAWW1]
-{_str = "SoldierWAT", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_soldierATW, _soldierATW2, _soldierATW1]
-{_str = "SoldierWSaboteurDay", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_bomberW, _customW]
-{_str = "SoldierWMiner", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_minerW]
-{_str = "SoldierWMedic", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_medicW]
-{_str = "SoldierWCrew", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_crewW]
-{_str = "SoldierWPilot", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_pilotW]
-
-{_str = "SoldierEAA", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [utWorkerE, _soldierAAE, _soldierAAE1]
-{_str = "SoldierEB", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_soldierE, _MortarE]
-{_str = "SoldierEG", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_soldierGLE]
-{_str = "HeavyGrenadier_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_6G30E]
-{_str = "SoldierEMG", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_soldierMGE, _soldierMGE1]
-{_str = "SoldierESniper", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_sniperE, _sniperE1]
-{_str = "SoldierELAW", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_soldierLAWE, _soldierLAWE2, _soldierLAWE1]
-{_str = "SoldierEAT", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_soldierATE, _soldierATE2, _soldierATE1]
-{_str = "SoldierESaboteurBizon_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_bomberE, _customE]
-{_str = "SoldierEMiner", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_minerE]
-{_str = "SoldierEMedic", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_medicE]
-{_str = "SoldierECrew", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_crewE]
-{_str = "SoldierEPilot", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_pilotE]
-
-{_str = "SoldierGG", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_soldierGLG]
-{_str = "SoldierGMedic", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_medicR]
-{_str = "SoldierGCrew", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_crewR]
-{_str = "SoldierGMG", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_soldierMGR]
-{_str = "SoldierGSniper", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_sniperR]
-{_str = "SoldierGLAW", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_soldierLAWR]
-{_str = "SoldierGAT", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_soldierATR]
-{_str = "SoldierGAA", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_soldierAAR]
-{_str = "OfficerG", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_officerR]
-
-
-{_str = "Jeep_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_jeepW, jeepaW]
-{_str = "HMMWV_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_hummerW]
-{_str = "Truck5t_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_truckW]
-{_str = "Truck5tRepair_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_supportTruckW, _supportTruckW2]
-{_str = "M113Ambul_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_supportAPCW, _supportAPCWminer]
-{_str = "M113_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_m113W]
-{_str = "M2A2_AA_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_m2a2W, _m3a2W, _m2a2d, _m2a2at, _m2a2aa]
-{_str = "M2A2_AA_Town_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_m2a2townat, _m2a2townaad]
-{_str = "MCVW_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [utMCVW]
-{_str = "MHQW_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [utMHQ0]
-
-{_str = "UAZ_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_uazE, uazaE]
-{_str = "BRDM_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_brdmE]
-{_str = "Ural_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_truckE]
-{_str = "UralRepair_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_supportTruckE, _supportTruckE2]
-{_str = "BMPAmbul_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_supportAPCE, _supportAPCEminer]
-{_str = "M113_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_bmpE]
-{_str = "BMP2_AA_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_bmp2E, _bmp2_EE, _bmp2d, _bmp2at, _bmp2Cannon, _bmp2aa]
-{_str = "BMP2_AA_Town_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_bmp2townat, _bmp2townaad]
-{_str = "MCVE_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [utMCVE]
-{_str = "MHQE_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [utMHQ1]
-
-{_str = "A10_AAOnly_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_a10gun]
-{_str = "A10_LGB_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_a10LGB4, _a10LGB8]
-{_str = "A10_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_a10bombs, _a10, _a10AA]
-{_str = "A10_FFAR_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_a10FFAR]
-{_str = "A10_Buster_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_a10BB]
-{_str = "A10_Tomahawk_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_a10Tomahawk]
-{_str = "Su25_AAOnly_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_su25gun]
-{_str = "Su25_LGB_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_su25LGB4, _su25LGB8]
-{_str = "Su25_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_su25bombs, _su25, _su25AA]
-{_str = "Su25_Rocket_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_su25Rocket]
-{_str = "Su25_Buster_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_su25BB]
-{_str = "Su25_Raduga_Vanilla_xj400", unitDefs select _x set [udModel, _str]; unitTypeArray set [_x, _str]} forEach [_su25Raduga]
-
-#Skip199ReDef
-
-
-unitDefs select _m60W set [udCost, (unitDefs select _m60W select udCost)/2]
-{unitDefs select _x set [udCost, (unitDefs select _x select udCost)*4/5]; unitDefs select _x set [udModel, "M1Abrams"]; unitTypeArray set [_x, "M1Abrams"]} forEach [_m1a1W, _m1a1artW,  _m1a1townW]
-unitDefs select _t72E set [udCost, (unitDefs select _t72E select udCost)*3/4]
-{unitDefs select _x set [udCost, (unitDefs select _x select udCost)/2]; unitDefs select _x set [udModel, "T80"]; unitTypeArray set [_x, "T80"]} forEach [_t80E, _t80artE,  _t80townE]
-unitDefs select _t80R set [udModel, "T80Res"]; unitTypeArray set [_t80R, "T80Res"]
-{unitDefs select _x set [udModel, "Vulcan"]; unitTypeArray set [_x, "Vulcan"]} forEach [_vulcanBaseW, _vulcanBaseW2, _vulcanW, _vulcanW2]
-{_i = unitTypeArray find "Vulcan"; _list = unitTypeData select _i; _list set [count _list, _x]} forEach [_vulcanBaseW2, _vulcanW2]
-{unitDefs select _x set [udModel, "ZSU"]; unitTypeArray set [_x, "ZSU"]} forEach [_shilkaBaseE, _tunguskaBaseE, _shilkaE, _tunguskaE]
-{_i = unitTypeArray find "ZSU"; _list = unitTypeData select _i; _list set [count _list, _x]} forEach [_tunguskaBaseE, _tunguskaE]
-unitDefs select _tunguskaE set [udName, "4xAA"]; unitDefs select _tunguskaE set [udImage, "izsu"]
-
-unitDefs select _ah1W set [udModel, "AH1_xj400"]; unitTypeArray set [_ah1W, "AH1_xj400"]; unitDefs select _ah1W set [udName, "AH1"]; unitDefs select _ah1W set [udImage, "icobra"]
-unitDefs select _ah1W2 set [udModel, "AH1_AT_xj400"]; unitTypeArray set [_ah1W2, "AH1_AT_xj400"]; unitDefs select _ah1W2 set [udName, "AH1 AT"]; unitDefs select _ah1W2 set [udImage, "icobra"]
-unitDefs select _ah64W set [udModel, "AH64_xj400"]; unitTypeArray set [_ah64W, "AH64_xj400"]
-unitDefs select _ah64W2 set [udModel, "AH64_AT_xj400"]; unitTypeArray set [_ah64W2, "AH64_AT_xj400"]
-unitDefs select _ah64townW2 set [udModel, "AH64_xj400"]; unitTypeArray set [_ah64townW2, "AH64_xj400"]
-unitDefs select _v80E set [udModel, "Ka50_xj400"]; unitTypeArray set [_v80E, "Ka50_xj400"]; unitDefs select _v80E set [udImage, "\TZK_Objects\CTI_Image\Veh\ka50.paa"]
-unitDefs select _v80E2 set [udModel, "Ka50_AT_xj400"]; unitTypeArray set [_v80E2, "Ka50_AT_xj400"]; unitDefs select _v80E2 set [udImage, "\TZK_Objects\CTI_Image\Veh\ka50.paa"]
-unitDefs select _mi24E set [udModel, "Mi24_xj400"]; unitTypeArray set [_mi24E, "Mi24_xj400"]; unitDefs select _mi24E set [udImage, "imi24"]
-unitDefs select _mi24E2 set [udModel, "Mi24_AT_xj400"]; unitTypeArray set [_mi24E2, "Mi24_AT_xj400"]; unitDefs select _mi24E2 set [udImage, "imi24"]
-unitDefs select _mi24townE2 set [udModel, "Mi24_xj400"]; unitTypeArray set [_mi24townE2, "Mi24_xj400"]; unitDefs select _mi24townE2 set [udImage, "imi24"]
-{unitDefs select _x set [udModel, "Mi17_Vanilla_xj400"]; unitTypeArray set [_x, "Mi17_Vanilla_xj400"]} forEach [_mi17E, _mi17supE]
-{unitDefs select _x set [udModel, "UH60_Vanilla_xj400"]; unitTypeArray set [_x, "UH60_Vanilla_xj400"]} forEach [_uh60W, _uh60supW]
-unitDefs select _mi17E30 set [udModel, "Mi17_MG_Vanilla_xj400"]; unitTypeArray set [_mi17E30, "Mi17_MG_Vanilla_xj400"]
-unitDefs select _uh60W30 set [udModel, "UH60_MG_Vanilla_xj400"]; unitTypeArray set [_uh60W30, "UH60_MG_Vanilla_xj400"]
-unitDefs select _mi17EL set [udModel, "Mi17_LGB_Vanilla_xj400"]; unitTypeArray set [_mi17EL, "Mi17_LGB_Vanilla_xj400"]
-unitDefs select _uh60WL set [udModel, "UH60_LGB_Vanilla_xj400"]; unitTypeArray set [_uh60WL, "UH60_LGB_Vanilla_xj400"]
-
-{unitDefs select _x set [udModel, "Su25_xj400"]; unitTypeArray set [_x, "Su25_xj400"]} forEach [_planeatR, _planeatR2]
-
-
-	? !bool_TZK_199_Mode: goto "SkipMFUnits"
-	_entry = unitDefs select _m2a2W; _entry set [udModel, "MFCTI116M2A2"]; unitTypeArray set [_m2a2W, "MFCTI116M2A2"]; _entry set [udName, "M2A2"]; _entry set [udCost, 1300]; _entry set [udBuildTime, 40]; _entry set [udScripts, []]
-	_entry = unitDefs select _m3a2W; _entry set [udModel, "MFCTI116M3A2"]; unitTypeArray set [_m3a2W, "MFCTI116M3A2"]; _entry set [udName, "M3A2"]; _entry set [udCost, 1500]; _entry set [udBuildTime, 40]; _entry set [udFactoryType, 2^stHeavy]; _entry set [udScripts, []]
-	_entry = unitDefs select _m60W; _entry set [udModel, "MFCTI116M60"]; unitTypeArray set [_m60W, "MFCTI116M60"]; _entry set [udName, "M60"]; _entry set [udCost, 1000]; _entry set [udBuildTime, 40]
-	_entry = unitDefs select _m60A3W; _entry set [udModel, "MFCTI116M60A3"]; unitTypeArray set [_m60A3W, "MFCTI116M60A3"]; _entry set [udName, "M60A3"]; _entry set [udCost, 1400]; _entry set [udBuildTime, 40]; _entry set [udFactoryType, 2^stHeavy]
-	_entry = unitDefs select _m1a1W; _entry set [udModel, "MFCTI116M1"]; unitTypeArray set [_m1a1W, "MFCTI116M1"]; _entry set [udName, "M1"]; _entry set [udCost, 3000]; _entry set [udBuildTime, 50]
-	_entry = unitDefs select _m1a2sepW; _entry set [udModel, "MFCTI116M1A1"]; unitTypeArray set [_m1a2sepW, "MFCTI116M1A1"]; _entry set [udName, "M1A1"]; _entry set [udCost, 4000]; _entry set [udBuildTime, 50]; _entry set [udImage, "iabrams"]; _entry set [udFactoryType, 2^stHeavy]
-
-	_entry = unitDefs select _bmpE; _entry set [udModel, "MFCTI116BMP1"]; unitTypeArray set [_bmpE, "MFCTI116BMP1"]; _entry set [udName, "BMP"]; _entry set [udCost, 1000]; _entry set [udBuildTime, 35]; _entry set [udScripts, []]
-	_entry = unitDefs select _bmp2E; _entry set [udModel, "MFCTI116BMP2"]; unitTypeArray set [_bmp2E, "MFCTI116BMP2"]; _entry set [udName, "BMP2"]; _entry set [udCost, 1300]; _entry set [udBuildTime, 40]; _entry set [udScripts, []]
-	_entry = unitDefs select _bmp2_EE; _entry set [udModel, "MFCTI116BMP2E"]; unitTypeArray set [_bmp2_EE, "MFCTI116BMP2E"]; _entry set [udName, "BMP2E"]; _entry set [udCost, 1500]; _entry set [udBuildTime, 40]; _entry set [udFactoryType, 2^stHeavy]; _entry set [udScripts, []]
-	_entry = unitDefs select _t72E; _entry set [udModel, "MFCTI116T72"]; unitTypeArray set [_t72E, "MFCTI116T72"]; _entry set [udName, "T72"]; _entry set [udCost, 1700]; _entry set [udBuildTime, 40]
-	_entry = unitDefs select _t72_AE; _entry set [udModel, "MFCTI116T72A"]; unitTypeArray set [_t72_AE, "MFCTI116T72A"]; _entry set [udName, "T72A"]; _entry set [udCost, 1900]; _entry set [udBuildTime, 40]; _entry set [udFactoryType, 2^stHeavy]
-	_entry = unitDefs select _t72_BE; _entry set [udModel, "MFCTI116T72B"]; unitTypeArray set [_t72_BE, "MFCTI116T72B"]; _entry set [udName, "T72B"]; _entry set [udCost, 2200]; _entry set [udBuildTime, 40]; _entry set [udFactoryType, 2^stHeavy]
-	_entry = unitDefs select _t80E; _entry set [udModel, "MFCTI116T80"]; unitTypeArray set [_t80E, "MFCTI116T80"]; _entry set [udName, "T80"]; _entry set [udCost, 2600]; _entry set [udBuildTime, 50]
-	_entry = unitDefs select _t90E; _entry set [udModel, "MFCTI116T80B"]; unitTypeArray set [_t90E, "MFCTI116T80B"]; _entry set [udName, "T80B"]; _entry set [udCost, 3000]; _entry set [udBuildTime, 50]; _entry set [udImage, "it80"]; _entry set [udFactoryType, 2^stHeavy]
-	_entry = unitDefs select _ztz99E; _entry set [udModel, "MFCTI116T80U"]; unitTypeArray set [_ztz99E, "MFCTI116T80U"]; _entry set [udName, "T80U"]; _entry set [udCost, 3400]; _entry set [udBuildTime, 50]; _entry set [udImage, "it80"]; _entry set [udFactoryType, 2^stHeavy]
-	#SkipMFUnits
-
-#SkipVanilla
+? bool_TZK_Vanilla_Mode: call loadFile "Common\Init\UnitTypes_VanillaMode.sqf"
 
 
 ; CLEANUP - mags, weapons and vehicles. (Added by TZK_4.0.0) Should be placed in the bottom of file.

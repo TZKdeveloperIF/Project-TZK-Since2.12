@@ -1,0 +1,10 @@
+; args: [value]
+
+_value = _this select 0
+; _time = 0
+@(_time > 5 || _value == lvVoteReceived0)
+? _value == lvVoteReceived0: lvVoteReceived0 = -1, exit
+
+Vote_Matrix select _item_Index set [2, _item_Value]
+_string = format ["Server failed to receife your vote on %1. Recover to ""%2"". This probably due to other players' voting, or your network problem. Try vote again later.", Vote_Matrix select _item_Index select 0,  Vote_Matrix select _item_Index select 1 select _item_Value]
+_logic = "Logic" camCreate [0,0,0]; _logic globalChat _string; deleteVehicle _logic

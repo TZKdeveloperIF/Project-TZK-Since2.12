@@ -51,7 +51,7 @@ _timeRepairsComplete = time + _timeRepair
 
 	_damageVirtual = (damage _vehicle)/_timeRepair * (_timeRepair - _time)
 	_text = format ["Reparing Vehicle %1%2", 100 - (100*(_damageVirtual - (_damageVirtual % 0.01))), "%"]
-	? player in _vehicle: titleText [_text, "PLAIN DOWN", 0.05]
+	? player in _vehicle: titleText [_text, "PLAIN DOWN", 0.15]
 	~1
 	goto "Repair"
 

@@ -26,6 +26,8 @@ _idcSpySat = IDC + 22
 _idcGiveMoneyToALL = IDC + 23
 _idcRadioONBG = IDC + 24
 _idcRadioONBtn = IDC + 25
+_idcDarkSkin = IDC + 26
+_idcMusic = IDC + 27
 
 ; _idc defined above must consist with definition in description.ext.
 
@@ -36,27 +38,8 @@ _dlg = createDialog "OptionsDialog"
 ctrlShow [IDC_DEFAULT, false]
 ctrlShow [_idcNumberedAI, false]
 
-btnLeaderboard = false
-btnDestruction = false
-btnGrant = false 
-btnAsk = false
-btnTake = false
-btnGive = false
-btnGiveAIs = false
-btnGiveAll = false
-btnUpgrade = false
-btnBuyUnits = false
-btnShowStats = false
-btnUnitCam = false
-btnSatCam = false
-btnCustomSoldiers = false
-btnCommandAI = false
-btnCommandPlayer = false
-btnTransfer = false
-btnNumberedAI = false
-btnAICheck = false
-btnCommandTemporary = false
-btnSpySat = false
+{call (_x + " = false")} forEach ["btnLeaderboard", "btnDestruction", "btnGrant", "btnAsk", "btnTake", "btnGive", "btnGiveAIs", "btnGiveAll", "btnUpgrade", "btnBuyUnits", "btnShowStats", "btnUnitCam", "btnSatCam", "btnCustomSoldiers", "btnCommandAI", "btnCommandPlayer", "btnTransfer", "btnNumberedAI", "btnAICheck", "btnCommandTemporary", "btnSpySat"]
+{call (_x + " = false")} forEach ["btnVoteMenu"]
 
 
 _report = report
@@ -67,10 +50,7 @@ _groupsMoney = groupMoneyMatrix select siPlayer
 _groupsAI = groupAiMatrix select siPlayer
 _groupCommander = (groupCommander select siPlayer)
 
-? (siPlayer == si0): _incomeRatio = pvIncomeRatio0; _incomeRatioPlayer = pvIncomeRatioPlayer0
-? (siPlayer == si1): _incomeRatio = pvIncomeRatio1; _incomeRatioPlayer = pvIncomeRatioPlayer1
-
-ctrlShow [_x, bool_TZK_199_Mode] forEach [_idcRadioONBtn]; ctrlShow [_x, false] forEach [_idcRadioONBG]
+{ctrlShow [_x, bool_TZK_199_Mode]} forEach [_idcRadioONBtn]; {ctrlShow [_x, false]} forEach [_idcRadioONBG]
 _res = [_idcTransferAmount, _idcIncomeRatio, _idcIncomeRatioPlayer, _idcGroupMarkers, _idcReports, _idcTransferCommandGroup, _idcWorkerBehaviour, _idcAIRespawn] call funcDialog_Options_Init
 _currentAiRespawn = _res select 0; _respawnObjects = _res select 1
 
@@ -89,6 +69,10 @@ ctrlEnable [_idcAIRespawn, _isCommander]; ctrlEnable [_idcIncomeRatio, _isComman
 ctrlShow [_idcNumberedAI, bNumberedAI]
 ctrlShow [_idcSpySat, bSpySat]
 ctrlShow [_idcRadioONBG, bool_TZK_RadioReceive_199]
+ctrlSetText [_idcDarkSkin, ["GUI Grey Skin", "GUI Dark Skin"] select bool_TZK_DarkSkin]
+ctrlSetText [_idcMusic, ["Music OFF", "Music ON"] select bool_TZK_Music]
+
+ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 
 ; AI RESPAWN POS
 ? (_currentAiRespawn != (lbCurSel _idcAIRespawn)): _currentAiRespawn = (lbCurSel _idcAIRespawn); call format["pvRespawnObjectAi%1 = (_respawnObjects select _currentAiRespawn); PublicVariable ""pvRespawnObjectAi%1""", siPlayer]
@@ -122,6 +106,7 @@ report = lbCurSel _idcReports
 ? btnCommandTemporary : btnCommandTemporary = false; goto "CommandTemporary"
 ? btnSpySat : btnSpySat = false; goto "SpySat"
 ? btnRadioON : btnRadioON = false; goto "RadioSwitch"
+? btnVoteMenu: btnVoteMenu = false, goto "Vote_Menu"
 
 
 ~0.2
@@ -342,3 +327,9 @@ goto "Update"
 	bool_TZK_RadioReceive_199 = !bool_TZK_RadioReceive_199
 	hint format ["Radio Channel %1.", ["turned off. Radio channels won't be activated unless you click this button again", "activated. If wish to turn it off, use this button again "] select bool_TZK_RadioReceive_199]
 	goto "Update"
+#Vote_Menu
+	closeDialog 0
+	~0.1
+	[] exec "Player\Dialog\VoteMenu.sqs"
+	Exit
+; EOF

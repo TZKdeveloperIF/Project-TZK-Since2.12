@@ -95,8 +95,9 @@ boole_Nuclear_Effect = false
 boole_Rocket_Impact = true
 boole_Rocket_Launch = true
 
-boole_Show_GPS = false; boole_Show_Pad = true
+boole_Show_GPS = false; boole_Show_Pad = true; bool_Show_Radio = false
 boole_Mark_Player_Name = false
+bool_TZK_Music = false; bool_TZK_DarkSkin = false;
 
 boole_ShowAction_TransportEject = true
 boole_ShowAction_Attach = true
@@ -127,7 +128,10 @@ booleSettingEffects = [ {boole_Local_Bullet_Tracer}, {boole_Global_Bullet_Tracer
 _missionSettingFunctions set [count _missionSettingFunctions, ["Show GPS             [OFF]", "Show GPS              [ON]"]]
 _missionSettingFunctions set [count _missionSettingFunctions, ["Mark Player Name     [OFF]", "Mark Player Name      [ON]"]]
 _missionSettingFunctions set [count _missionSettingFunctions, ["Show Pad             [OFF]", "Show Pad              [ON]"]]
-booleSettingFunctions = [ {boole_Show_GPS}, {boole_Mark_Player_Name}, {boole_Show_Pad} ]
+_missionSettingFunctions set [count _missionSettingFunctions, ["Show Radio           [OFF]", "Show Radio            [ON]"]]
+_missionSettingFunctions set [count _missionSettingFunctions, ["Play Music           [OFF]", "Play Music            [ON]"]]
+_missionSettingFunctions set [count _missionSettingFunctions, ["GUI Dark Skin        [OFF]", "GUI Dark Skin         [ON]"]]
+booleSettingFunctions = [ {boole_Show_GPS}, {boole_Mark_Player_Name}, {boole_Show_Pad}, {bool_Show_Radio}, {bool_TZK_Music}, {bool_TZK_DarkSkin} ]
 
 _missionSettingActions set [count _missionSettingActions, ["Show Transport/Eject [OFF]", "Show Transport/Eject  [ON]"]]
 _missionSettingActions set [count _missionSettingActions, ["Show Attach          [OFF]", "Show Attach           [ON]"]]

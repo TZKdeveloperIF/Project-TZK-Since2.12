@@ -20,11 +20,13 @@ _factorBuildTime = ([60, 15] select dev)
 
 _prims = _base select 0
 _indexNextPrim = 0
-_timeNextPrim = (_prims select _indexNextPrim) select bdTime
-_costNextPrim = (structDefs select ((_prims select _indexNextPrim) select bdType)) select sdCost
+_timeNextPrim = _prims select _indexNextPrim select bdTime
+_costNextPrim = structDefs select (_prims select _indexNextPrim select bdType) select sdCost
 
 _secs = _base select 1
+_timeCheckBuildPrim = 0*60
 _timeCheckBuildSec = 2*60
+_objPrim = []; { _objPrim set [count _objPrim, false] } foreach _prims
 _objSec = []; { _objSec set [count _objSec, objNull] } foreach _secs
 
 _timeCheckPlayerIncome = 0
@@ -78,7 +80,7 @@ _giPatrol = _gi; _bTakeTown=false; _nDestroy=0
 	_unitsStart = (units _group) - _unitsStarted - [_unit]
 	{ [_x, _si, _gi] exec "Server\AI_Start.sqs"; _unitsStarted set [count _unitsStarted, _x] } foreach _unitsStart
 
-	_money = (groupMoneyMatrix select _si) select _gi
+	_money = groupMoneyMatrix select _si select _gi
 
 	? _money > 500 : [_unit, _si, _gi] exec "Server\AICO_CheckBuyUnit.sqs"; [_si, _gi, _giPatrol, 500] exec "Server\MoneyTransfer.sqs"
 	? time > _timeCheckNextUpgrade : [_si, _gi] exec "Server\AICO_CheckUpgrade.sqs"; _timeCheckNextUpgrade = time + ([5*60, 60] select dev)
@@ -88,24 +90,38 @@ _giPatrol = _gi; _bTakeTown=false; _nDestroy=0
 
 	_mhq = mhq select _si
 	? time > _timeCheckPlayerIncome : [_si] exec "Server\AICO_CheckPlayerIncome.sqs"; _timeCheckPlayerIncome = time + ([5*60, 60] select dev)
-
-	? (alive _mhq) && time > (_factorBuildTime*_timeNextPrim) && _money > (_costNextPrim+1000) : goto "BuildPrim"
-	? time > _timeCheckBuildSec : goto "CheckBuildSec"
 	
 	? (alive _mhq) && (call format["pvWorkers%1 < 10", _si]) && _money >= costWorker : [_si] exec "Server\AddWorker.sqs"; _sleep = 0.5; goto "Update"
 
+;	? alive _mhq && time > _factorBuildTime*_timeNextPrim && _money > (_costNextPrim+1000): goto "BuildPrim"
+	? alive _mhq && time > _timeCheckBuildPrim: goto "CheckBuildPrim"
+	? alive _mhq && time > _timeCheckBuildSec : goto "CheckBuildSec"
+
 	? (count _posIdle) > 0 : _dist = [_posIdle, getPos _unit] call funcDistH; if (_dist > 10) then { _posMove = _posIdle; _returnMove = "Update"; goto "MoveToPos" }
 
-	? time > _timeCheckSupport : [_unit, _si, _gi] exec "Server\AICO_CheckSupport.sqs"; _timeCheckSupport = time + 60; goto "Update"
+	? time > _timeCheckSupport && !bool_TZK_199_Mode: [_unit, _si, _gi] exec "Server\AICO_CheckSupport.sqs"; _timeCheckSupport = time + 60; goto "Update"
 	? time > _timeCheckEjectDrivers : goto "CheckEjectDrivers"
 
 	? !(alive _mhq) && _money > costRepairMHQ : goto "RepairMHQ"
 	
 	goto "Update"
+	
+#CheckBuildPrim
+;	? (_indexNextPrim < (count _prims)): goto "SkipPrimCheck"
+		_i = 0 
+		_c = count _prims
+		#CheckBuildPrim_CheckObject
+			? !(_i<_c) : _timeCheckBuildPrim = _timeCheckBuildPrim + 2*60, goto "Update"
+			? time > _factorBuildTime*((_prims select _i) select bdTime) && !(_objPrim select _i) && _money > (structDefs select (_prims select _i select bdType) select sdCost): goto "BuildPrim"
+		_i = _i + 1
+		goto "CheckBuildPrim_CheckObject"
+	
+	#SkipPrimCheck
 
 #BuildPrim
-	_buildDesc = _prims select _indexNextPrim
+	_buildDesc = _prims select _i
 	_structType = _buildDesc select bdType
+;	_distStruct = sqrt(((_buildDesc select bdPos) select 0)^2 + ((_buildDesc select bdPos) select 1)^2)
 	_structPosRel = [_buildDesc select bdPos, _dirBase] call funcVectorRot
 	_structDir = (_buildDesc select bdDir) + _dirBase
 	
@@ -115,26 +131,27 @@ _giPatrol = _gi; _bTakeTown=false; _nDestroy=0
 	_dist = _structDesc select sdDist
 	_posMove = [(_posStruct select 0) - _dist*(sin _structDir), (_posStruct select 1) - _dist*(cos _structDir)]
 	_posWatch = _posStruct
-	_returnMove = "BuildPrim_BuildPosReached"
-	goto "MoveToPos"
+	
+	_returnMove = "BuildPrim_BuildPosReached", goto "MoveToPos"
+	
 	#BuildPrim_BuildPosReached
-	_money = (groupMoneyMatrix select _si) select _gi
+	_money = groupMoneyMatrix select _si select _gi
   ? _money < _costNextPrim || !(alive _mhq) : goto "Update"
-	[_structType, _si, _gi, _posStruct, _structDir] call fBuildStruct
+	[_structType, _si, _gi, _posStruct, _structDir] call fBuildStruct; _objPrim set [_i, true]
 
 	? _structType == stComm : _posIdle = [(_posStruct Select 0) - 0.5*(_structDesc select sdDist)*(sin _structDir), (_posStruct Select 1) - 0.5*(_structDesc select sdDist)*(cos _structDir)]; _posWatch = _posStruct
 
-	_indexNextPrim = _indexNextPrim + 1
-	? !(_indexNextPrim < (count _prims)) : _timeNextPrim = 10000*60; goto "Update"
-	_costNextPrim = (structDefs select ((_prims select _indexNextPrim) select bdType)) select sdCost
-	_timeNextPrim = (_prims select _indexNextPrim) select bdTime
+;	_indexNextPrim = _indexNextPrim + 1
+;	? !(_indexNextPrim < (count _prims)) : _timeNextPrim = (time/_factorBuildTime) + 5; goto "Update"
+;	_costNextPrim = (structDefs select ((_prims select _indexNextPrim) select bdType)) select sdCost
+;	_timeNextPrim = (_prims select _indexNextPrim) select bdTime
 	
 	goto "Update"
 
 #CheckBuildSec
-  ; SET AI RESPAWN OBJECT
-  _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
-  ? call format["_objectRespawn != pvRespawnObjectAi%1", _si] : call format["pvRespawnObjectAi%1 = _objectRespawn; PublicVariable ""pvRespawnObjectAi%1""", _si]
+; SET AI RESPAWN OBJECT
+_objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
+? call format["_objectRespawn != pvRespawnObjectAi%1", _si] : call format["pvRespawnObjectAi%1 = _objectRespawn; PublicVariable ""pvRespawnObjectAi%1""", _si]
 
 	_i = 0 
 	_c = count _secs
@@ -154,14 +171,14 @@ _giPatrol = _gi; _bTakeTown=false; _nDestroy=0
 	_dist = _structDesc select sdDist
 	_posMove = [(_posStruct Select 0) - _dist*(sin _structDir), (_posStruct Select 1) - _dist*(cos _structDir)]
 	_posWatch = _posStruct
-	_returnMove = "BuildSec_BuildPosReached"
-	goto "MoveToPos"
+	
+	_returnMove = "BuildSec_BuildPosReached"; goto "MoveToPos"
+	
 	#BuildSec_BuildPosReached
-	_money = (groupMoneyMatrix select _si) select _gi
+	_money = groupMoneyMatrix select _si select _gi
   ? _money < (_structDesc select sdCost) : goto "Update"
 	; TODO ? !(alive _mhq) : goto "Update"
-	_res = [_structType, _si, _gi, _posStruct, _structDir] call fBuildStruct
-	_objSec set [_i, _res select 0]
+	_res = [_structType, _si, _gi, _posStruct, _structDir] call fBuildStruct; _objSec set [_i, _res select 0]
 	goto "Update"
 
 #MoveToPos
@@ -314,7 +331,7 @@ _c = count _units
 	[_unit, _si, 200] exec "Common\EventAdd_InfantryKilled.sqs"
 	[_unit, _si, _gi] exec "Server\EventAdd_Infantry.sqs"
 	
-	_money = (groupMoneyMatrix select _si) select _gi
+	_money = groupMoneyMatrix select _si select _gi
 
 	? _money >= costRespawn : goto "Respawn"
 	#WaitMoney
@@ -322,7 +339,7 @@ _c = count _units
 	; _unit setPos [(posCenter select 0) + _si*100, (posCenter select 1) + _gi*100, 1000]
 	_unit setVelocity [0,0,0]
 	~1
-	_money = (groupMoneyMatrix select _si) select _gi
+	_money = groupMoneyMatrix select _si select _gi
 	? _money < costRespawn : goto "WaitMoney"
 
 	#Respawn

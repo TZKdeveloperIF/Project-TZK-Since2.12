@@ -1,0 +1,19 @@
+; args: [value0]
+
+_value0 = _this select 0
+lvVoteReceived0 = _value0
+; Global Variable for player to know whether server received his voting.
+
+_si = _value0 % 2
+_value0 = (_value0 - _si)/2
+
+_gi = _value0 % GroupsNum
+_value0 = (_value0 - _gi)/GroupsNum
+
+_item_Index = _value0 % (count Vote_Matrix)
+_value0 = (_value0 - _item_Index)/(count Vote_Matrix)
+
+_item_Value = _value0
+
+_string = format ["%1 votes %2: %3", name leader (groupMatrix select _si select _gi), Vote_Matrix select _item_Index select 0,  Vote_Matrix select _item_Index select 1 select _item_Value]
+_logic = "Logic" camCreate [0,0,0]; _logic globalChat _string; deleteVehicle _logic

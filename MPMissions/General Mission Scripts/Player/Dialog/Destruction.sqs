@@ -41,6 +41,7 @@ lbSetCurSel [_idcList, 0]
   ? (call format ["Destruction_Undo%1", siPlayer]) : { ctrlEnable [_x, false] } forEach [_idcAction0, _idcAction1, _idcAction2]; goto "Undo_Sleep"
 
 #Update
+ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
   ? !(dialog) : exit
   ? !(alive player) : closeDialog 0; exit
 

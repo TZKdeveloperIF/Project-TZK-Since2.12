@@ -5,7 +5,7 @@ _si = siRes
 
 _inf = 3 + random 3
 _tanks = 1 * restanksx
-_interval = (7 - restanksx) *60
+_interval = "(7 - restanksx) *60"
 _patrol = 0
 
 _distSpawn = viewDistance + 5000
@@ -36,7 +36,7 @@ mutexInitResGroups = false
 	goto "CheckSpawn"
 
 #Spawn
-_infExtra = time/_interval; _infExtra = _infExtra - (_infExtra % 1)
+_infExtra = time/(call _interval); _infExtra = _infExtra - (_infExtra % 1)
 _inf = _inf + _infExtra
 ? _inf > 8 : _tanks = _tanks + _inf - 8; _inf = 8
 ? _tanks > 2 : _patrol = _patrol + _tanks - 2; _tanks = 2
@@ -96,7 +96,7 @@ _i = 0
 #SpawnNoPatrol
 
 _timePatrol = 0
-_timeReinforce = time + _interval
+_timeReinforce = time + (call _interval)
 
 #Update
   ~(25 + random 10)
@@ -122,7 +122,7 @@ _timeReinforce = time + _interval
 	goto "Update"
 
 #Reinforce
-  _timeReinforce = time + _interval
+  _timeReinforce = time + (call _interval)
 	? count (units _group) < 8 : goto "AddInf"
 	? count (units _group) <= 9 : goto "AddTank"
 	goto "SendOutTanks"

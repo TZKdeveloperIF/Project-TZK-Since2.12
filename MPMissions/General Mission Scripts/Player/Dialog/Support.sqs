@@ -69,16 +69,17 @@ _c = count _vs
 lbSetCurSel [_idcList, 0]
 
 #Update
-  ? !(dialog) : exit
-  ? !(alive player) : closeDialog 0; exit
+ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+	? !(dialog) : exit
+	? !(alive player) : closeDialog 0; exit
 
-  ? (btnAction0): btnAction0=false; _prio = [1, 2]; goto "Support"
-  ? (btnAction1): btnAction1=false; _prio = [1, 0]; goto "Support"
-  ? (btnAction2): btnAction2=false; _prio = [0, 1]; goto "Support"
+	? (btnAction0): btnAction0=false; _prio = [1, 2]; goto "Support"
+	? (btnAction1): btnAction1=false; _prio = [1, 0]; goto "Support"
+	? (btnAction2): btnAction2=false; _prio = [0, 1]; goto "Support"
 
-  #Skip
-  ~0.2
-  goto "Update"
+	#Skip
+	~0.2
+	goto "Update"
 
 #Support
   _vehicle = (_vs select (lbCurSel _idcList)) select 0

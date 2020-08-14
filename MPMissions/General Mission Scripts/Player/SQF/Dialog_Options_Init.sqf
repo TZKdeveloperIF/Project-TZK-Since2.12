@@ -29,6 +29,7 @@ _id = lbAdd [_idcTransferAmount, "Change"]; lbSetValue [_idcTransferAmount, _id,
 _id = lbAdd [_idcTransferAmount, "All"]; lbSetValue [_idcTransferAmount, _id, 50000];
 
 // PLAYER INCOME
+_incomeRatio = [pvIncomeRatio0, pvIncomeRatio1] select (siPlayer == si1); _incomeRatioPlayer = [pvIncomeRatioPlayer0, pvIncomeRatioPlayer1] select (siPlayer == si1);
 { _id = lbAdd [_idcIncomeRatio, format["%1%2", 100*_x, "%"] ]; lbSetValue [_idcIncomeRatio, _id, 100*_x]; if (_incomeRatio==_x) then { lbSetCurSel [_idcIncomeRatio, _id] } } forEach [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1];
 { _id = lbAdd [_idcIncomeRatioPlayer, format["%1%2", 100*_x, "%"] ]; lbSetValue [_idcIncomeRatioPlayer, _id, 100*_x]; if (_incomeRatioPlayer==_x) then { lbSetCurSel [_idcIncomeRatioPlayer, _id] } } forEach [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1];
 

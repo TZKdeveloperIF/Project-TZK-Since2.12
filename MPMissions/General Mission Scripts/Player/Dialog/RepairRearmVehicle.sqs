@@ -98,15 +98,16 @@ _c = count _structs
 lbSetCurSel [_idcList, 0]
 
 #Update
-  ? !(dialog) : exit
-  ? !(alive _support ) || !(alive _unit) || !(alive player) : closeDialog 0; exit
+ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+	? !(dialog) : exit
+	? !(alive _support ) || !(alive _unit) || !(alive player) : closeDialog 0; exit
 
-  ? btnAction0 : btnAction0=false; _perform = "RepairOptRearm"; goto "Perform"
-  ? btnAction1 : btnAction1=false; _perform = "Repair"; goto "Perform"
-  ? btnAction2 : btnAction2=false; _perform = "Rearm"; goto "Perform"
+	? btnAction0 : btnAction0=false; _perform = "RepairOptRearm"; goto "Perform"
+	? btnAction1 : btnAction1=false; _perform = "Repair"; goto "Perform"
+	? btnAction2 : btnAction2=false; _perform = "Rearm"; goto "Perform"
 
-  ~0.2
-  goto "Update"
+	~0.2
+	goto "Update"
 
 #Perform
 	_sel = lbCurSel _idcList

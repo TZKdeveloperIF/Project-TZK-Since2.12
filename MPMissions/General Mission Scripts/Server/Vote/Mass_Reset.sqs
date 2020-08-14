@@ -1,0 +1,4 @@
+~[5*60, 5] select dev
+
+
+{_item = _x, { if (_x select 1 >= 100) Then { _x set [1, [1, VoteMassComm] select ((groupMatrix select (_x select 2) select (_x select 3)) in groupCommander)] } } forEach _item } forEach Vote_Result

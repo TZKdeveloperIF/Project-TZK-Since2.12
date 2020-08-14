@@ -23,7 +23,7 @@ _booleShell = false; _sizeOfShell = 0;
 if (_weapon in ["Gun73", "MFCTI116BMP1Gun"]) then {_booleShell = true; _sizeOfShell = 73};
 if (_weapon in ["M252Launcher"]) then {_booleShell = true; _sizeOfShell = 81};
 if (_weapon in ["Gun105", "Gun105_xj400", "MFCTI116M60Gun","MFCTI116M60A3Gun","MFCTI116M1Gun"]) then {_booleShell = true; _sizeOfShell = 105};
-if (_weapon in ["M1Gun_xj400","M12Gun_xj400","LeoGun_xj400","Gun120", ,"MFCTI116M1A1Gun"]) then {_booleShell = true; _sizeOfShell = 120};
+if (_weapon in ["M1Gun_xj400","M12Gun_xj400","LeoGun_xj400","Gun120", "MFCTI116M1A1Gun"]) then {_booleShell = true; _sizeOfShell = 120};
 if (_weapon in ["Gun122_xj400"]) then {_booleShell = true; _sizeOfShell = 122};
 if (_weapon in ["T80Gun_xj400","T90Gun_xj400","T90msGun_xj400","PLAGun_xj400","Gun125", "Sprut_2A75_xj400", 
 				"MFCTI116T72Gun","MFCTI116T72BGun","MFCTI116T80Gun","MFCTI116T80BGun","MFCTI116T80UGun"]) then {_booleShell = true; _sizeOfShell = 125};

@@ -183,14 +183,18 @@ _try = 0
 { _gi = ( groupMatrix select si1 ) find ( _x ); while "_try < 10 && _gi == -1" do {_gi = ( groupMatrix select si1 ) find ( _x );_try = _try + 1}; [si1, _gi] exec "Server\Info\GroupIsAI.sqs" } foreach (groupAiMatrix select si1)
 
 _si = si0
-? !dev && count (groupMatrix select _si) == count (groupAiMatrix select _si): startMoney set [_si, 10*(startMoney select _si)], if ((groupMatrix select (siEnemy select _si) select 0) in (groupAiMatrix select (siEnemy select _si))) Then {startMoney set [_si, 0.5*(startMoney select _si)]}, goto "Money0Set"
-? !dev && (groupMatrix select _si select 0) in (groupAiMatrix select _si): startMoney set [_si, 10*0.5*(startMoney select _si)], startMoneyPlayer set [_si, 14*(startMoneyPlayer select _si)]
-? bool_TZK_199_Mode && !dev && (groupMatrix select _si select 0) in (groupAiMatrix select _si): startMoney set [_si, 57500]
+? bool_TZK_199_Mode && !dev && (groupMatrix select _si select 0) in (groupAiMatrix select _si): startMoney set [_si, 57500+10000]
+? bool_TZK_199_Mode && !dev && count (groupMatrix select _si) == count (groupAiMatrix select _si): startMoney set [_si, (startMoney select _si) * 2], goto "Money0Set"
+
+? !bool_TZK_199_Mode && !dev && count (groupMatrix select _si) == count (groupAiMatrix select _si): startMoney set [_si, 10*(startMoney select _si)], if ((groupMatrix select (siEnemy select _si) select 0) in (groupAiMatrix select (siEnemy select _si))) Then {startMoney set [_si, 0.5*(startMoney select _si)]}, goto "Money0Set"
+? !bool_TZK_199_Mode && !dev && (groupMatrix select _si select 0) in (groupAiMatrix select _si): startMoney set [_si, 10*0.5*(startMoney select _si)], startMoneyPlayer set [_si, 14*(startMoneyPlayer select _si)]
 #Money0Set
 _si = si1
-? !dev && count (groupMatrix select _si) == count (groupAiMatrix select _si): startMoney set [_si, 10*(startMoney select _si)], if ((groupMatrix select (siEnemy select _si) select 0) in (groupAiMatrix select (siEnemy select _si))) Then {startMoney set [_si, 0.5*(startMoney select _si)]}, goto "Money1Set"
-? !dev && (groupMatrix select _si select 0) in (groupAiMatrix select _si): startMoney set [_si, 10*0.5*(startMoney select _si)], startMoneyPlayer set [_si, 14*(startMoneyPlayer select _si)]
-? bool_TZK_199_Mode && !dev && (groupMatrix select _si select 0) in (groupAiMatrix select _si): startMoney set [_si, 57500]
+? bool_TZK_199_Mode && !dev && (groupMatrix select _si select 0) in (groupAiMatrix select _si): startMoney set [_si, 57500+10000]
+? bool_TZK_199_Mode && !dev && count (groupMatrix select _si) == count (groupAiMatrix select _si): startMoney set [_si, (startMoney select _si) * 2], goto "Money1Set"
+
+? !bool_TZK_199_Mode && !dev && count (groupMatrix select _si) == count (groupAiMatrix select _si): startMoney set [_si, 10*(startMoney select _si)], if ((groupMatrix select (siEnemy select _si) select 0) in (groupAiMatrix select (siEnemy select _si))) Then {startMoney set [_si, 0.5*(startMoney select _si)]}, goto "Money1Set"
+? !bool_TZK_199_Mode && !dev && (groupMatrix select _si select 0) in (groupAiMatrix select _si): startMoney set [_si, 10*0.5*(startMoney select _si)], startMoneyPlayer set [_si, 14*(startMoneyPlayer select _si)]
 #Money1Set
 
 [] exec "Server\SendStartMoney.sqs"
@@ -213,3 +217,17 @@ PublicVariable "music0"; PublicVariable "music1h"; PublicVariable "music10m";
 
 ; west setFriend [east,1]; west setFriend [resistance,1]; east setFriend [west,1]; east setFriend [resistance,1]; resistance setFriend [west,1]; resistance setFriend [east,1]
 ? bool_TZK_199_Mode: {[_x] exec "Common\KeepTempLeaderAlive.sqs"} forEach [leaderTemp0, leaderJoin0, leaderTemp1, leaderJoin1]
+
+
+; ================================================================================TZK_4.0.0 Block================================================================================
+; Vote System. Server Design. Requiring "AI group leader" judged results. No problem for after-start delay, but msg script should start after variables having defined.
+voteRate = 0.33; VoteMassComm = 2; VoteMassAdmin = 1000; Vote_Result = []; {Vote_Result set [ count Vote_Result, [] ]} forEach Vote_Matrix
+call loadFile "Server\Init\Vote.sqf"
+; format of Vote_Result elements: [voted value, mass of voter, si, gi]
+; Vote_Options_Name = []; {Vote_Options_Name set [count Vote_Options_Name, _x select 0]} forEach Vote_Matrix
+
+[] exec "Server\Msg\mVoteReceived.sqs"
+[] exec "Server\Vote\Mass_Reset.sqs"
+
+estimatedTimeLeft 7200
+; ================================================================================TZK_4.0.0 Block================================================================================

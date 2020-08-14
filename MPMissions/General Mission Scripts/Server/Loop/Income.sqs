@@ -15,7 +15,7 @@ _factor = 1; if (time > 60*90) Then {_factor = 1.2}; if (time > 60*150) Then {_f
 
 _i = 0
 #Loop
-	_si = _siArray select _i; call format ["_IncomeRatio = pvIncomeRatio%1; _IncomeRatioPlayer = pvIncomeRatioPlayer%1", _si]
+	_si = _siArray select _i; _IncomeRatio = 0; _IncomeRatioPlayer = 0; call format ["_IncomeRatio = pvIncomeRatio%1; _IncomeRatioPlayer = pvIncomeRatioPlayer%1", _si]
 	_groups = groupMatrix select _si; _groupCommander = groupCommander select _si; _groupAIs = groupAiMatrix select _si
 	_playerIncome = 0; _aiIncome = 0; _playerGroups = _groups - [_groupCommander] - _groupAIs
 	? (count _playerGroups) == 0 : goto "NoPlayersSide"
@@ -26,7 +26,7 @@ _i = 0
 		_aiIncome = (_incomeTowns select _si)*(1-_IncomeRatio)*(1-_IncomeRatioPlayer) / (count _aiGroups); _aiIncome = _aiIncome - _aiIncome%1
 	#NoAIteamsSide
 	_commanderIncome = (_incomeTowns select _si) - _playerIncome*(count _playerGroups) - _aiIncome*(count _aiGroups); _commanderIncome = _commanderIncome - _commanderIncome%1; _gi = 0
-	{_bonus = _moneyPerScore*(scoreMoney select _si select _gi); _bonus = _bonus - _bonus%1; _totalIncome set [_si, (_totalIncome select _si) + _bonus]; if (_x in (_groupAIs - [_groupCommander])) then {_income = _aiIncome} else {_income = ([_playerIncome, _commanderIncome] select (_x == (_groupCommander)))}; [_si, _gi, _income + _bonus, 0] exec "Server\MoneyAdd.sqs"; [_bonus, _si, _gi] exec "Server\Info\ScoreMoney.sqs"; (scoreMoney select _si) set [_gi, 0]; _gi = _gi + 1} forEach _groups
+	{_bonus = _moneyPerScore*(scoreMoney select _si select _gi); _bonus = _bonus - _bonus%1; _totalIncome set [_si, (_totalIncome select _si) + _bonus]; if (_x in (_groupAIs - [_groupCommander])) then {_income = _aiIncome} else {_income = [_playerIncome, _commanderIncome] select (_x == _groupCommander)}; [_si, _gi, _income + _bonus, 0] exec "Server\MoneyAdd.sqs"; [_bonus, _si, _gi] exec "Server\Info\ScoreMoney.sqs"; (scoreMoney select _si) set [_gi, 0]; _gi = _gi + 1} forEach _groups
 
 	_i = _i + 1
 	? _i < _c: goto "Loop"

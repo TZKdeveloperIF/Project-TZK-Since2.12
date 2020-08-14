@@ -61,18 +61,18 @@ if (_incomeRatioPlayer != _selectedIncome) then { lbSetCurSel[_idcIncomeRatioPla
 
 // TOWNS
 _townCount = count towns; _towns = 0; _income = 0;
-{ if ((_x select 3) == siPlayer) then { _towns=_towns+1; _income=_income+(_x select 2) } } forEach towns;
+{ if ((_x select tdSide) == siPlayer) then { _towns=_towns+1; _income=_income+(_x select tdValue) } } forEach towns;
 ctrlSetText [_idcTowns, format["Towns: %1 of %2", _towns, _townCount]];
 
 // INCOME
 _factor = 1; if (time > 60*90) Then {_factor = 1.2}; if (time > 60*150) Then {_factor = 1.5};
 _income = _income*incomex*_factor;
-_players = count ((groupMatrix select siPlayer) - [groupCommander select siPlayer] - (groupAiMatrix select siPlayer)); _aileaders = count (groupAiMatrix select siPlayer);
+_players = count (_groups - [_groupCommander] - _groupsAI); _aileaders = count _groupsAI;
 _incomePlayer = 0; _incomeAiLeaders = 0;
 if (_players > 0) then {_incomePlayer = _income*(1-_incomeRatio)*_incomeRatioPlayer/_players; _incomePlayer = _incomePlayer - (_incomePlayer % 1)};
 if (_aileaders > 0) then {_incomeAiLeaders = _income*(1-_incomeRatio)*(1-_incomeRatioPlayer)/_aileaders; _incomeAiLeaders = _incomeAiLeaders - (_incomeAiLeaders % 1)};
 _incomeCommander = _income - _incomePlayer*_players - _incomeAiLeaders*_aileaders;
-ctrlSetText [_idcIncome, format["Income You/Side: %1/%2", [_incomePlayer, _incomeCommander] select (groupPlayer == (groupCommander select siPlayer)), _income]];
+ctrlSetText [_idcIncome, format["Income You/Side: %1/%2", [_incomePlayer, _incomeCommander] select (groupPlayer == _groupCommander), _income]];
 
 // GROUPS
 
