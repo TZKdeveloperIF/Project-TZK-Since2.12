@@ -1,0 +1,26 @@
+; args: [value0]
+_value0 = _this select 0
+
+; Broadcast to show "vote received"
+[_value0] exec "Server\Msg\sVoteReceived.sqs"
+
+_si = _value0 % 2
+_value0 = (_value0 - _si)/2
+
+_gi = _value0 % GroupsNum
+_value0 = (_value0 - _gi)/GroupsNum
+
+_item_Index = _value0 % (count Vote_Matrix)
+_value0 = (_value0 - _item_Index)/(count Vote_Matrix)
+
+_item_Value = _value0
+
+_entry = Vote_Result select _item_Index
+{ if (_x select 2 == _si && _x select 3 == _gi) Then {_x set [0, _item_Value]} } forEach _entry
+
+; Calculate vote result
+_mass_Vote = 0; _mass_Total = 0;
+call loadFile "Server\Msg\fVoteCalculate.sqf"
+? _mass_Vote/_mass_Total > voteRate: [_item_Index, _item_Value] exec "Server\Msg\sVoteResult.sqs", [_item_Index, _item_Value] exec "Server\Vote\Vote_Effect.sqs"
+
+; EOF

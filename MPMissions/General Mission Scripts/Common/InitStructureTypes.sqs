@@ -32,7 +32,7 @@ _mAir = "Plane_Marker_xj400"
 _mCC = "Sign_Marker_xj400"
 
 
-_mHowitzer = "FieldGun_Marker_xj400"; _mMortar = "Mortar_Marker_xj400"
+_mHowitzer = "FieldGun_Marker_xj400"; _mMortar = if !bool_TZK_199_Mode Then {"Mortar_Marker_xj400"} Else {"Bike_Marker_xj400"}
 _mMG = "MachineGun_Marker_xj400"
 _mRadar = "Tower_Marker_xj400"
 
@@ -402,27 +402,27 @@ goto "SkipBase"
 
 _base = []
 _prims = []
-_prims set [count _prims, [stHeavy, 0, [-5, 11], 180] ]
+_prims set [count _prims, [stHeavy, 0, [-2, 15], 180] ]
 _prims set [count _prims, [stradar, 2, [30, 30], 0] ]
 _prims set [count _prims, [stSatRec, 2, [30, 40], 0] ]
 _prims set [count _prims, [stradarair, 2, [50, 50], 0] ]
-_prims set [count _prims, [stLight, 2, [7, 0], 180] ]
-_prims set [count _prims, [stComm, 2, [-12, 0.5], 90] ]
-_prims set [count _prims, [stBarracks, 5, [-12, -11.5], 0] ]
-_prims set [count _prims, [stBarracks, 5, [-1, -18], 270] ]
+_prims set [count _prims, [stLight, 0.5, [10, 0], 180] ]
+_prims set [count _prims, [stComm, 2, [-12, 2], 90] ]
+_prims set [count _prims, [stBarracks, 5, [-12, -14.5], 0] ]
+_prims set [count _prims, [stBarracks, 5, [-1, -51], 270] ]
 _prims set [count _prims, [_mortar1, 5, [20, -40], 180] ]
 _prims set [count _prims, [_mortar1, 5, [30, -30], 90] ]
 _prims set [count _prims, [_mgFort, 5, [-35.2, -5], 270] ]
 _prims set [count _prims, [_mgFort, 5, [35.2, -10], 90] ]
 _prims set [count _prims, [stHeavy, 30, [-23, -10], 90] ]
 _prims set [count _prims, [stAir, 40, [60, 0], 90] ]
-_prims set [count _prims, [_heliH, 40, [50, 20], 90] ]
-_prims set [count _prims, [_heliH, 40, [50, -20], 90] ]
-_prims set [count _prims, [_heliH, 40, [-50, 20], 270] ]
-_prims set [count _prims, [_heliH, 40, [-50, -20], 270] ]
 _base set [0, _prims]
 
 _secs = []
+_secs set [count _secs, [_heliH, 40, [50, 20], 90] ]
+_secs set [count _secs, [_heliH, 40, [50, -20], 90] ]
+_secs set [count _secs, [_heliH, 40, [-50, 20], 270] ]
+_secs set [count _secs, [_heliH, 40, [-50, -20], 270] ]
 _base set [1, _secs]
 baseDefs set [count baseDefs, _base]
 _type = _type + 1

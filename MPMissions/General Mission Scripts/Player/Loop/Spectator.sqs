@@ -73,7 +73,7 @@ goto "Update"
 	? ([_posStart, _pos] call funcDistH) > 50 : goto "ResetPos"
 	
 	? (pvDebugVars): pvDebugVars=false; player globalchat format["pvDebugVar1=%1", pvDebugVar1]; player globalchat format["pvDebugVar2=%1", pvDebugVar2]; player globalchat format["pvDebugVar3=%1", pvDebugVar3]
-	setViewDistance viewDistance; showGPS boole_Show_GPS; showPad boole_Show_Pad
+	setViewDistance viewDistance; showGPS boole_Show_GPS; showPad boole_Show_Pad; showRadio bool_Show_Radio
 
 	goto "Update"
 	
@@ -113,7 +113,7 @@ goto "Update"
 	#SleepFreeMode
 		_unit setPos _posFreeMove
 		#FreeModeLoop
-			? time % 1 > 0.8: setViewDistance viewDistance; showGPS boole_Show_GPS; showPad boole_Show_Pad; removeAllWeapons _unit
+			? time % 1 > 0.8: setViewDistance viewDistance; showGPS boole_Show_GPS; showPad boole_Show_Pad; showRadio bool_Show_Radio; removeAllWeapons _unit
 			~0.1
 			? _unit != vehicle _unit: _unit action ["Eject", vehicle _unit]
 			? bFreeMode: goto "FreeModeLoop"

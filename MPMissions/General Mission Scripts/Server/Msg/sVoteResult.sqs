@@ -1,0 +1,12 @@
+; args: [item Index,  item Value]
+
+_item_Index = _this select 0
+_item_Value = _this select 1
+
+@!(mutexVote)
+mutexVote = true
+
+pvVoteResult0 = _item_Index+ (count Vote_Matrix)*_item_Value; publicVariable "pvVoteResult0"
+
+~sendDelay
+mutexVote = false

@@ -5,7 +5,7 @@ _group = _this select 0; _ti = _this select 1; _timePatrol = _this select 2; _ti
 ~5
 
 _si = siRes
-_interval = (7 - restanksx) *60
+_interval = "(7 - restanksx) *60"
 _distSpawn = viewDistance + 500
 _flag = (towns select _ti) select tdFlag
 _posFlag = getPos _flag
@@ -32,7 +32,7 @@ _posFlag = getPos _flag
 	goto "Update"
 
 #Reinforce
-	_timeReinforce = time + _interval
+	_timeReinforce = time + (call _interval)
 	? count (units _group) < 8 : goto "AddInf"
 	? count (units _group) <= 10 : goto "AddTank"
 	goto "SendOutTanks"

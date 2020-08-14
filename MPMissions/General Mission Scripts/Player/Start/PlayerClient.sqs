@@ -9,6 +9,7 @@ _unit = player
 
 	_sensorOld = "EmptyDetector" camCreate getPos player; _sensorNow = "EmptyDetector" camCreate getPos player
 	_timeOld = -3600; _timeNow = -3600
+	_nextMusic = 5*60
 	
 	@( !(isNull (mhq select si0)) && !(isNull (mhq select si1)) )
-	[_sensorOld, _sensorNow, _timeOld, _timeNow] exec "Player\Loop\PlayerClient.sqs"
+	[_sensorOld, _sensorNow, _timeOld, _timeNow, _nextMusic, bool_TZK_Music] exec "Player\Loop\PlayerClient.sqs"

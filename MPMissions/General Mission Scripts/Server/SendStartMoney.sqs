@@ -9,6 +9,7 @@ _i = 0; _siArray = [si0, si1]; _c = count _siArray
 	
 	_startMoney = startMoney select _si
 	_startMoneyPlayer = startMoneyPlayer select _si
+	
 	? !dev && (groupMatrix select _si select 0) in (groupAiMatrix select _si): if (_countPlayers > 0) Then {_startMoneyPlayer = 0.5*_startMoney/_countPlayers}
 	? !dev && _startMoneyPlayer > 8000: _startMoneyPlayer = 8000
 	? bool_TZK_199_Mode: _startMoneyPlayer = 2000

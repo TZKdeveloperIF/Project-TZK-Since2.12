@@ -1,6 +1,6 @@
 ; args: [vehicle player]
 _vehicle = _this select 0
-? bool_TZK_199_Mode: exit
+? bool_TZK_199_Mode: [_vehicle] exec "Player\Radio\Radio_199_Update.sqs", exit
 ? _vehicle == player: [_vehicle] exec "Player\Radio\Radio_Update_Vehicle_OnFoot.sqs"; exit
 
 ; Clean up radio channels and make it unnecessary to be handle in other scripts.

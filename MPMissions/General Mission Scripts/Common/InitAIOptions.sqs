@@ -114,7 +114,7 @@ _type = _type + 1
 _default = []
 { _default set [count _default, _x select 2] } foreach aiSettingDefs
 
-; current setting entry format: [orderID, orderType, [param0, param1, ...]]
+; current setting entry format: [orderID, orderType, [param 0, param 1, ...]]
 aiSetting = [ [], [] ]
 _si = si0; _list = aiSetting select _si; { _list set [ count _list, +_default ] } foreach (groupMatrix select _si)
 _si = si1; _list = aiSetting select _si; { _list set [ count _list, +_default ] } foreach (groupMatrix select _si)
@@ -241,7 +241,7 @@ _type = _type + 1
 
 
 
-; order entry format: [orderID, orderType, [param0, param1, ...]]
+; order entry format: [orderID, orderType, [param 0, param 1, ...]]
 orderMatrix = [ [], [] ]
 _si = si0; _gi = 0; { (orderMatrix select _si) set [ _gi, [0, orderTakeHoldTowns, [3, 1]] ]; _gi = _gi + 1 } foreach (groupMatrix select _si)
 _si = si1; _gi = 0; { (orderMatrix select _si) set [ _gi, [0, orderTakeHoldTowns, [3, 1]] ]; _gi = _gi + 1 } foreach (groupMatrix select _si)
@@ -466,7 +466,7 @@ orderTempDefs set [_type, ["Shoot Target", [_param0, _param1, _param2, _param3, 
 _type = _type + 1
 
 
-; orderTemp entry format: [orderTempID, orderTempType, [param0, param1, ...]]
+; orderTemp entry format: [orderTempID, orderTempType, [param 0, param 1, ...]]
 orderTempMatrix = [ [], [] ]
 _si = si0; _gi = 0; { (orderTempMatrix select _si) set [ _gi, [-1, orderTempClearUnit, [0]] ]; _gi = _gi + 1 } foreach (groupMatrix select _si)
 _si = si1; _gi = 0; { (orderTempMatrix select _si) set [ _gi, [-1, orderTempClearUnit, [0]] ]; _gi = _gi + 1 } foreach (groupMatrix select _si)

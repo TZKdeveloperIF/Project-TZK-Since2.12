@@ -5,7 +5,7 @@ while "_i < _Column" do
 {
 	_idc = IDC + 100 + 100 * _i;
 	_settingArray = missionSettingMatrix select _i; _size = count _settingArray; _last = _lastMissionSettings select _i; _booleans = _booleMatrix select _i;
-	 _j = 0;  _Line = 12;
+	_j = 0;  _Line = 12;
 	while "_j < _Line" do
 	{
 		if (_j < _size) then

@@ -1,10 +1,12 @@
-; args: [_sensorOld, _sensorNow, _timeOld, _timeNow]
-_sensorOld = _this select 0; _sensorNow = _this select 1; _timeOld = _this select 2; _timeNow = _this select 3
+; args: [_sensorOld, _sensorNow, _timeOld, _timeNow, _nextMusic, bool play music]
+_sensorOld = _this select 0; _sensorNow = _this select 1; _timeOld = _this select 2; _timeNow = _this select 3; _nextMusic = _this select 4; _bool_TZK_Music = _this select 5
 _posOld = getPos _sensorOld; _posNow = getPos _sensorNow
 _unit = player; _unitsStarted = units group player
+; Music list picked up by MF
+_songs = ["Track1","Track2","Track3","Track5","Track6","Track7","Track8","Track11","Track15","RTrack1a","RTrack4","RTrack5"]
 #Update
 	~1
-	? _time > 5*60: [_sensorOld, _sensorNow, _timeOld, _timeNow] exec "Player\Loop\PlayerClient.sqs"; exit
+	? _time > 5*60: [_sensorOld, _sensorNow, _timeOld, _timeNow, _nextMusic, _bool_TZK_Music] exec "Player\Loop\PlayerClient.sqs"; exit
 
 	_mhq = mhq select siPlayer
 	_mcvs = MCV select siPlayer
@@ -37,7 +39,12 @@ _unit = player; _unitsStarted = units group player
 
 	? -1 != (vehicle player) call funcGetUnitTypeFromObject && !local vehicle player : if (player == commander vehicle player && !dev) then {player action ["Eject", vehicle player]}
 	
-	setViewDistance viewDistance; showGPS boole_Show_GPS; showPad boole_Show_Pad
+	setViewDistance viewDistance; showGPS boole_Show_GPS; showPad boole_Show_Pad; showRadio bool_Show_Radio
+	
+	? !bool_TZK_Music && _bool_TZK_Music: 1 FadeMusic 0, _nextMusic = 0
+	? bool_TZK_Music && !_bool_TZK_Music: PlayMusic [_songs Select Random ((Count _songs) - 1),0], 0 FadeMusic 1, _nextMusic = time + 400 + Random 400
+	? bool_TZK_Music && _bool_TZK_Music: if (time > _nextMusic) Then {PlayMusic [_songs Select Random ((Count _songs) - 1),0], 0 FadeMusic 1, _nextMusic = time + 400 + Random 400}
+	_bool_TZK_Music = bool_TZK_Music
 	goto "Update"
 
 
