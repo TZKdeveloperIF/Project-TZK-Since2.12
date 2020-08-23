@@ -26,8 +26,6 @@ _idcSpySat = IDC + 22
 _idcGiveMoneyToALL = IDC + 23
 _idcRadioONBG = IDC + 24
 _idcRadioONBtn = IDC + 25
-_idcDarkSkin = IDC + 26
-_idcMusic = IDC + 27
 
 ; _idc defined above must consist with definition in description.ext.
 
@@ -51,7 +49,7 @@ _groupsAI = groupAiMatrix select siPlayer
 _groupCommander = (groupCommander select siPlayer)
 
 {ctrlShow [_x, bool_TZK_199_Mode]} forEach [_idcRadioONBtn]; {ctrlShow [_x, false]} forEach [_idcRadioONBG]
-_res = [_idcTransferAmount, _idcIncomeRatio, _idcIncomeRatioPlayer, _idcGroupMarkers, _idcReports, _idcTransferCommandGroup, _idcWorkerBehaviour, _idcAIRespawn] call funcDialog_Options_Init
+_res = [_idcTransferAmount, _idcIncomeRatio, _idcIncomeRatioPlayer, _idcGroupMarkers, _idcReports, _idcTransferCommandGroup, _idcWorkerBehaviour, _idcAIRespawn] call loadFile "Player\Dialog\Options_Init.sqf"
 _currentAiRespawn = _res select 0; _respawnObjects = _res select 1
 
 #Update
@@ -69,15 +67,13 @@ ctrlEnable [_idcAIRespawn, _isCommander]; ctrlEnable [_idcIncomeRatio, _isComman
 ctrlShow [_idcNumberedAI, bNumberedAI]
 ctrlShow [_idcSpySat, bSpySat]
 ctrlShow [_idcRadioONBG, bool_TZK_RadioReceive_199]
-ctrlSetText [_idcDarkSkin, ["GUI Grey Skin", "GUI Dark Skin"] select bool_TZK_DarkSkin]
-ctrlSetText [_idcMusic, ["Music OFF", "Music ON"] select bool_TZK_Music]
+; ctrlSetText [_idcDarkSkin, ["GUI Grey Skin", "GUI Dark Skin"] select bool_TZK_DarkSkin]
+; ctrlSetText [_idcMusic, ["Music OFF", "Music ON"] select bool_TZK_Music]
+; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 
-ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+? _currentAiRespawn != (lbCurSel _idcAIRespawn): _currentAiRespawn = (lbCurSel _idcAIRespawn), if (_currentAiRespawn != -1) Then {call format ["pvRespawnObjectAi%1 = (_respawnObjects select _currentAiRespawn); PublicVariable {pvRespawnObjectAi%1}", siPlayer]}
 
-; AI RESPAWN POS
-? (_currentAiRespawn != (lbCurSel _idcAIRespawn)): _currentAiRespawn = (lbCurSel _idcAIRespawn); call format["pvRespawnObjectAi%1 = (_respawnObjects select _currentAiRespawn); PublicVariable ""pvRespawnObjectAi%1""", siPlayer]
-
-[_idcMoney, _idcScore, _idcIncomeRatio, _idcIncomeRatioPlayer, _idcTowns, _idcIncome, _idcTransferGroup, _idcGroupMarkers, _idcWorkerBehaviour, _idcUpgradeList ] call funcDialog_Options_Update
+[_idcMoney, _idcScore, _idcIncomeRatio, _idcIncomeRatioPlayer, _idcTowns, _idcIncome, _idcTransferGroup, _idcGroupMarkers, _idcWorkerBehaviour, _idcUpgradeList ] call loadFile "Player\Dialog\Options_Update.sqf"
 
 
 ; REPORTS
@@ -107,7 +103,6 @@ report = lbCurSel _idcReports
 ? btnSpySat : btnSpySat = false; goto "SpySat"
 ? btnRadioON : btnRadioON = false; goto "RadioSwitch"
 ? btnVoteMenu: btnVoteMenu = false, goto "Vote_Menu"
-
 
 ~0.2
 goto "Update"
@@ -304,7 +299,7 @@ goto "Update"
 	_group = _groups select _index
 	? (groupPlayer == _group): hint "Well I think you're not an AI since you're so smart that you are tend to check whether you are an AI."; goto "Update"
 	? _group in _groupsAI : hint "This group is AI."; goto "Update"
-	_index exec "Player\CheckAI.sqs"; hint "Checking whether the group is AI. Please wait for the result."
+	_index exec "Player\Msg\sCheckAI.sqs"; hint "Checking whether the group is AI. Please wait for the result."
 	goto "Update"
 
 #CommandTemporary

@@ -1,6 +1,5 @@
 ; args: [[unit tracked]]
-
-_unitselect = (_this select 0) select 0
+_unitselect = _this select 0 select 0
 _groups = [groupPlayer]
 _dlg = createDialog "DisbandGroupDialog"
 
@@ -22,7 +21,7 @@ _dlg = createDialog "DisbandGroupDialog"
 goto "Update"
 
 #BeginDisbandGroup
-? (group _unitselect) in ((workerGroups select siPlayer) + (townGroups select siPlayer)) : player groupchat "Not allowed to disband town or worker groups"; exit
+? (group _unitselect) in (townGroups select siPlayer) : player groupchat "Not allowed to disband town groups"; exit
 player groupchat "Process started: disbanding group of selected unit....";
 
 	_members = units _unitselect; _units = []
@@ -33,7 +32,7 @@ player groupchat "Process started: disbanding group of selected unit....";
 	? btnDisbandGroupGunner : { if (_x == vehicle _x || _x != gunner vehicle _x) then {_units set [count _units, _x]} } forEach _members; btnDisbandGroupGunner = false
 
 	~1
-	? giPlayer == giCO select siPlayer : _groups = _groups + (groupAiMatrix select siPlayer)
+	? giPlayer == giCO select siPlayer || (groupCommander select siPlayer) in (groupAiMatrix select siPlayer): _groups = _groups + (groupAiMatrix select siPlayer)
 
 	_num = 0; _i = 0; _c = count _units
 	#CheckUnit

@@ -35,13 +35,9 @@ if (local _shell) then {
 // Range
 	if (typeOf _shell != ammoMine) then { [_vehicle, _shell, _limitWeaponRangeFactor] exec "Player\Effect\LimitWeaponRangeNew.sqs" };
 	_effectShell = _shell;
-	if ((_limitWeaponRangeFactor <= 0 && _sizeOfShell > 0) || _sizeOfShell > 125) then {
-// Marker
-		_Fired_EH_Array exec "Player\ImpactPointMarker.sqs";
-		if (_limitWeaponRangeFactor <= 0 && _sizeOfShell > 0) then {
+	if (_limitWeaponRangeFactor <= 0 && _sizeOfShell > 0) then {
 // Track
-			if (player == gunner _vehicle && (bTrackBullet || !bTrackBullet)) then {[_shell] exec "Player\TrackBullet.sqs"};
-		};
+		if (player == gunner _vehicle && (bTrackBullet || !bTrackBullet)) then {[_shell] exec "Player\TrackBullet.sqs"};
 	};
 } else {
 	if (boole_Global_Bullet_Tracer || boole_Global_Cannon_Tracer || boole_Global_Shell_Tracer) then

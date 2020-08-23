@@ -1,28 +1,19 @@
+_timeAbort = (1 + random 2) * 60
 #Start
 
-@(pvMoneyTransfer != -1)
+@ pvMoneyTransfer != -1 || _time > _timeAbort
+? pvMoneyTransfer == -1: [] exec "Player\Msg\mMoneyTransferred.sqs"; exit
 
 _amount = pvMoneyTransfer
+
+@ pvMoneyTransferGroup != -1
 _value = pvMoneyTransferGroup
+
 pvMoneyTransfer = -1
-pvMoneyTransfer = -1
+pvMoneyTransferGroup = -1
 
+[_amount, _value] exec "Player\Msg\hMoneyTransferred.sqs"
 
-_giFrom = _value % GroupsNum
-_value = (_value - _giFrom)/GroupsNum
-
-_giTo = _value % GroupsNum
-_value = (_value - _giTo)/GroupsNum
-
-_si = _value
-
-
-
-; player globalchat format["MsgMoneyTransferred.sqs: _amount=%1, _si=%2, _giFrom=%3", _amount, _si, _giFrom]
-
-_nameFrom = name leader ((groupMatrix select _si) select _giFrom)
-? ((groupMatrix select _si) select _giFrom) in (groupAiMatrix select _si) : _nameFrom = format["AI %1", (groupNameMatrix select _si) select _giFrom]
-? (siPlayer == _si) && (giPlayer == _giTo) && _amount > 0: player groupchat format ["You received $%1 from %2", _amount, _nameFrom]
-? (siPlayer == _si) && (giPlayer == _giTo) && _amount < 0: player groupchat format ["Your $%1 was taken by %2", -_amount, _nameFrom]
+[] exec "Player\Msg\mMoneyTransferred.sqs"; exit
 
 goto "Start"

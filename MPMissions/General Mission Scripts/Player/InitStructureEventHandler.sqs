@@ -8,7 +8,7 @@ _object = _this select 0
 ? !isServer && _type in (structsOccupiableArtHowitzer + structsOccupiableHowitzer + structsOccupiableMortar): _object addEventHandler ["Fired", format [{ [_this select 0, nearestObject[_this select 0, _this select 4], %1 ] exec "Common\EH\TrackShell.sqs" }, _si]]
 
 ? _type in structsOccupiableArtHowitzer: _object addEventHandler ["Fired",{[_this, 0] call funcFiredEffect}]; exit
-? _type in structsOccupiableHowitzer + structsOccupiableMortar: _object addEventHandler ["Fired",{[_this, 1] call funcFiredEffect; _this exec "Player\ImpactPointMarker.sqs"}]; exit
+? _type in structsOccupiableHowitzer + structsOccupiableMortar: _object addEventHandler ["Fired",{[_this, 1] call funcFiredEffect}]; exit
 
 _object addEventHandler ["Fired",{[_this, 1] call funcFiredEffect}]
 exit

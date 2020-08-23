@@ -29,8 +29,6 @@ funcDialog_BuyUnitsAvailable = preprocessFile "Player\SQF\Dialog_BuyUnitsAvailab
 funcDialog_BuyUnitsFactory = preprocessFile "Player\SQF\Dialog_BuyUnitsFactory.sqf"
 funcDialog_BuyUnitsGroups = preprocessFile "Player\SQF\Dialog_BuyUnitsGroups.sqf"
 funcDialog_BuyUnitsQueue = preprocessFile "Player\SQF\Dialog_BuyUnitsQueue.sqf"
-funcDialog_Options_Init = preprocessFile "Player\SQF\Dialog_Options_Init.sqf"
-funcDialog_Options_Update = preprocessFile "Player\SQF\Dialog_Options_Update.sqf"
 funcDialog_Destruction = preprocessFile "Player\SQF\Dialog_Destruction.sqf"
 funcDialog_AttachableVehicles = preprocessFile "Player\SQF\Dialog_AttachableVehicles.sqf"
 funcDialog_AttachVehicleList = preprocessFile "Player\SQF\Dialog_AttachVehicleList.sqf"
@@ -91,11 +89,14 @@ indexWayPointSelected = -1
 
 
 mutexBuildStructure = false; mutexOrderBuildStructure = false
-mutexMoneyStatus = false; mutexMoneySpent = false
+mutexMoneySpent = false
 mutexSendCancelBuy = false; mutexqPlayer = false
 indexSendBuyUnit = 0; countSendBuyUnit = 4
 
 ; MESSAGE HANDLERS (PLAYERS)
+mutexMoneyStatus = false; _i = 0; while "_i < 10" do {call format [{[] exec "Player\Msg\mMoneyStatus%1.sqs"}, _i]; _i = _i + 1}
+[] exec "Player\Msg\mMoneyTransferred.sqs"
+
 _i = 0; _count = 10; while "_i < _count" do {call Format[{[] exec "Player\Msg\mAddUnit%1.sqs"}, _i]; _i = _i + 1}
 
 _i = 0; _count = 5; while "_i < _count" do {call Format[{[] exec "Player\Msg\mQueueAdd%1.sqs"; [] exec "Player\Msg\mQueueRem%1.sqs"}, _i]; _i = _i + 1}

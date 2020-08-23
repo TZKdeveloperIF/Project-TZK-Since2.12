@@ -10,7 +10,7 @@ _pages = 2; _page = Page_Radio_CustomCar; _boole_PageNoChange = true
 
 
 Radio001 setTriggerText " "; Radio001 setTriggerStatements ["this", "", ""];
-Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", "[] exec {Player\Dialog\TZK_Mission_Setting.sqs}", ""];
+Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", "[] exec {Player\Dialog\TZK_Mission_Setting_1.sqs}", ""];
 if (call _booleStringSwitchDriver) then {Radio003 setTriggerText "To driver's seat"; Radio003 setTriggerStatements ["this", "(vehicle player) exec {Player\Action\SwitchToDriver.sqs}", ""]} else {Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""]};
 if (call _booleStringSwitchGunner) then {Radio004 setTriggerText "To gunner's seat"; Radio004 setTriggerStatements ["this", "(vehicle player) exec {Player\Action\SwitchToGunner.sqs}", ""]} else {Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""]};
 Radio005 setTriggerText " "; Radio005 setTriggerStatements ["this", "", ""];

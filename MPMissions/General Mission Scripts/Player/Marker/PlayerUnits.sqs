@@ -7,14 +7,18 @@ _si = _this select 0; _boole_Mark_Player_Name = _this select 1
 #Update
 	? _time > 30: [_si, _boole_Mark_Player_Name] exec "Player\Marker\PlayerUnits.sqs"; exit
 	? !([_boole_Mark_Player_Name, boole_Mark_Player_Name] call funcBoolEqual): goto "ResetLeaderMarker"
-	~0.5
-	? (0 == count ([_si, stradar] call funcGetWorkingStructures)): call funcHideMarkers; goto "HideSleep"
+	_delay = if !bool_TZK_Marker_LowFrequency Then {0.5} Else {3}
+	~ _delay
+	? 0 == count ([_si, stradar] call funcGetWorkingStructures) || bool_TZK_Marker_Hide: call funcHideMarkers; goto "HideSleep"
+	
+	? bool_TZK_Marker_SQS: [_si, _boole_Mark_Player_Name] exec "Player\Marker\PlayerUnitsSQSMode.sqs"; exit
 	call funcMappingUnitsPlayer
 	? dev: call funcMappingPlayerDev
+	
 	goto "Update"
 #HideSleep
 	~0.5
-	? (0 == count ([_si, stradar] call funcGetWorkingStructures)): goto "HideSleep"
+	? 0 == count ([_si, stradar] call funcGetWorkingStructures) || bool_TZK_Marker_Hide: goto "HideSleep"
 	goto "Update"
 	
 #ResetLeaderMarker
@@ -29,5 +33,6 @@ _si = _this select 0; _boole_Mark_Player_Name = _this select 1
 		_i = _i + 1
 		? (_i < _c):goto "ResetMarker"
 	goto "Update"
+	
 	
 ; EOF

@@ -1,6 +1,8 @@
+_timeAbort = (1 + random 2) * 60
 #Start
 
-@(pvInfo1 != -1)
+@ pvInfo1 != -1 || _time > _timeAbort
+? pvInfo1 == -1: [] exec "Player\Msg\mInfo2.sqs"; exit
 
 _value = pvInfo1
 pvInfo1 = -1
@@ -8,5 +10,7 @@ _value2 = pvInfoEx1
 pvInfoEx1 = -1
 
 [_value, _value2] exec "Player\Msg\hInfo.sqs"
+
+[] exec "Player\Msg\mInfo2.sqs"; exit
 
 goto "Start"

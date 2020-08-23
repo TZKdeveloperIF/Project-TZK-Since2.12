@@ -44,7 +44,7 @@ _distLimit = viewDistance;
 		? !(_unit call temporaryCheck): goto "EOF"
 		? !(alive _unit) || _vehicle != vehicle _unit: goto "EOF"
 		_ammoArray = _vehicle ammoArray _weapon
-		? count _ammoArray > 0 && local gunner _vehicle: if (_ammoArray select 1 == 1) Then {_reloadMagazine = true}; if (_ammoArray select 1 > 0) Then {if ((_ammoArray select 1 != _ammunition) || (_ammoArray select 1 == 1)) Then {_ammunition = _ammoArray select 1; _vehicle fire _weapon}} else {goto "EOF"}
+		? count _ammoArray > 0 && local gunner _vehicle: if (_ammoArray select 1 == 1) Then {_reloadMagazine = true}; if (_ammoArray select 1 > 0) Then {if ((_ammoArray select 1 != _ammunition) || (_ammoArray select 1 == 1)) Then {_ammunition = _ammoArray select 1; _ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev], _vehicle addEventHandler [ "Fired", format ["[_this, %1, %2] exec {Common\EH\Fired_ReviseShellDir.sqs}", getPosASL _actualTarget, _ehRev] ], _vehicle fire _weapon}} else {goto "EOF"}
 		? count _ammoArray == 0: goto "EOF"
 		goto "AttackDone"
 		
@@ -64,9 +64,10 @@ _distLimit = viewDistance;
 		? !(_unit call temporaryCheck): goto "EOF"
 		? !(alive _unit) || _vehicle != vehicle _unit: goto "EOF"
 		_ammoNow = _vehicle ammo _weapon
-		? _ammoNow > 0 && local gunner _vehicle: if (_ammoNow == 1) Then {_reloadMagazine = true}; if (_ammoNow != _ammunition || _ammoNow == 1) Then {_ammunition = _ammoNow, _vehicle fire _weapon}
+		? _ammoNow > 0 && local gunner _vehicle: if (_ammoNow == 1) Then {_reloadMagazine = true}; if (_ammoNow != _ammunition || _ammoNow == 1) Then {_ammunition = _ammoNow, _ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev], _vehicle addEventHandler [ "Fired", format ["[_this, %1, %2] exec {Common\EH\Fired_ReviseShellDir.sqs}", getPosASL _actualTarget, _ehRev] ], _vehicle fire _weapon}
 		? _ammoNow == 0: if (_ammoOld == 0) Then {goto "EOF"}
 		
+		#AttackDone
 		~0.1
 		_vehicle doWatch (getPos _actualTarget)
 	goto "AttackCheck"

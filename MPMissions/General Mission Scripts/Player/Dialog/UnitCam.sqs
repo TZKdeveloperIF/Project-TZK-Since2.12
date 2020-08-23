@@ -271,36 +271,34 @@ _return = "External_Update"; goto "UpdateDialog"
   goto "Exit"
 
 #Disband
-  ; ? !(alive _unitTracked) : player groupchat "You can't disband dead units."; goto _return
+	; ? !(alive _unitTracked) : player groupchat "You can't disband dead units."; goto _return
+	[[_unitTracked]] exec "Player\DisbandUnits.sqs"
 
-  [[_unitTracked]] exec "Player\DisbandUnits.sqs"
+	_crew = crew vehicle _unitTracked
+	_done = false; { if (_unitTracked != _x && !_done) then { _unitTracked = _x; _done=true } } foreach _crew
+	? !_done : _unitTracked = vehicle _unitTracked
 
-  _crew = crew vehicle _unitTracked
-  _done = false; { if (_unitTracked != _x && !_done) then { _unitTracked = _x; _done=true } } foreach _crew
-  ? !_done : _unitTracked = vehicle _unitTracked
-  
-  ? _iView > 0 : iView = 0; goto "ChangeView"
-  goto _return
+	? _iView > 0 : iView = 0; goto "ChangeView"
+	goto _return
   
 #DisbandAll
-? giPlayer != (giCO select siPlayer) : player groupchat "Disband all units of a group is only allowed for commander."; goto _return
-  ? !(alive _unitTracked) : player groupchat "Selected Unit is not alive."; goto _return
+	? giPlayer != (giCO select siPlayer) && !((groupCommander select siPlayer) in (groupAiMatrix select siPlayer)): player groupchat "Disband all units of a group is only allowed for human commander."; goto _return
+	; ? !(alive _unitTracked) : player groupchat "Selected Unit is not alive."; goto _return
+	[[_unitTracked]] exec "Player\DisbandAllUnits.sqs"
 
-  [[_unitTracked]] exec "Player\DisbandAllUnits.sqs"
-
-  ? _iView > 0 : iView = 0; goto "ChangeView"
-  goto "Exit"
+	? _iView > 0 : iView = 0; goto "ChangeView"
+	goto "Exit"
   
 #ClearDeadCrew
   [[_unitTracked]] exec "Player\ClearDeadCrew.sqs"
   goto _return
   
 #Disembark
-  [[_unitTracked]] exec "Player\SendUnitDisembark.sqs"
+  [[_unitTracked]] exec "Player\Msg\sUnitDisembark.sqs"
   goto "External_Update"
  
 #Join
-	? giPlayer != (giCO select siPlayer) : player groupchat "Join units via Unit Camera is only allowed for commander."; goto _return
+	? giPlayer != (giCO select siPlayer) && !((groupCommander select siPlayer) in (groupAiMatrix select siPlayer)): player groupchat "Join units via Unit Camera is only allowed for human commander."; goto _return
 	? !(group _unitTracked in ((groupAiMatrix select si0) + (groupAiMatrix select si1))) : player groupchat "Only allow to ask AI group units to join other groups."; goto _return
 
 	? _unitTracked == leader _unitTracked : player groupchat "AI Group Leader is not allowed to join other groups"; goto _return
@@ -309,7 +307,7 @@ _return = "External_Update"; goto "UpdateDialog"
 	goto "Exit"
  
 #VehicleJoin
-	? giPlayer != (giCO select siPlayer) : player groupchat "Join units via Unit Camera is only allowed for commander."; goto _return
+	? giPlayer != (giCO select siPlayer) && !((groupCommander select siPlayer) in (groupAiMatrix select siPlayer)): player groupchat "Join units via Unit Camera is only allowed for human commander."; goto _return
 		
 	_unitsToJoin = [driver vehicle _unitTracked, gunner vehicle _unitTracked, commander vehicle _unitTracked] - [objNull]; _allowToJoin = true
 	? count _unitsToJoin == 0 : player groupchat "Cargo or Empty Vehicle isn't allowed to join."; goto _return

@@ -1,10 +1,10 @@
-_lastMissionSettings = _this select 0; _booleMatrix = _this select 1;
+_lastMissionSettings = _this select 0; _booleMatrix = _this select 1; _matrixName = _this select 2;
 
 _i = 0; _Column = 3;
 while "_i < _Column" do
 {
 	_idc = IDC + 100 + 100 * _i;
-	_settingArray = missionSettingMatrix select _i; _size = count _settingArray; _last = _lastMissionSettings select _i; _booleans = _booleMatrix select _i;
+	_settingArray = (call _matrixName) select _i; _size = count _settingArray; _last = _lastMissionSettings select _i; _booleans = _booleMatrix select _i;
 	_j = 0;  _Line = 12;
 	while "_j < _Line" do
 	{

@@ -8,7 +8,7 @@ _crew = crew _unit
 ? count _crew == 0 : player groupchat "Empty vehicles can't disembark."; exit  
 
 _groups = [groupPlayer]
-? giPlayer == giCO select siPlayer : _groups = _groups + (groupAiMatrix select siPlayer)
+? giPlayer == giCO select siPlayer || (groupCommander select siPlayer) in (groupAiMatrix select siPlayer): _groups = _groups + (groupAiMatrix select siPlayer)
 ? !((group _unit) in _groups) : player groupchat "You are not allowed to order this unit disembark."; exit
 
 pvDisembarkUnit = _unit; PublicVariable "pvDisembarkUnit"

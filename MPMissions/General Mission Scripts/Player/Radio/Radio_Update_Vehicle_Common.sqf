@@ -1,6 +1,6 @@
 Radio001 setTriggerText " "; Radio001 setTriggerStatements ["this", "", ""];
 
-Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", "[] exec {Player\Dialog\TZK_Mission_Setting.sqs}", ""];
+Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", "[] exec {Player\Dialog\TZK_Mission_Setting_1.sqs}", ""];
 
 Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""];
 Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""];

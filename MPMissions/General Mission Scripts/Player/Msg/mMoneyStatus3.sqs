@@ -1,15 +1,19 @@
+_timeAbort = (1 + random 2) * 60
 #Start
 
-@(pvMoney3 != -1)
+@ pvMoney3 != -1 || _time > _timeAbort
+? pvMoney3 == -1: [] exec "Player\Msg\mMoneyStatus3.sqs"; exit
 
 _amount = pvMoney3
 
-@(pvMoneyGroup3 != -1)
+@ pvMoneyGroup3 != -1
 _value = pvMoneyGroup3
 
 pvMoney3 = -1
 pvMoneyGroup3 = -1
 
 [_amount, _value] exec "Player\Msg\hMoneyStatus.sqs"
+
+[] exec "Player\Msg\mMoneyStatus3.sqs"; exit
 
 goto "Start"

@@ -34,15 +34,15 @@ _repeat = 0
 	? _money < _cost : exit
 	
 	_factoryType = _unitDesc select udFactoryType; _factoryType = _factoryType call funcBinaryDigit
-	_aisBuyFactoryNum = []; {_aisBuyFactoryNum set [ (_x - 1), ((aiSetting select _si) select _giBuyer) select (call format ["aisBuyFactory%1", _x]) ] } foreach [1,2,3,4]
-	_aisBuyFactoryNumType = []
-	? (count (_aisBuyFactoryNum - [1,2,3,4]) < count _aisBuyFactoryNum) : _aisBuyFactoryNumType set [count _aisBuyFactoryNumType, stBarracks]
-	? (count (_aisBuyFactoryNum - [5,6,7,8]) < count _aisBuyFactoryNum) : _aisBuyFactoryNumType set [count _aisBuyFactoryNumType, stHeavy]
-	? "_x in _factoryType" count _aisBuyFactoryNumType > 0: goto "BuyAtSetFactory"
+	_aisBuyFactoryNum = []; {_aisBuyFactoryNum set [ _x - 1, aiSetting select _si select _giBuyer select (call format ["aisBuyFactory%1", _x]) ] } foreach [1,2,3,4]
+	_aisBuyFactoryType = []
+	? (count (_aisBuyFactoryNum - [1,2,3,4]) < count _aisBuyFactoryNum) : _aisBuyFactoryType set [count _aisBuyFactoryType, stBarracks]
+	? (count (_aisBuyFactoryNum - [5,6,7,8]) < count _aisBuyFactoryNum) : _aisBuyFactoryType set [count _aisBuyFactoryType, stHeavy]
+	? "_x in _factoryType" count _aisBuyFactoryType > 0: goto "BuyAtSetFactory"
 	
 #BuyAtOldFashion
 	? count _factoryType == 0: exit
-	_factoryType = _factoryType select ((count _factoryType) - 1)
+	_factoryType = _factoryType select count _factoryType - 1
 	 _factory = [_si, _factoryType, true] call funcGetIdleFactories; if (count _factory == 0) then {_factory = objNull} else {_factory = _factory select 0}
 	 ? (isNull _factory) : exit	
 	[_type, _driver, _gunner, 0, _si, _giJoin, _giBuyer, _factory] exec "Server\BuyUnit.sqs"
@@ -50,7 +50,7 @@ _repeat = 0
 	exit
 	
 #BuyAtSetFactory
-	_factoryType = _factoryType select ((count _factoryType) - 1)
+	_factoryType = _factoryType select count _factoryType - 1
 	if (_factoryType == stHeavy) then { _aisBuyFactoryNum = _aisBuyFactoryNum - [0,1,2,3,4]; _i = 0; _c = count _aisBuyFactoryNum; while "_i < _c" do {_aisBuyFactoryNum set [_i, (_aisBuyFactoryNum select _i) - 4]; _i = _i + 1} } else { _aisBuyFactoryNum = _aisBuyFactoryNum - [0,5,6,7,8] }
 
 	_workingFactories = [_si, _factoryType] call funcGetWorkingStructures; _chosenFactories = []

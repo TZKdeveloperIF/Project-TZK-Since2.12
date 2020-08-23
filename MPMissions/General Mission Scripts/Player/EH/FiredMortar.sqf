@@ -35,7 +35,5 @@ if (local _shell) then {
 	};
 
 	[_vehicle, _shell, _limitWeaponRangeFactor] exec "Player\Effect\LimitWeaponRangeNew.sqs";
-	
-	_Fired_EH_Array exec "Player\ImpactPointMarker.sqs";
 };
 
