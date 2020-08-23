@@ -131,45 +131,7 @@ _count = count _groups
 #CheckGroupSide1Empty
 groupAiMatrix set [si1, _groupsAI]
 
-_spec0exists = false
-? !(isNull Spec0): _spec0exists = true
-if (_spec0exists && (local Spec0) && player != Spec0) then { Spec0 disableAI "TARGET"; Spec0 disableAI "AUTOTARGET"; Spec0 disableAI "MOVE"; deleteVehicle Spec0 }
-
-_spec1exists = false
-? !(isNull Spec1): _spec1exists = true
-if (_spec1exists && (local Spec1) && player != Spec1) then { Spec1 disableAI "TARGET"; Spec1 disableAI "AUTOTARGET"; Spec1 disableAI "MOVE"; deleteVehicle Spec1 }
-
-_spec2exists = false
-? !(isNull Spec2): _spec2exists = true
-if (_spec2exists && (local Spec2) && player != Spec2) then { Spec2 disableAI "TARGET"; Spec2 disableAI "AUTOTARGET"; Spec2 disableAI "MOVE"; deleteVehicle Spec2 }
-
-_spec3exists = false
-? !(isNull Spec3): _spec3exists = true
-if (_spec3exists && (local Spec3) && player != Spec3) then { Spec3 disableAI "TARGET"; Spec3 disableAI "AUTOTARGET"; Spec3 disableAI "MOVE"; deleteVehicle Spec3 }
-
-_spec4exists = false
-? !(isNull Spec4): _spec4exists = true
-if (_spec4exists && (local Spec4) && player != Spec4) then { Spec4 disableAI "TARGET"; Spec4 disableAI "AUTOTARGET"; Spec4 disableAI "MOVE"; deleteVehicle Spec4 }
-
-_spec5exists = false
-? !(isNull Spec5): _spec5exists = true
-if (_spec5exists && (local Spec5) && player != Spec5) then { Spec5 disableAI "TARGET"; Spec5 disableAI "AUTOTARGET"; Spec5 disableAI "MOVE"; deleteVehicle Spec5 }
-
-_spec6exists = false
-? !(isNull Spec6): _spec6exists = true
-if (_spec6exists && (local Spec6) && player != Spec6) then { Spec6 disableAI "TARGET"; Spec6 disableAI "AUTOTARGET"; Spec6 disableAI "MOVE"; deleteVehicle Spec6 }
-
-_spec7exists = false
-? !(isNull Spec7): _spec7exists = true
-if (_spec7exists && (local Spec7) && player != Spec7) then { Spec7 disableAI "TARGET"; Spec7 disableAI "AUTOTARGET"; Spec7 disableAI "MOVE"; deleteVehicle Spec7 }
-
-_spec8exists = false
-? !(isNull Spec8): _spec8exists = true
-if (_spec8exists && (local Spec8) && player != Spec8) then { Spec8 disableAI "TARGET"; Spec8 disableAI "AUTOTARGET"; Spec8 disableAI "MOVE"; deleteVehicle Spec8 }
-
-_spec9exists = false
-? !(isNull Spec9): _spec9exists = true
-if (_spec9exists && (local Spec9) && player != Spec9) then { Spec9 disableAI "TARGET"; Spec9 disableAI "AUTOTARGET"; Spec9 disableAI "MOVE"; deleteVehicle Spec9 }
+{ call format ["_spec%1exists = if (isNull Spec%1) Then {false} Else {true}, if (_spec%1exists && (local Spec%1) && player != Spec%1) then {deleteVehicle Spec%1}", _x] } forEach [0,1,2,3,4,5,6,7,8,9]
 
 
 ;pvDebugVars = true; PublicVariable "pvDebugVars"
@@ -221,7 +183,7 @@ PublicVariable "music0"; PublicVariable "music1h"; PublicVariable "music10m";
 
 ; ================================================================================TZK_4.0.0 Block================================================================================
 ; Vote System. Server Design. Requiring "AI group leader" judged results. No problem for after-start delay, but msg script should start after variables having defined.
-voteRate = 0.33; VoteMassComm = 2; VoteMassAdmin = 1000; Vote_Result = []; {Vote_Result set [ count Vote_Result, [] ]} forEach Vote_Matrix
+voteRate = 0.33; VoteMassComm = [2, 1] select bool_TZK_199_Mode; VoteMassAdmin = 1000; Vote_Result = []; {Vote_Result set [ count Vote_Result, [] ]} forEach Vote_Matrix
 call loadFile "Server\Init\Vote.sqf"
 ; format of Vote_Result elements: [voted value, mass of voter, si, gi]
 ; Vote_Options_Name = []; {Vote_Options_Name set [count Vote_Options_Name, _x select 0]} forEach Vote_Matrix

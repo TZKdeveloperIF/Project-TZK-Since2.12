@@ -1,6 +1,8 @@
+_timeAbort = (1 + random 2) * 60
 #Start
 
-@(pvArt != -1)
+@ pvArt != -1 || _time > _timeAbort
+? pvArt == -1: [] exec "Player\Msg\mArtilleryShellDetected.sqs"; exit
 
 _value = pvArt
 _valuePos = pvArtPos
@@ -9,5 +11,7 @@ pvArt = -1
 pvArtPos = -1
 
 [_value, _valuePos] exec "Player\Msg\hArtilleryShellDetected.sqs"
+
+[] exec "Player\Msg\mArtilleryShellDetected.sqs"; exit
 
 goto "Start"

@@ -12,8 +12,8 @@ _this exec "Common\InitVehicle_Stable.sqs"
 
 ; Fired Event
 ? _typeName == "2S6_DKM_xj400": _vehicle addEventHandler ["Fired", "_this exec {Player\EH\Fired_2S6.sqs}"]
-? _typeName == "M270_M29064_xj400": _vehicle addEventHandler ["Fired", "_this exec {Player\EH\Fired_M270.sqs}; _this exec {Player\ImpactPointMarker.sqs}"]
-? _typeName == "TOS1_TZK_xj400": _vehicle addEventHandler ["Fired", "_this exec {Player\EH\Fired_TOS1.sqs}; _this exec {Player\ImpactPointMarker.sqs}"]
+? _typeName == "M270_M29064_xj400": _vehicle addEventHandler ["Fired", "_this exec {Player\EH\Fired_M270.sqs}"]
+? _typeName == "TOS1_TZK_xj400": _vehicle addEventHandler ["Fired", "_this exec {Player\EH\Fired_TOS1.sqs}"]
 
 ? bool_TZK_Vanilla_Mode: goto "SkipVanilla"
 ? _type in (typesHowitzer + typesHeavyTank): _vehicle addEventHandler ["Fired", "_this exec {\TZK_Objects\Scripts\gunrec.sqs}"]

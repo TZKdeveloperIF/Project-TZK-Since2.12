@@ -201,7 +201,7 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 #PatrolBase
 	_currentOrder = "TakeFirstTown"
 	_timeCheckOrders = time + 1*60
-  [0, getPos _mhq, _si, _gi] exec "Common\SendSetWPCO.sqs"
+	[0, getPos _mhq, _si, _gi] exec "Common\SendSetWPCO.sqs"
 	~0.4
 	[_si, _gi + GroupsNum, orderPatrolArea, [0,2]] exec "Common\SendAIGroupOrder.sqs"; [_si, _gi + GroupsNum, aisKeepMax, 13] exec "Common\SendAIGroupSetting.sqs"
 	goto "Update"
@@ -213,13 +213,17 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 	[0, getPos _mhq, _si, _gi] exec "Common\SendSetWPCO.sqs"
 	~0.4
 	[_si, _gi + GroupsNum, orderPatrolArea, [0,2]] exec "Common\SendAIGroupOrder.sqs"; [_si, _gi + GroupsNum, aisKeepMax, 13] exec "Common\SendAIGroupSetting.sqs"
+	
+	_res = [getPos _mhq, _si, []] call funcGetClosestEnemyTown  	  
+	_ti = _res select 0
+	[_si, _gi + GroupsNum, orderTempHoldTown, [_ti, HoldTownTypeDefs find "Infantry", 0, 0, 0]] exec "Common\SendAITemporaryOrder.sqs"; 
 	goto "Update"
 
 #TakeFirstTown
 	_currentOrder = "CheckFirstTownTaken"
 	_timeCheckOrders = time + 1*60
 
-  _res = [getPos _mhq, _si, []] call funcGetClosestEnemyTown  	  
+	_res = [getPos _mhq, _si, []] call funcGetClosestEnemyTown  	  
 	_ti = _res select 0
 	
 	[_si, _gi + GroupsNum, orderHoldTown, [_ti,1,0]] exec "Common\SendAIGroupOrder.sqs"

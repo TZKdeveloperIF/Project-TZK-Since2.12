@@ -1,8 +1,10 @@
 ; Effects won't work on dedicated server.
 ? isServer && isNull player : exit
+_timeAbort = (1 + random 2) * 60
 
 #Start
-@!(isNull pvAfterBurnerON)
+@ !isNull pvAfterBurnerON || _time > _timeAbort
+? isNull pvAfterBurnerON: [] exec "Player\Effect\PlaneAB_Msg_ON.sqs"; exit
 _plane = pvAfterBurnerON; pvAfterBurnerON = objNull
 
 BurningPlanes set [count BurningPlanes, _plane]
@@ -11,5 +13,7 @@ BurningPlanes set [count BurningPlanes, _plane]
 ? ("A10_Base_xj400" countType [_plane]) > 0: [_plane] exec "Player\Effect\AfterBurner\EffectA10.sqs"
 ? ("Su25_Base_xj400" countType [_plane]) > 0: [_plane] exec "Player\Effect\AfterBurner\EffectSu25.sqs"
 
+
+[] exec "Player\Effect\PlaneAB_Msg_ON.sqs"; exit
 
 goto "Start"

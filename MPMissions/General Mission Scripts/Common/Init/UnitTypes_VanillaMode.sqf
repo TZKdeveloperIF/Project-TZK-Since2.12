@@ -28,8 +28,8 @@ unitDefs select _ah1W2 set [udModel, "AH1_AT_xj400"]; unitTypeArray set [_ah1W2,
 unitDefs select _ah64W set [udModel, "AH64_xj400"]; unitTypeArray set [_ah64W, "AH64_xj400"];
 unitDefs select _ah64W2 set [udModel, "AH64_AT_xj400"]; unitTypeArray set [_ah64W2, "AH64_AT_xj400"];
 unitDefs select _ah64townW2 set [udModel, "AH64_xj400"]; unitTypeArray set [_ah64townW2, "AH64_xj400"];
-unitDefs select _v80E set [udModel, "Ka50_xj400"]; unitTypeArray set [_v80E, "Ka50_xj400"]; unitDefs select _v80E set [udImage, "\TZK_Objects\CTI_Image\Veh\ka50.paa"];
-unitDefs select _v80E2 set [udModel, "Ka50_AT_xj400"]; unitTypeArray set [_v80E2, "Ka50_AT_xj400"]; unitDefs select _v80E2 set [udImage, "\TZK_Objects\CTI_Image\Veh\ka50.paa"];
+unitDefs select _v80E set  [udFactoryType, -1];
+unitDefs select _v80E2 set [udFactoryType, -1];
 unitDefs select _mi24E set [udModel, "Mi24_xj400"]; unitTypeArray set [_mi24E, "Mi24_xj400"]; unitDefs select _mi24E set [udImage, "imi24"];
 unitDefs select _mi24E2 set [udModel, "Mi24_AT_xj400"]; unitTypeArray set [_mi24E2, "Mi24_AT_xj400"]; unitDefs select _mi24E2 set [udImage, "imi24"];
 unitDefs select _mi24townE2 set [udModel, "Mi24_xj400"]; unitTypeArray set [_mi24townE2, "Mi24_xj400"]; unitDefs select _mi24townE2 set [udImage, "imi24"];

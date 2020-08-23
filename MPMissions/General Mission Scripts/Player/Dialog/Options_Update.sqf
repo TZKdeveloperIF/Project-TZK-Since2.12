@@ -1,6 +1,3 @@
-// args: [_idcMoney, _idcScore, _idcIncomeRatio, _idcIncomeRatioPlayer, _idcTowns, _idcIncome, _idcTransferGroup, _idcGroupMarkers, _idcWorkerBehaviour, _idcUpgradeList ]
-// return: none
-
 private ["_idcMoney", "_idcScore", "_idcIncomeRatio", "_idcIncomeRatioPlayer", "_idcTowns", "_idcIncome", "_idcGroupMarkers", "_idcWorkerBehaviour", "_idcUpgradeList", "_idcWorkerBehaviour", 
 "_groups", "_groupsName", "_groupsMoney", "_groupsAI", "_groupCommander", 
 "_texts", "_index", "_count", 
@@ -28,13 +25,11 @@ _groupCommander = (groupCommander select siPlayer);
 
 ctrlSetText [IDC_TEXT_GAMETIME_Options, [] call funcGetTimeString ];
 
-// MONEY
 _money = _groupsMoney select giPlayer; _moneySide = 0;
 _index = 0;
 { _moneySide = _moneySide + (_groupsMoney select _index); _index=_index+1 } forEach _groups;
 ctrlSetText [_idcMoney, format["$ You/Side: %1/%2", _money, _moneySide]];
 
-// SCORE
 _score = [siPlayer, giPlayer] call funcCalcScore;
 _groupCount = count (groupMatrix select si0) + count (groupMatrix select si1);
 _place = 1;
@@ -46,7 +41,7 @@ _giX = 0;
 { _scoreX = [_siX, _giX] call funcCalcScore; if (_score < _scoreX) then {_place=_place+1}; _giX=_giX+1 } forEach (groupScoreMatrix select _siX);
 ctrlSetText [_idcScore, format["Score (Pos): %1 (%2/%3)", _score, _place, _groupCount]];
 
-// PLAYER INCOME RATIO
+
 _incomeRatio = [pvIncomeRatio0, pvIncomeRatio1] select (siPlayer == si1);
 _selectedIncome = (lbValue [_idcIncomeRatio, lbCurSel _idcIncomeRatio])/100;
 if ( ((ctrlEnabled _idcIncomeRatio) && _incomeRatio != _selectedIncome) ) then {if (siPlayer==si0) then {pvIncomeRatio0=_selectedIncome;PublicVariable "pvIncomeRatio0"} else {pvIncomeRatio1=_selectedIncome;PublicVariable "pvIncomeRatio1"}; };
@@ -59,22 +54,19 @@ if ((ctrlEnabled _idcIncomeRatioPlayer) && _incomeRatioPlayer != _selectedIncome
 _incomeRatioPlayer = [pvIncomeRatioPlayer0, pvIncomeRatioPlayer1] select (siPlayer == si1);
 if (_incomeRatioPlayer != _selectedIncome) then { lbSetCurSel[_idcIncomeRatioPlayer, 10*_incomeRatioPlayer]; };
 
-// TOWNS
 _townCount = count towns; _towns = 0; _income = 0;
 { if ((_x select tdSide) == siPlayer) then { _towns=_towns+1; _income=_income+(_x select tdValue) } } forEach towns;
 ctrlSetText [_idcTowns, format["Towns: %1 of %2", _towns, _townCount]];
 
-// INCOME
 _factor = 1; if (time > 60*90) Then {_factor = 1.2}; if (time > 60*150) Then {_factor = 1.5};
 _income = _income*incomex*_factor;
 _players = count (_groups - [_groupCommander] - _groupsAI); _aileaders = count _groupsAI;
 _incomePlayer = 0; _incomeAiLeaders = 0;
-if (_players > 0) then {_incomePlayer = _income*(1-_incomeRatio)*_incomeRatioPlayer/_players; _incomePlayer = _incomePlayer - (_incomePlayer % 1)};
-if (_aileaders > 0) then {_incomeAiLeaders = _income*(1-_incomeRatio)*(1-_incomeRatioPlayer)/_aileaders; _incomeAiLeaders = _incomeAiLeaders - (_incomeAiLeaders % 1)};
-_incomeCommander = _income - _incomePlayer*_players - _incomeAiLeaders*_aileaders;
+if (_players > 0) then {_incomePlayer = _income*(1-_incomeRatio)*_incomeRatioPlayer/_players; _incomePlayer = _incomePlayer - _incomePlayer % 1};
+if (_aileaders > 0) then {_incomeAiLeaders = _income*(1-_incomeRatio)*(1-_incomeRatioPlayer)/_aileaders; _incomeAiLeaders = _incomeAiLeaders - _incomeAiLeaders % 1};
+_incomeCommander = _income - _incomePlayer*_players - _incomeAiLeaders*_aileaders; _incomeCommander = _incomeCommander - _incomeCommander % 1;
 ctrlSetText [_idcIncome, format["Income You/Side: %1/%2", [_incomePlayer, _incomeCommander] select (groupPlayer == _groupCommander), _income]];
 
-// GROUPS
 
 _texts = []; _index = 0;
 { _texts set [_index, format["%1 %2 $%3 %4", [name leader _x, "AI"] select (_x in _groupsAI), _groupsName select _index, _groupsMoney select _index, count units _x] ]; _index=_index+1 } forEach _groups;
@@ -82,14 +74,11 @@ _texts = []; _index = 0;
 lbClear _idcTransferGroup; _index = 0;
 { _id = lbAdd [_idcTransferGroup, _x]; lbSetPicture [_idcTransferGroup, _id, ""]; _index = _index + 1} forEach _texts;
 
-// AI MARKERS GROUP
-giMarkersAI = lbCurSel _idcGroupMarkers;
+if (lbCurSel _idcGroupMarkers >= 0) Then {giMarkersAI = lbCurSel _idcGroupMarkers};
 
-// WORKER BEHAVIOUR
 call format["pvWorkerBehaviour%1", siPlayer];
 if (call format["pvWorkerBehaviour%1 != lbCurSel _idcWorkerBehaviour", siPlayer]) then { call format["pvWorkerBehaviour%1 = lbCurSel _idcWorkerBehaviour; PublicVariable ""pvWorkerBehaviour%1""", siPlayer] };
 
-// UPGRADES
 _index = 0; _upgState = upgMatrix select siPlayer;
 lbClear _idcUpgradeList;
 private ["_iconPath"]; _iconPath = "\TZK_Texture_4_0_0\CTI_Image\Icon\"; if (bool_TZK_Vanilla_Mode) Then {_iconPath = "\TZK_Objects\CTI_Image\Icon\"};

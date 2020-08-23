@@ -1,9 +1,13 @@
+_timeAbort = (1 + random 2) * 60
 #Start
 
-@( !isNull pvKilledTank0 )
+@ !isNull pvKilledTank0 || _time > _timeAbort
+? isNull pvKilledTank0: [] exec "Player\Effect\Killed_Msg_Tank0.sqs"; exit
 _vehicle = pvKilledTank0
 pvKilledTank0 = objNull
 
 [_vehicle] exec {Player\Effect\Killed_csla_burn_Unit_Heavy.sqs}
+
+[] exec "Player\Effect\Killed_Msg_Tank0.sqs"; exit
 
 goto "Start"

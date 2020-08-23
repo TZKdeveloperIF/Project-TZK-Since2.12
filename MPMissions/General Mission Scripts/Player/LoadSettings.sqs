@@ -37,11 +37,15 @@ _c = count infCustom
 
 
 ; TZK Mission Setting
-	_booleMatrix = [booleSettingEffects, booleSettingFunctions, booleSettingActions]
+_k = 0; _items = 2
+#Load_TZK_Settings
+	? _k == 0: _booleMatrix = [booleSettingEffects, booleSettingFunctions, booleSettingActions]
+	? _k == 1: _booleMatrix = [boolSettingGUI, boolSettingEnvironments, boolSettingControls]
 	_i = 0; _Column = 3
 	#LoadBooleColumn
-	_entry = format["TZK_Mission_Setting_%1", _i]
-	? !(unitSetting loadStatus _entry) : goto "LoadNextBoole"
+	? _k == 0: _entry = format["TZK_Mission_Setting_%1", _i]
+	? _k == 1: _entry = format["TZK_Mission_Setting_2_%1", _i]
+	? !(unitSetting loadStatus _entry) : removeAllWeapons unitSetting
 	
 	_booleans = _booleMatrix select _i
 	_j = 0; _Line = 12
@@ -51,12 +55,13 @@ _c = count infCustom
 		_j = _j + 1
 		? _j < _Line : goto "LoadBooleLine"
 	
-	#LoadNextBoole
+	; #LoadNextBoole
 	_i = _i + 1
 	? _i < _Column : goto "LoadBooleColumn"
-	
-	
-	
+_k = _k + 1
+? _k < _items: goto "Load_TZK_Settings"
+
+
 deleteVehicle unitSetting
 
 ; EOF

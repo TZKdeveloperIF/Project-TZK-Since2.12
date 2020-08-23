@@ -31,7 +31,7 @@ _hint = "0-0-1 channel is mainly for aircrafts switching ""SpoofMissile"" functi
 goto "Quit"
 
 #Channel2
-[] exec {Player\Dialog\TZK_Mission_Setting.sqs}; exit
+[] exec {Player\Dialog\TZK_Mission_Setting_1.sqs}; exit
 
 #Channel3
 ? _vehicle == player: if (call "{_x=={Medkit_xj400}} count magazines player > 0 && damage player > 0.01") Then {player exec {Player\Action\SelfMedic.sqs}} Else {hint "Improper condition. Self Medic don't happen."}, exit

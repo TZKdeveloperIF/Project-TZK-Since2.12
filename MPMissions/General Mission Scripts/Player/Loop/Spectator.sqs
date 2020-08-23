@@ -96,30 +96,23 @@ goto "Update"
   goto "Update"
 
 #WaitUntilAlive
-  keyForward = false
-  keyBackward = false
-  keyStrafeLeft = false
-  keyStrafeRight = false
-  keyTurnLeft = false
-  keyTurnRight = false
-  keyReload = false
+	keyForward = false
+	keyBackward = false
+	keyStrafeLeft = false
+	keyStrafeRight = false
+	keyTurnLeft = false
+	keyTurnRight = false
+	keyReload = false
 
-  player globalchat "Your player unit was killed. You will be back in control when you have respawned."
-  @(alive player)
-  _unit = player
-  _unit setPos _posStart
-  goto "Init"
+	player globalchat "Your player unit was killed. You will be back in control when you have respawned."
+	@(alive player)
+	_unit = player
+	_unit setPos _posStart
+	goto "Init"
 
-	#SleepFreeMode
-		_unit setPos _posFreeMove
-		#FreeModeLoop
-			? time % 1 > 0.8: setViewDistance viewDistance; showGPS boole_Show_GPS; showPad boole_Show_Pad; showRadio bool_Show_Radio; removeAllWeapons _unit
-			~0.1
-			? _unit != vehicle _unit: _unit action ["Eject", vehicle _unit]
-			? bFreeMode: goto "FreeModeLoop"
-		_posFreeMove = getPos _unit; _sensorFreeMove setPos _posFreeMove
-		_unit addWeapon "Ingram"; { _unit addMagazine "IngramMag" } forEach [1]; _unit selectWeapon "Ingram"; player addWeapon "NVGoggles"
-	goto "Update"
+#SleepFreeMode
+	_unit setPos _posFreeMove
+	[_unit, _sensorOld, _dirOld, _sensorStart, _sensorFreeMove] exec "Player\Loop\Spectator_Free.sqs"; exit
   
 #GameOver
   ~5

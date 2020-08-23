@@ -157,10 +157,10 @@ _unitsStarted = units _group
 	? _money < _cost: goto "Sleep"
 	
 	_factoryType = _unitDesc select udFactoryType; _factoryType = _factoryType call funcBinaryDigit
-	{_buyFacSet set [ (_x - 1), _setting select (call format ["aisBuyFactory%1", _x]) ] } foreach [1,2,3,4]
+	{_buyFacSet set [ _x - 1, _setting select (call format ["aisBuyFactory%1", _x]) ] } foreach [1,2,3,4]
 	_buyFacTypes = []
-	? "_x in [1,2,3,4]" count _buyFacSet > 0:: _buyFacTypes set [count _buyFacTypes, stBarracks]
-	? "_x in [5,6,7,8]" count _buyFacSet > 0:: _buyFacTypes set [count _buyFacTypes, stHeavy]
+	? "_x in [1,2,3,4]" count _buyFacSet > 0: _buyFacTypes set [count _buyFacTypes, stBarracks]
+	? "_x in [5,6,7,8]" count _buyFacSet > 0: _buyFacTypes set [count _buyFacTypes, stHeavy]
 	? "_x in _factoryType" count _buyFacTypes > 0: goto "BuyAtSetFactory"
 	#BuyAtOldFashion
 		_factories = []
@@ -170,8 +170,8 @@ _unitsStarted = units _group
 		goto "Sleep"
 	
 	#BuyAtSetFactory
-		_barracks = +((structMatrix select _si) select stBarracks); _barracks = _barracks - [objNull]
-		_heavys = +((structMatrix select _si) select stHeavy); _heavys = _heavys - [objNull]
+		_barracks = +(structMatrix select _si select stBarracks); _barracks = _barracks - [objNull]
+		_heavys = +(structMatrix select _si select stHeavy); _heavys = _heavys - [objNull]
 		_buyFactories = []
 		_i = 0; 
 		#SetSelectedFactories

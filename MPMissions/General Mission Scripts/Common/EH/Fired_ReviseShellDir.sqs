@@ -1,0 +1,39 @@
+; args: [Fired EH Array, actual target <object>, EH index]
+_vehicle = _this select 0 select 0
+_ammo = _this select 0 select 4
+_posTarget = _this select 1
+_ehRev = _this select 2; _vehicle removeEventHandler ["Fired", _ehRev]
+_shell = nearestObject [_vehicle, _ammo]; _posShell = getPosASL _shell; _velShell = velocity _shell; _speed = (speed _shell) / 3.6
+
+_distX = [_posShell, _posTarget] call funcDistH
+_deltaY = (_posTarget call funcHASL) - (_posShell select 2)
+_vx = sqrt ( (_velShell select 0)^2 + (_velShell select 1)^2 ); _vy = _velShell select 2; _theta0 = _vy atan2 _vx
+_range = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range.sqf"; _error0 = _range-_distX
+
+? abs _error0 > _distX*0.5: _vehicle groupChat "Improper initial speed/direction. Shell deleted.", deleteVehicle _shell, exit
+
+_step = [-1, +1] select (_range < _distX); _theta1 = _theta0 + _step; _vx = _speed * cos(_theta1); _vy = _speed * sin(_theta1)
+_range = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range.sqf"; _error1 = _range-_distX
+
+_theta = (_error0*_theta1 - _error1*_theta0) / (_error0 - _error1)
+? _theta > 90 || _theta < -90: _vehicle groupChat "Improper initial speed/direction. Shell deleted.", deleteVehicle _shell, exit
+
+; ? dev: player globalChat format ["%1, %2, %3, %4", _range, _error1, _vx, _vy]
+
+_i = 0; _try = 5
+#Newton_Loop
+_vx = _speed * cos(_theta); _vy = _speed * sin(_theta)
+_range = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range.sqf"; _error = _range-_distX
+; ? dev: player globalChat format ["%1, %2, %3, %4", _range, _error, _vx, _vy]
+
+? abs(_error) > 8 && _i < _try: _theta0 = _theta, _theta = (_error*_theta1 - _error1*_theta) / (_error - _error1), _theta1 = _theta0, _error1 = _error, _i = _i + 1, goto "Newton_Loop"
+
+? abs(_error) > abs(_error0): _vehicle groupChat "Improper initial speed. Shell deleted.", deleteVehicle _shell, exit
+
+_angle = (_velShell select 1) atan2 (_velShell select 0)
+_velShell = [_speed * cos(_theta) * cos(_angle), _speed * cos(_theta) * sin(_angle), _speed * sin(_theta)]
+? !bool_TZK_199_Mode: _shell setVectorDir _velShell
+_shell setVelocity _velShell; _shell setPosASL _posShell
+
+? isNull player: exit
+[_vehicle,_shell] exec "Player\Effect\Fired_Artillery_Impact.sqs"

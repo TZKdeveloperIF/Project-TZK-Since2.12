@@ -4,14 +4,15 @@
 
 _dlg = createDialog "TZK_Setting_Dialog"
 _si = siPlayer
+btnAction0 = false
 
 _lastMissionSettings = [ [], [], [] ]; _booleMatrix = [booleSettingEffects, booleSettingFunctions, booleSettingActions]
 
-[_lastMissionSettings, _booleMatrix] call loadFile "Player\SQF\Dialog_TZK_Mission_Setting_Init.sqf"
+[_lastMissionSettings, _booleMatrix, "missionSettingMatrix_1"] call loadFile "Player\Dialog\TZK_Mission_Setting_Init.sqf"
 
 ; Show text in dev for debugging
 ? !dev : _i = 1; _c = 3; while "_i <= _c" do { ctrlShow [IDC + _i, false]; _i = _i + 1 }
-? dev: (getPos player) exec "Server\CutDownTrees.sqs", hint format ["This message will appear only in developing mode (training missions), displaying some variables' value.\n\n%1, %2\n%3\n%4\n%5\n%6", GetWorld, TheWorld, dev, Weather_TZK]
+? dev: (getPos player) exec "Server\CutDownTrees.sqs", hint format ["This message will appear only in developing mode (training missions), displaying some variables' value.\n\n%1, %2\n%3\n%4\n%5\n%6", GetWorld, TheWorld, dev], ctrlSetText [IDC + 2, format["%1", (vehicle player) call funcGetUnitTypeFromObject]], ctrlSetText [IDC + 3, format ["%1", structDefs select stHeavy select sdObjects0]]
 
 #Update
 ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
@@ -29,7 +30,7 @@ ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bo
 	_i = _i + 1
 	? _i < _Column : goto "LoopColumn"
 	
-	? dev: ctrlSetText [IDC + 2, format["%1", (vehicle player) call funcGetUnitTypeFromObject]], ctrlSetText [IDC + 3, format ["%1", structDefs select stHeavy select sdObjects0]]
+	? btnAction0: btnAction0 = false, [] exec {Player\Dialog\TZK_Mission_Setting_2.sqs}, closeDialog 0, goto "Quit"
 
 	~0.2
 	goto "Update"
@@ -50,12 +51,11 @@ _soldier = "SoldierWB" camCreate [10,10,10]
 		? _j < _Line : goto "BoolesLine"
 		
 	_entry = format["TZK_Mission_Setting_%1", _i]
-	_soldier saveStatus _entry
+	if (count magazines _soldier > 0) Then {_soldier saveStatus _entry} Else {deleteStatus _entry}
 		
 	_i = _i + 1
 	? _i < _Column : goto "BoolesColumn"
 
 	deleteVehicle _soldier
 
-	
 ; EOF

@@ -2304,7 +2304,7 @@ class OptionsDialog: Menu {
 		IncomeRatioLabel, IncomeRatio, IncomeRatioPlayer, CommanderLabel, Commander, CommanderTransfer,
 		WorkerBehaviourLabel, WorkerBehaviour, AIRespawnLabel, AIRespawn,
 		UpgradesLabel, Upgrades, Upgrade, Exit, HiddenDefault,
-		VoteButton, GUISkinButton, SongsButton, 
+		VoteButton, TZK_Mission_Setting_1, TZK_Mission_Setting_2, 
 	};
 	class OptionsBackgroundWindow: BackgroundWindow {
 		x = 0.2;
@@ -2722,21 +2722,19 @@ class OptionsDialog: Menu {
 		text = "Online Help";
 	//	action = "closeDialog 0;optionsMenuInUse = false;[0] Exec ""GUI\OpenHelpMenu.sqs""";
 	};
-	class GUISkinButton: Button {
-		idc = IDC + 26;
+	class TZK_Mission_Setting_1: Button {
 		x = 0.025;
 		y = 0.35;
 		w = 0.15;
-		text = "";
-		action = "bool_TZK_DarkSkin = !bool_TZK_DarkSkin";
+		colorText[] = {0.9,0.7,0.2,1.0};
+		text = "TZK Setting 1";
+		action = "closeDialog 0; [] exec {Player\Dialog\TZK_Mission_Setting_1.sqs}";
+		sizeEx = 0.023;
 	};
-	class SongsButton: Button {
-		idc = IDC + 27;
-		x = 0.025;
+	class TZK_Mission_Setting_2: TZK_Mission_Setting_1 {
 		y = 0.395;
-		w = 0.15;
-		text = "";
-		action = "bool_TZK_Music = !bool_TZK_Music";
+		text = "TZK Setting 2";
+		action = "closeDialog 0; [] exec {Player\Dialog\TZK_Mission_Setting_2.sqs}";
 	};
 };
 
@@ -4608,16 +4606,14 @@ class UCJoinDialog: Menu {
 	objects[] = { };
 	controls[] = {UCJoinDialog_Title, UCJoinDialog_List, UCJoinDialog_BUTTON_OK, UCJoinDialog_BUTTON_EXIT};
 
-  	class UCJoinDialog_BackgroundWindow: BackgroundWindow
-  	{
-			 x = 0.55;
-			 y = 0.07;
-			 w = 0.30;
-			 h = 0.66;
+  	class UCJoinDialog_BackgroundWindow: BackgroundWindow {
+		 x = 0.55;
+		 y = 0.07;
+		 w = 0.30;
+		 h = 0.66;
   	};
 
-  	class UCJoinDialog_Title: Title
-  	{
+  	class UCJoinDialog_Title: Title {
 			style = ST_CENTER;
 			x = 0.55;
 			y = 0.08;
@@ -4633,27 +4629,25 @@ class UCJoinDialog: Menu {
 			w = 0.30;
 			h = 0.54;
 	};
- 		class UCJoinDialog_BUTTON_OK: Button
- 		{
-  			x = 0.5975;
-  			y = 0.69;
-  			w = 0.1;
-  			h = 0.04;
-  			text = "Confirm"
-  			action = "btnUCJoinOK = true"
-  			default = false
-  	};
+	class UCJoinDialog_BUTTON_OK: Button {
+		x = 0.5975;
+		y = 0.69;
+		w = 0.1;
+		h = 0.04;
+		text = "Confirm"
+		action = "btnUCJoinOK = true"
+		default = false
+};
 
- 		class UCJoinDialog_BUTTON_EXIT: Button
- 		{
-  			x = 0.7025;
-  			y = 0.69;
-  			w = 0.1;
-  			h = 0.04;
-  			text = "Exit"
-  			action = "btnUCJoinExit = true"
-  			default = false
-  	};
+	class UCJoinDialog_BUTTON_EXIT: Button {
+		x = 0.7025;
+		y = 0.69;
+		w = 0.1;
+		h = 0.04;
+		text = "Exit"
+		action = "btnUCJoinExit = true"
+		default = false
+};
 
 };
 class CleanMapDialog: Menu {
@@ -4663,8 +4657,7 @@ class CleanMapDialog: Menu {
 	objects[] = { };
 	controls[] = {CleanMapDialog_Title, CleanMapDialog_BUTTON_OK, CleanMapDialog_BUTTON_EXIT};
 
-  	class CleanMapDialog_BackgroundWindow: BackgroundWindow
-  	{
+  	class CleanMapDialog_BackgroundWindow: BackgroundWindow {
 			 x = 0.39;
 			 y = 0.41;
 			 w = 0.22;
@@ -4673,8 +4666,7 @@ class CleanMapDialog: Menu {
 			 colorBackground[] = {0.247, 0.247, 0.247, 0.75};
   	};
 
-  	class CleanMapDialog_Title: Title
-  	{
+  	class CleanMapDialog_Title: Title {
 			style = ST_CENTER;
 			x = 0.41;
 			y = 0.43;
@@ -4684,27 +4676,25 @@ class CleanMapDialog: Menu {
 			text = "Confirm Clean Map";
 	};
 
- 		class CleanMapDialog_BUTTON_OK: Button
- 		{
-  			x = 0.3975;
-  			y = 0.48;
-  			w = 0.1;
-  			h = 0.04;
-  			text = "Confirm"
-  			action = "btnCleanMapOK = true"
-  			default = false
-  	};
+	class CleanMapDialog_BUTTON_OK: Button {
+		x = 0.3975;
+		y = 0.48;
+		w = 0.1;
+		h = 0.04;
+		text = "Confirm"
+		action = "btnCleanMapOK = true"
+		default = false
+	};
 
- 		class CleanMapDialog_BUTTON_EXIT: Button
- 		{
-  			x = 0.5025;
-  			y = 0.48;
-  			w = 0.1;
-  			h = 0.04;
-  			text = "Exit"
-  			action = "btnCleanMapExit = true"
-  			default = false
-  	};
+	class CleanMapDialog_BUTTON_EXIT: Button {
+		x = 0.5025;
+		y = 0.48;
+		w = 0.1;
+		h = 0.04;
+		text = "Exit"
+		action = "btnCleanMapExit = true"
+		default = false
+	};
 
 };
 
@@ -4795,8 +4785,7 @@ class TrackBull {
 class TZK_Setting_Dialog {
 	idd = -1;
 	movingEnable = true;
-	controlsBackground[] = { BackGround_0_Base, BackGround_1_Left, BackGround_1_Mid, BackGround_1_Right, Frame_1_Left , Frame_1_Mid, Frame_0_Base, Frame_1_Right
-	, Sub_BG_Light};
+	controlsBackground[] = { Sub_BG_Light, BackGround_0_Base, BackGround_1_Left, BackGround_1_Mid, BackGround_1_Right, Frame_1_Left , Frame_1_Mid, Frame_0_Base, Frame_1_Right };
 	class Sub_BG_Light: TZK_BackGround_0 {
 		idc = IDC_DialogBG_Light;
 		style = ST_HUD_BACKGROUND;
@@ -4831,14 +4820,16 @@ class TZK_Setting_Dialog {
 		x = 0.68;	// 0.03 more
 	};
 	class Frame_0_Base: TZK_Frame_0 {
+		idc = IDC + 10;
 		colorText[] = {1, 1, 1, 0.7};
-		text = "  TZK Mission Setting";
+		text = "  TZK Mission Setting 1";
 		x = 0.1;
 		y = 0.082;	//0.018 less for sizeEx 0.030
 		w = 0.85;
 		h = 0.768;
 	};
 	class Frame_1_Left: TZK_Frame_1 {
+		idc = IDC + 11;
 		colorText[] = {0, 0, 0, 0.6};
 		text = "  Effects";
 		x = 0.12;
@@ -4847,15 +4838,17 @@ class TZK_Setting_Dialog {
 		h = 0.71;
 	};
 	class Frame_1_Mid: Frame_1_Left {
+		idc = IDC + 12;
 		text = "  Functions";
 		x = 0.40;
 	};
 	class Frame_1_Right: Frame_1_Left {
+		idc = IDC + 13;
 		text = "  Actions";
 		x = 0.68;
 	};
 	objects[] = {};
-	controls[] = { Exit, Text1, Text2, Text3,
+	controls[] = { Exit, AnotherDialog, Text1, Text2, Text3,
 	Combo_L_00, Combo_L_01, Combo_L_02, Combo_L_03, Combo_L_04, Combo_L_05, Combo_L_06, Combo_L_07, Combo_L_08, Combo_L_09, Combo_L_10, Combo_L_11,
 	Combo_M_00, Combo_M_01, Combo_M_02, Combo_M_03, Combo_M_04, Combo_M_05, Combo_M_06, Combo_M_07, Combo_M_08, Combo_M_09, Combo_M_10, Combo_M_11,
 	Combo_R_00, Combo_R_01, Combo_R_02, Combo_R_03, Combo_R_04, Combo_R_05, Combo_R_06, Combo_R_07, Combo_R_08, Combo_R_09, Combo_R_10, Combo_R_11, };
@@ -4864,8 +4857,14 @@ class TZK_Setting_Dialog {
 		y = 0.1;
 		w = 0.05;
 		h = 0.03;
+		colorText[] = {0.9,0.7,0.5,1.0};
 		text = "Exit";
 		action = "closeDialog 0";
+	};
+	class AnotherDialog: Exit {
+		x = 0.75; w = 0.15;
+		text = "Next Setting Dialog";
+		action = "btnAction0 = true";
 	};
 	class Text1: Text {
 		idc = IDC + 1;
