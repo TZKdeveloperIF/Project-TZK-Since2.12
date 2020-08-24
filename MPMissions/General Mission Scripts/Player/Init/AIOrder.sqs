@@ -1,5 +1,5 @@
 ; AI ORDERS
-; aiOrders format: [name, [param 0, param 1, ...], subdlg, script, description]
+; aiOrders format: [name, [param 0, param 1, ...], subdlg or units exec only 1 but not each script, script, description]
 ; aiOrders param# format: [nameParam, countParams, funcToText, default]
 
 playerOrderID = []; _i = 0; while "_i < 13" do {playerOrderID set [_i, 0]; _i = _i + 1}
@@ -109,10 +109,10 @@ _desc = "Ask your group member get close to MHQ (MCV not support yet) to buy wor
 _param0 = ["Workers Num", 10, "format[""%1"", 1+_this]", 0]
 aiOrders2 set [_type, ["Buy Workers", [_param0], false, "Order\BuyWorkers.sqs", _desc] ]; _type = _type + 1
 
-; _desc = "Set target at clicking position. To clear a target, select 'Clear' item in second parameter listbox."
-; _param0 = ["Target", 10, "format[""Target_%1"", _this]", 0]
-; _param1 = ["Set", 2, "[{Set},{Clear}] select _this", 0]
-; aiOrders2 set [_type, ["Set Target", [_param0, _param1], false, "Order\SetTarget.sqs", _desc] ]; _type = _type + 1
+_desc = "Set target at clicking position. To clear a target, select 'Clear' item in second parameter listbox.\n\nOnly Commander is allowed to adjust ""TargetS"" markers, which are for AI groups' order."
+_param0 = ["Target", 20, "format[""Target%2_%1"", _this%10, [{P},{S}] select (_this > 9)]", 0]
+_param1 = ["Set", 2, "[{Set},{Clear}] select _this", 0]
+aiOrders2 set [_type, ["Set Target", [_param0, _param1], true, "Order\SetTarget.sqs", _desc] ]; _type = _type + 1
 
 _desc = "Ask your group member to shoot at selected target. Order is valid to tank, howitzer vehicle, mortar structure and howitzer structure."
 _param0 = ["Target", 10, "format[""Target_%1"", _this]", 0]

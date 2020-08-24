@@ -37,21 +37,21 @@ _giJoin = _giList select ((random _c) - 0.5)
     ? _slots > 2 : _unitsBuy = ((unitsBuyAI select _si) select utbinfAt)
     goto "TypesSelected"
   #NotTransportDuty
-;  	_utb = [utbTanksHeavy, utbTanksL] select (dev && (getWorld == "eden"))
-  	_utb = [utbTanksHeavy, [utbTanksL, utbinfRPGLAW2] select _si] select (dev && (getWorld == "eden"))
-;  	_utb = [utbTanksHeavy, utbinfRPGLAW] select (dev && (getWorld == "eden"))
+;  	_utbMain = [utbTanksHeavy, utbTanksL] select (dev && (getWorld == "eden"))
+  	_utbMain = [utbTanksHeavy, [utbTanksL, utbinfRPGLAW2] select _si] select (dev && (getWorld == "eden")); _utbAir = utbPlane
+;  	_utbMain = [utbTanksHeavy, utbinfRPGLAW] select (dev && (getWorld == "eden"))
 ;  ? _giJoin in [_giBuyer, _giBuyer + 1, _giBuyer + 2] && time < 600 : goto "Exit"
 	? boole_Infantry_Mode: _unitsBuy = unitsBuyAI select _si select utbinfRPGLAW2, goto "TypesSelected"
-	? bool_TZK_199_Mode: _utb = utbTanksMixed
+	? bool_TZK_199_Mode: _utbMain = utbTanksMixed
 
 	? _giJoin == _giBuyer: _unitsBuy = (unitsBuyAI select _si) select utbTanksHeavy; goto "TypesSelected"
 	? (((orderMatrix select _si) select _giJoin) select 1) == orderPatrolLine: _unitsBuy = (unitsBuyAI select _si) select utbTanksHeavy; goto "TypesSelected"  
-	? (alive (mhq select _si)) && (("(_x select tdSide) == _si" count towns)/(count towns)) > ratioAttackEnemy: _unitsBuy = ((unitsBuyAI select _si) select utbTanksHeavy) + ((unitsBuyAI select _si) select utbPlane) + ((unitsBuyAI select _si) select utbAAHeavy); goto "TypesSelected"
-	_unitsBuy = ((unitsBuyAI select _si) select _utb)
+	? (alive (mhq select _si)) && (("(_x select tdSide) == _si" count towns)/(count towns)) > ratioAttackEnemy: _unitsBuy = ((unitsBuyAI select _si) select utbTanksHeavy) + ((unitsBuyAI select _si) select _utbAir) + ((unitsBuyAI select _si) select utbAAHeavy); goto "TypesSelected"
+	_unitsBuy = ((unitsBuyAI select _si) select _utbMain)
 	? _money < 7000 && _slots > 5 : _unitsBuy = _unitsBuy + ((unitsBuyAI select _si) select utbinfAt)
-	? _money > 7000 && _slots <= 5 : _unitsBuy = _unitsBuy + ((unitsBuyAI select _si) select _utb)
-	? time > 3000 && _money > 30000 && _slots >= 2 : _unitsBuy = _unitsBuy + ((unitsBuyAI select _si) select _utb) + ((unitsBuyAI select _si) select utbAAHeavy)
-	? time > 3600 && _money > 30000 && _slots >= 2: _unitsBuy = _unitsBuy + ((unitsBuyAI select _si) select utbPlane) + ((unitsBuyAI select _si) select _utb)
+	? _money > 7000 && _slots <= 5 : _unitsBuy = _unitsBuy + ((unitsBuyAI select _si) select _utbMain)
+	? time > 3000 && _money > 30000 && _slots >= 2 : _unitsBuy = _unitsBuy + ((unitsBuyAI select _si) select _utbMain) + ((unitsBuyAI select _si) select utbAAHeavy)
+	? time > 3600 && _money > 30000 && _slots >= 2: _unitsBuy = _unitsBuy + ((unitsBuyAI select _si) select _utbAir) + ((unitsBuyAI select _si) select _utbMain)
 	? time > 300 && ([_si, typesSupport select _si] call funcCountUnits) < (("(_x select tdSide) == _si" count towns) + 2) : _unitsBuy = [[(typesSupport select _si) select 3, 1]]
   
   #TypesSelected
