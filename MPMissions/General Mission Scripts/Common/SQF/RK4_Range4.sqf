@@ -3,7 +3,7 @@ private ["_vx0", "_vy0", "_deltaY", "_x", "_y", "_vx", "_vy", "_c", "_g", "_h", 
 _vx = _this select 0; _vy = _this select 1; _deltaY = _this select 2;
 
 _x = 0; _y = 0;
-_c = -0.0005; _g = 9.8;
+_c = -0.0005; _g = 9.80665;
 _h = 0.05;
 
 while "_y >= _deltaY || _vy > 0" do {

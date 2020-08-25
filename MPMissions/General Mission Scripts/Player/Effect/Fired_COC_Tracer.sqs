@@ -25,12 +25,14 @@ _analogueShell = "EffectBullet0_xj400" camCreate [_pos select 0, _pos select 1, 
 ; _analogueShell  [_dir, [0,0,1]];
 
 #LoopRemote
-_vel = velocity _effectShell
+_vel = velocity _effectShell; _timeCheck = true
 drop ["obrysove svetlo", "", "Billboard", 60, 0.21, call _posTracer, _vel, 0, 2, 1, 0, [_size / 100], _farbe, [0], 0, 0, "", "", ""];
 ~0.1
+? _timeCheck: if (_time > 3.2) Then {_timeCheck = false, goto "Remote_Reset"}
 ? !isNull _analogueShell: goto "LoopRemote"
 ? isNull _shell: deleteVehicle _effectShell, exit
-_pos = getPosASL _shell; _vel = velocity _shell; deleteVehicle _effectShell; _posE = [_pos select 0, _pos select 1, (_pos select 2) + 1000]
+#Remote_Reset
+_pos = getPosASL _shell; _vel = velocity _shell; deleteVehicle _effectShell; deleteVehicle _analogueShell; _posE = [_pos select 0, _pos select 1, (_pos select 2) + 1000]
 _effectShell = "EffectBullet0_xj400" camCreate _posE; _effectShell setPosASL _posE; _effectShell setVelocity _vel
 drop ["obrysove svetlo", "", "Billboard", 60, 0.21, call _posTracer, velocity _effectShell, 0, 2, 1, 0, [_size / 100], _farbe, [0], 0, 0, "", "", ""];
 ~0.1

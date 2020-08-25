@@ -3,7 +3,7 @@ _vehicle = _this select 0; _rocket = _this select 1; _pos = _this select 2; _dir
 
 _initSpeed = call format ["%1", _mode GetWeaponParam "InitSpeed"]; _velocity = [_initSpeed * (_dir select 0), _initSpeed * (_dir select 1), _initSpeed * (_dir select 2)]
 
-? local _rocket: [_rocket, _vehicle] exec {\TZK_Objects\Scripts\Fired_EH\Rocket_FAE220_Track.sqs}
+? local _rocket: [_rocket, _vehicle] exec {Player\Effect\Rocket_FAE220_Track.sqs}
 
 _vel1 = [0, -9, -(_velocity select 2)/3/_initSpeed]
 _vel2 = [0, 0.3, 0]

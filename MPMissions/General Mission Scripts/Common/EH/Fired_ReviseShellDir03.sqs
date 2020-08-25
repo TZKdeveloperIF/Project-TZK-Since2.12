@@ -10,50 +10,79 @@ _vx = sqrt ( (_velShell select 0)^2 + (_velShell select 1)^2 ); _vy = _velShell 
 ? _deltaY > 0 && vy <= 0: _vehicle groupChat "Improper initial elevation. Shell deleted.", deleteVehicle _shell, exit
 ? _deltaY <= 0: goto "Case2"
 ; Case_1: _deltaY > 0 and vy > 0 here.
-_res = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range1.sqf"
+_res = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range2.sqf"
 ? !(_res select 2): _vehicle groupChat "Improper initial elevation. Shell deleted.", deleteVehicle _shell, exit
 _range1 = _res select 1; _error0 = _range1 - _distX
-? _error0 < -0.5 * _distX: _vehicle groupChat "Improper initial speed/elevation. Shell deleted.", deleteVehicle _shell, exit
+? _error0 < -0.5 * _distX: _vehicle groupChat "Improper initial speed/elevation in upward case. Shell deleted.", deleteVehicle _shell, exit
 
 _theta1 = _theta0 + 0.5; _vx = _speed * cos(_theta1); _vy = _speed * sin(_theta1); _caseTry = true
-? _distX > _res select 1: goto "Case_1_R2"
-? _distX >= _res select 0 && _distX <= _res select 1: if ( (_vehicle ammo (_this select 0 select 2)) % 2 == 0 ) Then {goto "Case_1_R2"}
+? _distX > _res select 1: goto "Case_1_R3"
+? _distX >= _res select 0 && _distX <= _res select 1: if (_theta0 > 35) Then { if((_vehicle ammo (_this select 0 select 2)) % 3 == 0)Then{goto "Case_1_R2"} } Else {goto "Case_1_R1"}
+#Case_1_R0
+_res = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range1.sqf"; if !(_res select 1) Then {_vehicle groupChat "Error occur in step0 of Case_1_R0.", deleteVehicle _shell, exit}
+_range = _res select 0; _error1 = _range - _distX
+_theta = (_error0*_theta1 - _error1*_theta0) / (_error0 - _error1); _dTheta = _theta1 - _theta
+_i = 0; _try = 5; _theta1 = [_theta0, _theta1] select (abs _error0 > abs _error1); _error1 = [_error0, _error1] select (abs _error0 > abs _error1)
+	#Newton_Loop_1_R0
+		_vx = _speed * cos(_theta); _vy = _speed * sin(_theta); _res = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range1.sqf";
+		? !(_res select 1): if (_theta < _theta1 && _i < _try) Then {_theta = _theta + _dTheta*12/31, _i = _i + 0.34, goto "Newton_Loop_1_R0"}
+		_range = _res select 0; _error = _range - _distX
+
+		_theta0 = _theta; _theta = (_error*_theta1 - _error1*_theta) / (_error - _error1)
+		? abs(_error) > 8 && _i < _try: _theta1 = _theta0, _error1 = _error, _dTheta = _theta1 - _theta, _i = _i + 1, goto "Newton_Loop_1_R0"
+	; ; player globalChat format ["R0. %1, distX: %2", _res, _distX]
+	goto "Iteration_End"
 
 #Case_1_R1
 _temp = [+_res, _theta0]; _error0 = (_res select 0) - _distX
-_res = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range1.sqf"; if !(_res select 2) Then {_vehicle groupChat "Error occur in step0 of Case_1_R1.", deleteVehicle _shell, exit}
+_res = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range2.sqf"; if !(_res select 2) Then {_vehicle groupChat "Error occur in step0 of Case_1_R1.", deleteVehicle _shell, exit}
 _range = _res select 0; _error1 = _range - _distX
 _theta = (_error0*_theta1 - _error1*_theta0) / (_error0 - _error1); _dTheta = _theta1 - _theta
 _i = 0; _try = 5; _theta1 = [_theta0, _theta1] select (abs _error0 > abs _error1); _error1 = [_error0, _error1] select (abs _error0 > abs _error1)
 	#Newton_Loop_1_R1
-		_vx = _speed * cos(_theta); _vy = _speed * sin(_theta); _res = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range1.sqf";
-		? !(_res select 2) && _theta < _theta1 && _i < _try: _theta = _theta + _dTheta*12/31, _i = _i + 0.34, goto "Newton_Loop_1_R1"
+		_vx = _speed * cos(_theta); _vy = _speed * sin(_theta); _res = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range2.sqf";
+		? !(_res select 2): if (_theta < _theta1 && _i < _try) Then {_theta = _theta + _dTheta*12/31, _i = _i + 0.34, goto "Newton_Loop_1_R1"}
 		_range = _res select 0; _error = _range - _distX
 
 		_theta0 = _theta; _theta = (_error*_theta1 - _error1*_theta) / (_error - _error1)
 		? abs(_error) > 8 && _i < _try: _theta1 = _theta0, _error1 = _error, _dTheta = _theta1 - _theta, _i = _i + 1, goto "Newton_Loop_1_R1"
-	player globalChat format ["R1. %1, distX: %2", _res, _distX]
+	; ; player globalChat format ["R1. %1, distX: %2", _res, _distX]
 	? abs(_error) > 100 && _caseTry: _caseTry = false, _res = _temp select 0, _theta0 = _temp select 1, _theta1 = _theta0 + 0.5; _vx = _speed * cos(_theta1); _vy = _speed * sin(_theta1), goto "Case_1_R2"
 	goto "Iteration_End"
 
 #Case_1_R2
 _temp = [+_res, _theta0]; _error0 = (_res select 1) - _distX
 _res = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range3.sqf"; if !(_res select 1) Then {_vehicle groupChat "Error occur in step0 of Case_1_R2.", deleteVehicle _shell, exit}
-_range = _res select 0; _error1 = _range - _distX
+_range = _res select 0; _error1 = _range - _distX; if (_theta0 < 45) Then {_theta0 = 90 - _theta0, _theta1 = 90 - _theta1}
 _theta = (_error0*_theta1 - _error1*_theta0) / (_error0 - _error1); _dTheta = _theta1 - _theta
 _i = 0; _try = 5; _theta1 = [_theta0, _theta1] select (abs _error0 > abs _error1); _error1 = [_error0, _error1] select (abs _error0 > abs _error1)
 	#Newton_Loop_1_R2
-	_vehicle sideChat format ["%1", _theta]
-		_vx = _speed * cos(_theta); _vy = _speed * sin(_theta); _res = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range3.sqf";
-		? !(_res select 1) && _theta < _theta1 && _i < _try: _theta = _theta + _dTheta*12/31, _i = _i + 0.34, goto "Newton_Loop_1_R2"
-		_range = _res select 0; _error = _range - _distX
+	; ; _vehicle globalChat format ["%1", _theta]
+		_vx = _speed * cos(_theta); _vy = _speed * sin(_theta); _range = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range4.sqf"; _error = _range - _distX
 
 		_theta0 = _theta; _theta = (_error*_theta1 - _error1*_theta) / (_error - _error1)
 		? abs(_error) > 8 && _i < _try: _theta1 = _theta0, _error1 = _error, _dTheta = _theta1 - _theta, _i = _i + 1, goto "Newton_Loop_1_R2"
-	player globalChat format ["R2. %1, distX: %2", _res, _distX]
-	? ( abs(_error) > 100 || !(_res select 1) )&& _caseTry: _caseTry = false, _res = _temp select 0, _theta0 = _temp select 1, _theta1 = _theta0 + 0.5; _vx = _speed * cos(_theta1); _vy = _speed * sin(_theta1), goto "Case_1_R1"
+	; ; player globalChat format ["R2. %1, distX: %2", _range, _distX]
+	? ( abs(_error) > 100  )&& _caseTry: _caseTry = false, _res = _temp select 0, _theta0 = _temp select 1, _theta1 = _theta0 + 0.5; _vx = _speed * cos(_theta1); _vy = _speed * sin(_theta1), goto "Case_1_R1"
 	goto "Iteration_End"
 
+#Case_1_R3
+_error0 = (_res select 1) - _distX
+_res = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range3.sqf"; if !(_res select 1) Then {_vehicle groupChat "Error occur in step0 of Case_1_R3.", deleteVehicle _shell, exit}
+_range = _res select 0; _error1 = _range - _distX
+_theta = (_error0*_theta1 - _error1*_theta0) / (_error0 - _error1); _dTheta = _theta1 - _theta
+_i = 0; _try = 5; _theta1 = [_theta0, _theta1] select (abs _error0 > abs _error1); _error1 = [_error0, _error1] select (abs _error0 > abs _error1)
+	#Newton_Loop_1_R3
+	; ; _vehicle globalChat format ["%1", _theta]
+		_vx = _speed * cos(_theta); _vy = _speed * sin(_theta); _res = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range3.sqf";
+		? !(_res select 1) && _theta < _theta1 && _i < _try: _theta = _theta + _dTheta*12/31, _i = _i + 0.34, goto "Newton_Loop_1_R3"
+		_range = _res select 0; _error = _range - _distX
+		? abs(_error) > 10 + 1.05*abs(_error1): _vehicle groupChat "Improper initial speed in upward case3. Shell deleted.", deleteVehicle _shell, exit
+
+		_theta0 = _theta; _theta = (_error*_theta1 - _error1*_theta) / (_error - _error1)
+		? abs(_error) > 8 && _i < _try: _theta1 = _theta0, _error1 = _error, _dTheta = _theta1 - _theta, _i = _i + 1, goto "Newton_Loop_1_R3"
+	; ; player globalChat format ["R3. %1, distX: %2", _res, _distX]
+	goto "Iteration_End"
 
 #Case2
 _range = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range_Y_0.sqf"; _error0 = _range - _distX
@@ -72,7 +101,7 @@ _i = 0; _try = 5; _theta1 = [_theta0, _theta1] select (abs _error0 > abs _error1
 		? abs(_error) > 8 && _i < _try: _theta1 = _theta0, _error1 = _error, _i = _i + 1, goto "Newton_Loop_2"
 
 #Iteration_End
-_vehicle sideChat format ["%1", _theta]
+
 ? isNull _shell: exit
 _angle = (_velShell select 1) atan2 (_velShell select 0)
 _velShell = [_speed * cos(_theta) * cos(_angle), _speed * cos(_theta) * sin(_angle), _speed * sin(_theta)]
