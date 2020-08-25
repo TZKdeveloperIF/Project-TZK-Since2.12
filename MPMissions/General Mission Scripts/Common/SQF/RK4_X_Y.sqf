@@ -1,12 +1,12 @@
-private ["_vx0", "_vy0", "_deltaY", "_x", "_y", "_vx", "_vy", "_c", "_g", "_h", "_t", "_K1", "_L1", "_K2", "_L2", "_K3", "_L3", "_K4", "_L4", "_boolH"];
+private ["_vx0", "_vy0", "_deltaX", "_x", "_y", "_vx", "_vy", "_c", "_g", "_h", "_t", "_K1", "_L1", "_K2", "_L2", "_K3", "_L3", "_K4", "_L4"];
 
-_vx0 = _this select 0; _vy0 = _this select 1; _deltaY = _this select 2;
+_vx = _this select 0; _vy = _this select 1; _deltaX = _this select 2;
+_c = if (count _this > 3) Then {_this select 3} Else {-0.0005};
 
-_x = 0; _y = 0; _vx = _vx0; _vy = _vy0; _boolH = true;
-_c = -0.0005; _g = 9.80665;
-_h = 0.05;
+_x = 0; _y = 0;
+_g = 9.80665; _h = 0.05;
 
-while "_y > _deltaY || _vy > 0" do {
+while "_x < _deltaX" do {
 	_vx0 = _vx;_vy0 = _vy;
 	
 	_K1 = _c*_vx*sqrt(_vx^2+_vy^2); _L1 = _c*_vy*sqrt(_vx^2+_vy^2)-_g;
@@ -16,4 +16,4 @@ while "_y > _deltaY || _vy > 0" do {
 
 	_vx = _vx+_h/6*(_K1+2*_K2+2*_K3+_K4);_vy = _vy+_h/6*(_L1+2*_L2+2*_L3+_L4); _x=_x+_h/2*(_vx0+_vx); _y=_y+_h/2*(_vy0+_vy);
 };
-if (_vy0 * _vy > 0) Then {_t = (_y-_deltaY)/(_vy0+_vy), [_x - _t*(_vx0+_vx), _boolH]} Else {_boolH = false; [_x, _boolH]}
+_y - (_vy0+_vy) * (_x-_deltaX)/(_vx0+_vx)
