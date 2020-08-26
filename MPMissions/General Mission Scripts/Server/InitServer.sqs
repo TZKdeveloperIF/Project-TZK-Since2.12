@@ -79,7 +79,7 @@ _i = 0; countTargetMarkers = 10; while "_i < countTargetMarkers" do {call Format
 [] exec "Server\MsgCancelBuy.sqs"
 [] exec "Server\MsgMoneySpent.sqs"
 [] exec "Server\Msg\mGiveMoney.sqs"
-[] exec "Server\MsgUpgrade.sqs"
+[] exec "Server\Msg\mUpgrade.sqs"
 [] exec "Server\MsgTransferCommand.sqs"
 [] exec "Server\MsgDestruction.sqs"
 [] exec "Server\MsgUnitDisembark.sqs"
@@ -197,7 +197,6 @@ _sides = [si0, si1]; _i = 0
 #Init_AI_Upg
 _si = _sides select _i
 ? count (groupMatrix select _si) == count (groupAiMatrix select _si): {(upgMatrix select _si) set [_x, 2], [_si, _x, 2] exec "Server\Info\UpgState.sqs"} forEach [upgGunshipRocket, upgLongWeaponRange]
-~1
 _i = _i + 1
 ? _i < count _sides: goto "Init_AI_Upg"
 ; ================================================================================TZK_4.0.0 Block================================================================================

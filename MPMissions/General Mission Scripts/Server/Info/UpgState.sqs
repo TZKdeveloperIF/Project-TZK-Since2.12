@@ -6,8 +6,8 @@ _state = _this select 2
 
 _value = mtUpgState
 _value = _value + TotalInfoTypes*_upg
-_value = _value + (TotalInfoTypes*100)*_state
-_value = _value + (TotalInfoTypes*100*3)*_si
+_value = _value + TotalInfoTypes*(count upgDefs)*_state
+_value = _value + TotalInfoTypes*(count upgDefs)*3*_si
 
 [_value] exec "Server\Info\SendInfoMsg.sqs"
 
@@ -21,6 +21,6 @@ _value = _value + (TotalInfoTypes*100*3)*_si
 
 ? upgRedTopMagazines == _upg && _state == 2: [_si, _upg, "4xAA"] exec "Common\ReEquip\ReEquip.sqs"
 
-? upgPlaneAfterBurner == _upg && _state == 2: if (isNull player) then {exit} else { if (_si == siPlayer) then {bAfterBurner = true} }
+? upgPlaneAfterBurner == _upg && _state == 2: if !(isNull player) then {if (_si == siPlayer) then {bAfterBurner = _state == 2}}
 
-? upgSpoofMissile == _upg && _state == 2: if (isNull player) then {exit} else { if (_si == siPlayer) then {bSpoofMissile = true} }
+? upgSpoofMissile == _upg && _state == 2: if !(isNull player) then {if (_si == siPlayer) then {bSpoofMissile = _state == 2}}

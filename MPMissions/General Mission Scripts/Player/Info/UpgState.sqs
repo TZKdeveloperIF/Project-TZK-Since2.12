@@ -2,36 +2,38 @@
 
 _value = _this select 0
 
-_upg = (_value % (100))
-_value = _value - _upg
+_upg = _value % (count upgDefs)
+_value = (_value - _upg)/(count upgDefs)
 
-_state = (_value % (100*3))/(100)
-_value = _value - _state*(100)
+_state = _value % 3
+_value = (_value - _state)/3
 
-_si = _value/(100*3)
+_si = _value
 
 ;player globalchat format["_type=%1, _si=%2, _groupBuyer=%3", _type, _si, _groupBuyer]
+? !isServer && upgMatrix select _si select _upg == _state: exit
 
-(upgMatrix select _si) set [_upg, _state]
+? siPlayer == siCiv && _state == 2: format["%1 upgraded %2.", sideNames select _si, (upgDefs select _upg select 0) call funcLocStr] exec "Player\LogSpectator.sqs"
+? siPlayer != _si: Exit
 
-? (siPlayer == siCiv && _state == 2): format["%1 upgraded %2.", sideNames select _si, (upgDefs select _upg select 0) call funcLocStr] exec "Player\LogSpectator.sqs"
+? _state == 0 && upgMatrix select _si select _upg == 1: player sidechat format ["All Command Center destroyed. Upgrade Failed: %1", (upgDefs select _upg select 0) call funcLocStr]
+? _state == 0 && upgMatrix select _si select _upg == 2: player sidechat format ["Upgrade Downgraded: %1", (upgDefs select _upg select 0) call funcLocStr]
+? _state == 1: player sidechat format ["Upgrade Started: %1", (upgDefs select _upg select 0) call funcLocStr]
+? _state == 2: player sidechat format ["Upgrade Complete: %1", (upgDefs select _upg select 0) call funcLocStr]
 
-? (_si != siPlayer): Exit
-
-? (_state == 1): player sidechat format ["Upgrade Started: %1", (upgDefs select _upg select 0) call funcLocStr]
-? (_state == 2): player sidechat format ["Upgrade Complete: %1", (upgDefs select _upg select 0) call funcLocStr]
+upgMatrix select _si set [_upg, _state]
 
 
-? upgCCdistance == _upg && _state == 2 : CCdistMax set [_si, distMaxCCUpgraded]
+? upgCCdistance == _upg && _state == 2: CCdistMax set [_si, distMaxCCUpgraded]
 
-? upgGunshipRocket == _upg && _state == 2 && !isServer : [_si, _upg, "HeliRocket"] exec "Common\ReEquip\ReEquip.sqs"
+? upgGunshipRocket == _upg && _state == 2 && !isServer: [_si, _upg, "HeliRocket"] exec "Common\ReEquip\ReEquip.sqs"
 
-? upgWorkers == _upg && _state == 2 : maxWorkers set [_si, 20]
+? upgWorkers == _upg && _state == 2: maxWorkers set [_si, 20]
 
-? upgRedTopRange == _upg && _state == 2 && !isServer : [_si, _upg, "4xAA"] exec "Common\ReEquip\ReEquip.sqs"
+? upgRedTopRange == _upg && _state == 2 && !isServer: [_si, _upg, "4xAA"] exec "Common\ReEquip\ReEquip.sqs"
 
-? upgRedTopMagazines == _upg && _state == 2 && !isServer : [_si, _upg, "4xAA"] exec "Common\ReEquip\ReEquip.sqs"
+? upgRedTopMagazines == _upg && _state == 2 && !isServer: [_si, _upg, "4xAA"] exec "Common\ReEquip\ReEquip.sqs"
 
-? upgPlaneAfterBurner == _upg && _state == 2 : bAfterBurner = true
+? upgPlaneAfterBurner == _upg: bAfterBurner = _state == 2
 
-? upgSpoofMissile == _upg && _state == 2 : bSpoofMissile = true
+? upgSpoofMissile == _upg: bSpoofMissile = _state == 2

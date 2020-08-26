@@ -26,6 +26,7 @@ _idcSpySat = IDC + 22
 _idcGiveMoneyToALL = IDC + 23
 _idcRadioONBG = IDC + 24
 _idcRadioONBtn = IDC + 25
+_idcUpgSwitch = IDC + 26
 
 ; _idc defined above must consist with definition in description.ext.
 
@@ -61,7 +62,10 @@ _money = _groupsMoney select giPlayer
 _groupCommander = (groupCommander select siPlayer)
 ; DISABLE stuff for NON-commanders
 _isCommander = groupPlayer == _groupCommander; _isAIcommander = _groupCommander in _groupsAI
-ctrlEnable [_idcAIRespawn, _isCommander]; ctrlEnable [_idcIncomeRatio, _isCommander]; ctrlEnable [_idcIncomeRatioPlayer, _isCommander]; ctrlShow [_idcUpgradeStart, _isCommander || _isAIcommander]; ctrlEnable [_idcTransferCommandGroup, _isCommander]; ctrlShow [_idcTransferCommand, _isCommander]; ctrlEnable [_idcWorkerBehaviour, _isCommander]; ctrlShow [_idcDestruction, _isCommander]; ctrlShow [_idcGiveMoneyToAI, _isCommander]; ctrlShow [_idcGiveMoneyToALL, _isCommander]; ctrlShow [_idcTakeMoney, _isCommander]
+{ ctrlEnable [_x, _isCommander] } forEach [ _idcAIRespawn, _idcIncomeRatio, _idcIncomeRatioPlayer, _idcTransferCommandGroup, _idcWorkerBehaviour ]
+{ ctrlShow [_x, _isCommander] } forEach [ _idcTransferCommand, _idcDestruction, _idcGiveMoneyToAI, _idcGiveMoneyToALL, _idcTakeMoney ]
+{ ctrlShow [_x, _isCommander || _isAIcommander] } forEach [_idcUpgradeStart, _idcUpgSwitch]
+
 ? !_isCommander : _gis = ([siPlayer] call funcGetAIGroupsIndex); _Superior = _gis call funcCheckWhetherSuperior; if (_Superior && lbCurSel _idcTransferGroup != -1) then {ctrlShow [_idcTakeMoney, ( ( (["Commander"] + callsigns) select ( ( (aiSetting select siPlayer) select lbCurSel _idcTransferGroup ) select aisSuperior ) ) == _groupsName select giPlayer) || ( (_groups select (lbCurSel _idcTransferGroup)) == _groupCommander )]}
 
 ctrlShow [_idcNumberedAI, bNumberedAI]
@@ -91,6 +95,7 @@ report = lbCurSel _idcReports
 ? btnUnitCam : btnUnitCam=false; goto "UnitCam"
 ? btnSatCam : btnSatCam=false; goto "SatCam"
 ? btnUpgrade : btnUpgrade=false; goto "Upgrade"
+? btnUpgSwitch: btnUpgSwitch = false, goto "UpgSwitch"
 ? btnLeaderboard : btnLeaderboard=false; goto "Leaderboard"
 ? btnCommandAI : btnCommandAI=false; goto "CommandAI"
 ? btnCommandPlayer : btnCommandPlayer=false; goto "CommandPlayer"
@@ -189,7 +194,17 @@ goto "Update"
 	_cost = (upgDefs select _index) select 1
 	? (_money < _cost): hint "Not Enough Cash"; goto "Update"
 
-	[_index] exec "Player\SendUpgrade.sqs"
+	[_index] exec "Player\Msg\sUpgrade.sqs"
+	goto "Update"
+#UpgSwitch
+	_index = lbCurSel _idcUpgradeList
+	? (_index == -1): hint "No Upgrade Selected"; goto "Update"
+	? _index == 0: goto "Update"
+
+	_controlCenters = [siPlayer, stComm] call funcGetWorkingStructures
+	? ((count _controlCenters) == 0): hint "No Working Comm Center"; goto "Update"
+
+	[_index, _index] exec "Player\Msg\sUpgrade.sqs"
 	goto "Update"
 
 #BuyUnits
