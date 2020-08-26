@@ -1,12 +1,12 @@
-; args: none
+; args: array of recorded enemies
 
-_last = []
-
+_last = _this
+_timeAbort = (1 + random 2) * 60
 #Start
 
 @!(isNull pvEnemy0)
 
-? (pvGameover != -1): Exit
+? pvGameover != -1: Exit
 _enemy = pvEnemy0
 pvEnemy0 = objNull
 
@@ -16,5 +16,7 @@ _last set [count _last, _enemy]
 ? (count _last) > 10 : _last set [0, objNull]; _last = _last - [objNull]
 
 [_enemy] exec "Player\Msg\hEnemySpotted.sqs"
+
+? _time > _timeAbort: _last exec "Player\Msg\mEnemySpotted0.sqs", exit
 
 goto "Start"
