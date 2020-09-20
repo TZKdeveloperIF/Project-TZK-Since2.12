@@ -1,0 +1,29 @@
+; args: Fired_EH_Array
+_vehicle = _this select 0; _weapon = _this select 1; _ammo = _this select 4; 
+? _ammo != "FAE220_DKMM_xj400": exit;
+_shell = nearestObject [_vehicle, _ammo];
+? isNull _shell: exit;
+
+; ====================================================================================================================================================================
+_vehicle exec "\TZK_Objects\Scripts\Fired_EH\Tank_RSC_Shock.sqs"
+ _posShell = getPosASL _shell; _dirShell = VectorDir _shell; _upVeh = VectorUp _vehicle;
+
+_ammunition = _vehicle ammo _weapon
+? local _vehicle: if (_ammunition < 30) Then { if (_ammunition == 1) Then {_this exec {\TZK_Objects\Scripts\Fired_EH\Reload_TOS1.sqs}}, publicExec format ["[UnitById %1, %2] exec {Player\Effect\RocketVehicleDisplay.sqs}", NetworkID _vehicle, _ammunition], if (!isNull player) Then {_selection = format ["m%1%2", ["", 0] select (_ammunition + 1 < 10), _ammunition + 1], _name = typeOf _vehicle, _i = (_name GetVehicleParamArray "hiddenSelections") find _selection, _vehicle setObjectTexture [_i, ""]} }
+; ====================================================================================================================================================================
+_a2 = _ammunition + 2; _corX = 0.994 - ([_a2 % 8, 15 - (_a2 % 8)] select (_a2 % 2 == 1)) * 0.284 / 2; _corY = -((_a2/8) - (_a2/8)%1) * 0.278
+_vectorH = [_dirShell, _upVeh] call funcVectorCross
+_vectorV = [_vectorH, _dirShell] call funcVectorCross
+
+_length = _vectorH call funcVectorLength
+_vectorH = [_vectorH, _corX/_length] call funcVectorScale
+_length = _vectorV call funcVectorLength
+_vectorV = [_vectorV, _corY/_length] call funcVectorScale
+
+_vectorCor = [_vectorH, _vectorV] call funcVectorAdd
+_launchPos = [_posShell, _vectorCor] call funcVectorAdd
+? local _shell: _shell setPosASL _launchPos;
+; ====================================================================================================================================================================
+; The ammunition of a full magazine and the position of rockets is hard-coded. They are depending on the model file.
+
+[_vehicle, _shell, _launchPos, _dirShell, _this select 3] exec {Common\Effect\Rocket_FAE220_Launch.sqs}

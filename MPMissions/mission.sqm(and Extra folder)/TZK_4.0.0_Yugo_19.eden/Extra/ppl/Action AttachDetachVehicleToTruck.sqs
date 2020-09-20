@@ -1,0 +1,5 @@
+; args: [vehicle, unit, idAction]
+
+? ((_this select 1) distance (_this select 0)) > 20 : (_this select 1) groupChat "Truck out of range"; Exit
+
+[_this select 0, tsCenter, ttTruck, _this select 2] exec "Player\Action\AttachDetachVehicle.sqs"

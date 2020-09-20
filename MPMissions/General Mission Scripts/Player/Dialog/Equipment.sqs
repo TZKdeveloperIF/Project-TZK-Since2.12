@@ -6,6 +6,7 @@ _define = _this select 2
 _costFactor = _this select 3
 
 ? !(alive _unit) || !(alive _object) : exit
+_strMOD = "STR_CRCTI_MOD"; if bool_TZK_MF_Mode Then {_strMOD = "STR_CRCTI_Kaos_MOD"}; if bool_TZK_Yugo_Mode Then {_strMOD = "STR_CRCTI_Yugo_MOD"};
 
 _cost = 100
 _delay = 0.2
@@ -390,7 +391,7 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
 	_slot = isHandgun; (_templ select 6) set [_slot, []]; { ((_templ select 6) select _slot) set [count ((_templ select 6) select _slot), +_x] } foreach (_equipment select _slot)
 	? ((_templ select 1) == -1 && (_templ select 2) == -1 && (_templ select 3) == -1 && (_templ select 4) == -1 && (_templ select 5) == -1 && count ((_templ select 6) select isGeneral) + count ((_templ select 6) select isHandgun) == 0 ) : _templ resize 0
 	
-	_entry = format["%1_%2_LOADOUT_%3_%4", localize "STR_CRCTI_VER", localize "STR_CRCTI_MOD", _id, sideNames select siPlayer]
+	_entry = format["%1_%2_LOADOUT_%3_%4", localize "STR_CRCTI_VER", localize _strMOD, _id, sideNames select siPlayer]
   unitSetting = "SoldierWB" camCreate [10,10,10]
 	[ unitSetting, ["", _typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG, _equipment] ] call funcEquipTempl
   if (count _templ > 0) then {unitSetting saveStatus _entry} else {deleteStatus _entry}
@@ -416,7 +417,7 @@ _money = (groupMoneyMatrix select siPlayer) select giPlayer
 	_slot = isHandgun; (_templ select 6) set [_slot, []]; { ((_templ select 6) select _slot) set [count ((_templ select 6) select _slot), +_x] } foreach (_equipment select _slot)
 	? ((_templ select 1) == -1 && (_templ select 2) == -1 && (_templ select 3) == -1 && (_templ select 4) == -1 && (_templ select 5) == -1 && count ((_templ select 6) select isGeneral) + count ((_templ select 6) select isHandgun) == 0 ) : _templ resize 0
 
-	_entry = format["%1_%2_SOLDIER_%3_%4", localize "STR_CRCTI_VER", localize "STR_CRCTI_MOD", _id, sideNames select siPlayer]
+	_entry = format["%1_%2_SOLDIER_%3_%4", localize "STR_CRCTI_VER", localize _strMOD, _id, sideNames select siPlayer]
 
   unitSetting = "SoldierWB" camCreate [10,10,10]
 	[ unitSetting, ["", _typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG, _equipment] ] call funcEquipTempl

@@ -1,22 +1,4 @@
-salvageRatio = 0.4
-equipDefs = []; equipSearch = []
-
-edName = 0
-edSides = 1
-edSlotType = 2
-edSlots = 3
-edObject = 4
-edImage = 5
-edcost = 6
-
-; inventory slot types
-isGeneral = 0
-isHandgun = 1
-
-
-isGeneralSlots = 10
-isHandgunSlots = 4
-isBinocularSlot = 0; isNVGSlot = 1;
+; args: none
 
 ; addon specific equipment used in scripts
 _nvg0 = "NVG_stat_xj400"; _nvg1 = "NVG_statF_xj400"; _wSG551 = "SG551_xj400"; _mSG551 = "SG551_Mag_xj400"
@@ -35,7 +17,7 @@ weaponPut = "Put_xj400"
 weaponsCustom = [weaponPut]
 
 ; ? bool_TZK_Vanilla_Mode: _medkit = "", magPistolMine = "", _hyperL = "CarlGustavLauncher", _carl4slot = "CarlGustav", _at44slot = _carl4slot, _aa4slot = "", _9k324slot = ""
-; ? bool_TZK_Vanilla_Mode: _nvg0 = "NVGoggles", _nvg1 = _nvg0
+? bool_TZK_199_Mode: _nvg0 = "NVGoggles", _nvg1 = _nvg0
 ? bool_TZK_Vanilla_Mode: {call (_x+{="AK74"})} forEach ["w_TZK_AK107", "m_TZK_AK107"], _wGroza = "Bizon", _mGroza = "BizonMag", {call (_x+{="SVDDragunov"})} forEach ["_wVAL", "_mVAL", "_wRPK74SD", "_mRPK74SD", "w_TZK_SniperE", "m_TZK_SniperE"], {call (_x+{="M21"})} forEach ["_wSG551", "_mSG551", "_wM249SD", "_mM249SD"], {call (_x+{="HK"})} forEach ["_wMP5SD6", "_mMP5SD6"]
 
 cargoCarSide0 = [[magMine,2], [magSatchel,4], ["LAWLauncher",3], ["CarlGustavLauncher",2], ["AALauncher",1]]
@@ -116,8 +98,28 @@ magsRespawnAI9 = [ ["G36aMag", "G36aMag", "CarlGustavLauncher", magSatchel], [m_
 
 
 
+salvageRatio = 0.4
+equipDefs = []; equipSearch = []
+
+edName = 0
+edSides = 1
+edSlotType = 2
+edSlots = 3
+edObject = 4
+edImage = 5
+edcost = 6
+
+; inventory slot types
+isGeneral = 0
+isHandgun = 1
 
 
+isGeneralSlots = 10
+isHandgunSlots = 4
+isBinocularSlot = 0; isNVGSlot = 1;
+
+
+? bool_TZK_Yugo_Mode: [] exec "Extra\199\InitEquipment_Yugo_Redef.sqs", exit
 
 ; EQUIP (ammo followed by equipment)
 
@@ -821,6 +823,6 @@ weaponDefs select _wtRemigton set [wdSides, siBoth]
 
 {equipDefs select _x set [edSides, -1]} forEach [_atM16MortarForAI, _atAK74MortarForAI]
 {equipDefs select _x set [edObject, "Mortar"]} forEach [_atM16Mortar, _atAK74Mortar]
-
+? bool_TZK_199_Mode: {weaponDefs select _x set [wdSides, -1]} forEach [_wtNVG0, _wtNVG1], weaponDefs select _wtNVGOrigin set [wdSides, siBoth]
 
 ; EOF

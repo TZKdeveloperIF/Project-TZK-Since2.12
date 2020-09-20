@@ -9,6 +9,7 @@ clearMagazineCargo _vehicle; clearWeaponCargo _vehicle
 ; Killed and Hit Event
 _vehicle addEventHandler ["killed", {_this exec "Common\Event_VehicleDestroyed.sqs"}]
 [_vehicle, _si, _desc select udCost] exec "Common\EventAdd_VehicleHit.sqs"
+? "Tank" countType [_vehicle] > 0: [_vehicle, _type] exec "Common\EH\AddTankHit.sqs"
 
 ; Fired Event
 ? _typeName in ["HMMMV_TOW2A_xj400", "BRDM2_MNF_xj400", "GunBoatW_Custom_xj400", "GunBoatE_Custom_xj400"]: _vehicle addEventHandler ["Fired", "_this call loadFile {Player\EH\FiredImitated.sqf}" ]
@@ -31,8 +32,6 @@ _vehicle addEventHandler ["killed", {_this exec "Common\Event_VehicleDestroyed.s
 ? !(_type in vUnlimitedRange) && !(_type in vDoubledRange): _vehicle addEventHandler ["Fired",{[_this, 1] call funcFiredEffect}]
 ? (_type in vDoubledRange): _vehicle addEventHandler ["Fired",{[_this, 2] call funcFiredEffect}]
 ? (_type in vUnlimitedRange): _vehicle addEventHandler ["Fired",{[_this, 0] call funcFiredEffect}]
-
-? "Tank" countType [_vehicle] > 0: [_vehicle, _type] exec "Player\EH\AddTankHit.sqs"
 
 ~0.3
 ? _si == siPlayer && _gi == giPlayer: if (count (crew _vehicle) == 0 && time > 30) then { _text = format ["Your empty %1 has arrived.", (unitDefs select _type) select udName ]; hint _text; player groupchat _text }; if (_type in (airTransport select _si)) then { _vehicle exec "Player\InitTransportHeli.sqs" }

@@ -20,8 +20,6 @@ mutexWorkerJoin = true
 ? !(group _unit in _groups) : [_unit] join (_groups select 0)
 mutexWorkerJoin = false
 
-? ((upgMatrix select _si) select upgWorkers) == 2: goto "Update"
-
 removeAllWeapons _unit
 
 ? _si == si0 : { _unit addMagazine "HK" } forEach [1,2,3,4]; _unit addWeapon "HK"

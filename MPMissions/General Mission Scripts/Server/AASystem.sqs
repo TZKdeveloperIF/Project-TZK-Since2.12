@@ -65,7 +65,7 @@ goto "Update"
 goto "Quit"
 
 #Quit
-? !isNull _group: if (bool_TZK_199_Mode) Then {deleteGroup _group} Else {[_aaGroupUnit] join group _leader}
+? !isNull _group: if !bool_TZK_199_Mode Then {deleteGroup _group} Else {[_aaGroupUnit] join group _leader}
 ~1
 ? bool_TZK_199_Mode: deleteVehicle _aaGroupUnit
 

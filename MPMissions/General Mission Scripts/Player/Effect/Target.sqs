@@ -1,0 +1,10 @@
+; args: [logic object]
+_logic = _this select 0
+
+; This script is for AA spoof effect display.
+
+#loop
+? (getPos _logic) select 2 > 0: [_target] exec {Player\Effect\SpoofFlare.sqs}, exit
+? isNull _logic: exit
+~1
+goto "loop"
