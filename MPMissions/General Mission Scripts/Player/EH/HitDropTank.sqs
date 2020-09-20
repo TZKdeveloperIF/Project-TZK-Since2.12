@@ -56,17 +56,4 @@ deletevehicle _ob3
 deletevehicle _ob4
 deletevehicle _ob5
 deletevehicle _ob6
-_tank setdammage 1
-
-~5
-_cmd = commander _tank
-_dir = random 360; _dist = 3
-_pos = getPos _tank
-_pos set [0, _dist*(sin _dir) + (_pos select 0)]; _pos set [1, _dist*(cos _dir) + (_pos select 1)];
-_cmd setPos _pos
-_cmd setVelocity [sin _dir, cos _dir, 0]
-
-~5
-(commander _tank) setdammage 1
-
 ; EOF

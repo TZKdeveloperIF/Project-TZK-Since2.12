@@ -183,7 +183,7 @@ _unitsStarted = units _group
 		? count _buyFactories > 0: {_i = 0; if (_x in buildingsInUse) then {_buyFactories set [_i, objNull]}; _i = _i + 1} forEach _buyFactories
 		? "!isNull _x" count _buyFactories == 0: goto "Bought"
 		_buyFactories = _buyFactories - [objNull]
-		? (_driver + _gunner) > 0 : _slots = _slots / (_driver + _gunner); _slots = _slots % 1
+		? (_driver + _gunner) > 0 : _slots = _slots / (_driver + _gunner); _slots = _slots - _slots % 1
 		? count _buyFactories > _slots : _buyFactories resize _slots
 		{ [_type, _driver, _gunner, 0, _si, _gi, _gi, _x] exec "Server\BuyUnit.sqs" } forEach _buyFactories
 	#Bought

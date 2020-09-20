@@ -25,7 +25,9 @@ while "_i < _c && !_found" do {if (_world == _array select _i) then {_found = tr
 ; Ask server to roll the world.
 ? !isServer: exit
 ? bool_TZK_199_Mode: exit
-? (random 1) < 1/3: TheWorld = "G"; publicVariableString TheWorld
+~0.1
+; delay. Make sure server broadcast string after game has started.
+? (random 1) < 1/3: TheWorld = "G"; publicVariableString "TheWorld"
 exit
 
 #SecondaryInitialization

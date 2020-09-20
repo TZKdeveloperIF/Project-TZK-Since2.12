@@ -7,11 +7,11 @@ _shell = nearestObject [_vehicle, _ammo]; _posShell = getPosASL _shell; _velShel
 _distX = [_posShell, _posTarget] call funcDistH; _deltaY = (_posTarget call funcHASL) - (_posShell select 2)
 _vx = sqrt ( (_velShell select 0)^2 + (_velShell select 1)^2 ); _vy = _velShell select 2; _theta0 = _vy atan2 _vx
 
-? _deltaY > 0 && vy <= 0: _vehicle groupChat "Improper initial elevation. Shell deleted.", deleteVehicle _shell, exit
+? _deltaY > 0 && vy <= 0: _vehicle groupChat "Improper initial elevation angle. Shell deleted.", deleteVehicle _shell, exit
 ? _deltaY <= 0: goto "Case2"
 ; Case_1: _deltaY > 0 and vy > 0 here.
 _res = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range2.sqf"
-? !(_res select 2): _vehicle groupChat "Improper initial elevation. Shell deleted.", deleteVehicle _shell, exit
+? !(_res select 2): _vehicle groupChat "Improper initial elevation angle. Shell deleted.", deleteVehicle _shell, exit
 _range1 = _res select 1; _error0 = _range1 - _distX
 ? _error0 < -0.5 * _distX: _vehicle groupChat "Improper initial speed/elevation in upward case. Shell deleted.", deleteVehicle _shell, exit
 
@@ -86,7 +86,7 @@ _i = 0; _try = 5; _theta1 = [_theta0, _theta1] select (abs _error0 > abs _error1
 
 #Case2
 _range = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range_Y_0.sqf"; _error0 = _range - _distX
-? _error0 < -0.5 * _distX: _vehicle groupChat "Improper initial elevation. Shell deleted.", deleteVehicle _shell, exit
+? _error0 < -0.5 * _distX: _vehicle groupChat "Improper initial elevation angle. Shell deleted.", deleteVehicle _shell, exit
 
 _step = [-0.5, +0.5] select (_error0 < 0 && _theta0 < 30 || _error0 > 0 && _theta0 > 30); _theta1 = _theta0 + _step; _vx = _speed * cos(_theta1); _vy = _speed * sin(_theta1)
 _range = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range_Y_0.sqf"; _error1 = _range - _distX

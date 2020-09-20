@@ -1,0 +1,19 @@
+; args: [unit, typeUnit, siUnit]
+
+_unit = _this select 0
+
+RemoveAllweapons _unit
+
+{_unit addMagazine "CR08_Mag_Strela_1"  } foreach [1,2]
+	_unit addWeapon "CR08_StrelaLauncher"
+
+{_unit addMagazine "JAM_E545m_45mag"  } foreach [1,2,3,4]
+	_unit addWeapon "ICP_ak74"
+      _unit selectWeapon "ICP_ak74"
+
+_unit addWeapon "Throw"
+_unit addWeapon  "Put"
+_unit addWeapon "CR08_Throw"
+_unit addWeapon  "CR08_Put"
+
+exit

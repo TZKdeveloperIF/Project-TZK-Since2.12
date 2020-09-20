@@ -1,7 +1,7 @@
 
 
 _range = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range_Y_0.sqf"; _error0 = _range - _distX;
-if (_error0 < -0.5 * _distX) Then {_vehicle groupChat "Improper initial elevation. Shell deleted.", deleteVehicle _shell, exit} Else {
+if (_error0 < -0.5 * _distX) Then {_vehicle groupChat "Improper initial elevation angle. Shell deleted.", deleteVehicle _shell, exit} Else {
 
 	_step = [-0.5, +0.5] select (_error0 < 0 && _theta0 < 30 || _error0 > 0 && _theta0 > 30); _theta1 = _theta0 + _step; _vx = _speed * cos(_theta1); _vy = _speed * sin(_theta1);
 	_range = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range_Y_0.sqf"; _error1 = _range - _distX;

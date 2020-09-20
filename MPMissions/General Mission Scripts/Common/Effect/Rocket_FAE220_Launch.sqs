@@ -1,0 +1,44 @@
+; args: [vehicle, shell, launch Position, direction, mode name]
+_vehicle = _this select 0; _rocket = _this select 1; _pos = _this select 2; _dir = _this select 3; _mode = _this select 4
+
+_initSpeed = call format ["%1", _mode GetWeaponParam "InitSpeed"]; _velocity = [_initSpeed * (_dir select 0), _initSpeed * (_dir select 1), _initSpeed * (_dir select 2)]
+
+? local _rocket: [_rocket, _vehicle] exec {Common\Effect\Rocket_FAE220_Track.sqs}
+
+_vel1 = [0, -9, -(_velocity select 2)/3/_initSpeed]
+_vel2 = [0, 0.3, 0]
+_vel3 = [0 , -1, -(_velocity select 2)/3/_initSpeed]
+_vel4 = [0 , 10 , -(_velocity select 2)/_initSpeed]
+
+_colflame =[[1,1,.5,.8],[1,1,.73,.7],[.4,.4,0.3,.3],[.6,.6,.6,.1],[0,0,0,0]]
+_coldust = [[.7,.7,.7,.8],[.8,.8,.8,.7],[.9,.9,.9,.4]]
+_coldust2 = [[.7,.7,.7,.6],[.8,.8,.8,.4],[.9,.9,.9,.2]]
+
+_remote = false; _dropObj = _rocket
+? !local _rocket || isNull _rocket: _dropObj = "Logic" camCreate _pos, _dropObj setVectorDirAndUp [_dir, [0,0,1]], _dropObj setPosASL _pos, _remote = true
+? format ["%1", _dropObj] == "scalar bool array string 0xfcffffef": exit
+
+_clr1 = [0.99, 0.99, 0.99, 0.9]; _clr2 = [0.8, 0.8, 0.8, 0.7]; _clr3 = [0.6, 0.6, 0.6, 0.1]; _clr4 = [1, 1, 0, 0.7]
+_i = 8
+drop ["missileSmoke", "", "Billboard", 3, 2, "smoke2", [0,0,0], 0, 0.2, 0.157, 0.001, [2,8], [_clr1,_clr2,_clr3] , [0], 0.1, 0.2, "", "", _dropObj]
+drop ["missileSmoke", "", "Billboard", 3, 2, "rear2", [0,0,0], 0, 0.2, 0.157, 0.001, [4,8], _coldust, [0], 0.1, 0.2, "", "", _vehicle]
+drop ["missileSmoke", "", "Billboard", 5, 4, "smoke2", [0,0,0], 0, 0.2, 0.157, 0.001, [4,10], _coldust, [0], 0.1, 0.2, "", "", _dropObj]
+
+; front fire
+drop ["cl_fire", "", "Billboard", 2, 0.6, "smoke", _vel4, 0, 0.2, 0.157, 0.01, [7 , 0.1], [_clr4,_clr4,_clr4,_clr3], [0], 0.1, 0.2, "", "", _dropObj]
+
+? !boole_Rocket_Launch: if (_remote) Then {deleteVehicle _dropObj}; exit
+#next
+; rear blast
+drop ["missileSmoke", "", "Billboard", 2, 8, "smoke2", _vel1, 0, 0.2, 0.157, 0.01, [1,_i*3], [_clr1,_clr1,_clr2,_clr2,_clr3], [0], 0.1, 0.2, "", "", _dropObj]
+drop ["missileSmoke", "", "Billboard", 2, 6, "smoke2", _vel1, 0, 0.2, 0.157, 0.01, [1,_i*3], [_clr1,_clr1,_clr2,_clr2,_clr3], [0], 0.1, 0.2, "", "", _dropObj]
+; rear down blast
+drop ["missileSmoke", "", "Billboard", 2, 6, "smoke2", _vel3, 0, 0.2, 0.157, 0.01, [1,_i*3], [_clr1,_clr1,_clr2,_clr2,_clr3], [0], 0.1, 0.2, "", "", _dropObj]
+;  and down blast
+drop ["missilesmoke", "", "Billboard", 2, 8, "smoke", _vel2, 0, 0.2, 0.157, 0.1, [0.5,_i*2], [_clr1,_clr1,_clr2,_clr2,_clr3], [0], 0.1, 0.2, "", "", _dropObj]
+_vel1 = [(_vel1 select 0)*0.9,(_vel1 select 1)*0.9, (_vel1 select 2)*0.9]
+_vel2 = [(_vel2 select 0)*0.9,(_vel2 select 1)*0.9,(_vel2 select 2)*0.95]
+_vel3 = [(_vel3 select 0)*0.9,(_vel3 select 1)*0.9,(_vel3 select 2)*0.8]
+_vel4 = [(_vel4 select 0)*0.9,(_vel4 select 1)*0.9,(_vel4 select 2)*0.8]
+? _i > 1.2 : _i = _i - 0.4,  goto "next"
+? _remote: deleteVehicle _dropObj

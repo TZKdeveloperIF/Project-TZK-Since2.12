@@ -58,9 +58,10 @@ _unit call temporarySet
 ? _unit call busyCheck: goto "WaitReady"
 
 #Update
-? _bStruct: [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, _vt] exec "Server\OrderTemp\ShootStruct.sqs"; exit
+? _bStruct: if (_vt in structsOccupiableMortar && _dispersion < 60) Then {_dispersion = 60}; if (typeOf _vehicle == "m119_xj400" && _dispersion < 10) Then {_dispersion = 10}; if (typeOf _vehicle == "D30_xj400" && _dispersion < 30) Then {_dispersion = 30}; [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, _vt] exec "Server\OrderTemp\ShootStruct.sqs"; exit
 ; Vehicle case here.
 ? _unit != driver _vehicle: if (!isNull driver _vehicle) then {goto "Sleep"}
+if (_vt in typesHowitzer + typesRocketLauncher && _dispersion < 40) Then {_dispersion = 40}; if (typeOf _vehicle == "TOS1_TZK_xj400" && _dispersion < 60) Then {_dispersion = 60}
 [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, _vt] exec "Server\OrderTemp\ShootTank.sqs"; exit
 
 

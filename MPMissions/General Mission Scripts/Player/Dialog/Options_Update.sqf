@@ -81,5 +81,5 @@ if (call format["pvWorkerBehaviour%1 != lbCurSel _idcWorkerBehaviour", siPlayer]
 
 _index = 0; _upgState = upgMatrix select siPlayer;
 lbClear _idcUpgradeList;
-private ["_iconPath"]; _iconPath = "\TZK_Texture_4_0_0\CTI_Image\Icon\"; if (bool_TZK_Vanilla_Mode) Then {_iconPath = "\TZK_Objects\CTI_Image\Icon\"};
+private ["_iconPath"]; _iconPath = "\TZK_Objects\Image\Icon\";
 { _id=lbAdd [_idcUpgradeList, format["%1 $%2 %3min", (_x select 0) call funcLocStr, _x select 1, _x select 2] ]; lbSetPicture[_idcUpgradeList, _id, [_iconPath + "square_empty.paa", _iconPath + "square_yellow.paa", _iconPath + "square_green.paa"] select (_upgState select _index)]; _index=_index+1} forEach upgDefs;

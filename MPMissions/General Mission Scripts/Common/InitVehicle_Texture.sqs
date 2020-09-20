@@ -9,8 +9,11 @@ _type = -1
 ? "BMP" countType [_vehicle] > 0: goto "CheckBMP"
 ? "Air" countType [_vehicle] > 0: goto "CheckAir"
 
+	? "Jeep_xj400" countType [_vehicle] > 0 || "JeepMG_xj400" countType [_vehicle] > 0 || "UAZ_xj400" countType [_vehicle] > 0 || "Ural_xj400" countType [_vehicle] > 0 || "UralRepair_xj400" countType [_vehicle] > 0 || "UralRefuel_xj400" countType [_vehicle] > 0: _scriptName = "Car", goto "END"
+	? "Truck5t_xj400" countType [_vehicle] > 0 || "Truck5tRepair_xj400" countType [_vehicle] > 0 || "Truck5tRefuel_xj400" countType [_vehicle] > 0: _scriptName = "Truck", goto "END"
 	? "HMMWV_xj400" countType [_vehicle] > 0: _scriptName = "HMMWV", goto "END"
 	? "BRDM2_MNF_xj400" countType [_vehicle] > 0: _scriptName = "BRDM2_MNF", goto "END"
+	? "BRDM_xj400" countType [_vehicle] > 0: _scriptName = "BRDM", goto "END"
 	? "ZSU_MNF_xj400" countType [_vehicle] > 0: _scriptName = "ZSU_MNF", goto "END"
 	? "ZSU_xj400" countType [_vehicle] > 0: _scriptName = "ZSU", goto "END"
 	goto "END"
@@ -20,9 +23,14 @@ _type = -1
 	? "Leo2A6_xj400" countType [_vehicle] > 0: _scriptName = "Leo2A6", goto "END"
 	? "M109A6G_xj400" countType [_vehicle] > 0: _scriptName = "M109A6G", goto "END"
 	? "M270_M29064_xj400" countType [_vehicle] > 0: _scriptName = "M270", goto "END"
-	? "T80_TZK_xj400" countType [_vehicle] > 0 || "T80Res_TZK_xj400" countType [_vehicle] > 0: _scriptName = "T80", goto "END"
+	? "T80_xj400" countType [_vehicle] > 0 || "T80Res_TZK_xj400" countType [_vehicle] > 0: _scriptName = "T80", goto "END"
 	? "T90ms_xj400" countType [_vehicle] > 0: _scriptName = "T90ms", goto "END"
 	? "2S6_DKM_xj400" countType [_vehicle] > 0: _scriptName = "2S6", goto "END"
+	
+	? "T55E_xj400" countType [_vehicle] > 0: _scriptName = "T55", goto "END"
+	? "T72_xj400" countType [_vehicle] > 0: _scriptName = "T72", goto "END"
+	? "M60_xj400" == _typeName: _scriptName = "M60", goto "END"
+	? "M60_120S_xj400" == _typeName: _scriptName = "M60_120S", goto "END"
 	goto "END"
 #CheckM113
 	? "M113_xj400" countType [_vehicle] > 0: _scriptName = "M113", goto "END"

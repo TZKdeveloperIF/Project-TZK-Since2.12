@@ -29,7 +29,7 @@ if (_unit == driver _v) then {
 		_rearmMags = _rearmData select 1;
 		if ((count _rearmMags) > 0) then {
 			_weapons = weapons _v;
-			{if ((_v ammo _x) == 0) then {_rearm = true}} foreach _weapons;
+			{if ((_v ammo _x) == 0) then {_rearm = true}} foreach _weapons; if _rearm Then {if (typeOf _v == "TOS1_TZK_xj400") Then {_rearm = false}};
 			if !(_rearm) then {
 				private ["_vt", "_gun", "_sabotMag", "_magazines"];
 				_vt = _v call funcGetUnitTypeFromObject;

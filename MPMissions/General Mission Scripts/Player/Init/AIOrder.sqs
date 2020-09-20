@@ -114,7 +114,7 @@ _param0 = ["Target", 20, "format[""Target%2_%1"", _this%10, [{P},{S}] select (_t
 _param1 = ["Set", 2, "[{Set},{Clear}] select _this", 0]
 aiOrders2 set [_type, ["Set Target", [_param0, _param1], true, "Order\SetTarget.sqs", _desc] ]; _type = _type + 1
 
-_desc = "Ask your group member to shoot at selected target. Order is valid to tank, howitzer vehicle, mortar structure and howitzer structure."
+_desc = "Ask your group member to shoot at selected target. Order is valid to tank, howitzer vehicle, mortar structure and howitzer structure.\n\nThere exists ""minimum"" disperation radius for different kinds of shooting vehicle. 0 m for tanks, 10 m for M119 105mm Howitzer, 30 m for D30A 122mm Howitzer, 40m for 155mm M109/PLZ05 Howitzer and M270 MLRS, 60 m for Mortar and T.O.S-1. If less disperation selected, the minimum value will replace it as actual value."
 _param0 = ["Target", 10, "format[""Target_%1"", _this]", 0]
 _param1 = ["Dispersion", 20, "format [""%1m"", 10*_this]", 0]
 aiOrders2 set [_type, ["Shoot Target", [_param0, _param1], false, "Order\ShootTarget.sqs", _desc] ]; _type = _type + 1

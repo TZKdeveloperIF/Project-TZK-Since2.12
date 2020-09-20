@@ -23,10 +23,12 @@ exit
 ; ? [["M16MortarLauncher_TZK_xj400", "AK74MortarLauncher_TZK_xj400"], _weapons + _magData] call funcArrayOverlap: [_unit, _marker, _target] exec "Player\Order\ShootMortarInf.sqs"; exit
 
 #CheckVehicle
-_type = _vehicle call funcGetUnitTypeFromObject
-? _type in (typesHeavyTank + typesLightTank + typesHowitzer + typesRocketLauncher) || (typeOf _vehicle) in ["M1A1_Art_xj400", "T80_Art_xj400"]: [_unit, _marker, _target, _type, _dispersion] exec "Player\Order\ShootTank.sqs"; exit
+_vt = _vehicle call funcGetUnitTypeFromObject
+? _vt in (typesHeavyTank + typesLightTank + typesHowitzer + typesRocketLauncher) || (typeOf _vehicle) in ["M1A1_Art_xj400", "T80_Art_xj400"]: if (_vt in typesHowitzer + typesRocketLauncher && _dispersion < 40) Then {_dispersion = 40}; if (typeOf _vehicle == "TOS1_TZK_xj400" && _dispersion < 60) Then {_dispersion = 60}, [_unit, _marker, _target, _vt, _dispersion] exec "Player\Order\ShootTank.sqs"; exit
 
-? _type == -1: _type = _vehicle call funcGetStructTypeFromObject
-? _type in (structsOccupiableMortar + structsOccupiableHowitzer + structsOccupiableArtHowitzer): [_unit, _marker, _target, _type, _dispersion] exec "Player\Order\ShootStruct.sqs"; exit
+? _vt == -1: _vt = _vehicle call funcGetStructTypeFromObject
+? !( _vt in (structsOccupiableMortar + structsOccupiableHowitzer + structsOccupiableArtHowitzer) ): exit
+if (_vt in structsOccupiableMortar && _dispersion < 60) Then {_dispersion = 60}; if (typeOf _vehicle == "m119_xj400" && _dispersion < 10) Then {_dispersion = 10}; if (typeOf _vehicle == "D30_xj400" && _dispersion < 30) Then {_dispersion = 30}
+[_unit, _marker, _target, _vt, _dispersion] exec "Player\Order\ShootStruct.sqs"
 
 ; EOF

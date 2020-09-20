@@ -22,7 +22,7 @@ _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is out
 ? ([getPos _unit, _posOrdered] call funcDistH) < 30: _unit doMove _posOrdered, goto "PrePareToAttack"
 	_unit groupChat "Moving to attacking position."; _timeStart = time; _timeHint = _timeStart + 5*60; 
 	_hint = ["I've been running for %1 minutes. Distance %2 meters now.", (_timeHint -_timeStart)/60, (_unit distance _target) - (_unit distance _target)%1]
-	? _typeName in ["TOS1_TZK_xj400", "M109A6G_xj400", "PLZ05_TZK_xj400"] && fuel _vehicle == 0: [_vehicle, 0] exec {Player\Effect\DeployChange.sqs}
+	? _typeName in ["TOS1_TZK_xj400", "M109A6G_xj400", "PLZ05_TZK_xj400"] && "_x == {DeploySwitch_xj400}" count magazines _vehicle > 0: [_vehicle, 0] exec {Common\Effect\DeployChange.sqs}
 #CheckPosReached
 	_unit doMove _posOrdered
 	~5
@@ -39,7 +39,7 @@ _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is out
 	_weapon = (_vehicle call funcVehParamWeapons) select 0
 	_delay = 3
 	; Delay for turning the turret. It'll be good to obtain proper value by the angle's difference, however no way to compute this in OFP.
-	? _typeName in ["TOS1_TZK_xj400", "M109A6G_xj400", "PLZ05_TZK_xj400"]: [_vehicle, 1] exec {Player\Effect\DeployChange.sqs}; _delay = [5, 8] select (fuel _vehicle > 0)
+	? _typeName in ["TOS1_TZK_xj400", "M109A6G_xj400", "PLZ05_TZK_xj400"]: [_vehicle, 1] exec {Common\Effect\DeployChange.sqs}; _delay = [5, 8] select ("_x == {DeploySwitch_xj400}" count magazines _vehicle == 0)
 	~_delay
 	
 	? !(_vehicle hasWeapon _weapon): _unit groupChat "No proper weapon. Order aborted. Rearm me or help me to deploy, sir."; goto "Exit"
@@ -103,7 +103,7 @@ _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is out
 	_unit groupChat "Moving to support vehicle for more magazines."
 
 	_timeAbort = time + 15*60
-	? _typeName in ["TOS1_TZK_xj400", "M109A6G_xj400", "PLZ05_TZK_xj400"] && fuel _vehicle == 0: [_vehicle, 0] exec {Player\Effect\DeployChange.sqs}
+	? _typeName in ["TOS1_TZK_xj400", "M109A6G_xj400", "PLZ05_TZK_xj400"] && "_x == {DeploySwitch_xj400}" count magazines _vehicle > 0: [_vehicle, 0] exec {Common\Effect\DeployChange.sqs}
 	#MoveToSupport
 		_posMove = [[0,25], (getDir _sup)] call funcVectorRot
 		_posMove = [getPos _sup, _posMove] call funcVectorSub
