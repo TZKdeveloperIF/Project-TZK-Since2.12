@@ -1,5 +1,3 @@
-
-
 _range = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range_Y_0.sqf"; _error0 = _range - _distX;
 if (_error0 < -0.5 * _distX) Then {_vehicle groupChat "Improper initial elevation angle. Shell deleted.", deleteVehicle _shell, exit} Else {
 

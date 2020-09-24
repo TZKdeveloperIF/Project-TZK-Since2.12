@@ -7,24 +7,23 @@ _shell = nearestObject [_vehicle, _ammo]; _posShell = getPosASL _shell; _velShel
 _distX = [_posShell, _posTarget] call funcDistH; _deltaY = (_posTarget call funcHASL) - (_posShell select 2)
 _vx = sqrt ( (_velShell select 0)^2 + (_velShell select 1)^2 ); _vy = _velShell select 2; _theta0 = _vy atan2 _vx; _vx = _speed * cos(_theta0); _vy = _speed * sin(_theta0) 
 
-? _deltaY > 0 && vy <= 0: _vehicle groupChat "Improper initial elevation angle. Shell deleted.", deleteVehicle _shell, exit
+? _deltaY > 0 && _vy <= 0: _vehicle groupChat "Improper initial elevation angle. Shell deleted.", deleteVehicle _shell, exit
 ? _deltaY <= 0: goto "Case2"
-; Case_1: _deltaY > 0 and vy > 0 here.
-_res = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range2.sqf"
-? !(_res select 2): _vehicle groupChat "Failed to shoot high. Shell deleted.", deleteVehicle _shell, exit
+; Case_1: _deltaY > 0 and _vy > 0 here.
+_res = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range_X_2.sqf"
+? !(_res select 2): goto "Case_1_R3"
 _error0 = (_res select 1) - _distX
-? _error0 < -0.5 * _distX: _vehicle groupChat "Improper initial speed/elevation in upward case. Shell deleted.", deleteVehicle _shell, exit
+? _error0 < -0.5 * _distX: _vehicle groupChat "Improper initial speed/elevation angle in upward case. Shell deleted.", deleteVehicle _shell, exit
 
 ? _distX > _res select 1: goto "Case_1_R3"
 ; Case_1_R1
-; _theta = call loadFile "Common\EH\Fired_Revise_Case1_2.sqf"; goto "Iteration_End"
-_theta = call loadFile "Common\EH\Fired_Revise_Case1_2_X.sqf"; goto "Iteration_End"
+_theta = call loadFile "Common\EH\Fired_Revise_Angle_Case1_2_X.sqf"; goto "Iteration_End"
 
 #Case_1_R3
-_theta = call loadFile "Common\EH\Fired_Revise_Case1_3.sqf"; goto "Iteration_End"
+_theta = call loadFile "Common\EH\Fired_Revise_Angle_Case1_3_X.sqf"; goto "Iteration_End"
 
 #Case2
-_theta = call loadFile "Common\EH\Fired_Revise_Case2.sqf"
+_theta = call loadFile "Common\EH\Fired_Revise_Angle_Case2.sqf"
 
 #Iteration_End
 
@@ -35,4 +34,6 @@ _velShell = [_speed * cos(_theta) * cos(_angle), _speed * cos(_theta) * sin(_ang
 _shell setVelocity _velShell; _shell setPosASL _posShell
 
 ? isNull player: exit
+~0.1
+? isNull _shell: exit
 [_vehicle,_shell] exec "Player\Effect\Fired_Artillery_Impact.sqs"

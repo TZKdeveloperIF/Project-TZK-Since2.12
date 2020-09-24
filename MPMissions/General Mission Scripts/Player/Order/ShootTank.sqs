@@ -118,14 +118,21 @@ _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is out
 	? !bool_TZK_199_Mode: _magazines = magazines _vehicle; _validMags = [_weapon] call loadFile "Common\SQF\WeaponValidMags.sqf"; {if (_x in _validMags) Then {_mag = _x}} forEach _magazines
 	? _mag != "": _speed = substr [_mag, sizeofstr(_mag) - sizeofstr("xxxx_xj400"), sizeofstr(_mag) - sizeofstr("_xj400")]; if !(substr [_speed, 0, 1] in ["0","1","2","3"]) then {_speed = -1} else {_speed = call _speed};
 	_delay = [0,3] select (_speed > 0)
-	_unit groupChat "Rearming at support vehicle."; [_unit, _sup] exec "Player\Rearm.sqs"; doStop _unit
+	_unit groupChat "Rearming at support vehicle. If I'm far away from you, probably I can't receive supplemented magazines. In this case, please use Unit Camera and look at me."; [_unit, _sup] exec "Player\Rearm.sqs"; doStop _unit
 	#WaitRearmComplete
 		~5
 		? call orderCheck: goto "Exit"
 		? !(alive _unit) || _vehicle != vehicle _unit: goto "Exit"
 		? !someAmmo _vehicle: goto "WaitRearmComplete"
 	~_delay + 1
-	? _speed > 0: [_vehicle, _speed] exec {Common\ReEquip\SwitchMagPreset.sqs}
+	? _speed <= 0: goto "PrepareToMove"
+	_delay = 1; [_vehicle, _speed] exec {Common\ReEquip\SwitchMagPreset.sqs}; _unit groupChat "Switching magazine. Again, if I'm far away, use Unit Camera and look at me."
+	#WaitSwitchComplete
+		~_delay
+		? call orderCheck : goto "Exit"
+		? !(alive _unit) || _vehicle != vehicle _unit : goto "Exit"
+		_delay = 5
+		? !someAmmo _vehicle: goto "WaitSwitchComplete"
 	goto "PrepareToMove"
 
 #Exit

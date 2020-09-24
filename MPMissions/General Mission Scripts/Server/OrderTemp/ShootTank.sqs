@@ -117,7 +117,14 @@ if (_attackPos select 0 < 0) then {_attackPos = getPos _vehicle} else {_attackPo
 		? !(alive _unit) || _vehicle != vehicle _unit: goto "EOF"
 		? !someAmmo _vehicle: goto "WaitRearmComplete"
 	~_delay + 1
-	? _speed > 0: [_vehicle, _speed] exec {Common\ReEquip\SwitchMagPreset.sqs}
+	? _speed <= 0: goto "PrepareToMove"
+	_delay = 1; [_vehicle, _speed] exec {Common\ReEquip\SwitchMagPreset.sqs}
+	#WaitSwitchComplete
+		~_delay
+		? !(_unit call temporaryCheck): goto "EOF"
+		? !(alive _unit) || _vehicle != vehicle _unit: goto "EOF"
+		_delay = 5
+		? !someAmmo _vehicle: goto "WaitSwitchComplete"
 	goto "PrepareToMove"
 
 ; End Of File
