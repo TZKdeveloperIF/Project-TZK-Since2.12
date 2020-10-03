@@ -52,7 +52,7 @@ _order = orderMatrix select _si select _gi; _idOrder = _order select 0
 
 ; _posStart exec "Server\CutDownTrees.sqs"
 
-? !(alive _unit): goto "WaitUntilAlive"
+? !(alive _unit): goto "SkipInitialize"
 
 _unit setCombatMode "YELLOW"; _unit setBehaviour "AWARE"; _unit setSpeedMode "FULL"
 
@@ -60,6 +60,7 @@ _unit setCombatMode "YELLOW"; _unit setBehaviour "AWARE"; _unit setSpeedMode "FU
 [_unit, _si, _gi] exec "Server\EventAdd_Infantry.sqs"
 [_unit] exec "Common\AddRearmData.sqs"
 
+#SkipInitialize
 _sleep = 5
 _giPatrol = _gi; _bTakeTown=false
 

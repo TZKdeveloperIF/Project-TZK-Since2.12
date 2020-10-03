@@ -14,15 +14,15 @@ _si = _value
 ? !isServer && upgMatrix select _si select _upg == _state: exit
 
 ? siPlayer == siCiv && _state == 2: format["%1 upgraded %2.", sideNames select _si, (upgDefs select _upg select 0) call funcLocStr] exec "Player\LogSpectator.sqs"
-? siPlayer != _si: Exit
+? siPlayer != _si: goto "SkipInfoDisplay"
 
 ? _state == 0 && upgMatrix select _si select _upg == 1: player sidechat format ["All Command Center destroyed. Upgrade Failed: %1", (upgDefs select _upg select 0) call funcLocStr]
 ? _state == 0 && upgMatrix select _si select _upg == 2: player sidechat format ["Upgrade Downgraded: %1", (upgDefs select _upg select 0) call funcLocStr]
 ? _state == 1: player sidechat format ["Upgrade Started: %1", (upgDefs select _upg select 0) call funcLocStr]
 ? _state == 2: player sidechat format ["Upgrade Complete: %1", (upgDefs select _upg select 0) call funcLocStr]
 
+#SkipInfoDisplay
 upgMatrix select _si set [_upg, _state]
-
 
 ? upgCCdistance == _upg && _state == 2: CCdistMax set [_si, distMaxCCUpgraded]
 

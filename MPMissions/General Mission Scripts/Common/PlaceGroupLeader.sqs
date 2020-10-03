@@ -22,10 +22,12 @@ _unit setDir _dir
 ? !bool_TZK_199_Mode: _unit allowdammage true
 
 ~10
+_try = 0
 #FixStartPosBug
 ? _unit distance (mhq select _si) < 1000: exit
-_unit setPos [(_pos Select 0) + _dist*sin(_dir + 90), (_pos Select 1) + _dist*cos(_dir + 90), 0]
+_unit setPos [(_pos Select 0) + _dist*sin(_dir + 90), (_pos Select 1) + _dist*cos(_dir + 90), 0]; (vehicle player) switchCamera "internal"; _try = _try + 1
 ~1
-goto "FixStartPosBug"
+? _try < 5: goto "FixStartPosBug"
+_unit setDammage 1; _unit globalChat "Suicide. If Game still abnormal after having respawned, ask Admin to restart the game please."
 
 ; EOF

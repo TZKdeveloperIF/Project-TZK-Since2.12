@@ -12,7 +12,7 @@ _object = (_this select 2) select 0; _objects = (_this select 2); _additionalObj
 [_object, _si, kaStruct, 200] exec "Server\Start\KnowsAbout.sqs"
 
 ; Artillery Detecting 
-? _type in (structsOccupiableArtHowitzer + structsOccupiableHowitzer + structsOccupiableMortar): _object addEventHandler ["Fired", format [{ [_this select 0, nearestObject[_this select 0, _this select 4], %1 ] exec "Common\EH\TrackShell.sqs" }, _si]]
+? _type in (structsOccupiableArtHowitzer + structsOccupiableHowitzer + structsOccupiableMortar): _object addEventHandler ["Fired", format [{ [_this select 0, nearestObject[_this select 0, _this select 4], %1, true ] exec "Common\EH\Fired_TrackShell.sqs" }, _si]]
 
 ? !( !dev && !((count _this) > 3) ) : exit
 

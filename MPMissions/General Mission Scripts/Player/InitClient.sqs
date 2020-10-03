@@ -86,12 +86,12 @@ boole_Local_Bullet_Tracer = false
 boole_Global_Bullet_Tracer = true
 boole_Local_Cannon_Tracer = false
 boole_Global_Cannon_Tracer = true
-boole_Local_Shell_Tracer = false
+boole_Local_Shell_Tracer = true
 boole_Global_Shell_Tracer = true
 boole_Dead_Tank_Burning = true
 boole_Nuclear_Effect = false
-boole_Rocket_Impact = true
-boole_Rocket_Launch = true
+boole_Rocket_Impact = false
+boole_Rocket_Launch = false
 
 boole_Show_GPS = false; boole_Show_Pad = true; bool_Show_Radio = false
 boole_Mark_Player_Name = false
@@ -158,6 +158,8 @@ _missionSettingControls set [count _missionSettingControls, ["Marker Not Dislpay
 boolSettingControls = [ {bool_TZK_Marker_LowFrequency}, {bool_TZK_Marker_SQS}, {bool_TZK_Marker_Hide} ]
 
 magazinesBooleRecording = ["M16", "M4", "AK47", "AK74", "M21", "SVDDragunov", "Flare", "FlareGreen", "FlareRed", "FlareYellow",  "TokarevMag", "CZ75Mag"]
+; Be Aware! If all options are "false" and thus the soldier for save/load status equipping none magazines, the "saveStatus" command won't save data although it returns "true". In this case one might think to apply the "deleteStatus" command, however this is indistinguishable with new TZK player/user account. Thus it's always necessary to add another mag to the soldier in case of saveStatus fail.
+magazinesBooleRecording set [count magazinesBooleRecording, "IngramMag"]
 
 ; It would be better if define these "Rapid_Rearm" in InitEquipmentTypes. However some launchers aren't planned to be added into CTI right now.
 RapidRearmSecWeapons = [{CarlGustavLauncher},{AT4Launcher},{LAWLauncher},{RPGLauncher},{AALauncher},{9K32Launcher},{HyperLauncher_xj400},{Kasapanos}, {SMAWLauncher_xj400},{RPG16dLauncher_xj400},{JavelinLauncher_xj400}]

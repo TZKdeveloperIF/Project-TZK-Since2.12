@@ -8,7 +8,7 @@ _type = _this select 7
 _vehicle = vehicle _unit; _typeName = typeOf _vehicle; _actualTarget = typeOf _target camCreate getPosASL _target; _actualTarget exec {Common\Command\allowDamageFalse.sqs}
 #CheckDistance
 _distLimit = viewDistance; 
-? (upgMatrix select _si) select upgLongWeaponRange == 2: _distLimit = 2*viewDistance; 
+? (upgMatrix select _si) select upgLongWeaponRange == 2 && (upgMatrix select _si) select upgLongArtRange == 2: _distLimit = 2*viewDistance; 
 ? _typeName in ["M1A1_Art_xj400", "T80_Art_xj400"]: _distLimit = 10000; 
 
 #PrepareToMove
