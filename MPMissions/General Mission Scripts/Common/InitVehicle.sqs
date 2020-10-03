@@ -18,7 +18,7 @@ _this exec "Common\InitVehicle_Stable.sqs"
 ? _type in (typesHowitzer + typesHeavyTank + typesLightTank): _vehicle addEventHandler ["Fired", "_this exec {\TZK_Objects\Scripts\gunrec.sqs}"]
 #SkipVanilla
 
-? _type in (typesHowitzer + typesRocketLauncher + RadioTypesArtUnits): _vehicle addEventHandler ["Fired", format [{ [_this select 0, nearestObject[_this select 0, _this select 4], %1 ] exec "Common\EH\TrackShell.sqs" }, _si]]
+? _type in (typesHowitzer + typesRocketLauncher + RadioTypesArtUnits): _vehicle addEventHandler ["Fired", format [{ [_this select 0, nearestObject[_this select 0, _this select 4], %1 , true] exec "Common\EH\Fired_TrackShell.sqs" }, _si]]
 
 ; Long last animation
 ? _typeName in ["2S6_DKM_xj400", "ZSU_MNF_xj400", "ZSU_xj400"] && local _vehicle: _vehicle animate ["rot_radar", 1]

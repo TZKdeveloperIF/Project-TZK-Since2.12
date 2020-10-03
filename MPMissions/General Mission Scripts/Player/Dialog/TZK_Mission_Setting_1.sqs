@@ -51,7 +51,8 @@ _soldier = "SoldierWB" camCreate [10,10,10]
 		? _j < _Line : goto "BoolesLine"
 		
 	_entry = format["TZK_Mission_Setting_%1", _i]
-	if (count magazines _soldier > 0) Then {_soldier saveStatus _entry} Else {deleteStatus _entry}
+	; if (count magazines _soldier > 0) Then {_soldier saveStatus _entry} Else {deleteStatus _entry}
+	_soldier addMagazine (magazinesBooleRecording select count magazinesBooleRecording - 1); _soldier saveStatus _entry
 		
 	_i = _i + 1
 	? _i < _Column : goto "BoolesColumn"
