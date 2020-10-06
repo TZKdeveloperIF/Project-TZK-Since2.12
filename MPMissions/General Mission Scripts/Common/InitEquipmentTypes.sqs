@@ -46,6 +46,9 @@ magsRespawnPlayer3 = [ [_mSG551, _mSG551, _carl4slot, _aa4slot, magPistolMine, _
 weaponsRespawnPlayer4 = [ [_wM249SD, _hyperL, "Binocular", _nvg1], [_wRPK74SD, _hyperL, "Binocular", _nvg1] ]
 magsRespawnPlayer4 = [ [_mM249SD, _carl4slot, _aa4slot, magPistolMine, _medkit], [_mRPK74SD, _mRPK74SD, _at44slot, _9k324slot, magPistolMine, _medkit] ]
 
+? bool_TZK_SEMod_Mode: weaponsRespawnPlayer4 = [ ["JahSG551", "WW4_JavelinLauncher", "Binocular", "NVGoggles"], ["RFSVUa", "ICPRPG29", "Binocular", "NVGoggles"] ], magsRespawnPlayer4 = [ ["JahSG551mag", "JahSG551mag", "WW4_JavelinMag", "WW4_JavelinMag", "WW4_JavelinMag", "WW4_JavelinMag"], ["RFSVUAmag", "RFSVUAmag", "ICPRPG29Mag", "ICPRPG29Mag", "ICPRPG29Mag", "ICPRPG29Mag"] ]
+; not used below
+
 weaponsRespawnPlayer5 = [ ["M21", "CarlGustavLauncher", "Binocular", _nvg0], ["SVDDragunov", "AT4Launcher", "Binocular", _nvg0] ]
 magsRespawnPlayer5 = [ ["M21", "M21", "M21", "M21", "CarlGustavLauncher"], ["SVDDragunov", "SVDDragunov", "SVDDragunov", "SVDDragunov", "AT4Launcher"] ]
 
@@ -234,6 +237,11 @@ equipSearch set [_type, (equipDefs select _type) select edObject]
 _atCarlGustav = _type
 _type = _type + 1
 
+equipDefs set [_type, ["Javelin", si0, isGeneral, 6, "WW4_JavelinMag", "\dtaExt\equip\m\m_carlgustavlauncher",250 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atJav = _type
+_type = _type + 1
+
 equipDefs set [_type, ["Stinger", si0, isGeneral, 6, "AALauncher", "\dtaExt\equip\m\m_aalauncher",100 ]] 
 equipSearch set [_type, (equipDefs select _type) select edObject]
 _atStinger = _type
@@ -373,6 +381,11 @@ _type = _type + 1
 equipDefs set [_type, ["AT4", si1, isGeneral, 6, "AT4Launcher", "\dtaExt\equip\m\m_at4launcher",60 ]] 
 equipSearch set [_type, (equipDefs select _type) select edObject]
 _atAT4 = _type
+_type = _type + 1
+
+equipDefs set [_type, ["RPG29 Vampire", si1, isGeneral, 6, "ICPRPG29Mag", "\dtaExt\equip\m\m_carlgustavlauncher",250 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atJavE = _type
 _type = _type + 1
 
 equipDefs set [_type, ["Strela", si1, isGeneral, 6, "9K32Launcher", "\dtaExt\equip\m\m_9k32launcher",100 ]] 
@@ -631,6 +644,11 @@ weaponDefs set [_type, ["CarlGustav", si0, wtSecondary, "CarlGustavLauncher", "\
 weaponSearch set [_type, (weaponDefs select _type) select wdObject]
 _type = _type + 1
 
+weaponDefs set [_type, ["Javelin", -1, wtSecondary, "WW4_JavelinLauncher", "\ww4_wpn\javelinlogo.paa", [[_atJav,1]],1500 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+? bool_TZK_SEMod_Mode: weaponDefs select _type set [wdSides, si0]
+_type = _type + 1
+
 weaponDefs set [_type, ["Stinger", si0, wtSecondary, "AALauncher", "\dtaExt\equip\w\w_aalauncher", [[_atStinger,1]],100 ]] 
 weaponSearch set [_type, (weaponDefs select _type) select wdObject]
 _type = _type + 1
@@ -750,6 +768,11 @@ _type = _type + 1
 
 weaponDefs set [_type, ["AT4", si1, wtSecondary, "AT4Launcher", "\dtaExt\equip\w\w_at4launcher", [[_atAT4,1]],70 ]] 
 weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+weaponDefs set [_type, ["RPG29 Vampire", -1, wtSecondary, "ICPRPG29", "\ICPrpg7\rpg26\rpg29_w.paa", [[_atJavE,1]],1500 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+? bool_TZK_SEMod_Mode: weaponDefs select _type set [wdSides, si1]
 _type = _type + 1
 
 weaponDefs set [_type, ["Strela", si1, wtSecondary, "9K32Launcher", "\dtaExt\equip\w\w_9k32launcher", [[_atStrela,1]],100 ]] 

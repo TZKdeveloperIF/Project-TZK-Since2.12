@@ -1,0 +1,197 @@
+; args: [_group, _ti, _si, _cLast, _siLast, _timeReinforce, _bCheckSupport, _support, _hibernate]
+~5
+_group = _this select 0; _ti = _this select 1; _si = _this select 2
+_cLast = _this select 3; _siLast = _this select 4; _timeReinforce = _this select 5; _bCheckSupport = _this select 6
+_support = _this select 7; _hibernate = _this select 8
+
+_unitsSupport = []; _unitsSupporting = []
+
+_distSpawn = viewDistance + 1500
+_flag = (towns select _ti) select tdFlag
+_posFlag = getPos _flag
+
+? _hibernate: goto "CheckSpawn"
+#Update
+~30
+? _time > 3*60 && count _unitsSupport == 0: goto "NextLoop"
+	; check if town taken (won)
+	_siTown = (towns Select _ti) select tdSide
+	? _siTown == _si && _siLast != _si : _timeReinforce = time + timeReinforceTown
+	_siLast = _siTown
+	? _siTown == _si && time > _timeReinforce : goto "Reinforce"
+	? (count (units _group)) == 0 : goto "Update"
+	#ReinforceReady
+	? _hibernate: goto "CheckSpawn"
+	{ if (alive _x) then { _x doWatch ([getPos _x, 200, 200] call funcGetRandomPos); if (unitReady _x) then { doStop _x } } } forEach units _group	
+	
+	_flagguard = (units _group) select 0
+	_flagguard1 = (units _group) select 1
+	_flagguard doMove ([getpos _flag, 50,50] call funcGetRandomPos)
+	_flagguard1 doMove ([getpos _flag, 95,95] call funcGetRandomPos)	
+	
+	_guns = [_posFlag, 200, typesGuns, []] call funcGetNearbyVehiclesEmpty
+	_cg = count _guns
+	?_cg > 0: _retakeGun = (_guns select ((random _cg) - 0.5)) select 0		
+  	_c = count (units _group)		
+	?_c > 1: _gunner = (units _group) select ((random _c) - 0.5)
+	if (_cg > 0 && vehicle _gunner == _gunner && isNull gunner _retakeGun && someAmmo _retakeGun && _gunner != (units _group) select 0) then { _gunner assignAsGunner _retakeGun; [_gunner] orderGetIn true }
+	_guns1 = [_posFlag, 200, typesGuns, []] call funcGetNearbyVehicles	
+	?(vehicle _x) in _guns1 && !(someAmmo vehicle _x): unassignVehicle _x forEach (units _group)
+	
+	? _siTown != _si : goto "TakeFlag"
+	? _bCheckSupport : goto "Support"
+	goto "Patrol"
+
+#Patrol
+_group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "NORMAL"
+	; CHECK HIBERNATE
+	; _hibernate = true
+	; { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach (groupMatrix select (siEnemy select _si))
+	; { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach (townGroups select (siEnemy select _si))
+	; { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach ( (groupMatrix select siRes) - groupsPatrol )
+	; { _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach groupsPatrol
+	; ? _hibernate : goto "Hibernate"
+	
+	_c = count (units _group)
+	? _c < _cLast : [_ti, _si] exec "Server\Info\TownGroupLoss.sqs"
+	_cLast = _c
+	
+	{ if ( ( (random 1) < 0.5 || (_x distance _flag) < 50 ) && (alive _x) && !(_x in (_unitsSupport + _unitsSupporting) ) ) then { _x doMove ([_posFlag, 149, 149] call funcGetRandomPos) } } forEach units _group
+	
+	_flagguard = (units _group) select 0
+	_flagguard1 = (units _group) select 1
+	_flagguard doMove ([getpos _flag, 50,50] call funcGetRandomPos)
+	_flagguard1 doMove ([getpos _flag, 95,95] call funcGetRandomPos)	
+	
+	goto "Update"
+
+#TakeFlag
+	{ if ((random 1) < 0.5 && !(_x in (_unitsSupport + _unitsSupporting)) ) then { _x doMove ([_posFlag, 5, 5] call funcGetRandomPos) } } forEach units _group
+	~10
+	goto "Update"
+
+#Reinforce
+	_timeReinforce = time + timeReinforceTown
+	_c = count (units _group); _i = _c; _units = units _group
+	#ClearDeadinRein
+	_i = _i - 1
+	? _i >= 0 && _i < count _units : _u = _units select _i; if (!alive _u && _u == vehicle _u) then {deleteVehicle _u}
+	? _i > 0 : goto "ClearDeadinRein"
+	_unitsInfantry = []; { if ((vehicle _x) == _x) then { _unitsInfantry = _unitsInfantry + [_x] } } forEach (units _group); _i = 0
+	? count (units _group) < 8 : goto "AddInf"
+	? count (units _group) < 10 : goto "AddTank"
+	? count (units _group) == 10 : goto "AddTankH"
+	goto "ReinforceReady"
+
+#AddInf
+  _type = -1
+  while "_type == -1" do { _type = (infTown select _si) call funcGetRandomUnitType }
+  _pos = [_posFlag, 149, 149] call funcGetRandomPos
+  _pos1 = [_posFlag, 50, 50] call funcGetRandomPos 
+  ? isNull _group : format["ERROR: _group is NULL at AddInf for %1 town group in '%1'", sideNames select _si, (towns select _ti) select tdName] call fDebugLog; exit
+  ? count (units _group) == 0: [_type, 0, 0, 0, _pos1, random 360, _si, giTown, _group, 0, 0] exec "Common\AddUnit.sqs"
+  ? count (units _group) > 0 : [_type, 0, 0, 0, _pos, random 360, _si, giTown, _group, 0, 0] exec "Common\AddUnit.sqs"
+  ;player globalchat format["AddInf: %1 (%2)", (towns select _ti) select tdName, count (units _group)]
+  goto "ReinforceReady"
+
+#AddTank
+	? ((upgMatrix select _si) select upgTownGroupH) == 2: goto "AddTankH"
+	? ((upgMatrix select _si) select upgTownGroupb) != 2: goto "ReinforceReady"
+	~15
+		_type = -1
+		while "_type == -1" do { _type = (armorTownH select _si) call funcGetRandomUnitType }
+		_pos = [_posFlag, 12, 13] call funcGetRandomPos
+		_vehicle = [_type, 1, 1, 0, _pos, random 360, _si, giTown, _group, 0, 0] call funcAddServerUnit
+		
+		_timeAbort = time + 5
+		@ (!isNull _vehicle || time > _timeAbort)
+	  
+	? count _unitsInfantry >= 8 : { deleteVehicle (_unitsInfantry select _x) } forEach [0,1]
+	~5
+	goto "ReinforceReady"
+
+#AddTankH
+	? ((upgMatrix select _si) select upgTownGroupH) != 2: goto "ReinforceReady"
+	~25
+		_type = -1
+		while "_type == -1" do { _type = (armorTownH select _si) call funcGetRandomUnitType }
+		_pos = [_posFlag, 149, 149] call funcGetRandomPos
+		_vehicle = [_type, 1, 1, 0, _pos, random 360, _si, giTown, _group, 0, 0] call funcAddServerUnit
+		
+		_timeAbort = time + 5
+		@ (!isNull _vehicle || time > _timeAbort)
+	  
+	? count _unitsInfantry >= ( [8,6] select ( ((upgMatrix select _si) select upgTownGroupb) == 2 ) ) : { deleteVehicle (_unitsInfantry select _x) } forEach [0,1]
+	~5
+	goto "ReinforceReady"
+
+
+
+#Hibernate
+	[_ti, _si] exec "Server\Info\TownGroupHibernate.sqs"
+#CheckSpawn
+~10
+? _time > 3*60: goto "NextLoop"
+	_hibernate = true
+	{ _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach (groupMatrix select (siEnemy select _si))
+	? !_hibernate : goto "Spawn"
+	{ _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach (townGroups select (siEnemy select _si))
+	? !_hibernate : goto "Spawn"
+	{ _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach groupsPatrol
+	? !_hibernate : goto "Spawn"
+	{ _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach ( (groupMatrix select siRes) - groupsPatrol )
+	? !_hibernate : goto "Spawn"
+	? time > _timeReinforce: goto "Reinforce"
+	goto "CheckSpawn"
+  
+#Spawn
+	? isNull _group : format["ERROR: _group is NULL at spawn for %1 town group in '%1'", sideNames select _si, (towns select _ti) select tdName] call fDebugLog; exit
+	[_ti, _si] exec "Server\Info\TownGroupSpawn.sqs"
+	goto "Update"
+#Support
+	? !(alive _support) : _res = [getPos _flag, _si, typesSupport select _si, []] call funcGetClosestVehicle; goto "Support_VehicleSet"
+	_dist = _support distance _flag
+	? _dist > 500 : _res = [getPos _flag, _si, typesSupport select _si, []] call funcGetClosestVehicle; goto "Support_VehicleSet"
+	goto "Support_CheckUnits"
+  
+  #Support_VehicleSet
+	_support = _res select 0
+	_dist = _res select 1
+	? _dist > 500 : _unitsSupport = []; _unitsSupporting = []; goto "Patrol"
+  
+  #Support_CheckUnits
+	_i = 0
+	_units = units _group
+  #Support_CheckUnit
+  	? !(alive _support) : _unitsSupport = []; _unitsSupporting = []; goto "Patrol"
+  	? !(_i < count _units) : goto "Support_Move"
+  	_u = _units select _i
+	_v = vehicle _u
+	_i = _i + 1
+	
+  	? !(alive _u) : goto "Support_CheckUnit"
+	? _u in _unitsSupport && (_u distance _support) < rangeSupport : goto "Support_Perform"
+	
+	_heal = [_u, _si, giTown] call funcCheckRepair
+	_rearm = [_u, _si, giTown] call funcCheckRearm
+	? (_heal || _rearm) && !(_u in (_unitsSupport + _unitsSupporting)) : _unitsSupport set [count _unitsSupport, _u]; goto "Support_CheckUnit"
+	? (_heal || _rearm) && (_u in _unitsSupporting) : _unitsSupporting = _unitsSupporting - [_u, objNull]; _unitsSupport set [count _unitsSupport, _u]; goto "Support_CheckUnit"
+	? !_heal && !_rearm : _unitsSupport - [_u, objNull]; _unitsSupporting = _unitsSupporting - [_u, objNull]
+	~2
+  	goto "Support_CheckUnit"
+    
+    #Support_Perform
+  	; format["UTG: %1 performs support in %2 ", _u, (towns select _ti) select tdName] call fDebugLog
+	[_u, _si, giTown, _v, -1, _support] exec "Server\AI_Heal_TownUnit.sqs"
+	[_u, _si, giTown, _v, -1, _support] exec "Server\AI_Rearm_TownUnit.sqs"
+	_unitsSupport = _unitsSupport - [_u, objNull]; _unitsSupporting set [count _unitsSupporting, _u]
+  	goto "Support_CheckUnit"
+    
+  #Support_Move
+	_unitsSupport = _unitsSupport - [objNull]
+	; TEST { if (alive _x) then { _posMove = [getPos _support, 5, 5] call funcGetRandomPos; _x doMove _posMove; player globalchat format["UTG: %1 moves to support in %2 ", _x, (towns select _ti) select tdName]; } } forEach _unitsSupport
+	{ if (alive _x) then { _posMove = [getPos _support, 5, 5] call funcGetRandomPos; _x doMove _posMove } } forEach _unitsSupport
+	goto "Patrol"
+  
+#NextLoop
+	[_group, _ti, _si, _cLast, _siLast, _timeReinforce, _bCheckSupport, _support, _hibernate] exec "Extra\TownGroup3.sqs"; exit

@@ -16,7 +16,9 @@ _indexTown = _res select 2
 _lastSetSide = _townDesc select tdSide
 _lastSide = _lastSetSide
 
+? bool_TZK_SEMod_Mode: if (((towns select _indexTown) select tdSide) == siRes) then { _flag setFlagTexture "\flags\Pirates.jpg" }
 ~(10 + random 5)
 { [_x, [getPos _flag, 50, 150] call funcGetRandomPos, - 180 + random 360, siCiv, -1, 0, 1] call fAddVehicle } foreach civTown
 
+? bool_TZK_SEMod_Mode: [_trigger, _lastSetSide, _lastSide, siRes, siRes] exec {Extra\TownTrigger.sqs}, exit
 [_trigger, _lastSetSide, _lastSide] exec {Server\Loop\TownTrigger.sqs}

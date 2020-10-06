@@ -14,7 +14,9 @@ _count = count towns; _index = 0
 #SetTownTriggers
 _town = towns select _index; _flag = _town select 0
 ; format: [flag,"Name",value,side]
-call format [{ Trig%1 = createTrigger [{EmptyDetector}, getPos _flag]; Trig%1 setTriggerArea [10,10,0,false]; Trig%1 setTriggerActivation [{ANY}, {PRESENT}, false]; Trig%1 setTriggerStatements [{true}, {Trig%1 exec {Server\Start\TownTrigger.sqs}}, {}] }, _index]
+_radius = 10
+? bool_TZK_SEMod_Mode: _radius = 100
+call format [{ Trig%1 = createTrigger [{EmptyDetector}, getPos _flag]; Trig%1 setTriggerArea [_radius,_radius,0,false]; Trig%1 setTriggerActivation [{ANY}, {PRESENT}, false]; Trig%1 setTriggerStatements [{true}, {Trig%1 exec {Server\Start\TownTrigger.sqs}}, {}] }, _index]
 
 _index = _index + 1
 ? _index < _count : goto "SetTownTriggers"

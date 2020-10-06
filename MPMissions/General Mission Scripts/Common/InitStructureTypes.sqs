@@ -219,6 +219,33 @@ structMarker set [_type, _mMG]
 _mg = _type
 _type = _type + 1
 
+
+_price = [300, 600] select PricingMode
+_objects0 = [["RCWC_M2_tripod", 0, []]]
+_objects1 = [["ICP_NSV", 0, []]]
+_image = ["Extra\ppl\MG.jpg","Extra\ppl\MG.jpg"]
+structDefs set [_type, ["Static MG 12.7mm", _price, siBoth, _image, false, false, 25, 2, 5, _objects0, _objects1, ["Server\InitSecondaryStructure.sqs"], ["Player\InitStructureMarker.sqs"], _mMG] ]
+_staticMG = _type
+_type = _type + 1
+
+_price = [800, 1200] select PricingMode
+_objects0 = [["una_Mk19_gl_static", 0, []]]
+_objects1 = [["armags30East", 0, []]]
+_image = ["Extra\ppl\MG.jpg","Extra\ppl\MG.jpg"]
+structDefs set [_type, ["Static GL", _price, siBoth, _image, false, false, 25, 2, 5, _objects0, _objects1, ["Server\InitSecondaryStructure.sqs"], ["Player\InitStructureMarker.sqs"], _mMG] ]
+_staticGL = _type
+_type = _type + 1
+
+_price = [1000, 2000] select PricingMode
+_objects0 = [["una_m220tow_Static", 0, []]]
+_objects1 = [["Static_Metis_88", 0, []]]
+_image = ["Extra\ppl\AT-Launcher.jpg","Extra\ppl\AT-Launcher.jpg"]
+structDefs set [_type, ["Static AT-Launcher", _price, siBoth, _image, false, false, 25, 2, 5, _objects0, _objects1, ["Server\InitSecondaryStructure.sqs"], ["Player\InitStructureMarker.sqs"], _mMG] ]
+_staticAT = _type
+_type = _type + 1
+? !bool_TZK_SEMod_Mode: {structDefs select _x set [sdSides, -1]} forEach [_staticMG, _staticGL, _staticAT]
+
+
 _price = [1000, 1000] select PricingMode
 _objects0 = [["gunfort_west_xj400", 0, []]]
 _objects1 = [["gunfort_east_xj400", 0, []]]
@@ -268,6 +295,7 @@ _image = [_texPath + "Image\Struct\Trench.jpg",_texPath + "Image\Struct\Trench.j
 structDefs set [_type, ["Tank Trench", _price, siBoth, _image, true, false, 50, 5, 20, _objects, _objects, ["Server\InitSecondaryStructure.sqs"], []]  ]
 structMarker set [_type, ""]
 _tanktr = _type
+? bool_TZK_SEMod_Mode: tanktr = _tanktr
 _type = _type + 1
 
 _price = [600, 1200] select PricingMode

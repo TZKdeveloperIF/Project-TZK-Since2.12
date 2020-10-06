@@ -1,7 +1,7 @@
 ; args: [_group, _ti, _timePatrol, _timeReinforce]
 
 _group = _this select 0; _ti = _this select 1; _timePatrol = _this select 2; _timeReinforce = _this select 3
-
+_armorTown = [armorTown, armorTownTD] select bool_TZK_SEMod_Mode
 ~5
 
 _si = siRes
@@ -46,7 +46,7 @@ _posFlag = getPos _flag
   
 #AddTank
 	_type = -1
-	while "_type == -1" do { _type = (armorTown select _si) call funcGetRandomUnitType }
+	while "_type == -1" do { _type = (_armorTown select _si) call funcGetRandomUnitType }
 	_pos = [_posFlag, 12, 13] call funcGetRandomPos
 	[_type, 1, 1, 0, _pos, random 360, _si, -1, _group, 0, 0] exec "Common\AddUnit.sqs"
 	goto "Patrol"

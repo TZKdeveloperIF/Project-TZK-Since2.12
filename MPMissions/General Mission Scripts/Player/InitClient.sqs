@@ -55,7 +55,7 @@ _i = 0; while "_i < 4" do {call format [{[] exec "Player\Msg\mInfo%1.sqs"}, _i];
 
 [] exec "Player\Msg\mMoneySideTotal.sqs"
 [] exec "Player\Msg\mMoneySideSpent.sqs"
-[] exec "Player\Msg\mSetTownSide.sqs"
+if !bool_TZK_SEMod_Mode Then {[] exec "Player\Msg\mSetTownSide.sqs"} Else {[] exec "Extra\MsgSetTownSide.sqs"}
 [] exec "Player\Msg\mStructBuilt.sqs"
 [] exec "Player\Msg\mArtilleryShellDetected.sqs"
 
