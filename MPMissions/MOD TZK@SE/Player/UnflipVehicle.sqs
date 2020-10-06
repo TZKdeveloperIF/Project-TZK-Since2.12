@@ -1,0 +1,8 @@
+; args: [vehicle]
+
+_vehicle = _this Select 0
+
+_pos = getPos _vehicle
+_pos set [2, (_pos select 2) + 0.1]
+? (_pos select 2) < 0.1 : _pos set [2, (_pos select 2) + 0.5]
+_vehicle setPos _pos

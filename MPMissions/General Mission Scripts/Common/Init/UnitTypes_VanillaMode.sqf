@@ -2,43 +2,41 @@
 
 if !bool_TZK_199_Mode Then
 {
-	_i = 0; {_desc = _x, if (count (_desc select udCrew) == 0) Then {_str = _desc select udModel, _size = sizeofstr _str, if (substr [_str, _size - 6, _size] == "_xj400") Then {_str = substr [_str, 0, _size - 6]}, _desc set [udModel, _str]; unitTypeArray set [_i, _str]}, _i = _i + 1 } forEach unitDefs;
+	_i = 0; {_desc = _x, if (count (_desc select udCrew) == 0) Then {_str = _desc select udModel, _size = sizeofstr _str, if (substr [_str, _size - 6, _size] == "_xj400") Then {_str = substr [_str, 0, _size - 6]}, _desc set [udModel, _str]}, _i = _i + 1 } forEach unitDefs;
 };
 if !bool_TZK_199_Mode Then
 {
-	{_desc = unitDefs select _x, _str = _desc select udModel, _size = sizeofstr _str, if (substr [_str, _size - 6, _size] == "_xj400") Then {_str = substr [_str, 0, _size - 6] + "_Vanilla" + "_xj400"}, _desc set [udModel, _str]; unitTypeArray set [_x, _str] } forEach ([_jeepW, jeepaW, _hummerW, _truckW, _supportTruckW, _supportTruckW2, _supportAPCW, _supportAPCWminer, _m113W, _m2a2W, _m3a2W, _m2a2d, _m2a2at, _m2a2aa, _m2a2townat, _m2a2townaad, utMCVW, utMHQ0, _uazE, uazaE, _brdmE, _truckE, _supportTruckE, _supportTruckE2, _supportAPCE, _supportAPCEminer, _bmpE, _bmp2E, _bmp2_EE, _bmp2d, _bmp2at, _bmp2Cannon, _bmp2aa, _bmp2townat, _bmp2townaad, utMCVE, utMHQ1] + typesPlane);
+	{_desc = unitDefs select _x, _str = _desc select udModel, _size = sizeofstr _str, if (substr [_str, _size - 6, _size] == "_xj400") Then {_str = substr [_str, 0, _size - 6] + "_Vanilla" + "_xj400"}, _desc set [udModel, _str] } forEach ([_jeepW, jeepaW, _hummerW, _truckW, _supportTruckW, _supportTruckW2, _supportAPCW, _supportAPCWminer, _m113W, _m2a2W, _m3a2W, _m2a2d, _m2a2at, _m2a2aa, _m2a2townat, _m2a2townaad, utMCVW, utMHQ0, _uazE, uazaE, _brdmE, _truckE, _supportTruckE, _supportTruckE2, _supportAPCE, _supportAPCEminer, _bmpE, _bmp2E, _bmp2_EE, _bmp2d, _bmp2at, _bmp2Cannon, _bmp2aa, _bmp2townat, _bmp2townaad, utMCVE, utMHQ1] + typesPlane);
 };
 
 if bool_TZK_199_Mode Then {call loadFile "Extra\199\UnitTypes_ACWA_Redefine.sqf"};
 
 
-{unitDefs select _x set [udCost, (unitDefs select _x select udCost)*4/5]; unitDefs select _x set [udModel, "M1Abrams"]; unitTypeArray set [_x, "M1Abrams"]} forEach [_m1a1W, _m1a1artW,  _m1a1townW];
-{unitDefs select _x set [udCost, (unitDefs select _x select udCost)/2]; unitDefs select _x set [udModel, "T80"]; unitTypeArray set [_x, "T80"]} forEach [_t80E, _t80artE,  _t80townE];
-unitDefs select _t80R set [udModel, "T80Res"]; unitTypeArray set [_t80R, "T80Res"];
-{unitDefs select _x set [udModel, "Vulcan"]; unitTypeArray set [_x, "Vulcan"]} forEach [_vulcanBaseW, _vulcanBaseW2, _vulcanW, _vulcanW2];
-{_i = unitTypeArray find "Vulcan"; _list = unitTypeData select _i; _list set [count _list, _x]} forEach [_vulcanBaseW2, _vulcanW2];
-{unitDefs select _x set [udModel, "ZSU"]; unitTypeArray set [_x, "ZSU"]} forEach [_shilkaBaseE, _tunguskaBaseE, _shilkaE, _tunguskaE];
-{_i = unitTypeArray find "ZSU"; _list = unitTypeData select _i; _list set [count _list, _x]} forEach [_tunguskaBaseE, _tunguskaE];
+{unitDefs select _x set [udCost, (unitDefs select _x select udCost)*4/5]; unitDefs select _x set [udModel, "M1Abrams"];} forEach [_m1a1W, _m1a1artW,  _m1a1townW];
+{unitDefs select _x set [udCost, (unitDefs select _x select udCost)/2]; unitDefs select _x set [udModel, "T80"]} forEach [_t80E, _t80artE,  _t80townE];
+unitDefs select _t80R set [udModel, "T80Res"];
+{unitDefs select _x set [udModel, "Vulcan"]} forEach [_vulcanBaseW, _vulcanBaseW2, _vulcanW, _vulcanW2];
+{unitDefs select _x set [udModel, "ZSU"]} forEach [_shilkaBaseE, _tunguskaBaseE, _shilkaE, _tunguskaE];
 unitDefs select _tunguskaE set [udName, "4xAA"]; unitDefs select _tunguskaE set [udImage, "izsu"];
 
-unitDefs select _ah1W set [udModel, "AH1_xj400"]; unitTypeArray set [_ah1W, "AH1_xj400"]; unitDefs select _ah1W set [udName, "AH1"]; unitDefs select _ah1W set [udImage, "icobra"];
-unitDefs select _ah1W2 set [udModel, "AH1_AT_xj400"]; unitTypeArray set [_ah1W2, "AH1_AT_xj400"]; unitDefs select _ah1W2 set [udName, "AH1 AT"]; unitDefs select _ah1W2 set [udImage, "icobra"];
-unitDefs select _ah64W set [udModel, "AH64_xj400"]; unitTypeArray set [_ah64W, "AH64_xj400"];
-unitDefs select _ah64W2 set [udModel, "AH64_AT_xj400"]; unitTypeArray set [_ah64W2, "AH64_AT_xj400"];
-unitDefs select _ah64townW2 set [udModel, "AH64_xj400"]; unitTypeArray set [_ah64townW2, "AH64_xj400"];
-unitDefs select _v80E set [udModel, "Ka50_Vanilla_xj400"]; unitTypeArray set [_v80E, "Ka50_Vanilla_xj400"];
-unitDefs select _v80E2 set [udModel, "Ka50_AT_Vanilla_xj400"]; unitTypeArray set [_v80E2, "Ka50_AT_Vanilla_xj400"];
-unitDefs select _mi24E set [udModel, "Mi24_xj400"]; unitTypeArray set [_mi24E, "Mi24_xj400"]; unitDefs select _mi24E set [udImage, "imi24"];
-unitDefs select _mi24E2 set [udModel, "Mi24_AT_xj400"]; unitTypeArray set [_mi24E2, "Mi24_AT_xj400"]; unitDefs select _mi24E2 set [udImage, "imi24"];
-unitDefs select _mi24townE2 set [udModel, "Mi24_xj400"]; unitTypeArray set [_mi24townE2, "Mi24_xj400"]; unitDefs select _mi24townE2 set [udImage, "imi24"];
-{unitDefs select _x set [udModel, "Mi17_Vanilla_xj400"]; unitTypeArray set [_x, "Mi17_Vanilla_xj400"]} forEach [_mi17E, _mi17supE];
-{unitDefs select _x set [udModel, "UH60_Vanilla_xj400"]; unitTypeArray set [_x, "UH60_Vanilla_xj400"]} forEach [_uh60W, _uh60supW];
-unitDefs select _mi17E30 set [udModel, "Mi17_MG_Vanilla_xj400"]; unitTypeArray set [_mi17E30, "Mi17_MG_Vanilla_xj400"];
-unitDefs select _uh60W30 set [udModel, "UH60_MG_Vanilla_xj400"]; unitTypeArray set [_uh60W30, "UH60_MG_Vanilla_xj400"];
-unitDefs select _mi17EL set [udModel, "Mi17_LGB_Vanilla_xj400"]; unitTypeArray set [_mi17EL, "Mi17_LGB_Vanilla_xj400"];
-unitDefs select _uh60WL set [udModel, "UH60_LGB_Vanilla_xj400"]; unitTypeArray set [_uh60WL, "UH60_LGB_Vanilla_xj400"];
+unitDefs select _ah1W set [udModel, "AH1_xj400"]; unitDefs select _ah1W set [udName, "AH1"]; unitDefs select _ah1W set [udImage, "icobra"];
+unitDefs select _ah1W2 set [udModel, "AH1_AT_xj400"]; unitDefs select _ah1W2 set [udName, "AH1 AT"]; unitDefs select _ah1W2 set [udImage, "icobra"];
+unitDefs select _ah64W set [udModel, "AH64_xj400"];
+unitDefs select _ah64W2 set [udModel, "AH64_AT_xj400"];
+unitDefs select _ah64townW2 set [udModel, "AH64_xj400"];
+unitDefs select _v80E set [udModel, "Ka50_Vanilla_xj400"];
+unitDefs select _v80E2 set [udModel, "Ka50_AT_Vanilla_xj400"];
+unitDefs select _mi24E set [udModel, "Mi24_xj400"]; unitDefs select _mi24E set [udImage, "imi24"];
+unitDefs select _mi24E2 set [udModel, "Mi24_AT_xj400"]; unitDefs select _mi24E2 set [udImage, "imi24"];
+unitDefs select _mi24townE2 set [udModel, "Mi24_xj400"]; unitDefs select _mi24townE2 set [udImage, "imi24"];
+{unitDefs select _x set [udModel, "Mi17_Vanilla_xj400"]} forEach [_mi17E, _mi17supE];
+{unitDefs select _x set [udModel, "UH60_Vanilla_xj400"]} forEach [_uh60W, _uh60supW];
+unitDefs select _mi17E30 set [udModel, "Mi17_MG_Vanilla_xj400"];
+unitDefs select _uh60W30 set [udModel, "UH60_MG_Vanilla_xj400"];
+unitDefs select _mi17EL set [udModel, "Mi17_LGB_Vanilla_xj400"];
+unitDefs select _uh60WL set [udModel, "UH60_LGB_Vanilla_xj400"];
 
-{unitDefs select _x set [udModel, "Su25_xj400"]; unitTypeArray set [_x, "Su25_xj400"]} forEach [_planeatR, _planeatR2];
+{unitDefs select _x set [udModel, "Su25_xj400"]} forEach [_planeatR, _planeatR2];
 
 
 if false Then {call loadFile "Extra\199\UnitTypes_MFCTI116_TZK_Units.sqf"};

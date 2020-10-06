@@ -150,14 +150,14 @@ goto "Update"
 #GiveMoneyToAI
 	_amount = lbValue [_idcTransferAmount, lbCurSel _idcTransferAmount]
 	? _amount == 114514 : _amount = ( _money % 100 )
-	? _amount == 50000 : _amount = _money / count(_groupsAI) - ( ( _money / count(_groupsAI) ) % 1 )
+	? _amount == 50000 : _amount = _money / count(_groupsAI), _amount = _amount - _amount%1
 	[siPlayer, giPlayer, giPlayer, _amount] exec "Player\Msg\sGiveMoney.sqs"
 	goto "Update"
 
 #GiveMoneyToAll
 	_amount = lbValue [_idcTransferAmount, lbCurSel _idcTransferAmount]
 	? _amount == 114514 : _amount = ( _money % 100 )
-	? _amount == 50000 : _amount = _money / count(_groups - [_groupCommander]) - ( ( _money / count(_groups - [_groupCommander]) ) % 1 )
+	? _amount == 50000 : _amount = _money / count(_groups - [_groupCommander]), _amount = _amount - _amount%1
 	_amount = - _amount
 	[siPlayer, giPlayer, giPlayer, _amount] exec "Player\Msg\sGiveMoney.sqs"
 	goto "Update"

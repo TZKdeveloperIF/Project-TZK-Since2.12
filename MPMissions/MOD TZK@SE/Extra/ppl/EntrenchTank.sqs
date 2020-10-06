@@ -1,0 +1,34 @@
+_vehicle = _this select 0
+_driver = _this select 1
+_pos = _this select 2
+
+_pos = getPos _vehicle
+_money = groupMoneyMatrix select siPlayer select giPlayer
+? 1000 > _money : _vehicle groupchat "Not enough money for entrenchment. ($1000 needed)"; exit
+
+_vehicle groupchat "Do not move!"
+_c = 0
+#CheckPos
+~1
+_pos1 = getPos _vehicle
+_dir = getDir _vehicle
+private ["_distance"]
+_distance = sqrt ( ( ((_pos) select 0) - ((_pos1) select 0) )^2 + ( ((_pos) select 1) - ((_pos1) select 1) )^2 )
+?_distance > 10: _vehicle groupchat "Entrenchment failed, vehicle is moving."; exit
+_c = _c + 1
+?_c == 30: goto "CreateTrench"
+goto "CheckPos"
+
+#CreateTrench
+trench = (structDefs select tanktr select ([sdObjects0, sdObjects1] select siPlayer) select 0) createVehicle _pos1
+
+trench setDir _dir
+; setPos should effect AFTER setDir command, and those "setVector..." 2.01 ArmA:Resistance commands.
+trench setPos [_pos1 select 0, (_pos1 select 1) + 0.5, _pos1 select 2]
+;_trench setPos [(_pos select 0) + 5.5, (_pos select 1) - 5, _pos select 2]
+
+[1000] exec "Player\SendMoneySpent.sqs"
+_vehicle groupchat "Entrenchment ready."
+publicVariable "trench"
+
+exit

@@ -1,0 +1,66 @@
+; args: [_trigger, _lastSetSide, _lastSide, _lastSetSideOld, _lastSetSideOldOld]
+
+_trigger = _this select 0; _lastSetSide = _this select 1; _lastSide = _this select 2; _lastSetSideOld = _this select 3; _lastSetSideOldOld = _this select 4
+
+_pos = getPos _trigger
+_res = [_pos, [si0,si1,siRes], []] call funcGetClosestTown
+_indexTown = _res select 2
+
+#Update
+? _time > 3*60: [_trigger, _lastSetSide, _lastSide, _lastSetSideOld, _lastSetSideOldOld] exec {Extra\TownTrigger.sqs}; exit
+
+_siLastSiCiv = false
+
+	_res = (list _trigger) call funcUpdateTownCheckUnits
+	_units = _res select 0
+	_groups = _res select 1
+
+	?(towns select _indexTown) select tdSide == siRes && _time < 30: _si = siRes; goto "SkipPause" 	
+
+	_si = -1		
+	if ((_units select si0 == _units select si1) && (_units select si0) !=0 && (_units select si1) !=0) then { _si = siBoth; goto "SkipPause" }	
+	if (((_units select si0) ==0 && (_units select si1) ==0 && (_units select siRes) ==0) && _lastSetSide != siRes) then { _si = siCiv; goto "SkipPause" }	
+	if (((_units select si0) > (_units select si1)) && ((_units select si0) > (_units select siRes))) then { _si = si0; goto "SkipPause" } 
+	if (((_units select si1) > (_units select si0)) && ((_units select si1) > (_units select siRes))) then { _si = si1; goto "SkipPause" } 
+	if (((_units select siRes) > (_units select si0)) && ((_units select siRes) > (_units select si1))) then { goto "Pause" }	
+	if (((_units select siRes) > 0) && (_lastSetSide == siCiv or _lastSetSide == siBoth)) then { goto "Pause" }	
+	
+#Pause
+if (_lastSetSide == siCiv ) then { _si = siRes; goto "SkipPause" }
+~15
+_si = siRes
+
+#SkipPause
+	? _si >= 0 && _si == _lastSide && _si != _lastSetSide : goto "SetTownSide"
+
+	_lastSide = _si
+	~5
+	goto "Update"
+
+#SetTownSide
+
+	? (pvGameOver != -1): Exit
+
+	?_si == siPlayer && _lastSetSide == siCiv && _LastSetSideOld == siPlayer && (_lastSetSideOldOld == siRes or _lastSetSideOldOld == siCiv): _siLastSiCiv = true
+
+	[_indexTown, _si, _lastSetSide, _lastSetSideOld, _lastSetSideOldOld] exec "Extra\SendTownSideChange.sqs"	
+				
+
+  ? _si == siRes or _si == siCiv or _si == siBoth: goto "SkipScore"
+  
+  ; calc score
+  ?!(_siLastSiCiv): _score = ((towns select _indexTown) select tdValue)*0.05
+  ?(_siLastSiCiv): _score = ((towns select _indexTown) select tdValue)*0.005
+		_score = _score/(count (_groups select _si))
+		_score = _score - (_score % 1)
+		? _score < 1 : _score = 1
+
+		{ _gi = ( groupMatrix select _si ) find ( _x ); if (_gi != -1) then { [_score, scTown, _si, _gi] exec "Common\SendScore.sqs" } } foreach (_groups select _si)
+  
+	#SkipScore
+	~1
+  _lastSetSideOldOld = _lastSetSideOld
+  _lastSetSideOld = _lastSetSide
+  _lastSetSide = _si
+  _lastSide = _si
+	goto "Update"

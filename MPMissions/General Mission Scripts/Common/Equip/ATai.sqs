@@ -4,14 +4,5 @@ _v = _this select 0; _t = _this select 1
 _si = _this select 2
 _m = [["M21", "M21", magSatchel, "CarlGustavLauncher"], [m_TZK_SniperE, m_TZK_SniperE, magSatchel, "AT4Launcher"]] select _si
 _w = [["M21", "CarlGustavLauncher", "NVGoggles"], [w_TZK_SniperE, "AT4Launcher", "NVGoggles"]] select _si
-~1
-? !(local _v) || !(alive _v) : [_v, _w, _m, _t, 1] exec "Common\EditEquipRearmData.sqs"; exit
 
-removeAllWeapons _v
-
-{ _v addWeapon _x } forEach weaponsCustom
-
-{_v addMagazine _x} forEach _m
-{_v addweapon _x} forEach _w
-
-[_v, _w, _m, _t, 1] exec "Common\EditEquipRearmData.sqs"; exit
+[_v, _t, _m, _w] exec "Common\Equip\GeneralSoldier.sqs"

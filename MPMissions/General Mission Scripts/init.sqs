@@ -4,7 +4,7 @@
 debug = true
 
 _nil = "scalar bool array string 0xfcffffef"
-{ if (format ["%1", call _x] == _nil) Then {call (_x + " = false")} } forEach ["dev", "boole_Infantry_Mode", "boole_NeutralTown_Mode", "boole_SEMod_Mode", "bool_TZK_Vanilla_Mode", "bool_TZK_199_Mode", "bool_TZK_MF_Mode", "bool_TZK_Yugo_Mode"]
+{ if (format ["%1", call _x] == _nil) Then {call (_x + " = false")} } forEach ["dev", "boole_Infantry_Mode", "boole_NeutralTown_Mode", "bool_TZK_SEMod_Mode", "bool_TZK_Vanilla_Mode", "bool_TZK_199_Mode", "bool_TZK_MF_Mode", "bool_TZK_Yugo_Mode"]
 
 ; CONSTANTS
 si0 = 0
@@ -17,6 +17,7 @@ sideNames = ["West", "East", "Resistance", "Both", "Civilian"]
 groupName = ["WEST", "EAST", "GUER", "", "CIVL"]
 sides = [west, east, resistance]
 flags = ["\flags\USA.jpg", "\flags\CHINA.jpg", "\flags\FIA.jpg"]
+? bool_TZK_SEMod_Mode: sides = [west, east, resistance, unknown, civilian], flags = ["\flags\USA.jpg", "\flags\Russia.jpg", "\flags\Pirates.jpg", "\flags\White.jpg", "\flags\White.jpg"]
 
 
 siPlayer = -1
@@ -131,6 +132,7 @@ upgWorkers = _type; 			upgDefs set [_type, ["Upgrade Workers", [5000, 5] select 
 upgGunshipRocket = _type; 		upgDefs set [_type, ["Helicopter Rockets", [25000, 25] select dev, [3, 0] select dev]]; _type=_type+1
 
 upgPlaneAfterBurner = _type; 	upgDefs set [_type, ["Plane After Burner", [20000, 20] select dev, [3, 0] select dev]]; _type=_type+1
+? bool_TZK_SEMod_Mode: upgDefs select upgPlaneAfterBurner set [1, 0], upgDefs select upgPlaneAfterBurner set [2, 0]
 
 upgSpoofMissile = _type; 		upgDefs set [_type, ["Aircraft Spoof Missile", [20000, 20] select dev, [3, 0] select dev]]; _type=_type+1
 

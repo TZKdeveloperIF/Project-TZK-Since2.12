@@ -1,0 +1,81 @@
+#Start
+
+@(pvTownSide != -1)
+
+;player globalchat format["pvTownSide_Town = %1", pvTownSide]
+
+_value = pvTownSide
+pvTownSide = -1
+
+_index = _value % 100
+_value = _value - _index
+
+_si = (_value % 1000)/100
+_value = _value - _si*100
+
+_lastSide = (_value % 10000)/1000
+_value = _value - _lastSide*1000
+
+_lastSideOld = (_value % 100000)/10000
+_value = _value - _lastSideOld*10000
+
+_lastSideOldOld = _value/100000
+
+_siLastSiCivSi0 = false
+_siLastSiCivSi1 = false
+_siLastPlayerRes = false
+;player globalchat format["pvTownSide_Town = %1", pvTownSide]
+
+?_si == si0 && _lastSide == siCiv && _lastSideOld == si0 && (_lastSideOldOld == siRes or _lastSideOldOld == siCiv): _siLastSiCivSi0 = true
+?_si == si1 && _lastSide == siCiv && _lastSideOld == si1 && (_lastSideOldOld == siRes or _lastSideOldOld == siCiv): _siLastSiCivSi1 = true
+?_si == siPlayer && _lastSide == siRes && _lastSideOld == siPlayer: _siLastPlayerRes = true
+
+_townDesc = towns select _index
+_town = _townDesc select 0
+
+;player globalchat format["_si = %1, _lastSide = %2", _si, _lastSide]
+
+(towns select _index) set [tdSide, _si]
+
+? _si == siPlayer || _lastSide == siPlayer || siPlayer == siCiv : goto "ChangeMarker"
+
+goto "Start"
+
+#ChangeMarker
+
+	_marker = Format["Town_%1", _index]
+
+	; color
+	? (_si == siPlayer): _marker SetMarkerColor "colorGreen"
+	? (_si != siPlayer): _marker SetMarkerColor "colorBlack"
+	? (siPlayer == siCiv && _si == si0): _marker SetMarkerColor "colorBlue"
+	? (siPlayer == siCiv && _si == si1): _marker SetMarkerColor "colorRed"
+	? (siPlayer == siCiv && _si == siBoth): _marker SetMarkerColor "colorGreen"
+	
+	; marker type
+	; ? (_si == siRes || _lastSide == siRes): _marker SetMarkerType "flag1"
+	; ? (_si != siRes && _lastSide != siRes): _marker SetMarkerType "flag"
+
+	_towns = [0,0,0]
+;	{ _si2 = (_x select tdSide); _towns set [_si2, (_towns select _si2) + 1] } foreach towns
+	
+	_towns = _towns set [_si, _si + 1]
+			
+	; announce
+	
+	? (siPlayer != siCiv) && (_si == si0) && (siPlayer == si0) && ((_lastSide == si1) or (_lastSide == siBoth) && (_lastSideOld == si1)): format["%1 WON from East",_townDesc select 1,_towns select siPlayer] call funcSideMsg
+	? (siPlayer != siCiv) && (_si == si1) && (siPlayer == si1) && ((_lastSide == si0) or (_lastSide == siBoth) && (_lastSideOld == si0)): format["%1 WON from West",_townDesc select 1,_towns select siPlayer] call funcSideMsg
+	? (siPlayer != siCiv) && (_si == siPlayer) && (_lastSide == siRes) && !(_siLastPlayerRes): format["%1 WON from Resistance",_townDesc select 1,_towns select siPlayer] call funcSideMsg		
+	? (siPlayer != siCiv) && (_si == si0) && (_lastSide == siBoth) && (_lastSideOld == si0): format["%1 HELD from East",_townDesc select 1] call funcSideMsg	
+	? (siPlayer != siCiv) && (_si == si1) && (_lastSide == siBoth) && (_lastSideOld == si1): format["%1 HELD from West",_townDesc select 1] call funcSideMsg		
+	? (siPlayer != siCiv) && (_si == siPlayer) && (_lastSide == siRes) && _siLastPlayerRes: format["%1 HELD from Resistance",_townDesc select 1] call funcSideMsg		
+	? (siPlayer != siCiv) && (_si == si0) && (siPlayer == si0) && _siLastSiCivSi0 && !(_siLastPlayerRes): format["%1 HELD",_townDesc select 1] call funcSideMsg	
+	? (siPlayer != siCiv) && (_si == si1) && (siPlayer == si1) && _siLastSiCivSi1 && !(_siLastPlayerRes): format["%1 HELD",_townDesc select 1] call funcSideMsg		
+	? (siPlayer != siCiv) && (_si == si0) && (_lastSide == siCiv) && (_lastSideOld != si0): format["%1 WON from East",_townDesc select 1] call funcSideMsg	
+	? (siPlayer != siCiv) && (_si == si1) && (_lastSide == siCiv) && (_lastSideOld != si1): format["%1 WON from West",_townDesc select 1] call funcSideMsg
+	? (siPlayer != siCiv) && (_si != siPlayer): format["%1 LOST", _townDesc select 1, _towns select siPlayer] call funcSideMsg					
+	? (siPlayer == siCiv) && (_si == si0 or _si == si1): format["%1 won %2", sideNames select _si, _townDesc select tdName, _towns select si0, _towns select si1] exec "Player\LogSpectator.sqs"
+	? (siPlayer == siCiv) && (_si == siBoth): format["%1 CONTESTED", _townDesc select tdName, _towns select si0, _towns select si1] exec "Player\LogSpectator.sqs"
+	? (siPlayer == siCiv) && (_si == siCiv): format["%1 UNCONTROLLED", _townDesc select tdName, _towns select si0, _towns select si1] exec "Player\LogSpectator.sqs"
+
+goto "Start"

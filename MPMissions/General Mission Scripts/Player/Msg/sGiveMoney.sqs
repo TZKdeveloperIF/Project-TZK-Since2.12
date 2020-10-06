@@ -7,7 +7,7 @@ _amount = _this select 3
 
 ; Since TZK_1.10 this script will only be executed by Dialog Options, so it's unnecessary to require _amount positive
 
-_money = (groupMoneyMatrix select _si) select _giFrom
+_money = groupMoneyMatrix select _si select _giFrom
 ? _amount > 0 && _money < _amount : exit
 
 _value = _giFrom
@@ -16,7 +16,7 @@ _value = _value + (GroupsNum*GroupsNum)*_si
 
 @!(mutexMoneyGive)
 mutexMoneyGive = true
-_money = (groupMoneyMatrix select _si) select _giFrom
+_money = groupMoneyMatrix select _si select _giFrom
 ? _amount > 0 && _money < _amount : mutexMoneyGive = false; exit
 
 pvMoneyGive = _amount; PublicVariable "pvMoneyGive"
