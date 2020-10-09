@@ -17,14 +17,14 @@ comment "Adjust the build-able tanks.";
 comment "Add the Action EntrenchTank to all units built from Heavy Factory.";
 {;
 	_entry = _x; _factoryType = _entry select udFactoryType;
-	_factoryType = _factoryType - (_factoryType % (2*2^stHeavy));
+	_factoryType = _factoryType % (2*2^stHeavy);
 	if (_factoryType >= 2^stHeavy) Then {;
 		_crews = _entry select udCrew; _scripts = _entry select udScripts;
 		if (count _crews > 0 && !("Extra\ppl\Action EntrenchTank.sqs" in _scripts)) Then {_scripts set [count _scripts, "Extra\ppl\Action EntrenchTank.sqs"]};
 	};
 } forEach unitDefs;
 comment "Add the Action EntrenchTank to some units assigned in SE.";
-{_scripts = unitDefs select _x select udScripts; _scripts set [count _scripts, "Extra\ppl\Action EntrenchTank.sqs"]} forEach [jeepaW, _hummerWG, _hummerWAT, _hummerWAA, uazaE, _brdmEG, _brdmEAT, _brdmEAA];
+{ _scripts = unitDefs select _x select udScripts; if !("Extra\ppl\Action EntrenchTank.sqs" in _scripts) Then {_scripts set [count _scripts, "Extra\ppl\Action EntrenchTank.sqs"]} } forEach [jeepaW, _hummerWG, _hummerWAT, _hummerWAA, uazaE, _brdmEG, _brdmEAT, _brdmEAA, utMCVW, utMHQ0, utMCVE, utMHQ1];
 
 comment "Adjust the udName, udModel and udImage of planes.";
 {;
@@ -70,7 +70,7 @@ _entry = unitDefs select _crewW; _entry set [udModel, "DVDUS_SoldierWCrew"];
 {_entry = unitDefs select _x; _entry set [udModel, "DVDUS_M113A3Amb"]} forEach [_supportAPCW, _supportAPCWminer];
 _entry = unitDefs select utMHQ0; _entry set [udModel, "DVDUS_M113A3_MHQW"];
 
-_entry = unitDefs select utWorkerE; _entry set [udModel, "utWorkerE"];
+_entry = unitDefs select utWorkerE; _entry set [udModel, "icp_infdriver1"];
 _entry = unitDefs select _soldierE; _entry set [udModel, "icp_infakm"];
 {_entry = unitDefs select _x; _entry set [udModel, "icp_infak74gren_v"]} forEach [_soldierGLE, _6G30E];
 {_entry = unitDefs select _x; _entry set [udModel, "icp_infmgun"]} forEach [_soldierMGE, _soldierMGE1];
