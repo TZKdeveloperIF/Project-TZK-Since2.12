@@ -10,7 +10,7 @@ _vx = sqrt ( (_velShell select 0)^2 + (_velShell select 1)^2 ); _vy = _velShell 
 ? _deltaY > 0 && _vy <= 0: _vehicle groupChat "Improper initial elevation angle. Shell deleted.", deleteVehicle _shell, exit
 ? _deltaY <= 0: if (_vy > 0) Then {goto "Case_00"} Else {goto "Case_01"}
 ; Case_1: _deltaY > 0 and _vy > 0 here.
-_res = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range_X_2.sqf"
+_res = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range_H.sqf"
 ? !(_res select 2): goto "Case_11_000"
 _error0 = (_res select 1) - _distX
 ? _error0 < -0.5 * _distX: _vehicle groupChat "Improper initial speed/elevation angle in upward case. Shell deleted.", deleteVehicle _shell, exit
