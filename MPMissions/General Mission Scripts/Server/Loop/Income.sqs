@@ -10,7 +10,7 @@ _timeNext = _timeNext + 60
 ? pvGameOver != -1: goto "SendAndExit"
 
 _factor = 1; if (time > 60*90) Then {_factor = 1.2}; if (time > 60*150) Then {_factor = 1.5}
-{ _si = (_x select tdSide); _val = (_x select tdValue); if (_si != siRes && _si != siCiv && _si != siBoth) then {_incomeTowns set [_si, (_incomeTowns select _si) + _val*incomex*_factor]} } forEach towns
+{ _si = (_x select tdSide); _val = (_x select tdValue); if (_si != siRes) then {_incomeTowns set [_si, (_incomeTowns select _si) + _val*incomex*_factor]} } forEach towns
 {_incomeTowns set [_x, (_incomeTowns select _x) - (_incomeTowns select _x) % 1], _totalIncome set [_x, (_totalIncome select _x) + (_incomeTowns select _x)]} forEach _siArray
 
 _i = 0

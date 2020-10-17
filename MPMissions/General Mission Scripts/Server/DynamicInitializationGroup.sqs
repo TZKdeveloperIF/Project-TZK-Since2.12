@@ -28,7 +28,7 @@ _index = 0; _count = count towns; _westTG = grpNull; _eastTG = grpNull; _resTG =
 	call format ["[_westTG, _index, west] exec %1; [_eastTG, _index, east] exec %1", _script]
 
 	_script = "{Server\Start\TownGroupRes1.sqs}"
-	? bool_TZK_SEMod_Mode && _income >= 1000 : _script = "{Server\Start\TownGroupRes2.sqs}"
+	; ? _income >= 1000 : _script = "{Server\Start\TownGroupRes2.sqs}"
 	call format ["[_resTG, _index] exec %1", _script]
 
 	_index = _index + 1

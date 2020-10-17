@@ -68,9 +68,7 @@ _posOrdered = getPosASL _vehicle; _distLimit = 800; _hint = "Target is too far f
 #CheckRearm
 	_magData = (_unit call funcGetRearmData) select 1
 	? !([["M16MortarLauncher_TZK_xj400", "AK74MortarLauncher_TZK_xj400"], _magData] call funcArrayOverlap): _unit groupChat "I'm not mortar soldier. Can't go rearm."; goto "Exit"
-	_vs = [getPos _unit, 500, (typesSupport select si0) + (typesSupport select si1) + [(typesMHQ select _si)] +[jeepaW,uazaE], []] call funcGetNearbyVehicles
-	? count _vs == 0: _vs = [getPos _unit, 500, [stAmmoCrate], [], siPlayer] call funcGetNearbyStructure
-	? count _vs == 0: _vs = [getPos _unit, 500, [stAmmoCrate], [], siEnemy select siPlayer] call funcGetNearbyStructure
+	_vs = [getPos _unit, 500, (typesSupport select si0) + (typesSupport select si1) + [(typesMHQ select _si)], []] call funcGetNearbyVehicles
 	? count _vs == 0: _unit groupChat "No support vehicle within 500 meters. Magazines exhausted. Order aborted."; goto "Exit"
 	_distMin = 500; _sup = objNull
 	{ _dist = _unit distance (_x select 0); if (_dist < _distMin) then { _sup = (_x select 0); _distMin = _dist } } foreach _vs
