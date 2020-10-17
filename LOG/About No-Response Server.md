@@ -1,4 +1,6 @@
-Having experiment for many times, the author has preliminarily found the reason causing no-response server. It's due to the "portable satchel", defined as class **"PipeBomb_Pistol_xj200"** in **@TZK_2.10\AddOns\TZK_Objects\HPP\CfgWeapons_Infantry_inherit.hpp**. However the author only modified its *magazineType* parameter. It's hard to image why this modification cause the problem. Soldier carrying such a portable mine won't cause this problem. Maybe this is related to "attack", but set the portable satchel's enableAttack as 0 can't solve the problem.  
+Having experiment for many times, the author has preliminarily found the reason causing no-response server. It's due to the "portable satchel", defined as class **"PipeBomb_Pistol_xj200"** in **@TZK_2.10\AddOns\TZK_Objects\HPP\CfgWeapons_Infantry_inherit.hpp**. However the author only modified its *magazineType* parameter. It's hard to image why this modification cause the problem. Soldier carrying such a portable mine won't cause this problem. Maybe this is related to "attack", but set the portable satchel's enableAttack as 0 can't solve the problem.
++ Another reason might due to difference between satchel and mine. The mine has unique parameter **defaultMagazine**, this parameter controls the magazine when action *take mine* being executed. However, no *take satchel* action but only *deactivate satchel*, which will both deactivate the bomb and take the magazine. The parameter **defaultMagazine** is useless for satchel.
+
 Thus the author banned this magazine for server units (soldiers belong to AI group that processed by server). In recompense east RPG/AT sniper equipping SVU-A instead of SVD, both of them using same "BulletSniperE" but SVU-A has 20 rounds in a magazine, same as M21.
 
 Vaild experiments related to "no-response"
@@ -60,3 +62,17 @@ Experiments below seems irrelevant with "no-response" problem. Some of them are 
 	knowsAbout采用互斥锁。  
 	削减RES巡逻组的运算量。  
 	将循环脚本更改为传出状态执行新脚本，终止当前脚本（这个机制有助于提升Server FPS，但无法解决卡死问题。主观上它似乎能减少卡死的发生概率）。  
+	
+#Abandoned outdated explorations (probably inaccurate)
+This phenomenon raised first in TZK_2.10 MPMissions. It cost months to try and find out some reasons. Some of them are listed below. Keep on observation...
+## groups
+In 2.01 Arma Resistance the createGroup command is available. Missions applied this command cause no-response server.
+The problem probably because of different group ID in MP game. The effect of "setGroupID" seems to be local, according to BIKI. In TZK scripts groups placed in mission.sqm will be initialized frist, then playable groups' ID will be set by "setGroupID" in init.sqs. Probably "createGroup" command should strictly be executed behind Init.sqs, that is, better after game has started.
+The command "createGroup" don't have such "Init" parameter as createUnit. However the order groupID be used by groups should follow a fixed rule defined in OFP. It's possible in this way to get new groups' ID without applying "publicVariable" but by calling strings pre-defined in the way groupID being used.
+## objects' id in mission.sqm
+It seems unacceptable to set multi groups/vehicles sharing same ID in mission.sqm. This setting probably caused no-response server as well.
+Discontinuous ID is acceptable, i.e., some number can be jumped without being used by any groups/vehicles. Actually those playable roles being closed in MP game are deleted, and surely will cause ID discontinuous.
+## Unknown Problem of 2.10 mission
+Settings above aren't included in 2.10 missions. Thus there must exists other problem sources. Remain unspotted.
+## Unknown Reason of 2.12 MOD
+Missions work stable before 2.12N version. Since 2.12P, a new patch mod, @TZK_2.12, is applied, and sometimes this problem raised again. Keep on observation...
