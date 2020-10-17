@@ -10,7 +10,7 @@ if !bool_TZK_199_Mode Then {
 	 
 	while "_index < _count" do {
 		_magazine = _magazinesArray select _index; _ammunition = _magazinesArray select (_index + 1);
-		if (_ammunition > 0 && _magazine != _exclude) then {
+		if (_ammunition > 0 && !(_magazine in _exclude)) then {
 			_magazineType = call format ["%1", _magazine GetWeaponParam "magazineType"];
 			if ([_magazineType >= 256, _magazineType < 256] select _boolHandGun) then {
 				_slots = _slots - (_magazineType / _slotType);

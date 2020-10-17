@@ -80,7 +80,7 @@ _i = 0
 	#SpawnPatrolTank
 		? _j >= _slots || _patrol <= 0: goto "CheckNextGroup"
 		_type = -1
-		while "_type == -1" do { _type = (_armorTown select _si) call funcGetRandomUnitType }
+		while "_type == -1" do { _type = (armorTown select _si) call funcGetRandomUnitType }
 		_pos = [_posFlag, 150, 150] call funcGetRandomPos
 		[_type, 1, 1, 0, _pos, random 360, _si, -1, _groupPatrol, 0, 0] exec "Common\AddUnit.sqs"
 		~1

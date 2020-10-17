@@ -8,7 +8,8 @@ if ((_found select 1) > rangeSupport) then {hint "No Rearm Vehicle Nearby."} els
 	if !(_wpnSec in [{LAWLauncher},{RPGLauncher},{HyperLauncher}]) then {_weapon = [{LAWLauncher},{RPGLauncher}] select siPlayer; _magazine = _weapon} else {
 		_weapon = _wpnSec; _magazine = _weapon; if (_magazine == {HyperLauncher}) then {_magazine = [{LAWLauncher},{RPGLauncher}] select siPlayer}; _reEquip = false;
 	};
-	_wpnSec = secondaryWeapon _unit; _exclude = _wpnSec; if (!_reEquip) then {_exclude = ""};
+	_script = if bool_TZK_199_Mode Then {"Common\SQF\WeaponValidEquip.sqf"} Else {"Common\SQF\WeaponValidMags.sqf"};
+	_wpnSec = secondaryWeapon _unit; _exclude = [_wpnSec] call loadFile _script; if (!_reEquip) then {_exclude = []};
 	if (([_unit, false, _exclude] call loadFile "Player\SQF\SlotCalculate.sqf") < 2) then {hint "You're equipping too many magazines."} else {
 		
 		RespawnW = RespawnWeapon + [-1]; RespawnM = RespawnMagazine + [-1]; RespawnA = RespawnAmmunition + [-1]; 
@@ -38,10 +39,11 @@ if ((_found select 1) > rangeSupport) then {hint "No Rearm Vehicle Nearby."} els
 		_salvage = _salvage * salvageRatio; _salvage = _salvage - (_salvage % 1); _cost = _cost - _salvage; _money = (groupMoneyMatrix select siPlayer) select giPlayer;
 		
 		if (_cost >= 0 && _cost > _money) then {hint "Not Enough Money."} else {
-			if (_reEquip) then {_unit removeMagazines _wpnSec; _unit removeWeapon _wpnSec};
-			unitContainer = "SecondaryWeaponHolder" camCreate getPos _unit; unitContainer addMagazineCargo [_magazine, 1];
-			_unit action ["TAKE MAGAZINE", unitContainer, 0, 0, _magazine];
-			if (_reEquip) then {_unit addWeapon _weapon}; unitContainer = nil;
+			_anim = substr [getMove _unit, 0, 9]; if (_anim == "weaponwal" || _anim == "weaponrun") Then {_unit switchMove "WeaponCrouching"};
+			if (_reEquip) then {{_unit removeMagazines _x} forEach _exclude; _unit removeWeapon _wpnSec};
+			_unitContainer = "SecondaryWeaponHolder" camCreate getPos _unit; _unitContainer addMagazineCargo [_magazine, 1];
+			_unit action ["TAKE MAGAZINE", _unitContainer, 0, 0, _magazine];
+			if (_reEquip) then {_unit addWeapon _weapon}; [_unitContainer, 10] exec "Common\DeleteUnitAfterDelay.sqs";
 			[_cost] exec "Player\SendMoneySpent.sqs"; player groupChat format ["Rapid Rearm completed. Cost: $%1", _cost];
 			RespawnWeapon = RespawnW; RespawnMagazine = RespawnM; RespawnAmmunition = RespawnA; 
 		};

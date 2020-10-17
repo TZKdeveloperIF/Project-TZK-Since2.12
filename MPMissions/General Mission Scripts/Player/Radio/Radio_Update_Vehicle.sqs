@@ -12,6 +12,8 @@ _vt = _vehicle call funcGetUnitTypeFromObject
 ? _vt == -1: goto "CheckStructure"
 ? _vt in RadioTypesCustomCarShips: if ("Ship" countType [_vehicle] > 0) then {[_vehicle] exec "Player\Radio\Radio_Update_Vehicle_CustomShip.sqs"} else {[_vehicle] exec "Player\Radio\Radio_Update_Vehicle_CustomCar.sqs"}; exit
 
+? bool_TZK_SEMod_Mode && _vt in (typesHeavyTank + typesLightTank): [_vehicle] exec "Player\Radio\Radio_Update_Vehicle_Tank.sqs"; exit
+
 ? _vt in typesHowitzer: [_vehicle] exec "Player\Radio\Radio_Update_Vehicle_Howitzer.sqs"; exit
 ? _vt in typesRocketLauncher: [_vehicle] exec "Player\Radio\Radio_Update_Vehicle_TOS1.sqs"; exit
 
