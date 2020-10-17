@@ -25,11 +25,9 @@ _textEnemyCo = [name leader _group,"AI"] select (_group in (groupAiMatrix select
 _group = (groupMatrix select siPlayer) select 0
 _textCo = [name leader _group,"AI"] select (_group in (groupAiMatrix select siPlayer))
 
-_strMissionName = "STR_MISSION_NAME"; if bool_TZK_MF_Mode Then {_strMissionName = "STR_MISSION_KaoS_NAME"}; if bool_TZK_Yugo_Mode Then {_strMissionName = "STR_MISSION_TotalYugoWar_NAME"}; if bool_TZK_SEMod_Mode Then {_strMissionName = "STR_MISSION_SE_NAME"};
+_info = format["Don`t cry just play or disconnect\n\nGame Style:\n\nTime Left: %1\nGroup size: %2\nWeather: %10\nStart Time: %9\nView distance: %3\nTime Limit: %5\nGame Mode: %6\n\nOur Commander is:\n%7\n\nEnemy Commander is:\n%8\n\nMission:\n%4", _timeleft, maxGroupSize, viewDistance, localize "STR_MISSION_NAME", _textTimeLimit, _textIncome, _textCo, _textEnemyCo, ["Day","Dusk","Night","Dawn", "Boost"] select ZeroTime, ["Sunny", "Cloudy", "Overcast","Rainy","Stromy","Misty","Foggy","Random"] select WeatherChosen]
 
-_info = format["Don`t cry just play or disconnect\n\nGame Style:\n\nTime Left: %1\nGroup size: %2\nWeather: %10\nStart Time: %9\nView distance: %3\nTime Limit: %5\nGame Mode: %6\n\nOur Commander is:\n%7\n\nEnemy Commander is:\n%8\n\nMission:\n%4", _timeleft, maxGroupSize, viewDistance, localize _strMissionName, _textTimeLimit, _textIncome, _textCo, _textEnemyCo, ["Day","Dusk","Night","Dawn", "Boost"] select ZeroTime, ["Sunny", "Cloudy", "Overcast","Rainy","Stromy","Misty","Foggy","Random"] select WeatherChosen]
-
-;_info = format["GOOD LUCK ALL \nStart positions  %1\nGroup size  %2\nView distance  %3\n%4", _textSP, maxGroupSize, viewDistance, localize _strMissionName]
+;_info = format["GOOD LUCK ALL \nStart positions  %1\nGroup size  %2\nView distance  %3\n%4", _textSP, maxGroupSize, viewDistance, localize "STR_MISSION_NAME"]
 
 ;titleText [_info, "PLAIN DOWN", 2]
 hint _info
