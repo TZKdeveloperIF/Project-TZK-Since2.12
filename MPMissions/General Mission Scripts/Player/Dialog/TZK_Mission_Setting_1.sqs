@@ -50,7 +50,8 @@ _soldier = "SoldierWB" camCreate [10,10,10]
 		_j = _j + 1
 		? _j < _Line : goto "BoolesLine"
 		
-	_entry = format["TZK_Mission_Setting_%1", _i]
+_strMOD = "STR_CRCTI_MOD"; if bool_TZK_MF_Mode Then {_strMOD = "STR_CRCTI_Kaos_MOD"}; if bool_TZK_Yugo_Mode Then {_strMOD = "STR_CRCTI_Yugo_MOD"}; if bool_TZK_SEMod_Mode Then {_strMOD = "STR_CRCTI_SE_MOD"};
+	_entry = format["TZK_Mission_Setting_1_%1_%2", _i, localize _strMOD]
 	; if (count magazines _soldier > 0) Then {_soldier saveStatus _entry} Else {deleteStatus _entry}
 	_soldier addMagazine (magazinesBooleRecording select count magazinesBooleRecording - 1); _soldier saveStatus _entry
 		

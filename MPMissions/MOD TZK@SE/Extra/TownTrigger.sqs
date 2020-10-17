@@ -15,7 +15,7 @@ _siLastSiCiv = false
 	_units = _res select 0
 	_groups = _res select 1
 
-	?(towns select _indexTown) select tdSide == siRes && _time < 30: _si = siRes; goto "SkipPause" 	
+	? time < 30: if (towns select _indexTown select tdSide == siRes) then {_si = siRes; goto "SkipPause"}
 
 	_si = -1		
 	if ((_units select si0 == _units select si1) && (_units select si0) !=0 && (_units select si1) !=0) then { _si = siBoth; goto "SkipPause" }	
@@ -34,7 +34,6 @@ _si = siRes
 	? _si >= 0 && _si == _lastSide && _si != _lastSetSide : goto "SetTownSide"
 
 	_lastSide = _si
-	~5
 	goto "Update"
 
 #SetTownSide
