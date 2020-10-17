@@ -1,4 +1,3 @@
-
 unitsBuyAI = [ [], [] ];
 _i = 0;
 
@@ -16,14 +15,12 @@ _list = [ [_soldierE, 1] ];
 (unitsBuyAI select si1) set [_i, _list];
 _i = _i + 1;
 
-
 utbinfMGSnip = _i;
 _list = [[_soldierMGW, 1],[_sniperW, 0.5] ];
 (unitsBuyAI select si0) set [_i, _list];
 _list = [ [_soldierMGE, 1],[_sniperE, 0.5] ];
 (unitsBuyAI select si1) set [_i, _list];
 _i = _i + 1;
-
 
 utbinfRPGLAW = _i;
 _list = [[_soldierLAWW, 1] ];
@@ -96,9 +93,9 @@ _list = [ [_soldierLAWE2, 1], [_soldierATE2, 1], [_soldierAAE, 1] ];
 _i = _i + 1;
 
 utbInfMixed = _i;
-_list = [ [_medicW, 0.1], [_sniperW, 0.5], [_bomberW, 1], [_soldierAAW, 0.5], [_soldierMGW, 1], [_soldierLAWW, 1], [_soldierATW, 1], [_soldierLAWW2, 1], [_soldierATW2, 1] ];
+_list = [ [_medicW, 0.1], [_sniperW, 0.5], [_bomberW, 1], [_soldierAAW, 0.5], [_soldierMGW, 1], [_soldierLAWW, 1], [_soldierATW, 1], [_soldierLAWW2, 1], [_soldierATW2, 1], [_javW, 0.5 ] ];
 (unitsBuyAI select si0) set [_i, _list];
-_list = [ [_medicE, 0.1], [_sniperE, 0.5], [_bomberE, 1], [_soldierAAE, 0.5], [_soldierMGE, 1], [_soldierLAWE, 1], [_soldierATE, 1], [_soldierLAWE2, 1], [_soldierATE2, 1] ];
+_list = [ [_medicE, 0.1], [_sniperE, 0.5], [_bomberE, 1], [_soldierAAE, 0.5], [_soldierMGE, 1], [_soldierLAWE, 1], [_soldierATE, 1], [_soldierLAWE2, 1], [_soldierATE2, 1], [_javE, 0.5 ] ];
 (unitsBuyAI select si1) set [_i, _list];
 _i = _i + 1;
 
@@ -117,16 +114,16 @@ _list = [ [_brdmEAT, 0.7] ];
 _i = _i + 1;
 
 utbTanksMixed = _i;
-_list = [ [_m60W, 0.2], [_m2a2at, 0.2], [_m2a2aa, 0.2], [_m1a1W, 1] ];
+_list = [ [_m60W, 0.5], [_vulcanW2, 0.5], [_m2a2at, 0.5], [_m2a2aa, 0.5], [_m1a1W, 1], [_tdW, 0.5], [_AMX10W, 0.5] ];
 (unitsBuyAI select si0) set [_i, _list];
-_list = [ [_t72E, 0.2], [_bmp2at, 0.2], [_bmp2aa, 0.2], [_t80E, 1] ];
+_list = [ [_t72E, 0.5], [_shilkaE2, 0.5], [_bmp2at, 0.5], [_bmp2aa, 0.5], [_t80E, 1], [_tdE, 0.5], [_bmp3, 0.5] ];
 (unitsBuyAI select si1) set [_i, _list];
 _i = _i + 1;
 
 utbTanksL = _i;
-_list = [ [_m60W, 0.5] ];
+_list = [ [_m60W, 0.7] ];
 (unitsBuyAI select si0) set [_i, _list];
-_list = [ [_t72E, 0.5] ];
+_list = [ [_t72E, 0.7] ];
 (unitsBuyAI select si1) set [_i, _list];
 _i = _i + 1;
 
@@ -173,7 +170,7 @@ _list = [ [_bmp2at, 0.5] ];
 _i = _i + 1;
 
 utbBMP3 = _i;
-_list = [ [_AMX10W, 0.5] ];
+_list = [ [_warrior80W, 0.5] ];
 (unitsBuyAI select si0) set [_i, _list];
 _list = [ [_bmp3, 0.5] ];
 (unitsBuyAI select si1) set [_i, _list];
@@ -235,16 +232,16 @@ _list = [ [_su25, 1] ];
 (unitsBuyAI select si1) set [_i, _list];
 _i = _i + 1;
 
-utbMortar = _i;
-_list = [ [_MortarW, 1] ];
+utbGunship1 = _i;
+_list = [ [_ah1W2, 1] ];
 (unitsBuyAI select si0) set [_i, _list];
-_list = [ [_MortarE, 1] ];
+_list = [ [_v80E2, 1] ];
 (unitsBuyAI select si1) set [_i, _list];
 _i = _i + 1;
 
-utbM82KSVK = _i;
-_list = [ [_M82A1W, 1] ];
+utbGunship2 = _i;
+_list = [ [_ah64W2, 1] ];
 (unitsBuyAI select si0) set [_i, _list];
-_list = [ [_KSVKE, 1] ];
+_list = [ [_mi24E2, 1] ];
 (unitsBuyAI select si1) set [_i, _list];
 _i = _i + 1;
