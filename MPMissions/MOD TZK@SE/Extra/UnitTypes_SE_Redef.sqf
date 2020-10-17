@@ -10,10 +10,10 @@ comment "Allow Light Factory Build Transport Helicopter. In TZK_4 there're no-ra
 "_entry = unitDefs select _x; _entry set [udFactoryType, 2^stLight + 2^stAir]" forEach [_irNO_uh60, _irNO_mi17];
 
 
-comment "Adjust the build-able tanks.";
-"_entry = unitDefs select _x; _entry set [udFactoryType, 2^stHeavy]" forEach [_challengerW, _t90MSE, _m109artW, _plz05artE, _warrior80W, _bmp3];
+comment "Adjust the build-able vehicles.";
+"_entry = unitDefs select _x; _entry set [udFactoryType, 2^stHeavy]" forEach [_challengerW, _t90MSE, _m109artW, _plz05artE, _warrior80W, _bmp3, _tdW, _tdE];
 "_entry = unitDefs select _x; _entry set [udFactoryType, 2^stAir]" forEach [_Mi24E3, _mi26E, _ch47W];
-"_entry = unitDefs select _x; _entry set [udFactoryType, -1]" forEach [_m1a2sepW, _m2a2d, _m60A3W, _bmp2d, _t72_AE, _ztz99E, _uh60W, _mi17E];
+"_entry = unitDefs select _x; _entry set [udFactoryType, -1]" forEach [_m1a2sepW, _m2a2d, _m60A3W, _bmp2d, _t72_AE, _ztz99E, _uh60W, _mi17E, _m109W, _plz05E];
 
 comment "Add the Action EntrenchTank to all units built from Heavy Factory.";
 {;
@@ -75,7 +75,6 @@ _entry = unitDefs select _truckRefuelW; _entry set [udModel, "M925NATOFUEL"];
 {_entry = unitDefs select _x; _entry set [udModel, "DVDUS_M113A3Amb"]} forEach [_supportAPCW, _supportAPCWminer];
 _entry = unitDefs select _m113; _entry set [udModel, "DVDUS_M113A3"];
 _entry = unitDefs select _m60W; _entry set [udCost, [2500, 5000] select PricingMode]; _entry set [udModel, "SIG_M60A3"];
-_entry = unitDefs select _m109W; _entry set [udName, "M109 Paladin"];_entry set [udCost, [4000, 5000] select PricingMode]; _entry set [udModel, "M109_paladin"]; _entry set [udImage, "\TZK_Objects\Texture\Paladin.paa"]; 
 _entry = unitDefs select _m1a1W; _entry set [udModel, "DVDUS_M1A1"];
 _entry = unitDefs select _m1a1artW; _entry set [udModel, "DVDUS_M1A1"];
 _entry = unitDefs select _m109artW; _entry set [udModel, "M109_paladin"]; _entry set [udImage, "\TZK_Objects\Texture\Paladin.paa"]; 
@@ -83,7 +82,7 @@ _entry = unitDefs select utMCV0; _entry set [udModel, "DVDUS_M113A3_MCVW"];
 _entry = unitDefs select utMHQ0; _entry set [udModel, "DVDUS_M113A3_MHQW"];
 _entry = unitDefs select _c130W; _entry set [udName, "C-160 Transall"]; _entry set [udModel, "IkaR_C160_Transall"];
 _entry = unitDefs select _ah64W; _entry set [udModel, "fz_ah64d"]; 
-_entry = unitDefs select _tigerW; _entry set [udCost, [22000, 44000] select PricingMode]; _entry set [udName, "RA66"]; _entry set [udModel, "DKMM_RAH66"]; _entry set udScripts ["Common\Equip\AH1.sqs"]; _entry set [udImage, "\DKMM_RAH66\rah-66.paa"];
+_entry = unitDefs select _tigerW; _entry set [udCost, [22000, 44000] select PricingMode]; _entry set [udName, "RA66"]; _entry set [udModel, "DKMM_RAH66"]; _entry set [udScripts, ["Common\Equip\AH1.sqs"]]; _entry set [udImage, "\DKMM_RAH66\rah-66.paa"];
 _entry = unitDefs select _ah1W2;  _entry set [udName, "AH64 AT"];_entry set [udModel, "fz_ah64d_AT"]; _entry select udScripts set [0, "Common\Equip\AH64.sqs"]; _entry set [udImage, "\APAC\iah64"]; 
 _entry = unitDefs select _ah64W2; _entry set [udName, "RA66 AT"]; _entry set [udModel, "DKMM_RAH66_AT"]; _entry select udScripts set [0, "Common\Equip\AH1.sqs"]; _entry set [udImage, "\DKMM_RAH66\rah-66.paa"]; 
 _entry = unitDefs select _irNO_uh60; _entry set [udName, "UH60 (Tug)"]; _entry set [udCost, [3000, 6000] select PricingMode]; _entry set [udModel, "UH60_CSLA_xj400"];
@@ -118,7 +117,6 @@ _entry = unitDefs select _bmp2aa; _entry set [udModel, "WW3_BMP2"];
 _entry = unitDefs select _T72E; _entry set [udName, "T72"]; _entry set [udCost, [2500, 5000] select PricingMode]; _entry set [udModel, "ICP_T72B"];
 _entry = unitDefs select _T80E; _entry set [udName, "T80UM"];_entry set [udModel, "ICP_T80UM"];
 _entry = unitDefs select _T90E; _entry set [udName, "T90"];_entry set [udModel, "T90"]; _entry set [udImage, "it80"]; 
-_entry = unitDefs select _plz05E; _entry set [udName, "2S25 Sprut-SD"]; _entry set [udCost, [4000, 5000] select PricingMode]; _entry set [udModel, "cit_sprutsd"]; _entry set [udImage, "\TZK_Objects\Texture\Sprut.paa"]; 
 _entry = unitDefs select _T80artE; _entry set [udName, "T90 Art"];_entry set [udModel, "T90"];
 _entry = unitDefs select _plz05artE; _entry set [udName, "2S25 Art"]; _entry set [udModel, "cit_sprutsd"]; _entry set [udImage, "\TZK_Objects\Texture\Sprut.paa"];
 _entry = unitDefs select _v80E; _entry set [udName, "Ka52"]; _entry set [udCost, [22000, 50000] select PricingMode]; _entry set [udModel, "ka52"];
