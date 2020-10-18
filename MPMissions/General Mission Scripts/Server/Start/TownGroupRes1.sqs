@@ -5,7 +5,7 @@ _si = siRes; _armorTown = [armorTown, armorTownTD] select bool_TZK_SEMod_Mode
 
 _inf = 3 + random 3
 _tanks = 1 * restanksx
-_interval = "(7 - restanksx) *60"
+_interval = if (dev && _ti == 0) Then {"(7 - 1.75 - restanksx) *60"} Else {"(7 - restanksx) *60"}
 _patrol = 0
 
 _distSpawn = viewDistance + 500

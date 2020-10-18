@@ -139,6 +139,13 @@ _desc = "Ask your member go to buy custom equipment.\n\nThe template will be loa
 _param0 = ["Equipment", 10, "format [""cs%1"", _this]", 0]
 aiOrders2 set [_type, ["Buy Equipment", [_param0], false, "Order\BuyEquipment.sqs", _desc] ]; _type = _type + 1
 
+? !bool_TZK_SEMod_Mode: goto "Skip_SE_Orders"
+
+_desc = "Ask your member build tank trench on his position. Vehicle must stop for about 30 seconds to wait trench built. $1000 is charged."
+aiOrders2 set [_type, ["Entrench Tank", [], false, "Order\EntrenchTank.sqs", _desc] ]; _type = _type + 1
+
+#Skip_SE_Orders
+
 _desc = "Force selected units to join other group. Custom soldiers may perform abnormal when they go rearm after having jointed other groups."
 _param0 = ["Group", count callsigns, "format[""%1"", callsigns select _this]", -1]
 aiOrders2 set [_type, ["Join", [_param0], true, "Order\Join.sqs", _desc] ]; _type = _type + 1

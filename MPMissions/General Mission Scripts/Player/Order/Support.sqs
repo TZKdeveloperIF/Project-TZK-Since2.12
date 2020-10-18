@@ -126,5 +126,5 @@ _mags = _rearmData select 1
     goto "Return_Check"
       
   #Return_Do
-  ? alive _unit : _unit groupchat "Returning after support."; [_unit, _posReturn] call funcMove
+  ? alive _unit && !(player in _v): _unit groupchat "Returning after support."; [_unit, _posReturn] call funcMove
   

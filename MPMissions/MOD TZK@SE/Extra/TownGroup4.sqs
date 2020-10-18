@@ -24,10 +24,8 @@ _posFlag = getPos _flag
 	? _hibernate: goto "CheckSpawn"
 	{ if (alive _x) then { _x doWatch ([getPos _x, 200, 200] call funcGetRandomPos); if (unitReady _x) then { doStop _x } } } forEach units _group	
 	
-	_flagguard = (units _group) select 0
-	_flagguard1 = (units _group) select 1
-	_flagguard doMove ([getpos _flag, 50,50] call funcGetRandomPos)
-	_flagguard1 doMove ([getpos _flag, 95,95] call funcGetRandomPos)	
+	? count units _group > 0: _flagguard0 = (units _group) select 0, _flagguard0 doMove ([getpos _flag, 50,50] call funcGetRandomPos)
+	? count units _group > 1: _flagguard1 = (units _group) select 1, _flagguard1 doMove ([getpos _flag, 95,95] call funcGetRandomPos)
 	
 	_guns = [_posFlag, 200, typesGuns, []] call funcGetNearbyVehiclesEmpty
 	_cg = count _guns
@@ -58,10 +56,8 @@ _group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "N
 	
 	{ if ( ( (random 1) < 0.5 || (_x distance _flag) < 50 ) && (alive _x) && !(_x in (_unitsSupport + _unitsSupporting) ) ) then { _x doMove ([_posFlag, 149, 149] call funcGetRandomPos) } } forEach units _group
 	
-	_flagguard = (units _group) select 0
-	_flagguard1 = (units _group) select 1
-	_flagguard doMove ([getpos _flag, 50,50] call funcGetRandomPos)
-	_flagguard1 doMove ([getpos _flag, 95,95] call funcGetRandomPos)	
+	? count units _group > 0: _flagguard0 = (units _group) select 0, _flagguard0 doMove ([getpos _flag, 50,50] call funcGetRandomPos)
+	? count units _group > 1: _flagguard1 = (units _group) select 1, _flagguard1 doMove ([getpos _flag, 95,95] call funcGetRandomPos)
 	
 	goto "Update"
 

@@ -1,0 +1,23 @@
+; args: [unit, pos]
+
+_unit = _this select 0
+_pos = _this select 1
+
+? !(alive _unit): exit
+_vehicle = vehicle _unit
+? _unit == _vehicle: exit
+? !local _vehicle || player in _vehicle || _unit != (crew _vehicle select 0): exit
+
+_vt = _vehicle call funcGetUnitTypeFromObject
+? _vt == -1: exit
+? !( _vt in [utMCVW, utMHQ0, utMCVE, utMHQ1] || stHeavy in ((unitDefs select _vt select udFactoryType) call funcBinaryDigit) ): exit
+
+_uid = [_unit, siPlayer, giPlayer] call funcCalcUID
+? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
+_id = (playerOrderID select _uid) + 1; [_uid, _id] exec "Player\Order\New.sqs"
+
+
+_vehicle doMove getPosASL _vehicle
+~1
+doStop _vehicle
+[_vehicle, _unit, []] exec "Extra\ppl\EntrenchTank.sqs"
