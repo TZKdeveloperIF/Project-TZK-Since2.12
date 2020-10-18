@@ -7,7 +7,7 @@ _trigger = _this
 ; find closest flag and init stuff
 
 _pos = getPos _trigger
-_res = [_pos, [si0,si1,siRes], []] call funcGetClosestTown
+_res = [_pos, [si0,si1,siRes,  siBoth,siCiv], []] call funcGetClosestTown
 _townDesc = _res select 0
 
 _flag = _townDesc select tdFlag
@@ -20,5 +20,5 @@ _lastSide = _lastSetSide
 ~(10 + random 5)
 { [_x, [getPos _flag, 50, 150] call funcGetRandomPos, - 180 + random 360, siCiv, -1, 0, 1] call fAddVehicle } foreach civTown
 
-? bool_TZK_SEMod_Mode: [_trigger, _lastSetSide, _lastSide, siRes, siRes] exec {Extra\TownTrigger.sqs}, exit
-[_trigger, _lastSetSide, _lastSide] exec {Server\Loop\TownTrigger.sqs}
+? bool_TZK_SEMod_Mode: [_trigger, _indexTown, _lastSetSide, _lastSide, siRes, siRes] exec {Extra\TownTrigger.sqs}, exit
+[_trigger, _indexTown, _lastSetSide, _lastSide] exec {Server\Loop\TownTrigger.sqs}

@@ -1,13 +1,10 @@
-; args: [_trigger, _lastSetSide, _lastSide, _lastSetSideOld, _lastSetSideOldOld]
+; args: [_trigger, _indexTown, _lastSetSide, _lastSide, _lastSetSideOld, _lastSetSideOldOld]
 
-_trigger = _this select 0; _lastSetSide = _this select 1; _lastSide = _this select 2; _lastSetSideOld = _this select 3; _lastSetSideOldOld = _this select 4
-
-_pos = getPos _trigger
-_res = [_pos, [si0,si1,siRes], []] call funcGetClosestTown
-_indexTown = _res select 2
+_trigger = _this select 0; _indexTown = _this select 1; _lastSetSide = _this select 2; _lastSide = _this select 3
+_lastSetSideOld = _this select 4; _lastSetSideOldOld = _this select 5
 
 #Update
-? _time > 3*60: [_trigger, _lastSetSide, _lastSide, _lastSetSideOld, _lastSetSideOldOld] exec {Extra\TownTrigger.sqs}; exit
+? _time > 3*60: [_trigger, _indexTown, _lastSetSide, _lastSide, _lastSetSideOld, _lastSetSideOldOld] exec {Extra\TownTrigger.sqs}; exit
 
 _siLastSiCiv = false
 
@@ -38,7 +35,6 @@ _si = siRes
 	goto "Update"
 
 #SetTownSide
-
 	? (pvGameOver != -1): Exit
 
 	?_si == siPlayer && _lastSetSide == siCiv && _LastSetSideOld == siPlayer && (_lastSetSideOldOld == siRes or _lastSetSideOldOld == siCiv): _siLastSiCiv = true
@@ -48,9 +44,9 @@ _si = siRes
 
   ? _si == siRes or _si == siCiv or _si == siBoth: goto "SkipScore"
   
-  ; calc score
-  ?!(_siLastSiCiv): _score = ((towns select _indexTown) select tdValue)*0.05
-  ?(_siLastSiCiv): _score = ((towns select _indexTown) select tdValue)*0.005
+	; calc score
+	?!(_siLastSiCiv): _score = ((towns select _indexTown) select tdValue)*0.05
+	?(_siLastSiCiv): _score = ((towns select _indexTown) select tdValue)*0.005
 		_score = _score/(count (_groups select _si))
 		_score = _score - (_score % 1)
 		? _score < 1 : _score = 1
@@ -59,8 +55,8 @@ _si = siRes
   
 	#SkipScore
 	~1
-  _lastSetSideOldOld = _lastSetSideOld
-  _lastSetSideOld = _lastSetSide
-  _lastSetSide = _si
-  _lastSide = _si
+	_lastSetSideOldOld = _lastSetSideOld
+	_lastSetSideOld = _lastSetSide
+	_lastSetSide = _si
+	_lastSide = _si
 	goto "Update"

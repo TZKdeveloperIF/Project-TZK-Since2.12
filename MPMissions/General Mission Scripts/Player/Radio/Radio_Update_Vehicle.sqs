@@ -33,7 +33,7 @@ _vt = _vehicle call funcGetUnitTypeFromObject
 ? _vt in RadioTypesPlane: [_vehicle] exec "Player\Radio\Radio_Update_Vehicle_Plane.sqs"; exit
 
 ; Transport Land Vehicles. Ship will enter script above thus won't reach here.
-? _vt in (typesTransportCar + typesTransportAPC): [_vehicle] exec "Player\Radio\Radio_Update_Vehicle_TransportLand.sqs"; exit
+? _vt in (typesTransportCar + typesTransportAPC): [_vehicle, _vt] exec "Player\Radio\Radio_Update_Vehicle_TransportLand.sqs"; exit
 
 ; Vehicle doesn't have special Actions
 [_vehicle] call loadFile "Player\Radio\Radio_Update_Vehicle_Common.sqf"; exit

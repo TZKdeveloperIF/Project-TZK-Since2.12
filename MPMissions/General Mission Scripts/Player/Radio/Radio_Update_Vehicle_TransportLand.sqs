@@ -1,11 +1,11 @@
 ; args: [vehicle]
-_vehicle = _this select 0
+_vehicle = _this select 0; _vt = _this select 1
 
 _booleStringTransport = "_vehicle in TransportActivatedVehicles"; _booleTransport = call _booleStringTransport
 
 Radio001 setTriggerText " "; Radio001 setTriggerStatements ["this", "", ""];
 Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", "[] exec {Player\Dialog\TZK_Mission_Setting_1.sqs}", ""];
-Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""];
+? bool_TZK_SEMod_Mode && "APC" countType [_vehicle] > 0: Radio003 setTriggerText "Entrench Tank ($1000)"; Radio003 setTriggerStatements ["this", "[vehicle player, player, [] ] exec {Extra\ppl\EntrenchTank.sqs}", ""];
 Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""];
 Radio005 setTriggerText " "; Radio005 setTriggerStatements ["this", "", ""];
 Radio006 setTriggerText " "; Radio006 setTriggerStatements ["this", "", ""];

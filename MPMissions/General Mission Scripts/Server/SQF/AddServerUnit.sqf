@@ -19,12 +19,12 @@ _sendRepeats = _this select 10;
 
 _vehicle = objNull;
 
-if (_type >= maxUnitTypes) then {[_type, _pos, _dir, _si, _gi, _groupJoin, _giBuyer] call fAddSoldier} else {
+if (_type >= maxUnitTypes) then {_vehicle = [_type, _pos, _dir, _si, _gi, _groupJoin, _giBuyer] call fAddSoldier} else {
 
 	if ( _type < 0 || _type >= (count unitDefs) ) then {format["ERROR: _type is out of range (%1) in AddUnit.sqs", _type] call fDebugLog} else {
 		
 		_desc = unitDefs select _type;
-		if (count (_desc select udCrew) == 0) then {[_type, _pos, _dir, _si, _gi, _groupJoin, _giBuyer] call fAddSoldier} else {
+		if (count (_desc select udCrew) == 0) then {_vehicle = [_type, _pos, _dir, _si, _gi, _groupJoin, _giBuyer] call fAddSoldier} else {
 
 			// must be a vehicle if we got here
 			_vehicle = [_type, _pos, _dir, _si, _gi, _giBuyer, _sendRepeats] call fAddVehicle;

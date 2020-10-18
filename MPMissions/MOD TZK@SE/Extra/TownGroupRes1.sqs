@@ -1,17 +1,17 @@
-; args: [_group, _ti, _timePatrol, _timeReinforce]
+; args: [_group, _ti, _timePatrol, _timeReinforce, Town 2S9 Nonas[]]
 
-_group = _this select 0; _ti = _this select 1; _timePatrol = _this select 2; _timeReinforce = _this select 3
-_armorTown = [armorTown, armorTownTD] select bool_TZK_SEMod_Mode
+_group = _this select 0; _ti = _this select 1; _timePatrol = _this select 2; _timeReinforce = _this select 3; _nonas = if (count _this > 4) Then {_this select 4} Else {[]}
+_armorTown = [armorTown, armorTownTD] select bool_TZK_SEMod_Mode; _Driver = objNull; _Gunner = objNull
 ~5
 
 _si = siRes
-_interval = "(7 - restanksx) *60"
+_interval = if (dev && _ti == 0) Then {"(7 - 1.75 - restanksx) *60"} Else {"(7 - restanksx) *60"}
 _distSpawn = viewDistance + 500
 _flag = (towns select _ti) select tdFlag
 _posFlag = getPos _flag
 
 #Update
-~30
+~[30, 3] select (dev && _ti == 0)
 ? _time > 3*60: goto "NextLoop"
 	? time > _timeReinforce && ((towns select _ti) select tdSide) == siRes : goto "Reinforce"
 	? (count (units _group)) == 0 : goto "Update"
@@ -55,15 +55,48 @@ _posFlag = getPos _flag
 	goto "Patrol"
   
 #AddTank
+	? count _nonas > 0: goto "Add_Nona_Crew"
 	_type = -1
 	while "_type == -1" do { _type = (_armorTown select _si) call funcGetRandomUnitType }
 	_pos = [_posFlag, 12, 13] call funcGetRandomPos
 	[_type, 1, 1, 0, _pos, random 360, _si, -1, _group, 0, 0] exec "Common\AddUnit.sqs"
 	goto "Patrol"
 
+	#Add_Nona_Crew
+	_type = -1
+	while "_type == -1" do { _type = (infTown select _si) call funcGetRandomUnitType }
+	_vehicle = (_nonas select count _nonas - 1); _pos = getPosASL _vehicle
+	_Driver = [_type, 0, 0, 0, _pos, random 360, _si, -1, _group, 0, 0] call funcAddServerUnit
+	~1
+	_Gunner = [_type, 0, 0, 0, _pos, random 360, _si, -1, _group, 0, 0] call funcAddServerUnit
+	_timeAbort = _time + 15
+	@(_time > _timeAbort || _Driver != vehicle _Driver && _Gunner != vehicle _Gunner)
+	? _time > _timeAbort: goto "Patrol"
+	~0.5
+	_Driver setPosASL _pos; _Gunner setPosASL _pos;
+	~0.5
+	_Driver assignAsDriver _vehicle; _Driver moveInDriver _vehicle; _Gunner assignAsGunner _vehicle; _Gunner moveInGunner _vehicle; _nonas resize count _nonas - 1
+	goto "Patrol"
+
 #SendOutTanks
 	_tanksInGroup = []
 	{ _v = vehicle _x; if (_x != _v && !(_v in _tanksInGroup) ) then { _tanksInGroup set [count _tanksInGroup, _v] } } forEach units _group
+	; Replace Town Vehicles with extra vehicles
+	_i = 0; _nonas = (_nonas - _tanksInGroup) + _tanksInGroup
+	#NextReplace
+		_tank = _tanksInGroup select _i
+		_type = -1
+		while "_type == -1" do { _type = (armorTown select _si) call funcGetRandomUnitType }
+		_vehicle = [_type, 0, 0, 0, getPosASL _tank, getDir _tank, _si, -1, _group, 0, 0] call funcAddServerUnit
+		{call format ["_%1 = %1 _tank; unassignVehicle _%1", _x]} forEach ["Driver", "Gunner"]
+		~1
+		{call format ["_%1 setPosASL getPosASL _%1", _x]} forEach ["Driver", "Gunner"]
+		~2
+		{call format ["_%1 assignAs%1 _vehicle; _%1 moveIn%1 _vehicle", _x]} forEach ["Driver", "Gunner"]
+		_tanksInGroup set [_i, _vehicle]
+		_i = _i + 1
+    ? _i < count _tanksInGroup : goto "NextReplace"
+
 	@!(mutexAddResPatrol)
 	mutexAddResPatrol = true
 	_i = 0
@@ -82,4 +115,4 @@ _posFlag = getPos _flag
 goto "Patrol"
 
 #NextLoop
-	[_group, _ti, _timePatrol, _timeReinforce] exec "Server\Loop\TownGroupRes1.sqs"; exit
+	[_group, _ti, _timePatrol, _timeReinforce, _nonas] exec "Extra\TownGroupRes1.sqs"; exit

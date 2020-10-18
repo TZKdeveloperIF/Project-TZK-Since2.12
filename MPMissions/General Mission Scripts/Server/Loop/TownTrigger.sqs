@@ -1,13 +1,9 @@
-; args: [_trigger, _lastSetSide, _lastSide]
+; args: [_trigger, _indexTown, _lastSetSide, _lastSide]
 
-_trigger = _this select 0; _lastSetSide = _this select 1; _lastSide = _this select 2
-
-_pos = getPos _trigger
-_res = [_pos, [si0,si1,siRes], []] call funcGetClosestTown
-_indexTown = _res select 2
+_trigger = _this select 0; _indexTown = _this select 1; _lastSetSide = _this select 2; _lastSide = _this select 3
 
 #Update
-? _time > 3*60: [_trigger, _lastSetSide, _lastSide] exec {Server\Loop\TownTrigger.sqs}; exit
+? _time > 3*60: [_trigger, _indexTown, _lastSetSide, _lastSide] exec {Server\Loop\TownTrigger.sqs}; exit
 	~3
 	_timeCheck = time + 19 - (time%20)
 	@ (time > _timeCheck)
@@ -28,7 +24,6 @@ _indexTown = _res select 2
 	goto "Update"
 
 #SetTownSide
-
 	? (pvGameOver != -1): Exit
 
 	[_indexTown, _si, _lastSetSide] exec "Server\SendTownSideChange.sqs"
@@ -45,6 +40,5 @@ _indexTown = _res select 2
 		? _score < 1 : _score = 1
 
 		{ _gi = ( groupMatrix select _si ) find ( _x ); if (_gi != -1) then { [_score, scTown, _si, _gi] exec "Common\SendScore.sqs" } } foreach (_groups select _si)
-  
 	#SkipScore
 	goto "Update"
