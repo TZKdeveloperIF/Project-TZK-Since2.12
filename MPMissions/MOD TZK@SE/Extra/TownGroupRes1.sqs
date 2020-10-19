@@ -82,7 +82,8 @@ _posFlag = getPos _flag
 	_tanksInGroup = []
 	{ _v = vehicle _x; if (_x != _v && !(_v in _tanksInGroup) ) then { _tanksInGroup set [count _tanksInGroup, _v] } } forEach units _group
 	; Replace Town Vehicles with extra vehicles
-	_i = 0; _nonas = (_nonas - _tanksInGroup) + _tanksInGroup
+	_i = 0
+	; _nonas = (_nonas - _tanksInGroup) + _tanksInGroup
 	#NextReplace
 		_tank = _tanksInGroup select _i
 		_type = -1
@@ -93,9 +94,9 @@ _posFlag = getPos _flag
 		{call format ["_%1 setPosASL getPosASL _%1", _x]} forEach ["Driver", "Gunner"]
 		~2
 		{call format ["_%1 assignAs%1 _vehicle; _%1 moveIn%1 _vehicle", _x]} forEach ["Driver", "Gunner"]
-		_tanksInGroup set [_i, _vehicle]
+		_tanksInGroup set [_i, _vehicle]; deleteVehicle _tank
 		_i = _i + 1
-    ? _i < count _tanksInGroup : goto "NextReplace"
+    ? _i < count _tanksInGroup / 2 : goto "NextReplace"
 
 	@!(mutexAddResPatrol)
 	mutexAddResPatrol = true
