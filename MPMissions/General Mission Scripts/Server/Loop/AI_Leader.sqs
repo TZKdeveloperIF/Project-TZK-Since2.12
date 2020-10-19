@@ -180,7 +180,7 @@ _unitsStarted = units _group
 			? _set > 4: _set = _set - 5; if (count _heavys > _set) then {_fac = _heavys select _set; if (alive _fac && !(_fac in _buyFactories)) then {	_buyFactories set [count _buyFactories, _fac]}}
 			_i = _i + 1
 			? _i < 4: goto "SetSelectedFactories"
-		? count _buyFactories > 0: {_i = 0; if (_x in buildingsInUse) then {_buyFactories set [_i, objNull]}; _i = _i + 1} forEach _buyFactories
+		? count _buyFactories > 0: _i = 0; {if (_x in buildingsInUse) then {_buyFactories set [_i, objNull]}; _i = _i + 1} forEach _buyFactories
 		? "!isNull _x" count _buyFactories == 0: goto "Bought"
 		_buyFactories = _buyFactories - [objNull]
 		? (_driver + _gunner) > 0 : _slots = _slots / (_driver + _gunner); _slots = _slots - _slots % 1
