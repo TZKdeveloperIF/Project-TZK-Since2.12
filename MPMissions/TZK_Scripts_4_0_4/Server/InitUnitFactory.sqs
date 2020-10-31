@@ -1,0 +1,21 @@
+; args: [_type, _si, _objects]
+
+? !isServer : exit
+
+_typeStructure = _this select 0
+_si = _this select 1
+_factory = (_this select 2) select 0
+
+@!(mutexFacQueues)
+mutexFacQueues = true
+_queues = factoryQueues select _si
+
+_qi = 0
+_c = count _queues
+_found = false
+while "_qi<_c && !_found" do { if (isNull ((_queues select _qi) select 0)) then { _found = true; _qi=_qi-1 }; _qi=_qi+1 }
+
+_queues set [_qi, [_factory, _typeStructure, []] ]
+mutexFacQueues = false
+
+[_typeStructure, _si, _factory, _qi] exec "\TZK_Scripts_4_0_4\Server\Loop\UnitFactory.sqs"

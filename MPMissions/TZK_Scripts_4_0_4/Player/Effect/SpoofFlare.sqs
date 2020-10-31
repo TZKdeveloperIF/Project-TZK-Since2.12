@@ -1,0 +1,16 @@
+; args: [target vehicle]
+? isNull player: exit
+
+_target = _this select 0
+
+; create flare effect
+_count =0
+
+#LaunchLoop
+drop["kouleSvetlo","","Billboard",0.05,6,[-.2,-1,1.1],[-14-random 6,- random 2,0],0,1.8,1,0,[1],[[1,1,0.3,1]],[0,1],0,0, "\TZK_Scripts_4_0_4\Player\Effect\SpoofSmokes.sqs","",_target] 
+
+drop["kouleSvetlo","","Billboard",0.05,6,[.2,-1,1.1],[14+random 6,- random 2,0],0,1.8,1,0,[1],[[1,1,0.3,1]],[0,1],0,0, "\TZK_Scripts_4_0_4\Player\Effect\SpoofSmokes.sqs","",_target]
+
+_count = _count + 1
+~0.1
+?(_count<5):goto "LaunchLoop"

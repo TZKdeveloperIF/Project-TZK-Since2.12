@@ -1,0 +1,43 @@
+; args: [overcast last, rain last]
+? isServer: exit
+@(time % 60 > 40 && time % 60 < 50)
+
+_overcastLast = 0; _rainLast = 0
+? count _this == 0: _i = Vote_Item_Weather find Weather_TZK, if (_i != -1) Then {_overcastLast = [0,0.2,0.4,0.5,0.8,0.0,0.4,0.0] select (Vote_Item_Weather find Weather_TZK), 0 SetOvercast _overcastLast}
+? count _this > 0: _overcastLast = _this select 0; _rainLast = _this select 1
+
+_threshold = "_ratio = abs( (_overcastLast - 0.7)/(0.001 + abs(_overcastLast - _overcast)) ), _thresholdDelay = if (_ratio > 1) Then{0} Else {_ratio*_delaychange}"
+_weather = Weather_TZK
+
+; main part. Due to its long time unnecessary to loop but execute another script.
+_time = 0; _thresholdDelay = 0
+
+_weatherValue = pvWeather_Value/100; _delaychange = pvWeather_Delay
+_overcast = _weatherValue % 1
+_weatherValue = (_weatherValue - _overcast)/100
+_rain = _weatherValue % 1
+_weatherValue = (_weatherValue - _rain)/100
+_fog = _weatherValue % 1
+
+_weatherValue = pvWeather_Value
+_delaychange SetOvercast _overcast; _delaychange SetRain _rain
+? _weather == "Foggy": _delaychange SetFog _fog
+? _overcastLast > 0.7 && _overcast <= 0.7 : call _threshold; _thresholdDelay SetOvercast 0.7; _thresholdDelay SetRain 0
+? _overcastLast <= 0.7 && _overcast > 0.7 : call _threshold; _thresholdDelay SetOvercast 0.7
+? dev: if (name player == "IF") Then {hint format ["_thresholdDelay: %1\n_overcast: %2\n_rain: %3\n_delaychange: %4", _thresholdDelay, _overcast, _rain, _delaychange]}
+
+@(_time > _thresholdDelay || _weather != Weather_TZK)
+? _weather != Weather_TZK: [_overcast, _rain] exec "\TZK_Scripts_4_0_4\Player\Loop\Weather.sqs", exit
+? _thresholdDelay > 0 && _overcastLast > 0.7 && _overcast <= 0.7: 0.5*(_delaychange - _thresholdDelay) SetFog (if (_weather == "Rainy") Then {sqrt (_fog*_fog*_fog)} Else {_fog*_fog})
+? _thresholdDelay > 0 && _overcastLast <= 0.7 && _overcast > 0.7: 0.5*(_delaychange - _thresholdDelay) SetFog _fog; 0.5*(_delaychange - _thresholdDelay) SetRain _rain
+
+_time = 0
+@(_time > 0.5*(_delaychange - _thresholdDelay) || _weather != Weather_TZK)
+? _weather != Weather_TZK: [_overcast, _rain] exec "\TZK_Scripts_4_0_4\Player\Loop\Weather.sqs", exit
+0.5*(_delaychange - _thresholdDelay) SetOvercast _overcast
+? _overcastLast <= 0.7 && _overcast <= 0.7 && _weather == "Rainy": 0.5*(_delaychange - _thresholdDelay) SetFog _fog
+
+_time = 0; _sleep = pvWeather_Cycle
+
+@(_time > _sleep || _weather != Weather_TZK)
+[_overcast, _rain] exec "\TZK_Scripts_4_0_4\Player\Loop\Weather.sqs", exit

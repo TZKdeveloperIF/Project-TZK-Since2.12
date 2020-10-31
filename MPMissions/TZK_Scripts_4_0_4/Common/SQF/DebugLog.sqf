@@ -1,0 +1,1 @@
+if (debug) then {private[ "_text" ]; _text = format["DBG: %1", _this]; resistance_Center saveStatus _text; _text exec "\TZK_Scripts_4_0_4\Common\SendTextMsg.sqs"};

@@ -1,0 +1,24 @@
+; args: Fired-EH Array
+_vehicle = _this select 0; _ammo = _this select 4
+
+_bNuclear = false; _bBaseBuster = _ammo in ["LaserGuidedBomb_xj400", "LaserGuidedBomb"]
+? bool_TZK_SEMod_Mode: _vt = _vehicle call funcGetUnitTypeFromObject; if (_vt == -1) Then { _price = unitDefs select _vt select udCost, if (_price >= [90000, 180000] select PricingMode) Then "playsound {NuclearMissileLaunched_xj400}, _bNuclear = true" Else "if (_price < [45000, 90000] select PricingMode) Then {_bBaseBuster = false}" }
+? _ammo == "tomahawk_xj400": _bNuclear = true
+? _bNuclear: playsound {NuclearMissileLaunched_xj400}
+
+_shell = nearestObject [_vehicle, _ammo]
+? !local _shell : exit
+
+? !_bBaseBuster && !_bNuclear: exit
+
+#Check
+_pos = getPos _shell
+~0.01
+? alive _shell && _ammo == typeOf _shell : goto "Check"
+
+_x = _pos Select 0; _y = _pos Select 1; _z = _pos Select 2;
+? _bNuclear: _logicName = "ExplodeLogic_Nuclear_xj400"; _logic = _logicName createVehicle [-_x, _y, _z]; [_vehicle, _pos] exec "\TZK_Scripts_4_0_4\Player\Effect\ExplosionTomahawk.sqs"; exit
+
+? _bBaseBuster: if ("A10_Buster_xj400" countType [_vehicle] > 0 || "Su25_Buster_xj400" countType [_vehicle] > 0 || bool_TZK_SEMod_Mode) then {[_vehicle, _pos] exec "\TZK_Scripts_4_0_4\Player\Effect\ExplosionBuster.sqs"}; exit
+
+; EOF
