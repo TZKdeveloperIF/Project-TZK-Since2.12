@@ -1,0 +1,48 @@
+; args: [unit, type]
+
+_unit = _this select 0
+_type = _this select 1
+
+_id = _type - maxUnitTypes
+
+? _id < 0 || _id > 9 : format["ERROR: custom id out of range, %1", _id] call fDebugLog; exit
+? count (infCustom select _id) == 0 : format["ERROR: custom loadout not defined, %1", _id] call fDebugLog; exit
+
+; player globalchat format["CS: _unit=%1 _id=%2", _unit, _id]
+
+_custom = infCustom select _id
+
+@ (local _unit) || !(alive _unit)
+
+? !(alive _unit) : exit
+
+removeAllWeapons _unit
+
+_typePrim = _custom select 1
+_typeHandgun = _custom select 2
+_typeSec = _custom select 3
+_typeBinocular = _custom select 4
+_typeNVG = _custom select 5
+_equipment = _custom select 6
+
+_cost = 0;
+{ _cost = _cost + ((equipDefs select (_x select 0)) select edcost) } foreach (_equipment select isGeneral)
+{ _cost = _cost + ((equipDefs select (_x select 0)) select edcost) } foreach (_equipment select isHandgun)
+{ if (_x != -1) then {_cost = _cost + ((weaponDefs select _x) select wdcost)} } forEach [_typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG]
+? _cost > 0 && _cost > (groupMoneyMatrix select siPlayer select giPlayer) : _unit groupChat "Insufficient fund. Unequipped yet."; goto "SkipEquipping"
+
+{ _unit addWeapon _x } forEach weaponsCustom
+
+{ _unit addMagazine ((equipDefs select (_x select 0)) select edObject)} foreach (_equipment select isGeneral)
+{ _unit addMagazine ((equipDefs select (_x select 0)) select edObject)} foreach (_equipment select isHandgun)
+
+? _typePrim != -1 : _weapon = ((weaponDefs select _typePrim) select wdObject); _unit addWeapon _weapon; _unit selectWeapon _weapon
+? _typeSec != -1 : _weapon = ((weaponDefs select _typeSec) select wdObject); _unit addWeapon _weapon
+? _typeHandgun != -1 : _weapon = ((weaponDefs select _typeHandgun) select wdObject); _unit addWeapon _weapon
+? _typeBinocular != -1 : _weapon = ((weaponDefs select _typeBinocular) select wdObject); _unit addWeapon _weapon
+? _typeNVG != -1 : _weapon = ((weaponDefs select _typeNVG) select wdObject); _unit addWeapon _weapon
+[_cost] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"; _unit groupChat format ["Equipping completed. Cost $%1", _cost]
+
+#SkipEquipping
+~10
+[_unit, weapons _unit, magazines _unit, _type, 1, true] exec "\TZK_Scripts_4_0_4\Common\EditEquipRearmData.sqs"; exit

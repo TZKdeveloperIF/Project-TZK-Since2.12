@@ -74,8 +74,8 @@ goto "Start"
 	? (siPlayer != siCiv) && (_si == si0) && (_lastSide == siCiv) && (_lastSideOld != si0): format["%1 WON from East",_townDesc select 1] call funcSideMsg	
 	? (siPlayer != siCiv) && (_si == si1) && (_lastSide == siCiv) && (_lastSideOld != si1): format["%1 WON from West",_townDesc select 1] call funcSideMsg
 	? (siPlayer != siCiv) && (_si != siPlayer): format["%1 LOST", _townDesc select 1, _towns select siPlayer] call funcSideMsg					
-	? (siPlayer == siCiv) && (_si == si0 or _si == si1): format["%1 won %2", sideNames select _si, _townDesc select tdName, _towns select si0, _towns select si1] exec "Player\LogSpectator.sqs"
-	? (siPlayer == siCiv) && (_si == siBoth): format["%1 CONTESTED", _townDesc select tdName, _towns select si0, _towns select si1] exec "Player\LogSpectator.sqs"
-	? (siPlayer == siCiv) && (_si == siCiv): format["%1 UNCONTROLLED", _townDesc select tdName, _towns select si0, _towns select si1] exec "Player\LogSpectator.sqs"
+	? (siPlayer == siCiv) && (_si == si0 or _si == si1): format["%1 won %2", sideNames select _si, _townDesc select tdName, _towns select si0, _towns select si1] exec "\TZK_Scripts_4_0_4\Player\LogSpectator.sqs"
+	? (siPlayer == siCiv) && (_si == siBoth): format["%1 CONTESTED", _townDesc select tdName, _towns select si0, _towns select si1] exec "\TZK_Scripts_4_0_4\Player\LogSpectator.sqs"
+	? (siPlayer == siCiv) && (_si == siCiv): format["%1 UNCONTROLLED", _townDesc select tdName, _towns select si0, _towns select si1] exec "\TZK_Scripts_4_0_4\Player\LogSpectator.sqs"
 
 goto "Start"

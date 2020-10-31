@@ -1,0 +1,42 @@
+; args: [upg, upg2, si, gi]
+
+_upg2 = _this select 1
+_si = _this select 2
+_gi = _this select 3
+
+_controlCenters = [_si, stComm] call funcGetWorkingStructures
+
+? (count _controlCenters) == 0: exit
+
+? upgMatrix select _si select _upg2 != 0: [_si, _upg2, upgMatrix select _si select _upg2] exec "\TZK_Scripts_4_0_4\Server\Info\UpgState.sqs", exit
+
+; _gi = giCO select _si
+? _gi == -1: exit
+
+_upgs = [upgLongWeaponRange, upgPlaneAfterBurner, upgSpoofMissile]
+? !(_upg2 in _upgs): exit
+
+_minutes = upgDefs select _upg2 select 2
+_cost = 0; { if (_x != _upg2 && upgMatrix select _si select _x > 0) Then {if (upgDefs select _x select 1 > _cost) Then {_cost = upgDefs select _x select 1}} } forEach _upgs
+_cost = (upgDefs select _upg2 select 1) - _cost
+
+_money = groupMoneyMatrix select _si select _gi
+? _money < _cost && _cost > 0: exit
+
+[_si, _gi, _cost] exec "\TZK_Scripts_4_0_4\Server\MoneySpend.sqs"
+
+{upgMatrix select _si set [_x, 0]} forEach _upgs; upgMatrix select _si set [_upg2, 1]
+
+{[_si, _x, upgMatrix select _si select _x] exec "\TZK_Scripts_4_0_4\Server\Info\UpgState.sqs"} forEach _upgs
+
+_timeStart = time
+#CheckControlCenters
+	~5
+	_controlCenters = [_si, stComm] call funcGetWorkingStructures
+	? upgMatrix select _si select _upg2 == 0: exit
+	? (count _controlCenters) == 0: (upgMatrix select _si) set [_upg2, 0]; [_si, _upg2, 0] exec "\TZK_Scripts_4_0_4\Server\Info\UpgState.sqs"; exit
+
+	? time < (_timeStart + 60*_minutes): goto "CheckControlCenters"
+
+upgMatrix select _si set [_upg2, 2]
+[_si, _upg2, 2] exec "\TZK_Scripts_4_0_4\Server\Info\UpgState.sqs"

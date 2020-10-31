@@ -1,0 +1,32 @@
+; args: [unit, type, si, gi]
+
+_unit = _this select 0
+_type = _this select 1
+_si = _this select 2
+_gi = _this select 3
+
+? !alive _unit: exit
+
+? isServer: [_unit, _si, kaUnit, -1] exec "\TZK_Scripts_4_0_4\Server\Start\KnowsAbout.sqs"
+
+? _type >= maxUnitTypes: _cost = unitDefs select (utCustom select _si) select udCost
+? _type < maxUnitTypes:  _cost = unitDefs select _type select udCost
+; Killed-EH used to be added to local soldiers. However Killed-EH is local thus should be added on all clients after "Join" having been allowed since TZK_2.00.
+; However all client add Killed-EH seems may cause lag same as killed-tank-effect do.
+; [_unit, _si, _cost] exec "\TZK_Scripts_4_0_4\Common\EventAdd_InfantryKilled.sqs"
+? isServer || local _unit: [_unit, _si, _cost] exec "\TZK_Scripts_4_0_4\Common\EventAdd_InfantryKilled.sqs"
+? isServer				:  [_unit, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\EventAdd_Infantry.sqs"
+
+? !local _unit: exit
+
+; Add weaponCustom to all soldiers on their client.
+{_unit addWeapon _x} forEach weaponsCustom
+
+~1
+doStop _unit
+
+? !(_unit in units groupPlayer): exit
+
+; do stuff specific to players infantry
+
+? _type >= maxUnitTypes: [_unit, _type] exec "\TZK_Scripts_4_0_4\Player\EquipCustomSoldier.sqs"

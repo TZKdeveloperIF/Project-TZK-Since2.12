@@ -1,0 +1,14 @@
+; args: [si, gi]
+
+_si = _this select 0
+_gi = _this select 1
+
+_i = 0
+_c = count upgDefs
+
+#CheckNextUpgrade
+	? !(_i < _c): exit
+	? ((upgMatrix select _si) select _i) == 0 : [_i, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\UpgradeStart.sqs"; exit
+	_i = _i + 1
+	goto "CheckNextUpgrade"
+

@@ -1,0 +1,26 @@
+; args: [si, upg, state]
+
+_si = _this select 0
+_upg = _this select 1
+_state = _this select 2
+
+_value = mtUpgState
+_value = _value + TotalInfoTypes*_upg
+_value = _value + TotalInfoTypes*(count upgDefs)*_state
+_value = _value + TotalInfoTypes*(count upgDefs)*3*_si
+
+[_value] exec "\TZK_Scripts_4_0_4\Server\Info\SendInfoMsg.sqs"
+
+? upgCCdistance == _upg && _state == 2 : CCdistMax set [_si, distMaxCCUpgraded]
+
+? upgGunshipRocket == _upg && _state == 2 : [_si, _upg, "HeliRocket"] exec "\TZK_Scripts_4_0_4\Common\ReEquip\ReEquip.sqs"
+
+? upgWorkers == _upg && _state == 2: maxWorkers set [_si, 20]
+
+? upgRedTopRange == _upg && _state == 2: [_si, _upg, "4xAA"] exec "\TZK_Scripts_4_0_4\Common\ReEquip\ReEquip.sqs"
+
+? upgRedTopMagazines == _upg && _state == 2: [_si, _upg, "4xAA"] exec "\TZK_Scripts_4_0_4\Common\ReEquip\ReEquip.sqs"
+
+? upgPlaneAfterBurner == _upg && _state == 2: if !(isNull player) then {if (_si == siPlayer) then {bAfterBurner = _state == 2}}
+
+? upgSpoofMissile == _upg && _state == 2: if !(isNull player) then {if (_si == siPlayer) then {bSpoofMissile = _state == 2}}

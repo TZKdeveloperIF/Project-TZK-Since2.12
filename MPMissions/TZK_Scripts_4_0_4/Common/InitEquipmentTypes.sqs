@@ -1,0 +1,858 @@
+; args: none
+
+; addon specific equipment used in scripts
+_nvg0 = "NVG_stat_xj400"; _nvg1 = "NVG_statF_xj400"; _wSG551 = "SG551_xj400"; _mSG551 = "SG551_Mag_xj400"
+_wMP5SD6 = "EUDEF_MP5SD6_xj400"; _mMP5SD6 = "EUDEF_MP5SD6_MAG_xj400"; _wGroza = "VNgroza1sscope_xj400"; _mGroza = "VNgroza1s_Mag_xj400"
+_medkit = "Medkit_xj400"; _hyperL = "HyperLauncher_xj400"; _carl4slot = "CarlGustavIn4_xj400"; _aa4slot = "AAIn4_xj400"; _at44slot = "AT4In4_xj400"; _9k324slot = "9k32In4_xj400"
+_wVAL = "VALPSO_xj400"; _mVAL = "VAL_Mag_xj400"; 
+_wM249SD = "M249SPW_ACOG_SD_xj400"; _mM249SD = "M249SPW_SD_Mag_xj400"; _wRPK74SD = "RPK74M_1P29_SD_xj400"; _mRPK74SD = "RPK74_SD_Mag_xj400"
+w_TZK_SniperE = "RFSVUa_xj400"; m_TZK_SniperE = "RFSVUA_Mag_xj400"; w_TZK_AK107 = "KEGAK107_xj400"; m_TZK_AK107 = "KEGAK107_Mag_xj400"
+
+magMine = "Mine"; magPistolMine = "Mine_Pistol_xj400"; MagzinesMine = [magMine, magPistolMine]
+magHandGrenade = "HandGrenade"
+ammoMine = "Mine"
+magSatchel = "PipeBomb"
+magTimeBomb = "TimeBomb"
+weaponPut = "Put_xj400"
+weaponsCustom = [weaponPut]
+
+; ? bool_TZK_Vanilla_Mode: _medkit = "", magPistolMine = "", _hyperL = "CarlGustavLauncher", _carl4slot = "CarlGustav", _at44slot = _carl4slot, _aa4slot = "", _9k324slot = ""
+? bool_TZK_199_Mode: _nvg0 = "NVGoggles", _nvg1 = _nvg0
+? bool_TZK_Vanilla_Mode: {call (_x+{="AK74"})} forEach ["w_TZK_AK107", "m_TZK_AK107"], _wGroza = "Bizon", _mGroza = "BizonMag", {call (_x+{="SVDDragunov"})} forEach ["_wVAL", "_mVAL", "_wRPK74SD", "_mRPK74SD", "w_TZK_SniperE", "m_TZK_SniperE"], {call (_x+{="M21"})} forEach ["_wSG551", "_mSG551", "_wM249SD", "_mM249SD"], {call (_x+{="HK"})} forEach ["_wMP5SD6", "_mMP5SD6"]
+
+cargoCarSide0 = [[magMine,2], [magSatchel,4], ["LAWLauncher",3], ["CarlGustavLauncher",2], ["AALauncher",1]]
+cargoCarSide1 = [[magMine,2], [magSatchel,4], ["RPGLauncher",3], ["AT4Launcher",2], ["9K32Launcher",1]]
+cargoCar2Side0 = [[magMine,4], [magSatchel,4], ["LAWLauncher",6], ["CarlGustavLauncher",4], ["AALauncher",3]]
+cargoCar2Side1 = [[magMine,4], [magSatchel,4], ["RPGLauncher",6], ["AT4Launcher",4], ["9K32Launcher",3]]
+cargoTruckSide0 = [[magMine,4], [magSatchel,8], ["LAWLauncher",6], ["CarlGustavLauncher",5], ["AALauncher",3]]
+cargoTruckSide1 = [[magMine,4], [magSatchel,8], ["RPGLauncher",6], ["AT4Launcher",5], ["9K32Launcher",3]]
+
+
+
+weaponsRespawnPlayer = [ ["G36a", "LAWLauncher", "Binocular", _nvg0], [w_TZK_AK107, "RPGLauncher", "Binocular", _nvg0] ]
+magsRespawnPlayer = [ ["G36aMag", "G36aMag", "G36aMag", "G36aMag", "LAWLauncher", "LAWLauncher"], [m_TZK_AK107, m_TZK_AK107, m_TZK_AK107, m_TZK_AK107, "RPGLauncher", "RPGLauncher"] ]
+
+weaponsRespawnPlayer1 = [ ["M21", "LAWLauncher", "Binocular", _nvg0], ["SVDDragunov", "RPGLauncher", "Binocular", _nvg0] ]
+magsRespawnPlayer1 = [ ["M21", "M21", "M21", "M21", "LAWLauncher", "LAWLauncher"], ["SVDDragunov", "SVDDragunov", "SVDDragunov", "SVDDragunov", "RPGLauncher", "RPGLauncher"] ]
+
+weaponsRespawnPlayer2 = [ [_wMP5SD6, "LAWLauncher", "Binocular", _nvg0], [_wGroza, "RPGLauncher", "Binocular", _nvg0] ]
+magsRespawnPlayer2 = [ [_mMP5SD6, _mMP5SD6, _mMP5SD6, _mMP5SD6, "LAWLauncher", "LAWLauncher"], [_mGroza, _mGroza, _mGroza, _mGroza, "RPGLauncher", "RPGLauncher"] ]
+
+
+
+weaponsRespawnPlayer3 = [ [_wSG551, _hyperL, "Binocular", _nvg1], [_wVAL, _hyperL, "Binocular", _nvg1] ]
+magsRespawnPlayer3 = [ [_mSG551, _mSG551, _carl4slot, _aa4slot, magPistolMine, _medkit], [_mVAL, _mVAL, _at44slot, _9k324slot, magPistolMine, _medkit] ]
+
+weaponsRespawnPlayer4 = [ [_wM249SD, _hyperL, "Binocular", _nvg1], [_wRPK74SD, _hyperL, "Binocular", _nvg1] ]
+magsRespawnPlayer4 = [ [_mM249SD, _carl4slot, _aa4slot, magPistolMine, _medkit], [_mRPK74SD, _mRPK74SD, _at44slot, _9k324slot, magPistolMine, _medkit] ]
+
+? bool_TZK_SEMod_Mode: weaponsRespawnPlayer4 = [ [_wSG551, "WW4_JavelinLauncher", "Binocular", _nvg1], [_wRPK74SD, "ICPRPG29", "Binocular", _nvg1] ], magsRespawnPlayer4 = [ [_mSG551, _mSG551, _mSG551, "WW4_JavelinMag", _medkit], [_mRPK74SD, _mRPK74SD, _mRPK74SD, "ICPRPG29Mag", _medkit] ]
+; not used below
+
+weaponsRespawnPlayer5 = [ ["M21", "CarlGustavLauncher", "Binocular", _nvg0], ["SVDDragunov", "AT4Launcher", "Binocular", _nvg0] ]
+magsRespawnPlayer5 = [ ["M21", "M21", "M21", "M21", "CarlGustavLauncher"], ["SVDDragunov", "SVDDragunov", "SVDDragunov", "SVDDragunov", "AT4Launcher"] ]
+
+weaponsRespawnPlayer6 = [ ["G36a", "CarlGustavLauncher", "Binocular", _nvg0], [w_TZK_AK107, "AT4Launcher", "Binocular", _nvg0] ]
+magsRespawnPlayer6 = [ ["G36aMag", "G36aMag", "G36aMag", "G36aMag", "CarlGustavLauncher"], [m_TZK_AK107, m_TZK_AK107, m_TZK_AK107, m_TZK_AK107, "AT4Launcher"] ]
+
+weaponsRespawnPlayer7 = [ [_wSG551, "AALauncher", "Binocular", _nvg0], [_wVAL, "9K32Launcher", "Binocular", _nvg0] ]
+magsRespawnPlayer7 = [ [_mSG551, _mSG551, _mSG551, _mSG551, "AALauncher"], [_mVAL, _mVAL, _mVAL, _mVAL, "9K32Launcher"] ]
+
+weaponsRespawnPlayer8 = [ [_wSG551, "AALauncher", "Binocular", _nvg0], [w_TZK_SniperE, "9K32Launcher", "Binocular", _nvg0] ]
+magsRespawnPlayer8= [ [_mSG551, _mSG551, _mSG551, _mSG551, "AALauncher"], [m_TZK_SniperE, m_TZK_SniperE, m_TZK_SniperE, m_TZK_SniperE, "9K32Launcher"] ]
+
+weaponsRespawnPlayer9 = [ [_wSG551, "LAWLauncher", "Binocular", _nvg0], [w_TZK_SniperE, "RPGLauncher", "Binocular", _nvg0] ]
+magsRespawnPlayer9 = [ [_mSG551, _mSG551, "LAWLauncher", "LAWLauncher", "LAWLauncher", "LAWLauncher"], [m_TZK_SniperE, m_TZK_SniperE, "RPGLauncher", "RPGLauncher", "RPGLauncher","RPGLauncher"] ]
+
+
+
+
+weaponsRespawnAI = [ ["G36a", "LAWLauncher", "Put", _nvg0], [w_TZK_AK107, "RPGLauncher","Put", _nvg0] ]
+magsRespawnAI = [ ["G36aMag", "G36aMag", "LAWLauncher", "LAWLauncher", magSatchel, magSatchel], [m_TZK_AK107, m_TZK_AK107, "RPGLauncher", "RPGLauncher", magSatchel, magSatchel] ]
+
+weaponsRespawnAI1 = [ ["G36a", "AALauncher", _nvg0], [w_TZK_AK107, "9K32Launcher", _nvg0] ]
+magsRespawnAI1 = [ ["G36aMag", "G36aMag","G36aMag","G36aMag", "AALauncher"], [m_TZK_AK107, m_TZK_AK107,m_TZK_AK107,m_TZK_AK107, "9K32Launcher"] ]
+
+weaponsRespawnAI2 = [ ["M21", "LAWLauncher", _nvg0], ["SVDDragunov", "RPGLauncher", _nvg0] ]
+magsRespawnAI2 = [ ["M21", "M21", "M21", "LAWLauncher", "LAWLauncher", "LAWLauncher"], ["SVDDragunov", "SVDDragunov", "SVDDragunov", "RPGLauncher", "RPGLauncher", "RPGLauncher"] ]
+
+weaponsRespawnAI3 = [ [_wMP5SD6, "LAWLauncher", _nvg0], [_wGroza, "RPGLauncher", _nvg0] ]
+magsRespawnAI3 = [ [_mMP5SD6, _mMP5SD6, _mMP5SD6, "LAWLauncher", "LAWLauncher", "LAWLauncher"], [_mGroza, _mGroza, _mGroza, "RPGLauncher", "RPGLauncher", "RPGLauncher"] ]
+
+weaponsRespawnAI4 = [ ["G36a", "LAWLauncher", _nvg0], [w_TZK_AK107, "RPGLauncher", _nvg0] ]
+magsRespawnAI4 = [ ["G36aMag", "G36aMag", "G36aMag", "LAWLauncher", "LAWLauncher", "LAWLauncher"], [m_TZK_AK107, m_TZK_AK107, m_TZK_AK107, "RPGLauncher", "RPGLauncher", "RPGLauncher"] ]
+
+
+
+weaponsRespawnAI5 = [ [_wM249SD, _hyperL, _nvg1], [_wRPK74SD, _hyperL, _nvg1] ]
+magsRespawnAI5 = [ [_mM249SD, _carl4slot, _aa4slot, magPistolMine, magPistolMine], [_mRPK74SD, _mRPK74SD, _at44slot, _9k324slot, magPistolMine, magPistolMine] ]
+
+weaponsRespawnAI6 = [ ["M21", _hyperL, _nvg1], ["SVDDragunov", _hyperL, _nvg1] ]
+magsRespawnAI6 = [ ["M21", "M21", _carl4slot, _aa4slot, magPistolMine, magPistolMine], ["SVDDragunov", "SVDDragunov", _at44slot, _9k324slot, magPistolMine, magPistolMine] ]
+
+weaponsRespawnAI7 = [ ["M21", "CarlGustavLauncher", "Put", _nvg0], [w_TZK_SniperE, "AT4Launcher","Put", _nvg0] ]
+magsRespawnAI7 = [ ["M21", "M21", "CarlGustavLauncher", magSatchel], [m_TZK_SniperE, m_TZK_SniperE, "AT4Launcher", magSatchel] ]
+
+weaponsRespawnAI8 = [ ["M21", "AALauncher", "Put", _nvg0], [w_TZK_SniperE, "9K32Launcher","Put", _nvg0] ]
+magsRespawnAI8 = [ ["M21", "M21", "AALauncher", magSatchel], [m_TZK_SniperE, m_TZK_SniperE, "9K32Launcher", magSatchel] ]
+
+weaponsRespawnAI9 = [ ["G36a", "CarlGustavLauncher", "Put", _nvg0], [w_TZK_AK107, "AT4Launcher","Put", _nvg0] ]
+magsRespawnAI9 = [ ["G36aMag", "G36aMag", "CarlGustavLauncher", magSatchel], [m_TZK_AK107, m_TZK_AK107, "AT4Launcher", magSatchel] ]
+
+? bool_TZK_SEMod_Mode: weaponsRespawnAI9 = [ ["G36a", "WW4_JavelinLauncher", "Put", _nvg0], [w_TZK_AK107, "ICPRPG29", "Binocular", "NVGoggles"] ], magsRespawnPlayer4 = [ ["G36aMag", "G36aMag", "G36aMag", "WW4_JavelinMag", magSatchel], [m_TZK_AK107, m_TZK_AK107, m_TZK_AK107, "ICPRPG29Mag"] ]
+
+salvageRatio = 0.4
+equipDefs = []; equipSearch = []
+
+edName = 0
+edSides = 1
+edSlotType = 2
+edSlots = 3
+edObject = 4
+edImage = 5
+edcost = 6
+
+; inventory slot types
+isGeneral = 0
+isHandgun = 1
+
+
+isGeneralSlots = 10
+isHandgunSlots = 4
+isBinocularSlot = 0; isNVGSlot = 1;
+
+
+? bool_TZK_Yugo_Mode: [] exec "Extra\199\InitEquipment_Yugo_Redef.sqs", exit
+
+; EQUIP (ammo followed by equipment)
+
+; IMPORTANT - primary and secondary mag names must be same as weapon name to make template names look good
+
+_type = 0
+
+; WEST AMMO
+
+equipDefs set [_type, ["M16", si0, isGeneral, 1, "M16", "\dtaExt\equip\m\m_m16",0]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atM16 = _type
+_type = _type + 1
+
+equipDefs set [_type, ["XMS", si0, isGeneral, 1, "M4", "\dtaExt\equip\m\m_m4",0 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atM4 = _type
+_type = _type + 1
+
+equipDefs set [_type, ["M4 SD", si0, isGeneral, 1, "M4_SD_Mag_xj400", "\TZK_Texture_4_0_0\Picture\LSR_uswp\m_ar15sd.paa",10]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atLSR_M4_SD = _type
+_type = _type + 1
+
+equipDefs set [_type, ["M203 Vest", si0, isGeneral, 5, "M203_Vest_xj400", "\TZK_Texture_4_0_0\Picture\LSR_uswp\m_m203vest.paa",150]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atM203Vest = _type
+_type = _type + 1
+
+equipDefs set [_type, ["M203 Grenade", si0, isGeneral, 1, "M203_Grenade_xj400", "\TZK_Texture_4_0_0\Picture\LSR_uswp\m_m203grenade.paa",5]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atM203Grenade = _type
+_type = _type + 1
+
+equipDefs set [_type, ["M21", si0, isGeneral, 1, "M21", "\dtaExt\equip\m\m_m21",15 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atM21 = _type
+_type = _type + 1
+
+equipDefs set [_type, ["G36", si0, isGeneral, 1, "G36aMag", "\G36a\m_g36",15 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atG36 = _type
+_type = _type + 1
+
+equipDefs set [_type, ["MP5SD scope", si0, isGeneral, 1, _mMP5SD6, "\dtaExt\equip\m\m_hk",10 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atMP5 = _type
+_type = _type + 1
+
+equipDefs set [_type, ["HK", si0, isGeneral, 1, "HK", "\dtaExt\equip\m\m_hk",10 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atHK = _type
+_type = _type + 1
+
+equipDefs set [_type, ["M4", si0, isGeneral, 1, "M4", "\dtaExt\equip\m\m_m4",0 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atM4 = _type
+_type = _type + 1
+
+equipDefs set [_type, ["JAH SG551", si0, isGeneral, 1, _mSG551, "\TZK_Texture_4_0_0\Picture\m_sg551.pac",20 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atjah = _type
+_type = _type + 1
+
+equipDefs set [_type, ["M24 SWS", si0, isGeneral, 1, "M24_Mag_xj400", "\TZK_Texture_4_0_0\Picture\LSR_uswp\m_M24.paa",20 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atm24mag = _type
+_type = _type + 1
+
+equipDefs set [_type, ["M82 AP", si0, isGeneral, 1, "M82A1_Mag_xj400", "\TZK_Texture_4_0_0\Picture\LSR_uswp\m_m82.paa",25 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atm82mag = _type
+_type = _type + 1
+
+equipDefs set [_type, ["M249 SPW ACOG", si0, isGeneral, 2, "M249SPW_Mag_xj400", "\TZK_Texture_4_0_0\Picture\LSR_uswp\m_m249.paa",35 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atM249 = _type
+_type = _type + 1
+
+equipDefs set [_type, ["M249 SPW ACOG SD", si0, isGeneral, 2, _mM249SD, "\TZK_Texture_4_0_0\Picture\LSR_uswp\m_m249sd.paa",50 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atM249SD = _type
+_type = _type + 1
+
+equipDefs set [_type, ["M240B", si0, isGeneral, 2, "M240_Mag_xj400", "\TZK_Texture_4_0_0\Picture\LSR_uswp\m_m240.paa",40 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atm240mag = _type
+_type = _type + 1
+
+equipDefs set [_type, ["M60e4", si0, isGeneral, 2, "M60_Mag_xj400", "\TZK_Texture_4_0_0\Picture\LSR_uswp\m_m60.paa",40 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atm60e4mag = _type
+_type = _type + 1
+
+equipDefs set [_type, ["MM1", si0, isGeneral, 8, "MM1Magazine", "\mm-1\m_mm1",10 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atMM1 = _type
+_type = _type + 1
+
+equipDefs set [_type, ["M60", si0, isGeneral, 2, "M60", "\dtaExt\equip\m\m_m60",20 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atM60 = _type
+_type = _type + 1
+
+equipDefs set [_type, ["LAW", si0, isGeneral, 2, "LAWLauncher", "\dtaExt\equip\m\m_lawlauncher",20 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atLAW = _type
+_type = _type + 1
+
+equipDefs set [_type, ["CarlGustav", si0, isGeneral, 6, "CarlGustavLauncher", "\dtaExt\equip\m\m_carlgustavlauncher",60 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atCarlGustav = _type
+_type = _type + 1
+
+equipDefs set [_type, ["Javelin", si0, isGeneral, 6, "WW4_JavelinMag", "\dtaExt\equip\m\m_carlgustavlauncher",1500 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atJav = _type
+_type = _type + 1
+
+equipDefs set [_type, ["Stinger", si0, isGeneral, 6, "AALauncher", "\dtaExt\equip\m\m_aalauncher",100 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atStinger = _type
+_type = _type + 1
+equipDefs set [_type, ["CarlGustav*", si0, isGeneral, 4, _carl4slot, "\dtaExt\equip\m\m_carlgustavlauncher",60 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atCarlGustav2 = _type
+_type = _type + 1
+equipDefs set [_type, ["Stinger*", si0, isGeneral, 4, _aa4slot, "\dtaExt\equip\m\m_aalauncher",100 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atStinger2 = _type
+_type = _type + 1
+
+
+equipDefs set [_type, ["Ingram Mag", si0, isHandgun, 1, "IngramMag", "\O\Guns\m_uzi.paa",5 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atIngram = _type
+_type = _type + 1
+
+equipDefs set [_type, ["Beretta Mag", si0, isHandgun, 1, "BerettaMag", "\O\Guns\zasobnik",5 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atBeretta = _type
+_type = _type + 1
+
+equipDefs set [_type, ["Glock Mag", si0, isHandgun, 1, "GlockMag", "\O\Guns\zasobnik",5 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atGlock = _type
+_type = _type + 1
+
+equipDefs set [_type, ["GlockS Mag", si0, isHandgun, 1, "GlockSMag", "\O\Guns\zasobnik.paa",5 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atGlockS = _type
+_type = _type + 1
+
+equipDefs set [_type, ["Revolver Mag", si0, isHandgun, 1, "RevolverMag", "\O_wp\m_revolever.paa",5 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atRevolver = _type
+_type = _type + 1
+
+; EAST AMMO
+
+equipDefs set [_type, ["AK74", si1, isGeneral, 1, "AK74", "\dtaExt\equip\m\m_ak74",0 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atAK74 = _type
+_type = _type + 1
+
+equipDefs set [_type, ["AK74M SD", si1, isGeneral, 1, "AK74_SD_Mag_xj400", "\TZK_Texture_4_0_0\Picture\c8x_russ\ak74Mag.paa",10]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atC8X_AK74M_SD = _type
+_type = _type + 1
+
+equipDefs set [_type, ["GP25 Vest", si1, isGeneral, 5, "GP25_Vest_xj400", "\TZK_Texture_4_0_0\Picture\c8x_russ\vogvest.paa",150]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atGP25Vest = _type
+_type = _type + 1
+
+equipDefs set [_type, ["GP25 Grenade", si1, isGeneral, 1, "GP25_Grenade_xj400", "\TZK_Texture_4_0_0\Picture\c8x_russ\gp25grenade.paa",5]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atGP25grenade = _type
+_type = _type + 1
+
+equipDefs set [_type, ["AK107", si1, isGeneral, 1, m_TZK_AK107, "\TZK_Texture_4_0_0\Picture\KEG_ak107\gear2.paa",15 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atAK107 = _type
+_type = _type + 1
+
+equipDefs set [_type, ["SVD", si1, isGeneral, 1, "SVDDragunov", "\dtaExt\equip\m\m_svddragunov",15 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atDragunov = _type
+_type = _type + 1
+
+equipDefs set [_type, ["SVU-A", si1, isGeneral, 1, m_TZK_SniperE, "\TZK_Texture_4_0_0\Picture\SVUmag.jpg",20 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atSVU = _type
+_type = _type + 1
+
+equipDefs set [_type, ["mVSS", si1, isGeneral, 1, "mVSS_Mag_xj400", "\TZK_Texture_4_0_0\Picture\vssmag.jpg",20 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atVSS = _type
+_type = _type + 1
+
+equipDefs set [_type, ["AS VAL", si1, isGeneral, 1, _mVAL, "\TZK_Texture_4_0_0\Picture\ICP_rfwp\m_val.paa",20 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atVAL = _type
+_type = _type + 1
+
+equipDefs set [_type, ["SVD-S.", si1, isGeneral, 1, "SVDS_Mag_xj400", "\TZK_Texture_4_0_0\Picture\ICP_rfwp\m_svd.paa",20 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atsvdmag = _type
+_type = _type + 1
+
+equipDefs set [_type, ["KSVK", si1, isGeneral, 1, "KSVK_Mag_xj400", "\TZK_Texture_4_0_0\Picture\KSVKmag.paa",25 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atksvk = _type
+_type = _type + 1
+
+equipDefs set [_type, ["RPK74", si1, isGeneral, 1, "RPK74_Mag_xj400", "\TZK_Texture_4_0_0\Picture\c8x_russ\rpk74Mag.paa",15 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atrpk74m = _type
+_type = _type + 1
+
+equipDefs set [_type, ["RPK74 SD", si1, isGeneral, 1, _mRPK74SD, "\TZK_Texture_4_0_0\Picture\c8x_russ\rpk74Mag.paa",20 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atrpk74SD = _type
+_type = _type + 1
+
+equipDefs set [_type, ["PKM", si1, isGeneral, 2, "PKM_Mag_xj400", "\TZK_Texture_4_0_0\Picture\ICP_rfwp\m_pk.paa",40 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atpkmmag = _type
+_type = _type + 1
+
+equipDefs set [_type, ["Groza", si1, isGeneral, 1, _mGroza, "\TZK_Texture_4_0_0\Picture\m_groza.paa",15 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atgroza = _type
+_type = _type + 1
+
+equipDefs set [_type, ["Bizon", si1, isGeneral, 1, "BizonMag", "\Bizon\m_bizon",5 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atBizon = _type
+_type = _type + 1
+
+equipDefs set [_type, ["PK", si1, isGeneral, 2, "PK", "\dtaExt\equip\m\m_pk",20 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atPK = _type
+_type = _type + 1
+
+equipDefs set [_type, ["6G30", si1, isGeneral, 4, "6G30Magazine", "\6G30\m_6g30",10 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_at6G30 = _type
+_type = _type + 1
+
+equipDefs set [_type, ["RPG", si1, isGeneral, 2, "RPGLauncher", "\dtaExt\equip\m\m_rpglauncher",20 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atRPG = _type
+_type = _type + 1
+
+equipDefs set [_type, ["AT4", si1, isGeneral, 6, "AT4Launcher", "\dtaExt\equip\m\m_at4launcher",60 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atAT4 = _type
+_type = _type + 1
+
+equipDefs set [_type, ["RPG29 Vampire", si1, isGeneral, 6, "ICPRPG29Mag", "\dtaExt\equip\m\m_carlgustavlauncher",1500 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atJavE = _type
+_type = _type + 1
+
+equipDefs set [_type, ["Strela", si1, isGeneral, 6, "9K32Launcher", "\dtaExt\equip\m\m_9k32launcher",100 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atStrela = _type
+_type = _type + 1
+equipDefs set [_type, ["AT4*", si1, isGeneral, 4, _at44slot, "\dtaExt\equip\m\m_at4launcher",60 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atAT42 = _type
+_type = _type + 1
+equipDefs set [_type, ["Strela*", si1, isGeneral, 4, _9k324slot, "\dtaExt\equip\m\m_9k32launcher",100 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atStrela2 = _type
+_type = _type + 1
+
+
+equipDefs set [_type, ["AEK-919K mag", si1, isHandgun, 1, "AEK919KMag", "\AEK919K\AEK919Kmag.jpg",10 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_ataek = _type
+_type = _type + 1
+
+equipDefs set [_type, ["Skorpion Mag", si1, isHandgun, 1, "SkorpionMag", "\O\Guns\zasobnik",5 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atSkorpion = _type
+_type = _type + 1
+
+equipDefs set [_type, ["Tokarev Mag", si1, isHandgun, 1, "TokarevMag", "\O\Guns\zasobnik",5 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atTokarev = _type
+_type = _type + 1
+
+; BOTH AMMO
+
+
+equipDefs set [_type, ["Remigton", siBoth, isGeneral, 1, "HuntingRifleMag", "\dtaExt\equip\m\m_m21",20 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atHRiffle = _type
+_type = _type + 1
+
+equipDefs set [_type, ["Rifle Mortar", siBoth, isGeneral, 2, "MortarM16_xj400", "\dtaExt\equip\m\m_mortar",20 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atM16Mortar = _type
+_type = _type + 1
+
+equipDefs set [_type, ["Rifle Mortar", siBoth, isGeneral, 2, "Mortar", "\dtaExt\equip\m\m_mortar",20 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atM4Mortar = _type
+_type = _type + 1
+
+equipDefs set [_type, ["Rifle Mortar", siBoth, isGeneral, 2, "MortarAK74_xj400", "\dtaExt\equip\m\m_mortar",20 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atAK74Mortar = _type
+_type = _type + 1
+
+equipDefs set [_type, ["Mortar(for AI)", siBoth, isGeneral, 2, "M16MortarLauncher_TZK_xj400", "\dtaExt\equip\m\m_mortar",20 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atM16MortarForAI = _type
+_type = _type + 1
+
+equipDefs set [_type, ["Mortar(for AI)", siBoth, isGeneral, 2, "AK74MortarLauncher_TZK_xj400", "\dtaExt\equip\m\m_mortar",20 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atAK74MortarForAI = _type
+_type = _type + 1
+
+equipDefs set [_type, ["Rifle Grenade", siBoth, isGeneral, 2, "GrenadeLauncher", "\dtaExt\equip\m\m_grenadelauncher",5 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atGrenade = _type
+_type = _type + 1
+
+equipDefs set [_type, ["Flare", siBoth, isGeneral, 1, "Flare", "\dtaExt\equip\m\m_flare",0 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atFlare = _type
+_type = _type + 1
+
+equipDefs set [_type, ["Flare Green", siBoth, isGeneral, 1, "FlareGreen", "\dtaExt\equip\m\m_flaregreen",0 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atFlareGreen = _type
+_type = _type + 1
+
+equipDefs set [_type, ["Flare Red", siBoth, isGeneral, 1, "FlareRed", "\dtaExt\equip\m\m_flarered",0 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atFlareRed = _type
+_type = _type + 1
+
+equipDefs set [_type, ["Flare Yellow", siBoth, isGeneral, 1, "FlareYellow", "\dtaExt\equip\m\m_flareyellow",0 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atFlareYellow = _type
+_type = _type + 1
+
+equipDefs set [_type, ["Kasapanos", siBoth, isGeneral, 2, "Kasap_xj400", "\TZK_Texture_4_0_0\Picture\kyl_kasapanos.jpg",25 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_kasap = _type
+_type = _type + 1
+
+equipDefs set [_type, ["Laser", siBoth, isGeneral, 6, "LaserDesignator", "\dtaExt\equip\m\m_carlgustavlauncher",50 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atLaser = _type
+_type = _type + 1
+
+firstEquip = _type
+
+equipDefs set [_type, ["Hand Grenade", siBoth, isGeneral, 1, "HandGrenade", "\dtaExt\equip\m\m_handgrenade",3 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_type = _type + 1
+
+equipDefs set [_type, ["Mine", siBoth, isGeneral, 2, magMine, "\dtaExt\equip\m\m_mine",50 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+etMine = _type
+_type = _type + 1
+
+equipDefs set [_type, ["Satchel", siBoth, isGeneral, 2, magSatchel, "\dtaExt\equip\m\m_PipeBomb",50 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_type = _type + 1
+
+equipDefs set [_type, ["Smoke Shell", siBoth, isGeneral, 1, "SmokeShell", "\dtaExt\equip\m\m_smokeshell",15 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_type = _type + 1
+
+equipDefs set [_type, ["Smoke Shell Green", siBoth, isGeneral, 1, "SmokeShellGreen", "\dtaExt\equip\m\m_smokeshell",15 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_type = _type + 1
+
+equipDefs set [_type, ["Smoke Shell Red", siBoth, isGeneral, 1, "SmokeShellRed", "\dtaExt\equip\m\m_smokeshellred",15 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_type = _type + 1
+
+equipDefs set [_type, ["Medkit", siBoth, isHandgun, 1, _medkit, "\data\sanita_02",50 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_etMed = _type
+_type = _type + 1
+equipDefs set [_type, ["Portable Mine", siBoth, isHandgun, 1, magPistolMine, "\dtaExt\equip\m\m_mine",100 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_etPortMine = _type
+_type = _type + 1
+equipDefs set [_type, ["Mine APE", -1, isGeneral, 1, "MineAPE", "\res\equip\m_APMineE.paa",20 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_etMineAPE = _type
+? bool_TZK_199_Mode: equipDefs select _type set [edSides, -1]
+_type = _type + 1
+
+
+
+
+
+
+weaponDefs = []; weaponSearch = []; weaponThrowPutList = []
+
+wdName = 0
+wdSides = 1
+wdType = 2
+wdObject = 3
+wdImage = 4
+wdAmmoTypes = 5
+wdcost = 6
+
+; weapon types
+wtPrimary = 0
+wtPrimaryOnly = 1
+wtSecondary = 2
+wtHandgun = 3
+wtBinocular = 4
+wtNVG = 5
+
+; WEAPONS
+
+_type = 0
+
+; WEST WEAPONS
+
+
+weaponDefs set [_type, ["M16", si0, wtPrimary, "M16MortarLauncher_TZK_xj400", "\dtaExt\equip\w\w_m16", [[_atM16,4],[_atM16Mortar,0],[_atM16MortarForAI,0]] ,0]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtM161 = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["M4 ACOG SD/M203", si0, wtPrimary, "M4_M203_ACOG_SD_xj400", "\TZK_Texture_4_0_0\Picture\LSR_uswp\w_m4acogm203sd.paa", [[_atLSR_M4_SD,4],[_atM203Vest,1],[_atM203Grenade,0],[_atFlare,0],[_atFlareGreen,0],[_atFlareRed,0],[_atFlareYellow,0]],40]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtM2031 = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["M16", -1, wtPrimary, "M16", "\dtaExt\equip\w\w_m16", [] ,0]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+weaponDefs set [_type, ["M16 M203", -1, wtPrimary, "M16GrenadeLauncher_TZK_xj400", "\dtaExt\equip\w\w_m16", [] ,0]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+weaponDefs set [_type, ["M4", -1, wtPrimary, "M4", "\dtaExt\equip\w\w_m4", [[_atM4,4],[_atM4Mortar,0]],0 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+weaponDefs set [_type, ["XMS", si0, wtPrimary, "XMS", "\XMS\w_XMS", [[_atM4,4],[_atM4Mortar,0]],15 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+weaponDefs set [_type, ["G36", si0, wtPrimary, "G36a", "\G36a\w_g36", [[_atG36,4]],50 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtG36a = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["HK", si0, wtPrimary, "HK", "\dtaExt\equip\w\w_hk", [[_atHK,4]],30]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+weaponDefs set [_type, ["MP5SD scope", si0, wtPrimary, _wMP5SD6, "\TZK_Texture_4_0_0\Picture\w_MP5SD6.paa", [[_atMP5,4]],70]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtMP5 = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["M21", si0, wtPrimary, "M21", "\dtaExt\equip\w\w_m21", [[_atM21,4]],70]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+weaponDefs set [_type, ["JAH SG551", si0, wtPrimary, _wSG551, "\TZK_Texture_4_0_0\Picture\w_sg551.pac", [[_atjah,4]],100 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtSG551 = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["M24 SWS", si0, wtPrimary, "M24_xj400", "\TZK_Texture_4_0_0\Picture\LSR_uswp\w_m24.paa", [[_atm24mag,4]],100 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtM24 = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["M82A1", si0, wtPrimary, "M82A1_xj400", "\TZK_Texture_4_0_0\Picture\LSR_uswp\w_m82a1.paa", [[_atm82mag,2]],100 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtM82 = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["M249 SPW ACOG", si0, wtPrimary, "M249SPW_ACOG_xj400", "\TZK_Texture_4_0_0\Picture\LSR_uswp\w_spw.paa", [[_atM249,2]],100 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtM249SPW = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["M249 SPW ACOG SD", si0, wtPrimary, _wM249SD, "\TZK_Texture_4_0_0\Picture\LSR_uswp\w_spw_sd.paa", [[_atM249SD,2]],120 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtM249SPWSD = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["M60", si0, wtPrimaryOnly, "M60", "\dtaExt\equip\w\w_m60", [[_atM60,4]],20 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+weaponDefs set [_type, ["M240B/M145", si0, wtPrimaryOnly, "M240_M145_xj400", "\TZK_Texture_4_0_0\Picture\LSR_uswp\w_m240opt.paa", [[_atm240mag,4]],80 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtM240M145 = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["M60e4", si0, wtPrimaryOnly, "M60e4_xj400", "\TZK_Texture_4_0_0\Picture\LSR_uswp\w_m60e4.paa", [[_atm60e4mag,4]],100 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtM260e4 = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["MM1", si0, wtPrimaryOnly, "MM1", "\MM-1\mm-1", [[_atMM1,1]],20 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+weaponDefs set [_type, ["LAW", si0, wtSecondary, "LAWLauncher", "\dtaExt\equip\w\w_lawlauncher", [[_atLAW,3]],40 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+weaponDefs set [_type, ["CarlGustav", si0, wtSecondary, "CarlGustavLauncher", "\dtaExt\equip\w\w_carlgustavlauncher", [[_atCarlGustav,1]],70 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+weaponDefs set [_type, ["Javelin", -1, wtSecondary, "WW4_JavelinLauncher", "\ww4_wpn\javelinlogo.paa", [[_atJav,1]],350 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+? bool_TZK_SEMod_Mode: weaponDefs select _type set [wdSides, si0]
+_type = _type + 1
+
+weaponDefs set [_type, ["Stinger", si0, wtSecondary, "AALauncher", "\dtaExt\equip\w\w_aalauncher", [[_atStinger,1]],100 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+weaponDefs set [_type, ["Ingram", si0, wtHandgun, "Ingram", "\O_wp\w_ingram.paa", [[_atIngram,4]],25 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+weaponDefs set [_type, ["Beretta", si0, wtHandgun, "Beretta", "\O\Guns\bereta", [[_atBeretta,4]],15 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+weaponDefs set [_type, ["Glock", si0, wtHandgun, "Glock", "\O\Guns\Glock", [[_atGlock,4]],15 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+weaponDefs set [_type, ["GlockS", si0, wtHandgun, "GlockS", "\O_wp\w_Glocksilent.paa", [[_atGlockS,4]],15 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+weaponDefs set [_type, ["Revolver", si0, wtHandgun, "Revolver", "\O_wp\w_sam.paa", [[_atRevolver,4]],15 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+; EAST WEAPONS
+
+weaponDefs set [_type, ["AK74", si1, wtPrimary, "AK74MortarLauncher_TZK_xj400", "\dtaExt\equip\w\w_ak74", [[_atAK74,4],[_atAK74Mortar,0],[_atAK74MortarForAI,0]],0 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtAK741 = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["AK74", -1, wtPrimary, "AK74", "\dtaExt\equip\w\w_ak74", [] ,0]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+weaponDefs set [_type, ["AK74 GP25", -1, wtPrimary, "AK74GrenadeLauncher_TZK_xj400", "\dtaExt\equip\w\w_ak74", [] ,0]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+weaponDefs set [_type, ["AK74M/GP25 1P29 SD", si1, wtPrimary, "AK74M_GP25_1P29_SD_xj400", "\TZK_Texture_4_0_0\Picture\c8x_russ\ak74m1P29gp25_sd.paa", [[_atC8X_AK74M_SD,4],[_atGP25Vest,1],[_atGP25grenade,0],[_atFlare,0],[_atFlareGreen,0],[_atFlareRed,0],[_atFlareYellow,0]],40 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtAK74GL = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["AK74 SU", si1, wtPrimary, "AK74SU", "\dtaExt\equip\w\w_ak74su", [[_atAK74,4]],0 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+weaponDefs set [_type, ["AK107", si1, wtPrimary, w_TZK_AK107, "\TZK_Texture_4_0_0\Picture\KEG_ak107\gear1.paa", [[_atAK107,4]],60 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtAK107 = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["Bizon", si1, wtPrimary, "Bizon", "\Bizon\w_bizon", [[_atBizon,4]],30 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+weaponDefs set [_type, ["Groza", si1, wtPrimary, _wGroza, "\TZK_Texture_4_0_0\Picture\w_grozasscope.paa", [[_atgroza,4]],70 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtGroza = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["SVD", si1, wtPrimary, "SVDDragunov", "\dtaExt\equip\w\w_svddragunov", [[_atDragunov,4]],70 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+weaponDefs set [_type, ["SVU-A", si1, wtPrimary, w_TZK_SniperE, "\TZK_Texture_4_0_0\Picture\SVU.jpg", [[_atSVU,4]],100 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtSVUA = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["VSS", si1, wtPrimary, "mVSS_xj400", "\TZK_Texture_4_0_0\Picture\vss.jpg", [[_atVSS,4]],80 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtVSS = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["AS VAL/PSO-1", si1, wtPrimary, _wVAL, "\TZK_Texture_4_0_0\Picture\ICP_rfwp\w_valpso.paa", [[_atVAL,4]],100 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtVAL = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["KSVK", si1, wtPrimary, "KSVK_xj400", "\TZK_Texture_4_0_0\Picture\KSVK.paa", [[_atksvk,4]],100 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtKSVK = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["SVD-S", si1, wtPrimary, "SVDS_xj400", "\TZK_Texture_4_0_0\Picture\ICP_rfwp\w_svds.paa", [[_atsvdmag,4]],100 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtSVDS = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["RPK74M 1P29", si1, wtPrimary, "RPK74M_1P29_xj400", "\TZK_Texture_4_0_0\Picture\c8x_russ\rpk741P29.paa", [[_atrpk74m,4]],100 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtRPK74 = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["RPK74M 1P29 SD", si1, wtPrimary, _wRPK74SD, "\TZK_Texture_4_0_0\Picture\c8x_russ\rpk741P29.paa", [[_atrpk74SD,4]],120 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtRPK74SD = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["PK", si1, wtPrimaryOnly, "PK", "\dtaExt\equip\w\w_pk", [[_atPK,4]],20 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+weaponDefs set [_type, ["PKM 1P29", si1, wtPrimaryOnly, "PKM_1P29_xj400", "\TZK_Texture_4_0_0\Picture\ICP_rfwp\w_pkm.paa", [[_atpkmmag,4]],80 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtPKM = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["6G30", si1, wtPrimaryOnly, "6G30", "\6G30\6G30", [[_at6G30,2]],20 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+weaponDefs set [_type, ["RPG", si1, wtSecondary, "RPGLauncher", "\dtaExt\equip\w\w_rpglauncher", [[_atRPG,3]],40 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+weaponDefs set [_type, ["AT4", si1, wtSecondary, "AT4Launcher", "\dtaExt\equip\w\w_at4launcher", [[_atAT4,1]],70 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+weaponDefs set [_type, ["RPG29 Vampire", -1, wtSecondary, "ICPRPG29", "\ICPrpg7\rpg26\rpg29_w.paa", [[_atJavE,1]],350 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+? bool_TZK_SEMod_Mode: weaponDefs select _type set [wdSides, si1]
+_type = _type + 1
+
+weaponDefs set [_type, ["Strela", si1, wtSecondary, "9K32Launcher", "\dtaExt\equip\w\w_9k32launcher", [[_atStrela,1]],100 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+weaponDefs set [_type, ["AEK-919K", si1,  wtHandgun, "AEK919K", "\AEK919K\aek919k.jpg", [[_ataek,4]],50 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtAEK919 = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["Skorpion", si1, wtHandgun, "Skorpion", "\O\Guns\Skorpion", [[_atSkorpion,4]],25 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+weaponDefs set [_type, ["Tokarev", si1, wtHandgun, "Tokarev", "\O\Guns\Tokarev", [[_atTokarev,4]],15 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+; BOTH WEAPONS
+
+weaponDefs set [_type, ["Remigton", -1, wtPrimary, "HuntingRifle", "\O_wp\w_remigton", [[_atHRiffle,4]],100 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtRemigton = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["Kasapanos", siBoth, wtSecondary, "KasaThrow_xj400", "\TZK_Texture_4_0_0\Picture\kyl_kasapanos.jpg", [[_kasap,3]],40 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtKasap = _type
+_type = _type + 1
+weaponThrowPutList set [count weaponThrowPutList, weaponSearch select (count weaponSearch) - 1]
+
+weaponDefs set [_type, ["Laser", siBoth, wtSecondary, "LaserDesignator", "\dtaExt\equip\w\w_carlgustavlauncher", [[_atLaser,1]],50 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+weaponDefs set [_type, ["HyperLauncher", -1, wtSecondary, _hyperL, "\dtaExt\equip\w\w_carlgustavlauncher", [[_atCarlGustav2,0],[_atStinger2,0],[_atAT42,0],[_atStrela2,0]],150 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+
+
+weaponDefs set [_type, ["Binoculars", siBoth, wtBinocular, "Binocular", "\dtaExt\equip\w\w_binocular", [], 0 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_type = _type + 1
+weaponDefs set [_type, ["NV Goggles", -1, wtNVG, "NVGoggles", "\dtaExt\equip\w\w_nvgoggles", [], 0 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtNVGOrigin = _type
+_type = _type + 1
+weaponDefs set [_type, ["NVG stat", siBoth, wtNVG, _nvg0, "\dtaExt\equip\w\w_nvgoggles", [], 0 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtNVG0 = _type
+_type = _type + 1
+weaponDefs set [_type, ["NVG statF", siBoth, wtNVG, _nvg1, "\dtaExt\equip\w\w_nvgoggles", [], 100 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtNVG1 = _type
+_type = _type + 1
+
+
+
+call loadFile "impl\Equip.sqf"
+
+? bool_TZK_Vanilla_Mode: goto "VanillaMode"
+exit
+#VanillaMode
+weaponDefs select _wtM161 set [wdObject, "M16"]; weaponSearch set [_wtM161, "M16"]
+_entry = weaponDefs select _wtM2031; _entry set [wdObject, "M16GrenadeLauncher"]; weaponSearch set [_wtM2031, "M16GrenadeLauncher"]; _entry set [wdName, "M16 M203"]; _entry set [wdImage, "\dtaExt\equip\w\w_m16grenadelauncher.paa"]; _entry set [wdAmmoTypes, [[_atM16,4],[_atGrenade,3],[_atFlare,0],[_atFlareGreen,0],[_atFlareRed,0],[_atFlareYellow,0]] ];_entry set [wdcost,5]
+weaponDefs select _wtAK741 set [wdObject, "AK74"]; weaponSearch set [_wtAK741, "AK74"]; weaponDefs select _wtAK741 set [wdAmmoTypes, [[_atAK74,4]]]
+_entry = weaponDefs select _wtAK74GL; _entry set [wdObject, "AK74GrenadeLauncher"]; weaponSearch set [_wtAK74GL, "AK74GrenadeLauncher"]; _entry set [wdName, "AK74 GP25"]; _entry set [wdImage, "\dtaExt\equip\w\w_ak74grenadelauncher.paa"]; _entry set [wdAmmoTypes, [[_atAK74,4],[_atGrenade,3],[_atFlare,0],[_atFlareGreen,0],[_atFlareRed,0],[_atFlareYellow,0]] ];_entry set [wdcost,5]
+{weaponDefs select _x set [wdSides, -1]} forEach [_wtMP5, _wtSG551, _wtM24, _wtM82, _wtM249SPW, _wtM249SPWSD, _wtM240M145, _wtM260e4, _wtAK107, _wtGroza, _wtSVUA, _wtVSS, _wtVAL, _wtKSVK, _wtSVDS, _wtRPK74, _wtRPK74SD, _wtPKM, _wtAEK919, _wtKasap]
+; weaponDefs select _wtNVGOrigin set [wdSides, siBoth]
+weaponDefs select _wtG36a set [wdSides, siBoth]
+weaponDefs select _wtRemigton set [wdSides, siBoth]
+
+{equipDefs select _x set [edSides, -1]} forEach [_atM16MortarForAI, _atAK74MortarForAI]
+{equipDefs select _x set [edObject, "Mortar"]} forEach [_atM16Mortar, _atAK74Mortar]
+? bool_TZK_199_Mode: {weaponDefs select _x set [wdSides, -1]} forEach [_wtNVG0, _wtNVG1], weaponDefs select _wtNVGOrigin set [wdSides, siBoth]
+
+; EOF

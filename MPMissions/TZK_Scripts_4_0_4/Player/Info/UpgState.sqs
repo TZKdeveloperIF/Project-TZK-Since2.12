@@ -1,0 +1,39 @@
+; args: [params]
+
+_value = _this select 0
+
+_upg = _value % (count upgDefs)
+_value = (_value - _upg)/(count upgDefs)
+
+_state = _value % 3
+_value = (_value - _state)/3
+
+_si = _value
+
+;player globalchat format["_type=%1, _si=%2, _groupBuyer=%3", _type, _si, _groupBuyer]
+? !isServer && upgMatrix select _si select _upg == _state: exit
+
+? siPlayer == siCiv && _state == 2: format["%1 upgraded %2.", sideNames select _si, (upgDefs select _upg select 0) call funcLocStr] exec "\TZK_Scripts_4_0_4\Player\LogSpectator.sqs"
+? siPlayer != _si: goto "SkipInfoDisplay"
+
+? _state == 0 && upgMatrix select _si select _upg == 1: player sidechat format ["All Command Center destroyed. Upgrade Failed: %1", (upgDefs select _upg select 0) call funcLocStr]
+? _state == 0 && upgMatrix select _si select _upg == 2: player sidechat format ["Upgrade Downgraded: %1", (upgDefs select _upg select 0) call funcLocStr]
+? _state == 1: player sidechat format ["Upgrade Started: %1", (upgDefs select _upg select 0) call funcLocStr]
+? _state == 2: player sidechat format ["Upgrade Complete: %1", (upgDefs select _upg select 0) call funcLocStr]
+
+#SkipInfoDisplay
+upgMatrix select _si set [_upg, _state]
+
+? upgCCdistance == _upg && _state == 2: CCdistMax set [_si, distMaxCCUpgraded]
+
+? upgGunshipRocket == _upg && _state == 2 && !isServer: [_si, _upg, "HeliRocket"] exec "\TZK_Scripts_4_0_4\Common\ReEquip\ReEquip.sqs"
+
+? upgWorkers == _upg && _state == 2: maxWorkers set [_si, 20]
+
+? upgRedTopRange == _upg && _state == 2 && !isServer: [_si, _upg, "4xAA"] exec "\TZK_Scripts_4_0_4\Common\ReEquip\ReEquip.sqs"
+
+? upgRedTopMagazines == _upg && _state == 2 && !isServer: [_si, _upg, "4xAA"] exec "\TZK_Scripts_4_0_4\Common\ReEquip\ReEquip.sqs"
+
+? upgPlaneAfterBurner == _upg: bAfterBurner = _state == 2
+
+? upgSpoofMissile == _upg: bSpoofMissile = _state == 2

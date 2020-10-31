@@ -1,0 +1,9 @@
+@( !(isNull (mhq select si0)) && !(isNull (mhq select si1)) )
+
+_mhqAlive = [true, true]
+_mcvAlive = [false, false]
+
+_remind = [timeLimit - 60*60, 10*60, 5*60, 1*60, -10000]
+_ir = 0
+
+[true, true, false, false, _ir] exec "\TZK_Scripts_4_0_4\Server\Loop\Server.sqs"

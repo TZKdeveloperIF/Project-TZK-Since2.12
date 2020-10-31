@@ -1,0 +1,16 @@
+; args: [si, gi, Item Index, Item Value]
+
+_si = _this select 0
+_gi = _this select 1
+_item_Index = _this select 2
+_item_Value = _this select 3
+
+@!(mutexVote)
+mutexVote = true
+
+_value = _si + 2*_gi + 2*GroupsNum*_item_Index + 2*GroupsNum*(count Vote_Matrix)*_item_Value
+pvVoteStart0 = _value; publicVariable "pvVoteStart0"
+[_value] exec "\TZK_Scripts_4_0_4\Player\Msg\hVoteStart.sqs"
+
+~sendDelay
+mutexVote = false

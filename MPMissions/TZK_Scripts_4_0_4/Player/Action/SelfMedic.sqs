@@ -1,0 +1,9 @@
+; args: soldier
+
+? bool_TZK_199_Mode: _this playMove "CombatToTreated"; _this playMove "Combat"; goto "MovePlayEnd"
+if (substr [getMove _this, 0, 5] == "lying") Then {_this playMove "LyingToTreatedLying"} Else {_this playMove "CombatToTreated"; _this playMove "Combat"}
+
+#MovePlayEnd
+? !boole_Refresh_Radio && _this == player: boole_Refresh_Radio = true
+~9
+? alive _this: if ({_x == "Medkit_xj400"} count magazines _this > 0 && damage _this > 0) Then {_this removeMagazine "Medkit_xj400", _this setDamage 0}
