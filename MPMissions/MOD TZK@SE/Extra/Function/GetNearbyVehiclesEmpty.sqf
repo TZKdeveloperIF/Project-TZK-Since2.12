@@ -1,6 +1,3 @@
-// arguments: [pos, distance, types, except]
-// returns: [ [vcl, type, dist], ...]
-
 private ["_x", "_posOrigin", "_distMax", "_types", "_pos", "_except", "_vehicles", "_type", "_count", "_distance"];
 
 _posOrigin = _this select 0;

@@ -1,0 +1,39 @@
+; args: [group, timePatrol, timeDestroy, sensor]
+
+_group = _this select 0
+_timePatrol = _this select 1
+_timeDestroy = _this select 2
+_sensor = _this select 3
+_posPatrol = getPos _sensor
+
+#Update
+	mutexResPatrolScript = false
+	  ~(120 - 15 + random 30)
+	@!(mutexResPatrolScript)
+	mutexResPatrolScript = true
+
+	? (count (units _group)) == 0 : goto "Update"
+
+  _group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "NORMAL"
+  
+  ; TODO { _x disableAI "TARGET" } foreach (units _group)
+
+	? time < _timePatrol : goto "Patrol"
+	? time > _timeDestroy : goto "Destroy"
+	_res = [-1,0]
+	{ if (_x == driver vehicle _x) then { _res = [getPos _x, siRes, []] call funcGetClosestEnemyTown; if ((_res select 0) != -1) then { _flag = (towns select (_res select 0)) select tdFlag; _x doMove ([getPos _flag,4, 4] call funcGetRandomPos) } } } forEach (units _group)
+	? (_res select 0) != -1 : goto "Update"
+
+
+#Patrol
+	? time < [60*10, 0] select dev: goto "Update"
+	_posOld = _posPatrol
+	_posPatrol = [_posOld] call loadFile "Extra\UpdateResPatrolPos.sqf"
+
+	{ if (_x == driver vehicle _x) then { _x doMove ([_posPatrol, 10, 20] call funcGetRandomPos) } } foreach (units _group)
+		; player globalchat Format ["UpdatePatrollingResTank.sqs: Patrol: _posPatrol=%1", _posPatrol]
+		goto "Update"
+
+#Destroy
+	[_group] call loadFile "Extra\UpdateResPatrolDestroy.sqf"
+	goto "Update"
