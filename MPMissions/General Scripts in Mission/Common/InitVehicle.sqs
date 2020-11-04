@@ -13,6 +13,7 @@ _this exec "Common\InitVehicle_Stable.sqs"
 ? _typeName == "2S6_DKM_xj400": _vehicle addEventHandler ["Fired", {_this exec "\TZK_Scripts_4_0_4\Common\EH\Fired_2S6.sqs"}]
 ? _typeName == "M270_M29064_xj400": _vehicle addEventHandler ["Fired", {_this exec "\TZK_Scripts_4_0_4\Common\EH\Fired_M270.sqs"}]
 ? _typeName == "TOS1_TZK_xj400": _vehicle addEventHandler ["Fired", {_this exec "\TZK_Scripts_4_0_4\Common\EH\Fired_TOS1.sqs"}]
+? _typeName == "2S6_DKM_xj400" || _typeName == "Vulcan_TZK_xj400": _vehicle addEventHandler ["Fired", {_this exec "Common\EH\Fired_4xAA.sqs"}]
 
 ? bool_TZK_Vanilla_Mode: goto "SkipVanilla"
 ? _type in (typesHowitzer + typesHeavyTank + typesLightTank): _vehicle addEventHandler ["Fired", "_this exec {\TZK_Objects\Scripts\gunrec.sqs}"]

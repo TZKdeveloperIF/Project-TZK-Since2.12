@@ -340,8 +340,9 @@ townGroups=[ [], [], [] ]; workerGroups = [ [], [] ]; patrolGroups = []
 mutexDynamicInitializeGroups = false; [] exec "\TZK_Scripts_4_0_4\Common\Dynamic\GroupsClear.sqs"
 timeReinforceTown = 3*60
 
-? isServer: [] exec "\TZK_Scripts_4_0_4\Server\InitServer.sqs"
-? !isServer: [] exec "\TZK_Scripts_4_0_4\Player\InitClient.sqs"
+? isServer && !bool_TZK_SEMod_Mode: [] exec "\TZK_Scripts_4_0_4\Server\InitServer.sqs"
+? isServer && bool_TZK_SEMod_Mode: [] exec "Extra\InitServer.sqs"
+? !isServer: [] exec "Player\InitClient.sqs"
 
 
 ; New contents added in later version. **BEFORE Any Delay.**

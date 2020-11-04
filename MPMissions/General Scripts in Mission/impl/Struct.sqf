@@ -1,0 +1,1 @@
+{structMarker set [_x, _mMG]} forEach [_staticMG, _staticGL, _staticAT];
