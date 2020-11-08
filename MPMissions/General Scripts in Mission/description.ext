@@ -2754,22 +2754,22 @@ class VoteMenu: Menu {
 	controlsBackground[] = {Sub_BG_Dark, Sub_BG_Light};
 	objects[] = { };
 	class Sub_BG_Dark: Dark_BG_Window {
-		x = 0.17;
+		x = 0.10;
 		y = 0.075;
 		h = 0.61;
-		w = 0.66;
+		w = 0.80;
 	};
 	class Sub_BG_Light: Light_BG_Window {
-		x = 0.17;
+		x = 0.10;
 		y = 0.075;
 		h = 0.61;
-		w = 0.66;
+		w = 0.80;
 	};
 	
 	controls[] = {
 		MenuTitle, ExitMenu, AdminBtn, 
-		ItemsLabel, ResultLabel, SelectionsLabel, 
-		Items0, Result0, Selections0, Items1, Result1, Selections1, Items2, Result2, Selections2, Items3, Result3, Selections3, Items4, Result4, Selections4, Items5, Result5, Selections5, Items6, Result6, Selections6, Items7, Result7, Selections7, 
+		ItemsLabel, ResultLabel, SelectionsLabel, ConfirmLabel, 
+		Items00, Result00, Selections00, ConfirmBtn00, Items01, Result01, Selections01, ConfirmBtn01, Items02, Result02, Selections02, ConfirmBtn02, Items03, Result03, Selections03, ConfirmBtn03, Items04, Result04, Selections04, ConfirmBtn04, Items05, Result05, Selections05, ConfirmBtn05, Items06, Result06, Selections06, ConfirmBtn06, Items07, Result07, Selections07, ConfirmBtn07, 
 	};
 	class MenuTitle: GuiLargeText {
 		style = ST_CENTER;
@@ -2781,7 +2781,7 @@ class VoteMenu: Menu {
 	};
 	
 	class ItemsBase: Text {
-		x = 0.18;
+		x = 0.11;
 		h = 0.04;
 		w = 0.3;
 		sizeEx = 0.022;
@@ -2790,7 +2790,7 @@ class VoteMenu: Menu {
 	};
 	class ResultBase: Text {
 		style = ST_RIGHT;
-		x = 0.445;
+		x = 0.375;
 		h = 0.04;
 		w = 0.125;
 		sizeEx = 0.022;
@@ -2798,7 +2798,7 @@ class VoteMenu: Menu {
 		colorText[] = {0.75,0.75,0.75,1};
 	};
 	class SelectionsBase: ComboBox {
-		x = 0.715;
+		x = 0.645;
 		h = 0.035;
 		w = 0.1;
 		text = "";
@@ -2815,6 +2815,14 @@ class VoteMenu: Menu {
 		// colorActive[] = {0,0,1,1}; // useless for comboBox of OFP.
 		// colorDisabled[] = {0,1,0,1}; // useless for comboBox of OFP.
 	};
+	class ConfirmBase: Button {
+		x = 0.785+0.01;
+		h = 0.035;
+		w = 0.06;
+		text = "Vote";
+		colorText[] = {0.75,0.75,0.75,1};
+		colorBackground[] = {0,0,0,0};
+	};
 	class ItemsLabel:ItemsBase {
 		y = 0.12;
 		sizeEx = 0.025;
@@ -2822,115 +2830,163 @@ class VoteMenu: Menu {
 	};
 	class ResultLabel: ResultBase {
 		y = 0.12;
-		x = 0.435;
+		x = 0.365;
 		h = 0.04;
 		w = 0.135;
 		sizeEx = 0.025;
 		text = "Result";
 	};
 	class SelectionsLabel: Text {
-		x = 0.715;
+		x = 0.645;
 		y = 0.12;
 		h = 0.04;
 		w = 0.1;
 		text = "Your Vote";
 		colorText[] = {0.75,0.75,0.75,1};
 	};
+	class ConfirmLabel: Text {
+		x = 0.785;
+		y = 0.12;
+		h = 0.04;
+		w = 0.1;
+		text = "Confirm";
+		colorText[] = {0.75,0.75,0.75,1};
+	};
 
-	class Items0: ItemsBase {
+	class Items00: ItemsBase {
 		idc = IDC + 100+0;
 		y = 0.16 + 0.04*0;
 	};
-	class Result0: ResultBase {
+	class Result00: ResultBase {
 		idc = IDC + 300+0;
 		y = 0.16 + 0.04*0;
 	};
-	class Selections0: SelectionsBase {
+	class Selections00: SelectionsBase {
 		idc = IDC + 200+0;
 		y = 0.1625 + 0.04*0;
 	};
-	class Items1: ItemsBase {
+	class ConfirmBtn00: ConfirmBase {
+		action = "btnValue00 = 2^0";
+		idc = IDC + 400+0;
+		y = 0.1625 + 0.04*0;
+	};
+	class Items01: ItemsBase {
 		idc = IDC + 100+1;
 		y = 0.16 + 0.04*1;
 	};
-	class Result1: ResultBase {
+	class Result01: ResultBase {
 		idc = IDC + 300+1;
 		y = 0.16 + 0.04*1;
 	};
-	class Selections1: SelectionsBase {
+	class Selections01: SelectionsBase {
 		idc = IDC + 200+1;
 		y = 0.1625 + 0.04*1;
 	};
-	class Items2: ItemsBase {
+	class ConfirmBtn01: ConfirmBase {
+		action = "btnValue00 = 2^1";
+		idc = IDC + 400+1;
+		y = 0.1625 + 0.04*1;
+	};
+	class Items02: ItemsBase {
 		idc = IDC + 100+2;
 		y = 0.16 + 0.04*2;
 	};
-	class Result2: ResultBase {
+	class Result02: ResultBase {
 		idc = IDC + 300+2;
 		y = 0.16 + 0.04*2;
 	};
-	class Selections2: SelectionsBase {
+	class Selections02: SelectionsBase {
 		idc = IDC + 200+2;
 		y = 0.1625 + 0.04*2;
 	};
-	class Items3: ItemsBase {
+	class ConfirmBtn02: ConfirmBase {
+		action = "btnValue00 = 2^2";
+		idc = IDC + 400+2;
+		y = 0.1625 + 0.04*2;
+	};
+	class Items03: ItemsBase {
 		idc = IDC + 100+3;
 		y = 0.16 + 0.04*3;
 	};
-	class Result3: ResultBase {
+	class Result03: ResultBase {
 		idc = IDC + 300+3;
 		y = 0.16 + 0.04*3;
 	};
-	class Selections3: SelectionsBase {
+	class Selections03: SelectionsBase {
 		idc = IDC + 200+3;
 		y = 0.1625 + 0.04*3;
 	};
-	class Items4: ItemsBase {
+	class ConfirmBtn03: ConfirmBase {
+		action = "btnValue00 = 2^3";
+		idc = IDC + 400+3;
+		y = 0.1625 + 0.04*3;
+	};
+	class Items04: ItemsBase {
 		idc = IDC + 100+4;
 		y = 0.16 + 0.04*4;
 	};
-	class Result4: ResultBase {
+	class Result04: ResultBase {
 		idc = IDC + 300+4;
 		y = 0.16 + 0.04*4;
 	};
-	class Selections4: SelectionsBase {
+	class Selections04: SelectionsBase {
 		idc = IDC + 200+4;
 		y = 0.1625 + 0.04*4;
 	};
-	class Items5: ItemsBase {
+	class ConfirmBtn04: ConfirmBase {
+		action = "btnValue00 = 2^4";
+		idc = IDC + 400+4;
+		y = 0.1625 + 0.04*4;
+	};
+	class Items05: ItemsBase {
 		idc = IDC + 100+5;
 		y = 0.16 + 0.04*5;
 	};
-	class Result5: ResultBase {
+	class Result05: ResultBase {
 		idc = IDC + 300+5;
 		y = 0.16 + 0.04*5;
 	};
-	class Selections5: SelectionsBase {
+	class Selections05: SelectionsBase {
 		idc = IDC + 200+5;
 		y = 0.1625 + 0.04*5;
 	};
-	class Items6: ItemsBase {
+	class ConfirmBtn05: ConfirmBase {
+		action = "btnValue00 = 2^5";
+		idc = IDC + 400+5;
+		y = 0.1625 + 0.04*5;
+	};
+	class Items06: ItemsBase {
 		idc = IDC + 100+6;
 		y = 0.16 + 0.04*6;
 	};
-	class Result6: ResultBase {
+	class Result06: ResultBase {
 		idc = IDC + 300+6;
 		y = 0.16 + 0.04*6;
 	};
-	class Selections6: SelectionsBase {
+	class Selections06: SelectionsBase {
 		idc = IDC + 200+6;
 		y = 0.1625 + 0.04*6;
 	};
-	class Items7: ItemsBase {
+	class ConfirmBtn06: ConfirmBase {
+		action = "btnValue00 = 2^6";
+		idc = IDC + 400+6;
+		y = 0.1625 + 0.04*6;
+	};
+	class Items07: ItemsBase {
 		idc = IDC + 100+7;
 		y = 0.16 + 0.04*7;
 	};
-	class Result7: ResultBase {
+	class Result07: ResultBase {
 		idc = IDC + 300+7;
 		y = 0.16 + 0.04*7;
 	};
-	class Selections7: SelectionsBase {
+	class Selections07: SelectionsBase {
 		idc = IDC + 200+7;
+		y = 0.1625 + 0.04*7;
+	};
+	class ConfirmBtn07: ConfirmBase {
+		action = "btnValue00 = 2^7";
+		idc = IDC + 400+7;
 		y = 0.1625 + 0.04*7;
 	};
 	// regular expression: 0([;:,])

@@ -82,6 +82,19 @@ ctrlShow [_idcRadioONBG, bool_TZK_RadioReceive_199]
 
 [_idcMoney, _idcScore, _idcIncomeRatio, _idcIncomeRatioPlayer, _idcTowns, _idcIncome, _idcTransferGroup, _idcGroupMarkers, _idcWorkerBehaviour, _idcUpgradeList ] call loadFile "\TZK_Scripts_4_0_4\Player\Dialog\Options_Update.sqf"
 
+; 4.0.4 Patch
+_townCount = count towns; _towns = 0; _income = 0;
+{ if ((_x select tdSide) == siPlayer) then { _towns=_towns+1; _income=_income+(_x select tdValue) } } forEach towns;
+
+_factor = 1; if (time > 60*90) Then {_factor = 1.2}; if (time > 60*150) Then {_factor = 1.5}; _factor = [1, _factor] select IncomeGrow_TZK;
+_income = _income*incomex*_factor;
+_players = count (_groups - [_groupCommander] - _groupsAI); _aileaders = count _groupsAI;
+_incomePlayer = 0; _incomeAiLeaders = 0;
+if (_players > 0) then {_incomePlayer = _income*(1-_incomeRatio)*_incomeRatioPlayer/_players; _incomePlayer = _incomePlayer - _incomePlayer % 1};
+if (_aileaders > 0) then {_incomeAiLeaders = _income*(1-_incomeRatio)*(1-_incomeRatioPlayer)/_aileaders; _incomeAiLeaders = _incomeAiLeaders - _incomeAiLeaders % 1};
+_incomeCommander = _income - _incomePlayer*_players - _incomeAiLeaders*_aileaders; _incomeCommander = _incomeCommander - _incomeCommander % 1;
+ctrlSetText [_idcIncome, format["Income You/Side: %1/%2", [_incomePlayer, _incomeCommander] select (groupPlayer == _groupCommander), _income]];
+
 
 ; REPORTS
 report = lbCurSel _idcReports
@@ -343,6 +356,6 @@ goto "Update"
 #Vote_Menu
 	closeDialog 0
 	; ~0.1
-	[] exec "\TZK_Scripts_4_0_4\Player\Dialog\VoteMenu.sqs"
+	[] exec "Player\Dialog\VoteMenu.sqs"
 	Exit
 ; EOF

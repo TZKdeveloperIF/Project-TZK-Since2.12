@@ -61,7 +61,7 @@ ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bo
 	? _selGroup != lbCurSel _idcCurrent : _selGroup = lbCurSel _idcCurrent; goto "NewGroupSelected"
 	? _selOrder != lbCurSel _idcOrder : _selOrder = lbCurSel _idcOrder; goto "NewOrderSelected"
 
-	_set = -1; _i=0; _c = count aiSettingDefs; while "_i<_c && _set == -1" do { if ( lbCurSel (_idcSetting+_i) != (_lastSetting select _i) ) then { _set = _i }; _i=_i+1 }
+	_set = -1; _i=0; _c = count aiSettingDefs; while "_i<_c && _set == -1" do {if !(lbCurSel (_idcSetting+_i) in [_lastSetting select _i, -1]) then {_set = _i}; _i=_i+1}
 	? _set != -1 : goto "SendSetting"
 
 	? btnSendOrder: btnSendOrder = false; goto "SendOrder"
