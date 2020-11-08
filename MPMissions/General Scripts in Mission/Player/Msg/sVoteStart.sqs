@@ -1,0 +1,20 @@
+; args: [si, gi, Item Index, Item Value]
+
+_si = _this select 0
+_gi = _this select 1
+_item_Index = _this select 2
+_item_Value = _this select 3
+
+@!(mutexVote)
+mutexVote = true
+? time > 2*60*60 && (Vote_Matrix select _item_Index select 0 == "Income Ratio" || Vote_Matrix select _item_Index select 0 == "View Distance"): _logic = "Logic" camCreate [0,0,0]; _logic globalChat "Not allow vote view distance or income ratio after 2 hours."; deleteVehicle _logic, goto "RecordYourVote"
+
+_value = _si + 2*_gi + 2*GroupsNum*_item_Index + 2*GroupsNum*(count Vote_Matrix)*_item_Value
+pvVoteStart0 = _value; publicVariable "pvVoteStart0"
+[_value] exec "Player\Msg\hVoteStart.sqs"
+
+#RecordYourVote
+Vote_Matrix select _item_Index set [2, _item_Value]
+
+~sendDelay
+mutexVote = false

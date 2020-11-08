@@ -280,11 +280,11 @@ vehicleTuggedServer = []; vehicleTugServer = []
 [] exec "\TZK_Scripts_4_0_4\Common\MsgAIGroupOrder2.sqs"
 [] exec "\TZK_Scripts_4_0_4\Common\MsgAIGroupOrder3.sqs"
 [] exec "\TZK_Scripts_4_0_4\Common\MsgAIGroupOrder4.sqs"
-[] exec "\TZK_Scripts_4_0_4\Common\MsgAIGroupSetting0.sqs"
-[] exec "\TZK_Scripts_4_0_4\Common\MsgAIGroupSetting1.sqs"
-[] exec "\TZK_Scripts_4_0_4\Common\MsgAIGroupSetting2.sqs"
-[] exec "\TZK_Scripts_4_0_4\Common\MsgAIGroupSetting3.sqs"
-[] exec "\TZK_Scripts_4_0_4\Common\MsgAIGroupSetting4.sqs"
+[] exec "Common\MsgAIGroupSetting0.sqs"
+[] exec "Common\MsgAIGroupSetting1.sqs"
+[] exec "Common\MsgAIGroupSetting2.sqs"
+[] exec "Common\MsgAIGroupSetting3.sqs"
+[] exec "Common\MsgAIGroupSetting4.sqs"
 [] exec "\TZK_Scripts_4_0_4\Common\MsgSetWPCO.sqs"
 [] exec "\TZK_Scripts_4_0_4\Common\MsgVehicleAttached.sqs"
 [] exec "\TZK_Scripts_4_0_4\Common\MsgDetachVehicle.sqs"
@@ -340,14 +340,13 @@ townGroups=[ [], [], [] ]; workerGroups = [ [], [] ]; patrolGroups = []
 mutexDynamicInitializeGroups = false; [] exec "\TZK_Scripts_4_0_4\Common\Dynamic\GroupsClear.sqs"
 timeReinforceTown = 3*60
 
-? isServer && !bool_TZK_SEMod_Mode: [] exec "\TZK_Scripts_4_0_4\Server\InitServer.sqs"
-? isServer && bool_TZK_SEMod_Mode: [] exec "Extra\InitServer.sqs"
-? !isServer: [] exec "Player\InitClient.sqs"
+? isServer: [] exec "Server\InitServer.sqs"
+?!isServer: [] exec "Player\InitClient.sqs"
 
 
 ; New contents added in later version. **BEFORE Any Delay.**
 ; ================================================================================TZK_4.0.0 Block================================================================================
-; Vote System. Format of elements: [name, items[], default value]
+; Vote System. Format of elements: [name, items[], player selected value, server vote result]
 Vote_Matrix = []
 _voteItemArrayName = "Vote_Item_Weather"; call (_voteItemArrayName + " = [{Sunny}, {Cloudy}, {Overcast}, {Rainy}, {Stromy}, {Misty}, {Foggy}, {Random}]")
 Vote_Matrix set [ count Vote_Matrix, ["Weather", call _voteItemArrayName, 0, 0] ]
@@ -371,10 +370,13 @@ Vote_Matrix set [ count Vote_Matrix, ["Resistance", Vote_Item_Resistance, restan
 Vote_Item_IncomeRate = ["1x", "2x"];
 Vote_Matrix set [ count Vote_Matrix, ["Income Ratio", Vote_Item_IncomeRate, 0, 0] ]
 
+Vote_Item_IncomeGrow = ["OFF", "ON"];
+Vote_Matrix set [ count Vote_Matrix, ["Income Grow", Vote_Item_IncomeGrow, 0, 0] ]
+
 
 pvVoteStart0 = -1; pvVoteReceived0 = -1; pvVoteResult0 = -1; pvVoteAdmin = false
 ? isServer: mutexVote = false
-? !isNull player: [] exec "\TZK_Scripts_4_0_4\Player\Msg\mVoteReceived.sqs", lvVoteReceived0 = -1, mutexVote = false, [] exec "\TZK_Scripts_4_0_4\Player\Msg\mVoteResult.sqs"
+? !isNull player: [] exec "\TZK_Scripts_4_0_4\Player\Msg\mVoteReceived.sqs", lvVoteReceived0 = -1, mutexVote = false, [] exec "Player\Msg\mVoteResult.sqs"
 
 ; Weather.
 pvWeather_Value = 0; pvWeather_Delay = 2*60; pvWeather_Cycle = 10*60
@@ -395,6 +397,7 @@ Period_TZK = 0
 ; Time Limit
 ; Resistance
 ; Income
+IncomeGrow_TZK = false
 
 ; ================================================================================TZK_4.0.0 Block================================================================================
 

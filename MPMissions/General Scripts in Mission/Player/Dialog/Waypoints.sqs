@@ -120,7 +120,7 @@ ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bo
 		goto "Init"
 
 #ClearAllCO
-	player groupchat "Clearing all CO waypoints ..."
+	player groupchat "Clearing all CO waypoints. Don't close dialog before it finished, otherwise clearing will halt..."
 	indexWayPointSelected = -1
 	_j = 0
 	#ClearAllCO_Check
@@ -142,6 +142,7 @@ ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bo
 	Exit
   
 #Init
+? call dlgUpdated: exit
 	lbClear _idcList
 	? !_co: goto "Init_SkipCO"
 	_list = wpCO select siPlayer

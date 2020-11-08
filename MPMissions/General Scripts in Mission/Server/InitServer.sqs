@@ -90,7 +90,7 @@ _i = 0; countTargetMarkers = 10; while "_i < countTargetMarkers" do {call Format
 ; ? bool_TZK_199_Mode: [] exec "\TZK_Scripts_4_0_4\Server\Msg\mRadioChannel.sqs"
 
 ? !(isNull player): forceMap true
-? !(isNull player): [] exec "\TZK_Scripts_4_0_4\Player\InitClient.sqs"
+? !(isNull player): [] exec "Player\InitClient.sqs"
 
 pingTimes = [[], []]
 blockedPlayers = [[], []]
@@ -162,13 +162,13 @@ _si = si1
 [] exec "\TZK_Scripts_4_0_4\Server\SendStartMoney.sqs"
 [si0] exec "\TZK_Scripts_4_0_4\Server\UpdateRespawnAI.sqs"; [si1] exec "\TZK_Scripts_4_0_4\Server\UpdateRespawnAI.sqs"
 
-[] exec "\TZK_Scripts_4_0_4\Server\Start\Income.sqs"
+[] exec "Server\Start\Income.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\Start\Server.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\SendPing.sqs"
 
 [] exec "\TZK_Scripts_4_0_4\Server\DynamicInitializationMarker.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\DynamicInitializationTrigger.sqs"
-[] exec "Extra\DynamicInitializationGroup.sqs"
+if bool_TZK_SEMod_Mode Then {[] exec "Extra\DynamicInitializationGroup.sqs"} Else {[] exec "\TZK_Scripts_4_0_4\Server\DynamicInitializationGroup.sqs"}
 
 ; after data initialized and before forcemap canceled
 ~2
@@ -188,7 +188,7 @@ call loadFile "\TZK_Scripts_4_0_4\Server\Init\Vote.sqf"
 ; format of Vote_Result elements: [voted value, mass of voter, si, gi]
 ; Vote_Options_Name = []; {Vote_Options_Name set [count Vote_Options_Name, _x select 0]} forEach Vote_Matrix
 
-[] exec "\TZK_Scripts_4_0_4\Server\Msg\mVoteReceived.sqs"
+[] exec "Server\Msg\mVoteReceived.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\Vote\Mass_Reset.sqs"
 
 estimatedTimeLeft 7200
