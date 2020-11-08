@@ -1,0 +1,14 @@
+; Effects won't work on dedicated server.
+? isServer && isNull player : exit
+_timeAbort = (1 + random 2) * 60
+
+#Start
+@ !isNull pvAfterBurnerOFF || _time > _timeAbort
+? isNull pvAfterBurnerOFF: [] exec "\TZK_Scripts_4_0_4\Player\Effect\PlaneAB_Msg_OFF.sqs"; exit
+_plane = pvAfterBurnerOFF; pvAfterBurnerOFF = objNull
+
+BurningPlanes = BurningPlanes - [_plane]
+
+[] exec "\TZK_Scripts_4_0_4\Player\Effect\PlaneAB_Msg_OFF.sqs"; exit
+
+goto "Start"

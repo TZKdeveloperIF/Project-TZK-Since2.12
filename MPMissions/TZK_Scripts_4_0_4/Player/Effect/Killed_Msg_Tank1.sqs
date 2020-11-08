@@ -1,0 +1,13 @@
+_timeAbort = (1 + random 2) * 60
+#Start
+
+@ !isNull pvKilledTank1 || _time > _timeAbort
+? isNull pvKilledTank1: [] exec "\TZK_Scripts_4_0_4\Player\Effect\Killed_Msg_Tank1.sqs"; exit
+_vehicle = pvKilledTank1
+pvKilledTank1 = objNull
+
+[_vehicle] exec "\TZK_Scripts_4_0_4\Player\Effect\Killed_csla_burn_Unit_Heavy.sqs"
+
+[] exec "\TZK_Scripts_4_0_4\Player\Effect\Killed_Msg_Tank1.sqs"; exit
+
+goto "Start"

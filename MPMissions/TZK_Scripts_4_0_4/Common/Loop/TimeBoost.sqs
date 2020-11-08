@@ -1,0 +1,15 @@
+@ (time > 60)
+; Although BIKI said that skipTime should executed on server, it requires being executed on all clients. So do those weather commands. Probably they're local but not global effect.
+
+_DLapse = 60
+_IncTime = ((24/_DLapse)/60)
+
+; Time acceleration loop
+
+#loop
+_lastTime = time
+~0.04
+
+skipTime (_IncTime * (time - _lastTime))
+? _time > 5*60: [] exec "\TZK_Scripts_4_0_4\Common\Loop\TimeBoost.sqs"; exit
+goto "loop"

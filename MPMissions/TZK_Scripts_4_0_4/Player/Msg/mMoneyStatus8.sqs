@@ -1,0 +1,19 @@
+_timeAbort = (1 + random 2) * 60
+#Start
+
+@ pvMoney8 != -1 || _time > _timeAbort
+? pvMoney8 == -1: [] exec "\TZK_Scripts_4_0_4\Player\Msg\mMoneyStatus8.sqs"; exit
+
+_amount = pvMoney8
+
+@ pvMoneyGroup8 != -1
+_value = pvMoneyGroup8
+
+pvMoney8 = -1
+pvMoneyGroup8 = -1
+
+[_amount, _value] exec "\TZK_Scripts_4_0_4\Player\Msg\hMoneyStatus.sqs"
+
+[] exec "\TZK_Scripts_4_0_4\Player\Msg\mMoneyStatus8.sqs"; exit
+
+goto "Start"

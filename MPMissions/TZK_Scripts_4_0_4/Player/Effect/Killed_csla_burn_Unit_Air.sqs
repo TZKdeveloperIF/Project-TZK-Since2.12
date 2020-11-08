@@ -1,0 +1,106 @@
+; Script copy from csla_mod and modified to fit CTI game.
+
+; Plan to execute this script via killed EventHandlers
+_vehicle = _this Select 0
+? isNull _vehicle : exit
+; @( ((getPos _vehicle) select 2) < 5 )
+; this step has been done via Killed-EH on local client
+
+; Public variable thus remote players could know the vehicle is dead and create effect. This step is necessary because the "Killed" EventHandlers is LOCAL.
+; pvEffectKilledHeli = _vehicle; publicVariable "pvEffectKilledHeli"
+
+; Remain Explosition, Dust and Smoke
+
+;_______________________; FUEL EXPLOSION ;_______________________;
+_color1 = [0.58,0.57,0.55, 1] 
+_color2 = [8.8,8.8,0, 0.99] 
+_color3 = [0.009, 0.00, 0, 0.99]
+
+_radius1 = 0.1;
+_radius2 = 10;
+
+
+Drop ["cl_fire", "", "Billboard", 1, 1, [(Random _radius1)-(_radius1 / 2), (Random _radius1)-(_radius1 / 2), (Random _radius1)-(_radius1 / 2)], [(Random _radius2)-(_radius2 / 2), (Random _radius2)-(_radius2 / 2), (Random _radius2)-(_radius2 / 2)], 1, -10, (Random 1), 0, [0.1, 8, 0], [_color1], [0, 1, 0], 0.2, 2, "", "",_srot]
+
+Drop ["cl_fire", "", "Billboard", 1, 1, [(Random _radius1)-(_radius1 / 2), (Random _radius1)-(_radius1 / 2), (Random _radius1)-(_radius1 / 2)], [(Random _radius2)-(_radius2 / 2), (Random _radius2)-(_radius2 / 2), (Random _radius2)-(_radius2 / 2)], 1, -10, (Random 1), 0, [0.1, 8, 0], [_color1], [0, 1, 0], 0.2, 2, "", "",_srot]
+
+Drop ["cl_fire", "", "Billboard", 1, 1, [(Random _radius1)-(_radius1 / 2), (Random _radius1)-(_radius1 / 2), (Random _radius1)-(_radius1 / 2)], [(Random _radius2)-(_radius2 / 2), (Random _radius2)-(_radius2 / 2), (Random _radius2)-(_radius2 / 2)], 1, -10, (Random 1), 0, [0.1, 8, 0], [_color2], [0, 1, 0], 0.2, 2, "", "",_srot]
+
+Drop ["cl_fire", "", "Billboard", 1, 1, [(Random _radius1)-(_radius1 / 2), (Random _radius1)-(_radius1 / 2), (Random _radius1)-(_radius1 / 2)], [(Random _radius2)-(_radius2 / 2), (Random _radius2)-(_radius2 / 2), (Random _radius2)-(_radius2 / 2)], 1, -10, (Random 1), 0, [0.1, 8, 0], [_color2], [0, 1, 0], 0.2, 2, "", "",_srot]
+
+Drop ["cl_fire", "", "Billboard", 1, 1, [(Random _radius1)-(_radius1 / 2), (Random _radius1)-(_radius1 / 2), (Random _radius1)-(_radius1 / 2)], [(Random _radius2)-(_radius2 / 2), (Random _radius2)-(_radius2 / 2), (Random _radius2)-(_radius2 / 2)], 1, -10, (Random 1), 0, [0.1, 8, 0], [_color3], [0, 1, 0], 0.2, 2, "", "",_srot]
+
+Drop ["cl_fire", "", "Billboard", 1, 1, [(Random _radius1)-(_radius1 / 2), (Random _radius1)-(_radius1 / 2), (Random _radius1)-(_radius1 / 2)], [(Random _radius2)-(_radius2 / 2), (Random _radius2)-(_radius2 / 2), (Random _radius2)-(_radius2 / 2)], 1, -10, (Random 1), 0, [0.1, 8, 0], [_color3], [0, 1, 0], 0.2, 2, "", "",_srot]
+
+Drop ["cl_fire", "", "Billboard", 1, 1, [(Random _radius1)-(_radius1 / 2), (Random _radius1)-(_radius1 / 2), (Random _radius1)-(_radius1 / 2)], [(Random _radius2)-(_radius2 / 2), (Random _radius2)-(_radius2 / 2), (Random _radius2)-(_radius2 / 2)], 1, -10, (Random 1), 0, [0.1, 8, 0], [_color1, _color2], [0, 1, 0], 0.2, 2, "", "",_srot]
+
+Drop ["cl_fire", "", "Billboard", 1, 1, [(Random _radius1)-(_radius1 / 2), (Random _radius1)-(_radius1 / 2), (Random _radius1)-(_radius1 / 2)], [(Random _radius2)-(_radius2 / 2), (Random _radius2)-(_radius2 / 2), (Random _radius2)-(_radius2 / 2)], 1, -10, (Random 1), 0, [0.1, 8, 0], [_color1, _color2], [0, 1, 0], 0.2, 2, "", "",_srot]
+
+Drop ["cl_fire", "", "Billboard", 1, 1, [(Random _radius1)-(_radius1 / 2), (Random _radius1)-(_radius1 / 2), (Random _radius1)-(_radius1 / 2)], [(Random _radius2)-(_radius2 / 2), (Random _radius2)-(_radius2 / 2), (Random _radius2)-(_radius2 / 2)], 1, -10, (Random 1), 0, [0.1, 8, 0], [_color2, _color3], [0, 1, 0], 0.2, 2, "", "",_srot]
+
+Drop ["cl_fire", "", "Billboard", 1, 1, [(Random _radius1)-(_radius1 / 2), (Random _radius1)-(_radius1 / 2), (Random _radius1)-(_radius1 / 2)], [(Random _radius2)-(_radius2 / 2), (Random _radius2)-(_radius2 / 2), (Random _radius2)-(_radius2 / 2)], 1, -10, (Random 1), 0, [0.1, 8, 0], [_color2, _color3], [0, 1, 0], 0.2, 2, "", "",_srot]
+
+Drop ["cl_fire", "", "Billboard", 1, 1, [(Random _radius1)-(_radius1 / 2), (Random _radius1)-(_radius1 / 2), (Random _radius1)-(_radius1 / 2)], [(Random _radius2)-(_radius2 / 2), (Random _radius2)-(_radius2 / 2), (Random _radius2)-(_radius2 / 2)], 1, -10, (Random 1), 0, [0.1, 8, 0], [_color1, _color3], [0, 1, 0], 0.2, 2, "", "",_srot]
+
+Drop ["cl_fire", "", "Billboard", 1, 1, [(Random _radius1)-(_radius1 / 2), (Random _radius1)-(_radius1 / 2), (Random _radius1)-(_radius1 / 2)], [(Random _radius2)-(_radius2 / 2), (Random _radius2)-(_radius2 / 2), (Random _radius2)-(_radius2 / 2)], 1, -10, (Random 1), 0, [0.1, 8, 0], [_color1, _color3], [0, 1, 0], 0.2, 2, "", "",_srot]
+
+
+;_______________________; DUST EFFECT ;_______________________;
+; @ (GetPos _vehicle Select 2) < 2
+
+_null = "scalar bool array string 0xfcffffef"
+
+Private ["_sensor"];
+
+_sensor = "EmptyDetector" camCreate [0,0,0];
+_calcH = {Private["_result"]; _sensor SetPos [_p Select 0, _p Select 1, 0]; _result = GetPos _sensor Select 2; _result};
+
+_hdColorDust   = [[0.784314, 0.772549, 0.717647, 0.5], [0.784314, 0.772549, 0.717647, 0.3], [0.784314, 0.772549, 0.717647, 0.1], [0.784314, 0.772549, 0.717647, 0]]
+_hdColorWater = [[0.8,0.8,0.9,0],[0.9,0.9,1,0.7],[0.8,0.8,0.9,0],[0.8,0.8,0.9,0]]
+
+_color = _hdColorDust
+_shape = "cl_basic"
+
+_radius = 20
+
+_p = GetPosASL _vehicle
+_x = _p Select 0
+_y = _p Select 1
+
+_d = 0.0
+; ============TZK_4.0.4 Design with "Up" supporting============
+_up = _p call funcVectorUp; _up = [_up, 1/(_up call funcVectorLength)] call funcVectorScale
+_ux = _up select 0; _uy = _up select 1; _uz = _up select 2; _posSmoke = []
+
+; ? !boole_Dead_Tank_Burning : goto "SkipExplode"
+#loop4
+_sa = Sin _d; _sb = Cos _d
+_posSmoke set [0, _x + ((_sa-_sb)*_ux*_uy + _sa*_uz*_uz) * (_radius + 3)]; _posSmoke set [1, _y + (_sb*_uz*_uz-(_sa-_sb)*_ux*_ux) * (_radius + 3)]; _posSmoke set [2,1]
+? -(_sa*_ux+_sb*_uy)*_uz * (_radius + 3) > 1: _posSmoke set [2, -(_sa*_ux+_sb*_uy)*_uz * (_radius + 3)]
+; Drop [_shape , "" , "Billboard" , 120 , 3 , [_x + (_xs * (_radius + 3)), _y + (_ys * (_radius + 3)), 0] , [1.8,2.8,0] , 1 , 2 , 1.55 , 1 , [2.5,6] , _color , [0] , 0.2 , 0.2 , "" , "" , ""] 
+Drop [_shape , "" , "Billboard" , 120 , 3 , _posSmoke , [1.8,2.8,0] , 1 , 2 , 1.55 , 1 , [2.5,6] , _color , [0] , 0.2 , 0.2 , "" , "" , ""]
+
+_d = _d + 4.8 
+
+? Abs(_vehicle Call _calcH) < 3: _color = _hdColorWater; _shape = "cl_water"; _nasrat = 1
+
+? (_d < 361) : Goto "loop4"
+#SkipExplode
+
+? Abs(_vehicle Call _calcH) < 3: _color = _hdColorWater; _shape = "cl_water"; _nasrat = 1
+? _nasrat == 1 : goto "Quit"
+
+;_______________________; FIRE && SMOKE ;_______________________;
+@ Speed _vehicle < 2
+~0.0001+(Random 10)
+[[(Random 1), (Random 1), (Random -2)], [0,0,0], (300 + (Random 300)), _vehicle, 10] Exec "\TZK_Scripts_4_0_4\Player\Effect\Killed_csla_burn_script_smoke.sqs"
+[(240 + (Random 70)), 3, _vehicle] Exec "\TZK_Scripts_4_0_4\Player\Effect\Killed_csla_burn_script_fire.sqs"
+[[(Random 1), (Random 1), (Random -2)], [0,0,0], (240 + (Random 70)), _vehicle] Exec "\TZK_Scripts_4_0_4\Player\Effect\Killed_csla_burn_script_spark.sqs"
+
+#Quit
+deleteVehicle _sensor
+exit
+
+; Copyright ?2003 MikeODonnell
+; All Rights Reserved
+

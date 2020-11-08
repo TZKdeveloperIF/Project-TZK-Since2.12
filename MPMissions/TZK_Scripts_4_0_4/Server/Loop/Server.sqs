@@ -1,0 +1,42 @@
+; args: [_mhqAlive select si0, _mhqAlive select si1, _mcvAlive select si0, _mcvAlive select si1, _ir]
+_mhqAlive = [_this select 0, _this select 1]; _mcvAlive = [_this select 2, _this select 3]
+_ir = _this select 4
+_remind = [timeLimit - 60*60, timeLimit - 60*90, timeLimit - 60*150, 10*60, 5*60, 1*60, -10000]
+_timeNextRemind = timeLimit - (_remind select _ir)
+
+#Update
+~2
+	? _time > 5*60: [_mhqAlive select si0, _mhqAlive select si1, _mcvAlive select si0, _mcvAlive select si1, _ir] exec "\TZK_Scripts_4_0_4\Server\Loop\Server.sqs"; exit
+	? pvGameOver != -1 : [] exec "\TZK_Scripts_4_0_4\Common\Dynamic\TriggerGameEnd.sqs"; exit
+
+	? (timeLimit != 0 && time > timeLimit): goto "TimeLimitReached"
+
+	? _mhqAlive select si0 && !(alive (mhq select si0)) : _mhqAlive set [si0, false]; si0 exec "\TZK_Scripts_4_0_4\Server\CheckWinDestruction.sqs"
+	? _mhqAlive select si1 && !(alive (mhq select si1)) : _mhqAlive set [si1, false]; si1 exec "\TZK_Scripts_4_0_4\Server\CheckWinDestruction.sqs"
+
+	? !(_mhqAlive select si0) && (alive (mhq select si0)) : _mhqAlive set [si0, true]
+	? !(_mhqAlive select si1) && (alive (mhq select si1)) : _mhqAlive set [si1, true]
+	
+	? (count (MCV select si0)) > 0 && (_mcvAlive select si0) : _mcvAlive set [si0, false]; { if (alive _x) then {_mcvAlive set [si0, true]} } forEach (MCV select si0); if !(_mcvAlive select si0) then { si0 exec "\TZK_Scripts_4_0_4\Server\CheckWinDestruction.sqs" }
+	? (count (MCV select si0)) > 0 && !(_mcvAlive select si0) : { if (alive _x) then {_mcvAlive set [si0, true]} } forEach (MCV select si0)
+	
+	? (count (MCV select si1)) > 0 && (_mcvAlive select si1) : _mcvAlive set [si1, false]; { if (alive _x) then {_mcvAlive set [si1, true]} } forEach (MCV select si1); if !(_mcvAlive select si1) then { si1 exec "\TZK_Scripts_4_0_4\Server\CheckWinDestruction.sqs" }
+	? (count (MCV select si1)) > 0 && !(_mcvAlive select si1) : { if (alive _x) then {_mcvAlive set [si1, true]} } forEach (MCV select si1)
+	
+	? pvRepairMHQ != -1 : pvRepairMHQ exec "\TZK_Scripts_4_0_4\Server\RepairMHQ.sqs"; pvRepairMHQ = -1
+	? pvRepairMCV != -1 : [pvRepairMCV, pvRepairMCV_object] exec "\TZK_Scripts_4_0_4\Server\RepairMCV.sqs"; pvRepairMCV = -1; pvRepairMCV_object = objNull
+
+	? timeLimit != 0 && time > _timeNextRemind : goto "Remind"
+  goto "Update"
+
+#Remind
+  [_remind select _ir] exec "\TZK_Scripts_4_0_4\Server\Info\TimeLimitRemind.sqs"
+  _ir = _ir + 1
+  _timeNextRemind = timeLimit - (_remind select _ir)
+  goto "Update"
+  
+#TimeLimitReached
+	pvGameOver = (1) + 2*(0)
+	PublicVariable "pvGameOver"
+	[] exec "\TZK_Scripts_4_0_4\Common\Dynamic\TriggerGameEnd.sqs"
+	exit

@@ -1,0 +1,15 @@
+; args: [value]
+
+_value = _this select 0
+; _time = 0
+@(_time > 5 || _value == lvVoteReceived0)
+? _value == lvVoteReceived0: lvVoteReceived0 = -1, exit
+
+_si = _value % 2; _value = (_value - _si)/2
+_gi = _value % GroupsNum; _value = (_value - _gi)/GroupsNum
+_item_Index = _value % (count Vote_Matrix); _value = (_value - _item_Index)/(count Vote_Matrix)
+; _item_Value = _value
+
+
+_string = format ["Server failed to receife your vote on %1. This probably due to other players' being voting, or your network problem. Try vote again later.", Vote_Matrix select _item_Index select 0]
+_logic = "Logic" camCreate [0,0,0]; _logic globalChat _string; deleteVehicle _logic

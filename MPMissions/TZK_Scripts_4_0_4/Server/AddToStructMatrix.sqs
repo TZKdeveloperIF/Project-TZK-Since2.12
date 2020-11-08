@@ -1,0 +1,20 @@
+; args: [si, type, object]
+
+_si = _this select 0
+_type = _this select 1
+_object = _this select 2
+
+_list = (structMatrix select _si) select _type
+
+@!(mutexEditStructMatrix)
+mutexEditStructMatrix = true
+? _object in _list: mutexEditStructMatrix = false; exit
+
+? _type in structsShelter: _index = _list find objNull
+? !(_type in structsShelter): _index = count _list
+? _index == -1: _index = count _list
+_list set [_index, _object]
+
+mutexEditStructMatrix = false
+
+[_object, _type, _si, 1, _index] exec "\TZK_Scripts_4_0_4\Server\SendStructBuilt.sqs"

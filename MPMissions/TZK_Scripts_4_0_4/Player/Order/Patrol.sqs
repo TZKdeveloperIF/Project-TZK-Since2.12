@@ -1,0 +1,36 @@
+; args: [unit, pos, radius, (wp index)]
+
+_unit = _this select 0
+_pos = _this select 1
+_radius = _this select 2
+? count _this > 3: _pos = wpPlayer select (_this select (count _this) - 1)
+
+? !(alive _unit): exit
+? !(alive driver vehicle _unit): exit
+
+_uid = [_unit, siPlayer, giPlayer] call funcCalcUID
+? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
+_id = (playerOrderID select _uid) + 1; [_uid, _id] exec "\TZK_Scripts_4_0_4\Player\Order\New.sqs"
+
+_unit groupChat "Roger, patrolling area."
+
+#GetRandomPos
+_posMove = [_pos, _radius-25, _radius+25] call funcGetRandomPos
+_timeAbort = time + 2*60*60; _timeMove = time - 1
+
+#Move
+	? _pos select 0 < 0 || _pos select 1 < 0: _unit groupChat "WP not defined, order abort.", exit
+	? time > _timeMove: [_unit, _posMove] call funcMove, _timeMove = time + 30
+	~10
+	? !(alive _unit): exit
+	? time > _timeAbort: _unit groupChat "Having patrolled for 2 hour. Order aborted."; exit
+	? call orderCheck: exit
+	? ([_posMove, getPos _unit] call funcDistH) > 20: goto "Move"
+
+_timeWait = time + 60 + _radius/4
+#Wait
+	~10
+	? !(alive _unit): exit
+	? call orderCheck: exit
+	? time > _timeWait: goto "GetRandomPos"
+	goto "Wait"

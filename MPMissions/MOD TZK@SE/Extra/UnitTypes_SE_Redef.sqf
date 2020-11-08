@@ -40,7 +40,7 @@ comment "Adjust the udName, udModel and udImage of planes.";
 	_entry set [udImage, "\rktf15c\modpic.paa"];
 } forEach [_a10LGB8, _a10AA, _a10FFAR];
 _entry = unitDefs select _B2; _entry set [udFactoryType, 2^stAir];
-_entry = unitDefs select _a10BB; _entry set [udName, "F35 Base Buster"]; _entry set [udModel, "rkt_F35JSF"]; _entry set [udImage, "\rkt_f35\f35_pic.paa"]; _entry select udScripts set [count (_entry select udScripts), "Common\Equip\LGB8.sqs"];
+_entry = unitDefs select _a10BB; _entry set [udName, "F35 Base Buster"]; _entry set [udModel, "rkt_F35JSF"]; _entry set [udImage, "\rkt_f35\f35_pic.paa"]; _entry select udScripts set [count (_entry select udScripts), "\TZK_Scripts_4_0_4\Common\Equip\LGB8.sqs"];
 _entry = unitDefs select _a10Tomahawk; _entry set [udName, "F35 Stealth Nuke"]; _entry set [udModel, "rkt_F35JSF_Stealth"]; _entry set [udImage, "\rkt_f35\f35_pic.paa"];
 {;
 	_entry = unitDefs select _x;
@@ -48,7 +48,7 @@ _entry = unitDefs select _a10Tomahawk; _entry set [udName, "F35 Stealth Nuke"]; 
 	_entry set [udModel, "su30mki_p1"]; if (_x == _su25LGB8) then {_entry set [udModel, "su30mki_p1b"]}; _entry set [udImage, "\acwc_su30mk\n\su30_pic1.paa"];
 } forEach [_su25, _su25LGB8, _su25AA, _su25Rocket];
 _entry = unitDefs select _su39; _entry set [udFactoryType, 2^stAir];
-_entry = unitDefs select _su25BB; _entry set [udName, "Su57 Base Buster"]; _entry set [udModel, "PAK_FA"]; _entry select udScripts set [count (_entry select udScripts), "Common\Equip\LGB8.sqs"]; _entry set [udImage, "\acwc_su30mk\n\su30_pic1.paa"];
+_entry = unitDefs select _su25BB; _entry set [udName, "Su57 Base Buster"]; _entry set [udModel, "PAK_FA"]; _entry select udScripts set [count (_entry select udScripts), "\TZK_Scripts_4_0_4\Common\Equip\LGB8.sqs"]; _entry set [udImage, "\acwc_su30mk\n\su30_pic1.paa"];
 _entry = unitDefs select _su25Raduga; _entry set [udName, "Su57 Raduga"]; _entry set [udModel, "PAK_FA_Nuke"]; _entry set [udImage, "\acwc_su30mk\n\su30_pic1.paa"];
 
 comment "TZK use AAOnly A10/Su25 and allow LF build them. It's optional for SE to modify their udModel. Here, their udFactoryType are redefined.";
@@ -81,10 +81,11 @@ _entry = unitDefs select _m109artW; _entry set [udModel, "M109_paladin"]; _entry
 _entry = unitDefs select utMCV0; _entry set [udModel, "DVDUS_M113A3_MCVW"];
 _entry = unitDefs select utMHQ0; _entry set [udModel, "DVDUS_M113A3_MHQW"];
 _entry = unitDefs select _c130W; _entry set [udName, "C-160 Transall"]; _entry set [udModel, "IkaR_C160_Transall"];
+_entry = unitDefs select _c130supportW; _entry set [udName, "C-160 Support"]; _entry set [udModel, "IkaR_C160_Transall"];
 _entry = unitDefs select _ah64W; _entry set [udModel, "fz_ah64d"]; 
-_entry = unitDefs select _tigerW; _entry set [udCost, [22000, 44000] select PricingMode]; _entry set [udName, "RA66"]; _entry set [udModel, "DKMM_RAH66"]; _entry set [udScripts, ["Common\Equip\AH1.sqs"]]; _entry set [udImage, "\DKMM_RAH66\rah-66.paa"];
-_entry = unitDefs select _ah1W2;  _entry set [udName, "AH64 AT"];_entry set [udModel, "fz_ah64d_AT"]; _entry select udScripts set [0, "Common\Equip\AH64.sqs"]; _entry set [udImage, "\APAC\iah64"]; 
-_entry = unitDefs select _ah64W2; _entry set [udName, "RA66 AT"]; _entry set [udModel, "DKMM_RAH66_AT"]; _entry select udScripts set [0, "Common\Equip\AH1.sqs"]; _entry set [udImage, "\DKMM_RAH66\rah-66.paa"]; 
+_entry = unitDefs select _tigerW; _entry set [udCost, [22000, 44000] select PricingMode]; _entry set [udName, "RAH66"]; _entry set [udModel, "DKMM_RAH66"]; _entry set [udScripts, ["\TZK_Scripts_4_0_4\Common\Equip\AH1.sqs"]]; _entry set [udImage, "\DKMM_RAH66\rah-66.paa"];
+_entry = unitDefs select _ah1W2;  _entry set [udName, "AH64 AT"];_entry set [udModel, "fz_ah64d_AT"]; _entry select udScripts set [0, "\TZK_Scripts_4_0_4\Common\Equip\AH64.sqs"]; _entry set [udImage, "\APAC\iah64"]; 
+_entry = unitDefs select _ah64W2; _entry set [udName, "RAH66 AT"]; _entry set [udModel, "DKMM_RAH66_AT"]; _entry select udScripts set [0, "\TZK_Scripts_4_0_4\Common\Equip\AH1.sqs"]; _entry set [udImage, "\DKMM_RAH66\rah-66.paa"]; 
 _entry = unitDefs select _irNO_uh60; _entry set [udName, "UH60 (Tug)"]; _entry set [udCost, [3000, 6000] select PricingMode]; _entry set [udModel, "UH60_CSLA_xj400"];
 _entry = unitDefs select _uh60W; _entry set [udCost, [3000, 6000] select PricingMode]; 
 
@@ -111,7 +112,7 @@ _entry = unitDefs select _bmpE; _entry set [udModel, "WW3_BMP1"];
 _entry = unitDefs select _bmp2E; _entry set [udModel, "WW3_BMP2"];
 _entry = unitDefs select _bmp2at; _entry set [udModel, "WW3_BMP2"];
 _entry = unitDefs select _shilkaE; _entry set [udModel, "RUS_ZSU"];
-_entry = unitDefs select _tunguskaE;  _entry set [udName, "4xAA"]; _entry set [udModel, "RUS_ZSU"]; _entry select udScripts set [0, "Common\Equip\DefAA.sqs"]; _entry set [udImage, "izsu"];
+_entry = unitDefs select _tunguskaE;  _entry set [udName, "4xAA"]; _entry set [udModel, "RUS_ZSU"]; _entry select udScripts set [0, "\TZK_Scripts_4_0_4\Common\Equip\DefAA.sqs"]; _entry set [udImage, "izsu"];
 _entry = unitDefs select _bmp2cannon; _entry set [udModel, "WW3_BMP2"];
 _entry = unitDefs select _bmp2aa; _entry set [udModel, "WW3_BMP2"];
 _entry = unitDefs select _T72E; _entry set [udName, "T72"]; _entry set [udCost, [2500, 5000] select PricingMode]; _entry set [udModel, "ICP_T72B"]; _entry set [udImage, "it72"];
@@ -133,7 +134,7 @@ _entry = unitDefs select _soldierLAWW1; _entry set [udModel, "DVDUS_SoldierWSMAW
 _entry = unitDefs select _soldierATW1; _entry set [udModel, "DVDUS_SoldierWSMAW2"];
 _entry = unitDefs select _javW1; _entry set [udModel, "DVDUS_SoldierWJAV"];
 _entry = unitDefs select _soldierAAW1; _entry set [udModel, "DVDUS_SoldierWAA"];
-_entry = unitDefs select _m1a2Wtown; _entry set [udModel, "DVDUS_M1A1"];
+_entry = unitDefs select _m1a1townW; _entry set [udModel, "DVDUS_M1A1"];
 _entry = unitDefs select _ah64W2town; _entry set [udModel, "fz_ah64d_AT"];
 
 _entry = unitDefs select _soldierMGE1; _entry set [udModel, "icp_infmgun"];

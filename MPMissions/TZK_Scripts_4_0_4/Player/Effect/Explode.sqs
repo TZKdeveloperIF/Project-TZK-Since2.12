@@ -1,0 +1,10 @@
+; args: [logic, information string]
+
+_logic = _this select 0
+_string = _this select 1
+
+
+? _string == "Nuclear": _logic exec "\TZK_Scripts_4_0_4\Player\Effect\NuclearMissileExplode.sqs"
+
+? _string == "Rocket" : _logic exec "\TZK_Scripts_4_0_4\Player\Effect\Explosion_FAE220.sqs"
+? _string == "FAE220" : [getPosASL _logic, [0,0,0]] exec "\TZK_Objects\Scripts\Fired_EH\Rocket_FAE220_Impact.sqs"
