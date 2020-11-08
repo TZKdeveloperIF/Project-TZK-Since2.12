@@ -1,0 +1,17 @@
+#Start
+
+@(pvClearBuy != -1)
+
+_value = pvClearBuy
+
+pvClearBuy = -1
+
+_gi = _value % GroupsNum
+_value = (_value - _gi) / GroupsNum
+
+_si = _value
+
+[_si, _gi] exec "\TZK_Scripts_4_0_4\Server\HandleClearBuy.sqs"
+
+
+goto "Start"

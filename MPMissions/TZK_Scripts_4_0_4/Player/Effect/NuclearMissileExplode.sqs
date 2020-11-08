@@ -1,0 +1,14 @@
+; args: logic
+
+_logic = _this; _pos = getPos _logic
+_x = - (_pos select 0)
+_y = _pos select 1
+_z = _pos select 2
+
+? !(isNull player) : [ [_x, _y, 0] ] exec "\TZK_Scripts_4_0_4\Player\Effect\TomahawkDrop.sqs"
+? !local _logic : exit
+
+~ 1*60
+deleteVehicle _logic
+
+; EOF

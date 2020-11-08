@@ -1,0 +1,96 @@
+; args: [unit, si, gi, [unit types (defined by HaltTypeDefs), duration]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+
+; Get Correct Parameters. Need Pay Attention To Coefficients
+_typeIndex = (_params select 0)
+_duration = 720 * ((_params select 1) + 1)
+
+; Check Whether Unit Fits The Parameters Of The Temporary Order
+
+? (HaltTypeDefs select _typeIndex) == "Transport Car": 	_typesHalt = typesTransportCar;				
+? (HaltTypeDefs select _typeIndex) == "Transport Ship": 	_typesHalt = typesTransportShip; 				
+? (HaltTypeDefs select _typeIndex) == "Transport APC": 	_typesHalt = typesTransportAPC; 					
+? (HaltTypeDefs select _typeIndex) == "Transport Heli": 	_typesHalt = typesTransportHeli; 				
+? (HaltTypeDefs select _typeIndex) == "Battle Ship": 		_typesHalt = typesBattleShip; 					
+? (HaltTypeDefs select _typeIndex) == "Light Tank": 		_typesHalt = typesLightTank; 					
+? (HaltTypeDefs select _typeIndex) == "Heavy Tank": 		_typesHalt = typesHeavyTank; 					
+? (HaltTypeDefs select _typeIndex) == "Artillery": 			_typesHalt = typesHowitzer+typesRocketLauncher; 						
+? (HaltTypeDefs select _typeIndex) == "AT APC":			_typesHalt = typesATAPC; 						
+? (HaltTypeDefs select _typeIndex) == "AA Vehicle":		_typesHalt = typesAAAPC; 						
+? (HaltTypeDefs select _typeIndex) == "Kamov":				_typesHalt = typesKa50; 							
+? (HaltTypeDefs select _typeIndex) == "Cobra\Apac\Hind":	_typesHalt = (typesGunshipOrigin+typesGunshipAT) - typesKa50; 								
+? (HaltTypeDefs select _typeIndex) == "Transports": 		_typesHalt = typesTransportCar+typesTransportShip+typesTransportAPC+typesTransportHeli;		
+? (HaltTypeDefs select _typeIndex) == "Tanks": 			_typesHalt = typesLightTank+typesHeavyTank+typesHowitzer+typesRocketLauncher; 									
+? (HaltTypeDefs select _typeIndex) == "APCs": 				_typesHalt = typesATAPC+typesAAAPC; 				
+? (HaltTypeDefs select _typeIndex) == "Support APC": 		_typesHalt = typesSupportAPC;					
+? (HaltTypeDefs select _typeIndex) == "non-AT-Infantry": 	_typesHalt = typesInfantryAll - typesInfantryAT;					
+? (HaltTypeDefs select _typeIndex) == "AT-Infantry": 		_typesHalt = typesInfantryAT;					
+? (HaltTypeDefs select _typeIndex) == "All Infantry": 		_typesHalt = typesInfantryAll;					
+
+_vehicle = vehicle _unit
+_vt = _vehicle call funcGetUnitTypeFromObject
+? !(_vt in _typesHalt) && _unit != leader group _unit: exit
+? _unit == leader group _unit: if !(_unit == _vehicle && (HaltTypeDefs select _typeIndex) in ["AT-Infantry", "All Infantry"]) then {exit}
+
+; Check Whether Unit In Another Temporary Order (Except For Set Flight Altitude, Clear Temporary Order, Etc)
+? _unit call temporaryCheck: exit
+
+; Initialize The Order Script
+_timeStart = time; _timeAbort = _timeStart + _duration; _timeUp = _timeStart; _cycle = 30; _loop = 0
+_unit call temporarySet
+
+
+; Wait For Unit Finish Its Busy-Work
+#WaitReady
+~5
+? time > _timeAbort: 	_unit call temporaryClear; exit
+? !(_unit call temporaryCheck): exit
+? _unit call busyCheck: goto "WaitReady"
+
+; Main Part Of Temporary Order
+_timeCheckSupport = time + 30 + random 60
+_bCheckDropBomb = true
+_posMove = getPos _unit
+
+
+_groups = groupMatrix select _si
+#Update
+	_gi = ( _groups ) find ( (group _unit) )
+	_vehicle = vehicle _unit
+	? _unit != driver _vehicle: goto "Sleep"
+
+	; check support
+	? time > _timeCheckSupport: _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\AI_CheckSupport.sqs"; _cycle = 20; goto "Sleep"
+
+	; check bomb	
+	_bCheckDropBomb = !_bCheckDropBomb 
+	_magazines = []
+	? _bCheckDropBomb && _unit == _vehicle: if (magSatchel in (magazines _unit)) then {[_unit, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\AI_CheckDropBomb.sqs"; _cycle = 20; goto "Sleep"}
+	
+	[_unit, _posMove] call funcMoveAI
+	[_unit, _si, _gi] call funcWatch
+	? _unit != _vehicle && !(isNull gunner _vehicle) && isNull (commander _vehicle): [_unit, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\AI_CheckFireGun.sqs"
+	_cycle = 30
+	goto "Sleep"
+
+
+
+; End Of File
+#EOF
+_unit call temporaryClear
+exit
+
+
+#Sleep
+_loop = (time-_timeStart)/_cycle; _loop = 1 + _loop - _loop%1
+_timeUp = _loop*_cycle + _timeStart
+
+@ ( time > _timeUp || !(_unit call temporaryCheck) )
+? !(_unit call temporaryCheck): goto "EOF"
+? !(alive _unit) || time > _timeAbort: goto "EOF"
+? _unit call busyCheck: goto "Sleep"
+goto "Update"

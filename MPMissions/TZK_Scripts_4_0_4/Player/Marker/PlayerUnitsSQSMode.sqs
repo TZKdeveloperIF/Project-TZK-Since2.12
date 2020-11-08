@@ -1,0 +1,96 @@
+; args: [si, _boole_Mark_Player_Name]
+_si = _this select 0; _boole_Mark_Player_Name = _this select 1
+
+; Wait until AI leaders identified.
+@(time > 10)
+
+#Update
+	? _time > 30: [_si, _boole_Mark_Player_Name] exec "\TZK_Scripts_4_0_4\Player\Marker\PlayerUnitsSQSMode.sqs"; exit
+	? !([_boole_Mark_Player_Name, boole_Mark_Player_Name] call funcBoolEqual): goto "ResetLeaderMarker"
+	_delay = if !bool_TZK_Marker_LowFrequency Then {0.5} Else {3}
+	~ _delay
+	? 0 == count ([_si, stradar] call funcGetWorkingStructures) || bool_TZK_Marker_Hide: call funcHideMarkers; goto "HideSleep"
+	
+	? !bool_TZK_Marker_SQS: [_si, _boole_Mark_Player_Name] exec "\TZK_Scripts_4_0_4\Player\Marker\PlayerUnits.sqs"; exit
+	
+	_groups = groupMatrix select _si; _gi = 0; _countGroups = count _groups
+	#Leader_Marker
+		_grp = _groups select _gi; _leader = leader _grp; _markerType = (["Marker","Dot"] select (alive _leader)); 
+		_marker = Format ["%1%2", (groupNameMatrix select _si) select _gi, _si]; _marker setMarkerPos getPos _leader; _marker setMarkerType _markerType
+		_gi = _gi + 1
+		? _gi < _countGroups: goto "Leader_Marker"
+
+	_ids = (groupUnitIDMatrix select _si) select giPlayer;
+	? !bNumberedAI: { format["PlayerUnit_%1", _x] setMarkerPos hiddenMarkerPos } forEach [2,3,4,5,6,7,8,9,10,11,12], goto "PlayerUnits_End"
+	_units = (units groupPlayer) - [player]; _id = 2; _index = 0; _count = count _units
+	#PlayerUnits_Loop
+		? _id > 12: goto "PlayerUnits_End"
+		_marker = format["PlayerUnit_%1", _id];
+		if !(_index < _count) then {_marker setMarkerPos hiddenMarkerPos} else { _ai = _units select _index; _text = format["%1", _ai]; if ( _text == (_ids select _id) ) then { _marker setMarkerPos getPos _ai; _index = _index + 1 } else { _marker setMarkerPos hiddenMarkerPos }; 	}
+		_id = _id + 1; goto "PlayerUnits_Loop"
+	#PlayerUnits_End
+	
+	_gi = 0; _countGroups = count _groups
+	#Group_Marker
+		_grp = _groups select _gi; _units = units _grp - [leader _grp]; _count = count _units; _index = 0
+		#Group_Member
+			_marker = Format["GroupUnit_%1_%2_%3", _si, _gi, _index]
+			if ( _gi == giPlayer && bNumberedAI ) then {_marker setMarkerPos hiddenMarkerPos} else { if ( (_index < _count) && (_gi == giPlayer || giMarkersAI == _gi || giMarkersAI == _countGroups) ) then { _ai = _units select _index; _marker setMarkerPos getPos _ai; } else {_marker setMarkerPos hiddenMarkerPos}; 	};
+			_index = _index + 1
+			? _index < 12: goto "Group_Member"
+		_gi = _gi + 1
+		? _gi < _countGroups: goto "Group_Marker"
+
+	; Town Unit Markers
+	_gi = 0; _countGroups = count (townGroups select _si);
+	#TownGrp_Marker
+		_grp = (townGroups select _si) select _gi; _units = units _grp; _count = count _units; _index = 0
+		#TownGrp_Member 
+			_marker = Format["TownUnit_%1_%2_%3", _si, _gi, _index]
+			if (_index < _count) then {_ai = _units select _index; _marker setMarkerPos getPos _ai} else {_marker setMarkerPos hiddenMarkerPos}
+			_index = _index + 1
+			? _index < 12: goto "TownGrp_Member"
+		_gi = _gi + 1
+		? _gi < _countGroups: goto "TownGrp_Marker"
+
+	; Worker Markers
+	_gi = 0; _countGroups = count (workerGroups select _si);
+	#Worker_Marker
+		_grp = (workerGroups select _si) select _gi; _units = units _grp; _count = count _units; _index = 0
+		#Worker_Member
+			_marker = Format["Worker_%1_%2_%3", _si, _gi, _index]
+			if (_index < _count) then {_ai = _units select _index; _marker setMarkerPos getPos _ai} else {_marker setMarkerPos hiddenMarkerPos}
+			_index = _index + 1
+			? _index < 12: goto "Worker_Member"
+		_gi = _gi + 1
+		? _gi < _countGroups: goto "Worker_Marker"
+
+	; Vehicles OWN
+	_index = 0;
+	#Vehicle_Marker
+		_v = (vehicleMarkerMapping select _si) select _index; _m = format["Vehicle_%1_%2", _si, _index]
+		if ( !(alive _v) && _v != (mhq select _si) ) then {_m setMarkerPos hiddenMarkerPos} else {_m setMarkerPos getPos _v}
+		_index = _index + 1
+		? _index < maxVehicleMarkers: goto "Vehicle_Marker"
+	
+	goto "Update"
+	
+#HideSleep
+	~0.5
+	? 0 == count ([_si, stradar] call funcGetWorkingStructures) || bool_TZK_Marker_Hide: goto "HideSleep"
+	goto "Update"
+	
+#ResetLeaderMarker
+	_boole_Mark_Player_Name = boole_Mark_Player_Name
+	? bool_TZK_199_Mode: goto "Update"
+
+	_i = 0; _c = count (groupMatrix select _si)
+	#ResetMarker
+		_marker = Format ["%1%2", groupNameMatrix select _si select _i, _si];
+		? !( (groupMatrix select _si select _i) in (groupAiMatrix select _si) ) : _marker setMarkerText format ["%1", [groupNameMatrix select _si select _i, name leader (groupMatrix select _si select _i) + "(" + (groupNameMatrix select _si select _i) + ")"] select boole_Mark_Player_Name]; _marker setMarkerColor (["ColorBlue", "ColorBlue"] select boole_Mark_Player_Name)
+		? (groupMatrix select _si select _i) in (groupAiMatrix select _si) : _marker setMarkerText format ["%1", groupNameMatrix select _si select _i]
+		_i = _i + 1
+		? (_i < _c):goto "ResetMarker"
+	goto "Update"
+	
+; EOF

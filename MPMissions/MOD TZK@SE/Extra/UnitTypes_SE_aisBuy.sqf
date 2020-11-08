@@ -130,7 +130,7 @@ _i = _i + 1;
 utbTanksHeavy = _i;
 _list = [ [_m1a1W, 1] ];
 (unitsBuyAI select si0) set [_i, _list];
-_list = [ [_t80E, 1] ];
+_list = [ [_t90E, 1] ];
 (unitsBuyAI select si1) set [_i, _list];
 _i = _i + 1;
 
@@ -151,7 +151,7 @@ _i = _i + 1;
 utbTanksHeavyD = _i;
 _list = [ [_m1a1W, 0.7], [_tdW, 0.3] ];
 (unitsBuyAI select si0) set [_i, _list];
-_list = [ [_t80E, 0.7], [_tdE, 0.3] ];
+_list = [ [_t90E, 0.7], [_tdE, 0.3] ];
 (unitsBuyAI select si1) set [_i, _list];
 _i = _i + 1;
 

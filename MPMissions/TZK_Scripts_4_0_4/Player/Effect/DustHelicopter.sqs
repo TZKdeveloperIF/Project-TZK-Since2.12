@@ -1,0 +1,60 @@
+; args: [vehicle]
+_vehicle = _this Select 0
+
+; This design requiring frequently obtain REMOTE helictoper's position. In CTI the "Map Marker" design has proved "getPos" command is safe when applying on REMOTE units with a 2HZ frequency. Going to verify in high frequency, with "Speed" and "isEngineOn" command.
+
+_sensor = "EmptyDetector" CreateVehicle [0,0,0]
+; HDSIN and HDCOS has been defined by "Init-Series" scripts.
+
+; Color prefabs. It'll be good to design a condition for checking the land material.
+
+; HDCOLORGRASSb  = [[0.35,0.35,0.3,0], [0.2, 0.2, 0.1, 0.5],[0.2, 0.27, 0.15, 0]]
+; HDCOLORGRASS  = [[0.35,0.35,0.3,0], [0.45, 0.4, 0.27, 0.2],[0.2, 0.27, 0.15, 0]]
+; HDCOLORSAND   = [[0.35,0.35,0.3,0],[0.35,0.35,0.3,0],[0.6, 0.57, 0.5, 0.5],[0.5, 0.47, 0.4, 0]]
+; HDCOLORDUST   = [[0.45,0.4,0.4,0],[0.6,0.6,0.6,0],[0.4,0.4,0.4,0.7], [0.65, 0.6, 0.5, 0]]
+; HDCOLORDESERT = [[0.4,0.4,0.4,0],[0.6,0.6,0.6,0],[0.7,0.7,0.65,1], [0.65, 0.6, 0.5, 0]]
+; HDCOLORWATER = [[0.8,0.8,0.9,0],[0.9,0.9,1,0.7],[0.8,0.8,0.9,0],[0.8,0.8,0.9,0]]
+_HDCOLORGRASS  = [[0.35,0.35,0.3,0], [0.45, 0.4, 0.27, 0.2],[0.2, 0.27, 0.15, 0]]
+_HDCOLORWATER = [[0.8,0.8,0.9,0],[0.9,0.9,1,0.7],[0.8,0.8,0.9,0],[0.8,0.8,0.9,0]]
+_icolor = _HDCOLORGRASS
+
+_repeat = True
+_lifetime = 1.4
+_shape = "cl_basic"
+_color = _icolor
+
+; here comes all the visual part!
+
+#repeat
+@(GetPos _vehicle Select 2) < 25 && Speed _vehicle < 100 && isEngineOn _vehicle
+
+#loop
+_p = GetPos _vehicle
+_x = _p Select 0; _y = _p Select 1; _Z = Random 2
+_up = _p call funcVectorUp; _up = [_up, 1/(_up call funcVectorLength)] call funcVectorScale
+_ux = _up select 0; _uy = _up select 1; _uz = _up select 2; _velSmoke = []
+
+_i = 0
+#smokeLoop
+; _vel = [HDSIN Select _i, HDCOS Select _i, 0]
+_sa = HDSIN Select _i; _sb = HDCOS Select _i
+_velSmoke set [0, ((_sa-_sb)*_ux*_uy + _sa*_uz*_uz)]; _velSmoke set [1, (_sb*_uz*_uz-(_sa-_sb)*_ux*_ux)]; _velSmoke set [2,1]
+? -(_sa*_ux+_sb*_uy)*_uz > 1: _velSmoke set [2, -(_sa*_ux+_sb*_uy)*_uz]
+_size1 = Random 3
+_size2 = Random 3 + 1
+_size = [_size1, _size2]
+Drop [_shape, "", "Billboard", _lifetime, _lifetime, [_x, _y, _z], _velSmoke, 0, 0.2, 0.157, 0.01, _size, _color, [0], 0.1, 0.2, "", "", ""]
+_i = _i + 1
+?_i < 50: Goto "smokeLoop"
+~0.01
+_color = _icolor
+_shape = "cl_basic"
+
+_sensor setPos [_x, _y, 0]
+
+? Abs ((getPos _sensor) select 2) < 3: _color = _HDCOLORWATER; _shape = "cl_water"
+? (GetPos _vehicle Select 2) < 25 && Speed _vehicle < 100 && isEngineOn _vehicle: Goto "loop"
+? _repeat && Alive _vehicle: Goto "repeat"
+
+deleteVehicle _sensor
+Exit

@@ -1,0 +1,1 @@
+[playerSide, "hq"] sidechat _this

@@ -1,0 +1,22 @@
+; args: array of recorded enemies
+
+_last = _this
+_timeAbort = (1 + random 2) * 60
+#Start
+
+@!(isNull pvEnemy1)
+
+? pvGameover != -1: Exit
+_enemy = pvEnemy1
+pvEnemy1 = objNull
+
+? _enemy in _last : goto "Start"
+
+_last set [count _last, _enemy]
+? (count _last) > 10 : _last set [0, objNull]; _last = _last - [objNull]
+
+[_enemy] exec "\TZK_Scripts_4_0_4\Player\Msg\hEnemySpotted.sqs"
+
+? _time > _timeAbort: _last exec "\TZK_Scripts_4_0_4\Player\Msg\mEnemySpotted1.sqs", exit
+
+goto "Start"

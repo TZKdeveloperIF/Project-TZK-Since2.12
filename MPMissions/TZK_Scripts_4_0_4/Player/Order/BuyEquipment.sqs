@@ -1,0 +1,81 @@
+; args: [unit, pos, [equipment index]]
+
+_unit = _this select 0
+_pos = _this select 1
+_template = _this select 2 select 0
+
+? !(alive _unit): exit
+_v = vehicle _unit
+? _v != _unit: exit
+
+? count (infCustom select _template) == 0: _unit groupChat "Equipment Template Not Defined"; exit
+
+#FindSupport
+_vs = [_pos, 500, (typesSupportPlus select siPlayer) + ([[utMHQ0, utMCVW], [utMHQ1, utMCVE]] select siPlayer), [_v]] call funcGetNearbyVehicles
+_vs = _vs + ([_pos, 500, [stAmmoCrate, stBarracks], [], siPlayer] call funcGetNearbyStructure)
+? (count _vs) == 0: _unit groupChat "No support vehicles in that area."; exit
+_vs = [2, true, _vs] call funcSort
+
+_support = (_vs select 0) select 0
+? (speed _support) > 100: _unit groupChat "Support vehicle moving to fast. Fail to follow it."; exit
+
+_uid = [_unit, siPlayer, giPlayer] call funcCalcUID
+? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
+_id = (playerOrderID select _uid) + 1; [_uid, _id] exec "\TZK_Scripts_4_0_4\Player\Order\New.sqs"
+
+_forceRearm = true
+_rearm = false
+_posReturn = getPos _unit
+
+_msg = ""
+_unit groupChat "Roger, moving to support vehicle."
+
+_timeAbort = time + 15*60; _timeMove = time - 1
+
+#MoveGround
+	_posMove = [[0,5], (getDir _support)] call funcVectorRot2D
+	_posMove = [getPos _support, _posMove] call funcVectorSub
+	? time > _timeMove: [_unit, _posMove] call funcMove, _timeMove = time + 30
+	~5
+	? !(alive _unit): exit
+	? call orderCheck: exit
+	? !(alive _support): _msg = "Support aborted, support vehicle destroyed."; goto "Abort"
+	? time > _timeAbort: _msg = "Cost too much time. Support aborted."; goto "Abort"
+	? (_unit distance _support) > rangeSupport: goto "MoveGround"
+
+? _support call funcGetUnitTypeFromObject != -1: [_unit, _support] exec "\TZK_Scripts_4_0_4\Player\HealRepair.sqs"
+; Load Equipment
+_custom = infCustom select _template
+_typePrim = _custom select 1
+_typeHandgun = _custom select 2
+_typeSec = _custom select 3
+_typeBinocular = _custom select 4
+_typeNVG = _custom select 5
+_equipment = _custom select 6
+
+_weapons = []; _mags = []
+{ if (_x != -1) then {_weapons = _weapons + [weaponSearch select _x]} } forEach [_typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG]
+{ _mags = _mags + [equipSearch select (_x select 0)] } foreach (_equipment select isGeneral)
+{ _mags = _mags + [equipSearch select (_x select 0)] } foreach (_equipment select isHandgun)
+_cost = [_unit, _weapons, _mags] call funcCalcRearmCost
+
+; hint format ["%1\n%2\n%3", _weapons, _mags, _cost]
+_money = groupMoneyMatrix select siPlayer select giPlayer
+? !(typeOf _unit in ["SoldierWSaboteurDay", "SoldierESaboteurBizon", "SoldierWSaboteurDay_xj400", "SoldierESaboteurBizon_xj400"]): _cost = _cost + 50
+? _cost > _money && _cost > 0: _msg = format["Not enough money for rearm. ($%1 needed)", _cost]; goto "Abort"
+
+[_cost] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"; _unit groupChat format["Rearm Complete. $%1", _cost]; 
+removeAllWeapons _unit; {_unit addMagazine _x} forEach _mags; {_unit addWeapon _x} forEach _weapons
+goto "Return"
+
+  
+#Abort
+  ? (alive _unit) && _msg != "": _unit groupChat _msg
+  ? (alive _unit): goto "Return"
+  exit
+  
+#Return
+    ~6
+    ? !(alive _unit): exit
+	_unit groupChat "Returning after support."; [_unit, _posReturn] call funcMove
+  
