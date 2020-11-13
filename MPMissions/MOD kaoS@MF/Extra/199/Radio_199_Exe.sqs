@@ -1,6 +1,7 @@
 ; args: [Number of channel]
 ; Sensor in mission.sqm is GLOBAL. Aiming to have local effect extra designs must be applied.
 ? isNull player: exit
+? !bool_TZK_199_Mode: exit
 ? !bool_TZK_RadioReceive_199: if (hint_countdown_TZK_RadioReceive_199 > 0) Then {hint format ["Radio channel in 1.96 OFP or 1.99 ACWA is MP-GLOBAL. Thus it's turned off by default and radio channels won't be activated, unless you turn it on in ""Options"" by the button at right-upper corner.\nThis hint will appear when someone calling radio channel (not must be yourself, as have mentioned above, it's MP-GLOBAL.\nThis hint will still appear %1 times in this game.", hint_countdown_TZK_RadioReceive_199 - 1], hint_countdown_TZK_RadioReceive_199 = hint_countdown_TZK_RadioReceive_199 - 1}, exit
 
 ; This script is for OFP:CWC, OFP:R and ArmA:CWA. In unofficial ArmA:R 2.01 triggers' in-game editing is available and radio channels are thus changeable and flexible. In official version no later than 1.99 no way to do so, and the name of channels are fixed. However, it's still possible to design available channels with confusing names. In 2.01 scripts using vehicle type for identification and adjust channels, and in 1.99 they can be pre-sorted by this script. The usage of channel can be "hint" for few times in each game, using "hint" or add a button for player to turn on/off the channel hint in 1.99.
@@ -69,7 +70,7 @@ goto "Quit"
 goto "Quit"
 
 #Channel7
-; ? _vehicle == player: [player] call loadFile "\TZK_Scripts_4_0_4\Player\Radio\RadioList_Soldier_RearmNVG.sqf", exit
+; ? _vehicle == player: [player] call loadFile "Extra\Radio\RadioList_Soldier_RearmNVG.sqf", exit
 ? "GunBoat_xj400" countType [_vehicle] > 0: [_vehicle, tsLeft, ttBoat] exec "\TZK_Scripts_4_0_4\Player\Action\AttachDetachVehicle.sqs", exit
 ? "Helicopter" countType [_vehicle] > 0: [_vehicle, siPlayer] exec "\TZK_Scripts_4_0_4\Player\Action\EjectAIUnits.sqs", exit
 _hint = "0-0-7 channel can be applied for ship to attach/detach vehicle in left slot.\nWhen player is in helicopter, this channel can be applied to eject all cargos (belonging to AI groups ONLY) quickly."
@@ -77,7 +78,7 @@ _hint = "0-0-7 channel can be applied for ship to attach/detach vehicle in left 
 goto "Quit"
 
 #Channel8
-? _vehicle == player: [player] call loadFile "\TZK_Scripts_4_0_4\Player\Radio\RadioList_Soldier_RearmAA.sqf", exit
+? _vehicle == player: [player] call loadFile "Extra\Radio\RadioList_Soldier_RearmAA.sqf", exit
 ? "Helicopter" countType [_vehicle] > 0: [_vehicle, siPlayer] exec "\TZK_Scripts_4_0_4\Player\Action\EjectAllCargo.sqs", exit
 _vt = _vehicle call funcGetUnitTypeFromObject
 ? _vt in (RadioTypesShips + RadioTypesTransportPlane + typesTransportCar + typesTransportAPC): [_vehicle, siPlayer] exec "\TZK_Scripts_4_0_4\Player\Action\EjectAllCargo.sqs", exit
@@ -87,7 +88,7 @@ _hint = "0-0-8 channel can be applied for player to buy AA launcher/ammo quickly
 goto "Quit"
 
 #Channel9
-? _vehicle == player && siPlayer in [si0,si1]: [player] call loadFile "\TZK_Scripts_4_0_4\Player\Radio\RadioList_Soldier_RearmAT.sqf", exit
+? _vehicle == player && siPlayer in [si0,si1]: [player] call loadFile "Extra\Radio\RadioList_Soldier_RearmAT.sqf", exit
 ? "Helicopter" countType [_vehicle] > 0: [_vehicle, siPlayer] exec "\TZK_Scripts_4_0_4\Player\Action\EjectOneCargo.sqs", exit
 _vt = _vehicle call funcGetUnitTypeFromObject
 ? _vt in (RadioTypesShips + RadioTypesTransportPlane + typesTransportCar + typesTransportAPC): [_vehicle, siPlayer] exec "\TZK_Scripts_4_0_4\Player\Action\EjectOneCargo.sqs", exit
@@ -102,7 +103,7 @@ _vehicle in TransportActivatedVehicles
 goto "Quit"
 
 #Channel0
-? _vehicle == player: [player] call loadFile "\TZK_Scripts_4_0_4\Player\Radio\RadioList_Soldier_RearmRPG.sqf", exit
+? _vehicle == player: [player] call loadFile "Extra\Radio\RadioList_Soldier_RearmRPG.sqf", exit
 _hint = "0-0-0 channel can be applied for player to buy RPG launcher/ammo quickly.\nWhen player is in transport vehicles, this channel can be applied to switch transport function. In TZK AI group units will only board those vehicles Turning ON Transport Function.\nWhen player is driving plane, this channel can be applied to switch after burner function (require upgrade).\nIf player is civ and in 1st view mode, this channel can be applied to return to spectator mode."
 ? (_vehicle call funcGetUnitTypeFromObject) in ((airTransport select siPlayer) + (groundTransport select siPlayer)): if (_vehicle in TransportActivatedVehicles) Then {[_vehicle] exec "\TZK_Scripts_4_0_4\Common\SendTransportTurnOff.sqs", hint "Transport Turn OFF", 10 setRadioMsg "Transport Turn ON"} Else {[_vehicle] exec "\TZK_Scripts_4_0_4\Common\SendTransportTurnOn.sqs", hint "Transport Turn ON", 10 setRadioMsg "Transport Turn OFF"}, exit
 ? siPlayer == siCiv: [] exec "\TZK_Scripts_4_0_4\Player\Radio\RadioList_Spectator_Return.sqs", exit

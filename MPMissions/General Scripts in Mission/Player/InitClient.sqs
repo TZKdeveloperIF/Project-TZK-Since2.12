@@ -200,7 +200,7 @@ RapidRearmSecMagazines = [{CarlGustavLauncher},{AT4Launcher},{LAWLauncher},{RPGL
 _i = 0; _count = 5; while "_i < _count" do {call format [{[] exec "\TZK_Scripts_4_0_4\Player\Effect\Killed_Msg_Tank%1.sqs"}, _i]; _i = _i + 1}
 [] exec "\TZK_Scripts_4_0_4\Player\Effect\PlaneAB_Msg_ON.sqs"; [] exec "\TZK_Scripts_4_0_4\Player\Effect\PlaneAB_Msg_OFF.sqs"; BurningPlanes = [];
 
-[] exec "\TZK_Scripts_4_0_4\Player\DynamicInitializationMarker.sqs"
+if !(bool_TZK_MF_Mode || bool_TZK_Yugo_Mode) Then {[] exec "\TZK_Scripts_4_0_4\Player\DynamicInitializationMarker.sqs"} Else {[] exec "Extra\DynamicInitializationMarker.sqs"}
 [] exec "\TZK_Scripts_4_0_4\Player\DynamicInitializationTrigger.sqs"
 ; ================================================================================TZK_3.00 Block================================================================================
 

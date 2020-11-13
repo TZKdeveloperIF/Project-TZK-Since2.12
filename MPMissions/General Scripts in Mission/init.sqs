@@ -4,7 +4,11 @@
 debug = true
 
 _nil = "scalar bool array string 0xfcffffef"
-{ if (format ["%1", call _x] == _nil) Then {call (_x + " = false")} } forEach ["dev", "boole_Infantry_Mode", "boole_NeutralTown_Mode", "bool_TZK_SEMod_Mode", "bool_TZK_Vanilla_Mode", "bool_TZK_199_Mode", "bool_TZK_MF_Mode", "bool_TZK_Yugo_Mode"]
+{ if (format ["%1", call _x] == _nil) Then {call (_x + " = false")} } forEach ["dev", "boole_Infantry_Mode", "bool_TZK_SEMod_Mode", "bool_TZK_Vanilla_Mode", "bool_TZK_199_Mode", "bool_TZK_MF_Mode", "bool_TZK_Yugo_Mode"]
+
+; "UsedVersion" is 2.01 script command, but its syntax is similar as if it's a variable (actually one can assign another value to it as "time" or "_time"). Directly apply it won't cause debug error info in OFP versions older than 2.01. Its return value on 2.01 version is 2010.
+; This new design will make those "1.99 missions" using 2.01 functions if it's open under 2.01 game. Before applying this design, it's necessary to decouple bool_TZK_199_Mode with other mods, and find out the method remove thousands of markers and town/radio sensors defined for 1.99 missions in mission.sqm.
+? UsedVersion >= 2010: bool_TZK_199_Mode = false
 
 ; CONSTANTS
 si0 = 0
@@ -231,7 +235,8 @@ InitStructureReady = false
 [] exec "\TZK_Scripts_4_0_4\Common\Init\TheWorld.sqs"
 
 _initUnitTypes = "\TZK_Scripts_4_0_4\Common\InitUnitTypes.sqs"; _initStructureTypes = "\TZK_Scripts_4_0_4\Common\InitStructureTypes.sqs"
-; ? boole_Infantry_Mode : _initUnitTypes = "\TZK_Scripts_4_0_4\Common\InitUnitTypes_Infantry_Mode.sqs"; _initStructureTypes = "\TZK_Scripts_4_0_4\Common\InitStructureTypes_Infantry_Mode.sqs"
+? bool_TZK_Yugo_Mode : _initUnitTypes = "Extra\Unit_Yugo_Redef.sqs"; _initStructureTypes = "Extra\Struct_Yugo_Redef.sqs"
+
 [] exec "\TZK_Scripts_4_0_4\Common\InitPublicVariables.sqs"
 [] exec _initStructureTypes
 [] exec _initUnitTypes
@@ -340,6 +345,7 @@ townGroups=[ [], [], [] ]; workerGroups = [ [], [] ]; patrolGroups = []
 mutexDynamicInitializeGroups = false; [] exec "\TZK_Scripts_4_0_4\Common\Dynamic\GroupsClear.sqs"
 timeReinforceTown = 3*60
 
+? !bool_TZK_199_Mode && (bool_TZK_MF_Mode || bool_TZK_Yugo_Mode): call loadFile "Extra\DynamicTriggerRemove.sqf"
 ? isServer: [] exec "Server\InitServer.sqs"
 ?!isServer: [] exec "Player\InitClient.sqs"
 

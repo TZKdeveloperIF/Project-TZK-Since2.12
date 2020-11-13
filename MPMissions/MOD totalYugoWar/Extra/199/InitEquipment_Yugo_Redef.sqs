@@ -6,6 +6,18 @@ _wVAL = "VALPSO_xj400"; _mVAL = "VAL_Mag_xj400";
 _wM249SD = "M249SPW_ACOG_SD_xj400"; _mM249SD = "M249SPW_SD_Mag_xj400"; _wRPK74SD = "RPK74M_1P29_SD_xj400"; _mRPK74SD = "RPK74_SD_Mag_xj400"
 w_TZK_SniperE = "RFSVUa_xj400"; m_TZK_SniperE = "RFSVUA_Mag_xj400"; w_TZK_AK107 = "KEGAK107_xj400"; m_TZK_AK107 = "KEGAK107_Mag_xj400"
 
+magMine = "Mine"; magPistolMine = "Mine_Pistol_xj400"; MagzinesMine = [magMine, magPistolMine]
+magHandGrenade = "HandGrenade"
+ammoMine = "Mine"
+magSatchel = "PipeBomb"
+magTimeBomb = "TimeBomb"
+weaponPut = "Put_xj400"
+weaponsCustom = [weaponPut]
+
+; ? bool_TZK_Vanilla_Mode: _medkit = "", magPistolMine = "", _hyperL = "CarlGustavLauncher", _carl4slot = "CarlGustav", _at44slot = _carl4slot, _aa4slot = "", _9k324slot = ""
+? bool_TZK_199_Mode: _nvg0 = "NVGoggles", _nvg1 = _nvg0
+? bool_TZK_Vanilla_Mode: {call (_x+{="AK74"})} forEach ["w_TZK_AK107", "m_TZK_AK107"], _wGroza = "Bizon", _mGroza = "BizonMag", {call (_x+{="SVDDragunov"})} forEach ["_wVAL", "_mVAL", "_wRPK74SD", "_mRPK74SD", "w_TZK_SniperE", "m_TZK_SniperE"], {call (_x+{="M21"})} forEach ["_wSG551", "_mSG551", "_wM249SD", "_mM249SD"], {call (_x+{="HK"})} forEach ["_wMP5SD6", "_mMP5SD6"]
+
 cargoCarSide0 = [[magMine,2], ["Pipebomb",2], ["JAM_CAVS_M72Rocket",2], ["JAM_CAVS_AT4Rocket",2], ["CR08_Mag_CarlGustav_1",1],["TYW_CBT_Drag_Mag",1], ["CR08_Mag_Stinger_1",1]]
 cargoCarSide1 = [[magMine,2], ["Pipebomb",2], ["ICPRPG16dAT",2], ["JAM_CAVS_RPG7Rocket",2], ["CR08_Mag_AT4_1",1], ["ICPRPG29Mag",1], ["CR08_Mag_Strela_1",1]]
 cargoTruckSide0 = [[magMine,4], ["Pipebomb",4], ["JAM_CAVS_M72Rocket",4], ["JAM_CAVS_AT4Rocket",4],  ["CR08_Mag_CarlGustav_1",2],["TYW_CBT_Drag_Mag",2], ["CR08_Mag_Stinger_1",2]]
@@ -1194,11 +1206,23 @@ _type = _type + 1
 weaponDefs set [_type, ["Binoculars", siBoth, wtBinocular, "Binocular", "\dtaExt\equip\w\w_binocular", [], 0 ]] 
 weaponSearch set [_type, (weaponDefs select _type) select wdObject]
 _type = _type + 1
-weaponDefs set [_type, ["NV Goggles", siBoth, wtNVG, "NVGoggles", "\dtaExt\equip\w\w_nvgoggles", [], 0 ]] 
+weaponDefs set [_type, ["NV Goggles", -1, wtNVG, "NVGoggles", "\dtaExt\equip\w\w_nvgoggles", [], 0 ]] 
 weaponSearch set [_type, (weaponDefs select _type) select wdObject]
 _wtNVGOrigin = _type
 _type = _type + 1
+weaponDefs set [_type, ["NVG stat", siBoth, wtNVG, _nvg0, "\dtaExt\equip\w\w_nvgoggles", [], 0 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtNVG0 = _type
+_type = _type + 1
+weaponDefs set [_type, ["NVG statF", siBoth, wtNVG, _nvg1, "\dtaExt\equip\w\w_nvgoggles", [], 100 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtNVG1 = _type
+_type = _type + 1
+
+? bool_TZK_199_Mode: {weaponDefs select _x set [wdSides, -1]} forEach [_wtNVG0, _wtNVG1], weaponDefs select _wtNVGOrigin set [wdSides, siBoth]
 
 
 {_x set [edcost, 0]} forEach equipDefs
 {_x set [wdcost, 0]} forEach weaponDefs
+
+?!bool_TZK_199_Mode: weaponDefs select _wtNVG1 set [wdcost, 100]

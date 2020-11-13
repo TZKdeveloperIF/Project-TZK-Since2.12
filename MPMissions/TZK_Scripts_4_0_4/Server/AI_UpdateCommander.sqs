@@ -99,7 +99,7 @@ _giPatrol = _gi; _bTakeTown=false; _nDestroy=0
 
 	? (count _posIdle) > 0 : _dist = [_posIdle, getPos _unit] call funcDistH; if (_dist > 10) then { _posMove = _posIdle; _returnMove = "Update"; goto "MoveToPos" }
 
-	? time > _timeCheckSupport && !bool_TZK_199_Mode: [_unit, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\AICO_CheckSupport.sqs"; _timeCheckSupport = time + 60; goto "Update"
+	? time > _timeCheckSupport && !bool_TZK_MF_Mode: [_unit, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\AICO_CheckSupport.sqs"; _timeCheckSupport = time + 60; goto "Update"
 	? time > _timeCheckEjectDrivers : goto "CheckEjectDrivers"
 
 	? !(alive _mhq) && _money > costRepairMHQ : goto "RepairMHQ"
