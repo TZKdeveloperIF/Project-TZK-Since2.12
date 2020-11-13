@@ -9,8 +9,11 @@ if ((_found select 1) > rangeSupport) then {hint "No Rearm Vehicle Nearby."} els
 		_NVGs = ["NVGoggles", "NVG_stat_xj400", "NVG_statF_xj400"]; _nvgOptics = "NVG_statF_xj400";
 		
 		_index = weaponSearch find _nvgOptics;
-		if (_index != -1) then {_costO = weaponDefs select _index select wdcost}; if (_costO != 0) then {{_unit removeWeapon _x} forEach _NVGs; _unit addWeapon _nvgOptics};
-		if ((upgMatrix select siPlayer select upgTL) == 2) then {_costO = 0}; if (_costO > 0) then {[_costO] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"};
-		player groupChat format ["Rapid Rearm completed. Cost: $%1", _costO];
+		if (_index != -1) then {
+			{_unit removeWeapon _x} forEach _NVGs; _unit addWeapon _nvgOptics;
+			_costO = weaponDefs select _index select wdcost;
+			if (upgMatrix select siPlayer select upgTL == 2) then {_costO = 0}; if (_costO > 0) then {[_costO] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"};
+			player groupChat format ["Rapid Rearm completed. Cost: $%1", _costO];
+		};
 	};
 };

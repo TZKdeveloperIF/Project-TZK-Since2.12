@@ -11,9 +11,8 @@ _entry = unitDefs select _irNO_mi17; _entry set [udFactoryType, -1];
 };
 
 if bool_TZK_Vanilla_Mode Then {
-comment "Hide some units in vanilla mode like new-added T55.";
-	if !bool_TZK_199_Mode Then {
-	comment "MFCTI mode use bool of 199 but not MF, so 199 bool is applied here to make sure work for 2.01 version.";
+comment "Hide some units in vanilla but not mf/totalYugo mode like new-added T55.";
+	if (!bool_TZK_MF_Mode && !bool_TZK_Yugo_Mode) Then {
 		unitDefs select _t72E set [udFactoryType, -1];
 		unitDefs select _t72_AE set [udModel, "T72"];
 		unitDefs select _m60A3W set [udFactoryType, -1];

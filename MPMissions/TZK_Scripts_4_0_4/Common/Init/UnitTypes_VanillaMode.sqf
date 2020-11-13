@@ -40,4 +40,4 @@ unitDefs select _uh60WL set [udModel, "UH60_LGB_Vanilla_xj400"];
 
 
 if false Then {call loadFile "Extra\199\UnitTypes_MFCTI116_TZK_Units.sqf"};
-if bool_TZK_199_Mode Then {call loadFile "Extra\199\UnitTypes_MFCTI116_Units.sqf"};
+if bool_TZK_MF_Mode Then {call loadFile "Extra\199\UnitTypes_MFCTI116_Units.sqf"};

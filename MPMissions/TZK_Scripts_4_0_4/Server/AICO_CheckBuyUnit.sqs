@@ -42,7 +42,7 @@ _giJoin = _giList select ((random _c) - 0.5)
 ;  	_utbMain = [utbTanksHeavy, utbinfRPGLAW] select (dev && (getWorld == "eden"))
 ;  ? _giJoin in [_giBuyer, _giBuyer + 1, _giBuyer + 2] && time < 600 : goto "Exit"
 	? boole_Infantry_Mode: _unitsBuy = unitsBuyAI select _si select utbinfRPGLAW2, goto "TypesSelected"
-	? bool_TZK_199_Mode: _utbMain = utbTanksMixed
+	? bool_TZK_MF_Mode: _utbMain = utbTanksMixed
 	? bool_TZK_SEMod_Mode: goto "SE"
 
 	? _giJoin == _giBuyer: _unitsBuy = (unitsBuyAI select _si) select utbTanksHeavy; goto "TypesSelected"

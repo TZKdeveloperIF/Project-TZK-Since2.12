@@ -6,6 +6,7 @@ _gi = _this select 2
 _timeAbort = _this select 3
 _ais = _this select 4
 
+? _gi == -1: goto "Quit"
 _set = aiSetting select _si select _gi select _ais
 ? _set == 0: goto "Quit"
 _pos = (wpCO select _si) select (_set - 1)
@@ -16,7 +17,10 @@ _pos = (wpCO select _si) select (_set - 1)
 ? _time > 2*60: [_unit, _si, _gi, _timeAbort, _ais] exec "\TZK_Scripts_4_0_4\Server\Loop\AI_RallyPoint.sqs"; exit
 
 	_gi = (groupMatrix select _si) find (group _unit)
-	? (aiSetting select _si select _gi select _ais) == 0 : goto "Quit"
+	? _gi == -1: _sleep = 10, goto "Sleep"
+	?!((groupMatrix select _si select _gi) in (groupAIMatrix select _si)): goto "Quit"
+	
+	? (aiSetting select _si select _gi select _ais) == 0: goto "Quit"
 	? !(alive _unit): goto "Quit"
 	? _unit != driver vehicle _unit: goto "Quit"
 	? time > _timeAbort: goto "Quit"
@@ -26,6 +30,7 @@ _pos = (wpCO select _si) select (_set - 1)
 
 	[_unit, _pos] call funcMoveAI
 	_sleep = [30, 0.1*_distToDest] select (_distToDest < 300)
+	#Sleep
 	~_sleep
 	goto "Update"
   

@@ -43,7 +43,7 @@ if ((_found select 1) > rangeSupport) then {hint "No Rearm Vehicle Nearby."} els
 		_salvage = _salvage * salvageRatio; _salvage = _salvage - (_salvage % 1); _cost = _cost - _salvage; _money = groupMoneyMatrix select siPlayer select giPlayer;
 		
 		if (_cost >= 0 && _cost > _money) then {hint "Not Enough Money."} else {
-			_anim = substr [getMove _unit, 0, 9]; if (_anim == "weaponwal" || _anim == "weaponrun") Then {_unit switchMove "WeaponCrouching"};
+			if !bool_TZK_199_Mode Then { _anim = substr [getMove _unit, 0, 9]; if (_anim == "weaponwal" || _anim == "weaponrun") Then {_unit switchMove "WeaponCrouching"} };
 			if (_reEquip) then {{_unit removeMagazines _x} forEach _exclude; _unit removeWeapon _wpnSec};
 			_unitContainer = "SecondaryWeaponHolder" camCreate getPos _unit; _unitContainer addMagazineCargo [_magazine, 1];
 			_unit action ["TAKE MAGAZINE", _unitContainer, 0, 0, _magazine];

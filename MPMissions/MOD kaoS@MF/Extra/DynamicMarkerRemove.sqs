@@ -1,0 +1,117 @@
+deleteMarker "TZK_Info"
+while "{0 == _x} count (getMarkerPos {MarkerStatic}) < 3" do {deleteMarker "MarkerStatic"}
+
+_i = 0; _count = count towns;
+#FlagMarker
+	_marker = format["TownHibernate%1", _i]; deleteMarker _marker
+	_marker = format["Town_%1", _i]; deleteMarker _marker
+	_i = _i + 1
+	? _i < _count : goto "FlagMarker"
+	
+_i = 0
+#TargetMarker
+	_marker = Format["TargetP_%1", _i]; deleteMarker _marker;
+	_marker = Format["TargetS_%1", _i]; deleteMarker _marker;
+	_i = _i + 1
+	? _i < countTargetMarkers : goto "TargetMarker"
+
+_i = 0
+#StructureMarker
+	_marker = format["Structure_%1_%2", si0, _i]; 	deleteMarker _marker
+	_marker = format["Structure_%1_%2", si1, _i]; 	deleteMarker _marker
+	_i = _i + 1
+	? _i < maxStructureMarkers : goto "StructureMarker"
+	
+_i = 0
+#ArtMarker
+	_marker = format["Art%1", _i]; deleteMarker _marker;
+	_i = _i + 1
+	? _i < 30 : goto "ArtMarker"
+
+_i = 0
+#SpotMarker
+	_marker = format["EnemySpotted_%1", _i]; deleteMarker _marker;
+	_marker setMarkerColor "ColorRed"
+	_i = _i + 1
+	? _i < 30 : goto "SpotMarker"
+
+_i = 0
+#COMarker
+	_marker = format["co_%1", _i]; 	deleteMarker _marker;
+	_i = _i + 1
+	? _i < countWPCO : goto "COMarker"
+	
+_i = 0
+#WPMarker
+	_marker = format["wp_%1", _i]; 	deleteMarker _marker; 
+	_i = _i + 1
+	? _i < countWPPlayer : goto "WPMarker"
+
+_marker = "ImpactPoint_0"; deleteMarker _marker; 
+_marker = "ImpactPoint_1"; deleteMarker _marker; 
+_marker = "ImpactPoint_2"; deleteMarker _marker; 
+_marker = "ImpactPoint_3"; deleteMarker _marker; 
+_marker = "ImpactPoint_4"; deleteMarker _marker; 
+
+
+_i = 0
+#VehicleMarker
+	_marker = format["Vehicle_%1_%2", si0, _i]; 	deleteMarker _marker;
+	_marker = format["Vehicle_%1_%2", si1, _i]; 	deleteMarker _marker;
+	_marker = format["Vehicle_%1_%2", siRes, _i]; 	deleteMarker _marker;
+	_marker = format["Vehicle_%1_%2", siCiv, _i]; 	deleteMarker _marker;
+	_i = _i + 1
+	? _i < maxVehicleMarkers : goto "VehicleMarker"
+	
+_i = 0
+#WorkerMarkers
+	_j = 0
+	#WorkerMarker
+		_marker = Format["Worker_0_%1_%2", _i, _j]; deleteMarker _marker;
+		_marker = Format["Worker_1_%1_%2", _i, _j]; deleteMarker _marker;
+		_j = _j + 1
+		? (_j < 12): goto "WorkerMarker"
+	_i = _i + 1
+	? (_i < 3): goto "WorkerMarkers"
+	
+_i = 0; _count = count towns; { if ( (_x select 2)>=1000 ) then {_count = _count + 1} } forEach towns
+#TownUnitMarkers
+	_j = 0
+	#TownUnitMarker
+		_marker = Format["TownUnit_0_%1_%2", _i, _j]; deleteMarker _marker;
+		_marker = Format["TownUnit_1_%1_%2", _i, _j]; deleteMarker _marker;
+		_j = _j + 1
+		? (_j < 12): goto "TownUnitMarker"
+	_i = _i + 1
+	? (_i < _count): goto "TownUnitMarkers"
+
+_gi = 0
+#GroupMarker
+	_index = 0
+	#UnitMarker
+		_marker = Format["GroupUnit_0_%1_%2", _gi, _index]; deleteMarker _marker; 
+		_marker = Format["GroupUnit_1_%1_%2", _gi, _index]; deleteMarker _marker; 
+		_index = _index + 1
+		? (_index < 11): goto "UnitMarker"
+	_gi = _gi + 1
+	? _gi < (count callsigns) : goto "GroupMarker"
+	
+{ _m = format["PlayerUnit_%1", _x]; deleteMarker _m } forEach [2,3,4,5,6,7,8,9,10,11,12]
+
+_i = 0; _count = count callsigns
+#LeaderMarker
+	_marker = format["%1%2", callsigns select _i, si0]; deleteMarker _marker
+	_marker = format["%1%2", callsigns select _i, si1]; deleteMarker _marker
+	_i = _i + 1
+	? (_i < _count):goto "LeaderMarker"
+	
+_marker = "Respawn_west"; deleteMarker _marker
+_marker = "Respawn_east"; deleteMarker _marker
+_marker = "Respawn_guerrila"; deleteMarker _marker
+_marker = "Respawn_civilian"; deleteMarker _marker
+_marker = "Respawn_vehicle_west"; deleteMarker _marker
+_marker = "Respawn_vehicle_east"; deleteMarker _marker
+_marker = "Respawn_vehicle_guerrila"; deleteMarker _marker
+_marker = "Respawn_vehicle_civilian"; deleteMarker _marker
+
+Marker_TZK_199Rem = true

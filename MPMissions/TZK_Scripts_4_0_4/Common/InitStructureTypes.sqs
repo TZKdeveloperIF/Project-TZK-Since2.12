@@ -406,7 +406,7 @@ bdPos = 2
 bdDir = 3
 
 baseDefs = []
-? bool_TZK_199_Mode: goto "KaosMFBase"
+? bool_TZK_MF_Mode: goto "KaosMFBase"
 
 _base = []
 _prims = []
@@ -502,7 +502,7 @@ structDefs select _mg set [sdObjects1, [["M2StaticMGE", 0, []]]  ]
 {structDefs select _walls set [_x, [["Fortress1", 0, [0,0,-2.0]] ]  ]} forEach [sdObjects0, sdObjects1]; structDefs select _walls set [sdName, "Fortress"]
 {structDefs select _sandbag set [_x, [["FenceWood", 90, []]]  ]} forEach [sdObjects0, sdObjects1]
 
-? !bool_TZK_199_Mode: goto "SkipACWADef"
+? !bool_TZK_MF_Mode: goto "Skip_MF_Redef"
 structDefs select stHeavy set [sdOnlyCO, false]
 structDefs select stAir set [sdOnlyCO, false]
 
@@ -511,7 +511,7 @@ _entry = structDefs select _wall; _entry set [sdName, "Concrete Wall High"]; _en
 alignDefs select (alignTypes find _wall) set [1, 5.6]
 _entry = structDefs select _walls; _entry set [sdName, "Concrete Wall Low"]; _entry set [sdObjects0, [["MFCTI116WestLargeWall", 0, [0,0,-1.8]]] ]; _entry set [sdObjects1, [["MFCTI116EastLargeWall", 0, [0,0,-1.8]]] ];
 alignDefs select (alignTypes find _walls) set [1, 5.6]
-#SkipACWADef
+#Skip_MF_Redef
 
 exit
 
