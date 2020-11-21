@@ -18,4 +18,6 @@ comment "Hide some units in vanilla but not mf/totalYugo mode like new-added T55
 		unitDefs select _m60A3W set [udFactoryType, -1];
 		unitDefs select _m60W set [udModel, "M60"];
 	};
+	unitDefs select _uh60WMG2 set [udFactoryType, -1];
+	unitDefs select _mi17EMG2 set [udFactoryType, -1];
 };

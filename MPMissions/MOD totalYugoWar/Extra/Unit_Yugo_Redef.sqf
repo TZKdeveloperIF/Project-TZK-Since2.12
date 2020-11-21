@@ -879,5 +879,5 @@ _type = _type + 1;
 
 {unitDefs select _x set [udModel, "Vulcan"]} forEach [_vulcanBaseW, _vulcanBaseW2];
 {unitDefs select _x set [udModel, "ZSU"]} forEach [_shilkaBaseE, _tunguskaBaseE, _shilkaE];
-{_str = "M2A2_AA_Town_Vanilla_xj400", unitDefs select _x set [udModel, _str]} forEach [_m2a2townat, _m2a2townaad];
-{_str = "BMP2_AA_Town_Vanilla_xj400", unitDefs select _x set [udModel, _str]} forEach [_bmp2townat, _bmp2townaad];
+{_str = "M2A2_AA_Town_Vanilla_xj405", unitDefs select _x set [udModel, _str]} forEach [_m2a2townat, _m2a2townaad];
+{_str = "BMP2_AA_Town_Vanilla_xj405", unitDefs select _x set [udModel, _str]} forEach [_bmp2townat, _bmp2townaad];

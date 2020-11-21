@@ -13,6 +13,7 @@ maxStructureMarkers = 50; mutexMarkerStructure = false
 ?!bool_TZK_199_Mode && !(bool_TZK_MF_Mode || bool_TZK_Yugo_Mode): goto "Skip199MarkerRemove"
 ?!bool_TZK_199_Mode && (bool_TZK_MF_Mode || bool_TZK_Yugo_Mode): [] exec "Extra\DynamicMarkerRemove.sqs", Marker_TZK_199Rem = false
 @ Marker_TZK_199Rem
+Marker_TZK_199Rem = false
 
 #Skip199MarkerRemove
 _marker = "TZK_Info"; createMarker [_marker, [2560,1024] ]; _marker setMarkerSize [0,0]; _marker setMarkerColor _colorPurple;  _marker setMarkerType "Warning"; 
@@ -140,4 +141,5 @@ _si = sides find (side player)
 ? _si == -1 : _si = siCiv
 [_si] exec "\TZK_Scripts_4_0_4\Player\InitMarkers.sqs"
 
+Marker_TZK_199Rem = true
 ; EOF

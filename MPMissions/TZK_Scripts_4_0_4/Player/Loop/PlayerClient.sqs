@@ -111,7 +111,7 @@ _songs = ["Track1","Track2","Track3","Track5","Track6","Track7","Track8","Track1
 	[_unit] exec "\TZK_Scripts_4_0_4\Player\AddPlayerActions.sqs"
 
 	; The AnimChanged-EH is available since 1.99
-	_unit addEventHandler ["AnimChanged", { _this exec "\TZK_Scripts_4_0_4\Player\Event_AnimChanged_WW4.sqs" }]
+	?!bool_TZK_Vanilla_Mode: _unit addEventHandler ["AnimChanged", { _this exec "\TZK_Scripts_4_0_4\Player\Event_AnimChanged_WW4.sqs" }]
 	_unit addEventHandler ["Fired",{ _this exec "\TZK_Scripts_4_0_4\Player\Effect\LimitWeaponRangePlayer.sqs" }]
 
 	_posOld = _posRespawn

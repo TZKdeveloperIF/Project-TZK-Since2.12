@@ -14,3 +14,11 @@ _entry = unitDefs select _t72_BE; _entry set [udModel, "MFCTI116T72B"]; _entry s
 _entry = unitDefs select _t80E; _entry set [udModel, "MFCTI116T80"]; _entry set [udName, "T80"]; _entry set [udCost, 2600]; _entry set [udBuildTime, 50];
 _entry = unitDefs select _t90E; _entry set [udModel, "MFCTI116T80B"]; _entry set [udName, "T80B"]; _entry set [udCost, 3000]; _entry set [udBuildTime, 50]; _entry set [udImage, "it80"]; _entry set [udFactoryType, 2^stHeavy];
 _entry = unitDefs select _ztz99E; _entry set [udModel, "MFCTI116T80U"]; _entry set [udName, "T80U"]; _entry set [udCost, 3400]; _entry set [udBuildTime, 50]; _entry set [udImage, "it80"]; _entry set [udFactoryType, 2^stHeavy];
+
+if bool_TZK_ETON_Mod Then {
+	_entry = unitDefs select _t72E; _entry set [udModel, "T62_mfcti_Eton508_xj400"]; _entry set [udName, "T62"]; _entry set [udCost, 1000];
+	_entry = unitDefs select _t72_AE; _entry set [udModel, "T72A_mfcti_Eton508_xj400"];
+	_entry = unitDefs select _t72_BE; _entry set [udModel, "T72B_mfcti_Eton508_xj400"];
+	_entry = unitDefs select _t80E; _entry set [udModel, "T80_mfcti_Eton508_xj400"];
+};
+	
