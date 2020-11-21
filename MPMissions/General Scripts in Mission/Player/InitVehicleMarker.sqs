@@ -1,0 +1,9 @@
+; args: [_vehicle, _type, _si]
+_vehicle = _this select 0; _type = _this select 1; _si = _this select 2
+? time > 20 || bool_TZK_199_Mode: [_vehicle, _type, _si] call funcInitVehicleMarker, exit
+
+~(20-time)
+@Marker_TZK_199Rem
+Marker_TZK_199Rem = false
+[_vehicle, _type, _si] call funcInitVehicleMarker
+Marker_TZK_199Rem = true
