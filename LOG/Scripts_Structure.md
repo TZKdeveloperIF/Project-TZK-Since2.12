@@ -12,6 +12,9 @@ Aiming to reduce the volume of mission files, many scripts are placed in AddOns 
 	+ Many scripts should be designed in this way.
 		+ Functions should have impl.
 + Artillery Module should be placed in mission.
++ Radio system should be started in mission (scripts can be placed in addons)
++ Dynamic scripts should have impl.
++ Options and some important dialog should be remained in mission (at least the entrance)
 #4.0.5 Done
 	
 ##4.0.4.07
