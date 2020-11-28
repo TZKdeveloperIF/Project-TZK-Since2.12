@@ -1,0 +1,40 @@
+; args: [Fired EH Array, actual target <object>, EH index, (bool infantry), (speed), (max range)]
+_vehicle = _this select 0 select 0; _speedMax = 2000; if ("M252Mortar_TZK_xj400" countType [_vehicle] > 0) Then {_speedMax = 202}; if ("m119_xj400" countType [_vehicle] > 0) Then {_speedMax = 712}; if ("D30_xj400" countType [_vehicle] > 0) Then {_speedMax = 690}; if ("TOS1_TZK_xj400" countType [_vehicle] > 0) Then {_speedMax = 500}; 
+_ammo = _this select 0 select 4
+_posTarget = _this select 1; _boolInf = if (count _this > 3) Then "_this select 3" Else "false"
+_ehRev = _this select 2; _vehicle removeEventHandler ["Fired", _ehRev]
+_shell = nearestObject [_vehicle, _ammo]; _posShell = getPosASL _shell; _velShell = velocity _shell; _speed = if (count _this > 4) Then {_this select 4} Else {speed _shell / 3.6}
+_distX = [_posShell, _posTarget] call funcDistH; _deltaY = (_posTarget call funcHASL) - (_posShell select 2)
+_vx = sqrt ( (_velShell select 0)^2 + (_velShell select 1)^2 ); _vy = _velShell select 2; _theta0 = _vy atan2 _vx; if _boolInf Then "if (count _this > 5) Then {_theta0 = 15 + (40-15)*_distX/(_this select 5)}"; _vx = _speed * cos(_theta0); _vy = _speed * sin(_theta0) 
+
+? _deltaY > 0 && _vy <= 0: _vehicle groupChat "Improper initial elevation angle. Shell deleted.", deleteVehicle _shell, exit
+? _deltaY <= 0: if (_vy > 0) Then {goto "Case_00"} Else {goto "Case_01"}
+; Case_1: _deltaY > 0 and _vy > 0 here.
+_res = [_vx, _vy, _deltaY] call loadFile "Common\SQF\RK4_Range_H.sqf"
+? !(_res select 2): goto "Case_11_000"
+_error0 = (_res select 1) - _distX
+? _error0 < -0.5 * _distX: _vehicle groupChat "Improper initial speed/elevation angle in upward case. Shell deleted.", deleteVehicle _shell, exit
+
+? _distX > _res select 1: goto "Case_11_001"
+; Case_1 situation 1 and 2. Proper initial speed and elevation angle. Iterating angle.
+_theta = call loadFile "Common\EH\Fired_Revise_Angle_Case_11_110.sqf"; goto "Iteration_End"
+#Case_11_001
+_theta = call loadFile "Common\EH\Fired_Revise_Angle_Case_11_001.sqf"; goto "Iteration_End"
+#Case_11_000
+; Trajectory fail to reach ideal height.
+_theta = call loadFile "Common\EH\Fired_Revise_Angle_Case_11_000.sqf"; goto "Iteration_End"
+#Case_00
+_theta = call loadFile "Common\EH\Fired_Revise_Angle_Case_00.sqf"; goto "Iteration_End"
+#Case_01
+_theta = call loadFile "Common\EH\Fired_Revise_Angle_Case_01.sqf"; goto "Iteration_End"
+#Iteration_End
+
+? isNull _shell: exit
+_angle = (if _boolInf Then "((_posTarget select 1) - (_posShell select 1)) atan2 ((_posTarget select 0) - (_posShell select 0))" Else "(_velShell select 1) atan2 (_velShell select 0)")
+_velShell = [_speed * cos(_theta) * cos(_angle), _speed * cos(_theta) * sin(_angle), _speed * sin(_theta)]
+? !bool_TZK_199_Mode: _shell setVectorDir _velShell
+_shell setVelocity _velShell; _shell setPosASL _posShell
+
+? isNull player: exit
+~0.1
+? !isNull _shell: [_vehicle,_shell] exec "\TZK_Scripts_4_0_4\Player\Effect\Fired_Artillery_Impact.sqs"
