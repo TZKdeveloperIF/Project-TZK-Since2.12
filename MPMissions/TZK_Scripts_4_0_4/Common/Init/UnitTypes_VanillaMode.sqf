@@ -6,7 +6,7 @@ if !bool_TZK_199_Mode Then
 };
 if !bool_TZK_199_Mode Then
 {
-	{_desc = unitDefs select _x, _str = _desc select udModel, _size = sizeofstr _str, if (substr [_str, _size - 6, _size] == "_xj400") Then {_str = substr [_str, 0, _size - 6] + "_Vanilla" + "_xj400"}, _desc set [udModel, _str] } forEach ([_jeepW, jeepaW, _hummerW, _truckW, _supportTruckW, _supportTruckW2, _supportAPCW, _supportAPCWminer, _m113W, _m2a2W, _m3a2W, _m2a2d, _m2a2at, _m2a2aa, _m2a2townat, _m2a2townaad, utMCVW, utMHQ0, _uazE, uazaE, _brdmE, _truckE, _supportTruckE, _supportTruckE2, _supportAPCE, _supportAPCEminer, _bmpE, _bmp2E, _bmp2_EE, _bmp2d, _bmp2at, _bmp2Cannon, _bmp2aa, _bmp2townat, _bmp2townaad, utMCVE, utMHQ1] + [_a10gun, _a10LGB4, _a10bombs, _a10, _a10FFAR, _a10LGB8, _a10AA, _a10BB, _a10Tomahawk, _an72supportE, _su25gun, _su25LGB4, _su25bombs, _su25, _su25Rocket, _su25LGB8, _su25AA, _su25BB, _su25Raduga]);
+	{_desc = unitDefs select _x, _str = _desc select udModel, _size = sizeofstr _str, if (substr [_str, _size - 6, _size] == "_xj400") Then {_str = substr [_str, 0, _size - 6] + "_Vanilla" + "_xj405"}, _desc set [udModel, _str] } forEach ([_jeepW, jeepaW, _hummerW, _truckW, _supportTruckW, _supportTruckW2, _supportAPCW, _supportAPCWminer, _m113W, _m2a2W, _m3a2W, _m2a2d, _m2a2at, _m2a2aa, _m2a2townat, _m2a2townaad, utMCVW, utMHQ0, _uazE, uazaE, _brdmE, _truckE, _supportTruckE, _supportTruckE2, _supportAPCE, _supportAPCEminer, _bmpE, _bmp2E, _bmp2_EE, _bmp2d, _bmp2at, _bmp2Cannon, _bmp2aa, _bmp2townat, _bmp2townaad, utMCVE, utMHQ1] + [_a10gun, _a10LGB4, _a10bombs, _a10, _a10FFAR, _a10LGB8, _a10AA, _a10BB, _a10Tomahawk, _an72supportE, _su25gun, _su25LGB4, _su25bombs, _su25, _su25Rocket, _su25LGB8, _su25AA, _su25BB, _su25Raduga]);
 };
 
 if bool_TZK_199_Mode Then {call loadFile "Extra\199\UnitTypes_ACWA_Redefine.sqf"};
@@ -24,17 +24,17 @@ unitDefs select _ah1W2 set [udModel, "AH1_AT_xj400"]; unitDefs select _ah1W2 set
 unitDefs select _ah64W set [udModel, "AH64_xj400"];
 unitDefs select _ah64W2 set [udModel, "AH64_AT_xj400"];
 unitDefs select _ah64townW2 set [udModel, "AH64_xj400"];
-unitDefs select _v80E set [udModel, "Ka50_Vanilla_xj400"];
-unitDefs select _v80E2 set [udModel, "Ka50_AT_Vanilla_xj400"];
+unitDefs select _v80E set [udModel, "Ka50_Vanilla_xj405"];
+unitDefs select _v80E2 set [udModel, "Ka50_AT_Vanilla_xj405"];
 unitDefs select _mi24E set [udModel, "Mi24_xj400"]; unitDefs select _mi24E set [udImage, "imi24"];
 unitDefs select _mi24E2 set [udModel, "Mi24_AT_xj400"]; unitDefs select _mi24E2 set [udImage, "imi24"];
 unitDefs select _mi24townE2 set [udModel, "Mi24_xj400"]; unitDefs select _mi24townE2 set [udImage, "imi24"];
-{unitDefs select _x set [udModel, "Mi17_Vanilla_xj400"]} forEach [_mi17E, _mi17supE];
-{unitDefs select _x set [udModel, "UH60_Vanilla_xj400"]} forEach [_uh60W, _uh60supW];
-unitDefs select _mi17E30 set [udModel, "Mi17_MG_Vanilla_xj400"];
-unitDefs select _uh60W30 set [udModel, "UH60_MG_Vanilla_xj400"];
-unitDefs select _mi17EL set [udModel, "Mi17_LGB_Vanilla_xj400"];
-unitDefs select _uh60WL set [udModel, "UH60_LGB_Vanilla_xj400"];
+{unitDefs select _x set [udModel, "Mi17_Vanilla_xj405"]} forEach [_mi17E, _mi17supE];
+{unitDefs select _x set [udModel, "UH60_Vanilla_xj405"]} forEach [_uh60W, _uh60supW];
+unitDefs select _mi17E30 set [udModel, "Mi17_MG_Vanilla_xj405"];
+unitDefs select _uh60W30 set [udModel, "UH60_MG_Vanilla_xj405"];
+unitDefs select _mi17EL set [udModel, "Mi17_LGB_Vanilla_xj405"];
+unitDefs select _uh60WL set [udModel, "UH60_LGB_Vanilla_xj405"];
 
 {unitDefs select _x set [udModel, "Su25_xj400"]} forEach [_planeatR, _planeatR2];
 

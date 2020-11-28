@@ -14,7 +14,7 @@ _value = _value - _gi*(40*30)
 _si = _value/(40*30*GroupsNum*2)
 @!(mutexAIGroup)
 mutexAIGroup = true
-?!isNull player && !bool_TZK_199_Mode: if (name player == "IF" || name player == "Dr.StrangeLove") Then {[format [{showDebug ["%1", 5000]}, [_si, _gi, _setting, _type]], 1] exec "\TZK_Scripts_4_0_4\Common\DelayCode.sqs" }
+?!isNull player && !bool_TZK_199_Mode: if false Then {[format [{showDebug ["%1", 5000]}, [_si, _gi, _setting, _type]], 1] exec "\TZK_Scripts_4_0_4\Common\DelayCode.sqs" }
 ? (_gi >= GroupsNum) : goto "SettingAll"
 (aiSetting select _si select _gi) set [_type, _setting]
 ; ? isServer : if (_type in [aisBuyFactory1, aisBuyFactory2, aisBuyFactory3, aisBuyFactory4]) then {[_si, _gi, _type, _setting] exec "\TZK_Scripts_4_0_4\Common\HandleAIAutoBuyFactories.sqs"}

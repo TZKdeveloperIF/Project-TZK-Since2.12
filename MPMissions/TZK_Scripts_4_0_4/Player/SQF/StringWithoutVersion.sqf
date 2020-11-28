@@ -3,7 +3,7 @@ private ["_string", "_size", "_version", "_versionSize"];
 _string = _this;
 if !bool_TZK_199_Mode Then {
 	_size = sizeofstr _string; _version = "_xj400"; _versionSize = sizeofstr _version;
-	if (substr [_string, _size - _versionSize, _size] == _version) then {_string = substr [_string, 0, _size - _versionSize]};
+	if (substr [_string, _size - _versionSize, _size - _versionSize + 3] == "_xj") then {_string = substr [_string, 0, _size - _versionSize]};
 	_size = sizeofstr _string; _version = "_Mag"; _versionSize = sizeofstr _version;
 	if (substr [_string, _size - _versionSize, _size] == _version) then {_string = substr [_string, 0, _size - _versionSize]};
 

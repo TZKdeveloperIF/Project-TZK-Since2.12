@@ -52,7 +52,7 @@ _group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "N
 	? !_comparison && _unit == driver vehicle _unit: _res0 = [getPos _unit, siRes, []] call funcGetClosestEnemyTown; if ((_res0 select 0) != -1) then {_flag = (towns select (_res0 select 0)) select tdFlag; _unit doMove ([getPos _flag, 4, 4] call funcGetRandomPos)};
 
 	_index = _index + 1
-	~2
+	~0.4
 	? _index < _count : goto "DestroyUnits"
 
 	goto "NextLoop"

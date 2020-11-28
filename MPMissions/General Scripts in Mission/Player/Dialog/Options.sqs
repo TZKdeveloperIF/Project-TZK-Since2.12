@@ -83,6 +83,8 @@ ctrlShow [_idcRadioONBG, bool_TZK_RadioReceive_199]
 [_idcMoney, _idcScore, _idcIncomeRatio, _idcIncomeRatioPlayer, _idcTowns, _idcIncome, _idcTransferGroup, _idcGroupMarkers, _idcWorkerBehaviour, _idcUpgradeList ] call loadFile "\TZK_Scripts_4_0_4\Player\Dialog\Options_Update.sqf"
 
 ; 4.0.4 Patch
+_incomeRatio = [pvIncomeRatio0, pvIncomeRatio1] select (siPlayer == si1);
+_incomeRatioPlayer = [pvIncomeRatioPlayer0, pvIncomeRatioPlayer1] select (siPlayer == si1);
 _townCount = count towns; _towns = 0; _income = 0;
 { if ((_x select tdSide) == siPlayer) then { _towns=_towns+1; _income=_income+(_x select tdValue) } } forEach towns;
 

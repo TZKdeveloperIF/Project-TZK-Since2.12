@@ -7,7 +7,7 @@ _shift = _this select 3;
 _processed = false;
 
 if (!alive player) then {_processed = true};
-if (!_processed && (count _units) > 0) then { if (!_processed && !_alt && _shift) then {[_pos, _units] exec "\TZK_Scripts_4_0_4\Player\Dialog\OrderPlayerAI.sqs"; _processed = true} };
+if (!_processed && (count _units) > 0) then { if (!_processed && !_alt && _shift) then {[_pos, _units] exec "Player\Dialog\OrderPlayerAI.sqs"; _processed = true} };
 if (!_processed) then {
 	if (!_processed && !_alt && _shift && count ([siPlayer, stSatRec] call funcGetWorkingStructures) > 0) then {
 		_res = [siPlayer, _pos] call funcGetClosestUnit; 
