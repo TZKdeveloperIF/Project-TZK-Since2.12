@@ -78,7 +78,7 @@ _giPatrol = _gi; _bTakeTown=false; _nDestroy=0
 	; start ai for new units
 	_unitsStarted = _unitsStarted - [objNull]
 	_unitsStart = (units _group) - _unitsStarted - [_unit]
-	{ [_x, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\AI_Start.sqs"; _unitsStarted set [count _unitsStarted, _x] } foreach _unitsStart
+	{ [_x, _si, _gi] exec "Server\AI_Start.sqs"; _unitsStarted set [count _unitsStarted, _x] } foreach _unitsStart
 
 	_money = groupMoneyMatrix select _si select _gi
 
