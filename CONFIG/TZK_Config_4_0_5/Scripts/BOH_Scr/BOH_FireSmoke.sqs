@@ -1,0 +1,87 @@
+;?(BOH_MultiPlayMode): Exit
+?(format ["%1", BOH_disableFireEffects] == "scalar bool array string 0xfcffffef"): BOH_disableFireEffects = false
+?(BOH_disableFireEffects): Exit
+
+_object = _this select 0
+? player distance _object > 2000 : exit
+
+_lifeTime = 75
+?!(local _object): goto "next"
+?(random 1 < 0.2): exit
+_lifeTime = 75 + (random 30)
+
+#next
+
+?((getPos _object) select 2 > 2): goto "noEject"
+[_object, (Commander _object)] exec "\TZK_Config_4_0_5\Scripts\BOH_Scr\BOH_FireCrew.sqs"
+[_object, (Gunner _object)] exec "\TZK_Config_4_0_5\Scripts\BOH_Scr\BOH_FireCrew.sqs"
+[_object, (Driver _object)] exec "\TZK_Config_4_0_5\Scripts\BOH_Scr\BOH_FireCrew.sqs"
+#noEject
+
+
+_zPosFix = 0
+?(Count _this > 1): _zPosFix = _this select 1
+
+_sizeFix = 0
+?(Count _this > 2): _sizeFix = _this select 2
+_fireSize = 5 + _sizeFix
+_fireZ = 0.5 + _fireSize / 2
+
+_smokeObject = "BOHFireSmoke1"
+_smokeObjectEnd = "BOHFireSmokeEnd1"
+?(_sizeFix < -1): _lifeTime = _lifeTime * 0.7; _smokeObject = "BOHFireSmokeSmall1"; _smokeObjectEnd = "BOHFireSmokeEndSmall1"
+
+
+_delay = 0.23
+_lifeTicks = _lifeTime / _delay
+_lifeTick = _lifeTicks
+
+
+?!(local _object):goto "start"
+
+_fireSmoke = _smokeObject createvehicle [0,0,0]
+_fireSmoke inflame true
+
+#start
+
+@((getPos _object) select 2 < 10)
+
+~2
+
+#Begin
+
+_firePos = [getpos _object select 0, getpos _object select 1, (getpos _object select 2)+0.5 + _zPosFix]
+
+drop ["cl_fire", "", "Billboard", 1,  5, _firePos, [ 1 - random 2, 1 - random 2, random 3], 1, 0.005, 0.0042, 0, [0.15], [[1,1,1,1],[0,0,0,0]], [0,1], 0.5, 1, "", "",""]
+drop ["cl_fire", "", "Billboard", 1, 1, _firePos, [0.3 - random 0.6, 0.3 - random 0.6, _fireZ], 1, 0.004, 0.004, 0.1, [1,(1 + random _fireSize),0.8], [[1,0.5,0.5,0], [0.2,0.2,0,0.7], [1,1,0,0.5], [1,1,0.1,0]], [0,1], 0.5, 0.05, "", "", ""]
+
+?!(local _object):goto "skip"
+_firesmoke setpos _firePos
+?(!inflamed _fireSmoke): _fireSmoke inflame true
+
+#skip
+~_delay
+
+_lifeTick = _lifeTick - 1
+?_lifeTick > 0 : goto "Begin"
+
+?!(local _object):exit
+_fireSmokeEnd = _smokeObjectEnd createvehicle [0,0,0]
+_fireSmokeEnd inflame true
+?!(_sizeFix < -1): _fireSmokeEnd say "BOHFireSoundEnd1"
+?(_sizeFix < -1): _fireSmokeEnd say "BOHFireSoundEndSmall1"
+_fireSmokeEnd setPos _firePos
+~0.2
+deletevehicle _fireSmoke
+
+_num = 0
+#smokeEndPosLoop
+?(_num > 35 ): goto "end"
+_fireSmokeEnd setPos [getpos _object select 0, getpos _object select 1, (getpos _object select 2)+0.5 + _zPosFix]
+~0.5
+_num = _num + 1
+goto "smokeEndPosLoop"
+
+#end
+deletevehicle _fireSmokeEnd
+Exit

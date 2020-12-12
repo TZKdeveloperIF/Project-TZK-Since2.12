@@ -1,0 +1,15 @@
+; args: [Fired_EH_Array, delay, (animation name[], animation phase[])]
+
+_vehicle = _this select 0 select 0; _ammo = _this select 0 select 4
+? format ["%1", _ammo GetAmmoParam "simulation"] == "shotBullet": exit
+
+_delay = if (count _this > 1) Then {_this select 1} Else {0.12}
+
+_anims = ["gunrec"]; _phases = [1]
+? count _this > 2: _anims = _this select 2
+? count _this > 3: _phases = _this select 3
+
+_c = count _anims
+_i = 0; while "_i < _c" do "_thePhase = if (_i < count _phases) Then {_phases select _i} Else {1}, _vehicle animate [_anims select _i, _thePhase], _i = _i + 1"
+~_delay
+_i = 0; while "_i < _c" do "_thePhase = if (_i < count _phases) Then {_phases select _i} Else {1}, _vehicle animate [_anims select _i, 1 - _thePhase], _i = _i + 1"

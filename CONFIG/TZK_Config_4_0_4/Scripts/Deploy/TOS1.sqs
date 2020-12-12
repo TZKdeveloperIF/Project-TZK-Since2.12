@@ -1,0 +1,46 @@
+; args: [vehicle, status deploy]
+_vehicle = _this select 0; _deploy = _this select 1
+
+_i = 0; _aName = ["stf","stL","stR"]; _aTime= [0.5, 0, 3]
+_index = (typeOf _vehicle GetVehicleParamArray "hiddenSelections") find "lidF"
+? _deploy == 0: goto "drive"
+
+commandstop (driver _vehicle)
+(driver _vehicle) action ["ENGINEOFF", _vehicle]; (commander _vehicle) action ["LIGHTOFFOFF", _vehicle]
+_vehicle addMagazine "DeploySwitch_xj400"; _vehicle engineOn false;  _vehicle groupChat "Preparing vehicle..."
+~1
+#Deploy
+	_vehicle animate [(_aName select _i), _deploy]
+	~(_aTime select _i)
+	? _i < (count _aName)-1: _i = _i + 1, goto "Deploy"
+	
+	_vehicle setObjectTexture [_index , ""]; _vehicle setObjectTexture [_index + 1 , ""]
+	; MP broadcast
+	_NetWorkID = NetworkID _vehicle; _code = format [{(UnitById %2) setObjectTexture [%1 , ""]; (UnitById %2) setObjectTexture [%1 + 1 , ""]}, _index, _NetWorkID]; publicExec _code
+	~1
+	_vehicle addweapon "FAE220Launcher_xj400"; _vehicle removeWeapon "NoGun_xj400"; _vehicle groupChat "Ready to fire"
+	? !isNull gunner _vehicle && !local gunner _vehicle: publicExec format [{if (local gunner UnitById %1) then {UnitById %1 removeWeapon "NoGun_xj400"}}, _NetWorkID]
+	? !local _vehicle: publicExec format [{if (local UnitById %1) then {UnitById %1 addweapon "FAE220Launcher_xj400"}}, _NetWorkID]
+exit
+
+#drive
+_vehicle addweapon "NoGun_xj400"; _vehicle removeWeapon "FAE220Launcher_xj400"
+	? !isNull gunner _vehicle && !local gunner _vehicle: publicExec format [{if (local gunner UnitById %1) then {UnitById %1 removeWeapon "FAE220Launcher_xj400"}}, _NetWorkID]
+
+	~1
+	_path = "\TZK_Texture_4_0_0\DKMM\Arty\"; 
+	? TheWorld == "D": _path = "\TZK_Texture_4_0_4\yellow\DKMM\"
+	? TheWorld == "G": _path = "\TZK_Texture_4_0_4\green\DKMM\"
+	? TheWorld == "W": _path = "\TZK_Texture_4_0_4\white\DKMM\"
+	_vehicle setObjectTexture [_index , _path + "tost2.pac"]; _vehicle setObjectTexture [_index + 1 , _path + "tost2.pac"]
+	; MP broadcast
+	_NetWorkID = NetworkID _vehicle; _code = format [{(UnitById %2) setObjectTexture [%1,"%3"]; (UnitById %2) setObjectTexture [%1 + 1, "%3"]}, _index, _NetWorkID, _path + "tost2.pac"]; publicExec _code
+	_vehicle groupChat "Launcher secured..."
+	~1
+#Pack
+	_vehicle animate [(_aName select _i), _deploy]
+	~(_aTime select _i)
+	? _i < (count _aName)-1: _i = _i + 1, goto "Pack"
+_vehicle removeMagazines "DeploySwitch_xj400"; 
+_vehicle groupChat "Ready for movement"
+exit

@@ -1,0 +1,10 @@
+_helo = _this select 0
+if ((getpos _helo select 2) <= 2) then {goto "landing"} else {goto "flying"}
+
+#landing
+_helo animate ["doorC", 1];_helo animate ["doorD", 1];_helo animate ["doorA", 1];_helo animate ["doorB", 1]
+@ ((getpos _helo select 2) >= 2)
+#flying
+_helo animate ["doorC", 0];_helo animate ["doorD", 0];_helo animate ["doorA", 0];_helo animate ["doorB", 0]
+@ ((getpos _helo select 2) < 2)
+goto "landing"

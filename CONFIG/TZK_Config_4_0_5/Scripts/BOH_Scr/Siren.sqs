@@ -1,0 +1,18 @@
+_Truck = _this select 0
+goto "Exit"
+
+#loop
+_Truck Say "BOHsiren"
+~6.6
+?(_Truck animationphase "Siren" <= 0.1):goto "Exit"
+?(not Alive _Truck) : goto "End"
+goto "loop"
+
+#Exit
+?(_Truck animationphase "Siren" > 0.1):goto "loop"
+?(not Alive _Truck) : goto "End"
+~0.05
+goto "Exit"
+#End
+_Truck animate ["Siren",0]
+exit;

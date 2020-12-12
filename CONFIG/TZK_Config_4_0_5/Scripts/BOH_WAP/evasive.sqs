@@ -1,0 +1,84 @@
+_wanzer = _this select 0
+
+?(driver _wanzer == player) : exit
+
+_wait = 0.1 + random 0.2
+~_wait
+
+_posz = getpos _wanzer select 2
+
+?(_posz > 1) : goto "fly"
+
+_num = random 15
+?(_num < 1) : goto "a"
+?(_num < 2) : goto "a"
+?(_num < 3) : goto "a"
+?(_num < 4) : goto "a"
+?(_num < 5) : goto "b"
+?(_num < 6) : goto "b"
+?(_num < 7) : goto "b"
+?(_num < 8) : goto "b"
+?(_num < 9) : goto "c"
+?(_num < 10) : goto "c"
+?(_num < 11) : goto "d"
+?(_num < 12) : goto "e"
+?(_num < 13) : goto "e"
+?(_num < 14) : goto "e"
+?(_num < 15) : goto "e"
+
+
+#a
+[_wanzer] exec "\bohjsdf5\wap\dashleft.sqs"
+exit
+
+#b
+[_wanzer] exec "\bohjsdf5\wap\dashright.sqs"
+exit
+
+#c
+[_wanzer] exec "\bohjsdf5\wap\dashfront.sqs"
+exit
+
+#d
+[_wanzer] exec "\bohjsdf5\wap\dashback.sqs"
+exit
+
+#e
+[_wanzer] exec "\bohjsdf5\wap\jump.sqs"
+~1.0
+?(random 10 > 5) : [_wanzer] exec "\bohjsdf5\wap\jumpcancel.sqs"
+~3.0
+?(random 10 > 4) : [_wanzer] exec "\bohjsdf5\wap\jumpcancel.sqs"
+~5.0
+?(random 10 > 3) : [_wanzer] exec "\bohjsdf5\wap\jumpcancel.sqs"
+exit
+
+
+#fly
+
+_numfly = random 5
+?(_numfly < 1) : goto "aa"
+?(_numfly < 2) : goto "bb"
+?(_numfly < 3) : goto "cc"
+?(_numfly < 4) : goto "dd"
+?(_numfly < 5) : goto "ee"
+
+#aa
+[_wanzer] exec "\bohjsdf5\wap\slideleft.sqs"
+exit
+
+#bb
+[_wanzer] exec "\bohjsdf5\wap\slideright.sqs"
+exit
+
+#cc
+[_wanzer] exec "\bohjsdf5\wap\slideback.sqs"
+exit
+
+#dd
+[_wanzer] exec "\bohjsdf5\wap\slidefront.sqs"
+exit
+
+#ee
+[_wanzer] exec "\bohjsdf5\wap\jumpcancel.sqs"
+exit

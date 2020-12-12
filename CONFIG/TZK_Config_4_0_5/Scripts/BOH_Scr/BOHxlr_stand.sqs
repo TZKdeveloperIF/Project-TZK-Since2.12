@@ -1,0 +1,25 @@
+;LAST UPDATE 2004.11.09
+
+_unit =_this select 0
+
+#waitGetIn
+@(!isNull (driver _unit) || !alive _unit)
+?(!alive _unit): goto "exit"
+
+?((getPos _unit select 2) < -0.3): _unit setDir getDir _unit; _unit setPos [(getPos _unit) select 0, (getPos _unit) select 1, 0.05]
+
+#driverOnTheBike
+(driver _unit) switchMove "BOHXLRDriverSTAND"
+
+@(isNull (driver _unit) || !alive _unit || (speed _unit >= 2 || speed _unit <= -8))
+?(isNull (driver _unit) || !alive _unit): goto "exit"
+(driver _unit) switchMove "BOHXLRDriverSTAND2"
+
+@(isNull (driver _unit) || !alive _unit || (speed _unit < 2 && speed _unit > -8))
+?(isNull (driver _unit) || !alive _unit): goto "exit"
+goto "driverOnTheBike"
+
+#exit
+?(isNull (driver _unit) && alive _unit): goto "waitGetIn"
+?(!isNull (driver _unit)): _man = (driver _unit); unassignvehicle _man; _man action ["eject", vehicle _man]
+exit

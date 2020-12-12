@@ -1,0 +1,36 @@
+;LAST UPDATE 2004.11.09
+
+_object = (_this select 0) select 0
+?((getPos _object) select 2)>1: Exit
+
+?(format ["%1",BOH_IslandMap] =="scalar bool array string 0xfcffffef"): BOH_IslandMap = 1
+?(format ["%1",BAS_IslandMap] =="scalar bool array string 0xfcffffef"): BAS_IslandMap = BOH_IslandMap
+?(format ["%1",BOH_WINDUST] == "scalar bool array string 0xfcffffef"):BOH_WINDUST = false
+?(format ["%1",BAS_WINDUST] == "scalar bool array string 0xfcffffef"):BAS_WINDUST = BOH_WINDUST
+
+_standard = [0.345,0.29,0.168]
+_vietnam = [0.4,0.3,0.2]
+_snow = [0.95,0.95,0.95]
+
+_baseColour = _standard
+?(BAS_IslandMap == 6): _baseColour = _vietnam
+?(BAS_WINDUST): _baseColour = _snow
+
+_circleSize = 6
+?(Count _this > 1): _circleSize  = _circleSize  + (_this select 1)
+?(_circleSize < 0): _circleSize = 1
+
+_dropZ = -1.5
+?(Count _this > 2): _dropZ = _dropZ + (_this select 2)
+
+_dustSize = [(2 + _circleSize / 2),(1 + _circleSize / 4)] 
+_deg = 0
+_roundSpace = 8
+_objectPosX = (getPos _object) select 0
+_objectPosY = (getPos _object) select 1
+
+~(_circleSize / 85)
+
+while "_deg < 360" do { _a = _circleSize + (random (_circleSize /10)); _tmpX = _a * sin _deg; _tmpY = _a * cos _deg; _Colour = [_baseColour + [random 0.3], _baseColour + [0.1], _baseColour + [random 0.2], _baseColour + [0.01]]; drop["cl_basic","","Billboard",1,random (_circleSize / 4),[_tmpX + _objectPosX, _tmpY + _objectPosY, _dropZ],[_tmpX,_tmpY,random 4],0,1.8,1,0.1,_dustSize, _Colour,[0],2,(_circleSize / 10),"","",""]; _deg = _deg  + _roundSpace; };
+
+exit

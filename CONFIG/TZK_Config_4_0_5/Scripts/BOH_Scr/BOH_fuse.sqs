@@ -1,0 +1,121 @@
+;;Orignal Code by Pennywise from Radishville
+;;Email:  onepremise@nc.rr.com
+;;Email2: pennywise@radishville.com
+;;Optimized by Naoyuki 2005/09/18
+
+_plane      = _this Select 0
+_missobj         = _this Select 1
+_ammoname     = _this Select 2
+
+;=========================================================
+;Initialize Local Variables
+;=========================================================
+_Target = objNull
+_Radius = 50
+_DetonateRadius = 20
+_olddis = 2000
+_faildis = 0.001
+
+;=========================================================
+;Models
+;=========================================================
+_planee = "Plane"
+_helo  = "Helicopter"
+_tank  = "Tank"
+_chaff = "BOHnulltgt"
+
+;=========================================================
+;Run Client Side Only
+;=========================================================
+?(!(Local _plane)):goto "Exit"
+
+;=========================================================
+;Process
+;=========================================================
+
+#ScanForTarget
+
+?(!(alive _missobj)):goto "Exit"
+
+_curPos = getPos _missobj
+
+_xOffset = (Sin (direction _missobj)) * _Radius
+_yOffset = (Cos (direction _missobj)) * _Radius
+
+_X = (_curPos select 0) + _xOffset
+_Y = (_curPos select 1) + _yOffset
+_Z = (_curPos select 2)
+
+?(alive _missobj):_Target = NearestObject [[_X, _Y, _Z],""]
+
+?((side _plane==side _Target) or (side _plane==civilian)):goto "ScanForTarget"
+
+?((count crew _Target) == 0):goto "ScanForTarget"
+
+?(_planee countType [_Target] > 0):_DetonateRadius = 20;goto "CheckDistance"
+?(_helo countType [_Target] > 0):_DetonateRadius = 13;goto "CheckDistance"
+;?(_tank countType [_Target] > 0):player globalChat "Target:Tank";goto "Exit"
+
+?(alive _missobj):goto "ScanForTarget"
+
+goto "Exit"
+
+;=========================================================
+;Check Distance
+;=========================================================
+#CheckDistance
+_missvel = velocity _missobj
+_tgtvel = velocity _Target
+_faildistance = (_Target distance _missobj)
+_failvel = sqrt(((_missvel select 0) - (_tgtvel select 0))^2 + ((_missvel select 1) - (_tgtvel select 1))^2 +((_missvel select 2) - (_tgtvel select 2))^2)
+_faildischk = (_faildistance / _failvel)/15
+?(_faildischk < 0):_faildischk=_faildischk*(-1)
+#CheckDistance2
+~0.001
+_faildis = _faildis +0.001
+_dis = (_Target distance _missobj)
+?(_dis <= _DetonateRadius ):player vehicleChat "Target Lock On";goto "Detonate"
+?(_faildis > _faildischk):player vehicleChat "Target Lock Failed";goto "Detonate"
+?(alive _missobj):goto "CheckDistance2"
+
+goto "Exit"
+
+;=========================================================
+;Detonate Missile
+;=========================================================
+#Detonate
+?(debugBOHVT):hint format ["ETA count %1 \nactual %2\nvelocity %3\ndis %4",_faildischk,_faildis,_failvel,_faildistance]
+_bfrdmg = getDammage _Target
+_missvel = velocity _missobj
+_missspd = speed _missobj
+_offset = 10 / _missspd
+_curPos = getPos _missobj
+
+;_xOffset = (Sin (direction _missobj)) * 5
+;_yOffset = (Cos (direction _missobj)) * 5
+
+_xOffset = (_missvel select 0) * _offset
+_yOffset = (_missvel select 1) * _offset
+_zOffset = (_missvel select 2) * _offset
+
+_X = (_curPos select 0) + _xOffset
+_Y = (_curPos select 1) + _yOffset
+_Z = (_curPos select 2) + _zOffset
+
+_curPos = [_X,_Y,_Z]
+_detonate = _chaff createVehicle (_curPos)
+_detonate setdir (direction _missobj)
+
+;=========================================================
+;Clean Up
+;=========================================================
+#AliveWait
+~.1
+?(alive _missobj):goto "AliveWait"
+
+deleteVehicle _detonate
+
+_aftdmg = getDammage _Target
+
+#Exit
+exit

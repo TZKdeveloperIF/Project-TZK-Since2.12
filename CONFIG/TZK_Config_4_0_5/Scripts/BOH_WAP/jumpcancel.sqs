@@ -1,0 +1,36 @@
+_wanzer = _this select 0
+
+_cnt = 0
+
+_wanzer say "BOHWAPBoost1"
+
+_velz = velocity _wanzer select 2
+
+_pwr = 3.0
+?(_velz > -10) : _pwr = 5.0
+?(_velz > 0) : _pwr = 9.0
+?(_velz > 10) : _pwr = 11.0
+?(_velz > 15) : _pwr = 11.5
+?(_velz > 20) : _pwr = 12.0
+?(_velz > 25) : _pwr = 12.5
+?(_velz > 30) : _pwr = 13.0
+;hint format["Arg1 : %1 \nArg2 : %2",_velz,_pwr]
+
+_wanzer Animate ["LeftWing", 0]
+_wanzer Animate ["RightWing", 0]
+
+
+#bst
+
+_velx = velocity _wanzer select 0
+_vely = velocity _wanzer select 1
+_velz = velocity _wanzer select 2
+
+_wanzer setvelocity [_velx, _vely, _velz - _pwr]
+
+_cnt = _cnt + 1
+?(_cnt > 3) : exit
+
+~0.1
+
+goto "bst"

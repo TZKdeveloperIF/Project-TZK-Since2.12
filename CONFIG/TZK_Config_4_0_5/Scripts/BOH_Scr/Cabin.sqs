@@ -1,0 +1,27 @@
+;BAS cabin lighting system - TJ 2003
+
+;Yeah baby you know you want this! Credit where its due plz.
+
+;KISS
+
+_helo = _this
+_light = "UH1CargoLight" createvehicle [0,0,0]
+_light inflame true
+
+
+
+#loop1
+~0.001
+
+_velo = (velocity _helo)
+_dir = (getdir _helo - 270)
+_posx = (getpos  _helo select 0)-(1 * cos _dir)
+_posy = (getpos _helo select 1) +(1 * sin _dir)
+
+_light setpos [_posx,_posy,(getpos _helo select 2)+2.6]
+_light setvelocity _velo
+? _helo animationphase "Lightnull" == 0:deletevehicle _light,exit
+? (getdammage _helo) >=0.9:deletevehicle _light,exit
+goto "loop1"
+
+

@@ -1,0 +1,6 @@
+_helo = _this select 0
+_position = _this select 1
+
+?( (count ((crew _helo)-[driver _helo,gunner _helo])>=6) && (_position == "cargo") ): _helo animate [{door1}, 0];_helo animate [{door2}, 0];_helo animate [{doorA}, 0];_helo animate [{doorB}, 0];
+
+exit

@@ -1,0 +1,22 @@
+_car = _this select 0
+_horn = _this select 1
+
+#start
+@(_car animationPhase "B" == 1) and (getdammage _car < 0.9)
+_car setObjectTexture [0, "\BOHJSDF1\lhl.paa"]
+_car setObjectTexture [1, "\BOHJSDF1\lhl.paa"]
+
+#loop
+?(_car animationPhase "B1" <= 0.01):_car animate ["B1",1]
+?(_car animationPhase "B2" <= 0.01):_car animate ["B2",1]
+
+?(_car animationPhase "B" == 0): _car setObjectTexture [0, "\BOHJSDF1\clear.paa"]; 
+?(_car animationPhase "B" == 0): _car setObjectTexture [1, "\BOHJSDF1\clear.paa"]; goto "start"
+
+?(_car animationPhase "B1" >= 0.99):_car animate ["B1",0]
+?(_car animationPhase "B2" >= 0.99):_car animate ["B2",0]
+
+?(_car animationPhase "B" == 0): _car setObjectTexture [0, "\BOHJSDF1\clear.paa"]; 
+?(_car animationPhase "B" == 0): _car setObjectTexture [1, "\BOHJSDF1\clear.paa"]; goto "start"
+~1
+goto "loop"

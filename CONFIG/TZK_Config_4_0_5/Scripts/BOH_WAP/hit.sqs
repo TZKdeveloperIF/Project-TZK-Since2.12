@@ -1,0 +1,71 @@
+_wanzer = _this select 0
+
+?(driver _wanzer == player) : exit
+?(!isengineon _wanzer) : exit
+?(6 < random 10) : exit
+
+~(0.1 + random 0.2)
+
+_posz = getpos _wanzer select 2
+
+?(_posz > 1) : goto "fly"
+
+_num = random 5
+?(_num < 1) : goto "a"
+?(_num < 2) : goto "b"
+?(_num < 3) : goto "c"
+?(_num < 4) : goto "d"
+?(_num < 5) : goto "e"
+
+
+#a
+[_wanzer] exec "\bohjsdf5\wap\dashleft.sqs"
+exit
+
+#b
+[_wanzer] exec "\bohjsdf5\wap\dashright.sqs"
+exit
+
+#c
+[_wanzer] exec "\bohjsdf5\wap\dashfront.sqs"
+exit
+
+#d
+[_wanzer] exec "\bohjsdf5\wap\dashback.sqs"
+exit
+
+#e
+[_wanzer] exec "\bohjsdf5\wap\jump.sqs"
+~1.0
+?(random 10 > 5) : [_wanzer] exec "\bohjsdf5\wap\jumpcancel.sqs"
+~3.0
+?(random 10 > 4) : [_wanzer] exec "\bohjsdf5\wap\jumpcancel.sqs"
+~5.0
+?(random 10 > 3) : [_wanzer] exec "\bohjsdf5\wap\jumpcancel.sqs"
+exit
+
+
+#fly
+
+[_wanzer] exec "\bohjsdf5\wap\jumpcancel.sqs"
+
+_dir = getdir _wanzer
+_wanzer setdir _dir
+~0.1
+_dir = getdir _wanzer
+_wanzer setdir _dir
+~0.1
+_dir = getdir _wanzer
+_wanzer setdir _dir
+~0.1
+_dir = getdir _wanzer
+_wanzer setdir _dir
+~0.1
+_dir = getdir _wanzer
+_wanzer setdir _dir
+~0.1
+_dir = getdir _wanzer
+_wanzer setdir _dir
+~0.1
+
+exit
