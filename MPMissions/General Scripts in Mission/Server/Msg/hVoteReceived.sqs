@@ -21,6 +21,6 @@ _entry = Vote_Result select _item_Index
 ; Calculate vote result
 _mass_Vote = 0; _mass_Total = 0;
 call loadFile "\TZK_Scripts_4_0_4\Server\Msg\fVoteCalculate.sqf"
-? _mass_Vote/_mass_Total > voteRate: if (time > 2*60*60 && (Vote_Matrix select _item_Index select 0 == "Income Ratio" || Vote_Matrix select _item_Index select 0 == "View Distance")) Then "exit", [_item_Index, _item_Value] exec "\TZK_Scripts_4_0_4\Server\Msg\sVoteResult.sqs", [_item_Index, _item_Value] exec "Server\Vote\Vote_Effect.sqs"
+? _mass_Vote/_mass_Total > voteRate: if (time > 2*60*60 && (Vote_ItemNames select _item_Index == "Income Ratio" || Vote_ItemNames select _item_Index == "View Distance")) Then "exit", [_item_Index, _item_Value] exec "\TZK_Scripts_4_0_4\Server\Msg\sVoteResult.sqs", [_item_Index, _item_Value] exec "Server\Vote\Vote_Effect.sqs"
 
 ; EOF

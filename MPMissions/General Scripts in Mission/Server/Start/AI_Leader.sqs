@@ -1,25 +1,3 @@
 ; args: [unit, si, gi]
 
-? !isServer : exit
-
-_unit = _this select 0
-_si = _this select 1
-_gi = _this select 2
-
-_group = (groupMatrix select _si) select _gi
-
-? _group == (groupCommander select _si) : _this exec "Server\AI_UpdateCommander.sqs"; exit
-
-_idOrder = -1; _indexCombatMode = 0; _indexBehaviour = 0; _idTemporaryOrder = -1
-
-
-? !(alive _unit) : goto "SkipInitialize"
-
-[_unit, _si, 200] exec "\TZK_Scripts_4_0_4\Common\EventAdd_InfantryKilled.sqs"
-[_unit, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\EventAdd_Infantry.sqs"
-[_unit, _si, kaUnit, -1] exec "\TZK_Scripts_4_0_4\Server\Start\KnowsAbout.sqs"
-[_unit] exec "\TZK_Scripts_4_0_4\Common\AddRearmData.sqs"
-
-#SkipInitialize
-{if (alive _x) then {[_x, _si, _gi] exec "Server\AI_Start.sqs"}} foreach units _group
-[_unit, _si, _gi, _idTemporaryOrder, _idOrder, _indexCombatMode, _indexBehaviour] exec "Server\Loop\AI_Leader.sqs"
+_this exec "\TZK_Scripts_4_0_5\Server\Start\AI_Leader.sqs"

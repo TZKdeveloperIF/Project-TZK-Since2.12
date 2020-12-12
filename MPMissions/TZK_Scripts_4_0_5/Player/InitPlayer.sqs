@@ -1,0 +1,142 @@
+; args: [unit, si, gi]
+; Since TZK_3.00 and TZK_2.12 common functions/message handlers for both player and spectator are intergraded in "\TZK_Scripts_4_0_4\Player\InitClient.sqs"
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+
+forceMap true
+[] exec "\TZK_Scripts_4_0_5\Player\Init_Function_Player.sqs"
+
+
+structAction = -1
+lastSelectedStructType = -1
+lastSelectedUnitType = -1
+
+aVehiclesWithRepairAction = []
+vehiclesRearming = []
+giMarkersAI = count (groupMatrix select _si)
+
+qPlayer = []
+qLen = []; mutexqLen = false
+lastSelectedFactory = [ [], [] ]
+
+timeLastPing = 30
+bBlockedByClient = false
+
+bMannedDriver = true
+bMannedGunner = true
+bMannedCommander = false
+
+
+alignWalls = false
+
+respawnType = 10
+objectRespawn = objNull
+
+playerSide = side _unit
+groupPlayer = group _unit
+siPlayer = _si
+giPlayer = _gi
+
+unitcamUnit = objNull
+iView = 0
+satcamUnit = objNull
+satcamPos = []
+satcamAlt = viewDistance/4
+SpySatPos0 = []; SpySatPos1 = []; bSpySat = false
+
+reportAll = 0
+reportVehiclesStructs = 1
+reportStructs = 2
+reportNone = 3
+report = reportAll
+
+Destruction_Undo0 = false
+Destruction_Undo1 = false
+
+wpPlayer = []
+_i = 0; while "_i < countWPPlayer" do { wpPlayer set [_i, [-1,-1]]; _i = _i + 1 } 
+timeLastWaypointSet = 0
+indexWayPointSelected = -1
+
+[_si] exec "Player\InitPlayer_Msg.sqs"
+
+_targetObject = {Target_TZK_xj400}
+; ? bool_TZK_Vanilla_Mode: _targetObject = "HeliH"
+_i = 0; countTargetMarkers = 10; while "_i < countTargetMarkers" do {call Format[{TargetP_%1 = _targetObject camCreate [0,0,0]; TargetP_%1 exec "\TZK_Scripts_4_0_4\Common\Command\allowDamageFalse.sqs"}, _i]; _i = _i + 1}
+; Should better use camCreate than createVehicle. Its position don't have to be broadcast.
+
+;game has begun after this pause
+~0.1
+
+mapAnimClear
+mapAnimAdd [0, 1.0, posCenter]
+mapAnimCommit
+@mapAnimDone
+
+; TODO - disable for release
+; player addAction ["TEST", "\TZK_Scripts_4_0_4\Player\Action\Test.sqs"]
+
+onMapSingleClick {[_pos, _units, _alt, _shift] call funcMapClickPlayer}
+
+player groupchat "Waiting for start data ..."
+@( !(isNull (mhq select si0)) && !(isNull (mhq select si1)) )
+player groupchat "Start data received."
+
+[_unit, _si, _gi] exec "Player\InitPlayer_Scripts.sqs"
+
+mapAnimClear
+mapAnimAdd [1.0, 1.0, getPos (mhq select _si)]
+mapAnimCommit
+@mapAnimDone
+; ~1
+; forceMap false
+
+[] exec "\TZK_Scripts_4_0_5\Player\Init\AIOrder.sqs"
+call loadFile "impl\Client_Player.sqf"
+
+
+; [] exec "\TZK_Scripts_4_0_4\Player\LoadSettings.sqs"
+RespawnWeapon = []; RespawnMagazine = []; RespawnAmmunition = [];
+RespawnW = []; RespawnM = []; RespawnA = [];
+~0.1
+[player, siPlayer] exec "\TZK_Scripts_4_0_4\Player\EquipPlayerRespawn.sqs"
+
+; flash start pos
+_marker = "Art0"
+_size = getMarkerSize _marker
+_marker setMarkerSize [1,1]
+_i = 0
+#FlashStart
+_marker setMarkerPos ( [getPos (mhq select _si), hiddenMarkerPos] select ((_i % 2) == 0) )
+ ~0.2
+ _i = _i + 1
+ ? _i < 10 : goto "FlashStart"
+
+
+ 
+forceMap false
+~0.1
+[player, player, false, 0] exec "\TZK_Scripts_4_0_4\Player\Dialog\Equipment.sqs"
+~1
+@ !dialog
+[] exec "Player\DisplayGameInfo.sqs"
+[] exec "\TZK_Scripts_4_0_4\Player\InitCommanderUnit.sqs"
+[] exec "\TZK_Scripts_4_0_4\Player\Init\BuyList.sqs"
+
+~15
+PlayMusic (Musics0 select music0); 0 FadeMusic 0.35
+; Hide start pos marker after some time
+~20
+20 FadeMusic 0.09
+_marker setMarkerPos hiddenMarkerPos
+_marker setMarkerSize _size
+
+_westName = []; _groups = groupMatrix select si0; _index = 0; _groupsAI = groupAiMatrix select si0
+{ _westName set [_index, format["%1", [name leader _x, "AI"] select (_x in _groupsAI)] ]; _index=_index+1 } forEach _groups;
+_eastName = []; _groups = groupMatrix select si1; _index = 0; _groupsAI = groupAiMatrix select si1
+{ _eastName set [_index, format["%1", [name leader _x, "AI"] select (_x in _groupsAI)] ]; _index=_index+1 } forEach _groups;
+LeaderNameMatrix = [_westName, _eastName]
+
+; EOF

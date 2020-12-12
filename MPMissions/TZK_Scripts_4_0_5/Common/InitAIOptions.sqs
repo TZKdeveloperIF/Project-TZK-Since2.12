@@ -138,69 +138,69 @@ orderDefs = []
 _type = 0
 
 orderTakeTowns = _type
-orderDefs set [_type, ["Take Towns", [], "TakeTowns.sqs"] ]
+orderDefs set [_type, ["Take Towns", [], "\TZK_Scripts_4_0_5\Server\Order\TakeTowns.sqs"] ]
 _type = _type + 1
 
 orderTakeHoldTowns = _type
 _param0 = ["Hold Distance", "5", "format [""<%1m"", 500*(_this+1)]"]
 _param1 = ["Hold Time", "10", "format [""%1min"", 5*(_this+1)]"]
-orderDefs set [_type, ["Take Hold Towns", [_param0, _param1], "TakeHoldTowns.sqs"] ]
+orderDefs set [_type, ["Take Hold Towns", [_param0, _param1], "\TZK_Scripts_4_0_5\Server\Order\TakeHoldTowns.sqs"] ]
 _type = _type + 1
 
 orderHoldTown = _type
 _param0 = [ "Town", "count towns", "(towns select _this) select 1" ]
 _param1 = [ "Defend Distance", "10", "format [""%1m"", 50*(_this+1)]" ]
 _param2 = [ "Defend Direction", "9", funcDirIndexToText ]
-orderDefs set [_type, ["Hold Town", [_param0, _param1, _param2], "HoldTown.sqs"] ]
+orderDefs set [_type, ["Hold Town", [_param0, _param1, _param2], "\TZK_Scripts_4_0_5\Server\Order\HoldTown.sqs"] ]
 _type = _type + 1
 
 orderGuardArea = _type
 _param0 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
 _param1 = [ "Defend Distance", "10", "format [""%1m"", 50*(_this+1)]" ]
 _param2 = [ "Defend Direction", "9", funcDirIndexToText ]
-orderDefs set [_type, ["Guard Area", [_param0, _param1, _param2], "GuardArea.sqs"] ]
+orderDefs set [_type, ["Guard Area", [_param0, _param1, _param2], "\TZK_Scripts_4_0_5\Server\Order\GuardArea.sqs"] ]
 _type = _type + 1
 
 orderGuardLine = _type
 _param0 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
 _param1 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
-orderDefs set [_type, ["Guard Line", [_param0, _param1], "GuardLine.sqs"] ]
+orderDefs set [_type, ["Guard Line", [_param0, _param1], "\TZK_Scripts_4_0_5\Server\Order\GuardLine.sqs"] ]
 _type = _type + 1
 
 orderPatrolArea = _type
 _param0 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
 _param1 = [ "Patrol Radius", "10", "format [""%1m"", 50*(_this+1)]" ]
-orderDefs set [_type, ["Patrol Area", [_param0, _param1], "PatrolArea.sqs"] ]
+orderDefs set [_type, ["Patrol Area", [_param0, _param1], "\TZK_Scripts_4_0_5\Server\Order\PatrolArea.sqs"] ]
 _type = _type + 1
 
 orderPatrolLine = _type
 _param0 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
 _param1 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
-orderDefs set [_type, ["Patrol Line", [_param0, _param1], "PatrolLine.sqs"] ]
+orderDefs set [_type, ["Patrol Line", [_param0, _param1], "\TZK_Scripts_4_0_5\Server\Order\PatrolLine.sqs"] ]
 _type = _type + 1
 
 orderAdvance = _type
 _param0 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
 _param1 = [ "Meters/minute", "10", "format [""%1m"", 100*(_this+1)]" ]
-orderDefs set [_type, ["Advance", [_param0, _param1], "Advance.sqs"] ]
+orderDefs set [_type, ["Advance", [_param0, _param1], "\TZK_Scripts_4_0_5\Server\Order\Advance.sqs"] ]
 _type = _type + 1
 
 orderTransportDuty = _type
 _param0 = [ "Pickup Pos", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
 _param1 = [ "Eject Pos", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
 _param2 = [ "Eject Distance", "5", "format [""%1m"", 200*(_this+1)]" ]
-orderDefs set [_type, ["Transport Duty", [_param0, _param1, _param2], "TransportDuty.sqs"] ]
+orderDefs set [_type, ["Transport Duty", [_param0, _param1, _param2], "\TZK_Scripts_4_0_5\Server\Order\TransportDuty.sqs"] ]
 _type = _type + 1
 
 orderMineLine = _type
 _param0 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
 _param1 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
-orderDefs set [_type, ["Mine Line", [_param0, _param1], "MineLine.sqs"] ]
+orderDefs set [_type, ["Mine Line", [_param0, _param1], "\TZK_Scripts_4_0_5\Server\Order\MineLine.sqs"] ]
 _type = _type + 1
 
 orderDisableMines = _type
 _param0 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
-orderDefs set [_type, ["Disable Mines", [_param0], "DisableMines.sqs"] ]
+orderDefs set [_type, ["Disable Mines", [_param0], "\TZK_Scripts_4_0_5\Server\Order\DisableMines.sqs"] ]
 _type = _type + 1
 
 ;orderReclaim = _type
@@ -208,7 +208,7 @@ _type = _type + 1
 ;_param0 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
 ;_param1 = [ "Vehicle type", "count ReclaimTypeDefs", "format [""%1"", ReclaimTypeDefs select _this ]" ]
 ;_param2 = [ "Reciaim Radius", "10", "format [""%1m"", 50*(_this+1)]" ]
-;orderDefs set [_type, ["Reclaim", [_param0, _param1, _param2], "Reclaim.sqs"] ]
+;orderDefs set [_type, ["Reclaim", [_param0, _param1, _param2], "\TZK_Scripts_4_0_5\Server\Order\Reclaim.sqs"] ]
 ;_type = _type + 1
 
 ;orderOccupy = _type
@@ -216,7 +216,7 @@ _type = _type + 1
 ;_param0 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
 ;_param1 = [ "Structure type", "count OccupyTypeDefs", "format [""%1"", OccupyTypeDefs select _this ]" ]
 ;_param2 = [ "Occupy Radius", "10", "format [""%1m"", 50*(_this+1)]" ]
-;orderDefs set [_type, ["Occupy", [_param0, _param1, _param2], "Occupy.sqs"] ]
+;orderDefs set [_type, ["Occupy", [_param0, _param1, _param2], "\TZK_Scripts_4_0_5\Server\Order\Occupy.sqs"] ]
 ;_type = _type + 1
 
 ;orderBoard = _type
@@ -224,18 +224,18 @@ _type = _type + 1
 ;_param0 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
 ;_param1 = [ "Transport type", "count BoardTypeDefs", "format [""%1"", BoardTypeDefs select _this ]" ]
 ;_param2 = [ "Board Radius", "10", "format [""%1m"", 50*(_this+1)]" ]
-;orderDefs set [_type, ["Board", [_param0, _param1, _param2], "Board.sqs"] ]
+;orderDefs set [_type, ["Board", [_param0, _param1, _param2], "\TZK_Scripts_4_0_5\Server\Order\Board.sqs"] ]
 ;_type = _type + 1
 
 ;orderLand = _type
 ;LandTypeDefs = ["All Helicopters", "Transport Heli", "Gunship"]
 ;_param0 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
 ;_param1 = [ "Helicopter type", "count LandTypeDefs", "format [""%1"", LandTypeDefs select _this ]" ]
-;orderDefs set [_type, ["Land Helicopters", [_param0, _param1], "Land.sqs"] ]
+;orderDefs set [_type, ["Land Helicopters", [_param0, _param1], "\TZK_Scripts_4_0_5\Server\Order\Land.sqs"] ]
 ;_type = _type + 1
 
 orderHalt = _type
-orderDefs set [_type, ["Halt", [], "Halt.sqs"] ]
+orderDefs set [_type, ["Halt", [], "\TZK_Scripts_4_0_5\Server\Order\Halt.sqs"] ]
 _type = _type + 1
 
 
@@ -262,12 +262,12 @@ _type = 0
 orderTempClearType = _type
 ClearTypeDefs = ["Transport Car", "Transport Ship", "Transport APC", "Transport Heli", "Battle Ship", "Light Tank", "Heavy Tank", "Artillery", "AT APC", "AA Vehicle", "Kamov", "Cobra\Apac\Hind", "Transports", "Tanks", "APCs", "Support APC", "non-AT-Infantry", "AT-Infantry", "All Infantry", "All"]
 _param0 = [ "Unit type", "count ClearTypeDefs", "format [""%1"", ClearTypeDefs select _this ]" ]
-orderTempDefs set [_type, ["ClearOrder(Type)", [_param0], "OrderTemp\ClearType.sqs"] ]
+orderTempDefs set [_type, ["ClearOrder(Type)", [_param0], "\TZK_Scripts_4_0_5\Server\OrderTemp\ClearType.sqs"] ]
 _type = _type + 1
 
 orderTempClearUnit = _type
 _param0 = [ "Unit Number ID", "13", "format [""%1"", (_this) ]" ]
-orderTempDefs set [_type, ["ClearOrder(Unit)", [_param0], "OrderTemp\ClearUnit.sqs"] ]
+orderTempDefs set [_type, ["ClearOrder(Unit)", [_param0], "\TZK_Scripts_4_0_5\Server\OrderTemp\ClearUnit.sqs"] ]
 _type = _type + 1
 
 orderTempRepair = _type
@@ -276,7 +276,7 @@ _param1 = [ "Response Radius", "20", "format [""%1m"", 100*(_this+1)]" ]
 _param2 = [ "Support Radius", "20", "format [""%1m"", 100*(_this+1)]" ]
 _param3 = [ "Repair Rate",  "20", "format [""%1%"", 5*_this]" ]
 _param4 = [ "Duration", "20", "format [""%1min"", 0.5*(_this+1)]" ]
-orderTempDefs set [_type, ["Repair", [_param0, _param1, _param2, _param3, _param4], "OrderTemp\Repair.sqs"] ]
+orderTempDefs set [_type, ["Repair", [_param0, _param1, _param2, _param3, _param4], "\TZK_Scripts_4_0_5\Server\OrderTemp\Repair.sqs"] ]
 _type = _type + 1
 
 orderTempRearm = _type
@@ -285,7 +285,7 @@ _param1 = [ "Response Radius", "20", "format [""%1m"", 100*(_this+1)]" ]
 _param2 = [ "Support Radius", "20", "format [""%1m"", 100*(_this+1)]" ]
 _param3 = [ "Sabots", "20", "format [""%1"", _this]" ]
 _param4 = [ "Duration", "20", "format [""%1min"", 0.5*(_this+1)]" ]
-orderTempDefs set [_type, ["Rearm", [_param0, _param1, _param2, _param3, _param4], "OrderTemp\Rearm.sqs"] ]
+orderTempDefs set [_type, ["Rearm", [_param0, _param1, _param2, _param3, _param4], "\TZK_Scripts_4_0_5\Server\OrderTemp\Rearm.sqs"] ]
 _type = _type + 1
 
 orderTempReclaim = _type
@@ -296,7 +296,7 @@ _param1 = [ "Vehicle type", "count ReclaimTypeDefs", "format [""%1"", ReclaimTyp
 _param2 = [ "Reciaim Radius", "20", "format [""%1m"", 50*(_this+1)]" ]
 _param3 = [ "Priority Seat", "count ReclaimPrioDefs", "format [""%1"", ReclaimPrioDefs select _this]" ]
 _param4 = [ "Duration", "20", "format [""%1min"", 0.5*(_this+1)]" ]
-orderTempDefs set [_type, ["Reclaim", [_param0, _param1, _param2, _param3, _param4], "OrderTemp\Reclaim.sqs"] ]
+orderTempDefs set [_type, ["Reclaim", [_param0, _param1, _param2, _param3, _param4], "\TZK_Scripts_4_0_5\Server\OrderTemp\Reclaim.sqs"] ]
 _type = _type + 1
 
 orderTempOccupy = _type
@@ -305,7 +305,7 @@ _param0 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO se
 _param1 = [ "Structure type", "count OccupyTypeDefs", "format [""%1"", OccupyTypeDefs select _this ]" ]
 _param2 = [ "Occupy Radius", "20", "format [""%1m"", 50*(_this+1)]" ]
 _param3 = [ "Duration", "20", "format [""%1min"", 0.5*(_this+1)]" ]
-orderTempDefs set [_type, ["Occupy", [_param0, _param1, _param2, _param3], "OrderTemp\Occupy.sqs"] ]
+orderTempDefs set [_type, ["Occupy", [_param0, _param1, _param2, _param3], "\TZK_Scripts_4_0_5\Server\OrderTemp\Occupy.sqs"] ]
 _type = _type + 1
 
 orderTempBoard = _type
@@ -314,7 +314,7 @@ _param0 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO se
 _param1 = [ "Transport type", "count BoardTypeDefs", "format [""%1"", BoardTypeDefs select _this ]" ]
 _param2 = [ "Board Radius", "20", "format [""%1m"", 50*(_this+1)]" ]
 _param3 = [ "Duration", "20", "format [""%1min"", 0.5*(_this+1)]" ]
-orderTempDefs set [_type, ["Board", [_param0, _param1, _param2, _param3], "OrderTemp\Board.sqs"] ]
+orderTempDefs set [_type, ["Board", [_param0, _param1, _param2, _param3], "\TZK_Scripts_4_0_5\Server\OrderTemp\Board.sqs"] ]
 _type = _type + 1
 
 orderTempLand = _type
@@ -323,7 +323,7 @@ _param0 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO se
 _param1 = [ "Helicopter type", "count LandTypeDefs", "format [""%1"", LandTypeDefs select _this ]" ]
 _param2 = [ "Land Radius", "20", "format [""%1m"", 200*(_this+1)]" ]
 _param3 = [ "Duration", "20", "format [""%1min"", 0.5*(_this+1)]" ]
-orderTempDefs set [_type, ["Land Helicopters", [_param0, _param1, _param2, _param3], "OrderTemp\Land.sqs"] ]
+orderTempDefs set [_type, ["Land Helicopters", [_param0, _param1, _param2, _param3], "\TZK_Scripts_4_0_5\Server\OrderTemp\Land.sqs"] ]
 _type = _type + 1
 
 orderTempSetFlightAltitude = _type
@@ -331,13 +331,13 @@ HeightDefs = [3, 5, 10, 20, 30, 40, 50, 100, 150, 200, 300, 400, 500, 600, 700, 
 SetFlightAltitudeTypeDefs = ["Transport Heli", "Original Gunship", "AT Gunship", "All Helicopters", "Planes", "All Aircrafts"]
 _param0 = [ "Height", "count HeightDefs", "format [""%1m"", HeightDefs select _this ]" ]
 _param1 = [ "Aircraft type", "count SetFlightAltitudeTypeDefs", "format [""%1"", SetFlightAltitudeTypeDefs select _this ]" ]
-orderTempDefs set [_type, ["Set Flight Altitude", [_param0, _param1], "OrderTemp\SetFlightAltitude.sqs"] ]
+orderTempDefs set [_type, ["Set Flight Altitude", [_param0, _param1], "\TZK_Scripts_4_0_5\Server\OrderTemp\SetFlightAltitude.sqs"] ]
 _type = _type + 1
 
 orderTempSpoofMissileON = _type
 SpoofTypeDefs = ["Transport Heli", "Original Gunship", "AT Gunship", "All Helicopters", "Planes", "All Aircrafts"]
 _param0 = [ "Aircraft type", "count SpoofTypeDefs", "format [""%1"", SpoofTypeDefs select _this ]" ]
-orderTempDefs set [_type, ["Spoof Missile ON", [_param0], "OrderTemp\SpoofMissileON.sqs"] ]
+orderTempDefs set [_type, ["Spoof Missile ON", [_param0], "\TZK_Scripts_4_0_5\Server\OrderTemp\SpoofMissileON.sqs"] ]
 _type = _type + 1
 
 orderTempTransportDuty = _type
@@ -347,7 +347,7 @@ _param1 = [ "Eject Pos", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO s
 _param2 = [ "Eject Distance", "20", "format [""%1m"", 50*(_this+1)]" ]
 _param3 = [ "Transport type", "count TransportDutyTypeDefs", "format [""%1"", TransportDutyTypeDefs select _this ]" ]
 _param4 = [ "Duration", "20", "format [""%1min"", 3*(_this+1)]" ]
-orderTempDefs set [_type, ["Transport Duty", [_param0, _param1, _param2, _param3, _param4], "OrderTemp\TransportDuty.sqs"] ]
+orderTempDefs set [_type, ["Transport Duty", [_param0, _param1, _param2, _param3, _param4], "\TZK_Scripts_4_0_5\Server\OrderTemp\TransportDuty.sqs"] ]
 _type = _type + 1
 
 orderTempMoveType = _type
@@ -357,7 +357,7 @@ _param1 = [ "Unit type", "count MoveTypeDefs", "format [""%1"", MoveTypeDefs sel
 _param2 = [ "Guard Radius", "20", "format [""%1m"", 5*_this]" ]
 _param3 = [ "Defend Direction", "9", funcDirIndexToText ]
 _param4 = [ "Duration", "20", "format [""%1min"", 12*(_this+1)]" ]
-orderTempDefs set [_type, ["Move(Type)", [_param0, _param1, _param2, _param3, _param4], "OrderTemp\MoveType.sqs"] ]
+orderTempDefs set [_type, ["Move(Type)", [_param0, _param1, _param2, _param3, _param4], "\TZK_Scripts_4_0_5\Server\OrderTemp\MoveType.sqs"] ]
 _type = _type + 1
 
 orderTempMoveUnit = _type
@@ -366,36 +366,36 @@ _param1 = [ "Unit Number ID", "12", "format [""%1"", (_this+1) ]" ]
 _param2 = [ "Guard Radius", "20", "format [""%1m"", 5*_this]" ]
 _param3 = [ "Defend Direction", "9", funcDirIndexToText ]
 _param4 = [ "Duration", "20", "format [""%1min"", 12*(_this+1)]" ]
-orderTempDefs set [_type, ["Move(Unit)", [_param0, _param1, _param2, _param3, _param4], "OrderTemp\MoveUnit.sqs"] ]
+orderTempDefs set [_type, ["Move(Unit)", [_param0, _param1, _param2, _param3, _param4], "\TZK_Scripts_4_0_5\Server\OrderTemp\MoveUnit.sqs"] ]
 _type = _type + 1
 
 orderTempHaltType = _type
 HaltTypeDefs = ["Transport Car", "Transport Ship", "Transport APC", "Transport Heli", "Battle Ship", "Light Tank", "Heavy Tank", "Artillery", "AT APC", "AA Vehicle", "Kamov", "Cobra\Apac\Hind", "Transports", "Tanks", "APCs", "Support APC", "non-AT-Infantry", "AT-Infantry", "All Infantry"]
 _param0 = [ "Unit type", "count HaltTypeDefs", "format [""%1"", HaltTypeDefs select _this ]" ]
 _param1 = [ "Duration", "20", "format [""%1min"", 12*(_this+1)]" ]
-orderTempDefs set [_type, ["Halt(Type)", [_param0, _param1], "OrderTemp\HaltType.sqs"] ]
+orderTempDefs set [_type, ["Halt(Type)", [_param0, _param1], "\TZK_Scripts_4_0_5\Server\OrderTemp\HaltType.sqs"] ]
 _type = _type + 1
 
 orderTempHaltUnit = _type
 _param0 = [ "Unit Number ID", "12", "format [""%1"", (_this+1) ]" ]
 _param1 = [ "Duration", "20", "format [""%1min"", 12*(_this+1)]" ]
-orderTempDefs set [_type, ["Halt(Unit)", [_param0, _param1], "OrderTemp\HaltUnit.sqs"] ]
+orderTempDefs set [_type, ["Halt(Unit)", [_param0, _param1], "\TZK_Scripts_4_0_5\Server\OrderTemp\HaltUnit.sqs"] ]
 _type = _type + 1
 
 orderTanksEngineOFF = _type
 _param0 = [ "Duration", "20", "format [""%1 second"", 6*(_this+1)]" ]
-orderTempDefs set [_type, ["Tanks EngineOFF", [_param0], "OrderTemp\TanksEngineOFF.sqs"] ]
+orderTempDefs set [_type, ["Tanks EngineOFF", [_param0], "\TZK_Scripts_4_0_5\Server\OrderTemp\TanksEngineOFF.sqs"] ]
 _type = _type + 1
 
 orderTempDisengageType = _type
 DisengageTypeDefs = ["Transport Car", "Transport Ship", "Transport APC", "Transport Heli", "Battle Ship", "Light Tank", "Heavy Tank", "Artillery", "AT APC", "AA Vehicle", "Kamov", "Cobra\Apac\Hind", "Transports", "Tanks", "APCs", "Support APC", "non-AT-Infantry", "AT-Infantry", "All Infantry"]
 _param0 = [ "Unit type", "count DisengageTypeDefs", "format [""%1"", DisengageTypeDefs select _this ]" ]
-orderTempDefs set [_type, ["Disengage(Type)", [_param0], "OrderTemp\DisengageType.sqs"] ]
+orderTempDefs set [_type, ["Disengage(Type)", [_param0], "\TZK_Scripts_4_0_5\Server\OrderTemp\DisengageType.sqs"] ]
 _type = _type + 1
 
 orderTempDisengageUnit = _type
 _param0 = [ "Unit Number ID", "12", "format [""%1"", (_this+1) ]" ]
-orderTempDefs set [_type, ["Disengage(Unit)", [_param0], "OrderTemp\DisengageUnit.sqs"] ]
+orderTempDefs set [_type, ["Disengage(Unit)", [_param0], "\TZK_Scripts_4_0_5\Server\OrderTemp\DisengageUnit.sqs"] ]
 _type = _type + 1
 
 orderTempHoldTown = _type
@@ -405,7 +405,7 @@ _param1 = [ "Unit type", "count HoldTownTypeDefs", "format [""%1"", HoldTownType
 _param2 = [ "Defend Distance", "10", "format [""%1m"", 50*(_this+1)]" ]
 _param3 = [ "Defend Direction", "9", funcDirIndexToText ]
 _param4 = [ "Duration", "20", "format [""%1min"", 12*(_this+1)]" ]
-orderTempDefs set [_type, ["HoldTown", [_param0, _param1, _param2, _param3, _param4], "OrderTemp\HoldTown.sqs"] ]
+orderTempDefs set [_type, ["HoldTown", [_param0, _param1, _param2, _param3, _param4], "\TZK_Scripts_4_0_5\Server\OrderTemp\HoldTown.sqs"] ]
 _type = _type + 1
 
 orderTempPatrolLine = _type
@@ -414,28 +414,28 @@ _param0 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO se
 _param1 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
 _param2 = [ "Unit type", "count PatrolLineTypeDefs", "format [""%1"", PatrolLineTypeDefs select _this ]" ]
 _param3 = [ "Duration", "20", "format [""%1min"", 12*(_this+1)]" ]
-orderTempDefs set [_type, ["Patrol Line", [_param0, _param1, _param2, _param3], "OrderTemp\PatrolLine.sqs"] ]
+orderTempDefs set [_type, ["Patrol Line", [_param0, _param1, _param2, _param3], "\TZK_Scripts_4_0_5\Server\OrderTemp\PatrolLine.sqs"] ]
 _type = _type + 1
 
 orderTempMineLine = _type
 _param0 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
 _param1 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
 _param2 = [ "Duration", "20", "format [""%1min"", 3*(_this+1)]" ]
-orderTempDefs set [_type, ["Mine Line", [_param0, _param1, _param2], "OrderTemp\MineLine.sqs"] ]
+orderTempDefs set [_type, ["Mine Line", [_param0, _param1, _param2], "\TZK_Scripts_4_0_5\Server\OrderTemp\MineLine.sqs"] ]
 _type = _type + 1
 
 orderTempDisableMines = _type
 _param0 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
 _param1 = [ "Search Radius", "20", "format [""%1m"", 25*(_this+1)]" ]
 _param2 = [ "Duration", "20", "format [""%1min"", 3*(_this+1)]" ]
-orderTempDefs set [_type, ["Disable Mines", [_param0, _param1, _param2], "OrderTemp\DisableMines.sqs"] ]
+orderTempDefs set [_type, ["Disable Mines", [_param0, _param1, _param2], "\TZK_Scripts_4_0_5\Server\OrderTemp\DisableMines.sqs"] ]
 _type = _type + 1
 
 orderTempChangeAmmo = _type
 ChangeAmmoTypeDefs = ["Light Tank", "Heavy Tank", "All"]
 _param0 = [ "Unit type", "count ChangeAmmoTypeDefs", "format [""%1"", ChangeAmmoTypeDefs select _this ]" ]
 _param1 = [ "Ammo", "2", "format [""%1"", [""Sabot"",""Heat""] select _this]" ]
-orderTempDefs set [_type, ["Change Ammo", [_param0, _param1], "OrderTemp\ChangeAmmo.sqs"] ]
+orderTempDefs set [_type, ["Change Ammo", [_param0, _param1], "\TZK_Scripts_4_0_5\Server\OrderTemp\ChangeAmmo.sqs"] ]
 _type = _type + 1
 
 orderTempSwitchMagazine = _type
@@ -446,7 +446,7 @@ _param1 = [ "Response Radius", "20", "format [""%1m"", 100*(_this+1)]" ]
 _param2 = [ "Unit Type", "count ArtilleryTypeDefs", "ArtilleryTypeDefs select _this" ]
 _param3 = [ "InitSpeed", "count ArtilleryMagazineSpeedList", "format [""%1"", ArtilleryMagazineSpeedList select _this ]" ]
 _param4 = [ "Curved", "2", "[{false},{true}] select _this" ]
-orderTempDefs set [_type, ["Switch Magazine", [_param0, _param1, _param2, _param3, _param4], "OrderTemp\SwitchMagazine.sqs"] ]
+orderTempDefs set [_type, ["Switch Magazine", [_param0, _param1, _param2, _param3, _param4], "\TZK_Scripts_4_0_5\Server\OrderTemp\SwitchMagazine.sqs"] ]
 _type = _type + 1
 
 orderTempDeployVehicle = _type
@@ -454,16 +454,16 @@ _param0 = [ "Waypoint", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO se
 _param1 = [ "Response Radius", "20", "format [""%1m"", 100*(_this+1)]" ]
 _param2 = [ "Unit Type", "count [{Howitzer Vehicle}, {Rocket Launcher}, {ALL}]", "[{Howitzer Vehicle}, {Rocket Launcher}, {ALL}] select _this" ]
 _param3 = [ "Deploy", "2", "[{OFF},{ON}] select _this" ]
-orderTempDefs set [_type, ["Deploy Vehicle", [_param0, _param1, _param2, _param3], "OrderTemp\DeployVehicle.sqs"] ]
+orderTempDefs set [_type, ["Deploy Vehicle", [_param0, _param1, _param2, _param3], "\TZK_Scripts_4_0_5\Server\OrderTemp\DeployVehicle.sqs"] ]
 _type = _type + 1
 
 orderTempShootTarget = _type
 _param0 = [ "Attack Pos", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ]
 _param1 = [ "Radius", "20", "format [""%1m"", 5*(_this+1)]" ]
-_param2 = [ "Unit Type", "count ([{Light Tank}, {Heavy Tank}] + ArtilleryTypeDefs)", "([{Light Tank}, {Heavy Tank}] + ArtilleryTypeDefs) select _this" ]
+_param2 = [ "Unit Type", "count ([{Soldier}, {Light Tank}, {Heavy Tank}] + ArtilleryTypeDefs)", "([{Soldier}, {Light Tank}, {Heavy Tank}] + ArtilleryTypeDefs) select _this" ]
 _param3 = [ "Target", "countTargetMarkers", "format [""%1"", _this ]" ]
 _param4 = [ "Dispersion", "20", "format [""%1m"", 10*_this]" ]
-orderTempDefs set [_type, ["Shoot Target", [_param0, _param1, _param2, _param3, _param4], "OrderTemp\ShootTarget.sqs"] ]
+orderTempDefs set [_type, ["Shoot Target", [_param0, _param1, _param2, _param3, _param4], "Server\OrderTemp\ShootTarget.sqs"] ]
 _type = _type + 1
 
 
@@ -474,4 +474,4 @@ _si = si1; _gi = 0; { (orderTempMatrix select _si) set [ _gi, [-1, orderTempClea
 
 
 
-call loadFile "impl\AI.sqf"
+call loadFile "impl\AI_Order_Server.sqf"

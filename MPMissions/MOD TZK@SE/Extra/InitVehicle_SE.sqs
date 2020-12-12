@@ -1,0 +1,15 @@
+; args: [vehicle, type, si, gi]
+_vehicle = _this select 0; _type = _this select 1; _si = _this select 2; _gi = _this select 3
+_desc = unitDefs select _type; _typeName = typeOf _vehicle
+; Place SE special EH here.
+
+; SERVER AND PLAYER
+
+; Engine Event. 
+; Suspension. 2S19 happen to use "suspension" as its animation thus TZK scripts is able to use.
+? "CoC_2S19" countType [_vehicle] > 0 || "2S19_CoC_Base_xj400" countType [_vehicle] > 0: _vehicle addEventHandler ["Engine", { if (_this select 1) Then {_vehicle = _this select 0, [_vehicle, [{Suspension}]] exec "\TZK_Scripts_4_0_4\Common\EH\Tank_Acc_Sus.sqs"} } ]; _vehicle engineOn false
+; this should use vehicle param.
+
+; Fired Event
+? "CoC_2S19" countType [_vehicle] > 0 || "2S19_CoC_Base_xj400" countType [_vehicle] > 0: _vehicle addEventHandler ["Fired", {[ _this, 0.3, ["lufaodrzurt"] ] exec "\TZK_Config_4_0_5\Scripts\gunrec.sqs"} ]
+? "M109_CoC_paladin_xj400" countType [_vehicle] > 0: _vehicle addEventHandler ["Fired", {[ _this, 0.3, ["gunrec"] ] exec "\TZK_Config_4_0_5\Scripts\gunrec.sqs"} ]

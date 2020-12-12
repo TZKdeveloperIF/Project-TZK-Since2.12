@@ -1,0 +1,79 @@
+
+; SCORE
+_type = 0
+scoreDefs = []
+scInfantry = _type; scoreDefs set [_type, ["Infantry",1]]; _type=_type+1
+scVehicle = _type; scoreDefs set [_type, ["Vehicle",2]]; _type=_type+1
+scMHQ = _type; scoreDefs set [_type, ["MHQ",10]]; _type=_type+1
+scStruct = _type; scoreDefs set [_type, ["Struct",4]]; _type=_type+1
+scTown = _type; scoreDefs set [_type, ["Town",4]]; _type=_type+1
+
+_scoreStart = []
+_scoreStart resize (count scoreDefs)
+_index = 0
+{ _scoreStart set [_index, 0]; _index=_index+1 } foreach _scoreStart
+
+groupMatrix = [[], [], []]
+groupNameMatrix = [[], []]
+groupUnitIDMatrix = [[], []]
+groupAiMatrix = [[], []]
+groupMoneyMatrix = [[], []]
+groupUnitsBuildingMatrix = [[], []]
+groupScoreMatrix = [[], []]
+groupCommander = [grpNull, grpNull]
+giCO = [0, 0]
+
+
+_groups = []
+_groupNames = []
+
+_i = 0
+_c = count callsigns
+#SetGroupID
+  _si = si0
+  _groups = groupMatrix select _si
+  _groupNames = groupNameMatrix select _si
+  _group = format["Group%1%2", callsigns select _i, _si]
+  _test = format["%1 != grpNull", _group]
+  ? call _test : call format["%1 setGroupId [""%2"", ""GroupColor0""]", _group, callsigns select _i]; call format["_groups set [count _groups, %1]", _group]; call format["_groupNames set [count _groupNames, ""%1""]", callsigns select _i]; _ids = []; _j = 0; while "_j <= 12" do { _ids set [_j, format["%1 %2:%3", sideNames select _si, callsigns select _i, _j] ]; _j = _j + 1 }; _UID = groupUnitIDMatrix select _si; _UID set [count _UID, _ids]
+
+  _si = si1
+  _groups = groupMatrix select _si
+  _groupNames = groupNameMatrix select _si
+  _group = format["Group%1%2", callsigns select _i, _si]
+  _test = format["%1 != grpNull", _group]
+  ? call _test : call format["%1 setGroupId [""%2"", ""GroupColor0""]", _group, callsigns select _i]; call format["_groups set [count _groups, %1]", _group]; call format["_groupNames set [count _groupNames, ""%1""]", callsigns select _i]; _ids = []; _j = 0; while "_j <= 12" do { _ids set [_j, format["%1 %2:%3", sideNames select _si, callsigns select _i, _j] ]; _j = _j + 1 }; _UID = groupUnitIDMatrix select _si; _UID set [count _UID, _ids]
+
+  _i = _i + 1
+  ? _i < _c : goto "SetGroupID"
+
+; Planning to Initialize worker and town groups
+
+
+_si = si0
+_i = 0
+_c = count (groupMatrix select _si)
+? _c == 0 : goto "Side0Empty"
+groupCommander set [_si, (groupMatrix select _si) select 0]
+#InitSide0Groups
+	(groupMoneyMatrix select _si) set [_i, 0]
+	(groupUnitsBuildingMatrix select _si) set [_i, 0]
+	(groupScoreMatrix select _si) set [_i, +_scoreStart]
+	_i = _i + 1
+	? _i < _c : goto "InitSide0Groups"
+#Side0Empty
+
+_si = si1
+_i = 0
+_c = count (groupMatrix select _si)
+? _c == 0 : goto "Side1Empty"
+groupCommander set [_si, (groupMatrix select _si) select 0]
+#InitSide1Groups
+	(groupMoneyMatrix select _si) set [_i, 0]
+	(groupUnitsBuildingMatrix select _si) set [_i, 0]
+	(groupScoreMatrix select _si) set [_i, +_scoreStart]
+	_i = _i + 1
+	? _i < _c : goto "InitSide1Groups"
+#Side1Empty
+
+Init_TZK_Script_Order = true

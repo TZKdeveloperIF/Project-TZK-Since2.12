@@ -1,0 +1,21 @@
+; args: [Command(string), <variables[]>, <delay[]>, <variable to be wait until(string, name of the variable)>]
+
+_delayArr = if (count _this < 2) Then {[0,1]} Else {_this select 2)
+
+? count _this < 4: goto "globalMutex"
+@(call (_this select 3))
+? dev: if (name player == "IF") Then "FixStart_0 globalChat (_this select 0)"
+~_delayArr select 0
+call (_this select 0)
+~_delayArr select 1
+; The 3-iterator variable can be not only mutex variable name but an expression. Thus it can't be applied here to reassign variable's value.
+; Well there're still errors in this scripts. Not recommend to use it.
+exit
+
+#globalMutex
+@!mutexCmd
+mutexCmd = true
+~_delayArr select 0
+call (_this select 0)
+~_delayArr select 1
+mutexCmd = false

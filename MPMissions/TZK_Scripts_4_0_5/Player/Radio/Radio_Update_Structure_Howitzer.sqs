@@ -1,0 +1,52 @@
+; args: [vehicle, structure type]
+_vehicle = _this select 0; _vt = _this select 1; _isArt = _vt in structsOccupiableArtHowitzer; _bTrackBullet = bTrackBullet
+
+_pages = 2; _page = Page_Radio_Artillery; _boole_PageNoChange = true
+_speed = [712, 690] select ("D30_xj400" == typeOf _vehicle)
+Radio001 setTriggerText "Next Page..."; Radio001 setTriggerStatements ["this", "Page_Radio_Artillery = Page_Radio_Artillery + 1; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true}", ""];
+Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", {[] exec "\TZK_Scripts_4_0_4\Player\Dialog\TZK_Mission_Setting_1.sqs"}, ""];
+
+Radio003 setTriggerText "Switch 080m/s Magazine"; Radio003 setTriggerStatements ["this", {[(vehicle player), 080, {M}] exec "\TZK_Scripts_4_0_4\Player\Radio\Graduation.sqs"}, ""];
+Radio004 setTriggerText "Switch 120m/s Magazine"; Radio004 setTriggerStatements ["this", {[(vehicle player), 120, {M}] exec "\TZK_Scripts_4_0_4\Player\Radio\Graduation.sqs"}, ""];
+Radio005 setTriggerText "Switch 180m/s Magazine"; Radio005 setTriggerStatements ["this", {[(vehicle player), 180, {M}] exec "\TZK_Scripts_4_0_4\Player\Radio\Graduation.sqs"}, ""];
+Radio006 setTriggerText "Switch 300m/s Magazine"; Radio006 setTriggerStatements ["this", {[(vehicle player), 300, {M}] exec "\TZK_Scripts_4_0_4\Player\Radio\Graduation.sqs"}, ""];
+Radio007 setTriggerText "Switch 400m/s Magazine"; Radio007 setTriggerStatements ["this", {[(vehicle player), 400, {M}] exec "\TZK_Scripts_4_0_4\Player\Radio\Graduation.sqs"}, ""];
+
+? _isArt: if (bTrackBullet) then {Radio009 setTriggerText "BulletCam Turn OFF"; Radio009 setTriggerStatements ["this", {if (bTrackBullet) then {[] exec "\TZK_Scripts_4_0_4\Player\Action\BulletCamTurnOFF.sqs"}}, ""]} else {Radio009 setTriggerText "BulletCam Turn ON"; Radio009 setTriggerStatements ["this", {if !(bTrackBullet) then {[] exec "Player\Action\BulletCamTurnON.sqs"}}, ""]};
+Radio000 setTriggerText "Reset Vector Up"; Radio000 setTriggerStatements ["this", {[vehicle player] exec "\TZK_Scripts_4_0_4\Player\Radio\RadioList_Struct_ResetUp.sqs"}, ""];
+
+	? Page_Radio_Artillery == 0 : goto "SkipInitPage2"
+	Radio003 setTriggerText "Switch 500m/s Magazine"; Radio003 setTriggerStatements ["this", {[(vehicle player), 500, {M}] exec "\TZK_Scripts_4_0_4\Player\Radio\Graduation.sqs"}, ""];
+	Radio004 setTriggerText "Switch 600m/s Magazine"; Radio004 setTriggerStatements ["this", {[(vehicle player), 600, {M}] exec "\TZK_Scripts_4_0_4\Player\Radio\Graduation.sqs"}, ""];
+	Radio005 setTriggerText format ["Switch %1m/s Magazine", _speed]; 
+	Radio005 setTriggerStatements ["this", format [{[(vehicle player), %1, {M}] exec "\TZK_Scripts_4_0_4\Player\Radio\Graduation.sqs"}, _speed], ""];
+	
+	Radio006 setTriggerText " "; Radio006 setTriggerStatements ["this", "", ""];
+	Radio007 setTriggerText " "; Radio007 setTriggerStatements ["this", "", ""];
+
+#SkipInitPage2
+
+~1
+#Refresh
+~0.05
+; In OFP/Arma can't compare booleans directly. Use (A && !B) || (!A && B) here, and use !_boolean to refresh.
+? _isArt && ((_bTrackBullet && !bTrackBullet) || (!_bTrackBullet && bTrackBullet)): if (bTrackBullet) then {Radio009 setTriggerText "BulletCam Turn OFF"; Radio009 setTriggerStatements ["this", {if (bTrackBullet) then {[] exec "\TZK_Scripts_4_0_4\Player\Action\BulletCamTurnOFF.sqs"}}, ""]} else {Radio009 setTriggerText "BulletCam Turn ON"; Radio009 setTriggerStatements ["this", {if !(bTrackBullet) then {[] exec "Player\Action\BulletCamTurnON.sqs"}}, ""]}; _bTrackBullet = bTrackBullet
+
+; Get page and judge whether page changed.
+? Page_Radio_Artillery >= _pages : Page_Radio_Artillery = Page_Radio_Artillery % _pages
+_boole_PageNoChange = (Page_Radio_Artillery == _page); _page = Page_Radio_Artillery
+
+; If page no change, refresh (nothing here)
+
+; If page changed, re-initialize
+? !_boole_PageNoChange && _page == 0: Radio003 setTriggerText "Switch 080m/s Magazine"; Radio003 setTriggerStatements ["this", {[(vehicle player), 080, {M}] exec "\TZK_Scripts_4_0_4\Player\Radio\Graduation.sqs"}, ""]; Radio004 setTriggerText "Switch 120m/s Magazine"; Radio004 setTriggerStatements ["this", {[(vehicle player), 120, {M}] exec "\TZK_Scripts_4_0_4\Player\Radio\Graduation.sqs"}, ""]; Radio005 setTriggerText "Switch 180m/s Magazine"; Radio005 setTriggerStatements ["this", {[(vehicle player), 180, {M}] exec "\TZK_Scripts_4_0_4\Player\Radio\Graduation.sqs"}, ""]; Radio006 setTriggerText "Switch 300m/s Magazine"; Radio006 setTriggerStatements ["this", {[(vehicle player), 300, {M}] exec "\TZK_Scripts_4_0_4\Player\Radio\Graduation.sqs"}, ""]; Radio007 setTriggerText "Switch 400m/s Magazine"; Radio007 setTriggerStatements ["this", {[(vehicle player), 400, {M}] exec "\TZK_Scripts_4_0_4\Player\Radio\Graduation.sqs"}, ""];
+
+? !_boole_PageNoChange && _page == 1: Radio003 setTriggerText "Switch 500m/s Magazine"; Radio003 setTriggerStatements ["this", {[(vehicle player), 500, {M}] exec "\TZK_Scripts_4_0_4\Player\Radio\Graduation.sqs"}, ""]; Radio004 setTriggerText "Switch 600m/s Magazine"; Radio004 setTriggerStatements ["this", {[(vehicle player), 600, {M}] exec "\TZK_Scripts_4_0_4\Player\Radio\Graduation.sqs"}, ""]; Radio005 setTriggerText format ["Switch %1m/s Magazine", _speed]; Radio005 setTriggerStatements ["this", format [{[(vehicle player), %1, {M}] exec "\TZK_Scripts_4_0_4\Player\Radio\Graduation.sqs"}, _speed], ""]; Radio006 setTriggerText " "; Radio006 setTriggerStatements ["this", "", ""]; Radio007 setTriggerText " "; Radio007 setTriggerStatements ["this", "", ""];
+
+
+_timeRefresh = time + 1
+@(time > _timeRefresh || boole_Refresh_Radio)
+? boole_Refresh_Radio: boole_Refresh_Radio = false
+? _vehicle == vehicle player: goto "Refresh"
+
+; EOF

@@ -3,13 +3,14 @@
 _item_Index = _this select 0
 _item_Value = _this select 1
 
-? Vote_Matrix select _item_Index select 0 == "Weather": Weather_TZK = Vote_Item_Weather select _item_Value, exit
-? Vote_Matrix select _item_Index select 0 == "Time Boost": pvTimeBoost = [false, true] select _item_Value, exit
-? Vote_Matrix select _item_Index select 0 == "Period": skipTime ((Vote_Item_PeriotMoment select _item_Value) - (Vote_Item_PeriotMoment select Period_TZK)), Period_TZK = _item_Value, exit
+? Vote_ItemNames select _item_Index == "Weather": Weather_TZK = Vote_Item_Weather select _item_Value, exit
+? Vote_ItemNames select _item_Index == "Time Boost": pvTimeBoost = [false, true] select _item_Value, exit
+? Vote_ItemNames select _item_Index == "Period": skipTime ((Vote_Item_PeriotMoment select _item_Value) - (Vote_Item_PeriotMoment select Period_TZK)), Period_TZK = _item_Value, exit
 
-? Vote_Matrix select _item_Index select 0 == "View Distance": viewDistance = call (Vote_Item_View_Distance select _item_Value), upgDefs select upgLongWeaponRange set [0, format[{%1m Range Weapons}, 2*viewDistance]], exit
-? Vote_Matrix select _item_Index select 0 == "Time Limit": timeLimit = (Vote_Item_Time_Limit_Hours select _item_Value)*60*60, exit
+? Vote_ItemNames select _item_Index == "View Distance": viewDistance = call (Vote_Item_View_Distance select _item_Value), upgDefs select upgLongWeaponRange set [0, format[{%1m Range Weapons}, 2*viewDistance]], exit
+? Vote_ItemNames select _item_Index == "Time Limit": timeLimit = (Vote_Item_Time_Limit_Hours select _item_Value)*60*60, exit
 
-? Vote_Matrix select _item_Index select 0 == "Resistance": restanksx = _item_Value + 1, upgDefs select upgTownGroupH set [1, [60000 + 5000*restanksx, 100] select dev], exit
-? Vote_Matrix select _item_Index select 0 == "Income Ratio": Incomex = _item_Value + 1, exit
-? Vote_Matrix select _item_Index select 0 == "Income Grow": IncomeGrow_TZK = _item_Value, exit
+? Vote_ItemNames select _item_Index == "Resistance": restanksx = _item_Value + 1, upgDefs select upgTownGroupH set [1, [60000 + 5000*restanksx, 100] select dev], exit
+? Vote_ItemNames select _item_Index == "Income Ratio": Incomex = _item_Value + 1, exit
+? Vote_ItemNames select _item_Index == "Income Grow": IncomeGrow_TZK = _item_Value, exit
+? Vote_ItemNames select _item_Index == "BOH WAP Vehicle" && !bool_TZK_Yugo_Mode: bool_TZK_BOH_WAP = [false, true] select _item_Value, "unitDefs select _x set [udFactoryType, [-1, 2^stHeavy] select bool_TZK_BOH_WAP]" forEach [wapW01, wapE01], exit

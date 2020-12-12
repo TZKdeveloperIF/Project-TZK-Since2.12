@@ -156,7 +156,7 @@ unitDefs set [_type, ["HMMWV TOW", 800, _si, 30, "TYW8_CBT_M1121_W", "\CBT_HMMWV
 _hummerTOWW = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Support Truck", 500, _si, 30, "TYW8_M925NATOREPAIR", "itruck5trepair", 2^_st, [1, _soldierW], _mSupport, ["\TZK_Scripts_4_0_4\Common\InitSupportVehicle.sqs", "Extra\ppl\InitTransportTruck.sqs"]] ];
+unitDefs set [_type, ["Support Truck", 500, _si, 30, "TYW8_M925NATOREPAIR", "itruck5trepair", 2^_st, [1, _soldierW], _mSupport, ["\TZK_Scripts_4_0_5\Common\InitSupportVehicle.sqs", "Extra\ppl\InitTransportTruck.sqs"]] ];
 _supportTruckW = _type;
 _type = _type + 1;
 
@@ -189,7 +189,7 @@ _type = _type + 1;
 
 _st = stHeavy;
 
-unitDefs set [_type, ["Support M113A2", _costSupportAPC, _si, 60, "TYW8_CBT_M113A2Support", "\CBT_M113a_Scripts\m113w.paa", 2^_st, [2, _soldierW], _mSupport, ["\TZK_Scripts_4_0_4\Common\InitSupportVehicle.sqs", "Extra\ppl\InitTransportAPC.sqs"]] ];
+unitDefs set [_type, ["Support M113A2", _costSupportAPC, _si, 60, "TYW8_CBT_M113A2Support", "\CBT_M113a_Scripts\m113w.paa", 2^_st, [2, _soldierW], _mSupport, ["\TZK_Scripts_4_0_5\Common\InitSupportVehicle.sqs", "Extra\ppl\InitTransportAPC.sqs"]] ];
 _supportAPCW = _type;
 _type = _type + 1;
 
@@ -237,7 +237,7 @@ unitDefs set [_type, ["M1A1 Art", 14000, _si, 60, "M1Abrams", "iabrams", 2^_st, 
 _m1a1artW = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["MHQ West", _costSupportAPC, _si, 10, "TYW8_CBT_M577A3C", "im113_ambu", -1, [1, _crewW], _mMHQ, ["\TZK_Scripts_4_0_4\Common\InitMHQ.sqs"]] ];
+unitDefs set [_type, ["MHQ West", _costSupportAPC, _si, 10, "TYW8_CBT_M577A3C", "im113_ambu", -1, [1, _crewW], _mMHQ, ["\TZK_Scripts_4_0_5\Common\InitMHQ.sqs"]] ];
 utMHQ0 = _type;
 _type = _type + 1;
 
@@ -509,7 +509,7 @@ unitDefs set [_type, ["Ural-375", 300, _si, 30, "TYW8_dlem_ural375_closed", "iur
 _truckE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Support Ural-375", 500, _si, 30, "TYW8_dlem_ural4320_repair", "iuralrepair", 2^_st, [1, _soldierE], _mSupport, ["\TZK_Scripts_4_0_4\Common\InitSupportVehicle.sqs"]] ];
+unitDefs set [_type, ["Support Ural-375", 500, _si, 30, "TYW8_dlem_ural4320_repair", "iuralrepair", 2^_st, [1, _soldierE], _mSupport, ["\TZK_Scripts_4_0_5\Common\InitSupportVehicle.sqs"]] ];
 _supportTruckE = _type;
 _type = _type + 1;
 
@@ -534,7 +534,7 @@ _type = _type + 1;
 
 _st = stHeavy;
 
-unitDefs set [_type, ["Support BMP", _costSupportAPC, _si, 60, "TYW8_BMPSupport", "ibmp", 2^_st, [3, _crewE], _mSupport, ["\TZK_Scripts_4_0_4\Common\InitSupportVehicle.sqs", "Extra\ppl\InitTransportAPC.sqs"]] ];
+unitDefs set [_type, ["Support BMP", _costSupportAPC, _si, 60, "TYW8_BMPSupport", "ibmp", 2^_st, [3, _crewE], _mSupport, ["\TZK_Scripts_4_0_5\Common\InitSupportVehicle.sqs", "Extra\ppl\InitTransportAPC.sqs"]] ];
 _supportAPCE = _type;
 _type = _type + 1;
 
@@ -598,7 +598,7 @@ unitDefs set [_type, ["T80 Art", 10000, _si, 60, "T80", "it80", 2^_st, [3, _crew
 _t80artE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["MHQ East", _costSupportAPC, _si, 10, "TYW8_BMPAmbul", "\apcrus\mtlb_pict", -1, [1, _crewE], _mMHQ, ["\TZK_Scripts_4_0_4\Common\InitMHQ.sqs"]] ];
+unitDefs set [_type, ["MHQ East", _costSupportAPC, _si, 10, "TYW8_BMPAmbul", "\apcrus\mtlb_pict", -1, [1, _crewE], _mMHQ, ["\TZK_Scripts_4_0_5\Common\InitMHQ.sqs"]] ];
 utMHQ1 = _type;
 _type = _type + 1;
 
@@ -821,7 +821,7 @@ _vulcanBaseW = _type;
 _type = _type + 1;
 
 _price = [8000, 16000] select PricingMode;
-unitDefs set [_type, ["4xAA Base", _price, _si, 30, "Vulcan_TZK_xj400", "\VULCAN\ivulcan", -2, [2, _crewW], _mAA, ["\TZK_Scripts_4_0_4\Common\Equip\DefAA.sqs"]] ];
+unitDefs set [_type, ["4xAA Base", _price, _si, 30, "Vulcan_TZK_xj400", "\VULCAN\ivulcan", -2, [2, _crewW], _mAA, ["\TZK_Scripts_4_0_5\Common\Equip\DefAA.sqs"]] ];
 _vulcanBaseW2 = _type;
 _type = _type + 1;
 
@@ -871,7 +871,7 @@ _shilkaBaseE = _type;
 _type = _type + 1;
 
 _price = [8000, 16000] select PricingMode;
-unitDefs set [_type, ["Tunguska Base", _price, _si, 30, "2S6_DKM_xj400", "\TZK_Texture_4_0_0\icon\i2s6.paa", -2, [3, _crewE], _mAA, ["\TZK_Scripts_4_0_4\Common\Equip\Tunguska.sqs"]] ];
+unitDefs set [_type, ["Tunguska Base", _price, _si, 30, "2S6_DKM_xj400", "\TZK_Texture_4_0_0\icon\i2s6.paa", -2, [3, _crewE], _mAA, ["\TZK_Scripts_4_0_5\Common\Equip\Tunguska.sqs"]] ];
 _tunguskaBaseE = _type;
 _type = _type + 1;
 

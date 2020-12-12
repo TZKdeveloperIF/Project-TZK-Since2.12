@@ -1,0 +1,35 @@
+
+; game properties (see description.ext)
+
+; ? ( (param1 % 20) < 10) : fixedStartPos = 1
+; ? ( (param1 % 20) in [10,11,12,16,17]) : fixedStartPos = 2
+; ? ( (param1 % 20) in [13,14,15,18,19]) : fixedStartPos = 3
+fixedStartPos = param1 % 4
+Allow_BOH_WAP_TZK = param1 >= 4
+
+; ? ( (param1 % 20) in ([0,1,2,3,4] + [10,11,12,13,14,15]) ) : Incomex = 1
+; ? ( (param1 % 20) in ([5,6,7,8,9] + [16,17,18,19]) ) : Incomex = 2
+Incomex = 1
+
+; ? ( (param1 % 20) in [0,5,10,13]) : restanksx = 1
+; ? ( (param1 % 20) in [1,6,16,18]) : restanksx = 2
+; ? ( (param1 % 20) in [2,7,11,14]) : restanksx = 3
+; ? ( (param1 % 20) in [3,8,17,19]) : restanksx = 4
+; ? ( (param1 % 20) in [4,9,12,15]) : restanksx = 5
+restanksx = param2 + 1
+
+; timeLimit = ( [4,6,3,0] select ( (param1 - param1 % 20)/20 ) )*60*60
+timeLimit = 4*60*60
+maxGroupSize = 12
+; WeatherChosen = (param2 % 100) % 8
+WeatherChosen = 0
+; ZeroTime = ( (param2 % 100) - WeatherChosen ) / 8
+ZeroTime = 0
+; viewDistance = param2 - (param2 % 100)
+viewDistance = 1300
+; SkipTime ([0,9,15,21,0] select ZeroTime)
+; [] exec "\TZK_Scripts_4_0_4\Common\TimeWeather.sqs"
+PricingMode = 0
+
+setViewDistance viewDistance
+;player globalchat format ["fixedStartPos=%1, timeLimit=%2, maxGroupSize=%3, viewDistance=%4" ,fixedStartPos, timeLimit, maxGroupSize, viewDistance]

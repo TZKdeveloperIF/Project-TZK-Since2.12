@@ -114,30 +114,30 @@ _list = [ [_brdmEAT, 0.7] ];
 _i = _i + 1;
 
 utbTanksMixed = _i;
-_list = [ [_m60W, 0.5], [_vulcanW2, 0.5], [_m2a2at, 0.5], [_m2a2aa, 0.5], [_m1a1W, 1], [_tdW, 0.5], [_AMX10W, 0.5] ];
+_list = [ [_tankLightW01, 0.5], [_vulcanW2, 0.5], [_m2a2at, 0.5], [_m2a2aa, 0.5], [_tankHeavyW01, 1], [_tdW, 0.5], [_AMX10W, 0.5] ];
 (unitsBuyAI select si0) set [_i, _list];
-_list = [ [_t72E, 0.5], [_shilkaE2, 0.5], [_bmp2at, 0.5], [_bmp2aa, 0.5], [_t80E, 1], [_tdE, 0.5], [_bmp3, 0.5] ];
+_list = [ [_tankLightE01, 0.5], [_shilkaE2, 0.5], [_bmp2at, 0.5], [_bmp2aa, 0.5], [_tankHeavyE01, 1], [_tdE, 0.5], [_bmp3, 0.5] ];
 (unitsBuyAI select si1) set [_i, _list];
 _i = _i + 1;
 
 utbTanksL = _i;
-_list = [ [_m60W, 0.7] ];
+_list = [ [_tankLightW01, 0.7] ];
 (unitsBuyAI select si0) set [_i, _list];
-_list = [ [_t72E, 0.7] ];
+_list = [ [_tankLightE01, 0.7] ];
 (unitsBuyAI select si1) set [_i, _list];
 _i = _i + 1;
 
 utbTanksHeavy = _i;
-_list = [ [_m1a1W, 1] ];
+_list = [ [_tankHeavyW01, 1] ];
 (unitsBuyAI select si0) set [_i, _list];
-_list = [ [_t90E, 1] ];
+_list = [ [_tankHeavyE02, 1] ];
 (unitsBuyAI select si1) set [_i, _list];
 _i = _i + 1;
 
 utbTanksHeavy2 = _i;
-_list = [ [_challengerW, 1] ];
+_list = [ [_tankHyperW01, 1] ];
 (unitsBuyAI select si0) set [_i, _list];
-_list = [ [_t90MSE, 1] ];
+_list = [ [_tankHyperE01, 1] ];
 (unitsBuyAI select si1) set [_i, _list];
 _i = _i + 1;
 
@@ -149,16 +149,16 @@ _list = [ [_tdE, 1] ];
 _i = _i + 1;
 
 utbTanksHeavyD = _i;
-_list = [ [_m1a1W, 0.7], [_tdW, 0.3] ];
+_list = [ [_tankHeavyW01, 0.7], [_tdW, 0.3] ];
 (unitsBuyAI select si0) set [_i, _list];
-_list = [ [_t90E, 0.7], [_tdE, 0.3] ];
+_list = [ [_tankHeavyE02, 0.7], [_tdE, 0.3] ];
 (unitsBuyAI select si1) set [_i, _list];
 _i = _i + 1;
 
 utbTanksLD = _i;
-_list = [ [_m60W, 0.7], [_tdW, 0.3] ];
+_list = [ [_tankLightW01, 0.7], [_tdW, 0.3] ];
 (unitsBuyAI select si0) set [_i, _list];
-_list = [ [_t72E, 0.7], [_tdE, 0.3] ];
+_list = [ [_tankLightE01, 0.7], [_tdE, 0.3] ];
 (unitsBuyAI select si1) set [_i, _list];
 _i = _i + 1;
 

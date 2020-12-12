@@ -1,0 +1,507 @@
+version=11;
+#include "TZK_Scripts_4_0_5\mission.h"
+class Mission
+{
+	addOns[]=
+	{
+		TZK_BIS_AddOns
+		"MFCTI116",
+		"RMFCTI116",
+		TZK_CONFIG_405_AddOns
+	};
+	addOnsAuto[]=
+	{
+		TZK_CONFIG_405_AddOns
+	};
+	randomSeed=42499;
+	class Intel
+	{
+		briefingName="@STR_MISSION_KaoS_NAME";
+		briefingDescription="Top slot is Commander.";
+		resistanceWest=0.000000;
+		startWeather=0.000000;
+		forecastWeather=0.000000;
+		month=9;
+		day=22;
+		hour=8;
+		minute=0;
+	};
+	class Groups
+	{
+		items=146;
+		class Item0
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={-1000.000000,0.000000,2000.000000};
+					id=0;
+					side="GUER";
+					vehicle="SoldierGB";
+					leader=1;
+					skill=0.200000;
+					text="resistance_Center";
+					init="dev=true;bool_TZK_Vanilla_Mode = true; bool_TZK_199_Mode = true; bool_TZK_MF_Mode = true; bool_TZK_ETON_Mod = true; gameEndType = -1; towns=[]; [] exec ""\TZK_Scripts_4_0_4\Server\InitRepairableObjects.sqs""; [] exec ""\TZK_Scripts_4_0_4\Server\InitDestroyIslandObject.sqs""";
+				};
+			};
+		};
+
+#define posW1 1393.198242
+#define posW2 49.004383
+#define posW3 11353.285156
+#define posE1 835.611084
+#define posE2 24.349396
+#define posE3 11580.038086
+
+		TZK_Mission_Grp_Playable_199("CommanderW_Vanilla_xj400", "CommanderE_Vanilla_xj400", "LeaderW_Vanilla_xj400", "LeaderE_Vanilla_xj400")
+		
+		TZK_Mission_Group_Playable(37,CIV, 1143.693115,88.774994,11496.580078, 37, "Civilian", "Spec0=this")
+		TZK_Mission_Group_Playable(38,CIV, 1143.693115,88.774994,11496.580078, 38, "Civilian", "Spec1=this")
+		TZK_Mission_Group_Playable(39,CIV, 1143.693115,88.774994,11496.580078, 39, "Civilian", "Spec2=this")
+		TZK_Mission_Group_Playable(40,CIV, 1143.693115,88.774994,11496.580078, 40, "Civilian", "Spec3=this")
+		TZK_Mission_Group_Playable(41,CIV, 1143.693115,88.774994,11496.580078, 41, "Civilian", "Spec4=this")
+		TZK_Mission_Group_Playable(42,CIV, 1143.693115,88.774994,11496.580078, 42, "Civilian", "Spec5=this")
+		TZK_Mission_Group_Playable(43,CIV, 1143.693115,88.774994,11496.580078, 43, "Civilian", "Spec6=this")
+		TZK_Mission_Group_Playable(44,CIV, 1143.693115,88.774994,11496.580078, 44, "Civilian", "Spec7=this")
+		TZK_Mission_Group_Playable(45,CIV, 1143.693115,88.774994,11496.580078, 45, "Civilian", "Spec8=this")
+		TZK_Mission_Group_Playable(46,CIV, 1143.693115,88.774994,11496.580078, 46, "Civilian", "Spec9=this")
+		
+		TZK_Mission_Grp_Functional_199("LeaderW_Vanilla_xj400", "LeaderE_Vanilla_xj400")
+		TZK_Mission_Grp_TownGrp("LeaderW_Vanilla_xj400", "LeaderE_Vanilla_xj400")
+		TZK_Mission_Grp_PatrolGrp("LeaderW_Vanilla_xj400", "LeaderE_Vanilla_xj400")
+		TZK_Mission_Grp_WorkerGrp("LeaderW_Vanilla_xj400", "LeaderE_Vanilla_xj400")
+		class Item144
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={8112.067871,164.540924,1973.494507};
+					special="NONE";
+					id=144;
+					side="LOGIC";
+					vehicle="Logic";
+					leader=1;
+					skill=0.600000;
+					text="FixStart_0";
+				};
+			};
+		};
+		class Item145
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={5264.545898,32.659138,11372.510742};
+					special="NONE";
+					id=145;
+					side="LOGIC";
+					vehicle="Logic";
+					leader=1;
+					skill=0.600000;
+					text="FixStart_1";
+				};
+			};
+		};
+	};
+	class Vehicles
+	{
+		items=16;
+		class Item0
+		{
+			position[]={2614.734375,83.204994,5427.010742};
+			special="NONE";
+			id=200;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Le Moule"",500,2]]";
+		};
+		class Item1
+		{
+			position[]={1302.813965,65.474998,5963.163574};
+			special="NONE";
+			id=201;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Lamentin"",500,2]]";
+		};
+		class Item2
+		{
+			position[]={7251.920410,30.374998,6777.814453};
+			special="NONE";
+			id=202;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Eastport"",500,2]]";
+		};
+		class Item3
+		{
+			position[]={4143.924805,38.699997,7806.138672};
+			special="NONE";
+			id=203;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Gravette"",500,2]]";
+		};
+		class Item4
+		{
+			position[]={7537.058594,40.814999,5573.884277};
+			special="NONE";
+			id=204;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Laruns"",500,2]]";
+		};
+		class Item5
+		{
+			position[]={7077.643555,108.044998,6016.540527};
+			special="NONE";
+			id=205;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Chotain"",500,2]]";
+		};
+		class Item6
+		{
+			position[]={2898.415771,61.919998,6431.332031};
+			special="NONE";
+			id=206;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Farm"",500,2]]";
+		};
+		class Item7
+		{
+			position[]={4896.325195,30.091164,9079.018555};
+			special="NONE";
+			id=207;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Tyrone"",500,2]]";
+		};
+		class Item8
+		{
+			position[]={7571.654297,118.015656,4690.064941};
+			special="NONE";
+			id=208;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Levie"",500,2]]";
+		};
+		class Item9
+		{
+			position[]={4676.293945,17.594999,10735.553711};
+			special="NONE";
+			id=209;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Saint Phillippe"",500,2]]";
+		};
+		class Item10
+		{
+			position[]={7191.489258,123.974998,2377.741455};
+			special="NONE";
+			id=210;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Regina"",500,2]]";
+		};
+		class Item11
+		{
+			position[]={9639.697266,14.958533,1593.539917};
+			special="NONE";
+			id=211;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Saint Pierre"",500,2]]";
+		};
+		class Item12
+		{
+			position[]={5152.198730,16.424044,4064.596191};
+			special="NONE";
+			id=212;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Morton"",500,2]]";
+		};
+		class Item13
+		{
+			position[]={4930.600586,159.029999,6974.111328};
+			special="NONE";
+			id=213;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Mongtinac"",500,2]]";
+		};
+		class Item14
+		{
+			position[]={2205.661621,22.320000,7397.397461};
+			special="NONE";
+			id=214;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Westport"",500,2]]";
+		};
+		class Item15
+		{
+			position[]={8769.842773,88.154999,2730.614014};
+			special="NONE";
+			id=215;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Durras"",500,2]]";
+		};
+	};
+	class Markers
+	{
+		items=1975;
+		class Item0
+		{
+			position[]={9228.718750,1.793249,13141.357422};
+			name="Respawn_West";
+			type="Start";
+			colorName="ColorBlue";
+		};
+		class Item1
+		{
+			position[]={8851.494141,1.793249,13610.057617};
+			name="Respawn_East";
+			type="Start";
+			colorName="ColorRed";
+		};
+		class Item2
+		{
+			position[]={9161.492188,1.793249,13529.037109};
+			name="Respawn_Guerrila";
+			type="Start";
+			colorName="ColorBlack";
+		};
+		class Item3
+		{
+			position[]={-2000.000000,10.000000,-2000.000000};
+			name="MarkerTownName";
+			text="OUTPOST 1 +500$";
+			type="Dot";
+			colorName="ColorCyan_xj400";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item4
+		{
+			position[]={-2000.000000,10.000000,-2000.000000};
+			name="MarkerTownName";
+			text="OUTPOST2 +500$";
+			type="Dot";
+			colorName="ColorRed";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item5
+		{
+			position[]={-2000.000000,10.000000,-2000.000000};
+			name="MarkerTownName";
+			text="1000";
+			type="Warning";
+			colorName="ColorGreenAlpha";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item6
+		{
+			position[]={-2000.000000,10.000000,-2000.000000};
+			name="MarkerTownName";
+			text="1000";
+			type="Warning";
+			colorName="ColorGreenAlpha";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item7
+		{
+			position[]={2560.114514,0.528174,1024.114514};
+			name="TZK_Info";
+			text="Mod Version: mfcti1.16.pbo, rmfcti1.16.pbo (by ScoRPioN), TZK_Objects.pbo in @TZK_4.0.3 and TZK_Config_4_0_4.pbo in @TZK_4.0.4. Check ""Notes"" for more info.";
+			type="Warning";
+			colorName="ColorDarkPurple_xj400";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item8
+		{
+			position[]={-2000.000000,10.000000,-2000.000000};
+			name="MarkerStatic";
+			type="Empty";
+		};
+		class Item9
+		{
+			position[]={-2000.000000,10.000000,-2000.000000};
+			name="MarkerStatic";
+			type="Empty";
+		};
+		class Item10
+		{
+			position[]={2891.522705,61.919998,6384.252441};
+			name="03";
+			text="Farm";
+			type="Flag";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item11
+		{
+			position[]={7254.673828,30.374998,6759.855469};
+			name="04";
+			text="Eastport";
+			type="Flag";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item12
+		{
+			position[]={2198.768555,22.320000,7350.317871};
+			name="05";
+			text="Westport";
+			type="Flag";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item13
+		{
+			position[]={-2000.000000,10.000000,-2000.000000};
+			name="Area2";
+			markerType="ELLIPSE";
+			type="Dot";
+			colorName="ColorCyan_xj400";
+			a=30.000000;
+			b=30.000000;
+		};
+		class Item14
+		{
+			position[]={-2000.000000,10.000000,-2000.000000};
+			name="MarkerTeleporter";
+			text="Teleport";
+			type="Dot";
+			colorName="ColorDarkPurple_xj400";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item15
+		{
+			position[]={-2000.000000,10.000000,-2000.000000};
+			name="MarkerStatic";
+			type="Empty";
+		};
+		class Item16
+		{
+			position[]={-2000.000000,10.000000,-2000.000000};
+			name="MarkerStatic";
+			type="Empty";
+		};
+		class Item17
+		{
+			position[]={-2000.000000,10.000000,-2000.000000};
+			name="MarkerStatic";
+			type="Empty";
+		};
+		class Item18
+		{
+			position[]={-2000.000000,10.000000,-2000.000000};
+			name="MarkerStatic";
+			type="Empty";
+		};
+		class Item19
+		{
+			position[]={-2000.000000,10.000000,-2000.000000};
+			name="MarkerStatic";
+			type="Empty";
+		};
+		#include "TZK_Scripts_4_0_5\mission_marker.h"
+		TZK_Mission_Marker_Std
+	};
+	class Sensors
+	{
+		items=31;
+		#include "TZK_Scripts_4_0_5\mission_sensor.h"
+		TZK_Mission_Sensor_gammeEnd(0, 0, 0, 0, 0, 0, "END1", "WestWins", "WestWins", "gameEndType == 0")
+		TZK_Mission_Sensor_gammeEnd(1, 0, 0, 0, 0, 0, "END2", "EastWins", "EastWins", "gameEndType == 1")
+		TZK_Mission_Sensor_gammeEnd(2, 0, 0, 0, 0, 0, "END3", "Draw", "Draw", "gameEndType == 2")
+		
+		TZK_Mission_Sensor_Town(3, 2614.503418,83.204994,5428.021973, 10, 10, trig,"\TZK_Scripts_4_0_4\Server\Start\TownTrigger.sqs")
+		TZK_Mission_Sensor_Town(4, 1302.084961,65.474998,5964.083496, 10, 10, trig,"\TZK_Scripts_4_0_4\Server\Start\TownTrigger.sqs")
+		TZK_Mission_Sensor_Town(5, 7251.827637,30.374998,6778.904297, 10, 10, trig,"\TZK_Scripts_4_0_4\Server\Start\TownTrigger.sqs")
+		TZK_Mission_Sensor_Town(6, 4143.072266,38.699997,7806.373535, 10, 10, trig,"\TZK_Scripts_4_0_4\Server\Start\TownTrigger.sqs")
+		TZK_Mission_Sensor_Town(7, 7536.801758,40.814999,5574.923340, 10, 10, trig,"\TZK_Scripts_4_0_4\Server\Start\TownTrigger.sqs")
+		TZK_Mission_Sensor_Town(8, 7077.542969,108.044998,6017.310547, 10, 10, trig,"\TZK_Scripts_4_0_4\Server\Start\TownTrigger.sqs")
+		TZK_Mission_Sensor_Town(9, 2898.189209,61.919998,6432.235352, 10, 10, trig,"\TZK_Scripts_4_0_4\Server\Start\TownTrigger.sqs")
+		TZK_Mission_Sensor_Town(10, 4895.613281,30.062332,9079.706055, 10, 10, trig,"\TZK_Scripts_4_0_4\Server\Start\TownTrigger.sqs")
+		TZK_Mission_Sensor_Town(11, 7570.942383,118.001427,4690.752441, 10, 10, trig,"\TZK_Scripts_4_0_4\Server\Start\TownTrigger.sqs")
+		TZK_Mission_Sensor_Town(12, 4675.582031,17.594999,10736.241211, 10, 10, trig,"\TZK_Scripts_4_0_4\Server\Start\TownTrigger.sqs")
+		TZK_Mission_Sensor_Town(13, 7190.777344,123.974998,2378.428955, 10, 10, trig,"\TZK_Scripts_4_0_4\Server\Start\TownTrigger.sqs")
+		TZK_Mission_Sensor_Town(14, 9638.984375,15.065681,1594.227417, 10, 10, trig,"\TZK_Scripts_4_0_4\Server\Start\TownTrigger.sqs")
+		TZK_Mission_Sensor_Town(15, 2205.435059,22.320000,7398.300781, 10, 10, trig,"\TZK_Scripts_4_0_4\Server\Start\TownTrigger.sqs")
+		TZK_Mission_Sensor_Town(16, 8769.616211,88.154999,2731.517334, 10, 10, trig,"\TZK_Scripts_4_0_4\Server\Start\TownTrigger.sqs")
+		TZK_Mission_Sensor_Town(17, 5152.899902,16.452440,4065.283691, 10, 10, trig,"\TZK_Scripts_4_0_4\Server\Start\TownTrigger.sqs")
+		TZK_Mission_Sensor_Town(18, 4931.301758,159.029999,6974.798828, 10, 10, trig,"\TZK_Scripts_4_0_4\Server\Start\TownTrigger.sqs")
+
+		TZK_Mission_Sensor_Empty(19)
+		TZK_Mission_Sensor_Empty(20)
+		TZK_Mission_Sensor_Radio(21,"ALPHA",1,"Extra\199\Radio_199_Exe.sqs")
+		TZK_Mission_Sensor_Radio(22,"BRAVO",2,"Extra\199\Radio_199_Exe.sqs")
+		TZK_Mission_Sensor_Radio(23,"CHARLIE",3,"Extra\199\Radio_199_Exe.sqs")
+		TZK_Mission_Sensor_Radio(24,"DELTA",4,"Extra\199\Radio_199_Exe.sqs")
+		TZK_Mission_Sensor_Radio(25,"ECHO",5,"Extra\199\Radio_199_Exe.sqs")
+		TZK_Mission_Sensor_Radio(26,"FOXTROT",6,"Extra\199\Radio_199_Exe.sqs")
+		TZK_Mission_Sensor_Radio(27,"GOLF",7,"Extra\199\Radio_199_Exe.sqs")
+		TZK_Mission_Sensor_Radio(28,"HOTEL",8,"Extra\199\Radio_199_Exe.sqs")
+		TZK_Mission_Sensor_Radio(29,"INDIA",9,"Extra\199\Radio_199_Exe.sqs")
+		TZK_Mission_Sensor_Radio(30,"JULIET",0,"Extra\199\Radio_199_Exe.sqs")
+	};
+};
+class Intro
+{
+	randomSeed=8166403;
+	class Intel
+	{
+	};
+};
+class OutroWin
+{
+	randomSeed=5538307;
+	class Intel
+	{
+	};
+};
+class OutroLoose
+{
+	randomSeed=2739203;
+	class Intel
+	{
+	};
+};

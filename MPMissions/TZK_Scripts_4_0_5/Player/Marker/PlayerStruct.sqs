@@ -1,0 +1,34 @@
+; args: [si]
+_si = _this select 0
+_siEnemy = siEnemy select _si
+
+; Wait until markers initialized.
+@(time > 10)
+? dev: exit
+#Update
+	? _time > 30: [_si] exec "\TZK_Scripts_4_0_5\Player\Marker\PlayerStruct.sqs"; exit
+	~10
+	_structs = StructureMarkerMapping select _si; _i = 0
+	
+	#StructOwn
+	_struct = _structs select _i
+	_m = format["Structure_%1_%2", _si, _i]
+	if (isNull _struct) then {_m setMarkerPos hiddenMarkerPos} else {if (! alive _struct) then {_m setMarkerColor "ColorBlack"} else {_m setMarkerColor "ColorCyan_xj400", _m setMarkerPos getPos _struct}}
+	
+	_i = _i + 1
+	? _i < maxStructureMarkers: goto "StructOwn"
+	
+	? ! bSpySat: goto "Update"
+	_SpySatPos = [SpySatPos0, SpySatPos1] select _si;
+	_structs = StructureMarkerMapping select _siEnemy; _i = 0
+	#StructEnemy
+	_struct = _structs select _i
+	_m = format["Structure_%1_%2", _siEnemy, _i]
+	if (isNull _struct) then {_m setMarkerPos hiddenMarkerPos} else {_inrange = ([getPos _struct, _SpySatPos] call funcDistH) < (2*viewDistance); if !(_inrange) then {_m setMarkerSize [0,0]} else {_m setMarkerSize [0.5,0.5], _m setMarkerPos getPos _struct}}
+	
+	_i = _i + 1
+	? _i < maxStructureMarkers: goto "StructEnemy"
+	
+	goto "Update"
+
+; EOF
