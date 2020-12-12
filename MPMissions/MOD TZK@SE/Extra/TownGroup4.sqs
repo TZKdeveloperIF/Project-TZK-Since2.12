@@ -144,8 +144,8 @@ _group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "N
     
     #Support_Perform
   	; format["UTG: %1 performs support in %2 ", _u, (towns select _ti) select tdName] call fDebugLog
-	[_u, _si, giTown, _v, -1, _support, true] exec "\TZK_Scripts_4_0_4\Server\AI_Heal.sqs"
-	[_u, _si, giTown, _v, -1, _support, true] exec "\TZK_Scripts_4_0_4\Server\AI_Rearm.sqs"
+	[_u, _si, giTown, _v, -1, _support, true] exec "Server\AI_Heal.sqs"
+	[_u, _si, giTown, _v, -1, _support, true] exec "Server\AI_Rearm.sqs"
 	_unitsSupport = _unitsSupport - [_u, objNull]; _unitsSupporting set [count _unitsSupporting, _u]
   	goto "Support_CheckUnit"
     

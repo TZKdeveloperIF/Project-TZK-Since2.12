@@ -25,45 +25,45 @@ _delay = 0; _hint = ""; goto format ["Channel%1", _this select 0]
 _hint = "0-0-1 channel is mainly for aircrafts switching ""SpoofMissile"" function, which requires upgrading.\nBesides, when player jumping off the aircraft and stay in parachute, this channel can be applied to call the ""Options"" action.\nAnd when player is commander and on foot, this channel can be applied to call back MHQ out of the map (this occur sometimes, due to attach bug, or due to enemy blowing up many satchels to make the MHQ out of map)."
 ? _vehicle == player: if (isCommander) Then {[] exec "\TZK_Scripts_4_0_4\Player\Radio\RadioList_Soldier_CallBackMHQ.sqs", _delay = 2} Else {_delay = 0}, goto "Quit"
 ? "Air" countType [_vehicle] == 0: goto "Quit"
-? "ParachuteBase" countType [_vehicle] > 0: [] exec "\TZK_Scripts_4_0_4\Player\Dialog\Options.sqs", exit
+? "ParachuteBase" countType [_vehicle] > 0: [] exec "Player\Dialog\Options.sqs", exit
 
 ? call "bSpoofMissile && ""_x=={SpoofSwitch_xj400}"" count magazines _vehicle > 0": _vehicle removeMagazines {SpoofSwitch_xj400}, hint "Spoof Missile ON.", 1 setRadioMsg "SpoofMissile OFF", exit
 ? call """_x=={SpoofSwitch_xj400}"" count magazines _vehicle == 0 && count magazines _vehicle > 0": _vehicle addMagazine {SpoofSwitch_xj400}, hint "Spoof Missile OFF.", 1 setRadioMsg "SpoofMissile ON", exit
 goto "Quit"
 
 #Channel2
-[] exec "\TZK_Scripts_4_0_4\Player\Dialog\TZK_Mission_Setting_1.sqs"; exit
+[] exec "Player\Dialog\TZK_Mission_Setting_1.sqs"; exit
 
 #Channel3
-? _vehicle == player: if (call "{_x=={Medkit_xj400}} count magazines player > 0 && damage player > 0.01") Then {player exec "\TZK_Scripts_4_0_4\Player\Action\SelfMedic.sqs"} Else {hint "Improper condition. Self Medic don't happen."}, exit
-? (_vehicle call funcGetStructTypeFromObject) in structsOccupiableMortar: [(_vehicle), 080, {M}] exec "\TZK_Scripts_4_0_4\Player\Radio\Graduation.sqs", exit
+? _vehicle == player: if (call "{_x=={Medkit_xj400}} count magazines player > 0 && damage player > 0.01") Then {player exec "Player\Action\SelfMedic.sqs"} Else {hint "Improper condition. Self Medic don't happen."}, exit
+? (_vehicle call funcGetStructTypeFromObject) in structsOccupiableMortar: [(_vehicle), 080, {M}] exec "Player\Radio\Graduation.sqs", exit
 _hint = "0-0-3 channel can be applied for self-medic when you're on foot and carring ""Medkit"". Also it can be applied for player to switch to the driver seat when player is in ship/helicopter.\nWhen player is in Mortar Structure, this channel can be applied to switch 80m/s speed magazine as well."
 ? "Helicopter" countType [_vehicle] == 0 && "Ship" countType [_vehicle] == 0: goto "Quit"
-? "Ship" countType [_vehicle] > 0: if (player == gunner _vehicle && (isNull driver _vehicle || local driver _vehicle) && local _vehicle) Then {(_vehicle) exec "\TZK_Scripts_4_0_4\Player\Action\SwitchToDriver.sqs", 3 setRadioMsg "", 4 setRadioMsg "To gunner's seat"}, exit
-? "Helicopter" countType [_vehicle] > 0: if (player == gunner _vehicle && (isNull driver _vehicle || local driver _vehicle) && local _vehicle) Then {if (abs(speed _vehicle) < 50) Then {(_vehicle) exec "\TZK_Scripts_4_0_4\Player\Action\SwitchToDriver.sqs", 3 setRadioMsg "", 4 setRadioMsg "To gunner's seat"} Else {hint "Switch seat in Helicopter requires speed no more than 50km/h."}}, exit
+? "Ship" countType [_vehicle] > 0: if (player == gunner _vehicle && (isNull driver _vehicle || local driver _vehicle) && local _vehicle) Then {(_vehicle) exec "Player\Action\SwitchToDriver.sqs", 3 setRadioMsg "", 4 setRadioMsg "To gunner's seat"}, exit
+? "Helicopter" countType [_vehicle] > 0: if (player == gunner _vehicle && (isNull driver _vehicle || local driver _vehicle) && local _vehicle) Then {if (abs(speed _vehicle) < 50) Then {(_vehicle) exec "Player\Action\SwitchToDriver.sqs", 3 setRadioMsg "", 4 setRadioMsg "To gunner's seat"} Else {hint "Switch seat in Helicopter requires speed no more than 50km/h."}}, exit
 goto "Quit"
 
 #Channel4
-? _vehicle == player: if (mhqNearby) Then {[utMHQ0,150] exec "\TZK_Scripts_4_0_4\Player\Dialog\BuildMenu.sqs"} Else {hint "MHQ too far away. Build Menu not activated."}, exit
-? (_vehicle call funcGetStructTypeFromObject) in structsOccupiableMortar: [(_vehicle), 120, {M}] exec "\TZK_Scripts_4_0_4\Player\Radio\Graduation.sqs", exit
+? _vehicle == player: if (mhqNearby) Then {[utMHQ0,150] exec "Player\Dialog\BuildMenu.sqs"} Else {hint "MHQ too far away. Build Menu not activated."}, exit
+? (_vehicle call funcGetStructTypeFromObject) in structsOccupiableMortar: [(_vehicle), 120, {M}] exec "Player\Radio\Graduation.sqs", exit
 _hint = "0-0-4 channel can be applied for calling MHQ Build Menu when you're on foot and MHQ nearby (150 meters). Also it can be applied for player to switch to the gunner seat when player is in ship/helicopter.\nWhen player is in Mortar Structure, this channel can be applied to switch 120m/s speed magazine as well."
 ? "Helicopter" countType [_vehicle] == 0 && "Ship" countType [_vehicle] == 0: goto "Quit"
-? "Ship" countType [_vehicle] > 0: if (player == driver _vehicle && (isNull gunner _vehicle || local gunner _vehicle) && local _vehicle) Then {(_vehicle) exec "\TZK_Scripts_4_0_4\Player\Action\SwitchToGunner.sqs", 3 setRadioMsg "To driver's seat", 4 setRadioMsg ""}, exit
-? "Helicopter" countType [_vehicle] > 0: if (player == driver _vehicle && (isNull gunner _vehicle || local gunner _vehicle) && local _vehicle) Then {if (abs(speed _vehicle) < 50) Then {(_vehicle) exec "\TZK_Scripts_4_0_4\Player\Action\SwitchToGunner.sqs", 3 setRadioMsg "To driver's seat", 4 setRadioMsg ""} Else {hint "Switch seat in Helicopter requires speed no more than 50km/h."}}, exit
+? "Ship" countType [_vehicle] > 0: if (player == driver _vehicle && (isNull gunner _vehicle || local gunner _vehicle) && local _vehicle) Then {(_vehicle) exec "Player\Action\SwitchToGunner.sqs", 3 setRadioMsg "To driver's seat", 4 setRadioMsg ""}, exit
+? "Helicopter" countType [_vehicle] > 0: if (player == driver _vehicle && (isNull gunner _vehicle || local gunner _vehicle) && local _vehicle) Then {if (abs(speed _vehicle) < 50) Then {(_vehicle) exec "Player\Action\SwitchToGunner.sqs", 3 setRadioMsg "To driver's seat", 4 setRadioMsg ""} Else {hint "Switch seat in Helicopter requires speed no more than 50km/h."}}, exit
 goto "Quit"
 
 #Channel5
-? _vehicle == player: if (SupNearby) Then {[-1,50] exec "\TZK_Scripts_4_0_4\Player\Dialog\BuildMenu.sqs"} Else {hint "Sup too far away. Build Menu not activated."}, exit
-? (_vehicle call funcGetStructTypeFromObject) in structsOccupiableMortar: [(_vehicle), 180, {M}] exec "\TZK_Scripts_4_0_4\Player\Radio\Graduation.sqs", exit
+? _vehicle == player: if (SupNearby) Then {[-1,50] exec "Player\Dialog\BuildMenu.sqs"} Else {hint "Sup too far away. Build Menu not activated."}, exit
+? (_vehicle call funcGetStructTypeFromObject) in structsOccupiableMortar: [(_vehicle), 180, {M}] exec "Player\Radio\Graduation.sqs", exit
 _hint = "0-0-5 channel can be applied for calling Sup Build Menu when you're on foot and any support vehicle nearby (50 meters).\nWhen player is in Mortar Structure, this channel can be applied to switch 120m/s speed magazine as well.\n When player is in tug-able vehicle, this channel can be applied to attach/detach other vehicle."
-? "GunBoat_xj400" countType [_vehicle] > 0: [_vehicle, tsCenter, ttBoat] exec "\TZK_Scripts_4_0_4\Player\Action\AttachDetachVehicle.sqs", exit
-? (_vehicle call funcGetUnitTypeFromObject) in (RadioTypesSupport + [utMCVW, utMCVE, utMHQ0, utMHQ1]) && ("Land" countType [_vehicle] > 0): if ("Truck" countType [_vehicle] > 0) Then {[_vehicle, tsCenter, ttTruck] exec "\TZK_Scripts_4_0_4\Player\Action\AttachDetachVehicle.sqs"} Else {[_vehicle, tsCenter, ttAPC] exec "\TZK_Scripts_4_0_4\Player\Action\AttachDetachVehicle.sqs"}, exit
-? "Mi17" countType [_vehicle] > 0 || "UH60" countType [_vehicle] > 0: [_vehicle, tsCenter, ttHeli] exec "\TZK_Scripts_4_0_4\Player\Action\AttachDetachVehicle.sqs", exit
+? "GunBoat_xj400" countType [_vehicle] > 0: [_vehicle, tsCenter, ttBoat] exec "Player\Action\AttachDetachVehicle.sqs", exit
+? (_vehicle call funcGetUnitTypeFromObject) in (RadioTypesSupport + [utMCVW, utMCVE, utMHQ0, utMHQ1]) && ("Land" countType [_vehicle] > 0): if ("Truck" countType [_vehicle] > 0) Then {[_vehicle, tsCenter, ttTruck] exec "Player\Action\AttachDetachVehicle.sqs"} Else {[_vehicle, tsCenter, ttAPC] exec "Player\Action\AttachDetachVehicle.sqs"}, exit
+? "Mi17" countType [_vehicle] > 0 || "UH60" countType [_vehicle] > 0: [_vehicle, tsCenter, ttHeli] exec "Player\Action\AttachDetachVehicle.sqs", exit
 
 goto "Quit"
 
 #Channel6
-? "GunBoat_xj400" countType [_vehicle] > 0: [_vehicle, tsRight, ttBoat] exec "\TZK_Scripts_4_0_4\Player\Action\AttachDetachVehicle.sqs", exit
+? "GunBoat_xj400" countType [_vehicle] > 0: [_vehicle, tsRight, ttBoat] exec "Player\Action\AttachDetachVehicle.sqs", exit
 ; _hint = "0-0-6 channel can be applied for ship to attach/detach vehicle in right slot."
 ? _vehicle == player: hint_countdown_TZK_RadioReceive_199 = hint_countdown_TZK_RadioReceive_199 + 1, hint format ["Radio channel in 1.96 OFP or 1.99 ACWA is MP-GLOBAL. Thus it's turned off by default and radio channels won't be activated, unless you turn it on in ""Options"" by the button at right-upper corner.\nThis hint will appear when someone calling radio channel (not must be yourself, as have mentioned above, it's MP-GLOBAL.\nThis hint will still appear %1 times in this game.", hint_countdown_TZK_RadioReceive_199]
 
@@ -71,31 +71,31 @@ goto "Quit"
 
 #Channel7
 ; ? _vehicle == player: [player] call loadFile "Extra\Radio\RadioList_Soldier_RearmNVG.sqf", exit
-? "GunBoat_xj400" countType [_vehicle] > 0: [_vehicle, tsLeft, ttBoat] exec "\TZK_Scripts_4_0_4\Player\Action\AttachDetachVehicle.sqs", exit
-? "Helicopter" countType [_vehicle] > 0: [_vehicle, siPlayer] exec "\TZK_Scripts_4_0_4\Player\Action\EjectAIUnits.sqs", exit
+? "GunBoat_xj400" countType [_vehicle] > 0: [_vehicle, tsLeft, ttBoat] exec "Player\Action\AttachDetachVehicle.sqs", exit
+? "Helicopter" countType [_vehicle] > 0: [_vehicle, siPlayer] exec "Player\Action\EjectAIUnits.sqs", exit
 _hint = "0-0-7 channel can be applied for ship to attach/detach vehicle in left slot.\nWhen player is in helicopter, this channel can be applied to eject all cargos (belonging to AI groups ONLY) quickly."
 
 goto "Quit"
 
 #Channel8
 ? _vehicle == player: [player] call loadFile "Extra\Radio\RadioList_Soldier_RearmAA.sqf", exit
-? "Helicopter" countType [_vehicle] > 0: [_vehicle, siPlayer] exec "\TZK_Scripts_4_0_4\Player\Action\EjectAllCargo.sqs", exit
+? "Helicopter" countType [_vehicle] > 0: [_vehicle, siPlayer] exec "Player\Action\EjectAllCargo.sqs", exit
 _vt = _vehicle call funcGetUnitTypeFromObject
-? _vt in (RadioTypesShips + RadioTypesTransportPlane + typesTransportCar + typesTransportAPC): [_vehicle, siPlayer] exec "\TZK_Scripts_4_0_4\Player\Action\EjectAllCargo.sqs", exit
-? _vt in (RadioTypesSupport + [utMCVW, utMCVE, utMHQ0, utMHQ1]): if ("Land" countType [_vehicle] > 0) then {[_vehicle, siPlayer] exec "\TZK_Scripts_4_0_4\Player\Action\EjectAllCargo.sqs", exit}
+? _vt in (RadioTypesShips + RadioTypesTransportPlane + typesTransportCar + typesTransportAPC): [_vehicle, siPlayer] exec "Player\Action\EjectAllCargo.sqs", exit
+? _vt in (RadioTypesSupport + [utMCVW, utMCVE, utMHQ0, utMHQ1]): if ("Land" countType [_vehicle] > 0) then {[_vehicle, siPlayer] exec "Player\Action\EjectAllCargo.sqs", exit}
 
 _hint = "0-0-8 channel can be applied for player to buy AA launcher/ammo quickly.\nWhen player is in helicopter, this channel can be applied to eject all cargos. No groups limit in this channel unlike 0-0-7, but the frequency here is slower (due to script commands' MP broadcasting feature)."
 goto "Quit"
 
 #Channel9
 ? _vehicle == player && siPlayer in [si0,si1]: [player] call loadFile "Extra\Radio\RadioList_Soldier_RearmAT.sqf", exit
-? "Helicopter" countType [_vehicle] > 0: [_vehicle, siPlayer] exec "\TZK_Scripts_4_0_4\Player\Action\EjectOneCargo.sqs", exit
+? "Helicopter" countType [_vehicle] > 0: [_vehicle, siPlayer] exec "Player\Action\EjectOneCargo.sqs", exit
 _vt = _vehicle call funcGetUnitTypeFromObject
-? _vt in (RadioTypesShips + RadioTypesTransportPlane + typesTransportCar + typesTransportAPC): [_vehicle, siPlayer] exec "\TZK_Scripts_4_0_4\Player\Action\EjectOneCargo.sqs", exit
-? _vt in (RadioTypesSupport + [utMCVW, utMCVE, utMHQ0, utMHQ1]): if ("Land" countType [_vehicle] > 0) then {[_vehicle, siPlayer] exec "\TZK_Scripts_4_0_4\Player\Action\EjectOneCargo.sqs", exit}
+? _vt in (RadioTypesShips + RadioTypesTransportPlane + typesTransportCar + typesTransportAPC): [_vehicle, siPlayer] exec "Player\Action\EjectOneCargo.sqs", exit
+? _vt in (RadioTypesSupport + [utMCVW, utMCVE, utMHQ0, utMHQ1]): if ("Land" countType [_vehicle] > 0) then {[_vehicle, siPlayer] exec "Player\Action\EjectOneCargo.sqs", exit}
 
 _hint = "0-0-9 channel can be applied for player to buy AT launcher/ammo quickly.\nWhen player is in helicopter, this channel can be applied to eject only 1 cargo.\nIf player is in Art Vehicle (no weapon range limit vehicle, special design in CTI), this channel can switch the bullet-camera (require upgrade).\nIf player is civ and in 1st view mode, this channel can be applied to switch the displaying of markers."
-? (_vehicle call funcGetUnitTypeFromObject) in RadioTypesArtUnits: if (bTrackBullet) then {[] exec "\TZK_Scripts_4_0_4\Player\Action\BulletCamTurnOFF.sqs", hint "Bullet Camera turn off.", 9 setRadioMsg "BulletCam Turn ON"} Else {[] exec "\TZK_Scripts_4_0_4\Player\Action\BulletCamTurnON.sqs", 9 setRadioMsg "BulletCam Turn OFF"}, exit
+? (_vehicle call funcGetUnitTypeFromObject) in RadioTypesArtUnits: if (bTrackBullet) then {[] exec "\TZK_Scripts_4_0_4\Player\Action\BulletCamTurnOFF.sqs", hint "Bullet Camera turn off.", 9 setRadioMsg "BulletCam Turn ON"} Else {[] exec "Player\Action\BulletCamTurnON.sqs", 9 setRadioMsg "BulletCam Turn OFF"}, exit
 ? siPlayer == siCiv: btnMarker = !btnMarker; if !btnMarker then {call loadFile "\TZK_Scripts_4_0_4\Player\Marker\HideSpectator.sqf"} else {[boole_Mark_Player_Name] exec "\TZK_Scripts_4_0_4\Player\Marker\SpectatorMarker.sqs"}, exit
 
 _vehicle in TransportActivatedVehicles
@@ -105,11 +105,11 @@ goto "Quit"
 #Channel0
 ? _vehicle == player: [player] call loadFile "Extra\Radio\RadioList_Soldier_RearmRPG.sqf", exit
 _hint = "0-0-0 channel can be applied for player to buy RPG launcher/ammo quickly.\nWhen player is in transport vehicles, this channel can be applied to switch transport function. In TZK AI group units will only board those vehicles Turning ON Transport Function.\nWhen player is driving plane, this channel can be applied to switch after burner function (require upgrade).\nIf player is civ and in 1st view mode, this channel can be applied to return to spectator mode."
-? (_vehicle call funcGetUnitTypeFromObject) in ((airTransport select siPlayer) + (groundTransport select siPlayer)): if (_vehicle in TransportActivatedVehicles) Then {[_vehicle] exec "\TZK_Scripts_4_0_4\Common\SendTransportTurnOff.sqs", hint "Transport Turn OFF", 10 setRadioMsg "Transport Turn ON"} Else {[_vehicle] exec "\TZK_Scripts_4_0_4\Common\SendTransportTurnOn.sqs", hint "Transport Turn ON", 10 setRadioMsg "Transport Turn OFF"}, exit
+? (_vehicle call funcGetUnitTypeFromObject) in ((airTransport select siPlayer) + (groundTransport select siPlayer)): if (_vehicle in TransportActivatedVehicles) Then {[_vehicle] exec "Common\SendTransportTurnOff.sqs", hint "Transport Turn OFF", 10 setRadioMsg "Transport Turn ON"} Else {[_vehicle] exec "Common\SendTransportTurnOn.sqs", hint "Transport Turn ON", 10 setRadioMsg "Transport Turn OFF"}, exit
 ? siPlayer == siCiv: [] exec "\TZK_Scripts_4_0_4\Player\Radio\RadioList_Spectator_Return.sqs", exit
 
-? "A10_Base_xj400" countType [_vehicle] == 0 && "Su25_Base_xj400" countType [_vehicle] == 0: [_vehicle] exec "\TZK_Scripts_4_0_4\Player\Radio\Radio_Update_Vehicle.sqs", goto "Quit"
-? call "bAfterBurner && ""_x=={AfterBurnerSwitch_xj400}"" count magazines _vehicle > 0": _vehicle removeMagazines {AfterBurnerSwitch_xj400}; _vehicle exec "\TZK_Scripts_4_0_4\Player\Effect\AfterBurner\Start.sqs", hint "After Burner turn on. Make sure your engine on as well.", 10 setRadioMsg "AfterBurner OFF", exit
+? "A10_Base_xj400" countType [_vehicle] == 0 && "Su25_Base_xj400" countType [_vehicle] == 0: [_vehicle] exec "Player\Radio\Radio_Update_Vehicle.sqs", goto "Quit"
+? call "bAfterBurner && ""_x=={AfterBurnerSwitch_xj400}"" count magazines _vehicle > 0": _vehicle removeMagazines {AfterBurnerSwitch_xj400}; _vehicle exec "Player\Effect\AfterBurner\Start.sqs", hint "After Burner turn on. Make sure your engine on as well.", 10 setRadioMsg "AfterBurner OFF", exit
 ? call " ""_x=={AfterBurnerSwitch_xj400}"" count magazines _vehicle == 0 && count magazines _vehicle > 0": _vehicle addMagazine {AfterBurnerSwitch_xj400}, hint "After Burner turn off.", 10 setRadioMsg "AfterBurner ON", exit
 
 #Quit

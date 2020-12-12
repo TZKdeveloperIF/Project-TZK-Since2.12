@@ -1,0 +1,31 @@
+; args: [unit, si, gi, [WayPoint, Response Radius, unit types (defined  in "InitAIOptions.sqs"), deploy or not]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+
+; Get Correct Parameters. Need Pay Attention To Coefficients
+_pos = ((wpCO select _si) select (_params select 0))
+_radius = 100*((_params select 1) + 1)
+_typeIndex = (_params select 2)
+_status = [false, true] select (_params select 3)
+
+; Check Whether Unit Fits The Parameters Of The Temporary Order
+_typeIndex = [{Howitzer Vehicle}, {Rocket Launcher}, {ALL}] select _typeIndex
+? _typeIndex == "Howitzer Vehicle":		_orderTypes = typesHowitzer; 	
+? _typeIndex == "Rocket Launcher":		_orderTypes = typesRocketLauncher;		
+? _typeIndex == "ALL":					_orderTypes = typesHowitzer + typesRocketLauncher
+
+? ([getPos _unit, _pos] call funcDistH) > _radius && _pos select 0 > 0: exit
+_vehicle = vehicle _unit
+? _unit == _vehicle || _unit != crew _vehicle select 0 || !local _vehicle: exit
+
+_vt = _vehicle call funcGetUnitTypeFromObject
+? _vt == -1: exit
+? !(_vt in _orderTypes): exit
+
+; Main Part Of Temporary Order
+[_vehicle, _status] exec "\TZK_Scripts_4_0_4\Common\Effect\DeployChange.sqs"
+
+; EOF

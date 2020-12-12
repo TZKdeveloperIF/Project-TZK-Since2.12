@@ -8,15 +8,16 @@ mutexDlg = false
 _si = siPlayer
 _gi = giPlayer
 
-_idcAdmin = IDC + 0
+_idcAdmin = IDC + 0; _idcNextPage = IDC + 1
 _idcItems = IDC + 100
 _idcSelections = IDC + 200
 _idcResult = IDC + 300
 _idcConfirmBtn = IDC + 400
-btnValue00 = -1
+btnValue00 = -1; btnValue01 = -1
 
 ; Init
-ctrlShow [_idcAdmin, name player == "IF"]
+ctrlShow [_idcAdmin, name player == "IF"]; ctrlShow [_idcNextPage, false]
+? !Allow_BOH_WAP_TZK: _j = Vote_ItemNames find "BOH WAP Vehicle", {ctrlShow [_x + _j, false]} forEach [_idcItems, _idcSelections, _idcResult, _idcConfirmBtn]
 call loadFile "\TZK_Scripts_4_0_4\Player\Dialog\VoteMenu_Init.sqf"
 ctrlShow [IDC_DialogBG_Light, !bool_TZK_DarkSkin]
 #Update

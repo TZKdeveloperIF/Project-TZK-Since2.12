@@ -1,64 +1,9 @@
-;player globalchat "InitServer.sqs Entered"
-;DEFINE CONSTANT POINTER FOR FUNCTION
-;TG0 = townGroups select si0; TG1 = townGroups select si1; WG0 = workerGroups select si0; WG1 = workerGroups select si1; GM0 = groupMatrix select si0; GM1 = groupMatrix select si1
-{deleteVehicle (leader _x)} forEach (workerGroups select si0); {deleteVehicle (leader _x)} forEach (workerGroups select si1)
-
-; local bool variable of game mode. On server they should be global
-
-[] exec "\TZK_Scripts_4_0_4\Server\InitFunctions.sqs"
-
-busyInit = "call format[{busy%1 = []}, sideNames select _si]"; busySet = {call format[{[_this,_si] exec "\TZK_Scripts_4_0_4\Server\BusySet.sqs"}]}; busyClear = {call format[{[_this,_si] exec "\TZK_Scripts_4_0_4\Server\BusyClear.sqs"}]}; busyCheck = {call format[{_this in busy%1}, sideNames select _si]}; mutexBusy = false
-temporaryInit = "call format[{temporary%1 = []}, sideNames select _si]"; temporarySet = {call format[{[_this,_si] exec "\TZK_Scripts_4_0_4\Server\TemporarySet.sqs"}]}; temporaryClear = {call format[{[_this,_si] exec "\TZK_Scripts_4_0_4\Server\TemporaryClear.sqs"}]}; temporaryCheck = "call format[{_this in temporary%1}, sideNames select _si]"; mutexTemporary = false
-_si = si0; call busyInit; call temporaryInit; _si = si1; call busyInit; call temporaryInit
-
-; busySet = "_this setSkill (skill _this) - 0.0002"; busyClear = "_this setSkill (skill _this) + 0.0002"; busyCheck = "(skill _this) < 0.9999"
-; temporarySet = "_this setSkill (skill _this) - 0.0001"; temporaryClear = "_this setSkill (skill _this) + 0.0001"; temporaryCheck = "(skill _this) == 0.9999"
-ResDestroyStruct = []; mutexResDestStruct = false
+Init_TZK_Script_Order = false
+[] exec "\TZK_Scripts_4_0_5\Server\InitFunctions.sqs"
+[] exec "\TZK_Scripts_4_0_5\Server\InitServer_constant.sqs"
+[] exec "\TZK_Scripts_4_0_5\Server\InitServer_Group.sqs"
 
 
-CheckSupportUnits = []; mutexCheckSupport = false
-
-repairableStructureMatrix = [ [], [] ]; repairableStructureInfo = [ [], [] ]; mutexRepStructMatrix = false; mutexRepairStructure = false
-structServer = []; structsServer = []; mutexStructServer = false
-primStructsPlaced = []; mutexPlacedPrimStructs = false
-factoryQueues = [ [], [] ]; mutexFacQueues = false
-buildingsInUse = []; mutexbuildingInUse = false
-undoList = []; mutexUndo = false
-
-startMoney = [[40000, 40000],[80000, 80000]] select PricingMode
-? (dev): startMoney = [800000, 800000]
-startMoneyPlayer = [1000, 1000]
-? (dev): startMoneyPlayer = [2000, 2000]
-moneySpent = [0, 0]
-moneyRequest = [[],[]]
-indexMoneyMsg = 0
-countMoneyMsg = 10
-indexInfoMsg = 0
-countInfoMsg = 4
-qidNext = [0,0]
-qidCancel = [[],[]]
-qidToCancel = [[],[]]
-
-timeCheckSupport = 120
-ratioAttackEnemy = ([0.70, 0.70] select dev)
-
-countQueueMsg = 5
-indexQueueAddMsg = 0
-indexQueueRemMsg = 0
-indexUnitAddMsg = 0
-mutexBuildingQueue = false
-mutexEditMoneyMatrix = false
-mutexMovingToSupport = false
-mutexSendMoneySide = false
-mutexEnemySpotted = false
-mutexqidCancel = false
-mutexFuelVehicle = false
-
-scoreMoney = [[],[]]
-groupsPatrol = []; groupPatrolJoinMatrix = []; mutexInitResGroups = false; mutexResPatrolScript = false
-
-mutexAddResPatrol = false
-mutexWorkerJoin = false
 
 _targetObject = {Target_TZK_xj400}
 ; ? bool_TZK_Vanilla_Mode: _targetObject = "HeliH"
@@ -71,11 +16,9 @@ _i = 0; countTargetMarkers = 10; while "_i < countTargetMarkers" do {call Format
 [] exec "\TZK_Scripts_4_0_4\Server\MsgBuildStructure.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\MsgUndo.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\MsgAddWorker.sqs"
-[] exec "\TZK_Scripts_4_0_4\Server\MsgBuyUnit0.sqs"
-[] exec "\TZK_Scripts_4_0_4\Server\MsgBuyUnit1.sqs"
-[] exec "\TZK_Scripts_4_0_4\Server\MsgBuyUnit2.sqs"
-[] exec "\TZK_Scripts_4_0_4\Server\MsgBuyUnit3.sqs"
-[] exec "\TZK_Scripts_4_0_4\Server\MsgBuyUnit4.sqs"
+
+{ ["\TZK_Scripts_4_0_5\Server\Msg\hBuyUnit.sqs"] exec format ["\TZK_Scripts_4_0_5\Server\Msg\mBuyUnit%1.sqs", _x] } forEach [0,1,2,3,4]
+
 [] exec "\TZK_Scripts_4_0_4\Server\MsgCancelBuy.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\MsgMoneySpent.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\Msg\mGiveMoney.sqs"
@@ -83,7 +26,7 @@ _i = 0; countTargetMarkers = 10; while "_i < countTargetMarkers" do {call Format
 [] exec "\TZK_Scripts_4_0_4\Server\MsgTransferCommand.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\MsgDestruction.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\MsgUnitDisembark.sqs"
-[] exec "\TZK_Scripts_4_0_4\Server\MsgJoin.sqs"
+["\TZK_Scripts_4_0_5\Server\Join\ViaOrder.sqs"] exec "\TZK_Scripts_4_0_5\Server\Msg\mJoin.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\MsgCheckAI.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\MsgClearBuy.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\MsgEjectAIUnits.sqs"
@@ -92,74 +35,14 @@ _i = 0; countTargetMarkers = 10; while "_i < countTargetMarkers" do {call Format
 ? !(isNull player): forceMap true
 ? !(isNull player): [] exec "Player\InitClient.sqs"
 
-pingTimes = [[], []]
-blockedPlayers = [[], []]
-_si = si0; _gi = 0; { (pingTimes select _si) set [_gi, -1]; (blockedPlayers select _si) set [_gi, false]; _gi = _gi + 1} foreach (groupMatrix select _si)
-_si = si1; _gi = 0; { (pingTimes select _si) set [_gi, -1]; (blockedPlayers select _si) set [_gi, false]; _gi = _gi + 1} foreach (groupMatrix select _si)
-
 ;game has begun after this pause
 ~2
 
-; NOTE: locality of players must be determined after game start on server
-_index = 0
-_groups = groupMatrix select si0
-_groupsAI = []
-_count = count _groups
-? (_count == 0): goto "CheckGroupSide0Empty"
-#CheckGroupSide0
-	_leader = leader (_groups select _index)
-	? ( local _leader && !(player == _leader) ): _groupsAI set [count _groupsAI, group _leader]; [_leader, si0, _index] exec "Server\InitLeaderAI.sqs"
-	? !(local _leader): [group _leader, si0, _index] exec "Server\Loop\DetectPlayerDisconnect.sqs"
-		(scoreMoney select si0) set [_index, 0]
-	_index = _index + 1
-	? (_index < _count): goto "CheckGroupSide0"
-#CheckGroupSide0Empty
-groupAiMatrix set [si0, _groupsAI]
-
-_index = 0
-_groups = groupMatrix select si1
-_groupsAI = []
-_count = count _groups
-? (_count == 0): goto "CheckGroupSide1Empty"
-#CheckGroupSide1
-	_leader = leader (_groups select _index)
-	? ( local _leader && !(player == _leader) ): _groupsAI set [count _groupsAI, group _leader]; [_leader, si1, _index] exec "Server\InitLeaderAI.sqs"
-	? !(local _leader): [group _leader, si1, _index] exec "Server\Loop\DetectPlayerDisconnect.sqs"
-		(scoreMoney select si1) set [_index, 0]
-	_index = _index + 1
-	? (_index < _count): goto "CheckGroupSide1"
-#CheckGroupSide1Empty
-groupAiMatrix set [si1, _groupsAI]
-
-{ call format ["_spec%1exists = if (isNull Spec%1) Then {false} Else {true}, if (_spec%1exists && (local Spec%1) && player != Spec%1) then {deleteVehicle Spec%1}", _x] } forEach [0,1,2,3,4,5,6,7,8,9]
-
-
-;pvDebugVars = true; PublicVariable "pvDebugVars"
-
+; pvDebugVars = true; PublicVariable "pvDebugVars"
+@ Init_TZK_Script_Order
 [] exec "\TZK_Scripts_4_0_4\Server\GenerateStartPositions.sqs"
+[] exec "\TZK_Scripts_4_0_5\Server\Msg\sStartMoney.sqs"
 
-; send AI groups
-_try = 0
-{ _gi = ( groupMatrix select si0 ) find ( _x ); while "_try < 10 && _gi == -1" do {_gi = ( groupMatrix select si0 ) find ( _x );_try = _try + 1}; [si0, _gi] exec "\TZK_Scripts_4_0_4\Server\Info\GroupIsAI.sqs" } foreach (groupAiMatrix select si0)
-_try = 0
-{ _gi = ( groupMatrix select si1 ) find ( _x ); while "_try < 10 && _gi == -1" do {_gi = ( groupMatrix select si1 ) find ( _x );_try = _try + 1}; [si1, _gi] exec "\TZK_Scripts_4_0_4\Server\Info\GroupIsAI.sqs" } foreach (groupAiMatrix select si1)
-
-_si = si0
-? bool_TZK_MF_Mode && !dev && (groupMatrix select _si select 0) in (groupAiMatrix select _si): startMoney set [_si, 57500+10000]
-? bool_TZK_MF_Mode && !dev && count (groupMatrix select _si) == count (groupAiMatrix select _si): startMoney set [_si, (startMoney select _si) * 2], goto "Money0Set"
-
-? !bool_TZK_MF_Mode && !dev && count (groupMatrix select _si) == count (groupAiMatrix select _si): startMoney set [_si, 10*(startMoney select _si)], if ((groupMatrix select (siEnemy select _si) select 0) in (groupAiMatrix select (siEnemy select _si))) Then {startMoney set [_si, 0.5*(startMoney select _si)]}, goto "Money0Set"
-? !bool_TZK_MF_Mode && !dev && (groupMatrix select _si select 0) in (groupAiMatrix select _si): startMoney set [_si, 10*0.5*(startMoney select _si)], startMoneyPlayer set [_si, 14*(startMoneyPlayer select _si)]
-#Money0Set
-_si = si1
-? bool_TZK_MF_Mode && !dev && (groupMatrix select _si select 0) in (groupAiMatrix select _si): startMoney set [_si, 57500+10000]
-? bool_TZK_MF_Mode && !dev && count (groupMatrix select _si) == count (groupAiMatrix select _si): startMoney set [_si, (startMoney select _si) * 2], goto "Money1Set"
-
-? !bool_TZK_MF_Mode && !dev && count (groupMatrix select _si) == count (groupAiMatrix select _si): startMoney set [_si, 10*(startMoney select _si)], if ((groupMatrix select (siEnemy select _si) select 0) in (groupAiMatrix select (siEnemy select _si))) Then {startMoney set [_si, 0.5*(startMoney select _si)]}, goto "Money1Set"
-? !bool_TZK_MF_Mode && !dev && (groupMatrix select _si select 0) in (groupAiMatrix select _si): startMoney set [_si, 10*0.5*(startMoney select _si)], startMoneyPlayer set [_si, 14*(startMoneyPlayer select _si)]
-#Money1Set
-
-[] exec "\TZK_Scripts_4_0_4\Server\SendStartMoney.sqs"
 [si0] exec "\TZK_Scripts_4_0_4\Server\UpdateRespawnAI.sqs"; [si1] exec "\TZK_Scripts_4_0_4\Server\UpdateRespawnAI.sqs"
 
 [] exec "Server\Start\Income.sqs"
@@ -167,8 +50,8 @@ _si = si1
 [] exec "\TZK_Scripts_4_0_4\Server\SendPing.sqs"
 
 [] exec "\TZK_Scripts_4_0_4\Server\DynamicInitializationMarker.sqs"
-if !(bool_TZK_MF_Mode || bool_TZK_Yugo_Mode) Then {[] exec "\TZK_Scripts_4_0_4\Server\DynamicInitializationTrigger.sqs"} Else {[] exec "Extra\DynamicInitializationTrigger.sqs"}
-if bool_TZK_SEMod_Mode Then {[] exec "Extra\DynamicInitializationGroup.sqs"} Else {[] exec "\TZK_Scripts_4_0_4\Server\DynamicInitializationGroup.sqs"}
+[] exec "\TZK_Scripts_4_0_5\Server\DynamicInitializationTrigger.sqs"
+if bool_TZK_SEMod_Mode Then {[] exec "Extra\DynamicInitializationGroup.sqs"} Else {[] exec "\TZK_Scripts_4_0_5\Server\DynamicInitializationGroup.sqs"}
 
 ; after data initialized and before forcemap canceled
 ~2
@@ -188,15 +71,8 @@ call loadFile "\TZK_Scripts_4_0_4\Server\Init\Vote.sqf"
 ; format of Vote_Result elements: [voted value, mass of voter, si, gi]
 ; Vote_Options_Name = []; {Vote_Options_Name set [count Vote_Options_Name, _x select 0]} forEach Vote_Matrix
 
-[] exec "Server\Msg\mVoteReceived.sqs"
+["Server\Msg\hVoteReceived.sqs"] exec "\TZK_Scripts_4_0_5\Server\Msg\mVoteReceived.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\Vote\Mass_Reset.sqs"
 
 estimatedTimeLeft 7200
-
-_sides = [si0, si1]; _i = 0
-#Init_AI_Upg
-_si = _sides select _i
-? count (groupMatrix select _si) == count (groupAiMatrix select _si) && bool_TZK_MF_Mode: {(upgMatrix select _si) set [_x, 2], [_si, _x, 2] exec "\TZK_Scripts_4_0_4\Server\Info\UpgState.sqs"} forEach [upgGunshipRocket, upgLongWeaponRange]
-_i = _i + 1
-? _i < count _sides: goto "Init_AI_Upg"
 ; ================================================================================TZK_4.0.0 Block================================================================================

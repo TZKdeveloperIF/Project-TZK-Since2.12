@@ -25,7 +25,7 @@ _vehicle addEventHandler ["killed", {_this exec "\TZK_Scripts_4_0_4\Common\Event
 ? isNull player: goto "SkipClient"
 ; PLAYER ONLY
 
-[_vehicle, _type, _si] exec "Player\InitVehicleMarker.sqs"
+[_vehicle, _type, _si] exec "\TZK_Scripts_4_0_5\Player\InitVehicleMarker.sqs"
 ? _typeName in [{A10_Tomahawk_xj400}, {Su25_Raduga_xj400}, {A10_Tomahawk_Vanilla_xj400}, {Su25_Raduga_Vanilla_xj400}]: _vehicle say {NuclearMissileReady_xj400}
 
 ; _vehicle addEventHandler ["Fired", {[_this, LimitWeaponRangeFactor] call <function>}]
@@ -41,4 +41,4 @@ _vehicle addEventHandler ["killed", {_this exec "\TZK_Scripts_4_0_4\Common\Event
 ? !isServer: exit
 
 ; SERVER ONLY
-? _type in (typesHeavyTank + typesLightTank + typesHowitzer + typesATAPC + typesAAAPC + typesGunshipOrigin + typesGunshipAT): [_vehicle, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\EventAdd_Vehicle.sqs"
+? _type in (typesHeavyTank + typesLightTank + typesHowitzer + typesATAPC + typesAAAPC + typesGunshipOrigin + typesGunshipAT): [_vehicle, _si, _gi] exec "Server\EventAdd_Vehicle.sqs"

@@ -91,7 +91,7 @@ _posOrdered = getPosASL _vehicle; _distLimit = 300; _hint = "Target is too far f
 		? !(alive _sup): goto "CheckRearm"
 		? time > _timeAbort: _unit groupChat "Cost too much time. Unable to reach support vehicle. Order aborted."; goto "Exit"
 		? (_unit distance _sup) > 10: goto "MoveToSupport"
-	_unit groupChat "Rearming at support vehicle."; [_unit, _sup] exec "\TZK_Scripts_4_0_4\Player\Rearm.sqs"; doStop _unit
+	_unit groupChat "Rearming at support vehicle."; [_unit, _sup] exec "Player\Rearm.sqs"; doStop _unit
 	#WaitRearmComplete
 		~5
 		? call orderCheck: goto "Exit"

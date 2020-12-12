@@ -1,0 +1,33 @@
+
+_index = 0
+_groups = groupMatrix select si0
+_count = count _groups
+? (_count == 0): goto "ClientCheckGroupSide0Empty"
+#ClientCheckGroupSide0
+	_leader = leader (_groups select _index)
+	? (player == _leader): [_leader, si0, _index] exec (_this select 0)
+	_index = _index + 1
+	? (_index < _count): goto "ClientCheckGroupSide0"
+#ClientCheckGroupSide0Empty
+
+_index = 0
+_groups = groupMatrix select si1
+_count = count _groups
+? (_count == 0): goto "ClientCheckGroupSide1Empty"
+#ClientCheckGroupSide1
+	_leader = leader (_groups select _index)
+	? (player == _leader): [_leader, si1, _index] exec (_this select 0)
+	_index = _index + 1
+	? (_index < _count): goto "ClientCheckGroupSide1"
+#ClientCheckGroupSide1Empty
+
+? player == Spec0 : Spec0 exec (_this select 1)
+? player == Spec1 : Spec1 exec (_this select 1)
+? player == Spec2 : Spec2 exec (_this select 1)
+? player == Spec3 : Spec3 exec (_this select 1)
+? player == Spec4 : Spec4 exec (_this select 1)
+? player == Spec5 : Spec5 exec (_this select 1)
+? player == Spec6 : Spec6 exec (_this select 1)
+? player == Spec7 : Spec7 exec (_this select 1)
+? player == Spec8 : Spec8 exec (_this select 1)
+? player == Spec9 : Spec9 exec (_this select 1)

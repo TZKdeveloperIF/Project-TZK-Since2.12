@@ -1,4 +1,4 @@
-{ unitDefs select _x set [udFactoryType, -1] } forEach [_M82A1W, _KSVKE, _quadW, _quadE, _hummerW2, _hummerW3, _brdmE2, _brdmE3, _jetskiW, _jetskiE, _zodiacW, _zodiacE, _boatW2, _boatE2, _vulcanTransp, _bmp2Cannon,  _m1a2sepW, _leo2a6W, _m109W, _m270W, _t90E, _ztz99E, _plz05E, _tos1E,  _irNO_mh6, _irNO_uh60, _uh60WMG2, _c130W, _tigerW, _tigerW2, _c130supportW, _irNO_mi2, _irNO_mi17, _mi17EMG2, _an72E, _an72supportE];
+{ unitDefs select _x set [udFactoryType, -1] } forEach [_M82A1W, _KSVKE, _quadW, _quadE, _hummerW2, _hummerW3, _brdmE2, _brdmE3, _jetskiW, _jetskiE, _zodiacW, _zodiacE, _boatW2, _boatE2, _vulcanTransp, _bmp2Cannon,  _tankHeavyW02, _tankHeavyW03, _m109W, _m270W, _tankHeavyE02, _tankHeavyE03, _plz05E, _tos1E,  _irNO_mh6, _irNO_uh60, _uh60WMG2, _c130W, _tigerW, _tigerW2, _c130supportW, _irNO_mi2, _irNO_mi17, _mi17EMG2, _an72E, _an72supportE];
 
 if !bool_TZK_199_Mode Then
 {
@@ -12,9 +12,11 @@ if !bool_TZK_199_Mode Then
 if bool_TZK_199_Mode Then {call loadFile "Extra\199\UnitTypes_ACWA_Redefine.sqf"};
 
 
-{unitDefs select _x set [udCost, (unitDefs select _x select udCost)*4/5]; unitDefs select _x set [udModel, "M1Abrams"];} forEach [_m1a1W, _m1a1artW,  _m1a1townW];
-{unitDefs select _x set [udCost, (unitDefs select _x select udCost)/2]; unitDefs select _x set [udModel, "T80"]} forEach [_t80E, _t80artE,  _t80townE];
+{unitDefs select _x set [udCost, (unitDefs select _x select udCost)*4/5]; unitDefs select _x set [udModel, "M1Abrams"];} forEach [_tankHeavyW01, _m1a1artW,  _m1a1townW];
+{unitDefs select _x set [udCost, (unitDefs select _x select udCost)/2]; unitDefs select _x set [udModel, "T80"]} forEach [_tankHeavyE01, _t80artE,  _t80townE];
 unitDefs select _t80R set [udModel, "T80Res"];
+unitDefs select _tankLightW01 set [udModel, "M60"]; unitDefs select _tankLightW02 set [udFactoryType, -1]; 
+unitDefs select _tankLightE01 set [udFactoryType, -1]; unitDefs select _tankLightE02 set [udModel, "T72"];
 {unitDefs select _x set [udModel, "Vulcan"]} forEach [_vulcanBaseW, _vulcanBaseW2, _vulcanW, _vulcanW2];
 {unitDefs select _x set [udModel, "ZSU"]} forEach [_shilkaBaseE, _tunguskaBaseE, _shilkaE, _tunguskaE];
 unitDefs select _tunguskaE set [udName, "4xAA"]; unitDefs select _tunguskaE set [udImage, "izsu"];
@@ -39,5 +41,4 @@ unitDefs select _uh60WL set [udModel, "UH60_LGB_Vanilla_xj405"];
 {unitDefs select _x set [udModel, "Su25_xj400"]} forEach [_planeatR, _planeatR2];
 
 
-if false Then {call loadFile "Extra\199\UnitTypes_MFCTI116_TZK_Units.sqf"};
-if bool_TZK_MF_Mode Then {call loadFile "Extra\199\UnitTypes_MFCTI116_Units.sqf"};
+call loadFile "impl\Unit_Vanilla_Redef.sqf"

@@ -7,7 +7,7 @@ _item_Value = _this select 3
 
 @!(mutexVote)
 mutexVote = true
-? time > 2*60*60 && (Vote_Matrix select _item_Index select 0 == "Income Ratio" || Vote_Matrix select _item_Index select 0 == "View Distance"): _logic = "Logic" camCreate [0,0,0]; _logic globalChat "Not allow vote view distance or income ratio after 2 hours."; deleteVehicle _logic, goto "RecordYourVote"
+? time > 2*60*60 && (Vote_ItemNames select _item_Index == "Income Ratio" || Vote_ItemNames select _item_Index == "View Distance"): _logic = "Logic" camCreate [0,0,0]; _logic globalChat "Not allow vote view distance or income ratio after 2 hours."; deleteVehicle _logic, goto "RecordYourVote"
 
 _value = _si + 2*_gi + 2*GroupsNum*_item_Index + 2*GroupsNum*(count Vote_Matrix)*_item_Value
 pvVoteStart0 = _value; publicVariable "pvVoteStart0"

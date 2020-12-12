@@ -1,0 +1,46 @@
+; args : none
+
+_textSP = ["Fully Random", "Random N/S", "West North", "West South"] select fixedStartPos
+? timeLimit == 0 : _textTimeLimit = "None"
+? timeLimit > 0 : _textTimeLimit = format["%1 hours", timeLimit/(60*60)]
+_textPricingMode = ["Normal", "Doubled"] select PricingMode
+; ? single == 1 : _textbases = "Single"
+; ? single == 0 : _textbases = "Multi"
+_timeleft = (timelimit/60) -(time/60)
+_timel = _timeleft %1
+_timeleft = format["%1 min", _timeleft - _timel]
+
+? (restanksx == 1) : _textIncome = "V.LOW RESISTANCE"
+? (restanksx == 2) : _textIncome = "LOW RESISTANCE"
+? (restanksx == 3) : _textIncome = "MEDIUM RESISTANNCE"
+? (restanksx == 4) : _textIncome = "HEAVY RESISTANCE"
+? (restanksx == 5) : _textIncome = "DOOM"
+
+~2
+
+_siEnemy = siEnemy select siPlayer
+_group = (groupMatrix select _siEnemy) select 0
+_textEnemyCo = (if (count (groupMatrix select _siEnemy) > 0) Then { [name leader _group,"AI"] select (_group in (groupAiMatrix select _siEnemy)) } Else {"None"})
+
+_group = (groupMatrix select siPlayer) select 0
+_textCo = [name leader _group,"AI"] select (_group in (groupAiMatrix select siPlayer))
+
+_strMissionName = "STR_MISSION_NAME"; if bool_TZK_MF_Mode Then {_strMissionName = "STR_MISSION_KaoS_NAME"}; if bool_TZK_Yugo_Mode Then {_strMissionName = "STR_MISSION_TotalYugoWar_NAME"}; if bool_TZK_SEMod_Mode Then {_strMissionName = "STR_MISSION_SE_NAME"};
+
+_info = format["Don`t cry just play or disconnect\n\nGame Style:\n\nTime Left: %1\nGroup size: %2\nWeather: %10\nStart Time: %9\nView distance: %3\nTime Limit: %5\nGame Mode: %6\n\nOur Commander is:\n%7\n\nEnemy Commander is:\n%8\n\nMission:\n%4", _timeleft, maxGroupSize, viewDistance, localize _strMissionName, _textTimeLimit, _textIncome, _textCo, _textEnemyCo, ["Day","Dusk","Night","Dawn", "Boost"] select ZeroTime, ["Sunny", "Cloudy", "Overcast","Rainy","Stromy","Misty","Foggy","Random"] select WeatherChosen]
+
+;_info = format["GOOD LUCK ALL \nStart positions  %1\nGroup size  %2\nView distance  %3\n%4", _textSP, maxGroupSize, viewDistance, localize _strMissionName]
+
+;titleText [_info, "PLAIN DOWN", 2]
+hint _info
+
+_info = "Radio System available since TZK_2.12. You're free to press 0-0 to call channels in different vehicles. Press 0-0-2 to open the Setting Interface."
+? bool_TZK_199_Mode: _info = "Radio System available. You're free to press 0-0 to call channels in different vehicles. Press 0-0-2 to open the Setting Interface. However radio channels relying on triggers/sensors, which in 1.96 OFP or 1.99 ACWA is server-local and GLOBAL-effect. You must click the button in right-upper corner of Options dialog to turn ON the radio channels, and turn it OFF when you think necessary."
+; ? ZeroTime == 4: _info = _info + " Time boost will start when 00:01:00. Prepare for your equipment please."
+
+@ (time > 5)
+_logic = "Logic" camCreate [0,0,0]; _logic globalChat _info; deleteVehicle _logic
+; _info call funcSideMsg
+
+_credits = "WEST/EAST Players can ""Vote"" using ""Vote"" Button in the left of ""Options"" dialog.\nIn the first 5 minutes only commanders' votes are available."
+TitleText[_credits, "Plain"]

@@ -1,0 +1,161 @@
+; args: [unit, si, gi, [wp, wp, dist]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+_posPickup = ((wpCO select _si) select (_params select 0))
+_posEject = ((wpCO select _si) select (_params select 1))
+_distEject = 200*(1+(_params select 2))
+
+_order = orderMatrix select _si select _gi; _idOrder = _order select 0; _script = (orderDefs select (_order select 1)) select 2
+_waitloop = 0
+
+#WaitReady
+~5
+? _idOrder != _order select 0: exit
+? _unit call busyCheck : goto "WaitReady"
+
+? !(alive _unit) : exit
+
+_sleep = 30
+
+_timeCheckSupport = time + 30 + random 60
+
+? _unit == vehicle _unit || _unit != driver vehicle _unit : goto "Patrol"
+_type = (vehicle _unit) call funcGetUnitTypeFromObject
+? _type == -1 : goto "Patrol"
+? !(_type in (airTransport select _si)) : goto "Patrol"
+
+#TransportDuty
+_transp = vehicle _unit
+_unit disableAI "TARGET"
+; _unit disableAI "AUTOTARGET"
+
+_posPickup set [2, 200]
+_posEject set [2, 200]
+
+_distToPickup = [getPos _transp, _posPickup] call funcDistH
+_crew = _transp call funcGetCargoNum
+? _distToPickup > 200 && _crew > 2 : goto "MoveEject"
+? _distToPickup < 200 && _crew > 10 : goto "MoveOut"
+? _distToPickup < 200 && ((getPos _transp) select 2) < 5 : _posMove = [_posPickup, 50, 50] call funcGetRandomPos; goto "WaitForCargo"
+? _distToPickup < 200 && ((getPos _transp) select 2) > 5 : _posMove = [_posPickup, 50, 50] call funcGetRandomPos; goto "PrepareLand"
+
+#MovePickup
+_transp flyInHeight (400 + random 100)
+[_transp] exec "Common\SendTransportTurnOn.sqs"
+_posMove = [_posPickup, 50, 50] call funcGetRandomPos
+[_unit, _posMove] call funcMoveAI
+_timeRepeat = time + 60
+#MovePickup_Check
+  ~10
+	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
+	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "MovePickup_Check"}
+  ? !(alive _unit) : exit
+  ? _idOrder != _order select 0 : exit
+  ? !(alive _transp) || _transp != (vehicle _unit) : goto "Patrol"
+  ? time > _timeRepeat : [_unit, _posMove] call funcMoveAI; _timeRepeat = time + 60
+  ? ([_posMove, getPos _transp] call funcDistH) > 200 : goto "MovePickup_Check"
+
+[_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"
+#WaitSupportDone
+  ~5
+	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "WaitSupportDone"}
+  ? !(alive _unit) : exit
+  ? (damage _transp) < 0.1 : _unit call busyClear
+  ? _unit call busyCheck : goto "WaitSupportDone"
+  ? _idOrder != _order select 0 : exit
+  ? !(alive _transp) || _transp != (vehicle _unit) : goto "Patrol"
+
+#PrepareLand
+_transp flyInHeight (400 + random 100)
+#PrepareLand_Check
+  [_unit, _posMove] call funcMoveAI
+  ~5
+	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "PrepareLand_Check"}
+  ? !(alive _unit) : exit
+  ? _idOrder != _order select 0 : exit
+  ? !(alive _transp) || _transp != (vehicle _unit) : goto "Patrol"
+  ? ([_posMove, getPos _transp] call funcDistH) > 200 || (speed _transp) > 20 : goto "PrepareLand_Check"
+
+#Land
+_transp flyInHeight 50
+[_unit, _posMove] call funcMoveAI
+_timeRetry = time + 60
+#Land_Check
+  ~5
+	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Land_Check"}
+  ? !(alive _unit) : exit
+  ? _idOrder != _order select 0 : exit
+  ? !(alive _transp) || _transp != (vehicle _unit) : goto "Patrol"
+  ? time > _timeRetry : goto "PrepareLand"
+  ? !(unitReady _unit) && !( ([getPos _transp, _posMove] call funcDistH) < 50 && (speed _transp) < 20 ) : goto "Land_Check"
+
+doStop _unit
+_transp land "LAND"
+_timeRetry = time + 60
+#Landed_Check
+  ~5
+	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Landed_Check"}
+  ? !(alive _unit) : exit
+  ? _idOrder != _order select 0 : exit
+  ? !(alive _transp) || _transp != (vehicle _unit) : goto "Patrol"
+  ? time > _timeRetry : goto "PrepareLand"
+  ? ((getPos _transp) select 2) > 5 : goto "Landed_Check"
+
+#WaitForCargo
+  _transp engineOn false
+  [_transp] exec "Common\SendTransportTurnOn.sqs"
+  ~30
+	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "WaitForCargo"}
+	
+  _waitloop = _waitloop + 1; if ( _waitloop > 5 ) then { goto "MoveOut" }
+  ? !(alive _unit) : exit
+  ? _idOrder != _order select 0 : exit
+  ? !(alive _transp) || _transp != (vehicle _unit) : goto "Patrol"
+  ? _transp call funcGetCargoNum > (_transp call funcGetTranspVol) - 2 : goto "MoveOut"
+  ? ((getPos _transp) select 2) > 5 : goto "PrepareLand"
+  ? _transp call funcGetCargoNum < 4 : goto "WaitForCargo"
+  ? _transp call funcGetCargoNum > _crew : _crew = _transp call funcGetCargoNum; goto "WaitForCargo"
+
+#MoveOut
+_waitloop = 0
+_transp flyInHeight 40
+_posMove = [_posEject, 50, 50] call funcGetRandomPos
+[_unit, _posMove] call funcMoveAI
+~30
+? !(alive _unit) : exit
+? _idOrder != _order select 0 : exit
+? !(alive _transp) || _transp != (vehicle _unit) : goto "Patrol"
+
+#MoveEject
+[_transp] exec "Common\SendTransportTurnOff.sqs"
+_transp flyInHeight (400 + random 100)
+_posMove = [_posEject, 50, 50] call funcGetRandomPos
+[_unit, _posMove] call funcMoveAI
+_timeRepeat = time + 60
+#MoveEject_Check
+  ~5
+	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "MoveEject_Check"}
+  
+  ? !(alive _unit) : exit
+  ? _idOrder != _order select 0 : exit
+  ? !(alive _transp) || _transp != (vehicle _unit) : goto "Patrol"
+  ? time > _timeRepeat : [_unit, _posMove] call funcMoveAI; _timeRepeat = time + 60
+  ? ([_posMove, getPos _transp] call funcDistH) > _distEject : goto "MoveEject_Check"
+
+#EjectCargo
+[_transp, _si] exec "\TZK_Scripts_4_0_4\Common\EjectAllCargo.sqs"
+~10
+? !(alive _unit) : exit
+? _idOrder != _order select 0 : exit
+? !(alive _transp) || _transp != (vehicle _unit) : goto "Patrol"
+goto "MovePickup"
+
+
+#Patrol
+  ? _idOrder != _order select 0 : exit
+  _this exec (orderDefs select orderTransportDuty select 2)
+  exit
+
