@@ -1,0 +1,41 @@
+;LAST UPDATE 2006.04.21 YAG
+
+;Based script : Written by DKM-Rastavovich rastavovich@dkm-mod.mkdi.net http://www.dkm-mod.mkdi.net	
+
+_vehicle=_this select 0
+?(driver _vehicle != player): exit
+
+?(format ["%1",BOH_CurrentMap] == "scalar bool array string 0xfcffffef"): BOH_CurrentMap = ""; [] exec "\BOHCONFIG\BOHISLAND_scripts\BOH_detectIsland.sqs"
+@(BOH_CurrentMap != "")
+
+#mapdetect
+; Ev,Ma,Ko,Di,No
+? BOH_CurrentMap == "EVERON"      : _vehicle setObjectTexture [0,"\BOHJSDF2\MAP\everon.paa"];  goto "check"
+? BOH_CurrentMap == "MALDEN"      : _vehicle setObjectTexture [1,"\BOHJSDF2\MAP\malden.paa"];  goto "check"
+? BOH_CurrentMap == "KOLGUJEV"    : _vehicle setObjectTexture [2,"\BOHJSDF2\MAP\kolguyev.paa"];goto "check"
+? BOH_CurrentMap == "DESERTISLAND": _vehicle setObjectTexture [3,"\BOHJSDF2\MAP\desert.paa"];  goto "check"
+? BOH_CurrentMap == "NOGOVA"      : _vehicle setObjectTexture [4,"\BOHJSDF2\MAP\nogova.paa"];  goto "check"
+? BOH_CurrentMap == "BOH_KANON"   : _vehicle setObjectTexture [5,"\BOHJSDF2\MAP\init.paa"];    goto "check"
+_vehicle setObjectTexture [5,"\BOHJSDF2\MAP\init.paa"]
+
+#check
+
+_r=0
+
+#loop
+
+_pos=getpos _vehicle
+_xpos=_pos select 0
+_ypos=_pos select 1
+
+? !(isEngineOn _vehicle) || !(alive _vehicle) : exit
+
+_vehicle animate ["map_x_desp", _xpos/12800]
+_vehicle animate ["map_y_desp", _ypos/12800]
+
+~1
+
+_r=_r+1
+? _r>=20 : goto "mapdetect"
+
+goto "loop"

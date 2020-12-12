@@ -1,0 +1,21 @@
+; args: [posShell, velShell, name, vehicle]
+
+_posShell = _this select 0; _velShell = _this select 1; _name = _this select 2; _vehicle = _this select 3
+_bomb = ["FAE220_Sound_xj400", "M26_Sound_xj400"] select (_name == "M26_CoC_xj400")
+_dum = createShell [_bomb, _posShell, [0,0,-10], _vehicle, objNull]
+
+_dx = (_posShell select 0) 
+_dy = (_posShell select 1) 
+_dz = (_posShell select 2) + 3 
+
+_vx = (_velShell select 0) / 2
+_vy = (_velShell select 1) / 2
+_vz = (_velShell select 2) / 2
+
+_splash = [ _dx, _dy, _dz - _vz ]
+_splash2 = [ _dx , _dy , _dz - _vz + 5  ]
+_splash3 = [ _dx + (_vx / 2) , _dy + (_vy / 2), 1 ]
+_vsplash = [_vx / 2 , _vy / 2 , _vz / 2]
+
+_bomb = ["FAE220_SubBomb_Center_xj400", "M26_SubBomb_Center_xj400"] select (_name == "M26_CoC_xj400")
+_dum = createShell [_bomb, _posShell, [0,0,-10], _vehicle, objNull]

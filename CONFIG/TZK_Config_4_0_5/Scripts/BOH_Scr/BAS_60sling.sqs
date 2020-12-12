@@ -1,0 +1,172 @@
+; BAS Cargo Sling - adapted by TJ 2003
+; customized for BOHUH1J by high_tex
+
+_helo = _this select 0
+
+?(format ["%1", BOH_disableCargoLifting] == "scalar bool array string 0xfcffffef"): BOH_disableCargoLifting = false
+?(BOH_disableCargoLifting): Exit
+
+?!(driver _helo == player):exit
+
+
+#check1
+
+? !isEngineOn  _helo : exit
+_warned = 0
+_action = 0
+
+_heavycargo1 = nearestObject [_helo,"BOHType73Jeep"]
+_heavycargo2 = nearestObject [_helo,"BOHType73JeepM249"]
+_heavycargo3 = nearestObject [_helo,"BOHType73JeepM2"]
+_heavycargo4 = nearestObject [_helo,"BOHLAV"]
+_heavycargo5 = nearestObject [_helo,"BOHLAVMINIMI"]
+_heavycargo6 = nearestObject [_helo,"BOHLAVa"]
+_heavycargo7 = nearestObject [_helo,"BOHLAVMINIMIa"]
+_heavycargo8 = nearestObject [_helo,"BOHLAVi"]
+_heavycargo9 = nearestObject [_helo,"BOHLAVMINIMIi"]
+_heavycargo10 = nearestObject [_helo,"BOHHMV"]
+_heavycargo11 = nearestObject [_helo,"BOHHMVOP"]
+_heavycargo12 = nearestObject [_helo,"BOHHMVM249"]
+_heavycargo13 = nearestObject [_helo,"BOHHMVi"]
+_heavycargo14 = nearestObject [_helo,"BOHHMVOPi"]
+_heavycargo15 = nearestObject [_helo,"BOHHMVM249i"]
+
+_distance1 = _helo distance _heavycargo1
+_distance2 = _helo distance _heavycargo2
+_distance3 = _helo distance _heavycargo3
+_distance4 = _helo distance _heavycargo4
+_distance5 = _helo distance _heavycargo5
+_distance6 = _helo distance _heavycargo6
+_distance7 = _helo distance _heavycargo7
+_distance8 = _helo distance _heavycargo8
+_distance9 = _helo distance _heavycargo9
+_distance10 = _helo distance _heavycargo10
+_distance11 = _helo distance _heavycargo11
+_distance12 = _helo distance _heavycargo12
+_distance13 = _helo distance _heavycargo13
+_distance14 = _helo distance _heavycargo14
+_distance15 = _helo distance _heavycargo15
+
+? (format ["%1",_distance1] == "scalar bool array string 0xfcffffef"): _distance1 = 100
+? (format ["%1",_distance2] == "scalar bool array string 0xfcffffef"): _distance2 = 100
+? (format ["%1",_distance3] == "scalar bool array string 0xfcffffef"): _distance3 = 100
+? (format ["%1",_distance4] == "scalar bool array string 0xfcffffef"): _distance4 = 100
+? (format ["%1",_distance5] == "scalar bool array string 0xfcffffef"): _distance5 = 100
+? (format ["%1",_distance6] == "scalar bool array string 0xfcffffef"): _distance6 = 100
+? (format ["%1",_distance7] == "scalar bool array string 0xfcffffef"): _distance7 = 100
+? (format ["%1",_distance8] == "scalar bool array string 0xfcffffef"): _distance8 = 100
+? (format ["%1",_distance9] == "scalar bool array string 0xfcffffef"): _distance9 = 100
+? (format ["%1",_distance10] == "scalar bool array string 0xfcffffef"): _distance10 = 100
+? (format ["%1",_distance11] == "scalar bool array string 0xfcffffef"): _distance11 = 100
+? (format ["%1",_distance12] == "scalar bool array string 0xfcffffef"): _distance12 = 100
+? (format ["%1",_distance13] == "scalar bool array string 0xfcffffef"): _distance13 = 100
+? (format ["%1",_distance14] == "scalar bool array string 0xfcffffef"): _distance14 = 100
+? (format ["%1",_distance15] == "scalar bool array string 0xfcffffef"): _distance15 = 100
+
+? ((_distance1 < _distance2) 	and (_distance1 < _distance3) 	and (_distance1 < _distance4) 	and (_distance1 < _distance5) 	and (_distance1 < _distance6) 	and (_distance1 < _distance7) 	and (_distance1 < _distance8) 	and (_distance1 < _distance9) 	and (_distance1 < _distance10) 	and (_distance1 < _distance11) 	and (_distance1 < _distance12)	and (_distance1 < _distance13)	and (_distance1 < _distance14) 	and (_distance1 < _distance15))	: _heavycargo = _heavycargo1
+? ((_distance2 < _distance1) 	and (_distance2 < _distance3) 	and (_distance2 < _distance4) 	and (_distance2 < _distance5) 	and (_distance2 < _distance6) 	and (_distance2 < _distance7) 	and (_distance2 < _distance8) 	and (_distance2 < _distance9) 	and (_distance2 < _distance10) 	and (_distance2 < _distance11) 	and (_distance2 < _distance12)	and (_distance2 < _distance13)	and (_distance2 < _distance14) 	and (_distance2 < _distance15))	: _heavycargo = _heavycargo2
+? ((_distance3 < _distance1) 	and (_distance3 < _distance2) 	and (_distance3 < _distance4) 	and (_distance3 < _distance5) 	and (_distance3 < _distance6) 	and (_distance3 < _distance7) 	and (_distance3 < _distance8) 	and (_distance3 < _distance9) 	and (_distance3 < _distance10) 	and (_distance3 < _distance11) 	and (_distance3 < _distance12)	and (_distance3 < _distance13)	and (_distance3 < _distance14) 	and (_distance3 < _distance15))	: _heavycargo = _heavycargo3
+? ((_distance4 < _distance1) 	and (_distance4 < _distance2) 	and (_distance4 < _distance3) 	and (_distance4 < _distance5) 	and (_distance4 < _distance6) 	and (_distance4 < _distance7) 	and (_distance4 < _distance8) 	and (_distance4 < _distance9) 	and (_distance4 < _distance10) 	and (_distance4 < _distance11) 	and (_distance4 < _distance12)	and (_distance4 < _distance13)	and (_distance4 < _distance14) 	and (_distance4 < _distance15))	: _heavycargo = _heavycargo4
+? ((_distance5 < _distance1) 	and (_distance5 < _distance2) 	and (_distance5 < _distance3) 	and (_distance5 < _distance4) 	and (_distance5 < _distance6) 	and (_distance5 < _distance7) 	and (_distance5 < _distance8) 	and (_distance5 < _distance9) 	and (_distance5 < _distance10) 	and (_distance5 < _distance11) 	and (_distance5 < _distance12)	and (_distance5 < _distance13)	and (_distance5 < _distance14) 	and (_distance5 < _distance15))	: _heavycargo = _heavycargo5
+? ((_distance6 < _distance1) 	and (_distance6 < _distance2) 	and (_distance6 < _distance3) 	and (_distance6 < _distance4) 	and (_distance6 < _distance5) 	and (_distance6 < _distance7) 	and (_distance6 < _distance8) 	and (_distance6 < _distance9) 	and (_distance6 < _distance10) 	and (_distance6 < _distance11) 	and (_distance6 < _distance12)	and (_distance6 < _distance13)	and (_distance6 < _distance14) 	and (_distance6 < _distance15))	: _heavycargo = _heavycargo6
+? ((_distance7 < _distance1) 	and (_distance7 < _distance2) 	and (_distance7 < _distance3) 	and (_distance7 < _distance4) 	and (_distance7 < _distance5) 	and (_distance7 < _distance6) 	and (_distance7 < _distance8) 	and (_distance7 < _distance9) 	and (_distance7 < _distance10) 	and (_distance7 < _distance11) 	and (_distance7 < _distance12)	and (_distance7 < _distance13)	and (_distance7 < _distance14) 	and (_distance7 < _distance15))	: _heavycargo = _heavycargo7
+? ((_distance8 < _distance1) 	and (_distance8 < _distance2) 	and (_distance8 < _distance3) 	and (_distance8 < _distance4) 	and (_distance8 < _distance5) 	and (_distance8 < _distance6) 	and (_distance8 < _distance7) 	and (_distance8 < _distance9) 	and (_distance8 < _distance10) 	and (_distance8 < _distance11)	and (_distance8 < _distance12)	and (_distance8 < _distance13)	and (_distance8 < _distance14) 	and (_distance8 < _distance15))	: _heavycargo = _heavycargo8
+? ((_distance9 < _distance1) 	and (_distance9 < _distance2) 	and (_distance9 < _distance3) 	and (_distance9 < _distance4) 	and (_distance9 < _distance5) 	and (_distance9 < _distance6) 	and (_distance9 < _distance7) 	and (_distance9 < _distance8) 	and (_distance9 < _distance10) 	and (_distance9 < _distance11) 	and (_distance9 < _distance12)	and (_distance9 < _distance13)	and (_distance9 < _distance14) 	and (_distance9 < _distance15))	: _heavycargo = _heavycargo9
+? ((_distance10 < _distance1) 	and (_distance10 < _distance2) 	and (_distance10 < _distance3) 	and (_distance10 < _distance4) 	and (_distance10 < _distance5) 	and (_distance10 < _distance6) 	and (_distance10 < _distance7) 	and (_distance10 < _distance8) 	and (_distance10 < _distance9) 	and (_distance10 < _distance11)	and (_distance10 < _distance12)	and (_distance10 < _distance13)	and (_distance10 < _distance14)	and (_distance10 < _distance15)): _heavycargo = _heavycargo10
+? ((_distance11 < _distance1) 	and (_distance11 < _distance2) 	and (_distance11 < _distance3) 	and (_distance11 < _distance4) 	and (_distance11 < _distance5) 	and (_distance11 < _distance6) 	and (_distance11 < _distance7) 	and (_distance11 < _distance8) 	and (_distance11 < _distance9) 	and (_distance11 < _distance10)	and (_distance11 < _distance12)	and (_distance11 < _distance13)	and (_distance11 < _distance14)	and (_distance11 < _distance15)): _heavycargo = _heavycargo11
+? ((_distance12 < _distance1) 	and (_distance12 < _distance2) 	and (_distance12 < _distance3) 	and (_distance12 < _distance4) 	and (_distance12 < _distance5) 	and (_distance12 < _distance6) 	and (_distance12 < _distance7) 	and (_distance12 < _distance8) 	and (_distance12 < _distance9) 	and (_distance12 < _distance10)	and (_distance12 < _distance11)	and (_distance12 < _distance13)	and (_distance12 < _distance14)	and (_distance12 < _distance15)): _heavycargo = _heavycargo12
+? ((_distance13 < _distance1) 	and (_distance13 < _distance2) 	and (_distance13 < _distance3) 	and (_distance13 < _distance4) 	and (_distance13 < _distance5) 	and (_distance13 < _distance6) 	and (_distance13 < _distance7) 	and (_distance13 < _distance8) 	and (_distance13 < _distance9) 	and (_distance13 < _distance10)	and (_distance13 < _distance11)	and (_distance13 < _distance12)	and (_distance13 < _distance14)	and (_distance13 < _distance15)): _heavycargo = _heavycargo13
+? ((_distance14 < _distance1) 	and (_distance14 < _distance2) 	and (_distance14 < _distance3) 	and (_distance14 < _distance4) 	and (_distance14 < _distance5) 	and (_distance14 < _distance6) 	and (_distance14 < _distance7) 	and (_distance14 < _distance8) 	and (_distance14 < _distance9) 	and (_distance14 < _distance10)	and (_distance14 < _distance11)	and (_distance14 < _distance12)	and (_distance14 < _distance13)	and (_distance14 < _distance15)): _heavycargo = _heavycargo14
+? ((_distance15 < _distance1) 	and (_distance15 < _distance2) 	and (_distance15 < _distance3) 	and (_distance15 < _distance4) 	and (_distance15 < _distance5) 	and (_distance15 < _distance6) 	and (_distance15 < _distance7) 	and (_distance15 < _distance8) 	and (_distance15 < _distance9) 	and (_distance15 < _distance10)	and (_distance15 < _distance11)	and (_distance15 < _distance12)	and (_distance15 < _distance13)	and (_distance15 < _distance14)): _heavycargo = _heavycargo15
+
+? (getpos  _helo select 2) < 20 && (getpos _helo select 2)>3 && speed  _helo < 10 && _heavycargo distance  _helo < 15 : goto "liftoption"
+
+~8
+goto "check1"
+
+#liftoption
+BOH_UH1J_Liftcargo = 1
+
+?! (local _heavycargo):goto "nonlocal"
+
+_canlift =   _helo addaction [format  ["Attach Jeep"], "\TZK_Config_4_0_5\Scripts\BOH_Scr\liftcargo.sqs"]
+
+#lifting
+? _heavycargo distance _helo > 12 : _helo removeaction _canlift; goto "check1"
+? BOH_UH1J_w == 1 : goto "next"
+~1
+goto "lifting"
+
+#next
+
+Hint format ["%1,\n120Km/h Speed Limit\nWhilst Transporting\nCargo.",name driver  _helo]
+ _helo removeaction _canlift
+;_drop = driver  _helo addaction [format ["Unload Jeep"], "\TZK_Config_4_0_5\Scripts\BOH_Scr\dropcargo.sqs"];_action = 1
+
+#Grabing
+_carry = (getpos  _helo select 2) -6
+? _carry <0:_carry = 0
+_heavycargo setpos [(getpos  _helo select 0), (getpos  _helo select 1),_carry]
+
+
+_rope = "BOH_UH1JCargoRope" createvehicle [0,0,0]
+
+#lifted
+
+~0.001
+;set the position
+
+? (getpos _helo select 2)>6.1:_heavycargo setpos [getpos _helo select 0, getpos _helo select 1, (getpos _helo select 2) - 6]
+
+? (getpos _helo select 2)<=6.1:_heavycargo setpos [getpos _helo select 0, getpos _helo select 1, 0]
+
+
+? (getpos _helo select 2)>6.1:_rope setpos [getpos _heavycargo select 0, getpos _heavycargo select 1, (getpos _heavycargo select 2) + 3.12]
+
+? (getpos _helo select 2)<=6.1:_rope setpos [getpos _heavycargo select 0, getpos _heavycargo select 1, (getpos _helo select 2) -2.5]
+#rope
+_heavycargo setDir (getDir  _helo)
+_rope setDir (getDir  _helo)
+
+? (speed  _helo) > 15 || (getpos _heavycargo select 2) >=2.5:  _helo removeaction _drop; _action= 0
+
+? (speed  _helo) < 15 && (getpos _heavycargo select 2) < 2.5 && (BOH_UH1J_w == 1) &&  _action == 0 && (getdammage  _helo) <0.9: _drop =  _helo addaction [format ["Unload Jeep"], "\TZK_Config_4_0_5\Scripts\BOH_Scr\dropcargo.sqs"];_action = 1
+
+?! (alive _helo) : _helo removeaction _drop; _action= 0;exit
+
+? abs(speed _helo) >100 && _warned==0: Hint format ["W A R N I N G !!!\n\nSpeed Limit\n       120km/h. \n\n%1\nWATCH YOUR SPEED",name driver  _helo]; _warned = 1
+
+? abs(speed  _helo) > 120  && _warned == 1: Hint format ["W A R N I N G !!!\n\nSpeed Limit Exceeded.\n\n  %1\nREDUCE SPEED NOW,\nCargo Sling at\nSnapping Tension!",name driver  _helo]; _warned = 2
+
+? abs(speed  _helo) > 140  && _warned == 2: Hint format ["W A R N I N G !!!\n\nExcessive Speed.\n\n%1\nYou have snapped\nThe cargo sling.\n\n\nCargo lost.",name driver  _helo]; BOH_UH1J_Liftcargo  = 0;BOH_UH1J_w = 0;goto "blown"
+
+? BOH_UH1J_Liftcargo == 0 || BOH_UH1J_w == 0:goto "nip"
+
+? BOH_UH1J_Liftcargo == 1 : goto "lifted"
+
+#nip
+@BOH_UH1J_Liftcargo  == 0
+_heavycargo setvelocity [(velocity  _helo select 0), (velocity  _helo select 1), (velocity driver  _helo select 2)]
+deletevehicle _rope
+ _helo removeaction _drop
+~5
+goto "check1"
+
+#nonlocal
+
+Hint "The Vehicle You Are\nAttempting To Lift\nIs NOT Local To Your\nHelicopter.\nTry Mounting An AI\nTeam Member In It.\n\nWinch Aborted."
+~10
+goto "check1"
+
+#blown
+_heavycargo setvelocity [(velocity  _helo select 0), (velocity  _helo select 1), (velocity driver _helo select 2)]
+deletevehicle _rope
+_helo removeaction _drop
+
+
+?(!alive _heavycargo): goto "check1"
+@ (getpos _heavycargo select 2)<1
+_heavycargo setdammage 4
+;[_heavycargo] exec "\TZK_Config_4_0_5\Scripts\BOH_Scr\bas_mpfire.sqs"
+
+goto "check1"

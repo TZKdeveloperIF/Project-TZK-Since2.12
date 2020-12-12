@@ -1,0 +1,35 @@
+_m2 = _this select 0
+
+
+_m2 animate ["barrel",1]
+~0.05
+_m2 animate ["barrel",0]
+
+_dir = getdir _m2
+_posx = getpos _m2 select 0
+_posy = getpos _m2 select 1
+_posz = getpos _m2 select 2
+
+_ShapeName = "\BOHJSDF1\cal\BOH12_7c"
+
+_errx = -(cos _dir) * -0.1
+_erry = (sin _dir) * -0.1
+
+_Position = [_posx,_posy+0.45,_posz+1.45]
+
+_clvelx = ((cos _dir) * 0)
+_clvely = (-(sin _dir) * 0)
+_clvelz = (random -0.5) - 1
+_MoveVelocity = [_clvelx,_clvely,_clvelz]
+
+drop [_ShapeName,"","SpaceObject",1,6,_Position,_MoveVelocity,0.5,2.5,1,0,[1],[[1,1,1,1]],[0],1.3,1.5,"","","_m2"]
+
+_ShapeNameC = "\BOHJSDF1\cal\clink"
+_PositionC = [_posx+0.05,_posy+0.4,_posz+1.45]
+_clvelx = ((cos _dir) * 0.8)
+_clvely = (-(sin _dir) * 0.8)
+_clvelz = (random -0.5) - 1
+_MoveVelocity = [((cos _dir) * 0.8),(-(sin _dir) * 0.8),(random -0.5) - 1]
+drop [_ShapeNameC,"","SpaceObject",1,6,_PositionC,_MoveVelocity,0.5,2.5,1,0,[2],[[1,1,1,1]],[0],1.3,1.5,"","","_m2"]
+
+exit

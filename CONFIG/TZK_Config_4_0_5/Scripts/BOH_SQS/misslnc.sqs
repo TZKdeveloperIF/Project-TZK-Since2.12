@@ -1,0 +1,81 @@
+
+_wanzer = _this select 0
+
+
+_ShapeName = "cl_basic"
+_AnimationName = ""
+_Type = "Billboard"
+_TimerPeriod = 1
+_LifeTime = 3.0
+_Position = [0,0,0]
+_MoveVelocity = [0,0,0]
+_RotationVelocity = 1.0
+_Weight = 1.0
+_Volume = 0.8
+_Rubbing = 0.0
+_Size = [2.0,5.0,9.0,15.0]
+_Color = [[0.75,0.75,0.75,0.8],[0.75,0.75,0.75,0.6],[0.75,0.75,0.75,0.4],[0.75,0.75,0.75,0.1]]
+_AnimationPhase = [0]
+_RandomDirectionPeriod = 0.1
+_RandomDirectionIntensity = 0.1
+_OnTimer = ""
+_BeforeDestroy = ""
+_Object = "_wanzer"
+
+
+_cnt = 0
+
+
+_clspd = 10.0
+
+
+_cldsp = 2.0 
+
+
+_ammo = nearestObject [_wanzer,"BOHHellfire2W"]
+
+
+_dir = getdir _ammo
+
+
+#bst
+
+
+_posx = getpos _wanzer select 0
+
+_posy = getpos _wanzer select 1
+
+_posz = getpos _wanzer select 2
+
+
+_errx = -(cos _dir) * -2.4
+_erry = (sin _dir) * -2.4
+
+
+_Position = [_posx + _errx,_posy + _erry,_posz + 6]
+
+
+_clvelx = (-(sin _dir) * (_clspd + (random (_clspd / 1.5))))
+_clvely = (-(cos _dir) * (_clspd + (random (_clspd / 1.5))))
+_MoveVelocity = [_clvelx + (random _cldsp) - (_cldsp / 2),_clvely + (random _cldsp) - (_cldsp / 2),(random _cldsp) - (_cldsp / 2)]
+drop [_ShapeName,_AnimationName,_Type,_TimerPeriod,_LifeTime,_Position,_MoveVelocity,_RotationVelocity,_Weight,_Volume,_Rubbing,_Size,_Color,_AnimationPhase,_RandomDirectionPeriod,_RandomDirectionIntensity,_OnTimer,_BeforeDestroy,_Object]
+
+_clvelx = (-(sin _dir) * (_clspd + (random (_clspd / 1.5))))
+_clvely = (-(cos _dir) * (_clspd + (random (_clspd / 1.5))))
+_MoveVelocity = [_clvelx + (random _cldsp) - (_cldsp / 2),_clvely + (random _cldsp) - (_cldsp / 2),(random _cldsp) - (_cldsp / 2)]
+drop [_ShapeName,_AnimationName,_Type,_TimerPeriod,_LifeTime,_Position,_MoveVelocity,_RotationVelocity,_Weight,_Volume,_Rubbing,_Size,_Color,_AnimationPhase,_RandomDirectionPeriod,_RandomDirectionIntensity,_OnTimer,_BeforeDestroy,_Object]
+
+
+~0.05
+
+
+_cnt = _cnt + 1
+
+
+?(_cnt > 5) : goto "misschk"
+
+
+goto "bst"
+
+#misschk
+exit

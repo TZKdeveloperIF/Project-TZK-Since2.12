@@ -1,0 +1,22 @@
+; args: [vehicle, name]
+_vehicle = _this select 0
+_name = _this select 1
+
+_path = "\TZK_Texture_4_0_0\BWMOD\Tiger\"; _postfix = ""; _excludeList = []
+? _name == "D": _path = "\TZK_Texture_4_0_4\Tiger\D\"
+? _name == "G": _path = "\TZK_Texture_4_0_0\BWMOD\Tiger\", _excludeList = ["tex_seite.pac"]
+? _name == "W": _path = "\TZK_Texture_4_0_4\Tiger\W\"
+
+[_vehicle, _path, _postfix, _excludeList] call loadFile "\TZK_Objects\Scripts\texture\stdSetObjTex.sqf"
+
+; Special design for tiger.
+_array = typeOf _vehicle GetVehicleParamArray "hiddenSelections"
+_indexT = _array find "tzk_tex_99"
+_indexP = _array find "pars3"
+_indexH = _array find "hot3"
+
+? _indexT != -1 && _indexP != -1 && _indexT != -1 && (_indexP == _indexT + 1 || _indexH == _indexT + 1): _vehicle setObjectTexture [ [_indexP, _indexH] select (_indexH > _indexP), _path + "wp\waffen.pac"]
+
+? count _excludeList == 0: exit
+_array = typeOf _vehicle GetVehicleParamArray "hiddenSelections"
+{_tex = substr [_x, 4, sizeofstr _x], _vehicle setObjectTexture [_array find _x, "\TZK_Texture_4_0_0\BWMOD\Tiger\Tiger\" + _tex]} forEach _excludeList

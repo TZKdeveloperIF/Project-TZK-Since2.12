@@ -1,0 +1,104 @@
+;LAST UPDATE 2005.06.19
+;UPDATED 2004.11.09
+
+?(format ["%1", BOH_Initialised] == "scalar bool array string 0xfcffffef"): BOH_Initialised = false; [] exec "\BOHCONFIG\Soldiers\init_once.sqs"
+@BOH_Initialised
+
+?(format ["%1",BOH_CurrentMap] =="scalar bool array string 0xfcffffef"): BOH_CurrentMap = "";  [] exec "\BOHCONFIG\BOHISLAND_scripts\BOH_detectIsland.sqs"
+@(BOH_CurrentMap != "")
+
+?(format ["%1", BOH_disableHeliDust] == "scalar bool array string 0xfcffffef"): BOH_disableHeliDust = false
+?(BOH_disableHeliDust): exit
+
+_object = _this select 0
+? !(local _object): exit
+
+?(format ["%1",BOH_IslandMap] =="scalar bool array string 0xfcffffef"): BOH_IslandMap = 1
+?(format ["%1",BOH_WINDUST] == "scalar bool array string 0xfcffffef"):BOH_WINDUST = false
+?(format ["%1",BOH_DESDUST] == "scalar bool array string 0xfcffffef"):BOH_DESDUST = false
+
+?(format ["%1",BAS_IslandMap] =="scalar bool array string 0xfcffffef"): BAS_IslandMap = BOH_IslandMap
+?(format ["%1",BAS_WINDUST] == "scalar bool array string 0xfcffffef"):BAS_WINDUST = BOH_WINDUST
+?(format ["%1",BAS_DESDUST] == "scalar bool array string 0xfcffffef"):BAS_DESDUST = BOH_DESDUST
+
+? BOH_CurrentMap == "EVERON"      : _baseColour = [0.332, 0.195, 0.052]; goto "mapclear"
+? BOH_CurrentMap == "MALDEN"      : _baseColour = [0.365, 0.243, 0.096]; goto "mapclear"
+? BOH_CurrentMap == "KOLGUJEV"    : _baseColour = [0.268, 0.151, 0.039]; goto "mapclear"
+? BOH_CurrentMap == "NOGOVA"      : _baseColour = [0.342, 0.273, 0.124]; goto "mapclear"
+? BOH_CurrentMap == "DESERTISLAND": _baseColour = [0.345, 0.319, 0.155]; goto "mapclear"
+? BOH_CurrentMap == "UNKNOWNMAP"  : _baseColour = [0.345, 0.274, 0.168]; goto "mapclear"
+? BOH_CurrentMap == "BOH_KANON"   : _baseColour = [0.200, 0.185, 0.125]; goto "mapclear"
+_baseColour = [0.345, 0.29, 0.168]
+
+#mapclear
+
+_water   = [0.85, 0.85, 1.00]
+
+?(BAS_IslandMap == 6): _vietnam = [0.45, 0.30, 0.20];   _baseColour = _vietnam
+?(BAS_WINDUST):        _snow    = [0.85, 0.85, 0.85];   _baseColour = _snow
+?(BAS_DESDUST):        _desert  = [0.345, 0.29, 0.168]; _baseColour = _desert
+
+_tmpBaseColour = _baseColour
+
+? BOH_CurrentMap == "NOGOVA": _snow = [0.85, 0.85, 0.85]; _desert = [0.345, 0.29, 0.168]; _desertPos = "Emptydetector" createVehicle [2023,4454]; _snow1Pos = "Emptydetector" createVehicle [8730,9532]; _snow2Pos = "Emptydetector" createVehicle [9571,9664]; _surface = { private ["_returnColour"]; if (_object distance _desertPos < 1800) then { _returnColour = _desert;} else { if ((_object distance _snow1Pos < 270) || (_object distance _snow2Pos < 270)) then { _returnColour = _snow;} else { _returnColour = _baseColour;};}; _returnColour};
+?(BOH_CurrentMap == "NOGOVA" && BAS_DESDUST): _snow = [0.85, 0.85, 0.85]; _snow1Pos = "Emptydetector" createVehicle [8730,9532]; _snow2Pos = "Emptydetector" createVehicle [9571,9664]; _surface = { private ["_returnColour"]; if ((_object distance _snow1Pos < 270) || (_object distance _snow2Pos < 270)) then { _returnColour = _snow;} else { _returnColour = _baseColour;}; _returnColour};
+
+_circleSize = 5.5
+?("UH60" countType [_object] == 1 || "BOHUH60JA" countType [_object] == 1): _circleSize = 6.5
+?("CH47D" countType [_object] == 1): _circleSize = 8
+_sizeFix = (_circleSize / 5.5)
+
+@(isEngineOn _object || (!alive _object))
+?(!alive _object): goto "end"
+
+_loopWait = 0.15
+_searchWait = 0
+_shape = "cl_basic"
+
+private ["_sensor1"];
+_sensor1 = "EmptyDetector" createVehicle [0,0,0]
+_groundLevel = { private ["_return"]; _sensor1 setpos [getPos _object select 0, getPos _object select 1]; _return = getPos _sensor1 select 2; _return};
+
+#top
+
+@(isEngineOn _object || (!alive _object))
+?(!alive _object): goto "end"
+?((getPos _object select 2) > 2): _wait = 1; goto "altitudeWait"
+
+~4
+_wait = 0.3
+
+#altitudeWait
+@((getPos _object select 2) <= 30 || isEngineOn _object || (!alive _object))
+?(!alive _object): goto "end"
+
+#groundCheck
+
+if (abs (call _groundLevel) <= 2.4) then { _shape = "cl_water"; _tmpBaseColour = _water;} else { _shape = "cl_basic"; if (BOH_CurrentMap == "NOGOVA") then { if !(BAS_WINDUST) then {_tmpBaseColour = call _surface;};} else {_tmpBaseColour = _baseColour;};};
+
+#loop1
+_objPos = getPos _object
+?(_objPos select 2 < -1): goto "top"
+if (!isEngineOn _object) then { if (_wait > 0.3) then { if (_objPos select 2 > 0.3) then { _wait = _wait - 0.05;} else {_wait = _wait - 0.008;}} else { goto "top";};} else { if (_wait < 1) then { _wait = _wait + 0.01;};};
+?(_objPos select 2)>30 : _wait = 1; goto "altitudeWait"
+_dustSize = [(1.8 * _wait) * _sizeFix, (4 * _wait) * _sizeFix, (7 * _wait) * _sizeFix, (3 * _wait) * _sizeFix] 
+_objVelo = velocity _object
+_dropZ = ((_objPos select 2) +1) * -0.1
+_deg = 0
+_roundSpace = 7.5 + random 1
+_objectPosX = _objPos select 0
+_objectPosY = _objPos select 1
+_objVeloX = _objVelo select 0
+_objVeloY = _objVelo select 1
+ while "_deg < 360" do { _a = _circleSize + (random (_circleSize /10)); _tmpX = _a * sin _deg; _tmpY = _a * cos _deg; _Colour = [_tmpBaseColour + [random 0.35], _tmpBaseColour + [0.15], _tmpBaseColour + [random 0.25], _tmpBaseColour + [0.01]]; drop[_shape,"","Billboard",1, 1 + random 1.2,[_tmpX + _objectPosX , _tmpY + _objectPosY, _dropZ],[_tmpX * (2 + random 1) * (_wait) + _objVeloX, _tmpY * (2 + random 1) * (_wait) + _objVeloY, random (4 * _wait + 1)],0,10,1,0.1,_dustSize, _Colour,[0],2,(_circleSize / 10),"","",""]; _deg = _deg  + _roundSpace;};
+~_loopWait
+_searchWait = _searchWait + _loopWait
+?(_searchWait > 1): _searchWait = 0; goto "groundCheck"
+goto "loop1"
+
+
+
+#end
+deleteVehicle _sensor1
+?(BOH_CurrentMap == "NOGOVA"): deleteVehicle _desertPos; deleteVehicle _snow1Pos; deleteVehicle _snow2Pos
+exit

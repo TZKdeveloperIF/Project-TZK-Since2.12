@@ -1,0 +1,10 @@
+; args: Get_In_Array
+_vehicle = _this select 0; _seat = _this select 1; _unit = _this select 2
+
+? _seat == "Driver": exit
+? _seat == "Gunner": exit
+
+; Seat must be "Cargo" here.
+? _vehicle animationPhase "CSLA_UH60_doorL" < 0.5 || _vehicle animationPhase "CSLA_UH60_doorR" < 0.5: {[_vehicle] exec "\TZK_Config_4_0_4\Scripts\CSLA_UH60A\DoorOpen" + _x + ".sqs"} forEach ["L", "R"]; exit
+
+exit

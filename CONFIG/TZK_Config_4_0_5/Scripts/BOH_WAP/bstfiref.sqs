@@ -1,0 +1,40 @@
+_wanzer = _this select 0
+
+_dir = getdir _wanzer
+_posx = getpos _wanzer select 0
+_posy = getpos _wanzer select 1
+_posz = getpos _wanzer select 2
+
+_ShapeName = "cl_fireD"
+_AnimationName = ""
+_Type = "Billboard"
+_TimerPeriod = 1
+_LifeTime = 0.05
+_Position = [0,0,0]
+_MoveVelocity = [0,0,0]
+_RotationVelocity = 0.5
+_Weight = 0.2
+_Volume = 0.5
+_Rubbing = 0.05
+_Size = [5,6,7,9]
+_Color = [[0.6,0.6,1.0,0.6],[0.3,0.3,1.0,07],[0.5,0.3,0.5,0.65],[1.0,0.7,0.3,0.6]]
+_AnimationPhase = [0]
+_RandomDirectionPeriod = 1.3
+_RandomDirectionIntensity = 5
+_OnTimer = ""
+_BeforeDestroy = ""
+_Object = "_wanzer"
+
+_errx = -(cos _dir) * 1.4
+_erry = (sin _dir) * 1.4
+
+_Position = [_posx + _errx,_posy + _erry,_posz + 3]
+
+_clvelx = (-(sin _Dir) * 50)
+_clvely = (-(cos _Dir) * 50)
+_MoveVelocity = [_clvelx + random 20 - 10,_clvely + random 20 - 10,random 20 - 10]
+drop [_ShapeName,_AnimationName,_Type,_TimerPeriod,_LifeTime,_Position,_MoveVelocity,_RotationVelocity,_Weight,_Volume,_Rubbing,_Size,_Color,_AnimationPhase,_RandomDirectionPeriod,_RandomDirectionIntensity,_OnTimer,_BeforeDestroy,_Object]
+~0.05
+drop [_ShapeName,_AnimationName,_Type,_TimerPeriod,_LifeTime,_Position,_MoveVelocity,_RotationVelocity,_Weight,_Volume,_Rubbing,_Size,_Color,_AnimationPhase,_RandomDirectionPeriod,_RandomDirectionIntensity,_OnTimer,_BeforeDestroy,_Object]
+
+exit

@@ -1,0 +1,20 @@
+_vehicle = _this select 0
+_weapon = _this select 1 
+
+?_weapon == "HellfireLauncherWAP_BOH_xj400" || _weapon == "HellfireLauncherWAP2_BOH_xj400" : goto "miss"
+?_weapon == "CGun_BOH_xj400" : goto "cgun"
+?_weapon == "HVG90_BOH_xj400" : goto "Quit"
+
+
+#miss
+? !local _vehicle: [_vehicle] exec "\TZK_Config_4_0_5\Scripts\BOH_SQS\misslnc2.sqs", goto "Quit"
+[_vehicle] exec "\TZK_Config_4_0_5\Scripts\BOH_SQS\misslnc.sqs"
+goto "Quit"
+
+#cgun
+[_vehicle] exec "\TZK_Config_4_0_5\Scripts\BOH_SQS\brasspos_W.sqs"
+goto "Quit"
+
+
+#Quit
+exit

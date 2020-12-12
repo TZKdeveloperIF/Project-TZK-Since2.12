@@ -1,0 +1,33 @@
+; args: [vehicle, name]
+_vehicle = _this select 0
+_name = _this select 1
+
+_path = ""; _postfix = ""; _excludeList0 = ["tex_m1a1_hlaven1.pac"]; _excludeList1 = ["tex_bmp_kuk2.pac", "tex_m1a1_ammo_box.pac", "tex_m1a1_dratram_back.paa", "tex_m1a1_dratram_side.paa", "tex_m1a1_drtrm_back_b.paa", "tex_m1a1_frnt_bck_lod.pac", "tex_m1a1_hlaven.pac", "tex_m1a1_main_back.pac", "tex_m1a1_main_bottom.pac", "tex_m1a1_main_front.pac", "tex_m1a1_main_side.pac", "tex_m1a1_main_top.pac", "tex_m1a1_poklop_driver.pac", "tex_m1a1_vez_back.pac", "tex_m1a1_vez_front.pac", "tex_m1a1_vez_hatch.pac", "tex_m1a1_vez_side.pac", "tex_m1a1_vez_top.pac"]; _excludeList = _excludeList0 + _excludeList1
+
+? _name == "C" || _name == "G": _excludeList2 = ["tex_m60_kolo_strana.pac", "tex_m60_poklop_driver.pac", "tex_m60_t_top.pac", "tex_m60hullback.pac", "tex_m60hulldown.pac", "tex_m60hullfront.pac", "tex_m60hulltop.pac", "tex_m60kolo.paa", "tex_m60kolo.pac", "tex_m60kolo2.paa", "tex_m60kolo2.pac", "tex_m60kolomaly.paa", "tex_m60kolozub.paa", "tex_m60pas.pac", "tex_m60pasb.pac", "tex_m60s.pac"], _excludeList = _excludeList + _excludeList2
+? _name == "D": _path = "\TZK_Texture_4_0_4\yellow\", _excludeList2 = ["tex_m60_kolo_strana.pac", "tex_m60_poklop_driver.pac", "tex_m60_t_top.pac", "tex_m60hullback.pac", "tex_m60hulldown.pac", "tex_m60hullfront.pac", "tex_m60hulltop.pac", "tex_m60kolo.paa", "tex_m60kolo.pac", "tex_m60kolo2.paa", "tex_m60kolo2.pac", "tex_m60kolomaly.paa", "tex_m60kolozub.paa", "tex_m60pas.pac", "tex_m60pasb.pac", "tex_m60s.pac"], _excludeList = _excludeList + _excludeList2
+? _name == "W": _path = "\TZK_Texture_4_0_3\snow\"
+; ? _name == "wood": comment "Same as default case."
+
+[_vehicle, _path, _postfix, _excludeList] call loadFile "\TZK_Objects\Scripts\texture\stdSetObjTex.sqf"
+
+? count _excludeList == 0: exit
+_array = typeOf _vehicle GetVehicleParamArray "hiddenSelections"
+; below is special texture for M1A1 hlaven.
+? _name == "C" || _name == "G": _path = "\TZK_Texture_4_0_5\etonv508\INQ_M1\d\"
+{_tex = (if (_name == "C" || _name == "G" || _name == "wood") Then {"m1a1_hlaven1.pac"} Else {"m1a1_hlaven.pac"}); _vehicle setObjectTexture [_array find _x, _path + _tex]} forEach _excludeList0
+
+; _path below means texture path of M1A1 turret.
+? _name == "C" || _name == "G": _path = "\TZK_Texture_4_0_5\etonv508\INQ_M1\d\"
+? _name == "W": _path = "\TZK_Texture_4_0_0\snow\"
+? _name == "wood": _path = "\TZK_Texture_4_0_5\etonv508\INQ_M1\w\"
+? _name == "D": _path = "\TZK_Texture_4_0_5\yellow\"
+
+? format ["%1", _excludeList1] == "scalar bool array string 0xfcffffef": _excludeList1 = _excludeList
+{_tex = substr [_x, 4, sizeofstr _x]; _vehicle setObjectTexture [_array find _x, _path + _tex]} forEach _excludeList1
+
+? count _excludeList2 == 0: exit
+; _path below means texture path of extra M60 body.
+? _name == "C" || _name == "G": _path = "\TZK_Texture_4_0_5\etonv508\ffur_uarm\m60\"
+? _name == "D": _path = "\TZK_Texture_4_0_5\yellow\"
+{_tex = substr [_x, 4, sizeofstr _x]; _vehicle setObjectTexture [_array find _x, _path + _tex]} forEach _excludeList2
