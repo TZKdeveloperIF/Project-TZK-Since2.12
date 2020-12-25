@@ -13,18 +13,19 @@ _targetIndex = (_params select 3)
 _dispersion = 10*(_params select 4)
 
 ; Check Whether Unit Fits The Parameters Of The Temporary Order
+_types_howitzer = +typesHowitzer; if bool_TZK_SEMod_Mode Then {_types_howitzer = _types_howitzer + types_SE_td}
 ; ArtilleryTypeDefs = ["Howitzer Vehicle", "Rocket Launcher", "Mortar Structure", "Howitzer Structure", "Vehicles", "Structures", "ALL"]
 _typeIndex = ([{Soldier}, {Light Tank}, {Heavy Tank}] + ArtilleryTypeDefs) select _typeIndex;   _bVeh = false; _bStruct = false; _bInfantry = false
 ? _typeIndex == "Soldier":				_bInfantry = true; 	_orderTypes = typesInfantryAll;
 ? _typeIndex == "Light Tank":			_bVeh = true; 		_orderTypes = typesLightTank;
 ? _typeIndex == "Heavy Tank":			_bVeh = true; 		_orderTypes = typesHeavyTank;
-? _typeIndex == "Howitzer Vehicle":		_bVeh = true; 		_orderTypes = typesHowitzer;
+? _typeIndex == "Howitzer Vehicle":		_bVeh = true; 		_orderTypes = _types_howitzer;
 ? _typeIndex == "Rocket Launcher":		_bVeh = true; 		_orderTypes = typesRocketLauncher;
 ? _typeIndex == "Mortar Structure":		_bStruct = true;	_orderTypes = structsOccupiableArtilleryMortar;
 ? _typeIndex == "Howitzer Structure": 	_bStruct = true;	_orderTypes = structsOccupiableHowitzer + structsOccupiableArtHowitzer;
-? _typeIndex == "Vehicles":				_bVeh = true;		_orderTypes = typesLightTank + typesHeavyTank + typesHowitzer + typesRocketLauncher;
+? _typeIndex == "Vehicles":				_bVeh = true;		_orderTypes = typesLightTank + typesHeavyTank + _types_howitzer + typesRocketLauncher;
 ? _typeIndex == "Structures":			_bStruct = true; 	_orderTypes = structsOccupiableArtilleryMortar + structsOccupiableHowitzer + structsOccupiableArtHowitzer;
-? _typeIndex == "ALL":		_bVeh = true; _bStruct = true; 	_orderTypes = typesLightTank + typesHeavyTank + typesHowitzer + typesRocketLauncher + structsOccupiableArtilleryMortar + structsOccupiableHowitzer + structsOccupiableArtHowitzer;
+? _typeIndex == "ALL":		_bVeh = true; _bStruct = true; 	_orderTypes = typesInfantryAll + typesLightTank + typesHeavyTank + _types_howitzer + typesRocketLauncher + structsOccupiableArtilleryMortar + structsOccupiableHowitzer + structsOccupiableArtHowitzer;
 
 _vehicle = vehicle _unit
 ? !local _vehicle: exit
@@ -78,7 +79,7 @@ exit
 	? _bStruct: if (_vt in structsOccupiableArtilleryMortar && _dispersion < 60) Then {_dispersion = 60}; if (typeOf _vehicle == "m119_xj400" && _dispersion < 10) Then {_dispersion = 10}; if (typeOf _vehicle == "D30_xj400" && _dispersion < 30) Then {_dispersion = 30}; [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, _vt] exec "Server\OrderTemp\ShootStruct.sqs"; exit
 	; Vehicle case here.
 	? _unit != driver _vehicle: if (!isNull driver _vehicle) then {goto "Sleep"}
-	if (_vt in typesHowitzer + typesRocketLauncher && _dispersion < 40) Then {_dispersion = 40}; if (typeOf _vehicle == "TOS1_TZK_xj400" && _dispersion < 60) Then {_dispersion = 60}
+	if (_vt in _types_howitzer + typesRocketLauncher && _dispersion < 40) Then {_dispersion = 40}; if (typeOf _vehicle == "TOS1_TZK_xj400" && _dispersion < 60) Then {_dispersion = 60}
 	[_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, _vt] exec "Server\OrderTemp\ShootTank.sqs"; exit
 
 

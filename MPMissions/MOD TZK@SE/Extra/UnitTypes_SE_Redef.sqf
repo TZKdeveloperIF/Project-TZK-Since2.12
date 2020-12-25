@@ -17,6 +17,7 @@ _entry = unitDefs select _m109artW; _entry set [udModel, "M109_CoC_Art_xj400"]; 
 comment "    _entry = unitDefs select _tdW    ";
 comment "    _entry = unitDefs select _tdE    ";
 comment "    _entry = unitDefs select _plz05artE    ";
+types_SE_td = [_tdW, _tdE, _m109artW, _plz05artE];
 
 comment "Adjust the build-able vehicles.";
 "_entry = unitDefs select _x; _entry set [udFactoryType, 2^stHeavy]" forEach [_tankHyperW01, _tankHyperE01, _m109artW, _plz05artE, _warrior80W, _bmp3, _tdW, _tdE];
@@ -53,7 +54,7 @@ _entry = unitDefs select _a10Tomahawk; _entry set [udName, "F35 Stealth Nuke"]; 
 {;
 	_entry = unitDefs select _x;
 	_name = _entry select udName; _name = "Su30" + substr [_name, sizeofstr "Su25", sizeofstr _name]; _entry set [udName, _name];
-	_entry set [udModel, "su30mki_p1"]; if (_x == _su25LGB8) then {_entry set [udModel, "su30mki_p1b"]}; _entry set [udImage, "\acwc_su30mk\n\su30_pic1.paa"];
+	_entry set [udModel, "su30mki_p1"]; if (_x == _su25LGB8) then {_entry set [udModel, "su30mki_p1"]}; _entry set [udImage, "\acwc_su30mk\n\su30_pic1.paa"];
 } forEach [_su25, _su25LGB8, _su25AA, _su25Rocket];
 _entry = unitDefs select _su39; _entry set [udFactoryType, 2^stAir];
 _entry = unitDefs select _su25BB; _entry set [udName, "Su57 Base Buster"]; _entry set [udModel, "PAK_FA"]; _entry select udScripts set [count (_entry select udScripts), "\TZK_Scripts_4_0_4\Common\Equip\LGB8.sqs"]; _entry set [udImage, "\acwc_su30mk\n\su30_pic1.paa"];
