@@ -4,7 +4,7 @@ _unit = _this select 0
 _marker = _this select 1
 _target = _this select 2
 _type = _this select 3
-_dispersion = _this select 4; if bool_TZK_SEMod_Mode Then {if (_type in types_SE_td) Then {_this exec "Extra\Shoot_TD_Player.sqs", exit} }
+_dispersion = _this select 4
 
 _si = siPlayer; _uid = [_unit, _si, giPlayer] call funcCalcUID
 ? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
@@ -16,14 +16,14 @@ _vehicle = vehicle _unit; _typeName = typeOf _vehicle; _actualTarget = typeOf _t
 _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is outside viewDistance. Order aborted."
 ? (upgMatrix select _si) select upgLongWeaponRange == 2 || (upgMatrix select _si) select upgLongArtRange == 2: _hint = "Since TZK_4.0.3.02 Mission, a new upgrade item ""Artillery Long Range"" is added. One must upgrade both Weapon Range and Art Range if wish to extend the range of Artillery Module. Order aborted."
 ? (upgMatrix select _si) select upgLongWeaponRange == 2 && (upgMatrix select _si) select upgLongArtRange == 2: _distLimit = 2*viewDistance; _hint = "Target is outside 2xviewDistance. Order aborted."
-? _typeName in ["M1A1_Art_xj400", "T80_Art_xj400"]: _distLimit = 10000; _hint = "Target is very far. Probably can't hit it directly."
+? _typeName in RadioTypesArtUnits: _distLimit = 10000; _hint = "Target is very far. Probably can't hit it directly."
 ? _unit distance _target > _distLimit: _unit groupChat _hint; goto "Exit"
 ? _unit distance _target < _distLimit && _unit distance _target > viewDistance: _unit groupChat "Target is far. Probably missing."
 #PrepareToMove
 ? ([getPos _unit, _posOrdered] call funcDistH) < 30: _unit doMove _posOrdered, goto "PrePareToAttack"
 	_unit groupChat "Moving to attacking position."; _timeStart = time; _timeHint = _timeStart + 5*60; 
 	_hint = ["I've been running for %1 minutes. Distance %2 meters now.", (_timeHint -_timeStart)/60, (_unit distance _target) - (_unit distance _target)%1]
-	? _typeName in ["TOS1_TZK_xj400", "M109A6G_xj400", "PLZ05_TZK_xj400"] && "_x == {DeploySwitch_xj400}" count magazines _vehicle > 0: [_vehicle, 0] exec "\TZK_Scripts_4_0_4\Common\Effect\DeployChange.sqs"
+	
 #CheckPosReached
 	_unit doMove _posOrdered
 	~5
@@ -35,16 +35,17 @@ _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is out
 	_bAvoidStruct = 50 + _dispersion > ([getPos _target, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1
 	_unit groupChat "In position. Prepare to attack.";
 	driver _vehicle action ["ENGINE OFF", _vehicle]; _vehicle engineOn false
-	_vehicle reveal _actualTarget
-	_vehicle doTarget _actualTarget
 	
-	_weapon = (_vehicle call funcVehParamWeapons) select 0
+	_vehicle doTarget _actualTarget
+	; Prepare 155mm for SE TD vehicle.
+	_weapon = "Gun155_xj400"
 	_delay = 3
 	; Delay for turning the turret. It'll be good to obtain proper value by the angle's difference, however no way to compute this in OFP.
-	? _typeName in ["TOS1_TZK_xj400", "M109A6G_xj400", "PLZ05_TZK_xj400"]: [_vehicle, 1] exec "\TZK_Scripts_4_0_4\Common\Effect\DeployChange.sqs"; _delay = [5, 8] select ("_x == {DeploySwitch_xj400}" count magazines _vehicle == 0)
 	~_delay
+	; If didn't select proper magazine for SE TD, general 120m/s magazine will be equipped.
+	? !(_vehicle hasWeapon _weapon): _magazinesArray = magazinesArray _vehicle; _i = 0; _c = count _magazinesArray; _ammunition = 0; while "_i < _c" do {if ("DKMM_Gun155HE" == _magazinesArray select _i) then {_ammunition = _ammunition + (_magazinesArray select _i + 1)}; _i = _i + 2}; _vehicle addWeapon _weapon, _vehicle addMagazinePrecise ["HE155_0120_xj400", _ammunition], _vehicle removeMagazines "DKMM_Gun155HE", _vehicle removeWeapon "Gun155"
 	
-	? !(_vehicle hasWeapon _weapon): _unit groupChat "No proper weapon. Order aborted. Rearm me or help me to deploy, sir."; goto "Exit"
+	
 	_weapons = (weapons _vehicle) - [_weapon]; {_vehicle removeWeapon _x} forEach _weapons; {_vehicle addWeapon _x} forEach _weapons
 	_reloadMagazine = false
 	_ammunition = -1
@@ -55,10 +56,10 @@ _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is out
 		_posTarget set [2,0]; _actualTarget setPos _posTarget
 		
 		? _unit distance _target > _distLimit: goto "CheckDistance"
-		? bool_TZK_199_Mode: goto "Mode199"
+		; ? bool_TZK_199_Mode: goto "Mode199"
 		
 		? _vehicle ammo _weapon == 0: _magazines = _vehicle call funcGetNotEmptyMags; _validMags = [_weapon] call funcWeaponValidMags; if ("_x in _validMags" count _magazines == 0) Then {goto "CheckRearm"};
-		_vehicle reveal _actualTarget
+		
 		~0.1
 		_vehicle doTarget _actualTarget
 		
@@ -72,30 +73,14 @@ _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is out
 		? call orderCheck: goto "Exit"
 		? !(alive _unit) || _vehicle != vehicle _unit: goto "Exit"
 		_ammoArray = _vehicle ammoArray _weapon
+		
+		; use "knowsAbout" to limit SE TD vehicle shooting
+		; hint format ["%1", _vehicle knowsAbout _actualTarget]
+		? _vehicle knowsAbout _actualTarget < 3: goto "AttackCheck"
+		
 		? count _ammoArray > 0: if (_ammoArray select 1 == 1) Then {_reloadMagazine = true}; if (_ammoArray select 1 > 0) Then {if ((_ammoArray select 1 != _ammunition) || (_ammoArray select 1 == 1)) Then {_ammunition = _ammoArray select 1; if bool_TZK_Art_RK4 Then {_ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev], _vehicle addEventHandler [ "Fired", format [{[_this, %1, %2] exec "Common\EH\Fired_ReviseShellDir.sqs"}, getPosASL _actualTarget, _ehRev] ]}, _vehicle fire _weapon}} else {_unit groupChat "Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."; goto "Exit"}
 		? count _ammoArray == 0: _unit groupChat "Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."; goto "Exit"
-		goto "AttackDone"
 		
-		#Mode199
-		
-		? _vehicle ammo _weapon == 0: if !(someAmmo _vehicle) Then {goto "CheckRearm"};
-		_vehicle reveal _actualTarget
-		~0.1
-		_vehicle doTarget _actualTarget
-		
-		; delay must be correctly assigned for "fire" command.
-		_ammoOld = _vehicle ammo _weapon
-		_delay = ( ([0,8] select (true) ) + ([0,0] select (true)) )*1.2 + 1
-		~0.1
-		? _reloadMagazine: _delay = ([0,5] select (true) ) + _delay; _reloadMagazine = false
-		~_delay
-		? call orderCheck : goto "Exit"
-		? !(alive _unit) || _vehicle != vehicle _unit: goto "Exit"
-		_ammoNow = _vehicle ammo _weapon
-		? _ammoNow > 0: if (_ammoNow == 1) Then {_reloadMagazine = true}; if (_ammoNow != _ammunition || _ammoNow == 1) Then {_ammunition = _ammoNow, if bool_TZK_Art_RK4 Then {_ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev], _vehicle addEventHandler [ "Fired", format [{[_this, %1, %2] exec "Common\EH\Fired_ReviseShellDir.sqs"}, getPosASL _actualTarget, _ehRev] ]}, _vehicle fire _weapon}
-		? _ammoNow == 0: if (_ammoOld == 0) Then {_unit groupChat "Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."; goto "Exit"}
-		
-		#AttackDone
 		~0.1
 		_vehicle doWatch (getPos _actualTarget)
 	goto "AttackCheck"
@@ -111,7 +96,7 @@ _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is out
 	_unit groupChat "Moving to support vehicle for more magazines."
 
 	_timeAbort = time + 15*60
-	? _typeName in ["TOS1_TZK_xj400", "M109A6G_xj400", "PLZ05_TZK_xj400"] && "_x == {DeploySwitch_xj400}" count magazines _vehicle > 0: [_vehicle, 0] exec "\TZK_Scripts_4_0_4\Common\Effect\DeployChange.sqs"
+	
 	#MoveToSupport
 		_posMove = [[0,25], (getDir _sup)] call funcVectorRot2D
 		_posMove = [getPos _sup, _posMove] call funcVectorSub
@@ -126,7 +111,7 @@ _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is out
 	? !bool_TZK_199_Mode: _magazines = magazines _vehicle; _validMags = [_weapon] call funcWeaponValidMags; {if (_x in _validMags) Then {_mag = _x}} forEach _magazines
 	? _mag != "": _speed = substr [_mag, sizeofstr(_mag) - sizeofstr("xxxx_xj400"), sizeofstr(_mag) - sizeofstr("_xj400")]; if !(substr [_speed, 0, 1] in ["0","1","2","3"]) then {_speed = -1} else {_speed = call _speed};
 	_delay = [0,3] select (_speed > 0)
-	_unit groupChat "Rearming at support vehicle. If I'm far away from you, probably I can't receive supplemented magazines. In this case, please use Unit Camera and look at me."; [_unit, _sup] exec "Player\Rearm.sqs"; doStop _unit
+	_unit groupChat "Rearming at support vehicle. If I'm far away from you, probably I can't receive supplemented magazines. In this case, please use Unit Camera and look at me."; [_unit, _sup] exec "Player\Rearm.sqs"; doStop _unit; removeAllWeapons _vehicle
 	#WaitRearmComplete
 		~5
 		? call orderCheck: goto "Exit"
@@ -134,7 +119,7 @@ _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is out
 		? !someAmmo _vehicle: goto "WaitRearmComplete"
 	~_delay + 1
 	? _speed <= 0: goto "PrepareToMove"
-	_delay = 1; [_vehicle, _speed] exec "\TZK_Scripts_4_0_4\Common\ReEquip\SwitchMagPreset.sqs"; _unit groupChat "Switching magazine. Again, if I'm far away, use Unit Camera and look at me."
+	_delay = 1; [_vehicle, _speed] exec "Extra\SwitchSEMagPreset.sqs"; _unit groupChat "Switching magazine. Again, if I'm far away, use Unit Camera and look at me."
 	#WaitSwitchComplete
 		~_delay
 		? call orderCheck : goto "Exit"

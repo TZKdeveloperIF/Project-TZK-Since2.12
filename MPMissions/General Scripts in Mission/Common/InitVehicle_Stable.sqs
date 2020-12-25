@@ -13,7 +13,7 @@ _vehicle addEventHandler ["killed", {_this exec "\TZK_Scripts_4_0_4\Common\Event
 
 ; Fired Event
 ? _typeName in ["HMMMV_TOW2A_xj400", "BRDM2_MNF_xj400", "GunBoatW_Custom_xj400", "GunBoatE_Custom_xj400"]: _vehicle addEventHandler ["Fired", {_this call loadFile "\TZK_Scripts_4_0_4\Player\EH\FiredImitated.sqf"} ]
-? "Plane" countType [_vehicle] > 0: _vehicle addEventHandler ["Fired", { _this exec "\TZK_Scripts_4_0_4\Player\EH\FiredPlaneMissile.sqs"} ]
+? "Plane" countType [_vehicle] > 0: _vehicle addEventHandler ["Fired", { _this exec "Common\EH\FiredPlaneMissile.sqs"} ]
 
 ; GetOut Event
 ? "Air" countType [_vehicle] > 0: _vehicle addEventHandler ["GetOut", { _this exec "\TZK_Scripts_4_0_4\Common\EH\GetOutAircraft.sqs" }]

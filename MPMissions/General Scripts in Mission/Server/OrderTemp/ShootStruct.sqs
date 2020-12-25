@@ -1,7 +1,7 @@
 ; args: [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, _vt]
 
 _unit = _this select 0; _si = _this select 1; _gi = _this select 2
-; _attackPos = _this select 3; _radius = _this select 4
+_attackPos = _this select 3; _radius = _this select 4
 _target = _this select 5; _dispersion = _this select 6
 _type = _this select 7
 
@@ -11,11 +11,12 @@ _distLimit = viewDistance;
 ? (upgMatrix select _si) select upgLongWeaponRange == 2 && (upgMatrix select _si) select upgLongArtRange == 2: _distLimit = 2*viewDistance; 
 ? _type in structsOccupiableArtHowitzer: _distLimit = 10000; 
 ? _type in structsOccupiableMortar: _distLimit = 800; 
-? _unit distance _target > _distLimit: exit
-? _unit distance _target < 50: exit
+? _unit distance _target > _distLimit: goto "EOF"
+? _unit distance _target < 50: goto "EOF"
+? [_attackPos, _vehicle] call funcDistH > _radius: goto "EOF"
 
 #PrePareToAttack
-	_bAvoidStruct = 50 + _dispersion > ([getPos _target, _si] call loadFile "\TZK_Scripts_4_0_5\Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1
+	_bAvoidStruct = 50 + _dispersion > ([getPos _target, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1
 	[_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
 	_weapon = (_vehicle call funcVehParamWeapons) select 0
 	? !(_vehicle hasWeapon _weapon): goto "EOF"
@@ -28,7 +29,7 @@ _distLimit = viewDistance;
 	; The applying of "_ammunition" will invalid magazines containing only 1 shot. If wish to use such a magazine, adjust this script manually.
 	#AttackCheck
 		_posTarget = [getPos _target, 0, _dispersion] call funcGetRandomPos
-		? _bAvoidStruct: if (50 > ([_posTarget, _si] call loadFile "\TZK_Scripts_4_0_5\Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1) Then {goto "SwitchTargetSleep"}
+		? _bAvoidStruct: if (50 > ([_posTarget, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1) Then {goto "SwitchTargetSleep"}
 		_posTarget set [2,0]; _actualTarget setPos _posTarget
 		
 		? _unit distance _target > _distLimit: goto "CheckDistance"
