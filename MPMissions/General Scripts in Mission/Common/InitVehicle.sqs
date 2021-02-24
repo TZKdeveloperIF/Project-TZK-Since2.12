@@ -16,6 +16,7 @@ _this exec "Common\InitVehicle_Stable.sqs"
 ; ? _typeName == "2S6_DKM_xj400" || _typeName == "Vulcan_TZK_xj400": _vehicle addEventHandler ["Fired", {_this exec "Common\EH\Fired_4xAA.sqs"}]
 
 ? bool_TZK_Vanilla_Mode: goto "SkipVanilla"
+? _type in types_SE_td: goto "SkipVanilla"; comment "this variable is undefined if not in SE mode, and this line thus won't be executed."
 ? _type in (typesHowitzer + typesHeavyTank + typesLightTank): _vehicle addEventHandler ["Fired", "_this exec {\TZK_Objects\Scripts\gunrec.sqs}"]
 #SkipVanilla
 

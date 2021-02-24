@@ -1,17 +1,20 @@
-; args: [unit, marker, target, structure type, dispersion]
+; args: [unit, marker, target, structure type, dispersion, (bigger angle)]
 
 _unit = _this select 0
 _marker = _this select 1
 _target = _this select 2
-_type = _this select 3
-_dispersion = _this select 4
+_type = _this select 3; _dispersion = _this select 4; _biggerAngle = (if (count _this > 5) Then {_this select 5} Else {0})
 
 _si = siPlayer; _uid = [_unit, _si, giPlayer] call funcCalcUID
 ? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
 _id = (playerOrderID select _uid) + 1; [_uid, _id] exec "\TZK_Scripts_4_0_4\Player\Order\New.sqs"
 
-_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _actualTarget = typeOf _target camCreate getPosASL _target; _actualTarget exec "\TZK_Scripts_4_0_4\Common\Command\allowDamageFalse.sqs"
+_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _actualTarget = typeOf _target camCreate getPosASL _target; _actualTarget exec "\TZK_Scripts_4_0_4\Common\Command\allowDamageFalse.sqs"; _script = "Common\EH\Fired_ReviseShellDir.sqs"
+? _biggerAngle > 0: _heliH = typeOf _target camCreate [0,0,0]; _script = "Common\EH\Fired_ReviseShell_BigAngle.sqs"
 ? !(_unit in PlayerShootingUnits): PlayerShootingUnits set [_uid, _unit]
+
+_groups = (groupMatrix select siPlayer) + (townGroups select siPlayer) + (workerGroups select siPlayer) - [groupPlayer]
+
 #CheckDistance
 _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is outside viewDistance. Order aborted."
 ? (upgMatrix select _si) select upgLongWeaponRange == 2 || (upgMatrix select _si) select upgLongArtRange == 2: _hint = "Since TZK_4.0.3.02 Mission, a new upgrade item ""Artillery Long Range"" is added. One must upgrade both Weapon Range and Art Range if wish to extend the range of Artillery Module. Order aborted."
@@ -47,7 +50,7 @@ _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is out
 	
 	
 	_weapons = (weapons _vehicle) - [_weapon]; {_vehicle removeWeapon _x} forEach _weapons; {_vehicle addWeapon _x} forEach _weapons
-	_reloadMagazine = false
+	_reloadMagazine = false; _targetSpotted = false; _timeReveal = _time + 60; _timeCheckKA = _time + 60 + random 60; _remoteKA = [_target, _groups] call loadFile "Common\Art\BiggestKnowsAbout.sqf"
 	_ammunition = -1
 	; The applying of "_ammunition" will invalid magazines containing only 1 shot. If wish to use such a magazine, adjust this script manually.
 	#AttackCheck
@@ -56,12 +59,14 @@ _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is out
 		_posTarget set [2,0]; _actualTarget setPos _posTarget
 		
 		? _unit distance _target > _distLimit: goto "CheckDistance"
+		? _biggerAngle > 0: _posH = [_posTarget, getPos _vehicle] call funcVectorSub, _posH set [2,1], _length = _posH call funcVectorLength, _posH = [_posH, 600/_length] call funcVectorScale, _posH set [2, 6*173.2], _posH = [_posH, getPos _vehicle] call funcVectorAdd, _heliH setPos _posH, _vehicle reveal _heliH
 		; ? bool_TZK_199_Mode: goto "Mode199"
 		
 		? _vehicle ammo _weapon == 0: _magazines = _vehicle call funcGetNotEmptyMags; _validMags = [_weapon] call funcWeaponValidMags; if ("_x in _validMags" count _magazines == 0) Then {goto "CheckRearm"};
-		
+		? _time > _timeReveal: _timeReveal = _time + 60*2, _vehicle reveal _actualTarget
+		? _time > _timeCheckKA: _timeCheckKA = _time + 60*2, _remoteKA = [_target, _groups] call loadFile "Common\Art\BiggestKnowsAbout.sqf"
 		~0.1
-		_vehicle doTarget _actualTarget
+		if (_biggerAngle > 0) Then "_vehicle doTarget _heliH" Else "_vehicle doTarget _actualTarget"
 		
 		; delay must be correctly assigned for "fire" command.
 		_ammoArray = _vehicle ammoArray _weapon
@@ -75,14 +80,16 @@ _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is out
 		_ammoArray = _vehicle ammoArray _weapon
 		
 		; use "knowsAbout" to limit SE TD vehicle shooting
-		; hint format ["%1", _vehicle knowsAbout _actualTarget]
-		? _vehicle knowsAbout _actualTarget < 3: goto "AttackCheck"
+		_localKA = _vehicle knowsAbout _actualTarget; _KA = _localKA;
+		? _KA < 3.5: _KA = _remoteKA
+		? _KA < 3.5: if !_targetSpotted Then {_vehicle groupChat format ["Can not fire, the target is not spotted. Current knowsAbout: %1, friendly groups' biggest knowsAbout: %2, desired knowsAbout: 3.5.", _localKA, _remoteKA]} Else {_vehicle groupChat format ["Firing ceased, the target is lost. Current knowsAbout: %1, friendly groups' biggest knowsAbout: %2, desired knowsAbout: 3.5.", _localKA, _remoteKA], _targetSpotted = false}, goto "AttackCheck"
+		_targetSpotted = true
 		
-		? count _ammoArray > 0: if (_ammoArray select 1 == 1) Then {_reloadMagazine = true}; if (_ammoArray select 1 > 0) Then {if ((_ammoArray select 1 != _ammunition) || (_ammoArray select 1 == 1)) Then {_ammunition = _ammoArray select 1; if bool_TZK_Art_RK4 Then {_ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev], _vehicle addEventHandler [ "Fired", format [{[_this, %1, %2] exec "Common\EH\Fired_ReviseShellDir.sqs"}, getPosASL _actualTarget, _ehRev] ]}, _vehicle fire _weapon}} else {_unit groupChat "Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."; goto "Exit"}
+		? count _ammoArray > 0: if (_ammoArray select 1 == 1) Then {_reloadMagazine = true}; if (_ammoArray select 1 > 0) Then {if ((_ammoArray select 1 != _ammunition) || (_ammoArray select 1 == 1)) Then {_ammunition = _ammoArray select 1; if bool_TZK_Art_RK4 Then {_ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev], _vehicle addEventHandler [ "Fired", format [{[_this, %1, %2] exec "%3"}, getPosASL _actualTarget, _ehRev, _script] ]}, _vehicle fire _weapon}} else {_unit groupChat "Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."; goto "Exit"}
 		? count _ammoArray == 0: _unit groupChat "Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."; goto "Exit"
 		
 		~0.1
-		_vehicle doWatch (getPos _actualTarget)
+		if (_biggerAngle > 0) Then "_vehicle doWatch _posH" Else "_vehicle doWatch (getPos _actualTarget)"
 	goto "AttackCheck"
 #SwitchTargetSleep
 	~4+random 2
@@ -130,4 +137,5 @@ _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is out
 
 #Exit
 deleteVehicle _actualTarget; PlayerShootingUnits set [_uid, objNull]
+? _biggerAngle > 0: deleteVehicle _heliH
 exit

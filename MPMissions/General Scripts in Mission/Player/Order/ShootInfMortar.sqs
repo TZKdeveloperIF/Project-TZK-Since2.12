@@ -1,16 +1,16 @@
-; args: [unit, marker, target, useless parameter, dispersion]
+; args: [unit, marker, target, useless parameter, dispersion, (bigger angle)]
 
 _unit = _this select 0
 _marker = _this select 1
 _target = _this select 2
-; _type = _this select 3
-_dispersion = _this select 4
+_type = _this select 3; _dispersion = _this select 4; _biggerAngle = (if (count _this > 5) Then {_this select 5} Else {0})
 
 _si = siPlayer; _uid = [_unit, _si, giPlayer] call funcCalcUID
 ? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
 _id = (playerOrderID select _uid) + 1; [_uid, _id] exec "\TZK_Scripts_4_0_4\Player\Order\New.sqs"
 
-_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _actualTarget = typeOf _target camCreate getPosASL _target; _actualTarget exec "\TZK_Scripts_4_0_4\Common\Command\allowDamageFalse.sqs"
+_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _actualTarget = typeOf _target camCreate getPosASL _target; _actualTarget exec "\TZK_Scripts_4_0_4\Common\Command\allowDamageFalse.sqs"; _script = "Common\EH\Fired_ReviseShellDir.sqs"
+? _biggerAngle > 0: _heliH = typeOf _target camCreate [0,0,0]; _script = "Common\EH\Fired_ReviseShell_BigAngle.sqs"
 ? !(_unit in PlayerShootingUnits): PlayerShootingUnits set [_uid, _unit]
 ; CheckDistance
 _posOrdered = getPosASL _vehicle; _distLimit = 800; _hint = "Target is too far for infantry mortar. Order aborted."
@@ -44,10 +44,11 @@ _unit doMove _posOrdered
 	#AttackCheck
 		_posTarget = [getPos _target, 0, _dispersion] call funcGetRandomPos; _posTarget set [2,0]; _actualTarget setPos _posTarget
 		? _unit distance _target > 450: goto "PrepareToMove"
+		? _biggerAngle > 0: _posH = [_posTarget, getPos _vehicle] call funcVectorSub, _posH set [2,1], _length = _posH call funcVectorLength, _posH = [_posH, 600/_length] call funcVectorScale, _posH set [2, 6*173.2], _posH = [_posH, getPos _vehicle] call funcVectorAdd, _heliH setPos _posH, _vehicle reveal _heliH
 		; Rearm check should be placed in loop below, due to time cost of animation.
 		_vehicle reveal _actualTarget
 		~0.1
-		_vehicle doTarget _actualTarget
+		if (_biggerAngle > 0) Then "_vehicle doTarget _heliH" Else "_vehicle doTarget _actualTarget"
 		
 		; delay must be correctly assigned for "fire" command.
 		#WaitUntilReload
@@ -62,12 +63,12 @@ _unit doMove _posOrdered
 			? ("_x in [{M16MortarLauncher_TZK_xj400}, {AK74MortarLauncher_TZK_xj400}]" count magazines _unit) >= _numOfMagLast: goto "WaitUntilReload"
 		_numOfMagLast = "_x in [{M16MortarLauncher_TZK_xj400}, {AK74MortarLauncher_TZK_xj400}]" count magazines _unit
 		
-		if bool_TZK_Art_RK4 Then {_ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev], _vehicle addEventHandler [ "Fired", format [{[_this, %1, %2, true, 70, 450] exec "Common\EH\Fired_ReviseShellDir.sqs"}, getPosASL _actualTarget, _ehRev] ]}; _vehicle fire [_weapon, _weapon, _weapon]
+		if bool_TZK_Art_RK4 Then {_ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev], _vehicle addEventHandler [ "Fired", format [{[_this, %1, %2, true, 70, 450] exec "%3"}, getPosASL _actualTarget, _ehRev, _script] ]}; _vehicle fire [_weapon, _weapon, _weapon]
 		goto "AttackDone"
 		
 		#AttackDone
 		~0.1
-		_vehicle doWatch (getPos _actualTarget)
+		if (_biggerAngle > 0) Then "_vehicle doWatch _posH" Else "_vehicle doWatch (getPos _actualTarget)"
 	goto "AttackCheck"
 #CheckRearm
 	_magData = (_unit call funcGetRearmData) select 1
@@ -99,4 +100,6 @@ _unit doMove _posOrdered
 	goto "PrepareToMove"
 
 #Exit
-	exit
+deleteVehicle _actualTarget; PlayerShootingUnits set [_uid, objNull]
+? _biggerAngle > 0: deleteVehicle _heliH
+exit

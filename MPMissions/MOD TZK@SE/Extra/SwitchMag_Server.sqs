@@ -37,7 +37,7 @@ _vt = _vehicle call funcGetUnitTypeFromObject
 
 ? _vt == -1: if !_bStruct then {exit} else {goto "VehicleChecked"}
 ? !(_vt in _orderTypes): exit
-? _vt in _types_howitzer: _magSeries = {H}; if (_speed >= 900) then {_speed = 930}; if (("M109_CoC_paladin_xj400" countType [_vehicle] > 0 || "M109A6G_xj400" countType [_vehicle] > 0) && _speed >= 800) then {_speed = 827}
+? _vt in _types_howitzer: _magSeries = {H}; if (_speed >= 900) then {_speed = 930}; if (_speed == 800) then {_speed = 827}; if (("M109_CoC_paladin_xj400" countType [_vehicle] > 0 || "M109A6G_xj400" countType [_vehicle] > 0) && _speed >= 800) then {_speed = 827}
 ? _vt in typesRocketLauncher: _magSeries = {MLRS}; if ("TOS1_TZK_xj400" == typeOf _vehicle) then {_magSeries = {T}; if (_speed > 500) then {_speed = 500}};
 goto "StructureChecked"
 
