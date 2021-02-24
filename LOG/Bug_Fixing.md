@@ -1,5 +1,9 @@
 #CONFIG
 Bug due to definition in CONFIG needs to be completely solved by mod updating and tried to be simply fixed in-mission.
+##4.0.5.05
++ The PP87 82mm mortar for EAST is packed in TZK_CONFIG_4_0_5. It's unnecessary to remove it for vanilla mode. Implement is added using delay script.
+	+ **Solve this bug in 4.0.6**
+
 ##4.0.5.01
 + Error definition of Su25 series and its vanilla units.
 	+ Almost all su25_xj400 with their vanilla version is ruined. Apply normal Su25_xj400 and Su25_Vanilla_xj405 on all of them.
@@ -16,6 +20,7 @@ Bug due to definition in CONFIG needs to be completely solved by mod updating an
 		+** Common\EH\FiredPlaneMissile.sqs**
 		+ **impl\unit, unit_vanilla_redef.sqf**
 	+ **\_xj400 series su25 is polluted. In new "external" config new postfix should be prepared. And it's necessary to give another base class inherit from BIS A10/Su25 and for vanilla TZK A10/Su25, because other mods' planes might inherit from A10/Su25 as well. We need TZK A10/Su25 as base class in "countType" command of afterburner design.**
+		+ Release another same name pbo in 4.0.6. Use another name in CfgPatches. 
 
 #Radio Rearm Channel
 0-0-7 ~ 0-0-0 channels for soldiers.

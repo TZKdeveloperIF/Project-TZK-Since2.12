@@ -1,1 +1,37 @@
-_this exec "\TZK_Scripts_4_0_5\Common\Msg\hRearmVeh.sqs"
+; _this exec "\TZK_Scripts_4_0_5\Common\Msg\hRearmVeh.sqs"
+; args: [vehicle]
+_v = _this select 0
+? !alive _v || !local _v: exit
+
+? (count (magazines _v)) > 0 : format["WARNING: vehicle %1 have mags when going to rearm", _v] call fDebugLog; exit
+
+_bDeploy = false
+? !bool_TZK_199_Mode: _name = substr [(typeOf _v), 0, 4]
+? "M109A6G_Base_xj400" countType [_vehicle] > 0 || "PLZ05_VME_Base_xj400" countType [_vehicle] > 0 || "TOS1_TZK_xj400" countType [_vehicle] > 0: _bDeploy = true
+
+
+_rearmData = _v call funcGetRearmData
+_weapons = _rearmData select 0
+_mags = _rearmData select 1
+? (count _mags) == 0 : exit
+_wpns = weapons _v
+
+
+_matching = true
+_c = count _wpns; _i = 0
+while "_i < _c && _matching" do { if !( (_wpns select _i)in(_weapons) ) then {_matching = false}; _i=_i+1 }
+_c = count _weapons; _i = 0
+while "_i < _c && _matching" do { if !( (_weapons select _i)in(_wpns) ) then {_matching = false}; _i=_i+1 }
+
+if (_matching || _bDeploy) then { { _v addMagazine _x } foreach _mags } else { { _v removeWeapon _x} foreach _wpns; { _v addWeapon _x } foreach _weapons; { _v addMagazine _x } foreach _mags; _v selectWeapon (_weapons select 0) }
+? _bDeploy: if (_v hasWeapon "Gun155_xj400" || _v hasWeapon "FAE220Launcher_xj400") Then {_v addMagazine "DeploySwitch_xj400"} Else {_v removeMagazines "DeploySwitch_xj400"}, _v engineOn false
+; MLRS Rocket re-texture. For 199 ACWA the "_name" is undefined and the command below won't be executed.
+? _name == "M270" || _name == "TOS1": [{mutexCmd = true; _v = _this select 1 select 0; pv_TZK_MLRS = _v; publicVariable {pv_TZK_MLRS}; ["mutexCmd = false", 1] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"}, [_v], "!mutexCmd"] exec "\TZK_Scripts_4_0_5\Common\~@\mutexCommand.sqs"
+
+
+? canFire _v : exit
+_v groupChat "Rearm completed. But gun barrel still hurts. Repair it please."
+~90
+? canFire _v : exit
+? !bool_TZK_199_Mode: if (local _v && format ["%1", (typeOf _v) GetVehicleParam "simulation"] == "tank") then { { _v removeMagazines _x } foreach (magazines _v); _v groupChat "Gun barrel not repair. Unable to fire. NEED REPAIR AND REARM!" } else { [_v] exec "\TZK_Scripts_4_0_4\Common\SendVehicleMagsRemove.sqs" }
+? bool_TZK_199_Mode: if (local _v && !canFire _v) then { { _v removeMagazines _x } foreach (magazines _v); _v groupChat "Gun barrel not repair. Unable to fire. NEED REPAIR AND REARM!" } else { [_v] exec "\TZK_Scripts_4_0_4\Common\SendVehicleMagsRemove.sqs" }

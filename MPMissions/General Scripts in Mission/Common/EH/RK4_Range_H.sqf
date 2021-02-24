@@ -1,8 +1,8 @@
 private ["_vx0", "_vy0", "_deltaY", "_x", "_y", "_vx", "_vy", "_c", "_g", "_h", "_t", "_K1", "_L1", "_K2", "_L2", "_K3", "_L3", "_K4", "_L4", "_range0", "_range1", "_boolH"];
 
-_vx0 = _this select 0; _vy0 = _this select 1; _deltaY = _this select 2;
+_vx0 = _this select 0; _vy0 = _this select 1; _deltaY = _this select 2; _boolH = (if (count _this > 3) Then {_this select 3} Else {true});
 
-_x = 0; _y = 0; _vx = _vx0; _vy = _vy0; _range0 = 0; _boolH = true;
+_x = 0; _y = 0; _vx = _vx0; _vy = _vy0; _range0 = 0;
 _c = -0.0005; _g = 9.80665;
 _h = 0.05;
 
@@ -14,9 +14,17 @@ while "_y > _deltaY || _vy > 0" do {
 	_K3 = _c*(_vx+_h/2*_K2)*sqrt((_vx+_h/2*_K2)^2+(_vy+_h/2*_L2)^2); _L3 = _c*(_vy+_h/2*_L2)*sqrt((_vx+_h/2*_K2)^2+(_vy+_h/2*_L2)^2)-_g;
 	_K4 = _c*(_vx+_h/2*_K3)*sqrt((_vx+_h/2*_K3)^2+(_vy+_h/2*_L3)^2); _L4 = _c*(_vy+_h/2*_L3)*sqrt((_vx+_h/2*_K3)^2+(_vy+_h/2*_L3)^2)-_g;
 
-	_vx = _vx+_h/6*(_K1+2*_K2+2*_K3+_K4);_vy = _vy+_h/6*(_L1+2*_L2+2*_L3+_L4); _x=_x+_h/2*(_vx0+_vx); _y=_y+_h/2*(_vy0+_vy);
-	if (_y >= _deltaY && _y-_h/2*(_vy0+_vy) < _deltaY) Then { _range0 = if (_vy0 * _vy > 0) Then {_t = (_y-_deltaY)/(_vy0+_vy), _x - _t*(_vx0+_vx)} Else {_x} };
+	_vx = _vx+_h/6*(_K1+2*_K2+2*_K3+_K4);
+	_vy = _vy+_h/6*(_L1+2*_L2+2*_L3+_L4);
+	_x=_x+_h/2*(_vx0+_vx);
+	_y=_y+_h/2*(_vy0+_vy);
+	if _boolH Then {
+		if (_y >= _deltaY && _y-_h/2*(_vy0+_vy) < _deltaY) Then {
+			_range0 = if (_vy0 * _vy > 0) Then {_t = (_y-_deltaY)/(_vy0+_vy), _x - _t*(_vx0+_vx)} Else {_x};
+			_boolH = false;
+		};
+	};
 };
-_range1 = if (_vy0 * _vy > 0) Then {_t = (_y-_deltaY)/(_vy0+_vy), _x - _t*(_vx0+_vx)} Else {_boolH = false; _x};
+_range1 = if (_vy0 * _vy > 0) Then { _boolH = true; _t = (_y-_deltaY)/(_vy0+_vy), _x - _t*(_vx0+_vx) } Else { _boolH = false; _x };
 
 [_range0, _range1, _boolH]

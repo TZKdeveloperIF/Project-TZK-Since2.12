@@ -19,6 +19,7 @@ Init_TZK_Script_Order = false
 @ Init_TZK_Script_Order
 Init_TZK_Script_Order = false
 [] exec "\TZK_Scripts_4_0_4\Common\Init\TheWorld.sqs"
+? bool_TZK_SEMod_Mode: ["if (TheWorld == {C}) Then {TheWorld = {G}} Else {exit}, if !isServer Then {exit}, publicVariableString {TheWorld}", 1] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
 
 _initUnitTypes = "\TZK_Scripts_4_0_5\Common\InitUnitTypes.sqs"; _initStructureTypes = "\TZK_Scripts_4_0_5\Common\InitStructureTypes.sqs"
 ; ? bool_TZK_MF_Mode: 
@@ -42,7 +43,7 @@ _initUnitTypes = "\TZK_Scripts_4_0_5\Common\InitUnitTypes.sqs"; _initStructureTy
 { ["\TZK_Scripts_4_0_4\Common\HandleAIGroupOrder.sqs"] exec format ["\TZK_Scripts_4_0_5\Common\Msg\mAIGroupOrder%1.sqs", _x] } forEach [0,1,2,3,4]
 { ["\TZK_Scripts_4_0_4\Common\HandleAIGroupSetting.sqs"] exec format ["\TZK_Scripts_4_0_5\Common\Msg\mAIGroupSetting%1.sqs", _x] } forEach [0,1,2,3,4]
 
-["\TZK_Scripts_4_0_4\Common\HandleSetWPCO.sqs"] exec "\TZK_Scripts_4_0_5\Common\Msg\mSetWPCO.sqs"
+["Common\Msg\hSetWPCO.sqs"] exec "\TZK_Scripts_4_0_5\Common\Msg\mSetWPCO.sqs"
 ["\TZK_Scripts_4_0_5\Common\Msg\hVehicleAttached.sqs"] exec "\TZK_Scripts_4_0_5\Common\Msg\mVehicleAttached.sqs"
 ["\TZK_Scripts_4_0_4\Common\HandleDetachVehicle.sqs"] exec "\TZK_Scripts_4_0_5\Common\Msg\mDetachVehicle.sqs"
 ["\TZK_Scripts_4_0_4\Common\HandleVehicleDetached.sqs"] exec "\TZK_Scripts_4_0_5\Common\Msg\mVehicleDetached.sqs"

@@ -1,9 +1,9 @@
-; args: [unit, si, gi, [WayPoint, Response Radius, unit types (defined by ArtilleryMagazineSpeedList), Target, Rally Point (NONE if WayPoint undefined)]]
+; args: [unit, si, gi, [WayPoint, Response Radius, unit types (defined by ArtilleryMagazineSpeedList), Target, Rally Point (NONE if WayPoint undefined)], (biggerAngle)]
 
 _unit = _this select 0
 _si = _this select 1
 _gi = _this select 2
-_params = _this select 3
+_params = _this select 3; _biggerAngle = (if (count _this > 4) Then "_this select 4" Else "0")
 
 ; Get Correct Parameters. Need Pay Attention To Coefficients
 _attackPos = ((wpCO select _si) select (_params select 0))
@@ -70,17 +70,17 @@ _unit call temporarySet
 ? !_bInfantry: goto "SkipInfantry"
 _magData = (_unit call funcGetRearmData) select 1
 _weapons = weapons _unit; _magzines = magazines _unit
-? [["M16MortarLauncher_TZK_xj400", "AK74MortarLauncher_TZK_xj400"], _magzines + _magData] call funcArrayOverlap: [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion] exec "Server\OrderTemp\ShootInfMortar.sqs"; exit
-? [["M16GrenadeLauncher_TZK_xj400", "AK74GrenadeLauncher_TZK_xj400", "M4_M203_ACOG_SD_xj400", "AK74M_GP25_1P29_SD_xj400", "MM1", "6G30"], _weapons] call funcArrayOverlap: [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion] exec "Server\OrderTemp\ShootInfGrenadeL.sqs"; exit
-? "_x in [{HandGrenade}, {SmokeShell}, {SmokeShellGreen}, {SmokeShellRed}]" count (_magzines + _magData) > 0: [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion] exec "Server\OrderTemp\ShootInfThrow.sqs"; exit
+? [["M16MortarLauncher_TZK_xj400", "AK74MortarLauncher_TZK_xj400"], _magzines + _magData] call funcArrayOverlap: [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, -1, _biggerAngle] exec "Server\OrderTemp\ShootInfMortar.sqs"; exit
+? [["M16GrenadeLauncher_TZK_xj400", "AK74GrenadeLauncher_TZK_xj400", "M4_M203_ACOG_SD_xj400", "AK74M_GP25_1P29_SD_xj400", "MM1", "6G30"], _weapons] call funcArrayOverlap: [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, -1, _biggerAngle] exec "Server\OrderTemp\ShootInfGrenadeL.sqs"; exit
+? "_x in [{HandGrenade}, {SmokeShell}, {SmokeShellGreen}, {SmokeShellRed}]" count (_magzines + _magData) > 0: [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, -1, _biggerAngle] exec "Server\OrderTemp\ShootInfThrow.sqs"; exit
 exit
 
 #SkipInfantry
-	? _bStruct: if (_vt in structsOccupiableArtilleryMortar && _dispersion < 60) Then {_dispersion = 60}; if (typeOf _vehicle == "m119_xj400" && _dispersion < 10) Then {_dispersion = 10}; if (typeOf _vehicle == "D30_xj400" && _dispersion < 30) Then {_dispersion = 30}; [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, _vt] exec "Server\OrderTemp\ShootStruct.sqs"; exit
+	? _bStruct: if (_vt in structsOccupiableArtilleryMortar && _dispersion < 60) Then {_dispersion = 60}; if (typeOf _vehicle == "m119_xj400" && _dispersion < 10) Then {_dispersion = 10}; if (typeOf _vehicle == "D30_xj400" && _dispersion < 30) Then {_dispersion = 30}; [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, _vt, _biggerAngle] exec "Server\OrderTemp\ShootStruct.sqs"; exit
 	; Vehicle case here.
 	? _unit != driver _vehicle: if (!isNull driver _vehicle) then {goto "Sleep"}
 	if (_vt in _types_howitzer + typesRocketLauncher && _dispersion < 40) Then {_dispersion = 40}; if (typeOf _vehicle == "TOS1_TZK_xj400" && _dispersion < 60) Then {_dispersion = 60}
-	[_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, _vt] exec "Server\OrderTemp\ShootTank.sqs"; exit
+	[_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, _vt, _biggerAngle] exec "Server\OrderTemp\ShootTank.sqs"; exit
 
 
 ; End Of File
