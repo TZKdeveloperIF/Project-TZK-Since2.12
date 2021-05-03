@@ -4,6 +4,14 @@ if bool_TZK_SEMod_Mode Then {
 	ArtilleryMagazineSpeedList set [count ArtilleryMagazineSpeedList, "Recover TD"];
 };
 
+if bool_TZK_DEV_FPS Then {
+comment {
+	orderDefs select orderPatrolArea set [2, "Extra\Order\PatrolArea.sqs"];
+};
+	orderDefs select orderPatrolArea set [2, ""];
+};
+orderTempDefs select orderTempReclaim set [2, "Server\OrderTemp\Reclaim.sqs"];
+
 _type = count orderTempDefs;
 orderTempShootBigAngle = _type;
 _param0 = [ "Attack Pos", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ];
@@ -15,3 +23,24 @@ orderTempDefs set [_type, ["Shoot Big Angle", [_param0, _param1, _param2, _param
 _type = _type + 1;
 
 TempOrderNum = count orderTempDefs;
+
+
+comment {
+	; initStatusMatrix structure: array[]. Index = _si * GroupsNum + _gi.
+	; element of array above: array[]. Index = type of concurrent order.
+	; element of array above: [option item on/off, param 0, param 1, ...]
+};
+initStatusMatrix = [];
+{
+	_si = _x; _gi = 0;
+	{
+		_matrix = []; _i = 0; _c = count orderTempDefs;
+		while "_i < _c" do {
+			_params = [];  _params set [0, 0]; _j = 0; while "_j < count(orderTempDefs select _i select 1)" do "_params set [_j + 1, -1]; _j = _j + 1";
+			_matrix set [_i, _params];
+			_i = _i + 1;
+		};
+		initStatusMatrix set [_si * GroupsNum + _gi, _matrix];
+		_gi = _gi + 1
+	} foreach (groupMatrix select _x)
+} forEach [si0, si1];

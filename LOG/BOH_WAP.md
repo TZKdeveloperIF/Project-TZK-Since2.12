@@ -1,6 +1,6 @@
-WAP vehicles from @BOH mod is interesting. There're "@BOH4.8" CTI missions on a server but I haven't played it yet. The server didn't appear on Monitor any longer.
+WAP vehicles from @BOH mod is interesting. It's funny that I was actually looking for "boi4.8" CTI mission but my memory made mistake and I went explore @BOH mod.
 
-##@TZK_4.0.5
+## @TZK_4.0.5
 Start to introduce the BOHJSDF5.pbo into TZK. CONFIG of WAP vehicle/weapon/ammo is defined in TZK without introduce BOHCONFIG.pbo.
 + Prepare another HellfireLauncher using "GuidedAT_Heli_xj400" ammo to take place with too powerful "AGM-114F".
 + Define a TypeXX WAP for EAST side as well.

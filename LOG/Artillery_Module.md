@@ -1,6 +1,14 @@
 Basing on motion equation of "shotShell"-simulation CfgAmmo class member, artillery module is possible to be designed and introduced into CTI. Since this part is still in developing, its scripts should be placed in mission but not AddOns.
 
-##4.0.5.05
+## 4.0.5.06
++ Aiming to reduce the calculation, we only compute accurate elevation angle/initSpeed in the beginning. Disperation is realized by adding small random turbulence.
+  为简化运算量，只在炮击命令开始时计算精确的俯仰角/速度。之后的散布通过求得的俯仰角/速度加上一个随机扰动实现。
+  The position of unit/target should be recorded. Once the position changed, the initial value should be re-calculate.
+  单位和目标的坐标需要记录。当坐标发生变化，初值需要被重新计算。
+  The effect of turbulence here will make hit area a ladder-shaped fan.
+  这种扰动的效果将会令弹着区域呈现梯形扇面.
+
+## 4.0.5.05
 + 增加高仰角发射art的选项。这需要用一个浮空的target来指示目标，而且还要求target没有geometry。
 	+ 目标选择为 target_tzk，heliH物体的坐标变更无法被响应，老问题了。
 	+ 高仰角发射，预设初始角度为60°。
@@ -16,7 +24,7 @@ Basing on motion equation of "shotShell"-simulation CfgAmmo class member, artill
 	+ 测试通过。需注意server上target的名字要调整，也因此format同样要调整（代码里包含等号时，左端不可以是call的返回值，因为是右值。要统一用一个字符串表述代码并call）
 	+ 远端KA有效性通过。为我购买的直升机，其KA对AI队伍的脚本有效。并且，原地出厂的直升机，KA只能达到2左右，3.5的阈值仍然需要单位靠近。
 
-##4.0.5.04
+## 4.0.5.04
 + In Common\Msg\hRearmVeh the howitzer is handled in "deploy". But M109 paladin in SE shouldn't be handled in this way.
 + 保留原始的camCreate初始化target方式，于target被调用时将它变成global可探测物体。
   这么做是为了利用其他友方队伍的knowsAbout来辅助判定是否可以对目标执行发射。相当于在Art模块里使用战争迷雾。目前仅对SE的TD单位实装。
@@ -26,7 +34,7 @@ Basing on motion equation of "shotShell"-simulation CfgAmmo class member, artill
 		*由于不确定拉开距离后的发现效果如何，因此选择createVehicle的方法。*
 	+ 射击脚本遍历队伍获取ka值，宜对单个目标以较低频率执行（例如2min检测一次），而本队的ka值则每次发射执行。
 
-##4.0.5.03
+## 4.0.5.03
 + Add isNull check in Fired_ReviseShellDir.sqs. Make sure script working on actual shell.
 	+ **测试向上发射的情形，用手雷，初速度低。**
 + 调整 Fired_Revise_Angle_Case_11_001 脚本。
@@ -39,7 +47,7 @@ Basing on motion equation of "shotShell"-simulation CfgAmmo class member, artill
 + Add group chat message in SE TD scripts of player order. Add reveal command in each 2 minutes. This is prepared for "high elevation angle".
 	+ The threshold "3" is proper.
 
-##4.0.5.02
+## 4.0.5.02
 + Adjust soldier scripts. 
 	+ Soldiers are easier to hurt themselves than vehicles, so they need better assigned attack position, and script should always use this positions.
 		+ Always ask soldier move to ordered position even though they're closed enough there.
@@ -68,7 +76,7 @@ Basing on motion equation of "shotShell"-simulation CfgAmmo class member, artill
 + 为SE的TD增加shoot target命令（玩家）
 	+ 参照AI脚本，设置玩家的弹夹切换脚本与命令。
 
-##4.0.5.00
+## 4.0.5.00
 + Set new power of mortar 81mm: hit = 0; indirectHit = 40; indirectHitRange = 10;
 	+ Quite weak. This is aim to reduce the influence of mortar when attacking tank. 
 + Prepare another weapon/magazine for this mrotar 81mm ammo.
@@ -81,7 +89,7 @@ Basing on motion equation of "shotShell"-simulation CfgAmmo class member, artill
 	+ Adjust the position of "zarmeny" in their models to make gunner easier to be killed.
 + Adjust the *structure avoiding* design. Threshold raised to 50 meters and provide another SQF file to search enemy objects only in *structsCritcal*.
 
-##4.0.4.07
+## 4.0.4.07
 + Rename the upgrade of "Trace Special Shell" as "Trace Artillery Shell".
 + Decouple artillery module scripts with addons.
 	+ Entrance of orders (of player/server), EH of Common\EH\Fired_ReviseShellDir, SQF of RK4.

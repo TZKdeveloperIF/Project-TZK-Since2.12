@@ -1,0 +1,1 @@
+fAddSoldier = loadFile "Common\SQF\AddSoldier.sqf";

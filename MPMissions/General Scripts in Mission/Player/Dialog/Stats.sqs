@@ -1,0 +1,47 @@
+; args [si]
+
+_siShow = _this select 0
+
+_dlg = createDialog "StatsDialog"
+
+#Update
+
+? !(dialog):Exit
+? !(ctrlVisible IDC_TEXT_MONEYWEST): Exit
+? (pvGameOver == -1) && !(alive player): closeDialog 0; Exit
+
+
+_idc = IDC_TEXT_MONEYWEST
+_si = si0
+if (_siShow == _si || _siShow == siBoth) then { ctrlSetText [_idc, format["%1/%2", moneySideTotal select _si, moneySideSpent select _si] ] } else { ctrlSetText [_idc, "?/?"] }
+
+_idc = IDC_TEXT_MONEYEAST
+_si = si1
+if (_siShow == _si || _siShow == siBoth) then { ctrlSetText [_idc, format["%1/%2", moneySideTotal select _si, moneySideSpent select _si] ] } else { ctrlSetText [_idc, "?/?"] }
+
+_idc = IDC_LB_STRUCTSWEST
+lbClear _idc
+_index = 0
+_si = si0
+{ if (_siShow != _si && _siShow != siBoth) then { _x=-1 }; _sides = ((structDefs select _index) select sdSides); if (_sides == siBoth || _si == _sides) then { _spacer = " "; if(_x<10)then{_spacer=_spacer+" "}; if(_x<100)then{_spacer=_spacer+" "}; _name = (structDefs select _index) select sdName; lbAdd[_idc, format["%1%2%3", [_x, "?"] select (_x == -1), _spacer, _name]] }; _index = _index +1 } foreach (structsBuilt select _si)
+
+_idc = IDC_LB_UNITSWEST
+lbClear _idc
+_index = 0
+_si = si0
+{ if (_siShow != _si && _siShow != siBoth) then { _x=-1 }; if (_si == ((unitDefs select _index) select udSide)) then { _spacer = " "; if(_x<10)then{_spacer=_spacer+" "}; if(_x<100)then{_spacer=_spacer+" "}; _name = (unitDefs select _index) select udName; lbAdd[_idc, format["%1%2%3", [_x, "?"] select (_x == -1), _spacer, _name]] }; _index = _index +1 } foreach (unitsBuilt select _si)
+
+_idc = IDC_LB_STRUCTSEAST
+lbClear _idc
+_index = 0
+_si = si1
+{ if (_siShow != _si && _siShow != siBoth) then { _x=-1 }; _sides = ((structDefs select _index) select sdSides); if (_sides == siBoth || _si == _sides) then { _spacer = " "; if(_x<10)then{_spacer=_spacer+" "}; if(_x<100)then{_spacer=_spacer+" "}; _name = (structDefs select _index) select sdName; lbAdd[_idc, format["%1%2%3", [_x, "?"] select (_x == -1), _spacer, _name]] }; _index = _index +1 } foreach (structsBuilt select _si)
+
+_idc = IDC_LB_UNITSEAST
+lbClear _idc
+_index = 0
+_si = si1
+{ if (_siShow != _si && _siShow != siBoth) then { _x=-1 }; if (_si == ((unitDefs select _index) select udSide)) then { _spacer = " "; if(_x<10)then{_spacer=_spacer+" "}; if(_x<100)then{_spacer=_spacer+" "}; _name = (unitDefs select _index) select udName; lbAdd[_idc, format["%1%2%3", [_x, "?"] select (_x == -1), _spacer, _name]] }; _index = _index +1 } foreach (unitsBuilt select _si)
+
+~0.5
+goto "Update"

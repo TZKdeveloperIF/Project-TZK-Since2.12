@@ -1,8 +1,4 @@
 ; args: [unit, si, gi]
-? bool_TZK_DEV_FPS: _this exec "Extra\AI_UpdateCommander.sqs", exit
-; _this exec "\TZK_Scripts_4_0_5\Server\AI_UpdateCommander.sqs"
-
-; args: [unit, si, gi]
 
 ? !isServer : exit
 
@@ -60,7 +56,7 @@ _order = orderMatrix select _si select _gi; _idOrder = _order select 0
 
 _unit setCombatMode "YELLOW"; _unit setBehaviour "AWARE"; _unit setSpeedMode "FULL"
 
-[_unit, _si, 200] exec "Common\Event\Add_Killed_Infantry.sqs"
+[_unit, _si, 200] exec "\TZK_Scripts_4_0_4\Common\EventAdd_InfantryKilled.sqs"
 [_unit, _si, _gi] exec "Server\EventAdd_Infantry.sqs"
 [_unit] exec "\TZK_Scripts_4_0_4\Common\AddRearmData.sqs"
 
@@ -70,6 +66,7 @@ _giPatrol = _gi; _bTakeTown=false; _nDestroy=0
 	~_sleep
 	_sleep = 5
 	? !(alive _unit): goto "WaitUntilAlive"
+	? bool_TZK_DEV_FPS: goto "skip1"
 
 	; check for new order
 	? _idOrder == _order select 0: goto "NoNewOrder"
@@ -86,10 +83,14 @@ _giPatrol = _gi; _bTakeTown=false; _nDestroy=0
 
 	_money = groupMoneyMatrix select _si select _gi
 
+	#skip1
 	? _money > 500 : [_unit, _si, _gi] exec "\TZK_Scripts_4_0_5\Server\AICO_CheckBuyUnit.sqs"; [_si, _gi, _giPatrol, 500] exec "\TZK_Scripts_4_0_4\Server\MoneyTransfer.sqs"
-	? time > _timeCheckNextUpgrade : [_si, _gi] exec "\TZK_Scripts_4_0_4\Server\AICO_CheckUpgrade.sqs"; _timeCheckNextUpgrade = time + ([5*60, 60] select dev)
+	
+	? !bool_TZK_DEV_FPS && time > _timeCheckNextUpgrade : [_si, _gi] exec "\TZK_Scripts_4_0_4\Server\AICO_CheckUpgrade.sqs"; _timeCheckNextUpgrade = time + ([5*60, 60] select dev)
 	? time > _timeCheckOrders : goto _currentOrder
 
+	? bool_TZK_DEV_FPS: if(time > 600) goto "Update"
+	
 	? _unit call busyCheck : goto "Update"
 
 	_mhq = mhq select _si
@@ -208,11 +209,12 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 	[0, getPos _mhq, _si, _gi] exec "\TZK_Scripts_4_0_4\Common\SendSetWPCO.sqs"
 	~0.4
 	[_si, _gi + GroupsNum, orderPatrolArea, [0,2]] exec "\TZK_Scripts_4_0_4\Common\SendAIGroupOrder.sqs"; [_si, _gi + GroupsNum, aisKeepMax, 13] exec "\TZK_Scripts_4_0_4\Common\SendAIGroupSetting.sqs"
+	? bool_TZK_DEV_FPS: showDebug ["Exit Comm script", 5000], exit
 	goto "Update"
 
 #PrepareToTakeFirstTown
 	_currentOrder = "TakeFirstTown"
-	_timeCheckOrders = time + 5*60
+	_timeCheckOrders = if(!bool_TZK_DEV_FPS) Then "time + 5*60" Else "time + 5000*60"
 	~(random 10)
 	[0, getPos _mhq, _si, _gi] exec "\TZK_Scripts_4_0_4\Common\SendSetWPCO.sqs"
 	~0.4
@@ -336,7 +338,7 @@ _c = count _units
 	@(alive leader _group)
 	_unit = leader _group
 
-	[_unit, _si, 200] exec "Common\Event\Add_Killed_Infantry.sqs"
+	[_unit, _si, 200] exec "\TZK_Scripts_4_0_4\Common\EventAdd_InfantryKilled.sqs"
 	[_unit, _si, _gi] exec "Server\EventAdd_Infantry.sqs"
 	
 	_money = groupMoneyMatrix select _si select _gi

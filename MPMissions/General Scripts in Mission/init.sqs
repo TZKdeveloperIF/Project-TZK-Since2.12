@@ -4,7 +4,7 @@
 debug = true
 
 _nil = "scalar bool array string 0xfcffffef"
-{ if (format ["%1", call _x] == _nil) Then {call (_x + " = false")} } forEach ["dev", "boole_Infantry_Mode", "bool_TZK_SEMod_Mode", "bool_TZK_Vanilla_Mode", "bool_TZK_199_Mode", "bool_TZK_MF_Mode", "bool_TZK_Yugo_Mode", "bool_TZK_ETON_Mod",   "bool_TZK_BOH_WAP"]
+{ if (format ["%1", call _x] == _nil) Then {call (_x + " = false")} } forEach ["dev", "bool_TZK_DEV_FPS", "boole_Infantry_Mode", "bool_TZK_SEMod_Mode", "bool_TZK_Vanilla_Mode", "bool_TZK_199_Mode", "bool_TZK_MF_Mode", "bool_TZK_Yugo_Mode", "bool_TZK_ETON_Mod",   "bool_TZK_BOH_WAP"]
 
 ; "UsedVersion" is 2.01 script command, but its syntax is similar as if it's a variable (actually one can assign another value to it as "time" or "_time"). Directly apply it won't cause debug error info in OFP versions older than 2.01. Its return value on 2.01 version is 2010.
 ; This new design will make those "1.99 missions" using 2.01 functions if it's open under 2.01 game. Before applying this design, it's necessary to decouple bool_TZK_199_Mode with other mods, and find out the method remove thousands of markers and town/radio sensors defined for 1.99 missions in mission.sqm.
@@ -18,14 +18,17 @@ Init_TZK_Script_Order = false
 
 @ Init_TZK_Script_Order
 Init_TZK_Script_Order = false
+deleteObjDelay = deleteUnitDelay
 [] exec "\TZK_Scripts_4_0_4\Common\Init\TheWorld.sqs"
 ? bool_TZK_SEMod_Mode: ["if (TheWorld == {C}) Then {TheWorld = {G}} Else {exit}, if !isServer Then {exit}, publicVariableString {TheWorld}", 1] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
+? bool_TZK_DEV_FPS: timeLimit = 0
 
 _initUnitTypes = "\TZK_Scripts_4_0_5\Common\InitUnitTypes.sqs"; _initStructureTypes = "\TZK_Scripts_4_0_5\Common\InitStructureTypes.sqs"
 ; ? bool_TZK_MF_Mode: 
 ; ? bool_TZK_Yugo_Mode:
 
 [] exec "\TZK_Scripts_4_0_4\Common\InitPublicVariables.sqs"
+pvConcurStatus1 = -1; pvConcurStatus2 = -1;
 [] exec _initStructureTypes
 [] exec _initUnitTypes
 [] exec "\TZK_Scripts_4_0_5\Common\InitInfoMsgTypes.sqs"
@@ -66,6 +69,7 @@ _initUnitTypes = "\TZK_Scripts_4_0_5\Common\InitUnitTypes.sqs"; _initStructureTy
 ["\TZK_Scripts_4_0_4\Common\HandleStructMatrixRemove.sqs"] exec "\TZK_Scripts_4_0_5\Common\Msg\mStructMatrixRemove.sqs"
 
 ["\TZK_Scripts_4_0_5\Common\Msg\hAITemporaryOrder.sqs"] exec "\TZK_Scripts_4_0_5\Common\Msg\mAITemporaryOrder.sqs"
+["Common\Msg\hAIStatus.sqs"] exec "Common\Msg\mAIStatus.sqs"
 ? bool_TZK_199_Mode: [] exec "\TZK_Scripts_4_0_4\Common\Msg\mSpoofTarget.sqs", [] exec "\TZK_Scripts_4_0_4\Common\Msg\mSwitchMagazine.sqs"
 
 ; town descriptor indexes
@@ -134,7 +138,10 @@ _items = ["1x", "2x"];
 Vote_ItemNames set [_i, "Income Ratio"]; Vote_Matrix set [_i, [Vote_ItemNames select _i, _items, 0, 0] ]; _i = _i + 1
 
 _items = ["OFF", "ON"];
-Vote_ItemNames set [_i, "Income Grow"]; Vote_Matrix set [_i, [Vote_ItemNames select _i, _items, 0, 0] ]; _i = _i + 1
+; Vote_ItemNames set [_i, "Income Grow"]; Vote_Matrix set [_i, [Vote_ItemNames select _i, _items, 0, 0] ]; _i = _i + 1
+
+_items = ["x1", "x2", "x3", "Never"]; Vote_Item_DeleteDelay = [1,2,3,-1]
+Vote_ItemNames set [_i, "Wreck Disappear Time"]; Vote_Matrix set [_i, [Vote_ItemNames select _i, _items, 0, 0] ]; _i = _i + 1
 
 _items = ["OFF", "ON"];
 Vote_ItemNames set [_i, "BOH WAP Vehicle"]; Vote_Matrix set [_i, [Vote_ItemNames select _i, _items, [0,1] select bool_TZK_BOH_WAP, [0,1] select bool_TZK_BOH_WAP] ]; _i = _i + 1
