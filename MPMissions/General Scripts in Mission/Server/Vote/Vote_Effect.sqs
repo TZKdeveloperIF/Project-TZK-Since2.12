@@ -13,4 +13,5 @@ _item_Value = _this select 1
 ? Vote_ItemNames select _item_Index == "Resistance": restanksx = _item_Value + 1, upgDefs select upgTownGroupH set [1, [60000 + 5000*restanksx, 100] select dev], exit
 ? Vote_ItemNames select _item_Index == "Income Ratio": Incomex = _item_Value + 1, exit
 ? Vote_ItemNames select _item_Index == "Income Grow": IncomeGrow_TZK = _item_Value, exit
+? Vote_ItemNames select _item_Index == "Destroyed Vehicles/Corpses Disappear Time": deleteObjDelay = deleteUnitDelay * (Vote_Item_DeleteDelay select _item_Value), exit
 ? Vote_ItemNames select _item_Index == "BOH WAP Vehicle" && !bool_TZK_Yugo_Mode: bool_TZK_BOH_WAP = [false, true] select _item_Value, "unitDefs select _x set [udFactoryType, [-1, 2^stHeavy] select bool_TZK_BOH_WAP]" forEach [wapW01, wapE01], exit

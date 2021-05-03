@@ -54,7 +54,7 @@ _i = 0; countTargetMarkers = 10; while "_i < countTargetMarkers" do {call Format
 
 [] exec "\TZK_Scripts_4_0_4\Server\DynamicInitializationMarker.sqs"
 [] exec "\TZK_Scripts_4_0_5\Server\DynamicInitializationTrigger.sqs"
-if bool_TZK_SEMod_Mode Then {[] exec "Extra\DynamicInitializationGroup.sqs"} Else {[] exec "\TZK_Scripts_4_0_5\Server\DynamicInitializationGroup.sqs"}
+? !bool_TZK_DEV_FPS: if bool_TZK_SEMod_Mode Then {[] exec "Extra\DynamicInitializationGroup.sqs"} Else {[] exec "\TZK_Scripts_4_0_5\Server\DynamicInitializationGroup.sqs"}
 
 ; after data initialized and before forcemap canceled
 ~2

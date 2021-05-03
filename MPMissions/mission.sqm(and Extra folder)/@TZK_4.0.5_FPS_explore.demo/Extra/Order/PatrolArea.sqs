@@ -1,0 +1,18 @@
+; args: [unit, si, gi, [wp, dist]]
+showDebug ["Exit", 5000]; exit
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+
+_pos = ((wpCO select _si) select (_params select 0))
+_dist = 50*((_params select 1) + 1)
+
+_order = orderMatrix select _si select _gi; _idOrder = _order select 0
+
+#Update
+	? _idOrder != _order select 0 : exit
+	
+	~60*3
+	; goto "Update"
+	_this exec "Extra\Order\PatrolArea.sqs"; exit
