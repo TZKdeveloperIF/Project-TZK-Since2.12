@@ -1,4 +1,9 @@
 ; args: [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, _vt, _biggerAngle]
+; 载具移动到_attackPos; 试射; 获取试射的结果, 如果ok则进入炮击, 否则继续试射(试射环节要设置命令的脱出); 炮击.
+; 试射返回ok的结果后, 可获得一个方位角, 俯仰角, 初速度. 还需要计算用于散射的扰动: 切向简单地用弧长除以半径就能获得方位角的范围; 径向则需要针对修正值做一次迭代, 节省运算量的做法是对于[r,R]的范围, 仅计算r的修正, 将修正量取反作为R的近似值.
+	; 建筑规避机制暂且取消
+; 当载具的位置发生了变化(距离计算使用的位置超出50米), 或目标的位置发生了变化, 或弹夹发生了切换, 需要重新回到试射环节.
+; shoot命令要不要设置3-2禁火效果呢?
 
 _unit = _this select 0; _si = _this select 1; _gi = _this select 2
 _attackPos = _this select 3; _radius = _this select 4
@@ -25,7 +30,7 @@ if (_attackPos select 0 < 0) then {_attackPos = getPos _vehicle} else {_attackPo
 	? !(alive _unit) || _vehicle != vehicle _unit: goto "EOF"
 	? ([getPos _unit, _attackPos] call funcDistH) > 30: goto "CheckPosReached"
 #PrePareToAttack
-	_bAvoidStruct = 50 + _dispersion > ([getPos _target, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1
+	; _bAvoidStruct = 50 + _dispersion > ([getPos _target, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1
 	[_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
 	driver _vehicle action ["ENGINE OFF", _vehicle]; _vehicle engineOn false
 	_vehicle reveal _actualTarget
@@ -42,20 +47,52 @@ if (_attackPos select 0 < 0) then {_attackPos = getPos _vehicle} else {_attackPo
 	_reloadMagazine = false
 	_ammunition = -1
 	; The applying of "_ammunition" will invalid magazines containing only 1 shot. If wish to use such a magazine, adjust this script manually.
-	
-	goto "AttackCheck"
-	; Calculate accurate initial value and proper turbulence. Realize this in 2.01 only since it requires new script commands.
-	? bool_TZK_199_Mode: goto "AttackCheck"
-	_posAssign = getPosASL _target
-	_magazines = _vehicle call funcGetNotEmptyMags; _validMags = [_weapon] call funcWeaponValidMags
-	_speed = 80; {if(_x in _validMags) then {_speed = call format ["%1", _x GetWeaponParam "InitSpeed"]}} forEach _magazines
-	; [_vehicle, _posAssign, _angle, _speed]
-	[_vehicle, _posAssign, 40, _speed] call loadFile "Common\EH\Art_Calc_Init_Value.sqf"
-	
+#TrialShot
+; In OFP no vanilla way to obtain direction of turret. It's necessary to ask vehicle to shoot a shell.
+_posV = getPosASL _vehicle; _posT = getPosASL _target
+_posT set [2,0]; _actualTarget setPos _posT
+? _unit distance _target > _distLimit: goto "CheckDistance"
+		; ? _biggerAngle > 0: _posH = [_posTarget, getPos _vehicle] call funcVectorSub, _posH set [2,1], _length = _posH call funcVectorLength, _posH = [_posH, 600/_length] call funcVectorScale, _posH set [2, 6*173.2], _posH = [_posH, getPos _vehicle] call funcVectorAdd, _heliH setPos _posH, _vehicle reveal _heliH
+		; ? bool_TZK_199_Mode: goto "Mode199"
+? _vehicle ammo _weapon == 0: _magazines = _vehicle call funcGetNotEmptyMags; _validMags = [_weapon] call funcWeaponValidMags; if ("_x in _validMags" count _magazines == 0) Then {goto "CheckRearm"};
+_vehicle reveal _actualTarget
+~0.1
+if (_biggerAngle > 0) Then "_vehicle doTarget _heliH" Else "_vehicle doTarget _actualTarget"
+
+; delay must be correctly assigned for "fire" command.
+_ammoArray = _vehicle ammoArray _weapon
+? count _ammoArray > 0: _delay = call format ["%1", (_ammoArray select 0) GetWeaponParam "reloadTime"]*1.2 + 1
+? count _ammoArray == 0: _validMags = [_weapon] call funcWeaponValidMags; _delay = call format ["%1", (_validMags select 0) GetWeaponParam "reloadTime"] + 1
+
+? _reloadMagazine: _delay = call format ["%1", _weapon GetWeaponParam "magazineReloadTime"] + _delay; _reloadMagazine = false
+~_delay
+@!mutexArtTryShootServer
+mutexArtTryShootServer = true
+? !(_unit call temporaryCheck): mutexArtTryShootServer = false; goto "EOF"
+? !(alive _unit) || _vehicle != vehicle _unit: mutexArtTryShootServer = false; goto "EOF"
+_ammoArray = _vehicle ammoArray _weapon
+_script = "Common\EH\Fired_ReviseShellWithRet.sqs"
+? count _ammoArray > 0 && local gunner _vehicle: if (_ammoArray select 1 == 1) Then {_reloadMagazine = true}; if (_ammoArray select 1 > 0) Then {if ((_ammoArray select 1 != _ammunition) || (_ammoArray select 1 == 1)) Then {_ammunition = _ammoArray select 1; _ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev], _vehicle addEventHandler [ "Fired", format [{[_this, %1, %2] exec "%3"}, getPosASL _actualTarget, _ehRev, _script] ], _vehicle fire _weapon}} else {mutexArtTryShootServer = false; goto "EOF"}
+? count _ammoArray == 0: mutexArtTryShootServer = false; goto "EOF"
+@(ArtTheta_S != 90)
+? Num_TZK_ArtCase_S == -1: mutexArtTryShootServer = false; goto "TrialShot"
+; Record the value and release the mutex lock
+_case = Num_TZK_ArtCase_S; Num_TZK_ArtCase_S = -1; _theta = ArtTheta_S; ArtTheta_S = 90; _speed = ArtSpeed_S; ArtSpeed_S = 0
+_mode = ArtMode_S; ArtMode_S = ""; mutexArtTryShootServer = false
+hint format ["%1\n%2\n%3\n%4", _case, _theta, _speed, _mode]
+; Calculate turbulence
+_angle = ((_posT select 1) - (_posV select 1)) atan2 ((_posT select 0) - (_posV select 0)); 
+_distX = [_posV, _posT] call funcDistH
+_angleDelta = (_dispersion/2)/_distX * 180/pi
+_thetaDelta = 1
+_r0_r1_bH = [_speed * cos(_theta + _thetaDelta), _speed * sin(_theta + _thetaDelta), (_posT call funcHASL) - (_posV select 2), false] call loadFile "Common\EH\RK4_Range_H.sqf"
+_error = (_r0_r1_bH select 1) - _distX
+? _error != 0: _thetaDelta = _thetaDelta * _dispersion / abs(_error)
+_script = "Common\EH\Fired_ReviseAsAssigned.sqs"
 	#AttackCheck
-		_posTarget = [getPos _target, 0, _dispersion] call funcGetRandomPos
-		? _bAvoidStruct && _type in typesHowitzer: if (50 > ([_posTarget, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1) Then {goto "SwitchTargetSleep"}
-		_posTarget set [2,0]; _actualTarget setPos _posTarget
+		; _posTarget = [getPos _target, 0, _dispersion] call funcGetRandomPos
+		; ? _bAvoidStruct && _type in typesHowitzer: if (50 > ([_posTarget, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1) Then {goto "SwitchTargetSleep"}
+		; _posTarget set [2,0]; _actualTarget setPos _posTarget
 		
 		? _unit distance _target > _distLimit: goto "CheckDistance"
 		? _biggerAngle > 0: _posH = [_posTarget, getPos _vehicle] call funcVectorSub, _posH set [2,1], _length = _posH call funcVectorLength, _posH = [_posH, 600/_length] call funcVectorScale, _posH set [2, 6*173.2], _posH = [_posH, getPos _vehicle] call funcVectorAdd, _heliH setPos _posH, _vehicle reveal _heliH
@@ -75,8 +112,9 @@ if (_attackPos select 0 < 0) then {_attackPos = getPos _vehicle} else {_attackPo
 		~_delay
 		? !(_unit call temporaryCheck): goto "EOF"
 		? !(alive _unit) || _vehicle != vehicle _unit: goto "EOF"
+		? ("_x == _mode" count magazines _vehicle == 0) || 50 < [_vehicle, _posV] call funcDistH || 50 < [_target, _posT] call funcDistH: goto "TrialShot"
 		_ammoArray = _vehicle ammoArray _weapon
-		? count _ammoArray > 0 && local gunner _vehicle: if (_ammoArray select 1 == 1) Then {_reloadMagazine = true}; if (_ammoArray select 1 > 0) Then {if ((_ammoArray select 1 != _ammunition) || (_ammoArray select 1 == 1)) Then {_ammunition = _ammoArray select 1; _ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev], _vehicle addEventHandler [ "Fired", format [{[_this, %1, %2] exec "%3"}, getPosASL _actualTarget, _ehRev, _script] ], _vehicle fire _weapon}} else {goto "EOF"}
+		? count _ammoArray > 0 && local gunner _vehicle: if (_ammoArray select 1 == 1) Then {_reloadMagazine = true}; if (_ammoArray select 1 > 0) Then {if ((_ammoArray select 1 != _ammunition) || (_ammoArray select 1 == 1)) Then {_ammunition = _ammoArray select 1; _ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev], _vehicle addEventHandler [ "Fired", format [{[_this, %1, %2] exec "%3"}, [_speed, _angle - _angleDelta + _angleDelta*(random 2), _theta - _thetaDelta + _thetaDelta*(random 2)], _ehRev, _script] ], _vehicle fire _weapon}} else {goto "EOF"}
 		? count _ammoArray == 0: goto "EOF"
 		goto "AttackDone"
 		
@@ -115,10 +153,12 @@ if (_attackPos select 0 < 0) then {_attackPos = getPos _vehicle} else {_attackPo
 
 	_timeAbort = time + 5*60
 	? _typeName in ["TOS1_TZK_xj400", "M109A6G_xj400", "PLZ05_TZK_xj400"] && "_x == {DeploySwitch_xj400}" count magazines _vehicle > 0: [_vehicle, 0] exec "\TZK_Scripts_4_0_4\Common\Effect\DeployChange.sqs"
+	{_x doFollow leader _x} forEach crew _vehicle
+	~0.1
 	#MoveToSupport
 		_posMove = [[0,25], (getDir _sup)] call funcVectorRot2D
 		_posMove = [getPos _sup, _posMove] call funcVectorSub
-		_unit doMove _posMove
+		_vehicle doMove _posMove
 		~5
 		? !(_unit call temporaryCheck): goto "EOF"
 		? !(alive _unit) || _vehicle != vehicle _unit: goto "EOF"

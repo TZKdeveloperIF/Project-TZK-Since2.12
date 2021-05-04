@@ -142,6 +142,22 @@ _params = []; _i = 1; while "_i < count _entry" do "_params set [_i - 1, _entry 
 _delay = 5; goto "Quit"
 #Skip_LV4_ShootBigAngle
 
+; Status Level 4: Shoot Target Type.
+? initStatusMatrix select _si * GroupsNum + _gi select orderTempHoldTown select 0 == 0: goto "Skip_LV4_HoldTown"
+_entry = initStatusMatrix select _si * GroupsNum + _gi select orderTempHoldTown
+_params = []; _i = 1; while "_i < count _entry" do "_params set [_i - 1, _entry select _i]; _i = _i + 1"
+[_unit, _si, _gi, _params] exec format["%1", orderTempDefs select orderTempHoldTown select 2]
+_delay = 5; goto "Quit"
+#Skip_LV4_HoldTown
+
+; Status Level 4: Shoot Target Type.
+? initStatusMatrix select _si * GroupsNum + _gi select orderTempMoveType select 0 == 0: goto "Skip_LV4_Move"
+_entry = initStatusMatrix select _si * GroupsNum + _gi select orderTempMoveType
+_params = []; _i = 1; while "_i < count _entry" do "_params set [_i - 1, _entry select _i]; _i = _i + 1"
+[_unit, _si, _gi, _params] exec format["%1", orderTempDefs select orderTempMoveType select 2]
+_delay = 5; goto "Quit"
+#Skip_LV4_Move
+
 _delay = 0
 #Quit
 ~_delay
