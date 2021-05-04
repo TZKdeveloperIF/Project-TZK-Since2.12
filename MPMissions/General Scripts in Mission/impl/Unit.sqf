@@ -5,6 +5,11 @@ if (!bool_TZK_Vanilla_Mode && !bool_TZK_SEMod_Mode) Then {
 	_entry = unitDefs select _su25BB, _scripts = _entry select udscripts, _scripts set [count _scripts, "Common\Equip\Su25BB.sqs"];
 	_entry = unitDefs select _su25Raduga, _scripts = _entry select udscripts, _scripts set [count _scripts, "Common\Equip\Su25Raduga.sqs"];
 };
+comment "SE requrests.";
+if bool_TZK_SEMod_Mode then {
+	vDoubledRange = [_vulcanW, _shilkaE, _m2a2aa, _bmp2aa, _vulcanTransp, _bmp2Cannon, _boatW3, _boatE3, _vulcanBaseW, _shilkaBaseE, _patrolboatW, _patrolboatE];
+	vUnlimitedRange = [_m1a1artW, _m109artW, _t80artE, _plz05artE, _vulcanW2, _vulcanBaseW2, _tunguskaE, _tunguskaBaseE, _patrolshipW, _patrolshipE];
+};
 
 
 comment "After having called the 'impl\Unit.sqf', the unitTypeData and unitTypeArray should be re-defined.";

@@ -7,7 +7,11 @@ Basing on motion equation of "shotShell"-simulation CfgAmmo class member, artill
   单位和目标的坐标需要记录。当坐标发生变化，初值需要被重新计算。
   The effect of turbulence here will make hit area a ladder-shaped fan.
   这种扰动的效果将会令弹着区域呈现梯形扇面.
-
+	+ 初始探测
+		+ 受限于OFP的简陋脚本命令，炮击的信息最好还是让载具试射一发来获取。
+			+ 使用一个全局的互斥变量。该变量只管理“试射”的队列。每个载具的脚本在延时后进入就绪态，然后等待该变量；之后设置互斥，串行地发射炮弹，在EH中获取需要的数据，并通过全局变量将数值读入脚本。数据读取完毕后，释放锁。如果载具的Fired-EH返回失败的试射，则下一次发射仍然是试射，脚本从尾部重新进入队列。
+		
+		
 ## 4.0.5.05
 + 增加高仰角发射art的选项。这需要用一个浮空的target来指示目标，而且还要求target没有geometry。
 	+ 目标选择为 target_tzk，heliH物体的坐标变更无法被响应，老问题了。
