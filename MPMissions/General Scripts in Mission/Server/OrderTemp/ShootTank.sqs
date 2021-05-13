@@ -42,16 +42,6 @@ if (_attackPos select 0 < 0) then {_attackPos = getPos _vehicle} else {_attackPo
 	_reloadMagazine = false
 	_ammunition = -1
 	; The applying of "_ammunition" will invalid magazines containing only 1 shot. If wish to use such a magazine, adjust this script manually.
-	
-	goto "AttackCheck"
-	; Calculate accurate initial value and proper turbulence. Realize this in 2.01 only since it requires new script commands.
-	? bool_TZK_199_Mode: goto "AttackCheck"
-	_posAssign = getPosASL _target
-	_magazines = _vehicle call funcGetNotEmptyMags; _validMags = [_weapon] call funcWeaponValidMags
-	_speed = 80; {if(_x in _validMags) then {_speed = call format ["%1", _x GetWeaponParam "InitSpeed"]}} forEach _magazines
-	; [_vehicle, _posAssign, _angle, _speed]
-	[_vehicle, _posAssign, 40, _speed] call loadFile "Common\EH\Art_Calc_Init_Value.sqf"
-	
 	#AttackCheck
 		_posTarget = [getPos _target, 0, _dispersion] call funcGetRandomPos
 		? _bAvoidStruct && _type in typesHowitzer: if (50 > ([_posTarget, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1) Then {goto "SwitchTargetSleep"}

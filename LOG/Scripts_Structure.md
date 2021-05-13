@@ -1,7 +1,10 @@
 Aiming to reduce the volume of mission files, many scripts are placed in AddOns but not in mission. However this will make script adjusting more inconvenient. Having tried on 4.0.4 version, the structure of scripts should be better designed in 4.0.5 version.  
 Besides, the use of **Preprocessor** can help a lot to simplify the mission.sqm and description.ext as well. This part is illustrated in **Preprocessor.md**.
+# Hint
++ "goto" Loops in init.sqs will be busily executed as if it's a be called sqf/string.
+  init.sqs中的goto循环会被忙处理，如同sqf脚本或string字符串。
 
-#4.0.5 Done
+# 4.0.5 Done
 + Modifications in "impl" folder of 4.0.4 have been merged in 4.0.5.
 + Scripts relating with external mods.
 	+ Commented "UnitTypes_MFCTI116_TZK_Units.sqf" and add impl in "Common\Init\UnitTypes_VanillaMode.sqf".

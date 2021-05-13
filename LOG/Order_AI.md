@@ -2,6 +2,10 @@ Recording the updating of commanding AI groups. Order, orderTemp and settings of
 # Plan
 + Recover busy/temporary array as matrix. The array will cost too many times to check the unit for it records all units in one array.
 
+## 4.0.5.08
++ Triple "duration" for reclaim and occupy order to make soldiers stay 30 mins at most in base for available vehicle/structure.
++ Add reclaim and occupy as lv0 status, add disengage, spoof missile, flight altitude, switch sabot/heat, switch magazine as lv1, move, hold town, shoot, transport as lv4.
+
 ## 4.0.5.05
 + Group Initial Concurrent Status
   If temporary order isn't considered, units of a group will execute the group's order after finished rally point and pickup. It'll certainly be more convenient if units automatically execute concurrent orders as well. 

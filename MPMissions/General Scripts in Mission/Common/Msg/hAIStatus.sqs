@@ -26,7 +26,7 @@ _i = 0; _c = count _entry - 1; while" _i < _c" do "_entry set [_i + 1, if _bClea
 ? _si != siPlayer: mutexHandleAITemporary = false; exit
 
 _group = groupMatrix select _si select _gi; (leader _group) sidechat format["Status %1", if _bClear then {"Clear"} else {"Changed, " + ([-1, _type, _params] call funcGetOrderTempDesc)}]
-? name player == "IF": player groupChat format ["%1", _entry]
+; ? name player == "IF": player groupChat format ["%1", _entry]
 mutexHandleAITemporary = false; exit
 
 #OrderAll

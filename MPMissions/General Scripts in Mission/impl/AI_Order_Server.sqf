@@ -12,6 +12,9 @@ comment {
 };
 orderTempDefs select orderTempReclaim set [2, "Server\OrderTemp\Reclaim.sqs"];
 
+orderTempDefs select orderTempReclaim select 1 set [4, [ "Duration", "20", "format [""%1min"", 1.5*(_this+1)]" ]];
+orderTempDefs select orderTempOccupy select 1 set [3, [ "Duration", "20", "format [""%1min"", 1.5*(_this+1)]" ]];
+
 _type = count orderTempDefs;
 orderTempShootBigAngle = _type;
 _param0 = [ "Attack Pos", "count (wpCO select siPlayer)", "_posRelTown = ((wpCO select siPlayer) select _this) call funcCalcTownDirDistFromPos; format[""co%1 %2"", _this, [_posRelTown, """"] select ((((wpCO select siPlayer) select _this) select 0) == -1)]" ];
