@@ -18,14 +18,14 @@ _distLimit = viewDistance; _hint = "Target is out of the structure's ability. Or
 ? (upgMatrix select _si) select upgLongWeaponRange == 2 && (upgMatrix select _si) select upgLongArtRange == 2: _distLimit = 2*viewDistance; _hint = "Target is outside 2xviewDistance. Order aborted."
 ? _type in structsOccupiableArtHowitzer: _distLimit = 10000; _hint = "Target is very far. Probably can't hit it directly."
 ? _type in structsOccupiableMortar: _distLimit = 800;  _hint = "Mortar structure is limited within 800 meters since TZK_4.0.4.07."
-? _unit distance _target > _distLimit: _unit groupChat _hint; goto "Exit"
+? _unit distance _target > _distLimit: _unit groupChat _hint; goto "EOF"
 ? _unit distance _target < _distLimit && _unit distance _target > viewDistance: _unit groupChat "Target is far. Probably missing."
-? _unit distance _target < 50: _unit groupChat "Target too close. This will be suicide. Order aborted."; goto "Exit"
+? _unit distance _target < 50: _unit groupChat "Target too close. This will be suicide. Order aborted."; goto "EOF"
 #PrePareToAttack
 	_bAvoidStruct = 50 + _dispersion > ([getPos _target, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1
 	_unit groupChat "Prepare to attack.";
 	_weapon = (_vehicle call funcVehParamWeapons) select 0
-	? !(_vehicle hasWeapon _weapon): _unit groupChat "No proper weapon. Order aborted. Rearm me or help me to deploy, sir."; goto "Exit"
+	? !(_vehicle hasWeapon _weapon): _unit groupChat "No proper weapon. Order aborted. Rearm me or help me to deploy, sir."; goto "EOF"
 	_weapons = (weapons _vehicle) - [_weapon]; {_vehicle removeWeapon _x} forEach _weapons; {_vehicle addWeapon _x} forEach _weapons
 	_vehicle reveal _actualTarget
 	_vehicle doTarget _actualTarget
@@ -54,12 +54,12 @@ _distLimit = viewDistance; _hint = "Target is out of the structure's ability. Or
 		~0.1
 		? _reloadMagazine: _delay = call format ["%1", _weapon GetWeaponParam "magazineReloadTime"] + _delay; _reloadMagazine = false
 		~_delay
-		? call orderCheck : goto "Exit"
-		? !(alive _unit) || _vehicle != vehicle _unit: goto "Exit"
+		? call orderCheck : goto "EOF"
+		? !(alive _unit) || _vehicle != vehicle _unit: goto "EOF"
 		_ammoArray = _vehicle ammoArray _weapon
 		
-		? count _ammoArray > 0: if (_ammoArray select 1 == 1) Then {_reloadMagazine = true}; if (_ammoArray select 1 > 0) Then {if ((_ammoArray select 1 != _ammunition) || (_ammoArray select 1 == 1)) Then {_ammunition = _ammoArray select 1; if bool_TZK_Art_RK4 Then {_ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev], _vehicle addEventHandler [ "Fired", format [{[_this, %1, %2] exec "%3"}, getPosASL _actualTarget, _ehRev, _script] ]}, _vehicle fire _weapon}} else {_unit groupChat "Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."; goto "Exit"}
-		? count _ammoArray == 0: _unit groupChat "Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."; goto "Exit"
+		? count _ammoArray > 0: if (_ammoArray select 1 == 1) Then {_reloadMagazine = true}; if (_ammoArray select 1 > 0) Then {if ((_ammoArray select 1 != _ammunition) || (_ammoArray select 1 == 1)) Then {_ammunition = _ammoArray select 1; if bool_TZK_Art_RK4 Then {_ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev], _vehicle addEventHandler [ "Fired", format [{[_this, %1, %2] exec "%3"}, getPosASL _actualTarget, _ehRev, _script] ]}, _vehicle fire _weapon}} else {_unit groupChat "Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."; goto "EOF"}
+		? count _ammoArray == 0: _unit groupChat "Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."; goto "EOF"
 		goto "AttackDone"
 		
 		#Mode199
@@ -75,11 +75,11 @@ _distLimit = viewDistance; _hint = "Target is out of the structure's ability. Or
 		~0.1
 		? _reloadMagazine: _delay = ([0,5] select (_ammoOld == 25 && "M252Mortar_TZK_xj400" countType [_vehicle] > 0) ) + _delay; _reloadMagazine = false
 		~_delay
-		? call orderCheck : goto "Exit"
-		? !(alive _unit) || _vehicle != vehicle _unit: goto "Exit"
+		? call orderCheck : goto "EOF"
+		? !(alive _unit) || _vehicle != vehicle _unit: goto "EOF"
 		_ammoNow = _vehicle ammo _weapon
 		? _ammoNow > 0: if (_ammoNow == 1) Then {_reloadMagazine = true}; if (_ammoNow != _ammunition || _ammoNow == 1) Then {_ammunition = _ammoNow, if bool_TZK_Art_RK4 Then {_ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev], _vehicle addEventHandler [ "Fired", format [{[_this, %1, %2] exec "%3"}, getPosASL _actualTarget, _ehRev, _script] ]}, _vehicle fire _weapon}
-		? _ammoNow == 0: if (_ammoOld == 0) Then {_unit groupChat "Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."; goto "Exit"}
+		? _ammoNow == 0: if (_ammoOld == 0) Then {_unit groupChat "Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."; goto "EOF"}
 		
 		#AttackDone
 		~0.1
@@ -90,7 +90,7 @@ _distLimit = viewDistance; _hint = "Target is out of the structure's ability. Or
 	goto "AttackCheck";
 #CheckRearm
 	_vs = [getPos _unit, 50, (typesSupport select si0) + (typesSupport select si1) + [(typesMHQ select _si)], []] call funcGetNearbyVehicles
-	? count _vs == 0 : _unit groupChat "No support vehicle within 50 meters. Magazines exhausted. Order aborted."; goto "Exit"
+	? count _vs == 0 : _unit groupChat "No support vehicle within 50 meters. Magazines exhausted. Order aborted."; goto "EOF"
 	_sup = (_vs select 0) select 0
 	_speed = -1; _mag = "";
 	? !bool_TZK_199_Mode: _magazines = magazines _vehicle; _validMags = [_weapon] call funcWeaponValidMags; {if (_x in _validMags) Then {_mag = _x}} forEach _magazines
@@ -99,21 +99,21 @@ _distLimit = viewDistance; _hint = "Target is out of the structure's ability. Or
 	_unit groupChat "Rearming at support vehicle. If I'm far away from you, probably I can't receive supplemented magazines. In this case, please use Unit Camera and look at me."; [_unit, _sup] exec "Player\Rearm.sqs"; doStop _unit
 	#WaitRearmComplete
 		~5
-		? call orderCheck : goto "Exit"
-		? !(alive _unit) || _vehicle != vehicle _unit : goto "Exit"
+		? call orderCheck : goto "EOF"
+		? !(alive _unit) || _vehicle != vehicle _unit : goto "EOF"
 		? !someAmmo _vehicle: goto "WaitRearmComplete"
 	~_delay + 1
 	? _speed <= 0: goto "PrePareToAttack"
 	_delay = 1; [_vehicle, _speed] exec "\TZK_Scripts_4_0_4\Common\ReEquip\SwitchMagPreset.sqs"; _unit groupChat "Switching magazine. Again, if I'm far away, use Unit Camera and look at me."
 	#WaitSwitchComplete
 		~_delay
-		? call orderCheck : goto "Exit"
-		? !(alive _unit) || _vehicle != vehicle _unit : goto "Exit"
+		? call orderCheck : goto "EOF"
+		? !(alive _unit) || _vehicle != vehicle _unit : goto "EOF"
 		_delay = 5
 		? !someAmmo _vehicle: goto "WaitSwitchComplete"
 	goto "PrePareToAttack"
 
-#Exit
+#EOF
 deleteVehicle _actualTarget; PlayerShootingUnits set [_uid, objNull]
 ? _biggerAngle > 0: deleteVehicle _heliH
 exit

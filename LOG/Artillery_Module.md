@@ -1,5 +1,16 @@
 Basing on motion equation of "shotShell"-simulation CfgAmmo class member, artillery module is possible to be designed and introduced into CTI. Since this part is still in developing, its scripts should be placed in mission but not AddOns.
 
+## 4.0.5.08
++ Add some definition of tank/mortar structure weapon/magazine in impl\Equip.sqf to make "ValidWeaponEquip.sqf" (ACWA mag of weapon check script) available for them.
+  在impl\Equip.sqf里增加一些坦克, 迫击炮建筑的武器弹夹定义, 使得ACWA的"ValidWeaponEquip.sqf"脚本对它们有效.
++ And record the initSpeed, reloadTime and magazineReloadTime in InitWeaponsInfo.sqs. 
+  并且在 InitWeaponsInfo.sqs 里记录 initSpeed, reloadTime, magazineReloadTime。
+	+ 
+	  由于微分方程的复杂性，必须用数值法和迭代法。为减少运算量，拟采用一次预计算和随机扰动。为兼容ACWA，将信息记录在数组里是更好的。
++ Design pre-calculate SQF script (and RK4 iterating scripts), and adjust all shoot order scripts.
+  设计预计算的SQF脚本（及应用RK4的迭代脚本），并改造全部Shoot命令脚本。
+	+ Shoot scripts have better format now.
+
 ## 4.0.5.06
 + Aiming to reduce the calculation, we only compute accurate elevation angle/initSpeed in the beginning. Disperation is realized by adding small random turbulence.
   为简化运算量，只在炮击命令开始时计算精确的俯仰角/速度。之后的散布通过求得的俯仰角/速度加上一个随机扰动实现。

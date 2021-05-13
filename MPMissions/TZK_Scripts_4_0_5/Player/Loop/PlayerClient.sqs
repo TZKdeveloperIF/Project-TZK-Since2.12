@@ -13,7 +13,7 @@ _songs = ["Track1","Track2","Track3","Track5","Track6","Track7","Track8","Track1
 
 	? pvGameOver != -1 : [] exec "\TZK_Scripts_4_0_4\Player\PlayGameOverSequence.sqs"; [] exec "\TZK_Scripts_4_0_4\Common\Dynamic\TriggerGameEnd.sqs"; Exit
 
-	? time > (timeLastPing + blockTime) && !bBlockedByClient : bBlockedByClient = true; [] exec "\TZK_Scripts_4_0_4\Player\BlockByClient.sqs"
+	? time > (timeLastPing + blockTime) && !bBlockedByClient : bBlockedByClient = true; [] exec "Player\BlockByClient.sqs"
 	
 	? !(alive _unit): goto "WaitUntilAlive"
 	_posNow = getPos player; _sensorNow setPos _posNow; _timeNow = time

@@ -31,7 +31,7 @@ _idcStLev = IDC + 810; _idcStItem = IDC + 811; _idcStLabel = IDC + 900; _idcStPa
 {lbAdd [_idcStLev, format["%1", _x] ]} forEach [0,1,2,3,4]
 ; _status = [["Occupy"], [], ["attach wait"], ["Move(unit)", "Patrol(unit)", "Hold Town(unit)", "Shoot Target(unit)", "Shoot Big Angle(unit)", "Transport Duty(unit)", "Mine(unit)", "Disable Mine(unit)"], ["Patrol(type)",     , "Mine(type)", "Disable Mine(type)"]]
 _nameOfOrder = "orderTempDefs select _this select 0"
-_status = [[orderTempReclaim], [orderTempDisengageType, orderTempSetFlightAltitude, orderTempSpoofMissileON, orderTempChangeAmmo, orderTempSwitchMagazine], [], [], [orderTempTransportDuty, orderTempShootTarget, orderTempShootBigAngle, orderTempHoldTown, orderTempMoveType]]
+_status = [[orderTempReclaim, orderTempOccupy], [orderTempDisengageType, orderTempSetFlightAltitude, orderTempSpoofMissileON, orderTempChangeAmmo, orderTempSwitchMagazine], [], [], [orderTempTransportDuty, orderTempShootTarget, orderTempShootBigAngle, orderTempHoldTown, orderTempMoveType]]
 
 _hideCommands = "{ ctrlShow [_x, false] } forEach ([_idcOrderLabel, _idcSendOrder, _idcOrder] + _idcParamLabels + _idcParams + [_idcStLev, _idcStItem, _idcStBtn, _idcStBtn + 1])" + {; "{ ctrlShow [_x, false] } forEach [_idcStLabel + _x, _idcStParam + _x]" forEach [0,1,2,3,4,5]}
 _grpSuperior = "([{Commander}] + callsigns) select (aiSetting select (_this select 0) select (_this select 1) select aisSuperior)"
