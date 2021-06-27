@@ -1,5 +1,7 @@
 # CONFIG
 Bug due to definition in CONFIG needs to be completely solved by mod updating and tried to be simply fixed in-mission.
+## 4.0.5.09
++ Fix script name error in player groum tank artillery module.
 ## 4.0.5.05
 + The PP87 82mm mortar for EAST is packed in TZK_CONFIG_4_0_5. It's unnecessary to remove it for vanilla mode. Implement is added using delay script.
 	+ **Solve this bug in 4.0.6**

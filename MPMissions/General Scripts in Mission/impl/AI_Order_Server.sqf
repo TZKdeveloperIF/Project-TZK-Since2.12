@@ -11,6 +11,11 @@ comment {
 	orderDefs select orderPatrolArea set [2, ""];
 };
 orderTempDefs select orderTempReclaim set [2, "Server\OrderTemp\Reclaim.sqs"];
+orderTempDefs select orderTempDisengageType set [2, "Server\OrderTemp\DisengageType.sqs"];
+
+_param0 = [ "Unit type", "count DisengageTypeDefs", "format [""%1"", DisengageTypeDefs select _this ]" ];
+orderTempDefs select orderTempDisengageType set [1, [_param0, _param0, _param0]];
+
 
 orderTempDefs select orderTempReclaim select 1 set [4, [ "Duration", "20", "format [""%1min"", 1.5*(_this+1)]" ]];
 orderTempDefs select orderTempOccupy select 1 set [3, [ "Duration", "20", "format [""%1min"", 1.5*(_this+1)]" ]];
