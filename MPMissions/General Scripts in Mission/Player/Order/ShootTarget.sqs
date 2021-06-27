@@ -26,7 +26,7 @@ _weapons = weapons _unit; _magzines = magazines _unit
 #CheckVehicle
 _vt = _vehicle call funcGetUnitTypeFromObject
 _types_howitzer = +typesHowitzer; if bool_TZK_SEMod_Mode Then {_types_howitzer = _types_howitzer + types_SE_td}
-? _vt in (typesHeavyTank + typesLightTank + _types_howitzer + typesRocketLauncher) || (typeOf _vehicle) in ["M1A1_Art_xj400", "T80_Art_xj400"]: if (_vt in _types_howitzer + typesRocketLauncher && _dispersion < 40) Then {_dispersion = 40} Else {_biggerAngle = 0}; if (typeOf _vehicle == "TOS1_TZK_xj400" && _dispersion < 60) Then {_dispersion = 60}, [_unit, _marker, _target, _vt, _dispersion, _biggerAngle] exec "Player\Order\ShootTank.sqs"; exit
+? _vt in (typesHeavyTank + typesLightTank + _types_howitzer + typesRocketLauncher) || (typeOf _vehicle) in ["M1A1_Art_xj400", "T80_Art_xj400"]: if (_vt in _types_howitzer + typesRocketLauncher && _dispersion < 40) Then {_dispersion = 40} Else {_biggerAngle = 0}; if (typeOf _vehicle == "TOS1_TZK_xj400" && _dispersion < 60) Then {_dispersion = 60}, [_unit, _marker, _target, _vt, _dispersion, _biggerAngle] exec "Player\Order\ShootTank2.sqs"; exit
 
 ? _vt == -1: _vt = _vehicle call funcGetStructTypeFromObject
 ? !( _vt in (structsOccupiableArtilleryMortar + structsOccupiableHowitzer + structsOccupiableArtHowitzer) ): exit
