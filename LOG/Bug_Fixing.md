@@ -1,5 +1,8 @@
 # CONFIG
 Bug due to definition in CONFIG needs to be completely solved by mod updating and tried to be simply fixed in-mission.
+
+## 4.0.5.11
++ Add script for me only to spy group size info when join failed due to size exception.
 ## 4.0.5.09
 + Fix script name error in player groum tank artillery module.
 ## 4.0.5.05
