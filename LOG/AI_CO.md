@@ -1,0 +1,3 @@
+There're less and less CTI player in OFP by now. So I do something to improve AI Commander (or say, AICO). In old CRCTI AICO has 10 times start money (namely $400,000 in most cases), and in TZK the player Inspektor request for more stronger tank platoons. However that's not good enough design. I'll first try make AICO able to do something useful but not only building tanks.
+# Transport Duty
+Since TZK add "side-cheat CIV-like" transport helicopters, it's possible to recover AI transport by air again.

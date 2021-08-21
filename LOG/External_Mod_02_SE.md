@@ -1,11 +1,15 @@
-
-##4.0.5.00
+## 4.0.5.01
++ Help fix no marker for MG structure
++ Add res patrol group implement for SE
++ Remove comments in GetNearbyVehiclesEmpty since it's loaded by "loadFile" command
++ Help fix bug of initEquipmentTypes (strangeLove use no.9 in mistake)
+## 4.0.5.00
 + Check external unit redefinition.
 	+ Merged new soldier model redefine.
 	+ Provides new helicopter redefine contents.
 	+ Use new howitzers and prepare howitzer implement.
 
-#@TZK_4.0.5
+# @TZK_4.0.5
 + Provide TZKSE_CONFIG_4_0_5 as additional CONFIG pbo. It requires TZK_Object of 4.0.3 and TZK_CONFIG_4_0_4, but not TZK_CONFIG_4_0_5 (didn't use anything of TZK_CONFIG_4_0_5).
 + 为SE提供备选的 M109 和 2S19。
 	+ 更换它们的瞄具贴图，为它们增加刻度（只需要根据弹夹初速度 400m/s 生成一套贴图足以，放在SE_CONFIG里），检查旋转问题，追加仪表盘定义，调整driver的高度。

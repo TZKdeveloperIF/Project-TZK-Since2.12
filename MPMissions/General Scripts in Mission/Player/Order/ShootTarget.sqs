@@ -4,7 +4,7 @@ _unit = _this select 0
 _pos = _this select 1
 _marker = format ["TargetP_%1", (_this select 2) select 0]; _target = call _marker
 _dispersion = 10*(_this select 2 select 1); _biggerAngle = _this select 2 select 2
-
+_this = nil
 _uid = [_unit, siPlayer, giPlayer] call funcCalcUID
 ? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
 _id = (playerOrderID select _uid) + 1; [_uid, _id] exec "\TZK_Scripts_4_0_4\Player\Order\New.sqs"
@@ -26,11 +26,11 @@ _weapons = weapons _unit; _magzines = magazines _unit
 #CheckVehicle
 _vt = _vehicle call funcGetUnitTypeFromObject
 _types_howitzer = +typesHowitzer; if bool_TZK_SEMod_Mode Then {_types_howitzer = _types_howitzer + types_SE_td}
-? _vt in (typesHeavyTank + typesLightTank + _types_howitzer + typesRocketLauncher) || (typeOf _vehicle) in ["M1A1_Art_xj400", "T80_Art_xj400"]: if (_vt in _types_howitzer + typesRocketLauncher && _dispersion < 40) Then {_dispersion = 40} Else {_biggerAngle = 0}; if (typeOf _vehicle == "TOS1_TZK_xj400" && _dispersion < 60) Then {_dispersion = 60}, [_unit, _marker, _target, _vt, _dispersion, _biggerAngle] exec "Player\Order\ShootTank2.sqs"; exit
+? _vt in (typesHeavyTank + typesLightTank + _types_howitzer + typesRocketLauncher) || (typeOf _vehicle) in ["M1A1_Art_xj400", "T80_Art_xj400"]: if (_vt in _types_howitzer + typesRocketLauncher && _dispersion < 40) Then {_dispersion = 40} Else {_biggerAngle = 0}; if (typeOf _vehicle == "TOS1_TZK_xj400" && _dispersion < 60) Then {_dispersion = 60}, [_unit, _marker, _target, _vt, _dispersion, _biggerAngle] exec "Player\Order\ShootTank.sqs"; exit
 
 ? _vt == -1: _vt = _vehicle call funcGetStructTypeFromObject
 ? !( _vt in (structsOccupiableArtilleryMortar + structsOccupiableHowitzer + structsOccupiableArtHowitzer) ): exit
 if (_vt in structsOccupiableArtilleryMortar && _dispersion < 60) Then {_dispersion = 60}; if (typeOf _vehicle == "m119_xj400" && _dispersion < 10) Then {_dispersion = 10}; if (typeOf _vehicle == "D30_xj400" && _dispersion < 30) Then {_dispersion = 30}
-[_unit, _marker, _target, _vt, _dispersion, _biggerAngle] exec "Player\Order\ShootStruct2.sqs"
+[_unit, _marker, _target, _vt, _dispersion, _biggerAngle] exec "Player\Order\ShootStruct.sqs"
 
 ; EOF

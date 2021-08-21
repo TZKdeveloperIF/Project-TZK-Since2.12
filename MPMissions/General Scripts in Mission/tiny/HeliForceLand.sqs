@@ -1,0 +1,18 @@
+; args: [helicopter]
+; This script is for ordering AI helicopters to land. Many times AI helicopters will approach the land but keep engine on even they're ordered to "disembark".With the help of this script we at least able to make them turn off the engine.
+_heli = _this select 0; _this = nil
+
+driver _heli action ["ENGINE OFF", _heli]
+~0.5
+_heli engineOn false
+
+~2
+_fuel = fuel _heli
+? isEngineOn _heli && _fuel > 0: _heli setFuel 0
+~10
+driver _heli action ["ENGINE OFF", _heli]
+~0.5
+_heli engineOn false
+
+~1
+? !isEngineOn _heli && _fuel > 0: _heli setFuel _fuel

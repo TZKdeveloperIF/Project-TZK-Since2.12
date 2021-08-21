@@ -8,7 +8,7 @@ _target = _this select 5
 _dispersion = _this select 6
 _commandType = _this select 7
 _biggerAngle = (if (count _this > 8) Then {_this select 8} Else {0})
-
+_this = nil
 ; enum commandType {throw, grenadeL, mortar};
 _speed = [22, 60, 70] select _commandType; _range = [60, 150, 450] select _commandType; _text = ["Throw", "Grenade", "Mortar"] select _commandType
 _weapon = ["Throw", primaryWeapon _unit, primaryWeapon _unit] select _commandType
@@ -17,7 +17,7 @@ _validMags = [ [{HandGrenade}, {SmokeShell}, {SmokeShellGreen}, {SmokeShellRed}]
 _rldTime = [3.5, if (_weapon == "MM1" || _weapon == "6G30") Then {0.6} Else {5.5}, 5.5] select _commandType
 _fireCommand = ["(_this select 0) fire (_this select 1)", "(_this select 0) fire (_this select 1)", "(_this select 0) fire [_this select 1, _this select 1, _this select 1]"] select _commandType
 
-_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _actualTarget = typeOf _target camCreate getPosASL _target; _actualTarget exec "\TZK_Scripts_4_0_4\Common\Command\allowDamageFalse.sqs"; _script = "Common\EH\Fired_ReviseShellDir.sqs"
+_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Common\EH\Fired_ReviseShellDir.sqs"
 ? _biggerAngle > 0: _heliH = typeOf _target camCreate [0,0,0]; _script = "Common\EH\Fired_ReviseShell_BigAngle.sqs"
 ; CheckDistance
 _posOrdered = getPosASL _vehicle; _distLimit = _range + 350; _hint = "Target is too far for infantry " + _text + ". Order aborted."
@@ -52,8 +52,8 @@ _unit doMove _posOrdered
 	? !(_unit call _weaponCheck): _unit groupChat ("No proper weapon for " + _text + ". Order Aborted."), goto "EOF"
 	; _unit groupChat "Target in range. Prepare to attack.";
 	doStop _unit
-	_vehicle reveal _actualTarget
-	_vehicle doTarget _actualTarget
+	_vehicle reveal _target
+	_vehicle doTarget _target
 	
 	_delay = 3
 	; Delay for turning the turret. It'll be good to obtain proper value by the angle's difference, however no way to compute this in OFP.
@@ -102,12 +102,12 @@ _script = "Common\EH\Fired_ReviseAsAssigned.sqs"
 	_magazines = _unit call funcGetNotEmptyMags
 	_numOfMagLast = 1 + ("_x in _validMags" count _magazines)
 	#AttackCheck
-		_posTarget = [getPos _target, 0, _dispersion] call funcGetRandomPos; _posTarget set [2,0]; _actualTarget setPos _posTarget
+		_posTarget = [getPos _target, 0, _dispersion] call funcGetRandomPos; _posTarget set [2,0]
 		? _unit distance _target > _range: goto "PrepareToMove"
 		? _biggerAngle > 0: _posH = [_posTarget, getPos _vehicle] call funcVectorSub, _posH set [2,1], _length = _posH call funcVectorLength, _posH = [_posH, 600/_length] call funcVectorScale, _posH set [2, 6*173.2], _posH = [_posH, getPos _vehicle] call funcVectorAdd, _heliH setPos _posH, _vehicle reveal _heliH
-		_vehicle reveal (if (_biggerAngle > 0) then "_heliH" else "_actualTarget")
+		_vehicle reveal (if (_biggerAngle > 0) then "_heliH" else "_target")
 		~0.1
-		_vehicle doTarget (if (_biggerAngle > 0) then "_heliH" else "_actualTarget")
+		_vehicle doTarget (if (_biggerAngle > 0) then "_heliH" else "_target")
 		; Rearm check should be placed in loop below, due to time cost of animation.
 		
 		; delay must be correctly assigned for "fire" command.
@@ -128,14 +128,13 @@ _script = "Common\EH\Fired_ReviseAsAssigned.sqs"
 		; what if magazine changed? sure the elevation will change too.
 		
 		_ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev]
-		; _vehicle addEventHandler [ "Fired", format [{[_this, %1, %2, true, %4, %5] exec "%3"}, getPosASL _actualTarget, _ehRev, _script, _speed, _range] ]
 		_vehicle addEventHandler [ "Fired", format [{[_this, %1, %2] exec "%3"}, [_speed, _angle - _angleDelta + _angleDelta*(random 2), _elev - _thetaDelta + _thetaDelta*(random 2)], _ehRev, _script] ]
 		[_vehicle, _weapon] call _fireCommand
 		goto "AttackDone"
 		
 		#AttackDone
 		~0.1
-		if (_biggerAngle > 0) Then "_vehicle doWatch _posH" Else "_vehicle doWatch (getPos _actualTarget)"
+		if (_biggerAngle > 0) Then "_vehicle doWatch _posH" Else "_vehicle doWatch _posT"
 	goto "AttackCheck"
 #CheckRearm
 	_magData = (_unit call funcGetRearmData) select 1
@@ -170,6 +169,5 @@ _script = "Common\EH\Fired_ReviseAsAssigned.sqs"
 #EOF
 _unit call busyClear
 _unit call temporaryClear
-deleteVehicle _actualTarget
 ? _biggerAngle > 0: deleteVehicle _heliH
 exit

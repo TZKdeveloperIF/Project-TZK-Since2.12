@@ -1,0 +1,19 @@
+; args: [unit, dest]
+; This script is for ordering AI helicopters to take off. Sometimes the destination is rejected by AI to move to and they won't even turn on the engine. With the help of this script we at least able to make them leave the land.
+_unit = _this select 0; _this = nil
+_dest = if(count _this > 1) then {_this select 1} else {getPos _unit}
+
+# CheckAliveLeader
+	~1
+	? !alive leader _unit: goto "CheckAliveLeader"
+_unit commandFollow leader _unit
+~0.2
+_unit dofollow leader _unit
+~0.2
+_unit action ["ENGINE ON", vehicle _unit]
+~0.5
+vehicle _unit engineOn true
+~1
+_unit commandMove _dest
+~0.5
+_unit doMove _dest
