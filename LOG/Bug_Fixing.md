@@ -1,6 +1,9 @@
 # CONFIG
 Bug due to definition in CONFIG needs to be completely solved by mod updating and tried to be simply fixed in-mission.
 
+## 4.0.5.12
++ Fix bug in art module that AI won't change its direction when target pos changed.
++ Remove abandoned art scripts.
 ## 4.0.5.11
 + Add script for me only to spy group size info when join failed due to size exception.
 ## 4.0.5.09

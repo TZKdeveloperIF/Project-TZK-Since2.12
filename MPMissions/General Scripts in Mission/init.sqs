@@ -140,7 +140,7 @@ _items = ["1x", "2x"];
 Vote_ItemNames set [_i, "Income Ratio"]; Vote_Matrix set [_i, [Vote_ItemNames select _i, _items, 0, 0] ]; _i = _i + 1
 
 _items = ["OFF", "ON"];
-; Vote_ItemNames set [_i, "Income Grow"]; Vote_Matrix set [_i, [Vote_ItemNames select _i, _items, 0, 0] ]; _i = _i + 1
+Vote_ItemNames set [_i, "Income Grow"]; Vote_Matrix set [_i, [Vote_ItemNames select _i, _items, 0, 0] ]; _i = _i + 1
 
 _items = ["x1", "x2", "x3", "Never"]; Vote_Item_DeleteDelay = [1,2,3,-1]
 Vote_ItemNames set [_i, "Wreck Disappear Time"]; Vote_Matrix set [_i, [Vote_ItemNames select _i, _items, 0, 0] ]; _i = _i + 1
@@ -148,6 +148,8 @@ Vote_ItemNames set [_i, "Wreck Disappear Time"]; Vote_Matrix set [_i, [Vote_Item
 _items = ["OFF", "ON"];
 Vote_ItemNames set [_i, "BOH WAP Vehicle"]; Vote_Matrix set [_i, [Vote_ItemNames select _i, _items, [0,1] select bool_TZK_BOH_WAP, [0,1] select bool_TZK_BOH_WAP] ]; _i = _i + 1
 
+; 4.0.5.12
+TZK_Vote_Items = 9; TZK_Vote_Pages = 2; TZK_Vote_Page = 0;
 
 pvVoteStart0 = -1; pvVoteReceived0 = -1; pvVoteResult0 = -1; pvVoteAdmin = false
 ? isServer: mutexVote = false

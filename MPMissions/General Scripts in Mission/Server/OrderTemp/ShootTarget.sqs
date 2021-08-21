@@ -4,7 +4,7 @@ _unit = _this select 0
 _si = _this select 1
 _gi = _this select 2
 _params = _this select 3; _biggerAngle = (if (count _this > 4) Then "_this select 4" Else "0")
-
+_this = nil
 ; Get Correct Parameters. Need Pay Attention To Coefficients
 _attackPos = ((wpCO select _si) select (_params select 0))
 _radius = 5*((_params select 1) + 1)
@@ -76,11 +76,11 @@ _weapons = weapons _unit; _magzines = magazines _unit
 exit
 
 #SkipInfantry
-	? _bStruct: if (_vt in structsOccupiableArtilleryMortar && _dispersion < 60) Then {_dispersion = 60}; if (typeOf _vehicle == "m119_xj400" && _dispersion < 10) Then {_dispersion = 10}; if (typeOf _vehicle == "D30_xj400" && _dispersion < 30) Then {_dispersion = 30}; [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, _vt, _biggerAngle] exec "Server\OrderTemp\ShootStruct2.sqs"; exit
+	? _bStruct: if (_vt in structsOccupiableArtilleryMortar && _dispersion < 60) Then {_dispersion = 60}; if (typeOf _vehicle == "m119_xj400" && _dispersion < 10) Then {_dispersion = 10}; if (typeOf _vehicle == "D30_xj400" && _dispersion < 30) Then {_dispersion = 30}; [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, _vt, _biggerAngle] exec "Server\OrderTemp\ShootStruct.sqs"; exit
 	; Vehicle case here.
 	? _unit != driver _vehicle: if (!isNull driver _vehicle) then {goto "Sleep"}
 	if (_vt in _types_howitzer + typesRocketLauncher && _dispersion < 40) Then {_dispersion = 40}; if (typeOf _vehicle == "TOS1_TZK_xj400" && _dispersion < 60) Then {_dispersion = 60}
-	[_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, _vt, _biggerAngle] exec "Server\OrderTemp\ShootTank2.sqs"; exit
+	[_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, _vt, _biggerAngle] exec "Server\OrderTemp\ShootTank.sqs"; exit
 
 
 ; End Of File

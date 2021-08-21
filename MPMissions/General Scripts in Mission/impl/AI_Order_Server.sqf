@@ -32,6 +32,10 @@ _type = _type + 1;
 
 TempOrderNum = count orderTempDefs;
 
+_order = orderDefs select orderTransportDuty;
+_order select 1 set [2, [ "Eject Distance", "10", "format [""%1m"", 100*(_this+1)]" ]];
+_order set [2, "Server\Order\TransportDuty.sqs"];
+
 
 comment {
 	; initStatusMatrix structure: array[]. Index = _si * GroupsNum + _gi.
