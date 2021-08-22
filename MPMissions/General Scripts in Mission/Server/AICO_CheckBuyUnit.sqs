@@ -70,11 +70,13 @@ _unitsBuy = []; _giInf = AICO_giInf select _si
 		_giJoin = _giTanks select random count _giTanks - 0.5
 		_slots = maxGroupSize - count units (groupMatrix select _si select _giJoin) - (groupUnitsBuildingMatrix select _si select _giJoin)
 		? _slots <= 0: _decideNum = _decideNum - 1; _buyMode = _bmSoldier; goto "CheckBuyUnit"
-		_utbTanks = utbTanksHeavy; if (bool_TZK_SEMod_Mode) then {_utbTanks = utbTanksHeavyD}
+		_utbTanks = utbTanksHeavy; if (bool_TZK_SEMod_Mode) then {_utbTanks = utbTanksHeavyD}; if (bool_TZK_MF_Mode) then {_utbTanks = utbTanksL}
 		? _giJoin == _giBuyer: _unitsBuy = unitsBuyAI select _si select _utbTanks, goto "TypesSelected"
 		_unitsBuy = unitsBuyAI select _si select _utbTanks
-		? bool_TZK_MF_Mode: _unitsBuy = unitsBuyAI select _si select utbTanksMixed
 		? time > 60*50 && _money > 15000 && random 1 < 0.1: _unitsBuy = unitsBuyAI select _si select utbTanksAT
+		; Extra mode setting.
+		? bool_TZK_MF_Mode: _unitsBuy = unitsBuyAI select _si select utbTanksMixed
+		? bool_TZK_Lester_Mode: if (time < 60*45) then {_unitsBuy = (unitsBuyAI select _si select utbTanksL) + (unitsBuyAI select _si select utbTanksAT)} else {_unitsBuy = (unitsBuyAI select _si select utbTanksL) + (unitsBuyAI select _si select utbTanksAT) + (unitsBuyAI select _si select utbTanksHeavy) + (unitsBuyAI select _si select utbAAvehicles) + (unitsBuyAI select _si select utbSupport)}
 		_buyNum = 2
 		goto "TypesSelected"
 	# mode_soldier
