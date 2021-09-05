@@ -19,13 +19,12 @@ _bLegalJoin = true
 
 _members = count _unitsToJoin
 
-
 _allow = 0; _full = 0; _busy = 0
 
 
 _unitsInProgress = groupUnitsBuildingMatrix select _si select _giTo
-_size = (count units (groupMatrix select _si select _giTo)) + _unitsInProgress
-? ((_members + _size) > maxGroupSize): _full = 1; if !(isNull player) Then {if (name player == "IF") Then "showDebug [format [{Group: %1, gi: %2, unitsInProgress: %3, size: %4}, groupMatrix select _si select _giTo, _giTo, _unitsInProgress, (count units (groupMatrix select _si select _giTo))], 5000], pvGrpSize = _unitsInProgress + 13*(count units (groupMatrix select _si select _giTo)), publicVariable {pvGrpSize}"}; goto "Reply"
+_size = count units (groupMatrix select _si select _giTo)
+? _members + _size + _unitsInProgress > maxGroupSize: _full = 1; if (name leader(groupCommander select _si) == "IF") then {pvGrpSize = _unitsInProgress + 13*_size + 13*13*_members, publicVariable {pvGrpSize}}; goto "Reply"
 
 ? mutexJoinServer : _busy = 1; goto "Reply"
 
