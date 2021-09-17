@@ -1,0 +1,24 @@
+; args: [vehicle, mags]
+_vehicle = _this select 0
+? !local _vehicle: exit
+
+_mags = _this select 1
+_this = _nil
+
+_magazines = _vehicle call funcGetNotEmptyMags; 
+_magCnt = {_x in _mags} count _magazines
+? _magCnt > 0: exit
+
+_supTypes = (typesSupport select si0) + (typesSupport select si1) + [(typesMHQ select _si)]
+_vs = [getPos _vehicle, rangeSupport*2, _supTypes, []] call funcGetNearbyVehicles
+? count _vs == 0: exit
+
+_sup = (_vs select 0) select 0
+? !isNull player && leader _vehicle == player: [gunner _vehicle, _sup] exec "Player\Rearm.sqs", exit
+; Server AI
+_unit = gunner _vehicle
+_si = sides find (side _unit)
+? _si != si0 && _si != si1: exit
+_gi = (groupMatrix select _si) find (group _unit)
+_type = _vehicle call funcGetUnitTypeFromObject
+[_unit, _si, _gi, _vehicle, _type, _sup] exec "Server\AI_Rearm.sqs"
