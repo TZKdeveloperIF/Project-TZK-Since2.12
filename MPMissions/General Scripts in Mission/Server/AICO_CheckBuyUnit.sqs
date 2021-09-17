@@ -80,6 +80,7 @@ _unitsBuy = []; _giInf = AICO_giInf select _si
 		_buyNum = 2
 		goto "TypesSelected"
 	# mode_soldier
+		? count _giInf < 1: exit
 		_giJoin = _giInf select random count _giInf - 0.5
 		_slots = maxGroupSize - count units (groupMatrix select _si select _giJoin) - (groupUnitsBuildingMatrix select _si select _giJoin)
 		? _slots <= 0: _decideNum = _decideNum - 1; _buyMode = _bmSoldier; goto "CheckBuyUnit"
@@ -91,6 +92,7 @@ _unitsBuy = []; _giInf = AICO_giInf select _si
 		? time > 60*50 && _money > 15000 && random 1 < 0.1: _unitsBuy = _unitsBuy + unitsBuyAI select _si select utbAAHeavy, _buyNum = 1
 		goto "TypesSelected"
 	# mode_planeAT
+		? count _giInf < 1: exit
 		_giJoin = _giInf select random count _giInf - 0.5
 		_slots = maxGroupSize - count units (groupMatrix select _si select _giJoin) - (groupUnitsBuildingMatrix select _si select _giJoin)
 		? _slots <= 0: exit
