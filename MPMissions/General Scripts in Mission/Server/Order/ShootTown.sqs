@@ -1,0 +1,104 @@
+; args: [unit, si, gi, [ti, wp, type]]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_params = _this select 3
+
+_ti = _params select 0
+_pos = wpCO select _si select (_params select 1)
+_typeIndex = _params select 2
+
+_posFlag = getPos (towns select _ti select tdFlag)
+? [_posFlag, _pos] call funcDistH > viewDistance - 50: goto "Quit"
+
+; Check Whether Unit Fits The Parameters Of The Temporary Order
+_types_howitzer = +typesHowitzer; if bool_TZK_SEMod_Mode Then {_types_howitzer = _types_howitzer + types_SE_td}
+; ArtilleryTypeDefs = ["Howitzer Vehicle", "Rocket Launcher", "Mortar Structure", "Howitzer Structure", "Vehicles", "Structures", "ALL"]
+_typeIndex = ([{Soldier}, {Light Tank}, {Heavy Tank}] + ArtilleryTypeDefs) select _typeIndex;   _bVeh = false; _bStruct = false; _bInfantry = false
+? _typeIndex == "Soldier":				_bInfantry = true; 	_orderTypes = typesInfantryAll;
+? _typeIndex == "Light Tank":			_bVeh = true; 		_orderTypes = typesLightTank;
+? _typeIndex == "Heavy Tank":			_bVeh = true; 		_orderTypes = typesHeavyTank;
+? _typeIndex == "Howitzer Vehicle":		_bVeh = true; 		_orderTypes = _types_howitzer;
+? _typeIndex == "Rocket Launcher":		_bVeh = true; 		_orderTypes = typesRocketLauncher;
+? _typeIndex == "Mortar Structure":		_bStruct = true;	_orderTypes = structsOccupiableArtilleryMortar;
+? _typeIndex == "Howitzer Structure": 	_bStruct = true;	_orderTypes = structsOccupiableHowitzer + structsOccupiableArtHowitzer;
+? _typeIndex == "Vehicles":				_bVeh = true;		_orderTypes = typesLightTank + typesHeavyTank + _types_howitzer + typesRocketLauncher;
+? _typeIndex == "Structures":			_bStruct = true; 	_orderTypes = structsOccupiableArtilleryMortar + structsOccupiableHowitzer + structsOccupiableArtHowitzer;
+? _typeIndex == "ALL":		_bVeh = true; _bStruct = true; 	_orderTypes = typesInfantryAll + typesLightTank + typesHeavyTank + _types_howitzer + typesRocketLauncher + structsOccupiableArtilleryMortar + structsOccupiableHowitzer + structsOccupiableArtHowitzer;
+
+_vehicle = vehicle _unit
+? !local _vehicle: exit
+
+_target = call Format["TargetTownS_%1%2", _ti, _si]
+
+? _unit == _vehicle: goto "CheckInfantry"
+? !_bVeh: goto "VehicleChecked"
+_vt = _vehicle call funcGetUnitTypeFromObject
+? _vt == -1: if !_bStruct then {goto "Quit"} else {goto "VehicleChecked"}
+? !(_vt in _orderTypes): goto "Quit"
+_bVeh = true; _bStruct = false; goto "Start"
+
+#VehicleChecked
+? !_bStruct: goto "Quit"
+_vt = _vehicle call funcGetStructTypeFromObject
+? _vt == -1: goto "Quit"
+? !(_vt in _orderTypes): goto "Quit"
+_bVeh = false; _bStruct = true; goto "Start"
+
+#CheckInfantry
+? !_bInfantry: goto "Quit"
+goto "Start"
+
+; Units doesn't fit order type will patrol at given wp.
+# Quit
+[_unit, _si, _gi, [_params select 1, 2]] exec (orderDefs select orderPatrolArea select 2); exit
+
+#Start
+_params = _nil; _this = _nil
+; request concurrent order system to command AI. Only those units fits the order param will enter this part.
+
+_order = orderMatrix select _si select _gi; _idOrder = _order select 0; _script = orderDefs select (_order select 1) select 2
+
+_sleep = 0
+#WaitReady
+~_sleep
+? _idOrder != _order select 0: exit
+? _unit call busyCheck: _sleep = 5; goto "WaitReady"
+
+; Initialize The Order Script
+_timeStart = time; _timeAbort = _timeStart + 3600*6; _timeUp = _timeStart; _cycle = 30; _loop = 0
+_sleep = 30
+; delay for concurrent script halt.
+~5
+#Update
+	; Clear units' temporary order if order updated
+	? _unit call temporaryCheck: if (_idOrder != _order select 0) then {_unit call temporaryClear, exit} else {goto "Sleep"}
+	
+	? !(alive _unit): exit
+	? _idOrder != _order select 0: _unit call temporaryClear, exit
+
+	_unit call temporarySet
+	_attackPos = _pos; _radius = 100; _dispersion = 100; _biggerAngle = 0
+	
+	? !_bInfantry: goto "SkipInfantry"
+	_magData = (_unit call funcGetRearmData) select 1
+	_weapons = weapons _unit; _magzines = magazines _unit
+	? [["M16MortarLauncher_TZK_xj400", "AK74MortarLauncher_TZK_xj400"], _magzines + _magData] call funcArrayOverlap: [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, 2, _biggerAngle] exec "Server\OrderTemp\ShootInfantry.sqs"; _sleep = 30; goto "Sleep"
+	? [["M16GrenadeLauncher_TZK_xj400", "AK74GrenadeLauncher_TZK_xj400", "M4_M203_ACOG_SD_xj400", "AK74M_GP25_1P29_SD_xj400", "MM1", "6G30"], _weapons] call funcArrayOverlap: [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, 1, _biggerAngle] exec "Server\OrderTemp\ShootInfantry.sqs"; _sleep = 30; goto "Sleep"
+	? "_x in [{HandGrenade}, {SmokeShell}, {SmokeShellGreen}, {SmokeShellRed}]" count (_magzines + _magData) > 0: [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, 0, _biggerAngle] exec "Server\OrderTemp\ShootInfantry.sqs"; _sleep = 30; goto "Sleep"
+	_sleep = 30; goto "Sleep"
+
+	#SkipInfantry
+		? _bStruct: if (_vt in structsOccupiableArtilleryMortar && _dispersion < 60) Then {_dispersion = 60}; if (typeOf _vehicle == "m119_xj400" && _dispersion < 10) Then {_dispersion = 10}; if (typeOf _vehicle == "D30_xj400" && _dispersion < 30) Then {_dispersion = 30}; [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, _vt, _biggerAngle] exec "Server\OrderTemp\ShootStruct.sqs"; _sleep = 30; goto "Sleep"
+		; Vehicle case here.
+		? _unit != driver _vehicle: if (!isNull driver _vehicle) then {goto "Sleep"}
+		if (_vt in _types_howitzer + typesRocketLauncher && _dispersion < 40) Then {_dispersion = 40}; if (typeOf _vehicle == "TOS1_TZK_xj400" && _dispersion < 60) Then {_dispersion = 60}
+		[_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, _vt, _biggerAngle] exec "Server\OrderTemp\ShootTank.sqs"; _sleep = 30; goto "Sleep"
+
+
+#Sleep
+~_sleep
+
+? _unit call busyCheck: _sleep = 10; goto "Sleep"
+goto "Update"
