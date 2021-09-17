@@ -1,0 +1,12 @@
+; args: [vehicle, type]
+_vehicle = _this select 0
+_type = _this select 1
+_this = _nil
+
+_eh = {format [{[_this select 0, %1] exec "Common\EH\Fired_AA_AutoRearm.sqs"}, _this]}
+; hint (["Stinger_xj400"] call _eh)
+
+? "M2A2_AA_xj400" countType [_vehicle] > 0: _vehicle addEventHandler ["Fired", ["Stinger_xj400"] call _eh], exit
+? "BMP2_AA_xj400" countType [_vehicle] > 0: _vehicle addEventHandler ["Fired", ["Strela_xj400"] call _eh], exit
+? _type in (vRedTop select si0): _vehicle addEventHandler ["Fired", ["RedTop_26_xj400", "RedTop_30_xj400", "RedTop_40_xj400"] call _eh], exit
+? _type in (vRedTop select si1): _vehicle addEventHandler ["Fired", ["9M311_26_xj400", "9M311_30_xj400", "9M311_40_xj400"] call _eh], exit
