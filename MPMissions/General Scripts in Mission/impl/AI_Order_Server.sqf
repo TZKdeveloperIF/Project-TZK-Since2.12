@@ -1,4 +1,6 @@
 comment "Insert 'Shoot Town' order in orderDefs.";
+comment "Dont add this order first.";
+if false then {
 _type = orderHalt;
 orderShootTown = _type;
 _param0 = [ "Town", "count towns", "(towns select _this) select 1" ];
@@ -10,7 +12,7 @@ _type = _type + 1;
 orderHalt = _type;
 orderDefs set [_type, ["Halt", [], "\TZK_Scripts_4_0_5\Server\Order\Halt.sqs"] ];
 _type = _type + 1;
-
+};
 
 
 if bool_TZK_SEMod_Mode Then {
