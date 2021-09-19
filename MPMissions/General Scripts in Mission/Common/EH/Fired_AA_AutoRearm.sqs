@@ -21,4 +21,4 @@ _si = sides find (side _unit)
 ? _si != si0 && _si != si1: exit
 _gi = (groupMatrix select _si) find (group _unit)
 _type = _vehicle call funcGetUnitTypeFromObject
-[_unit, _si, _gi, _vehicle, _type, _sup] exec "Server\AI_Rearm.sqs"
+[_unit, _si, _gi, _vehicle, _type, _sup, false, true] exec "Server\AI_Rearm.sqs"
