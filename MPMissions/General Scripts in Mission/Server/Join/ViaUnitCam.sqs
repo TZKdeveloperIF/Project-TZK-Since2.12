@@ -13,9 +13,9 @@ _si = _value % 2
 
 @!(isNull pvJoinUnits)
 _unit = pvJoinUnits; pvJoinUnits = objNull
-_unitsToJoin = [driver vehicle _unit, gunner vehicle _unit, commander vehicle _unit] - [objNull]
+_unitsToJoin = []; { if (!isNull _x && _unitsToJoin find _x == -1) then {_unitsToJoin set [count _unitsToJoin, _x]} } forEach [driver vehicle _unit, gunner vehicle _unit, commander vehicle _unit]
 _bLegalJoin = true
-{ if !((group _x) in (groupAIMatrix select _si) && _x != leader group _x) then "_bLegalJoin = false"} forEach _unitsToJoin
+{ if (!(group _x in (groupAIMatrix select _si)) || _x == leader group _x) then {_bLegalJoin = false} } forEach _unitsToJoin
 
 _members = count _unitsToJoin
 
