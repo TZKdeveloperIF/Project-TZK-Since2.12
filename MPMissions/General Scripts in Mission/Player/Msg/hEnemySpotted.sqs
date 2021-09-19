@@ -1,0 +1,15 @@
+; args: enemy
+_enemy = _this
+
+_textType = ""
+? _enemy == (driver _enemy) && report == reportAll: _textType = "Infantry"
+? _enemy != (driver _enemy) && report < reportStructs: _textType = (if (getPos _enemy select 2 > 10) then {"Aircraft"} else {"Vehicle"})
+{ if (_enemy in _x && report < reportNone) then { _textType = "Structure" } } foreach (structMatrix select si1)
+
+? _textType == "Aircraft": if ("ParachuteBase" countType [_enemy] > 0) then {_textType = "Parachute"}
+
+_textPos = (getPos _enemy) call funcCalcTownDirDistFromPos
+? _textType != "": format["Enemy %1 spotted at %2", _textType, _textPos] call funcSideMsg
+[getPos _enemy, _textType] exec "Player\SetEnemyMarker.sqs"
+
+groupPlayer reveal _enemy

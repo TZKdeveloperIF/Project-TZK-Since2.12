@@ -1,0 +1,22 @@
+; args: [pos, textType]
+
+_pos = _this select 0
+_textType = _this select 1
+_this = _nil
+
+_id = enemyMarkers select 0
+_marker = format ["EnemySpotted_%1", _id]
+
+_i = 0; _c = count enemyMarkers; while {_i < _c && enemyMarkers select _i != _id} do {_i = _i + 1}
+_i = _i + 1; while {_i < _c} do {enemyMarkers set [_i - 1, enemyMarkers select _i]; _i = _i + 1}; enemyMarkers set [_c - 1, _id]
+
+_marker setMarkerType "Warning"; _marker setMarkerSize [0.5,0.5]
+? _textType == "Infantry": _marker setMarkerType "Soldier_Marker_xj400"; _marker setMarkerSize [1,1]
+? _textType == "Structure": _marker setMarkerType "UnknownStructure_Marker_xj400"
+? _textType == "Parachute": _marker setMarkerType "Parachute_Marker_xj400"
+_marker setMarkerPos _pos
+
+~(2*60)
+
+_posAfter = getMarkerPos _marker
+? ((_pos select 0) == (_posAfter select 0)) && ((_pos select 1) == (_posAfter select 1)): _marker setMarkerPos hiddenMarkerPos
