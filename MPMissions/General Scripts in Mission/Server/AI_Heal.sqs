@@ -1,1 +1,63 @@
-_this exec "\TZK_Scripts_4_0_5\Server\AI_Heal.sqs"
+; args: [unit, si, gi, vehicleHeal, type, support, <non-controlable AI group>, <use comm money>]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_vehicleHeal = _this select 3
+_type = _this select 4
+_support = _this select 5
+_nonAIgroup = if (count _this > 6) Then {_this select 6} Else {false}
+_bUseCommMoney = if (count _this > 7) Then {_this select 7} Else {false}
+_this = nil
+
+_timeHeal = 5
+_price = 0
+? _unit == _vehicleHeal: goto "UnitOnFoot"
+
+#UnitInVehicle
+? _nonAIgroup: _type = _vehicleHeal call funcGetUnitTypeFromObject
+? _type == -1: format["ERROR: _type is -1 for vehicle '%1' in AI_Heal", _vehicleHeal] call fDebugLog; exit
+_damage = damage _vehicleHeal
+
+; CALC COST
+_price = unitDefs select _type select udCost
+? _nonAIgroup: goto "SkipMoneySpend"
+
+_cost = _damage*_price*factorRepairCost; _cost = _cost - (_cost % 1)
+_money = groupMoneyMatrix select _si select _gi
+_moneyComm = groupMoneyMatrix select _si select (giCO select _si)
+_insufficientFond = {_this > _money && (!_bUseCommMoney || _this > _moneyComm)}
+? _cost call _insufficientFond: exit
+? _cost > 0 && _cost <= _money: [_si, _gi, _cost] exec "\TZK_Scripts_4_0_4\Server\MoneySpend.sqs"
+? _cost > 0 && _cost > _money: [_si, giCO select _si, _cost] exec "\TZK_Scripts_4_0_4\Server\MoneySpend.sqs"
+
+# SkipMoneySpend
+; CALC REPAIR TIME
+_timeRepair = _damage*_price*factorRepairTime
+; ? _timeRepair < 10: _timeRepair = 10
+? _timeRepair > 60: _timeRepair = 60
+
+~_timeRepair
+? !(alive _vehicleHeal) || !(alive _support) || (damage _vehicleHeal) > _damage: exit
+
+_vehicleHeal setDamage 0
+
+_crew = crew _vehicleHeal
+_c = count _crew
+_i = 0
+#HealCrew
+	? !(_i < _c): exit
+	_u = _crew select _i
+	? !(alive _u) || (damage _u) == 0: _i = _i + 1; goto "HealCrew"
+	~_timeHeal
+	? !(alive _support): exit
+	? !(alive _u): _i = _i + 1; goto "HealCrew"
+	_u setDamage 0
+	_i = _i + 1
+	goto "HealCrew"
+	exit
+
+#UnitOnFoot
+	~_timeHeal
+	? !(alive _vehicleHeal) || !(alive _support): exit
+	_unit setDamage 0
