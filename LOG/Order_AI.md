@@ -1,6 +1,10 @@
 Recording the updating of commanding AI groups. Order, orderTemp and settings of AI groups are recorded here.
 # Plan
-+ Recover busy/temporary array as matrix. The array will cost too many times to check the unit for it records all units in one array.
++ Make busy/temporary array remove elements without passing it since they're not small array.
+## 4.0.5.14
++ Adjust the eject distance of Transport Duty.
++ Add force engine off in AI transport duty script.
++ Add "Repair" and "Rearm" button in Unit Cam.
 ## 4.0.5.10
 + Add 1 parameter "Overwrite rearmData" for player group ***"Buy Equipment"*** order. Player can select whether overwrite unit's rearmData via that order.
 + In player's rearm script, infantry will be searched in rearmDataObj first. The array *rearmDataObj* is for recording those units without meaningful type like AI group leader or custom soldiers. By now in new ***"Buy Equipment"*** order we allow player overwrite commom soldier's rearmData thus they may be recorded in *rearmDataObj* as well. It won't be a burden to make this check since there're few units in player's group.
