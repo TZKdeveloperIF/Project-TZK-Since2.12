@@ -1,0 +1,72 @@
+; args: none
+
+mutexPlaneArray = false; pv_TZK_Plane_Obj = objNull, pv_TZK_Plane_Info = -1
+; format of PlanesInfo: [price index, need rearm time: bool]
+PlaneUnits = []; PlanesInfo = []
+
+PlanePrice = [12000, 14000, 15000, 20000, 25000, 30000, 45000, 90000]
+
+
+; format of PlaneMagInfo: [weapon name, display name, si, price, slot, rearm time, plane price]
+PlaneMags = []; PlaneMagInfo = []
+_type = 0
+
+PlaneMags set [_type, "MachineGun30A10"]
+PlaneMagInfo set [_type, ["MachineGun30A10", "30mm cannon", siBoth, 0, 1, 0, 0] ]
+_type = _type + 1
+
+PlaneMags set [_type, "RKTHunter_Guns_xj400"]
+PlaneMagInfo set [_type, ["RKTHunter_Guns_xj400", "4x 30mm cannons", siBoth, 0, 2, 10, 0] ]
+_type = _type + 1
+
+PlaneMags set [_type, "Stinger_xj400"]
+PlaneMagInfo set [_type, ["Stinger_xj400", "Stinger", si0, 500, 2, 10, 0] ]
+_type = _type + 1
+
+PlaneMags set [_type, "Strela_xj400"]
+PlaneMagInfo set [_type, ["Strela_xj400", "Strela", si1, 500, 2, 10, 0] ]
+_type = _type + 1
+
+PlaneMags set [_type, "Mag_LGB_2_xj400"]
+PlaneMagInfo set [_type, ["LGBLauncher_xj400", "2x LGB", siBoth, 600, 2, 15, 12000] ]
+_type = _type + 1
+
+PlaneMags set [_type, "RKTHunter_BombRail_xj400"]
+PlaneMagInfo set [_type, ["RKTHunter_BombRail_xj400", "14x bombs", siBoth, 1400, 7, 30, 14000] ]
+_type = _type + 1
+
+PlaneMags set [_type, "MaverickLauncher"]
+PlaneMagInfo set [_type, ["MaverickLauncher", "Maverick", si0, 2000, 8, 60, 20000] ]
+_type = _type + 1
+
+PlaneMags set [_type, "Ch29TLauncher_xj400"]
+PlaneMagInfo set [_type, ["Ch29TLauncher_xj400", "Ch-29T", si1, 2000, 8, 60, 20000] ]
+_type = _type + 1
+
+PlaneMags set [_type, "RedTop_26_xj400"]
+PlaneMagInfo set [_type, ["RedTop_26_xj400", "Redtop", siBoth, 2500, 4, 30, 25000] ]
+_type = _type + 1
+
+PlaneMags set [_type, "Zuni_MaverickLike_xj400"]
+PlaneMagInfo set [_type, ["Zuni_MaverickLike_xj400", "8x Zuni", si0, 125, 1/3, 2.5, 30000] ]
+_type = _type + 1
+
+PlaneMags set [_type, "Rocket57x192"]
+PlaneMagInfo set [_type, ["Rocket57x192", "192x Rockets", si1, 3000, 8, 60, 30000] ]
+_type = _type + 1
+
+PlaneMags set [_type, "Mag_LGB_8_xj400"]
+PlaneMagInfo set [_type, ["LGBLauncher_xj400", "8x LGB", siBoth, 2000, 8, 60, 20000] ]
+_type = _type + 1
+
+PlaneMags set [_type, "Mag_LGB_8_xj400"]
+PlaneMagInfo set [_type, ["LGBLauncher_xj400", "8x Buster LGB", siBoth, 4500, 8, 60, 45000] ]
+_type = _type + 1
+
+PlaneMags set [_type, "Tomahawk_xj400"]
+PlaneMagInfo set [_type, ["Tomahawk_xj400", "Tomahawk", si0, 9000, 8, 90, 90000] ]
+_type = _type + 1
+
+PlaneMags set [_type, "Raduga_xj400"]
+PlaneMagInfo set [_type, ["Raduga_xj400", "Raduga", si1, 9000, 8, 90, 90000] ]
+_type = _type + 1

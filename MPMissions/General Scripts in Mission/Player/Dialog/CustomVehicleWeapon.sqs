@@ -1,0 +1,128 @@
+; args: [dialog name, vehicle type(enum), vehicle, support]
+
+_script = _this select 0; _var1 = _this select 1; _vehicle = _this select 2; _support = _this select 3; _this = 0
+; create dialog
+@!mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog _script
+mutexDlg = false
+
+; show background
+ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+
+; initialize variables
+_si = siPlayer; _gi = giPlayer
+_idcSlotText = IDC + 30; _idcYourMoneyText = IDC + 31; _idcMagPriceText = IDC + 32; _idcUpgradeText = IDC + 33; _idcTimeText = IDC + 34
+_idcMagList = IDC + 20; _idcEquippedList = IDC + 21
+_totalSlots = 9; _usedSlots = 0; _magCost = 0; _upgradeCost = 0; _timeCost = 0
+
+; initial available controls
+ctrlSetText [_idcSlotText, format ["%1", _totalSlots - _usedSlots]]
+ctrlSetText [_idcYourMoneyText, format ["$%1", groupMoneyMatrix select _si select _gi]]
+ctrlSetText [_idcMagPriceText, format ["$%1",_magCost]]
+ctrlSetText [_idcUpgradeText, format ["$%1", 0]]
+
+_vehicleIndex = -1;
+? _var1 == 0: _vehicleIndex = PlaneUnits find _vehicle
+? _vehicleIndex == -1: exit
+
+_piWeapon = 0, _piName = 1, _piSide = 2, _piPrice = 3, _piSlot = 4, _piRearmTime = 5, _piPlanePrice = 6
+? upgMatrix select _si select upgRedTopRange == 2 : _redtop = "RedTop_40_xj400"
+_i = 0; _c = count PlaneMagInfo
+_shoppingCartMag = []; _shoppingCartCnt = []
+# AddMagList
+	; player globalChat format ["%1, %2", _i, _c]
+	; skip improper side
+	_var1 = PlaneMagInfo select _i select _piSide
+	? _var1 != siBoth && _var1 != _si: goto "Continue_AddMagList"
+	; fill whitespace for price
+	_var1 = ""; _var2 = PlaneMagInfo select _i select _piPrice; _var3 = 1000
+	while {_var3 > 1} do {if (_var2 < _var3) then {_var1 = _var1 + " "}; _var3 = _var3 / 10}
+	;
+	_idx = lbAdd [_idcMagList, PlaneMagInfo select _i select _piName];
+	lbSetValue [_idcMagList, _idx, _i]
+	_var3 = PlaneMagInfo select _i select _piSlot; _var3 = _var3 - (_var3 % 0.01)
+	_var1 = format ["$%1%2, Slot: %3", _var1, _var2, _var3]
+	_idx = lbAdd [_idcMagList, _var1];
+	lbSetValue [_idcMagList, _idx, _i]
+	lbSetColor [_idcMagList, _idx, [1,1,1, 0.5]]
+	
+	# Continue_AddMagList
+	_i = _i + 1
+	? _i < _c: goto "AddMagList"
+
+btnValue00 = 0
+# Update
+	? call dlgUpdated: exit
+	? !(alive player): closeDialog 0; Exit
+
+	? btnValue00 > 0: goto "ParserBtn00"
+	~0.2
+	? !alive _vehicle: hint "Vehicle destroyed.", exit
+	? !alive _support: hint "Support destroyed.", exit
+	? _vehicle distance _support > 2*rangeSupport: hint "Rearm failed. Support vehicle out of range.", exit
+	ctrlSetText [_idcYourMoneyText, format ["$%1", groupMoneyMatrix select _si select _gi]]
+	goto "Update"
+
+# ParserBtn00
+	_var1 = btnValue00; btnValue00 = 0
+	? _var1 == 2^0 || _var1 == 2^1: goto "MagAddRem"
+	? _var1 == 2^2: goto "MagClear"
+	? _var1 == 2^3: goto "Buy"
+	goto "Update"
+# MagAddRem
+	_idx = lbCurSel _idcMagList
+	? _idx == -1: hint "No magazine selected."; goto "Update"
+	_i = lbValue [_idcMagList, _idx]; _j = _shoppingCartMag find _i
+	; ? _var1 == 2^0: goto "MagAdd"
+	? _var1 == 2^1: goto "MagRem"
+# MagAdd
+	? _usedSlots + (PlaneMagInfo select _i select _piSlot) > _totalSlots: hint "Insufficient Slots.", goto "Update"
+	1 call loadFile "Player\Dialog\CustomVehicleWeapon_RefreshStat.sqf"
+	goto "Update"
+# MagRem
+	? _j == -1: goto "Update"
+	-1 call loadFile "Player\Dialog\CustomVehicleWeapon_RefreshStat.sqf"
+	goto "Update"
+# MagClear
+	0 call loadFile "Player\Dialog\CustomVehicleWeapon_RefreshStat.sqf"
+	goto "Update"
+# Buy
+	? !local _vehicle: hint "Rearm failed. The vehicle isn't local.", goto "Update"
+	? _magCost + _upgradeCost < _money: hint "Insufficient fond.", goto "Update"
+	? count _shoppingCartMag == 0: hint "No bought magazines.", goto "Update"
+	closeDialog 0
+
+	_timeStart = _time; { _vehicle removeMagazines _x } foreach (magazines _vehicle)
+	vehiclesRearming set [count vehiclesRearming, _vehicle]
+	? dev: _timeCost = 5
+	_msg = format ["Rearm started, ready in %1s ...", _timeCost]
+	_unit = driver _vehicle
+	? _unit == player: hint _msg
+	_unit groupChat _msg
+	_timeComplete = _time + _timeCost
+	_text = format ["Rearming. %1 seconds left.", (_time - _timeComplete) - (_time - _timeComplete)%0.1 + 0.1]
+	? player in _vehicle: hint _text
+	_range = 4*rangeSupport
+	#Loop
+		_vehicle say "Rearming_xj400";
+		~5
+		? !(alive _vehicle): _msg = "Rearm failed. Vehicle destroyed."; goto "Quit"
+		? !(alive _support): _msg = "Rearm failed. Support vehicle destroyed."; goto "Quit"
+		? (_vehicle distance _support) > _range: if (([positionAttach, (getPos _vehicle)] call funcDistH) > 100 && ([positionAttach, (getPos _support)] call funcDistH) > 100) then {_msg = "Rearm failed. Support vehicle out of range."; goto "Quit"}
+		_text = format ["Rearming. %1 seconds left.", (_time - _timeComplete) - (_time - _timeComplete)%0.1 + 0.1]
+		? player in _vehicle: hint _text
+		? _time < _timeComplete: goto "Loop"
+
+	? count magazines _vehicle == 0: call loadFile "Player\Dialog\CustomVehicleWeapon_RearmExec.sqf"
+	? _shoppingCartMag find "Tomahawk" != -1 || _shoppingCartMag find "Raduga" != -1: _vehicle say "NuclearMissileReady_xj400"
+
+	_cost = _magCost + _upgradeCost
+	while {_cost > 0} do {_amount = _cost, if (_cost > 9999) then {_amount = 9999, _cost = _cost - _amount} else {_cost = 0}, [_amount] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"}
+	_msg = format["Rearm Complete. $%1", _magCost + _upgradeCost]
+
+# Quit
+	? _msg != "" && _unit == player: hint _msg
+	? _msg != "": _unit groupChat _msg
+	? _unit != _vehicle: vehiclesRearming = vehiclesRearming - [_vehicle]
+	exit

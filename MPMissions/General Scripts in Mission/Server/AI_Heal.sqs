@@ -3,7 +3,7 @@
 _unit = _this select 0
 _si = _this select 1
 _gi = _this select 2
-_vehicleHeal = _this select 3
+_vehicle = _this select 3
 _type = _this select 4
 _support = _this select 5
 _nonAIgroup = if (count _this > 6) Then {_this select 6} Else {false}
@@ -12,15 +12,16 @@ _this = nil
 
 _timeHeal = 5
 _price = 0
-? _unit == _vehicleHeal: goto "UnitOnFoot"
+? _unit == _vehicle: goto "UnitOnFoot"
 
 #UnitInVehicle
-? _nonAIgroup: _type = _vehicleHeal call funcGetUnitTypeFromObject
-? _type == -1: format["ERROR: _type is -1 for vehicle '%1' in AI_Heal", _vehicleHeal] call fDebugLog; exit
-_damage = damage _vehicleHeal
+? _nonAIgroup: _type = _vehicle call funcGetUnitTypeFromObject
+? _type == -1: format["ERROR: _type is -1 for _vehicle '%1' in AI_Heal", _vehicle] call fDebugLog; exit
+_damage = damage _vehicle
 
 ; CALC COST
 _price = unitDefs select _type select udCost
+? "A10_xj400" countType [_vehicle] > 0 && "A10_AAOnly_xj400" countType [_vehicle] == 0 || "Su25_xj400" countType [_vehicle] > 0 && "Su25_AAOnly_xj400" countType [_vehicle] == 0: _idx = PlaneUnits find _vehicle, if (_idx != -1) then {_price = PlanesInfo select _idx select 0}
 ? _nonAIgroup: goto "SkipMoneySpend"
 
 _cost = _damage*_price*factorRepairCost; _cost = _cost - (_cost % 1)
@@ -38,11 +39,11 @@ _timeRepair = _damage*_price*factorRepairTime
 ? _timeRepair > 60: _timeRepair = 60
 
 ~_timeRepair
-? !(alive _vehicleHeal) || !(alive _support) || (damage _vehicleHeal) > _damage: exit
+? !(alive _vehicle) || !(alive _support) || (damage _vehicle) > _damage: exit
 
-_vehicleHeal setDamage 0
+_vehicle setDamage 0
 
-_crew = crew _vehicleHeal
+_crew = crew _vehicle
 _c = count _crew
 _i = 0
 #HealCrew
@@ -59,5 +60,5 @@ _i = 0
 
 #UnitOnFoot
 	~_timeHeal
-	? !(alive _vehicleHeal) || !(alive _support): exit
+	? !(alive _vehicle) || !(alive _support): exit
 	_unit setDamage 0
