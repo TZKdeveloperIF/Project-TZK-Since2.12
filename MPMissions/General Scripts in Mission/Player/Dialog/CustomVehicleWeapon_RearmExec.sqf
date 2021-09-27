@@ -22,4 +22,4 @@ if ("A10_xj400" countType [_vehicle] > 0 || "Su25_xj400" countType [_vehicle] > 
 };
 _vehicle selectWeapon (weapons _vehicle select 0);
 
-[_vehicle, (PlanesInfo select _vehicleIndex select 0) + _upgradeCost, true] exec "Common\Msg\sPlaneInfo.sqs";
+[_vehicle, (PlanesInfo select _vehicleIndex select 0) + _upgradeCost, true] exec "Common\Msg\sCustomWeaponVehicleInfo.sqs";

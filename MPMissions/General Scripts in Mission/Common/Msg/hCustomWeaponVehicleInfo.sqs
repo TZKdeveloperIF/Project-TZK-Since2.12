@@ -2,8 +2,8 @@ _plane = _this select 0
 _info = _this select 1
 _this = _nil
 
-@ !mutexPlaneArray
-mutexPlaneArray = true
+@ !mutexVehicleArray
+mutexVehicleArray = true
 _i = PlaneUnits find _plane; _bNewElement = false
 ? _i == -1: _i = 0, _c = count PlaneUnits, _found = false, while {_i < _c && !_found} do {if (!alive (PlaneUnits select _i)) then {_found = true} else {_i = _i + 1}}, if (_i == count PlaneUnits) then {_bNewElement = true}
 
@@ -14,4 +14,4 @@ _bNeedRearm = [false, true] select _info
 ? _bNewElement: PlanesInfo set [_i, [_price, _bNeedRearm]]
 ?!_bNewElement: PlanesInfo select _i set [0, _price], PlanesInfo select _i set [1, _bNeedRearm]
 
-mutexPlaneArray = false
+mutexVehicleArray = false
