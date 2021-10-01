@@ -45,7 +45,7 @@ while {_k < _c} do {
 			format [{%1%2%3}, _magInfo select _idx select _piName, "      ", _shoppingCartCnt select _k]
 		} else {
 			_name = _magInfo select _idx select _piName;
-			_spaces = ""; _size = sizeofstr _name; while {_size < 16} do {_spaces = _spaces + " "; _size = _size + 1};
+			_spaces = ""; _size = sizeofstr _name; while {_size < 18} do {_spaces = _spaces + " "; _size = _size + 1};
 			format [{%1%2x%3}, _name, _spaces, _shoppingCartCnt select _k]
 		}
 	);
