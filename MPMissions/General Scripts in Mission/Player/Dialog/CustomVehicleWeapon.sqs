@@ -1,6 +1,6 @@
 ; args: [dialog name, vehicle type(enum), vehicle, support]
 
-_script = _this select 0; _var1 = _this select 1; _vehicle = _this select 2; _support = _this select 3; _this = 0
+_script = _this select 0; _enum = _this select 1; _vehicle = _this select 2; _support = _this select 3; _this = 0
 ; create dialog
 @!mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
@@ -11,10 +11,18 @@ mutexDlg = false
 ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 
 ; initialize variables
+_vi = call ([{PlaneUnits}, {GunshipUnits}, {HeliUnits}] select _enum) find _vehicle
+? _vi == -1: exit
+_info = call ([{PlanesInfo}, {GunshipInfo}, {HelisInfo}] select _enum) select _vi
+_availMags = call ([{PlaneMags}, {GunshipMags}, {HeliMags}] select _enum)
+_magInfo = call ([{PlaneMagInfo}, {GunshipMagInfo}, {HeliMagInfo}] select _enum)
+
 _si = siPlayer; _gi = giPlayer
 _idcSlotText = IDC + 30; _idcYourMoneyText = IDC + 31; _idcMagPriceText = IDC + 32; _idcUpgradeText = IDC + 33; _idcTimeText = IDC + 34
-_idcMagList = IDC + 20; _idcEquippedList = IDC + 21
-_totalSlots = 9; _usedSlots = 0; _magCost = 0; _upgradeCost = 0; _timeCost = 0
+_idcMagList = IDC + 20; _idcEquippedList = IDC + 21; ctrlEnable [_idcEquippedList, false]
+_usedSlots = 0; _magCost = 0; _upgradeCost = 0; _timeCost = 0; _totalSlots = 9
+? _enum == enum_TZK_CustomVehicle_Gunship: _totalSlots = 5, if ("Ka50_xj400" countType [_vehicle] > 0) then {_totalSlots = 7}
+? _enum == enum_TZK_CustomVehicle_Helicopter: _totalSlots = 2
 
 ; initial available controls
 ctrlSetText [_idcSlotText, format ["%1", _totalSlots - _usedSlots]]
@@ -22,26 +30,23 @@ ctrlSetText [_idcYourMoneyText, format ["$%1", groupMoneyMatrix select _si selec
 ctrlSetText [_idcMagPriceText, format ["$%1",_magCost]]
 ctrlSetText [_idcUpgradeText, format ["$%1", 0]]
 
-_vehicleIndex = -1;
-? _var1 == 0: _vehicleIndex = PlaneUnits find _vehicle
-? _vehicleIndex == -1: exit
-
-_piWeapon = 0, _piName = 1, _piSide = 2, _piPrice = 3, _piSlot = 4, _piRearmTime = 5, _piPlanePrice = 6
-? upgMatrix select _si select upgRedTopRange == 2 : _redtop = "RedTop_40_xj400"
-_i = 0; _c = count PlaneMagInfo
+_piWeapon = 0, _piName = 1, _piSide = 2, _piMagPrice = 3, _piSlot = 4, _piRearmTime = 5, _piVehPrice = 6
+_i = 0; _c = count _magInfo
 _shoppingCartMag = []; _shoppingCartCnt = []
 # AddMagList
 	; player globalChat format ["%1, %2", _i, _c]
 	; skip improper side
-	_var1 = PlaneMagInfo select _i select _piSide
+	_var1 = _magInfo select _i select _piSide
 	? _var1 != siBoth && _var1 != _si: goto "Continue_AddMagList"
+	? _enum == enum_TZK_CustomVehicle_Gunship: if (!call loadFile "Player\Dialog\CVW_validMag.sqf") then {goto "Continue_AddMagList"}
+	
 	; fill whitespace for price
-	_var1 = ""; _var2 = PlaneMagInfo select _i select _piPrice; _var3 = 1000
+	_var1 = ""; _var2 = _magInfo select _i select _piMagPrice; _var3 = 1000
 	while {_var3 > 1} do {if (_var2 < _var3) then {_var1 = _var1 + " "}; _var3 = _var3 / 10}
 	;
-	_idx = lbAdd [_idcMagList, PlaneMagInfo select _i select _piName];
+	_idx = lbAdd [_idcMagList, _magInfo select _i select _piName];
 	lbSetValue [_idcMagList, _idx, _i]
-	_var3 = PlaneMagInfo select _i select _piSlot; _var3 = _var3 - (_var3 % 0.01)
+	_var3 = _magInfo select _i select _piSlot; _var3 = _var3 - (_var3 % 0.01)
 	_var1 = format ["$%1%2, Slot: %3", _var1, _var2, _var3]
 	_idx = lbAdd [_idcMagList, _var1];
 	lbSetValue [_idcMagList, _idx, _i]
@@ -77,7 +82,7 @@ btnValue00 = 0
 	; ? _var1 == 2^0: goto "MagAdd"
 	? _var1 == 2^1: goto "MagRem"
 # MagAdd
-	? _usedSlots + (PlaneMagInfo select _i select _piSlot) > _totalSlots: hint "Insufficient Slots.", goto "Update"
+	? _usedSlots + (_magInfo select _i select _piSlot) > _totalSlots: hint "Insufficient Slots.", goto "Update"
 	1 call loadFile "Player\Dialog\CustomVehicleWeapon_RefreshStat.sqf"
 	goto "Update"
 # MagRem

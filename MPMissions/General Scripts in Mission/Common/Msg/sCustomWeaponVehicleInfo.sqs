@@ -1,10 +1,17 @@
-; args: [plane, price, need rearm time: bool]
-_plane = _this select 0
+; args: [vehicle, price, need rearm time: bool, vehicle type(enum)]
+_vehicle = _this select 0
 _price = _this select 1
 _bNeedRearm = _this select 2
+_enum = _this select 3
 _this = _nil
 
-pv_TZK_Veh_Obj = _plane
-pv_TZK_Veh_Info = (PlanePrice find _price) + (count PlanePrice) * ([0,1] select _bNeedRearm)
+pv_TZK_Veh_Obj = _vehicle
+
+pv_TZK_Veh_Info = _enum
+_priceIndex = call ([{PlanePrice}, {GunshipPrice}, {HeliPrice}] select _enum) find _price
+pv_TZK_Veh_Info = pv_TZK_Veh_Info + enum_TZK_CustomVehicle_Cnt * _priceIndex
+_cnt = count call ([{PlanePrice}, {GunshipPrice}, {HeliPrice}] select _enum)
+pv_TZK_Veh_Info = pv_TZK_Veh_Info + enum_TZK_CustomVehicle_Cnt * _cnt * ([0,1] select _bNeedRearm)
+
 publicVariable {pv_TZK_Veh_Info}
 publicVariable {pv_TZK_Veh_Obj}
