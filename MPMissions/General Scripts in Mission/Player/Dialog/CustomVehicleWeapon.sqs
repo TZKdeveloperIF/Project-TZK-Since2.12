@@ -21,8 +21,7 @@ _si = siPlayer; _gi = giPlayer
 _idcSlotText = IDC + 30; _idcYourMoneyText = IDC + 31; _idcMagPriceText = IDC + 32; _idcUpgradeText = IDC + 33; _idcTimeText = IDC + 34
 _idcMagList = IDC + 20; _idcEquippedList = IDC + 21; ctrlEnable [_idcEquippedList, false]
 _usedSlots = 0; _magCost = 0; _upgradeCost = 0; _timeCost = 0; _totalSlots = 9
-? _enum == enum_TZK_CustomVehicle_Gunship: _totalSlots = 5, if ("Ka50_xj400" countType [_vehicle] > 0) then {_totalSlots = 7}
-? _enum == enum_TZK_CustomVehicle_Helicopter: _totalSlots = 2
+call preprocessFile "Player\Dialog\CVW_getTotalSlot.sqf"
 
 ; initial available controls
 ctrlSetText [_idcSlotText, format ["%1", _totalSlots - _usedSlots]]
