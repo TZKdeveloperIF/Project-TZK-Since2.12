@@ -82,14 +82,14 @@ btnValue00 = 0
 	? _var1 == 2^1: goto "MagRem"
 # MagAdd
 	? _usedSlots + (_magInfo select _i select _piSlot) > _totalSlots: hint "Insufficient Slots.", goto "Update"
-	1 call loadFile "Player\Dialog\CustomVehicleWeapon_RefreshStat.sqf"
+	1 call loadFile "Player\Dialog\CVW_RefreshStat.sqf"
 	goto "Update"
 # MagRem
 	? _j == -1: goto "Update"
-	-1 call loadFile "Player\Dialog\CustomVehicleWeapon_RefreshStat.sqf"
+	-1 call loadFile "Player\Dialog\CVW_RefreshStat.sqf"
 	goto "Update"
 # MagClear
-	0 call loadFile "Player\Dialog\CustomVehicleWeapon_RefreshStat.sqf"
+	0 call loadFile "Player\Dialog\CVW_RefreshStat.sqf"
 	goto "Update"
 # Buy
 	? !local _vehicle: hint "Rearm failed. The vehicle isn't local.", goto "Update"
@@ -118,7 +118,7 @@ btnValue00 = 0
 		? player in _vehicle: hint _text
 		? _time < _timeComplete: goto "Loop"
 
-	? count magazines _vehicle == 0: call loadFile "Player\Dialog\CustomVehicleWeapon_RearmExec.sqf"
+	? count magazines _vehicle == 0: call loadFile "Player\Dialog\CVW_RearmExec.sqf"
 	? _shoppingCartMag find "Tomahawk" != -1 || _shoppingCartMag find "Raduga" != -1: _vehicle say "NuclearMissileReady_xj400"
 
 	_cost = _magCost + _upgradeCost
