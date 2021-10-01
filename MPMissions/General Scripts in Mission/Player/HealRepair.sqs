@@ -13,7 +13,9 @@ _timeHeal = 5; _bIsCrew = (_unit in _support)
 _type = _vehicle call funcGetUnitTypeFromObject
 ? _type == -1: goto "CheckStruct"
 _price = unitDefs select _type select udCost
-? "A10_xj400" countType [_vehicle] > 0 && "A10_AAOnly_xj400" countType [_vehicle] == 0 || "Su25_xj400" countType [_vehicle] > 0 && "Su25_AAOnly_xj400" countType [_vehicle] == 0: _idx = PlaneUnits find _vehicle, if (_idx != -1) then {_price = PlanesInfo select _idx select 0}
+; update "_price" if vehicle is "Custom Weapon Vehicle"
+? _unit != _vehicle: _vehicle call loadFile "Common\SQF\GetCustomWeaponVehicle.sqf"
+
 goto "CheckDamage"
 
 #CheckStruct

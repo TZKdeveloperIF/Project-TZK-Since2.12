@@ -8,7 +8,7 @@ if (!bool_TZK_Vanilla_Mode && !bool_TZK_SEMod_Mode) Then {
 	unitDefs select _irNO_mi2 set [udFactoryType, -1];
 };
 
-if bool_TZK_Origin then {
+if true then {
 	comment "Remove redundant planes and redefine remained ones.";
 	_type = _a10LGB4; while {_type <= _a10Tomahawk} do {
 		if (_type != _a10) then {unitDefs select _type set [udFactoryType, -1]};
@@ -32,6 +32,20 @@ if bool_TZK_Origin then {
 	]];
 	unitDefs select _a10gun set [udName, "A10 (AA Only)"];
 	unitDefs select _su25gun set [udName, "Su25 (AA Only)"];
+
+	comment "Remove redundant planes and redefine remained ones.";
+	{
+		unitDefs select _x set [udCost, (unitDefs select _x select udCost) - 5000];
+		unitDefs select _x set [udScripts, [
+			"Common\Equip\Gunship.sqs", "Common\InitGunship.sqs", "\TZK_Scripts_4_0_4\Common\Init\V80.sqs"
+		]];
+	} forEach [_v80E, _v80E2];
+	{
+		unitDefs select _x set [udCost, (unitDefs select _x select udCost) - 5000];
+		unitDefs select _x set [udScripts, [
+			"Common\Equip\Gunship.sqs", "Common\InitGunship.sqs"
+		]];
+	} forEach [_mi24E, _mi24E2, _mi24E3, _ah1W, _ah64W, _tigerW, _ah1W2, _ah64W2, _tigerW2];
 };
 
 

@@ -16,7 +16,10 @@ _msg = ""; _timeRearm = 30;
 ? _unit == _vehicle: _timeRearm = 5
 ? _vehicle in vehiclesRearming: _msg = "Rearm not started, rearm of vehicle already in progress."; if (_unit == player) then {hint _msg}; _unit groupChat _msg; exit
 
-? "A10_xj400" countType [_vehicle] > 0 && "A10_AAOnly_xj400" countType [_vehicle] == 0 || "Su25_xj400" countType [_vehicle] > 0 && "Su25_AAOnly_xj400" countType [_vehicle] == 0: ["TZK_CustomAircraftWeaponDialog", 0, _vehicle, _support] exec "Player\Dialog\CustomVehicleWeapon.sqs", exit
+_enum = -1
+; get "_enum" if vehicle is "Custom Weapon Vehicle"
+? _unit != _vehicle: _vehicle call loadFile "Common\SQF\GetCustomWeaponVehicle.sqf"
+? _enum != -1: if (dialog) then {closeDialog 0}, ["TZK_CustomAircraftWeaponDialog", _enum, _vehicle, _support] exec "Player\Dialog\CustomVehicleWeapon.sqs", exit
 
 ; player globalchat format["_type=%1  unit: %2", _type, (unitDefs select _type) select udName ]
 

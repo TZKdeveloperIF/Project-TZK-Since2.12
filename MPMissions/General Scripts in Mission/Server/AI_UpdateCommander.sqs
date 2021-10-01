@@ -59,6 +59,10 @@ _transEjectParam = call (orderDefs select orderTransportDuty select 1 select 2 s
 {if(_grpNums >= _x) then {_giT = _giTanks select _x - 7, _giT set [count _giT, _x call _getGrpIdxFromID]}} forEach [7,8,9]
 {if(_grpNums >= _x) then {_giInf set [count _giInf, _x call _getGrpIdxFromID]}} forEach [10,11,12,13,14]
 {if(_grpNums >= _x) then {_giT = _giTanks select _x - 15, _giT set [count _giT, _x call _getGrpIdxFromID]}} forEach [15,16,17]
+; 4.0.5.15 Update
+_planeType = unitsBuyAI select _si select utbPlane select 0 select 0
+_script = ["\TZK_Scripts_4_0_4\Common\Equip\A10AT.sqs", "\TZK_Scripts_4_0_4\Common\Equip\Su25AT.sqs"] select _si
+unitDefs select _planeType set [udScripts, [_script, "Common\InitSpawnPlane.sqs"]];
 
 
 _townsTotal = count towns

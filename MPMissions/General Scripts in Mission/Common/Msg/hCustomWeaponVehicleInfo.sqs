@@ -4,14 +4,21 @@ _this = _nil
 
 @ !mutexVehicleArray
 mutexVehicleArray = true
-_i = PlaneUnits find _plane; _bNewElement = false
-? _i == -1: _i = 0, _c = count PlaneUnits, _found = false, while {_i < _c && !_found} do {if (!alive (PlaneUnits select _i)) then {_found = true} else {_i = _i + 1}}, if (_i == count PlaneUnits) then {_bNewElement = true}
 
-PlaneUnits set [_i, _plane]
-_priceIndex = _info % (count PlanePrice); _info = (_info - _priceIndex) / (count PlanePrice)
-_price = PlanePrice select _priceIndex
+_enum = _info % enum_TZK_CustomVehicle_Cnt; _info = (_info - _enum) / enum_TZK_CustomVehicle_Cnt
+_cnt = count call ([{PlanePrice}, {GunshipPrice}, {HeliPrice}] select _enum)
+_priceIndex = _info % _cnt; _info = (_info - _priceIndex) / _cnt
+_price = call ([{PlanePrice}, {GunshipPrice}, {HeliPrice}] select _enum) select _priceIndex
 _bNeedRearm = [false, true] select _info
-? _bNewElement: PlanesInfo set [_i, [_price, _bNeedRearm]]
-?!_bNewElement: PlanesInfo select _i set [0, _price], PlanesInfo select _i set [1, _bNeedRearm]
+
+_vehArr = call ([{PlaneUnits}, {GunshipUnits}, {HeliUnits}] select _enum)
+_info = call ([{PlanesInfo}, {GunshipInfo}, {HelisInfo}] select _enum)
+
+_i = _vehArr find _plane; _bNewElement = false
+? _i == -1: _i = 0, _c = count _vehArr, _found = false, while {_i < _c && !_found} do {if (!alive (_vehArr select _i)) then {_found = true} else {_i = _i + 1}}, if (_i == count _vehArr) then {_bNewElement = true}
+
+_vehArr set [_i, _plane]
+? _bNewElement: _info set [_i, [_price, _bNeedRearm]]
+?!_bNewElement: _info select _i set [0, _price], _info select _i set [1, _bNeedRearm]
 
 mutexVehicleArray = false

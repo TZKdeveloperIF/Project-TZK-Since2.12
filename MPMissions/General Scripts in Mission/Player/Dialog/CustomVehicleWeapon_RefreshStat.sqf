@@ -4,7 +4,7 @@ if (_this == 0) then {
 	_usedSlots = 0;
 	_shoppingCartMag resize 0; _shoppingCartCnt resize 0;
 } else {
-	_usedSlots = _usedSlots + _this * (PlaneMagInfo select _i select _piSlot);
+	_usedSlots = _usedSlots + _this * (_magInfo select _i select _piSlot);
 	if (_this == 1) then {
 		if (_j == -1) then {
 			_shoppingCartMag set [count _shoppingCartMag, _i];
@@ -29,8 +29,8 @@ if (_this == 0) then {
 _slots = _totalSlots - _usedSlots; _slots = _slots - _slots % 0.01;
 ctrlSetText [_idcSlotText, format ["%1", _slots]];
 
-_magCost = if (_this != 0 && PlanesInfo select _vehicleIndex select 1) then {
-	_magCost + _this * (PlaneMagInfo select _i select _piPrice)
+_magCost = if (_this != 0 && _info select 1) then {
+	_magCost + _this * (_magInfo select _i select _piMagPrice)
 } else {
 	0
 };
@@ -42,22 +42,21 @@ while {_k < _c} do {
 	_idx = _shoppingCartMag select _k;
 	_text = (
 		if bool_TZK_199_Mode then {
-			format [{%1%2%3}, PlaneMagInfo select _idx select _piName, "      ", _shoppingCartCnt select _k]
+			format [{%1%2%3}, _magInfo select _idx select _piName, "      ", _shoppingCartCnt select _k]
 		} else {
-			_name = PlaneMagInfo select _idx select _piName;
-			_spaces = ""; _size = sizeofstr _name; while {_size < 18} do {_spaces = _spaces + " "; _size = _size + 1};
-			format [{%1%2%3}, _name, _spaces, _shoppingCartCnt select _k]
+			_name = _magInfo select _idx select _piName;
+			_spaces = ""; _size = sizeofstr _name; while {_size < 16} do {_spaces = _spaces + " "; _size = _size + 1};
+			format [{%1%2x%3}, _name, _spaces, _shoppingCartCnt select _k]
 		}
 	);
-	_m = lbAdd [_idcEquippedList, _text];
-	lbSetColor [_idcEquippedList, _m, [0,0,0,0.5]];
-	_upg = PlaneMagInfo select _idx select _piPlanePrice;
+	_m = lbAdd [_idcEquippedList, _text]; if false then "lbSetColor [_idcEquippedList, _m, [0,0,0,0.5]]";
+	_upg = _magInfo select _idx select _piVehPrice;
 	if (_upg > _upgradeCost) then {_upgradeCost = _upg};
-	_rearmTime = (PlaneMagInfo select _idx select _piRearmTime) * (_shoppingCartCnt select _k);
+	_rearmTime = (_magInfo select _idx select _piRearmTime) * (_shoppingCartCnt select _k);
 	if (_rearmTime > _timeCost) then {_timeCost = _rearmTime};
 	_k = _k + 1;
 };
-if (_this == 0 || !(PlanesInfo select _vehicleIndex select 1)) then {_timeCost = 0};
+if (_this == 0 || !(_info select 1)) then {_timeCost = 0};
 ctrlSetText [_idcTimeText, format ["%1s", _timeCost]];
-_upgradeCost = _upgradeCost - (PlanesInfo select _vehicleIndex select 0); if (_upgradeCost < 0) then {_upgradeCost = 0};
+_upgradeCost = _upgradeCost - (_info select 0); if (_upgradeCost < 0) then {_upgradeCost = 0};
 ctrlSetText [_idcUpgradeText, format ["$%1", _upgradeCost]];

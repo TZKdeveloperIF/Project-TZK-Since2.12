@@ -2,7 +2,13 @@
 _vehicle = _this select 0; _ammo = _this select 4
 
 _bNuclear = false; _bBaseBuster = _ammo in ["LaserGuidedBomb_xj400", "LaserGuidedBomb"]
-? bool_TZK_SEMod_Mode: _vt = _vehicle call funcGetUnitTypeFromObject; if (_vt != -1) Then { _price = unitDefs select _vt select udCost, if (_price >= [90000, 180000] select PricingMode) Then "_bNuclear = true" Else "if (_price < [45000, 90000] select PricingMode) Then {_bBaseBuster = false}" }
+
+_vt = _vehicle call funcGetUnitTypeFromObject
+_price = unitDefs select _vt select udCost
+; update "_price" if vehicle is "Custom Weapon Vehicle"
+_vehicle call loadFile "Common\SQF\GetCustomWeaponVehicle.sqf"
+
+? bool_TZK_SEMod_Mode: if (_price >= [90000, 180000] select PricingMode) Then {_bNuclear = true} Else {if (_price < [45000, 90000] select PricingMode) Then {_bBaseBuster = false}}
 ? _ammo == "tomahawk_xj400": _bNuclear = true
 ? _bNuclear: playsound {NuclearMissileLaunched_xj400}
 
@@ -19,9 +25,13 @@ _pos = getPos _shell
 _x = _pos Select 0; _y = _pos Select 1; _z = _pos Select 2;
 ? _bNuclear: _logicName = "ExplodeLogic_Nuclear_xj400"; _logic = _logicName createVehicle [-_x, _y, _z]; [_vehicle, _pos] exec "\TZK_Scripts_4_0_4\Player\Effect\ExplosionTomahawk.sqs"; exit
 
-? _bBaseBuster: if ("Su25_xj400" countType [_vehicle] > 0 || "Su25_Vanilla_xj405" countType [_vehicle] > 0) Then "_vt = _vehicle call funcGetUnitTypeFromObject; if (_vt != -1) Then { _price = unitDefs select _vt select udCost, if (_price < [45000, 90000] select PricingMode) Then {_bBaseBuster = false} }", if _bBaseBuster Then{[_vehicle, _pos] exec "\TZK_Scripts_4_0_4\Player\Effect\ExplosionBuster.sqs"}; exit
-; ? _bBaseBuster: if ("A10_Buster_xj400" countType [_vehicle] > 0 || "Su25_Buster_xj400" countType [_vehicle] > 0 || bool_TZK_SEMod_Mode)
+? _bBaseBuster && bool_TZK_SEMod_Mode: [_vehicle, _pos] exec "\TZK_Scripts_4_0_4\Player\Effect\ExplosionBuster.sqs", goto "SkipBuster"
+? _bBaseBuster: if (_price < [45000, 90000] select PricingMode) Then {_bBaseBuster = false}
+? _bBaseBuster: [_vehicle, _pos] exec "\TZK_Scripts_4_0_4\Player\Effect\ExplosionBuster.sqs", goto "SkipBuster"
 ; condition backup. Due to 4.0.5 config bug.
-? _bBaseBuster: if ("A10_Buster_xj400" countType [_vehicle] > 0 || bool_TZK_SEMod_Mode) then {[_vehicle, _pos] exec "\TZK_Scripts_4_0_4\Player\Effect\ExplosionBuster.sqs"}; exit
+; ? _bBaseBuster: if ("A10_Buster_xj400" countType [_vehicle] > 0 || "Su25_Buster_xj400" countType [_vehicle] > 0 || bool_TZK_SEMod_Mode)
+
+# SkipBuster
+exit
 
 ; EOF
