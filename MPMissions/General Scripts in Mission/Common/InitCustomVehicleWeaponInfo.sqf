@@ -10,6 +10,8 @@
 TZK_CustomVehicleTypes = [
 	"A10_xj400",
 	"Su25_xj400",
+	"A10_Vanilla_xj405",
+	"Su25_Vanilla_xj405",
 
 	"AH1_xj400",
 	"AH1_AT_xj400",
