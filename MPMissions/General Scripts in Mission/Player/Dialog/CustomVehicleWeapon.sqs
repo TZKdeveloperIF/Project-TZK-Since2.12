@@ -18,7 +18,8 @@ _availMags = call ([{PlaneMags}, {GunshipMags}, {HeliMags}] select _enum)
 _magInfo = call ([{PlaneMagInfo}, {GunshipMagInfo}, {HeliMagInfo}] select _enum)
 
 _si = siPlayer; _gi = giPlayer
-_idcSlotText = IDC + 30; _idcYourMoneyText = IDC + 31; _idcMagPriceText = IDC + 32; _idcUpgradeText = IDC + 33; _idcTimeText = IDC + 34
+_idcSlotText = IDC + 30; _idcYourMoneyText = IDC + 31; _idcMagPriceText = IDC + 32
+_idcUpgradeText = IDC + 33; _idcTimeText = IDC + 34
 _idcMagList = IDC + 20; _idcEquippedList = IDC + 21; ctrlEnable [_idcEquippedList, false]
 _usedSlots = 0; _magCost = 0; _upgradeCost = 0; _timeCost = 0; _totalSlots = 9
 call preprocessFile "Player\Dialog\CVW_getTotalSlot.sqf"
@@ -29,7 +30,7 @@ ctrlSetText [_idcYourMoneyText, format ["$%1", groupMoneyMatrix select _si selec
 ctrlSetText [_idcMagPriceText, format ["$%1",_magCost]]
 ctrlSetText [_idcUpgradeText, format ["$%1", 0]]
 
-_piWeapon = 0, _piName = 1, _piSide = 2, _piMagPrice = 3, _piSlot = 4, _piRearmTime = 5, _piVehPrice = 6
+_piWeapon = 0, _piName = 1, _piSide = 2, _piVehPrice = 3, _piUnitCost = 4, _piUnitSlot = 5, _piUnitTime = 6, _piUnitCount = 7
 _i = 0; _c = count _magInfo
 _shoppingCartMag = []; _shoppingCartCnt = []
 # AddMagList
@@ -40,12 +41,12 @@ _shoppingCartMag = []; _shoppingCartCnt = []
 	? _enum == enum_TZK_CustomVehicle_Gunship: if (!call loadFile "Player\Dialog\CVW_validMag.sqf") then {goto "Continue_AddMagList"}
 	
 	; fill whitespace for price
-	_var1 = ""; _var2 = _magInfo select _i select _piMagPrice; _var3 = 1000
+	_var1 = ""; _var2 = _magInfo select _i select _piUnitCost; _var3 = 1000
 	while {_var3 > 1} do {if (_var2 < _var3) then {_var1 = _var1 + " "}; _var3 = _var3 / 10}
 	;
 	_idx = lbAdd [_idcMagList, _magInfo select _i select _piName];
 	lbSetValue [_idcMagList, _idx, _i]
-	_var3 = _magInfo select _i select _piSlot; _var3 = _var3 - (_var3 % 0.01)
+	_var3 = _magInfo select _i select _piUnitSlot
 	_var1 = format ["$%1%2, Slot: %3", _var1, _var2, _var3]
 	_idx = lbAdd [_idcMagList, _var1];
 	lbSetValue [_idcMagList, _idx, _i]
@@ -81,7 +82,8 @@ btnValue00 = 0
 	; ? _var1 == 2^0: goto "MagAdd"
 	? _var1 == 2^1: goto "MagRem"
 # MagAdd
-	? _usedSlots + (_magInfo select _i select _piSlot) > _totalSlots: hint "Insufficient Slots.", goto "Update"
+	_var3 = _magInfo select _i select _piUnitSlot
+	? _usedSlots + _var3 > _totalSlots: hint "Insufficient Slots.", goto "Update"
 	1 call loadFile "Player\Dialog\CVW_RefreshStat.sqf"
 	goto "Update"
 # MagRem
