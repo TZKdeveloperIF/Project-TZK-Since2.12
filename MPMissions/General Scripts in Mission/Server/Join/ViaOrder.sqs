@@ -1,7 +1,7 @@
 ; args: value
 
 _value = _this
-? _value < 0 : _value exec "Server\Join\ViaUnitCam.sqs"; exit
+? _value < 0: _value exec "Server\Join\ViaUnitCam.sqs"; exit
 
 _giTo = _value % GroupsNum
 _value = (_value - _giTo) / GroupsNum
@@ -26,7 +26,7 @@ _unitsInProgress = groupUnitsBuildingMatrix select _si select _giTo
 _size = count units (groupMatrix select _si select _giTo)
 ? _members + _size + _unitsInProgress > maxGroupSize: _full = 1; if (name leader(groupCommander select _si) == "IF") then {pvGrpSize = _unitsInProgress + 13*_size + 13*13*_members, publicVariable {pvGrpSize}}; goto "Reply"
 
-? mutexJoinServer : _busy = 1; goto "Reply"
+? mutexJoinServer: _busy = 1; goto "Reply"
 
 mutexJoinServer = true; _allow = 1; goto "Reply"
 
@@ -35,62 +35,63 @@ mutexJoinServer = true; _allow = 1; goto "Reply"
 _value = _allow + 2*_full + 2*2*_busy
 pvJoinReply = _value; publicVariable "pvJoinReply"
 
-? _busy == 1 : exit
-? _allow == 0 : mutexJoinServer = false; exit
+? _busy == 1: exit
+? _allow == 0: mutexJoinServer = false; exit
 _leaderJoin = call format ["leaderJoin%1", _si]; _groupJoin = group _leaderJoin
 
 	_ids = (groupUnitIDMatrix select _si) select _giFrom; _uid = 0; _text = ""
 	_units = units (groupMatrix select _si select _giFrom); _unitsToJoin = []
 
 	_index = 0; _count = count _units
-	while "_uid <= 12 && _index < _count" do { _found = false; 		if (_unitsID select _uid) then { 	while "!_found && _index < _count" do 	{ 	_text = format["%1", _units select _index];  	if (_text == (_ids select _uid)) then {_unitsToJoin = _unitsToJoin + [_units select _index]; _found = true}; 	_index = _index + 1 	} 	}; 	_uid = _uid + 1}
-	? count _unitsToJoin == 0 : _remoteIDs = []; {_remoteIDs set [count _remoteIDs, _x + " REMOTE"]} forEach _ids; _uid = 0; _index = 0; while "_uid <= 12 && _index < _count" do { _found = false; 		if (_unitsID select _uid) then { 	while "!_found && _index < _count" do 	{ 	_text = format["%1", _units select _index];  	if (_text == (_remoteIDs select _uid)) then {_unitsToJoin = _unitsToJoin + [_units select _index]; _found = true}; 	_index = _index + 1 	} 	}; 	_uid = _uid + 1}
+	while {_uid <= 12 && _index < _count} do {																							_found = false; if (_unitsID select _uid) then {																					while {!_found && _index < _count} do {																								_text = format["%1", _units select _index];																						if (_text == (_ids select _uid)) then {_unitsToJoin = _unitsToJoin + [_units select _index]; _found = true};					_index = _index + 1}																									}; _uid = _uid + 1																											  }
+	? count _unitsToJoin == 0: _remoteIDs = []; {_remoteIDs set [count _remoteIDs, _x + " REMOTE"]} forEach _ids; _uid = 0;		_index = 0; while {_uid <= 12 && _index < _count} do {																				_found = false;																													if (_unitsID select _uid) then {																									while {!_found && _index < _count} do {																								_text = format["%1", _units select _index];																						if (_text == (_remoteIDs select _uid)) then {_unitsToJoin = _unitsToJoin + [_units select _index]; _found = true}; 				_index = _index + 1																											}																															}; _uid = _uid + 1																											  }
 	
 	
-	? count _unitsToJoin == 0 : mutexJoinServer = false; exit
+	? count _unitsToJoin == 0: mutexJoinServer = false; exit
 
 	{_leaderJoin reveal _x} forEach _unitsToJoin; [_unitsToJoin, _si, _giFrom, _giTo] exec "\TZK_Scripts_4_0_5\Server\Join\DelayAssign.sqs"
 	~0.1
-	_unitsToJoin join _groupJoin
+	_unitsToJoin join _groupJoin; _unitsBck = +_unitsToJoin
 	
 	_try = 0; _unitsJoint = []
 	#FirstRepeat
 	~0.4
 	_count = count _unitsToJoin; _index = 0
 		#FirstGroupCheck
-			? (group (_unitsToJoin select _index)) == _groupJoin : _unitsJoint = _unitsJoint + [_unitsToJoin select _index]
+			? (group (_unitsToJoin select _index)) == _groupJoin: _unitsJoint = _unitsJoint + [_unitsToJoin select _index]
 			_index = _index + 1
-			? _index < _count : goto "FirstGroupCheck"
+			? _index < _count: goto "FirstGroupCheck"
 		_unitsToJoin = _unitsToJoin - _unitsJoint
-		? count _unitsToJoin > 0 && _try < 10 : _unitsToJoin join _groupJoin; _try = _try + 1; goto "FirstRepeat"
+		? count _unitsToJoin > 0 && _try < 10: _unitsToJoin join _groupJoin; _try = _try + 1; goto "FirstRepeat"
 		
 	~0.5
 _units = (units _groupJoin) - [_leaderJoin]
 if ((groupMatrix select _si select _giTo) in (groupAiMatrix select _si)) then {_units join (groupMatrix select _si select _giTo)} else { pvJoinReceive = _giTo + GroupsNum*_si; publicVariable "pvJoinReceive" }
-? (groupMatrix select _si select _giFrom) in (groupAiMatrix select _si) : _order = orderMatrix select _si select _giFrom; _order set [0, (_order select 0) + 3]
+? (groupMatrix select _si select _giFrom) in (groupAiMatrix select _si): _order = orderMatrix select _si select _giFrom; _order set [0, (_order select 0) + 3]
 
 
-? !((groupMatrix select _si select _giTo) in (groupAiMatrix select _si)) : goto "DONE"
-? count _units == 0 : goto "DONE"
+? !((groupMatrix select _si select _giTo) in (groupAiMatrix select _si)): goto "DONE"
+? count _units == 0: goto "DONE"
 	_try = 0; _unitsJoint = []
 	#SecondRepeat
 	~0.4
 	_count = count _units; _index = 0
 		#SecondGroupCheck
-			? (group (_units select _index)) == (groupMatrix select _si select _giTo) : _unitsJoint = _unitsJoint + [_units select _index]
+			? (group (_units select _index)) == (groupMatrix select _si select _giTo): _unitsJoint = _unitsJoint + [_units select _index]
 			_index = _index + 1
-			? _index < _count : goto "SecondGroupCheck"
+			? _index < _count: goto "SecondGroupCheck"
 		_units = _units - _unitsJoint
-		? count _units > 0 && _try < 10 : _units join (groupMatrix select _si select _giTo); _try = _try + 1; goto "SecondRepeat"
+		? count _units > 0 && _try < 10: _units join (groupMatrix select _si select _giTo); _try = _try + 1; goto "SecondRepeat"
 
 
 #DONE
+{doStop _x} forEach _unitsBck
 ; Wait till Join Process completed
 _timeAbort = time + 15
 @( count (units _groupJoin) == 1 || time > _timeAbort )
 
 ; Join might fail on client sometimes, especially when someone lags.
-? count (units _groupJoin) == 1 : goto "QUIT"
+? count (units _groupJoin) == 1: goto "QUIT"
 
 _units = (units _groupJoin) - [_leaderJoin]; {_x setPos getPos _x} forEach _units
 ~2
