@@ -43,7 +43,7 @@ _leaderJoin = call format ["leaderJoin%1", _si]; _groupJoin = group _leaderJoin
 
 	{_leaderJoin reveal _x} forEach _unitsToJoin; [_unitsToJoin, _si, _giFrom, _giTo] exec "\TZK_Scripts_4_0_5\Server\Join\DelayAssign.sqs"
 	~0.1
-	_unitsToJoin join _groupJoin
+	_unitsToJoin join _groupJoin; _unitsBck = +_unitsToJoin
 	
 	_try = 0; _unitsJoint = []
 	#FirstRepeat
@@ -77,6 +77,7 @@ if ((groupMatrix select _si select _giTo) in (groupAiMatrix select _si)) then {_
 
 
 #DONE
+{doStop _x} forEach _unitsBck
 ; Wait till Join Process completed
 _timeAbort = time + 15
 @( count (units _groupJoin) == 1 || time > _timeAbort )
