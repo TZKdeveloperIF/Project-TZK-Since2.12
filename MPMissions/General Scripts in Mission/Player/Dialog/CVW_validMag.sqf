@@ -1,6 +1,12 @@
 private [{_bValid}, {_magName}];
 _bValid = true; _magName = _magInfo select _i select _piName;
 
+if (_bValid && _magName == "Rocket") then {
+	if (_enum == enum_TZK_CustomVehicle_Gunship || _enum == enum_TZK_CustomVehicle_Helicopter) then {
+		_bValid = upgMatrix select _si select upgGunshipRocket == 2;
+	};
+};
+
 if (_bValid && _magName == "AT") then {
 	if (_bValid && _availMags select _i == "HellfireLauncherCobra_xj400") then {
 		_bValid = typeOf _vehicle in ["AH1W_Vit_xj400", "AH1_xj400"];

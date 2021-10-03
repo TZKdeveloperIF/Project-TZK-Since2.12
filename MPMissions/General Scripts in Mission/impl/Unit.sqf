@@ -39,7 +39,7 @@ if true then {
 	unitDefs select _a10gun set [udName, "A10 (AA Only)"];
 	unitDefs select _su25gun set [udName, "Su25 (AA Only)"];
 
-	comment "Remove redundant planes and redefine remained ones.";
+	comment "Adjust gunships.";
 	{
 		unitDefs select _x set [udCost, (unitDefs select _x select udCost) - 5000];
 		unitDefs select _x set [udScripts, [
@@ -52,6 +52,15 @@ if true then {
 			"Common\Equip\Gunship.sqs", "Common\InitGunship.sqs"
 		]];
 	} forEach [_mi24E, _mi24E2, _mi24E3, _ah1W, _ah64W, _tigerW, _ah1W2, _ah64W2, _tigerW2];
+	comment "Adjust helicopters.";
+	{
+		unitDefs select _x set [udFactoryType, -1];
+	} forEach [_uh60W30, _uh60WL, _mi17E30, _mi17EL];
+	{
+		_scripts = unitDefs select _x select udScripts;
+		_scripts set [count _scripts, "Common\InitHelicopter.sqs"];
+		vDoubledRange set [count vDoubledRange, _x];
+	} forEach [_uh60W, _uh60supW, _uh60WMG2, _mi17E, _mi17supE, _mi17EMG2];
 };
 
 
