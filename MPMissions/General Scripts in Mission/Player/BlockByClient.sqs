@@ -1,7 +1,5 @@
 ; args: none
 
-_timeStart = _time
-
 disableUserInput true
 
 hint "You are BLOCKED.\nYou are NOT Receiving."
@@ -11,11 +9,9 @@ hint "You are BLOCKED.\nYou are NOT Receiving."
 #WaitForData
 	groupPlayer setCombatMode "BLUE"
 	~1
-	? _time > _timeStart + 86: disableUserInput false
 	? (time > (timeLastPing + blockTime)): goto "WaitForData"
 
 ~blockTime/6*1.5
-? _time > _timeStart + 86: disableUserInput false
 ? (time > (timeLastPing + blockTime/6*1.5)): goto "WaitForData"
 
 groupPlayer setCombatMode "YELLOW"
