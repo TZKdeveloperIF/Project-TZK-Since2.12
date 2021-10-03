@@ -5,7 +5,7 @@
 if (_enum == enum_TZK_CustomVehicle_Gunship) then {
 	_totalSlots = 5, if ("Ka50_xj400" countType [_vehicle] > 0) then {_totalSlots = 7};
 };
-if (_enum == enum_TZK_CustomVehicle_Helicopter) then {_totalSlots = 2};
+if (_enum == enum_TZK_CustomVehicle_Helicopter) then {_totalSlots = 2.1};
 
 if !bool_TZK_199_Mode then {
 	_bVerify = true;

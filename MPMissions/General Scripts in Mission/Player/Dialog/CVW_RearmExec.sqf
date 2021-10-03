@@ -9,7 +9,7 @@ while {_k < _c} do {
 	_mag = _availMags select _magInfoIdx;
 	_wep = _magInfo select _magInfoIdx select _piWeapon;
 
-	call loadFile "Player\Dialog\CVW_getMagWep.sqf";
+	call preprocessFile "Player\Dialog\CVW_getMagWep.sqf";
 
 	if !bool_TZK_199_Mode then {
 		_ammunition = _shoppingCartCnt select _k;
@@ -22,7 +22,7 @@ while {_k < _c} do {
 	_vehicle addWeapon _wep;
 	_k = _k + 1;
 };
-call loadFile "Player\Dialog\CVW_equipGeneral.sqf";
+call preprocessFile "Player\Dialog\CVW_equipGeneral.sqf";
 if ("Air" countType [_vehicle] > 0) then {{_vehicle addMagazine _x} forEach SpoofMagazines};
 if ("A10_xj400" countType [_vehicle] > 0 || "Su25_xj400" countType [_vehicle] > 0 || "A10_Vanilla_xj405" countType [_plane] > 0 || "Su25_Vanilla_xj405" countType [_plane] > 0) then {
 	_vehicle addMagazine "AfterBurnerSwitch_xj400"

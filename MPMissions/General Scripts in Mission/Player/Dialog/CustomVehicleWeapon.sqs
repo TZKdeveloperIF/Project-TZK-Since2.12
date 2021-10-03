@@ -38,8 +38,8 @@ _shoppingCartMag = []; _shoppingCartCnt = []
 	; skip improper side
 	_var1 = _magInfo select _i select _piSide
 	? _var1 != siBoth && _var1 != _si: goto "Continue_AddMagList"
-	? _enum == enum_TZK_CustomVehicle_Gunship: if (!call loadFile "Player\Dialog\CVW_validMag.sqf") then {goto "Continue_AddMagList"}
-	
+	? _enum == enum_TZK_CustomVehicle_Gunship || _enum == enum_TZK_CustomVehicle_Helicopter: 											if (!call loadFile "Player\Dialog\CVW_validMag.sqf") then {goto "Continue_AddMagList"}
+
 	; fill whitespace for price
 	_var1 = ""; _var2 = _magInfo select _i select _piUnitCost; _var3 = 1000
 	while {_var3 > 1} do {if (_var2 < _var3) then {_var1 = _var1 + " "}; _var3 = _var3 / 10}
