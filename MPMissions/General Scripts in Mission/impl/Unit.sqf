@@ -20,12 +20,18 @@ if true then {
 	};
 	unitDefs select _a10 set [udName, "A10"];
 	unitDefs select _a10 set [udCost, 15000];
+	if (name leader (groupCommander select si0) != "IF" && name leader (groupCommander select si1) != "IF") then {
+		unitDefs select _a10 set [udCost, 25000];
+	};
 	if !bool_TZK_199_Mode then {unitDefs select _a10 set [udModel, "A10_xj400"]};
 	unitDefs select _a10 set [udScripts, [
 		"\TZK_Scripts_4_0_4\Common\Equip\A10bombs.sqs",  "Common\InitSpawnPlane.sqs"
 	]];
 	unitDefs select _su25 set [udName, "Su25"];
 	unitDefs select _su25 set [udCost, 15000];
+	if (name leader (groupCommander select si0) != "IF" && name leader (groupCommander select si1) != "IF") then {
+		unitDefs select _su25 set [udCost, 25000];
+	};
 	if !bool_TZK_199_Mode then {unitDefs select _su25 set [udModel, "Su25_xj400"]};
 	unitDefs select _su25 set [udScripts, [
 		"\TZK_Scripts_4_0_4\Common\Equip\Su25bombs.sqs", "Common\InitSpawnPlane.sqs"
