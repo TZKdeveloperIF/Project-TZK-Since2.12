@@ -1,0 +1,1 @@
+infoDefs select mtTimeLimitRemind set [1, "Player\Info\"];

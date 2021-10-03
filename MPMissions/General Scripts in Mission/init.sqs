@@ -39,6 +39,9 @@ pvConcurStatus1 = -1; pvConcurStatus2 = -1;
 [] exec "Common\InitWeaponsInfo.sqs"
 ; 4.0.5.15/16 updating
 [] exec "Common\InitCustomVehicleWeaponInfo.sqs"
+; delay call in case of initialization unfinished
+[{call preprocessFile "impl\Upgrade.sqf"; call preprocessFile "impl\info.sqf"}, 0.1] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
+
 
 
 ; init functions (stuff that return values)
@@ -117,7 +120,6 @@ timeReinforceTown = 3*60
 ? !bool_TZK_199_Mode && (bool_TZK_MF_Mode || bool_TZK_Yugo_Mode): call loadFile "Extra\DynamicTriggerRemove.sqf"
 ? isServer: [] exec "Server\InitServer.sqs"
 ?!isServer: [] exec "Player\InitClient.sqs"
-call loadFile "impl\Upgrade.sqf"
 
 
 ; New contents added in later version. **BEFORE Any Delay.**
