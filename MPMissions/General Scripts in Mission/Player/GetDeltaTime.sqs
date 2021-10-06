@@ -1,0 +1,11 @@
+; args: none
+
+; this script isn't used because the "time" won't work if being assigned
+
+# loop
+~ 5
+? pvDeltaTime == -1: goto "loop"
+
+; ? !isServer: time = time - pvDeltaTime
+player globalChat format ["%1, %2", pvDeltaTime, time]
+exit

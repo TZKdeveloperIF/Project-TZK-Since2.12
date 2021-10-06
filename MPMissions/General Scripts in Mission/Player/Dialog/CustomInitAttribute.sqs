@@ -1,0 +1,52 @@
+; args: dialog name
+
+_script = _this
+; create dialog
+@!mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog _script
+mutexDlg = false
+
+; show background
+ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+
+; initialize variables
+_si = siPlayer; _gi = giPlayer
+_idcPlayerMoney = IDC + 30; _idcAicoMoney = IDC + 31
+
+; main loop
+btnValue00 = 0
+# Update
+	? call dlgUpdated: goto "Quit"
+	? !(alive player): closeDialog 0; exit
+
+	? btnValue00 > 0: goto "ParserBtn00"
+	~0.2
+	goto "Update"
+
+# ParserBtn00
+	_var1 = btnValue00; btnValue00 = 0
+	? _var1 == 2^0: goto "Confirm"
+	goto "Update"
+# Confirm
+	; There may be "undefined" value in editable box so we shall use "goto" to jump those undefined ones.
+	? ctrlText _idcPlayerMoney == "": goto "SkipPlayerMoney"
+	? call (ctrlText _idcPlayerMoney) >= 0: goto "SkipPlayerMoney"
+	hint "Invalid Player Money Value.", goto "Update"
+	# SkipPlayerMoney
+	? ctrlText _idcAicoMoney == "": goto "SkipAicoMoney"
+	? call (ctrlText _idcAicoMoney) >= 0: goto "SkipAicoMoney"
+	hint "Invalid AICO Money Value.", goto "Update"
+	# SkipAicoMoney
+	pvCustomPlayerMoney = call (ctrlText _idcPlayerMoney)
+	? pvCustomPlayerMoney > 999999: pvCustomPlayerMoney = 999999
+	? ctrlText _idcPlayerMoney == "": pvCustomPlayerMoney = -1
+	pvCustomAicoMoney = call (ctrlText _idcAicoMoney)
+	? pvCustomAicoMoney < 60000: pvCustomAicoMoney = 60000
+	? pvCustomAicoMoney > 999999: pvCustomAicoMoney = 999999
+	? ctrlText _idcAicoMoney == "": pvCustomAicoMoney = -1
+	publicVariable {pvCustomPlayerMoney}; publicVariable {pvCustomAicoMoney}; closeDialog 0; goto "Quit"
+
+# Quit
+	mutexCmd = false; publicVariable {mutexCmd}
+	exit
