@@ -1,7 +1,7 @@
 Target_Set_TZK_Number = 0
 ; 4_0_6_Update
 
-["\TZK_Scripts_4_0_5\Player\InitPlayer.sqs", "Player\InitSpectator.sqs"] exec "\TZK_Scripts_4_0_5\Player\InitClient_Group.sqs"
+["Player\InitPlayer.sqs", "Player\InitSpectator.sqs"] exec "\TZK_Scripts_4_0_5\Player\InitClient_Group.sqs"
 [] exec "\TZK_Scripts_4_0_5\Player\Init_Function_Client.sqs"
 [] exec "\TZK_Scripts_4_0_5\Player\InitClient_constants.sqs"
 [] exec "\TZK_Scripts_4_0_5\Player\InitClient_TZK_Setting.sqs"
@@ -27,8 +27,10 @@ _i = 0; _count = 5; while "_i < _count" do {call format [{[] exec "\TZK_Scripts_
 
 
 
-;game has begun after this pause
+; game has begun after this pause
 ~0.1
 [] exec "\TZK_Scripts_4_0_4\Player\LoadSettings.sqs"
+; 4.0.5.18 update
+; 0 exec "Player\GetDeltaTime.sqs"
 
 ; EOF

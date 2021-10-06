@@ -15,8 +15,9 @@ Init_TZK_Script_Order = false
 ["\TZK_Scripts_4_0_5\init_group.sqs"] exec "\TZK_Scripts_4_0_5\init_constants.sqs"
 [] exec "\TZK_Scripts_4_0_5\init_param.sqs"
 [] exec "\TZK_Scripts_4_0_5\init_upgrade.sqs"
-? bool_TZK_Lester_Mode: [] exec "Extra\init_upgrade.sqs"
-; [] exec 
+? bool_TZK_Lester_Mode: [{[] exec "Extra\init_upgrade.sqs"}, 0.1] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
+; 4.0.5.18 update
+pvInit_0 = -1; pvCustomPlayerMoney = -1; pvCustomAicoMoney = -1
 
 @ Init_TZK_Script_Order
 Init_TZK_Script_Order = false
@@ -118,12 +119,16 @@ mutexDynamicInitializeGroups = false; [] exec "\TZK_Scripts_4_0_4\Common\Dynamic
 timeReinforceTown = 3*60
 
 ? !bool_TZK_199_Mode && (bool_TZK_MF_Mode || bool_TZK_Yugo_Mode): call loadFile "Extra\DynamicTriggerRemove.sqf"
+
+; The global variable "mutexCmd" is for low frequently scripts. It'll be better not to define too many global variables.
+mutexCmd = true; comment "initialization. Game will wait until commander make the decision since 4.0.5.18."
+
 ? isServer: [] exec "Server\InitServer.sqs"
 ?!isServer: [] exec "Player\InitClient.sqs"
 
 
 ; New contents added in later version. **BEFORE Any Delay.**
-; ================================================================================TZK_4.0.0 Block================================================================================
+; ==============================================TZK_4.0.0 Block==============================================
 ; Vote System. Format of elements: [name, items[], player selected value, server vote result]
 Vote_Matrix = []; Vote_ItemNames = []; _i = 0
 _items = "Vote_Item_Weather"; call (_items + " = [{Sunny}, {Cloudy}, {Overcast}, {Rainy}, {Stromy}, {Misty}, {Foggy}, {Random}]")
@@ -185,12 +190,12 @@ Period_TZK = 0
 ; Income
 IncomeGrow_TZK = false
 
-; ================================================================================TZK_4.0.0 Block================================================================================
+; ==============================================TZK_4.0.0 Block==============================================
 
-; ================================================================================TZK_4.0.4 Block================================================================================
+; ==============================================TZK_4.0.4 Block==============================================
 dlgID = 0; mutexDlg = false; dlgUpdated = "!dialog || _dlgID != dlgID"
-; ================================================================================TZK_4.0.4 Block================================================================================
+; ==============================================TZK_4.0.4 Block==============================================
 
-; ================================================================================TZK_4.0.5 Block================================================================================
-mutexCmd = false
-; ================================================================================TZK_4.0.5 Block================================================================================
+; ==============================================TZK_4.0.5 Block==============================================
+
+; ==============================================TZK_4.0.5 Block==============================================
