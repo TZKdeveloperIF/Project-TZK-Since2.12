@@ -5,7 +5,7 @@ _tugslot = _this select 1
 _tugType = _this select 2
 
 _massLimit = 1000000; _distMax = 0
-? (_tugType == ttHeli): _distMax = 30; _massLimit = 6000
+? (_tugType == ttHeli): _distMax = 30; _massLimit = 6000; if (bool_TZK_Lester_Mode) Then {_massLimit = 999999};
 ? (_tugType == ttBoat): _distMax = 50;
 ? (_tugType == ttTruck): _distMax = 20; _massLimit = 9999
 ? (_tugType == ttAPC): _distMax = 20; 
