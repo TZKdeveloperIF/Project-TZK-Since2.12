@@ -3,7 +3,7 @@ comment "Make objects build-able. Adjust their udFactoryType to legal value.";
 "_entry = unitDefs select _x; _entry set [udFactoryType, 2^stLight]" forEach [_jeepMGW, _uazMGE,  _hummerWG, _hummerWAA, _brdmEAT, _brdmEAA];
 
 "_entry = unitDefs select _x; _entry set [udFactoryType, 2^stLight + 2^stHeavy]" forEach [_AMX10W];
-"_entry = unitDefs select _x; _entry set [udFactoryType, 2^stLight + 2^stShip]" forEach [_zodiacHW, _patrolboatW, _patrolshipW,  _zodiacHE, _patrolboatE, _patrolshipE];
+"_entry = unitDefs select _x; _entry set [udFactoryType, 2^stShip]" forEach [_zodiacHW, _patrolboatW, _patrolshipW,  _zodiacHE, _patrolboatE, _patrolshipE];
 
 
 comment "Allow Light Factory Build Transport Helicopter. Try new accuracy side trick helicopters here.";
@@ -22,7 +22,7 @@ types_SE_td = [_tdW, _tdE, _m109artW, _plz05artE];
 comment "Adjust the build-able vehicles.";
 "_entry = unitDefs select _x; _entry set [udFactoryType, 2^stHeavy]" forEach [_tankHyperW01, _tankHyperE01, _m109artW, _plz05artE, _warrior80W, _bmp3, _tdW, _tdE];
 "_entry = unitDefs select _x; _entry set [udFactoryType, 2^stAir]" forEach [_Mi24E3, _mi26E, _ch47W];
-"_entry = unitDefs select _x; _entry set [udFactoryType, -1]" forEach [_tankHeavyW02, _m2a2d, _tankLightW02, _bmp2d, _tankLightE02, _tankHeavyE03, _uh60W, _mi17E, _m109W, _plz05E];
+"_entry = unitDefs select _x; _entry set [udFactoryType, -1]" forEach [_tankHeavyW02, _m2a2d, _tankLightW02, _bmp2d, _tankLightE02, _tankHeavyE03, _uh60W, _mi17E, _m109W, _plz05E, _brdmE3];
 
 comment "Add the Action EntrenchTank to all units built from Heavy Factory.";
 {;
@@ -55,13 +55,14 @@ _entry = unitDefs select _a10Tomahawk; _entry set [udName, "F35 Stealth Nuke"]; 
 	_entry = unitDefs select _x;
 	_name = _entry select udName; _name = "Su30" + substr [_name, sizeofstr "Su25", sizeofstr _name]; _entry set [udName, _name];
 	_entry set [udModel, "su30mki_p1"]; if (_x == _su25LGB8) then {_entry set [udModel, "su30mki_p1"]}; _entry set [udImage, "\acwc_su30mk\n\su30_pic1.paa"];
-} forEach [_su25, _su25LGB8, _su25AA, _su25Rocket];
+} forEach [_su25LGB8, _su25AA, _su25Rocket];
 _entry = unitDefs select _su39; _entry set [udFactoryType, 2^stAir];
 _entry = unitDefs select _su25BB; _entry set [udName, "Su57 Base Buster"]; _entry set [udModel, "PAK_FA"]; _entry select udScripts set [count (_entry select udScripts), "\TZK_Scripts_4_0_4\Common\Equip\LGB8.sqs"]; _entry set [udImage, "\acwc_su30mk\n\su30_pic1.paa"];
 _entry = unitDefs select _su25Raduga; _entry set [udName, "Su57 Raduga"]; _entry set [udModel, "PAK_FA_Nuke"]; _entry set [udImage, "\acwc_su30mk\n\su30_pic1.paa"];
+_entry = unitDefs select _su25; _entry set [udName, "Su25 AT/30mm"];
 
 comment "TZK use AAOnly A10/Su25 and allow LF build them. It's optional for SE to modify their udModel. Here, their udFactoryType are redefined.";
-"_entry = unitDefs select _x; _entry set [udFactoryType, 2^stAir + 2^stLight]" forEach [_a10gun, _su25gun];
+"_entry = unitDefs select _x; _entry set [udFactoryType, 2^stAir + 2^stLight]; _entry set [udCost, [8000, 16000] select PricingMode]" forEach [_a10gun, _su25gun];
 
 
 comment "Redefine units.";
@@ -116,6 +117,7 @@ _entry = unitDefs select _supportTruckE2; _entry set [udModel, "dlem_ural4320_re
 _entry = unitDefs select _truckRefuelE; _entry set [udModel, "dlem_ural4320_GAS"];
 _entry = unitDefs select _brdmE; _entry set [udModel, "MNF_BRDM2U"]; _entry set [udImage, "\BRMD\ibrmd"];
 _entry = unitDefs select _brdmE3; _entry set [udCost, [1100, 2200] select PricingMode]; _entry set [udName, "BRDM2 Rockets"]; _entry set [udModel, "MNF_BRDM2_AT3"]; _entry set [udImage, "\BRMD\ibrmd"];
+_entry = unitDefs select _brdmEAT; _entry set [udCost, [1500, 3000] select PricingMode]; _entry set [udName, "BMD3"]; _entry set [udModel, "DVD_BMD3"]; _entry set [udImage, "\dvd_config\Pics\BMD3.paa"];
 _entry = unitDefs select _brdmEAA; _entry set [udCost, [2000, 4000] select PricingMode];
 _entry = unitDefs select _bmpE; _entry set [udModel, "WW3_BMP1"];
 _entry = unitDefs select _bmp2E; _entry set [udModel, "WW3_BMP2"];
@@ -152,4 +154,4 @@ _entry = unitDefs select _javE1; _entry set [udModel, "icp_infATH"];
 _entry = unitDefs select _soldierAAE1; _entry set [udModel, "icp_infAA"];
 _entry = unitDefs select _bmp2attown; _entry set [udModel, "WW3_BMP2"];
 _entry = unitDefs select _bmp2aatown; _entry set [udModel, "WW3_BMP2"];
-_entry = unitDefs select _tankHeavyE02town; _entry set [udModel, "T90"];
+_entry = unitDefs select _t80townE; _entry set [udModel, "T90"];
