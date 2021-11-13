@@ -102,7 +102,7 @@ _group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "N
 		_timeAbort = time + 5
 		@ (!isNull _vehicle || time > _timeAbort)
 	  
-	? count _unitsInfantry >= 8 : { deleteVehicle (_unitsInfantry select _x) } forEach [1,2]
+	? count _unitsInfantry >= 8 : { deleteVehicle (_unitsInfantry select _x) } forEach [2,3]
 	~5
 	goto "ReinforceReady"
 
@@ -117,7 +117,7 @@ _group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "N
 		_timeAbort = time + 5
 		@ (!isNull _vehicle || time > _timeAbort)
 	  
-	? count _unitsInfantry >= ( [8,6] select ( ((upgMatrix select _si) select upgTownGroupb) == 2 ) ) : { deleteVehicle (_unitsInfantry select _x) } forEach [1,2]
+	? count _unitsInfantry >= ( [8,6] select ( ((upgMatrix select _si) select upgTownGroupb) == 2 ) ) : { deleteVehicle (_unitsInfantry select _x) } forEach [2,3]
 	~5
 	goto "ReinforceReady"
 
