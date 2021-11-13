@@ -10,17 +10,26 @@ if (!bool_TZK_Vanilla_Mode && !bool_TZK_SEMod_Mode) Then {
 
 if true then {
 	comment "Remove redundant planes and redefine remained ones.";
+	_name0 = []; _i = 0; _c = count (groupMatrix select si0); while {_i < _c} do {
+		_name0 set [_i, name leader (groupMatrix select si0 select _i)];
+		_i = _i + 1;
+	};
+	_name1 = []; _i = 0; _c = count (groupMatrix select si1); while {_i < _c} do {
+		_name1 set [_i, name leader (groupMatrix select si1 select _i)];
+		_i = _i + 1;
+	};
+
 	_type = _a10LGB4; while {_type <= _a10Tomahawk} do {
-		if (_type != _a10) then {unitDefs select _type set [udFactoryType, -1]};
+		if (_type != _a10) then {unitDefs select _type set [udFactoryType, -1], unitDefs select _type set [udName, "(empty)"]};
 		_type = _type + 1;
 	};
 	_type = _su25LGB4; while {_type <= _su25Raduga} do {
-		if (_type != _su25) then {unitDefs select _type set [udFactoryType, -1]};
+		if (_type != _su25) then {unitDefs select _type set [udFactoryType, -1], unitDefs select _type set [udName, "(empty)"]};
 		_type = _type + 1;
 	};
 	unitDefs select _a10 set [udName, "A10"];
 	unitDefs select _a10 set [udCost, 15000];
-	if (name leader (groupCommander select si0) != "IF" && name leader (groupCommander select si1) != "IF") then {
+	if (-1 != _name0 find "J10A" && -1 == _name1 find "IF") then {
 		unitDefs select _a10 set [udCost, 25000];
 	};
 	if !bool_TZK_199_Mode then {unitDefs select _a10 set [udModel, "A10_xj400"]};
@@ -29,7 +38,7 @@ if true then {
 	]];
 	unitDefs select _su25 set [udName, "Su25"];
 	unitDefs select _su25 set [udCost, 15000];
-	if (name leader (groupCommander select si0) != "IF" && name leader (groupCommander select si1) != "IF") then {
+	if (-1 != _name1 find "J10A" && -1 == _name0 find "IF") then {
 		unitDefs select _su25 set [udCost, 25000];
 	};
 	if !bool_TZK_199_Mode then {unitDefs select _su25 set [udModel, "Su25_xj400"]};
@@ -54,13 +63,18 @@ if true then {
 	} forEach [_mi24E, _mi24E2, _mi24E3, _ah1W, _ah64W, _tigerW, _ah1W2, _ah64W2, _tigerW2];
 	comment "Adjust helicopters.";
 	{
-		unitDefs select _x set [udFactoryType, -1];
+		unitDefs select _x set [udFactoryType, -1], unitDefs select _x set [udName, "(empty)"]
 	} forEach [_uh60W30, _uh60WL, _mi17E30, _mi17EL];
 	{
 		_scripts = unitDefs select _x select udScripts;
 		_scripts set [count _scripts, "Common\InitHelicopter.sqs"];
 		vDoubledRange set [count vDoubledRange, _x];
 	} forEach [_uh60W, _uh60supW, _uh60WMG2, _mi17E, _mi17supE, _mi17EMG2];
+
+	comment "Allow buy support truck in air factory";
+	{
+		unitDefs select _x set [udFactoryType, 2^stLight + 2^stAir];
+	} forEach [_supportTruckW, _supportTruckE];
 };
 
 
