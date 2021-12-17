@@ -77,6 +77,9 @@ if true then {
 	} forEach [_supportTruckW, _supportTruckE];
 };
 
+comment "Remove AA missile for Gun-Plane.";
+unitDefs select _a10gun select udScripts set [0, "Common\Equip\PlaneGun.sqs"];
+unitDefs select _su25gun select udScripts set [0, "Common\Equip\PlaneGun.sqs"];
 
 comment "SE requrests.";
 if bool_TZK_SEMod_Mode then {
