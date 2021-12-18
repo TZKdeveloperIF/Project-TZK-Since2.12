@@ -19,7 +19,7 @@ _vehicle addEventHandler ["killed", {_this exec "Common\Event\Killed_Vehicle.sqs
 ? "Air" countType [_vehicle] > 0: _vehicle addEventHandler ["GetOut", { _this exec "\TZK_Scripts_4_0_4\Common\EH\GetOutAircraft.sqs" }]
 
 ; "IncomingMissile" EH must be added to all clients. Although it is a global EH, it should be added to the client who fires missile. The command can be empty, but EH can't be omitted.
-? "Air" countType [_vehicle] > 0: [_vehicle, _type] exec "\TZK_Scripts_4_0_4\Common\EH\AddAirIncoming.sqs"
+? "Air" countType [_vehicle] > 0: [_vehicle, _type] exec "Common\EH\AddAirIncoming.sqs"
 ? "Tank" countType [_vehicle] > 0: if (_si != siRes) then {[_vehicle, _type] exec "\TZK_Scripts_4_0_4\Common\EH\AddTankIncoming.sqs"}
 
 ? isNull player: goto "SkipClient"

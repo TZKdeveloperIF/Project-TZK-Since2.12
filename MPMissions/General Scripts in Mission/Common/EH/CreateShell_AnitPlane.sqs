@@ -1,0 +1,6 @@
+; args: [target, missile, shooter]
+
+_this exec "Util\SpoofCheck.sqs"
+_this exec "Util\SpoofMissile.sqs"
+
+? !isNull player: [_this select 0, typeOf (_this select 1), _this select 2] exec "Util\AirAlert.sqs"
