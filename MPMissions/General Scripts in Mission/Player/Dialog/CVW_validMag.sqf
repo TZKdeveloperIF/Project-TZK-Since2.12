@@ -2,7 +2,7 @@ private [{_bValid}, {_magName}];
 _bValid = true; _magName = _magInfo select _i select _piName;
 
 if (_bValid && _magName == "Rocket") then {
-	if (_enum == enum_TZK_CustomVehicle_Gunship || _enum == enum_TZK_CustomVehicle_Helicopter) then {
+	if (_enum == enum_TZK_CustomVehicle_Helicopter) then {
 		_bValid = upgMatrix select _si select upgGunshipRocket == 2;
 	};
 };
