@@ -1,6 +1,5 @@
-; args: [target, ammo, whoFired]
-_target = _this select 0; _ammo = _this select 1; _shooter = _this select 2
-_missile = nearestobject [_shooter, _ammo]
+; args: [target, missile, whoFired]
+_target = _this select 0; _missile = _this select 1; _shooter = _this select 2
 ? !local _target && !local _missile : goto "Quit"
 ? "_x=={SpoofSwitch_xj400}" count magazines _target > 0 : goto "Quit"
 
