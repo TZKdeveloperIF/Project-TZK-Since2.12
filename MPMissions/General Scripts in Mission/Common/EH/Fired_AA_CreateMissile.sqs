@@ -1,0 +1,34 @@
+; args: [target, source, missile type, (init time = 0)]
+
+_target = _this select 0
+_source = _this select 1
+_missileClass = _this select 2
+_initTime = if (count _this > 3) then {_this select 3} else {0}
+
+; createShell will always create a shell with [0,1,0] vector and make them unable to lock different
+; directions' target eventhough their vector dir and up is adjusted immediately. So missile shall be
+; created from the south and deploy above vehicle later
+
+? _source distance _target > 3 * viewDistance: exit
+~ 2 + random 2
+? _source distance _target > 3 * viewDistance: exit
+
+_startPos = getPosASL _target
+; random launch pos in case of missiles collide with each other
+_startPos set [0, (_startPos select 0) + random 1000 - 500]
+_startPos set [1, (_startPos select 1) + random 200]
+
+_startPos set [1, (_startPos select 1) - (_source distance _target)]
+_minH = _startPos select 2
+? _minH < 50: _minH = 50
+_startPos set [2, _minH]
+_aa = createShell [_missileClass, _startPos, [0,0,0], _source, _target]
+
+~_initTime * 0.8 + 0.001
+_startPos = getPosASL _source
+_startPos set [2, (_startPos select 2) + 20]
+_vector = [getPosASL _target, _startPos] call funcVectorSub
+_aa setPosASL _startPos
+_aa SetVectorDirAndUp [_vector, [0,0,1]]
+
+; hint format ["%1\n%2\n%3", _vector, velocity _aa, vectorDir _aa]

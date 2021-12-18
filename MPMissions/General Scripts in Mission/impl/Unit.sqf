@@ -77,6 +77,10 @@ if true then {
 	} forEach [_supportTruckW, _supportTruckE];
 };
 
+comment "Anti Plane Vehicle Type Constant.";
+typesAntiPlane3500 = [[_m2a2aa, _m2a2townaad], [_bmp2aa, _bmp2townaad]];
+typesAntiPlane8000 = [[_vulcanW2], [_tunguskaE]];
+
 comment "Remove AA missile for Gun-Plane.";
 unitDefs select _a10gun select udScripts set [0, "Common\Equip\PlaneGun.sqs"];
 unitDefs select _su25gun select udScripts set [0, "Common\Equip\PlaneGun.sqs"];

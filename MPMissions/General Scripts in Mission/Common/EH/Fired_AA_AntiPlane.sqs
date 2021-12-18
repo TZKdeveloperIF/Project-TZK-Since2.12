@@ -1,0 +1,17 @@
+; rhis script is to limit AT plane for they're too strong (especially when "long range weapon" having upgraded)
+
+_ammo = _this select 4
+? !(_ammo in ["Maverick", "Ch29T", "tomahawk_xj400"]): exit
+
+_vehicle = _this select 0
+_this = 1
+
+_si = siEnemy select (sides find side _vehicle)
+
+? !isServer: if (_si != siPlayer) then {exit}
+
+; check 3500AA
+[_vehicle, _si] call loadFile "Common\EH\Fired_AA_AntiPlane_3500.sqf"
+
+; check 8000AA
+[_vehicle, _si] call loadFile "Common\EH\Fired_AA_AntiPlane_8000.sqf"
