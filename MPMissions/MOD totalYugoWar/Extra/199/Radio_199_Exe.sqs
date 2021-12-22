@@ -23,7 +23,7 @@ _delay = 0; _hint = ""; goto format ["Channel%1", _this select 0]
 
 #Channel1
 _hint = "0-0-1 channel is mainly for aircrafts switching ""SpoofMissile"" function, which requires upgrading.\nBesides, when player jumping off the aircraft and stay in parachute, this channel can be applied to call the ""Options"" action.\nAnd when player is commander and on foot, this channel can be applied to call back MHQ out of the map (this occur sometimes, due to attach bug, or due to enemy blowing up many satchels to make the MHQ out of map)."
-? _vehicle == player: if (isCommander) Then {[] exec "\TZK_Scripts_4_0_4\Player\Radio\RadioList_Soldier_CallBackMHQ.sqs", _delay = 2} Else {_delay = 0}, goto "Quit"
+? _vehicle == player: if (isCommander) Then {[] exec "Player\Radio\RadioList_Soldier_CallBackMHQ.sqs", _delay = 2} Else {_delay = 0}, goto "Quit"
 ? "Air" countType [_vehicle] == 0: goto "Quit"
 ? "ParachuteBase" countType [_vehicle] > 0: [] exec "Player\Dialog\Options.sqs", exit
 
