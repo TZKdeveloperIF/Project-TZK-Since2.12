@@ -95,7 +95,7 @@ btnValue00 = 0
 	goto "Update"
 # Buy
 	? !local _vehicle: hint "Rearm failed. The vehicle isn't local.", goto "Update"
-	? _magCost + _upgradeCost < _money: hint "Insufficient fond.", goto "Update"
+	? _magCost + _upgradeCost > groupMoneyMatrix select siPlayer select giPlayer: hint "Insufficient fond.", goto "Update"
 	? count _shoppingCartMag == 0: hint "No bought magazines.", goto "Update"
 	closeDialog 0
 
