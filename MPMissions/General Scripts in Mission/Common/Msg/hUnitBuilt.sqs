@@ -22,9 +22,9 @@ _indexUnitMatrix = _type
 
 ? _si == siPlayer : groupPlayer reveal _unit
 
-? _unit in ((unitMatrix select _si) select _indexUnitMatrix) : exit
+? _unit in (unitMatrix select _si select _indexUnitMatrix) : exit
 
-[_unit, _indexUnitMatrix, _si] exec "\TZK_Scripts_4_0_4\Common\AddToUnitMatrix.sqs"
+[_unit, _indexUnitMatrix, _si] exec "Common\AddToUnitMatrix.sqs"
 
 _desc = unitDefs select _indexUnitMatrix
 

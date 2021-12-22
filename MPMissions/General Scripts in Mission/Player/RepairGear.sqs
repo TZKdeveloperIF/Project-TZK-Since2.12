@@ -1,0 +1,54 @@
+; args: [unit, truck, vehicle]
+
+_unit = _this select 0
+_support = _this select 1
+_vehicle = _this select 2
+_this = 1
+
+? damage _vehicle > 0.02: _support groupChat "Plane isn't repaired. Repair it first.", exit
+? !local _vehicle: _support groupChat "Not local vehicle. Script won't work.", exit
+
+_idxObserved = Array_TZK_Observed find _vehicle
+? -1 == _idxObserved: _support groupChat "Error occured on this plane. Unable to repair its gear.", exit
+
+_cost = 1000
+_money = groupMoneyMatrix select siPlayer select giPlayer
+? _cost > _money: goto "NotEnoughCash"
+? _cost > 0: [_cost] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"
+
+_pos = getPosASL _vehicle
+_dir = getDir _vehicle
+? !bool_TZK_199_Mode: _vecDir = vectorDir _vehicle
+? bool_TZK_199_Mode: _mags = magazines _vehicle
+? !bool_TZK_199_Mode: _magArr = magazinesArray _vehicle
+_weps = weapons _vehicle
+_fuel = fuel _vehicle
+_className = typeOf _vehicle
+_driver = driver _vehicle
+
+{_x setPosASL _pos} forEach (crew _vehicle)
+_vehicle setPosASL [-1000, -1000, 20]
+_vehOld = _vehicle
+
+_vehicle = _className createVehicle _pos
+_vehicle setPosASL _pos
+_vehicle setDir _dir
+? !bool_TZK_199_Mode: _vehicle setVectorDirAndUp [_vecDir, [0,0,1]]
+removeAllWeapons _vehicle
+{_vehicle removeWeapon _x} forEach (weapons _vehicle)
+? bool_TZK_199_Mode: {_vehicle addMagazine _x} forEach _mags
+? !bool_TZK_199_Mode: _i = 0, _c = count _magArr, while {_i < _c} do {_vehicle addMagazinePrecise [_magArr select _i, _magArr select _i + 1]; _i = _i + 2}
+{_vehicle addWeapon _x} forEach _weps
+_vehicle setFuel _fuel
+
+; broadcast vehicle
+[_vehOld, _vehicle] call loadFile "Util\Broadcast_Observed.sqf"
+
+_msg = format ["Repairs complete. $%1", _cost]
+? _unit == player: hint _msg
+_unit groupchat _msg
+exit
+  
+#NotEnoughCash
+    _text = format["Not enough cash. Need $%1.", _cost]
+    _unit groupchat _text

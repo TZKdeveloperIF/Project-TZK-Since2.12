@@ -1,0 +1,31 @@
+; args: [unit, indexUnitMatrix, si]
+
+_unit = _this select 0
+_indexUnitMatrix = _this select 1
+_si = _this select 2
+_this = 0
+
+? _indexUnitMatrix >= maxUnitTypes: _indexUnitMatrix = utCustom select _si
+
+@ !mutexAddToUnitMatrix
+mutexAddToUnitMatrix = true
+
+_list = unitMatrix select _si select _indexUnitMatrix
+? time < 5 * 60: _i = count _list; goto "SetList"
+
+? _unit in _list: mutexAddToUnitMatrix = false; exit
+_i = _list find objNull
+? _i == -1: _i = count _list
+
+# SetList
+_list set [_i, _unit]
+unitsBuilt select _si set [_indexUnitMatrix, 1 + (unitsBuilt select _si select _indexUnitMatrix)]
+
+? !(_unit call loadFile "Util\IsTzkPlane.sqf"): goto "SkipBattlePlane"
+@ !Lock_TZK_Observer
+Lock_TZK_Observer = true
+[_unit, _list, _i] call loadFile "Util\Add2ObserverList.sqf"
+Lock_TZK_Observer = false
+# SkipBattlePlane
+
+mutexAddToUnitMatrix = false

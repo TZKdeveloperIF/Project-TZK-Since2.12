@@ -42,6 +42,8 @@ pvConcurStatus1 = -1; pvConcurStatus2 = -1;
 [] exec "Common\InitCustomVehicleWeaponInfo.sqs"
 ; delay call in case of initialization unfinished
 [{call preprocessFile "impl\Upgrade.sqf"; call preprocessFile "impl\info.sqf"}, 0.1] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
+; 4.0.5.21 updating
+0 exec "Common\InitObserverMode.sqs"
 
 
 
@@ -73,14 +75,14 @@ pvConcurStatus1 = -1; pvConcurStatus2 = -1;
 [] exec "\TZK_Scripts_4_0_4\Common\MsgTransportTurnOn.sqs"
 [] exec "\TZK_Scripts_4_0_4\Common\MsgTransportTurnOff.sqs"
 
-{ ["\TZK_Scripts_4_0_5\Common\Msg\hUnitBuilt.sqs"] exec format ["\TZK_Scripts_4_0_5\Common\Msg\mUnitBuilt_%1.sqs", _x] } forEach [0,1,2,3,4]
+{ ["Common\Msg\hUnitBuilt.sqs"] exec format ["\TZK_Scripts_4_0_5\Common\Msg\mUnitBuilt_%1.sqs", _x] } forEach [0,1,2,3,4]
 
 [] exec "\TZK_Scripts_4_0_4\Common\MsgObjectRepaired.sqs"
 ["\TZK_Scripts_4_0_4\Common\HandleStructMatrixRemove.sqs"] exec "\TZK_Scripts_4_0_5\Common\Msg\mStructMatrixRemove.sqs"
 
 ["\TZK_Scripts_4_0_5\Common\Msg\hAITemporaryOrder.sqs"] exec "\TZK_Scripts_4_0_5\Common\Msg\mAITemporaryOrder.sqs"
 ["Common\Msg\hAIStatus.sqs"] exec "Common\Msg\mAIStatus.sqs"
-? bool_TZK_199_Mode: [] exec "\TZK_Scripts_4_0_4\Common\Msg\mSpoofTarget.sqs", [] exec "\TZK_Scripts_4_0_4\Common\Msg\mSwitchMagazine.sqs"
+? bool_TZK_199_Mode: 0 exec "Common\initMsgUnderACWA.sqs"
 
 "Common\Msg\hCustomWeaponVehicleInfo.sqs" exec "Common\Msg\mCustomWeaponVehicleInfo.sqs"
 

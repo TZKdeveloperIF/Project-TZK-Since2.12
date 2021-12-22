@@ -7,10 +7,7 @@ _this = _nil
 _posveh = getpos _plane;
 _driver = driver _plane;
 
-? "A10_xj400" countType [_plane] == 0 && "Su25_xj400" countType [_plane] == 0 && "A10_Vanilla_xj405" countType [_plane] == 0 && "Su25_Vanilla_xj405" countType [_plane] == 0: goto "SkipBattlePlane"
-? "A10_AAOnly_xj400" countType [_plane] > 0 || "Su25_AAOnly_xj400" countType [_plane] > 0 || "A10_AAOnly_Vanilla_xj405" countType [_plane] > 0 || "Su25_AAOnly_Vanilla_xj405" countType [_plane] > 0: goto "SkipBattlePlane"
-	[_plane, unitDefs select _type select udCost, false, enum_TZK_CustomVehicle_Plane] exec "Common\Msg\sCustomWeaponVehicleInfo.sqs"
-# SkipBattlePlane
+? _plane call loadFile "Util\IsTzkPlane.sqf": [_plane, unitDefs select _type select udCost, false, enum_TZK_CustomVehicle_Plane] exec "Common\Msg\sCustomWeaponVehicleInfo.sqs"
 
 ? (isNull _driver) || _driver == player: exit
 

@@ -1,3 +1,5 @@
+; message handler. Record custom weapon vehicles in array [{PlaneUnits}, {GunshipUnits}, {HeliUnits}].
+
 _plane = _this select 0
 _info = _this select 1
 _this = _nil
@@ -20,5 +22,10 @@ _i = _vehArr find _plane; _bNewElement = false
 _vehArr set [_i, _plane]
 ? _bNewElement: _info set [_i, [_price, _bNeedRearm]]
 ?!_bNewElement: _info select _i set [0, _price], _info select _i set [1, _bNeedRearm]
+
+@ !Lock_TZK_Observer
+Lock_TZK_Observer = true
+[_plane, _vehArr, _i] call loadFile "Util\Add2ObserverList.sqf"
+Lock_TZK_Observer = false
 
 mutexVehicleArray = false

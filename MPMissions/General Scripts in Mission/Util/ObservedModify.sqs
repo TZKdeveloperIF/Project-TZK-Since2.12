@@ -1,0 +1,16 @@
+_vehOld = _this select 0
+_vehNew = _this select 1
+_this = 0
+
+; get both unit matrix and custom weapon vehicle array lock
+@ !mutexAddToUnitMatrix
+mutexAddToUnitMatrix = true
+@ !mutexVehicleArray
+mutexVehicleArray = true
+
+_idxObserved = Array_TZK_Observed find _vehOld
+Array_TZK_Observed set [_idxObserved, _vehNew]
+{_x select 0 set [_x select 1, _vehNew]} forEach (Array_TZK_Observer select _idxObserved)
+
+mutexVehicleArray = false
+mutexAddToUnitMatrix = false

@@ -1,0 +1,13 @@
+; observer mode
+
+; format of Array_TZK_Observed: [vehicle, vehicle, ...]
+Array_TZK_Observed = []
+; format of Array_TZK_Observer: [[container of observer, index of observer in this container], ...]
+Array_TZK_Observer = []
+; Lock
+Lock_TZK_Observer = false
+
+; 1. "find" observed object in Array_TZK_Observed and get an index
+; 2. Get its observer at Array_TZK_Observer.at(i)
+; 3. Do something on each observer
+; 4. Do something on observed object (and update observer if necessary)
