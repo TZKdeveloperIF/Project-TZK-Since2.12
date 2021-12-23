@@ -1,0 +1,13 @@
+; args: none
+_unit = player
+
+? !alive player: goto "PlayerDead"
+
+# PlayerOnFoot
+	_unit addEventHandler ["Fired", {_this exec "Player\Effect\Fired_Player_ArtShell.sqs"}]
+	@ !alive _unit
+
+# PlayerDead
+	@ alive player
+	_unit = player
+	goto "PlayerOnFoot"
