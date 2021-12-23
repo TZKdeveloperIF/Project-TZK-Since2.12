@@ -1,7 +1,8 @@
 private ["_weapons", "_mags", "_weapon", "_muzzles", "_muzzle", "_x", "_magazines", "_magazine"];
 _weapons = _this; _mags = [];
 {
-	_weapon = _x;
+	_weapon = _x; if ("" != _weapon) then
+	{
 	_muzzles = call format ["%1", _weapon GetWeaponParamArray "muzzles"];
 	{
 		_muzzle = _x; if (_x == "this") then {
@@ -14,5 +15,6 @@ _weapons = _this; _mags = [];
 			if !(_magazine in _mags) then {_mags set [count _mags, _magazine]};
 		} forEach _magazines;
 	} forEach _muzzles;
+	};
 } forEach _weapons;
 _mags
