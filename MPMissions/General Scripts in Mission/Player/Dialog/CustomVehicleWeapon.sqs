@@ -79,10 +79,10 @@ btnValue00 = 0
 	_idx = lbCurSel _idcMagList
 	? _idx == -1: hint "No magazine selected."; goto "Update"
 	_i = lbValue [_idcMagList, _idx]; _j = _shoppingCartMag find _i
+	_var3 = _magInfo select _i select _piUnitSlot
 	; ? _var1 == 2^0: goto "MagAdd"
 	? _var1 == 2^1: goto "MagRem"
 # MagAdd
-	_var3 = _magInfo select _i select _piUnitSlot
 	? _usedSlots + _var3 > _totalSlots: hint "Insufficient Slots.", goto "Update"
 	1 call loadFile "Player\Dialog\CVW_RefreshStat.sqf"
 	goto "Update"
