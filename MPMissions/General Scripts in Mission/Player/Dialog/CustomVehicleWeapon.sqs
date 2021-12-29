@@ -16,6 +16,7 @@ _vi = call ([{PlaneUnits}, {GunshipUnits}, {HeliUnits}] select _enum) find _vehi
 _info = call ([{PlanesInfo}, {GunshipInfo}, {HelisInfo}] select _enum) select _vi
 _availMags = call ([{PlaneMags}, {GunshipMags}, {HeliMags}] select _enum)
 _magInfo = call ([{PlaneMagInfo}, {GunshipMagInfo}, {HeliMagInfo}] select _enum)
+? enum_TZK_CustomVehicle_Gunship == _enum: _rocketSlotLimit = 1
 
 _si = siPlayer; _gi = giPlayer
 _idcSlotText = IDC + 30; _idcYourMoneyText = IDC + 31; _idcMagPriceText = IDC + 32
@@ -84,6 +85,8 @@ btnValue00 = 0
 	? _var1 == 2^1: goto "MagRem"
 # MagAdd
 	? _usedSlots + _var3 > _totalSlots: hint "Insufficient Slots.", goto "Update"
+	? enum_TZK_CustomVehicle_Gunship == _enum && "Rocket" == _magInfo select _i select _piName: _magInfoIdx = _shoppingCartMag find _i, _var4 = 0, if (-1 != _magInfoIdx) then {_var4 = (_shoppingCartCnt select _magInfoIdx) * (_magInfo select _i select _piUnitSlot) / (_magInfo select _i select _piUnitCount)}, if (_var3 + _var4 > _rocketSlotLimit) then {hint "Can't carry more rockets!", goto "Update"}
+
 	1 call loadFile "Player\Dialog\CVW_RefreshStat.sqf"
 	goto "Update"
 # MagRem
