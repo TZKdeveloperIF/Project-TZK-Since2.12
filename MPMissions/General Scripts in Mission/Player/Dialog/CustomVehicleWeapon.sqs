@@ -121,7 +121,7 @@ btnValue00 = 0
 		? _time < _timeComplete: goto "Loop"
 
 	? count magazines _vehicle == 0: call loadFile "Player\Dialog\CVW_RearmExec.sqf"
-	? _shoppingCartMag find "Tomahawk" != -1 || _shoppingCartMag find "Raduga" != -1: _vehicle say "NuclearMissileReady_xj400"
+	? (_availMags find "Tomahawk_xj400") in _shoppingCartMag || (_availMags find "Raduga_xj400") in _shoppingCartMag: _vehicle say "NuclearMissileReady_xj400"
 
 	_cost = _magCost + _upgradeCost
 	while {_cost > 0} do {_amount = _cost, if (_cost > 9999) then {_amount = 9999, _cost = _cost - _amount} else {_cost = 0}, [_amount] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"}
