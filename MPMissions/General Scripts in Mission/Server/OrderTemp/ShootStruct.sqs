@@ -110,7 +110,6 @@ _script = "Common\EH\Fired_ReviseAsAssigned.sqs"
 		_vehicle reveal (if (_biggerAngle > 0) then "_heliH" else "_target")
 		~0.1
 		_vehicle doTarget (if (_biggerAngle > 0) then "_heliH" else "_target")
-		? _vehicle knowsAbout (if (_biggerAngle > 0) then "_heliH" else "_target") < 0.01: _unit groupChat "Can't locate the target. Order Aborted. Help me spot it again please."; goto "EOF"
 		_magazines = _vehicle call funcGetNotEmptyMags; _ammoOld = _vehicle ammo _weapon
 		? _ammoOld == 0: if ("_x in _validMags" count _magazines == 0) Then {goto "CheckRearm"};
 		; delay must be correctly assigned for "fire" command.
@@ -120,6 +119,7 @@ _script = "Common\EH\Fired_ReviseAsAssigned.sqs"
 		~ _delay
 		? !(_unit call temporaryCheck): goto "EOF"
 		? !(alive _unit) || _vehicle != vehicle _unit: goto "EOF"
+		? _vehicle knowsAbout (if (_biggerAngle > 0) then "_heliH" else "_target") < 0.01: _unit groupChat "Can't locate the target. Order Aborted. Help me spot it again please."; goto "EOF"
 		
 		_currentMag = ""; _i = 0; while "_i < count _magazines" do "if((_magazines select _i) in _validMags) then {_currentMag = _magazines select _i}; _i = _i + 1;"
 		? _currentMag != _equippedMag: goto "PreCalculate"
