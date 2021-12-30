@@ -123,7 +123,7 @@ btnValue00 = 0
 		? player in _vehicle: hint _text
 		? _time < _timeComplete: goto "Loop"
 
-	? count magazines _vehicle == 0: call loadFile "Player\Dialog\CVW_RearmExec.sqf"
+	? _vehicle call preprocessFile "Util\NoUseableMag.sqf": call loadFile "Player\Dialog\CVW_RearmExec.sqf"
 	? (_availMags find "Tomahawk_xj400") in _shoppingCartMag || (_availMags find "Raduga_xj400") in _shoppingCartMag: _vehicle say "NuclearMissileReady_xj400"
 
 	_cost = _magCost + _upgradeCost

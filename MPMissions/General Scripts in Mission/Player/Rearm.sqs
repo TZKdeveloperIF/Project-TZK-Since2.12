@@ -86,6 +86,9 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 	? _cost > _money: _msg = format["Not enough money for rearm. ($%1 needed)", _cost]; goto "Exit"
 
 	if (local _vehicle) then { { _vehicle removeMagazines _x } foreach (magazines _vehicle) } else { [_vehicle] exec "\TZK_Scripts_4_0_4\Common\SendVehicleMagsRemove.sqs" }
+	; Force howitzer and tos deploy in 2.01 game
+	_vehicle call preprocessFile "Util\DeployInRearm.sqf"
+
 	vehiclesRearming set [count vehiclesRearming, _vehicle]
 	_msg = format["Rearm started, ready in %1s ...", _timeRearm]
 	? _unit == player: hint _msg
@@ -104,7 +107,7 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 		? player in _vehicle: hint _text
 		? time < _timeComplete: goto "Loop"
 
-  ? count (magazines _vehicle) == 0: [_vehicle] exec "\TZK_Scripts_4_0_4\Common\Msg\sRearmVehGeneral.sqs"
+  ? _vehicle call preprocessFile "Util\NoUseableMag.sqf": [_vehicle] exec "\TZK_Scripts_4_0_4\Common\Msg\sRearmVehGeneral.sqs"
   ? (_type in vSixfoldRearmTime): _vehicle say "NuclearMissileReady_xj400"
 
 #RearmEnd

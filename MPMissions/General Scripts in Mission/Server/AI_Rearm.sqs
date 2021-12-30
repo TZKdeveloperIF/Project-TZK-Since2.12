@@ -59,9 +59,11 @@ _insufficientFond = {_this > _money && (!_bUseCommMoney || _this > _moneyComm)}
 	? !_nonAIgroup: _cost = if (_type != -1) Then {(unitDefs select _type select udCost)/10} Else {50}, if (_cost < 50) Then {_cost = 50}, _cost = _cost - (_cost % 1), if (_cost call _insufficientFond) Then {exit}
 
 	if (local _vehicle) then { { _vehicle removeMagazines _x } foreach (magazines _vehicle) } else { [_vehicle] exec "\TZK_Scripts_4_0_4\Common\SendVehicleMagsRemove.sqs" }
+	; Force howitzer and tos deploy in 2.01 game
+	_vehicle call preprocessFile "Util\DeployInRearm.sqf"
 	~_timeRearm
 	? !(alive _vehicle) || !(alive _support): exit
-	? count (magazines _vehicle) == 0: [_vehicle] exec "\TZK_Scripts_4_0_4\Common\Msg\sRearmVehGeneral.sqs"
+	? _vehicle call preprocessFile "Util\NoUseableMag.sqf": [_vehicle] exec "\TZK_Scripts_4_0_4\Common\Msg\sRearmVehGeneral.sqs"
 	goto "RearmEnd"
 
 #RearmEnd
