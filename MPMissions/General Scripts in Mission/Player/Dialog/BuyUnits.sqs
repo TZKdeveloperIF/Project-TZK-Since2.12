@@ -20,6 +20,8 @@ _delay = 0.2
 
 
 _bUpdateInfo = true
+_enum = -1
+
 _nameFactory = "Buy Units"
 
 nShow = 2
@@ -246,7 +248,8 @@ mutexDlg = false
 	? _remote && _factoryIndex == -1: Hint "No Factory Selected"; goto "Update"
 	? _remote: _factory = _factories select _factoryIndex
 
-	[_typeUnit, _driver, _gunner, _commander, _selectedGroup, _factory] exec "Player\Msg\sBuyUnit.sqs"
+	? -1 == _enum: [_typeUnit, _driver, _gunner, _commander, _selectedGroup, _factory] exec "Player\Msg\sBuyUnit.sqs"
+	? -1 != _enum: [_typeUnit, _driver, _gunner, _commander, _selectedGroup, _factory, true, lbValue [_idcEquipList, lbCurSel _idcEquipList]] exec "Player\Msg\sBuyUnit.sqs"
 	goto "Update"
 
 #Cancel
