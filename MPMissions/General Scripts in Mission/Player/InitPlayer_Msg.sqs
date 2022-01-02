@@ -11,9 +11,10 @@ indexSendBuyUnit = 0; countSendBuyUnit = 4
 mutexMoneyStatus = false; _i = 0; while "_i < 10" do {call format [{[] exec "\TZK_Scripts_4_0_4\Player\Msg\mMoneyStatus%1.sqs"}, _i]; _i = _i + 1}
 [] exec "\TZK_Scripts_4_0_4\Player\Msg\mMoneyTransferred.sqs"
 
-_i = 0; _count = 10; while "_i < _count" do {call Format[{[] exec "\TZK_Scripts_4_0_4\Player\Msg\mAddUnit%1.sqs"}, _i]; _i = _i + 1}
+_i = 0; _count = 10
+while "_i < _count" do {call format [{"Player\Msg\hAddUnit.sqs" exec "Player\Msg\mAddUnit%1.sqs"}, _i]; _i = _i + 1}
 
-_i = 0; _count = 5; while "_i < _count" do {call Format[{[] exec "\TZK_Scripts_4_0_4\Player\Msg\mQueueAdd%1.sqs"; [] exec "\TZK_Scripts_4_0_4\Player\Msg\mQueueRem%1.sqs"}, _i]; _i = _i + 1}
+_i = 0; _count = 5; while "_i < _count" do {call format [{[] exec "\TZK_Scripts_4_0_4\Player\Msg\mQueueAdd%1.sqs"; [] exec "\TZK_Scripts_4_0_4\Player\Msg\mQueueRem%1.sqs"}, _i]; _i = _i + 1}
 [] exec "\TZK_Scripts_4_0_4\Player\Msg\mQueueLength.sqs"
 
 [] exec "\TZK_Scripts_4_0_4\Player\Msg\mMovingToSupport.sqs"

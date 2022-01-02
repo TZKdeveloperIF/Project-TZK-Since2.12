@@ -21,7 +21,7 @@ _i = _list find objNull
 _list set [_i, _unit]
 unitsBuilt select _si set [_indexUnitMatrix, 1 + (unitsBuilt select _si select _indexUnitMatrix)]
 
-? !(_unit call loadFile "Util\IsTzkPlane.sqf"): goto "SkipBattlePlane"
+? !(_unit call loadFile "Util\IsTzkBattlePlane.sqf"): goto "SkipBattlePlane"
 @ !Lock_TZK_Observer
 Lock_TZK_Observer = true
 [_unit, _list, _i] call loadFile "Util\Add2ObserverList.sqf"

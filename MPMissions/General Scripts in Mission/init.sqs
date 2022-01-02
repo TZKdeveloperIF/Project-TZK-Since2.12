@@ -32,6 +32,9 @@ _initUnitTypes = "\TZK_Scripts_4_0_5\Common\InitUnitTypes.sqs"; _initStructureTy
 
 [] exec "\TZK_Scripts_4_0_4\Common\InitPublicVariables.sqs"
 pvConcurStatus1 = -1; pvConcurStatus2 = -1;
+_i = 0; while {_i < 5} do {call format["pvBuyUnit_Custom%1 = -1", _i]; _i = _i + 1}
+_i = 0; while {_i < 10} do {call format["pvAddUnit_Custom%1 = -1", _i]; _i = _i + 1}
+
 [] exec _initStructureTypes
 [] exec _initUnitTypes
 [] exec "\TZK_Scripts_4_0_5\Common\InitInfoMsgTypes.sqs"
@@ -84,7 +87,9 @@ pvConcurStatus1 = -1; pvConcurStatus2 = -1;
 ["Common\Msg\hAIStatus.sqs"] exec "Common\Msg\mAIStatus.sqs"
 ? bool_TZK_199_Mode: 0 exec "Common\initMsgUnderACWA.sqs"
 
+; Custom weapon module
 "Common\Msg\hCustomWeaponVehicleInfo.sqs" exec "Common\Msg\mCustomWeaponVehicleInfo.sqs"
+Array_TZK_NewUnitEquipped = []; mutexNewUnitEquipped = false
 
 ; town descriptor indexes
 tdFlag = 0

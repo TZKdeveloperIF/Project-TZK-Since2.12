@@ -1,3 +1,23 @@
+_i = 0; _c = count structDefs; while {_i < _c} do {
+	_scripts = structDefs select _i select sdScriptsServer;
+	_idx = _scripts find "\TZK_Scripts_4_0_4\Server\InitUnitFactory.sqs";
+	if (-1 != _idx) then {
+		_scripts set [_idx, "Server\BuyUnit\Factory.sqs"];
+	};
+	_i = _i + 1;
+};
+
+_scripts = structDefs select stLight select sdScriptsPlayer;
+_scripts set [0, "Player\Init\LightVehicleFactory.sqs"];
+_scripts = structDefs select stBarracks select sdScriptsPlayer;
+_scripts set [0, "Player\Init\Barracks.sqs"];
+_scripts = structDefs select stHeavy select sdScriptsPlayer;
+_scripts set [0, "Player\Init\HeavyVehicleFactory.sqs"];
+_scripts = structDefs select stAir select sdScriptsPlayer;
+_scripts set [0, "Player\Init\AircraftFactory.sqs"];
+_scripts = structDefs select stShip select sdScriptsPlayer;
+_scripts set [0, "Player\Init\ShipyardFactory.sqs"];
+
 if (bool_TZK_Vanilla_Mode && !bool_TZK_Yugo_Mode) Then {
 	[format [{ structDefs select %1 set [sdObjects1, [["PP87_TZK_xj400", 0, [0,5,0.1]]]  ] }, _mortar1], 1] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
 };
