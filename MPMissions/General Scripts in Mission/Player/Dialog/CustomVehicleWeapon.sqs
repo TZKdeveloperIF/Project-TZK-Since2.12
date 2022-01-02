@@ -1,6 +1,7 @@
 ; args: [dialog name, vehicle type(enum), vehicle, support]
 
 _script = _this select 0; _enum = _this select 1; _vehicle = _this select 2; _support = _this select 3; _this = 0
+_typeName = typeOf _vehicle
 ; create dialog
 @!mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
@@ -23,7 +24,7 @@ _idcSlotText = IDC + 30; _idcYourMoneyText = IDC + 31; _idcMagPriceText = IDC + 
 _idcUpgradeText = IDC + 33; _idcTimeText = IDC + 34
 _idcMagList = IDC + 20; _idcEquippedList = IDC + 21; ctrlEnable [_idcEquippedList, false]
 _usedSlots = 0; _magCost = 0; _upgradeCost = 0; _timeCost = 0; _totalSlots = 9
-call preprocessFile "Player\Dialog\CVW_getTotalSlot.sqf"
+call preprocessFile "Player\Dialog\CWV_getTotalSlot.sqf"
 
 ; initial available controls
 ctrlSetText [_idcSlotText, format ["%1", _totalSlots - _usedSlots]]
@@ -39,7 +40,7 @@ _shoppingCartMag = []; _shoppingCartCnt = []
 	; skip improper side
 	_var1 = _magInfo select _i select _piSide
 	? _var1 != siBoth && _var1 != _si: goto "Continue_AddMagList"
-	? _enum == enum_TZK_CustomVehicle_Gunship || _enum == enum_TZK_CustomVehicle_Helicopter: 											if (!call loadFile "Player\Dialog\CVW_validMag.sqf") then {goto "Continue_AddMagList"}
+	? _enum == enum_TZK_CustomVehicle_Gunship || _enum == enum_TZK_CustomVehicle_Helicopter: if !(_availMags call loadFile "Util\CWV\ValidMag.sqf") then {goto "Continue_AddMagList"}
 
 	; fill whitespace for price
 	_var1 = ""; _var2 = _magInfo select _i select _piUnitCost; _var3 = 1000
@@ -87,14 +88,14 @@ btnValue00 = 0
 	? _usedSlots + _var3 > _totalSlots: hint "Insufficient Slots.", goto "Update"
 	? enum_TZK_CustomVehicle_Gunship == _enum && "Rocket" == _magInfo select _i select _piName: _magInfoIdx = _shoppingCartMag find _i, _var4 = 0, if (-1 != _magInfoIdx) then {_var4 = (_shoppingCartCnt select _magInfoIdx) * (_magInfo select _i select _piUnitSlot) / (_magInfo select _i select _piUnitCount)}, if (_var3 + _var4 > _rocketSlotLimit) then {hint "Can't carry more rockets!", goto "Update"}
 
-	1 call loadFile "Player\Dialog\CVW_RefreshStat.sqf"
+	1 call loadFile "Player\Dialog\CWV_RefreshStat.sqf"
 	goto "Update"
 # MagRem
 	? _j == -1: goto "Update"
-	-1 call loadFile "Player\Dialog\CVW_RefreshStat.sqf"
+	-1 call loadFile "Player\Dialog\CWV_RefreshStat.sqf"
 	goto "Update"
 # MagClear
-	0 call loadFile "Player\Dialog\CVW_RefreshStat.sqf"
+	0 call loadFile "Player\Dialog\CWV_RefreshStat.sqf"
 	goto "Update"
 # Buy
 	? !local _vehicle: hint "Rearm failed. The vehicle isn't local.", goto "Update"
@@ -123,7 +124,7 @@ btnValue00 = 0
 		? player in _vehicle: hint _text
 		? _time < _timeComplete: goto "Loop"
 
-	? _vehicle call preprocessFile "Util\NoUseableMag.sqf": call loadFile "Player\Dialog\CVW_RearmExec.sqf"
+	? count magazines _vehicle == 0: call loadFile "Player\Dialog\CWV_RearmExec.sqf"
 	? (_availMags find "Tomahawk_xj400") in _shoppingCartMag || (_availMags find "Raduga_xj400") in _shoppingCartMag: _vehicle say "NuclearMissileReady_xj400"
 
 	_cost = _magCost + _upgradeCost

@@ -34,7 +34,7 @@ if true then {
 	};
 	if !bool_TZK_199_Mode then {unitDefs select _a10 set [udModel, "A10_xj400"]};
 	unitDefs select _a10 set [udScripts, [
-		"\TZK_Scripts_4_0_4\Common\Equip\A10bombs.sqs",  "Common\InitSpawnPlane.sqs"
+		"Common\Equip\PlaneCustom.sqs",  "Common\InitSpawnPlane.sqs"
 	]];
 	unitDefs select _su25 set [udName, "Su25"];
 	unitDefs select _su25 set [udCost, 15000];
@@ -43,9 +43,10 @@ if true then {
 	};
 	if !bool_TZK_199_Mode then {unitDefs select _su25 set [udModel, "Su25_xj400"]};
 	unitDefs select _su25 set [udScripts, [
-		"\TZK_Scripts_4_0_4\Common\Equip\Su25bombs.sqs", "Common\InitSpawnPlane.sqs"
+		"Common\Equip\PlaneCustom.sqs", "Common\InitSpawnPlane.sqs"
 	]];
 	unitDefs select _a10gun set [udName, "A10 (AA Only)"];
+	unitDefs select _su25gun set [udName, "Su25 (AA Only)"];
 	unitDefs select _su25gun set [udName, "Su25 (AA Only)"];
 
 	comment "Adjust gunships.";
@@ -67,6 +68,14 @@ if true then {
 	} forEach [_uh60W30, _uh60WL, _mi17E30, _mi17EL];
 	{
 		_scripts = unitDefs select _x select udScripts;
+		_idx = _scripts find "\TZK_Scripts_4_0_4\Common\Equip\UH60.sqs";
+		if (-1 != _idx) then {
+			_scripts set [_idx, "Common\Equip\UH60.sqs"];
+		};
+		_idx = _scripts find "\TZK_Scripts_4_0_4\Common\Equip\Mi17.sqs";
+		if (-1 != _idx) then {
+			_scripts set [_idx, "Common\Equip\Mi17.sqs"];
+		};
 		_scripts set [count _scripts, "Common\InitHelicopter.sqs"];
 		vDoubledRange set [count vDoubledRange, _x];
 	} forEach [_uh60W, _uh60supW, _uh60WMG2, _mi17E, _mi17supE, _mi17EMG2];
@@ -84,6 +93,8 @@ typesAntiPlane8000 = [[_vulcanW2], [_tunguskaE]];
 comment "Remove AA missile for Gun-Plane.";
 unitDefs select _a10gun select udScripts set [0, "Common\Equip\PlaneGun.sqs"];
 unitDefs select _su25gun select udScripts set [0, "Common\Equip\PlaneGun.sqs"];
+comment "Remove Su25 gun unit in-game.";
+unitDefs select _su25gun set [udFactoryType, -1];
 
 comment "SE requrests.";
 if bool_TZK_SEMod_Mode then {
