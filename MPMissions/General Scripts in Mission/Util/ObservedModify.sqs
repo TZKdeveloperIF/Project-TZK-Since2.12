@@ -14,3 +14,8 @@ Array_TZK_Observed set [_idxObserved, _vehNew]
 
 mutexVehicleArray = false
 mutexAddToUnitMatrix = false
+
+; re-initialize vehicle. It has been written in unitMatrix thus "funcGetUnitTypeFromObject" is available
+_type = _vehNew call funcGetUnitTypeFromObject
+? -1 != _type: [_vehNew, _type, unitDefs select _type select udSide] exec "Common\InitVehicle.sqs"
+; TODO: in tzk new rearm data system it's unable to obtain mutable rearm data for CWV module vehicle
