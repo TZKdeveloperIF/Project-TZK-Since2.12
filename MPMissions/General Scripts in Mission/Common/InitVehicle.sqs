@@ -19,10 +19,13 @@ _this exec "Common\InitVehicle_Stable.sqs"
 
 ? bool_TZK_Vanilla_Mode: goto "SkipVanilla"
 ? _type in types_SE_td: goto "SkipVanilla"; comment "this variable is undefined if not in SE mode, and this line thus won't be executed."
-? _type in (typesHowitzer + typesHeavyTank + typesLightTank): _vehicle addEventHandler ["Fired", "_this exec {\TZK_Objects\Scripts\gunrec.sqs}"]
-#SkipVanilla
+? _type in (typesHowitzer + typesHeavyTank + typesLightTank): _vehicle addEventHandler ["Fired", {_this exec "\TZK_Objects\Scripts\gunrec.sqs"}]
+# SkipVanilla
 
 ? _type in (typesHowitzer + typesRocketLauncher + RadioTypesArtUnits): _vehicle addEventHandler ["Fired", format [{ [_this select 0, nearestObject[_this select 0, _this select 4], %1 , true] exec "\TZK_Scripts_4_0_4\Common\EH\Fired_TrackShell.sqs" }, _si]]
+
+; Hit Event
+? "Air" countType [_vehicle] > 0: [_vehicle, _type] exec "Common\EH\AddAirHit.sqs"
 
 ; Long last animation
 ? _typeName in ["2S6_DKM_xj400", "ZSU_MNF_xj400", "ZSU_xj400"] && local _vehicle: _vehicle animate ["rot_radar", 1]
