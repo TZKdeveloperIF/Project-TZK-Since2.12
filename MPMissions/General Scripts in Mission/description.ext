@@ -2015,7 +2015,7 @@ class EquipmentDialog
 
 class TZK_CustomAircraftWeaponDialog: TZK_Setting_Dialog {
 	controlsBackground[] = {
-		Sub_BG_Light, BackGround_0_Base, BackGround_1_Left, BackGround_1_Mid, BackGround_1_Right, 
+		Sub_BG_Light, BackGround_0_Base, BackGround_2_Left, BackGround_2_Mid, BackGround_2_Right, 
 		Frame_0_Base, Frame_1_Left , Frame_1_Mid, Frame_1_Right
 	};
 	class Frame_0_Base: TZK_Frame_0 {
@@ -2045,6 +2045,15 @@ class TZK_CustomAircraftWeaponDialog: TZK_Setting_Dialog {
 		idc = IDC + 13;
 		text = " Cost ";
 		x = 0.68;
+	};
+	class BackGround_2_Left: BackGround_1_Left {
+		colorBackground[] = {0.3, 0.3, 0.8, 0.2};
+	};
+	class BackGround_2_Mid: BackGround_1_Mid {
+		colorBackground[] = {0.3, 0.3, 0.8, 0.2};
+	};
+	class BackGround_2_Right: BackGround_1_Right {
+		colorBackground[] = {0.3, 0.3, 0.8, 0.2};
 	};
 
 	objects[] = {};
@@ -2111,6 +2120,7 @@ class TZK_CustomAircraftWeaponDialog: TZK_Setting_Dialog {
 		y = 0.15;
 		w = 0.17;
 		h = 0.67;
+		colorText[] = {1.0, 0.0, 0.0, 1.0};
 	};
 	class EquippedList: MagazinesList {
 		idc = IDC + 21;
