@@ -221,7 +221,7 @@ mutexDlg = false
 
 	? -1 == _enum: [_typeUnit, 0, 0, 0, _selectedGroup, _factory] exec "Player\Msg\sBuyUnit.sqs"
 	; extra info: selected equipment index (in predefined array)
-	? -1 != _enum: [_typeUnit, 0, 0, 0, _selectedGroup, _factory, true, lbValue [_idcEquipList, lbCurSel _idcEquipList]] exec "Player\Msg\sBuyUnit.sqs"
+	? -1 != _enum: [_typeUnit, 0, 0, 0, _selectedGroup, _factory, -1 != lbCurSel _idcEquipList, lbValue [_idcEquipList, lbCurSel _idcEquipList]] exec "Player\Msg\sBuyUnit.sqs"
 
 	? bFactoryBuy4 : {[_typeUnit, 0, 0, 0, _selectedGroup, _factory] exec "Player\Msg\sBuyUnit.sqs"} forEach [1,2,3]
 	? bFactoryBuy3 : {[_typeUnit, 0, 0, 0, _selectedGroup, _factory] exec "Player\Msg\sBuyUnit.sqs"} forEach [1,2]
@@ -249,7 +249,7 @@ mutexDlg = false
 	? _remote: _factory = _factories select _factoryIndex
 
 	? -1 == _enum: [_typeUnit, _driver, _gunner, _commander, _selectedGroup, _factory] exec "Player\Msg\sBuyUnit.sqs"
-	? -1 != _enum: [_typeUnit, _driver, _gunner, _commander, _selectedGroup, _factory, true, lbValue [_idcEquipList, lbCurSel _idcEquipList]] exec "Player\Msg\sBuyUnit.sqs"
+	? -1 != _enum: [_typeUnit, _driver, _gunner, _commander, _selectedGroup, _factory, -1 != lbCurSel _idcEquipList, lbValue [_idcEquipList, lbCurSel _idcEquipList]] exec "Player\Msg\sBuyUnit.sqs"
 	goto "Update"
 
 #Cancel
