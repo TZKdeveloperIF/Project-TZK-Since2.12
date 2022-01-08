@@ -153,10 +153,10 @@ mutexDlg = false
 	lastSelectedUnitType = _typeUnit
 	? _typeUnit >= maxUnitTypes : _cost = costCustom; _manning = []; _typeFactory = 2^stBarracks; goto "UnitSelectedCustom"
 	_cost = unitDefs select _typeUnit select udCost; _manning = unitDefs select _typeUnit select udCrew; _typeFactory = unitDefs select _typeUnit select udFactoryType
-	#UnitSelectedCustom
+	# UnitSelectedCustom
 	_bVehicle = (count _manning > 0)
 
-	? _bUpdateInfo: _enum = _typeUnit call preprocessFile "Player\Dialog\BuyUnits_OptionalEquipmentList.sqf"
+	? _bUpdateInfo && _typeUnit < maxUnitTypes: _enum = _typeUnit call preprocessFile "Player\Dialog\BuyUnits_OptionalEquipmentList.sqf"
 	_bUpdateInfo = false
 	? -1 != _enum: _enum call preprocessFile "Player\Dialog\BuyUnits_OptionalEquipmentCost.sqf"
 
