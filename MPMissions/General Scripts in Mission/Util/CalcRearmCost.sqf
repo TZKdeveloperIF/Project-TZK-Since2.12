@@ -1,6 +1,7 @@
-private ["_unit", "_weaData", "_magData", "_cost", "_weapons", "_index", "_price", "_magazines"];
-
+// script to calculate the equipment price
+private ["_unit", "_weaData", "_magData", "_discount", "_cost", "_weapons", "_index", "_price", "_magazines"];
 _unit = _this select 0; _weaData = _this select 1; _magData = _this select 2;
+_discount = if (count _this > 3) then {_this select 3} else {1};
 _cost = 0;
 
 _weapons = weapons _unit;
@@ -21,6 +22,8 @@ _magazines = _unit call funcGetNotEmptyMags;
 		_magazines set [_index, ""];
 	};
 } forEach _magData;
+
+if (_cost > 0) then {_cost = _cost * _discount};
 
 _cost = _cost - (_cost % 1);
 _cost
