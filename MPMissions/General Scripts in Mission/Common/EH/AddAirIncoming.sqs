@@ -3,9 +3,9 @@
 _vehicle = _this select 0
 _type = _this select 1
 
-_event = {_this exec "Common\Event\Incoming_SpoofMissile.sqs"; _this exec "Common\Event\Incoming_SpoofCheck.sqs"; }
+_event = { _this exec "Common\Event\Incoming_SpoofMissile.sqs"; _this exec "Common\Event\Incoming_SpoofCheck.sqs"; }
 
-? !isNull player: _event = _event + {_this exec "Util\AirAlert.sqs";}
+? !isNull player: _event = _event + { _this exec "Util\AirAlert.sqs"; }
 
 _vehicle addEventHandler ["IncomingMissile", _event]
 

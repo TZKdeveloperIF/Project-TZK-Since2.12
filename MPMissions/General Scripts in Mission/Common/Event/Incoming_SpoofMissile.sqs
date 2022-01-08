@@ -1,4 +1,4 @@
 ; args: [target, ammo, whoFired]
 _target = _this select 0; _ammo = _this select 1; _shooter = _this select 2
-_missile = nearestObject [_target, _ammo]
+_missile = nearestObject [_shooter, _ammo]
 [_target, _missile, _shooter] exec "Util\SpoofMissile.sqs"
