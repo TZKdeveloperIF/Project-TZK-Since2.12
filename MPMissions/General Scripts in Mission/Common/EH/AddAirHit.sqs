@@ -1,0 +1,8 @@
+; args: [vehicle, type]
+_vehicle = _this select 0; _type = _this select 1; _this = 0
+
+_event = { _this exec "Common\Event\Hit_Air_Fuel_Loss.sqs"; }
+
+_vehicle addEventHandler ["Hit", _event]
+
+; EOF
