@@ -9,7 +9,7 @@ _dispersion = _this select 6
 _type = _this select 7
 _biggerAngle = (if (count _this > 8) Then {_this select 8} Else {0})
 ? bool_TZK_SEMod_Mode: if (_type in types_SE_td) Then {_this exec "Extra\Shoot_TD_Server.sqs", exit}
-_this = nil
+_this = 0
 
 
 
@@ -52,7 +52,8 @@ _distLimit = viewDistance;
 
 
 #PrePareToAttack
-	; _bAvoidStruct = 50 + _dispersion > ([getPos _target, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1
+	_bAvoidStruct = 50 + _dispersion > ([getPos _target, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1
+	? _bAvoidStruct: _unit groupChat "Banned in shooting structure directly."; goto "EOF"
 	; weapon check unnecessary for struct. They're always use first weapon defined in CONFIG.CPP as main gun.
 	; _unit groupChat "Target in range. Prepare to attack.";
 	; [_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"

@@ -9,9 +9,9 @@ _marker = _this select 1; _target = _this select 2
 _dispersion = _this select 4; _type = _this select 3
 _biggerAngle = (if (count _this > 5) Then {_this select 5} Else {0})
 ? bool_TZK_SEMod_Mode: if (_type in types_SE_td) Then {_this exec "Extra\Shoot_TD_Player.sqs", exit}
-_this = nil
-
-
+_this = 0
+; big angle will be invalid when ordering tanks.
+? _type in (typesLightTank + typesHeavyTank): _biggerAngle = 0;
 
 
 
@@ -48,7 +48,8 @@ _hint = ["I've been running for %1 minutes. Distance %2 meters now.", (_timeHint
 	? ([getPos _unit, _posOrdered] call funcDistH) > 30: goto "CheckPosReached"
 	? time > _timeHint: hint format _hint; _timeHint = _timeHint + 5*60
 #PrePareToAttack
-	; _bAvoidStruct = 50 + _dispersion > ([getPos _target, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1
+	_bAvoidStruct = 50 + _dispersion > ([getPos _target, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1 && _type in typesHowitzer
+	? _bAvoidStruct: _unit groupChat "Banned in shooting structure directly."; goto "EOF"
 	; weapon check unnecessary for tank. They're always use first weapon defined in CONFIG.CPP as main gun.
 	_unit groupChat "In position. Prepare to attack.";
 	driver _vehicle action ["ENGINE OFF", _vehicle]; _vehicle engineOn false
