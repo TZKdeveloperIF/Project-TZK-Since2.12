@@ -1,6 +1,6 @@
 // Script to calculate custom initial equipments' cost.
 // args: type(idx in unitDefs): number
-private [{_type}, {_typeName}, {_enum}];
+private [{_enum}];
 
 _enum = _this;
 _idx = lbCurSel _idcEquipList;
