@@ -8,7 +8,7 @@ _id = (playerOrderID select _uid) + 1; [_uid, _id] exec "\TZK_Scripts_4_0_4\Play
 _marker = _this select 1; _target = _this select 2
 _dispersion = _this select 4; _type = _this select 3
 _biggerAngle = (if (count _this > 5) Then {_this select 5} Else {0})
-_this = nil
+_this = 0
 
 
 
@@ -49,7 +49,8 @@ _distLimit = viewDistance; _hint = "Target is out of the structure's ability. Or
 
 
 #PrePareToAttack
-	; _bAvoidStruct = 50 + _dispersion > ([getPos _target, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1
+	_bAvoidStruct = 50 + _dispersion > ([getPos _target, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1
+	? _bAvoidStruct: _unit groupChat "Banned in shooting structure directly."; goto "EOF"
 	; weapon check unnecessary for struct. They're always use first weapon defined in CONFIG.CPP as main gun.
 	_unit groupChat "Prepare to attack.";
 	; doStop _unit
