@@ -58,7 +58,7 @@ _weapons = []; _mags = []
 { if (_x != -1) then {_weapons = _weapons + [weaponSearch select _x]} } forEach [_typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG]
 { _mags = _mags + [equipSearch select (_x select 0)] } foreach (_equipment select isGeneral)
 { _mags = _mags + [equipSearch select (_x select 0)] } foreach (_equipment select isHandgun)
-_cost = [_unit, _weapons, _mags] call funcCalcRearmCost
+_cost = [_unit, _weapons, _mags, 0.5] call funcCalcRearmCost
 
 ; hint format ["%1\n%2\n%3", _weapons, _mags, _cost]
 _money = groupMoneyMatrix select siPlayer select giPlayer

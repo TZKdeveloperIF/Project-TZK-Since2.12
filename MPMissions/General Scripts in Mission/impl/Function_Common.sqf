@@ -7,3 +7,5 @@ funcWeaponValidMags = loadFile (
 		"\TZK_Scripts_4_0_4\Common\SQF\WeaponValidEquip.sqf"
 	}
 );
+
+funcCalcRearmCost = preprocessFile "Util\CalcRearmCost.sqf";

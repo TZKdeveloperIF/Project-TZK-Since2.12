@@ -30,6 +30,7 @@ _cost = 0;
 { _cost = _cost + ((equipDefs select (_x select 0)) select edcost) } foreach (_equipment select isHandgun)
 { if (_x != -1) then {_cost = _cost + ((weaponDefs select _x) select wdcost)} } forEach [_typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG]
 ? _cost > 0 && _cost > (groupMoneyMatrix select siPlayer select giPlayer) : _unit groupChat "Insufficient fund. Unequipped yet."; goto "SkipEquipping"
+_cost = _cost / 2; _cost = _cost - _cost % 1
 
 { _unit addWeapon _x } forEach weaponsCustom
 
