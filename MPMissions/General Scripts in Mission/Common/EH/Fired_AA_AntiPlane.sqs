@@ -6,7 +6,9 @@ _ammo = _this select 4
 _vehicle = _this select 0
 _this = 1
 
-_si = siEnemy select (sides find side _vehicle)
+_type = _vehicle call funcGetUnitTypeFromObject
+? _type == -1: exit
+_si = siEnemy select (unitDefs select _type select udSide)
 
 ? !isServer: if (_si != siPlayer) then {exit}
 
