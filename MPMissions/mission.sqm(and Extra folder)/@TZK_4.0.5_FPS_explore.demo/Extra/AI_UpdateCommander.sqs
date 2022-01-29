@@ -86,7 +86,7 @@ _giPatrol = _gi; _bTakeTown=false; _nDestroy=0
 	#skip1
 	? _money > 500 : [_unit, _si, _gi] exec "\TZK_Scripts_4_0_5\Server\AICO_CheckBuyUnit.sqs"; [_si, _gi, _giPatrol, 500] exec "\TZK_Scripts_4_0_4\Server\MoneyTransfer.sqs"
 	
-	? !bool_TZK_DEV_FPS && time > _timeCheckNextUpgrade : [_si, _gi] exec "\TZK_Scripts_4_0_4\Server\AICO_CheckUpgrade.sqs"; _timeCheckNextUpgrade = time + ([5*60, 60] select dev)
+	? !bool_TZK_DEV_FPS && time > _timeCheckNextUpgrade : [_si, _gi] exec "Server\AICO_CheckUpgrade.sqs"; _timeCheckNextUpgrade = time + ([5*60, 60] select dev)
 	? time > _timeCheckOrders : goto _currentOrder
 
 	? bool_TZK_DEV_FPS: if(time > 600) goto "Update"

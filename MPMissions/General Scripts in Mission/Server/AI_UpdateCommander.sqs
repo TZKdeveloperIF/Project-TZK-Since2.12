@@ -1,6 +1,5 @@
 ; args: [unit, si, gi]
 ? bool_TZK_DEV_FPS: _this exec "Extra\AI_UpdateCommander.sqs", exit
-; _this exec "\TZK_Scripts_4_0_5\Server\AI_UpdateCommander.sqs"
 
 ; args: [unit, si, gi]
 
@@ -110,7 +109,7 @@ _bTakeTown = false; _nDestroy = 0
 	_money = groupMoneyMatrix select _si select _gi
 
 	? time > _buyTime && _money > 500: [_unit, _si, _gi, _nextOrder] exec "Server\AICO_CheckBuyUnit.sqs"; _buyTime = time + 15
-	? time > _timeCheckNextUpgrade: [_si, _gi] exec "\TZK_Scripts_4_0_4\Server\AICO_CheckUpgrade.sqs"; _timeCheckNextUpgrade = time + ([5*60, 60] select dev)
+	? time > _timeCheckNextUpgrade: [_si, _gi] exec "Server\AICO_CheckUpgrade.sqs"; _timeCheckNextUpgrade = time + ([5*60, 60] select dev)
 	? time > _timeCheckOrders: goto _nextOrder
 
 	? _unit call busyCheck: goto "Update"

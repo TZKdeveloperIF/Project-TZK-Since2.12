@@ -74,7 +74,7 @@ call preprocessFile "impl\Server_Group.sqf"
 _sides = [si0, si1]; _i = 0
 #Init_AI_Upg
 _si = _sides select _i
-? count (groupMatrix select _si) == count (groupAiMatrix select _si) && bool_TZK_MF_Mode: {(upgMatrix select _si) set [_x, 2], [_si, _x, 2] exec "\TZK_Scripts_4_0_4\Server\Info\UpgState.sqs"} forEach [upgGunshipRocket, upgLongWeaponRange]
+? count (groupMatrix select _si) == count (groupAiMatrix select _si) && bool_TZK_MF_Mode: {(upgMatrix select _si) set [_x, 2], [_si, _x, 2] exec "Server\Info\UpgState.sqs"} forEach [upgGunshipRocket, upgLongWeaponRange]
 _i = _i + 1
 ? _i < count _sides: goto "Init_AI_Upg"
 ; =================================================TZK_4.0.0 Block=================================================

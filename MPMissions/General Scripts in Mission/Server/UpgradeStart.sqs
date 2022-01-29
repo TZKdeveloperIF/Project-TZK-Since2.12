@@ -8,7 +8,7 @@ _controlCenters = [_si, stComm] call funcGetWorkingStructures
 
 ? (count _controlCenters) == 0: exit
 
-? upgMatrix select _si select _upg != 0: [_si, _upg, upgMatrix select _si select _upg] exec "\TZK_Scripts_4_0_4\Server\Info\UpgState.sqs", exit
+? upgMatrix select _si select _upg != 0: [_si, _upg, upgMatrix select _si select _upg] exec "Server\Info\UpgState.sqs", exit
 
 ; _gi = giCO select _si
 ? _gi == -1: exit
@@ -23,16 +23,16 @@ _money = groupMoneyMatrix select _si select _gi
 
 upgMatrix select _si set [_upg, 1]
 
-[_si, _upg, 1] exec "\TZK_Scripts_4_0_4\Server\Info\UpgState.sqs"
+[_si, _upg, 1] exec "Server\Info\UpgState.sqs"
 
 _timeStart = time
 #CheckControlCenters
 	~5
 	_controlCenters = [_si, stComm] call funcGetWorkingStructures
 
-	? (count _controlCenters) == 0: (upgMatrix select _si) set [_upg, 0]; [_si, _upg, 0] exec "\TZK_Scripts_4_0_4\Server\Info\UpgState.sqs"; exit
+	? (count _controlCenters) == 0: (upgMatrix select _si) set [_upg, 0]; [_si, _upg, 0] exec "Server\Info\UpgState.sqs"; exit
 
 	? time < (_timeStart + 60*_minutes): goto "CheckControlCenters"
 
 upgMatrix select _si set [_upg, 2]
-[_si, _upg, 2] exec "\TZK_Scripts_4_0_4\Server\Info\UpgState.sqs"
+[_si, _upg, 2] exec "Server\Info\UpgState.sqs"

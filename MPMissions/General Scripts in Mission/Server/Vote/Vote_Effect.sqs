@@ -3,6 +3,8 @@
 _item_Index = _this select 0
 _item_Value = _this select 1
 
+_this exec "\TZK_Scripts_4_0_4\Server\Msg\sVoteResult.sqs", 
+
 ? Vote_ItemNames select _item_Index == "Weather": Weather_TZK = Vote_Item_Weather select _item_Value, exit
 ? Vote_ItemNames select _item_Index == "Time Boost": pvTimeBoost = [false, true] select _item_Value, exit
 ? Vote_ItemNames select _item_Index == "Period": skipTime ((Vote_Item_PeriotMoment select _item_Value) - (Vote_Item_PeriotMoment select Period_TZK)), Period_TZK = _item_Value, exit
