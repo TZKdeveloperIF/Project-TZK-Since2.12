@@ -36,31 +36,20 @@ _bNewTarget = false
 
 _colorDead = [0.5,0.5,0.5, 0.6]
 
-? (2 == (upgMatrix select siPlayer) select upgSatCamZoom): goto "zoom"
-
 @!mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
 _ok = createDialog "SatCamDialog"
 mutexDlg = false
-sliderSetRange [IDC_SL_DISTANCE, 100, viewDistance/2]
-; sliderSetRange [IDC_SL_DISTANCE, 20, viewDistance/2]
+
+? 2 == upgMatrix select siPlayer select upgSatCamZoom: goto "zoom"
+	sliderSetRange [IDC_SL_DISTANCE, 650, 650]
+	goto "skip"
+# zoom
+	sliderSetRange [IDC_SL_DISTANCE, 300, 800]
+# skip
+
 sliderSetSpeed [IDC_SL_DISTANCE, 100, 100]
 sliderSetPosition [IDC_SL_DISTANCE, _alt]
-
-goto "skip"
-
-#zoom
-
-@!mutexDlg
-mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
-_ok = createDialog "SatCamDialog"
-mutexDlg = false
-sliderSetRange [IDC_SL_DISTANCE, 15, viewDistance/2]
-; sliderSetRange [IDC_SL_DISTANCE, 20, viewDistance/2]
-sliderSetSpeed [IDC_SL_DISTANCE, 100, 100]
-sliderSetPosition [IDC_SL_DISTANCE, _alt]
-
-#skip
 
 goto "UpdateDialog"
 
