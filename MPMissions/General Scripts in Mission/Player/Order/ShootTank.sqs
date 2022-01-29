@@ -120,7 +120,7 @@ _script = "Common\EH\Fired_ReviseAsAssigned.sqs"
 		~ _delay
 		? call orderCheck : goto "EOF"
 		? !(alive _unit) || _vehicle != vehicle _unit: goto "EOF"
-		? _vehicle knowsAbout (if (_biggerAngle > 0) then "_heliH" else "_target") < 0.01: _unit groupChat "Can't locate the target. Order Aborted. Help me spot it again please."; goto "EOF"
+		? _vehicle knowsAbout _target < 0.01: _unit groupChat "Can't locate the target. Order Aborted. Help me spot it again please."; goto "EOF"
 		
 		_currentMag = ""; _i = 0; while "_i < count _magazines" do "if((_magazines select _i) in _validMags) then {_currentMag = _magazines select _i}; _i = _i + 1;"
 		? _currentMag != _equippedMag: goto "PreCalculate"
