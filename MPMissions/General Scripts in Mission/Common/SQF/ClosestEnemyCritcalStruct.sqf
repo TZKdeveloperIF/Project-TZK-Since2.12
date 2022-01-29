@@ -5,20 +5,19 @@ _distMin = 100000;
 
 _siEnemy = siEnemy select (_this select 1);
 
-_objects = [mhq select _siEnemy];
-_objects = _objects + (MCV select _siEnemy);
-{ _objects = _objects + ((structMatrix select _siEnemy) select _x) } foreach structsCritcal;
-_objects = _objects - [objNull];
+_objects = [];
+{
+	{
+		if (!isNull _x) then {_objects set [count _objects, _x]};
+	} forEach (structMatrix select _siEnemy select _x);
+} foreach structsCritcal;
 
 {
-	if ( !(isNull _x) ) then
+	_dist = [_this select 0, _x] call funcCalcDistanceToObject;
+	if (_distMin > _dist) then
 	{
-		_dist = [_this select 0, _x] call funcCalcDistanceToObject;
-		if (_distMin > _dist) then
-		{
-			_object = _x;
-			_distMin = _dist;
-		};
+		_object = _x;
+		_distMin = _dist;
 	};
 } foreach _objects;
 
