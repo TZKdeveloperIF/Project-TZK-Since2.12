@@ -49,8 +49,6 @@ _distLimit = viewDistance; _hint = "Target is out of the structure's ability. Or
 
 
 #PrePareToAttack
-	_bAvoidStruct = 50 + _dispersion > ([getPos _target, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1
-	? _bAvoidStruct: _unit groupChat "Banned in shooting structure directly."; goto "EOF"
 	; weapon check unnecessary for struct. They're always use first weapon defined in CONFIG.CPP as main gun.
 	_unit groupChat "Prepare to attack.";
 	; doStop _unit
@@ -74,6 +72,9 @@ _distLimit = viewDistance; _hint = "Target is out of the structure's ability. Or
 ; 预计算如果得不到合适的结果, 则设置弹夹的切换, 或终止命令.
 
 ; In OFP no vanilla way to obtain direction of turret. Initial angle is 30° or 60°. In pre-calculating we iterate mostly elevation angle.
+_bAvoidStruct = 50 + _dispersion > ([getPos _target, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1
+? _bAvoidStruct: _unit groupChat "Banned in shooting structure directly."; goto "EOF"
+
 _posV = getPosASL _vehicle; _posT = getPosASL _target; _posT set [2, _posT call funcHASL]
 _elev = if(_biggerAngle > 0) then "60" else "30"
 ? _unit distance _target > _distLimit: goto "CheckDistance"

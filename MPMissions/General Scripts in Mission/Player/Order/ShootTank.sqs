@@ -48,8 +48,6 @@ _hint = ["I've been running for %1 minutes. Distance %2 meters now.", (_timeHint
 	? ([getPos _unit, _posOrdered] call funcDistH) > 30: goto "CheckPosReached"
 	? time > _timeHint: hint format _hint; _timeHint = _timeHint + 5*60
 #PrePareToAttack
-	_bAvoidStruct = 50 + _dispersion > ([getPos _target, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1 && _type in typesHowitzer
-	? _bAvoidStruct: _unit groupChat "Banned in shooting structure directly."; goto "EOF"
 	; weapon check unnecessary for tank. They're always use first weapon defined in CONFIG.CPP as main gun.
 	_unit groupChat "In position. Prepare to attack.";
 	driver _vehicle action ["ENGINE OFF", _vehicle]; _vehicle engineOn false
@@ -72,6 +70,9 @@ _hint = ["I've been running for %1 minutes. Distance %2 meters now.", (_timeHint
 ; 预计算如果得不到合适的结果, 则设置弹夹的切换, 或终止命令.
 
 ; In OFP no vanilla way to obtain direction of turret. Initial angle is 30° or 60°. In pre-calculating we iterate mostly elevation angle.
+_bAvoidStruct = 50 + _dispersion > ([getPos _target, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1 && _type in typesHowitzer
+? _bAvoidStruct: _unit groupChat "Banned in shooting structure directly."; goto "EOF"
+
 _posV = getPosASL _vehicle; _posT = getPosASL _target; _posT set [2, _posT call funcHASL]
 _elev = if(_biggerAngle > 0) then "60" else "30"
 ? _unit distance _target > _distLimit: goto "CheckDistance"
