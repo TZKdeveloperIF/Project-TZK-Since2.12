@@ -89,7 +89,11 @@ _i = TZK_MagName find _equippedMag
 ? _i == -1: goto "EOF"
 _speed = TZK_MagInfo_Speed select _i
 
-_res = [ [_vehicle, _weapon, ""], _posT, _speed, _elev, _biggerAngle ] call preprocessFile "Common\Art\PreCalcArtInfo.sqf"
+@ !mutexTzkArtModule
+	mutexTzkArtModule = true
+	_res = [ [_vehicle, _weapon, ""], _posT, _speed, _elev, _biggerAngle ] call preprocessFile "Common\Art\PreCalcArtInfo.sqf"
+	~ 0.1
+	mutexTzkArtModule = false
 ; _res format: [bool acceptable return value, _elev, _speed]
 ? _res select 0 != 0: goto "EOF"
 _elev = _res select 1; _speed = _res select 2
