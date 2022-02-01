@@ -29,6 +29,8 @@ _idcGiveMoneyToALL = IDC + 23
 _idcRadioONBG = IDC + 24
 _idcRadioONBtn = IDC + 25
 _idcUpgSwitch = IDC + 26
+_idcCmdLabel = IDC + 27
+_idcCmdImage = IDC + 28
 
 ; _idc defined above must consist with definition in description.ext.
 
@@ -39,11 +41,18 @@ mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
 _dlg = createDialog "OptionsDialog"
 mutexDlg = false
 
+? !bool_TZK_CHN_inited && bool_TZK_CHN_Lang: call preprocessFile "Player\Init\DialogChnLanguage.sqf"
+
 ctrlShow [IDC_DEFAULT, false]
 ctrlShow [_idcNumberedAI, false]
 
 {call (_x + " = false")} forEach ["btnLeaderboard", "btnDestruction", "btnGrant", "btnAsk", "btnTake", "btnGive", "btnGiveAIs", "btnGiveAll", "btnUpgrade", "btnBuyUnits", "btnShowStats", "btnUnitCam", "btnSatCam", "btnCustomSoldiers", "btnCommandAI", "btnCommandPlayer", "btnTransfer", "btnNumberedAI", "btnAICheck", "btnCommandTemporary", "btnSpySat"]
 {call (_x + " = false")} forEach ["btnVoteMenu"]
+_icons = ["\TZK_Objects\Image\Icon\square_empty.paa", "\TZK_Objects\Image\Icon\square_yellow.paa", "\TZK_Objects\Image\Icon\square_green.paa"]
+_colors = [[1,1,1,0.5], [1,1,0,0.6],[0,1,0.2,0.8]]
+
+? bool_TZK_CHN_Lang: ctrlSetText [_idcCmdImage, "\TZK_CHN_4_0_6_27\option_commander_co.paa"]
+ctrlShow [_idcCmdImage, bool_TZK_CHN_Lang], ctrlShow [_idcCmdLabel, !bool_TZK_CHN_Lang]
 
 
 _report = report
@@ -83,6 +92,7 @@ ctrlShow [_idcRadioONBG, bool_TZK_RadioReceive_199]
 ? _currentAiRespawn != (lbCurSel _idcAIRespawn): _currentAiRespawn = (lbCurSel _idcAIRespawn), if (_currentAiRespawn != -1) Then {call format ["pvRespawnObjectAi%1 = (_respawnObjects select _currentAiRespawn); PublicVariable {pvRespawnObjectAi%1}", siPlayer]}
 
 [_idcMoney, _idcScore, _idcIncomeRatio, _idcIncomeRatioPlayer, _idcTowns, _idcIncome, _idcTransferGroup, _idcGroupMarkers, _idcWorkerBehaviour, _idcUpgradeList ] call loadFile "\TZK_Scripts_4_0_5\Player\Dialog\Options_Update.sqf"
+call preprocessFile "Player\Dialog\Options_Update.sqf"
 
 ; 4.0.4 Patch
 ; _incomeRatio = [pvIncomeRatio0, pvIncomeRatio1] select (siPlayer == si1);
@@ -329,7 +339,7 @@ goto "Update"
 #CommandTemporary
 	closeDialog 0
 	; ~0.1
-	[] exec "Player\Dialog\AITemporaryOrders.sqs"
+	[] exec "Player\Dialog\AiConcurrentOrders.sqs"
 	Exit
 
 

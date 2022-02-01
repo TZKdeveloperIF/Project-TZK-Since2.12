@@ -1,5 +1,3 @@
-; [] exec "\TZK_Scripts_4_0_5\Player\Dialog\AITemporaryOrders.sqs"
-
 ; args: none
 
 ; create dialog
@@ -7,6 +5,8 @@
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
 _dlg = createDialog "TemporaryAIOrderDialog"
 mutexDlg = false
+
+? !bool_TZK_CHN_inited && bool_TZK_CHN_Lang: call preprocessFile "Player\Init\DialogChnLanguage.sqf"
 
 ; show background
 ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
@@ -23,19 +23,14 @@ _idcParamLabels = []; _idcParams = []; "_idcParamLabels set [_x, IDC + 10 + _x],
 _idcStLev = IDC + 810; _idcStItem = IDC + 811; _idcStLabel = IDC + 900; _idcStParam = IDC + 1000; _idcStBtn = IDC + 820
 
 ; initial available controls
-? (groupPlayer != (groupCommander select _si)) : { ctrlShow [_x, false] } forEach [_idcOrderLabel, _idcSendOrder, _idcOrder, _idcStBtn, _idcStBtn+1]; 
-{ ctrlShow [_x, false] } forEach (_idcParamLabels + _idcParams)
-"{ ctrlShow [_x, false] } forEach [_idcStLabel + _x, _idcStParam + _x]" forEach [0,1,2,3,4,5]
+call preprocessFile "Player\Dialog\AiConcurrent_Init.sqf"
 
-{ lbAdd [_idcOrder, _x select 0] } forEach orderTempDefs
-{lbAdd [_idcStLev, format["%1", _x] ]} forEach [0,1,2,3,4]
-; _status = [["Occupy"], [], ["attach wait"], ["Move(unit)", "Patrol(unit)", "Hold Town(unit)", "Shoot Target(unit)", "Shoot Big Angle(unit)", "Transport Duty(unit)", "Mine(unit)", "Disable Mine(unit)"], ["Patrol(type)",     , "Mine(type)", "Disable Mine(type)"]]
 _nameOfOrder = "orderTempDefs select _this select 0"
 _status = [[orderTempReclaim, orderTempOccupy], [orderTempDisengageType, orderTempSetFlightAltitude, orderTempSpoofMissileON, orderTempChangeAmmo, orderTempSwitchMagazine], [], [orderTempMoveUnit], [orderTempTransportDuty, orderTempShootTarget, orderTempShootBigAngle, orderTempHoldTown, orderTempMoveType]]
 
 _hideCommands = "{ ctrlShow [_x, false] } forEach ([_idcOrderLabel, _idcSendOrder, _idcOrder] + _idcParamLabels + _idcParams + [_idcStLev, _idcStItem, _idcStBtn, _idcStBtn + 1])" + {; "{ ctrlShow [_x, false] } forEach [_idcStLabel + _x, _idcStParam + _x]" forEach [0,1,2,3,4,5]}
 _grpSuperior = "([{Commander}] + callsigns) select (aiSetting select (_this select 0) select (_this select 1) select aisSuperior)"
-#Update
+# Update
 	? call dlgUpdated: exit
 	? !(alive player): closeDialog 0; Exit
 

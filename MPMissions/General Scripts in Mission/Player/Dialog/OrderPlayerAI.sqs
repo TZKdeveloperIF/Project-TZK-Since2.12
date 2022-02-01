@@ -1,1 +1,78 @@
-_this exec "\TZK_Scripts_4_0_5\Player\Dialog\OrderPlayerAI.sqs"
+; args: [pos, units, (aiOrder Matrix index, abandoned)]
+_pos = _this select 0; _units = _this select 1;
+
+? (count _units) == 0: exit
+@!mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "TZK_OrderAIDialog"
+mutexDlg = false
+
+? !bool_TZK_CHN_inited && bool_TZK_CHN_Lang: call preprocessFile "Player\Init\DialogChnLanguage.sqf"
+
+ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+
+_idcOrders1 = IDC+0; _idcOrders2 = IDC+6
+_idcButtonBG1 = IDC + 9; _idcButtonBG2 = IDC + 10
+_idcButton1 = IDC + 11; _idcButton2 = IDC + 12
+
+_idcPar0Label = IDC+1
+_idcPar0List = IDC+2
+_idcPar1Label = IDC+3
+_idcPar1List = IDC+4
+_idcOrderDesc = IDC+5
+
+_idcPar2Label = IDC+7
+_idcPar2List = IDC+8
+
+call preprocessFile "Player\Dialog\OrderPlayerAi_Init.sqf"
+
+_selectedOrder1 = lastOrder1; _selectedOrder2 = lastOrder2
+? lastOrderList > 0: call format ["_selectedOrder%1 = -1", lastOrderList]
+
+ctrlSetText [_idcOrderDesc, "Since TZK_4.0.0.00, extend orders are listed on the left. 2 buttons are available for orders."]
+
+#Update
+
+? call dlgUpdated: exit
+? !(alive player): closeDialog 0; exit
+? (_selectedOrder1 != lbCurSel _idcOrders1): _i = 1, goto "NewOrderSelected"
+? (_selectedOrder2 != lbCurSel _idcOrders2): _i = 2, goto "NewOrderSelected"
+? btnSendOrder: btnSendOrder=false, _i = 1, goto "SendOrder"
+? btnSendOrder2: btnSendOrder2=false, _i = 2, goto "SendOrder"
+
+~0.2
+goto "Update"
+
+#SendOrder
+	? call format ["lastOrder%1 == -1", _i]: hint "No order selected. Maybe you clicked wrong button?", goto "Update"
+	_params = []
+	? (count (_order select 1)) >= 1: _params set [0, lbCurSel _idcPar0List]
+	? (count (_order select 1)) >= 2: _params set [1, lbCurSel _idcPar1List]
+	? (count (_order select 1)) >= 3: _params set [2, lbCurSel _idcPar2List]
+	closeDialog 0
+	~0.1
+	_order = (call format ["aiOrders%1", _i]) select (call format ["lastOrder%1", _i])
+	_script = format["%1", _order select 3]
+	? _order select 2: [_units, _pos, _params] exec _script; exit
+	{ [_x, _pos, _params] exec _script } forEach _units
+	exit
+
+#NewOrderSelected
+	call format ["_selectedOrder%1 = lbCurSel _idcOrders%1; lastOrder%1 = lbCurSel _idcOrders%1; lastOrderList = %1", _i]
+	_order = (call format ["aiOrders%1", _i]) select (call format ["_selectedOrder%1", _i])
+	{ ctrlShow [_x, false] } forEach [_idcButtonBG1, _idcButtonBG2]; { ctrlEnable [_x, false] } forEach [_idcButton1, _idcButton2]
+	call format ["ctrlShow [_idcButtonBG%1, true]; ctrlEnable [_idcButton%1, true]", _i]
+
+	ctrlSetText [_idcOrderDesc, (_order select 4) call funcLocStr]
+
+	_params = _order select 1
+
+	{ ctrlShow [_x, count _params >= 1] } forEach [_idcPar0Label, _idcPar0List]
+	{ ctrlShow [_x, count _params >= 2] } forEach [_idcPar1Label, _idcPar1List]
+	{ ctrlShow [_x, count _params >= 3] } forEach [_idcPar2Label, _idcPar2List]
+
+	? count _params == 0: goto "Update"
+	? count _params >= 1: _par = _params select 0; ctrlSetText [_idcPar0Label, _par select 0]; lbClear _idcPar0List; _i=0; while "_i < (_par select 1)" do { lbAdd [_idcPar0List, _i call (_par select 2)]; _i=_i+1 }; lbSetCurSel [_idcPar0List, _par select 3]
+	? count _params >= 2: _par = _params select 1; ctrlSetText [_idcPar1Label, _par select 0]; lbClear _idcPar1List; _i=0; while "_i < (_par select 1)" do { lbAdd [_idcPar1List, _i call (_par select 2)]; _i=_i+1 }; lbSetCurSel [_idcPar1List, _par select 3]
+	? count _params >= 3: _par = _params select 2; ctrlSetText [_idcPar2Label, _par select 0]; lbClear _idcPar2List; _i=0; while "_i < (_par select 1)" do { lbAdd [_idcPar2List, _i call (_par select 2)]; _i=_i+1 }; lbSetCurSel [_idcPar2List, _par select 3]
+	goto "Update"
