@@ -1,33 +1,13 @@
-private ["_idcMoney", "_idcScore", "_idcIncomeRatio", "_idcIncomeRatioPlayer", "_idcTowns", "_idcIncome", "_idcGroupMarkers", "_idcWorkerBehaviour", "_idcUpgradeList", "_idcWorkerBehaviour", 
-"_groups", "_groupsName", "_groupsMoney", "_groupsAI", "_groupCommander", 
-"_texts", "_index", "_count", 
-"_id", "_x", "_money", "_moneySide", "_score", "_groupCount", "_place", "_siX", "_giX", "_scoreX", "_incomeRatio", "_selectedIncome", "_incomeRatioPlayer",
-"_townCount", "_towns", "_income", "_factor", "_players", "_aileaders", "_incomePlayer", "_incomeAiLeaders", "_incomeCommander", "_upgState"];
-
-_idcMoney = _this select 0;
-_idcScore = _this select 1;
-_idcIncomeRatio = _this select 2;
-_idcIncomeRatioPlayer = _this select 3;
-_idcTowns = _this select 4;
-_idcIncome = _this select 5;
-_idcTransferGroup = _this select 6;
-_idcGroupMarkers = _this select 7;
-_idcWorkerBehaviour = _this select 8;
-_idcUpgradeList = _this select 9;
-
-
-_groups = groupMatrix select siPlayer;
-_groupsName = groupNameMatrix select siPlayer;
-_groupsMoney = groupMoneyMatrix select siPlayer;
-_groupsAI = groupAiMatrix select siPlayer;
-_groupCommander = (groupCommander select siPlayer);
-
+private [
+	"_texts", "_index", "_count", 
+	"_id", "_x", "_money", "_moneySide", "_score", "_groupCount", "_place", "_siX", "_giX", "_scoreX", "_incomeRatio", "_selectedIncome", "_incomeRatioPlayer",
+	"_townCount", "_towns", "_income", "_factor", "_players", "_aileaders", "_incomePlayer", "_incomeAiLeaders", "_incomeCommander", "_upgState"
+];
 
 ctrlSetText [IDC_TEXT_GAMETIME_Options, [] call funcGetTimeString ];
 
 _money = _groupsMoney select giPlayer; _moneySide = 0;
-_index = 0;
-{ _moneySide = _moneySide + (_groupsMoney select _index); _index=_index+1 } forEach _groups;
+_index = 0; { _moneySide = _moneySide + (_groupsMoney select _index); _index = _index + 1 } forEach _groups;
 ctrlSetText [_idcMoney, format["$ You/Side: %1/%2", _money, _moneySide]];
 
 _score = [siPlayer, giPlayer] call funcCalcScore;
@@ -81,5 +61,14 @@ if (call format["pvWorkerBehaviour%1 != lbCurSel _idcWorkerBehaviour", siPlayer]
 
 _index = 0; _upgState = upgMatrix select siPlayer;
 lbClear _idcUpgradeList;
-private ["_iconPath"]; _iconPath = "\TZK_Objects\Image\Icon\";
-{ _id=lbAdd [_idcUpgradeList, format["%1 $%2 %3min", (_x select 0) call funcLocStr, _x select 1, _x select 2] ]; lbSetPicture[_idcUpgradeList, _id, [_iconPath + "square_empty.paa", _iconPath + "square_yellow.paa", _iconPath + "square_green.paa"] select (_upgState select _index)]; _index=_index+1} forEach upgDefs;
+{
+	if !bool_TZK_CHN_Lang then {
+		_id = lbAdd [_idcUpgradeList, format["%1 $%2 %3min", (_x select 0) call funcLocStr, _x select 1, _x select 2] ];
+		lbSetPicture[_idcUpgradeList, _id, _icons select (_upgState select _index)];
+	} else {
+		_id = lbAdd [_idcUpgradeList, format[" $%2 %3min", "", _x select 1, _x select 2] ];
+		lbSetPicture[_idcUpgradeList, _id, upgChnDefs select _index];
+		lbSetColor [_idcUpgradeList, _id, _colors select (_upgState select _index)]
+	};
+	_index = _index + 1;
+} forEach upgDefs;
