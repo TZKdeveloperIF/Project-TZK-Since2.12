@@ -1,0 +1,6 @@
+; args: <Fired Event Handler Array>
+? _this select 1 != "Put": exit
+? _this select 4 != "PipeBomb": exit
+_bomb = nearestObject [_this select 0, _this select 4]
+? isNull _bomb: exit
+Array_TZK_PlayerC4 set [count Array_TZK_PlayerC4, _bomb]
