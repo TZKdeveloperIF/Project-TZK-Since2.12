@@ -16,6 +16,9 @@ _vt = _vehicle call funcGetUnitTypeFromObject
 
 ? bool_TZK_SEMod_Mode && _vt in (typesHeavyTank + typesLightTank): [_vehicle] exec "\TZK_Scripts_4_0_4\Player\Radio\Radio_Update_Vehicle_Tank.sqs"; exit
 
+; Miner car radio. Use ammo car instead before new mod. Ammo car can't transport via player by now.
+? _vt == jeepaW || _vt == uazaE: [_vehicle] exec "Player\Radio\Radio_Update_Vehicle_MinerCar.sqs"; exit
+
 ? _vt in typesHowitzer: [_vehicle] exec "\TZK_Scripts_4_0_5\Player\Radio\Radio_Update_Vehicle_Howitzer.sqs"; exit
 ? _vt in typesRocketLauncher: [_vehicle] exec "\TZK_Scripts_4_0_5\Player\Radio\Radio_Update_Vehicle_TOS1.sqs"; exit
 
