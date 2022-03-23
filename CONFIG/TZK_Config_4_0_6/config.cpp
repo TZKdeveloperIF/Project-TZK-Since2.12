@@ -345,6 +345,18 @@ class CfgVehicles {
 		armorStructual = 16;
 	};
 	
+	class m119_xj400: M2StaticMG {
+		soundEngine[] = {"",0,1};
+		soundEnviron[] = {"",0,1};
+	};
+	class D30_xj400: M2StaticMG {
+		soundEngine[] = {"",0,1};
+		soundEnviron[] = {"",0,1};
+	};
+	class M252Mortar_TZK_xj400: M2StaticMG {
+		soundEngine[] = {"",0,1};
+		soundEnviron[] = {"",0,1};
+	};
 
 	// class Tank_xj400: Tank {};
 	// class RussianTank_xj400: Tank_xj400 {};
