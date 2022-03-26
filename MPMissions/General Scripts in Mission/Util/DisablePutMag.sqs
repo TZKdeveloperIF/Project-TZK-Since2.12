@@ -1,0 +1,30 @@
+; Unsync script since this is a sqs
+
+; args: [operator: object, magMine: string]
+_operator = _this select 0; _mag = _this select 1
+_this = 0
+
+; ? "Man" countType [_operator] > 0: _operator fire [weaponPut, _mag, _mag]; exit
+_dist = 15
+
+_si = sides find (side _operator)
+? _si != si0 && _si != si1: exit
+_gi = (groupMatrix select _si) find group _operator
+? -1 == _gi: exit
+
+_shell = nearestObject [_operator, _mag]
+? _mag != magMine: goto "SkipVerifyMineApe"
+; VerifyMineApe
+	? isNull _shell || _shell distance _operator > _dist: _mag = "MineAPE", _shell = nearestObject [_operator, _mag]
+# SkipVerifyMineApe
+? isNull _shell || _shell distance _operator > _dist: hint "No shells nearby. Search at another place please.", exit
+
+_et = etMine
+? "MineAPE" == _mag: _et = etMineAPE
+? magSatchel == _mag: _et = etSatchel
+_cost = equipDefs select _et select edcost
+
+deleteVehicle _shell
+
+? isServer: [_si, _gi, -_cost] exec "\TZK_Scripts_4_0_4\Server\MoneySpend.sqs"
+? !isServer && !isNull player: [-_cost] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"

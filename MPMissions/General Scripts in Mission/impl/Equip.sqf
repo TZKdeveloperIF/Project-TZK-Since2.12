@@ -4,11 +4,12 @@ if bool_TZK_SEMod_Mode Then {
 	magsRespawnPlayer9 = [ ["G36aMag", "G36aMag", "G36aMag", "WW4_JavelinMag", magSatchel], [m_TZK_AK107, m_TZK_AK107, m_TZK_AK107, "ICPRPG29Mag"] ];
 };
 
-comment "Allow buying MineAPE in game";
-_type = equipSearch find "MineAPE";
-if (-1 != _type) then {
-	equipDefs select _type set [edSides, siBoth];
+comment "Miner Car(Ammo Jeep) supporting";
+etMineAPE = equipSearch find "MineAPE";
+if (-1 != etMineAPE) then {
+	equipDefs select etMineAPE set [edSides, siBoth];
 };
+etSatchel = equipSearch find magSatchel;
 
 comment "Add few weapons with magazines in weaponSearch and equipSearch array for artillery module in ACWA. There're only few kinds so won't occupy too many items.";
 
