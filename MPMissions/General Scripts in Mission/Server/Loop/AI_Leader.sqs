@@ -12,7 +12,7 @@ _idTemporaryOrder = _this select 3
 _idOrder = _this select 4
 _indexCombatMode = _this select 5
 _indexBehaviour = _this select 6
-
+_this = 0
 ; Refresh members' order script when each new loop started.
 _order = orderMatrix select _si select _gi; _orderTemp = orderTempMatrix select _si select _gi; _order set [0, (_order select 0) + 1]
 _buyFacSet = []; _setting = aiSetting select _si select _gi
@@ -61,11 +61,10 @@ _unitsStarted = units _group
 
 	_money = (groupMoneyMatrix select _si) select _gi
 	_KeepMax = aisKeepDefs select (_setting select aisKeepMax)
-	? _money > _KeepMax : _tax = _money - _KeepMax; [_si, _gi, giCO select _si, _tax] exec "\TZK_Scripts_4_0_4\Server\MoneyTransfer.sqs"; goto "Sleep"
+	? _money > _KeepMax : _tax = _money - _KeepMax; [_si, _gi, [_si, _gi] call loadFile "Util\GetSuperiorIdx.sqf", _tax] exec "\TZK_Scripts_4_0_4\Server\MoneyTransfer.sqs"; goto "Sleep"
 	? (_setting select aisBuy) > 0: goto "CheckBuyUnit"
 
-	#Sleep
-	? _time > 2*60: [_unit, _si, _gi, _idTemporaryOrder, _idOrder, _indexCombatMode, _indexBehaviour] exec "\TZK_Scripts_4_0_5\Server\Loop\AI_Leader.sqs"; exit
+	# Sleep
 	~5
 	goto "Update"
 
