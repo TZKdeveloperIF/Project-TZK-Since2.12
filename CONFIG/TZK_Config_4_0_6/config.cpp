@@ -213,6 +213,15 @@ class CfgVehicles {
 	class M60: Tank {};
 
 	class M2StaticMG: M113 {};
+
+	
+	class Static: All {};
+	class Building: Static {};
+	class NonStrategic: Building {};
+	class HeliH: NonStrategic {};
+	class Target_TZK_xj400: HeliH {
+		model = "\TZK_Config_4_0_6\TZK_Target_New0.p3d";
+	};
 	
 	class HMMMV_TOW2A_xj400 : JeepMG {};
 	class HMMMV_TOW2A_Auto_xj400 : HMMMV_TOW2A_xj400 {
