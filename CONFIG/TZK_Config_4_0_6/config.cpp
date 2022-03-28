@@ -354,6 +354,7 @@ class CfgVehicles {
 		armorStructual = 16;
 	};
 	
+	// Remove soundEngine/soundEnviron
 	class m119_xj400: M2StaticMG {
 		soundEngine[] = {"",0,1};
 		soundEnviron[] = {"",0,1};
@@ -367,14 +368,51 @@ class CfgVehicles {
 		soundEnviron[] = {"",0,1};
 	};
 
-	// class Tank_xj400: Tank {};
-	// class RussianTank_xj400: Tank_xj400 {};
-	// class T72_Base_xj400: RussianTank_xj400 {};
-	// class T80_Base_xj400: T72_Base_xj400 {};
-	// class TZK_HeavyEastTank_Base_xj400: T80_Base_xj400 {};
-	// class ZTZ99_xj400: TZK_HeavyEastTank_Base_xj400 {
-		// model = "TZK_Config_4_0_6\ztz99.p3d";
-	// };
+	class Tank_xj400: Tank {};
+	class M1Abrams_Base_xj400: Tank_xj400 {};
+	class TZK_HeavyWestTank_Base_xj400: M1Abrams_Base_xj400 {};
+	class M1A1_xj400: TZK_HeavyWestTank_Base_xj400 {
+		model = "\TZK_Config_4_0_6\M1A1_TZK.p3d";
+	};
+	class M1A2_INQ_xj400: TZK_HeavyWestTank_Base_xj400 {
+		model = "\TZK_Config_4_0_6\M1A2_INQ.p3d";
+	};
+	class Leo2A6_xj400: TZK_HeavyWestTank_Base_xj400 {
+		model = "\TZK_Config_4_0_6\Leo2A6.p3d";
+	};
+	
+	class RussianTank_xj400: Tank_xj400 {};
+	class T72_Base_xj400: RussianTank_xj400 {};
+	class T80_Base_xj400: T72_Base_xj400 {};
+	class TZK_HeavyEastTank_Base_xj400: T80_Base_xj400 {};
+	class T90_xj400: TZK_HeavyEastTank_Base_xj400 {
+		model = "\TZK_Config_4_0_6\T90_ICP.p3d";
+	};
+	class ZTZ99_xj400: TZK_HeavyEastTank_Base_xj400 {
+		model = "\TZK_Config_4_0_6\ztz99.p3d";
+	};
+	class M109A6G_Base_xj400: M1Abrams_Base_xj400 {};
+	class M109A6G_xj400: M109A6G_Base_xj400 {
+		model = "\TZK_Config_4_0_6\M109A6_DKMM.p3d";
+	};
+	class PLZ05_VME_Base_xj400: T72_Base_xj400 {};
+	class PLZ05_TZK_xj400: PLZ05_VME_Base_xj400 {
+		model = "\TZK_Config_4_0_6\PLZ05.p3d";
+	};
+	
+	class M60_Base_xj400: Tank_xj400 {};
+	class M60_xj400: M60_Base_xj400 {
+		model = "\TZK_Config_4_0_6\M60_TZK.p3d";
+	};
+	
+	class M113_xj400: M113 {};
+	class M113Ambul_xj400: M113Ambul {
+		model = "\TZK_Config_4_0_6\M113_Ambu_TZK.p3d";
+	};
+	class Bradley_xj400: M113 {};
+	class M2A2_xj400: Bradley_xj400 {
+		model = "\TZK_Config_4_0_6\M2A2_TZK.p3d";
+	};
 };
 
 // EOF
