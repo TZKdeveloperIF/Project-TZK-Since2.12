@@ -338,23 +338,37 @@ class CfgModels {
 // =======================================TZK 4.0.0 Vehicles=====================================	
 	class Veh_Grad: Vehicle {
 		sectionsInherit = "Vehicle";
+		sections[] = {"TZK_Grad1","TZK_Grad2","TZK_Grad3","TZK_Grad4","TZK_Grad5","TZK_Grad6","tzk_tex_00"};
+	};
+	class Tank_MultiTex_Base: Tank {
+		sectionsInherit = "Tank";
+		sections[] = {"tzk_tex_00"};
+	};
+	class Tank_MultiTex: Tank_MultiTex_Base {
+		sectionsInherit = "Tank_MultiTex_Base";
+	};
+	class Tank_Grad_Base: Tank_MultiTex {
 		sections[] = {"TZK_Grad1","TZK_Grad2","TZK_Grad3","TZK_Grad4","TZK_Grad5","TZK_Grad6"};
 	};
-	class Tank_Grad: Tank {
-		sectionsInherit = "Tank";
-		sections[] = {"TZK_Grad1","TZK_Grad2","TZK_Grad3","TZK_Grad4","TZK_Grad5","TZK_Grad6"};
+	class Tank_Grad: Tank_Grad_Base {
+		sectionsInherit = "Tank_Grad_Base";
+	};
+	class Heli_MultiTex_Base: Helicopter {
+		sectionsInherit = "Helicopter";
+		sections[] = {"tzk_tex_00"};
+	};
+	class Heli_MultiTex: Heli_MultiTex_Base {
+		sectionsInherit = "Heli_MultiTex_Base";
 	};
 
 	class M1A1_TZK: Tank_Grad {
-		sectionsInherit = "Tank_Grad";
 		sections[] = { 
 			tex_abrams_kolo.pac, tex_abrams_kolo2.pac, tex_abrams_svetlo.paa, tex_abrams_svetlo_b.paa, tex_m1a1_ammo_box.pac, tex_m1a1_bocek.pac, tex_m1a1_dratram_back.paa, tex_m1a1_dratram_side.paa, tex_m1a1_drtrm_back_b.paa, tex_m1a1_frnt_bck_lod.pac, tex_m1a1_hlaven.pac, tex_m1a1_main_back.pac, tex_m1a1_main_bottom.pac, tex_m1a1_main_front.pac, tex_m1a1_main_side.pac, tex_m1a1_main_top.pac, tex_m1a1_poklop_driver.pac, tex_m1a1_vez_back.pac, tex_m1a1_vez_front.pac, tex_m1a1_vez_hatch.pac, tex_m1a1_vez_side.pac, tex_m1a1_vez_top.pac, tex_m1a1_vymetnice.pac, tex_m60pas.pac, tex_pasy_okolo_uni.pac,
 			tex_bmp_kuk2.pac, tex_t72_kolo_kraj.pac, tex_t72_zubkolo_detail.paa, tex_t72_zubkolo_detail2.paa
 			, tex_m1a1_hlaven1.pac
 		};
 	};
-	class M1A2_INQ: Tank {
-		sectionsInherit = "Tank";
+	class M1A2_INQ: Tank_MultiTex {
 		sections[] = {
 			"BS1","BS2","BS3","_mark","_chevron","_for", 
 			tex_blampe1.paa, tex_blampe2.paa, tex_box.paa, tex_box2.paa, tex_ca.paa, tex_chabak.paa, tex_chabot.paa, tex_chatop.paa, tex_citv.paa, tex_cws.paa, tex_cws1.paa, tex_dratybk.paa, tex_dratysd.paa, tex_drivhat.paa, tex_green.paa, tex_greendirt.paa, tex_kettea1.paa, tex_kolo1.paa, tex_kolo1a.paa, tex_kolo2.paa, tex_kolo2a.paa, tex_kolop.paa, tex_kolot.paa, tex_ksidin1.paa, tex_ksidin2.paa, tex_ksidl.paa, tex_ksidr.paa, tex_ksidtp.paa, tex_kuk2x2a.paa, tex_mg.paa, tex_mg2.paa, tex_misc1.paa, tex_misc2.paa, tex_misc3.paa, tex_mlamp1.paa, tex_mlamp1b.paa, tex_mlamp2.paa, tex_mlamp2b.paa, tex_turbk.paa, tex_turbot.paa, tex_turcrt.paa, tex_turfr.paa, tex_tursil.paa, tex_tursir.paa, tex_turtop.paa, 
@@ -363,8 +377,7 @@ class CfgModels {
 			tex_netz.paa, tex_netz1.paa
 		};
 	};
-	class Leo2A6: Tank {
-		sectionsInherit = "Tank";
+	class Leo2A6: Tank_MultiTex {
 		sections[] = {
 			"zadni svetlo","Takt_Kp","Takt_Symbol","Takt_Btl_1","Takt_Btl_2","Takt_Btl_3","nr1","nr2","nr3",
 			tex_kettes.pac, tex_ketteu.pac, tex_main1.pac, tex_main2.pac, tex_main3.pac, tex_rolle2.pac, tex_rolle2m.pac, tex_rollei.paa, 
@@ -373,7 +386,6 @@ class CfgModels {
 	};
 
 	class T80_TZK: Tank_Grad {
-		sectionsInherit = "Tank_Grad";
 		sections[] = {
 			tex_pas_spod_1frame.pac, tex_pasy_okolo_uni.pac, tex_t55_infra.pac, tex_t55_sum.pac, tex_t72_vymetnice.pac, tex_t80_kolo2.pac, tex_tank_04_bck.pac, tex_tank_04_bednyuvalce_.pac, tex_tank_04_frt.pac, tex_tank_04_krabic_back.pac, tex_tank_04_krabic_sidet.pac, tex_tank_04_lauf_frt.pac, tex_tank_04_lauf_top.pac, tex_tank_04_platyzveze_s.pac, tex_tank_04_platyzvozu_t.pac, tex_tank_04_side.pac, tex_tank_04_spod.pac, tex_tank_04_sud_norm.pac, tex_tank_04_sud_side.paa, tex_tank_04_top.pac, tex_tank_04_v_lec_norm.pac, tex_tank_04_v_lec_side.paa, tex_tank_04_vez_bck.pac, tex_tank_04_vez_frt.pac, tex_tank_04_vez_side.pac, tex_tank_04_vez_top.pac, tex_tank_m_02_kanon.pac, tex_tank_m_02_vez_frt.pac, 
 			tex_t80_kolo1.pac, tex_tank4_passide.pac, tex_tank_04_detailkanon.pac, tex_tank_04_detailkanon2.pac, tex_tnk04topslo.pac, tex_tank_04_spod_spol.pac, tex_ural_kabok2.pac, tex_t72_kolo3.paa, 
@@ -385,14 +397,12 @@ class CfgModels {
 		sectionsInherit = "Vehicle";
 		sections[] = {"zasleh", "L svetlo", "P svetlo", "zadni svetlo", "TR", "zak", "dz", "pl", "n1", "n2", "n3", "fire1", "fire2", "fire3", "fire4", "fire5", "fire6",          "rak1", "rak2", "rak3", "rak4", "Flag"};
 	};
-	class T90ms_mfm: Tank {
-		sectionsInherit = "Vehicle";
+	class T90ms_mfm: Tank_MultiTex {
 		sections[] = {
 			"no1", "no2",  "no3", "SignSide", "arena_block", "zadni svetlo", "brzdove svetlo", tex_t90ms_
 		};
 	};
-	class ZTZ99: Tank {
-		sectionsInherit = "Tank";
+	class ZTZ99: Tank_MultiTex {
 		sections[] = {
 			"n1", "n2", "n3"
 			, tex_VWCanon1.paa, tex_VWChassis1.paa, tex_VWChassis2.paa, tex_VWChassis3.paa, tex_VWTurret1.paa, tex_VWTurret2.paa, tex_VWTurret3.paa, tex_VWTurret4.paa, tex_VWTurret5.paa, tex_VWTurret6.paa, tex_VWWheel1.paa, tex_Ztz993.paa
@@ -400,14 +410,12 @@ class CfgModels {
 	};	
 
 	class M109A6_DKMM: Tank_Grad {
-		sectionsInherit = "Tank_Grad";
 		sections[] = {
 			"vlam","clamp", 
 			tex_box.paa, tex_pal1.pac, tex_pal2.pac, tex_cog.paa
 		};
 	};
 	class PLZ05: Tank_Grad{
-		sectionsInherit = "Tank_Grad";
 		sections[] = {
 			"n1", "n2", "n3", "zhijia"
 			, tex_CETI.paa, tex_cetic.paa, tex_CETIh.paa, tex_CETIq.paa, tex_CETIs.paa, tex_ct1.paa, tex_ct2.paa, tex_jing.paa, tex_mi.paa, tex_micai.paa, tex_pao.paa, tex_paota1.paa, tex_paota2.paa, tex_paotac.paa, tex_paotaqh.paa, tex_paotaSd.paa, tex_paott.paa, tex_qb.paa, tex_ROLLEA.pac, tex_ROLLEH.paa, tex_ROLLEV.paa, tex_ROLLEVA.paa, tex_tta.paa, tex_ttt.paa, tex_VWTurret3.paa, tex_VWTurret6.paa, tex_ZSD89_lun.paa, 
@@ -499,7 +507,7 @@ class CfgModels {
 
 	class UH60A_CSLA2: Helicopter {
 		sectionsInherit = "Helicopter";
-		sections[] = {
+		sections[]= {
 			"cis1","cis2","cis3","cis4","cis5","zasleh2","offline"
 			, tex_bottom.pac,tex_front.pac,tex_koloin.pac,tex_koloout.pac,tex_kolopas.pac,tex_kridlo.pac,tex_motor.pac,tex_nadrze.pac,tex_nos.pac,tex_podvozek.pac,tex_posuvokna.pac,tex_rotor.pac,tex_sidea.pac,tex_sideb.pac,tex_topa.pac,tex_valec.pac,tex_zadkolo.pac,tex_zadkridlo.pac
 			, tex_all.paa
@@ -548,6 +556,7 @@ class CfgModels {
 	class M113_TZK: Tank {
 		sectionsInherit = "Tank";
 		sections[] = {
+			tzk_tex_00, 
 			tex_m60pas.pac, tex_pasy_okolo_uni.pac, tex_m113_kolo.pac, tex_m113_kolo2.pac, tex_m113_svetla_front.pac, tex_m113bottom.pac, tex_m113bottom_lod.pac, tex_m113front.pac, tex_m113greenbedna.pac, tex_m113pasb.pac, tex_m113plat_uni.pac, tex_m113sanita-side_lod.pac, tex_m113sanita-top.pac, tex_m133_newback.pac, tex_m133_newbottom.pac, tex_m133_newfront.pac, tex_m133_newfrontlod.pac, tex_m133_newside.pac, tex_m133_newsideamb.pac, tex_m133_newtop.pac, 
 			tex_m133_kanystr.pac, tex_m133_lopata.paa, tex_t55kolozub.paa, tex_t55kolozub2.paa, tex_t72_kolo_kraj.pac, tex_t72_kolo3.paa, 
 		};
@@ -565,8 +574,7 @@ class CfgModels {
 			tex_\vulcan\vulcan_1.pac, tex_\vulcan\vulcan_2.pac, tex_\vulcan\vulcan_3.pac, tex_\vulcan\vulcan_4.pac, tex_\vulcan\vulcan_kolas.pac, tex_\vulcan\vulcan_ku4l.pac, tex_\vulcan\vulcan_kukr.paa, tex_\vulcan\vulcan_kukr.pac, tex_\vulcan\vulcan_kul2.pac, tex_\vulcan\vulcan_kul3.pac, tex_\vulcan\vulcan_newtop.pac, tex_\vulcan\vulcan_side.pac, tex_\vulcan\vulcan1.pac, tex_\vulcan\vulcan2.pac, tex_\vulcan\vulcan4.pac, 
 		};
 	};
-	class M2A2_TZK: Tank {
-		sectionsInherit = "Tank";
+	class M2A2_TZK: Tank_MultiTex {
 		sections[] = {
 			tex_back.pac, tex_bk.pac, tex_down.pac, tex_dn.pac, tex_opak.pac, tex_opak2.pac, tex_pasbok.pac, tex_pasy.pac, tex_pasy2.pac, tex_sid1a.pac, tex_sid1b.pac, tex_sid2a.pac, tex_sid2b.pac, tex_sida.pac, tex_sidb.pac, tex_svetla.pac, tex_up.pac, tex_upa.pac, tex_upb.pac, tex_upvez.pac, tex_upveza.pac, tex_upvezb.pac, tex_upvezc.pac, tex_upvezd.pac, tex_vezpruh.pac, tex_vez_op.pac, tex_vez_op2.pac, 
 			tex_m113_kolo.pac, tex_m113_kolo2.pac, tex_t55kolozub.paa, tex_t55kolozub2.paa, tex_t72_kolo3.paa, tex_t72_kolo_kraj.pac
