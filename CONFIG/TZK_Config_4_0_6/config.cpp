@@ -391,6 +391,7 @@ class CfgVehicles {
 	class ZTZ99_xj400: TZK_HeavyEastTank_Base_xj400 {
 		model = "\TZK_Config_4_0_6\ztz99.p3d";
 	};
+
 	class M109A6G_Base_xj400: M1Abrams_Base_xj400 {};
 	class M109A6G_xj400: M109A6G_Base_xj400 {
 		model = "\TZK_Config_4_0_6\M109A6_DKMM.p3d";
@@ -413,6 +414,99 @@ class CfgVehicles {
 	class M2A2_xj400: Bradley_xj400 {
 		model = "\TZK_Config_4_0_6\M2A2_TZK.p3d";
 	};
+
+	class ResistanceTank_xj400: Tank_xj400 {};
+	class T80Res_Base_xj406: ResistanceTank_xj400 {
+		scope = 0;
+		picture = "it80";
+		side = 2;
+		displayName = "$STR_DN_OUT_T80Res";
+		nameSound = "t80";
+		accuracy = 0.5;
+		hiddenSelections[] = {};
+		armor = 700;
+		cost = 1500000;
+		weapons[] = {"Gun120","MachineGun12_7"};
+		magazines[] = {"Heat120","Shell120","MachineGun12_7"};
+		type = 1;
+		threat[] = {0.9,0.9,0.3};
+		
+		class HitGun { armor = 3; material = 52; name = "gun"; passThrough = 1; };
+		maxSpeed = 70;
+		soundEngine[] = {"Vehicles\ModernIdle1",0.0316228,1};
+		soundEnviron[] = {"Vehicles\ModernRolling_Treads1",0.0316228,1};
+		model = "t80";
+		driverAction = "ManActT80DriverOut";
+		gunnerAction = "ManActT80GunnerOut";
+		commanderAction = "ManActT80CommanderOut";
+		driverInAction = "ManActT80Driver";
+		gunnerInAction = "ManActT80Gunner";
+		commanderInAction = "ManActT80Commander";
+		class IndicatorSpeed {
+			selection = "ukaz_rychlo";
+			axis = "osa_rychlo";
+			angle = -270;
+			min = 0;
+			max = "100 / 3.6";
+		};
+		class IndicatorSpeed2 {
+			selection = "ukaz_rychlo2";
+			axis = "osa_rychlo2";
+			angle = -270;
+			min = 0;
+			max = "100 / 3.6";
+		};
+		class IndicatorRPM {
+			selection = "ukaz_rpm";
+			axis = "osa_rpm";
+			angle = -290;
+			min = 0;
+			max = 1;
+		};
+	};
+	class T80Res_TZK_xj406: T80Res_Base_xj406 {
+		scope = protected; vehicleClass = "TZK_Units_400";
+		displayName = "T80(Res) Red"; accuracy = 1000;
+		model = "\TZK_Model_4_0_5\T80_TZK.p3d";
+		hiddenSelections[] = {
+			"pruh", "TZK_Grad1","TZK_Grad2","TZK_Grad3","TZK_Grad4","TZK_Grad5","TZK_Grad6",  tzk_tex_00,
+			tex_pas_spod_1frame.pac, tex_pasy_okolo_uni.pac, tex_t55_infra.pac, tex_t55_sum.pac, tex_t72_vymetnice.pac, tex_t80_kolo2.pac, tex_tank_04_bck.pac, tex_tank_04_bednyuvalce_.pac, tex_tank_04_frt.pac, tex_tank_04_krabic_back.pac, tex_tank_04_krabic_sidet.pac, tex_tank_04_lauf_frt.pac, tex_tank_04_lauf_top.pac, tex_tank_04_platyzveze_s.pac, tex_tank_04_platyzvozu_t.pac, tex_tank_04_side.pac, tex_tank_04_spod.pac, tex_tank_04_sud_norm.pac, tex_tank_04_sud_side.paa, tex_tank_04_top.pac, tex_tank_04_v_lec_norm.pac, tex_tank_04_v_lec_side.paa, tex_tank_04_vez_bck.pac, tex_tank_04_vez_frt.pac, tex_tank_04_vez_side.pac, tex_tank_04_vez_top.pac, tex_tank_m_02_kanon.pac, tex_tank_m_02_vez_frt.pac,
+			tex_t80_kolo1.pac, tex_tank4_passide.pac, tex_tank_04_detailkanon.pac, tex_tank_04_detailkanon2.pac, tex_tnk04topslo.pac, tex_tank_04_spod_spol.pac, tex_ural_kabok2.pac, tex_t72_kolo3.paa,
+			tex_drat_svetlo_s.paa, tex_t72_com_strop.paa, tex_t72_dri_poklop.paa, tex_t72_hlaven_s.pac, tex_t72_vez_strop.paa, tex_t72_zubkolo_detail.paa, tex_t72_zubkolo_detail2.paa
+			, tex_t80_stranakol.pac
+				, tzk_tex_99
+		};
+		class EventHandlers {
+			Init = _vehicle = _this select 0, [_vehicle, {C}] exec {\TZK_Objects\Scripts\texture\T80.sqs}, [_vehicle, {red}] exec {\TZK_Objects\Scripts\texture\GUER.sqs};
+		};
+		gunnerInAction = "ManActM1A1Gunner";
+		commanderInAction = "ManActM1A1Commander";
+	};
+	class T80Res_Orange_xj406: T80Res_TZK_xj406 {
+		scope = protected; vehicleClass = "TZK_Testing_300";
+		displayName = "T80(Res) Orange"; accuracy = 1000;
+		class EventHandlers {
+			Init = _vehicle = _this select 0, [_vehicle, {C}] exec {\TZK_Objects\Scripts\texture\T80.sqs}, [_vehicle, {orange}] exec {\TZK_Objects\Scripts\texture\GUER.sqs};
+		};
+	};
+	class T80Res_Yellow_xj406: T80Res_Orange_xj406 {
+		displayName = "T80(Res) Yellow"; accuracy = 1000;
+		class EventHandlers {
+			Init = _vehicle = _this select 0, [_vehicle, {C}] exec {\TZK_Objects\Scripts\texture\T80.sqs}, [_vehicle, {yellow}] exec {\TZK_Objects\Scripts\texture\GUER.sqs};
+		};
+	};
+	class T80Res_Purple_xj406: T80Res_Orange_xj406 {
+		displayName = "T80(Res) Purple"; accuracy = 1000;
+		class EventHandlers {
+			Init = _vehicle = _this select 0, [_vehicle, {C}] exec {\TZK_Objects\Scripts\texture\T80.sqs}, [_vehicle, {purple}] exec {\TZK_Objects\Scripts\texture\GUER.sqs};
+		};
+	};
+	class T80Res_Green_xj406: T80Res_Base_xj406 {
+		// This unit using original OFPR T80Res Model.
+		scope = protected; vehicleClass = "TZK_Testing_300";
+		displayName = "T80(Res) Green"; accuracy = 1000;
+	};
+
 };
 
 // EOF
