@@ -643,6 +643,11 @@ class CfgVehicles {
 		magazines[]={"MachineGun30E", "MachineGun30E", "MachineGun30E", SpoofMagazines, "AfterBurnerSwitch_xj400"};
 	};
 	
+	class C130_Base_xj400: Plane {};
+	class C130_xj400: C130_Base_xj400 {
+		model = "\TZK_Config_4_0_6\C130.p3d";
+	};
+	
 	// Remove soundEngine/soundEnviron
 	class m119_xj400: M2StaticMG {
 		soundEngine[] = {"",0,1};
