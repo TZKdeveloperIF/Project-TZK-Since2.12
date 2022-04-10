@@ -9186,11 +9186,14 @@ class CfgAmmo {
 	};
 	class PipeBomb: TimeBomb {
 		simulation = "shotPipeBomb";
+		hit = 0;
+		indirectHit = 1100;
+		indirectHitRange = 6;
 	};
 	class Mine: TimeBomb {
-		hit = 750;
-		indirectHit = 750;
-		indirectHitRange = 5;
+		hit = 0;
+		indirectHit = 1000;
+		indirectHitRange = 4;
 		simulation = "shotMine";
 		model = "m19_at_proxy.p3d";
 		defaultMagazine = "Mine";
@@ -11394,7 +11397,7 @@ class CfgWeapons {
 	class Mine: TimeBomb {
 		scopeMagazine = 2;
 		enableAttack = 0;
-		magazineType = "2 * 		256";
+		magazineType = "1 * 		256";
 		ammo = "Mine";
 		displayName = "$STR_DN_MINE";
 		displayNameMagazine = "$STR_MN_MINE";
@@ -11404,7 +11407,7 @@ class CfgWeapons {
 		scopeMagazine = 2;
 		enableAttack = 0;
 		picture = "\res\equip\m_MineE.paa";
-		magazineType = "2 *  256";
+		magazineType = "1 *  256";
 		ammo = "MineE";
 		displayName = "$STR_DN_MINE_E";
 		displayNameMagazine = "$STR_MN_MINE_E";
@@ -11425,7 +11428,7 @@ class CfgWeapons {
 		scopeMagazine = 2;
 		enableAttack = 1;
 		valueMagazine = 5;
-		magazineType = "2 * 		256";
+		magazineType = "1 * 		256";
 		ammo = "PipeBomb";
 		displayName = "$STR_DN_PIPE_BOMB";
 		displayNameMagazine = "$STR_MN_PIPE_BOMB";
