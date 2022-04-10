@@ -524,7 +524,9 @@ class CfgModels {
 		sectionsInherit = "Vehicle";
 		sections[]= {
 			"cislo", "grupa", "side", "sektor", "clan", "podsvit pristroju", "poskozeni", "L svetlo", "P svetlo", "zasleh", "sklo predni p", "sklo predni l", "vrtule staticka", "vrtule blur"
-			, tex_Auxtanks.paa, tex_C130fslg.paa, tex_C130PRP1.paa, tex_door.paa, tex_FIN&RDDR.paa, tex_hztlstbl.paa, tex_hztlstbr.paa, tex_nacelles.paa, tex_prop.paa, tex_wingleft.paa, tex_wingrght.paa, 
+			, "vrtule", "vrtule 1", "vrtule 2", "vrtule 3"
+			, tzk_tex_00
+			, tex_Auxtanks.paa, tex_C130fslg.paa, tex_C130PRP1.paa, tex_door.paa, tex_FIN&RDDR.paa, tex_hztlstbl.paa, tex_hztlstbr.paa, tex_nacelles.paa, tex_wingleft.paa, tex_wingrght.paa, 
 		};
 	};
 	class an12: Vehicle {};
