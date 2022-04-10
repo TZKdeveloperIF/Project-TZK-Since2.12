@@ -128,6 +128,33 @@ class CfgAmmo {
 		maxRange = 6000;
 		maxControlRange = 6000;
 	};
+
+	class FakeC4_1000_xj400 : Grenade {
+		hit = 0;
+		indirectHit = 1000;
+		indirectHitRange = 6;
+		soundHit[] = {"Explosions\timebomb",100.00001,1};
+		soundFly[] = {"",0,1};
+		soundEngine[] = {"",0,1};
+		visibleFire = 0;
+		audibleFire = 0;
+		visibleFireTime = 0;
+	};
+	class FakeC4_1100_xj400 : FakeC4_1000_xj400 {
+		indirectHit = 1100;
+	};
+	class FakeC4_1200_xj400 : FakeC4_1000_xj400 {
+		indirectHit = 1200;
+	};
+	class FakeC4_1300_xj400 : FakeC4_1000_xj400 {
+		indirectHit = 1300;
+	};
+	class FakeC4_1400_xj400 : FakeC4_1000_xj400 {
+		indirectHit = 1400;
+	};
+	class FakeC4_1500_xj400 : FakeC4_1000_xj400 {
+		indirectHit = 1500;
+	};
 };
 class CfgWeapons {
 	class Default {};
