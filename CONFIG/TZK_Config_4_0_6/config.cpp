@@ -155,6 +155,37 @@ class CfgAmmo {
 	class FakeC4_1500_xj400 : FakeC4_1000_xj400 {
 		indirectHit = 1500;
 	};
+
+	class GuidedAT_APC_xj400: AT3 {
+		hit = 750;
+		indirectHitRange = 4;
+	};
+	class GuidedAT_P18_xj400: GuidedAT_APC_xj400 {
+		hit = 650;
+	};
+	class GuidedAT_Heli_xj400: GuidedAT_APC_xj400 {
+		hit = 1225; indirectHit = 600; indirectHitRange = 4;
+	};
+	class GuidedAT_Heli_P40_xj400: GuidedAT_Heli_xj400 {
+		hit = 1175; indirectHitRange = 4;
+		thrustTime = 10;
+	};
+	class GuidedAT_Cobra_P40_xj400: GuidedAT_Heli_P40_xj400 {
+		proxyShape = "\TZK_Model_4_0_0\wp\hellfirecobra_proxy.p3d";
+	};
+	class GuidedAT_AT6_P40_xj400: GuidedAT_Heli_P40_xj400 {
+		proxyShape = "\TZK_Model_4_0_0\wp\RHS_AT6a_Proxy.p3d";
+	};
+	class Maverick: Hellfire {};
+	class Maverick_P50_xj400: Maverick {
+		hit = 1225; indirectHit = 600; indirectHitRange = 4;
+	};
+	class Ch29T: Maverick {};
+	class Ch29T_P50_xj400: Ch29T {
+		hit = 1225; indirectHit = 600; indirectHitRange = 4;
+		model = "\Su25\Ch_29T_shine";
+		proxyShape = "\Su25\Ch_29T";
+	};
 };
 class CfgWeapons {
 	class Default {};
