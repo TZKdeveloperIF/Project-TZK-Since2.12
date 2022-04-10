@@ -645,6 +645,47 @@ class CfgVehicles {
 	class M2A2_xj400: Bradley_xj400 {
 		model = "\TZK_Config_4_0_6\M2A2_TZK.p3d";
 	};
+	class Vulcan_xj400: M113 {
+		model = "\TZK_Config_4_0_6\Vulcan_TZK.p3d";
+		class ReloadAnimations {
+			class Cannon1 {
+				weapon = "VulcanCannon_xj406";
+				angle0 = 0;
+				angle1 = "-2 * 3.141592654";
+				multiplier = 500;
+				type = "rotation";
+				animPeriod = 1;
+				selection = "gatling";
+				begin = "usti hlavne";
+				end = "konec hlavne";
+			};
+		};
+	};
+	class Vulcan_TZK_xj400: Vulcan_xj400 {
+		class ReloadAnimations {
+			class Cannon1 {
+				weapon = "VulcanCannon_xj406";
+				angle0 = 0;
+				angle1 = "-2 * 3.141592654";
+				multiplier = 500;
+				type = "rotation";
+				animPeriod = 1;
+				selection = "gatling";
+				begin = "usti hlavne";
+				end = "konec hlavne";
+			};
+		};
+	};
+	class Vulcan_Auto_xj406: Vulcan_xj400 {
+		hasGunner = 0;
+		driverIsGunner = 1;
+	};
+
+	class ZSU_xj400: ZSU {};
+	class ZSU_Auto_xj400: ZSU_xj400 {
+		hasGunner = 0;
+		driverIsGunner = 1;
+	};
 
 	class ResistanceTank_xj400: Tank_xj400 {};
 	class T80Res_Base_xj406: ResistanceTank_xj400 {
@@ -738,6 +779,27 @@ class CfgVehicles {
 		displayName = "T80(Res) Green"; accuracy = 1000;
 	};
 
+	class Ship: AllVehicles {};
+	class SmallShip: Ship {};
+	class BoatW: SmallShip {};
+	class BoatE: SmallShip {};
+	class PCSFWjetski_xj400: BoatW {
+		maxSpeed = 150;
+	};
+	class PCSFEjetski_xj400: BoatE {
+		maxSpeed = 150;
+	};
+	class GunBoat_xj400: BoatW {};
+	class GunBoatW_xj400: GunBoat_xj400 {};
+	class GunBoatW_Auto_xj400: GunBoatW_xj400 {
+		hasGunner = 0;
+		driverIsGunner = 1;
+	};
+	class GunBoatE_xj400: GunBoat_xj400 {};
+	class GunBoatE_Auto_xj400: GunBoatE_xj400 {
+		hasGunner = 0;
+		driverIsGunner = 1;
+	};
 };
 
 // EOF
