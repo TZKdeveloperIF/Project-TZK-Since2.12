@@ -53,10 +53,6 @@ class CfgAmmo {
 	
 	class Bullet4x20: ExplosiveBullet {};
 	class Bullet4x20_xj400: Bullet4x20 {};
-	class Bullet4x20_AntiPlane_xj406: Bullet4x20_xj400 {
-		hit = 4; indirectHit = 1; indirectHitRange = 1;
-		maxRange = 5000; 	maxRangeProbab = 0.2;
-	};
 	class Bullet4x20_4xAA_xj406: Bullet4x20_xj400 {
 		maxRange = 1300; // For 4xAA using both missile and cannon
 	};
@@ -68,6 +64,69 @@ class CfgAmmo {
 	class Bullet4x23_xj400: Bullet4x23 {};
 	class Bullet4x23_xj406: Bullet4x23_xj400 {
 		indirectHitRange = 1;
+	};
+
+	class RedTop_26_xj400 : AA {};
+	// Add range-extended missile.
+	class RedTop_45_xj400 : RedTop_26_xj400 {
+		maxRange = 4500;
+		maxControlRange = 4500;
+	};
+	class RedTop_48_xj400 : RedTop_26_xj400 {
+		maxRange = 4800;
+		maxControlRange = 4800;
+	};
+	class 9M311_26_xj400: RedTop_26_xj400 {};
+	class 9M311_45_xj400 : 9M311_26_xj400 {
+		maxRange = 4500;
+		maxControlRange = 4500;
+	};
+	class 9M311_48_xj400 : 9M311_26_xj400 {
+		maxRange = 4800;
+		maxControlRange = 4800;
+	};
+	// Add special missile using small hit to attack little armor units only.
+	class RedTop_26_TZK_xj400: RedTop_26_xj400 {
+		hit = 4; // indirectHit = 100;indirectHitRange = 10;
+	};
+	class RedTop_30_TZK_xj400 : RedTop_26_TZK_xj400 {
+		maxRange = 3000;
+		maxControlRange = 3000;
+	};
+	class RedTop_40_TZK_xj400 : RedTop_26_TZK_xj400 {
+		maxRange = 4000;
+		maxControlRange = 4000;
+	};
+	class RedTop_45_TZK_xj400 : RedTop_26_TZK_xj400 {
+		maxRange = 4500;
+		maxControlRange = 4500;
+	};
+	class RedTop_48_TZK_xj400 : RedTop_26_TZK_xj400 {
+		maxRange = 4800;
+		maxControlRange = 4800;
+	};
+	class 9M311_26_TZK_xj400: 9M311_26_xj400 {
+		hit = 4; // indirectHit = 100;indirectHitRange = 10;
+	};
+	class 9M311_30_TZK_xj400 : 9M311_26_TZK_xj400 {
+		maxRange = 3000;
+		maxControlRange = 3000;
+	};
+	class 9M311_40_TZK_xj400 : 9M311_26_TZK_xj400 {
+		maxRange = 4000;
+		maxControlRange = 4000;
+	};
+	class 9M311_45_TZK_xj400 : 9M311_26_TZK_xj400 {
+		maxRange = 4500;
+		maxControlRange = 4500;
+	};
+	class 9M311_48_TZK_xj400 : 9M311_26_TZK_xj400 {
+		maxRange = 4800;
+		maxControlRange = 4800;
+	};
+	class 9M311_60_TZK_xj400 : 9M311_26_TZK_xj400 {
+		maxRange = 6000;
+		maxControlRange = 6000;
 	};
 };
 class CfgWeapons {
@@ -98,13 +157,6 @@ class CfgWeapons {
 	
 	class HellfireLauncherApach: HellfireLauncher {};
 	
-	class MachineGun30: MachineGun7_6 {};
-	class VulcanCannon_xj400: MachineGun30 {};
-	class VulcanCannon_AntiPlane_xj400: VulcanCannon_xj400 {
-		ammo = "Bullet4x20_AntiPlane_xj406";
-		initSpeed = 5000;
-	};
-
 	#define CannonCommonMag(weapon, time, disp) weapon##_##time##_##disp##_xj406
 	#define CannonSmallMag(weapon, time, disp) weapon##_Small_##time##_##disp##_xj406
 	#define CannonClass(weapon, time, disp) \
@@ -115,6 +167,8 @@ class CfgWeapons {
 	class CannonSmallMag(weapon,time,disp): CannonCommonMag(weapon,time,disp) { \
 		count = 100; \
 	};
+	class MachineGun30: MachineGun7_6 {};
+	class VulcanCannon_xj400: MachineGun30 {};
 	class VulcanCannon_Base_xj406: VulcanCannon_xj400 {
 		scopeWeapon = 0; scopeMagazine = 2;
 		ammo = "Bullet4x20_xj406";
@@ -187,6 +241,24 @@ class CfgWeapons {
 		magazinereloadtime = 3;
 		magazines[] = {Tunguska_30mm_CommonMag_xj406, Tunguska_30mm_SmallMag_xj406};
 	};
+
+	#define AntiPlane4xAA(name, range) \
+	class name##_##range##_TZK_xj400: ##name##_26_xj400 { \
+		ammo = ##name##_##range##_TZK_xj400; \
+	};
+	class RedTop_26_xj400: HellfireLauncher {};
+	class 9M311_26_xj400: HellfireLauncher {};
+	AntiPlane4xAA(RedTop,26);
+	AntiPlane4xAA(RedTop,30);
+	AntiPlane4xAA(RedTop,40);
+	AntiPlane4xAA(RedTop,45);
+	AntiPlane4xAA(RedTop,48);
+	AntiPlane4xAA(9M311,26);
+	AntiPlane4xAA(9M311,30);
+	AntiPlane4xAA(9M311,40);
+	AntiPlane4xAA(9M311,45);
+	AntiPlane4xAA(9M311,48);
+	AntiPlane4xAA(9M311,60);
 };
 
 	
@@ -374,6 +446,7 @@ class CfgVehicles {
 		class ViewPilot: ViewPilotBase {};
 	};
 
+	#define SpoofMagazines "SpoofSwitch_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400"
 	class UH60_CSLA_Base_xj400: Helicopter {
 		class EventHandlers {
 			GetOut = "_this exec {\TZK_Config_4_0_6\Scripts\CSLA_UH60A\GetOut_EH.sqs};"
@@ -441,12 +514,75 @@ class CfgVehicles {
 		scope = protected;
 	};
 	
-	class Su25_Base_xj400: Plane {};
+	class A10_Base_xj400: A10 {
+		accuracy = 0.29;
+		armor = 2;
+	};
+	class A10_xj400: A10_Base_xj400 {};
+	class A10_xj406: A10_xj400 {
+		accuracy = 1000;
+		armor = 50;
+		fuelCapacity = 15;
+	};
+	class A10_Support_xj406 : A10_xj406 {
+		maxSpeed = 400; // 2/3 of A10's maxspeed thus A10 can approach it easier.
+		displayName = "A10 Support";
+		weapons[] = {};
+		magazines[]={SpoofMagazines, "AfterBurnerSwitch_xj400"};
+	};
+	class A10_AAOnly_xj406: A10_xj406 {
+		displayName = "A10 AA";
+		irScanGround = 0; // Not allowed scanning ground.
+		weapons[] = {"MachineGun30W" };
+		magazines[]={"MachineGun30W", "MachineGun30W", "MachineGun30W", SpoofMagazines, "AfterBurnerSwitch_xj400"};
+	};
+	class A10_Vanilla_Base_xj400: A10 {
+		accuracy = 0.29;
+		armor = 2;
+	};
+	class A10_Vanilla_xj405: A10_Vanilla_Base_xj400 {
+		accuracy = 1000;
+		armor = 50;
+		fuelCapacity = 15;
+	};
+
+	class Su25_Base_xj400: Plane {
+		accuracy = 0.29;
+		armor = 2;
+	};
 	class Su25_xj400: Su25_Base_xj400 {};
 	class Su25_xj406: Su25_xj400 {
-		fuelCapacity = 10;
-		armor = 3;
-		armorStructual = 16;
+		accuracy = 1000;
+		fuelCapacity = 15;
+		armor = 24;
+	};
+	class Su25_Support_xj406 : Su25_xj406 {
+		displayName = "Su25 Support";
+		weapons[] = {};
+		magazines[]={SpoofMagazines, "AfterBurnerSwitch_xj400"};
+		maxSpeed = 533; // 2/3 of Su25's maxspeed thus Su25 can approach it easier.
+	};
+	class Su25_AAOnly_xj406: Su25_xj406 {
+		displayName = "Su25 AA";
+		irScanGround = 0; // Not allowed scanning ground.
+		weapons[] = {"MachineGun30E" };
+		magazines[]={"MachineGun30E", "MachineGun30E", "MachineGun30E", SpoofMagazines, "AfterBurnerSwitch_xj400"};
+	};
+	// Fill missed definition and fix broken definition of vanilla plane
+	class Su25_Vanilla_Base_xj405: Su25 {
+		accuracy = 0.29;
+		armor = 2;
+	};
+	class Su25_Vanilla_xj405: Su25_Vanilla_Base_xj405 {
+		accuracy = 1000;
+		fuelCapacity = 15;
+		armor = 24;
+	};
+	class Su25_AAOnly_Vanilla_xj405: Su25_Vanilla_xj405 {
+		displayName = "Su25 AA";
+		irScanGround = 0; // Not allowed scanning ground.
+		weapons[] = {"MachineGun30E" };
+		magazines[]={"MachineGun30E", "MachineGun30E", "MachineGun30E", SpoofMagazines, "AfterBurnerSwitch_xj400"};
 	};
 	
 	// Remove soundEngine/soundEnviron
