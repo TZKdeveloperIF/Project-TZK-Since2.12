@@ -11745,6 +11745,7 @@ class CfgWeapons {
 };
 class CfgCloudlets {
 	access = 1;
+	// explosion of explosive ammo including cannon, shell and missile
 	class Explosion {
 		access = 3;
 		cloudletDuration = 0.2;
@@ -11804,29 +11805,30 @@ class CfgCloudlets {
 			};
 		};
 	};
+	// upward black smoke
 	class CraterSmoke1 {
 		access = 3;
-		interval = "0.05 / 	0.8";
-		cloudletAnimPeriod = "1 * 	0.8";
+		interval = "0.05 / 	0.4";
+		cloudletAnimPeriod = "1 * 	0.4";
 		cloudletSize = 2;
 		cloudletAlpha = 1;
-		cloudletGrowUp = "1.0 * 	0.8";
-		cloudletFadeIn = "0.1 * 	0.8";
-		cloudletDuration = "3.0 * 	0.8";
-		cloudletFadeOut = "1.5 * 	0.8";
+		cloudletGrowUp = "1.0 * 	0.4";
+		cloudletFadeIn = "0.1 * 	0.4";
+		cloudletDuration = "3.0 * 	0.4";
+		cloudletFadeOut = "1.5 * 	0.4";
 		cloudletAccY = -0.1;
-		cloudletMinYSpeed = "0.0 / 	0.8";
-		cloudletMaxYSpeed = "5.0 / 	0.8";
+		cloudletMinYSpeed = "0.0 / 	0.4";
+		cloudletMaxYSpeed = "5.0 / 	0.4";
 		cloudletColor[] = {1,1,1,0};
 		initT = 500;
-		deltaT = "-50 * 	0.8";
+		deltaT = "-50 * 	0.4";
 		cloudletShape = "cl_basic";
 		density = "1.0 / 0.7";
 		size = 1;
-		timeToLive = "0.4 * 	0.8";
-		in = "0.0 * 	0.8";
-		out = "0.0 * 	0.8";
-		initYSpeed = "5.0 / 	0.8";
+		timeToLive = "0.4 * 	0.4";
+		in = "0.0 * 	0.4";
+		out = "0.0 * 	0.4";
+		initYSpeed = "5.0 / 	0.4";
 		class Table {
 			class T0 {
 				maxT = 0;
@@ -11838,29 +11840,30 @@ class CfgCloudlets {
 			};
 		};
 	};
+	// smokes at explosion position
 	class CraterSmoke2 {
 		access = 3;
-		interval = "0.1 / 	0.8";
-		cloudletAnimPeriod = "1 * 	0.8";
+		interval = "0.1 / 	0.1";
+		cloudletAnimPeriod = "1 * 	0.1";
 		cloudletSize = 2;
 		cloudletAlpha = 1;
-		cloudletGrowUp = "1.0 * 	0.8";
-		cloudletFadeIn = "0.1 * 	0.8";
-		cloudletDuration = "2.5 * 	0.8";
-		cloudletFadeOut = "1.5 * 	0.8";
+		cloudletGrowUp = "1.0 * 	0.1";
+		cloudletFadeIn = "0.1 * 	0.1";
+		cloudletDuration = "2.5 * 	0.1";
+		cloudletFadeOut = "1.5 * 	0.1";
 		cloudletAccY = -0.1;
-		cloudletMinYSpeed = "0.0 / 	0.8";
-		cloudletMaxYSpeed = "2.0 / 	0.8";
+		cloudletMinYSpeed = "0.0 / 	0.1";
+		cloudletMaxYSpeed = "2.0 / 	0.1";
 		cloudletColor[] = {1,1,1,0};
 		initT = 0;
-		deltaT = "0 * 	0.8";
+		deltaT = "0 * 	0.1";
 		cloudletShape = "cl_basic";
 		density = "1.0 / 0.7";
 		size = 1;
-		timeToLive = "1.0 * 	0.8";
-		in = "0.0 * 	0.8";
-		out = "2.0 * 	0.8";
-		initYSpeed = "0 / 	0.8";
+		timeToLive = "1.0 * 	0.1";
+		in = "0.0 * 	0.1";
+		out = "2.0 * 	0.1";
+		initYSpeed = "0 / 	0.1";
 		class Table {
 			class T0 {
 				maxT = 0;
@@ -11868,29 +11871,30 @@ class CfgCloudlets {
 			};
 		};
 	};
+	// upward white smoke
 	class CraterSmoke3 {
 		access = 3;
-		interval = "0.1 / 	0.8";
-		cloudletAnimPeriod = "1 * 	0.8";
+		interval = "0.1 / 	0.4";
+		cloudletAnimPeriod = "1 * 	0.4";
 		cloudletSize = 1;
 		cloudletAlpha = 0.3;
-		cloudletGrowUp = "1.0 * 	0.8";
-		cloudletFadeIn = "0.5 * 	0.8";
-		cloudletDuration = "3 * 	0.8";
-		cloudletFadeOut = "1 * 	0.8";
-		cloudletAccY = "-0.1 * 	0.8";
-		cloudletMinYSpeed = "0.0 / 	0.8";
-		cloudletMaxYSpeed = "5.0 / 	0.8";
+		cloudletGrowUp = "1.0 * 	0.4";
+		cloudletFadeIn = "0.5 * 	0.4";
+		cloudletDuration = "3 * 	0.4";
+		cloudletFadeOut = "1 * 	0.4";
+		cloudletAccY = "-0.1 * 	0.4";
+		cloudletMinYSpeed = "0.0 / 	0.4";
+		cloudletMaxYSpeed = "5.0 / 	0.4";
 		cloudletColor[] = {1,1,1,0};
 		initT = 500;
-		deltaT = "-80 * 	0.8";
+		deltaT = "-80 * 	0.4";
 		cloudletShape = "cl_basic";
 		density = "0.5 / 0.7";
 		size = 1;
-		timeToLive = "2.0 * 	0.8";
-		in = "0.2 * 	0.8";
-		out = "0.0 * 	0.8";
-		initYSpeed = "5.0 / 	0.8";
+		timeToLive = "2.0 * 	0.4";
+		in = "0.2 * 	0.4";
+		out = "0.0 * 	0.4";
+		initYSpeed = "5.0 / 	0.4";
 		class Table {
 			class T0 {
 				maxT = 0;
@@ -11971,13 +11975,13 @@ class CfgCloudlets {
 	class CloudletsMissile {
 		access = 3;
 		interval = 0.005;
-		cloudletSize = 3;
+		cloudletSize = 0.3;
 		cloudletAlpha = 0.5;
-		cloudletDuration = 0.45;
+		cloudletDuration = 0.0;
 		cloudletAnimPeriod = 1;
-		cloudletGrowUp = 0.05;
+		cloudletGrowUp = 0.0;
 		cloudletFadeIn = 0;
-		cloudletFadeOut = 0.5;
+		cloudletFadeOut = 0.0;
 		cloudletAccY = 0;
 		cloudletMinYSpeed = -10;
 		cloudletMaxYSpeed = 10;
@@ -12012,6 +12016,7 @@ class CfgCloudlets {
 		sourceSize = 1;
 	};
 };
+// Vehicle can define their own GunFire/GunClouds/MGunFire/MGunClouds but most of them simply inherit from below classes.
 class WeaponFireGun {
 	access = 3;
 	cloudletDuration = 0.2;
@@ -12138,6 +12143,7 @@ class WeaponFireMGun: WeaponFireGun {
 	initT = 3200;
 	deltaT = -4000;
 };
+// General main gun clouds. 
 class WeaponCloudsGun {
 	access = 3;
 	cloudletDuration = 0.3;
