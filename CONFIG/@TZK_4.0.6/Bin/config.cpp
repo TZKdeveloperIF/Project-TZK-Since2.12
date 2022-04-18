@@ -8301,7 +8301,8 @@ class CfgAmmo {
 		minRangeProbab = 0.3;
 		midRange = 150;
 		midRangeProbab = 0.95;
-		maxRange = 500;
+		maxRange = 5000;
+		// maxRange = 500;
 		maxRangeProbab = 0.1;
 		model = "LAW";
 		simulation = "laserDesignate";
