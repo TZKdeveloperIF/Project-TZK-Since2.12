@@ -10810,7 +10810,10 @@ class RscDisplayHintC {
 };
 class RscInGameUI {
 	access = 3;
-	unitInfoTypes[] = {"RscUnitInfoSoldier","RscUnitInfoTank","RscUnitInfo","RscUnitInfo","RscUnitInfoAir","RscUnitInfoAir"};
+	unitInfoTypes[] = {
+		"RscUnitInfoSoldier","RscUnitInfoTank","RscUnitInfo","RscUnitInfo","RscUnitInfoAir","RscUnitInfoAir", 
+		"RscUnitInfoSoldier", // bind holder. It seems 6 is a preserved value and will cause game crash.
+		"RscUnitInfoSoldier_TZK","RscUnitInfoTank_TZK"};
 	class RscUnitInfoSoldier {
 		idd = 100;
 		movingEnable = 0;
@@ -11007,6 +11010,84 @@ class RscInGameUI {
 			y = 0.033;
 			w = 0.19;
 			text = "STR_DISP_ERROR";
+		};
+	};
+	// Extra definitions
+	class RscUnitInfoSoldier_TZK: RscUnitInfoSoldier {
+		controls[] = {"Background","Weapon","Ammo", "TextArmor","ValueArmor"};
+		class Background {
+			type = 0;
+			idc = 124;
+			style = 128;
+			x = 0.02;
+			y = 0.02;
+			w = 0.2;
+			h = 0.09;
+			text = "";
+			colorBackground[] = {0,0,0,0.8};
+			colorText[] = {0,0,0,0};
+			font = "tahomaB24";
+			sizeEx = 0;
+		};
+		class TextArmor: RscIGText {
+			x = 0.025;
+			y = 0.070;
+			w = 0.19;
+			text = "$STR_UI_HBAR";
+		};
+		class ValueArmor: RscIGProgress {
+			idc = 111;
+			x = 0.115;
+			y = 0.071;
+			w = 0.1;
+		};
+	};
+	class RscUnitInfoTank_TZK: RscUnitInfoTank {
+		controls[] = {"Background","Weapon","Ammo", "Speed","ValueArmor","ValueFuel","TextArmor","TextFuel"};
+		class Background {
+			type = 0;
+			idc = 124;
+			style = 128;
+			x = 0.02;
+			y = 0.02;
+			w = 0.2;
+			h = 0.295;
+			text = "";
+			colorBackground[] = {0,0,0,0.8};
+			colorText[] = {0,0,0,0};
+			font = "tahomaB24";
+			sizeEx = 0;
+		};
+		class Speed: RscIGText {
+			idc = 121;
+			x = 0.025;
+			y = 0.225;
+			w = 0.09;
+			text = "$STR_DISP_ERROR";
+		};
+		class TextArmor: RscIGText {
+			x = 0.025;
+			y = 0.255;
+			w = 0.19;
+			text = "$STR_UI_ABAR";
+		};
+		class ValueArmor: RscIGProgress {
+			idc = 111;
+			x = 0.115;
+			y = 0.256;
+			w = 0.1;
+		};
+		class TextFuel: RscIGText {
+			x = 0.025;
+			y = 0.275;
+			w = 0.19;
+			text = "$STR_UI_FBAR";
+		};
+		class ValueFuel: RscIGProgress {
+			idc = 113;
+			x = 0.115;
+			y = 0.276;
+			w = 0.1;
 		};
 	};
 };

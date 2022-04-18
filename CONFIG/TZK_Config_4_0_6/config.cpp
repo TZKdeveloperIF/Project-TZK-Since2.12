@@ -923,6 +923,15 @@ class CfgVehicles {
 		hasGunner = 0;
 		driverIsGunner = 1;
 	};
+
+	class Man: Land {};
+	class Soldier: Man {};
+	class SoldierWB: Soldier {};
+	class SoldierWB_xj400: SoldierWB {};
+	class LeaderW_xj400: SoldierWB_xj400 {
+		unitInfoType = 7;
+		hideUnitInfo = 0;
+	};
 };
 
 // EOF
