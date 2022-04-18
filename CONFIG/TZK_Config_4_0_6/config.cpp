@@ -640,7 +640,7 @@ class CfgVehicles {
 	class A10_xj406: A10_xj400 {
 		accuracy = 1000;
 		armor = 50;
-		fuelCapacity = 15;
+		fuelCapacity = 25;
 	};
 	class A10_Support_xj406 : A10_xj406 {
 		maxSpeed = 400; // 2/3 of A10's maxspeed thus A10 can approach it easier.
@@ -661,7 +661,7 @@ class CfgVehicles {
 	class A10_Vanilla_xj405: A10_Vanilla_Base_xj400 {
 		accuracy = 1000;
 		armor = 50;
-		fuelCapacity = 15;
+		fuelCapacity = 25;
 	};
 
 	class Su25_Base_xj400: Plane {
@@ -671,8 +671,8 @@ class CfgVehicles {
 	class Su25_xj400: Su25_Base_xj400 {};
 	class Su25_xj406: Su25_xj400 {
 		accuracy = 1000;
-		fuelCapacity = 15;
 		armor = 24;
+		fuelCapacity = 25;
 	};
 	class Su25_Support_xj406 : Su25_xj406 {
 		displayName = "Su25 Support";
@@ -693,8 +693,8 @@ class CfgVehicles {
 	};
 	class Su25_Vanilla_xj405: Su25_Vanilla_Base_xj405 {
 		accuracy = 1000;
-		fuelCapacity = 15;
 		armor = 24;
+		fuelCapacity = 25;
 	};
 	class Su25_AAOnly_Vanilla_xj405: Su25_Vanilla_xj405 {
 		displayName = "Su25 AA";
