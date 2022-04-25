@@ -238,11 +238,11 @@ class CfgAmmo {
 	};
 	class Maverick: Hellfire {};
 	class Maverick_P50_xj400: Maverick {
-		hit = 1225; indirectHit = 600; indirectHitRange = 4;
+		hit = 1250; indirectHit = 600; indirectHitRange = 4;
 	};
 	class Ch29T: Maverick {};
 	class Ch29T_P50_xj400: Ch29T {
-		hit = 1225; indirectHit = 600; indirectHitRange = 4;
+		hit = 1250; indirectHit = 600; indirectHitRange = 4;
 		model = "\Su25\Ch_29T_shine";
 		proxyShape = "\Su25\Ch_29T";
 	};
@@ -360,6 +360,43 @@ class CfgWeapons {
 		magazines[] = {Tunguska_30mm_CommonMag_xj406, Tunguska_30mm_SmallMag_xj406};
 	};
 
+	class Stinger_xj400: AT3Launcher {};
+	class Stinger_Mag_xj400: Stinger_xj400 {
+		scopeWeapon = 0; scopeMagazine = 2;
+	};
+	class Strela_xj400: Stinger_xj400 {};
+	class Strela_Mag_xj400: Strela_xj400 {
+		scopeWeapon = 0; scopeMagazine = 2;
+	};
+	#define GeneralVehicleAA(range) \
+	class Stinger_Mag_##range##_xj400: Stinger_Mag_xj400 { \
+		ammo = Stinger_##range##_xj406; \
+	}; \
+	class Strela_Mag_##range##_xj400: Strela_Mag_xj400 { \
+		ammo = Strela_##range##_xj406; \
+	};
+	GeneralVehicleAA(19);
+	GeneralVehicleAA(23);
+	GeneralVehicleAA(26);
+	GeneralVehicleAA(30);
+
+	class Stinger_Wep_xj400: Stinger_xj400 {
+		scopeWeapon = 2; scopeMagazine = 0;
+		magazines[] = {"Stinger_Mag_19_xj400","Stinger_Mag_23_xj400","Stinger_Mag_26_xj400","Stinger_Mag_30_xj400"};
+	};
+	class StingerT_Wep_xj400: Stinger_Wep_xj400 {
+		count = 1;
+		magazineReloadTime = 4;
+	};
+	class Strela_Wep_xj400: Strela_xj400 {
+		scopeWeapon = 2; scopeMagazine = 0;
+		magazines[] = {"Strela_Mag_19_xj400","Strela_Mag_23_xj400","Strela_Mag_26_xj400","Strela_Mag_30_xj400"};
+	};
+	class StrelaTWep_xj400: Strela_Wep_xj400 {
+		count = 1;
+		magazineReloadTime = 4;
+	};
+
 	#define AntiPlane4xAA(name, range) \
 	class name##_##range##_TZK_xj400: ##name##_26_xj400 { \
 		ammo = ##name##_##range##_TZK_xj400; \
@@ -377,6 +414,33 @@ class CfgWeapons {
 	AntiPlane4xAA(9M311,45);
 	AntiPlane4xAA(9M311,48);
 	AntiPlane4xAA(9M311,60);
+
+	class GuidedAT_APC_xj400: AT3Launcher {};
+	class GuidedAT_P18_xj400: GuidedAT_APC_xj400 { ammo = "GuidedAT_P18_xj400"; };
+	class ATLauncherTank_xj400: AT3Launcher {
+		magazines[] = {"GuidedAT_APC_xj400","GuidedAT_P18_xj400"};
+	};
+	class GuidedAT_Heli_8_xj400: GuidedAT_APC_xj400 {};
+	class GuidedAT_Heli_P40_xj400: GuidedAT_Heli_8_xj400 { ammo = "GuidedAT_Heli_P40_xj400"; };
+	class GuidedAT_Cobra_P40_xj400: GuidedAT_Heli_8_xj400 { ammo = "GuidedAT_Cobra_P40_xj400"; };
+	class GuidedAT_AT6_P40_xj400: GuidedAT_Heli_8_xj400 { ammo = "GuidedAT_AT6_P40_xj400"; };
+	class GuidedAT_Heli_12_xj400: GuidedAT_APC_xj400 {};
+	class GuidedAT_Heli_P40_12_xj400: GuidedAT_Heli_12_xj400 { ammo = "GuidedAT_Heli_P40_xj400"; };
+	class ATLauncherAir_xj400: HellfireLauncher {
+		magazines[]={
+			"GuidedAT_Heli_8_xj400", "GuidedAT6_8_xj400", "GuidedAT_Cobra_8_xj400", "GuidedAT_Heli_12_xj400",
+			"GuidedAT_Heli_P40_xj400", "GuidedAT_Cobra_P40_xj400", "GuidedAT_AT6_P40_xj400", "GuidedAT_Heli_P40_12_xj400",
+		};
+	};
+
+	class MaverickLauncher: HellfireLauncher {};
+	class Ch29TLauncher: MaverickLauncher {};
+	class Maverick_P50_xj400: MaverickLauncher {
+		ammo = "Maverick_P50_xj400";
+	};
+	class Ch29T_P50_xj400: Ch29TLauncher {
+		ammo = "Ch29T_P50_xj400";
+	};
 };
 
 	
