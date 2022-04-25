@@ -739,12 +739,20 @@ class CfgVehicles {
 	class T72_Base_xj400: RussianTank_xj400 {};
 	class T80_Base_xj400: T72_Base_xj400 {};
 	class TZK_HeavyEastTank_Base_xj400: T80_Base_xj400 {};
+	class T80_xj400: TZK_HeavyEastTank_Base_xj400 {};
 	class T90_xj400: TZK_HeavyEastTank_Base_xj400 {
 		model = "\TZK_Config_4_0_6\T90_ICP.p3d";
 	};
 	class ZTZ99_xj400: TZK_HeavyEastTank_Base_xj400 {
 		model = "\TZK_Config_4_0_6\ztz99.p3d";
 	};
+
+	class M1A1_Info_xj400: M1A1_xj400 { unitInfoType = 8; };
+	class M1A2_Info_xj400: M1A2_INQ_xj400 { unitInfoType = 8; };
+	class Leo2A6_Info_xj400: Leo2A6_xj400 { unitInfoType = 8; };
+	class T80_Info_xj400: T80_xj400 { unitInfoType = 8; };
+	class T90_Info_xj400: T90_xj400 { unitInfoType = 8; };
+	class ZTZ99_Info_xj400: ZTZ99_xj400 { unitInfoType = 8; };
 
 	class M109A6G_Base_xj400: M1Abrams_Base_xj400 {};
 	class M109A6G_xj400: M109A6G_Base_xj400 {
@@ -928,9 +936,67 @@ class CfgVehicles {
 	class Soldier: Man {};
 	class SoldierWB: Soldier {};
 	class SoldierWB_xj400: SoldierWB {};
-	class LeaderW_xj400: SoldierWB_xj400 {
+	class LeaderW_xj400: SoldierWB_xj400 {};
+	class LeaderW_Info_xj400: LeaderW_xj400 {
+		accuracy = 1000;
 		unitInfoType = 7;
 		hideUnitInfo = 0;
+	};
+	class LeaderW_5HP_xj400: LeaderW_xj400 {
+		accuracy = 1000;
+		armor = 5;
+	};
+	class LeaderW_Info_5HP_xj400: LeaderW_Info_xj400 {
+		accuracy = 1000;
+		armor = 5;
+	};
+	class SoldierEB: Soldier {};
+	class SoldierEB_xj400: SoldierEB {};
+	class LeaderE_xj400: SoldierEB_xj400 {};
+	class LeaderE_Info_xj400: LeaderE_xj400 {
+		accuracy = 1000;
+		unitInfoType = 7;
+		hideUnitInfo = 0;
+	};
+	class LeaderE_5HP_xj400: LeaderE_xj400 {
+		accuracy = 1000;
+		armor = 5;
+	};
+	class LeaderE_Info_5HP_xj400: LeaderE_Info_xj400 {
+		accuracy = 1000;
+		armor = 5;
+	};
+	class OfficerW: SoldierWB {};
+	class OfficerW_xj400: OfficerW {};
+	class CommanderW_xj400: OfficerW_xj400 {};
+	class CommanderW_Info_xj400: CommanderW_xj400 {
+		accuracy = 1000;
+		unitInfoType = 7;
+		hideUnitInfo = 0;
+	};
+	class CommanderW_5HP_xj400: CommanderW_xj400 {
+		accuracy = 1000;
+		armor = 5;
+	};
+	class CommanderW_Info_5HP_xj400: CommanderW_Info_xj400 {
+		accuracy = 1000;
+		armor = 5;
+	};
+	class OfficerE: SoldierEB {};
+	class OfficerE_xj400: OfficerE {};
+	class CommanderE_xj400: OfficerE_xj400 {};
+	class CommanderE_Info_xj400: CommanderE_xj400 {
+		accuracy = 1000;
+		unitInfoType = 7;
+		hideUnitInfo = 0;
+	};
+	class CommanderE_5HP_xj400: CommanderE_xj400 {
+		accuracy = 1000;
+		armor = 5;
+	};
+	class CommanderE_Info_5HP_xj400: CommanderE_Info_xj400 {
+		accuracy = 1000;
+		armor = 5;
 	};
 };
 
