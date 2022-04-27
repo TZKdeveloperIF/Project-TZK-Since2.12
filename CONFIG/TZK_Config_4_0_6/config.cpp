@@ -571,6 +571,21 @@ class CfgVehicles {
 	class Target_TZK_xj400: HeliH {
 		model = "\TZK_Config_4_0_6\TZK_Target_New0.p3d";
 	};
+	class Strategic: Building {};
+	class Camp: Strategic {};
+	class Mash: Camp {};
+	class Mash_TZK_xj400: Mash {
+		attendant = 0;
+	};
+	class ReammoBox: Strategic {};
+	class ReammoBoxWest: ReammoBox {};
+	class ReammoBoxEast: ReammoBox {};
+	class ReammoBoxW_TZK_xj400: ReammoBoxWest {
+		class TransportMagazines {};
+	};
+	class ReammoBoxE_TZK_xj400: ReammoBoxEast {
+		class TransportMagazines {};
+	};
 	
 	class HMMMV_TOW2A_xj400 : JeepMG {};
 	class HMMMV_TOW2A_Auto_xj400 : HMMMV_TOW2A_xj400 {
@@ -1062,6 +1077,13 @@ class CfgVehicles {
 		accuracy = 1000;
 		armor = 5;
 	};
+
+	class SoldierWMedic: SoldierWB {};
+	class SoldierWMedic_xj400: SoldierWMedic {};
+	class SoldierWMedic_xj406: SoldierWMedic_xj400 { attendant = 0; };
+	class SoldierEMedic: SoldierEB {};
+	class SoldierEMedic_xj400: SoldierEMedic {};
+	class SoldierEMedic_xj406: SoldierEMedic_xj400 { attendant = 0; };
 };
 
 // EOF
