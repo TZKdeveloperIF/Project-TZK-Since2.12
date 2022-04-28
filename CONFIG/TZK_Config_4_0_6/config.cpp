@@ -246,6 +246,10 @@ class CfgAmmo {
 		model = "\Su25\Ch_29T_shine";
 		proxyShape = "\Su25\Ch_29T";
 	};
+	
+	class Bullet12_7: Bullet7_6 {};
+	class Bullet_12_7_AI_xj400: Bullet12_7 { hit = 12; };
+	class Bullet_12_7_Player_xj400: Bullet12_7 { midRange = 5; maxRange = 6; } // cost = 600;
 };
 class CfgWeapons {
 	class Default {};
@@ -272,6 +276,22 @@ class CfgWeapons {
 	class MGun: Default {};
 	class MachineGun7_6: MGun {};
 	class MachineGun12_7: MachineGun7_6 {};
+	class MG_12_7_TZK: MachineGun12_7 {
+		modes[] = {"Player", "AI"};
+		count = 1000;
+		class Player: MachineGun12_7 {
+			displayName = "Machine Gun (Player)";
+			ammo = "Bullet_12_7_Player_xj400";
+			multiplier = 2;
+		};
+		class AI: MachineGun12_7 {
+			displayName = "Machine Gun (AI Mode)";
+			ammo = "Bullet_12_7_AI_xj400";
+			dispersion = 0.0035;
+			reloadTime = 0.05; // double frequency of both reloadTime and aiRateOfFire
+			aiRateOfFire = 0.25;
+		};
+	};
 	
 	class HellfireLauncherApach: HellfireLauncher {};
 	
