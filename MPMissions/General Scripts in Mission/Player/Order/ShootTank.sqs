@@ -8,7 +8,7 @@ _id = (playerOrderID select _uid) + 1; [_uid, _id] exec "\TZK_Scripts_4_0_4\Play
 _marker = _this select 1; _target = _this select 2
 _dispersion = _this select 4; _type = _this select 3
 _biggerAngle = (if (count _this > 5) Then {_this select 5} Else {0})
-? bool_TZK_SEMod_Mode: if (_type in types_SE_td) Then {_this exec "Extra\Shoot_TD_Player.sqs", exit}
+? bool_TZK_SEMod_Mode: if (_type in (types_SE_td + typesRocketLauncher)) Then {_this exec "Extra\Shoot_TD_Player.sqs", exit}
 _this = 0
 ; big angle will be invalid when ordering tanks.
 ? _type in (typesLightTank + typesHeavyTank): _biggerAngle = 0;
