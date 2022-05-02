@@ -3,7 +3,7 @@
 // this is a script called only once in a dialog so load it via "preprocessFile" to remain annotations
 
 if (_enum == enum_TZK_CustomVehicle_Gunship) then {
-	_totalSlots = 5, if ("Ka50_xj400" countType [_vehicle] > 0) then {_totalSlots = 7};
+	_totalSlots = 9, if ("Ka50_xj400" countType [_vehicle] > 0 || "Ka50_Vanilla_xj405" countType [_vehicle] > 0) then {_totalSlots = 13};
 };
 if (_enum == enum_TZK_CustomVehicle_Helicopter) then {_totalSlots = 2.1};
 

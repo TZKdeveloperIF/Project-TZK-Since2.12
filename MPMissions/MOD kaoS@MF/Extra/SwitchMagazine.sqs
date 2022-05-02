@@ -1,0 +1,36 @@
+; args: [vehicle, oldMag, newMag] (or [vehicle, <not use>, speed] for 1.99 game)
+_vehicle = _this select 0
+? !local _vehicle: exit
+
+? bool_TZK_199_Mode: goto "Ver199"
+
+_oldMag = _this select 1; _newMag = _this select 2
+
+_magazinesArray = magazinesArray _vehicle; _i = 0; _c = count _magazinesArray; _ammunition = []
+while "_i < _c" do {if (_oldMag == _magazinesArray select _i) then {_ammunition set [count _ammunition, _magazinesArray select _i + 1]}; _i = _i + 2}
+
+_vehicle removeMagazines _oldMag
+{ if (_x > 0) then {_vehicle addMagazinePrecise [_newMag, _x]} } forEach _ammunition
+exit
+
+#Ver199
+_speed = _this select 2
+_mainWeapon = (_vehicle call funcVehParamWeapons) select 0
+? _mainWeapon == "M252Launcher" || _mainWeapon == "M252Launcher_xj400": _magSeries = "Mortar_"
+? _mainWeapon == "Mortar81_Launcher_xj400" || _mainWeapon == "Mortar82_Launcher_xj400": _magSeries = "Mortar81_"
+? _mainWeapon == "Gun105_xj400": _magSeries = "HE105_"
+? _mainWeapon == "Gun122_xj400": _magSeries = "HE122_"
+? _mainWeapon == "Gun155_xj400": _magSeries = "HE155_"
+? _mainWeapon == "FAE220Launcher_xj400": _magSeries = "FAE220_DKMM_"
+? _mainWeapon == "M26Launcher_xj400": _magSeries = "M26_COC_"
+
+_strSpeed = format ["%1", _speed]
+? _speed < 100: _strSpeed = "0" + _strSpeed
+? _speed < 1000: _strSpeed = "0" + _strSpeed
+_newMag = _magSeries + _strSpeed + "_xj400"
+
+{ if (_x != "MachineGun12_7_xj400") Then {_vehicle removeMagazines _x} } forEach (magazines _vehicle)
+_vehicle addMagazine _newMag
+
+
+; EOF

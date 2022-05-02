@@ -1,0 +1,33 @@
+; args: [object, initSpeed of magazine, (unused parameter) name]
+_vehicle = _this select 0; _speed = _this select 1
+
+; ==================== MP weapon/magazine controlling. ====================
+? !isNull gunner _vehicle && !local gunner _vehicle: hint "Remote gunner exist. Ask him to disembark or call radio by himself.", exit
+; Make sure the Gunner is LOCAL.
+; ==================== MP weapon/magazine controlling. ====================
+
+_mainWeapon = (_vehicle call funcVehParamWeapons) select 0
+? bool_TZK_199_Mode: goto "Ver199"
+
+_magazines = magazines _vehicle; _validMags = [_mainWeapon] call funcWeaponValidMags; 
+_oldMags = []; {if (_x in _validMags && !(_x in _oldMags)) then {_oldMags set [count _oldMags, _x]}} forEach _magazines
+? count _oldMags == 0: hint "Abnormal weapon/magazine status. Please rearm. Report the author if problem remain unsolved after having rearmed.", exit
+
+_oldMag = _oldMags select 0; _size = sizeOfStr _oldMag; _strSpeed = format ["%1", _speed]
+? _speed < 100: _strSpeed = "0" + _strSpeed
+? _speed < 1000: _strSpeed = "0" + _strSpeed
+_newMag = substr [_oldMag, 0, _size - 10] + _strSpeed + "_xj400"
+
+; ==================== MP weapon/magazine controlling. ====================
+; If the caller of this script is the REMOTE Gunner of the vehicle, on his client all magazines should be removed in MP game.
+? !local _vehicle: _vehicle removeMagazines _oldMag; publicExec format [{[UnitById %1, "%2", "%3"] exec "\TZK_Scripts_4_0_4\Common\ReEquip\SwitchMagazine.sqs"}, NetworkID _vehicle, _oldMag, _newMag]; exit
+; Both Gunner and Vehicle is LOCAL here.
+[_vehicle, _oldMag, _newMag] exec "\TZK_Scripts_4_0_4\Common\ReEquip\SwitchMagazine.sqs"; exit
+; ==================== MP weapon/magazine controlling. ====================
+
+#Ver199
+? !local _vehicle: { if (_x != "MachineGun12_7_xj400") Then {_vehicle removeMagazines _x} } forEach (magazines _vehicle), _this exec "\TZK_Scripts_4_0_4\Common\Msg\sSwitchMagazine.sqs", exit
+; Both Gunner and Vehicle is LOCAL here.
+[_vehicle, 0, _speed] exec "Extra\SwitchMagazine.sqs"; exit
+
+; EOF
