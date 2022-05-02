@@ -24,7 +24,7 @@ if (_bValid && _magName == "AT") then {
 		_bValid = _typeName in ["Mi24_RHS_xj400"];
 	};
 	if (_bValid && _availMags select _i == "HellfireLauncherKamov_xj400") then {
-		_bValid = _typeName in ["Ka50_xj400"];
+		_bValid = _typeName in ["Ka50_xj400", "Ka50_Vanilla_xj405"];
 	};
 	if (_bValid && _availMags select _i == "GuidedAT_Heli_8_xj400") then {
 		_bValid = _typeName in ["AH64_MPIV_AT_xj400", "AH1_AT_xj400", "AH64_AT_xj400", "Mi24_AT_xj400"];
@@ -39,7 +39,7 @@ if (_bValid && _magName == "AT") then {
 		_bValid = _typeName in ["Mi24_RHS_AT_xj400"];
 	};
 	if (_bValid && _availMags select _i == "GuidedAT_Heli_12_xj400") then {
-		_bValid = _typeName in ["Ka50_AT_xj400"];
+		_bValid = _typeName in ["Ka50_AT_xj400", "Ka50_AT_Vanilla_xj405"];
 	};
 };
 _bValid

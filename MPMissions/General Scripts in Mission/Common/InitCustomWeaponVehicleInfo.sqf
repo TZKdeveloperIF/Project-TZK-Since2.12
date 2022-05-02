@@ -27,6 +27,8 @@ TZK_CustomVehicleTypes = [
 	"Mi24_RHS_AT_xj400",
 	"Ka50_xj400",
 	"Ka50_AT_xj400",
+	"Ka50_Vanilla_xj405",
+	"Ka50_AT_Vanilla_xj405",
 	"Tiger_HOT3_xj400",
 	"Tiger_PARS3_xj400",
 

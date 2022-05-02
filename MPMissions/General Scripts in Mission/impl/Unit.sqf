@@ -32,7 +32,7 @@ if true then {
 	if (-1 != _name0 find "J10A" && -1 == _name1 find "IF") then {
 		unitDefs select _a10 set [udCost, 25000];
 	};
-	if !bool_TZK_199_Mode then {unitDefs select _a10 set [udModel, "A10_xj400"]};
+	if (!bool_TZK_199_Mode && !bool_TZK_Vanilla_Mode) then {unitDefs select _a10 set [udModel, "A10_xj400"]};
 	unitDefs select _a10 set [udScripts, [
 		"Common\Equip\PlaneCustom.sqs",  "Common\InitSpawnPlane.sqs"
 	]];
@@ -41,7 +41,7 @@ if true then {
 	if (-1 != _name1 find "J10A" && -1 == _name0 find "IF") then {
 		unitDefs select _su25 set [udCost, 25000];
 	};
-	if !bool_TZK_199_Mode then {unitDefs select _su25 set [udModel, "Su25_xj400"]};
+	if (!bool_TZK_199_Mode && !bool_TZK_Vanilla_Mode) then {unitDefs select _su25 set [udModel, "Su25_xj400"]};
 	unitDefs select _su25 set [udScripts, [
 		"Common\Equip\PlaneCustom.sqs", "Common\InitSpawnPlane.sqs"
 	]];

@@ -19,7 +19,7 @@ if (_dispMagName == "Rocket") then {
 		if ("Mi24_Base_xj400" countType [_vehicle] > 0) then {
 			_mag = "Rocket57x64", _wep = "Rocket57x64";
 		};
-		if ("Kamov_Base_xj400" countType [_vehicle] > 0) then {
+		if ("Kamov_Base_xj400" countType [_vehicle] > 0 || "Ka50_Vanilla_Base_xj400" countType [_vehicle] > 0) then {
 			_mag = "Rocket57x40Kamov_xj400", _wep = "Rocket57x40Kamov_xj400";
 		};
 	};

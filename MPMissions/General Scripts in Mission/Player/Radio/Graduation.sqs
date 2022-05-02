@@ -1,1 +1,17 @@
-_this exec "\TZK_Scripts_4_0_5\Player\Radio\Graduation.sqs"
+; args: [object, initSpeed of magazine, name]
+_vehicle = _this select 0; _speed = _this select 1; _name = _this select 2
+
+_this exec "\TZK_Scripts_4_0_4\Common\ReEquip\SwitchMagPreset.sqs"
+? bool_TZK_Vanilla_Mode && bool_TZK_199_Mode: _this exec "Extra\SwitchMagPreset.sqs"
+
+_strSpeed = format ["%1", _speed/10 - (_speed/10)%1 + ([0,1] select (_speed%10 >= 5))]
+? _speed < 100: _strSpeed = "0" + _strSpeed
+? _speed < 1000: _strSpeed = "0" + _strSpeed
+_i = if !bool_TZK_199_Mode Then {(typeOf _vehicle GetVehicleParamArray "hiddenSelections") find "TZK_Grad1"} Else {0}
+
+_gradPath = "\TZK_Texture_4_0_0\Grad"
+? _name == "P89": _gradPath = "\TZK_Texture_4_0_5\Grad"
+? bool_TZK_Vanilla_Mode: if (_name == "M" || _name == "P89") then {_gradPath = "\TZK_Patch_405"}
+{_vehicle setObjectTexture [_i, format [_gradPath + "\%1%2_%3.paa", _name, _strSpeed, _x]]; _i = _i + 1} forEach ["A", "B", "C", "D", "E", "F"]
+
+; EOF
