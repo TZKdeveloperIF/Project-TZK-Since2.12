@@ -8,7 +8,7 @@ _target = _this select 5
 _dispersion = _this select 6
 _type = _this select 7
 _biggerAngle = (if (count _this > 8) Then {_this select 8} Else {0})
-? bool_TZK_SEMod_Mode: if (_type in types_SE_td) Then {_this exec "Extra\Shoot_TD_Server.sqs", exit}
+? bool_TZK_SEMod_Mode: if (_type in (types_SE_td + typesRocketLauncher)) Then {_this exec "Extra\Shoot_TD_Server.sqs", exit}
 _this = 0
 ; big angle will be invalid when ordering tanks.
 ? _type in (typesLightTank + typesHeavyTank): _biggerAngle = 0;
