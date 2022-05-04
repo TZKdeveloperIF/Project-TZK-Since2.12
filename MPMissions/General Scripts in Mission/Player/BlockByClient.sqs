@@ -6,14 +6,20 @@ hint "You are BLOCKED.\nYou are NOT Receiving."
 
 [siPlayer, giPlayer, 1] exec "\TZK_Scripts_4_0_4\Player\SendBlockedByClient.sqs"
 
-#WaitForData
+# WaitForData
 	groupPlayer setCombatMode "BLUE"
 	~1
 	? (time > (timeLastPing + blockTime)): goto "WaitForData"
 
-~blockTime/6*1.5
-? (time > (timeLastPing + blockTime/6*1.5)): goto "WaitForData"
+~ blockTime / 3
+? time <= timeLastPing + blockTime / 3 * 1: goto "UnBlock"
+~ blockTime / 3
+? time <= timeLastPing + blockTime / 3 * 2: goto "UnBlock"
+~ blockTime / 3
+? time <= timeLastPing + blockTime / 3 * 3: goto "UnBlock"
+goto "WaitForData"
 
+# UnBlock
 groupPlayer setCombatMode "YELLOW"
 
 disableUserInput false
