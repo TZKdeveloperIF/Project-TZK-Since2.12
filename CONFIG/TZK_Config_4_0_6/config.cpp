@@ -250,6 +250,21 @@ class CfgAmmo {
 	class Bullet12_7: Bullet7_6 {};
 	class Bullet_12_7_AI_xj400: Bullet12_7 { hit = 12; };
 	class Bullet_12_7_Player_xj400: Bullet12_7 { midRange = 5; maxRange = 6; } // cost = 600;
+	
+	class Carl_I_TZK_xj400: CarlGustav {};
+	class Carl_II_TZK_xj400: Carl_I_TZK_xj400 {
+		maxControlRange = 400; maneuvrability = 1.3;
+	};
+	class Carl_III_TZK_xj400: Carl_II_TZK_xj400 {
+		maxControlRange = 600; maneuvrability = 1.6;
+	};
+	class Carl_IV_TZK_xj400: Carl_III_TZK_xj400 {
+		maxControlRange = 800; maneuvrability = 2; maxRange = 800; thrustTime = 2.5;
+	};
+	class AT4_I_TZK_xj400: Carl_I_TZK_xj400 { model = "RPG"; };
+	class AT4_II_TZK_xj400: Carl_II_TZK_xj400 { model = "RPG"; };
+	class AT4_III_TZK_xj400: Carl_III_TZK_xj400 { model = "RPG"; };
+	class AT4_IV_TZK_xj400: Carl_IV_TZK_xj400 { model = "RPG"; };
 };
 class CfgWeapons {
 	class Default {};
@@ -460,6 +475,27 @@ class CfgWeapons {
 	};
 	class Ch29T_P50_xj400: Ch29TLauncher {
 		ammo = "Ch29T_P50_xj400";
+	};
+	
+	class Carl_I_TZK_xj400: CarlGustavLauncher {
+		ammo = "Carl_I_TZK_xj400"; 
+		picture = "\dtaext\equip\m\m_CarlGustavLauncher.paa";
+		magazineType = "3 * 		256";
+	};
+	class Carl_II_TZK_xj400: Carl_I_TZK_xj400 { ammo = "Carl_II_TZK_xj400"; };
+	class Carl_III_TZK_xj400: Carl_I_TZK_xj400 { ammo = "Carl_III_TZK_xj400"; };
+	class Carl_IV_TZK_xj400: Carl_I_TZK_xj400 { ammo = "Carl_IV_TZK_xj400"; };
+	class Carl_TZK_xj400: CarlGustavLauncher {
+		magazines[] = {"CarlGustavLauncher","Carl_I_TZK_xj400","Carl_II_TZK_xj400","Carl_III_TZK_xj400","Carl_IV_TZK_xj400"};
+		picture = "\dtaext\equip\w\w_CarlGustavLauncher.paa";
+	};
+	class AT4Launcher: CarlGustavLauncher {};
+	class AT4_I_TZK_xj400: AT4Launcher { ammo = "AT4_I_TZK_xj400"; };
+	class AT4_II_TZK_xj400: AT4Launcher { ammo = "AT4_II_TZK_xj400"; };
+	class AT4_III_TZK_xj400: AT4Launcher { ammo = "AT4_III_TZK_xj400"; };
+	class AT4_IV_TZK_xj400: AT4Launcher { ammo = "AT4_IV_TZK_xj400"; };
+	class AT4_TZK_xj400: AT4Launcher {
+		magazines[] = {"AT4Launcher","AT4_I_TZK_xj400","AT4_II_TZK_xj400","AT4_III_TZK_xj400","AT4_IV_TZK_xj400"};
 	};
 };
 
