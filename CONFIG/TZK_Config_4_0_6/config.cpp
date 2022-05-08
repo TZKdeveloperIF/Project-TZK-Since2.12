@@ -1140,6 +1140,15 @@ class CfgVehicles {
 	class SoldierEMedic: SoldierEB {};
 	class SoldierEMedic_xj400: SoldierEMedic {};
 	class SoldierEMedic_xj406: SoldierEMedic_xj400 { attendant = 0; };
+	class ParachuteBase: Helicopter {};
+	class ParachuteC:ParachuteBase {};
+	class pwr_paraC_xj400: ParachuteC {};
+	class pwr_paraC_4ammo_xj400: pwr_paraC_xj400 {
+		model = "\TZK_Config_4_0_6\PARA_Ammo.p3d";
+	};
+	class pwr_paraC_4veh_xj400: pwr_paraC_xj400 {
+		model = "\TZK_Config_4_0_6\PARA_Veh.p3d";
+	};
 };
 
 // EOF
