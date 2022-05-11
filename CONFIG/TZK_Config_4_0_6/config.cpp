@@ -251,6 +251,24 @@ class CfgAmmo {
 	class Bullet_12_7_AI_xj400: Bullet12_7 { hit = 12; };
 	class Bullet_12_7_Player_xj400: Bullet12_7 { midRange = 5; maxRange = 6; } // cost = 600;
 	
+	class GrenadeHand: Grenade {};
+	class RKG3M_xj400: GrenadeHand {
+		hit = 500;
+		indirectHit = 150;
+		indirectHitRange = 2.5;
+		// ================ above same as LAW ================
+		cost = 500; // less cost to make AI use it more
+		// ================ below same as Kasap ================
+		model = "\TZK_Weapon_4_0_0\KYL\kasapanos.p3d";
+		soundHit1[]={"\TZK_Sounds_4_0_0\KYL_KASAP\Boom2.ogg",db40,1};
+		soundHit2[]={"\TZK_Sounds_4_0_0\KYL_KASAP\Boom3.ogg",db40,1};
+		soundHit3[]={"\TZK_Sounds_4_0_0\KYL_KASAP\Boom4.ogg",db40,1};
+		soundHit4[]={"\TZK_Sounds_4_0_0\KYL_KASAP\Boom5.ogg",db40,1};
+		hitGround[]={soundHit1,0.25,soundHit2,0.25,soundHit3,0.25,soundHit4,0.25};
+		hitMan[]={soundHit1,0.25,soundHit2,0.25,soundHit3,0.25,soundHit4,0.25};
+		hitArmor[]={soundHit1,0.25,soundHit2,0.25,soundHit3,0.25,soundHit4,0.25};
+		hitBuilding[]={soundHit1,0.25,soundHit2,0.25,soundHit3,0.25,soundHit4,0.25};
+	};
 	class Carl_I_TZK_xj400: CarlGustav {};
 	class Carl_II_TZK_xj400: Carl_I_TZK_xj400 {
 		maxControlRange = 400; maneuvrability = 1.3;
@@ -477,6 +495,8 @@ class CfgWeapons {
 		ammo = "Ch29T_P50_xj400";
 	};
 	
+	class GrenadeLauncher: Default {};
+	class HandGrenade: GrenadeLauncher {};
 	class Carl_I_TZK_xj400: CarlGustavLauncher {
 		ammo = "Carl_I_TZK_xj400"; 
 		picture = "\dtaext\equip\m\m_CarlGustavLauncher.paa";
@@ -496,6 +516,24 @@ class CfgWeapons {
 	class AT4_IV_TZK_xj400: AT4Launcher { ammo = "AT4_IV_TZK_xj400"; };
 	class AT4_TZK_xj400: AT4Launcher {
 		magazines[] = {"AT4Launcher","AT4_I_TZK_xj400","AT4_II_TZK_xj400","AT4_III_TZK_xj400","AT4_IV_TZK_xj400"};
+
+	class RKG3M_xj400: HandGrenade {
+		displayName = "RKG-3M";
+		displayNameMagazine = "RKG-3M";
+		shortNameMagazine = "RKG-3M";
+		picture = "\TZK_Config_4_0_6\RKG-3_co.paa";
+		maxLeadSpeed = 20; // 72 km/h at most
+		ammo = "RKG3M_xj400"
+		sound[] = {"\TZK_Sounds_4_0_0\KYL_KASAP\Throw.ogg", db-60, 1};
+	};
+	class Throw: GrenadeLauncher {};
+	class Throw_xj400: Throw {
+		enableAttack = 1;
+		magazines[] = {
+			"HandGrenade","SmokeShell","SmokeShellRed","SmokeShellGreen"
+			, "RKG3M_xj400"
+		};
+		// RKG3M_xj400 requires AI equip Throw weapon with "enableAttack = 1" and equipping RKG3M_xj400 only (namely don't equip HandGrenade)
 	};
 };
 
