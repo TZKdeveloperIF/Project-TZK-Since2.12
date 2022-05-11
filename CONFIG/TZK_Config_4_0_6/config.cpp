@@ -510,12 +510,18 @@ class CfgWeapons {
 		picture = "\dtaext\equip\w\w_CarlGustavLauncher.paa";
 	};
 	class AT4Launcher: CarlGustavLauncher {};
-	class AT4_I_TZK_xj400: AT4Launcher { ammo = "AT4_I_TZK_xj400"; };
-	class AT4_II_TZK_xj400: AT4Launcher { ammo = "AT4_II_TZK_xj400"; };
-	class AT4_III_TZK_xj400: AT4Launcher { ammo = "AT4_III_TZK_xj400"; };
-	class AT4_IV_TZK_xj400: AT4Launcher { ammo = "AT4_IV_TZK_xj400"; };
+	class AT4_I_TZK_xj400: AT4Launcher {
+		ammo = "AT4_I_TZK_xj400";
+		picture = "\dtaext\equip\m\m_AT4Launcher.paa";
+		magazineType = "3 * 		256";
+	};
+	class AT4_II_TZK_xj400: AT4_I_TZK_xj400 { ammo = "AT4_II_TZK_xj400"; };
+	class AT4_III_TZK_xj400: AT4_I_TZK_xj400 { ammo = "AT4_III_TZK_xj400"; };
+	class AT4_IV_TZK_xj400: AT4_I_TZK_xj400 { ammo = "AT4_IV_TZK_xj400"; };
 	class AT4_TZK_xj400: AT4Launcher {
 		magazines[] = {"AT4Launcher","AT4_I_TZK_xj400","AT4_II_TZK_xj400","AT4_III_TZK_xj400","AT4_IV_TZK_xj400"};
+		picture = "\dtaext\equip\w\w_AT4Launcher.paa";
+	};
 
 	class RKG3M_xj400: HandGrenade {
 		displayName = "RKG-3M";
