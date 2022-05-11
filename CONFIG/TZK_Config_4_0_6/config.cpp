@@ -522,6 +522,25 @@ class CfgWeapons {
 		magazines[] = {"AT4Launcher","AT4_I_TZK_xj400","AT4_II_TZK_xj400","AT4_III_TZK_xj400","AT4_IV_TZK_xj400"};
 		picture = "\dtaext\equip\w\w_AT4Launcher.paa";
 	};
+	class AALauncher: CarlGustavLauncher {};
+	class AA_I_TZK_xj400: AALauncher {
+		picture = "\dtaext\equip\m\m_AALauncher.paa";
+		magazineType = "3 * 		256";
+	};
+	class AA_TZK_xj400: AALauncher {
+		magazines[] = {"AALauncher","AA_I_TZK_xj400"};
+		picture = "\dtaext\equip\w\w_AALauncher.paa";
+	};
+	class 9K32Launcher: AALauncher {};
+	class 9k32_I_TZK_xj400: 9k32Launcher {
+		picture = "\dtaext\equip\m\m_9k32Launcher.paa";
+		magazineType = "3 * 		256";
+	};
+	class 9k32_TZK_xj400: 9k32Launcher {
+		magazines[] = {"9k32Launcher","9k32_I_TZK_xj400"};
+		picture = "\dtaext\equip\w\w_9k32Launcher.paa";
+	};
+	
 
 	class RKG3M_xj400: HandGrenade {
 		displayName = "RKG-3M";
