@@ -269,20 +269,29 @@ class CfgAmmo {
 		hitArmor[]={soundHit1,0.25,soundHit2,0.25,soundHit3,0.25,soundHit4,0.25};
 		hitBuilding[]={soundHit1,0.25,soundHit2,0.25,soundHit3,0.25,soundHit4,0.25};
 	};
-	class Carl_I_TZK_xj400: CarlGustav {};
-	class Carl_II_TZK_xj400: Carl_I_TZK_xj400 {
+	
+	class Carl_I_1_TZK_xj400: CarlGustav {};
+	class Carl_I_2_TZK_xj400: Carl_I_1_TZK_xj400 { hit = 900; };
+	class Carl_II_1_TZK_xj400: Carl_I_1_TZK_xj400 {
 		maxControlRange = 400; maneuvrability = 1.3;
 	};
-	class Carl_III_TZK_xj400: Carl_II_TZK_xj400 {
+	class Carl_II_2_TZK_xj400: Carl_II_1_TZK_xj400 { hit = 900; };
+	class Carl_III_1_TZK_xj400: Carl_I_1_TZK_xj400 {
 		maxControlRange = 600; maneuvrability = 1.6;
 	};
-	class Carl_IV_TZK_xj400: Carl_III_TZK_xj400 {
+	class Carl_III_2_TZK_xj400: Carl_III_1_TZK_xj400 { hit = 900; };
+	class Carl_IV_1_TZK_xj400: Carl_I_1_TZK_xj400 {
 		maxControlRange = 800; maneuvrability = 2; maxRange = 800; thrustTime = 2.5;
 	};
-	class AT4_I_TZK_xj400: Carl_I_TZK_xj400 { model = "RPG"; };
-	class AT4_II_TZK_xj400: Carl_II_TZK_xj400 { model = "RPG"; };
-	class AT4_III_TZK_xj400: Carl_III_TZK_xj400 { model = "RPG"; };
-	class AT4_IV_TZK_xj400: Carl_IV_TZK_xj400 { model = "RPG"; };
+	class Carl_IV_2_TZK_xj400: Carl_IV_1_TZK_xj400 { hit = 900; };
+	class AT4_I_1_TZK_xj400: Carl_I_1_TZK_xj400 { model = "RPG"; };
+	class AT4_II_1_TZK_xj400: Carl_II_1_TZK_xj400 { model = "RPG"; };
+	class AT4_III_1_TZK_xj400: Carl_III_1_TZK_xj400 { model = "RPG"; };
+	class AT4_IV_1_TZK_xj400: Carl_IV_1_TZK_xj400 { model = "RPG"; };
+	class AT4_I_2_TZK_xj400: Carl_I_2_TZK_xj400 { model = "RPG"; };
+	class AT4_II_2_TZK_xj400: Carl_II_2_TZK_xj400 { model = "RPG"; };
+	class AT4_III_2_TZK_xj400: Carl_III_2_TZK_xj400 { model = "RPG"; };
+	class AT4_IV_2_TZK_xj400: Carl_IV_2_TZK_xj400 { model = "RPG"; };
 };
 class CfgWeapons {
 	class Default {};
@@ -497,29 +506,46 @@ class CfgWeapons {
 	
 	class GrenadeLauncher: Default {};
 	class HandGrenade: GrenadeLauncher {};
-	class Carl_I_TZK_xj400: CarlGustavLauncher {
-		ammo = "Carl_I_TZK_xj400"; 
+	
+	class Carl_I_1_TZK_xj400: CarlGustavLauncher {
+		ammo = "Carl_I_1_TZK_xj400"; 
 		picture = "\dtaext\equip\m\m_CarlGustavLauncher.paa";
 		magazineType = "3 * 		256";
 	};
-	class Carl_II_TZK_xj400: Carl_I_TZK_xj400 { ammo = "Carl_II_TZK_xj400"; };
-	class Carl_III_TZK_xj400: Carl_I_TZK_xj400 { ammo = "Carl_III_TZK_xj400"; };
-	class Carl_IV_TZK_xj400: Carl_I_TZK_xj400 { ammo = "Carl_IV_TZK_xj400"; };
+	class Carl_II_1_TZK_xj400: Carl_I_1_TZK_xj400 { ammo = "Carl_II_1_TZK_xj400"; };
+	class Carl_III_1_TZK_xj400: Carl_I_1_TZK_xj400 { ammo = "Carl_III_1_TZK_xj400"; };
+	class Carl_IV_1_TZK_xj400: Carl_I_1_TZK_xj400 { ammo = "Carl_IV_1_TZK_xj400"; };
+	class Carl_I_2_TZK_xj400: Carl_I_1_TZK_xj400 { ammo = "Carl_I_2_TZK_xj400"; };
+	class Carl_II_2_TZK_xj400: Carl_I_1_TZK_xj400 { ammo = "Carl_II_2_TZK_xj400"; };
+	class Carl_III_2_TZK_xj400: Carl_I_1_TZK_xj400 { ammo = "Carl_III_2_TZK_xj400"; };
+	class Carl_IV_2_TZK_xj400: Carl_I_1_TZK_xj400 { ammo = "Carl_IV_2_TZK_xj400"; };
 	class Carl_TZK_xj400: CarlGustavLauncher {
-		magazines[] = {"CarlGustavLauncher","Carl_I_TZK_xj400","Carl_II_TZK_xj400","Carl_III_TZK_xj400","Carl_IV_TZK_xj400"};
+		magazines[] = {
+			"CarlGustavLauncher"
+			,"Carl_I_1_TZK_xj400","Carl_II_1_TZK_xj400","Carl_III_1_TZK_xj400","Carl_IV_1_TZK_xj400"
+			,"Carl_I_2_TZK_xj400","Carl_II_2_TZK_xj400","Carl_III_2_TZK_xj400","Carl_IV_2_TZK_xj400"
+		};
 		picture = "\dtaext\equip\w\w_CarlGustavLauncher.paa";
 	};
 	class AT4Launcher: CarlGustavLauncher {};
-	class AT4_I_TZK_xj400: AT4Launcher {
-		ammo = "AT4_I_TZK_xj400";
+	class AT4_I_1_TZK_xj400: AT4Launcher {
+		ammo = "AT4_I_1_TZK_xj400";
 		picture = "\dtaext\equip\m\m_AT4Launcher.paa";
 		magazineType = "3 * 		256";
 	};
-	class AT4_II_TZK_xj400: AT4_I_TZK_xj400 { ammo = "AT4_II_TZK_xj400"; };
-	class AT4_III_TZK_xj400: AT4_I_TZK_xj400 { ammo = "AT4_III_TZK_xj400"; };
-	class AT4_IV_TZK_xj400: AT4_I_TZK_xj400 { ammo = "AT4_IV_TZK_xj400"; };
+	class AT4_II_1_TZK_xj400: AT4_I_1_TZK_xj400 { ammo = "AT4_II_1_TZK_xj400"; };
+	class AT4_III_1_TZK_xj400: AT4_I_1_TZK_xj400 { ammo = "AT4_III_1_TZK_xj400"; };
+	class AT4_IV_1_TZK_xj400: AT4_I_1_TZK_xj400 { ammo = "AT4_IV_1_TZK_xj400"; };
+	class AT4_I_2_TZK_xj400: AT4_I_1_TZK_xj400 { ammo = "AT4_I_2_TZK_xj400"; };
+	class AT4_II_2_TZK_xj400: AT4_I_1_TZK_xj400 { ammo = "AT4_II_2_TZK_xj400"; };
+	class AT4_III_2_TZK_xj400: AT4_I_1_TZK_xj400 { ammo = "AT4_III_2_TZK_xj400"; };
+	class AT4_IV_2_TZK_xj400: AT4_I_1_TZK_xj400 { ammo = "AT4_IV_2_TZK_xj400"; };
 	class AT4_TZK_xj400: AT4Launcher {
-		magazines[] = {"AT4Launcher","AT4_I_TZK_xj400","AT4_II_TZK_xj400","AT4_III_TZK_xj400","AT4_IV_TZK_xj400"};
+		magazines[] = {
+			"AT4Launcher"
+			,"AT4_I_1_TZK_xj400","AT4_II_1_TZK_xj400","AT4_III_1_TZK_xj400","AT4_IV_1_TZK_xj400"
+			,"AT4_I_2_TZK_xj400","AT4_II_2_TZK_xj400","AT4_III_2_TZK_xj400","AT4_IV_2_TZK_xj400"
+		};
 		picture = "\dtaext\equip\w\w_AT4Launcher.paa";
 	};
 	class AALauncher: CarlGustavLauncher {};
