@@ -32,6 +32,11 @@ class CfgAmmo {
 	class Shell105: Shell73 {};
 	class Shell120: Shell105 {};
 	class Shell125: Shell120 {};
+	class Heat: Shell {};
+	class Heat73: Heat {};
+	class Heat105: Heat73 {};
+	class Heat120: Heat105 {};
+	class Heat125: Heat120 {};
 	
 	class AT3:Default {};
 	class LAW:AT3 {};
@@ -294,6 +299,14 @@ class CfgAmmo {
 	class AT4_IV_2_TZK_xj400: Carl_IV_2_TZK_xj400 { model = "RPG"; };
 	class AA_I_TZK_xj400: AA { maxRange = 1500; };
 	class 9K32_I_TZK_xj400: AA_I_TZK_xj400 {};
+	
+	class Shrapnel_xj400: Heat120 {
+		hit = 500;
+		indirectHit = 150;
+		indirectHitRange = 2.5;
+		// ================ above same as LAW ================
+		simulation = "shotShell";
+	};
 };
 class CfgWeapons {
 	class Default {};
