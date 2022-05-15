@@ -292,6 +292,8 @@ class CfgAmmo {
 	class AT4_II_2_TZK_xj400: Carl_II_2_TZK_xj400 { model = "RPG"; };
 	class AT4_III_2_TZK_xj400: Carl_III_2_TZK_xj400 { model = "RPG"; };
 	class AT4_IV_2_TZK_xj400: Carl_IV_2_TZK_xj400 { model = "RPG"; };
+	class AA_I_TZK_xj400: AA { maxRange = 1500; };
+	class 9K32_I_TZK_xj400: AA_I_TZK_xj400 {};
 };
 class CfgWeapons {
 	class Default {};
@@ -552,6 +554,7 @@ class CfgWeapons {
 	class AA_I_TZK_xj400: AALauncher {
 		picture = "\dtaext\equip\m\m_AALauncher.paa";
 		magazineType = "3 * 		256";
+		ammo = "AA_I_TZK_xj400";
 	};
 	class AA_TZK_xj400: AALauncher {
 		magazines[] = {"AALauncher","AA_I_TZK_xj400"};
@@ -561,6 +564,7 @@ class CfgWeapons {
 	class 9k32_I_TZK_xj400: 9k32Launcher {
 		picture = "\dtaext\equip\m\m_9k32Launcher.paa";
 		magazineType = "3 * 		256";
+		ammo = "9K32_I_TZK_xj400";
 	};
 	class 9k32_TZK_xj400: 9k32Launcher {
 		magazines[] = {"9k32Launcher","9k32_I_TZK_xj400"};
