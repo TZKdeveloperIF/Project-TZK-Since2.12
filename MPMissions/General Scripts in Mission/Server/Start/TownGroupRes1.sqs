@@ -10,9 +10,9 @@ _patrol = 0
 
 _distSpawn = viewDistance + 500
 
-_flag = (towns select _ti) select tdFlag
+_flag = towns select _ti select tdFlag
 _posFlag = getPos _flag
-? isNull _group : format["ERROR: _group is NULL at init for RES town group in '%1'", (towns select _ti) select tdName] call fDebugLog; exit
+? isNull _group : format["ERROR: _group is NULL at init for RES town group in '%1'", towns select _ti select tdName] call fDebugLog; exit
 
 @!(mutexInitResGroups)
 mutexInitResGroups = true
@@ -28,9 +28,10 @@ mutexInitResGroups = false
 ? (mhq select si0) distance _flag < _distSpawn || (mhq select si1) distance _flag < _distSpawn: goto "Spawn"
 
 #CheckSpawn
-	_spawn = false
-	{ _g = _x; { if ((_x distance _flag) < _distSpawn) then { _spawn = true } } foreach (units _g) } foreach (groupMatrix select si0)
-	{ _g = _x; { if ((_x distance _flag) < _distSpawn) then { _spawn = true } } foreach (units _g) } foreach (groupMatrix select si1)
+	_spawn = false; _units = [(towns select _ti select tdName) + " triggered by:"]
+	{ _g = _x; { if ((_x distance _flag) < _distSpawn) then { _spawn = true; _units set [count _units, format ["%1", _x]] } } foreach (units _g) } foreach (groupMatrix select si0)
+	{ _g = _x; { if ((_x distance _flag) < _distSpawn) then { _spawn = true; _units set [count _units, format ["%1", _x]] } } foreach (units _g) } foreach (groupMatrix select si1)
+	? _spawn: Array_TZK_Town_Triggered_By set [count Array_TZK_Town_Triggered_By, _units]
 	? _spawn: goto "Spawn"
 	~10
 	goto "CheckSpawn"
@@ -40,7 +41,7 @@ _infExtra = time/(call _interval); _infExtra = _infExtra - (_infExtra % 1)
 _inf = _inf + _infExtra
 ? _inf > 8 : _tanks = _tanks + _inf - 8; _inf = 8
 ? _tanks > 2 : _patrol = _patrol + _tanks - 2; _tanks = 2
-? isNull _group : format["ERROR: _group is NULL at spawn for RES town group in '%1'", (towns select _ti) select tdName] call fDebugLog
+? isNull _group : format["ERROR: _group is NULL at spawn for RES town group in '%1'", towns select _ti select tdName] call fDebugLog
 
 ? _inf == 0 : goto "SpawnNoInf"
 _i = 0
