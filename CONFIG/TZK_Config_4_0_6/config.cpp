@@ -1036,6 +1036,21 @@ class CfgVehicles {
 	};
 	class Leo2A6_xj400: TZK_HeavyWestTank_Base_xj400 {
 		model = "\TZK_Config_4_0_6\Leo2A6.p3d";
+		class Turret {
+			gunAxis = "OsaHlavne";
+			turretAxis = "OsaVeze";
+
+			soundServo[] = {"\TZK_Sounds_4_0_0\Leo2A6\Turret.wss",0.0316228,1};
+
+			gunBeg = "usti hlavne";
+			gunEnd = "konec hlavne";
+
+			minElev = -8; maxElev = +20;
+			minTurn = -360; maxTurn = +360;
+
+			body = "OtocVez";
+			gun = "OtocHlaven";
+		};
 	};
 	
 	class RussianTank_xj400: Tank_xj400 {};
