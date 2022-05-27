@@ -1329,6 +1329,138 @@ class CfgVehicles {
 			};
 		};
 	};	
+	class T55_Base_xj400: Tank_xj400 {}
+	class 2S25_mfm_xj400: T55_Base_xj400 {
+		scope = protected; vehicleClass = "TZK_Units_400";
+		accuract = 0.5;
+		displayName = "2S25 Sprut-SD"; nameSound = "tank"; side = 0; cost = 950000; type = 1; threat[] = {0.6,1,0.3};
+
+		model = "\TZK_Config_4_0_6\2S25_mfm.p3d";
+		hiddenselections[]= {"no1", "no2", "no3"};
+		icon = "\TZK_Config_4_0_6\tex\sprut_i.paa";
+		picture = "\TZK_Config_4_0_6\tex\sprut.paa";
+
+		gunnerOpticsModel = "\TZK_Config_4_0_6\opt\G_Optic.p3d";
+		commanderOpticsModel = "\TZK_Config_4_0_6\opt\C_Optic.p3d";
+
+		irScanToEyeFactor = 0.616; // Special radar setting in TZK.
+		laserscanner = 1;
+
+		armor = 180;
+		class HitGun { armor = 0.9; material = 52; name = "gun"; passThrough = 1; };
+		maxspeed = 71;
+		canFloat = 1;
+		crew = "SoldierECrew";
+
+		weapons[] = {"T90Gun_xj400", "MachineGun7_6"};
+		magazines[] = {"T90Sabot_xj400","T90Heat_xj400", "MachineGun7_6"};
+
+		transportSoldier = 0;
+		class TransportMagazines{};
+
+		driverAction = "ManActT72DriverOut";
+		gunnerAction = "ManActT72GunnerOut";
+		commanderAction = "ManActT72CommanderOut";
+		driverInAction = "ManActBMPDriver";
+		gunnerInAction = "ManActT72Gunner";
+		commanderInAction = "ManActT72Commander";
+		commandercansee = 31;
+		drivercansee = 31;
+		gunnercansee = 31;
+		hascommander = 1;
+
+		soundEngine[] = {"\TZK_Config_4_0_6\engine_loaded.wss", db-30, 1};
+		soundEnviron[] = {"\TZK_Config_4_0_6\tracks.wss", db-40, 0.8};
+		soundGear[] = {"\TZK_Config_4_0_6\gear.wss", db-50,0.8};
+		
+		forceHideGunner = 0;
+		// same setting as bmp
+		class HatchDriver {
+			selection = "poklop_driver";
+			axis = "osa_poklop_driver";
+			angle = -100;
+		};
+		class HatchCommander {
+			selection = "poklop_commander";
+			axis = "osa_poklop_commander";
+			angle = -90;
+		};
+		class HatchGunner {
+			selection = "poklop_gunner";
+			axis = "osa_poklop_gunner";
+			angle = 90;
+		};
+		class IndicatorSpeed {
+			selection = "ukaz_rychlo";
+			axis = "osa_rychlo";
+			angle = -320;
+			min = 0;
+			max = "40 / 3.6";
+		};
+		class IndicatorRPM {
+			selection = "ukaz_rpm";
+			axis = "osa_rpm";
+			angle = -230;
+			min = 0;
+			max = 1;
+		};
+
+		class Reflectors {
+			class Left {
+				color[] = {0.9,0.8,0.8,1.0};
+				ambient[] = {0.1,0.1,0.1,1.0};
+				position = "L svetlo";
+				direction = "konec L svetla";
+				hitpoint = "L svetlo";
+				selection = "L svetlo";
+				size = 0.5;
+				brightness = 0.25;
+			};
+		};
+		class TurretBase {
+			gunAxis = "osahlavne";
+			turretAxis = "osaveze";
+			soundServo[] = {"Vehicles\gun_elevate",0.0316228,1.0};
+			gunBeg = "usti hlavne";
+			gunEnd = "konec hlavne";
+			minElev=-5
+			maxElev = 17
+			minTurn=-360
+			maxTurn = 360
+			initangl = 8;
+			body = "otocvez";
+			gun = "otochlaven";
+		};
+		class Turret: TurretBase{};
+		class ComTurret {
+			turretAxis = "OsaVelitele";
+			gunAxis = "OsaHlavneVelitele";
+			soundServo[] = {"Vehicles\gun_elevate",0.0003162,1.2};
+			gunBeg = "usti hlavne";
+			gunEnd = "konec hlavne";
+			minElev=-6;
+			maxElev = 25;
+			minTurn=-100;
+			maxTurn = 100;
+			body = "OtocVelitele";
+			gun = "OtocHlavenVelitele";
+		};
+
+		class Animations {
+			class Podveska {
+				type = "rotation";
+				animperiod = 0.5;
+				selection = "podw";
+				axis = "osa_podw";
+				angle0=-0.04;
+				angle1 = 0.04;
+			};
+		};
+		class EventHandlers {
+			init = "(_this select 0) animate [{Podveska}, 0.5]"
+		};
+	};
+
 	class ResistanceTank_xj400: Tank_xj400 {};
 	class T80Res_Base_xj406: ResistanceTank_xj400 {
 		scope = 0;
