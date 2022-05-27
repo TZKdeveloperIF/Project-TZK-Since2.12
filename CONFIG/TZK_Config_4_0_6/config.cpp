@@ -272,14 +272,14 @@ class CfgAmmo {
 		cost = 500; // less cost to make AI use it more
 		// ================ below same as Kasap ================
 		model = "\TZK_Weapon_4_0_0\KYL\kasapanos.p3d";
-		soundHit1[]={"\TZK_Sounds_4_0_0\KYL_KASAP\Boom2.ogg",db40,1};
-		soundHit2[]={"\TZK_Sounds_4_0_0\KYL_KASAP\Boom3.ogg",db40,1};
-		soundHit3[]={"\TZK_Sounds_4_0_0\KYL_KASAP\Boom4.ogg",db40,1};
-		soundHit4[]={"\TZK_Sounds_4_0_0\KYL_KASAP\Boom5.ogg",db40,1};
-		hitGround[]={soundHit1,0.25,soundHit2,0.25,soundHit3,0.25,soundHit4,0.25};
-		hitMan[]={soundHit1,0.25,soundHit2,0.25,soundHit3,0.25,soundHit4,0.25};
-		hitArmor[]={soundHit1,0.25,soundHit2,0.25,soundHit3,0.25,soundHit4,0.25};
-		hitBuilding[]={soundHit1,0.25,soundHit2,0.25,soundHit3,0.25,soundHit4,0.25};
+		soundHit1[] = {"\TZK_Sounds_4_0_0\KYL_KASAP\Boom2.ogg",db40,1};
+		soundHit2[] = {"\TZK_Sounds_4_0_0\KYL_KASAP\Boom3.ogg",db40,1};
+		soundHit3[] = {"\TZK_Sounds_4_0_0\KYL_KASAP\Boom4.ogg",db40,1};
+		soundHit4[] = {"\TZK_Sounds_4_0_0\KYL_KASAP\Boom5.ogg",db40,1};
+		hitGround[] = {soundHit1,0.25,soundHit2,0.25,soundHit3,0.25,soundHit4,0.25};
+		hitMan[] = {soundHit1,0.25,soundHit2,0.25,soundHit3,0.25,soundHit4,0.25};
+		hitArmor[] = {soundHit1,0.25,soundHit2,0.25,soundHit3,0.25,soundHit4,0.25};
+		hitBuilding[] = {soundHit1,0.25,soundHit2,0.25,soundHit3,0.25,soundHit4,0.25};
 	};
 	
 	class Carl_I_1_TZK_xj400: CarlGustav {};
@@ -526,7 +526,7 @@ class CfgWeapons {
 	class GuidedAT_Heli_12_xj400: GuidedAT_APC_xj400 {};
 	class GuidedAT_Heli_P40_12_xj400: GuidedAT_Heli_12_xj400 { ammo = "GuidedAT_Heli_P40_xj400"; };
 	class ATLauncherAir_xj400: HellfireLauncher {
-		magazines[]={
+		magazines[] = {
 			"GuidedAT_Heli_8_xj400", "GuidedAT6_8_xj400", "GuidedAT_Cobra_8_xj400", "GuidedAT_Heli_12_xj400",
 			"GuidedAT_Heli_P40_xj400", "GuidedAT_Cobra_P40_xj400", "GuidedAT_AT6_P40_xj400", "GuidedAT_Heli_P40_12_xj400",
 		};
@@ -949,13 +949,13 @@ class CfgVehicles {
 		maxSpeed = 400; // 2/3 of A10's maxspeed thus A10 can approach it easier.
 		displayName = "A10 Support";
 		weapons[] = {};
-		magazines[]={SpoofMagazines, "AfterBurnerSwitch_xj400"};
+		magazines[] = {SpoofMagazines, "AfterBurnerSwitch_xj400"};
 	};
 	class A10_AAOnly_xj406: A10_xj406 {
 		displayName = "A10 AA";
 		irScanGround = 0; // Not allowed scanning ground.
 		weapons[] = {"MachineGun30W" };
-		magazines[]={"MachineGun30W", "MachineGun30W", "MachineGun30W", SpoofMagazines, "AfterBurnerSwitch_xj400"};
+		magazines[] = {"MachineGun30W", "MachineGun30W", "MachineGun30W", SpoofMagazines, "AfterBurnerSwitch_xj400"};
 	};
 	class A10_Vanilla_Base_xj400: A10 {
 		accuracy = 0.29;
@@ -980,14 +980,14 @@ class CfgVehicles {
 	class Su25_Support_xj406 : Su25_xj406 {
 		displayName = "Su25 Support";
 		weapons[] = {};
-		magazines[]={SpoofMagazines, "AfterBurnerSwitch_xj400"};
+		magazines[] = {SpoofMagazines, "AfterBurnerSwitch_xj400"};
 		maxSpeed = 533; // 2/3 of Su25's maxspeed thus Su25 can approach it easier.
 	};
 	class Su25_AAOnly_xj406: Su25_xj406 {
 		displayName = "Su25 AA";
 		irScanGround = 0; // Not allowed scanning ground.
 		weapons[] = {"MachineGun30E" };
-		magazines[]={"MachineGun30E", "MachineGun30E", "MachineGun30E", SpoofMagazines, "AfterBurnerSwitch_xj400"};
+		magazines[] = {"MachineGun30E", "MachineGun30E", "MachineGun30E", SpoofMagazines, "AfterBurnerSwitch_xj400"};
 	};
 	// Fill missed definition and fix broken definition of vanilla plane
 	class Su25_Vanilla_Base_xj405: Su25 {
@@ -1003,7 +1003,7 @@ class CfgVehicles {
 		displayName = "Su25 AA";
 		irScanGround = 0; // Not allowed scanning ground.
 		weapons[] = {"MachineGun30E" };
-		magazines[]={"MachineGun30E", "MachineGun30E", "MachineGun30E", SpoofMagazines, "AfterBurnerSwitch_xj400"};
+		magazines[] = {"MachineGun30E", "MachineGun30E", "MachineGun30E", SpoofMagazines, "AfterBurnerSwitch_xj400"};
 	};
 	
 	class C130_Base_xj400: Plane {};
@@ -1383,7 +1383,7 @@ class CfgVehicles {
 		displayName = "T80(Res) Red"; accuracy = 1000;
 		model = "\TZK_Model_4_0_5\T80_TZK.p3d";
 		hiddenSelections[] = {
-			"pruh", "TZK_Grad1","TZK_Grad2","TZK_Grad3","TZK_Grad4","TZK_Grad5","TZK_Grad6",  tzk_tex_00,
+			"pruh", "TZK_Grad1","TZK_Grad2","TZK_Grad3","TZK_Grad4","TZK_Grad5","TZK_Grad6", tzk_tex_00,
 			tex_pas_spod_1frame.pac, tex_pasy_okolo_uni.pac, tex_t55_infra.pac, tex_t55_sum.pac, tex_t72_vymetnice.pac, tex_t80_kolo2.pac, tex_tank_04_bck.pac, tex_tank_04_bednyuvalce_.pac, tex_tank_04_frt.pac, tex_tank_04_krabic_back.pac, tex_tank_04_krabic_sidet.pac, tex_tank_04_lauf_frt.pac, tex_tank_04_lauf_top.pac, tex_tank_04_platyzveze_s.pac, tex_tank_04_platyzvozu_t.pac, tex_tank_04_side.pac, tex_tank_04_spod.pac, tex_tank_04_sud_norm.pac, tex_tank_04_sud_side.paa, tex_tank_04_top.pac, tex_tank_04_v_lec_norm.pac, tex_tank_04_v_lec_side.paa, tex_tank_04_vez_bck.pac, tex_tank_04_vez_frt.pac, tex_tank_04_vez_side.pac, tex_tank_04_vez_top.pac, tex_tank_m_02_kanon.pac, tex_tank_m_02_vez_frt.pac,
 			tex_t80_kolo1.pac, tex_tank4_passide.pac, tex_tank_04_detailkanon.pac, tex_tank_04_detailkanon2.pac, tex_tnk04topslo.pac, tex_tank_04_spod_spol.pac, tex_ural_kabok2.pac, tex_t72_kolo3.paa,
 			tex_drat_svetlo_s.paa, tex_t72_com_strop.paa, tex_t72_dri_poklop.paa, tex_t72_hlaven_s.pac, tex_t72_vez_strop.paa, tex_t72_zubkolo_detail.paa, tex_t72_zubkolo_detail2.paa
@@ -1543,12 +1543,12 @@ class CfgNonAIVehicles {
 };
 
 class CfgVehicleActions {
-	OFrPAMX10RCDriver="OFrPAMX10RCDriver";
-	OFrPAMX10RCGunner="OFrPAMX10RCGunner";
-	OFrPAMX10RCCommander="OFrPAMX10RCCommander";
-	OFrPAMX10RCDriverOut="OFrPAMX10RCDriverOut";
-	OFrPAMX10RCGunnerOut="OFrPAMX10RCGunnerOut";
-	OFrPAMX10RCCommanderOut="OFrPAMX10RCCommanderOut";
+	OFrPAMX10RCDriver = "OFrPAMX10RCDriver";
+	OFrPAMX10RCGunner = "OFrPAMX10RCGunner";
+	OFrPAMX10RCCommander = "OFrPAMX10RCCommander";
+	OFrPAMX10RCDriverOut = "OFrPAMX10RCDriverOut";
+	OFrPAMX10RCGunnerOut = "OFrPAMX10RCGunnerOut";
+	OFrPAMX10RCCommanderOut = "OFrPAMX10RCCommanderOut";
 };
 class CfgMovesMC {
 	class Default {};
@@ -1563,208 +1563,208 @@ class CfgMovesMC {
 // --------------------------- AMX10RC -------------------------------
 
 		class OFrPAMX10RCDriver: Driver {
-			file="\TZK_Config_4_0_6\Anims\AMX10RC_driver.rtm";
+			file = "\TZK_Config_4_0_6\Anims\AMX10RC_driver.rtm";
 			speed=-10.000000;
-			looped=1;
-			connectTo[]={"OFrPAMX10RCDriverDying",1};
-			interpolateTo[]={"OFrPAMX10RCDriverDying",0.100000};
+			looped = 1;
+			connectTo[] = {"OFrPAMX10RCDriverDying",1};
+			interpolateTo[] = {"OFrPAMX10RCDriverDying",0.100000};
 		};
 		class OFrPAMX10RCDriverDying: DefaultDie {
-			actions="NoActions";
-			file="\TZK_Config_4_0_6\Anims\AMX10RC_driver_dead.rtm";
+			actions = "NoActions";
+			file = "\TZK_Config_4_0_6\Anims\AMX10RC_driver_dead.rtm";
 			speed=-0.5;
-			looped=0;
-			soundEnabled=0;
-			connectFrom[]={"OFrPAMX10RCDriver",1};
+			looped = 0;
+			soundEnabled = 0;
+			connectFrom[] = {"OFrPAMX10RCDriver",1};
 		};
 		class OFrPAMX10RCDriverDead: OFrPAMX10RCDriverDying {
-			actions="DeadActions";
-			file="\TZK_Config_4_0_6\Anims\AMX10RC_driver_dead_stat.rtm";
-			speed=10000000000.000000;
-			terminal=1;
-			connectFrom[]={"OFrPAMX10RCDriverDying",1};
-			connectTo[]={"DeadState",1};
+			actions = "DeadActions";
+			file = "\TZK_Config_4_0_6\Anims\AMX10RC_driver_dead_stat.rtm";
+			speed = 10000000000.000000;
+			terminal = 1;
+			connectFrom[] = {"OFrPAMX10RCDriverDying",1};
+			connectTo[] = {"DeadState",1};
 		};
 		class OFrPAMX10RCDriverOut: Driver {
-			file="\TZK_Config_4_0_6\Anims\AMX10RC_driver_Out.rtm";
+			file = "\TZK_Config_4_0_6\Anims\AMX10RC_driver_Out.rtm";
 			speed=-10.000000;
-			looped=1;
-			connectTo[]={"OFrPAMX10RCDriverOutDying",1};
-			interpolateTo[]={"OFrPAMX10RCDriverOutDying",0.100000};
+			looped = 1;
+			connectTo[] = {"OFrPAMX10RCDriverOutDying",1};
+			interpolateTo[] = {"OFrPAMX10RCDriverOutDying",0.100000};
 		};
 		class OFrPAMX10RCDriverOutDying: DefaultDie {
-			actions="NoActions";
-			file="\TZK_Config_4_0_6\Anims\AMX10RC_driver_Out_dead.rtm";
+			actions = "NoActions";
+			file = "\TZK_Config_4_0_6\Anims\AMX10RC_driver_Out_dead.rtm";
 			speed=-0.5;
-			looped=0;
-			soundEnabled=0;
-			connectFrom[]={"OFrPAMX10RCDriverOut",1};
+			looped = 0;
+			soundEnabled = 0;
+			connectFrom[] = {"OFrPAMX10RCDriverOut",1};
 		};
 		class OFrPAMX10RCDriverOutDead: OFrPAMX10RCDriverOutDying {
-			actions="DeadActions";
-			file="\TZK_Config_4_0_6\Anims\AMX10RC_driver_Out_dead_stat.rtm";
-			speed=10000000000.000000;
-			terminal=1;
-			connectFrom[]={"OFrPAMX10RCDriverOutDying",1};
-			connectTo[]={"DeadState",1};
+			actions = "DeadActions";
+			file = "\TZK_Config_4_0_6\Anims\AMX10RC_driver_Out_dead_stat.rtm";
+			speed = 10000000000.000000;
+			terminal = 1;
+			connectFrom[] = {"OFrPAMX10RCDriverOutDying",1};
+			connectTo[] = {"DeadState",1};
 		};
 
 		class OFrPAMX10RCDriverOutForward: StandBase {
 			actions = StandSaluteActions;
-			file="\TZK_Config_4_0_6\Anims\AMX10RC_Driver_out_forward.rtm";
+			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Driver_out_forward.rtm";
 			speed = -0.75
 			looped = false;
 			soundEnabled = false;
-			connectFrom[]={Stand,1};
-			interpolationSpeed=0.1; 
-			interpolateTo[]={"OFrPAMX10RCDriverOutDying",0.1,"OFrPAMX10RCDriverOutDying",0.1};
+			connectFrom[] = {Stand,1};
+			interpolationSpeed = 0.1;
+			interpolateTo[] = {"OFrPAMX10RCDriverOutDying",0.1,"OFrPAMX10RCDriverOutDying",0.1};
 		};
 		class OFrPAMX10RCDriverOutBackward: StandBase {
 			actions = StandSaluteActions;
-			file="\TZK_Config_4_0_6\Anims\AMX10RC_Driver_out_backward.rtm";
+			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Driver_out_backward.rtm";
 			speed = -0.75
 			looped = false;
 			soundEnabled = false;
-			connectFrom[]={Stand,1};
-			interpolationSpeed=0.1; 
-			interpolateTo[]={"OFrPAMX10RCDriverOutDying",0.1,"OFrPAMX10RCDriverOutDying",0.1};
+			connectFrom[] = {Stand,1};
+			interpolationSpeed = 0.1;
+			interpolateTo[] = {"OFrPAMX10RCDriverOutDying",0.1,"OFrPAMX10RCDriverOutDying",0.1};
 		};
 		class OFrPAMX10RCGunner: Gunner {
-			file="\TZK_Config_4_0_6\Anims\AMX10RC_gunner.rtm";
+			file = "\TZK_Config_4_0_6\Anims\AMX10RC_gunner.rtm";
 			speed=-10.000000;
-			looped=1;
-			connectTo[]={"OFrPAMX10RCGunnerDying",1};
-			interpolateTo[]={"OFrPAMX10RCGunnerDying",0.100000};
+			looped = 1;
+			connectTo[] = {"OFrPAMX10RCGunnerDying",1};
+			interpolateTo[] = {"OFrPAMX10RCGunnerDying",0.100000};
 		};
 
 		class OFrPAMX10RCGunnerDying: DefaultDie {
-			actions="NoActions";
-			file="\TZK_Config_4_0_6\Anims\AMX10RC_gunner_dead.rtm";
+			actions = "NoActions";
+			file = "\TZK_Config_4_0_6\Anims\AMX10RC_gunner_dead.rtm";
 			speed=-0.5;
-			looped=0;
-			soundEnabled=0;
-			connectFrom[]={"OFrPAMX10RCGunner",1};
+			looped = 0;
+			soundEnabled = 0;
+			connectFrom[] = {"OFrPAMX10RCGunner",1};
 		};
 		class OFrPAMX10RCGunnerDead: OFrPAMX10RCGunnerDying {
-			actions="DeadActions";
-			file="\TZK_Config_4_0_6\Anims\AMX10RC_gunner_dead_stat.rtm";
-			speed=10000000000.000000;
-			terminal=1;
-			connectFrom[]={"OFrPAMX10RCGunnerDying",1};
-			connectTo[]={"DeadState",1};
+			actions = "DeadActions";
+			file = "\TZK_Config_4_0_6\Anims\AMX10RC_gunner_dead_stat.rtm";
+			speed = 10000000000.000000;
+			terminal = 1;
+			connectFrom[] = {"OFrPAMX10RCGunnerDying",1};
+			connectTo[] = {"DeadState",1};
 		};
 		class OFrPAMX10RCGunnerOut: Gunner {
-			file="\TZK_Config_4_0_6\Anims\AMX10RC_Gunner_out.rtm";
+			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Gunner_out.rtm";
 			speed=-10.000000;
-			looped=1;
-			connectTo[]={"OFrPAMX10RCGunnerOutDying",1};
-			interpolateTo[]={"OFrPAMX10RCGunnerOutDying",0.100000};
+			looped = 1;
+			connectTo[] = {"OFrPAMX10RCGunnerOutDying",1};
+			interpolateTo[] = {"OFrPAMX10RCGunnerOutDying",0.100000};
 		};
 
 		class OFrPAMX10RCGunnerOutDying: DefaultDie {
-			actions="NoActions";
-			file="\TZK_Config_4_0_6\Anims\AMX10RC_Gunner_out_dead.rtm";
+			actions = "NoActions";
+			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Gunner_out_dead.rtm";
 			speed=-0.5;
-			looped=0;
-			soundEnabled=0;
-			connectFrom[]={"OFrPAMX10RCGunnerOut",1};
+			looped = 0;
+			soundEnabled = 0;
+			connectFrom[] = {"OFrPAMX10RCGunnerOut",1};
 		};
 		class OFrPAMX10RCGunnerOutDead: OFrPAMX10RCGunnerOutDying {
-			actions="DeadActions";
-			file="\TZK_Config_4_0_6\Anims\AMX10RC_Gunner_out_dead_stat.rtm";
-			speed=10000000000.000000;
-			terminal=1;
-			connectFrom[]={"OFrPAMX10RCGunnerOutDying",1};
-			connectTo[]={"DeadState",1};
+			actions = "DeadActions";
+			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Gunner_out_dead_stat.rtm";
+			speed = 10000000000.000000;
+			terminal = 1;
+			connectFrom[] = {"OFrPAMX10RCGunnerOutDying",1};
+			connectTo[] = {"DeadState",1};
 		};
 
 		class OFrPAMX10RCGunnerOutForward: StandBase {
 			actions = StandSaluteActions;
-			file="\TZK_Config_4_0_6\Anims\AMX10RC_Gunner_out_forward.rtm";
+			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Gunner_out_forward.rtm";
 			speed = -0.75
 			looped = false;
 			soundEnabled = false;
-			connectFrom[]={Stand,1};
-			interpolationSpeed=0.1; 
-			interpolateTo[]={"OFrPAMX10RCGunnerOutDying",0.1,"OFrPAMX10RCGunnerOutDying",0.1};
+			connectFrom[] = {Stand,1};
+			interpolationSpeed = 0.1;
+			interpolateTo[] = {"OFrPAMX10RCGunnerOutDying",0.1,"OFrPAMX10RCGunnerOutDying",0.1};
 		};
 		class OFrPAMX10RCGunnerOutBackward: StandBase {
 			actions = StandSaluteActions;
-			file="\TZK_Config_4_0_6\Anims\AMX10RC_Gunner_out_backward.rtm";
+			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Gunner_out_backward.rtm";
 			speed = -0.75
 			looped = false;
 			soundEnabled = false;
-			connectFrom[]={Stand,1};
-			interpolationSpeed=0.1; 
-			interpolateTo[]={"OFrPAMX10RCGunnerOutDying",0.1,"OFrPAMX10RCGunnerOutDying",0.1};
+			connectFrom[] = {Stand,1};
+			interpolationSpeed = 0.1;
+			interpolateTo[] = {"OFrPAMX10RCGunnerOutDying",0.1,"OFrPAMX10RCGunnerOutDying",0.1};
 		};
 		class OFrPAMX10RCCommander: Commander {
-			file="\TZK_Config_4_0_6\Anims\AMX10RC_Commander.rtm";
+			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Commander.rtm";
 			speed=-10.000000;
-			looped=1;
-			connectTo[]={"OFrPAMX10RCCommanderDying",1};
-			interpolateTo[]={"OFrPAMX10RCCommanderDying",0.100000};
+			looped = 1;
+			connectTo[] = {"OFrPAMX10RCCommanderDying",1};
+			interpolateTo[] = {"OFrPAMX10RCCommanderDying",0.100000};
 		};
 		class OFrPAMX10RCCommanderDying: DefaultDie {
-			actions="NoActions";
-			file="\TZK_Config_4_0_6\Anims\AMX10RC_Commander_dead.rtm";
+			actions = "NoActions";
+			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Commander_dead.rtm";
 			speed=-0.5;
-			looped=0;
-			soundEnabled=0;
-			connectFrom[]={"OFrPAMX10RCCommander",1};
+			looped = 0;
+			soundEnabled = 0;
+			connectFrom[] = {"OFrPAMX10RCCommander",1};
 		};
 		class OFrPAMX10RCCommanderDead: OFrPAMX10RCCommanderDying {
-			actions="DeadActions";
-			file="\TZK_Config_4_0_6\Anims\AMX10RC_Commander_dead_stat.rtm";
-			speed=10000000000.000000;
-			terminal=1;
-			connectFrom[]={"OFrPAMX10RCCommanderDying",1};
-			connectTo[]={"DeadState",1};
+			actions = "DeadActions";
+			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Commander_dead_stat.rtm";
+			speed = 10000000000.000000;
+			terminal = 1;
+			connectFrom[] = {"OFrPAMX10RCCommanderDying",1};
+			connectTo[] = {"DeadState",1};
 		};
 		class OFrPAMX10RCCommanderOut: Commander {
-			file="\TZK_Config_4_0_6\Anims\AMX10RC_Commander_out.rtm";
+			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Commander_out.rtm";
 			speed=-10.000000;
-			looped=1;
-			connectTo[]={"OFrPAMX10RCCommanderOutDying",1};
-			interpolateTo[]={"OFrPAMX10RCCommanderOutDying",0.100000};
+			looped = 1;
+			connectTo[] = {"OFrPAMX10RCCommanderOutDying",1};
+			interpolateTo[] = {"OFrPAMX10RCCommanderOutDying",0.100000};
 		};
 		class OFrPAMX10RCCommanderOutDying: DefaultDie {
-			actions="NoActions";
-			file="\TZK_Config_4_0_6\Anims\AMX10RC_Commander_out_dead.rtm";
+			actions = "NoActions";
+			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Commander_out_dead.rtm";
 			speed=-0.5;
-			looped=0;
-			soundEnabled=0;
-			connectFrom[]={"OFrPAMX10RCCommanderOut",1};
+			looped = 0;
+			soundEnabled = 0;
+			connectFrom[] = {"OFrPAMX10RCCommanderOut",1};
 		};
 		class OFrPAMX10RCCommanderOutDead: OFrPAMX10RCCommanderOutDying {
-			actions="DeadActions";
-			file="\TZK_Config_4_0_6\Anims\AMX10RC_Commander_out_dead_stat.rtm";
-			speed=10000000000.000000;
-			terminal=1;
-			connectFrom[]={"OFrPAMX10RCCommanderOutDying",1};
-			connectTo[]={"DeadState",1};
+			actions = "DeadActions";
+			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Commander_out_dead_stat.rtm";
+			speed = 10000000000.000000;
+			terminal = 1;
+			connectFrom[] = {"OFrPAMX10RCCommanderOutDying",1};
+			connectTo[] = {"DeadState",1};
 		};
 		
 
 		class OFrPAMX10RCCommanderOutForward: StandBase {
 			actions = StandSaluteActions;
-			file="\TZK_Config_4_0_6\Anims\AMX10RC_Commander_out_forward.rtm";
+			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Commander_out_forward.rtm";
 			speed = -0.75
 			looped = false;
 			soundEnabled = false;
-			connectFrom[]={Stand,1};
-			interpolationSpeed=0.1; 
-			interpolateTo[]={"OFrPAMX10RCCommanderOutDying",0.1,"OFrPAMX10RCCommanderOutDying",0.1};
+			connectFrom[] = {Stand,1};
+			interpolationSpeed = 0.1;
+			interpolateTo[] = {"OFrPAMX10RCCommanderOutDying",0.1,"OFrPAMX10RCCommanderOutDying",0.1};
 		};
 		class OFrPAMX10RCCommanderOutBackward: StandBase {
 			actions = StandSaluteActions;
-			file="\TZK_Config_4_0_6\Anims\AMX10RC_Commander_out_backward.rtm";
+			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Commander_out_backward.rtm";
 			speed = -0.75
 			looped = false;
 			soundEnabled = false;
-			connectFrom[]={Stand,1};
-			interpolationSpeed=0.1; 
-			interpolateTo[]={"OFrPAMX10RCCommanderOutDying",0.1,"OFrPAMX10RCCommanderOutDying",0.1};
+			connectFrom[] = {Stand,1};
+			interpolationSpeed = 0.1;
+			interpolateTo[] = {"OFrPAMX10RCCommanderOutDying",0.1,"OFrPAMX10RCCommanderOutDying",0.1};
 		};
 	};
 };
