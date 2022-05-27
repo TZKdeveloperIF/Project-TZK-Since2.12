@@ -14,6 +14,13 @@
 #define protected 1
 #define public 2
 
+#define CanSeeRadar 1
+#define CanSeeEye 2
+#define CanSeeOptics 4
+#define CanSeeEar 8
+#define CanSeeCompass 16 
+#define CanSeeAll 31
+
 class CfgPatches {
 	class TZK_CONFIG_406 {
 		name = "TZK_CONFIG_406";
@@ -307,6 +314,21 @@ class CfgAmmo {
 		// ================ above same as LAW ================
 		simulation = "shotShell";
 	};
+	
+	class 105RCSabot_OFrP_xj400: Heat105 {
+		hit = 550; indirectHit = 150;
+		minRange = 10;
+		soundFly[] = {"\TZK_Config_4_0_6\PrjtlFlg.wss",db-20,1.0};
+		cost = 800;
+	};
+	class 105RCHE_OFrP_xj400: Shell105 {
+		hit = 150; indirectHit = 100; indirectHitRange = 8;
+		soundFly[] = {"\TZK_Config_4_0_6\PrjtlFlg.wss",db-20,1.0};
+		minRange = 50; minRangeProbab = 0.5;
+		midRange = 1050; midRangeProbab = 0.99;
+		maxRange = 2000; maxRangeProbab = 0.75;
+		cost = 200;
+	};
 };
 class CfgWeapons {
 	class Default {};
@@ -584,6 +606,46 @@ class CfgWeapons {
 		picture = "\dtaext\equip\w\w_9k32Launcher.paa";
 	};
 	
+	class 105RC_OFrP_xj400: Gun105 {
+		displayName = "105mm/48caliber";
+		magazines[] = {"105RCSabot_OFrP_xj400", "105RCHE_OFrP_xj400"};
+		reloadTime = 8; //chargeur manuel
+		
+		opticsZoomMin = 0.04;
+ 		opticsZoomMax = 0.18;
+ 		distanceZoomMin = 800;
+ 		distanceZoomMax = 50;
+	};
+	class 105RCSabot_OFrP_xj400: HEAT105 {
+		displayName = "APFSDS 105mm F3";
+		displayNameMagazine = "APFSDS";
+		shortNameMagazine = "APFSDS";
+		ammo = "105RCSabot_OFrP_xj400";
+		count = 38;
+		initSpeed = 1400;
+		nameSound = "heat";
+		recoil = "Empty";
+		dispersion = 0.0001;
+		reloadTime = 8;
+		sound[] = {"\TZK_Config_4_0_6\tir10RC.wss", 10, 1.0};
+		aiRateOfFire = 0;
+		aiRateOfFireDistance = 0;
+	};
+	class 105RCHE_OFrP_xj400: Shell105 {
+		displayName = "HE 105mm F3";
+		displayNameMagazine = "HE";
+		shortNameMagazine = "HE";
+		ammo = "105RCHE_OFrP_xj400";
+		count = 38;
+		initSpeed = 800;
+		nameSound = "Shell";
+		recoil = "Empty";
+		dispersion = 0.001;
+		reloadTime = 8;
+		sound[] = {"\TZK_Config_4_0_6\tir10RC.wss", 10, 1.0};
+		aiRateOfFire = 0;
+		aiRateOfFireDistance = 0;
+	};
 
 	class RKG3M_xj400: HandGrenade {
 		displayName = "RKG-3M";
@@ -1059,6 +1121,199 @@ class CfgVehicles {
 		driverIsGunner = 1;
 	};
 
+	
+	// AMX10RC from OFrP mod
+	class AMX10RC_OFrP_xj400: M1Abrams_Base_xj400 {
+		scope = protected; vehicleClass = "TZK_Units_400";
+		accuracy = 0.5;
+		displayName = "AMX 10 RC"; nameSound = "tank"; side = 1; cost = 1000000; type = 1; threat[] = {1, 1, 0.6};
+		
+		model = "\TZK_Config_4_0_6\Amx10Rc_uiox.p3d";
+		hiddenSelections[] = {
+			"nom","ID","logo","KFOR","Flag"
+			, tzk_tex_00
+			, tex_10p_cha.pac, tex_10p_gre.pac, tex_ar1.paa, tex_camo.paa, tex_cots.paa, tex_cul.paa, 
+			tex_d1.paa, tex_d2.paa, tex_d3.paa, tex_d4.paa, tex_d5.paa, tex_d6.paa, tex_d7.paa, tex_d8.paa, 
+			tex_des.paa, tex_det.paa, tex_det2.paa, tex_ec.paa, tex_epinoir.paa, tex_lg.paa, tex_pan.paa, 
+			tex_roue.paa, tex_roues.paa, tex_t1.paa, tex_tav.paa, tex_tconduc.paa, tex_td.paa, 
+			tex_tg.paa, tex_tour.paa, tex_viseur.paa, tex_visouv.paa
+			, tzk_tex_99
+		};
+ 		picture = "\TZK_Config_4_0_6\tex\i10rc.paa";
+		// smaller vehicle size
+		camouflage = 5; audible = 5;
+		// hs_todo: need verify armor in real
+		armor = 200; armorStructural = 2.0;
+		class HitEngine { armor = 0.8; material = 60; name = "engine"; passThrough = 1; };
+		class HitHull { armor = 1.0; material = 50; name = "hull"; passThrough = 1; };
+		class HitTurret { armor = 0.8; material = 51; name = "turet"; passThrough = 1; };
+		class HitGun { armor = 0.9; material = 52; name = "gun"; passThrough = 1; };
+		class HitLTrack { armor = 0.4; material = 53; name = "pasL"; passThrough = 1; };
+		class HitRTrack { armor = 0.4; material = 54; name = "pasP"; passThrough = 1; };
+
+		irScanToEyeFactor = 0.616; // Special radar setting in TZK.
+		nightVision = 1;
+		canFloat = 1; //amphibie
+		maxSpeed = 85;
+		precision = 5;
+		brakeDistance = 10;
+		fuelCapacity = 675;
+		formationX = 50;
+		formationZ = 50;
+
+		// hs_todo: 换成AI的散射机枪
+		weapons[] = {"105RC_OFrP_xj400", "MachineGun7_6"};
+		magazines[] = {
+			"105RCSabot_OFrP_xj400", "105RCHE_OFrP_xj400", 
+			"MachineGun7_6", "MachineGun7_6", "MachineGun7_6", "MachineGun7_6", "MachineGun7_6", "MachineGun7_6", "MachineGun7_6", "MachineGun7_6"
+		};
+
+		// hs_todo: adjust db value, verify turret/comturret sound/memory
+		soundEngine[] = {"\TZK_Config_4_0_6\moteur10rc.wss",db-15,1};
+		soundEnviron[] = {,db-15,1};
+
+		class Turret {
+			gunAxis = "OsaHlavne";
+			turretAxis = "OsaVeze";
+			soundServo[] = {"Vehicles\gun_elevate",db-30,1.0}; // 0.0316228
+			gunBeg = "usti hlavne";
+			gunEnd = "konec hlavne";
+			body = "OtocVez";
+			gun = "OtocHlaven";
+			minElev = -8;
+			maxElev = +20;
+			minTurn = -360;
+			maxTurn = +360;
+		};
+		class ComTurret {
+			turretAxis = "OsaVelitele";
+			gunAxis = "OsaHlavneVelitele";
+			soundServo[] = {"Vehicles\gun_elevate",db-70,1.2}; // 0.0003162
+			
+			gunBeg = "usti hlavne"; // currently ignored
+			gunEnd = "konec hlavne";
+			
+			minElev = -15; maxElev = +20;
+			minTurn = -360; maxTurn = +360;
+
+			body = "OtocVelitele";
+			gun = "OtocHlavenVelitele";
+		};
+
+		class ViewOptics {
+			initFov = 0.18; minFov = 0.04; maxFov = 0.18;
+			initAngleX = 0; minAngleX = -40; maxAngleX = +40;
+			initAngleY = 0; minAngleY = -360; maxAngleY = +360;
+		};
+		class ViewPilot {
+			initAngleX = 5; minAngleX = -20; maxAngleX = +20;
+			initAngleY = 0; minAngleY = -45; maxAngleY = +45;
+			initFov = 0.7; minFov = 0.42; maxFov = 0.85;
+		};
+		class ViewCommander {
+			initAngleX = 5; minAngleX = -20; maxAngleX = +20;
+			initAngleY = 0; minAngleY = -150; maxAngleY = +150;
+			initFov = 0.7; minFov = 0.42; maxFov = 0.85;
+		};
+		class ViewGunner {
+			initAngleX = 5; minAngleX = -15; maxAngleX = +15;
+			initAngleY = 0; minAngleY = -45; maxAngleY = +45;
+			initFov = 0.7; minFov = 0.42; maxFov = 0.85;
+		};
+
+		commanderAction = "ManActOFrPAMX10RCCommanderOut";
+		commanderInAction = "ManActOFrPAMX10RCCommander";
+		commanderCanSee = CanSeeRadar+CanSeeEye+CanSeeOptics+CanSeeCompass;
+		forceHideCommander = false;
+
+		driverAction = "ManActOFrPAMX10RCDriverOut";
+		driverInAction = "ManActOFrPAMX10RCDriver";
+		driverCanSee = CanSeeEye+CanSeeEar+CanSeeCompass;
+		forceHideDriver = false;
+
+		gunnerAction = "ManActOFrPAMX10RCGunnerOut";
+		gunnerInAction = "ManActOFrPAMX10RCGunner";
+		gunnerCanSee = CanSeeRadar+CanSeeEye+CanSeeOptics+CanSeeCompass;
+		outGunnerMayFire = false;
+		forceHideGunner = false;
+		
+		gunnerOpticsModel = "\TZK_Config_4_0_6\opt\TirRc";
+		commanderOpticsModel = "\TZK_Config_4_0_6\opt\ComRc";
+		
+		// EVENTS ##################################################
+		class EventHandlers {
+			Init = "_vehicle = _this select 0; [_vehicle, {D}] exec {\TZK_Config_4_0_6\Scripts\texture\AMX10RC.sqs}";
+		};
+		
+		// ANIMATIONS ##############################################
+		class HatchDriver {
+			selection = "poklop_driver";
+			axis = "osa_poklop_driver";
+			angle = 90;
+		};
+		class HatchCommander {
+			selection = "poklop_commander";
+			axis = "osa_poklop_commander";
+			angle = -120;
+		};
+		class HatchGunner {
+			selection = "poklop_gunner";
+			axis = "osa_poklop_gunner";
+			angle = 120;
+		};
+
+		// ANIMATIONS SELECTION LOD ###############################
+		class Animations {
+			class AnimDrecL {
+				type = "rotation";
+				animperiod = 0.01;
+				selection = ReloadDrecL;
+				axis = AxeDrecL;
+				angle0= -0.04;
+				angle1= 0.04; 
+			};
+			class AnimDrecR {
+				type = "rotation";
+				animperiod = 0.01;
+				selection = ReloadDrecR;
+				axis = AxeDrecR;
+				angle0= -0.04;
+				angle1= 0.04; 
+			};
+			class AnimDreb {
+				type = "rotation";
+				animperiod = 0.01;
+				selection = ReloadDreb;
+				axis = AxeDreb;
+				angle0= -0.04;
+				angle1= 0.04; 
+			};
+			class TrappeVisGun {
+				type = "rotation";
+				animperiod = 2;
+				selection = TrappeVisGun;
+				axis = AxeTrappeVisGun;
+				angle0= 0;
+				angle1= pi/2; 
+			};
+			class TrappeVisChar {
+				type = "rotation";
+				animperiod = 2;
+				selection = TrappeVisChar;
+				axis = AxeTrappeVisChar;
+				angle0= 0;
+				angle1= -pi/2; 
+			};
+			class AnimBriseLame {
+				type = "rotation";
+				animperiod = 3;
+				selection = BriseLame;
+				axis = AxeBriseLame;
+				angle0= 0;
+				angle1= pi/1.5; 
+			};
+		};
+	};	
 	class ResistanceTank_xj400: Tank_xj400 {};
 	class T80Res_Base_xj406: ResistanceTank_xj400 {
 		scope = 0;
@@ -1254,6 +1509,248 @@ class CfgVehicles {
 	};
 	class pwr_paraC_4veh_xj400: pwr_paraC_xj400 {
 		model = "\TZK_Config_4_0_6\PARA_Veh.p3d";
+	};
+};
+
+
+class CfgNonAIVehicles {
+	class ProxyCrew {};
+	class ProxyDriver: ProxyCrew {};
+	class ProxyGunner: ProxyCrew {};
+	class ProxyCommander: ProxyCrew {};
+
+	class ProxyOFrPAMX10RCDriver: ProxyDriver {};
+	class ProxyOFrPAMX10RCDriverOut: ProxyDriver {};
+	class ProxyOFrPAMX10RCGunner: ProxyGunner {};
+	class ProxyOFrPAMX10RCGunnerOut: ProxyGunner {};
+	class ProxyOFrPAMX10RCCommander: ProxyCommander {};
+	class ProxyOFrPAMX10RCCommanderOut: ProxyCommander {};
+};
+
+class CfgVehicleActions {
+	OFrPAMX10RCDriver="OFrPAMX10RCDriver";
+	OFrPAMX10RCGunner="OFrPAMX10RCGunner";
+	OFrPAMX10RCCommander="OFrPAMX10RCCommander";
+	OFrPAMX10RCDriverOut="OFrPAMX10RCDriverOut";
+	OFrPAMX10RCGunnerOut="OFrPAMX10RCGunnerOut";
+	OFrPAMX10RCCommanderOut="OFrPAMX10RCCommanderOut";
+};
+class CfgMovesMC {
+	class Default {};
+	class DefaultDie: Default {};
+	class StandBase: Default {};
+	class States {
+		class Driver: Default {};
+		class Gunner: Driver {};
+		class Commander: Driver {};
+		class Cargo: Driver {};
+
+// --------------------------- AMX10RC -------------------------------
+
+		class OFrPAMX10RCDriver: Driver {
+			file="\TZK_Config_4_0_6\Anims\AMX10RC_driver.rtm";
+			speed=-10.000000;
+			looped=1;
+			connectTo[]={"OFrPAMX10RCDriverDying",1};
+			interpolateTo[]={"OFrPAMX10RCDriverDying",0.100000};
+		};
+		class OFrPAMX10RCDriverDying: DefaultDie {
+			actions="NoActions";
+			file="\TZK_Config_4_0_6\Anims\AMX10RC_driver_dead.rtm";
+			speed=-0.5;
+			looped=0;
+			soundEnabled=0;
+			connectFrom[]={"OFrPAMX10RCDriver",1};
+		};
+		class OFrPAMX10RCDriverDead: OFrPAMX10RCDriverDying {
+			actions="DeadActions";
+			file="\TZK_Config_4_0_6\Anims\AMX10RC_driver_dead_stat.rtm";
+			speed=10000000000.000000;
+			terminal=1;
+			connectFrom[]={"OFrPAMX10RCDriverDying",1};
+			connectTo[]={"DeadState",1};
+		};
+		class OFrPAMX10RCDriverOut: Driver {
+			file="\TZK_Config_4_0_6\Anims\AMX10RC_driver_Out.rtm";
+			speed=-10.000000;
+			looped=1;
+			connectTo[]={"OFrPAMX10RCDriverOutDying",1};
+			interpolateTo[]={"OFrPAMX10RCDriverOutDying",0.100000};
+		};
+		class OFrPAMX10RCDriverOutDying: DefaultDie {
+			actions="NoActions";
+			file="\TZK_Config_4_0_6\Anims\AMX10RC_driver_Out_dead.rtm";
+			speed=-0.5;
+			looped=0;
+			soundEnabled=0;
+			connectFrom[]={"OFrPAMX10RCDriverOut",1};
+		};
+		class OFrPAMX10RCDriverOutDead: OFrPAMX10RCDriverOutDying {
+			actions="DeadActions";
+			file="\TZK_Config_4_0_6\Anims\AMX10RC_driver_Out_dead_stat.rtm";
+			speed=10000000000.000000;
+			terminal=1;
+			connectFrom[]={"OFrPAMX10RCDriverOutDying",1};
+			connectTo[]={"DeadState",1};
+		};
+
+		class OFrPAMX10RCDriverOutForward: StandBase {
+			actions = StandSaluteActions;
+			file="\TZK_Config_4_0_6\Anims\AMX10RC_Driver_out_forward.rtm";
+			speed = -0.75
+			looped = false;
+			soundEnabled = false;
+			connectFrom[]={Stand,1};
+			interpolationSpeed=0.1; 
+			interpolateTo[]={"OFrPAMX10RCDriverOutDying",0.1,"OFrPAMX10RCDriverOutDying",0.1};
+		};
+		class OFrPAMX10RCDriverOutBackward: StandBase {
+			actions = StandSaluteActions;
+			file="\TZK_Config_4_0_6\Anims\AMX10RC_Driver_out_backward.rtm";
+			speed = -0.75
+			looped = false;
+			soundEnabled = false;
+			connectFrom[]={Stand,1};
+			interpolationSpeed=0.1; 
+			interpolateTo[]={"OFrPAMX10RCDriverOutDying",0.1,"OFrPAMX10RCDriverOutDying",0.1};
+		};
+		class OFrPAMX10RCGunner: Gunner {
+			file="\TZK_Config_4_0_6\Anims\AMX10RC_gunner.rtm";
+			speed=-10.000000;
+			looped=1;
+			connectTo[]={"OFrPAMX10RCGunnerDying",1};
+			interpolateTo[]={"OFrPAMX10RCGunnerDying",0.100000};
+		};
+
+		class OFrPAMX10RCGunnerDying: DefaultDie {
+			actions="NoActions";
+			file="\TZK_Config_4_0_6\Anims\AMX10RC_gunner_dead.rtm";
+			speed=-0.5;
+			looped=0;
+			soundEnabled=0;
+			connectFrom[]={"OFrPAMX10RCGunner",1};
+		};
+		class OFrPAMX10RCGunnerDead: OFrPAMX10RCGunnerDying {
+			actions="DeadActions";
+			file="\TZK_Config_4_0_6\Anims\AMX10RC_gunner_dead_stat.rtm";
+			speed=10000000000.000000;
+			terminal=1;
+			connectFrom[]={"OFrPAMX10RCGunnerDying",1};
+			connectTo[]={"DeadState",1};
+		};
+		class OFrPAMX10RCGunnerOut: Gunner {
+			file="\TZK_Config_4_0_6\Anims\AMX10RC_Gunner_out.rtm";
+			speed=-10.000000;
+			looped=1;
+			connectTo[]={"OFrPAMX10RCGunnerOutDying",1};
+			interpolateTo[]={"OFrPAMX10RCGunnerOutDying",0.100000};
+		};
+
+		class OFrPAMX10RCGunnerOutDying: DefaultDie {
+			actions="NoActions";
+			file="\TZK_Config_4_0_6\Anims\AMX10RC_Gunner_out_dead.rtm";
+			speed=-0.5;
+			looped=0;
+			soundEnabled=0;
+			connectFrom[]={"OFrPAMX10RCGunnerOut",1};
+		};
+		class OFrPAMX10RCGunnerOutDead: OFrPAMX10RCGunnerOutDying {
+			actions="DeadActions";
+			file="\TZK_Config_4_0_6\Anims\AMX10RC_Gunner_out_dead_stat.rtm";
+			speed=10000000000.000000;
+			terminal=1;
+			connectFrom[]={"OFrPAMX10RCGunnerOutDying",1};
+			connectTo[]={"DeadState",1};
+		};
+
+		class OFrPAMX10RCGunnerOutForward: StandBase {
+			actions = StandSaluteActions;
+			file="\TZK_Config_4_0_6\Anims\AMX10RC_Gunner_out_forward.rtm";
+			speed = -0.75
+			looped = false;
+			soundEnabled = false;
+			connectFrom[]={Stand,1};
+			interpolationSpeed=0.1; 
+			interpolateTo[]={"OFrPAMX10RCGunnerOutDying",0.1,"OFrPAMX10RCGunnerOutDying",0.1};
+		};
+		class OFrPAMX10RCGunnerOutBackward: StandBase {
+			actions = StandSaluteActions;
+			file="\TZK_Config_4_0_6\Anims\AMX10RC_Gunner_out_backward.rtm";
+			speed = -0.75
+			looped = false;
+			soundEnabled = false;
+			connectFrom[]={Stand,1};
+			interpolationSpeed=0.1; 
+			interpolateTo[]={"OFrPAMX10RCGunnerOutDying",0.1,"OFrPAMX10RCGunnerOutDying",0.1};
+		};
+		class OFrPAMX10RCCommander: Commander {
+			file="\TZK_Config_4_0_6\Anims\AMX10RC_Commander.rtm";
+			speed=-10.000000;
+			looped=1;
+			connectTo[]={"OFrPAMX10RCCommanderDying",1};
+			interpolateTo[]={"OFrPAMX10RCCommanderDying",0.100000};
+		};
+		class OFrPAMX10RCCommanderDying: DefaultDie {
+			actions="NoActions";
+			file="\TZK_Config_4_0_6\Anims\AMX10RC_Commander_dead.rtm";
+			speed=-0.5;
+			looped=0;
+			soundEnabled=0;
+			connectFrom[]={"OFrPAMX10RCCommander",1};
+		};
+		class OFrPAMX10RCCommanderDead: OFrPAMX10RCCommanderDying {
+			actions="DeadActions";
+			file="\TZK_Config_4_0_6\Anims\AMX10RC_Commander_dead_stat.rtm";
+			speed=10000000000.000000;
+			terminal=1;
+			connectFrom[]={"OFrPAMX10RCCommanderDying",1};
+			connectTo[]={"DeadState",1};
+		};
+		class OFrPAMX10RCCommanderOut: Commander {
+			file="\TZK_Config_4_0_6\Anims\AMX10RC_Commander_out.rtm";
+			speed=-10.000000;
+			looped=1;
+			connectTo[]={"OFrPAMX10RCCommanderOutDying",1};
+			interpolateTo[]={"OFrPAMX10RCCommanderOutDying",0.100000};
+		};
+		class OFrPAMX10RCCommanderOutDying: DefaultDie {
+			actions="NoActions";
+			file="\TZK_Config_4_0_6\Anims\AMX10RC_Commander_out_dead.rtm";
+			speed=-0.5;
+			looped=0;
+			soundEnabled=0;
+			connectFrom[]={"OFrPAMX10RCCommanderOut",1};
+		};
+		class OFrPAMX10RCCommanderOutDead: OFrPAMX10RCCommanderOutDying {
+			actions="DeadActions";
+			file="\TZK_Config_4_0_6\Anims\AMX10RC_Commander_out_dead_stat.rtm";
+			speed=10000000000.000000;
+			terminal=1;
+			connectFrom[]={"OFrPAMX10RCCommanderOutDying",1};
+			connectTo[]={"DeadState",1};
+		};
+		
+
+		class OFrPAMX10RCCommanderOutForward: StandBase {
+			actions = StandSaluteActions;
+			file="\TZK_Config_4_0_6\Anims\AMX10RC_Commander_out_forward.rtm";
+			speed = -0.75
+			looped = false;
+			soundEnabled = false;
+			connectFrom[]={Stand,1};
+			interpolationSpeed=0.1; 
+			interpolateTo[]={"OFrPAMX10RCCommanderOutDying",0.1,"OFrPAMX10RCCommanderOutDying",0.1};
+		};
+		class OFrPAMX10RCCommanderOutBackward: StandBase {
+			actions = StandSaluteActions;
+			file="\TZK_Config_4_0_6\Anims\AMX10RC_Commander_out_backward.rtm";
+			speed = -0.75
+			looped = false;
+			soundEnabled = false;
+			connectFrom[]={Stand,1};
+			interpolationSpeed=0.1; 
+			interpolateTo[]={"OFrPAMX10RCCommanderOutDying",0.1,"OFrPAMX10RCCommanderOutDying",0.1};
+		};
 	};
 };
 
