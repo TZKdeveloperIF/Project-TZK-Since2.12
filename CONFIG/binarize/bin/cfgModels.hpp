@@ -742,6 +742,17 @@ class CfgModels {
 			"cammo"
 		};
 	};
+	class Amx10Rc_uiox: Tank_MultiTex {
+		sections[] = {	
+			"zadni svetlo","brzdove svetlo","pruh",
+			"nom","ID","logo","KFOR","Flag"
+			, tex_10p_cha.pac, tex_10p_gre.pac, tex_ar1.paa, tex_camo.paa, tex_cots.paa, tex_cul.paa, 
+			tex_d1.paa, tex_d2.paa, tex_d3.paa, tex_d4.paa, tex_d5.paa, tex_d6.paa, tex_d7.paa, tex_d8.paa, 
+			tex_des.paa, tex_det.paa, tex_det2.paa, tex_ec.paa, tex_epinoir.paa, tex_lg.paa, tex_pan.paa, 
+			tex_roue.paa, tex_roues.paa, tex_t1.paa, tex_tav.paa, tex_tconduc.paa, tex_td.paa, 
+			tex_tg.paa, tex_tour.paa, tex_viseur.paa, tex_visouv.paa
+		};
+	};
 };
 
 // EOF
