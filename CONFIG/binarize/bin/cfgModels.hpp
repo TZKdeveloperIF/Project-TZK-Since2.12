@@ -753,6 +753,10 @@ class CfgModels {
 			tex_tg.paa, tex_tour.paa, tex_viseur.paa, tex_visouv.paa
 		};
 	};
+	class 2S25_mfm: Tank  {
+		sectionsInherit = "Vehicle";
+		sections[] = {"no1", "no2", "no3","zadni svetlo","brzdove svetlo"};
+	};
 };
 
 // EOF
