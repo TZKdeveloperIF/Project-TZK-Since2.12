@@ -271,7 +271,7 @@ class CfgAmmo {
 		// ================ above same as LAW ================
 		cost = 500; // less cost to make AI use it more
 		// ================ below same as Kasap ================
-		model = "\TZK_Weapon_4_0_0\KYL\kasapanos.p3d";
+		model = "\TZK_Config_4_0_6\RGK3M.p3d";
 		soundHit1[] = {"\TZK_Sounds_4_0_0\KYL_KASAP\Boom2.ogg",db40,1};
 		soundHit2[] = {"\TZK_Sounds_4_0_0\KYL_KASAP\Boom3.ogg",db40,1};
 		soundHit3[] = {"\TZK_Sounds_4_0_0\KYL_KASAP\Boom4.ogg",db40,1};
