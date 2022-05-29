@@ -728,6 +728,8 @@ class UA_Equip9K112 {};
 class UA_Equip9K119 {};
 class UA_EquipATGM125 {};
 
+class WeaponFireGun {};
+
 class CfgVehicles {
 	class All {};
 	class AllVehicles:All{};
@@ -865,6 +867,196 @@ class CfgVehicles {
 			maxFov = 0.85;
 		};
 		class ViewPilot: ViewPilotBase {};
+	};
+
+	class M151A1C_htr_xj400: JeepMG {
+		scope = 2; vehicleClass = "TZK_Units_400";
+	//	accuracy = ;
+		displayName = "M151A1C with 106mm"; side = 1; cost = 100000; threat[] = {0.3, 1, 0.1};
+		
+		model = "\TZK_Config_4_0_6\m151a1c_htr.p3d";
+		picture = "\TZK_Config_4_0_6\tex\htr_m151a1c_ui.paa";
+		hiddenSelections[] = {"shell_casing01","shell_projectile01","shell_casing02","shell_projectile02","shell_casing03","shell_projectile03","shell_casing04","shell_projectile04","shell_casing05","shell_projectile05","n1","n2","chambProj","chambCase"};
+
+		gunnerAction = "ManActHTRM151ACGunner";
+		gunnerOpticsModel = "\TZK_Config_4_0_6\opt\htr_106recOptic";
+		
+		weapons[] = {}; // Car with weapon should better not equip weapon. But editors shouldn't make them haven't any magazines as well.
+		magazines[] = {"Browning_xj400"}; // Magazines must be empty for cars or game may crash in some situation, but they should be removed but not define an empty array here.
+
+		class MGunClouds : WeaponFireGun {};
+
+		maxSpeed = 80;
+		unitInfoType = "UnitInfoShip";
+		hideUnitInfo = 0;
+		secondaryExplosion = 5;
+
+		irScanGround = 0;
+		irScanToEyeFactor = 0;
+
+		armorBody = 0.8;
+		armorFuel = 1.6;
+		armorLights = 0.5;
+		armorWheels = 0.12;
+		terrainCoef = 1.2;
+		damperSize = .07;
+		damperForce = 40;
+
+   		driverCanSee = 2 + 4 + 8 + 16;
+		gunnerCanSee = 2 + 4 + 8 + 16;
+		gunnerHasOptics = 1;
+		ejectDeadDriver = 1;
+		ejectDeadGunner = 1;
+		ejectDeadCommander = 1;
+		ejectDeadCargo = 1;
+		castDriverShadow = 1;
+		castGunnerShadow = 1;
+		hasCommander = 0;
+		driverIsCommander = 1;
+		nightVision = 1;
+		transportSoldier = 1; // only 1 crew instead of 3 which in MCAR project is for logic turret direction detectore
+		// transportSoldier = 3;
+
+		gunnerOpticsColor[] = {1,0,0,1};
+
+		class Turret {
+			gunAxis = "OsaHlavne";
+			turretAxis = "OsaVeze";
+			gunBeg = "usti hlavne";
+			gunEnd = "konec hlavne";
+			body = "OtocVez";
+			gun = "OtocHlaven";
+
+			minElev = -20; maxElev = +0;
+			minTurn = -180; maxTurn = +180;
+			soundServo[] = {"",0,0};
+		};
+		class ViewOpticsBase {};
+		class ViewOptics: ViewOpticsBase {
+			initAngleX = 0;
+			minAngleX = -30;
+			maxAngleX = +30;
+			initAngleY = 0;
+			minAngleY = -100;
+			maxAngleY = +100;
+			initFov = 0.11;
+			minFov = 0.11;
+			maxFov = 0.11;
+		};
+		class ViewGunner {
+			initAngleX = 0;
+			minAngleX = 0;
+			maxAngleX = 0;
+			initAngleY = 0;
+			minAngleY = 0;
+			maxAngleY = 0;
+			initFov = 0.700000;
+			minFov = 0.420000;
+			maxFov = 0.850000;
+		};
+		class Animations {
+			class lever {
+				type ="rotation";
+				animPeriod =.7;
+				selection ="lever";
+				axis ="leverAxis";
+				angle0 =0;
+				angle1 =-3.14;
+			};
+			class lock {
+				type ="rotation";
+				animPeriod =.7;
+				selection ="lock";
+				axis ="lockAxis";
+				angle0 =0;
+				angle1 =-1.57;
+			};
+			class shield {
+				type ="rotation";
+				animPeriod =1.5;
+				selection ="frontGlass";
+				axis ="frontGlass_axis";
+				angle0 =0;
+				angle1 =-1.7;
+			};
+		};
+		class EventHandlers {
+			init = _this exec {\TZK_Objects\Scripts\InitEventHandlers\removeAllWeapons.sqs};
+		};
+	};
+	class UAZ_SPG_FDF_xj400: JeepMG {
+		scope = 2; vehicleClass = "TZK_Units_400";
+		// accuracy = 0.4;
+		displayName = "UAZ (SPG-9)"; nameSound = "UAZ"; side = 0; cost = 100000; type = 1; threat[] = {0.3, 1, 0.1};
+		
+		model = "\TZK_Config_4_0_6\uaz_spg_RUS.p3d";
+		picture = "\TZK_Config_4_0_6\tex\icon_musti.paa";
+		crew ="soldierECrew";
+		soundEngine[] = {"\TZK_Config_4_0_6\fdf\uaz_engine.wss",0.031623,1}; //FDF - Goeth 12.10.2003
+		soundEnviron[] = {"\TZK_Config_4_0_6\fdf\car_treads.wss",0.001000,1};
+		soundGetIn[] = {"\TZK_Config_4_0_6\fdf\car_getin.wss",0.001000,1};
+		soundGetOut[] = {"\TZK_Config_4_0_6\fdf\car_getout.wss",0.001000,1};
+		soundLandCrash[] = {"\TZK_Config_4_0_6\fdf\car_crash.wss",0.006000,1};
+		soundGear[] = {"\TZK_Config_4_0_6\fdf\old_gear.wss",0.000500,1};
+		soundWaterCrash[] = {"\TZK_Config_4_0_6\fdf\medium_water_splash.wss",0.006000,1};
+		
+		weapons[] = {}; // Car with weapon should better not equip weapon. But editors shouldn't make them haven't any magazines as well.
+		magazines[] = {"Browning_xj400"}; // Magazines must be empty for cars or game may crash in some situation, but they should be removed but not define an empty array here.
+
+		class MGunClouds : WeaponFireGun {};
+
+		dammageHalf[] = {"jeep4x4_glass.paa","jeep4x4_glassB.paa","jeep_kab_sklo1.paa","jeep_kab_sklo1B.paa","jeep_kab_sklo2.paa","jeep_kab_sklo2B.paa","scud_sklo.paa","scud_skloB.paa","scud_sklo2.paa","scud_sklo2B.paa","scud_sklo3.paa","scud_sklo3B.paa","scud_sklo4.paa","scud_sklo4B.paa"};
+		dammageFull[] = {"jeep4x4_glass.paa","jeep4x4_glassC.paa","jeep_kab_sklo1.paa","jeep_kab_sklo1C.paa","jeep_kab_sklo2.paa","jeep_kab_sklo2C.paa","scud_sklo.paa","scud_skloC.paa","scud_sklo2.paa","scud_sklo2C.paa","scud_sklo3.paa","scud_sklo3C.paa","scud_sklo4.paa","scud_sklo4C.paa"};
+
+		armor = 20;
+		armorGlass = 0.5;
+		armorWheels = 0.1;
+
+		transportsoldier = 1;
+		gunnerCanSee = 2 + 4 + 8 + 16;
+		gunnerHasOptics = 1;
+		optics = 1;
+		driverAction = "ManActUAZDriver";
+		gunnerAction = "ManActFDFCrouch2";
+		gunnerInAction = "ManActFDFCrouch2";
+		cargoAction[] = {"ManActUazCoDriver","ManActCargo"};
+		gunnerOpticsModel = "optika_tanke_auxiliary";
+
+		unitInfoType = "UnitInfoShip";
+		hideUnitInfo = 0;
+		maxSpeed = 90;
+
+		class ViewOptics {
+			initAngleX = 45;
+			minAngleX = -270;
+			maxAngleX = 45;
+			initAngleY = 0;
+			minAngleY = 0;
+			maxAngleY = 0;
+			initFov = 0.13; minFov = 0.13; maxFov = 0.13;
+		};
+		class ViewGunner {
+			initAngleX = 45; minAngleX = -270; maxAngleX = 45;
+			initAngleY = 0; minAngleY = 0; maxAngleY = 0;
+			initFov = 0.7; minFov = 0.15; maxFov = 0.7;
+		};
+		class TurretBase {};
+		class Turret: TurretBase {
+			gunAxis = "OsaHlavne";
+			turretAxis = "OsaVeze";
+			gunBeg = "usti hlavne";
+			gunEnd = "konec hlavne";
+			body = "OtocVez";
+			gun = "OtocHlaven";
+			soundServo[] = {"\TZK_Config_4_0_6\fdf\manual_servo.wss",0.000500,1}; //FDF - Goeth 11.5.2003
+			minElev = -15;
+			maxElev = 15;
+			minTurn = -180;
+			maxTurn = 180;
+		};
+		class EventHandlers {
+			init = _this exec {\TZK_Objects\Scripts\InitEventHandlers\removeAllWeapons.sqs};
+		};
 	};
 
 	#define SpoofMagazines "SpoofSwitch_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400"
@@ -1681,6 +1873,9 @@ class CfgVehicleActions {
 	OFrPAMX10RCDriverOut = "OFrPAMX10RCDriverOut";
 	OFrPAMX10RCGunnerOut = "OFrPAMX10RCGunnerOut";
 	OFrPAMX10RCCommanderOut = "OFrPAMX10RCCommanderOut";
+
+	HTRM151ACGunner = "CrouchToWeapon";
+	FDFCrouch2 = "CrouchToWeapon";
 };
 class CfgMovesMC {
 	class Default {};

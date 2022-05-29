@@ -757,6 +757,12 @@ class CfgModels {
 		sectionsInherit = "Vehicle";
 		sections[] = {"no1", "no2", "no3","zadni svetlo","brzdove svetlo"};
 	};
+
+	class m151a1c_htr: Car {
+		sectionsInherit="Vehicle";
+ 		sections[] = {"shell_casing01","shell_projectile01","shell_casing02","shell_projectile02","shell_casing03","shell_projectile03","shell_casing04","shell_projectile04","shell_casing05","shell_projectile05","n1","n2","lever","lock","chambProj","chambCase","frontGlass","zadni svetlo","brzdove svetlo"};
+	};
+	class uaz_spg_RUS: car {};
 };
 
 // EOF
