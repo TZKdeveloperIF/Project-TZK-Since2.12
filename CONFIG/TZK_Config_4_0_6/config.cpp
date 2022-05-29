@@ -1615,9 +1615,9 @@ class CfgVehicles {
 			soundServo[] = {"Vehicles\gun_elevate",0.0316228,1.0};
 			gunBeg = "usti hlavne";
 			gunEnd = "konec hlavne";
-			minElev=-5
+			minElev = -5
 			maxElev = 17
-			minTurn=-360
+			minTurn = -360
 			maxTurn = 360
 			initangl = 8;
 			body = "otocvez";
@@ -1630,9 +1630,9 @@ class CfgVehicles {
 			soundServo[] = {"Vehicles\gun_elevate",0.0003162,1.2};
 			gunBeg = "usti hlavne";
 			gunEnd = "konec hlavne";
-			minElev=-6;
+			minElev = -6;
 			maxElev = 25;
-			minTurn=-100;
+			minTurn = -100;
 			maxTurn = 100;
 			body = "OtocVelitele";
 			gun = "OtocHlavenVelitele";
@@ -1644,7 +1644,7 @@ class CfgVehicles {
 				animperiod = 0.5;
 				selection = "podw";
 				axis = "osa_podw";
-				angle0=-0.04;
+				angle0 = -0.04;
 				angle1 = 0.04;
 			};
 		};
@@ -1891,7 +1891,7 @@ class CfgMovesMC {
 
 		class OFrPAMX10RCDriver: Driver {
 			file = "\TZK_Config_4_0_6\Anims\AMX10RC_driver.rtm";
-			speed=-10.000000;
+			speed = -10.000000;
 			looped = 1;
 			connectTo[] = {"OFrPAMX10RCDriverDying",1};
 			interpolateTo[] = {"OFrPAMX10RCDriverDying",0.100000};
@@ -1899,7 +1899,7 @@ class CfgMovesMC {
 		class OFrPAMX10RCDriverDying: DefaultDie {
 			actions = "NoActions";
 			file = "\TZK_Config_4_0_6\Anims\AMX10RC_driver_dead.rtm";
-			speed=-0.5;
+			speed = -0.5;
 			looped = 0;
 			soundEnabled = 0;
 			connectFrom[] = {"OFrPAMX10RCDriver",1};
@@ -1914,7 +1914,7 @@ class CfgMovesMC {
 		};
 		class OFrPAMX10RCDriverOut: Driver {
 			file = "\TZK_Config_4_0_6\Anims\AMX10RC_driver_Out.rtm";
-			speed=-10.000000;
+			speed = -10.000000;
 			looped = 1;
 			connectTo[] = {"OFrPAMX10RCDriverOutDying",1};
 			interpolateTo[] = {"OFrPAMX10RCDriverOutDying",0.100000};
@@ -1922,7 +1922,7 @@ class CfgMovesMC {
 		class OFrPAMX10RCDriverOutDying: DefaultDie {
 			actions = "NoActions";
 			file = "\TZK_Config_4_0_6\Anims\AMX10RC_driver_Out_dead.rtm";
-			speed=-0.5;
+			speed = -0.5;
 			looped = 0;
 			soundEnabled = 0;
 			connectFrom[] = {"OFrPAMX10RCDriverOut",1};
@@ -1958,7 +1958,7 @@ class CfgMovesMC {
 		};
 		class OFrPAMX10RCGunner: Gunner {
 			file = "\TZK_Config_4_0_6\Anims\AMX10RC_gunner.rtm";
-			speed=-10.000000;
+			speed = -10.000000;
 			looped = 1;
 			connectTo[] = {"OFrPAMX10RCGunnerDying",1};
 			interpolateTo[] = {"OFrPAMX10RCGunnerDying",0.100000};
@@ -1967,7 +1967,7 @@ class CfgMovesMC {
 		class OFrPAMX10RCGunnerDying: DefaultDie {
 			actions = "NoActions";
 			file = "\TZK_Config_4_0_6\Anims\AMX10RC_gunner_dead.rtm";
-			speed=-0.5;
+			speed = -0.5;
 			looped = 0;
 			soundEnabled = 0;
 			connectFrom[] = {"OFrPAMX10RCGunner",1};
@@ -1982,7 +1982,7 @@ class CfgMovesMC {
 		};
 		class OFrPAMX10RCGunnerOut: Gunner {
 			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Gunner_out.rtm";
-			speed=-10.000000;
+			speed = -10.000000;
 			looped = 1;
 			connectTo[] = {"OFrPAMX10RCGunnerOutDying",1};
 			interpolateTo[] = {"OFrPAMX10RCGunnerOutDying",0.100000};
@@ -1991,7 +1991,7 @@ class CfgMovesMC {
 		class OFrPAMX10RCGunnerOutDying: DefaultDie {
 			actions = "NoActions";
 			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Gunner_out_dead.rtm";
-			speed=-0.5;
+			speed = -0.5;
 			looped = 0;
 			soundEnabled = 0;
 			connectFrom[] = {"OFrPAMX10RCGunnerOut",1};
@@ -2027,7 +2027,7 @@ class CfgMovesMC {
 		};
 		class OFrPAMX10RCCommander: Commander {
 			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Commander.rtm";
-			speed=-10.000000;
+			speed = -10.000000;
 			looped = 1;
 			connectTo[] = {"OFrPAMX10RCCommanderDying",1};
 			interpolateTo[] = {"OFrPAMX10RCCommanderDying",0.100000};
@@ -2035,7 +2035,7 @@ class CfgMovesMC {
 		class OFrPAMX10RCCommanderDying: DefaultDie {
 			actions = "NoActions";
 			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Commander_dead.rtm";
-			speed=-0.5;
+			speed = -0.5;
 			looped = 0;
 			soundEnabled = 0;
 			connectFrom[] = {"OFrPAMX10RCCommander",1};
@@ -2050,7 +2050,7 @@ class CfgMovesMC {
 		};
 		class OFrPAMX10RCCommanderOut: Commander {
 			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Commander_out.rtm";
-			speed=-10.000000;
+			speed = -10.000000;
 			looped = 1;
 			connectTo[] = {"OFrPAMX10RCCommanderOutDying",1};
 			interpolateTo[] = {"OFrPAMX10RCCommanderOutDying",0.100000};
@@ -2058,7 +2058,7 @@ class CfgMovesMC {
 		class OFrPAMX10RCCommanderOutDying: DefaultDie {
 			actions = "NoActions";
 			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Commander_out_dead.rtm";
-			speed=-0.5;
+			speed = -0.5;
 			looped = 0;
 			soundEnabled = 0;
 			connectFrom[] = {"OFrPAMX10RCCommanderOut",1};
