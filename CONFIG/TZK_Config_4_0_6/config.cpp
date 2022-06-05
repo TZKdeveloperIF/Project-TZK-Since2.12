@@ -1315,12 +1315,15 @@ class CfgVehicles {
 	class M1Abrams_Base_xj400: Tank_xj400 {};
 	class TZK_HeavyWestTank_Base_xj400: M1Abrams_Base_xj400 {};
 	class M1A1_xj400: TZK_HeavyWestTank_Base_xj400 {
+		maxSpeed = 57;
 		model = "\TZK_Config_4_0_6\M1A1_TZK.p3d";
 	};
 	class M1A2_INQ_xj400: TZK_HeavyWestTank_Base_xj400 {
+		maxSpeed = 57;
 		model = "\TZK_Config_4_0_6\M1A2_INQ.p3d";
 	};
 	class Leo2A6_xj400: TZK_HeavyWestTank_Base_xj400 {
+		maxSpeed = 57;
 		model = "\TZK_Config_4_0_6\Leo2A6.p3d";
 		class Turret {
 			gunAxis = "OsaHlavne";
@@ -1343,11 +1346,15 @@ class CfgVehicles {
 	class T72_Base_xj400: RussianTank_xj400 {};
 	class T80_Base_xj400: T72_Base_xj400 {};
 	class TZK_HeavyEastTank_Base_xj400: T80_Base_xj400 {};
-	class T80_xj400: TZK_HeavyEastTank_Base_xj400 {};
+	class T80_xj400: TZK_HeavyEastTank_Base_xj400 {
+		maxSpeed = 57;
+	};
 	class T90_xj400: TZK_HeavyEastTank_Base_xj400 {
+		maxSpeed = 57;
 		model = "\TZK_Config_4_0_6\T90_ICP.p3d";
 	};
 	class ZTZ99_xj400: TZK_HeavyEastTank_Base_xj400 {
+		maxSpeed = 57;
 		model = "\TZK_Config_4_0_6\ztz99.p3d";
 	};
 
@@ -1970,7 +1977,7 @@ class CfgVehicles {
 		threat[] = {0.9,0.9,0.3};
 		
 		class HitGun { armor = 3; material = 52; name = "gun"; passThrough = 1; };
-		maxSpeed = 70;
+		maxSpeed = 57;
 		soundEngine[] = {"Vehicles\ModernIdle1",0.0316228,1};
 		soundEnviron[] = {"Vehicles\ModernRolling_Treads1",0.0316228,1};
 		model = "t80";
