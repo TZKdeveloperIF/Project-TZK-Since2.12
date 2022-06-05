@@ -329,6 +329,12 @@ class CfgAmmo {
 		maxRange = 2000; maxRangeProbab = 0.75;
 		cost = 200;
 	};
+	// 120/122 mm howitzer shell
+	class HE120_Coc_xj400: HEAT155_DKMM_xj400 {
+		hit = 200; indirectHit = 150; indirectHitRange = 9.5;
+		soundFly[] = {"\TZK_Config_4_0_6\coc\shellfly.wss", db-30, 0.9};
+		cost = 300;
+	};
 };
 class CfgWeapons {
 	class Default {};
@@ -646,6 +652,40 @@ class CfgWeapons {
 		aiRateOfFire = 0;
 		aiRateOfFireDistance = 0;
 	};
+
+	class Gun120_Grk_xj400: shell125 {
+		displayName = "120mm Gun";
+		scopeWeapon = 2; scopeMagazine = 0;
+		
+		backgroundReload = 1;
+		reloadSound[] = {"Weapons\reload",0.001,1};
+		magazines[] = {
+			"HE120_Grk_0080_xj400","HE120_Grk_0120_xj400","HE120_Grk_0180_xj400","HE120_Grk_0300_xj400","HE120_Grk_0400_xj400"
+			,"HE120_Grk_0500_xj400","HE120_Grk_0600_xj400","HE120_Grk_0700_xj400"
+		};
+		magazineReloadTime = 8;
+	};
+	class HE120_Grk_Base_xj400: shell125 {
+		scopeWeapon = 0; scopeMagazine = 2;
+		displayNameMagazine = "120mm HE"; shortNameMagazine = "HE";
+		count = 20;
+		initSpeed = 500;
+		
+		displayName = "120mm HE";
+		ammo = "HE120_Coc_xj400";
+		sound[] = {"\TZK_Config_4_0_6\coc\amos_fire.wss", db+20 ,1};
+		reloadTime = 4;
+		flash = "gunfire";
+		flashSize = 10.000000;
+		dispersion = 0.00055;
+		autoFire = 0;
+		aiRateOfFire = 0.06; aiRateOfFireDistance = 10000;
+	};
+	#define HE120_Grk(speed) \
+	class HE120_Grk_##speed##_xj400: HE120_Grk_Base_xj400 { \
+		initSpeed = ##speed##;  displayName = 120mm HE (##speed##m/s); \
+	};
+	HE120_Grk(0080); HE120_Grk(0120); HE120_Grk(0180); HE120_Grk(0300); HE120_Grk(0400); HE120_Grk(0500); HE120_Grk(0600); HE120_Grk(0700);
 
 	class RKG3M_xj400: HandGrenade {
 		displayName = "RKG-3M";
@@ -1328,6 +1368,111 @@ class CfgVehicles {
 		driverIsGunner = 1;
 	};
 
+	// Grkpbv from CoC mod
+	class Grkpbv_Coc_xj400: M1Abrams_Base_xj400 {
+		scope = 2; vehicleClass = "TZK_Units_400";
+		accuracy = 0.5;
+		displayName = "GrkPbv 120"; nameSound = "tank"; side = 1; cost = 1700000; type = 1; threat[] = {1, 0.4, 0.1};
+
+		crew = "SoldierWCrew";
+		model = "\TZK_Config_4_0_6\Grkpbv_Coc.p3d";
+		hiddenSelections[] = {
+			"flash1","flash2","flash3","flash4","flash5","flash6"
+			, "tzkGunL00", "tzkGunL01", "tzkGunL02", "tzkGunR00", "tzkGunR01", "tzkGunR02"
+		};
+		soundEngine[] = {"\TZK_Config_4_0_6\coc\motor.wss", db-30, 1};
+		soundEnviron[] = {"\TZK_Config_4_0_6\coc\band.wss", db-40, 0.7};
+		picture = "\TZK_Config_4_0_6\tex\inv_ssg120_com.paa";
+		icon = "\TZK_Texture_4_0_0\icon\uiM109.paa"; 
+
+		irScanToEyeFactor = 1; // Howitzer can has 1x view distance radar.
+
+		weapons[] = {"Gun120_Grk_xj400"};
+		magazines[] = {"HE120_Grk_0120_xj400"};
+
+		maxSpeed = 75;
+		transportSoldier = 0;
+		armor = 200;
+		forceHideGunner = 1;
+		forceHideCommander = 1;
+
+		// Same as origin BMP
+		canFloat = 1;
+		minGunElev = -5;
+		maxGunElev = 15;
+		typicalCargo[] = {"Soldier","Soldier","SoldierLAW"};
+		class HatchGunner {
+			selection = "poklop_gunner";
+			axis = "osa_poklop_gunner";
+			angle = 90;
+		};
+		class IndicatorSpeed {
+			selection = "ukaz_rychlo";
+			axis = "osa_rychlo";
+			angle = -320;
+			min = 0;
+			max = "40 / 3.6";
+		};
+		class IndicatorRPM {
+			selection = "ukaz_rpm";
+			axis = "osa_rpm";
+			angle = -230;
+			min = 0;
+			max = 1;
+		};
+
+		driverAction = "ManActSFP_ssg120driverout";
+		gunnerAction = "ManActSFP_ssg120gunnerout";
+		commanderAction = "ManActSFP_ssg120commanderout";
+		driverinaction = "ManActSFP_ssg120driver";
+		gunnerInAction = "ManActSFP_ssg120gunner";
+		commanderInAction = "ManActSFP_ssg120commander";
+
+		class TurretBase {
+		  	gunAxis = "OsaHlavne";
+			turretAxis = "OsaVeze";
+			soundServo[] = {"\TZK_Config_4_0_6\coc\servo.wss",db-30,1};
+			gunBeg = "usti hlavne";
+			gunEnd = "konec hlavne";
+			minElev = -5;
+			maxElev = 85;
+			minTurn = -360;
+			maxTurn = 360;
+			body = "OtocVez";
+			gun = "OtocHlaven";
+		};
+		class Turret: TurretBase {};
+		class HatchDriver {
+			selection = "poklop_driver";
+			axis = "osa_poklop_driver";
+			angle = -100;
+		};
+		class HatchCommander {
+			selection = "poklop_commander";
+			axis = "osa_poklop_commander";
+			angle = 90;
+		};
+
+		animated = 1;
+		class Animations {
+			class suspension {
+				type = "rotation";
+				animperiod = 0.5;
+				selection = "sus_F";
+				axis = "osa_sus";
+				angle0 = -0.04;
+				angle1 = 0.04;
+			};
+		};
+		class EventHandlers {
+			init = "_veh = _this select 0; _veh animate [{suspension}, 0.5]; {[_veh, _x] exec {\TZK_Config_4_0_6\Scripts\recoilByTex\grkpbv.sqs}} forEach [{L},{R}]";
+		};
+
+		transportAmmo = 0;
+		transportMaxMagazines = 250;
+		transportMaxWeapons = 25;
+		class TransportMagazines {};
+	};
 	
 	// AMX10RC from OFrP mod
 	class AMX10RC_OFrP_xj400: M1Abrams_Base_xj400 {
@@ -1522,6 +1667,7 @@ class CfgVehicles {
 		};
 	};	
 	class T55_Base_xj400: Tank_xj400 {}
+	// 2S25 from mfm mod
 	class 2S25_mfm_xj400: T55_Base_xj400 {
 		scope = protected; vehicleClass = "TZK_Units_400";
 		accuract = 0.5;
@@ -1876,6 +2022,13 @@ class CfgVehicleActions {
 
 	HTRM151ACGunner = "CrouchToWeapon";
 	FDFCrouch2 = "CrouchToWeapon";
+
+	SFP_ssg120driver = "SFP_ssg120driver";
+	SFP_ssg120driverout = "SFP_ssg120driverout";
+	SFP_ssg120gunner = "SFP_ssg120gunner";
+	SFP_ssg120gunnerout = "SFP_ssg120gunnerout";
+	SFP_ssg120commander = "SFP_ssg120commander";
+	SFP_ssg120commanderout = "SFP_ssg120commanderout";
 };
 class CfgMovesMC {
 	class Default {};
@@ -2071,7 +2224,6 @@ class CfgMovesMC {
 			connectFrom[] = {"OFrPAMX10RCCommanderOutDying",1};
 			connectTo[] = {"DeadState",1};
 		};
-		
 
 		class OFrPAMX10RCCommanderOutForward: StandBase {
 			actions = StandSaluteActions;
@@ -2092,6 +2244,69 @@ class CfgMovesMC {
 			connectFrom[] = {Stand,1};
 			interpolationSpeed = 0.1;
 			interpolateTo[] = {"OFrPAMX10RCCommanderOutDying",0.1,"OFrPAMX10RCCommanderOutDying",0.1};
+		};
+
+// --------------------------- Grkpbv -------------------------------
+
+		class SFP_ssg120driver: StandBase {
+			actions=StandActions;
+			file = "\TZK_Config_4_0_6\Anims\strf90_driver.rtm";
+			speed=SPEED_STATIC;
+			looped=1
+			soundEnabled=0
+			variantAfter[]={1,3,6};
+			variantsAI[]={HandGunStandVar2,0.700000,HandGunStand,0.300000};
+			equivalentTo=HandGunStand;
+		};
+		class SFP_ssg120driverout: StandBase {
+			actions=StandActions;
+			file = "\TZK_Config_4_0_6\Anims\strf90_driverout.rtm";
+			speed=SPEED_STATIC;
+			looped=1
+			soundEnabled=0
+			variantAfter[]={1,3,6};
+			variantsAI[]={HandGunStandVar2,0.700000,HandGunStand,0.300000};
+			equivalentTo=HandGunStand;
+		};
+		class SFP_ssg120gunner: StandBase {
+			actions=StandActions;
+			file = "\TZK_Config_4_0_6\Anims\strf90_gunner.rtm";
+			speed=SPEED_STATIC;
+			looped=1
+			soundEnabled=0
+			variantAfter[]={1,3,6};
+			variantsAI[]={HandGunStandVar2,0.700000,HandGunStand,0.300000};
+			equivalentTo=HandGunStand;
+		};
+		class SFP_ssg120gunnerout: StandBase {
+			actions=StandActions;
+			file = "\TZK_Config_4_0_6\Anims\strf90_gunnerout.rtm";
+			speed=SPEED_STATIC;
+			looped=1
+			soundEnabled=0
+			variantAfter[]={1,3,6};
+			variantsAI[]={HandGunStandVar2,0.700000,HandGunStand,0.300000};
+			equivalentTo=HandGunStand;
+		};
+		class SFP_ssg120commander: StandBase {
+			actions=StandActions;
+			file = "\TZK_Config_4_0_6\Anims\strf90_commander.rtm";
+			speed=SPEED_STATIC;
+			looped=1
+			soundEnabled=0
+			variantAfter[]={1,3,6};
+			variantsAI[]={HandGunStandVar2,0.700000,HandGunStand,0.300000};
+			equivalentTo=HandGunStand;
+		};
+		class SFP_ssg120commanderout: StandBase {
+			actions=StandActions;
+			file = "\TZK_Config_4_0_6\Anims\strf90_commanderout.rtm";
+			speed=SPEED_STATIC;
+			looped=1
+			soundEnabled=0
+			variantAfter[]={1,3,6};
+			variantsAI[]={HandGunStandVar2,0.700000,HandGunStand,0.300000};
+			equivalentTo=HandGunStand;
 		};
 	};
 };
