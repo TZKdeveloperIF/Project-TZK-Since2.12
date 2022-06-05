@@ -329,6 +329,11 @@ class CfgAmmo {
 		maxRange = 2000; maxRangeProbab = 0.75;
 		cost = 200;
 	};
+	// Fix 155mm shell model error
+	class HEAT155_DKMM_xj400: Heat125 {
+		model = "\TZK_Config_4_0_6\wp\heat155.p3d";
+		soundFly[] = {"\TZK_Sounds_4_0_0\COC\155mmFly.wss", db-30, 1};
+	};
 	// 120/122 mm howitzer shell
 	class HE120_Coc_xj400: HEAT155_DKMM_xj400 {
 		hit = 200; indirectHit = 150; indirectHitRange = 9.5;
@@ -1355,10 +1360,12 @@ class CfgVehicles {
 
 	class M109A6G_Base_xj400: M1Abrams_Base_xj400 {};
 	class M109A6G_xj400: M109A6G_Base_xj400 {
+		accuracy = 0.4; // Big size tank easier to be identified
 		model = "\TZK_Config_4_0_6\M109A6_DKMM.p3d";
 	};
 	class PLZ05_VME_Base_xj400: T72_Base_xj400 {};
 	class PLZ05_TZK_xj400: PLZ05_VME_Base_xj400 {
+		accuracy = 0.4; // Big size tank easier to be identified
 		model = "\TZK_Config_4_0_6\PLZ05.p3d";
 	};
 	
