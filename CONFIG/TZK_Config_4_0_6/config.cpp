@@ -335,6 +335,15 @@ class CfgAmmo {
 		soundFly[] = {"\TZK_Config_4_0_6\coc\shellfly.wss", db-30, 0.9};
 		cost = 300;
 	};
+	class HE122_VME_xj400: HEAT155_DKMM_xj400 {
+		hit = 250; indirectHit = 200; indirectHitRange = 12;
+		soundHit1[] = {"\TZK_Sounds_4_0_0\VME\sabot1.wss",100,1};
+		soundHit2[] = {"\TZK_Sounds_4_0_0\VME\sabot2.wss",100,1};
+		soundHitArmor1[] = {"\TZK_Sounds_4_0_0\VME\sabot1.wss",100,1};
+		soundHitArmor2[] = {"\TZK_Sounds_4_0_0\VME\sabot2.wss",100,1};
+		hitGround[]={"soundHit1",0.5,"soundHit2",0.5};
+		hitArmor[]={"soundHitArmor1",0.5,"soundHitArmor2",0.5};
+	};
 };
 class CfgWeapons {
 	class Default {};
@@ -687,6 +696,45 @@ class CfgWeapons {
 	};
 	HE120_Grk(0080); HE120_Grk(0120); HE120_Grk(0180); HE120_Grk(0300); HE120_Grk(0400); HE120_Grk(0500); HE120_Grk(0600); HE120_Grk(0700);
 
+	class Gun122_VME_xj400: shell125 {
+		displayName = "122mm Gun";
+		scopeWeapon = 2; scopeMagazine = 0;
+		
+		backgroundReload = 1;
+		reloadSound[] = {"\TZK_Sounds_4_0_0\VME\aa1.wav", 0.1, 1};
+		magazines[] = {
+			"HE122_VME_0080_xj400","HE122_VME_0120_xj400","HE122_VME_0180_xj400","HE122_VME_0300_xj400","HE122_VME_0400_xj400"
+			,"HE122_VME_0500_xj400","HE122_VME_0600_xj400","HE122_VME_0700_xj400"
+		};
+		magazineReloadTime = 8;
+		
+		opticsZoomMin = 0.04;
+		opticsZoomMax = 0.12;
+		distanceZoomMin = 1500;
+		distanceZoomMax = 80;
+	};
+	class HE122_VME_Base_xj400: shell125 {
+		scopeWeapon = 0; scopeMagazine = 2;
+		displayNameMagazine = "122mm SHRAP"; shortNameMagazine = "SHRAP";
+		count = 50;
+		initSpeed = 500;
+		
+		displayName = "122mm SHRAP";
+		ammo = "HE122_VME_xj400";
+		sound[] = {"\TZK_Config_4_0_6\vme\plz89.wss", db+20, 1};
+		reloadTime = 8;
+		flash = "gunfire";
+		flashSize = 10;
+		dispersion = 0.00055;
+		autoFire = 0;
+		aiRateOfFire = 0.06; aiRateOfFireDistance = 10000;
+	};
+	#define HE122_VME(speed) \
+	class HE122_VME_##speed##_xj400: HE122_VME_Base_xj400 { \
+		initSpeed = ##speed##;  displayName = 122mm SHRAP (##speed##m/s); \
+	};
+	HE122_VME(0080); HE122_VME(0120); HE122_VME(0180); HE122_VME(0300); HE122_VME(0400); HE122_VME(0500); HE122_VME(0600); HE122_VME(0700);
+
 	class RKG3M_xj400: HandGrenade {
 		displayName = "RKG-3M";
 		displayNameMagazine = "RKG-3M";
@@ -769,6 +817,7 @@ class UA_Equip9K119 {};
 class UA_EquipATGM125 {};
 
 class WeaponFireGun {};
+class WeaponCloudsGun {};
 
 class CfgVehicles {
 	class All {};
@@ -1472,6 +1521,104 @@ class CfgVehicles {
 		transportMaxMagazines = 250;
 		transportMaxWeapons = 25;
 		class TransportMagazines {};
+	};
+	// PLZ89 from VME pla3.2 mod
+	class PLZ89_VME_Base_xj400: T72_Base_xj400 {
+		scope = private; vehicleClass = "TZK_Units_400";
+	//	accuracy = 0.4;
+		displayName = "PLZ-89"; nameSound = "Tank"; side = 0; cost = 2000000; type = 1; threat[] = {1, 1, 0.5};
+		
+		model = "\TZK_Config_4_0_6\PLZ89.p3d";
+		hiddenSelections[] = {
+			"n1", "n2", "n3"
+			, "tzkGun00", "tzkGun01", "tzkGun02", "tzkGun03"
+		};
+		picture = "\TZK_Config_4_0_6\tex\plz89.paa";
+		icon = "\TZK_Texture_4_0_0\icon\uiM109.paa"; 
+		
+ 		soundEngine[] = {"\TZK_Sounds_4_0_0\M1_Turbine.wss",0.031622775,1.1};
+		soundEnviron[] = {"\TZK_Sounds_4_0_0\M1_Treads.wss",0.01,1};
+		
+		maxspeed = 60; canfloat = 1; mapSize = 10;
+
+		irScanToEyeFactor = 1; // Howitzer can has 1x view distance radar.
+		
+		gunnerInAction = "ManActT55Gunner";
+		driverInAction = "ManActT55Driver";
+		commanderInAction = "ManActT55Commander";
+		gunnerOpticsModel = "\TZK_Model_4_0_0\Opt\ViewGunner_Grad.p3d";
+
+		class GunFire: WeaponFireGun {
+			cloudletDuration = 0.4;		
+			cloudletAnimPeriod = 1.50; 
+			cloudletSize = 6.0;			
+			cloudletColor[] = {1, 1, 1, 1};			
+			size = 9;			
+		};
+		class GunClouds: WeaponCloudsGun {
+			cloudletDuration = 0.6;
+			cloudletAnimPeriod = 1.50;
+			cloudletSize = 6.0;			
+			cloudletColor[] = {1, 1, 1, 1};
+			size = 9;
+			sourceSize = 0.5;			
+		};
+
+		class IndicatorRPM {
+			selection = "ukaz_rpm";
+			axis = "osa_rpm";
+			angle = 0;
+			min = 0;
+			max = 1;
+		};
+		class Hatchdriver {
+			selection = "poklop_driver";
+			axis = "osa_poklop_driver";
+			angle = 100;
+		};
+		class HatchGunner {
+			selection = "poklop_gunner";
+			axis = "osa_poklop_gunner";
+			angle = 180;
+		};
+		class TurretBase {
+			gunAxis = "osahlavne";
+			turretAxis = "osaveze";
+			soundServo[] = {"\TZK_Config_4_0_6\vme\paotaztz99.wav", db-25, 1};
+
+			gunBeg = "usti hlavne";
+			gunEnd = "konec hlavne";
+			
+			body = "OtocVez";
+			gun = "OtocHlaven";
+
+			minElev = -5;
+			maxElev = +55;
+			minTurn = -360;
+			maxTurn = +360;
+		};
+		class Turret: TurretBase {};
+	};
+	class PLZ89_TZK_xj400: PLZ89_VME_Base_xj400 {
+		scope = 2; accuracy = 0.45;
+		armor = 180;
+		weapons[] = {"Gun122_VME_xj400"};
+		magazines[] = {"HE122_VME_0120_xj400"};
+
+		class Animations {
+			class suspension {
+				type = "rotation";
+				animperiod = 0.5;
+				selection = "sus_F";
+				axis = "osa_sus";
+				angle0 = -0.1;
+				angle1 = 0.1;
+			};
+		};
+		class EventHandlers {
+			Init = "_veh = _this select 0; [_veh, {\TZK_Texture_4_0_0\BWMOD\leo2A6\num\}, {n}, {0}] exec {\TZK_Objects\Scripts\texture\RSC_Numbers.sqs}; _veh animate [{suspension}, 0.5]; _veh exec {\TZK_Config_4_0_6\Scripts\recoilByTex\plz89.sqs}";
+		};
+
 	};
 	
 	// AMX10RC from OFrP mod
