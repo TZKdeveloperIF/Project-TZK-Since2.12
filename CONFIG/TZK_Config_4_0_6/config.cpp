@@ -720,11 +720,11 @@ class CfgWeapons {
 	};
 	class HE122_VME_Base_xj400: shell125 {
 		scopeWeapon = 0; scopeMagazine = 2;
-		displayNameMagazine = "122mm SHRAP"; shortNameMagazine = "SHRAP";
+		displayNameMagazine = "122mm HE"; shortNameMagazine = "HE";
 		count = 50;
 		initSpeed = 500;
 		
-		displayName = "122mm SHRAP";
+		displayName = "122mm HE";
 		ammo = "HE122_VME_xj400";
 		sound[] = {"\TZK_Config_4_0_6\vme\plz89.wss", db+20, 1};
 		reloadTime = 8;
@@ -736,7 +736,7 @@ class CfgWeapons {
 	};
 	#define HE122_VME(speed) \
 	class HE122_VME_##speed##_xj400: HE122_VME_Base_xj400 { \
-		initSpeed = ##speed##;  displayName = 122mm SHRAP (##speed##m/s); \
+		initSpeed = ##speed##;  displayName = 122mm HE (##speed##m/s); \
 	};
 	HE122_VME(0080); HE122_VME(0120); HE122_VME(0180); HE122_VME(0300); HE122_VME(0400); HE122_VME(0500); HE122_VME(0600); HE122_VME(0700);
 
@@ -1581,7 +1581,7 @@ class CfgVehicles {
 		class IndicatorRPM {
 			selection = "ukaz_rpm";
 			axis = "osa_rpm";
-			angle = 0;
+			angle = -290;
 			min = 0;
 			max = 1;
 		};
@@ -1594,6 +1594,19 @@ class CfgVehicles {
 			selection = "poklop_gunner";
 			axis = "osa_poklop_gunner";
 			angle = 180;
+		};
+		class ComTurret {
+			turretAxis = "OsaVelitele";
+			gunAxis = "OsaHlavneVelitele";
+			soundServo[] = {"Vehicles\gun_elevate",0.0003162,1.2};
+			gunBeg = "usti hlavne";
+			gunEnd = "konec hlavne";
+			minElev = -4;
+			maxElev = 20;
+			minTurn = -80;
+			maxTurn = 105;
+			body = "OtocVelitele";
+			gun = "OtocHlavenVelitele";
 		};
 		class TurretBase {
 			gunAxis = "osahlavne";
