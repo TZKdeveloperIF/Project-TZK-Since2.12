@@ -757,6 +757,14 @@ class CfgModels {
 		sectionsInherit = "Vehicle";
 		sections[] = {"no1", "no2", "no3","zadni svetlo","brzdove svetlo"};
 	};
+	class Grkpbv_Coc: Tank  {
+		sectionsInherit = "Tank";
+		sections[] = {
+			"flash1","flash2","flash3","flash4","flash5","flash6", 
+			"cislo","grupa","side","sektor","clan","podsvit pristroju","poskozeni","L svetlo","P svetlo","zasleh","zadni svetlo"
+			, "tzkGunL00", "tzkGunL01", "tzkGunL02", "tzkGunR00", "tzkGunR01", "tzkGunR02"
+		};
+	};
 
 	class m151a1c_htr: Car {
 		sectionsInherit="Vehicle";
