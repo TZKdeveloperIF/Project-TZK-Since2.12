@@ -1313,7 +1313,15 @@ class CfgVehicles {
 
 	class Tank_xj400: Tank {};
 	class M1Abrams_Base_xj400: Tank_xj400 {};
-	class TZK_HeavyWestTank_Base_xj400: M1Abrams_Base_xj400 {};
+	class TZK_HeavyWestTank_Base_xj400: M1Abrams_Base_xj400 {
+		// remove abandoned animations
+		class Anim_Base_suspension { animperiod = 0; selection = ""; axis = ""; angle0 = 0; angle1 = 0; type = "rotation"; };
+		class Anim_Base_gunrec { animperiod = 0; selection = ""; axis = ""; angle0 = 0; angle1 = 0; type = "rotation"; };
+		class Animations {
+			class suspension: Anim_Base_suspension {};
+			class gunrec: Anim_Base_gunrec {};
+		};
+	};
 	class M1A1_xj400: TZK_HeavyWestTank_Base_xj400 {
 		maxSpeed = 57;
 		model = "\TZK_Config_4_0_6\M1A1_TZK.p3d";
@@ -1345,9 +1353,18 @@ class CfgVehicles {
 	class RussianTank_xj400: Tank_xj400 {};
 	class T72_Base_xj400: RussianTank_xj400 {};
 	class T80_Base_xj400: T72_Base_xj400 {};
-	class TZK_HeavyEastTank_Base_xj400: T80_Base_xj400 {};
+	class TZK_HeavyEastTank_Base_xj400: T80_Base_xj400 {
+		// remove abandoned animations
+		class Anim_Base_suspension { animperiod = 0; selection = ""; axis = ""; angle0 = 0; angle1 = 0; type = "rotation"; };
+		class Anim_Base_gunrec { animperiod = 0; selection = ""; axis = ""; angle0 = 0; angle1 = 0; type = "rotation"; };
+		class Animations {
+			class suspension: Anim_Base_suspension {};
+			class gunrec: Anim_Base_gunrec {};
+		};
+	};
 	class T80_xj400: TZK_HeavyEastTank_Base_xj400 {
 		maxSpeed = 57;
+		model = "\TZK_Config_4_0_6\T80_TZK.p3d";
 	};
 	class T90_xj400: TZK_HeavyEastTank_Base_xj400 {
 		maxSpeed = 57;
@@ -2025,7 +2042,7 @@ class CfgVehicles {
 	class T80Res_TZK_xj406: T80Res_Base_xj406 {
 		scope = protected; vehicleClass = "TZK_Units_400";
 		displayName = "T80(Res) Red"; accuracy = 1000;
-		model = "\TZK_Model_4_0_5\T80_TZK.p3d";
+		model = "\TZK_Config_4_0_6\T80_TZK.p3d";
 		hiddenSelections[] = {
 			"pruh", "TZK_Grad1","TZK_Grad2","TZK_Grad3","TZK_Grad4","TZK_Grad5","TZK_Grad6", tzk_tex_00,
 			tex_pas_spod_1frame.pac, tex_pasy_okolo_uni.pac, tex_t55_infra.pac, tex_t55_sum.pac, tex_t72_vymetnice.pac, tex_t80_kolo2.pac, tex_tank_04_bck.pac, tex_tank_04_bednyuvalce_.pac, tex_tank_04_frt.pac, tex_tank_04_krabic_back.pac, tex_tank_04_krabic_sidet.pac, tex_tank_04_lauf_frt.pac, tex_tank_04_lauf_top.pac, tex_tank_04_platyzveze_s.pac, tex_tank_04_platyzvozu_t.pac, tex_tank_04_side.pac, tex_tank_04_spod.pac, tex_tank_04_sud_norm.pac, tex_tank_04_sud_side.paa, tex_tank_04_top.pac, tex_tank_04_v_lec_norm.pac, tex_tank_04_v_lec_side.paa, tex_tank_04_vez_bck.pac, tex_tank_04_vez_frt.pac, tex_tank_04_vez_side.pac, tex_tank_04_vez_top.pac, tex_tank_m_02_kanon.pac, tex_tank_m_02_vez_frt.pac,
