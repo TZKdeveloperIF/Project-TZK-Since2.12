@@ -765,6 +765,13 @@ class CfgModels {
 			, "tzkGunL00", "tzkGunL01", "tzkGunL02", "tzkGunR00", "tzkGunR01", "tzkGunR02"
 		};
 	};
+	class PLZ89: Tank {
+		sectionsInherit = "Tank";
+		sections[] = {
+			"n1", "n2", "n3"
+			, "tzkGun00", "tzkGun01", "tzkGun02", "tzkGun03"
+		};
+	};
 
 	class m151a1c_htr: Car {
 		sectionsInherit="Vehicle";
