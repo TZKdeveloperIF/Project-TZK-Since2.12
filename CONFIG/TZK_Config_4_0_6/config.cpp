@@ -1545,6 +1545,8 @@ class CfgVehicles {
 	class M113_xj400: M113 {};
 	class M113Ambul_xj400: M113Ambul {
 		model = "\TZK_Config_4_0_6\M113_Ambu_TZK.p3d";
+		camouflage = 6; // support vehicle using less value
+		audible = 4;
 	};
 	class Bradley_xj400: M113 {};
 	class M2A2_xj400: Bradley_xj400 {
@@ -1584,6 +1586,11 @@ class CfgVehicles {
 	class Vulcan_Auto_xj406: Vulcan_xj400 {
 		hasGunner = 0;
 		driverIsGunner = 1;
+	};
+
+	class BMPAmbul_xj400: BMPAmbul {
+		camouflage = 6; // support vehicle using less value
+		audible = 4;
 	};
 
 	class ZSU_xj400: ZSU {};
