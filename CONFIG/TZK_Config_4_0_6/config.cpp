@@ -1599,6 +1599,10 @@ class CfgVehicles {
 		driverIsGunner = 1;
 	};
 
+	class BMPResScoreConfuser_xj400: BMPRes {
+		cost = 0; // provide no cost to make player obtain no extra score.
+	};
+
 	// Grkpbv from CoC mod
 	class Grkpbv_Coc_xj400: M1Abrams_Base_xj400 {
 		scope = 2; vehicleClass = "TZK_Units_400";
