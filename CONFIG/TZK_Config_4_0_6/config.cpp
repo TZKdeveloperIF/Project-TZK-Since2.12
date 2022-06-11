@@ -205,7 +205,7 @@ class CfgAmmo {
 		hit = 0;
 		indirectHit = 1000;
 		indirectHitRange = 6;
-		soundHit[] = {"Explosions\timebomb",100.00001,1};
+		soundHit[] = {"Explosions\timebomb", 100, 1};
 		soundFly[] = {"",0,1};
 		soundEngine[] = {"",0,1};
 		visibleFire = 0;
@@ -363,7 +363,7 @@ class CfgAmmo {
 	};
 	
 	class 105RCSabot_OFrP_xj400: Heat105 {
-		hit = 550; indirectHit = 150;
+		hit = 700; indirectHit = 300; indirectHitRange = 1;
 		minRange = 10;
 		soundFly[] = {"\TZK_Config_4_0_6\PrjtlFlg.wss",db-20,1.0};
 		cost = 800;
@@ -389,10 +389,10 @@ class CfgAmmo {
 	};
 	class HE122_VME_xj400: HEAT155_DKMM_xj400 {
 		hit = 250; indirectHit = 200; indirectHitRange = 12;
-		soundHit1[] = {"\TZK_Sounds_4_0_0\VME\sabot1.wss",100,1};
-		soundHit2[] = {"\TZK_Sounds_4_0_0\VME\sabot2.wss",100,1};
-		soundHitArmor1[] = {"\TZK_Sounds_4_0_0\VME\sabot1.wss",100,1};
-		soundHitArmor2[] = {"\TZK_Sounds_4_0_0\VME\sabot2.wss",100,1};
+		soundHit1[] = {"\TZK_Sounds_4_0_0\VME\sabot1.wss", 100, 1};
+		soundHit2[] = {"\TZK_Sounds_4_0_0\VME\sabot2.wss", 100, 1};
+		soundHitArmor1[] = {"\TZK_Sounds_4_0_0\VME\sabot1.wss", 100, 1};
+		soundHitArmor2[] = {"\TZK_Sounds_4_0_0\VME\sabot2.wss", 100, 1};
 		hitGround[]={"soundHit1",0.5,"soundHit2",0.5};
 		hitArmor[]={"soundHitArmor1",0.5,"soundHitArmor2",0.5};
 	};
@@ -729,6 +729,7 @@ class CfgWeapons {
 		aiRateOfFireDistance = 0;
 	};
 
+	// AMX-10 RC weapon
 	class 105RC_OFrP_xj400: Gun105 {
 		displayName = "105mm/48caliber";
 		magazines[] = {"105RCSabot_OFrP_xj400", "105RCHE_OFrP_xj400"};
@@ -769,6 +770,33 @@ class CfgWeapons {
 		aiRateOfFire = 0;
 		aiRateOfFireDistance = 0;
 	};
+	// 2S25 Sprut-SD Weapon from mfm. Defined in TZK_Objects. Redefine here
+	class Sprut_3VBM17_xj400: Heat125 {
+		displayName = "3BM-42 APFSDS";
+		displayNameMagazine = "3BM-42 APFSDS";
+		shortNameMagazine = "3BM-42 APFSDS";
+		namesound = "heat";
+		sound[] = {"\TZK_Sounds_4_0_0\2S25\125mm_3p.wss", db+30, 1};
+		reloadTime = 8;
+		aiRateOfFire = 0;
+		aiRateOfFireDistance = 0;
+	};
+	class Sprut_3VBK25_xj400: Heat125 {
+		displayName = "3VBK25 HEAT";
+		displayNameMagazine = "3VBK25 HEAT";
+		shortNameMagazine = "3VBK25 HEAT";
+		nameSound = "shell";
+		reloadTime = 8;
+		aiRateOfFire = 0;
+		aiRateOfFireDistance = 0;
+        sound[] = {"\TZK_Sounds_4_0_0\2S25\125mm_3p.wss", db+30, 1};
+	};
+	class Sprut_2A75_xj400: Gun125 {
+		reloadSound[] = {"\TZK_Sounds_4_0_0\2S25\125mmreload.wss", 0.1, 0.9};
+		reloadTime = 8;
+		magazines[] = {"Sprut_3VBM17_xj400","Sprut_3VBK25_xj400"};
+	};
+
 
 	class Gun120_Grk_xj400: shell125 {
 		displayName = "120mm Gun";
@@ -1997,8 +2025,8 @@ class CfgVehicles {
 		canFloat = 1;
 		crew = "SoldierECrew";
 
-		weapons[] = {"T90Gun_xj400", "MachineGun7_6"};
-		magazines[] = {"T90Sabot_xj400","T90Heat_xj400", "MachineGun7_6"};
+		weapons[] = {"Sprut_2A75_xj400", "MachineGun7_6"};
+		magazines[] = {"Sprut_3VBM17_xj400","Sprut_3VBK25_xj400", "MachineGun7_6"};
 
 		transportSoldier = 0;
 		class TransportMagazines{};
