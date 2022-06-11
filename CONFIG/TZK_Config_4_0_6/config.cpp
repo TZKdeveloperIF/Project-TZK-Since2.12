@@ -307,6 +307,53 @@ class CfgAmmo {
 	class AA_I_TZK_xj400: AA { maxRange = 1500; };
 	class 9K32_I_TZK_xj400: AA_I_TZK_xj400 {};
 	
+	class Sabot106_htr_xj400: Bullet12_7 {
+		airLock = 0;
+		hit = 650; indirectHit = 250; indirectHitRange = 1;
+		minRange = 5; minRangeProbab = 0.95;
+		midRange = 1000; midRangeProbab = 0.95;
+		maxRange = 2500; maxRangeProbab = 0.95;
+		soundHit[] = {"Explosions\expl4", 100, 1};
+		soundFly[] = {"objects\bulletnoise",0.0316228,4};
+		simulation = "shotBullet";
+		timeToLive = 60; // Useless for shotBullet
+		
+		explosive = 1;
+		cost = 300;
+		visibleFire = 16;
+		audibleFire = 16;
+		visibleFireTime = 10;
+		tracerColor[] = {0, 0, 0, 0};
+   };
+	class PG9HEAT_fdf_xj400: Bullet12_7 {
+		airLock = 0;
+		hit = 490; indirectHit = 100; indirectHitRange = 4;
+		minRange = 5; minRangeProbab = 0.95;
+		midRange = 1000; midRangeProbab = 0.95;
+		maxRange = 2500; maxRangeProbab = 0.95;
+		soundFly[] = {"\TZK_Config_4_0_6\snd\finmod\tank_shell_fly.wss", 1, 1}; //FDF - Goeth 10.1.2004
+		soundHit1[] = {"\TZK_Config_4_0_6\snd\finmod\spg9_expl.wss", 100, 1};
+		soundHit2[] = {"\TZK_Config_4_0_6\snd\finmod\spg9_expl.wss", 100, 1};
+		soundHit3[] = {"\TZK_Config_4_0_6\snd\finmod\spg9_expl.wss", 100, 1};
+		soundHitArmor1[] = {"\TZK_Config_4_0_6\snd\finmod\spg9_expl.wss", 100, 1};
+		soundHitArmor2[] = {"\TZK_Config_4_0_6\snd\finmod\spg9_expl.wss", 100, 1};
+		soundHitMan1[] = {"\TZK_Config_4_0_6\snd\finmod\spg9_expl.wss", 100, 1};
+		soundHitMan2[] = {"\TZK_Config_4_0_6\snd\finmod\spg9_expl.wss", 100, 1};
+		soundHitBuilding1[] = {"\TZK_Config_4_0_6\snd\finmod\spg9_expl.wss", 100, 1};
+		soundHitBuilding2[] = {"\TZK_Config_4_0_6\snd\finmod\spg9_expl.wss", 100, 1};
+		hitGround[] = {soundHit1, 0.33, soundHit2, 0.33, soundHit3, 0.33};
+		hitArmor[] = {soundHitArmor1, 0.5, soundHitArmor2, 0.5};
+		hitMan[] = {soundHitMan1, 0.5, soundHitMan2, 0.5};
+		hitBuilding[] = {soundHitBuilding1, 0.5, soundHitBuilding2, 0.5};
+
+		explosive = 1;
+		cost = 270;
+		visibleFire = 16;
+		audibleFire = 16;
+		visibleFireTime = 10;
+		tracerColor[] = {1, 0, 0, 0};
+	};
+
 	class Shrapnel_xj400: Heat120 {
 		hit = 500;
 		indirectHit = 150;
@@ -626,6 +673,62 @@ class CfgWeapons {
 		picture = "\dtaext\equip\w\w_9k32Launcher.paa";
 	};
 	
+	class Gun106_htr_xj400: Gun120 {
+		displayName = "106mm HEAT";
+		reloadSound[] = {"\TZK_Config_4_0_6\snd\m151a1c\106reload.wss", 0.5, 1};
+		magazines[] = {"Sabot106_htr_xj400"};
+		aiRateOfFire = 0;
+		aiRateOfFireDistance = 0;
+	};
+	class Sabot106_htr_xj400: Shell120 {
+		displayName = "106mm HEAT";
+		displayNameMagazine = "106mm HEAT";
+		shortNameMagazine = "HEAT";
+		ammo = "Sabot106_htr_xj400";
+		count = 8;
+		initSpeed = 1400;
+		nameSound = "heat";
+		reloadTime = 8;
+		sound[] = {"\TZK_Config_4_0_6\snd\m151a1c\106shot.wss", db+20, 1};
+		soundContinuous = 0;
+		ffCount = 1;
+		flash = "gunfire";
+		flashSize = 1;
+		dispersion = 0;
+		maxLeadSpeed = 80;
+		aiRateOfFire = 0;
+		aiRateOfFireDistance = 0;
+	};
+	class Gun_Spg_fdf_xj400: Gun120 {
+		displayName = "PG-9 HEAT-FS";
+		drySound[] = {"\TZK_Config_4_0_6\snd\finmod\mg_dry.wss",0.000316,1};
+		reloadMagazineSound[] = {"\TZK_Config_4_0_6\snd\finmod\mg_reload_manual.wss",0.000316,1};
+		reloadSound[] = {"\TZK_Config_4_0_6\snd\finmod\musti_reload.wss",0.000316,1};
+		magazines[] = {"PG9HEAT_fdf_xj400"};
+		magazineReloadTime = 0;
+		aiRateOfFire = 0;
+		aiRateOfFireDistance = 0;
+	};
+	class PG9HEAT_fdf_xj400: Shell120 {
+		displayName="PG-9 HEAT-FS";
+		displayNameMagazine="HEAT";
+		shortNameMagazine="PG-9 HEAT-FS Rounds";
+		ammo = "PG9HEAT_fdf_xj400";
+		count = 15;
+		initSpeed = 1400;
+		nameSound = "heat";
+		reloadTime = 8;
+		sound[] = {"\TZK_Config_4_0_6\snd\finmod\spg9.wss", db+20, 1};
+		soundContinuous = 0;
+		ffCount = 1;
+		flash = "gunfire";
+		flashSize = 1;
+		dispersion = 0.002;
+		maxLeadSpeed = 50;
+		aiRateOfFire = 0;
+		aiRateOfFireDistance = 0;
+	};
+
 	class 105RC_OFrP_xj400: Gun105 {
 		displayName = "105mm/48caliber";
 		magazines[] = {"105RCSabot_OFrP_xj400", "105RCHE_OFrP_xj400"};
@@ -975,8 +1078,9 @@ class CfgVehicles {
 		gunnerAction = "ManActHTRM151ACGunner";
 		gunnerOpticsModel = "\TZK_Config_4_0_6\opt\htr_106recOptic";
 		
+		// "Gun106_htr_xj400"
 		weapons[] = {}; // Car with weapon should better not equip weapon. But editors shouldn't make them haven't any magazines as well.
-		magazines[] = {"Browning_xj400"}; // Magazines must be empty for cars or game may crash in some situation, but they should be removed but not define an empty array here.
+		magazines[] = {"Sabot106_htr_xj400"}; // Magazines must be empty for cars or game may crash in some situation, but they should be removed but not define an empty array here.
 
 		class MGunClouds : WeaponFireGun {};
 
@@ -985,6 +1089,9 @@ class CfgVehicles {
 		hideUnitInfo = 0;
 		secondaryExplosion = 5;
 
+		preferRoads = 0;
+		terrainCoef = 1;
+
 		irScanGround = 0;
 		irScanToEyeFactor = 0;
 
@@ -992,7 +1099,6 @@ class CfgVehicles {
 		armorFuel = 1.6;
 		armorLights = 0.5;
 		armorWheels = 0.12;
-		terrainCoef = 1.2;
 		damperSize = .07;
 		damperForce = 40;
 
@@ -1021,7 +1127,7 @@ class CfgVehicles {
 			body = "OtocVez";
 			gun = "OtocHlaven";
 
-			minElev = -20; maxElev = +0;
+			minElev = -10 - 18; maxElev = +25 - 18; // There're +18 degree in the model thus need corret it here in config.
 			minTurn = -180; maxTurn = +180;
 			soundServo[] = {"",0,0};
 		};
@@ -1074,6 +1180,9 @@ class CfgVehicles {
 				angle1 =-1.7;
 			};
 		};
+		class UserActions {
+			class SwitchToDriverLand : UA_SwitchToDriverLand {}; class SwitchToGunnerLand : UA_SwitchToGunnerLand {};
+		};
 		class EventHandlers {
 			init = _this exec {\TZK_Objects\Scripts\InitEventHandlers\removeAllWeapons.sqs};
 		};
@@ -1081,7 +1190,7 @@ class CfgVehicles {
 	class UAZ_SPG_FDF_xj400: JeepMG {
 		scope = 2; vehicleClass = "TZK_Units_400";
 		// accuracy = 0.4;
-		displayName = "UAZ (SPG-9)"; nameSound = "UAZ"; side = 0; cost = 100000; type = 1; threat[] = {0.3, 1, 0.1};
+		displayName = "UAZ (SPG-9)"; nameSound = "UAZ"; side = 0; cost = 100000; type = 1; threat[] = {0.5, 1, 0.1};
 		
 		model = "\TZK_Config_4_0_6\uaz_spg_RUS.p3d";
 		picture = "\TZK_Config_4_0_6\tex\icon_musti.paa";
@@ -1094,8 +1203,9 @@ class CfgVehicles {
 		soundGear[] = {"\TZK_Config_4_0_6\fdf\old_gear.wss",0.000500,1};
 		soundWaterCrash[] = {"\TZK_Config_4_0_6\fdf\medium_water_splash.wss",0.006000,1};
 		
+		// "Gun_Spg_fdf_xj400"
 		weapons[] = {}; // Car with weapon should better not equip weapon. But editors shouldn't make them haven't any magazines as well.
-		magazines[] = {"Browning_xj400"}; // Magazines must be empty for cars or game may crash in some situation, but they should be removed but not define an empty array here.
+		magazines[] = {"PG9HEAT_fdf_xj400"}; // Magazines must be empty for cars or game may crash in some situation, but they should be removed but not define an empty array here.
 
 		class MGunClouds : WeaponFireGun {};
 
@@ -1119,6 +1229,9 @@ class CfgVehicles {
 		unitInfoType = "UnitInfoShip";
 		hideUnitInfo = 0;
 		maxSpeed = 90;
+		
+		preferRoads = 0;
+		terrainCoef = 1;
 
 		class ViewOptics {
 			initAngleX = 45;
@@ -1143,10 +1256,13 @@ class CfgVehicles {
 			body = "OtocVez";
 			gun = "OtocHlaven";
 			soundServo[] = {"\TZK_Config_4_0_6\fdf\manual_servo.wss",0.000500,1}; //FDF - Goeth 11.5.2003
-			minElev = -15;
-			maxElev = 15;
+			minElev = -18;
+			maxElev = 30;
 			minTurn = -180;
 			maxTurn = 180;
+		};
+		class UserActions {
+			class SwitchToDriverLand : UA_SwitchToDriverLand {}; class SwitchToGunnerLand : UA_SwitchToGunnerLand {};
 		};
 		class EventHandlers {
 			init = _this exec {\TZK_Objects\Scripts\InitEventHandlers\removeAllWeapons.sqs};
