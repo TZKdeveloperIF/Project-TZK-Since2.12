@@ -1365,6 +1365,169 @@ class CfgVehicles {
 		scope = protected;
 	};
 	
+	class Orca95_MCSR_ABC_xj400: Helicopter {
+		scope = private; vehicleClass = "TZK_Units_400";
+		accuracy = 0.3;
+		// displayName = "ORCA Craft";
+		nameSound = "chopper";
+		// side = 0;
+		cost = 10000000; type = 2; threat[] = {0, 1, 0.2};
+
+		model = "\TZK_Config_4_0_6\Orca95_MCSR.p3d";
+		armor = 20;
+		hiddenSelections[] = {};
+		picture = "\t406\ui\iOrca95.paa";
+		weapons[] = {"LaserDesignatorOH"};
+		magazines[] = {"LaserDesignatorOH", SpoofMagazines};
+
+		hasgunner = 0;
+		driverAction = "ManActMCSR_OrcaPilot";
+		driverOpticsModel = "\o\vehl\V80_optika.p3d";
+		animated = 1;
+		maxSpeed = 500;
+		mainrotorspeed = 2.5;
+		backrotorspeed = 2.5;
+
+		soundEngine[] = {"\TZK_Config_4_0_6\snd\mcsr\OrcaEng.wss", db+10, 1};
+		InsideSoundCoef = 0.005;
+		armorStructural=3;
+		armorHull = 0.5;
+		armorEngine = 0.6;
+		armorAvionics = 1.4;
+		armorVRotor = 0.5;
+		armorHRotor = 0.7;
+		armorMissiles = 1.6;
+		armorGlass = 0.5;
+		
+		ejectSpeed[] = {0,0,0};
+
+		class Animations {
+			class FWheelAnim {
+				type=rotation;animperiod=0.7;
+				selection= FrontWheel; axis=FWheelAxis;
+				angle0= 0;angle1= -0.91804;
+			};
+			class RwheelAnim {
+				type=rotation;animperiod=0.7;
+				selection= RearWheel;axis=RWheelAxis;
+				angle0= 0;angle1= -0.91455;
+			};
+			class FldoorAnim {
+				type=rotation;animperiod=0.7;
+				selection= Fldoor; axis=FldoorAxis;
+				angle0= 0;angle1= 1.5708;
+			};
+			class FrdoorAnim {
+				type=rotation;animperiod=0.7;
+				selection= Frdoor; axis=FrdoorAxis;
+				angle0= 0;angle1= -1.5708;
+			};
+			class RdoorAnim {
+				type=rotation;animperiod=0.5;
+				selection= RearDoor;axis=RDoorAxis;
+				angle0= 0;angle1= -1.5708;
+			};
+		};
+		class ViewPilotBase {};
+		class ViewPilot: ViewPilotBase {
+			initFov = 1.0;
+			minFov = 0.400000;
+			maxFov = 1.000000;
+			initAngleX = 7;
+			minAngleX = -25;
+			maxAngleX = 25;
+			initAngleY = 0;
+			minAngleY = -90;
+			maxAngleY = 90;
+		};
+		class TurretBase {
+			gunAxis = "OsaHlavne";
+			turretAxis = "OsaVeze";
+			gunBeg = "usti hlavne";
+			gunEnd = "konec hlavne";
+			soundServo[] = {};
+			minElev = -20;
+			maxElev = 20;
+			minTurn = -45;
+			maxTurn = 45;
+			body = "OtocVez";
+			gun = "OtocHlaven";
+		};
+		class Turret: TurretBase {
+			minElev = -90;
+			maxElev = +20;
+			minTurn = -180;
+			maxTurn = +180;
+		};
+
+		// In origin pbo inherit cobra. This base class inherit from helicopter and remain those un-overwrite cobra's attributes.
+		gunnerAction = "ManActAH1Gunner";
+		rotorBig = "vrtule_velka";
+		rotorBigBlend = "vrtule_velka_bl_";
+		rotorSmall = "vrtule_mala";
+		rotorSmallBlend = "vrtule_mala_bl";
+		
+		laserScanner = 1;
+		class IndicatorAltRadar {
+			selection = "alt";
+			axis = "osa_alt";
+			angle = -360;
+			min = 0;
+			max = 304;
+		};
+		class IndicatorAltBaro {
+			selection = "nm_alt";
+			axis = "osa_nm_alt";
+			angle = -180;
+			min = 0;
+			max = 61;
+		};
+		class IndicatorSpeed {
+			selection = "mph";
+			axis = "osa_mph";
+			angle = -320;
+			min = 0;
+			max = 125;
+		};
+		class IndicatorVertSpeed {
+			selection = "vert_speed";
+			axis = "osa_vert_speed";
+			angle = -300;
+			min = -30;
+			max = 30;
+		};
+		class IndicatorRPM {
+			selection = "rpm";
+			axis = "osa_rpm";
+			angle = -320;
+			min = 0;
+			max = 12;
+		};
+
+	};
+	class Orca95_West_Base_xj400: Orca95_MCSR_ABC_xj400 {
+		scope = private;
+		side = TWest;
+		accuracy = 0.8;
+		displayName = "ORCA Craft West";
+	};
+	class Orca95_W_xj400: Orca95_West_Base_xj400 {
+		scope = protected;
+		accuracy = 1000;
+		armor = 120;
+	};
+	class Orca95_East_Base_xj400: Orca95_MCSR_ABC_xj400 {
+		scope = private;
+		side = TEast;
+		accuracy = 0.8;
+		displayName = "ORCA Craft East";
+	};
+	class Orca95_E_xj400: Orca95_MCSR_Base_xj400 {
+		scope = protected;
+		accuracy = 1000;
+		armor = 120;
+	};
+
 	class A10_Base_xj400: A10 {
 		accuracy = 0.29;
 		armor = 2;
@@ -2356,6 +2519,8 @@ class CfgNonAIVehicles {
 	class ProxyOFrPAMX10RCGunnerOut: ProxyGunner {};
 	class ProxyOFrPAMX10RCCommander: ProxyCommander {};
 	class ProxyOFrPAMX10RCCommanderOut: ProxyCommander {};
+
+	class ProxyMCSR_OrcaPilot: Proxydriver {};
 };
 
 class CfgVehicleActions {
@@ -2375,6 +2540,8 @@ class CfgVehicleActions {
 	SFP_ssg120gunnerout = "SFP_ssg120gunnerout";
 	SFP_ssg120commander = "SFP_ssg120commander";
 	SFP_ssg120commanderout = "SFP_ssg120commanderout";
+
+	MCSR_OrcaPilot="MCSR_OrcaPilot";
 };
 class CfgMovesMC {
 	class Default {};
@@ -2654,6 +2821,34 @@ class CfgMovesMC {
 			variantsAI[]={HandGunStandVar2,0.700000,HandGunStand,0.300000};
 			equivalentTo=HandGunStand;
 		};
+
+// --------------------------- Orca95  -------------------------------
+
+		class MCSR_OrcaPilot: Driver {
+			file = "\TZK_Config_4_0_6\Anims\OrcaPilot.rtm";
+			speed = 10000000000;
+			looped = 1;
+			equivalentTo = "MCSR_OrcaPilot";
+			interpolationSpeed = 1;
+			connectTo[] = {"MCSR_OrcaPilotDying", 1};
+		};
+		class MCSR_OrcaPilotDying: DefaultDie {
+			actions = "NoActions";
+			file = "\TZK_Config_4_0_6\Anims\OrcaPilotDying.rtm";
+			speed = "- 1";
+			looped = 0;
+			soundEnabled = 0;
+			connectFrom[] = {"MCSR_OrcaPilot", 1};
+		};
+		class MCSR_OrcaPilotDead: MCSR_OrcaPilotDying {
+			actions = "DeadActions";
+			file = "\TZK_Config_4_0_6\Anims\OrcaPilotDead.rtm";
+			speed = 10000000000.000000;
+			terminal = 1;
+			connectFrom[] = {"MCSR_OrcaPilotDying", 1};
+			connectTo[] = {"DeadState", 1};
+		};
+
 	};
 };
 

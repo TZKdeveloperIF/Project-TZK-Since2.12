@@ -520,6 +520,8 @@ class CfgModels {
 	};
 	class Mi2NO: Helicopter {};
 
+	class Orca95_MCSR: Helicopter {};
+
 	class C130: Vehicle {
 		sectionsInherit = "Vehicle";
 		sections[]= {
