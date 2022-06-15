@@ -354,12 +354,35 @@ class CfgAmmo {
 		tracerColor[] = {1, 0, 0, 0};
 	};
 
-	class Shrapnel_xj400: Heat120 {
+	class Shrapnel_W_xj400: Heat120 {
 		hit = 500;
 		indirectHit = 150;
 		indirectHitRange = 2.5;
+		soundHit[] = {"Explosions\explosion_at3",31.622778,1};
+		soundFly[] = {"objects\noise",0.0001,4};
 		// ================ above same as LAW ================
 		simulation = "shotShell";
+		model = "\TZK_Model_4_0_6\warhead02.p3d";
+		// displayName = "M483A1"; // manazine name
+		// 弹头个数             12
+		// 单个弹头伤害       0.12
+		// 散布半径             12
+		// 发射载具             M109
+	};
+	class Shrapnel_E_xj400: Heat120 {
+		hit = 540;
+		indirectHit = 150;
+		indirectHitRange = 2.5;
+		soundHit[] = {"Explosions\explosion_at3",31.622778,1};
+		soundFly[] = {"objects\noise",0.0001,4};
+		// ================ above same as LAW ================
+		simulation = "shotShell";
+		model = "\TZK_Model_4_0_6\warhead02.p3d";
+		// displayName =  "3-O-13"; // manazine name
+		// 弹头个数             8
+		// 单个弹头伤害       0.16
+		// 散布半径             9
+		// 发射载具             PLZ05
 	};
 	
 	class 105RCSabot_OFrP_xj400: Heat105 {
