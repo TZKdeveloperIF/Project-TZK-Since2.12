@@ -2504,6 +2504,24 @@ class CfgVehicles {
 	class pwr_paraC_4veh_xj400: pwr_paraC_xj400 {
 		model = "\TZK_Config_4_0_6\PARA_Veh.p3d";
 	};
+
+	class House: NonStrategic {};
+	class House_Base_xj400: House {};
+	class AirF_xj400: House_Base_xj400 {
+		model = "\TZK_Model_4_0_6\Struct\Hangar02_Baracken.p3d";
+		class UserActions {
+			class Au04{displayName = "";position = ""; radius = 0;
+				 condition = "false";
+				 statement = "";
+			};
+			class Zu04{displayName = "";position = ""; radius = 0;
+				 condition = "false";
+				 statement = "";
+			};
+		};
+	};
+	class AirF_Grey_xj400: AirF_xj400 { model = "\TZK_Model_4_0_6\Struct\Grey_Hangar03_Baracken.p3d"; };
+	class AirF_Green_xj400: AirF_xj400 { model = "\TZK_Model_4_0_6\Struct\Green_Hangar02_Baracken.p3d"; };
 };
 
 
