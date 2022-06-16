@@ -67,7 +67,7 @@ _groupCommander = (groupCommander select siPlayer)
 _res = [_idcTransferAmount, _idcIncomeRatio, _idcIncomeRatioPlayer, _idcGroupMarkers, _idcReports, _idcTransferCommandGroup, _idcWorkerBehaviour, _idcAIRespawn] call loadFile "\TZK_Scripts_4_0_4\Player\Dialog\Options_Init.sqf"
 _currentAiRespawn = _res select 0; _respawnObjects = _res select 1
 
-#Update
+# Update
 
 ? call dlgUpdated: exit
 ? !(alive _unit): Exit
@@ -238,7 +238,7 @@ goto "Update"
 #Leaderboard
 	closeDialog 0
 	; ~0.1
-	[] exec "\TZK_Scripts_4_0_4\Player\Dialog\Leaderboard.sqs"
+	0 exec "Player\Dialog\Leaderboard.sqs"
 	Exit
 
 #ShowStats

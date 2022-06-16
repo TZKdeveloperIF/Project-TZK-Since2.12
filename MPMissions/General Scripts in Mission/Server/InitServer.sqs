@@ -61,12 +61,12 @@ _i = 0; countTargetMarkers = 10; while "_i < countTargetMarkers" do {call Format
 [si0] exec "\TZK_Scripts_4_0_4\Server\UpdateRespawnAI.sqs"; [si1] exec "\TZK_Scripts_4_0_4\Server\UpdateRespawnAI.sqs"
 
 [] exec "Server\Start\Income.sqs"
-[] exec "\TZK_Scripts_4_0_4\Server\Start\Server.sqs"
+0 exec "Server\Loop\Server.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\SendPing.sqs"
 
 [] exec "\TZK_Scripts_4_0_4\Server\DynamicInitializationMarker.sqs"
 [] exec "\TZK_Scripts_4_0_5\Server\DynamicInitializationTrigger.sqs"
-? !bool_TZK_DEV_FPS: if bool_TZK_SEMod_Mode Then {[] exec "Extra\DynamicInitializationGroup.sqs"} Else {[] exec "\TZK_Scripts_4_0_5\Server\DynamicInitializationGroup.sqs"}
+? !bool_TZK_DEV_FPS: if bool_TZK_SEMod_Mode then {[] exec "Extra\DynamicInitializationGroup.sqs"} else {0 exec "Server\DynamicInitializationGroup.sqs"}
 
 ; after data initialized and before forcemap canceled
 ~2
@@ -91,3 +91,8 @@ call loadFile "\TZK_Scripts_4_0_4\Server\Init\Vote.sqf"
 
 estimatedTimeLeft 7200
 ; ================================================================================TZK_4.0.0 Block================================================================================
+
+; 4.0.5.33
+west exec "Server\Loop\PlaneBuilt.sqs"
+east exec "Server\Loop\PlaneBuilt.sqs"
+Array_TZK_Town_Triggered_By = []

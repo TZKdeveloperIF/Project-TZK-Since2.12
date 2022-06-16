@@ -86,6 +86,10 @@ if true then {
 	} forEach [_supportTruckW, _supportTruckE];
 };
 
+comment "Lazy load 4xAA missile after plane built.";
+unitDefs select _vulcanW2 select udScripts set [0, "Common\Equip\Modified4xAA.sqs"];
+unitDefs select _tunguskaE select udScripts set [0, "Common\Equip\Modified4xAA.sqs"];
+
 comment "Anti Plane Vehicle Type Constant.";
 typesAntiPlane3500 = [[_m2a2aa, _m2a2townaad], [_bmp2aa, _bmp2townaad]];
 typesAntiPlane8000 = [[_vulcanW2], [_tunguskaE]];
@@ -103,6 +107,8 @@ if bool_TZK_SEMod_Mode then {
 };
 comment "Define global variable for nuke planes";
 typesNuke = [_a10Tomahawk, _su25Raduga];
+comment "Define global variable for general planes";
+typesTzkGenearlPlane = [[_a10], [_su25]];
 
 comment "After having called the 'impl\Unit.sqf', the unitTypeData and unitTypeArray should be re-defined.";
 unitTypeArray resize 0; unitTypeData resize 0;

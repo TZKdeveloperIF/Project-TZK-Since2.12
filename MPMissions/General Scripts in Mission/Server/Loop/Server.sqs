@@ -1,13 +1,19 @@
-; args: [_mhqAlive select si0, _mhqAlive select si1, _mcvAlive select si0, _mcvAlive select si1, _ir]
-_mhqAlive = [_this select 0, _this select 1]; _mcvAlive = [_this select 2, _this select 3]
-_ir = _this select 4
+; arg: 0
+
+@( !(isNull (mhq select si0)) && !(isNull (mhq select si1)) )
+
+_mhqAlive = [true, true]
+_mcvAlive = [false, false]
+
+_remind = [timeLimit - 60*60, 10*60, 5*60, 1*60, -10000]
+_ir = 0
+
 _remind = [timeLimit - 60*60, timeLimit - 60*90, timeLimit - 60*150, 10*60, 5*60, 1*60, -10000]
 _timeNextRemind = timeLimit - (_remind select _ir)
 
-#Update
+# Update
 ~2
-	? _time > 5*60: [_mhqAlive select si0, _mhqAlive select si1, _mcvAlive select si0, _mcvAlive select si1, _ir] exec "\TZK_Scripts_4_0_4\Server\Loop\Server.sqs"; exit
-	? pvGameOver != -1 : [] exec "\TZK_Scripts_4_0_4\Common\Dynamic\TriggerGameEnd.sqs"; exit
+	? pvGameOver != -1 : [] exec "Common\Dynamic\TriggerGameEnd.sqs"; exit
 
 	? (timeLimit != 0 && time > timeLimit): goto "TimeLimitReached"
 
@@ -29,14 +35,14 @@ _timeNextRemind = timeLimit - (_remind select _ir)
 	? timeLimit != 0 && time > _timeNextRemind : goto "Remind"
   goto "Update"
 
-#Remind
+# Remind
   [_remind select _ir] exec "\TZK_Scripts_4_0_4\Server\Info\TimeLimitRemind.sqs"
   _ir = _ir + 1
   _timeNextRemind = timeLimit - (_remind select _ir)
   goto "Update"
   
-#TimeLimitReached
+# TimeLimitReached
 	pvGameOver = (1) + 2*(0)
 	PublicVariable "pvGameOver"
-	[] exec "\TZK_Scripts_4_0_4\Common\Dynamic\TriggerGameEnd.sqs"
+	[] exec "Common\Dynamic\TriggerGameEnd.sqs"
 	exit
