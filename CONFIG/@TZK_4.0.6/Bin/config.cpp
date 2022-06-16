@@ -44248,11 +44248,11 @@ class CfgPatches {
 		units[] = {};
 		weapons[] = {};
 	};
-	class TZK_BIN_CONFIG_4_0_5 {
+	class TZK_BIN_CONFIG_4_0_6 {
 		units[] = {};
 		weapons[] = {};
 	};
-	class TZK_BIN_CONFIG_4_0_0_2 {
+	class TZK_BIN_CONFIG_4_0_5 {
 		units[] = {};
 		weapons[] = {};
 	};
