@@ -69,6 +69,10 @@ _i = 0; countTargetMarkers = 10; while "_i < countTargetMarkers" do {call Format
 
 ; 4.0.5.28
 Array_TZK_PlayerC4 = []
+; 4.0.5.33
+Array_TZK_ScoreTankPos = [-200 - 300 * siPlayer - 100 * giPlayer, -200 - 300 * siPlayer - 100 * giPlayer, 10]
+Object_TZK_ScoreTank = (["M113", "BMP"] select (siEnemy select siPlayer)) createVehicle Array_TZK_ScoreTankPos
+removeAllWeapons Object_TZK_ScoreTank; Object_TZK_ScoreTank setFuel 0
 
 ;game has begun after this pause
 ~0.1

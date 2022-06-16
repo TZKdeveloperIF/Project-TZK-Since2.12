@@ -54,7 +54,7 @@ _typeBinocular = _custom select 4
 _typeNVG = _custom select 5
 _equipment = _custom select 6
 
-_weapons = []; _mags = []
+_weapons = +weaponsCustom; _mags = []
 { if (_x != -1) then {_weapons = _weapons + [weaponSearch select _x]} } forEach [_typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG]
 { _mags = _mags + [equipSearch select (_x select 0)] } foreach (_equipment select isGeneral)
 { _mags = _mags + [equipSearch select (_x select 0)] } foreach (_equipment select isHandgun)

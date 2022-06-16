@@ -1,6 +1,6 @@
 private [
 	"_texts", "_index", "_count", 
-	"_id", "_x", "_money", "_moneySide", "_score", "_groupCount", "_place", "_siX", "_giX", "_scoreX", "_incomeRatio", "_selectedIncome", "_incomeRatioPlayer",
+	"_id", "_x", "_money", "_moneySide", "_score", "_siX", "_giX", "_scoreX", "_incomeRatio", "_selectedIncome", "_incomeRatioPlayer",
 	"_townCount", "_towns", "_income", "_factor", "_players", "_aileaders", "_incomePlayer", "_incomeAiLeaders", "_incomeCommander", "_upgState"
 ];
 
@@ -11,15 +11,7 @@ _index = 0; { _moneySide = _moneySide + (_groupsMoney select _index); _index = _
 ctrlSetText [_idcMoney, format["$ You/Side: %1/%2", _money, _moneySide]];
 
 _score = [siPlayer, giPlayer] call funcCalcScore;
-_groupCount = count (groupMatrix select si0) + count (groupMatrix select si1);
-_place = 1;
-_siX = si0;
-_giX = 0;
-{ _scoreX = [_siX, _giX] call funcCalcScore; if (_score < _scoreX) then {_place=_place+1}; _giX=_giX+1 } forEach (groupScoreMatrix select _siX);
-_siX = si1;
-_giX = 0;
-{ _scoreX = [_siX, _giX] call funcCalcScore; if (_score < _scoreX) then {_place=_place+1}; _giX=_giX+1 } forEach (groupScoreMatrix select _siX);
-ctrlSetText [_idcScore, format["Score (Pos): %1 (%2/%3)", _score, _place, _groupCount]];
+ctrlSetText [_idcScore, format ["Score: %1", _score]];
 
 
 _incomeRatio = [pvIncomeRatio0, pvIncomeRatio1] select (siPlayer == si1);

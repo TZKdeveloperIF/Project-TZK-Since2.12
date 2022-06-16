@@ -1,0 +1,24 @@
+; args: side
+_side = _this
+? !isServer: exit
+? bool_TZK_SEMod_Mode: exit
+~10
+_si = sides find _side
+? _si == -1: format["ERROR: %1 side is illegal in 'PlaneBuilt.sqs'.", _side] call fDebugLog; exit
+
+_planeBuilt = false
+_siEnemy = siEnemy select _si
+_planeTypes = typesTzkGenearlPlane select _siEnemy
+_planes = 0
+
+# loop
+	~ 30
+	{ _planes = _planes + (unitsBuilt select _siEnemy select _x) } foreach _planeTypes
+	? _planes > 0: _planeBuilt = true
+	? !_planeBuilt: goto "loop"
+
+
+publicExec format [{[%1] call preprocessFile "Common\Reequip\4xAA_Init.sqf"}, _si]
+call format [{[%1] call preprocessFile "Common\Reequip\4xAA_Init.sqf"}, _si]
+publicExec format [{Array_TZK_PlaneBuilt set [%1, true]}, _siEnemy]
+Array_TZK_PlaneBuilt set [_siEnemy, true]
