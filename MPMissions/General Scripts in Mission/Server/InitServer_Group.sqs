@@ -14,7 +14,7 @@ _count = count _groups
 #CheckGroupSide0
 	_leader = leader (_groups select _index)
 	? ( local _leader && !(player == _leader) ): _groupsAI set [count _groupsAI, group _leader]; [_leader, si0, _index] exec "Server\InitLeaderAI.sqs"
-	? !(local _leader): [group _leader, si0, _index] exec "\TZK_Scripts_4_0_5\Server\Loop\DetectPlayerDisconnect.sqs"
+	? !(local _leader): [group _leader, si0, _index] exec "Server\Loop\DetectPlayerDisconnect.sqs"
 		(scoreMoney select si0) set [_index, 0]
 	_index = _index + 1
 	? (_index < _count): goto "CheckGroupSide0"
@@ -29,7 +29,7 @@ _count = count _groups
 #CheckGroupSide1
 	_leader = leader (_groups select _index)
 	? ( local _leader && !(player == _leader) ): _groupsAI set [count _groupsAI, group _leader]; [_leader, si1, _index] exec "Server\InitLeaderAI.sqs"
-	? !(local _leader): [group _leader, si1, _index] exec "\TZK_Scripts_4_0_5\Server\Loop\DetectPlayerDisconnect.sqs"
+	? !(local _leader): [group _leader, si1, _index] exec "Server\Loop\DetectPlayerDisconnect.sqs"
 		(scoreMoney select si1) set [_index, 0]
 	_index = _index + 1
 	? (_index < _count): goto "CheckGroupSide1"
