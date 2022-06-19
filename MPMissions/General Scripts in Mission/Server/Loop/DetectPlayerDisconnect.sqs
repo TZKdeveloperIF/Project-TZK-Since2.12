@@ -1,0 +1,14 @@
+; args: [group, si, gi]
+
+_group = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_this = 0
+
+? !isServer : exit
+
+# CheckDisconnect
+	~30
+	? !(local leader _group) : goto "CheckDisconnect"
+	
+[_group, _si, _gi] exec "Server\PlayerDisconnect.sqs"

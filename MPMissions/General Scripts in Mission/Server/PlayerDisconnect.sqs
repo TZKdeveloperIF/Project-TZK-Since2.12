@@ -1,1 +1,24 @@
-_this exec "\TZK_Scripts_4_0_5\Server\PlayerDisconnect.sqs"
+; args: [group, si, gi]
+
+_group = _this select 0
+_si = _this select 1
+_gi = _this select 2
+_this = 0
+
+# CheckGroupLocal
+	~1
+	_groupLocal = true
+	{ if (!(local _x)) then { if (_time < 60) then {_groupLocal = false} else {deleteVehicle _x} } } foreach (units _group)
+	? !_groupLocal: goto "CheckGroupLocal"
+~10
+pingTimes select _si set [_gi, -1]
+? pvGameOver != -1: exit
+
+# LoopUntilLeaderAlive
+	~1
+	? !alive leader _group: goto {LoopUntilLeaderAlive}
+
+(leader _group) call preprocessFile "Server\PlayerDisconnect.sqf"
+; Disconnected player MUST BE KILLED BY SERVER for they often can't be killed by clients
+~1
+(leader _group) setDamage 1
