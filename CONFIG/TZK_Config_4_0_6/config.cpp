@@ -434,6 +434,26 @@ class CfgAmmo {
 		hitGround[]={"soundHit1",0.5,"soundHit2",0.5};
 		hitArmor[]={"soundHitArmor1",0.5,"soundHitArmor2",0.5};
 	};
+
+	// MLRS ammo. Useless tbh
+	class FAE220_DKMM_xj400: Shell125 {};
+	class FAE220_Rocket_xj400: FAE220_DKMM_xj400 {
+		simulation = "shotRocket";
+		thrustTime = 0;
+		thrust = 0;
+	};
+	class FAE220_Bullet_xj400: FAE220_DKMM_xj400 {
+		simulation = "shotBullet";
+	};
+	class M26_CoC_xj400: FAE220_DKMM_xj400 {};
+	class M26_Rocket_xj400: M26_CoC_xj400 {
+		simulation = "shotRocket";
+		thrustTime = 0;
+		thrust = 0;
+	};
+	class M26_Bullet_xj400: M26_CoC_xj400 {
+		simulation = "shotBullet";
+	};
 };
 class CfgWeapons {
 	class Default {};
@@ -1045,8 +1065,63 @@ class CfgWeapons {
 		};
 		// RKG3M_xj400 requires AI equip Throw weapon with "enableAttack = 1" and equipping RKG3M_xj400 only (namely don't equip HandGrenade)
 	};
-};
 
+	class FAE220Launcher_xj400: MachineGun12_7 {
+		magazines[] = {
+			"FAE220_DKMM_0080_xj400", "FAE220_DKMM_0120_xj400", "FAE220_DKMM_0180_xj400", 
+			"FAE220_DKMM_0300_xj400", "FAE220_DKMM_0400_xj400", "FAE220_DKMM_0500_xj400", 
+			"FAE220_DKMM_0600_xj400", "FAE220_DKMM_0700_xj400", "FAE220_DKMM_0800_xj400", 
+			"FAE220_DKMM_0900_xj400", "FAE220_DKMM_1000_xj400",
+			"FAE220_0080_xj400", "FAE220_0120_xj400", "FAE220_0180_xj400", 
+			"FAE220_0300_xj400", "FAE220_0400_xj400", "FAE220_0500_xj400", 
+			"FAE220_0600_xj400", "FAE220_0700_xj400", "FAE220_0800_xj400", 
+			"FAE220_0900_xj400", "FAE220_1000_xj400"
+};
+	};
+	class FAE220_DKMM_0080_xj400: FAE220Launcher_xj400 {};
+	class FAE220_0080_xj400: FAE220_DKMM_0080_xj400 {
+		ammo = "FAE220_Bullet_xj400";
+	};
+	class FAE220_0120_xj400: FAE220_0080_xj400 { displayName = "9M27K-TB(120m/s)"; initSpeed = 120; };
+	class FAE220_0180_xj400: FAE220_0080_xj400 { displayName = "9M27K-TB(180m/s)"; initSpeed = 180; };
+	class FAE220_0300_xj400: FAE220_0080_xj400 { displayName = "9M27K-TB(300m/s)"; initSpeed = 300; };
+	class FAE220_0400_xj400: FAE220_0080_xj400 { displayName = "9M27K-TB(400m/s)"; initSpeed = 400; };
+	class FAE220_0500_xj400: FAE220_0080_xj400 { displayName = "9M27K-TB(500m/s)"; initSpeed = 500; };
+	class FAE220_0600_xj400: FAE220_0080_xj400 { displayName = "9M27K-TB(600m/s)"; initSpeed = 600; };
+	class FAE220_0700_xj400: FAE220_0080_xj400 { displayName = "9M27K-TB(700m/s)"; initSpeed = 700; };
+	class FAE220_0800_xj400: FAE220_0080_xj400 { displayName = "9M27K-TB(800m/s)"; initSpeed = 800; };
+	class FAE220_0900_xj400: FAE220_0080_xj400 { displayName = "9M27K-TB(900m/s)"; initSpeed = 900; };
+	class FAE220_1000_xj400: FAE220_0080_xj400 { displayName = "9M27K-TB(1000m/s)"; initSpeed = 1000; };
+
+	class M26Launcher_xj400: FAE220Launcher_xj400 {
+		magazines[] = {
+			"M26_COC_0080_xj400", "M26_COC_0120_xj400", "M26_COC_0180_xj400", "M26_COC_0300_xj400", 
+			"M26_COC_0400_xj400", "M26_COC_0500_xj400", "M26_COC_0600_xj400", "M26_COC_0700_xj400", 
+			"M26_COC_0800_xj400", "M26_COC_0900_xj400", "M26_COC_1000_xj400", "M26_COC_1200_xj400", 
+			"M26_COC_1500_xj400",
+			"M26_0080_xj400", "M26_0120_xj400", "M26_0180_xj400", "M26_0300_xj400", 
+			"M26_0400_xj400", "M26_0500_xj400", "M26_0600_xj400", "M26_0700_xj400", 
+			"M26_0800_xj400", "M26_0900_xj400", "M26_1000_xj400", "M26_1200_xj400", 
+			"M26_1500_xj400"
+		};
+	};
+	class M26_COC_0080_xj400: M26Launcher_xj400 {};
+	class M26_0080_xj400: M26_COC_0080_xj400 {
+		ammo = "M26_Bullet_xj400";
+	};
+	class M26_0120_xj400: M26_0080_xj400 { displayName = "M26 Rocket(120m/s)"; initSpeed = 120; };
+	class M26_0180_xj400: M26_0080_xj400 { displayName = "M26 Rocket(180m/s)"; initSpeed = 180; };
+	class M26_0300_xj400: M26_0080_xj400 { displayName = "M26 Rocket(300m/s)"; initSpeed = 300; };
+	class M26_0400_xj400: M26_0080_xj400 { displayName = "M26 Rocket(400m/s)"; initSpeed = 400; };
+	class M26_0500_xj400: M26_0080_xj400 { displayName = "M26 Rocket(500m/s)"; initSpeed = 500; };
+	class M26_0600_xj400: M26_0080_xj400 { displayName = "M26 Rocket(600m/s)"; initSpeed = 600; };
+	class M26_0700_xj400: M26_0080_xj400 { displayName = "M26 Rocket(700m/s)"; initSpeed = 700; };
+	class M26_0800_xj400: M26_0080_xj400 { displayName = "M26 Rocket(800m/s)"; initSpeed = 800; };
+	class M26_0900_xj400: M26_0080_xj400 { displayName = "M26 Rocket(900m/s)"; initSpeed = 900; };
+	class M26_1000_xj400: M26_0080_xj400 { displayName = "M26 Rocket(1000m/s)"; initSpeed = 1000; };	
+	class M26_1200_xj400: M26_0080_xj400 { displayName = "M26 Rocket(1200m/s)"; initSpeed = 1200; };	
+	class M26_1500_xj400: M26_0080_xj400 { displayName = "M26 Rocket(1500m/s)"; initSpeed = 1500; };	
+};
 	
 class UA_MHQBuildMenu {};
 class UA_MCVBuildMenu {};
