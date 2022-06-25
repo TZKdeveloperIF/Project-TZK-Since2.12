@@ -995,7 +995,7 @@ class CfgWeapons {
 		displayName = "120mm HE";
 		ammo = "HE120_Coc_xj400";
 		sound[] = {"\TZK_Config_4_0_6\coc\amos_fire.wss", db+20 ,1};
-		reloadTime = 4;
+		reloadTime = 5;
 		flash = "gunfire";
 		flashSize = 10.000000;
 		dispersion = 0.00055;
@@ -2416,7 +2416,7 @@ class CfgVehicles {
 		model = "\TZK_Config_4_0_6\2S25_mfm.p3d";
 		hiddenselections[]= {"no1", "no2", "no3"};
 		icon = "\TZK_Config_4_0_6\tex\sprut_i.paa";
-		picture = "\TZK_Config_4_0_6\tex\sprut.paa";
+		picture = "\t406\ui\2s25.paa";
 
 		gunnerOpticsModel = "\TZK_Config_4_0_6\opt\G_Optic.p3d";
 		commanderOpticsModel = "\TZK_Config_4_0_6\opt\C_Optic.p3d";
