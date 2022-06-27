@@ -252,11 +252,29 @@ class CfgAmmo {
 	class Maverick_P50_xj400: Maverick {
 		hit = 1250; indirectHit = 600; indirectHitRange = 4;
 	};
+	class Maverick_16_xj400: Maverick {
+		thrustTime = 2.2;
+	};
+	class Maverick_18_xj400: Maverick_16_xj400 {
+		thrustTime = 2.5;
+	};
+	class Maverick_20_xj400: Maverick_16_xj400 {
+		thrustTime = 2.7;
+	};
 	class Ch29T: Maverick {};
 	class Ch29T_P50_xj400: Ch29T {
 		hit = 1250; indirectHit = 600; indirectHitRange = 4;
 		model = "\Su25\Ch_29T_shine";
 		proxyShape = "\Su25\Ch_29T";
+	};
+	class Ch29T_16_xj400: Ch29T {
+		thrustTime = 2.2;
+	};
+	class Ch29T_18_xj400: Ch29T_16_xj400 {
+		thrustTime = 2.5;
+	};
+	class Ch29T_20_xj400: Ch29T_16_xj400 {
+		thrustTime = 2.7;
 	};
 	
 	class Bullet7_6: BulletSingle {};
@@ -777,11 +795,35 @@ class CfgWeapons {
 
 	class MaverickLauncher: HellfireLauncher {};
 	class Ch29TLauncher: MaverickLauncher {};
+	class MaverickLauncher_xj400: MaverickLauncher {
+		magazines[] = {"MaverickLauncher", "Maverick_P50_xj400", "Maverick_16_xj400", "Maverick_18_xj400", "Maverick_20_xj400"};
+	};
+	class Ch29TLauncher_xj400: Ch29TLauncher {
+		magazines[] = {"Ch29TLauncher", "Ch29T_P50_xj400", "Ch29T_16_xj400", "Ch29T_18_xj400", "Ch29T_20_xj400"};
+	};
 	class Maverick_P50_xj400: MaverickLauncher {
 		ammo = "Maverick_P50_xj400";
 	};
 	class Ch29T_P50_xj400: Ch29TLauncher {
 		ammo = "Ch29T_P50_xj400";
+	};
+	class Maverick_16_xj400: MaverickLauncher {
+		ammo = "Maverick_16_xj400";
+	};
+	class Maverick_18_xj400: MaverickLauncher {
+		ammo = "Maverick_18_xj400";
+	};
+	class Maverick_20_xj400: MaverickLauncher {
+		ammo = "Maverick_20_xj400";
+	};
+	class Ch29T_16_xj400: Ch29TLauncher {
+		ammo = "Ch29T_16_xj400";
+	};
+	class Ch29T_18_xj400: Ch29TLauncher {
+		ammo = "Ch29T_18_xj400";
+	};
+	class Ch29T_20_xj400: Ch29TLauncher {
+		ammo = "Ch29T_20_xj400";
 	};
 	
 	class GrenadeLauncher: Default {};
