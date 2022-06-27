@@ -1,0 +1,35 @@
+; args: [value]
+
+_value = _this select 0
+
+_gi = _value % GroupsNum
+_si = (_value - _gi) / GroupsNum
+
+? _si != siPlayer || _gi != giPlayer : exit
+
+; _groupJoin = call format ["groupJoin%1", _si]; _leaderJoin = call format ["leaderJoin%1", _si]
+; groupJoin and groupTemp are not defined in mission.sqm since TZK_3.00 any longer, and client execpt server don't know these groups without public them. In dynamic initialization the leader with global Init message created thus use the leader to indicate the group.
+_leaderJoin = call format ["leaderJoin%1", _si]; _groupJoin = group _leaderJoin
+
+_units = ((units _groupJoin) - [_leaderJoin])
+{groupplayer reveal _x} forEach _units
+
+~0.1
+_units join groupPlayer
+
+
+	? count _units == 0 : exit
+	_try = 0; _unitsJoint = []
+	#SecondRepeat
+	~0.4
+	_count = count _units; _index = 0
+		#SecondGroupCheck
+			? (group (_units select _index)) == groupPlayer && local (_units select _index): _unitsJoint = _unitsJoint + [_units select _index]
+			_index = _index + 1
+			? _index < _count : goto "SecondGroupCheck"
+		_units = _units - _unitsJoint
+		? count _units > 0 && _try < 10 : _units join groupPlayer; _try = _try + 1; goto "SecondRepeat"
+		
+	_cost = 0; _type = -1; { _type = _x call funcgetunittypefromobject; if (_type >= maxUnitTypes || _type < 0) then {_cost = (unitDefs select (utCustom select _si)) select udCost} else {_cost = (unitDefs select _type) select udCost}; [_x, _si, _cost] exec "Common\Event\Add_Killed_Infantry.sqs" } forEach _unitsJoint
+
+; EOF

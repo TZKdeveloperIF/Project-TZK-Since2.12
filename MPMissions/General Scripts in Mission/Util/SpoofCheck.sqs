@@ -13,7 +13,6 @@ _timeAbort = time + 10
 ? _missile distance _target > 400: _timeAbort = time + 0.33; goto "Check"
 
 ? !bool_TZK_199_Mode: _NetWorkID = NetworkID _target; _code = format [{[UnitById %1] exec "\TZK_Scripts_4_0_4\Player\Effect\SpoofFlare.sqs"}, _NetWorkID]; publicExec _code
-; ? !bool_TZK_199_Mode: _pos = getPosASL _target, _logic = "FireTargetLogic_0_xj400" createVehicle _pos, _logic setVectorDir VectorDir _target, _logic setPosASL _pos, [_logic, 60] exec "\TZK_Scripts_4_0_4\Common\DeleteUnitAfterDelay.sqs"
 ? bool_TZK_199_Mode: [_target] exec "\TZK_Scripts_4_0_4\Common\Msg\sSpoofTarget.sqs", exit
 [_target] exec "\TZK_Scripts_4_0_4\Player\Effect\SpoofFlare.sqs"
 
