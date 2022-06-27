@@ -1,49 +1,43 @@
 ; args : none
 
-; Initialize the bool, make sure all of them not remain "undefined".
+; ======================================== environment variables ========================================
+
+; for debug log
 debug = true
 
 _nil = "scalar bool array string 0xfcffffef"
-{ if (format ["%1", call _x] == _nil) Then {call (_x + " = false")} } forEach ["dev", "bool_TZK_DEV_FPS", "boole_Infantry_Mode", "bool_TZK_SEMod_Mode", "bool_TZK_Vanilla_Mode", "bool_TZK_199_Mode", "bool_TZK_MF_Mode", "bool_TZK_Yugo_Mode", "bool_TZK_ETON_Mod",   "bool_TZK_BOH_WAP", "bool_TZK_Lester_Mode"]
+{ if (format ["%1", call _x] == _nil) then {call (_x + " = false")} } forEach ["dev", "bool_TZK_DEV_FPS", "boole_Infantry_Mode", "bool_TZK_SEMod_Mode", "bool_TZK_Vanilla_Mode", "bool_TZK_199_Mode", "bool_TZK_MF_Mode", "bool_TZK_Yugo_Mode", "bool_TZK_ETON_Mod",   "bool_TZK_BOH_WAP", "bool_TZK_Lester_Mode"]
 ; bool_TZK_Origin = !boole_Infantry_Mode && !bool_TZK_SEMod_Mode && !bool_TZK_Yugo_Mode
 
-; "UsedVersion" is 2.01 script command, but its syntax is similar as if it's a variable (actually one can assign another value to it like "time" or "_time"). Directly apply it won't cause debug error info in OFP versions older than 2.01. Its return value on 2.01 version is 2010.
-; This new design will make those "1.99 missions" using 2.01 functions if it's opened under 2.01 game. Before applying this design, it's necessary to decouple bool_TZK_199_Mode with other mods, and find out the method remove thousands of markers and town/radio sensors defined for 1.99 missions in mission.sqm.
+; "UsedVersion" is 2.01 script command, but its syntax is similar as if it's a variable. (actually one can assign 
+; another value to it like "time" or "_time"). Directly apply it won't cause debug error info in OFP versions older
+; than 2.01. Its return value on 2.01 version is 2010.
+; This new design will make those "1.99 missions" using 2.01 functions if it's opened under 2.01 game. Before 
+; applying this design, it's necessary to decouple bool_TZK_199_Mode with other mods, and find out the method remove
+; thousands of markers and town/radio sensors defined for 1.99 missions in mission.sqm.
 ? UsedVersion >= 2010: bool_TZK_199_Mode = false
 
-Init_TZK_Script_Order = false
-["\TZK_Scripts_4_0_5\init_group.sqs"] exec "\TZK_Scripts_4_0_5\init_constants.sqs"
-[] exec "\TZK_Scripts_4_0_5\init_param.sqs"
-[] exec "\TZK_Scripts_4_0_5\init_upgrade.sqs"
+call preprocessFile "\TZK_Scripts_4_0_6\init_constants.sqf"
+call preprocessFile "\TZK_Scripts_4_0_6\init_group.sqf"
+call preprocessFile "\TZK_Scripts_4_0_6\init_param.sqf"
+"" call preprocessFile "\TZK_Scripts_4_0_6\init_upgrade.sqf"
 ? bool_TZK_Lester_Mode: [{[] exec "Extra\init_upgrade.sqs"}, 0.1] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
-; 4.0.5.18 update
-pvInit_0 = -1; pvCustomPlayerMoney = -1; pvCustomAicoMoney = -1
-; 4.0.5.26 update
-mutexTzkArtModule = false
-; 4.0.5.27 update
-bool_TZK_CHN_inited = false
+call preprocessFile "\TZK_Scripts_4_0_6\init_theWorld.sqf"
 
 
-@ Init_TZK_Script_Order
 Init_TZK_Script_Order = false
-deleteObjDelay = deleteUnitDelay
-[] exec "\TZK_Scripts_4_0_4\Common\Init\TheWorld.sqs"
-? bool_TZK_SEMod_Mode: ["if (TheWorld == {C}) Then {TheWorld = {G}} Else {exit}, if !isServer Then {exit}, publicVariableString {TheWorld}", 1] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
-? bool_TZK_DEV_FPS: timeLimit = 0
 
-_initUnitTypes = "\TZK_Scripts_4_0_5\Common\InitUnitTypes.sqs"; _initStructureTypes = "\TZK_Scripts_4_0_5\Common\InitStructureTypes.sqs"
+_initUnitTypes = "\TZK_Scripts_4_0_6\Common\InitUnitTypes.sqs"
+_initStructureTypes = "\TZK_Scripts_4_0_6\Common\InitStructureTypes.sqs"
 ; ? bool_TZK_MF_Mode: 
 ; ? bool_TZK_Yugo_Mode:
 
-[] exec "\TZK_Scripts_4_0_4\Common\InitPublicVariables.sqs"
-pvConcurStatus1 = -1; pvConcurStatus2 = -1;
-_i = 0; while {_i < 5} do {call format["pvBuyUnit_Custom%1 = -1", _i]; _i = _i + 1}
-_i = 0; while {_i < 10} do {call format["pvAddUnit_Custom%1 = -1", _i]; _i = _i + 1}
+call preprocessFile "\TZK_Scripts_4_0_6\Common\InitPublicVariables.sqf"
 
-[] exec _initStructureTypes
-[] exec _initUnitTypes
-[] exec "\TZK_Scripts_4_0_5\Common\InitInfoMsgTypes.sqs"
-[] exec "\TZK_Scripts_4_0_5\Common\InitEquipmentTypes.sqs"
+0 exec _initStructureTypes
+0 exec _initUnitTypes
+0 exec "\TZK_Scripts_4_0_6\Common\InitInfoMsgTypes.sqs"
+0 exec "\TZK_Scripts_4_0_6\Common\InitEquipmentTypes.sqs"
 ; 4.0.5.08 updating
 [] exec "Common\InitWeaponsInfo.sqs"
 ; 4.0.5.15/16 updating
@@ -56,9 +50,9 @@ _i = 0; while {_i < 10} do {call format["pvAddUnit_Custom%1 = -1", _i]; _i = _i 
 
 
 ; init functions (stuff that return values)
-[] exec "\TZK_Scripts_4_0_5\Common\InitFunctions.sqs"
+call preprocessFile "\TZK_Scripts_4_0_6\Common\InitFunctions.sqf"
 ; AI Group Settings/Orders
-[] exec "\TZK_Scripts_4_0_5\Common\InitAIOptions.sqs"
+call preprocessFile "\TZK_Scripts_4_0_6\Common\InitAIOptions.sqf"
 
 
 ; MESSAGE HANDLERS (SERVER AND CLIENTS)

@@ -1,0 +1,60 @@
+; args: [_objectDestroyed, _type, _si]
+
+_objectDestroyed = _this select 0
+_type = _this select 1
+_si = _this select 2
+
+_model = typeOf _objectDestroyed;
+_pos = getPos _objectDestroyed;
+_dir = getDir _objectDestroyed;
+_temp = _model camCreate _pos;
+_temp setDir _dir;
+_temp setPos _pos;
+_vect = [_pos, getPos _temp] call funcVectorSub;
+_posCorrect = [_pos, _vect] call funcVectorAdd;
+_posCorrect set [2, 0];
+deleteVehicle _temp;
+
+_structDesc = structDefs select _type
+
+_posStruct = _posCorrect
+_posStruct set [2, 0]
+
+_parts = _structDesc select ([sdObjects0, sdObjects1] select (_si == si1))
+
+_objects = []
+
+
+? isNull _objectDestroyed: exit
+
+_part = _parts select 0
+_object = (_part select 0) createVehicle _posStruct
+_object setDir _dir
+_object setPos _posStruct
+if (isNull gunner _object) then { [_object] exec "\TZK_Scripts_4_0_4\Common\AddRearmData.sqs" };
+
+
+[_si, _type] exec "\TZK_Scripts_4_0_4\Server\Info\StructReady.sqs"; [_objectDestroyed] exec "\TZK_Scripts_4_0_4\Server\primStructsPlacedRemove.sqs"
+
+_objects = [_object]
+[_objects, _type] exec "\TZK_Scripts_4_0_4\Server\ResetStructureUp.sqs";
+
+#ReplaceStructure
+
+{ [_type, _si, [_object], "Repaired"] exec _x } forEach (_structDesc select sdScriptsServer)
+
+{ _group = _x; { _group reveal _x } forEach _objects } forEach (groupAiMatrix select _si)
+
+_list = (structMatrix select _si) select _type
+_index = _list find _objectDestroyed
+@!(mutexEditStructMatrix)
+mutexEditStructMatrix = true
+? _index != -1: _list set [_index, _object]
+mutexEditStructMatrix = false
+[_object, _type, _si, 0, _index] exec "\TZK_Scripts_4_0_4\Server\SendStructBuilt.sqs"
+if (_type in structsDestroy) then {(_objects select 0) exec "\TZK_Scripts_4_0_4\Server\StructDestoryAdd.sqs"};
+
+_i = structServer find _objectDestroyed
+? _i == -1: "ERROR: _object not found in ReplacePrimStruct when structure is to be deleted. It might remain some rubbish unable to clear during the whole game." call fDebugLog
+? _i != -1: structServer set [_i, _object]; {_x setDamage 0} forEach (structsServer select _i select 0)
+_objectDestroyed setPos [-1000,0,0]; [_objectDestroyed, 60] exec localize TZK_PATH_DELAY_DELETE_UNIT

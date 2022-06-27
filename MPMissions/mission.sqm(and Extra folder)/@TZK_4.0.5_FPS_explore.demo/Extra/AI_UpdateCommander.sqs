@@ -56,7 +56,7 @@ _order = orderMatrix select _si select _gi; _idOrder = _order select 0
 
 _unit setCombatMode "YELLOW"; _unit setBehaviour "AWARE"; _unit setSpeedMode "FULL"
 
-[_unit, _si, 200] exec "\TZK_Scripts_4_0_4\Common\EventAdd_InfantryKilled.sqs"
+[_unit, _si, 200] exec "Common\Event\Add_Killed_Infantry.sqs"
 [_unit, _si, _gi] exec "Server\EventAdd_Infantry.sqs"
 [_unit] exec "\TZK_Scripts_4_0_4\Common\AddRearmData.sqs"
 
@@ -338,7 +338,7 @@ _c = count _units
 	@(alive leader _group)
 	_unit = leader _group
 
-	[_unit, _si, 200] exec "\TZK_Scripts_4_0_4\Common\EventAdd_InfantryKilled.sqs"
+	[_unit, _si, 200] exec "Common\Event\Add_Killed_Infantry.sqs"
 	[_unit, _si, _gi] exec "Server\EventAdd_Infantry.sqs"
 	
 	_money = groupMoneyMatrix select _si select _gi
