@@ -1296,6 +1296,10 @@ class CfgVehicles {
 	class Target_TZK_xj400: HeliH {
 		model = "\TZK_Config_4_0_6\TZK_Target_New0.p3d";
 	};
+	class Container_TZK_xj400: HeliH { // Vehicle container
+		model = "\TZK_Model_4_0_6\container.p3d";
+		armor = 100000;
+	};
 	class Strategic: Building {};
 	class Camp: Strategic {};
 	class Mash: Camp {};
