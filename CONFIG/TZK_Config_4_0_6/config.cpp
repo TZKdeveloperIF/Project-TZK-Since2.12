@@ -1118,7 +1118,7 @@ class CfgWeapons {
 			"FAE220_0300_xj400", "FAE220_0400_xj400", "FAE220_0500_xj400", 
 			"FAE220_0600_xj400", "FAE220_0700_xj400", "FAE220_0800_xj400", 
 			"FAE220_0900_xj400", "FAE220_1000_xj400"
-};
+		};
 	};
 	class FAE220_DKMM_0080_xj400: FAE220Launcher_xj400 {};
 	class FAE220_0080_xj400: FAE220_DKMM_0080_xj400 {
