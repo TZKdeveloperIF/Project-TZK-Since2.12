@@ -665,7 +665,7 @@ class CfgWeapons {
 	CannonClass(VulcanCannon,3,05);
 	class VulcanCannon_xj406: VulcanCannon_xj400 {
 		scopeWeapon = 2; scopeMagazine = 0;
-		magazineReloadtime = 1;
+		magazineReloadTime = 1;
 		magazines[] = {
 			CannonCommonMag(VulcanCannon,3,30);
 			CannonCommonMag(VulcanCannon,3,25);
@@ -694,7 +694,7 @@ class CfgWeapons {
 	CannonClass(ZsuCannon,2,05);
 	class ZsuCannon_xj406: ZsuCannon {
 		scopeWeapon = 2; scopeMagazine = 0;
-		magazineReloadtime = 1;
+		magazineReloadTime = 1;
 		magazines[] = {
 			CannonCommonMag(ZsuCannon,2,30);
 			CannonCommonMag(ZsuCannon,2,25);
@@ -722,7 +722,7 @@ class CfgWeapons {
 	};
 	class Tunguska_30mm_DKM_xj406: Tunguska_30mm_DKM_xj400 {
 		scopeWeapon = 2; scopeMagazine = 0;
-		magazineReloadtime = 1;
+		magazineReloadTime = 1;
 		magazines[] = {Tunguska_30mm_CommonMag_xj406, Tunguska_30mm_SmallMag_xj406};
 	};
 
@@ -748,7 +748,7 @@ class CfgWeapons {
 
 	class Stinger_Wep_xj400: Stinger_xj400 {
 		scopeWeapon = 2; scopeMagazine = 0;
-		magazineReloadtime = 2;
+		magazineReloadTime = 2;
 		magazines[] = {"Stinger_Mag_19_xj400","Stinger_Mag_23_xj400","Stinger_Mag_26_xj400","Stinger_Mag_30_xj400"};
 	};
 	class StingerT_Wep_xj400: Stinger_Wep_xj400 {
@@ -757,6 +757,7 @@ class CfgWeapons {
 	};
 	class Strela_Wep_xj400: Strela_xj400 {
 		scopeWeapon = 2; scopeMagazine = 0;
+		magazineReloadTime = 2;
 		magazines[] = {"Strela_Mag_19_xj400","Strela_Mag_23_xj400","Strela_Mag_26_xj400","Strela_Mag_30_xj400"};
 	};
 	class StrelaTWep_xj400: Strela_Wep_xj400 {
@@ -782,7 +783,9 @@ class CfgWeapons {
 	AntiPlane4xAA(9M311,48);
 	AntiPlane4xAA(9M311,60);
 
-	class GuidedAT_APC_xj400: AT3Launcher {};
+	class GuidedAT_APC_xj400: AT3Launcher {
+		magazineReloadTime = 2.5;
+	};
 	class GuidedAT_P18_xj400: GuidedAT_APC_xj400 { ammo = "GuidedAT_P18_xj400"; };
 	class ATLauncherTank_xj400: AT3Launcher {
 		magazines[] = {"GuidedAT_APC_xj400","GuidedAT_P18_xj400"};
@@ -794,6 +797,7 @@ class CfgWeapons {
 	class GuidedAT_Heli_12_xj400: GuidedAT_APC_xj400 {};
 	class GuidedAT_Heli_P40_12_xj400: GuidedAT_Heli_12_xj400 { ammo = "GuidedAT_Heli_P40_xj400"; };
 	class ATLauncherAir_xj400: HellfireLauncher {
+		magazineReloadTime = 2.5;
 		magazines[] = {
 			"GuidedAT_Heli_8_xj400", "GuidedAT6_8_xj400", "GuidedAT_Cobra_8_xj400", "GuidedAT_Heli_12_xj400",
 			"GuidedAT_Heli_P40_xj400", "GuidedAT_Cobra_P40_xj400", "GuidedAT_AT6_P40_xj400", "GuidedAT_Heli_P40_12_xj400",
@@ -1039,7 +1043,7 @@ class CfgWeapons {
 			"HE120_Grk_0080_xj400","HE120_Grk_0120_xj400","HE120_Grk_0180_xj400","HE120_Grk_0300_xj400","HE120_Grk_0400_xj400"
 			,"HE120_Grk_0500_xj400","HE120_Grk_0600_xj400","HE120_Grk_0700_xj400"
 		};
-		magazineReloadTime = 8;
+		magazineReloadTime = 2.5;
 	};
 	class HE120_Grk_Base_xj400: shell125 {
 		scopeWeapon = 0; scopeMagazine = 2;
@@ -1073,7 +1077,7 @@ class CfgWeapons {
 			"HE122_VME_0080_xj400","HE122_VME_0120_xj400","HE122_VME_0180_xj400","HE122_VME_0300_xj400","HE122_VME_0400_xj400"
 			,"HE122_VME_0500_xj400","HE122_VME_0600_xj400","HE122_VME_0700_xj400"
 		};
-		magazineReloadTime = 8;
+		magazineReloadTime = 2.5;
 		
 		opticsZoomMin = 0.04;
 		opticsZoomMax = 0.12;
