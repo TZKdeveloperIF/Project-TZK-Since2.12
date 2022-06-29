@@ -397,10 +397,10 @@ class CfgAmmo {
 		simulation = "shotShell";
 		model = "\TZK_Model_4_0_6\warhead02.p3d";
 		// displayName = "M483A1"; // manazine name
-		// 弹头个数             12
-		// 单个弹头伤害       0.12
-		// 散布半径             12
-		// 发射载具             M109
+		// 弹头个数			12
+		// 单个弹头伤害		0.12
+		// 散布半径			12
+		// 发射载具			M109
 	};
 	class Shrapnel_E_xj400: Heat120 {
 		hit = 540;
@@ -412,10 +412,10 @@ class CfgAmmo {
 		simulation = "shotShell";
 		model = "\TZK_Model_4_0_6\warhead02.p3d";
 		// displayName =  "3-O-13"; // manazine name
-		// 弹头个数             8
-		// 单个弹头伤害       0.16
-		// 散布半径             9
-		// 发射载具             PLZ05
+		// 弹头个数			8
+		// 单个弹头伤害		0.16
+		// 散布半径			9
+		// 发射载具			PLZ05
 	};
 	
 	class 105RCSabot_OFrP_xj400: Heat105 {
@@ -659,7 +659,7 @@ class CfgWeapons {
 	CannonClass(VulcanCannon,3,05);
 	class VulcanCannon_xj406: VulcanCannon_xj400 {
 		scopeWeapon = 2; scopeMagazine = 0;
-		magazinereloadtime = 3;
+		magazineReloadtime = 1;
 		magazines[] = {
 			CannonCommonMag(VulcanCannon,3,30);
 			CannonCommonMag(VulcanCannon,3,25);
@@ -688,7 +688,7 @@ class CfgWeapons {
 	CannonClass(ZsuCannon,2,05);
 	class ZsuCannon_xj406: ZsuCannon {
 		scopeWeapon = 2; scopeMagazine = 0;
-		magazinereloadtime = 3;
+		magazineReloadtime = 1;
 		magazines[] = {
 			CannonCommonMag(ZsuCannon,2,30);
 			CannonCommonMag(ZsuCannon,2,25);
@@ -716,7 +716,7 @@ class CfgWeapons {
 	};
 	class Tunguska_30mm_DKM_xj406: Tunguska_30mm_DKM_xj400 {
 		scopeWeapon = 2; scopeMagazine = 0;
-		magazinereloadtime = 3;
+		magazineReloadtime = 1;
 		magazines[] = {Tunguska_30mm_CommonMag_xj406, Tunguska_30mm_SmallMag_xj406};
 	};
 
@@ -742,6 +742,7 @@ class CfgWeapons {
 
 	class Stinger_Wep_xj400: Stinger_xj400 {
 		scopeWeapon = 2; scopeMagazine = 0;
+		magazineReloadtime = 2;
 		magazines[] = {"Stinger_Mag_19_xj400","Stinger_Mag_23_xj400","Stinger_Mag_26_xj400","Stinger_Mag_30_xj400"};
 	};
 	class StingerT_Wep_xj400: Stinger_Wep_xj400 {
@@ -1007,7 +1008,7 @@ class CfgWeapons {
 		reloadTime = 8;
 		aiRateOfFire = 0;
 		aiRateOfFireDistance = 0;
-        sound[] = {"\TZK_Sounds_4_0_0\2S25\125mm_3p.wss", db+30, 1};
+		sound[] = {"\TZK_Sounds_4_0_0\2S25\125mm_3p.wss", db+30, 1};
 	};
 	class Sprut_2A75_xj400: Gun125 {
 		reloadSound[] = {"\TZK_Sounds_4_0_0\2S25\125mmreload.wss", 0.1, 0.9};

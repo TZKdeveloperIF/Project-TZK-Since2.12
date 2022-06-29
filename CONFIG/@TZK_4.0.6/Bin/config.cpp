@@ -11457,7 +11457,8 @@ class CfgWeapons {
 		displayNameMagazine = "$STR_MN_LAW";
 		shortNameMagazine = "$STR_SN_LAW";
 		count = 1;
-		magazineReloadTime = 12;
+		// magazineReloadTime = 12; // BIS origin value
+		magazineReloadTime = 2.5; // TZK modified value
 		reloadTime = 0.5;
 		sound[] = {"Weapons\at_launch",0.01,1};
 		reloadMagazineSound[] = {"Weapons\at_load",0.0003162,1};
