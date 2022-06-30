@@ -249,7 +249,7 @@ class CfgModels {
 	class kiowa: Helicopter {};
 	class m2a2: Tank {};
 	// RESISTANCE
-//	class skodasm11: Car {};
+	// class skodasm11: Car {};
 	/*
 	class lampadrevo {
 		properties[]= {"firegeometry","1","viewgeometry","1"};
@@ -413,12 +413,18 @@ class CfgModels {
 		sections[] = {
 			"vlam","clamp", 
 			tex_box.paa, tex_pal1.pac, tex_pal2.pac, tex_cog.paa
+			, "tzkGun00", "tzkGun01", "tzkGun02", "tzkGun03"
 		};
 	};
 	class PLZ05: Tank_Grad{
 		sections[] = {
 			"n1", "n2", "n3", "zhijia"
-			, tex_CETI.paa, tex_cetic.paa, tex_CETIh.paa, tex_CETIq.paa, tex_CETIs.paa, tex_ct1.paa, tex_ct2.paa, tex_jing.paa, tex_mi.paa, tex_micai.paa, tex_pao.paa, tex_paota1.paa, tex_paota2.paa, tex_paotac.paa, tex_paotaqh.paa, tex_paotaSd.paa, tex_paott.paa, tex_qb.paa, tex_ROLLEA.pac, tex_ROLLEH.paa, tex_ROLLEV.paa, tex_ROLLEVA.paa, tex_tta.paa, tex_ttt.paa, tex_VWTurret3.paa, tex_VWTurret6.paa, tex_ZSD89_lun.paa, 
+			, tex_CETI.paa, tex_cetic.paa, tex_CETIh.paa, tex_CETIq.paa, tex_CETIs.paa, tex_ct1.paa
+			, tex_ct2.paa, tex_jing.paa, tex_mi.paa, tex_micai.paa, tex_pao.paa, tex_paota1.paa
+			, tex_paota2.paa, tex_paotac.paa, tex_paotaqh.paa, tex_paotaSd.paa, tex_paott.paa
+			, tex_qb.paa, tex_ROLLEA.pac, tex_ROLLEH.paa, tex_ROLLEV.paa, tex_ROLLEVA.paa
+			, tex_tta.paa, tex_ttt.paa, tex_VWTurret3.paa, tex_VWTurret6.paa, tex_ZSD89_lun.paa
+			, "tzkGun00", "tzkGun01", "tzkGun02", "tzkGun03"
 		};
 	};
 	class M270_m29064: Tank_Grad {
