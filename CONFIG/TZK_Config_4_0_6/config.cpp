@@ -235,12 +235,17 @@ class CfgAmmo {
 	};
 
 	class GuidedAT_APC_xj400: AT3 {
+		irLock = 1; laserLock = 1;
+
 		hit = 750;
 		indirectHitRange = 4;
 		// calculated value (m/s): velocity is 821 on thrust end and 1541 on 10s
 		midRange = 821;
 		maxRange = 1500;
 		maneuvrability = 2.5;
+	};
+	class LaserAT_APC_xj400: GuidedAT_APC_xj400 {
+		irLock = 0; laserLock = 1;
 	};
 	class GuidedAT_P18_xj400: GuidedAT_APC_xj400 {
 		hit = 650;
@@ -801,6 +806,9 @@ class CfgWeapons {
 	};
 	class GuidedAT_APC_xj400: AT3Launcher {
 		magazineReloadTime = 2.5;
+	};
+	class LaserAT_APC_xj400: GuidedAT_APC_xj400 {
+		ammo = "LaserAT_APC_xj400";
 	};
 	class GuidedAT_P18_xj400: GuidedAT_APC_xj400 { ammo = "GuidedAT_P18_xj400"; };
 	class ATLauncherTank_xj400: AT3Launcher {
