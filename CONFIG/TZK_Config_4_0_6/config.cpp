@@ -2010,12 +2010,35 @@ class CfgVehicles {
 	class M109A6G_Base_xj400: M1Abrams_Base_xj400 {};
 	class M109A6G_xj400: M109A6G_Base_xj400 {
 		accuracy = 0.4; // Big size tank easier to be identified
-		model = "\TZK_Config_4_0_6\M109A6_DKMM.p3d";
+		model = "\TZK_Model_4_0_6\M109A6_DKMM.p3d";
+		hiddenSelections[] = {
+			"vlam","clamp", "TZK_Grad1","TZK_Grad2","TZK_Grad3","TZK_Grad4","TZK_Grad5","TZK_Grad6",  tzk_tex_00,
+			tex_box.paa, tex_pal1.pac, tex_pal2.pac, tex_cog.paa
+				, tzk_tex_99
+			, "tzkGun00", "tzkGun01", "tzkGun02", "tzkGun03"
+		};
+		class EventHandlers {
+			Init = "_vehicle = _this select 0; [_vehicle, {C}] exec {\TZK_Config_4_0_4\Scripts\texture\M109A6G.sqs}; [_vehicle] exec {\TZK_Objects\Scripts\InitEventHandlers\M109A6G.sqs}; [_vehicle, {C}] exec {\TZK_Config_4_0_6\Scripts\recoilByTex\m109a6.sqs}";
+		};
 	};
 	class PLZ05_VME_Base_xj400: T72_Base_xj400 {};
 	class PLZ05_TZK_xj400: PLZ05_VME_Base_xj400 {
 		accuracy = 0.4; // Big size tank easier to be identified
-		model = "\TZK_Config_4_0_6\PLZ05.p3d";
+		model = "\TZK_Model_4_0_6\PLZ05.p3d";
+		hiddenSelections[] = {
+			"n1", "n2", "n3", "zhijia"
+			, "TZK_Grad1","TZK_Grad2","TZK_Grad3","TZK_Grad4","TZK_Grad5","TZK_Grad6",  tzk_tex_00 ,
+			tex_CETI.paa, tex_cetic.paa, tex_CETIh.paa, tex_CETIq.paa, tex_CETIs.paa, tex_ct1.paa
+			, tex_ct2.paa, tex_jing.paa, tex_mi.paa, tex_micai.paa, tex_pao.paa, tex_paota1.paa
+			, tex_paota2.paa, tex_paotac.paa, tex_paotaqh.paa, tex_paotaSd.paa, tex_paott.paa
+			, tex_qb.paa, tex_ROLLEA.pac, tex_ROLLEH.paa, tex_ROLLEV.paa, tex_ROLLEVA.paa
+			, tex_tta.paa, tex_ttt.paa, tex_VWTurret3.paa, tex_VWTurret6.paa, tex_ZSD89_lun.paa
+				, tzk_tex_99
+			, "tzkGun00", "tzkGun01", "tzkGun02", "tzkGun03"
+		};
+		class EventHandlers {
+			Init = "_vehicle = _this select 0; [_vehicle] exec {\TZK_Objects\Scripts\InitEventHandlers\PLZ05.sqs}; [_vehicle, {\TZK_Texture_4_0_0\BWMOD\leo2A6\num\}, {n}, {0}] exec {\TZK_Objects\Scripts\texture\RSC_Numbers.sqs}; [_vehicle, {C}] exec {\TZK_Config_4_0_4\Scripts\texture\PLZ05.sqs}; [_vehicle, {C}] exec {\TZK_Config_4_0_6\Scripts\recoilByTex\plz05.sqs}";
+		};
 	};
 	
 	class M60_Base_xj400: Tank_xj400 {};
