@@ -28,13 +28,13 @@ call preprocessFile "\TZK_Scripts_4_0_6\init_theWorld.sqf"
 Init_TZK_Script_Order = false
 
 _initUnitTypes = "\TZK_Scripts_4_0_6\Common\InitUnitTypes.sqs"
-_initStructureTypes = "\TZK_Scripts_4_0_6\Common\InitStructureTypes.sqs"
 ; ? bool_TZK_MF_Mode: 
 ; ? bool_TZK_Yugo_Mode:
 
 call preprocessFile "\TZK_Scripts_4_0_6\Common\InitPublicVariables.sqf"
 
-0 exec _initStructureTypes
+; order required. structures should be initialized before units
+call preprocessFile "\TZK_Scripts_4_0_6\Common\InitStructureTypes.sqf"
 0 exec _initUnitTypes
 0 exec "\TZK_Scripts_4_0_6\Common\InitInfoMsgTypes.sqs"
 0 exec "\TZK_Scripts_4_0_6\Common\InitEquipmentTypes.sqs"
