@@ -1414,7 +1414,7 @@ class CfgVehicles {
 
 	class M151A1C_htr_xj400: JeepMG {
 		scope = 2; vehicleClass = "TZK_Units_400";
-	//	accuracy = ;
+		// accuracy = ;
 		displayName = "M151A1C with 106mm"; side = 1; cost = 100000; threat[] = {0.3, 1, 0.1};
 		
 		model = "\TZK_Config_4_0_6\m151a1c_htr.p3d";
@@ -1437,7 +1437,7 @@ class CfgVehicles {
 
 		preferRoads = 0;
 		terrainCoef = 1;
-
+		// anti-tank car hasn't radar
 		irScanGround = 0;
 		irScanToEyeFactor = 0;
 
@@ -1448,7 +1448,7 @@ class CfgVehicles {
 		damperSize = .07;
 		damperForce = 40;
 
-   		driverCanSee = 2 + 4 + 8 + 16;
+		driverCanSee = 2 + 4 + 8 + 16;
 		gunnerCanSee = 2 + 4 + 8 + 16;
 		gunnerHasOptics = 1;
 		ejectDeadDriver = 1;
@@ -1578,6 +1578,9 @@ class CfgVehicles {
 		
 		preferRoads = 0;
 		terrainCoef = 1;
+		// anti-tank car hasn't radar
+		irScanGround = 0;
+		irScanToEyeFactor = 0;
 
 		class ViewOptics {
 			initAngleX = 45;
