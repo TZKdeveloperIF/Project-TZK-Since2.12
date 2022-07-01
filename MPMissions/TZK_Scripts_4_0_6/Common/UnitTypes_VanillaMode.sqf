@@ -1,15 +1,24 @@
-{ unitDefs select _x set [udFactoryType, -1] } forEach [_M82A1W, _KSVKE, _quadW, _quadE, _hummerW2, _hummerW3, _brdmE2, _brdmE3, _jetskiW, _jetskiE, _zodiacW, _zodiacE, _boatW2, _boatE2, _vulcanTransp, _bmp2Cannon,  _tankHeavyW02, _tankHeavyW03, _m109W, _m270W, _tankHeavyE02, _tankHeavyE03, _plz05E, _tos1E,  _irNO_mh6, _irNO_uh60, _uh60WMG2, _c130W, _tigerW, _tigerW2, _c130supportW, _irNO_mi2, _irNO_mi17, _mi17EMG2, _an72E, _an72supportE];
+{unitDefs select _x set [udFactoryType, -1]} forEach [
+	_M82A1W, _KSVKE, _quadW, _quadE, _hummerW2, _hummerW3, _brdmE2, _brdmE3, 
+	_jetskiW, _jetskiE, _zodiacW, _zodiacE, _boatW2, _boatE2, 
+	_vulcanTransp, _bmp2Cannon,  _tankHeavyW02, _tankHeavyW03, _m109W, _m270W, 
+	_tankHeavyE02, _tankHeavyE03, _plz05E, _tos1E,  _irNO_mh6, _irNO_uh60, _uh60WMG2, 
+	_c130W, _tigerW, _tigerW2, _c130supportW, _irNO_mi2, _irNO_mi17, _mi17EMG2, _an72E, _an72supportE
+];
 
-if !bool_TZK_199_Mode Then
-{
-	_i = 0; {_desc = _x, if (count (_desc select udCrew) == 0) Then {_str = _desc select udModel, _size = sizeofstr _str, if (substr [_str, _size - 6, _size] == "_xj400") Then {_str = substr [_str, 0, _size - 6]}, _desc set [udModel, _str]}, _i = _i + 1 } forEach unitDefs;
-};
-if !bool_TZK_199_Mode Then
-{
-	{_desc = unitDefs select _x, _str = _desc select udModel, _size = sizeofstr _str, if (substr [_str, _size - 6, _size] == "_xj400") Then {_str = substr [_str, 0, _size - 6] + "_Vanilla" + "_xj405"}, _desc set [udModel, _str] } forEach ([_jeepW, jeepaW, _hummerW, _truckW, _supportTruckW, _supportTruckW2, _supportAPCW, _supportAPCWminer, _m113W, _m2a2W, _m3a2W, _m2a2d, _m2a2at, _m2a2aa, _m2a2townat, _m2a2townaad, utMCVW, utMHQ0, _uazE, uazaE, _brdmE, _truckE, _supportTruckE, _supportTruckE2, _supportAPCE, _supportAPCEminer, _bmpE, _bmp2E, _bmp2_EE, _bmp2d, _bmp2at, _bmp2Cannon, _bmp2aa, _bmp2townat, _bmp2townaad, utMCVE, utMHQ1] + [_a10gun, _a10LGB4, _a10bombs, _a10, _a10FFAR, _a10LGB8, _a10AA, _a10BB, _a10Tomahawk, _an72supportE, _su25gun, _su25LGB4, _su25bombs, _su25, _su25Rocket, _su25LGB8, _su25AA, _su25BB, _su25Raduga]);
+if !bool_TZK_199_Mode then {
+	_i = 0; {
+		_desc = _x, if (count (_desc select udCrew) == 0) then {
+			_str = _desc select udModel, _size = sizeofstr _str;
+			if (substr [_str, _size - 6, _size] == "_xj400") then {_str = substr [_str, 0, _size - 6]}, _
+			desc set [udModel, _str]
+		}, 
+		_i = _i + 1;
+	} forEach unitDefs;
+	{_desc = unitDefs select _x, _str = _desc select udModel, _size = sizeofstr _str, if (substr [_str, _size - 6, _size] == "_xj400") then {_str = substr [_str, 0, _size - 6] + "_Vanilla" + "_xj405"}, _desc set [udModel, _str] } forEach ([_jeepW, jeepaW, _hummerW, _truckW, _supportTruckW, _supportTruckW2, _supportAPCW, _supportAPCWminer, _m113W, _m2a2W, _m3a2W, _m2a2d, _m2a2at, _m2a2aa, _m2a2townat, _m2a2townaad, utMCVW, utMHQ0, _uazE, uazaE, _brdmE, _truckE, _supportTruckE, _supportTruckE2, _supportAPCE, _supportAPCEminer, _bmpE, _bmp2E, _bmp2_EE, _bmp2d, _bmp2at, _bmp2Cannon, _bmp2aa, _bmp2townat, _bmp2townaad, utMCVE, utMHQ1] + [_a10gun, _a10LGB4, _a10bombs, _a10, _a10FFAR, _a10LGB8, _a10AA, _a10BB, _a10Tomahawk, _an72supportE, _su25gun, _su25LGB4, _su25bombs, _su25, _su25Rocket, _su25LGB8, _su25AA, _su25BB, _su25Raduga]);
 };
 
-if bool_TZK_199_Mode Then {call loadFile "Extra\199\UnitTypes_ACWA_Redefine.sqf"};
+if bool_TZK_199_Mode then {call loadFile "Extra\199\UnitTypes_ACWA_Redefine.sqf"};
 
 
 {unitDefs select _x set [udCost, (unitDefs select _x select udCost)*4/5]; unitDefs select _x set [udModel, "M1Abrams"];} forEach [_tankHeavyW01, _m1a1artW,  _m1a1townW];
@@ -41,4 +50,4 @@ unitDefs select _uh60WL set [udModel, "UH60_LGB_Vanilla_xj405"];
 {unitDefs select _x set [udModel, "Su25_xj400"]} forEach [_planeatR, _planeatR2];
 
 
-call loadFile "impl\Unit_Vanilla_Redef.sqf"
+call preprocessFile "impl\Unit_Vanilla_Redef.sqf"

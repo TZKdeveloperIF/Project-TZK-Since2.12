@@ -1,11 +1,3 @@
-if (!bool_TZK_Vanilla_Mode && !bool_TZK_SEMod_Mode) Then {
-	// Fix su25 error on basic TZK missions
-	{_entry = unitDefs select _x, _entry set [udModel, "Su25_xj400"]} forEach [_su25gun, _su25LGB4, _su25LGB8, _su25Rocket, _su25BB, _su25Raduga];
-	_entry = unitDefs select _su25Rocket, _scripts = _entry select udscripts, _scripts set [count _scripts, "Common\Equip\Su25Rocket.sqs"];
-	_entry = unitDefs select _su25BB, _scripts = _entry select udscripts, _scripts set [count _scripts, "Common\Equip\Su25BB.sqs"];
-	_entry = unitDefs select _su25Raduga, _scripts = _entry select udscripts, _scripts set [count _scripts, "Common\Equip\Su25Raduga.sqs"];
-};
-
 if true then {
 	_name0 = []; _i = 0; _c = count (groupMatrix select si0); while {_i < _c} do {
 		_name0 set [_i, name leader (groupMatrix select si0 select _i)];
