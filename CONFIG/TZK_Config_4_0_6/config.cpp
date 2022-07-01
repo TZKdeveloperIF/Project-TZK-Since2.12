@@ -2058,6 +2058,13 @@ class CfgVehicles {
 	class Bradley_xj400: M113 {};
 	class M2A2_xj400: Bradley_xj400 {
 		model = "\TZK_Config_4_0_6\M2A2_TZK.p3d";
+		accuracy = 0.35;
+	};
+	class M2A2_AA_xj400: M2A2_xj400 {
+		accuracy = 1000;
+	};
+	class M2A2_AA_Town_xj400: M2A2_AA_xj400 {
+		sensitivity = 1.6; sensitivityEar = 0.012;
 	};
 	class Vulcan_xj400: M113 {
 		model = "\TZK_Config_4_0_6\Vulcan_TZK.p3d";
@@ -2099,6 +2106,16 @@ class CfgVehicles {
 		camouflage = 6; // support vehicle using less value
 		audible = 4;
 	};
+	class BMP2_Base_xj400: BMP {};
+	class BMP2_xj400: BMP2_Base_xj400 {
+		accuracy = 0.35;
+	};
+	class BMP2_AA_xj400: BMP2_xj400 {
+		accuracy = 1000;
+	};
+	class BMP2_AA_Town_xj400: BMP2_AA_xj400 {
+		sensitivity = 1.6; sensitivityEar = 0.012;
+	};
 
 	class ZSU_xj400: ZSU {};
 	class ZSU_Auto_xj400: ZSU_xj400 {
@@ -2108,6 +2125,24 @@ class CfgVehicles {
 
 	class BMPResScoreConfuser_xj400: BMPRes {
 		cost = 0; // provide no cost to make player obtain no extra score.
+	};
+
+	// Auto unit for town group
+	class M1A1_Auto_xj400: M1A1_xj400 {
+		hasGunner = 0;
+		driverIsGunner = 1;
+	};
+	class T80_Auto_xj400: T80_xj400 {
+		hasGunner = 0;
+		driverIsGunner = 1;
+	};
+	class M2A2_Town_Auto_xj400: M2A2_AA_Town_xj400 {
+		hasGunner = 0;
+		driverIsGunner = 1;
+	};
+	class BMP2_Town_Auto_xj400: BMP2_AA_Town_xj400 {
+		hasGunner = 0;
+		driverIsGunner = 1;
 	};
 
 	// Grkpbv from CoC mod
