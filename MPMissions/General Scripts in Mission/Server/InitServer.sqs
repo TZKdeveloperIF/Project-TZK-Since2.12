@@ -1,10 +1,9 @@
 Target_Set_TZK_Server_0 = 0; Target_Set_TZK_Server_1 = 0
 ; 4_0_6_Update
 
-Init_TZK_Script_Order = false
 [] exec "\TZK_Scripts_4_0_5\Server\InitFunctions.sqs"
 call preprocessFile "\TZK_Scripts_4_0_6\Server\InitServer_constant.sqf"
-[] exec "Server\InitServer_Group.sqs"
+call preprocessFile "Server\InitServer_Group.sqf"
 AICO_giTrans = [[],[]]; AICO_giInf = [[],[]]; AICO_giTanks = [[[], [], []], [[], [], []]]
 
 
@@ -43,20 +42,18 @@ _i = 0; countTargetMarkers = 10; while "_i < countTargetMarkers" do {call Format
 ? !(isNull player): [] exec "Player\InitClient.sqs"
 
 ; game has begun after this pause
+; todo: generate an uniform game time. The "time" can't be assigned in-game.
 ~0.001
 ? pvInit_0 != -1: publicVariable {pvInit_0}
 ? pvInit_0 == -1: mutexCmd = false; publicVariable {mutexCmd}
 
 ~2
 @ !mutexCmd
-; The start money is adjusted in "InitServer_Group.sqs". After that the "Init_TZK_Script_Order" will be set true.
+call preprocessFile "Server\initStartedGrpMoney.sqf"
+call preprocessFile "Server\initStartedGrpUpg.sqf"
 
-; todo: generate an uniform game time. The "time" can't be assigned in-game.
-
-; pvDebugVars = true; PublicVariable "pvDebugVars"
-@ Init_TZK_Script_Order
 [] exec "\TZK_Scripts_4_0_4\Server\GenerateStartPositions.sqs"
-[] exec "\TZK_Scripts_4_0_5\Server\Msg\sStartMoney.sqs"
+call preprocessFile "\TZK_Scripts_4_0_6\Server\Msg\sStartMoney.sqf"
 
 [si0] exec "\TZK_Scripts_4_0_4\Server\UpdateRespawnAI.sqs"; [si1] exec "\TZK_Scripts_4_0_4\Server\UpdateRespawnAI.sqs"
 
