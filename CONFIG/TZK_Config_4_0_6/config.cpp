@@ -1707,14 +1707,27 @@ class CfgVehicles {
 		};
 	}
 	class Mi17_owp_ABC_xj400: Mi17 {
+		model = "\TZK_Model_4_0_6\Mi17_OWP.p3d";
 		class ViewOpticsBase {};
 	};
-	class Mi17_owp_Base_xj400: Mi17_owp_ABC_xj400 {};
+	class Mi17_owp_Base_xj400: Mi17_owp_ABC_xj400 {
+		class ViewOptics : ViewOpticsBase {
+			// addon's value
+			initAngleX = 0; minAngleX = -40; maxAngleX = 17;
+			initAngleY = 0; minAngleY = -100; maxAngleY = 100;
+			// BIS config value
+			initFov = 0.5; minFov = 0.3; maxFov = 1.2;
+		};
+	};
 	class Mi17_owp_xj400: Mi17_owp_Base_xj400 {
 		class Turret: TurretBase {
 			minElev = -0; maxElev = +0;
 			minTurn = -0; maxTurn = +0;
 		};
+		gunnerOpticsModel = "\TZK_Model_4_0_6\Opt\OWP_Mi8_pkt.p3d";
+	};
+	class Mi17_owp_PKT_xj400: Mi17_owp_Base_xj400 {
+		gunnerOpticsModel = "\TZK_Model_4_0_6\Opt\OWP_Mi8_pkt.p3d";
 	};
 	
 	class MH6_Side_Base_xj400: Helicopter {};
