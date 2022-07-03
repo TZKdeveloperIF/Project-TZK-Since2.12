@@ -316,7 +316,7 @@ class CfgAmmo {
 	class 50calE_xj400: Bullet12_7 {};
 	class 50calE_AI_xj400: 50calE_xj400 { hit = 18; };
 	class 50calE_Player_xj400: 50calE_xj400 { midRange = 5; maxRange = 6; };
-	
+
 	class Gatling7_6_xj400: Bullet7_6 {
 		hit = 6;
 		indirectHit = 4;
@@ -661,7 +661,7 @@ class CfgWeapons {
 			aiRateOfFire = 0.5 / 2;
 		};
 	};
-	
+
 	class M134_Bas_xj400: MachineGun7_6 {
 		scopeWeapon = 2; scopeMagazine = 2;
 
@@ -1619,7 +1619,7 @@ class CfgVehicles {
 		armorGlass = 0.5;
 		armorWheels = 0.1;
 
-		transportsoldier = 1;
+		transportSoldier = 1;
 		gunnerCanSee = 2 + 4 + 8 + 16;
 		gunnerHasOptics = 1;
 		optics = 1;
@@ -1729,7 +1729,7 @@ class CfgVehicles {
 	class Mi17_owp_PKT_xj400: Mi17_owp_Base_xj400 {
 		gunnerOpticsModel = "\TZK_Model_4_0_6\Opt\OWP_Mi8_pkt.p3d";
 	};
-	
+
 	class MH6_Side_Base_xj400: Helicopter {};
 	class MH6_FakeC_Base0_xj400: MH6_Side_Base_xj400 {};
 	class MH6_FakeC_Base1_xj400: MH6_FakeC_Base0_xj400 {};
@@ -3017,7 +3017,7 @@ class CfgMovesMC {
 		class Commander: Driver {};
 		class Cargo: Driver {};
 
-// --------------------------- AMX10RC -------------------------------
+		// --------------------------- AMX10RC -------------------------------
 
 		class OFrPAMX10RCDriver: Driver {
 			file = "\TZK_Config_4_0_6\Anims\AMX10RC_driver.rtm";
@@ -3223,7 +3223,7 @@ class CfgMovesMC {
 			interpolateTo[] = {"OFrPAMX10RCCommanderOutDying",0.1,"OFrPAMX10RCCommanderOutDying",0.1};
 		};
 
-// --------------------------- Grkpbv -------------------------------
+		// --------------------------- Grkpbv -------------------------------
 
 		class SFP_ssg120driver: StandBase {
 			actions=StandActions;
@@ -3286,7 +3286,7 @@ class CfgMovesMC {
 			equivalentTo=HandGunStand;
 		};
 
-// --------------------------- Orca95  -------------------------------
+		// --------------------------- Orca95  -------------------------------
 
 		class MCSR_OrcaPilot: Driver {
 			file = "\TZK_Config_4_0_6\Anims\OrcaPilot.rtm";
