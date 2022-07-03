@@ -1724,13 +1724,15 @@ class CfgVehicles {
 			minElev = -0; maxElev = +0;
 			minTurn = -0; maxTurn = +0;
 		};
-		gunnerOpticsModel = "\TZK_Model_4_0_6\Opt\OWP_Mi8_pkt.p3d";
+		gunnerOpticsModel = "optika_empty";
 	};
 	class Mi17_owp_PKT_xj400: Mi17_owp_Base_xj400 {
-		gunnerOpticsModel = "\TZK_Model_4_0_6\Opt\OWP_Mi8_pkt.p3d";
+		gunnerOpticsModel = "optika_empty";
 	};
 
-	class MH6_Side_Base_xj400: Helicopter {};
+	class MH6_Side_Base_xj400: Helicopter {
+		model = "\TZK_Model_4_0_6\MH6_Bas.p3d";
+	};
 	class MH6_FakeC_Base0_xj400: MH6_Side_Base_xj400 {};
 	class MH6_FakeC_Base1_xj400: MH6_FakeC_Base0_xj400 {};
 	class MH6_TZK_xj400: MH6_FakeC_Base1_xj400 {};
@@ -1742,19 +1744,6 @@ class CfgVehicles {
 		
 		weapons[] = {"GAU2B_Bas_xj400"};
 		magazines[] = {"GAU2B_Bas_xj400"};
-		class TurretBase {
-			gunAxis = "OsaHlavne";
-			turretAxis = "osaveze";
-			gunBeg = "usti hlavne";
-			gunEnd = "konec hlavne";
-			soundServo[] = {};
-			minElev = -360;
-			maxElev = 40;
-			minTurn = -110;
-			maxTurn = 110;
-			body = "OtocVez";
-			gun = "OtocHlaven";
-		};
 		class ReloadAnimations {
 			class GAU2B {
 				weapon = "GAU2B_Bas_xj400";
@@ -1770,14 +1759,12 @@ class CfgVehicles {
 		};
 		model = "\TZK_Model_4_0_6\MH6_SideWep.p3d";
 		gunnerAction = "ManActBAS_MH60Gunner";
-		// gunnerAction = "ManActUH60Gunner";
 		gunnerOpticsModel = "optika_empty";
 		class Turret: TurretBase {
 			minElev = -42;
 			maxElev = 5;
 			minTurn = 30;
 			maxTurn = 150;
-			soundServo[] = {"",0.01,1};
 		};
 		class ViewGunner: ViewGunnerBase {
 			initAngleY = 90;
