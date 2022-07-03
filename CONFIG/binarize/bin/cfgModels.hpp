@@ -524,6 +524,10 @@ class CfgModels {
 		sectionsInherit = "Vehicle";
 		sections[]= {"sklo predni p","sklo predni l","velka vrtule staticka","velka vrtule blur","mala vrtule staticka","mala vrtule blur"};
 	};
+	class MH6_SideWep: MH6_Bas {
+		sectionsInherit = "MH6_Bas";
+		sections[]= {"m134"};
+	};
 	class Mi2NO: Helicopter {};
 
 	class Orca95_MCSR: Helicopter {};

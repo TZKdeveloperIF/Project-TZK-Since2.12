@@ -317,6 +317,14 @@ class CfgAmmo {
 	class 50calE_AI_xj400: 50calE_xj400 { hit = 18; };
 	class 50calE_Player_xj400: 50calE_xj400 { midRange = 5; maxRange = 6; };
 	
+	class Gatling7_6_xj400: Bullet7_6 {
+		hit = 6;
+		indirectHit = 4;
+		indirectHitRange = 0.1; // 1.5 in origin bas definition
+		maxRange = 1600;
+		cartridge = "FxCartridge"; // Same as BulletSingle actually. Explicitly define it
+	};
+	
 	class GrenadeHand: Grenade {};
 	class RKG3M_xj400: GrenadeHand {
 		hit = 500;
@@ -651,6 +659,55 @@ class CfgWeapons {
 			dispersion = 0.00125 * 5;
 			reloadTime = 0.1 / 2;
 			aiRateOfFire = 0.5 / 2;
+		};
+	};
+	
+	class M134_Bas_xj400: MachineGun7_6 {
+		scopeWeapon = 2; scopeMagazine = 2;
+
+		displayName = "M134 Minigun";
+		displayNameMagazine = "M134 7.62mm";
+		shortNameMagazine = "M134 7.62mm";
+
+		muzzlePos = "usti hlavne";
+		muzzleEnd = "konec hlavne";
+		count = 4500;
+		modes[] = {"RPM2K"};
+		class RPMBase {
+			displayName = "M134 Minigun";
+			ammo = "Gatling7_6_xj400";
+			burst = 5;
+			multiplier = 1;
+			initSpeed = 1000;
+			reloadTime = 0.025;
+			sound[] = {"\TZK_Config_4_0_6\snd\bas\M134_2kx5.wss", 1, 1};
+			soundContinuous = 1;
+			flash = gunfire;
+			flashSize = 0.01;
+			dispersion = 0.025;
+			maxLeadSpeed = 80;
+			aiDispersionCoefX = 5;
+			aiDispersionCoefY = 5;
+			ffMagnitude = 0.5;
+			ffFrequency = 11;
+			ffCount = 6;
+			recoil = "Empty";
+			aiRateOfFire = 0.5;
+			aiRateOfFireDistance = 1000;
+			autoFire = 1;
+			optics = 1;
+			useAction = 0;
+			useActionTitle = "";
+		};
+		class RPM2K: RPMBase {};
+	};
+	class GAU2B_Bas_xj400: M134_Bas_xj400 {
+		displayName = "GAU-2B/A 7.62mm";
+		displayNameMagazine = "GAU-2B/A 7.62mm";
+		shortNameMagazine = "GAU-2B/A";
+		modes[] = {"RPM2K"};
+		class RPM2K: RPMBase {
+			displayName = "GAU-2B/A 7.62mm";
 		};
 	};
 	
@@ -1657,6 +1714,65 @@ class CfgVehicles {
 		class Turret: TurretBase {
 			minElev = -0; maxElev = +0;
 			minTurn = -0; maxTurn = +0;
+		};
+	};
+	
+	class MH6_Side_Base_xj400: Helicopter {};
+	class MH6_FakeC_Base0_xj400: MH6_Side_Base_xj400 {};
+	class MH6_FakeC_Base1_xj400: MH6_FakeC_Base0_xj400 {};
+	class MH6_TZK_xj400: MH6_FakeC_Base1_xj400 {};
+	class MH6_irNo_TZK_xj400: MH6_TZK_xj400 {};
+	class MH6_irNo_M134_xj400: MH6_irNo_TZK_xj400 {
+		displayName = "MH-6 (M134)";
+
+		transportSoldier = 3;
+		
+		weapons[] = {"GAU2B_Bas_xj400"};
+		magazines[] = {"GAU2B_Bas_xj400"};
+		class TurretBase {
+			gunAxis = "OsaHlavne";
+			turretAxis = "osaveze";
+			gunBeg = "usti hlavne";
+			gunEnd = "konec hlavne";
+			soundServo[] = {};
+			minElev = -360;
+			maxElev = 40;
+			minTurn = -110;
+			maxTurn = 110;
+			body = "OtocVez";
+			gun = "OtocHlaven";
+		};
+		class ReloadAnimations {
+			class GAU2B {
+				weapon = "GAU2B_Bas_xj400";
+				angle0 = 0;
+				angle1 = -2 * 3.141592654;
+				multiplier = 5000;
+				type = rotation;
+				animPeriod = 1;
+				selection = gatling;
+				begin = "usti hlavne";
+				end = "konec hlavne";
+			};
+		};
+		model = "\TZK_Model_4_0_6\MH6_SideWep.p3d";
+		gunnerAction = "ManActBAS_MH60Gunner";
+		// gunnerAction = "ManActUH60Gunner";
+		gunnerOpticsModel = "optika_empty";
+		class Turret: TurretBase {
+			minElev = -42;
+			maxElev = 5;
+			minTurn = 30;
+			maxTurn = 150;
+			soundServo[] = {"",0.01,1};
+		};
+		class ViewGunner: ViewGunnerBase {
+			initAngleY = 90;
+			minAngleY = 30;
+			maxAngleY = 150;
+			initAngleX = 0;
+			minAngleX = -42;
+			maxAngleX = 5;
 		};
 	};
 	
@@ -2875,6 +2991,8 @@ class CfgVehicleActions {
 	SFP_ssg120commanderout = "SFP_ssg120commanderout";
 
 	MCSR_OrcaPilot="MCSR_OrcaPilot";
+	
+	BAS_MH60Gunner = "BAS_MH60Gunner";
 };
 class CfgMovesMC {
 	class Default {};
@@ -3182,6 +3300,50 @@ class CfgMovesMC {
 			connectTo[] = {"DeadState", 1};
 		};
 
+		// --------------------------- Bas Mah60  -------------------------------
+		
+		#define VEH_DIE_CONN(Name,anim,time) \
+			class Name##Dying: DefaultDie \
+			{ \
+				actions = NoActions; \
+				file=anim##smrt.rtm; \
+				speed=-time; \
+				looped=false; \
+				soundEnabled=false; \
+				connectFrom[]={Name,1}; \
+			}; \
+			class Name##Dead: Name##Dying \
+			{ \
+				actions = DeadActions; \
+				file=anim##smrt2.rtm; \
+				speed=SPEED_STATIC; \
+				terminal = true; \
+				connectFrom[]={Name##Dying,1}; \
+				connectTo[]={DeadState,1}; \
+			}
+		#define VEHIN_MOVES_VAR(Name,anim,vartime) \
+			class Name: Driver \
+			{ \
+				file=anim##stat.rtm; \
+				speed=SPEED_STATIC; \
+				looped=true; \
+				variantsAI[]= {Name##V1,0.7,Name};\
+				interpolateWith[]={Name##V1,0.5};\
+				equivalentTo=Name; \
+				interpolationSpeed=1; \
+				connectTo[]={Name##Dying,1}; \
+			} \
+			class Name##V1: Name \
+			{ \
+				file=anim.rtm; \
+				speed=-vartime; \
+				looped=true; \
+			}
+		#define VEH_MOVES_VAR(Name,anim,time,vartime) \
+			VEHIN_MOVES_VAR(Name,anim,vartime); \
+			VEH_DIE_CONN(Name,anim,time)
+
+		VEH_MOVES_VAR(bas_mh60gunner, \TZK_Config_4_0_6\Anims\bas_mh60gunner, 0.5, 12);
 	};
 };
 
