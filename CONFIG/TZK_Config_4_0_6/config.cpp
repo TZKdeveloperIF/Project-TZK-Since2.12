@@ -1940,7 +1940,7 @@ class CfgVehicles {
 		accuracy = 0.8;
 		displayName = "ORCA Craft East";
 	};
-	class Orca95_E_xj400: Orca95_MCSR_Base_xj400 {
+	class Orca95_E_xj400: Orca95_East_Base_xj400 {
 		scope = protected;
 		accuracy = 1000;
 		armor = 120;
@@ -2634,7 +2634,7 @@ class CfgVehicles {
 	// 2S25 from mfm mod
 	class 2S25_mfm_xj400: T55_Base_xj400 {
 		scope = protected; vehicleClass = "TZK_Units_400";
-		accuract = 0.5;
+		accuracy = 0.5;
 		displayName = "2S25 Sprut-SD"; nameSound = "tank"; side = 0; cost = 950000; type = 1; threat[] = {0.6,1,0.3};
 
 		model = "\TZK_Config_4_0_6\2S25_mfm.p3d";
