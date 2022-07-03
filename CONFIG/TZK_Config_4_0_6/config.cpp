@@ -1270,11 +1270,16 @@ class WeaponFireGun {};
 class WeaponCloudsGun {};
 
 class CfgVehicles {
-	class All {};
+	class All {
+		class ViewGunnerBase {};
+		class ViewOpticsBase {}; // for gunner aiming?
+	};
 	class AllVehicles:All{};
 		
 	class Air: AllVehicles {};
-	class Helicopter: Air {};
+	class Helicopter: Air {
+		class TurretBase {};
+	};
 	class Plane: Air {};
 	class UH60: Helicopter {};
 	class UH60MG: UH60 {};
@@ -1306,7 +1311,9 @@ class CfgVehicles {
 	class UralReammo: Ural {};
 	class UralRefuel: Ural {};
 
-	class Tank: LandVehicle {};
+	class Tank: LandVehicle {
+		class TurretBase {};
+	};
 	class RussianTank: Tank {};
 	class APC: Tank {};
 	class ZSU: Tank {};
@@ -1477,14 +1484,7 @@ class CfgVehicles {
 			minTurn = -180; maxTurn = +180;
 			soundServo[] = {"",0,0};
 		};
-		class ViewOpticsBase {};
 		class ViewOptics: ViewOpticsBase {
-			initAngleX = 0;
-			minAngleX = -30;
-			maxAngleX = +30;
-			initAngleY = 0;
-			minAngleY = -100;
-			maxAngleY = +100;
 			initFov = 0.11;
 			minFov = 0.11;
 			maxFov = 0.11;
@@ -1626,19 +1626,6 @@ class CfgVehicles {
 	};
 	class UH60_CSLA_xj400: UH60_CSLA_Base_xj400 {
 		model = "\TZK_Config_4_0_6\UH60A_CSLA2.p3d";
-		class TurretBase {
-			gunAxis = "OsaHlavne";
-			turretAxis = "OsaVeze";
-			gunBeg = "usti hlavne";
-			gunEnd = "konec hlavne";
-			soundServo[] = {};
-			minElev = -20;
-			maxElev = 20;
-			minTurn = -45;
-			maxTurn = 45;
-			body = "OtocVez";
-			gun = "OtocHlaven";
-		};
 		class Turret: TurretBase {
 			minElev = -0;
 			maxElev = 0;
@@ -1662,20 +1649,14 @@ class CfgVehicles {
 			gun = "OtocHlaven";
 		};
 	}
-	class Mi17_owp_ABC_xj400: Mi17 {};
+	class Mi17_owp_ABC_xj400: Mi17 {
+		class ViewOpticsBase {};
+	};
 	class Mi17_owp_Base_xj400: Mi17_owp_ABC_xj400 {};
 	class Mi17_owp_xj400: Mi17_owp_Base_xj400 {
-		class TurretBase {};
 		class Turret: TurretBase {
-			gunAxis = "OsaHlavne";
-			turretAxis = "OsaVeze";
-			gunBeg = "usti hlavne";
-			gunEnd = "konec hlavne";
-			soundServo[] = {};
 			minElev = -0; maxElev = +0;
 			minTurn = -0; maxTurn = +0;
-			body = "OtocVez";
-			gun = "OtocHlaven";
 		};
 	};
 	
@@ -1760,19 +1741,6 @@ class CfgVehicles {
 			initAngleY = 0;
 			minAngleY = -90;
 			maxAngleY = 90;
-		};
-		class TurretBase {
-			gunAxis = "OsaHlavne";
-			turretAxis = "OsaVeze";
-			gunBeg = "usti hlavne";
-			gunEnd = "konec hlavne";
-			soundServo[] = {};
-			minElev = -20;
-			maxElev = 20;
-			minTurn = -45;
-			maxTurn = 45;
-			body = "OtocVez";
-			gun = "OtocHlaven";
 		};
 		class Turret: TurretBase {
 			minElev = -90;
@@ -2205,20 +2173,11 @@ class CfgVehicles {
 		gunnerInAction = "ManActSFP_ssg120gunner";
 		commanderInAction = "ManActSFP_ssg120commander";
 
-		class TurretBase {
-		  	gunAxis = "OsaHlavne";
-			turretAxis = "OsaVeze";
+		class Turret: TurretBase {
 			soundServo[] = {"\TZK_Config_4_0_6\coc\servo.wss",db-30,1};
-			gunBeg = "usti hlavne";
-			gunEnd = "konec hlavne";
 			minElev = -5;
 			maxElev = 85;
-			minTurn = -360;
-			maxTurn = 360;
-			body = "OtocVez";
-			gun = "OtocHlaven";
 		};
-		class Turret: TurretBase {};
 		class HatchDriver {
 			selection = "poklop_driver";
 			axis = "osa_poklop_driver";
@@ -2322,23 +2281,11 @@ class CfgVehicles {
 			body = "OtocVelitele";
 			gun = "OtocHlavenVelitele";
 		};
-		class TurretBase {
-			gunAxis = "osahlavne";
-			turretAxis = "osaveze";
+		class Turret: TurretBase {
 			soundServo[] = {"\TZK_Config_4_0_6\vme\paotaztz99.wav", db-25, 1};
-
-			gunBeg = "usti hlavne";
-			gunEnd = "konec hlavne";
-			
-			body = "OtocVez";
-			gun = "OtocHlaven";
-
 			minElev = -5;
 			maxElev = +55;
-			minTurn = -360;
-			maxTurn = +360;
 		};
-		class Turret: TurretBase {};
 	};
 	class PLZ89_TZK_xj400: PLZ89_VME_Base_xj400 {
 		scope = 2; accuracy = 0.45;
@@ -2643,21 +2590,10 @@ class CfgVehicles {
 				brightness = 0.25;
 			};
 		};
-		class TurretBase {
-			gunAxis = "osahlavne";
-			turretAxis = "osaveze";
-			soundServo[] = {"Vehicles\gun_elevate",0.0316228,1.0};
-			gunBeg = "usti hlavne";
-			gunEnd = "konec hlavne";
+		class Turret: TurretBase {
 			minElev = -5
 			maxElev = 17
-			minTurn = -360
-			maxTurn = 360
-			initangl = 8;
-			body = "otocvez";
-			gun = "otochlaven";
 		};
-		class Turret: TurretBase{};
 		class ComTurret {
 			turretAxis = "OsaVelitele";
 			gunAxis = "OsaHlavneVelitele";
