@@ -5,17 +5,6 @@ _end = createTrigger ["EmptyDetector", [0,0,0]]; _end setTriggerArea [0, 0, 0, f
 _end = createTrigger ["EmptyDetector", [0,0,0]]; _end setTriggerArea [0, 0, 0, false]; _end setTriggerActivation ["NONE", "PRESENT", true]; _end setTriggerType "END2"; _end setTriggerText "EastWins"; _end setTriggerStatements ["gameEndType == 1", "", ""]
 _end = createTrigger ["EmptyDetector", [0,0,0]]; _end setTriggerArea [0, 0, 0, false]; _end setTriggerActivation ["NONE", "PRESENT", true]; _end setTriggerType "END3"; _end setTriggerText "Draw";     _end setTriggerStatements ["gameEndType == 2", "", ""]
 
-? !isServer: exit
-; ? _spawn: Array_TZK_Town_Triggered_By set [count Array_TZK_Town_Triggered_By, _units]
-_i = 0; _c = count Array_TZK_Town_Triggered_By
-# OutputTownTriggerInfo
-	~2
-	_str = ""
-	{_str = _str + _x + "  "} forEach (Array_TZK_Town_Triggered_By select _i)
-	publicExec format [{{%1} exec "Util\GlobalMsg.sqs"}, _str]
-	_str exec "Util\GlobalMsg.sqs"
-
-	_i = _i + 1
-	? _i < _c: goto "OutputTownTriggerInfo"
+? isServer: 0 exec localize TZK_TRIGGER_GAME_END_SERVER
 
 ; EOF
