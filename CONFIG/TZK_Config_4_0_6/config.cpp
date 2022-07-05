@@ -710,6 +710,35 @@ class CfgWeapons {
 			displayName = "GAU-2B/A 7.62mm";
 		};
 	};
+	class GShG7_62_xj400: GAU2B_Bas_xj400 {
+		displayName = "9-A-622 7.62mm";
+		displayNameMagazine = "9-A-622 7.62mm";
+		shortNameMagazine = "9-A-622";
+		modes[] = {"RPM2K"};
+		class RPM2K: RPMBase {
+			displayName = "9-A-622 7.62mm";
+			sound[] = {"\BOHJSDF5\wap\fv24b", 1, 1};
+		};
+	};
+	class M60_Heli_xj400: MachineGun7_6 {
+		ammo = "Bullet7_6W";
+		count = 200;
+		reloadAction = "manactreloadmagazine";
+		reloadMagazineSound[] = {"weapons\m16load",0.0003162,1};
+		displayName = "$STR_DN_M60_MG";
+		displayNameMagazine = "$STR_MN_M60_MG";
+		shortNameMagazine = "$STR_SN_M60_MG";
+	};
+	class PKT_Heli_xj400: MachineGun7_6 {
+		ammo = "Bullet7_6E";
+		count = 200;
+		reloadAction = "manactreloadmagazine";
+		reloadMagazineSound[] = {"weapons\m16load",0.0003162,1};
+		sound[] = {"Weapons\AK74full",3.1622777,1};
+		displayName = "$STR_DN_PK";
+		displayNameMagazine = "$STR_MN_PK";
+		shortNameMagazine = "$STR_SN_PK";
+	};
 	
 	class HellfireLauncherApach: HellfireLauncher {};
 	
@@ -1737,26 +1766,9 @@ class CfgVehicles {
 	class MH6_FakeC_Base1_xj400: MH6_FakeC_Base0_xj400 {};
 	class MH6_TZK_xj400: MH6_FakeC_Base1_xj400 {};
 	class MH6_irNo_TZK_xj400: MH6_TZK_xj400 {};
-	class MH6_irNo_M134_xj400: MH6_irNo_TZK_xj400 {
-		displayName = "MH-6 (M134)";
-
+	class MH6_irNo_SideWep_xj400: MH6_irNo_TZK_xj400 {
+		scope = private;
 		transportSoldier = 3;
-		
-		weapons[] = {"GAU2B_Bas_xj400"};
-		magazines[] = {"GAU2B_Bas_xj400"};
-		class ReloadAnimations {
-			class GAU2B {
-				weapon = "GAU2B_Bas_xj400";
-				angle0 = 0;
-				angle1 = -2 * 3.141592654;
-				multiplier = 5000;
-				type = rotation;
-				animPeriod = 1;
-				selection = gatling;
-				begin = "usti hlavne";
-				end = "konec hlavne";
-			};
-		};
 		model = "\TZK_Model_4_0_6\MH6_SideWep.p3d";
 		gunnerAction = "ManActBAS_MH60Gunner";
 		gunnerOpticsModel = "optika_empty";
@@ -1775,12 +1787,117 @@ class CfgVehicles {
 			maxAngleX = 5;
 		};
 	};
+	class MH6_irNo_M134_xj400: MH6_irNo_SideWep_xj400 {
+		scope = protected;
+		displayName = "MH-6 (M134)";
+		hiddenSelections[] = {"m60"};
+		
+		weapons[] = {"GAU2B_Bas_xj400"};
+		magazines[] = {"GAU2B_Bas_xj400"};
+		class ReloadAnimations {
+			class GAU2B {
+				weapon = "GAU2B_Bas_xj400";
+				angle0 = 0;
+				angle1 = -2 * 3.141592654;
+				multiplier = 5000;
+				type = rotation;
+				animPeriod = 1;
+				selection = gatling;
+				begin = "usti hlavne";
+				end = "konec hlavne";
+			};
+		};
+	};
+	class MH6_irNo_M60_xj400: MH6_irNo_SideWep_xj400 {
+		scope = protected;
+		displayName = "MH-6 (M60)";
+		hiddenSelections[] = {"m134"};
+		
+		weapons[] = {"M60_Heli_xj400"};
+		magazines[] = {"M60_Heli_xj400", "M60_Heli_xj400"};
+	};
 	
-	class Mi2NOE_Side_Base_xj400: Helicopter {};
+	class Mi2NOE_Side_Base_xj400: Helicopter {
+		model = "\TZK_Model_4_0_6\Mi2NO.p3d";
+	};
 	class Mi2NOE_FakeC_Base0_xj400: Mi2NOE_Side_Base_xj400 {};
 	class Mi2NOE_FakeC_Base1_xj400: Mi2NOE_FakeC_Base0_xj400 {};
 	class Mi2NOE_TZK_xj400: Mi2NOE_FakeC_Base1_xj400 {
 		scope = protected;
+	};
+	class Mi2NOE_irNo_TZK_xj400: Mi2NOE_TZK_xj400 {};
+	class Mi2NOE_irNo_SideWep_xj400: Mi2NOE_irNo_TZK_xj400 {
+		scope = private;
+		hasGunner = 1;
+		model = "\TZK_Model_4_0_6\Mi2NO_SideWep.p3d";
+		gunnerAction = "ManActBAS_MH60Gunner";
+		gunnerOpticsModel = "optika_empty";
+		class Turret: TurretBase {
+			minElev = -42;
+			maxElev = 5;
+			minTurn = 210;
+			maxTurn = 330;
+		};
+		class ViewGunner: ViewGunnerBase {
+			initAngleY = 90;
+			minAngleY = 30;
+			maxAngleY = 150;
+			initAngleX = 0;
+			minAngleX = -42;
+			maxAngleX = 5;
+			initFov = 1;
+			maxFov = 1;
+		};
+	};
+	class Mi2NOE_irNo_GShG_xj400: Mi2NOE_irNo_SideWep_xj400 {
+		scope = protected;
+		displayName = "Mi-2 (GShG)";
+		hiddenSelections[] = {"pkt", "m134"};
+	
+		weapons[] = {"GShG7_62_xj400"};
+		magazines[] = {"GShG7_62_xj400"};
+		class ReloadAnimations {
+			class GAU2B {
+				weapon = "GShG7_62_xj400";
+				angle0 = 0;
+				angle1 = -2 * 3.141592654;
+				multiplier = 5000;
+				type = rotation;
+				animPeriod = 1;
+				selection = gatling;
+				begin = "usti hlavne";
+				end = "konec hlavne";
+			};
+		};
+	};
+	class Mi2NOE_irNo_M134_xj400: Mi2NOE_irNo_SideWep_xj400 {
+		scope = protected;
+		displayName = "Mi-2 (M134)";
+		hiddenSelections[] = {"pkt", "gshg"};
+		
+		weapons[] = {"GShG7_62_xj400"};
+		magazines[] = {"GShG7_62_xj400"};
+		class ReloadAnimations {
+			class GAU2B {
+				weapon = "GShG7_62_xj400";
+				angle0 = 0;
+				angle1 = -2 * 3.141592654;
+				multiplier = 5000;
+				type = rotation;
+				animPeriod = 1;
+				selection = gatling;
+				begin = "usti hlavne";
+				end = "konec hlavne";
+			};
+		};
+	};
+	class Mi2NOE_irNo_PKT_xj400: Mi2NOE_irNo_SideWep_xj400 {
+		scope = protected;
+		displayName = "Mi-2 (PKT)";
+		hiddenSelections[] = {"m134", "gshg"};
+		
+		weapons[] = {"PKT_Heli_xj400"};
+		magazines[] = {"PKT_Heli_xj400", "PKT_Heli_xj400"};
 	};
 	
 	class Orca95_MCSR_ABC_xj400: Helicopter {
