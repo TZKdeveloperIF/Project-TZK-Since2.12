@@ -129,3 +129,5 @@ aiOrdersChn2 set [6, "\TZK_CHN_4_0_6_27\aiOrder2_switchMagazine_co.paa"];
 aiOrdersChn2 set [7, "\TZK_CHN_4_0_6_27\aiOrder2_adjustVectorUp_co.paa"];
 aiOrdersChn2 set [8, "\TZK_CHN_4_0_6_27\aiOrder2_buyEquipment_co.paa"];
 aiOrdersChn2 set [9, "\TZK_CHN_4_0_6_27\aiOrder2_join_co.paa"];
+
+call preprocessFile "impl\LangChn.sqf"

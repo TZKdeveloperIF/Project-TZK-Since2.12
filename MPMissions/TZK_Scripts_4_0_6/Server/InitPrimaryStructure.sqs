@@ -9,7 +9,7 @@ _object = (_this select 2) select 0
 ? _si in [si0, si1]: _object addEventHandler ["killed", format [{[_this, %1] exec "\TZK_Scripts_4_0_4\Server\Event_StructPrimDestroyed.sqs"}, _si]]
 
 [_object, _si, (structDefs select _type) select sdCost] exec "\TZK_Scripts_4_0_4\Server\EventAdd_StructHit.sqs"
-[_object, _si, kaStruct, 200] exec "\TZK_Scripts_4_0_4\Server\Start\KnowsAbout.sqs"
+[_object, _si, kaStruct, 200] exec localize TZK_SERVER_KNOWSABOUT_START
 
 
 ? !dev && !((count _this) > 3) : _object setDamage 1

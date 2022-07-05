@@ -1,6 +1,6 @@
 _unit = player
 ; Init
-[_unit, siPlayer, 200] exec "Common\Event\Add_Killed_Infantry.sqs"
+[_unit, siPlayer, 200] exec localize TZK_EVENT_ADD_KILLED_INF
 [_unit] exec "\TZK_Scripts_4_0_4\Player\AddPlayerActions.sqs"
 
 ; The AnimChanged-EH is available since 1.99
@@ -89,7 +89,7 @@ _timeConfuseScore = 20 + random 60
 
 	_unit = player
 	removeAllWeapons _unit
-	[_unit, siPlayer, 200] exec "Common\Event\Add_Killed_Infantry.sqs"
+	[_unit, siPlayer, 200] exec localize TZK_EVENT_ADD_KILLED_INF
 
 	_money = groupMoneyMatrix select siPlayer select giPlayer
 

@@ -6,12 +6,12 @@ _si = _this select 1
 _kaReport = _this select 2
 _dist = _this select 3
 _timeLastSent = _this select 4
+_this = 0
 
 _siEnemy = siEnemy select _si
 _groups = (groupMatrix select _siEnemy) + (townGroups select _siEnemy) + (workerGroups select _siEnemy)
-#Update
-~(_interval/2 + random _interval)
-	? _time > 2*60: goto "NextLoop"
+# Update
+	~ _interval / 2 + random _interval
 	
 	? !(alive _unit) : exit
 	_target = vehicle _unit
@@ -31,5 +31,3 @@ _groups = (groupMatrix select _siEnemy) + (townGroups select _siEnemy) + (worker
 	? _kaMax > _kaReport : { _x reveal _target } forEach _groups; [_target, _siEnemy] exec "\TZK_Scripts_4_0_4\Server\Msg\sEnemySpotted.sqs"; _timeLastSent = time
 	
 	goto "Update"
-#NextLoop
-	[_unit, _si, _kaReport, _dist, _timeLastSent] exec "\TZK_Scripts_4_0_4\Server\Loop\KnowsAboutG.sqs"; exit
