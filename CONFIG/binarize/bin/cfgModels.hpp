@@ -526,9 +526,13 @@ class CfgModels {
 	};
 	class MH6_SideWep: MH6_Bas {
 		sectionsInherit = "MH6_Bas";
-		sections[]= {"m134"};
+		sections[]= {"m134", "m60"};
 	};
 	class Mi2NO: Helicopter {};
+	class Mi2NO_SideWep: Mi2NO {
+		sectionsInherit = "Mi2NO";
+		sections[]= {"gshg", "pkt", "m134"};
+	};
 
 	class Orca95_MCSR: Helicopter {};
 
