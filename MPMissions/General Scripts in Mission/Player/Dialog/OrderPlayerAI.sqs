@@ -7,7 +7,7 @@ mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
 _dlg = createDialog "TZK_OrderAIDialog"
 mutexDlg = false
 
-? !bool_TZK_CHN_inited && bool_TZK_CHN_Lang: call preprocessFile "Player\Init\DialogChnLanguage.sqf"
+? !bool_TZK_CHN_inited && bool_TZK_CHN_Lang: call preprocessFile localize TZK_PLAYER_DIALOG_CHNLANG
 
 ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 

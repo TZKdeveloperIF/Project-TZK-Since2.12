@@ -30,6 +30,6 @@ _units join groupPlayer
 		_units = _units - _unitsJoint
 		? count _units > 0 && _try < 10 : _units join groupPlayer; _try = _try + 1; goto "SecondRepeat"
 		
-	_cost = 0; _type = -1; { _type = _x call funcgetunittypefromobject; if (_type >= maxUnitTypes || _type < 0) then {_cost = (unitDefs select (utCustom select _si)) select udCost} else {_cost = (unitDefs select _type) select udCost}; [_x, _si, _cost] exec "Common\Event\Add_Killed_Infantry.sqs" } forEach _unitsJoint
+	_cost = 0; _type = -1; { _type = _x call funcgetunittypefromobject; if (_type >= maxUnitTypes || _type < 0) then {_cost = (unitDefs select (utCustom select _si)) select udCost} else {_cost = (unitDefs select _type) select udCost}; [_x, _si, _cost] exec localize TZK_EVENT_ADD_KILLED_INF } forEach _unitsJoint
 
 ; EOF

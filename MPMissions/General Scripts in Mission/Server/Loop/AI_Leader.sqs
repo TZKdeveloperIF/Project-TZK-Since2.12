@@ -71,9 +71,9 @@ _unitsStarted = units _group
 #WaitUntilAlive
 	@(alive leader _group)
 	_unit = leader _group
-	[_unit, _si, 200] exec "Common\Event\Add_Killed_Infantry.sqs"
+	[_unit, _si, 200] exec localize TZK_EVENT_ADD_KILLED_INF
 	[_unit, _si, _gi] exec "Server\EventAdd_Infantry.sqs"
-	[_unit, _si, kaUnit, -1] exec "\TZK_Scripts_4_0_4\Server\Start\KnowsAbout.sqs"
+	[_unit, _si, kaUnit, -1] exec localize TZK_SERVER_KNOWSABOUT_START
 	
 	_money = (groupMoneyMatrix select _si) select _gi
 
