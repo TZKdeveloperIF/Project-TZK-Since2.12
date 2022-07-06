@@ -1,18 +1,16 @@
 ; args: [t80 tank]
-_t80 = _this select 0
+_t80 = _this select 0; _this = 0
 _unit = player; _si = siPlayer
 
 ? (_unit != vehicle _unit): goto "PlayerEnteredVehicle"
 
-#PlayerOnFoot
-	? _time > 5*60: [_t80] exec "\TZK_Scripts_4_0_5\Player\Loop\PlayerVehicle.sqs"; exit
-	
-	[vehicle _unit] exec "Player\Radio\Radio_Update_Vehicle.sqs"
+# PlayerOnFoot
+	[vehicle _unit] exec localize TZK_RADIO_ENTRANCE
 	? !isNull _t80 : [_t80, true] exec "\TZK_Scripts_4_0_4\Player\Effect\T80DrumDisplaySwitch.sqs"; _t80 = objNull
 	@ !(alive _unit) || (_unit != vehicle _unit)
 	? !(alive _unit): goto "PlayerDead"
 
-#PlayerEnteredVehicle
+# PlayerEnteredVehicle
 	_vehicle = vehicle _unit
 	? _vehicle in TownGroupVehicles : (vehicle _unit) setdamage 1; hint "Big brother is watching you."
 	_bool_Track = true; _bool_Impact = false; _type1 = _vehicle call funcGetUnitTypeFromObject; _type2 = _vehicle call funcGetStructTypeFromObject
@@ -21,7 +19,7 @@ _unit = player; _si = siPlayer
 	? _bool_Impact: _ehImpact = _vehicle addEventHandler ["Fired", {[_this select 0, nearestObject [_this select 0, _this select 4]] exec "Player\Effect\Fired_Artillery_Impact.sqs"}]
 	; _ehLimit = _vehicle addEventHandler ...
 	
-	[_vehicle] exec "Player\Radio\Radio_Update_Vehicle.sqs"
+	[_vehicle] exec localize TZK_RADIO_ENTRANCE
 	? "T80_xj400" countType [_vehicle] > 0 || "T80Res_TZK_xj400" countType [_vehicle] > 0: _t80 = _vehicle; [_t80, false] exec "\TZK_Scripts_4_0_4\Player\Effect\T80DrumDisplaySwitch.sqs"
 	
 	@ !(alive _unit) || (_unit == vehicle _unit)
@@ -35,7 +33,7 @@ _unit = player; _si = siPlayer
 	? !(alive _unit): goto "PlayerDead"
 	goto "PlayerOnFoot"
 
-#PlayerDead
+# PlayerDead
 	@ (alive player)
 	_unit = player
 	goto "PlayerOnFoot"
