@@ -1505,6 +1505,49 @@ class CfgVehicles {
 		class ViewPilot: ViewPilotBase {};
 	};
 
+	class HMMWV_M2wS_xj400: jeepMG {
+		model = "\TZK_Model_4_0_6\hmmwv_m2wS_FK_HMMWV.p3d";
+		accuracy = 1.5;
+	};
+	class HMMWV_M134_xj400: HMMWV_M2wS_xj400 {
+		displayName = "HMMWV M134"; cost = 100000; threat[] = {1, 0.1, 0.9};
+		model = "\TZK_Model_4_0_6\hmmwv_M134.p3d";
+		class ReloadAnimations {
+			class GAU2B {
+				weapon = "GAU2B_Bas_xj400";
+				angle0 = 0;
+				angle1 = -2 * 3.141592654;
+				multiplier = 5000;
+				type = rotation;
+				animPeriod = 1;
+				selection = gatling;
+				begin = "usti hlavne";
+				end = "konec hlavne";
+			};
+		};
+	};
+	class BRDM_PK_xj400: BRDM {
+		model = "\TZK_Model_4_0_6\BRDM_PK_BAS.p3d";
+		accuracy = 1.5;
+	};
+	class BRDM_GShG_xj400: BRDM_PK_xj400 {
+		displayName = "BRDM GShG"; cost = 100000; threat[] = {1, 0.1, 0.9};
+		model = "\TZK_Model_4_0_6\BRDM_GShG.p3d";
+		class ReloadAnimations {
+			class GAU2B {
+				weapon = "GShG7_62_xj400";
+				angle0 = 0;
+				angle1 = -2 * 3.141592654;
+				multiplier = 5000;
+				type = rotation;
+				animPeriod = 1;
+				selection = gatling;
+				begin = "usti hlavne";
+				end = "konec hlavne";
+			};
+		};
+	};
+
 	class M151A1C_htr_xj400: JeepMG {
 		scope = 2; vehicleClass = "TZK_Units_400";
 		// accuracy = ;
