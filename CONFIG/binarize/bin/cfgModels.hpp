@@ -560,9 +560,11 @@ class CfgModels {
 		sectionsInherit = "Car";
 		sections[] = {"sklo predni p","sklo predni l","zadni svetlo","brzdove svetlo","IFF_Hood","IFF_Door1","IFF_Door2","StuffA1","StuffA2","StuffB1","StuffC1","StuffD1","StuffD2","StuffD3","StuffE1"};
 	};
+	class hmmwv_M134: hmmwv_m2wS_FK_HMMWV {};
 	class hmmwv_tow2_FK_HMMWV: hmmwv_m2wS_FK_HMMWV {};
 	class hmmwv_tow2_Auto: hmmwv_m2wS_FK_HMMWV {};
 	class BRDM_PK_BAS: Car {};
+	class BRDM_GShG: BRDM_PK_BAS {};
 	class BRDM2_MNF: Car {
 		sectionsInherit = "Car";
 		sections[] = {
