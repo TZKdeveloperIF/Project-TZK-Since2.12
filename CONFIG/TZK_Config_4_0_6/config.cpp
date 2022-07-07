@@ -1521,6 +1521,18 @@ class CfgVehicles {
 		model = "\TZK_Model_4_0_6\hmmwv_m2wS_FK_HMMWV.p3d";
 		accuracy = 1.5;
 		terrainCoef = 1; preferRoads = 0;
+		// redefine viewoptics
+		class ViewOptics {
+			initAngleX = 0;
+			minAngleX = -30;
+			maxAngleX = 30;
+			initAngleY = 0;
+			minAngleY = -10;
+			maxAngleY = 20;
+			initFov = 0.7;
+			minFov = 0.42;
+			maxFov = 0.85;
+		};
 	};
 	class HMMWV_M134_xj400: HMMWV_M2wS_xj400 {
 		displayName = "HMMWV M134"; cost = 100000; threat[] = {1, 0.1, 0.9};
@@ -1543,6 +1555,18 @@ class CfgVehicles {
 		model = "\TZK_Model_4_0_6\BRDM_PK_BAS.p3d";
 		accuracy = 1.5;
 		terrainCoef = 1; preferRoads = 0;
+		// redefine viewoptics
+		class ViewOptics {
+			initAngleX = 0;
+			minAngleX = -30;
+			maxAngleX = 30;
+			initAngleY = 0;
+			minAngleY = -20;
+			maxAngleY = 55;
+			initFov = 0.7;
+			minFov = 0.42;
+			maxFov = 0.85;
+		};
 	};
 	class BRDM_GShG_xj400: BRDM_PK_xj400 {
 		displayName = "BRDM GShG"; cost = 100000; threat[] = {1, 0.1, 0.9};
