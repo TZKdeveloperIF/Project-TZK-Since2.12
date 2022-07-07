@@ -1449,7 +1449,19 @@ class CfgVehicles {
 		class TransportMagazines {};
 	};
 	
-	class HMMMV_TOW2A_xj400 : JeepMG {};
+	class Jeep_xj400: Jeep { terrainCoef = 1; preferRoads = 0; };
+	class JeepMG_xj400: JeepMG { terrainCoef = 1; preferRoads = 0; };
+	class HMMWV_xj400: Jeep { terrainCoef = 1; preferRoads = 0; };
+	class UAZ_xj400: UAZ { terrainCoef = 1; preferRoads = 0; };
+	class BRDM_xj400: LandVehicle { terrainCoef = 1; preferRoads = 0; };
+	class Truck5t_xj400: Truck5t { terrainCoef = 1; preferRoads = 0; };
+	class Truck5tRepair_xj400: Truck5tRepair { terrainCoef = 1; preferRoads = 0; };
+	class Truck5tRefuel_xj400: Truck5tRefuel { terrainCoef = 1; preferRoads = 0; };
+	class Ural_xj400: Ural { terrainCoef = 1; preferRoads = 0; };
+	class UralRepair_xj400: UralRepair { terrainCoef = 1; preferRoads = 0; };
+	class UralRefuel_xj400: UralRefuel { terrainCoef = 1; preferRoads = 0; };
+	
+	class HMMMV_TOW2A_xj400 : JeepMG { terrainCoef = 1; preferRoads = 0; };
 	class HMMMV_TOW2A_Auto_xj400 : HMMMV_TOW2A_xj400 {
 		// In debugging, don't forget use TZK soldiers but not origin ones otherwise CfgMoves will be abnormal
 		hasGunner = 0;
@@ -1470,8 +1482,8 @@ class CfgVehicles {
 		};
 		class ViewPilot: ViewPilotBase {};
 	};
-	class BRDM_xj400: LandVehicle {};
 	class BRDM2_MNF_xj400: BRDM_xj400 {
+		terrainCoef = 1; preferRoads = 0;
 		class UserActions {
 			class SwitchToDriverLand : UA_SwitchToDriverLand {}; class SwitchToGunnerLand : UA_SwitchToGunnerLand {};
 			
@@ -1508,6 +1520,7 @@ class CfgVehicles {
 	class HMMWV_M2wS_xj400: jeepMG {
 		model = "\TZK_Model_4_0_6\hmmwv_m2wS_FK_HMMWV.p3d";
 		accuracy = 1.5;
+		terrainCoef = 1; preferRoads = 0;
 	};
 	class HMMWV_M134_xj400: HMMWV_M2wS_xj400 {
 		displayName = "HMMWV M134"; cost = 100000; threat[] = {1, 0.1, 0.9};
@@ -1529,6 +1542,7 @@ class CfgVehicles {
 	class BRDM_PK_xj400: BRDM {
 		model = "\TZK_Model_4_0_6\BRDM_PK_BAS.p3d";
 		accuracy = 1.5;
+		terrainCoef = 1; preferRoads = 0;
 	};
 	class BRDM_GShG_xj400: BRDM_PK_xj400 {
 		displayName = "BRDM GShG"; cost = 100000; threat[] = {1, 0.1, 0.9};
@@ -1550,7 +1564,7 @@ class CfgVehicles {
 
 	class M151A1C_htr_xj400: JeepMG {
 		scope = 2; vehicleClass = "TZK_Units_400";
-		// accuracy = ;
+		accuracy = 1.5;
 		displayName = "M151A1C with 106mm"; side = 1; cost = 100000; threat[] = {0.3, 1, 0.1};
 		
 		model = "\TZK_Config_4_0_6\m151a1c_htr.p3d";
@@ -1571,8 +1585,7 @@ class CfgVehicles {
 		hideUnitInfo = 0;
 		secondaryExplosion = 5;
 
-		preferRoads = 0;
-		terrainCoef = 1;
+		terrainCoef = 1; preferRoads = 0; 
 		// anti-tank car hasn't radar
 		irScanGround = 0;
 		irScanToEyeFactor = 0;
@@ -1664,7 +1677,7 @@ class CfgVehicles {
 	};
 	class UAZ_SPG_FDF_xj400: JeepMG {
 		scope = 2; vehicleClass = "TZK_Units_400";
-		// accuracy = 0.4;
+		accuracy = 1.5;
 		displayName = "UAZ (SPG-9)"; nameSound = "UAZ"; side = 0; cost = 100000; type = 1; threat[] = {0.5, 1, 0.1};
 		
 		model = "\TZK_Config_4_0_6\uaz_spg_RUS.p3d";
@@ -1705,8 +1718,7 @@ class CfgVehicles {
 		hideUnitInfo = 0;
 		maxSpeed = 90;
 		
-		preferRoads = 0;
-		terrainCoef = 1;
+		terrainCoef = 1; preferRoads = 0; 
 		// anti-tank car hasn't radar
 		irScanGround = 0;
 		irScanToEyeFactor = 0;
