@@ -3124,6 +3124,16 @@ class CfgVehicles {
 	class SoldierEMedic_xj406: SoldierEMedic_xj400 { attendant = 0; };
 	class Logic: All {};
 	class Logic_xj400: Logic {};
+	class Logic_Mine_xj400: Logic_xj400 {
+		model = "m19_at_proxy.p3d";
+		// EventHandler. Init. Scripts shall be placed in missions.
+	};
+	class Logic_APE_xj400: Logic_xj400 {
+		model = "MMN_2_proxy.p3d";
+	};
+	class Logic_Stachel_xj400: Logic_xj400 {
+		model = "satchel.p3d";
+	};
 	class Logic_M1A1_xj400: Logic_xj400 {
 		model = "m1_abrams.p3d";
 	};
