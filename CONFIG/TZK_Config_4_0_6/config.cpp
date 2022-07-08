@@ -2240,7 +2240,7 @@ class CfgVehicles {
 	};
 	class Leo2A6_xj400: TZK_HeavyWestTank_Base_xj400 {
 		maxSpeed = 57;
-		model = "\TZK_Config_4_0_6\Leo2A6.p3d";
+		model = "\TZK_Model_4_0_6\Leo2A6.p3d";
 		class Turret {
 			gunAxis = "OsaHlavne";
 			turretAxis = "OsaVeze";
@@ -2280,7 +2280,7 @@ class CfgVehicles {
 	};
 	class ZTZ99_xj400: TZK_HeavyEastTank_Base_xj400 {
 		maxSpeed = 57;
-		model = "\TZK_Config_4_0_6\ztz99.p3d";
+		model = "\TZK_Model_4_0_6\ztz99.p3d";
 	};
 
 	class M1A1_Info_xj400: M1A1_xj400 { unitInfoType = 8; };
@@ -2627,7 +2627,7 @@ class CfgVehicles {
 		accuracy = 0.5;
 		displayName = "AMX 10 RC"; nameSound = "tank"; side = 1; cost = 1000000; type = 1; threat[] = {1, 1, 0.6};
 		
-		model = "\TZK_Config_4_0_6\Amx10Rc_uiox.p3d";
+		model = "\TZK_Model_4_0_6\Amx10Rc_uiox.p3d";
 		hiddenSelections[] = {
 			"nom","ID","logo","KFOR","Flag"
 			, tzk_tex_00
