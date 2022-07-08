@@ -18,7 +18,7 @@ while "_i < _ci" do {
 			if ((_m select _k) in ["9M311_26_xj400","9M311_30_xj400"]) then {_m set [_k, "9M311_40_xj400"]};
 			_k = _k + 1
 		};
-		[_unit, _w, _m, _types select _i, 2, true] exec "\TZK_Scripts_4_0_4\Common\EditEquipRearmData.sqs";
+		[_unit, _w, _m, _types select _i, 2, true] exec localize TZK_EQUIPREARMDATA_EDIT;
 		
 		if (local _unit && !bool_TZK_199_Mode) then {
 			_mArray = magazinesArray _unit; _k = 0; _ck = count _mArray;

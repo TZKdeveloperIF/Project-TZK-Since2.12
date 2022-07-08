@@ -29,7 +29,7 @@ while {_i < _ci} do {
 				, "9M311_26_xj400","9M311_30_xj400","9M311_40_xj400"]) then {_hasRedTop = true};
 		} forEach _wep;
 		if (!_hasRedTop) then {
-			[_unit, _w, _m, _types select _i, 2, true] exec "\TZK_Scripts_4_0_4\Common\EditEquipRearmData.sqs";
+			[_unit, _w, _m, _types select _i, 2, true] exec localize TZK_EQUIPREARMDATA_EDIT;
 			
 			if (local _unit) then {
 				{ _unit removeMagazine _x} foreach magazines _unit;
