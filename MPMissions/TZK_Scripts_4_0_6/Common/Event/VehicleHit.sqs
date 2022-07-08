@@ -12,7 +12,7 @@ _scoreTotal = _this select 2
 
 _groupSource = group _source
 
-? !(_vehicle in ( mhq + (MCV select si0) + (MCV select si1) )) && (damage _vehicle) > 0.5 && (alive _vehicle): [_vehicle] exec "\TZK_Scripts_4_0_4\Common\CheckDestroyHitVehicle.sqs"
+; ? !(_vehicle in ( mhq + (MCV select si0) + (MCV select si1) )) && (damage _vehicle) > 0.5 && (alive _vehicle): [_vehicle] exec localize TZK_EVENT_HIT_AUTODESTROY_BADLYHURT
 
 ; check and handle disabled vehicle
 _crew = crew _vehicle
@@ -27,16 +27,16 @@ _group = grpNull
 
 ; player globalchat format["canFire = %1", canFire _vehicle]
 ? canFire _vehicle || count (magazines _vehicle) == 0: goto "CheckCanMove"
-#GunDisabled
+; GunDisabled
 { _vehicle removeMagazines _x } forEach (magazines _vehicle)
 ? !bool_TZK_199_Mode: if (format ["%1", (typeOf _vehicle) GetVehicleParam "simulation"] == "tank") Then { _vehicle setSelectionDammage ["Gun", 0.8] }
-? !(_vehicle in ( mhq + (MCV select si0) + (MCV select si1) )): [_vehicle] exec "\TZK_Scripts_4_0_4\Common\CheckDestroyDisabledVehicle.sqs"
+? !(_vehicle in ( mhq + (MCV select si0) + (MCV select si1) )): [_vehicle] exec localize TZK_EVENT_HIT_AUTODESTROY_DISABLED
 ? _group != groupPlayer && _siVehicle == siRes: { if (local _x) then { unassignVehicle _x; _x action ["eject", _vehicle] } } forEach _crew; goto "CheckCanMove"
 ? _group == groupPlayer: _unit groupChat "Vehicle weapons destroyed, need rearm"; goto "CheckCanMove"
 
-#CheckCanMove
-? canMove _vehicle: goto "CheckScore"
-? !(_vehicle in ( mhq + (MCV select si0) + (MCV select si1) )): [_vehicle] exec "\TZK_Scripts_4_0_4\Common\CheckDestroyDisabledVehicle.sqs"
+# CheckCanMove
+; ? canMove _vehicle: goto "CheckScore"
+; ? !(_vehicle in ( mhq + (MCV select si0) + (MCV select si1) )): [_vehicle] exec localize TZK_EVENT_HIT_AUTODESTROY_DISABLED
 
 #CheckScore
 _siSource = -1

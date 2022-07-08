@@ -8,7 +8,7 @@ clearMagazineCargo _vehicle; clearWeaponCargo _vehicle
 
 ; Killed and Hit Event
 _vehicle addEventHandler ["killed", {_this exec "Common\Event\Killed_Vehicle.sqs"}]
-[_vehicle, _si, _desc select udCost] exec "\TZK_Scripts_4_0_4\Common\EventAdd_VehicleHit.sqs"
+[_vehicle, _si, _desc select udCost] exec "\TZK_Scripts_4_0_6\Common\Event\Add_VehicleHit.sqs"
 ? "Tank" countType [_vehicle] > 0: [_vehicle, _type] exec "\TZK_Scripts_4_0_4\Common\EH\AddTankHit.sqs"
 
 ; Fired Event
