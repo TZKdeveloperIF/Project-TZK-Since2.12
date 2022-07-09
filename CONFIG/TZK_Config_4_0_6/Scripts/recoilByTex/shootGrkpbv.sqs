@@ -1,0 +1,15 @@
+_vehicle = _this select 0
+_weapon = _this select 1
+_this = 0
+
+_array = typeOf grkpbv GetVehicleParamArray "hiddenSelections"
+
+_num = _vehicle ammo _weapon
+_gunSide = (if (0 == _num % 2) then {"R"} else {"L"})
+
+_vehicle setObjectTexture [_array find "tzkGun" + _gunSide + "00", ""]
+_vehicle setObjectTexture [_array find "tzkGun" + _gunSide + "01", ""]
+_vehicle setObjectTexture [_array find "tzkGun" + _gunSide + "02", ""]
+
+~0.1
+[_vehicle, _gunSide] exec "\TZK_Config_4_0_6\Scripts\recoilByTex\grkpbv.sqs"
