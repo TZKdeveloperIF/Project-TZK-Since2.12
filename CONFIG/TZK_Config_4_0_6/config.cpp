@@ -3135,22 +3135,22 @@ class CfgVehicles {
 		model = "satchel.p3d";
 	};
 	class Logic_M1A1_xj400: Logic_xj400 {
-		model = "m1_abrams.p3d";
+		model = "\TZK_Model_4_0_6\proxy\M1A1_TZK.p3d";
 	};
 	class Logic_Leo2A6_xj400: Logic_xj400 {
-		model = "\TZK_Model_4_0_6\Leo2A6.p3d";
+		model = "\TZK_Model_4_0_6\proxy\Leo2A6.p3d";
 	};
 	class Logic_T80_xj400: Logic_xj400 {
-		model = "t80";
+		model = "\TZK_Model_4_0_6\proxy\t80_tzk.p3d";
 	};
 	class Logic_ZTZ99_xj400: Logic_xj400 {
-		model = "\TZK_Model_4_0_6\ztz99.p3d";
+		model = "\TZK_Model_4_0_6\proxy\ztz99.p3d";
 	};
 	class Logic_M60_xj400: Logic_xj400 {
-		model = "m60";
+		model = "\TZK_Model_4_0_6\proxy\m60_tzk.p3d";
 	};
 	class Logic_M60_120S_xj400: Logic_xj400 {
-		model = "\TZK_Model_4_0_5\M60_120S_TZK.p3d";
+		model = "\TZK_Model_4_0_6\proxy\M60_120S_TZK.p3d";
 	};
 	class Logic_T55_xj400: Logic_xj400 {
 		model = "t55";
@@ -3174,16 +3174,16 @@ class CfgVehicles {
 		model = "truck5tfuel";
 	};
 	class Logic_M113_xj400: Logic_xj400 {
-		model = "m113";
+		model = "\TZK_Model_4_0_6\proxy\m113_tzk.p3d";
 	};
 	class Logic_M113Ambu_xj400: Logic_xj400 {
 		model = "M113_ambulance";
 	};
 	class Logic_Vulcan_xj400: Logic_xj400 {
-		model = "\vulcan\m163a1vulcan";
+		model = "\TZK_Model_4_0_6\proxy\vulcan_tzk.p3d";
 	};
 	class Logic_M2A2_xj400: Logic_xj400 {
-		model = "\m2a2\m2a2";
+		model = "\TZK_Model_4_0_6\proxy\m2a2_tzk.p3d";
 	};
 	class Logic_Uaz_xj400: Logic_xj400 {
 		model = "uaz";
@@ -3207,52 +3207,52 @@ class CfgVehicles {
 		model = "bmp_Ambu";
 	};
 	class Logic_ZSU_xj400: Logic_xj400 {
-		model = "zsu";
+		model = "\TZK_Model_4_0_6\proxy\zsu_tzk.p3d";
 	};
 	class Logic_BMP2_xj400: Logic_xj400 {
 		model = "\bmp2\bmp2";
 	};
 	class Logic_AMX10RC_xj400: Logic_xj400 {
-		model = "\TZK_Model_4_0_6\Amx10Rc_uiox.p3d";
+		model = "\TZK_Model_4_0_6\proxy\Amx10Rc_uiox.p3d";
 	};
 	class Logic_2S25_xj400: Logic_xj400 {
-		model = "\TZK_Config_4_0_6\2S25_mfm.p3d";
+		model = "\TZK_Model_4_0_6\proxy\2S25_mfm.p3d";
 	};
 	class Logic_Grkpbv_xj400: Logic_xj400 {
-		model = "\TZK_Config_4_0_6\Grkpbv_Coc.p3d";
+		model = "\TZK_Model_4_0_6\proxy\Grkpbv_Coc.p3d";
 	};
 	class Logic_PLZ89_xj400: Logic_xj400 {
-		model = "\TZK_Config_4_0_6\PLZ89.p3d";
+		model = "\TZK_Model_4_0_6\proxy\PLZ89.p3d";
 	};
 	class Logic_M109A6G_xj400: Logic_xj400 {
-		model = "\TZK_Model_4_0_6\M109A6_DKMM.p3d";
+		model = "\TZK_Model_4_0_6\proxy\M109A6_DKMM.p3d";
 	};
 	class Logic_PLZ05_xj400: Logic_xj400 {
-		model = "\TZK_Model_4_0_6\PLZ05.p3d";
+		model = "\TZK_Model_4_0_6\proxy\PLZ05.p3d";
 	};
 	class Logic_M270_xj400: Logic_xj400 {
-		model = "\TZK_Model_4_0_5\M270_m29064.p3d";
+		model = "\TZK_Model_4_0_6\proxy\M270_m29064.p3d";
 	};
 	class Logic_TOS1_xj400: Logic_xj400 {
-		model = "\TZK_Model_4_0_4\TOS1_DKMM.p3d";
+		model = "\TZK_Model_4_0_6\proxy\TOS1_DKMM.p3d";
 	};
 	class Logic_HMMWV_M2wS_xj400: Logic_xj400 {
-		model = "\TZK_Model_4_0_6\hmmwv_m2wS_FK_HMMWV.p3d";
+		model = "\TZK_Model_4_0_6\proxy\hmmwv_m2wS_FK_HMMWV.p3d";
 	};
 	class Logic_HMMWV_M134_xj400: Logic_xj400 {
-		model = "\TZK_Model_4_0_6\hmmwv_M134.p3d";
+		model = "\TZK_Model_4_0_6\proxy\hmmwv_M134.p3d";
 	};
 	class Logic_M151A1C_xj400: Logic_xj400 {
-		model = "\TZK_Config_4_0_6\m151a1c_htr.p3d";
+		model = "\TZK_Model_4_0_6\proxy\m151a1c_htr.p3d";
 	};
 	class Logic_BRDM_PK_xj400: Logic_xj400 {
-		model = "\TZK_Model_4_0_6\BRDM_PK_BAS.p3d";
+		model = "\TZK_Model_4_0_6\proxy\BRDM_PK_BAS.p3d";
 	};
 	class Logic_BRDM_GShG_xj400: Logic_xj400 {
-		model = "\TZK_Model_4_0_6\BRDM_GShG.p3d";
+		model = "\TZK_Model_4_0_6\proxy\BRDM_GShG.p3d";
 	};
 	class Logic_UAZ_SPG_xj400: Logic_xj400 {
-		model = "\TZK_Config_4_0_6\uaz_spg_RUS.p3d";
+		model = "\TZK_Model_4_0_6\proxy\uaz_spg_RUS.p3d";
 	};
 
 	class ParachuteBase: Helicopter {};
