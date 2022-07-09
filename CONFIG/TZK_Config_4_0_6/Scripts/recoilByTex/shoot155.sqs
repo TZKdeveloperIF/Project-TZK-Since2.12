@@ -1,0 +1,17 @@
+_vehicle = _this select 0
+_theWorld = _this select 1
+_className = _this select 2
+_this = 0
+
+_array = typeOf _vehicle GetVehicleParamArray "hiddenSelections"
+
+_vehicle setObjectTexture [_array find "tzkGun00", ""]
+~0.02
+_vehicle setObjectTexture [_array find "tzkGun01", ""]
+~0.02
+_vehicle setObjectTexture [_array find "tzkGun02", ""]
+~0.02
+_vehicle setObjectTexture [_array find "tzkGun03", ""]
+
+~0.3
+[_vehicle, _theWorld] exec format ["\TZK_Config_4_0_6\Scripts\recoilByTex\%1.sqs", _className]
