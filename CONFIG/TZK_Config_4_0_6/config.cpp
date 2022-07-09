@@ -1591,7 +1591,7 @@ class CfgVehicles {
 		accuracy = 1.5;
 		displayName = "M151A1C with 106mm"; side = 1; cost = 100000; threat[] = {0.3, 1, 0.1};
 		
-		model = "\TZK_Config_4_0_6\m151a1c_htr.p3d";
+		model = "\TZK_Model_4_0_6\m151a1c_htr.p3d";
 		picture = "\TZK_Config_4_0_6\tex\htr_m151a1c_ui.paa";
 		hiddenSelections[] = {"shell_casing01","shell_projectile01","shell_casing02","shell_projectile02","shell_casing03","shell_projectile03","shell_casing04","shell_projectile04","shell_casing05","shell_projectile05","n1","n2","chambProj","chambCase"};
 
@@ -1704,7 +1704,7 @@ class CfgVehicles {
 		accuracy = 1.5;
 		displayName = "UAZ (SPG-9)"; nameSound = "UAZ"; side = 0; cost = 100000; type = 1; threat[] = {0.5, 1, 0.1};
 		
-		model = "\TZK_Config_4_0_6\uaz_spg_RUS.p3d";
+		model = "\TZK_Model_4_0_6\uaz_spg_RUS.p3d";
 		picture = "\TZK_Config_4_0_6\tex\icon_musti.paa";
 		crew ="soldierECrew";
 		soundEngine[] = {"\TZK_Config_4_0_6\fdf\uaz_engine.wss",0.031623,1}; //FDF - Goeth 12.10.2003
@@ -2202,7 +2202,10 @@ class CfgVehicles {
 	
 	class C130_Base_xj400: Plane {};
 	class C130_xj400: C130_Base_xj400 {
-		model = "\TZK_Config_4_0_6\C130.p3d";
+		model = "\TZK_Model_4_0_6\C130.p3d";
+	};
+	class AN72_Base_xj400: Plane {
+		model = "\TZK_Model_4_0_6\AN72.p3d";
 	};
 	
 	// Remove soundEngine/soundEnviron
@@ -2324,6 +2327,13 @@ class CfgVehicles {
 		};
 	};
 	
+	class M270_M29064_xj400: M1Abrams_Base_xj400 {
+		model = "\TZK_Model_4_0_6\M270_m29064.p3d";
+	};
+	class TOS1_TZK_xj400: T72_Base_xj400 {
+		model = "\TZK_Model_4_0_6\TOS1_DKMM.p3d";
+	};
+	
 	class M60_Base_xj400: Tank_xj400 {};
 	class M60_xj400: M60_Base_xj400 {
 		model = "\TZK_Config_4_0_6\M60_TZK.p3d";
@@ -2432,7 +2442,7 @@ class CfgVehicles {
 		displayName = "GrkPbv 120"; nameSound = "tank"; side = 1; cost = 1700000; type = 1; threat[] = {1, 0.4, 0.1};
 
 		crew = "SoldierWCrew";
-		model = "\TZK_Config_4_0_6\Grkpbv_Coc.p3d";
+		model = "\TZK_Model_4_0_6\Grkpbv_Coc.p3d";
 		hiddenSelections[] = {
 			"flash1","flash2","flash3","flash4","flash5","flash6"
 			, "tzkGunL00", "tzkGunL01", "tzkGunL02", "tzkGunR00", "tzkGunR01", "tzkGunR02"
@@ -2820,7 +2830,7 @@ class CfgVehicles {
 		accuracy = 0.5;
 		displayName = "2S25 Sprut-SD"; nameSound = "tank"; side = 0; cost = 950000; type = 1; threat[] = {0.6,1,0.3};
 
-		model = "\TZK_Config_4_0_6\2S25_mfm.p3d";
+		model = "\TZK_Model_4_0_6\2S25_mfm.p3d";
 		hiddenselections[]= {"no1", "no2", "no3"};
 		icon = "\TZK_Config_4_0_6\tex\sprut_i.paa";
 		picture = "\t406\ui\2s25.paa";
