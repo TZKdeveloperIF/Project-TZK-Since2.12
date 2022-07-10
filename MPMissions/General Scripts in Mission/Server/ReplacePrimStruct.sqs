@@ -37,7 +37,7 @@ if (isNull gunner _object) then { [_object] exec "\TZK_Scripts_4_0_4\Common\AddR
 [_si, _type] exec "\TZK_Scripts_4_0_4\Server\Info\StructReady.sqs"; [_objectDestroyed] exec "\TZK_Scripts_4_0_4\Server\primStructsPlacedRemove.sqs"
 
 _objects = [_object]
-[_objects, _type] exec localize TZK_SERVER_FUNC_RESET_UP;
+[_objects, _type] exec localize {TZK_SERVER_FUNC_RESET_UP};
 
 #ReplaceStructure
 
@@ -57,4 +57,4 @@ if (_type in structsDestroy) then {(_objects select 0) exec "\TZK_Scripts_4_0_4\
 _i = structServer find _objectDestroyed
 ? _i == -1: "ERROR: _object not found in ReplacePrimStruct when structure is to be deleted. It might remain some rubbish unable to clear during the whole game." call fDebugLog
 ? _i != -1: structServer set [_i, _object]; {_x setDamage 0} forEach (structsServer select _i select 0)
-_objectDestroyed setPos [-1000,0,0]; [_objectDestroyed, 60] exec localize TZK_PATH_DELAY_DELETE_UNIT
+_objectDestroyed setPos [-1000,0,0]; [_objectDestroyed, 60] exec localize {TZK_PATH_DELAY_DELETE_UNIT}

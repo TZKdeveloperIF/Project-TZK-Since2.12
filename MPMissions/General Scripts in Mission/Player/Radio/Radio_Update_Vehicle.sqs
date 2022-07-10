@@ -4,7 +4,7 @@ _vehicle = _this select 0
 ? _vehicle == player: [_vehicle] exec "Player\Radio\Radio_Update_Vehicle_OnFoot.sqs"; exit
 
 ; Clean up radio channels and make it unnecessary to be handle in other scripts.
-[_vehicle] call loadFile localize TZK_RADIO_ENTRANCE_COMMON
+[_vehicle] call loadFile localize {TZK_RADIO_ENTRANCE_COMMON}
 
 ; Classifications below are defined in InitUnitTypes.sqs
 # CheckVehicle
@@ -38,7 +38,7 @@ _vt = _vehicle call funcGetUnitTypeFromObject
 ? _vt in (typesTransportCar + typesTransportAPC): [_vehicle, _vt] exec "\TZK_Scripts_4_0_6\Player\Radio\Radio_Update_Vehicle_TransportLand.sqs"; exit
 
 ; Vehicle doesn't have special Actions
-[_vehicle] call loadFile localize TZK_RADIO_ENTRANCE_COMMON; exit
+[_vehicle] call loadFile localize {TZK_RADIO_ENTRANCE_COMMON}; exit
 
 
 # CheckStructure
@@ -54,8 +54,8 @@ _vt = _vehicle call funcGetStructTypeFromObject
 # Abnormal
 
 ; Parachute. In crCTI when player in Parachute the "Options" action invalid. No modifying there but add "Options" in radio.
-? "ParachuteBase" countType [_vehicle] > 0: [_vehicle] call loadFile localize TZK_RADIO_ENTRANCE_PARA; exit
+? "ParachuteBase" countType [_vehicle] > 0: [_vehicle] call loadFile localize {TZK_RADIO_ENTRANCE_PARA}; exit
 
-[_vehicle] call loadFile localize TZK_RADIO_ENTRANCE_COMMON; exit
+[_vehicle] call loadFile localize {TZK_RADIO_ENTRANCE_COMMON}; exit
 
 ; EOF

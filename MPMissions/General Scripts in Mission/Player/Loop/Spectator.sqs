@@ -18,7 +18,7 @@ goto "Update"
 	_vForward = [sin _dirOld, cos _dirOld]
 	_vRight = [_vForward, 90] call funcVectorRot2D
 
-	[] exec localize TZK_DIALOG_SPEC
+	[] exec localize {TZK_DIALOG_SPEC}
 
 # Update
 	~0.02
@@ -123,5 +123,5 @@ goto "Update"
 	deleteVehicle hhSpec
 	deleteVehicle hhTracker
 
-	[] exec localize TZK_PLAYER_GAMEOVER_SECQUENCE; [] exec localize TZK_TRIGGER_GAME_END_COMMON
+	[] exec localize {TZK_PLAYER_GAMEOVER_SECQUENCE}; [] exec localize {TZK_TRIGGER_GAME_END_COMMON}
 	exit

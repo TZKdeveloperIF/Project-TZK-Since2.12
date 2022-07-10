@@ -199,7 +199,7 @@ mutexSwitchSeat = false;
 
 _param0 = ["InitSpeed", count ArtilleryMagazineSpeedList, {format [{%1 m/s}, ArtilleryMagazineSpeedList select _this]}, 0];
 _param1 = ["Curved", 2, {["False", "True"] select _this}, 1];
-_script = localize TZK_ORDER_PLAYER_SWITCH_MAG;
+_script = localize {TZK_ORDER_PLAYER_SWITCH_MAG};
 if bool_TZK_SEMod_Mode then {_script = "Extra\SwitchMag_Player.sqs"};
 aiOrders2 set [count aiOrders1, [
 	"Switch Magazine", [_param0, _param1], false, _script,

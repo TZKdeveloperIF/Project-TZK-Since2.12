@@ -6,7 +6,7 @@ _m = magazines _v
 _w = weapons _v
 
 ~1
-?(!(local _v) || !(alive _v)) && (_si in [si0, si1]): [_v, _w, _m, _t, 1] exec localize TZK_EQUIPREARMDATA_EDIT; exit
+?(!(local _v) || !(alive _v)) && (_si in [si0, si1]): [_v, _w, _m, _t, 1] exec localize {TZK_EQUIPREARMDATA_EDIT}; exit
 
 
 _mags = magazines _v
@@ -18,7 +18,7 @@ _wpns = weapons _v
 ~15
 {_v addMagazine _x} forEach _m
 
-? _si in [si0, si1]: [_v, _w, _m, _t, 1] exec localize TZK_EQUIPREARMDATA_EDIT; exit
+? _si in [si0, si1]: [_v, _w, _m, _t, 1] exec localize {TZK_EQUIPREARMDATA_EDIT}; exit
 
 
 

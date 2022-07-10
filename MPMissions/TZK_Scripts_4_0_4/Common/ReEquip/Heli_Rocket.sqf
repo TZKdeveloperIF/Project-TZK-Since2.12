@@ -16,7 +16,7 @@ while "_i < _ci" do {
 	
 	while "_j < _cj" do {
 		_unit = _vehicles select _j;
-		[_unit, [_theWeapon], [_theWeapon], _types select _i, 2, false] exec localize TZK_EQUIPREARMDATA_EDIT;
+		[_unit, [_theWeapon], [_theWeapon], _types select _i, 2, false] exec localize {TZK_EQUIPREARMDATA_EDIT};
 		
 		if (local _unit) then {
 			_unit addMagazine _theWeapon; _unit addWeapon _theWeapon;
