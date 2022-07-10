@@ -20,7 +20,6 @@ _vt = _vehicle call funcGetUnitTypeFromObject
 ? _vt in typesHowitzer: [_vehicle] exec "\TZK_Scripts_4_0_6\Player\Radio\Radio_Update_Vehicle_Howitzer.sqs"; exit
 ? _vt in typesRocketLauncher: [_vehicle] exec "\TZK_Scripts_4_0_6\Player\Radio\Radio_Update_Vehicle_TOS1.sqs"; exit
 
-? _vt in RadioTypesArtUnits: [_vehicle] exec "\TZK_Scripts_4_0_5\Player\Radio\Radio_Update_Vehicle_Art.sqs"; exit
 ? _vt in RadioTypesShips: [_vehicle] exec "\TZK_Scripts_4_0_5\Player\Radio\Radio_Update_Vehicle_Ship.sqs"; exit
 
 ; Helis all can attach and support Heli is special in drop ammo crate. Support Plane is more a transport plane. Support Ship nothing to specialize.
@@ -45,7 +44,7 @@ _vt = _vehicle call funcGetUnitTypeFromObject
 # CheckStructure
 _vt = _vehicle call funcGetStructTypeFromObject
 ? _vt == -1: goto "Abnormal"
-? _vt in (structsOccupiableHowitzer + structsOccupiableArtHowitzer): [_vehicle, _vt] exec "\TZK_Scripts_4_0_6\Player\Radio\Radio_Update_Structure_Howitzer.sqs"; exit
+? _vt in (structsOccupiableHowitzer): [_vehicle, _vt] exec "\TZK_Scripts_4_0_6\Player\Radio\Radio_Update_Structure_Howitzer.sqs"; exit
 ? _vt in structsOccupiableMortar: [_vehicle] call loadFile "Player\Radio\Radio_Update_Structure_Mortar.sqf"; exit
 
 ; General Structures are allowed to reset the Vector Up.

@@ -15,7 +15,7 @@
 ; 6: Get Plane Status, Attach/Detach Right
 ; 7: Eject AI Units, Buy Better NVG, Attach/Detach Left
 ; 8: Eject All Cargo, Rearm AA
-; 9: Eject One Cargo, Rearm AT, BulletCam, Marker Displaying Switch
+; 9: Eject One Cargo, Rearm AT, Marker Displaying Switch
 ; 0: Transport Turn, Rearm RPG, AfterBurner, Return to Spectator Mode
 
 _vehicle = vehicle player
@@ -95,7 +95,6 @@ _vt = _vehicle call funcGetUnitTypeFromObject
 ? _vt in (RadioTypesSupport + [utMCVW, utMCVE, utMHQ0, utMHQ1]): if ("Land" countType [_vehicle] > 0) then {[_vehicle, siPlayer] exec "Player\Action\EjectOneCargo.sqs", exit}
 
 _hint = "0-0-9 channel can be applied for player to buy AT launcher/ammo quickly.\nWhen player is in helicopter, this channel can be applied to eject only 1 cargo.\nIf player is in Art Vehicle (no weapon range limit vehicle, special design in CTI), this channel can switch the bullet-camera (require upgrade).\nIf player is civ and in 1st view mode, this channel can be applied to switch the displaying of markers."
-? (_vehicle call funcGetUnitTypeFromObject) in RadioTypesArtUnits: if (bTrackBullet) then {[] exec "\TZK_Scripts_4_0_4\Player\Action\BulletCamTurnOFF.sqs", hint "Bullet Camera turn off.", 9 setRadioMsg "BulletCam Turn ON"} Else {[] exec "Player\Action\BulletCamTurnON.sqs", 9 setRadioMsg "BulletCam Turn OFF"}, exit
 ? siPlayer == siCiv: btnMarker = !btnMarker; if !btnMarker then {call loadFile "\TZK_Scripts_4_0_4\Player\Marker\HideSpectator.sqf"} else {[boole_Mark_Player_Name] exec "\TZK_Scripts_4_0_4\Player\Marker\SpectatorMarker.sqs"}, exit
 
 _vehicle in TransportActivatedVehicles

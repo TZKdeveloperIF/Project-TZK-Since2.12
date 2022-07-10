@@ -316,12 +316,12 @@ orderTempDefs set [_type, ["Reclaim", [_param0, _param1, _param2, _param3, _para
 _type = _type + 1;
 
 orderTempOccupy = _type;
-OccupyTypeDefs = ["All Defense", "Mortar", "MG Ground", "MG Tower", "Howitzer", "Howitzer Art", "Gun Fort"];
+OccupyTypeDefs = ["All Defense", "Mortar", "MG Ground", "MG Tower", "Howitzer", "Gun Fort"];
 _param0 = [ "Waypoint", _coCnt, _coDispStr];
 _param1 = [ "Structure type", "count OccupyTypeDefs", "format [""%1"", OccupyTypeDefs select _this ]" ];
 _param2 = [ "Occupy Radius", "20", [50, 1] call _distByOffset];
 _param3 = [ "Duration", "20", "format [""%1min"", 1.5* (_this + 1)]" ];
-orderTempDefs set [_type, ["Occupy", [_param0, _param1, _param2, _param3], "\TZK_Scripts_4_0_5\Server\OrderTemp\Occupy.sqs"] ];
+orderTempDefs set [_type, ["Occupy", [_param0, _param1, _param2, _param3], localize TZK_ORDER_SERVER_OCCUPY] ];
 _type = _type + 1;
 
 orderTempBoard = _type;
@@ -462,7 +462,7 @@ _param1 = [ "Response Radius", "20", [100, 1] call _distByOffset];
 _param2 = [ "Unit Type", "count ArtilleryTypeDefs", "ArtilleryTypeDefs select _this" ];
 _param3 = [ "InitSpeed", "count ArtilleryMagazineSpeedList", "format [""%1"", ArtilleryMagazineSpeedList select _this ]" ];
 _param4 = [ "Curved", "2", "[{false},{true}] select _this" ];
-_script = "\TZK_Scripts_4_0_5\Server\OrderTemp\SwitchMagazine.sqs";
+_script = localize TZK_ORDER_SERVER_SWITCH_MAG;
 if bool_TZK_SEMod_Mode then {
 	ArtilleryMagazineSpeedList set [count ArtilleryMagazineSpeedList, "Recover TD"];
 	_param2 = [ "Unit Type", "count ([{SE TD}] + ArtilleryTypeDefs)", "([{SE TD}] + ArtilleryTypeDefs) select _this" ];

@@ -21,8 +21,8 @@ if !bool_TZK_199_Mode then {
 if bool_TZK_199_Mode then {call loadFile "Extra\199\UnitTypes_ACWA_Redefine.sqf"};
 
 
-{unitDefs select _x set [udCost, (unitDefs select _x select udCost)*4/5]; unitDefs select _x set [udModel, "M1Abrams"];} forEach [_tankHeavyW01, _m1a1artW,  _m1a1townW];
-{unitDefs select _x set [udCost, (unitDefs select _x select udCost)/2]; unitDefs select _x set [udModel, "T80"]} forEach [_tankHeavyE01, _t80artE,  _t80townE];
+{unitDefs select _x set [udCost, (unitDefs select _x select udCost)*4/5]; unitDefs select _x set [udModel, "M1Abrams"];} forEach [_tankHeavyW01, _m1a1townW];
+{unitDefs select _x set [udCost, (unitDefs select _x select udCost)/2]; unitDefs select _x set [udModel, "T80"]} forEach [_tankHeavyE01, _t80townE];
 unitDefs select _t80R set [udModel, "T80Res"];
 unitDefs select _tankLightW01 set [udModel, "M60"]; unitDefs select _tankLightW02 set [udFactoryType, -1]; 
 unitDefs select _tankLightE01 set [udFactoryType, -1]; unitDefs select _tankLightE02 set [udModel, "T72"];

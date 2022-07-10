@@ -29,9 +29,6 @@ if (!bool_TZK_SEMod_Mode && !_bShell) Then {
 if _local then {
 	if (typeOf _shell != ammoMine) then { [_vehicle, _shell, _limitWeaponRangeFactor] exec "\TZK_Scripts_4_0_4\Player\Effect\LimitWeaponRangeNew.sqs" };
 	_effectShell = _shell;
-	if (_limitWeaponRangeFactor <= 0 && _sizeOfShell > 0) then {
-		if (player == gunner _vehicle && (bTrackBullet || !bTrackBullet)) then {[_shell] exec "\TZK_Scripts_4_0_4\Player\TrackBullet.sqs"};
-	};
 } else {
 	if (boole_Global_Bullet_Tracer || boole_Global_Cannon_Tracer || boole_Global_Shell_Tracer) then 	{
 		_position = getPos _shell; _velocity = velocity _shell;

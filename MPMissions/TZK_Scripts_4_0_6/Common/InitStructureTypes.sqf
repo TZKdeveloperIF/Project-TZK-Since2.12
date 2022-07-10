@@ -139,7 +139,7 @@ _price = [4500, 9000] select PricingMode;
 _objects0 = [["M252Mortar_TZK_xj400", 0, [0,5,0.1]]];
 _objects1 = [["PP87_TZK_xj400", 0, [0,5,0.1]]];
 _image = ["\TZK_Objects\Texture\icon\iM252.paa","\TZK_CONFIG_4_0_5\Tex\PP87.paa"];
-structDefs set [_type, ["Mortar 81 (82) mm", _price, siBoth, _image, false, false, 6, 2, 10, _objects0, _objects1, [localize TZK_SERVER_INIT_STRUCT_DEF_TOWER], ["\TZK_Scripts_4_0_4\Player\InitStructureEventHandler.sqs", "\TZK_Scripts_4_0_4\Player\Marker\InitStructureMarker.sqs"]]  ];
+structDefs set [_type, ["Mortar 81 (82) mm", _price, siBoth, _image, false, false, 6, 2, 10, _objects0, _objects1, [localize TZK_SERVER_INIT_STRUCT_DEF_TOWER], [localize TZK_PLAYER_INIT_STRUCT_EH, "\TZK_Scripts_4_0_4\Player\Marker\InitStructureMarker.sqs"]]  ];
 structMarker set [_type, _mMortar];
 _mortar1 = _type;
 _type = _type + 1;
@@ -148,7 +148,7 @@ _price = [4500, 9000] select PricingMode;
 _objects0 = [["M252Mortar_TZK_xj400", 0, [0,5,0.1]]];
 _objects1 = [["M252Mortar_TZK_E_xj400", 0, [0,5,0.1]]];
 _image = ["\TZK_Objects\Texture\icon\iM252.paa","\TZK_Objects\Texture\icon\iM252.paa"];
-structDefs set [_type, ["Mortar (Non-Artillery)", _price, -1, _image, false, false, 6, 2, 10, _objects0, _objects1, [localize TZK_SERVER_INIT_STRUCT_DEF_TOWER], ["\TZK_Scripts_4_0_4\Player\InitStructureEventHandler.sqs", "\TZK_Scripts_4_0_4\Player\Marker\InitStructureMarker.sqs"]]  ];
+structDefs set [_type, ["Mortar (Non-Artillery)", _price, -1, _image, false, false, 6, 2, 10, _objects0, _objects1, [localize TZK_SERVER_INIT_STRUCT_DEF_TOWER], [localize TZK_PLAYER_INIT_STRUCT_EH, "\TZK_Scripts_4_0_4\Player\Marker\InitStructureMarker.sqs"]]  ];
 structMarker set [_type, _mMortar];
 _mortar_ArtNO = _type;
 _type = _type + 1;
@@ -157,7 +157,7 @@ _price = [1500, 3000] select PricingMode;
 _objects0 = [["m119_xj400", 0, []]];
 _objects1 = [];
 _image = ["\TZK_Texture_4_0_0\icon\iM119.paa","\TZK_Texture_4_0_0\icon\iM119.paa"];
-structDefs set [_type, ["M119 105mm Howitzer", _price, si0, _image, false, false, 15, 2, 10, _objects0, _objects1, [localize TZK_SERVER_INIT_STRUCT_DEF_TOWER], ["\TZK_Scripts_4_0_4\Player\InitStructureEventHandler.sqs", "\TZK_Scripts_4_0_4\Player\Marker\InitStructureMarker.sqs"]]  ];
+structDefs set [_type, ["M119 105mm Howitzer", _price, si0, _image, false, false, 15, 2, 10, _objects0, _objects1, [localize TZK_SERVER_INIT_STRUCT_DEF_TOWER], [localize TZK_PLAYER_INIT_STRUCT_EH, "\TZK_Scripts_4_0_4\Player\Marker\InitStructureMarker.sqs"]]  ];
 structMarker set [_type, _mHowitzer];
 _m119 = _type;
 _type = _type + 1;
@@ -166,27 +166,9 @@ _price = [2500, 5000] select PricingMode;
 _objects0 = [];
 _objects1 = [["D30_xj400", 0, []]];
 _image = ["\TZK_Texture_4_0_0\icon\iD30A.paa","\TZK_Texture_4_0_0\icon\iD30A.paa"];
-structDefs set [_type, ["D30-A Howitzer", _price, si1, _image, false, false, 15, 2, 10, _objects0, _objects1, [localize TZK_SERVER_INIT_STRUCT_DEF_TOWER], ["\TZK_Scripts_4_0_4\Player\InitStructureEventHandler.sqs", "\TZK_Scripts_4_0_4\Player\Marker\InitStructureMarker.sqs"]]  ];
+structDefs set [_type, ["D30-A Howitzer", _price, si1, _image, false, false, 15, 2, 10, _objects0, _objects1, [localize TZK_SERVER_INIT_STRUCT_DEF_TOWER], [localize TZK_PLAYER_INIT_STRUCT_EH, "\TZK_Scripts_4_0_4\Player\Marker\InitStructureMarker.sqs"]]  ];
 structMarker set [_type, _mHowitzer];
 _d30 = _type;
-_type = _type + 1;
-
-_price = [9000, 18000] select PricingMode;
-_objects0 = [["m119_xj400", 0, []]];
-_objects1 = [];
-_image = ["\TZK_Texture_4_0_0\icon\iM119.paa","\TZK_Texture_4_0_0\icon\iM119.paa"];
-structDefs set [_type, ["M119 Art", _price, si0, _image, false, false, 15, 2, 10, _objects0, _objects1, [localize TZK_SERVER_INIT_STRUCT_DEF_TOWER], ["\TZK_Scripts_4_0_4\Player\InitStructureEventHandler.sqs", "\TZK_Scripts_4_0_4\Player\Marker\InitStructureMarker.sqs"]]  ];
-structMarker set [_type, _mHowitzer];
-_m119Art = _type;
-_type = _type + 1;
-
-_price = [15000, 30000] select PricingMode;
-_objects0 = [];
-_objects1 = [["D30_xj400", 0, []]];
-_image = ["\TZK_Texture_4_0_0\icon\iD30A.paa","\TZK_Texture_4_0_0\icon\iD30A.paa"];
-structDefs set [_type, ["D30-A Art", _price, si1, _image, false, false, 15, 2, 10, _objects0, _objects1, [localize TZK_SERVER_INIT_STRUCT_DEF_TOWER], ["\TZK_Scripts_4_0_4\Player\InitStructureEventHandler.sqs", "\TZK_Scripts_4_0_4\Player\Marker\InitStructureMarker.sqs"]]  ];
-structMarker set [_type, _mHowitzer];
-_d30Art = _type;
 _type = _type + 1;
 
 _price = [500, 1000] select PricingMode;
@@ -376,7 +358,7 @@ structsCritcal = [stComm, stBarracks, stLight, stHeavy, stAir];
 structsDestroy = [stComm, stBarracks, stLight, stHeavy, stAir, stShip, stradarair, stradar, stSatRec];
 structsFactory = [stBarracks, stLight, stHeavy, stAir, stShip];
 
-structsDefence = [_mgFort, _mgTowerWood, _mgTowerConcrete, _mg, _gunf, _mortar1, _mortar_ArtNO, _m119, _d30, _m119Art, _d30Art,  _staticMG, _staticGL, _staticAT];
+structsDefence = [_mgFort, _mgTowerWood, _mgTowerConcrete, _mg, _gunf, _mortar1, _mortar_ArtNO, _m119, _d30, _staticMG, _staticGL, _staticAT];
 structsShelter = [_wall, _walls, _roof, _roofHigh, _tanktr, _artPlain, _tankt, _sandbag, stAmmoCrate, _heliH];
 structsOccupiableMortar = [_mortar1, _mortar_ArtNO];
 structsOccupiableArtilleryMortar = [_mortar1];
@@ -384,7 +366,6 @@ structsOccupiableMGGround = [_mg, _mgFort,  _staticMG, _staticGL, _staticAT];
 structsOccupiableMGTower = [_mgTowerWood, _mgTowerConcrete];
 structsOccupiableGunfort = [_gunf];
 structsOccupiableHowitzer = [_m119, _d30];
-structsOccupiableArtHowitzer = [_m119Art, _d30Art];
 
 // do server stuff only;
 if isServer then {
@@ -467,7 +448,7 @@ if bool_TZK_Yugo_Mode then {
 } else {
 	if bool_TZK_Vanilla_Mode then {
 		// Remove baracken/dvd_v2 structures.;
-		{structDefs select _x set [sdSides, -1]} forEach [_m119, _d30, _m119Art, _d30Art, _mgTowerConcrete, _gunf, _roof, _roofHigh, _tanktr, _artPlain];
+		{structDefs select _x set [sdSides, -1]} forEach [_m119, _d30, _mgTowerConcrete, _gunf, _roof, _roofHigh, _tanktr, _artPlain];
 		structDefs select _mgTowerWood set [sdImage, ["\TZK_Objects\Image\Struct\MGTower.jpg","\TZK_Objects\Image\Struct\MGTower.jpg"]];
 
 		{structDefs select stradar set [_x, [["ViewTower", 270, []]]  ]} forEach [sdObjects0, sdObjects1];

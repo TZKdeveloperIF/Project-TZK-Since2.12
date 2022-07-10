@@ -23,7 +23,7 @@ _price = [4500, 9000] select PricingMode
 _objects0 = [["M252Mortar_TZK_xj400", 0, [0,5,0.1]]];
 _objects1 = [["M252Mortar_TZK_E_xj400", 0, [0,5,0.1]]];
 _image = ["\TZK_Objects\Texture\icon\iM252.paa","\TZK_Objects\Texture\icon\iM252.paa"];
-structDefs set [_type, ["Mortar 81 mm", _price, siBoth, _image, false, false, 6, 2, 10, _objects0, _objects1, [localize TZK_SERVER_INIT_STRUCT_DEF_TOWER], ["\TZK_Scripts_4_0_4\Player\InitStructureEventHandler.sqs", "\TZK_Scripts_4_0_4\Player\Marker\InitStructureMarker.sqs"]]  ];
+structDefs set [_type, ["Mortar 81 mm", _price, siBoth, _image, false, false, 6, 2, 10, _objects0, _objects1, [localize TZK_SERVER_INIT_STRUCT_DEF_TOWER], [localize TZK_PLAYER_INIT_STRUCT_EH, "\TZK_Scripts_4_0_4\Player\Marker\InitStructureMarker.sqs"]]  ];
 structMarker set [_type, _mMortar];
 _mortar1 = _type;
 _type = _type + 1;
@@ -32,7 +32,7 @@ _price = [4500, 9000] select PricingMode;
 _objects0 = [["M252Mortar_TZK_xj400", 0, [0,5,0.1]]];
 _objects1 = [["M252Mortar_TZK_E_xj400", 0, [0,5,0.1]]];
 _image = ["\TZK_Objects\Texture\icon\iM252.paa","\TZK_Objects\Texture\icon\iM252.paa"];
-structDefs set [_type, ["Mortar (Non-Artillery)", _price, -1, _image, false, false, 6, 2, 10, _objects0, _objects1, [localize TZK_SERVER_INIT_STRUCT_DEF_TOWER], ["\TZK_Scripts_4_0_4\Player\InitStructureEventHandler.sqs", "\TZK_Scripts_4_0_4\Player\Marker\InitStructureMarker.sqs"]]  ];
+structDefs set [_type, ["Mortar (Non-Artillery)", _price, -1, _image, false, false, 6, 2, 10, _objects0, _objects1, [localize TZK_SERVER_INIT_STRUCT_DEF_TOWER], [localize TZK_PLAYER_INIT_STRUCT_EH, "\TZK_Scripts_4_0_4\Player\Marker\InitStructureMarker.sqs"]]  ];
 structMarker set [_type, _mMortar];
 _mortar_ArtNO = _type;
 _type = _type + 1;
@@ -218,7 +218,6 @@ structsOccupiableMGGround = [_mg, _mgFort, _mgPillbox, _AA, _AAM];
 structsOccupiableMGTower = [_mgTowerWood, _mgTowerConcrete];
 structsOccupiableGunfort = [_GunFort, _BB, _KONK];
 structsOccupiableHowitzer = [_M46];
-structsOccupiableArtHowitzer = [];
 structsDefence = structsOccupiableMortar + structsOccupiableMGGround + structsOccupiableMGTower + structsOccupiableGunfort + structsOccupiableHowitzer;
 
 if isServer Then {

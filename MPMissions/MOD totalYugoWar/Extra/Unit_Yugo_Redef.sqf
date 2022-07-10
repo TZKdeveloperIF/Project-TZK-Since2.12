@@ -233,10 +233,6 @@ unitDefs set [_type, ["M109 ADATS", 4000, _si, 60, "TYW8_DKMM_M109_ADATS", "\M10
 _ADATS = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["M1A1 Art", 14000, _si, 60, "M1Abrams", "iabrams", 2^_st, [3, _crewW], _mTank, ["\TZK_Scripts_4_0_4\Common\EquipM1A1Art.sqs"], []] ];
-_m1a1artW = _type;
-_type = _type + 1;
-
 unitDefs set [_type, ["MHQ West", _costSupportAPC, _si, 10, "TYW8_CBT_M577A3C", "im113_ambu", -1, [1, _crewW], _mMHQ, ["Common\InitMHQ.sqs"]] ];
 utMHQ0 = _type;
 _type = _type + 1;
@@ -592,10 +588,6 @@ _type = _type + 1;
 
 unitDefs set [_type, ["SA-13", 3000, _si, 60, "TYW8_MAF_SA_13", "\apcrus\sa13_pict", 2^_st, [2, _crewE], _mAA, []] ];
 _Sa13 = _type;
-_type = _type + 1;
-
-unitDefs set [_type, ["T80 Art", 10000, _si, 60, "T80", "it80", 2^_st, [3, _crewE], _mTank, ["\TZK_Scripts_4_0_4\Common\EquipT80Art.sqs"]] ];
-_t80artE = _type;
 _type = _type + 1;
 
 unitDefs set [_type, ["MHQ East", _costSupportAPC, _si, 10, "TYW8_BMPAmbul", "\apcrus\mtlb_pict", -1, [1, _crewE], _mMHQ, ["Common\InitMHQ.sqs"]] ];

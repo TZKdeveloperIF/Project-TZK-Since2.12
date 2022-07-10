@@ -20,10 +20,10 @@ _typeIndex = ([{SE TD}] + ArtilleryTypeDefs) select _typeIndex;   _bVeh = false;
 ? _typeIndex == "Howitzer Vehicle":		_bVeh = true; 		_orderTypes = typesHowitzer;
 ? _typeIndex == "Rocket Launcher":		_bVeh = true; 		_orderTypes = typesRocketLauncher;
 ? _typeIndex == "Mortar Structure":		_bStruct = true;	_orderTypes = structsOccupiableArtilleryMortar;
-? _typeIndex == "Howitzer Structure": 	_bStruct = true;	_orderTypes = structsOccupiableHowitzer + structsOccupiableArtHowitzer;
+? _typeIndex == "Howitzer Structure": 	_bStruct = true;	_orderTypes = structsOccupiableHowitzer;
 ? _typeIndex == "Vehicles":				_bVeh = true;		_orderTypes = _types_howitzer + typesRocketLauncher;
-? _typeIndex == "Structures":			_bStruct = true; 	_orderTypes = structsOccupiableArtilleryMortar + structsOccupiableHowitzer + structsOccupiableArtHowitzer;
-? _typeIndex == "ALL":		_bVeh = true; _bStruct = true; 	_orderTypes = _types_howitzer + typesRocketLauncher + structsOccupiableArtilleryMortar + structsOccupiableHowitzer + structsOccupiableArtHowitzer;
+? _typeIndex == "Structures":			_bStruct = true; 	_orderTypes = structsOccupiableArtilleryMortar + structsOccupiableHowitzer;
+? _typeIndex == "ALL":		_bVeh = true; _bStruct = true; 	_orderTypes = _types_howitzer + typesRocketLauncher + structsOccupiableArtilleryMortar + structsOccupiableHowitzer;
 
 ? ([getPos _unit, _pos] call funcDistH) > _radius && _pos select 0 > 0: exit
 _vehicle = vehicle _unit
@@ -48,7 +48,7 @@ _vt = _vehicle call funcGetStructTypeFromObject
 ? _vt == -1: exit
 ? !(_vt in _orderTypes): exit
 ? _vt in structsOccupiableArtilleryMortar: _magSeries = {M}; if (_speed > 120) then {_speed = 120}; if !_curved then {_speed = 200};
-? _vt in (structsOccupiableHowitzer + structsOccupiableArtHowitzer): _magSeries = {M}; if (_speed > 600) then {_speed = 712; if ("D30_xj400" == typeOf _vehicle) then {_speed = 690}};
+? _vt in (structsOccupiableHowitzer): _magSeries = {M}; if (_speed > 600) then {_speed = 712; if ("D30_xj400" == typeOf _vehicle) then {_speed = 690}};
 
 #StructureChecked
 ? format ["%1", _magSeries] == "scalar bool array string 0xfcffffef": exit

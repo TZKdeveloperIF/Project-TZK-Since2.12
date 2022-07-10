@@ -14,7 +14,7 @@ _unit = player; _si = siPlayer
 	_vehicle = vehicle _unit
 	? _vehicle in TownGroupVehicles : (vehicle _unit) setdamage 1; hint "Big brother is watching you."
 	_bool_Track = true; _bool_Impact = false; _type1 = _vehicle call funcGetUnitTypeFromObject; _type2 = _vehicle call funcGetStructTypeFromObject
-	? _type1 in (typesHowitzer + typesRocketLauncher + RadioTypesArtUnits) || _type2 in (structsOccupiableArtHowitzer + structsOccupiableHowitzer + structsOccupiableMortar): _bool_Track = false, _bool_Impact = true
+	? _type1 in (typesHowitzer + typesRocketLauncher) || _type2 in (structsOccupiableHowitzer + structsOccupiableMortar): _bool_Track = false, _bool_Impact = true
 	? _bool_Track: _ehTrack = _vehicle addEventHandler ["Fired", format[ {[_this select 0, nearestObject[_this select 0, _this select 4], %1] exec "\TZK_Scripts_4_0_4\Common\EH\Fired_TrackShell.sqs"}, _si]]
 	? _bool_Impact: _ehImpact = _vehicle addEventHandler ["Fired", {[_this select 0, nearestObject [_this select 0, _this select 4]] exec "Player\Effect\Fired_Artillery_Impact.sqs"}]
 	; _ehLimit = _vehicle addEventHandler ...
@@ -29,7 +29,6 @@ _unit = player; _si = siPlayer
 	? _bool_Track: _vehicle removeEventHandler ["Fired", _ehTrack]
 	? _bool_Impact: _vehicle removeEventHandler ["Fired", _ehImpact]
 	_vehicle = objNull
-	bTrackBullet = false
 	? !(alive _unit): goto "PlayerDead"
 	goto "PlayerOnFoot"
 

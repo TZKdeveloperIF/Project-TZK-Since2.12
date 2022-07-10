@@ -22,10 +22,10 @@ _typeIndex = ([{Soldier}, {Light Tank}, {Heavy Tank}] + ArtilleryTypeDefs) selec
 ? _typeIndex == "Howitzer Vehicle":		_bVeh = true; 		_orderTypes = _types_howitzer;
 ? _typeIndex == "Rocket Launcher":		_bVeh = true; 		_orderTypes = typesRocketLauncher;
 ? _typeIndex == "Mortar Structure":		_bStruct = true;	_orderTypes = structsOccupiableArtilleryMortar;
-? _typeIndex == "Howitzer Structure": 	_bStruct = true;	_orderTypes = structsOccupiableHowitzer + structsOccupiableArtHowitzer;
+? _typeIndex == "Howitzer Structure": 	_bStruct = true;	_orderTypes = structsOccupiableHowitzer;
 ? _typeIndex == "Vehicles":				_bVeh = true;		_orderTypes = typesLightTank + typesHeavyTank + _types_howitzer + typesRocketLauncher;
-? _typeIndex == "Structures":			_bStruct = true; 	_orderTypes = structsOccupiableArtilleryMortar + structsOccupiableHowitzer + structsOccupiableArtHowitzer;
-? _typeIndex == "ALL":		_bVeh = true; _bStruct = true; 	_orderTypes = typesInfantryAll + typesLightTank + typesHeavyTank + _types_howitzer + typesRocketLauncher + structsOccupiableArtilleryMortar + structsOccupiableHowitzer + structsOccupiableArtHowitzer;
+? _typeIndex == "Structures":			_bStruct = true; 	_orderTypes = structsOccupiableArtilleryMortar + structsOccupiableHowitzer;
+? _typeIndex == "ALL":		_bVeh = true; _bStruct = true; 	_orderTypes = typesInfantryAll + typesLightTank + typesHeavyTank + _types_howitzer + typesRocketLauncher + structsOccupiableArtilleryMortar + structsOccupiableHowitzer;
 
 _vehicle = vehicle _unit
 ? !local _vehicle: exit

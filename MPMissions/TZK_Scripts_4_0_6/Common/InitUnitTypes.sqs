@@ -338,12 +338,10 @@ unitDefs set [_type, ["M270 MLRS", 25000, _si, 60, "M270_M29064_xj400", "\TZK_Te
 _m270W = _type
 _type = _type + 1
 
-unitDefs set [_type, ["M1A1 Art", 25000, _si, 90, "M1A1_Art_xj400", "iabrams", 2^_st, [3, _crewW], _mTank,  []] ]
-_m1a1artW = _type
+unitDefs set [_type, ["(empty)", 0, _si, 90, "M1Abrams", "", -1, [3, _crewW], _mTank,  []] ]
 _type = _type + 1
 
-unitDefs set [_type, ["M109 Art", 25000, _si, 90, "M109A6G_Art_xj400", "\TZK_Texture_4_0_0\icon\iM109A6G.paa", -1, [3, _crewW], _mHowitzer,  []] ]
-_m109artW = _type
+unitDefs set [_type, ["(empty)", 0, _si, 90, "m1abrams", "", -1, [3, _crewW], _mHowitzer,  []] ]
 _type = _type + 1
 
 _price = [1.5*costRepairMHQ, 3.0*costRepairMHQ] select PricingMode
@@ -754,12 +752,10 @@ unitDefs set [_type, ["TOS-1 Buratino", 25000, _si, 60, "TOS1_TZK_xj400", "\TZK_
 _tos1E = _type
 _type = _type + 1
 
-unitDefs set [_type, ["T80 Art", 25000, _si, 90, "T80_Art_xj400", "it80", 2^_st, [3, _crewE], _mTank, []] ]
-_t80artE = _type
+unitDefs set [_type, ["(empty)", 0, _si, 90, "t80", "", -1, [3, _crewE], _mTank, []] ]
 _type = _type + 1
 
-unitDefs set [_type, ["2S19 Msta-S Art", 25000, _si, 90, "2S19M1_CoC_Art_xj200", "\TZK_Texture_4_0_0\icon\iPLZ05.paa", -1, [3, _crewE], _mHowitzer, []] ]
-_plz05artE = _type
+unitDefs set [_type, ["(empty)", 0, _si, 90, "t80", "", -1, [3, _crewE], _mHowitzer, []] ]
 _type = _type + 1
 
 _price = [1.5*costRepairMHQ, 3.0*costRepairMHQ] select PricingMode
@@ -1461,12 +1457,12 @@ AggressiveAircrafts set [ si1, [_mi17E30, _mi17EL, _mi17EMG2, _v80E, _mi24E, _v8
 AASystem = [ [_vulcanBaseW, _vulcanBaseW2], [_shilkaBaseE, _tunguskaBaseE] ]
 
 ; VEHICLES WITH UNLIMITED/SPECIAL WEAPON RANGE
-vUnlimitedRange = [_m1a1artW, _m109artW, _t80artE, _plz05artE, _vulcanW2, _vulcanBaseW2, _tunguskaE, _tunguskaBaseE]
+vUnlimitedRange = [_vulcanW2, _vulcanBaseW2, _tunguskaE, _tunguskaBaseE]
 vDoubledRange = [_vulcanW, _shilkaE, _m2a2aa, _bmp2aa, _vulcanTransp, _bmp2Cannon, _boatW3, _boatE3, _vulcanBaseW, _shilkaBaseE, _uh60W, _uh60supW, _uh60WMG2, _mi17E, _mi17supE, _mi17EMG2]
-? bool_TZK_SEMod_Mode: vDoubledRange = [_vulcanW, _shilkaE, _m2a2aa, _bmp2aa, _vulcanTransp, _bmp2Cannon, _boatW3, _boatE3, _vulcanBaseW, _shilkaBaseE, _patrolboatW, _patrolboatE]; vUnlimitedRange = [_m1a1artW, _m109artW, _t80artE, _plz05artE, _vulcanW2, _vulcanBaseW2, _tunguskaE, _tunguskaBaseE, _patrolshipW, _patrolshipE];
+? bool_TZK_SEMod_Mode: vDoubledRange = [_vulcanW, _shilkaE, _m2a2aa, _bmp2aa, _vulcanTransp, _bmp2Cannon, _boatW3, _boatE3, _vulcanBaseW, _shilkaBaseE, _patrolboatW, _patrolboatE]; vUnlimitedRange = [_vulcanW2, _vulcanBaseW2, _tunguskaE, _tunguskaBaseE, _patrolshipW, _patrolshipE];
 
 ; VEHICLES WITH LONGER REARM TIME
-vDoubleRearmTime = [_m1a1artW, _m109artW, _t80artE, _plz05artE, _ah1W, _ah1W2, _ah64W, _ah64W2, _tigerW, _tigerW2, _mi24E, _mi24E2, _mi24E3, _a10, _a10FFAR, _a10LGB8, _su25, _su25Rocket, _su25LGB8]
+vDoubleRearmTime = [_ah1W, _ah1W2, _ah64W, _ah64W2, _tigerW, _tigerW2, _mi24E, _mi24E2, _mi24E3, _a10, _a10FFAR, _a10LGB8, _su25, _su25Rocket, _su25LGB8]
 vTripleRearmTime = [_v80E, _v80E2, _a10BB, _su25BB, _B2, _su39]
 vSixfoldRearmTime = [_a10Tomahawk, _su25Raduga]
 vTenfoldRearmTime = [_m270W, _tos1E]
@@ -1517,7 +1513,6 @@ TownGroupVehicles = []
 
 ; Radio List Classification(Relating to How Actions Defined)
 RadioTypesCustomCarShips = [_hummerW2, _brdmE2, _hummerW3, _brdmE3, _boatCustomW, _boatCustomE]
-RadioTypesArtUnits = [_m1a1artW, _m109artW, _t80artE, _plz05artE]
 RadioTypesShips = TransportShipW + TransportShipE
 RadioTypesSupport = (typesSupportPlus select 0) + (typesSupportPlus select 1)
 RadioTypesTransportPlane = [ _c130supportW, _an72supportE, _c130W, _an72E ]

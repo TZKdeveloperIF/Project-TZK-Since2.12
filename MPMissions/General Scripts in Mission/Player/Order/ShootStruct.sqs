@@ -26,7 +26,6 @@ _vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Common\EH\Fire
 _distLimit = viewDistance; _hint = "Target is out of the structure's ability. Order aborted."
 ? upgMatrix select _si select upgLongWeaponRange == 2 || upgMatrix select _si select upgLongArtRange == 2: _hint = "Since TZK_4.0.3.02 Mission, a new upgrade item ""Artillery Long Range"" is added. One must upgrade both Weapon Range and Art Range if wish to extend the range of Artillery Module. Order aborted."
 ? upgMatrix select _si select upgLongWeaponRange == 2 && upgMatrix select _si select upgLongArtRange == 2: _distLimit = 2*viewDistance; _hint = "Target is outside 2xviewDistance. Order aborted."
-? _type in structsOccupiableArtHowitzer: _distLimit = 10000; _hint = "Target is very far. Probably can't hit it directly."
 ? _type in structsOccupiableMortar: _distLimit = viewDistance/13*8; _distLimit = _distLimit - _distLimit % 1; _hint = format ["Mortar structure is limited within %1 meters since TZK_4.0.4.07.", _distLimit]
 ? _unit distance _target > _distLimit: _unit groupChat _hint; goto "EOF"
 ? _unit distance _target < _distLimit && _unit distance _target > viewDistance: _unit groupChat "Target is far. Probably missing."
