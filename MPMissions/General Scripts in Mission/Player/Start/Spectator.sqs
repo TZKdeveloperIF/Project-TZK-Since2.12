@@ -24,7 +24,7 @@ camSpec camCommand "inertia on"
 	_posOld = getPos _unit
 	_dirOld = getDir _unit
 
-	[] exec localize TZK_DIALOG_SPEC
+	[] exec localize {TZK_DIALOG_SPEC}
 
 	_sensorOld = "EmptyDetector" camCreate _posOld; _sensorStart = "EmptyDetector" camCreate _posOld; _sensorFreeMove = "EmptyDetector" camCreate _posOld
 	[_unit, _sensorOld, _dirOld, _sensorStart, _sensorFreeMove] exec "Player\Loop\Spectator.sqs"

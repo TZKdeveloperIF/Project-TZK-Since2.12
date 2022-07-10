@@ -1,6 +1,6 @@
 _unit = player
 ; Init
-[_unit, siPlayer, 200] exec localize TZK_EVENT_ADD_KILLED_INF
+[_unit, siPlayer, 200] exec localize {TZK_EVENT_ADD_KILLED_INF}
 [_unit] exec "\TZK_Scripts_4_0_4\Player\AddPlayerActions.sqs"
 
 ; The AnimChanged-EH is available since 1.99
@@ -27,7 +27,7 @@ _timeConfuseScore = 20 + random 60
 	_mhq = mhq select siPlayer
 	_mcvs = MCV select siPlayer
 
-	? pvGameOver != -1: [] exec localize TZK_PLAYER_GAMEOVER_SECQUENCE; [] exec localize TZK_TRIGGER_GAME_END_COMMON; Exit
+	? pvGameOver != -1: [] exec localize {TZK_PLAYER_GAMEOVER_SECQUENCE}; [] exec localize {TZK_TRIGGER_GAME_END_COMMON}; Exit
 
 	? time > (timeLastPing + blockTime) && !bBlockedByClient: bBlockedByClient = true; 0 exec "Player\BlockByClient.sqs"
 	
@@ -85,11 +85,11 @@ _timeConfuseScore = 20 + random 60
 
 	@(alive player) || (pvGameOver != -1)
 
-	? pvGameOver != -1: [] exec localize TZK_PLAYER_GAMEOVER_SECQUENCE; [] exec localize TZK_TRIGGER_GAME_END_COMMON; exit
+	? pvGameOver != -1: [] exec localize {TZK_PLAYER_GAMEOVER_SECQUENCE}; [] exec localize {TZK_TRIGGER_GAME_END_COMMON}; exit
 
 	_unit = player
 	removeAllWeapons _unit
-	[_unit, siPlayer, 200] exec localize TZK_EVENT_ADD_KILLED_INF
+	[_unit, siPlayer, 200] exec localize {TZK_EVENT_ADD_KILLED_INF}
 
 	_money = groupMoneyMatrix select siPlayer select giPlayer
 

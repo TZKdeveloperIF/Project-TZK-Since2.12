@@ -5,7 +5,7 @@ _unit = player; _si = siPlayer
 ? (_unit != vehicle _unit): goto "PlayerEnteredVehicle"
 
 # PlayerOnFoot
-	[vehicle _unit] exec localize TZK_RADIO_ENTRANCE
+	[vehicle _unit] exec localize {TZK_RADIO_ENTRANCE}
 	? !isNull _t80 : [_t80, true] exec "\TZK_Scripts_4_0_4\Player\Effect\T80DrumDisplaySwitch.sqs"; _t80 = objNull
 	@ !(alive _unit) || (_unit != vehicle _unit)
 	? !(alive _unit): goto "PlayerDead"
@@ -19,7 +19,7 @@ _unit = player; _si = siPlayer
 	? _bool_Impact: _ehImpact = _vehicle addEventHandler ["Fired", {[_this select 0, nearestObject [_this select 0, _this select 4]] exec "Player\Effect\Fired_Artillery_Impact.sqs"}]
 	; _ehLimit = _vehicle addEventHandler ...
 	
-	[_vehicle] exec localize TZK_RADIO_ENTRANCE
+	[_vehicle] exec localize {TZK_RADIO_ENTRANCE}
 	? "T80_xj400" countType [_vehicle] > 0 || "T80Res_TZK_xj400" countType [_vehicle] > 0: _t80 = _vehicle; [_t80, false] exec "\TZK_Scripts_4_0_4\Player\Effect\T80DrumDisplaySwitch.sqs"
 	
 	@ !(alive _unit) || (_unit == vehicle _unit)

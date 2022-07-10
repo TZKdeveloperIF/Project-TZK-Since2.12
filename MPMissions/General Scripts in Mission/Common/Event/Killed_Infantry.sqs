@@ -22,4 +22,4 @@ goto "Delete"
 ? (_unit != _vehicle): _dir = random 360; _dist = 3; _pos = getPos _vehicle; _pos set [0, _dist*(sin _dir) + (_pos select 0)]; _pos set [1, _dist*(cos _dir) + (_pos select 1)]; _unit setPos _pos; _unit setVelocity [sin _dir, cos _dir, 0]
 
 _deleteDelay = deleteObjDelay
-[_unit, _deleteDelay] exec localize TZK_PATH_DELAY_DELETE_UNIT
+[_unit, _deleteDelay] exec localize {TZK_PATH_DELAY_DELETE_UNIT}

@@ -8,4 +8,4 @@ Radio006 setTriggerText " "; Radio006 setTriggerStatements ["this", "", ""];
 Radio007 setTriggerText " "; Radio007 setTriggerStatements ["this", "", ""];
 Radio008 setTriggerText " "; Radio008 setTriggerStatements ["this", "", ""];
 Radio009 setTriggerText " "; Radio009 setTriggerStatements ["this", "", ""];
-Radio000 setTriggerText "Refresh Radio List"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize TZK_RADIO_ENTRANCE}, ""];
+Radio000 setTriggerText "Refresh Radio List"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize {TZK_RADIO_ENTRANCE}}, ""];
