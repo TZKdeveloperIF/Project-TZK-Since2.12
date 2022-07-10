@@ -506,6 +506,7 @@ class CfgWeapons {
 	class Default {};
 
 	class LAWLauncher:Default {};
+	class RPGLauncher: LAWLauncher {};
 	class CarlGustavLauncher:LAWLauncher {};
 	class AT3Launcher: CarlGustavLauncher {};
 	class HellfireLauncher: AT3Launcher {};
@@ -1017,6 +1018,82 @@ class CfgWeapons {
 		magazines[] = {"9k32Launcher","9k32_I_TZK_xj400"};
 		picture = "\dtaext\equip\w\w_9k32Launcher.paa";
 	};
+	class LAW_TZK_xj400: LAWLauncher {
+		scopeWeapon = 2; scopeMagazine = 0;
+		magazines[] = {"LAWLauncher", "LAW_1slot_xj400"};
+	};
+	class LAW_1slot_xj400: LAWLauncher {
+		scopeWeapon = 0; scopeMagazine = 2;
+		magazineType = "1 * 256";
+	};
+	class RPG_TZK_xj400: RPGLauncher {
+		scopeWeapon = 2; scopeMagazine = 0;
+		magazines[] = {"RPGLauncher", "RPG_1slot_xj400"};
+	};
+	class RPG_1slot_xj400: RPGLauncher {
+		scopeWeapon = 0; scopeMagazine = 2;
+		magazineType = "1 * 256";
+	};
+	// Infantry gun
+	class MachineGun7_6Manual: MachineGun7_6 {};
+	class M60: MachineGun7_6Manual {};
+	class M60_TZK_xj400: M60 {
+		scopeMagazine = 0;
+		weaponType = "1";
+		magazines[] = {"M60"};
+	};
+	class PK: MachineGun7_6Manual {};
+	class PK_TZK_xj400: PK {
+		scopeMagazine = 0;
+		weaponType = "1";
+		magazines[] = {"PK"};
+	};
+	class M240_M145_xj400: MachineGun7_6Manual {};
+	class M240_Mag_xj400: M240_M145_xj400 {
+		class Fullauto {
+			ammo = "Bullet_M240_xj400";
+			multiplier = 1; burst = 1;
+			displayName = "7,62x51";
+			sound[] = {"\TZK_Sounds_4_0_0\LSR\M240Fire.wss",db7,1};
+			soundContinuous = 0;
+			reloadTime = 0.0705;
+			ffCount = 6;
+			ffMagnitude = 0.5;
+			ffFrequency = 11;
+			dispersion = 0.0033;
+			aiDispersionCoefX = 5; // dispersion used to simulate horizontal burst
+			maxLeadSpeed = 300;
+			recoil = "M249_750_Recoil_LSR";
+			autoFire = 1;
+			useAction = 0; useActionTitle = "";
+			aiRateOfFire = 0.075;
+			aiRateOfFireDistance = 1000;
+		};
+	};
+	class M60e4_xj400: MachineGun7_6Manual {
+		weaponType = "1";
+	};
+	class PKM_Mag_xj400: MachineGun7_6Manual {
+		dispersion = 0.0033;
+	};
+
+	class Riffle: MGun {};
+	class AK74: Riffle {};
+	class RPK74_Mag_xj400: AK74 {};
+	class RPK74_Pistol_Mag_xj400: RPK74_Mag_xj400 {
+		magazineType = "1 * 32";
+	};
+	class RPK74M_1P29_xj400: Riffle {
+		magazines[]={"RPK74_Mag_xj400", "RPK74_Pistol_Mag_xj400"};
+	};
+	class RPK74_SD_Mag_xj400: RPK74_Mag_xj400 {};
+	class RPK74_SD_Pistol_Mag_xj400: RPK74_SD_Mag_xj400 {
+		magazineType = "1 * 32";
+	};
+	class RPK74M_1P29_SD_xj400: RPK74M_1P29_xj400 {
+		magazines[]={"RPK74_SD_Mag_xj400", "RPK74_SD_Pistol_Mag_xj400"};
+	};
+
 	
 	class Gun106_htr_xj400: Gun120 {
 		displayName = "106mm HEAT";
