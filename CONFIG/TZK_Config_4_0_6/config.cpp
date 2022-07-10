@@ -2401,7 +2401,7 @@ class CfgVehicles {
 			, "tzkGun00", "tzkGun01", "tzkGun02", "tzkGun03"
 		};
 		class EventHandlers {
-			Init = "_vehicle = _this select 0; [_vehicle, {C}] exec {\TZK_Config_4_0_4\Scripts\texture\M109A6G.sqs}; [_vehicle] exec {\TZK_Objects\Scripts\InitEventHandlers\M109A6G.sqs}; [_vehicle, {C}] exec {\TZK_Config_4_0_6\Scripts\recoilByTex\m109a6.sqs}";
+			Init = "_vehicle = _this select 0; [_vehicle, {C}] exec localize {TZK_MULTITEX_STYLE_M109}; [_vehicle] exec {\TZK_Objects\Scripts\InitEventHandlers\M109A6G.sqs}; [_vehicle, {C}] exec localize {TZK_MULTITEX_GUNREC_M109}";
 		};
 	};
 	class PLZ05_VME_Base_xj400: T72_Base_xj400 {};
@@ -2420,7 +2420,7 @@ class CfgVehicles {
 			, "tzkGun00", "tzkGun01", "tzkGun02", "tzkGun03"
 		};
 		class EventHandlers {
-			Init = "_vehicle = _this select 0; [_vehicle] exec {\TZK_Objects\Scripts\InitEventHandlers\PLZ05.sqs}; [_vehicle, {\TZK_Texture_4_0_0\BWMOD\leo2A6\num\}, {n}, {0}] exec {\TZK_Objects\Scripts\texture\RSC_Numbers.sqs}; [_vehicle, {C}] exec {\TZK_Config_4_0_4\Scripts\texture\PLZ05.sqs}; [_vehicle, {C}] exec {\TZK_Config_4_0_6\Scripts\recoilByTex\plz05.sqs}";
+			Init = "_vehicle = _this select 0; [_vehicle] exec {\TZK_Objects\Scripts\InitEventHandlers\PLZ05.sqs}; [_vehicle, {\TZK_Texture_4_0_0\BWMOD\leo2A6\num\}, {n}, {0}] exec {\TZK_Objects\Scripts\texture\RSC_Numbers.sqs}; [_vehicle, {C}] exec localize {TZK_MULTITEX_STYLE_PLZ05}; [_vehicle, {C}] exec localize {TZK_MULTITEX_GUNREC_PLZ05}";
 		};
 	};
 	
@@ -2620,7 +2620,7 @@ class CfgVehicles {
 			};
 		};
 		class EventHandlers {
-			init = "_veh = _this select 0; _veh animate [{suspension}, 0.5]; {[_veh, _x] exec {\TZK_Config_4_0_6\Scripts\recoilByTex\grkpbv.sqs}} forEach [{L},{R}]";
+			init = "_veh = _this select 0; _veh animate [{suspension}, 0.5]; {[_veh, _x] exec localize {TZK_MULTITEX_GUNREC_GRKPBV}} forEach [{L},{R}]";
 		};
 
 		transportAmmo = 0;
@@ -2723,7 +2723,7 @@ class CfgVehicles {
 			};
 		};
 		class EventHandlers {
-			Init = "_veh = _this select 0; [_veh, {\TZK_Texture_4_0_0\BWMOD\leo2A6\num\}, {n}, {0}] exec {\TZK_Objects\Scripts\texture\RSC_Numbers.sqs}; _veh animate [{suspension}, 0.5]; _veh exec {\TZK_Config_4_0_6\Scripts\recoilByTex\plz89.sqs}";
+			Init = "_veh = _this select 0; [_veh, {\TZK_Texture_4_0_0\BWMOD\leo2A6\num\}, {n}, {0}] exec {\TZK_Objects\Scripts\texture\RSC_Numbers.sqs}; _veh animate [{suspension}, 0.5]; _veh exec localize {TZK_MULTITEX_GUNREC_PLZ89}";
 		};
 
 	};
@@ -2848,7 +2848,7 @@ class CfgVehicles {
 		
 		// EVENTS ##################################################
 		class EventHandlers {
-			Init = "_vehicle = _this select 0; [_vehicle, {D}] exec {\TZK_Config_4_0_6\Scripts\texture\AMX10RC.sqs}";
+			Init = "_vehicle = _this select 0; [_vehicle, {C}] exec {\TZK_Config_4_0_6\Scripts\texture\AMX10RC.sqs}";
 		};
 		
 		// ANIMATIONS ##############################################

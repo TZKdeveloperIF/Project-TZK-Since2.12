@@ -4,6 +4,8 @@
 _vehicle = _this select 0; _typeName = typeOf _vehicle; _scriptPath = "\TZK_Objects"; _scriptName = ""
 _type = -1
 ? count _this > 1: _type = _this select 1
+_this = 0
+; todo: use related container to handle variables
 
 ? "Tank_xj400" countType [_vehicle] > 0: goto "CheckTZKTank"
 ? "M113" countType [_vehicle] > 0: goto "CheckM113"
@@ -23,14 +25,16 @@ _type = -1
 	? "M1A1_xj400" countType [_vehicle] > 0: _scriptName = "M1A1", _scriptPath = "\TZK_Config_4_0_5", goto "END"
 	? "M1A2_INQ_xj400" countType [_vehicle] > 0: _scriptName = "M1A2", goto "END"
 	? "Leo2A6_xj400" countType [_vehicle] > 0: _scriptName = "Leo2A6", _scriptPath = "\TZK_Config_4_0_4", goto "END"
-	? "M109A6G_xj400" countType [_vehicle] > 0: _scriptName = "M109A6G", _scriptPath = "\TZK_Config_4_0_4", goto "END"
+	? "M109A6G_xj400" countType [_vehicle] > 0: _scriptName = "M109A6G", _scriptPath = "\TZK_Config_4_0_6", goto "END"
 	? "M270_M29064_xj400" countType [_vehicle] > 0: _scriptName = "M270", _scriptPath = "\TZK_Config_4_0_4", goto "END"
 	? "TOS1_TZK_xj400" countType [_vehicle] > 0: _scriptName = "TOS1", _scriptPath = "\TZK_Config_4_0_4", goto "END"
 	? "T80_xj400" countType [_vehicle] > 0 || "T80Res_TZK_xj400" countType [_vehicle] > 0: _scriptName = "T80", _scriptPath = "\TZK_Config_4_0_4", goto "END"
 	? "T90ms_xj400" countType [_vehicle] > 0: _scriptName = "T90ms", goto "END"
 	? "ZTZ99_xj400" countType [_vehicle] > 0: _scriptName = "ZTZ99", _scriptPath = "\TZK_Config_4_0_4", goto "END"
-	? "PLZ05_TZK_xj400" countType [_vehicle] > 0: _scriptName = "PLZ05", _scriptPath = "\TZK_Config_4_0_4", goto "END"
+	? "PLZ05_TZK_xj400" countType [_vehicle] > 0: _scriptName = "PLZ05", _scriptPath = "\TZK_Config_4_0_6", goto "END"
 	? "2S6_DKM_xj400" countType [_vehicle] > 0: _scriptName = "2S6", goto "END"
+
+	? "AMX10RC_OFrP_xj400" countType [_vehicle] > 0: _scriptName = "AMX10RC", _scriptPath = "\TZK_Config_4_0_6", goto "END"
 	
 	? "T55E_xj400" countType [_vehicle] > 0: _scriptName = "T55", _scriptPath = "\TZK_Config_4_0_4", goto "END"
 	? "T72_xj400" countType [_vehicle] > 0: _scriptName = "T72", _scriptPath = "\TZK_Config_4_0_4", goto "END"
