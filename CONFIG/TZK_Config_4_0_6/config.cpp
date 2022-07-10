@@ -1610,6 +1610,15 @@ class CfgVehicles {
 			minFov = 0.42;
 			maxFov = 0.85;
 		};
+		class UserActions {
+			class EquipM2: UA_EquipM2 {
+				displayName = "";
+				position = "";
+				radius = 0;
+				condition = "false";
+				statement = "";
+			};
+		};
 	};
 	class HMMWV_M134_xj400: HMMWV_M2wS_xj400 {
 		displayName = "HMMWV M134"; cost = 100000; threat[] = {1, 0.1, 0.9};
@@ -1643,6 +1652,15 @@ class CfgVehicles {
 			initFov = 0.7;
 			minFov = 0.42;
 			maxFov = 0.85;
+		};
+		class UserActions {
+			class EquipPKT : UA_EquipPKT {
+				displayName = "";
+				position = "";
+				radius = 0;
+				condition = "false";
+				statement = "";
+			};
 		};
 	};
 	class BRDM_GShG_xj400: BRDM_PK_xj400 {
