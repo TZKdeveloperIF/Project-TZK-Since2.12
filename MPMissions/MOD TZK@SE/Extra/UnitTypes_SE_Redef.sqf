@@ -13,14 +13,12 @@ _entry = unitDefs select _irNO_uh60; _entry set [udName, "UH60 (Tug)"]; _entry s
 _entry = unitDefs select _irNO_mi17; _entry set [udName, "Mi17 (Tug)"]; _entry set [udCost, [3000, 6000] select PricingMode]; _entry set [udModel, "Mi17_irNo_owp_TZK_xj400"];
 
 comment "Adjust TD (and Art TD) udModel here.";
-_entry = unitDefs select _m109artW; _entry set [udModel, "M109_CoC_Art_xj400"]; _entry set [udImage, "\TZK_Objects\Texture\Paladin.paa"];
 comment "    _entry = unitDefs select _tdW    ";
 comment "    _entry = unitDefs select _tdE    ";
-comment "    _entry = unitDefs select _plz05artE    ";
-types_SE_td = [_tdW, _tdE, _m109artW, _plz05artE];
+types_SE_td = [_tdW, _tdE];
 
 comment "Adjust the build-able vehicles.";
-"_entry = unitDefs select _x; _entry set [udFactoryType, 2^stHeavy]" forEach [_tankHyperW01, _tankHyperE01, _m109artW, _plz05artE, _warrior80W, _bmp3, _tdW, _tdE];
+"_entry = unitDefs select _x; _entry set [udFactoryType, 2^stHeavy]" forEach [_tankHyperW01, _tankHyperE01, _warrior80W, _bmp3, _tdW, _tdE];
 "_entry = unitDefs select _x; _entry set [udFactoryType, 2^stAir]" forEach [_Mi24E3, _mi26E, _ch47W];
 "_entry = unitDefs select _x; _entry set [udFactoryType, -1]" forEach [_tankHeavyW02, _m2a2d, _tankLightW02, _bmp2d, _tankLightE02, _tankHeavyE03, _uh60W, _mi17E, _m109W, _plz05E, _brdmE3];
 
@@ -87,7 +85,6 @@ _entry = unitDefs select _hummerWAA; _entry set [udCost, [2000, 4000] select Pri
 _entry = unitDefs select _m113; _entry set [udModel, "DVDUS_M113A3"];
 _entry = unitDefs select _tankLightW01; _entry set [udCost, [2500, 5000] select PricingMode]; _entry set [udModel, "SIG_M60A3"];
 _entry = unitDefs select _tankHeavyW01; _entry set [udModel, "DVDUS_M1A1"];
-_entry = unitDefs select _m1a1artW; _entry set [udModel, "DVDUS_M1A1"];
 _entry = unitDefs select utMCV0; _entry set [udModel, "DVDUS_M113A3_MCVW"];
 _entry = unitDefs select utMHQ0; _entry set [udModel, "DVDUS_M113A3_MHQW"];
 _entry = unitDefs select _c130W; _entry set [udName, "C-160 Transall"]; _entry set [udModel, "IkaR_C160_Transall"];
@@ -129,7 +126,6 @@ _entry = unitDefs select _bmp2aa; _entry set [udModel, "WW3_BMP2"];
 _entry = unitDefs select _tankLightE01; _entry set [udName, "T72"]; _entry set [udCost, [2500, 5000] select PricingMode]; _entry set [udModel, "ICP_T72B"]; _entry set [udImage, "it72"];
 _entry = unitDefs select _tankHeavyE01; _entry set [udName, "T80UM"];_entry set [udModel, "ICP_T80UM"];
 _entry = unitDefs select _tankHeavyE02; _entry set [udName, "T90"];_entry set [udModel, "T90"]; _entry set [udImage, "it80"]; 
-_entry = unitDefs select _T80artE; _entry set [udName, "T90 Art"];_entry set [udModel, "T90"];
 _entry = unitDefs select _v80E; _entry set [udName, "Ka52"]; _entry set [udCost, [22000, 50000] select PricingMode]; _entry set [udModel, "ka52"];
 _entry = unitDefs select _Mi24E; _entry set [udName, "Mi28"]; _entry set [udCost, [22000, 50000] select PricingMode]; _entry set [udModel, "HWK_MI28"]; _entry set [udImage, "\HWK_MI28\mi28a.paa"]; 
 _entry = unitDefs select _v80E2; _entry set [udName, "Ka52 AT"]; _entry set [udCost, [25000, 56000] select PricingMode]; _entry set [udModel, "ka52_AT"];

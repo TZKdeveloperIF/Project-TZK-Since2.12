@@ -18,7 +18,7 @@ goto "SwitchTheMags"
 _vt = _vehicle call funcGetStructTypeFromObject
 ? _vt == -1: exit
 ? _vt in structsOccupiableArtilleryMortar: _magSeries = {M}; if (_speed > 120) then {_speed = 120}; if !_curved then {_speed = 200}; _legalType = true
-? _vt in (structsOccupiableHowitzer + structsOccupiableArtHowitzer): _magSeries = {M}; if (_speed > 600) then {_speed = 712; if ("D30_xj400" == typeOf _vehicle) then {_speed = 690}}; _legalType = true
+? _vt in (structsOccupiableHowitzer): _magSeries = {M}; if (_speed > 600) then {_speed = 712; if ("D30_xj400" == typeOf _vehicle) then {_speed = 690}}; _legalType = true
 
 #SwitchTheMags
 ? !_legalType: exit

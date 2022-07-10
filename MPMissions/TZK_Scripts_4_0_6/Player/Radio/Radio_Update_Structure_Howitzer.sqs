@@ -1,5 +1,5 @@
 ; args: [vehicle, structure type]
-_vehicle = _this select 0; _vt = _this select 1; _isArt = _vt in structsOccupiableArtHowitzer; _bTrackBullet = bTrackBullet
+_vehicle = _this select 0; _vt = _this select 1; _this = 0
 
 _pages = 2; _page = Page_Radio_Artillery; _boole_PageNoChange = true
 _speed = [712, 690] select ("D30_xj400" == typeOf _vehicle)
@@ -12,7 +12,6 @@ Radio005 setTriggerText "Switch 180m/s Magazine"; Radio005 setTriggerStatements 
 Radio006 setTriggerText "Switch 300m/s Magazine"; Radio006 setTriggerStatements ["this", {[(vehicle player), 300, {M}] exec localize TZK_RADIO_FUNC_GRAD}, ""];
 Radio007 setTriggerText "Switch 400m/s Magazine"; Radio007 setTriggerStatements ["this", {[(vehicle player), 400, {M}] exec localize TZK_RADIO_FUNC_GRAD}, ""];
 
-? _isArt: if (bTrackBullet) then {Radio009 setTriggerText "BulletCam Turn OFF"; Radio009 setTriggerStatements ["this", {if (bTrackBullet) then {[] exec "\TZK_Scripts_4_0_4\Player\Action\BulletCamTurnOFF.sqs"}}, ""]} else {Radio009 setTriggerText "BulletCam Turn ON"; Radio009 setTriggerStatements ["this", {if !(bTrackBullet) then {[] exec "Player\Action\BulletCamTurnON.sqs"}}, ""]};
 Radio000 setTriggerText "Reset Vector Up"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize TZK_RADIO_FUNC_VECTORUP}, ""];
 
 	? Page_Radio_Artillery == 0 : goto "SkipInitPage2"
@@ -30,7 +29,6 @@ Radio000 setTriggerText "Reset Vector Up"; Radio000 setTriggerStatements ["this"
 #Refresh
 ~0.05
 ; In OFP/Arma can't compare booleans directly. Use (A && !B) || (!A && B) here, and use !_boolean to refresh.
-? _isArt && ((_bTrackBullet && !bTrackBullet) || (!_bTrackBullet && bTrackBullet)): if (bTrackBullet) then {Radio009 setTriggerText "BulletCam Turn OFF"; Radio009 setTriggerStatements ["this", {if (bTrackBullet) then {[] exec "\TZK_Scripts_4_0_4\Player\Action\BulletCamTurnOFF.sqs"}}, ""]} else {Radio009 setTriggerText "BulletCam Turn ON"; Radio009 setTriggerStatements ["this", {if !(bTrackBullet) then {[] exec "Player\Action\BulletCamTurnON.sqs"}}, ""]}; _bTrackBullet = bTrackBullet
 
 ; Get page and judge whether page changed.
 ? Page_Radio_Artillery >= _pages : Page_Radio_Artillery = Page_Radio_Artillery % _pages

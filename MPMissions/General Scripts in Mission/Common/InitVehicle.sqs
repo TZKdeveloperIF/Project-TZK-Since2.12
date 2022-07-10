@@ -22,7 +22,7 @@ _this exec "Common\InitVehicle_Stable.sqs"
 ? _type in (typesHowitzer + typesHeavyTank + typesLightTank): _vehicle addEventHandler ["Fired", {_this exec "\TZK_Objects\Scripts\gunrec.sqs"}]
 # SkipVanilla
 
-? _type in (typesHowitzer + typesRocketLauncher + RadioTypesArtUnits): _vehicle addEventHandler ["Fired", format [{ [_this select 0, nearestObject[_this select 0, _this select 4], %1 , true] exec "\TZK_Scripts_4_0_4\Common\EH\Fired_TrackShell.sqs" }, _si]]
+? _type in (typesHowitzer + typesRocketLauncher): _vehicle addEventHandler ["Fired", format [{ [_this select 0, nearestObject[_this select 0, _this select 4], %1 , true] exec "\TZK_Scripts_4_0_4\Common\EH\Fired_TrackShell.sqs" }, _si]]
 
 ; Hit Event
 ? "Air" countType [_vehicle] > 0: [_vehicle, _type] exec "Common\EH\AddAirHit.sqs"

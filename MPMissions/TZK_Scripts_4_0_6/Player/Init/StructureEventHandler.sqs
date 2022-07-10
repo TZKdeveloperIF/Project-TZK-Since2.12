@@ -5,9 +5,8 @@ _si = _this select 2
 _object = _this select 0
 
 ; Artillery Detecting 
-? !isServer && _type in (structsOccupiableArtHowitzer + structsOccupiableHowitzer + structsOccupiableMortar): _object addEventHandler ["Fired", format [{ [_this select 0, nearestObject[_this select 0, _this select 4], %1, true ] exec "\TZK_Scripts_4_0_4\Common\EH\Fired_TrackShell.sqs" }, _si]]
+? !isServer && _type in (structsOccupiableHowitzer + structsOccupiableMortar): _object addEventHandler ["Fired", format [{ [_this select 0, nearestObject[_this select 0, _this select 4], %1, true ] exec "\TZK_Scripts_4_0_4\Common\EH\Fired_TrackShell.sqs" }, _si]]
 
-? _type in structsOccupiableArtHowitzer: _object addEventHandler ["Fired",{[_this, 0] call funcFiredEffect}]; exit
 ? _type in structsOccupiableHowitzer + structsOccupiableMortar: _object addEventHandler ["Fired",{[_this, 1] call funcFiredEffect}]; exit
 
 _object addEventHandler ["Fired",{[_this, 1] call funcFiredEffect}]

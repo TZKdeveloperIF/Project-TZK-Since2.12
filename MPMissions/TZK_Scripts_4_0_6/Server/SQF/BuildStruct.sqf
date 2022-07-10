@@ -32,7 +32,7 @@ while "_i<_c" do {
 
 	_i=_i+1;
 };
-[_objects, _type] exec "\TZK_Scripts_4_0_4\Server\ResetStructureUp.sqs";
+[_objects, _type] exec localize TZK_SERVER_FUNC_RESET_UP;
 [_si, _type, _objects select 0] exec "\TZK_Scripts_4_0_4\Server\AddToStructMatrix.sqs";
 [_objects, _type] exec "\TZK_Scripts_4_0_4\Server\StructuresServerAdd.sqs";
 [_objects select 0] exec "\TZK_Scripts_4_0_4\Server\primStructsPlacedAdd.sqs";

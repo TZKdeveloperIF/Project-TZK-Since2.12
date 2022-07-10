@@ -37,14 +37,13 @@ _unit call busySet
 _typesOccupy = []; _crewnum = 0; 
 
 ; Using structsOccupiable arrays defined in InitStructureTypes.sqs
-; OccupyTypeDefs = ["All Defense", "Mortar", "MG Ground", "MG Tower", "Howitzer", "Howitzer Art", "Gun Fort"], defined in Init.sqs
+; OccupyTypeDefs = ["All Defense", "Mortar", "MG Ground", "MG Tower", "Howitzer", "Gun Fort"], defined in Init.sqs
 
 ? (OccupyTypeDefs select _typeIndex) == "All Defense":	_typesOccupy = structsDefence
 ? (OccupyTypeDefs select _typeIndex) == "Mortar":		_typesOccupy = structsOccupiableMortar
 ? (OccupyTypeDefs select _typeIndex) == "MG Ground":	_typesOccupy = structsOccupiableMGGround
 ? (OccupyTypeDefs select _typeIndex) == "MG Tower":		_typesOccupy = structsOccupiableMGTower
 ? (OccupyTypeDefs select _typeIndex) == "Howitzer":		_typesOccupy = structsOccupiableHowitzer
-? (OccupyTypeDefs select _typeIndex) == "Howitzer Art":	_typesOccupy = structsOccupiableArtHowitzer
 ? (OccupyTypeDefs select _typeIndex) == "Gun Fort":		_typesOccupy = structsOccupiableGunfort
 
 _groups = groupMatrix select _si

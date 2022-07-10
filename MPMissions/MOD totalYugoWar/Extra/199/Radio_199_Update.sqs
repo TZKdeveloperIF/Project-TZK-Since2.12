@@ -15,7 +15,6 @@ _vt = _vehicle call funcGetUnitTypeFromObject
 
 _booleStringTransport = "_vehicle in TransportActivatedVehicles";
 
-? _vt in RadioTypesArtUnits: 9 setRadioMsg (if (bTrackBullet) then {"BulletCam Turn OFF"} Else {"BulletCam Turn ON"}), 10 setRadioMsg "Refresh Radio List", exit
 ? _vt in RadioTypesShips: 3 setRadioMsg "To driver's seat", 4 setRadioMsg "To gunner's seat", 5 setRadioMsg "Attach/Detach Center Vehicle", 6 setRadioMsg "Attach/Detach Right Vehicle", 7 setRadioMsg "Attach/Detach Left Vehicle", 8 setRadioMsg "Eject All Cargo", 9 setRadioMsg "Eject One Cargo", 10 setRadioMsg (if (call _booleStringTransport) Then {"Transport Turn OFF"} Else {"Transport Turn ON"}), exit
 
 ; Helis all can attach and support Heli is special in drop ammo crate. Support Plane is more a transport plane. Support Ship nothing to specialize.
@@ -46,7 +45,7 @@ _booleAfterBurner = ("A10_Base_xj400" countType [_vehicle] > 0) || ("Su25_Base_x
 #CheckStructure
 _vt = _vehicle call funcGetStructTypeFromObject
 ? _vt == -1: goto "Abnormal"
-? _vt in (structsOccupiableHowitzer + structsOccupiableArtHowitzer): hint "This unit shouldn't appear in 1.99 mission. Please report bug to the author.", exit
+? _vt in (structsOccupiableHowitzer): hint "This unit shouldn't appear in 1.99 mission. Please report bug to the author.", exit
 ? _vt in structsOccupiableMortar: 3 setRadioMsg "Switch 080m/s Magazine", 4 setRadioMsg "Switch 120m/s Magazine", 5 setRadioMsg "Switch 180m/s Magazine", 10 setRadioMsg "Refresh Radio List", exit
 
 ; General Structures are allowed to reset the Vector Up.
