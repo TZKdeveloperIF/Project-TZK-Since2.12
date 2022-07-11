@@ -1,0 +1,12 @@
+; args: [upgrade]
+
+_index = _this select 0
+; _index2 = if (count _this > 1) Then {_this select 1} Else {0}
+_index2 = 0
+_this = 0
+
+; abandoned "upgrade switch" contents
+
+_value = _index + (count upgDefs)*_index2 + (count upgDefs)*(count upgDefs)*siPlayer + (count upgDefs)*(count upgDefs)*10*giPlayer
+
+pvUpgrade = _value; PublicVariable "pvUpgrade"
