@@ -213,7 +213,7 @@ goto "Update"
 	_cost = (upgDefs select _index) select 1
 	? (_money < _cost): hint "Not Enough Cash"; goto "Update"
 
-	[_index] exec "\TZK_Scripts_4_0_4\Player\Msg\sUpgrade.sqs"
+	[_index] exec localize {TZK_MSG_PLAYER_UPGRADE}
 	goto "Update"
 #UpgSwitch
 	_index = lbCurSel _idcUpgradeList
@@ -223,7 +223,7 @@ goto "Update"
 	_controlCenters = [siPlayer, stComm] call funcGetWorkingStructures
 	? ((count _controlCenters) == 0): hint "No Working Comm Center"; goto "Update"
 
-	[_index, _index] exec "\TZK_Scripts_4_0_4\Player\Msg\sUpgrade.sqs"
+	[_index, _index] exec localize {TZK_MSG_PLAYER_UPGRADE}
 	goto "Update"
 
 #BuyUnits
