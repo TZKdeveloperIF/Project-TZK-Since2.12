@@ -4,7 +4,7 @@
 		_gi = (groupMatrix select _si) find (_x);
 		_try = _try + 1;
 	};
-	[_si, _gi] exec "\TZK_Scripts_4_0_4\Server\Info\GroupIsAI.sqs";
+	[_si, _gi] exec localize {TZK_INFO_SERVER_CHECK_AI};
 } forEach (groupAiMatrix select _si)} forEach [si0, si1];
 {
 	_si = _x;

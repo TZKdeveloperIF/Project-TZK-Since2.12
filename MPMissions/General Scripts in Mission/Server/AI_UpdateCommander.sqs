@@ -117,7 +117,7 @@ _bTakeTown = false; _nDestroy = 0
 	_mhq = mhq select _si
 	? time > _timeCheckPlayerIncome: [_si] exec "\TZK_Scripts_4_0_5\Server\AICO_CheckPlayerIncome.sqs"; _timeCheckPlayerIncome = time + ([5*60, 60] select dev)
 	
-	? (alive _mhq) && (call format["pvWorkers%1 < 10", _si]) && _money >= costWorker: [_si] exec "\TZK_Scripts_4_0_4\Server\AddWorker.sqs"; _sleep = 0.5; goto "Update"
+	? (alive _mhq) && (call format["pvWorkers%1 < 10", _si]) && _money >= costWorker: [_si] exec localize {TZK_FUNC_SERVER_ADD_WORKER}; _sleep = 0.5; goto "Update"
 
 ;	? alive _mhq && time > _factorBuildTime*_timeNextPrim && _money > (_costNextPrim+1000): goto "BuildPrim"
 	? alive _mhq && time > _timeCheckBuildPrim: goto "CheckBuildPrim"
@@ -326,7 +326,7 @@ _c = count _units
   _posWatch = getPos _mhq
   _returnMove = "MHQReached"; goto "MoveToPos"
   #MHQReached
-  (_gi + GroupsNum*_si) exec "\TZK_Scripts_4_0_4\Server\RepairMHQ.sqs"
+  (_gi + GroupsNum*_si) exec localize {TZK_SERVER_FUNC_REPAIR_MHQ}
   goto "Update"
   
 #WaitUntilAlive
@@ -348,7 +348,7 @@ _c = count _units
 	? _money < costRespawn: goto "WaitMoney"
 
 	#Respawn
-	? costRespawn > 0: [_si, _gi, costRespawn] exec "\TZK_Scripts_4_0_4\Server\MoneySpend.sqs"
+	? costRespawn > 0: [_si, _gi, costRespawn] exec localize {TZK_MONEY_SERVER_SPEND}
 	_objectRespawn = objNull
 	call format["_objectRespawn = pvRespawnObjectAi%1", _si]
 	? !(alive _objectRespawn): _objectRespawn = [_objectRespawn, _si] call funcGetNearestRespawnObject

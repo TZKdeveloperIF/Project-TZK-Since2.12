@@ -9,7 +9,7 @@ _value = _value + TotalInfoTypes*_upg
 _value = _value + TotalInfoTypes*(count upgDefs)*_state
 _value = _value + TotalInfoTypes*(count upgDefs)*3*_si
 
-[_value] exec "\TZK_Scripts_4_0_4\Server\Info\SendInfoMsg.sqs"
+[_value] exec localize {TZK_MSG_SERVER_SEND_INFO}
 
 ? upgCCdistance == _upg && _state == 2 : CCdistMax set [_si, distMaxCCUpgraded]
 

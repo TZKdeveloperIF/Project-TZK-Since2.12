@@ -61,7 +61,7 @@ _unitsStarted = units _group
 
 	_money = (groupMoneyMatrix select _si) select _gi
 	_KeepMax = aisKeepDefs select (_setting select aisKeepMax)
-	? _money > _KeepMax : _tax = _money - _KeepMax; [_si, _gi, [_si, _gi] call loadFile "Util\GetSuperiorIdx.sqf", _tax] exec "\TZK_Scripts_4_0_4\Server\MoneyTransfer.sqs"; goto "Sleep"
+	? _money > _KeepMax : _tax = _money - _KeepMax; [_si, _gi, [_si, _gi] call loadFile "Util\GetSuperiorIdx.sqf", _tax] exec localize {TZK_MONEY_SERVER_TRANSFER}; goto "Sleep"
 	? (_setting select aisBuy) > 0: goto "CheckBuyUnit"
 
 	# Sleep
@@ -87,7 +87,7 @@ _unitsStarted = units _group
 	? _money < costRespawn : goto "WaitMoney"
 
 #Respawn
-	? costRespawn > 0 : [_si, _gi, costRespawn] exec "\TZK_Scripts_4_0_4\Server\MoneySpend.sqs"
+	? costRespawn > 0 : [_si, _gi, costRespawn] exec localize {TZK_MONEY_SERVER_SPEND}
 	_objectRespawn = objNull
 	
 	; read data from AI Setting

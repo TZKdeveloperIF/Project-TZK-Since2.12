@@ -27,13 +27,13 @@
 			};
 			if (_group in (groupAiMatrix select _si)) then {_bSkipGroupSide = true};
 			if !_bSkipGroupSide then {
-				[_si, _index, _startMoneyPlayer, 1] exec "\TZK_Scripts_4_0_4\Server\MoneyAdd.sqs";
+				[_si, _index, _startMoneyPlayer, 1] exec localize {TZK_MONEY_SERVER_ADD};
 				_startMoney = _startMoney - _startMoneyPlayer;
 			};
 
 			_moneyRequest set [_index, 0];
 			_index = _index + 1;
 		};
-		[_si, _commanderIndex, _startMoney, 1] exec "\TZK_Scripts_4_0_4\Server\MoneyAdd.sqs";
+		[_si, _commanderIndex, _startMoney, 1] exec localize {TZK_MONEY_SERVER_ADD};
 	}
 } forEach [si0, si1];

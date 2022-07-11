@@ -19,7 +19,7 @@ _cost = upgDefs select _upg select 1
 _money = groupMoneyMatrix select _si select _gi
 ? _money < _cost: exit
 
-[_si, _gi, _cost] exec "\TZK_Scripts_4_0_4\Server\MoneySpend.sqs"
+[_si, _gi, _cost] exec localize {TZK_MONEY_SERVER_SPEND}
 
 upgMatrix select _si set [_upg, 1]
 

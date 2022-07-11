@@ -46,9 +46,9 @@ _distMin = 100000
 		_rateRep = if (_type in structsDefence) Then {4} Else {1}; _rateCost = if (_type in structsDefence) Then {0.5} Else {0.1}
 		_cost = _rateCost*_cost*_rateRep*_repair; _cost = _cost - (_cost % 1)
 		? _object in primStructsPlaced: _cost = 0
-		? _cost >  groupMoneyMatrix select _si select (giCO select _si): [_si, _type] exec "\TZK_Scripts_4_0_4\Server\Info\NoMoneyForStructRepair.sqs"; mutexRepairStructure = false; goto "Update"
+		? _cost >  groupMoneyMatrix select _si select (giCO select _si): [_si, _type] exec localize {TZK_INFO_SERVER_NO_MONEY_REPAIR_STRUCT}; mutexRepairStructure = false; goto "Update"
 			
-			[_si, giCO select _si, _cost] exec "\TZK_Scripts_4_0_4\Server\MoneySpend.sqs"; _damage = _damage - _repair*_rateRep
+			[_si, giCO select _si, _cost] exec localize {TZK_MONEY_SERVER_SPEND}; _damage = _damage - _repair*_rateRep
 			(_repairInfoList select _index) set [0, _damage]
 			? _damage <= 0: [_object, _type, _si] exec "Server\ReplacePrimStruct.sqs"; _repairObjList set [_index, objNull]
 		
@@ -56,10 +56,10 @@ _distMin = 100000
 
 ? _group in (groupAiMatrix select _si) : goto "Update"
 
-? _gi != -1 && _type != -1 : [_damage, _si, _gi, _type] exec "\TZK_Scripts_4_0_4\Server\Info\StructRepaired.sqs"
+? _gi != -1 && _type != -1 : [_damage, _si, _gi, _type] exec localize {TZK_INFO_SERVER_STRUCT_REPAIRED}
 
 ; those negative _damage will be reset in Server\Info\StructRepaired.sqs
-; ? _damage == 0 && _type != -1 : [_si, _type] exec "\TZK_Scripts_4_0_4\Server\Info\StructReady.sqs"; [_object] exec "\TZK_Scripts_4_0_4\Server\primStructsPlacedRemove.sqs"
+; ? _damage == 0 && _type != -1 : [_si, _type] exec localize {TZK_INFO_SERVER_STRUCT_READY}; [_object] exec "\TZK_Scripts_4_0_4\Server\primStructsPlacedRemove.sqs"
 goto "Update"
 
 #CheckObjects

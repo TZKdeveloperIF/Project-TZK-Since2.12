@@ -17,7 +17,7 @@ _giKiller = ( groupMatrix select si1 ) find ( _groupKiller )
 goto "Delete"
 
 # CheckSendScore
-	? (_siKiller != _siUnit && _score > 0): [_score, scInfantry, _siKiller, _giKiller] exec "\TZK_Scripts_4_0_4\Common\SendScore.sqs"
+	? (_siKiller != _siUnit && _score > 0): [_score, scInfantry, _siKiller, _giKiller] exec localize {TZK_MSG_COMMON_SEND_SCORE}
 # Delete
 ? (_unit != _vehicle): _dir = random 360; _dist = 3; _pos = getPos _vehicle; _pos set [0, _dist*(sin _dir) + (_pos select 0)]; _pos set [1, _dist*(cos _dir) + (_pos select 1)]; _unit setPos _pos; _unit setVelocity [sin _dir, cos _dir, 0]
 

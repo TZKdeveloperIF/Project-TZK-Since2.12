@@ -94,12 +94,12 @@ mutexFacQueues = false
 		moneySpent set [_si, _cost + (moneySpent select _si)]
 	mutexEditMoneyMatrix = false
 	
-	[_type, _si, _giBuyer, _giJoin] exec "\TZK_Scripts_4_0_4\Server\Info\UnitBuilding.sqs"
+	[_type, _si, _giBuyer, _giJoin] exec localize {TZK_INFO_SERVER_UNIT_BUILDING}
 
 	_timeBuilt = time + ([_buildTime, 5] select dev)
 	@ time > _timeBuilt || _qid in (qidCancel select _si)
 
-	? _qid in (qidCancel select _si): [_si, _giBuyer, -_cost, 0] exec "\TZK_Scripts_4_0_4\Server\MoneySpend.sqs"; goto "UnitCanceled"
+	? _qid in (qidCancel select _si): [_si, _giBuyer, -_cost, 0] exec localize {TZK_MONEY_SERVER_SPEND}; goto "UnitCanceled"
 
 	[_qid, _si, 0] exec "\TZK_Scripts_4_0_4\Server\SendQueueRem.sqs"
 
@@ -125,12 +125,12 @@ mutexFacQueues = false
 	goto "Wait"
 
 #GroupFull
-	[_type, _si, _giBuyer, _giJoin] exec "\TZK_Scripts_4_0_4\Server\Info\GroupFull.sqs"
+	[_type, _si, _giBuyer, _giJoin] exec "\TZK_Scripts_4_0_6\Server\Info\GroupFull.sqs"
 	[_qid, _si, 0] exec "\TZK_Scripts_4_0_4\Server\SendQueueRem.sqs"
 	goto "UnitNotBuilt"
 
 #NoMoney
-	[_type, _si, _giBuyer, _giJoin] exec "\TZK_Scripts_4_0_4\Server\Info\NoMoneyUnit.sqs"
+	[_type, _si, _giBuyer, _giJoin] exec "\TZK_Scripts_4_0_6\Server\Info\NoMoneyUnit.sqs"
 	[_qid, _si, 0] exec "\TZK_Scripts_4_0_4\Server\SendQueueRem.sqs"
 	goto "UnitNotBuilt"
 
