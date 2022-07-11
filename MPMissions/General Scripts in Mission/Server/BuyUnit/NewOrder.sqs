@@ -21,7 +21,7 @@ mutexBuildingQueue = true
 
 _unitsInProgress = groupUnitsBuildingMatrix select _si select _giJoin
 _size = count units (groupMatrix select _si select _giJoin) + _unitsInProgress
-? (_unitsToBuild + _size > maxGroupSize): [_type, _si, _giBuyer, _giJoin] exec "\TZK_Scripts_4_0_4\Server\Info\GroupFull.sqs"; goto "Unlock"
+? (_unitsToBuild + _size > maxGroupSize): [_type, _si, _giBuyer, _giJoin] exec "\TZK_Scripts_4_0_6\Server\Info\GroupFull.sqs"; goto "Unlock"
 
 ? isNull _factory || !alive _factory: player globalchat "TODO: send factory destroyed message"; goto "Unlock"
 

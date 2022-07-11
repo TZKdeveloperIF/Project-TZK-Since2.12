@@ -1,0 +1,31 @@
+; args: [group, townIndex, side]
+
+_group = _this select 0; _ti = _this select 1, _side = _this select 2
+
+_distSpawn = viewDistance + 1500
+_cLast = 0
+
+_si = -1
+? _side == sides select si0 : _si = si0
+? _side == sides select si1 : _si = si1
+
+timeReinforceTown = 45
+
+#Init
+_flag = (towns select _ti) select tdFlag
+_posFlag = getPos _flag
+? _si == -1 : format["ERROR: _si == -1 set in Town Group scripts for %1", (towns select _ti) select tdName] call fDebugLog; exit
+_siLast = (towns select _ti) select tdSide
+? isNull _group : format["ERROR: _group is NULL at init for %1 town group in '%1'", sideNames select _si, (towns select _ti) select tdName] call fDebugLog; exit
+
+
+_timeReinforce = time + timeReinforceTown
+_bCheckSupport = true
+_support = objNull
+_hibernate = false
+
+@(((upgMatrix select _si) select upgTownGroupb ) == 2)
+{deleteVehicle _x} forEach units _group
+
+? bool_TZK_SEMod_Mode: [_group, _ti, _si, _cLast, _siLast, _timeReinforce, _bCheckSupport, _support, _hibernate] exec "Extra\TownGroup4.sqs", exit
+[_group, _ti, _si, _cLast, _siLast, _timeReinforce, _bCheckSupport, _support, _hibernate] exec localize {TZK_TOWN_GROUP_LOOP_4}

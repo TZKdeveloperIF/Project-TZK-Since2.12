@@ -39,6 +39,6 @@ while "_i<_c" do {
 { [_type, _si, _objects] exec _x } foreach (_desc select sdScriptsServer);
 [groupMatrix select _si select _gi, _type, _objects] exec "\TZK_Scripts_4_0_4\Server\InsertIntoUndoList.sqs";
 { _group = _x; { _group reveal _x } foreach _objects } foreach (groupAiMatrix select _si);
-[_si, _gi, _desc select sdCost] exec "\TZK_Scripts_4_0_4\Server\MoneySpend.sqs";
+[_si, _gi, _desc select sdCost] exec localize {TZK_MONEY_SERVER_SPEND};
 if (_type in structsDestroy) then {(_objects select 0) exec "\TZK_Scripts_4_0_4\Server\StructDestoryAdd.sqs"};
 _objects

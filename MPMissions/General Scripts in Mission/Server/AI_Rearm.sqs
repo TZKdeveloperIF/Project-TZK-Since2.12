@@ -67,5 +67,5 @@ _insufficientFond = {_this > _money && (!_bUseCommMoney || _this > _moneyComm)}
 	goto "RearmEnd"
 
 #RearmEnd
-	? _cost > 0 && _cost <= _money: [_si, _gi, _cost] exec "\TZK_Scripts_4_0_4\Server\MoneySpend.sqs", exit
-	? _cost > 0: [_si, giCO select _si, _cost] exec "\TZK_Scripts_4_0_4\Server\MoneySpend.sqs", exit
+	? _cost > 0 && _cost <= _money: [_si, _gi, _cost] exec localize {TZK_MONEY_SERVER_SPEND}, exit
+	? _cost > 0: [_si, giCO select _si, _cost] exec localize {TZK_MONEY_SERVER_SPEND}, exit

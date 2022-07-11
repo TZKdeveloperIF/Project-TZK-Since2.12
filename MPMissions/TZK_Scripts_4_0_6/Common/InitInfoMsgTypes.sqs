@@ -113,4 +113,6 @@ mtMaterialEffect = _type
 infoDefs set [_type, ["MaterialEffect.sqs", "\TZK_Scripts_4_0_4\Player\Info\"] ]
 _type = _type + 1
 
+call preprocessFile "impl\InfoMsg.sqf"
+
 ? (_type >= TotalInfoTypes): format["ERROR: Exceeded maximum number (%1 > %2) of Info message types", _type, TotalInfoTypes] call fDebugLog
