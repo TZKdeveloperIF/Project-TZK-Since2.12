@@ -3156,6 +3156,40 @@ class CfgVehicles {
 		driverIsGunner = 1;
 	};
 
+	class BigShip: Ship {};
+	class LST_Base_xj400: BigShip {
+		scope = private; vehicleClass = "TZK_Units_400";
+		
+		fuelCapacity = 700;
+		model = "\TZK_Model_4_0_6\newport.p3d";
+		picture = "\t406\ui\iLst.paa";
+		maxSpeed = 50;
+		transportSoldier = 50 + 15;
+		transportAmmo = 10000000;
+		transportVehiclesCount = 15;
+		cost = 200000000;
+		armor = 1000;
+		weapons[] = {};
+		magazines[] = {};
+		magazines[] = {"Heat120"}; // having magazines can make AI attack it
+		threat[] = {0.6, 0.9, 0.2};
+		class TransportMagazines {};
+	};
+	class LST_W_xj400: LST_Base_xj400 {
+		scope = protected;
+		crew = "SoldierWB";
+		side = 1;
+		displayName = "Tank Landing Ship";
+		accuracy = 0.5;
+	};
+	class LST_E_xj400: LST_Base_xj400 {
+		scope = protected;
+		crew = "SoldierEB";
+		side = 0;
+		displayName = "Landing Craft Tank";
+		accuracy = 0.5;
+	};
+
 	class Man: Land {};
 	class Soldier: Man {};
 	class SoldierWB: Soldier {};
@@ -3231,6 +3265,8 @@ class CfgVehicles {
 	class SoldierEMedic_xj406: SoldierEMedic_xj400 { attendant = 0; };
 	class Logic: All {};
 	class Logic_xj400: Logic {};
+	class Logic_PlaceHolder_xj400: Logic_xj400 {};
+
 	class Logic_Mine_xj400: Logic_xj400 {
 		model = "m19_at_proxy.p3d";
 		// EventHandler. Init. Scripts shall be placed in missions.
