@@ -1,5 +1,5 @@
 ; args: none
-@!mutexDlg
+@ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
 _dlg = createDialog "CommandAIDialog"
 mutexDlg = false
@@ -38,7 +38,7 @@ _idcParamLabels = [_idcPar0Label, _idcPar1Label, _idcPar2Label]
 _idcParams = [_idcPar0, _idcPar1, _idcPar2]
 { ctrlShow [_x, false] } foreach _idcParamLabels, { ctrlShow [_x, false] } foreach _idcParams
 
-call preprocessFile "Player\Dialog\AiGrpOrder_Init.sqf"
+call preprocessFile localize {TZK_DIALOG_AI_GRP_ORDER_INIT}
 
 #Update
 ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
@@ -192,5 +192,5 @@ ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bo
 # TemporaryOrder
 	closeDialog 0
 	; ~0.1
-	[] exec "Player\Dialog\AiConcurrentOrders.sqs"
+	[] exec localize {TZK_DIALOG_AI_CONCURRENT}
 	Exit

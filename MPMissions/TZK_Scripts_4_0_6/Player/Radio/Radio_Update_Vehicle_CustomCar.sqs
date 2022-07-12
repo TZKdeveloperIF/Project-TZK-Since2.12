@@ -17,8 +17,8 @@ Radio005 setTriggerText " "; Radio005 setTriggerStatements ["this", "", ""];
 Radio006 setTriggerText " "; Radio006 setTriggerStatements ["this", "", ""];
 Radio007 setTriggerText " "; Radio007 setTriggerStatements ["this", "", ""];
 Radio008 setTriggerText "Eject All Cargo"; Radio008 setTriggerStatements ["this", {[vehicle player, siPlayer] exec "\TZK_Scripts_4_0_4\Player\Action\EjectAllCargo.sqs"}, ""];
-Radio009 setTriggerText "Eject One Cargo"; Radio009 setTriggerStatements ["this", {[vehicle player, siPlayer] exec "\TZK_Scripts_4_0_4\Player\Action\EjectOneCargo.sqs"}, ""];
-if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", {[vehicle player] exec "\TZK_Scripts_4_0_4\Common\SendTransportTurnOff.sqs"}, ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", {[vehicle player] exec "\TZK_Scripts_4_0_4\Common\SendTransportTurnOn.sqs"}, ""];	};
+Radio009 setTriggerText "Eject One Cargo"; Radio009 setTriggerStatements ["this", {[vehicle player, siPlayer] exec localize {TZK_FUNC_EJECT_ONE_CARGO}}, ""];
+if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNOFF}}, ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNON}}, ""];	};
 
 ? !(typeOf _vehicle in ["HMMMV_TOW2A_xj400","BRDM2_MNF_xj400"]) : goto "SkipInitCustomCar"
 
@@ -46,7 +46,7 @@ Radio001 setTriggerText "Next Page..."; Radio001 setTriggerStatements ["this", "
 ; In OFP/Arma can't compare booleans directly. Use (A && !B) || (!A && B) here, and use !_boolean to refresh.
 
 _booleRefreshTransport = (_booleTransport && !(call _booleStringTransport)) || (!_booleTransport && (call _booleStringTransport))
-? _booleRefreshTransport : if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", {[vehicle player] exec "\TZK_Scripts_4_0_4\Common\SendTransportTurnOff.sqs"}, ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", {[vehicle player] exec "\TZK_Scripts_4_0_4\Common\SendTransportTurnOn.sqs"}, ""];	}
+? _booleRefreshTransport : if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNOFF}}, ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNON}}, ""];	}
 
 _booleRefreshSwitchDriver = (_booleSwitchDriver && !(call _booleStringSwitchDriver)) || (!_booleSwitchDriver && (call _booleStringSwitchDriver))
 _booleRefreshSwitchGunner = (_booleSwitchGunner && !(call _booleStringSwitchGunner)) || (!_booleSwitchGunner && (call _booleStringSwitchGunner))

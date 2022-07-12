@@ -64,7 +64,7 @@ _param0 = ["START", countWPPlayer, {format[{wp%1}, _this]}, 0];
 _param1 = ["DESTINATION", countWPPlayer, {format[{wp%1}, _this]}, 1];
 _param2 = ["Eject distance", 5, {format[{%1m}, 200*(_this+1)]}, 0];
 aiOrders1 set [count aiOrders1, [
-	"Transport Duty", [_param0, _param1, _param2], false, "\TZK_Scripts_4_0_4\Player\Order\TransportDuty.sqs",
+	"Transport Duty", [_param0, _param1, _param2], false, "\TZK_Scripts_4_0_6\Player\Order\TransportDuty.sqs",
 	"Drivers of transport vehicles will pickup infantry at START wp and eject cargo at DESTINATION wp, passing 
 	all intermediate defined waypoints."
 ]];
