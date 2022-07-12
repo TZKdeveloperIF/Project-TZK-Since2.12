@@ -2,7 +2,7 @@
 
 mutexVehicleArray = false; pv_TZK_Veh_Obj = objNull, pv_TZK_Veh_Info = -1
 ; initial variables via sqf script aiming to have better readability
-call preprocessFile "Common\InitCustomWeaponVehicleInfo.sqf"
+call preprocessFile localize {TZK_CWV_INIT}
 
 ; format of PlanesInfo: [price index, need rearm time: bool]
 PlaneUnits = []; PlanesInfo = []
@@ -214,3 +214,5 @@ HeliMags set [_type, "Mag_LGB_2_xj400"]
 ?  bool_TZK_199_Mode: HeliMagInfo set [_type, ["LGBLauncher_xj400", "LGB (x2)", siBoth, 7000, 600, 2, 15, 1] ]
 ? !bool_TZK_199_Mode: HeliMagInfo set [_type, ["LGBLauncher_xj400", "LGB (x2)", siBoth, 7000, 250, 1, 7.5, 1] ]
 _type = _type + 1
+
+call preprocessFile "impl\Cwv.sqf"
