@@ -26,10 +26,10 @@ Radio000 setTriggerText " "; Radio000 setTriggerStatements ["this", "", ""];
 _transportGunship = call (typeOf _vehicle GetVehicleParam "transportSoldier") > 0
 ? !_transportGunship : goto "SkipTransportInit"
 _booleStringTransport = "_vehicle in TransportActivatedVehicles"; _booleTransport = call _booleStringTransport
-Radio007 setTriggerText "Eject AI Units"; Radio007 setTriggerStatements ["this", {[vehicle player, siPlayer] exec "Player\Action\EjectAIUnits.sqs"}, ""];
-Radio008 setTriggerText "Eject All Cargo"; Radio008 setTriggerStatements ["this", {[vehicle player, siPlayer] exec "Player\Action\EjectAllCargo.sqs"}, ""];
-Radio009 setTriggerText "Eject One Cargo"; Radio009 setTriggerStatements ["this", {[vehicle player, siPlayer] exec "Player\Action\EjectOneCargo.sqs"}, ""];
-if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", {[vehicle player] exec "Common\SendTransportTurnOff.sqs"}, ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", {[vehicle player] exec "Common\SendTransportTurnOn.sqs"}, ""];	};
+Radio007 setTriggerText "Eject AI Units"; Radio007 setTriggerStatements ["this", {[vehicle player, siPlayer] exec localize {TZK_FUNC_EJECT_QUICKLY}}, ""];
+Radio008 setTriggerText "Eject All Cargo"; Radio008 setTriggerStatements ["this", {[vehicle player, siPlayer] exec localize {TZK_FUNC_EJECT_ALL_CARGO}}, ""];
+Radio009 setTriggerText "Eject One Cargo"; Radio009 setTriggerStatements ["this", {[vehicle player, siPlayer] exec localize {TZK_FUNC_EJECT_ONE_CARGO}}, ""];
+if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNOFF}}, ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNON}}, ""];	};
 #SkipTransportInit
 
 ~1
@@ -50,7 +50,7 @@ _booleRefreshSwitchGunner = (_booleSwitchGunner && !(call _booleStringSwitchGunn
 
 ? !_transportGunship : goto "SkipTransportRefresh"
 _booleRefreshTransport = (_booleTransport && !(call _booleStringTransport)) || (!_booleTransport && (call _booleStringTransport))
-? _booleRefreshTransport : if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", {[vehicle player] exec "Common\SendTransportTurnOff.sqs"}, ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", {[vehicle player] exec "Common\SendTransportTurnOn.sqs"}, ""];	}
+? _booleRefreshTransport : if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNOFF}}, ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNON}}, ""];	}
 ? _booleRefreshTransport : _booleTransport = call _booleStringTransport
 #SkipTransportRefresh
 

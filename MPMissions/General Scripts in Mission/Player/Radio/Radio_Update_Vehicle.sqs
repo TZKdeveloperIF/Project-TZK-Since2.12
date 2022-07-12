@@ -20,10 +20,10 @@ _vt = _vehicle call funcGetUnitTypeFromObject
 ? _vt in typesHowitzer: [_vehicle] exec "\TZK_Scripts_4_0_6\Player\Radio\Radio_Update_Vehicle_Howitzer.sqs"; exit
 ? _vt in typesRocketLauncher: [_vehicle] exec "\TZK_Scripts_4_0_6\Player\Radio\Radio_Update_Vehicle_TOS1.sqs"; exit
 
-? _vt in RadioTypesShips: [_vehicle] exec "\TZK_Scripts_4_0_5\Player\Radio\Radio_Update_Vehicle_Ship.sqs"; exit
+? _vt in RadioTypesShips: [_vehicle] exec "\TZK_Scripts_4_0_6\Player\Radio\Radio_Update_Vehicle_Ship.sqs"; exit
 
 ; Helis all can attach and support Heli is special in drop ammo crate. Support Plane is more a transport plane. Support Ship nothing to specialize.
-? _vt in (RadioTypesSupport + [utMCVW, utMCVE, utMHQ0, utMHQ1]): if ("Land" countType [_vehicle] > 0) then {[_vehicle] exec "\TZK_Scripts_4_0_5\Player\Radio\Radio_Update_Vehicle_SupportLand.sqs"; exit}
+? _vt in (RadioTypesSupport + [utMCVW, utMCVE, utMHQ0, utMHQ1]): if ("Land" countType [_vehicle] > 0) then {[_vehicle] exec "\TZK_Scripts_4_0_6\Player\Radio\Radio_Update_Vehicle_SupportLand.sqs"; exit}
 
 ; Transport Helis and Planes are similar. Support Heli is special in drop ammo crate.
 ? _vt in RadioTypesTransportPlane + RadioTypesTransportHeli: [_vehicle] exec "\TZK_Scripts_4_0_6\Player\Radio\Radio_Update_Vehicle_TransportAir.sqs"; exit

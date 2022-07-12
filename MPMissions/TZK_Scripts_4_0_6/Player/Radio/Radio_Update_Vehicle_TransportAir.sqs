@@ -18,10 +18,10 @@ if (call _booleStringSwitchDriver) then {Radio003 setTriggerText "To driver's se
 if (call _booleStringSwitchGunner) then {Radio004 setTriggerText "To gunner's seat"; Radio004 setTriggerStatements ["this", {(vehicle player) exec "Player\Action\SwitchToGunner.sqs"}, ""]} else {Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""]};
 ? "Plane" countType [_vehicle] == 0 && call (typeOf _vehicle GetVehicleParam "transportSoldier") > 8: Radio005 setTriggerText "Attach/Detach Center Vehicle"; Radio005 setTriggerStatements ["this", {[vehicle player, tsCenter, ttHeli] exec "Player\Action\AttachDetachVehicle.sqs"}, ""];
 Radio006 setTriggerText "Get Plane Status"; Radio006 setTriggerStatements ["this", {[vehicle player, player] exec "\TZK_Scripts_4_0_4\Player\Action\PlaneFlyingStatus.sqs"}, ""];
-Radio007 setTriggerText "Eject AI Units"; Radio007 setTriggerStatements ["this", {[vehicle player, siPlayer] exec "Player\Action\EjectAIUnits.sqs"}, ""];
-Radio008 setTriggerText "Eject All Cargo"; Radio008 setTriggerStatements ["this", {[vehicle player, siPlayer] exec "Player\Action\EjectAllCargo.sqs"}, ""];
-Radio009 setTriggerText "Eject One Cargo"; Radio009 setTriggerStatements ["this", {[vehicle player, siPlayer] exec "Player\Action\EjectOneCargo.sqs"}, ""];
-if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", {[vehicle player] exec "Common\SendTransportTurnOff.sqs"}, ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", {[vehicle player] exec "Common\SendTransportTurnOn.sqs"}, ""];	};
+Radio007 setTriggerText "Eject AI Units"; Radio007 setTriggerStatements ["this", {[vehicle player, siPlayer] exec localize {TZK_FUNC_EJECT_QUICKLY}}, ""];
+Radio008 setTriggerText "Eject All Cargo"; Radio008 setTriggerStatements ["this", {[vehicle player, siPlayer] exec localize {TZK_FUNC_EJECT_ALL_CARGO}}, ""];
+Radio009 setTriggerText "Eject One Cargo"; Radio009 setTriggerStatements ["this", {[vehicle player, siPlayer] exec localize {TZK_FUNC_EJECT_ONE_CARGO}}, ""];
+if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNOFF}}, ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNON}}, ""];	};
 
 
 ~1
@@ -30,7 +30,7 @@ if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn O
 ; In OFP/Arma can't compare booleans directly. Use (A && !B) || (!A && B) here, and use !_boolean to refresh.
 
 _booleRefreshTransport = (_booleTransport && !(call _booleStringTransport)) || (!_booleTransport && (call _booleStringTransport))
-? _booleRefreshTransport : if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", {[vehicle player] exec "Common\SendTransportTurnOff.sqs"}, ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", {[vehicle player] exec "Common\SendTransportTurnOn.sqs"}, ""];	}
+? _booleRefreshTransport : if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNOFF}}, ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNON}}, ""];	}
 
 ? call _booleStringSpoofON : Radio001 setTriggerText "SpoofMissile ON"; Radio001 setTriggerStatements ["this", "vehicle player removeMagazines {SpoofSwitch_xj400}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true}", ""]
 ? call _booleStringSpoofOFF : Radio001 setTriggerText "SpoofMissile OFF"; Radio001 setTriggerStatements ["this", "vehicle player addMagazine {SpoofSwitch_xj400}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true}", ""]

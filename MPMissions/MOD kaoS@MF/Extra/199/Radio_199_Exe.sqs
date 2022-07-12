@@ -72,27 +72,27 @@ goto "Quit"
 #Channel7
 ; ? _vehicle == player: [player] call loadFile "Extra\Radio\RadioList_Soldier_RearmNVG.sqf", exit
 ? "GunBoat_xj400" countType [_vehicle] > 0: [_vehicle, tsLeft, ttBoat] exec "Player\Action\AttachDetachVehicle.sqs", exit
-? "Helicopter" countType [_vehicle] > 0: [_vehicle, siPlayer] exec "Player\Action\EjectAIUnits.sqs", exit
+? "Helicopter" countType [_vehicle] > 0: [_vehicle, siPlayer] exec localize {TZK_FUNC_EJECT_QUICKLY}, exit
 _hint = "0-0-7 channel can be applied for ship to attach/detach vehicle in left slot.\nWhen player is in helicopter, this channel can be applied to eject all cargos (belonging to AI groups ONLY) quickly."
 
 goto "Quit"
 
 #Channel8
 ? _vehicle == player: [player] call loadFile "Extra\Radio\RadioList_Soldier_RearmAA.sqf", exit
-? "Helicopter" countType [_vehicle] > 0: [_vehicle, siPlayer] exec "Player\Action\EjectAllCargo.sqs", exit
+? "Helicopter" countType [_vehicle] > 0: [_vehicle, siPlayer] exec localize {TZK_FUNC_EJECT_ALL_CARGO}, exit
 _vt = _vehicle call funcGetUnitTypeFromObject
-? _vt in (RadioTypesShips + RadioTypesTransportPlane + typesTransportCar + typesTransportAPC): [_vehicle, siPlayer] exec "Player\Action\EjectAllCargo.sqs", exit
-? _vt in (RadioTypesSupport + [utMCVW, utMCVE, utMHQ0, utMHQ1]): if ("Land" countType [_vehicle] > 0) then {[_vehicle, siPlayer] exec "Player\Action\EjectAllCargo.sqs", exit}
+? _vt in (RadioTypesShips + RadioTypesTransportPlane + typesTransportCar + typesTransportAPC): [_vehicle, siPlayer] exec localize {TZK_FUNC_EJECT_ALL_CARGO}, exit
+? _vt in (RadioTypesSupport + [utMCVW, utMCVE, utMHQ0, utMHQ1]): if ("Land" countType [_vehicle] > 0) then {[_vehicle, siPlayer] exec localize {TZK_FUNC_EJECT_ALL_CARGO}, exit}
 
 _hint = "0-0-8 channel can be applied for player to buy AA launcher/ammo quickly.\nWhen player is in helicopter, this channel can be applied to eject all cargos. No groups limit in this channel unlike 0-0-7, but the frequency here is slower (due to script commands' MP broadcasting feature)."
 goto "Quit"
 
 #Channel9
 ? _vehicle == player && siPlayer in [si0,si1]: [player] call loadFile "Extra\Radio\RadioList_Soldier_RearmAT.sqf", exit
-? "Helicopter" countType [_vehicle] > 0: [_vehicle, siPlayer] exec "Player\Action\EjectOneCargo.sqs", exit
+? "Helicopter" countType [_vehicle] > 0: [_vehicle, siPlayer] exec localize {TZK_FUNC_EJECT_ONE_CARGO}, exit
 _vt = _vehicle call funcGetUnitTypeFromObject
-? _vt in (RadioTypesShips + RadioTypesTransportPlane + typesTransportCar + typesTransportAPC): [_vehicle, siPlayer] exec "Player\Action\EjectOneCargo.sqs", exit
-? _vt in (RadioTypesSupport + [utMCVW, utMCVE, utMHQ0, utMHQ1]): if ("Land" countType [_vehicle] > 0) then {[_vehicle, siPlayer] exec "Player\Action\EjectOneCargo.sqs", exit}
+? _vt in (RadioTypesShips + RadioTypesTransportPlane + typesTransportCar + typesTransportAPC): [_vehicle, siPlayer] exec localize {TZK_FUNC_EJECT_ONE_CARGO}, exit
+? _vt in (RadioTypesSupport + [utMCVW, utMCVE, utMHQ0, utMHQ1]): if ("Land" countType [_vehicle] > 0) then {[_vehicle, siPlayer] exec localize {TZK_FUNC_EJECT_ONE_CARGO}, exit}
 
 _hint = "0-0-9 channel can be applied for player to buy AT launcher/ammo quickly.\nWhen player is in helicopter, this channel can be applied to eject only 1 cargo.\nIf player is in Art Vehicle (no weapon range limit vehicle, special design in CTI), this channel can switch the bullet-camera (require upgrade).\nIf player is civ and in 1st view mode, this channel can be applied to switch the displaying of markers."
 ? siPlayer == siCiv: btnMarker = !btnMarker; if !btnMarker then {call loadFile "\TZK_Scripts_4_0_4\Player\Marker\HideSpectator.sqf"} else {[boole_Mark_Player_Name] exec "\TZK_Scripts_4_0_4\Player\Marker\SpectatorMarker.sqs"}, exit
@@ -104,7 +104,7 @@ goto "Quit"
 #Channel0
 ? _vehicle == player: [player] call loadFile "Extra\Radio\RadioList_Soldier_RearmRPG.sqf", exit
 _hint = "0-0-0 channel can be applied for player to buy RPG launcher/ammo quickly.\nWhen player is in transport vehicles, this channel can be applied to switch transport function. In TZK AI group units will only board those vehicles Turning ON Transport Function.\nWhen player is driving plane, this channel can be applied to switch after burner function (require upgrade).\nIf player is civ and in 1st view mode, this channel can be applied to return to spectator mode."
-? (_vehicle call funcGetUnitTypeFromObject) in ((airTransport select siPlayer) + (groundTransport select siPlayer)): if (_vehicle in TransportActivatedVehicles) Then {[_vehicle] exec "Common\SendTransportTurnOff.sqs", hint "Transport Turn OFF", 10 setRadioMsg "Transport Turn ON"} Else {[_vehicle] exec "Common\SendTransportTurnOn.sqs", hint "Transport Turn ON", 10 setRadioMsg "Transport Turn OFF"}, exit
+? (_vehicle call funcGetUnitTypeFromObject) in ((airTransport select siPlayer) + (groundTransport select siPlayer)): if (_vehicle in TransportActivatedVehicles) Then {[_vehicle] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNOFF}, hint "Transport Turn OFF", 10 setRadioMsg "Transport Turn ON"} Else {[_vehicle] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNON}, hint "Transport Turn ON", 10 setRadioMsg "Transport Turn OFF"}, exit
 ? siPlayer == siCiv: [] exec localize {TZK_RADIO_FUNC_SPEC_RET}, exit
 
 ? "A10_Base_xj400" countType [_vehicle] == 0 && "Su25_Base_xj400" countType [_vehicle] == 0: [_vehicle] exec "Player\Radio\Radio_Update_Vehicle.sqs", goto "Quit"

@@ -20,9 +20,9 @@ if (call _booleStringSwitchGunner) then {Radio004 setTriggerText "To gunner's se
 Radio005 setTriggerText "Attach/Detach Center Vehicle"; Radio005 setTriggerStatements ["this", {[vehicle player, tsCenter, ttBoat] exec "Player\Action\AttachDetachVehicle.sqs"}, ""];
 Radio006 setTriggerText "Attach/Detach Right Vehicle"; Radio006 setTriggerStatements ["this", {[vehicle player, tsRight, ttBoat] exec "Player\Action\AttachDetachVehicle.sqs"}, ""];
 Radio007 setTriggerText "Attach/Detach Left Vehicle"; Radio007 setTriggerStatements ["this", {[vehicle player, tsLeft, ttBoat] exec "Player\Action\AttachDetachVehicle.sqs"}, ""];
-Radio008 setTriggerText "Eject All Cargo"; Radio008 setTriggerStatements ["this", {[vehicle player, siPlayer] exec "Player\Action\EjectAllCargo.sqs"}, ""];
-Radio009 setTriggerText "Eject One Cargo"; Radio009 setTriggerStatements ["this", {[vehicle player, siPlayer] exec "Player\Action\EjectOneCargo.sqs"}, ""];
-if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", {[vehicle player] exec "Common\SendTransportTurnOff.sqs"}, ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", {[vehicle player] exec "Common\SendTransportTurnOn.sqs"}, ""];	};
+Radio008 setTriggerText "Eject All Cargo"; Radio008 setTriggerStatements ["this", {[vehicle player, siPlayer] exec localize {TZK_FUNC_EJECT_ALL_CARGO}}, ""];
+Radio009 setTriggerText "Eject One Cargo"; Radio009 setTriggerStatements ["this", {[vehicle player, siPlayer] exec localize {TZK_FUNC_EJECT_ONE_CARGO}}, ""];
+if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNOFF}}, ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNON}}, ""];	};
 
 	? Page_Radio_CustomShip == 0 : goto "SkipInitPage2"
 	if (call _booleStringEquip1x2 && local _vehicle) then { Radio003 setTriggerText "Equip Grenade"; Radio003 setTriggerStatements ["this", {[vehicle player, [{VirtualGrenade_xj400}], 10] exec localize {TZK_PLAYER_EFFECT_VIRTUAL_WEP}}, ""]; Radio004 setTriggerText "Equip Mortar"; Radio004 setTriggerStatements ["this", {[vehicle player, [{VirtualMortar_xj400}], 20] exec localize {TZK_PLAYER_EFFECT_VIRTUAL_WEP}}, ""]; } else {	Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""]; Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""] }
@@ -37,7 +37,7 @@ if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn O
 ; In OFP/Arma can't compare booleans directly. Use (A && !B) || (!A && B) here, and use !_boolean to refresh.
 
 _booleRefreshTransport = (_booleTransport && !(call _booleStringTransport)) || (!_booleTransport && (call _booleStringTransport))
-? _booleRefreshTransport : if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", {[vehicle player] exec "Common\SendTransportTurnOff.sqs"}, ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", {[vehicle player] exec "Common\SendTransportTurnOn.sqs"}, ""];	}
+? _booleRefreshTransport : if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNOFF}}, ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNON}}, ""];	}
 
 _booleRefreshSwitchDriver = (_booleSwitchDriver && !(call _booleStringSwitchDriver)) || (!_booleSwitchDriver && (call _booleStringSwitchDriver))
 _booleRefreshSwitchGunner = (_booleSwitchGunner && !(call _booleStringSwitchGunner)) || (!_booleSwitchGunner && (call _booleStringSwitchGunner))

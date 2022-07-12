@@ -101,7 +101,7 @@ _timeRetry = time + 60
 
 #WaitForCargo
   _transp engineOn false
-  [_transp] exec "\TZK_Scripts_4_0_4\Common\SendTransportTurnOn.sqs"
+  [_transp] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNON}
   _unit groupchat "Waiting for cargo."
   _crew = -1
   #WaitForCargo_Check
@@ -109,7 +109,7 @@ _timeRetry = time + 60
   ? !(alive _unit): goto "Exit"
   ? call orderCheck: goto "Exit"
   ? !(alive _transp) || _transp != (vehicle _unit): _msg = _msgAbort; goto "Exit"
-  [_transp] exec "\TZK_Scripts_4_0_4\Common\SendTransportTurnOn.sqs"
+  [_transp] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNON}
   ? ((getPos _transp) select 2) > 5: goto "PrepareLand"
   ? ([_pos, getPos _transp] call funcDistH) > 200: _msg = "I'm too far from START wp. Transport duty aborted."; goto "Exit"  
   ? _transp call funcGetCargoNum > (_transp call funcGetTranspVol) - 2 && _transp call funcGetCargoNum > 0: goto "MoveOut"
@@ -117,7 +117,7 @@ _timeRetry = time + 60
   ? _transp call funcGetCargoNum > _crew: _crew = _transp call funcGetCargoNum; goto "WaitForCargo_Check"
 
 #MoveOut
-[_transp] exec "\TZK_Scripts_4_0_4\Common\SendTransportTurnOff.sqs"
+[_transp] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNOFF}
 _unit groupchat "Taking off."
 _transp flyInHeight 40
 _transp engineOn true
@@ -129,7 +129,7 @@ goto "MoveNextPos"
 
 #EjectCargo
 _unit groupchat "Ejecting cargo."
-[_transp, siPlayer] exec "\TZK_Scripts_4_0_4\Common\EjectAllCargo.sqs"
+[_transp, siPlayer] exec localize {TZK_FUNC_EJECT_ALL_CARGO}
 ~10
   ? !(alive _unit): goto "Exit"
   ? call orderCheck: goto "Exit"
@@ -138,5 +138,5 @@ goto "MoveNextPos"
 
 #Exit
   ? (alive _unit) && _msg != "": _unit groupchat _msg
-  ? (alive _transp) && _unit != (driver _transp): [_transp] exec "\TZK_Scripts_4_0_4\Common\SendTransportTurnOff.sqs"
+  ? (alive _transp) && _unit != (driver _transp): [_transp] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNOFF}
   

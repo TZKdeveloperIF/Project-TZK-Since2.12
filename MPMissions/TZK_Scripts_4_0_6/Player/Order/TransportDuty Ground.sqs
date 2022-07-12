@@ -63,7 +63,7 @@ _words = ["Next", "Previous"] select (_dir != 1 || _i == 0); _unit groupchat for
 goto "MoveNextPos"
 
 #WaitForCargo
-  [_transp] exec "\TZK_Scripts_4_0_4\Common\SendTransportTurnOn.sqs"
+  [_transp] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNON}
   _unit doWatch _pos
   _unit groupchat "Waiting for cargo."
   _crew = -1
@@ -79,7 +79,7 @@ goto "MoveNextPos"
   ? _transp call funcGetCargoNum > _crew: _crew = _transp call funcGetCargoNum; goto "WaitForCargo_Check"
 
 #MoveOut
-[_transp] exec "\TZK_Scripts_4_0_4\Common\SendTransportTurnOff.sqs"
+[_transp] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNOFF}
 _unit groupchat "Moving out."; goto "MoveNextPos"
 goto "MoveNextPos"
 
@@ -93,7 +93,7 @@ goto "MoveNextPos"
 
 #EjectCargo
 _unit groupchat "Ejecting cargo."
-[_transp, siPlayer] exec "\TZK_Scripts_4_0_4\Common\EjectAllCargo.sqs"
+[_transp, siPlayer] exec localize {TZK_FUNC_EJECT_ALL_CARGO}
 ~10
 ? call orderCheck: goto "Exit"
 ? !(alive _unit): goto "Exit"
@@ -102,5 +102,5 @@ goto "MoveNextPos"
 
 #Exit
   ? (alive _unit) && _msg != "": _unit groupchat _msg
-  ? (alive _transp) && _unit != (driver _transp): [_transp] exec "\TZK_Scripts_4_0_4\Common\SendTransportTurnOff.sqs"
+  ? (alive _transp) && _unit != (driver _transp): [_transp] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNOFF}
   

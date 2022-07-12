@@ -363,7 +363,7 @@ _param1 = [ "Eject Pos", _coCnt, _coDispStr];
 _param2 = [ "Eject Distance", "20", [50, 1] call _distByOffset];
 _param3 = [ "Transport type", "count TransportDutyTypeDefs", "format [""%1"", TransportDutyTypeDefs select _this ]" ];
 _param4 = [ "Duration", "20", "format [""%1min"", 3* (_this + 1)]" ];
-orderTempDefs set [_type, ["Transport Duty", [_param0, _param1, _param2, _param3, _param4], "\TZK_Scripts_4_0_5\Server\OrderTemp\TransportDuty.sqs"] ];
+orderTempDefs set [_type, ["Transport Duty", [_param0, _param1, _param2, _param3, _param4], "\TZK_Scripts_4_0_6\Server\OrderTemp\TransportDuty.sqs"] ];
 _type = _type + 1;
 
 orderTempMoveType = _type;
