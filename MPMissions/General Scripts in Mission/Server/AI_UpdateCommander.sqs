@@ -230,13 +230,13 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 	~(random 10)
 	[0, getPos _mhq, _si, _gi] exec "\TZK_Scripts_4_0_4\Common\SendSetWPCO.sqs"
 	; lock AICO group setting
-	[_si, _gi, aisPickupWait1, 0] exec "\TZK_Scripts_4_0_4\Common\SendAIGroupSetting.sqs"
-	[_si, _gi, aisLockSetting, 1] exec "\TZK_Scripts_4_0_4\Common\SendAIGroupSetting.sqs"
+	[_si, _gi, aisPickupWait1, 0] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
+	[_si, _gi, aisLockSetting, 1] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
 	~0.4
 
-	[_si, _gi + GroupsNum, orderGuardArea, [0,3]] exec "\TZK_Scripts_4_0_4\Common\SendAIGroupOrder.sqs"
-	[_si, _gi + GroupsNum, aisKeepMax, 13] exec "\TZK_Scripts_4_0_4\Common\SendAIGroupSetting.sqs"
-	[_si, _gi + GroupsNum, aisPickupWait1, count aisPickupWaitTimeDisp - 1] exec "\TZK_Scripts_4_0_4\Common\SendAIGroupSetting.sqs"
+	[_si, _gi + GroupsNum, orderGuardArea, [0,3]] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}
+	[_si, _gi + GroupsNum, aisKeepMax, 13] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
+	[_si, _gi + GroupsNum, aisPickupWait1, count aisPickupWaitTimeDisp - 1] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
 	
 	; _ti = _townsSortedByDist select 0 select 0
 	; [_si, _gi + GroupsNum, orderTempHoldTown, [_ti, HoldTownTypeDefs find "Infantry", 0, 0, 0]] exec "\TZK_Scripts_4_0_4\Common\SendAITemporaryOrder.sqs"; 
@@ -247,26 +247,26 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 	_timeCheckOrders = time + 1*60
 	; assign orders heading first 2 towns.
 	_ti = _townsSortedByDist select 1
-	[_si, _gi + GroupsNum, orderHoldTown, [_ti,1,0]] exec "\TZK_Scripts_4_0_4\Common\SendAIGroupOrder.sqs"
+	[_si, _gi + GroupsNum, orderHoldTown, [_ti,1,0]] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}
 	; let transport group do transport duty
 	[1, getPos (towns select _ti select tdFlag), _si, _gi] exec "\TZK_Scripts_4_0_4\Common\SendSetWPCO.sqs"
-	{[_si, _x, orderTransportDuty, [0,1,0]] exec "\TZK_Scripts_4_0_4\Common\SendAIGroupOrder.sqs"} forEach _giTrans
+	{[_si, _x, orderTransportDuty, [0,1,0]] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}} forEach _giTrans
 	; lock transport group order
-	{[_si, _x, aisLockOrder, 1] exec "\TZK_Scripts_4_0_4\Common\SendAIGroupSetting.sqs"} forEach _giTrans
+	{[_si, _x, aisLockOrder, 1] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}} forEach _giTrans
 	; 2 groups of tank go take 1st town, 1 group of tank and soldiers go take 2nd town.
 	_ti = _townsSortedByDist select 0
-	{[_si, _x, orderHoldTown, [_ti,1,0]] exec "\TZK_Scripts_4_0_4\Common\SendAIGroupOrder.sqs"} forEach (_giTanks select 0)
-	{[_si, _x, orderHoldTown, [_ti,1,0]] exec "\TZK_Scripts_4_0_4\Common\SendAIGroupOrder.sqs"} forEach (_giTanks select 1)
+	{[_si, _x, orderHoldTown, [_ti,1,0]] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}} forEach (_giTanks select 0)
+	{[_si, _x, orderHoldTown, [_ti,1,0]] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}} forEach (_giTanks select 1)
 	~1
 	; lock AICO group order
-	[_si, _gi, aisLockOrder, 1] exec "\TZK_Scripts_4_0_4\Common\SendAIGroupSetting.sqs"
+	[_si, _gi, aisLockOrder, 1] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
 	goto "Update"
 
 #CheckFirstTownTaken
 	_timeCheckOrders = time + 1*60
 	? ("_x select tdSide == _si" count towns) == 0: goto "Update"
 	~0.4
-	[_si, _gi, orderPatrolArea, [0,2]] exec "\TZK_Scripts_4_0_4\Common\SendAIGroupOrder.sqs"
+	[_si, _gi, orderPatrolArea, [0,2]] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}
   	; goto "TakeHoldTowns"
 
 #TakeHoldTowns
@@ -279,7 +279,7 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 	[1, getPos (towns select _ti select tdFlag), _si, _gi] exec "\TZK_Scripts_4_0_4\Common\SendSetWPCO.sqs"
 	#TakeHoldTowns_SkipPointSet
 	~0.4
-	? !_bTakeTown: [_si, _gi + GroupsNum, orderTakeHoldTowns, [4,([1, 0] select dev)]] exec "\TZK_Scripts_4_0_4\Common\SendAIGroupOrder.sqs"; {[_si, _x, orderTransportDuty, [0,1,_transEjectParam]] exec "\TZK_Scripts_4_0_4\Common\SendAIGroupOrder.sqs"} forEach _giTrans; _bTakeTown = true
+	? !_bTakeTown: [_si, _gi + GroupsNum, orderTakeHoldTowns, [4,([1, 0] select dev)]] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}; {[_si, _x, orderTransportDuty, [0,1,_transEjectParam]] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}} forEach _giTrans; _bTakeTown = true
 	goto "Update"
   
 #DestroyEnemy
@@ -295,8 +295,8 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 	_nDestroy = (_nDestroy + 1) % 3
 	[9, getPos _object, _si, _gi] exec "\TZK_Scripts_4_0_4\Common\SendSetWPCO.sqs"
 	~1
-	[_si, _gi + GroupsNum, orderPatrolArea, [9,0]] exec "\TZK_Scripts_4_0_4\Common\SendAIGroupOrder.sqs";
-	{[_si, _x, orderTransportDuty, [0,9,_transEjectParam]] exec "\TZK_Scripts_4_0_4\Common\SendAIGroupOrder.sqs"} forEach _giTrans; 
+	[_si, _gi + GroupsNum, orderPatrolArea, [9,0]] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER};
+	{[_si, _x, orderTransportDuty, [0,9,_transEjectParam]] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}} forEach _giTrans; 
 	_bTakeTown = false
 	goto "Update"
 

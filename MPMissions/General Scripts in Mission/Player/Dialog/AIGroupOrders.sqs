@@ -157,10 +157,10 @@ ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bo
   _val = lbCurSel (_idcSettingCombo+_set)
   _lastSetting set [_set, _val]
 	
-	? _gi == -1 : if (_set != aisSuperior) then {[_si, giPlayer + GroupsNum, _set, _val] exec "\TZK_Scripts_4_0_4\Common\SendAIGroupSetting.sqs"}; goto "Update"
+	? _gi == -1 : if (_set != aisSuperior) then {[_si, giPlayer + GroupsNum, _set, _val] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}}; goto "Update"
 
 	(aiSetting select _si select _gi) set [_set, _val]
-	[_si, _gi, _set, _val] exec "\TZK_Scripts_4_0_4\Common\SendAIGroupSetting.sqs"
+	[_si, _gi, _set, _val] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
 	? _set != aisSuperior : goto "Update"
 	? (groupPlayer == (groupCommander select _si)) && !( ((["Commander"] + callsigns) select _val) in ["Commander", _groupNames select giPlayer] ) : { ctrlShow [_x, false] } foreach [_idcOrderLabel, _idcSendOrder, _idcOrder, _idcPar0Label, _idcPar0, _idcPar1Label, _idcPar1, _idcPar2Label, _idcPar2]; _i = 0; while "_i < _cSettings" do { ctrlEnable [_idcSettingCombo+_i, false]; _i=_i+1 }; ctrlEnable [_idcSettingCombo+aisSuperior, true]
 	? (groupPlayer == (groupCommander select _si)) && ( ((["Commander"] + callsigns) select _val) in ["Commander", _groupNames select giPlayer] ) : { ctrlShow [_x, true] } foreach [_idcOrderLabel, _idcSendOrder, _idcOrder]; _i = 0; while "_i < _cSettings" do { ctrlEnable [_idcSettingCombo+_i, true]; _i=_i+1 }; goto "RefreshOrder"
@@ -184,12 +184,12 @@ ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bo
 	_index = 0
 	{ _params set [_index, lbCurSel (_idcParams select _index)]; _index = _index + 1 } foreach ((orderDefs select _selOrder) select 1)
 	
-	? _gi == -1 : [_si, giPlayer + GroupsNum, _selOrder, _params] exec "\TZK_Scripts_4_0_4\Common\SendAIGroupOrder.sqs"; goto "Update"
+	? _gi == -1 : [_si, giPlayer + GroupsNum, _selOrder, _params] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}; goto "Update"
 	
-	[_si, _gi, _selOrder, _params] exec "\TZK_Scripts_4_0_4\Common\SendAIGroupOrder.sqs"; goto "Update"
+	[_si, _gi, _selOrder, _params] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}; goto "Update"
 	
 	
-#TemporaryOrder
+# TemporaryOrder
 	closeDialog 0
 	; ~0.1
 	[] exec "Player\Dialog\AiConcurrentOrders.sqs"
