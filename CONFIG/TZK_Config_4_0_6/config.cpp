@@ -3239,7 +3239,6 @@ class CfgVehicles {
 		cost = 200000000;
 		armor = 1000;
 		weapons[] = {};
-		magazines[] = {};
 		magazines[] = {"Heat120"}; // having magazines can make AI attack it
 		threat[] = {0.6, 0.9, 0.2};
 		class TransportMagazines {};
