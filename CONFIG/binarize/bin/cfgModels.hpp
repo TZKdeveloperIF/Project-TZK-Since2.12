@@ -651,6 +651,8 @@ class CfgModels {
 		sections[] = {
 			tex_mutt_backg.pac, tex_mutt_bottom.pac, tex_mutt_frontg.pac, tex_mutt_kapotag.pac, tex_mutt_kolog.pac, tex_mutt_koloog.pac, tex_mutt_palubkmg.pac, tex_mutt_podanteng.pac, tex_mutt_podlahg.pac, tex_mutt_podpaka.pac, tex_mutt_radiog.pac, tex_mutt_sedoperg.pac, tex_mutt_sedsedg.pac, tex_mutt_sideg.pac, tex_mutt_sklog.pac, tex_mutt_trubka.pac, tex_mutt_volant.paa, tex_mutt_pristrtga.paa
 			,tex_mutt_plachtag.pac
+			, tzk_tex_00
+			, Box006
 		};
 	};
 	class Jeep_MG_TZK: Jeep_TZK {};
@@ -681,7 +683,10 @@ class CfgModels {
 	class UAZ_TZK: Car {
 		sectionsInherit = "Car";
 		sections[] = {
-			tex_jeep_kab_sklo1.paa, tex_jeep_kab_sklo2.paa, tex_jeep_kolo_side.pac, tex_mutt_bottom.pac, tex_mutt_kolog.pac, tex_mutt_koloog.pac, tex_uaz_ige_front.paa, tex_uaz_kapota_top.pac, tex_uaz_zasterka.pac, tex_uazbck.pac, tex_uazfrt.pac, tex_uazkolo.pac, tex_uazside1.pac, tex_uazside2.pac, tex_uaztop.pac
+			tex_jeep_kab_sklo1.paa, tex_jeep_kab_sklo2.paa, tex_jeep_kolo_side.pac, tex_mutt_bottom.pac, tex_mutt_kolog.pac, 
+			tex_mutt_koloog.pac, tex_uaz_ige_front.paa, tex_uaz_kapota_top.pac, tex_uaz_zasterka.pac, tex_uazbck.pac, 
+			tex_uazfrt.pac, tex_uazkolo.pac, tex_uazside1.pac, tex_uazside2.pac, tex_uaztop.pac
+			, Box006
 		};
 	};
 	class Ural_TZK: Car {
