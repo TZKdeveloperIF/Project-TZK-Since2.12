@@ -1526,10 +1526,34 @@ class CfgVehicles {
 		class TransportMagazines {};
 	};
 	
-	class Jeep_xj400: Jeep { terrainCoef = 1; preferRoads = 0; };
+	class Jeep_xj400: Jeep {
+		model = "\TZK_Model_4_0_6\Jeep_TZK.p3d";
+		hiddenSelections[] = {tzk_tex_00, 
+			tex_mutt_backg.pac, tex_mutt_bottom.pac, tex_mutt_frontg.pac, 
+			tex_mutt_kapotag.pac,tex_mutt_kolog.pac, tex_mutt_koloog.pac, 
+			tex_mutt_palubkmg.pac, tex_mutt_podanteng.pac,tex_mutt_podlahg.pac, 
+			tex_mutt_podpaka.pac, tex_mutt_radiog.pac, tex_mutt_sedoperg.pac, 
+			tex_mutt_sedsedg.pac, tex_mutt_sideg.pac, tex_mutt_sklog.pac, 
+			tex_mutt_trubka.pac,tex_mutt_volant.paa, tex_mutt_pristrtga.paa
+			, tzk_tex_99
+			, Box006
+		};
+		terrainCoef = 1; preferRoads = 0;
+	};
 	class JeepMG_xj400: JeepMG { terrainCoef = 1; preferRoads = 0; };
 	class HMMWV_xj400: Jeep { terrainCoef = 1; preferRoads = 0; };
-	class UAZ_xj400: UAZ { terrainCoef = 1; preferRoads = 0; };
+	class UAZ_xj400: UAZ {
+		model = "\TZK_Model_4_0_6\uaz_TZK.p3d";
+		hiddenSelections[] = {tzk_tex_00, 
+			tex_jeep_kab_sklo1.paa, tex_jeep_kab_sklo2.paa, tex_jeep_kolo_side.pac, 
+			tex_mutt_bottom.pac, tex_mutt_kolog.pac, tex_mutt_koloog.pac, tex_uaz_ige_front.paa, 
+			tex_uaz_kapota_top.pac, tex_uaz_zasterka.pac, tex_uazbck.pac, tex_uazfrt.pac, 
+			tex_uazkolo.pac, tex_uazside1.pac, tex_uazside2.pac, tex_uaztop.pac
+			, tzk_tex_99
+			, Box006
+		};
+		terrainCoef = 1; preferRoads = 0;
+	};
 	class BRDM_xj400: LandVehicle { terrainCoef = 1; preferRoads = 0; };
 	class Truck5t_xj400: Truck5t { terrainCoef = 1; preferRoads = 0; };
 	class Truck5tRepair_xj400: Truck5tRepair { terrainCoef = 1; preferRoads = 0; };
@@ -1537,6 +1561,51 @@ class CfgVehicles {
 	class Ural_xj400: Ural { terrainCoef = 1; preferRoads = 0; };
 	class UralRepair_xj400: UralRepair { terrainCoef = 1; preferRoads = 0; };
 	class UralRefuel_xj400: UralRefuel { terrainCoef = 1; preferRoads = 0; };
+
+	class Jeep_Radar_xj400: Jeep_xj400 {
+		hiddenSelections[] = {tzk_tex_00, 
+			tex_mutt_backg.pac, tex_mutt_bottom.pac, tex_mutt_frontg.pac, 
+			tex_mutt_kapotag.pac,tex_mutt_kolog.pac, tex_mutt_koloog.pac, 
+			tex_mutt_palubkmg.pac, tex_mutt_podanteng.pac,tex_mutt_podlahg.pac, 
+			tex_mutt_podpaka.pac, tex_mutt_radiog.pac, tex_mutt_sedoperg.pac, 
+			tex_mutt_sedsedg.pac, tex_mutt_sideg.pac, tex_mutt_sklog.pac, 
+			tex_mutt_trubka.pac,tex_mutt_volant.paa, tex_mutt_pristrtga.paa
+			, tzk_tex_99
+		};
+		class Animations {
+			class rot_radar {
+				type = rotation;
+				animperiod = 2*7200;
+				selection = "Box006";
+				axis = "osaRadar";
+				angle0= 0;
+				angle1= -12.566*7200;
+			};
+		};
+		irScanRangeMin = 500; irScanRangeMax = 4000; irScanToEyeFactor = 1; irScanGround = 1; // Standard radar setting.
+		driverCanSee = CanSeeAll;
+	};
+	class UAZ_Radar_xj400: UAZ_xj400 {
+		hiddenSelections[] = {tzk_tex_00, 
+			tex_jeep_kab_sklo1.paa, tex_jeep_kab_sklo2.paa, tex_jeep_kolo_side.pac, 
+			tex_mutt_bottom.pac, tex_mutt_kolog.pac, tex_mutt_koloog.pac, tex_uaz_ige_front.paa, 
+			tex_uaz_kapota_top.pac, tex_uaz_zasterka.pac, tex_uazbck.pac, tex_uazfrt.pac, 
+			tex_uazkolo.pac, tex_uazside1.pac, tex_uazside2.pac, tex_uaztop.pac
+			, tzk_tex_99
+		};
+		class Animations {
+			class rot_radar {
+				type = rotation;
+				animperiod = 2*7200;
+				selection = "Box006";
+				axis = "osaRadar";
+				angle0= 0;
+				angle1= -12.566*7200;
+			};
+		};
+		irScanRangeMin = 500; irScanRangeMax = 4000; irScanToEyeFactor = 1; irScanGround = 1; // Standard radar setting.
+		driverCanSee = CanSeeAll;
+	};
 	
 	class HMMMV_TOW2A_xj400 : JeepMG { terrainCoef = 1; preferRoads = 0; };
 	class HMMMV_TOW2A_Auto_xj400 : HMMMV_TOW2A_xj400 {
