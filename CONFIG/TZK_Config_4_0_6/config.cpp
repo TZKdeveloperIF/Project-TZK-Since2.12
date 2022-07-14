@@ -1369,65 +1369,158 @@ class CfgWeapons {
 	class M26_1500_xj400: M26_0080_xj400 { displayName = "M26 Rocket(1500m/s)"; initSpeed = 1500; };	
 };
 	
+// todo: localize statement
 class UA_MHQBuildMenu {};
 class UA_MCVBuildMenu {};
 class UA_SupBuildMenu {};
 
-class UA_SelfMedic {};
+class UA_SelfMedic {
+	statement = "this exec {Player\Action\SelfMedic.sqs}";
+};
 
-class UA_EjectAICargo {};
-class UA_EjectAllCargo {};
-class UA_EjectOneCargo {};
-class UA_TransportTurnON {};
-class UA_TransportTurnOFF {};
 
+// UA for Transport Vehicle
+class UA_EjectAICargo {
+	statement = "[this, siPlayer] exec {Player\Action\EjectAIUnits.sqs}";
+};
+class UA_EjectAllCargo {
+	statement = "[this, siPlayer] exec {Player\Action\EjectAllCargo.sqs}";
+};
+class UA_EjectOneCargo {
+	statement = "[this, siPlayer] exec {Player\Action\EjectOneCargo.sqs}";
+};
+class UA_TransportTurnON {
+	statement = "[this] exec {Common\SendTransportTurnOn.sqs}";
+};
+class UA_TransportTurnOFF {
+	statement = "[this] exec {Common\SendTransportTurnOff.sqs}";
+};
+
+// UA for Attach
 class UA_AttachInVehicle {};
-class UA_AttachOnFoot {};
-class UA_AttachInVehicle_Truck : UA_AttachInVehicle {};
-class UA_AttachOnFoot_Truck : UA_AttachOnFoot {};
+class UA_AttachOnFoot {
+	statement = "[this, tsCenter, ttTruck] exec {Player\Action\AttachDetachVehicle.sqs}";
+};
+class UA_AttachInVehicle_Truck : UA_AttachInVehicle {
+	statement = "[this, tsCenter, ttTruck] exec {Player\Action\AttachDetachVehicle.sqs}";
+};
+class UA_AttachOnFoot_Truck : UA_AttachOnFoot {
+	statement = "[this, tsCenter, ttTruck] exec {Player\Action\AttachDetachVehicle.sqs}";
+};
 
-class UA_AttachInVehicle_Center : UA_AttachInVehicle {};
-class UA_AttachInVehicle_Right : UA_AttachInVehicle {};
-class UA_AttachInVehicle_Left : UA_AttachInVehicle_Right {};
-class UA_AttachOnFoot_Center : UA_AttachOnFoot {};
-class UA_AttachOnFoot_Right : UA_AttachOnFoot {};
-class UA_AttachOnFoot_Left : UA_AttachOnFoot {};
+class UA_AttachInVehicle_Center : UA_AttachInVehicle {
+	statement = "[this, tsCenter, ttBoat] exec {Player\Action\AttachDetachVehicle.sqs}";
+};
+class UA_AttachInVehicle_Right : UA_AttachInVehicle {
+	statement = "[this, tsRight, ttBoat] exec {Player\Action\AttachDetachVehicle.sqs}";
+};
+class UA_AttachInVehicle_Left : UA_AttachInVehicle_Right {
+	statement = "[this, tsLeft, ttBoat] exec {Player\Action\AttachDetachVehicle.sqs}";
+};
+class UA_AttachOnFoot_Center : UA_AttachOnFoot {
+	statement = "[this, tsCenter, ttBoat] exec {Player\Action\AttachDetachVehicle.sqs}";
+};
+class UA_AttachOnFoot_Right : UA_AttachOnFoot {
+	statement = "[this, tsRight, ttBoat] exec {Player\Action\AttachDetachVehicle.sqs}";
+};
+class UA_AttachOnFoot_Left : UA_AttachOnFoot {
+	statement = "[this, tsLeft, ttBoat] exec {Player\Action\AttachDetachVehicle.sqs}";
+};
 
-class UA_AttachInVehicle_APC : UA_AttachInVehicle {};
-class UA_AttachOnFoot_APC : UA_AttachOnFoot {};
+class UA_AttachInVehicle_APC : UA_AttachInVehicle {
+	statement = "[this, tsCenter, ttAPC] exec {Player\Action\AttachDetachVehicle.sqs}";
+};
+class UA_AttachOnFoot_APC : UA_AttachOnFoot {
+	statement = "[this, tsCenter, ttAPC] exec {Player\Action\AttachDetachVehicle.sqs}";
+};
 
-class UA_AttachInVehicle_Heli : UA_AttachInVehicle {};
-class UA_AttachOnFoot_Heli : UA_AttachOnFoot {};
+class UA_AttachInVehicle_Heli : UA_AttachInVehicle {
+	statement = "[this, tsCenter, ttHeli] exec {Player\Action\AttachDetachVehicle.sqs}";
+};
+class UA_AttachOnFoot_Heli : UA_AttachOnFoot {
+	statement = "[this, tsCenter, ttHeli] exec {Player\Action\AttachDetachVehicle.sqs}";
+};
 
-class UA_SwitchToDriverAir {};
-class UA_SwitchToGunnerAir {};
+// UA for driver-gunner-switch
+class UA_SwitchToDriverAir {
+	statement = "this exec {Player\Action\SwitchToDriver.sqs}";
+};
+class UA_SwitchToGunnerAir {
+	statement = "this exec {Player\Action\SwitchToGunner.sqs}";
+};
 class UA_SwitchToDriverLand : UA_SwitchToDriverAir {};
 class UA_SwitchToGunnerLand : UA_SwitchToGunnerAir {};
 
-class UA_SetFlightAltitude {};
-class UA_LAND_Heli {};
-class UA_AfterBurnerON {};
-class UA_AfterBurnerOFF {};
-class UA_SpoofMissileON {};
-class UA_SpoofMissileOFF {};
+// UA for Aircraft
+class UA_SetFlightAltitude {
+	statement = "[this, driver this] exec {Player\Dialog\SetFlightAltitude.sqs}";
+};
+class UA_LAND_Heli {
+	statement = "doStop this; this land ""LAND""";
+}
+	// Display or not decided by boolean
+class UA_AfterBurnerON {
+	statement = "this removeMagazines {AfterBurnerSwitch_xj400}; this exec {Player\Effect\AfterBurner\Start.sqs} ";
+};
+class UA_AfterBurnerOFF {
+	statement = "this addMagazine {AfterBurnerSwitch_xj400}";
+};
+class UA_SpoofMissileON {
+	statement = "this removeMagazines {SpoofSwitch_xj400}";
+};
+class UA_SpoofMissileOFF {
+	statement = "this addMagazine {SpoofSwitch_xj400}";
+};
 
-class UA_EquipLAW {};
-class UA_EquipRPG {};
-class UA_EquipCarlGustav {};
-class UA_EquipAT4 {};
-class UA_EquipGrenade {};
-class UA_EquipMortar {}	
-class UA_EquipMG {};
+// The script command addMagazine and removeMagazine(s) is local. Thus the following actions for car/ship only show to local client.
+// UA for Virtual Weapons Rearm
+class UA_EquipLAW {
+	statement = "[this, [{VirtualLAW_xj400}], 25] exec {Player\Effect\EquipVirtualWeapon.sqs}";
+}
+class UA_EquipRPG {
+	statement = "[this, [{VirtualRPG_xj400}], 25] exec {Player\Effect\EquipVirtualWeapon.sqs}";
+}
+class UA_EquipCarlGustav {
+	statement = "[this, [{VirtualCarlGustav_xj400}], 60] exec {Player\Effect\EquipVirtualWeapon.sqs}";
+}
+class UA_EquipAT4 {
+	statement = "[this, [{VirtualAT4_xj400}], 60] exec {Player\Effect\EquipVirtualWeapon.sqs}";
+}
+class UA_EquipGrenade {
+	statement = "[this, [{VirtualGrenade_xj400}], 10] exec {Player\Effect\EquipVirtualWeapon.sqs}";
+}
+class UA_EquipMortar {
+	statement = "[this, [{VirtualMortar_xj400}], 20] exec {Player\Effect\EquipVirtualWeapon.sqs}";
+}	
+class UA_EquipMG {
+	statement = "[this, [{Mag_12mm7_100_xj400}], 20] exec {Player\Effect\EquipVirtualWeapon.sqs}";
+}
 
-class UA_ShowEquipList {};
-class UA_HideEquipList {};
+class UA_ShowEquipList {
+	statement = "this addMagazine {VirtualEquipSwitchMag_xj400}";
+}
+class UA_HideEquipList {
+	statement = "this removeMagazines {VirtualEquipSwitchMag_xj400}";
+}
 
-class UA_EquipM2 {};
-class UA_EquipPKT {};
+// UA for MG Car Weapons. Car with weapon and none magazines will cause crash when they target objects, thus necessary to use UA to rearm instead rearm-system in CTI.
+class UA_EquipM2 {
+	statement = "[this, [{M2cal50_DVDUS_xj400},{M2cal50_DVDUS_xj400},{M2cal50_DVDUS_xj400},{M2cal50_DVDUS_xj400},{M2cal50_DVDUS_xj400}], 50, [{M2cal50_DVDUS_xj400}]] exec {Player\Effect\EquipCarMG.sqs}";
+};
+class UA_EquipPKT {
+	statement = "[this, [{PKTUAZ_DVD_xj400},{PKTUAZ_DVD_xj400},{PKTUAZ_DVD_xj400},{PKTUAZ_DVD_xj400}], 50, [{PKTUAZ_DVD_xj400}]] exec {Player\Effect\EquipCarMG.sqs}";
+};
 
-class UA_Equip9K112 {};
-class UA_Equip9K119 {};
-class UA_EquipATGM125 {};
+// UA for EAST Tanks Missile. Abandoned.
+class UA_Equip9K112 {
+	statement = "[this, [{9K112_xj400}], 1000] exec {Player\Effect\EquipTankMissile.sqs}";
+};
+class UA_Equip9K119 {
+	statement = "[this, [{9K119_xj400}], 1000] exec {Player\Effect\EquipTankMissile.sqs}";
+};
+class UA_EquipATGM125 {
+	statement = "[this, [{ATGM125_xj400}], 1000] exec {Player\Effect\EquipTankMissile.sqs}";
+};
 
 class WeaponFireGun {};
 class WeaponCloudsGun {};
@@ -3242,6 +3335,30 @@ class CfgVehicles {
 		magazines[] = {"Heat120"}; // having magazines can make AI attack it
 		threat[] = {0.6, 0.9, 0.2};
 		class TransportMagazines {};
+		class UserActions {
+			// todo: localize condition/statement
+			class LST_Attach {
+				displayName = "Load Vehicle";
+				position = "uaDriver";
+				radius = 5;
+				condition = "true";
+				statement = "";
+			};
+			class LST_Detach {
+				displayName = "Unload Vehicle";
+				position = "uaDriver";
+				radius = 5;
+				condition = "true";
+				statement = "";
+			};
+			class LST_Support {
+				displayName = "Support";
+				position = "uaDriver";
+				radius = 5;
+				condition = "true";
+				statement = "";
+			};
+		};
 	};
 	class LST_W_xj400: LST_Base_xj400 {
 		scope = protected;
