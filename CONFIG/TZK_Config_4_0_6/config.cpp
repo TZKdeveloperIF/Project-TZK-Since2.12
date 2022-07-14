@@ -3326,7 +3326,8 @@ class CfgVehicles {
 		model = "\TZK_Model_4_0_6\newport.p3d";
 		picture = "\t406\ui\iLst.paa";
 		maxSpeed = 50;
-		transportSoldier = 50 + 15;
+		transportSoldier = 50 + 15 + 1;
+		cargoAction[] = {"ManActJeepCoDriver","ManActCargo"};
 		transportAmmo = 10000000;
 		transportVehiclesCount = 15;
 		cost = 200000000;
