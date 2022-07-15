@@ -1874,8 +1874,7 @@ class CfgVehicles {
 		};
 	};
 
-	class M151A1C_htr_xj400: JeepMG {
-		scope = 2; vehicleClass = "TZK_Units_400";
+	class M151A1C_htr_xj400: JeepMG_xj400 {
 		accuracy = 1.5;
 		displayName = "M151A1C with 106mm"; side = 1; cost = 100000; threat[] = {0.3, 1, 0.1};
 
@@ -1980,15 +1979,11 @@ class CfgVehicles {
 				angle1 =-1.7;
 			};
 		};
-		class UserActions {
-			class SwitchToDriverLand: UA_SwitchToDriverLand {}; class SwitchToGunnerLand: UA_SwitchToGunnerLand {};
-		};
 		class EventHandlers {
 			init = _this exec {\TZK_Objects\Scripts\InitEventHandlers\removeAllWeapons.sqs};
 		};
 	};
-	class UAZ_SPG_FDF_xj400: JeepMG {
-		scope = 2; vehicleClass = "TZK_Units_400";
+	class UAZ_SPG_FDF_xj400: JeepMG_xj400 {
 		accuracy = 1.5;
 		displayName = "UAZ (SPG-9)"; nameSound = "UAZ"; side = 0; cost = 100000; type = 1; threat[] = {0.5, 1, 0.1};
 
@@ -2062,9 +2057,6 @@ class CfgVehicles {
 			maxElev = 30;
 			minTurn = -180;
 			maxTurn = 180;
-		};
-		class UserActions {
-			class SwitchToDriverLand: UA_SwitchToDriverLand {}; class SwitchToGunnerLand: UA_SwitchToGunnerLand {};
 		};
 		class EventHandlers {
 			init = _this exec {\TZK_Objects\Scripts\InitEventHandlers\removeAllWeapons.sqs};
@@ -2822,7 +2814,7 @@ class CfgVehicles {
 
 	// Grkpbv from CoC mod
 	class Grkpbv_Coc_xj400: M1Abrams_Base_xj400 {
-		scope = 2; vehicleClass = "TZK_Units_400";
+		scope = protected;
 		accuracy = 0.5;
 		displayName = "GrkPbv 120"; nameSound = "tank"; side = 1; cost = 1700000; type = 1; threat[] = {1, 0.4, 0.1};
 
@@ -2919,7 +2911,7 @@ class CfgVehicles {
 	// PLZ89 from VME pla3.2 mod
 	class PLZ89_VME_Base_xj400: T72_Base_xj400 {
 		scope = private; vehicleClass = "TZK_Units_400";
-	//	accuracy = 0.4;
+		// accuracy = 0.4;
 		displayName = "PLZ-89"; nameSound = "Tank"; side = 0; cost = 2000000; type = 1; threat[] = {1, 1, 0.5};
 
 		model = "\TZK_Config_4_0_6\PLZ89.p3d";
@@ -2995,7 +2987,8 @@ class CfgVehicles {
 		};
 	};
 	class PLZ89_TZK_xj400: PLZ89_VME_Base_xj400 {
-		scope = 2; accuracy = 0.45;
+		scope = protected;
+		accuracy = 0.45;
 		armor = 180;
 		weapons[] = {"Gun122_VME_xj400"};
 		magazines[] = {"HE122_VME_0120_xj400"};
