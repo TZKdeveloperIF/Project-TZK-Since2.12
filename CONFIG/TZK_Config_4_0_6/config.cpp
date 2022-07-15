@@ -1391,6 +1391,11 @@ class CfgWeapons {
 	class M26_1000_xj400: M26_0080_xj400 { displayName = "M26 Rocket(1000m/s)"; initSpeed = 1000; };
 	class M26_1200_xj400: M26_0080_xj400 { displayName = "M26 Rocket(1200m/s)"; initSpeed = 1200; };
 	class M26_1500_xj400: M26_0080_xj400 { displayName = "M26 Rocket(1500m/s)"; initSpeed = 1500; };
+
+	class Mortar81_Launcher_xj400: Gun120 {};
+	class Mortar81_0200_xj400: Mortar81_Launcher_xj400 {
+		reloadTime = 6;
+	};
 };
 
 // todo: localize statement
