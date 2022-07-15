@@ -9,7 +9,7 @@ orderCheck = {_id < playerOrderID select _uid}; mutexUnitOrder = false;
 aiOrders1 = []; aiOrders2 = []; lastOrder1 = -1; lastOrder2 = -1; lastOrderList = -1;
 
 aiOrders1 set [count aiOrders1, [
-	"Heal & (Rearm)", [], false, "\TZK_Scripts_4_0_5\Player\Order\Support OptRearm.sqs",
+	"Heal & (Rearm)", [], false, localize {TZK_ORDER_PLAYER_SUPPORT_OPT_REARM},
 	"Units will move to nearest support vehicle belonging to us if heal, repair or rearm needed."
 ]];
 

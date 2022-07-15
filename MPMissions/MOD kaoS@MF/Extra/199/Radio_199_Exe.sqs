@@ -35,12 +35,12 @@ goto "Quit"
 [] exec "Player\Dialog\TZK_Mission_Setting_1.sqs"; exit
 
 #Channel3
-? _vehicle == player: if (call "{_x=={Medkit_xj400}} count magazines player > 0 && damage player > 0.01") Then {player exec "Player\Action\SelfMedic.sqs"} Else {hint "Improper condition. Self Medic don't happen."}, exit
+? _vehicle == player: if (call "{_x=={Medkit_xj400}} count magazines player > 0 && damage player > 0.01") Then {player exec localize {TZK_ACTION_SELF_MEDIC}} Else {hint "Improper condition. Self Medic don't happen."}, exit
 ? (_vehicle call funcGetStructTypeFromObject) in structsOccupiableMortar: [(_vehicle), 080, {M}] exec localize {TZK_RADIO_FUNC_GRAD}, exit
 _hint = "0-0-3 channel can be applied for self-medic when you're on foot and carring ""Medkit"". Also it can be applied for player to switch to the driver seat when player is in ship/helicopter.\nWhen player is in Mortar Structure, this channel can be applied to switch 80m/s speed magazine as well."
 ? "Helicopter" countType [_vehicle] == 0 && "Ship" countType [_vehicle] == 0: goto "Quit"
-? "Ship" countType [_vehicle] > 0: if (player == gunner _vehicle && (isNull driver _vehicle || local driver _vehicle) && local _vehicle) Then {(_vehicle) exec "Player\Action\SwitchToDriver.sqs", 3 setRadioMsg "", 4 setRadioMsg "To gunner's seat"}, exit
-? "Helicopter" countType [_vehicle] > 0: if (player == gunner _vehicle && (isNull driver _vehicle || local driver _vehicle) && local _vehicle) Then {if (abs(speed _vehicle) < 50) Then {(_vehicle) exec "Player\Action\SwitchToDriver.sqs", 3 setRadioMsg "", 4 setRadioMsg "To gunner's seat"} Else {hint "Switch seat in Helicopter requires speed no more than 50km/h."}}, exit
+? "Ship" countType [_vehicle] > 0: if (player == gunner _vehicle && (isNull driver _vehicle || local driver _vehicle) && local _vehicle) Then {(_vehicle) exec localize {TZK_FUNC_SWITCH_2_DRIVER}, 3 setRadioMsg "", 4 setRadioMsg "To gunner's seat"}, exit
+? "Helicopter" countType [_vehicle] > 0: if (player == gunner _vehicle && (isNull driver _vehicle || local driver _vehicle) && local _vehicle) Then {if (abs(speed _vehicle) < 50) Then {(_vehicle) exec localize {TZK_FUNC_SWITCH_2_DRIVER}, 3 setRadioMsg "", 4 setRadioMsg "To gunner's seat"} Else {hint "Switch seat in Helicopter requires speed no more than 50km/h."}}, exit
 goto "Quit"
 
 #Channel4
@@ -48,22 +48,22 @@ goto "Quit"
 ? (_vehicle call funcGetStructTypeFromObject) in structsOccupiableMortar: [(_vehicle), 120, {M}] exec localize {TZK_RADIO_FUNC_GRAD}, exit
 _hint = "0-0-4 channel can be applied for calling MHQ Build Menu when you're on foot and MHQ nearby (150 meters). Also it can be applied for player to switch to the gunner seat when player is in ship/helicopter.\nWhen player is in Mortar Structure, this channel can be applied to switch 120m/s speed magazine as well."
 ? "Helicopter" countType [_vehicle] == 0 && "Ship" countType [_vehicle] == 0: goto "Quit"
-? "Ship" countType [_vehicle] > 0: if (player == driver _vehicle && (isNull gunner _vehicle || local gunner _vehicle) && local _vehicle) Then {(_vehicle) exec "Player\Action\SwitchToGunner.sqs", 3 setRadioMsg "To driver's seat", 4 setRadioMsg ""}, exit
-? "Helicopter" countType [_vehicle] > 0: if (player == driver _vehicle && (isNull gunner _vehicle || local gunner _vehicle) && local _vehicle) Then {if (abs(speed _vehicle) < 50) Then {(_vehicle) exec "Player\Action\SwitchToGunner.sqs", 3 setRadioMsg "To driver's seat", 4 setRadioMsg ""} Else {hint "Switch seat in Helicopter requires speed no more than 50km/h."}}, exit
+? "Ship" countType [_vehicle] > 0: if (player == driver _vehicle && (isNull gunner _vehicle || local gunner _vehicle) && local _vehicle) Then {(_vehicle) exec localize {TZK_FUNC_SWITCH_2_GUNNER}, 3 setRadioMsg "To driver's seat", 4 setRadioMsg ""}, exit
+? "Helicopter" countType [_vehicle] > 0: if (player == driver _vehicle && (isNull gunner _vehicle || local gunner _vehicle) && local _vehicle) Then {if (abs(speed _vehicle) < 50) Then {(_vehicle) exec localize {TZK_FUNC_SWITCH_2_GUNNER}, 3 setRadioMsg "To driver's seat", 4 setRadioMsg ""} Else {hint "Switch seat in Helicopter requires speed no more than 50km/h."}}, exit
 goto "Quit"
 
 #Channel5
 ? _vehicle == player: if (SupNearby) Then {[-1,50] exec "Player\Dialog\BuildMenu.sqs"} Else {hint "Sup too far away. Build Menu not activated."}, exit
 ? (_vehicle call funcGetStructTypeFromObject) in structsOccupiableMortar: [(_vehicle), 180, {M}] exec localize {TZK_RADIO_FUNC_GRAD}, exit
 _hint = "0-0-5 channel can be applied for calling Sup Build Menu when you're on foot and any support vehicle nearby (50 meters).\nWhen player is in Mortar Structure, this channel can be applied to switch 120m/s speed magazine as well.\n When player is in tug-able vehicle, this channel can be applied to attach/detach other vehicle."
-? "GunBoat_xj400" countType [_vehicle] > 0: [_vehicle, tsCenter, ttBoat] exec "Player\Action\AttachDetachVehicle.sqs", exit
-? (_vehicle call funcGetUnitTypeFromObject) in (RadioTypesSupport + [utMCVW, utMCVE, utMHQ0, utMHQ1]) && ("Land" countType [_vehicle] > 0): if ("Truck" countType [_vehicle] > 0) Then {[_vehicle, tsCenter, ttTruck] exec "Player\Action\AttachDetachVehicle.sqs"} Else {[_vehicle, tsCenter, ttAPC] exec "Player\Action\AttachDetachVehicle.sqs"}, exit
-? "Mi17" countType [_vehicle] > 0 || "UH60" countType [_vehicle] > 0: [_vehicle, tsCenter, ttHeli] exec "Player\Action\AttachDetachVehicle.sqs", exit
+? "GunBoat_xj400" countType [_vehicle] > 0: [_vehicle, tsCenter, ttBoat] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}, exit
+? (_vehicle call funcGetUnitTypeFromObject) in (RadioTypesSupport + [utMCVW, utMCVE, utMHQ0, utMHQ1]) && ("Land" countType [_vehicle] > 0): if ("Truck" countType [_vehicle] > 0) Then {[_vehicle, tsCenter, ttTruck] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}} Else {[_vehicle, tsCenter, ttAPC] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}}, exit
+? "Mi17" countType [_vehicle] > 0 || "UH60" countType [_vehicle] > 0: [_vehicle, tsCenter, ttHeli] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}, exit
 
 goto "Quit"
 
 #Channel6
-? "GunBoat_xj400" countType [_vehicle] > 0: [_vehicle, tsRight, ttBoat] exec "Player\Action\AttachDetachVehicle.sqs", exit
+? "GunBoat_xj400" countType [_vehicle] > 0: [_vehicle, tsRight, ttBoat] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}, exit
 ; _hint = "0-0-6 channel can be applied for ship to attach/detach vehicle in right slot."
 ? _vehicle == player: hint_countdown_TZK_RadioReceive_199 = hint_countdown_TZK_RadioReceive_199 + 1, hint format ["Radio channel in 1.96 OFP or 1.99 ACWA is MP-GLOBAL. Thus it's turned off by default and radio channels won't be activated, unless you turn it on in ""Options"" by the button at right-upper corner.\nThis hint will appear when someone calling radio channel (not must be yourself, as have mentioned above, it's MP-GLOBAL.\nThis hint will still appear %1 times in this game.", hint_countdown_TZK_RadioReceive_199]
 
@@ -71,7 +71,7 @@ goto "Quit"
 
 #Channel7
 ; ? _vehicle == player: [player] call loadFile "Extra\Radio\RadioList_Soldier_RearmNVG.sqf", exit
-? "GunBoat_xj400" countType [_vehicle] > 0: [_vehicle, tsLeft, ttBoat] exec "Player\Action\AttachDetachVehicle.sqs", exit
+? "GunBoat_xj400" countType [_vehicle] > 0: [_vehicle, tsLeft, ttBoat] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}, exit
 ? "Helicopter" countType [_vehicle] > 0: [_vehicle, siPlayer] exec localize {TZK_FUNC_EJECT_QUICKLY}, exit
 _hint = "0-0-7 channel can be applied for ship to attach/detach vehicle in left slot.\nWhen player is in helicopter, this channel can be applied to eject all cargos (belonging to AI groups ONLY) quickly."
 
@@ -108,7 +108,7 @@ _hint = "0-0-0 channel can be applied for player to buy RPG launcher/ammo quickl
 ? siPlayer == siCiv: [] exec localize {TZK_RADIO_FUNC_SPEC_RET}, exit
 
 ? "A10_Base_xj400" countType [_vehicle] == 0 && "Su25_Base_xj400" countType [_vehicle] == 0: [_vehicle] exec "Player\Radio\Radio_Update_Vehicle.sqs", goto "Quit"
-? call "bAfterBurner && ""_x=={AfterBurnerSwitch_xj400}"" count magazines _vehicle > 0": _vehicle removeMagazines {AfterBurnerSwitch_xj400}; _vehicle exec "Player\Effect\AfterBurner\Start.sqs", hint "After Burner turn on. Make sure your engine on as well.", 10 setRadioMsg "AfterBurner OFF", exit
+? call "bAfterBurner && ""_x=={AfterBurnerSwitch_xj400}"" count magazines _vehicle > 0": _vehicle removeMagazines {AfterBurnerSwitch_xj400}; _vehicle exec localize {TZK_EFFECT_AFTER_BURNER}, hint "After Burner turn on. Make sure your engine on as well.", 10 setRadioMsg "AfterBurner OFF", exit
 ? call " ""_x=={AfterBurnerSwitch_xj400}"" count magazines _vehicle == 0 && count magazines _vehicle > 0": _vehicle addMagazine {AfterBurnerSwitch_xj400}, hint "After Burner turn off.", 10 setRadioMsg "AfterBurner ON", exit
 
 #Quit

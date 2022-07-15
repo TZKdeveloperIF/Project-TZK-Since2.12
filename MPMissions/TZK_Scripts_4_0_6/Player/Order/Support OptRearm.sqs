@@ -7,7 +7,7 @@ _need = false; _msg = "I'm fine."; _v = vehicle _unit
 ? _unit != _v : goto "Vehicle"
 #Infantry
 	? (damage _unit) > 0 && "_x == {Medkit_xj400}" count magazines _unit ==0: goto "FindSupport"
-	? (damage _unit) > 0 && "_x == {Medkit_xj400}" count magazines _unit > 0: _unit exec "Player\Action\SelfMedic.sqs"; _msg = "Using Med Kit."
+	? (damage _unit) > 0 && "_x == {Medkit_xj400}" count magazines _unit > 0: _unit exec localize {TZK_ACTION_SELF_MEDIC}; _msg = "Using Med Kit."
 	_wpnPrim = primaryWeapon _unit; _wpnSec = secondaryWeapon _unit
 	? _wpnPrim != "": if ((_unit ammo _wpnPrim) == 0) then { _need = true }
 	? _wpnSec != "" : if ((_unit ammo _wpnSec) == 0) then { _need = true }

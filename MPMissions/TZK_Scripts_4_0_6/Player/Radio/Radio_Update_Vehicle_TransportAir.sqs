@@ -14,9 +14,9 @@ if (_booleSpoofON) then {Radio001 setTriggerText "SpoofMissile ON"; Radio001 set
 if (_booleSpoofOFF) then {Radio001 setTriggerText "SpoofMissile OFF"; Radio001 setTriggerStatements ["this", "vehicle player addMagazine {SpoofSwitch_xj400}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true}", ""]};
 
 Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", {[] exec "Player\Dialog\TZK_Mission_Setting_1.sqs"}, ""];
-if (call _booleStringSwitchDriver) then {Radio003 setTriggerText "To driver's seat"; Radio003 setTriggerStatements ["this", {(vehicle player) exec "Player\Action\SwitchToDriver.sqs"}, ""]} else {Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""]};
-if (call _booleStringSwitchGunner) then {Radio004 setTriggerText "To gunner's seat"; Radio004 setTriggerStatements ["this", {(vehicle player) exec "Player\Action\SwitchToGunner.sqs"}, ""]} else {Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""]};
-? "Plane" countType [_vehicle] == 0 && call (typeOf _vehicle GetVehicleParam "transportSoldier") > 8: Radio005 setTriggerText "Attach/Detach Center Vehicle"; Radio005 setTriggerStatements ["this", {[vehicle player, tsCenter, ttHeli] exec "Player\Action\AttachDetachVehicle.sqs"}, ""];
+if (call _booleStringSwitchDriver) then {Radio003 setTriggerText "To driver's seat"; Radio003 setTriggerStatements ["this", {(vehicle player) exec localize {TZK_FUNC_SWITCH_2_DRIVER}}, ""]} else {Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""]};
+if (call _booleStringSwitchGunner) then {Radio004 setTriggerText "To gunner's seat"; Radio004 setTriggerStatements ["this", {(vehicle player) exec localize {TZK_FUNC_SWITCH_2_GUNNER}}, ""]} else {Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""]};
+? "Plane" countType [_vehicle] == 0 && call (typeOf _vehicle GetVehicleParam "transportSoldier") > 8: Radio005 setTriggerText "Attach/Detach Center Vehicle"; Radio005 setTriggerStatements ["this", {[vehicle player, tsCenter, ttHeli] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}}, ""];
 Radio006 setTriggerText "Get Plane Status"; Radio006 setTriggerStatements ["this", {[vehicle player, player] exec "\TZK_Scripts_4_0_4\Player\Action\PlaneFlyingStatus.sqs"}, ""];
 Radio007 setTriggerText "Eject AI Units"; Radio007 setTriggerStatements ["this", {[vehicle player, siPlayer] exec localize {TZK_FUNC_EJECT_QUICKLY}}, ""];
 Radio008 setTriggerText "Eject All Cargo"; Radio008 setTriggerStatements ["this", {[vehicle player, siPlayer] exec localize {TZK_FUNC_EJECT_ALL_CARGO}}, ""];
@@ -39,8 +39,8 @@ _booleRefreshTransport = (_booleTransport && !(call _booleStringTransport)) || (
 
 _booleRefreshSwitchDriver = (_booleSwitchDriver && !(call _booleStringSwitchDriver)) || (!_booleSwitchDriver && (call _booleStringSwitchDriver))
 _booleRefreshSwitchGunner = (_booleSwitchGunner && !(call _booleStringSwitchGunner)) || (!_booleSwitchGunner && (call _booleStringSwitchGunner))
-? _booleRefreshSwitchDriver : if (call _booleStringSwitchDriver) then {Radio003 setTriggerText "To driver's seat"; Radio003 setTriggerStatements ["this", {(vehicle player) exec "Player\Action\SwitchToDriver.sqs"}, ""]} else {Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""]}
-? _booleRefreshSwitchGunner : if (call _booleStringSwitchGunner) then {Radio004 setTriggerText "To gunner's seat"; Radio004 setTriggerStatements ["this", {(vehicle player) exec "Player\Action\SwitchToGunner.sqs"}, ""]} else {Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""]}
+? _booleRefreshSwitchDriver : if (call _booleStringSwitchDriver) then {Radio003 setTriggerText "To driver's seat"; Radio003 setTriggerStatements ["this", {(vehicle player) exec localize {TZK_FUNC_SWITCH_2_DRIVER}}, ""]} else {Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""]}
+? _booleRefreshSwitchGunner : if (call _booleStringSwitchGunner) then {Radio004 setTriggerText "To gunner's seat"; Radio004 setTriggerStatements ["this", {(vehicle player) exec localize {TZK_FUNC_SWITCH_2_GUNNER}}, ""]} else {Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""]}
 
 ? _booleRefreshSwitchDriver : _booleSwitchDriver = call _booleStringSwitchDriver
 ? _booleRefreshSwitchGunner : _booleSwitchGunner = call _booleStringSwitchGunner
