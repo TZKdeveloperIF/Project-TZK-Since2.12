@@ -450,6 +450,11 @@ class CfgModels {
 	class m119: Veh_Grad {};
 	class d30: Veh_Grad {};
 
+	class m2_tripod: m2_mg {};
+	class icp_nsv: m2_mg {};
+	class una_tow_m220: m2_mg {};
+	class AT7s: m2_mg {};
+
 	class A10_TZK: Vehicle {
 		sectionsInherit = "Vehicle";
 		sections[]= {

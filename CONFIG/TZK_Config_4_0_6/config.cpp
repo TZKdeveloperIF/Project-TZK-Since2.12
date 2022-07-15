@@ -828,6 +828,30 @@ class CfgWeapons {
 		magazines[] = {Tunguska_30mm_CommonMag_xj406, Tunguska_30mm_SmallMag_xj406};
 	};
 
+	class VehAA_xj400: AT3Launcher {
+		count = 20;
+		ammo = "AA_I_TZK_xj400";
+		modelOptics = "optika_stinger";
+		displayName = "$STR_DN_AA";
+		displayNameMagazine = "$STR_MN_AA";
+		shortNameMagazine = "$STR_SN_AA";
+		sound[] = {"Weapons\at_launch",0.01,1};
+		reloadSound[] = {"Weapons\at_load",0.0003162,1};
+		reloadTime = 5;
+		magazineReloadTime = 5;
+		aiRateOfFire = 3.0;
+		aiRateOfFireDistance = 2000;
+		maxLeadSpeed = 600;
+		aiDispersionCoefX = 16; aiDispersionCoefY = 16;
+	};
+	class Veh9k32_xj400: VehAA_xj400 {
+		modelOptics = "optika_strela";
+		ammo = "9k32_I_TZK_xj400";
+		displayName = "$STR_DN_9K32";
+		displayNameMagazine = "$STR_MN_9K32";
+		shortNameMagazine = "$STR_SN_9K32";
+	};
+
 	class Stinger_xj400: AT3Launcher {};
 	class Stinger_Mag_xj400: Stinger_xj400 {
 		scopeWeapon = 0; scopeMagazine = 2;
@@ -1571,7 +1595,9 @@ class CfgVehicles {
 		class TurretBase {};
 	};
 	class RussianTank: Tank {};
-	class APC: Tank {};
+	class APC: Tank {
+		class TurretBase {};
+	};
 	class ZSU: Tank {};
 	class BMP: APC {};
 	class BMPAmbul: BMP {};
@@ -2479,6 +2505,101 @@ class CfgVehicles {
 	class M252Mortar_TZK_xj400: M2StaticMG {
 		soundEngine[] = {"",0,1};
 		soundEnviron[] = {"",0,1};
+	};
+
+	class M2StaticMG_xj400: M2StaticMG {
+		camouflage = 2;
+	};
+	class M2StaticMG_W_xj400: M2StaticMG_xj400 {};
+	class M2StaticMG_E_xj400: M2StaticMG_xj400 {};
+	class M2_tripod_una_xj400: M2StaticMG_W_xj400 {
+		displayName = "M2 tripod";
+
+		model = "\TZK_Model_4_0_6\m2_tripod.p3d";
+		gunnerOpticsModel = "optika_empty.p3d";
+		gunnerAction = "ManActUNA_MK19gl_Gunner";
+		gunnerInAction = "ManActUNA_MK19gl_Gunner";
+
+		weapons[] = {"MG_12_7_xj400"};
+		magazines[] = {"MG_12_7_xj400", "MG_12_7_xj400"};
+
+		class Turret: TurretBase {
+			minElev = -5;
+			maxElev = +15;
+			minTurn = -180;
+			maxTurn = +180;
+		};
+	};
+	class NSV_ICP_xj400: M2StaticMG_E_xj400 {
+		displayName = "NSV 12.7 UTES";
+		cost = 15000;
+
+		model = "\TZK_Model_4_0_6\ICP_NSV.p3d";
+		gunnerAction = "ManActICP_Mgunner";
+		gunnerInAction = "ManActICP_Mgunner";
+
+		weapons[] = {"MG_12_7_xj400"};
+		magazines[] = {"MG_12_7_xj400", "MG_12_7_xj400"};
+
+		picture = "\t406\icp\icon.paa";
+		icon = "\t406\icp\EDnsv.paa";
+		mapSize = 8;
+
+		nightVision = 1;
+
+		hideProxyInCombat = false;
+		secondaryExplosion = -1;
+		
+		class Turret: TurretBase {
+			minElev = -10;
+			maxElev = +30;
+			minTurn = -180;
+			maxTurn = +180;
+		};
+	};
+	class M220TOW_una_xj400: M2StaticMG_W_xj400 {
+		displayName = "M220-Tow Launcher";
+		threat[] = {0.1, 0.5, 0.9};
+
+		model = "\TZK_Model_4_0_6\una_tow_m220.p3d";
+		gunnerOpticsModel = "optika_stinger";
+
+		weapons[] = {"VehAA_xj400"};
+		magazines[] = {"VehAA_xj400"};
+
+		gunnerAction = "ManActUNA_MK19gl_Gunner";
+		gunnerInAction = "ManActUNA_MK19gl_Gunner";
+		
+		picture = "\t406\rcwc\town_220.paa";
+		mapSize = 1;
+	};
+	class Metis_rcwc_xj400: M2StaticMG_E_xj400 {
+		displayName = "ATGM Metis";
+		cost = 10000;
+		threat[] = {0.1, 0.5, 0.9};
+		
+		model = "\TZK_Model_4_0_6\AT7s.p3d";
+		gunnerOpticsModel = "optika_strela";
+		gunnerOpticsColor[] = {0.3, 0.3 ,0.0, 1};
+
+		weapons[] = {"Veh9k32_xj400"};
+		magazines[] = {"Veh9k32_xj400"};
+
+		hideProxyInCombat = 0;
+		nightVision = 1;
+		castGunnerShadow = 0;
+
+		gunnerAction = "ManActUpLying";
+		gunnerInAction = "ManActUpLying";
+
+		picture = "\t406\rcwc\town_220.paa";
+
+		class Turret: TurretBase {
+			minElev = -7.5;
+			maxElev = +35;
+			minTurn = -180;
+			maxTurn = +180;
+		};
 	};
 
 	class Tank_xj400: Tank {};
@@ -3651,6 +3772,12 @@ class CfgVehicleActions {
 	MCSR_OrcaPilot="MCSR_OrcaPilot";
 	
 	BAS_MH60Gunner = "BAS_MH60Gunner";
+
+	UNA_MK19gl_Gunner = "UNA_MK19gl_static";
+
+	ICP_Mgunner="ICP_Mgunner";
+
+	UpLying = "BinocLying"; 
 };
 class CfgMovesMC {
 	class Default {};
@@ -4002,6 +4129,25 @@ class CfgMovesMC {
 			VEH_DIE_CONN(Name,anim,time)
 
 		VEH_MOVES_VAR(bas_mh60gunner, \TZK_Config_4_0_6\Anims\bas_mh60gunner, 0.5, 12);
+
+		// --------------------------- UNA Static -------------------------------
+		class UNA_MK19gl_Static: Gunner {
+			file = "\TZK_Config_4_0_6\Anims\MK19gl_Gunner.rtm";
+			speed = 10000000000.000000;
+			looped = 1
+		};
+
+		// --------------------------- ICP MGun -------------------------------
+		class ICP_Mgunner: StandBase {
+			actions = StandActions;
+			file = "\TZK_Config_4_0_6\Anims\NSVGunner.rtm";
+			speed = SPEED_STATIC;
+			looped = 1
+			soundEnabled = 0
+			variantAfter[] = {1,3,6};
+			variantsAI[] = {HandGunStandVar2,.700000,HandGunStand,.300000};
+			equivalentTo = HandGunStand;
+		};
 	};
 };
 
