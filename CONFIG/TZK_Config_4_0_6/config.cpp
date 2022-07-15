@@ -44,25 +44,25 @@ class CfgAmmo {
 	class Heat105: Heat73 {};
 	class Heat120: Heat105 {};
 	class Heat125: Heat120 {};
-	
-	class AT3:Default {};
-	class LAW:AT3 {};
-	class RPG:LAW {};
-	class CarlGustav:AT3 {};
+
+	class AT3: Default {};
+	class LAW: AT3 {};
+	class RPG: LAW {};
+	class CarlGustav: AT3 {};
 	class AT4: CarlGustav {};
-	class AA:CarlGustav {};
-	class 9K32:AA {};
-	
+	class AA: CarlGustav {};
+	class 9K32: AA {};
+
 	class Grenade: Default {};
 	class MortarShell: Grenade {};
-	
+
 	class BulletSingle: Default {};
 	class ExplosiveBullet: BulletSingle {};
 	class Bullet30: ExplosiveBullet {};
-	
+
 	class Hellfire: AT3 {};
 	class HellfireApach: Hellfire {};
-	
+
 	class Bullet4x20: ExplosiveBullet {};
 	class Bullet4x20_xj400: Bullet4x20 {};
 	class Bullet4x20_4xAA_xj406: Bullet4x20_xj400 {
@@ -119,22 +119,22 @@ class CfgAmmo {
 		maxRange = 3000;
 		thrustTime = 4.85;
 	};
-	
-	class RedTop_26_xj400 : AA {
+
+	class RedTop_26_xj400: AA {
 		thrustTime = 5; // Don't know why but in this class demical like 5.1 will be reset as its interger part automatically
 	};
-	class RedTop_30_xj400 : RedTop_26_xj400 {
+	class RedTop_30_xj400: RedTop_26_xj400 {
 		thrustTime = 6.3;
 	};
-	class RedTop_40_xj400 : RedTop_26_xj400 {
+	class RedTop_40_xj400: RedTop_26_xj400 {
 		thrustTime = 8.2;
 	};
 	// Add range-extended missile.
-	class RedTop_45_xj400 : RedTop_26_xj400 {
+	class RedTop_45_xj400: RedTop_26_xj400 {
 		maxRange = 4500;
 		thrustTime = 9.1;
 	};
-	class RedTop_48_xj400 : RedTop_26_xj400 {
+	class RedTop_48_xj400: RedTop_26_xj400 {
 		maxRange = 4800;
 		thrustTime = 9.6;
 	};
@@ -144,18 +144,18 @@ class CfgAmmo {
 		maxSpeed = 900;
 		sideAirFriction = 1;
 	};
-	class 9M311_30_xj400 : 9M311_26_xj400 {
+	class 9M311_30_xj400: 9M311_26_xj400 {
 		thrustTime = 6.3;
 	};
-	class 9M311_40_xj400 : 9M311_26_xj400 {
+	class 9M311_40_xj400: 9M311_26_xj400 {
 		thrustTime = 8.2;
 	};
 	// Add range-extended missile.
-	class 9M311_45_xj400 : 9M311_26_xj400 {
+	class 9M311_45_xj400: 9M311_26_xj400 {
 		maxRange = 4500;
 		thrustTime = 9.1;
 	};
-	class 9M311_48_xj400 : 9M311_26_xj400 {
+	class 9M311_48_xj400: 9M311_26_xj400 {
 		maxRange = 4800;
 		thrustTime = 9.6;
 	};
@@ -164,19 +164,19 @@ class CfgAmmo {
 		thrustTime = 5.5;
 		hit = 4;
 	};
-	class RedTop_30_TZK_xj400 : RedTop_30_xj400 {
+	class RedTop_30_TZK_xj400: RedTop_30_xj400 {
 		hit = 4;
 		maxRange = 3000;
 	};
-	class RedTop_40_TZK_xj400 : RedTop_40_xj400 {
+	class RedTop_40_TZK_xj400: RedTop_40_xj400 {
 		hit = 4;
 		maxRange = 4000;
 	};
-	class RedTop_45_TZK_xj400 : RedTop_45_xj400 {
+	class RedTop_45_TZK_xj400: RedTop_45_xj400 {
 		hit = 4;
 		maxRange = 4500;
 	};
-	class RedTop_48_TZK_xj400 : RedTop_48_xj400 {
+	class RedTop_48_TZK_xj400: RedTop_48_xj400 {
 		hit = 4;
 		maxRange = 4800;
 	};
@@ -184,24 +184,24 @@ class CfgAmmo {
 		thrustTime = 5.5;
 		hit = 4;
 	};
-	class 9M311_30_TZK_xj400 : 9M311_30_xj400 {
+	class 9M311_30_TZK_xj400: 9M311_30_xj400 {
 		hit = 4;
 		maxRange = 3000;
 	};
-	class 9M311_40_TZK_xj400 : 9M311_40_xj400 {
+	class 9M311_40_TZK_xj400: 9M311_40_xj400 {
 		hit = 4;
 		maxRange = 4000;
 	};
-	class 9M311_45_TZK_xj400 : 9M311_45_xj400 {
+	class 9M311_45_TZK_xj400: 9M311_45_xj400 {
 		hit = 4;
 		maxRange = 4500;
 	};
-	class 9M311_48_TZK_xj400 : 9M311_48_xj400 {
+	class 9M311_48_TZK_xj400: 9M311_48_xj400 {
 		hit = 4;
 		maxRange = 4800;
 	};
 
-	class FakeC4_1000_xj400 : Grenade {
+	class FakeC4_1000_xj400: Grenade {
 		hit = 0;
 		indirectHit = 1000;
 		indirectHitRange = 6;
@@ -212,19 +212,19 @@ class CfgAmmo {
 		audibleFire = 0;
 		visibleFireTime = 0;
 	};
-	class FakeC4_1100_xj400 : FakeC4_1000_xj400 {
+	class FakeC4_1100_xj400: FakeC4_1000_xj400 {
 		indirectHit = 1100;
 	};
-	class FakeC4_1200_xj400 : FakeC4_1000_xj400 {
+	class FakeC4_1200_xj400: FakeC4_1000_xj400 {
 		indirectHit = 1200;
 	};
-	class FakeC4_1300_xj400 : FakeC4_1000_xj400 {
+	class FakeC4_1300_xj400: FakeC4_1000_xj400 {
 		indirectHit = 1300;
 	};
-	class FakeC4_1400_xj400 : FakeC4_1000_xj400 {
+	class FakeC4_1400_xj400: FakeC4_1000_xj400 {
 		indirectHit = 1400;
 	};
-	class FakeC4_1500_xj400 : FakeC4_1000_xj400 {
+	class FakeC4_1500_xj400: FakeC4_1000_xj400 {
 		indirectHit = 1500;
 	};
 
@@ -297,7 +297,7 @@ class CfgAmmo {
 	class Ch29T_20_xj400: Ch29T_14_xj400 {
 		thrustTime = 2.75;
 	};
-	
+
 	class Bullet7_6: BulletSingle {};
 	class Bullet_7_6_AI_xj400: Bullet7_6 {};
 	class Bullet_7_6_Player_xj400: Bullet7_6 { midRange = 5; maxRange = 6; };
@@ -324,7 +324,7 @@ class CfgAmmo {
 		maxRange = 1600;
 		cartridge = "FxCartridge"; // Same as BulletSingle actually. Explicitly define it
 	};
-	
+
 	class GrenadeHand: Grenade {};
 	class RKG3M_xj400: GrenadeHand {
 		hit = 500;
@@ -343,7 +343,7 @@ class CfgAmmo {
 		hitArmor[] = {soundHit1,0.25,soundHit2,0.25,soundHit3,0.25,soundHit4,0.25};
 		hitBuilding[] = {soundHit1,0.25,soundHit2,0.25,soundHit3,0.25,soundHit4,0.25};
 	};
-	
+
 	class Carl_I_1_TZK_xj400: CarlGustav {};
 	class Carl_I_2_TZK_xj400: Carl_I_1_TZK_xj400 { hit = 900; };
 	class Carl_II_1_TZK_xj400: Carl_I_1_TZK_xj400 {
@@ -368,7 +368,7 @@ class CfgAmmo {
 	class AT4_IV_2_TZK_xj400: Carl_IV_2_TZK_xj400 { model = "RPG"; };
 	class AA_I_TZK_xj400: AA { maxRange = 1500; };
 	class 9K32_I_TZK_xj400: AA_I_TZK_xj400 {};
-	
+
 	class Sabot106_htr_xj400: Bullet12_7 {
 		airLock = 0;
 		hit = 650; indirectHit = 250; indirectHitRange = 1;
@@ -379,14 +379,14 @@ class CfgAmmo {
 		soundFly[] = {"objects\bulletnoise",0.0316228,4};
 		simulation = "shotBullet";
 		timeToLive = 60; // Useless for shotBullet
-		
+
 		explosive = 1;
 		cost = 300;
 		visibleFire = 16;
 		audibleFire = 16;
 		visibleFireTime = 10;
 		tracerColor[] = {0, 0, 0, 0};
-   };
+	};
 	class PG9HEAT_fdf_xj400: Bullet12_7 {
 		airLock = 0;
 		hit = 490; indirectHit = 100; indirectHitRange = 4;
@@ -440,13 +440,13 @@ class CfgAmmo {
 		// ================ above same as LAW ================
 		simulation = "shotShell";
 		model = "\TZK_Model_4_0_6\warhead02.p3d";
-		// displayName =  "3-O-13"; // manazine name
+		// displayName =	"3-O-13"; // manazine name
 		// 弹头个数			8
 		// 单个弹头伤害		0.16
 		// 散布半径			9
 		// 发射载具			PLZ05
 	};
-	
+
 	class 105RCSabot_OFrP_xj400: Heat105 {
 		hit = 700; indirectHit = 300; indirectHitRange = 1;
 		minRange = 10;
@@ -505,9 +505,9 @@ class CfgAmmo {
 class CfgWeapons {
 	class Default {};
 
-	class LAWLauncher:Default {};
+	class LAWLauncher: Default {};
 	class RPGLauncher: LAWLauncher {};
-	class CarlGustavLauncher:LAWLauncher {};
+	class CarlGustavLauncher: LAWLauncher {};
 	class AT3Launcher: CarlGustavLauncher {};
 	class HellfireLauncher: AT3Launcher {};
 
@@ -515,7 +515,7 @@ class CfgWeapons {
 	class Gun105: Gun73 {};
 	class Gun120: Gun105 {};
 	class Gun125: Gun120 {};
-	class Shell73 : Default {};
+	class Shell73: Default {};
 	class Heat73: Shell73 {};
 	class Shell105: Shell73 {};
 	class Heat105: Shell105 {};
@@ -523,7 +523,7 @@ class CfgWeapons {
 	class Heat120: Shell120 {};
 	class Shell125: Shell120 {};
 	class Heat125: Shell125 {};
-	
+
 	class MGun: Default {};
 	class MachineGun7_6: MGun {};
 	class MachineGun12_7: MachineGun7_6 {};
@@ -740,9 +740,9 @@ class CfgWeapons {
 		displayNameMagazine = "$STR_MN_PK";
 		shortNameMagazine = "$STR_SN_PK";
 	};
-	
+
 	class HellfireLauncherApach: HellfireLauncher {};
-	
+
 	#define CannonCommonMag(weapon, time, disp) weapon##_##time##_##disp##_xj406
 	#define CannonSmallMag(weapon, time, disp) weapon##_Small_##time##_##disp##_xj406
 	#define CannonClass(weapon, time, disp) \
@@ -977,10 +977,10 @@ class CfgWeapons {
 	class Ch29T_20_xj400: Ch29T_14_xj400 {
 		ammo = "Ch29T_20_xj400";
 	};
-	
+
 	class GrenadeLauncher: Default {};
 	class HandGrenade: GrenadeLauncher {};
-	
+
 	class Carl_I_1_TZK_xj400: CarlGustavLauncher {
 		ammo = "Carl_I_1_TZK_xj400"; 
 		picture = "\dtaext\equip\m\m_CarlGustavLauncher.paa";
@@ -1118,7 +1118,7 @@ class CfgWeapons {
 		magazines[]={"RPK74_SD_Mag_xj400", "RPK74_SD_Pistol_Mag_xj400"};
 	};
 
-	
+
 	class Gun106_htr_xj400: Gun120 {
 		displayName = "106mm HEAT";
 		reloadSound[] = {"\TZK_Config_4_0_6\snd\m151a1c\106reload.wss", 0.5, 1};
@@ -1180,7 +1180,7 @@ class CfgWeapons {
 		displayName = "105mm/48caliber";
 		magazines[] = {"105RCSabot_OFrP_xj400", "105RCHE_OFrP_xj400"};
 		reloadTime = 8; //chargeur manuel
-		
+
 		opticsZoomMin = 0.04;
  		opticsZoomMax = 0.18;
  		distanceZoomMin = 800;
@@ -1247,7 +1247,7 @@ class CfgWeapons {
 	class Gun120_Grk_xj400: shell125 {
 		displayName = "120mm Gun";
 		scopeWeapon = 2; scopeMagazine = 0;
-		
+
 		backgroundReload = 1;
 		reloadSound[] = {"Weapons\reload",0.001,1};
 		magazines[] = {
@@ -1261,7 +1261,7 @@ class CfgWeapons {
 		displayNameMagazine = "120mm HE"; shortNameMagazine = "HE";
 		count = 20;
 		initSpeed = 500;
-		
+
 		displayName = "120mm HE";
 		ammo = "HE120_Coc_xj400";
 		sound[] = {"\TZK_Config_4_0_6\coc\amos_fire.wss", db+20 ,1};
@@ -1274,14 +1274,14 @@ class CfgWeapons {
 	};
 	#define HE120_Grk(speed) \
 	class HE120_Grk_##speed##_xj400: HE120_Grk_Base_xj400 { \
-		initSpeed = ##speed##;  displayName = 120mm HE (##speed##m/s); \
+		initSpeed = ##speed##; displayName = 120mm HE (##speed##m/s); \
 	};
 	HE120_Grk(0080); HE120_Grk(0120); HE120_Grk(0180); HE120_Grk(0300); HE120_Grk(0400); HE120_Grk(0500); HE120_Grk(0600); HE120_Grk(0700);
 
 	class Gun122_VME_xj400: shell125 {
 		displayName = "122mm Gun";
 		scopeWeapon = 2; scopeMagazine = 0;
-		
+
 		backgroundReload = 1;
 		reloadSound[] = {"\TZK_Sounds_4_0_0\VME\aa1.wav", 0.1, 1};
 		magazines[] = {
@@ -1289,7 +1289,7 @@ class CfgWeapons {
 			,"HE122_VME_0500_xj400","HE122_VME_0600_xj400","HE122_VME_0700_xj400"
 		};
 		magazineReloadTime = 2.5;
-		
+
 		opticsZoomMin = 0.04;
 		opticsZoomMax = 0.12;
 		distanceZoomMin = 1500;
@@ -1300,7 +1300,7 @@ class CfgWeapons {
 		displayNameMagazine = "122mm HE"; shortNameMagazine = "HE";
 		count = 50;
 		initSpeed = 500;
-		
+
 		displayName = "122mm HE";
 		ammo = "HE122_VME_xj400";
 		sound[] = {"\TZK_Config_4_0_6\vme\plz89.wss", db+20, 1};
@@ -1313,7 +1313,7 @@ class CfgWeapons {
 	};
 	#define HE122_VME(speed) \
 	class HE122_VME_##speed##_xj400: HE122_VME_Base_xj400 { \
-		initSpeed = ##speed##;  displayName = 122mm HE (##speed##m/s); \
+		initSpeed = ##speed##; displayName = 122mm HE (##speed##m/s); \
 	};
 	HE122_VME(0080); HE122_VME(0120); HE122_VME(0180); HE122_VME(0300); HE122_VME(0400); HE122_VME(0500); HE122_VME(0600); HE122_VME(0700);
 
@@ -1388,11 +1388,11 @@ class CfgWeapons {
 	class M26_0700_xj400: M26_0080_xj400 { displayName = "M26 Rocket(700m/s)"; initSpeed = 700; };
 	class M26_0800_xj400: M26_0080_xj400 { displayName = "M26 Rocket(800m/s)"; initSpeed = 800; };
 	class M26_0900_xj400: M26_0080_xj400 { displayName = "M26 Rocket(900m/s)"; initSpeed = 900; };
-	class M26_1000_xj400: M26_0080_xj400 { displayName = "M26 Rocket(1000m/s)"; initSpeed = 1000; };	
-	class M26_1200_xj400: M26_0080_xj400 { displayName = "M26 Rocket(1200m/s)"; initSpeed = 1200; };	
-	class M26_1500_xj400: M26_0080_xj400 { displayName = "M26 Rocket(1500m/s)"; initSpeed = 1500; };	
+	class M26_1000_xj400: M26_0080_xj400 { displayName = "M26 Rocket(1000m/s)"; initSpeed = 1000; };
+	class M26_1200_xj400: M26_0080_xj400 { displayName = "M26 Rocket(1200m/s)"; initSpeed = 1200; };
+	class M26_1500_xj400: M26_0080_xj400 { displayName = "M26 Rocket(1500m/s)"; initSpeed = 1500; };
 };
-	
+
 // todo: localize statement
 class UA_MHQBuildMenu {};
 class UA_MCVBuildMenu {};
@@ -1425,43 +1425,43 @@ class UA_AttachInVehicle {};
 class UA_AttachOnFoot {
 	statement = "[this, tsCenter, ttTruck] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}";
 };
-class UA_AttachInVehicle_Truck : UA_AttachInVehicle {
+class UA_AttachInVehicle_Truck: UA_AttachInVehicle {
 	statement = "[this, tsCenter, ttTruck] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}";
 };
-class UA_AttachOnFoot_Truck : UA_AttachOnFoot {
+class UA_AttachOnFoot_Truck: UA_AttachOnFoot {
 	statement = "[this, tsCenter, ttTruck] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}";
 };
 
-class UA_AttachInVehicle_Center : UA_AttachInVehicle {
+class UA_AttachInVehicle_Center: UA_AttachInVehicle {
 	statement = "[this, tsCenter, ttBoat] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}";
 };
-class UA_AttachInVehicle_Right : UA_AttachInVehicle {
+class UA_AttachInVehicle_Right: UA_AttachInVehicle {
 	statement = "[this, tsRight, ttBoat] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}";
 };
-class UA_AttachInVehicle_Left : UA_AttachInVehicle_Right {
+class UA_AttachInVehicle_Left: UA_AttachInVehicle_Right {
 	statement = "[this, tsLeft, ttBoat] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}";
 };
-class UA_AttachOnFoot_Center : UA_AttachOnFoot {
+class UA_AttachOnFoot_Center: UA_AttachOnFoot {
 	statement = "[this, tsCenter, ttBoat] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}";
 };
-class UA_AttachOnFoot_Right : UA_AttachOnFoot {
+class UA_AttachOnFoot_Right: UA_AttachOnFoot {
 	statement = "[this, tsRight, ttBoat] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}";
 };
-class UA_AttachOnFoot_Left : UA_AttachOnFoot {
+class UA_AttachOnFoot_Left: UA_AttachOnFoot {
 	statement = "[this, tsLeft, ttBoat] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}";
 };
 
-class UA_AttachInVehicle_APC : UA_AttachInVehicle {
+class UA_AttachInVehicle_APC: UA_AttachInVehicle {
 	statement = "[this, tsCenter, ttAPC] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}";
 };
-class UA_AttachOnFoot_APC : UA_AttachOnFoot {
+class UA_AttachOnFoot_APC: UA_AttachOnFoot {
 	statement = "[this, tsCenter, ttAPC] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}";
 };
 
-class UA_AttachInVehicle_Heli : UA_AttachInVehicle {
+class UA_AttachInVehicle_Heli: UA_AttachInVehicle {
 	statement = "[this, tsCenter, ttHeli] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}";
 };
-class UA_AttachOnFoot_Heli : UA_AttachOnFoot {
+class UA_AttachOnFoot_Heli: UA_AttachOnFoot {
 	statement = "[this, tsCenter, ttHeli] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}";
 };
 
@@ -1472,8 +1472,8 @@ class UA_SwitchToDriverAir {
 class UA_SwitchToGunnerAir {
 	statement = "this exec localize {TZK_FUNC_SWITCH_2_GUNNER}";
 };
-class UA_SwitchToDriverLand : UA_SwitchToDriverAir {};
-class UA_SwitchToGunnerLand : UA_SwitchToGunnerAir {};
+class UA_SwitchToDriverLand: UA_SwitchToDriverAir {};
+class UA_SwitchToGunnerLand: UA_SwitchToGunnerAir {};
 
 // UA for Aircraft
 class UA_SetFlightAltitude {
@@ -1515,7 +1515,7 @@ class UA_EquipGrenade {
 }
 class UA_EquipMortar {
 	statement = "[this, [{VirtualMortar_xj400}], 20] exec localize {TZK_FUNC_EQUIP_VIRTUAL_WEP}";
-}	
+}
 class UA_EquipMG {
 	statement = "[this, [{Mag_12mm7_100_xj400}], 20] exec localize {TZK_FUNC_EQUIP_VIRTUAL_WEP}";
 }
@@ -1554,8 +1554,8 @@ class CfgVehicles {
 		class ViewGunnerBase {};
 		class ViewOpticsBase {}; // for gunner aiming?
 	};
-	class AllVehicles:All{};
-		
+	class AllVehicles: All{};
+
 	class Air: AllVehicles {};
 	class Helicopter: Air {
 		class TurretBase {};
@@ -1570,8 +1570,8 @@ class CfgVehicles {
 	class Kamov: Mi24 {};
 	class A10: Plane {};
 	class Su25: Plane {};
-	
-	class Land:AllVehicles{};
+
+	class Land: AllVehicles{};
 	class LandVehicle: Land {};
 	class Car: LandVehicle {};
 	class Truck: Car {};
@@ -1617,7 +1617,7 @@ class CfgVehicles {
 
 	class M2StaticMG: M113 {};
 
-	
+
 	class Static: All {};
 	class Building: Static {};
 	class NonStrategic: Building {};
@@ -1644,7 +1644,7 @@ class CfgVehicles {
 	class ReammoBoxE_TZK_xj400: ReammoBoxEast {
 		class TransportMagazines {};
 	};
-	
+
 	class Jeep_xj400: Jeep {
 		model = "\TZK_Model_4_0_6\Jeep_TZK.p3d";
 		hiddenSelections[] = {tzk_tex_00, 
@@ -1725,9 +1725,9 @@ class CfgVehicles {
 		irScanRangeMin = 500; irScanRangeMax = 4000; irScanToEyeFactor = 1; irScanGround = 1; // Standard radar setting.
 		driverCanSee = CanSeeAll;
 	};
-	
-	class HMMMV_TOW2A_xj400 : JeepMG { terrainCoef = 1; preferRoads = 0; };
-	class HMMMV_TOW2A_Auto_xj400 : HMMMV_TOW2A_xj400 {
+
+	class HMMMV_TOW2A_xj400: JeepMG { terrainCoef = 1; preferRoads = 0; };
+	class HMMMV_TOW2A_Auto_xj400: HMMMV_TOW2A_xj400 {
 		// In debugging, don't forget use TZK soldiers but not origin ones otherwise CfgMoves will be abnormal
 		hasGunner = 0;
 		driverAction = "ManActHmmwvGunner02";
@@ -1750,15 +1750,15 @@ class CfgVehicles {
 	class BRDM2_MNF_xj400: BRDM_xj400 {
 		terrainCoef = 1; preferRoads = 0;
 		class UserActions {
-			class SwitchToDriverLand : UA_SwitchToDriverLand {}; class SwitchToGunnerLand : UA_SwitchToGunnerLand {};
-			
+			class SwitchToDriverLand: UA_SwitchToDriverLand {}; class SwitchToGunnerLand: UA_SwitchToGunnerLand {};
+
 			class EquipLAW: UA_EquipLAW {};
 			class EquipCarlGustav: UA_EquipCarlGustav {};
 			class EquipGrenade: UA_EquipGrenade {};
 			class EquipMortar: UA_EquipMortar {};
 			class EquipMG: UA_EquipMG {};
-			class TransportTurnON : UA_TransportTurnON {}; class TransportTurnOFF : UA_TransportTurnOFF {};
-			class EjectOneCargo : UA_EjectOneCargo {}; class EjectAllCargo : UA_EjectAllCargo {};
+			class TransportTurnON: UA_TransportTurnON {}; class TransportTurnOFF: UA_TransportTurnOFF {};
+			class EjectOneCargo: UA_EjectOneCargo {}; class EjectAllCargo: UA_EjectAllCargo {};
 		};
 	};
 	class BRDM2_MNF_Auto_xj400: BRDM2_MNF_xj400 {
@@ -1842,7 +1842,7 @@ class CfgVehicles {
 			maxFov = 0.85;
 		};
 		class UserActions {
-			class EquipPKT : UA_EquipPKT {
+			class EquipPKT: UA_EquipPKT {
 				displayName = "";
 				position = "";
 				radius = 0;
@@ -1873,19 +1873,19 @@ class CfgVehicles {
 		scope = 2; vehicleClass = "TZK_Units_400";
 		accuracy = 1.5;
 		displayName = "M151A1C with 106mm"; side = 1; cost = 100000; threat[] = {0.3, 1, 0.1};
-		
+
 		model = "\TZK_Model_4_0_6\m151a1c_htr.p3d";
 		picture = "\TZK_Config_4_0_6\tex\htr_m151a1c_ui.paa";
 		hiddenSelections[] = {"shell_casing01","shell_projectile01","shell_casing02","shell_projectile02","shell_casing03","shell_projectile03","shell_casing04","shell_projectile04","shell_casing05","shell_projectile05","n1","n2","chambProj","chambCase"};
 
 		gunnerAction = "ManActHTRM151ACGunner";
 		gunnerOpticsModel = "\TZK_Config_4_0_6\opt\htr_106recOptic";
-		
+
 		// "Gun106_htr_xj400"
 		weapons[] = {}; // Car with weapon should better not equip weapon. But editors shouldn't make them haven't any magazines as well.
 		magazines[] = {"Sabot106_htr_xj400"}; // Magazines must be empty for cars or game may crash in some situation, but they should be removed but not define an empty array here.
 
-		class MGunClouds : WeaponFireGun {};
+		class MGunClouds: WeaponFireGun {};
 
 		maxSpeed = 80;
 		unitInfoType = "UnitInfoShip";
@@ -1976,7 +1976,7 @@ class CfgVehicles {
 			};
 		};
 		class UserActions {
-			class SwitchToDriverLand : UA_SwitchToDriverLand {}; class SwitchToGunnerLand : UA_SwitchToGunnerLand {};
+			class SwitchToDriverLand: UA_SwitchToDriverLand {}; class SwitchToGunnerLand: UA_SwitchToGunnerLand {};
 		};
 		class EventHandlers {
 			init = _this exec {\TZK_Objects\Scripts\InitEventHandlers\removeAllWeapons.sqs};
@@ -1986,7 +1986,7 @@ class CfgVehicles {
 		scope = 2; vehicleClass = "TZK_Units_400";
 		accuracy = 1.5;
 		displayName = "UAZ (SPG-9)"; nameSound = "UAZ"; side = 0; cost = 100000; type = 1; threat[] = {0.5, 1, 0.1};
-		
+
 		model = "\TZK_Model_4_0_6\uaz_spg_RUS.p3d";
 		picture = "\TZK_Config_4_0_6\tex\icon_musti.paa";
 		crew ="soldierECrew";
@@ -1997,12 +1997,12 @@ class CfgVehicles {
 		soundLandCrash[] = {"\TZK_Config_4_0_6\fdf\car_crash.wss",0.006000,1};
 		soundGear[] = {"\TZK_Config_4_0_6\fdf\old_gear.wss",0.000500,1};
 		soundWaterCrash[] = {"\TZK_Config_4_0_6\fdf\medium_water_splash.wss",0.006000,1};
-		
+
 		// "Gun_Spg_fdf_xj400"
 		weapons[] = {}; // Car with weapon should better not equip weapon. But editors shouldn't make them haven't any magazines as well.
 		magazines[] = {"PG9HEAT_fdf_xj400"}; // Magazines must be empty for cars or game may crash in some situation, but they should be removed but not define an empty array here.
 
-		class MGunClouds : WeaponFireGun {};
+		class MGunClouds: WeaponFireGun {};
 
 		dammageHalf[] = {"jeep4x4_glass.paa","jeep4x4_glassB.paa","jeep_kab_sklo1.paa","jeep_kab_sklo1B.paa","jeep_kab_sklo2.paa","jeep_kab_sklo2B.paa","scud_sklo.paa","scud_skloB.paa","scud_sklo2.paa","scud_sklo2B.paa","scud_sklo3.paa","scud_sklo3B.paa","scud_sklo4.paa","scud_sklo4B.paa"};
 		dammageFull[] = {"jeep4x4_glass.paa","jeep4x4_glassC.paa","jeep_kab_sklo1.paa","jeep_kab_sklo1C.paa","jeep_kab_sklo2.paa","jeep_kab_sklo2C.paa","scud_sklo.paa","scud_skloC.paa","scud_sklo2.paa","scud_sklo2C.paa","scud_sklo3.paa","scud_sklo3C.paa","scud_sklo4.paa","scud_sklo4C.paa"};
@@ -2024,7 +2024,7 @@ class CfgVehicles {
 		unitInfoType = "UnitInfoShip";
 		hideUnitInfo = 0;
 		maxSpeed = 90;
-		
+
 		terrainCoef = 1; preferRoads = 0; 
 		// anti-tank car hasn't radar
 		irScanGround = 0;
@@ -2059,7 +2059,7 @@ class CfgVehicles {
 			maxTurn = 180;
 		};
 		class UserActions {
-			class SwitchToDriverLand : UA_SwitchToDriverLand {}; class SwitchToGunnerLand : UA_SwitchToGunnerLand {};
+			class SwitchToDriverLand: UA_SwitchToDriverLand {}; class SwitchToGunnerLand: UA_SwitchToGunnerLand {};
 		};
 		class EventHandlers {
 			init = _this exec {\TZK_Objects\Scripts\InitEventHandlers\removeAllWeapons.sqs};
@@ -2102,7 +2102,7 @@ class CfgVehicles {
 		class ViewOpticsBase {};
 	};
 	class Mi17_owp_Base_xj400: Mi17_owp_ABC_xj400 {
-		class ViewOptics : ViewOpticsBase {
+		class ViewOptics: ViewOpticsBase {
 			// addon's value
 			initAngleX = 0; minAngleX = -40; maxAngleX = 17;
 			initAngleY = 0; minAngleY = -100; maxAngleY = 100;
@@ -2153,7 +2153,7 @@ class CfgVehicles {
 		scope = protected;
 		displayName = "MH-6 (M134)";
 		hiddenSelections[] = {"m60"};
-		
+
 		weapons[] = {"GAU2B_Bas_xj400"};
 		magazines[] = {"GAU2B_Bas_xj400", SpoofMagazines};
 		class ReloadAnimations {
@@ -2174,11 +2174,11 @@ class CfgVehicles {
 		scope = protected;
 		displayName = "MH-6 (M60)";
 		hiddenSelections[] = {"m134"};
-		
+
 		weapons[] = {"M60_Heli_xj400"};
 		magazines[] = {"M60_Heli_xj400", "M60_Heli_xj400", SpoofMagazines};
 	};
-	
+
 	class Mi2NOE_Side_Base_xj400: Helicopter {
 		model = "\TZK_Model_4_0_6\Mi2NO.p3d";
 	};
@@ -2215,7 +2215,7 @@ class CfgVehicles {
 		scope = protected;
 		displayName = "Mi-2 (GShG)";
 		hiddenSelections[] = {"pkt", "m134"};
-	
+
 		weapons[] = {"GShG7_62_xj400"};
 		magazines[] = {"GShG7_62_xj400", SpoofMagazines};
 		class ReloadAnimations {
@@ -2236,7 +2236,7 @@ class CfgVehicles {
 		scope = protected;
 		displayName = "Mi-2 (M134)";
 		hiddenSelections[] = {"pkt", "gshg"};
-		
+
 		weapons[] = {"GShG7_62_xj400"};
 		magazines[] = {"GShG7_62_xj400", SpoofMagazines};
 		class ReloadAnimations {
@@ -2257,11 +2257,11 @@ class CfgVehicles {
 		scope = protected;
 		displayName = "Mi-2 (PKT)";
 		hiddenSelections[] = {"m134", "gshg"};
-		
+
 		weapons[] = {"PKT_Heli_xj400"};
 		magazines[] = {"PKT_Heli_xj400", "PKT_Heli_xj400", SpoofMagazines};
 	};
-	
+
 	class Orca95_MCSR_ABC_xj400: Helicopter {
 		scope = private; vehicleClass = "TZK_Units_400";
 		accuracy = 0.3;
@@ -2295,7 +2295,7 @@ class CfgVehicles {
 		armorHRotor = 0.7;
 		armorMissiles = 1.6;
 		armorGlass = 0.5;
-		
+
 		ejectSpeed[] = {0,0,0};
 
 		class Animations {
@@ -2350,7 +2350,7 @@ class CfgVehicles {
 		rotorBigBlend = "vrtule_velka_bl_";
 		rotorSmall = "vrtule_mala";
 		rotorSmallBlend = "vrtule_mala_bl";
-		
+
 		laserScanner = 1;
 		class IndicatorAltRadar {
 			selection = "alt";
@@ -2423,7 +2423,7 @@ class CfgVehicles {
 		armor = 50;
 		fuelCapacity = 25;
 	};
-	class A10_Support_xj406 : A10_xj406 {
+	class A10_Support_xj406: A10_xj406 {
 		maxSpeed = 400; // 2/3 of A10's maxspeed thus A10 can approach it easier.
 		displayName = "A10 Support";
 		weapons[] = {};
@@ -2456,7 +2456,7 @@ class CfgVehicles {
 		armor = 24;
 		fuelCapacity = 25;
 	};
-	class Su25_Support_xj406 : Su25_xj406 {
+	class Su25_Support_xj406: Su25_xj406 {
 		displayName = "Su25 Support";
 		weapons[] = {};
 		magazines[] = {"AfterBurnerSwitch_xj400"};
@@ -2484,7 +2484,7 @@ class CfgVehicles {
 		weapons[] = {"MachineGun30E" };
 		magazines[] = {"MachineGun30E", "MachineGun30E", "MachineGun30E", "AfterBurnerSwitch_xj400"};
 	};
-	
+
 	class C130_Base_xj400: Plane {};
 	class C130_xj400: C130_Base_xj400 {
 		model = "\TZK_Model_4_0_6\C130.p3d";
@@ -2492,7 +2492,7 @@ class CfgVehicles {
 	class AN72_Base_xj400: Plane {
 		model = "\TZK_Model_4_0_6\AN72.p3d";
 	};
-	
+
 	// Remove soundEngine/soundEnviron
 	class m119_xj400: M2StaticMG {
 		soundEngine[] = {"",0,1};
@@ -2640,7 +2640,7 @@ class CfgVehicles {
 			gun = "OtocHlaven";
 		};
 	};
-	
+
 	class RussianTank_xj400: Tank_xj400 {};
 	class T72_Base_xj400: RussianTank_xj400 {};
 	class T80_Base_xj400: T72_Base_xj400 {};
@@ -2706,19 +2706,19 @@ class CfgVehicles {
 			Init = "_vehicle = _this select 0; [_vehicle] exec {\TZK_Objects\Scripts\InitEventHandlers\PLZ05.sqs}; [_vehicle, {\TZK_Texture_4_0_0\BWMOD\leo2A6\num\}, {n}, {0}] exec {\TZK_Objects\Scripts\texture\RSC_Numbers.sqs}; [_vehicle, {C}] exec localize {TZK_MULTITEX_STYLE_PLZ05}; [_vehicle, {C}] exec localize {TZK_MULTITEX_GUNREC_PLZ05}";
 		};
 	};
-	
+
 	class M270_M29064_xj400: M1Abrams_Base_xj400 {
 		model = "\TZK_Model_4_0_6\M270_m29064.p3d";
 	};
 	class TOS1_TZK_xj400: T72_Base_xj400 {
 		model = "\TZK_Model_4_0_6\TOS1_DKMM.p3d";
 	};
-	
+
 	class M60_Base_xj400: Tank_xj400 {};
 	class M60_xj400: M60_Base_xj400 {
 		model = "\TZK_Config_4_0_6\M60_TZK.p3d";
 	};
-	
+
 	class M113_xj400: M113 {};
 	class M113Ambul_xj400: M113Ambul {
 		model = "\TZK_Config_4_0_6\M113_Ambu_TZK.p3d";
@@ -2916,7 +2916,7 @@ class CfgVehicles {
 		scope = private; vehicleClass = "TZK_Units_400";
 	//	accuracy = 0.4;
 		displayName = "PLZ-89"; nameSound = "Tank"; side = 0; cost = 2000000; type = 1; threat[] = {1, 1, 0.5};
-		
+
 		model = "\TZK_Config_4_0_6\PLZ89.p3d";
 		hiddenSelections[] = {
 			"n1", "n2", "n3"
@@ -2924,33 +2924,33 @@ class CfgVehicles {
 		};
 		picture = "\TZK_Config_4_0_6\tex\plz89.paa";
 		icon = "\TZK_Texture_4_0_0\icon\uiM109.paa"; 
-		
+
  		soundEngine[] = {"\TZK_Sounds_4_0_0\M1_Turbine.wss",0.031622775,1.1};
 		soundEnviron[] = {"\TZK_Sounds_4_0_0\M1_Treads.wss",0.01,1};
-		
+
 		maxspeed = 60; canfloat = 1; mapSize = 10;
 
 		irScanToEyeFactor = 1; // Howitzer can has 1x view distance radar.
-		
+
 		gunnerInAction = "ManActT55Gunner";
 		driverInAction = "ManActT55Driver";
 		commanderInAction = "ManActT55Commander";
 		gunnerOpticsModel = "\TZK_Model_4_0_0\Opt\ViewGunner_Grad.p3d";
 
 		class GunFire: WeaponFireGun {
-			cloudletDuration = 0.4;		
+			cloudletDuration = 0.4;
 			cloudletAnimPeriod = 1.50; 
-			cloudletSize = 6.0;			
-			cloudletColor[] = {1, 1, 1, 1};			
-			size = 9;			
+			cloudletSize = 6.0;
+			cloudletColor[] = {1, 1, 1, 1};
+			size = 9;
 		};
 		class GunClouds: WeaponCloudsGun {
 			cloudletDuration = 0.6;
 			cloudletAnimPeriod = 1.50;
-			cloudletSize = 6.0;			
+			cloudletSize = 6.0;
 			cloudletColor[] = {1, 1, 1, 1};
 			size = 9;
-			sourceSize = 0.5;			
+			sourceSize = 0.5;
 		};
 
 		class IndicatorRPM {
@@ -3010,13 +3010,13 @@ class CfgVehicles {
 		};
 
 	};
-	
+
 	// AMX10RC from OFrP mod
 	class AMX10RC_OFrP_xj400: M1Abrams_Base_xj400 {
 		scope = protected; vehicleClass = "TZK_Units_400";
 		accuracy = 0.5;
 		displayName = "AMX 10 RC"; nameSound = "tank"; side = 1; cost = 1000000; type = 1; threat[] = {1, 1, 0.6};
-		
+
 		model = "\TZK_Model_4_0_6\Amx10Rc_uiox.p3d";
 		hiddenSelections[] = {
 			"nom","ID","logo","KFOR","Flag"
@@ -3078,10 +3078,10 @@ class CfgVehicles {
 			turretAxis = "OsaVelitele";
 			gunAxis = "OsaHlavneVelitele";
 			soundServo[] = {"Vehicles\gun_elevate",db-70,1.2}; // 0.0003162
-			
+
 			gunBeg = "usti hlavne"; // currently ignored
 			gunEnd = "konec hlavne";
-			
+
 			minElev = -15; maxElev = +20;
 			minTurn = -360; maxTurn = +360;
 
@@ -3125,15 +3125,15 @@ class CfgVehicles {
 		gunnerCanSee = CanSeeRadar+CanSeeEye+CanSeeOptics+CanSeeCompass;
 		outGunnerMayFire = false;
 		forceHideGunner = false;
-		
+
 		gunnerOpticsModel = "\TZK_Config_4_0_6\opt\TirRc";
 		commanderOpticsModel = "\TZK_Config_4_0_6\opt\ComRc";
-		
+
 		// EVENTS ##################################################
 		class EventHandlers {
 			Init = "_vehicle = _this select 0; [_vehicle, {C}] exec {\TZK_Config_4_0_6\Scripts\texture\AMX10RC.sqs}";
 		};
-		
+
 		// ANIMATIONS ##############################################
 		class HatchDriver {
 			selection = "poklop_driver";
@@ -3202,7 +3202,7 @@ class CfgVehicles {
 				angle1= pi/1.5; 
 			};
 		};
-	};	
+	};
 	class T55_Base_xj400: Tank_xj400 {}
 	// 2S25 from mfm mod
 	class 2S25_mfm_xj400: T55_Base_xj400 {
@@ -3247,7 +3247,7 @@ class CfgVehicles {
 		soundEngine[] = {"\TZK_Config_4_0_6\engine_loaded.wss", db-30, 1};
 		soundEnviron[] = {"\TZK_Config_4_0_6\tracks.wss", db-40, 0.8};
 		soundGear[] = {"\TZK_Config_4_0_6\gear.wss", db-50,0.8};
-		
+
 		forceHideGunner = 0;
 		// same setting as bmp
 		class HatchDriver {
@@ -3340,7 +3340,7 @@ class CfgVehicles {
 		magazines[] = {"Heat120","Shell120","MachineGun12_7"};
 		type = 1;
 		threat[] = {0.9,0.9,0.3};
-		
+
 		class HitGun { armor = 3; material = 52; name = "gun"; passThrough = 1; };
 		maxSpeed = 57;
 		soundEngine[] = {"Vehicles\ModernIdle1",0.0316228,1};
@@ -3442,7 +3442,7 @@ class CfgVehicles {
 	class BigShip: Ship {};
 	class LST_Base_xj400: BigShip {
 		scope = private; vehicleClass = "TZK_Units_400";
-		
+
 		fuelCapacity = 700;
 		model = "\TZK_Model_4_0_6\newport.p3d";
 		picture = "\t406\ui\iLst.paa";
@@ -3706,7 +3706,7 @@ class CfgVehicles {
 	};
 
 	class ParachuteBase: Helicopter {};
-	class ParachuteC:ParachuteBase {};
+	class ParachuteC: ParachuteBase {};
 	class pwr_paraC_xj400: ParachuteC {};
 	class pwr_paraC_4ammo_xj400: pwr_paraC_xj400 {
 		model = "\TZK_Config_4_0_6\PARA_Ammo.p3d";
@@ -3770,7 +3770,7 @@ class CfgVehicleActions {
 	SFP_ssg120commanderout = "SFP_ssg120commanderout";
 
 	MCSR_OrcaPilot="MCSR_OrcaPilot";
-	
+
 	BAS_MH60Gunner = "BAS_MH60Gunner";
 
 	UNA_MK19gl_Gunner = "UNA_MK19gl_static";
@@ -3998,67 +3998,67 @@ class CfgMovesMC {
 		// --------------------------- Grkpbv -------------------------------
 
 		class SFP_ssg120driver: StandBase {
-			actions=StandActions;
+			actions = StandActions;
 			file = "\TZK_Config_4_0_6\Anims\strf90_driver.rtm";
-			speed=SPEED_STATIC;
-			looped=1
-			soundEnabled=0
-			variantAfter[]={1,3,6};
+			speed = SPEED_STATIC;
+			looped = 1
+			soundEnabled = 0
+			variantAfter[] = {1,3,6};
 			variantsAI[]={HandGunStandVar2,0.700000,HandGunStand,0.300000};
-			equivalentTo=HandGunStand;
+			equivalentTo = HandGunStand;
 		};
 		class SFP_ssg120driverout: StandBase {
-			actions=StandActions;
+			actions = StandActions;
 			file = "\TZK_Config_4_0_6\Anims\strf90_driverout.rtm";
-			speed=SPEED_STATIC;
-			looped=1
-			soundEnabled=0
-			variantAfter[]={1,3,6};
+			speed = SPEED_STATIC;
+			looped = 1
+			soundEnabled = 0
+			variantAfter[] = {1,3,6};
 			variantsAI[]={HandGunStandVar2,0.700000,HandGunStand,0.300000};
-			equivalentTo=HandGunStand;
+			equivalentTo = HandGunStand;
 		};
 		class SFP_ssg120gunner: StandBase {
-			actions=StandActions;
+			actions = StandActions;
 			file = "\TZK_Config_4_0_6\Anims\strf90_gunner.rtm";
-			speed=SPEED_STATIC;
-			looped=1
-			soundEnabled=0
-			variantAfter[]={1,3,6};
+			speed = SPEED_STATIC;
+			looped = 1
+			soundEnabled = 0
+			variantAfter[] = {1,3,6};
 			variantsAI[]={HandGunStandVar2,0.700000,HandGunStand,0.300000};
-			equivalentTo=HandGunStand;
+			equivalentTo = HandGunStand;
 		};
 		class SFP_ssg120gunnerout: StandBase {
-			actions=StandActions;
+			actions = StandActions;
 			file = "\TZK_Config_4_0_6\Anims\strf90_gunnerout.rtm";
-			speed=SPEED_STATIC;
-			looped=1
-			soundEnabled=0
-			variantAfter[]={1,3,6};
+			speed = SPEED_STATIC;
+			looped = 1
+			soundEnabled = 0
+			variantAfter[] = {1,3,6};
 			variantsAI[]={HandGunStandVar2,0.700000,HandGunStand,0.300000};
-			equivalentTo=HandGunStand;
+			equivalentTo = HandGunStand;
 		};
 		class SFP_ssg120commander: StandBase {
-			actions=StandActions;
+			actions = StandActions;
 			file = "\TZK_Config_4_0_6\Anims\strf90_commander.rtm";
-			speed=SPEED_STATIC;
-			looped=1
-			soundEnabled=0
-			variantAfter[]={1,3,6};
+			speed = SPEED_STATIC;
+			looped = 1
+			soundEnabled = 0
+			variantAfter[] = {1,3,6};
 			variantsAI[]={HandGunStandVar2,0.700000,HandGunStand,0.300000};
-			equivalentTo=HandGunStand;
+			equivalentTo = HandGunStand;
 		};
 		class SFP_ssg120commanderout: StandBase {
-			actions=StandActions;
+			actions = StandActions;
 			file = "\TZK_Config_4_0_6\Anims\strf90_commanderout.rtm";
-			speed=SPEED_STATIC;
-			looped=1
-			soundEnabled=0
-			variantAfter[]={1,3,6};
+			speed = SPEED_STATIC;
+			looped = 1
+			soundEnabled = 0
+			variantAfter[] = {1,3,6};
 			variantsAI[]={HandGunStandVar2,0.700000,HandGunStand,0.300000};
-			equivalentTo=HandGunStand;
+			equivalentTo = HandGunStand;
 		};
 
-		// --------------------------- Orca95  -------------------------------
+		// --------------------------- Orca95 -------------------------------
 
 		class MCSR_OrcaPilot: Driver {
 			file = "\TZK_Config_4_0_6\Anims\OrcaPilot.rtm";
@@ -4085,8 +4085,8 @@ class CfgMovesMC {
 			connectTo[] = {"DeadState", 1};
 		};
 
-		// --------------------------- Bas Mah60  -------------------------------
-		
+		// --------------------------- Bas Mah60 -------------------------------
+
 		#define VEH_DIE_CONN(Name,anim,time) \
 			class Name##Dying: DefaultDie \
 			{ \
@@ -4101,7 +4101,7 @@ class CfgMovesMC {
 			{ \
 				actions = DeadActions; \
 				file=anim##smrt2.rtm; \
-				speed=SPEED_STATIC; \
+				speed = SPEED_STATIC; \
 				terminal = true; \
 				connectFrom[]={Name##Dying,1}; \
 				connectTo[]={DeadState,1}; \
@@ -4110,7 +4110,7 @@ class CfgMovesMC {
 			class Name: Driver \
 			{ \
 				file=anim##stat.rtm; \
-				speed=SPEED_STATIC; \
+				speed = SPEED_STATIC; \
 				looped=true; \
 				variantsAI[]= {Name##V1,0.7,Name};\
 				interpolateWith[]={Name##V1,0.5};\
