@@ -1558,6 +1558,8 @@ class CfgVehicles {
 	class All {
 		class ViewGunnerBase {};
 		class ViewOpticsBase {}; // for gunner aiming?
+		class ViewCommanderBase {};
+		class ViewPilotBase {};
 	};
 	class AllVehicles: All{};
 
@@ -2600,7 +2602,9 @@ class CfgVehicles {
 	};
 
 	class Tank_xj400: Tank {};
-	class M1Abrams_Base_xj400: Tank_xj400 {};
+	class M1Abrams_Base_xj400: Tank_xj400 {
+		vehicleClass = "TZK_Units_400";
+	};
 	class TZK_HeavyWestTank_Base_xj400: M1Abrams_Base_xj400 {
 		// remove abandoned animations
 		class Anim_Base_suspension { animperiod = 0; selection = ""; axis = ""; angle0 = 0; angle1 = 0; type = "rotation"; };
@@ -3323,6 +3327,189 @@ class CfgVehicles {
 		};
 	};
 
+	class M88arv_mfm_xj400: M1Abrams_Base_xj400 {
+		scope = protected;
+		accuracy = 0.4;
+		displayName = "M88 (ARV)"; nameSound = "tank"; side = 1; cost = 1500000; type = 1; threat[] = {1, 0.3, 0.6};
+
+		model = "\TZK_Model_4_0_6\m88a2.p3d";
+		hiddenSelections[] = {
+			"crane_det01", "crane_det01_2", "crane_det02", "crane_det02_2", "shield1", "shield2"
+			, tzk_tex_00
+			, tex_kette002.paa, tex_m88_001.paa, tex_m88_002.paa, tex_m88_003.paa
+			, tzk_tex_99
+		};
+		icon = "\t406\m88\m88icon.paa";
+		picture = "\t406\m88\m88pic.paa";
+		mapSize = 11;
+
+		maxSpeed = 46;
+		armor = 550;
+		irScanRangeMin = 0; irScanRangeMax = 0; irScanToEyeFactor = 0; irScanGround = 0;
+		class EventHandlers {
+			Init = "_vehicle = _this select 0; _vehicle animate [{suspension}, 0.5], [_vehicle, {C}] exec {\TZK_Config_4_0_6\Scripts\texture\M88.sqs}";
+		};
+
+		insideSoundCoef = 0.02;
+		soundEnviron[] = {"\TZK_Sounds_4_0_6\MFM_M88\M1_Treads.wss",1,0.8};
+		soundEngine[] = {"\TZK_Sounds_4_0_6\MFM_M88\M1_Turbine.wss",1,1};
+		soundCrash[] = {"\TZK_Sounds_4_0_6\MFM_M88\tank_crash_heavy.wss",1,1};
+		soundLandCrash[] = {"\TZK_Sounds_4_0_6\MFM_M88\tank_crash.wss",1,1};
+		soundGear[] = {"\TZK_Sounds_4_0_6\MFM_M88\Gear.wss",0.07,1};
+		soundDammage[] = {"\TZK_Sounds_4_0_6\MFM_M88\Alarm.wss",0.1,1};
+
+		gunnerOpticsModel = "optika_empty";
+		commanderOpticsModel = "optika_tank_driver";
+
+		weapons[] = {"MG_12_7_xj400"};
+		magazines[] = {"MG_12_7_xj400"};
+
+		gunnerAction = "ManActM88MGGunner";
+		gunnerInAction = "ManActM88MGGunner";
+		driverAction = "ManActM113DriverOut";
+		// driverInAction = "ManActM2A2Driver";
+		driverInAction = "ManActm88driver";
+		commanderAction = "ManActM113DriverOut";
+		// commanderInAction = "ManActTruck5tCoDriver";
+		commanderInAction = "ManActm88commander";
+
+		commanderCanSee = 31;
+
+		viewGunnerInExternal = 1;
+		outGunnerMayFire = 1;
+		forceHideGunner = 1; //1
+		castGunnerShadow = 1;
+
+		transportMaxMagazines = 25;
+		transportMaxWeapons = 5;
+		// transportRepair = 200000000;
+		transportSoldier = 0;
+
+		camouflage = 9;
+		audible = 7;
+		extCameraPosition[] = {0,2,-14}; //{0,1.5,-9};
+		class Animations {
+			class suspension {type = "rotation";animperiod = 0.5;selection = "podw";axis = "osa_podw";angle0 = -0.04;angle1 = 0.04;};
+			class Bucket {type = "rotation";animPeriod = 3.5;selection = "bucket";axis = "osa_bucket";angle0 = 0;angle1 = 1.3;};
+			class Crane {type = "rotation";animPeriod = 3.5;selection = "crane";axis = "osa_crane";angle0 = 0;angle1 = 2.110;};
+		};
+		class UserActions
+		{
+			class Bucket_down {
+				displayName = "<Bucket down>";
+				position = "controls";
+				radius = 4;
+				condition = "this animationPhase ""Bucket"" < 0.5";
+				statement = "this animate [""Bucket"", 1]";
+			};
+			class Bucket_up {
+				displayName = "<Bucket up>";
+				position = "controls";
+				radius = 4;
+				condition = "this animationPhase ""Bucket"" >=  0.5";
+				statement = "this animate [""Bucket"", 0]";
+			};
+			class Crane_up {
+				displayName = "<Crane up>";
+				position = "controls";
+				radius = 4;
+				condition = "this animationPhase ""Crane"" ==0";
+				statement = "[this,""Up""] exec ""\TZK_Config_4_0_6\Scripts\M88\Crane.sqs"" ";
+			};
+			class Crane_down {
+				displayName = "<Crane down>";
+				position = "controls";
+				radius = 4;
+				condition = "this animationPhase ""Crane"" == 1 ";
+				statement = "[this,""Down""] exec ""\TZK_Config_4_0_6\Scripts\M88\Crane.sqs""";
+			};
+		};
+		class HatchDriver {
+			selection = "poklop_driver";
+			axis = "osa_poklop_driver";
+			angle = 90;
+		};
+		class HatchCommander {
+			selection = "poklop_commander";
+			axis = "osa_poklop_commander";
+			angle = -90;
+		};
+		class Turret: TurretBase {
+			soundServo[] = {};
+			minElev = -5;
+			maxElev = 40;
+			minTurn = -360;
+			maxTurn = 360;
+		};
+		class ComTurret {
+			turretAxis = "OsaVelitele";
+			gunAxis = "OsaHlavneVelitele";
+			soundServo[] = {};
+			gunBeg = "usti hlavne";
+			gunEnd = "konec hlavne";
+			minElev = -5;
+			maxElev = 10;
+			minTurn = -15;
+			maxTurn = 15;
+			body = "OtocVelitele";
+			gun = "OtocHlavenVelitele";
+		};
+		class ViewGunner: ViewGunnerBase {
+			minAngleY = 0;
+			maxAngleY = 0;
+		};
+		class ViewPilot: ViewPilotBase {
+			initAngleX = 7;
+			minAngleX = -15;
+			maxAngleX = 25;
+			initAngleY = 0;
+			minAngleY = -60;
+			maxAngleY = 60;
+		};
+		class ViewCommander: ViewCommanderBase {
+			initAngleX = 7;
+			minAngleX = -15;
+			maxAngleX = 25;
+			minAngleY = -60;
+			maxAngleY = 60;
+		};
+		class IndicatorSpeed {
+			selection = "ukaz_rychlo";
+			axis = "osa_rychlo";
+			angle = -160; //240 //180
+			min = 0;
+			max = 16.6700001;
+		};
+		class IndicatorRPM {
+			selection = "ukaz_rpm";
+			axis = "osa_rpm";
+			angle = -240; //340
+			min = 0;
+			max = 1;
+		};
+	};
+	class BMR3M_ICP_xj400: T90_xj400 {
+		displayName = "BMR-3M"; cost = 3000000; type = 1; threat[] = {0, 0.1, 0.1};
+		hiddenSelections[] = {
+			"TR","fire1","fire2","fire3","fire4","fire5","fire6",
+			"rak1","rak2","rak3","rak4","Flag", 
+			"n1", "n2", "n3"
+		};
+		maxSpeed = 70;
+
+		model = "\TZK_Model_4_0_6\BMR3M_ICP.p3d";
+		picture = "\TZK_Texture_4_0_0\icon\iT90.paa";
+		armor = 600; armorStructural = 2.0;
+		irScanRangeMin = 0; irScanRangeMax = 0; irScanToEyeFactor = 0; irScanGround = 0;
+		gunnerInAction = "ManActM1A1Gunner";
+		commanderInAction = "ManActM1A1Commander";
+
+		weapons[] = {};
+		magazines[] = {};
+		hasGunner = 0;
+		hasCommander = 0;
+	};
+
 	class ResistanceTank_xj400: Tank_xj400 {};
 	class T80Res_Base_xj406: ResistanceTank_xj400 {
 		scope = 0;
@@ -3776,6 +3963,10 @@ class CfgVehicleActions {
 	ICP_Mgunner="ICP_Mgunner";
 
 	UpLying = "BinocLying"; 
+
+	m88MgGunner = "m88MgGunner";
+	m88Commander = "m88Commander";
+	m88Driver = "m88Driver";
 };
 class CfgMovesMC {
 	class Default {};
@@ -4145,6 +4336,70 @@ class CfgMovesMC {
 			variantAfter[] = {1,3,6};
 			variantsAI[] = {HandGunStandVar2,.700000,HandGunStand,.300000};
 			equivalentTo = HandGunStand;
+		};
+
+		// --------------------------- M88 -------------------------------
+		class M88MGGunner: Driver {
+			file = "\TZK_Config_4_0_6\Anims\M88GUNNER.rtm";
+			speed = 10000000000.0;
+			looped = 1;
+			variantsAI[] = {"M88MGGunnerV1",0.7,"M88MGGunner"};
+			interpolateWith[] = {"M88MGGunnerV1",0.5};
+			equivalentTo = "M88MGGunner";
+			interpolationSpeed = 1;
+			connectTo[] = {"M88MGGunnerDying",1};
+		};
+		class M88MGGunnerV1: M88MGGunner {
+			file = "\TZK_Config_4_0_6\Anims\M88GUNNER.rtm";
+			speed = "- 4";
+			looped = 1;
+		};
+		class M88MGGunnerDying: DefaultDie {
+			actions = "NoActions";
+			file = "\TZK_Config_4_0_6\Anims\vulcangunnersmrt.rtm";
+			speed = "- 1";
+			looped = 0;
+			soundEnabled = 0;
+			connectFrom[] = {"M88MGGunner",1};
+		};
+
+		class M88MGGunnerDead: M88MGGunnerDying {
+			actions = "DeadActions";
+			file = "\TZK_Config_4_0_6\Anims\vulcangunnersmrt2.rtm";
+			speed = 10000000000.0;
+			terminal = 1;
+			connectFrom[] = {"M88MGGunnerDying",1};
+			connectTo[] = {"DeadState",1};
+		};
+
+		class m88driver: Driver {
+			file = "\TZK_Config_4_0_6\Anims\m88driver.rtm";
+			speed = 10000000000.0;
+			looped = 1;
+			variantsAI[] = {"m88driverV1",0.7,"m88driver"};
+			interpolateWith[] = {"m88driverV1",0.5};
+			equivalentTo = "m88driver";
+			interpolationSpeed = 1;
+		};
+		class m88driverV1: m88driver {
+			file = "\TZK_Config_4_0_6\Anims\m88driver.rtm";
+			speed = "- 4";
+			looped = 1;
+		};
+
+		class m88commander: Driver {
+			file = "\TZK_Config_4_0_6\Anims\m88commander.rtm";
+			speed = 10000000000.0;
+			looped = 1;
+			variantsAI[] = {"m88commanderV1",0.7,"m88commander"};
+			interpolateWith[] = {"m88commanderV1",0.5};
+			equivalentTo = "m88commander";
+			interpolationSpeed = 1;
+		};
+		class m88commanderV1: m88commander {
+			file = "\TZK_Config_4_0_6\Anims\m88commander.rtm";
+			speed = "- 4";
+			looped = 1;
 		};
 	};
 };

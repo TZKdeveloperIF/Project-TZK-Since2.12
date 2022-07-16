@@ -806,6 +806,15 @@ class CfgModels {
  		sections[] = {"shell_casing01","shell_projectile01","shell_casing02","shell_projectile02","shell_casing03","shell_projectile03","shell_casing04","shell_projectile04","shell_casing05","shell_projectile05","n1","n2","lever","lock","chambProj","chambCase","frontGlass","zadni svetlo","brzdove svetlo"};
 	};
 	class uaz_spg_RUS: car {};
+
+	class m88a2: Tank_MultiTex {
+		sections[] = {
+			"crane_det01","crane_det01_2","crane_det02","crane_det02_2",
+			"shield1","shield2","bucket","crane","brzdove svetlo"
+			, tex_kette002.paa, tex_m88_001.paa, tex_m88_002.paa, tex_m88_003.paa
+		};
+	};
+	class BMR3M_ICP: T90_ICP {};
 };
 
 // EOF
