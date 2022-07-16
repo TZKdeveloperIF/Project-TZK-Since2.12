@@ -815,6 +815,23 @@ class CfgModels {
 			, tex_kette002.paa, tex_m88_001.paa, tex_m88_002.paa, tex_m88_003.paa
 		};
 	};
+	class mfm_brem1m: Tank {
+		sectionsInherit = "Vehicle";
+		sections[] = {
+			"Tros",		//0
+			"Strela_V1",		//1
+			"Strela_V2",		//2
+			"Strela_V3",		//3
+			"Strela_H1",	//4
+			"Strela_H2",	//5
+			"Strela_H3",	//6
+			"no1",     //7
+			"no2",     //8
+			"no3" ,     //9
+			"barrels" //10
+		};
+	};
+	class mfm_brem1mt02: mfm_brem1m {};
 	class BMR3M_ICP: T90_ICP {};
 };
 

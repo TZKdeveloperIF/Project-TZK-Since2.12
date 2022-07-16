@@ -2601,10 +2601,10 @@ class CfgVehicles {
 		};
 	};
 
-	class Tank_xj400: Tank {};
-	class M1Abrams_Base_xj400: Tank_xj400 {
+	class Tank_xj400: Tank {
 		vehicleClass = "TZK_Units_400";
 	};
+	class M1Abrams_Base_xj400: Tank_xj400 {};
 	class TZK_HeavyWestTank_Base_xj400: M1Abrams_Base_xj400 {
 		// remove abandoned animations
 		class Anim_Base_suspension { animperiod = 0; selection = ""; axis = ""; angle0 = 0; angle1 = 0; type = "rotation"; };
@@ -3347,7 +3347,7 @@ class CfgVehicles {
 		armor = 550;
 		irScanRangeMin = 0; irScanRangeMax = 0; irScanToEyeFactor = 0; irScanGround = 0;
 		class EventHandlers {
-			Init = "_vehicle = _this select 0; _vehicle animate [{suspension}, 0.5], [_vehicle, {C}] exec {\TZK_Config_4_0_6\Scripts\texture\M88.sqs}";
+			Init = "_vehicle = _this select 0; _vehicle animate [{Podveska}, 0.5], [_vehicle, {C}] exec {\TZK_Config_4_0_6\Scripts\texture\M88.sqs}";
 		};
 
 		insideSoundCoef = 0.02;
@@ -3389,7 +3389,7 @@ class CfgVehicles {
 		audible = 7;
 		extCameraPosition[] = {0,2,-14}; //{0,1.5,-9};
 		class Animations {
-			class suspension {type = "rotation";animperiod = 0.5;selection = "podw";axis = "osa_podw";angle0 = -0.04;angle1 = 0.04;};
+			class Podveska {type = "rotation";animperiod = 0.5;selection = "podw";axis = "osa_podw";angle0 = -0.04;angle1 = 0.04;};
 			class Bucket {type = "rotation";animPeriod = 3.5;selection = "bucket";axis = "osa_bucket";angle0 = 0;angle1 = 1.3;};
 			class Crane {type = "rotation";animPeriod = 3.5;selection = "crane";axis = "osa_crane";angle0 = 0;angle1 = 2.110;};
 		};
@@ -3488,6 +3488,139 @@ class CfgVehicles {
 			max = 1;
 		};
 	};
+	class BREM_mfm_xj400: T72_Base_xj400 {
+		scope = protected;
+		accuracy = 0.4;
+		displayName = "BREM-1"; nameSound = "tank"; side = 0; cost = 900000; type = 1; threat[] = {1, 0.3, 0.6};
+
+		model = "\TZK_Model_4_0_6\mfm_brem1mt02.p3d";
+		hiddenSelections[] = {
+			"Tros",				// 0
+			"Strela_V1",		// 1
+			"Strela_V2",		// 2
+			"Strela_V3",		// 3
+			"Strela_H1",		// 4
+			"Strela_H2",		// 5
+			"Strela_H3",		// 6
+			"no1",				// 7
+			"no2",				// 8
+			"no3",				// 9
+			"barrels"			// 10
+		};
+		icon = "\t406\brem1\ic_brem1.paa";
+		picture = "\t406\brem1\pic_brem1.paa";
+		mapSize = 11;
+
+		maxSpeed = 50;
+		armor = 450; //400
+		irScanRangeMin = 0; irScanRangeMax = 0; irScanToEyeFactor = 0; irScanGround = 0;
+		class EventHandlers {
+			Init = "_vehicle = _this select 0; _vehicle animate [{Podveska}, 0.5]";
+		};
+
+		getInRadius = 2.0; //3.5
+
+		driverAction = "ManActT72DriverOut";
+		driverInAction = "ManActT72Driver";
+		gunnerAction = "ManActbremgunner02";
+		gunnerInAction = "ManActbremgunner02";
+		commanderAction = "ManActBMPCommanderOut";
+		commanderInAction = "ManActbremcommander";
+
+		weapons[] = {"MG_12_7_xj400"};
+		magazines[] = {"MG_12_7_xj400"};
+		gunnerOpticsModel = "optika_empty";
+		commanderOpticsModel = "optika_tank_driver";
+
+		// transportRepair = 200000000;
+
+		insideSoundCoef = 0.04;
+		soundEngine[] = {"\TZK_Sounds_4_0_6\MFM_BREM1\EngineF2.wss", 1, 1};
+		soundEnviron[] = {"\TZK_Sounds_4_0_6\MFM_BREM1\I_treadsF3.wss", 1, 0.8};
+
+		class ViewPilot: ViewPilotBase {
+			minAngleY = -100;
+			maxAngleY = 100;
+		};
+		class ViewCommander: ViewCommanderBase{
+			minAngleY = -150;
+			maxAngleY = 170;
+		};
+		class ViewGunner: ViewGunnerBase {
+			minAngleX = -70; maxAngleX = +45;
+			minAngleY = -90; maxAngleY = +90;
+		};
+		class HatchCommander {
+			selection = "poklop_commander";
+			axis = "osa_poklop_commander";
+			angle = 110;
+		};
+		class HatchDriver {
+			selection = "poklop_driver";
+			axis = "osa_poklop_driver";
+			angle = -110;
+		};
+		class Turret: TurretBase {
+			soundServo[] = {};
+			minElev = -10; //-6
+			maxElev = 75; //80
+			minTurn = -160; //-160
+			maxTurn = 132; //132
+		};
+		class ComTurret {
+			turretAxis = "OsaVelitele";
+			gunAxis = "OsaHlavneVelitele";
+			soundServo[] = {};
+			gunBeg = "usti hlavne";
+			gunEnd = "konec hlavne";
+			minElev = -5;
+			maxElev = 10;
+			minTurn = -10;
+			maxTurn = 180;
+			body = "OtocVelitele";
+			gun = "OtocHlavenVelitele";
+		};
+		class IndicatorSpeed {
+			selection = "ukaz_mph";
+			axis = "osa_mph";
+			angle = 185; //angle = 250;
+			min = 0;
+			max = "90 / 3.6"; //max = "100 / 3.6";
+		};
+		class IndicatorRPM {
+			selection = "ukaz_rpm";
+			axis = "osa_rpm";
+			angle = 315;
+			min = 0;
+			max = 1;
+		};
+
+		class UserActions {
+			class Crane_up {
+				displayName = "<Crane up>";
+				position = "controls";
+				radius = 4;
+				condition = "this animationPhase ""Strela_V"" ==0";
+				statement = "[this,""Up""] exec ""\TZK_Config_4_0_6\Scripts\BREM1\Crane.sqs"" ";
+			};
+			class Crane_down {
+				displayName = "<Crane down>";
+				position = "controls";
+				radius = 4;
+				condition = "this animationPhase ""Strela_H"" == 0.5";
+				statement = "[this,""Down""] exec ""\TZK_Config_4_0_6\Scripts\BREM1\Crane.sqs""";
+			};
+		};
+		class Animations {
+			class Podveska {type = "rotation";animperiod = 0.5;selection = "podw";axis = "osa_podw";angle0 = -0.04;angle1 = 0.04;};
+			class kompas {type = "rotation";animPeriod = 0.01;selection = "S_kompas";axis = "osa_S_kompas";angle0 = 0;angle1 = 6.283185;};
+			class kompas2 {type = "rotation";animPeriod = 0.01;selection = "S_kompas2";axis = "osa_S_kompas2";angle0 = 0;angle1 = 6.283185;};
+			class Strela_V {type = "rotation";animPeriod = 3.5;selection = "Strela_V";axis = "osa_strela_V";angle0 = 0;angle1 = 0.959931;};
+			class Strela_H {type = "rotation";animPeriod = 6;selection = "Strela_H";axis = "osa_strela_H";angle0 = 0;angle1 = 2.792526;};
+			class barrels {type = "rotation";animPeriod = 0.01;selection = "barrels";axis = "osa_barrels";angle0 = 0;angle1 = 3.141592;};
+			class Trg_Horn{type = "rotation";animPeriod = 0.01;selection = "Trg_Horn";axis = "osa_Trigger";angle0 = 0;angle1 = 1.570796;};			// 90*
+	 	};
+	};	
 	class BMR3M_ICP_xj400: T90_xj400 {
 		displayName = "BMR-3M"; cost = 3000000; type = 1; threat[] = {0, 0.1, 0.1};
 		hiddenSelections[] = {
@@ -3967,6 +4100,9 @@ class CfgVehicleActions {
 	m88MgGunner = "m88MgGunner";
 	m88Commander = "m88Commander";
 	m88Driver = "m88Driver";
+	bremgunner = "bremgunner";
+	bremcommander = "bremcommander";
+	bremgunner02 = "bremgunner02";
 };
 class CfgMovesMC {
 	class Default {};
@@ -4400,6 +4536,66 @@ class CfgMovesMC {
 			file = "\TZK_Config_4_0_6\Anims\m88commander.rtm";
 			speed = "- 4";
 			looped = 1;
+		};
+		// --------------------------- BREM-1 -------------------------------
+		class bremgunner: Driver {
+			file = "\TZK_Config_4_0_6\Anims\bremgunner.rtm";
+			speed = 10000000000.0;
+			looped = 1;
+			variantsAI[] = {"bremgunnerV1",0.7,"bremgunner"};
+			interpolateWith[] = {"bremgunnerV1",0.5};
+			equivalentTo = "bremgunner";
+			interpolationSpeed = 1;
+		};
+		class bremgunnerV1: bremgunner {
+			file = "\TZK_Config_4_0_6\Anims\bremgunner.rtm";
+			speed = "- 4";
+			looped = 1;
+		};
+		class bremcommander: Driver {
+			file = "\TZK_Config_4_0_6\Anims\bremcommander.rtm";
+			speed = 10000000000.0;
+			looped = 1;
+			variantsAI[] = {"bremcommanderV1",0.7,"bremcommander"};
+			interpolateWith[] = {"bremcommanderV1",0.5};
+			equivalentTo = "bremcommander";
+			interpolationSpeed = 1;
+		};
+		class bremcommanderV1: bremcommander {
+			file = "\TZK_Config_4_0_6\Anims\bremcommander.rtm";
+			speed = "- 4";
+			looped = 1;
+		};
+		class bremgunner02: Driver {
+			file = "\TZK_Config_4_0_6\Anims\bremgunner02.rtm";
+			speed = 10000000000.0;
+			looped = 1;
+			variantsAI[] = {"bremgunner02V1",0.7,"bremgunner02"};
+			interpolateWith[] = {"bremgunner02V1",0.5};
+			equivalentTo = "bremgunner02";
+			interpolationSpeed = 1;
+			connectTo[] = {"bremgunner02Dying",1};
+		};
+		class bremgunner02V1: bremgunner02 {
+			file = "\TZK_Config_4_0_6\Anims\bremgunner02.rtm";
+			speed = -4;
+			looped = 1;
+		};
+		class bremgunner02Dying: DefaultDie {
+			actions = "NoActions";
+			file = "\TZK_Config_4_0_6\Anims\bremgunner02Dying.rtm";
+			speed = -1;
+			looped = 0;
+			soundEnabled = 0;
+			connectFrom[] = {"bremgunner02",1};
+		};
+		class bremgunner02Dead: bremgunner02Dying {
+			actions = "DeadActions";
+			file = "\TZK_Config_4_0_6\Anims\bremgunner02Dead.rtm";
+			speed = 10000000000.0;
+			terminal = 1;
+			connectFrom[] = {"bremgunner02Dying",1};
+			connectTo[] = {"DeadState",1};
 		};
 	};
 };
