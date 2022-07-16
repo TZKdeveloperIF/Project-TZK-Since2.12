@@ -1,0 +1,25 @@
+@ time > 1
+_veh = _this select 0; _mode = _this select 1; _this = 0
+
+_path = "\t406\m88\g\"
+? _name == "D" || _name == "W": _path = "\t406\m88\d\"
+? _name == "G": _path = "\t406\m88\c\"
+
+_tex1 = _path + "m88_002.paa"; _tex2 = _path + "m88_003.paa"
+? _mode == "Down": goto "Down"
+
+# Up
+_veh animate ["Crane", 0.9999]
+_veh animate ["Crane_d1", 0.9999]
+~4
+_veh SetObjectTexture [0,""]; _veh SetObjectTexture [1,""]; _veh SetObjectTexture [2,_tex1]; _veh SetObjectTexture [3,_tex2]
+_veh animate ["Crane", 1]
+_veh animate ["Crane_d1", 1]
+exit
+
+# Down
+_veh SetObjectTexture [0,_tex1]; _veh SetObjectTexture [1,_tex2]; _veh SetObjectTexture [2,""]; _veh SetObjectTexture [3,""]
+~0.5
+_veh animate ["Crane", 0]
+_veh animate ["Crane_d1", 0]
+exit
