@@ -259,8 +259,9 @@ class CfgModels {
 	};
 	*/
 	
-// ============================================TZK Units============================================
-/*	class 2s19: T72 {
+	// ============================================TZK Units============================================
+	/*	
+	class 2s19: T72 {
 		sectionsInherit = "T72";
 		sections[]= {
 			"cislo",
@@ -296,8 +297,8 @@ class CfgModels {
 		sectionsInherit = "Helicopter";
 		sections[]= {"n1","n2","gearlight","enginelight","fire","fireB","missilelight"};
 	};
-*/
-// =======================================TZK 2.12/3.00 Weapons=====================================
+	*/
+	// =======================================TZK 2.12/3.00 Weapons=====================================
 	class LSR_m249spw_acog: Weapon {};
 	class LSR_m249spw_acog_sd: Weapon {};
 	class LSR_m4_m203_acog_sd: Weapon {};
@@ -335,7 +336,7 @@ class CfgModels {
 	class KEGak107: Weapon {};
 	class KEGak107_sight: Weapon {};	
 	class RFSVUa: Weapon {};
-// =======================================TZK 4.0.0 Vehicles=====================================	
+	// =======================================TZK 4.0.0 Vehicles=====================================	
 	class Veh_Grad: Vehicle {
 		sectionsInherit = "Vehicle";
 		sections[] = {"TZK_Grad1","TZK_Grad2","TZK_Grad3","TZK_Grad4","TZK_Grad5","TZK_Grad6","tzk_tex_00"};

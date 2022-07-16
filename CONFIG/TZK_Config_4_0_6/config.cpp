@@ -18,7 +18,7 @@
 #define CanSeeEye 2
 #define CanSeeOptics 4
 #define CanSeeEar 8
-#define CanSeeCompass 16 
+#define CanSeeCompass 16
 #define CanSeeAll 31
 
 class CfgPatches {
@@ -85,7 +85,7 @@ class CfgAmmo {
 	};
 	class Stinger_19_xj406: Stinger_Base_xj406 {
 		maxRange = 1900;
-		thrustTime = 3.2; 
+		thrustTime = 3.2;
 	};
 	class Stinger_23_xj406: Stinger_Base_xj406 {
 		maxRange = 2300;
@@ -105,7 +105,7 @@ class CfgAmmo {
 	};
 	class Strela_19_xj406: Strela_Base_xj406 {
 		maxRange = 1900;
-		thrustTime = 3.2; 
+		thrustTime = 3.2;
 	};
 	class Strela_23_xj406: Strela_Base_xj406 {
 		maxRange = 2300;
@@ -982,7 +982,7 @@ class CfgWeapons {
 	class HandGrenade: GrenadeLauncher {};
 
 	class Carl_I_1_TZK_xj400: CarlGustavLauncher {
-		ammo = "Carl_I_1_TZK_xj400"; 
+		ammo = "Carl_I_1_TZK_xj400";
 		picture = "\dtaext\equip\m\m_CarlGustavLauncher.paa";
 		magazineType = "3 * 		256";
 	};
@@ -1338,13 +1338,13 @@ class CfgWeapons {
 
 	class FAE220Launcher_xj400: MachineGun12_7 {
 		magazines[] = {
-			"FAE220_DKMM_0080_xj400", "FAE220_DKMM_0120_xj400", "FAE220_DKMM_0180_xj400", 
-			"FAE220_DKMM_0300_xj400", "FAE220_DKMM_0400_xj400", "FAE220_DKMM_0500_xj400", 
-			"FAE220_DKMM_0600_xj400", "FAE220_DKMM_0700_xj400", "FAE220_DKMM_0800_xj400", 
+			"FAE220_DKMM_0080_xj400", "FAE220_DKMM_0120_xj400", "FAE220_DKMM_0180_xj400",
+			"FAE220_DKMM_0300_xj400", "FAE220_DKMM_0400_xj400", "FAE220_DKMM_0500_xj400",
+			"FAE220_DKMM_0600_xj400", "FAE220_DKMM_0700_xj400", "FAE220_DKMM_0800_xj400",
 			"FAE220_DKMM_0900_xj400", "FAE220_DKMM_1000_xj400",
-			"FAE220_0080_xj400", "FAE220_0120_xj400", "FAE220_0180_xj400", 
-			"FAE220_0300_xj400", "FAE220_0400_xj400", "FAE220_0500_xj400", 
-			"FAE220_0600_xj400", "FAE220_0700_xj400", "FAE220_0800_xj400", 
+			"FAE220_0080_xj400", "FAE220_0120_xj400", "FAE220_0180_xj400",
+			"FAE220_0300_xj400", "FAE220_0400_xj400", "FAE220_0500_xj400",
+			"FAE220_0600_xj400", "FAE220_0700_xj400", "FAE220_0800_xj400",
 			"FAE220_0900_xj400", "FAE220_1000_xj400"
 		};
 	};
@@ -1365,13 +1365,13 @@ class CfgWeapons {
 
 	class M26Launcher_xj400: FAE220Launcher_xj400 {
 		magazines[] = {
-			"M26_COC_0080_xj400", "M26_COC_0120_xj400", "M26_COC_0180_xj400", "M26_COC_0300_xj400", 
-			"M26_COC_0400_xj400", "M26_COC_0500_xj400", "M26_COC_0600_xj400", "M26_COC_0700_xj400", 
-			"M26_COC_0800_xj400", "M26_COC_0900_xj400", "M26_COC_1000_xj400", "M26_COC_1200_xj400", 
+			"M26_COC_0080_xj400", "M26_COC_0120_xj400", "M26_COC_0180_xj400", "M26_COC_0300_xj400",
+			"M26_COC_0400_xj400", "M26_COC_0500_xj400", "M26_COC_0600_xj400", "M26_COC_0700_xj400",
+			"M26_COC_0800_xj400", "M26_COC_0900_xj400", "M26_COC_1000_xj400", "M26_COC_1200_xj400",
 			"M26_COC_1500_xj400",
-			"M26_0080_xj400", "M26_0120_xj400", "M26_0180_xj400", "M26_0300_xj400", 
-			"M26_0400_xj400", "M26_0500_xj400", "M26_0600_xj400", "M26_0700_xj400", 
-			"M26_0800_xj400", "M26_0900_xj400", "M26_1000_xj400", "M26_1200_xj400", 
+			"M26_0080_xj400", "M26_0120_xj400", "M26_0180_xj400", "M26_0300_xj400",
+			"M26_0400_xj400", "M26_0500_xj400", "M26_0600_xj400", "M26_0700_xj400",
+			"M26_0800_xj400", "M26_0900_xj400", "M26_1000_xj400", "M26_1200_xj400",
 			"M26_1500_xj400"
 		};
 	};
@@ -1654,12 +1654,12 @@ class CfgVehicles {
 
 	class Jeep_xj400: Jeep {
 		model = "\TZK_Model_4_0_6\Jeep_TZK.p3d";
-		hiddenSelections[] = {tzk_tex_00, 
-			tex_mutt_backg.pac, tex_mutt_bottom.pac, tex_mutt_frontg.pac, 
-			tex_mutt_kapotag.pac,tex_mutt_kolog.pac, tex_mutt_koloog.pac, 
-			tex_mutt_palubkmg.pac, tex_mutt_podanteng.pac,tex_mutt_podlahg.pac, 
-			tex_mutt_podpaka.pac, tex_mutt_radiog.pac, tex_mutt_sedoperg.pac, 
-			tex_mutt_sedsedg.pac, tex_mutt_sideg.pac, tex_mutt_sklog.pac, 
+		hiddenSelections[] = {tzk_tex_00,
+			tex_mutt_backg.pac, tex_mutt_bottom.pac, tex_mutt_frontg.pac,
+			tex_mutt_kapotag.pac,tex_mutt_kolog.pac, tex_mutt_koloog.pac,
+			tex_mutt_palubkmg.pac, tex_mutt_podanteng.pac,tex_mutt_podlahg.pac,
+			tex_mutt_podpaka.pac, tex_mutt_radiog.pac, tex_mutt_sedoperg.pac,
+			tex_mutt_sedsedg.pac, tex_mutt_sideg.pac, tex_mutt_sklog.pac,
 			tex_mutt_trubka.pac,tex_mutt_volant.paa, tex_mutt_pristrtga.paa
 			, tzk_tex_99
 			, Box006
@@ -1670,10 +1670,10 @@ class CfgVehicles {
 	class HMMWV_xj400: Jeep { terrainCoef = 1; preferRoads = 0; };
 	class UAZ_xj400: UAZ {
 		model = "\TZK_Model_4_0_6\uaz_TZK.p3d";
-		hiddenSelections[] = {tzk_tex_00, 
-			tex_jeep_kab_sklo1.paa, tex_jeep_kab_sklo2.paa, tex_jeep_kolo_side.pac, 
-			tex_mutt_bottom.pac, tex_mutt_kolog.pac, tex_mutt_koloog.pac, tex_uaz_ige_front.paa, 
-			tex_uaz_kapota_top.pac, tex_uaz_zasterka.pac, tex_uazbck.pac, tex_uazfrt.pac, 
+		hiddenSelections[] = {tzk_tex_00,
+			tex_jeep_kab_sklo1.paa, tex_jeep_kab_sklo2.paa, tex_jeep_kolo_side.pac,
+			tex_mutt_bottom.pac, tex_mutt_kolog.pac, tex_mutt_koloog.pac, tex_uaz_ige_front.paa,
+			tex_uaz_kapota_top.pac, tex_uaz_zasterka.pac, tex_uazbck.pac, tex_uazfrt.pac,
 			tex_uazkolo.pac, tex_uazside1.pac, tex_uazside2.pac, tex_uaztop.pac
 			, tzk_tex_99
 			, Box006
@@ -1689,12 +1689,12 @@ class CfgVehicles {
 	class UralRefuel_xj400: UralRefuel { terrainCoef = 1; preferRoads = 0; };
 
 	class Jeep_Radar_xj400: Jeep_xj400 {
-		hiddenSelections[] = {tzk_tex_00, 
-			tex_mutt_backg.pac, tex_mutt_bottom.pac, tex_mutt_frontg.pac, 
-			tex_mutt_kapotag.pac,tex_mutt_kolog.pac, tex_mutt_koloog.pac, 
-			tex_mutt_palubkmg.pac, tex_mutt_podanteng.pac,tex_mutt_podlahg.pac, 
-			tex_mutt_podpaka.pac, tex_mutt_radiog.pac, tex_mutt_sedoperg.pac, 
-			tex_mutt_sedsedg.pac, tex_mutt_sideg.pac, tex_mutt_sklog.pac, 
+		hiddenSelections[] = {tzk_tex_00,
+			tex_mutt_backg.pac, tex_mutt_bottom.pac, tex_mutt_frontg.pac,
+			tex_mutt_kapotag.pac,tex_mutt_kolog.pac, tex_mutt_koloog.pac,
+			tex_mutt_palubkmg.pac, tex_mutt_podanteng.pac,tex_mutt_podlahg.pac,
+			tex_mutt_podpaka.pac, tex_mutt_radiog.pac, tex_mutt_sedoperg.pac,
+			tex_mutt_sedsedg.pac, tex_mutt_sideg.pac, tex_mutt_sklog.pac,
 			tex_mutt_trubka.pac,tex_mutt_volant.paa, tex_mutt_pristrtga.paa
 			, tzk_tex_99
 		};
@@ -1712,10 +1712,10 @@ class CfgVehicles {
 		driverCanSee = CanSeeAll;
 	};
 	class UAZ_Radar_xj400: UAZ_xj400 {
-		hiddenSelections[] = {tzk_tex_00, 
-			tex_jeep_kab_sklo1.paa, tex_jeep_kab_sklo2.paa, tex_jeep_kolo_side.pac, 
-			tex_mutt_bottom.pac, tex_mutt_kolog.pac, tex_mutt_koloog.pac, tex_uaz_ige_front.paa, 
-			tex_uaz_kapota_top.pac, tex_uaz_zasterka.pac, tex_uazbck.pac, tex_uazfrt.pac, 
+		hiddenSelections[] = {tzk_tex_00,
+			tex_jeep_kab_sklo1.paa, tex_jeep_kab_sklo2.paa, tex_jeep_kolo_side.pac,
+			tex_mutt_bottom.pac, tex_mutt_kolog.pac, tex_mutt_koloog.pac, tex_uaz_ige_front.paa,
+			tex_uaz_kapota_top.pac, tex_uaz_zasterka.pac, tex_uazbck.pac, tex_uazfrt.pac,
 			tex_uazkolo.pac, tex_uazside1.pac, tex_uazside2.pac, tex_uaztop.pac
 			, tzk_tex_99
 		};
@@ -1898,7 +1898,7 @@ class CfgVehicles {
 		hideUnitInfo = 0;
 		secondaryExplosion = 5;
 
-		terrainCoef = 1; preferRoads = 0; 
+		terrainCoef = 1; preferRoads = 0;
 		// anti-tank car hasn't radar
 		irScanGround = 0;
 		irScanToEyeFactor = 0;
@@ -2027,7 +2027,7 @@ class CfgVehicles {
 		hideUnitInfo = 0;
 		maxSpeed = 90;
 
-		terrainCoef = 1; preferRoads = 0; 
+		terrainCoef = 1; preferRoads = 0;
 		// anti-tank car hasn't radar
 		irScanGround = 0;
 		irScanToEyeFactor = 0;
@@ -2276,7 +2276,7 @@ class CfgVehicles {
 		weapons[] = {"LaserDesignatorOH"};
 		magazines[] = {"LaserDesignatorOH", SpoofMagazines};
 
-		hasgunner = 0;
+		hasGunner = 0;
 		driverAction = "ManActMCSR_OrcaPilot";
 		driverOpticsModel = "\o\vehl\V80_optika.p3d";
 		animated = 1;
@@ -2548,7 +2548,7 @@ class CfgVehicles {
 
 		hideProxyInCombat = false;
 		secondaryExplosion = -1;
-		
+
 		class Turret: TurretBase {
 			minElev = -10;
 			maxElev = +30;
@@ -2568,7 +2568,7 @@ class CfgVehicles {
 
 		gunnerAction = "ManActUNA_MK19gl_Gunner";
 		gunnerInAction = "ManActUNA_MK19gl_Gunner";
-		
+
 		picture = "\t406\rcwc\town_220.paa";
 		mapSize = 1;
 	};
@@ -2576,7 +2576,7 @@ class CfgVehicles {
 		displayName = "ATGM Metis";
 		cost = 10000;
 		threat[] = {0.1, 0.5, 0.9};
-		
+
 		model = "\TZK_Model_4_0_6\AT7s.p3d";
 		gunnerOpticsModel = "optika_strela";
 		gunnerOpticsColor[] = {0.3, 0.3 ,0.0, 1};
@@ -2831,7 +2831,7 @@ class CfgVehicles {
 		soundEngine[] = {"\TZK_Config_4_0_6\coc\motor.wss", db-30, 1};
 		soundEnviron[] = {"\TZK_Config_4_0_6\coc\band.wss", db-40, 0.7};
 		picture = "\TZK_Config_4_0_6\tex\inv_ssg120_com.paa";
-		icon = "\TZK_Texture_4_0_0\icon\uiM109.paa"; 
+		icon = "\TZK_Texture_4_0_0\icon\uiM109.paa";
 
 		irScanToEyeFactor = 1; // Howitzer can has 1x view distance radar.
 
@@ -2924,7 +2924,7 @@ class CfgVehicles {
 			, "tzkGun00", "tzkGun01", "tzkGun02", "tzkGun03"
 		};
 		picture = "\TZK_Config_4_0_6\tex\plz89.paa";
-		icon = "\TZK_Texture_4_0_0\icon\uiM109.paa"; 
+		icon = "\TZK_Texture_4_0_0\icon\uiM109.paa";
 
  		soundEngine[] = {"\TZK_Sounds_4_0_0\M1_Turbine.wss",0.031622775,1.1};
 		soundEnviron[] = {"\TZK_Sounds_4_0_0\M1_Treads.wss",0.01,1};
@@ -2940,7 +2940,7 @@ class CfgVehicles {
 
 		class GunFire: WeaponFireGun {
 			cloudletDuration = 0.4;
-			cloudletAnimPeriod = 1.50; 
+			cloudletAnimPeriod = 1.50;
 			cloudletSize = 6.0;
 			cloudletColor[] = {1, 1, 1, 1};
 			size = 9;
@@ -3023,10 +3023,10 @@ class CfgVehicles {
 		hiddenSelections[] = {
 			"nom","ID","logo","KFOR","Flag"
 			, tzk_tex_00
-			, tex_10p_cha.pac, tex_10p_gre.pac, tex_ar1.paa, tex_camo.paa, tex_cots.paa, tex_cul.paa, 
-			tex_d1.paa, tex_d2.paa, tex_d3.paa, tex_d4.paa, tex_d5.paa, tex_d6.paa, tex_d7.paa, tex_d8.paa, 
-			tex_des.paa, tex_det.paa, tex_det2.paa, tex_ec.paa, tex_epinoir.paa, tex_lg.paa, tex_pan.paa, 
-			tex_roue.paa, tex_roues.paa, tex_t1.paa, tex_tav.paa, tex_tconduc.paa, tex_td.paa, 
+			, tex_10p_cha.pac, tex_10p_gre.pac, tex_ar1.paa, tex_camo.paa, tex_cots.paa, tex_cul.paa,
+			tex_d1.paa, tex_d2.paa, tex_d3.paa, tex_d4.paa, tex_d5.paa, tex_d6.paa, tex_d7.paa, tex_d8.paa,
+			tex_des.paa, tex_det.paa, tex_det2.paa, tex_ec.paa, tex_epinoir.paa, tex_lg.paa, tex_pan.paa,
+			tex_roue.paa, tex_roues.paa, tex_t1.paa, tex_tav.paa, tex_tconduc.paa, tex_td.paa,
 			tex_tg.paa, tex_tour.paa, tex_viseur.paa, tex_visouv.paa
 			, tzk_tex_99
 		};
@@ -3055,7 +3055,7 @@ class CfgVehicles {
 		// hs_todo: 换成AI的散射机枪
 		weapons[] = {"105RC_OFrP_xj400", "MachineGun7_6"};
 		magazines[] = {
-			"105RCSabot_OFrP_xj400", "105RCHE_OFrP_xj400", 
+			"105RCSabot_OFrP_xj400", "105RCHE_OFrP_xj400",
 			"MachineGun7_6", "MachineGun7_6", "MachineGun7_6", "MachineGun7_6", "MachineGun7_6", "MachineGun7_6", "MachineGun7_6", "MachineGun7_6"
 		};
 
@@ -3161,7 +3161,7 @@ class CfgVehicles {
 				selection = ReloadDrecL;
 				axis = AxeDrecL;
 				angle0= -0.04;
-				angle1= 0.04; 
+				angle1= 0.04;
 			};
 			class AnimDrecR {
 				type = "rotation";
@@ -3169,7 +3169,7 @@ class CfgVehicles {
 				selection = ReloadDrecR;
 				axis = AxeDrecR;
 				angle0= -0.04;
-				angle1= 0.04; 
+				angle1= 0.04;
 			};
 			class AnimDreb {
 				type = "rotation";
@@ -3177,7 +3177,7 @@ class CfgVehicles {
 				selection = ReloadDreb;
 				axis = AxeDreb;
 				angle0= -0.04;
-				angle1= 0.04; 
+				angle1= 0.04;
 			};
 			class TrappeVisGun {
 				type = "rotation";
@@ -3185,7 +3185,7 @@ class CfgVehicles {
 				selection = TrappeVisGun;
 				axis = AxeTrappeVisGun;
 				angle0= 0;
-				angle1= pi/2; 
+				angle1= pi/2;
 			};
 			class TrappeVisChar {
 				type = "rotation";
@@ -3193,7 +3193,7 @@ class CfgVehicles {
 				selection = TrappeVisChar;
 				axis = AxeTrappeVisChar;
 				angle0= 0;
-				angle1= -pi/2; 
+				angle1= -pi/2;
 			};
 			class AnimBriseLame {
 				type = "rotation";
@@ -3201,7 +3201,7 @@ class CfgVehicles {
 				selection = BriseLame;
 				axis = AxeBriseLame;
 				angle0= 0;
-				angle1= pi/1.5; 
+				angle1= pi/1.5;
 			};
 		};
 	};
@@ -3244,7 +3244,7 @@ class CfgVehicles {
 		commandercansee = 31;
 		drivercansee = 31;
 		gunnercansee = 31;
-		hascommander = 1;
+		hasCommander = 1;
 
 		soundEngine[] = {"\TZK_Config_4_0_6\engine_loaded.wss", db-30, 1};
 		soundEnviron[] = {"\TZK_Config_4_0_6\tracks.wss", db-40, 0.8};
@@ -3492,7 +3492,7 @@ class CfgVehicles {
 		displayName = "BMR-3M"; cost = 3000000; type = 1; threat[] = {0, 0.1, 0.1};
 		hiddenSelections[] = {
 			"TR","fire1","fire2","fire3","fire4","fire5","fire6",
-			"rak1","rak2","rak3","rak4","Flag", 
+			"rak1","rak2","rak3","rak4","Flag",
 			"n1", "n2", "n3"
 		};
 		maxSpeed = 70;
@@ -3962,7 +3962,7 @@ class CfgVehicleActions {
 
 	ICP_Mgunner="ICP_Mgunner";
 
-	UpLying = "BinocLying"; 
+	UpLying = "BinocLying";
 
 	m88MgGunner = "m88MgGunner";
 	m88Commander = "m88Commander";
