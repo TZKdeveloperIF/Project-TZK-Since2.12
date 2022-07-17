@@ -851,6 +851,13 @@ class CfgModels {
 			"pod_yellow", "pod_green"
 		};
 	};
+
+	class NewPort: Ship {
+		sectionsInherit = "Ship";
+		sections[]= {
+			"boardL", "boardR"
+		};
+	};
 };
 
 // EOF
