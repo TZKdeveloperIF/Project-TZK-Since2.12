@@ -333,7 +333,7 @@ class CfgAmmo {
 		// ================ above same as LAW ================
 		cost = 500; // less cost to make AI use it more
 		// ================ below same as Kasap ================
-		model = "\TZK_Config_4_0_6\RGK3M.p3d";
+		model = "\TZK_Config_4_0_6\Model\RGK3M.p3d";
 		soundHit1[] = {"\TZK_Sounds_4_0_0\KYL_KASAP\Boom2.ogg",db40,1};
 		soundHit2[] = {"\TZK_Sounds_4_0_0\KYL_KASAP\Boom3.ogg",db40,1};
 		soundHit3[] = {"\TZK_Sounds_4_0_0\KYL_KASAP\Boom4.ogg",db40,1};
@@ -393,16 +393,16 @@ class CfgAmmo {
 		minRange = 5; minRangeProbab = 0.95;
 		midRange = 1000; midRangeProbab = 0.95;
 		maxRange = 2500; maxRangeProbab = 0.95;
-		soundFly[] = {"\TZK_Config_4_0_6\snd\finmod\tank_shell_fly.wss", 1, 1}; //FDF - Goeth 10.1.2004
-		soundHit1[] = {"\TZK_Config_4_0_6\snd\finmod\spg9_expl.wss", 100, 1};
-		soundHit2[] = {"\TZK_Config_4_0_6\snd\finmod\spg9_expl.wss", 100, 1};
-		soundHit3[] = {"\TZK_Config_4_0_6\snd\finmod\spg9_expl.wss", 100, 1};
-		soundHitArmor1[] = {"\TZK_Config_4_0_6\snd\finmod\spg9_expl.wss", 100, 1};
-		soundHitArmor2[] = {"\TZK_Config_4_0_6\snd\finmod\spg9_expl.wss", 100, 1};
-		soundHitMan1[] = {"\TZK_Config_4_0_6\snd\finmod\spg9_expl.wss", 100, 1};
-		soundHitMan2[] = {"\TZK_Config_4_0_6\snd\finmod\spg9_expl.wss", 100, 1};
-		soundHitBuilding1[] = {"\TZK_Config_4_0_6\snd\finmod\spg9_expl.wss", 100, 1};
-		soundHitBuilding2[] = {"\TZK_Config_4_0_6\snd\finmod\spg9_expl.wss", 100, 1};
+		soundFly[] = {"\TZK_Sounds_4_0_6\fdf\tank_shell_fly.wss", 1, 1}; //FDF - Goeth 10.1.2004
+		soundHit1[] = {"\TZK_Sounds_4_0_6\fdf\spg9_expl.wss", 100, 1};
+		soundHit2[] = {"\TZK_Sounds_4_0_6\fdf\spg9_expl.wss", 100, 1};
+		soundHit3[] = {"\TZK_Sounds_4_0_6\fdf\spg9_expl.wss", 100, 1};
+		soundHitArmor1[] = {"\TZK_Sounds_4_0_6\fdf\spg9_expl.wss", 100, 1};
+		soundHitArmor2[] = {"\TZK_Sounds_4_0_6\fdf\spg9_expl.wss", 100, 1};
+		soundHitMan1[] = {"\TZK_Sounds_4_0_6\fdf\spg9_expl.wss", 100, 1};
+		soundHitMan2[] = {"\TZK_Sounds_4_0_6\fdf\spg9_expl.wss", 100, 1};
+		soundHitBuilding1[] = {"\TZK_Sounds_4_0_6\fdf\spg9_expl.wss", 100, 1};
+		soundHitBuilding2[] = {"\TZK_Sounds_4_0_6\fdf\spg9_expl.wss", 100, 1};
 		hitGround[] = {soundHit1, 0.33, soundHit2, 0.33, soundHit3, 0.33};
 		hitArmor[] = {soundHitArmor1, 0.5, soundHitArmor2, 0.5};
 		hitMan[] = {soundHitMan1, 0.5, soundHitMan2, 0.5};
@@ -450,12 +450,12 @@ class CfgAmmo {
 	class 105RCSabot_OFrP_xj400: Heat105 {
 		hit = 700; indirectHit = 300; indirectHitRange = 1;
 		minRange = 10;
-		soundFly[] = {"\TZK_Config_4_0_6\PrjtlFlg.wss",db-20,1.0};
+		soundFly[] = {"\TZK_Sounds_4_0_6\AMX10\PrjtlFlg.wss",db-20,1.0};
 		cost = 800;
 	};
 	class 105RCHE_OFrP_xj400: Shell105 {
 		hit = 150; indirectHit = 100; indirectHitRange = 8;
-		soundFly[] = {"\TZK_Config_4_0_6\PrjtlFlg.wss",db-20,1.0};
+		soundFly[] = {"\TZK_Sounds_4_0_6\AMX10\PrjtlFlg.wss",db-20,1.0};
 		minRange = 50; minRangeProbab = 0.5;
 		midRange = 1050; midRangeProbab = 0.99;
 		maxRange = 2000; maxRangeProbab = 0.75;
@@ -463,13 +463,13 @@ class CfgAmmo {
 	};
 	// Fix 155mm shell model error
 	class HEAT155_DKMM_xj400: Heat125 {
-		model = "\TZK_Config_4_0_6\wp\heat155.p3d";
+		model = "\TZK_Model_4_0_6\wep\heat155.p3d";
 		soundFly[] = {"\TZK_Sounds_4_0_0\COC\155mmFly.wss", db-30, 1};
 	};
 	// 120/122 mm howitzer shell
 	class HE120_Coc_xj400: HEAT155_DKMM_xj400 {
 		hit = 200; indirectHit = 150; indirectHitRange = 9.5;
-		soundFly[] = {"\TZK_Config_4_0_6\coc\shellfly.wss", db-30, 0.9};
+		soundFly[] = {"\TZK_Sounds_4_0_6\Coc\shellfly.wss", db-30, 0.9};
 		cost = 300;
 	};
 	class HE122_VME_xj400: HEAT155_DKMM_xj400 {
@@ -681,7 +681,7 @@ class CfgWeapons {
 			multiplier = 1;
 			initSpeed = 1000;
 			reloadTime = 0.025;
-			sound[] = {"\TZK_Config_4_0_6\snd\bas\M134_2kx5.wss", 1, 1};
+			sound[] = {"\TZK_Sounds_4_0_6\bas\M134_2kx5.wss", 1, 1};
 			soundContinuous = 1;
 			flash = gunfire;
 			flashSize = 0.01;
@@ -1121,7 +1121,7 @@ class CfgWeapons {
 
 	class Gun106_htr_xj400: Gun120 {
 		displayName = "106mm HEAT";
-		reloadSound[] = {"\TZK_Config_4_0_6\snd\m151a1c\106reload.wss", 0.5, 1};
+		reloadSound[] = {"\TZK_Sounds_4_0_6\m151a1c\106reload.wss", 0.5, 1};
 		magazines[] = {"Sabot106_htr_xj400"};
 		aiRateOfFire = 0;
 		aiRateOfFireDistance = 0;
@@ -1135,7 +1135,7 @@ class CfgWeapons {
 		initSpeed = 1400;
 		nameSound = "heat";
 		reloadTime = 8;
-		sound[] = {"\TZK_Config_4_0_6\snd\m151a1c\106shot.wss", db+20, 1};
+		sound[] = {"\TZK_Sounds_4_0_6\m151a1c\106shot.wss", db+20, 1};
 		soundContinuous = 0;
 		ffCount = 1;
 		flash = "gunfire";
@@ -1147,9 +1147,9 @@ class CfgWeapons {
 	};
 	class Gun_Spg_fdf_xj400: Gun120 {
 		displayName = "PG-9 HEAT-FS";
-		drySound[] = {"\TZK_Config_4_0_6\snd\finmod\mg_dry.wss",0.000316,1};
-		reloadMagazineSound[] = {"\TZK_Config_4_0_6\snd\finmod\mg_reload_manual.wss",0.000316,1};
-		reloadSound[] = {"\TZK_Config_4_0_6\snd\finmod\musti_reload.wss",0.000316,1};
+		drySound[] = {"\TZK_Sounds_4_0_6\fdf\mg_dry.wss",0.000316,1};
+		reloadMagazineSound[] = {"\TZK_Sounds_4_0_6\fdf\mg_reload_manual.wss",0.000316,1};
+		reloadSound[] = {"\TZK_Sounds_4_0_6\fdf\musti_reload.wss",0.000316,1};
 		magazines[] = {"PG9HEAT_fdf_xj400"};
 		magazineReloadTime = 0;
 		aiRateOfFire = 0;
@@ -1164,7 +1164,7 @@ class CfgWeapons {
 		initSpeed = 1400;
 		nameSound = "heat";
 		reloadTime = 8;
-		sound[] = {"\TZK_Config_4_0_6\snd\finmod\spg9.wss", db+20, 1};
+		sound[] = {"\TZK_Sounds_4_0_6\fdf\spg9.wss", db+20, 1};
 		soundContinuous = 0;
 		ffCount = 1;
 		flash = "gunfire";
@@ -1197,7 +1197,7 @@ class CfgWeapons {
 		recoil = "Empty";
 		dispersion = 0.0001;
 		reloadTime = 8;
-		sound[] = {"\TZK_Config_4_0_6\tir10RC.wss", 10, 1.0};
+		sound[] = {"\TZK_Sounds_4_0_6\AMX10\tir10RC.wss", 10, 1.0};
 		aiRateOfFire = 0;
 		aiRateOfFireDistance = 0;
 	};
@@ -1212,7 +1212,7 @@ class CfgWeapons {
 		recoil = "Empty";
 		dispersion = 0.001;
 		reloadTime = 8;
-		sound[] = {"\TZK_Config_4_0_6\tir10RC.wss", 10, 1.0};
+		sound[] = {"\TZK_Sounds_4_0_6\AMX10\tir10RC.wss", 10, 1.0};
 		aiRateOfFire = 0;
 		aiRateOfFireDistance = 0;
 	};
@@ -1264,7 +1264,7 @@ class CfgWeapons {
 
 		displayName = "120mm HE";
 		ammo = "HE120_Coc_xj400";
-		sound[] = {"\TZK_Config_4_0_6\coc\amos_fire.wss", db+20 ,1};
+		sound[] = {"\TZK_Sounds_4_0_6\Coc\amos_fire.wss", db+20 ,1};
 		reloadTime = 5;
 		flash = "gunfire";
 		flashSize = 10.000000;
@@ -1303,7 +1303,7 @@ class CfgWeapons {
 
 		displayName = "122mm HE";
 		ammo = "HE122_VME_xj400";
-		sound[] = {"\TZK_Config_4_0_6\vme\plz89.wss", db+20, 1};
+		sound[] = {"\TZK_Sounds_4_0_6\VME\plz89.wss", db+20, 1};
 		reloadTime = 8;
 		flash = "gunfire";
 		flashSize = 10;
@@ -1321,7 +1321,7 @@ class CfgWeapons {
 		displayName = "RKG-3M";
 		displayNameMagazine = "RKG-3M";
 		shortNameMagazine = "RKG-3M";
-		picture = "\TZK_Config_4_0_6\RKG-3_co.paa";
+		picture = "\TZK_Config_4_0_6\Tex\RKG-3.paa";
 		maxLeadSpeed = 20; // 72 km/h at most
 		ammo = "RKG3M_xj400"
 		sound[] = {"\TZK_Sounds_4_0_0\KYL_KASAP\Throw.ogg", db-60, 1};
@@ -1434,7 +1434,6 @@ class CfgWeapons {
 	class MineRocket_1000_xj400: MineRocket_0080_xj400 { displayName = "Mine Rocket(1000m/s)"; initSpeed = 1000; };
 };
 
-// todo: localize statement
 class UA_MHQBuildMenu {};
 class UA_MCVBuildMenu {};
 class UA_SupBuildMenu {};
@@ -1666,7 +1665,7 @@ class CfgVehicles {
 	class NonStrategic: Building {};
 	class HeliH: NonStrategic {};
 	class Target_TZK_xj400: HeliH {
-		model = "\TZK_Config_4_0_6\TZK_Target_New0.p3d";
+		model = "\TZK_Config_4_0_6\Model\TZK_Target_New0.p3d";
 	};
 	class Container_TZK_xj400: HeliH { // Vehicle container
 		model = "\TZK_Model_4_0_6\container.p3d";
@@ -1769,7 +1768,10 @@ class CfgVehicles {
 		driverCanSee = CanSeeAll;
 	};
 
-	class HMMMV_TOW2A_xj400: JeepMG { terrainCoef = 1; preferRoads = 0; };
+	class HMMMV_TOW2A_xj400: JeepMG {
+		model = "\TZK_Model_4_0_6\hmmwv_tow2_FK_HMMWV.p3d";
+		terrainCoef = 1; preferRoads = 0;
+	};
 	class HMMMV_TOW2A_Auto_xj400: HMMMV_TOW2A_xj400 {
 		// In debugging, don't forget use TZK soldiers but not origin ones otherwise CfgMoves will be abnormal
 		hasGunner = 0;
@@ -1777,7 +1779,7 @@ class CfgVehicles {
 		driverAction = "ManActHmmwvGunner02";
 		transportSoldier = 4;
 		cargoAction[] = {"ManActJeepDriver","ManActHmmwvCargo02","ManActHmmwvCargo02","ManActHmmwvCargo02"};
-		model = "\TZK_Config_4_0_6\hmmwv_tow2_Auto.p3d";
+		model = "\TZK_Model_4_0_6\hmmwv_tow2_Auto.p3d";
 		class ViewPilotBase {
 			initAngleX = 5;
 			minAngleX = -9;
@@ -1812,7 +1814,7 @@ class CfgVehicles {
 		driverAction = "ManActven_brdm2_gunner";
 		transportSoldier = 3;
 		cargoAction[] = {"ManActven_brdm2_driver","ManActven_brdm2_codriver","ManActven_brdm2_codriver"};
-		model = "\TZK_Config_4_0_6\BRDM2_MNF_Auto.p3d";
+		model = "\TZK_Model_4_0_6\BRDM2_MNF_Auto.p3d";
 		class ViewPilotBase {
 			initAngleX = 5;
 			minAngleX = -5;
@@ -1919,11 +1921,11 @@ class CfgVehicles {
 		displayName = "M151A1C with 106mm"; side = 1; cost = 100000; threat[] = {0.3, 1, 0.1};
 
 		model = "\TZK_Model_4_0_6\m151a1c_htr.p3d";
-		picture = "\TZK_Config_4_0_6\tex\htr_m151a1c_ui.paa";
+		picture = "\t406\ui\iM151a1c.paa";
 		hiddenSelections[] = {"shell_casing01","shell_projectile01","shell_casing02","shell_projectile02","shell_casing03","shell_projectile03","shell_casing04","shell_projectile04","shell_casing05","shell_projectile05","n1","n2","chambProj","chambCase"};
 
 		gunnerAction = "ManActHTRM151ACGunner";
-		gunnerOpticsModel = "\TZK_Config_4_0_6\opt\htr_106recOptic";
+		gunnerOpticsmodel = "\TZK_Model_4_0_6\opt\htr_106recOptic";
 
 		// "Gun106_htr_xj400"
 		weapons[] = {}; // Car with weapon should better not equip weapon. But editors shouldn't make them haven't any magazines as well.
@@ -2028,15 +2030,15 @@ class CfgVehicles {
 		displayName = "UAZ (SPG-9)"; nameSound = "UAZ"; side = 0; cost = 100000; type = 1; threat[] = {0.5, 1, 0.1};
 
 		model = "\TZK_Model_4_0_6\uaz_spg_RUS.p3d";
-		picture = "\TZK_Config_4_0_6\tex\icon_musti.paa";
+		picture = "\t406\ui\iUazSpg.paa";
 		crew ="soldierECrew";
-		soundEngine[] = {"\TZK_Config_4_0_6\fdf\uaz_engine.wss",0.031623,1}; //FDF - Goeth 12.10.2003
-		soundEnviron[] = {"\TZK_Config_4_0_6\fdf\car_treads.wss",0.001000,1};
-		soundGetIn[] = {"\TZK_Config_4_0_6\fdf\car_getin.wss",0.001000,1};
-		soundGetOut[] = {"\TZK_Config_4_0_6\fdf\car_getout.wss",0.001000,1};
-		soundLandCrash[] = {"\TZK_Config_4_0_6\fdf\car_crash.wss",0.006000,1};
-		soundGear[] = {"\TZK_Config_4_0_6\fdf\old_gear.wss",0.000500,1};
-		soundWaterCrash[] = {"\TZK_Config_4_0_6\fdf\medium_water_splash.wss",0.006000,1};
+		soundEngine[] = {"\TZK_Sounds_4_0_6\fdf\uaz_engine.wss", 0.031623, 1}; //FDF - Goeth 12.10.2003
+		soundEnviron[] = {"\TZK_Sounds_4_0_6\fdf\car_treads.wss", 0.001, 1};
+		soundGetIn[] = {"\TZK_Sounds_4_0_6\fdf\car_getin.wss", 0.001, 1};
+		soundGetOut[] = {"\TZK_Sounds_4_0_6\fdf\car_getout.wss", 0.001, 1};
+		soundLandCrash[] = {"\TZK_Sounds_4_0_6\fdf\car_crash.wss", 0.006, 1};
+		soundGear[] = {"\TZK_Sounds_4_0_6\fdf\old_gear.wss", 0.0005, 1};
+		soundWaterCrash[] = {"\TZK_Sounds_4_0_6\fdf\medium_water_splash.wss", 0.006, 1};
 
 		// "Gun_Spg_fdf_xj400"
 		weapons[] = {}; // Car with weapon should better not equip weapon. But editors shouldn't make them haven't any magazines as well.
@@ -2092,7 +2094,7 @@ class CfgVehicles {
 			gunEnd = "konec hlavne";
 			body = "OtocVez";
 			gun = "OtocHlaven";
-			soundServo[] = {"\TZK_Config_4_0_6\fdf\manual_servo.wss",0.000500,1}; //FDF - Goeth 11.5.2003
+			soundServo[] = {"\TZK_Sounds_4_0_6\fdf\manual_servo.wss",0.000500,1}; //FDF - Goeth 11.5.2003
 			minElev = -18;
 			maxElev = 30;
 			minTurn = -180;
@@ -2106,11 +2108,11 @@ class CfgVehicles {
 	#define SpoofMagazines "SpoofSwitch_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400", "SpoofCount_xj400"
 	class UH60_CSLA_Base_xj400: Helicopter {
 		class EventHandlers {
-			GetOut = "_this exec {\TZK_Config_4_0_6\Scripts\CSLA_UH60A\GetOut_EH.sqs};"
+			GetOut = "_this exec localize {TZK_EVENT_GETOUT_UH60A}"
 		};
 	};
 	class UH60_CSLA_xj400: UH60_CSLA_Base_xj400 {
-		model = "\TZK_Config_4_0_6\UH60A_CSLA2.p3d";
+		model = "\TZK_Model_4_0_6\UH60A_CSLA2.p3d";
 		class Turret: TurretBase {
 			minElev = -0;
 			maxElev = 0;
@@ -2119,7 +2121,7 @@ class CfgVehicles {
 		};
 	};
 	class UH60MG_CSLA_Base_xj400: UH60_CSLA_Base_xj400 {
-		model = "\TZK_Config_4_0_6\UH60A_CSLA2.p3d";
+		model = "\TZK_Model_4_0_6\UH60A_CSLA2.p3d";
 		class Turret {
 			gunAxis = "OsaHlavne";
 			turretAxis = "OsaVeze";
@@ -2307,7 +2309,7 @@ class CfgVehicles {
 		// side = 0;
 		cost = 10000000; type = 2; threat[] = {0, 1, 0.2};
 
-		model = "\TZK_Config_4_0_6\Orca95_MCSR.p3d";
+		model = "\TZK_Model_4_0_6\Orca95_MCSR.p3d";
 		armor = 20;
 		hiddenSelections[] = {};
 		picture = "\t406\ui\iOrca95.paa";
@@ -2322,7 +2324,7 @@ class CfgVehicles {
 		mainrotorspeed = 2.5;
 		backrotorspeed = 2.5;
 
-		soundEngine[] = {"\TZK_Config_4_0_6\snd\mcsr\OrcaEng.wss", db+10, 1};
+		soundEngine[] = {"\TZK_Sounds_4_0_6\mcsr\OrcaEng.wss", db+10, 1};
 		InsideSoundCoef = 0.005;
 		armorStructural=3;
 		armorHull = 0.5;
@@ -2654,11 +2656,14 @@ class CfgVehicles {
 	};
 	class M1A1_xj400: TZK_HeavyWestTank_Base_xj400 {
 		maxSpeed = 57;
-		model = "\TZK_Config_4_0_6\M1A1_TZK.p3d";
+		model = "\TZK_Model_4_0_6\M1A1_TZK.p3d";
+		class EventHandlers {
+			Init = "_vehicle = _this select 0; [_vehicle, {C}] exec localize {TZK_EVENT_INIT_TEX_M1A1}; _vehicle animate [{suspension}, 0.5]";
+		};
 	};
 	class M1A2_INQ_xj400: TZK_HeavyWestTank_Base_xj400 {
 		maxSpeed = 57;
-		model = "\TZK_Config_4_0_6\M1A2_INQ.p3d";
+		model = "\TZK_Model_4_0_6\M1A2_INQ.p3d";
 	};
 	class Leo2A6_xj400: TZK_HeavyWestTank_Base_xj400 {
 		maxSpeed = 57;
@@ -2694,11 +2699,11 @@ class CfgVehicles {
 	};
 	class T80_xj400: TZK_HeavyEastTank_Base_xj400 {
 		maxSpeed = 57;
-		model = "\TZK_Config_4_0_6\T80_TZK.p3d";
+		model = "\TZK_Model_4_0_6\T80_TZK.p3d";
 	};
 	class T90_xj400: TZK_HeavyEastTank_Base_xj400 {
 		maxSpeed = 57;
-		model = "\TZK_Config_4_0_6\T90_ICP.p3d";
+		model = "\TZK_Model_4_0_6\T90_ICP.p3d";
 	};
 	class ZTZ99_xj400: TZK_HeavyEastTank_Base_xj400 {
 		maxSpeed = 57;
@@ -2723,7 +2728,7 @@ class CfgVehicles {
 			, "tzkGun00", "tzkGun01", "tzkGun02", "tzkGun03"
 		};
 		class EventHandlers {
-			Init = "_vehicle = _this select 0; [_vehicle, {C}] exec localize {TZK_MULTITEX_STYLE_M109}; [_vehicle] exec {\TZK_Objects\Scripts\InitEventHandlers\M109A6G.sqs}; [_vehicle, {C}] exec localize {TZK_MULTITEX_GUNREC_M109}";
+			Init = "_vehicle = _this select 0; [_vehicle, {C}] exec localize {TZK_EVENT_INIT_TEX_M109}; [_vehicle] exec {\TZK_Objects\Scripts\InitEventHandlers\M109A6G.sqs}; [_vehicle, {C}] exec localize {TZK_MULTITEX_GUNREC_M109}";
 		};
 	};
 	class PLZ05_VME_Base_xj400: T72_Base_xj400 {};
@@ -2742,7 +2747,7 @@ class CfgVehicles {
 			, "tzkGun00", "tzkGun01", "tzkGun02", "tzkGun03"
 		};
 		class EventHandlers {
-			Init = "_vehicle = _this select 0; [_vehicle] exec {\TZK_Objects\Scripts\InitEventHandlers\PLZ05.sqs}; [_vehicle, {\TZK_Texture_4_0_0\BWMOD\leo2A6\num\}, {n}, {0}] exec {\TZK_Objects\Scripts\texture\RSC_Numbers.sqs}; [_vehicle, {C}] exec localize {TZK_MULTITEX_STYLE_PLZ05}; [_vehicle, {C}] exec localize {TZK_MULTITEX_GUNREC_PLZ05}";
+			Init = "_vehicle = _this select 0; [_vehicle] exec {\TZK_Objects\Scripts\InitEventHandlers\PLZ05.sqs}; [_vehicle, {\TZK_Texture_4_0_0\BWMOD\leo2A6\num\}, {n}, {0}] exec {\TZK_Objects\Scripts\texture\RSC_Numbers.sqs}; [_vehicle, {C}] exec localize {TZK_EVENT_INIT_TEX_PLZ05}; [_vehicle, {C}] exec localize {TZK_MULTITEX_GUNREC_PLZ05}";
 		};
 	};
 
@@ -2755,18 +2760,20 @@ class CfgVehicles {
 
 	class M60_Base_xj400: Tank_xj400 {};
 	class M60_xj400: M60_Base_xj400 {
-		model = "\TZK_Config_4_0_6\M60_TZK.p3d";
+		model = "\TZK_Model_4_0_6\M60_TZK.p3d";
 	};
 
-	class M113_xj400: M113 {};
+	class M113_xj400: M113 {
+		model = "\TZK_Model_4_0_6\m113_TZK.p3d";
+	};
 	class M113Ambul_xj400: M113Ambul {
-		model = "\TZK_Config_4_0_6\M113_Ambu_TZK.p3d";
+		model = "\TZK_Model_4_0_6\M113_Ambu_TZK.p3d";
 		camouflage = 6; // support vehicle using less value
 		audible = 4;
 	};
 	class Bradley_xj400: M113 {};
 	class M2A2_xj400: Bradley_xj400 {
-		model = "\TZK_Config_4_0_6\M2A2_TZK.p3d";
+		model = "\TZK_Model_4_0_6\M2A2_TZK.p3d";
 		accuracy = 0.35;
 	};
 	class M2A2_AA_xj400: M2A2_xj400 {
@@ -2776,7 +2783,7 @@ class CfgVehicles {
 		sensitivity = 1.6; sensitivityEar = 0.012;
 	};
 	class Vulcan_xj400: M113 {
-		model = "\TZK_Config_4_0_6\Vulcan_TZK.p3d";
+		model = "\TZK_Model_4_0_6\Vulcan_TZK.p3d";
 		class ReloadAnimations {
 			class Cannon1 {
 				weapon = "VulcanCannon_xj406";
@@ -2872,9 +2879,9 @@ class CfgVehicles {
 			"flash1","flash2","flash3","flash4","flash5","flash6"
 			, "tzkGunL00", "tzkGunL01", "tzkGunL02", "tzkGunR00", "tzkGunR01", "tzkGunR02"
 		};
-		soundEngine[] = {"\TZK_Config_4_0_6\coc\motor.wss", db-30, 1};
-		soundEnviron[] = {"\TZK_Config_4_0_6\coc\band.wss", db-40, 0.7};
-		picture = "\TZK_Config_4_0_6\tex\inv_ssg120_com.paa";
+		soundEngine[] = {"\TZK_Sounds_4_0_6\Coc\motor.wss", db-30, 1};
+		soundEnviron[] = {"\TZK_Sounds_4_0_6\Coc\band.wss", db-40, 0.7};
+		picture = "\t406\ui\iGrkpbv.paa";
 		icon = "\TZK_Texture_4_0_0\icon\uiM109.paa";
 
 		irScanToEyeFactor = 1; // Howitzer can has 1x view distance radar.
@@ -2921,7 +2928,7 @@ class CfgVehicles {
 		commanderInAction = "ManActSFP_ssg120commander";
 
 		class Turret: TurretBase {
-			soundServo[] = {"\TZK_Config_4_0_6\coc\servo.wss",db-30,1};
+			soundServo[] = {"\TZK_Sounds_4_0_6\Coc\servo.wss",db-30,1};
 			minElev = -5;
 			maxElev = 85;
 		};
@@ -2962,12 +2969,12 @@ class CfgVehicles {
 		// accuracy = 0.4;
 		displayName = "PLZ-89"; nameSound = "Tank"; side = 0; cost = 2000000; type = 1; threat[] = {1, 1, 0.5};
 
-		model = "\TZK_Config_4_0_6\PLZ89.p3d";
+		model = "\TZK_Model_4_0_6\PLZ89.p3d";
 		hiddenSelections[] = {
 			"n1", "n2", "n3"
 			, "tzkGun00", "tzkGun01", "tzkGun02", "tzkGun03"
 		};
-		picture = "\TZK_Config_4_0_6\tex\plz89.paa";
+		picture = "\t406\ui\iPlz89.paa";
 		icon = "\TZK_Texture_4_0_0\icon\uiM109.paa";
 
  		soundEngine[] = {"\TZK_Sounds_4_0_0\M1_Turbine.wss",0.031622775,1.1};
@@ -3029,7 +3036,7 @@ class CfgVehicles {
 			gun = "OtocHlavenVelitele";
 		};
 		class Turret: TurretBase {
-			soundServo[] = {"\TZK_Config_4_0_6\vme\paotaztz99.wav", db-25, 1};
+			soundServo[] = {"\TZK_Sounds_4_0_6\VME\paotaztz99.wav", db-25, 1};
 			minElev = -5;
 			maxElev = +55;
 		};
@@ -3074,10 +3081,10 @@ class CfgVehicles {
 			tex_tg.paa, tex_tour.paa, tex_viseur.paa, tex_visouv.paa
 			, tzk_tex_99
 		};
- 		picture = "\TZK_Config_4_0_6\tex\i10rc.paa";
+ 		picture = "\t406\ui\iAmx10rc.paa";
 		// smaller vehicle size
 		camouflage = 5; audible = 5;
-		// hs_todo: need verify armor in real
+
 		armor = 200; armorStructural = 2.0;
 		class HitEngine { armor = 0.8; material = 60; name = "engine"; passThrough = 1; };
 		class HitHull { armor = 1.0; material = 50; name = "hull"; passThrough = 1; };
@@ -3096,15 +3103,13 @@ class CfgVehicles {
 		formationX = 50;
 		formationZ = 50;
 
-		// hs_todo: 换成AI的散射机枪
-		weapons[] = {"105RC_OFrP_xj400", "MachineGun7_6"};
+		weapons[] = {"105RC_OFrP_xj400", "MG_7_6_xj400"};
 		magazines[] = {
 			"105RCSabot_OFrP_xj400", "105RCHE_OFrP_xj400",
-			"MachineGun7_6", "MachineGun7_6", "MachineGun7_6", "MachineGun7_6", "MachineGun7_6", "MachineGun7_6", "MachineGun7_6", "MachineGun7_6"
+			"MG_7_6_xj400", "MG_7_6_xj400", "MG_7_6_xj400", "MG_7_6_xj400", "MG_7_6_xj400"
 		};
 
-		// hs_todo: adjust db value, verify turret/comturret sound/memory
-		soundEngine[] = {"\TZK_Config_4_0_6\moteur10rc.wss",db-15,1};
+		soundEngine[] = {"\TZK_Sounds_4_0_6\AMX10\moteur10rc.wss", db-15, 1};
 		soundEnviron[] = {,db-15,1};
 
 		class Turret {
@@ -3172,12 +3177,12 @@ class CfgVehicles {
 		outGunnerMayFire = false;
 		forceHideGunner = false;
 
-		gunnerOpticsModel = "\TZK_Config_4_0_6\opt\TirRc";
-		commanderOpticsModel = "\TZK_Config_4_0_6\opt\ComRc";
+		gunnerOpticsmodel = "\TZK_Model_4_0_6\opt\TirRc";
+		commanderOpticsmodel = "\TZK_Model_4_0_6\opt\ComRc";
 
 		// EVENTS ##################################################
 		class EventHandlers {
-			Init = "_vehicle = _this select 0; [_vehicle, {C}] exec {\TZK_Config_4_0_6\Scripts\texture\AMX10RC.sqs}";
+			Init = "_vehicle = _this select 0; [_vehicle, {C}] exec localize {TZK_EVENT_INIT_TEX_AMX10RC}";
 		};
 
 		// ANIMATIONS ##############################################
@@ -3257,12 +3262,12 @@ class CfgVehicles {
 		displayName = "2S25 Sprut-SD"; nameSound = "tank"; side = 0; cost = 950000; type = 1; threat[] = {0.6,1,0.3};
 
 		model = "\TZK_Model_4_0_6\2S25_mfm.p3d";
-		hiddenselections[]= {"no1", "no2", "no3"};
-		icon = "\TZK_Config_4_0_6\tex\sprut_i.paa";
-		picture = "\t406\ui\2s25.paa";
+		hiddenSelections[]= {"no1", "no2", "no3"};
+		icon = "\t406\ui\uiSprut.paa";
+		picture = "\t406\ui\i2s25.paa";
 
-		gunnerOpticsModel = "\TZK_Config_4_0_6\opt\G_Optic.p3d";
-		commanderOpticsModel = "\TZK_Config_4_0_6\opt\C_Optic.p3d";
+		gunnerOpticsmodel = "\TZK_Model_4_0_6\opt\G_Optic.p3d";
+		commanderOpticsmodel = "\TZK_Model_4_0_6\opt\C_Optic.p3d";
 
 		irScanToEyeFactor = 0.616; // Special radar setting in TZK.
 		laserscanner = 1;
@@ -3290,9 +3295,9 @@ class CfgVehicles {
 		gunnercansee = 31;
 		hasCommander = 1;
 
-		soundEngine[] = {"\TZK_Config_4_0_6\engine_loaded.wss", db-30, 1};
-		soundEnviron[] = {"\TZK_Config_4_0_6\tracks.wss", db-40, 0.8};
-		soundGear[] = {"\TZK_Config_4_0_6\gear.wss", db-50,0.8};
+		soundEngine[] = {"\TZK_Sounds_4_0_6\MFM_2S25\engine_loaded.wss", db-30, 1};
+		soundEnviron[] = {"\TZK_Sounds_4_0_6\MFM_2S25\tracks.wss", db-40, 0.8};
+		soundGear[] = {"\TZK_Sounds_4_0_6\MFM_2S25\gear.wss", db-50, 0.8};
 
 		forceHideGunner = 0;
 		// same setting as bmp
@@ -3391,7 +3396,7 @@ class CfgVehicles {
 		armor = 550;
 		irScanRangeMin = 0; irScanRangeMax = 0; irScanToEyeFactor = 0; irScanGround = 0;
 		class EventHandlers {
-			Init = "_vehicle = _this select 0; _vehicle animate [{Podveska}, 0.5], [_vehicle, {C}] exec {\TZK_Config_4_0_6\Scripts\texture\M88.sqs}";
+			Init = "_vehicle = _this select 0; _vehicle animate [{Podveska}, 0.5], [_vehicle, {C}] exec localize {TZK_EVENT_INIT_TEX_M88}";
 		};
 
 		insideSoundCoef = 0.02;
@@ -3450,14 +3455,14 @@ class CfgVehicles {
 				displayName = "<Bucket up>";
 				position = "controls";
 				radius = 4;
-				condition = "this animationPhase ""Bucket"" >=  0.5";
+				condition = "this animationPhase ""Bucket"" >= 0.5";
 				statement = "this animate [""Bucket"", 0]";
 			};
 			class Crane_up {
 				displayName = "<Crane up>";
 				position = "controls";
 				radius = 4;
-				condition = "this animationPhase ""Crane"" ==0";
+				condition = "this animationPhase ""Crane"" == 0";
 				statement = "[this,""Up""] exec ""\TZK_Config_4_0_6\Scripts\M88\Crane.sqs"" ";
 			};
 			class Crane_down {
@@ -3693,7 +3698,7 @@ class CfgVehicles {
 		displayName = "MIM-72A Chaparral"; nameSound = "tank"; side = 1; cost = 1000000; type = 1; threat[] = {0, 0.5, 0};
 
 		model = "\TZK_Model_4_0_6\scfus_m730a1_w.p3d";
-		// hiddenselections[] = {"missile_1","missile_2","missile_3","missile_4"};
+		// hiddenSelections[] = {"missile_1","missile_2","missile_3","missile_4"};
 
 		picture = "\t406\ui\iMim72.paa";
 		icon = "\t406\ui\uiSa13.paa";
@@ -3936,7 +3941,7 @@ class CfgVehicles {
 	class T80Res_TZK_xj406: T80Res_Base_xj406 {
 		scope = protected; vehicleClass = "TZK_Units_400";
 		displayName = "T80(Res) Red"; accuracy = 1000;
-		model = "\TZK_Config_4_0_6\T80_TZK.p3d";
+		model = "\TZK_Model_4_0_6\T80_TZK.p3d";
 		hiddenSelections[] = {
 			"pruh", "TZK_Grad1","TZK_Grad2","TZK_Grad3","TZK_Grad4","TZK_Grad5","TZK_Grad6", tzk_tex_00,
 			tex_pas_spod_1frame.pac, tex_pasy_okolo_uni.pac, tex_t55_infra.pac, tex_t55_sum.pac, tex_t72_vymetnice.pac, tex_t80_kolo2.pac, tex_tank_04_bck.pac, tex_tank_04_bednyuvalce_.pac, tex_tank_04_frt.pac, tex_tank_04_krabic_back.pac, tex_tank_04_krabic_sidet.pac, tex_tank_04_lauf_frt.pac, tex_tank_04_lauf_top.pac, tex_tank_04_platyzveze_s.pac, tex_tank_04_platyzvozu_t.pac, tex_tank_04_side.pac, tex_tank_04_spod.pac, tex_tank_04_sud_norm.pac, tex_tank_04_sud_side.paa, tex_tank_04_top.pac, tex_tank_04_v_lec_norm.pac, tex_tank_04_v_lec_side.paa, tex_tank_04_vez_bck.pac, tex_tank_04_vez_frt.pac, tex_tank_04_vez_side.pac, tex_tank_04_vez_top.pac, tex_tank_m_02_kanon.pac, tex_tank_m_02_vez_frt.pac,
@@ -4296,10 +4301,10 @@ class CfgVehicles {
 	class ParachuteC: ParachuteBase {};
 	class pwr_paraC_xj400: ParachuteC {};
 	class pwr_paraC_4ammo_xj400: pwr_paraC_xj400 {
-		model = "\TZK_Config_4_0_6\PARA_Ammo.p3d";
+		model = "\TZK_Config_4_0_6\Model\PARA_Ammo.p3d";
 	};
 	class pwr_paraC_4veh_xj400: pwr_paraC_xj400 {
-		model = "\TZK_Config_4_0_6\PARA_Veh.p3d";
+		model = "\TZK_Config_4_0_6\Model\PARA_Veh.p3d";
 	};
 
 	class House: NonStrategic {};
@@ -4386,7 +4391,7 @@ class CfgMovesMC {
 		// --------------------------- AMX10RC -------------------------------
 
 		class OFrPAMX10RCDriver: Driver {
-			file = "\TZK_Config_4_0_6\Anims\AMX10RC_driver.rtm";
+			file = "\TZK_Anims_4_0_6\AMX10RC_driver.rtm";
 			speed = -10.000000;
 			looped = 1;
 			connectTo[] = {"OFrPAMX10RCDriverDying",1};
@@ -4394,7 +4399,7 @@ class CfgMovesMC {
 		};
 		class OFrPAMX10RCDriverDying: DefaultDie {
 			actions = "NoActions";
-			file = "\TZK_Config_4_0_6\Anims\AMX10RC_driver_dead.rtm";
+			file = "\TZK_Anims_4_0_6\AMX10RC_driver_dead.rtm";
 			speed = -0.5;
 			looped = 0;
 			soundEnabled = 0;
@@ -4402,14 +4407,14 @@ class CfgMovesMC {
 		};
 		class OFrPAMX10RCDriverDead: OFrPAMX10RCDriverDying {
 			actions = "DeadActions";
-			file = "\TZK_Config_4_0_6\Anims\AMX10RC_driver_dead_stat.rtm";
+			file = "\TZK_Anims_4_0_6\AMX10RC_driver_dead_stat.rtm";
 			speed = 10000000000.000000;
 			terminal = 1;
 			connectFrom[] = {"OFrPAMX10RCDriverDying",1};
 			connectTo[] = {"DeadState",1};
 		};
 		class OFrPAMX10RCDriverOut: Driver {
-			file = "\TZK_Config_4_0_6\Anims\AMX10RC_driver_Out.rtm";
+			file = "\TZK_Anims_4_0_6\AMX10RC_driver_Out.rtm";
 			speed = -10.000000;
 			looped = 1;
 			connectTo[] = {"OFrPAMX10RCDriverOutDying",1};
@@ -4417,7 +4422,7 @@ class CfgMovesMC {
 		};
 		class OFrPAMX10RCDriverOutDying: DefaultDie {
 			actions = "NoActions";
-			file = "\TZK_Config_4_0_6\Anims\AMX10RC_driver_Out_dead.rtm";
+			file = "\TZK_Anims_4_0_6\AMX10RC_driver_Out_dead.rtm";
 			speed = -0.5;
 			looped = 0;
 			soundEnabled = 0;
@@ -4425,7 +4430,7 @@ class CfgMovesMC {
 		};
 		class OFrPAMX10RCDriverOutDead: OFrPAMX10RCDriverOutDying {
 			actions = "DeadActions";
-			file = "\TZK_Config_4_0_6\Anims\AMX10RC_driver_Out_dead_stat.rtm";
+			file = "\TZK_Anims_4_0_6\AMX10RC_driver_Out_dead_stat.rtm";
 			speed = 10000000000.000000;
 			terminal = 1;
 			connectFrom[] = {"OFrPAMX10RCDriverOutDying",1};
@@ -4434,7 +4439,7 @@ class CfgMovesMC {
 
 		class OFrPAMX10RCDriverOutForward: StandBase {
 			actions = StandSaluteActions;
-			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Driver_out_forward.rtm";
+			file = "\TZK_Anims_4_0_6\AMX10RC_Driver_out_forward.rtm";
 			speed = -0.75
 			looped = false;
 			soundEnabled = false;
@@ -4444,7 +4449,7 @@ class CfgMovesMC {
 		};
 		class OFrPAMX10RCDriverOutBackward: StandBase {
 			actions = StandSaluteActions;
-			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Driver_out_backward.rtm";
+			file = "\TZK_Anims_4_0_6\AMX10RC_Driver_out_backward.rtm";
 			speed = -0.75
 			looped = false;
 			soundEnabled = false;
@@ -4453,7 +4458,7 @@ class CfgMovesMC {
 			interpolateTo[] = {"OFrPAMX10RCDriverOutDying",0.1,"OFrPAMX10RCDriverOutDying",0.1};
 		};
 		class OFrPAMX10RCGunner: Gunner {
-			file = "\TZK_Config_4_0_6\Anims\AMX10RC_gunner.rtm";
+			file = "\TZK_Anims_4_0_6\AMX10RC_gunner.rtm";
 			speed = -10.000000;
 			looped = 1;
 			connectTo[] = {"OFrPAMX10RCGunnerDying",1};
@@ -4462,7 +4467,7 @@ class CfgMovesMC {
 
 		class OFrPAMX10RCGunnerDying: DefaultDie {
 			actions = "NoActions";
-			file = "\TZK_Config_4_0_6\Anims\AMX10RC_gunner_dead.rtm";
+			file = "\TZK_Anims_4_0_6\AMX10RC_gunner_dead.rtm";
 			speed = -0.5;
 			looped = 0;
 			soundEnabled = 0;
@@ -4470,14 +4475,14 @@ class CfgMovesMC {
 		};
 		class OFrPAMX10RCGunnerDead: OFrPAMX10RCGunnerDying {
 			actions = "DeadActions";
-			file = "\TZK_Config_4_0_6\Anims\AMX10RC_gunner_dead_stat.rtm";
+			file = "\TZK_Anims_4_0_6\AMX10RC_gunner_dead_stat.rtm";
 			speed = 10000000000.000000;
 			terminal = 1;
 			connectFrom[] = {"OFrPAMX10RCGunnerDying",1};
 			connectTo[] = {"DeadState",1};
 		};
 		class OFrPAMX10RCGunnerOut: Gunner {
-			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Gunner_out.rtm";
+			file = "\TZK_Anims_4_0_6\AMX10RC_Gunner_out.rtm";
 			speed = -10.000000;
 			looped = 1;
 			connectTo[] = {"OFrPAMX10RCGunnerOutDying",1};
@@ -4486,7 +4491,7 @@ class CfgMovesMC {
 
 		class OFrPAMX10RCGunnerOutDying: DefaultDie {
 			actions = "NoActions";
-			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Gunner_out_dead.rtm";
+			file = "\TZK_Anims_4_0_6\AMX10RC_Gunner_out_dead.rtm";
 			speed = -0.5;
 			looped = 0;
 			soundEnabled = 0;
@@ -4494,7 +4499,7 @@ class CfgMovesMC {
 		};
 		class OFrPAMX10RCGunnerOutDead: OFrPAMX10RCGunnerOutDying {
 			actions = "DeadActions";
-			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Gunner_out_dead_stat.rtm";
+			file = "\TZK_Anims_4_0_6\AMX10RC_Gunner_out_dead_stat.rtm";
 			speed = 10000000000.000000;
 			terminal = 1;
 			connectFrom[] = {"OFrPAMX10RCGunnerOutDying",1};
@@ -4503,7 +4508,7 @@ class CfgMovesMC {
 
 		class OFrPAMX10RCGunnerOutForward: StandBase {
 			actions = StandSaluteActions;
-			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Gunner_out_forward.rtm";
+			file = "\TZK_Anims_4_0_6\AMX10RC_Gunner_out_forward.rtm";
 			speed = -0.75
 			looped = false;
 			soundEnabled = false;
@@ -4513,7 +4518,7 @@ class CfgMovesMC {
 		};
 		class OFrPAMX10RCGunnerOutBackward: StandBase {
 			actions = StandSaluteActions;
-			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Gunner_out_backward.rtm";
+			file = "\TZK_Anims_4_0_6\AMX10RC_Gunner_out_backward.rtm";
 			speed = -0.75
 			looped = false;
 			soundEnabled = false;
@@ -4522,7 +4527,7 @@ class CfgMovesMC {
 			interpolateTo[] = {"OFrPAMX10RCGunnerOutDying",0.1,"OFrPAMX10RCGunnerOutDying",0.1};
 		};
 		class OFrPAMX10RCCommander: Commander {
-			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Commander.rtm";
+			file = "\TZK_Anims_4_0_6\AMX10RC_Commander.rtm";
 			speed = -10.000000;
 			looped = 1;
 			connectTo[] = {"OFrPAMX10RCCommanderDying",1};
@@ -4530,7 +4535,7 @@ class CfgMovesMC {
 		};
 		class OFrPAMX10RCCommanderDying: DefaultDie {
 			actions = "NoActions";
-			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Commander_dead.rtm";
+			file = "\TZK_Anims_4_0_6\AMX10RC_Commander_dead.rtm";
 			speed = -0.5;
 			looped = 0;
 			soundEnabled = 0;
@@ -4538,14 +4543,14 @@ class CfgMovesMC {
 		};
 		class OFrPAMX10RCCommanderDead: OFrPAMX10RCCommanderDying {
 			actions = "DeadActions";
-			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Commander_dead_stat.rtm";
+			file = "\TZK_Anims_4_0_6\AMX10RC_Commander_dead_stat.rtm";
 			speed = 10000000000.000000;
 			terminal = 1;
 			connectFrom[] = {"OFrPAMX10RCCommanderDying",1};
 			connectTo[] = {"DeadState",1};
 		};
 		class OFrPAMX10RCCommanderOut: Commander {
-			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Commander_out.rtm";
+			file = "\TZK_Anims_4_0_6\AMX10RC_Commander_out.rtm";
 			speed = -10.000000;
 			looped = 1;
 			connectTo[] = {"OFrPAMX10RCCommanderOutDying",1};
@@ -4553,7 +4558,7 @@ class CfgMovesMC {
 		};
 		class OFrPAMX10RCCommanderOutDying: DefaultDie {
 			actions = "NoActions";
-			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Commander_out_dead.rtm";
+			file = "\TZK_Anims_4_0_6\AMX10RC_Commander_out_dead.rtm";
 			speed = -0.5;
 			looped = 0;
 			soundEnabled = 0;
@@ -4561,7 +4566,7 @@ class CfgMovesMC {
 		};
 		class OFrPAMX10RCCommanderOutDead: OFrPAMX10RCCommanderOutDying {
 			actions = "DeadActions";
-			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Commander_out_dead_stat.rtm";
+			file = "\TZK_Anims_4_0_6\AMX10RC_Commander_out_dead_stat.rtm";
 			speed = 10000000000.000000;
 			terminal = 1;
 			connectFrom[] = {"OFrPAMX10RCCommanderOutDying",1};
@@ -4570,7 +4575,7 @@ class CfgMovesMC {
 
 		class OFrPAMX10RCCommanderOutForward: StandBase {
 			actions = StandSaluteActions;
-			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Commander_out_forward.rtm";
+			file = "\TZK_Anims_4_0_6\AMX10RC_Commander_out_forward.rtm";
 			speed = -0.75
 			looped = false;
 			soundEnabled = false;
@@ -4580,7 +4585,7 @@ class CfgMovesMC {
 		};
 		class OFrPAMX10RCCommanderOutBackward: StandBase {
 			actions = StandSaluteActions;
-			file = "\TZK_Config_4_0_6\Anims\AMX10RC_Commander_out_backward.rtm";
+			file = "\TZK_Anims_4_0_6\AMX10RC_Commander_out_backward.rtm";
 			speed = -0.75
 			looped = false;
 			soundEnabled = false;
@@ -4593,7 +4598,7 @@ class CfgMovesMC {
 
 		class SFP_ssg120driver: StandBase {
 			actions = StandActions;
-			file = "\TZK_Config_4_0_6\Anims\strf90_driver.rtm";
+			file = "\TZK_Anims_4_0_6\strf90_driver.rtm";
 			speed = SPEED_STATIC;
 			looped = 1
 			soundEnabled = 0
@@ -4603,7 +4608,7 @@ class CfgMovesMC {
 		};
 		class SFP_ssg120driverout: StandBase {
 			actions = StandActions;
-			file = "\TZK_Config_4_0_6\Anims\strf90_driverout.rtm";
+			file = "\TZK_Anims_4_0_6\strf90_driverout.rtm";
 			speed = SPEED_STATIC;
 			looped = 1
 			soundEnabled = 0
@@ -4613,7 +4618,7 @@ class CfgMovesMC {
 		};
 		class SFP_ssg120gunner: StandBase {
 			actions = StandActions;
-			file = "\TZK_Config_4_0_6\Anims\strf90_gunner.rtm";
+			file = "\TZK_Anims_4_0_6\strf90_gunner.rtm";
 			speed = SPEED_STATIC;
 			looped = 1
 			soundEnabled = 0
@@ -4623,7 +4628,7 @@ class CfgMovesMC {
 		};
 		class SFP_ssg120gunnerout: StandBase {
 			actions = StandActions;
-			file = "\TZK_Config_4_0_6\Anims\strf90_gunnerout.rtm";
+			file = "\TZK_Anims_4_0_6\strf90_gunnerout.rtm";
 			speed = SPEED_STATIC;
 			looped = 1
 			soundEnabled = 0
@@ -4633,7 +4638,7 @@ class CfgMovesMC {
 		};
 		class SFP_ssg120commander: StandBase {
 			actions = StandActions;
-			file = "\TZK_Config_4_0_6\Anims\strf90_commander.rtm";
+			file = "\TZK_Anims_4_0_6\strf90_commander.rtm";
 			speed = SPEED_STATIC;
 			looped = 1
 			soundEnabled = 0
@@ -4643,7 +4648,7 @@ class CfgMovesMC {
 		};
 		class SFP_ssg120commanderout: StandBase {
 			actions = StandActions;
-			file = "\TZK_Config_4_0_6\Anims\strf90_commanderout.rtm";
+			file = "\TZK_Anims_4_0_6\strf90_commanderout.rtm";
 			speed = SPEED_STATIC;
 			looped = 1
 			soundEnabled = 0
@@ -4655,7 +4660,7 @@ class CfgMovesMC {
 		// --------------------------- Orca95 -------------------------------
 
 		class MCSR_OrcaPilot: Driver {
-			file = "\TZK_Config_4_0_6\Anims\OrcaPilot.rtm";
+			file = "\TZK_Anims_4_0_6\OrcaPilot.rtm";
 			speed = 10000000000;
 			looped = 1;
 			equivalentTo = "MCSR_OrcaPilot";
@@ -4664,7 +4669,7 @@ class CfgMovesMC {
 		};
 		class MCSR_OrcaPilotDying: DefaultDie {
 			actions = "NoActions";
-			file = "\TZK_Config_4_0_6\Anims\OrcaPilotDying.rtm";
+			file = "\TZK_Anims_4_0_6\OrcaPilotDying.rtm";
 			speed = "- 1";
 			looped = 0;
 			soundEnabled = 0;
@@ -4672,7 +4677,7 @@ class CfgMovesMC {
 		};
 		class MCSR_OrcaPilotDead: MCSR_OrcaPilotDying {
 			actions = "DeadActions";
-			file = "\TZK_Config_4_0_6\Anims\OrcaPilotDead.rtm";
+			file = "\TZK_Anims_4_0_6\OrcaPilotDead.rtm";
 			speed = 10000000000.000000;
 			terminal = 1;
 			connectFrom[] = {"MCSR_OrcaPilotDying", 1};
@@ -4722,11 +4727,11 @@ class CfgMovesMC {
 			VEHIN_MOVES_VAR(Name,anim,vartime); \
 			VEH_DIE_CONN(Name,anim,time)
 
-		VEH_MOVES_VAR(bas_mh60gunner, \TZK_Config_4_0_6\Anims\bas_mh60gunner, 0.5, 12);
+		VEH_MOVES_VAR(bas_mh60gunner, \TZK_Anims_4_0_6\bas_mh60gunner, 0.5, 12);
 
 		// --------------------------- UNA Static -------------------------------
 		class UNA_MK19gl_Static: Gunner {
-			file = "\TZK_Config_4_0_6\Anims\MK19gl_Gunner.rtm";
+			file = "\TZK_Anims_4_0_6\MK19gl_Gunner.rtm";
 			speed = 10000000000.000000;
 			looped = 1
 		};
@@ -4734,7 +4739,7 @@ class CfgMovesMC {
 		// --------------------------- ICP MGun -------------------------------
 		class ICP_Mgunner: StandBase {
 			actions = StandActions;
-			file = "\TZK_Config_4_0_6\Anims\NSVGunner.rtm";
+			file = "\TZK_Anims_4_0_6\NSVGunner.rtm";
 			speed = SPEED_STATIC;
 			looped = 1
 			soundEnabled = 0
@@ -4745,7 +4750,7 @@ class CfgMovesMC {
 
 		// --------------------------- M88 -------------------------------
 		class M88MGGunner: Driver {
-			file = "\TZK_Config_4_0_6\Anims\M88GUNNER.rtm";
+			file = "\TZK_Anims_4_0_6\M88GUNNER.rtm";
 			speed = 10000000000.0;
 			looped = 1;
 			variantsAI[] = {"M88MGGunnerV1",0.7,"M88MGGunner"};
@@ -4755,13 +4760,13 @@ class CfgMovesMC {
 			connectTo[] = {"M88MGGunnerDying",1};
 		};
 		class M88MGGunnerV1: M88MGGunner {
-			file = "\TZK_Config_4_0_6\Anims\M88GUNNER.rtm";
+			file = "\TZK_Anims_4_0_6\M88GUNNER.rtm";
 			speed = "- 4";
 			looped = 1;
 		};
 		class M88MGGunnerDying: DefaultDie {
 			actions = "NoActions";
-			file = "\TZK_Config_4_0_6\Anims\vulcangunnersmrt.rtm";
+			file = "\TZK_Anims_4_0_6\vulcangunnersmrt.rtm";
 			speed = "- 1";
 			looped = 0;
 			soundEnabled = 0;
@@ -4770,7 +4775,7 @@ class CfgMovesMC {
 
 		class M88MGGunnerDead: M88MGGunnerDying {
 			actions = "DeadActions";
-			file = "\TZK_Config_4_0_6\Anims\vulcangunnersmrt2.rtm";
+			file = "\TZK_Anims_4_0_6\vulcangunnersmrt2.rtm";
 			speed = 10000000000.0;
 			terminal = 1;
 			connectFrom[] = {"M88MGGunnerDying",1};
@@ -4778,7 +4783,7 @@ class CfgMovesMC {
 		};
 
 		class m88driver: Driver {
-			file = "\TZK_Config_4_0_6\Anims\m88driver.rtm";
+			file = "\TZK_Anims_4_0_6\m88driver.rtm";
 			speed = 10000000000.0;
 			looped = 1;
 			variantsAI[] = {"m88driverV1",0.7,"m88driver"};
@@ -4787,13 +4792,13 @@ class CfgMovesMC {
 			interpolationSpeed = 1;
 		};
 		class m88driverV1: m88driver {
-			file = "\TZK_Config_4_0_6\Anims\m88driver.rtm";
+			file = "\TZK_Anims_4_0_6\m88driver.rtm";
 			speed = "- 4";
 			looped = 1;
 		};
 
 		class m88commander: Driver {
-			file = "\TZK_Config_4_0_6\Anims\m88commander.rtm";
+			file = "\TZK_Anims_4_0_6\m88commander.rtm";
 			speed = 10000000000.0;
 			looped = 1;
 			variantsAI[] = {"m88commanderV1",0.7,"m88commander"};
@@ -4802,13 +4807,13 @@ class CfgMovesMC {
 			interpolationSpeed = 1;
 		};
 		class m88commanderV1: m88commander {
-			file = "\TZK_Config_4_0_6\Anims\m88commander.rtm";
+			file = "\TZK_Anims_4_0_6\m88commander.rtm";
 			speed = "- 4";
 			looped = 1;
 		};
 		// --------------------------- BREM-1 -------------------------------
 		class bremgunner: Driver {
-			file = "\TZK_Config_4_0_6\Anims\bremgunner.rtm";
+			file = "\TZK_Anims_4_0_6\bremgunner.rtm";
 			speed = 10000000000.0;
 			looped = 1;
 			variantsAI[] = {"bremgunnerV1",0.7,"bremgunner"};
@@ -4817,12 +4822,12 @@ class CfgMovesMC {
 			interpolationSpeed = 1;
 		};
 		class bremgunnerV1: bremgunner {
-			file = "\TZK_Config_4_0_6\Anims\bremgunner.rtm";
+			file = "\TZK_Anims_4_0_6\bremgunner.rtm";
 			speed = "- 4";
 			looped = 1;
 		};
 		class bremcommander: Driver {
-			file = "\TZK_Config_4_0_6\Anims\bremcommander.rtm";
+			file = "\TZK_Anims_4_0_6\bremcommander.rtm";
 			speed = 10000000000.0;
 			looped = 1;
 			variantsAI[] = {"bremcommanderV1",0.7,"bremcommander"};
@@ -4831,12 +4836,12 @@ class CfgMovesMC {
 			interpolationSpeed = 1;
 		};
 		class bremcommanderV1: bremcommander {
-			file = "\TZK_Config_4_0_6\Anims\bremcommander.rtm";
+			file = "\TZK_Anims_4_0_6\bremcommander.rtm";
 			speed = "- 4";
 			looped = 1;
 		};
 		class bremgunner02: Driver {
-			file = "\TZK_Config_4_0_6\Anims\bremgunner02.rtm";
+			file = "\TZK_Anims_4_0_6\bremgunner02.rtm";
 			speed = 10000000000.0;
 			looped = 1;
 			variantsAI[] = {"bremgunner02V1",0.7,"bremgunner02"};
@@ -4846,13 +4851,13 @@ class CfgMovesMC {
 			connectTo[] = {"bremgunner02Dying",1};
 		};
 		class bremgunner02V1: bremgunner02 {
-			file = "\TZK_Config_4_0_6\Anims\bremgunner02.rtm";
+			file = "\TZK_Anims_4_0_6\bremgunner02.rtm";
 			speed = -4;
 			looped = 1;
 		};
 		class bremgunner02Dying: DefaultDie {
 			actions = "NoActions";
-			file = "\TZK_Config_4_0_6\Anims\bremgunner02Dying.rtm";
+			file = "\TZK_Anims_4_0_6\bremgunner02Dying.rtm";
 			speed = -1;
 			looped = 0;
 			soundEnabled = 0;
@@ -4860,7 +4865,7 @@ class CfgMovesMC {
 		};
 		class bremgunner02Dead: bremgunner02Dying {
 			actions = "DeadActions";
-			file = "\TZK_Config_4_0_6\Anims\bremgunner02Dead.rtm";
+			file = "\TZK_Anims_4_0_6\bremgunner02Dead.rtm";
 			speed = 10000000000.0;
 			terminal = 1;
 			connectFrom[] = {"bremgunner02Dying",1};
