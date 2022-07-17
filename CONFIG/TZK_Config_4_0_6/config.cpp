@@ -2022,7 +2022,7 @@ class CfgVehicles {
 			};
 		};
 		class EventHandlers {
-			init = _this exec {\TZK_Objects\Scripts\InitEventHandlers\removeAllWeapons.sqs};
+			init = _this exec localize {TZK_EVENT_INIT_REM_ALL_WEP};
 		};
 	};
 	class UAZ_SPG_FDF_xj400: JeepMG_xj400 {
@@ -2101,7 +2101,7 @@ class CfgVehicles {
 			maxTurn = 180;
 		};
 		class EventHandlers {
-			init = _this exec {\TZK_Objects\Scripts\InitEventHandlers\removeAllWeapons.sqs};
+			init = _this exec localize {TZK_EVENT_INIT_REM_ALL_WEP};
 		};
 	};
 
@@ -2728,7 +2728,7 @@ class CfgVehicles {
 			, "tzkGun00", "tzkGun01", "tzkGun02", "tzkGun03"
 		};
 		class EventHandlers {
-			Init = "_vehicle = _this select 0; [_vehicle, {C}] exec localize {TZK_EVENT_INIT_TEX_M109}; [_vehicle] exec {\TZK_Objects\Scripts\InitEventHandlers\M109A6G.sqs}; [_vehicle, {C}] exec localize {TZK_MULTITEX_GUNREC_M109}";
+			Init = _vehicle = _this select 0, [_vehicle, {C}] exec localize {TZK_EVENT_INIT_TEX_M109}, [_vehicle] exec {\TZK_Objects\Scripts\InitEventHandlers\M109A6G.sqs}, [_vehicle, {C}] exec localize {TZK_MULTITEX_GUNREC_M109};
 		};
 	};
 	class PLZ05_VME_Base_xj400: T72_Base_xj400 {};
@@ -2747,7 +2747,7 @@ class CfgVehicles {
 			, "tzkGun00", "tzkGun01", "tzkGun02", "tzkGun03"
 		};
 		class EventHandlers {
-			Init = "_vehicle = _this select 0; [_vehicle] exec {\TZK_Objects\Scripts\InitEventHandlers\PLZ05.sqs}; [_vehicle, {\TZK_Texture_4_0_0\BWMOD\leo2A6\num\}, {n}, {0}] exec {\TZK_Objects\Scripts\texture\RSC_Numbers.sqs}; [_vehicle, {C}] exec localize {TZK_EVENT_INIT_TEX_PLZ05}; [_vehicle, {C}] exec localize {TZK_MULTITEX_GUNREC_PLZ05}";
+			Init = _vehicle = _this select 0, [_vehicle] exec {\TZK_Objects\Scripts\InitEventHandlers\PLZ05.sqs}, [_vehicle, {\TZK_Texture_4_0_0\BWMOD\leo2A6\num\}, {n}, {0}] exec localize {TZK_EVENT_INIT_TEX_RSC_NUM}, [_vehicle, {C}] exec localize {TZK_EVENT_INIT_TEX_PLZ05}, [_vehicle, {C}] exec localize {TZK_MULTITEX_GUNREC_PLZ05};
 		};
 	};
 
@@ -3059,7 +3059,7 @@ class CfgVehicles {
 			};
 		};
 		class EventHandlers {
-			Init = "_veh = _this select 0; [_veh, {\TZK_Texture_4_0_0\BWMOD\leo2A6\num\}, {n}, {0}] exec {\TZK_Objects\Scripts\texture\RSC_Numbers.sqs}; _veh animate [{suspension}, 0.5]; _veh exec localize {TZK_MULTITEX_GUNREC_PLZ89}";
+			Init = _veh = _this select 0, [_veh, {\TZK_Texture_4_0_0\BWMOD\leo2A6\num\}, {n}, {0}] exec localize {TZK_EVENT_INIT_TEX_RSC_NUM}, _veh animate [{suspension}, 0.5], _veh exec localize {TZK_MULTITEX_GUNREC_PLZ89};
 		};
 
 	};
@@ -3464,14 +3464,14 @@ class CfgVehicles {
 				position = "controls";
 				radius = 4;
 				condition = "this animationPhase ""Crane"" == 0";
-				statement = "[this,""Up""] exec ""\TZK_Config_4_0_6\Scripts\M88\Crane.sqs"" ";
+				statement = [this, "Up"] exec localize {TZK_ACTION_M88_CRANE};
 			};
 			class Crane_down {
 				displayName = "<Crane down>";
 				position = "controls";
 				radius = 4;
 				condition = "this animationPhase ""Crane"" == 1 ";
-				statement = "[this,""Down""] exec ""\TZK_Config_4_0_6\Scripts\M88\Crane.sqs""";
+				statement = [this, "Down"] exec localize {TZK_ACTION_M88_CRANE};
 			};
 		};
 		class HatchDriver {
@@ -3651,14 +3651,14 @@ class CfgVehicles {
 				position = "controls";
 				radius = 4;
 				condition = "this animationPhase ""Strela_V"" ==0";
-				statement = "[this,""Up""] exec ""\TZK_Config_4_0_6\Scripts\BREM1\Crane.sqs"" ";
+				statement = [this, "Up"] exec localize {TZK_ACTION_BREM1_CRANE};
 			};
 			class Crane_down {
 				displayName = "<Crane down>";
 				position = "controls";
 				radius = 4;
 				condition = "this animationPhase ""Strela_H"" == 0.5";
-				statement = "[this,""Down""] exec ""\TZK_Config_4_0_6\Scripts\BREM1\Crane.sqs""";
+				statement = [this, "Down"] exec localize {TZK_ACTION_BREM1_CRANE};
 			};
 		};
 		class Animations {
@@ -3952,7 +3952,7 @@ class CfgVehicles {
 				, tzk_tex_99
 		};
 		class EventHandlers {
-			Init = _vehicle = _this select 0, [_vehicle, {C}] exec {\TZK_Objects\Scripts\texture\T80.sqs}, [_vehicle, {red}] exec {\TZK_Objects\Scripts\texture\GUER.sqs};
+			Init = _vehicle = _this select 0, [_vehicle, {C}] exec localize {TZK_EVENT_INIT_TEX_T80}, [_vehicle, {red}] exec localize {TZK_EVENT_INIT_TEX_GUER};
 		};
 		gunnerInAction = "ManActM1A1Gunner";
 		commanderInAction = "ManActM1A1Commander";
@@ -3961,19 +3961,19 @@ class CfgVehicles {
 		scope = protected; vehicleClass = "TZK_Testing_300";
 		displayName = "T80(Res) Orange"; accuracy = 1000;
 		class EventHandlers {
-			Init = _vehicle = _this select 0, [_vehicle, {C}] exec {\TZK_Objects\Scripts\texture\T80.sqs}, [_vehicle, {orange}] exec {\TZK_Objects\Scripts\texture\GUER.sqs};
+			Init = _vehicle = _this select 0, [_vehicle, {C}] exec localize {TZK_EVENT_INIT_TEX_T80}, [_vehicle, {orange}] exec localize {TZK_EVENT_INIT_TEX_GUER};
 		};
 	};
 	class T80Res_Yellow_xj406: T80Res_Orange_xj406 {
 		displayName = "T80(Res) Yellow"; accuracy = 1000;
 		class EventHandlers {
-			Init = _vehicle = _this select 0, [_vehicle, {C}] exec {\TZK_Objects\Scripts\texture\T80.sqs}, [_vehicle, {yellow}] exec {\TZK_Objects\Scripts\texture\GUER.sqs};
+			Init = _vehicle = _this select 0, [_vehicle, {C}] exec localize {TZK_EVENT_INIT_TEX_T80}, [_vehicle, {yellow}] exec localize {TZK_EVENT_INIT_TEX_GUER};
 		};
 	};
 	class T80Res_Purple_xj406: T80Res_Orange_xj406 {
 		displayName = "T80(Res) Purple"; accuracy = 1000;
 		class EventHandlers {
-			Init = _vehicle = _this select 0, [_vehicle, {C}] exec {\TZK_Objects\Scripts\texture\T80.sqs}, [_vehicle, {purple}] exec {\TZK_Objects\Scripts\texture\GUER.sqs};
+			Init = _vehicle = _this select 0, [_vehicle, {C}] exec localize {TZK_EVENT_INIT_TEX_T80}, [_vehicle, {purple}] exec localize {TZK_EVENT_INIT_TEX_GUER};
 		};
 	};
 	class T80Res_Green_xj406: T80Res_Base_xj406 {
