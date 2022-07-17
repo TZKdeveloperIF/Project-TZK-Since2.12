@@ -1773,6 +1773,7 @@ class CfgVehicles {
 	class HMMMV_TOW2A_Auto_xj400: HMMMV_TOW2A_xj400 {
 		// In debugging, don't forget use TZK soldiers but not origin ones otherwise CfgMoves will be abnormal
 		hasGunner = 0;
+		hasCommander = 0;
 		driverAction = "ManActHmmwvGunner02";
 		transportSoldier = 4;
 		cargoAction[] = {"ManActJeepDriver","ManActHmmwvCargo02","ManActHmmwvCargo02","ManActHmmwvCargo02"};
@@ -1807,6 +1808,7 @@ class CfgVehicles {
 	class BRDM2_MNF_Auto_xj400: BRDM2_MNF_xj400 {
 		// In debugging, don't forget use TZK soldiers but not origin ones otherwise CfgMoves will be abnormal
 		hasGunner = 0;
+		hasCommander = 0;
 		driverAction = "ManActven_brdm2_gunner";
 		transportSoldier = 3;
 		cargoAction[] = {"ManActven_brdm2_driver","ManActven_brdm2_codriver","ManActven_brdm2_codriver"};
@@ -2806,6 +2808,7 @@ class CfgVehicles {
 	};
 	class Vulcan_Auto_xj406: Vulcan_xj400 {
 		hasGunner = 0;
+		hasCommander = 0;
 		driverIsGunner = 1;
 	};
 
@@ -2827,6 +2830,7 @@ class CfgVehicles {
 	class ZSU_xj400: ZSU {};
 	class ZSU_Auto_xj400: ZSU_xj400 {
 		hasGunner = 0;
+		hasCommander = 0;
 		driverIsGunner = 1;
 	};
 
@@ -2837,18 +2841,22 @@ class CfgVehicles {
 	// Auto unit for town group
 	class M1A1_Auto_xj400: M1A1_xj400 {
 		hasGunner = 0;
+		hasCommander = 0;
 		driverIsGunner = 1;
 	};
 	class T80_Auto_xj400: T80_xj400 {
 		hasGunner = 0;
+		hasCommander = 0;
 		driverIsGunner = 1;
 	};
 	class M2A2_Town_Auto_xj400: M2A2_AA_Town_xj400 {
 		hasGunner = 0;
+		hasCommander = 0;
 		driverIsGunner = 1;
 	};
 	class BMP2_Town_Auto_xj400: BMP2_AA_Town_xj400 {
 		hasGunner = 0;
+		hasCommander = 0;
 		driverIsGunner = 1;
 	};
 
@@ -3982,11 +3990,13 @@ class CfgVehicles {
 	class GunBoatW_xj400: GunBoat_xj400 {};
 	class GunBoatW_Auto_xj400: GunBoatW_xj400 {
 		hasGunner = 0;
+		hasCommander = 0;
 		driverIsGunner = 1;
 	};
 	class GunBoatE_xj400: GunBoat_xj400 {};
 	class GunBoatE_Auto_xj400: GunBoatE_xj400 {
 		hasGunner = 0;
+		hasCommander = 0;
 		driverIsGunner = 1;
 	};
 
