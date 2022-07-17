@@ -833,6 +833,24 @@ class CfgModels {
 	};
 	class mfm_brem1mt02: mfm_brem1m {};
 	class BMR3M_ICP: T90_ICP {};
+
+	class scfus_m730a1_w: Tank {
+		sectionsInherit = "Vehicle";
+		sections[] = {"missile_1","missile_2","missile_3","missile_4"};
+	};
+	class apcrus: Tank {
+		sectionsInherit = "Vehicle";
+		sections[] = {
+			"barrel", "clan", "RES", "CCCP", "MARINE", "gunnersitz",
+			"CSLA", "box", "halterung", "cross", "amulbox"
+		};
+	};
+	class sa13: apcrus {
+		sectionsInherit = "apcrus";
+		sections[] = {
+			"pod_yellow", "pod_green"
+		};
+	};
 };
 
 // EOF
