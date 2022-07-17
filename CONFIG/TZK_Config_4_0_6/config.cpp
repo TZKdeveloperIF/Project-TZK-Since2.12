@@ -3082,6 +3082,7 @@ class CfgVehicles {
 			, tzk_tex_99
 		};
  		picture = "\t406\ui\iAmx10rc.paa";
+ 		icon = "\t406\ui\iAmx10rc.paa";
 		// smaller vehicle size
 		camouflage = 5; audible = 5;
 
@@ -3263,7 +3264,7 @@ class CfgVehicles {
 
 		model = "\TZK_Model_4_0_6\2S25_mfm.p3d";
 		hiddenSelections[]= {"no1", "no2", "no3"};
-		icon = "\t406\ui\uiSprut.paa";
+ 		icon = "\t406\ui\iAmx10rc.paa";
 		picture = "\t406\ui\i2s25.paa";
 
 		gunnerOpticsmodel = "\TZK_Model_4_0_6\opt\G_Optic.p3d";
@@ -4018,6 +4019,7 @@ class CfgVehicles {
 		}
 
 		picture = "\t406\ui\iLst.paa";
+		icon = "\t406\ui\iLst.paa";
 		armor = 1000;
 
 		weapons[] = {};
