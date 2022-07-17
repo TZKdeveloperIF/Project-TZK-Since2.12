@@ -1396,6 +1396,42 @@ class CfgWeapons {
 	class Mortar81_0200_xj400: Mortar81_Launcher_xj400 {
 		reloadTime = 6;
 	};
+
+	class MineLayingLauncher_xj400: FAE220Launcher_xj400 {
+		displayName = "Mine Laying Launcher";
+		magazines[] = {
+			"MineRocket_0080_xj400", "MineRocket_0120_xj400", "MineRocket_0180_xj400",
+			"MineRocket_0300_xj400", "MineRocket_0400_xj400", "MineRocket_0500_xj400",
+			"MineRocket_0600_xj400", "MineRocket_0700_xj400", "MineRocket_0800_xj400",
+			"MineRocket_0900_xj400", "MineRocket_1000_xj400"
+		};
+	};
+	class MineRocket_0080_xj400: MineLayingLauncher_xj400 {
+		scopeWeapon = 0; scopeMagazine = 2;
+		displayNameMagazine = "Mine Laying Rocket";
+		shortNameMagazine = "Mine Rocket";
+		count = 30;
+		initSpeed = 80; // Rocket's initSpeed are always 20m/s.
+		
+		displayName = "Mine Rocket (80m/s)";
+		ammo = "FAE220_DKMM_xj400";
+		sound[] = {"\TZK_Sounds_4_0_6\scf_us\missile.wss", 10, 1};
+		soundcontinuous = 0;
+		reloadTime = 0.25;
+		aiRateOfFire = 0.9;
+		aiRateOfFireDistance = 1000;
+		recoil = "empty";
+	};
+	class MineRocket_0120_xj400: MineRocket_0080_xj400 { displayName = "Mine Rocket(120m/s)"; initSpeed = 120; };
+	class MineRocket_0180_xj400: MineRocket_0080_xj400 { displayName = "Mine Rocket(180m/s)"; initSpeed = 180; };
+	class MineRocket_0300_xj400: MineRocket_0080_xj400 { displayName = "Mine Rocket(300m/s)"; initSpeed = 300; };
+	class MineRocket_0400_xj400: MineRocket_0080_xj400 { displayName = "Mine Rocket(400m/s)"; initSpeed = 400; };
+	class MineRocket_0500_xj400: MineRocket_0080_xj400 { displayName = "Mine Rocket(500m/s)"; initSpeed = 500; };
+	class MineRocket_0600_xj400: MineRocket_0080_xj400 { displayName = "Mine Rocket(600m/s)"; initSpeed = 600; };
+	class MineRocket_0700_xj400: MineRocket_0080_xj400 { displayName = "Mine Rocket(700m/s)"; initSpeed = 700; };
+	class MineRocket_0800_xj400: MineRocket_0080_xj400 { displayName = "Mine Rocket(800m/s)"; initSpeed = 800; };
+	class MineRocket_0900_xj400: MineRocket_0080_xj400 { displayName = "Mine Rocket(900m/s)"; initSpeed = 900; };
+	class MineRocket_1000_xj400: MineRocket_0080_xj400 { displayName = "Mine Rocket(1000m/s)"; initSpeed = 1000; };
 };
 
 // todo: localize statement
@@ -3642,6 +3678,203 @@ class CfgVehicles {
 		hasGunner = 0;
 		hasCommander = 0;
 	};
+
+	class MIM72_scf_xj400: M113 {
+		scope = protected; vehicleClass = "TZK_Units_400";
+		accuracy = 0.4;
+		displayName = "MIM-72A Chaparral"; nameSound = "tank"; side = 1; cost = 1000000; type = 1; threat[] = {0, 0.5, 0};
+
+		model = "\TZK_Model_4_0_6\scfus_m730a1_w.p3d";
+		// hiddenselections[] = {"missile_1","missile_2","missile_3","missile_4"};
+
+		picture = "\t406\ui\iMim72.paa";
+		icon = "\t406\ui\uiSa13.paa";
+		armor = 180;
+
+		driveriscommander = 1;
+		gunnerCanSee = "4 + 8 + 16 +1";
+		weapons[] = {"MineLayingLauncher_xj400"};
+		magazines[] = {"MineRocket_0120_xj400"};
+
+		unitInfoType = "UnitInfoTank";
+		hideUnitInfo = false;
+
+		gunnerOpticsModel = "optika_zsu_gunner";
+		commanderOpticsModel = "optika_tanke_auxiliary";
+		gunnerAction = "ManActM60Gunner";
+		driverAction = "ManActUralDriver";
+		driverInAction = "ManActUralDriver";
+
+		forceHideGunner = 1;
+		forceHidedriver = 0;
+		// hideProxyInCombat = 0; // should be 1 as tank default value (except for those static obj like M2 MG)
+		viewGunnerInExternal = 1;
+
+		irScanRangeMin = 0; irScanRangeMax = 0; irScanToEyeFactor = 0; irScanGround = 0;
+
+		class Turret: TurretBase {
+			soundServo[] = {};
+			minElev = 0; maxElev = +70;
+			minTurn = -360; maxTurn = +360;
+		};
+		transportSoldier = 2;
+		class TransportMagazines {};
+	};
+	class SA13_MAF_xj400: ZSU {
+		scope = protected; vehicleClass = "TZK_Units_400";
+		accuracy = 0.4;
+		displayName = "SA-13"; nameSound = "tank"; side = 0; cost = 800000; type = 1; threat[] = {0, 0.5, 0};
+
+		model = "\TZK_Model_4_0_6\sa13.p3d";
+		hiddenSelections[] = {"MARINE", "CSLA", "pod_green"};
+
+		picture = "\t406\ui\iSa13.paa";
+		icon = "\t406\ui\uiSa13.paa";
+
+		insideSoundCoef = 1.1;
+		soundEnviron[] = {"Vehicles\OldRolling_Treads1", db-15, 0.85};
+		soundEngine[] = {"Vehicles\T55Sound", db-15, 1};
+
+		fuelCapacity = 200;
+		transportSoldier = 0;
+
+		maxSpeed = 70; // A bit faster than real due to increased weight
+		armor = 150
+		canfloat = 1;
+
+		unitInfoType = "UnitInfoTank";
+		hideUnitInfo = false;
+
+		weapons[] = {"MineLayingLauncher_xj400"};
+		magazines[] = {"MineRocket_0120_xj400"};
+
+		viewGunnerInExternal = true;
+		viewDriverInExternal = true;
+		viewCommanderInExternal = true;
+
+		driverAction = ManActBMPDriverOut;
+		gunnerAction = ManActZSUgunner;
+
+		driverInAction = ManActBMPDriver;
+		gunnerInAction = ManActZSUgunner;
+
+		getOutAction = ManActGetOutTank;
+
+		commanderaction = ManActZSUCommanderOut;
+		commanderInAction = ManActTruck5tCoDriver;
+
+		outGunnerMayFire = true;
+		forceHideGunner = true;
+		forceHideDriver = false;
+
+		GunnerOpticsModel = "optika_tank_driver";
+		commanderOpticsModel = "optika_tank_driver";
+
+		irScanRangeMin = 0; irScanRangeMax = 0; irScanToEyeFactor = 0; irScanGround = 0;
+
+		class HatchDriver {
+			selection = "poklop_driver";
+			axis = "osa_poklop_driver";
+			angle = -100;
+		};
+		class HatchCommander {
+			selection = "poklop_commander";
+			axis = "osa_poklop_commander";
+			angle = 150;
+		};
+		class Turret: TurretBase {
+			minElev = -5; maxElev = +70;
+			minTurn = -360; maxTurn = +360;
+		};
+		class ComTurret {
+			turretAxis = "OsaVelitele";
+			gunAxis = "OsaHlavneVelitele";
+			soundServo[] = {};
+
+			gunBeg = "usti hlavne"; // currently ignored
+			gunEnd = "konec hlavne";
+
+			minElev = -4; maxElev = +20;
+			minTurn = -11.5; maxTurn = +11.5;
+
+			body = "OtocVelitele";
+			gun = "OtocHlavenVelitele";
+		};
+		class ViewGunner: ViewGunnerBase {
+			initAngleX = -25; minAngleX = -60; maxAngleX = -10;
+			minAngleY = -20; maxAngleY = +20;
+		};
+		class IndicatorSpeed {
+			selection = "ukaz_rychlo";
+			axis = "osa_rychlo";
+			angle = -270;
+			min = 0;
+			max = 62 / 3.6;
+		};
+		class IndicatorRPM {
+			selection = "ukaz_rpm";
+			axis = "osa_rpm";
+			angle = -180;
+			min = 0;
+			max = 1;
+		};
+		class IndicatorRPM2: IndicatorRPM {
+			selection = "ukaz_t1";
+			axis = "osa_t1";
+			angle = -180;
+			min = 0;
+			max = 3;
+		};
+		class Animations {
+			class Hatch
+			{
+				type = "rotation";
+				animPeriod = 1
+				selection = "luken";
+				axis = "osa_luken";
+				angle0 = 0
+				angle1 = -0.7;
+			};
+			class Mudgards {
+				type = "rotation";
+				animPeriod = 1
+				selection = "mud";
+				axis = "osa_mud";
+				angle0 = 0
+				angle1 = -2.1;
+			};
+		};
+		class UserActions {
+			class CloseHatch {
+				displayName = "<Close Front Hatch>";
+				position = "osa_luken";
+				radius = 5;
+				condition = "this animationPhase ""Hatch"" < 0.5";
+				statement = "this animate [""Hatch"", 1]";
+			};
+			class OpenHatch {
+				displayName = "<Open Front Hatch>";
+				position = "osa_luken";
+				radius = 5;
+				condition = "this animationPhase ""Hatch"" >= 0.5";
+				statement = "this animate [""Hatch"", 0]";
+			};
+			class ExtendMudgards {
+				displayName = "<Lower Mudgards>";
+				position = "osa_mud";
+				radius = 5;
+				condition = "this animationPhase ""Mudgards"" < 0.5";
+				statement = "this animate [""Mudgards"", 1]";
+			};
+			class RetractMudgards {
+				displayName = "<Rise Mudgards>";
+				position = "osa_mud";
+				radius = 5;
+				condition = "this animationPhase ""Mudgards"" >= 0.5";
+				statement = "this animate [""Mudgards"", 0]";
+			};
+		};
+	}; 
 
 	class ResistanceTank_xj400: Tank_xj400 {};
 	class T80Res_Base_xj406: ResistanceTank_xj400 {
