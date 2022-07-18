@@ -366,8 +366,8 @@ class CfgAmmo {
 	class AT4_II_2_TZK_xj400: Carl_II_2_TZK_xj400 { model = "RPG"; };
 	class AT4_III_2_TZK_xj400: Carl_III_2_TZK_xj400 { model = "RPG"; };
 	class AT4_IV_2_TZK_xj400: Carl_IV_2_TZK_xj400 { model = "RPG"; };
-	class AA_I_TZK_xj400: AA { maxRange = 1500; };
-	class 9K32_I_TZK_xj400: AA_I_TZK_xj400 {};
+	class AA_II_TZK_xj400: AA { maxRange = 1500; };
+	class 9K32_II_TZK_xj400: AA_II_TZK_xj400 {};
 
 	class Sabot106_htr_xj400: Bullet12_7 {
 		airLock = 0;
@@ -830,7 +830,7 @@ class CfgWeapons {
 
 	class VehAA_xj400: AT3Launcher {
 		count = 20;
-		ammo = "AA_I_TZK_xj400";
+		ammo = "AA_II_TZK_xj400";
 		modelOptics = "optika_stinger";
 		displayName = "$STR_DN_AA";
 		displayNameMagazine = "$STR_MN_AA";
@@ -846,7 +846,7 @@ class CfgWeapons {
 	};
 	class Veh9k32_xj400: VehAA_xj400 {
 		modelOptics = "optika_strela";
-		ammo = "9k32_I_TZK_xj400";
+		ammo = "9K32_II_TZK_xj400";
 		displayName = "$STR_DN_9K32";
 		displayNameMagazine = "$STR_MN_9K32";
 		shortNameMagazine = "$STR_SN_9K32";
@@ -1025,38 +1025,46 @@ class CfgWeapons {
 	class AALauncher: CarlGustavLauncher {};
 	class AA_I_TZK_xj400: AALauncher {
 		picture = "\dtaext\equip\m\m_AALauncher.paa";
-		magazineType = "3 * 		256";
-		ammo = "AA_I_TZK_xj400";
+		magazineType = "3 * 256";
+	};
+	class AA_II_TZK_xj400: AA_I_TZK_xj400 {
+		ammo = "AA_II_TZK_xj400";
 	};
 	class AA_TZK_xj400: AALauncher {
-		magazines[] = {"AALauncher","AA_I_TZK_xj400"};
+		magazines[] = {"AALauncher", "AA_I_TZK_xj400", "AA_II_TZK_xj400"};
 		picture = "\dtaext\equip\w\w_AALauncher.paa";
 	};
 	class 9K32Launcher: AALauncher {};
-	class 9k32_I_TZK_xj400: 9k32Launcher {
+	class 9K32_I_TZK_xj400: 9k32Launcher {
 		picture = "\dtaext\equip\m\m_9k32Launcher.paa";
-		magazineType = "3 * 		256";
-		ammo = "9K32_I_TZK_xj400";
+		magazineType = "3 * 256";
+	};
+	class 9K32_II_TZK_xj400: 9K32_I_TZK_xj400 {
+		ammo = "9K32_II_TZK_xj400";
 	};
 	class 9k32_TZK_xj400: 9k32Launcher {
-		magazines[] = {"9k32Launcher","9k32_I_TZK_xj400"};
+		magazines[] = {"9k32Launcher", "9K32_I_TZK_xj400", "9K32_II_TZK_xj400"};
 		picture = "\dtaext\equip\w\w_9k32Launcher.paa";
 	};
 	class LAW_TZK_xj400: LAWLauncher {
 		scopeWeapon = 2; scopeMagazine = 0;
 		magazines[] = {"LAWLauncher", "LAW_1slot_xj400"};
+		picture = "\dtaext\equip\w\w_lawLauncher.paa";
 	};
 	class LAW_1slot_xj400: LAWLauncher {
 		scopeWeapon = 0; scopeMagazine = 2;
 		magazineType = "1 * 256";
+		picture = "\dtaext\equip\m\m_lawLauncher.paa";
 	};
 	class RPG_TZK_xj400: RPGLauncher {
 		scopeWeapon = 2; scopeMagazine = 0;
 		magazines[] = {"RPGLauncher", "RPG_1slot_xj400"};
+		picture = "\dtaext\equip\w\w_rpgLauncher.paa";
 	};
 	class RPG_1slot_xj400: RPGLauncher {
 		scopeWeapon = 0; scopeMagazine = 2;
 		magazineType = "1 * 256";
+		picture = "\dtaext\equip\m\m_rpgLauncher.paa";
 	};
 	// Infantry gun
 	class MachineGun7_6Manual: MachineGun7_6 {};
@@ -1065,12 +1073,14 @@ class CfgWeapons {
 		scopeMagazine = 0;
 		weaponType = "1";
 		magazines[] = {"M60"};
+		picture = "\dtaext\equip\w\w_m60.paa";
 	};
 	class PK: MachineGun7_6Manual {};
 	class PK_TZK_xj400: PK {
 		scopeMagazine = 0;
 		weaponType = "1";
 		magazines[] = {"PK"};
+		picture = "\dtaext\equip\w\w_pk.paa";
 	};
 	class M240_M145_xj400: MachineGun7_6Manual {};
 	class M240_Mag_xj400: M240_M145_xj400 {
@@ -1100,6 +1110,9 @@ class CfgWeapons {
 	class PKM_Mag_xj400: MachineGun7_6Manual {
 		dispersion = 0.0033;
 	};
+	class PKM_1P29_xj400: PKM_Mag_xj400 {
+		weaponType = "1";
+	};
 
 	class Riffle: MGun {};
 	class AK74: Riffle {};
@@ -1118,6 +1131,62 @@ class CfgWeapons {
 		magazines[]={"RPK74_SD_Mag_xj400", "RPK74_SD_Pistol_Mag_xj400"};
 	};
 
+	class SupportMag_xj400: Riffle {
+		scopeWeapon = 0;
+		scopeMagazine = 2;
+		modelOptics = "";
+		picture = "\dtaext\equip\m\m_apmine.paa";
+		optics = "false";
+		opticsZoomMin = 0.35;
+		opticsZoomMax = 0.35;
+		displayName = "Support Box";
+		displayNameMagazine = "Support Box";
+		shortNameMagazine = "Support Box";
+
+		drySound[] = {"weapons\M16dry", 0, 1};
+		muzzles[] = {};
+		ammo = "StrokeFistHit";
+		count = 1;
+		multiplier = 1;
+		division = 7;
+		burst = 7;
+		dispersion = 0.0001;
+		sound[] = {"\kozl\kozl_single", 0, 1};
+		reloadMagazineSound[] = {"\kozl\kozl_load","db-70",1};
+		soundContinuous = "false";
+		reloadTime = 0.001;
+		magazineReloadTime = 3;
+		ffCount = 1;
+		recoil = "sniperSingle";
+		recoilFixed = "riffleSingleFixed";
+		autoFire = "false";
+		aiRateOfFire = 5.0;
+		aiRateOfFireDistance = 500;
+		useAction = "false";
+		useActionTitle = "";
+
+		enableAttack = 0;
+		primary = 1;
+		showEmpty = 0;
+		canDrop = 0;
+
+		magazineType = "1 * 256";
+	};
+	class SupportBox_xj400: SupportMag_xj400 {
+		model = "\kozl\kozlice";
+		displayName = "Support Box";
+		displayNameMagazine = "Support Box";
+		shortNameMagazine = "Support Box";
+		
+		scopeWeapon = 2;
+		scopeMagazine = 0;
+		weaponType = "1";
+
+		enableAttack = 0;
+		primary = 1;
+		showEmpty = 0;
+		canDrop = 0;
+	}
 
 	class Gun106_htr_xj400: Gun120 {
 		displayName = "106mm HEAT";
@@ -4164,6 +4233,220 @@ class CfgVehicles {
 	class SoldierEMedic: SoldierEB {};
 	class SoldierEMedic_xj400: SoldierEMedic {};
 	class SoldierEMedic_xj406: SoldierEMedic_xj400 { attendant = 0; };
+
+	class SoldierWSniper: SoldierWB {};
+	class SoldierESniper: SoldierEB {};
+	class SoldierGB: Soldier {};
+	class SoldierGSniper: SoldierGB {};
+	class SoldierWSniper_xj400: SoldierWSniper {};
+	class SoldierESniper_xj400: SoldierESniper {};
+	class SoldierGSniper_xj400: SoldierGSniper {};
+	class SoldierWSniperHeavy_xj400: SoldierWSniper_xj400 {
+		vehicleClass = "TZK_Units_400";
+
+		weaponSlots = "1 + 16 + 10 * 256 + 2 * 4096 + 2 + 4 * 32";
+		weapons[] = {"M24_xj400"};
+		magazines[] = {"M24_Mag_xj400", "M24_Mag_xj400", "M24_Mag_xj400", "M24_Mag_xj400", "M24_Mag_xj400"
+			, "M24_Mag_xj400", "M24_Mag_xj400", "M24_Mag_xj400", "M24_Mag_xj400", "M24_Mag_xj400"};
+	};
+	class SoldierESniperHeavy_xj400: SoldierESniper_xj400 {
+		vehicleClass = "TZK_Units_400";
+
+		weaponSlots = "1 + 16 + 10 * 256 + 2 * 4096 + 2 + 4 * 32";
+		weapons[] = {"SVDS_xj400"};
+		magazines[] = {"SVDS_Mag_xj400", "SVDS_Mag_xj400", "SVDS_Mag_xj400", "SVDS_Mag_xj400", "SVDS_Mag_xj400"
+			, "SVDS_Mag_xj400", "SVDS_Mag_xj400", "SVDS_Mag_xj400", "SVDS_Mag_xj400", "SVDS_Mag_xj400"};
+	};
+	class SoldierGSniperHeavy_xj400: SoldierGSniper_xj400 {
+		weaponSlots = "1 + 16 + 10 * 256 + 2 * 4096 + 2 + 4 * 32";
+	};
+	class SoldierWSupport_xj400: SoldierWB_xj400 {
+		vehicleClass = "TZK_Units_400";
+		displayName = "Support Carrier";
+
+		weapons[] = {"SupportBox_xj400"};
+		magazines[] = {"SupportMag_xj400","SupportMag_xj400","SupportMag_xj400","SupportMag_xj400"};
+	};
+	class SoldierESupport_xj400: SoldierEB_xj400 {
+		vehicleClass = "TZK_Units_400";
+		displayName = "Support Carrier";
+
+		weapons[] = {"SupportBox_xj400"};
+		magazines[] = {"SupportMag_xj400","SupportMag_xj400","SupportMag_xj400","SupportMag_xj400"};
+	};
+	class SoldierWCrew: SoldierWB {};
+	class SoldierWCrew_xj400: SoldierWCrew {};
+	class SoldierWCrewAA_xj400: SoldierWCrew_xj400 {
+		vehicleClass = "TZK_Units_400";
+		displayName = "AA Crew";
+
+		weapons[] = {"M4","NVGoggles","Throw_xj400","Put", "AA_TZK_xj400"};
+		magazines[] = {"M4","M4","M4","M4", "AALauncher"};
+	};
+	class SoldierECrew: SoldierEB {};
+	class SoldierECrew_xj400: SoldierECrew {};
+	class SoldierECrewAA_xj400: SoldierECrew_xj400 {
+		vehicleClass = "TZK_Units_400";
+		displayName = "AA Crew";
+
+		weapons[] = {"AK74SU","NVGoggles","Throw_xj400","Put", "9k32_TZK_xj400"};
+		magazines[] = {"AK74","AK74","AK74","AK74", "9K32Launcher"};
+	};
+
+	class SoldierWB_III_xj400: SoldierWB_xj400 {
+		vehicleClass = "TZK_Units_400";
+
+		weapons[] = {"SG551_xj400","Throw_xj400","Put","NVG_stat_xj400", "LAW_TZK_xj400"};
+		magazines[] = {
+			"SG551_Mag_xj400","SG551_Mag_xj400","SG551_Mag_xj400","SG551_Mag_xj400", 
+			"LAW_1slot_xj400","LAW_1slot_xj400","LAW_1slot_xj400", "RKG3M_xj400","RKG3M_xj400", "PipeBomb"};
+	};
+	class SoldierEB_III_xj400: SoldierEB_xj400 {
+		vehicleClass = "TZK_Units_400";
+
+		weapons[] = {"mVSS_xj400","Throw_xj400","Put","NVG_stat_xj400", "RPG_TZK_xj400"};
+		magazines[] = {
+			"mVSS_Mag_xj400","mVSS_Mag_xj400","mVSS_Mag_xj400","mVSS_Mag_xj400", 
+			"RPG_1slot_xj400","RPG_1slot_xj400","RPG_1slot_xj400", "RKG3M_xj400","RKG3M_xj400", "PipeBomb"};
+	};
+	class SoldierWB_IV_xj400: SoldierWB_III_xj400 {
+		weapons[] = {"M249SPW_ACOG_SD_xj400","Throw_xj400","Put","NVG_stat_xj400", "LAW_TZK_xj400"};
+		magazines[] = {
+			"M249SPW_SD_Mag_xj400","M249SPW_SD_Mag_xj400", 
+			"LAW_1slot_xj400","LAW_1slot_xj400","LAW_1slot_xj400", "RKG3M_xj400","RKG3M_xj400", "PipeBomb"};
+	};
+	class SoldierEB_IV_xj400: SoldierEB_III_xj400 {
+		weapons[] = {"RPK74M_1P29_SD_xj400","Throw_xj400","Put","NVG_stat_xj400", "RPG_TZK_xj400"};
+		magazines[] = {
+			"RPK74_SD_Mag_xj400","RPK74_SD_Mag_xj400","RPK74_SD_Mag_xj400","RPK74_SD_Mag_xj400", 
+			"RPK74_SD_Pistol_Mag_xj400","RPK74_SD_Pistol_Mag_xj400","RPK74_SD_Pistol_Mag_xj400","RPK74_SD_Pistol_Mag_xj400", 
+			"RPG_1slot_xj400","RPG_1slot_xj400","RPG_1slot_xj400", "RKG3M_xj400","RKG3M_xj400", "PipeBomb"};
+	};
+	class SoldierWB_RKG_xj400: SoldierWB_III_xj400 {
+		accuracy = 1000;
+		displayName = "Soldier RKG";
+		weapons[] = {"M16","Throw_xj400","Put"};
+		magazines[] = {"M16","M16","M16","RKG3M_xj400","RKG3M_xj400","RKG3M_xj400","RKG3M_xj400","RKG3M_xj400","RKG3M_xj400","RKG3M_xj400"};
+	}
+	class SoldierEB_RKG_xj400: SoldierEB_III_xj400 {
+		accuracy = 1000;
+		displayName = "Soldier RKG";
+		weapons[] = {"AK74","Throw_xj400","Put"};
+		magazines[] = {"AK74","AK74","AK74","RKG3M_xj400","RKG3M_xj400","RKG3M_xj400","RKG3M_xj400","RKG3M_xj400","RKG3M_xj400","RKG3M_xj400"};
+	}
+
+	class SoldierWMG: SoldierWB {};
+	class SoldierEMG: SoldierEB {};
+	class SoldierWMG_xj400: SoldierWMG {};
+	class SoldierEMG_xj400: SoldierEMG {};
+	class SoldierWMG_I_xj400: SoldierWMG_xj400 {
+		vehicleClass = "TZK_Units_400";
+
+		weapons[] = {"M249SPW_ACOG_xj400","Throw_xj400","Put"};
+		magazines[] = {"M249SPW_Mag_xj400","M249SPW_Mag_xj400","M249SPW_Mag_xj400","M249SPW_Mag_xj400","M249SPW_Mag_xj400"};
+	};
+	class SoldierEMG_I_xj400: SoldierEMG_xj400 {
+		vehicleClass = "TZK_Units_400";
+
+		weapons[] = {"RPK74M_1P29_xj400","Throw_xj400","Put"};
+		magazines[] = {"RPK74_Mag_xj400","RPK74_Mag_xj400","RPK74_Mag_xj400","RPK74_Mag_xj400","RPK74_Mag_xj400",
+			"RPK74_Mag_xj400","RPK74_Mag_xj400","RPK74_Mag_xj400","RPK74_Mag_xj400","RPK74_Mag_xj400"};
+	};
+	class SoldierWMG_II_xj400: SoldierWMG_I_xj400 {
+		weapons[] = {"M60_TZK_xj400","Throw_xj400","Put"};
+		magazines[] = {"M60","M60","M60","M60","M60"};
+	};
+	class SoldierEMG_II_xj400: SoldierEMG_I_xj400 {
+		weapons[] = {"PK_TZK_xj400","Throw_xj400","Put"};
+		magazines[] = {"PK","PK","PK","PK","PK"};
+	};
+	class SoldierWMG_III_xj400: SoldierWMG_I_xj400 {
+		weapons[] = {"M60_TZK_xj400","Throw_xj400","Put", "LAW_TZK_xj400"};
+		magazines[] = {"M60","M60","M60","M60", "LAW_1slot_xj400","LAW_1slot_xj400"};
+	};
+	class SoldierEMG_III_xj400: SoldierEMG_I_xj400 {
+		weapons[] = {"PK_TZK_xj400","Throw_xj400","Put", "RPG_TZK_xj400"};
+		magazines[] = {"PK","PK","PK","PK", "RPG_1slot_xj400","RPG_1slot_xj400"};
+	};
+	class SoldierWMG_IV_xj400: SoldierWMG_I_xj400 {
+		weapons[] = {"M60e4_xj400","Throw_xj400","Put", "LAW_TZK_xj400"};
+		magazines[] = {"M60_Mag_xj400","M60_Mag_xj400","M60_Mag_xj400","M60_Mag_xj400", "LAW_1slot_xj400","LAW_1slot_xj400"};
+	};
+	class SoldierEMG_IV_xj400: SoldierEMG_I_xj400 {
+		weapons[] = {"PKM_1P29_xj400","Throw_xj400","Put", "RPG_TZK_xj400"};
+		magazines[] = {"PKM_Mag_xj400","PKM_Mag_xj400","PKM_Mag_xj400","PKM_Mag_xj400", "RPG_1slot_xj400","RPG_1slot_xj400"};
+	};
+
+	class SoldierWLAW: SoldierWB {};
+	class SoldierELAW: SoldierEB {};
+	class SoldierWAT: SoldierWLAW {};
+	class SoldierEAT: SoldierELAW {};
+	class SoldierWAT_xj400: SoldierWAT {};
+	class SoldierEAT_xj400: SoldierEAT {};
+	class SoldierWAT_I_xj400: SoldierWAT_xj400 {
+		vehicleClass = "TZK_Units_400";
+
+		weapons[] = {"M16","Throw_xj400","Put", "Carl_TZK_xj400"};
+		magazines[] = {"M16","M16","M16","M16", "Carl_I_1_TZK_xj400","PipeBomb"};
+	};
+	class SoldierEAT_I_xj400: SoldierEAT_xj400 {
+		vehicleClass = "TZK_Units_400";
+
+		weapons[] = {"AK74","Throw_xj400","Put", "AT4_TZK_xj400"};
+		magazines[] = {"AK74","AK74","AK74","AK74", "AT4_I_1_TZK_xj400","PipeBomb"};
+	};
+	class SoldierWAT_II_xj400: SoldierWAT_I_xj400 {
+		weapons[] = {"M16","Throw_xj400","Put", "Carl_TZK_xj400"};
+		magazines[] = {"M16","M16","M16","M16", "Carl_II_1_TZK_xj400","PipeBomb"};
+	};
+	class SoldierEAT_II_xj400: SoldierEAT_I_xj400 {
+		weapons[] = {"AK74","Throw_xj400","Put", "AT4_TZK_xj400"};
+		magazines[] = {"AK74","AK74","AK74","AK74", "AT4_II_1_TZK_xj400","PipeBomb"};
+	};
+	class SoldierWAT_III_xj400: SoldierWAT_I_xj400 {
+		weapons[] = {"G36a","Throw_xj400","Put", "Carl_TZK_xj400"};
+		magazines[] = {"G36aMag","G36aMag","G36aMag","G36aMag", "Carl_III_1_TZK_xj400","PipeBomb"};
+	};
+	class SoldierEAT_III_xj400: SoldierEAT_I_xj400 {
+		weapons[] = {"KEGAK107_xj400","Throw_xj400","Put", "AT4_TZK_xj400"};
+		magazines[] = {"KEGAK107_Mag_xj400","KEGAK107_Mag_xj400","KEGAK107_Mag_xj400","KEGAK107_Mag_xj400", "AT4_III_1_TZK_xj400","PipeBomb"};
+	};
+	class SoldierWAT_IV_xj400: SoldierWAT_I_xj400 {
+		weapons[] = {"SG551_xj400","Throw_xj400","Put", "Carl_TZK_xj400"};
+		magazines[] = {"SG551_Mag_xj400","SG551_Mag_xj400","SG551_Mag_xj400","SG551_Mag_xj400", "Carl_IV_1_TZK_xj400","Carl_IV_1_TZK_xj400"};
+	};
+	class SoldierEAT_IV_xj400: SoldierEAT_I_xj400 {
+		weapons[] = {"mVSS_xj400","Throw_xj400","Put", "AT4_TZK_xj400"};
+		magazines[] = {"mVSS_Mag_xj400","mVSS_Mag_xj400","mVSS_Mag_xj400","mVSS_Mag_xj400", "AT4_IV_1_TZK_xj400","AT4_IV_1_TZK_xj400"};
+	};
+
+	class SoldierWAA: SoldierWLAW {};
+	class SoldierEAA: SoldierELAW {};
+	class SoldierWAA_xj400: SoldierWAA {};
+	class SoldierEAA_xj400: SoldierEAA {};
+	class SoldierWAA_Assautl_III_xj400: SoldierWAA_xj400 {
+		vehicleClass = "TZK_Units_400";
+		displayName = "AA Assulter";
+
+		weapons[] = {"M21","Throw_xj400","Put", "AA_TZK_xj400"};
+		magazines[] = {"M21","M21","M21","M21", "AA_II_TZK_xj400","PipeBomb"};
+	};
+	class SoldierEAA_Assautl_III_xj400: SoldierEAA_xj400 {
+		vehicleClass = "TZK_Units_400";
+		displayName = "AA Assulter";
+
+		weapons[] = {"RFSVUa_xj400","Throw_xj400","Put", "9k32_TZK_xj400"};
+		magazines[] = {"RFSVUA_Mag_xj400","RFSVUA_Mag_xj400","RFSVUA_Mag_xj400","RFSVUA_Mag_xj400", "9K32_II_TZK_xj400","PipeBomb"};
+	};
+	class SoldierWAA_Assautl_IV_xj400: SoldierWAA_Assautl_III_xj400 {
+		weapons[] = {"M21","Throw_xj400","Put", "AA_TZK_xj400"};
+		magazines[] = {"M21","M21","M21","M21", "AA_II_TZK_xj400","AA_II_TZK_xj400"};
+	};
+	class SoldierEAA_Assautl_IV_xj400: SoldierEAA_Assautl_III_xj400 {
+		weapons[] = {"RFSVUa_xj400","Throw_xj400","Put", "9k32_TZK_xj400"};
+		magazines[] = {"RFSVUA_Mag_xj400","RFSVUA_Mag_xj400","RFSVUA_Mag_xj400","RFSVUA_Mag_xj400", "9K32_II_TZK_xj400","9K32_II_TZK_xj400"};
+	};
+
 	class Logic: All {};
 	class Logic_xj400: Logic {};
 	class Logic_PlaceHolder_xj400: Logic_xj400 {};
