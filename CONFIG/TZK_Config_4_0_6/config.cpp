@@ -1793,7 +1793,7 @@ class CfgVehicles {
 	class UralRefuel_xj400: UralRefuel { terrainCoef = 1; preferRoads = 0; };
 
 	class Jeep_Radar_xj400: Jeep_xj400 {
- 		picture = "\t406\ui\iJeepRadar.paa";
+ 		picture = "\tzk_texture_4_0_6\ui\iJeepRadar.paa";
 		hiddenSelections[] = {tzk_tex_00,
 			tex_mutt_backg.pac, tex_mutt_bottom.pac, tex_mutt_frontg.pac,
 			tex_mutt_kapotag.pac,tex_mutt_kolog.pac, tex_mutt_koloog.pac,
@@ -1817,7 +1817,7 @@ class CfgVehicles {
 		driverCanSee = CanSeeAll;
 	};
 	class UAZ_Radar_xj400: UAZ_xj400 {
- 		picture = "\t406\ui\iUazRadar.paa";
+ 		picture = "\tzk_texture_4_0_6\ui\iUazRadar.paa";
 		hiddenSelections[] = {tzk_tex_00,
 			tex_jeep_kab_sklo1.paa, tex_jeep_kab_sklo2.paa, tex_jeep_kolo_side.pac,
 			tex_mutt_bottom.pac, tex_mutt_kolog.pac, tex_mutt_koloog.pac, tex_uaz_ige_front.paa,
@@ -1992,7 +1992,7 @@ class CfgVehicles {
 		displayName = "M151A1C with 106mm"; side = 1; cost = 100000; threat[] = {0.3, 1, 0.1};
 
 		model = "\TZK_Model_4_0_6\m151a1c_htr.p3d";
-		picture = "\t406\ui\iM151a1c.paa";
+		picture = "\tzk_texture_4_0_6\ui\iM151a1c.paa";
 		hiddenSelections[] = {"shell_casing01","shell_projectile01","shell_casing02","shell_projectile02","shell_casing03","shell_projectile03","shell_casing04","shell_projectile04","shell_casing05","shell_projectile05","n1","n2","chambProj","chambCase"};
 
 		gunnerAction = "ManActHTRM151ACGunner";
@@ -2101,7 +2101,7 @@ class CfgVehicles {
 		displayName = "UAZ (SPG-9)"; nameSound = "UAZ"; side = 0; cost = 100000; type = 1; threat[] = {0.5, 1, 0.1};
 
 		model = "\TZK_Model_4_0_6\uaz_spg_RUS.p3d";
-		picture = "\t406\ui\iUazSpg.paa";
+		picture = "\tzk_texture_4_0_6\ui\iUazSpg.paa";
 		crew ="soldierECrew";
 		soundEngine[] = {"\TZK_Sounds_4_0_6\fdf\uaz_engine.wss", 0.031623, 1}; //FDF - Goeth 12.10.2003
 		soundEnviron[] = {"\TZK_Sounds_4_0_6\fdf\car_treads.wss", 0.001, 1};
@@ -2383,7 +2383,7 @@ class CfgVehicles {
 		model = "\TZK_Model_4_0_6\Orca95_MCSR.p3d";
 		armor = 20;
 		hiddenSelections[] = {};
-		picture = "\t406\ui\iOrca95.paa";
+		picture = "\tzk_texture_4_0_6\ui\iOrca95.paa";
 		weapons[] = {"LaserDesignatorOH"};
 		magazines[] = {"LaserDesignatorOH", SpoofMagazines};
 
@@ -2651,8 +2651,8 @@ class CfgVehicles {
 		weapons[] = {"MG_12_7_xj400"};
 		magazines[] = {"MG_12_7_xj400", "MG_12_7_xj400"};
 
-		picture = "\t406\icp\icon.paa";
-		icon = "\t406\icp\EDnsv.paa";
+		picture = "\tzk_texture_4_0_6\icp\icon.paa";
+		icon = "\tzk_texture_4_0_6\icp\EDnsv.paa";
 		mapSize = 8;
 
 		nightVision = 1;
@@ -2680,7 +2680,7 @@ class CfgVehicles {
 		gunnerAction = "ManActUNA_MK19gl_Gunner";
 		gunnerInAction = "ManActUNA_MK19gl_Gunner";
 
-		picture = "\t406\rcwc\town_220.paa";
+		picture = "\tzk_texture_4_0_6\rcwc\town_220.paa";
 		mapSize = 1;
 	};
 	class Metis_rcwc_xj400: M2StaticMG_E_xj400 {
@@ -2702,7 +2702,7 @@ class CfgVehicles {
 		gunnerAction = "ManActUpLying";
 		gunnerInAction = "ManActUpLying";
 
-		picture = "\t406\rcwc\town_220.paa";
+		picture = "\tzk_texture_4_0_6\rcwc\town_220.paa";
 
 		class Turret: TurretBase {
 			minElev = -7.5;
@@ -2952,7 +2952,7 @@ class CfgVehicles {
 		};
 		soundEngine[] = {"\TZK_Sounds_4_0_6\Coc\motor.wss", db-30, 1};
 		soundEnviron[] = {"\TZK_Sounds_4_0_6\Coc\band.wss", db-40, 0.7};
-		picture = "\t406\ui\iGrkpbv.paa";
+		picture = "\tzk_texture_4_0_6\ui\iGrkpbv.paa";
 		icon = "\TZK_Texture_4_0_0\icon\uiM109.paa";
 
 		irScanToEyeFactor = 1; // Howitzer can has 1x view distance radar.
@@ -3045,7 +3045,7 @@ class CfgVehicles {
 			"n1", "n2", "n3"
 			, "tzkGun00", "tzkGun01", "tzkGun02", "tzkGun03"
 		};
-		picture = "\t406\ui\iPlz89.paa";
+		picture = "\tzk_texture_4_0_6\ui\iPlz89.paa";
 		icon = "\TZK_Texture_4_0_0\icon\uiM109.paa";
 
  		soundEngine[] = {"\TZK_Sounds_4_0_0\M1_Turbine.wss",0.031622775,1.1};
@@ -3152,8 +3152,8 @@ class CfgVehicles {
 			tex_tg.paa, tex_tour.paa, tex_viseur.paa, tex_visouv.paa
 			, tzk_tex_99
 		};
- 		picture = "\t406\ui\iAmx10rc.paa";
- 		icon = "\t406\ui\iAmx10rc.paa";
+ 		picture = "\tzk_texture_4_0_6\ui\iAmx10rc.paa";
+ 		icon = "\tzk_texture_4_0_6\ui\iAmx10rc.paa";
 		// smaller vehicle size
 		camouflage = 5; audible = 5;
 
@@ -3335,8 +3335,8 @@ class CfgVehicles {
 
 		model = "\TZK_Model_4_0_6\2S25_mfm.p3d";
 		hiddenSelections[]= {"no1", "no2", "no3"};
- 		icon = "\t406\ui\iAmx10rc.paa";
-		picture = "\t406\ui\i2s25.paa";
+ 		icon = "\tzk_texture_4_0_6\ui\iAmx10rc.paa";
+		picture = "\tzk_texture_4_0_6\ui\i2s25.paa";
 
 		gunnerOpticsmodel = "\TZK_Model_4_0_6\opt\G_Optic.p3d";
 		commanderOpticsmodel = "\TZK_Model_4_0_6\opt\C_Optic.p3d";
@@ -3460,8 +3460,8 @@ class CfgVehicles {
 			, tex_kette002.paa, tex_m88_001.paa, tex_m88_002.paa, tex_m88_003.paa
 			, tzk_tex_99
 		};
-		icon = "\t406\m88\m88icon.paa";
-		picture = "\t406\m88\m88pic.paa";
+		icon = "\tzk_texture_4_0_6\m88\m88icon.paa";
+		picture = "\tzk_texture_4_0_6\m88\m88pic.paa";
 		mapSize = 11;
 
 		maxSpeed = 46;
@@ -3628,8 +3628,8 @@ class CfgVehicles {
 			"no3",				// 9
 			"barrels"			// 10
 		};
-		icon = "\t406\brem1\ic_brem1.paa";
-		picture = "\t406\brem1\pic_brem1.paa";
+		icon = "\tzk_texture_4_0_6\brem1\ic_brem1.paa";
+		picture = "\tzk_texture_4_0_6\brem1\pic_brem1.paa";
 		mapSize = 11;
 
 		maxSpeed = 50;
@@ -3772,8 +3772,8 @@ class CfgVehicles {
 		model = "\TZK_Model_4_0_6\scfus_m730a1_w.p3d";
 		// hiddenSelections[] = {"missile_1","missile_2","missile_3","missile_4"};
 
-		picture = "\t406\ui\iMim72.paa";
-		icon = "\t406\ui\uiSa13.paa";
+		picture = "\tzk_texture_4_0_6\ui\iMim72.paa";
+		icon = "\tzk_texture_4_0_6\ui\uiSa13.paa";
 		armor = 180;
 
 		driveriscommander = 1;
@@ -3813,8 +3813,8 @@ class CfgVehicles {
 		model = "\TZK_Model_4_0_6\sa13.p3d";
 		hiddenSelections[] = {"MARINE", "CSLA", "pod_green"};
 
-		picture = "\t406\ui\iSa13.paa";
-		icon = "\t406\ui\uiSa13.paa";
+		picture = "\tzk_texture_4_0_6\ui\iSa13.paa";
+		icon = "\tzk_texture_4_0_6\ui\uiSa13.paa";
 
 		insideSoundCoef = 1.1;
 		soundEnviron[] = {"Vehicles\OldRolling_Treads1", db-15, 0.85};
@@ -4086,11 +4086,11 @@ class CfgVehicles {
 		model = "\TZK_Model_4_0_6\newport.p3d";
 		hiddenSelections[] = {"BoardL", "BoardR"};
 		class EventHandlers {
-			Init = _veh = _this select 0, {_veh setObjectTexture [_x, "\t406\contex.paa"]} forEach [0, 1];
+			Init = _veh = _this select 0, {_veh setObjectTexture [_x, "\tzk_texture_4_0_6\contex.paa"]} forEach [0, 1];
 		}
 
-		picture = "\t406\ui\iLst.paa";
-		icon = "\t406\ui\iLst.paa";
+		picture = "\tzk_texture_4_0_6\ui\iLst.paa";
+		icon = "\tzk_texture_4_0_6\ui\iLst.paa";
 		armor = 1000;
 
 		weapons[] = {};
@@ -4667,37 +4667,37 @@ class CfgMarkers {
 	class UnknownVehicle_Marker_xj400 {};
 	class TD_Marker_xj400: UnknownVehicle_Marker_xj400 {
 		name = "TD";
- 		icon = "\t406\ui\iAmx10rc.paa";
+ 		icon = "\tzk_texture_4_0_6\ui\iAmx10rc.paa";
 		size = 12;
 	};
 	class RadarCar_Marker_xj400: UnknownVehicle_Marker_xj400 {
 		name = "RadarCar";
- 		icon = "\t406\ui\iJeepRadar.paa";
+ 		icon = "\tzk_texture_4_0_6\ui\iJeepRadar.paa";
 		size = 12;
 	};
 	class RocketMiner_Marker_xj400: UnknownVehicle_Marker_xj400 {
 		name = "RocketMiner";
-		icon = "\t406\ui\uiSa13.paa";
+		icon = "\tzk_texture_4_0_6\ui\uiSa13.paa";
 		size = 12;
 	};
 	class EngineerVeh_Marker_xj400: UnknownVehicle_Marker_xj400 {
 		name = "EngineerVeh";
-		icon = "\t406\m88\m88icon.paa";
+		icon = "\tzk_texture_4_0_6\m88\m88icon.paa";
 		size = 12;
 	};
 	class AtCar_Marker_xj400: UnknownVehicle_Marker_xj400 {
 		name = "AtCar";
-		icon = "\t406\ui\iUazSpg.paa";
+		icon = "\tzk_texture_4_0_6\ui\iUazSpg.paa";
 		size = 12;
 	};
 	class LST_Marker_xj400: UnknownVehicle_Marker_xj400 {
 		name = "LST";
-		icon = "\t406\ui\iLst.paa";
+		icon = "\tzk_texture_4_0_6\ui\iLst.paa";
 		size = 8;
 	};
 	class Orca_Marker_xj400: UnknownVehicle_Marker_xj400 {
 		name = "Orca";
-		icon ="\t406\ui\iOrca95.paa";
+		icon ="\tzk_texture_4_0_6\ui\iOrca95.paa";
 		size = 12;
 	};
 	class SmallHeli_Marker_xj400: UnknownVehicle_Marker_xj400 {
