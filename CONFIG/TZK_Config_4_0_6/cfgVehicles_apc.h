@@ -268,7 +268,7 @@
 		armor = 450; //400
 		irScanRangeMin = 0; irScanRangeMax = 0; irScanToEyeFactor = 0; irScanGround = 0;
 		class EventHandlers {
-			Init = "_vehicle = _this select 0; _vehicle animate [{Podveska}, 0.5]";
+			Init = (_this select 0) exec localize {TZK_EVENT_INIT_TEX_BREM1};
 		};
 
 		getInRadius = 2.0; //3.5
