@@ -1793,6 +1793,7 @@ class CfgVehicles {
 	class UralRefuel_xj400: UralRefuel { terrainCoef = 1; preferRoads = 0; };
 
 	class Jeep_Radar_xj400: Jeep_xj400 {
+ 		picture = "\t406\ui\iJeepRadar.paa";
 		hiddenSelections[] = {tzk_tex_00,
 			tex_mutt_backg.pac, tex_mutt_bottom.pac, tex_mutt_frontg.pac,
 			tex_mutt_kapotag.pac,tex_mutt_kolog.pac, tex_mutt_koloog.pac,
@@ -1816,6 +1817,7 @@ class CfgVehicles {
 		driverCanSee = CanSeeAll;
 	};
 	class UAZ_Radar_xj400: UAZ_xj400 {
+ 		picture = "\t406\ui\iUazRadar.paa";
 		hiddenSelections[] = {tzk_tex_00,
 			tex_jeep_kab_sklo1.paa, tex_jeep_kab_sklo2.paa, tex_jeep_kolo_side.pac,
 			tex_mutt_bottom.pac, tex_mutt_kolog.pac, tex_mutt_koloog.pac, tex_uaz_ige_front.paa,
@@ -4661,6 +4663,49 @@ class CfgVehicles {
 	class AirF_Green_xj400: AirF_xj400 { model = "\TZK_Model_4_0_6\Struct\Green_Hangar02_Baracken.p3d"; };
 };
 
+class CfgMarkers {
+	class UnknownVehicle_Marker_xj400 {};
+	class TD_Marker_xj400: UnknownVehicle_Marker_xj400 {
+		name = "TD";
+ 		icon = "\t406\ui\iAmx10rc.paa";
+		size = 12;
+	};
+	class RadarCar_Marker_xj400: UnknownVehicle_Marker_xj400 {
+		name = "RadarCar";
+ 		icon = "\t406\ui\iJeepRadar.paa";
+		size = 12;
+	};
+	class RocketMiner_Marker_xj400: UnknownVehicle_Marker_xj400 {
+		name = "RocketMiner";
+		icon = "\t406\ui\uiSa13.paa";
+		size = 12;
+	};
+	class EngineerVeh_Marker_xj400: UnknownVehicle_Marker_xj400 {
+		name = "EngineerVeh";
+		icon = "\t406\m88\m88icon.paa";
+		size = 12;
+	};
+	class AtCar_Marker_xj400: UnknownVehicle_Marker_xj400 {
+		name = "AtCar";
+		icon = "\t406\ui\iUazSpg.paa";
+		size = 12;
+	};
+	class LST_Marker_xj400: UnknownVehicle_Marker_xj400 {
+		name = "LST";
+		icon = "\t406\ui\iLst.paa";
+		size = 8;
+	};
+	class Orca_Marker_xj400: UnknownVehicle_Marker_xj400 {
+		name = "Orca";
+		icon ="\t406\ui\iOrca95.paa";
+		size = 12;
+	};
+	class SmallHeli_Marker_xj400: UnknownVehicle_Marker_xj400 {
+		name = "SmallHeli";
+		icon = "\TZK_Texture_4_0_0\icon\iMi2.paa";
+		size = 12;
+	};
+};
 
 class CfgNonAIVehicles {
 	class ProxyCrew {};
