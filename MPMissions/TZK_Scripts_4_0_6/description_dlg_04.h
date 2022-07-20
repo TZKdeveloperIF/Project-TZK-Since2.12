@@ -456,7 +456,7 @@ class SpecDialog: Menu {
 		idc = IDC_BTN_MARK;
 		y = 0.84;
 		text = "Marker";
-		action = "btnMarker = !btnMarker; if !btnMarker then {call loadFile ""\TZK_Scripts_4_0_4\Player\Marker\HideSpectator.sqf""} else {[boole_Mark_Player_Name] exec ""\TZK_Scripts_4_0_4\Player\Marker\SpectatorMarker.sqs""} ";
+		action = "btnMarker = !btnMarker; if !btnMarker then {call preprocessFile localize {TZK_FUNC_MARKER_HIDE_SPEC}} else {[boole_Mark_Player_Name] exec ""\TZK_Scripts_4_0_4\Player\Marker\SpectatorMarker.sqs""} ";
 	};
 	class MarkerBG: SelectedBG {
 		idc = IDC_BTN_MARK + 1;

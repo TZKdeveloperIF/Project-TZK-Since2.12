@@ -1,5 +1,5 @@
 fixedStartPos = param1 % 4;
-Allow_BOH_WAP_TZK = param1 >= 4;
+Allow_BOH_WAP_TZK = false;
 Incomex = 1;
 restanksx = param2 + 1;
 timeLimit = 4*60*60;

@@ -9,7 +9,7 @@ _unit = _this
 forceMap true
 
 ;init spectator functions
-funcMapClickSpectator = loadFile "\TZK_Scripts_4_0_4\Player\SQF\MapClickSpectator.sqf"
+funcMapClickSpectator = preprocessFile "\TZK_Scripts_4_0_6\Player\SQF\MapClickSpectator.sqf"
 ; // arguments: [_pos, _units, _alt, _shift]
 ; // returns: true if command processed, false if not
 
@@ -53,7 +53,5 @@ forceMap false
 _unit addWeapon "Ingram"; { _unit addMagazine "IngramMag" } forEach [1]; _unit selectWeapon "Ingram"; player addWeapon "NVGoggles"
 
 [_unit] exec "Player\Start\Spectator.sqs"
-
-; [] exec "\TZK_Scripts_4_0_4\Player\DisplayGameInfo.sqs"
 
 ? bool_TZK_199_Mode: [_unit] exec "\TZK_Scripts_4_0_4\Common\KeepTempLeaderAlive.sqs"

@@ -377,7 +377,7 @@ class OptionsDialog: Menu {
 		y = 0.05;
 		w = 0.18;
 		text = "Cleanup Ground";
-		action = "closeDialog 0; [getPos player] exec ""\TZK_Scripts_4_0_4\Player\CleanupGround.sqs"" ";
+		action = "closeDialog 0; [getPos player] exec localize {TZK_FUNC_CLEANUP_GROUND}";
 	};
 	class Income: Text {
 		idc = IDC+3;
@@ -552,7 +552,7 @@ class OptionsDialog: Menu {
 		y = 0.17;
 		w = 0.18;
 		text = "Game Info...";
-		action = "closeDialog 0; [player] exec ""Player\DisplayGameInfo.sqs""";
+		action = "closeDialog 0; 0 exec localize {TZK_FUNC_DISPLAY_GAMEINFO}";
 	};
 
 	class IncomeRatioLabel: Label {
@@ -737,7 +737,6 @@ class OptionsDialog: Menu {
 		y = 0.305;
 		w = 0.15;
 		text = "Online Help";
-	//	action = "closeDialog 0;optionsMenuInUse = false;[0] Exec ""GUI\OpenHelpMenu.sqs""";
 	};
 	class TZK_Mission_Setting_1: Button {
 		x = 0.025;
@@ -745,13 +744,13 @@ class OptionsDialog: Menu {
 		w = 0.15;
 		colorText[] = {0.9,0.7,0.2,1.0};
 		text = "TZK Setting 1";
-		action = "closeDialog 0; [] exec ""Player\Dialog\TZK_Mission_Setting_1.sqs"" ";
+		action = "closeDialog 0; [] exec localize {TZK_DIALOG_TZK_SETTING_1}";
 		sizeEx = 0.023;
 	};
 	class TZK_Mission_Setting_2: TZK_Mission_Setting_1 {
 		y = 0.395;
 		text = "TZK Setting 2";
-		action = "closeDialog 0; [] exec ""Player\Dialog\TZK_Mission_Setting_2.sqs"" ";
+		action = "closeDialog 0; [] exec localize {TZK_DIALOG_TZK_SETTING_2}";
 	};
 };
 
