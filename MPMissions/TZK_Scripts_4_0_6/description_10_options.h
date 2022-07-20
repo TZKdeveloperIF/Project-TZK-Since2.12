@@ -1,300 +1,3 @@
-class GenericDialog: Menu {
-	idd = -1;
-	movingEnable = true;
-	controlsBackground[] = {Sub_BG, Sub_BG_Light};
-	objects[] = { };
-	controls[] = { GenericTitle, InfoAction0, Action0, InfoAction1, Action1, InfoAction2, Action2, InfoAction3, Action3, InfoAction4, Action4, ListHeader, List, Exit };
-
-	class Sub_BG: BackgroundWindow {
-		x = 0.2;
-		y = 0.0;
-		w = 0.8;
-		h = 0.65;
-	};
-	class Sub_BG_Light: Light_BG_Window {
-		x = 0.2;
-		y = 0.0;
-		w = 0.8;
-		h = 0.65;
-	};
-
-	class GenericTitle: Title {
-		idc = IDC_TITLE;
-		style = ST_CENTER;
-		x = 0.2;
-		y = 0.0;
-		w = 0.3;
-		text = "UNDEFINED";
-	};
-	class InfoAction0: Label {
-		idc = IDC+0
-		x = 0.225;
-		y = 0.07;
-		text = "UNDEFINED";
-	};
-	class Action0: Button {
-		idc = IDC+1
-		x = 0.225;
-		y = 0.10;
-		text = "UNDEFINED";
-		action = "btnAction0 = true";
-	};
-	class InfoAction1: Label {
-		idc = IDC+2
-		x = 0.225;
-		y = 0.17;
-		text = "UNDEFINED";
-	};
-	class Action1: Button {
-		idc = IDC+3
-		x = 0.225;
-		y = 0.20;
-		text = "UNDEFINED";
-		action = "btnAction1 = true";
-	};
-	class InfoAction2: Label {
-		idc = IDC+4
-		x = 0.225;
-		y = 0.27;
-		text = "UNDEFINED";
-	};
-	class Action2: Button {
-		idc = IDC+5
-		x = 0.225;
-		y = 0.30;
-		text = "UNDEFINED";
-		action = "btnAction2 = true";
-	};
-	class InfoAction3: Label {
-		idc = IDC+6
-		x = 0.225;
-		y = 0.36;
-		text = "UNDEFINED";
-	};
-	class Action3: Button {
-		idc = IDC+7
-		x = 0.225;
-		y = 0.40;
-		text = "UNDEFINED";
-		action = "btnAction3 = true";
-	};
-	class InfoAction4: Label {
-		idc = IDC+8
-		x = 0.225;
-		y = 0.46;
-		text = "UNDEFINED";
-	};
-	class Action4: Button {
-		idc = IDC+9
-		x = 0.225;
-		y = 0.50;
-		text = "UNDEFINED";
-		action = "btnAction4 = true";
-	};
-
-	class ListHeader: Label {
-		idc = IDC+10
-		x = 0.5;
-		y = 0.0;
-		w = 0.5;
-  // h = 0.65;
-	};
-	class List: ListBox {
-		idc = IDC+11
-		x = 0.5;
-		y = 0.04;
-		w = 0.5;
-		h = 0.60;
-	};
-
-	class Exit: Button {
-		x = 0.95;
-		y = 0.0;
-		w = 0.05;
-		h = 0.04;
-		text = "Exit";
-
-	action = "closeDialog 0";
-	};
-
-};
-class LeaderboardDialog: Menu {
-	idd = -1;
-	movingEnable = true;
-	controlsBackground[] = {Sub_BG, Sub_BG_Light};
-	objects[] = { };
-	controls[] = {LeaderboardTitle, GroupLabel, Group, Side, InfantryLabel, Infantry, InfantrySide, VehicleLabel, Vehicle, VehicleSide, MHQLabel, MHQ, MHQSide, StructLabel, Struct, StructSide, TownLabel, Town, TownSide, TotalLabel, Total, TotalSide, Exit};
-
-	class Sub_BG: BackgroundWindow {
-		x = 0.1;
-		y = 0.0;
-		w = 0.8;
-		h = 0.66;
-	};
-	class Sub_BG_Light: Light_BG_Window {
-		x = 0.1;
-		y = 0.0;
-		w = 0.8;
-		h = 0.66;
-	};
-
-
-	class LeaderboardTitle: Title {
-		style = ST_CENTER;
-		x = 0.1;
-		y = 0.0;
-		w = 0.8;
-		text = "Leaderboard";
- };
-	class GroupLabel: Label {
-		x = 0.1;
-		y = 0.03;
-		w = 0.2;
-		text = "Group";
- };
-	class Group: ListBox {
-		idc = IDC_LB_GROUP;
-		x = 0.1;
-		y = 0.06;
-		w = 0.2;
-		h = 0.54;
-	};
-	class Side: ListBox {
-		idc = IDC_LB_SIDE;
-		x = 0.1;
-		y = 0.60;
-		w = 0.2;
-		h = 0.06;
-	};
-	class InfantryLabel: Label {
-		x = 0.3;
-		y = 0.03;
-		w = 0.1;
-		text = "Inf";
-	};
-	class Infantry: ListBox {
-		idc = IDC_LB_INFANTRY;
-		x = 0.3;
-		y = 0.06;
-		w = 0.1;
-		h = 0.54;
-	};
-	class InfantrySide: ListBox {
-		idc = IDC_LB_INFANTRYSIDE;
-		x = 0.3;
-		y = 0.60;
-		w = 0.1;
-		h = 0.06;
-	};
-	class VehicleLabel: Label {
-		x = 0.4;
-		y = 0.03;
-		w = 0.1;
-		text = "Vehicle";
-	};
-	class Vehicle: ListBox {
-		idc = IDC_LB_VEHICLE;
-		x = 0.4;
-		y = 0.06;
-		w = 0.1;
-		h = 0.54;
-	};
-	class VehicleSide: ListBox {
-		idc = IDC_LB_VEHICLESIDE;
-		x = 0.4;
-		y = 0.60;
-		w = 0.1;
-		h = 0.06;
-	};
-	class MHQLabel: Label {
-		x = 0.5;
-		y = 0.03;
-		w = 0.1;
-		text = "MHQ";
-	};
-	class MHQ: ListBox {
-		idc = IDC_LB_MHQ;
-		x = 0.5;
-		y = 0.06;
-		w = 0.1;
-		h = 0.54;
-	};
-	class MHQSide: ListBox {
-		idc = IDC_LB_MHQSIDE;
-		x = 0.5;
-		y = 0.60;
-		w = 0.1;
-		h = 0.06;
-	};
-	class StructLabel: Label {
-		x = 0.6;
-		y = 0.03;
-		w = 0.1;
-		text = "Struct";
-	};
-	class Struct: ListBox {
-		idc = IDC_LB_STRUCT;
-		x = 0.6;
-		y = 0.06;
-		w = 0.1;
-		h = 0.54;
-	};
-	class StructSide: ListBox {
-		idc = IDC_LB_STRUCTSIDE;
-		x = 0.6;
-		y = 0.60;
-		w = 0.1;
-		h = 0.06;
-	};
-	class TownLabel: Label {
-		x = 0.7;
-		y = 0.03;
-		w = 0.1;
-		text = "Town";
-	};
-	class Town: ListBox {
-		idc = IDC_LB_TOWN;
-		x = 0.7;
-		y = 0.06;
-		w = 0.1;
-		h = 0.54;
-	};
-	class TownSide: ListBox {
-		idc = IDC_LB_TOWNSIDE;
-		x = 0.7;
-		y = 0.60;
-		w = 0.1;
-		h = 0.06;
-	};
-	class TotalLabel: Label {
-		x = 0.8;
-		y = 0.03;
-		w = 0.1;
-		text = "Total";
-	};
-	class Total: ListBox {
-		idc = IDC_LB_TOTAL;
-		x = 0.8;
-		y = 0.06;
-		w = 0.1;
-		h = 0.54;
-	};
-	class TotalSide: ListBox {
-		idc = IDC_LB_TOTALSIDE;
-		x = 0.8;
-		y = 0.60;
-		w = 0.1;
-		h = 0.06;
-	};
-	class Exit: Button {
-		x = 0.8;
-		y = 0.0;
-		w = 0.1;
-		h = 0.03;
-		text = "Exit";
-		action = "closeDialog 0";
-	};
-};
 class OptionsDialog: Menu {
 	idd = -1;
 	movingEnable = true;
@@ -308,7 +11,7 @@ class OptionsDialog: Menu {
 		MemberMarkersLabel, MemberMarkers,
 		TransferLabel, TransferTarget, TransferAmount,Transfer, TransferAIs, TransferAll, TransferTake, AICheck,
 		BuyUnits, CustomSoldiers, CommandAI, CommandTemporary, ShowStats, UnitCam, SatCam, SpySatBG, SpySat, RadioONBG, RadioONBtn,
-		IncomeRatioLabel, IncomeRatio, IncomeRatioPlayer, CommanderLabel, Commander, CommanderTransfer,
+		IncomeRatioLabel, IncomeRatio, IncomeRatioPlayer, CommanderLabel, CommanderImage, Commander, CommanderTransfer,
 		WorkerBehaviourLabel, WorkerBehaviour, AIRespawnLabel, AIRespawn,
 		UpgradesLabel, Upgrades, Upgrade, Exit, HiddenDefault, UpgSwitch, 
 		VoteButton, TZK_Mission_Setting_1, TZK_Mission_Setting_2, 
@@ -588,10 +291,16 @@ class OptionsDialog: Menu {
 	};
 
 	class CommanderLabel: Label {
+		idc = IDC + 27;
 		x = 0.79;
 		y = 0.27;
 		w = 0.11;
 		text = "Commander";
+	};
+	class CommanderImage: CommanderLabel {
+		idc = IDC + 28;
+		style = ST_PICTURE;
+		text = "";
 	};
 	class CommanderTransfer: Button {
 		idc = IDC+10;
@@ -675,12 +384,12 @@ class OptionsDialog: Menu {
 		colorBackground[] = {0.82,0.82,0.82,1};
 	};
 	class CommandTemporary: Button {
-		SizeEX = 0.024;
+		sizeEX = 0.024;
  		idc = IDC + 21;
 		x = 0.61;
 		y = 0.17;
 		w = 0.18;
-		text = "Temporary Orders...";
+		text = "Concurrent Orders...";
 		action = "btnCommandTemporary = true";
 	};
 	class SpySatBG: SelectedBG {
@@ -744,14 +453,12 @@ class OptionsDialog: Menu {
 		w = 0.15;
 		colorText[] = {0.9,0.7,0.2,1.0};
 		text = "TZK Setting 1";
-		action = "closeDialog 0; [] exec localize {TZK_DIALOG_TZK_SETTING_1}";
+		action = "closeDialog 0; [] exec localize {TZK_DIALOG_TZK_SETTING_1} ";
 		sizeEx = 0.023;
 	};
 	class TZK_Mission_Setting_2: TZK_Mission_Setting_1 {
 		y = 0.395;
 		text = "TZK Setting 2";
-		action = "closeDialog 0; [] exec localize {TZK_DIALOG_TZK_SETTING_2}";
+		action = "closeDialog 0; [] exec localize {TZK_DIALOG_TZK_SETTING_2} ";
 	};
 };
-
-// EOF

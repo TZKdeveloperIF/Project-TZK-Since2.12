@@ -45,7 +45,7 @@ player groupchat "Waiting for start data ..."
 @( !(isNull (mhq select si0)) && !(isNull (mhq select si1)) )
 player groupchat "Start data received."
 
-[false] exec "\TZK_Scripts_4_0_4\Player\Marker\SpectatorMarker.sqs"; btnMarker = true; boolFriendly = true
+[false] exec localize {TZK_MARKER_SPEC}; btnMarker = true; boolFriendly = true
 
 forceMap false
 
@@ -54,4 +54,4 @@ _unit addWeapon "Ingram"; { _unit addMagazine "IngramMag" } forEach [1]; _unit s
 
 [_unit] exec "Player\Start\Spectator.sqs"
 
-? bool_TZK_199_Mode: [_unit] exec "\TZK_Scripts_4_0_4\Common\KeepTempLeaderAlive.sqs"
+? bool_TZK_199_Mode: [_unit] exec localize {TZK_FUNC_KEEP_ALIVE}
