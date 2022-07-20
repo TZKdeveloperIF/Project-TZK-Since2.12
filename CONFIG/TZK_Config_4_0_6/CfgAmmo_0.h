@@ -59,13 +59,13 @@
 	class Heat120: Heat105 {};
 	class Heat125: Heat120 {};
 
-	class AT3:Default {};
-	class LAW:AT3 {};
-	class RPG:LAW {};
-	class CarlGustav:AT3 {};
+	class AT3: Default {};
+	class LAW: AT3 {};
+	class RPG: LAW {};
+	class CarlGustav: AT3 {};
 	class AT4: CarlGustav {};
-	class AA:CarlGustav {};
-	class 9K32:AA {};
+	class AA: CarlGustav {};
+	class 9K32: AA {};
 
 	class Hellfire: AT3 {};
 	class HellfireApach: Hellfire {};
@@ -73,16 +73,16 @@
 	class Zuni: Hellfire {};
 	class Rocket57: Zuni {};
 	class Maverick: Hellfire {};
-	class Ch29T : Maverick {};
+	class Ch29T: Maverick {};
 
 	class LaserDesignator: Default {};
 	class LaserGuidedBomb: Default {};
 
 	class Grenade: Default {};
 	class GrenadeHand: Grenade {};
-	class TimeBomb : Default {};
-	class PipeBomb : TimeBomb {};
-	class Mine : TimeBomb {};
+	class TimeBomb: Default {};
+	class PipeBomb: TimeBomb {};
+	class Mine: TimeBomb {};
 	class MineE: Mine {};
 	class MortarShell: Grenade {};
 	class Flare: Grenade {};

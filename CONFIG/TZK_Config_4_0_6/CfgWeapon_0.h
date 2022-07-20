@@ -4,7 +4,7 @@
 	class Gun105: Gun73 {};
 	class Gun120: Gun105 {};
 	class Gun125: Gun120 {};
-	class Shell73 : Default {};
+	class Shell73: Default {};
 	class Heat73: Shell73 {};
 	class Shell105: Shell73 {};
 	class Heat105: Shell105 {};
@@ -25,18 +25,18 @@
 	class BizonBase: Riffle {};
 	class BizonMag: BizonBase {};
 	class Bizon: BizonBase {};
-	class SniperRiffle : Riffle {};
-	class M21 : SniperRiffle {};
-	class SVDDragunov : SniperRiffle {};
+	class SniperRiffle: Riffle {};
+	class M21: SniperRiffle {};
+	class SVDDragunov: SniperRiffle {};
 	class Binocular: Default {};
 	class NVGoggles: Binocular {};
 
 	class MachineGun7_6: MGun {};
 	class MachineGun7_6Manual: MachineGun7_6 {};
-	class M60 : MachineGun7_6Manual {};
-	class PK : MachineGun7_6Manual {};
+	class M60: MachineGun7_6Manual {};
+	class PK: MachineGun7_6Manual {};
 	class MachineGun12_7: MachineGun7_6 {};
-	class Browning : MachineGun12_7 {};
+	class Browning: MachineGun12_7 {};
 	class MachineGun30: MachineGun7_6 {};
 	class MachineGun30W: MachineGun30 {};
 	class MachineGun30E: MachineGun30 {};
@@ -62,9 +62,9 @@
 	class SmokeShellRed: SmokeShell {};
 	class SmokeShellGreen: SmokeShell {};
 
-	class Put : Default {};
-	class TimeBomb : Default {};
-	class Mine : TimeBomb {};
+	class Put: Default {};
+	class TimeBomb: Default {};
+	class Mine: TimeBomb {};
 	class MineE: TimeBomb {};
 	class PipeBomb: TimeBomb {};
 
@@ -82,6 +82,7 @@
 	class HellfireLauncherCobra: HellfireLauncher {};
 	class HellfireLauncherHind: HellfireLauncher {};
 	class MaverickLauncher: HellfireLauncher {};
+	class Ch29TLauncher: MaverickLauncher {};
 	class AALauncher:CarlGustavLauncher {};
 	class 9K32Launcher:AALauncher {};
 
