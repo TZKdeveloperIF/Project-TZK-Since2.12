@@ -31,7 +31,7 @@ goto "Update"
 ~0.5
 ? bool_TZK_199_Mode: [_aaGroupUnit] join grpNull
 ~0.5
-? bool_TZK_199_Mode: _group = group _aaGroupUnit, [_aaGroupUnit] exec "\TZK_Scripts_4_0_4\Common\KeepTempLeaderAlive.sqs"
+? bool_TZK_199_Mode: _group = group _aaGroupUnit, [_aaGroupUnit] exec localize {TZK_FUNC_KEEP_ALIVE}
 
 ~1
 ? isNull _group : format["ERROR: _group is NULL at init for %1 temporary AA group", _side] call fDebugLog; exit
