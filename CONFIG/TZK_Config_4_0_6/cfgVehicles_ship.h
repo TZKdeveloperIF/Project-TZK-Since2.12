@@ -29,9 +29,9 @@
 		threat[] = {0.6, 0.9, 0.2};
 
 		model = "\TZK_Model_4_0_6\newport.p3d";
-		hiddenSelections[] = {"BoardL", "BoardR"};
+		hiddenSelections[] = {"BoardL", "BoardR", "BoardH"};
 		class EventHandlers {
-			Init = _veh = _this select 0, {_veh setObjectTexture [_x, "\tzk_texture_4_0_6\contex.paa"]} forEach [0, 1];
+			Init = _veh = _this select 0, {_veh setObjectTexture [_x, "\tzk_texture_4_0_6\contex.paa"]} forEach [2];
 		}
 
 		picture = "\tzk_texture_4_0_6\ui\iLst.paa";
@@ -60,6 +60,14 @@
 				axis = "osaBoardR";
 				angle0= 0;
 				angle1= + 3.14 * 10 / 18;
+			};
+			class BoardH {
+				type = "rotation";
+				animperiod = 10;
+				selection = "boardH";
+				axis = "osaBoardH";
+				angle0= 0;
+				angle1= 3.14 / 2;
 			};
 		};
 		class UserActions {

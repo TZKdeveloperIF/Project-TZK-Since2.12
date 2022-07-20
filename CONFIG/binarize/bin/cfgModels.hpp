@@ -855,7 +855,7 @@ class CfgModels {
 	class NewPort: Ship {
 		sectionsInherit = "Ship";
 		sections[]= {
-			"boardL", "boardR"
+			"boardL", "boardR", "boardH"
 		};
 	};
 };
