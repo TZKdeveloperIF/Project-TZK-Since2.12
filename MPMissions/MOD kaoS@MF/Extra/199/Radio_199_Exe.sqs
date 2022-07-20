@@ -32,7 +32,7 @@ _hint = "0-0-1 channel is mainly for aircrafts switching ""SpoofMissile"" functi
 goto "Quit"
 
 #Channel2
-[] exec "Player\Dialog\TZK_Mission_Setting_1.sqs"; exit
+[] exec localize {TZK_DIALOG_TZK_SETTING_1}; exit
 
 #Channel3
 ? _vehicle == player: if (call "{_x=={Medkit_xj400}} count magazines player > 0 && damage player > 0.01") Then {player exec localize {TZK_ACTION_SELF_MEDIC}} Else {hint "Improper condition. Self Medic don't happen."}, exit
@@ -95,7 +95,7 @@ _vt = _vehicle call funcGetUnitTypeFromObject
 ? _vt in (RadioTypesSupport + [utMCVW, utMCVE, utMHQ0, utMHQ1]): if ("Land" countType [_vehicle] > 0) then {[_vehicle, siPlayer] exec localize {TZK_FUNC_EJECT_ONE_CARGO}, exit}
 
 _hint = "0-0-9 channel can be applied for player to buy AT launcher/ammo quickly.\nWhen player is in helicopter, this channel can be applied to eject only 1 cargo.\nIf player is in Art Vehicle (no weapon range limit vehicle, special design in CTI), this channel can switch the bullet-camera (require upgrade).\nIf player is civ and in 1st view mode, this channel can be applied to switch the displaying of markers."
-? siPlayer == siCiv: btnMarker = !btnMarker; if !btnMarker then {call loadFile "\TZK_Scripts_4_0_4\Player\Marker\HideSpectator.sqf"} else {[boole_Mark_Player_Name] exec "\TZK_Scripts_4_0_4\Player\Marker\SpectatorMarker.sqs"}, exit
+? siPlayer == siCiv: btnMarker = !btnMarker; if !btnMarker then {call preprocessFile localize {TZK_FUNC_MARKER_HIDE_SPEC}} else {[boole_Mark_Player_Name] exec "\TZK_Scripts_4_0_4\Player\Marker\SpectatorMarker.sqs"}, exit
 
 _vehicle in TransportActivatedVehicles
 

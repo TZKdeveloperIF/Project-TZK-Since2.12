@@ -26,6 +26,6 @@ if (!_processed && !_alt && _shift) then {
 	unitSpec = _unit; seagullModeExit = true;
 	_processed = true;
 };
-if (!_processed && _alt && !_shift) then {[_pos] exec "\TZK_Scripts_4_0_4\Player\CleanupGround.sqs"};
+if (!_processed && _alt && !_shift) then {[_pos] exec localize {TZK_FUNC_CLEANUP_GROUND}};
 
 _processed

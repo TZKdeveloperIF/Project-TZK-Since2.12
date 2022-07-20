@@ -4,9 +4,9 @@ onLoadMission = $STR_MISSION_NAME; onLoadMissionTime = 1;
 
 // game properties
 
-titleParam1 = "Spawn Pos, WAP";
-valuesParam1[] = {0,1,2,3,  4,5,6,7};
-textsParam1[] = {"Fully Random", "Random N/S", "West at N", "West at S",  "Fully (WAP ON)", "Random N/S (WAP ON)", "West at N (WAP ON)", "West at S (WAP ON)"};
+titleParam1 = "Spawn Pos";
+valuesParam1[] = {0,1,2,3};
+textsParam1[] = {"Fully Random", "Random N/S", "West at N", "West at S"};
 defValueParam1 = 1;
 
 // titleParam2 = "GS,VD, Time";
@@ -15,52 +15,22 @@ valuesParam2[] = {0,1,2,3,4};
 textsParam2[] = {"Very Low", "Low", "Middle", "High", "Doom"};
 defValueParam2 = 2;
 
-#include "TZK_Scripts_4_0_5\description_def.h"
-#include "TZK_Scripts_4_0_5\description_dlg_00.h"
-#include "TZK_Scripts_4_0_5\description_dlg_01.h"
-class FactoryMenu2: FactoryMenu {
-	controls[] = {
-		FactoryName, FactoryStatus, Money
-		, ShowLabel, ShowInfBG, ShowInf, ShowVehBG, ShowVeh, ShowBothBG, ShowBoth
-		, GroupListLabel, GroupListBG, GroupList, FactoryListLabel, FactoryListBG, FactoryList
-		, BuyBG, Buy, Buy4BG, Buy4, BuyFullBG, BuyFull, Buy3BG, Buy3, Buy5BG, Buy5
-		, DriverSelected, Driver, GunnerSelected, Gunner, CommanderSelected, Commander, BuyMannedBG, BuyManned
-		, UnitListBG, UnitList, QueueBG, QueueLabel, QueueCancel, QueueClear, QueueListBG, QueueList, Exit
-		, EquipBg, EquipLabel, EquipListBG, EquipList
-	};
+#include "TZK_Scripts_4_0_6\description_00_def.h"
+#include "TZK_Scripts_4_0_6\description_01_components.h"
+#include "TZK_Scripts_4_0_6\description_02_respawn_menu.h"
+#include "TZK_Scripts_4_0_6\description_03_build_menu.h"
+#include "TZK_Scripts_4_0_6\description_04_stat.h"
+#include "TZK_Scripts_4_0_6\description_05_factory_menu.h"
+#include "TZK_Scripts_4_0_6\description_06_factory_menu2.h"
 
-	class EquipBg: BackgroundWindow {
-		idc = IDC_BG + 16;
-		x = 0.50;
-		y = 0.65;
-		w = qx - 0.50;
-		h = 1 - 0.65;
-	};
-	class EquipLabel: Label {
-		idc = IDC_TEXT + 6;
-		x = 0.50;
-		y = 0.65;
-		w = 0.1;
-		text = "Equipment";
-	};
-	class EquipListBG: ListBoxBG {
-		idc = IDC_BG + 17;
-		x = 0.50;
-		y = 0.65 + 0.04;
-		w = qx - 0.50;
-		h = 1 - (0.65 + 0.04);
-	};
-	class EquipList: ListBox {
-		idc = IDC_LB + 4;
-		x = 0.50;
-		y = 0.65 + 0.04;
-		w = qx - 0.50;
-		h = 1 - (0.65 + 0.04);
-	};
-};
-#include "TZK_Scripts_4_0_5\description_dlg_02.h"
 
-// #include "TZK_Scripts_4_0_5\description_dlg_03.h"
+#include "TZK_Scripts_4_0_6\description_dlg_02.h"
+
+
+#include "TZK_Scripts_4_0_6\description_0_.h"
+
+
+// #include "TZK_Scripts_4_0_6\description_dlg_03.h"
 class GenericDialog: Menu {
 	idd = -1;
 	movingEnable = true;
@@ -440,7 +410,7 @@ class OptionsDialog: Menu {
 		y = 0.05;
 		w = 0.18;
 		text = "Cleanup Ground";
-		action = "closeDialog 0; [getPos player] exec ""\TZK_Scripts_4_0_4\Player\CleanupGround.sqs"" ";
+		action = "closeDialog 0; [getPos player] exec localize {TZK_FUNC_CLEANUP_GROUND}";
 	};
 	class Income: Text {
 		idc = IDC+3;
@@ -615,7 +585,7 @@ class OptionsDialog: Menu {
 		y = 0.17;
 		w = 0.18;
 		text = "Game Info...";
-		action = "closeDialog 0; [player] exec ""Player\DisplayGameInfo.sqs""";
+		action = "closeDialog 0; 0 exec localize {TZK_FUNC_DISPLAY_GAMEINFO}";
 	};
 
 	class IncomeRatioLabel: Label {
@@ -806,7 +776,6 @@ class OptionsDialog: Menu {
 		y = 0.305;
 		w = 0.15;
 		text = "Online Help";
-	//	action = "closeDialog 0;optionsMenuInUse = false;[0] Exec ""GUI\OpenHelpMenu.sqs""";
 	};
 	class TZK_Mission_Setting_1: Button {
 		x = 0.025;
@@ -814,20 +783,20 @@ class OptionsDialog: Menu {
 		w = 0.15;
 		colorText[] = {0.9,0.7,0.2,1.0};
 		text = "TZK Setting 1";
-		action = "closeDialog 0; [] exec ""Player\Dialog\TZK_Mission_Setting_1.sqs"" ";
+		action = "closeDialog 0; [] exec localize {TZK_DIALOG_TZK_SETTING_1} ";
 		sizeEx = 0.023;
 	};
 	class TZK_Mission_Setting_2: TZK_Mission_Setting_1 {
 		y = 0.395;
 		text = "TZK Setting 2";
-		action = "closeDialog 0; [] exec ""Player\Dialog\TZK_Mission_Setting_2.sqs"" ";
+		action = "closeDialog 0; [] exec localize {TZK_DIALOG_TZK_SETTING_2} ";
 	};
 };
 
 // EOF
 
 
-#include "TZK_Scripts_4_0_5\description_dlg_04.h"
+#include "TZK_Scripts_4_0_6\description_dlg_04.h"
 class UnitCamDialog2: UnitCamDialog {
 	controls[] = {
 		ShowInfo, Info, Tracking, DriverBG, Driver, GunnerBG, Gunner, CommanderBG, Commander, Disband, DisbandAll, 
@@ -850,7 +819,7 @@ class UnitCamDialog2: UnitCamDialog {
 	}
 };
 
-// #include "TZK_Scripts_4_0_5\description_dlg_05.h"
+// #include "TZK_Scripts_4_0_6\description_dlg_05.h"
 class TemporaryAIOrderDialog: Menu {
 	idd = -1;
 	movingEnable = true;
@@ -2150,7 +2119,7 @@ class EquipmentDialog
 	};
 };
 
-#include "TZK_Scripts_4_0_5\description_dlg_06.h"
+#include "TZK_Scripts_4_0_6\description_dlg_06.h"
 
 class TZK_CustomAircraftWeaponDialog: TZK_Setting_Dialog {
 	controlsBackground[] = {

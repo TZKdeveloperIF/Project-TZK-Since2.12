@@ -9,7 +9,7 @@ _SupNearby = SupNearby
 
 _rearmAT = "Rearm AT" + (if bool_TZK_SEMod_Mode Then {"/Javelin"} Else {""})
 ? isCommander : Radio001 setTriggerText "Call back MHQ"; Radio001 setTriggerStatements ["this", {[] exec "Player\Radio\RadioList_Soldier_CallBackMHQ.sqs"}, ""];
-Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", {[] exec "Player\Dialog\TZK_Mission_Setting_1.sqs"}, ""];
+Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", {[] exec localize {TZK_DIALOG_TZK_SETTING_1}}, ""];
 
 if (call _booleStringMedic) then {	Radio003 setTriggerText "Self-Medic"; Radio003 setTriggerStatements ["this", {if ({_x=={Medkit_xj400}} count magazines player > 0) then { player exec localize {TZK_ACTION_SELF_MEDIC} } else {hint {You aren't carrying any Medkit.}}}, ""];	} else {	Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""];	};
 
