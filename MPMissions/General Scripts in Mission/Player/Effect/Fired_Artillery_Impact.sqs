@@ -1,18 +1,16 @@
-; _this exec "\TZK_Scripts_4_0_5\Player\Effect\Fired_Artillery_Impact.sqs"
-
 ; The number of ImpactPoint is 5, which is defined in Mission.sqm. 
 ; If Editors wish to change it be aware not to forget to adjust anyone of them.
 
-; args: shell
+_vehicle = _this select 0; _bullet = _this select 1; _this = 0
+; available to soldier weapon since 4.0.6
+? "man" countType [_vehicle] == 0: exit
 
 ; ? isNull player: exit
 ? !(gunner _vehicle in units group player) && !local _vehicle: exit
 ; If the server is created by a player (namely not dedicated), this script will work for all server-local tanks 
 ; including AI group vehicles.
 
-? upgMatrix select siPlayer select upgTraceSpecialShell != 2: exit
 ? 0 == count ([siPlayer, stradar] call funcGetWorkingStructures): exit
-_vehicle = _this select 0; _bullet = _this select 1; _this = 0
 ? !local _bullet: exit
 
 ; exclude the "bullet" type ammo in 2.01 game.
@@ -20,7 +18,7 @@ _type = typeOf _bullet
 ? "" == _type: exit
 ? !bool_TZK_199_Mode: if ("shotBullet" == format ["%1", _type GetAmmoParam "simulation"]) Then {exit}
 
-#loop
+# loop
 _pos = getPosASL _bullet
 ~0.01
 ? !isNull _bullet: goto "loop"

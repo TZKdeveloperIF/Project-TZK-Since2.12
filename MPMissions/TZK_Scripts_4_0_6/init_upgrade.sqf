@@ -93,14 +93,6 @@ upgDefs set [_type, [
 ]];
 _type = _type + 1;
 
-upgTraceSpecialShell = _type;
-upgDefs set [_type, [
-	"Trace Artillery Shell",
-	[10000, 10] select dev,
-	[2, 0] select dev
-]];
-_type = _type + 1;
-
 upgWorkers = _type;
 upgDefs set [_type, [
 	"Upgrade Workers",
@@ -163,14 +155,6 @@ upgDefs set [_type, [
 	"4xAA 2x Magazines",
 	[8000, 8] select dev,
 	[2, 0] select dev
-]];
-_type = _type + 1;
-
-upgLongArtRange = _type;
-upgDefs set [_type, [
-	"Artillery Long Range",
-	[30000, 30] select dev,
-	[3, 0] select dev
 ]];
 _type = _type + 1;
 

@@ -203,7 +203,7 @@ goto "Update"
 ;	? !(alive _ai): deleteVehicle _ai
 ;	goto "Update"
 
-#Upgrade
+# Upgrade
 	_index = lbCurSel _idcUpgradeList
 	? (_index == -1): hint "No Upgrade Selected"; goto "Update"
 
@@ -215,7 +215,7 @@ goto "Update"
 
 	[_index] exec localize {TZK_MSG_PLAYER_UPGRADE}
 	goto "Update"
-#UpgSwitch
+# UpgSwitch
 	_index = lbCurSel _idcUpgradeList
 	? (_index == -1): hint "No Upgrade Selected"; goto "Update"
 	? _index == 0: goto "Update"
