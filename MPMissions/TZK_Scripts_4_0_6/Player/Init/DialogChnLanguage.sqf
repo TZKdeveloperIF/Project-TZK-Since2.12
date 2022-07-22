@@ -57,7 +57,6 @@ upgChnDefs set [upgNumBuildings, "\TZK_CHN_4_0_6_27\upgrade_moreBuilding_co.paa"
 upgChnDefs set [upgSatCam, "\TZK_CHN_4_0_6_27\upgrade_satellite_co.paa"];
 upgChnDefs set [upgSatCamZoom, "\TZK_CHN_4_0_6_27\upgrade_satZoom_co.paa"];
 upgChnDefs set [upgSpySat, "\TZK_CHN_4_0_6_27\upgrade_spySat_co.paa"];
-upgChnDefs set [upgTraceSpecialShell, "\TZK_CHN_4_0_6_27\upgrade_traceArtShell_co.paa"];
 upgChnDefs set [upgWorkers, "\TZK_CHN_4_0_6_27\upgrade_worker_co.paa"];
 upgChnDefs set [upgGunshipRocket, "\TZK_CHN_4_0_6_27\upgrade_heliRocket_co.paa"];
 upgChnDefs set [upgPlaneAfterBurner, "\TZK_CHN_4_0_6_27\upgrade_planeAfterBurner_co.paa"];
@@ -66,7 +65,6 @@ upgChnDefs set [upgAltFlight, "\TZK_CHN_4_0_6_27\upgrade_1500m_co.paa"];
 upgChnDefs set [upgVehicleAirRadar, "\TZK_CHN_4_0_6_27\upgrade_airRadar_co.paa"];
 upgChnDefs set [upgRedTopRange, "\TZK_CHN_4_0_6_27\upgrade_redtopRange_co.paa"];
 upgChnDefs set [upgRedTopMagazines, "\TZK_CHN_4_0_6_27\upgrade_redtopMag_co.paa"];
-upgChnDefs set [upgLongArtRange, "\TZK_CHN_4_0_6_27\upgrade_artLongRange_co.paa"];
 
 orderConDefs = [];
 orderConDefs set [orderTempClearType, "\TZK_CHN_4_0_6_27\orderCon_clearType_co.paa"];
