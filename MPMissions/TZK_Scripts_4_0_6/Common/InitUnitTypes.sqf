@@ -206,7 +206,7 @@ unitDefs set [_type, ["Jeep Radar", 800, _si, 20, "Jeep_Radar_xj400", "ijeepMUTT
 _jeepRadarW = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["M151A1C", 1200, _si, 30, "M151A1C_htr_xj400", "\tzk_texture_4_0_6\ui\iM151a1c.paa", 2^_st, [2, _crewW], _atCar, []] ];
+unitDefs set [_type, ["M151A1C", 1200, _si, 30, "M151A1C_htr_xj400", "\tzk_texture_4_0_6\ui\iM151a1c.paa", 2^_st, [2, _crewW], _mAtCar, []] ];
 _m151a1cW = _type;
 _type = _type + 1;
 
@@ -694,7 +694,7 @@ unitDefs set [_type, ["UAZ Radar", 800, _si, 20, "UAZ_Radar_xj400", "iuaz", 2^_s
 _uazRadarE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["UAZ SPG9", 1200, _si, 30, "UAZ_SPG_FDF_xj400", "\tzk_texture_4_0_6\ui\iUazSpg.paa", 2^_st, [2, _crewE], _atCar, []] ];
+unitDefs set [_type, ["UAZ SPG9", 1200, _si, 30, "UAZ_SPG_FDF_xj400", "\tzk_texture_4_0_6\ui\iUazSpg.paa", 2^_st, [2, _crewE], _mAtCar, []] ];
 _uazSpg9E = _type;
 _type = _type + 1;
 
