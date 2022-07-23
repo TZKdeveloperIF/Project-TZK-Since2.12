@@ -98,8 +98,10 @@ pvQueueLength_Obj = objNull;
 
 pvCancelBuy = -1;
 
-pvRemoveMags = objNull; mutexVehicleMagRem = false; mutexRearmVehG = false; indexRearmVehG = 0;
-_i = 0; while {_i < 5} do {call format ["pvRearmVehG%1 = objNull", _i]; _i = _i + 1};
+comment {
+	pvRemoveMags = objNull; mutexVehicleMagRem = false; mutexRearmVehG = false; indexRearmVehG = 0;
+	_i = 0; while {_i < 5} do {call format ["pvRearmVehG%1 = objNull", _i]; _i = _i + 1};
+};
 
 comment {pvMoney format: Used to be amount + 100 000*groupIndex + 10 000 000*side. Now _Group PV added and used to save giFrom, giTo and si, pvMoney are for amount only, so there is no need to limit money less than 100000 in order to avoid amount information's loss in value's passing.};
 mutexMoney = false;

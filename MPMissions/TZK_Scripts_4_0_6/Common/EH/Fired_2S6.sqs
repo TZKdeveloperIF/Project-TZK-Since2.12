@@ -26,4 +26,4 @@ _launchPos = [_posShell, _vectorCor] call funcVectorAdd
 ; Quit for missile.
 ? _num != 8: exit;
 ? !local _shell: _velocity = velocity _shell; _shell = "EffectBullet0_xj400" camCreate _launchPos; _shell setVectorDirAndUp [_dirShell, [0,0,1]]; _shell setVelocity _velocity;
-[_shell, _weapon] exec "\TZK_Scripts_4_0_4\Player\Effect\Fired_FFUR_Cannon.sqs"
+[_shell, _weapon] exec localize {TZK_EFFECT_FIRED_FFUR_CANNON}
