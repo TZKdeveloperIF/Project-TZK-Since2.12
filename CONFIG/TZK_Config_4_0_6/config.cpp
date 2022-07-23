@@ -78,28 +78,6 @@ class CfgVehicles {
 	#include "TZK_Config_4_0_6\cfgVehicles_apc.h"
 	#include "TZK_Config_4_0_6\cfgVehicles_art.h"
 
-	// Auto unit for town group
-	class M1A1_Auto_xj400: M1A1_xj400 {
-		hasGunner = 0;
-		hasCommander = 0;
-		driverIsGunner = 1;
-	};
-	class T80_Auto_xj400: T80_xj400 {
-		hasGunner = 0;
-		hasCommander = 0;
-		driverIsGunner = 1;
-	};
-	class M2A2_Town_Auto_xj400: M2A2_AA_Town_xj400 {
-		hasGunner = 0;
-		hasCommander = 0;
-		driverIsGunner = 1;
-	};
-	class BMP2_Town_Auto_xj400: BMP2_AA_Town_xj400 {
-		hasGunner = 0;
-		hasCommander = 0;
-		driverIsGunner = 1;
-	};
-
 	#include "TZK_Config_4_0_6\cfgVehicles_car.h"
 	#include "TZK_Config_4_0_6\cfgVehicles_ship.h"
 
