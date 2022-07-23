@@ -68,7 +68,7 @@ if !_err then {
 			if (-1 != _idx) then {_skill = TzkUnitSkillVal select _idx};
 		};
 	};
-	if (dev) then {hint format ["%1", [_model, _skill]]};
+	if (dev) then {showDebug [format ["%1", [_model, _skill]], 5000]};
 	_model createUnit [_pos, _groupCreate, _init, _skill, "PRIVATE"];
 	newSoldier setDir _dir;
 	_unit = newSoldier;
