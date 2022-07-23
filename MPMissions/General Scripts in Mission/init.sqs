@@ -17,19 +17,19 @@ _nil = "scalar bool array string 0xfcffffef"
 ; thousands of markers and town/radio sensors defined for 1.99 missions in mission.sqm.
 ? UsedVersion >= 2010: bool_TZK_199_Mode = false
 
-call preprocessFile "\TZK_Scripts_4_0_6\init_constants.sqf"
-call preprocessFile "\TZK_Scripts_4_0_6\init_group.sqf"
-call preprocessFile "\TZK_Scripts_4_0_6\init_param.sqf"
-"" call preprocessFile "\TZK_Scripts_4_0_6\init_upgrade.sqf"
+call loadFile "\TZK_Scripts_4_0_6\init_constants.sqf"
+call loadFile "\TZK_Scripts_4_0_6\init_group.sqf"
+call loadFile "\TZK_Scripts_4_0_6\init_param.sqf"
+"" call loadFile "\TZK_Scripts_4_0_6\init_upgrade.sqf"
 ? bool_TZK_Lester_Mode: [{[] exec "Extra\init_upgrade.sqs"}, 0.1] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
-call preprocessFile "\TZK_Scripts_4_0_6\init_theWorld.sqf"
+call loadFile "\TZK_Scripts_4_0_6\init_theWorld.sqf"
 
-call preprocessFile "\TZK_Scripts_4_0_6\Common\InitPublicVariables.sqf"
+call loadFile "\TZK_Scripts_4_0_6\Common\InitPublicVariables.sqf"
 ; order required. structures should be initialized before units
-call preprocessFile "\TZK_Scripts_4_0_6\Common\InitStructureTypes.sqf"
+call loadFile "\TZK_Scripts_4_0_6\Common\InitStructureTypes.sqf"
 ; ? bool_TZK_MF_Mode: 
 ; ? bool_TZK_Yugo_Mode:
-call preprocessFile "\TZK_Scripts_4_0_6\Common\InitUnitTypes.sqf"
+call loadFile "\TZK_Scripts_4_0_6\Common\InitUnitTypes.sqf"
 0 exec "\TZK_Scripts_4_0_6\Common\InitInfoMsgTypes.sqs"
 0 exec "\TZK_Scripts_4_0_6\Common\InitEquipmentTypes.sqs"
 ; 4.0.5.08 updating
@@ -37,17 +37,16 @@ call preprocessFile "\TZK_Scripts_4_0_6\Common\InitUnitTypes.sqf"
 ; 4.0.5.15/16 updating
 0 exec "\TZK_Scripts_4_0_6\Common\Init\CustomWeaponVehicleInfo.sqs"
 ; delay call in case of initialization unfinished
-[{call preprocessFile "impl\Upgrade.sqf"}, 10] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
+[{call loadFile "impl\Upgrade.sqf"}, 10] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
 ; 4.0.5.21 updating
 0 exec "Common\InitObserverMode.sqs"
 
 
 
 ; init functions (stuff that return values)
-call preprocessFile "\TZK_Scripts_4_0_6\Common\InitFunctions.sqf"
+call loadFile "\TZK_Scripts_4_0_6\Common\InitFunctions.sqf"
 ; AI Group Settings/Orders
-call preprocessFile "\TZK_Scripts_4_0_6\Common\InitAIOptions.sqf"
-
+call loadFile "\TZK_Scripts_4_0_6\Common\InitAIOptions.sqf"
 
 ; MESSAGE HANDLERS (SERVER AND CLIENTS)
 ["\TZK_Scripts_4_0_4\Common\HandleScore.sqs"] exec "\TZK_Scripts_4_0_5\Common\Msg\mScore.sqs"

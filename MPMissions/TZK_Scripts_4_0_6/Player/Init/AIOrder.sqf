@@ -1,11 +1,13 @@
-// AI ORDERS;
-// aiOrders format: [name, [param 0, param 1, ...], subdlg or units exec only 1 but not each script, script, description];
-// aiOrders param# format: [nameParam, countParams, funcToText, default];
+comment {
+	AI ORDERS;
+	aiOrders format: [name, [param 0, param 1, ...], subdlg or units exec only 1 but not each script, script, description];
+	aiOrders param# format: [nameParam, countParams, funcToText, default]
+};
 
 playerOrderID = []; _i = 0; while {_i < 13} do {playerOrderID set [_i, 0]; _i = _i + 1};
 orderCheck = {_id < playerOrderID select _uid}; mutexUnitOrder = false;
 
-// Use 2 matrixes since TZK_4.0.0.00;
+comment { Use 2 matrixes since TZK_4.0.0.0 };
 aiOrders1 = []; aiOrders2 = []; lastOrder1 = -1; lastOrder2 = -1; lastOrderList = -1;
 
 aiOrders1 set [count aiOrders1, [
@@ -147,16 +149,16 @@ aiOrders2 set [count aiOrders1, [
 	"Ask your group member get close to the factory out of CC range and help buy units."
 ]];
 
-_param0 = ["Structure Type", count structDefs, {format[{%1}, (structDefs select _this) select sdName]}, 0];
+_param0 = ["Structure Type", count structDefs, {format[{%1}, structDefs select _this select sdName]}, 0];
 _param1 = [
 	"Angle",
 	24,
 	{format [{%1%2}, 15*(_this), [
 		[" (N)", " (NE)", " (E)", " (SE)", " (S)", " (SW)", " (W)", " (NW)"] select ((_this - (_this mod 3))/3), 
-		{}
+		""
 	] select (_this mod 3 != 0)]}, 
 	0
-]
+];
 aiOrders2 set [count aiOrders1, [
 	"Build Struct", [_param0, _param1], false, "\TZK_Scripts_4_0_4\Player\Order\BuildStructure.sqs",
 	"Ask your group member get close to the destination and help build structure (the position must close enough to 

@@ -1,6 +1,6 @@
-// structDefs defines all buildable structures;
+comment { structDefs defines all buildable structures; };
 alignDefs = []; alignTypes = [];
-// adCenter = 0; adWidth = 1;
+comment { adCenter = 0; adWidth = 1; };
 
 structDefs = []; structMarker = [];
 
@@ -18,7 +18,7 @@ sdObjects1 = 10;
 sdScriptsServer = 11;
 sdScriptsPlayer = 12;
 
-// Structure Markers;
+comment { Structure Markers; };
 
 _mBarrack = "Soldier_Marker_xj400";
 _mLight = "Truck_Marker_xj400";
@@ -34,10 +34,10 @@ _mMortar = if !bool_TZK_199_Mode then {"Mortar_Marker_xj400"} else {"Bike_Marker
 _mMG = "MachineGun_Marker_xj400";
 _mRadar = "Tower_Marker_xj400";
 
-// knowsAbout level for enemy structure reports;
+comment { knowsAbout level for enemy structure reports; };
 kaStruct = 1;
 
-// object format: [oName, nRot, aPos];
+comment { object format: [oName, nRot, aPos]; };
 _type = 0; _texPath = "\TZK_Texture_4_0_0\CTI_";
 if bool_TZK_Vanilla_Mode then {_texPath = "\TZK_Objects\"};
 
@@ -547,17 +547,6 @@ _tankt = _type;
 alignTypes set [count alignTypes, _type]; alignDefs set [ count alignDefs, [[0,0], 6] ];
 _type = _type + 1;
 
-_price = [20, 40] select PricingMode;
-//_objects = [["WireFence", 0, []]];
-//_image = [_texPath + "Image\Struct\fence.jpg",_texPath + "Image\Struct\fence.jpg"];
-//structDefs set [_type, [
-	"Wire fence", _price, siBoth, _image, false, true, 100, 2, 10, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_SEC}], []]
-];
-structMarker set [_type, ""];
-//alignTypes set [count alignTypes, _type]; alignDefs set [ count alignDefs, [[0,0], 8] ];
-//_type = _type + 1;
-
 _price = [500, 1000] select PricingMode;
 _objects0 = [["ReammoBoxWest", 0, []]];
 _objects1 = [["ReammoBoxEast", 0, []]];
@@ -604,6 +593,8 @@ _index = 0; _count = count structDefs; while {_index < _count} do {
 
 	structsBuilt select si0 set [_index, 0];
 	structsBuilt select si1 set [_index, 0];
+
+	_index = _index + 1;
 };
 
 structsRespawn = [stComm, stBarracks, stLight, stHeavy, stAir, stHosp];
@@ -612,7 +603,7 @@ structsDestroy = [stComm, stBarracks, stLight, stHeavy, stAir, stShip, stradarai
 structsFactory = [stBarracks, stLight, stHeavy, stAir, stShip];
 
 structsDefence = [
-	_mgFort, _mgTowerWood, _mgTowerConcrete, _mg, _staticAaLauncher
+	_mgFort, _mgTowerWood, _mgTowerConcrete, _mg, _staticAaLauncher,
 	_gunf, _mortar1, _m119, _d30, 
 	_staticMG, _staticGL, _staticAT
 ];
@@ -624,10 +615,10 @@ structsOccupiableMGTower = [_mgTowerWood, _mgTowerConcrete];
 structsOccupiableGunfort = [_gunf, _staticAaLauncher];
 structsOccupiableHowitzer = [_m119, _d30];
 
-// do server stuff only;
+comment { do server stuff only; };
 if isServer then {
-	// format [type, timeBuild, posRelMhq, dirBuilder];
-	// dirBuilder is the direction the builder faces when building the structure;
+	comment { format [type, timeBuild, posRelMhq, dirBuilder]; };
+	comment { dirBuilder is the direction the builder faces when building the structure; };
 	bdType = 0; bdTime = 1; bdPos = 2; bdDir = 3;
 	baseDefs = [];
 	if !bool_TZK_MF_Mode then {
@@ -702,7 +693,7 @@ if bool_TZK_Yugo_Mode then {
 	call loadFile "Extra\Struct_Yugo_Redef.sqf";
 } else {
 	if bool_TZK_Vanilla_Mode then {
-		// Remove baracken/dvd_v2 structures.;
+		comment { Remove baracken/dvd_v2 structures.; };
 		{structDefs select _x set [sdSides, -1]} forEach [_m119, _d30, _mgTowerConcrete, _gunf, _roof, _roofHigh, _tanktr, _artPlain];
 		structDefs select _mgTowerWood set [sdImage, ["\TZK_Objects\Image\Struct\MGTower.jpg","\TZK_Objects\Image\Struct\MGTower.jpg"]];
 
@@ -749,4 +740,4 @@ if bool_TZK_Yugo_Mode then {
 	};
 };
 
-// EOF;
+comment { EOF; };

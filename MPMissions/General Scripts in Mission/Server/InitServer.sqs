@@ -2,7 +2,7 @@ Target_Set_TZK_Server_0 = 0; Target_Set_TZK_Server_1 = 0
 ; 4_0_6_Update
 
 0 exec "\TZK_Scripts_4_0_6\Server\InitFunctions.sqs"
-call preprocessFile "\TZK_Scripts_4_0_6\Server\InitServer_constant.sqf"
+call loadFile "\TZK_Scripts_4_0_6\Server\InitServer_constant.sqf"
 call preprocessFile "Server\InitServer_Group.sqf"
 AICO_giTrans = [[],[]]; AICO_giInf = [[],[]]; AICO_giTanks = [[[], [], []], [[], [], []]]
 
@@ -21,7 +21,7 @@ _i = 0; countTargetMarkers = 10; while "_i < countTargetMarkers" do {call Format
 ; MESSAGE HANDLERS (SERVER ONLY)
 [] exec "\TZK_Scripts_4_0_4\Server\MsgBuildStructure.sqs"
 (localize {TZK_FUNC_SERVER_UNDO_STRUCT}) exec "\TZK_Scripts_4_0_6\Server\Msg\mUndo.sqs"
-0 exec localize {TZK_FUNC_SERVER_ADD_WORKER}
+0 exec "\TZK_Scripts_4_0_6\Server\Msg\mAddWorker.sqs"
 
 { ["Server\Msg\hBuyUnit.sqs"] exec format ["Server\Msg\mBuyUnit%1.sqs", _x] } forEach [0,1,2,3,4]
 
@@ -33,7 +33,7 @@ _i = 0; countTargetMarkers = 10; while "_i < countTargetMarkers" do {call Format
 0 exec "\TZK_Scripts_4_0_6\Server\Msg\mDestruction.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\MsgUnitDisembark.sqs"
 ["Server\Join\ViaOrder.sqs"] exec "\TZK_Scripts_4_0_5\Server\Msg\mJoin.sqs"
-0 exec "\TZK_Scripts_4_0_4\Server\Msg\mCheckAI.sqs"
+0 exec "\TZK_Scripts_4_0_6\Server\Msg\mCheckAI.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\MsgClearBuy.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\MsgEjectAIUnits.sqs"
 ; ? bool_TZK_199_Mode: [] exec "\TZK_Scripts_4_0_4\Server\Msg\mRadioChannel.sqs"
@@ -53,7 +53,7 @@ call preprocessFile "Server\initStartedGrpMoney.sqf"
 call preprocessFile "Server\initStartedGrpUpg.sqf"
 
 [] exec "\TZK_Scripts_4_0_4\Server\GenerateStartPositions.sqs"
-call preprocessFile "\TZK_Scripts_4_0_6\Server\Msg\sStartMoney.sqf"
+call loadFile "\TZK_Scripts_4_0_6\Server\Msg\sStartMoney.sqf"
 
 [si0] exec "\TZK_Scripts_4_0_4\Server\UpdateRespawnAI.sqs"; [si1] exec "\TZK_Scripts_4_0_4\Server\UpdateRespawnAI.sqs"
 

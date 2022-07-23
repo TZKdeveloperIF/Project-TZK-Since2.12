@@ -1,6 +1,6 @@
 // =================================================TZK_4.0.0 Block=================================================
 {
-	_si = x;
+	_si = _x;
 	if (count (groupMatrix select _si) == count (groupAiMatrix select _si) && bool_TZK_MF_Mode) then {
 		{
 			upgMatrix select _si set [_x, 2],
