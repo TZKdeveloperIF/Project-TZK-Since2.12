@@ -97,17 +97,17 @@ class CfgMarkers {
 	class TD_Marker_xj400: UnknownVehicle_Marker_xj400 {
 		name = "TD";
  		icon = "\tzk_texture_4_0_6\ui\iAmx10rc.paa";
-		size = 12;
+		size = 20;
 	};
 	class RadarCar_Marker_xj400: UnknownVehicle_Marker_xj400 {
 		name = "RadarCar";
  		icon = "\tzk_texture_4_0_6\ui\iJeepRadar.paa";
-		size = 12;
+		size = 18;
 	};
 	class RocketMiner_Marker_xj400: UnknownVehicle_Marker_xj400 {
 		name = "RocketMiner";
 		icon = "\tzk_texture_4_0_6\ui\uiSa13.paa";
-		size = 12;
+		size = 20;
 	};
 	class EngineerVeh_Marker_xj400: UnknownVehicle_Marker_xj400 {
 		name = "EngineerVeh";
@@ -117,22 +117,22 @@ class CfgMarkers {
 	class AtCar_Marker_xj400: UnknownVehicle_Marker_xj400 {
 		name = "AtCar";
 		icon = "\tzk_texture_4_0_6\ui\iUazSpg.paa";
-		size = 12;
+		size = 16;
 	};
 	class LST_Marker_xj400: UnknownVehicle_Marker_xj400 {
 		name = "LST";
 		icon = "\tzk_texture_4_0_6\ui\iLst.paa";
-		size = 8;
+		size = 28;
 	};
 	class Orca_Marker_xj400: UnknownVehicle_Marker_xj400 {
 		name = "Orca";
 		icon ="\tzk_texture_4_0_6\ui\iOrca95.paa";
-		size = 12;
+		size = 18;
 	};
 	class SmallHeli_Marker_xj400: UnknownVehicle_Marker_xj400 {
 		name = "SmallHeli";
-		icon = "\TZK_Texture_4_0_0\icon\iMi2.paa";
-		size = 12;
+		icon = "\tzk_texture_4_0_6\ui\iMi2.paa";
+		size = 28;
 	};
 };
 
