@@ -726,7 +726,7 @@ unitDefs set [_type, ["BRDM2 AA", 1300, _si, 30, "MNF_SA9", "\BRMD\ibrmd", -1, [
 _brdmEAA = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["2S25 Sprut-SD", 3500, _si, 40, "2S25_mfm_xj400", "\tzk_texture_4_0_6\ui\i2s25.paa", 22^stHeavy + 2^stLight, [2, _crewE], _mTd, []] ];
+unitDefs set [_type, ["2S25 Sprut-SD", 3500, _si, 40, "2S25_mfm_xj400", "\tzk_texture_4_0_6\ui\i2s25.paa", 2^stHeavy + 2^stLight, [2, _crewE], _mTd, []] ];
 _2s25E = _type;
 _type = _type + 1;
 
