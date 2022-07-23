@@ -483,3 +483,15 @@
 			init = "(_this select 0) animate [{Podveska}, 0.5]"
 		};
 	};
+
+	// Auto unit
+	class M1A1_Auto_xj400: M1A1_xj400 {
+		hasGunner = 0;
+		hasCommander = 0;
+		driverIsGunner = 1;
+	};
+	class T80_Auto_xj400: T80_xj400 {
+		hasGunner = 0;
+		hasCommander = 0;
+		driverIsGunner = 1;
+	};

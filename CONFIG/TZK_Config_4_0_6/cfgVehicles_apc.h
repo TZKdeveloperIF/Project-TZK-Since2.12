@@ -48,11 +48,6 @@
 			};
 		};
 	};
-	class Vulcan_Auto_xj406: Vulcan_xj400 {
-		hasGunner = 0;
-		hasCommander = 0;
-		driverIsGunner = 1;
-	};
 
 	class BMPAmbul_xj400: BMPAmbul {
 		camouflage = 6; // support vehicle using less value
@@ -70,6 +65,23 @@
 	};
 
 	class ZSU_xj400: ZSU {};
+
+	// Auto unit
+	class M2A2_Town_Auto_xj400: M2A2_AA_Town_xj400 {
+		hasGunner = 0;
+		hasCommander = 0;
+		driverIsGunner = 1;
+	};
+	class BMP2_Town_Auto_xj400: BMP2_AA_Town_xj400 {
+		hasGunner = 0;
+		hasCommander = 0;
+		driverIsGunner = 1;
+	};
+	class Vulcan_Auto_xj406: Vulcan_xj400 {
+		hasGunner = 0;
+		hasCommander = 0;
+		driverIsGunner = 1;
+	};
 	class ZSU_Auto_xj400: ZSU_xj400 {
 		hasGunner = 0;
 		hasCommander = 0;
