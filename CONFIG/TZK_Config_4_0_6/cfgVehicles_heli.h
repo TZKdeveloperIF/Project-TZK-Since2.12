@@ -320,6 +320,11 @@
 			max = 12;
 		};
 
+		class UserActions {
+			class SetFlightAltitude : UA_SetFlightAltitude {};
+			class SpoofMissileON : UA_SpoofMissileON{}; class SpoofMissileOFF : UA_SpoofMissileOFF{};
+			class LAND : UA_LAND_Heli {};
+		};
 	};
 	class Orca95_West_Base_xj400: Orca95_MCSR_ABC_xj400 {
 		scope = private;
