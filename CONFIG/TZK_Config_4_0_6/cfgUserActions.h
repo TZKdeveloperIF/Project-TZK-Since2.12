@@ -27,46 +27,46 @@ class UA_TransportTurnOFF {
 // UA for Attach
 class UA_AttachInVehicle {};
 class UA_AttachOnFoot {
-	statement = "[this, tsCenter, ttTruck] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}";
+	statement = "[this, tsCenter, ttTruck] exec localize {TZK_FUNC_ATTACHDETACH_VEHICLE}";
 };
 class UA_AttachInVehicle_Truck: UA_AttachInVehicle {
-	statement = "[this, tsCenter, ttTruck] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}";
+	statement = "[this, tsCenter, ttTruck] exec localize {TZK_FUNC_ATTACHDETACH_VEHICLE}";
 };
 class UA_AttachOnFoot_Truck: UA_AttachOnFoot {
-	statement = "[this, tsCenter, ttTruck] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}";
+	statement = "[this, tsCenter, ttTruck] exec localize {TZK_FUNC_ATTACHDETACH_VEHICLE}";
 };
 
 class UA_AttachInVehicle_Center: UA_AttachInVehicle {
-	statement = "[this, tsCenter, ttBoat] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}";
+	statement = "[this, tsCenter, ttBoat] exec localize {TZK_FUNC_ATTACHDETACH_VEHICLE}";
 };
 class UA_AttachInVehicle_Right: UA_AttachInVehicle {
-	statement = "[this, tsRight, ttBoat] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}";
+	statement = "[this, tsRight, ttBoat] exec localize {TZK_FUNC_ATTACHDETACH_VEHICLE}";
 };
 class UA_AttachInVehicle_Left: UA_AttachInVehicle_Right {
-	statement = "[this, tsLeft, ttBoat] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}";
+	statement = "[this, tsLeft, ttBoat] exec localize {TZK_FUNC_ATTACHDETACH_VEHICLE}";
 };
 class UA_AttachOnFoot_Center: UA_AttachOnFoot {
-	statement = "[this, tsCenter, ttBoat] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}";
+	statement = "[this, tsCenter, ttBoat] exec localize {TZK_FUNC_ATTACHDETACH_VEHICLE}";
 };
 class UA_AttachOnFoot_Right: UA_AttachOnFoot {
-	statement = "[this, tsRight, ttBoat] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}";
+	statement = "[this, tsRight, ttBoat] exec localize {TZK_FUNC_ATTACHDETACH_VEHICLE}";
 };
 class UA_AttachOnFoot_Left: UA_AttachOnFoot {
-	statement = "[this, tsLeft, ttBoat] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}";
+	statement = "[this, tsLeft, ttBoat] exec localize {TZK_FUNC_ATTACHDETACH_VEHICLE}";
 };
 
 class UA_AttachInVehicle_APC: UA_AttachInVehicle {
-	statement = "[this, tsCenter, ttAPC] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}";
+	statement = "[this, tsCenter, ttAPC] exec localize {TZK_FUNC_ATTACHDETACH_VEHICLE}";
 };
 class UA_AttachOnFoot_APC: UA_AttachOnFoot {
-	statement = "[this, tsCenter, ttAPC] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}";
+	statement = "[this, tsCenter, ttAPC] exec localize {TZK_FUNC_ATTACHDETACH_VEHICLE}";
 };
 
 class UA_AttachInVehicle_Heli: UA_AttachInVehicle {
-	statement = "[this, tsCenter, ttHeli] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}";
+	statement = "[this, tsCenter, ttHeli] exec localize {TZK_FUNC_ATTACHDETACH_VEHICLE}";
 };
 class UA_AttachOnFoot_Heli: UA_AttachOnFoot {
-	statement = "[this, tsCenter, ttHeli] exec localize {TKZ_FUNC_ATTACHDETACH_VEHICLE}";
+	statement = "[this, tsCenter, ttHeli] exec localize {TZK_FUNC_ATTACHDETACH_VEHICLE}";
 };
 
 // UA for driver-gunner-switch
