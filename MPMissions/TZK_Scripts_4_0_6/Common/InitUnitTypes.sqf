@@ -228,6 +228,10 @@ TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [coun
 ]];
 _type = _type + 1;
 
+unitDefs set [_type, ["Saboteur Laser", 150, _si, 10, "SoldierWSaboteurDay_xj400", "isaboteur", -1, [], "", ["\TZK_Scripts_4_0_6\Common\Equip\Laser.sqs"]] ];
+_laserW = _type;
+_type = _type + 1;
+
 unitDefs set [_type, ["Miner", 200, _si, 10, "SoldierWMiner_xj400", "iminer", 2^_st, [], "", []] ];
 _minerW = _type;
 TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [count TzkSelfUpdateVal, [
@@ -783,6 +787,10 @@ TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [coun
 	["SoldierESaboteurBizon_xj400", "SoldierESaboteurBizon_xj400", "SoldierESaboteurBizon_xj400", "SoldierESaboteurBizon_xj400"],
 	["\TZK_Scripts_4_0_6\Common\Equip\Spec.sqs", "\TZK_Scripts_4_0_6\Common\Equip\Spec.sqs", "\TZK_Scripts_4_0_6\Common\Equip\Spec.sqs", "\TZK_Scripts_4_0_6\Common\Equip\SpecIv.sqs"]
 ]];
+_type = _type + 1;
+
+unitDefs set [_type, ["Saboteur Laser", 150, _si, 10, "SoldierESaboteurBizon_xj400", "isaboteur", -1, [], "", ["\TZK_Scripts_4_0_6\Common\Equip\Laser.sqs"]] ];
+_laserE = _type;
 _type = _type + 1;
 
 unitDefs set [_type, ["Miner", 200, _si, 10, "SoldierEMiner_xj400", "iminer", 2^_st, [], "", []] ];
