@@ -1,0 +1,40 @@
+; args: [vehicle, type]
+? bool_TZK_Vanilla_Mode: exit
+? TheWorld == "C": exit
+_vehicle = _this select 0; _typeName = typeOf _vehicle; _scriptPath = "\TZK_Objects"; _scriptName = ""
+_type = -1
+? count _this > 1: _type = _this select 1
+_this = 0
+; todo: use related container to handle variables
+_firstChar = substr [0, 1, _typeName]; _found = false;
+
+? "Tank_xj400" countType [_vehicle] > 0: call preprocessFile "Common\Init\TexTank.sqf", goto "END"
+? "M113" countType [_vehicle] > 0: goto "CheckM113"
+? "BMP" countType [_vehicle] > 0: goto "CheckBMP"
+? "Air" countType [_vehicle] > 0: call preprocessFile "Common\Init\TexAir.sqf", goto "END"
+? "J" == _firstChar || "U" == _firstChar: call preprocessFile "Common\Init\TexCar.sqf", goto "END"
+? "T" == _firstChar: call preprocessFile "Common\Init\TexTruck.sqf", goto "END"
+
+	? "HMMWV_xj400" countType [_vehicle] > 0: _scriptName = "HMMWV", goto "END"
+	? "BRDM2_MNF_xj400" countType [_vehicle] > 0: _scriptName = "BRDM2_MNF", goto "END"
+	? "BRDM_xj400" countType [_vehicle] > 0: _scriptName = "BRDM", _scriptPath = "\TZK_Config_4_0_4", goto "END"
+	? "ZSU_MNF_xj400" countType [_vehicle] > 0: _scriptName = "ZSU_MNF", goto "END"
+	? "ZSU_xj400" countType [_vehicle] > 0: _scriptName = "ZSU", goto "END"
+	? "M88arv_mfm_xj400" countType [_vehicle] > 0: _scriptName = "M88", _scriptPath = "\TZK_Config_4_0_6", goto "END"
+	; ? bool_TZK_SEMod_Mode: if ("mfm_cfg_t90ms_gca" countType [_vehicle] > 0) Then {_scriptName = "T90ms", goto "END"}
+	goto "END"
+
+# CheckM113
+	? "M113_xj400" countType [_vehicle] > 0: _scriptName = "M113", goto "END"
+	? "M113Ambul_xj400" countType [_vehicle] > 0: _scriptName = "M113Ambu", goto "END"
+	? "Vulcan_xj400" countType [_vehicle] > 0: _scriptName = "Vulcan", goto "END"
+	? "M2A2_xj400" countType [_vehicle] > 0: _scriptName = "M2A2", goto "END"
+	goto "END"
+# CheckBMP
+	? "BMP_xj400" countType [_vehicle] > 0: _scriptName = "BMP1", _scriptPath = "\TZK_Config_4_0_4", goto "END"
+	? "BMP2_xj400" countType [_vehicle] > 0: _scriptName = "BMP2", _scriptPath = "\TZK_Config_4_0_4", goto "END"
+	? "BMPAmbul_xj400" countType [_vehicle] > 0: _scriptName = "BMPAmbu", _scriptPath = "\TZK_Config_4_0_4", goto "END"
+	goto "END"
+
+# END
+? _scriptName != "": [_vehicle, TheWorld] exec (_scriptPath + "\Scripts\texture\" + _scriptName + ".sqs")
