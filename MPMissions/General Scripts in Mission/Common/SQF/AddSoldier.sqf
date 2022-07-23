@@ -33,7 +33,7 @@ if (_indexUnitMatrix < 0 || _indexUnitMatrix >= count unitDefs) then {
 };
 if (count (unitDefs select _indexUnitMatrix select udCrew) > 0) then {
 	_err = true; 
-	format ["ERROR: unit type is not a soldier in AddSoldier.sqf"] call fDebugLog
+	format ["ERROR: unit type is not a soldier in AddSoldier.sqf"] call fDebugLog;
 };
 if (count units _groupCreate >= 12) then {
 	_err = true;
@@ -49,7 +49,27 @@ if !_err then {
 		+ TotalUnitTypes * GroupsNum * GroupsNum * _si;
 	_init = format [{newSoldier = this; [%1, this] exec "Common\Msg\hUnitBuilt.sqs"}, _value];
 
-	(_desc select udModel) createUnit [_pos, _groupCreate, _init, 1, "PRIVATE"];
+	_model = _desc select udModel; _skill = 1;
+	if (_si == si0 || _si == si1) then {
+		_idx = TzkSelfUpdateIdx find _type;
+		if (-1 != _idx) then {
+			_infLevel = _si call loadFile "Util\InfLevel.sqf";
+			_selfUpdateVal = TzkSelfUpdateVal select _idx;
+			if (_infLevel > _selfUpdateVal select 1) then {_infLevel = _selfUpdateVal select 1};
+			if (_infLevel < _selfUpdateVal select 0) then {
+				format ["ERROR: infantry level error"] call fDebugLog;
+			} else {
+				_levelDiff = _infLevel - (_selfUpdateVal select 0);
+				_model = _selfUpdateVal select 2 select _levelDiff;
+				_skill = TzkSkillLevel select _infLevel;
+			};
+		} else {
+			_idx = TzkUnitSkillIdx find _type;
+			if (-1 != _idx) then {_skill = TzkUnitSkillVal select _idx};
+		};
+	};
+	if (dev) then {hint format ["%1", [_model, _skill]]};
+	_model createUnit [_pos, _groupCreate, _init, _skill, "PRIVATE"];
 	newSoldier setDir _dir;
 	_unit = newSoldier;
 	if (_joinNull) then {[newSoldier] join grpNull};

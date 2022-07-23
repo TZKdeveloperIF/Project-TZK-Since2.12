@@ -7,6 +7,9 @@ _this = 0
 
 ; abandoned "upgrade switch" contents
 
+? upgInfLevel3 == _index && upgMatrix select siPlayer select upgInfLevel2 == 0: hint "Soldier Level 2 not upgraded yet!", exit
+? upgInfLevel4 == _index && upgMatrix select siPlayer select upgInfLevel3 == 0: hint "Soldier Level 3 not upgraded yet!", exit
+
 _value = _index + (count upgDefs)*_index2 + (count upgDefs)*(count upgDefs)*siPlayer + (count upgDefs)*(count upgDefs)*10*giPlayer
 
 pvUpgrade = _value; PublicVariable "pvUpgrade"

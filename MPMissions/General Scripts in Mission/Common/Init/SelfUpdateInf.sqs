@@ -1,0 +1,17 @@
+; args: [unit, type, si, gi]
+
+_unit = _this select 0
+_type = _this select 1
+_si = _this select 2
+_gi = _this select 3
+_this = 0
+
+~1
+
+_idx = TzkSelfUpdateIdx find _type
+_infLevel = _si call loadFile "Util\InfLevel.sqf"
+_selfUpdateVal = TzkSelfUpdateVal select _idx;
+
+_levelDiff = _infLevel - (_selfUpdateVal select 0);
+_equipScript = _selfUpdateVal select 3 select _levelDiff
+? "" != _equipScript: [_unit, _type, _si, _gi] exec _equipScript

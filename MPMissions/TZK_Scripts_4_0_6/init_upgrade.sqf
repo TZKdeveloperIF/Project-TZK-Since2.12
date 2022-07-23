@@ -37,6 +37,30 @@ upgDefs set [_type, [
 ]];
 _type = _type + 1;
 
+upgInfLevel2 = _type;
+upgDefs set [_type, [
+	"Soldier Level 2",
+	[2000, 20] select dev,
+	[1, 0] select dev
+]];
+_type = _type + 1;
+
+upgInfLevel3 = _type;
+upgDefs set [_type, [
+	"Soldier Level 3",
+	[5000, 20] select dev,
+	[2, 0] select dev
+]];
+_type = _type + 1;
+
+upgInfLevel4 = _type;
+upgDefs set [_type, [
+	"Soldier Level 4",
+	[10000, 100] select dev,
+	[3, 0] select dev
+]];
+_type = _type + 1;
+
 upgRadarArtillery = _type;
 upgDefs set [_type, [
 	"Artillery Radar",
