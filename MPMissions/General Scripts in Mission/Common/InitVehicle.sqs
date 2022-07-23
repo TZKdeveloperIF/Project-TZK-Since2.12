@@ -15,7 +15,7 @@ _this exec "Common\InitVehicle_Stable.sqs"
 ? _typeName == "TOS1_TZK_xj400": _vehicle addEventHandler ["Fired", {_this exec "Common\EH\Fired_TOS1.sqs"}], [{mutex_TZK_MLRS = true; _vehicle = _this select 1 select 0; _i = 0; _c = count TZK_MLRS_Veh; _found = false; while "_i < _c && !_found" do "if (!alive (TZK_MLRS_Veh select _i select 0)) Then {_found = true} Else {_i = _i + 1}"; TZK_MLRS_Veh set [ _i, [_vehicle,30] ]; ["mutex_TZK_MLRS = false", 1] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"}, [_vehicle], "!mutex_TZK_MLRS"] exec "\TZK_Scripts_4_0_5\Common\~@\mutexCommand.sqs"
 ; ? _typeName == "2S6_DKM_xj400" || _typeName == "Vulcan_TZK_xj400": _vehicle addEventHandler ["Fired", {_this exec "Common\EH\Fired_4xAA.sqs"}]
 ? _type in typesAAAPC: [_vehicle, _type] exec "Common\EH\CheckAndAddAAEH.sqs"
-? "Plane" countType [_vehicle] > 0 && !bool_TZK_199_Mode: _vehicle addEventHandler ["Fired", {_this exec "Common\EH\Fired_AA_AntiPlane.sqs"}]
+; ? "Plane" countType [_vehicle] > 0 && !bool_TZK_199_Mode: _vehicle addEventHandler ["Fired", {_this exec "Common\EH\Fired_AA_AntiPlane.sqs"}]
 
 ? bool_TZK_Vanilla_Mode: goto "SkipVanilla"
 ? _type in types_SE_td: goto "SkipVanilla"; comment "this variable is undefined if not in SE mode, and this line thus won't be executed."
