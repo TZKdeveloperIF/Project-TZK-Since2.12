@@ -148,7 +148,7 @@
 		count = 30;
 		initSpeed = 80; // Rocket's initSpeed are always 20m/s.
 		
-		displayName = "Mine Rocket (80m/s)";
+		displayName = "Mine Rkt(80m/s)";
 		ammo = "FAE220_DKMM_xj400";
 		sound[] = {"\TZK_Sounds_4_0_6\scf_us\missile.wss", 10, 1};
 		soundcontinuous = 0;
@@ -157,16 +157,16 @@
 		aiRateOfFireDistance = 1000;
 		recoil = "empty";
 	};
-	class MineRocket_0120_xj400: MineRocket_0080_xj400 { displayName = "Mine Rocket(120m/s)"; initSpeed = 120; };
-	class MineRocket_0180_xj400: MineRocket_0080_xj400 { displayName = "Mine Rocket(180m/s)"; initSpeed = 180; };
-	class MineRocket_0300_xj400: MineRocket_0080_xj400 { displayName = "Mine Rocket(300m/s)"; initSpeed = 300; };
-	class MineRocket_0400_xj400: MineRocket_0080_xj400 { displayName = "Mine Rocket(400m/s)"; initSpeed = 400; };
-	class MineRocket_0500_xj400: MineRocket_0080_xj400 { displayName = "Mine Rocket(500m/s)"; initSpeed = 500; };
-	class MineRocket_0600_xj400: MineRocket_0080_xj400 { displayName = "Mine Rocket(600m/s)"; initSpeed = 600; };
-	class MineRocket_0700_xj400: MineRocket_0080_xj400 { displayName = "Mine Rocket(700m/s)"; initSpeed = 700; };
-	class MineRocket_0800_xj400: MineRocket_0080_xj400 { displayName = "Mine Rocket(800m/s)"; initSpeed = 800; };
-	class MineRocket_0900_xj400: MineRocket_0080_xj400 { displayName = "Mine Rocket(900m/s)"; initSpeed = 900; };
-	class MineRocket_1000_xj400: MineRocket_0080_xj400 { displayName = "Mine Rocket(1000m/s)"; initSpeed = 1000; };
+	class MineRocket_0120_xj400: MineRocket_0080_xj400 { displayName = "Mine Rkt(120m/s)"; initSpeed = 120; };
+	class MineRocket_0180_xj400: MineRocket_0080_xj400 { displayName = "Mine Rkt(180m/s)"; initSpeed = 180; };
+	class MineRocket_0300_xj400: MineRocket_0080_xj400 { displayName = "Mine Rkt(300m/s)"; initSpeed = 300; };
+	class MineRocket_0400_xj400: MineRocket_0080_xj400 { displayName = "Mine Rkt(400m/s)"; initSpeed = 400; };
+	class MineRocket_0500_xj400: MineRocket_0080_xj400 { displayName = "Mine Rkt(500m/s)"; initSpeed = 500; };
+	class MineRocket_0600_xj400: MineRocket_0080_xj400 { displayName = "Mine Rkt(600m/s)"; initSpeed = 600; };
+	class MineRocket_0700_xj400: MineRocket_0080_xj400 { displayName = "Mine Rkt(700m/s)"; initSpeed = 700; };
+	class MineRocket_0800_xj400: MineRocket_0080_xj400 { displayName = "Mine Rkt(800m/s)"; initSpeed = 800; };
+	class MineRocket_0900_xj400: MineRocket_0080_xj400 { displayName = "Mine Rkt(900m/s)"; initSpeed = 900; };
+	class MineRocket_1000_xj400: MineRocket_0080_xj400 { displayName = "Mine Rkt(1000m/s)"; initSpeed = 1000; };
 
 	class Shrapnel_W_xj400: shell125 {
 		displayName = "M483A1";
