@@ -148,7 +148,7 @@ class SpecDialog: Menu {
 		idc = IDC_BTN_MARK;
 		y = 0.84;
 		text = "Marker";
-		action = "btnMarker = !btnMarker; if !btnMarker then {call preprocessFile localize {TZK_FUNC_MARKER_HIDE_SPEC}} else {[boole_Mark_Player_Name] exec localize {TZK_MARKER_SPEC}} ";
+		action = "btnMarker = !btnMarker; if !btnMarker then {call loadFile localize {TZK_FUNC_MARKER_HIDE_SPEC}} else {[boole_Mark_Player_Name] exec localize {TZK_MARKER_SPEC}} ";
 	};
 	class MarkerBG: SelectedBG {
 		idc = IDC_BTN_MARK + 1;

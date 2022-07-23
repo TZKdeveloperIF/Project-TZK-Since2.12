@@ -4,7 +4,7 @@ mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
 _dlg = createDialog "CommandAIDialog"
 mutexDlg = false
 
-? !bool_TZK_CHN_inited && bool_TZK_CHN_Lang: call preprocessFile localize {TZK_PLAYER_DIALOG_CHNLANG}
+? !bool_TZK_CHN_inited && bool_TZK_CHN_Lang: call loadFile localize {TZK_PLAYER_DIALOG_CHNLANG}
 
 _si = siPlayer
 _gi = -1
@@ -38,7 +38,7 @@ _idcParamLabels = [_idcPar0Label, _idcPar1Label, _idcPar2Label]
 _idcParams = [_idcPar0, _idcPar1, _idcPar2]
 { ctrlShow [_x, false] } foreach _idcParamLabels, { ctrlShow [_x, false] } foreach _idcParams
 
-call preprocessFile localize {TZK_DIALOG_AI_GRP_ORDER_INIT}
+call loadFile localize {TZK_DIALOG_AI_GRP_ORDER_INIT}
 
 #Update
 ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
