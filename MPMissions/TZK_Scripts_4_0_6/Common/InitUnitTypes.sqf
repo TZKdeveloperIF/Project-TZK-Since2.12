@@ -384,7 +384,7 @@ unitDefs set [_type, ["Patrol Boat HE/AP gun", 1500, _si, 30, "GunBoatW_xj400", 
 _boatW2 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Patrol Boat 30mm gun", 1500, _si, 30, "GunBoatW_xj400", "ipbr", 2^stLight + 2^stShip, [2, _crewW], _mBoat, [localize {TZK_EQUIP_UNIT_TRUCK}, "\TZK_Scripts_4_0_6\Common\Equip\BoatW.sqs"]] ];
+unitDefs set [_type, ["Patrol Boat 30mm gun", 1500, _si, 30, "GunBoatW_Auto_xj400", "ipbr", 2^stLight + 2^stShip, [1, _crewW], _mBoat, [localize {TZK_EQUIP_UNIT_TRUCK}, "\TZK_Scripts_4_0_6\Common\Equip\BoatW.sqs"]] ];
 _boatW3 = _type;
 _type = _type + 1;
 
@@ -941,7 +941,7 @@ unitDefs set [_type, ["Patrol Boat HE/AP gun", 1500, _si, 30, "GunBoatE_xj400", 
 _boatE2 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Patrol Boat 30mm gun", 1500, _si, 30, "GunBoatE_xj400", "ipbr", 2^stLight + 2^stShip, [2, _crewE], _mBoat, [localize {TZK_EQUIP_UNIT_TRUCK}, "\TZK_Scripts_4_0_6\Common\Equip\BoatE.sqs"]] ];
+unitDefs set [_type, ["Patrol Boat 30mm gun", 1500, _si, 30, "GunBoatE_Auto_xj400", "ipbr", 2^stLight + 2^stShip, [1, _crewE], _mBoat, [localize {TZK_EQUIP_UNIT_TRUCK}, "\TZK_Scripts_4_0_6\Common\Equip\BoatE.sqs"]] ];
 _boatE3 = _type;
 _type = _type + 1;
 
