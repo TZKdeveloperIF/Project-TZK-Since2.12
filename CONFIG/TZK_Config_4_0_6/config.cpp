@@ -209,7 +209,7 @@ class CfgVehicleActions {
 	bremcommander = "bremcommander";
 	bremgunner02 = "bremgunner02";
 };
-class CfgMovesMC {
+class CfgMovesMC_xj400 {
 	class Default {};
 	class DefaultDie: Default {};
 	class StandBase: Default {};
