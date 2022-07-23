@@ -13,8 +13,8 @@ magHandGrenade = "HandGrenade"
 ammoMine = "Mine"
 magSatchel = "PipeBomb"
 magTimeBomb = "TimeBomb"
-weaponPut = "Put_xj400"
-weaponsCustom = [weaponPut]
+weaponPut = "Put_xj400"; weaponThrow = "Throw_xj400";
+weaponsCustom = [weaponPut, weaponThrow]
 
 ; ? bool_TZK_Vanilla_Mode: _medkit = "", magPistolMine = "", _hyperL = "CarlGustavLauncher", _carl4slot = "CarlGustav", _at44slot = _carl4slot, _aa4slot = "", _9k324slot = ""
 ? bool_TZK_199_Mode: _nvg0 = "NVGoggles", _nvg1 = _nvg0
@@ -341,10 +341,18 @@ equipDefs set [_type, ["RPK74", si1, isGeneral, 1, "RPK74_Mag_xj400", "\TZK_Text
 equipSearch set [_type, (equipDefs select _type) select edObject]
 _atrpk74m = _type
 _type = _type + 1
+equipDefs set [_type, ["RPK74", si1, isHandgun, 1, "RPK74_Pistol_Mag_xj400", "\TZK_Texture_4_0_0\Picture\c8x_russ\rpk74Mag.paa",15 ]] 
+equipSearch set [_type, equipDefs select _type select edObject]
+_atrpk74Pistol = _type
+_type = _type + 1
 
 equipDefs set [_type, ["RPK74 SD", si1, isGeneral, 1, _mRPK74SD, "\TZK_Texture_4_0_0\Picture\c8x_russ\rpk74Mag.paa",20 ]] 
 equipSearch set [_type, (equipDefs select _type) select edObject]
 _atrpk74SD = _type
+_type = _type + 1
+equipDefs set [_type, ["RPK74 SD", si1, isHandgun, 1, "RPK74M_1P29_SD_xj400", "\TZK_Texture_4_0_0\Picture\c8x_russ\rpk74Mag.paa",20 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atrpk74SdPistol = _type
 _type = _type + 1
 
 equipDefs set [_type, ["PKM", si1, isGeneral, 2, "PKM_Mag_xj400", "\TZK_Texture_4_0_0\Picture\ICP_rfwp\m_pk.paa",40 ]] 
@@ -474,9 +482,9 @@ equipSearch set [_type, (equipDefs select _type) select edObject]
 _atFlareYellow = _type
 _type = _type + 1
 
-equipDefs set [_type, ["Kasapanos", siBoth, isGeneral, 2, "Kasap_xj400", "\TZK_Texture_4_0_0\Picture\kyl_kasapanos.jpg",25 ]] 
-equipSearch set [_type, (equipDefs select _type) select edObject]
-_kasap = _type
+equipDefs set [_type, ["RKG-3M", siBoth, isGeneral, 2, "RKG3M_xj400", "\TZK_Config_4_0_6\Tex\RKG-3.paa", 5 ]] 
+equipSearch set [_type, equipDefs select _type select edObject]
+_rkg3m = _type
 _type = _type + 1
 
 equipDefs set [_type, ["Laser", siBoth, isGeneral, 6, "LaserDesignator", "\dtaExt\equip\m\m_carlgustavlauncher",50 ]] 
@@ -525,6 +533,81 @@ equipSearch set [_type, (equipDefs select _type) select edObject]
 _etMineAPE = _type
 ? bool_TZK_199_Mode: equipDefs select _type set [edSides, -1]
 _type = _type + 1
+
+equipDefs set [_type, ["Carl", -1, isGeneral, 4, Carl_I_1_TZK_xj400, "\dtaExt\equip\m\m_carlgustavlauncher", 60]] 
+equipSearch set [_type, equipDefs select _type select edObject]
+_type = _type + 1
+equipDefs set [_type, ["Carl", -1, isGeneral, 4, Carl_II_1_TZK_xj400, "\dtaExt\equip\m\m_carlgustavlauncher", 70]] 
+equipSearch set [_type, equipDefs select _type select edObject]
+_type = _type + 1
+equipDefs set [_type, ["Carl", -1, isGeneral, 4, Carl_III_1_TZK_xj400, "\dtaExt\equip\m\m_carlgustavlauncher", 90]] 
+equipSearch set [_type, equipDefs select _type select edObject]
+_type = _type + 1
+equipDefs set [_type, ["Carl", -1, isGeneral, 4, Carl_IV_1_TZK_xj400, "\dtaExt\equip\m\m_carlgustavlauncher", 120]] 
+equipSearch set [_type, equipDefs select _type select edObject]
+_type = _type + 1
+equipDefs set [_type, ["Carl", -1, isGeneral, 4, Carl_I_2_TZK_xj400, "\dtaExt\equip\m\m_carlgustavlauncher", 90]] 
+equipSearch set [_type, equipDefs select _type select edObject]
+_type = _type + 1
+equipDefs set [_type, ["Carl", -1, isGeneral, 4, Carl_II_2_TZK_xj400, "\dtaExt\equip\m\m_carlgustavlauncher", 105]] 
+equipSearch set [_type, equipDefs select _type select edObject]
+_type = _type + 1
+equipDefs set [_type, ["Carl", -1, isGeneral, 4, Carl_III_2_TZK_xj400, "\dtaExt\equip\m\m_carlgustavlauncher", 135]] 
+equipSearch set [_type, equipDefs select _type select edObject]
+_type = _type + 1
+equipDefs set [_type, ["Carl", -1, isGeneral, 4, Carl_IV_2_TZK_xj400, "\dtaExt\equip\m\m_carlgustavlauncher", 180]] 
+equipSearch set [_type, equipDefs select _type select edObject]
+_type = _type + 1
+equipDefs set [_type, ["AT4", -1, isGeneral, 4, AT4_I_1_TZK_xj400, "\dtaExt\equip\m\m_carlgustavlauncher", 60]] 
+equipSearch set [_type, equipDefs select _type select edObject]
+_type = _type + 1
+equipDefs set [_type, ["AT4", -1, isGeneral, 4, AT4_II_1_TZK_xj400, "\dtaExt\equip\m\m_carlgustavlauncher", 70]] 
+equipSearch set [_type, equipDefs select _type select edObject]
+_type = _type + 1
+equipDefs set [_type, ["AT4", -1, isGeneral, 4, AT4_III_1_TZK_xj400, "\dtaExt\equip\m\m_carlgustavlauncher", 90]] 
+equipSearch set [_type, equipDefs select _type select edObject]
+_type = _type + 1
+equipDefs set [_type, ["AT4", -1, isGeneral, 4, AT4_IV_1_TZK_xj400, "\dtaExt\equip\m\m_carlgustavlauncher", 120]] 
+equipSearch set [_type, equipDefs select _type select edObject]
+_type = _type + 1
+equipDefs set [_type, ["AT4", -1, isGeneral, 4, AT4_I_2_TZK_xj400, "\dtaExt\equip\m\m_carlgustavlauncher", 90]] 
+equipSearch set [_type, equipDefs select _type select edObject]
+_type = _type + 1
+equipDefs set [_type, ["AT4", -1, isGeneral, 4, AT4_II_2_TZK_xj400, "\dtaExt\equip\m\m_carlgustavlauncher", 105]] 
+equipSearch set [_type, equipDefs select _type select edObject]
+_type = _type + 1
+equipDefs set [_type, ["AT4", -1, isGeneral, 4, AT4_III_2_TZK_xj400, "\dtaExt\equip\m\m_carlgustavlauncher", 135]] 
+equipSearch set [_type, equipDefs select _type select edObject]
+_type = _type + 1
+equipDefs set [_type, ["AT4", -1, isGeneral, 4, AT4_IV_2_TZK_xj400, "\dtaExt\equip\m\m_carlgustavlauncher", 180]] 
+equipSearch set [_type, equipDefs select _type select edObject]
+_type = _type + 1
+
+equipDefs set [_type, ["Stinger", -1, isGeneral, 6, "AA_I_TZK_xj400", "",100 ]] 
+equipSearch set [_type, equipDefs select _type select edObject]
+_type = _type + 1
+equipDefs set [_type, ["Stinger", -1, isGeneral, 6, "AA_II_TZK_xj400", "",120 ]] 
+equipSearch set [_type, equipDefs select _type select edObject]
+_type = _type + 1
+equipDefs set [_type, ["Strela", -1, isGeneral, 6, "9K32_I_TZK_xj400", "",100 ]] 
+equipSearch set [_type, equipDefs select _type select edObject]
+_type = _type + 1
+equipDefs set [_type, ["Strela", -1, isGeneral, 6, "9K32_II_TZK_xj400", "",120 ]] 
+equipSearch set [_type, equipDefs select _type select edObject]
+_type = _type + 1
+
+equipDefs set [_type, ["LAW", -1, isGeneral, 6, "LAW_1slot_xj400", "",20 ]] 
+equipSearch set [_type, equipDefs select _type select edObject]
+_type = _type + 1
+equipDefs set [_type, ["RPG", -1, isGeneral, 6, "RPG_1slot_xj400", "",20 ]] 
+equipSearch set [_type, equipDefs select _type select edObject]
+_type = _type + 1
+
+equipDefs set [_type, ["SupportMag", -1, isGeneral, 6, "SupportMag_xj400", "",0 ]] 
+equipSearch set [_type, equipDefs select _type select edObject]
+_type = _type + 1
+
+
 
 ; Add few weapons with magazines in weaponSearch and equipSearch array for artillery module in ACWA. There're only few kinds so won't occupy too many items.
 equipDefs set [_type, ["Heat105", -1, -1, 2, "Heat105", "",0 ]];
@@ -844,11 +927,7 @@ weaponSearch set [_type, (weaponDefs select _type) select wdObject]
 _wtRemigton = _type
 _type = _type + 1
 
-weaponDefs set [_type, ["Kasapanos", siBoth, wtSecondary, "KasaThrow_xj400", "\TZK_Texture_4_0_0\Picture\kyl_kasapanos.jpg", [[_kasap,3]],40 ]] 
-weaponSearch set [_type, (weaponDefs select _type) select wdObject]
-_wtKasap = _type
-_type = _type + 1
-weaponThrowPutList set [count weaponThrowPutList, weaponSearch select (count weaponSearch) - 1]
+; weaponThrowPutList set [count weaponThrowPutList, weaponSearch select (count weaponSearch) - 1]
 
 weaponDefs set [_type, ["Laser", siBoth, wtSecondary, "LaserDesignator", "\dtaExt\equip\w\w_carlgustavlauncher", [[_atLaser,1]],50 ]] 
 weaponSearch set [_type, (weaponDefs select _type) select wdObject]
@@ -873,6 +952,34 @@ _type = _type + 1
 weaponDefs set [_type, ["NVG statF", siBoth, wtNVG, _nvg1, "\dtaExt\equip\w\w_nvgoggles", [], 100 ]] 
 weaponSearch set [_type, (weaponDefs select _type) select wdObject]
 _wtNVG1 = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["Carl", -1, wtSecondary, "Carl_TZK_xj400", "\dtaExt\equip\w\w_carlgustavlauncher", [],70 ]]
+weaponSearch set [_type, weaponDefs select _type select wdObject]
+_type = _type + 1
+weaponDefs set [_type, ["AT4", -1, wtSecondary, "AT4_TZK_xj400", "\dtaExt\equip\w\w_carlgustavlauncher", [],70 ]]
+weaponSearch set [_type, weaponDefs select _type select wdObject]
+_type = _type + 1
+weaponDefs set [_type, ["Stinger", -1, wtSecondary, "AA_TZK_xj400", "\dtaExt\equip\w\w_9k32launcher", [],100 ]]
+weaponSearch set [_type, weaponDefs select _type select wdObject]
+_type = _type + 1
+weaponDefs set [_type, ["Strela", -1, wtSecondary, "9k32_TZK_xj400", "\dtaExt\equip\w\w_9k32launcher", [],100 ]]
+weaponSearch set [_type, weaponDefs select _type select wdObject]
+_type = _type + 1
+weaponDefs set [_type, ["LAW", -1, wtSecondary, "LAW_TZK_xj400", "\dtaExt\equip\w\w_rpglauncher", [],40 ]]
+weaponSearch set [_type, weaponDefs select _type select wdObject]
+_type = _type + 1
+weaponDefs set [_type, ["RPG", -1, wtSecondary, "RPG_TZK_xj400", "\dtaExt\equip\w\w_rpglauncher", [],40 ]]
+weaponSearch set [_type, weaponDefs select _type select wdObject]
+_type = _type + 1
+weaponDefs set [_type, ["M60", -1, wtPrimary, "M60_TZK_xj400", "\dtaExt\equip\w\w_m60", [],20 ]] 
+weaponSearch set [_type, weaponDefs select _type select wdObject]
+_type = _type + 1
+weaponDefs set [_type, ["PK", -1, wtPrimary, "PK_TZK_xj400", "\dtaExt\equip\w\w_m60", [],20 ]] 
+weaponSearch set [_type, weaponDefs select _type select wdObject]
+_type = _type + 1
+weaponDefs set [_type, ["SupportBox", -1, wtPrimary, "SupportBox_xj400", "\dtaExt\equip\w\w_m60", [],20 ]] 
+weaponSearch set [_type, weaponDefs select _type select wdObject]
 _type = _type + 1
 
 ; Add few weapons with magazines in weaponSearch and equipSearch array for artillery module in ACWA. There're only few kinds so won't occupy too many items.
