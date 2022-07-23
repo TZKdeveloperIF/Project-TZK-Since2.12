@@ -78,7 +78,8 @@ _groupCommander = (groupCommander select siPlayer)
 _isCommander = groupPlayer == _groupCommander; _isAIcommander = _groupCommander in _groupsAI
 { ctrlEnable [_x, _isCommander] } forEach [ _idcAIRespawn, _idcIncomeRatio, _idcIncomeRatioPlayer, _idcTransferCommandGroup, _idcWorkerBehaviour ]
 { ctrlShow [_x, _isCommander] } forEach [ _idcTransferCommand, _idcDestruction, _idcGiveMoneyToAI, _idcGiveMoneyToALL, _idcTakeMoney ]
-{ ctrlShow [_x, _isCommander || _isAIcommander] } forEach [_idcUpgradeStart, _idcUpgSwitch]
+{ ctrlShow [_x, _isCommander || _isAIcommander] } forEach [_idcUpgradeStart]
+{ ctrlShow [_x, false] } forEach [_idcUpgSwitch]
 
 ? !_isCommander : _gis = ([siPlayer] call funcGetAIGroupsIndex); _Superior = _gis call funcCheckWhetherSuperior; if (_Superior && lbCurSel _idcTransferGroup != -1) then {ctrlShow [_idcTakeMoney, ( ( (["Commander"] + callsigns) select ( ( (aiSetting select siPlayer) select lbCurSel _idcTransferGroup ) select aisSuperior ) ) == _groupsName select giPlayer) || ( (_groups select (lbCurSel _idcTransferGroup)) == _groupCommander )]}
 

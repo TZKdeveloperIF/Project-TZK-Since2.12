@@ -1,12 +1,40 @@
-comment { unitDefs defines all buildable units; };
-
-comment { IMPORTANT: all vehicles must have a non empty crew array; };
-comment { Must wait till stShip has been defined; };
+comment {
+	unitDefs defines all buildable units
+	IMPORTANT: all vehicles must have a non empty crew array
+	Must wait till stShip has been defined
+};
 
 unitDefs = []; unitTypeArray = []; unitTypeData = [];
 comment { ? bool_TZK_Yugo_Mode: [] exec "Extra\199\InitUnitTypes_Yugo_Redef.sqs", exit; };
 TzkUnitMarkerIdx = []; TzkUnitMarkerAzimuth = [];
-TzkUnitSkillIdx = []; TzkUnitSkillVal = [];
+TzkUnitSkillIdx = []; TzkUnitSkillVal = []; TzkSkillLevel = [0, 0.6, 0.75, 0.85, 1];
+TzkInfLevelIdx = []; TzkInfLevelVal = [];
+TzkSelfUpdateIdx = []; TzkSelfUpdateVal = []; comment {
+	format of TzkSelfUpdateVal is: [minLevel, maxLefel, modelArray[], equipScriptArr[]]
+};
+comment { script local "macro"};
+_lv1Inf = {
+	TzkUnitSkillIdx set [count TzkUnitSkillIdx, _this];
+	TzkUnitSkillVal set [count TzkUnitSkillVal, TzkSkillLevel select 1];
+};
+_lv2Inf = {
+	TzkUnitSkillIdx set [count TzkUnitSkillIdx, _this];
+	TzkUnitSkillVal set [count TzkUnitSkillVal, TzkSkillLevel select 2];
+	TzkInfLevelIdx set [count TzkInfLevelIdx, _this];
+	TzkInfLevelVal set [count TzkInfLevelVal, 2];
+};
+_lv3Inf = {
+	TzkUnitSkillIdx set [count TzkUnitSkillIdx, _this];
+	TzkUnitSkillVal set [count TzkUnitSkillVal, TzkSkillLevel select 3];
+	TzkInfLevelIdx set [count TzkInfLevelIdx, _this];
+	TzkInfLevelVal set [count TzkInfLevelVal, 3];
+};
+_lv4Inf = {
+	TzkUnitSkillIdx set [count TzkUnitSkillIdx, _this];
+	TzkUnitSkillVal set [count TzkUnitSkillVal, TzkSkillLevel select 4];
+	TzkInfLevelIdx set [count TzkInfLevelIdx, _this];
+	TzkInfLevelVal set [count TzkInfLevelVal, 4];
+};
 
 udName = 0;
 udCost = 1;
@@ -19,10 +47,10 @@ udCrew = 7;
 udMarkerType = 8;
 udScripts = 9;
 
-comment { knowsAbout level for infantry and vehicle enemy reports; };
+comment { knowsAbout level for infantry and vehicle enemy reports };
 kaUnit = 1;
 
-comment { VEHICLE MARKERS; };
+comment { VEHICLE MARKERS };
 _mBike = "Bike_Marker_xj400";
 _mCar = "Car_Marker_xj400";
 _mRadarCar = "RadarCar_Marker_xj400";
@@ -78,82 +106,135 @@ _type = _type + 1;
 
 unitDefs set [_type, ["Soldier I", 50, _si, 5, "SoldierWB_I_xj400", "ivojak", 2^_st, [], "", []] ];
 _soldierW1 = _type;
-_type = _type + 1;
-
-unitDefs set [_type, ["Soldier II", 50, _si, 5, "SoldierWB_II_xj400", "ivojak", 2^_st, [], "", []] ];
-_soldierW2 = _type;
+_type call _lv1Inf;
+TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [count TzkSelfUpdateVal, [
+	1, 2, 
+	["SoldierWB_I_xj400", "SoldierWB_II_xj400"],
+	["", ""]
+]];
 _type = _type + 1;
 
 unitDefs set [_type, ["Soldier III", 200, _si, 15, "SoldierWB_III_xj400", "ivojak", 2^_st, [], "", []] ];
 _soldierW3 = _type;
+_type call _lv3Inf;
 _type = _type + 1;
 
 unitDefs set [_type, ["Soldier IV", 250, _si, 20, "SoldierWB_IV_xj400", "ivojak", 2^_st, [], "", []] ];
+_type call _lv4Inf;
 _soldierW4 = _type;
 _type = _type + 1;
 
 unitDefs set [_type, ["RKG I", 50, _si, 5, "SoldierWB_RKG_xj400", "ivojak", 2^_st, [], "", []] ];
 _rkgSoldierW = _type;
+_type call _lv1Inf;
+TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [count TzkSelfUpdateVal, [
+	1, 2, 
+	["SoldierWB_RKG_xj400", "SoldierWB_RKG_xj400"],
+	["", ""]
+]];
 _type = _type + 1;
 
 unitDefs set [_type, ["MG I", 70, _si, 7, "SoldierWMG_I_xj400", "ismg", 2^_st, [], "", []] ];
 _mgW1 = _type;
+_type call _lv1Inf;
 _type = _type + 1;
 
 unitDefs set [_type, ["MG II", 100, _si, 10, "SoldierWMG_II_xj400", "ismg", 2^_st, [], "", []] ];
 _mgW2 = _type;
+_type call _lv2Inf;
 _type = _type + 1;
 
 unitDefs set [_type, ["MG III", 200, _si, 15, "SoldierWMG_III_xj400", "ismg", 2^_st, [], "", []] ];
 _mgW3 = _type;
+_type call _lv3Inf;
 _type = _type + 1;
 
 unitDefs set [_type, ["MG IV", 250, _si, 20, "SoldierWMG_IV_xj400", "ismg", 2^_st, [], "", []] ];
 _mgW4 = _type;
+_type call _lv4Inf;
 _type = _type + 1;
 
 unitDefs set [_type, ["Sniper", 100, _si, 10, "SoldierWSniper_xj400", "isniper", 2^_st, [], "", []] ];
 _sniperW = _type;
+TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [count TzkSelfUpdateVal, [
+	1, 4, 
+	["SoldierWSniper_xj400", "SoldierWSniper_xj400", "SoldierWSniper_xj400", "SoldierWSniper_xj400"],
+	["", "", "", ""]
+]];
 _type = _type + 1;
 
 unitDefs set [_type, ["Heavy Sniper", 200, _si, 20, "SoldierWSniperHeavy_xj400", "isniper", 2^_st, [], "", []] ];
 _heavySniperW = _type;
+TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [count TzkSelfUpdateVal, [
+	3, 4, 
+	["SoldierWSniperHeavy_xj400", "SoldierWSniperHeavy_xj400"],
+	["", ""]
+]];
 _type = _type + 1;
 
-unitDefs set [_type, ["LAW Soldier", 150, _si, 10, "SoldierWLAW_xj400", "islaw", 2^_st, [], "", ["\TZK_Scripts_4_0_6\Common\Equip\RPG2ai.sqs"]] ];
+unitDefs set [_type, ["LAW Soldier", 150, _si, 10, "SoldierWLAW_xj400", "islaw", 2^_st, [], "", []] ];
 _lawSoldierW = _type;
+TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [count TzkSelfUpdateVal, [
+	1, 4, 
+	["SoldierWLAW_xj400", "SoldierWLAW_xj400", "SoldierWLAW_xj400", "SoldierWLAW_xj400"],
+	["\TZK_Scripts_4_0_6\Common\Equip\RPG2ai.sqs", "\TZK_Scripts_4_0_6\Common\Equip\RPG2ai.sqs", "\TZK_Scripts_4_0_6\Common\Equip\RPG2ai.sqs", "\TZK_Scripts_4_0_6\Common\Equip\RPG2ai.sqs"]
+]];
 _type = _type + 1;
 
 unitDefs set [_type, ["AT I", 150, _si, 8, "SoldierWAT_I_xj400", "isat", 2^_st, [], "", []] ];
 _atW1 = _type;
+_type call _lv1Inf;
 _type = _type + 1;
 
 unitDefs set [_type, ["AT II", 180, _si, 10, "SoldierWAT_II_xj400", "isat", 2^_st, [], "", []] ];
 _atW2 = _type;
+_type call _lv2Inf;
 _type = _type + 1;
 
 unitDefs set [_type, ["AT III", 250, _si, 15, "SoldierWAT_III_xj400", "isat", 2^_st, [], "", []] ];
 _atW3 = _type;
+_type call _lv3Inf;
 _type = _type + 1;
 
 unitDefs set [_type, ["AT IV", 400, _si, 25, "SoldierWAT_IV_xj400", "isat", 2^_st, [], "", []] ];
 _atW4 = _type;
+_type call _lv4Inf;
 _type = _type + 1;
 
-unitDefs set [_type, ["Stinger", 250, _si, 10, "SoldierWAA_xj400", "isaa", 2^_st, [], "", ["\TZK_Scripts_4_0_6\Common\Equip\AAai.sqs"]] ];
+unitDefs set [_type, ["Stinger", 250, _si, 10, "SoldierWAA_xj400", "isaa", 2^_st, [], "", []] ];
 _soldierAAW = _type;
+TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [count TzkSelfUpdateVal, [
+	1, 4, 
+	["SoldierWAA_xj400", "SoldierWAA_xj400", "SoldierWAA_xj400", "SoldierWAA_xj400"],
+	["\TZK_Scripts_4_0_6\Common\Equip\AAai.sqs", "\TZK_Scripts_4_0_6\Common\Equip\AAai.sqs", "\TZK_Scripts_4_0_6\Common\Equip\AAai.sqs", "\TZK_Scripts_4_0_6\Common\Equip\AAai.sqs"]
+]];
 _type = _type + 1;
 
 unitDefs set [_type, ["AA Commando", 300, _si, 20, "SoldierWAA_Commando_III_xj400", "isaa", 2^_st, [], "", []] ];
 _aaCommandoW = _type;
+TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [count TzkSelfUpdateVal, [
+	3, 4, 
+	["SoldierWAA_Commando_III_xj400", "SoldierWAA_Commando_IV_xj400"],
+	["", ""]
+]];
 _type = _type + 1;
 
-unitDefs set [_type, ["Saboteur", 150, _si, 10, "SoldierWSaboteurDay_xj400", "isaboteur", 2^_st, [], "", ["\TZK_Scripts_4_0_6\Common\Equip\Spec.sqs"]] ];
+unitDefs set [_type, ["Saboteur", 150, _si, 10, "SoldierWSaboteurDay_xj400", "isaboteur", 2^_st, [], "", []] ];
 _bomberW = _type;
+TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [count TzkSelfUpdateVal, [
+	1, 4, 
+	["SoldierWSaboteurDay_xj400", "SoldierWSaboteurDay_xj400", "SoldierWSaboteurDay_xj400", "SoldierWSaboteurDay_xj400"],
+	["\TZK_Scripts_4_0_6\Common\Equip\Spec.sqs", "\TZK_Scripts_4_0_6\Common\Equip\Spec.sqs", "\TZK_Scripts_4_0_6\Common\Equip\Spec.sqs", "\TZK_Scripts_4_0_6\Common\Equip\SpecIv.sqs"]
+]];
 _type = _type + 1;
 
-unitDefs set [_type, ["Miner", 200, _si, 10, "SoldierWMiner_xj400", "iminer", 2^_st, [], "", ["\TZK_Scripts_4_0_6\Common\Equip\Miner.sqs"]] ];
+unitDefs set [_type, ["Miner", 200, _si, 10, "SoldierWMiner_xj400", "iminer", 2^_st, [], "", []] ];
 _minerW = _type;
+TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [count TzkSelfUpdateVal, [
+	1, 4, 
+	["SoldierWMiner_xj400", "SoldierWMiner_xj400", "SoldierWMiner_xj400", "SoldierWSaboteurDay_xj400"],
+	["\TZK_Scripts_4_0_6\Common\Equip\Miner.sqs", "\TZK_Scripts_4_0_6\Common\Equip\Miner.sqs", "\TZK_Scripts_4_0_6\Common\Equip\Miner.sqs", "\TZK_Scripts_4_0_6\Common\Equip\MinerIV.sqs"]
+]];
 _type = _type + 1;
 
 unitDefs set [_type, ["Crew", 50, _si, 10, "SoldierWCrew_xj400", "icrew", 2^stBarracks + 2^stLight + 2^stShip + 2^stHeavy, [], "", []] ];
@@ -162,22 +243,37 @@ _type = _type + 1;
 
 unitDefs set [_type, ["AA Crew", 250, _si, 10, "SoldierWCrewAA_xj400", "icrew", 2^stBarracks + 2^stLight + 2^stShip + 2^stHeavy, [], "", []] ];
 _crewAAW = _type;
+TzkUnitSkillIdx set [count TzkUnitSkillIdx, _type];
+TzkUnitSkillVal set [count TzkUnitSkillVal, TzkSkillLevel select 4];
+TzkInfLevelIdx set [count TzkInfLevelIdx, _type];
+TzkInfLevelVal set [count TzkInfLevelVal, 3];
 _type = _type + 1;
 
 unitDefs set [_type, ["Pilot", 50, _si, 10, "SoldierWPilot_xj400", "ipilot", 2^stBarracks + 2^stAir, [], "", []] ];
 _pilotW = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Grenade Vest", 130, _si, 10, "SoldierWG_xj400", "igrenadier", 2^_st, [], "", ["\TZK_Scripts_4_0_6\Common\Equip\GL.sqs"]] ];
+unitDefs set [_type, ["Grenade Vest", 130, _si, 10, "SoldierWSaboteurDay_xj400", "igrenadier", 2^_st, [], "", ["\TZK_Scripts_4_0_6\Common\Equip\Vest.sqs"]] ];
 _vestW = _type;
+_type call _lv4Inf;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mortar", 130, _si, 10, "SoldierWB_xj400", "igrenadier", 2^_st, [], "", ["\TZK_Scripts_4_0_6\Common\Equip\Mortar.sqs"]] ];
+unitDefs set [_type, ["Mortar", 130, _si, 10, "SoldierWB_xj400", "igrenadier", 2^_st, [], "", []] ];
 _MortarW = _type;
+TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [count TzkSelfUpdateVal, [
+	1, 4, 
+	["SoldierWB_xj400", "SoldierWB_xj400", "SoldierWB_xj400", "SoldierWSaboteurDay_xj400"],
+	["\TZK_Scripts_4_0_6\Common\Equip\Mortar.sqs", "\TZK_Scripts_4_0_6\Common\Equip\Mortar.sqs", "\TZK_Scripts_4_0_6\Common\Equip\Mortar.sqs", "\TZK_Scripts_4_0_6\Common\Equip\Mortar.sqs"]
+]];
 _type = _type + 1;
 
 unitDefs set [_type, ["Support Carrier", 500, _si, 10, "SoldierWSupport_xj400", "imedic", 2^_st, [], "", []] ];
 _supportCarrierW = _type;
+TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [count TzkSelfUpdateVal, [
+	1, 4, 
+	["SoldierWSupport_xj400", "SoldierWSupport_xj400", "SoldierWSaboteurDay_xj400", "SoldierWSniper_xj400"],
+	["", "", "\TZK_Scripts_4_0_6\Common\Equip\SupportCarrier.sqs", "\TZK_Scripts_4_0_6\Common\Equip\SupportCarrier.sqs"]
+]];
 _type = _type + 1;
 
 unitDefs set [_type, ["Custom", 150, _si, 10, "SoldierWSaboteurDay_xj400", "isaboteur", -1, [], "", []] ];
@@ -567,82 +663,135 @@ _type = _type + 1;
 
 unitDefs set [_type, ["Soldier I", 50, _si, 5, "SoldierEB_I_xj400", "ivojak", 2^_st, [], "", []] ];
 _soldierE1 = _type;
-_type = _type + 1;
-
-unitDefs set [_type, ["Soldier II", 50, _si, 5, "SoldierEB_II_xj400", "ivojak", 2^_st, [], "", []] ];
-_soldierE2 = _type;
+_type call _lv1Inf;
+TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [count TzkSelfUpdateVal, [
+	1, 2, 
+	["SoldierEB_I_xj400", "SoldierEB_II_xj400"],
+	["", ""]
+]];
 _type = _type + 1;
 
 unitDefs set [_type, ["Soldier III", 200, _si, 15, "SoldierEB_III_xj400", "ivojak", 2^_st, [], "", []] ];
 _soldierE3 = _type;
+_type call _lv3Inf;
 _type = _type + 1;
 
 unitDefs set [_type, ["Soldier IV", 250, _si, 20, "SoldierEB_IV_xj400", "ivojak", 2^_st, [], "", []] ];
 _soldierE4 = _type;
+_type call _lv4Inf;
 _type = _type + 1;
 
 unitDefs set [_type, ["RKG I", 50, _si, 5, "SoldierEB_RKG_xj400", "ivojak", 2^_st, [], "", []] ];
 _rkgSoldierE = _type;
+_type call _lv1Inf;
+TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [count TzkSelfUpdateVal, [
+	1, 2, 
+	["SoldierEB_RKG_xj400", "SoldierEB_RKG_xj400"],
+	["", ""]
+]];
 _type = _type + 1;
 
 unitDefs set [_type, ["MG I", 70, _si, 7, "SoldierEMG_I_xj400", "ismg", 2^_st, [], "", []] ];
 _mgE1 = _type;
+_type call _lv1Inf;
 _type = _type + 1;
 
 unitDefs set [_type, ["MG II", 100, _si, 10, "SoldierEMG_II_xj400", "ismg", 2^_st, [], "", []] ];
 _mgE2 = _type;
+_type call _lv2Inf;
 _type = _type + 1;
 
 unitDefs set [_type, ["MG III", 200, _si, 15, "SoldierEMG_III_xj400", "ismg", 2^_st, [], "", []] ];
 _mgE3 = _type;
+_type call _lv3Inf;
 _type = _type + 1;
 
 unitDefs set [_type, ["MG IV", 250, _si, 20, "SoldierEMG_IV_xj400", "ismg", 2^_st, [], "", []] ];
 _mgE4 = _type;
+_type call _lv4Inf;
 _type = _type + 1;
 
 unitDefs set [_type, ["Sniper", 100, _si, 10, "SoldierESniper_xj400", "isniper", 2^_st, [], "", []] ];
 _sniperE = _type;
+TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [count TzkSelfUpdateVal, [
+	1, 4, 
+	["SoldierESniper_xj400", "SoldierESniper_xj400", "SoldierESniper_xj400", "SoldierESniper_xj400"],
+	["", "", "", ""]
+]];
 _type = _type + 1;
 
 unitDefs set [_type, ["Heavy Sniper", 200, _si, 20, "SoldierESniperHeavy_xj400", "isniper", 2^_st, [], "", []] ];
 _heavySniperE = _type;
+TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [count TzkSelfUpdateVal, [
+	3, 4, 
+	["SoldierESniperHeavy_xj400", "SoldierESniperHeavy_xj400"],
+	["", ""]
+]];
 _type = _type + 1;
 
-unitDefs set [_type, ["RPG Soldier", 150, _si, 10, "SoldierELAW_xj400", "islaw", 2^_st, [], "", ["\TZK_Scripts_4_0_6\Common\Equip\RPG2ai.sqs"]] ];
+unitDefs set [_type, ["RPG Soldier", 150, _si, 10, "SoldierELAW_xj400", "islaw", 2^_st, [], "", []] ];
 _rpgSoldierE = _type;
+TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [count TzkSelfUpdateVal, [
+	1, 4, 
+	["SoldierELAW_xj400", "SoldierELAW_xj400", "SoldierELAW_xj400", "SoldierELAW_xj400"],
+	["\TZK_Scripts_4_0_6\Common\Equip\RPG2ai.sqs", "\TZK_Scripts_4_0_6\Common\Equip\RPG2ai.sqs", "\TZK_Scripts_4_0_6\Common\Equip\RPG2ai.sqs", "\TZK_Scripts_4_0_6\Common\Equip\RPG2ai.sqs"]
+]];
 _type = _type + 1;
 
 unitDefs set [_type, ["AT I", 150, _si, 8, "SoldierEAT_I_xj400", "isat", 2^_st, [], "", []] ];
 _atE1 = _type;
+_type call _lv1Inf;
 _type = _type + 1;
 
 unitDefs set [_type, ["AT II", 180, _si, 10, "SoldierEAT_II_xj400", "isat", 2^_st, [], "", []] ];
 _atE2 = _type;
+_type call _lv2Inf;
 _type = _type + 1;
 
 unitDefs set [_type, ["AT III", 250, _si, 15, "SoldierEAT_III_xj400", "isat", 2^_st, [], "", []] ];
 _atE3 = _type;
+_type call _lv3Inf;
 _type = _type + 1;
 
 unitDefs set [_type, ["AT IV", 400, _si, 25, "SoldierEAT_IV_xj400", "isat", 2^_st, [], "", []] ];
 _atE4 = _type;
+_type call _lv4Inf;
 _type = _type + 1;
 
-unitDefs set [_type, ["Strela", 250, _si, 10, "SoldierEAA_xj400", "isaa", 2^_st, [], "", ["\TZK_Scripts_4_0_6\Common\Equip\AAai.sqs"]] ];
+unitDefs set [_type, ["Strela", 250, _si, 10, "SoldierEAA_xj400", "isaa", 2^_st, [], "", []] ];
 _soldierAAE = _type;
+TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [count TzkSelfUpdateVal, [
+	1, 4, 
+	["SoldierEAA_xj400", "SoldierEAA_xj400", "SoldierEAA_xj400", "SoldierEAA_xj400"],
+	["\TZK_Scripts_4_0_6\Common\Equip\AAai.sqs", "\TZK_Scripts_4_0_6\Common\Equip\AAai.sqs", "\TZK_Scripts_4_0_6\Common\Equip\AAai.sqs", "\TZK_Scripts_4_0_6\Common\Equip\AAai.sqs"]
+]];
 _type = _type + 1;
 
 unitDefs set [_type, ["AA Commando", 300, _si, 20, "SoldierEAA_Commando_III_xj400", "isaa", 2^_st, [], "", []] ];
 _aaCommandoE = _type;
+TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [count TzkSelfUpdateVal, [
+	3, 4, 
+	["SoldierEAA_Commando_III_xj400", "SoldierEAA_Commando_IV_xj400"],
+	["", ""]
+]];
 _type = _type + 1;
 
-unitDefs set [_type, ["Saboteur", 150, _si, 10, "SoldierESaboteurBizon_xj400", "isaboteur", 2^_st, [], "", ["\TZK_Scripts_4_0_6\Common\Equip\Spec.sqs"]] ];
+unitDefs set [_type, ["Saboteur", 150, _si, 10, "SoldierESaboteurBizon_xj400", "isaboteur", 2^_st, [], "", []] ];
 _bomberE = _type;
+TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [count TzkSelfUpdateVal, [
+	1, 4, 
+	["SoldierESaboteurBizon_xj400", "SoldierESaboteurBizon_xj400", "SoldierESaboteurBizon_xj400", "SoldierESaboteurBizon_xj400"],
+	["\TZK_Scripts_4_0_6\Common\Equip\Spec.sqs", "\TZK_Scripts_4_0_6\Common\Equip\Spec.sqs", "\TZK_Scripts_4_0_6\Common\Equip\Spec.sqs", "\TZK_Scripts_4_0_6\Common\Equip\SpecIv.sqs"]
+]];
 _type = _type + 1;
 
-unitDefs set [_type, ["Miner", 200, _si, 10, "SoldierEMiner_xj400", "iminer", 2^_st, [], "", ["\TZK_Scripts_4_0_6\Common\Equip\Miner.sqs"]] ];
+unitDefs set [_type, ["Miner", 200, _si, 10, "SoldierEMiner_xj400", "iminer", 2^_st, [], "", []] ];
 _minerE = _type;
+TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [count TzkSelfUpdateVal, [
+	1, 4, 
+	["SoldierEMiner_xj400", "SoldierEMiner_xj400", "SoldierEMiner_xj400", "SoldierESaboteurBizon_xj400"],
+	["\TZK_Scripts_4_0_6\Common\Equip\Miner.sqs", "\TZK_Scripts_4_0_6\Common\Equip\Miner.sqs", "\TZK_Scripts_4_0_6\Common\Equip\Miner.sqs", "\TZK_Scripts_4_0_6\Common\Equip\MinerIV.sqs"]
+]];
 _type = _type + 1;
 
 unitDefs set [_type, ["Crew", 50, _si, 10, "SoldierECrew_xj400", "icrew", 2^stBarracks + 2^stLight + 2^stShip + 2^stHeavy, [], "", []] ];
@@ -651,22 +800,37 @@ _type = _type + 1;
 
 unitDefs set [_type, ["AA Crew", 250, _si, 10, "SoldierECrewAA_xj400", "icrew", 2^stBarracks + 2^stLight + 2^stShip + 2^stHeavy, [], "", []] ];
 _crewAAE = _type;
+TzkUnitSkillIdx set [count TzkUnitSkillIdx, _type];
+TzkUnitSkillVal set [count TzkUnitSkillVal, TzkSkillLevel select 4];
+TzkInfLevelIdx set [count TzkInfLevelIdx, _type];
+TzkInfLevelVal set [count TzkInfLevelVal, 3];
 _type = _type + 1;
 
 unitDefs set [_type, ["Pilot", 50, _si, 10, "SoldierEPilot_xj400", "ipilot", 2^stBarracks + 2^stAir, [], "", []] ];
 _pilotE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Grenade Vest", 130, _si, 10, "SoldierEG_xj400", "igrenadier", 2^_st, [], "", ["\TZK_Scripts_4_0_6\Common\Equip\GL.sqs"]] ];
+unitDefs set [_type, ["Grenade Vest", 130, _si, 10, "SoldierESaboteurBizon_xj400", "igrenadier", 2^_st, [], "", ["\TZK_Scripts_4_0_6\Common\Equip\Vest.sqs"]] ];
 _vestE = _type;
+_type call _lv4Inf;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mortar", 130, _si, 10, "SoldierEB_xj400", "igrenadier", 2^_st, [], "", ["\TZK_Scripts_4_0_6\Common\Equip\Mortar.sqs"]] ];
+unitDefs set [_type, ["Mortar", 130, _si, 10, "SoldierEB_xj400", "igrenadier", 2^_st, [], "", []] ];
 _MortarE = _type;
+TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [count TzkSelfUpdateVal, [
+	1, 4, 
+	["SoldierEB_xj400", "SoldierEB_xj400", "SoldierEB_xj400", "SoldierESaboteurBizon_xj400"],
+	["\TZK_Scripts_4_0_6\Common\Equip\Mortar.sqs", "\TZK_Scripts_4_0_6\Common\Equip\Mortar.sqs", "\TZK_Scripts_4_0_6\Common\Equip\Mortar.sqs", "\TZK_Scripts_4_0_6\Common\Equip\Mortar.sqs"]
+]];
 _type = _type + 1;
 
 unitDefs set [_type, ["Support Carrier", 500, _si, 10, "SoldierESupport_xj400", "imedic", 2^_st, [], "", []] ];
 _supportCarrierE = _type;
+TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [count TzkSelfUpdateVal, [
+	1, 4, 
+	["SoldierESupport_xj400", "SoldierESupport_xj400", "SoldierESaboteurBizon_xj400", "SoldierESniper_xj400"],
+	["", "", "\TZK_Scripts_4_0_6\Common\Equip\SupportCarrier.sqs", "\TZK_Scripts_4_0_6\Common\Equip\SupportCarrier.sqs"]
+]];
 _type = _type + 1;
 
 unitDefs set [_type, ["Custom", 150, _si, 10, "SoldierESaboteurBizon_xj400", "isaboteur", -1, [], "", []] ];
