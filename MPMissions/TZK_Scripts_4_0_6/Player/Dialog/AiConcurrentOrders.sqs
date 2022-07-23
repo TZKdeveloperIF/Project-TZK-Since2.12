@@ -6,7 +6,7 @@ mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
 _dlg = createDialog "TemporaryAIOrderDialog"
 mutexDlg = false
 
-? !bool_TZK_CHN_inited && bool_TZK_CHN_Lang: call preprocessFile localize {TZK_PLAYER_DIALOG_CHNLANG}
+? !bool_TZK_CHN_inited && bool_TZK_CHN_Lang: call loadFile localize {TZK_PLAYER_DIALOG_CHNLANG}
 
 ; show background
 ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
@@ -23,7 +23,7 @@ _idcParamLabels = []; _idcParams = []; "_idcParamLabels set [_x, IDC + 10 + _x],
 _idcStLev = IDC + 810; _idcStItem = IDC + 811; _idcStLabel = IDC + 900; _idcStParam = IDC + 1000; _idcStBtn = IDC + 820
 
 ; initial available controls
-call preprocessFile localize {TZK_DIALOG_AI_CONCURRENT_INIT}
+call loadFile localize {TZK_DIALOG_AI_CONCURRENT_INIT}
 
 _nameOfOrder = "orderTempDefs select _this select 0"
 _status = [[orderTempReclaim, orderTempOccupy], [orderTempDisengageType, orderTempSetFlightAltitude, orderTempSpoofMissileON, orderTempChangeAmmo, orderTempSwitchMagazine], [], [orderTempMoveUnit], [orderTempTransportDuty, orderTempShootTarget, orderTempShootBigAngle, orderTempHoldTown, orderTempMoveType]]
@@ -42,7 +42,7 @@ _grpSuperior = "([{Commander}] + callsigns) select (aiSetting select (_this sele
 	? _selGroup != lbCurSel _idcCurrent : _selGroup = lbCurSel _idcCurrent; goto "NewGroupSelected"
 	? _selOrder != lbCurSel _idcOrder : _selOrder = lbCurSel _idcOrder; goto "NewOrderSelected"
 	? _selStLev != lbCurSel _idcStLev: _selStLev = lbCurSel _idcStLev; goto "NewStLevSel"
-	? _selStItem != lbCurSel _idcStItem: _selStItem = lbCurSel _idcStItem; call preprocessFile localize {TZK_DIALOG_AI_CONCURRENT_REFRESH_STATUS}
+	? _selStItem != lbCurSel _idcStItem: _selStItem = lbCurSel _idcStItem; call loadFile localize {TZK_DIALOG_AI_CONCURRENT_REFRESH_STATUS}
 
 	? btnSendOrder: btnSendOrder = false; goto "SendOrder"
 	? btnReturn : btnReturn = false; goto "CommandAI"
@@ -56,18 +56,18 @@ _grpSuperior = "([{Commander}] + callsigns) select (aiSetting select (_this sele
 
 	? _gi != -1 : goto "SelectedOneGroup"
 
-	? (groupPlayer == (groupCommander select _si)) : { ctrlShow [_x, true] } forEach [_idcOrderLabel, _idcSendOrder, _idcOrder]; call preprocessFile "Player\Dialog\localize {TZK_DIALOG_AI_CONCURRENT_REFRESH_ORDER}", goto "Update"
+	? (groupPlayer == (groupCommander select _si)) : { ctrlShow [_x, true] } forEach [_idcOrderLabel, _idcSendOrder, _idcOrder]; call loadFile localize {TZK_DIALOG_AI_CONCURRENT_REFRESH_ORDER}, goto "Update"
 	
 	_Superior = false; { if ( (["Commander"] + callsigns) select (aiSetting select _si select _x select aisSuperior) == _groupNames select giPlayer ) then {_Superior = true} } forEach _gis
-	? _Superior : { ctrlShow [_x, true] } forEach [_idcOrderLabel, _idcSendOrder, _idcOrder]; call preprocessFile "Player\Dialog\localize {TZK_DIALOG_AI_CONCURRENT_REFRESH_ORDER}", call preprocessFile localize {TZK_DIALOG_AI_CONCURRENT_REFRESH_STATUS}, goto "Update"
+	? _Superior : { ctrlShow [_x, true] } forEach [_idcOrderLabel, _idcSendOrder, _idcOrder]; call loadFile localize {TZK_DIALOG_AI_CONCURRENT_REFRESH_ORDER}, call loadFile localize {TZK_DIALOG_AI_CONCURRENT_REFRESH_STATUS}, goto "Update"
 	
 	? !_Superior : call _hideCommands; goto "Update"
 
 	#SelectedOneGroup
 	? (groupPlayer == (groupCommander select _si)) && !( ([_si, _gi] call _grpSuperior) in ["Commander", _groupNames select giPlayer] ) : call _hideCommands
-	? (groupPlayer == (groupCommander select _si)) && ( ([_si, _gi] call _grpSuperior) in ["Commander", _groupNames select giPlayer] ) : { ctrlShow [_x, true] } forEach [_idcOrderLabel, _idcSendOrder, _idcOrder]; call preprocessFile "Player\Dialog\localize {TZK_DIALOG_AI_CONCURRENT_REFRESH_ORDER}", call preprocessFile localize {TZK_DIALOG_AI_CONCURRENT_REFRESH_STATUS}, goto "Update"
+	? (groupPlayer == (groupCommander select _si)) && ( ([_si, _gi] call _grpSuperior) in ["Commander", _groupNames select giPlayer] ) : { ctrlShow [_x, true] } forEach [_idcOrderLabel, _idcSendOrder, _idcOrder]; call loadFile localize {TZK_DIALOG_AI_CONCURRENT_REFRESH_ORDER}, call loadFile localize {TZK_DIALOG_AI_CONCURRENT_REFRESH_STATUS}, goto "Update"
 	? (groupPlayer != (groupCommander select _si)) && ([_si, _gi] call _grpSuperior) != _groupNames select giPlayer : call _hideCommands
-	? (groupPlayer != (groupCommander select _si)) && ([_si, _gi] call _grpSuperior) == _groupNames select giPlayer : { ctrlShow [_x, true] } forEach [_idcOrderLabel, _idcSendOrder, _idcOrder]; call preprocessFile "Player\Dialog\localize {TZK_DIALOG_AI_CONCURRENT_REFRESH_ORDER}", call preprocessFile localize {TZK_DIALOG_AI_CONCURRENT_REFRESH_STATUS}, goto "Update"
+	? (groupPlayer != (groupCommander select _si)) && ([_si, _gi] call _grpSuperior) == _groupNames select giPlayer : { ctrlShow [_x, true] } forEach [_idcOrderLabel, _idcSendOrder, _idcOrder]; call loadFile localize {TZK_DIALOG_AI_CONCURRENT_REFRESH_ORDER}, call loadFile localize {TZK_DIALOG_AI_CONCURRENT_REFRESH_STATUS}, goto "Update"
 	
 	goto "Update"
 
@@ -110,7 +110,7 @@ _grpSuperior = "([{Commander}] + callsigns) select (aiSetting select (_this sele
 	? count (_status select _selStLev) == 0 || call dlgUpdated: goto "Update"
 	{lbAdd [_idcStItem, _x call _nameOfOrder]} forEach (_status select _selStLev)
 	; continue execute RefreshStatus to hide label/param
-	call preprocessFile localize {TZK_DIALOG_AI_CONCURRENT_REFRESH_STATUS}
+	call loadFile localize {TZK_DIALOG_AI_CONCURRENT_REFRESH_STATUS}
 	goto "Update"
 #StatusButton
 	? _selGroup == -1 : player globalChat "No group selected"; goto "Update"

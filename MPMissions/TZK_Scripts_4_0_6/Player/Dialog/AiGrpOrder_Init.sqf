@@ -1,5 +1,3 @@
-// args: none
-
 private [{_i}, {_c}];
 
 if (groupPlayer != groupCommander select _si) then {
