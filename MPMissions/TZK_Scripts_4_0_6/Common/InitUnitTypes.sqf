@@ -306,7 +306,10 @@ unitDefs set [_type, ["Jeep Radar", 800, _si, 20, "Jeep_Radar_xj400", "ijeepMUTT
 _jeepRadarW = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["M151A1C", 1200, _si, 30, "M151A1C_htr_xj400", "\tzk_texture_4_0_6\ui\iM151a1c.paa", 2^_st, [2, _crewW], _mAtCar, []] ];
+unitDefs set [_type, [
+	"M151A1C", 1200, _si, 30, "M151A1C_htr_xj400", "\tzk_texture_4_0_6\ui\iM151a1c.paa", 2^_st, [2, _crewW], _mAtCar,
+	["\TZK_Scripts_4_0_6\Common\Equip\AntiTankCar.sqs"]
+]];
 _m151a1cW = _type;
 _type = _type + 1;
 
@@ -318,11 +321,17 @@ unitDefs set [_type, ["HMMWV", 400, _si, 30, "HMMWV_xj400", "\humr\ihmmwv", 2^_s
 _hummerW = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["HMMWV M2", 500, _si, 30, "HMMWV_M2wS_xj400", "\TZK_Texture_4_0_0\icon\iHMMWV_M2wS.paa", 2^_st, [2, _crewW], _mCar, []] ];
+unitDefs set [_type, [
+	"HMMWV M2", 500, _si, 30, "HMMWV_M2wS_xj400", "\TZK_Texture_4_0_0\icon\iHMMWV_M2wS.paa", 2^_st, [2, _crewW], _mCar, 
+	["\TZK_Scripts_4_0_6\Common\Equip\ArmoredCarMg.sqs"]
+]];
 _hummerW2 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["HMMWV M134", 1200, _si, 30, "HMMWV_M134_xj400", "\TZK_Texture_4_0_0\icon\iHMMWV_M2wS.paa", 2^_st, [2, _crewW], _mCar, []] ];
+unitDefs set [_type, [
+	"HMMWV M134", 1200, _si, 30, "HMMWV_M134_xj400", "\TZK_Texture_4_0_0\icon\iHMMWV_M2wS.paa", 2^_st, [2, _crewW], _mCar,
+	["\TZK_Scripts_4_0_6\Common\Equip\ArmoredCarGatling.sqs"]
+]];
 _hummerM134W = _type;
 _type = _type + 1;
 
@@ -870,7 +879,10 @@ unitDefs set [_type, ["UAZ Radar", 800, _si, 20, "UAZ_Radar_xj400", "iuaz", 2^_s
 _uazRadarE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["UAZ SPG9", 1200, _si, 30, "UAZ_SPG_FDF_xj400", "\tzk_texture_4_0_6\ui\iUazSpg.paa", 2^_st, [2, _crewE], _mAtCar, []] ];
+unitDefs set [_type, [
+	"UAZ SPG9", 1200, _si, 30, "UAZ_SPG_FDF_xj400", "\tzk_texture_4_0_6\ui\iUazSpg.paa", 2^_st, [2, _crewE], _mAtCar,
+	["\TZK_Scripts_4_0_6\Common\Equip\AntiTankCar.sqs"]
+]];
 _uazSpg9E = _type;
 _type = _type + 1;
 
@@ -882,11 +894,17 @@ unitDefs set [_type, ["BRDM", 400, _si, 30, "BRDM_xj400", "\BRMD\ibrmd", 2^_st, 
 _brdmE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["BRDM PK", 500, _si, 30, "BRDM_PK_xj400", "\TZK_Texture_4_0_0\icon\iBRDMPK.paa", 2^_st, [2, _crewE], _mCar, []] ];
+unitDefs set [_type, [
+	"BRDM PK", 500, _si, 30, "BRDM_PK_xj400", "\TZK_Texture_4_0_0\icon\iBRDMPK.paa", 2^_st, [2, _crewE], _mCar,
+	["\TZK_Scripts_4_0_6\Common\Equip\ArmoredCarMg.sqs"]
+]];
 _brdmE2 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["BRDM GShG", 1200, _si, 30, "BRDM_GShG_xj400", "\TZK_Texture_4_0_0\icon\iBRDMPK.paa", 2^_st, [2, _crewE], _mCar, []] ];
+unitDefs set [_type, [
+	"BRDM GShG", 1200, _si, 30, "BRDM_GShG_xj400", "\TZK_Texture_4_0_0\icon\iBRDMPK.paa", 2^_st, [2, _crewE], _mCar,
+	["\TZK_Scripts_4_0_6\Common\Equip\ArmoredCarGatling.sqs"]
+]];
 _brdmGsghE = _type;
 _type = _type + 1;
 

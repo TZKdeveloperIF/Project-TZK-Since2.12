@@ -1,0 +1,19 @@
+; args: [vehicle]
+_v = _this
+? not alive _v: exit
+? not local _v && (isNull gunner _v || not local gunner _v): exit
+
+_simulation = format ["%1", typeof _v GetVehicleParam "simulation"]
+_bCar = _simulation == "car" || _simulation == "motorcycle"
+
+? _bCar: goto "Car"
+; Except for car
+{_v removeMagazines _x} foreach magazines _v
+_v groupChat "Magazines removed. Waiting for Rearm..."
+exit
+
+# Car
+{_v removeWeapon _x} foreach weapons _v; _v doWatch getPosASL _v
+_v groupChat "Magazines removed. Waiting for Rearm..."
+~1
+{_v removeMagazines _x} foreach magazines _v
