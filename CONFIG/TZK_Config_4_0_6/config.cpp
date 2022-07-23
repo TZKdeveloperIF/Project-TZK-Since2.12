@@ -182,8 +182,8 @@ class CfgVehicleActions {
 	OFrPAMX10RCGunnerOut = "OFrPAMX10RCGunnerOut";
 	OFrPAMX10RCCommanderOut = "OFrPAMX10RCCommanderOut";
 
-	HTRM151ACGunner = "CrouchToWeapon";
-	FDFCrouch2 = "CrouchToWeapon";
+	HTRM151ACGunner = "BIS_CrouchToWeapon";
+	FDFCrouch2 = "BIS_CrouchToWeapon";
 
 	SFP_ssg120driver = "SFP_ssg120driver";
 	SFP_ssg120driverout = "SFP_ssg120driverout";
@@ -218,6 +218,19 @@ class CfgMovesMC_xj400 {
 		class Gunner: Driver {};
 		class Commander: Driver {};
 		class Cargo: Driver {};
+
+		// --------------------------- BIS OFP ------------------------------
+		class BIS_CrouchToWeapon: Default {
+			actions = "WeaponActions";
+			file = "klekdoAT.rtm";
+			speed = -2;
+			looped = 0;
+			disableWeapons = 1;
+			soundEnabled = 0;
+			connectFrom[] = {"Crouch",1};
+			connectTo[] = {"Weapon",1};
+			interpolateTo[] = {"WeaponDying",0.1,"WeaponDyingVer2",0.1};
+		};
 
 		// --------------------------- AMX10RC -------------------------------
 

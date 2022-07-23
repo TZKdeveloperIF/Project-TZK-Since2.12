@@ -235,7 +235,11 @@
 
 		model = "\TZK_Model_4_0_6\m151a1c_htr.p3d";
 		picture = "\tzk_texture_4_0_6\ui\iM151a1c.paa";
-		hiddenSelections[] = {"shell_casing01","shell_projectile01","shell_casing02","shell_projectile02","shell_casing03","shell_projectile03","shell_casing04","shell_projectile04","shell_casing05","shell_projectile05","n1","n2","chambProj","chambCase"};
+		hiddenSelections[] = {
+			"shell_casing01","shell_projectile01","shell_casing02","shell_projectile02",
+			"shell_casing03","shell_projectile03","shell_casing04","shell_projectile04",
+			"shell_casing05","shell_projectile05","n1","n2","chambProj","chambCase"
+		};
 
 		gunnerAction = "ManActHTRM151ACGunner";
 		gunnerOpticsmodel = "\TZK_Model_4_0_6\opt\htr_106recOptic";
