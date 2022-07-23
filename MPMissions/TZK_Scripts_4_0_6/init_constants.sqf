@@ -1,6 +1,6 @@
-// args: [scripts];
+comment {args: [scripts]};
 
-// side info
+comment {side info};
 si0 = 0; si1 = 1; siRes = 2; siBoth = 3; siCiv = 4;
 siEnemy = [si1, si0];
 sideNames = ["West", "East", "Resistance", "Both", "Civilian"];
@@ -43,9 +43,9 @@ callsigns = [
 GroupsNum = (count callsigns) + 2; giTown = GroupsNum - 2; giWorker = GroupsNum - 1;
 maxQ = 1000;
 TotalInfoTypes = 100;
-// these constants are used for calculating "value" in publicVariable operation.;
-// "TotalInfoTypes" could be defined in init script of "InfoMsgTypes" as well.;
-// cautious: number in OFP is "Single" so it's necessary to make sure the value of "value" less than 15,000,000;
+comment {these constants are used for calculating "value" in publicVariable operation};
+comment {"TotalInfoTypes" could be defined in init script of "InfoMsgTypes" as well};
+comment {cautious: number in OFP is "Single" so it's necessary to make sure the value of "value" less than 15,000,000};
 
 Musics0 = [
 	"Track1", "Track2", "Track3", "Track4", "Track5", "Track6", "Track7", "Track8", "Track9",
@@ -58,7 +58,7 @@ music1h = 0;
 Musics10m = ["Track1", "Track2", "Track3", "Track4", "Track5", "Track6", "Track7", "Track8", "Track10", "RTrack2"];
 music10m = 0;
 
-// WAYPOINTS;
+comment {WAYPOINTS};
 countWPPlayer = 10; countWPCO = 20; countTargetMarkers = 10;
 wpCO = [[], []];
 {
@@ -67,15 +67,17 @@ wpCO = [[], []];
 		wpCO select _si set [_i, [-1, -1]]; _i = _i + 1
 	};
 } forEach [si0, si1];
-// { _index = 0; while "_index < countWaypoints" do { (waypoint select _x) set [_index, []];  _index = _index + 1 } } foreach [si0, si1];
+comment {
+	{ _index = 0; while "_index < countWaypoints" do { (waypoint select _x) set [_index, []];  _index = _index + 1 } } foreach [si0, si1];
+};
 
-// vehicleAttached format: [ [tug, [vehicleCenter, vehicleRight, vehicleLeft]], ...];
+comment {vehicleAttached format: [ [tug, [vehicleCenter, vehicleRight, vehicleLeft]], ...]};
 tsTug = 0; tsTugged = 1;
 tsCenter = 0; tsRight = 1; tsLeft = 2;
 vehicleAttached = [];
 ttHeli = 0; ttBoat = 1; ttTruck = 2; ttAPC = 3;
-// vehicleTuggedServer is used to check vehicles' position and fix the attach/detach position bug;
+comment {vehicleTuggedServer is used to check vehicles' position and fix the attach/detach position bug};
 vehicleTuggedServer = []; vehicleTugServer = [];
 
-// art module
+comment {art module};
 mutexTzkArtModule = false;

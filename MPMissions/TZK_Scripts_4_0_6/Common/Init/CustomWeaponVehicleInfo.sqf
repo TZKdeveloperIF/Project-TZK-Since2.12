@@ -1,12 +1,8 @@
-// args: none
+enum_TZK_CustomVehicle_Plane = 0;
+enum_TZK_CustomVehicle_Gunship = 1;
+enum_TZK_CustomVehicle_Helicopter = 2;
+enum_TZK_CustomVehicle_Cnt = 3;
 
-// enum
-// {
-	enum_TZK_CustomVehicle_Plane = 0;
-	enum_TZK_CustomVehicle_Gunship = 1;
-	enum_TZK_CustomVehicle_Helicopter = 2;
-	enum_TZK_CustomVehicle_Cnt = 3;
-// };
 TZK_CustomVehicleTypes = [
 	"A10_xj400",
 	"Su25_xj400",

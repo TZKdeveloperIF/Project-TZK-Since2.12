@@ -1,8 +1,8 @@
-// args: string (script interface)
+comment {args: string (script interface)};
 
-// UPGRADES;
-// upgDefs entry format: [sName, nCost, nMinutes];
-// The constant used for passing upg is 100 thus quite enough up till now;
+comment {UPGRADES};
+comment {upgDefs entry format: [sName, nCost, nMinutes]};
+comment {The constant used for passing upg is 100 thus quite enough up till now};
 _type = 0; upgDefs = [];
 
 upgTL = _type;
@@ -116,7 +116,10 @@ upgDefs set [_type, [
 	[3, 0] select dev
 ]];
 _type = _type + 1;
-? bool_TZK_SEMod_Mode: upgDefs select upgPlaneAfterBurner set [1, 0], upgDefs select upgPlaneAfterBurner set [2, 0];
+if bool_TZK_SEMod_Mode then {
+	upgDefs select upgPlaneAfterBurner set [1, 0];
+	upgDefs select upgPlaneAfterBurner set [2, 0];
+};
 
 upgSpoofMissile = _type;
 upgDefs set [_type, [
@@ -160,10 +163,10 @@ _type = _type + 1;
 
 if ("" != _this) then {call preprocessFile _this};
 
-// upgMatrix entry format: 0=not begun, 1=in progress, 2=upgraded;
+comment {upgMatrix entry format: 0=not begun, 1=in progress, 2=upgraded};
 upgMatrix = [ [], [] ];
 {
-	_si = x;
+	_si = _x;
 	_i = 0; _c = count upgDefs; while {_i < _c} do {
 		upgMatrix select _si set [_i, 0];
 		_i = _i + 1;

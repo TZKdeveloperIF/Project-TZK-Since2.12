@@ -1,4 +1,4 @@
-// Init the upgRedTopRange upgrade, recover 4xAA 4000m range as in crcti@res2c3c8.
+comment {Init the upgRedTopRange upgrade, recover 4xAA 4000m range as in crcti@res2c3c8};
 {
 	private [{_si}];
 	_si = _x;

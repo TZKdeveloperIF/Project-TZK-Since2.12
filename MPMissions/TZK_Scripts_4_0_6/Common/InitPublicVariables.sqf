@@ -1,15 +1,15 @@
-// VARIABLES SENT BY SERVER AND PLAYERS
-// 2.01 ArmA:Resistance provides another available broadcast method and some scripts have applied them.
+comment {VARIABLES SENT BY SERVER AND PLAYERS};
+comment {2.01 ArmA:Resistance provides another available broadcast method and some scripts have applied them};
 
-// Ver 2.12 v02 pvKilled
+comment {Ver 2.12 v02 pvKilled};
 indexKilledTank = 0; mutexKilledTank = false; _i = 0; _c = 5; while {_i < _c} do {
 	call format [{pvKilledTank%1 = objNull}, _i];
 	_i = _i + 1;
 };
 pvKilledAircraft = objNull; pvKilledBoat = objNull;
-// Ver 2.12 v02 mutex ReEquip
+comment {Ver 2.12 v02 mutex ReEquip};
 mutexReEquip = false;
-// Ver 2.00 Variables
+comment {Ver 2.00 Variables};
 pvJoinApply = -1; pvJoinReply = -1; pvJoinReceive = -1; pvJoinUnits = objNull;
 mutexJoinServer = false; mutexSendJoinApply = false;
 pvAfterBurnerON = objNull; pvAfterBurnerOFF = objNull;
@@ -21,7 +21,7 @@ pvEjectAIUnits = objNull; pvClearBuy = -1;
 
 mutexTownWorkerGroups = false;
 
-// Earlier Version Variables
+comment {Earlier Version Variables};
 
 mutexScore = false;
 mutexReadScore = false;
@@ -57,10 +57,7 @@ mutexTransportTurnOff = false; pvTransportTurnOff = objNull;
 mutexInitTownGroupVehicles = false;
 mutexTextMsg = false;
 
-//pvScudSide = -1
-//pvScud = objNull
-
-// VARIABLES SENT BY SERVER
+comment {VARIABLES SENT BY SERVER};
 
 pvWorkers0 = 0;
 pvWorkers1 = 0;
@@ -69,7 +66,7 @@ mutexStructBuilt = false;
 pvStructBuilt = -1;
 pvStructBuilt_Object = objNull;
 
-// pvTownSide format: townIndex + 100*newSide + 1000*oldSide
+comment {pvTownSide format: townIndex + 100*newSide + 1000*oldSide};
 mutexTownSide = false;
 pvTownSide = -1;
 
@@ -92,6 +89,7 @@ mutexQueueAdd = false; mutexQueueRem = false; _i = 0; _c = 5; while {_i < _c} do
 	call format [{pvQueueAdd%1 = -1}, _i];
 	call format [{pvQueueAddEx%1 = -1}, _i];
 	call format [{pvQueueRem%1 = -1}, _i];
+	_i = _i + 1;
 };
 
 mutexQueueLength = false;
@@ -103,7 +101,7 @@ pvCancelBuy = -1;
 pvRemoveMags = objNull; mutexVehicleMagRem = false; mutexRearmVehG = false; indexRearmVehG = 0;
 _i = 0; while {_i < 5} do {call format ["pvRearmVehG%1 = objNull", _i]; _i = _i + 1};
 
-// pvMoney format: Used to be amount + 100 000*groupIndex + 10 000 000*side. Now _Group PV added and used to save giFrom, giTo and si, pvMoney are for amount only, so there is no need to limit money less than 100000 in order to avoid amount information's loss in value's passing.
+comment {pvMoney format: Used to be amount + 100 000*groupIndex + 10 000 000*side. Now _Group PV added and used to save giFrom, giTo and si, pvMoney are for amount only, so there is no need to limit money less than 100000 in order to avoid amount information's loss in value's passing.};
 mutexMoney = false;
 _i = 0; while {_i < 10} do {call format ["pvMoney%1 = -1; pvMoneyGroup%1 = -1", _i]; _i = _i + 1};
 
@@ -127,11 +125,11 @@ pvMoneySideSpent = -1;
 pvMovingToSupport_Unit = objNull;
 pvMovingToSupport_Support = objNull;
 
-// pvGameOver values: (draw) + 2*(reasonDraw) + 2*4*(siWinner) + 2*4*2*(reasonWin)
-// 2-draw: 0:noDraw, 1:draw
-// 4-reasonDraw: (ignored if draw=0) 0:timeLimit, 1:TBD, 2:TBD, 3:TBD
-// 2-siWinner: (ignored if draw=1)
-// 4-reasonWin: (ignored if draw=1) 0:destruction, 1:towns, 2:TBD, 3:TBD
+comment {pvGameOver values: (draw) + 2*(reasonDraw) + 2*4*(siWinner) + 2*4*2*(reasonWin)};
+comment {2-draw: 0:noDraw, 1:draw};
+comment {4-reasonDraw: (ignored if draw=0) 0:timeLimit, 1:TBD, 2:TBD, 3:TBD};
+comment {2-siWinner: (ignored if draw=1)};
+comment {4-reasonWin: (ignored if draw=1) 0:destruction, 1:towns, 2:TBD, 3:TBD};
 pvGameOver = -1;
 
 pvDebugVars = false;
@@ -139,7 +137,7 @@ pvDebugVar1 = -1000;
 pvDebugVar2 = -1000;
 pvDebugVar3 = -1000;
 
-//VARIABLES SENT BY PLAYERS
+comment "VARIABLES SENT BY PLAYERS";
 
 mutexGroupIsAI = false;
 mutexAddWorker = false;

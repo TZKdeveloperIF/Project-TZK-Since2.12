@@ -19,6 +19,7 @@
 
 		_startMoneyPlayer = _startMoneyPlayer - (_startMoneyPlayer % 1);
 		_moneyRequest = moneyRequest select _si;
+		private [{_commanderIndex}];
 		_index = 0; while {_index < _countGroups} do {
 			_group = _groups select _index;
 			_bSkipGroupSide = false;

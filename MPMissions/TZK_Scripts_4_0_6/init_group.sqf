@@ -1,4 +1,4 @@
-// SCORE;
+comment {SCORE};
 _type = 0;
 scoreDefs = [];
 scInfantry = _type; scoreDefs set [_type, ["Infantry", 1]]; _type = _type + 1;
@@ -44,7 +44,7 @@ _groups = []; _groupNames = [];
     };
 } forEach [si0, si1];
 
-// Planning to Initialize worker and town groups;
+comment {Planning to Initialize worker and town groups};
 {
     _si = _x;
     _i = 0; _c = count (groupMatrix select _si);

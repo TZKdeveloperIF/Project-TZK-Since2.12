@@ -12,12 +12,12 @@
 _count = count towns; _index = 0
 
 ; Name of triggers should better be "TrigDym..." but not "Trig...". The latter is used in old CTI missions, and those trigger name defined in mission.sqm can't be assigned in-game again even though sensor has been "deleted". Even in 2.01 there's no "undefine/rename Trigger" command available. So the best way is not to use those names.
-#SetTownTriggers
+# SetTownTriggers
 _town = towns select _index; _flag = _town select 0
 ; format: [flag,"Name",value,side]
 _radius = 10
 ? bool_TZK_SEMod_Mode: _radius = 100
-call format [{ TrigDym%1 = createTrigger [{EmptyDetector}, getPos _flag]; TrigDym%1 setTriggerArea [_radius,_radius,0,false]; TrigDym%1 setTriggerActivation [{ANY}, {PRESENT}, false]; TrigDym%1 setTriggerStatements [{true}, {TrigDym%1 exec localize {TZK_TRIGGER_TOWN_START_SERVER}}, {}] }, _index]
+call format [{ TrigDym%1 = createTrigger [{EmptyDetector}, getPos _flag]; TrigDym%1 setTriggerArea [_radius,_radius,0,false]; TrigDym%1 setTriggerActivation [{ANY}, {PRESENT}, false]; TrigDym%1 setTriggerStatements [{true}, {TrigDym%1 exec localize {TZK_TRIGGER_TOWN_SERVER}}, {}] }, _index]
 
 _index = _index + 1
 ? _index < _count : goto "SetTownTriggers"

@@ -1,13 +1,15 @@
 
-// AI GROUP SETTINGS;
-// setting definition entry format: [ name, [s0, s1, ...], default ];
+comment {
+	AI GROUP SETTINGS
+	setting definition entry format: [ name, [s0, s1, ...], default ]
+};
 aiSettingDefs = []; _type = 0;
 
 aisPickupWaitTimeDefs = [0, 120, 240, 360, 480, 600, 720, 840, 960, 1080, 1800, 3600, 5940];
 aisPickupWaitTimeDisp = []; {
 	aisPickupWaitTimeDisp set [
 		count aisPickupWaitTimeDisp, 
-		call format [{%3%2%1%3}, "min", _x/60, ""]
+		call format [{"%2%1"}, "min", _x/60]
 	]
 } foreach aisPickupWaitTimeDefs; aisPickupWaitTimeDisp set [0, "Don't use"];
 aisRallyPoint1 = _type;
@@ -39,7 +41,10 @@ aiSettingDefs set [_type, ["Pickup Wait 2#", aisPickupWaitTimeDisp, 0, ""] ];
 _type = _type + 1;
 
 
-aisKeepDefs = [0, 50, 100, 150, 200, 250, 300, 350, 400, 500, 600, 800, 1000, 1500, 2000, 5000, 6500, 10000, 35000, 95000]; aisKeepDisp = [];
+aisKeepDefs = [
+	0, 50, 100, 150, 200, 250, 300, 350, 400, 500, 600, 
+	800, 1000, 1500, 2000, 5000, 6500, 10000, 35000, 95000
+]; aisKeepDisp = [];
 { if (_x < 1000) then {aisKeepDisp set [ count aisKeepDisp, call format[{%3%1%2%3}, "$", _x, {} ] ]} } foreach aisKeepDefs;
 aisKeepMin = _type;
 aiSettingDefs set [_type, ["Keep At Least", aisKeepDisp, 0, "Keep At Least/At Most"] ];
@@ -103,7 +108,9 @@ _type = _type + 1;
 
 
 aisAutoSupportRangeDefs = [100, 150, 200, 300, 400, 500, 800, 1000, 1200, 1500]; aisAutoSupportRange = [];
-{aisAutoSupportRange set [ count aisAutoSupportRange, call format[{%3%2%1%3}, "m", _x, {} ] ] } foreach aisAutoSupportRangeDefs;
+{
+	aisAutoSupportRange set [count aisAutoSupportRange, call format [{"%2%1"}, "m", _x]]
+} foreach aisAutoSupportRangeDefs;
 aisAutoRepair = _type;
 aiSettingDefs set [_type, ["Repair Place", ["At Both Sup", "At Our Sup", "Don't Use"], 0, "RepairPlace"] ];
 _type = _type + 1;
@@ -152,7 +159,7 @@ _type = _type + 1;
 _default = [];
 { _default set [count _default, _x select 2] } foreach aiSettingDefs;
 
-// current setting entry format: [orderID, orderType, [param 0, param 1, ...]];
+comment { current setting entry format: [orderID, orderType, [param 0, param 1, ...]]; };
 aiSetting = [ [], [] ];
 _si = si0; _list = aiSetting select _si; { _list set [ count _list, +_default ] } foreach (groupMatrix select _si);
 _si = si1; _list = aiSetting select _si; { _list set [ count _list, +_default ] } foreach (groupMatrix select _si);
@@ -160,18 +167,18 @@ aiBuying = [ [], [] ];
 _si = si0; _list = aiSetting select _si; { _list set [ count _list, [0,0,0,0] ] } foreach (groupMatrix select _si);
 _si = si1; _list = aiSetting select _si; { _list set [ count _list, [0,0,0,0] ] } foreach (groupMatrix select _si);
 
-// AI Auto-Buy Factory Selected by Setting. Format: [ [Factory1], [Factory2], [Factory3], [Factory4] ];
-// abandoned. maybe use it in next version;
-// aiAutoBuyFactory = [ [], [] ];
-// _si = si0; _list = aiAutoBuyFactory select _si; { _list set [ count _list, [ [objNull, -1], [objNull, -1], [objNull, -1], [objNull, -1] ] ] } foreach (groupMatrix select _si);
-// _si = si1; _list = aiAutoBuyFactory select _si; { _list set [ count _list, [ [objNull, -1], [objNull, -1], [objNull, -1], [objNull, -1] ] ] } foreach (groupMatrix select _si);
+comment { AI Auto-Buy Factory Selected by Setting. Format: [ [Factory1], [Factory2], [Factory3], [Factory4] ]; };
+comment { abandoned. maybe use it in next version; };
+comment { aiAutoBuyFactory = [ [], [] ]; };
+comment { _si = si0; _list = aiAutoBuyFactory select _si; { _list set [ count _list, [ [objNull, -1], [objNull, -1], [objNull, -1], [objNull, -1] ] ] } foreach (groupMatrix select _si); };
+comment { _si = si1; _list = aiAutoBuyFactory select _si; { _list set [ count _list, [ [objNull, -1], [objNull, -1], [objNull, -1], [objNull, -1] ] ] } foreach (groupMatrix select _si); };
 
 
-// AI GROUP ORDERS;
-// order def entry format: [name, params, script];
-// order def param format: [name, countFunc, toTextFunc];
+comment { AI GROUP ORDERS; };
+comment { order def entry format: [name, params, script]; };
+comment { order def param format: [name, countFunc, toTextFunc]; };
 _dirIndexToText = {["All", "N", "NE", "E", "SE", "S", "SW", "W", "NW"] select _this};
-_coCnt = {count (wpCO select siPlayer)}
+_coCnt = {count (wpCO select siPlayer)};
 _coDispStr = {
 	_posRelTown = (wpCO select siPlayer select _this) call funcCalcTownDirDistFromPos; 
 	format [{co%1 %2}, _this, [_posRelTown, {}] select (wpCO select siPlayer select _this select 0 == -1)]
@@ -252,21 +259,21 @@ orderHalt = _type;
 orderDefs set [_type, ["Halt", [], "\TZK_Scripts_4_0_5\Server\Order\Halt.sqs"] ];
 _type = _type + 1;
 
-// order entry format: [orderID, orderType, [param 0, param 1, ...]];
+comment { order entry format: [orderID, orderType, [param 0, param 1, ...]]; };
 orderMatrix = [ [], [] ];
 _si = si0; _gi = 0; { (orderMatrix select _si) set [ _gi, [0, orderTakeHoldTowns, [3, 1]] ]; _gi = _gi + 1 } foreach (groupMatrix select _si);
 _si = si1; _gi = 0; { (orderMatrix select _si) set [ _gi, [0, orderTakeHoldTowns, [3, 1]] ]; _gi = _gi + 1 } foreach (groupMatrix select _si);
 
 
 
-// Concurrent AI Group Orders. Different from "AI Group Orders", units fits the parameters of the command will break off from the "AI Group Order" 
-// and follow the Concurrent Order for a period, then return to the "AI Group Order";
+comment { Concurrent AI Group Orders. Different from "AI Group Orders", units fits the parameters of the command will break off from the "AI Group Order"  };
+comment { and follow the Concurrent Order for a period, then return to the "AI Group Order"; };
 
-// Constants used in Concurrent Orders' Send/Msg Scripts;
+comment { Constants used in Concurrent Orders' Send/Msg Scripts; };
 TempOrderNum = 30; TempParamNum = 10; TempParam0 = 30; TempParam1 = 30; TempParam2 = 20; TempParam3 = 20; TempParam4 = 20;
 
-// orderTemp def entry format: [name, params, script];
-// orderTemp def param format: [name, countFunc, toTextFunc];
+comment { orderTemp def entry format: [name, params, script]; };
+comment { orderTemp def param format: [name, countFunc, toTextFunc]; };
 orderTempDefs = []; _type = 0;
 _typeDefs0 = [
 	"Transport Car", "Transport Ship", "Transport APC", "Transport Heli", "Battle Ship", "Light Tank", "Heavy Tank", "Artillery", 
@@ -344,8 +351,11 @@ _type = _type + 1;
 
 orderTempSetFlightAltitude = _type;
 HeightDefs = [3, 5, 10, 20, 30, 40, 50, 100, 150, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1200, 1500];
-SetFlightAltitudeTypeDefs = ["Transport Heli", "Original Gunship", "AT Gunship", "All Helicopters", "Planes", "All Aircrafts"];
-_param0 = [ "Height", "count HeightDefs", "format [""%1m"", HeightDefs select _this ]" ];
+SetFlightAltitudeTypeDefs = [
+	"Transport Heli", "Original Gunship", "AT Gunship", 
+	"All Helicopters", "Planes", "All Aircrafts"
+];
+_param0 = [ "Height", "count HeightDefs", "format [{%1m}, HeightDefs select _this ]" ];
 _param1 = [ "Aircraft type", "count SetFlightAltitudeTypeDefs", "format [""%1"", SetFlightAltitudeTypeDefs select _this ]" ];
 orderTempDefs set [_type, ["Set Flight Altitude", [_param0, _param1], "\TZK_Scripts_4_0_5\Server\OrderTemp\SetFlightAltitude.sqs"] ];
 _type = _type + 1;
@@ -456,11 +466,14 @@ _type = _type + 1;
 
 orderTempSwitchMagazine = _type;
 ArtilleryMagazineSpeedList = [80, 120, 180, 300, 400, 500, 600, 700, 800, 900, 1000, 1200, 1500];
-ArtilleryTypeDefs = ["Howitzer Vehicle", "Rocket Launcher", "Mortar Structure", "Howitzer Structure", "Vehicles", "Structures", "ALL"];
+ArtilleryTypeDefs = [
+	"Howitzer Vehicle", "Rocket Launcher", "Mortar Structure", 
+	"Howitzer Structure", "Vehicles", "Structures", "ALL"
+];
 _param0 = [ "Waypoint", _coCnt, _coDispStr];
 _param1 = [ "Response Radius", "20", [100, 1] call _distByOffset];
 _param2 = [ "Unit Type", "count ArtilleryTypeDefs", "ArtilleryTypeDefs select _this" ];
-_param3 = [ "InitSpeed", "count ArtilleryMagazineSpeedList", "format [""%1"", ArtilleryMagazineSpeedList select _this ]" ];
+_param3 = [ "InitSpeed", "count ArtilleryMagazineSpeedList", "format [{%1}, ArtilleryMagazineSpeedList select _this ]" ];
 _param4 = [ "Curved", "2", "[{false},{true}] select _this" ];
 _script = localize {TZK_ORDER_SERVER_SWITCH_MAG};
 if bool_TZK_SEMod_Mode then {
@@ -499,15 +512,15 @@ _type = _type + 1;
 
 
 TempOrderNum = count orderTempDefs;
-// orderTemp entry format: [orderTempID, orderTempType, [param 0, param 1, ...]];
+comment { orderTemp entry format: [orderTempID, orderTempType, [param 0, param 1, ...]]; };
 orderTempMatrix = [ [], [] ];
 _si = si0; _gi = 0; { (orderTempMatrix select _si) set [ _gi, [-1, orderTempClearUnit, [0]] ]; _gi = _gi + 1 } foreach (groupMatrix select _si);
 _si = si1; _gi = 0; { (orderTempMatrix select _si) set [ _gi, [-1, orderTempClearUnit, [0]] ]; _gi = _gi + 1 } foreach (groupMatrix select _si);
 
 
-// initStatusMatrix structure: array[]. Index = _si * GroupsNum + _gi.
-// element of array above: array[]. Index = type of concurrent order.
-// element of array above: [option item on/off, param 0, param 1, ...]
+comment { initStatusMatrix structure: array[]. Index = _si * GroupsNum + _gi. };
+comment { element of array above: array[]. Index = type of concurrent order. };
+comment { element of array above: [option item on/off, param 0, param 1, ...] };
 initStatusMatrix = [];
 {
 	_si = _x; _gi = 0;

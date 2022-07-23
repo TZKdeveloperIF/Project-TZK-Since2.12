@@ -1,6 +1,6 @@
 
-// DEFINE CONSTANT POINTER FOR FUNCTION;
-// TG0 = townGroups select si0; TG1 = townGroups select si1; WG0 = workerGroups select si0; WG1 = workerGroups select si1; GM0 = groupMatrix select si0; GM1 = groupMatrix select si1;
+comment { DEFINE CONSTANT POINTER FOR FUNCTION; };
+comment { TG0 = townGroups select si0; TG1 = townGroups select si1; WG0 = workerGroups select si0; WG1 = workerGroups select si1; GM0 = groupMatrix select si0; GM1 = groupMatrix select si1; };
 
 {deleteVehicle (leader _x)} forEach (workerGroups select si0); {deleteVehicle (leader _x)} forEach (workerGroups select si1);
 
