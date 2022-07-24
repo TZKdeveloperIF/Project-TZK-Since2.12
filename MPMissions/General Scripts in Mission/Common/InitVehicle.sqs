@@ -6,20 +6,15 @@ _this exec "Common\InitVehicle_Stable.sqs"
 ; SERVER AND PLAYER
 ? bool_TZK_SEMod_Mode: _this exec "Extra\InitVehicle_SE.sqs"
 ; Engine Event. For Suspension effect and Deployment. Suspension don't fit tanks but still available for howitzer & T.O.S.
-? _typeName in ["M109A6G_xj400", "M109A6G_Art_xj400", "PLZ05_TZK_xj400", "PLZ05_Art_xj400", "TOS1_TZK_xj400"]: _vehicle addEventHandler ["Engine", { if (_this select 1) Then {_vehicle = _this select 0, if ("_x == {DeploySwitch_xj400}" count magazines _vehicle > 0) Then {_vehicle engineOn false}, [_vehicle, [{Suspension}]] exec "\TZK_Scripts_4_0_4\Common\EH\Tank_Acc_Sus.sqs"} }]; _vehicle engineOn false
-; this should use vehicle param.
+call preprocessFile "Common\Init\VehEhEngine.sqf"
 
 ; Fired Event
-? _typeName == "2S6_DKM_xj400": _vehicle addEventHandler ["Fired", {_this exec "\TZK_Scripts_4_0_6\Common\EH\Fired_2S6.sqs"}]
-? _typeName == "M270_M29064_xj400": _vehicle addEventHandler ["Fired", {_this exec "Common\EH\Fired_M270.sqs"}], [{mutex_TZK_MLRS = true; _vehicle = _this select 1 select 0; _i = 0; _c = count TZK_MLRS_Veh; _found = false; while "_i < _c && !_found" do "if (!alive (TZK_MLRS_Veh select _i select 0)) Then {_found = true} Else {_i = _i + 1}"; TZK_MLRS_Veh set [ _i, [_vehicle,12] ]; ["mutex_TZK_MLRS = false", 1] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"}, [_vehicle], "!mutex_TZK_MLRS"] exec "\TZK_Scripts_4_0_5\Common\~@\mutexCommand.sqs"
-? _typeName == "TOS1_TZK_xj400": _vehicle addEventHandler ["Fired", {_this exec "Common\EH\Fired_TOS1.sqs"}], [{mutex_TZK_MLRS = true; _vehicle = _this select 1 select 0; _i = 0; _c = count TZK_MLRS_Veh; _found = false; while "_i < _c && !_found" do "if (!alive (TZK_MLRS_Veh select _i select 0)) Then {_found = true} Else {_i = _i + 1}"; TZK_MLRS_Veh set [ _i, [_vehicle,30] ]; ["mutex_TZK_MLRS = false", 1] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"}, [_vehicle], "!mutex_TZK_MLRS"] exec "\TZK_Scripts_4_0_5\Common\~@\mutexCommand.sqs"
+call preprocessFile "Common\Init\VehEhFire.sqf"
 ; ? _typeName == "2S6_DKM_xj400" || _typeName == "Vulcan_TZK_xj400": _vehicle addEventHandler ["Fired", {_this exec "Common\EH\Fired_4xAA.sqs"}]
 ? _type in typesAAAPC: [_vehicle, _type] exec "Common\EH\CheckAndAddAAEH.sqs"
 ; ? "Plane" countType [_vehicle] > 0 && !bool_TZK_199_Mode: _vehicle addEventHandler ["Fired", {_this exec "Common\EH\Fired_AA_AntiPlane.sqs"}]
 
-? bool_TZK_Vanilla_Mode: goto "SkipVanilla"
-? _type in types_SE_td: goto "SkipVanilla"; comment "this variable is undefined if not in SE mode, and this line thus won't be executed."
-? _type in (typesHowitzer + typesHeavyTank + typesLightTank): _vehicle addEventHandler ["Fired", {_this exec "\TZK_Objects\Scripts\gunrec.sqs"}]
+? bool_TZK_Vanilla_Mode || not bool_TZK_SEMod_Mode: goto "SkipVanilla"
 # SkipVanilla
 
 ? _type in (typesHowitzer + typesRocketLauncher): _vehicle addEventHandler ["Fired", format [{ [_this select 0, nearestObject[_this select 0, _this select 4], %1 , true] exec localize {TZK_EH_FIRED_TRACK_SHELL} }, _si]]
@@ -28,7 +23,7 @@ _this exec "Common\InitVehicle_Stable.sqs"
 ? "Air" countType [_vehicle] > 0: [_vehicle, _type] exec "Common\EH\AddAirHit.sqs"
 
 ; Long last animation
-? _typeName in ["2S6_DKM_xj400", "ZSU_MNF_xj400", "ZSU_xj400"] && local _vehicle: _vehicle animate ["rot_radar", 1]
+? _typeName in ["2S6_DKM_xj400", "ZSU_MNF_xj400", "ZSU_xj400", "Jeep_Radar_xj400", "UAZ_Radar_xj400"] && local _vehicle: _vehicle animate ["rot_radar", 1]
 
 ? isNull player : goto "SkipClient"
 ; PLAYER ONLY
