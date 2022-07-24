@@ -48,7 +48,7 @@ _type = _type + 1;
 upgInfLevel3 = _type;
 upgDefs set [_type, [
 	"Soldier Level 3",
-	[5000, 20] select dev,
+	[5000, 50] select dev,
 	[2, 0] select dev
 ]];
 _type = _type + 1;
