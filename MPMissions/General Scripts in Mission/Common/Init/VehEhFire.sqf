@@ -44,25 +44,33 @@ if (_type in typesHowitzer && not bool_TZK_SEMod_Mode) then {
 	if (not _found && _typeName == "Grkpbv_Coc_xj400") then {
 		_found = true;
 		_vehicle addEventHandler ["Fired", {
-			[_this select 0, _this select 1] exec {\TZK_Config_4_0_6\Scripts\recoilByTex\shootGrkpbv.sqs}
+			if ("Gun120_Grk_xj400" == (_this select 1)) then {
+				[_this select 0, _this select 1] exec {\TZK_Config_4_0_6\Scripts\recoilByTex\shootGrkpbv.sqs}
+			};
 		}];
 	};
 	if (not _found && _typeName == "PLZ89_TZK_xj400") then {
 		_found = true;
 		_vehicle addEventHandler ["Fired", {
-			[_this select 0] exec {\TZK_Config_4_0_6\Scripts\recoilByTex\shootPlz89.sqs}
+			if ("Gun122_VME_xj400" == (_this select 1)) then {
+				[_this select 0] exec {\TZK_Config_4_0_6\Scripts\recoilByTex\shootPlz89.sqs}
+			};
 		}];
 	};
 	if (not _found && _typeName == "M109A6G_xj400") then {
 		_found = true;
 		_vehicle addEventHandler ["Fired", {
-			[_this select 0, TheWorld, {m109a6g}] exec {\TZK_Config_4_0_6\Scripts\recoilByTex\shoot155.sqs}
+			if ("Gun155_xj400" == (_this select 1)) then {
+				[_this select 0, TheWorld, {m109a6g}] exec {\TZK_Config_4_0_6\Scripts\recoilByTex\shoot155.sqs}
+			};
 		}];
 	};
 	if (not _found && _typeName == "PLZ05_TZK_xj400") then {
 		_found = true;
 		_vehicle addEventHandler ["Fired", {
-			[_this select 0, TheWorld, {plz05}] exec {\TZK_Config_4_0_6\Scripts\recoilByTex\shoot155.sqs}
+			if ("Gun155_xj400" == (_this select 1)) then {
+				[_this select 0, TheWorld, {plz05}] exec {\TZK_Config_4_0_6\Scripts\recoilByTex\shoot155.sqs}
+			};
 		}];
 	};
 };
