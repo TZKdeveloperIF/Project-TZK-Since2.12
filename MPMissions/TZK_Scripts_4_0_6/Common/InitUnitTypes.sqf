@@ -393,7 +393,11 @@ unitDefs set [_type, ["Patrol Boat HE/AP gun", 1500, _si, 30, "GunBoatW_xj400", 
 _boatW2 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Patrol Boat 30mm gun", 1500, _si, 30, "GunBoatW_Auto_xj400", "ipbr", 2^stLight + 2^stShip, [1, _crewW], _mBoat, [localize {TZK_EQUIP_UNIT_TRUCK}, "\TZK_Scripts_4_0_6\Common\Equip\BoatW.sqs"]] ];
+unitDefs set [_type, [
+	"Patrol Boat 30mm gun", 1500, _si, 30, "GunBoatW_Auto_xj400", "ipbr", 
+	2^stLight + 2^stShip, [1, _crewW], _mBoat, 
+	[localize {TZK_EQUIP_UNIT_TRUCK}, "\TZK_Scripts_4_0_6\Common\Equip\DispCannon.sqs"]
+]];
 _boatW3 = _type;
 _type = _type + 1;
 
@@ -455,7 +459,10 @@ unitDefs set [_type, ["M2A2 AT", 7500, _si, 30, "M2A2_AA_xj400", "\M2A2\im2a2", 
 _m2a2at = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Vulcan", 1500, _si, 30, "Vulcan_Auto_xj406", "\VULCAN\ivulcan", 2^_st, [1, _crewW], _mAA, []] ];
+unitDefs set [_type, [
+	"Vulcan", 1500, _si, 30, "Vulcan_Auto_xj406", "\VULCAN\ivulcan", 2^_st, [1, _crewW], _mAA, 
+	["\TZK_Scripts_4_0_6\Common\Equip\DispCannon.sqs"]
+]];
 _vulcanW = _type;
 _type = _type + 1;
 
@@ -963,7 +970,11 @@ unitDefs set [_type, ["Patrol Boat HE/AP gun", 1500, _si, 30, "GunBoatE_xj400", 
 _boatE2 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Patrol Boat 30mm gun", 1500, _si, 30, "GunBoatE_Auto_xj400", "ipbr", 2^stLight + 2^stShip, [1, _crewE], _mBoat, [localize {TZK_EQUIP_UNIT_TRUCK}, "\TZK_Scripts_4_0_6\Common\Equip\BoatE.sqs"]] ];
+unitDefs set [_type, [
+	"Patrol Boat 30mm gun", 1500, _si, 30, "GunBoatE_Auto_xj400", "ipbr", 
+	2^stLight + 2^stShip, [1, _crewE], _mBoat, 
+	[localize {TZK_EQUIP_UNIT_TRUCK}, "\TZK_Scripts_4_0_6\Common\Equip\DispCannon.sqs"]
+]];
 _boatE3 = _type;
 _type = _type + 1;
 
@@ -1021,7 +1032,10 @@ unitDefs set [_type, ["BMP2 AT", 7500, _si, 30, "BMP2_AA_xj400", "ibmp", 2^_st, 
 _bmp2at = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Shilka", 1500, _si, 30, "ZSU_Auto_xj400", "izsu", 2^_st, [1, _crewE], _mAA, []] ];
+unitDefs set [_type, [
+	"Shilka", 1500, _si, 30, "ZSU_Auto_xj400", "izsu", 2^_st, [1, _crewE], _mAA, 
+	["\TZK_Scripts_4_0_6\Common\Equip\DispCannon.sqs"]
+]];
 _shilkaE = _type;
 _type = _type + 1;
 
