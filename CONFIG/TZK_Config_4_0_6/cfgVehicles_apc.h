@@ -1,5 +1,7 @@
 	class M113_xj400: M113 {
 		model = "\TZK_Model_4_0_6\m113_TZK.p3d";
+		weapons[] = {"MG_12_7_xj400"};
+		magazines[] = {"MG_12_7_xj400"};
 	};
 	class M113Ambul_xj400: M113Ambul {
 		model = "\TZK_Model_4_0_6\M113_Ambu_TZK.p3d";
