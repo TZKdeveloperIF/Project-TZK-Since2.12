@@ -25,7 +25,6 @@ _vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Common\EH\Fire
 # CheckDistance
 _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is outside viewDistance. Order aborted."
 ? upgMatrix select _si select upgLongWeaponRange == 2: _distLimit = 2*viewDistance; _hint = "Target is outside 2xviewDistance. Order aborted."
-? _typeName in ["M1A1_Art_xj400", "T80_Art_xj400"]: _distLimit = 10000; _hint = "Target is very far. Probably can't hit it directly."
 ? _unit distance _target > _distLimit: _unit groupChat _hint; goto "EOF"
 ? _unit distance _target < _distLimit && _unit distance _target > viewDistance: _unit groupChat "Target is far. Probably missing."
 #PrepareToMove
