@@ -1,5 +1,5 @@
 ; args: [vehicle]
-_vehicle = _this select 0
+_vehicle = _this select 0; _this = 0; _type = typeof _vehicle
 
 _pages = 2; _page = Page_Radio_Artillery; _boole_PageNoChange = true
 
@@ -18,8 +18,9 @@ Radio000 setTriggerText "Refresh Radio List"; Radio000 setTriggerStatements ["th
 	Radio003 setTriggerText "Switch 500m/s Magazine"; Radio003 setTriggerStatements ["this", {[(vehicle player), 500, {H}] exec localize {TZK_RADIO_FUNC_GRAD}}, ""];
 	Radio004 setTriggerText "Switch 600m/s Magazine"; Radio004 setTriggerStatements ["this", {[(vehicle player), 600, {H}] exec localize {TZK_RADIO_FUNC_GRAD}}, ""];
 	Radio005 setTriggerText "Switch 700m/s Magazine"; Radio005 setTriggerStatements ["this", {[(vehicle player), 700, {H}] exec localize {TZK_RADIO_FUNC_GRAD}}, ""];
-	Radio006 setTriggerText "Switch 827m/s Magazine"; Radio006 setTriggerStatements ["this", {[(vehicle player), 827, {H}] exec localize {TZK_RADIO_FUNC_GRAD}}, ""];
-	if ("PLZ05_TZK_xj400" countType [_vehicle] > 0) Then {Radio007 setTriggerText "Switch 930m/s Magazine"; Radio007 setTriggerStatements ["this", {[(vehicle player), 930, {H}] exec localize {TZK_RADIO_FUNC_GRAD}}, ""];} else {Radio007 setTriggerText " "; Radio007 setTriggerStatements ["this", "", ""];};
+	
+	if (_type != "Grkpbv_Coc_xj400" && _type != "PLZ89_TZK_xj400") then {Radio006 setTriggerText "Switch 827m/s Magazine"; Radio006 setTriggerStatements ["this", {[(vehicle player), 827, {H}] exec localize {TZK_RADIO_FUNC_GRAD}}, ""];} else {Radio006 setTriggerText " "; Radio006 setTriggerStatements ["this", "", ""];};
+	if ("PLZ05_TZK_xj400" countType [_vehicle] > 0) then {Radio007 setTriggerText "Switch 930m/s Magazine"; Radio007 setTriggerStatements ["this", {[(vehicle player), 930, {H}] exec localize {TZK_RADIO_FUNC_GRAD}}, ""];} else {Radio007 setTriggerText " "; Radio007 setTriggerStatements ["this", "", ""];};
 
 #SkipInitPage2
 
@@ -37,7 +38,7 @@ _boole_PageNoChange = (Page_Radio_Artillery == _page); _page = Page_Radio_Artill
 ; If page changed, re-initialize
 ? !_boole_PageNoChange && _page == 0: Radio003 setTriggerText "Switch 080m/s Magazine"; Radio003 setTriggerStatements ["this", {[(vehicle player), 080, {H}] exec localize {TZK_RADIO_FUNC_GRAD}}, ""]; Radio004 setTriggerText "Switch 120m/s Magazine"; Radio004 setTriggerStatements ["this", {[(vehicle player), 120, {H}] exec localize {TZK_RADIO_FUNC_GRAD}}, ""]; Radio005 setTriggerText "Switch 180m/s Magazine"; Radio005 setTriggerStatements ["this", {[(vehicle player), 180, {H}] exec localize {TZK_RADIO_FUNC_GRAD}}, ""]; Radio006 setTriggerText "Switch 300m/s Magazine"; Radio006 setTriggerStatements ["this", {[(vehicle player), 300, {H}] exec localize {TZK_RADIO_FUNC_GRAD}}, ""]; Radio007 setTriggerText "Switch 400m/s Magazine"; Radio007 setTriggerStatements ["this", {[(vehicle player), 400, {H}] exec localize {TZK_RADIO_FUNC_GRAD}}, ""];
 
-? !_boole_PageNoChange && _page == 1: Radio003 setTriggerText "Switch 500m/s Magazine"; Radio003 setTriggerStatements ["this", {[(vehicle player), 500, {H}] exec localize {TZK_RADIO_FUNC_GRAD}}, ""]; Radio004 setTriggerText "Switch 600m/s Magazine"; Radio004 setTriggerStatements ["this", {[(vehicle player), 600, {H}] exec localize {TZK_RADIO_FUNC_GRAD}}, ""]; Radio005 setTriggerText "Switch 700m/s Magazine"; Radio005 setTriggerStatements ["this", {[(vehicle player), 700, {H}] exec localize {TZK_RADIO_FUNC_GRAD}}, ""]; Radio006 setTriggerText "Switch 827m/s Magazine"; Radio006 setTriggerStatements ["this", {[(vehicle player), 827, {H}] exec localize {TZK_RADIO_FUNC_GRAD}}, ""]; if ("PLZ05_TZK_xj400" countType [_vehicle] > 0) Then {Radio007 setTriggerText "Switch 930m/s Magazine"; Radio007 setTriggerStatements ["this", {[(vehicle player), 930, {H}] exec localize {TZK_RADIO_FUNC_GRAD}}, ""];} else {Radio007 setTriggerText " "; Radio007 setTriggerStatements ["this", "", ""];};
+? !_boole_PageNoChange && _page == 1: Radio003 setTriggerText "Switch 500m/s Magazine"; Radio003 setTriggerStatements ["this", {[(vehicle player), 500, {H}] exec localize {TZK_RADIO_FUNC_GRAD}}, ""]; Radio004 setTriggerText "Switch 600m/s Magazine"; Radio004 setTriggerStatements ["this", {[(vehicle player), 600, {H}] exec localize {TZK_RADIO_FUNC_GRAD}}, ""]; Radio005 setTriggerText "Switch 700m/s Magazine"; Radio005 setTriggerStatements ["this", {[(vehicle player), 700, {H}] exec localize {TZK_RADIO_FUNC_GRAD}}, ""]; if (_type != "Grkpbv_Coc_xj400" && _type != "PLZ89_TZK_xj400") then {Radio006 setTriggerText "Switch 827m/s Magazine"; Radio006 setTriggerStatements ["this", {[(vehicle player), 827, {H}] exec localize {TZK_RADIO_FUNC_GRAD}}, ""];} else {Radio006 setTriggerText " "; Radio006 setTriggerStatements ["this", "", ""];}; if ("PLZ05_TZK_xj400" countType [_vehicle] > 0) then {Radio007 setTriggerText "Switch 930m/s Magazine"; Radio007 setTriggerStatements ["this", {[(vehicle player), 930, {H}] exec localize {TZK_RADIO_FUNC_GRAD}}, ""];} else {Radio007 setTriggerText " "; Radio007 setTriggerStatements ["this", "", ""];};
 
 
 _timeRefresh = time + 1
