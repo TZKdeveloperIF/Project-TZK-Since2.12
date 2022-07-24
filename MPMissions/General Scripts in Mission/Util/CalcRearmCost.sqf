@@ -14,12 +14,12 @@ _weapons = weapons _unit;
 
 _magazines = _unit call funcGetNotEmptyMags;
 {
-	if !(_x in _magazines) then {
+	_magIdx = _magazines find _x;
+	if (-1 == _magIdx) then {
 		_index = equipSearch find _x;
 		if (_index != -1) then {_price = equipDefs select _index select edcost; _cost = _cost + _price};
 	} else {
-		_index = _magazines find _x;
-		_magazines set [_index, ""];
+		_magazines set [_magIdx, ""];
 	};
 } forEach _magData;
 
