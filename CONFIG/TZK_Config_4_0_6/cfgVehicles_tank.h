@@ -17,10 +17,14 @@
 		class EventHandlers {
 			Init = "_vehicle = _this select 0; [_vehicle, {C}] exec localize {TZK_EVENT_INIT_TEX_M1A1}; _vehicle animate [{suspension}, 0.5]";
 		};
+		weapons[] = {"M1Gun_xj400","Coax_M240_xj400"};
+		magazines[] = {"M1Sabot_xj400","M1Heat_xj400", "Coax_M240_xj400"};
 	};
 	class M1A2_INQ_xj400: TZK_HeavyWestTank_Base_xj400 {
 		maxSpeed = 57;
 		model = "\TZK_Model_4_0_6\M1A2_INQ.p3d";
+		weapons[] = {"M12Gun_xj400","Coax_M240_xj400"};
+		magazines[] = {"M12Sabot_xj400","M12Heat_xj400", "Coax_M240_xj400"};
 	};
 	class Leo2A6_xj400: TZK_HeavyWestTank_Base_xj400 {
 		maxSpeed = 57;
@@ -40,6 +44,8 @@
 			body = "OtocVez";
 			gun = "OtocHlaven";
 		};
+		weapons[] = {"LeoGun_xj400","MG3A1_xj400"};
+		magazines[] = {"LeoSabot_xj400","LeoHeat_xj400", "MG3A1_xj400"};
 	};
 
 	class RussianTank_xj400: Tank_xj400 {};
@@ -57,14 +63,20 @@
 	class T80_xj400: TZK_HeavyEastTank_Base_xj400 {
 		maxSpeed = 57;
 		model = "\TZK_Model_4_0_6\T80_TZK.p3d";
+		weapons[] = {"T80Gun_xj400","MG_12_7_xj400"};
+		magazines[] = {"T80Sabot_xj400","T80Heat_xj400", "MG_12_7_xj400","MG_12_7_xj400"};
 	};
 	class T90_xj400: TZK_HeavyEastTank_Base_xj400 {
 		maxSpeed = 57;
 		model = "\TZK_Model_4_0_6\T90_ICP.p3d";
+		weapons[] = {"T90Gun_xj400","MG_12_7_xj400"};
+		magazines[] = {"T90Sabot_xj400","T90Heat_xj400", "MG_12_7_xj400","MG_12_7_xj400"};
 	};
 	class ZTZ99_xj400: TZK_HeavyEastTank_Base_xj400 {
 		maxSpeed = 57;
 		model = "\TZK_Model_4_0_6\ztz99.p3d";
+		weapons[] = {"PLAGun_xj400","PLAMG_xj400"};
+		magazines[] = {"PLASabot_xj400","PLAHeat_xj400", "PLAMG_xj400","PLAMG_xj400"};
 	};
 
 	class M1A1_Info_xj400: M1A1_xj400 { unitInfoType = 8; };
@@ -77,6 +89,25 @@
 	class M60_Base_xj400: Tank_xj400 {};
 	class M60_xj400: M60_Base_xj400 {
 		model = "\TZK_Model_4_0_6\M60_TZK.p3d";
+		weapons[] = {"Gun105","MG_7_6_xj400"};
+		magazines[] = {"Heat105","Shell105","MG_7_6_xj400"};
+	};
+	class T72_xj400: T72_Base_xj400 {
+		weapons[] = {"Gun120","MG_7_6_xj400"};
+		magazines[] = {"Heat120","Shell120","MG_7_6_xj400"};
+	};
+	class M60_120S_xj400: M60_xj400 {
+		weapons[] = {"Gun120","Coax_M240_xj400"};
+		magazines[] = {"Heat120","Shell120", "Coax_M240_xj400"};
+	};
+	class T55_Base_xj400: Tank_xj400 {}
+	class T55G_xj400: T55_Base_xj400 {
+		weapons[] = {"Gun105","MG_7_6_xj400"};
+		magazines[] = {"Heat105","Shell105","MG_7_6_xj400"};
+	};
+	class T55E_xj400: T55_Base_xj400 {
+		weapons[] = {"Gun105","MG_7_6_xj400"};
+		magazines[] = {"Heat105","Shell105","MG_7_6_xj400"};
 	};
 
 	class ResistanceTank_xj400: Tank_xj400 {};
@@ -90,8 +121,8 @@
 		hiddenSelections[] = {};
 		armor = 700;
 		cost = 1500000;
-		weapons[] = {"Gun120","MachineGun12_7"};
-		magazines[] = {"Heat120","Shell120","MachineGun12_7"};
+		weapons[] = {"Gun120","MG_12_7_xj400"};
+		magazines[] = {"Heat120","Shell120", "MG_12_7_xj400"};
 		type = 1;
 		threat[] = {0.9,0.9,0.3};
 
@@ -362,7 +393,6 @@
 			};
 		};
 	};
-	class T55_Base_xj400: Tank_xj400 {}
 	// 2S25 from mfm mod
 	class 2S25_mfm_xj400: T55_Base_xj400 {
 		scope = protected; vehicleClass = "TZK_Units_400";
@@ -386,8 +416,8 @@
 		canFloat = 1;
 		crew = "SoldierECrew";
 
-		weapons[] = {"Sprut_2A75_xj400", "MachineGun7_6"};
-		magazines[] = {"Sprut_3VBM17_xj400","Sprut_3VBK25_xj400", "MachineGun7_6"};
+		weapons[] = {"Sprut_2A75_xj400", "MG_7_6_xj400"};
+		magazines[] = {"Sprut_3VBM17_xj400","Sprut_3VBK25_xj400", "MG_7_6_xj400"};
 
 		transportSoldier = 0;
 		class TransportMagazines{};
