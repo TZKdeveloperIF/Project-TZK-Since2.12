@@ -12,6 +12,7 @@ _vehicle = vehicle _unit
 _vt = _vehicle call funcGetUnitTypeFromObject; _legalType = false
 ? _vt == -1: goto "CheckStructure"
 ? _vt in typesHowitzer: if (_speed >= 900) then {_speed = 930}; if ("M109A6G_xj400" countType [_vehicle] > 0 && _speed >= 800) then {_speed = 827}; _legalType = true
+? _vt in typesHowitzer && _speed > 700: _type = typeof _vehicle; if (_type == "Grkpbv_Coc_xj400" || _type == "PLZ89_TZK_xj400") then {_speed = 700}
 ? _vt in typesRocketLauncher: _magSeries = {MLRS}; if ("TOS1_TZK_xj400" == typeOf _vehicle) then {_magSeries = {T}; if (_speed > 500) then {_speed = 500}}; _legalType = true
 goto "SwitchTheMags"
 #CheckStructure
@@ -22,7 +23,7 @@ _vt = _vehicle call funcGetStructTypeFromObject
 
 #SwitchTheMags
 ? !_legalType: exit
-
+; hint format ["%1", [_speed, _type]]
 ; Use Radio\Graduation script to switch the magazine. It has been well designed.
 [_vehicle, _speed, _magSeries] exec "\TZK_Scripts_4_0_4\Common\ReEquip\SwitchMagPreset.sqs"
 

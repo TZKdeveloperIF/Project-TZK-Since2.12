@@ -572,27 +572,39 @@ unitDefs set [_type, ["UH60 (transp)", 4000, _si, 60, "UH60_irNo_TZK_xj400", "iu
 _irNO_uh60 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["UH60 (Tug)", 4000, _si, 60, "UH60_CSLA_xj400", "iuh60", 2^_st, [1, _pilotW], _mHeli, ["\TZK_Scripts_4_0_6\Common\Equip\UH60.sqs", "Common\InitHelicopter.sqs", "Common\Equip\UH60.sqs"]] ];
+unitDefs set [_type, ["UH60 (Tug)", 4000, _si, 60, "UH60_CSLA_xj400", "iuh60", 2^_st, [1, _pilotW], _mHeli,
+	["Common\Equip\UH60.sqs", "Common\InitHelicopter.sqs"]
+]];
 _uh60W = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Support UH60", 5000, _si, 60, "UH60_CSLA_xj400", "iuh60", 2^_st, [1, _pilotW], _mSupport, ["Common\InitSupportVehicle.sqs", "\TZK_Scripts_4_0_6\Common\Equip\UH60.sqs", "Common\InitHelicopter.sqs", "Common\Equip\UH60.sqs", "\TZK_Scripts_4_0_4\Common\InitAmmoDrop.sqs"]] ];
+unitDefs set [_type, ["Support UH60", 5000, _si, 60, "UH60_CSLA_xj400", "iuh60", 2^_st, [1, _pilotW], _mSupport,
+	["Common\InitSupportVehicle.sqs", "Common\InitHelicopter.sqs", "Common\Equip\UH60.sqs", "\TZK_Scripts_4_0_4\Common\InitAmmoDrop.sqs"]
+]];
 _uh60supW = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["(empty)", 7000, _si, 60, "UH60_CSLA_MG_xj400", "iuh60", -1, [2, _pilotW], _mHeli, ["\TZK_Scripts_4_0_6\Common\Equip\UH60.sqs", "Common\InitHelicopter.sqs"]] ];
+unitDefs set [_type, ["(empty)", 7000, _si, 60, "UH60_CSLA_MG_xj400", "iuh60", -1, [2, _pilotW], _mHeli,
+	["Common\Equip\UH60.sqs", "Common\InitHelicopter.sqs"]
+]];
 _uh60W30 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["(empty)", 7000, _si, 60, "UH60_CSLA_LGB_xj400", "iuh60", -1, [1, _pilotW], _mHeli, ["\TZK_Scripts_4_0_6\Common\Equip\UH60.sqs", "Common\InitHelicopter.sqs"]] ];
+unitDefs set [_type, ["(empty)", 7000, _si, 60, "UH60_CSLA_LGB_xj400", "iuh60", -1, [1, _pilotW], _mHeli,
+	["Common\Equip\UH60.sqs", "Common\InitHelicopter.sqs"]
+]];
 _uh60WL = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["UH60 30mm MG", 10000, _si, 60, "UH60MG_CSLA_xj400", "iuh60", 2^_st, [2, _pilotW], _mHeli, ["\TZK_Scripts_4_0_6\Common\Equip\UH60.sqs", "Common\InitHelicopter.sqs", "Common\Equip\UH60.sqs"]] ];
+unitDefs set [_type, ["UH60 30mm MG", 10000, _si, 60, "UH60MG_CSLA_xj400", "iuh60", 2^_st, [2, _pilotW], _mHeli,
+	["Common\Equip\UH60.sqs", "Common\InitHelicopter.sqs"]
+]];
 _uh60WMG2 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["CH47 (Tug)", 4000, _si, 60, "BAS_MH47E", "\ch47\ich47.paa", -1, [1, _pilotW], _mHeli, ["\TZK_Scripts_4_0_6\Common\Equip\UH60.sqs", "Common\InitHelicopter.sqs", "Common\Equip\UH60.sqs"]] ];
+unitDefs set [_type, ["CH47 (Tug)", 4000, _si, 60, "BAS_MH47E", "\ch47\ich47.paa", -1, [1, _pilotW], _mHeli,
+	["Common\Equip\UH60.sqs", "Common\InitHelicopter.sqs"]
+]];
 _ch47W = _type;
 _type = _type + 1;
 
@@ -1153,27 +1165,39 @@ unitDefs set [_type, ["Mi17 (transp)", 4000, _si, 60, "Mi17_irNo_TZK_xj400", "im
 _irNO_mi17 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mi17 (tug)", 4000, _si, 60, "Mi17_owp_xj400", "imi17", 2^_st, [1, _pilotE], _mHeli, ["\TZK_Scripts_4_0_6\Common\Equip\Mi17.sqs", "Common\InitHelicopter.sqs", "Common\Equip\Mi17.sqs"]] ];
+unitDefs set [_type, ["Mi17 (tug)", 4000, _si, 60, "Mi17_owp_xj400", "imi17", 2^_st, [1, _pilotE], _mHeli,
+	["Common\Equip\Mi17.sqs", "Common\InitHelicopter.sqs"]
+]];
 _mi17E = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mi17 support", 5000, _si, 60, "Mi17_owp_xj400", "imi17", 2^_st, [1, _pilotE], _mSupport, ["Common\InitSupportVehicle.sqs", "\TZK_Scripts_4_0_6\Common\Equip\Mi17.sqs", "Common\InitHelicopter.sqs", "Common\Equip\Mi17.sqs", "\TZK_Scripts_4_0_4\Common\InitAmmoDrop.sqs"]] ];
+unitDefs set [_type, ["Mi17 support", 5000, _si, 60, "Mi17_owp_xj400", "imi17", 2^_st, [1, _pilotE], _mSupport,
+	["Common\InitSupportVehicle.sqs", "Common\InitHelicopter.sqs", "Common\Equip\Mi17.sqs", "\TZK_Scripts_4_0_4\Common\InitAmmoDrop.sqs"]
+]];
 _mi17supE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["(empty)", 7000, _si, 60, "Mi17_owp_MG_xj400", "imi17",-1, [1, _pilotE], _mHeli, ["\TZK_Scripts_4_0_6\Common\Equip\Mi17.sqs", "Common\InitHelicopter.sqs", "Common\Equip\Mi17.sqs"]] ];
+unitDefs set [_type, ["(empty)", 7000, _si, 60, "Mi17_owp_MG_xj400", "imi17",-1, [1, _pilotE], _mHeli,
+	["Common\Equip\Mi17.sqs", "Common\InitHelicopter.sqs"]
+]];
 _mi17E30 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["(empty)", 7000, _si, 60, "Mi17_owp_LGB_xj400", "imi17",-1, [1, _pilotE], _mHeli, ["\TZK_Scripts_4_0_6\Common\Equip\Mi17.sqs", "Common\InitHelicopter.sqs", "Common\Equip\Mi17.sqs"]] ];
+unitDefs set [_type, ["(empty)", 7000, _si, 60, "Mi17_owp_LGB_xj400", "imi17",-1, [1, _pilotE], _mHeli,
+	["Common\Equip\Mi17.sqs", "Common\InitHelicopter.sqs"]
+]];
 _mi17EL = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mi17 30mm MG", 10000, _si, 60, "Mi17_owp_PKT_xj400", "imi17", 2^_st, [2, _pilotW], _mHeli, ["\TZK_Scripts_4_0_6\Common\Equip\Mi17.sqs", "Common\InitHelicopter.sqs", "Common\Equip\Mi17.sqs"]] ];
+unitDefs set [_type, ["Mi17 30mm MG", 10000, _si, 60, "Mi17_owp_PKT_xj400", "imi17", 2^_st, [2, _pilotW], _mHeli,
+	["Common\Equip\Mi17.sqs", "Common\InitHelicopter.sqs"]
+]];
 _mi17EMG2 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mi26 (tug)", 4000, _si, 60, "OWP_MI26ps", "\OWP_Mi26\pics\OWP_Mi26.paa", -1, [1, _pilotE], _mHeli, ["\TZK_Scripts_4_0_6\Common\Equip\Mi17.sqs", "Common\InitHelicopter.sqs", "Common\Equip\Mi17.sqs"]] ];
+unitDefs set [_type, ["Mi26 (tug)", 4000, _si, 60, "OWP_MI26ps", "\OWP_Mi26\pics\OWP_Mi26.paa", -1, [1, _pilotE], _mHeli,
+	["Common\Equip\Mi17.sqs", "Common\InitHelicopter.sqs"]
+]];
 _mi26E = _type;
 _type = _type + 1;
 
