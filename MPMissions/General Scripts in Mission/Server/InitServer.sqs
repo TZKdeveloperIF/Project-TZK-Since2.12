@@ -3,7 +3,6 @@ Target_Set_TZK_Server_0 = 0; Target_Set_TZK_Server_1 = 0
 
 0 exec "\TZK_Scripts_4_0_6\Server\InitFunctions.sqs"
 call loadFile "\TZK_Scripts_4_0_6\Server\InitServer_constant.sqf"
-call preprocessFile "Server\InitServer_Group.sqf"
 AICO_giTrans = [[],[]]; AICO_giInf = [[],[]]; AICO_giTanks = [[[], [], []], [[], [], []]]
 
 
@@ -49,6 +48,7 @@ _i = 0; countTargetMarkers = 10; while "_i < countTargetMarkers" do {call Format
 
 ~2
 @ !mutexCmd
+call preprocessFile "Server\InitServer_Group.sqf"
 call preprocessFile "Server\initStartedGrpMoney.sqf"
 call preprocessFile "Server\initStartedGrpUpg.sqf"
 

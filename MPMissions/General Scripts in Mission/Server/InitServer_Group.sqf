@@ -9,6 +9,9 @@ pingTimes = [[], []]; blockedPlayers = [[], []];
 } forEach [si0, si1];
 
 // It seems verifying locality of players don't have to be determined after game start on server
+// However this is wrong. Wait for a while then exec this script is necessary
+// refer to commit 401fc9e6fe7378f47675ffa866c0fce9583471c7
+
 {
 	_si = _x;
 	_groups = groupMatrix select _si; _groupsAI = [];
