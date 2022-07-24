@@ -45,11 +45,11 @@ aisKeepDefs = [
 	0, 50, 100, 150, 200, 250, 300, 350, 400, 500, 600, 
 	800, 1000, 1500, 2000, 5000, 6500, 10000, 35000, 95000
 ]; aisKeepDisp = [];
-{ if (_x < 1000) then {aisKeepDisp set [ count aisKeepDisp, call format[{%3%1%2%3}, "$", _x, {} ] ]} } foreach aisKeepDefs;
+{ if (_x < 1000) then {aisKeepDisp set [ count aisKeepDisp, call format[{"%1%2"}, "$", _x, {} ] ]} } foreach aisKeepDefs;
 aisKeepMin = _type;
 aiSettingDefs set [_type, ["Keep At Least", aisKeepDisp, 0, "Keep At Least/At Most"] ];
 _type = _type + 1;
-aisKeepDisp = []; {aisKeepDisp set [ count aisKeepDisp, call format[{%3%1%2%3}, "$", _x, {} ] ] } foreach aisKeepDefs;
+aisKeepDisp = []; {aisKeepDisp set [ count aisKeepDisp, call format[{"%1%2"}, "$", _x, {} ] ] } foreach aisKeepDefs;
 aisKeepMax = _type;
 aiSettingDefs set [_type, ["Keep At Most", aisKeepDisp, 2, ""] ];
 _type = _type + 1;
@@ -183,7 +183,7 @@ _coDispStr = {
 	_posRelTown = (wpCO select siPlayer select _this) call funcCalcTownDirDistFromPos; 
 	format [{co%1 %2}, _this, [_posRelTown, {}] select (wpCO select siPlayer select _this select 0 == -1)]
 };
-_distByOffset = format [{{format [{%1m}, (_this + %2) * %1]}}, _this select 0, _this select 1];
+_distByOffset = "format [{format [{%3m}, (_this + %2) * %1]}, _this select 0, _this select 1, {%1}]";
 
 orderDefs = []; _type = 0;
 
@@ -192,8 +192,8 @@ orderDefs set [_type, ["Take Towns", [], "\TZK_Scripts_4_0_5\Server\Order\TakeTo
 _type = _type + 1;
 
 orderTakeHoldTowns = _type;
-_param0 = ["Hold Distance", "5", format [{<%1m}, 500* (_this + 1)]];
-_param1 = ["Hold Time", "10", format [{%1min}, 5* (_this + 1)]];
+_param0 = ["Hold Distance", "5", {format [{<%1m}, 500* (_this + 1)]}];
+_param1 = ["Hold Time", "10", {format [{%1min}, 5* (_this + 1)]}];
 orderDefs set [_type, ["Take Hold Towns", [_param0, _param1], "\TZK_Scripts_4_0_5\Server\Order\TakeHoldTowns.sqs"] ];
 _type = _type + 1;
 
