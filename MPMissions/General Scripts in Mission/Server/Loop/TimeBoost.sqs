@@ -1,26 +1,24 @@
-; args: [_lastTime]
+; args: none
 @ pvTimeBoost
-@(time % 60 > 35 && time % 60 < 45)
-_time = 0
 
 _DLapse = 60
-_IncTime = ((24/_DLapse)/60)
+_IncTime = 24 / _DLapse / 60
 
-_lastTime = if (count _this == 0) Then {time} Else {_this select 0}
+# externalLoop
+@ time % 60 > 35 && time % 60 < 45
+_lastTime = time
 skipTime (_IncTime * (time - _lastTime))
 
 ; Time acceleration loop (on server unnecessary to loop quickly).
 
-
-#loop
+# internalLoop
 ; PublicVariable the daytime
 pvDayTime = daytime; publicVariable "pvDayTime"
 _lastTime = time
-@(time - _lastTime > 60 || !pvTimeBoost)
+@ time - _lastTime > 60 || !pvTimeBoost
 skipTime (_IncTime * (time - _lastTime))
 
-? !pvTimeBoost: pvDayTime = daytime; publicVariable "pvDayTime", [time] exec "\TZK_Scripts_4_0_4\Server\Loop\TimeBoost.sqs"; exit
-? _time > 5*60: [time] exec "\TZK_Scripts_4_0_4\Server\Loop\TimeBoost.sqs"; exit
-goto "loop"
+? !pvTimeBoost: pvDayTime = daytime; publicVariable "pvDayTime", _lastTime = time, goto "externalLoop"
+goto "internalLoop"
 
 ; EOF
