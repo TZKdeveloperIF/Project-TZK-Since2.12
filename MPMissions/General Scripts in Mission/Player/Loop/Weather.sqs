@@ -1,5 +1,5 @@
 ; args: [overcast last, rain last]
-
+? isServer: exit
 @(time % 60 > 40 && time % 60 < 50)
 
 _overcastLast = 0; _rainLast = 0
@@ -11,44 +11,33 @@ _weather = Weather_TZK
 
 ; main part. Due to its long time unnecessary to loop but execute another script.
 _time = 0; _thresholdDelay = 0
-_overcast = [random 0.2, (random 1)*(random 1)*0.8, 0.2 + 0.8 * (random 1), 0.3 + 0.7 * sqrt (random 1), 0.6 + 0.4 * sqrt (random 1), random 0.2, 0.3 + 0.7 * sqrt (random 1), random 1] select (Vote_Item_Weather find Weather_TZK)
-_overcast = _overcast - _overcast%0.01
 
-_fog = 0
-? _weather == "Random": _fog = if (_overcast > 0.3 && _overcast <= 0.7) then { random (_overcast - 0.3) } else {0}
-? _rainLast != 0 && _weather in ["Rainy", "Stromy", "Random"]: _fog = _rainLast
-? _weather == "Misty": _fog = 0.1 + random 0.2
-? _weather == "Foggy": _fog = 0.3 + 0.7 * sqrt (random 1)
-_fog = _fog - _fog%0.01
+_weatherValue = pvWeather_Value/100; _delaychange = pvWeather_Delay
+_overcast = _weatherValue % 1
+_weatherValue = (_weatherValue - _overcast)/100
+_rain = _weatherValue % 1
+_weatherValue = (_weatherValue - _rain)/100
+_fog = _weatherValue % 1
 
-_rain = 0
-? _weather == "Rainy": _rain = sqrt (random (_overcast - 0.6))
-? _weather == "Stromy": _rain = (random _overcast/2) + _overcast/2
-? _weather == "Overcast" || Weather_TZK == "Cloudy": _rain = random (_overcast - 0.7)
-? _weather == "Random": _rain = random 1
-_rain = _rain - _rain%0.01
-
-_delaychange = (2 + random 6)*60; _delaychange = _delaychange - _delaychange%1
+_weatherValue = pvWeather_Value
 _delaychange SetOvercast _overcast; _delaychange SetRain _rain
 ? _weather == "Foggy": _delaychange SetFog _fog
 ? _overcastLast > 0.7 && _overcast <= 0.7 : call _threshold; _thresholdDelay SetOvercast 0.7; _thresholdDelay SetRain 0
 ? _overcastLast <= 0.7 && _overcast > 0.7 : call _threshold; _thresholdDelay SetOvercast 0.7
-
-pvWeather_Value = (_overcast + 100*_rain + 100*100*_fog)*100; publicVariable "pvWeather_Value"
-pvWeather_Delay = _delaychange; publicVariable "pvWeather_Delay"
+? dev: if (name player == "IF") Then {hint format ["_thresholdDelay: %1\n_overcast: %2\n_rain: %3\n_delaychange: %4", _thresholdDelay, _overcast, _rain, _delaychange]}
 
 @(_time > _thresholdDelay || _weather != Weather_TZK)
-? _weather != Weather_TZK: [_overcast, _rain] exec "\TZK_Scripts_4_0_4\Server\Loop\Weather.sqs", exit
+? _weather != Weather_TZK: [_overcast, _rain] exec "Player\Loop\Weather.sqs", exit
 ? _thresholdDelay > 0 && _overcastLast > 0.7 && _overcast <= 0.7: 0.5*(_delaychange - _thresholdDelay) SetFog (if (_weather == "Rainy") Then {sqrt (_fog*_fog*_fog)} Else {_fog*_fog})
 ? _thresholdDelay > 0 && _overcastLast <= 0.7 && _overcast > 0.7: 0.5*(_delaychange - _thresholdDelay) SetFog _fog; 0.5*(_delaychange - _thresholdDelay) SetRain _rain
 
 _time = 0
 @(_time > 0.5*(_delaychange - _thresholdDelay) || _weather != Weather_TZK)
-? _weather != Weather_TZK: [_overcast, _rain] exec "\TZK_Scripts_4_0_4\Server\Loop\Weather.sqs", exit
+? _weather != Weather_TZK: [_overcast, _rain] exec "Player\Loop\Weather.sqs", exit
 0.5*(_delaychange - _thresholdDelay) SetOvercast _overcast
 ? _overcastLast <= 0.7 && _overcast <= 0.7 && _weather == "Rainy": 0.5*(_delaychange - _thresholdDelay) SetFog _fog
 
-_time = 0; _sleep = (8 + random 4)*60; _sleep = _sleep - _sleep%1
-pvWeather_Cycle = _delaychange; publicVariable "pvWeather_Cycle"
+_time = 0; _sleep = pvWeather_Cycle
+
 @(_time > _sleep || _weather != Weather_TZK)
-[_overcast, _rain] exec "\TZK_Scripts_4_0_4\Server\Loop\Weather.sqs", exit
+[_overcast, _rain] exec "Player\Loop\Weather.sqs", exit

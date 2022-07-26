@@ -176,14 +176,14 @@ pvWeather_Value = 0; pvWeather_Delay = 2*60; pvWeather_Cycle = 10*60
 Weather_TZK = "Sunny"
   ; 4.0.5.26
   TZK_Force_Random_Weather = false
-? isServer: [] exec "\TZK_Scripts_4_0_4\Server\Loop\Weather.sqs"
-? !isNull player: [] exec "\TZK_Scripts_4_0_4\Player\Loop\Weather.sqs"
+? isServer: [] exec "Server\Loop\Weather.sqs"
+? !isNull player: [] exec "Player\Loop\Weather.sqs"
 
 ; TimeBoost
 ; Although BIKI said that skipTime should executed on server, it requires being executed on all clients. So do those weather commands. Probably they're local but not global effect.
 pvDaytime = dayTime; pvTimeBoost = false
-? isServer: [] exec "\TZK_Scripts_4_0_4\Server\Loop\TimeBoost.sqs"
-? !isNull player: [] exec "\TZK_Scripts_4_0_4\Player\Loop\TimeBoost.sqs"
+? isServer: 0 exec "Server\Loop\TimeBoost.sqs"
+? !isNull player: 0 exec "Player\Loop\TimeBoost.sqs"
 
 ; TimePeriod (Morning, Dusk, Evening, etc). Using index but not string as indicator, aiming to compatible with "publicVariable"-able type in OFP.
 Period_TZK = 0
