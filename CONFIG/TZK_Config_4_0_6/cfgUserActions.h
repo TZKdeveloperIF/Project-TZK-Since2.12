@@ -103,25 +103,25 @@ class UA_SpoofMissileOFF {
 // The script command addMagazine and removeMagazine(s) is local. Thus the following actions for car/ship only show to local client.
 // UA for Virtual Weapons Rearm
 class UA_EquipLAW {
-	statement = "[this, [{VirtualLAW_xj400}], 25] exec localize {TZK_FUNC_EQUIP_VIRTUAL_WEP}";
+	statement = "[this, [{VirtualLAW_xj400}], 25] exec localize {TZK_PLAYER_EFFECT_VIRTUAL_WEP}";
 }
 class UA_EquipRPG {
-	statement = "[this, [{VirtualRPG_xj400}], 25] exec localize {TZK_FUNC_EQUIP_VIRTUAL_WEP}";
+	statement = "[this, [{VirtualRPG_xj400}], 25] exec localize {TZK_PLAYER_EFFECT_VIRTUAL_WEP}";
 }
 class UA_EquipCarlGustav {
-	statement = "[this, [{VirtualCarlGustav_xj400}], 60] exec localize {TZK_FUNC_EQUIP_VIRTUAL_WEP}";
+	statement = "[this, [{VirtualCarlGustav_xj400}], 60] exec localize {TZK_PLAYER_EFFECT_VIRTUAL_WEP}";
 }
 class UA_EquipAT4 {
-	statement = "[this, [{VirtualAT4_xj400}], 60] exec localize {TZK_FUNC_EQUIP_VIRTUAL_WEP}";
+	statement = "[this, [{VirtualAT4_xj400}], 60] exec localize {TZK_PLAYER_EFFECT_VIRTUAL_WEP}";
 }
 class UA_EquipGrenade {
-	statement = "[this, [{VirtualGrenade_xj400}], 10] exec localize {TZK_FUNC_EQUIP_VIRTUAL_WEP}";
+	statement = "[this, [{VirtualGrenade_xj400}], 10] exec localize {TZK_PLAYER_EFFECT_VIRTUAL_WEP}";
 }
 class UA_EquipMortar {
-	statement = "[this, [{VirtualMortar_xj400}], 20] exec localize {TZK_FUNC_EQUIP_VIRTUAL_WEP}";
+	statement = "[this, [{VirtualMortar_xj400}], 20] exec localize {TZK_PLAYER_EFFECT_VIRTUAL_WEP}";
 }
 class UA_EquipMG {
-	statement = "[this, [{Mag_12mm7_100_xj400}], 20] exec localize {TZK_FUNC_EQUIP_VIRTUAL_WEP}";
+	statement = "[this, [{Mag_12mm7_100_xj400}], 20] exec localize {TZK_PLAYER_EFFECT_VIRTUAL_WEP}";
 }
 
 class UA_ShowEquipList {
