@@ -1,7 +1,7 @@
 // this should use vehicle param
 
 _found = false;
-if (not _found && -1 != ["M109A6G_xj400", "PLZ05_TZK_xj400", "TOS1_TZK_xj400"] find _typeName) then {
+if not _found then {if (-1 != ["M109A6G_xj400", "PLZ05_TZK_xj400", "TOS1_TZK_xj400"] find _typeName) then {
 	_found = true;
 	_vehicle addEventHandler ["Engine", {
 		if (_this select 1) then {
@@ -11,8 +11,8 @@ if (not _found && -1 != ["M109A6G_xj400", "PLZ05_TZK_xj400", "TOS1_TZK_xj400"] f
 		}
 	}];
 	_vehicle engineOn false;
-};
-if (not _found && -1 != ["Grkpbv_Coc_xj400","PLZ89_TZK_xj400"] find _typeName) then {
+}};
+if not _found then {if (-1 != ["Grkpbv_Coc_xj400","PLZ89_TZK_xj400"] find _typeName) then {
 	_found = true;
 	_vehicle addEventHandler ["Engine", {
 		if (_this select 1) then {
@@ -20,4 +20,4 @@ if (not _found && -1 != ["Grkpbv_Coc_xj400","PLZ89_TZK_xj400"] find _typeName) t
 		}
 	}];
 	_vehicle engineOn false;
-};
+}};
