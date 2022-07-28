@@ -26,8 +26,8 @@ if bool_TZK_199_Mode then {call loadFile "Extra\199\UnitTypes_ACWA_Redefine.sqf"
 unitDefs select _t80R set [udModel, "T80Res"];
 unitDefs select _tankLightW01 set [udModel, "M60"]; unitDefs select _tankLightW02 set [udFactoryType, -1]; 
 unitDefs select _tankLightE01 set [udFactoryType, -1]; unitDefs select _tankLightE02 set [udModel, "T72"];
-{unitDefs select _x set [udModel, "Vulcan"]} forEach [_vulcanBaseW, _vulcanBaseW2, _vulcanW, _vulcanW2];
-{unitDefs select _x set [udModel, "ZSU"]} forEach [_shilkaBaseE, _tunguskaBaseE, _shilkaE, _tunguskaE];
+{unitDefs select _x set [udModel, "Vulcan"]} forEach [_vulcanBaseW, _vulcanBaseW2, _vulcanAutoW, _vulcanW2];
+{unitDefs select _x set [udModel, "ZSU"]} forEach [_shilkaBaseE, _tunguskaBaseE, _shilkaAutoE, _tunguskaE];
 unitDefs select _tunguskaE set [udName, "4xAA"]; unitDefs select _tunguskaE set [udImage, "izsu"];
 
 unitDefs select _ah1W set [udModel, "AH1_xj400"]; unitDefs select _ah1W set [udName, "AH1"]; unitDefs select _ah1W set [udImage, "icobra"];

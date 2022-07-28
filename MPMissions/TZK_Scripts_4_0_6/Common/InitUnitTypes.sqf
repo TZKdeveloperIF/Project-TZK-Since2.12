@@ -6,6 +6,7 @@ comment {
 
 unitDefs = []; unitTypeArray = []; unitTypeData = [];
 comment { ? bool_TZK_Yugo_Mode: [] exec "Extra\199\InitUnitTypes_Yugo_Redef.sqs", exit; };
+
 TzkUnitMarkerIdx = []; TzkUnitMarkerAzimuth = [];
 TzkUnitSkillIdx = []; TzkUnitSkillVal = []; TzkSkillLevel = [0, 0.6, 0.75, 0.85, 1];
 TzkInfLevelIdx = []; TzkInfLevelVal = [];
@@ -463,7 +464,7 @@ unitDefs set [_type, [
 	"Vulcan", 1500, _si, 30, "Vulcan_Auto_xj406", "\VULCAN\ivulcan", 2^_st, [1, _crewW], _mAA, 
 	["\TZK_Scripts_4_0_6\Common\Equip\DispCannon.sqs"]
 ]];
-_vulcanW = _type;
+_vulcanAutoW = _type;
 _type = _type + 1;
 
 unitDefs set [_type, ["M113 Cannon", 2000, _si, 30, "Vulcan_TZK_xj400", "\VULCAN\ivulcan", 2^_st, [2, _crewW], _mAA, ["\TZK_Scripts_4_0_6\Common\Equip\M2A2_AA2.sqs"]] ];
@@ -1048,7 +1049,7 @@ unitDefs set [_type, [
 	"Shilka", 1500, _si, 30, "ZSU_Auto_xj400", "izsu", 2^_st, [1, _crewE], _mAA, 
 	["\TZK_Scripts_4_0_6\Common\Equip\DispCannon.sqs"]
 ]];
-_shilkaE = _type;
+_shilkaAutoE = _type;
 _type = _type + 1;
 
 unitDefs set [_type, ["BMP3", 2000, _si, 30, "DVD_BMP3", "ibmp", -1, [3, _crewE], _mAPC, ["Extra\ppl\Action EntrenchTank.sqs"]] ];
@@ -1154,7 +1155,7 @@ _mi2E = _type;
 _type = _type + 1;
 
 unitDefs set [_type, ["Mi-2 PKT", 3000, _si, 30, "Mi2NOE_irNo_PKT_xj400", "\TZK_Texture_4_0_0\icon\iMi2.paa", 2^_st, [2, _pilotE], _mSmallHeli, []] ];
-_mi2M60E = _type;
+_mi2PktE = _type;
 _type = _type + 1;
 
 unitDefs set [_type, ["Mi-2 GShG", 5000, _si, 40, "Mi2NOE_irNo_GShG_xj400", "\TZK_Texture_4_0_0\icon\iMi2.paa", 2^_st, [2, _pilotE], _mSmallHeli, []] ];
@@ -1499,7 +1500,7 @@ infTown set [_si, [ [_soldierLAWW1, 1], [_soldierATW1, 1], [_soldierAAW1, 0.5],[
 if (bool_TZK_SEMod_Mode) then {infTown set [_si, [ [_soldierLAWW1, 1], [_soldierATW1, 1], [_soldierAAW1, 0.5], [_soldierMGW1, 0.1], [_javW1, 0.5] ] ]};
 infTownH set [_si, [ [_soldierAAW1, 1] ] ];
 armorTown set [_si, [ [_m2a2townat, 1], [_m2a2townaad,1] ] ];
-if (bool_TZK_SEMod_Mode) then {armorTown set [_si, [ [_m2a2attown, 1], [_vulcanW, 0.5], [_staticATW, 0.5], [_tdW, 0.5], [_m2a2aa, 0.5] ] ]};
+if (bool_TZK_SEMod_Mode) then {armorTown set [_si, [ [_m2a2attown, 1], [_vulcanAutoW, 0.5], [_staticATW, 0.5], [_tdW, 0.5], [_m2a2aa, 0.5] ] ]};
 armorTownH set [_si, [ [_m1a1townW, 1] ] ];
 armorTownHIsle set [_si, [ [_m1a1townW, 1], [_ah64townW2, 1]] ];
 
@@ -1509,7 +1510,7 @@ infTown set [_si, [ [_soldierLAWE1, 1], [_soldierATE1, 1], [_soldierAAE1, 0.5], 
 if (bool_TZK_SEMod_Mode) then {infTown set [_si, [ [_soldierLAWE1, 1], [_soldierATE1, 1], [_soldierAAE1, 0.5], [ _soldierMGE1, 0.1], [_javE1, 0.5] ] ]};
 infTownH set [_si, [ [_soldierAAE1, 1] ] ];
 armorTown set [_si, [ [_bmp2townat, 1], [_bmp2townaad,1] ] ];
-if (bool_TZK_SEMod_Mode) then {armorTown set [_si, [ [_bmp2attown, 1], [_shilkaE, 0.5], [_staticATE, 0.5], [_tdE, 0.5], [_bmp2aa, 0.5] ] ] };
+if (bool_TZK_SEMod_Mode) then {armorTown set [_si, [ [_bmp2attown, 1], [_shilkaAutoE, 0.5], [_staticATE, 0.5], [_tdE, 0.5], [_bmp2aa, 0.5] ] ] };
 armorTownH set [_si, [ [_t80townE, 1] ] ];
 armorTownHIsle set [_si, [ [_t80townE, 1], [_mi24townE2, 1]] ];
 
@@ -1536,157 +1537,166 @@ if !_bSkipBuyDef then {
 	unitsBuyAI = [ [], [] ];
 	_i = 0;
 
-	utbNone = _i;
+	comment "utbNone = _i;"
 	_list = [];
-	(unitsBuyAI select si0) set [_i, _list];
+	unitsBuyAI select si0 set [_i, _list];
 	_list = [];
-	(unitsBuyAI select si1) set [_i, _list];
+	unitsBuyAI select si1 set [_i, _list];
 	_i = _i + 1;
 
-	utbSoldier = _i;
-	_list = [ [_soldierW1, 1] ];
-	(unitsBuyAI select si0) set [_i, _list];
-	_list = [ [_soldierE1, 1] ];
-	(unitsBuyAI select si1) set [_i, _list];
+	comment "utbSoldier = _i;"
+	_list = [
+		[_rkgSoldierW, 0.5],
+		[_soldierW1, 0.5]
+	];
+	unitsBuyAI select si0 set [_i, _list];
+	_list = [
+		[_rkgSoldierE, 0.5],
+		[_soldierE1, 0.5]
+	];
+	unitsBuyAI select si1 set [_i, _list];
 	_i = _i + 1;
 
-
-	utbinfMGSnip = _i;
-	_list = [[_mgW1, 1],[_sniperW, 0.5] ];
-	(unitsBuyAI select si0) set [_i, _list];
-	_list = [ [_mgE1, 1],[_sniperE, 0.5] ];
-	(unitsBuyAI select si1) set [_i, _list];
+	comment "utbinfMGSnip = _i;"
+	_list = [ [_sniperW, 1] ];
+	unitsBuyAI select si0 set [_i, _list];
+	_list = [ [_sniperE, 1] ];
+	unitsBuyAI select si1 set [_i, _list];
 	_i = _i + 1;
-
 
 	utbinfRPGLAW = _i;
-	_list = [[_lawSoldierW, 1] ];
-	(unitsBuyAI select si0) set [_i, _list];
+	_list = [ [_lawSoldierW, 1] ];
+	unitsBuyAI select si0 set [_i, _list];
 	_list = [ [_rpgSoldierE, 1] ];
-	(unitsBuyAI select si1) set [_i, _list];
-	_i = _i + 1;
-
-	utbinfAt = _i;
-	_list = [[_lawSoldierW, 1], [_atW1, 1] ];
-	(unitsBuyAI select si0) set [_i, _list];
-	_list = [[_rpgSoldierE, 1], [_atE1, 1] ];
-	(unitsBuyAI select si1) set [_i, _list];
+	unitsBuyAI select si1 set [_i, _list];
 	_i = _i + 1;
 
 	utbAA = _i;
-	_list = [ [_soldierAAW, 0.5] ];
-	(unitsBuyAI select si0) set [_i, _list];
-	_list = [ [_soldierAAE, 0.5] ];
-	(unitsBuyAI select si1) set [_i, _list];
+	_list = [ [_soldierAAW, 1] ];
+	unitsBuyAI select si0 set [_i, _list];
+	_list = [ [_soldierAAE, 1] ];
+	unitsBuyAI select si1 set [_i, _list];
 	_i = _i + 1;
 
 	utbinfAASnip = _i;
-	_list = [[_aaCommandoW, 1] ];
-	(unitsBuyAI select si0) set [_i, _list];
-	_list = [[_aaCommandoE, 1] ];
-	(unitsBuyAI select si1) set [_i, _list];
+	_list = [ [_aaCommandoW, 1] ];
+	unitsBuyAI select si0 set [_i, _list];
+	_list = [ [_aaCommandoE, 1] ];
+	unitsBuyAI select si1 set [_i, _list];
 	_i = _i + 1;
 
-	utbInfMixed = _i;
-	_list = [ [_sniperW, 0.5], [_bomberW, 1], [_soldierAAW, 0.5], [_mgW1, 1], [_lawSoldierW, 1] ];
-	(unitsBuyAI select si0) set [_i, _list];
-	_list = [ [_sniperE, 0.5], [_bomberE, 1], [_soldierAAE, 0.5], [_mgE1, 1], [_rpgSoldierE, 1] ];
-	(unitsBuyAI select si1) set [_i, _list];
+	utbinfAtI = _i;
+	_list = [ [_atW1, 1] ];
+	unitsBuyAI select si0 set [_i, _list];
+	_list = [ [_atE1, 1] ];
+	unitsBuyAI select si1 set [_i, _list];
 	_i = _i + 1;
 
-	utbTanksMixed = _i;
-	_list = [ [_tankLightW01, 0.2], [_m2a2at, 0.2], [_m2a2aa, 0.2], [_tankHeavyW01, 1] ];
-	if (bool_TZK_MF_Mode) then {_list = [ [_m2a2W, 0.5], [_m3a2W, 0.5], [_tankHeavyW02, 1] ]};
-	(unitsBuyAI select si0) set [_i, _list];
-	_list = [ [_tankLightE01, 0.2], [_bmp2at, 0.2], [_bmp2aa, 0.2], [_tankHeavyE01, 1] ];
-	if (bool_TZK_MF_Mode) then {_list = [ [_tankLightE01, 0.2], [_tankLightE02, 0.4], [_tankLightE03, 0.8], [_bmp2E, 0.5], [_bmp2_EE, 0.5], [_tankHeavyE01, 0.5], [_tankHeavyE02, 0.5], [_tankHeavyE03, 1] ]};
-	(unitsBuyAI select si1) set [_i, _list];
+	_list = [ [_atW2, 1] ];
+	unitsBuyAI select si0 set [_i, _list];
+	_list = [ [_atE2, 1] ];
+	unitsBuyAI select si1 set [_i, _list];
+	_i = _i + 1;
+	_list = [ [_atW3, 1] ];
+	unitsBuyAI select si0 set [_i, _list];
+	_list = [ [_atE3, 1] ];
+	unitsBuyAI select si1 set [_i, _list];
+	_i = _i + 1;
+	_list = [ [_atW4, 1] ];
+	unitsBuyAI select si0 set [_i, _list];
+	_list = [ [_atE4, 1] ];
+	unitsBuyAI select si1 set [_i, _list];
 	_i = _i + 1;
 
-	utbTanksL = _i;
-	_list = [ [_tankLightW01, 0.5] ];
-	(unitsBuyAI select si0) set [_i, _list];
-	_list = [ [_tankLightE01, 0.5] ];
-	(unitsBuyAI select si1) set [_i, _list];
+	_list = [ [_soldierW3, 1] ];
+	unitsBuyAI select si0 set [_i, _list];
+	_list = [ [_soldierE3, 1] ];
+	unitsBuyAI select si1 set [_i, _list];
+	_i = _i + 1;
+	_list = [ [_soldierW4, 1] ];
+	unitsBuyAI select si0 set [_i, _list];
+	_list = [ [_soldierE4, 1] ];
+	unitsBuyAI select si1 set [_i, _list];
+	_i = _i + 1;
+	
+	_list = [ [_mgW1, 1] ];
+	unitsBuyAI select si0 set [_i, _list];
+	_list = [ [_mgE1, 1] ];
+	unitsBuyAI select si1 set [_i, _list];
+	_i = _i + 1;
+	_list = [ [_mgW2, 1] ];
+	unitsBuyAI select si0 set [_i, _list];
+	_list = [ [_mgE2, 1] ];
+	unitsBuyAI select si1 set [_i, _list];
+	_i = _i + 1;
+	_list = [ [_mgW3, 1] ];
+	unitsBuyAI select si0 set [_i, _list];
+	_list = [ [_mgE3, 1] ];
+	unitsBuyAI select si1 set [_i, _list];
+	_i = _i + 1;
+	_list = [ [_mgW4, 1] ];
+	unitsBuyAI select si0 set [_i, _list];
+	_list = [ [_mgE4, 1] ];
+	unitsBuyAI select si1 set [_i, _list];
+	_i = _i + 1;
+
+	_list = [ [_heavySniperW, 1] ];
+	unitsBuyAI select si0 set [_i, _list];
+	_list = [ [_heavySniperE, 1] ];
+	unitsBuyAI select si1 set [_i, _list];
 	_i = _i + 1;
 
 	utbTanksHeavy = _i;
+	comment "Remove supporting MF mode.";
+	utbTanksMixed = utbTanksHeavy; 	utbTanksL = utbTanksHeavy;
 	_list = [ [_tankHeavyW01, 1] ];
-	(unitsBuyAI select si0) set [_i, _list];
+	unitsBuyAI select si0 set [_i, _list];
 	_list = [ [_tankHeavyE01, 1] ];
-	(unitsBuyAI select si1) set [_i, _list];
+	unitsBuyAI select si1 set [_i, _list];
 	_i = _i + 1;
 
 	utbTanksAT = _i;
 	_list = [ [_m2a2at, 0.5] ];
-	(unitsBuyAI select si0) set [_i, _list];
+	unitsBuyAI select si0 set [_i, _list];
 	_list = [ [_bmp2at, 0.5] ];
-	(unitsBuyAI select si1) set [_i, _list];
-	_i = _i + 1;
-
-	utbAAHeavy = _i;
-	_list = [ [_vulcanW2, 0.3] ];
-	(unitsBuyAI select si0) set [_i, _list];
-	_list = [ [_tunguskaE, 0.3] ];
-	(unitsBuyAI select si1) set [_i, _list];
+	unitsBuyAI select si1 set [_i, _list];
 	_i = _i + 1;
 
 	utbAAvehicles = _i;
-	_list = [ [_vulcanW, 0.5], [_m2a2aa, 0.5], [_vulcanTransp, 0.5] ];
-	(unitsBuyAI select si0) set [_i, _list];
-	_list = [ [_shilkaE, 0.5], [_bmp2aa, 0.5], [_bmp2Cannon, 0.5] ];
-	(unitsBuyAI select si1) set [_i, _list];
-	_i = _i + 1;
-
-	utbBombers = _i;
-	_list = [ [_bomberW, 1] ];
-	(unitsBuyAI select si0) set [_i, _list];
-	_list = [ [_bomberE, 1] ];
-	(unitsBuyAI select si1) set [_i, _list];
-	_i = _i + 1;
-
-	utbminers = _i;
-	_list = [ [_minerW, 1] ];
-	(unitsBuyAI select si0) set [_i, _list];
-	_list = [ [_minerE, 1] ];
-	(unitsBuyAI select si1) set [_i, _list];
-	_i = _i + 1;
-
-	utbtransl = _i;
-	_list = [ [_m2a2W, 1] ];
-	(unitsBuyAI select si0) set [_i, _list];
-	_list = [ [_bmp2E, 1] ];
-	(unitsBuyAI select si1) set [_i, _list];
-	_i = _i + 1;
-
-	utbtransa = _i;
-	_list = [ [_uh60W, 0.5], [_uh60supW, 0.8] ];
-	(unitsBuyAI select si0) set [_i, _list];
-	_list = [ [_mi17E, 0.5], [_mi17supE, 0.8] ];
-	(unitsBuyAI select si1) set [_i, _list];
+	_list = [ [_vulcanAutoW, 1] ];
+	unitsBuyAI select si0 set [_i, _list];
+	_list = [ [_shilkaAutoE, 1] ];
+	unitsBuyAI select si1 set [_i, _list];
 	_i = _i + 1;
 
 	utbSupport = _i;
 	_list = [ [_supportAPCW, 1], [_supportTruckW, 0.1] ];
-	(unitsBuyAI select si0) set [_i, _list];
+	unitsBuyAI select si0 set [_i, _list];
 	_list = [ [_supportAPCE, 1], [_supportTruckE, 0.1] ];
-	(unitsBuyAI select si1) set [_i, _list];
+	unitsBuyAI select si1 set [_i, _list];
 	_i = _i + 1;
 
 	utbPlane = _i;
 	_list = [ [_a10, 1] ];
 	if (bool_TZK_MF_Mode) then {_list = [ [_a10, 1], [_ah64W2, 0.5] ]};
-	(unitsBuyAI select si0) set [_i, _list];
+	unitsBuyAI select si0 set [_i, _list];
 	_list = [ [_su25, 1] ];
 	if (bool_TZK_MF_Mode) then {_list = [ [_su25, 1], [_mi24E2, 0.5] ]};
-	(unitsBuyAI select si1) set [_i, _list];
+	unitsBuyAI select si1 set [_i, _list];
+	_i = _i + 1;
+
+	utbminers = _i;
+	_list = [ [_minerW, 1] ];
+	unitsBuyAI select si0 set [_i, _list];
+	_list = [ [_minerE, 1] ];
+	unitsBuyAI select si1 set [_i, _list];
 	_i = _i + 1;
 
 	utbMortar = _i;
 	_list = [ [_MortarW, 1] ];
-	(unitsBuyAI select si0) set [_i, _list];
+	unitsBuyAI select si0 set [_i, _list];
 	_list = [ [_MortarE, 1] ];
-	(unitsBuyAI select si1) set [_i, _list];
+	unitsBuyAI select si1 set [_i, _list];
 	_i = _i + 1;
 };
 
@@ -1743,7 +1753,9 @@ TransportZodiacW = [ _zodiacW, _zodiacHW ];				TransportZodiacE = [ _zodiacE, _z
 Transport6APCW = [ _m2a2W, _m3a2W, _m2a2aa, _m2a2at, _m2a2d,  _warrior80W ];		Transport6APCE = [ _bmp2E, _bmp2_EE, _bmp2aa, _bmp2at, _bmp2d, _bmp2Cannon,  _bmp3 ];
 Transport8APCW = [ _m113W, _vulcanTransp, _vulcanW2 ]; 					Transport8APCE = [ _bmpE ];
 TransportHeliW = [ _uh60W, _uh60supW, _uh60W30,_uh60WMG2,_uh60WL,  _ch47W ]; 	TransportHeliE = [ _mi17E, _mi17supE, _mi17E30, _mi17EL, _mi17EMG2,  _mi26E ];
-TransportirNOHeliW = [_mh6W, _irNO_uh60]; TransportirNOHeliE = [_mi2E, _irNO_mi17]; TransportHindE = [ _mi24E, _mi24E2, _mi24E3 ];
+TransportirNOHeliW = [_mh6W,_mh6M60W,_mh6M134W, _irNO_uh60];
+TransportirNOHeliE = [_mi2E,_mi2PktE,_mi2GshgE, _irNO_mi17];
+TransportHindE = [ _mi24E, _mi24E2, _mi24E3 ];
 TransportPlaneW = [ _c130W, _c130supportW ]; 				TransportPlaneE = [ _an72E, _an72supportE ];
 TransportRepairTruckW = [_supportTruckW, _supportTruckW2]; 		TransportRepairTruckE = [_supportTruckE, _supportTruckE2];
 TransportSupAPCW = [_supportAPCW, _supportAPCWminer];
@@ -1777,7 +1789,7 @@ typesHowitzer = [ _m109W,_plz05E, _grkpbvW,_plz89E ]; typesRocketLauncher = [_m2
 typesHeavyTank = [ _tankHeavyW01, _tankHeavyW02, _tankHeavyW03, _tankHyperW01,  _tankHeavyE01, _tankHeavyE02, _tankHeavyE03, _tankHyperE01 ];
 typesLightTank = [ _tankLightW01, _tankLightW02, _tankLightE01, _tankLightE02, _tankLightE03,  _AMX10W, _tdW, _tdE, _amx10RcW,_2s25E];
 typesATAPC = [ _m2a2at, _bmp2at ];
-typesAAAPC = [ _vulcanW2, _m2a2aa, _vulcanTransp, _vulcanW, _tunguskaE, _bmp2aa, _bmp2Cannon, _shilkaE ];
+typesAAAPC = [ _vulcanW2, _m2a2aa, _vulcanTransp, _vulcanAutoW, _tunguskaE, _bmp2aa, _bmp2Cannon, _shilkaAutoE ];
 typesGunshipOrigin = [_ah1W, _ah64W, _v80E, _mi24E, _tigerW];
 typesGunshipAT = [_ah1W2, _ah64W2, _v80E2, _mi24E2, _mi24E3, _tigerW2];
 typesKa50 = [ _v80E, _v80E2 ];
@@ -1811,8 +1823,8 @@ AASystem = [ [_vulcanBaseW, _vulcanBaseW2], [_shilkaBaseE, _tunguskaBaseE] ];
 
 comment { VEHICLES WITH UNLIMITED/SPECIAL WEAPON RANGE; };
 vUnlimitedRange = [_vulcanW2, _vulcanBaseW2, _tunguskaE, _tunguskaBaseE];
-vDoubledRange = [_vulcanW, _shilkaE, _m2a2aa, _bmp2aa, _vulcanTransp, _bmp2Cannon, _boatW3, _boatE3, _vulcanBaseW, _shilkaBaseE, _uh60W, _uh60supW, _uh60WMG2, _mi17E, _mi17supE, _mi17EMG2];
-if (bool_TZK_SEMod_Mode) then {vDoubledRange = [_vulcanW, _shilkaE, _m2a2aa, _bmp2aa, _vulcanTransp, _bmp2Cannon, _boatW3, _boatE3, _vulcanBaseW, _shilkaBaseE, _patrolboatW, _patrolboatE]; vUnlimitedRange = [_vulcanW2, _vulcanBaseW2, _tunguskaE, _tunguskaBaseE, _patrolshipW, _patrolshipE]};
+vDoubledRange = [_vulcanAutoW, _shilkaAutoE, _m2a2aa, _bmp2aa, _vulcanTransp, _bmp2Cannon, _boatW3, _boatE3, _vulcanBaseW, _shilkaBaseE, _uh60W, _uh60supW, _uh60WMG2, _mi17E, _mi17supE, _mi17EMG2];
+if (bool_TZK_SEMod_Mode) then {vDoubledRange = [_vulcanAutoW, _shilkaAutoE, _m2a2aa, _bmp2aa, _vulcanTransp, _bmp2Cannon, _boatW3, _boatE3, _vulcanBaseW, _shilkaBaseE, _patrolboatW, _patrolboatE]; vUnlimitedRange = [_vulcanW2, _vulcanBaseW2, _tunguskaE, _tunguskaBaseE, _patrolshipW, _patrolshipE]};
 
 comment { VEHICLES WITH LONGER REARM TIME; };
 vDoubleRearmTime = [_ah1W, _ah1W2, _ah64W, _ah64W2, _tigerW, _tigerW2, _mi24E, _mi24E2, _mi24E3, _a10, _a10FFAR, _a10LGB8, _su25, _su25Rocket, _su25LGB8];
@@ -1824,7 +1836,7 @@ comment { VEHICLES CAN CAUSE MINE EXPLOSION; };
 vMinerAvoid = (typesSupportAPC + typesLightTank + typesHeavyTank + typesHowitzer + typesTransportAPC - typesAAAPC) + typesAAAPC + typesPlane + [_bmpR, _t72R, _t80R, _TDR,utMCVW, utMCVE, utMHQ0, utMHQ1];
 
 comment { VEHICLES USED FOR EXTEND AIR RADAR; };
-vRadarAir = [ [_vulcanW, _vulcanW2, _vulcanBaseW, _vulcanBaseW2], [_shilkaE, _tunguskaE, _shilkaBaseE, _tunguskaBaseE] ];
+vRadarAir = [ [_vulcanAutoW, _vulcanW2, _vulcanBaseW, _vulcanBaseW2], [_shilkaAutoE, _tunguskaE, _shilkaBaseE, _tunguskaBaseE] ];
 
 comment { VEHICLES Equipping RedTop; };
 vRedTop = [ [_vulcanW2, _vulcanBaseW2, _a10AA], [_tunguskaE, _tunguskaBaseE, _su25AA] ];
