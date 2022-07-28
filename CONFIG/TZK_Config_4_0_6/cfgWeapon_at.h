@@ -12,7 +12,7 @@
 	};
 	class GuidedAT_P18_xj400: GuidedAT_APC_xj400 { ammo = "GuidedAT_P18_xj400"; };
 	class ATLauncherTank_xj400: AT3Launcher {
-		magazines[] = {"GuidedAT_APC_xj400","GuidedAT_P18_xj400"};
+		magazines[] = {"GuidedAT_APC_xj400","GuidedAT_P18_xj400","LaserAT_APC_xj400"};
 	};
 	class GuidedAT_Heli_8_xj400: GuidedAT_APC_xj400 {};
 	class GuidedAT_Heli_P40_xj400: GuidedAT_Heli_8_xj400 { ammo = "GuidedAT_Heli_P40_xj400"; };
