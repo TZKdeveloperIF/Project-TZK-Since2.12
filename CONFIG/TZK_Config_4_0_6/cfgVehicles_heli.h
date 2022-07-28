@@ -5,6 +5,7 @@
 		};
 	};
 	class UH60_CSLA_xj400: UH60_CSLA_Base_xj400 {
+		armor = 120;
 		model = "\TZK_Model_4_0_6\UH60A_CSLA2.p3d";
 		class Turret: TurretBase {
 			minElev = -0;
@@ -14,6 +15,7 @@
 		};
 	};
 	class UH60MG_CSLA_Base_xj400: UH60_CSLA_Base_xj400 {
+		armor = 120;
 		model = "\TZK_Model_4_0_6\UH60A_CSLA2.p3d";
 		class Turret {
 			gunAxis = "OsaHlavne";
@@ -48,9 +50,11 @@
 			minTurn = -0; maxTurn = +0;
 		};
 		gunnerOpticsModel = "optika_empty";
+		armor = 75;
 	};
 	class Mi17_owp_PKT_xj400: Mi17_owp_Base_xj400 {
 		gunnerOpticsModel = "optika_empty";
+		armor = 75;
 	};
 
 	class MH6_Side_Base_xj400: Helicopter {
