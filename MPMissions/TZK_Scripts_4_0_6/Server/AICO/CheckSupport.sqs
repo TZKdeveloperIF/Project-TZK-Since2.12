@@ -52,7 +52,7 @@ _timeAbort = time + 2*60
 	~5
 
   ? !(alive _unit) : goto "Exit"
-  [_unit, _si, _gi] exec "\TZK_Scripts_4_0_5\Server\AICO_CheckBuyUnit.sqs"
+  [_unit, _si, _gi] exec localize {TZK_AICO_CHECK_BUYUNIT}
   ? !(alive _support) || isNull _objRepair || time > _timeAbort : goto "CheckSupport"
   ? _unit != driver _support : goto "WaitInAsDriver"
   
@@ -64,7 +64,7 @@ _timeAbort = time + 2*60
 	~5
 	
   ? !(alive _unit) : goto "Exit"
-  [_unit, _si, _gi] exec "\TZK_Scripts_4_0_5\Server\AICO_CheckBuyUnit.sqs"
+  [_unit, _si, _gi] exec localize {TZK_AICO_CHECK_BUYUNIT}
   ? _unit != (driver _support) || isNull _objRepair || time > _timeAbort : goto "CheckSupport"
   ? (_support distance _objRepair) > rangeSupport : goto "CheckObjectReached"
 
@@ -92,7 +92,7 @@ _vt = _objRepair call funcGetUnitTypeFromObject
 	~30
 	
 ? !(alive _unit) : goto "Exit"
-[_unit, _si, _gi] exec "\TZK_Scripts_4_0_5\Server\AICO_CheckBuyUnit.sqs"
+[_unit, _si, _gi] exec localize {TZK_AICO_CHECK_BUYUNIT}
 goto "CheckSupport"
 
 #MoveToEjectPos

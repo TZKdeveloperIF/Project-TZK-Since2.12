@@ -108,8 +108,8 @@ _bTakeTown = false; _nDestroy = 0
 
 	_money = groupMoneyMatrix select _si select _gi
 
-	? time > _buyTime && _money > 500: [_unit, _si, _gi, _nextOrder] exec "Server\AICO_CheckBuyUnit.sqs"; _buyTime = time + 15
-	? time > _timeCheckNextUpgrade: [_si, _gi] exec "Server\AICO_CheckUpgrade.sqs"; _timeCheckNextUpgrade = time + ([5*60, 60] select dev)
+	? time > _buyTime && _money > 500: [_unit, _si, _gi, _nextOrder] exec localize {TZK_AICO_CHECK_BUYUNIT}; _buyTime = time + 15
+	? time > _timeCheckNextUpgrade: [_si, _gi] exec "Server\AICO\CheckUpgrade.sqs"; _timeCheckNextUpgrade = time + ([5*60, 60] select dev)
 	? time > _timeCheckOrders: goto _nextOrder
 
 	? _unit call busyCheck: goto "Update"
@@ -125,7 +125,7 @@ _bTakeTown = false; _nDestroy = 0
 
 	? (count _posIdle) > 0: _dist = [_posIdle, getPos _unit] call funcDistH; if (_dist > 10) then { _posMove = _posIdle; _returnMove = "Update"; goto "MoveToPos" }
 
-	? time > _timeCheckSupport && !bool_TZK_MF_Mode: [_unit, _si, _gi] exec "\TZK_Scripts_4_0_5\Server\AICO_CheckSupport.sqs"; _timeCheckSupport = time + 60; goto "Update"
+	? time > _timeCheckSupport && !bool_TZK_MF_Mode: [_unit, _si, _gi] exec localize {TZK_AICO_CHECK_SUPPORT}; _timeCheckSupport = time + 60; goto "Update"
 	? time > _timeCheckEjectDrivers: goto "CheckEjectDrivers"
 
 	? !(alive _mhq) && _money > costRepairMHQ: goto "RepairMHQ"
@@ -215,7 +215,7 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 		~5
 		? !(alive _unit): goto "WaitUntilAlive"
 		? time > _timeForce: (vehicle _unit) setPos _posMove; goto _returnMove
-		? time > _buyTime && _money > 500: [_unit, _si, _gi, _nextOrder] exec "Server\AICO_CheckBuyUnit.sqs"; _buyTime = time + 15
+		? time > _buyTime && _money > 500: [_unit, _si, _gi, _nextOrder] exec localize {TZK_AICO_CHECK_BUYUNIT}; _buyTime = time + 15
 		_dist = [_posMove, getPos _unit] call funcDistH
 		? _dist > 5: goto "CheckPosReached"
 	doStop _unit

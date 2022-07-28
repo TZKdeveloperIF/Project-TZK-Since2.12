@@ -84,12 +84,11 @@ _unitsBuy = []; _giInf = AICO_giInf select _si
 		_giJoin = _giInf select random count _giInf - 0.5
 		_slots = maxGroupSize - count units (groupMatrix select _si select _giJoin) - (groupUnitsBuildingMatrix select _si select _giJoin)
 		? _slots <= 0: _decideNum = _decideNum - 1; _buyMode = _bmSoldier; goto "CheckBuyUnit"
-		_unitsBuy = (unitsBuyAI select _si select utbinfAt) + (unitsBuyAI select _si select utbinfAAATSnip)
+		_unitsBuy = (unitsBuyAI select _si select utbinfAtI) + (unitsBuyAI select _si select utbinfAAATSnip)
 		? bool_TZK_SEMod_Mode: _unitsBuy = unitsBuyAI select _si select utbInfMixed2
 		_buyNum = 4
 		; ask infantry group buy AA vehicle.
 		? time > 60*10 && [_si, typesSupport select _si] call funcCountUnits < ("_x select tdSide == _si" count towns) + 2: _unitsBuy = [[typesSupport select _si select 3, 1]], _buyNum = 3
-		? time > 60*50 && _money > 15000 && random 1 < 0.1: _unitsBuy = _unitsBuy + unitsBuyAI select _si select utbAAHeavy, _buyNum = 1
 		goto "TypesSelected"
 	# mode_planeAT
 		? count _giInf < 1: exit

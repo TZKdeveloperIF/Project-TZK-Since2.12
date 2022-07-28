@@ -57,9 +57,11 @@ _type = _type + 1;
 
 aisBuy = _type;
 aiSettingDefs set [_type, ["Auto-Buy", [
-	"none", "Soldier", "MG/Snipers", "LAW/RPG-Infantry", "AT-Infantry",
-	"AA-Infantry", "AA/Snipers", "Infantry-Mixed", "Armor Mixed", "T72/M60", "Armor-Heavy", "M2A2/BMP2-AT", "AA-Heavy", 
-	"AA-Vehicles", "Saboteurs", "Miners", "Transp-Land", "Transp-Air", "Support Vehicles", "Planes", "Mortar"
+	"none", "Soldier", "Sniper", "LAW/RPG", "AA-Infantry", "AA/Snipers",
+	"AT I", "AT II", "AT III", "AT IV", "Soldier III", "Soldier IV",
+	"MG I", "MG II", "MG III", "MG IV", "Sniper Heavy",
+	"Armor-Heavy", "M2A2/BMP2-AT", "AA-Cannon", "Support Vehicles", "Planes",
+	"Miners", "Mortar"
 ], 0, "Auto-Buy"] ];
 if bool_TZK_SEMod_Mode then {
 	aiSettingDefs set [_type, ["Auto-Buy", [
