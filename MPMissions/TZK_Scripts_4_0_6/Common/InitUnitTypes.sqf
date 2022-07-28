@@ -1537,14 +1537,14 @@ if !_bSkipBuyDef then {
 	unitsBuyAI = [ [], [] ];
 	_i = 0;
 
-	comment "utbNone = _i;"
+	comment "utbNone = _i;";
 	_list = [];
 	unitsBuyAI select si0 set [_i, _list];
 	_list = [];
 	unitsBuyAI select si1 set [_i, _list];
 	_i = _i + 1;
 
-	comment "utbSoldier = _i;"
+	comment "utbSoldier = _i;";
 	_list = [
 		[_rkgSoldierW, 0.5],
 		[_soldierW1, 0.5]
@@ -1557,7 +1557,7 @@ if !_bSkipBuyDef then {
 	unitsBuyAI select si1 set [_i, _list];
 	_i = _i + 1;
 
-	comment "utbinfMGSnip = _i;"
+	comment "utbinfMGSnip = _i;";
 	_list = [ [_sniperW, 1] ];
 	unitsBuyAI select si0 set [_i, _list];
 	_list = [ [_sniperE, 1] ];

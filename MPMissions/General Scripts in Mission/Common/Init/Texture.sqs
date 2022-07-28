@@ -6,7 +6,7 @@ _type = -1
 ? count _this > 1: _type = _this select 1
 _this = 0
 ; todo: use related container to handle variables
-_firstChar = substr [0, 1, _typeName]; _found = false;
+_firstChar = substr [_typeName, 0, 1]; _found = false;
 
 ? "Tank_xj400" countType [_vehicle] > 0: call preprocessFile "Common\Init\TexTank.sqf", goto "END"
 ? "M113" countType [_vehicle] > 0: goto "CheckM113"
