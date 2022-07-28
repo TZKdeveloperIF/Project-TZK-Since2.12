@@ -490,8 +490,9 @@ class CfgModels {
 	class Mi17_OWP: Helicopter  {
 		sectionsInherit = "Helicopter";
 		sections[] = {
-			cdln1,cdrn1,cdln2,cdrn2,ss_cms,ss_engine1,ss_engine2,ss_fuel,ss_gun,ss_transm,ss_weap,num_1,num_2,deslight,
-			tex_body.pac, tex_decals.paa, tex_special.pac, tex_dop.pac
+			cdln1,cdrn1,cdln2,cdrn2,ss_cms,ss_engine1,ss_engine2,ss_fuel,ss_gun,ss_transm,ss_weap,num_1,num_2,deslight
+			, tzk_tex_00
+			, tex_body.pac, tex_decals.paa, tex_special.pac, tex_dop.pac
 		};
 	};
 	class MI24_RHS: Helicopter  {
