@@ -1,4 +1,7 @@
 _vehicle = _this select 0
+? isNull player: exit
+_dist = _vehicle distance player
+? _dist > viewDistance / 2: exit
 
 _array = typeOf _vehicle GetVehicleParamArray "hiddenSelections"
 
