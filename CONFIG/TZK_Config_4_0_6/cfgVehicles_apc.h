@@ -111,7 +111,8 @@
 		mapSize = 11;
 
 		maxSpeed = 46;
-		armor = 550;
+		// armor = 550;
+		armor = 400;
 		irScanRangeMin = 0; irScanRangeMax = 0; irScanToEyeFactor = 0; irScanGround = 0;
 		class EventHandlers {
 			Init = "_vehicle = _this select 0; _vehicle animate [{Podveska}, 0.5], [_vehicle, {C}] exec localize {TZK_EVENT_INIT_TEX_M88}";
@@ -279,7 +280,8 @@
 		mapSize = 11;
 
 		maxSpeed = 50;
-		armor = 450; //400
+		// armor = 450; //400
+		armor = 400; //400
 		irScanRangeMin = 0; irScanRangeMax = 0; irScanToEyeFactor = 0; irScanGround = 0;
 		class EventHandlers {
 			Init = (_this select 0) exec localize {TZK_EVENT_INIT_TEX_BREM1};
