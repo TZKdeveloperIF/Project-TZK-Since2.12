@@ -1,12 +1,13 @@
 	class MachineGun7_6_xj400: MachineGun7_6 {};
 	class MG_7_6_xj400: MachineGun7_6 {
-		modes[] = {"Player", "AI"};
-		count = 500 * 2;
-		class Player: MachineGun7_6_xj400 {
-			displayName = "7.62mm (Man)";
-			ammo = "Bullet_7_6_Player_xj400";
-			multiplier = 2;
-		};
+		modes[] = {"AI"};
+		// count = 500 * 2;
+		count = 500;
+		// class Player: MachineGun7_6_xj400 {
+		// 	displayName = "7.62mm (Man)";
+		// 	ammo = "Bullet_7_6_Player_xj400";
+		// 	multiplier = 2;
+		// };
 		class AI: MachineGun7_6_xj400 {
 			displayName = "7.62mm (AI)";
 			ammo = "Bullet_7_6_AI_xj400";
@@ -17,13 +18,14 @@
 	};
 	class MachineGun12_7_xj400: MachineGun12_7 {};
 	class MG_12_7_xj400: MachineGun12_7_xj400 {
-		modes[] = {"Player", "AI"};
-		count = 500 * 2;
-		class Player: MachineGun12_7_xj400 {
-			displayName = "12.7mm (Man)";
-			ammo = "Bullet_12_7_Player_xj400";
-			multiplier = 2;
-		};
+		modes[] = {"AI"};
+		// count = 500 * 2;
+		count = 500;
+		// class Player: MachineGun12_7_xj400 {
+		// 	displayName = "12.7mm (Man)";
+		// 	ammo = "Bullet_12_7_Player_xj400";
+		// 	multiplier = 2;
+		// };
 		class AI: MachineGun12_7_xj400 {
 			displayName = "12.7mm (AI)";
 			ammo = "Bullet_12_7_AI_xj400";
@@ -34,13 +36,14 @@
 	};
 	class CoaxW_xj400: MachineGun7_6 {};
 	class Coax_M240_xj400: CoaxW_xj400 {
-		modes[] = {"Player", "AI"};
-		count = 11400 * 2;
-		class Player: CoaxW_xj400 {
-			displayName = "M240 7.62 (man)";
-			ammo = "CoaxW_Player_xj400";
-			multiplier = 2;
-		};
+		modes[] = {"AI"};
+		// count = 11400 * 2;
+		count = 11400;
+		// class Player: CoaxW_xj400 {
+		// 	displayName = "M240 7.62 (man)";
+		// 	ammo = "CoaxW_Player_xj400";
+		// 	multiplier = 2;
+		// };
 		class AI: CoaxW_xj400 {
 			displayName = "M240 7.62 (AI)";
 			ammo = "CoaxW_AI_xj400";
@@ -50,13 +53,14 @@
 	};
 	class CoaxE_xj400: MachineGun7_6 {};
 	class Coax_PKT_xj400: CoaxE_xj400 {
-		modes[] = {"Player", "AI"};
-		count = 1000 * 2;
-		class Player: CoaxE_xj400 {
-			displayName = "PKT 7.62 (man)";
-			ammo = "CoaxE_Player_xj400";
-			multiplier = 2;
-		};
+		modes[] = {"AI"};
+		// count = 1000 * 2;
+		count = 1000;
+		// class Player: CoaxE_xj400 {
+		// 	displayName = "PKT 7.62 (man)";
+		// 	ammo = "CoaxE_Player_xj400";
+		// 	multiplier = 2;
+		// };
 		class AI: CoaxE_xj400 {
 			displayName = "PKT 7.62 (AI)";
 			ammo = "CoaxE_AI_xj400";
@@ -64,32 +68,51 @@
 			reloadTime = 0.075 / 2;
 		};
 	};
-	class LeoMG_xj400: MachineGun12_7 {};
-	class MG3A1_xj400: LeoMG_xj400 {
-		modes[] = {"Player", "AI"};
-		count = 4750 * 2;
-		class Player: LeoMG_xj400 {
-			displayName = "MG3A1 (Man)";
-			ammo = "Bullet_12_7_Player_xj400";
-			multiplier = 2;
-		};
-		class AI: LeoMG_xj400 {
+	class MG3A1_xj400: MachineGun12_7_xj400 {
+		scopeWeapon = 2;
+		scopeMagazine = 2;
+		displayName = "MG3A1";
+		initSpeed = 800;
+		sound[] = {"\TZK_Sounds_4_0_0\mg3_fire.wss",3.1622777,1};
+		soundContinuous = 0;
+
+		modes[] = {"AI"};
+		// count = 4750 * 2;
+		count = 4750;
+		// class Player: MachineGun12_7_xj400 {
+		// 	displayName = "MG3A1 (Man)";
+		// 	displayNameMagazine = "MG3A1";
+		// 	shortNameMagazine = "MG3A1";
+		// 	ammo = "Bullet_12_7_Player_xj400";
+		// 	dispersion = 0.0005;
+		// 	reloadTime = 0.065;
+		// 	aiRateOfFire = 0.5;
+		// 	multiplier = 2;
+		// 	sound[] = {"\TZK_Sounds_4_0_0\mg3_fire.wss",3.1622777,1};
+		// 	soundContinuous = 0;
+		// };
+		class AI: MachineGun12_7_xj400 {
 			displayName = "MG3A1 (AI)";
+			displayNameMagazine = "MG3A1";
+			shortNameMagazine = "MG3A1";
 			ammo = "Bullet_12_7_AI_xj400";
 			dispersion = 0.0005 * 5;
 			reloadTime = 0.065 / 2;
 			aiRateOfFire = 0.5 / 2;
+			sound[] = {"\TZK_Sounds_4_0_0\mg3_fire.wss",3.1622777,1};
+			soundContinuous = 0;
 		};
 	};
 	class PLAMG_xj400: MachineGun12_7_xj400 {
-		modes[] = {"Player", "AI"};
-		count = 500 * 2;
-		class Player: MachineGun12_7_xj400 {
-			displayName = "12.7mm (Man)";
-			ammo = "Bullet_12_7_Player_xj400";
-			multiplier = 2;
-			sound[] = {"\TZK_Sounds_4_0_0\jiqiang.wss",3.1622777,1};
-		};
+		modes[] = {"AI"};
+		// count = 500 * 2;
+		count = 500;
+		// class Player: MachineGun12_7_xj400 {
+		// 	displayName = "12.7mm (Man)";
+		// 	ammo = "Bullet_12_7_Player_xj400";
+		// 	multiplier = 2;
+		// 	sound[] = {"\TZK_Sounds_4_0_0\jiqiang.wss",3.1622777,1};
+		// };
 		class AI: MachineGun12_7_xj400 {
 			displayName = "12.7mm (AI)";
 			ammo = "Bullet_12_7_AI_xj400";
@@ -101,13 +124,14 @@
 	};
 	class 50calW_xj400: MachineGun12_7 {};
 	class 50cal_M2_xj400: 50calW_xj400 {
-		modes[] = {"Player", "AI"};
-		count = 50 * 2;
-		class Player: 50calW_xj400 {
-			displayName = "M2 12.7 (Man)";
-			ammo = "50calW_Player_xj400";
-			multiplier = 2;
-		};
+		modes[] = {"AI"};
+		// count = 50 * 2;
+		count = 50;
+		// class Player: 50calW_xj400 {
+		// 	displayName = "M2 12.7 (Man)";
+		// 	ammo = "50calW_Player_xj400";
+		// 	multiplier = 2;
+		// };
 		class AI: 50calW_xj400 {
 			displayName = "M2 12.7 (AI)";
 			ammo = "50calW_AI_xj400";
@@ -118,13 +142,14 @@
 	};
 	class 50calE_xj400: MachineGun12_7 {};
 	class 50cal_NSVT_xj400: 50calE_xj400 {
-		modes[] = {"Player", "AI"};
-		count = 50 * 2;
-		class Player: 50calE_xj400 {
-			displayName = "NSVT 12.7 (Man)";
-			ammo = "50calE_Player_xj400";
-			multiplier = 2;
-		};
+		modes[] = {"AI"};
+		// count = 50 * 2;
+		count = 50;
+		// class Player: 50calE_xj400 {
+		// 	displayName = "NSVT 12.7 (Man)";
+		// 	ammo = "50calE_Player_xj400";
+		// 	multiplier = 2;
+		// };
 		class AI: 50calE_xj400 {
 			displayName = "NSVT 12.7 (AI)";
 			ammo = "50calE_AI_xj400";

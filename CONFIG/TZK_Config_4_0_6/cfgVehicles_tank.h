@@ -249,7 +249,7 @@
 		};
 
 		soundEngine[] = {"\TZK_Sounds_4_0_6\AMX10\moteur10rc.wss", db-15, 1};
-		soundEnviron[] = {,db-15,1};
+		soundEnviron[] = {"", db-15, 1};
 
 		class Turret {
 			gunAxis = "OsaHlavne";
