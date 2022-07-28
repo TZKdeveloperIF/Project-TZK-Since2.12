@@ -82,7 +82,6 @@
 	};
 
 	class HMMMV_TOW2A_xj400: JeepMG {
-		model = "\TZK_Model_4_0_6\hmmwv_tow2_FK_HMMWV.p3d";
 		terrainCoef = 1; preferRoads = 0;
 	};
 	class HMMMV_TOW2A_Auto_xj400: HMMMV_TOW2A_xj400 {
