@@ -8,15 +8,53 @@
 #define posG2 0
 #define posG3 2000
 
-#define TZK_BIS_AddOns "6G30", "Bizon", "Brdm", "Ch47D", "G36a", "HMMWV", "MM1", "oh58", "Su25", "Vulcan", "XMS", "Bradley", "BMP2", "KOLO", "Hunter", "BIS_Resistance", "BIS_WeaponPack", 
-#define TZK_Basic_405_AddOns "cwkzodiac", "aek919k", "GST_KawaP", "Baracken", "TZK_Vehicle_Models_401", "TZK_Vehicle_Models_401_1", "TZK_Vehicle_Models_402", "TZK_Vehicle_Models_403", "TZK_Vehicle_Models_404", "TZK_Vehicle_Models_405", "TZK_Textures_401", "TZK_Textures_402", "TZK_Textures_403", "TZK_Textures_404", "TZK_Textures_405", "TZK_BIN_CONFIG_4_0_5",
-#define TZK_CONFIG_405_AddOns "TZK_Objects_400_3", "TZK_CONFIG_404", "TZK_CONFIG_405", "TZK_Scripts_404", "TZK_Scripts_405",
-#define TZK_YugoMode_AddOns "Trabant", "Mini", "groups", "UNM2A2", "UNVULCAN", "UNHUMMER", "UNJeep", "UNJeepMG", "UN_URAL", "UNM6Bradley", "UN_5to2", "UNCH47", "UNOH58", "UNUH60MG", "UN_URAL_REFUEL", "UNM113", "UNM113_SAN", "UN_NL_Sold_Sani", "UN_Pilot", "UN_Crew", "bkm_weapons", "Bkm_BumbleBee", "scg", "SAJ", "JSO", "Soko_Soldier", "mg36sm", "kmmyug", "kmmmrn", "kmmfnmag", "kmmjamfnmag", "kmmm136at4", "kmmdiemaco", "kmmmb290gd", "kmm_mb", "kmmtnk", "KMMLeopard2", "SIG_M84", "SIG_T90", "SIG_T90s", "SIG_T72BC", "sig_t72b", "SIG_T80", "sig_t72m1i", "SIG_T72S", "lsr_uswp", "lsr_rang", "lsr_rang90", "lsr_delta", "lsr_sfsnip", "tactevents", "CBT_m113a", "CBT_M2IFV", "CBT_HMMWV", "CBT_m577", "cbt_misc", "CBT_Crew", "ICPrpg7", "icp_inf", "icp_crew", "icp_weaponpack", "icprpg7", "LLW_AH64D", "llw_weapons_aircraft", "llwypr", "vit_mig29", "vit_dkmm_apc", "dkmm_mod", "dkmm_rsc", "Mi_T55", "mig31Tim", "hwk_mi28", "Coaler", "RKSL_WLDNets", "sa_11gadfly", "mi2no", "PCfoxhill", "PCfoxhole", "pchorse3", "KONKURSM", "Cover", "orspkpit", "ORSComPos", "BAS_RUSOPFOR", "INQ_M1A2", "bizmk4", "MiG_anim", "ADF_FCPB", "FABoat", "Zubr", "euro_res", "jam_magazines", "KEGak107", "baracken", "cti_markers", "CWKZodiac", "CR08", "ctiobjects02", "BAS_Airweap", "BAS_MH47185", "BAS_MAH60", "BAS_HH60", "BAS_Kiowapack", "bas_mh6185", "evgeni_mod", "M925NATO", "OWP_Mi26", "Vit_AH1W", "Vit_Mi24", "dlem_ural", "M925NATOOPEN", "M925NATOREPAIR", "M925NATOFUEL", "hwk_c130", "MTLB", "rktmod", "GNT_B52", "DSL_a10", "totalyugowar", "totalyugowarupdate1", "TotalYugoWarFinal",
-#define TZK_SE_Mode_AddOns  "JAM_Magazines", "JAM_Sounds", "C8X_RUSS", "C8X_Magazines", "ICP_weaponpack", "LSR_uswp", "M109A6", "mfm_cit_sprutsd", "ww4_weaponry", "ICP_Tanks", "t90", "sig_mn1", "sig_m11", "sig_m60a3", "Su30MK", "UNA_Static_addon_V10_Beta", "metis", "owp_mi26", "bas_mh47185", "dc3", "dkm_mod", "fz_ah64d", "evgeni_mod", "hwk_C130", "2S9_nona", "icp_inf", "icprpg7", "dvd_us_config1", "dvd_config218", "m925nato", "bas_rusopfor", "icp_crew", "rus_shilka", "mcar_engine", "icprpg7", "IkaR_160", "Coaler", "DKMM_Mod", "mfm_cfg_t_90_ms_pack", "mnf_brdm2", "ADF_FCPB", "zodhuri", "FLK_Guerrico", "MX_Mirage", "FABoat", "OFrP_Blindes", "dkmm_rsc", "hwk_mi28", "fk_hmmwv", "mnf_scripts", "dlem_ural", "pak_fa", "F_22", "B2", "su39", "WW3_BMP2", "una_static_addon_v10_beta", "icp_mgun", "armags30East", "armags30res", "zu23m", "rktmod", \
-"TZKSE_CONFIG_405", "TZKSE_BIN_CONFIG_4_0_5", \
-
-#define TZK_Basic_406_AddOns TZK_Basic_405_AddOns "TZK_Models_406", "TZK_Textures_406", "TZK_Sounds_406", "TZK_BIN_CONFIG_4_0_6", 
-#define TZK_CONFIG_406_AddOns TZK_CONFIG_405_AddOns "TZK_CONFIG_406", "TZK_Scripts_406", 
+#define TZK_BIS_AddOns \
+	"6G30", "Bizon", "Brdm", "Ch47D", "G36a", "HMMWV", "MM1", "oh58", "Su25", \
+	"Vulcan", "XMS", "Bradley", "BMP2", "KOLO", "Hunter", "BIS_Resistance", "BIS_WeaponPack", 
+#define TZK_Basic_405_AddOns \
+	"cwkzodiac", "aek919k", "GST_KawaP", "Baracken", "TZK_Vehicle_Models_401", \
+	"TZK_Vehicle_Models_401_1", "TZK_Vehicle_Models_402", "TZK_Vehicle_Models_403", \
+	"TZK_Vehicle_Models_404", "TZK_Vehicle_Models_405", "TZK_Textures_401", \
+	"TZK_Textures_402", "TZK_Textures_403", "TZK_Textures_404", "TZK_Textures_405", \
+	"TZK_BIN_CONFIG_4_0_5",
+#define TZK_CONFIG_405_AddOns \
+	"TZK_Objects_400_3", "TZK_CONFIG_404", "TZK_CONFIG_405", "TZK_Scripts_404", "TZK_Scripts_405",
+#define TZK_YugoMode_AddOns \
+	"Trabant", "Mini", "groups", "UNM2A2", "UNVULCAN", "UNHUMMER", "UNJeep", "UNJeepMG", \
+	"UN_URAL", "UNM6Bradley", "UN_5to2", "UNCH47", "UNOH58", "UNUH60MG", "UN_URAL_REFUEL", \
+	"UNM113", "UNM113_SAN", "UN_NL_Sold_Sani", "UN_Pilot", "UN_Crew", "bkm_weapons", \
+	"Bkm_BumbleBee", "scg", "SAJ", "JSO", "Soko_Soldier", "mg36sm", "kmmyug", "kmmmrn", \
+	"kmmfnmag", "kmmjamfnmag", "kmmm136at4", "kmmdiemaco", "kmmmb290gd", "kmm_mb", "kmmtnk", \
+	"KMMLeopard2", "SIG_M84", "SIG_T90", "SIG_T90s", "SIG_T72BC", "sig_t72b", "SIG_T80", \
+	"sig_t72m1i", "SIG_T72S", "lsr_uswp", "lsr_rang", "lsr_rang90", "lsr_delta", "lsr_sfsnip", \
+	"tactevents", "CBT_m113a", "CBT_M2IFV", "CBT_HMMWV", "CBT_m577", "cbt_misc", "CBT_Crew", \
+	"ICPrpg7", "icp_inf", "icp_crew", "icp_weaponpack", "icprpg7", "LLW_AH64D", \
+	"llw_weapons_aircraft", "llwypr", "vit_mig29", "vit_dkmm_apc", "dkmm_mod", "dkmm_rsc", \
+	"Mi_T55", "mig31Tim", "hwk_mi28", "Coaler", "RKSL_WLDNets", "sa_11gadfly", "mi2no", \
+	"PCfoxhill", "PCfoxhole", "pchorse3", "KONKURSM", "Cover", "orspkpit", "ORSComPos", \
+	"BAS_RUSOPFOR", "INQ_M1A2", "bizmk4", "MiG_anim", "ADF_FCPB", "FABoat", "Zubr", "euro_res", \
+	"jam_magazines", "KEGak107", "baracken", "cti_markers", "CWKZodiac", "CR08", "ctiobjects02", \
+	"BAS_Airweap", "BAS_MH47185", "BAS_MAH60", "BAS_HH60", "BAS_Kiowapack", "bas_mh6185", \
+	"evgeni_mod", "M925NATO", "OWP_Mi26", "Vit_AH1W", "Vit_Mi24", "dlem_ural", "M925NATOOPEN", \
+	"M925NATOREPAIR", "M925NATOFUEL", "hwk_c130", "MTLB", "rktmod", "GNT_B52", "DSL_a10", \
+	"totalyugowar", "totalyugowarupdate1", "TotalYugoWarFinal",
+#define TZK_SE_Mode_AddOns \
+	"JAM_Magazines", "JAM_Sounds", "C8X_RUSS", "C8X_Magazines", "ICP_weaponpack", "LSR_uswp", \
+	"M109A6", "mfm_cit_sprutsd", "ww4_weaponry", "ICP_Tanks", "t90", "sig_mn1", "sig_m11", \
+	"sig_m60a3", "Su30MK", "UNA_Static_addon_V10_Beta", "metis", "owp_mi26", "bas_mh47185", \
+	"dc3", "dkm_mod", "fz_ah64d", "evgeni_mod", "hwk_C130", "2S9_nona", "icp_inf", "icprpg7", \
+	"dvd_us_config1", "dvd_config218", "m925nato", "bas_rusopfor", "icp_crew", "rus_shilka", \
+	"mcar_engine", "icprpg7", "IkaR_160", "Coaler", "DKMM_Mod", "mfm_cfg_t_90_ms_pack", \
+	"mnf_brdm2", "ADF_FCPB", "zodhuri", "FLK_Guerrico", "MX_Mirage", "FABoat", "OFrP_Blindes", \
+	"dkmm_rsc", "hwk_mi28", "fk_hmmwv", "mnf_scripts", "dlem_ural", "pak_fa", "F_22", "B2", \
+	"su39", "WW3_BMP2", "una_static_addon_v10_beta", "icp_mgun", "armags30East", "armags30res", \
+	"zu23m", "rktmod", "TZKSE_CONFIG_405", "TZKSE_BIN_CONFIG_4_0_5", 
+#define TZK_Basic_406_AddOns \
+	TZK_Basic_405_AddOns \
+	"TZK_Models_406_Beta01", "TZK_Textures_406", "TZK_Sounds_406", "TZK_BIN_CONFIG_4_0_6", 
+#define TZK_CONFIG_406_AddOns \
+	TZK_CONFIG_405_AddOns \
+	"TZK_CONFIG_406_Beta01", "TZK_Scripts_406_Beta01", 
 
 
 		// TZK_Mission_Group_Initialize(0,GUER, posG1,posG2,posG3, 0, "SoldierGB", "dev = true; gameEndType = -1; towns=[]; [] exec ""\TZK_Scripts_4_0_4\Server\InitRepairableObjects.sqs""; [] exec ""\TZK_Scripts_4_0_4\Server\InitDestroyIslandObject.sqs""")
