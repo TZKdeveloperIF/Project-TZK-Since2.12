@@ -125,11 +125,11 @@ _unitsStarted = units _group
 	_unit setVelocity [0,0,0]
 	_unit setPos _posRespawn
 
-	[_unit, _si] exec "\TZK_Scripts_4_0_4\Server\EquipGroupLeaderAI.sqs"
+	[_unit, _si] exec localize {TZK_AI_LEADER_EQUIP}
 
 	unassignVehicle _unit
 	
-	[_unit] exec "\TZK_Scripts_4_0_4\Common\AddRearmData.sqs"
+	[_unit] exec localize {TZK_REARMDATA_ADD}
 	[_unit, _si, _gi] exec "Server\AI_Start.sqs"; 
 
 	goto "Update"

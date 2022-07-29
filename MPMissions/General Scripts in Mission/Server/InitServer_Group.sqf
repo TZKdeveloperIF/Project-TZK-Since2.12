@@ -20,7 +20,7 @@ pingTimes = [[], []]; blockedPlayers = [[], []];
 		_leader = leader _group;
 		if (local _leader && player != _leader) then {
 			_groupsAI set [count _groupsAI, _group];
-			[_leader, _si, _index] exec "Server\InitLeaderAI.sqs";
+			[_leader, _si, _index] exec localize {TZK_AI_LEADER_INIT};
 		};
 		if !(local _leader) then {
 			[_group, _si, _index] exec "Server\Loop\DetectPlayerDisconnect.sqs";
