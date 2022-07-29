@@ -1,15 +1,13 @@
 _timeAbort = (1 + random 2) * 60
-#Start
+# Start
 
-@ pvStructBuilt != -1 || _time > _timeAbort
-? pvStructBuilt == -1: [] exec "\TZK_Scripts_4_0_4\Player\Msg\mStructBuilt.sqs"; exit
-
+@ pvStructBuilt != -1
 _value = pvStructBuilt
-_object = pvStructBuilt_Object
-
 pvStructBuilt = -1
-[_value, _object] exec "\TZK_Scripts_4_0_4\Player\Msg\hStructBuilt.sqs"
+@ !isNull pvStructBuilt_Object
+_object = pvStructBuilt_Object
+pvStructBuilt_Object = objNull
 
-[] exec "\TZK_Scripts_4_0_4\Player\Msg\mStructBuilt.sqs"; exit
+[_value, _object] exec _this
 
 goto "Start"

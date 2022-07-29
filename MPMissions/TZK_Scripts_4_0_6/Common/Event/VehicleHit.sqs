@@ -7,7 +7,7 @@ _source = (_this select 0) select 1
 _amount = (_this select 0) select 2
 _siVehicle = _this select 1
 _scoreTotal = _this select 2
-
+_this = 0
 ~1
 
 _groupSource = group _source
@@ -48,14 +48,14 @@ _giSource = ( groupMatrix select si1 ) find ( _groupSource )
 
 exit
 
-#CheckSendScore
-  _class = scVehicle
-  ? !(isNull _vehicle) && (_vehicle in mhq): _class = scMHQ
+# CheckSendScore
+    _class = scVehicle
+    ? !(isNull _vehicle) && (_vehicle in mhq): _class = scMHQ
 
-  ; calc score
-  ? _amount > 1: _amount = 1
-  _score = _scoreTotal*_amount
-  _score = _score - (_score % 1)
-  ? _score < 1: _score = 1
+    ; calc score
+    ? _amount > 1: _amount = 1
+    _score = _scoreTotal*_amount
+    _score = _score - (_score % 1)
+    ? _score < 1: _score = 1
 
-  ? _siSource != _siVehicle && _scoreTotal > 0: [_score, _class, _siSource, _giSource] exec localize {TZK_MSG_COMMON_SEND_SCORE}
+    ? _siSource != _siVehicle && _scoreTotal > 0: [_score, _class, _siSource, _giSource] exec localize {TZK_MSG_COMMON_SEND_SCORE}
