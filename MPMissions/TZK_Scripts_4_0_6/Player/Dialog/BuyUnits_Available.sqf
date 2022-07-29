@@ -36,7 +36,9 @@ if ((count (_workingFactoryTypes - _lastWorkingFactoryTypes) != 0 || count (_las
 			_manning = _unitDesc select udCrew;
 			_canBuy = false;
 			if (0 == count _manning) then {
-				_canBuy = not ([siPlayer, _index] call loadFile "Util\UnitCanBuy.sqf");
+				_canBuy = [siPlayer, _index] call loadFile "Util\UnitCanBuy.sqf";
+			} else {
+				_canBuy = true;
 			};
 			if (_canBuy) then {
 				_name = _unitDesc select udName;
