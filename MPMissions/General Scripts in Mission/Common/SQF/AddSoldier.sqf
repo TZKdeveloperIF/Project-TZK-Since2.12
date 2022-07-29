@@ -67,7 +67,10 @@ if !_err then {
 			_idx = TzkUnitSkillIdx find _type;
 			if (-1 != _idx) then {_skill = TzkUnitSkillVal select _idx};
 		};
-		if (_type >= maxUnitTypes) then {_skill = TzkSkillLevel select _infLevel};
+		if (_type >= maxUnitTypes) then {
+			_infLevel = _si call loadFile "Util\InfLevel.sqf";
+			_skill = TzkSkillLevel select _infLevel;
+		};
 	};
 	if (dev) then {showDebug [format ["%1", [_model, _skill]], 5000]};
 	_model createUnit [_pos, _groupCreate, _init, _skill, "PRIVATE"];
