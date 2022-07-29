@@ -610,20 +610,37 @@ class CfgModels {
 	class BMP1_TZK: Tank {
 		sectionsInherit = "Tank";
 		sections[] = {
-			tex_bmp_back.pac, tex_bmp_hlaven.pac, tex_bmp_kolo.pac, tex_bmp_kolo_hn.paa, tex_bmp_kolo_kraj.pac, tex_bmp_kolo_mini.paa, tex_bmp_kolo_zub.paa, tex_bmp_kolo_zub2.paa, tex_bmp_kolo2.pac, tex_bmp_kuk1.pac, tex_bmp_kuk2.pac, tex_bmp_kuk3.pac, tex_bmp_plat_uni.pac, tex_bmp_podlauf_f.pac, tex_bmp_rocketramp.pac, tex_bmp_rocketramp_t.pac, tex_bmp_side.pac,  tex_bmp_side_hi.pac, tex_bmp_sidestrel.paa, tex_bmp_spodek.pac, tex_bmp_stit.pac, tex_bmp_sum.pac, tex_bmp_top.pac, tex_bmp_vez_back.pac, tex_bmp_vez_top.pac, tex_pas_spod_1frame.pac, tex_t55_infra.pac, tex_t55_sum.pac, tex_tank_pas.pac, tex_ural_kabok2.pac, 
+			tzk_tex_00,
+			tex_bmp_back.pac, tex_bmp_hlaven.pac, tex_bmp_kolo.pac, tex_bmp_kolo_hn.paa, tex_bmp_kolo_kraj.pac,
+			tex_bmp_kolo_mini.paa, tex_bmp_kolo_zub.paa, tex_bmp_kolo_zub2.paa, tex_bmp_kolo2.pac, tex_bmp_kuk1.pac,
+			tex_bmp_kuk2.pac, tex_bmp_kuk3.pac, tex_bmp_plat_uni.pac, tex_bmp_podlauf_f.pac, tex_bmp_rocketramp.pac,
+			tex_bmp_rocketramp_t.pac, tex_bmp_side.pac,  tex_bmp_side_hi.pac, tex_bmp_sidestrel.paa, tex_bmp_spodek.pac,
+			tex_bmp_stit.pac, tex_bmp_sum.pac, tex_bmp_top.pac, tex_bmp_vez_back.pac, tex_bmp_vez_top.pac,
+			tex_pas_spod_1frame.pac, tex_t55_infra.pac, tex_t55_sum.pac, tex_tank_pas.pac, tex_ural_kabok2.pac, 
 		};
 	};
 	class BMP2_TZK: Tank {
 		sectionsInherit = "Tank"; 
 		sections[] = {
-			tex_\bmp2\at6-launcher.pac, tex_\bmp2\bmp2_top.pac, tex_\bmp2\bmp2_vez_back.pac, tex_\bmp2\bmp2_vez_frnt.pac, tex_\bmp2\smoke-prefinal.pac, tex_bmp_back.pac, tex_bmp_kolo.pac, tex_bmp_kolo_hn.paa, tex_bmp_kolo_kraj.pac, tex_bmp_kolo_mini.paa, tex_bmp_kolo_zub.paa, tex_bmp_kolo_zub2.paa, tex_bmp_kuk1.pac, tex_bmp_kuk2.pac, tex_bmp_kuk3.pac, tex_bmp_plat_uni.pac, tex_bmp_side.pac, tex_bmp_side_hi.pac, tex_bmp_sidestrel.paa, tex_bmp_spodek.pac, tex_bmp_stit.pac, tex_bmp_sum.pac, tex_bmp_top.pac, tex_bmp_vez_back.pac, tex_bmp_vez_top.pac, tex_pas_spod_1frame.pac, tex_t55_infra.pac, tex_t55_sum.pac, tex_tank_pas.pac, tex_ural_kabok2.pac, 
+			tzk_tex_00,
+			tex_\bmp2\at6-launcher.pac, tex_\bmp2\bmp2_top.pac, tex_\bmp2\bmp2_vez_back.pac, tex_\bmp2\bmp2_vez_frnt.pac,
+			tex_\bmp2\smoke-prefinal.pac, tex_bmp_back.pac, tex_bmp_kolo.pac, tex_bmp_kolo_hn.paa, tex_bmp_kolo_kraj.pac,
+			tex_bmp_kolo_mini.paa, tex_bmp_kolo_zub.paa, tex_bmp_kolo_zub2.paa, tex_bmp_kuk1.pac, tex_bmp_kuk2.pac,
+			tex_bmp_kuk3.pac, tex_bmp_plat_uni.pac, tex_bmp_side.pac, tex_bmp_side_hi.pac, tex_bmp_sidestrel.paa,
+			tex_bmp_spodek.pac, tex_bmp_stit.pac, tex_bmp_sum.pac, tex_bmp_top.pac, tex_bmp_vez_back.pac,
+			tex_bmp_vez_top.pac, tex_pas_spod_1frame.pac, tex_t55_infra.pac, tex_t55_sum.pac, tex_tank_pas.pac,
+			tex_ural_kabok2.pac, 
 		};
 	};
 	class BMP_Ambu_TZK: Tank {
 		sectionsInherit = "Tank";
 		sections[] = {
-			tex_bmp_back.pac, tex_bmp_kolo.pac, tex_bmp_kolo_hn.paa, tex_bmp_kolo_kraj.pac, tex_bmp_kolo_mini.paa, tex_bmp_kolo_zub.paa, tex_bmp_kolo_zub2.paa, tex_bmp_kolo2.pac, tex_bmp_kuk2.pac, tex_bmp_kuk3.pac, tex_bmp_side.pac,  tex_bmp_side_hi.pac, tex_bmp_spodek.pac, tex_bmp_stit.pac, tex_bmp_sum.pac, tex_bmp_top.pac, tex_pas_spod_1frame.pac, tex_t55_infra.pac, tex_t55_sum.pac, tex_ural_kabok2.pac, 
-			tex_bmp_ambulance_back.pac, tex_bmp_ambulance_sideca.pac, tex_bmp_ambulance_top.pac, 
+			tzk_tex_00,
+			tex_bmp_back.pac, tex_bmp_kolo.pac, tex_bmp_kolo_hn.paa, tex_bmp_kolo_kraj.pac, tex_bmp_kolo_mini.paa,
+			tex_bmp_kolo_zub.paa, tex_bmp_kolo_zub2.paa, tex_bmp_kolo2.pac, tex_bmp_kuk2.pac, tex_bmp_kuk3.pac,
+			tex_bmp_side.pac,  tex_bmp_side_hi.pac, tex_bmp_spodek.pac, tex_bmp_stit.pac, tex_bmp_sum.pac, tex_bmp_top.pac,
+			tex_pas_spod_1frame.pac, tex_t55_infra.pac, tex_t55_sum.pac, tex_ural_kabok2.pac,
+			tex_bmp_ambulance_back.pac, tex_bmp_ambulance_sideca.pac, tex_bmp_ambulance_top.pac,
 			tex_bvp_sanitka_bedna_si.pac, tex_bvp_sanitka_bedna_to.pac, tex_bmp_anm.01.pac
 		};
 	};

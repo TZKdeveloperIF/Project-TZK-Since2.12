@@ -51,13 +51,27 @@
 		};
 	};
 
+	class BMP_xj400: BMP {
+		model = "\TZK_Model_4_0_6\BMP1_TZK.p3d";
+		class EventHandlers {
+			Init = _vehicle = _this select 0, [_vehicle, {C}] exec localize {TZK_EVENT_INIT_TEX_BMP1};
+		};
+	};
 	class BMPAmbul_xj400: BMPAmbul {
 		camouflage = 6; // support vehicle using less value
 		audible = 4;
+		model = "\TZK_Model_4_0_6\BMP_Ambu_TZK.p3d";
+		class EventHandlers {
+			Init = _vehicle = _this select 0, [_vehicle, {C}] exec localize {TZK_EVENT_INIT_TEX_BMPAMBU};
+		};
 	};
 	class BMP2_Base_xj400: BMP {};
 	class BMP2_xj400: BMP2_Base_xj400 {
 		accuracy = 0.35;
+		model = "\TZK_Model_4_0_6\BMP2_TZK.p3d";
+		class EventHandlers {
+			Init = _vehicle = _this select 0, [_vehicle, {C}] exec localize {TZK_EVENT_INIT_TEX_BMP2};
+		};
 	};
 	class BMP2_AA_xj400: BMP2_xj400 {
 		accuracy = 1000;
