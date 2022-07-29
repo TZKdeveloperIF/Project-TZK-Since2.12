@@ -27,7 +27,7 @@ while "_i<_c" do {
 	_obj setDir _dirPart;
 	_obj setPos _posPart;
 	
-	if (isNull gunner _obj) then { [_obj] exec "\TZK_Scripts_4_0_4\Common\AddRearmData.sqs" };
+	if (isNull gunner _obj) then { [_obj] exec localize {TZK_REARMDATA_ADD} };
 	_objects set [count _objects, _obj];
 
 	_i=_i+1;

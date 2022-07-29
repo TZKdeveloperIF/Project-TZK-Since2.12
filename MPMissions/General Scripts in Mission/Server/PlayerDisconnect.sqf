@@ -27,7 +27,7 @@ _money = groupMoneyMatrix select _si select _gi;
 [_si, giCO select _si, _money, 0] exec localize {TZK_MONEY_SERVER_ADD};
 // Initialize AI leader
 if (alive _leader && time < 5*60) then {_leader setPos getPos (mhq select _si)};
-[_leader, _si] exec "\TZK_Scripts_4_0_4\Server\EquipGroupLeaderAI.sqs";
+[_leader, _si] exec localize {TZK_AI_LEADER_EQUIP};
 [_leader, _si, _gi] exec "Server\Start\AI_Leader.sqs";
 // Eject commander units in group. Leader shall be alive when ordering its units
 _i = 0; _c = count units _group; _units = units _group;

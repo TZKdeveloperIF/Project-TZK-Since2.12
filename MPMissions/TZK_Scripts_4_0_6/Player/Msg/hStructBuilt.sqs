@@ -15,10 +15,10 @@ _value = (_value - _si)/2
 _index = _value
 
 
-? isNull gunner _object : [_object] exec "\TZK_Scripts_4_0_4\Common\AddRearmData.sqs"
+? isNull gunner _object : [_object] exec localize {TZK_REARMDATA_ADD}
 
 ; only add for non local players since it is already done on server
-? !isServer: [_si, _type, _object, _index] exec "\TZK_Scripts_4_0_4\Player\AddToStructMatrix.sqs"
+? !isServer: [_si, _type, _object, _index] exec localize {TZK_FUNC_MATRIX_STRUCT_ADD_PLAYER}
 
 
 _desc = structDefs select _type

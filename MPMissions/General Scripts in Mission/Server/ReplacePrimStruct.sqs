@@ -31,7 +31,7 @@ _part = _parts select 0
 _object = (_part select 0) createVehicle _posStruct
 _object setDir _dir
 _object setPos _posStruct
-if (isNull gunner _object) then { [_object] exec "\TZK_Scripts_4_0_4\Common\AddRearmData.sqs" };
+if (isNull gunner _object) then { [_object] exec localize {TZK_REARMDATA_ADD} };
 
 
 [_si, _type] exec localize {TZK_INFO_SERVER_STRUCT_READY}; [_objectDestroyed] exec "\TZK_Scripts_4_0_4\Server\primStructsPlacedRemove.sqs"
