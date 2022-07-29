@@ -34,20 +34,11 @@ if ((count (_workingFactoryTypes - _lastWorkingFactoryTypes) != 0 || count (_las
 		_sideUnit = _unitDesc select udSide;
 		if (_sideUnit == siPlayer && [(_unitDesc select udFactoryType) call funcBinaryDigit, _workingFactoryTypes] call funcArrayOverlap) then {
 			_manning = _unitDesc select udCrew;
-			_skip = false;
+			_canBuy = false;
 			if (0 == count _manning) then {
-				_levelIdx = TzkInfLevelIdx find _index;
-				if (-1 != _levelIdx) then {
-					if (TzkInfLevelVal select _levelIdx > _infLevel) then {_skip = true};
-				};
-				if (not _skip && -1 == _levelIdx) then {
-					_selfUpdateIdx = TzkSelfUpdateIdx find _index;
-					if (-1 != _selfUpdateIdx) then {
-						if (TzkSelfUpdateVal select _selfUpdateIdx select 0 > _infLevel) then {_skip = true};
-					};
-				}
+				_canBuy = not ([siPlayer, _index] call loadFile "Util\UnitCanBuy.sqf");
 			};
-			if (not _skip) then {
+			if (_canBuy) then {
 				_name = _unitDesc select udName;
 				_cost = _unitDesc select udCost;
 				if (not (nShow == 0 && (count _manning) > 0) && not (nShow == 1 && (count _manning) == 0)) then {

@@ -134,7 +134,7 @@ _unitsStarted = units _group
 
 	goto "Update"
 	
-#CheckBuyUnit
+# CheckBuyUnit
 	_KeepMin = aisKeepDefs select (_setting select aisKeepMin)
 	? _money <= _KeepMin: goto "Sleep"
 	_slots = maxGroupSize - (count units _group + ((groupUnitsBuildingMatrix select _si) select _gi))
@@ -146,6 +146,8 @@ _unitsStarted = units _group
 	_unitsBuy = (unitsBuyAI select _si) select (_setting select aisBuy)
 	_type = _unitsBuy call funcGetRandomUnitType
 	? _type == -1: goto "Sleep"
+
+	? not ([_si, _type] call loadFile "Util\UnitCanBuy.sqf"): goto "Sleep"
 	
 	_unitDesc = unitDefs select _type
 	_cost = _unitDesc select udCost
@@ -165,7 +167,7 @@ _unitsStarted = units _group
 	#BuyAtOldFashion
 		_factories = []
 		{_factories = _factories + ([_si, _x, true] call funcGetIdleFactories)} forEach _factoryType
-		? count _factories > 0: [_type, _driver, _gunner, 0, _si, _gi, _gi, _factories select (random (count _factories) - 0.5)] exec "\TZK_Scripts_4_0_4\Server\BuyUnit.sqs"
+		? count _factories > 0: [_type, _driver, _gunner, 0, _si, _gi, _gi, _factories select (random (count _factories) - 0.5)] exec localize {TZK_AI_BUY_UNIT}
 		_factories = nil; _buyFacTypes resize 0; _buyFacTypes = nil
 		goto "Sleep"
 	
@@ -185,7 +187,7 @@ _unitsStarted = units _group
 		_buyFactories = _buyFactories - [objNull]
 		? (_driver + _gunner) > 0 : _slots = _slots / (_driver + _gunner); _slots = _slots - _slots % 1
 		? count _buyFactories > _slots : _buyFactories resize _slots
-		{ [_type, _driver, _gunner, 0, _si, _gi, _gi, _x] exec "\TZK_Scripts_4_0_4\Server\BuyUnit.sqs" } forEach _buyFactories
+		{ [_type, _driver, _gunner, 0, _si, _gi, _gi, _x] exec localize {TZK_AI_BUY_UNIT} } forEach _buyFactories
 	#Bought
 	_barracks = nil; _heavys = nil; _buyFactories resize 0; _buyFactories = nil; _buyFacTypes resize 0; _buyFacTypes = nil
 	goto "Sleep"
