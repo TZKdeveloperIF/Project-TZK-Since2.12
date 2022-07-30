@@ -51,10 +51,10 @@
 	"zu23m", "rktmod", "TZKSE_CONFIG_405", "TZKSE_BIN_CONFIG_4_0_5", 
 #define TZK_Basic_406_AddOns \
 	TZK_Basic_405_AddOns \
-	"TZK_Models_406_Beta01", "TZK_Textures_406", "TZK_Sounds_406", "TZK_BIN_CONFIG_4_0_6", 
+	"TZK_Models_406_Release", "TZK_Textures_406_Release", "TZK_Sounds_406", "TZK_BIN_CONFIG_4_0_6", 
 #define TZK_CONFIG_406_AddOns \
 	TZK_CONFIG_405_AddOns \
-	"TZK_CONFIG_406_Beta01", "TZK_Scripts_406_Beta01", 
+	"TZK_CONFIG_406_Release", "TZK_Scripts_406_Release", 
 
 
 		// TZK_Mission_Group_Initialize(0,GUER, posG1,posG2,posG3, 0, "SoldierGB", "dev = true; gameEndType = -1; towns=[]; [] exec ""\TZK_Scripts_4_0_4\Server\InitRepairableObjects.sqs""; [] exec ""\TZK_Scripts_4_0_4\Server\InitDestroyIslandObject.sqs""")

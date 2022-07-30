@@ -22,8 +22,8 @@
 #define CanSeeAll 31
 
 class CfgPatches {
-	class TZK_CONFIG_406_Beta01 {
-		name = "TZK_CONFIG_406_Beta01";
+	class TZK_CONFIG_406_Release {
+		name = "TZK_CONFIG_406_Release";
 		author = "IF";
 		units[] = {};
 		requiredAddons[] = {"TZK_CONFIG_405"}; // IMPORTANT!
