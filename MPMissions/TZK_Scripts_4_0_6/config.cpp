@@ -1,6 +1,6 @@
 class CfgPatches {
-	class TZK_Scripts_406_Beta01 {
-		name = "TZK_Scripts_406_Beta01";
+	class TZK_Scripts_406_Release {
+		name = "TZK_Scripts_406_Release";
 		author = "IF";
 		units[] = {};
 		requiredAddons[] = {};
