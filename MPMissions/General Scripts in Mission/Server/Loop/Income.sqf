@@ -1,3 +1,5 @@
+_income = 0; _incomeTowns = [0,0];
+
 _factor = 1; 
 if (time > 60*90) then {_factor = 1.2}; 
 if (time > 60*150) then {_factor = 1.5};
@@ -43,7 +45,7 @@ _factor = [1, _factor] select IncomeGrow_TZK;
 		};
 		[_si, _gi, _income + _bonus, 0] exec localize {TZK_MONEY_SERVER_ADD};
 		[_bonus, _si, _gi] exec localize {TZK_INFO_SERVER_SCORE_MONEY};
-		(scoreMoney select _si) set [_gi, 0];
+		scoreMoney select _si set [_gi, 0];
 		_gi = _gi + 1;
 	} forEach _groups;
 } forEach [si0, si1];
