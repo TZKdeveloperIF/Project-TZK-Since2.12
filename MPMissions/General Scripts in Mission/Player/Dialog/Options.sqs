@@ -41,7 +41,7 @@ mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
 _dlg = createDialog "OptionsDialog"
 mutexDlg = false
 
-? !bool_TZK_CHN_inited && bool_TZK_CHN_Lang: call preprocessFile "Player\Init\DialogChnLanguage.sqf"
+? !bool_TZK_CHN_inited && bool_TZK_CHN_Lang: call loadFile localize {TZK_PLAYER_DIALOG_CHNLANG}
 
 ctrlShow [IDC_DEFAULT, false]
 ctrlShow [_idcNumberedAI, false]
@@ -78,7 +78,8 @@ _groupCommander = (groupCommander select siPlayer)
 _isCommander = groupPlayer == _groupCommander; _isAIcommander = _groupCommander in _groupsAI
 { ctrlEnable [_x, _isCommander] } forEach [ _idcAIRespawn, _idcIncomeRatio, _idcIncomeRatioPlayer, _idcTransferCommandGroup, _idcWorkerBehaviour ]
 { ctrlShow [_x, _isCommander] } forEach [ _idcTransferCommand, _idcDestruction, _idcGiveMoneyToAI, _idcGiveMoneyToALL, _idcTakeMoney ]
-{ ctrlShow [_x, _isCommander || _isAIcommander] } forEach [_idcUpgradeStart, _idcUpgSwitch]
+{ ctrlShow [_x, _isCommander || _isAIcommander] } forEach [_idcUpgradeStart]
+{ ctrlShow [_x, false] } forEach [_idcUpgSwitch]
 
 ? !_isCommander : _gis = ([siPlayer] call funcGetAIGroupsIndex); _Superior = _gis call funcCheckWhetherSuperior; if (_Superior && lbCurSel _idcTransferGroup != -1) then {ctrlShow [_idcTakeMoney, ( ( (["Commander"] + callsigns) select ( ( (aiSetting select siPlayer) select lbCurSel _idcTransferGroup ) select aisSuperior ) ) == _groupsName select giPlayer) || ( (_groups select (lbCurSel _idcTransferGroup)) == _groupCommander )]}
 
@@ -203,7 +204,7 @@ goto "Update"
 ;	? !(alive _ai): deleteVehicle _ai
 ;	goto "Update"
 
-#Upgrade
+# Upgrade
 	_index = lbCurSel _idcUpgradeList
 	? (_index == -1): hint "No Upgrade Selected"; goto "Update"
 
@@ -213,9 +214,9 @@ goto "Update"
 	_cost = (upgDefs select _index) select 1
 	? (_money < _cost): hint "Not Enough Cash"; goto "Update"
 
-	[_index] exec "\TZK_Scripts_4_0_4\Player\Msg\sUpgrade.sqs"
+	[_index] exec localize {TZK_MSG_PLAYER_UPGRADE}
 	goto "Update"
-#UpgSwitch
+# UpgSwitch
 	_index = lbCurSel _idcUpgradeList
 	? (_index == -1): hint "No Upgrade Selected"; goto "Update"
 	? _index == 0: goto "Update"
@@ -223,7 +224,7 @@ goto "Update"
 	_controlCenters = [siPlayer, stComm] call funcGetWorkingStructures
 	? ((count _controlCenters) == 0): hint "No Working Comm Center"; goto "Update"
 
-	[_index, _index] exec "\TZK_Scripts_4_0_4\Player\Msg\sUpgrade.sqs"
+	[_index, _index] exec localize {TZK_MSG_PLAYER_UPGRADE}
 	goto "Update"
 
 #BuyUnits
@@ -255,7 +256,7 @@ goto "Update"
 
 	closeDialog 0
 	; ~0.1
-	[unitcamUnit] exec "Player\Dialog\UnitCam.sqs"
+	[unitcamUnit] exec localize {TZK_DIALOG_UNIT_CAM}
 	Exit
 
 #SatCam
@@ -280,7 +281,7 @@ goto "Update"
 #CommandAI
 	closeDialog 0
 	; ~0.1
-	[] exec "Player\Dialog\AIGroupOrders.sqs"
+	[] exec localize {TZK_DIALOG_AI_GRP_ORDER}
 	Exit
 	
 #CommandPlayer
@@ -336,10 +337,10 @@ goto "Update"
 	_index exec "\TZK_Scripts_4_0_4\Player\Msg\sCheckAI.sqs"; hint "Checking whether the group is AI. Please wait for the result."
 	goto "Update"
 
-#CommandTemporary
+# CommandTemporary
 	closeDialog 0
 	; ~0.1
-	[] exec "Player\Dialog\AiConcurrentOrders.sqs"
+	[] exec localize {TZK_DIALOG_AI_CONCURRENT}
 	Exit
 
 

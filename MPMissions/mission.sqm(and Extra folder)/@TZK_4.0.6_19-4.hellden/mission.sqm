@@ -1,0 +1,674 @@
+version=11;
+#include "TZK_Scripts_4_0_6\mission.h"
+class Mission
+{
+	addOns[]=
+	{
+		TZK_BIS_AddOns
+		TZK_Basic_406_AddOns
+		TZK_CONFIG_406_AddOns
+		"Hellden"
+	};
+	addOnsAuto[]=
+	{
+		TZK_CONFIG_406_AddOns
+	};
+	randomSeed=42499;
+	class Intel
+	{
+		briefingName="@STR_MISSION_NAME";
+		briefingDescription="Top slot is Commander.";
+		resistanceWest=0.000000;
+		startWeather=0.000000;
+		forecastWeather=0.000000;
+		month=9;
+		day=22;
+		hour=8;
+		minute=0;
+	};
+	class Groups
+	{
+		items=156;
+		class Item0
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={-1000.000000,0.000000,2000.000000};
+					id=0;
+					side="GUER";
+					vehicle="SoldierGB";
+					leader=1;
+					skill=0.200000;
+					text="resistance_Center";
+					init="gameEndType = -1; towns=[]; [12655,12656,12657,12659,12660,12661, 230,231,232,233,234,235] exec ""\TZK_Scripts_4_0_4\Server\InitRepairableObjects.sqs""; [] exec ""\TZK_Scripts_4_0_4\Server\InitDestroyIslandObject.sqs""";
+				};
+			};
+		};
+
+		TZK_Mission_Grp_Playable_201("CommanderW_Info_5HP_xj400", "CommanderE_Info_5HP_xj400", "LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		
+		TZK_Mission_Group_Playable(37,CIV, 0,0,3370, 37, "Civilian", "this allowdammage false; Spec0=this")
+		TZK_Mission_Group_Playable(38,CIV, 0,0,3380, 38, "Civilian", "this allowdammage false; Spec1=this")
+		TZK_Mission_Group_Playable(39,CIV, 0,0,3390, 39, "Civilian", "this allowdammage false; Spec2=this")
+		TZK_Mission_Group_Playable(40,CIV, 0,0,3400, 40, "Civilian", "this allowdammage false; Spec3=this")
+		TZK_Mission_Group_Playable(41,CIV, 0,0,3410, 41, "Civilian", "this allowdammage false; Spec4=this")
+		TZK_Mission_Group_Playable(42,CIV, 0,0,3420, 42, "Civilian", "this allowdammage false; Spec5=this")
+		TZK_Mission_Group_Playable(43,CIV, 0,0,3430, 43, "Civilian", "this allowdammage false; Spec6=this")
+		TZK_Mission_Group_Playable(44,CIV, 0,0,3440, 44, "Civilian", "this allowdammage false; Spec7=this")
+		TZK_Mission_Group_Playable(45,CIV, 0,0,3450, 45, "Civilian", "this allowdammage false; Spec8=this")
+		TZK_Mission_Group_Playable(46,CIV, 0,0,3460, 46, "Civilian", "this allowdammage false; Spec9=this")
+		
+		TZK_Mission_Grp_Functional_201("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_TownGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_PatrolGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_WorkerGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_FunctionalGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		class Item154
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={11213.544922,193.850037,3083.034912};
+					special="NONE";
+					id=144;
+					side="LOGIC";
+					vehicle="Logic";
+					leader=1;
+					skill=0.600000;
+					text="FixStart_0";
+				};
+			};
+		};
+		class Item155
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={2572.818359,134.728058,11480.025391};
+					special="NONE";
+					id=145;
+					side="LOGIC";
+					vehicle="Logic";
+					leader=1;
+					skill=0.600000;
+					text="FixStart_1";
+				};
+			};
+		};
+	};
+	class Vehicles
+	{
+		items=19;
+		class Item0
+		{
+			position[]={8211.966797,3.201637,3703.887451};
+			special="NONE";
+			id=200;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Kula Sea"",500,2]]";
+		};
+		class Item1
+		{
+			position[]={5819.705078,159.978683,5173.560547};
+			special="NONE";
+			id=201;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""WJL house"",500,2]]";
+		};
+		class Item2
+		{
+			position[]={7521.097656,108.889626,5073.177246};
+			special="NONE";
+			id=202;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""ASA Town"",500,2]]";
+		};
+		class Item3
+		{
+			position[]={6197.526855,106.234299,9290.387695};
+			special="NONE";
+			id=203;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""LXL Town"",500,2]]";
+		};
+		class Item4
+		{
+			position[]={3705.318359,140.385254,5049.688965};
+			special="NONE";
+			id=204;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""DF31 Town"",500,2]]";
+		};
+		class Item5
+		{
+			position[]={8711.144531,297.436951,5915.732910};
+			special="NONE";
+			id=205;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""DDAY Wood"",500,2]]";
+		};
+		class Item6
+		{
+			position[]={3377.965820,273.179962,10984.281250};
+			special="NONE";
+			id=206;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""gyqd Town"",500,2]]";
+		};
+		class Item7
+		{
+			position[]={3953.333496,130.002563,9607.716797};
+			special="NONE";
+			id=207;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""DALO Town"",500,2]]";
+		};
+		class Item8
+		{
+			position[]={5242.210938,10.435569,6663.518555};
+			special="NONE";
+			id=208;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""MUTOU Bridge"",-500,2]]";
+		};
+		class Item9
+		{
+			position[]={5654.538086,3.195677,11106.199219};
+			special="NONE";
+			id=209;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""ZP AD"",500,2]]";
+		};
+		class Item10
+		{
+			position[]={10338.685547,319.751007,3912.805664};
+			special="NONE";
+			id=210;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""SKLIN Hill 320"",500,2]]";
+		};
+		class Item11
+		{
+			position[]={9795.303711,55.893192,2022.518066};
+			special="NONE";
+			id=211;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""QING Sea"",500,2]]";
+		};
+		class Item12
+		{
+			position[]={3230.422852,282.087311,7763.152344};
+			special="NONE";
+			id=212;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""abu Base"",500,2]]";
+		};
+		class Item13
+		{
+			position[]={5326.982422,27.934286,3458.885254};
+			special="NONE";
+			id=213;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Cz119 Church"",500,2]]";
+		};
+		class Item14
+		{
+			position[]={1780.296997,429.555176,6790.869629};
+			special="NONE";
+			id=214;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""COOLMAN Hill 431"",500,2]]";
+		};
+		class Item15
+		{
+			position[]={8052.317871,254.103226,11301.515625};
+			special="NONE";
+			id=215;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""SED Hill"",-250,2]]";
+		};
+		class Item16
+		{
+			position[]={6663.009766,83.743706,7624.097168};
+			special="NONE";
+			id=216;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""YOYO Lake"",500,2]]";
+		};
+		class Item17
+		{
+			position[]={8011.205078,398.374756,7834.194824};
+			special="NONE";
+			id=217;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""K Road"",-500,2]]";
+		};
+		class Item18
+		{
+			position[]={9182.679688,73.601662,8425.173828};
+			special="NONE";
+			id=218;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""XXX Lake"",-250,2]]";
+		};
+	};
+	class Markers
+	{
+		items=35;
+		class Item0
+		{
+			position[]={5352.110352,1.793249,6566.812012};
+			name="MarkerTeleporter";
+			type="Arrow";
+			colorName="ColorOrange_xj400";
+			a=0.630000;
+			b=0.900000;
+			angle=-30.000000;
+		};
+		class Item1
+		{
+			position[]={5580.726074,11.015237,6544.332520};
+			name="MarkerTeleporter";
+			type="Arrow";
+			colorName="ColorOrange_xj400";
+			a=0.500000;
+			b=0.700000;
+			angle=10.000000;
+		};
+		class Item2
+		{
+			position[]={5316.919922,8.922170,6679.854980};
+			name="MarkerTeleporter";
+			markerType="RECTANGLE";
+			type="Dot";
+			colorName="ColorCyan_xj400";
+			a=5.000000;
+			b=5.000000;
+		};
+		class Item3
+		{
+			position[]={5606.955078,7.349210,6679.819824};
+			name="MarkerTeleporter";
+			markerType="RECTANGLE";
+			type="Dot";
+			colorName="ColorCyan_xj400";
+			a=5.000000;
+			b=5.000000;
+		};
+		class Item4
+		{
+			position[]={5346.260742,6.895276,6452.895996};
+			name="MarkerTeleporter";
+			text="Teleport";
+			type="Dot";
+			colorName="ColorDarkPurple_xj400";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item5
+		{
+			position[]={5289.999512,9.207335,6680.098145};
+			name="BridgeWestDestination1";
+			type="Empty";
+		};
+		class Item6
+		{
+			position[]={5624.553711,8.205016,6680.880371};
+			name="BridgeEastDestination1";
+			type="Empty";
+		};
+		class Item7
+		{
+			position[]={9833.422852,42.607716,1936.239746};
+			name="MarkerTownName";
+			text="Qing Sea";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item8
+		{
+			position[]={10446.206055,302.561829,3811.095703};
+			name="MarkerTownName";
+			text="SKLIN Hill 320";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item9
+		{
+			position[]={8784.742188,293.905151,5882.857910};
+			name="MarkerTownName";
+			text="DDAY Wood";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item10
+		{
+			position[]={5384.328613,29.128874,3470.768799};
+			name="MarkerTownName";
+			text="CZ119 Church";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item11
+		{
+			position[]={1699.186523,424.649139,6628.608887};
+			name="MarkerTownName";
+			text="COOLMAN Hill 431";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item12
+		{
+			position[]={8187.461914,3.200000,3582.142090};
+			name="MarkerTownName";
+			text="Kula Sea";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item13
+		{
+			position[]={5322.353516,3.200000,11254.064453};
+			name="MarkerTownName";
+			text="ZP AD";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item14
+		{
+			position[]={3448.123047,264.433899,10818.959961};
+			name="MarkerTownName";
+			text="gyqd Town";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item15
+		{
+			position[]={5774.315918,160.000000,5007.397949};
+			name="MarkerTownName";
+			text="WJL house";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item16
+		{
+			position[]={3926.052490,131.820084,4997.060547};
+			name="MarkerTownName";
+			text="DF31 Town";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item17
+		{
+			position[]={3226.121094,280.795959,7692.404297};
+			name="MarkerTownName";
+			text="abu Base";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item18
+		{
+			position[]={6208.217773,110.268105,9502.969727};
+			name="MarkerTownName";
+			text="LXL Town";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item19
+		{
+			position[]={3957.503418,132.867783,9729.395508};
+			name="MarkerTownName";
+			text="DALO Town";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item20
+		{
+			position[]={7526.400879,107.389481,5016.974609};
+			name="MarkerTownName";
+			text="ASA Town";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item21
+		{
+			position[]={8100.987793,249.148499,11394.698242};
+			name="MarkerTownName";
+			text="SED Hill -250$";
+			type="Dot";
+			colorName="ColorRedAlpha";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item22
+		{
+			position[]={6600.318848,0.528175,10864.187500};
+			name="MarkerTownName";
+			text="IF Bridge";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item23
+		{
+			position[]={6476.973633,15.065084,7678.475098};
+			name="MarkerTownName";
+			text="YOYO Lake";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item24
+		{
+			position[]={7972.179199,395.147980,7929.600586};
+			name="MarkerTownName";
+			text="K Road -500$";
+			type="Dot";
+			colorName="ColorRedAlpha";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item25
+		{
+			position[]={8976.826172,19.893982,8528.003906};
+			name="MarkerTownName";
+			text="XXX Lake -250$";
+			type="Dot";
+			colorName="ColorRedAlpha";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item26
+		{
+			position[]={4650.354004,0.528174,12497.232422};
+			name="MarkerTownName";
+			text="MISSION BY MUTOU";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item27
+		{
+			position[]={5416.167969,1.793249,6693.525879};
+			name="MarkerTownName";
+			text="MUTOU Bridge -500$";
+			type="Dot";
+			colorName="ColorRed";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item28
+		{
+			position[]={6605.174316,10.731735,10734.020508};
+			name="MarkerTeleporter";
+			type="Arrow";
+			colorName="ColorOrange_xj400";
+			a=0.630000;
+			b=0.720000;
+			angle=-47.775200;
+		};
+		class Item29
+		{
+			position[]={6744.541016,0.528175,10793.732422};
+			name="MarkerTeleporter";
+			type="Arrow";
+			colorName="ColorOrange_xj400";
+			a=0.500000;
+			b=0.700000;
+			angle=-37.265175;
+		};
+		class Item30
+		{
+			position[]={6510.885254,8.213688,10797.564453};
+			name="MarkerTeleporter";
+			markerType="RECTANGLE";
+			type="Dot";
+			colorName="ColorCyan_xj400";
+			a=2.000000;
+			b=5.000000;
+			angle=-45.995140;
+		};
+		class Item31
+		{
+			position[]={6717.944824,7.502887,11005.202148};
+			name="MarkerTeleporter";
+			markerType="RECTANGLE";
+			type="Dot";
+			colorName="ColorCyan_xj400";
+			a=2.000000;
+			b=5.000000;
+			angle=-225.754120;
+		};
+		class Item32
+		{
+			position[]={6724.731934,0.528175,10651.275391};
+			name="MarkerTeleporter";
+			text="Teleport";
+			type="Dot";
+			colorName="ColorDarkPurple_xj400";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item33
+		{
+			position[]={6502.614746,8.690538,10793.437500};
+			name="BridgeWestDestination2";
+			type="Empty";
+		};
+		class Item34
+		{
+			position[]={6732.315918,7.976352,11019.837891};
+			name="BridgeEastDestination2";
+			type="Empty";
+		};
+	};
+	class Sensors
+	{
+		items=4;
+		#include "TZK_Scripts_4_0_5\mission_sensor.h"
+		TZK_Mission_Sensor_Teleporter(0, 5316.919922,8.922170,6679.854980, 5, 5, 1, "BridgeEastDestination1", "Extra\CrossWater1.sqs")
+		TZK_Mission_Sensor_Teleporter(1, 5606.955078,7.349210,6679.819824, 5, 5, 1, "BridgeWestDestination1", "Extra\CrossWater1.sqs")
+		
+		TZK_Mission_Sensor_Teleporter_Angle(2, 6510.885254,8.213688,10797.564453, 2, 5, -45.995140, 1, "BridgeEastDestination2", "Extra\CrossWater2.sqs")
+		TZK_Mission_Sensor_Teleporter_Angle(3, 6717.944824,7.502887,11005.202148, 2, 5, -225.754120, 1, "BridgeWestDestination2", "Extra\CrossWater2.sqs")
+	};
+};
+class Intro
+{
+	randomSeed=8166403;
+	class Intel
+	{
+	};
+};
+class OutroWin
+{
+	randomSeed=5538307;
+	class Intel
+	{
+	};
+};
+class OutroLoose
+{
+	randomSeed=2739203;
+	class Intel
+	{
+	};
+};

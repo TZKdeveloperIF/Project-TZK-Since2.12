@@ -1,0 +1,63 @@
+; args: trigger
+; Only run this on the server.
+? !isServer: exit
+
+_trigger = _this
+
+; find closest flag and init stuff
+
+_pos = getPos _trigger
+_res = [_pos, [si0,si1,siRes,  siBoth,siCiv], []] call funcGetClosestTown
+_townDesc = _res select 0
+
+_flag = _townDesc select tdFlag
+_indexTown = _res select 2
+
+_lastSetSide = _townDesc select tdSide
+_lastSide = _lastSetSide
+
+? bool_TZK_SEMod_Mode: if (towns select _indexTown select tdSide == siRes) then { _flag setFlagTexture "\flags\Pirates.jpg" }
+~ 10 + random 5
+{ [_x, [getPos _flag, 50, 150] call funcGetRandomPos, - 180 + random 360, siCiv, -1, 0, 1] call fAddVehicle } foreach civTown
+
+? bool_TZK_SEMod_Mode: [_trigger, _indexTown, _lastSetSide, _lastSide, siRes, siRes] exec {Extra\TownTrigger.sqs}, exit
+
+# Update
+	~3
+	_timeCheck = time + 19 - (time%20)
+	@ time > _timeCheck
+
+	_res = (list _trigger) call funcUpdateTownCheckUnits
+	_units = _res select 0
+	_groups = _res select 1
+
+	_si = -1
+	? ((_units select siRes) > (_units select si0)) && ((_units select siRes) > (_units select si1)): _si = siRes
+	? ((_units select si0) > (_units select si1)) && ((_units select si0) > (_units select siRes)): _si = si0
+	? ((_units select si1) > (_units select si0)) && ((_units select si1) > (_units select siRes)): _si = si1
+
+	? _si >= 0 && _si == _lastSide && _si != _lastSetSide : goto "SetTownSide"
+
+	_lastSide = _si
+
+	goto "Update"
+
+# SetTownSide
+	? (pvGameOver != -1): Exit
+
+	[_indexTown, _si, _lastSetSide] exec localize {TZK_MSG_SERVER_SEND_TOWN_SIDE_CHANGE}
+
+	_lastSetSide = _si
+	_lastSide = _si
+
+	? _si == siRes : goto "SkipScore"
+
+		; calc score
+		_score = ((towns select _indexTown) select tdValue)*0.05
+		_score = _score/(count (_groups select _si))
+		_score = _score - (_score % 1)
+		? _score < 1 : _score = 1
+
+		{ _gi = ( groupMatrix select _si ) find ( _x ); if (_gi != -1) then { [_score, scTown, _si, _gi] exec localize {TZK_MSG_COMMON_SEND_SCORE} } } foreach (_groups select _si)
+	# SkipScore
+	goto "Update"

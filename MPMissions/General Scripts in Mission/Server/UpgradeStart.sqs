@@ -1,16 +1,11 @@
 ; args: [upg, si, gi]
-
-_upg = _this select 0
-_si = _this select 1
-_gi = _this select 2
+_upg = _this select 0; _si = _this select 1; _gi = _this select 2; _this = 0
 
 _controlCenters = [_si, stComm] call funcGetWorkingStructures
-
 ? (count _controlCenters) == 0: exit
 
 ? upgMatrix select _si select _upg != 0: [_si, _upg, upgMatrix select _si select _upg] exec "Server\Info\UpgState.sqs", exit
 
-; _gi = giCO select _si
 ? _gi == -1: exit
 
 _minutes = upgDefs select _upg select 2
@@ -19,14 +14,14 @@ _cost = upgDefs select _upg select 1
 _money = groupMoneyMatrix select _si select _gi
 ? _money < _cost: exit
 
-[_si, _gi, _cost] exec "\TZK_Scripts_4_0_4\Server\MoneySpend.sqs"
+[_si, _gi, _cost] exec localize {TZK_MONEY_SERVER_SPEND}
 
 upgMatrix select _si set [_upg, 1]
 
 [_si, _upg, 1] exec "Server\Info\UpgState.sqs"
 
 _timeStart = time
-#CheckControlCenters
+# CheckControlCenters
 	~5
 	_controlCenters = [_si, stComm] call funcGetWorkingStructures
 

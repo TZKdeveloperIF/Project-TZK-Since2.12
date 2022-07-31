@@ -2,9 +2,9 @@ Target_Set_TZK_Number = 0
 ; 4_0_6_Update
 
 ["Player\InitPlayer.sqs", "Player\InitSpectator.sqs"] exec "\TZK_Scripts_4_0_5\Player\InitClient_Group.sqs"
-[] exec "\TZK_Scripts_4_0_5\Player\Init_Function_Client.sqs"
-[] exec "\TZK_Scripts_4_0_5\Player\InitClient_constants.sqs"
-[] exec "\TZK_Scripts_4_0_5\Player\InitClient_TZK_Setting.sqs"
+0 exec "\TZK_Scripts_4_0_6\Player\Init_Function_Client.sqs"
+0 exec "\TZK_Scripts_4_0_6\Player\InitClient_constants.sqs"
+[] exec "\TZK_Scripts_4_0_6\Player\InitClient_TZK_Setting.sqs"
 
 
 [] exec "\TZK_Scripts_4_0_4\Player\InitGUIControlIDs.sqs"
@@ -15,7 +15,7 @@ _i = 0; while "_i < 4" do {call format [{["Player\Msg\hInfo.sqs"] exec "\TZK_Scr
 [] exec "\TZK_Scripts_4_0_4\Player\Msg\mMoneySideTotal.sqs"
 [] exec "\TZK_Scripts_4_0_4\Player\Msg\mMoneySideSpent.sqs"
 if !bool_TZK_SEMod_Mode Then {[] exec "\TZK_Scripts_4_0_4\Player\Msg\mSetTownSide.sqs"} Else {[] exec "Extra\MsgSetTownSide.sqs"}
-[] exec "\TZK_Scripts_4_0_4\Player\Msg\mStructBuilt.sqs"
+"\TZK_Scripts_4_0_6\Player\Msg\hStructBuilt.sqs" exec "\TZK_Scripts_4_0_6\Player\Msg\mStructBuilt.sqs"
 [] exec "\TZK_Scripts_4_0_4\Player\Msg\mArtilleryShellDetected.sqs"
 
 [] exec "\TZK_Scripts_4_0_4\Player\Effect\Killed_Msg_Aircraft.sqs"; [] exec "\TZK_Scripts_4_0_4\Player\Effect\Killed_Msg_Boat.sqs";
@@ -23,7 +23,7 @@ _i = 0; _count = 5; while "_i < _count" do {call format [{[] exec "\TZK_Scripts_
 [] exec "\TZK_Scripts_4_0_4\Player\Effect\PlaneAB_Msg_ON.sqs"; [] exec "\TZK_Scripts_4_0_4\Player\Effect\PlaneAB_Msg_OFF.sqs"; BurningPlanes = [];
 
 [] exec "\TZK_Scripts_4_0_5\Player\DynamicInitializationMarker.sqs"
-[] exec "\TZK_Scripts_4_0_5\Player\DynamicInitializationTrigger.sqs"
+0 exec "\TZK_Scripts_4_0_6\Player\DynamicInitializationTrigger.sqs"
 
 
 

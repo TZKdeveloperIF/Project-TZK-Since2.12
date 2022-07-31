@@ -11,7 +11,7 @@ while "_i < _ci" do {
 		_mDouble = [];
 		{if (_x in ["RedTop_26_xj400","RedTop_30_xj400","RedTop_40_xj400", "9M311_26_xj400","9M311_30_xj400","9M311_40_xj400"]) then {_mDouble set [count _mDouble, _x]}} forEach _m;
 		_m = _m + _mDouble;
-		[_unit, _w, _m, _types select _i, 2, true] exec "\TZK_Scripts_4_0_4\Common\EditEquipRearmData.sqs";
+		[_unit, _w, _m, _types select _i, 2, true] exec localize {TZK_EQUIPREARMDATA_EDIT};
 		
 		if (local _unit) then {{_unit addMagazine _x} forEach _mDouble};
 		_j = _j + 1;

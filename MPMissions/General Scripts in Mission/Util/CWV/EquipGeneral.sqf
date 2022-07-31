@@ -31,7 +31,7 @@ if (_bNeedEquip && _typeName in ["Tiger_HOT3_xj400", "Tiger_PARS3_xj400"]) then 
 	_w set [count _w, "RMKHETiger_DVD_xj400"]; _w set [count _w, "RMKAPTiger_DVD_xj400"];
 };
 
-if ("Air" countType [_this] > 0) then {
+if ("Helicopter" countType [_this] > 0) then {
 	{_m set [count _m, _x]} forEach SpoofMagazines;
 };
 if (_this call loadFile "Util\IsTZKModelPlane.sqf") then {

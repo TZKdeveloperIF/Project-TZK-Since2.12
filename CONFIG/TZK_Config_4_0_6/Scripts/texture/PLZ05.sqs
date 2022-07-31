@@ -1,0 +1,10 @@
+; args: [vehicle, name]
+_vehicle = _this select 0
+_name = _this select 1
+
+_path = "\TZK_Texture_4_0_0\PLA3.2\"
+? _name == "D": _path = "\TZK_Texture_4_0_4\VME\D\"
+? _name == "W": _path = "\TZK_Texture_4_0_4\VME\W\"
+
+[_vehicle, _path] call loadFile "\TZK_Objects\Scripts\texture\stdSetObjTex.sqf"
+[_vehicle, _name] exec localize {TZK_MULTITEX_GUNREC_PLZ05}

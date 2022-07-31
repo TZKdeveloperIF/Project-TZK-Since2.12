@@ -1,0 +1,81 @@
+; args: [support, si]
+
+_support = _this select 0
+_this = 0
+
+_object = objNull
+_repair = 0.05
+_range = rangeSupport + 10
+
+# Update
+~6
+
+? !(alive _support) : exit
+? !(alive driver _support) : goto "Update"
+
+_unit = driver _support
+_group = group _unit
+
+_si = -1
+_gi = ( groupMatrix select si0 ) find ( _group )
+? _gi != -1 : _si = si0; goto "SideSet"
+_gi = ( groupMatrix select si1 ) find ( _group )
+? _gi != -1 : _si = si1; goto "SideSet"
+exit
+#SideSet
+
+_repairObjList = repairableStructureMatrix select _si; _repairInfoList = repairableStructureInfo select _si
+? (count _repairObjList) == 0 : goto "CheckObjects"
+
+_object = objNull
+_type = -1
+_distMin = 100000
+{ _obj =_x; if ( !(isNull _obj) ) then { _dist = (_support distance _obj); if (_dist < _distMin) then { _object = _obj; _distMin = _dist }; } } foreach _repairObjList
+
+? isNull _object || _distMin > _range : goto "CheckObjects"
+
+		@!(mutexRepairStructure)
+		mutexRepairStructure = true
+		
+		; search next structure immediately if this one has been repaired.
+		_index = _repairObjList find _object
+		? _index == -1: mutexRepairStructure = false; goto "SideSet"
+		_damage = _repairInfoList select _index select 0
+		? _damage <= 0: mutexRepairStructure = false; goto "SideSet"
+		_type = _repairInfoList select _index select 1; _cost = structDefs select _type select sdCost
+		_rateRep = if (_type in structsDefence) Then {4} Else {1}; _rateCost = if (_type in structsDefence) Then {0.5} Else {0.1}
+		_cost = _rateCost*_cost*_rateRep*_repair; _cost = _cost - (_cost % 1)
+		? _object in primStructsPlaced: _cost = 0
+		? _cost >  groupMoneyMatrix select _si select (giCO select _si): [_si, _type] exec localize {TZK_INFO_SERVER_NO_MONEY_REPAIR_STRUCT}; mutexRepairStructure = false; goto "Update"
+			
+			[_si, giCO select _si, _cost] exec localize {TZK_MONEY_SERVER_SPEND}; _damage = _damage - _repair*_rateRep
+			(_repairInfoList select _index) set [0, _damage]
+			? _damage <= 0: [_object, _type, _si] exec "Server\ReplacePrimStruct.sqs"; _repairObjList set [_index, objNull]
+		
+		mutexRepairStructure = false
+
+? _group in (groupAiMatrix select _si) : goto "Update"
+
+? _gi != -1 && _type != -1 : [_damage, _si, _gi, _type] exec localize {TZK_INFO_SERVER_STRUCT_REPAIRED}
+
+; those negative _damage will be reset in Server\Info\StructRepaired.sqs
+; ? _damage == 0 && _type != -1 : [_si, _type] exec localize {TZK_INFO_SERVER_STRUCT_READY}; [_object] exec "\TZK_Scripts_4_0_4\Server\primStructsPlacedRemove.sqs"
+goto "Update"
+
+#CheckObjects
+_object = objNull; _distMin = 100000; _index = -1
+_i=0; { if !(alive _x) Then {_dist = ([getPos _support, getPos _x] call funcDistH); if (_dist < _distMin) Then {_object = _x; _index = _i; _distMin = _dist}}; _i = _i + 1 } forEach repairableObjects
+? isNull _object || _distMin > _range: goto "Update"
+
+		@!(mutexRepairStructure)
+		mutexRepairStructure = true
+			? alive _object: mutexRepairStructure = false; goto "Update"
+			_dmg = repairableObjectsDamage select _index
+			? _dmg == 0: _dmg = 1
+			_dmg = _dmg - _repair
+			? _dmg <= 0: _dmg = 0; _object setDamage 0
+			[_object, _dmg, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\SendObjectRepaired.sqs"
+			repairableObjectsDamage set [_index, _dmg]
+		mutexRepairStructure = false
+
+goto "Update"

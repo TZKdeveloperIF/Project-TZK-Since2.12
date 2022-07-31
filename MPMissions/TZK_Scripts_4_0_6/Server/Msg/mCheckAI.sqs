@@ -1,0 +1,10 @@
+# Start
+
+@ pvCheckAI != -1
+_value = pvCheckAI, pvCheckAI = -1
+
+_gi = _value % GroupsNum
+_si = (_value - _gi) / GroupsNum
+? (groupMatrix select _si select _gi) in (groupAIMatrix select _si): [_si, _gi] exec localize {TZK_INFO_SERVER_CHECK_AI}
+
+goto "Start"

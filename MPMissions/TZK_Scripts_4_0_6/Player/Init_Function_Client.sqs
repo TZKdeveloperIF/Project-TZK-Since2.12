@@ -1,0 +1,43 @@
+; args: none
+
+; Common Initialization for Both Player and Spectator
+funcCalcMapPos = loadFile "\TZK_Scripts_4_0_4\Player\SQF\CalcMapPos.sqf"
+; // arguments: pos ([x,y])
+; // returns: string ("Ea15" or "Beyond Map")
+funcCalcScore = loadFile "\TZK_Scripts_4_0_4\Player\SQF\CalcScore.sqf"
+; // arguments: [si,gi]
+; // returns: score
+funcCalcTownDirDistFromPos = loadFile "\TZK_Scripts_4_0_4\Player\SQF\CalcTownDirDistFromPos.sqf"
+; // arguments: pos ([x,y])
+; // returns: text ("Levie NE 800")
+; // 100 m resolution
+
+funcGetEqName = loadFile "\TZK_Scripts_4_0_4\Player\SQF\GetEqName.sqf"
+; // args: [ prim, sec, [gen0, ...] ]
+funcGetTimeString = loadFile "\TZK_Scripts_4_0_4\Player\SQF\GetTimeString.sqf"
+; // arguments: [] or [seconds]
+; // returns: string
+
+funcInitVehicleMarker = loadFile "\TZK_Scripts_4_0_6\Player\SQF\InitVehicleMarker.sqf"
+; // args: [vehicle, type, si]
+; // return : id (0 ~ (maxVehicleMarkers-1))
+
+funcEquipTempl = loadFile "\TZK_Scripts_4_0_4\Player\SQF\EquipTempl.sqf"
+; // args: [unit, templ]
+; // return: true
+funcBuildTempl = loadFile "\TZK_Scripts_4_0_4\Player\SQF\BuildTempl.sqf"
+; // args: unit
+; // return: template def if success, initialized array if failure
+
+; ================================================================================TZK_4.0.0 Block================================================================================
+; 2.01 string commands used for Chinese language "Pin Yin" supporting.
+funcLocStr = if !bool_TZK_199_Mode Then {loadFile "\TZK_Scripts_4_0_4\Player\SQF\LocalizeString.sqf"} Else {"_this"}
+; ================================================================================TZK_4.0.0 Block================================================================================
+
+; ================================================================================TZK_3.00 Block================================================================================
+; 2.01 commands used. String in game will display without "_xj400"
+funcStringWithoutVersion = loadFile localize {TZK_FUNC_PLAYER_STR_DISP}
+; 2.01 commands used. Controlling Fire Effects
+funcFiredEffect = loadFile localize {TZK_PLAYER_EFFECT_FIRED}
+
+call loadFile "impl\Function_Client.sqf"

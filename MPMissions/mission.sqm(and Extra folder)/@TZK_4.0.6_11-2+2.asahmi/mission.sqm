@@ -1,0 +1,359 @@
+version=11;
+#include "TZK_Scripts_4_0_6\mission.h"
+class Mission
+{
+	addOns[]=
+	{
+		TZK_BIS_AddOns
+		TZK_Basic_406_AddOns
+		TZK_CONFIG_406_AddOns
+		"asahmi",
+		"AGS_industrial_pack"
+	};
+	addOnsAuto[]=
+	{
+		TZK_CONFIG_406_AddOns
+	};
+	randomSeed=42499;
+	class Intel
+	{
+		briefingName="@STR_MISSION_NAME";
+		briefingDescription="Top slot is Commander.";
+		resistanceWest=0.000000;
+		startWeather=0.000000;
+		forecastWeather=0.000000;
+		month=9;
+		day=22;
+		hour=8;
+		minute=0;
+	};
+	class Groups
+	{
+		items=156;
+		class Item0
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={-1000.000000,0.000000,2000.000000};
+					id=0;
+					side="GUER";
+					vehicle="SoldierGB";
+					leader=1;
+					skill=0.200000;
+					text="resistance_Center";
+					init="gameEndType = -1; towns=[]; [] exec ""\TZK_Scripts_4_0_4\Server\InitRepairableObjects.sqs""; [] exec ""\TZK_Scripts_4_0_4\Server\InitDestroyIslandObject.sqs""";
+				};
+			};
+		};
+
+		TZK_Mission_Grp_Playable_201("CommanderW_Info_5HP_xj400", "CommanderE_Info_5HP_xj400", "LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		
+		TZK_Mission_Group_Playable(37,CIV, 0,0,3370, 37, "Civilian", "this allowdammage false; Spec0=this")
+		TZK_Mission_Group_Playable(38,CIV, 0,0,3380, 38, "Civilian", "this allowdammage false; Spec1=this")
+		TZK_Mission_Group_Playable(39,CIV, 0,0,3390, 39, "Civilian", "this allowdammage false; Spec2=this")
+		TZK_Mission_Group_Playable(40,CIV, 0,0,3400, 40, "Civilian", "this allowdammage false; Spec3=this")
+		TZK_Mission_Group_Playable(41,CIV, 0,0,3410, 41, "Civilian", "this allowdammage false; Spec4=this")
+		TZK_Mission_Group_Playable(42,CIV, 0,0,3420, 42, "Civilian", "this allowdammage false; Spec5=this")
+		TZK_Mission_Group_Playable(43,CIV, 0,0,3430, 43, "Civilian", "this allowdammage false; Spec6=this")
+		TZK_Mission_Group_Playable(44,CIV, 0,0,3440, 44, "Civilian", "this allowdammage false; Spec7=this")
+		TZK_Mission_Group_Playable(45,CIV, 0,0,3450, 45, "Civilian", "this allowdammage false; Spec8=this")
+		TZK_Mission_Group_Playable(46,CIV, 0,0,3460, 46, "Civilian", "this allowdammage false; Spec9=this")
+		
+		TZK_Mission_Grp_Functional_201("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_TownGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_PatrolGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_WorkerGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_FunctionalGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		class Item154
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={3333.385742,67.377266,8959.870117};
+					special="NONE";
+					id=144;
+					side="LOGIC";
+					vehicle="Logic";
+					leader=1;
+					skill=0.600000;
+					text="FixStart_0";
+				};
+			};
+		};
+		class Item155
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={9625.756836,70.590797,8974.059570};
+					special="NONE";
+					id=145;
+					side="LOGIC";
+					vehicle="Logic";
+					leader=1;
+					skill=0.600000;
+					text="FixStart_1";
+				};
+			};
+		};
+	};
+	class Vehicles
+	{
+		items=11;
+		class Item0
+		{
+			position[]={6429.031250,109.334320,8051.787598};
+			special="NONE";
+			id=200;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Outpost 1"",-250,2]]";
+		};
+		class Item1
+		{
+			position[]={9163.947266,58.000000,9595.215820};
+			special="NONE";
+			id=201;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Fuel Station"",500,2]]";
+		};
+		class Item2
+		{
+			position[]={7512.640625,26.000000,9772.819336};
+			special="NONE";
+			id=202;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Military Base"",500,2]]";
+		};
+		class Item3
+		{
+			position[]={9892.868164,34.000000,7467.929688};
+			special="NONE";
+			id=203;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Desert City"",500,2]]";
+		};
+		class Item4
+		{
+			position[]={6506.269531,70.062691,4879.758301};
+			special="NONE";
+			id=204;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Ruined Town"",500,2]]";
+		};
+		class Item5
+		{
+			position[]={3822.491455,90.000000,6682.141113};
+			special="NONE";
+			id=205;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Oil Field"",500,2]]";
+		};
+		class Item6
+		{
+			position[]={2924.832031,50.000000,8168.460938};
+			special="NONE";
+			id=206;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Sigma"",500,2]]";
+		};
+		class Item7
+		{
+			position[]={4892.099121,205.905502,7764.288086};
+			special="NONE";
+			id=207;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Hill 207"",1000,2]]";
+		};
+		class Item8
+		{
+			position[]={7977.014648,252.000000,8056.262695};
+			special="NONE";
+			id=208;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Camp 253"",1000,2]]";
+		};
+		class Item9
+		{
+			position[]={5626.430664,30.000000,10303.371094};
+			special="NONE";
+			id=209;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""LakeSide"",500,2]]";
+		};
+		class Item10
+		{
+			position[]={6380.826172,293.000000,6623.627441};
+			special="NONE";
+			id=210;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Outpost 2"",-250,2]]";
+		};
+	};
+	class Markers
+	{
+		items=11;
+		class Item0
+		{
+			position[]={6501.663574,116.234779,8007.493652};
+			name="MarkerTownName";
+			text="OUTPOST 1 -250$";
+			type="Dot";
+			colorName="ColorRed";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item1
+		{
+			position[]={6432.401367,263.464233,6667.912598};
+			name="MarkerTownName";
+			text="OUTPOST 2 -250$";
+			type="Dot";
+			colorName="ColorRed";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item2
+		{
+			position[]={5019.160645,197.332901,7741.136719};
+			name="MarkerTownName";
+			text="Hill 207";
+			type="Warning";
+			colorName="ColorGreenAlpha";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item3
+		{
+			position[]={8067.224609,252.000000,8066.727539};
+			name="MarkerTownName";
+			text="Camp 253";
+			type="Warning";
+			colorName="ColorGreenAlpha";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item4
+		{
+			position[]={5703.784180,29.705843,10297.847656};
+			name="MarkerTownName";
+			text="LakeSide";
+			type="Warning";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item5
+		{
+			position[]={7591.891113,26.000000,9755.432617};
+			name="MarkerTownName";
+			text="Military Base";
+			type="Warning";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item6
+		{
+			position[]={9228.580078,59.129414,9620.239258};
+			name="MarkerTownName";
+			text="Fuel Station";
+			type="Warning";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item7
+		{
+			position[]={3032.103271,56.230835,8167.030762};
+			name="MarkerTownName";
+			text="Sigma";
+			type="Warning";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item8
+		{
+			position[]={3902.159424,97.941261,6700.946289};
+			name="MarkerTownName";
+			text="Oil Field";
+			type="Warning";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item9
+		{
+			position[]={10000.215820,33.971775,7467.161133};
+			name="MarkerTownName";
+			text="Desert City";
+			type="Warning";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item10
+		{
+			position[]={6584.020996,72.881470,4878.884277};
+			name="MarkerTownName";
+			text="Ruined Town";
+			type="Warning";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+	};
+};
+class Intro
+{
+	randomSeed=8166403;
+	class Intel
+	{
+	};
+};
+class OutroWin
+{
+	randomSeed=5538307;
+	class Intel
+	{
+	};
+};
+class OutroLoose
+{
+	randomSeed=2739203;
+	class Intel
+	{
+	};
+};

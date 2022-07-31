@@ -5,7 +5,7 @@ _tug = _this select 0;
 _massLimit = _this select 1;
 _distMax = _this select 2;
 
-_vs = ([getPos _tug, _distMax, [], [_tug]] call funcGetNearbyVehicles) + ([getPos _tug, _distMax, structsOccupiableMortar + structsOccupiableHowitzer + structsOccupiableArtHowitzer, [_tug], siBoth] call funcGetNearbyStructure); _vehicles = [];
+_vs = ([getPos _tug, _distMax, [], [_tug]] call funcGetNearbyVehicles) + ([getPos _tug, _distMax, structsOccupiableMortar + structsOccupiableHowitzer, [_tug], siBoth] call funcGetNearbyStructure); _vehicles = [];
 
 {
 	_vehicle = _x select 0;

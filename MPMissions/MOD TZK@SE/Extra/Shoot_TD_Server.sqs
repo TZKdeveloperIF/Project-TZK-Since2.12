@@ -12,8 +12,7 @@ _groups = (groupMatrix select _si) + (townGroups select _si) + (workerGroups sel
 
 #CheckDistance
 _distLimit = viewDistance; 
-? (upgMatrix select _si) select upgLongWeaponRange == 2 && (upgMatrix select _si) select upgLongArtRange == 2: _distLimit = 2*viewDistance; 
-? _typeName in RadioTypesArtUnits: _distLimit = 10000
+? upgMatrix select _si select upgLongWeaponRange == 2: _distLimit = 2*viewDistance; 
 
 
 #PrepareToMove

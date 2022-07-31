@@ -1,0 +1,18 @@
+; args: [vehicle, name]
+_vehicle = _this select 0
+_name = _this select 1
+
+_path = "\TZK_Texture_4_0_0\PLA3.2\"
+? _name == "D": _path = "\TZK_Texture_4_0_4\VME\D\"
+? _name == "W": _path = "\TZK_Texture_4_0_4\VME\W\"
+_path = _path + "micai.paa"
+
+_array = typeOf _vehicle GetVehicleParamArray "hiddenSelections"
+
+_vehicle setObjectTexture [_array find "tzkGun03", _path]
+~0.1
+_vehicle setObjectTexture [_array find "tzkGun02", _path]
+~0.04
+_vehicle setObjectTexture [_array find "tzkGun01", _path]
+~0.02
+_vehicle setObjectTexture [_array find "tzkGun00", _path]

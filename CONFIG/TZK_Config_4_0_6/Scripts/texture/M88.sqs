@@ -1,0 +1,28 @@
+; args: [vehicle, name]
+_vehicle = _this select 0
+_name = _this select 1
+
+_path = "\tzk_texture_4_0_6\m88\g\"
+? _name == "D" || _name == "W": _path = "\tzk_texture_4_0_6\m88\d\"
+? _name == "G": _path = "\tzk_texture_4_0_6\m88\c\"
+
+[_vehicle, _path] call loadFile "\TZK_Objects\Scripts\texture\stdSetObjTex.sqf"
+
+_type = typeof _vehicle
+_hiddenSelections = _type GetVehicleParamArray "hiddenSelections"
+_phase = _vehicle animationPhase "Crane"
+
+_tex = if (1 == _phase) then {""} else {_path + "m88_002.paa"}
+_idx = _hiddenSelections find "crane_det01"; _vehicle SetObjectTexture [_idx, _tex]
+_tex = if (1 == _phase) then {""} else {_path + "m88_003.paa"}
+_idx = _hiddenSelections find "crane_det01_2"; _vehicle SetObjectTexture [_idx, _tex]
+
+_tex = if (1 == _phase) then {_path + "m88_002.paa"} else {""}
+_idx = _hiddenSelections find "crane_det02"; _vehicle SetObjectTexture [_idx, _tex]
+_tex = if (1 == _phase) then {_path + "m88_003.paa"} else {""}
+_idx = _hiddenSelections find "crane_det02_2"; _vehicle SetObjectTexture [_idx, _tex]
+
+_sections = ["shield1", "shield2"]
+_tex = _path + "m88_002.paa"
+_i = 0; _c = count _sections
+while {_i < _c} do {_idx = _hiddenSelections find (_sections select _i); _vehicle SetObjectTexture [_idx, _tex]; _i = _i + 1}

@@ -1,12 +1,11 @@
-; _this exec "\TZK_Scripts_4_0_5\Player\Rearm.sqs"
-
 ; args: [unit, truck, <vehicle>, <air support>]
 
 _unit = _this select 0
 _support = _this select 1
-_vehicle = if (count _this > 2) Then {_this select 2} Else {vehicle _unit}
-_bAirSup = if (count _this > 3) Then {_this select 3} Else {false}
-_range = if !_bAirSup Then {2*rangeSupport} Else {rangeSupportPlane}
+_vehicle = if (count _this > 2) then {_this select 2} else {vehicle _unit}
+_bAirSup = if (count _this > 3) then {_this select 3} else {false}
+_this = 0
+_range = if !_bAirSup then {2*rangeSupport} else {rangeSupportPlane}
 
 ? (_vehicle distance _support) > _range: _msg = "Support vehicle out of range"; goto "Exit"
 
@@ -85,7 +84,7 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 	? _cost < 50: _cost = 50
 	? _cost > _money: _msg = format["Not enough money for rearm. ($%1 needed)", _cost]; goto "Exit"
 
-	if (local _vehicle) then { { _vehicle removeMagazines _x } foreach (magazines _vehicle) } else { [_vehicle] exec "\TZK_Scripts_4_0_4\Common\SendVehicleMagsRemove.sqs" }
+	[_vehicle] exec localize {TZK_NETWORK_REMOVE_MAG}
 	; Force howitzer and tos deploy in 2.01 game
 	_vehicle call preprocessFile "Util\DeployInRearm.sqf"
 
@@ -96,7 +95,7 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 	_timeComplete = time + _timeRearm
 	_text = format ["Rearming. %1 seconds left.", (time - _timeComplete) - (time - _timeComplete)%0.1 + 0.1]
 	? player in _vehicle: hint _text
-	_range = if !_bAirSup Then {4*rangeSupport} Else {2*rangeSupportPlane}
+	_range = if !_bAirSup then {4*rangeSupport} else {2*rangeSupportPlane}
 	#Loop
 		_vehicle say "Rearming_xj400";
 		~5
@@ -107,7 +106,7 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 		? player in _vehicle: hint _text
 		? time < _timeComplete: goto "Loop"
 
-  ? _vehicle call preprocessFile "Util\NoUseableMag.sqf": [_vehicle] exec "\TZK_Scripts_4_0_4\Common\Msg\sRearmVehGeneral.sqs"
+  ? _vehicle call preprocessFile "Util\NoUseableMag.sqf": [_vehicle] exec localize {TZK_NETWORK_SEND_REARM_VEH}
   ? (_type in vSixfoldRearmTime): _vehicle say "NuclearMissileReady_xj400"
 
 #RearmEnd
