@@ -1,0 +1,21 @@
+; args: Get_Out_Array
+_vehicle = _this select 0; _seat = _this select 1; _unit = _this select 2
+
+? _seat == "Driver": exit
+? _seat == "Gunner": exit
+
+; Seat must be "Cargo" here.
+? _vehicle animationPhase "CSLA_UH60_doorL" < 0.5 || _vehicle animationPhase "CSLA_UH60_doorR" < 0.5: {[_vehicle] exec "\TZK_Config_4_0_4\Scripts\CSLA_UH60A\DoorOpen" + _x + ".sqs"} forEach ["L", "R"]
+
+? !local _vehicle: exit
+_crews = count crew _vehicle; _i = 0; _c = 10
+#Loop
+~1
+? !local _vehicle || !alive _vehicle || !isEngineOn _vehicle: exit
+? _crews > count crew _vehicle: exit
+_i = _i + 1
+? _i < _c: goto "Loop"
+
+? _vehicle animationPhase "CSLA_UH60_doorL" > 0.5 || _vehicle animationPhase "CSLA_UH60_doorR" > 0.5: {[_vehicle, true] exec "\TZK_Config_4_0_4\Scripts\CSLA_UH60A\DoorClose" + _x + ".sqs"} forEach ["L", "R"]
+
+exit

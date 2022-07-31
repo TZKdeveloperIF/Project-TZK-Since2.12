@@ -5,7 +5,7 @@ _delay = 0
 
 
 ~1
-? !(local _v) || !(alive _v) : [_v, _w, _m, _t, _id] exec "\TZK_Scripts_4_0_4\Common\EditEquipRearmData.sqs"; exit
+? !(local _v) || !(alive _v) : [_v, _w, _m, _t, _id] exec localize {TZK_EQUIPREARMDATA_EDIT}; exit
 
 
 _mags = magazines _v
@@ -18,4 +18,4 @@ _wpns = weapons _v
 ~ _delay
 {_v addMagazine _x} forEach _m
 
-[_v, _w, _m, _t, _id] exec "\TZK_Scripts_4_0_4\Common\EditEquipRearmData.sqs"; exit
+[_v, _w, _m, _t, _id] exec localize {TZK_EQUIPREARMDATA_EDIT}; exit

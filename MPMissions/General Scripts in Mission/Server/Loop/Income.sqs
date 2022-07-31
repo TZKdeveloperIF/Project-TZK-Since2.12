@@ -1,42 +1,27 @@
 ; args: [_totalIncome0, _totalIncome1, _timeNext]
 _totalIncome0 = _this select 0; _totalIncome1 = _this select 1; _timeNext = _this select 2
-_totalIncome = [_totalIncome0, _totalIncome1]; _moneyPerScore = 10; _income = 0; _incomeTowns = [0,0]
-_siArray = [si0, si1]; _c = count _siArray
+_totalIncome = [_totalIncome0, _totalIncome1]; _moneyPerScore = 10;
+_this = 0
 
-#Wait
+# Wait
 ~1
 ? time < _timeNext && pvGameOver == -1: goto "Wait"
 _timeNext = _timeNext + 60
 ? pvGameOver != -1: goto "SendAndExit"
 
-_factor = 1; if (time > 60*90) Then {_factor = 1.2}; if (time > 60*150) Then {_factor = 1.5}; _factor = [1, _factor] select IncomeGrow_TZK;
-{ _si = (_x select tdSide); _val = (_x select tdValue); if (_si != siRes && _si != siCiv && _si != siBoth) then {_incomeTowns set [_si, (_incomeTowns select _si) + _val*incomex*_factor]} } forEach towns
-{_incomeTowns set [_x, (_incomeTowns select _x) - (_incomeTowns select _x) % 1], _totalIncome set [_x, (_totalIncome select _x) + (_incomeTowns select _x)]} forEach _siArray
-
-_i = 0
-#Loop
-	_si = _siArray select _i; _IncomeRatio = 0; _IncomeRatioPlayer = 0; call format ["_IncomeRatio = pvIncomeRatio%1; _IncomeRatioPlayer = pvIncomeRatioPlayer%1", _si]
-	_groups = groupMatrix select _si; _groupCommander = groupCommander select _si; _groupAIs = groupAiMatrix select _si
-	_playerIncome = 0; _aiIncome = 0; _playerGroups = _groups - [_groupCommander] - _groupAIs
-	? (count _playerGroups) == 0 : goto "NoPlayersSide"
-		_playerIncome = (_incomeTowns select _si)*(1-_IncomeRatio)*_IncomeRatioPlayer / (count _playerGroups); _playerIncome = _playerIncome - _playerIncome%1
-	#NoPlayersSide
-	_aiGroups = _groupAIs
-	? (count _aiGroups) == 0 : goto "NoAIteamsSide"
-		_aiIncome = (_incomeTowns select _si)*(1-_IncomeRatio)*(1-_IncomeRatioPlayer) / (count _aiGroups); _aiIncome = _aiIncome - _aiIncome%1
-	#NoAIteamsSide
-	_commanderIncome = (_incomeTowns select _si) - _playerIncome*(count _playerGroups) - _aiIncome*(count _aiGroups); _commanderIncome = _commanderIncome - _commanderIncome%1; _gi = 0
-	{_bonus = _moneyPerScore*(scoreMoney select _si select _gi); _bonus = _bonus - _bonus%1; _totalIncome set [_si, (_totalIncome select _si) + _bonus]; if (_x in (_groupAIs - [_groupCommander])) then {_income = _aiIncome} else {_income = [_playerIncome, _commanderIncome] select (_x == _groupCommander)}; [_si, _gi, _income + _bonus, 0] exec "\TZK_Scripts_4_0_4\Server\MoneyAdd.sqs"; [_bonus, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\Info\ScoreMoney.sqs"; (scoreMoney select _si) set [_gi, 0]; _gi = _gi + 1} forEach _groups
-
-	_i = _i + 1
-	? _i < _c: goto "Loop"
+call loadFile "Server\Loop\Income.sqf"
 
 ~2
 _totalIncome0 = _totalIncome select si0; _totalIncome1 = _totalIncome select si1
-[si0, _totalIncome0] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideTotal.sqs"; [si1, _totalIncome1] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideTotal.sqs"
-[si0, moneySpent select si0] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideSpent.sqs"; [si1, moneySpent select si1] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideSpent.sqs"
-[_totalIncome0, _totalIncome1, _timeNext] exec "\TZK_Scripts_4_0_4\Server\Loop\Income.sqs"; exit
+[si0, _totalIncome0] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideTotal.sqs"
+[si1, _totalIncome1] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideTotal.sqs"
+[si0, moneySpent select si0] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideSpent.sqs"
+[si1, moneySpent select si1] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideSpent.sqs"
+goto "Wait"
 
-#SendAndExit
-[si0, _totalIncome select si0] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideTotal.sqs"; [si1, _totalIncome select si1] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideTotal.sqs"
-[si0, moneySpent select si0] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideSpent.sqs"; [si1, moneySpent select si1] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideSpent.sqs"
+# SendAndExit
+[si0, _totalIncome select si0] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideTotal.sqs"
+[si1, _totalIncome select si1] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideTotal.sqs"
+
+[si0, moneySpent select si0] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideSpent.sqs"
+[si1, moneySpent select si1] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideSpent.sqs"

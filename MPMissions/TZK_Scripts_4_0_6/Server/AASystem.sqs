@@ -1,0 +1,72 @@
+; args: side
+
+_side = _this
+? !isServer : exit
+@(time > 5)
+_si = sides find _side
+? _si == -1: format["ERROR: %1 side is illegal in 'AASystem.sqs'.", _side] call fDebugLog; exit
+
+_siEnemy = siEnemy select _si
+_aircraft = AggressiveAircrafts select _siEnemy
+_tank = [typesLightTank select _siEnemy, typesHeavyTank select _siEnemy]
+_group = grpNull
+
+#Update
+~30
+_tanks = 0; _aircrafts = 0
+
+{ _tanks = _tanks + ((unitsBuilt select _siEnemy) select _x) } foreach _tank
+? _tanks >= 3 : goto "Quit"
+
+{ _aircrafts = _aircrafts + ((unitsBuilt select _siEnemy) select _x) } foreach _aircraft
+? _aircrafts > 0 : goto "SpawnAA"
+
+? time > 30*60 : goto "Quit"
+goto "Update"
+
+
+#SpawnAA
+? !bool_TZK_199_Mode: _group = createGroup _side, _aaGroupUnit = objNull
+? bool_TZK_199_Mode: _leader = ([leaderTemp0, leaderTemp1] select _si), (["SoldierWB", "SoldierEB"] select _si) createUnit [getPos _leader, group _leader, "AAGroupUnit = this", 1, "PRIVATE"], _aaGroupUnit = AAGroupUnit
+~0.5
+? bool_TZK_199_Mode: [_aaGroupUnit] join grpNull
+~0.5
+? bool_TZK_199_Mode: _group = group _aaGroupUnit, [_aaGroupUnit] exec localize {TZK_FUNC_KEEP_ALIVE}
+
+~1
+? isNull _group : format["ERROR: _group is NULL at init for %1 temporary AA group", _side] call fDebugLog; exit
+
+
+~1
+[(AASystem select _si) select 0, 1, 1, 0, [getPos (mhq select _si), 500, 500] call funcGetRandomPos, random 360, _si, -1, _group, 0, 0] exec "\TZK_Scripts_4_0_4\Common\AddUnit.sqs"
+~1
+[(AASystem select _si) select 0, 1, 1, 0, [getPos (mhq select _si), 500, 500] call funcGetRandomPos, random 360, _si, -1, _group, 0, 0] exec "\TZK_Scripts_4_0_4\Common\AddUnit.sqs"
+~1
+[(AASystem select _si) select 0, 1, 1, 0, [getPos (mhq select _si), 500, 500] call funcGetRandomPos, random 360, _si, -1, _group, 0, 0] exec "\TZK_Scripts_4_0_4\Common\AddUnit.sqs"
+~1
+[(AASystem select _si) select 1, 1, 1, 0, [getPos (mhq select _si), 500, 500] call funcGetRandomPos, random 360, _si, -1, _group, 0, 0] exec "\TZK_Scripts_4_0_4\Common\AddUnit.sqs"
+~1
+[(AASystem select _si) select 1, 1, 1, 0, [getPos (mhq select _si), 500, 500] call funcGetRandomPos, random 360, _si, -1, _group, 0, 0] exec "\TZK_Scripts_4_0_4\Common\AddUnit.sqs"
+
+~5
+{ if (_x != vehicle _x) then { [vehicle _x, true] exec "\TZK_Scripts_4_0_4\Common\LockVehicle.sqs"; vehicle _x setFuel 0 } } foreach (units _group)
+[_si] exec localize {TZK_INFO_SERVER_TEMP_AA_CREATED}
+
+; Remain AA group for AI Comm.
+? (groupCommander select _si) in (groupAiMatrix select _si) && !dev: exit
+
+ _delay = [900,15] select dev
+~_delay
+{ _v = vehicle _x; if (_v != _x) then {deleteVehicle _v} } forEach (units _group - [_aaGroupUnit])
+~1
+{deleteVehicle _x} forEach (units _group - [_aaGroupUnit])
+~1
+[_si] exec localize {TZK_INFO_SERVER_TEMP_AA_DELETED}
+goto "Quit"
+
+# Quit
+? !isNull _group: if !bool_TZK_199_Mode Then {deleteGroup _group} Else {[_aaGroupUnit] join group _leader}
+~1
+? bool_TZK_199_Mode: deleteVehicle _aaGroupUnit
+
+;EOF

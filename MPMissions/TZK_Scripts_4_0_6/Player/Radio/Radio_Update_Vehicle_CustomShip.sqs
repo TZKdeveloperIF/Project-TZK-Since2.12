@@ -1,0 +1,73 @@
+; args: [vehicle]
+_vehicle = _this select 0
+
+
+_booleStringTransport = "_vehicle in TransportActivatedVehicles"; _booleTransport = call _booleStringTransport
+_booleStringSwitchDriver = "player == gunner _vehicle && (isNull driver _vehicle || local driver _vehicle) && local _vehicle"; _booleSwitchDriver = call _booleStringSwitchDriver
+_booleStringSwitchGunner = "player == driver _vehicle && (isNull gunner _vehicle || local gunner _vehicle) && local _vehicle"; _booleSwitchGunner = call _booleStringSwitchGunner
+_booleStringEquip3x2 = "( (count magazines _vehicle) + 2*({_x in [{VirtualCarlGustav_xj400},{VirtualAT4_xj400},{VirtualAA_xj400},{Virtual9K32_xj400}]} count magazines _vehicle) ) < 28"
+_booleStringEquip1x2 = "( (count magazines _vehicle) + 2*({_x in [{VirtualCarlGustav_xj400},{VirtualAT4_xj400},{VirtualAA_xj400},{Virtual9K32_xj400}]} count magazines _vehicle) ) < 30"
+_booleEquip3x2 = call _booleStringEquip3x2
+_booleEquip1x2 = call _booleStringEquip1x2
+
+_pages = 2; _page = Page_Radio_CustomShip; _boole_PageNoChange = true
+
+
+Radio001 setTriggerText "Next Page..."; Radio001 setTriggerStatements ["this", "Page_Radio_CustomShip = Page_Radio_CustomShip + 1; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true}", ""];
+Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", {[] exec localize {TZK_DIALOG_TZK_SETTING_1}}, ""];
+if (call _booleStringSwitchDriver) then {Radio003 setTriggerText "To driver's seat"; Radio003 setTriggerStatements ["this", {(vehicle player) exec localize {TZK_FUNC_SWITCH_2_DRIVER}}, ""]} else {Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""]};
+if (call _booleStringSwitchGunner) then {Radio004 setTriggerText "To gunner's seat"; Radio004 setTriggerStatements ["this", {(vehicle player) exec localize {TZK_FUNC_SWITCH_2_GUNNER}}, ""]} else {Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""]};
+Radio005 setTriggerText "Attach/Detach Center Vehicle"; Radio005 setTriggerStatements ["this", {[vehicle player, tsCenter, ttBoat] exec localize {TZK_FUNC_ATTACHDETACH_VEHICLE}}, ""];
+Radio006 setTriggerText "Attach/Detach Right Vehicle"; Radio006 setTriggerStatements ["this", {[vehicle player, tsRight, ttBoat] exec localize {TZK_FUNC_ATTACHDETACH_VEHICLE}}, ""];
+Radio007 setTriggerText "Attach/Detach Left Vehicle"; Radio007 setTriggerStatements ["this", {[vehicle player, tsLeft, ttBoat] exec localize {TZK_FUNC_ATTACHDETACH_VEHICLE}}, ""];
+Radio008 setTriggerText "Eject All Cargo"; Radio008 setTriggerStatements ["this", {[vehicle player, siPlayer] exec localize {TZK_FUNC_EJECT_ALL_CARGO}}, ""];
+Radio009 setTriggerText "Eject One Cargo"; Radio009 setTriggerStatements ["this", {[vehicle player, siPlayer] exec localize {TZK_FUNC_EJECT_ONE_CARGO}}, ""];
+if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNOFF}}, ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNON}}, ""];	};
+
+	? Page_Radio_CustomShip == 0 : goto "SkipInitPage2"
+	if (call _booleStringEquip1x2 && local _vehicle) then { Radio003 setTriggerText "Equip Grenade"; Radio003 setTriggerStatements ["this", {[vehicle player, [{VirtualGrenade_xj400}], 10] exec localize {TZK_PLAYER_EFFECT_VIRTUAL_WEP}}, ""]; Radio004 setTriggerText "Equip Mortar"; Radio004 setTriggerStatements ["this", {[vehicle player, [{VirtualMortar_xj400}], 20] exec localize {TZK_PLAYER_EFFECT_VIRTUAL_WEP}}, ""]; } else {	Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""]; Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""] }
+	if (call _booleStringEquip3x2 && local _vehicle) then {	Radio005 setTriggerText "Equip AT"; Radio005 setTriggerStatements ["this", {[vehicle player, [[{VirtualCarlGustav_xj400},{VirtualAT4_xj400}] select siPlayer], 60] exec localize {TZK_PLAYER_EFFECT_VIRTUAL_WEP}}, ""];	} else {	Radio005 setTriggerText " "; Radio005 setTriggerStatements ["this", "", ""];	}
+	if (call _booleStringEquip1x2 && local _vehicle) then {	Radio006 setTriggerText "Equip LAW/RPG"; Radio006 setTriggerStatements ["this", {[vehicle player, [[{VirtualLAW_xj400},{VirtualRPG_xj400}] select siPlayer], 25] exec localize {TZK_PLAYER_EFFECT_VIRTUAL_WEP}}, ""]; Radio007 setTriggerText "Equip MG"; Radio007 setTriggerStatements ["this", {[vehicle player, [{Mag_12mm7_100_xj400}], 20] exec localize {TZK_PLAYER_EFFECT_VIRTUAL_WEP}}, ""];	} else {	Radio006 setTriggerText " "; Radio006 setTriggerStatements ["this", "", ""]; Radio007 setTriggerText " "; Radio007 setTriggerStatements ["this", "", ""];	}
+
+#SkipInitPage2
+
+~1
+#Refresh
+~0.05
+; In OFP/Arma can't compare booleans directly. Use (A && !B) || (!A && B) here, and use !_boolean to refresh.
+
+_booleRefreshTransport = (_booleTransport && !(call _booleStringTransport)) || (!_booleTransport && (call _booleStringTransport))
+? _booleRefreshTransport : if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNOFF}}, ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNON}}, ""];	}
+
+_booleRefreshSwitchDriver = (_booleSwitchDriver && !(call _booleStringSwitchDriver)) || (!_booleSwitchDriver && (call _booleStringSwitchDriver))
+_booleRefreshSwitchGunner = (_booleSwitchGunner && !(call _booleStringSwitchGunner)) || (!_booleSwitchGunner && (call _booleStringSwitchGunner))
+_booleRefreshEquip3x2 = (_booleEquip3x2 && !(call _booleStringEquip3x2)) || (!_booleEquip3x2 && (call _booleStringEquip3x2))
+_booleRefreshEquip1x2 = (_booleEquip1x2 && !(call _booleStringEquip1x2)) || (!_booleEquip1x2 && (call _booleStringEquip1x2))
+; Get page and judge whether page changed.
+? Page_Radio_CustomShip >= _pages : Page_Radio_CustomShip = Page_Radio_CustomShip % _pages
+_boole_PageNoChange = (Page_Radio_CustomShip == _page); _page = Page_Radio_CustomShip
+
+; If page no change, refresh
+? _boole_PageNoChange && _page == 0 : if (_booleRefreshSwitchDriver) then { if (call _booleStringSwitchDriver) then {Radio003 setTriggerText "To driver's seat"; Radio003 setTriggerStatements ["this", {(vehicle player) exec localize {TZK_FUNC_SWITCH_2_DRIVER}}, ""]} else {Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""]} }; if (_booleRefreshSwitchGunner) then { if (call _booleStringSwitchGunner) then {Radio004 setTriggerText "To gunner's seat"; Radio004 setTriggerStatements ["this", {(vehicle player) exec localize {TZK_FUNC_SWITCH_2_GUNNER}}, ""]} else {Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""]} }
+
+? _boole_PageNoChange && _page == 1 : 
+if (_booleRefreshEquip3x2) then {if (call _booleStringEquip3x2 && local _vehicle) then {	Radio005 setTriggerText "Equip AT"; Radio005 setTriggerStatements ["this", {[vehicle player, [[{VirtualCarlGustav_xj400},{VirtualAT4_xj400}] select siPlayer], 60] exec localize {TZK_PLAYER_EFFECT_VIRTUAL_WEP}}, ""];	} else {	Radio005 setTriggerText " "; Radio005 setTriggerStatements ["this", "", ""];	}}; if (_booleRefreshEquip1x2) then {if (call _booleStringEquip1x2 && local _vehicle) then { Radio003 setTriggerText "Equip Grenade"; Radio003 setTriggerStatements ["this", {[vehicle player, [{VirtualGrenade_xj400}], 10] exec localize {TZK_PLAYER_EFFECT_VIRTUAL_WEP}}, ""]; Radio004 setTriggerText "Equip Mortar"; Radio004 setTriggerStatements ["this", {[vehicle player, [{VirtualMortar_xj400}], 20] exec localize {TZK_PLAYER_EFFECT_VIRTUAL_WEP}}, ""]; } else {	Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""]; Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""] }; if (call _booleStringEquip1x2 && local _vehicle) then {	Radio006 setTriggerText "Equip LAW/RPG"; Radio006 setTriggerStatements ["this", {[vehicle player, [[{VirtualLAW_xj400},{VirtualRPG_xj400}] select siPlayer], 25] exec localize {TZK_PLAYER_EFFECT_VIRTUAL_WEP}}, ""]; Radio007 setTriggerText "Equip MG"; Radio007 setTriggerStatements ["this", {[vehicle player, [{Mag_12mm7_100_xj400}], 20] exec localize {TZK_PLAYER_EFFECT_VIRTUAL_WEP}}, ""];	} else {	Radio006 setTriggerText " "; Radio006 setTriggerStatements ["this", "", ""]; Radio007 setTriggerText " "; Radio007 setTriggerStatements ["this", "", ""];	}}
+
+; If page changed, re-initialize
+? !_boole_PageNoChange && _page == 0 : if (call _booleStringSwitchDriver) then {Radio003 setTriggerText "To driver's seat"; Radio003 setTriggerStatements ["this", {(vehicle player) exec localize {TZK_FUNC_SWITCH_2_DRIVER}}, ""]} else {Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""]}; if (call _booleStringSwitchGunner) then {Radio004 setTriggerText "To gunner's seat"; Radio004 setTriggerStatements ["this", {(vehicle player) exec localize {TZK_FUNC_SWITCH_2_GUNNER}}, ""]} else {Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""]}; Radio005 setTriggerText "Attach/Detach Center Vehicle"; Radio005 setTriggerStatements ["this", {[vehicle player, tsCenter, ttBoat] exec localize {TZK_FUNC_ATTACHDETACH_VEHICLE}}, ""]; Radio006 setTriggerText "Attach/Detach Right Vehicle"; Radio006 setTriggerStatements ["this", {[vehicle player, tsRight, ttBoat] exec localize {TZK_FUNC_ATTACHDETACH_VEHICLE}}, ""]; Radio007 setTriggerText "Attach/Detach Left Vehicle"; Radio007 setTriggerStatements ["this", {[vehicle player, tsLeft, ttBoat] exec localize {TZK_FUNC_ATTACHDETACH_VEHICLE}}, ""];
+
+? !_boole_PageNoChange && _page == 1 : if (call _booleStringEquip1x2 && local _vehicle) then { Radio003 setTriggerText "Equip Grenade"; Radio003 setTriggerStatements ["this", {[vehicle player, [{VirtualGrenade_xj400}], 10] exec localize {TZK_PLAYER_EFFECT_VIRTUAL_WEP}}, ""]; Radio004 setTriggerText "Equip Mortar"; Radio004 setTriggerStatements ["this", {[vehicle player, [{VirtualMortar_xj400}], 20] exec localize {TZK_PLAYER_EFFECT_VIRTUAL_WEP}}, ""]; } else {	Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""]; Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""] }; if (call _booleStringEquip3x2 && local _vehicle) then {	Radio005 setTriggerText "Equip AT"; Radio005 setTriggerStatements ["this", {[vehicle player, [[{VirtualCarlGustav_xj400},{VirtualAT4_xj400}] select siPlayer], 60] exec localize {TZK_PLAYER_EFFECT_VIRTUAL_WEP}}, ""];	} else {	Radio005 setTriggerText " "; Radio005 setTriggerStatements ["this", "", ""];	}; if (call _booleStringEquip1x2 && local _vehicle) then {	Radio006 setTriggerText "Equip LAW/RPG"; Radio006 setTriggerStatements ["this", {[vehicle player, [[{VirtualLAW_xj400},{VirtualRPG_xj400}] select siPlayer], 25] exec localize {TZK_PLAYER_EFFECT_VIRTUAL_WEP}}, ""]; Radio007 setTriggerText "Equip MG"; Radio007 setTriggerStatements ["this", {[vehicle player, [{Mag_12mm7_100_xj400}], 20] exec localize {TZK_PLAYER_EFFECT_VIRTUAL_WEP}}, ""];	} else {	Radio006 setTriggerText " "; Radio006 setTriggerStatements ["this", "", ""]; Radio007 setTriggerText " "; Radio007 setTriggerStatements ["this", "", ""];	}
+
+
+? _booleRefreshTransport : _booleTransport = call _booleStringTransport
+? _booleRefreshEquip3x2 : _booleEquip3x2 = call _booleStringEquip3x2
+? _booleRefreshEquip1x2 : _booleEquip1x2 = call _booleStringEquip1x2
+? _booleRefreshSwitchDriver : _booleSwitchDriver = call _booleStringSwitchDriver
+? _booleRefreshSwitchGunner : _booleSwitchGunner = call _booleStringSwitchGunner
+
+_timeRefresh = time + 1
+@(time > _timeRefresh || boole_Refresh_Radio)
+? boole_Refresh_Radio : boole_Refresh_Radio = false
+? _vehicle == vehicle player : goto "Refresh"
+
+; EOF

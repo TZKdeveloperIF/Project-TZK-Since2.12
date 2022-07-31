@@ -1,8 +1,7 @@
-; _this exec "\TZK_Scripts_4_0_5\Player\Dialog\Waypoints.sqs"
 ; args: [pos]
 _pos = _this select 0
 _setTargetScript = "Player\Art\SetTarget.sqs"
-@!mutexDlg
+@ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
 _dlg = createDialog "GenericDialog"
 mutexDlg = false
@@ -139,7 +138,7 @@ ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bo
 #OrderAI
 	closeDialog 0
 	~0.1
-	[] exec "Player\Dialog\AIGroupOrders.sqs"
+	[] exec localize {TZK_DIALOG_AI_GRP_ORDER}
 	Exit
   
 #Init

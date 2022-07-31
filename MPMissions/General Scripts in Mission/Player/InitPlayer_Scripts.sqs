@@ -12,9 +12,9 @@ _unit = _this select 0; _si = _this select 1; _gi = _this select 2
 [] exec "\TZK_Scripts_4_0_4\Player\UpdatePlayerGetFlyingStatus.sqs"
 
 0 exec "Player\Loop\PlayerClient.sqs"
-[] exec "\TZK_Scripts_4_0_5\Player\Start\PlayerVehicle.sqs"
+0 exec localize {TZK_PLAYER_LOOP_VEHICLE}
 0 exec "Player\ArtilleryShell.sqs"
 
 [_si, false] exec "\TZK_Scripts_4_0_4\Player\Marker\PlayerUnits.sqs"; [_si] exec "\TZK_Scripts_4_0_4\Player\Marker\PlayerVehicleEnemy.sqs"; [_si] exec "\TZK_Scripts_4_0_5\Player\Marker\PlayerStruct.sqs"
 
-[] exec "\TZK_Scripts_4_0_4\Player\Msg\mJoinUnits.sqs"
+"Player\Msg\hJoinUnits.sqs" exec "Player\Msg\mJoinUnits.sqs"

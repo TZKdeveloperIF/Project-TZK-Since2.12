@@ -1,7 +1,5 @@
 ; args: [_factory, _type]
-
-_factory = _this select 0
-_typeFactory = _this select 1
+_factory = _this select 0; _typeFactory = _this select 1; _this = 0
 
 _typeUnit = -1
 _typeFactoryLast = -1
@@ -12,8 +10,8 @@ _si = siPlayer
 _controlCenters = [siPlayer, stComm] call funcGetWorkingStructures
 
 _remote = false
-? (isNull _factory): _remote = true
-? (_remote && (count _controlCenters) == 0): Hint "No Working Comm Center"; Exit
+? isNull _factory: _remote = true
+? _remote && (count _controlCenters) == 0: Hint "No Working Comm Center"; Exit
 
 _unit = player
 _delay = 0.2
@@ -79,9 +77,8 @@ _idcBuy3 = IDC_BTN+13
 _idcBuy5BG = IDC_BG+15
 _idcBuy5 = IDC_BTN+14
 
-#InitMenu
-
-@!mutexDlg
+; InitMenu
+@ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
 	_dialog = createDialog "FactoryMenu2"
 mutexDlg = false
@@ -103,7 +100,7 @@ mutexDlg = false
 	_lastSelQID = -1
 	? (_remote): _lastWorkingFactoryTypes = []; goto "Update"
 	
-	[_idcUnits, _nShow, [_typeFactory], []] call loadFile "\TZK_Scripts_4_0_4\Player\Dialog\BuyUnits_Available.sqf"; _typeFactory = 2^_typeFactory
+	[_idcUnits, _nShow, [_typeFactory], []] call loadFile localize {TZK_DIALOG_BUYUNITS_AVAILABLE_LIST}; _typeFactory = 2^_typeFactory
 
 		
 #Update
@@ -120,7 +117,7 @@ mutexDlg = false
 	ctrlSetText [_idcMoney, _text]
 
 	? _remote : ctrlShow [_idcShowInfBG, _nShow == 0]; ctrlShow [_idcShowVehBG, _nShow == 1]; ctrlShow [_idcShowBothBG, _nShow == 2]
-	? _remote : _lastWorkingFactoryTypes = [_idcUnits, _nShow, [], _lastWorkingFactoryTypes] call loadFile "\TZK_Scripts_4_0_4\Player\Dialog\BuyUnits_Available.sqf"
+	? _remote : _lastWorkingFactoryTypes = [_idcUnits, _nShow, [], _lastWorkingFactoryTypes] call loadFile localize {TZK_DIALOG_BUYUNITS_AVAILABLE_LIST}
 	? _nShow != nShow : _nShow = nShow
 
 	_lastSelQID = -1

@@ -28,6 +28,7 @@ _aa = createShell [_missileClass, _startPos, [0,0,0], _source, _target]
 _startPos = getPosASL _source
 _startPos set [2, (_startPos select 2) + 20]
 _vector = [getPosASL _target, _startPos] call funcVectorSub
+; we shall set pos first, then vector dir and last the velocity, especially for 0-thrustTime objects.
 _aa setPosASL _startPos
 _aa SetVectorDirAndUp [_vector, [0,0,1]]
 

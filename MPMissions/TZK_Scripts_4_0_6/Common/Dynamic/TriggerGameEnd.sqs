@@ -1,0 +1,10 @@
+; Game-End Triggers
+? bool_TZK_199_Mode: exit
+
+_end = createTrigger ["EmptyDetector", [0,0,0]]; _end setTriggerArea [0, 0, 0, false]; _end setTriggerActivation ["NONE", "PRESENT", true]; _end setTriggerType "END1"; _end setTriggerText "WestWins"; _end setTriggerStatements ["gameEndType == 0", "", ""]
+_end = createTrigger ["EmptyDetector", [0,0,0]]; _end setTriggerArea [0, 0, 0, false]; _end setTriggerActivation ["NONE", "PRESENT", true]; _end setTriggerType "END2"; _end setTriggerText "EastWins"; _end setTriggerStatements ["gameEndType == 1", "", ""]
+_end = createTrigger ["EmptyDetector", [0,0,0]]; _end setTriggerArea [0, 0, 0, false]; _end setTriggerActivation ["NONE", "PRESENT", true]; _end setTriggerType "END3"; _end setTriggerText "Draw";     _end setTriggerStatements ["gameEndType == 2", "", ""]
+
+? isServer: 0 exec localize {TZK_TRIGGER_GAME_END_SERVER}
+
+; EOF

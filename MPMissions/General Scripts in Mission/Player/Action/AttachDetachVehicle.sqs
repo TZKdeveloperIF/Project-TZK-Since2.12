@@ -8,7 +8,7 @@ _type = _this select 2
 
 
 ; check if attach possible
-{ _tugged = _x select tsTugged; if (_tug in _tugged) then { hint "Cannot attach a vehicle to a vehicle being towed."; Exit } } foreach vehicleAttached
+{ _tugged = _x select tsTugged; if (_tug in _tugged) then { hint "Cannot attach a vehicle to a vehicle being towed."; exit } } foreach vehicleAttached
 
 ; check if attach or detach should be performed
 _index = 0
@@ -17,6 +17,6 @@ _used = false
 _res = [_tug] call funcSearchvehicleAttached
 ? (_res select 1) : _tugged = ((vehicleAttached select (_res select 0)) select tsTugged); if !isNull(_tugged select _slot) then { _used = true }
 
-? (_used): [_tug, _slot] exec "\TZK_Scripts_4_0_4\Common\SendDetachVehicle.sqs"; Exit
+? (_used): [_tug, _slot] exec localize {TZK_MSG_COMMON_SEND_DETACH_VEHICLE}; exit
 
-[_tug, _slot, _type] exec "Player\Dialog\AttachVehicle.sqs"; Exit
+[_tug, _slot, _type] exec localize {TZK_DIALOG_ATTACH_VEHICLE}; exit

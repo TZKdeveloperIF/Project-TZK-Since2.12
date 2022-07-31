@@ -1,0 +1,24 @@
+; args: none
+@ pvTimeBoost
+
+_DLapse = 60
+_IncTime = 24 / _DLapse / 60
+
+# externalLoop
+@ time % 60 > 35 && time % 60 < 45
+_lastTime = time
+skipTime (_IncTime * (time - _lastTime))
+
+; Time acceleration loop (on server unnecessary to loop quickly).
+
+# internalLoop
+; PublicVariable the daytime
+pvDayTime = daytime; publicVariable "pvDayTime"
+_lastTime = time
+@ time - _lastTime > 60 || !pvTimeBoost
+skipTime (_IncTime * (time - _lastTime))
+
+? !pvTimeBoost: pvDayTime = daytime; publicVariable "pvDayTime", _lastTime = time, goto "externalLoop"
+goto "internalLoop"
+
+; EOF

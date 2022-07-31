@@ -23,8 +23,8 @@ _index = 0; _count = count towns; _westTG = grpNull; _eastTG = grpNull; _resTG =
 	
 	; An empty group created by "createGroup" return the "unknown" side. However editor can still use "format" and "substr" to gain the first 4 letters and hence gain the side.
 
-	_script = "\TZK_Scripts_4_0_5\Server\Start\TownGroup1.sqs"
-	? _income < 0 : _script = "\TZK_Scripts_4_0_5\Server\Start\TownGroup3.sqs"
+	_script = localize {TZK_TOWN_GROUP_START_1}
+	? _income < 0 : _script = localize {TZK_TOWN_GROUP_START_3}
 	[_westTG, _index, west] exec _script; [_eastTG, _index, east] exec _script
 
 	_script = "Server\Start\TownGroupRes1.sqs"
@@ -46,7 +46,7 @@ _indexExtra = 0
 	if (_index < count (townGroups select si0)) then {_westTG = (townGroups select si0) select _index} else {_westTG = createGroup west}
 	if (_index < count (townGroups select si1)) then {_eastTG = (townGroups select si1) select _index} else {_eastTG = createGroup east}
 	
-	_script = "\TZK_Scripts_4_0_5\Server\Start\TownGroup4.sqs"
+	_script = localize {TZK_TOWN_GROUP_START_4}
 	[_westTG, _indexExtra, west] exec _script; [_eastTG, _indexExtra, east] exec _script
 	_index = _index + 1
 
@@ -70,7 +70,7 @@ _count = (count towns) / 2.5; _index = 0; _patrolGroup = grpNull
 
 ; ===============================Functional Groups===============================
 ; script here should start after a delay, if they applied "createGroup" command. This command should be executed after groups' ID are set, or game may crash.
-west exec "\TZK_Scripts_4_0_4\Server\AASystem.sqs"; east exec "\TZK_Scripts_4_0_4\Server\AASystem.sqs"
+west exec "\TZK_Scripts_4_0_6\Server\AASystem.sqs"; east exec "\TZK_Scripts_4_0_6\Server\AASystem.sqs"
 
 
 exit

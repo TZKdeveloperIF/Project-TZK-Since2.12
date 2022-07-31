@@ -36,7 +36,7 @@ _crew = _transp call funcGetCargoNum
 ? _distToPickup < 200 && _crew > 10: goto "MoveEject"
 
 #MovePickup
-[_transp] exec "Common\SendTransportTurnOn.sqs"
+[_transp] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNON}
 _posMove = [_posPickup, 20, 20] call funcGetRandomPos
 [_unit, _posMove] call funcMoveAI
 _timeRepeat = time + 60
@@ -71,7 +71,7 @@ _unit doWatch _posPickup
 doStop (vehicle _unit)
 
 #WaitForCargo
-  [_transp] exec "Common\SendTransportTurnOn.sqs"
+  [_transp] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNON}
   _unit doWatch _posPickup
   ~30
   
@@ -87,7 +87,7 @@ doStop (vehicle _unit)
   
 #MoveEject
 _posMove = [_posEject, 20, 20] call funcGetRandomPos
-[_transp] exec "Common\SendTransportTurnOff.sqs"
+[_transp] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNOFF}
 [_unit, _posMove] call funcMoveAI
 _unit doWatch _posEject
 _timeRepeat = time + 60
@@ -116,7 +116,7 @@ doStop (vehicle _unit)
 	? _unit call temporaryCheck: if (_idOrder != _order select 0) then {exit} else {goto "WaitStopped"}
   ? (speed _transp) > 5: goto "WaitStopped"
 
-[_transp, _si] exec "\TZK_Scripts_4_0_4\Common\EjectAllCargo.sqs"
+[_transp, _si] exec localize {TZK_FUNC_EJECT_ALL_CARGO}
 ~10
   ? !(alive _unit): exit
   ? _idOrder != _order select 0: exit

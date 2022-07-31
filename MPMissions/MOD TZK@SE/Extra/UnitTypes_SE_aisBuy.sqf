@@ -43,7 +43,7 @@ _list = [ [_soldierLAWE, 1], [_soldierLAWE2, 0.5] ];
 (unitsBuyAI select si1) set [_i, _list];
 _i = _i + 1;
 
-utbinfAt = _i;
+utbinfAtI = _i;
 _list = [[_soldierLAWW, 1], [_soldierATW, 1] ];
 (unitsBuyAI select si0) set [_i, _list];
 _list = [ [_soldierLAWE, 1], [_soldierATE, 1] ];

@@ -1,10 +1,8 @@
 Target_Set_TZK_Server_0 = 0; Target_Set_TZK_Server_1 = 0
 ; 4_0_6_Update
 
-Init_TZK_Script_Order = false
-[] exec "\TZK_Scripts_4_0_5\Server\InitFunctions.sqs"
-[] exec "\TZK_Scripts_4_0_5\Server\InitServer_constant.sqs"
-[] exec "Server\InitServer_Group.sqs"
+0 exec "\TZK_Scripts_4_0_6\Server\InitFunctions.sqs"
+call loadFile "\TZK_Scripts_4_0_6\Server\InitServer_constant.sqf"
 AICO_giTrans = [[],[]]; AICO_giInf = [[],[]]; AICO_giTanks = [[[], [], []], [[], [], []]]
 
 
@@ -21,20 +19,20 @@ _i = 0; countTargetMarkers = 10; while "_i < countTargetMarkers" do {call Format
 
 ; MESSAGE HANDLERS (SERVER ONLY)
 [] exec "\TZK_Scripts_4_0_4\Server\MsgBuildStructure.sqs"
-[] exec "\TZK_Scripts_4_0_4\Server\MsgUndo.sqs"
-[] exec "\TZK_Scripts_4_0_4\Server\MsgAddWorker.sqs"
+(localize {TZK_FUNC_SERVER_UNDO_STRUCT}) exec "\TZK_Scripts_4_0_6\Server\Msg\mUndo.sqs"
+0 exec "\TZK_Scripts_4_0_6\Server\Msg\mAddWorker.sqs"
 
 { ["Server\Msg\hBuyUnit.sqs"] exec format ["Server\Msg\mBuyUnit%1.sqs", _x] } forEach [0,1,2,3,4]
 
 [] exec "\TZK_Scripts_4_0_4\Server\MsgCancelBuy.sqs"
-[] exec "\TZK_Scripts_4_0_4\Server\MsgMoneySpent.sqs"
-[] exec "\TZK_Scripts_4_0_4\Server\Msg\mGiveMoney.sqs"
+(localize {TZK_MONEY_SERVER_SPEND}) exec "\TZK_Scripts_4_0_6\Server\Msg\mMoneySpent.sqs"
+"\TZK_Scripts_4_0_6\Server\Msg\hGiveMoney.sqs" exec "\TZK_Scripts_4_0_6\Server\Msg\mGiveMoney.sqs"
 "Server\Msg\hUpgrade.sqs" exec "Server\Msg\mUpgrade.sqs"
-[] exec "\TZK_Scripts_4_0_4\Server\MsgTransferCommand.sqs"
-[] exec "\TZK_Scripts_4_0_4\Server\MsgDestruction.sqs"
+0 exec "\TZK_Scripts_4_0_6\Server\Msg\mTransferCmd.sqs"
+0 exec "\TZK_Scripts_4_0_6\Server\Msg\mDestruction.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\MsgUnitDisembark.sqs"
 ["Server\Join\ViaOrder.sqs"] exec "\TZK_Scripts_4_0_5\Server\Msg\mJoin.sqs"
-[] exec "\TZK_Scripts_4_0_4\Server\MsgCheckAI.sqs"
+0 exec "\TZK_Scripts_4_0_6\Server\Msg\mCheckAI.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\MsgClearBuy.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\MsgEjectAIUnits.sqs"
 ; ? bool_TZK_199_Mode: [] exec "\TZK_Scripts_4_0_4\Server\Msg\mRadioChannel.sqs"
@@ -43,20 +41,19 @@ _i = 0; countTargetMarkers = 10; while "_i < countTargetMarkers" do {call Format
 ? !(isNull player): [] exec "Player\InitClient.sqs"
 
 ; game has begun after this pause
+; todo: generate an uniform game time. The "time" can't be assigned in-game.
 ~0.001
 ? pvInit_0 != -1: publicVariable {pvInit_0}
 ? pvInit_0 == -1: mutexCmd = false; publicVariable {mutexCmd}
 
 ~2
 @ !mutexCmd
-; The start money is adjusted in "InitServer_Group.sqs". After that the "Init_TZK_Script_Order" will be set true.
+call preprocessFile "Server\InitServer_Group.sqf"
+call preprocessFile "Server\initStartedGrpMoney.sqf"
+call preprocessFile "Server\initStartedGrpUpg.sqf"
 
-; todo: generate an uniform game time. The "time" can't be assigned in-game.
-
-; pvDebugVars = true; PublicVariable "pvDebugVars"
-@ Init_TZK_Script_Order
 [] exec "\TZK_Scripts_4_0_4\Server\GenerateStartPositions.sqs"
-[] exec "\TZK_Scripts_4_0_5\Server\Msg\sStartMoney.sqs"
+call loadFile "\TZK_Scripts_4_0_6\Server\Msg\sStartMoney.sqf"
 
 [si0] exec "\TZK_Scripts_4_0_4\Server\UpdateRespawnAI.sqs"; [si1] exec "\TZK_Scripts_4_0_4\Server\UpdateRespawnAI.sqs"
 
@@ -65,7 +62,7 @@ _i = 0; countTargetMarkers = 10; while "_i < countTargetMarkers" do {call Format
 [] exec "\TZK_Scripts_4_0_4\Server\SendPing.sqs"
 
 [] exec "\TZK_Scripts_4_0_4\Server\DynamicInitializationMarker.sqs"
-[] exec "\TZK_Scripts_4_0_5\Server\DynamicInitializationTrigger.sqs"
+0 exec "\TZK_Scripts_4_0_6\Server\Dynamic\InitializationTrigger.sqs"
 ? !bool_TZK_DEV_FPS: if bool_TZK_SEMod_Mode then {[] exec "Extra\DynamicInitializationGroup.sqs"} else {0 exec "Server\DynamicInitializationGroup.sqs"}
 
 ; after data initialized and before forcemap canceled
@@ -76,7 +73,7 @@ music10m = (-0.5 + random count Musics10m)
 PublicVariable "music0"; PublicVariable "music1h"; PublicVariable "music10m"; 
 
 ; west setFriend [east,1]; west setFriend [resistance,1]; east setFriend [west,1]; east setFriend [resistance,1]; resistance setFriend [west,1]; resistance setFriend [east,1]
-? bool_TZK_199_Mode: {[_x] exec "\TZK_Scripts_4_0_4\Common\KeepTempLeaderAlive.sqs"} forEach [leaderTemp0, leaderJoin0, leaderTemp1, leaderJoin1]
+? bool_TZK_199_Mode: {[_x] exec localize {TZK_FUNC_KEEP_ALIVE}} forEach [leaderTemp0, leaderJoin0, leaderTemp1, leaderJoin1]
 
 
 ; ================================================================================TZK_4.0.0 Block================================================================================

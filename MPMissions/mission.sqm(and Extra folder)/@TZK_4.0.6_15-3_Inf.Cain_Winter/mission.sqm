@@ -1,0 +1,439 @@
+version=11;
+#include "TZK_Scripts_4_0_6\mission.h"
+class Mission
+{
+	addOns[]=
+	{
+		TZK_BIS_AddOns
+		TZK_Basic_406_AddOns
+		TZK_CONFIG_406_AddOns
+		"Cain_Winter"
+	};
+	addOnsAuto[]=
+	{
+		TZK_CONFIG_406_AddOns
+	};
+	randomSeed=1305091;
+	class Intel
+	{
+		briefingName="@STR_MISSION_NAME";
+		briefingDescription="Top slot is Commander.";
+		resistanceWest=0.000000;
+		startWeather=0.000000;
+		forecastWeather=0.000000;
+		month=9;
+		day=22;
+		hour=8;
+		minute=0;
+	};
+	class Groups
+	{
+		items=156;
+		class Item0
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={-1000.000000,0.000000,2000.000000};
+					id=0;
+					side="GUER";
+					vehicle="SoldierGB";
+					leader=1;
+					skill=0.200000;
+					text="resistance_Center";
+					init="boole_Infantry_Mode = true; gameEndType = -1; towns=[]; [167792,167793,167794,167795,167796,167797] exec ""\TZK_Scripts_4_0_4\Server\InitRepairableObjects.sqs""; [] exec ""\TZK_Scripts_4_0_4\Server\InitDestroyIslandObject.sqs""";
+				};
+			};
+		};
+
+		TZK_Mission_Grp_Playable_201("CommanderW_Info_5HP_xj400", "CommanderE_Info_5HP_xj400", "LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		
+		TZK_Mission_Group_Playable(37,CIV, 0,0,3370, 37, "Civilian", "this allowdammage false; Spec0=this")
+		TZK_Mission_Group_Playable(38,CIV, 0,0,3380, 38, "Civilian", "this allowdammage false; Spec1=this")
+		TZK_Mission_Group_Playable(39,CIV, 0,0,3390, 39, "Civilian", "this allowdammage false; Spec2=this")
+		TZK_Mission_Group_Playable(40,CIV, 0,0,3400, 40, "Civilian", "this allowdammage false; Spec3=this")
+		TZK_Mission_Group_Playable(41,CIV, 0,0,3410, 41, "Civilian", "this allowdammage false; Spec4=this")
+		TZK_Mission_Group_Playable(42,CIV, 0,0,3420, 42, "Civilian", "this allowdammage false; Spec5=this")
+		TZK_Mission_Group_Playable(43,CIV, 0,0,3430, 43, "Civilian", "this allowdammage false; Spec6=this")
+		TZK_Mission_Group_Playable(44,CIV, 0,0,3440, 44, "Civilian", "this allowdammage false; Spec7=this")
+		TZK_Mission_Group_Playable(45,CIV, 0,0,3450, 45, "Civilian", "this allowdammage false; Spec8=this")
+		TZK_Mission_Group_Playable(46,CIV, 0,0,3460, 46, "Civilian", "this allowdammage false; Spec9=this")
+		
+		TZK_Mission_Grp_Functional_201("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_TownGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_PatrolGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_WorkerGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_FunctionalGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		class Item154
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={4346.074707,8.865000,2837.292236};
+					special="NONE";
+					id=144;
+					side="LOGIC";
+					vehicle="Logic";
+					leader=1;
+					skill=0.600000;
+					text="FixStart_0";
+				};
+			};
+		};
+		class Item155
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={11458.212891,106.718071,10649.492188};
+					special="NONE";
+					id=145;
+					side="LOGIC";
+					vehicle="Logic";
+					leader=1;
+					skill=0.600000;
+					text="FixStart_1";
+				};
+			};
+		};
+	};
+	class Vehicles
+	{
+		items=15;
+		class Item0
+		{
+			position[]={2736.898438,16.559999,5554.348145};
+			special="NONE";
+			id=200;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""West Base"",500,2]]";
+		};
+		class Item1
+		{
+			position[]={9748.563477,53.684998,9405.073242};
+			special="NONE";
+			id=201;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Fisherman village"",500,2]]";
+		};
+		class Item2
+		{
+			position[]={8482.628906,96.133957,9361.916992};
+			special="NONE";
+			id=202;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Spetsnaz village"",500,2]]";
+		};
+		class Item3
+		{
+			position[]={7097.935059,311.938110,5993.595215};
+			special="NONE";
+			id=203;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Vodka City"",500,2]]";
+		};
+		class Item4
+		{
+			position[]={6857.113281,436.274994,6790.096191};
+			special="NONE";
+			id=204;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Mig Alley"",500,2]]";
+		};
+		class Item5
+		{
+			position[]={10472.608398,20.205000,9679.947266};
+			special="NONE";
+			id=205;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Death Harbour"",500,2]]";
+		};
+		class Item6
+		{
+			position[]={9574.735352,128.474991,10126.053711};
+			special="NONE";
+			id=206;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Lukin Town"",500,2]]";
+		};
+		class Item7
+		{
+			position[]={3297.961426,268.947083,6917.618652};
+			special="NONE";
+			id=207;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Gubovgrad"",500,2]]";
+		};
+		class Item8
+		{
+			position[]={6220.258789,36.269997,8001.565430};
+			special="NONE";
+			id=208;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Prison"",500,2]]";
+		};
+		class Item9
+		{
+			position[]={7437.562012,20.879999,4788.236328};
+			special="NONE";
+			id=209;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""East Base"",500,2]]";
+		};
+		class Item10
+		{
+			position[]={5319.255371,63.584999,3373.674805};
+			special="NONE";
+			id=210;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Ammo Depot"",500,2]]";
+		};
+		class Item11
+		{
+			position[]={7744.836426,311.264984,8108.351074};
+			special="NONE";
+			id=211;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Scud Camp"",-500,2]]";
+		};
+		class Item12
+		{
+			position[]={4540.914063,39.599998,3497.890137};
+			special="NONE";
+			id=212;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Fuel Station"",500,2]]";
+		};
+		class Item13
+		{
+			position[]={1883.309448,129.194992,7396.332031};
+			special="NONE";
+			id=213;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Guba house"",500,2]]";
+		};
+		class Item14
+		{
+			position[]={5049.014648,688.051147,6301.368652};
+			special="NONE";
+			id=214;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Hill 688"",-500,2]]";
+		};
+	};
+	class Markers
+	{
+		items=15;
+		class Item0
+		{
+			position[]={5108.092285,681.175049,6340.166992};
+			name="MarkerTownName";
+			text="Hill 688 -500$";
+			type="Dot";
+			colorName="ColorRed";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item1
+		{
+			position[]={1897.487305,129.194992,7381.268066};
+			name="MarkerTownName";
+			text="Guba house";
+			type="Flag1";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item2
+		{
+			position[]={3301.421387,269.250519,6904.297363};
+			name="MarkerTownName";
+			text="Gubovgrad";
+			type="Flag1";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item3
+		{
+			position[]={4586.434570,39.599998,3490.483154};
+			name="MarkerTownName";
+			text="Fuel Station";
+			type="Flag1";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item4
+		{
+			position[]={5339.911621,63.584999,3387.918457};
+			name="MarkerTownName";
+			text="Ammo Depot";
+			type="Flag1";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item5
+		{
+			position[]={2738.971191,16.559999,5548.552246};
+			name="MarkerTownName";
+			text="West Base";
+			type="Flag1";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item6
+		{
+			position[]={9579.272461,128.474991,10121.024414};
+			name="MarkerTownName";
+			text="Lukin Town";
+			type="Flag1";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item7
+		{
+			position[]={7392.843262,20.879999,4799.956055};
+			name="MarkerTownName";
+			text="East Base";
+			type="Flag1";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item8
+		{
+			position[]={10474.970703,20.205000,9663.669922};
+			name="MarkerTownName";
+			text="Death Harbour";
+			type="Flag1";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item9
+		{
+			position[]={7760.881348,310.559875,8110.818359};
+			name="MarkerTownName";
+			text="Scud Camp -500$";
+			type="Flag1";
+			colorName="ColorRed";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item10
+		{
+			position[]={6228.664063,36.269997,7985.460449};
+			name="MarkerTownName";
+			text="Prison";
+			type="Flag1";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item11
+		{
+			position[]={7111.500488,311.939972,5993.051270};
+			name="MarkerTownName";
+			text="Vodka City";
+			type="Flag1";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item12
+		{
+			position[]={9766.280273,53.684998,9419.224609};
+			name="MarkerTownName";
+			text="Fisherman village";
+			type="Flag1";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item13
+		{
+			position[]={8476.402344,95.039993,9342.970703};
+			name="MarkerTownName";
+			text="Spetsnaz village";
+			type="Flag1";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item14
+		{
+			position[]={6847.704102,436.274994,6766.406250};
+			name="MarkerTownName";
+			text="Mig Alley";
+			type="Flag1";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+				
+	};
+};
+class Intro
+{
+	randomSeed=2329091;
+	class Intel
+	{
+	};
+};
+class OutroWin
+{
+	randomSeed=14122499;
+	class Intel
+	{
+	};
+};
+class OutroLoose
+{
+	randomSeed=7624707;
+	class Intel
+	{
+	};
+};
