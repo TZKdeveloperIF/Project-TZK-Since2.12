@@ -144,7 +144,8 @@ _return = "External_Update"; goto "UpdateDialog"
 	ctrlShow [_idcInfo, bShowInfo]
 	_info = ""
 	? !bShowInfo || (isNull _unitTracked) : goto "SkipInfo"
-	_info = format["Damage: %1\n", damage _unitTracked]
+	_damage = damage _unitTracked; _damage = _damage - _damage % 0.01
+	_info = format["Damage: %1,   Skill: %2\n", _damage, skill _unitTracked]
 	? (handsHit _unitTracked) != 0 || !(canStand _unitTracked) : _info = _info + format[" %1 %2\n", ["", "BadAim"] select (handsHit _unitTracked), ["", "NoLegs"] select !(canStand _unitTracked)]
 	_wpns = weapons _unitTracked
 	_info = _info + "Weapons:\n"
