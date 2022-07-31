@@ -286,7 +286,9 @@ _customW = _type;
 _type = _type + 1;
 
 
-
+comment {
+// Since TZK_4.0.6 units are listed first by type then by factory
+};
 
 comment { LIGHT WEST; };
 _st = stLight;
@@ -350,10 +352,6 @@ _type = _type + 1;
 
 unitDefs set [_type, ["AMX-10RC", 1500, _si, 30, "OFrP_AMX10RC", "im60", -1, [3, _crewW], _mAPC, ["Extra\ppl\Action EntrenchTank.sqs"]] ];
 _AMX10W = _type;
-_type = _type + 1;
-
-unitDefs set [_type, ["AMX-10RC", 2000, _si, 40, "AMX10RC_OFrP_xj400", "\tzk_texture_4_0_6\ui\iAmx10rc.paa", 2^stHeavy + 2^stLight, [2, _crewW], _mTd, []] ];
-_amx10RcW = _type;
 _type = _type + 1;
 
 unitDefs set [_type, ["5t Truck", 500, _si, 30, "Truck5t_xj400", "itruck5t", 2^_st, [1, _crewW], _mTruck, [localize {TZK_EQUIP_UNIT_TRUCK}]] ];
@@ -436,6 +434,14 @@ unitDefs set [_type, ["Support M113 + miner", _price, _si, 30, "M113Ambul_xj400"
 _supportAPCWminer = _type;
 _type = _type + 1;
 
+unitDefs set [_type, ["MIM-72A", 2500, _si, 40, "MIM72_scf_xj400", "\tzk_texture_4_0_6\ui\iMim72.paa", -1, [2, _crewW], _mRocketMiner, []] ];
+_mim72aW = _type;
+_type = _type + 1;
+
+unitDefs set [_type, ["M88 (ARV)", _costSupportAPC, _si, 30, "M88arv_mfm_xj400", "\tzk_texture_4_0_6\m88\m88pic.paa", -1, [1, _crewW], _mEngineerVeh, []] ];
+_m88W = _type;
+_type = _type + 1;
+
 unitDefs set [_type, ["M113", 500, _si, 30, "M113_xj400", "im113", 2^_st, [2, _crewW], _mAPC, []] ];
 _m113W = _type;
 _type = _type + 1;
@@ -487,6 +493,10 @@ unitDefs set [_type, ["M60-120S", 2000, _si, 30, "M60_120S_xj400", "im60", 2^_st
 _tankLightW02 = _type;
 _type = _type + 1;
 
+unitDefs set [_type, ["AMX-10RC", 2000, _si, 40, "AMX10RC_OFrP_xj400", "\tzk_texture_4_0_6\ui\iAmx10rc.paa", 2^stHeavy + 2^stLight, [2, _crewW], _mTd, []] ];
+_amx10RcW = _type;
+_type = _type + 1;
+
 unitDefs set [_type, ["M1A1", 5000, _si, 60, "M1A1_Info_xj400", "iabrams", 2^_st, [3, _crewW], _mTank, []] ];
 _tankHeavyW01 = _type;
 _type = _type + 1;
@@ -518,14 +528,6 @@ _type = _type + 1;
 
 unitDefs set [_type, ["M109 Paladin", 4000, _si, 60, "M109_CoC_paladin_xj400", "\TZK_Objects\Texture\Paladin.paa", -1, [2, _crewW], _mHowitzer, []] ];
 _tdW = _type;
-_type = _type + 1;
-
-unitDefs set [_type, ["MIM-72A", 2500, _si, 40, "MIM72_scf_xj400", "\tzk_texture_4_0_6\ui\iMim72.paa", -1, [2, _crewW], _mRocketMiner, []] ];
-_mim72aW = _type;
-_type = _type + 1;
-
-unitDefs set [_type, ["M88 (ARV)", _costSupportAPC, _si, 30, "M88arv_mfm_xj400", "\tzk_texture_4_0_6\m88\m88pic.paa", -1, [1, _crewW], _mEngineerVeh, []] ];
-_m88W = _type;
 _type = _type + 1;
 
 unitDefs set [_type, ["M270 MLRS", 25000, _si, 60, "M270_M29064_xj400", "\TZK_Texture_4_0_0\icon\iM270.paa", 2^_st, [2, _crewW], _mMLRS, []] ];
@@ -940,10 +942,6 @@ unitDefs set [_type, ["BRDM2 AA", 1300, _si, 30, "MNF_SA9", "\BRMD\ibrmd", -1, [
 _brdmEAA = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["2S25 Sprut-SD", 3500, _si, 40, "2S25_mfm_xj400", "\tzk_texture_4_0_6\ui\i2s25.paa", 2^stHeavy + 2^stLight, [2, _crewE], _mTd, []] ];
-_2s25E = _type;
-_type = _type + 1;
-
 
 unitDefs set [_type, ["Ural", 500, _si, 30, "Ural_xj400", "iural", 2^_st, [1, _crewE], _mTruck, [localize {TZK_EQUIP_UNIT_TRUCK}]] ];
 _truckE = _type;
@@ -1025,6 +1023,14 @@ unitDefs set [_type, ["Support BMP + miner", _price, _si, 30, "BMPAmbul_xj400", 
 _supportAPCEminer = _type;
 _type = _type + 1;
 
+unitDefs set [_type, ["SA-13", 2500, _si, 40, "SA13_MAF_xj400", "\tzk_texture_4_0_6\ui\iSa13.paa", -1, [2, _crewE], _mRocketMiner, []] ];
+_sa13E = _type;
+_type = _type + 1;
+
+unitDefs set [_type, ["BREM-1", _costSupportAPC, _si, 30, "BREM_mfm_xj400", "\tzk_texture_4_0_6\brem1\pic_brem1.paa", -1, [1, _crewE], _mEngineerVeh, []] ];
+_bremE = _type;
+_type = _type + 1;
+
 unitDefs set [_type, ["BMP", 800, _si, 30, "BMP_xj400", "ibmp", 2^_st, [3, _crewE], _mAPC, []] ];
 _bmpE = _type;
 _type = _type + 1;
@@ -1080,6 +1086,10 @@ unitDefs set [_type, ["(Empty)", 2000, _si, 30, "T72_xj400", "it72", -1, [3, _cr
 _tankLightE03 = _type;
 _type = _type + 1;
 
+unitDefs set [_type, ["2S25 Sprut-SD", 3500, _si, 40, "2S25_mfm_xj400", "\tzk_texture_4_0_6\ui\i2s25.paa", 2^stHeavy + 2^stLight, [2, _crewE], _mTd, []] ];
+_2s25E = _type;
+_type = _type + 1;
+
 unitDefs set [_type, ["T80", 5000, _si, 60, "T80_Info_xj400", "it80", 2^_st, [3, _crewE], _mTank, []] ];
 _tankHeavyE01 = _type;
 _type = _type + 1;
@@ -1111,14 +1121,6 @@ _type = _type + 1;
 
 unitDefs set [_type, ["2S19 Msta-S", 4000, _si, 60, "2S19M1_CoC_xj400", "\TZK_Texture_4_0_0\icon\iPLZ05.paa", -1, [3, _crewE], _mHowitzer, []] ];
 _tdE = _type;
-_type = _type + 1;
-
-unitDefs set [_type, ["SA-13", 2500, _si, 40, "SA13_MAF_xj400", "\tzk_texture_4_0_6\ui\iSa13.paa", -1, [2, _crewE], _mRocketMiner, []] ];
-_sa13E = _type;
-_type = _type + 1;
-
-unitDefs set [_type, ["BREM-1", _costSupportAPC, _si, 30, "BREM_mfm_xj400", "\tzk_texture_4_0_6\brem1\pic_brem1.paa", -1, [1, _crewE], _mEngineerVeh, []] ];
-_bremE = _type;
 _type = _type + 1;
 
 unitDefs set [_type, ["TOS-1 Buratino", 25000, _si, 60, "TOS1_TZK_xj400", "\TZK_Texture_4_0_0\icon\iTOS_1.paa", 2^_st, [2, _crewE], _mMLRS, []] ];
@@ -1842,7 +1844,7 @@ comment { VEHICLES Equipping RedTop; };
 vRedTop = [ [_vulcanW2, _vulcanBaseW2, _a10AA], [_tunguskaE, _tunguskaBaseE, _su25AA] ];
 
 
-utSoldier = [_soldierW1, _soldierE1];
+utCrew = [_crewW, _crewE];
 utMiner = [_minerW, _minerE];
 unitMatrix = [ [], [], [], [], [] ];
 unitsBuilt = [ [], [], [], [], [] ];
