@@ -46,6 +46,9 @@
 		};
 		weapons[] = {"LeoGun_xj400","MG3A1_xj400"};
 		magazines[] = {"LeoSabot_xj400","LeoHeat_xj400", "MG3A1_xj400"};
+		class EventHandlers {
+			Init = _vehicle = _this select 0, [_vehicle, {C}] exec localize {TZK_EVENT_INIT_TEX_LEO2A6}, _vehicle animate [{suspension}, 0.5], [_vehicle, {\TZK_Texture_4_0_0\BWMOD\leo2A6\num\}, {nr}, {0}] exec localize {TZK_EVENT_INIT_TEX_RSC_NUM};
+		};
 	};
 
 	class RussianTank_xj400: Tank_xj400 {};

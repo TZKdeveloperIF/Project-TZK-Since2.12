@@ -51,10 +51,10 @@
 	"zu23m", "rktmod", "TZKSE_CONFIG_405", "TZKSE_BIN_CONFIG_4_0_5", 
 #define TZK_Basic_406_AddOns \
 	TZK_Basic_405_AddOns \
-	"TZK_Models_406_Release", "TZK_Textures_406_Release", "TZK_Sounds_406", "TZK_BIN_CONFIG_4_0_6", 
+	"TZK_Models_406_Release_2", "TZK_Textures_406_Release", "TZK_Sounds_406", "TZK_BIN_CONFIG_4_0_6", 
 #define TZK_CONFIG_406_AddOns \
 	TZK_CONFIG_405_AddOns \
-	"TZK_CONFIG_406_Release", "TZK_Scripts_406_Release", 
+	"TZK_CONFIG_406_Release_2", "TZK_Scripts_406_Release_2", 
 
 
 		// TZK_Mission_Group_Initialize(0,GUER, posG1,posG2,posG3, 0, "SoldierGB", "dev = true; gameEndType = -1; towns=[]; [] exec ""\TZK_Scripts_4_0_4\Server\InitRepairableObjects.sqs""; [] exec ""\TZK_Scripts_4_0_4\Server\InitDestroyIslandObject.sqs""")
@@ -401,7 +401,7 @@
 		TZK_Mission_Group_NonPlay(146,WEST, posW1,posW2,posW3, 146, typeWlead, "[group this] exec localize {TZK_GROUP_FUNCTIONAL}") \
 		TZK_Mission_Group_NonPlay(147,WEST, posW1,posW2,posW3, 147, typeWlead, "[group this] exec localize {TZK_GROUP_FUNCTIONAL}") \
 		TZK_Mission_Group_NonPlay(148,WEST, posW1,posW2,posW3, 148, typeWlead, "[group this] exec localize {TZK_GROUP_FUNCTIONAL}") \
-		TZK_Mission_Group_NonPlay(149,EAST, posW1,posW2,posW3, 149, typeElead, "[group this] exec localize {TZK_GROUP_FUNCTIONAL}") \
+		TZK_Mission_Group_NonPlay(149,EAST, posE1,posE2,posE3, 149, typeElead, "[group this] exec localize {TZK_GROUP_FUNCTIONAL}") \
 		TZK_Mission_Group_NonPlay(150,EAST, posE1,posE2,posE3, 150, typeElead, "[group this] exec localize {TZK_GROUP_FUNCTIONAL}") \
 		TZK_Mission_Group_NonPlay(151,EAST, posE1,posE2,posE3, 151, typeElead, "[group this] exec localize {TZK_GROUP_FUNCTIONAL}") \
 		TZK_Mission_Group_NonPlay(152,EAST, posE1,posE2,posE3, 152, typeElead, "[group this] exec localize {TZK_GROUP_FUNCTIONAL}") \
