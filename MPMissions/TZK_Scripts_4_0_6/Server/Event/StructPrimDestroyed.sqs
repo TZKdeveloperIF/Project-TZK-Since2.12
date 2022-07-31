@@ -12,7 +12,7 @@ _i = structServer find _object
 ? _i == -1: "ERROR: _object not found in structServer when structure destroyed. It might remain some rubbish unable to clear during the whole game. This structure is fail to be repaired." call fDebugLog; exit
 
 _type = structsServer select _i select 1
-? !(_object in primStructsPlaced): [_si, _type] exec localize {TZK_MSG_SERVER_SEND_INFO}
+? !(_object in primStructsPlaced): [_si, _type] exec localize {TZK_INFO_SERVER_STRUCT_PRIM_KILLED}
 
 [_object, _si, _type] exec "\TZK_Scripts_4_0_4\Server\AddToRepairList.sqs"
 _lastDamage = 1
