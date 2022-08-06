@@ -12,8 +12,8 @@ _biggerAngle = (if (count _this > 8) Then {_this select 8} Else {0})
 _this = 0
 ; big angle will be invalid when ordering tanks.
 ? _type in (typesLightTank + typesHeavyTank): _biggerAngle = 0;
-
-
+_longRangeCoef = 1.5
+? _type in (typesLightTank + typesHeavyTank): _longRangeCoef = 2
 
 
 
@@ -25,7 +25,7 @@ _vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Common\EH\Fire
 ? _biggerAngle > 0: _heliH = typeOf _target camCreate [0,0,0]; _script = "Common\EH\Fired_ReviseShell_BigAngle.sqs"
 # CheckDistance
 _distLimit = viewDistance; 
-? upgMatrix select _si select upgLongWeaponRange == 2: _distLimit = 2*viewDistance; 
+? upgMatrix select _si select upgLongWeaponRange == 2: _distLimit = _longRangeCoef * viewDistance; 
 
 
 
