@@ -26,7 +26,7 @@ _vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Common\EH\Fire
 # CheckDistance
 _distLimit = viewDistance; 
 ? upgMatrix select _si select upgLongWeaponRange == 2: _distLimit = 2*viewDistance; 
-? _type in structsOccupiableMortar: _distLimit = viewDistance/13*8; 
+; ? _type in structsOccupiableMortar: _distLimit = viewDistance/13*8; 
 ? _unit distance _target > _distLimit: goto "EOF"
 ? _unit distance _target < 50: goto "EOF"
 ? [_attackPos, _vehicle] call funcDistH > _radius: goto "EOF"

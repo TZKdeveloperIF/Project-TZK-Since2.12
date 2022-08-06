@@ -1,1 +1,0 @@
-_this call loadFile "\TZK_Scripts_4_0_6\Player\Radio\Radio_Update_Structure_Mortar.sqf"
