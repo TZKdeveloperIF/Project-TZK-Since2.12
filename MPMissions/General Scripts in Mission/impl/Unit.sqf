@@ -17,6 +17,11 @@ if true then {
 	if (!bool_TZK_199_Mode && !bool_TZK_Vanilla_Mode) then {unitDefs select _su25 set [udModel, "Su25_xj400"]};
 };
 
+// Ban mannual building orca since its ground radar not well-designed
+{
+	unitDefs select _x set [udFactoryType, -1];
+} forEach [_orcaW, _orcaE];
+
 // The unitTypeData and unitTypeArray should ALWAYS be defined AFTER HAVING CALLED THIS SCRIPT
 unitTypeArray resize 0; unitTypeData resize 0; _type = 0;
 {
