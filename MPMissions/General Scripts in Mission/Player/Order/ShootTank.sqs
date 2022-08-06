@@ -12,8 +12,8 @@ _biggerAngle = (if (count _this > 5) Then {_this select 5} Else {0})
 _this = 0
 ; big angle will be invalid when ordering tanks.
 ? _type in (typesLightTank + typesHeavyTank): _biggerAngle = 0;
-
-
+_longRangeCoef = 1.5
+? _type in (typesLightTank + typesHeavyTank): _longRangeCoef = 2
 
 
 
@@ -24,7 +24,7 @@ _vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Common\EH\Fire
 ? _biggerAngle > 0: _heliH = typeOf _target camCreate [0,0,0]; _script = "Common\EH\Fired_ReviseShell_BigAngle.sqs"
 # CheckDistance
 _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is outside viewDistance. Order aborted."
-? upgMatrix select _si select upgLongWeaponRange == 2: _distLimit = 2*viewDistance; _hint = "Target is outside 2xviewDistance. Order aborted."
+? upgMatrix select _si select upgLongWeaponRange == 2: _distLimit = _longRangeCoef * viewDistance; _hint = format ["Target is outside %1x viewDistance. Order aborted.", _longRangeCoef]
 ? _unit distance _target > _distLimit: _unit groupChat _hint; goto "EOF"
 ? _unit distance _target < _distLimit && _unit distance _target > viewDistance: _unit groupChat "Target is far. Probably missing."
 #PrepareToMove
