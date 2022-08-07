@@ -13,9 +13,9 @@ if not _found then {if ("M" == _firstChar) then {
 	}};
 	if not _found then {if ("M60_xj400" countType [_vehicle] > 0) then {
 		_scriptName = "M60", _scriptPath = "\TZK_Config_4_0_4", _found = true;
-	}};
-	if not _found then {if ("M60_120S_xj400" countType [_vehicle] > 0) then {
+		if ("M60_120S_xj400" countType [_vehicle] > 0) then {
 		_scriptName = "M60_120S", _scriptPath = "\TZK_Config_4_0_5", _found = true;
+		};
 	}};
 }};
 if not _found then {if ("T" == _firstChar) then {

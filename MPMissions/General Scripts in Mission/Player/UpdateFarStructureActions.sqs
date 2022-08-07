@@ -5,15 +5,13 @@ _type = (_this select 0) select 1
 _si = (_this select 0) select 2
 _actionNames = _this select 1
 _actionDistance = _this select 2
-_actionIDs = []
-_actionsAdded = false
+_this = 0
 
-_unit = player
-_delay = 0.5
+_actionIDs = []; _actionsAdded = false
+_unit = player; _delay = 0.5
+_structName = structDefs select _type select sdName
 
-_structName = (structDefs select _type) select sdName
-
-#Update
+# Update
 	~_delay
 
 	? (isNull _object): goto "RemoveActionsAndExit"
@@ -30,61 +28,49 @@ _structName = (structDefs select _type) select sdName
 	
 	goto "Update"
 
-#AddActions
+# AddActions
 	{ _id = _unit AddAction [_x, "\TZK_Scripts_4_0_4\Player\ActionStructure.sqs"]; _actionIDs = _actionIDs + [_id] } foreach _actionNames
 	_actionsAdded = true
 	goto "Update"
 
-#RemoveActions
+# RemoveActions
 	{ _unit removeAction _x } foreach _actionIDs
-	_actionIDs = []
-	_actionsAdded = false
+	_actionIDs = []; _actionsAdded = false
 	goto "Update"
 
-#RemoveActionsAndExit
+# RemoveActionsAndExit
 	{ _unit removeAction _x } foreach _actionIDs
-	_actionIDs = []
-	_actionsAdded = false
-	Exit
+	_actionIDs = []; _actionsAdded = false
+	exit
 
-#RemoveActionsAndWaitUntilAlive
+# RemoveActionsAndWaitUntilAlive
 	{ _unit removeAction _x } foreach _actionIDs
-	_actionIDs = []
-	_actionsAdded = false
-	@(alive player)
-	_unit = player
-	_delay = 0
+	_actionIDs = []; _actionsAdded = false
+	@ alive player
+	_unit = player; _delay = 0
 	goto "Update"
 
-#RemoveActionsAndWaitUntilRepaired
+# RemoveActionsAndWaitUntilRepaired
 	{ _unit removeAction _x } foreach _actionIDs
-	_actionIDs = []
-	_actionsAdded = false
-	@(isNull _object || alive _object)
+	_actionIDs = []; _actionsAdded = false
+	@ isNull _object || alive _object
 	;player globalchat "@(isNull _object || alive _object) passed"
 	goto "Update"
 
-#PerformAction
-	
-	;player globalchat format["#PerformAction", _this]
-
-	_index = 0
-	_count = count _actionIDs
-	#FindAction
-		? (structAction == (_actionIDs select _index)): goto "ActionFound"
+# PerformAction
+	_index = 0; _count = count _actionIDs
+	# FindAction
+		? structAction == _actionIDs select _index: goto "ActionFound"
 		_index = _index + 1
-		? (_index < _count): goto "FindAction"
+		? _index < _count: goto "FindAction"
 
 	structAction = -1
 	"ERROR: action not found in UpdateFarStructureActions.sqs" call fDebugLog
 	goto "Update"
 
-	#ActionFound
+	# ActionFound
 
 	structAction = -1
 	_script = format ["Player\ActionFar\%1.sqs", _actionNames select _index]
-
-	;player globalchat format["#ActionFound _script=%1", _script]
-
 	[_object, _type, _si] exec _script
 	goto "Update"
