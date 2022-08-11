@@ -4,13 +4,17 @@ _unit = _this select 0
 _si = _this select 1
 _gi = _this select 2
 _params = _this select 3; _biggerAngle = (if (count _this > 4) Then "_this select 4" Else "0")
-_this = nil
+_this = 0
 ; Get Correct Parameters. Need Pay Attention To Coefficients
 _attackPos = ((wpCO select _si) select (_params select 0))
 _radius = 5*((_params select 1) + 1)
 _typeIndex = (_params select 2)
 _targetIndex = (_params select 3)
 _dispersion = 10*(_params select 4)
+
+_marker = format ["TargetS_%1%2", _targetIndex, _si]
+? dev: showDebug [format ["Marker pos: %1", getMarkerPos _marker], 5000]
+? (getMarkerPos _marker) select 0 < 0: exit
 
 ; Check Whether Unit Fits The Parameters Of The Temporary Order
 _types_howitzer = +typesHowitzer; if bool_TZK_SEMod_Mode Then {_types_howitzer = _types_howitzer + types_SE_td}
@@ -30,7 +34,7 @@ _typeIndex = ([{Soldier}, {Light Tank}, {Heavy Tank}] + ArtilleryTypeDefs) selec
 _vehicle = vehicle _unit
 ? !local _vehicle: exit
 
-_target = call Format["TargetS_%1%2", _targetIndex, _si]
+_target = call _marker
 
 ? _unit == _vehicle: goto "CheckInfantry"
 ? !_bVeh: goto "VehicleChecked"

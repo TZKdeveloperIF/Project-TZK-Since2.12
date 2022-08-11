@@ -10,10 +10,13 @@ _ir = 0
 
 _remind = [timeLimit - 60*60, timeLimit - 60*90, timeLimit - 60*150, 10*60, 5*60, 1*60, -10000]
 _timeNextRemind = timeLimit - (_remind select _ir)
+_timeCalcArtKa = 30
 
 # Update
 ~2
 	? pvGameOver != -1 : [] exec "Common\Dynamic\TriggerGameEnd.sqs"; exit
+
+	? bool_TZK_SEMod_Mode && _time > _timeCalcArtKa: _timeCalcArtKa = _time + 30; [-1, si0] exec "Server\Art\CalcKa.sqs"; [-1, si1] exec "Server\Art\CalcKa.sqs"
 
 	? (timeLimit != 0 && time > timeLimit): goto "TimeLimitReached"
 

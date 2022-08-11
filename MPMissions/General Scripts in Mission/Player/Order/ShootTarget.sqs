@@ -2,7 +2,7 @@
 
 _unit = _this select 0
 _pos = _this select 1
-_marker = format ["TargetP_%1", (_this select 2) select 0]; _target = call _marker
+_marker = format ["TargetP_%1", (_this select 2) select 0]
 _dispersion = 10*(_this select 2 select 1); _biggerAngle = _this select 2 select 2
 _this = nil
 _uid = [_unit, siPlayer, giPlayer] call funcCalcUID
@@ -14,6 +14,7 @@ _id = (playerOrderID select _uid) + 1; [_uid, _id] exec "\TZK_Scripts_4_0_4\Play
 _vehicle = vehicle _unit
 ? _unit != gunner _vehicle: exit
 ? (getMarkerPos _marker) select 0 < 0: _unit groupChat "Target not set. Order aborted."; exit
+_target = call _marker
 
 ? _unit != _vehicle: goto "CheckVehicle"
 ; The "fire" command applying on infantry can't work properly. But since TZK_4.0.3.01 applied designed numerical correction method, this can be solved by manually assigning in-script.

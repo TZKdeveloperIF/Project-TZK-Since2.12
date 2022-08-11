@@ -34,7 +34,7 @@ Num_TZK_ArtCase_S = 1; _theta = call loadFile "Common\EH\Fired_Revise_Angle_Case
 _angle = (if _boolInf Then "((_posTarget select 1) - (_posShell select 1)) atan2 ((_posTarget select 0) - (_posShell select 0))" Else "(_velShell select 1) atan2 (_velShell select 0)")
 _velShell = [_speed * cos(_theta) * cos(_angle), _speed * cos(_theta) * sin(_angle), _speed * sin(_theta)]
 ? !bool_TZK_199_Mode: _shell setVectorDir _velShell
-_shell setVelocity _velShell; _shell setPosASL _posShell; ArtTheta_S = _theta; ArtSpeed_S = _speed; ArtMode_S = _this select 0 select 3
+_shell setVelocity _velShell; _shell setPosASL _posShell; 
 
 ? isNull player: exit
 ~0.1
