@@ -29,8 +29,7 @@ _marker setMarkerPos hiddenMarkerPos
 
 #SkipMarker
 ? !isServer: exit
-? _wp >= countWPCO: if !( (_wp - countWPCO) in ((call format ["Target_Set_TZK_Server_%1", _si]) call funcBinaryDigit) ) Then { (call format ["Target_Set_TZK_Server_%1 = Target_Set_TZK_Server_%1 + 2^(_wp - countWPCO)", _si]), deleteVehicle _target, call Format[{TargetS_%1%2 = {Target_TZK_xj400} createVehicle [0,0,0]; TargetS_%1%2 exec "\TZK_Scripts_4_0_4\Common\Command\allowDamageFalse.sqs"}, (_wp - countWPCO), _si], _target = call format [_marker + "%1", _si] }
-? _wp >= countWPCO: _pos set [2,0]; _target setPos _pos; exit
+? _wp >= countWPCO: _pos set [2,0]; [_wp - countWPCO, _si, _pos] exec "Server\Art\SetTarget.sqs"; exit
 
 _orders = (orderMatrix select _si)
 @!(mutexAIGroup)

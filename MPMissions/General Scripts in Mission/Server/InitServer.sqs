@@ -1,16 +1,11 @@
-Target_Set_TZK_Server_0 = 0; Target_Set_TZK_Server_1 = 0
-; 4_0_6_Update
+_this = 0
 
 0 exec "\TZK_Scripts_4_0_6\Server\InitFunctions.sqs"
 call loadFile "\TZK_Scripts_4_0_6\Server\InitServer_constant.sqf"
 AICO_giTrans = [[],[]]; AICO_giInf = [[],[]]; AICO_giTanks = [[[], [], []], [[], [], []]]
 
-
-_targetObject = {Target_TZK_xj400}
-; ? bool_TZK_Vanilla_Mode: _targetObject = "HeliH"
-_i = 0; countTargetMarkers = 10; while "_i < countTargetMarkers" do {call Format[{TargetS_%1%2 = _targetObject camCreate [0,0,0]; TargetS_%1%2 exec "\TZK_Scripts_4_0_4\Common\Command\allowDamageFalse.sqs"; TargetS_%1%3 = _targetObject camCreate [0,0,0]; TargetS_%1%3 exec "\TZK_Scripts_4_0_4\Common\Command\allowDamageFalse.sqs"}, _i, si0, si1]; _i = _i + 1}
-; Should better use camCreate than createVehicle. Its position don't have to be broadcast.
-; mutexArtTryShootServer = false; ArtTheta_S = 90; ArtSpeed_S = 0; ArtMode_S = ""; Num_TZK_ArtCase_S = -1;
+; 4.0.6.05
+call preprocessFile "Server\Art\Init.sqf"
 
 ; Target objects placed at town flag
 ; { _si = _x; _i = 0; _c = count towns; while {_i < _c} do {call format[{TargetTownS_%1%2 = _targetObject createVehicle [0,0,0]; TargetTownS_%1%2 exec "\TZK_Scripts_4_0_4\Common\Command\allowDamageFalse.sqs"; TargetTownS_%1%2 setPosASL getPosASL (towns select _i select tdFlag)}, _i, _si]; _i = _i + 1} } forEach [si0, si1]
