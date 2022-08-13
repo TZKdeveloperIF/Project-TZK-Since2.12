@@ -5,13 +5,13 @@ _i = _idx; _c = _idx
 _array = (if (_si == si0) then {TzkArtTargetSvrWest} else {TzkArtTargetSvrEast})
 
 # loop
-	? not (_array select _idx select 1): goto "continue"
-	_target = _array select _idx select 0
+	? not (_array select _i select 1): goto "continue"
+	_target = _array select _i select 0
 	_ka = 0
 	{_val = _x knowsAbout _target; if (_val > _ka) then {_ka = _val}} forEach (groupMatrix select _si)
 	{_val = _x knowsAbout _target; if (_val > _ka) then {_ka = _val}} forEach (townGroups select _si)
 	{_val = _x knowsAbout _target; if (_val > _ka) then {_ka = _val}} forEach (workerGroups select _si)
-	_array select _idx set [2, _ka]
+	_array select _i set [2, _ka]
 
 	# continue
 	_i = _i + 1

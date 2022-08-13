@@ -54,7 +54,9 @@ if (call format["pvWorkerBehaviour%1 != lbCurSel _idcWorkerBehaviour", siPlayer]
 _index = 0; _upgState = upgMatrix select siPlayer;
 lbClear _idcUpgradeList;
 {
-	if (not bool_TZK_CHN_Lang || "" == upgChnDefs select _index) then {
+	_showChn = bool_TZK_CHN_Lang;
+	if (_showChn) then {_showChn = "" != upgChnDefs select _index};
+	if !_showChn then {
 		_id = lbAdd [_idcUpgradeList, format["%1 $%2 %3min", (_x select 0) call funcLocStr, _x select 1, _x select 2] ];
 		lbSetPicture[_idcUpgradeList, _id, _icons select (_upgState select _index)];
 	} else {

@@ -9,10 +9,11 @@ _array select _index set [1, true];
 
 # SkipPreProc
 
-_marker = format ["TargetS_%1%2", _index, _si]; _target = call _marker
-? dev: showDebug [format ["Marker pos: %1", getMarkerPos _marker], 5000]
+_targetName = format ["TargetS_%1%2", _index, _si]; _target = call _targetName
+? dev: call format [{showDebug ["Target pos: %1", 5000]}, getPosASL _target]; 
+? dev: publicExec format [{showDebug ["Target pos: %1", 5000]}, getPosASL _target]
 
-_pos set [2,0]; _marker setMarkerPos _pos; _target setPos _pos; _target setDamage 0
+_pos set [2,0]; _target setPos _pos; _target setDamage 0
 ? _pos select 0 < 0 && _pos select 1 < 0: exit
 
 ? not bool_TZK_SEMod_Mode: exit

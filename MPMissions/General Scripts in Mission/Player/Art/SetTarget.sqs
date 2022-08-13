@@ -13,7 +13,6 @@ TzkArtTargetPlayer select _index set [1, true];
 # SkipPreProc
 
 _marker = format ["TargetP_%1", _index]; _target = call _marker
-? dev: showDebug [format ["Marker pos: %1", getMarkerPos _marker], 5000]
 ? !_bSet: _marker setMarkerPos hiddenMarkerPos; _target setPos hiddenMarkerPos, exit
 
 _pos set [2,0]; _marker setMarkerPos _pos; _target setPos _pos; _target setDamage 0
