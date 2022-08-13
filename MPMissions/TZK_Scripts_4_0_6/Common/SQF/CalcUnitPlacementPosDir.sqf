@@ -1,4 +1,7 @@
-private [ "_part", "_type", "_structDesc", "_partDesc", "_posPart", "_dirStruct", "_posPartRel", "_posStructX", "_posStructY", "_posStruct", "_dist", "_posUnit", "_dirUnit"];
+private [
+	"_part", "_type", "_structDesc", "_partDesc", "_posPart", "_dirStruct", 
+	"_posStruct", "_coef", "_dist", "_posUnit", "_dirUnit"
+];
 
 _part = _this select 0;
 _type = _this select 1;
@@ -11,7 +14,11 @@ _dirStruct = (getDir _part + 360 - (_partDesc select 1)) % 360;
 
 _posStruct = _posPart;
 
-_dist = (_structDesc select sdDist)*0.75;
+// Sometimes new HF-created vehicles get stuck. Enlarge the dist
+_coef = 0.75;
+if (_type == stHeavy || _type == stLight) then {_coef = 1.2};
+if (_type == stAir) then {_coef = 1.5};
+_dist = (_structDesc select sdDist) * _coef;
 
 _posUnit = [ (_posStruct select 0) - _dist*(sin _dirStruct), (_posStruct select 1) - _dist*(cos _dirStruct) ];
 _dirUnit = (_dirStruct + 270) % 360;
