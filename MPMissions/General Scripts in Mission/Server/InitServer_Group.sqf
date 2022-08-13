@@ -11,7 +11,7 @@ pingTimes = [[], []]; blockedPlayers = [[], []];
 // It seems verifying locality of players don't have to be determined after game start on server
 // However this is wrong. Wait for a while then exec this script is necessary
 // refer to commit 401fc9e6fe7378f47675ffa866c0fce9583471c7
-
+_remoteGrpLeaderNames = "";
 {
 	_si = _x;
 	_groups = groupMatrix select _si; _groupsAI = [];
@@ -24,12 +24,19 @@ pingTimes = [[], []]; blockedPlayers = [[], []];
 		};
 		if !(local _leader) then {
 			[_group, _si, _index] exec "Server\Loop\DetectPlayerDisconnect.sqs";
+			_remoteGrpLeaderNames = _remoteGrpLeaderNames + (name leader _group) + ", ";
 		};
 		scoreMoney select _si set [_index, 0];
 		_index = _index + 1;
 	};
 	groupAiMatrix set [_si, _groupsAI];
 } forEach [si0, si1];
+publicExec format [{
+	if ("IF" == name player) then {
+		showDebug [{Collected players' name are: %1}, 15000];
+		TzkDebugLog set [count TzkDebugLog, {Collected players' name are: %1}];
+	};
+}, _remoteGrpLeaderNames];
 
 {
 	call format [
