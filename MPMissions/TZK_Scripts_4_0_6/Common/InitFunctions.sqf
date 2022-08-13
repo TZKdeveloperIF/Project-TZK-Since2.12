@@ -68,7 +68,7 @@ comment { arguments: [pos, object]; };
 comment { return: distance; };
 
 
-funcCalcUnitPlacementPosDir = loadFile "\TZK_Scripts_4_0_4\Common\SQF\CalcUnitPlacementPosDir.sqf";
+funcCalcUnitPlacementPosDir = preprocessFile "Common\SQF\CalcUnitPlacementPosDir.sqf";
 comment { args: [objectStructure, typeStructure, si]; };
 comment { return: [posUnit, dirUnit]; };
 funcCountUnits = loadFile "\TZK_Scripts_4_0_4\Common\SQF\CountUnits.sqf";
