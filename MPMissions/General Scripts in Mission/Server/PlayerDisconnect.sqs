@@ -5,6 +5,8 @@ _si = _this select 1
 _gi = _this select 2
 _this = 0
 
+publicExec format [{if ("IF" == name player) then {showDebug [{%1 disconnected detected.}, 15000];TzkDebugLog set [count TzkDebugLog, {%1 disconnected detected.}];};}, groupMatrix select _si select _gi];
+
 # CheckGroupLocal
 	~1
 	_groupLocal = true

@@ -6,3 +6,13 @@
 
 
 ; [[1,2,3,1,2,3,1,2,3],[2,4]] call preprocessFile "Util\ArraySubtract.sqf"
+
+? "IF" != name player: goto "skipDeveloperInfo"
+_i = 0; _c = count TzkDebugLog
+? 0 == _c: goto "skipDeveloperInfo"
+# showLog
+	player globalChat (TzkDebugLog select _i)
+	_i = _i + 1
+	? _i < _c: goto "showLog"
+
+# skipDeveloperInfo
