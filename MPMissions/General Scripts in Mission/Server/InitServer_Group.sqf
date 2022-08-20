@@ -31,12 +31,10 @@ _remoteGrpLeaderNames = "";
 	};
 	groupAiMatrix set [_si, _groupsAI];
 } forEach [si0, si1];
-publicExec format [{
-	if ("IF" == name player) then {
-		showDebug [{Collected players' name are: %1}, 15000];
-		TzkDebugLog set [count TzkDebugLog, {Collected players' name are: %1}];
-	};
-}, _remoteGrpLeaderNames];
+if (sizeofstr _remoteGrpLeaderNames > 0) then {
+	_remoteGrpLeaderNames = substr [_remoteGrpLeaderNames, 0, sizeofstr _remoteGrpLeaderNames - 2];
+};
+format [{Collected players' name are: %1}, _remoteGrpLeaderNames] call preprocessFile "Util\DebugInfoFromSvr.sqf";
 
 {
 	call format [
