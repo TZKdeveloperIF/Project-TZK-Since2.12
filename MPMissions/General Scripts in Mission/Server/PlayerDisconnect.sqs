@@ -26,6 +26,9 @@ _checkRespawnTime = _time
 	? !alive leader _group: goto {LoopUntilLeaderAlive}
 # AliveLeader
 
+; exit if group has been marked as AI 
+? -1 != (groupAiMatrix select _si) find _group: exit
+
 (leader _group) call preprocessFile "Server\PlayerDisconnect.sqf"
 ; Disconnected player MUST BE KILLED BY SERVER for they often can't be killed by clients
 ~1
