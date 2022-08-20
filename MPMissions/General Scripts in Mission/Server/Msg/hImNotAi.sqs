@@ -1,0 +1,10 @@
+? dev: player globalChat format ["Value of 'not ai' server script is: %1", _this]
+
+_gi = _this % GroupsNum
+_si = (_this - _gi) / GroupsNum
+
+_group = groupMatrix select _si select _gi
+
+? dev: player globalChat format ["Maybe AI array: %1, not AI group: %2", Array_TZK_Group_MaybeAi, _group]
+
+Array_TZK_Group_MaybeAi = Array_TZK_Group_MaybeAi - [_group]
