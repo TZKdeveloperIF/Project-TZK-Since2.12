@@ -5,6 +5,9 @@ _si = _this select 1
 _gi = _this select 2
 _this = 0
 
+; According to bug phenomenon, the problem is not "LoopUntilLeaderAlive" check
+; but that killed player's disconnection won't make group "local to server"
+; not verify whether this bug is due to 4.0.6 updating
 format [{%1 disconnected detected.}, groupMatrix select _si select _gi] call preprocessFile "Util\DebugInfoFromSvr.sqf"
 
 # CheckGroupLocal
@@ -16,9 +19,12 @@ format [{%1 disconnected detected.}, groupMatrix select _si select _gi] call pre
 pingTimes select _si set [_gi, -1]
 ? pvGameOver != -1: exit
 
+_checkRespawnTime = _time
 # LoopUntilLeaderAlive
+	? _time > _checkRespawnTime + 60: (leader _group) setDamage 0, format [{%1 didn't auto respawn. Manually set damage zero.}, groupMatrix select _si select _gi] call preprocessFile "Util\DebugInfoFromSvr.sqf", goto "AliveLeader"
 	~1
 	? !alive leader _group: goto {LoopUntilLeaderAlive}
+# AliveLeader
 
 (leader _group) call preprocessFile "Server\PlayerDisconnect.sqf"
 ; Disconnected player MUST BE KILLED BY SERVER for they often can't be killed by clients
