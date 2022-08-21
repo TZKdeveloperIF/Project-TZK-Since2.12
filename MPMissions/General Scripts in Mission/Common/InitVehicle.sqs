@@ -11,7 +11,7 @@ call preprocessFile "Common\Init\VehEhEngine.sqf"
 ; Fired Event
 call preprocessFile "Common\Init\VehEhFire.sqf"
 ; ? _typeName == "2S6_DKM_xj400" || _typeName == "Vulcan_TZK_xj400": _vehicle addEventHandler ["Fired", {_this exec "Common\EH\Fired_4xAA.sqs"}]
-? _type in typesAAAPC: [_vehicle, _type] exec "Common\EH\CheckAndAddAAEH.sqs"
+; ? _type in typesAAAPC: [_vehicle, _type] exec "Common\EH\CheckAndAddAAEH.sqs"
 ; ? "Plane" countType [_vehicle] > 0 && !bool_TZK_199_Mode: _vehicle addEventHandler ["Fired", {_this exec "Common\EH\Fired_AA_AntiPlane.sqs"}]
 
 ? bool_TZK_Vanilla_Mode || not bool_TZK_SEMod_Mode: goto "SkipVanilla"
