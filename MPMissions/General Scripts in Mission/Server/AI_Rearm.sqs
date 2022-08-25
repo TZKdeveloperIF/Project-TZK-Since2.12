@@ -43,7 +43,10 @@ _insufficientFond = {_this > _money && (!_bUseCommMoney || _this > _moneyComm)}
 	_vehicle setCombatMode "BLUE"
 	~_timeRearm
 	? !(alive _vehicle): _vehicle setCombatMode "YELLOW"; exit
-	? !(alive _support): _vehicle setCombatMode "YELLOW"; exit
+	_bValidSupport = true
+	? isNull _support: _bValidSupport = false
+	? not isNull _support && not alive _support: if ("Man" countType [_support] == 0) then {_bValidSupport = false}
+	? not _bValidSupport: _vehicle setCombatMode "YELLOW"; exit
 	removeAllWeapons _vehicle
 	; add custom throw/put
 	{ _vehicle addWeapon _x } forEach weaponsCustom
