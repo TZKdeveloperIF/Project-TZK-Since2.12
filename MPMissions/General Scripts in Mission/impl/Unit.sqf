@@ -23,6 +23,10 @@ if true then {
 } forEach [_orcaW, _orcaE];
 
 utSupportInf = [_supportCarrierW, _supportCarrierE];
+{
+	_scripts = unitDefs select _x select udScripts;
+	_scripts set [count _scripts, "Common\Init\SoldierSupportCarrier.sqs"]
+} forEach utSupportInf;
 
 // The unitTypeData and unitTypeArray should ALWAYS be defined AFTER HAVING CALLED THIS SCRIPT
 unitTypeArray resize 0; unitTypeData resize 0; _type = 0;
