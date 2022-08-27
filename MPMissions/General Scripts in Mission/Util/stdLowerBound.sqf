@@ -17,11 +17,12 @@ if (_end <= _begin) then {
 		_mid = (_begin + _end) / 2;
 		_mid = _mid - (_mid % 1);
 		if ([_array select _mid, _elem] call _comp) then {_begin = _mid + 1} else {
-			if (_array select _mid == _elem) then {
+			// don't use operator== directly for we defines operator< only
+			if ([_elem, _array select _mid] call _comp) then {
+				_end = _mid;
+			} else {
 				_end = _mid + 1;
 				if ([_array select (_mid - 1), _elem] call _comp) then {_begin = _mid};
-			} else {
-				_end = _mid;
 			};
 		};
 	};

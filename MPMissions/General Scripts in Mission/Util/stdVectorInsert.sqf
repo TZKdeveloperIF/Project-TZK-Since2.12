@@ -1,13 +1,14 @@
-// args: [array (reference), begin(idx), end(idx), iterator (idx), element]
+// args: [array (reference), end(idx), iterator (idx), element]
 // return: none
+// insert element at iterator and move elemenets in []iterator, end) to next position
+// the "end" should be no more than array size
 
-private [{_array}, {_begin}, {_end}, {_itr}, {_elem}];
+private [{_array}, {_end}, {_itr}, {_elem}];
 _array = _this select 0;
-_begin = _this select 1;
-_end = _this select 2;
-_itr = _this select 3;
-_elem = _this select 4;
-if (_itr < _begin || _itr > _end) then {
+_end = _this select 1;
+_itr = _this select 2;
+_elem = _this select 3;
+if (_itr < 0 || _itr > _end || _end > count _array) then {
 	"ERROR: invalid iterator in std::vector::insert" call fDebugLog;
 } else {
 	_j = _end;
