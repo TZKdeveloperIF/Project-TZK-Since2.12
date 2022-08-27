@@ -28,10 +28,10 @@ _posOrdered = getPosASL _vehicle; _distLimit = _range + 350; _hint = "Target is 
 ; Ask unit get close to CO if unit isn't in CO's range (radius).
 ? [_attackPos, _vehicle] call funcDistH > _radius: _posOrdered = [_attackPos, _radius/3, _radius] call funcGetRandomPos; _posOrdered set [2,0]
 #PrepareToMove
-_unit doMove _posOrdered
+[_unit, _posOrdered] call funcMoveAI
 ; Not allow soldiers directly fire. They're required to go to CO pos first.
 #CheckCOReached
-	_unit doMove _posOrdered
+	[_unit, _posOrdered] call funcMoveAI
 	~5
 	? !(_unit call temporaryCheck): goto "EOF"
 	? !(alive _unit) || _unit != vehicle _unit: goto "EOF"
@@ -41,7 +41,7 @@ _unit doMove _posOrdered
 #CheckPosReached
 	_vector = [getPos _target, _posOrdered] call funcVectorSub; _dist = (_unit distance _target) - _range*8/9
 	_vector = [_vector, _dist/(_dist+_range*8/9)] call funcVectorScale; _destination = [_posOrdered, _vector] call funcVectorAdd
-	_unit doMove _destination
+	[_unit, _destination] call funcMoveAI
 	~5
 	? !(_unit call temporaryCheck): goto "EOF"
 	? !(alive _unit) || _unit != vehicle _unit: goto "EOF"
