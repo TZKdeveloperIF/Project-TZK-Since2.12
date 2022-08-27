@@ -4,9 +4,6 @@
 ; ? dev: if (name player == "IF") Then {showDebug [format ["%1, %2", TZK_MLRS_Veh, mutex_TZK_MLRS], 5000], player globalChat format ["%1, %2", player knowsAbout TargetS_11, getPos TargetS_11]}
 ; ? dev: if (true) then {hint format ["%1\n%2", Array_TZK_Observed, Array_TZK_Observer]}
 
-
-; [[1,2,3,1,2,3,1,2,3],[2,4]] call preprocessFile "Util\ArraySubtract.sqf"
-
 ? "IF" != name player: goto "skipDeveloperInfo"
 _i = 0; _c = count TzkDebugLog
 ? 0 == _c: goto "skipDeveloperInfo"
@@ -16,3 +13,9 @@ _i = 0; _c = count TzkDebugLog
 	? _i < _c: goto "showLog"
 
 # skipDeveloperInfo
+
+; ~0.6
+; _arr = [345,7635,1243,735,84,6896,524,54,578,23,34,7553,23,547,2456,7254,65143,743,235]
+; _comp = "(_this select 0) < (_this select 1)"
+; [_arr, _comp] call preprocessFile "Util\stdInsertSort.sqf"
+; hint format ["%1", _arr]
