@@ -1,10 +1,10 @@
 ; args: [unit, si, gi, timeAbort, order of Setting]
-
 _unit = _this select 0
 _si = _this select 1
 _gi = _this select 2
 _timeAbort = _this select 3
 _ais = _this select 4
+_this = 0
 
 ? _gi == -1: goto "Quit"
 _set = aiSetting select _si select _gi select _ais
@@ -13,12 +13,10 @@ _pos = (wpCO select _si) select (_set - 1)
 ? (_pos select 0) == -1: goto "Quit"
 
 ~5
-#Update
-? _time > 2*60: [_unit, _si, _gi, _timeAbort, _ais] exec "\TZK_Scripts_4_0_5\Server\Loop\AI_RallyPoint.sqs"; exit
-
+# Update
 	_gi = (groupMatrix select _si) find (group _unit)
 	? _gi == -1: _sleep = 10, goto "Sleep"
-	?!((groupMatrix select _si select _gi) in (groupAIMatrix select _si)): goto "Quit"
+	? -1 == (groupAIMatrix select _si) find (groupMatrix select _si select _gi): goto "Quit"
 	
 	? (aiSetting select _si select _gi select _ais) == 0: goto "Quit"
 	? !(alive _unit): goto "Quit"
@@ -26,7 +24,7 @@ _pos = (wpCO select _si) select (_set - 1)
 	? time > _timeAbort: goto "Quit"
 
 	_distToDest = [getPos _unit, _pos] call funcDistH
-	? _distToDest < 50: goto "Quit"
+	? _distToDest < 50: [_unit, [_pos, 0, 50] call funcGetRandomPos] call funcMoveAI, goto "Quit"
 
 	[_unit, _pos] call funcMoveAI
 	_sleep = [30, 0.1*_distToDest] select (_distToDest < 300)

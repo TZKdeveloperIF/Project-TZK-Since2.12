@@ -1,5 +1,4 @@
 ; args: [unit, si, gi]
-; _this exec "\TZK_Scripts_4_0_5\Server\AI_Start.sqs"
 
 ? !isServer : exit
 
@@ -75,7 +74,7 @@ _idx = 0; _types = [orderTempDisengageType, orderTempSetFlightAltitude, orderTem
 ? groupMatrix select _si select _gi != group _unit: _gi = (groupMatrix select _si) find (group _unit)
 ? (aiSetting select _si select _gi select aisRallyPoint1) == 0 || _unit != driver _vehicle : goto "NoRally1"
 ? !(_unit call busyCheck): _unit call busySet
-[_unit, _si, _gi, time + 10*60, aisRallyPoint1] exec "\TZK_Scripts_4_0_5\Server\Loop\AI_RallyPoint.sqs"
+[_unit, _si, _gi, time + 10*60, aisRallyPoint1] exec "Server\Loop\AI_RallyPoint.sqs"
 #WaitRallyReached1
 	~5
 	? !(alive _unit) : exit
@@ -104,7 +103,7 @@ goto "Board1"
 ? groupMatrix select _si select _gi != group _unit: _gi = (groupMatrix select _si) find (group _unit)
 ? (aiSetting select _si select _gi select aisRallyPoint2) == 0 || _unit != driver _vehicle : goto "NoRally2"
 ? !(_unit call busyCheck): _unit call busySet
-[_unit, _si, _gi, time + 10*60, aisRallyPoint2] exec "\TZK_Scripts_4_0_5\Server\Loop\AI_RallyPoint.sqs"
+[_unit, _si, _gi, time + 10*60, aisRallyPoint2] exec "Server\Loop\AI_RallyPoint.sqs"
 #WaitRallyReached2
 	~5
 	? !(alive _unit) : exit
