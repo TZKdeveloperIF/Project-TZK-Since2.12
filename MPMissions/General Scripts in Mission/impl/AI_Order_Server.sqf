@@ -13,3 +13,5 @@ if false then {
 	orderDefs set [_type, ["Halt", [], "\TZK_Scripts_4_0_5\Server\Order\Halt.sqs"] ];
 	_type = _type + 1;
 };
+
+orderTempDefs select orderTempRearm set [2, "Server\OrderTemp\Rearm.sqs"];
