@@ -14,8 +14,17 @@ _duration = 30 * ((_params select 4) + 1)
 
 ; Check Whether Unit Fits The Parameters Of The Temporary Order
 ? ([getPos _unit, _pos] call funcDistH) > _dist: exit
+? _unit != vehicle _unit: goto "skipSoldierRearmOnly"
+_support = [_unit, _si, 512] call preprocessFile "Util\SoldierRearmSupport.sqf"
+? _unit distance _support > _radius: exit
+goto "SupportFound"
+
+# skipSoldierRearmOnly
 _res = [_pos, _si, typesSupport select _si, []] call funcGetClosestVehicle
 ? (_res select 1) > _radius: exit
+_support = _res select 0
+
+# SupportFound
 
 _rearm = false; _vehicle = vehicle _unit; _weapons = weapons _vehicle; _vt = _vehicle call funcGetUnitTypeFromObject
 ? !(_vt in (typesLightTank + typesHeavyTank) && _gi >= 0 && _gi < (GroupsNum - 2)): _rearm = true
@@ -32,7 +41,6 @@ _rearm = false; _vehicle = vehicle _unit; _weapons = weapons _vehicle; _vt = _ve
 ; Initialize The Order Script
 _timeStart = time; _timeAbort = _timeStart + _duration; _timeUp = _timeStart; _cycle = 30; _loop = 0
 _unit call temporarySet
-_support = _res select 0
 
 
 ; Wait For Unit Finish Its Busy-Work

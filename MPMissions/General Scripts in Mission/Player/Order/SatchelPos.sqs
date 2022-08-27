@@ -1,0 +1,96 @@
+; args: [unit, pos, [radius], (wp index)]
+
+_unit = _this select 0
+_pos = _this select 1
+_radius = 5*( 0 + ((_this select 2) select 0) )
+? count _this > 3: _pos = wpPlayer select (_this select (count _this) - 1)
+
+? !(alive _unit): exit
+? _unit != vehicle _unit: exit
+
+_rearmData = _unit call funcGetRearmData
+_weapons = _rearmData select 0
+_mags = _rearmData select 1
+_hasC4 = false; if (magSatchel in _mags) then {_hasC4 = true}
+_magazines = _unit call funcGetNotEmptyMags;
+? ("_x == magSatchel" count _magazines) == 0 && !_hasC4: exit
+
+_uid = [_unit, siPlayer, giPlayer] call funcCalcUID
+? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
+_id = (playerOrderID select _uid) + 1; [_uid, _id] exec "\TZK_Scripts_4_0_4\Player\Order\New.sqs"
+
+_unit groupchat format["Roger, satcheling area."]
+
+#Start
+
+_timeAbort = time + 500*60; _timeMove = time - 1
+#MoveArea
+	? _pos select 0 < 0 || _pos select 1 < 0: _unit groupChat "WP not defined, order abort.", exit
+	? time > _timeMove: _unit doMove _pos, _timeMove = time + 30
+	~5
+	? !(alive _unit) || _unit != vehicle _unit: exit
+	? call orderCheck: exit
+	? time > _timeAbort: _unit groupchat "Unable to reach area. Satcheling order aborted."; exit
+	_dist = [_pos, getPos _unit] call funcDistH
+	? _dist > 20: goto "MoveArea"
+
+#MoveToNextPos
+	? _pos select 0 < 0 || _pos select 1 < 0: _unit groupChat "WP not defined, order abort.", exit
+	_posNext = [_pos, _radius, _radius] call funcGetRandomPos
+	_unit doMove _posNext
+	_timeAbort = time + 60
+	#WaitUntilPosReached
+		~5
+		? !(alive _unit) || _unit != vehicle _unit: exit
+		? call orderCheck: exit
+		? time > _timeAbort: goto "MoveToNextPos"
+		_dist = [_posNext, getPos _unit] call funcDistH
+		? _dist > 5: goto "WaitUntilPosReached"
+	goto "Placesat"
+  
+#Placesat
+	~2
+	? !(alive _unit): exit
+	_magazines = _unit call funcGetNotEmptyMags;
+	_cBefore = "_x == magSatchel" count _magazines
+	? _cBefore == 0: goto "CheckRearm"
+	_C4Mag = magSatchel
+	_cBefore = "_x == _C4Mag" count _magazines
+	_unit fire [weaponPut, _C4Mag,_C4Mag]
+  
+	~1
+	? !(alive _unit): exit
+	_unit groupchat "Satchel Placed."
+	_C4After = "_x == _C4Mag" count magazines _unit
+	? _cBefore == 1 && _C4After == 1: _unit removeMagazine _C4Mag
+	
+	_magazines = _unit call funcGetNotEmptyMags;
+	_cBefore = "_x == magSatchel" count _magazines
+	? _cBefore == 0:goto "CheckRearm"
+	goto "MoveToNextPos"
+
+#CheckRearm
+	? !_hasC4: exit
+	_si = siPlayer
+	_support = [_unit, _si, 512, true] call preprocessFile "Util\SoldierRearmSupport.sqf"
+	? isNull _support: _unit groupChat "No support vehicle near. Satcheling order aborted."; exit
+
+	_unit groupchat "Moving to support vehicle for more satchels."
+
+	_timeAbort = time + 15*60
+	#MoveToSupport
+		_posMove = [[0,5], (getDir _support)] call funcVectorRot2D
+		_posMove = [getPos _support, _posMove] call funcVectorSub
+		_unit doMove _posMove
+		~5
+		? !(alive _unit) || _unit != vehicle _unit: exit
+		? call orderCheck: exit
+		? !(alive _support): goto "CheckRearm"
+		? time > _timeAbort: _unit groupchat "Cost too much time. Unable to reach support vehicle. Satcheling order aborted."; exit
+		? (_unit distance _support) > 10: goto "MoveToSupport"
+    
+	_unit groupchat "Rearming at support vehicle."
+	[_unit, _support] exec "Player\Rearm.sqs"
+	~5
+	? !(alive _unit): exit
+	goto "Start"

@@ -29,10 +29,18 @@ _need = false; _msg = "I'm fine."; _v = vehicle _unit
 	? _need : goto "FindSupport"
 	_unit groupchat _msg; exit
 
-#FindSupport
+# FindSupport
+? _unit != vehicle _unit: goto "skipSoldierRearmOnly"
+_si = siPlayer
+_support = [_unit, _si, 512] call preprocessFile "Util\SoldierRearmSupport.sqf"
+? isNull _support: _unit groupChat "No support vehicles in that area."; exit
+goto "SupportFound"
+
+# skipSoldierRearmOnly
 _vs = [_pos, 500, (typesSupportPlus select siPlayer) + ([[utMHQ0, utMCVW], [utMHQ1, utMCVE]] select siPlayer), [_v]] call funcGetNearbyVehicles
 _vs = [2, true, _vs] call funcSort
+? (count _vs) == 0 : _unit groupchat "No support vehicles in that area."; exit
+_support = _vs select 0 select 0
 
-? (count _vs) == 0: _unit groupchat "No support vehicles in that area."; exit
-
-[_unit, _vs select 0 select 0, false] exec "\TZK_Scripts_4_0_5\Player\Order\Support.sqs"
+# SupportFound
+[_unit, _support, true] exec "\TZK_Scripts_4_0_5\Player\Order\Support.sqs"
