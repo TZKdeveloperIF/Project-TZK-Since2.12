@@ -13,7 +13,7 @@ _targetIndex = (_params select 3)
 _dispersion = 10*(_params select 4)
 
 _marker = format ["TargetS_%1%2", _targetIndex, _si]
-? dev: showDebug [format ["Marker pos: %1", getMarkerPos _marker], 5000]
+? dev: showDebug [format ["Marker pos: %1, target pos %2", getMarkerPos format ["TargetS_%1", _targetIndex], call _marker], 5000]
 ? (getMarkerPos _marker) select 0 < 0: exit
 
 ; Check Whether Unit Fits The Parameters Of The Temporary Order
