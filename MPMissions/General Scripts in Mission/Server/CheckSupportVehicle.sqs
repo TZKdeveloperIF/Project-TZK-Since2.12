@@ -19,12 +19,9 @@ _vt = -1
 ; CheckSupportVehicle
 ? not (_v == _unit && not _heal): goto "skipSoldierRearmOnly"
 ? _autoRearm != 0: goto "skipSoldierRearmOnly"
-_res = [getPosASL _v, 512, [utSupportInf select _si], [], _si] call funcGetNearbySoldiers
-; 弹药箱，兵营；脚本入参数组；快速/归并排序
-
-
-_support = _res select 0; _range = _autoRearmRange
-? (_res select 1) < _range: goto "SupportFound"
+_support = [_unit, _si, 512] call preprocessFile "Util\SoldierRearmSupport.sqf"
+? isNull _support: goto "skipSoldierRearmOnly"
+? _unit distance _support < _autoRearmRange: goto "SupportFound"
 
 # skipSoldierRearmOnly
 _res = [getPos _v, _si, typesSupport select _si, [_v]] call funcGetClosestVehicle
