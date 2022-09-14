@@ -1,0 +1,17 @@
+? bool_TZK_Cmd_Marker: exit
+
+bool_TZK_Cmd_Marker = true
+_marker = "TzkCmdMarker"; 
+createMarker [_marker, _this];
+_marker setMarkerColor "ColorBlue";
+_marker setMarkerType "Flag";
+
+_maxSize = 1.5; _size = _maxSize
+# loop
+	_marker setMarkerSize [_size, _size]
+	_size = _size - 0.1
+	? _size <= 0: _size = _maxSize
+	~0.04
+	? bool_TZK_Cmd_Marker: goto "loop"
+
+deleteMarker _marker
