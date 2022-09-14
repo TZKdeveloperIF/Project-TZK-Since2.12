@@ -1,0 +1,5 @@
+? not alive (mhq select siPlayer): hint "MHQ destroyed. MG not deployed.", exit
+? [getPosASL(mhq select siPlayer), _this] call funcDistH > 200: hint "Destination pos is too far (more than 200m). MG not deployed", exit
+
+? not isServer: publicExec format ["%1 call preprocessFile {Server\Msg\hDeployBaseMg.sqf}", [siPlayer, _this]]
+? isServer: [siPlayer, _this] call preprocessFile {Server\Msg\hDeployBaseMg.sqf}

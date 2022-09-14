@@ -9,7 +9,7 @@ if isServer then {
 		if (not _free && _cost > groupMoneyMatrix select _si select _gi) then {
 			[_si, _gi, "Insufficient fund. Wall not built."] call preprocessFile "Util\MsgSender.sqf";
 		} else {
-			_si call preprocessFile "Server\WallMhq.sqf";
+			_si call preprocessFile "Server\MapOp\WallMhq.sqf";
 			if (_free) then {
 				[_si, _gi, -_cost] exec localize {TZK_MONEY_SERVER_SPEND};
 			};
