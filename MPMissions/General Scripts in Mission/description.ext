@@ -45,4 +45,78 @@ defValueParam2 = 2;
 #include "TZK_Scripts_4_0_6\description_27_customAirWep_dialog.h"
 #include "TZK_Scripts_4_0_6\description_28_tzkCustomInitAttr.h"
 
+class TzkCmdMapDlgBase: Menu {
+	idd = -1;
+	movingEnable = true;
+	controlsBackground[] = {MapBg, LeftBg, DownBg};
+	objects[] = {};
+	controls[] = {
+		InfoLeftBtn0, LeftBtn0, 
+		InfoDownBtn0, DownBtn0, 
+		Exit
+	};
+
+	class MapBg: Light_BG_Window {
+		x = 0.3;
+		y = 0.0;
+		w = 0.7;
+		h = 0.85;
+		colorBackground[] = {0.1, 0.1, 0.1, 1.0};
+	};
+	class LeftBg: BackgroundWindow {
+		x = 0.0;
+		y = 0.0;
+		w = 0.3;
+		h = 1.0;
+	};
+	class DownBg: BackgroundWindow {
+		x = 0.3;
+		y = 0.85;
+		w = 0.7;
+		h = 0.15;
+	};
+	
+	class InfoLeftBtn0: Label {
+		idc = IDC + 0;
+		x = 0.025;
+		y = 0.07;
+		text = "UNDEFINED";
+	};
+	class LeftBtn0: Button {
+		idc = IDC + 32 + 0;
+		x = 0.025;
+		y = 0.10;
+		text = "UNDEFINED";
+		action = "btnValue00 = 2^0";
+	};
+	
+	class InfoDownBtn0: Label {
+		idc = IDC + 64 + 0;
+		x = 0.425;
+		y = 0.88;
+		w = 0.1;
+		h = 0.05;
+		text = "";
+		style = ST_PICTURE;
+	};
+	class DownBtn0: Button {
+		idc = IDC + 64 + 32 + 0;
+		x = 0.425;
+		y = 0.95;
+		w = 0.1;
+		text = "UNDEFINED";
+		action = "btnValue01 = 2^0";
+	};
+
+	class Exit: Button {
+		x = 0.95;
+		y = 0.0;
+		w = 0.05;
+		h = 0.04;
+		text = "Exit";
+		action = "closeDialog 0";
+	};
+
+};
+
 // EOF

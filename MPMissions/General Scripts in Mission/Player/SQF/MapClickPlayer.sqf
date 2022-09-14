@@ -25,7 +25,11 @@ if (!_processed) then {
 	};
 	if (!_processed && _alt && !_shift && (count _units) == 0) then {[_pos] exec localize {TZK_FUNC_PLAYER_WP_SET_SMART}; _processed = true};
 	if (!_processed && _alt && _shift && not bool_TZK_Ext_Cmd_Mode) then {[_pos] exec localize {TZK_DIALOG_WAYPOINT}; _processed = true};
-	if (!_processed && _alt && _shift && bool_TZK_Ext_Cmd_Mode) then {[_pos] exec localize {TZK_DIALOG_WAYPOINT}; _processed = true};
+	if (!_processed && _alt && _shift && bool_TZK_Ext_Cmd_Mode) then {
+		_pos exec "Player\Dialog\CmdExtMap.sqs";
+		_processed = true;
+		_pos exec "Player\Loop\CmdMarker.sqs";
+	};
 
 	_index = 0; _gis = []; _groupsAI = groupAiMatrix select siPlayer; _siGroups = groupMatrix select siPlayer; _groupNames = groupNameMatrix select siPlayer;
 	{ if (_x in _groupsAI) then { _gis set [count _gis, _index] }; _index = _index + 1} foreach _siGroups;
