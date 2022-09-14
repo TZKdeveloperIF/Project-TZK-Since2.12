@@ -82,17 +82,10 @@ mutexFacQueues = false
 	_grpSize = (count units _grpJoin)
 	? ((_grpSize + _unitsToBuild) > maxGroupSize): goto "GroupFull"
 	
-	@ !mutexEditMoneyMatrix
-	mutexEditMoneyMatrix = true
-		_money = groupMoneyMatrix select _si select _giBuyer
-		? (_money < _cost): mutexEditMoneyMatrix = false; goto "NoMoney"
-
-		? _qid in (qidCancel select _si): mutexEditMoneyMatrix = false; goto "UnitCanceled"
-		
-		groupMoneyMatrix select _si set [_giBuyer, -_cost + (groupMoneyMatrix select _si select _giBuyer)]
-		[_si, _giBuyer, 0] exec "\TZK_Scripts_4_0_4\Server\Msg\sMoneyStatus.sqs"
-		moneySpent set [_si, _cost + (moneySpent select _si)]
-	mutexEditMoneyMatrix = false
+	_money = groupMoneyMatrix select _si select _giBuyer
+	? (_money < _cost): goto "NoMoney"
+	? _qid in (qidCancel select _si): goto "UnitCanceled"
+	[_si, _giBuyer, _cost] exec localize {TZK_MONEY_SERVER_SPEND}
 	
 	[_type, _si, _giBuyer, _giJoin] exec localize {TZK_INFO_SERVER_UNIT_BUILDING}
 
