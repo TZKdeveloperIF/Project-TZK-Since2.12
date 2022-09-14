@@ -1,4 +1,5 @@
 stWall = _wall;
+stBaseMg = _mg;
 
 structMarker set [stAmmoCrate, "AmmoStructure_Marker_xj400"];
 _scripts = structDefs select stAmmoCrate select sdScriptsPlayer;
