@@ -5,13 +5,15 @@ _vehicle = _this select 0
 _booleStringSpoofON = "bSpoofMissile && ""_x=={SpoofSwitch_xj400}"" count magazines _vehicle > 0"; _booleSpoofON = call _booleStringSpoofON
 _booleStringSpoofOFF = """_x=={SpoofSwitch_xj400}"" count magazines _vehicle == 0 && count magazines _vehicle > 0"; _booleSpoofOFF = call _booleStringSpoofOFF
 
-if (_booleSpoofON) then {Radio001 setTriggerText "SpoofMissile ON"; Radio001 setTriggerStatements ["this", {vehicle player removeMagazines {SpoofSwitch_xj400}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true}}, ""]};
-if (_booleSpoofOFF) then {Radio001 setTriggerText "SpoofMissile OFF"; Radio001 setTriggerStatements ["this", {vehicle player addMagazine {SpoofSwitch_xj400}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true}}, ""]};
+Radio001 setTriggerText format ["Turn %1 Extra Map Click", if bool_TZK_Ext_Cmd_Mode then {"OFF"} else {"ON"}]; Radio001 setTriggerStatements ["this", {bool_TZK_Ext_Cmd_Mode = not bool_TZK_Ext_Cmd_Mode}, ""];
 
 Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", {[] exec localize {TZK_DIALOG_TZK_SETTING_1}}, ""];
 Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""];
 Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""];
-Radio005 setTriggerText " "; Radio005 setTriggerStatements ["this", "", ""];
+
+if (_booleSpoofON) then {Radio005 setTriggerText "SpoofMissile ON"; Radio005 setTriggerStatements ["this", {vehicle player removeMagazines {SpoofSwitch_xj400}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true}}, ""]};
+if (_booleSpoofOFF) then {Radio005 setTriggerText "SpoofMissile OFF"; Radio005 setTriggerStatements ["this", {vehicle player addMagazine {SpoofSwitch_xj400}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true}}, ""]};
+
 Radio006 setTriggerText "Get Plane Status"; Radio006 setTriggerStatements ["this", {[vehicle player, player] exec "\TZK_Scripts_4_0_4\Player\Action\PlaneFlyingStatus.sqs"}, ""];
 Radio007 setTriggerText " "; Radio007 setTriggerStatements ["this", "", ""];
 Radio008 setTriggerText " "; Radio008 setTriggerStatements ["this", "", ""];
@@ -29,8 +31,8 @@ if (_booleABOFF) then {Radio000 setTriggerText "AfterBurner OFF"; Radio000 setTr
 ~0.05
 ; In OFP/Arma can't compare booleans directly. Use (A && !B) || (!A && B) here, and use !_boolean to refresh.
 
-? call _booleStringSpoofON : Radio001 setTriggerText "SpoofMissile ON"; Radio001 setTriggerStatements ["this", {vehicle player removeMagazines {SpoofSwitch_xj400}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true}}, ""]
-? call _booleStringSpoofOFF : Radio001 setTriggerText "SpoofMissile OFF"; Radio001 setTriggerStatements ["this", {vehicle player addMagazine {SpoofSwitch_xj400}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true}}, ""]
+? call _booleStringSpoofON : Radio005 setTriggerText "SpoofMissile ON"; Radio005 setTriggerStatements ["this", {vehicle player removeMagazines {SpoofSwitch_xj400}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true}}, ""]
+? call _booleStringSpoofOFF : Radio005 setTriggerText "SpoofMissile OFF"; Radio005 setTriggerStatements ["this", {vehicle player addMagazine {SpoofSwitch_xj400}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true}}, ""]
 
 ? call _booleStringAfterBurnerON : Radio000 setTriggerText "AfterBurner ON"; Radio000 setTriggerStatements ["this", {vehicle player removeMagazines {AfterBurnerSwitch_xj400}; vehicle player exec localize {TZK_EFFECT_AFTER_BURNER}; if !(boole_Refresh_Radio) then "boole_Refresh_Radio = true"}, ""]
 ? call _booleStringAfterBurnerOFF : Radio000 setTriggerText "AfterBurner OFF"; Radio000 setTriggerStatements ["this", {vehicle player addMagazine {AfterBurnerSwitch_xj400}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true} }, ""]
