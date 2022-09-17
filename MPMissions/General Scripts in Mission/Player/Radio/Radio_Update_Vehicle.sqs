@@ -17,13 +17,13 @@ _vt = _vehicle call funcGetUnitTypeFromObject
 ; Miner car radio. Use ammo car instead before new mod. Ammo car can't transport via player by now.
 ? _vt == jeepaW || _vt == uazaE: [_vehicle] exec "Player\Radio\Radio_Update_Vehicle_MinerCar.sqs"; exit
 
-? _vt in typesHowitzer: [_vehicle] exec "\TZK_Scripts_4_0_6\Player\Radio\Radio_Update_Vehicle_Howitzer.sqs"; exit
+? _vt in typesHowitzer: [_vehicle] exec "Player\Radio\Radio_Update_Vehicle_Howitzer.sqs"; exit
 ? _vt in typesRocketLauncher: [_vehicle] exec "\TZK_Scripts_4_0_6\Player\Radio\Radio_Update_Vehicle_TOS1.sqs"; exit
 
-? _vt in RadioTypesShips: [_vehicle] exec "\TZK_Scripts_4_0_6\Player\Radio\Radio_Update_Vehicle_Ship.sqs"; exit
+? _vt in RadioTypesShips: [_vehicle] exec "Player\Radio\Radio_Update_Vehicle_Ship.sqs"; exit
 
 ; Helis all can attach and support Heli is special in drop ammo crate. Support Plane is more a transport plane. Support Ship nothing to specialize.
-? _vt in (RadioTypesSupport + [utMCVW, utMCVE, utMHQ0, utMHQ1]): if ("Land" countType [_vehicle] > 0) then {[_vehicle] exec "\TZK_Scripts_4_0_6\Player\Radio\Radio_Update_Vehicle_SupportLand.sqs"; exit}
+? _vt in (RadioTypesSupport + [utMCVW, utMCVE, utMHQ0, utMHQ1]): if ("Land" countType [_vehicle] > 0) then {[_vehicle] exec "Player\Radio\Radio_Update_Vehicle_SupportLand.sqs"; exit}
 
 ; Transport Helis and Planes are similar. Support Heli is special in drop ammo crate.
 ? _vt in RadioTypesTransportPlane + RadioTypesTransportHeli: [_vehicle] exec "\TZK_Scripts_4_0_6\Player\Radio\Radio_Update_Vehicle_TransportAir.sqs"; exit
@@ -35,7 +35,7 @@ _vt = _vehicle call funcGetUnitTypeFromObject
 ? _vt in RadioTypesPlane: [_vehicle] exec "Player\Radio\Radio_Update_Vehicle_Plane.sqs"; exit
 
 ; Transport Land Vehicles. Ship will enter script above thus won't reach here.
-? _vt in (typesTransportCar + typesTransportAPC): [_vehicle, _vt] exec "\TZK_Scripts_4_0_6\Player\Radio\Radio_Update_Vehicle_TransportLand.sqs"; exit
+? _vt in (typesTransportCar + typesTransportAPC): [_vehicle, _vt] exec "Player\Radio\Radio_Update_Vehicle_TransportLand.sqs"; exit
 
 ; Vehicle doesn't have special Actions
 [_vehicle] call loadFile localize {TZK_RADIO_ENTRANCE_COMMON}; exit
@@ -44,11 +44,11 @@ _vt = _vehicle call funcGetUnitTypeFromObject
 # CheckStructure
 _vt = _vehicle call funcGetStructTypeFromObject
 ? _vt == -1: goto "Abnormal"
-? _vt in (structsOccupiableHowitzer): [_vehicle, _vt] exec "\TZK_Scripts_4_0_6\Player\Radio\Radio_Update_Structure_Howitzer.sqs"; exit
+? _vt in (structsOccupiableHowitzer): [_vehicle, _vt] exec "Player\Radio\Radio_Update_Structure_Howitzer.sqs"; exit
 ? _vt in structsOccupiableMortar: [_vehicle] call loadFile "Player\Radio\Radio_Update_Structure_Mortar.sqf"; exit
 
 ; General Structures are allowed to reset the Vector Up.
-[_vehicle] call loadFile "\TZK_Scripts_4_0_6\Player\Radio\Radio_Update_Structure_Common.sqf"; exit
+[_vehicle] call loadFile "Player\Radio\Radio_Update_Structure_Common.sqf"; exit
 
 
 # Abnormal

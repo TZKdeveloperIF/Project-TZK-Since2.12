@@ -24,8 +24,11 @@ if (!_processed) then {
 		};
 	};
 	if (!_processed && _alt && !_shift && (count _units) == 0) then {[_pos] exec localize {TZK_FUNC_PLAYER_WP_SET_SMART}; _processed = true};
-	if (!_processed && _alt && _shift && not bool_TZK_Ext_Cmd_Mode) then {[_pos] exec localize {TZK_DIALOG_WAYPOINT}; _processed = true};
-	if (!_processed && _alt && _shift && bool_TZK_Ext_Cmd_Mode) then {
+	if (!_processed && _alt && _shift && (not bool_TZK_Ext_Cmd_Mode || not isCommander)) then {
+		[_pos] exec localize {TZK_DIALOG_WAYPOINT};
+		_processed = true
+	};
+	if (!_processed && _alt && _shift && bool_TZK_Ext_Cmd_Mode && isCommander) then {
 		_pos exec "Player\Dialog\CmdExtMap.sqs";
 		_processed = true;
 		_pos exec "Player\Loop\CmdMarker.sqs";
