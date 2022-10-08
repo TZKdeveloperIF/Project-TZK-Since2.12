@@ -309,7 +309,7 @@ _return = "External_Update"; goto "UpdateDialog"
 	? !(group _unitTracked in ((groupAiMatrix select si0) + (groupAiMatrix select si1) + [groupJoin0, groupJoin1])) : player groupchat "Only allow to ask AI group units to join other groups."; goto _return
 
 	? _unitTracked == leader _unitTracked : player groupchat "AI Group Leader is not allowed to join other groups"; goto _return
-	[_unitTracked] exec "\TZK_Scripts_4_0_4\Player\JoinUnit.sqs"
+	[_unitTracked] exec "Player\Join\UcJoin.sqs"
 	? _iView > 0 : iView = 0; goto "ChangeView"
 	goto "Exit"
  
@@ -324,7 +324,7 @@ _return = "External_Update"; goto "UpdateDialog"
 	{if (_x == leader _x) then {_allowToJoin = false}} forEach _unitsToJoin
 	? !_allowToJoin : player groupchat "AI Group Leader is not allowed to join other groups"; goto _return
 
-	_unitsToJoin exec "\TZK_Scripts_4_0_4\Player\JoinUnit.sqs"
+	_unitsToJoin exec "Player\Join\UcJoin.sqs"
 	? _iView > 0 : iView = 0; goto "ChangeView"
 	goto "Exit"
 
