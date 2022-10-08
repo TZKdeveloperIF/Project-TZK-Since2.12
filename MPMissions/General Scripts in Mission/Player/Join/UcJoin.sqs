@@ -34,7 +34,7 @@ _idcJoinList = IDC + 1
 	? !(_gNameJoin in _groupName) : player groupChat "Selected group doesn't exist in this game."; goto "Update"
 	
 	_gi = ( _groupName ) find ( _gNameJoin )
-	? _gi == -1 : player groupChat "Defination conflict between ""\TZK_Scripts_4_0_4\Player\JoinUnit.sqs"" and variable ""callsigns"". Please ask mission author to fix this."; closeDialog 0; exit
+	? _gi == -1 : player groupChat "Defination conflict between ""Player\Join\ViaUnitCam.sqs"" and variable ""callsigns"". Please ask mission author to fix this."; closeDialog 0; exit
 	
 	? _group == ((groupMatrix select siPlayer) select _gi) : player groupChat "You're trying to ask AI member to join his group."; goto "Update"
 	
@@ -70,6 +70,10 @@ _idcJoinList = IDC + 1
 
 	_value = _value / 2
 	? 1 == _value : player groupChat "Another Join Process is handling on Server. Please try again after a while"; goto "DONE"
+
+	_value = _value / 2
+	? 1 == _value : player groupChat format ["%1 is in Join black list. Join aborted", name leader (groupMatrix select siPlayer select _gi)]; goto "DONE"
+
 	? 0 == _value : player groupChat "Selected units including player units or AI leader. Illegal join not allowed."; goto "DONE"
 
 

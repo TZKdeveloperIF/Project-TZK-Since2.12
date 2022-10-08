@@ -16,23 +16,25 @@ _unitsID = []; _value = _value * 4; _index = 0
 while "_index < 12" do { _info = _value % 2; _unitsID set [_index, _info == 1]; _value = (_value - _info) / 2; _index = _index + 1 }
 _unitsID set [12, _value == 1]
 
-
 _members = "_x" count _unitsID
 
-_allow = 0; _full = 0; _busy = 0
+_allow = 0; _full = 0; _busy = 0; _black = 0
 
 
 _unitsInProgress = groupUnitsBuildingMatrix select _si select _giTo
 _size = count units (groupMatrix select _si select _giTo)
-? _members + _size + _unitsInProgress > maxGroupSize: _full = 1; if (name leader(groupCommander select _si) == "IF") then {pvGrpSize = _unitsInProgress + 13*_size + 13*13*_members, publicVariable {pvGrpSize}}; goto "Reply"
+? _members + _size + _unitsInProgress > maxGroupSize: _full = 1; goto "Reply"
 
 ? mutexJoinServer: _busy = 1; goto "Reply"
+
+_blackNameIdx = TzkJoinBlackList find (name leader (groupMatrix select _si select _giTo))
+? _blackNameIdx != -1: _black = 1; goto "Reply"
 
 mutexJoinServer = true; _allow = 1; goto "Reply"
 
 
-#Reply
-_value = _allow + 2*_full + 2*2*_busy
+# Reply
+_value = _allow + 2*_full + 2*2*_busy + 2*2*2*_black
 pvJoinReply = _value; publicVariable "pvJoinReply"
 
 ? _busy == 1: exit
