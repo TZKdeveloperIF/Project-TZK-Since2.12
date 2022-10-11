@@ -1,11 +1,11 @@
 ; args: [si, gi, amount]
 _si = _this select 0; _gi = _this select 1; _amount = _this select 2
 
-@!(mutexEditMoneyMatrix)
-mutexEditMoneyMatrix = true
+@ !(mutexEditMoneyMatrix select _si select _gi)
+mutexEditMoneyMatrix select _si set [_gi, true]
 
 (groupMoneyMatrix select _si) set [_gi, -_amount + (groupMoneyMatrix select _si select _gi)]
 [_si, _gi, 0] exec "\TZK_Scripts_4_0_4\Server\Msg\sMoneyStatus.sqs"
 moneySpent set [_si, _amount + (moneySpent select _si)]
 
-mutexEditMoneyMatrix = false
+mutexEditMoneyMatrix select _si set [_gi, false]
