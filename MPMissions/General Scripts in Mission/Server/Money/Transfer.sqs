@@ -2,11 +2,13 @@
 _si = _this select 0; _giFrom = _this select 1; _giTo = _this select 2; _amount = _this select 3
 ? _giFrom == _giTo: exit
 
-@ !mutexEditMoneyMatrix
-mutexEditMoneyMatrix = true
+@ !(mutexEditMoneyMatrix select _si select _giFrom) && !(mutexEditMoneyMatrix select _si select _giTo)
+{mutexEditMoneyMatrix select _si set [_x, true]} forEach [_giFrom, _giTo]
 
-? _amount > 0: if (_amount > (groupMoneyMatrix select _si select _giFrom)) then {mutexEditMoneyMatrix = false; exit}
-? _amount < 0: if (-_amount > (groupMoneyMatrix select _si select _giTo)) then {mutexEditMoneyMatrix = false; exit}
+_valid = true
+? _amount > 0: if (_amount > (groupMoneyMatrix select _si select _giFrom)) then {_valid = false}
+? _amount < 0: if (-_amount > (groupMoneyMatrix select _si select _giTo)) then {_valid = false}
+? not _valid: {mutexEditMoneyMatrix select _si set [_x, false]} forEach [_giFrom, _giTo]; exit
 
 groupMoneyMatrix select _si set [_giFrom, -_amount + (groupMoneyMatrix select _si select _giFrom)]
 groupMoneyMatrix select _si set [_giTo,  _amount + (groupMoneyMatrix select _si select _giTo)]
@@ -14,7 +16,7 @@ groupMoneyMatrix select _si set [_giTo,  _amount + (groupMoneyMatrix select _si 
 
 [_si, _giFrom, _giTo, _amount] exec "\TZK_Scripts_4_0_4\Server\SendMoneyTransferred.sqs"
 
-mutexEditMoneyMatrix = false
+{mutexEditMoneyMatrix select _si set [_x, false]} forEach [_giFrom, _giTo]
 
 _gi = _giTo
 ? !((groupMatrix select _si select _gi) in (groupAiMatrix select _si)) || (groupMatrix select _si select _gi) == (groupCommander select _si): exit
