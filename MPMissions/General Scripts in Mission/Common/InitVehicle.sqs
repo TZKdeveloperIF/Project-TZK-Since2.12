@@ -25,6 +25,10 @@ call preprocessFile "Common\Init\VehEhFire.sqf"
 ; Long last animation
 ? _typeName in ["2S6_DKM_xj400", "ZSU_MNF_xj400", "ZSU_xj400", "Jeep_Radar_xj400", "UAZ_Radar_xj400"] && local _vehicle: _vehicle animate ["rot_radar", 1]
 
+; 4.0.6.12
+; Force disengage AI tank/art/at apc
+? local _vehicle: _this exec "Common\Init\VehicleCrewDisable.sqs"
+
 ? isNull player : goto "SkipClient"
 ; PLAYER ONLY
 ? "Helicopter" countType [_vehicle] > 0: [_vehicle] exec "\TZK_Scripts_4_0_4\Player\Effect\DustHelicopter.sqs"

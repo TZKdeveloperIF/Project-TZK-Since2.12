@@ -1,0 +1,16 @@
+; Available for AI only
+? not isServer: exit
+_vehicle = _this select 0; _type = _this select 1, _si = _this select 2, _gi = _this select 3
+? not isNull player: if (_si == siPlayer && _gi == giPlayer) then {exit}
+? _si != si0 && _si != si1: exit
+_this = 0
+
+; wail until crew created. Need to be optimized
+~5
+
+_crews = crew _vehicle
+? count _crews == 0: exit
+
+? -1 == (typesLightTank + typesHeavyTank + typesHowitzer + typesRocketLauncher + typesATAPC) find _type: exit
+{_unit disableAI "TARGET"} forEach _crews
+? dev: showDebug [format ["%1", _crews], 5000]
