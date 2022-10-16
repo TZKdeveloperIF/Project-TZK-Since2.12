@@ -17,6 +17,9 @@ if true then {
 	if (!bool_TZK_199_Mode && !bool_TZK_Vanilla_Mode) then {unitDefs select _su25 set [udModel, "Su25_xj400"]};
 };
 
+// Extend typesATAPC definition since $1800 APC weapon more useful
+typesATAPC = [ _m2a2at, _bmp2at, _m2a2W, _bmp2E ];
+
 // Ban mannual building orca since its ground radar not well-designed
 {
 	unitDefs select _x set [udFactoryType, -1];
