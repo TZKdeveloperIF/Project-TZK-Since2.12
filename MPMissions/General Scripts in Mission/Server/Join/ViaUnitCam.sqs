@@ -43,6 +43,7 @@ pvJoinReply = _value; publicVariable "pvJoinReply"
 ? _allow == 0: mutexJoinServer = false; exit
 _leaderJoin = call format ["leaderJoin%1", _si]; _groupJoin = group _leaderJoin
 
+	? (groupMatrix select _si select _giFrom) in (groupAiMatrix select _si) && not ((groupMatrix select _si select _giTo) in (groupAiMatrix select _si)): {_x call busyClear; _x call temporaryClear} forEach _unitsToJoin
 
 	{_leaderJoin reveal _x} forEach _unitsToJoin; [_unitsToJoin, _si, _giFrom, _giTo] exec "\TZK_Scripts_4_0_5\Server\Join\DelayAssign.sqs"
 	~0.1
@@ -81,6 +82,7 @@ if ((groupMatrix select _si select _giTo) in (groupAiMatrix select _si)) then {_
 
 #DONE
 {doStop _x} forEach _unitsBck
+? not ((groupMatrix select _si select _giFrom) in (groupAiMatrix select _si)): {_x call busyClear; _x call temporaryClear} forEach _unitsBck
 ; Wait till Join Process completed
 _timeAbort = time + 15
 @( count (units _groupJoin) == 1 || time > _timeAbort )

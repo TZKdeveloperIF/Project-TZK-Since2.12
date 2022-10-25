@@ -54,13 +54,4 @@ funcUpdateTownCheckUnits = if !bool_TZK_SEMod_Mode Then {loadFile "\TZK_Scripts_
 ; // args: [si, giExclude]
 ; // return: [gi, slotsFree]
 
-
-busyInit = "call format[{busy%1 = []}, sideNames select _si]"; busySet = {call format[{[_this,_si] exec "\TZK_Scripts_4_0_4\Server\BusySet.sqs"}]}; busyClear = {call format[{[_this,_si] exec "\TZK_Scripts_4_0_4\Server\BusyClear.sqs"}]}; busyCheck = {call format[{_this in busy%1}, sideNames select _si]}; mutexBusy = false
-temporaryInit = "call format[{temporary%1 = []}, sideNames select _si]"; temporarySet = {call format[{[_this,_si] exec "\TZK_Scripts_4_0_4\Server\TemporarySet.sqs"}]}; temporaryClear = {call format[{[_this,_si] exec "\TZK_Scripts_4_0_4\Server\TemporaryClear.sqs"}]}; temporaryCheck = "call format[{_this in temporary%1}, sideNames select _si]"; mutexTemporary = false
-_si = si0; call busyInit; call temporaryInit; _si = si1; call busyInit; call temporaryInit
-
-; busySet = "_this setSkill (skill _this) - 0.0002"; busyClear = "_this setSkill (skill _this) + 0.0002"; busyCheck = "(skill _this) < 0.9999"
-; temporarySet = "_this setSkill (skill _this) - 0.0001"; temporaryClear = "_this setSkill (skill _this) + 0.0001"; temporaryCheck = "(skill _this) == 0.9999"
-
-
-call loadFile "impl\Function_Server.sqf"
+call preprocessFile "impl\Function_Server.sqf"
