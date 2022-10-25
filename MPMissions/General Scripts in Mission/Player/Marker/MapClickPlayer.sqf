@@ -23,7 +23,7 @@ if (!_processed) then {
 			if ( (_res select 1) < 50 ) then {[_res select 0] exec localize {TZK_DIALOG_UNIT_CAM}; _processed = true}
 		};
 	};
-	if (!_processed && _alt && !_shift && (count _units) == 0) then {[_pos] exec localize {TZK_FUNC_PLAYER_WP_SET_SMART}; _processed = true};
+	if (!_processed && _alt && !_shift && not bool_TZK_Ext_Cmd_Mode && (count _units) == 0) then {[_pos] exec localize {TZK_FUNC_PLAYER_WP_SET_SMART}; _processed = true};
 	if (!_processed && _alt && _shift && (not bool_TZK_Ext_Cmd_Mode || not isCommander)) then {
 		[_pos] exec localize {TZK_DIALOG_WAYPOINT};
 		_processed = true
@@ -32,6 +32,10 @@ if (!_processed) then {
 		_pos exec "Player\Dialog\CmdExtMap.sqs";
 		_processed = true;
 		_pos exec "Player\Loop\CmdMarker.sqs";
+	};
+	if (!_processed && _alt && !_shift && bool_TZK_Ext_Cmd_Mode && isCommander) then {
+		_pos call preprocessFile "Player\Marker\RtsMapCtrl.sqf";
+		_processed = true;
 	};
 
 	_index = 0; _gis = []; _groupsAI = groupAiMatrix select siPlayer; _siGroups = groupMatrix select siPlayer; _groupNames = groupNameMatrix select siPlayer;
