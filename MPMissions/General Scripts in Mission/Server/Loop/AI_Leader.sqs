@@ -87,6 +87,7 @@ _unitsStarted = units _group
 	? _money < costRespawn : goto "WaitMoney"
 
 #Respawn
+	_unit call busyClear; _unit call temporaryClear
 	? costRespawn > 0 : [_si, _gi, costRespawn] exec localize {TZK_MONEY_SERVER_SPEND}
 	_objectRespawn = objNull
 	

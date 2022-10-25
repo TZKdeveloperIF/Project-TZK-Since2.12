@@ -15,3 +15,6 @@ if false then {
 };
 
 orderTempDefs select orderTempRearm set [2, "Server\OrderTemp\Rearm.sqs"];
+comment {
+	orderTempDefs select orderTempMoveUnit set [2, "Server\OrderTemp\MoveUnit.sqs"];
+};
