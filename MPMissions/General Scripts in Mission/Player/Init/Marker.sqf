@@ -6,6 +6,9 @@ TzkMap2y = 0;
 TzkMapSelectClicked = false;
 TzkMapSelectedTime = 0;
 
+TzkMapSelectedHighlight = false;
+TzkSelectedUnits = [];
+
 {
 	createMarker [_x, [-10, -10]];
 	_x setMarkerColor "ColorBlue";
@@ -23,7 +26,7 @@ TzkMapSelectedTime = 0;
 
 _marker = "TzkRtsArea";
 createMarker [_marker, [0, 0]];
-_marker setMarkerColor "ColorOrange_xj400";
+_marker setMarkerColor "ColorCyan_xj400";
 _marker setMarkerShape "RECTANGLE";
 _marker setMarkerBrush "Cross";
 _marker setMarkerSize [0, 0];
