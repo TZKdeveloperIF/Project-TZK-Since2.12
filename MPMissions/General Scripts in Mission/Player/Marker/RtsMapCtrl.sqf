@@ -13,11 +13,11 @@ if TzkMapSelectClicked then {
 	"TzkRtsArea" setMarkerSize [(TzkMap2x - TzkMap1x) / 2, (TzkMap2y - TzkMap1y) / 2];
 	"TzkRtsArea" setMarkerPos [(TzkMap2x + TzkMap1x) / 2, (TzkMap2y + TzkMap1y) / 2];
 	// select area op
+	true call preprocessFile "Player\Rts\MapSelection.sqf";
 } else {
-	TzkMap1x = _pos select 0;
-	TzkMap1y = _pos select 1;
-	TzkMapSelectClicked = true;
-	TzkMapSelectedTime = time;
+	TzkMap1x = _pos select 0; TzkMap1y = _pos select 1;
+	TzkMapSelectClicked = true; TzkMapSelectedTime = time;
+
 	TzkMapUnitsSelected = false;
 	// marker op
 	"TzkRtsArea" setMarkerSize [0,0];
@@ -27,4 +27,5 @@ if TzkMapSelectClicked then {
 	"TzkRtsMarkerBgY" setMarkerPos [TzkMap1x, TzkMap1y];
 	"TzkRtsMarkerLineX" setMarkerPos [TzkMap1x, TzkMap1y];
 	"TzkRtsMarkerLineY" setMarkerPos [TzkMap1x, TzkMap1y];
+	false call preprocessFile "Player\Rts\MapSelection.sqf";
 };
