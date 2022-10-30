@@ -1,0 +1,12 @@
+? not isServer: exit
+
+_netIds = _this select 0; _si = _this select 1; _this = 0
+
+_func = preprocessFile "Server\SQF\RtsOrderClear.sqf"
+{(UnitById _x) call _func} forEach _netIds
+
+_orders = orderMatrix select _si
+@ not mutexAIGroup
+mutexAIGroup = true
+{_x set [0, (_x select 0) + 1]} forEach _orders
+mutexAIGroup = false

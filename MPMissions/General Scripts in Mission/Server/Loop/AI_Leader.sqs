@@ -37,6 +37,7 @@ _unitsStarted = units _group
 	
 	#NoNewTemporaryOrder
 	
+	_unit exec "Server\AI_RtsOrderStopper.sqs"
 	; check for new order
 	? _idOrder == _order select 0 : goto "NoNewOrder"
 	_idOrder = _order select 0

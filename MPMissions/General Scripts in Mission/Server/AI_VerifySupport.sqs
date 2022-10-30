@@ -1,0 +1,12 @@
+; args: [unit, si, gi]
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+
+? _unit != driver vehicle _unit : exit
+
+_heal = [_unit, _si, _gi] call funcCheckRepair
+_rearm = [_unit, _si, _gi] call funcCheckRearm
+
+[_unit, _heal, _rearm] exec "Server\Msg\sUnitNeedSupport.sqs"

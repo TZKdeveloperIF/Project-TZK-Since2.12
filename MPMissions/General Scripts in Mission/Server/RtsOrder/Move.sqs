@@ -1,0 +1,25 @@
+; args: [unit, [clicked pos, central pos of all selected units]]
+_unit = _this select 0
+_clickedPos = _this select 1 select 0
+_rtsCentralPos = _this select 1 select 1
+_this = 0
+
+; rts busy Check
+; not realized yet
+
+; rts order stack design
+; not realized yet
+
+; activated once and immediately. not long-last script
+_unit call preprocessFile "Server\SQF\RtsOrderSet.sqf"
+_unit call busyClear
+_unit call temporaryClear
+
+? _unit != driver vehicle _unit: exit
+_destPos = [_unit, _clickedPos, _rtsCentralPos, 50] call preprocessFile "Util\RtsDestPos.sqf"
+[_unit, _destPos] call funcMoveAI
+
+; tank can pre-set its' "stop" status
+? "tank" countType [vehicle _unit] == 0: exit
+~2
+doStop _unit

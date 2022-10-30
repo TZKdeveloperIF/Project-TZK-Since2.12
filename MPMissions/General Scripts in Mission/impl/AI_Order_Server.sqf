@@ -14,6 +14,18 @@ if false then {
 	_type = _type + 1;
 };
 
+comment "Adjust all group order scripts' path.";
+_oldPrefix = "\TZK_Scripts_4_0_5\Server\Order\"; _len = sizeofstr _oldPrefix;
+{
+	_oldPath = _x select 2;
+	if (sizeofstr _oldPath >= _len) then {
+		if (_oldPrefix == substr [_oldPath, 0, _len]) then {
+			_newPath = substr [_oldPath, sizeofstr "\TZK_Scripts_4_0_5\", sizeofstr _oldPath];
+			_x set [2, _newPath];
+		};
+	};
+} forEach orderDefs;
+
 orderTempDefs select orderTempRearm set [2, "Server\OrderTemp\Rearm.sqs"];
 comment {
 	orderTempDefs select orderTempMoveUnit set [2, "Server\OrderTemp\MoveUnit.sqs"];

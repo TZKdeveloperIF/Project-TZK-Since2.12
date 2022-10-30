@@ -47,6 +47,7 @@ mutexCheckSupport = false
 
 _unit call busySet
 [_unit, _support] exec "\TZK_Scripts_4_0_4\Server\SendMovingToSupport.sqs"
+_posReturn = getPosASL _unit
 
 _timeAbort = time + 2*60
 
@@ -94,6 +95,8 @@ goto "SupportReached"
 		~5
 		? _i < 7: goto "RepairCheck"
 # Quit
+	; return to beginning pos if support is not corrupted
+	? _unit call busyCheck && _unit call rtsOrderCheck: [_unit, _posReturn] call funcMoveAI
 	_unit call busyClear
 	@ !mutexCheckSupport
 	mutexCheckSupport = true

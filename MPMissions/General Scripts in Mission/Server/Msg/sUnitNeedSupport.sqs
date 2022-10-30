@@ -1,0 +1,15 @@
+; args: [unit, need heal, need rearm]
+_unit = _this select 0; _heal = _this select 1; _rearm = _this select 2; _this = 0
+
+_vehicle = vehicle _unit
+_type = _vehicle call funcGetUnitTypeFromObject
+_name = (if (-1 == _type) then {"Leader"} else {unitDefs select _type select udName})
+_needHeal = (if _heal then {" need repair"} else {""})
+_needRearm = (if _rearm then {" need rearm"} else {""})
+
+_msg = format ["%1 @ %2%3%4", _name, (getPosASL _vehicle) call funcCalcMapPos, _needHeal, _needRearm]
+publicExec format [{if ((side UnitByID %1) == playerSide) then {%1 sidechat %2}}, NetworkID _vehicle, _msg]
+
+? isNull player: exit
+? (side _unit) != playerSide : exit
+_unit sidechat _msg
