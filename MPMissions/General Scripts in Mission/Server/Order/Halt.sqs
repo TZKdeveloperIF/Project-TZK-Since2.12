@@ -1,19 +1,24 @@
-; args: [unit, si, gi]
+; args: [unit, si, gi, [wp, dist, dir]]
 
 _unit = _this select 0
 _si = _this select 1
 _gi = _this select 2
 
+
 _order = orderMatrix select _si select _gi; _idOrder = _order select 0; _script = (orderDefs select (_order select 1)) select 2
 
-#WaitReady
+# WaitReady
+? _unit call rtsOrderCheck: exit
 ~5
 ? _idOrder != _order select 0: exit
 ? _unit call busyCheck : goto "WaitReady"
 
-_ti = -1
+_timeCalcPos = 0
 _timeCheckSupport = time + 30 + random 60
+_bCheckDropBomb = true
+
 _sleep = 30
+
 
 #Update
 	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
@@ -21,31 +26,30 @@ _sleep = 30
 	
 	? !(alive _unit) : exit
 	? _idOrder != _order select 0 : exit
+	? _unit call rtsOrderCheck: exit
 
-	? _unit != driver vehicle _unit : _sleep = 30; goto "Sleep"
+	_vehicle = vehicle _unit
 	
-	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 10; goto "Sleep"
+	? _unit != driver _vehicle : goto "Sleep"
 	
-	_res = [getPos _unit, _si, []] call funcGetClosestEnemyTown
-	_ti = _res select 0
-	? _ti == -1 : _sleep = 30; goto "Sleep"
-	_posMove = getPos ((towns select _ti) select tdFlag)
+	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 20; goto "Sleep"
 
-	_distToDest = [getPos _unit, _posMove] call funcDistH
+	_bCheckDropBomb = !_bCheckDropBomb 
+	_magazines = []
+	? _bCheckDropBomb && _unit == _vehicle: if (magSatchel in (magazines _unit)) then {[_unit, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\AI_CheckDropBomb.sqs"; _sleep = 20; goto "Sleep"}
+	
 
-	? _distToDest > 10 : goto "Move"
 	[_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
 	[_unit, _si, _gi] call funcWatch
+	? _unit != _vehicle && !(isNull gunner _vehicle) && isNull (commander _vehicle) : [_unit, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\AI_CheckFireGun.sqs"
   _sleep = 30
   goto "Sleep"
-
-  #Move
-  [_unit, _posMove] call funcMoveAI
-	_sleep = [30, 0.1*_distToDest] select (_distToDest < 300)
-
+  
+	 
 	#Sleep
 	~_sleep
 	
+	? _unit call rtsOrderCheck: exit
 	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
 	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Sleep"}
   ? _unit call busyCheck : goto "Sleep"

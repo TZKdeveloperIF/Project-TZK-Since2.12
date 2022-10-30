@@ -116,7 +116,25 @@ class TzkCmdMapDlgBase: Menu {
 		text = "Exit";
 		action = "closeDialog 0";
 	};
+};
 
+class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
+	controls[] = {
+		InfoLeftBtn0, LeftBtn0, InfoLeftBtn1, LeftBtn1, 
+		InfoDownBtn0, DownBtn0, 
+		Exit
+	};
+	class InfoLeftBtn1: InfoLeftBtn0 {
+		idc = IDC + 1;
+		y = 0.07 + 0.1;
+		text = "UNDEFINED";
+	};
+	class LeftBtn1: LeftBtn0 {
+		idc = IDC + 32 + 1;
+		y = 0.10 + 0.1;
+		text = "UNDEFINED";
+		action = "btnValue00 = 2^1";
+	};
 };
 
 // EOF

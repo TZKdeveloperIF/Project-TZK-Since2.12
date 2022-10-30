@@ -23,18 +23,30 @@ if (!_processed) then {
 			if ( (_res select 1) < 50 ) then {[_res select 0] exec localize {TZK_DIALOG_UNIT_CAM}; _processed = true}
 		};
 	};
-	if (!_processed && _alt && !_shift && not bool_TZK_Ext_Cmd_Mode && (count _units) == 0) then {[_pos] exec localize {TZK_FUNC_PLAYER_WP_SET_SMART}; _processed = true};
-	if (!_processed && _alt && _shift && (not bool_TZK_Ext_Cmd_Mode || not isCommander)) then {
-		[_pos] exec localize {TZK_DIALOG_WAYPOINT};
-		_processed = true
-	};
-	if (!_processed && _alt && _shift && bool_TZK_Ext_Cmd_Mode && isCommander) then {
-		_pos exec "Player\Dialog\CmdExtMap.sqs";
+	if (not _processed && _alt && not _shift && (bool_TZK_Ext_Cmd_Mode || not isCommander) && (count _units) == 0) then {
+		[_pos] exec localize {TZK_FUNC_PLAYER_WP_SET_SMART};
 		_processed = true;
-		_pos exec "Player\Loop\CmdMarker.sqs";
 	};
-	if (!_processed && _alt && !_shift && bool_TZK_Ext_Cmd_Mode && isCommander) then {
-		_pos call preprocessFile "Player\Marker\RtsMapCtrl.sqf";
+	if (not _processed && _alt && _shift) then {
+		_bWp = true;
+		if TzkMapUnitsSelected then {if (count TzkSelectedUnits > 0) then {
+			_bWp = false;
+		}};
+		if _bWp then {
+			[_pos] exec localize {TZK_DIALOG_WAYPOINT};
+		} else {
+			_pos exec "Player\Dialog\CmdRtsMap.sqs";
+			_pos exec "Player\Loop\CmdMarker.sqs";
+		};
+		_processed = true;
+	};
+	if (!_processed && not _alt && _shift && bool_TZK_Ext_Cmd_Mode && isCommander) then {
+		_pos exec "Player\Dialog\CmdExtMap.sqs";
+		_pos exec "Player\Loop\CmdMarker.sqs";
+		_processed = true;
+	};
+	if (not _processed && _alt && not _shift && not bool_TZK_Ext_Cmd_Mode && isCommander) then {
+		_pos call preprocessFile "Player\Rts\RtsMapCtrl.sqf";
 		_processed = true;
 	};
 

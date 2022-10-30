@@ -1,5 +1,3 @@
-
-
 TzkMapSelectClicked = false;
 TzkMapSelectedTime = 0;
 

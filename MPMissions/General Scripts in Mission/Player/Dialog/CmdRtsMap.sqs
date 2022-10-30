@@ -1,0 +1,38 @@
+; args: pos
+_pos = _this
+; _setTargetScript = "Player\Art\SetTarget.sqs"
+@ !mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "TzkCmdMapDlgRts"
+mutexDlg = false
+
+_idcLeftBtnInfo0 = IDC + 0
+
+_idcLeftBtn0 = IDC + 32 + 0
+
+_idcDownBtnInfo0 = IDC + 64 + 0
+
+_idcDownBtn0= IDC + 64 + 32 + 0
+
+btnValue00 = 0; btnValue01 = 0
+
+{ ctrlShow [_x, false] } forEach [_idcLeftBtnInfo0, _idcLeftBtnInfo0 + 1, _idcDownBtnInfo0, _idcDownBtn0]
+ctrlSetText [_idcLeftBtn0, "Move"]
+ctrlSetText [_idcLeftBtn0 + 1, "Clear Rts Order"]
+
+# Update
+	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+	? call dlgUpdated: goto "Quit"
+	? not alive player: closeDialog 0; goto "Quit"
+
+	? btnValue00 > 0: _btnVal = btnValue00; btnValue00 = 0; goto "LeftBtn"
+
+	; Skip
+	~0.2
+	goto "Update"
+# Quit
+	bool_TZK_Cmd_Marker = false; exit
+# LeftBtn
+	? 2^0 == _btnVal: _pos exec "Player\Rts\sRtsMove.sqs"; closeDialog 0; goto "Quit"
+	? 2^1 == _btnVal: 0 exec "Player\Rts\sRtsClear.sqs"; closeDialog 0; goto "Quit"
+	goto "Update"

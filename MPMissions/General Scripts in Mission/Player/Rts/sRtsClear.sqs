@@ -1,0 +1,16 @@
+; args: none
+_c = count TzkSelectedUnits
+? _c == 0: goto "Quit"
+_netIds = []; _netIds resize _c; _i = 0
+# calc
+	_obj = TzkSelectedUnits select _i
+	_netIds set [_i, NetworkID _obj]
+	_i = _i + 1
+	? _i < _c: goto "calc"
+
+? isServer: [_netIds, siPlayer] exec "Server\Rts\hClear.sqs"
+? not isServer: publicExec format [{call {[%1, %2] exec "Server\Rts\hClear.sqs"}}, _netIds, siPlayer]
+
+# Quit
+false call preprocessFile "Player\Rts\Area.sqf"
+false call preprocessFile "Player\Rts\Selection.sqf"

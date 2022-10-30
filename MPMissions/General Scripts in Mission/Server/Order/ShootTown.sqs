@@ -62,6 +62,7 @@ _order = orderMatrix select _si select _gi; _idOrder = _order select 0; _script 
 
 _sleep = 0
 #WaitReady
+	? _unit call rtsOrderCheck: exit
 ~_sleep
 ? _idOrder != _order select 0: exit
 ? _unit call busyCheck: _sleep = 5; goto "WaitReady"
@@ -77,6 +78,7 @@ _sleep = 30
 	
 	? !(alive _unit): exit
 	? _idOrder != _order select 0: _unit call temporaryClear, exit
+	? _unit call rtsOrderCheck: exit
 
 	_unit call temporarySet
 	_attackPos = _pos; _radius = 100; _dispersion = 100; _biggerAngle = 0

@@ -1,0 +1,4 @@
+? not isServer: exit
+_netIds = _this select 0; _clickedPos = _this select 1; _rtsCentralPos = _this select 2
+_param = [_clickedPos, _rtsCentralPos]
+{[UnitById _x, _param] exec "Server\RtsOrder\Move.sqs"} forEach _netIds

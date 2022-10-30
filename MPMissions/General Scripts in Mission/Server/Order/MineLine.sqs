@@ -12,7 +12,8 @@ _posMove = []
 
 _order = orderMatrix select _si select _gi; _idOrder = _order select 0; _script = (orderDefs select (_order select 1)) select 2
 
-#WaitReady
+# WaitReady
+? _unit call rtsOrderCheck: exit
 ~5
 ? _idOrder != _order select 0: exit
 ? _unit call busyCheck : goto "WaitReady"
@@ -38,6 +39,7 @@ _mines = "_x == magMine" count _magazines
 	
 	? !(alive _unit) : exit
 	? _idOrder != _order select 0 : exit
+	? _unit call rtsOrderCheck: exit
 
 	_vehicle = vehicle _unit
 	
@@ -96,6 +98,7 @@ _mines = "_x == magMine" count _magazines
 	#Sleep
 	~_sleep
 	
+	? _unit call rtsOrderCheck: exit
 	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
 	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Sleep"}
   ? _unit call busyCheck : goto "Sleep"
