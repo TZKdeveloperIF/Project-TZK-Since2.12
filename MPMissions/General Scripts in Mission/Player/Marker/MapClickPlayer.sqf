@@ -9,6 +9,8 @@ _processed = false;
 if (!alive player) then {_processed = true};
 if (!_processed && (count _units) > 0) then { if (!_processed && !_alt && _shift) then {[_pos, _units] exec localize {TZK_DIALOG_ORDER_PLAYER_AI}; _processed = true} };
 if (!_processed) then {
+	// unit cam
+	// shift
 	if (!_processed && !_alt && _shift && count ([siPlayer, stSatRec] call funcGetWorkingStructures) > 0) then {
 		_res = [siPlayer, _pos] call funcGetClosestUnit; 
 		_marker = if !bool_TZK_199_Mode Then {(_res select 0) call loadFile localize {TZK_FUNC_GET_UNIT_MARKER}} else {""};
@@ -23,29 +25,34 @@ if (!_processed) then {
 			if ( (_res select 1) < 50 ) then {[_res select 0] exec localize {TZK_DIALOG_UNIT_CAM}; _processed = true}
 		};
 	};
+	// smart wp
 	if (not _processed && _alt && not _shift && (bool_TZK_Ext_Cmd_Mode || not isCommander) && (count _units) == 0) then {
 		[_pos] exec localize {TZK_FUNC_PLAYER_WP_SET_SMART};
 		_processed = true;
 	};
+	// alt + shift
 	if (not _processed && _alt && _shift) then {
-		_bWp = true;
-		if TzkMapUnitsSelected then {if (count TzkSelectedUnits > 0) then {
-			_bWp = false;
-		}};
-		if _bWp then {
-			[_pos] exec localize {TZK_DIALOG_WAYPOINT};
-		} else {
+		// selected area && selected units
+		if (not _processed && TzkMapUnitsSelected && count TzkSelectedUnits > 0) then {
 			_pos exec "Player\Dialog\CmdRtsMap.sqs";
 			_pos exec "Player\Loop\CmdMarker.sqs";
+			_processed = true;
 		};
-		_processed = true;
+		// selected area && selected nothing
+		if (not _processed && TzkMapUnitsSelected && count TzkSelectedUnits == 0) then {
+			_pos exec "Player\Dialog\CmdExtMap.sqs";
+			_pos exec "Player\Loop\CmdMarker.sqs";
+			_processed = true;
+		};
+		// set way points
+		if (not _processed) then {
+			[_pos] exec localize {TZK_DIALOG_WAYPOINT};
+			_processed = true;
+		};
 	};
-	if (!_processed && not _alt && _shift && bool_TZK_Ext_Cmd_Mode && isCommander) then {
-		_pos exec "Player\Dialog\CmdExtMap.sqs";
-		_pos exec "Player\Loop\CmdMarker.sqs";
-		_processed = true;
-	};
-	if (not _processed && _alt && not _shift && not bool_TZK_Ext_Cmd_Mode && isCommander) then {
+	// commander rts selection
+	// alt
+	if (not _processed && _alt && not _shift && not bool_TZK_Ext_Cmd_Mode && isCommander && (count _units) == 0) then {
 		_pos call preprocessFile "Player\Rts\RtsMapCtrl.sqf";
 		_processed = true;
 	};
