@@ -23,17 +23,15 @@ _index = 0;
 	_index = _index + 1;
 } forEach (groupMatrix select siPlayer);
 
-{
-	_ids = groupUnitIDMatrix select siPlayer select giPlayer;
-	_units = units groupPlayer; _id = 2; _index = 1; _count = count _units;
-	while {_id <= 12} do {
-		_marker = format ["PlayerUnit_%1", _id];
-		if (_index >= _count) then {_marker setMarkerPos hiddenMarkerPos} else {
-			_ai = _units select _index; _text = format ["%1", _ai];
-			if ( _text == (_ids select _id) ) then { _marker setMarkerPos getPos _ai; _index = _index + 1 } else { _marker setMarkerPos hiddenMarkerPos };
-		};	
-		_id = _id + 1;
-	};
+_ids = groupUnitIDMatrix select siPlayer select giPlayer;
+_units = units groupPlayer; _id = 2; _index = 1; _count = count _units;
+while {_id <= 12} do {
+	_marker = format ["PlayerUnit_%1", _id];
+	if (_index >= _count) then {_marker setMarkerPos hiddenMarkerPos} else {
+		_ai = _units select _index; _text = format ["%1", _ai];
+		if ( _text == (_ids select _id) ) then { _marker setMarkerPos getPos _ai; _index = _index + 1 } else { _marker setMarkerPos hiddenMarkerPos };
+	};	
+	_id = _id + 1;
 };
 
 _gi = 0;
