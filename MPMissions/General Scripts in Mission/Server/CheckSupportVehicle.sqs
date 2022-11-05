@@ -57,6 +57,7 @@ _timeAbort = time + 2*60
 # MoveGround
 	[_unit, [getPos _support, 10, 10] call funcGetRandomPos] call funcMoveAI
 	~10
+	? not (_unit call busyCheck): goto "Quit"
 	? !(alive _unit) || _v != (vehicle _unit) || !(alive _support) || time > _timeAbort: goto "Quit"
 	? (_v distance _support) > rangeSupport: goto "MoveGround"
 goto "SupportReached"
@@ -66,6 +67,7 @@ goto "SupportReached"
 	# MoveAir_Check
 		[_unit, getPos _support] call funcMoveAI
 		~5
+		? not (_unit call busyCheck): goto "Quit"
 		? !(alive _unit) || _v != (vehicle _unit) || !(alive _support) || time > _timeAbort: goto "Quit"
 		? ([getPos _v, getPos _support] call funcDistH) > 2*rangeSupport || (speed _v) > 40: goto "MoveAir_Check"
 	# Hover
@@ -75,6 +77,7 @@ goto "SupportReached"
 		_timeRetry = time + 60
 		# Hover_Check
 			~5
+			? not (_unit call busyCheck): goto "Quit"
 			? !(alive _unit) || _v != (vehicle _unit) || !(alive _support): goto "Quit"
 			? time > _timeRetry: goto "MoveAir"
 			? (_unit distance _support) > 2*rangeSupport: goto "Hover_Check"
@@ -86,13 +89,21 @@ goto "SupportReached"
 	? _heal: [_unit, _si, _gi, _v, _vt, _support] exec "Server\AI_Heal.sqs"
 	? _rearm: [_unit, _si, _gi, _v, _vt, _support] exec "Server\AI_Rearm.sqs"
 	~5
+	? not (_unit call busyCheck): goto "Quit"
 	? _unit == vehicle _unit: goto "Quit"
-	~30
+
+	_time30 = _time + 30
+	# delay30
+	~5
+	? not (_unit call busyCheck): goto "Quit"
+	? _time < _time30: goto "delay30"
+
 	_i = 0
 	# RepairCheck
 		? damage _v < 0.1 || !_heal: goto "Quit"
 		_i = _i + 1
 		~5
+		? not (_unit call busyCheck): goto "Quit"
 		? _i < 7: goto "RepairCheck"
 # Quit
 	; return to beginning pos if support is not corrupted
