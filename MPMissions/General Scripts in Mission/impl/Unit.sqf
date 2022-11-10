@@ -1,3 +1,13 @@
+// Since 4.0.6.13, skill for server unit is used to mark whether a unit is "busy" or "in rts order", etc
+// thus skill values must follow some rules. by now all its value * 10000 are required that can be devided by 8
+TzkSkillLevel = [0, 0.6, 0.74, 0.84, 1];
+_i = 0; _c = count TzkUnitSkillVal; while {_i < _c} do {
+	_val = TzkUnitSkillVal select _i;
+	if (_val == 0.75) then {TzkUnitSkillVal set [_i, 0.74]};
+	if (_val == 0.85) then {TzkUnitSkillVal set [_i, 0.84]};
+	_i = _i + 1;
+};
+
 if true then {
 	_name0 = []; _i = 0; _c = count (groupMatrix select si0); while {_i < _c} do {
 		_name0 set [_i, name leader (groupMatrix select si0 select _i)];
