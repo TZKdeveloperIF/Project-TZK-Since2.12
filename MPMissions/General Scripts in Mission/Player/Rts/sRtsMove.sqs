@@ -14,7 +14,7 @@ _netIds = []; _netIds resize _c; _sumX = 0; _sumY = 0; _i = 0
 _pos set [0, _sumX / _c]; _pos set [1, _sumY / _c]
 
 ? isServer: [_netIds, _this, _pos] exec "Server\Rts\hMove.sqs"
-? not isServer: publicExec format [{call {[%1, %2, %3] exec "Server\Rts\hMove.sqs"}}, _netIds, _this, _pos]
+? not isServer: _str = format [{[%1, %2, %3] exec "Server\Rts\hMove.sqs"}, _netIds, _this, _pos]; publicExec _str, pvRtsMsgSent = _str, publicVariableString "pvRtsMsgSent"
 
 # Quit
 false call preprocessFile "Player\Rts\Area.sqf"
