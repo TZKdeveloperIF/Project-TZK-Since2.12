@@ -9,7 +9,7 @@ _netIds = []; _netIds resize _c; _i = 0
 	? _i < _c: goto "calc"
 
 ? isServer: [_netIds, siPlayer] exec "Server\Rts\hClear.sqs"
-? not isServer: publicExec format [{call {[%1, %2] exec "Server\Rts\hClear.sqs"}}, _netIds, siPlayer]
+? not isServer: publicExec format [{[%1, %2] exec "Server\Rts\hClear.sqs"}, _netIds, siPlayer]
 
 # Quit
 false call preprocessFile "Player\Rts\Area.sqf"
