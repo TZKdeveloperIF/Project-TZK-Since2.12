@@ -1,0 +1,30 @@
+@ not mutexTzkRtsW
+mutexTzkRtsW = true
+
+? time <= TzkRtsWriteTime + 30 || TzkRtsId4Gc == TzkRtsSvrId: goto "Quit"
+; update ID and time
+TzkRtsSvrId = TzkRtsSvrId + 1; TzkRtsId4Gc = TzkRtsSvrId; TzkRtsWriteTime = time
+
+; TzkRtsIdxArr = [];
+; TzkRtsObjPool = [];
+; TzkRtsAvailableIdx = [];
+_c = count TzkRtsIdxArr; _i = _c - 1
+? _c <= 0: goto "Quit"
+
+TzkRtsAvailableIdx resize 0; _j = 0
+; enum array backward to get optimised available indexes
+# ergodic
+	_unit = TzkRtsIdxArr select _i
+	? alive _unit && ((TzkRtsObjPool select _i select 2) || (_unit call rtsOrderCheck)): goto "continue"
+	TzkRtsIdxArr set [_i, objNull]
+	TzkRtsObjPool select _i set [0, objNull]
+	TzkRtsAvailableIdx set [_j, _i], _j = _j + 1
+	# continue
+	_i = _i - 1
+	? _i >= 0: goto "ergodic"
+
+; update time again. Using latest time
+TzkRtsWriteTime = time
+
+# Quit
+mutexTzkRtsW = false

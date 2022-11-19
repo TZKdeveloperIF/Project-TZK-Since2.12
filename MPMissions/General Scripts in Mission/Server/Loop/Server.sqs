@@ -17,6 +17,8 @@ _timeCalcArtKa = 30
 	? pvGameOver != -1 : [] exec "Common\Dynamic\TriggerGameEnd.sqs"; exit
 
 	? bool_TZK_SEMod_Mode && _time > _timeCalcArtKa: _timeCalcArtKa = _time + 30; [-1, si0] exec "Server\Art\CalcKa.sqs"; [-1, si1] exec "Server\Art\CalcKa.sqs"
+	
+	? time > TzkRtsWriteTime + 30 && TzkRtsId4Gc != TzkRtsSvrId: 0 exec "Server\Rts\Gc.sqs"
 
 	? (timeLimit != 0 && time > timeLimit): goto "TimeLimitReached"
 

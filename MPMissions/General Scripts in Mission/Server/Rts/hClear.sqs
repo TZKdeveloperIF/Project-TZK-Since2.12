@@ -1,9 +1,32 @@
 ? not isServer: exit
 
 _netIds = _this select 0; _si = _this select 1; _this = 0
+_c = count _netIds
+? 0 == _c: exit
 
-_func = preprocessFile "Server\SQF\RtsOrderClear.sqf"
-{(UnitById _x) call _func} forEach _netIds
+@ not mutexTzkRtsW
+mutexTzkRtsW = true
+; update ID and time
+TzkRtsSvrId = TzkRtsSvrId + 1; TzkRtsWriteTime = time
+
+_i = 0; _func = preprocessFile "Server\SQF\RtsOrderClear.sqf"
+# ergodic
+	_unit = UnitById(_netIds select _i)
+	? not (_unit call rtsOrderCheck): goto "continue"
+	_idx = TzkRtsIdxArr find _unit
+	? -1 == _idx: format ["ERROR: %1 isn't found in TzkRtsIdxArr", _unit] call fDebugLog; goto "continue"
+	TzkRtsObjPool select _idx set [1, TzkRtsSvrId]; TzkRtsObjPool select _idx set [2, false]
+
+	_unit call _func
+	# continue
+	_i = _i + 1
+	? _i < _c: goto "ergodic"
+
+; update time again. Using latest time
+TzkRtsWriteTime = time
+
+# Quit
+mutexTzkRtsW = false
 
 _orders = orderMatrix select _si
 @ not mutexAIGroup
