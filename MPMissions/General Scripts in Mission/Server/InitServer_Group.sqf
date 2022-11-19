@@ -34,7 +34,6 @@ _remoteGrpLeaderNames = "";
 if (sizeofstr _remoteGrpLeaderNames > 0) then {
 	_remoteGrpLeaderNames = substr [_remoteGrpLeaderNames, 0, sizeofstr _remoteGrpLeaderNames - 2];
 };
-format [{Collected players' name are: %1}, _remoteGrpLeaderNames] call preprocessFile "Util\DebugInfoFromSvr.sqf";
 
 {
 	call format [
