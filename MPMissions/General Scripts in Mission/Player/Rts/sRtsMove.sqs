@@ -1,20 +1,32 @@
 ; args: clicked position
 _c = count TzkSelectedUnits
 ? _c == 0: goto "Quit"
-_netIds = []; _netIds resize _c; _sumX = 0; _sumY = 0; _i = 0
-# calc
+
+_sumX = 0; _sumY = 0; _i = 0
+# calcPos
 	_obj = TzkSelectedUnits select _i
-	_netIds set [_i, NetworkID _obj]
 	_pos = getPosASL _obj
 	_sumX = _sumX + (_pos select 0)
 	_sumY = _sumY + (_pos select 1)
 	_i = _i + 1
-	? _i < _c: goto "calc"
-
+	? _i < _c: goto "calcPos"
 _pos set [0, _sumX / _c]; _pos set [1, _sumY / _c]
 
-? isServer: [_netIds, _this, _pos] exec "Server\Rts\hMove.sqs"
-? not isServer: publicExec format [{[%1, %2, %3] exec "Server\Rts\hMove.sqs"}, _netIds, _this, _pos]
+_selectedUnits = +TzkSelectedUnits
+_len = 16; _j = 0; _cj = _c / _len; _cj = _cj - (_cj % 1) + 1; _i = 0
+# loop
+	_left = _len * _j
+	_right = _len * (_j + 1) - 1
+	? _j == _cj - 1: _right = _c - 1
+	["Server\Rts\hMove.sqs", [_this, _pos], _left, _right, _selectedUnits] exec "Player\Rts\GenStrAndExec.sqs"
+	_j = _j + 1
+	? _j < _cj: goto "loop"
+
+; request server hoster restart the server
+_netId = NetworkID (TzkSelectedUnits select 0)
+? _netId select 1 >= 8388608: hint "Too large network id detected. Maybe ask server hoster to restart the server after this game, or the RTS design may be invalid."
+_num2 = (_netId select 1) % 100000; _num1 = ((_netId select 1) - _num2) / 100000
+? "IF" == name player: showDebug [format ["network id: %1%2", _num1, _num2], 5000]
 
 # Quit
 false call preprocessFile "Player\Rts\Area.sqf"

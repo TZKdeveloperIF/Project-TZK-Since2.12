@@ -1,6 +1,7 @@
 ? not isServer: exit
-_netIds = _this select 0; _clickedPos = _this select 1; _rtsCentralPos = _this select 2
-_param = [_clickedPos, _rtsCentralPos]
+
+; args: [NetworkID[], [clicked pos, central pos]]
+_netIds = _this select 0; _param = _this select 1
 _c = count _netIds
 ? 0 == _c: exit
 
