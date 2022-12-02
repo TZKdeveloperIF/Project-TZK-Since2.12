@@ -34,7 +34,7 @@ _aa SetVectorDirAndUp [_vector, [0,0,1]]
 
 ; Inform plane as "imcoming missile warning" since IncomingMissile-EH won't be triggered
 _script = "Common\EH\CreateShell_AnitPlane.sqs"
-_str = format [{[UnitById %1, UnitById %2, UnitById %3] exec "%4"}, NetworkID _target, NetworkID _aa, NetworkID _source, _script]
+_str = format [{[UnitById %1, UnitById %2, UnitById %3] exec "%4"}, _target call funcGenNetIdStr, _aa call funcGenNetIdStr, _source call funcGenNetIdStr, _script]
 publicExec _str
 [_target, _aa, _source] exec _script
 

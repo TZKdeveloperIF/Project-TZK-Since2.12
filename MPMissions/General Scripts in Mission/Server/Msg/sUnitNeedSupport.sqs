@@ -8,7 +8,7 @@ _needHeal = (if _heal then {" need repair"} else {""})
 _needRearm = (if _rearm then {" need rearm"} else {""})
 
 _msg = format ["%1 @ %2%3%4", _name, (getPosASL _vehicle) call funcCalcMapPos, _needHeal, _needRearm]
-publicExec format [{if ((side UnitByID %1) == playerSide) then {%1 sidechat %2}}, NetworkID _vehicle, _msg]
+publicExec format [{if ((side UnitByID %1) == playerSide) then {UnitByID %1 sidechat %2}}, _vehicle call funcGenNetIdStr, _msg]
 
 ? isNull player: exit
 ? (side _unit) != playerSide : exit
