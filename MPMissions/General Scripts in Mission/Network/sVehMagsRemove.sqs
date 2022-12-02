@@ -1,0 +1,5 @@
+; args [vehicle]
+_vehicle = _this select 0; _this = 0
+
+publicExec format [{unitById %1 exec {Network\hVehMagsRemove.sqs}}, _vehicle call funcGenNetIdStr]
+_vehicle exec {Network\hVehMagsRemove.sqs}

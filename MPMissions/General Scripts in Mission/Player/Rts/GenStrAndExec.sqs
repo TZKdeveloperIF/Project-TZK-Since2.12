@@ -10,13 +10,12 @@ _scrpit = _this select 0; _param = _this select 1; _left = _this select 2; _righ
 _i = _left
 # loop
 	_obj = _selectedUnits select _i
-	_netId = NetworkID _obj
-	? isServer: _netIds set [_i - _left, _netId], goto "netIdGet"
+	? isServer: _netIds set [_i - _left, NetworkID _obj], goto "netIdGet"
 	; if server hosts too long the NetworkID will return a too large number
 	; and auto-convert the number to string will lost info
 	; format the str manually
 	_num2 = (_netId select 1) % 100000; _num1 = ((_netId select 1) - _num2) / 100000
-	_str = _str + format [{["%1",%2%3]%4}, _netId select 0, _num1, _num2, if (_i != _right) then {","} else {""}]
+	_str = _str + format [{%1%2}, _obj call funcGenNetIdStr, if (_i != _right) then {","} else {""}]
 
 	# netIdGet
 	_i = _i + 1

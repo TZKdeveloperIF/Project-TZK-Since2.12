@@ -156,7 +156,7 @@ _script = "Common\EH\Fired_ReviseAsAssigned.sqs"
 		? !someAmmo _vehicle: goto "WaitRearmComplete"
 	~_delay + 1
 	? _speed <= 0: goto "PrePareToAttack"
-	_delay = 1; [_vehicle, _speed] exec "\TZK_Scripts_4_0_4\Common\ReEquip\SwitchMagPreset.sqs"; _unit groupChat "Switching magazine. Again, if I'm far away, use Unit Camera and look at me."
+	_delay = 1; [_vehicle, _speed] exec localize {TZK_FUNC_SWITCH_MAG_PRESET}; _unit groupChat "Switching magazine. Again, if I'm far away, use Unit Camera and look at me."
 	#WaitSwitchComplete
 		~_delay
 		? call orderCheck : goto "EOF"

@@ -13,6 +13,6 @@ if (!bool_TZK_199_Mode && (
 	if (local _vehicle) then {
 		_vehicle addMagazine "DeploySwitch_xj400", [_vehicle, 1] exec _script;
 	} else {
-		publicExec format [{unitById %1 addMagazine "DeploySwitch_xj400", [unitById %1, 1] exec "%2"}, networkID _vehicle, _script];
+		publicExec format [{unitById %1 addMagazine "DeploySwitch_xj400", [unitById %1, 1] exec "%2"}, _vehicle call funcGenNetIdStr, _script];
 	};
 };

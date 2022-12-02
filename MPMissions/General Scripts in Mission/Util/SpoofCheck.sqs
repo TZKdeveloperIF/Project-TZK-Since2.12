@@ -12,7 +12,7 @@ _timeAbort = time + 10
 ? _time > 10 : goto "Quit"
 ? _missile distance _target > 400: _timeAbort = time + 0.33; goto "Check"
 
-? !bool_TZK_199_Mode: _NetWorkID = NetworkID _target; _code = format [{[UnitById %1] exec "\TZK_Scripts_4_0_4\Player\Effect\SpoofFlare.sqs"}, _NetWorkID]; publicExec _code
+? !bool_TZK_199_Mode: _code = format [{[UnitById %1] exec "\TZK_Scripts_4_0_4\Player\Effect\SpoofFlare.sqs"}, _target call funcGenNetIdStr]; publicExec _code
 ? bool_TZK_199_Mode: [_target] exec "\TZK_Scripts_4_0_4\Common\Msg\sSpoofTarget.sqs", exit
 [_target] exec "\TZK_Scripts_4_0_4\Player\Effect\SpoofFlare.sqs"
 

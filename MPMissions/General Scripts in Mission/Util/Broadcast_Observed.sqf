@@ -3,7 +3,7 @@ _vehNew = _this select 1;
 
 if (!bool_TZK_199_Mode) then {
 	_script = "Util\ObservedModify.sqs";
-	_str = format [{[UnitById %1, UnitById %2] exec "%3"}, NetworkID _vehOld, NetworkID _vehNew, _script];
+	_str = format [{[UnitById %1, UnitById %2] exec "%3"}, _vehOld call funcGenNetIdStr, _vehNew call funcGenNetIdStr, _script];
 	publicExec _str;
 	[_vehOld, _vehNew] exec _script;
 } else {

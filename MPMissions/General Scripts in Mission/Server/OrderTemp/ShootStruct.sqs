@@ -160,7 +160,7 @@ _script = "Common\EH\Fired_ReviseAsAssigned.sqs"
 		? !(alive _unit) || _vehicle != vehicle _unit: goto "EOF"
 		? !someAmmo _vehicle: goto "WaitRearmComplete"
 	~ _delay + 1
-	? _speed > 0: [_vehicle, _speed] exec "\TZK_Scripts_4_0_4\Common\ReEquip\SwitchMagPreset.sqs"
+	? _speed > 0: [_vehicle, _speed] exec localize {TZK_FUNC_SWITCH_MAG_PRESET}
 	goto "PrePareToAttack"
 
 ; End Of File

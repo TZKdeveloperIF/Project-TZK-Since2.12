@@ -1,0 +1,1 @@
+funcGenNetIdStr = preprocessFile "Network\GenNetIdStr.sqf";
