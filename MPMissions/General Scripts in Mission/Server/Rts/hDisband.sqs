@@ -1,0 +1,24 @@
+? not isServer: exit
+
+; args: [NetworkID[], -1]
+_netIds = _this select 0; _this = 0
+_c = count _netIds
+? 0 == _c: exit
+
+_i = 0
+# kill
+	_unit = UnitById(_netIds select _i)
+	_unit setDamage 1
+
+	_i = _i + 1
+	? _i < _c: goto "kill"
+
+~2
+
+_i = 0
+# remove
+	_unit = UnitById(_netIds select _i)
+	? _unit != leader group _unit: deleteVehicle _unit
+
+	_i = _i + 1
+	? _i < _c: goto "remove"

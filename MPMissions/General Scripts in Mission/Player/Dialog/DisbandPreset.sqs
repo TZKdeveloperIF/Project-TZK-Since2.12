@@ -1,0 +1,38 @@
+; args: none
+@ not mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "DisbandGroupDialog"
+mutexDlg = false
+
+btnDisbandGroupLeader = false
+btnDisbandGroupOK = false
+btnDisbandGroupExit = false
+btnDisbandGroupInf = false
+btnDisbandGroupGunner = false
+
+# Update
+	? call dlgUpdated: exit
+	? !(alive player) : closeDialog 0; exit
+
+	? btnDisbandGroupOK : closeDialog 0; goto "BeginDisbandGroup"
+	? btnDisbandGroupExit : btnDisbandGroupExit  = false; closeDialog 0; exit
+	? btnDisbandGroupInf : closeDialog 0; goto "BeginDisbandGroup"
+	? btnDisbandGroupGunner : closeDialog 0; goto "BeginDisbandGroup"
+
+	~ 0.1
+	goto "Update"
+
+# BeginDisbandGroup
+	? btnDisbandGroupOK: _selectedUnits = +TzkSelectedUnits, goto "Finish"
+	? btnDisbandGroupInf: _bDisband = {_this == vehicle _this}
+	? btnDisbandGroupGunner: _bDisband = {_this == vehicle _this || _this != gunner vehicle _this}
+	_selectedUnits = []; _i = 0
+	{if (_x call _bDisband) then {_selectedUnits set [_i, _x], _i = _i + 1}} forEach TzkSelectedUnits
+
+# Finish
+	btnDisbandGroupLeader = false
+	btnDisbandGroupOK = false
+	btnDisbandGroupExit = false
+	btnDisbandGroupInf = false
+	btnDisbandGroupGunner = false
+	_selectedUnits exec "Player\Rts\sDisband.sqs"; closeDialog 0; goto "Quit"
