@@ -8,6 +8,7 @@ if (_this) then {
 	} forEach (groupAiMatrix select siPlayer);
 	// activate selected units' highlighting
 	TzkMapSelectedHighlight = false;
+	if (0 == count TzkSelectedUnits) then {TzkMapSelectEmptyTime = time} else {TzkMapSelectEmptyTime = 0};
 } else {
 	_index = 0;
 	{
@@ -30,4 +31,5 @@ if (_this) then {
 		_gi = _gi + 1;	
 	};
 	TzkSelectedUnits resize 0;
+	TzkMapSelectEmptyTime = 0;
 };
