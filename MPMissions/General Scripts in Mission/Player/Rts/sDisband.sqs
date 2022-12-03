@@ -1,0 +1,16 @@
+; args: selected Units[]
+_c = count _this
+? _c == 0: goto "Quit"
+
+_len = 16; _j = 0; _cj = _c / _len; _cj = _cj - (_cj % 1) + 1; _i = 0
+# loop
+	_left = _len * _j
+	_right = _len * (_j + 1) - 1
+	? _j == _cj - 1: _right = _c - 1
+	["Server\Rts\hDisband.sqs", -1, _left, _right, _this] exec "Player\Rts\GenStrAndExec.sqs"
+	_j = _j + 1
+	? _j < _cj: goto "loop"
+
+# Quit
+false call preprocessFile "Player\Rts\Area.sqf"
+false call preprocessFile "Player\Rts\Selection.sqf"
