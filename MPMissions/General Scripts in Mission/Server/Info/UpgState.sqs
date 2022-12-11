@@ -24,5 +24,3 @@ _value = _value + TotalInfoTypes*(count upgDefs)*3*_si
 ? upgPlaneAfterBurner == _upg: if !(isNull player) then {if (_si == siPlayer) then {bAfterBurner = _state == 2}}
 
 ? upgSpoofMissile == _upg: if !(isNull player) then {if (_si == siPlayer) then {bSpoofMissile = _state == 2}}
-
-? upgSatCam == _upg && _state == 2: TZK_Force_Random_Weather = true, if (Weather_TZK in ["Sunny", "Cloudy", "Overcast"]) then {_item_Index = Vote_ItemNames find "Weather", _item_Value = Vote_Item_Weather find "Rainy", [_item_Index, _item_Value] exec "Server\Vote\Vote_Effect.sqs"}
