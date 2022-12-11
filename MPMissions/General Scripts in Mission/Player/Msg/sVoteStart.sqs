@@ -8,7 +8,6 @@ _item_Value = _this select 3
 @!(mutexVote)
 mutexVote = true
 ? time > 2*60*60 && (Vote_ItemNames select _item_Index == "Income Ratio" || Vote_ItemNames select _item_Index == "View Distance"): "Not allow vote view distance or income ratio after 2 hours." exec "Util\GlobalMsg.sqs", goto "RecordYourVote"
-? TZK_Force_Random_Weather && Vote_ItemNames select _item_Index == "Weather": "Weather is fixed now." exec "Util\GlobalMsg.sqs", goto "RecordYourVote"
 ? time > 3 * 60 * 60 && Vote_ItemNames select _item_Index == "Time Limit": "Not allow vote time limit after 3 hours." exec "Util\GlobalMsg.sqs", goto "RecordYourVote"
 
 _value = _si + 2*_gi + 2*GroupsNum*_item_Index + 2*GroupsNum*(count Vote_Matrix)*_item_Value
