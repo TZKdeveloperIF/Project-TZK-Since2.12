@@ -1,14 +1,15 @@
 ﻿#include "Calc.h"
 
 #define _USE_MATH_DEFINES
-#include <math.h>
+// #include <math.h>
+#include <cmath>
 #include <algorithm>
-#include <iostream>
-#include <assert.h>
+#include <stdio.h>
+// #include <assert.h>
 
 #ifdef _DEBUG
 	#define ASSERT(statement) \
-		if (not (statement)) std::cout << #statement << '\n';
+		if (not (statement)) printf(#statement##"\n");
 #else
 	#define ASSERT(statement)
 #endif
@@ -113,7 +114,8 @@ double Core::upwardDist(double elev) const
 		return invalidDist;
 	// 修正
 	if (abs(vy) < 0.00001)
-		std::cout << "too little delta h in last correction: " << vy << '\n';
+		printf("vy is close to 0 in upwardDist's last correction. h: %f, v: %f, elev: %f",
+			m_h, m_v, elev);
 	// 最后一次迭代的竖直位移为 h - h0。不考虑vy接近零的边界情形
 	return x + (m_h - h) / (h - h0) * (x - x0);
 }
@@ -142,7 +144,8 @@ double Core::downwardDist(double elev) const
 		return invalidDist;
 	// 修正
 	if (abs(vy) < 0.00001)
-		std::cout << "too little delta h in last correction: " << vy << '\n';
+		printf("vy is close to 0 in downwardDist's last correction. h: %f, v: %f, elev: %f",
+			m_h, m_v, elev);
 	// 最后一次迭代的竖直位移为 h - h0。不考虑vy接近零的边界情形
 	return x + (m_h - h) / (h - h0) * (x - x0);
 }
@@ -167,8 +170,6 @@ double Core::getMaxH() const
 		vy1 = vy0; vy0 = vy;
 	}
 	// last correction
-	if (abs(vy0 - vy1) < 0.00001)
-		std::cout << "too little delta v in last correction: " << vy0 - vy1 << '\n';
 	h = h - (0 - vy0) / (vy1 - vy0) * (h - h0);
 	return h;
 }
@@ -279,16 +280,16 @@ double Calc::lowElev(double x) const
 {
 	ASSERT(m_core.canReach(x));
 	double dist = x - 100;
-	double left = invalidElev, right = invalidElev;
+	double left = invalidElev, right = invalidElev, mid = invalidElev;
 	// m_h > 0时，lowElev的解可对应于炮弹以vy > 0命中目标的情形。由于轨迹的单调性，它是这种情况下的唯一解。
 	if (m_core.m_h > 0 && m_core.minUpwardElevDist >= x)
 	{
-		assert(m_core.minUpwardElevVal != invalidDist);
+		// assert(m_core.minUpwardElevVal != invalidDist);
 		// 在 [m_core.minUpwardElevVal, 90] 上二分查找
 		left = m_core.minUpwardElevVal, right = 90;
 		do
 		{
-			double mid = (left + right) / 2;
+			mid = (left + right) / 2;
 			dist = m_core.upwardDist(mid);
 			if (dist >= x)
 				left = mid;
@@ -302,40 +303,40 @@ double Calc::lowElev(double x) const
 		left = m_core.minDownwardElevVal, right = m_core.maxDownwardDistElev;
 		do
 		{
-			double mid = (left + right) / 2;
+			mid = (left + right) / 2;
 			dist = m_core.downwardDist(mid);
 			if (dist >= x)
 				right = mid;
 			else
 				left = mid;
-		} while (abs(left - right) > 0.0001 && abs(x - dist) > 1);
+		} while (abs(left - right) > 0.000001 && abs(x - dist) > 1);
 	}
 	if (abs(x - dist) > 1)
-	{
-		std::cout << "Imprecise result. Speed: " << m_core.m_v << ", height: " << m_core.m_h
-			<< ", dist: " << x << ", calc res: " << dist << '\n';
-	}
-	return left;
+		printf("Imprecise result. Speed: %f, height: %f, dist: %f, calc res: %f\n",
+			m_core.m_v, m_core.m_h, x, dist
+		);
+
+	return mid;
 }
 double Calc::highElev(double x) const
 {
 	ASSERT(m_core.canReach(x));
 	// 在 [m_maxDistElev, 90]上二分查找
-	double left = m_core.maxDownwardDistElev, right = 90;
+	double left = m_core.maxDownwardDistElev, right = 90, mid = invalidElev;;
 	double dist = x - 100;
 	do
 	{
-		double mid = (left + right) / 2;
+		mid = (left + right) / 2;
 		dist = m_core.downwardDist(mid);
 		if (dist >= x)
 			left = mid;
 		else
 			right = mid;
-	} while (abs(left - right) > 0.0001 && abs(x - dist) > 1);
+	} while (abs(left - right) > 0.000001 && abs(x - dist) > 1);
 	if (abs(x - dist) > 1)
-	{
-		std::cout << "Imprecise result. Speed: " << m_core.m_v << ", height: " << m_core.m_h
-			<< ", dist: " << x << ", calc res: " << dist << '\n';
-	}
-	return left;
+		printf("Imprecise result. Speed: %f, height: %f, dist: %f, calc res: %f\n",
+			m_core.m_v, m_core.m_h, x, dist
+		);
+
+	return mid;
 }
