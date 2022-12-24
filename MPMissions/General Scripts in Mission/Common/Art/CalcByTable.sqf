@@ -5,13 +5,15 @@ _posT = _this select 1;
 _v = _this select 2;
 _bHigh = _this select 3;
 
-_valid = TzkArt406; _ret = [false];
+_valid = true; _ret = 180;
+// valid elev ∈ [-90, 90]. 180 means invalid.
+// Use bits to mark the invalid reason. 1 means v isn't in table, 2 means h/d isn't in table, 4 means no solution
 
-if (-1 == TzkArtSpeeds find _v) then {_valid = false};
+if (-1 == TzkArtSpeeds find _v) then {_valid = false, _ret = _ret + 1};
 if (_valid) then {
 	_h = (_posT select 2) - (_posV select 2);
 	_d = sqrt ( ((_posV select 0) - (_posT select 0))^2 + ((_posV select 1) - (_posT select 1))^2 );
-	if (_h < -500 || _h >= 800 || _d < 10 || _d >= 3000) then {_valid = false};
+	if (_h < -500 || _h >= 800 || _d < 10 || _d >= 3000) then {_valid = false, _ret = _ret + 2};
 };
 if (_valid) then {
 	_h1 = _h - _h % 10;
@@ -27,6 +29,7 @@ if (_valid) then {
 		if (_this select 2) then {"high"} else {"low"}
 	]};
 	private [{_fh1d1}, {_fh1d2}, {_fh2d1}, {_fh2d2}, {_arr}];
+	_ret = _ret + 4; // no solution if 0x04 bit is set
 	if (_valid) then {
 		_fh1d1 = (_d1 / 10 - 1) call loadFile ([_v, _h1, _bHigh] call _lambda);
 		if (180 == _fh1d1) then {_valid = false};
@@ -44,12 +47,10 @@ if (_valid) then {
 		if (180 == _fh2d2) then {_valid = false};
 	};
 	if (_valid) then {
-		_ret set [0, true];
-		_elev = (
+		_ret = (
 			(_h - _h1) * (_d - _d1) * _fh2d2 + (_h - _h1) * (_d2 - _d) * _fh2d1 +
 			(_h2 - _h) * (_d - _d1) * _fh1d2 + (_h2 - _h) * (_d2 - _d) * _fh1d1
 		) / (_h2 - _h1) / (_d2 - _d1);
-		_ret set [1, _elev];
 	};
 };
 _ret
