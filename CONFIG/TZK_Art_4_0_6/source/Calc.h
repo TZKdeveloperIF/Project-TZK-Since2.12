@@ -11,6 +11,8 @@ struct Core
 {
 public:
 	explicit Core(int h, int v);
+	Core(const Core&);
+
 	bool canReach(double x) const;
 	double upwardDist(double elev) const;
 	double downwardDist(double elev) const;

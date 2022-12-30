@@ -1,4 +1,4 @@
-#include "Calc.h"
+﻿#include "Calc.h"
 
 #define _USE_MATH_DEFINES
 // #include <math.h>
@@ -77,6 +77,18 @@ Core::Core(int h, int v) : m_h(h), m_v(v)
 		minDownwardElevDist = invalidDist;
 	}
 }
+Core::Core(const Core& rhs)
+	: m_h(rhs.m_h), m_v(rhs.m_v)
+{
+	maxH = rhs.maxH;
+	maxDownwardDistVal = rhs.maxDownwardDistVal;
+	maxDownwardDistElev = rhs.maxDownwardDistElev;
+	minUpwardElevVal = rhs.minUpwardElevVal;
+	minUpwardElevDist = rhs.minUpwardElevDist;
+	minDownwardElevVal = rhs.minDownwardElevVal;
+	minDownwardElevDist = rhs.minDownwardElevDist;
+}
+
 
 bool Core::canReach(double x) const
 {
