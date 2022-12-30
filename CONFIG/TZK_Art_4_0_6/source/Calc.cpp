@@ -1,4 +1,4 @@
-﻿#include "Calc.h"
+#include "Calc.h"
 
 #define _USE_MATH_DEFINES
 // #include <math.h>
@@ -33,24 +33,24 @@ namespace
 	{
 		const double K1 = fx(vx, vy);
 		const double L1 = fy(vx, vy);
-		const double K2 = fx(vx + dt / 2 * K1, vy + dt / 2 * L1);
-		const double L2 = fy(vx + dt / 2 * K1, vy + dt / 2 * L1);
-		const double K3 = fx(vx + dt / 2 * K2, vy + dt / 2 * L2);
-		const double L3 = fy(vx + dt / 2 * K2, vy + dt / 2 * L2);
-		const double K4 = fx(vx + dt / 2 * K3, vy + dt / 2 * L3);
-		const double L4 = fy(vx + dt / 2 * K3, vy + dt / 2 * L3);
+		const double K2 = fx(vx + dt / 2.0 * K1, vy + dt / 2.0 * L1);
+		const double L2 = fy(vx + dt / 2.0 * K1, vy + dt / 2.0 * L1);
+		const double K3 = fx(vx + dt / 2.0 * K2, vy + dt / 2.0 * L2);
+		const double L3 = fy(vx + dt / 2.0 * K2, vy + dt / 2.0 * L2);
+		const double K4 = fx(vx + dt / 2.0 * K3, vy + dt / 2.0 * L3);
+		const double L4 = fy(vx + dt / 2.0 * K3, vy + dt / 2.0 * L3);
 		
-		vx = vx + dt / 6 * (K1 + 2 * K2 + 2 * K3 + K4);
-		vy = vy + dt / 6 * (L1 + 2 * L2 + 2 * L3 + L4);
+		vx = vx + dt / 6.0 * (K1 + 2.0 * K2 + 2.0 * K3 + K4);
+		vy = vy + dt / 6.0 * (L1 + 2.0 * L2 + 2.0 * L3 + L4);
 		return dt;
 	}
 	double deg2rad(double deg)
 	{
-		return deg / 180 * M_PI;
+		return deg / 180.0 * M_PI;
 	}
 	double rad2deg(double rad)
 	{
-		return rad / M_PI * 180;
+		return rad / M_PI * 180.0;
 	}
 	constexpr double invalidElev = 180.0;
 	constexpr double invalidDist = -1.0;
@@ -114,7 +114,7 @@ double Core::upwardDist(double elev) const
 		return invalidDist;
 	// 修正
 	if (abs(vy) < 0.00001)
-		printf("vy is close to 0 in upwardDist's last correction. h: %f, v: %f, elev: %f",
+		printf("vy is close to 0 in upwardDist's last correction. h: %f, v: %f, elev: %f\n",
 			m_h, m_v, elev);
 	// 最后一次迭代的竖直位移为 h - h0。不考虑vy接近零的边界情形
 	return x + (m_h - h) / (h - h0) * (x - x0);
@@ -144,7 +144,7 @@ double Core::downwardDist(double elev) const
 		return invalidDist;
 	// 修正
 	if (abs(vy) < 0.00001)
-		printf("vy is close to 0 in downwardDist's last correction. h: %f, v: %f, elev: %f",
+		printf("vy is close to 0 in downwardDist's last correction. h: %f, v: %f, elev: %f\n",
 			m_h, m_v, elev);
 	// 最后一次迭代的竖直位移为 h - h0。不考虑vy接近零的边界情形
 	return x + (m_h - h) / (h - h0) * (x - x0);
