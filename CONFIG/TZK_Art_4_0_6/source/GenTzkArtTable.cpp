@@ -1,8 +1,7 @@
-﻿#include <fstream>
+#include <fstream>
 #include <stdio.h>
 #include <string>
 #include <vector>
-#include <unordered_map>
 
 #include <direct.h>
 #include <io.h>
@@ -212,18 +211,17 @@ std::string num2str(int x)
 }
 void testCase()
 {
-	{
-		double v = 300, h = 47, d = 1866;
+	auto test = [](int v, int h, int d) -> void {
 		double exactElev = Calc(h, v).Exec(d).lowElev;
-		double h1 = 40, h2 = 50, d1 = 1860, d2 = 1870;
+		int h1 = h - h % 10, h2 = h1 + 10, d1 = d - d % 10, d2 = d1 + 10;
 		double fh1d1 = Calc(h1, v).Exec(d1).lowElev,
 			fh1d2 = Calc(h1, v).Exec(d2).lowElev,
 			fh2d1 = Calc(h2, v).Exec(d1).lowElev,
 			fh2d2 = Calc(h2, v).Exec(d2).lowElev;
 		double gridRes = (
-			(h - h1) * (d - d1) * fh2d2 + (h - h1) * (d2 - d) * fh2d1 +
-			(h2 - h) * (d - d1) * fh1d2 + (d2 - d) * (h2 - h) * fh1d1
-			) / (d2 - d1) / (h2 - h1);
+			double(h - h1) * double(d - d1) * fh2d2 + double(h - h1) * double(d2 - d) * fh2d1 +
+			double(h2 - h) * double(d - d1) * fh1d2 + double(d2 - d) * double(h2 - h) * fh1d1
+			) / double(d2 - d1) / double(h2 - h1);
 
 		printf("======== test case ========\n");
 		printf("exactElev: %f\n", exactElev);
@@ -232,26 +230,9 @@ void testCase()
 		double dist2 = Core(h, v).downwardDist(gridRes);
 		printf("dist1: %f\n", dist1);
 		printf("dist2: %f\n\n", dist2);
-	}
-	{
-		double v = 22, h = 5, d = 15;
-		double exactElev = Calc(h, v).Exec(d).lowElev;
-		double h1 = 0, h2 = 10, d1 = 10, d2 = 20;
-		double fh1d1 = Calc(h1, v).Exec(d1).lowElev,
-			fh1d2 = Calc(h1, v).Exec(d2).lowElev,
-			fh2d1 = Calc(h2, v).Exec(d1).lowElev,
-			fh2d2 = Calc(h2, v).Exec(d2).lowElev;
-		double gridRes = (
-			(h - h1) * (d - d1) * fh2d2 + (h - h1) * (d2 - d) * fh2d1 +
-			(h2 - h) * (d - d1) * fh1d2 + (d2 - d) * (h2 - h) * fh1d1
-			) / (d2 - d1) / (h2 - h1);
+	};
+	test(300, 47, 1866);
+	test(1500, 790, 2999);
 
-		printf("======== test case ========\n");
-		printf("exactElev: %f\n", exactElev);
-		printf("grid result: %f\n", gridRes);
-		double dist1 = Core(h, v).downwardDist(exactElev);
-		double dist2 = Core(h, v).downwardDist(gridRes);
-		printf("dist1: %f\n", dist1);
-		printf("dist2: %f\n\n", dist2);
-	}
+	printf("\n");
 }
