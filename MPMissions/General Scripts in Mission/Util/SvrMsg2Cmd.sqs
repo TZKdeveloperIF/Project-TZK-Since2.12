@@ -1,0 +1,7 @@
+; args: [si, msg]
+? isNull player: exit
+_si = _this select 0
+? _si != siBoth && _si != siPlayer: exit
+? groupPlayer != (groupCommander select siPlayer): exit
+
+("Server Message to commander: " + (_this select 1)) exec "Util\GlobalMsg.sqs"

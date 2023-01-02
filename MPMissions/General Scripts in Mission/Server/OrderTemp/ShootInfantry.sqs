@@ -1,56 +1,61 @@
 ; args: [_unit(object), _si, _gi, _attackPos, _radius, _target(object), _dispersion, _commandType(enum), _biggerAngle(enum)]
-_unit = _this select 0
-_si = _this select 1
-_gi = _this select 2
-_attackPos = _this select 3
-_radius = _this select 4
-_target = _this select 5
-_dispersion = _this select 6
-_commandType = _this select 7
-_biggerAngle = (if (count _this > 8) Then {_this select 8} Else {0})
-_this = nil
+_unit = _this select 0, _si = _this select 1, _gi = _this select 2
+_attackPos = _this select 3, _radius = _this select 4, _target = _this select 5
+_dispersion = _this select 6, _commandType = _this select 7
+_biggerAngle = (if (count _this > 8) then {_this select 8} else {0})
+_biggerAngle = (if (_biggerAngle > 0) then {true} else {false})
+_this = 0
 ; enum commandType {throw, grenadeL, mortar};
 _speed = [22, 60, 70] select _commandType; _range = [60, 150, 450] select _commandType; _text = ["Throw_xj400", "Grenade", "Mortar"] select _commandType
 _weapon = ["Throw_xj400", primaryWeapon _unit, primaryWeapon _unit] select _commandType
 _weaponCheck = [ {_this hasWeapon "Throw_xj400"}, {(primaryWeapon _this) in ["M16GrenadeLauncher_TZK_xj400", "AK74GrenadeLauncher_TZK_xj400", "M4_M203_ACOG_SD_xj400", "AK74M_GP25_1P29_SD_xj400", "MM1", "6G30"]}, {(primaryWeapon _this) in ["M16MortarLauncher_TZK_xj400", "AK74MortarLauncher_TZK_xj400"]} ] select _commandType
 _validMags = [ [{HandGrenade},{RKG3M_xj400}, {SmokeShell}, {SmokeShellGreen}, {SmokeShellRed}], ["GrenadeLauncher", "GP25_Grenade_xj400", "GP25_Vest_xj400", "M203_Grenade_xj400", "M203_Vest_xj400", "MM1Magazine", "6G30Magazine", primaryWeapon _unit], ["M16MortarLauncher_TZK_xj400", "AK74MortarLauncher_TZK_xj400"] ] select _commandType
-_rldTime = [3.5, if (_weapon == "MM1" || _weapon == "6G30") Then {0.6} Else {5.5}, 5.5] select _commandType
+_rldTime = [3.5, if (_weapon == "MM1" || _weapon == "6G30") then {0.6} else {5.5}, 5.5] select _commandType
 _fireCommand = ["(_this select 0) fire (_this select 1)", "(_this select 0) fire (_this select 1)", "(_this select 0) fire [_this select 1, _this select 1, _this select 1]"] select _commandType
 
-_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Common\EH\Fired_ReviseShellDir.sqs"
-? _biggerAngle > 0: _heliH = typeOf _target camCreate [0,0,0]; _script = "Common\EH\Fired_ReviseShell_BigAngle.sqs"
-; CheckDistance
-_posOrdered = getPosASL _vehicle; _distLimit = _range + 350; _hint = "Target is too far for infantry " + _text + ". Order aborted."
-; Check both distance between assigned CO waypoint and target and between unit and target.
-? ([_unit, _attackPos] call funcDistH) > 512 || ([_attackPos, _target] call funcDistH) > _distLimit: _unit groupChat _hint; goto "EOF"
-; Quit if CO undefined.
-? _attackPos select 0 < 0: goto "EOF"
-; Ask unit get close to CO if unit isn't in CO's range (radius).
-? [_attackPos, _vehicle] call funcDistH > _radius: _posOrdered = [_attackPos, _radius/3, _radius] call funcGetRandomPos; _posOrdered set [2,0]
-#PrepareToMove
-[_unit, _posOrdered] call funcMoveAI
-; Not allow soldiers directly fire. They're required to go to CO pos first.
-#CheckCOReached
+_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Common\EH\Fired_Art_406.sqs"
+? _biggerAngle: _heliH = typeOf _target camCreate [0,0,0]
+# CheckDistance
+	_posOrdered = getPosASL _vehicle; _distLimit = _range + 350; _hint = "Target is too far for infantry " + _text + ". Order aborted."
+	; Check both distance between assigned CO waypoint and target and between unit and target.
+	? ([_unit, _attackPos] call funcDistH) > 512 || ([_attackPos, _target] call funcDistH) > _distLimit: _msg = _hint; goto "EOF"
+	; Quit if CO undefined.
+	? _attackPos select 0 < 0: goto "EOF"
+	; Ask unit get close to CO if unit isn't in CO's range (radius).
+	? [_attackPos, _vehicle] call funcDistH > _radius: _posOrdered = [_attackPos, _radius/3, _radius] call funcGetRandomPos; _posOrdered set [2,0]
+
+
+
+_quitCond = {not (_unit call temporaryCheck) || not alive _unit || _vehicle != vehicle _unit}
+_msg = ""
+
+
+
+
+# PrepareToMove
+	[_unit, _posOrdered] call funcMoveAI
+	; Not allow soldiers directly fire. They're required to go to CO pos first.
+# CheckCOReached
 	[_unit, _posOrdered] call funcMoveAI
 	~5
-	? !(_unit call temporaryCheck): goto "EOF"
-	? !(alive _unit) || _unit != vehicle _unit: goto "EOF"
+	? call _quitCond: goto "EOF"
 	? ([_unit, _posOrdered] call funcDistH) > 20: goto "CheckCOReached"
-? ([_target, _posOrdered] call funcDistH) < _range: goto "PrePareToAttack"
+	? ([_target, _posOrdered] call funcDistH) < _range: goto "PrePareToAttack"
 	
-#CheckPosReached
+# CheckPosReached
 	_vector = [getPos _target, _posOrdered] call funcVectorSub; _dist = (_unit distance _target) - _range*8/9
 	_vector = [_vector, _dist/(_dist+_range*8/9)] call funcVectorScale; _destination = [_posOrdered, _vector] call funcVectorAdd
 	[_unit, _destination] call funcMoveAI
 	~5
-	? !(_unit call temporaryCheck): goto "EOF"
-	? !(alive _unit) || _unit != vehicle _unit: goto "EOF"
+	? call _quitCond: goto "EOF"
 	? _unit distance _target > _range || [_unit, _destination] call funcDistH > 5: goto "CheckPosReached"
 	_posOrdered = getPosASL _vehicle
-#PrePareToAttack
+
+
+# PrePareToAttack
 	; weapon check
-	? !(_unit call _weaponCheck): _unit groupChat ("No proper weapon for " + _text + ". Order Aborted."), goto "EOF"
-	; _unit groupChat "Target in range. Prepare to attack.";
+	? !(_unit call _weaponCheck): _msg = ("No proper weapon for " + _text + ". Order Aborted."), goto "EOF"
+	; _msg = "Target in range. Prepare to attack.";
 	doStop _unit
 	_vehicle reveal _target
 	_vehicle doTarget _target
@@ -62,89 +67,92 @@ _posOrdered = getPosASL _vehicle; _distLimit = _range + 350; _hint = "Target is 
 
 
 
+# PreCalculate
+	_ammoArray = _vehicle ammoArray _weapon
+	? count _ammoArray == 0: _msg = "No available magazine. Order aborted. Rearm me please, sir."; goto "EOF"
+	; The applying of "_ammoOld" will invalid magazines containing only 1 shot. If wish to use such a magazine, adjust this script manually.
+	_equippedMag = _ammoArray select 0, _ammoOld = _ammoArray select 1
+	? _equippedMag == "": goto "EOF"
 
+	? _unit distance _target > _range: goto "CheckDistance"
 
+	_posV = getPosASL _vehicle; _posT = getPosASL _target; _posT set [2, _posT call funcHASL]
+	_calc = [_posV, _posT, _speed, _biggerAngle] call funcCalcArt406
+	? 180 > _calc: _elev = _calc; goto "ResObtained"
+	_calc = _calc - 180
 
+	_bit = _calc % 2
+	? _bit > 0: _msg = format ["Invalid initSpeed: %1. Switch another magazine please.", _speed]; goto "EOF"
+	_calc = _calc - _bit
+	_bit = _calc % 4
+	? _bit > 0: _msg = "Invalid delta height or distance. Reassign the target please."; goto "EOF"
+	_calc = _calc - _bit
+	_bit = _calc % 8
+	? _bit > 0: _msg = "Current parameters can't hit the target. Adjust the target or switch another mag please."; goto "EOF"
+	_msg = "unexpected case."; goto "EOF"
 
-#PreCalculate
-; 单位移动到位, 且武器检查完毕（弹夹不检查, 因为速度可能需要调整）后, 进行预计算. 所需的空间信息已知, 而弹夹速度还未知. 采用矩阵记录信息的方式, 获取有效弹夹及相应的速度. 
-; 预计算如果得不到合适的结果, 则设置弹夹的切换, 或终止命令.
+# ResObtained
+	; Calculate turbulence
+	; 用弧长除以半径获得方位角的范围; 考虑散布范围的最近点，计算命中它所需的角度，以修正量作为俯仰角的扰动范围
+	_angle = ((_posT select 1) - (_posV select 1)) atan2 ((_posT select 0) - (_posV select 0));
+	_distX = [_posV, _posT] call funcDistH
+	_angleDelta = (_dispersion/2)/_distX * 180/pi
+	_vector = [_posT, _posV] call funcVectorSub
+	_nearestPoint = [_posT, [_vector, - _dispersion/_distX] call funcVectorScale] call funcVectorAdd
+	_nearestPoint set [2, _nearestPoint call funcHASL]
+	_calc = [_posV, _nearestPoint, _speed, _biggerAngle] call funcCalcArt406
+	? _calc >= 180: _angleDelta = 0, _thetaDelta = 0
+	? _calc < 180: _thetaDelta = abs(_calc - _elev)
+	; 当载具的位置发生了变化 (变化10米以上), 或目标的位置发生了变化, 或弹夹发生了切换, 需要重新回到试射环节.
 
-; In OFP no vanilla way to obtain direction of turret. Initial angle is 30° or 60°. In pre-calculating we iterate mostly elevation angle.
-_posV = getPosASL _vehicle; _posT = getPosASL _target; _posT set [2, _posT call funcHASL]
-_elev = if(_biggerAngle > 0) then "60" else "30"
-? _unit distance _target > _range:  goto "CheckDistance"
-
-
-
-
-
-
-
-; for soldier, the _speed is certain value depending on the weapon type. Otherwise obtain _speed from magazine in SQS script.
-@ !mutexTzkArtModule
-	mutexTzkArtModule = true
-	_res = [ [_vehicle, _weapon, ""], _posT, _speed, _elev, _biggerAngle ] call preprocessFile "Common\Art\PreCalcArtInfo.sqf"
-	~ 0.1
-	mutexTzkArtModule = false
-; _res format: [bool acceptable return value, _elev, _speed]
-? _res select 0 != 0: goto "EOF"
-_elev = _res select 1; _speed = _res select 2
-; Calculate turbulence
-; 切向简单地用弧长除以半径就能获得方位角的范围; 径向则需要针对修正值做一次迭代, 节省运算量的做法是对于[r,R]的范围, 仅计算r的修正, 将修正量取反作为R的近似值.
-_angle = ((_posT select 1) - (_posV select 1)) atan2 ((_posT select 0) - (_posV select 0)); 
-_distX = [_posV, _posT] call funcDistH
-_angleDelta = (_dispersion/2)/_distX * 180/pi
-_thetaDelta = 1
-_r0_r1_bH = [_speed * cos(_elev + _thetaDelta), _speed * sin(_elev + _thetaDelta), (_posT call funcHASL) - (_posV select 2), false] call loadFile "Common\EH\RK4_Range_H.sqf"
-_error = (_r0_r1_bH select 1) - _distX
-? _error != 0: _thetaDelta = _thetaDelta * _dispersion / abs(_error)
-_script = "Common\EH\Fired_ReviseAsAssigned.sqs"
-; 当载具的位置发生了变化(距离计算使用的位置超出50米), 或目标的位置发生了变化, 或弹夹发生了切换, 需要重新回到试射环节.
-; hint format ["%1", [_elev, _speed, _angle, _angleDelta, _thetaDelta]]
+	; outer variables for attack loop
+	_delay = 0
 	; For TZK customed GL, the "muzzle" using same name as "weapon". Thus unnecessary to worry about GL in TZK. Check it in more general way.
 	_magazines = _unit call funcGetNotEmptyMags
 	_numOfMagLast = 1 + ("_x in _validMags" count _magazines)
-	#AttackCheck
-		_posTarget = [getPos _target, 0, _dispersion] call funcGetRandomPos; _posTarget set [2,0]
-		? _unit distance _target > _range: goto "PrepareToMove"
-		? _biggerAngle > 0: _posH = [_posTarget, getPos _vehicle] call funcVectorSub, _posH set [2,1], _length = _posH call funcVectorLength, _posH = [_posH, 600/_length] call funcVectorScale, _posH set [2, 6*173.2], _posH = [_posH, getPos _vehicle] call funcVectorAdd, _heliH setPos _posH, _vehicle reveal _heliH
-		_vehicle reveal (if (_biggerAngle > 0) then "_heliH" else "_target")
-		~0.1
-		_vehicle doTarget (if (_biggerAngle > 0) then "_heliH" else "_target")
-		; Rearm check should be placed in loop below, due to time cost of animation.
-		
-		; delay must be correctly assigned for "fire" command.
-		#WaitUntilReload
+# AttackCheck
+	? 10 < [_vehicle, _posV] call funcDistH || 10 < [_target, _posT] call funcDistH: goto "PreCalculate"
+	? _unit distance _target > _range: goto "PrepareToMove"
+	? _biggerAngle: _posH = [_posT, _posV] call funcVectorSub, _posH set [2, 0], _length = _posH call funcVectorLength, _posH = [_posH, 600/_length] call funcVectorScale, _posH set [2, 600 * 1.732], _posH = [_posH, _posV] call funcVectorAdd, _heliH setPosASL _posH
+
+	_vehicle reveal (if _biggerAngle then "_heliH" else "_target")
+	~0.1
+	_vehicle doTarget (if _biggerAngle then "_heliH" else "_target")
+	; Rearm check should be placed in loop below, due to time cost of animation.
+	
+	; delay must be correctly assigned for "fire" command.
+	# WaitUntilReload
 		; For soldier weapon, the reload time should be calculated manually, considering the reload animation time cost.
-			_delay = _rldTime
-			~ _delay
-			? !(_unit call temporaryCheck): goto "EOF"
-			? !(alive _unit) || _vehicle != vehicle _unit: goto "EOF"
-			? "_x in _validMags" count _magazines == 0: goto "CheckRearm"
-			? bool_TZK_199_Mode: if ("_x in _validMags" count _magazines == 1 && _vehicle ammo _weapon == 0) Then {goto "CheckRearm"}
-			
-			_magazines = _unit call funcGetNotEmptyMags
-			? ("_x in _validMags" count _magazines) >= _numOfMagLast && _unit ammo _weapon < 1: goto "WaitUntilReload"
-		_numOfMagLast = "_x in _validMags" count _magazines
+		~ _delay
+		_delay = _rldTime
+		? call _quitCond: goto "EOF"
+		? "_x in _validMags" count _magazines == 0: goto "CheckRearm"
 		
-		? 50 < [_vehicle, _posV] call funcDistH || 50 < [_target, _posT] call funcDistH: goto "PreCalculate"
-		; what if magazine changed? sure the elevation will change too.
-		
-		_ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev]
-		_vehicle addEventHandler [ "Fired", format [{[_this, %1, %2] exec "%3"}, [_speed, _angle - _angleDelta + _angleDelta*(random 2), _elev - _thetaDelta + _thetaDelta*(random 2)], _ehRev, _script] ]
-		[_vehicle, _weapon] call _fireCommand
-		goto "AttackDone"
-		
-		#AttackDone
-		~0.1
-		if (_biggerAngle > 0) Then "_vehicle doWatch _posH" Else "_vehicle doWatch _posT"
+		_magazines = _unit call funcGetNotEmptyMags
+		? ("_x in _validMags" count _magazines) >= _numOfMagLast && _unit ammo _weapon < 1: goto "WaitUntilReload"
+	
+	; check ammoarray again since delayed
+	_ammoArray = _vehicle ammoArray _weapon
+	? count _ammoArray == 0: _msg = "No available magazine. Order aborted. Rearm me please, sir."; goto "EOF"
+	_currentMag = _ammoArray select 0
+	? _currentMag != _equippedMag: goto "PreCalculate"
+
+	_numOfMagLast = "_x in _validMags" count _magazines
+	; what if magazine changed? sure the elevation will change too.
+	
+	_ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev]
+	_vehicle addEventHandler ["Fired", format [{[_this, %1, %2, %3, %4] exec "%5"}, _speed, _angle - _angleDelta + _angleDelta*(random 2), _elev - _thetaDelta + _thetaDelta*(random 2), _ehRev, _script] ]
+	[_vehicle, _weapon] call _fireCommand
+	
+	; AttackDone
+	~0.1
+	if _biggerAngle then {_vehicle doWatch _posH} else {_vehicle doWatch _posT}
 	goto "AttackCheck"
-#CheckRearm
+# CheckRearm
 	_magData = (_unit call funcGetRearmData) select 1
-	? !([ _validMags, _magData] call funcArrayOverlap): _unit groupChat "My magData isn't match current command. Won't go rearm and order aborted."; goto "EOF"
+	? !([ _validMags, _magData] call funcArrayOverlap): _msg = "My magData isn't match current command. Won't go rearm and order aborted."; goto "EOF"
 	_sup = [_unit, _si, 512, true] call preprocessFile "Util\SoldierRearmSupport.sqf"
-	? isNull _sup: _unit groupChat "No support vehicle within 512 meters. Magazines exhausted. Order aborted."; goto "EOF"
+	? isNull _sup: _msg = "No support vehicle within 512 meters. Magazines exhausted. Order aborted."; goto "EOF"
 	_unit groupChat "Moving to support vehicle for more magazines."
 
 	_timeAbort = time + 15*60
@@ -153,16 +161,14 @@ _script = "Common\EH\Fired_ReviseAsAssigned.sqs"
 		_posMove = [getPos _sup, _posMove] call funcVectorSub
 		[_unit, _posMove] call funcMoveAI
 		~5
-		? !(alive _unit) || _unit != vehicle _unit: goto "EOF"
-		? !(_unit call temporaryCheck): goto "EOF"
+		? call _quitCond: goto "EOF"
 		? !(alive _sup): goto "CheckRearm"
-		? time > _timeAbort: _unit groupChat "Cost too much time. Unable to reach support vehicle. Order aborted."; goto "EOF"
+		? time > _timeAbort: _msg = "Cost too much time. Unable to reach support vehicle. Order aborted."; goto "EOF"
 		? (_unit distance _sup) > 10: goto "MoveToSupport"
 	[_unit, _si, _gi, _vehicle, _type, _sup] exec "Server\AI_Rearm.sqs"; [_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
 	#WaitRearmComplete
 		~5
-		? !(_unit call temporaryCheck): goto "EOF"
-		? !(alive _unit) || _vehicle != vehicle _unit: goto "EOF"
+		? call _quitCond: goto "EOF"
 		? !someAmmo _vehicle: goto "WaitRearmComplete"
 	goto "PrepareToMove"
 
@@ -170,5 +176,6 @@ _script = "Common\EH\Fired_ReviseAsAssigned.sqs"
 #EOF
 _unit call busyClear
 _unit call temporaryClear
-? _biggerAngle > 0: deleteVehicle _heliH
+? _biggerAngle: deleteVehicle _heliH
+? _msg != "": _msg = format ["[%1] ", _unit] + _msg, [_si, _msg] exec "Server\Msg\sSvrMsg2Cmd.sqs"
 exit
