@@ -29,7 +29,7 @@ _typeIndex = ([{Soldier}, {Light Tank}, {Heavy Tank}] + ArtilleryTypeDefs) selec
 ? _typeIndex == "Howitzer Structure": 	_bStruct = true;	_orderTypes = structsOccupiableHowitzer;
 ? _typeIndex == "Vehicles":				_bVeh = true;		_orderTypes = typesLightTank + typesHeavyTank + _types_howitzer + typesRocketLauncher;
 ? _typeIndex == "Structures":			_bStruct = true; 	_orderTypes = structsOccupiableArtilleryMortar + structsOccupiableHowitzer;
-? _typeIndex == "ALL":		_bVeh = true; _bStruct = true; 	_orderTypes = typesInfantryAll + typesLightTank + typesHeavyTank + _types_howitzer + typesRocketLauncher + structsOccupiableArtilleryMortar + structsOccupiableHowitzer;
+? _typeIndex == "ALL": _bInfantry = true; _bVeh = true; _bStruct = true; 	_orderTypes = typesInfantryAll + typesLightTank + typesHeavyTank + _types_howitzer + typesRocketLauncher + structsOccupiableArtilleryMortar + structsOccupiableHowitzer;
 
 _vehicle = vehicle _unit
 ? !local _vehicle: exit
@@ -39,19 +39,20 @@ _target = call _marker
 ? _unit == _vehicle: goto "CheckInfantry"
 ? !_bVeh: goto "VehicleChecked"
 _vt = _vehicle call funcGetUnitTypeFromObject
-? _vt == -1: if !_bStruct then {exit} else {goto "VehicleChecked"}
+? _vt == -1: if not _bStruct then {exit} else {_bVeh = false; goto "VehicleChecked"}
 ? !(_vt in _orderTypes): exit
-_bVeh = true; _bStruct = false; goto "Start"
+_bInfantry = false; _bVeh = true; _bStruct = false; goto "Start"
 
-#VehicleChecked
+# VehicleChecked
 ? !_bStruct: exit
 _vt = _vehicle call funcGetStructTypeFromObject
 ? _vt == -1: exit
 ? !(_vt in _orderTypes): exit
-_bVeh = false; _bStruct = true; goto "Start"
+_bInfantry = false; _bVeh = false; _bStruct = true; goto "Start"
 
-#CheckInfantry
+# CheckInfantry
 ? !_bInfantry: exit
+_bInfantry = true; _bVeh = false; _bStruct = false
 goto "Start"
 
 #Start
@@ -76,7 +77,7 @@ _magData = (_unit call funcGetRearmData) select 1
 _weapons = weapons _unit; _magzines = magazines _unit
 ? [["M16MortarLauncher_TZK_xj400", "AK74MortarLauncher_TZK_xj400"], _magzines + _magData] call funcArrayOverlap: [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, 2, _biggerAngle] exec "Server\OrderTemp\ShootInfantry.sqs"; exit
 ? [["M16GrenadeLauncher_TZK_xj400", "AK74GrenadeLauncher_TZK_xj400", "M4_M203_ACOG_SD_xj400", "AK74M_GP25_1P29_SD_xj400", "MM1", "6G30"], _weapons] call funcArrayOverlap: [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, 1, _biggerAngle] exec "Server\OrderTemp\ShootInfantry.sqs"; exit
-? "_x in [{HandGrenade}, {SmokeShell}, {SmokeShellGreen}, {SmokeShellRed}]" count (_magzines + _magData) > 0: [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, 0, _biggerAngle] exec "Server\OrderTemp\ShootInfantry.sqs"; exit
+? "_x in [{HandGrenade},{RKG3M_xj400}, {SmokeShell}, {SmokeShellGreen}, {SmokeShellRed}]" count (_magzines + _magData) > 0: [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, 0, _biggerAngle] exec "Server\OrderTemp\ShootInfantry.sqs"; exit
 exit
 
 #SkipInfantry
