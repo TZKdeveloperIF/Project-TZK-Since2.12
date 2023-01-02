@@ -3,7 +3,7 @@
 
 _vehicle = _this select 0; _bullet = _this select 1; _this = 0
 ; available to soldier weapon since 4.0.6
-? "man" countType [_vehicle] == 0: exit
+? not dev && "man" countType [_vehicle] == 0: exit
 
 ; ? isNull player: exit
 ? !(gunner _vehicle in units group player) && !local _vehicle: exit

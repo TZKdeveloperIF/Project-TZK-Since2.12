@@ -14,7 +14,7 @@ _timeCalcArtKa = 30
 
 # Update
 ~2
-	? pvGameOver != -1 : [] exec "Common\Dynamic\TriggerGameEnd.sqs"; exit
+	? pvGameOver != -1 : [] exec localize {TZK_TRIGGER_GAME_END_COMMON}; exit
 
 	? bool_TZK_SEMod_Mode && _time > _timeCalcArtKa: _timeCalcArtKa = _time + 30; [-1, si0] exec "Server\Art\CalcKa.sqs"; [-1, si1] exec "Server\Art\CalcKa.sqs"
 	
@@ -49,5 +49,5 @@ _timeCalcArtKa = 30
 # TimeLimitReached
 	pvGameOver = (1) + 2*(0)
 	PublicVariable "pvGameOver"
-	[] exec "Common\Dynamic\TriggerGameEnd.sqs"
+	[] exec localize {TZK_TRIGGER_GAME_END_COMMON}
 	exit
