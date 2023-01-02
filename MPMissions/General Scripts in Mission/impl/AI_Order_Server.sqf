@@ -27,6 +27,7 @@ _oldPrefix = "\TZK_Scripts_4_0_5\Server\Order\"; _len = sizeofstr _oldPrefix;
 } forEach orderDefs;
 
 orderTempDefs select orderTempRearm set [2, "Server\OrderTemp\Rearm.sqs"];
+orderTempDefs select orderTempChangeAmmo set [2, "Server\OrderTemp\ChangeAmmo.sqs"];
 comment {
 	orderTempDefs select orderTempMoveUnit set [2, "Server\OrderTemp\MoveUnit.sqs"];
 };
