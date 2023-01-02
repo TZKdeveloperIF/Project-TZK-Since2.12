@@ -22,7 +22,7 @@ _magData = (_unit call funcGetRearmData) select 1
 _weapons = weapons _unit; _magzines = magazines _unit
 ? [["M16MortarLauncher_TZK_xj400", "AK74MortarLauncher_TZK_xj400"], _magzines + _magData] call funcArrayOverlap: [_unit, _marker, _target, 2, _dispersion, _biggerAngle] exec "Player\Order\ShootInfantry.sqs"; exit
 ? [["M16GrenadeLauncher_TZK_xj400", "AK74GrenadeLauncher_TZK_xj400", "M4_M203_ACOG_SD_xj400", "AK74M_GP25_1P29_SD_xj400", "MM1", "6G30"], _weapons] call funcArrayOverlap: [_unit, _marker, _target, 1, _dispersion, _biggerAngle] exec "Player\Order\ShootInfantry.sqs"; exit
-? "_x in [{HandGrenade}, {SmokeShell}, {SmokeShellGreen}, {SmokeShellRed}]" count (_magzines + _magData) > 0: [_unit, _marker, _target, 0, _dispersion, _biggerAngle] exec "Player\Order\ShootInfantry.sqs"; exit
+? "_x in [{HandGrenade},{RKG3M_xj400}, {SmokeShell}, {SmokeShellGreen}, {SmokeShellRed}]" count (_magzines + _magData) > 0: [_unit, _marker, _target, 0, _dispersion, _biggerAngle] exec "Player\Order\ShootInfantry.sqs"; exit
 
 #CheckVehicle
 _vt = _vehicle call funcGetUnitTypeFromObject
