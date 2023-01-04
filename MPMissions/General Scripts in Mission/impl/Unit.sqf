@@ -2,8 +2,7 @@
 TzkSkillLevel = [1, 1, 1, 1, 1];
 _i = 0; _c = count TzkUnitSkillVal; while {_i < _c} do {
 	_val = TzkUnitSkillVal select _i;
-	if (_val == 0.75) then {TzkUnitSkillVal set [_i, 0.74]};
-	if (_val == 0.85) then {TzkUnitSkillVal set [_i, 0.84]};
+	TzkUnitSkillVal set [_i, 1];
 	_i = _i + 1;
 };
 
