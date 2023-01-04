@@ -1,4 +1,4 @@
-private [{_h}, {_v}, {_d}, {_bHigh}, {_posV}, {_posT}];
+private [{_h}, {_v}, {_d}, {_bHigh}, {_posV}, {_posT}, {_ret}];
 
 _posV = _this select 0;
 _posT = _this select 1;

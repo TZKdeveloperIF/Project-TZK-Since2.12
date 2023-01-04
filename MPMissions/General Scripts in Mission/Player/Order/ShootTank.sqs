@@ -18,8 +18,8 @@ _longRangeCoef = 1.5
 ? _type in (typesLightTank + typesHeavyTank): _biggerAngle = false; _longRangeCoef = 2
 
 _quitCond = {call orderCheck || not alive _unit || _vehicle != vehicle _unit}
-
-
+_msg = ""
+_isServer = false; _isVehicle = true; _isStruct = false;
 
 
 _vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Common\EH\Fired_Art_406.sqs"
@@ -27,8 +27,11 @@ _vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Common\EH\Fire
 # CheckDistance
 	_posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is outside viewDistance. Order aborted."
 	? upgMatrix select _si select upgLongWeaponRange == 2: _distLimit = _longRangeCoef * viewDistance; _hint = format ["Target is outside %1x viewDistance. Order aborted.", _longRangeCoef]
-	? _unit distance _target > _distLimit: _unit groupChat _hint; goto "EOF"
+	? _unit distance _target > _distLimit: _msg = _hint; goto "EOF"
 	? _unit distance _target < _distLimit && _unit distance _target > viewDistance: _unit groupChat "Target is far. Probably missing."
+
+
+
 # PrepareToMove
 ; For player controlled tanks, the order will directly use its current position as shooting position. This position is restored only for return after having rearmed.
 
@@ -37,103 +40,68 @@ _unit groupChat "Moving to attacking position."; _timeStart = time; _timeHint = 
 _hint = ["I've been running for %1 minutes. Distance %2 meters now.", (_timeHint -_timeStart)/60, (_unit distance _target) - (_unit distance _target)%1]
 ? _typeName in ["TOS1_TZK_xj400", "M109A6G_xj400", "PLZ05_TZK_xj400"] && "_x == {DeploySwitch_xj400}" count magazines _vehicle > 0: [_vehicle, 0] exec "\TZK_Scripts_4_0_4\Common\Effect\DeployChange.sqs"
 
-
 # CheckPosReached
-
-
 	_unit doMove _posOrdered
 	~5
-	? call _quitCond: goto "EOF"
+	? call _quitCond: _msg = ""; goto "EOF"
 	? ([getPos _unit, _posOrdered] call funcDistH) > 30: goto "CheckPosReached"
 	? time > _timeHint: hint format _hint; _timeHint = _timeHint + 5*60
 # PrePareToAttack
-	; weapon check unnecessary for tank. They're always use first weapon defined in CONFIG.CPP as main gun.
-	_unit groupChat "In position. Prepare to attack.";
-	driver _vehicle action ["ENGINE OFF", _vehicle]; _vehicle engineOn false
-	_vehicle reveal _target
-	_vehicle doTarget _target
-
-	_delay = 3
-	; Delay for turning the turret. It'll be good to obtain proper value by the angle's difference, however no way to compute this in OFP.
-	? _typeName in ["TOS1_TZK_xj400", "M109A6G_xj400", "PLZ05_TZK_xj400"]: [_vehicle, 1] exec "\TZK_Scripts_4_0_4\Common\Effect\DeployChange.sqs"; _delay = [3, 8] select ("_x == {DeploySwitch_xj400}" count magazines _vehicle == 0)
+	_delay = 0
+	_ret = call preprocessFile "Art\AimAndCalcDelay.sqf"
+	? not _ret: goto "EOF"
 	~ _delay
 
-	_weapon = (_vehicle call funcVehParamWeapons) select 0
-	? !(_vehicle hasWeapon _weapon): _unit groupChat "No proper weapon. Order aborted. Rearm me or help me deploy, sir."; goto "EOF"
-	_weapons = (weapons _vehicle) - [_weapon]; {_vehicle removeWeapon _x} forEach _weapons; {_vehicle addWeapon _x} forEach _weapons
+	_weapon = ""
+	_ret = call preprocessFile "Art\PrepareWeapon.sqf"
+	? not _ret: goto "EOF"
 # PreCalculate
-	_ammoArray = _vehicle ammoArray _weapon
-	? count _ammoArray == 0: _unit groupChat "No available magazine. Order aborted. Rearm me please, sir."; goto "EOF"
-	; The applying of "_ammoOld" will invalid magazines containing only 1 shot. If wish to use such a magazine, adjust this script manually.
-	_equippedMag = _ammoArray select 0, _ammoOld = _ammoArray select 1
-	? _equippedMag == "": goto "EOF"
-
-	_bAvoidStruct = 50 + _dispersion > ([getPos _target, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1 && _type in typesHowitzer
-	? _bAvoidStruct: _unit groupChat "Banned in shooting structure directly."; goto "EOF"
 	? _unit distance _target > _distLimit: goto "CheckDistance"
 
-	; _magazines = _vehicle call funcGetNotEmptyMags; _validMags = [_weapon] call funcWeaponValidMags
+	_ammoArray = _vehicle ammoArray _weapon; _equippedMag = ""; _ammoOld = 0;
+	_ret = call preprocessFile "Art\PreAnalysis.sqf"
+	? not _ret: goto "EOF"
+
 	_posV = getPosASL _vehicle; _posT = getPosASL _target; _posT set [2, _posT call funcHASL]
 	_speed = call format ["%1", _equippedMag GetWeaponParam "initSpeed"]
-
-
-
-	_calc = [_posV, _posT, _speed, _biggerAngle] call funcCalcArt406
-	? 180 > _calc: _elev = _calc; goto "ResObtained"
-	_calc = _calc - 180
-
-	_bit = _calc % 2
-	? _bit > 0: _unit groupChat format ["Invalid initSpeed: %1. Switch another magazine please.", _speed]; goto "EOF"
-	_calc = _calc - _bit
-	_bit = _calc % 4
-	? _bit > 0: _unit groupChat "Invalid delta height or distance. Reassign the target please."; goto "EOF"
-	_calc = _calc - _bit
-	_bit = _calc % 8
-	? _bit > 0: _unit groupChat "Current parameters can't hit the target. Adjust the target or switch another mag please."; goto "EOF"
-	_unit groupChat "unexpected case."; goto "EOF"
-
-# ResObtained
-	; Calculate turbulence
-	; 用弧长除以半径获得方位角的范围; 考虑散布范围的最近点，计算命中它所需的角度，以修正量作为俯仰角的扰动范围
-	_angle = ((_posT select 1) - (_posV select 1)) atan2 ((_posT select 0) - (_posV select 0));
-	_distX = [_posV, _posT] call funcDistH
-	_angleDelta = (_dispersion/2)/_distX * 180/pi
-	_vector = [_posT, _posV] call funcVectorSub
-	_nearestPoint = [_posT, [_vector, - _dispersion/_distX] call funcVectorScale] call funcVectorAdd
-	_nearestPoint set [2, _nearestPoint call funcHASL]
-	_calc = [_posV, _nearestPoint, _speed, _biggerAngle] call funcCalcArt406
-	? _calc >= 180: _angleDelta = 0, _thetaDelta = 0
-	? _calc < 180: _thetaDelta = abs(_calc - _elev)
-	; 当载具的位置发生了变化 (变化10米以上), 或目标的位置发生了变化, 或弹夹发生了切换, 需要重新回到试射环节.
+	_angle = 0; _angleDelta = 0; _elev = 0; _thetaDelta = 0
+	_ret = call preprocessFile "Art\PreCalculate.sqf"
+	? not _ret: goto "EOF"
 
 	; outer variables for attack loop
-	_delay = 0
-	_reloadMagazine = false
+	_delay = 0; _reloadMagazine = false
 # AttackCheck
+	; 当载具的位置发生了变化 (变化10米以上), 或目标的位置发生了变化, 或弹夹发生了切换, 需要重新回到试射环节.
 	? 10 < [_vehicle, _posV] call funcDistH || 10 < [_target, _posT] call funcDistH: goto "PreCalculate"
 	_currentMag = _equippedMag
 	? _unit distance _target > _distLimit: goto "CheckDistance"
 	? _biggerAngle: _posH = [_posT, _posV] call funcVectorSub, _posH set [2, 0], _length = _posH call funcVectorLength, _posH = [_posH, 600/_length] call funcVectorScale, _posH set [2, 600 * 1.732], _posH = [_posH, _posV] call funcVectorAdd, _heliH setPosASL _posH
 
-	_vehicle reveal (if _biggerAngle then {_heliH} else {_target})
+	? _biggerAngle: _vehicle reveal _heliH
+	_vehicle reveal _target
 	~0.1
 	_vehicle doTarget (if _biggerAngle then {_heliH} else {_target})
 
 	~0.1
-	? call _quitCond: goto "EOF"
-	? _vehicle knowsAbout _target < 0.01: _unit groupChat "Can't locate the target. Order Aborted. Help me spot it again please."; goto "EOF"
+	? call _quitCond: _msg = ""; goto "EOF"
+	? _vehicle knowsAbout _target < 0.01: _msg = "Can't locate the target. Order Aborted. Help me spot it again please."; goto "EOF"
 
 	? 0 == _ammoOld: _magazines = _vehicle call funcGetNotEmptyMags; _validMags = [_weapon] call funcWeaponValidMags; if ({_x in _validMags} count _magazines == 0) then {goto "CheckRearm"};
 
 	; _ammoArray is initialized before the loop and updated after having shot while before next loop delay
-	? count _ammoArray == 0: _unit groupChat "Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."; goto "EOF"
+	? count _ammoArray == 0: _msg = "Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."; goto "EOF"
 	_currentMag = _ammoArray select 0
 	? _currentMag != _equippedMag: goto "PreCalculate"
 
 	; no way in 2.01 to know when will a mag is loaded. Force shoot and wait until shooting actually happen using "_ammoOld"
 	~ _delay
-	? call _quitCond: goto "EOF"
-	; ASSERT(count _ammoArray > 0)
+	? call _quitCond: _msg = ""; goto "EOF"
+	; check ammoarray again since delayed
+	_ammoArray = _vehicle ammoArray _weapon
+	? count _ammoArray == 0: _msg = "Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."; goto "EOF"
+	_currentMag = _ammoArray select 0
+	? _currentMag != _equippedMag: goto "PreCalculate"
+
 	? not local gunner _vehicle: _delay = 5; goto "AttackCheck"
 	? "BLUE" == combatMode _vehicle || "GREEN" == combatMode _vehicle: _delay = 5; goto "AttackCheck"
 	? 1 == _ammoOld: _reloadMagazine = true
@@ -146,8 +114,8 @@ _hint = ["I've been running for %1 minutes. Distance %2 meters now.", (_timeHint
 		_counter = 0
 		~ 1
 		_ammoArray = _vehicle ammoArray _weapon
-		? 0 == count _ammoArray: _unit groupChat "Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."; goto "EOF"
-		? call _quitCond: goto "EOF"
+		? 0 == count _ammoArray: _msg = "Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."; goto "EOF"
+		? call _quitCond: _msg = ""; goto "EOF"
 		_counter = _counter + 1
 		? _counter >= 30: _unit groupChat "Verify whether my main weapon is loaded, sir. If weapon is ready then reorder me and report a bug to script designer.", _counter = 0
 		? _ammoArray select 1 == _ammoOld && _ammoOld != 1: goto "w8UntilShooted"
@@ -163,22 +131,22 @@ _hint = ["I've been running for %1 minutes. Distance %2 meters now.", (_timeHint
 	goto "AttackCheck"
 # CheckRearm
 	_vs = [getPos _unit, 1500, (typesSupport select si0) + (typesSupport select si1) + [(typesMHQ select _si)], []] call funcGetNearbyVehicles
-	? count _vs == 0: _unit groupChat "No support vehicle within 1500 meters. Magazines exhausted. Order aborted."; goto "EOF"
+	? count _vs == 0: _msg = "No support vehicle within 1500 meters. Magazines exhausted. Order aborted."; goto "EOF"
 	_distMin = 1500; _sup = objNull
 	{ _dist = _unit distance (_x select 0); if (_dist < _distMin) then { _sup = (_x select 0); _distMin = _dist } } forEach _vs
-	? isNull _sup: _unit groupChat "No support vehicle near. Magazines exhausted. Order aborted."; goto "EOF"
+	? isNull _sup: _msg = "No support vehicle near. Magazines exhausted. Order aborted."; goto "EOF"
 	_unit groupChat "Moving to support vehicle for more magazines."
 
 	_timeAbort = time + 15*60
 	? _typeName in ["TOS1_TZK_xj400", "M109A6G_xj400", "PLZ05_TZK_xj400"] && "_x == {DeploySwitch_xj400}" count magazines _vehicle > 0: [_vehicle, 0] exec "\TZK_Scripts_4_0_4\Common\Effect\DeployChange.sqs"
-	#MoveToSupport
+	# MoveToSupport
 		_posMove = [[0,25], (getDir _sup)] call funcVectorRot2D
 		_posMove = [getPos _sup, _posMove] call funcVectorSub
 		_unit doMove _posMove
 		~5
-		? call _quitCond: goto "EOF"
+		? call _quitCond: _msg = ""; goto "EOF"
 		? !(alive _sup): goto "CheckRearm"
-		? time > _timeAbort: _unit groupChat "Cost too much time. Unable to reach support vehicle. Order aborted."; goto "EOF"
+		? time > _timeAbort: _msg = "Cost too much time. Unable to reach support vehicle. Order aborted."; goto "EOF"
 		? (_unit distance _sup) > 30: goto "MoveToSupport"
 	_speed = -1; _mag = "";
 	_magazines = magazines _vehicle; _validMags = [_weapon] call funcWeaponValidMags; {if (_x in _validMags) then {_mag = _x}} forEach _magazines
@@ -187,19 +155,20 @@ _hint = ["I've been running for %1 minutes. Distance %2 meters now.", (_timeHint
 	_unit groupChat "Rearming at support vehicle. If I'm far away from you, probably I can't receive supplemented magazines. In this case, please use Unit Camera and look at me."; [_unit, _sup] exec "Player\Rearm.sqs"; doStop _unit
 	# WaitRearmComplete
 		~5
-		? call _quitCond: goto "EOF"
+		? call _quitCond: _msg = ""; goto "EOF"
 		? !someAmmo _vehicle: goto "WaitRearmComplete"
 	~ _delay + 1
 	? _speed <= 0: goto "PrepareToMove"
 	_delay = 1; [_vehicle, _speed] exec localize {TZK_FUNC_SWITCH_MAG_PRESET}; _unit groupChat "Switching magazine. Again, if I'm far away, use Unit Camera and look at me."
 	# WaitSwitchComplete
 		~ _delay
-		? call _quitCond: goto "EOF"
+		? call _quitCond: _msg = ""; goto "EOF"
 		_delay = 5
 		? !someAmmo _vehicle: goto "WaitSwitchComplete"
 	goto "PrepareToMove"
 
 # EOF
-PlayerShootingUnits set [_uid, objNull]
-? _biggerAngle: deleteVehicle _heliH
-exit
+	PlayerShootingUnits set [_uid, objNull]
+	? _biggerAngle: deleteVehicle _heliH
+	? _msg != "": _unit groupChat _msg
+	exit
