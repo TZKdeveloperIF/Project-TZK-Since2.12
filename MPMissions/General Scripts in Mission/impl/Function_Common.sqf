@@ -1,2 +1,2 @@
 funcGenNetIdStr = preprocessFile "Network\GenNetIdStr.sqf";
-funcCalcArt406 = preprocessFile "Common\Art\CalcByTable.sqf";
+funcElevArt406 = preprocessFile "Common\Art\ElevByTable.sqf";
