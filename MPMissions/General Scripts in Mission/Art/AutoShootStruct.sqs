@@ -66,7 +66,8 @@ _vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Common\EH\Fire
 	; special correct for structure
 	if (200 == _speed) then {_speed = 120}; if (_speed > 400) then {_speed = 400}
 	_angle = 0; _angleDelta = 0; _elev = 0; _thetaDelta = 0
-	_ret = call preprocessFile "Art\Predicate.sqf"
+	; predicate on fire
+	; _ret = call preprocessFile "Art\Predicate.sqf"
 	; ? not _ret && _msg == "Predicate fail.": 
 	? not _ret: goto "EOF"
 
@@ -75,7 +76,7 @@ _vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Common\EH\Fire
 	; No reload magazine check. Structures are always local to server so they won't reload mags manually. And TZK equip only 1 mag to each structure.
 # AttackCheck
 	; 当载具的位置发生了变化 (变化10米以上), 或目标的位置发生了变化, 或弹夹发生了切换, 需要重新回到试射环节.
-	? 10 < [_vehicle, _posV] call funcDistH || 10 < [_target, _posT] call funcDistH: goto "PreCalculate"
+	; ? 10 < [_vehicle, _posV] call funcDistH || 10 < [_target, _posT] call funcDistH: goto "PreCalculate"
 	_currentMag = _equippedMag
 	? _unit distance _target > _distLimit: goto "CheckDistance"
 	? _biggerAngle: _posH = [_posT, _posV] call funcVectorSub, _posH set [2, 0], _length = _posH call funcVectorLength, _posH = [_posH, 600/_length] call funcVectorScale, _posH set [2, 600 * 1.732], _posH = [_posH, _posV] call funcVectorAdd, _heliH setPosASL _posH
@@ -109,8 +110,15 @@ _vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Common\EH\Fire
 	? "BLUE" == combatMode _vehicle || "GREEN" == combatMode _vehicle: _delay = 5; goto "AttackCheck"
 	; ? 1 == _ammoOld: _reloadMagazine = true
 
+	_posV = getPosASL _vehicle; _posT = getPosASL _target; _posT set [2, _posT call funcHASL]
+	_ret = call preprocessFile "Art\Predicate.sqf"
+	; ? not _ret && _msg == "Predicate fail.": 
+	? not _ret: goto "EOF"
+
+	; hint format ["ammo old val: %1\nammo array: %2\ndelay: %3", _ammoOld, _vehicle ammoArray _weapon, _delay]
+
 	_ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev]
-	_vehicle addEventHandler ["Fired", format [{[_this, %1, %2, %3, %4] exec "%5"}, _speed, _angle - _angleDelta + _angleDelta*(random 2), _elev - _thetaDelta + _thetaDelta*(random 2), _ehRev, _script] ]
+	_vehicle addEventHandler ["Fired", format [{[_this, %1, %2, %3, %4] exec "%5"}, _speed, _angle, _elev, _ehRev, _script] ]
 	_vehicle fire _weapon
 
 	# w8UntilShooted

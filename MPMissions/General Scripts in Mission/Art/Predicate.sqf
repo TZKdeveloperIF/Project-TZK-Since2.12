@@ -39,7 +39,7 @@ if _ret then {_elev = [_posV, _dest, _speed, _biggerAngle] call funcElevArt406};
 if (_i > 0 && not _ret) then {_msg = "Predicate fail."};
 
 if _ret then {
-	_angle = ((_posT select 1) - (_posV select 1)) atan2 ((_posT select 0) - (_posV select 0));
+	_angle = ((_dest select 1) - (_posV select 1)) atan2 ((_dest select 0) - (_posV select 0));
 };
 
 _ret
