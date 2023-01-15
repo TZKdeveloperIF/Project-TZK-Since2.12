@@ -65,9 +65,7 @@ _vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Common\EH\Fire
 
 	; _magazines = _vehicle call funcGetNotEmptyMags; _validMags = [_weapon] call funcWeaponValidMags
 	_posV = getPosASL _vehicle; _posT = getPosASL _target; _posT set [2, _posT call funcHASL]
-	_speed = call format ["%1", _equippedMag GetWeaponParam "initSpeed"]
-	; special correct for structure
-	if (200 == _speed) then {_speed = 120}; if (_speed > 400) then {_speed = 400}
+	_speed = call preprocessFile "Art\GetInitSpeed.sqf"
 	_angle = 0; _angleDelta = 0; _elev = 0; _thetaDelta = 0
 	_ret = call preprocessFile "Art\PreCalculate.sqf"
 	? not _ret: goto "EOF"
