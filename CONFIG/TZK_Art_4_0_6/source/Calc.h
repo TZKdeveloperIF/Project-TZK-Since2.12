@@ -4,8 +4,20 @@ struct Result
 {
 	bool valid = false;
 	int maxDist = -1; // 向下舍入到10整数倍的结果
-	double lowElev = -180;
-	double highElev = 180;
+	double lowElev = -180.0;
+	double highElev = 180.0;
+	double lowTime = -1.0;
+	double highTime = -1.0;
+};
+struct Trajectory
+{
+	double dist = -1.0;
+	double period = -1.0;
+};
+struct InitVal
+{
+	double elev = -180.0;
+	double period = -1.0;
 };
 struct Core
 {
@@ -14,8 +26,8 @@ public:
 	Core(const Core&);
 
 	bool canReach(double x) const;
-	double upwardDist(double elev) const;
-	double downwardDist(double elev) const;
+	Trajectory upward(double elev) const;
+	Trajectory downward(double elev) const;
 private:
 	double getMaxH() const;
 	double searchMinValidUpwardElev() const;
@@ -31,10 +43,11 @@ class Calc
 public:
 	explicit Calc(int h, int v);
 	Result Exec(int x) const;
+	const Core& GetCore() const { return m_core; }
 
 private:
-	double lowElev(double x) const;
-	double highElev(double x) const;
+	InitVal lowElev(double x) const;
+	InitVal highElev(double x) const;
 private:
 	const Core m_core;
 };
