@@ -1,4 +1,4 @@
-// args: [array (reference), begin (idx), end (idx), comparer, <need preprocess comparer>]
+// args: [array (reference), begin (idx), end (idx), element, comparer, <need preprocess comparer>]
 // comparer is func(elem1, elem2) => bool
 // if need preprocess, comparer should be "preprocessFile"
 // return: idx

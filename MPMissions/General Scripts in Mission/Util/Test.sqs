@@ -14,3 +14,18 @@ _diff3 = abs(([[0,0,0], [0,2999,790], 1500, false] call funcElevArt406) - 16.201
 _diff4 = abs(([[0,0,0], [0,11,-500], 80, true] call funcElevArt406) - 89.534434)
 player globalChat format ["%1", [_diff1, _diff2, _diff3, _diff4]]
 {if (_x > 0.001) then {player globalChat "funcElevArt406 has bug"}} forEach [_diff1, _diff2, _diff3, _diff4]
+
+~1
+; TzkArtSpeeds = [22, 60, 70, 80, 120, 180, 300, 400, 500, 800, 900, 1200, 1400, 1500]
+_speed = 200
+_i = [TzkArtSpeeds, 0, count TzkArtSpeeds, _speed, {(_this select 0) < (_this select 1)}] call preprocessFile "Util\stdLowerBound.sqf";
+? _i != 6: player globalChat "stdLowerBound or TzkArtSpeeds definition has bug"
+_speed = 20
+_i = [TzkArtSpeeds, 0, count TzkArtSpeeds, _speed, {(_this select 0) < (_this select 1)}] call preprocessFile "Util\stdLowerBound.sqf";
+? _i != 0: player globalChat "stdLowerBound or TzkArtSpeeds definition has bug"
+_speed = 827
+_i = [TzkArtSpeeds, 0, count TzkArtSpeeds, _speed, {(_this select 0) < (_this select 1)}] call preprocessFile "Util\stdLowerBound.sqf";
+? _i != 10: player globalChat "stdLowerBound or TzkArtSpeeds definition has bug"
+_speed = 1750
+_i = [TzkArtSpeeds, 0, count TzkArtSpeeds, _speed, {(_this select 0) < (_this select 1)}] call preprocessFile "Util\stdLowerBound.sqf";
+? _i != (count TzkArtSpeeds): player globalChat "stdLowerBound or TzkArtSpeeds definition has bug"
