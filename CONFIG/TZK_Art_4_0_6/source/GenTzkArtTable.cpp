@@ -19,12 +19,18 @@
 
 std::string num2str(int x);
 void testCase();
+void dynamicShootCalc();
 void genFileName(std::string& str, const int speed, const int h);
 void proc(int speed);
 
 int main()
 {
-	if (0 != _access("./output", 0) && 0 != _mkdir("./output"))
+	if (0 != _access("./elev", 0) && 0 != _mkdir("./elev"))
+	{
+		printf("Failed in mkdir. Run the program as administrator please.");
+		return 0;
+	}
+	if (0 != _access("./period", 0) && 0 != _mkdir("./period"))
 	{
 		printf("Failed in mkdir. Run the program as administrator please.");
 		return 0;
@@ -33,7 +39,7 @@ int main()
 	testCase();
 
 	// 手雷22，枪榴弹60，Mortar70，火炮模块80-500，坦克800-1750
-	std::vector<int> speeds = { 22, 60, 70, 80, 85, 120, 180, 300, 400, 500, 800, 900, 1200, 1400, 1500, 1750, 1800 };
+	std::vector<int> speeds = { 22, 60, 70, 80, 120, 180, 300, 400, 500, 800, 900, 1200, 1400, 1500 };
 	int nCpu = std::max(static_cast<int>(std::thread::hardware_concurrency()), 1);
 	int c = static_cast<int>(speeds.size());
 	int threadCnt = std::min(nCpu, c);
@@ -60,21 +66,37 @@ void genFileName(std::string& str, const int speed, const int h) {
 
 void proc(int speed)
 {
-	std::vector<double> lowVals, highVals;
-	lowVals.reserve(300); highVals.reserve(300);
+	std::vector<double> lowPeriods, highPeriods, lowElevs, highElevs;
+	lowPeriods.reserve(300); highPeriods.reserve(300); lowElevs.reserve(300); highElevs.reserve(300);
 	int h = -500;
 	bool hasResult = true;
 	for (; h <= 800; h += 10)
 	{
-		std::string file1("output/"), file2("output/");
+		std::string file1("elev/"), file2("elev/");
 		genFileName(file1, speed, h);
 		genFileName(file2, speed, h);
 		file1.append("_low.sqf"); file2.append("_high.sqf");
 		std::ofstream fout1(file1), fout2(file2);
 
+		std::string timeSqf1("period/"), timeSqf2("period/");
+		genFileName(timeSqf1, speed, h);
+		genFileName(timeSqf2, speed, h);
+		timeSqf1.append("_low.sqf"); timeSqf2.append("_high.sqf");
+		std::ofstream timeFout1(timeSqf1), timeFout2(timeSqf2);
+
+		auto outputDefaultInvalidValue = [](std::ofstream& os, const char* defaultValue) {
+			os << defaultValue;
+		};
+		auto outputInvalid = [&]() {
+			outputDefaultInvalidValue(fout1, "180");
+			outputDefaultInvalidValue(fout2, "180");
+			outputDefaultInvalidValue(timeFout1, "-1");
+			outputDefaultInvalidValue(timeFout2, "-1");
+		};
+
 		if (not hasResult)
 		{
-			fout1 << "180"; fout2 << "180";
+			outputInvalid();
 			continue;
 		}
 
@@ -83,129 +105,112 @@ void proc(int speed)
 		if (not res.valid)
 		{
 			hasResult = false;
-			fout1 << "180"; fout2 << "180";
+			outputInvalid();
 			continue;
 		}
 
-		lowVals.clear(); highVals.clear();
+		lowPeriods.clear(); highPeriods.clear(); lowElevs.clear(); highElevs.clear();
 		for (int d = 10; d <= 3000; d += 10)
 		{
 			res = calculator.Exec(d);
 			if (not res.valid)
 				break;
-			lowVals.push_back(res.lowElev);
-			highVals.push_back(res.highElev);
+			lowPeriods.push_back(res.lowTime);
+			highPeriods.push_back(res.highTime);
+			lowElevs.push_back(res.lowElev);
+			highElevs.push_back(res.highElev);
 		}
 
-		size_t len = lowVals.size();
+		size_t len = lowPeriods.size();
+		auto outputMode1 = [](std::ofstream& os, const char* defaultValue, const std::vector<double> data) {
+			size_t len = data.size();
+			os << "if (_this >= " << len << ") then {" << defaultValue << "} else {\n\t[\n\t\t";
+			os << data[0];
+			for (size_t i = 1; i < len; ++i)
+				os << ',' << data[i];
+			os << "\n\t] select _this\n}";
+		};
+		auto output1 = [&]() {
+			outputMode1(fout1, "180", lowElevs);
+			outputMode1(fout2, "180", highElevs);
+			outputMode1(timeFout1, "-1", lowPeriods);
+			outputMode1(timeFout2, "-1", highPeriods);
+		};
+		auto outputMode2 = [](std::ofstream& os, const char* defaultValue, const std::vector<double> data) {
+			size_t len = data.size();
+			os << "if (_this >= " << len << ") then {" << defaultValue << "} else {\n"
+				"\tif (_this < 100) then {\n"
+				"\t\t[\n"
+				"\t\t\t";
+			os << data[0];
+			for (size_t i = 1; i < 100; ++i)
+				os << ',' << data[i];
+			os << "\n\t\t] select _this\n"
+				"\t} else {\n"
+				"\t\t[\n"
+				"\t\t\t";
+			os << data[100];
+			for (size_t i = 101; i < len; ++i)
+				os << ',' << data[i];
+			os << "\n\t\t] select _this - 100\n"
+				"\t}\n"
+				"}";
+		};
+		auto output2 = [&]() {
+			outputMode2(fout1, "180", lowElevs);
+			outputMode2(fout2, "180", highElevs);
+			outputMode2(timeFout1, "-1", lowPeriods);
+			outputMode2(timeFout2, "-1", highPeriods);
+		};
+		auto outputMode3 = [](std::ofstream& os, const char* defaultValue, const std::vector<double> data) {
+			size_t len = data.size();
+			os << "if (_this >= " << len << ") then {" << defaultValue  << "} else {\n"
+				"\tif (_this < 100) then {\n"
+				"\t\t[\n"
+				"\t\t\t";
+			os << data[0];
+			for (size_t i = 1; i < 100; ++i)
+				os << ',' << data[i];
+			os << "\n\t\t] select _this\n"
+				"\t} else {if (_this < 200) then {\n"
+				"\t\t[\n"
+				"\t\t\t";
+			os << data[100];
+			for (size_t i = 101; i < len; ++i)
+				os << ',' << data[i];
+			os << "\n\t\t] select _this - 100\n"
+				"\t} else {\n"
+				"\t\t[\n"
+				"\t\t\t";
+			os << data[200];
+			for (size_t i = 201; i < len; ++i)
+				os << ',' << data[i];
+			os << "\n\t\t] select _this - 200\n"
+				"\t}}\n"
+				"}";
+		};
+		auto output3 = [&]() {
+			outputMode3(fout1, "180", lowElevs);
+			outputMode3(fout2, "180", highElevs);
+			outputMode3(timeFout1, "-1", lowPeriods);
+			outputMode3(timeFout2, "-1", highPeriods);
+		};
 		if (0 == len)
 		{
 			printf("0 size elev vector. Speed: %d, height: %d\n", speed, h);
-			fout1 << "180"; fout2 << "180";
+			outputInvalid();
 		}
 		else if (0 < len && len <= 100)
 		{
-			fout1 << "if (_this >= " << len << ") then {180} else {\n\t[\n\t\t";
-			fout1 << lowVals[0];
-			for (size_t i = 1; i < len; ++i)
-				fout1 << ',' << lowVals[i];
-			fout1 << "\n\t] select _this\n}";
-
-			fout2 << "if (_this >= " << len << ") then {180} else {\n\t[\n\t\t";
-			fout2 << highVals[0];
-			for (size_t i = 1; i < len; ++i)
-				fout2 << ',' << highVals[i];
-			fout2 << "\n\t] select _this\n}";
+			output1();
 		}
 		else if (100 < len && len <= 200)
 		{
-			fout1 << "if (_this >= " << len << ") then {180} else {\n"
-				"\tif (_this < 100) then {\n"
-				"\t\t[\n"
-				"\t\t\t";
-			fout1 << lowVals[0];
-			for (size_t i = 1; i < 100; ++i)
-				fout1 << ',' << lowVals[i];
-			fout1 << "\n\t\t] select _this\n"
-				"\t} else {\n"
-				"\t\t[\n"
-				"\t\t\t";
-			fout1 << lowVals[100];
-			for (size_t i = 101; i < len; ++i)
-				fout1 << ',' << lowVals[i];
-			fout1 << "\n\t\t] select _this - 100\n"
-				"\t}\n"
-				"}";
-
-			fout2 << "if (_this >= " << len << ") then {180} else {\n"
-				"\tif (_this < 100) then {\n"
-				"\t\t[\n"
-				"\t\t\t";
-			fout2 << highVals[0];
-			for (size_t i = 1; i < 100; ++i)
-				fout2 << ',' << highVals[i];
-			fout2 << "\n\t\t] select _this\n"
-				"\t} else {\n"
-				"\t\t[\n"
-				"\t\t\t";
-			fout2 << highVals[100];
-			for (size_t i = 101; i < len; ++i)
-				fout2 << ',' << highVals[i];
-			fout2 << "\n\t\t] select _this - 100\n"
-				"\t}\n"
-				"}";
+			output1();
 		}
 		else
 		{
-			fout1 << "if (_this >= " << len << ") then {180} else {\n"
-				"\tif (_this < 100) then {\n"
-				"\t\t[\n"
-				"\t\t\t";
-			fout1 << lowVals[0];
-			for (size_t i = 1; i < 100; ++i)
-				fout1 << ',' << lowVals[i];
-			fout1 << "\n\t\t] select _this\n"
-				"\t} else {if (_this < 200) then {\n"
-				"\t\t[\n"
-				"\t\t\t";
-			fout1 << lowVals[100];
-			for (size_t i = 101; i < len; ++i)
-				fout1 << ',' << lowVals[i];
-			fout1 << "\n\t\t] select _this - 100\n"
-				"\t} else {\n"
-				"\t\t[\n"
-				"\t\t\t";
-			fout1 << lowVals[200];
-			for (size_t i = 201; i < len; ++i)
-				fout1 << ',' << lowVals[i];
-			fout1 << "\n\t\t] select _this - 200\n"
-				"\t}}\n"
-				"}";
-
-			fout2 << "if (_this >= " << len << ") then {180} else {\n"
-				"\tif (_this < 100) then {\n"
-				"\t\t[\n"
-				"\t\t\t";
-			fout2 << highVals[0];
-			for (size_t i = 1; i < 100; ++i)
-				fout2 << ',' << highVals[i];
-			fout2 << "\n\t\t] select _this\n"
-				"\t} else {if (_this < 200) then {\n"
-				"\t\t[\n"
-				"\t\t\t";
-			fout2 << highVals[100];
-			for (size_t i = 101; i < len; ++i)
-				fout2 << ',' << highVals[i];
-			fout2 << "\n\t\t] select _this - 100\n"
-				"\t} else {\n"
-				"\t\t[\n"
-				"\t\t\t";
-			fout2 << highVals[200];
-			for (size_t i = 201; i < len; ++i)
-				fout2 << ',' << highVals[i];
-			fout2 << "\n\t\t] select _this - 200\n"
-				"\t}}\n"
-				"}";
+			output3();
 		}
 	}
 }
@@ -248,8 +253,8 @@ void testCase()
 		printf("======== test case ========\n");
 		printf("exactElev: %f\n", exactElev);
 		printf("grid result: %f\n", gridRes);
-		double dist1 = Core(h, v).downwardDist(exactElev);
-		double dist2 = Core(h, v).downwardDist(gridRes);
+		double dist1 = Core(h, v).downward(exactElev).dist;
+		double dist2 = Core(h, v).downward(gridRes).dist;
 		printf("dist1: %f\n", dist1);
 		printf("dist2: %f\n\n", dist2);
 	};
@@ -257,4 +262,24 @@ void testCase()
 	test(1500, 790, 2999);
 
 	printf("\n");
+}
+void dynamicShootCalc()
+{
+	// 假设发射点在原点，地形分布：z = (x + y) / 2.0;
+	// 初始位置(900, 1000)，移动速度(-30, 40)
+	auto getH = [](double x, double y)->double {return (x + y) / 2.0; };
+	double x0 = 500.0, y0 = 500.0, vx = -10.0, vy = 13.0;
+	double t = 0.0;
+	int speed = 180;
+	for (int i = 0; i < 20; ++i)
+	{
+		double x = x0 + vx * t, y = y0 + vy * t;
+		double d = std::sqrt(x * x + y * y);
+		double h = getH(x, y);
+		Calc calculator(h, speed);
+		Result res = calculator.Exec(d);
+
+		t = calculator.GetCore().downward(res.lowElev).period;
+		// std::cout << "x: " << x << ", y : " << y << ", t: " << t << '\n';
+	}
 }

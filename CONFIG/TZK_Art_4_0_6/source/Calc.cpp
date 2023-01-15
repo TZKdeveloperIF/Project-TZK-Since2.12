@@ -16,7 +16,7 @@
 
 namespace
 {
-	constexpr double deltaT = 0.05;
+	constexpr double deltaT = 0.01;
 	constexpr double threshold = 0.001;
 	constexpr double c = -0.0005;
 	constexpr double g = 9.80665;
@@ -28,8 +28,8 @@ namespace
 	{
 		return c * vy * std::sqrt(vx * vx + vy * vy) - g;
 	}
-
-	double iterate(double& vx, double& vy, double dt = deltaT) // 返回本次迭代所使用的时间跨度
+	// 返回本次迭代所使用的时间跨度 (即入参dt. 入参可能是右值, 因此通过返回值获取)
+	double iterate(double& vx, double& vy, double dt = deltaT)
 	{
 		const double K1 = fx(vx, vy);
 		const double L1 = fy(vx, vy);
@@ -54,6 +54,7 @@ namespace
 	}
 	constexpr double invalidElev = 180.0;
 	constexpr double invalidDist = -1.0;
+	constexpr double invalidPeriod = -1.0;
 }
 
 Core::Core(int h, int v) : m_h(h), m_v(v)
@@ -62,9 +63,9 @@ Core::Core(int h, int v) : m_h(h), m_v(v)
 	if (m_h <= 0 || m_h < maxH)
 	{
 		minUpwardElevVal = searchMinValidUpwardElev();
-		minUpwardElevDist = upwardDist(minUpwardElevVal);
+		minUpwardElevDist = upward(minUpwardElevVal).dist;
 		minDownwardElevVal = searchMinValidDownwardElev();
-		minDownwardElevDist = downwardDist(minDownwardElevVal);
+		minDownwardElevDist = downward(minDownwardElevVal).dist;
 		searchMaxDownwardDist();
 	}
 	else
@@ -100,39 +101,42 @@ bool Core::canReach(double x) const
 	return maxDownwardDistVal >= x;
 }
 // 速度朝上，高度差达到m_h的距离
-double Core::upwardDist(double elev) const
+Trajectory Core::upward(double elev) const
 {
 	if (elev <= 0 || m_h <= 0)
-		return invalidDist;
+		return Trajectory{};
 	ASSERT(m_h <= getMaxH());
 	double rad = deg2rad(elev);
 	double vx = m_v * std::cos(rad), vy = m_v * std::sin(rad);
 	double h = 0, x = 0;
 	double vx0 = vx, vy0 = vy, x0 = x, h0 = h;
 	double dt = deltaT;
+	double period = 0.0;
 	while (h <= m_h && vy >= 0)
 	{
 		x0 = x; h0 = h;
 		iterate(vx, vy, dt);
-		while (vy < 0 && dt > threshold) // 当vy变号时，使用精细一些的时间梯度
+		while (vy0 >= 0 && vy < 0 && dt > threshold) // 当vy变号时，使用精细一些的时间步长
 		{
 			vx = vx0; vy = vy0;
 			dt = iterate(vx, vy, std::max(dt / 2, threshold));
 		}
+		period += dt;
+		// 无需恢复时间步长. upward场景下vy < 0会立刻退出循环
 		x = x + dt * (vx0 + vx) / 2; h = h + dt * (vy0 + vy) / 2;
 		vx0 = vx; vy0 = vy;
 	}
 	if (h < m_h)
-		return invalidDist;
+		return Trajectory{};
 	// 修正
-	if (abs(vy) < 0.00001)
-		printf("vy is close to 0 in upwardDist's last correction. h: %f, v: %f, elev: %f\n",
+	if (abs(vy) < 0.000001)
+		printf("vy is close to 0 in upward's last correction. h: %f, v: %f, elev: %f\n",
 			m_h, m_v, elev);
 	// 最后一次迭代的竖直位移为 h - h0。不考虑vy接近零的边界情形
-	return x + (m_h - h) / (h - h0) * (x - x0);
+	return { x + (m_h - h) / (h - h0) * (x - x0), period + (m_h - h) / (h - h0) * dt };
 }
 // 速度朝下，高度差达到m_h的距离
-double Core::downwardDist(double elev) const
+Trajectory Core::downward(double elev) const
 {
 	ASSERT(m_h <= getMaxH());
 	double rad = deg2rad(elev);
@@ -140,26 +144,31 @@ double Core::downwardDist(double elev) const
 	double h = 0, x = 0;
 	double vx0 = vx, vy0 = vy, x0 = x, h0 = h;
 	double dt = deltaT;
+	double period = 0.0;
 	while (h >= m_h || vy >= 0)
 	{
 		x0 = x; h0 = h;
 		iterate(vx, vy, dt);
-		while (vy < 0 && dt > threshold) // 当vy变号时，使用精细一些的时间梯度
+		while (vy0 >= 0 && vy < 0 && dt > threshold) // 当vy变号时，使用精细一些的时间步长
 		{
 			vx = vx0; vy = vy0;
 			dt = iterate(vx, vy, std::max(dt / 2, threshold));
 		}
+		period += dt;
+		// 恢复时间步长, 减少运算量. 这一过程可能较长, 使用略小的时间步长以减小误差
+		if (vy0 >= -0.1 && vy < -0.1)
+			dt = deltaT / 2;
 		x = x + dt * (vx0 + vx) / 2; h = h + dt * (vy0 + vy) / 2;
 		vx0 = vx; vy0 = vy;
 	}
 	if (h0 < m_h) // 弹道开始下坠时最高点仍然没有达到预期高度
-		return invalidDist;
+		return Trajectory{};
 	// 修正
-	if (abs(vy) < 0.00001)
-		printf("vy is close to 0 in downwardDist's last correction. h: %f, v: %f, elev: %f\n",
+	if (abs(vy) < 0.000001)
+		printf("vy is close to 0 in downward's last correction. h: %f, v: %f, elev: %f\n",
 			m_h, m_v, elev);
 	// 最后一次迭代的竖直位移为 h - h0。不考虑vy接近零的边界情形
-	return x + (m_h - h) / (h - h0) * (x - x0);
+	return { x + (m_h - h) / (h - h0) * (x - x0), period + (m_h - h) / (h - h0) * dt };
 }
 
 double Core::getMaxH() const
@@ -173,11 +182,12 @@ double Core::getMaxH() const
 	{
 		h0 = h;
 		iterate(vx, vy, dt);
-		while (vy < 0 && dt > threshold) // 当vy变号时，使用精细一些的时间梯度
+		while (vy0 >= 0 && vy < 0 && dt > threshold) // 当vy变号时，使用精细一些的时间步长
 		{
 			vx = vx0; vy = vy0;
 			dt = iterate(vx, vy, std::max(dt / 2, threshold));
 		}
+		// 无需恢复时间步长. upward场景下vy < 0会立刻退出循环
 		h = h + dt * (vy0 + vy) / 2;
 		vy1 = vy0; vy0 = vy;
 	}
@@ -185,7 +195,7 @@ double Core::getMaxH() const
 	h = h - (0 - vy0) / (vy1 - vy0) * (h - h0);
 	return h;
 }
-// 找寻upwardDist能够达到m_h的最小俯仰角
+// 找寻 upward 能够达到m_h的最小俯仰角
 double Core::searchMinValidUpwardElev() const
 {
 	if (m_h <= 0)
@@ -197,14 +207,14 @@ double Core::searchMinValidUpwardElev() const
 	do
 	{
 		double mid = (left + right) / 2;
-		if (invalidDist != upwardDist(mid))
+		if (invalidDist != upward(mid).dist)
 			right = mid;
 		else
 			left = mid;
-	} while (abs(left - right) > 0.00001);
+	} while (abs(left - right) > 0.000001);
 	return right; // right保证能达到m_h
 }
-// 找寻downwardDist能够达到m_h的最小俯仰角
+// 找寻 downward能够达到m_h的最小俯仰角
 double Core::searchMinValidDownwardElev() const
 {
 	if (m_h <= 0)
@@ -215,14 +225,14 @@ double Core::searchMinValidDownwardElev() const
 	do
 	{
 		double mid = (left + right) / 2;
-		if (invalidDist != downwardDist(mid))
+		if (invalidDist != downward(mid).dist)
 			right = mid;
 		else
 			left = mid;
-	} while (abs(left - right) > 0.00001);
+	} while (abs(left - right) > 0.000001);
 	return right; // right保证能达到m_h;
 }
-// 仅知 downwardDist 在[-90, 90]上先增后减。通过采样的方式找寻合适的区间
+// 仅知 downward dist 在[-90, 90]上先增后减。通过采样的方式找寻合适的区间
 void Core::searchMaxDownwardDist()
 {
 	double left = searchMinValidDownwardElev(), right = 90;
@@ -235,7 +245,7 @@ void Core::searchMaxDownwardDist()
 		for (int i = 0; i < len; ++i)
 		{
 			elevs[i] = left + static_cast<double>(i)* diff;
-			dists[i] = downwardDist(elevs[i]);
+			dists[i] = downward(elevs[i]).dist;
 		}
 		bool updated = false;
 		for (int i = 0; i < len - 2; ++i)
@@ -259,17 +269,17 @@ void Core::searchMaxDownwardDist()
 			{
 				left = elevs[len - 2];
 				right = elevs[len - 1];
-				dist = downwardDist((left + right) / 2);
+				dist = downward((left + right) / 2).dist;
 			}
 			else
 			{
 				left = elevs[0];
 				right = elevs[1];
-				dist = downwardDist((left + right) / 2);
+				dist = downward((left + right) / 2).dist;
 			}
 			updated = true;
 		}
-	} while (abs(left - right) > 0.00001);
+	} while (abs(left - right) > 0.000001);
 	maxDownwardDistVal = dist;
 	maxDownwardDistElev = (left + right) / 2;
 }
@@ -284,15 +294,20 @@ Result Calc::Exec(int x) const
 		return res;
 	int dist = static_cast<int>(m_core.maxDownwardDistVal); // 输入数据的范围不可能产生溢出
 	res.maxDist = dist - dist % 10;
-	res.lowElev = lowElev(x);
-	res.highElev = highElev(x);
+	InitVal lowInit = lowElev(x);
+	InitVal highInit = highElev(x);
+	res.lowElev = lowInit.elev;
+	res.lowTime = lowInit.period;
+	res.highElev = highInit.elev;
+	res.highTime = highInit.period;
 	return res;
 }
-double Calc::lowElev(double x) const
+InitVal Calc::lowElev(double x) const
 {
 	ASSERT(m_core.canReach(x));
-	double dist = x - 100;
 	double left = invalidElev, right = invalidElev, mid = invalidElev;
+	double dist = x - 100;
+	double period = invalidPeriod;
 	// m_h > 0时，lowElev的解可对应于炮弹以vy > 0命中目标的情形。由于轨迹的单调性，它是这种情况下的唯一解。
 	if (m_core.m_h > 0 && m_core.minUpwardElevDist >= x)
 	{
@@ -302,12 +317,14 @@ double Calc::lowElev(double x) const
 		do
 		{
 			mid = (left + right) / 2;
-			dist = m_core.upwardDist(mid);
+			Trajectory ret = m_core.upward(mid);
+			dist = ret.dist;
+			period = ret.period;
 			if (dist >= x)
 				left = mid;
 			else
 				right = mid;
-		} while (abs(left - right) > 0.0001 && abs(x - dist) > 1);
+		} while (abs(left - right) > 0.000001 && abs(x - dist) > 1);
 	}
 	else
 	{
@@ -316,7 +333,9 @@ double Calc::lowElev(double x) const
 		do
 		{
 			mid = (left + right) / 2;
-			dist = m_core.downwardDist(mid);
+			Trajectory ret = m_core.downward(mid);
+			dist = ret.dist;
+			period = ret.period;
 			if (dist >= x)
 				right = mid;
 			else
@@ -324,31 +343,34 @@ double Calc::lowElev(double x) const
 		} while (abs(left - right) > 0.000001 && abs(x - dist) > 1);
 	}
 	if (abs(x - dist) > 1)
-		printf("Imprecise result. Speed: %f, height: %f, dist: %f, calc res: %f\n",
-			m_core.m_v, m_core.m_h, x, dist
+		printf("Imprecise result. Speed: %f, height: %f, dist: %f, error: %f\n",
+			m_core.m_v, m_core.m_h, x, x - dist
 		);
 
-	return mid;
+	return { mid, period };
 }
-double Calc::highElev(double x) const
+InitVal Calc::highElev(double x) const
 {
 	ASSERT(m_core.canReach(x));
 	// 在 [m_maxDistElev, 90]上二分查找
 	double left = m_core.maxDownwardDistElev, right = 90, mid = invalidElev;;
 	double dist = x - 100;
+	double period = invalidPeriod;
 	do
 	{
 		mid = (left + right) / 2;
-		dist = m_core.downwardDist(mid);
+		Trajectory ret = m_core.downward(mid);
+		dist = ret.dist;
+		period = ret.period;
 		if (dist >= x)
 			left = mid;
 		else
 			right = mid;
 	} while (abs(left - right) > 0.000001 && abs(x - dist) > 1);
 	if (abs(x - dist) > 1)
-		printf("Imprecise result. Speed: %f, height: %f, dist: %f, calc res: %f\n",
-			m_core.m_v, m_core.m_h, x, dist
+		printf("Imprecise result. Speed: %f, height: %f, dist: %f, error: %f\n",
+			m_core.m_v, m_core.m_h, x, x - dist
 		);
 
-	return mid;
+	return { mid, period };
 }
