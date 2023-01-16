@@ -6,6 +6,12 @@ mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
 _dlg = createDialog "TzkCmdMapDlgBase"
 mutexDlg = false
 
+@ not mutexRtsMouse
+	mutexRtsMouse = true
+	_id = rtsMouseId
+	mutexRtsMouse = false
+[true, _id + 1, _this] exec "Player\Rts\SetRtsMouse.sqs";
+
 _idcLeftBtnInfo0 = IDC + 0
 
 _idcLeftBtn0 = IDC + 32 + 0
@@ -40,7 +46,7 @@ true call preprocessFile "Player\Dialog\Rts\InitSilider.sqf"
 	~0.2
 	goto "Update"
 # Quit
-	bool_TZK_Cmd_Marker = false; exit
+	[false, _id + 2] exec "Player\Rts\SetRtsMouse.sqs"; exit
 # LeftBtn
 	? 2^0 == _btnVal: 0 exec "Player\Msg\sWallMhq.sqs"; goto "Update"
 	goto "Update"
