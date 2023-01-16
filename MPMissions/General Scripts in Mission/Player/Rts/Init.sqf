@@ -6,6 +6,7 @@ TzkMap2y = 0;
 TzkMapSelectClicked = false;
 TzkMapSelectedTime = 0;
 TzkMapSelectEmptyTime = 0;
+TzkMapSelectDir = 0;
 
 TzkMapSelectedHighlight = false;
 TzkSelectedUnits = [];

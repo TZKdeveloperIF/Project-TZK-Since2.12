@@ -45,6 +45,14 @@ defValueParam2 = 2;
 #include "TZK_Scripts_4_0_6\description_27_customAirWep_dialog.h"
 #include "TZK_Scripts_4_0_6\description_28_tzkCustomInitAttr.h"
 
+class RscSliderH {
+	access = 3;
+	type = 3;
+	style = 1;
+	h = 0.028;
+	color[] = {0.08,0.08,0.12,0.75};
+};
+
 class TzkCmdMapDlgBase: Menu {
 	idd = -1;
 	movingEnable = true;
@@ -53,7 +61,30 @@ class TzkCmdMapDlgBase: Menu {
 	controls[] = {
 		InfoLeftBtn0, LeftBtn0, 
 		InfoDownBtn0, DownBtn0, 
+		TextAzimut, ValueAzimut, SliderAzimut, 
 		Exit
+	};
+	class TextAzimut: RscText {
+		x = 0.31;
+		y = 0.80;
+		w = 0.04;
+		h = 0.04;
+		text = "Azimut";
+	};
+	class ValueAzimut: RscEdit {
+		idc = IDC + 512 + 1;
+		x = 0.30 + 0.06;
+		y = 0.80;
+		w = 0.05;
+		h = 0.04;
+		text = "";
+	};
+	class SliderAzimut: RscSliderH {
+		idc = IDC + 512 + 0;
+		x = 0.30 + 0.12;
+		y = 0.80;
+		w = 0.40;
+		text = "";
 	};
 
 	class MapBg: Light_BG_Window {

@@ -6,6 +6,8 @@ if (_this) then {
 } else {
 	TzkMapUnitsSelected = false;
 
+	0 call loadFile "Player\Rts\AreaSetDir.sqf";
+
 	"TzkRtsArea" setMarkerSize [0,0];
 	"TzkRtsArea" setMarkerPos [0,0];
 };
