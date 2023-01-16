@@ -3,7 +3,7 @@ _pos = _this
 ; _setTargetScript = "Player\Art\SetTarget.sqs"
 @ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
-_dlg = createDialog "TzkCmdMapDlgBase"
+_dlg = createDialog "TzkCmdMapDlgArea"
 mutexDlg = false
 
 @ not mutexRtsMouse
@@ -12,17 +12,15 @@ mutexDlg = false
 	mutexRtsMouse = false
 [true, _id + 1, _this] exec "Player\Rts\SetRtsMouse.sqs";
 
-_idcLeftBtnInfo0 = IDC + 0
-
 _idcLeftBtn0 = IDC + 32 + 0
+_idcDownBtn0 = IDC + 64 + 32 + 0
+; init right-down corner buttons (switching to other rts dialogs)
+; 0: rts, 1: area
+1 call preprocessFile "Player\Dialog\Rts\InitSwitchDialogBtns.sqf"
 
-_idcDownBtnInfo0 = IDC + 64 + 0
+btnValue00 = 0; btnValue01 = 0; btnValue03 = 0
 
-_idcDownBtn0= IDC + 64 + 32 + 0
-
-btnValue00 = 0; btnValue01 = 0
-
-{ ctrlShow [_x, false] } forEach [_idcLeftBtnInfo0, _idcDownBtnInfo0]
+; { ctrlShow [_x, false] } forEach []
 ctrlSetText [_idcLeftBtn0, "Wall MHQ"]
 
 ; ctrlSetText [_idcDownBtnInfo0, "Img\MG.paa"]
@@ -41,6 +39,7 @@ true call preprocessFile "Player\Dialog\Rts\InitSilider.sqf"
 
 	? btnValue00 > 0: _btnVal = btnValue00; btnValue00 = 0; goto "LeftBtn"
 	? btnValue01 > 0: _btnVal = btnValue01; btnValue01 = 0; goto "DownBtn"
+	? btnValue03 > 0: _btnVal = btnValue03; btnValue03 = 0; goto "RightDownBtn"
 
 	; Skip
 	~0.2
@@ -50,7 +49,9 @@ true call preprocessFile "Player\Dialog\Rts\InitSilider.sqf"
 # LeftBtn
 	? 2^0 == _btnVal: 0 exec "Player\Msg\sWallMhq.sqs"; goto "Update"
 	goto "Update"
-
 # DownBtn
 	? 2^0 == _btnVal: _pos exec "Player\Msg\sDeployBaseMg.sqs"; goto "Update";
+	goto "Update"
+# RightDownBtn
+	? 2^0 == _btnVal: _this exec "Player\Dialog\CmdRtsMap.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"

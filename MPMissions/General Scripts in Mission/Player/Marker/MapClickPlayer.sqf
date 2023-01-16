@@ -39,7 +39,7 @@ if (!_processed) then {
 		};
 		// selected area && selected nothing
 		if (not _processed && TzkMapUnitsSelected && count TzkSelectedUnits == 0) then {
-			_pos exec "Player\Dialog\CmdExtMap.sqs";
+			_pos exec "Player\Dialog\CmdAreaMap.sqs";
 			_processed = true;
 		};
 		// set way points
