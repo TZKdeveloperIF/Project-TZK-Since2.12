@@ -1,17 +1,21 @@
-? bool_TZK_Cmd_Marker: exit
+; args: [pos, id]
+_id = _this select 1
+_diff = 0.04
+~ 2 * _diff
+? _id != rtsMouseId: exit
 
-bool_TZK_Cmd_Marker = true
-_marker = "TzkCmdMarker"; 
-createMarker [_marker, _this];
-_marker setMarkerColor "ColorBlue";
-_marker setMarkerType "Flag";
+"TzkCmdMarker" setMarkerPos (_this select 0)
+"TzkCmdMarker" setMarkerColor "ColorBlue";
+"TzkCmdMarker" setMarkerType "Flag";
 
-_maxSize = 1.5; _size = _maxSize
+_maxSize = 1.5; _size = _maxSize; _this = 0
 # loop
-	_marker setMarkerSize [_size, _size]
+	"TzkCmdMarker" setMarkerSize [_size, _size]
 	_size = _size - 0.1
 	? _size <= 0: _size = _maxSize
-	~0.04
-	? bool_TZK_Cmd_Marker: goto "loop"
+	~ _diff
+	? _id != rtsMouseId: goto "Quit"
+	goto "loop"
 
-deleteMarker _marker
+# Quit
+	"TzkCmdMarker" setMarkerPos [-10, -10]

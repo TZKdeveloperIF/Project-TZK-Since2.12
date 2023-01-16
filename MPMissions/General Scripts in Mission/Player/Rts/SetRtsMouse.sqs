@@ -1,0 +1,10 @@
+; args: [state, id, pos (required if state is true)]
+; the id is for resource managing. The false state means a destruct request. 
+; However if someone else has sent another construct request, this destruct request should be ignore.
+; reference count is another available design
+
+@ not mutexRtsMouse
+	mutexRtsMouse = true
+	? rtsMouseId < _this select 1: rtsMouseId = _this select 1
+	mutexRtsMouse = false
+? _this select 0: [_this select 2, _this select 1] exec "Player\Loop\CmdMarker.sqs";

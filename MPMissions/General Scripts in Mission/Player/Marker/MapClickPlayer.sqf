@@ -35,13 +35,11 @@ if (!_processed) then {
 		// selected area && selected units
 		if (not _processed && TzkMapUnitsSelected && count TzkSelectedUnits > 0) then {
 			_pos exec "Player\Dialog\CmdRtsMap.sqs";
-			_pos exec "Player\Loop\CmdMarker.sqs";
 			_processed = true;
 		};
 		// selected area && selected nothing
 		if (not _processed && TzkMapUnitsSelected && count TzkSelectedUnits == 0) then {
 			_pos exec "Player\Dialog\CmdExtMap.sqs";
-			_pos exec "Player\Loop\CmdMarker.sqs";
 			_processed = true;
 		};
 		// set way points

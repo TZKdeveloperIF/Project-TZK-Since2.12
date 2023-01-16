@@ -11,6 +11,9 @@ TzkMapSelectDir = 0;
 TzkMapSelectedHighlight = false;
 TzkSelectedUnits = [];
 
+createMarker ["TzkCmdMarker", [-10, -10]];
+mutexRtsMouse = false; rtsMouseId = 0;
+
 {
 	createMarker [_x, [-10, -10]];
 	_x setMarkerColor "ColorBlue";
