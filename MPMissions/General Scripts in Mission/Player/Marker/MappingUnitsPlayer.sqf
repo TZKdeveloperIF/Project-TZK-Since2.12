@@ -14,7 +14,11 @@ _index = 0;
 	_marker setMarkerPos getPos _leader;
 	_marker setMarkerType _markerType;
 	_bHighlight = false;
-	if (-1 != _tzkSelUnitsTop find _leader) then {if TzkMapSelectedHighlight then {_bHighlight = true}};
+	if not TzkMapBlockSelected then {
+		if (-1 != _tzkSelUnitsTop find _leader) then {if TzkMapSelectedHighlight then {
+			_bHighlight = true
+		}};
+	};
 	if _bHighlight then {
 		_marker setMarkerColor "ColorRedAlpha";
 	} else {
@@ -48,7 +52,11 @@ while {_gi < _countGroups} do {
 				_ai = _units select _index;
 				_marker setMarkerPos getPos _ai;
 				_bHighlight = false;
-				if (-1 != _tzkSelUnitsTop find _ai) then {if TzkMapSelectedHighlight then {_bHighlight = true}};
+				if not TzkMapBlockSelected then {
+					if (-1 != _tzkSelUnitsTop find _ai) then {if TzkMapSelectedHighlight then {
+						_bHighlight = true;
+					}};
+				};
 				if _bHighlight then {
 					_marker setMarkerColor "ColorRedAlpha";
 				} else {
