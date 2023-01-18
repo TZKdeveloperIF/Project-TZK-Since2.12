@@ -9,7 +9,8 @@ TzkMapSelectEmptyTime = 0;
 TzkMapSelectDir = 0;
 
 TzkMapSelectedHighlight = false;
-TzkSelectedUnits = [];
+TzkSelectedUnits = []; TzkSelUnitsStack = [TzkSelectedUnits, [], []]; TzkSelStackIdx = 0;
+TzkSelLv1Btn = -1; TzkSelLv2Btn = -1;
 
 createMarker ["TzkCmdMarker", [-10, -10]];
 mutexRtsMouse = false; rtsMouseId = 0;

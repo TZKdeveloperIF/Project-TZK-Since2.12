@@ -194,6 +194,8 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
 		DownBtn0, 
 		RightDownBtn0, RightDownBtn1, RightDownBtn2, RightDownBtn3, RightDownBtn4, 
 		RightDownBtn5, RightDownBtn6, RightDownBtn7, RightDownBtn8, 
+		LeftDownBtn0, LeftDownBtn1, LeftDownBtn2, LeftDownBtn3, LeftDownBtn4, 
+		LeftDownBtn5, LeftDownBtn6, LeftDownBtn7, LeftDownBtn8, 
 		Exit
 	};
 	class LeftBtn1: LeftBtn0 {
@@ -201,6 +203,57 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
 		y = 0.10 + 0.1;
 		text = "UNDEFINED";
 		action = "btnValue00 = 2^1";
+	};
+	
+	// left down part. select specific type
+	class LeftDownBtn0: RightDownBtn0 {
+		idc = IDC + 32 * 6 + 0;
+		x = 0.015 + 0.09 * 0;
+		y = 0.88 + 0.0;
+		w = 0.09;
+		text = "UNDEFINED";
+		action = "btnValue02 = 2^0";
+	};
+	class LeftDownBtn1: LeftDownBtn0 {
+		idc = IDC + 32 * 6 + 1;
+		x = 0.015 + 0.09 * 1;
+		action = "btnValue02 = 2^1";
+	};
+	class LeftDownBtn2: LeftDownBtn0 {
+		idc = IDC + 32 * 6 + 2;
+		x = 0.015 + 0.09 * 2;
+		action = "btnValue02 = 2^2";
+	};
+	class LeftDownBtn3: LeftDownBtn0 {
+		idc = IDC + 32 * 6 + 3;
+		y = 0.88 + 0.04;
+		action = "btnValue02 = 2^3";
+	};
+	class LeftDownBtn4: LeftDownBtn3 {
+		idc = IDC + 32 * 6 + 4;
+		x = 0.015 + 0.09 * 1;
+		action = "btnValue02 = 2^4";
+	};
+	class LeftDownBtn5: LeftDownBtn3 {
+		idc = IDC + 32 * 6 + 5;
+		x = 0.015 + 0.09 * 2;
+		action = "btnValue02 = 2^5";
+	};
+	class LeftDownBtn6: LeftDownBtn0 {
+		idc = IDC + 32 * 6 + 6;
+		y = 0.88 + 0.08;
+		action = "btnValue02 = 2^6";
+	};
+	class LeftDownBtn7: LeftDownBtn6 {
+		idc = IDC + 32 * 6 + 7;
+		x = 0.015 + 0.09 * 1;
+		action = "btnValue02 = 2^7";
+	};
+	class LeftDownBtn8: LeftDownBtn6 {
+		idc = IDC + 32 * 6 + 8;
+		x = 0.015 + 0.09 * 2;
+		action = "btnValue02 = 2^8";
+		text = "return";
 	};
 };
 
