@@ -31,5 +31,6 @@ if (_this) then {
 		_gi = _gi + 1;	
 	};
 	TzkSelectedUnits resize 0;
+	TzkSelStackIdx = 0; // move stack top
 	TzkMapSelectEmptyTime = 0;
 };

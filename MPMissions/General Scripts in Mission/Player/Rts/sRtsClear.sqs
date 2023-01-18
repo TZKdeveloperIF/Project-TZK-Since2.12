@@ -1,8 +1,9 @@
 ; args: none
-_c = count TzkSelectedUnits
+_top = TzkSelUnitsStack select TzkSelStackIdx
+_c = count _top
 ? _c == 0: goto "Quit"
 
-_selectedUnits = +TzkSelectedUnits
+_selectedUnits = +_top
 _len = 16; _j = 0; _cj = _c / _len; _cj = _cj - (_cj % 1) + 1; _i = 0
 # loop
 	_left = _len * _j

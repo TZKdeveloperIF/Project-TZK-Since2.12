@@ -5,7 +5,7 @@ private [
 ];
 
 TzkMapSelectedHighlight = not TzkMapSelectedHighlight;
-
+_tzkSelUnitsTop = TzkSelUnitsStack select TzkSelStackIdx;
 _index = 0;
 {
 	_leader = leader _x;
@@ -13,12 +13,12 @@ _index = 0;
 	_marker = format ["%1%2", (groupNameMatrix select siPlayer) select _index, siPlayer];
 	_marker setMarkerPos getPos _leader;
 	_marker setMarkerType _markerType;
-	if (-1 != TzkSelectedUnits find _leader) then {
-		if TzkMapSelectedHighlight then {
-			_marker setMarkerColor "ColorRedAlpha";
-		} else {
-			_marker setMarkerColor "ColorBlue";
-		};
+	_bHighlight = false;
+	if (-1 != _tzkSelUnitsTop find _leader) then {if TzkMapSelectedHighlight then {_bHighlight = true}};
+	if _bHighlight then {
+		_marker setMarkerColor "ColorRedAlpha";
+	} else {
+		_marker setMarkerColor "ColorBlue";
 	};
 	_index = _index + 1;
 } forEach (groupMatrix select siPlayer);
@@ -47,12 +47,12 @@ while {_gi < _countGroups} do {
 			if (_index < _count && (giMarkersAI == _gi || giMarkersAI == _countGroups)) then {
 				_ai = _units select _index;
 				_marker setMarkerPos getPos _ai;
-				if (-1 != TzkSelectedUnits find _ai) then {
-					if TzkMapSelectedHighlight then {
-						_marker setMarkerColor "ColorRedAlpha";
-					} else {
-						_marker setMarkerColor "ColorYellow";
-					};
+				_bHighlight = false;
+				if (-1 != _tzkSelUnitsTop find _ai) then {if TzkMapSelectedHighlight then {_bHighlight = true}};
+				if _bHighlight then {
+					_marker setMarkerColor "ColorRedAlpha";
+				} else {
+					_marker setMarkerColor "ColorYellow";
 				};
 			} else {
 				_marker setMarkerPos hiddenMarkerPos

@@ -23,11 +23,12 @@ btnDisbandGroupGunner = false
 	goto "Update"
 
 # BeginDisbandGroup
-	? btnDisbandGroupOK: _selectedUnits = +TzkSelectedUnits, goto "Finish"
+	_top = TzkSelUnitsStack select TzkSelStackIdx
+	? btnDisbandGroupOK: _selectedUnits = +_top, goto "Finish"
 	? btnDisbandGroupInf: _bDisband = {_this == vehicle _this}
 	? btnDisbandGroupGunner: _bDisband = {_this == vehicle _this || _this != gunner vehicle _this}
 	_selectedUnits = []; _i = 0
-	{if (_x call _bDisband) then {_selectedUnits set [_i, _x], _i = _i + 1}} forEach TzkSelectedUnits
+	{if (_x call _bDisband) then {_selectedUnits set [_i, _x], _i = _i + 1}} forEach _top
 
 # Finish
 	btnDisbandGroupLeader = false
