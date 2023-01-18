@@ -28,6 +28,7 @@ ctrlSetText [_idcDownBtn0, "Base MG"]
 
 _idcSliderAzimut = 0; _idcValueAzimut = 0; _AzimutCache = 0
 true call preprocessFile "Player\Dialog\Rts\InitSilider.sqf"
+TzkMapBlockSelected = true
 
 # Update
 	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
@@ -45,6 +46,7 @@ true call preprocessFile "Player\Dialog\Rts\InitSilider.sqf"
 	~0.2
 	goto "Update"
 # Quit
+	TzkMapBlockSelected = false
 	[false, _id + 2] exec "Player\Rts\SetRtsMouse.sqs"; exit
 # LeftBtn
 	? 2^0 == _btnVal: 0 exec "Player\Msg\sWallMhq.sqs"; goto "Update"

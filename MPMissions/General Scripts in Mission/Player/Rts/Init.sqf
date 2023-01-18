@@ -8,7 +8,7 @@ TzkMapSelectedTime = 0;
 TzkMapSelectEmptyTime = 0;
 TzkMapSelectDir = 0;
 
-TzkMapSelectedHighlight = false;
+TzkMapSelectedHighlight = false; TzkMapBlockSelected = false;
 TzkSelectedUnits = []; TzkSelUnitsStack = [TzkSelectedUnits, [], []]; TzkSelStackIdx = 0;
 TzkSelLv1Btn = -1; TzkSelLv2Btn = -1;
 
