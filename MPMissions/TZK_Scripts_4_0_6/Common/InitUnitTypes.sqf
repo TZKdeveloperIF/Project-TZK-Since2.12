@@ -1746,7 +1746,6 @@ comment { define which vehicles have the Eject function; };
 comment { AI CO will only buy first type of air types for transport missions.; };
 airTransport = [[], []];
 groundTransport = [[], []];
-driverAssigned = [[], []];
 TransportCarW = [ _jeepW, jeepaW, _hummerW, _hummerW2, _hummerW3, _hummerWG, _hummerWAA ];	TransportCarE = [ _uazE, uazaE, _brdmE, _brdmE2, _brdmE3, _brdmEAT, _brdmEAA ];
 TransportTruckW = [ _truckW ];								TransportTruckE = [ _truckE ];
 TransportShipE = [_boatE,_boatsupE,_boatE2,_boatE3,_boatCustomE, _patrolboatE, _patrolshipE];
