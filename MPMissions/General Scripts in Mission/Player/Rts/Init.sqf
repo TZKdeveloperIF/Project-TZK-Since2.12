@@ -36,3 +36,6 @@ _marker setMarkerColor "ColorCyan_xj400";
 _marker setMarkerShape "RECTANGLE";
 _marker setMarkerBrush "Cross";
 _marker setMarkerSize [0, 0];
+
+// variables for dialog
+RtsAreaBuildStruct = [0, 0];

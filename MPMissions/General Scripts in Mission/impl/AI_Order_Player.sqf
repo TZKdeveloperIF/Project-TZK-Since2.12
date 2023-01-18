@@ -51,14 +51,14 @@ _type = 0, _c = count aiOrders1; _found = false; while {_type < _c && not _found
 _type = 0, _c = count aiOrders2; _found = false; while {_type < _c && not _found} do {
 	if (aiOrders2 select _type select 0 == "Build Struct") then {
 		_found = true;
-		aiOrders2 select _type set [3, "Player\Order\BuildStructure.sqs"];
+		aiOrders2 select _type set [0, "Invalid"];
 	};
 	_type = _type + 1;
 };
 _type = 0, _c = count aiOrders2; _found = false; while {_type < _c && not _found} do {
 	if (aiOrders2 select _type select 0 == "Buy Workers") then {
 		_found = true;
-		aiOrders2 select _type set [3, "Player\Order\BuyWorkers.sqs"];
+		aiOrders2 select _type set [0, "Invalid"];
 	};
 	_type = _type + 1;
 };
@@ -69,3 +69,15 @@ _type = 0, _c = count aiOrders2; _found = false; while {_type < _c && not _found
 	};
 	_type = _type + 1;
 };
+
+comment "Remove invalid item";
+_type = 0, _c = count aiOrders2; _j = 0; while {_type < _c} do {
+	if (aiOrders2 select _type select 0 != "Invalid") then {
+		if (_j != _type) then {
+			aiOrders2 set [_j, aiOrders2 select _type];
+			_j = _j + 1;
+		};
+	};
+	_type = _type + 1;
+};
+aiOrders2 resize _j;
