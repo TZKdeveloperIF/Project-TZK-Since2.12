@@ -25,6 +25,8 @@ ctrlSetText [_idcLeftBtn0, "Wall MHQ"]
 
 ; ctrlSetText [_idcDownBtnInfo0, "Img\MG.paa"]
 ctrlSetText [_idcDownBtn0, "Base MG"]
+ctrlSetText [_idcDownBtn0 + 1, "Build"]
+ctrlSetText [_idcDownBtn0 + 2, "Worker"]
 
 _idcSliderAzimut = 0; _idcValueAzimut = 0; _AzimutCache = 0
 true call preprocessFile "Player\Dialog\Rts\InitSilider.sqf"
@@ -53,6 +55,8 @@ TzkMapBlockSelected = true
 	goto "Update"
 # DownBtn
 	? 2^0 == _btnVal: _pos exec "Player\Msg\sDeployBaseMg.sqs"; goto "Update";
+	? 2^1 == _btnVal: _pos exec "Player\Dialog\Rts\BuildStruct.sqs"; closeDialog 0; goto "Quit"
+	? 2^2 == _btnVal: _pos exec "Player\Dialog\Rts\BuyWorker.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 # RightDownBtn
 	? 2^0 == _btnVal: _this exec "Player\Dialog\CmdRtsMap.sqs"; closeDialog 0; goto "Quit"

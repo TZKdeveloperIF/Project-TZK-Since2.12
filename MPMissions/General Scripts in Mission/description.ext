@@ -122,6 +122,7 @@ class TzkCmdMapDlgBase: Menu {
 		x = 0.41 + 0.09 * 0;
 		y = 0.88 + 0.0;
 		w = 0.09;
+		// sizeEx = 0.025;
 		text = "UNDEFINED";
 		action = "btnValue01 = 2^0";
 	};
@@ -226,6 +227,14 @@ class TzkCmdMapDlgBase: Menu {
 };
 
 class TzkCmdMapDlgArea: TzkCmdMapDlgBase {
+	controls[] = {
+		LeftBtn0, 
+		DownBtn0, DownBtn1, DownBtn2, 
+		RightDownBtn0, RightDownBtn1, RightDownBtn2, RightDownBtn3, RightDownBtn4, 
+		RightDownBtn5, RightDownBtn6, RightDownBtn7, RightDownBtn8, 
+		TextAzimut, ValueAzimut, SliderAzimut, 
+		Exit
+	};
 };
 
 class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
@@ -294,6 +303,119 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
 		x = 0.015 + 0.09 * 2;
 		action = "btnValue02 = 2^8";
 		text = "return";
+	};
+};
+
+class TzkRtsSubMenuOneListBox: Menu {
+	controlsBackground[] = {OneListBg};
+	class OneListBg: BackgroundWindow {
+		x = 0.35;
+		y = 0.2;
+		w = 0.3;
+		h = 0.6;
+	};
+
+	controls[] = {
+		TRSM_LIST_TITLE, BTN_OK, BTN_EXIT, 
+		LISTBOX0, LISTTEXT0
+	};
+
+	class TRSM_LIST_TITLE: Title {
+		idc = IDC + 0;
+		style = ST_CENTER;
+		x = 0.42;
+		y = 0.22;
+		w = 0.16;
+		h = 0.03;
+		colorBackground[] = {0.247, 0.247, 0.247, 0.75};
+		text = "";
+	};
+
+	class BTN_EXIT: Button {
+		x = 0.60;
+		y = 0.2;
+		w = 0.05;
+		h = 0.04;
+		text = "Exit";
+		action = "btnValue00 = true";
+	};
+	class BTN_OK: Button {
+		x = 0.45;
+		y = 0.75;
+		w = 0.10;
+		h = 0.04;
+		text = "OK";
+		action = "btnValue01 = true";
+	};
+
+	class LISTTEXT0: Label {
+		idc = IDC + 16 * 1 + 0;
+		style = ST_CENTER;
+		x = 0.40;
+		y = 0.27;
+		w = 0.20;
+		text = "UNDEFINED";
+	};
+	class LISTBOX0: TZK_ListBox {
+		idc = IDC + 16 * 2 + 0;
+		x = 0.40;
+		y = 0.30;
+		w = 0.20;
+		h = 0.42;
+	};
+};
+
+class TzkRtsSubMenuTwoListBox: TzkRtsSubMenuOneListBox {
+	controlsBackground[] = {TowListBg};
+	class TowListBg: OneListBg {
+		x = 0.25;
+		w = 0.5;
+	};
+
+	controls[] = {
+		TRSM_LIST_TITLE, BTN_EXIT, BTN_OK, BTN_UNDO, 
+		LISTBOX0, LISTTEXT0, LISTBOX1, LISTTEXT1
+	};
+
+	class BTN_EXIT: Button {
+		x = 0.70;
+		y = 0.2;
+		w = 0.05;
+		h = 0.04;
+		text = "Exit";
+		action = "btnValue00 = true";
+	};
+	class BTN_UNDO: Button {
+		x = 0.69;
+		y = 0.75;
+		w = 0.05;
+		h = 0.04;
+		text = "UNDO";
+		action = "btnValue02 = true";
+	};
+
+	class LISTTEXT0: Label {
+		idc = IDC + 16 * 1 + 0;
+		style = ST_CENTER;
+		x = 0.27;
+		y = 0.27;
+		w = 0.20;
+		text = "UNDEFINED";
+	};
+	class LISTBOX0: TZK_ListBox {
+		idc = IDC + 16 * 2 + 0;
+		x = 0.27;
+		y = 0.30;
+		w = 0.20;
+		h = 0.42;
+	};
+	class LISTTEXT1: LISTTEXT0 {
+		idc = IDC + 16 * 1 + 1;
+		x = 0.52;
+	};
+	class LISTBOX1: LISTBOX0 {
+		idc = IDC + 16 * 2 + 1;
+		x = 0.52;
 	};
 };
 
