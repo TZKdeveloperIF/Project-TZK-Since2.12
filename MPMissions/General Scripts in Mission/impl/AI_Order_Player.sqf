@@ -70,13 +70,17 @@ _type = 0, _c = count aiOrders2; _found = false; while {_type < _c && not _found
 	_type = _type + 1;
 };
 
+aiOrdersChnIngore2 = [];
 comment "Remove invalid item";
+comment "Don't forget to modify CHN Language setting as well";
 _type = 0, _c = count aiOrders2; _j = 0; while {_type < _c} do {
 	if (aiOrders2 select _type select 0 != "Invalid") then {
 		if (_j != _type) then {
 			aiOrders2 set [_j, aiOrders2 select _type];
 			_j = _j + 1;
 		};
+	} else {
+		aiOrdersChnIngore2 set [count aiOrdersChnIngore2, _type];
 	};
 	_type = _type + 1;
 };
