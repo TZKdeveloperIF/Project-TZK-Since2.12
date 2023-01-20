@@ -87,7 +87,7 @@ _vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Common\EH\Fire
 
 	~0.1
 	? call _quitCond: _msg = ""; goto "EOF"
-	? _vehicle knowsAbout _target < 0.01: _msg = "Can't locate the target. Order Aborted. Help me spot it again please."; goto "EOF"
+	? _vehicle knowsAbout _target < 0.01 && _vehicle distance _target > viewDistance: _msg = "Can't locate the target. Order Aborted. Help me spot it again please."; goto "EOF"
 
 	? 0 == _ammoOld: _magazines = _vehicle call funcGetNotEmptyMags; _validMags = [_weapon] call funcWeaponValidMags; if ({_x in _validMags} count _magazines == 0) then {goto "CheckRearm"};
 
