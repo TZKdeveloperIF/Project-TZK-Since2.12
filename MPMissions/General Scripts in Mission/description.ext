@@ -229,7 +229,7 @@ class TzkCmdMapDlgBase: Menu {
 class TzkCmdMapDlgArea: TzkCmdMapDlgBase {
 	controls[] = {
 		LeftBtn0, 
-		DownBtn0, DownBtn1, DownBtn2, 
+		DownBtn0, DownBtn1, DownBtn2, DownBtn3, DownBtn8, 
 		RightDownBtn0, RightDownBtn1, RightDownBtn2, RightDownBtn3, RightDownBtn4, 
 		RightDownBtn5, RightDownBtn6, RightDownBtn7, RightDownBtn8, 
 		TextAzimut, ValueAzimut, SliderAzimut, 
@@ -362,6 +362,68 @@ class TzkRtsSubMenuOneListBox: Menu {
 		y = 0.30;
 		w = 0.20;
 		h = 0.42;
+	};
+};
+
+class TzkRtsSubMenuOneListWide: TzkRtsSubMenuOneListBox {
+	controlsBackground[] = {OneListWideBg};
+	class OneListWideBg: OneListBg {
+		x = 0.25;
+		w = 0.5;
+	};
+
+	controls[] = {
+		TRSM_LIST_TITLE, BTN_EXIT, BTN_SET, BTN_CLEAR, 
+		LISTBOX0, LISTTEXT0
+	};
+	class TRSM_LIST_TITLE: Title {
+		idc = IDC + 0;
+		style = ST_CENTER;
+		x = 0.32;
+		y = 0.22;
+		w = 0.36;
+		h = 0.03;
+		colorBackground[] = {0.247, 0.247, 0.247, 0.75};
+		text = "";
+	};
+	class LISTTEXT0: Label {
+		idc = IDC + 16 * 1 + 0;
+		style = ST_CENTER;
+		x = 0.30;
+		y = 0.27;
+		w = 0.40;
+		text = "UNDEFINED";
+	};
+	class LISTBOX0: TZK_ListBox {
+		idc = IDC + 16 * 2 + 0;
+		x = 0.30;
+		y = 0.30;
+		w = 0.40;
+		h = 0.42;
+	};
+	class BTN_EXIT: Button {
+		x = 0.70;
+		y = 0.2;
+		w = 0.05;
+		h = 0.04;
+		text = "Exit";
+		action = "btnValue00 = true";
+	};
+	class BTN_SET: Button {
+		x = 0.35;
+		y = 0.75;
+		w = 0.10;
+		h = 0.04;
+		text = "Set";
+		action = "btnValue01 = true";
+	};
+	class BTN_CLEAR: Button {
+		x = 0.55;
+		y = 0.75;
+		w = 0.10;
+		h = 0.04;
+		text = "Clear";
+		action = "btnValue02 = true";
 	};
 };
 

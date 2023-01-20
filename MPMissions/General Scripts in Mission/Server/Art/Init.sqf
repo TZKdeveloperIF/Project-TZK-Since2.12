@@ -14,3 +14,14 @@ _i = 0; while {_i < countTargetMarkers} do {
 	call Format[{TargetS_%1%2 = objNull}, _i, si1];
 	_i = _i + 1;
 };
+
+// Art Area
+TzkArtSvrAreaW = []; TzkArtSvrAreaW resize countTargetMarkers;
+TzkArtSvrAreaE = []; TzkArtSvrAreaE resize countTargetMarkers;
+
+// Format of element: [x, y, w, h, dir]
+_i = 0; while {_i < countTargetMarkers} do {
+	TzkArtSvrAreaW set [_i, [-10, -10, 0, 0, 0]];
+	TzkArtSvrAreaE set [_i, [-10, -10, 0, 0, 0]];
+	_i = _i + 1;
+};

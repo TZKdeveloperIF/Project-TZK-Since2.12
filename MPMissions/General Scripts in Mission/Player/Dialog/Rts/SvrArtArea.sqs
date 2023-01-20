@@ -1,0 +1,41 @@
+; args: none
+
+@ !mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "TzkRtsSubMenuOneListWide"
+mutexDlg = false
+
+_size = getMarkerSize "TzkRtsArea"
+
+_idcTitle = IDC + 0; _idcListLabel = IDC + 16 * 1 + 0; _idcListBox0 = IDC + 16 * 2 + 0
+
+ctrlSetText [_idcTitle, "Set Server Art Area"]
+ctrlSetText [_idcListLabel, "Areas"]
+
+_idcListBox0 call preprocessFile "Player\Dialog\Rts\UpdateSvrArea.sqf"
+lbSetCurSel [_idcListBox0, -1];
+
+btnValue00 = false; btnValue01 = false; btnValue02 = false
+
+# loop
+	~ 0.2
+	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+	? call dlgUpdated: goto "Quit"
+	? not alive player: closeDialog 0; goto "Quit"
+
+	_idcListBox0 call preprocessFile "Player\Dialog\Rts\UpdateSvrArea.sqf"
+
+	? btnValue00: btnValue00 = false; closeDialog 0; goto "Quit"
+	? btnValue01: btnValue01 = false; goto "Set"
+	? btnValue02: btnValue02 = false; goto "Clear"
+
+	goto "loop"
+# Quit
+	exit
+# Set
+	? -1 == lbCurSel _idcListBox0: hint "No area selected."; goto "loop"
+	? _size select 0 > 200 || _size select 1 > 200: hint "Marker too large. Can't be set as art area."; goto "loop"
+	(100 + lbCurSel _idcListBox0) exec "Player\Rts\sSetSvrArtArea.sqs"; closeDialog 0; goto "Quit"
+# Clear
+	? -1 == lbCurSel _idcListBox0: hint "No area selected."; goto "loop"
+	(lbCurSel _idcListBox0) exec "Player\Rts\sSetSvrArtArea.sqs"; goto "loop"
