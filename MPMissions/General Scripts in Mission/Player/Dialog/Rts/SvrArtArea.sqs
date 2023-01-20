@@ -13,7 +13,7 @@ ctrlSetText [_idcTitle, "Set Server Art Area"]
 ctrlSetText [_idcListLabel, "Areas"]
 
 _idcListBox0 call preprocessFile "Player\Dialog\Rts\UpdateSvrArea.sqf"
-lbSetCurSel [_idcListBox0, -1];
+? -1 != RtsArtAreaIdx: lbSetCurSel [_idcListBox0, RtsArtAreaIdx]
 
 btnValue00 = false; btnValue01 = false; btnValue02 = false
 
