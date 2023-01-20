@@ -8,7 +8,7 @@ while {_i < countTargetMarkers} do {
 		_this, 
 		format ["%1%2", _i,
 			if (-10 == _pos select 0) then {""} else {
-				format[": %1 %2", _pos call funcCalcMapPos, _pos call funcCalcTownDirDistFromPos]
+				format[": %1", _pos call funcCalcMapPos]
 			}
 		]
 	];
