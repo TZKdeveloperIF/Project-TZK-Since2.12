@@ -4,14 +4,7 @@ _c = count _top
 ? _c == 0: goto "Quit"
 
 _selectedUnits = +_top
-_len = 16; _j = 0; _cj = _c / _len; _cj = _cj - (_cj % 1) + 1; _i = 0
-# loop
-	_left = _len * _j
-	_right = _len * (_j + 1) - 1
-	? _j == _cj - 1: _right = _c - 1
-	["Server\Rts\hClear.sqs", [siPlayer], _left, _right, _selectedUnits] exec "Player\Rts\GenStrAndExec.sqs"
-	_j = _j + 1
-	? _j < _cj: goto "loop"
+[_selectedUnits, [siPlayer], "Server\Rts\hClear.sqs"] exec "Player\Rts\GenArrayCommand.sqs"
 
 # Quit
 false call preprocessFile "Player\Rts\Area.sqf"

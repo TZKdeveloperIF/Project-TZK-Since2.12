@@ -14,14 +14,7 @@ _sumX = 0; _sumY = 0; _i = 0
 _pos set [0, _sumX / _c]; _pos set [1, _sumY / _c]
 
 _selectedUnits = +_top
-_len = 16; _j = 0; _cj = _c / _len; _cj = _cj - (_cj % 1) + 1; _i = 0
-# loop
-	_left = _len * _j
-	_right = _len * (_j + 1) - 1
-	? _j == _cj - 1: _right = _c - 1
-	["Server\Rts\hMove.sqs", [_this, _pos], _left, _right, _selectedUnits] exec "Player\Rts\GenStrAndExec.sqs"
-	_j = _j + 1
-	? _j < _cj: goto "loop"
+[_selectedUnits, [_this, _pos], "Server\Rts\hMove.sqs"] exec "Player\Rts\GenArrayCommand.sqs"
 
 ; request server hoster restart the server
 _netId = NetworkID (_top select 0)
