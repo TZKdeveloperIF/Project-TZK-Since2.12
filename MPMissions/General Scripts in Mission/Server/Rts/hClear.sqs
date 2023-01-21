@@ -1,8 +1,10 @@
 ? not isServer: exit
 
-; args: [NetworkID[], [si]]
-_netIds = _this select 0; _si = _this select 1 select 0; _this = 0
-_c = count _netIds
+; args: [NetworkID[], si, isNet: bool (optional)]
+_array = _this select 0; _si = _this select 1;
+_isNet = (if (count _this > 2) then {_this select 2} else {true})
+_this = 0
+_c = count _array
 ? 0 == _c: exit
 
 @ not mutexTzkRtsW
@@ -12,7 +14,7 @@ TzkRtsSvrId = TzkRtsSvrId + 1; TzkRtsWriteTime = time
 
 _i = 0; _func = preprocessFile "Server\SQF\RtsOrderClear.sqf"
 # ergodic
-	_unit = UnitById(_netIds select _i)
+	_unit = if _isNet then {UnitById(_array select _i)} else {_array select _i}
 	? not (_unit call rtsOrderCheck): goto "continue"
 	_idx = TzkRtsIdxArr find _unit
 	? -1 == _idx: format ["ERROR: %1 isn't found in TzkRtsIdxArr", _unit] call fDebugLog; goto "continue"
