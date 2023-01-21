@@ -5,33 +5,10 @@ _netIds = _this select 0; _param = _this select 1
 _c = count _netIds
 ? 0 == _c: exit
 
+_this set [2, "Server\RtsOrder\Move.sqs"]
 @ not mutexTzkRtsW
-mutexTzkRtsW = true
-; update ID and time
-TzkRtsSvrId = TzkRtsSvrId + 1; TzkRtsWriteTime = time
+	mutexTzkRtsW = true
 
-_i = 0; _j = count TzkRtsIdxArr; _k = count TzkRtsAvailableIdx
-# ergodic
-	_unit = UnitById(_netIds select _i)
-	_idx = TzkRtsIdxArr find _unit; _found = -1 != _idx
-	? -1 != _idx: goto "idxGet"
-	? 0 == _k: _idx = _j; _j = _j + 1; goto "idxGet"
-	_idx = TzkRtsAvailableIdx select(_k - 1); _k = _k - 1
-	# idxGet
-	_len = count TzkRtsObjPool; _bNewObj = not _found && _idx >= _len
+	_this call preprocessFile "Server\Rts\DistributeOrder.sqf"
 
-	? not _found: TzkRtsIdxArr set [_idx, _unit]
-	? _bNewObj: TzkRtsObjPool set [_idx, [_unit, TzkRtsSvrId, true]]
-	? not _bNewObj: TzkRtsObjPool select _idx set [0, _unit]; TzkRtsObjPool select _idx set [1, TzkRtsSvrId]; TzkRtsObjPool select _idx set [2, true]
-
-	[_unit, _param, TzkRtsObjPool select _idx, TzkRtsSvrId] exec "Server\RtsOrder\Move.sqs"
-	
-	_i = _i + 1
-	? _i < _c: goto "ergodic"
-
-TzkRtsAvailableIdx resize _k
-; update time again. Using latest time
-TzkRtsWriteTime = time
-
-# Quit
-mutexTzkRtsW = false
+	mutexTzkRtsW = false
