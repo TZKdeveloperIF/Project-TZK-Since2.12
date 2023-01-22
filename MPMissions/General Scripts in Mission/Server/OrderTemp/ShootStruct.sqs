@@ -144,8 +144,7 @@ _vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Common\EH\Fire
 	[_unit, _si, _gi, _vehicle, _type, _sup] exec "Server\AI_Rearm.sqs"; [_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
 	# WaitRearmComplete
 		~5
-		? !(_unit call temporaryCheck): goto "EOF"
-		? !(alive _unit) || _vehicle != vehicle _unit: goto "EOF"
+		? call _quitCond: _msg = ""; goto "EOF"
 		? !someAmmo _vehicle: goto "WaitRearmComplete"
 	~ _delay + 1
 	? _speed > 0: [_vehicle, _speed] exec localize {TZK_FUNC_SWITCH_MAG_PRESET}
