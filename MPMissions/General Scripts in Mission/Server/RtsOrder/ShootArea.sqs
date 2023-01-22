@@ -1,0 +1,42 @@
+; args: [unit,
+;	[bigAngle: bool, suggested speed: number, area idx: number, type enum: string, time stamp: number, si: number], 
+; 	rts object status (array-reference), rts server id]
+
+_unit = _this select 0; _rtsStatus = _this select 2; _id = _this select 3
+_quitCond = {not (_unit call rtsOrderCheck) || _id != _rtsStatus select 1 || not alive _unit}
+? _unit != driver vehicle _unit: if (not isNull driver vehicle _unit) then {_this = 0; goto "Sleep"}
+
+; distributor
+_enum = _this select 1 select 3
+
+? "Soldier" == _enum: _this exec "Server\RtsOrder\ShootAreaSoldier.sqs"; exit
+? "Struct" == _enum: _this exec "Server\RtsOrder\ShootAreaStruct.sqs"; exit
+? "Howitzer" == _enum || "MLRS" == _enum || "Tank" == _enum: _this exec "Server\RtsOrder\ShootAreaTank.sqs"; exit
+
+; ASSERT(FALSE)
+exit
+
+# Sleep
+	~ 30
+	? call _quitCond: exit
+	goto "Sleep"
+
+; annotation
+; 与concurrent的区别
+; 	入参不同
+; 		需要手动获取type
+; 		type除了炮击之外, 补给脚本也需要
+; 	接入RTS命令框架
+; 	增加AREA信息的初始化
+; 		执行速度切换
+; 	quitCond不一样
+; 	移动逻辑不一样
+; 		以所在位置直接执行炮击逻辑
+; 			若距离太远，则基于所在位置向目标靠近
+; 	precalculate和attachCheck有区别
+; 		外部变量调整
+; 			根据速度切换与否，增加初次炮击的延时
+; 		area需在attachCheck内产生坐标和计算角度
+;		需要在坐标产生后，判定单位和目标的距离
+; 	发射时无需随机扰动
+; 	EOF

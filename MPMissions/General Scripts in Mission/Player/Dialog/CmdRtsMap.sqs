@@ -32,6 +32,7 @@ btnValue00 = 0; btnValue01 = 0; btnValue02 = 0; btnValue03 = 0
 ; { ctrlShow [_x, false] } forEach []
 ctrlSetText [_idcLeftBtn0, "Move"]
 ctrlSetText [_idcLeftBtn0 + 1, "Clear Rts Order"]
+ctrlSetText [_idcLeftBtn0 + 2, "Shoot Area"]
 ctrlSetText [_idcDownBtn0, "Disband"]
 
 ; false call preprocessFile "Player\Dialog\Rts\InitSilider.sqf"
@@ -54,6 +55,7 @@ ctrlSetText [_idcDownBtn0, "Disband"]
 # LeftBtn
 	? 2^0 == _btnVal: _pos exec "Player\Rts\sRtsMove.sqs"; closeDialog 0; goto "Quit"
 	? 2^1 == _btnVal: 0 exec "Player\Rts\sRtsClear.sqs"; closeDialog 0; goto "Quit"
+	? 2^2 == _btnVal: 0 exec "Player\Dialog\Rts\ShootArea.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 # DownBtn
 	? 2^0 == _btnVal: 0 exec "Player\Dialog\DisbandPreset.sqs"; closeDialog 0; goto "Quit"
