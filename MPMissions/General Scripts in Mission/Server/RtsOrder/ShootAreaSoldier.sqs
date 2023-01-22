@@ -1,0 +1,191 @@
+; args: [unit,
+;	[bigAngle: bool, suggested speed: number, area idx: number, type enum: string, time stamp: number, si: number], 
+; 	rts object status (array-reference), rts server id]
+
+_unit = _this select 0; _param = _this select 1; _rtsStatus = _this select 2; _id = _this select 3
+_biggerAngle = _param select 0; _suggestedSpeed = _param select 1; _idx = _param select 2; _enum = _param select 3; _si = _param select 5
+_this = 0; _param = 0
+_commandType = _unit call preprocessFile "Art\GetSoldierArtType.sqf"
+
+_speed = 0; _range = 0; _text = ""; _weapon = ""; _weaponCheck = ""; _rldTime = 0; _fireCommand = ""
+_validMags = []
+call preprocessFile "Art\InitSoldierScript.sqf"
+_type = _unit call funcGetUnitTypeFromObject
+
+; rts busy Check
+; not realized yet
+
+; rts order stack design
+; not realized yet
+
+_unit call preprocessFile "Server\SQF\RtsOrderSet.sqf"
+_unit call busyClear
+_unit call temporaryClear
+
+; Switch magazine
+	; Soldier will always ignore this part
+
+; Shoot Area infomation
+	_suffix = if (si0 == _si) then {"W"} else {"E"};
+	_markerInfo = call format [{TzkArtSvrArea%1 select _idx}, _suffix];
+	_result = call format [{TzkArtSvrAreaAnal%1 select _idx}, _suffix];
+; Rts infomation
+	_abort = {[_unit, _si, false] exec "Server\Rts\hClear.sqs"}; _bClearRts = false
+; Create local target object
+	_target = {Target_TZK_xj400} camCreate [0,0,0]; _target setPos [_markerInfo select 0, _markerInfo select 1, 0]
+; Get type info in area scripts
+	; obtained in former code
+
+; Init Art Variables
+	? localize {TZK_ART_406} != "true": [_si, "TZK_Art_4_0_6.pbo isn't detected. Art module inactivated."] exec "Server\Msg\sSvrMsg2Cmd.sqs", exit
+
+	_quitCond = {not (_unit call rtsOrderCheck) || _id != _rtsStatus select 1 || not alive _unit}
+	_msg = ""
+	_isServer = true; _isVehicle = false; _isStruct = false;
+
+	_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Common\EH\Fired_Art_406.sqs"
+	? _biggerAngle: _heliH = typeOf _target camCreate [0,0,0]
+# CheckDistance
+	_posOnOrdered = getPosASL _vehicle; _distLimit = _range + 350; _hint = "Target is too far for infantry " + _text + ". Order aborted."
+	; Check both distance between assigned CO waypoint and target and between unit and target.
+	? ([_unit, _attackPos] call funcDistH) > 512 || ([_attackPos, _target] call funcDistH) > _distLimit: _msg = _hint; goto "EOF"
+	; Quit if CO undefined.
+	? _attackPos select 0 < 0: goto "EOF"
+	; Ask unit get close to CO if unit isn't in CO's range (radius).
+	? [_attackPos, _vehicle] call funcDistH > _radius: _posOnOrdered = [_attackPos, _radius/3, _radius] call funcGetRandomPos; _posOnOrdered set [2,0]
+
+
+
+
+
+
+_posCorrect = 0
+# PrepareToMove
+	[_unit, _posOnOrdered] call funcMoveAI
+	; Not allow soldiers directly fire. They're required to go to CO pos first.
+# CheckCOReached
+	[_unit, _posOnOrdered] call funcMoveAI
+	~5
+	? call _quitCond: _msg = ""; goto "EOF"
+	? ([_unit, _posOnOrdered] call funcDistH) > 20: goto "CheckCOReached"
+	
+	? _unit distance _target < _range * (10 - _posCorrect) / 10: goto "PrePareToAttack"
+	? _posCorrect >= 10: _msg = "Can't find attack pos. Order aborted.", goto "EOF"
+	_vector = [getPosASL _target, _posOnOrdered] call funcVectorSub; _dist = ([_posOnOrdered, getPosASL _target] call funcDistH) - _range*8/9
+	_vector = [_vector, _dist/(_dist+_range*8/9)] call funcVectorScale;
+	_destination = [_posOnOrdered, _vector] call funcVectorAdd
+	_destination = [[[getPosASL _target, _destination] call funcVectorSub, _posCorrect / 10] call funcVectorScale, _destination] call funcVectorAdd
+
+# CheckPosReached
+	[_unit, _destination] call funcMoveAI
+	~5
+	? call _quitCond: _msg = ""; goto "EOF"
+	? _unit distance _target > _range || [_unit, _destination] call funcDistH > 5: goto "CheckPosReached"
+
+_posOnOrdered = getPosASL _vehicle
+
+# PrePareToAttack
+	_delay = 0
+	_ret = call preprocessFile "Art\AimAndCalcDelay.sqf"
+	? not _ret: goto "EOF"																																							
+	~ _delay
+
+	; weapon is prepared in infantry script
+
+# PreCalculate
+	? _unit distance _target > _range: goto "CheckDistance"
+
+	_ammoArray = _vehicle ammoArray _weapon; _equippedMag = ""
+	_ret = call preprocessFile "Art\AreaPreAnalysis.sqf"
+	? not _ret: goto "EOF"
+
+	; outer variables for attack loop
+	_delay = 0
+	; For TZK customed GL, the "muzzle" using same name as "weapon". Thus unnecessary to worry about GL in TZK. Check it in more general way.
+	_magazines = _unit call funcGetNotEmptyMags; _numOfMagLast = 1 + ("_x in _validMags" count _magazines)
+	; no switch speed delay
+# AttackCheck
+	; Generate target pos for AREA command
+	_try = 0; _posT = []
+	# GenAreaPos
+		_posT = _markerInfo call preprocessFile "Server\Art\AreaRandomPos.sqf"
+		_try = _try + 1
+		? _try < 3 && ([_posT, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1 < 50: goto "GenAreaPos"
+	? 3 == _try: _posT set [0, _result select 1 select 1]; _posT set [1, _result select 1 select 2]
+	_posT set [2, _posT call funcHASL]; _target setPosASL _posT
+	
+	? _unit distance _target > _range: goto "PrepareToMove"
+
+	_posV = getPosASL _vehicle
+	_angle = 0; _elev = 0
+	_ret = call preprocessFile "Art\AreaCalculate.sqf"
+	? not _ret: goto "EOF"
+
+	? _biggerAngle: _posH = [_posT, _posV] call funcVectorSub, _posH set [2, 0], _length = _posH call funcVectorLength, _posH = [_posH, 300/_length] call funcVectorScale, _posH set [2, 300* 1.732], _posH = [_posH, _posV] call funcVectorAdd, _heliH setPosASL _posH
+
+	? _biggerAngle: _vehicle reveal _heliH
+	_vehicle reveal _target
+	~0.1
+	_vehicle doTarget (if _biggerAngle then {_heliH} else {_target})
+	; Rearm check should be placed in loop below, due to time cost of animation.
+	
+	; delay must be correctly assigned for "fire" command.
+	# WaitUntilReload
+		; For soldier weapon, the reload time should be calculated manually, considering the reload animation time cost.
+		~ _delay
+		_delay = _rldTime
+		? call _quitCond: _msg = ""; goto "EOF"
+		? "_x in _validMags" count _magazines == 0: goto "CheckRearm"
+		
+		_magazines = _unit call funcGetNotEmptyMags
+		? ("_x in _validMags" count _magazines) >= _numOfMagLast && _unit ammo _weapon < 1: goto "WaitUntilReload"
+	
+	; check ammoarray again since delayed
+	_ammoArray = _vehicle ammoArray _weapon
+	? count _ammoArray == 0: _msg = "No available magazine. Order aborted. Rearm me please, sir."; goto "EOF"
+	_currentMag = _ammoArray select 0
+	? _currentMag != _equippedMag: goto "PreCalculate"
+
+	_numOfMagLast = "_x in _validMags" count _magazines
+	; what if magazine changed? sure the elevation will change too.
+	
+	_ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev]
+	_vehicle addEventHandler ["Fired", format [{[_this, %1, %2, %3, %4] exec "%5"}, _speed, _angle, _elev, _ehRev, _script] ]
+	[_vehicle, _weapon] call _fireCommand
+	
+	; AttackDone
+	~0.1
+	if _biggerAngle then {_vehicle doWatch _posH} else {_vehicle doWatch _posT}
+	goto "AttackCheck"
+# CheckRearm
+	_magData = (_unit call funcGetRearmData) select 1
+	? !([ _validMags, _magData] call funcArrayOverlap): _msg = "My magData isn't match current command. Won't go rearm and order aborted."; goto "EOF"
+	_sup = [_unit, _si, 512, true] call preprocessFile "Util\SoldierRearmSupport.sqf"
+	? isNull _sup: _msg = "No support vehicle within 512 meters. Magazines exhausted. Order aborted."; goto "EOF"
+	_unit groupChat "Moving to support vehicle for more magazines."
+
+	_timeAbort = time + 15*60
+	# MoveToSupport
+		_posMove = [[0, 5], (getDir _sup)] call funcVectorRot2D
+		_posMove = [getPos _sup, _posMove] call funcVectorSub
+		[_unit, _posMove] call funcMoveAI
+		~5
+		? call _quitCond: _msg = ""; goto "EOF"
+		? !(alive _sup): goto "CheckRearm"
+		? time > _timeAbort: _msg = "Cost too much time. Unable to reach support vehicle. Order aborted."; goto "EOF"
+		? (_unit distance _sup) > 10: goto "MoveToSupport"
+	[_unit, _si, _gi, _vehicle, _type, _sup] exec "Server\AI_Rearm.sqs"; [_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
+	# WaitRearmComplete
+		~5
+		? call _quitCond: _msg = ""; goto "EOF"
+		? !someAmmo _vehicle: goto "WaitRearmComplete"
+	goto "PrepareToMove"
+
+; End Of File
+# EOF
+	deleteVehicle _target
+	? _biggerAngle: deleteVehicle _heliH
+
+	? _msg != "": _msg = format ["[%1] ", _unit] + _msg, [_si, _msg] exec "Server\Msg\sSvrMsg2Cmd.sqs"
+	? _bClearRts: call _abort
+	exit

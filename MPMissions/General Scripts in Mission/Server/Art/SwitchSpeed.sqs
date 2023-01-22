@@ -1,0 +1,27 @@
+; args: [vehicle, speed, enum]
+_vehicle = _this select 0; _speed = _this select 1; _enum = _this select 2
+? "Soldier" == _enum: exit
+
+_legal = false; if (_speed >= 500) then {_speed = 500}
+
+? "Struct" == _enum: goto "CheckStructure"
+
+? "Tank" != _enum && "MLRS" != _enum && "Howitzer" != _enum: exit
+
+_vt = _vehicle call funcGetUnitTypeFromObject
+? _vt == -1: exit
+? _vt in typesHowitzer: _legal = true
+? _vt in typesRocketLauncher: _legal = true
+goto "SwitchTheMags"
+
+# CheckStructure
+_vt = _vehicle call funcGetStructTypeFromObject
+? _vt == -1: exit
+? _vt in structsOccupiableArtilleryMortar: if (_speed > 120) then {_speed = 120}; _legal = true
+? _vt in structsOccupiableHowitzer: _legal = true
+
+# SwitchTheMags
+? not _legal: exit
+
+; Use Radio\Graduation script to switch the magazine. It has been well designed.
+[_vehicle, _speed] exec localize {TZK_FUNC_SWITCH_MAG_PRESET}

@@ -1,0 +1,60 @@
+; args: none
+
+@ !mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "TzkRtsaArtSubMenu"
+mutexDlg = false
+
+_idcTitle = IDC + 0; _idcBtnLabel0 = IDC + 5; _idcBtnLabel1 = IDC + 6
+ctrlSetText [_idcBtnLabel0, "Type"]
+ctrlSetText [_idcBtnLabel1, "Big Angle"]
+_idcBtn_0_0 = IDC + 16 * 2; _idcBtnBg_0_0 = IDC + 16 * 1;
+_idcBtn_1_0 = IDC + 16 * 4; _idcBtnBg_1_0 = IDC + 16 * 3;
+ctrlSetText [_idcTitle, "Shoot Area"]
+{ctrlSetText [_x, "Soldier"]} forEach [_idcBtn_0_0, _idcBtn_1_0]
+{ctrlSetText [_x, "Struct"]} forEach [_idcBtn_0_0 + 1, _idcBtn_1_0 + 1]
+{ctrlSetText [_x, "Howitzer"]} forEach [_idcBtn_0_0 + 2, _idcBtn_1_0 + 2]
+{ctrlSetText [_x, "MLRS"]} forEach [_idcBtn_0_0 + 3, _idcBtn_1_0 + 3]
+{ctrlSetText [_x, "Tank"]} forEach [_idcBtn_0_0 + 4]
+{_i = _x; {ctrlShow [_x + _i, false]} forEach [_idcBtnBg_0_0, _idcBtnBg_1_0]} forEach [0,1,2,3,4]
+
+_idcListLabel0 = IDC + 1; _idcListBox0 = IDC + 2; _idcListLabel1 = IDC + 3; _idcListBox1 = IDC + 4
+ctrlSetText [_idcListLabel0, "Speed"]
+ctrlSetText [_idcListLabel1, "Art Area"]
+_idcListBox1 call preprocessFile "Player\Dialog\Rts\UpdateSvrArea.sqf"
+? -1 != RtsArtAreaIdx: lbSetCurSel [_idcListBox1, RtsArtAreaIdx]
+
+_i = lbAdd [_idcListBox0, "Do nothing"]; lbSetValue [_idcListBox0, _i, -1]
+_i = lbAdd [_idcListBox0, "80"]; lbSetValue [_idcListBox0, _i, 80]
+_i = lbAdd [_idcListBox0, "120"]; lbSetValue [_idcListBox0, _i, 120]
+_i = lbAdd [_idcListBox0, "180"]; lbSetValue [_idcListBox0, _i, 180]
+_i = lbAdd [_idcListBox0, "300"]; lbSetValue [_idcListBox0, _i, 300]
+_i = lbAdd [_idcListBox0, "400"]; lbSetValue [_idcListBox0, _i, 400]
+_i = lbAdd [_idcListBox0, "500"]; lbSetValue [_idcListBox0, _i, 500]
+; _i = lbAdd [_idcListBox0, "Auto"]; lbSetValue [_idcListBox0, _i, -2]
+lbSetCurSel [_idcListBox0, 0]
+
+btnValue00 = false; btnValue01 = false
+btnValue02 = [true,true,true,true,true]; btnValue03 = [false,false,false,false]
+
+# loop
+	~ 0.2
+	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+	? call dlgUpdated: goto "Quit"
+	? not alive player: closeDialog 0; goto "Quit"
+
+	call preprocessFile "Player\Dialog\Rts\UpdateShootAreaBtn.sqf"
+
+	? btnValue00: btnValue00 = false; closeDialog 0; goto "Quit"
+	? btnValue01: btnValue01 = false; goto "OK"
+
+	goto "loop"
+# Quit
+	btnValue02 = 0; btnValue03 = 0
+	exit
+# OK
+	? -1 == lbCurSel _idcListBox0: hint "No speed selected."; goto "loop"
+	? -1 == lbCurSel _idcListBox1: hint "No art area selected"; goto "loop"
+	? -10 == getMarkerPos (format ["ArtSvrArea%1", lbCurSel _idcListBox1]) select 0: hint "Area undefined."; goto "loop"
+	[btnValue02, btnValue03, lbValue [_idcListBox0, lbCurSel _idcListBox0], lbCurSel _idcListBox1] exec "Player\Rts\sRtsShootArea.sqs"
+	closeDialog 0; goto "Quit"
