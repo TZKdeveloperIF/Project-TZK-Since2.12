@@ -73,11 +73,8 @@ _unit call temporarySet
 
 #Update
 ? !_bInfantry: goto "SkipInfantry"
-_magData = (_unit call funcGetRearmData) select 1
-_weapons = weapons _unit; _magzines = magazines _unit
-? [["M16MortarLauncher_TZK_xj400", "AK74MortarLauncher_TZK_xj400"], _magzines + _magData] call funcArrayOverlap: [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, 2, _biggerAngle] exec "Server\OrderTemp\ShootInfantry.sqs"; exit
-? [["M16GrenadeLauncher_TZK_xj400", "AK74GrenadeLauncher_TZK_xj400", "M4_M203_ACOG_SD_xj400", "AK74M_GP25_1P29_SD_xj400", "MM1", "6G30"], _weapons] call funcArrayOverlap: [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, 1, _biggerAngle] exec "Server\OrderTemp\ShootInfantry.sqs"; exit
-? "_x in [{HandGrenade},{RKG3M_xj400}, {SmokeShell}, {SmokeShellGreen}, {SmokeShellRed}]" count (_magzines + _magData) > 0: [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, 0, _biggerAngle] exec "Server\OrderTemp\ShootInfantry.sqs"; exit
+_commandType = _unit call preprocessFile "Art\GetSoldierArtType.sqf"
+? -1 != _commandType: [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, _commandType, _biggerAngle] exec "Server\OrderTemp\ShootInfantry.sqs"
 exit
 
 #SkipInfantry
