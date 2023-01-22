@@ -9,6 +9,7 @@ _this = 0
 _speed = 0; _range = 0; _text = ""; _weapon = ""; _weaponCheck = ""; _rldTime = 0; _fireCommand = ""
 _validMags = []
 call preprocessFile "Art\InitSoldierScript.sqf"
+_type = _unit call funcGetUnitTypeFromObject
 
 ? localize {TZK_ART_406} != "true": [_si, "TZK_Art_4_0_6.pbo isn't detected. Art module inactivated."] exec "Server\Msg\sSvrMsg2Cmd.sqs", exit
 _quitCond = {not (_unit call temporaryCheck) || not alive _unit || _vehicle != vehicle _unit}
