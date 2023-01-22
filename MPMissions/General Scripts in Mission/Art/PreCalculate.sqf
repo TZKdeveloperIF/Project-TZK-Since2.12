@@ -3,6 +3,7 @@
 _ret = true;
 
 _calc = [_posV, _posT, _speed, _biggerAngle] call funcElevArt406;
+_angle = ((_posT select 1) - (_posV select 1)) atan2 ((_posT select 0) - (_posV select 0));
 if (_calc < 180) then {_elev = _calc} else {
 	_calc = _calc - 180;
 	_bit = _calc % 2;
@@ -31,7 +32,6 @@ if (_calc < 180) then {_elev = _calc} else {
 if _ret then {
 	// Calculate turbulence
 	// 用弧长除以半径获得方位角的范围; 考虑散布范围的最近点，计算命中它所需的角度，以修正量作为俯仰角的扰动范围
-	_angle = ((_posT select 1) - (_posV select 1)) atan2 ((_posT select 0) - (_posV select 0));
 	_distX = [_posV, _posT] call funcDistH;
 	_angleDelta = (_dispersion/2)/_distX * 180/pi;
 	_vector = [_posT, _posV] call funcVectorSub;
