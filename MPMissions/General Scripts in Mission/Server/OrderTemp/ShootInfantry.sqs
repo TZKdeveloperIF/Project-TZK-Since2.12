@@ -86,7 +86,7 @@ _posOnOrdered = getPosASL _vehicle
 	; 当载具的位置发生了变化 (变化10米以上), 或目标的位置发生了变化, 或弹夹发生了切换, 需要重新回到试射环节.
 	? 10 < [_vehicle, _posV] call funcDistH || 10 < [_target, _posT] call funcDistH: goto "PreCalculate"
 	? _unit distance _target > _range: goto "PrepareToMove"
-	? _biggerAngle: _posH = [_posT, _posV] call funcVectorSub, _posH set [2, 0], _length = _posH call funcVectorLength, _posH = [_posH, 600/_length] call funcVectorScale, _posH set [2, 600 * 1.732], _posH = [_posH, _posV] call funcVectorAdd, _heliH setPosASL _posH
+	? _biggerAngle: _posH = [_posT, _posV] call funcVectorSub, _posH set [2, 0], _length = _posH call funcVectorLength, _posH = [_posH, 300/_length] call funcVectorScale, _posH set [2, 300* 1.732], _posH = [_posH, _posV] call funcVectorAdd, _heliH setPosASL _posH
 
 	? _biggerAngle: _vehicle reveal _heliH
 	_vehicle reveal _target
