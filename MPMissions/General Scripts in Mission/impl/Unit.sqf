@@ -47,15 +47,37 @@ utSupportInf = [_supportCarrierW, _supportCarrierE];
 } forEach utSupportInf;
 
 // The unitTypeData and unitTypeArray should ALWAYS be defined AFTER HAVING CALLED THIS SCRIPT
-unitTypeArray resize 0; unitTypeData resize 0; _type = 0;
+unitTypeArray resize 0; unitTypeData resize 0; _type = 0; _j = 0;
 {
-	if ((_x select udModel) in unitTypeArray) then {
-		_i = unitTypeArray find (_x select udModel); 
-		_list = unitTypeData select _i; 
-		_list set [count _list, _type]
+	_i = unitTypeArray find (_x select udModel);
+	if (-1 != _i) then {
+		_list = unitTypeData select _i;
+		_list set [count _list, _type];
 	} else {
-		unitTypeData set [_type, [_type]]
-	}; 
-	unitTypeArray set [_type, _x select udModel];
+		unitTypeData set [_j, [_type]];
+		unitTypeArray set [_j, _x select udModel];
+		_j = _j + 1;
+	};
 	_type = _type + 1;
 } forEach unitDefs;
+_c = count TzkSelfUpdateIdx; _k = 0; while {_k < _c} do {
+	_type = TzkSelfUpdateIdx select _k;
+	_models = TzkSelfUpdateVal select _k select 2;
+	_l = 1; if ((unitDefs select _type select udModel) != (_models select 0)) then {
+		_l = 0;
+		player globalChat (unitDefs select _type select udName) + " has imporper TzkSelfUpdateVal definition.";
+	};
+	_cm = count _models; while {_l < _cm} do {
+		_i = unitTypeArray find (_models select _l);
+		if (-1 != _i) then {
+			_list = unitTypeData select _i;
+			_list set [count _list, _type];
+		} else {
+			unitTypeData set [_j, [_type]];
+			unitTypeArray set [_j, _models select _l];
+			_j = _j + 1;
+		};
+		_l = _l + 1;
+	};
+	_k = _k + 1;
+};
