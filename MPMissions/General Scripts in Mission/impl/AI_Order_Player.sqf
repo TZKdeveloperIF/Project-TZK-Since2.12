@@ -77,8 +77,8 @@ _type = 0, _c = count aiOrders2; _j = 0; while {_type < _c} do {
 	if (aiOrders2 select _type select 0 != "Invalid") then {
 		if (_j != _type) then {
 			aiOrders2 set [_j, aiOrders2 select _type];
-			_j = _j + 1;
 		};
+		_j = _j + 1;
 	} else {
 		aiOrdersChnIngore2 set [count aiOrdersChnIngore2, _type];
 	};

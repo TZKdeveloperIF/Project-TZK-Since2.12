@@ -15,8 +15,8 @@ _i = 0, _c = count aiOrdersChn2; _j = 0; while {_i < _c} do {
 	if (aiOrdersChn2 select _i != "") then {
 		if (_j != _i) then {
 			aiOrdersChn2 set [_j, aiOrdersChn2 select _i];
-			_j = _j + 1;
 		};
+		_j = _j + 1;
 	};
 	_i = _i + 1;
 };
