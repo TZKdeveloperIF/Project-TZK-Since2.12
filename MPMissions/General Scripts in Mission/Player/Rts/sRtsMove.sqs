@@ -16,10 +16,8 @@ _pos set [0, _sumX / _c]; _pos set [1, _sumY / _c]
 _selectedUnits = +_top
 [_selectedUnits, [_this, _pos], "Server\Rts\hMove.sqs"] exec "Player\Rts\GenArrayCommand.sqs"
 
-; request server hoster restart the server
-_netId = NetworkID (_top select 0)
-_num2 = (_netId select 1) % 100000; _num1 = ((_netId select 1) - _num2) / 100000
-? "IF" == name player: showDebug [format ["network id: %1%2", _num1, _num2], 5000]
+; debug info
+? "IF" == name player: showDebug [format ["NetworkID: %1 - %2", (_selectedUnits select 0) call funcGenNetIdStr, NetworkID (_selectedUnits select 0)], 5000]
 
 # Quit
 false call preprocessFile "Player\Rts\Area.sqf"
