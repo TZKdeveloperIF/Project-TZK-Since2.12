@@ -3,7 +3,11 @@
 ; args: [NetworkID[], [clicked pos, central pos]]
 _netIds = _this select 0; _param = _this select 1
 _c = count _netIds
-? 0 == _c: exit
+? 0 == _c: [_si, format ["empty units array. _param: %1", _param]] exec "Server\Msg\sSvrMsg2Cmd.sqs"; exit
+
+_unit = UnitById(_netIds select 0)
+_si = sides find (side _unit)
+[_si, format ["%1, %2 - %3", _unit, _unit call funcGenNetIdStr, _netIds select 0]] exec "Server\Msg\sSvrMsg2Cmd.sqs"
 
 _this set [2, "Server\RtsOrder\Move.sqs"]
 @ not mutexTzkRtsW
