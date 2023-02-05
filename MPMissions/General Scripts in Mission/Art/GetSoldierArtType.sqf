@@ -7,7 +7,7 @@ _weapons = weapons _this;
 
 _ret = -1;
 if (-1 == _ret) then {
-	if ([["M16MortarLauncher_TZK_xj400", "AK74MortarLauncher_TZK_xj400"], _mags] call funcArrayOverlap) then {
+	if ([["M16MortarLauncher_TZK_xj400", "AK74MortarLauncher_TZK_xj400", "MortarM16_xj400", "MortarAK74_xj400"], _mags] call funcArrayOverlap) then {
 		_ret = 2;
 	};
 };

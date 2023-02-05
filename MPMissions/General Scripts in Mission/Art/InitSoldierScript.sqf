@@ -11,11 +11,7 @@ _weaponCheck = [
 _validMags = [
 	[{HandGrenade},{RKG3M_xj400}, {SmokeShell}, {SmokeShellGreen}, {SmokeShellRed}],
 	["GrenadeLauncher", "GP25_Grenade_xj400", "GP25_Vest_xj400", "M203_Grenade_xj400", "M203_Vest_xj400", "MM1Magazine", "6G30Magazine", primaryWeapon _unit],
-	["M16MortarLauncher_TZK_xj400", "AK74MortarLauncher_TZK_xj400"]
+	["M16MortarLauncher_TZK_xj400", "AK74MortarLauncher_TZK_xj400", "MortarM16_xj400", "MortarAK74_xj400"]
 ] select _commandType;
 _rldTime = [3.5, if (_weapon == "MM1" || _weapon == "6G30") then {0.6} else {5.5}, 5.5] select _commandType;
-_fireCommand = [
-	"(_this select 0) fire (_this select 1)",
-	"(_this select 0) fire (_this select 1)",
-	"(_this select 0) fire [_this select 1, _this select 1, _this select 1]"
-] select _commandType;
+_fireCommand = {(_this select 0) fire (_this select 1)};
