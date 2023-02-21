@@ -6,12 +6,30 @@ _i = 0; _c = count TzkUnitSkillVal; while {_i < _c} do {
 	_i = _i + 1;
 };
 
+// explicitly mark "auto cannon ship" as "AI" unit
 {unitDefs select _x set [udName, "Boat 30mm gun (AI)"]} forEach [_boatW3, _boatE3];
+// Recover cannon 2-crew ship for player using boat2 slots
 {
 	_entry = unitDefs select _x;
 	_entry set [udName, "Boat 30mm gun"];
-	_entry set [udScripts, [localize {TZK_EQUIP_UNIT_TRUCK}, "\TZK_Scripts_4_0_6\Common\Equip\DispCannon.sqs"]];
+	if (_x == _boatW2) then {
+		_entry set [udScripts, [localize {TZK_EQUIP_UNIT_TRUCK}, "\TZK_Scripts_4_0_6\Common\Equip\BoatW.sqs"]];
+	} else {
+		_entry set [udScripts, [localize {TZK_EQUIP_UNIT_TRUCK}, "\TZK_Scripts_4_0_6\Common\Equip\BoatE.sqs"]];
+	};
 } forEach [_boatW2, _boatE2];
+// Recover HE/AP 2-crew ship for player using custom boat slots
+{
+	_entry = unitDefs select _x;
+	_entry set [udName, "Boat HE/AP gun"];
+	_entry set [udCost, 1500];
+	if (_x == _boatCustomW) then {
+		_entry set [udModel, "GunBoatW_xj400"];
+	} else {
+		_entry set [udModel, "GunBoatE_xj400"];
+	};
+	_entry set [udScripts, [localize {TZK_EQUIP_UNIT_TRUCK}]];
+} forEach [_boatCustomW, _boatCustomE];
 
 if true then {
 	_name0 = []; _i = 0; _c = count (groupMatrix select si0); while {_i < _c} do {
