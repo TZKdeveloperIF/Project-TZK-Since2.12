@@ -1,18 +1,21 @@
+// args: none
 private [
-	"_index", "_count", "_leader", "_markerType", "_marker", 
-	"_x",  "_ids", "_id", "_units",  "_gi", "_countGroups", "_group", "_marker", 
-	"_ai",  "_i", "_v", "_m"
+	{_i}, {_c}, {_id}, {_countGroups}, {_m}, {_v}, 
+	{_tzkSelUnitsTop}, {_bHighlight}, {_func}, {_cache}, {_showGroup}, 
+	{_unit}, {_units}, {_leader}, {_group}, {_gi}
 ];
 
+// RTS UI
 TzkMapSelectedHighlight = not TzkMapSelectedHighlight;
 _tzkSelUnitsTop = TzkSelUnitsStack select TzkSelStackIdx;
-_index = 0;
-{
-	_leader = leader _x;
-	_markerType = (["Marker","Dot"] select (alive _leader));
-	_marker = format ["%1%2", (groupNameMatrix select siPlayer) select _index, siPlayer];
-	_marker setMarkerPos getPos _leader;
-	_marker setMarkerType _markerType;
+// Leaders
+_i = 0; _c = count (groupMatrix select siPlayer); while {_i < _c} do {
+	_leader = leader (groupMatrix select siPlayer select _i);
+
+	_m = format ["%1%2", groupNameMatrix select siPlayer select _i, siPlayer];
+	_m setMarkerPos getPos _leader;
+	_m setMarkerType (if (alive _leader) then {"Dot"} else {"Marker"});
+
 	_bHighlight = false;
 	if not TzkMapBlockSelected then {
 		if (-1 != _tzkSelUnitsTop find _leader) then {if TzkMapSelectedHighlight then {
@@ -20,97 +23,96 @@ _index = 0;
 		}};
 	};
 	if _bHighlight then {
-		_marker setMarkerColor "ColorRedAlpha";
+		_m setMarkerColor "ColorRedAlpha";
 	} else {
-		_marker setMarkerColor "ColorBlue";
+		_m setMarkerColor "ColorBlue";
 	};
-	_index = _index + 1;
-} forEach (groupMatrix select siPlayer);
 
-_ids = groupUnitIDMatrix select siPlayer select giPlayer;
-_units = units groupPlayer; _id = 2; _index = 1; _count = count _units;
-while {_id <= 12} do {
-	_marker = format ["PlayerUnit_%1", _id];
-	if (_index >= _count) then {_marker setMarkerPos hiddenMarkerPos} else {
-		_ai = _units select _index; _text = format ["%1", _ai];
-		if ( _text == (_ids select _id) ) then { _marker setMarkerPos getPos _ai; _index = _index + 1 } else { _marker setMarkerPos hiddenMarkerPos };
-	};	
+	_i = _i + 1;
+};
+// Player group members
+_func = preprocessFile "Util\UnitIdInGroup.sqf";
+_units = units groupPlayer; _cache = -1;
+_id = 2; _i = 1; _c = count _units; while {_i < _c && _id <= 12} do {
+	_m = format ["PlayerUnit_%1", _id];
+	_unit = _units select _i;
+	if (-1 == _cache) then {_cache = _unit call _func};
+	if (_cache == _id) then {
+		_m setMarkerPos getPos _unit;
+		_cache = -1; _i = _i + 1;
+	} else {
+		_m setMarkerPos hiddenMarkerPos;
+	};
 	_id = _id + 1;
 };
+// ASSERT(_i == _c);
+while {_id <= 12} do {format ["PlayerUnit_%1", _id] setMarkerPos hiddenMarkerPos; _id = _id + 1;};
 
-_gi = 0;
-_countGroups = count (groupMatrix select siPlayer);
+_gi = 0; _countGroups = count (groupMatrix select siPlayer);
 while {_gi < _countGroups} do {
 	if (_gi != giPlayer) then {
-		_group = groupMatrix select siPlayer select _gi;
-		_units = units _group;
-		_count = count _units; _index = 1;
+		_group = groupMatrix select siPlayer select _gi; _units = units _group;
+		_i = 1; _c = count _units;
+		_showGroup = _gi call loadFile "Player\SQF\GroupUnitsShown.sqf";
 		// "GroupUnit" marker has only 0-10 index defined at dynamic initialization marker sqs
-		while {_index < 12} do {
-			_marker = Format["GroupUnit_%1_%2_%3", siPlayer, _gi, _index - 1];
-			if (_index < _count && (giMarkersAI == _gi || giMarkersAI == _countGroups)) then {
-				_ai = _units select _index;
-				_marker setMarkerPos getPos _ai;
+		while {_i < 12} do {
+			_m = Format["GroupUnit_%1_%2_%3", siPlayer, _gi, _i - 1];
+			if (_i < _c && _showGroup) then {
+				_unit = _units select _i;
+				_m setMarkerPos getPos _unit;
 				_bHighlight = false;
 				if not TzkMapBlockSelected then {
-					if (-1 != _tzkSelUnitsTop find _ai) then {if TzkMapSelectedHighlight then {
+					if (-1 != _tzkSelUnitsTop find _unit) then {if TzkMapSelectedHighlight then {
 						_bHighlight = true;
 					}};
 				};
 				if _bHighlight then {
-					_marker setMarkerColor "ColorRedAlpha";
+					_m setMarkerColor "ColorRedAlpha";
 				} else {
-					_marker setMarkerColor "ColorYellow";
+					_m setMarkerColor "ColorYellow";
 				};
 			} else {
-				_marker setMarkerPos hiddenMarkerPos
+				_m setMarkerPos hiddenMarkerPos
 			};
-			_index = _index + 1;
+			_i = _i + 1;
 		};
 	};
 	_gi = _gi + 1;	
 };
 
-_gi = 0;
-_countGroups = count (townGroups select siPlayer);
-while "_gi < _countGroups" do {
-	_group = (townGroups select siPlayer) select _gi;
-	_units = units _group;
-	_count = count _units; _index = 0;
-	while "_index < 12" do {
-		_marker = format ["TownUnit_%1_%2_%3", siPlayer, _gi, _index];
-		if (_index < _count) then {
-			_ai = _units select _index;
-			_marker setMarkerPos getPos _ai;
-		} else {_marker setMarkerPos hiddenMarkerPos};
-		_index = _index + 1;
+_gi = 0; _countGroups = count (townGroups select siPlayer);
+while {_gi < _countGroups} do {
+	_group = townGroups select siPlayer select _gi; _units = units _group;
+	_i = 0; _c = count _units;
+	while {_i < 12} do {
+		_m = format ["TownUnit_%1_%2_%3", siPlayer, _gi, _i];
+		if (_i < _c) then {
+			_unit = _units select _i;
+			_m setMarkerPos getPos _unit;
+		} else {_m setMarkerPos hiddenMarkerPos};
+		_i = _i + 1;
 	};
 	_gi = _gi + 1;
 };
 
-_gi = 0;
-_countGroups = count (workerGroups select siPlayer);
-while "_gi < _countGroups" do
-{
-	_group = (workerGroups select siPlayer) select _gi;
-	_units = units _group;
-	_count = count _units;
-	_index = 0;
-	while "_index < 12" do {
-		_marker = format ["Worker_%1_%2_%3", siPlayer, _gi, _index];
-		if (_index < _count) then {
-			_ai = _units select _index;
-			_marker setMarkerPos getPos _ai;
-		} else {_marker setMarkerPos hiddenMarkerPos};
-		_index = _index + 1;
+_gi = 0; _countGroups = count (workerGroups select siPlayer);
+while {_gi < _countGroups} do {
+	_group = workerGroups select siPlayer select _gi; _units = units _group;
+	_i = 0; _c = count _units;
+	while {_i < 12} do {
+		_m = format ["Worker_%1_%2_%3", siPlayer, _gi, _i];
+		if (_i < _c) then {
+			_unit = _units select _i;
+			_m setMarkerPos getPos _unit;
+		} else {_m setMarkerPos hiddenMarkerPos};
+		_i = _i + 1;
 	};
 	_gi = _gi + 1;
 };
 
-_i = 0;
-while "_i < maxVehicleMarkers" do {
-	_v = (vehicleMarkerMapping select siPlayer) select _i;
+_i = 0; while {_i < maxVehicleMarkers} do {
+	_v = vehicleMarkerMapping select siPlayer select _i;
 	_m = format ["Vehicle_%1_%2", siPlayer, _i];
-	if ( !(alive _v) && _v != (mhq select siPlayer) ) then {_m setMarkerPos hiddenMarkerPos} else {_m setMarkerPos getPos _v};
+	if (not alive _v && _v != (mhq select siPlayer)) then {_m setMarkerPos hiddenMarkerPos} else {_m setMarkerPos getPos _v};
 	_i = _i + 1;
 };

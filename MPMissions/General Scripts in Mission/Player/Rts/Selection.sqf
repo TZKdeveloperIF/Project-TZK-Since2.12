@@ -1,10 +1,12 @@
 if (_this) then {
 	{
-		{
-			if ((getPosASL _x) call preprocessFile "Util\InSelectedArea.sqf") then {
-				TzkSelectedUnits set [count TzkSelectedUnits, _x];
-			}
-		} forEach (units _x);
+		if (((groupMatrix select siPlayer) find _x) call loadFile "Player\SQF\GroupUnitsShown.sqf") then {
+			{
+				if ((getPosASL _x) call preprocessFile "Util\InSelectedArea.sqf") then {
+					TzkSelectedUnits set [count TzkSelectedUnits, _x];
+				}
+			} forEach (units _x);
+		}
 	} forEach (groupAiMatrix select siPlayer);
 	// activate selected units' highlighting
 	TzkMapSelectedHighlight = false;
