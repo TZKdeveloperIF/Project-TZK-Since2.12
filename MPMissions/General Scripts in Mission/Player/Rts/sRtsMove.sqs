@@ -3,15 +3,7 @@ _top = TzkSelUnitsStack select TzkSelStackIdx
 _c = count _top
 ? _c == 0: goto "Quit"
 
-_sumX = 0; _sumY = 0; _i = 0
-# calcPos
-	_obj = _top select _i
-	_pos = getPosASL _obj
-	_sumX = _sumX + (_pos select 0)
-	_sumY = _sumY + (_pos select 1)
-	_i = _i + 1
-	? _i < _c: goto "calcPos"
-_pos set [0, _sumX / _c]; _pos set [1, _sumY / _c]
+_pos = _top call preprocessFile "Player\Rts\CalcCentral.sqf"
 
 _selectedUnits = +_top
 [_selectedUnits, [_this, _pos], "Server\Rts\hMove.sqs"] exec "Player\Rts\GenArrayCommand.sqs"
