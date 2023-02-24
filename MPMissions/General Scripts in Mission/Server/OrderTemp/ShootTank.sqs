@@ -41,7 +41,7 @@ _vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Common\EH\Fire
 	? [_attackPos, getPos _target] call funcDistH > _distLimit: _vec = [getPos _target, _attackPos] call funcVectorSub; _len = _vec call funcVectorLength; _attackPos = [_attackPos, [_vec, 1 - 0.9*_distLimit/_len] call funcVectorScale] call funcVectorAdd
 	? ([getPos _unit, _attackPos] call funcDistH) < 30: goto "PrePareToAttack"
 	; change deployment of howitzer/TOS
-	? _typeName in ["TOS1_TZK_xj400", "M109A6G_xj400", "PLZ05_TZK_xj400"] && "_x == {DeploySwitch_xj400}" count magazines _vehicle > 0: [_vehicle, 0] exec "\TZK_Scripts_4_0_4\Common\Effect\DeployChange.sqs"
+	_vehicle exec "Art\Undeploy.sqs"
 
 
 # CheckPosReached
@@ -141,7 +141,7 @@ _vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Common\EH\Fire
 	? isNull _sup: goto "EOF"
 
 	_timeAbort = time + 5*60
-	? _typeName in ["TOS1_TZK_xj400", "M109A6G_xj400", "PLZ05_TZK_xj400"] && "_x == {DeploySwitch_xj400}" count magazines _vehicle > 0: [_vehicle, 0] exec "\TZK_Scripts_4_0_4\Common\Effect\DeployChange.sqs"
+	_vehicle exec "Art\Undeploy.sqs"
 	{_x doFollow leader _x} forEach crew _vehicle
 	~0.1
 	#MoveToSupport

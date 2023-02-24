@@ -38,7 +38,7 @@ _vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Common\EH\Fire
 ? ([getPos _unit, _posOrdered] call funcDistH) < 30: _unit doMove _posOrdered, goto "PrePareToAttack"
 _unit groupChat "Moving to attacking position."; _timeStart = time; _timeHint = _timeStart + 5*60;
 _hint = ["I've been running for %1 minutes. Distance %2 meters now.", (_timeHint -_timeStart)/60, (_unit distance _target) - (_unit distance _target)%1]
-? _typeName in ["TOS1_TZK_xj400", "M109A6G_xj400", "PLZ05_TZK_xj400"] && "_x == {DeploySwitch_xj400}" count magazines _vehicle > 0: [_vehicle, 0] exec "\TZK_Scripts_4_0_4\Common\Effect\DeployChange.sqs"
+_vehicle exec "Art\Undeploy.sqs"
 
 # CheckPosReached
 	_unit doMove _posOrdered
@@ -138,7 +138,7 @@ _hint = ["I've been running for %1 minutes. Distance %2 meters now.", (_timeHint
 	_unit groupChat "Moving to support vehicle for more magazines."
 
 	_timeAbort = time + 15*60
-	? _typeName in ["TOS1_TZK_xj400", "M109A6G_xj400", "PLZ05_TZK_xj400"] && "_x == {DeploySwitch_xj400}" count magazines _vehicle > 0: [_vehicle, 0] exec "\TZK_Scripts_4_0_4\Common\Effect\DeployChange.sqs"
+	_vehicle exec "Art\Undeploy.sqs"
 	# MoveToSupport
 		_posMove = [[0,25], (getDir _sup)] call funcVectorRot2D
 		_posMove = [getPos _sup, _posMove] call funcVectorSub
