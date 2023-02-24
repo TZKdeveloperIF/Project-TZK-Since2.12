@@ -1,9 +1,11 @@
 ; args: [unit,
-;	[bigAngle: bool, suggested speed: number, area idx: number, type enum: string, time stamp: number, si: number], 
+;	[bigAngle: bool, suggested speed: number, area idx: number, type enum: string, time stamp: number, si: number, 
+;		[clicked pos, central pos of all selected units]], 
 ; 	rts object status (array-reference), rts server id]
 
 _unit = _this select 0; _param = _this select 1; _rtsStatus = _this select 2; _id = _this select 3
 _biggerAngle = _param select 0; _suggestedSpeed = _param select 1; _idx = _param select 2; _enum = _param select 3; _si = _param select 5
+; _posParam = _param select 6
 _this = 0; _param = 0
 
 ; rts busy Check
@@ -42,6 +44,12 @@ _unit call temporaryClear
 
 	_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Common\EH\Fired_Art_406.sqs"
 	? _biggerAngle: _heliH = typeOf _target camCreate [0,0,0]
+
+; ======== Art order part ========
+; Pre-move if ordered
+# PreMove
+	; do nothing for structure
+
 # CheckDistance
 	_distLimit = viewDistance; 
 	? upgMatrix select _si select upgLongWeaponRange == 2: _distLimit = 2 * viewDistance; 
@@ -49,7 +57,7 @@ _unit call temporaryClear
 	? _unit distance _target > _distLimit: goto "EOF"
 	? _unit distance _target < 50: goto "EOF"
 
-; PrepareToMove
+; TryApproachingTarget
 
 
 
@@ -64,7 +72,7 @@ _unit call temporaryClear
 
 
 
-# PrePareToAttack
+; PrePareToAttack
 	_delay = 0
 	_ret = call preprocessFile "Art\AimAndCalcDelay.sqf"
 	? not _ret: goto "EOF"
@@ -174,7 +182,7 @@ _unit call temporaryClear
 		? !someAmmo _vehicle: goto "WaitRearmComplete"
 	~ _delay + 1
 	? _speed > 0: [_vehicle, _speed] exec localize {TZK_FUNC_SWITCH_MAG_PRESET}
-	goto "PrePareToAttack"
+	goto "PreMove"
 
 ; End Of File
 # EOF

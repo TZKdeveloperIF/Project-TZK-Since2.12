@@ -1,9 +1,11 @@
 ; args: [unit,
-;	[bigAngle: bool, suggested speed: number, area idx: number, type enum: string, time stamp: number, si: number], 
+;	[bigAngle: bool, suggested speed: number, area idx: number, type enum: string, time stamp: number, si: number, 
+;		[clicked pos, central pos of all selected units]], 
 ; 	rts object status (array-reference), rts server id]
 
 _unit = _this select 0; _param = _this select 1; _rtsStatus = _this select 2; _id = _this select 3
 _biggerAngle = _param select 0; _suggestedSpeed = _param select 1; _idx = _param select 2; _enum = _param select 3; _si = _param select 5
+_posParam = _param select 6
 _this = 0; _param = 0
 
 ; rts busy Check
@@ -42,6 +44,22 @@ _unit call temporaryClear
 
 	_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Common\EH\Fired_Art_406.sqs"
 	? _biggerAngle: _heliH = typeOf _target camCreate [0,0,0]
+
+; ======== Art order part ========
+; Pre-move if ordered
+# PreMove
+	? 0 == count _posParam: goto "CheckDistance"
+	_destPos = [_unit, _posParam select 0, _posParam select 1, 50] call preprocessFile "Util\RtsDestPos.sqf"
+
+	_vehicle exec "Art\Undeploy.sqs"
+	_unit doMove _destPos
+	? ([getPos _unit, _destPos] call funcDistH) < 30: goto "CheckDistance"
+	# LoopPreMove
+		_unit doMove _destPos
+		~5
+		? call _quitCond: _msg = ""; goto "EOF"
+		? ([getPos _unit, _destPos] call funcDistH) > 30: goto "LoopPreMove"
+
 # CheckDistance
 	_distLimit = viewDistance;
 	? upgMatrix select _si select upgLongWeaponRange == 2: _distLimit = _longRangeCoef * viewDistance;
@@ -50,20 +68,23 @@ _unit call temporaryClear
 
 
 
-# PrepareToMove
-	_attackPos = getPosASL _vehicle;
-	_attackPos set [2, 0]
-	? [_attackPos, getPos _target] call funcDistH > _distLimit: _vec = [getPos _target, _attackPos] call funcVectorSub; _len = _vec call funcVectorLength; _attackPos = [_attackPos, [_vec, 1 - 0.9*_distLimit/_len] call funcVectorScale] call funcVectorAdd
-	? ([getPos _unit, _attackPos] call funcDistH) < 30: goto "PrePareToAttack"
+; TryApproachingTarget
+	_destPos = getPosASL _vehicle;
+	_destPos set [2, 0]
+	? [_destPos, getPos _target] call funcDistH > _distLimit: _vec = [getPos _target, _destPos] call funcVectorSub; _len = _vec call funcVectorLength; _destPos = [_destPos, [_vec, 1 - 0.9*_distLimit/_len] call funcVectorScale] call funcVectorAdd
+	? [_destPos, getPos _target] call funcDistH > _distLimit: _msg = "Can't approach attacking position. Order aborted.", goto "EOF"
+	? ([getPos _unit, _destPos] call funcDistH) < 30: goto "PrePareToAttack"
 	; change deployment of howitzer/TOS
 	_vehicle exec "Art\Undeploy.sqs"
 
 
+_unit doMove _destPos
+? ([getPos _unit, _destPos] call funcDistH) < 30: goto "PrePareToAttack"
 # CheckPosReached
-	_unit doMove _attackPos
+	_unit doMove _destPos
 	~5
 	? call _quitCond: _msg = ""; goto "EOF"
-	? ([getPos _unit, _attackPos] call funcDistH) > 30: goto "CheckPosReached"
+	? ([getPos _unit, _destPos] call funcDistH) > 30: goto "CheckPosReached"
 
 # PrePareToAttack
 	_delay = 0
@@ -188,14 +209,14 @@ _unit call temporaryClear
 		? call _quitCond: _msg = ""; goto "EOF"
 		? !someAmmo _vehicle: goto "WaitRearmComplete"
 	~ _delay + 1
-	? _speed <= 0: goto "PrepareToMove"
+	? _speed <= 0: goto "PreMove"
 	_delay = 1; [_vehicle, _speed] exec localize {TZK_FUNC_SWITCH_MAG_PRESET}
 	# WaitSwitchComplete
 		~ _delay
 		? call _quitCond: _msg = ""; goto "EOF"
 		_delay = 5
 		? !someAmmo _vehicle: goto "WaitSwitchComplete"
-	goto "PrepareToMove"
+	goto "PreMove"
 
 ; End Of File
 # EOF
