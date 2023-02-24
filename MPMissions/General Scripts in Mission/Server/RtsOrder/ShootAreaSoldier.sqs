@@ -1,9 +1,11 @@
 ; args: [unit,
-;	[bigAngle: bool, suggested speed: number, area idx: number, type enum: string, time stamp: number, si: number], 
+;	[bigAngle: bool, suggested speed: number, area idx: number, type enum: string, time stamp: number, si: number, 
+;		[clicked pos, central pos of all selected units]], 
 ; 	rts object status (array-reference), rts server id]
 
 _unit = _this select 0; _param = _this select 1; _rtsStatus = _this select 2; _id = _this select 3
 _biggerAngle = _param select 0; _suggestedSpeed = _param select 1; _idx = _param select 2; _enum = _param select 3; _si = _param select 5
+_posParam = _param select 6
 _this = 0; _param = 0
 _commandType = _unit call preprocessFile "Art\GetSoldierArtType.sqf"
 
@@ -45,14 +47,25 @@ _unit call temporaryClear
 
 	_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Common\EH\Fired_Art_406.sqs"
 	? _biggerAngle: _heliH = typeOf _target camCreate [0,0,0]
+
+; ======== Art order part ========
+; Pre-move if ordered
+# PreMove
+	? 0 == count _posParam: goto "CheckDistance"
+	_destPos = [_unit, _posParam select 0, _posParam select 1, 50] call preprocessFile "Util\RtsDestPos.sqf"
+
+	_unit doMove _destPos
+	? ([getPos _unit, _destPos] call funcDistH) < 30: goto "CheckDistance"
+	# LoopPreMove
+		_unit doMove _destPos
+		~5
+		? call _quitCond: _msg = ""; goto "EOF"
+		? ([getPos _unit, _destPos] call funcDistH) > 30: goto "LoopPreMove"
+
 # CheckDistance
-	_posOnOrdered = getPosASL _vehicle; _distLimit = _range + 350; _hint = "Target is too far for infantry " + _text + ". Order aborted."
+	_distLimit = _range + 350; _hint = "Target is too far for infantry " + _text + ". Order aborted."
 	; Check both distance between assigned CO waypoint and target and between unit and target.
-	? ([_unit, _attackPos] call funcDistH) > 512 || ([_attackPos, _target] call funcDistH) > _distLimit: _msg = _hint; goto "EOF"
-	; Quit if CO undefined.
-	? _attackPos select 0 < 0: goto "EOF"
-	; Ask unit get close to CO if unit isn't in CO's range (radius).
-	? [_attackPos, _vehicle] call funcDistH > _radius: _posOnOrdered = [_attackPos, _radius/3, _radius] call funcGetRandomPos; _posOnOrdered set [2,0]
+	? ([_destPos, _target] call funcDistH) > _distLimit: _msg = _hint; goto "EOF"
 
 
 
@@ -60,29 +73,21 @@ _unit call temporaryClear
 
 
 _posCorrect = 0
-# PrepareToMove
-	[_unit, _posOnOrdered] call funcMoveAI
-	; Not allow soldiers directly fire. They're required to go to CO pos first.
-# CheckCOReached
-	[_unit, _posOnOrdered] call funcMoveAI
-	~5
-	? call _quitCond: _msg = ""; goto "EOF"
-	? ([_unit, _posOnOrdered] call funcDistH) > 20: goto "CheckCOReached"
-	
+; TryApproachingTarget
 	? _unit distance _target < _range * (10 - _posCorrect) / 10: goto "PrePareToAttack"
 	? _posCorrect >= 10: _msg = "Can't find attack pos. Order aborted.", goto "EOF"
-	_vector = [getPosASL _target, _posOnOrdered] call funcVectorSub; _dist = ([_posOnOrdered, getPosASL _target] call funcDistH) - _range*8/9
+	_vector = [getPosASL _target, _destPos] call funcVectorSub; _dist = ([_destPos, getPosASL _target] call funcDistH) - _range*8/9
 	_vector = [_vector, _dist/(_dist+_range*8/9)] call funcVectorScale;
-	_destination = [_posOnOrdered, _vector] call funcVectorAdd
+	_destination = [_destPos, _vector] call funcVectorAdd
 	_destination = [[[getPosASL _target, _destination] call funcVectorSub, _posCorrect / 10] call funcVectorScale, _destination] call funcVectorAdd
 
+[_unit, _destination] call funcMoveAI
+? ([getPos _unit, _destination] call funcDistH) < 30: goto "PrePareToAttack"
 # CheckPosReached
 	[_unit, _destination] call funcMoveAI
 	~5
 	? call _quitCond: _msg = ""; goto "EOF"
 	? _unit distance _target > _range || [_unit, _destination] call funcDistH > 5: goto "CheckPosReached"
-
-_posOnOrdered = getPosASL _vehicle
 
 # PrePareToAttack
 	_delay = 0
@@ -114,7 +119,7 @@ _posOnOrdered = getPosASL _vehicle
 	? 3 == _try: _posT set [0, _result select 1 select 1]; _posT set [1, _result select 1 select 2]
 	_posT set [2, _posT call funcHASL]; _target setPosASL _posT
 	
-	? _unit distance _target > _range: goto "PrepareToMove"
+	? _unit distance _target > _range: goto "CheckDistance"
 
 	_posV = getPosASL _vehicle
 	_angle = 0; _elev = 0
@@ -179,7 +184,7 @@ _posOnOrdered = getPosASL _vehicle
 		~5
 		? call _quitCond: _msg = ""; goto "EOF"
 		? !someAmmo _vehicle: goto "WaitRearmComplete"
-	goto "PrepareToMove"
+	goto "PreMove"
 
 ; End Of File
 # EOF
