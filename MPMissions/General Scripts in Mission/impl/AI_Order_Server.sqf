@@ -31,3 +31,17 @@ orderTempDefs select orderTempChangeAmmo set [2, "Server\OrderTemp\ChangeAmmo.sq
 comment {
 	orderTempDefs select orderTempMoveUnit set [2, "Server\OrderTemp\MoveUnit.sqs"];
 };
+
+comment "Disable all west/east AI group engage ability by default. Practice proves this a better choice.";
+{
+	_si = _x; _gi = 0;
+	{
+		_params = initStatusMatrix select _si * GroupsNum + _gi select orderTempDisengageType;
+		_params set [0, 1];
+		_params set [1, _typeDefs1 find "Light Tank"];
+		_params set [2, _typeDefs1 find "Heavy Tank"];
+		_params set [3, _typeDefs1 find "Artillery"];
+
+		_gi = _gi + 1;
+	} foreach (groupMatrix select _x);
+} forEach [si0, si1];
