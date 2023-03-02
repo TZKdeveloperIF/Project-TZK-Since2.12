@@ -39,7 +39,7 @@ call loadFile "\TZK_Scripts_4_0_6\Common\InitUnitTypes.sqf"
 0 exec "\TZK_Scripts_4_0_6\Common\InitInfoMsgTypes.sqs"
 0 exec "\TZK_Scripts_4_0_6\Common\InitEquipmentTypes.sqs"
 ; 4.0.5.15/16 updating
-0 exec "\TZK_Scripts_4_0_6\Common\Init\CustomWeaponVehicleInfo.sqs"
+0 exec "Cwv\Init.sqs"
 ; delay call in case of initialization unfinished
 [{call loadFile "impl\Upgrade.sqf"}, 10] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
 ; 4.0.5.21 updating
@@ -84,7 +84,6 @@ call loadFile "\TZK_Scripts_4_0_6\Common\InitAIOptions.sqf"
 ? bool_TZK_199_Mode: 0 exec "Common\initMsgUnderACWA.sqs"
 
 ; Custom weapon module
-"Common\Msg\hCustomWeaponVehicleInfo.sqs" exec "Common\Msg\mCustomWeaponVehicleInfo.sqs"
 Array_TZK_NewUnitEquipped = []; mutexNewUnitEquipped = false
 
 ; Aircraft fuel module

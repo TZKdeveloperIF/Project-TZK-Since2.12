@@ -20,6 +20,7 @@ _wep = _magInfo select _i select _piWeapon;
 _m = [_mag];
 _w = [_wep];
 
+// Prepare cannon for custom-on-purchase planes
 if (enum_TZK_CustomVehicle_Plane == _enum) then {
 	if ("30mm cannon" != _selMagName && "4x 30mm cannons" != _selMagName) then {
 		private [{_j}];
@@ -29,11 +30,11 @@ if (enum_TZK_CustomVehicle_Plane == _enum) then {
 	};
 };
 
-_v call preprocessFile "Util\CWV\EquipGeneral.sqf";
+_v call preprocessFile "Cwv\AppendGeneralEquips.sqf";
 // Overwrite rearm data
 [_v, _t, _m, _w, 2] exec "Common\Equip\NewCwvSetData.sqs";
 // Update object price in CWV
 _cost = unitDefs select _t select udCost;
 _cwvCost = _magInfo select _i select _piVehPrice;
 if (_cwvCost > _cost) then {_cost = _cwvCost};
-[_v, _cost, true, _enum] exec "Common\Msg\sCustomWeaponVehicleInfo.sqs";
+[_v, _cost, true, _enum] exec "Cwv\Net\sCwvInfo.sqs";

@@ -18,7 +18,7 @@ _msg = ""; _timeRearm = 30;
 _enum = -1
 ; get "_enum" if vehicle is "Custom Weapon Vehicle"
 ? _unit != _vehicle: _vehicle call loadFile "Common\SQF\GetCustomWeaponVehicle.sqf"
-? _enum != -1: if (dialog) then {closeDialog 0}, ["TZK_CustomAircraftWeaponDialog", _enum, _vehicle, _support] exec "Player\Dialog\CustomWeaponVehicle.sqs", exit
+? _enum != -1: if (dialog) then {closeDialog 0}, ["TZK_CustomAircraftWeaponDialog", _enum, _vehicle, _support] exec "Cwv\Dialog.sqs", exit
 
 ; player globalchat format["_type=%1  unit: %2", _type, (unitDefs select _type) select udName ]
 
