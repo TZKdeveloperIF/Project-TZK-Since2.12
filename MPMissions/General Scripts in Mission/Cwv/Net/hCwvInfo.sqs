@@ -1,31 +1,28 @@
+; args: [vehicle, price, need rearm time: bool, vehicle type(enum)]
 ; message handler. Record custom weapon vehicles in array [{PlaneUnits}, {GunshipUnits}, {HeliUnits}].
 
-_plane = _this select 0
-_info = _this select 1
-_this = _nil
+
+_vehicle = _this select 0; _vehPrice = _this select 1; _needPay4Rearm = _this select 2; _enum = _this select 3
+_this = 0
 
 @ !mutexVehicleArray
 mutexVehicleArray = true
 
-_enum = _info % enum_TZK_CustomVehicle_Cnt; _info = (_info - _enum) / enum_TZK_CustomVehicle_Cnt
-_cnt = count call ([{PlanePrice}, {GunshipPrice}, {HeliPrice}] select _enum)
-_priceIndex = _info % _cnt; _info = (_info - _priceIndex) / _cnt
-_price = call ([{PlanePrice}, {GunshipPrice}, {HeliPrice}] select _enum) select _priceIndex
-_bNeedRearm = [false, true] select _info
 
 _vehArr = call ([{PlaneUnits}, {GunshipUnits}, {HeliUnits}] select _enum)
 _info = call ([{PlanesInfo}, {GunshipInfo}, {HelisInfo}] select _enum)
 
-_i = _vehArr find _plane; _bNewElement = false
-? _i == -1: _i = 0, _c = count _vehArr, _found = false, while {_i < _c && !_found} do {if (!alive (_vehArr select _i)) then {_found = true} else {_i = _i + 1}}, if (_i == count _vehArr) then {_bNewElement = true}
+_i = _vehArr find _vehicle; _bNewElement = false
+? _i == -1: _i = 0, _c = count _vehArr, _found = false, while {_i < _c && !_found} do {if (!alive (_vehArr select _i)) then {_found = true} else {_i = _i + 1}}
+? _i == count _vehArr: _bNewElement = true
 
-_vehArr set [_i, _plane]
-? _bNewElement: _info set [_i, [_price, _bNeedRearm]]
-?!_bNewElement: _info select _i set [0, _price], _info select _i set [1, _bNeedRearm]
+_vehArr set [_i, _vehicle]
+? _bNewElement: _info set [_i, [_vehPrice, _needPay4Rearm]]
+?!_bNewElement: _info select _i set [0, _vehPrice], _info select _i set [1, _needPay4Rearm]
 
 @ !Lock_TZK_Observer
 Lock_TZK_Observer = true
-[_plane, _vehArr, _i] call loadFile "Util\Add2ObserverList.sqf"
+[_vehicle, _vehArr, _i] call loadFile "Util\Add2ObserverList.sqf"
 Lock_TZK_Observer = false
 
 mutexVehicleArray = false

@@ -738,4 +738,71 @@ class TzkRtsaArtSubMenu: Menu {
 	};
 };
 
+// 
+class TZK_CustomAircraftWeaponDialog2: TZK_CustomAircraftWeaponDialog {
+	controls[] = {
+		MagazinesList, EquippedList,
+		MagAdd, MagRem, MagClear, Exit, Buy, MagFull, MagNone,
+		SlotLabel, SlotLabelW0, SlotLabelW1, SlotText0, SlotText1, 
+		YourMoneyLabel, YourMoneyText, MagPriceLabel, MagPriceText,
+		UpgradeLeabel, UpgradeText, TimeLabel, TimeText,
+	};
+	class SlotLabelW0: SlotLabel {
+		idc = IDC + 40;
+		x = 0.70;
+		y = 0.20;
+		w = 0.05;
+		text = "AT:";
+		sizeEx = 0.022;
+	};
+	class SlotLabelW1: SlotLabelW0 {
+		idc = IDC + 41;
+		x = 0.785;
+		w = 0.07;
+		text = "Rocket:";
+	};
+	class SlotText0: SlotText {
+		idc = IDC + 42;
+		x = 0.75;
+		w = 0.03;
+	};
+	class SlotText1: SlotText {
+		idc = IDC + 43;
+		x = 0.865;
+		w = 0.05;
+	};
+	class MagAdd: RscButton1 {
+		x = 0.32;
+		y = 0.30;
+		w = 0.03;
+		h = 0.03;
+		colorText[] = {0.9,0.7,0.5,1.0};
+		text = "+";
+		action = "btnValue00 = 2^0"
+	};
+	class MagRem: MagAdd {
+		y = 0.35;
+		text = "-";
+		action = "btnValue00 = 2^1"
+	};
+	class MagFull: MagAdd {
+		y = 0.25;
+		w = 0.04;
+		text = "Full";
+		action = "btnValue00 = 2^4"
+	};
+	class MagClear: MagAdd {
+		y = 0.45;
+		w = 0.04;
+		text = "Clear";
+		action = "btnValue00 = 2^2"
+	};
+	class MagNone: MagAdd {
+		y = 0.40;
+		w = 0.04;
+		text = "None";
+		action = "btnValue00 = 2^5"
+	};
+};
+
 // EOF
