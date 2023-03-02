@@ -1,17 +1,8 @@
 ; args: [vehicle, price, need rearm time: bool, vehicle type(enum)]
 _vehicle = _this select 0
 _price = _this select 1
-_bNeedRearm = _this select 2
+_needPay4Rearm = _this select 2
 _enum = _this select 3
-_this = _nil
 
-pv_TZK_Veh_Obj = _vehicle
-
-pv_TZK_Veh_Info = _enum
-_priceIndex = call ([{PlanePrice}, {GunshipPrice}, {HeliPrice}] select _enum) find _price
-pv_TZK_Veh_Info = pv_TZK_Veh_Info + enum_TZK_CustomVehicle_Cnt * _priceIndex
-_cnt = count call ([{PlanePrice}, {GunshipPrice}, {HeliPrice}] select _enum)
-pv_TZK_Veh_Info = pv_TZK_Veh_Info + enum_TZK_CustomVehicle_Cnt * _cnt * ([0,1] select _bNeedRearm)
-
-publicVariable {pv_TZK_Veh_Info}
-publicVariable {pv_TZK_Veh_Obj}
+publicExec format [{[UnitById %1,%2,%3,%4] exec "Cwv\Net\hCwvInfo.sqs"}, _vehicle call funcGenNetIdStr, _price, _needPay4Rearm, _enum]
+_this exec "Cwv\Net\hCwvInfo.sqs"
