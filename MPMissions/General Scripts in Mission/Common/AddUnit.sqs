@@ -27,7 +27,7 @@ _desc = unitDefs select _type
 
 _vehicle = [_type, _pos, _dir, _si, _gi, _giBuyer, _sendRepeats] call fAddVehicle
 ? isNull _vehicle : format["ERROR: _vehicle is NULL in AddUnit.sqs"] call fDebugLog; exit
-[_vehicle, _type, _nCustomWeapon, _si] exec "Common\Equip\NewCwvEquipment.sqs"
+[_vehicle, _type, _nCustomWeapon, _si] exec "Cwv\Equip.sqs"
 
 _typeCrew = (_desc select udCrew) select 1
 
