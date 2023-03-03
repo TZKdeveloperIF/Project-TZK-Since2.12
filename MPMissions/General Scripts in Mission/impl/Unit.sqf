@@ -31,6 +31,9 @@ _i = 0; _c = count TzkUnitSkillVal; while {_i < _c} do {
 	_entry set [udScripts, [localize {TZK_EQUIP_UNIT_TRUCK}]];
 } forEach [_boatCustomW, _boatCustomE];
 
+// fix plane price bug
+unitDefs select _a10 set [udCost, 15000];
+
 if true then {
 	_name0 = []; _i = 0; _c = count (groupMatrix select si0); while {_i < _c} do {
 		_name0 set [_i, name leader (groupMatrix select si0 select _i)];
