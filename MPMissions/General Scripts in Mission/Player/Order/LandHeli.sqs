@@ -1,0 +1,29 @@
+; args: [unit, pos, []]
+
+_unit = _this select 0; _this = 0
+
+? not alive _unit: exit
+_vehicle = vehicle _unit
+? _unit != driver _vehicle: exit
+? 0 == "Helicopter" countType [_vehicle]: exit
+
+_vehicle land {LAND}
+
+_timeAbort = _time + 60
+
+# loop
+	~ 5
+	? not alive _unit: exit
+	? call orderCheck: exit
+	? _vehicle != vehicle _unit: exit
+	? _time > _timeAbort: exit
+	? (getPos _vehicle) select 2 > 5: goto "loop"
+
+? _unit != driver _vehicle: exit
+
+_unit action ["ENGINEOFF", _vehicle]; _vehicle engineOn false
+doStop _unit
+_unit setPosASL getPosASL _unit
+~ 0.5
+_unit moveInDriver _vehicle
+_unit action ["ENGINEOFF", _vehicle]; _vehicle engineOn false
