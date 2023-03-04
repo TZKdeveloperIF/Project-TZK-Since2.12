@@ -1,0 +1,8 @@
+_heli = vehicle _this
+? _this != driver _heli: exit
+
+_this setPosASL getPosASL _this
+; delay to cancel "land" script order effect
+~ 0.1
+_this moveInDriver _heli
+_this action ["ENGINEON", _heli]; _heli engineOn true

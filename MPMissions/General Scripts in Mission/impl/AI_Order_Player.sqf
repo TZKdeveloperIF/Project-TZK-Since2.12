@@ -47,6 +47,13 @@ _type = 0, _c = count aiOrders1; _found = false; while {_type < _c && not _found
 	};
 	_type = _type + 1;
 };
+_type = 0, _c = count aiOrders1; _found = false; while {_type < _c && not _found} do {
+	if (aiOrders1 select _type select 0 == "Clear Order") then {
+		_found = true;
+		aiOrders1 select _type set [3, "Player\Order\Clear.sqs"];
+	};
+	_type = _type + 1;
+};
 
 _type = 0, _c = count aiOrders2; _found = false; while {_type < _c && not _found} do {
 	if (aiOrders2 select _type select 0 == "Build Struct") then {
@@ -69,6 +76,13 @@ _type = 0, _c = count aiOrders2; _found = false; while {_type < _c && not _found
 	};
 	_type = _type + 1;
 };
+
+comment "Add new orders";
+	aiOrders2 set [count aiOrders2, [
+		"Land Heli", [], false, "Player\Order\LandHeli.sqs",
+		"Ask helicopter drivers to land."
+	]];
+
 
 aiOrdersChnIngore2 = [];
 comment "Remove invalid item";
