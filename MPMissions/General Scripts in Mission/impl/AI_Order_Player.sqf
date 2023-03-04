@@ -1,3 +1,5 @@
+comment "Redirect order scripts.";
+
 _type = 0, _c = count aiOrders1; _found = false; while {_type < _c && not _found} do {
 	if (aiOrders1 select _type select 0 == "Mine Town Flag") then {
 		_found = true;
@@ -84,18 +86,19 @@ comment "Add new orders";
 	]];
 
 
-aiOrdersChnIngore2 = [];
-comment "Remove invalid item";
-comment "Don't forget to modify CHN Language setting as well";
-_type = 0, _c = count aiOrders2; _j = 0; while {_type < _c} do {
-	if (aiOrders2 select _type select 0 != "Invalid") then {
-		if (_j != _type) then {
-			aiOrders2 set [_j, aiOrders2 select _type];
+comment "Post execute. Fix CHN images' indexes.";
+	aiOrdersChnIngore2 = [];
+	comment "Remove invalid item";
+	comment "Don't forget to modify CHN Language setting as well";
+	_type = 0, _c = count aiOrders2; _j = 0; while {_type < _c} do {
+		if (aiOrders2 select _type select 0 != "Invalid") then {
+			if (_j != _type) then {
+				aiOrders2 set [_j, aiOrders2 select _type];
+			};
+			_j = _j + 1;
+		} else {
+			aiOrdersChnIngore2 set [count aiOrdersChnIngore2, _type];
 		};
-		_j = _j + 1;
-	} else {
-		aiOrdersChnIngore2 set [count aiOrdersChnIngore2, _type];
+		_type = _type + 1;
 	};
-	_type = _type + 1;
-};
-aiOrders2 resize _j;
+	aiOrders2 resize _j;
