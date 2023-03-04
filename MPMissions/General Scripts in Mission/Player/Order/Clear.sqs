@@ -10,3 +10,5 @@ _uid = [_unit, siPlayer, giPlayer] call funcCalcUID
 ? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
 _id = (playerOrderID select _uid) + 1; [_uid, _id] exec "\TZK_Scripts_4_0_4\Player\Order\New.sqs"
 doStop _unit
+
+? "Helicopter" countType [vehicle _unit] > 0: _unit exec "Player\LandHeliCancel.sqs"
