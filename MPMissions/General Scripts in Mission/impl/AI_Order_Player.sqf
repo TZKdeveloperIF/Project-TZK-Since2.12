@@ -80,9 +80,16 @@ _type = 0, _c = count aiOrders2; _found = false; while {_type < _c && not _found
 };
 
 comment "Add new orders";
-	aiOrders2 set [count aiOrders2, [
+	aiOrders2 set [count aiOrders2 - 1, [
 		"Land Heli", [], false, "Player\Order\LandHeli.sqs",
 		"Ask helicopter drivers to land."
+	]];
+	comment "[Join] order should always be the last one";
+	_param0 = ["Group", count callsigns, {format[{%1}, callsigns select _this]}, -1];
+	aiOrders2 set [count aiOrders2, [
+		"Join", [_param0], true, "\TZK_Scripts_4_0_4\Player\Order\Join.sqs",
+		"Force selected units to join other group. Custom soldiers may perform abnormal when they go rearm after having 
+		jointed other groups."
 	]];
 
 
