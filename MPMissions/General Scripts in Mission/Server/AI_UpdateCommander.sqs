@@ -230,13 +230,13 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 	~(random 10)
 	[0, getPos _mhq, _si, _gi] exec "\TZK_Scripts_4_0_4\Common\SendSetWPCO.sqs"
 	; lock AICO group setting
-	[_si, _gi, aisPickupWait1, 0] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
-	[_si, _gi, aisLockSetting, 1] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
+	[_si, _gi, aisPickupWait1, 0, false] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
+	[_si, _gi, aisLockSetting, 1, false] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
 	~0.4
 
 	[_si, _gi + GroupsNum, orderGuardArea, [0,3]] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}
-	[_si, _gi + GroupsNum, aisKeepMax, 13] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
-	[_si, _gi + GroupsNum, aisPickupWait1, count aisPickupWaitTimeDisp - 1] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
+	[_si, _gi, aisKeepMax, 13, true] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
+	[_si, _gi, aisPickupWait1, count aisPickupWaitTimeDisp - 1, true] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
 	
 	; _ti = _townsSortedByDist select 0 select 0
 	; [_si, _gi + GroupsNum, orderTempHoldTown, [_ti, HoldTownTypeDefs find "Infantry", 0, 0, 0]] exec "\TZK_Scripts_4_0_4\Common\SendAITemporaryOrder.sqs"; 
@@ -252,14 +252,14 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 	[1, getPos (towns select _ti select tdFlag), _si, _gi] exec "\TZK_Scripts_4_0_4\Common\SendSetWPCO.sqs"
 	{[_si, _x, orderTransportDuty, [0,1,0]] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}} forEach _giTrans
 	; lock transport group order
-	{[_si, _x, aisLockOrder, 1] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}} forEach _giTrans
+	{[_si, _x, aisLockOrder, 1, false] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}} forEach _giTrans
 	; 2 groups of tank go take 1st town, 1 group of tank and soldiers go take 2nd town.
 	_ti = _townsSortedByDist select 0
 	{[_si, _x, orderHoldTown, [_ti,1,0]] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}} forEach (_giTanks select 0)
 	{[_si, _x, orderHoldTown, [_ti,1,0]] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}} forEach (_giTanks select 1)
 	~1
 	; lock AICO group order
-	[_si, _gi, aisLockOrder, 1] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
+	[_si, _gi, aisLockOrder, 1, false] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
 	goto "Update"
 
 #CheckFirstTownTaken
