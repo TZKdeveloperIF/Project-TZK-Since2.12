@@ -1,0 +1,1 @@
+bIsAiSuperior = false;

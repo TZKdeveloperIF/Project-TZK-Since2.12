@@ -208,7 +208,7 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 	_timeCheckOrders = time + 1*60
 	[0, getPos _mhq, _si, _gi] exec "\TZK_Scripts_4_0_4\Common\SendSetWPCO.sqs"
 	~0.4
-	[_si, _gi + GroupsNum, orderPatrolArea, [0,2]] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}; [_si, _gi + GroupsNum, aisKeepMax, 13] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
+	[_si, _gi, orderPatrolArea, [0,2], true] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}; [_si, _gi + GroupsNum, aisKeepMax, 13] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
 	? bool_TZK_DEV_FPS: showDebug ["Exit Comm script", 5000], exit
 	goto "Update"
 
@@ -218,7 +218,7 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 	~(random 10)
 	[0, getPos _mhq, _si, _gi] exec "\TZK_Scripts_4_0_4\Common\SendSetWPCO.sqs"
 	~0.4
-	[_si, _gi + GroupsNum, orderPatrolArea, [0,2]] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}; [_si, _gi + GroupsNum, aisKeepMax, 13] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
+	[_si, _gi, orderPatrolArea, [0,2], true] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}; [_si, _gi + GroupsNum, aisKeepMax, 13] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
 	
 	_res = [getPos _mhq, _si, []] call funcGetClosestEnemyTown  	  
 	_ti = _res select 0
@@ -233,7 +233,7 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 	_ti = _res select 0
 	
 	[_si, _gi + GroupsNum, orderHoldTown, [_ti,1,0]] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}
-	[_si, _gi + GroupsNum, aisPickupWait1, 0] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
+	[_si, _gi, aisPickupWait1, 0, true] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
 	goto "Update"
 
 #CheckFirstTownTaken
