@@ -34,12 +34,12 @@ if (!_processed) then {
 	if (not _processed && _alt && _shift) then {
 		// selected area && selected units
 		if (not _processed && TzkMapUnitsSelected && count TzkSelectedUnits > 0) then {
-			_pos exec "Player\Dialog\CmdRtsMap.sqs";
+			_pos exec "Rts\Dialog\RtsMap.sqs";
 			_processed = true;
 		};
 		// selected area && selected nothing
 		if (not _processed && TzkMapUnitsSelected && count TzkSelectedUnits == 0) then {
-			_pos exec "Player\Dialog\CmdAreaMap.sqs";
+			_pos exec "Rts\Dialog\AreaMap.sqs";
 			_processed = true;
 		};
 		// set way points
