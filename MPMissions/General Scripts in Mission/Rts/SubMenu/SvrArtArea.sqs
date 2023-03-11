@@ -12,7 +12,7 @@ _idcTitle = IDC + 0; _idcListLabel = IDC + 16 * 1 + 0; _idcListBox0 = IDC + 16 *
 ctrlSetText [_idcTitle, "Set Server Art Area"]
 ctrlSetText [_idcListLabel, "Areas"]
 
-_idcListBox0 call preprocessFile "Player\Dialog\Rts\UpdateSvrArea.sqf"
+_idcListBox0 call preprocessFile "Rts\SubMenu\UpdateSvrArea.sqf"
 ? -1 != RtsArtAreaIdx: lbSetCurSel [_idcListBox0, RtsArtAreaIdx]
 
 btnValue00 = false; btnValue01 = false; btnValue02 = false
@@ -25,7 +25,7 @@ btnValue00 = false; btnValue01 = false; btnValue02 = false
 	? call dlgUpdated: goto "Quit"
 	? not alive player: closeDialog 0; goto "Quit"
 
-	_idcListBox0 call preprocessFile "Player\Dialog\Rts\UpdateSvrArea.sqf"
+	_idcListBox0 call preprocessFile "Rts\SubMenu\UpdateSvrArea.sqf"
 
 	? btnValue00: btnValue00 = false; closeDialog 0; goto "Quit"
 	? btnValue01: btnValue01 = false; goto "Set"
