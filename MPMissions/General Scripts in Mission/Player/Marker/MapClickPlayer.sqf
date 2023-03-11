@@ -44,7 +44,7 @@ if (!_processed) then {
 		};
 		// set way points
 		if (not _processed) then {
-			[_pos] exec localize {TZK_DIALOG_WAYPOINT};
+			_pos exec localize {TZK_DIALOG_WAYPOINT};
 			_processed = true;
 		};
 	};
@@ -55,11 +55,7 @@ if (!_processed) then {
 		_processed = true;
 	};
 
-	_index = 0; _gis = []; _groupsAI = groupAiMatrix select siPlayer; _siGroups = groupMatrix select siPlayer; _groupNames = groupNameMatrix select siPlayer;
-	{ if (_x in _groupsAI) then { _gis set [count _gis, _index] }; _index = _index + 1} foreach _siGroups;
-	_Superior = false;
-	{ if ( (["Commander"] + callsigns) select (aiSetting select siPlayer select _x select aisSuperior) == _groupNames select giPlayer ) then { _Superior = true } } forEach _gis;
-	if ( !_processed && ( (groupPlayer == groupCommander select siPlayer) || _Superior ) ) then {
+	if (not _processed && (isCommander || bIsAiSuperior)) then {
 		if (!_processed && !_alt && _shift) then {[] exec localize {TZK_DIALOG_AI_GRP_ORDER}; _processed = true};
 	};
 };

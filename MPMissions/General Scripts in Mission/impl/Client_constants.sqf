@@ -1,1 +1,2 @@
 bIsAiSuperior = false;
+bNewCoSet = false;
