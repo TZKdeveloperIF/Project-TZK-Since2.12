@@ -34,5 +34,5 @@ _bSet = (_pos select 0) >= 0 && (_pos select 1) >= 0, _leader = leader (groupMat
 _orders = (orderMatrix select _si)
 @!(mutexAIGroup)
 mutexAIGroup = true
-{ if (_wp in (_x select 2)) then {_x set [0, (_x select 0) + 1]} } forEach _orders
+{ if (_index in (_x select 2)) then {_x set [0, (_x select 0) + 1]} } forEach _orders
 mutexAIGroup = false
