@@ -10,12 +10,12 @@ mutexDlg = false
 	mutexRtsMouse = true
 	_id = rtsMouseId
 	mutexRtsMouse = false
-[true, _id + 1, _this] exec "Player\Rts\SetRtsMouse.sqs";
+[true, _id + 1, _pos] exec "Player\Rts\SetRtsMouse.sqs";
 
-_idcLeftBtn0 = IDC + 32 + 0
-_idcDownBtn0 = IDC + 32 * 3 + 0
+_idcLeftBtn0 = IDC + 16 * 2 + 0
+_idcDownBtn0 = IDC + 16 * 6 + 0
 ; init right-down corner buttons (switching to other rts dialogs)
-; 0: rts, 1: area
+; 0: rts, 1: area, 2: wpco
 1 call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
 
 btnValue00 = 0; btnValue01 = 0; btnValue03 = 0
@@ -65,4 +65,5 @@ TzkMapBlockSelected = true
 		? 2^8 == _btnVal: _downBoardStack resize 0; call preprocessFile "Rts\Dialog\UpdateRtsAreaDownBoard.sqf"; goto "Update"
 # RightDownBtn
 	? 2^0 == _btnVal: _this exec "Rts\Dialog\RtsMap.sqs"; closeDialog 0; goto "Quit"
+	? 2^2 == _btnVal: _this exec "Rts\Dialog\Waypoints.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
