@@ -21,7 +21,7 @@ ctrlSetText [_idcTitle, "Shoot Area"]
 _idcListLabel0 = IDC + 1; _idcListBox0 = IDC + 2; _idcListLabel1 = IDC + 3; _idcListBox1 = IDC + 4
 ctrlSetText [_idcListLabel0, "Speed"]
 ctrlSetText [_idcListLabel1, "Art Area"]
-_idcListBox1 call preprocessFile "Player\Dialog\Rts\UpdateSvrArea.sqf"
+_idcListBox1 call preprocessFile "Rts\SubMenu\UpdateSvrArea.sqf"
 ? -1 != RtsArtAreaIdx: lbSetCurSel [_idcListBox1, RtsArtAreaIdx]
 
 _i = lbAdd [_idcListBox0, "Do nothing"]; lbSetValue [_idcListBox0, _i, -1]
@@ -43,7 +43,7 @@ btnValue02 = [true,true,true,true,true]; btnValue03 = [false,false,false,false]
 	? call dlgUpdated: goto "Quit"
 	? not alive player: closeDialog 0; goto "Quit"
 
-	call preprocessFile "Player\Dialog\Rts\UpdateShootAreaBtn.sqf"
+	call preprocessFile "Rts\SubMenu\UpdateShootAreaBtn.sqf"
 
 	? btnValue00: btnValue00 = false; closeDialog 0; goto "Quit"
 	? btnValue01: btnValue01 = false; goto "OK"
