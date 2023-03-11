@@ -1,0 +1,11 @@
+; args: [si, gi, pos, type (co or server target), index]
+
+; Only allow commander and superior set wp/co
+? not isCommander && not bIsAiSuperior: exit
+
+_pos = _this select 2
+{_val = _pos select _x; _val = _val - _val % 1; _pos set [_x, _val]} forEach [0, 1]
+_pos resize 2
+
+_this exec "Common\Msg\hSetWPCO.sqs"
+publicExec format [{%1 exec "Common\Msg\hSetWPCO.sqs"}, _this]

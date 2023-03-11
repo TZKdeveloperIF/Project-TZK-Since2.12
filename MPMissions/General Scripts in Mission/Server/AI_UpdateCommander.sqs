@@ -228,7 +228,7 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 	_nextOrder = "TakeFirstTown"
 	_timeCheckOrders = time + 5*60
 	~(random 10)
-	[0, getPos _mhq, _si, _gi] exec "\TZK_Scripts_4_0_4\Common\SendSetWPCO.sqs"
+	[_si, _gi, getPos _mhq, 0, 0] exec "Common\Msg\sSetWPCO.sqs"
 	; lock AICO group setting
 	[_si, _gi, aisPickupWait1, 0, false] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
 	[_si, _gi, aisLockSetting, 1, false] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
@@ -249,7 +249,7 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 	_ti = _townsSortedByDist select 1
 	[_si, _gi + GroupsNum, orderHoldTown, [_ti,1,0]] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}
 	; let transport group do transport duty
-	[1, getPos (towns select _ti select tdFlag), _si, _gi] exec "\TZK_Scripts_4_0_4\Common\SendSetWPCO.sqs"
+	[_si, _gi, getPos (towns select _ti select tdFlag), 0, 1] exec "Common\Msg\sSetWPCO.sqs"
 	{[_si, _x, orderTransportDuty, [0,1,0]] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}} forEach _giTrans
 	; lock transport group order
 	{[_si, _x, aisLockOrder, 1, false] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}} forEach _giTrans
@@ -276,7 +276,7 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 	_i = -1, _ti = -1; _found = false; while{_i < count _townsSortedByDist && !_found} do { _i = _i + 1, _ti = _townsSortedByDist select _i, if(towns select _ti select tdSide != _si) then {_found = true} }
     ? _i == count _townsSortedByDist: goto "TakeHoldTowns_SkipPointSet"
 	? [wpCO select _si select 1, getPos (towns select _ti select tdFlag)] call funcDistH < 100: goto "Update"
-	[1, getPos (towns select _ti select tdFlag), _si, _gi] exec "\TZK_Scripts_4_0_4\Common\SendSetWPCO.sqs"
+	[_si, _gi, getPos (towns select _ti select tdFlag), 0, 1] exec "Common\Msg\sSetWPCO.sqs"
 	#TakeHoldTowns_SkipPointSet
 	~0.4
 	? !_bTakeTown: [_si, _gi + GroupsNum, orderTakeHoldTowns, [4,([1, 0] select dev)]] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}; {[_si, _x, orderTransportDuty, [0,1,_transEjectParam]] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}} forEach _giTrans; _bTakeTown = true
@@ -293,7 +293,7 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 	_town0List = [ getPos _object, [_si], [] ] call funcGetClosestTown
 	? _nDestroy > 1: _object = _town0List select 0 select 0
 	_nDestroy = (_nDestroy + 1) % 3
-	[9, getPos _object, _si, _gi] exec "\TZK_Scripts_4_0_4\Common\SendSetWPCO.sqs"
+	[_si, _gi, getPos _object, 0, 9] exec "Common\Msg\sSetWPCO.sqs"
 	~1
 	[_si, _gi + GroupsNum, orderPatrolArea, [9,0]] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER};
 	{[_si, _x, orderTransportDuty, [0,9,_transEjectParam]] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}} forEach _giTrans; 

@@ -165,7 +165,7 @@ pvMoneySpent = -1;
 
 pvUpgrade = -1;
 
-pvWPCO = -1; pvWPCO_X = -1; pvWPCO_Y = -1; mutexSetWPCO = false;
+// pvWPCO = -1; pvWPCO_X = -1; pvWPCO_Y = -1; mutexSetWPCO = false;
 
 pvArt = -1;
 pvArtPos = -1;

@@ -206,7 +206,7 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 #PatrolBase
 	_currentOrder = "TakeFirstTown"
 	_timeCheckOrders = time + 1*60
-	[0, getPos _mhq, _si, _gi] exec "\TZK_Scripts_4_0_4\Common\SendSetWPCO.sqs"
+	[_si, _gi, getPos _mhq, 0, 0] exec "Common\Msg\sSetWPCO.sqs"
 	~0.4
 	[_si, _gi, orderPatrolArea, [0,2], true] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}; [_si, _gi + GroupsNum, aisKeepMax, 13] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
 	? bool_TZK_DEV_FPS: showDebug ["Exit Comm script", 5000], exit
@@ -216,7 +216,7 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 	_currentOrder = "TakeFirstTown"
 	_timeCheckOrders = if(!bool_TZK_DEV_FPS) Then "time + 5*60" Else "time + 5000*60"
 	~(random 10)
-	[0, getPos _mhq, _si, _gi] exec "\TZK_Scripts_4_0_4\Common\SendSetWPCO.sqs"
+	[_si, _gi, getPos _mhq, 0, 0] exec "Common\Msg\sSetWPCO.sqs"
 	~0.4
 	[_si, _gi, orderPatrolArea, [0,2], true] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}; [_si, _gi + GroupsNum, aisKeepMax, 13] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
 	
@@ -239,7 +239,7 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 #CheckFirstTownTaken
 	_timeCheckOrders = time + 1*60
 	? ("(_x select tdSide) == _si" count towns) == 0 : goto "Update"
-	[0, getPos _mhq, _si, _gi] exec "\TZK_Scripts_4_0_4\Common\SendSetWPCO.sqs"
+	[_si, _gi, getPos _mhq, 0, 0] exec "Common\Msg\sSetWPCO.sqs"
 	~0.4
 	[_si, _gi, orderPatrolArea, [0,2]] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}
 	~0.4
@@ -250,7 +250,7 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 #InitOrders
 	_currentOrder = "TakeHoldTowns"
 	_timeCheckOrders = time + 1*60
-	[1, posCenter, _si, _gi] exec "\TZK_Scripts_4_0_4\Common\SendSetWPCO.sqs"
+	[_si, _gi, posCenter, 0, 1] exec "Common\Msg\sSetWPCO.sqs"
 	~0.4
 	; _giList = [_si] call funcGetAIGroupsIndex
 	; _giList = _giList - [_gi]
@@ -271,7 +271,7 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
     _res = [getPos _mhq, _si, []] call funcGetClosestEnemyTown
     ? (_res select 0) == -1 : goto "TakeHoldTowns_SkipPointSet"
 	_lastCO = (wpCO select _si) select 1
-	[1, getPos ((towns select (_res select 0)) select tdFlag), _si, _gi] exec "\TZK_Scripts_4_0_4\Common\SendSetWPCO.sqs"
+	[_si, _gi, getPos ((towns select (_res select 0)) select tdFlag), 0, 1] exec "Common\Msg\sSetWPCO.sqs"
 	? [_lastCO, getPos ((towns select (_res select 0)) select tdFlag)] call funcDistH < 100 : goto "Update"
 	#TakeHoldTowns_SkipPointSet
 	~0.4
@@ -295,7 +295,7 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 	_town0List = [ getPos _object, [_si], [] ] call funcGetClosestTown
 	? _nDestroy > 1: _object = (_town0List select 0) select 0
 	_nDestroy = (_nDestroy + 1) % 3
-	[9, getPos _object, _si, _gi] exec "\TZK_Scripts_4_0_4\Common\SendSetWPCO.sqs"
+	[_si, _gi, getPos _object, 0, 9] exec "Common\Msg\sSetWPCO.sqs"
 	~1
 	; _giList = [_si] call funcGetAIGroupsIndex
 	; _giList = _giList - [_gi]
