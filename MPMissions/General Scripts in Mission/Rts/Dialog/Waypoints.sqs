@@ -1,9 +1,9 @@
 ; args: pos
 _pos = _this
-_setTargetScript = "Player\Art\SetTarget.sqs"
+
 @ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
-_dlg = createDialog "TzkWaypointsDialog"
+_dlg = createDialog "TzkCmdMapDlgWpCo"
 mutexDlg = false
 
 @ not mutexRtsMouse
@@ -12,87 +12,82 @@ mutexDlg = false
 	mutexRtsMouse = false
 [true, _id + 1, _pos] exec "Player\Rts\SetRtsMouse.sqs";
 
-_idcAction0Label = IDC+0
-_idcAction0 = IDC+1
-_idcAction1Label = IDC+2
-_idcAction1 = IDC+3
-_idcAction2Label = IDC+4
-_idcAction2 = IDC+5
-_idcAction3Label = IDC+6
-_idcAction3 = IDC+7
-_idcAction4Label = IDC+8
-_idcAction4 = IDC+9
+; init right-down corner buttons (switching to other rts dialogs)
+; 0: rts, 1: area, 2: wpco
+2 call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
 
-_idcListHeader = IDC+10
-_idcList = IDC+11
+_idcLeftLabel = IDC + 16 * 3 + 0
+_idcLeftBtn = IDC + 16 * 2
 
-btnAction0 = false
-btnAction1 = false
+_idcList = IDC + 16 * 3 + 10
 
-btnValue02 = -1
-
-_idcBtn_0_0 = IDC + 16 * 2; _idcBtnBg_0_0 = IDC + 16 * 1;
+_idcBtn_0_0 = IDC + 16 * 6; _idcBtnBg_0_0 = IDC + 16 * 1;
 {ctrlSetText [_x, "co"]} forEach [_idcBtn_0_0]
 {ctrlSetText [_x, "wp"]} forEach [_idcBtn_0_0 + 1]
-{ctrlSetText [_x, "Player Art"]} forEach [_idcBtn_0_0 + 2]
-{ctrlSetText [_x, "Server Art"]} forEach [_idcBtn_0_0 + 3]
-{_i = _x; {ctrlShow [_x + _i, false]} forEach [_idcBtnBg_0_0]} forEach [0,1,2,3,4]
-_highlight = "CO", btnValue02 = 0
+{ctrlSetText [_x, "Your Art"]} forEach [_idcBtn_0_0 + 3]
+{ctrlSetText [_x, "Svr Art"]} forEach [_idcBtn_0_0 + 4]
+{_i = _x; {ctrlShow [_x + _i, false]} forEach [_idcBtnBg_0_0]} forEach [0,1,3,4]
+_highlight = "CO", btnValue00 = -1, btnValue01 = 2^0
 
 _co = isCommander; _Superior = bIsAiSuperior
-? not _co && not _Superior: _highlight = "WP", btnValue02 = 1
+? not _co && not _Superior: _highlight = "WP", btnValue01 = 2^1
 
 _COcount = (countWPCO/2) - (countWPCO/2)%1
 
-{ ctrlShow [_x, false] } forEach [_idcAction0Label, _idcAction1Label, _idcAction2Label, _idcAction3Label, _idcAction4Label]
+{ ctrlShow [_idcLeftLabel + _x, false] } forEach [0,1,2,3,4]
 { ctrlShow [_x, _co] } forEach [_idcAction3, _idcAction4]
 
 ctrlSetText [IDC_TITLE, "Waypoints"]
-ctrlSetText [_idcAction0, "SetBtn"]
-ctrlSetText [_idcAction1, "Clear"]
-ctrlSetText [_idcAction2, "Clear All Player WPs"]
-ctrlSetText [_idcAction3, "Clear All CO WPs"]
-ctrlSetText [_idcAction4, "Order AI groups"]
+ctrlSetText [_idcLeftBtn + 0, "SetBtn"]
+ctrlSetText [_idcLeftBtn + 1, "Clear"]
+ctrlSetText [_idcLeftBtn + 2, "Clear All Player WPs"]
+ctrlSetText [_idcLeftBtn + 3, "Clear All CO WPs"]
+ctrlSetText [_idcLeftBtn + 4, "Order AI groups"]
 
-_refreshList = preprocessFile "Player\Dialog\Wp\UpdateList.sqf"
-
-ctrlSetText [_idcListHeader, "Player Waypoints"]
-? _co || _Superior: ctrlSetText [_idcListHeader, "Commander/Player Waypoints"]
+_refreshList = preprocessFile "Rts\Dialog\Wp\UpdateList.sqf"
 
 bNewCoSet = false; call _refreshList
 
 # Update
-	ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 
 	_co = isCommander; _Superior = bIsAiSuperior
 	_biasCo = 0
 	? not _co && _Superior: _biasCo = _COcount
-	? not _co && not _Superior && (0 == _val || 3 == _val): _val = 1, goto "OnHighlightChange"
+	? not _co && not _Superior && (0 == _val || 4 == _val): _val = 1, goto "OnHighlightChange"
 
 	? call dlgUpdated: goto "Quit"
 	? !(alive player): closeDialog 0; goto "Quit"
 
-	? (btnAction0): btnAction0=false; goto "SetBtn"
-	? (btnAction1): btnAction1=false; goto "Clear"
-	? (btnAction2): btnAction2=false; goto "ClearAllPlayer"
-	? (btnAction3): btnAction3=false; goto "ClearAllCO"
-	? (btnAction4): btnAction4=false; goto "OrderAI"
-
-	? btnValue02 >= 0: _val = btnValue02, btnValue02 = -1, goto "OnHighlightChange"
+	? btnValue00 >= 0: _leftBtn = btnValue00, btnValue00 = -1, goto "LeftBtn"
+	? btnValue01 > 0: _val = ln btnValue01 / ln 2, btnValue01 = 0, goto "OnHighlightChange"
+	? btnValue03 > 0: _btnVal = btnValue03; btnValue03 = 0; goto "RightDownBtn"
 
 	? bNewCoSet: bNewCoSet = false; call _refreshList
 
 	~ 0.2
 	goto "Update"
 
+# LeftBtn
+	? 0 == _leftBtn: goto "SetBtn"
+	? 1 == _leftBtn: goto "Clear"
+	? 2 == _leftBtn: goto "ClearAllPlayer"
+	? 3 == _leftBtn: goto "ClearAllCO"
+	? 4 == _leftBtn: goto "OrderAI"
+
 # OnHighlightChange
-	; _val is both the value of btnValue02 and the index of indexWayPointSelected
+	; _val is both the exponent of btnValue01 and the index of indexWayPointSelected
 	_bValid = false
 	? 0 == _val: if (_co || _Superior) then {_highlight = "CO", _bValid = true}
 	? 1 == _val: _highlight = "WP", _bValid = true
-	? 2 == _val: _highlight = "PlayerTarget", _bValid = true
-	? 3 == _val: if (_co || _Superior) then {_highlight = "ServerTarget", _bValid = true}
-	? _bValid: call _refreshList, {ctrlShow [_idcBtnBg_0_0 + _x, false]} forEach [0,1,2,3], ctrlShow [_idcBtnBg_0_0 + _val, true]
+	? 3 == _val: _highlight = "PlayerTarget", _bValid = true
+	? 4 == _val: if (_co || _Superior) then {_highlight = "ServerTarget", _bValid = true}
+	? _bValid: call _refreshList, {ctrlShow [_idcBtnBg_0_0 + _x, false]} forEach [0,1,3,4], ctrlShow [_idcBtnBg_0_0 + _val, true]
+	goto "Update"
+
+# RightDownBtn
+	? 2^0 == _btnVal: _this exec "Rts\Dialog\RtsMap.sqs"; closeDialog 0; goto "Quit"
+	? 2^1 == _btnVal: _this exec "Rts\Dialog\AreaMap.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 
 # SetBtn
@@ -103,7 +98,7 @@ bNewCoSet = false; call _refreshList
 
 	? "CO" == _highlight: [siPlayer, giPlayer, _coor, 0, _sel + _biasCo] exec "Common\Msg\sSetWPCO.sqs"
 	? "WP" == _highlight: [_sel, _coor] exec "\TZK_Scripts_4_0_4\Player\SetWaypoint.sqs"
-	? "PlayerTarget" == _highlight: [_sel, _pos, true] exec _setTargetScript
+	? "PlayerTarget" == _highlight: [_sel, _pos, true] exec "Player\Art\SetTarget.sqs"
 	? "ServerTarget" == _highlight: [siPlayer, giPlayer, _coor, 1, _sel] exec "Common\Msg\sSetWPCO.sqs"
 
 	closeDialog 0
@@ -117,7 +112,7 @@ bNewCoSet = false; call _refreshList
 
 	? "CO" == _highlight: [siPlayer, giPlayer, _coor, 0, _sel + _biasCo] exec "Common\Msg\sSetWPCO.sqs"
 	? "WP" == _highlight: [_sel, _coor] exec "\TZK_Scripts_4_0_4\Player\SetWaypoint.sqs"
-	? "PlayerTarget" == _highlight: [_sel, _pos, true] exec _setTargetScript
+	? "PlayerTarget" == _highlight: [_sel, _pos, true] exec "Player\Art\SetTarget.sqs"
 	? "ServerTarget" == _highlight: [siPlayer, giPlayer, _coor, 1, _sel] exec "Common\Msg\sSetWPCO.sqs"
 
 	~ 0.2
