@@ -1,3 +1,6 @@
-@ time > 120 || TheWorld == "D" || TheWorld == "W"
+# loop
+	~ 3
+	? time < 120 && TheWorld != "D" && TheWorld != "W": goto "loop"
+
 ? TheWorld == "C" || TheWorld == "G": exit
 call preprocessFile "impl\StructAdjustStyle.sqf"

@@ -14,7 +14,7 @@ _objects = [[
 	_newName = substr [_name, 0, sizeofstr _name - 6] + (["_Desert", "_Grey"] select _boolWinter) + "_xj400", 
 	_objects select 0 set [0, _newName], 
 	_entry set [sdObjects0, _objects], _entry set [sdObjects1, _objects];
-} forEach [stradarair, stradar, stSatRec, stLight, stComm, stBarracks, stHeavy, stShip, _wall, _walls, _roof, _roofHigh, _tanktr, _artPlain];
+} forEach [stradarair, stradar, stSatRec, stLight, stComm, stBarracks, stHeavy, stShip] + TzkAdjustStyleStructIdx;
 {
 	_t = _x, 
 	{
