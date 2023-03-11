@@ -16,7 +16,7 @@ _idcLeftBtn0 = IDC + 32 + 0
 _idcDownBtn0 = IDC + 32 * 3 + 0
 ; init right-down corner buttons (switching to other rts dialogs)
 ; 0: rts, 1: area
-0 call preprocessFile "Player\Dialog\Rts\InitSwitchDialogBtns.sqf"
+0 call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
 
 ; init left-down corner buttons (select specific type of units)
 _idcLeftDownBtn0 = IDC + 32 * 6 + 0
@@ -25,7 +25,7 @@ _level = TzkSelStackIdx
 ; Remove dead units in selected array
 _level call preprocessFile "Player\Rts\RemoveDeadSelectedUnit.sqf"
 if (1 == _level) then {_btnVal = TzkSelLv1Btn}; if (2 == _level) then {_btnVal = TzkSelLv2Btn}
-[_idcLeftDownBtn0, _level, _btnVal] call preprocessFile "Player\Dialog\Rts\UpdateRtsDlgType.sqf"
+[_idcLeftDownBtn0, _level, _btnVal] call preprocessFile "Rts\Dialog\UpdateRtsDlgType.sqf"
 
 btnValue00 = 0; btnValue01 = 0; btnValue02 = 0; btnValue03 = 0
 
@@ -36,7 +36,7 @@ ctrlSetText [_idcLeftBtn0 + 2, "Shoot Area"]
 ctrlSetText [_idcLeftBtn0 + 3, "Move & Shoot"]
 ctrlSetText [_idcDownBtn0, "Disband"]
 
-; false call preprocessFile "Player\Dialog\Rts\InitSilider.sqf"
+; false call preprocessFile "Rts\Dialog\InitSilider.sqf"
 
 # Update
 	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
@@ -56,8 +56,8 @@ ctrlSetText [_idcDownBtn0, "Disband"]
 # LeftBtn
 	? 2^0 == _btnVal: _pos exec "Player\Rts\sRtsMove.sqs"; closeDialog 0; goto "Quit"
 	? 2^1 == _btnVal: 0 exec "Player\Rts\sRtsClear.sqs"; closeDialog 0; goto "Quit"
-	? 2^2 == _btnVal: [_pos, false] exec "Player\Dialog\Rts\ShootArea.sqs"; closeDialog 0; goto "Quit"
-	? 2^3 == _btnVal: [_pos, true] exec "Player\Dialog\Rts\ShootArea.sqs"; closeDialog 0; goto "Quit"
+	? 2^2 == _btnVal: [_pos, false] exec "Rts\SubMenu\ShootArea.sqs"; closeDialog 0; goto "Quit"
+	? 2^3 == _btnVal: [_pos, true] exec "Rts\SubMenu\ShootArea.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 # DownBtn
 	? 2^0 == _btnVal: 0 exec "Player\Dialog\DisbandPreset.sqs"; closeDialog 0; goto "Quit"
@@ -65,8 +65,8 @@ ctrlSetText [_idcDownBtn0, "Disband"]
 # LeftDownBtn
 	if (2^8 == _btnVal) then {_level = _level - 1} else {_level = _level + 1}
 	_level call preprocessFile "Player\Rts\RemoveDeadSelectedUnit.sqf"
-	[_idcLeftDownBtn0, _level, _btnVal] call preprocessFile "Player\Dialog\Rts\UpdateRtsDlgType.sqf"
+	[_idcLeftDownBtn0, _level, _btnVal] call preprocessFile "Rts\Dialog\UpdateRtsDlgType.sqf"
 	goto "Update"
 # RightDownBtn
-	? 2^1 == _btnVal: _this exec "Player\Dialog\CmdAreaMap.sqs"; closeDialog 0; goto "Quit"
+	? 2^1 == _btnVal: _this exec "Rts\Dialog\AreaMap.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"

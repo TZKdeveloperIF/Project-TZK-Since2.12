@@ -16,7 +16,7 @@ _idcLeftBtn0 = IDC + 32 + 0
 _idcDownBtn0 = IDC + 32 * 3 + 0
 ; init right-down corner buttons (switching to other rts dialogs)
 ; 0: rts, 1: area
-1 call preprocessFile "Player\Dialog\Rts\InitSwitchDialogBtns.sqf"
+1 call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
 
 btnValue00 = 0; btnValue01 = 0; btnValue03 = 0
 
@@ -25,10 +25,10 @@ ctrlSetText [_idcLeftBtn0, "Wall MHQ"]
 
 ; down board
 _downBoardStack = []
-call preprocessFile "Player\Dialog\Rts\UpdateRtsAreaDownBoard.sqf"
+call preprocessFile "Rts\Dialog\UpdateRtsAreaDownBoard.sqf"
 
 _idcSliderAzimut = 0; _idcValueAzimut = 0; _AzimutCache = 0
-true call preprocessFile "Player\Dialog\Rts\InitSilider.sqf"
+true call preprocessFile "Rts\Dialog\InitSilider.sqf"
 TzkMapBlockSelected = true
 
 # Update
@@ -55,14 +55,14 @@ TzkMapBlockSelected = true
 # DownBtn
 	? count _downBoardStack > 0: goto "DownSubMenu"
 	? 2^0 == _btnVal: _pos exec "Player\Msg\sDeployBaseMg.sqs"; goto "Update";
-	? 2^1 == _btnVal: _pos exec "Player\Dialog\Rts\BuildStruct.sqs"; closeDialog 0; goto "Quit"
-	? 2^2 == _btnVal: _pos exec "Player\Dialog\Rts\BuyWorker.sqs"; closeDialog 0; goto "Quit"
-	? 2^3 == _btnVal: _downBoardStack set [0, 3]; call preprocessFile "Player\Dialog\Rts\UpdateRtsAreaDownBoard.sqf"; goto "Update"
+	? 2^1 == _btnVal: _pos exec "Rts\SubMenu\BuildStruct.sqs"; closeDialog 0; goto "Quit"
+	? 2^2 == _btnVal: _pos exec "Rts\SubMenu\BuyWorker.sqs"; closeDialog 0; goto "Quit"
+	? 2^3 == _btnVal: _downBoardStack set [0, 3]; call preprocessFile "Rts\Dialog\UpdateRtsAreaDownBoard.sqf"; goto "Update"
 	goto "Update"
 	# DownSubMenu
 		; ASSERT(3 == _downBoardStack select 0 && 1 == count _downBoardStack)
-		? 2^0 == _btnVal: 0 exec "Player\Dialog\Rts\SvrArtArea.sqs"; closeDialog 0; goto "Quit"
-		? 2^8 == _btnVal: _downBoardStack resize 0; call preprocessFile "Player\Dialog\Rts\UpdateRtsAreaDownBoard.sqf"; goto "Update"
+		? 2^0 == _btnVal: 0 exec "Rts\SubMenu\SvrArtArea.sqs"; closeDialog 0; goto "Quit"
+		? 2^8 == _btnVal: _downBoardStack resize 0; call preprocessFile "Rts\Dialog\UpdateRtsAreaDownBoard.sqf"; goto "Update"
 # RightDownBtn
-	? 2^0 == _btnVal: _this exec "Player\Dialog\CmdRtsMap.sqs"; closeDialog 0; goto "Quit"
+	? 2^0 == _btnVal: _this exec "Rts\Dialog\RtsMap.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
