@@ -1,0 +1,18 @@
+; args: [vehicle, si]
+
+_vehicle = _this select 0
+
+_cargo = (crew _vehicle) - [driver _vehicle, gunner _vehicle, commander _vehicle]
+? count _cargo == 0: exit
+
+_i = 0; _c = count _cargo
+
+# CheckUnit
+    ? !(_i < _c) : exit
+    _u = _cargo select _i
+	; skip unexpected invalid unit
+	? not alive _u || _vehicle != vehicle _u: _i = _i + 1, goto "CheckUnit"
+
+	? local _u: unassignVehicle _u; _u action ["EJECT", _vehicle]; exit
+	; not local _u
+	publicExec format [{UnitById %1 exec "Util\EjectOneCargo.sqs"}, _u call funcGenNetIdStr]

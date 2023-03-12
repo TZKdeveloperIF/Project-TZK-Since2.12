@@ -17,7 +17,8 @@ pvNuclearX = 0; pvNuclearY = 0; pvNuclearZ = 0;
 pvCheckAI = -1;
 
 pvTempOrder1 = -1; pvTempOrder2 = -1; mutexSendAITemporary = false; mutexHandleAITemporary = false;
-pvEjectAIUnits = objNull; pvClearBuy = -1;
+// pvEjectAIUnits = objNull; 
+pvClearBuy = -1;
 
 mutexTownWorkerGroups = false;
 
@@ -46,7 +47,7 @@ mutexLock = false;
 pvLock = objNull;
 pvUnlock = objNull;
 pvDisembarkUnit = objNull;
-pvEjectUnit = objNull; mutexEjectUnit = false;
+// pvEjectUnit = objNull; mutexEjectUnit = false;
 pvFuelVehicle = objNull;
 pvObjectRepaired = -1;
 pvObjectRepaired_Object = objNull;
