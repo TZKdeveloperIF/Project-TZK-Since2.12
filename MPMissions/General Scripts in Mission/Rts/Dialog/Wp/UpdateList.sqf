@@ -59,6 +59,6 @@ if (not _bUpdated && "ServerTarget" == _highlight) then {
 	};
 };
 // update current selected item index
-if (indexWayPointSelected select _val != -1) then {
-	lbSetCurSel [_idcList, indexWayPointSelected select _val];
+if (indexWayPointSelected select _mode != -1) then {
+	lbSetCurSel [_idcList, indexWayPointSelected select _mode];
 };

@@ -48,19 +48,21 @@ _refreshList = preprocessFile "Rts\Dialog\Wp\UpdateList.sqf"
 
 bNewCoSet = false; call _refreshList
 
+_mode = 0; _cacheMode = _mode; _invalidMode = {not _co && not _Superior && (0 == _mode || 4 == _mode)}
+
 # Update
 	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 
 	_co = isCommander; _Superior = bIsAiSuperior
 	_biasCo = 0
 	? not _co && _Superior: _biasCo = _COcount
-	? not _co && not _Superior && (0 == _val || 4 == _val): _val = 1, goto "OnHighlightChange"
+	? call _invalidMode: _mode = 1, goto "OnHighlightChange"
 
 	? call dlgUpdated: goto "Quit"
 	? !(alive player): closeDialog 0; goto "Quit"
 
 	? btnValue00 >= 0: _leftBtn = btnValue00, btnValue00 = -1, goto "LeftBtn"
-	? btnValue01 > 0: _val = ln btnValue01 / ln 2, btnValue01 = 0, goto "OnHighlightChange"
+	? btnValue01 > 0: _mode = ln btnValue01 / ln 2, btnValue01 = 0, goto "OnHighlightChange"
 	? btnValue03 > 0: _btnVal = btnValue03; btnValue03 = 0; goto "RightDownBtn"
 
 	? bNewCoSet: bNewCoSet = false; call _refreshList
@@ -76,13 +78,18 @@ bNewCoSet = false; call _refreshList
 	? 4 == _leftBtn: goto "OrderAI"
 
 # OnHighlightChange
-	; _val is both the exponent of btnValue01 and the index of indexWayPointSelected
+	; _mode is both the exponent of btnValue01 and the index of indexWayPointSelected
+
+	; do nothing (recover mode from cache) if not commander/superior and trying to change to co/server target
+	? call _invalidMode: _mode = _cacheMode; goto "Update"
+
+	_cacheMode = _mode
 	_bValid = false
-	? 0 == _val: if (_co || _Superior) then {_highlight = "CO", _bValid = true}
-	? 1 == _val: _highlight = "WP", _bValid = true
-	? 3 == _val: _highlight = "PlayerTarget", _bValid = true
-	? 4 == _val: if (_co || _Superior) then {_highlight = "ServerTarget", _bValid = true}
-	? _bValid: call _refreshList, {ctrlShow [_idcBtnBg_0_0 + _x, false]} forEach [0,1,3,4], ctrlShow [_idcBtnBg_0_0 + _val, true]
+	? 0 == _mode: if (_co || _Superior) then {_highlight = "CO", _bValid = true}
+	? 1 == _mode: _highlight = "WP", _bValid = true
+	? 3 == _mode: _highlight = "PlayerTarget", _bValid = true
+	? 4 == _mode: if (_co || _Superior) then {_highlight = "ServerTarget", _bValid = true}
+	? _bValid: call _refreshList, {ctrlShow [_idcBtnBg_0_0 + _x, false]} forEach [0,1,3,4], ctrlShow [_idcBtnBg_0_0 + _mode, true]
 	goto "Update"
 
 # RightDownBtn
@@ -93,11 +100,11 @@ bNewCoSet = false; call _refreshList
 # SetBtn
 	_sel = lbCurSel _idcList
 	? _sel == -1: hint "No waypoint selected"; goto "Update"
-	indexWayPointSelected set [_val, _sel]
+	indexWayPointSelected set [_mode, _sel]
 	_coor = _pos
 
 	? "CO" == _highlight: [siPlayer, giPlayer, _coor, 0, _sel + _biasCo] exec "Common\Msg\sSetWPCO.sqs"
-	? "WP" == _highlight: [_sel, _coor] exec "\TZK_Scripts_4_0_4\Player\SetWaypoint.sqs"
+	? "WP" == _highlight: [_sel, _coor] exec "Player\SetWaypoint.sqs"
 	? "PlayerTarget" == _highlight: [_sel, _pos, true] exec "Player\Art\SetTarget.sqs"
 	? "ServerTarget" == _highlight: [siPlayer, giPlayer, _coor, 1, _sel] exec "Common\Msg\sSetWPCO.sqs"
 
@@ -107,12 +114,12 @@ bNewCoSet = false; call _refreshList
 # Clear
 	_sel = lbCurSel _idcList
 	? _sel == -1: hint "No waypoint selected"; goto "Update"
-	indexWayPointSelected set [_val, _sel]
+	indexWayPointSelected set [_mode, _sel]
 	_coor = [-1, -1]
 
 	? "CO" == _highlight: [siPlayer, giPlayer, _coor, 0, _sel + _biasCo] exec "Common\Msg\sSetWPCO.sqs"
-	? "WP" == _highlight: [_sel, _coor] exec "\TZK_Scripts_4_0_4\Player\SetWaypoint.sqs"
-	? "PlayerTarget" == _highlight: [_sel, _pos, true] exec "Player\Art\SetTarget.sqs"
+	? "WP" == _highlight: [_sel, _coor] exec "Player\SetWaypoint.sqs"
+	? "PlayerTarget" == _highlight: [_sel, _pos, false] exec "Player\Art\SetTarget.sqs"
 	? "ServerTarget" == _highlight: [siPlayer, giPlayer, _coor, 1, _sel] exec "Common\Msg\sSetWPCO.sqs"
 
 	~ 0.2
@@ -120,7 +127,7 @@ bNewCoSet = false; call _refreshList
 
 # ClearAllPlayer
 	indexWayPointSelected set [1, -1]
-	_i = 0; while {_i < countWPPlayer} do {[_i, [-1,-1]] exec "\TZK_Scripts_4_0_4\Player\SetWaypoint.sqs", _i = _i + 1}
+	_i = 0; while {_i < countWPPlayer} do {[_i, [-1,-1]] exec "Player\SetWaypoint.sqs", _i = _i + 1}
 	call _refreshList
 	goto "Update"
 
