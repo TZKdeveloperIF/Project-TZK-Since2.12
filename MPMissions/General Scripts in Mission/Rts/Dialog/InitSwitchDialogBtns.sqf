@@ -13,8 +13,10 @@ if (0 != _this) then {
 // area
 if (1 != _this) then {
 	// area
-	ctrlShow [_idc + 1, true];
-	ctrlSetText [_idc + 1, "AREA"];
+	if (isCommander || bIsAiSuperior) then {
+		ctrlShow [_idc + 1, true];
+		ctrlSetText [_idc + 1, "AREA"];
+	};
 };
 // wpco
 if (2 != _this) then {
