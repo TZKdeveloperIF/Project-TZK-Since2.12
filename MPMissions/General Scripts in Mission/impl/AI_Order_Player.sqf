@@ -65,6 +65,13 @@ _type = 0, _c = count aiOrders2; _found = false; while {_type < _c && not _found
 	_type = _type + 1;
 };
 _type = 0, _c = count aiOrders2; _found = false; while {_type < _c && not _found} do {
+	if (aiOrders2 select _type select 0 == "Set Target") then {
+		_found = true;
+		aiOrders2 select _type set [0, "Invalid"];
+	};
+	_type = _type + 1;
+};
+_type = 0, _c = count aiOrders2; _found = false; while {_type < _c && not _found} do {
 	if (aiOrders2 select _type select 0 == "Buy Workers") then {
 		_found = true;
 		aiOrders2 select _type set [0, "Invalid"];
