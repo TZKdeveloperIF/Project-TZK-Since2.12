@@ -1,7 +1,11 @@
 ; args: [si, gi, pos, type (co or server target), index]
 
 ; Only allow commander and superior set wp/co
-? not isCommander && not bIsAiSuperior: exit
+
+; player is script caller case
+? not isNull player: if (_gi == giPlayer && not isCommander && not bIsAiSuperior) then {exit}
+; AI is script caller case
+; do nothing
 
 _pos = _this select 2
 {_val = _pos select _x; _val = _val - _val % 1; _pos set [_x, _val]} forEach [0, 1]
