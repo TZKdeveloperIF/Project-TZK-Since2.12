@@ -8,8 +8,7 @@ _ret = false;
 if (not _processed && "Soldier" == _enum) then {
 	_processed = true;
 	if (_unit == vehicle _unit) then {
-		_ret = (_unit hasWeapon "M16MortarLauncher_TZK_xj400" || _unit hasWeapon "AK74MortarLauncher_TZK_xj400" ||
-			_unit hasWeapon "M4_M203_ACOG_SD_xj400" || _unit hasWeapon "AK74M_GP25_1P29_SD_xj400");
+		_ret = (_unit call preprocessFile "Art\GetSoldierArtType.sqf") != -1;
 	};
 };
 if (not _processed && "Howitzer" == _enum) then {
