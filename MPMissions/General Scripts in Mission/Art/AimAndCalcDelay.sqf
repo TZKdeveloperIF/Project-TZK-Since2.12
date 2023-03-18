@@ -35,8 +35,8 @@ if _ret then {
 	// however no vanilla way to compute this in OFP.
 	if _isVehicle then {
 		if (-1 != ["TOS1_TZK_xj400", "M109A6G_xj400", "PLZ05_TZK_xj400"] find _typeName) then {
-			[_vehicle, 1] exec "\TZK_Scripts_4_0_4\Common\Effect\DeployChange.sqs";
 			_delay = [3, 8] select ("_x == {DeploySwitch_xj400}" count magazines _vehicle == 0);
+			[_vehicle, 1] exec "Util\Deploy\Change.sqs";
 		};
 	};
 };
