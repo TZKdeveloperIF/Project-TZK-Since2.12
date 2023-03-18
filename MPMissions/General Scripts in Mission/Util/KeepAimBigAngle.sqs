@@ -1,0 +1,8 @@
+; args: [vehicle, target, duration]
+_vehicle = _this select 0, _target = _this select 1, _duration = _this select 2
+
+# loop
+	_vehicle reveal _target
+	_vehicle doTarget _target
+	~ _duration / 3 + 0.1
+	? _time < _duration: goto "loop"

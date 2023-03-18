@@ -32,7 +32,6 @@ _i = 0; _count = count towns;
 _i = 0
 #TargetMarker
 	_marker = Format["TargetP_%1", _i]; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Destroy"; _marker setMarkerColor "ColorYellow"; _marker setMarkerSize [0.6,0.6]; _marker setMarkerText format ["Target %1", _i]
-	_marker = Format["TargetS_%1", _i]; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Destroy"; _marker setMarkerColor _colorOrange; _marker setMarkerSize [0.6,0.6]; _marker setMarkerText format ["Target %1", _i]
 	_i = _i + 1
 	? _i < countTargetMarkers : goto "TargetMarker"
 

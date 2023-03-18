@@ -14,4 +14,3 @@ _validMags = [
 	["M16MortarLauncher_TZK_xj400", "AK74MortarLauncher_TZK_xj400", "MortarM16_xj400", "MortarAK74_xj400"]
 ] select _commandType;
 _rldTime = [3.5, if (_weapon == "MM1" || _weapon == "6G30") then {0.6} else {5.5}, 5.5] select _commandType;
-_fireCommand = {(_this select 0) fire (_this select 1)};

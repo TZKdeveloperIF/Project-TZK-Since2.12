@@ -8,11 +8,11 @@ if _ret then {
 		_ret = false;
 	};
 };
-//  The applying of "_ammoOld" will invalid magazines containing only 1 shot. 
-// If wish to use such a magazine, adjust this script manually.
-_equippedMag = _ammoArray select 0, _ammoOld = _ammoArray select 1;
 
 if _ret then {
+	//  The applying of "_ammoOld" will invalid magazines containing only 1 shot. 
+	// If wish to use such a magazine, adjust this script manually.
+	_equippedMag = _ammoArray select 0, _ammoOld = _ammoArray select 1;
 	if (_equippedMag == "") then {_ret = false};
 };
 
