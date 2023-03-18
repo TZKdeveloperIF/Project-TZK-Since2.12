@@ -16,8 +16,7 @@ _isAaInf = {
 	_this hasWeapon "AA_TZK_xj400" || _this hasWeapon "9k32_TZK_xj400"
 };
 _isArtInf = {
-	_this hasWeapon "M16MortarLauncher_TZK_xj400" || _this hasWeapon "AK74MortarLauncher_TZK_xj400" ||
-	_this hasWeapon "M4_M203_ACOG_SD_xj400" || _this hasWeapon "AK74M_GP25_1P29_SD_xj400"
+	(_this call preprocessFile "Art\GetSoldierArtType.sqf") != -1
 };
 
 if (not _processed && 0 == _level) then {

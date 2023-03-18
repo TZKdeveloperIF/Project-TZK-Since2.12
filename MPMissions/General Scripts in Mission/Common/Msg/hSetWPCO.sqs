@@ -18,12 +18,6 @@ _bSet = (_pos select 0) >= 0 && (_pos select 1) >= 0, _leader = leader (groupMat
 	? _bSet: _leader sidechat format["%4 %1 set. %2 %3", _left, _pos call funcCalcMapPos, _pos call funcCalcTownDirDistFromPos, "CO waypoint"]
 
 	# skipCo
-	? _type != 1: goto "skipSvrTarget"
-	? isServer: [_left, _si, _pos] exec "Server\Art\SetTarget.sqs"
-	? not isNull player && siPlayer == _si: format["TargetS_%1", _left] setMarkerPos (if _bSet then {_pos} else {hiddenMarkerPos})
-	? _bSet: _leader sidechat format["%4 %1 set. %2 %3", _left, _pos call funcCalcMapPos, _pos call funcCalcTownDirDistFromPos, "Shooting Target"]
-
-	# skipSvrTarget
 
 	_left = _left + 1
 	? _left <= _right: goto "loop"
