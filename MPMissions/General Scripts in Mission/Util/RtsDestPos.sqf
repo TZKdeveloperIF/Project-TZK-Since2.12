@@ -5,6 +5,9 @@ _rtsCentralPos = _this select 2;
 _radius = _this select 3;
 
 _curPos = getPosASL _unit;
+
+_rtsCentralPos set [2, 0];
+
 _vec = [_curPos, _rtsCentralPos] call funcVectorSub;
 if ([_curPos, _rtsCentralPos] call loadFile "Util\PosDistSquare.sqf" > _radius * _radius) then {
 	_vec = [_vec, _radius / (_vec call funcVectorLength)] call funcVectorScale;

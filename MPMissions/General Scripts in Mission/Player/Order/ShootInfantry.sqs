@@ -13,7 +13,7 @@ _biggerAngle = (if (count _this > 5) then {_this select 5} else {0})
 _biggerAngle = (if (_biggerAngle > 0) then {true} else {false})
 
 _this = 0
-_speed = 0; _range = 0; _text = ""; _weapon = ""; _weaponCheck = ""; _rldTime = 0; _fireCommand = ""
+_speed = 0; _range = 0; _text = ""; _weapon = ""; _weaponCheck = ""; _rldTime = 0
 _validMags = []
 call preprocessFile "Art\InitSoldierScript.sqf"
 
@@ -109,7 +109,7 @@ _posCorrect = 0
 	
 	_ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev]
 	_vehicle addEventHandler ["Fired", format [{[_this, %1, %2, %3, %4] exec "%5"}, _speed, _angle - _angleDelta + _angleDelta*(random 2), _elev - _thetaDelta + _thetaDelta*(random 2), _ehRev, _script] ]
-	[_vehicle, _weapon] call _fireCommand
+	_vehicle fire _weapon
 	
 	; AttackDone
 	~0.1
