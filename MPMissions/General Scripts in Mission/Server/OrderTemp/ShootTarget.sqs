@@ -12,9 +12,8 @@ _typeIndex = (_params select 2)
 _targetIndex = (_params select 3)
 _dispersion = 10*(_params select 4)
 
-_marker = format ["TargetS_%1%2", _targetIndex, _si]
-? dev: showDebug [format ["Marker pos: %1, target pos %2", getMarkerPos format ["TargetS_%1", _targetIndex], call _marker], 5000]
-? (getMarkerPos _marker) select 0 < 0: exit
+? -10 == getMarkerPos (format ["ArtSvrArea%1", _targetIndex]) select 0: hint "Area undefined."; exit
+; ? (getMarkerPos _marker) select 0 < 0: exit
 
 ; Check Whether Unit Fits The Parameters Of The Temporary Order
 _types_howitzer = +typesHowitzer; if bool_TZK_SEMod_Mode Then {_types_howitzer = _types_howitzer + types_SE_td}
@@ -71,18 +70,18 @@ _unit call temporarySet
 ? !(_unit call temporaryCheck): exit
 ? _unit call busyCheck: goto "WaitReady"
 
-#Update
+# Update
 ? !_bInfantry: goto "SkipInfantry"
 _commandType = _unit call preprocessFile "Art\GetSoldierArtType.sqf"
-? -1 != _commandType: [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, _commandType, _biggerAngle] exec "Server\OrderTemp\ShootInfantry.sqs"
+? -1 != _commandType: [_unit, _si, _targetIndex, _biggerAngle, _attackPos] exec "Server\OrderTemp\ShootInfantry.sqs"; exit
+? -1 == _commandType: goto "EOF"
 exit
 
 #SkipInfantry
-	? _bStruct: if (_vt in structsOccupiableArtilleryMortar && _dispersion < 60) Then {_dispersion = 60}; if (typeOf _vehicle == "m119_xj400" && _dispersion < 10) Then {_dispersion = 10}; if (typeOf _vehicle == "D30_xj400" && _dispersion < 30) Then {_dispersion = 30}; [_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, _vt, _biggerAngle] exec "Server\OrderTemp\ShootStruct.sqs"; exit
+	? _bStruct: [_unit, _si, _targetIndex, _biggerAngle, _attackPos] exec "Server\OrderTemp\ShootStruct.sqs"; exit
 	; Vehicle case here.
 	? _unit != driver _vehicle: if (!isNull driver _vehicle) then {goto "Sleep"}
-	if (_vt in _types_howitzer + typesRocketLauncher && _dispersion < 40) Then {_dispersion = 40}; if (typeOf _vehicle == "TOS1_TZK_xj400" && _dispersion < 60) Then {_dispersion = 60}
-	[_unit, _si, _gi, _attackPos, _radius, _target, _dispersion, _vt, _biggerAngle] exec "Server\OrderTemp\ShootTank.sqs"; exit
+	[_unit, _si, _targetIndex, _biggerAngle, _attackPos] exec "Server\OrderTemp\ShootTank.sqs"; exit
 
 
 ; End Of File
@@ -91,11 +90,12 @@ _unit call temporaryClear
 exit
 
 
-#Sleep
+# Sleep
 _loop = (time-_timeStart)/_cycle; _loop = 1 + _loop - _loop%1
 _timeUp = _loop*_cycle + _timeStart
 
-@ ( time > _timeUp || !(_unit call temporaryCheck) )
+~ _timeUp - time
+
 ? !(_unit call temporaryCheck): goto "EOF"
 ? !(alive _unit) || time > _timeAbort: goto "EOF"
 ? _unit call busyCheck: goto "Sleep"
