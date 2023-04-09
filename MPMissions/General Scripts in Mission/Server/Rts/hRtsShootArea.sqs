@@ -9,6 +9,8 @@ _this set [2, "Server\RtsOrder\ShootArea.sqs"]
 @ not mutexTzkRtsW
 	mutexTzkRtsW = true
 
+	; 提供索引, 时间戳和阵营信息, 进行炮击区域的预分析
+	; 之所以要求派发命令前执行而非设置区域后执行, 是为了避免提前划定炮击区域, 绕过建筑检查
 	[_param select 2, _param select 4, _param select 5] call preprocessFile "Server\Rts\PreAnalysesArtArea.sqf"
 	_this call preprocessFile "Server\Rts\DistributeOrder.sqf"
 
