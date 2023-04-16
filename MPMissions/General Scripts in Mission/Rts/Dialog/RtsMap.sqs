@@ -15,7 +15,7 @@ mutexDlg = false
 _idcLeftBtn0 = IDC + 16 * 2 + 0
 _idcDownBtn0 = IDC + 16 * 6 + 0
 ; init right-down corner buttons (switching to other rts dialogs)
-; 0: rts, 1: area, 2: wpco
+; 0: rts, 1: area, 2: wpco, 4: point
 0 call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
 
 ; init left-down corner buttons (select specific type of units)
@@ -68,6 +68,5 @@ ctrlSetText [_idcDownBtn0, "Disband"]
 	[_idcLeftDownBtn0, _level, _btnVal] call preprocessFile "Rts\Dialog\UpdateRtsDlgType.sqf"
 	goto "Update"
 # RightDownBtn
-	? 2^1 == _btnVal: _this exec "Rts\Dialog\AreaMap.sqs"; closeDialog 0; goto "Quit"
-	? 2^2 == _btnVal: _this exec "Rts\Dialog\Waypoints.sqs"; closeDialog 0; goto "Quit"
+	? _btnVal > 0: call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
 	goto "Update"

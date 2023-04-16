@@ -13,7 +13,7 @@ mutexDlg = false
 [true, _id + 1, _pos] exec "Player\Rts\SetRtsMouse.sqs";
 
 ; init right-down corner buttons (switching to other rts dialogs)
-; 0: rts, 1: area, 2: wpco
+; 0: rts, 1: area, 2: wpco, 4: point
 2 call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
 
 _idcLeftLabel = IDC + 16 * 3 + 0
@@ -91,8 +91,7 @@ _mode = 0; _cacheMode = _mode; _invalidMode = {not _co && not _Superior && (0 ==
 	goto "Update"
 
 # RightDownBtn
-	? 2^0 == _btnVal: _this exec "Rts\Dialog\RtsMap.sqs"; closeDialog 0; goto "Quit"
-	? 2^1 == _btnVal: _this exec "Rts\Dialog\AreaMap.sqs"; closeDialog 0; goto "Quit"
+	? _btnVal > 0: call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
 	goto "Update"
 
 # SetBtn
