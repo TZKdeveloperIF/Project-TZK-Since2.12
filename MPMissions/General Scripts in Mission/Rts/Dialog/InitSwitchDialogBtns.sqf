@@ -13,7 +13,7 @@ if (0 != _this) then {
 // area
 if (1 != _this) then {
 	// area
-	if (isCommander || bIsAiSuperior) then {
+	if (TzkMapAreaCreated && (isCommander || bIsAiSuperior)) then {
 		ctrlShow [_idc + 1, true];
 		ctrlSetText [_idc + 1, "AREA"];
 	};
@@ -23,3 +23,10 @@ if (2 != _this) then {
 	ctrlShow [_idc + 2, true];
 	ctrlSetText [_idc + 2, "WP/CO"];
 };
+
+// point
+if (4 != _this) then {
+	// always available
+	ctrlShow [_idc + 4, true];
+	ctrlSetText [_idc + 4, "POINT"];
+}

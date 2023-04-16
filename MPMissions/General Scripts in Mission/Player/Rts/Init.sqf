@@ -1,4 +1,4 @@
-TzkMapUnitsSelected = false;
+TzkMapAreaCreated = false;
 TzkMap1x = 0;
 TzkMap1y = 0;
 TzkMap2x = 0;
@@ -8,7 +8,7 @@ TzkMapSelectedTime = 0;
 TzkMapSelectEmptyTime = 0;
 TzkMapSelectDir = 0;
 
-TzkMapSelectedHighlight = false; TzkMapBlockSelected = false;
+TzkMapSelectedHighlight = false; TzkMapRtsFlashingDisabled = false;
 TzkSelectedUnits = []; TzkSelUnitsStack = [TzkSelectedUnits, [], []]; TzkSelStackIdx = 0;
 TzkSelLv1Btn = -1; TzkSelLv2Btn = -1;
 
