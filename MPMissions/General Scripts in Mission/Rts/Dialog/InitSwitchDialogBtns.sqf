@@ -21,7 +21,7 @@ _enum = 1;
 ctrlSetText [_idcBtn + _enum, "AREA"];
 if (_enum != _this) then {
 	// area
-	if (TzkMapAreaCreated && (isCommander || bIsAiSuperior)) then {
+	if (TzkMapAreaCreated) then {
 		ctrlShow [_idcBtn + _enum, true];
 	};
 } else {

@@ -1,13 +1,18 @@
 if (_this) then {
-	{
-		if (((groupMatrix select siPlayer) find _x) call loadFile "Player\SQF\GroupUnitsShown.sqf") then {
-			{
-				if ((getPosASL _x) call preprocessFile "Util\InSelectedArea.sqf") then {
-					TzkSelectedUnits set [count TzkSelectedUnits, _x];
-				}
-			} forEach (units _x);
-		}
-	} forEach (groupAiMatrix select siPlayer);
+	if (isCommander || bIsAiSuperior) then {
+		private [{_funcLeadBy}, {_gi}];
+		_funcLeadBy = preprocessFile "Util\GrpLeadBy.sqf";
+		{
+			_gi = (groupMatrix select siPlayer) find _x;
+			if (([siPlayer, _gi, giPlayer] call _funcLeadBy) && _gi call loadFile "Player\SQF\GroupUnitsShown.sqf") then {
+				{
+					if ((getPosASL _x) call preprocessFile "Util\InSelectedArea.sqf") then {
+						TzkSelectedUnits set [count TzkSelectedUnits, _x];
+					}
+				} forEach (units _x);
+			}
+		} forEach (groupAiMatrix select siPlayer);
+	};
 	// activate selected units' highlighting
 	TzkMapSelectedHighlight = false;
 	if (0 == count TzkSelectedUnits) then {TzkMapSelectEmptyTime = time} else {TzkMapSelectEmptyTime = 0};
