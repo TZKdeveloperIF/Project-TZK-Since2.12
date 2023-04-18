@@ -35,7 +35,7 @@ _unitsStarted = units _group
 	{ if (alive _x) then { [_x, _si, _gi, _orderTemp select 2] exec format["%1", _script] } } foreach _unitsStarted
 	; 对于shootTarget的concurrent命令，以队伍为单位调用PreAnalysesArtArea.sqf
 	_timeStamp = time; _timeStamp = _timeStamp - _timeStamp % 1
-	? orderTempShootTarget == _orderTemp select 1: [_orderTemp select 2 select 3, _timeStamp, _si] call preprocessFile "Server\Rts\PreAnalysesArtArea.sqf"
+	? orderTempShootTarget == _orderTemp select 1: [_orderTemp select 2 select 3, _timeStamp, _si, true] call preprocessFile "Art\PreAnalysesArtArea.sqf"
 	~1
 	
 	#NoNewTemporaryOrder

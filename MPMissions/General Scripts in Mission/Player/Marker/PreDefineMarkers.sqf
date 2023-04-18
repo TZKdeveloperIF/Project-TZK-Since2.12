@@ -4,6 +4,7 @@
 
 private [{_i}, {_c}, {_marker}];
 _i = 0; _c = 10; while {_i < _c} do {
+	// server area art markers
 	_marker = createMarker [format ["ArtSvrArea%1", _i], [-10, -10]];
 	_marker setMarkerSize [0,0];
 	_marker setMarkerColor "ColorOrange_xj400";
@@ -15,6 +16,19 @@ _i = 0; _c = 10; while {_i < _c} do {
 	_marker setMarkerColor "ColorOrange_xj400";
 	_marker setMarkerType "Warning";
 	_marker setMarkerText format ["Server Art Area %1", _i];
+
+	// player area art markers
+	_marker = createMarker [format ["ArtPplArea%1", _i], [-10, -10]];
+	_marker setMarkerSize [0,0];
+	_marker setMarkerColor "ColorGreen";
+	_marker setMarkerShape "RECTANGLE";
+	_marker setMarkerBrush "fDiagonal";
+
+	_marker = createMarker [format ["ArtPplText%1", _i], [-10, -10]];
+	_marker setMarkerSize [0,0];
+	_marker setMarkerColor "ColorGreen";
+	_marker setMarkerType "Warning";
+	_marker setMarkerText format ["Player Art Area %1", _i];
 
 	_i = _i + 1;
 };

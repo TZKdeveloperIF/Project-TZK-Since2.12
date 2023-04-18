@@ -1,0 +1,38 @@
+; args: index + 100 * (if set marker then 1 else 0)
+; read info from "TzkRtsArea" marker
+
+? _this < 100: goto "Clear"
+
+_this = _this - 100
+_pos = getMarkerPos "TzkRtsArea"
+_size = getMarkerSize "TzkRtsArea"
+_dir = getMarkerDir "TzkRtsArea"
+
+_param = [_pos select 0, _pos select 1, _size select 0, _size select 1, _dir, _this]
+; record last being set marker idx
+RtsPplArtAreaIdx = _this
+goto "Execute"
+
+# Clear
+_param = [-10, -10, 0, 0, 0, _this]
+; clear rts area idx cache
+RtsPplArtAreaIdx = -1
+
+# Execute
+; param: [x, y, w, h, dir, index]
+_idx = _param select 5
+? _idx < 0 || _idx >= countTargetMarkers: hint "Invalid art marker index.", exit
+
+_markers = TzkArtPplArea
+_info = _markers select _idx
+
+{_info set [_x, _param select _x]} forEach [0,1,2,3,4]
+
+; Update Marker Pos
+_marker = format ["ArtPplArea%1", _param select 5]
+_marker setMarkerPos [_param select 0, _param select 1]
+_marker setMarkerSize [_param select 2, _param select 3]
+_marker setMarkerDir (_param select 4)
+
+_marker = format ["ArtPplText%1", _param select 5]
+_marker setMarkerPos [_param select 0, _param select 1]

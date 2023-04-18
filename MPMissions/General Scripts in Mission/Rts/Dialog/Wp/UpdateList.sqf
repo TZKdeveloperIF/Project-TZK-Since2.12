@@ -35,16 +35,6 @@ if (not _bUpdated && "WP" == _highlight) then {
 		_i = _i + 1;
 	};
 };
-if (not _bUpdated && "PlayerTarget" == _highlight) then {
-	_bUpdated = true;
-	_i = 0; while {_i < countTargetMarkers} do {
-		_pos = getMarkerPos format ["TargetP_%1", _i];
-		_text = "";
-		if ((_pos select 0) > -1) then {_text = format["%1 %2", _pos call funcCalcMapPos, _pos call funcCalcTownDirDistFromPos]};
-		lbAdd [_idcList, format["TargetP%1: %2", _i, _text]];
-		_i = _i + 1;
-	};
-};
 // update current selected item index
 if (indexWayPointSelected select _mode != -1) then {
 	lbSetCurSel [_idcList, indexWayPointSelected select _mode];

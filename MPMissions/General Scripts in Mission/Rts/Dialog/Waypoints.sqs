@@ -24,7 +24,7 @@ _idcList = IDC + 16 * 3 + 10
 _idcBtn_0_0 = IDC + 16 * 6; _idcBtnBg_0_0 = IDC + 16 * 1;
 {ctrlSetText [_x, "co"]} forEach [_idcBtn_0_0]
 {ctrlSetText [_x, "wp"]} forEach [_idcBtn_0_0 + 1]
-{ctrlSetText [_x, "Your Art"]} forEach [_idcBtn_0_0 + 3]
+{_i = _x; {ctrlShow [_x + _i, false]} forEach [_idcBtn_0_0]} forEach [3,4]
 {_i = _x; {ctrlShow [_x + _i, false]} forEach [_idcBtnBg_0_0]} forEach [0,1,3,4]
 _highlight = "CO", btnValue00 = -1, btnValue01 = 2^0
 
@@ -86,7 +86,6 @@ _mode = 0; _cacheMode = _mode; _invalidMode = {not _co && not _Superior && (0 ==
 	_bValid = false
 	? 0 == _mode: if (_co || _Superior) then {_highlight = "CO", _bValid = true}
 	? 1 == _mode: _highlight = "WP", _bValid = true
-	? 3 == _mode: _highlight = "PlayerTarget", _bValid = true
 	? _bValid: call _refreshList, {ctrlShow [_idcBtnBg_0_0 + _x, false]} forEach [0,1,3], ctrlShow [_idcBtnBg_0_0 + _mode, true]
 	goto "Update"
 
@@ -102,7 +101,6 @@ _mode = 0; _cacheMode = _mode; _invalidMode = {not _co && not _Superior && (0 ==
 
 	? "CO" == _highlight: [siPlayer, giPlayer, _coor, 0, _sel + _biasCo] exec "Common\Msg\sSetWPCO.sqs"
 	? "WP" == _highlight: [_sel, _coor] exec "Player\SetWaypoint.sqs"
-	? "PlayerTarget" == _highlight: [_sel, _pos, true] exec "Player\Art\SetTarget.sqs"
 
 	closeDialog 0
 	goto "Quit"
@@ -115,7 +113,6 @@ _mode = 0; _cacheMode = _mode; _invalidMode = {not _co && not _Superior && (0 ==
 
 	? "CO" == _highlight: [siPlayer, giPlayer, _coor, 0, _sel + _biasCo] exec "Common\Msg\sSetWPCO.sqs"
 	? "WP" == _highlight: [_sel, _coor] exec "Player\SetWaypoint.sqs"
-	? "PlayerTarget" == _highlight: [_sel, _pos, false] exec "Player\Art\SetTarget.sqs"
 
 	~ 0.2
 	goto "Update"
