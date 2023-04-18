@@ -1,6 +1,5 @@
 ; args: pos
 _pos = _this
-; _setTargetScript = "Player\Art\SetTarget.sqs"
 @ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
 _dlg = createDialog "TzkCmdMapDlgRts"
@@ -56,8 +55,8 @@ ctrlSetText [_idcDownBtn0, "Disband"]
 # LeftBtn
 	? 2^0 == _btnVal: _pos exec "Player\Rts\sRtsMove.sqs"; closeDialog 0; goto "Quit"
 	? 2^1 == _btnVal: 0 exec "Player\Rts\sRtsClear.sqs"; closeDialog 0; goto "Quit"
-	? 2^2 == _btnVal: [_pos, false] exec "Rts\SubMenu\ShootArea.sqs"; closeDialog 0; goto "Quit"
-	? 2^3 == _btnVal: [_pos, true] exec "Rts\SubMenu\ShootArea.sqs"; closeDialog 0; goto "Quit"
+	? 2^2 == _btnVal: [_pos, false, true] exec "Rts\SubMenu\AreaArt.sqs"; closeDialog 0; goto "Quit"
+	? 2^3 == _btnVal: [_pos, true, true] exec "Rts\SubMenu\AreaArt.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 # DownBtn
 	? 2^0 == _btnVal: 0 exec "Player\Dialog\DisbandPreset.sqs"; closeDialog 0; goto "Quit"

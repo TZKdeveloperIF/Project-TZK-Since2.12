@@ -1,6 +1,5 @@
 ; args: pos
 _pos = _this
-; _setTargetScript = "Player\Art\SetTarget.sqs"
 @ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
 _dlg = createDialog "TzkCmdMapDlgArea"
@@ -56,7 +55,8 @@ TzkMapRtsFlashingDisabled = true
 	goto "Update"
 	# DownSubMenu
 		; ASSERT(3 == _downBoardStack select 0 && 1 == count _downBoardStack)
-		? 2^0 == _btnVal: 0 exec "Rts\SubMenu\SvrArtArea.sqs"; closeDialog 0; goto "Quit"
+		? 2^0 == _btnVal: 0 exec "Rts\SubMenu\ArtArea.sqs"; closeDialog 0; goto "Quit"
+		? 2^1 == _btnVal: 1 exec "Rts\SubMenu\ArtArea.sqs"; closeDialog 0; goto "Quit"
 		? 2^8 == _btnVal: _downBoardStack resize 0; call preprocessFile "Rts\Dialog\UpdateRtsAreaDownBoard.sqf"; goto "Update"
 		~ 0.1
 		goto "Update"

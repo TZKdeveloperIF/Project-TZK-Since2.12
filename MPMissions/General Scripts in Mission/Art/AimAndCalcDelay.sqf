@@ -13,13 +13,13 @@ if (not _isVehicle && not _isStruct) then { // infantry
 // weapon check unnecessary for tank. They're always use first weapon defined in CONFIG.CPP as main gun.
 
 if _ret then {
-	if not _isServer then {
-		if (not _isVehicle && not _isStruct) then {
-			_unit groupChat "Target in range. Prepare to attack.";
-		} else {
-			_unit groupChat "In position. Prepare to attack.";
-		};
-	};
+	// if not _isServer then {
+	// 	if (not _isVehicle && not _isStruct) then {
+	// 		_unit groupChat "Target in range. Prepare to attack.";
+	// 	} else {
+	// 		_unit groupChat "In position. Prepare to attack.";
+	// 	};
+	// };
 
 	if _isVehicle then {
 		driver _vehicle action ["ENGINE OFF", _vehicle]; _vehicle engineOn false;

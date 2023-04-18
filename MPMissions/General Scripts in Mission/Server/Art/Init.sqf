@@ -1,6 +1,3 @@
-// Target Object should be lazy-load
-countTargetMarkers = 10;
-
 // Art Area
 TzkArtSvrAreaW = []; TzkArtSvrAreaW resize countTargetMarkers;
 TzkArtSvrAreaE = []; TzkArtSvrAreaE resize countTargetMarkers;

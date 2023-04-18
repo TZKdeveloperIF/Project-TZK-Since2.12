@@ -38,4 +38,6 @@ _marker setMarkerBrush "Cross";
 _marker setMarkerSize [0, 0];
 
 // variables for dialog
-RtsAreaBuildStruct = [0, 0]; RtsArtAreaIdx = -1;
+RtsAreaBuildStruct = [0, 0];
+RtsSvrArtAreaIdx = -1;
+RtsPplArtAreaIdx = -1;
