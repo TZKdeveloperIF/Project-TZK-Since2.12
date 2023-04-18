@@ -19,8 +19,8 @@ _idcDownBtn0 = IDC + 16 * 6 + 0
 
 btnValue00 = 0; btnValue01 = 0; btnValue03 = 0
 
-; { ctrlShow [_x, false] } forEach []
-ctrlSetText [_idcLeftBtn0, "Wall MHQ"]
+{ ctrlShow [_x, false] } forEach [_idcLeftBtn0]
+? isCommander || bIsAiSuperior: ctrlSetText [_idcLeftBtn0, "Wall MHQ"]; ctrlShow [_idcLeftBtn0, true]
 
 ; down board
 _downBoardStack = []

@@ -26,7 +26,7 @@ if (!_processed) then {
 		};
 	};
 	// smart wp
-	if (not _processed && _alt && not _shift && (bool_TZK_Ext_Cmd_Mode || not isCommander) && (count _units) == 0) then {
+	if (not _processed && _alt && not _shift && bool_TZK_Ext_Cmd_Mode && (count _units) == 0) then {
 		[_pos] exec localize {TZK_FUNC_PLAYER_WP_SET_SMART};
 		_processed = true;
 	};
@@ -50,7 +50,7 @@ if (!_processed) then {
 	};
 	// commander rts selection
 	// alt
-	if (not _processed && _alt && not _shift && not bool_TZK_Ext_Cmd_Mode && isCommander && (count _units) == 0) then {
+	if (not _processed && _alt && not _shift && not bool_TZK_Ext_Cmd_Mode && (count _units) == 0) then {
 		_pos call preprocessFile "Player\Rts\RtsMapCtrl.sqf";
 		_processed = true;
 	};
