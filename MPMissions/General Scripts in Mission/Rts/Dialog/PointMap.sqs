@@ -2,7 +2,7 @@
 _pos = _this
 @ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
-_dlg = createDialog "TzkCmdMapDlgArea"
+_dlg = createDialog "TzkCmdMapDlgPoint"
 mutexDlg = false
 
 @ not mutexRtsMouse
@@ -15,18 +15,17 @@ _idcLeftBtn0 = IDC + 16 * 2 + 0
 _idcDownBtn0 = IDC + 16 * 6 + 0
 ; init right-down corner buttons (switching to other rts dialogs)
 ; 0: rts, 1: area, 2: wpco, 4: point
-1 call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
+4 call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
 
 btnValue00 = 0; btnValue01 = 0; btnValue03 = 0
 
 { ctrlShow [_x, false] } forEach [_idcLeftBtn0]
+? isCommander || bIsAiSuperior: ctrlSetText [_idcLeftBtn0, "Wall MHQ"]; ctrlShow [_idcLeftBtn0, true]
 
 ; down board
 _downBoardStack = []
-call preprocessFile "Rts\Dialog\UpdateRtsAreaDownBoard.sqf"
+call preprocessFile "Rts\Dialog\UpdateRtsPointDownBoard.sqf"
 
-_idcSliderAzimut = 0; _idcValueAzimut = 0; _AzimutCache = 0
-true call preprocessFile "Rts\Dialog\InitSilider.sqf"
 TzkMapRtsFlashingDisabled = true
 
 # Update
@@ -48,16 +47,16 @@ TzkMapRtsFlashingDisabled = true
 	TzkMapRtsFlashingDisabled = false
 	[false, _id + 2] exec "Player\Rts\SetRtsMouse.sqs"; exit
 # LeftBtn
+	? 2^0 == _btnVal: 0 exec "Player\Msg\sWallMhq.sqs"; goto "Update"
 	goto "Update"
 # DownBtn
 	? count _downBoardStack > 0: goto "DownSubMenu"
-	? 2^3 == _btnVal: _downBoardStack set [0, 3]; call preprocessFile "Rts\Dialog\UpdateRtsAreaDownBoard.sqf"; goto "Update"
+	? 2^0 == _btnVal: _pos exec "Player\Msg\sDeployBaseMg.sqs"; goto "Update";
+	? 2^1 == _btnVal: _pos exec "Rts\SubMenu\BuildStruct.sqs"; closeDialog 0; goto "Quit"
+	? 2^2 == _btnVal: _pos exec "Rts\SubMenu\BuyWorker.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 	# DownSubMenu
 		; ASSERT(3 == _downBoardStack select 0 && 1 == count _downBoardStack)
-		? 2^0 == _btnVal: 0 exec "Rts\SubMenu\ArtArea.sqs"; closeDialog 0; goto "Quit"
-		? 2^1 == _btnVal: 1 exec "Rts\SubMenu\ArtArea.sqs"; closeDialog 0; goto "Quit"
-		? 2^8 == _btnVal: _downBoardStack resize 0; call preprocessFile "Rts\Dialog\UpdateRtsAreaDownBoard.sqf"; goto "Update"
 		~ 0.1
 		goto "Update"
 # RightDownBtn

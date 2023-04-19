@@ -1,6 +1,5 @@
 ; args: pos
 _pos = _this
-; _setTargetScript = "Player\Art\SetTarget.sqs"
 @ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
 _dlg = createDialog "TzkCmdMapDlgRts"
@@ -15,7 +14,7 @@ mutexDlg = false
 _idcLeftBtn0 = IDC + 16 * 2 + 0
 _idcDownBtn0 = IDC + 16 * 6 + 0
 ; init right-down corner buttons (switching to other rts dialogs)
-; 0: rts, 1: area, 2: wpco
+; 0: rts, 1: area, 2: wpco, 4: point
 0 call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
 
 ; init left-down corner buttons (select specific type of units)
@@ -56,8 +55,8 @@ ctrlSetText [_idcDownBtn0, "Disband"]
 # LeftBtn
 	? 2^0 == _btnVal: _pos exec "Player\Rts\sRtsMove.sqs"; closeDialog 0; goto "Quit"
 	? 2^1 == _btnVal: 0 exec "Player\Rts\sRtsClear.sqs"; closeDialog 0; goto "Quit"
-	? 2^2 == _btnVal: [_pos, false] exec "Rts\SubMenu\ShootArea.sqs"; closeDialog 0; goto "Quit"
-	? 2^3 == _btnVal: [_pos, true] exec "Rts\SubMenu\ShootArea.sqs"; closeDialog 0; goto "Quit"
+	? 2^2 == _btnVal: [_pos, false, true] exec "Rts\SubMenu\AreaArt.sqs"; closeDialog 0; goto "Quit"
+	? 2^3 == _btnVal: [_pos, true, true] exec "Rts\SubMenu\AreaArt.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 # DownBtn
 	? 2^0 == _btnVal: 0 exec "Player\Dialog\DisbandPreset.sqs"; closeDialog 0; goto "Quit"
@@ -68,6 +67,5 @@ ctrlSetText [_idcDownBtn0, "Disband"]
 	[_idcLeftDownBtn0, _level, _btnVal] call preprocessFile "Rts\Dialog\UpdateRtsDlgType.sqf"
 	goto "Update"
 # RightDownBtn
-	? 2^1 == _btnVal: _this exec "Rts\Dialog\AreaMap.sqs"; closeDialog 0; goto "Quit"
-	? 2^2 == _btnVal: _this exec "Rts\Dialog\Waypoints.sqs"; closeDialog 0; goto "Quit"
+	? _btnVal > 0: call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
 	goto "Update"
