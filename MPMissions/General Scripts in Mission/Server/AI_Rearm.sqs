@@ -18,7 +18,8 @@ _timeRearm = 5
 ? (_type in vDoubleRearmTime): _timeRearm = 30*2
 ? (_type in vTripleRearmTime): _timeRearm = 30*3
 ? (_type in vSixfoldRearmTime): _timeRearm = 30*6
-? (_type in vTenfoldRearmTime): _timeRearm = 30*10
+? _type == typesRocketLauncher select si0: _timeRearm = 144
+? _type == typesRocketLauncher select si1: _timeRearm = 300
 ? dev: _timeRearm = 5
 ? bool_TZK_MF_Mode && _timeRearm > 30: _timeRearm = 30
 
