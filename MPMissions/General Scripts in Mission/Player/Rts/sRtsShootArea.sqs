@@ -1,10 +1,15 @@
-; args: [art type[], use big angle type[], speed, art area index, [clicked pos: [x, y], move before shooting: boolean]]
-; hint format ["%1", _this]; exit
-_top = TzkSelUnitsStack select TzkSelStackIdx
-_c = count _top
+; args: [
+;	art type[], use big angle type[], speed, art area index, 
+;	[clicked pos: [x, y], move before shooting: boolean, server rts order: boolean, player group units: []]
+; ]
+
+_bSvrRtsOrder = _this select 4 select 2
+_units = (if _bSvrRtsOrder then {TzkSelUnitsStack select TzkSelStackIdx} else {_this select 4 select 3})
+_c = count _units
 ? _c == 0: goto "Quit"
 
-_posParam = if (_this select 4 select 1) then {[_this select 4 select 0, _top call preprocessFile "Player\Rts\CalcCentral.sqf"]} else {[]}
+_executor = (if _bSvrRtsOrder then {"Player\Rts\GenArrayCommand.sqs"} else {"Art\PlayerOrderDistributor.sqs"})
+_posParam = if (_this select 4 select 1) then {[_this select 4 select 0, _units call preprocessFile "Player\Rts\CalcCentral.sqf"]} else {[]}
 
 _speed = _this select 2, _idx = _this select 3
 _func = preprocessFile "Art\Verify.sqf"
@@ -13,40 +18,40 @@ _timeStamp = time; _timeStamp = _timeStamp - _timeStamp % 1
 ? not (_this select 0 select 0): goto "SkipSoldier"
 _selectedUnits = []; _biggerAngle = _this select 1 select 0
 _i = 0; _j = 0
-while {_i < _c} do {_u = _top select _i; if ([_u, "Soldier"] call _func) then {_selectedUnits set [_j, _u]; _j = _j + 1}; _i = _i + 1}
-[_selectedUnits, [_biggerAngle, _speed, _idx, "Soldier", _timeStamp, siPlayer, _posParam], "Server\Rts\hRtsShootArea.sqs"] exec "Player\Rts\GenArrayCommand.sqs"
+while {_i < _c} do {_u = _units select _i; if ([_u, "Soldier"] call _func) then {_selectedUnits set [_j, _u]; _j = _j + 1}; _i = _i + 1}
+[_selectedUnits, [_biggerAngle, _speed, _idx, "Soldier", _timeStamp, siPlayer, _posParam], "Server\Rts\hRtsShootArea.sqs"] exec _executor
 
 # SkipSoldier
 ; Struct
 ? not (_this select 0 select 1): goto "SkipStruct"
 _selectedUnits = []; _biggerAngle = _this select 1 select 1
 _i = 0; _j = 0
-while {_i < _c} do {_u = _top select _i; if ([_u, "Struct"] call _func) then {_selectedUnits set [_j, _u]; _j = _j + 1}; _i = _i + 1}
-[_selectedUnits, [_biggerAngle, _speed, _idx, "Struct", _timeStamp, siPlayer, _posParam], "Server\Rts\hRtsShootArea.sqs"] exec "Player\Rts\GenArrayCommand.sqs"
+while {_i < _c} do {_u = _units select _i; if ([_u, "Struct"] call _func) then {_selectedUnits set [_j, _u]; _j = _j + 1}; _i = _i + 1}
+[_selectedUnits, [_biggerAngle, _speed, _idx, "Struct", _timeStamp, siPlayer, _posParam], "Server\Rts\hRtsShootArea.sqs"] exec _executor
 
 # SkipStruct
 ; Howitzer
 ? not (_this select 0 select 2): goto "SkipHowitzer"
 _selectedUnits = []; _biggerAngle = _this select 1 select 2
 _i = 0; _j = 0
-while {_i < _c} do {_u = _top select _i; if ([_u, "Howitzer"] call _func) then {_selectedUnits set [_j, _u]; _j = _j + 1}; _i = _i + 1}
-[_selectedUnits, [_biggerAngle, _speed, _idx, "Howitzer", _timeStamp, siPlayer, _posParam], "Server\Rts\hRtsShootArea.sqs"] exec "Player\Rts\GenArrayCommand.sqs"
+while {_i < _c} do {_u = _units select _i; if ([_u, "Howitzer"] call _func) then {_selectedUnits set [_j, _u]; _j = _j + 1}; _i = _i + 1}
+[_selectedUnits, [_biggerAngle, _speed, _idx, "Howitzer", _timeStamp, siPlayer, _posParam], "Server\Rts\hRtsShootArea.sqs"] exec _executor
 
 # SkipHowitzer
 ; MLRS
 ? not (_this select 0 select 2): goto "SkipMLRS"
 _selectedUnits = []; _biggerAngle = _this select 1 select 2
 _i = 0; _j = 0
-while {_i < _c} do {_u = _top select _i; if ([_u, "MLRS"] call _func) then {_selectedUnits set [_j, _u]; _j = _j + 1}; _i = _i + 1}
-[_selectedUnits, [_biggerAngle, _speed, _idx, "MLRS", _timeStamp, siPlayer, _posParam], "Server\Rts\hRtsShootArea.sqs"] exec "Player\Rts\GenArrayCommand.sqs"
+while {_i < _c} do {_u = _units select _i; if ([_u, "MLRS"] call _func) then {_selectedUnits set [_j, _u]; _j = _j + 1}; _i = _i + 1}
+[_selectedUnits, [_biggerAngle, _speed, _idx, "MLRS", _timeStamp, siPlayer, _posParam], "Server\Rts\hRtsShootArea.sqs"] exec _executor
 
 # SkipMLRS
 ; Tank
 ? not (_this select 0 select 2): goto "SkipTank"
 _selectedUnits = []; _biggerAngle = false
 _i = 0; _j = 0
-while {_i < _c} do {_u = _top select _i; if ([_u, "Tank"] call _func) then {_selectedUnits set [_j, _u]; _j = _j + 1}; _i = _i + 1}
-[_selectedUnits, [_biggerAngle, _speed, _idx, "Tank", _timeStamp, siPlayer, _posParam], "Server\Rts\hRtsShootArea.sqs"] exec "Player\Rts\GenArrayCommand.sqs"
+while {_i < _c} do {_u = _units select _i; if ([_u, "Tank"] call _func) then {_selectedUnits set [_j, _u]; _j = _j + 1}; _i = _i + 1}
+[_selectedUnits, [_biggerAngle, _speed, _idx, "Tank", _timeStamp, siPlayer, _posParam], "Server\Rts\hRtsShootArea.sqs"] exec _executor
 
 # SkipTank
 

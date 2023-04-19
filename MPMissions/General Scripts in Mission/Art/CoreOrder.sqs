@@ -22,6 +22,14 @@ _needAvoidStruct = (_isVehicle && _type in typesHowitzer) || _isStruct
 	; TODO
 	; marked as RTS/concurrent order, etc
 
+	? _isServer: goto "OrderInited"
+	_uid = [_unit, _si, giPlayer] call funcCalcUID
+	? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
+	_id = (playerOrderID select _uid) + 1; [_uid, _id] exec "\TZK_Scripts_4_0_4\Player\Order\New.sqs"
+	? !(_unit in PlayerShootingUnits): PlayerShootingUnits set [_uid, _unit]
+
+# OrderInited
+
 ; Soldier initialization
 ? not _isInfantry: goto "SoldierInited"
 	_commandType = _unit call preprocessFile "Art\GetSoldierArtType.sqf"
@@ -31,12 +39,13 @@ _needAvoidStruct = (_isVehicle && _type in typesHowitzer) || _isStruct
 # SoldierInited
 
 ; Switch magazine
-	? _suggestedSpeed > 0 && not _bConcurrent: [vehicle _unit, _suggestedSpeed, _enum] exec "Server\Art\SwitchSpeed.sqs"
+	? _suggestedSpeed > 0 && not _bConcurrent: [vehicle _unit, _suggestedSpeed, _enum] exec "Art\SwitchSuggestedSpeed.sqs"
 	; ? -2 == _suggestedSpeed: [vehicle _unit, _enum, _idx, _si] exec "Server\Art\SwitchAuto.sqs"
 ; Shoot Area infomation
-	_suffix = if (si0 == _si) then {"W"} else {"E"};
-	_markerInfo = call format [{TzkArtSvrArea%1 select _idx}, _suffix];
-	_result = call format [{TzkArtSvrAreaAnal%1 select _idx}, _suffix];
+	_suffix = if (si0 == _si) then {"W"} else {"E"}
+	? not _isServer: _suffix = ""
+	_markerInfo = call format [{%2%1 select _idx}, _suffix, if _isServer then {"TzkArtSvrArea"} else {"TzkArtPplArea"}];
+	_result = call format [{%2%1 select _idx}, _suffix, if _isServer then {"TzkArtSvrAreaAnal"} else {"TzkArtPplAreaAnal"}];
 ; Rts infomation
 	; _abort = {[_unit, _si, false] exec "Server\Rts\hClear.sqs"}; _bClearRts = false
 ; Create local target object
@@ -46,7 +55,7 @@ _needAvoidStruct = (_isVehicle && _type in typesHowitzer) || _isStruct
 	? _isStruct: _type = (vehicle _unit) call funcGetStructTypeFromObject
 
 ; Init Art Variables
-	? localize {TZK_ART_406} != "true": [_si, "TZK_Art_4_0_6.pbo isn't detected. Art module inactivated."] exec "Server\Msg\sSvrMsg2Cmd.sqs", exit
+	? _isServer && localize {TZK_ART_406} != "true": [_si, "TZK_Art_4_0_6.pbo isn't detected. Art module inactivated."] exec "Server\Msg\sSvrMsg2Cmd.sqs", exit
 	_longRangeCoef = 1.5
 	; big angle will be invalid when ordering tanks.
 	? "Tank" == _enum: _biggerAngle = false; _longRangeCoef = 2
@@ -55,6 +64,7 @@ _needAvoidStruct = (_isVehicle && _type in typesHowitzer) || _isStruct
 	? _isInfantry: _quitCond = _quitCond + { or _vehicle != vehicle _unit}
 	? _isServer && _bConcurrent: _quitCond = _quitCond + { or not (_unit call temporaryCheck)}
 	? _isServer && not _bConcurrent: _quitCond = _quitCond + { or (not (_unit call rtsOrderCheck) || _rtsId != _rtsStatus select 1)}
+	? not _isServer: _quitCond = _quitCond + { or call orderCheck}
 	_msg = ""
 
 	_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Common\EH\Fired_Art_406.sqs"
@@ -62,15 +72,20 @@ _needAvoidStruct = (_isVehicle && _type in typesHowitzer) || _isStruct
 
 ; ======== Art order part ========
 ; Pre-move if ordered
+; 基于传入的 pre-move info, 产生预移动坐标. 散布半径为50. 散布半径即单位目的地与rts点击坐标之间所允许的最大距离
+_distributionRadius = (if _isInfantry then {20} else {50})
 # PreMove
 	_startPos = getPos _unit
 	? _isStruct: goto "CheckDistance"
-	? 0 == count _preMoveInfo: _preMoveInfo = [getPos _vehicle, getPos _vehicle], goto "CheckDistance"
-	_startPos = [_unit, _preMoveInfo select 0, _preMoveInfo select 1, 50] call preprocessFile "Util\RtsDestPos.sqf"
+	; 如果没有指定 pre-move info, 也即"就地炮击", 则设置一个小的散布半径, 如此一来, 第一次rearm完毕后有较大概率单位能回到原处 (除非补给单位贴着它, 这属于找死, 不予处理)
+	? 0 == count _preMoveInfo: _preMoveInfo = [getPos _vehicle, getPos _vehicle], _distributionRadius = (if _isInfantry then {4} else {10}), goto "CheckDistance"
+	_startPos = [_unit, _preMoveInfo select 0, _preMoveInfo select 1, _distributionRadius] call preprocessFile "Util\RtsDestPos.sqf"
 
 	_vehicle exec "Art\Undeploy.sqs"
 	_unit doMove _startPos; _unit setUnitPos "UP"
-	? ([getPos _unit, _startPos] call funcDistH) < 10: goto "CheckDistance"
+	_dist = ([getPos _unit, _startPos] call funcDistH); _dist = _dist - _dist % 1
+	? _dist < _distributionRadius: goto "CheckDistance"
+	_unit groupChat format ["Moving to ordered position, distance %1m.", _dist]
 	# LoopPreMove
 		_unit doMove _startPos
 		~ 5
@@ -130,9 +145,11 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	? not _ret: goto "EOF"
 # PreCalculate
 	? _unit distance _target > (if _isInfantry then {_range} else {_distLimit}): goto "CheckDistance"
+	? _unit distance _target < _distLimit && _unit distance _target > viewDistance: _unit groupChat "Target is far. Probably missing."
 
 	_ammoArray = _vehicle ammoArray _weapon; _equippedMag = ""; _ammoOld = 0;
 	_ret = call preprocessFile "Art\AreaPreAnalysis.sqf"
+	? not _ret && count _ammoArray == 0: _magazines = _vehicle call funcGetNotEmptyMags; goto "RearmAnalysis"
 	? not _ret: goto "EOF"
 	? not _isInfantry: _speed = call preprocessFile "Art\GetInitSpeed.sqf"
 
@@ -146,7 +163,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	? not _isInfantry && _suggestedSpeed > 0: _delay = (call format ["%1", _weapon GetWeaponParam "magazineReloadTime"]) + (call format ["%1", ((_vehicle ammoArray _weapon) select 0) GetWeaponParam "reloadTime"]) * 1.1 + 0.5
 # AttackCheck
 	; Generate target pos for AREA command
-	_posT = _markerInfo call preprocessFile "Server\Art\AreaRandomPos.sqf"
+	_posT = _markerInfo call preprocessFile "Art\AreaRandomPos.sqf"
 	? not _needAvoidStruct: goto "ObtainedTargetPos"
 		_try = 0
 		# GenAreaPos
@@ -172,6 +189,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	~ 0.1
 	_vehicle doTarget (if _biggerAngle then {_heliH} else {_target})
 
+	# RearmAnalysis
 	? _isInfantry: goto "RearmCheck4Soldier"
 		; rearm check for vehicle/structure
 		~ 0.1
@@ -293,8 +311,10 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 		? _mag != "": _speed = substr [_mag, sizeofstr(_mag) - sizeofstr("xxxx_xj400"), sizeofstr(_mag) - sizeofstr("_xj400")]; if !(substr [_speed, 0, 1] in ["0","1","2","3"]) then {_speed = -1} else {_speed = call _speed};
 		_delay = [0,3] select (_speed > 0)
 	# ExecRearm
-		[_unit, _si, _gi, _vehicle, _type, _sup] exec "Server\AI_Rearm.sqs"
-		[_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
+		? _isServer: [_unit, _si, _gi, _vehicle, _type, _sup] exec "Server\AI_Rearm.sqs"; [_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
+		? not _isServer: [_unit, _sup] exec "Player\Rearm.sqs"; doStop _unit
+		? not _isServer && not _isInfantry: _unit groupChat "Rearming. If I'm far away from you, probably I can't receive supplemented magazines. In this case, please use Unit Camera and look at me."
+
 	; _try = 0
 	# WaitRearmComplete
 		~ 5
@@ -307,6 +327,8 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	~ _delay + 1
 	? _speed <= 0: goto "PreMove"
 	_delay = 1; [_vehicle, _speed] exec localize {TZK_FUNC_SWITCH_MAG_PRESET}
+	? not _isServer && not _isInfantry: _unit groupChat "Switching magazine. Again, if I'm far away, use Unit Camera and look at me."
+
 	# WaitSwitchComplete
 		~ _delay
 		? call _quitCond: _msg = ""; goto "EOF"
@@ -317,10 +339,12 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 ; End Of File
 # EOF
 	? _bConcurrent: _unit call busyClear; _unit call temporaryClear
+	? not _isServer: PlayerShootingUnits set [_uid, objNull]
 
 	deleteVehicle _target
 	? _biggerAngle: deleteVehicle _heliH
 
-	? _msg != "": _msg = format ["[%1] ", _unit] + _msg, [_si, _msg] exec "Server\Msg\sSvrMsg2Cmd.sqs"
+	? _msg != "" && _isServer: _msg = format ["[%1] ", _unit] + _msg, [_si, _msg] exec "Server\Msg\sSvrMsg2Cmd.sqs"
+	? _msg != "" && not _isServer: _unit groupChat _msg
 	; ? _bClearRts: call _abort
 	exit

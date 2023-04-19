@@ -1,0 +1,8 @@
+; args: [units, pos, params: []]
+
+_unitsOnOrdering = _this select 0; _units = []; _i = 0
+{if (_x in units player) then {_units set [_i, _x], _i = _i + 1}} forEach _unitsOnOrdering
+_unitsOnOrdering = 0
+_pos = _this select 1
+
+[_pos, false, false, _units] exec "Rts\SubMenu\AreaArt.sqs"

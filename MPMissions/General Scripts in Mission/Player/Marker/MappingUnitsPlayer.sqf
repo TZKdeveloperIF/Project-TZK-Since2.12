@@ -17,7 +17,7 @@ _i = 0; _c = count (groupMatrix select siPlayer); while {_i < _c} do {
 	_m setMarkerType (if (alive _leader) then {"Dot"} else {"Marker"});
 
 	_bHighlight = false;
-	if not TzkMapBlockSelected then {
+	if not TzkMapRtsFlashingDisabled then {
 		if (-1 != _tzkSelUnitsTop find _leader) then {if TzkMapSelectedHighlight then {
 			_bHighlight = true
 		}};
@@ -61,7 +61,7 @@ while {_gi < _countGroups} do {
 				_unit = _units select _i;
 				_m setMarkerPos getPos _unit;
 				_bHighlight = false;
-				if not TzkMapBlockSelected then {
+				if not TzkMapRtsFlashingDisabled then {
 					if (-1 != _tzkSelUnitsTop find _unit) then {if TzkMapSelectedHighlight then {
 						_bHighlight = true;
 					}};

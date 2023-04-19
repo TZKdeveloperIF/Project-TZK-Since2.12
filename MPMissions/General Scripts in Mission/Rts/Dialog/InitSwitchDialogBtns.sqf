@@ -1,25 +1,50 @@
-private [{_idc}];
-_idc = IDC + 64 * 2 + 32 + 0;
+private [{_idcBtn}, {_idcBg}, {_enum}];
+_idcBtn = IDC + 16 * 10 + 0;
+_idcBg = IDC + 16 * 11 + 0;
 
-{ctrlShow [_idc + _x, false]} forEach [0,1,2,3,4,5,6,7,8];
+{ctrlShow [_idcBtn + _x, false]} forEach [0,1,2,3,4,5,6,7,8];
+{ctrlShow [_idcBg + _x, false]} forEach [0,1,2,3,4,5,6,7,8];
 
 // rts
-if (0 != _this) then {
+_enum = 0;
+ctrlSetText [_idcBtn + _enum, "RTS"];
+if (_enum != _this) then {
 	if (0 < count TzkSelectedUnits) then {
-		ctrlShow [_idc + 0, true];
-		ctrlSetText [_idc + 0, "RTS"];
+		ctrlShow [_idcBtn + _enum, true];
 	};
+} else {
+	ctrlShow [_idcBg + _enum, true];
+	ctrlShow [_idcBtn + _enum, true]; ctrlEnable [_idcBtn + _enum, false];
 };
 // area
-if (1 != _this) then {
+_enum = 1;
+ctrlSetText [_idcBtn + _enum, "AREA"];
+if (_enum != _this) then {
 	// area
-	if (isCommander || bIsAiSuperior) then {
-		ctrlShow [_idc + 1, true];
-		ctrlSetText [_idc + 1, "AREA"];
+	if (TzkMapAreaCreated) then {
+		ctrlShow [_idcBtn + _enum, true];
 	};
+} else {
+	ctrlShow [_idcBg + _enum, true];
+	ctrlShow [_idcBtn + _enum, true]; ctrlEnable [_idcBtn + _enum, false];
 };
 // wpco
-if (2 != _this) then {
-	ctrlShow [_idc + 2, true];
-	ctrlSetText [_idc + 2, "WP/CO"];
+_enum = 2;
+ctrlSetText [_idcBtn + _enum, "WP/CO"];
+if (_enum != _this) then {
+	ctrlShow [_idcBtn + _enum, true];
+} else {
+	ctrlShow [_idcBg + _enum, true];
+	ctrlShow [_idcBtn + _enum, true]; ctrlEnable [_idcBtn + _enum, false];
+};
+
+// point
+_enum = 4;
+ctrlSetText [_idcBtn + _enum, "POINT"];
+if (_enum != _this) then {
+	// always available
+	ctrlShow [_idcBtn + _enum, true];
+} else {
+	ctrlShow [_idcBg + _enum, true];
+	ctrlShow [_idcBtn + _enum, true]; ctrlEnable [_idcBtn + _enum, false];
 };
