@@ -33,7 +33,10 @@ ctrlSetText [_idcLeftBtn0, "Move"]
 ctrlSetText [_idcLeftBtn0 + 1, "Clear Rts Order"]
 ctrlSetText [_idcLeftBtn0 + 2, "Shoot Area"]
 ctrlSetText [_idcLeftBtn0 + 3, "Move & Shoot"]
+ctrlSetText [_idcLeftBtn0 + 4, "Board"]
+
 ctrlSetText [_idcDownBtn0, "Disband"]
+ctrlSetText [_idcDownBtn0 + 1, "Eject"]
 
 ; false call preprocessFile "Rts\Dialog\InitSilider.sqf"
 
@@ -57,9 +60,11 @@ ctrlSetText [_idcDownBtn0, "Disband"]
 	? 1 == _btnVal: 0 exec "Player\Rts\sRtsClear.sqs"; closeDialog 0; goto "Quit"
 	? 2 == _btnVal: [_pos, false, true] exec "Rts\SubMenu\AreaArt.sqs"; closeDialog 0; goto "Quit"
 	? 3 == _btnVal: [_pos, true, true] exec "Rts\SubMenu\AreaArt.sqs"; closeDialog 0; goto "Quit"
+	? 4 == _btnVal: _pos exec "Rts\SubMenu\BoardPreset.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 # DownBtn
 	? 2^0 == _btnVal: 0 exec "Player\Dialog\DisbandPreset.sqs"; closeDialog 0; goto "Quit"
+	? 2^1 == _btnVal: 0 exec "Player\Rts\sEject.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 # LeftDownBtn
 	if (2^8 == _btnVal) then {_level = _level - 1} else {_level = _level + 1}
