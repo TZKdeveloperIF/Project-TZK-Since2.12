@@ -13,6 +13,11 @@ _this = 0
 ; rts order stack design
 ; not realized yet
 
+_si = sides find (side _unit)
+? _si != si0 && _si != si1: exit
+
+_quitCond = {not alive _unit || not (_unit call rtsOrderCheck) || _rtsId != _rtsStatus select 1}
+
 _unit call preprocessFile "Server\SQF\RtsOrderSet.sqf"
 _unit call busyClear
 _unit call temporaryClear
@@ -25,6 +30,9 @@ _bCheckDropBomb = true
 # Update
 	_vehicle = vehicle _unit
 	? _unit != driver _vehicle: goto "Sleep"
+
+	_gi = (groupMatrix select _si) find group _unit
+	? -1 == _gi: exit
 
 	; check support
 	? _time > _timeCheckSupport: _timeCheckSupport = _time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _cycle = 20; goto "Sleep"
@@ -51,9 +59,8 @@ _loop = (_time-_timeStart) / _cycle; _loop = 1 + _loop - _loop % 1
 _timeUp = _loop * _cycle + _timeStart
 	# innerSleep
 	~ (if (_timeUp - _time > 5) then {_timeUp - _time + 1} else {5})
-	? not (_unit call rtsOrderCheck) || _id != _rtsStatus select 1: goto "Quit"
+	? call _quitCond: goto "Quit"
 	? _time < _timeUp: goto "innerSleep"
-	? not alive _unit: goto "Quit"
 	? _unit call busyCheck: goto "Sleep"
 	goto "Update"
 # Quit
