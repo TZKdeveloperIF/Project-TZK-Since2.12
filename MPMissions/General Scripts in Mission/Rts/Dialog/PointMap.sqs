@@ -17,7 +17,7 @@ _idcDownBtn0 = IDC + 16 * 6 + 0
 ; 0: rts, 1: area, 2: wpco, 4: point
 4 call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
 
-btnValue00 = 0; btnValue01 = 0; btnValue03 = 0
+btnValue00 = -1; btnValue01 = 0; btnValue03 = 0
 
 { ctrlShow [_x, false] } forEach [_idcLeftBtn0]
 ? isCommander || bIsAiSuperior: ctrlSetText [_idcLeftBtn0, "Wall MHQ"]; ctrlShow [_idcLeftBtn0, true]
@@ -36,7 +36,7 @@ TzkMapRtsFlashingDisabled = true
 	TzkMapSelectEmptyTime = time
 	call preprocessFile "Player\Rts\HandleDialogAzimut.sqf"
 
-	? btnValue00 > 0: _btnVal = btnValue00; btnValue00 = 0; goto "LeftBtn"
+	? btnValue00 >= 0: _btnVal = btnValue00; btnValue00 = -1; goto "LeftBtn"
 	? btnValue01 > 0: _btnVal = btnValue01; btnValue01 = 0; goto "DownBtn"
 	? btnValue03 > 0: _btnVal = btnValue03; btnValue03 = 0; goto "RightDownBtn"
 
@@ -47,7 +47,7 @@ TzkMapRtsFlashingDisabled = true
 	TzkMapRtsFlashingDisabled = false
 	[false, _id + 2] exec "Player\Rts\SetRtsMouse.sqs"; exit
 # LeftBtn
-	? 2^0 == _btnVal: 0 exec "Player\Msg\sWallMhq.sqs"; goto "Update"
+	? 0 == _btnVal: 0 exec "Player\Msg\sWallMhq.sqs"; goto "Update"
 	goto "Update"
 # DownBtn
 	? count _downBoardStack > 0: goto "DownSubMenu"

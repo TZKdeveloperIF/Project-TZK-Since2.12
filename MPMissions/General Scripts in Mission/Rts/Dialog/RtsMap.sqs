@@ -26,7 +26,7 @@ _level call preprocessFile "Player\Rts\RemoveDeadSelectedUnit.sqf"
 if (1 == _level) then {_btnVal = TzkSelLv1Btn}; if (2 == _level) then {_btnVal = TzkSelLv2Btn}
 [_idcLeftDownBtn0, _level, _btnVal] call preprocessFile "Rts\Dialog\UpdateRtsDlgType.sqf"
 
-btnValue00 = 0; btnValue01 = 0; btnValue02 = 0; btnValue03 = 0
+btnValue00 = -1; btnValue01 = 0; btnValue02 = 0; btnValue03 = 0
 
 ; { ctrlShow [_x, false] } forEach []
 ctrlSetText [_idcLeftBtn0, "Move"]
@@ -42,7 +42,7 @@ ctrlSetText [_idcDownBtn0, "Disband"]
 	? call dlgUpdated: goto "Quit"
 	? not alive player: closeDialog 0; goto "Quit"
 
-	? btnValue00 > 0: _btnVal = btnValue00; btnValue00 = 0; goto "LeftBtn"
+	? btnValue00 >= 0: _btnVal = btnValue00; btnValue00 = -1; goto "LeftBtn"
 	? btnValue01 > 0: _btnVal = btnValue01; btnValue01 = 0; goto "DownBtn"
 	? btnValue02 > 0: _btnVal = btnValue02; btnValue02 = 0; goto "LeftDownBtn"
 	? btnValue03 > 0: _btnVal = btnValue03; btnValue03 = 0; goto "RightDownBtn"
@@ -53,10 +53,10 @@ ctrlSetText [_idcDownBtn0, "Disband"]
 # Quit
 	[false, _id + 2] exec "Player\Rts\SetRtsMouse.sqs"; exit
 # LeftBtn
-	? 2^0 == _btnVal: _pos exec "Player\Rts\sRtsMove.sqs"; closeDialog 0; goto "Quit"
-	? 2^1 == _btnVal: 0 exec "Player\Rts\sRtsClear.sqs"; closeDialog 0; goto "Quit"
-	? 2^2 == _btnVal: [_pos, false, true] exec "Rts\SubMenu\AreaArt.sqs"; closeDialog 0; goto "Quit"
-	? 2^3 == _btnVal: [_pos, true, true] exec "Rts\SubMenu\AreaArt.sqs"; closeDialog 0; goto "Quit"
+	? 0 == _btnVal: _pos exec "Player\Rts\sRtsMove.sqs"; closeDialog 0; goto "Quit"
+	? 1 == _btnVal: 0 exec "Player\Rts\sRtsClear.sqs"; closeDialog 0; goto "Quit"
+	? 2 == _btnVal: [_pos, false, true] exec "Rts\SubMenu\AreaArt.sqs"; closeDialog 0; goto "Quit"
+	? 3 == _btnVal: [_pos, true, true] exec "Rts\SubMenu\AreaArt.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 # DownBtn
 	? 2^0 == _btnVal: 0 exec "Player\Dialog\DisbandPreset.sqs"; closeDialog 0; goto "Quit"
