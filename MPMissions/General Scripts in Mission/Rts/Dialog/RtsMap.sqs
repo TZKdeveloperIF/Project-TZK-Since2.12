@@ -28,15 +28,17 @@ if (1 == _level) then {_btnVal = TzkSelLv1Btn}; if (2 == _level) then {_btnVal =
 
 btnValue00 = -1; btnValue01 = 0; btnValue02 = 0; btnValue03 = 0
 
+; left board
 ; { ctrlShow [_x, false] } forEach []
 ctrlSetText [_idcLeftBtn0, "Move"]
 ctrlSetText [_idcLeftBtn0 + 1, "Clear Rts Order"]
 ctrlSetText [_idcLeftBtn0 + 2, "Shoot Area"]
-ctrlSetText [_idcLeftBtn0 + 3, "Move & Shoot"]
+ctrlSetText [_idcLeftBtn0 + 3, "Move and Shoot"]
 ctrlSetText [_idcLeftBtn0 + 4, "Board"]
 
-ctrlSetText [_idcDownBtn0, "Disband"]
-ctrlSetText [_idcDownBtn0 + 1, "Eject"]
+; down board
+_downBoardStack = []
+call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 
 ; false call preprocessFile "Rts\Dialog\InitSilider.sqf"
 
@@ -63,9 +65,22 @@ ctrlSetText [_idcDownBtn0 + 1, "Eject"]
 	? 4 == _btnVal: _pos exec "Rts\SubMenu\BoardPreset.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 # DownBtn
+	? count _downBoardStack > 0: goto "DownSubMenu"
+
 	? 2^0 == _btnVal: 0 exec "Player\Dialog\DisbandPreset.sqs"; closeDialog 0; goto "Quit"
 	? 2^1 == _btnVal: 0 exec "Player\Rts\sEject.sqs"; closeDialog 0; goto "Quit"
+	? 2^6 == _btnVal: _downBoardStack set [0, 6]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
 	goto "Update"
+	# DownSubMenu
+		_return = false
+		; ASSERT(6 == _downBoardStack select 0 && 1 == count _downBoardStack)
+		? 2^0 == _btnVal: true exec "Player\Rts\sTransportTurn.sqs"; _return = true
+		? 2^1 == _btnVal: false exec "Player\Rts\sTransportTurn.sqs"; _return = true
+		? 2^8 == _btnVal: _return = true
+
+		? _return: _downBoardStack resize 0; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
+		~ 0.1
+		goto "Update"
 # LeftDownBtn
 	if (2^8 == _btnVal) then {_level = _level - 1} else {_level = _level + 1}
 	_level call preprocessFile "Player\Rts\RemoveDeadSelectedUnit.sqf"
