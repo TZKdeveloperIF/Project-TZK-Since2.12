@@ -52,9 +52,6 @@ pvFuelVehicle = objNull;
 pvObjectRepaired = -1;
 pvObjectRepaired_Object = objNull;
 
-mutexTransportTurnOn = false; pvTransportTurnOn = objNull;
-mutexTransportTurnOff = false; pvTransportTurnOff = objNull;
-
 mutexInitTownGroupVehicles = false;
 mutexTextMsg = false;
 
