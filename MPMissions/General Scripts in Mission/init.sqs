@@ -18,6 +18,8 @@ _nil = "scalar bool array string 0xfcffffef"
 ? UsedVersion >= 2010: bool_TZK_199_Mode = false
 
 call loadFile "\TZK_Scripts_4_0_6\init_constants.sqf"
+; 4.0.6.29
+mutexTranspVehArr = false;
 ; 4.0.6.17
 TzkArtSpeeds = [22, 60, 70, 80, 120, 180, 300, 400, 500, 800, 900, 1200, 1400, 1500]
 ; there's a bug of 4.0.6 in \TZK_Scripts_4_0_6\Common\Msg\sMHQKilled.sqs”
@@ -68,8 +70,6 @@ call loadFile "\TZK_Scripts_4_0_6\Common\InitAIOptions.sqf"
 
 
 [] exec "\TZK_Scripts_4_0_4\Common\MsgFuelVehicle.sqs"
-[] exec "\TZK_Scripts_4_0_4\Common\MsgTransportTurnOn.sqs"
-[] exec "\TZK_Scripts_4_0_4\Common\MsgTransportTurnOff.sqs"
 
 { ["Common\Msg\hUnitBuilt.sqs"] exec format ["\TZK_Scripts_4_0_5\Common\Msg\mUnitBuilt_%1.sqs", _x] } forEach [0,1,2,3,4]
 

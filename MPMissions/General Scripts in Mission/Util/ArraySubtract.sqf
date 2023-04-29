@@ -9,6 +9,7 @@ _rhs = _this select 1;
 _this = 0;
 
 if (count _lhs > 0 && count _rhs > 0) then {
+	private [{_i}, {_j}, {_c}, {_elem}];
 	_i = 0, _j = 0; _c = count _lhs; while {_i < _c} do {
 		_elem = _lhs select _i;
 		if !(_elem in _rhs) then {
