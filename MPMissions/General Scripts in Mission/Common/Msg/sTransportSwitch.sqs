@@ -1,0 +1,4 @@
+; args: [vehicle, state]
+
+[[_this select 0], _this select 1] exec "Common\TransportSwitch.sqs"
+publicExec format [{[[UnitByID %1], %2] exec "Common\TransportSwitch.sqs"}, NetworkID (_this select 0), _this select 1]

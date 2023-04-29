@@ -1,0 +1,16 @@
+? not isServer: exit
+
+; args: [NetworkID[], state]
+_netIds = _this select 0; _state = _this select 1; _this = 0
+_c = count _netIds
+? 0 == _c: exit
+
+_array = []
+_i = 0
+# loop
+	_array set [_i, vehicle UnitById(_netIds select _i)]
+
+	_i = _i + 1
+	? _i < _c: goto "loop"
+
+[_array, _state] exec "Common\TransportSwitch.sqs"

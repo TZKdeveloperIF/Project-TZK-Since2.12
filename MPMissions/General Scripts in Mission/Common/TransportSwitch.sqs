@@ -1,0 +1,19 @@
+; args: [vehicles[], state: boolean]
+_array = _this select 0, _state = _this select 1
+_this = 0
+
+? not _state: goto "TurnOff"
+
+; TurnOn
+	@ not mutexTranspVehArr
+		mutexTranspVehArr = true
+		[TransportActivatedVehicles, _array] call preprocessFile "Util\ArrayAppend.sqf"
+		mutexTranspVehArr = false
+	exit
+
+# TurnOff
+	_array set [count _array, objNull]
+	@ not mutexTranspVehArr
+		mutexTranspVehArr = true
+		[TransportActivatedVehicles, _array] call preprocessFile "Util\ArraySubtract.sqf"
+		mutexTranspVehArr = false
