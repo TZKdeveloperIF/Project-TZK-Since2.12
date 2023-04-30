@@ -42,10 +42,10 @@ _ok = createDialog "SatCamDialog"
 mutexDlg = false
 
 ? 2 == upgMatrix select siPlayer select upgSatCamZoom: goto "zoom"
-	sliderSetRange [IDC_SL_DISTANCE, 650, 650]
+	sliderSetRange [IDC_SL_DISTANCE, 100, viewDistance/2]
 	goto "skip"
 # zoom
-	sliderSetRange [IDC_SL_DISTANCE, 300, 800]
+	sliderSetRange [IDC_SL_DISTANCE, 25, viewDistance/2]
 # skip
 
 sliderSetSpeed [IDC_SL_DISTANCE, 100, 100]
