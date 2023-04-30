@@ -74,6 +74,8 @@ _unitsStarted = units _group
 #WaitUntilAlive
 	@(alive leader _group)
 	_unit = leader _group
+	_unit call preprocessFile "Server\SQF\RtsOrderClear.sqf"
+
 	[_unit, _si, 200] exec localize {TZK_EVENT_ADD_KILLED_INF}
 	[_unit, _si, _gi] exec "Server\EventAdd_Infantry.sqs"
 	[_unit, _si, kaUnit, -1] exec localize {TZK_SERVER_KNOWSABOUT_START}
