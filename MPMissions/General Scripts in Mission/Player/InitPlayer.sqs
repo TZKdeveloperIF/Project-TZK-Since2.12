@@ -67,10 +67,9 @@ indexWayPointSelected = [-1, -1, -1, -1], timeLastWaypointSet = 0
 bool_TZK_CHN_inited = false
 ; 4.0.5.28
 Array_TZK_PlayerC4 = []
-; 4.0.5.33
-Array_TZK_ScoreTankPos = [-200 - 300 * siPlayer - 100 * giPlayer, -200 - 300 * siPlayer - 100 * giPlayer, 10]
-Object_TZK_ScoreTank = "BMPResScoreConfuser_xj400" createVehicle Array_TZK_ScoreTankPos
-removeAllWeapons Object_TZK_ScoreTank; Object_TZK_ScoreTank setFuel 0
+; Since 4.0.5.33. Confuser
+false exec "Common\Init\Confuser.sqs"
+
 ; 4.0.6.05
 call preprocessFile "Player\Art\Init.sqf"
 ; 4.0.6.13

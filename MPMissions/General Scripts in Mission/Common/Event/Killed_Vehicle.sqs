@@ -1,12 +1,14 @@
-; args: [vehicle, ...]
+; args: [vehicle, killer, si]
+_vehicle = _this select 0, _killer = _this select 1, _si = _this select 2
+_this exec "Common\Event\Killed_Confuser.sqs"
+_this = 0
 
-_vehicle = _this select 0
+@ ((getPos _vehicle) select 2) < 5
 
-@( ((getPos _vehicle) select 2) < 5 )
-
-? "Air" countType [_vehicle] > 0: pvKilledAircraft = _vehicle; publicVariable "pvKilledAircraft"
-? "Ship" countType [_vehicle] > 0: pvKilledBoat = _vehicle; publicVariable "pvKilledBoat"
-? "Tank" countType [_vehicle] > 0: [_vehicle] exec "\TZK_Scripts_4_0_4\Common\Msg\sKilledTank.sqs", _vehicle setDammage 1
+_arr = [_vehicle]
+? "Air" countType _arr > 0: pvKilledAircraft = _vehicle; publicVariable "pvKilledAircraft"
+? "Ship" countType _arr > 0: pvKilledBoat = _vehicle; publicVariable "pvKilledBoat"
+? "Tank" countType _arr > 0: _arr exec "\TZK_Scripts_4_0_4\Common\Msg\sKilledTank.sqs", _vehicle setDammage 1
 ; Use set damage 1 to blacken tank simulation.
 
 ? _vehicle in ( mhq + (MCV select si0) + (MCV select si1) ) : exit
