@@ -36,16 +36,19 @@ _bNewTarget = false
 
 _colorDead = [0.5,0.5,0.5, 0.6]
 
+_gapGeneratorBlocks = []
+call preprocessFile "Player\Dialog\SatCamPreprocess.sqf"
+
 @!mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
 _ok = createDialog "SatCamDialog"
 mutexDlg = false
 
 ? 2 == upgMatrix select siPlayer select upgSatCamZoom: goto "zoom"
-	sliderSetRange [IDC_SL_DISTANCE, 100, viewDistance/2]
+	sliderSetRange [IDC_SL_DISTANCE, 120, viewDistance/2]
 	goto "skip"
 # zoom
-	sliderSetRange [IDC_SL_DISTANCE, 25, viewDistance/2]
+	sliderSetRange [IDC_SL_DISTANCE, 120, viewDistance/2]
 # skip
 
 sliderSetSpeed [IDC_SL_DISTANCE, 100, 100]
@@ -56,8 +59,8 @@ goto "UpdateDialog"
 #UpdateCam
   ~0.01
 
-	? call dlgUpdated: forceMap false; bShowMap = false; goto "Exit"
-	? (pvGameOver != -1): forceMap false; goto "Exit"
+	? call dlgUpdated: forceMap false; bShowMap = false; goto "Quit"
+	? (pvGameOver != -1): forceMap false; goto "Quit"
 	
 	? (!_bNewLeader): goto "NoLeaderChange"
 		_group = (groupMatrix select siPlayer) select _selLeaderID
@@ -87,7 +90,7 @@ goto "UpdateDialog"
 
 #UpdateDialog
 
-	? count ([siPlayer, stSatRec] call funcGetWorkingStructures) == 0 : goto "Exit"
+	? count ([siPlayer, stSatRec] call funcGetWorkingStructures) == 0 : goto "Quit"
 
 	ctrlSetText [IDC_TEXT_TRACKING, [(format["%1", _unitTracked]) call funcStringWithoutVersion, "No Target"] select (isNull _unitTracked) ]
 
@@ -161,23 +164,11 @@ goto "UpdateDialog"
 	goto "UpdateCam"
 	
 #Unit
-  satcamUnit = _unitTracked
-  satcamAlt = _alt
-  satcamPos = _posTarget
-	closeDialog 0
-	deleteVehicle _tracker
-	_cam cameraEffect["terminate","back"]
-	camDestroy _cam
+	call preprocessFile "Player\Dialog\SatCamExit.sqf"
 	forceMap false; bShowMap = false
 	~0.1
 	[ [_unitTracked, unitcamUnit] select (isNull _unitTracked) ] exec localize {TZK_DIALOG_UNIT_CAM}
 	exit
 
-#Exit
-  satcamUnit = _unitTracked
-  satcamAlt = _alt
-  satcamPos = _posTarget
-	closeDialog 0
-	deleteVehicle _tracker
-	_cam cameraEffect["terminate","back"]
-	camDestroy _cam
+# Quit
+	call preprocessFile "Player\Dialog\SatCamExit.sqf"
