@@ -1,0 +1,82 @@
+; args: [vehicle, killer, si]
+_vehicle = _this select 0, _killer = _this select 1, _si = _this select 2
+
+; player check
+	_siKiller = -1
+	_grpKiller = group _killer
+	_giKiller = (groupMatrix select si0) find _grpKiller
+	? -1 != _giKiller: _siKiller = si0
+	? -1 == _siKiller: _giKiller = (groupMatrix select si1) find _grpKiller
+	? -1 == _siKiller && -1 != _giKiller: _siKiller = si1
+	? _siKiller != si0 && _siKiller != si1: exit
+
+	? not alive _killer: exit
+	_bIsManKiller = "Man" countType [_killer] > 0
+	? _bIsManKiller && _killer != leader _grpKiller: exit
+	? not _bIsManKiller && not ((leader _grpKiller) in _killer): exit
+	? -1 != (groupAiMatrix select _siKiller) find _grpKiller: exit
+
+	? _si == _siKiller: exit
+
+; reassign killer. Killed-EH pass killer VEHICLE but this script requires the leader
+	_killer = leader _grpKiller
+
+; create local shell and object to confuse the score
+; 本地创造子弹和载具, 产生计分混淆数据
+	_arr = [_vehicle]
+	? "Man" countType [_vehicle] > 0: goto "ManKilled"
+	_typeVal = call format ["%1", (typeOf _vehicle) GetVehicleParam "type"]
+	? 1 == _typeVal: goto "ArmorKilled"
+	? 2 == _typeVal: goto "AirKilled"
+
+; SoftKilled
+	goto "Quit"
+
+# ManKilled
+	@ not mutexProcessConfuser
+		mutexProcessConfuser = true
+
+		~ 0.2
+		_confuser = call format ["ConfuserMan%1", _siKiller]
+		_pos = call format ["ConfuserPos%1", _siKiller]
+
+		_confuser setPosASL _pos
+		_confuser setVelocity [0,0,0]
+		_confuser setDir 0
+		_confuser setDamage 0
+
+		_rocket = createShell ["GrenadeHand", _pos, [0, 0, -10], _killer, objNull]
+		_rocket setPosASL [_pos select 0, _pos select 1, (_pos select 2) + 3]
+		_confuser setVelocity [0, 0, -20]
+
+		_curTime = _time
+		# killManLoop
+			~ 0.2
+			? alive _confuser && _time < _curTime + 2: goto "killManLoop"
+
+		mutexProcessConfuser = false
+	goto "Quit"
+
+# ArmorKilled
+	@ not mutexProcessConfuser
+		mutexProcessConfuser = true
+
+		~ 0.2
+		_confuser = call format ["ConfuserArmor%1", _siKiller]
+		_pos = call format ["ConfuserPos%1", _siKiller]
+
+		_confuser setPos _pos
+		_confuser setVelocity [0,0,0]
+		_confuser setDir 0
+		_confuser setDamage 0
+		_rocket = createShell ["heat120", _pos, [0, 0, -10], _killer, objNull]
+
+		mutexProcessConfuser = false
+	goto "Quit"
+
+# AirKilled
+	goto "Quit"
+
+# Quit
+	; [_siKiller, format ["%1, %2", score _killer, rating _killer]] exec "Server\Msg\sSvrMsg2Cmd.sqs"
+	exit

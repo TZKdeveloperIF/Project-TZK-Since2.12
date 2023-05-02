@@ -1,0 +1,24 @@
+; args: called by init server: boolean
+
+; inited once
+_isDedicatedServer = isServer && isNull player
+? not _isDedicatedServer && _this: exit
+
+mutexProcessConfuser = false
+
+? _isDedicatedServer: ConfuserPos0 = [-200 - 300 * -1 - 100 * -1, -200 - 300 * -1 - 100 * -1, 10]
+? not _isDedicatedServer: ConfuserPos0 = [-200 - 300 * siPlayer - 100 * giPlayer, -200 - 300 * siPlayer - 100 * giPlayer, 10]
+
+ConfuserPos1 = [ConfuserPos0 select 0, -20 + (ConfuserPos0 select 1), ConfuserPos0 select 2]
+
+; Use team kill to reduce the score
+ConfuserArmor0 = "M113ScoreConfuser_xj400" createVehicle ConfuserPos0
+ConfuserArmor1 = "BMPScoreConfuser_xj400" createVehicle ConfuserPos1
+removeAllWeapons ConfuserArmor0; ConfuserArmor0 setFuel 0
+removeAllWeapons ConfuserArmor1; ConfuserArmor1 setFuel 0
+
+; "SoldierWScoreConfuser_xj400" createUnit [ConfuserPos0, groupTemp0, {ConfuserMan0 = this}, 1, "PRIVATE"];
+ConfuserMan0 = "SoldierWScoreConfuser_xj400" createVehicle ConfuserPos0
+; "SoldierWScoreConfuser_xj400" createUnit [ConfuserPos1, groupTemp1, {ConfuserMan1 = this}, 1, "PRIVATE"];
+ConfuserMan1 = "SoldierEScoreConfuser_xj400" createVehicle ConfuserPos1
+removeAllWeapons ConfuserMan0; removeAllWeapons ConfuserMan1
