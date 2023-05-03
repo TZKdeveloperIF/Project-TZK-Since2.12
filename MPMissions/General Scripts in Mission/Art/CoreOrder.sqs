@@ -16,7 +16,6 @@ _bConcurrent = _this select 10
 ? count (_this select 11) > 0: _rtsStatus = _this select 11 select 0; _rtsId = _this select 11 select 1
 _this = 0
 _isInfantry = not _isVehicle && not _isStruct
-_needAvoidStruct = (_isVehicle && _type in typesHowitzer) || _isStruct
 
 ; Order initialization
 	; TODO
@@ -69,6 +68,8 @@ _needAvoidStruct = (_isVehicle && _type in typesHowitzer) || _isStruct
 
 	_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Common\EH\Fired_Art_406.sqs"
 	? _biggerAngle: _heliH = typeOf _target camCreate [0,0,0]
+
+	_needAvoidStruct = (_isVehicle && _type in typesHowitzer) || _isStruct
 
 ; ======== Art order part ========
 ; Pre-move if ordered
