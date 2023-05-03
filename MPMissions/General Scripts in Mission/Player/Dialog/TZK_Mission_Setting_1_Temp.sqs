@@ -27,7 +27,7 @@ ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bo
 	_idc = IDC + 100 + 100*_i; _last = _lastMissionSettings select _i; _booleans = _booleMatrix select _i
 	_j = 0; _Line = 12
 		#LoopLine
-		? lbCurSel (_idc + _j) != (_last select _j) && lbCurSel (_idc + _j) >= 0: call ((_booleans select _j) + format ["= %1", [false, true] select lbCurSel (_idc + _j)]); _last set [_j, lbCurSel (_idc + _j)]
+		? lbCurSel (_idc + _j) != (_last select _j) && lbCurSel (_idc + _j) >= 0: call ((_booleans select _j) + format ["= %1", [false, true] select lbCurSel (_idc + _j)]); _last set [_j, lbCurSel (_idc + _j)], [1, _i, _j, [false, true] select lbCurSel (_idc + _j)] call preprocessFile "Player\OnMissionSettingModified.sqf"
 		_j = _j + 1
 		? _j < _Line : goto "LoopLine"
 	_i = _i + 1
