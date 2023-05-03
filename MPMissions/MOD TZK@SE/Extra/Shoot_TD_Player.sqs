@@ -83,7 +83,7 @@ _posOrdered = getPos _vehicle; _distLimit = viewDistance; _hint = "Target is out
 		? _KA < 3.5: if !_targetSpotted Then {_vehicle groupChat format ["Can not fire, the target is not spotted. Current knowsAbout: %1, friendly groups' biggest knowsAbout: %2, desired knowsAbout: 3.5.", _localKA, _remoteKA]} Else {_vehicle groupChat format ["Firing ceased, the target is lost. Current knowsAbout: %1, friendly groups' biggest knowsAbout: %2, desired knowsAbout: 3.5.", _localKA, _remoteKA], _targetSpotted = false}, goto "AttackCheck"
 		_targetSpotted = true
 		
-		? count _ammoArray > 0: if (_ammoArray select 1 == 1) Then {_reloadMagazine = true}; if (_ammoArray select 1 > 0) Then {if ((_ammoArray select 1 != _ammunition) || (_ammoArray select 1 == 1)) Then {_ammunition = _ammoArray select 1; if bool_TZK_Art_RK4 Then {_ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev], _vehicle addEventHandler [ "Fired", format [{[_this, %1, %2] exec "%3"}, getPosASL _actualTarget, _ehRev, _script] ]}, _vehicle fire _weapon}} else {_unit groupChat "Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."; goto "Exit"}
+		? count _ammoArray > 0: if (_ammoArray select 1 == 1) Then {_reloadMagazine = true}; if (_ammoArray select 1 > 0) Then {if ((_ammoArray select 1 != _ammunition) || (_ammoArray select 1 == 1)) Then {_ammunition = _ammoArray select 1; _vehicle fire _weapon}} else {_unit groupChat "Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."; goto "Exit"}
 		? count _ammoArray == 0: _unit groupChat "Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."; goto "Exit"
 		
 		~0.1

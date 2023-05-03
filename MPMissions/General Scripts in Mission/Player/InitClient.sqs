@@ -37,4 +37,8 @@ call preprocessFile "Player\Marker\PreDefineMarkers.sqf"
 ; need delay to wait until bNumberedAI readed
 [{bNumberedAI call preprocessFile "Player\Marker\SwitchNumberAi.sqf"}, 1] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
 
+; Send bool_TZK_Hide_Score status
+; todo: this should better be called by "LoadSettings.sqs"
+[{bool_TZK_Hide_Score exec "Network\sModifyScoreConfuserState.sqs"}, 10 + giPlayer * 2] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
+
 ; EOF
