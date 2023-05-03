@@ -14,8 +14,6 @@ _this = 0; _param = 0
 ; rts order stack design
 ; not realized yet
 
-_unit call preprocessFile "Server\SQF\RtsOrderSet.sqf"
-_unit call busyClear
-_unit call temporaryClear
+_unit call preprocessFile "Server\AI\RtsOrderBegin.sqf"
 
 [_unit, _si, _idx, _biggerAngle, _enum, _posParam, _suggestedSpeed, true, false, false, false, [_rtsStatus, _id]] exec "Art\CoreOrder.sqs"
