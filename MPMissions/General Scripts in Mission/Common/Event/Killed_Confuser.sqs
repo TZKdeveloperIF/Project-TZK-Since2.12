@@ -20,6 +20,8 @@ _vehicle = _this select 0, _killer = _this select 1, _si = _this select 2
 
 ; reassign killer. Killed-EH pass killer VEHICLE but this script requires the leader
 	_killer = leader _grpKiller
+; white list design
+	? not (name _killer in confuseWhiteList): exit
 
 ; create local shell and object to confuse the score
 ; 本地创造子弹和载具, 产生计分混淆数据
