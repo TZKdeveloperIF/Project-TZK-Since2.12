@@ -35,6 +35,7 @@ ctrlSetText [_idcLeftBtn0 + 1, "Clear Rts Order"]
 ctrlSetText [_idcLeftBtn0 + 2, "Shoot Area"]
 ctrlSetText [_idcLeftBtn0 + 3, "Move and Shoot"]
 ctrlSetText [_idcLeftBtn0 + 4, "Board"]
+ctrlSetText [_idcLeftBtn0 + 5, "Occupy"]
 
 ; down board
 _downBoardStack = []
@@ -63,6 +64,7 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 	? 2 == _btnVal: [_pos, false, true] exec "Rts\SubMenu\AreaArt.sqs"; closeDialog 0; goto "Quit"
 	? 3 == _btnVal: [_pos, true, true] exec "Rts\SubMenu\AreaArt.sqs"; closeDialog 0; goto "Quit"
 	? 4 == _btnVal: _pos exec "Rts\SubMenu\BoardPreset.sqs"; closeDialog 0; goto "Quit"
+	? 5 == _btnVal: _pos exec "Rts\SubMenu\OccupyPreset.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 # DownBtn
 	? count _downBoardStack > 0: goto "DownSubMenu"
