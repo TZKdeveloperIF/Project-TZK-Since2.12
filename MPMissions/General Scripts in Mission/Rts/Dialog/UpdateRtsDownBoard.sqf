@@ -8,10 +8,11 @@ _processed = false;
 if (not _processed && 0 == count _downBoardStack) then {
 	ctrlSetText [_idcDownBtn0, "Disband"];
 	ctrlSetText [_idcDownBtn0 + 1, "Eject"];
+	ctrlSetText [_idcDownBtn0 + 2, "GetOff"];
 
 	ctrlSetText [_idcDownBtn0 + 6, "Transport"];
 
-	{ctrlShow [_idcDownBtn0 + _x, true]} forEach [0,1,6];
+	{ctrlShow [_idcDownBtn0 + _x, true]} forEach [0,1,2,6];
 	_processed = true;
 };
 // Area "set as..." sub board

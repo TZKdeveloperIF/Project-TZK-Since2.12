@@ -69,6 +69,7 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 
 	? 2^0 == _btnVal: 0 exec "Player\Dialog\DisbandPreset.sqs"; closeDialog 0; goto "Quit"
 	? 2^1 == _btnVal: 0 exec "Player\Rts\sEject.sqs"; closeDialog 0; goto "Quit"
+	? 2^2 == _btnVal: 0 exec "Player\Rts\sDisembark.sqs"; closeDialog 0; goto "Quit"
 	? 2^6 == _btnVal: _downBoardStack set [0, 6]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
 	goto "Update"
 	# DownSubMenu
