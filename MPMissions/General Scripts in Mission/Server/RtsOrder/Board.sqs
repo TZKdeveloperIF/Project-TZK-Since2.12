@@ -4,10 +4,6 @@
 ; |		there until another new rts order is activated or rts order is cleared (same as in RA2).	|
 ; ---------------------------------------------------------------------------------------------------
 
-; 适时考虑批处理. 诸如reclaim/board等命令都需要以units为参数才能真正完善
-; 不过有一个问题: units数组被拆分后分别调用publicExec, 它们抵达server的时机是不能确认的,
-; 可能需要在参数信息里带上时间戳, 让server知道命令的信息. server需要缓存一些命令参数
-
 ; args: [unit, [clicked pos, central pos of all selected units, transport vehicle type info: number], 
 ; 	rts object status (array-reference), rts server id]
 _unit = _this select 0
@@ -58,41 +54,41 @@ _i = 0, _c = _totalTranspTypes, _transpTypes = [], _transpTypes resize _c
 
 # ExecBoard
 	[_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
-	_nearByTransports = [_destPos, 50] call funcGetNearbyTransports
-	? count _nearByTransports == 0: goto "Quit"
+	_nearByTargets = [_destPos, 50] call funcGetNearbyTransports
+	? count _nearByTargets == 0: goto "Quit"
 
-	_transports = [], _typesBoard = [], _transport = objNull, _suggestedIdx = -1
+	_targets = [], _selectedTypes = [], _target = objNull, _suggestedIdx = -1
 	_typeIdx = 0; _totalTryCnt = 0
 
-	# SearchTransports
+	# SearchTarget
 		_totalTryCnt = _totalTryCnt + 1
 		? _totalTryCnt > 100: goto "Quit"
 
 		? _typeIdx >= _totalTranspTypes: goto "Quit"
-		? not (_transpTypes select _typeIdx): _typeIdx = _typeIdx + 1, goto "SearchTransports"
+		? not (_transpTypes select _typeIdx): _typeIdx = _typeIdx + 1, goto "SearchTarget"
 	
-		? 0 == _typeIdx: _typesBoard = [TransportHeliW + TransportirNOHeliW, TransportHeliE + TransportirNOHeliE + TransportHindE] select _si
-		? 1 == _typeIdx: _typesBoard = [Transport6APCW + Transport8APCW, Transport6APCE + Transport8APCE] select _si
-		? 2 == _typeIdx: _typesBoard = [TransportTruckW, TransportTruckE] select _si
-		? 3 == _typeIdx: _typesBoard = [TransportShipW + TransportZodiacW, TransportShipE + TransportZodiacE] select _si
-		? 4 == _typeIdx: _typesBoard = [TransportPlaneW, TransportPlaneE] select _si
-		? 5 == _typeIdx: _typesBoard = [TransportSupAPCW, TransportSupAPCE] select _si
-		? 6 == _typeIdx: _typesBoard = [TransportRepairTruckW, TransportRepairTruckE] select _si
-		? 7 == _typeIdx: _typesBoard = [TransportCarW, TransportCarE] select _si
+		? 0 == _typeIdx: _selectedTypes = [TransportHeliW + TransportirNOHeliW, TransportHeliE + TransportirNOHeliE + TransportHindE] select _si
+		? 1 == _typeIdx: _selectedTypes = [Transport6APCW + Transport8APCW, Transport6APCE + Transport8APCE] select _si
+		? 2 == _typeIdx: _selectedTypes = [TransportTruckW, TransportTruckE] select _si
+		? 3 == _typeIdx: _selectedTypes = [TransportShipW + TransportZodiacW, TransportShipE + TransportZodiacE] select _si
+		? 4 == _typeIdx: _selectedTypes = [TransportPlaneW, TransportPlaneE] select _si
+		? 5 == _typeIdx: _selectedTypes = [TransportSupAPCW, TransportSupAPCE] select _si
+		? 6 == _typeIdx: _selectedTypes = [TransportRepairTruckW, TransportRepairTruckE] select _si
+		? 7 == _typeIdx: _selectedTypes = [TransportCarW, TransportCarE] select _si
 
-		call preprocessFile "Server\RtsOrder\HlpBoard.sqf"
+		call preprocessFile "Server\RtsOrder\HelpBoard.sqf"
 
 		_typeIdx = _typeIdx + 1
-		? count _transports == 0: goto "SearchTransports"
-		? count _transports > 1: _typeIdx = _typeIdx - 1
-		_transport = _transports select _suggestedIdx select 0
+		? count _targets == 0: goto "SearchTarget"
+		? count _targets > 1: _typeIdx = _typeIdx - 1
+		_target = _targets select _suggestedIdx select 0
 
 	; TryBoardVehicle
-		? not alive _transport: goto "SearchTransports"
+		? not alive _target: goto "SearchTarget"
 
-		_unit doWatch _transport
-		? (_unit distance _transport) < 10: goto "Reached"
-		_destPos4Board = ([getPos _transport, 10, 10] call funcGetRandomPos), _destPos4Board set [2, 0]
+		_unit doWatch _target
+		? (_unit distance _target) < 10: goto "Reached"
+		_destPos4Board = ([getPos _target, 10, 10] call funcGetRandomPos), _destPos4Board set [2, 0]
 
 		_timeMoveAbort = time + 2 * 60
 		# Move_Check
@@ -100,23 +96,24 @@ _i = 0, _c = _totalTranspTypes, _transpTypes = [], _transpTypes resize _c
 			? _distToDest < 10: goto "Reached"
 			_delay = [5, _distToDest / 5] select (_distToDest < 25)
 
-			? (_transport call funcGetCargoNum) >= (_transport call funcGetTranspVol): goto "SearchTransports"
+			? not alive _target: goto "SearchTarget"
+			? (_target call funcGetCargoNum) >= (_target call funcGetTranspVol): goto "SearchTarget"
 			[_unit, _destPos4Board] call funcMoveStand
 
 			~ _delay
 
 			? call _quitCond: goto "Quit"
 
-			? time > _timeMoveAbort || not alive _transport: goto "SearchTransports"
-			? (_unit distance _transport) > 10: goto "Move_Check"
+			? time > _timeMoveAbort || not alive _target: goto "SearchTarget"
+			? (_unit distance _target) > 10: goto "Move_Check"
 
 		# Reached
 			_unit playMove "CombatGetInTank"
 			~ 1
 			? not alive _unit: goto "Quit"
-			_unit assignAsCargo _transport; _unit moveInCargo _transport
+			_unit assignAsCargo _target; _unit moveInCargo _target
 			~ 1
-			? _transport != vehicle _unit: goto "SearchTransports"
+			? _target != vehicle _unit: goto "SearchTarget"
 
 # Quit
 	exit
