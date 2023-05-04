@@ -1,0 +1,126 @@
+; -------------------------------------------------------------------------------------------------------
+; |									RTS Occupy Order SQS Script											|
+; |		  Units will try occupy vehicles on ordered. If fail to occupy any of them, units will stay		|
+; |		there until another new rts order is activated or rts order is cleared (same as in RA2).		|
+; -------------------------------------------------------------------------------------------------------
+
+; args: [unit, [clicked pos, central pos of all selected units, transport vehicle type info: number], 
+; 	rts object status (array-reference), rts server id]
+_unit = _this select 0
+_clickedPos = _this select 1 select 0
+_rtsCentralPos = _this select 1 select 1
+_defenceTypeInfo = _this select 1 select 2
+_rtsStatus = _this select 2
+_id = _this select 3
+_this = 0
+
+; rts busy Check
+; not realized yet
+
+; rts order stack design
+; not realized yet
+
+_si = sides find (side _unit)
+? _si != si0 && _si != si1: exit
+
+? _unit != vehicle _unit: exit
+
+; under "RtsOrder" folder the "rts id" is restored by "id" variable but not "rtsId"
+_quitCond = {not alive _unit || not (_unit call rtsOrderCheck) || _id != _rtsStatus select 1}
+
+_unit call preprocessFile "Server\AI\RtsOrderBegin.sqf"
+; Initialize The Order Script
+_timeStart = _time; _timeUp = _timeStart; _cycle = 30
+_destPos = [_unit, _clickedPos, _rtsCentralPos, 50] call preprocessFile "Util\RtsDestPos.sqf"
+
+; defence types are listed by priority: howitzer, mortar, mg ground, mg tower, gun fort
+_totalTranspTypes = 5
+_i = 0, _c = _totalTranspTypes, _transpTypes = [], _transpTypes resize _c
+# buildTransType
+	_res = _defenceTypeInfo % 2
+	_defenceTypeInfo = (_defenceTypeInfo - _res) / 2
+	_transpTypes set [_i, _res != 0]
+	_i = _i + 1
+	? _i < _c: goto "buildTransType"
+
+? [_unit, _destPos] call funcDistH < 100: goto "ExecStep"
+# Update
+	; check move
+	_distToDest = [_unit, _destPos] call funcDistH
+	? _distToDest < 100: goto "ExecStep"
+	[_unit, _destPos] call funcMoveStand
+	_cycle = [30, 0.1*_distToDest] select (_distToDest < 300)
+	goto "Sleep"
+
+# ExecStep
+	[_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
+	_nearByTargets = [_clickedPos, 150, structsDefence, [], _si] call funcGetNearbyStructure
+	? count _nearByTargets == 0: goto "Quit"
+
+	_targets = [], _selectedTypes = [], _target = objNull, _suggestedIdx = -1
+	_typeIdx = 0; _totalTryCnt = 0
+
+	# SearchTarget
+		_totalTryCnt = _totalTryCnt + 1
+		? _totalTryCnt > 100: goto "Quit"
+
+		? _typeIdx >= _totalTranspTypes: goto "Quit"
+		? not (_transpTypes select _typeIdx): _typeIdx = _typeIdx + 1, goto "SearchTarget"
+	
+		? 0 == _typeIdx: _selectedTypes = structsOccupiableHowitzer
+		? 1 == _typeIdx: _selectedTypes = structsOccupiableMortar
+		? 2 == _typeIdx: _selectedTypes = structsOccupiableMGGround
+		? 3 == _typeIdx: _selectedTypes = structsOccupiableMGTower
+		? 4 == _typeIdx: _selectedTypes = structsOccupiableGunfort
+
+		call preprocessFile "Server\RtsOrder\HelpOccupy.sqf"
+
+		_typeIdx = _typeIdx + 1
+		? count _targets == 0: goto "SearchTarget"
+		? count _targets > 1: _typeIdx = _typeIdx - 1
+		_target = _targets select _suggestedIdx select 0
+
+	; TryBoardVehicle
+		? not alive _target: goto "SearchTarget"
+
+		_unit doWatch _target
+		? (_unit distance _target) < 10: goto "Reached"
+		_destPos4Board = ([getPos _target, 10, 10] call funcGetRandomPos), _destPos4Board set [2, 0]
+
+		_timeMoveAbort = time + 2 * 60
+		# Move_Check
+			_distToDest = [_unit, _destPos4Board] call funcDistH
+			? _distToDest < 10: goto "Reached"
+			_delay = [5, _distToDest / 5] select (_distToDest < 25)
+
+			? not alive _target: goto "SearchTarget"
+			? not isNull gunner _target: goto "SearchTarget"
+			[_unit, _destPos4Board] call funcMoveStand
+
+			~ _delay
+
+			? call _quitCond: goto "Quit"
+
+			? time > _timeMoveAbort || not alive _target: goto "SearchTarget"
+			? (_unit distance _target) > 10: goto "Move_Check"
+
+		# Reached
+			_unit playMove "CombatGetInTank"
+			~ 1
+			? not alive _unit: goto "Quit"
+			_unit assignAsGunner _target; _unit moveInGunner _target
+			~ 1
+			? _target != vehicle _unit: goto "SearchTarget"
+
+# Quit
+	exit
+
+# Sleep
+_loop = (_time-_timeStart) / _cycle; _loop = 1 + _loop - _loop % 1
+_timeUp = _loop * _cycle + _timeStart
+	# innerSleep
+	~ (if (_timeUp - _time > 5) then {_timeUp - _time + 1} else {5})
+	? call _quitCond: goto "Quit"
+	? _time < _timeUp: goto "innerSleep"
+	? _unit call busyCheck: goto "Sleep"
+	goto "Update"
