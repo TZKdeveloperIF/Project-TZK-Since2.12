@@ -1,0 +1,1 @@
+Scripts under this folder can support in-game art calculating. However in TZK_4.0.6 "pre-calculated data" is applied to save CPU time. Scripts here is for backup and pathes are incorrected. If wish to use them, obtain origin script path from current commit to know how are them designed.
