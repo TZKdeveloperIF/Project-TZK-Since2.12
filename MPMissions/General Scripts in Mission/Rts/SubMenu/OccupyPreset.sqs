@@ -1,0 +1,42 @@
+; args: [clicked pos: [x, y]]
+
+@ !mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "TzkRtsOccupySubMenu"
+mutexDlg = false
+
+_idcTitle = IDC + 0; _idcBtnLabel0 = IDC + 5
+ctrlSetText [_idcBtnLabel0, ""]
+_idcBtn_0_0 = IDC + 16 * 2; _idcBtnBg_0_0 = IDC + 16 * 1;
+ctrlSetText [_idcTitle, "Occupy Structure"]
+{ctrlSetText [_x, "Howitzer"]} forEach [_idcBtn_0_0]
+{ctrlSetText [_x, "Mortar"]} forEach [_idcBtn_0_0 + 1]
+{ctrlSetText [_x, "MG Ground"]} forEach [_idcBtn_0_0 + 2]
+{ctrlSetText [_x, "MG Tower"]} forEach [_idcBtn_0_0 + 3]
+{ctrlSetText [_x, "Gun Fort"]} forEach [_idcBtn_0_0 + 4]
+{_i = _x; {ctrlShow [_x + _i, false]} forEach [_idcBtnBg_0_0]} forEach [0,1,2,3,4,5,6,7]
+{_i = _x; {ctrlShow [_x + _i, false]} forEach [_idcBtn_0_0]} forEach [5,6,7]
+
+btnValue00 = false; btnValue01 = false
+btnValue02 = [false,false,false,false,false]
+
+# loop
+	~ 0.2
+	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+	? call dlgUpdated: goto "Quit"
+	? not alive player: closeDialog 0; goto "Quit"
+
+	_i = 0; while {_i < 5} do {ctrlShow [_idcBtnBg_0_0 + _i, btnValue02 select _i]; _i = _i + 1};
+
+	? btnValue00: btnValue00 = false; closeDialog 0; goto "Quit"
+	? btnValue01: btnValue01 = false; goto "OK"
+
+	goto "loop"
+# Quit
+	btnValue02 = 0
+	exit
+# OK
+	_defenceTypeInfo = 0, _i = 0
+	{if _x then {_defenceTypeInfo = _defenceTypeInfo + 2 ^ _i}, _i = _i + 1} forEach btnValue02
+	[_this, _defenceTypeInfo] exec "Player\Rts\sRtsOccupy.sqs"
+	closeDialog 0; goto "Quit"

@@ -75,28 +75,30 @@ _idx = 0; _types = [orderTempDisengageType, orderTempSetFlightAltitude, orderTem
 ? (aiSetting select _si select _gi select aisRallyPoint1) == 0 || _unit != driver _vehicle : goto "NoRally1"
 ? !(_unit call busyCheck): _unit call busySet
 [_unit, _si, _gi, time + 10*60, aisRallyPoint1] exec "Server\Loop\AI_RallyPoint.sqs"
-#WaitRallyReached1
+# WaitRallyReached1
 	~5
 	? !(alive _unit) : exit
+	? _unit call rtsOrderCheck: exit
 	? _unit call busyCheck : goto "WaitRallyReached1"
-#NoRally1
+# NoRally1
 
 ; BOARD 1
 ? groupMatrix select _si select _gi != group _unit: _gi = (groupMatrix select _si) find (group _unit)
 ? _unit != _vehicle || (aiSetting select _si select _gi select aisPickupWait1) == 0 : goto "NoBoard1"
 _timeCheckBoardStart = time
 _posCheckBoardStart = getPos _unit
-#Board1
+# Board1
 ? !(_unit call busyCheck): _unit call busySet
 [_unit, _si, _gi, _posCheckBoardStart select 0, _posCheckBoardStart select 1, _timeCheckBoardStart, aisPickupWait1] exec "\TZK_Scripts_4_0_4\Server\Loop\AI_CheckBoard.sqs"
-#WaitBoardReady1
+# WaitBoardReady1
 	~5
 	? !(alive _unit) : exit
+	? _unit call rtsOrderCheck: exit
 	? _unit call busyCheck : goto "WaitBoardReady1"
 ? time > _timeCheckBoardStart + (aisPickupWaitTimeDefs select (aiSetting select _si select (( groupMatrix select _si) find (group _unit)) select aisPickupWait1)): goto "NoBoard1"
 ? ([getPos _unit, _posCheckBoardStart] call funcDistH) > 200: goto "NoBoard1"
 goto "Board1"
-#NoBoard1
+# NoBoard1
 
 ;*************************Second Rally And Board Procedure**************************
 ; RALLY 2
@@ -104,28 +106,30 @@ goto "Board1"
 ? (aiSetting select _si select _gi select aisRallyPoint2) == 0 || _unit != driver _vehicle : goto "NoRally2"
 ? !(_unit call busyCheck): _unit call busySet
 [_unit, _si, _gi, time + 10*60, aisRallyPoint2] exec "Server\Loop\AI_RallyPoint.sqs"
-#WaitRallyReached2
+# WaitRallyReached2
 	~5
 	? !(alive _unit) : exit
+	? _unit call rtsOrderCheck: exit
 	? _unit call busyCheck : goto "WaitRallyReached2"
-#NoRally2
+# NoRally2
 
 ; BOARD 2
 ? groupMatrix select _si select _gi != group _unit: _gi = (groupMatrix select _si) find (group _unit)
 ? _unit != _vehicle || (aiSetting select _si select _gi select aisPickupWait2) == 0 : goto "NoBoard2"
 _timeCheckBoardStart = time
 _posCheckBoardStart = getPos _unit
-#Board2
+# Board2
 ? !(_unit call busyCheck): _unit call busySet
 [_unit, _si, _gi, _posCheckBoardStart select 0, _posCheckBoardStart select 1, _timeCheckBoardStart, aisPickupWait2] exec "\TZK_Scripts_4_0_4\Server\Loop\AI_CheckBoard.sqs"
-#WaitBoardReady2
+# WaitBoardReady2
 	~5
 	? !(alive _unit) : exit
+	? _unit call rtsOrderCheck: exit
 	? _unit call busyCheck : goto "WaitBoardReady2"
 ? time > _timeCheckBoardStart + (aisPickupWaitTimeDefs select (aiSetting select _si select (( groupMatrix select _si) find (group _unit)) select aisPickupWait2)): goto "NoBoard2"
 ? ([getPos _unit, _posCheckBoardStart] call funcDistH) > 200: goto "NoBoard2"
 goto "Board2"
-#NoBoard2
+# NoBoard2
 
 ; Status Level 3. They're available for particular unit. Delay loop isn't required.
 _delay = 0
