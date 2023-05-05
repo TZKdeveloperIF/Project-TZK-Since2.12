@@ -1,4 +1,4 @@
-; args: []
+; args: none
 
 @!mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
@@ -65,13 +65,13 @@ ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bo
 	? _factory in _MCVs : hint "MCV isn't structure."; goto "Update"
 	? !(alive _factory) && ( (_structsDisp select (lbCurSel _idcList)) select 2 ) == "Worker": hint "Worker has been killed. Select another one."; goto "Update"
 	? !(alive _factory) : hint "Structure destroyed, need repair first."; goto "Update"
-	[_structsDisp select (lbCurSel _idcList), false] exec "\TZK_Scripts_4_0_4\Player\Waiting For Destruction.sqs"; goto "Update"
+	[_structsDisp select (lbCurSel _idcList), false] exec "Player\DestructionDelay.sqs"; goto "Update"
   
 #DeleteMCV
 	? count _structsDisp == 0 : hint "No items available"; goto "Update"
 	_factory = (_structsDisp select (lbCurSel _idcList)) select 0
 	? !(_factory in _MCVs) : hint "Structure isn't MCV."; goto "Update"
-	[_structsDisp select (lbCurSel _idcList), true] exec "\TZK_Scripts_4_0_4\Player\Waiting For Destruction.sqs"; goto "Update"
+	[_structsDisp select (lbCurSel _idcList), true] exec "Player\DestructionDelay.sqs"; goto "Update"
 
 #Undo
   call format ["Destruction_Undo%1 = true", siPlayer]; publicVariable call format ["""Destruction_Undo%1""", siPlayer]
