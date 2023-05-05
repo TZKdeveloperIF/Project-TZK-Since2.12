@@ -11,41 +11,34 @@ _unit groupChat "Roger, landing helicopter."
 
 _vehicle land {LAND}
 
-_timeAbort = _time + 60
+_timeAbort = _time + 60, _maxRetryTime = 4, _retry = 0
 # simpleLoop
-	~ 5
+	_vehicle land {LAND}
+
 	? not alive _unit: exit
 	? call orderCheck: exit
 	? _vehicle != vehicle _unit: exit
 	? _time > _timeAbort: exit
 
-	_vehicle land {LAND}
+	~ 5
 	? (getPos _vehicle) select 2 > 3: goto "simpleLoop"
 
 ? _unit != driver _vehicle: exit
+doStop _unit; _unit action ["ENGINEOFF", _vehicle]; _vehicle engineOn false
+~ 5
+? (getPos _vehicle) select 2 < 5: goto "LandSucceeded"
 
-_timeAbort = _time + 10
-# preciselyLoop
-	~ 0.5
-	? not alive _unit: exit
-	? call orderCheck: exit
-	? _vehicle != vehicle _unit: exit
-	? _time > _timeAbort: exit
+_retry = _retry + 1
+_timeAbort = _time + 60
+? _retry >= _maxRetryTime: _unit groupChat "Land order aborted.", exit
+goto "simpleLoop"
 
-	doStop _unit; _vehicle land {LAND}; _unit action ["ENGINEOFF", _vehicle]; _vehicle engineOn false
-	? (getPos _vehicle) select 2 > 2 || isEngineOn _vehicle: goto "preciselyLoop"
-
-_timeAbort = _timeAbort + 3
-# postCheck
-	~ 0.5
-	? not alive _unit: exit
-	? call orderCheck: exit
-	? _vehicle != vehicle _unit: exit
-
-	? isEngineOn _vehicle: doStop _unit; _vehicle land {LAND}; _unit action ["ENGINEOFF", _vehicle]; _vehicle engineOn false
-	? _time < _timeAbort: goto "postCheck"
-
-; final check
-	? call orderCheck || not isEngineOn _vehicle: exit
-	? (getPos _vehicle) select 2 > 3: _timeAbort = _time + 60; goto "simpleLoop"
-	_timeAbort = _time + 10; goto "preciselyLoop"
+# LandSucceeded
+	unassignVehicle _unit
+	_unit action ["ENGINEOFF", _vehicle]; _vehicle engineOn false
+	_unit action ["GETOUT", _vehicle]
+	~ 0.1
+	doStop _unit
+	~ 0.1
+	_unit assignAsDriver _vehicle; _unit action ["GETIN DRIVER", _vehicle]
+	_unit groupChat "Landed"
