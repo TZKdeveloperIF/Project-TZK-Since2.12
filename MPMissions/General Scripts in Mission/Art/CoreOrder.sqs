@@ -66,7 +66,7 @@ _isInfantry = not _isVehicle && not _isStruct
 	? not _isServer: _quitCond = _quitCond + { or call orderCheck}
 	_msg = ""
 
-	_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Common\EH\Fired_Art_406.sqs"
+	_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Art\FiredEh406.sqs"
 	? _biggerAngle: _heliH = typeOf _target camCreate [0,0,0]
 
 	_needAvoidStruct = (_isVehicle && _type in typesHowitzer) || _isStruct
