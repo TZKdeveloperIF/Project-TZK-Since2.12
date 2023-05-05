@@ -9,11 +9,14 @@ _this = 0
 ? _gi == -1: goto "Quit"
 _set = aiSetting select _si select _gi select _ais
 ? _set == 0: goto "Quit"
-_pos = (wpCO select _si) select (_set - 1)
+_pos = wpCO select _si select (_set - 1)
 ? (_pos select 0) == -1: goto "Quit"
 
-~5
+~ 5
 # Update
+	? not (_unit call busyCheck): exit
+	? _unit call rtsOrderCheck: exit
+
 	_gi = (groupMatrix select _si) find (group _unit)
 	? _gi == -1: _sleep = 10, goto "Sleep"
 	? -1 == (groupAIMatrix select _si) find (groupMatrix select _si select _gi): goto "Quit"
@@ -28,9 +31,10 @@ _pos = (wpCO select _si) select (_set - 1)
 
 	[_unit, _pos] call funcMoveAI
 	_sleep = [30, 0.1*_distToDest] select (_distToDest < 300)
-	#Sleep
-	~_sleep
-	goto "Update"
+
+	# Sleep
+		~_sleep
+		goto "Update"
   
-#Quit
-	_unit call busyClear
+# Quit
+	? _unit call busyCheck: _unit call busyClear

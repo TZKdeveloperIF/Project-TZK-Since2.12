@@ -1,5 +1,5 @@
 ; args: none
-; all board units will eject while driver/gunner/commander won't
+; all units will disembark. Better use this order in safe area since it'll cost some times for moving vehicles to stop
 
 _top = TzkSelUnitsStack select TzkSelStackIdx
 _c = count _top
@@ -10,9 +10,6 @@ _i = 0, _j = 0, _selectedUnits = []
 	_unit = _top select _i
 	_vehicle = vehicle _unit
 	? _unit == _vehicle: goto "continue"
-	? _unit == driver _vehicle: goto "continue"
-	? _unit == gunner _vehicle: goto "continue"
-	? _unit == commander _vehicle: goto "continue"
 
 	_selectedUnits set [_j, _unit]
 	_j = _j + 1
@@ -22,7 +19,7 @@ _i = 0, _j = 0, _selectedUnits = []
 	? _i < _c: goto "loop"
 _selectedUnits resize _j
 
-[_selectedUnits, -1, "Server\Rts\hEject.sqs"] exec "Player\Rts\GenArrayCommand.sqs"
+[_selectedUnits, -1, "Server\Rts\hDisembark.sqs"] exec "Player\Rts\GenArrayCommand.sqs"
 
 # Quit
 	exit

@@ -1,15 +1,15 @@
-; ---------------------------------------------------------------------------------------------------
-; |									RTS Board Order SQS Script										|
-; |		  Units will try board vehicles on ordered. If fail to board any of them, units will stay	|
-; |		there until another new rts order is activated or rts order is cleared (same as in RA2).	|
-; ---------------------------------------------------------------------------------------------------
+; -------------------------------------------------------------------------------------------------------
+; |									RTS Occupy Order SQS Script											|
+; |		  Units will try occupy vehicles on ordered. If fail to occupy any of them, units will stay		|
+; |		there until another new rts order is activated or rts order is cleared (same as in RA2).		|
+; -------------------------------------------------------------------------------------------------------
 
 ; args: [unit, [clicked pos, central pos of all selected units, transport vehicle type info: number], 
 ; 	rts object status (array-reference), rts server id]
 _unit = _this select 0
 _clickedPos = _this select 1 select 0
 _rtsCentralPos = _this select 1 select 1
-_transpTypeInfo = _this select 1 select 2
+_defenceTypeInfo = _this select 1 select 2
 _rtsStatus = _this select 2
 _id = _this select 3
 _this = 0
@@ -33,28 +33,28 @@ _unit call preprocessFile "Server\AI\RtsOrderBegin.sqf"
 _timeStart = _time; _timeUp = _timeStart; _cycle = 30
 _destPos = [_unit, _clickedPos, _rtsCentralPos, 50] call preprocessFile "Util\RtsDestPos.sqf"
 
-; vehicle types are listed by priority: heli, apc, truck, ship, plane, support apc, repair truck, jeep
-_totalTranspTypes = 8
+; defence types are listed by priority: howitzer, mortar, mg ground, mg tower, gun fort
+_totalTranspTypes = 5
 _i = 0, _c = _totalTranspTypes, _transpTypes = [], _transpTypes resize _c
 # buildTransType
-	_res = _transpTypeInfo % 2
-	_transpTypeInfo = (_transpTypeInfo - _res) / 2
+	_res = _defenceTypeInfo % 2
+	_defenceTypeInfo = (_defenceTypeInfo - _res) / 2
 	_transpTypes set [_i, _res != 0]
 	_i = _i + 1
 	? _i < _c: goto "buildTransType"
 
-? [_unit, _destPos] call funcDistH < 50: goto "ExecBoard"
+? [_unit, _destPos] call funcDistH < 100: goto "ExecStep"
 # Update
 	; check move
 	_distToDest = [_unit, _destPos] call funcDistH
-	? _distToDest < 50: goto "ExecBoard"
+	? _distToDest < 100: goto "ExecStep"
 	[_unit, _destPos] call funcMoveStand
 	_cycle = [30, 0.1*_distToDest] select (_distToDest < 300)
 	goto "Sleep"
 
-# ExecBoard
+# ExecStep
 	[_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
-	_nearByTargets = [_destPos, 50] call funcGetNearbyTransports
+	_nearByTargets = [_clickedPos, 150, structsDefence, [], _si] call funcGetNearbyStructure
 	? count _nearByTargets == 0: goto "Quit"
 
 	_targets = [], _selectedTypes = [], _target = objNull, _suggestedIdx = -1
@@ -67,16 +67,13 @@ _i = 0, _c = _totalTranspTypes, _transpTypes = [], _transpTypes resize _c
 		? _typeIdx >= _totalTranspTypes: goto "Quit"
 		? not (_transpTypes select _typeIdx): _typeIdx = _typeIdx + 1, goto "SearchTarget"
 	
-		? 0 == _typeIdx: _selectedTypes = [TransportHeliW + TransportirNOHeliW, TransportHeliE + TransportirNOHeliE + TransportHindE] select _si
-		? 1 == _typeIdx: _selectedTypes = [Transport6APCW + Transport8APCW, Transport6APCE + Transport8APCE] select _si
-		? 2 == _typeIdx: _selectedTypes = [TransportTruckW, TransportTruckE] select _si
-		? 3 == _typeIdx: _selectedTypes = [TransportShipW + TransportZodiacW, TransportShipE + TransportZodiacE] select _si
-		? 4 == _typeIdx: _selectedTypes = [TransportPlaneW, TransportPlaneE] select _si
-		? 5 == _typeIdx: _selectedTypes = [TransportSupAPCW, TransportSupAPCE] select _si
-		? 6 == _typeIdx: _selectedTypes = [TransportRepairTruckW, TransportRepairTruckE] select _si
-		? 7 == _typeIdx: _selectedTypes = [TransportCarW, TransportCarE] select _si
+		? 0 == _typeIdx: _selectedTypes = structsOccupiableHowitzer
+		? 1 == _typeIdx: _selectedTypes = structsOccupiableMortar
+		? 2 == _typeIdx: _selectedTypes = structsOccupiableMGGround
+		? 3 == _typeIdx: _selectedTypes = structsOccupiableMGTower
+		? 4 == _typeIdx: _selectedTypes = structsOccupiableGunfort
 
-		call preprocessFile "Server\RtsOrder\HelpBoard.sqf"
+		call preprocessFile "Server\RtsOrder\HelpOccupy.sqf"
 
 		_typeIdx = _typeIdx + 1
 		? count _targets == 0: goto "SearchTarget"
@@ -97,7 +94,7 @@ _i = 0, _c = _totalTranspTypes, _transpTypes = [], _transpTypes resize _c
 			_delay = [5, _distToDest / 5] select (_distToDest < 25)
 
 			? not alive _target: goto "SearchTarget"
-			? (_target call funcGetCargoNum) >= (_target call funcGetTranspVol): goto "SearchTarget"
+			? not isNull gunner _target: goto "SearchTarget"
 			[_unit, _destPos4Board] call funcMoveStand
 
 			~ _delay
@@ -111,7 +108,7 @@ _i = 0, _c = _totalTranspTypes, _transpTypes = [], _transpTypes resize _c
 			_unit playMove "CombatGetInTank"
 			~ 1
 			? not alive _unit: goto "Quit"
-			_unit assignAsCargo _target; _unit moveInCargo _target
+			_unit assignAsGunner _target; _unit moveInGunner _target
 			~ 1
 			? _target != vehicle _unit: goto "SearchTarget"
 

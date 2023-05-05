@@ -295,7 +295,8 @@ class TzkCmdMapDlgPoint: TzkCmdMapDlgBase {
 class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
 	controls[] = {
 		LeftBtn0, LeftBtn1, LeftBtn2, LeftBtn3, LeftBtn4, 
-		DownBtn0, DownBtn1, 
+		LeftBtn5, 
+		DownBtn0, DownBtn1, DownBtn2, 
 		DownBtn6, DownBtn8, 
 		RightDownBg0, RightDownBg1, RightDownBg2, RightDownBg3, RightDownBg4, 
 		RightDownBg5, RightDownBg6, RightDownBg7, RightDownBg8, 
@@ -334,6 +335,13 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
 		w = 0.08;
 		text = "UNDEFINED";
 		action = "btnValue00 = 4";
+	};
+	class LeftBtn5: LeftBtn4 { // for RTS occupy
+		idc = IDC + 16 * 2 + 5;
+		y = 0.10 + 0.15 + 0.05 * 1;
+		w = 0.08;
+		text = "UNDEFINED";
+		action = "btnValue00 = 5";
 	};
 	
 	// left down part. select specific type
@@ -1041,6 +1049,8 @@ class TzkRtsBoardSubMenu: Menu {
 		action = "btnValue02 set [7, not(btnValue02 select 7)]";
 	};
 };
+
+class TzkRtsOccupySubMenu: TzkRtsBoardSubMenu {};
 
 // 
 class TZK_CustomAircraftWeaponDialog2: TZK_CustomAircraftWeaponDialog {
