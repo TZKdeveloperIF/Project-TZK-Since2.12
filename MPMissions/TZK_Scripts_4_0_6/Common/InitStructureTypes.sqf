@@ -544,6 +544,7 @@ structDefs set [_type, [
 ];
 structMarker set [_type, ""];
 _tankt = _type;
+// stTankTrap = _type;
 alignTypes set [count alignTypes, _type]; alignDefs set [ count alignDefs, [[0,0], 6] ];
 _type = _type + 1;
 
@@ -608,6 +609,7 @@ structsDefence = [
 	_staticMG, _staticGL, _staticAT
 ];
 structsShelter = [_wall, _walls, _roof, _roofHigh, _tanktr, _artPlain, _tankt, _sandbag, stAmmoCrate, _heliH];
+// structsShelter = [_wall, _walls, _roof, _roofHigh, _tanktr, _artPlain, stTankTrap, _sandbag, stAmmoCrate, _heliH];
 structsOccupiableMortar = [_mortar1];
 structsOccupiableArtilleryMortar = [_mortar1];
 structsOccupiableMGGround = [_mg, _mgFort,  _staticMG, _staticGL, _staticAT];
