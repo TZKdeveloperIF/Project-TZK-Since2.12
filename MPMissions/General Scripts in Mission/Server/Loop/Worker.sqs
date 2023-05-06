@@ -108,7 +108,7 @@ removeAllWeapons _unit
 		_damage = _repairInfoList select _index select 0
 		? _damage <= 0: _sleep = 0; mutexRepairStructure = false; goto _return
 		_type = _repairInfoList select _index select 1; _cost = structDefs select _type select sdCost
-		_rateRep = if (_type in structsDefence) Then {4} Else {1}; _rateCost = 0.1
+		_rateRep = if (_type in structsDefence) Then {4} Else {1}; _rateCost = if (_type in structsDefence) Then {0.5} Else {0.1}
 		_cost = _rateCost*_cost*_rateRep*_repair; _cost = _cost - (_cost % 1)
 		? _object in primStructsPlaced: _cost = 0
 		? _cost >  groupMoneyMatrix select _si select (giCO select _si): [_si, _type] exec localize {TZK_INFO_SERVER_NO_MONEY_REPAIR_STRUCT}; _return = "Update"; _sleep = 30; mutexRepairStructure = false; goto "Wander"
