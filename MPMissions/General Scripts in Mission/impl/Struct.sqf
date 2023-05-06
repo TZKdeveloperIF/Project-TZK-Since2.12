@@ -6,9 +6,28 @@ _scripts = structDefs select stAmmoCrate select sdScriptsPlayer;
 _scripts set [count _scripts, localize {TZK_MARKER_STRUCT}];
 
 structDefs select _tankt set [sdLimit, 500];
+stTankTrap = _tankt;
 
 // Add structure items
 _oldCount = count structDefs;
+
+_price = [20, 40] select PricingMode;
+_objects = [["WireFence", 0, []]];
+_image = [_texPath + "Image\Struct\fence.jpg",_texPath + "Image\Struct\fence.jpg"];
+structDefs set [_type, [
+	"Wire fence",
+	_price,
+	siBoth,
+	_image,
+	false,
+	false,
+	500, 2, 10, _objects, _objects,
+	[localize {TZK_SERVER_INIT_STRUCT_SEC}], []]
+];
+structMarker set [_type, ""];
+stWireFence = _type;
+alignTypes set [count alignTypes, _type]; alignDefs set [ count alignDefs, [[0,0], 8] ];
+_type = _type + 1;
 
 _price = [1500, 3000] select PricingMode;
 _objects0 = [["GapGenerator_W_xj400", 0, []]];
@@ -29,6 +48,7 @@ structMarker set [_type, "RadarCar_Marker_xj400"];
 stGapGenerator = _type;
 _type = _type + 1;
 
+structsShelter set [count structsShelter, stWireFence];
 structsShelter set [count structsShelter, stGapGenerator];
 
 _index = _oldCount; _count = count structDefs; while {_index < _count} do {
