@@ -78,6 +78,7 @@ _params = 0, _this = 0
 	? _biggerAngle: _heliH = typeOf _target camCreate [0,0,0]
 
 	_needAvoidStruct = ((_isVehicle && _type in typesHowitzer) || _isStruct) && "General Area" == _orderType
+	_posT = [-1, -1]; _defenceObject = objNull
 
 ; ======== Art order part ========
 ; Pre-move if ordered
@@ -175,7 +176,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	_ret = call preprocessFile "Art\GenerateTargetPos.sqf"
 	? not _ret: goto "EOF"
 	; assign target object to position
-		_posT set [2, _posT call funcHASL]; _target setPosASL _posT
+	_posT set [2, _posT call funcHASL]; _target setPosASL _posT
 	
 	? _unit distance _target > (if _isInfantry then {_range} else {_distLimit}): goto "CheckDistance"
 
@@ -241,6 +242,9 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	; for non-soldier
 	? not local gunner _vehicle: _delay = 5; goto "AttackCheck"
 	? 1 == _ammoOld: _reloadMagazine = true
+
+	; pre-process on fire
+	? "Destroy Obstruction" == _orderType: if (not alive _defenceObject) then {goto "AttackDone"}
 
 	_ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev]
 	_vehicle addEventHandler ["Fired", format [{[_this, %1, %2, %3, %4] exec "%5"}, _speed, _angle, _elev, _ehRev, _script] ]
