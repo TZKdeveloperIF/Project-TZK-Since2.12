@@ -73,15 +73,15 @@ _unit call temporarySet
 # Update
 ? !_bInfantry: goto "SkipInfantry"
 _commandType = _unit call preprocessFile "Art\GetSoldierArtType.sqf"
-? -1 != _commandType: [_unit, _si, _targetIndex, _biggerAngle, _attackPos] exec "Server\OrderTemp\ShootInfantry.sqs"; exit
+? -1 != _commandType: [_unit, _si, _targetIndex, _biggerAngle, _attackPos, "Soldier"] exec "Server\OrderTemp\ShootDistributor.sqs"; exit
 ? -1 == _commandType: goto "EOF"
 exit
 
 #SkipInfantry
-	? _bStruct: [_unit, _si, _targetIndex, _biggerAngle, _attackPos] exec "Server\OrderTemp\ShootStruct.sqs"; exit
+	? _bStruct: [_unit, _si, _targetIndex, _biggerAngle, _attackPos, "Struct"] exec "Server\OrderTemp\ShootDistributor.sqs"; exit
 	; Vehicle case here.
 	? _unit != driver _vehicle: if (!isNull driver _vehicle) then {goto "Sleep"}
-	[_unit, _si, _targetIndex, _biggerAngle, _attackPos] exec "Server\OrderTemp\ShootTank.sqs"; exit
+	[_unit, _si, _targetIndex, _biggerAngle, _attackPos, "Tank"] exec "Server\OrderTemp\ShootDistributor.sqs"; exit
 
 
 ; End Of File
