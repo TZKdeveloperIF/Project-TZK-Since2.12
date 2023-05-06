@@ -1,5 +1,6 @@
 ; args: [unit,
-;	[bigAngle: bool, suggested speed: number, area idx: number, type enum: string, time stamp: number, si: number], 
+;	[bigAngle: bool, suggested speed: number, area idx: number, type enum: string, time stamp: number, si: number, 
+;		[clicked pos, central pos of all selected units]], 
 ; 	rts object status (array-reference), rts server id]
 
 _unit = _this select 0; _rtsStatus = _this select 2; _id = _this select 3
@@ -7,36 +8,29 @@ _quitCond = {not (_unit call rtsOrderCheck) || _id != _rtsStatus select 1 || not
 ? _unit != driver vehicle _unit: if (not isNull driver vehicle _unit) then {_this = 0; goto "Sleep"}
 
 ; distributor
-_enum = _this select 1 select 3
+_params = _this select 1
+_biggerAngle = _params select 0; _suggestedSpeed = _params select 1; _idx = _params select 2; _enum = _params select 3; _si = _params select 5
+_posParam = _params select 6
 
-? "Soldier" == _enum: _this exec "Server\RtsOrder\ShootAreaSoldier.sqs"; exit
-? "Struct" == _enum: _this exec "Server\RtsOrder\ShootAreaStruct.sqs"; exit
-? "Howitzer" == _enum || "MLRS" == _enum || "Tank" == _enum: _this exec "Server\RtsOrder\ShootAreaTank.sqs"; exit
+; script type info: [is server, is vehicle, is structure]
+_scriptTypeInfo = [true, false, false]
 
-; ASSERT(FALSE)
+; ? "Soldier" == _enum: _scriptTypeInfo = [true, false, false]
+? "Struct" == _enum: _scriptTypeInfo = [true, false, true]
+? "Howitzer" == _enum || "MLRS" == _enum || "Tank" == _enum: _scriptTypeInfo = [true, true, false]
+
+; rts busy Check
+; not realized yet
+
+; rts order stack design
+; not realized yet
+
+_unit call preprocessFile "Server\AI\RtsOrderBegin.sqf"
+
+[[_unit, _si, _idx, _biggerAngle, _enum], [_posParam, _suggestedSpeed], _scriptTypeInfo, [false, [_rtsStatus, _id]]] exec "Art\CoreOrder.sqs"
 exit
 
 # Sleep
 	~ 30
 	? call _quitCond: exit
 	goto "Sleep"
-
-; annotation
-; 与concurrent的区别
-; 	入参不同
-; 		需要手动获取type
-; 		type除了炮击之外, 补给脚本也需要
-; 	接入RTS命令框架
-; 	增加AREA信息的初始化
-; 		执行速度切换
-; 	quitCond不一样
-; 	移动逻辑不一样
-; 		以所在位置直接执行炮击逻辑
-; 			若距离太远，则基于所在位置向目标靠近
-; 	precalculate和attachCheck有区别
-; 		外部变量调整
-; 			根据速度切换与否，增加初次炮击的延时
-; 		area需在attachCheck内产生坐标和计算角度
-;		需要在坐标产生后，判定单位和目标的距离
-; 	发射时无需随机扰动
-; 	EOF
