@@ -16,19 +16,22 @@ if (_stamp > _result select 0) then {
 	_siEnemy = siEnemy select _si;
 
 	_i = 2;
-	_dir = _markerInfo select 4; _cos = cos _dir, _sin = sin _dir;
+	_extendedRange = [
+		_markerInfo select 0, _markerInfo select 1,
+		(_markerInfo select 2) + 50, (_markerInfo select 3) + 50, 
+		_markerInfo select 4
+	];
 	{{if (not isNull _x) then {
 		_pos = getPosASL _x;
-		_oriVecX = (_pos select 0) - (_markerInfo select 0), _oriVecY = (_pos select 1) - (_markerInfo select 1);
-		_rotVecX = _cos * _oriVecX - _sin * _oriVecY; _rotVecY = _sin * _oriVecX + _cos * _oriVecY;
-		if (abs(_rotVecX) < (_markerInfo select 2) + 50 && abs(_rotVecY) < (_markerInfo select 3) + 50) then {
+		if ([_pos, _extendedRange] call preprocessFile "Util\PosInRect.sqf") then {
 			_result set [_i, _pos]; _i = _i + 1;
 		};
 	};} forEach (structMatrix select _siEnemy select _x);} foreach structsCritcal;
 	_result resize _i;
 
 	// find the nearest (to center) available target pos
-	private [{_a},{_b},{_c},{_d}];
+	private [{_a},{_b},{_c},{_d}, {_dir},{_cos},{_sin}];
+	_dir = _markerInfo select 4;
 	_cos = cos (-_dir), _sin = sin (-_dir);
 	_d = 0, _limit = (_markerInfo select 2) + (_markerInfo select 3);
 	_c = count _result;

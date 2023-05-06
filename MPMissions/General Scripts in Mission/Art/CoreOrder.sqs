@@ -5,9 +5,12 @@
 
 ; args: [art general params: [], preprocess params: [], script type info: [], server extra info: []]
 
-; art general params: [unit, si, area marker idx, use big angle, launcher type: enum]
+; art general params: [unit, si, area marker idx, use big angle, launcher type: enum, order type: enum (optional)]
 _params = _this select 0
 _unit = _params select 0, _si = _params select 1, _idx = _params select 2, _biggerAngle = _params select 3, _enum = _params select 4
+_orderType = "General Area"
+? count _params > 5: _orderType = _params select 5
+
 ; preprocess params: [pre move info, suggested shooting init speed]
 _params = _this select 1
 _preMoveInfo = _params select 0, _suggestedSpeed = _params select 1
@@ -74,7 +77,7 @@ _params = 0, _this = 0
 	_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Art\FiredEh406.sqs"
 	? _biggerAngle: _heliH = typeOf _target camCreate [0,0,0]
 
-	_needAvoidStruct = (_isVehicle && _type in typesHowitzer) || _isStruct
+	_needAvoidStruct = ((_isVehicle && _type in typesHowitzer) || _isStruct) && "General Area" == _orderType
 
 ; ======== Art order part ========
 ; Pre-move if ordered
@@ -168,15 +171,10 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	? not _isInfantry: _reloadMagazine = false
 	? not _isInfantry && _suggestedSpeed > 0: _delay = (call format ["%1", _weapon GetWeaponParam "magazineReloadTime"]) + (call format ["%1", ((_vehicle ammoArray _weapon) select 0) GetWeaponParam "reloadTime"]) * 1.1 + 0.5
 # AttackCheck
-	; Generate target pos for AREA command
-	_posT = _markerInfo call preprocessFile "Art\AreaRandomPos.sqf"
-	? not _needAvoidStruct: goto "ObtainedTargetPos"
-		_try = 0
-		# GenAreaPos
-			_try = _try + 1
-			? _try < 3 && ([_posT, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1 < 50: goto "GenAreaPos"
-		? 3 == _try: _posT set [0, _result select 1 select 1]; _posT set [1, _result select 1 select 2]
-	# ObtainedTargetPos
+	; Generate target pos
+	_ret = call preprocessFile "Art\GenerateTargetPos.sqf"
+	? not _ret: goto "EOF"
+	; assign target object to position
 		_posT set [2, _posT call funcHASL]; _target setPosASL _posT
 	
 	? _unit distance _target > (if _isInfantry then {_range} else {_distLimit}): goto "CheckDistance"
