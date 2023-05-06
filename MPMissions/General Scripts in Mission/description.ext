@@ -742,7 +742,8 @@ class TzkRtsArtSubMenu: Menu {
 	};
 
 	controls[] = {
-		TRSM_LIST_TITLE, BTN_OK, BTN_EXIT, 
+		TRSM_LIST_TITLE, BTN_SHOOT_AREA, BTN_DESTROY_OBSTRUCTION, 
+		BTN_EXIT, 
 		BTN_0_TITLE, BTN_1_TITLE, 
 		BTN_BG_0_0, BTN_BG_0_1, BTN_BG_0_2, BTN_BG_0_3, BTN_BG_0_4, 
 		BTN_0_0, BTN_0_1, BTN_0_2, BTN_0_3, BTN_0_4, 
@@ -771,13 +772,18 @@ class TzkRtsArtSubMenu: Menu {
 		text = "Exit";
 		action = "btnValue00 = true";
 	};
-	class BTN_OK: Button {
-		x = 0.45;
+	class BTN_SHOOT_AREA: Button {
+		x = 0.25;
 		y = 0.65;
-		w = 0.10;
+		w = 0.20;
 		h = 0.04;
-		text = "OK";
-		action = "btnValue01 = true";
+		text = "Shoot Area";
+		action = "btnValue01 = 1";
+	};
+	class BTN_DESTROY_OBSTRUCTION: BTN_SHOOT_AREA {
+		x = 0.55;
+		text = "Destroy Obstruction";
+		action = "btnValue01 = 2";
 	};
 
 	class BTN_0_TITLE: Label {
