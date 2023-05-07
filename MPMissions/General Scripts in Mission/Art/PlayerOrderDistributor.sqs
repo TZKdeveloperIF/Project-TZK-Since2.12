@@ -1,20 +1,6 @@
-; [_selectedUnits, [_biggerAngle, _speed, _idx, "Soldier", _timeStamp, siPlayer, _posParam], "Server\Rts\hRtsShootArea.sqs"] exec _executor
-; ; args: [units,	[
-; ;	bigAngle, speed, idx, enum, time stamp, si, pre-move info: [dest pos, "central" pos]
-; ; ]]
-
-
-; ; args: [
-; ; 	unit, si, target index, use big angle: bool, art type (enum): string, pre-move info: [dest pos, "central" pos], 
-; ; 	preset speed (enum): number, 
-; ;	is server order script: bool, is vehicle (moveable): bool, is structure
-; ;	is outdated concurrent order: bool, rts order info: [rts status, rts id]
-; ; ]
-; _unit = _this select 0, _si = _this select 1, _idx = _this select 2, _biggerAngle = _this select 3, _enum = _this select 4
-; _preMoveInfo = _this select 5, _suggestedSpeed = _this select 6
-; _isServer = _this select 7, _isVehicle = _this select 8, _isStruct = _this select 9
-; _bConcurrent = _this select 10
-; ? count (_this select 11) > 0: _rtsStatus = _this select 11 select 0; _rtsId = _this select 11 select 1
+; args: [units,	[
+;	bigAngle, speed, idx, enum, time stamp, si, pre-move info: [dest pos, "central" pos], order type
+; ]]
 
 ? localize {TZK_ART_406} != "true": hint "TZK_Art_4_0_6.pbo isn't detected. Art module inactivated.", exit
 
@@ -22,10 +8,10 @@ _si = siPlayer
 _params = _this select 1
 _idx = _params select 2, _biggerAngle = _params select 0, _enum = _params select 3
 _preMoveInfo = _params select 6, _suggestedSpeed = _params select 1
+_orderType = _params select 7
 _isServer = false
 _isVehicle = "Howitzer" == _enum || "MLRS" == _enum || "Tank" == _enum
 _isStruct = "Struct" == _enum
-_bConcurrent = false
 
 _timeStamp = _params select 4
 [_idx, _timeStamp, _si, false] call preprocessFile "Art\PreAnalysesArtArea.sqf"
@@ -35,7 +21,7 @@ _units = _this select 0; _i = 0; _c = count _units
 # loop
 	_unit = _units select _i
 	? _unit != gunner vehicle _unit: goto "continue"
-	[_unit, _si, _idx, _biggerAngle, _enum, _preMoveInfo, _suggestedSpeed, _isServer, _isVehicle, _isStruct, _bConcurrent] exec "Art\CoreOrder.sqs"
+	[[_unit, _si, _idx, _biggerAngle, _enum, _orderType], [_preMoveInfo, _suggestedSpeed], [_isServer, _isVehicle, _isStruct], [false]] exec "Art\CoreOrder.sqs"
 	# continue
 	_i = _i + 1
 	? _i < _c: goto "loop"

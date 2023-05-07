@@ -67,6 +67,12 @@ utSupportInf = [_supportCarrierW, _supportCarrierE];
 	_scripts set [count _scripts, "Common\Init\SoldierSupportCarrier.sqs"]
 } forEach utSupportInf;
 
+// M88/BREM unbanned
+typesEngineeringVeh = [_m88W, _bremE]; {
+	unitDefs select _x set [udFactoryType, 2^stLight + 2^stHeavy];
+	unitDefs select _x select udCrew set [0, 2];
+} forEach typesEngineeringVeh;
+
 // The unitTypeData and unitTypeArray should ALWAYS be defined AFTER HAVING CALLED THIS SCRIPT
 unitTypeArray resize 0; unitTypeData resize 0; _type = 0; _j = 0;
 {
