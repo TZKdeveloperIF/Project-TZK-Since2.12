@@ -3,6 +3,11 @@ TzkMap1x = 0;
 TzkMap1y = 0;
 TzkMap2x = 0;
 TzkMap2y = 0;
+// position info for diagonal of TZK Area
+TzkDiag1x = 0, TzkDiag1y = 0, TzkDiag2x = 0, TzkDiag2y = 0;
+// angle info for diagonal of TZK Area
+TzkDiagDir = 0;
+
 TzkMapSelectClicked = false;
 TzkMapSelectedTime = 0;
 TzkMapSelectEmptyTime = 0;
@@ -35,6 +40,12 @@ createMarker [_marker, [0, 0]];
 _marker setMarkerColor "ColorCyan_xj400";
 _marker setMarkerShape "RECTANGLE";
 _marker setMarkerBrush "Cross";
+_marker setMarkerSize [0, 0];
+
+_marker = "TzkRtsAreadiagonal";
+createMarker [_marker, [0, 0]];
+_marker setMarkerColor "ColorOrange_xj400";
+_marker setMarkerShape "RECTANGLE";
 _marker setMarkerSize [0, 0];
 
 // variables for dialog

@@ -3,19 +3,27 @@
 ; |		Prepare necessary parameters outside. Core art order logics will be preprocessed here.		|
 ; ---------------------------------------------------------------------------------------------------
 
-; args: [
-; 	unit, si, target index, use big angle: bool, art type (enum): string, pre-move info: [dest pos, "central" pos], 
-; 	preset speed (enum): number, 
-;	is server order script: bool, is vehicle (moveable): bool, is structure
-;	is outdated concurrent order: bool, rts order info: [rts status, rts id]
-; ]
-_unit = _this select 0, _si = _this select 1, _idx = _this select 2, _biggerAngle = _this select 3, _enum = _this select 4
-_preMoveInfo = _this select 5, _suggestedSpeed = _this select 6
-_isServer = _this select 7, _isVehicle = _this select 8, _isStruct = _this select 9
-_bConcurrent = _this select 10
-? count (_this select 11) > 0: _rtsStatus = _this select 11 select 0; _rtsId = _this select 11 select 1
-_this = 0
+; args: [art general params: [], preprocess params: [], script type info: [], server extra info: []]
+
+; art general params: [unit, si, area marker idx, use big angle, launcher type: enum, order type: enum (optional)]
+_params = _this select 0
+_unit = _params select 0, _si = _params select 1, _idx = _params select 2, _biggerAngle = _params select 3, _enum = _params select 4
+_orderType = "General Area"
+? count _params > 5: _orderType = _params select 5
+
+; preprocess params: [pre move info, suggested shooting init speed]
+_params = _this select 1
+_preMoveInfo = _params select 0, _suggestedSpeed = _params select 1
+; script type info: [is server, is vehicle, is structure]
+_params = _this select 2
+_isServer = _params select 0, _isVehicle = _params select 1, _isStruct = _params select 2
+; script type info: [is outdated concurrent order, [rts status, rts id]]
+_params = _this select 3
+_bConcurrent = _params select 0
+? count _params > 1: _rtsStatus = _params select 1 select 0; _rtsId = _params select 1 select 1
+
 _isInfantry = not _isVehicle && not _isStruct
+_params = 0, _this = 0
 
 ; Order initialization
 	; TODO
@@ -69,7 +77,8 @@ _isInfantry = not _isVehicle && not _isStruct
 	_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Art\FiredEh406.sqs"
 	? _biggerAngle: _heliH = typeOf _target camCreate [0,0,0]
 
-	_needAvoidStruct = (_isVehicle && _type in typesHowitzer) || _isStruct
+	_needAvoidStruct = ((_isVehicle && _type in typesHowitzer) || _isStruct) && "General Area" == _orderType
+	_posT = [-1, -1]; _defenceObject = objNull
 
 ; ======== Art order part ========
 ; Pre-move if ordered
@@ -163,16 +172,11 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	? not _isInfantry: _reloadMagazine = false
 	? not _isInfantry && _suggestedSpeed > 0: _delay = (call format ["%1", _weapon GetWeaponParam "magazineReloadTime"]) + (call format ["%1", ((_vehicle ammoArray _weapon) select 0) GetWeaponParam "reloadTime"]) * 1.1 + 0.5
 # AttackCheck
-	; Generate target pos for AREA command
-	_posT = _markerInfo call preprocessFile "Art\AreaRandomPos.sqf"
-	? not _needAvoidStruct: goto "ObtainedTargetPos"
-		_try = 0
-		# GenAreaPos
-			_try = _try + 1
-			? _try < 3 && ([_posT, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1 < 50: goto "GenAreaPos"
-		? 3 == _try: _posT set [0, _result select 1 select 1]; _posT set [1, _result select 1 select 2]
-	# ObtainedTargetPos
-		_posT set [2, _posT call funcHASL]; _target setPosASL _posT
+	; Generate target pos
+	_ret = call preprocessFile "Art\GenerateTargetPos.sqf"
+	? not _ret: goto "EOF"
+	; assign target object to position
+	_posT set [2, _posT call funcHASL]; _target setPosASL _posT
 	
 	? _unit distance _target > (if _isInfantry then {_range} else {_distLimit}): goto "CheckDistance"
 
@@ -238,6 +242,9 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	; for non-soldier
 	? not local gunner _vehicle: _delay = 5; goto "AttackCheck"
 	? 1 == _ammoOld: _reloadMagazine = true
+
+	; pre-process on fire
+	? "Destroy Obstruction" == _orderType: if (not alive _defenceObject) then {goto "AttackDone"}
 
 	_ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev]
 	_vehicle addEventHandler ["Fired", format [{[_this, %1, %2, %3, %4] exec "%5"}, _speed, _angle, _elev, _ehRev, _script] ]

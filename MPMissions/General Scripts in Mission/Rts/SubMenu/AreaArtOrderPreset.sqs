@@ -38,7 +38,7 @@ _i = lbAdd [_idcListBox0, "500"]; lbSetValue [_idcListBox0, _i, 500]
 ; _i = lbAdd [_idcListBox0, "Auto"]; lbSetValue [_idcListBox0, _i, -2]
 lbSetCurSel [_idcListBox0, 0]
 
-btnValue00 = false; btnValue01 = false
+btnValue00 = false; btnValue01 = 0
 btnValue02 = [true,true,true,true,true]; btnValue03 = [false,false,false,false]
 
 # loop
@@ -50,15 +50,18 @@ btnValue02 = [true,true,true,true,true]; btnValue03 = [false,false,false,false]
 	call preprocessFile "Rts\SubMenu\UpdateShootAreaBtn.sqf"
 
 	? btnValue00: btnValue00 = false; closeDialog 0; goto "Quit"
-	? btnValue01: btnValue01 = false; goto "OK"
+	? btnValue01 > 0: _btnVal = btnValue01, btnValue01 = 0; goto "Execution"
 
 	goto "loop"
 # Quit
 	btnValue02 = 0; btnValue03 = 0
 	exit
-# OK
+# Execution
 	? -1 == lbCurSel _idcListBox0: hint "No speed selected."; goto "loop"
 	? -1 == lbCurSel _idcListBox1: hint "No art area selected"; goto "loop"
 	? -10 == getMarkerPos (format ["%2%1", lbCurSel _idcListBox1, _markerPrefix]) select 0: hint "Area undefined."; goto "loop"
-	[btnValue02, btnValue03, lbValue [_idcListBox0, lbCurSel _idcListBox0], lbCurSel _idcListBox1, _this] exec "Player\Rts\sRtsShootArea.sqs"
+
+	_orderType = "General Area"
+	? 2 == _btnVal: _orderType = "Destroy Obstruction"
+	[btnValue02, btnValue03, lbValue [_idcListBox0, lbCurSel _idcListBox0], lbCurSel _idcListBox1, _this, _orderType] exec "Player\Rts\sRtsShootArea.sqs"
 	closeDialog 0; goto "Quit"
