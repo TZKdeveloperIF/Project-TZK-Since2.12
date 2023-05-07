@@ -3,15 +3,25 @@
 // external output variables: _nextBuildPos, _lineX, _cachedInfo, _skip, _msg
 // return: whether stopping building
 
-// 首先基于 _nextBuildPos 获取建筑坐标
-private [{_res},{_builtPos}];
-_res = [siPlayer, _stType, _nextBuildPos, _markerDir] call funcCalcAlignPosDir;
-_builtPos = _res select 0;
+// 首先基于 _nextBuildPos 获取建造坐标. 为避免障碍物重叠, 要求一定的距离差
+// 但是要考虑障碍物的尺寸, 如果机制对于过大或过小的障碍物会失效, 那么需要重新设计
+private [{_res},{_builtPos}, {_diff}, {_builtInfoX}, {_stepX}];
+_diff = 0; _stepX = _lineX;
+
+while {_diff < 3 && _stepX < _lineX + 10} do {
+	_res = [siPlayer, _stType, _nextBuildPos, _markerDir] call funcCalcAlignPosDir;
+	_builtPos = _res select 0;
+
+	_stepX = _stepX + 3;
+	_nextBuildPos set [0, (_markerPos select 0) + _stepX * _cos];
+	_nextBuildPos set [1, (_markerPos select 1) + _stepX * _sin];
+	_diff = [_nextBuildPos, _builtPos] call funcDistH;
+};
 
 _res = [_builtPos, _builderVehTypes, _cachedInfo] call preprocessFile "Player\Rts\CanBuildObstruction.sqf";
 // update next build position
 private [{_builtInfoX}]; _builtInfoX = ((_builtPos select 0) - (_markerPos select 0)) / _cos;
-_lineX = _lineX + 3; if (_builtInfoX > _lineX) then {_lineX = _builtInfoX};
+_lineX = _stepX; if (_builtInfoX > _lineX) then {_lineX = _builtInfoX + 3};
 _nextBuildPos set [0, (_markerPos select 0) + _lineX * _cos]; _nextBuildPos set [1, (_markerPos select 1) + _lineX * _sin];
 
 private [{_ret}];
