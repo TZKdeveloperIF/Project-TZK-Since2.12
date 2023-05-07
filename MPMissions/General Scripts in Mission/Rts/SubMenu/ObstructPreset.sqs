@@ -1,0 +1,44 @@
+; args: none
+; read info from "TzkRtsAreadiagonal" marker
+? (markerSize "TzkRtsAreadiagonal") select 0 > 500: hint "Drawn line too long. Draw a more precise line please.", exit
+
+@ !mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "TzkRtsSubMenuOneListTiny"
+mutexDlg = false
+
+_obstructionTypes = [stTankTrap, stWireFence]
+
+_idcTitle = IDC + 0; _idcListLabel = IDC + 16 * 1 + 0; _idcListBox0 = IDC + 16 * 2 + 0
+
+ctrlSetText [_idcTitle, "Obstruct"]
+
+ctrlSetText [_idcListLabel, "Obstruction Type"]; lbClear _idcListBox0
+_i = 0, _c = count _obstructionTypes
+# InitialList
+	_entry = structDefs select (_obstructionTypes select _i)
+	_idx = lbAdd [_idcListBox0, _entry select sdName]
+	lbSetValue [_idcListBox0, _idx, _obstructionTypes select _i]
+	lbSetPicture [_idcListBox0, _idx, _entry select sdImage select siPlayer];
+
+	_i = _i + 1
+	? _i < _c: goto "InitialList"
+
+btnValue00 = false; btnValue01 = false
+
+# loop
+	~ 0.2
+	? call dlgUpdated: goto "Quit"
+	? not alive player: closeDialog 0; goto "Quit"
+
+	? btnValue00: btnValue00 = false; closeDialog 0; goto "Quit"
+	? btnValue01: btnValue01 = false; goto "OK"
+
+	goto "loop"
+# Quit
+	exit
+# OK
+	_val = lbCurSel _idcListBox0
+	? -1 == _val: hint "Not selected yet.", goto "loop"
+	(lbValue [_idcListBox0, _val]) exec "Player\Rts\BuildObstructions.sqs"
+	closeDialog 0; goto "Quit"

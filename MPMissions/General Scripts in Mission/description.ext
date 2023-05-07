@@ -554,6 +554,51 @@ class TzkRtsSubMenuOneListBox: Menu {
 	};
 };
 
+class TzkRtsSubMenuOneListTiny: TzkRtsSubMenuOneListBox {
+	class OneListBg: BackgroundWindow {
+		x = 0.35;
+		y = 0.30;
+		w = 0.3;
+		h = 0.4;
+	};
+
+	class TRSM_LIST_TITLE: Title {
+		idc = IDC + 0;
+		style = ST_CENTER;
+		x = 0.42;
+		y = 0.32;
+		w = 0.16;
+		h = 0.03;
+		colorBackground[] = {0.247, 0.247, 0.247, 0.75};
+		text = "";
+	};
+
+	class BTN_EXIT: Button {
+		x = 0.60;
+		y = 0.30;
+		w = 0.05;
+		h = 0.04;
+		text = "Exit";
+		action = "btnValue00 = true";
+	};
+
+	class LISTTEXT0: Label {
+		idc = IDC + 16 * 1 + 0;
+		style = ST_CENTER;
+		x = 0.40;
+		y = 0.37;
+		w = 0.20;
+		text = "UNDEFINED";
+	};
+	class LISTBOX0: TZK_ListBox {
+		idc = IDC + 16 * 2 + 0;
+		x = 0.40;
+		y = 0.40;
+		w = 0.20;
+		h = 0.20;
+	};
+};
+
 class TzkRtsSubMenuOneListWide: TzkRtsSubMenuOneListBox {
 	controlsBackground[] = {OneListWideBg};
 	class OneListWideBg: OneListBg {
