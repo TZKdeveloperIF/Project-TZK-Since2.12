@@ -6,6 +6,7 @@ _scripts = structDefs select stAmmoCrate select sdScriptsPlayer;
 _scripts set [count _scripts, localize {TZK_MARKER_STRUCT}];
 
 structDefs select _tankt set [sdLimit, 500];
+structDefs select _tankt set [sdMaxRadius, 5];
 stTankTrap = _tankt;
 
 // Add structure items
