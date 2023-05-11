@@ -35,13 +35,15 @@ if not _processed then {
 	_posT = _markerInfo call preprocessFile "Art\AreaRandomPos.sqf";
 	if _needAvoidStruct then {
 		private [{_try}, {_legal}];
-		_try = 0; _legal = ([_posT, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1 < 50;
+		_try = 0; _legal = ([_posT, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1 > 50;
 		while {not _legal && _try < 3} do {
 			_posT = _markerInfo call preprocessFile "Art\AreaRandomPos.sqf";
-			_legal = ([_posT, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1 < 50;
+			_legal = ([_posT, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1 > 50;
 			_try = _try + 1;
 		};
 		if (3 == _try && not _legal) then {_posT set [0, _result select 1 select 1]; _posT set [1, _result select 1 select 2]};
+
+		_unit groupChat format ["posT: %1, legal: %2", _posT, _legal];
 	};
 
 	_ret = true;
