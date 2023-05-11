@@ -1,0 +1,12 @@
+; args: [vehicle, type, magazines to be equipped, weapons to be recorded but not equipped]
+_v = _this select 0; _t = _this select 1; _m = _this select 2, _w = _this select 3
+
+~ 1
+? !(local _v) || !(alive _v) : [_v, _w, _m, _t, 1] exec localize {TZK_EQUIPREARMDATA_EDIT}; exit
+
+_mags = magazines _v
+
+{ _v removeMagazine _x} foreach _mags
+{_v addMagazine _x} forEach _m
+
+[_v, _w, _m, _t, 1] exec localize {TZK_EQUIPREARMDATA_EDIT}; exit
