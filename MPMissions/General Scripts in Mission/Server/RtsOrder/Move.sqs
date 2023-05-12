@@ -26,6 +26,9 @@ _destPos = [_unit, _clickedPos, _rtsCentralPos, 50] call preprocessFile "Util\Rt
 _timeCheckSupport = _time + 30 + random 60
 _bCheckDropBomb = true
 
+; Move deployed vehicle
+_bMoveDeployed = false
+
 # Update
 	_vehicle = vehicle _unit
 	? _unit != driver _vehicle: goto "Sleep"
@@ -40,6 +43,8 @@ _bCheckDropBomb = true
 	_bCheckDropBomb = !_bCheckDropBomb 
 	? _bCheckDropBomb && _unit == _vehicle: if (magSatchel in (magazines _unit)) then {[_unit, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\AI_CheckDropBomb.sqs"; _cycle = 20; goto "Sleep"}
 	
+	? not _bMoveDeployed: _bMoveDeployed = true; _vehicle exec "Art\Undeploy.sqs"
+
 	; check move
 	_distToDest = [getPos _unit, _destPos] call funcDistH
 	? _distToDest > 10: goto "Move"
