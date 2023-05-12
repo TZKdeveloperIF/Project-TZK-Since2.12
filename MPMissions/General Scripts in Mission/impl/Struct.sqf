@@ -9,6 +9,12 @@ structDefs select _tankt set [sdLimit, 500];
 structDefs select _tankt set [sdMaxRadius, 5];
 stTankTrap = _tankt;
 
+// Init howtizer structures with 120m/s magazine
+_entry = structDefs select _m119 select sdScriptsServer;
+_entry set [count _entry, "Common\Equip\M119Svr.sqs"];
+_entry = structDefs select _d30 select sdScriptsServer;
+_entry set [count _entry, "Common\Equip\D30ASvr.sqs"];
+
 // Add structure items
 _oldCount = count structDefs;
 
