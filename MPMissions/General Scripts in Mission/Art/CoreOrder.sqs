@@ -79,6 +79,7 @@ _params = 0, _this = 0
 
 	_needAvoidStruct = ((_isVehicle && _type in typesHowitzer) || _isStruct) && "General Area" == _orderType
 	_posT = [-1, -1]; _defenceObject = objNull
+	_tuggedCheckCnt = 0
 
 ; ======== Art order part ========
 ; Pre-move if ordered
@@ -172,6 +173,10 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	? not _isInfantry: _reloadMagazine = false
 	? not _isInfantry && _suggestedSpeed > 0: _delay = (call format ["%1", _weapon GetWeaponParam "magazineReloadTime"]) + (call format ["%1", ((_vehicle ammoArray _weapon) select 0) GetWeaponParam "reloadTime"]) * 1.1 + 0.5
 # AttackCheck
+	; Attached check. Being tugged vehicle can't shoot
+	_tuggedCheckCnt = _tuggedCheckCnt - 1
+	? _tuggedCheckCnt <= 0: _tuggedCheckCnt = 5; if (call preprocessFile "Art\CheckTugged.sqf") then {goto "EOF"}
+
 	; Generate target pos
 	_ret = call preprocessFile "Art\GenerateTargetPos.sqf"
 	? not _ret: goto "EOF"
