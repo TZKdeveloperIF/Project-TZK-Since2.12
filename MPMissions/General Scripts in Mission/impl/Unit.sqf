@@ -31,6 +31,12 @@ _i = 0; _c = count TzkUnitSkillVal; while {_i < _c} do {
 	_entry set [udScripts, [localize {TZK_EQUIP_UNIT_TRUCK}]];
 } forEach [_boatCustomW, _boatCustomE];
 
+// Init howtizer with 120m/s magazine
+{
+	_entry = unitDefs select _x;
+	_entry set [udScripts, ["Common\Equip\Art155.sqs"]];
+} forEach [_m109W, _plz05E];
+
 // fix plane price bug
 unitDefs select _a10 set [udCost, 15000];
 
