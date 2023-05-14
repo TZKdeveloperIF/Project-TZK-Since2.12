@@ -52,3 +52,7 @@ _marker setMarkerSize [0, 0];
 RtsAreaBuildStruct = [0, 0];
 RtsSvrArtAreaIdx = -1;
 RtsPplArtAreaIdx = -1;
+
+RtsWpCoMode = 0;
+RtsPriorityPointDialogEnum = 2; // determine which dialog will be called when clicking on map
+RtsLatestPointDialogTime = 0; // the time that player used rts point dialog 

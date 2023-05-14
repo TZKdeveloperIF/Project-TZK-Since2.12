@@ -1,8 +1,12 @@
 ; args: pos
 _pos = _this
 @ !mutexDlg
-mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
-_dlg = createDialog "TzkCmdMapDlgPoint"
+	mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+	_dlg = createDialog "TzkCmdMapDlgPoint"
+
+	RtsPriorityPointDialogEnum = 4
+	RtsLatestPointDialogTime = time
+
 mutexDlg = false
 
 @ not mutexRtsMouse
@@ -43,6 +47,7 @@ TzkMapRtsFlashingDisabled = true
 	goto "Update"
 # Quit
 	TzkMapRtsFlashingDisabled = false
+	RtsLatestPointDialogTime = time
 	[false, _id + 2] exec "Player\Rts\SetRtsMouse.sqs"; exit
 # LeftBtn
 	? 0 == _btnVal: 0 exec "Player\Msg\sWallMhq.sqs"; goto "Update"
