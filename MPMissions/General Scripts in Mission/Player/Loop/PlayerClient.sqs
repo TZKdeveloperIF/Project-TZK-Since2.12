@@ -19,12 +19,12 @@ _unitsOld = units group player; _unitsNew = []
 ; Music list picked up by MF
 _songs = ["Track1","Track2","Track3","Track5","Track6","Track7","Track8","Track11","Track15","RTrack1a","RTrack4","RTrack5"]
 ; out date duration of "invalid rts single click (red cross)" and "selecting empty area"
-_mapSelOutdateDur = 10; _emptySelOutDateDur = 30;
+_rtsCrossOutdateDur = 10; _rtsAreaOutDateDur = 30;
 
 # Update
 	~1
-	? TzkMapSelectClicked && time > TzkMapSelectedTime + _mapSelOutdateDur: call preprocessFile "Player\Rts\ResetGuideLines.sqf"
-	? not TzkMapSelectClicked && time > TzkMapSelectEmptyTime + _emptySelOutDateDur && 0 == count TzkSelectedUnits: false call preprocessFile "Player\Rts\Area.sqf"; false call preprocessFile "Player\Rts\Selection.sqf";
+	? TzkMapSelectClicked && time > TzkMapFirstGuideLineDrawnTime + _rtsCrossOutdateDur: call preprocessFile "Player\Rts\ResetGuideLines.sqf"
+	? not TzkMapSelectClicked && TzkMapAreaLastUsedTime > 0 && time > TzkMapAreaLastUsedTime + _rtsAreaOutDateDur && 0 == count TzkSelectedUnits: false call preprocessFile "Player\Rts\Area.sqf"; false call preprocessFile "Player\Rts\Selection.sqf";
 
 	_mhq = mhq select siPlayer
 	_mcvs = MCV select siPlayer
