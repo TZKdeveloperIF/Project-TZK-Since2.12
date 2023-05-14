@@ -1,5 +1,5 @@
 TzkMapSelectClicked = false;
-TzkMapSelectedTime = 0;
+TzkMapFirstGuideLineDrawnTime = 0;
 
 "TzkRtsMarkerBgX" setMarkerPos [-10, -10];
 "TzkRtsMarkerBgY" setMarkerPos [-10, -10];

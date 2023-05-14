@@ -33,8 +33,8 @@ TzkMapRtsFlashingDisabled = true
 	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 	? call dlgUpdated: goto "Quit"
 	? not alive player: closeDialog 0; goto "Quit"
-	; update TzkMapSelectEmptyTime
-	TzkMapSelectEmptyTime = time
+	; update TzkMapAreaLastUsedTime
+	TzkMapAreaLastUsedTime = time
 	call preprocessFile "Player\Rts\HandleDialogAzimut.sqf"
 
 	? btnValue00 > 0: _btnVal = btnValue00; btnValue00 = 0; goto "LeftBtn"

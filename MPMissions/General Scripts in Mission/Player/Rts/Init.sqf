@@ -9,8 +9,8 @@ TzkDiag1x = 0, TzkDiag1y = 0, TzkDiag2x = 0, TzkDiag2y = 0;
 TzkDiagDir = 0;
 
 TzkMapSelectClicked = false;
-TzkMapSelectedTime = 0;
-TzkMapSelectEmptyTime = 0;
+TzkMapFirstGuideLineDrawnTime = 0;
+TzkMapAreaLastUsedTime = 0;
 TzkMapSelectDir = 0;
 
 TzkMapSelectedHighlight = false; TzkMapRtsFlashingDisabled = false;
