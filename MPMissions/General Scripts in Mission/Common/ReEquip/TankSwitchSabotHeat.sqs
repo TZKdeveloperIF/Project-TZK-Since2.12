@@ -1,7 +1,7 @@
-; args: [vehicle bool reload sabot]
+; args: [vehicle bool reload sabot, si]
 ; In this script we assume that the first 2 magazines of weapon are always the "sabot" and the "heat", and the weapon has only 1 muzzle whose name same as weapon's.
 
-_veh = _this select 0; _bReloadSabot = _this select 1
+_veh = _this select 0; _bReloadSabot = _this select 1, _si = _this select 2
 ? !local _veh: exit
 
 _mainGuns = ["Gun73", "Gun105", "Gun120", "M1Gun_xj400", "M12Gun_xj400", "T80Gun_xj400", "T90Gun_xj400","T90msGun_xj400","LeoGun_xj400", "PLAGun_xj400", "Gun155_xj400", "Gun130_xj400", "105RC_OFrP_xj400","Sprut_2A75_xj400"]
@@ -9,9 +9,10 @@ _weapons = weapons _veh
 ? !([_weapons, _mainGuns] call funcArrayOverlap): exit
 
 _j = 0; _cj = count _weapons
-#CheckWeapons
+? 0 == _cj: exit
+# CheckWeapons
 	_wea = _weapons select _j
-	? !(_wea in _mainGuns): goto "WeaponChecked"
+	? !(_wea in _mainGuns): goto "continue"
 	_magazines = call format ["%1", _wea GetWeaponParamArray "magazines"];
 	_magToBeHide = _magazines select _bReloadSabot; _magToBeReload = _magazines select !_bReloadSabot
 	
@@ -21,10 +22,20 @@ _j = 0; _cj = count _weapons
 	_indexToBeReload = _mArray find _magToBeReload; _ammoToBeReload = 0
 	? _indexToBeReload != -1: _ammoToBeReload = _mArray select (_indexToBeReload + 1)
 
+	; skip if no magazine
+	? -1 == _indexToBeHide || -1 == _indexToBeReload: goto "continue"
+	; skip if desired magazine has taken priority
+	? _indexToBeReload < _indexToBeHide: goto "continue"
+
+	? 0 == _ammoToBeHide || 0 == _ammoToBeReload: [_si, "ASSERT(FALSE)"] exec "Server\Msg\sSvrMsg2Cmd.sqs"; goto "continue"
+
 	_aArray = _veh ammoarray _wea
-	? (_aArray select 0) == _magToBeHide && _ammoToBeHide > 0 && _ammoToBeReload > 0: _veh removeMagazine _magToBeHide; _veh removeMagazine _magToBeReload; _veh addMagazinePrecise [_magToBeReload, _ammoToBeReload]; _veh addMagazinePrecise [_magToBeHide, _ammoToBeHide]
+	? (_aArray select 0) != _magToBeHide: goto "continue"
+
+	_veh removeMagazine _magToBeHide; _veh removeMagazine _magToBeReload
+	_veh addMagazinePrecise [_magToBeReload, _ammoToBeReload]; _veh addMagazinePrecise [_magToBeHide, _ammoToBeHide]
 	
-	#WeaponChecked
+	# continue
 	_j = _j + 1
 	? _j < _cj: goto "CheckWeapons"
 	
