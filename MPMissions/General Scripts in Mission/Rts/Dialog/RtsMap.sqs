@@ -73,12 +73,17 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 	? 2^1 == _btnVal: 0 exec "Player\Rts\sEject.sqs"; closeDialog 0; goto "Quit"
 	? 2^2 == _btnVal: 0 exec "Player\Rts\sDisembark.sqs"; closeDialog 0; goto "Quit"
 	? 2^6 == _btnVal: _downBoardStack set [0, 6]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
+	? 2^7 == _btnVal: _downBoardStack set [0, 7]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
 	goto "Update"
 	# DownSubMenu
 		_return = false
 		; ASSERT(6 == _downBoardStack select 0 && 1 == count _downBoardStack)
-		? 2^0 == _btnVal: true exec "Player\Rts\sTransportTurn.sqs"; _return = true
-		? 2^1 == _btnVal: false exec "Player\Rts\sTransportTurn.sqs"; _return = true
+		? 2^0 == _btnVal && 6 == _downBoardStack select 0: true exec "Player\Rts\sTransportTurn.sqs"; _return = true
+		? 2^1 == _btnVal && 6 == _downBoardStack select 0: false exec "Player\Rts\sTransportTurn.sqs"; _return = true
+
+		? 2^0 == _btnVal && 7 == _downBoardStack select 0: true exec "Player\Rts\sTankSwitchMainGun.sqs"; _return = true
+		? 2^1 == _btnVal && 7 == _downBoardStack select 0: false exec "Player\Rts\sTankSwitchMainGun.sqs"; _return = true
+
 		? 2^8 == _btnVal: _return = true
 
 		? _return: _downBoardStack resize 0; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"

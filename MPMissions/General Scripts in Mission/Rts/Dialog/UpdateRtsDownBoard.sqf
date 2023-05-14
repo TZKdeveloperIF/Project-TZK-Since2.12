@@ -11,8 +11,9 @@ if (not _processed && 0 == count _downBoardStack) then {
 	ctrlSetText [_idcDownBtn0 + 2, "GetOff"];
 
 	ctrlSetText [_idcDownBtn0 + 6, "Transport"];
+	ctrlSetText [_idcDownBtn0 + 7, "Tank"];
 
-	{ctrlShow [_idcDownBtn0 + _x, true]} forEach [0,1,2,6];
+	{ctrlShow [_idcDownBtn0 + _x, true]} forEach [0,1,2,6,7];
 	_processed = true;
 };
 // Area "set as..." sub board
@@ -24,6 +25,15 @@ if (not _processed && 1 == count _downBoardStack) then {
 		ctrlSetText [_idcDownBtn0 + 8, "Return"];
 
 		{ctrlShow [_idcDownBtn0 + _x, true]} forEach [0,1,8];
+		_processed = true;
 	};
-	_processed = true;
+	if (not _processed && 7 == _downBoardStack select 0) then {
+		ctrlSetText [_idcDownBtn0 + 0, "Sabot"];
+		ctrlSetText [_idcDownBtn0 + 1, "Heat"];
+
+		ctrlSetText [_idcDownBtn0 + 8, "Return"];
+
+		{ctrlShow [_idcDownBtn0 + _x, true]} forEach [0,1,8];
+		_processed = true;
+	};
 };
