@@ -1,23 +1,19 @@
-; args: [si]]
-_si = _this select 0
-_this = _nil
+; args: [enemy, si]
 
-_last = []; _enemy = objNull
+? pvGameover != -1: exit
 
-# Start
+_si = _this select 1
+? _si != siPlayer: exit
+_enemy = _this select 0
+_this = 0
 
-@ !(call format ["isNull pvEnemy%1", _si])
+@ not mutexSpottedEnemy
+	mutexSpottedEnemy = true
 
-? pvGameover != -1: Exit
-call format ["_enemy = pvEnemy%1; pvEnemy%1 = objNull", _si]
-? _enemy in _last: goto "Start"
+	? indexSpottedEnemy >= 10: indexSpottedEnemy = 0
+	_found = _enemy in arraySpottedEnemy
+	? not _found: arraySpottedEnemy set [indexSpottedEnemy, _enemy], indexSpottedEnemy = indexSpottedEnemy + 1
 
-_last set [count _last, _enemy]
-_enemy exec "Player\Msg\hEnemySpotted.sqs"
+	mutexSpottedEnemy = false
 
-? count _last <= 10: goto "Start"
-_last set [0, objNull]
-_i = 0; _j = 0; _c = count _last
-while {_i < _c} do {if (!isNull (_last select _i)) then {_last set [_j, _last select _i]; _j = _j + 1}; _i = _i + 1}; _last resize _j
-
-goto "Start"
+	? not _found: _enemy exec "Player\Msg\hEnemySpotted.sqs"

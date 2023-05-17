@@ -19,9 +19,10 @@ _i = 0; _count = 5; while "_i < _count" do {call format [{[] exec "\TZK_Scripts_
 
 [] exec "\TZK_Scripts_4_0_4\Player\Msg\mMovingToSupport.sqs"
 
-? _si == si0: [] exec "\TZK_Scripts_4_0_4\Player\Msg\mEnemySpotted0.sqs"
-? _si == si1: [] exec "\TZK_Scripts_4_0_4\Player\Msg\mEnemySpotted1.sqs"
-[_si] exec "Player\Msg\mEnemySpotted.sqs"
+mutexSpottedEnemy = false
+arraySpottedEnemy = []; arraySpottedEnemy resize 10; indexSpottedEnemy = 0
+while {indexSpottedEnemy < 10} do {arraySpottedEnemy set [indexSpottedEnemy, objNull], indexSpottedEnemy = indexSpottedEnemy + 1}
+indexEnemyMarker = 0
 
 0 exec "Player\Msg\mPingServer.sqs"
 
