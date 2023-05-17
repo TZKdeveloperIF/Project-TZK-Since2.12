@@ -13,6 +13,8 @@ _si = groupName find _name
 _groups = townGroups select _si
 _groups set [count _groups, _group]
 
+? _si == si0 || _si == si1: _groups = tzkAllGroups select _si; _groups set [count _groups, _group]
+
 mutexDynamicInitializeGroups = false
 
 ; EOF
