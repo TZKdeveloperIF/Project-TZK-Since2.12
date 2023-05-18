@@ -9,8 +9,8 @@ TzkDiag1x = 0, TzkDiag1y = 0, TzkDiag2x = 0, TzkDiag2y = 0;
 TzkDiagDir = 0;
 
 TzkMapSelectClicked = false;
-TzkMapSelectedTime = 0;
-TzkMapSelectEmptyTime = 0;
+TzkMapFirstGuideLineDrawnTime = 0;
+TzkMapAreaLastUsedTime = 0;
 TzkMapSelectDir = 0;
 
 TzkMapSelectedHighlight = false; TzkMapRtsFlashingDisabled = false;
@@ -52,3 +52,7 @@ _marker setMarkerSize [0, 0];
 RtsAreaBuildStruct = [0, 0];
 RtsSvrArtAreaIdx = -1;
 RtsPplArtAreaIdx = -1;
+
+RtsWpCoMode = 0;
+RtsPriorityPointDialogEnum = 2; // determine which dialog will be called when clicking on map
+RtsLatestPointDialogTime = 0; // the time that player used rts point dialog 

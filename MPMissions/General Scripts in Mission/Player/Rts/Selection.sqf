@@ -15,7 +15,7 @@ if (_this) then {
 	};
 	// activate selected units' highlighting
 	TzkMapSelectedHighlight = false;
-	if (0 == count TzkSelectedUnits) then {TzkMapSelectEmptyTime = time} else {TzkMapSelectEmptyTime = 0};
+	TzkMapAreaLastUsedTime = time;
 } else {
 	_index = 0;
 	{
@@ -39,5 +39,5 @@ if (_this) then {
 	};
 	TzkSelectedUnits resize 0;
 	TzkSelStackIdx = 0; // move stack top
-	TzkMapSelectEmptyTime = 0;
+	TzkMapAreaLastUsedTime = 0;
 };

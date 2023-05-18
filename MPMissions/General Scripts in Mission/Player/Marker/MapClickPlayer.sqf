@@ -42,9 +42,21 @@ if (!_processed) then {
 			_pos exec "Rts\Dialog\AreaMap.sqs";
 			_processed = true;
 		};
-		// set way points
+		// set way points or acitvate point dialog
 		if (not _processed) then {
-			_pos exec localize {TZK_DIALOG_WAYPOINT};
+			// lazy-load RtsPriorityPointDialogEnum status on clicking
+			if (4 == RtsPriorityPointDialogEnum) then {
+				if (time > RtsLatestPointDialogTime + 60) then {
+					RtsPriorityPointDialogEnum = 2; // fall back to way point dialog
+				};
+			};
+
+			private [{_script}];
+			_script = localize {TZK_DIALOG_WAYPOINT};
+			if (4 == RtsPriorityPointDialogEnum) then {
+				_script = "Rts\Dialog\PointMap.sqs";
+			};
+			_pos exec _script;
 			_processed = true;
 		};
 	};
