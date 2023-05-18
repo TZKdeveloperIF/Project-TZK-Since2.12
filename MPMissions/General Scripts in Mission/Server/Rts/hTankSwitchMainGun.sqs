@@ -1,0 +1,13 @@
+? not isServer: exit
+
+; args: [NetworkID[], [switch to sabot, si]]
+_netIds = _this select 0; _state = _this select 1 select 0, _si = _this select 1 select 1; _this = 0
+_c = count _netIds
+? 0 == _c: exit
+
+_i = 0
+# loop
+	[vehicle UnitById(_netIds select _i), _state, _si] exec "Common\ReEquip\TankSwitchSabotHeat.sqs"
+
+	_i = _i + 1
+	? _i < _c: goto "loop"

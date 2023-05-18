@@ -16,7 +16,7 @@ if TzkMapSelectClicked then {
 	TzkMap1x = _pos select 0; TzkMap1y = _pos select 1;
 	TzkDiag1x = _pos select 0; TzkDiag1y = _pos select 1;
 	
-	TzkMapSelectClicked = true; TzkMapSelectedTime = time;
+	TzkMapSelectClicked = true; TzkMapFirstGuideLineDrawnTime = time;
 
 	call preprocessFile "Player\Rts\SetGuideLines.sqf";
 
