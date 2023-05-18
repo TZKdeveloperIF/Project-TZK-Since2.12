@@ -1,0 +1,47 @@
+; args: [_unit, _si, _kaReport, _dist, _timeLastSent]
+_interval = 20
+
+_unit = _this select 0
+_si = _this select 1
+_kaReport = _this select 2
+_dist = _this select 3
+_timeLastSent = _this select 4
+_this = 0
+
+_siEnemy = siEnemy select _si
+_groups = tzkAllGroups select _siEnemy
+_commandCenters = structMatrix select _siEnemy select stComm
+
+# Update
+	~ _interval / 2 + random _interval
+	
+	? !(alive _unit) : exit
+	? time < (_timeLastSent + 120): goto "Update"
+
+	; check working cc
+	_found = false; _i = 0; _c = count _commandCenters
+	while {_i < _c && not _found} do {if (alive (_commandCenters select _i)) then {_found = true}; _i = _i + 1}
+	? not _found: goto "Update"
+	
+	_target = vehicle _unit
+	_res = [_target, _si, _groups] call funcBiggestKA
+	_kaMax = _res select 0; _group = _res select 1
+	? _kaMax < _kaReport : goto "Update"
+
+	? _dist == -1 : goto "SkipRangeCheck"
+	; range check
+		_bInRange = false
+		{ if ( (_x distance _target) < _dist ) then { _bInRange = true } } foreach (units _group)
+		? !_bInRange : _kaMax = 0
+	# SkipRangeCheck
+
+	? _kaMax <= _kaReport: goto "Update"
+
+	{ _x reveal _target } forEach _groups
+
+	? not isNull player: [_target, _siEnemy] exec "Player\Msg\mEnemySpotted.sqs"
+	publicExec format [{[UnitById %1, %2] exec "Player\Msg\mEnemySpotted.sqs"}, NetworkID _target, _siEnemy]
+
+	_timeLastSent = time
+	
+	goto "Update"

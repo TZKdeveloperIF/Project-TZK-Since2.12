@@ -1,0 +1,62 @@
+; args: [_unit, _si, _kaReport, _dist, _timeLastSent0, _timeLastSent1]
+_interval = 20
+
+_unit = _this select 0
+_si = _this select 1
+_kaReport = _this select 2
+_dist = _this select 3
+_timeLastSent0 = _this select 4
+_timeLastSent1 = _this select 5
+_this = 0
+
+_groups0 = tzkAllGroups select si0
+_groups1 = tzkAllGroups select si1
+_commandCenters0 = structMatrix select si0 select stComm
+_commandCenters1 = structMatrix select si1 select stComm
+# Update
+	~ _interval/2 + random _interval
+	
+	? !(alive _unit) : exit
+	_target = vehicle _unit
+	
+	# CheckSide0
+		_siEnemy = si0
+		? time < (_timeLastSent0 + 120): goto "CheckSide1"
+
+		; check working cc
+		_found = false; _i = 0; _c = count _commandCenters0
+		while {_i < _c && not _found} do {if (alive (_commandCenters0 select _i)) then {_found = true}; _i = _i + 1}
+		? not _found: goto "CheckSide1"
+
+		_res = [_target, _si, _groups0] call funcBiggestKA
+		_kaMax = _res select 0
+		? _kaMax < _kaReport : goto "CheckSide1"
+
+		{ _x reveal _target } forEach _groups0
+
+		? not isNull player: [_target, _siEnemy] exec "Player\Msg\mEnemySpotted.sqs"
+		publicExec format [{[UnitById %1, %2] exec "Player\Msg\mEnemySpotted.sqs"}, NetworkID _target, _siEnemy]
+
+		_timeLastSent0 = time
+	
+	# CheckSide1
+		_siEnemy = si1
+		? time < (_timeLastSent1 + 120): goto "Update"
+
+		; check working cc
+		_found = false; _i = 0; _c = count _commandCenters1
+		while {_i < _c && not _found} do {if (alive (_commandCenters1 select _i)) then {_found = true}; _i = _i + 1}
+		? not _found: goto "Update"
+
+		_res = [_target, _si, _groups1] call funcBiggestKA
+		_kaMax = _res select 0
+		? _kaMax < _kaReport : goto "Update"
+
+		{ _x reveal _target } forEach _groups1
+
+		? not isNull player: [_target, _siEnemy] exec "Player\Msg\mEnemySpotted.sqs"
+		publicExec format [{[UnitById %1, %2] exec "Player\Msg\mEnemySpotted.sqs"}, NetworkID _target, _siEnemy]
+
+		_timeLastSent0 = time
+
+	goto "Update"

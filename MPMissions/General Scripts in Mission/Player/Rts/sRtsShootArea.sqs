@@ -41,15 +41,15 @@ while {_i < _c} do {_u = _units select _i; if ([_u, "Howitzer"] call _func) then
 
 # SkipHowitzer
 ; MLRS
-? not (_this select 0 select 2): goto "SkipMLRS"
-_selectedUnits = []; _biggerAngle = _this select 1 select 2
+? not (_this select 0 select 3): goto "SkipMLRS"
+_selectedUnits = []; _biggerAngle = _this select 1 select 3
 _i = 0; _j = 0
 while {_i < _c} do {_u = _units select _i; if ([_u, "MLRS"] call _func) then {_selectedUnits set [_j, _u]; _j = _j + 1}; _i = _i + 1}
 [_selectedUnits, [_biggerAngle, _speed, _idx, "MLRS", _timeStamp, siPlayer, _posParam, _orderType], "Server\Rts\hRtsShootArea.sqs"] exec _executor
 
 # SkipMLRS
 ; Tank
-? not (_this select 0 select 2): goto "SkipTank"
+? not (_this select 0 select 4): goto "SkipTank"
 _selectedUnits = []; _biggerAngle = false
 _i = 0; _j = 0
 while {_i < _c} do {_u = _units select _i; if ([_u, "Tank"] call _func) then {_selectedUnits set [_j, _u]; _j = _j + 1}; _i = _i + 1}
