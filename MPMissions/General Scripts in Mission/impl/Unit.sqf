@@ -36,6 +36,11 @@ _i = 0; _c = count TzkUnitSkillVal; while {_i < _c} do {
 	_entry = unitDefs select _x;
 	_entry set [udScripts, ["Common\Equip\Art155.sqs"]];
 } forEach [_m109W, _plz05E];
+// Init MLRS with 120m/s magazine
+{
+	_entry = unitDefs select _x;
+	_entry set [udScripts, ["Common\Equip\ArtMLRS.sqs"]];
+} forEach [_m270W, _tos1E];
 
 // fix plane price bug
 unitDefs select _a10 set [udCost, 15000];
