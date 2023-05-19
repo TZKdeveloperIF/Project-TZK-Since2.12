@@ -9,6 +9,29 @@ _processed = false;
 if (!alive player) then {_processed = true};
 if (!_processed && (count _units) > 0) then { if (!_processed && !_alt && _shift) then {[_pos, _units] exec localize {TZK_DIALOG_ORDER_PLAYER_AI}; _processed = true} };
 if (!_processed) then {
+	// clear units current order. Same design as in old CRCTI missions
+	if ((count _units) > 0 && !_alt && !_shift) then {
+		private [{_allUnits}, {_unit}];
+		_allUnits = [];
+		{
+			if (_x == vehicle _x) then {_allUnits set [count _allUnits, _x]} else {
+				_unit = driver vehicle _x;
+				if (not isNull _unit) then {
+					if (-1 == _allUnits find _unit) then {_allUnits set [count _allUnits, _unit]};
+				};
+				_unit = gunner vehicle _x;
+				if (not isNull _unit) then {
+					if (-1 == _allUnits find _unit) then {_allUnits set [count _allUnits, _unit]};
+				};
+				_unit = commander vehicle _x;
+				if (not isNull _unit) then {
+					if (-1 == _allUnits find _unit) then {_allUnits set [count _allUnits, _unit]};
+				};
+			};
+		} forEach _units;
+		{_x exec "Player\Order\OnMapClickMove.sqs"} forEach _allUnits;
+	};
+
 	// unit cam
 	// shift
 	if (!_processed && !_alt && _shift && count ([siPlayer, stSatRec] call funcGetWorkingStructures) > 0) then {
