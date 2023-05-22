@@ -277,7 +277,15 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	if _biggerAngle then {_vehicle doWatch _posH} else {_vehicle doWatch _posT}
 	goto "AttackCheck"
 # CheckRearm
-	? _isInfantry: if not ([_validMags, (_unit call funcGetRearmData) select 1] call funcArrayOverlap) then {_msg = "My magData isn't match current command. Won't go rearm and order aborted."; goto "EOF"}
+	? not _isInfantry: goto "SkipSoldierRearmDataCheck"
+		; verify soldier rearm data
+		_i = rearmDataObj find _unit
+		_bValid = false
+		? _i != -1: _bValid = [_validMags, rearmDataEquip select _i select 1] call funcArrayOverlap
+		? _i == -1: _bValid = [_validMags, (_unit call funcGetRearmData) select 1] call funcArrayOverlap
+		? not _bValid: _msg = "My magData isn't match current command. Won't go rearm and order aborted."; goto "EOF"
+
+	# SkipSoldierRearmDataCheck
 	; pre rearm
 	? _isStruct: goto "SeekSup4Structure"
 	? not _isInfantry: goto "SeekSup4Vehicle"
