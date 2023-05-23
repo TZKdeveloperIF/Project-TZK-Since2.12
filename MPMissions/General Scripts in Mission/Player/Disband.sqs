@@ -11,18 +11,35 @@ _index = 0; _gis = []; _groupsAI = groupAiMatrix select siPlayer; _siGroups = gr
 { if ( (["Commander"] + callsigns) select (((aiSetting select siPlayer) select _x) select aisSuperior) == _groupNames select giPlayer ) then { _groups = _groups + [_siGroups select _x] } } forEach _gis
 
 #SkipSuperiorCheck
-; player globalchat format["_groups = %1", _groups]
+
+_extraRecycler = []
 _i = 0; _c = count _units
-#CheckUnit
-	? !(_i < _c) : exit 
+# CheckUnit
+	? !(_i < _c) : goto "Quit" 
 	_u = _units select _i; _i = _i + 1
 	; ? !(alive _u) : player groupchat "You can't disband dead units."; goto "CheckUnit"
 	_crew = crew _u
 	; player globalchat format["crew _u = %1", crew _u]
 	? giPlayer != (giCO select siPlayer) && count _crew == 0 : player groupchat "Only commanders can disband empty vehicles."; goto "CheckUnit"
 
+	? count _crew <= 0 || _u in _crew: goto "skipNonEmptyVehicleCheck"
 	; non-empty vehicle
-	? count _crew > 0 && !(_u in _crew) : player groupchat "You can't disband non-empty vehicles."; goto "CheckUnit"
+	; verify all crews. "join" sometimes creates bug and leave join group units in vehicle
+	; allow remove vehicle and those units
+		_bValid = true; _i = 0; _c = count _crew
+		# vehicleCrewCheck
+			_human = _crew select _i
+			? not alive _human: goto "vccContinue"
+			? sides find (side _human) != siPlayer: _bValid = false
+			? (group _human) in _groups: _bValid = false
+
+			# vccContinue
+			_i = _i + 1
+			? _i < _c && _bValid: goto "vehicleCrewCheck"
+		? not _bValid: player groupchat "You can't disband non-empty vehicles."; goto "CheckUnit"
+		_extraRecycler = _extraRecycler + _crew
+
+	# skipNonEmptyVehicleCheck
 
 	; empty vehicle
 	? count _crew == 0 && (_u in ( mhq + (MCV select si0) + (MCV select si1) )) : player groupchat "You can't disband MHQ/MCV."; goto "CheckUnit"
@@ -41,3 +58,6 @@ _i = 0; _c = count _units
 	? _u == leader _u && !((group _u) in (workerGroups select siPlayer)) : player groupchat "Leader has been killed but won't be deleted."; goto "CheckUnit"
 	deleteVehicle _u
 	goto "CheckUnit"
+
+# Quit
+? count _extraRecycler > 0: {deleteVehicle _x} forEach _extraRecycler
