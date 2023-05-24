@@ -3,6 +3,7 @@
 _unit = _this
 
 ? !(alive _unit): exit
+? _unit == player: exit
 
 _uid = [_unit, siPlayer, giPlayer] call funcCalcUID
 ? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit

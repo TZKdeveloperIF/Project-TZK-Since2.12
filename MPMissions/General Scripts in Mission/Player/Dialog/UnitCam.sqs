@@ -279,7 +279,7 @@ _return = "External_Update"; goto "UpdateDialog"
 
 #Disband
 	; ? !(alive _unitTracked) : player groupchat "You can't disband dead units."; goto _return
-	[[_unitTracked]] exec "\TZK_Scripts_4_0_4\Player\DisbandUnits.sqs"
+	[[_unitTracked]] exec "Player\Disband.sqs"
 
 	_crew = crew vehicle _unitTracked
 	_done = false; { if (_unitTracked != _x && !_done) then { _unitTracked = _x; _done=true } } foreach _crew

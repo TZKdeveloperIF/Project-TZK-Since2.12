@@ -11,19 +11,24 @@ if (!_processed && (count _units) > 0) then { if (!_processed && !_alt && _shift
 if (!_processed) then {
 	// clear units current order. Same design as in old CRCTI missions
 	if ((count _units) > 0 && !_alt && !_shift) then {
-		private [{_allUnits}, {_unit}];
+		private [{_allUnits}, {_unit}, {_vehicle}];
 		_allUnits = [];
 		{
-			if (_x == vehicle _x) then {_allUnits set [count _allUnits, _x]} else {
-				_unit = driver vehicle _x;
+			_vehicle = vehicle _x;
+			if (_x == _vehicle) then {_allUnits set [count _allUnits, _x]} else {
+				_unit = _x;
 				if (not isNull _unit) then {
 					if (-1 == _allUnits find _unit) then {_allUnits set [count _allUnits, _unit]};
 				};
-				_unit = gunner vehicle _x;
+				_unit = driver _vehicle;
 				if (not isNull _unit) then {
 					if (-1 == _allUnits find _unit) then {_allUnits set [count _allUnits, _unit]};
 				};
-				_unit = commander vehicle _x;
+				_unit = gunner _vehicle;
+				if (not isNull _unit) then {
+					if (-1 == _allUnits find _unit) then {_allUnits set [count _allUnits, _unit]};
+				};
+				_unit = commander _vehicle;
 				if (not isNull _unit) then {
 					if (-1 == _allUnits find _unit) then {_allUnits set [count _allUnits, _unit]};
 				};
