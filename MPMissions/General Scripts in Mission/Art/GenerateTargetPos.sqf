@@ -42,8 +42,6 @@ if not _processed then {
 			_try = _try + 1;
 		};
 		if (3 == _try && not _legal) then {_posT set [0, _result select 1 select 1]; _posT set [1, _result select 1 select 2]};
-
-		_unit groupChat format ["posT: %1, legal: %2", _posT, _legal];
 	};
 
 	_ret = true;
