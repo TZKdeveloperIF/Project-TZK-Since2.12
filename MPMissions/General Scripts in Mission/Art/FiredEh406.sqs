@@ -1,18 +1,37 @@
-; args: [Fired EH Array, _speed, _angle, _elev, EH index]
+; args: [Fired EH Array, _speed, _angle, _elev, EH index, extra info]
 _vehicle = _this select 0 select 0; _ammo = _this select 0 select 4
 
 _speed = _this select 1; _angle = _this select 2; _elev = _this select 3
 
 _ehRev = _this select 4; _vehicle removeEventHandler ["Fired", _ehRev]
 
+_extraInfo = _this select 5;
+
 _shell = nearestObject [_vehicle, _ammo]
 ? isNull _shell: exit
 
 _posShell = getPosASL _shell
 _velShell = [_speed * cos(_elev) * cos(_angle), _speed * cos(_elev) * sin(_angle), _speed * sin(_elev)]
-_shell setVectorDir _velShell
-_shell setVelocity _velShell; _shell setPosASL _posShell
 
-? isNull player: exit
-~0.1
-? !isNull _shell: [_vehicle, _shell] exec localize {TZK_EFFECT_FIRED_ART_IMPACT}
+? (_extraInfo select 1): goto "Shrapnel"
+; General shell
+	_shell setVectorDir _velShell
+	_shell setVelocity _velShell; _shell setPosASL _posShell
+
+	? isNull player: exit
+	~ 0.1
+	? !isNull _shell: [_vehicle, _shell] exec localize {TZK_EFFECT_FIRED_ART_IMPACT}
+	exit
+
+# Shrapnel
+	deleteVehicle _shell
+	_si = _extraInfo select 0
+	_shellType = format ["Shrapnel_%1_xj400", if (_si == si0) then {"W"} else {"E"}]
+	_radius = (if (_si == si0) then {12} else {9})
+	_number = (if (_si == si0) then {12} else {8})
+	_shell = createShell [_shellType, _posShell, _velShell, _vehicle, objNull]
+	_shell setVectorDir _velShell
+	_shell setVelocity _velShell; _shell setPosASL _posShell
+
+	~ 1
+	call preprocessFile "Art\GenerateShrapnelShells.sqf"
