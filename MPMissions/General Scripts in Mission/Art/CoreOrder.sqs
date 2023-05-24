@@ -77,7 +77,8 @@ _params = 0, _this = 0
 	_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Art\FiredEh406.sqs"
 	? _biggerAngle: _heliH = typeOf _target camCreate [0,0,0]
 
-	_needAvoidStruct = ((_isVehicle && _type in typesHowitzer) || _isStruct) && "General Area" == _orderType
+	_bShrapnel = ({"Shrapnel_W_0120_xj400" == _x} count magazines _vehicle > 0)
+	_needAvoidStruct = call preprocessFile "Art\NeedAvoidStruct.sqf"
 	_posT = [-1, -1]; _defenceObject = objNull
 	_tuggedCheckCnt = 0
 
@@ -252,7 +253,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	? "Destroy Obstruction" == _orderType: if (not alive _defenceObject) then {goto "AttackDone"}
 
 	_ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev]
-	_vehicle addEventHandler ["Fired", format [{[_this, %1, %2, %3, %4] exec "%5"}, _speed, _angle, _elev, _ehRev, _script] ]
+	_vehicle addEventHandler ["Fired", format [{[_this, %1, %2, %3, %4, %6] exec "%5"}, _speed, _angle, _elev, _ehRev, _script, [_si, _bShrapnel]] ]
 	_vehicle fire _weapon
 
 	? _isInfantry: goto "AttackDone"

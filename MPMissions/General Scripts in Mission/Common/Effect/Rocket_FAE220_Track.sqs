@@ -2,10 +2,15 @@
 _rocket = _this select 0; _vehicle = _this select 1
 _name = typeOf _rocket
 ? count sides > 0: _si = sides find (side _vehicle)
-#loop
-_pos = getPos _rocket; _vel = velocity _rocket
-~0.1
-? !isNull _rocket: goto "loop"
+
+? _si != si0 && _si != si1: exit
+? not alive _vehicle: exit
+? -1 != (magazines _vehicle) find "Shrapnel_W_0120_xj400": exit
+
+# loop
+	_pos = getPos _rocket; _vel = velocity _rocket
+	~ 0.1
+	? !isNull _rocket: goto "loop"
 
 _sensor = "EmptyDetector" camCreate _pos; _distance = _sensor distance _vehicle; _distance = _distance - _distance % 1; deleteVehicle _sensor
 ; _vehicle vehiclechat format ["Estimate Range: %1 meters", _distance]
