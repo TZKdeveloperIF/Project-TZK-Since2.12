@@ -86,14 +86,14 @@ typesEngineeringVeh = [_m88W, _bremE]; {
 
 // Add MLRS equipping with shrapnel
 _type = _m270W + 1;
-unitDefs set [_type, ["M270 Shrapnel", 7500, si0, 60, "M270_M29064_xj400", "\TZK_Texture_4_0_0\icon\iM270.paa", 2^stHeavy, [3, _crewW], _mMLRS, ["Common\Equip\Shrapnel.sqs"]] ];
-_m270ShrapnelW = _type;
+unitDefs set [_type, ["M109A6 Shrapnel", 7500, si0, 60, "M109A6G_xj400", "\TZK_Texture_4_0_0\icon\iM109A6G.paa", 2^stHeavy, [2, _crewW], _mHowitzer, ["Common\Equip\Shrapnel.sqs"]] ];
+_m109ShrapnelW = _type;
 _type = _tos1E + 1;
-unitDefs set [_type, ["TOS-1 Shrapnel", 7500, si1, 60, "TOS1_TZK_xj400", "\TZK_Texture_4_0_0\icon\iTOS_1.paa", 2^stHeavy, [3, _crewW], _mMLRS, ["Common\Equip\Shrapnel.sqs"]] ];
-_tos1ShrapnelE = _type;
+unitDefs set [_type, ["PLZ-05 Shrapnel", 7500, si1, 60, "PLZ05_TZK_xj400", "\TZK_Texture_4_0_0\icon\iPLZ05.paa", 2^stHeavy, [2, _crewW], _mHowitzer, ["Common\Equip\Shrapnel.sqs"]] ];
+_plz05ShrapnelE = _type;
 
-typesHowitzer set [count typesHowitzer, _m270ShrapnelW];
-typesHowitzer set [count typesHowitzer, _tos1ShrapnelE];
+typesHowitzer set [count typesHowitzer, _m109ShrapnelW];
+typesHowitzer set [count typesHowitzer, _plz05ShrapnelE];
 
 // The unitTypeData and unitTypeArray should ALWAYS be defined AFTER HAVING CALLED THIS SCRIPT
 unitTypeArray resize 0; unitTypeData resize 0; _type = 0; _j = 0;

@@ -3,14 +3,19 @@
 _ret = true;
 
 if (_isVehicle || _isStruct) then {
-	_weapon = (_vehicle call funcVehParamWeapons) select 0;
-	if not (_vehicle hasWeapon _weapon) then {
+	_weapon = _vehicle call preprocessFile "Art\GetAvailableArtWeapon.sqf";
+	if ("" == _weapon) then {
 		_msg = "No proper weapon. Order aborted. Rearm me or help me deploy, sir.";
 		_ret = false;
 	};
-	_weapons = (weapons _vehicle) - [_weapon];
-	{_vehicle removeWeapon _x} forEach _weapons;
-	{_vehicle addWeapon _x} forEach _weapons;
+
+	if _ret then {
+		private [{_weapons}];
+		_weapons = weapons _vehicle;
+		[_weapons, [_weapon]] call preprocessFile "Util\ArraySubtract.sqf";
+		{_vehicle removeWeapon _x} forEach _weapons;
+		{_vehicle addWeapon _x} forEach _weapons;
+	};
 };
 
 _ret
