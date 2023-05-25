@@ -6,11 +6,12 @@ _vehicle = _this select 0; _speed = _this select 1
 ; Make sure the Gunner is LOCAL.
 ; ==================== MP weapon/magazine controlling. ====================
 
-_mainWeapon = (_vehicle call funcVehParamWeapons) select 0
+_mainWeapon = _vehicle call preprocessFile "Art\GetAvailableArtWeapon.sqf";
+? "" == _mainWeapon: _vehicle sideChat "Abnormal weapon. Please rearm or deploy.", exit
 
 _magazines = magazines _vehicle; _validMags = [_mainWeapon] call funcWeaponValidMags; 
 _oldMags = []; {if (_x in _validMags && !(_x in _oldMags)) then {_oldMags set [count _oldMags, _x]}} forEach _magazines
-? count _oldMags == 0: hint "Abnormal weapon/magazine status. Please rearm. Report the author if problem remain unsolved after having rearmed.", exit
+? count _oldMags == 0: hint "Abnormal weapon/magazine status. Please rearm.", exit
 
 _oldMag = _oldMags select 0; _size = sizeOfStr _oldMag; _strSpeed = format ["%1", _speed]
 ? _speed < 100: _strSpeed = "0" + _strSpeed
