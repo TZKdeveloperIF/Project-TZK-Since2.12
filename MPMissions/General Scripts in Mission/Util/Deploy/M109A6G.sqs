@@ -3,6 +3,10 @@
 _vehicle = _this select 0
 _phase = _this select 1
 
+_mainWeapon = "Gun155_xj400"
+_shrapnelMag = _vehicle call preprocessFile "Art\ShrapnelMag.sqf"
+? "" != _shrapnelMag: _mainWeapon = format ["Shrapnel_%1_xj400", substr [_shrapnelMag, 9, 10]]
+
 _i = 0 
 _animations = ["backdoor","sidedoor","shovL","shovR","BoxL","BoxR","Clamp"]
 _delays= [0.5, 1, 0, 1, 0, 1, 0]
@@ -10,8 +14,8 @@ _delays= [0.5, 1, 0, 1, 0, 1, 0]
 _NetWorkID = _vehicle call funcGenNetIdStr
 ? _phase > 0: _vehicle addMagazine "DeploySwitch_xj400"; _vehicle engineOn false; goto "deploy"
 
-_vehicle removeWeapon "Gun155_xj400"
-? !isNull gunner _vehicle && !local gunner _vehicle: publicExec format [{if (local gunner UnitById %1) then {UnitById %1 removeWeapon "Gun155_xj400"}}, _NetWorkID]
+_vehicle removeWeapon _mainWeapon
+? !isNull gunner _vehicle && !local gunner _vehicle: publicExec format [{if (local gunner UnitById %1) then {UnitById %1 removeWeapon _mainWeapon}}, _NetWorkID]
 
 # deploy
 	_vehicle animate [(_animations select _i), _phase]
@@ -20,11 +24,11 @@ _vehicle removeWeapon "Gun155_xj400"
 	
 ? _phase == 0: _vehicle removeMagazines "DeploySwitch_xj400"; exit
 
-_vehicle addweapon "Gun155_xj400"
-? !local _vehicle: publicExec format [{if (local UnitById %1) then {UnitById %1 addweapon "Gun155_xj400"}}, _NetWorkID]
+_vehicle addweapon _mainWeapon
+? !local _vehicle: publicExec format [{if (local UnitById %1) then {UnitById %1 addweapon _mainWeapon}}, _NetWorkID]
 
 ; ammo array check. Sometimes bug may occur that weapon can't load magazine
 ~ 0.1
-? count (_vehicle ammoArray "Gun155_xj400") > 0: exit
+? count (_vehicle ammoArray _mainWeapon) > 0: exit
 _vehicle call preprocessFile "Util\MagazinesReset.sqf"
 ? !local _vehicle: publicExec format [{if (local UnitById %1) then {UnitById %1 call preprocessFile "Util\MagazinesReset.sqf"}}, _NetWorkID]

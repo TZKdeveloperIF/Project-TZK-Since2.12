@@ -1,0 +1,9 @@
+; args: [vehicle, ammunition]
+? isNull player: exit
+
+_vehicle = _this select 0
+_ammunition = (_this select 1) + 1
+
+_selection = format ["m%1%2", ["", 0] select (_ammunition < 10), _ammunition]
+_name = typeOf _vehicle
+_vehicle setObjectTexture [(_name GetVehicleParamArray "hiddenSelections") find _selection, ""]
