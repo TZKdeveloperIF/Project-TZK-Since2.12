@@ -1,0 +1,12 @@
+; args: vehicle
+? isNull player: exit
+
+_vehicle = _this
+
+_name = typeOf _vehicle; _i = (_name GetVehicleParamArray "hiddenSelections") find "m01";
+? _i == -1: showDebug ["Not found ""m01"" in " + _name + " type object.", 5000], exit
+
+_c = _i + 12; _tex = "\TZK_Texture_4_0_0\M29064mm\tube.paa"
+? _name == "TOS1_TZK_xj400": _c = _i + 30; _tex = "\TZK_Texture_4_0_0\DKMM\Arty\tost2.pac"
+
+while {_i < _c} do {_vehicle setObjectTexture [_i, _tex]; _i = _i + 1}
