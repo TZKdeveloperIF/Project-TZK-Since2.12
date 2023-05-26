@@ -1,6 +1,6 @@
 ; args: Fired_EH_Array
 _vehicle = _this select 0; _weapon = _this select 1; _ammo = _this select 4; 
-? _ammo != "M26_CoC_xj400": exit;
+? _ammo != "M26_CoC_xj400" && _ammo != "M26_Bullet_xj400": exit;
 _shell = nearestObject [_vehicle, _ammo];
 ? isNull _shell: exit;
 
@@ -8,9 +8,8 @@ _shell = nearestObject [_vehicle, _ammo];
 _vehicle exec "\TZK_Objects\Scripts\Fired_EH\Tank_RSC_Shock.sqs"
  _posShell = getPosASL _shell; _dirShell = VectorDir _shell; _upVeh = VectorUp _vehicle;
 
-_ammunition = _vehicle ammo _weapon
-; ? local _vehicle: if (_ammunition < 12) Then { if (_ammunition == 1) Then {_this exec {\TZK_Objects\Scripts\Fired_EH\Reload_M270.sqs}}, publicExec format [{[UnitById %1, %2] exec "\TZK_Scripts_4_0_4\Player\Effect\RocketVehicleDisplay.sqs"}, NetworkID _vehicle, _ammunition], if (!isNull player) Then {_selection = format ["m%1%2", ["", 0] select (_ammunition + 1 < 10), _ammunition + 1], _name = typeOf _vehicle, _i = (_name GetVehicleParamArray "hiddenSelections") find _selection, _vehicle setObjectTexture [_i, ""]} }
-; ? !isNull player: [{mutex_TZK_MLRS = true; _vehicle = _this select 1 select 0; _i = 0; _c = count TZK_MLRS_Veh; _found = false; while "_i < _c && !_found" do "if (_vehicle == TZK_MLRS_Veh select _i select 0) Then {_found = true} Else {_i = _i + 1}"; _ammunition = TZK_MLRS_Veh select _i select 1; _selection = format ["m%1%2", ["", 0] select (_ammunition < 10), _ammunition], _name = typeOf _vehicle, _vehicle setObjectTexture [(_name GetVehicleParamArray "hiddenSelections") find _selection, ""]; TZK_MLRS_Veh select _i set [1,_ammunition - 1]; ["mutex_TZK_MLRS = false", 0.1] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"}, [_vehicle], "!mutex_TZK_MLRS"] exec "\TZK_Scripts_4_0_5\Common\~@\mutexCommand.sqs"
+_ammunition = _vehicle ammo _weapon; _slots = 12
+? local _vehicle && _ammunition < _slots: [_vehicle, _ammunition] exec "Network\hMlrsShooting.sqs"; publicExec format [{[UnitById %1, %2] exec "Network\hMlrsShooting.sqs"}, NetworkID _vehicle, _ammunition]
 ; ====================================================================================================================================================================
 _corX = 1.046 - (_ammunition % 3) * 0.317 - ([0,1] select (_ammunition >= 6)) * 1.458; _corY = -([0,1] select (_ammunition % 6 >= 3)) * 0.317;
 _vectorH = [_dirShell, _upVeh] call funcVectorCross

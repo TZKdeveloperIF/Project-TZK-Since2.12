@@ -1,8 +1,11 @@
-; args: [vehicle, type, magazines to be equipped, weapons to be recorded but not equipped]
+; args: [vehicle, type, magazines to be equipped, weapons, whether weapons shall be equipped as well (optional): boolean]
 _v = _this select 0; _t = _this select 1; _m = _this select 2, _w = _this select 3
+_updateWeapons = (if (count _this > 4) then {_this select 4} else {false})
 
 ~ 1
 ? !(local _v) || !(alive _v) : [_v, _w, _m, _t, 1] exec localize {TZK_EQUIPREARMDATA_EDIT}; exit
+
+? _updateWeapons: { _v removeWeapon _x} foreach (weapons _v); {_v addweapon _x} forEach _w
 
 _mags = magazines _v
 
