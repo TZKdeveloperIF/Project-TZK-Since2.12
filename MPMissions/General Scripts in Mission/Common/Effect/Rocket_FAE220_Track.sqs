@@ -6,6 +6,20 @@ _name = typeOf _rocket
 ? _si != si0 && _si != si1: exit
 ? not alive _vehicle: exit
 
+; reassign "_rocket" variable if using bullet imitation
+_reassignType = ""
+? _name == "M26_Bullet_xj400": _reassignType = "M26_CoC_xj400"
+? _name == "FAE220_Bullet_xj400": _reassignType = "FAE220_DKMM_xj400"
+? "" == _reassignType: goto "skipReassign"
+	; reassign
+	_pos = getPosASL _rocket
+	_vel = velocity _rocket
+	_rocket = createShell [_reassignType, _pos, _vel, _vehicle, objNull]
+	_rocket setVectorDirAndUp [_vel, [0,0,1]]
+	_rocket setVelocity _vel; _rocket setPosASL _pos
+
+# skipReassign
+
 # loop
 	_pos = getPos _rocket; _vel = velocity _rocket
 	~ 0.1
