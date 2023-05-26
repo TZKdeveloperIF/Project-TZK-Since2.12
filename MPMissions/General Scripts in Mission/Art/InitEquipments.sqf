@@ -10,3 +10,13 @@ ArtVehWeapons = [
 	, "Shrapnel_W_xj400", "Shrapnel_E_xj400"
 	, "MineLayingLauncher_xj400"
 ];
+
+// ArtVehMagPrefixes = [
+// 	  "HE155"
+// 	, "HE120_Grk", "HE122_VME"
+// 	, "M26_COC", "M26", "FAE220_DKMM", "FAE220"
+// 	, "HE105", "HE122"
+// 	, "Mortar81"
+// 	, "Shrapnel_W", "Shrapnel_E"
+// 	, "MineRocket"
+// ];
