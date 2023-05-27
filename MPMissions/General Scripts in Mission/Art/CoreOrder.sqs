@@ -5,11 +5,13 @@
 
 ; args: [art general params: [], preprocess params: [], script type info: [], server extra info: []]
 
-; art general params: [unit, si, area marker idx, use big angle, launcher type: enum, order type: enum (optional)]
+; art general params: [unit, si, area marker idx, use big angle, launcher type: enum, order type: enum (optional), MLRS shooting count limit (optional)]
 _params = _this select 0
 _unit = _params select 0, _si = _params select 1, _idx = _params select 2, _biggerAngle = _params select 3, _enum = _params select 4
 _orderType = "General Area"
 ? count _params > 5: _orderType = _params select 5
+_mlrsCnt = 0
+? count _params > 6: _mlrsCnt = _params select 6
 
 ; preprocess params: [pre move info, suggested shooting init speed]
 _params = _this select 1
@@ -81,6 +83,7 @@ _params = 0, _this = 0
 	_needAvoidStruct = call preprocessFile "Art\NeedAvoidStruct.sqf"
 	_posT = [-1, -1]; _defenceObject = objNull
 	_tuggedCheckCnt = 0
+	_firedCnt = 0
 
 ; ======== Art order part ========
 ; Pre-move if ordered
@@ -256,6 +259,8 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	_ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev]
 	_vehicle addEventHandler ["Fired", format [{[_this, %1, %2, %3, %4, %6] exec "%5"}, _speed, _angle, _elev, _ehRev, _script, [_si, _bShrapnel]] ]
 	_vehicle fire _weapon
+	_firedCnt = _firedCnt + 1
+	? "MLRS" == _enum && _mlrsCnt > 0 && _mlrsCnt <= _firedCnt: _msg = format ["%1 rockets were shot. Order finished, sir.", _firedCnt], goto "EOF"
 
 	? _isInfantry: goto "AttackDone"
 
