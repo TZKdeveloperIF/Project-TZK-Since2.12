@@ -45,7 +45,9 @@ class CfgWeapons {
 // class WeaponCloudsGun {};
 
 class CfgVehicles {
-	
+	#include "TZK_Config_4_0_7\cfgVehicles_0.h"
+
+	#include "TZK_Config_4_0_7\cfgVehicles_art.h"
 };
 
 class CfgMarkers {
