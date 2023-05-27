@@ -261,7 +261,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 
 		# w8UntilShooted
 			_counter = 0
-			~ 1
+			~ (if (_delay > 1) then {1} else {_delay})
 			_ammoArray = _vehicle ammoArray _weapon
 			? 0 == count _ammoArray: _msg = "Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."; goto "EOF"
 			? call _quitCond: _msg = ""; goto "EOF"
@@ -270,7 +270,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 			? _ammoArray select 1 == _ammoOld && _ammoOld != 1: goto "w8UntilShooted"
 
 		_ammoOld = _ammoArray select 1
-		_delay = (call format ["%1", (_ammoArray select 0) GetWeaponParam "reloadTime"]) * 1.1 + 0.5
+		_delay = (call format ["%1", (_ammoArray select 0) GetWeaponParam "reloadTime"]) * 1.1 + 0.5; if ("MLRS" == _enum) then {_delay = _delay - 0.5}
 		? _reloadMagazine && not _isStruct: _delay = (call format ["%1", _weapon GetWeaponParam "magazineReloadTime"]) + _delay; _reloadMagazine = false
 		_delay = _delay - 1;
 
