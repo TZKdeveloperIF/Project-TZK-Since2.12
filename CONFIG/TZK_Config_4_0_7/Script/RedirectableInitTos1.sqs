@@ -1,0 +1,26 @@
+; args: vehicle
+_vehicle = _this
+
+[_vehicle, {C}] exec {\TZK_Config_4_0_4\Scripts\texture\TOS1.sqs}
+; texture number depending on its initial position
+[_vehicle, "\TZK_Texture_4_0_0\DKMM\"] exec "\TZK_Objects\Scripts\InitEventHandlers\RSC_Numbers.sqs"
+; lidcovers
+_path = "\TZK_Texture_4_0_0\DKMM\Arty\"; 
+? TheWorld == "D": _path = "\TZK_Texture_4_0_4\yellow\DKMM\"
+? TheWorld == "G": _path = "\TZK_Texture_4_0_4\green\DKMM\"
+? TheWorld == "W": _path = "\TZK_Texture_4_0_4\white\DKMM\"
+
+_i = (typeOf _vehicle GetVehicleParamArray "hiddenSelections") find "m01"; _c = _i + 30
+# textureCovers
+	_vehicle setobjecttexture [_i, _path + "tost2.pac"]
+	_i = _i + 1
+	? _i < _c: goto "textureCovers"
+
+? not local _vehicle: exit
+
+_deployScript = localize {TZK_BEHAVIOUR_DEPLOY_TOS1}
+? "" != _deployScript: [_vehicle, 1] exec _deployScript
+
+_vehicle removeweapon "FAE220Launcher_xj400"
+
+; EOF
