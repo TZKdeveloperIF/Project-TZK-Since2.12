@@ -13,3 +13,4 @@ _i = 0; _c = count _magArr; while {_i < _c && not _found} do {
 
 	_i = _i + 2;
 };
+_mag
