@@ -1,0 +1,82 @@
+if( !(local _MPIVHeli)) Then{exit};
+
+_MPIVHeli = _This select 0
+
+? MPIV_NoCheck : [_MPIVHeli] exec "\MPIV_AH64\scripte\nocheck.sqs"
+
+? player != gunner _MPIVHeli: exit
+
+@(isEngineOn _MPIVHeli)
+if (getpos _MPIVHeli select 2 < 2) then {goto "start"} else {goto "fly"};
+
+#start
+_MPIVHeli vehiclechat "Engines ?"
+~0.5
+_MPIVHeli vehiclechat "OK"
+~0.8
+_MPIVHeli vehiclechat "External Power ?"
+~0.5
+_MPIVHeli vehiclechat "OFF"
+
+_MPIVHeli setObjectTexture [9,"\MPIV_AH64\inst\g_info.pac"]
+~0.8
+_MPIVHeli vehiclechat "Hydraulic Pumps ?"
+~0.5
+_MPIVHeli vehiclechat "ON"
+~0.8
+_MPIVHeli vehiclechat "Hydraulic Systems ?"
+~0.5
+_MPIVHeli vehiclechat "OK"
+~0.8
+_MPIVHeli vehiclechat "Fuel Pumps ?"
+~0.5
+_MPIVHeli vehiclechat "ON"
+~0.8
+_MPIVHeli vehiclechat "Fuel ?"
+~0.5
+_MPIVHeli vehiclechat "OK"
+~0.8
+_MPIVHeli vehiclechat "Master Armed ?"
+~0.5
+_MPIVHeli setObjectTexture [7,"\MPIV_AH64\inst\g_weap.pac"]
+_MPIVHeli vehiclechat "ON"
+~0.8
+_MPIVHeli vehiclechat "Weapons ?"
+~0.5
+_MPIVHeli setObjectTexture [8,"\MPIV_AH64\inst\g_weap2.pac"]
+_MPIVHeli setObjectTexture [10,"\MPIV_AH64\inst\gun_mfd_mid.pac"]
+_MPIVHeli vehiclechat "OK"
+~3.1
+_MPIVHeli vehiclechat "Ready for TAKEOFF"
+goto "loop"
+
+#fly
+_MPIVHeli setObjectTexture [9,"\MPIV_AH64\inst\g_info.pac"]
+_MPIVHeli setObjectTexture [7,"\MPIV_AH64\inst\g_weap.pac"]
+_MPIVHeli setObjectTexture [8,"\MPIV_AH64\inst\g_weap2.pac"]
+_MPIVHeli setObjectTexture [10,"\MPIV_AH64\inst\gun_mfd_mid.pac"]
+goto "loop"
+
+#loop
+? isNull _MPIVHeli: exit
+~1
+? !(isEngineOn _MPIVHeli):goto "Ende"
+? !(alive _MPIVHeli):goto "Ende2"
+goto "loop"
+
+#Ende
+_MPIVHeli say "MPIV_EngineOff"
+
+~11.4
+_MPIVHeli setObjectTexture [7,"\MPIV_AH64\c\mfd_blank.pac"]
+_MPIVHeli setObjectTexture [8,"\MPIV_AH64\c\mfd_blank.pac"]
+_MPIVHeli setObjectTexture [9,"\MPIV_AH64\c\mfd_blank.pac"]
+_MPIVHeli setObjectTexture [10,"\MPIV_AH64\c\mfd_blank.pac"]
+exit
+
+#Ende2
+_MPIVHeli setObjectTexture [7,"\MPIV_AH64\c\mfd_blank.pac"]
+_MPIVHeli setObjectTexture [8,"\MPIV_AH64\c\mfd_blank.pac"]
+_MPIVHeli setObjectTexture [9,"\MPIV_AH64\c\mfd_blank.pac"]
+_MPIVHeli setObjectTexture [10,"\MPIV_AH64\c\mfd_blank.pac"]
+exit

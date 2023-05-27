@@ -1,0 +1,76 @@
+; BAS - Generic fire/damage script - by  TJ march 2003
+
+;execute with name of object to burn
+; eg,  [<objectname>] exec "fire.sqs"
+
+
+;check for mpgame
+? (mpgame):exit
+? MPIV_NoSmoke : exit
+
+;burn time (in seconds)
+_lifeTime = 150
+
+;unit to set fire to
+
+_object = _this select 0
+
+@ (getdammage _object)>=0.9
+
+_soundloop = 0
+_delay = 0.25
+_lifeTicks = _lifeTime / _delay
+_lifeTick = _lifeTicks
+_ouch = 0
+
+
+?! (local _object):goto "sound"
+
+_glow = "KioGlowFire" createvehicle [0,0,0]
+_glow setpos [getpos _object select 0, getpos _object select 1,1.5]
+_glow inflame true
+
+#sound
+_soundloop = 0
+_glow setpos getpos _object
+
+#Begin
+;random explos
+? ! (local _object):goto "client"
+_x = random 50
+?_x <=1 && _lifeTick > 550:_bang = "mortarshell" createvehicle getpos _object
+?_x>=49 && _lifeTick >360:_bang = "BulletFullAutoG" createvehicle getpos _object
+
+#client
+
+;burn player
+? player distance _glow <10: player setdammage ((getdammage player) +0.04),goto "scream"
+
+#fire
+drop ["\newcloud\cl_fire", "", "Billboard", 1, 1, [0,0,0.4], [random 0.3, random 0.3, 3], 1, 0.004, 0.004, 0.1, [1,(1 + random 7),1], [[1,0.5,0.5,0], [0.2,0.2,0,0.7], [1,1,0,0.5], [1,1,0.1,0]], [0,1], 0.5, 0.05, "", "",_object ]
+
+drop ["\newcloud\cl_fire", "", "Billboard", 1, 0.7, [0,0,0.35], [random 0.3, random 0.3, 3], 1, 0.004, 0.004, 0, [1,3,0], [[1,0.5,0.5,0], [1,1,0.8,0.7], [1,1,0,0.4], [1,1,0,0]], [0,1], 0.5, 0.05, "", "",_object ]
+
+;sparks
+ drop ["\newcloud\cl_fire", "", "Billboard", 1,  5, [0,0,1], [ random 1, random 1, random 3], 1, 0.005, 0.0042, 0, [0.15], [[1,1,1,1],[0,0,0,0]], [0,1], 0.5, 1, "", "",_object]
+
+
+
+~_delay
+
+_lifeTick = _lifeTick - 1
+_soundloop = _soundloop +1
+? _soundloop ==4: _glow say "Vit_AH1W_Fire_xj400";goto "sound"
+
+?_lifeTick > 0 : goto "Begin"
+
+deletevehicle _glow
+drop ["\newcloud\cl_fire", "", "Billboard", 1, 5, [0,0,0.6], [random 0.3, random 0.3, 3], 1, 0.014, 0.004, 0, [1,3,0], [[1,0.5,0.5,0], [1,0.8,0.8,1], [1,0.8,0.8,0.6], [1,1,0.1,0]], [0,1], 0.5, 0.05, "", "",_object ]
+exit
+
+#scream
+? _ouch == 1:goto "fire"
+_ouch = _ouch +1
+player say "eng31"
+player groupchat "MEDIC! I'm getting burnt here!"
+goto "Begin"

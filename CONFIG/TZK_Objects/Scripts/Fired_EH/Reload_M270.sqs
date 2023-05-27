@@ -1,0 +1,16 @@
+; args: Fired_EH_Array
+_vehicle = _this select 0; _weapon = _this select 1; _ammo = _this select 4; 
+
+@ (!alive _vehicle || !local _vehicle || (_vehicle ammo _weapon) > 1)
+? !alive _vehicle || !local _vehicle: exit;
+
+_name = typeOf _vehicle; _i = (_name GetVehicleParamArray "hiddenSelections") find "m01";
+? _i == -1: exit;
+_i0 = _i;
+_ammunition = _vehicle ammo _weapon;
+_c = _i + ([_ammunition, 12] select (_ammunition > 12));
+while "_i < _c" do {_vehicle setObjectTexture [_i, "\TZK_Texture_4_0_0\M29064mm\tube.paa"]; _i = _i + 1}
+; MP broadcast
+_NetWorkID = NetworkID _vehicle
+_code = format [{_i = %1; while "_i < %2" do {(UnitById %3) setObjectTexture [_i, "\TZK_Texture_4_0_0\M29064mm\tube.paa"]; _i = _i + 1}}, _i0, _c, _NetWorkID]
+publicExec _code

@@ -1,0 +1,232 @@
+? (format ["%1",BD_Map] == {scalar bool array string 0xfcffffef}): BD_Map = 1
+? (format ["%1",BD_SnowFX] == {scalar bool array string 0xfcffffef}): BD_SnowFX = false
+? (format ["%1",BD_DesertFX] == {scalar bool array string 0xfcffffef}): BD_DesertFX= false
+
+_unit = _this select 0
+
+
+
+@  isEngineOn _unit
+
+#A
+
+?((getpos _unit select 2) > 15) : goto "A"
+?((getpos _unit select 2) < 15) : goto "G"
+
+#G
+~7
+
+private ["_sensor"];
+_sensor = "EmptyDetector" createVehicle [0,0,0]
+_calcH = {private["_result"]; _sensor setpos [getpos _unit select 0, getpos _unit select 1]; _result = getpos _sensor select 2; _result};
+
+; Colors defined here
+_desert = [[0.345,0.29,0.168,0],[0.345,0.29,0.168,0.15], [0.345,0.29,0.168,0.29], [0.345 ,0.29,0.168, 0.2 + (random 0.1)], [0.345,0.274,0.168,0]]
+_standard = [[0.325,0.27,0.148,0],[0.325,0.27,0.148, 0.01], [0.325,0.27,0.148,0.13], [0.325,0.27,0.148, 0.13 + (random 0.2)], [0.325,0.27,0.148,0]]
+_vietnam = [[0.45,0.29,0.2,0],[ .4,.3, 0.2,0.2], [ .4,.3, .2,0.25], [.4,.3, .2, 0.3], [ .4, .3, .2, 0]]
+_snow = [[1,1,1,0],[0.95,0.95,0.95,0.2], [0.95,0.95, 0.95,0.4], [0.95 ,0.95,0.95,0.4], [1,1,1,0]]
+_colorwater = [[1, 1, 1, 0.01], [ 1, 1, 1, 0.22], [ 1, 1, 1,  0.18], [ 1, 1, 1,  0]]
+
+
+_terrain = BD_Map
+
+? (_terrain == 1 || _terrain == 2 || _terrain == 3 || _terrain == 5) : _color = _standard
+? (_terrain == 4 || _terrain == 7): _color = _desert
+? _terrain == 6: _color = _vietnam
+
+? BD_SnowFX : _color = _snow
+? BD_DesertFX : _color = _desert
+? BD_DesertFX :_terrain = 4
+
+? _terrain == 5: _descentre = "Emptydetector" createvehicle [2023,4454]
+? _terrain == 5: _snow1centre = "Emptydetector" createvehicle [8730,9532]
+? _terrain == 5: _snow2centre = "Emptydetector" createvehicle [9571,9664]
+
+
+_heightfx = 19
+_maxdust =10
+?(_terrain == 4 || _terrain == 7 ||  _terrain == 6): _maxdust = _maxdust + 9
+?(_terrain == 4 || _terrain == 7 ||  _terrain == 6): _heightfx = 30
+
+_origcolor = _color
+_origheightfx = _heightfx
+_origmaxdust = _maxdust
+
+
+_delay = 0.01
+_dustpos = 20
+_dustsize = 0
+_spinup = True
+_flying = False
+_spindown = False
+_dir4 = 0
+_dir5 = 0
+_skipper = 0
+
+#Loop
+
+? isEngineOn _unit : goto "SpinUp"
+? _dustsize > 0:goto "spindown"
+
+goto "Idle"
+
+#Dust
+
+? getDammage _unit >= 1 : goto "end"
+? ! isengineon _unit:goto "spindown"
+
+; particle direction
+_dir = random 360
+_dir2 = random 360
+_dir3 = random 360
+_dir4 =_dir4 +10
+_dir5 = _dir5 +10
+_rand = random 10
+? _dir4 >= 360:_dir4 =_rand
+?_dir5 >= 360:_dir5=_rand
+_velo = 15
+
+
+; particle array elements
+
+_ShapeName = "cl_basic"
+_AnimationName = ""
+_Type = "Billboard"
+_TimerPeriod = 1
+_LifeTime = 2
+?(_terrain == 4 || _terrain == 7 ||  _terrain == 6): _Lifetime = 3
+_Position = [getpos _unit select 0, getpos _unit select 1,0]
+_MoveVelocity = [_velo * sin _dir, _velo * cos _dir, 0+ random 1.5]
+? benchmark <1400: goto "skip"
+_MoveVelocity2 = [_velo *cos _dir2, _velo * sin _dir2, 0+ random 1]
+_MoveVelocity3 = [11 *sin _dir3, 11 * cos _dir3, 0]
+_MoveVelocity4 = [5 *cos _dir4, 5 *sin _dir4,0.3]
+_MoveVelocity5 = [5 *sin _dir5, 5 *cos _dir5,0.3]
+#skip
+_RotationVelocity = 0
+_Weight = 1.270
+_Volume = 1
+_Rubbing = 0.2
+_Size = [0.01,0.02,1,1+ (random _dustsize)]
+?(_terrain == 4 || _terrain == 7 ||  _terrain == 6): _Size =  [0.01,0.02,3,3 + (random _dustsize)]
+      
+_AnimationPhase = [0,1]
+_RandomDirectionPeriod = 1.2
+_RandomDirectionIntensity = 2
+_OnTimer = ""
+_BeforeDestroy = ""
+_Object = ""
+
+
+? abs (call _calcH) <= 2.4:goto "water"
+? abs (call _calcH) > 2.4 &&  abs (call _calcH) < 3.99:goto "shore"
+? abs (call _calcH) >4 :goto "dusty"
+
+goto "lowend"
+
+#dusty
+_color = _origcolor
+_maxdust = _origmaxdust
+_heightfx = _origheightfx
+_terrain = BAS_islandmap
+? _unit distance _descentre <1800:_color = _desert;_heightfx = 35; _maxdust = _maxdust + 15;_terrain = 4
+? _unit distance _snow1centre <270:_color = _snow; _maxdust = _maxdust + 15;_heightfx = 35
+? _unit distance _snow2centre <270:_color = _snow; _maxdust = _maxdust + 15;_heightfx = 35
+
+
+? speed _unit > 150: goto "lowend"
+drop ["cl_basic", "","Billboard",1,2, _Position, _MoveVelocity,0,1.270, 1,0.2, _Size, _Color, [0,1],1.2,2, "", "", _object]
+
+
+? benchmark <1500: goto "lowend"
+?(BAS_60Effects == 0.5):goto "lowend"
+
+;gravel
+? getpos _unit select 2 >5:goto "moredust"
+drop ["sutr2", _AnimationName, "SpaceObject", _TimerPeriod, 2, _Position, _Movevelocity, _RotationVelocity, 1.276, 1, 0, [0, 0.13], [[0.402,0.402,0.402, 1]], [0], 0, 0, "", "", _Object]
+
+
+#  moredust
+drop ["cl_basic","", _Type, 1, 1+ (random 0.8), _Position, _MoveVelocity2, 0, 1.272 + random 0.01, 1,0.1, _Size, _color, [0,1], 1, 3,"","",""]
+
+
+#desertdustonly
+? (_terrain == 1 || _terrain == 2 ||  _terrain == 3  ||  _terrain == 5):goto "lowend"
+drop [_ShapeName, _AnimationName, _Type, _TimerPeriod, 2+ random 0.3, _Position, _MoveVelocity2, 0, _Weight + random 0.01, _Volume, _Rubbing, _Size, _color, [0,1], 1, 3,"","",""]
+
+goto "lowend"
+
+#water
+? speed _unit > 150: goto "lowend"
+
+drop ["cl_water", "", _Type, _TimerPeriod, 2, _Position, _MoveVelocity, 1, 1.280, 1, 0.1, [0,0,2,8], _colorwater,[0,1,0],1.8,0.2, "", "", _Object]
+
+? benchmark < 1500: goto "lowend"
+?(BAS_60Effects ==0.5):goto "lowend"
+
+drop ["cl_water", "", _Type, _TimerPeriod, 2, _Position, _MoveVelocity2,1,1.260, 1,0.15, [0,0,4,7], _colorwater,[0,1,0], 1.8,1, "", "", ""]
+
+drop ["cl_water", _AnimationName, _Type, _TimerPeriod, 3, _Position, _MoveVelocity3, 1, 1.260, 1, 0.2, [0,1,4,9 + random 2], [[1, 1, 1, 0.1], [ 1, 1, 1, 0.3], [ 1, 1, 1,  0.3], [ 1, 1, 1,  0.007]], [0,1], 1.9,1, "", "", ""]
+
+
+;ripples at hover
+? speed _unit > 15: goto "lowend"
+drop ["cl_water", _AnimationName,  _Type, _TimerPeriod, 2.5, [getpos _unit select 0, getpos _unit select 1,-1], _MoveVelocity4, 0,1.275,1, 0, [0,0,0,1.5,1,2,1,2,1,2,1], [[1,1,1,0],[1,0,1,0],[1,1,1,0],[.9,.9,.9,0.07],[.9,.9,.9,0.07],[.9,.9,.9,0.07],[.9,.9,.9,0.07],[.9,.9,.9,0.07],[.9,.9,.9,0.07],[.9,.9,.9,0.07],[.9,.9,.9,0.07]], [0,1],0,0, "", "", ""]
+
+drop ["cl_water", _AnimationName,  _Type, _TimerPeriod, 2.5, [getpos _unit select 0, getpos _unit select 1,-1], _MoveVelocity5, 0, 1.275, 1, 0, [0,0,0,1.5,1,2,1,2,1,2,1], [[1,1,1,0],[1,1,1,0],[1,1,1,0],[.9,.9,.9,0.07],[.9,.9,.9,0.07],[.9,.9,.9,0.07],[.9,.9,.9,0.07],[.9,.9,.9,0.07],[.9,.9,.9,0.07],[.9,.9,.9,0.07],[.9,.9,.9,0.07]], [0,1], 0,0, "","", ""]
+
+goto "lowend"
+
+#shore
+? speed _unit > 80: goto "lowend"
+drop ["cl_water", _AnimationName, _Type, _TimerPeriod, 2, _Position, _MoveVelocity, _RotationVelocity, 0.007, _Volume, _Rubbing, [0,0,7], [[0.8,0.8,0.8,0.2],[0.7,0.7,0.7,0.1]], _AnimationPhase, _RandomDirectionPeriod,0, _OnTimer, _BeforeDestroy, _Object]
+
+#lowend      
+~_delay
+? _spinup : goto "SpinUp"
+? _flying : goto "Flying"
+? _spindown : goto "SpinDown"
+
+exit
+
+#SpinUp
+? _dustsize < _maxdust : _dustsize = _dustsize + .02
+? _dustsize >= _maxdust  || (getPos _unit select 2) > _heightfx: _spinup = false, _flying = true
+
+goto "Dust"
+
+#Flying
+_dustsize =_maxdust
+_height = getPos _unit select 2
+? _height < 1 : _height = 1
+? _height > _heightfx : goto "NoDust"
+
+_dustsize = _dustsize - (_height *0.5)
+
+? !isEngineOn _unit : _flying = false, _spindown = true
+goto "Dust"
+
+
+#SpinDown
+? _dustsize > 0 : _dustsize = _dustsize - .04
+? _dustsize <= 0 : _spindown = false, _spinup = true, goto "Loop"
+? isEngineOn _unit : _spinup = true, _spindown = false
+
+goto "Dust"
+
+#Idle
+~1
+? !isEngineOn _unit : exit
+goto "Loop"
+
+#NoDust
+~1.5
+? getPos _unit select 2 > _heightfx : goto "NoDust"
+goto "Flying"
+
+#end
+deletevehicle _sensor
+deletevehicle _descentre
+deletevehicle _snow1centre
+deletevehicle _snow2centre
+exit

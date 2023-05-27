@@ -1,0 +1,22 @@
+_tanker = _this select 0
+_refuel = _this select 1
+
+_refuel sidechat format["%1 to %2, request refuelling",vehicle _refuel,vehicle _tanker]
+~3
+if ((alive _tanker) and (isengineon _tanker) and ((getpos (vehicle _tanker) select 2) > 20) and (fuel vehicle _tanker >0.1)) then {_tanker sidechat format["Roger %1, you are cleared to request refuelling",vehicle _refuel]} else{_tanker sidechat format["Roger %1, We aren't able to answer to your request now",vehicle _refuel]}
+
+_grtanker = (group _tanker)
+_grrefuel = (group _refuel)
+(group _tanker) lockWP true
+(group _refuel) lockWP true
+[driver (vehicle _refuel)] join (group _tanker)
+(vehicle _refuel) setFormDir (direction _tanker)
+(group _tanker) setSpeedMode "LIMITED"
+#start
+(vehicle _refuel) dofollow (vehicle _tanker)
+(vehicle _refuel) flyinheight ((getpos (vehicle _tanker) select 2) -3)
+~0.5
+? (_tanker distance _refuel > 200):goto "start"
+? ((vehicle _tanker) animationPhase "gasolinerope0" < 0.5):[(vehicle _tanker)] exec "\TZK_Objects\Scripts\C130\opengas.sqs";
+[_tanker,_refuel,_grtanker,_grrefue] exec "\TZK_Objects\Scripts\C130\initrefuel.sqs"
+exit

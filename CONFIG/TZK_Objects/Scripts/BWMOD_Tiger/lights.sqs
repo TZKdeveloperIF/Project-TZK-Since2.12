@@ -1,0 +1,25 @@
+_tiger = _this select 0
+
+_tiger animate ["dummy",1]
+_tiger setobjecttexture [2, "\BWMOD_Tiger\redlight.paa"]
+_tiger setobjecttexture [3, "\BWMOD_Tiger\whitelight.paa"]
+_tiger setobjecttexture [4, "\BWMOD_Tiger\greenlight.paa"]
+
+#light
+ _tiger setobjecttexture [0, "\BWMOD_Tiger\fenster.paa"]
+ _tiger setobjecttexture [1, "\BWMOD_Tiger\redlight.paa"]
+ ~0.03
+ _tiger setobjecttexture [0, ""]
+ _tiger setobjecttexture [1, ""]
+ ~0.75
+?(getDammage _tiger >= 1): Goto "Ende"
+?((_tiger animationPhase "dummy")>0) : Goto "light"
+
+
+#Ende
+_tiger setobjecttexture [0, ""]
+_tiger setobjecttexture [1, ""]
+_tiger setobjecttexture [2, ""]
+_tiger setobjecttexture [3, ""]
+_tiger setobjecttexture [4, ""]
+exit

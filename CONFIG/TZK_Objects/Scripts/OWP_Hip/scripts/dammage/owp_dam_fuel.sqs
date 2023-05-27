@@ -1,0 +1,24 @@
+;#########################################
+;# Written by Kerd  Kerd@inbox.ru        #
+;# Modified by Voyager voyager04@mail.ru #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+
+_me = _this select 0;
+_dam = GetDammage _me;
+
+~(random(5))
+_spd = random (0.5)
+
+#Loop
+@(Fuel _me > 0)
+if !("owp_mi8_trigger_dammage_fuel" in magazines _me) then { exit; };
+;        1        2       3        4   5     6        7         8   9  10  11     12                       13                                   14   15 16  17  18   19
+drop ["cl_basic", "", "Billboard", 1, 0.5, [0,0,-3],[0,-5,-20], 10, 10, 5, 0.4, [1,2,7], [[0.9,0.9,0.9,0],[0.7,0.7,0.7,0.4],[0.9,0.9,0.9,0]], [0,1,0], 1, 5, "", "", _me]
+
+_me SetFuel ((Fuel _me) - random (0.01));
+if (fuel _me < 0.5) then { _me land "land"; };
+
+~_spd
+if ((GetDammage _me < _dam)||(!alive _me)) then {exit;}
+Goto "Loop";

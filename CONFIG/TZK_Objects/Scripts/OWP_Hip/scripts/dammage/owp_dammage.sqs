@@ -1,0 +1,19 @@
+;#########################################
+;# Written by Voyager voyager04@mail.ru  #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+
+_me = _this select 0
+
+_arrayhelitypeMi8T = ["OWP_Mi8T_d","OWP_Mi8T_w"]
+_arrayhelitypeMi8TV = ["OWP_Mi8TV_d","OWP_Mi8TV_g","OWP_Mi8TV_m","OWP_Mi8TV_w"]
+_arrayhelitypeMi8MT = ["OWP_Mi8MT_g","OWP_Mi8MT_m"]
+_arrayhelitypeMi8MTV = ["OWP_Mi8MTV_d","OWP_Mi8MTV_g","OWP_Mi8MTV_m","OWP_Mi8MTV_w"]
+
+? typeof _me == "OWP_Mi8T_c" : _me exec "\OWP_MI8\scripts\dammage\owp_dammage_mi8t_c.sqs"
+? typeof _me == "OWP_Mi8T_un" : _me exec "\OWP_MI8\scripts\dammage\owp_dammage_mi8t_un.sqs"
+? ((typeof _me) in _arrayhelitypeMi8T) : _me exec "\OWP_MI8\scripts\dammage\owp_dammage_mi8t.sqs"
+? ((typeof _me) in _arrayhelitypeMi8TV) : _me exec "\OWP_MI8\scripts\dammage\owp_dammage_mi8tv.sqs"
+? ((typeof _me) in _arrayhelitypeMi8MT) : _me exec "\OWP_MI8\scripts\dammage\owp_dammage_mi8mt.sqs"
+? ((typeof _me) in _arrayhelitypeMi8MTV) : _me exec "\OWP_MI8\scripts\dammage\owp_dammage_mi8mtv.sqs"
+exit

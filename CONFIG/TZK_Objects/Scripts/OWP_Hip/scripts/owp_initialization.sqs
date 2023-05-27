@@ -1,0 +1,27 @@
+;#########################################
+;# Written by Voyager  voyager04@mail.ru #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+
+_me = _this
+
+_me exec "\OWP_MI8\scripts\owp_fuelcontrol.sqs"
+_me exec "\OWP_Mi8\scripts\owp_initArrayMi8.sqs"
+_me exec "\OWP_MI8\scripts\dammage\owp_dammage.sqs"
+_me exec "\OWP_MI8\scripts\owp_dropflares.sqs"
+_me exec "\OWP_MI8\scripts\owp_droplightflares.sqs"
+_me exec "\OWP_MI8\scripts\owp_drivercontrol.sqs"
+
+_rnd_real = random 10
+_rnd_int1 = _rnd_real - (_rnd_real mod 1)
+_rnd_real = random 10
+_rnd_int2 = _rnd_real - (_rnd_real mod 1)
+[_me select 0,_rnd_int1,_rnd_int2,0] exec "\OWP_Mi8\scripts\owp_setnumbers.sqs"
+
+#fix
+_me exec "\OWP_MI8\scripts\owp_isinit.sqs"
+_me select 0 exec "\OWP_Mi8\scripts\owp_update.sqs"
+_me select 0 animate ["OWP_Mi8_lenta",1]
+@(_me select 0 animationPhase "OWP_Mi8_lenta" >= 0.9)
+@(_me select 0 animationPhase "OWP_Mi8_lenta" < 0.1)
+goto "fix"

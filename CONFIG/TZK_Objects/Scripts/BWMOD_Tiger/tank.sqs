@@ -1,0 +1,16 @@
+_tiger = _this 
+
+#mainloop 
+	? isnull _tiger || !isengineon _tiger: goto "ende"
+	_tiger animate ["Tank1", fuel _tiger]
+	_tiger animate ["Tank2", fuel _tiger]
+	_tiger animate ["Tank3", fuel _tiger]
+        ~5
+	goto "mainLoop"
+
+#ende
+	? isnull _tiger: exit
+	_tiger animate ["Tank1", 0]
+	_tiger animate ["Tank2", 0]
+	_tiger animate ["Tank3", 0]
+	exit

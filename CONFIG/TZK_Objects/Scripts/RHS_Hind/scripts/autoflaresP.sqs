@@ -1,0 +1,48 @@
+_array = _this select 0
+_mi24 = _array select 0
+
+?(not alive _mi24): goto "Exit"
+
+?(not isengineon _mi24): goto "Exit"
+
+_enemy = _array select 2
+
+_weaponname = _array select 1
+
+_missile = nearestobject [_enemy, _weaponname]
+
+_text = format["%1", _missile]
+?(_text == "NOID zuni"): goto "Exit"
+
+_mi24 say "RHS_mi24_missilealert"
+_mi24 vehiclechat "Missile Alert!!!"
+
+#WaitLoop
+~.2
+?(_missile distance _mi24 > 500) : goto "WaitLoop"
+
+_counter =0
+
+#LaunchLoop
+
+drop["kouleSvetlo","","Billboard",0.05,6,[-1,-2.5,0.1],[-6-random 6,- random 2,0],0,1.8,1,0,[1],[[1,.5,0.3,1]],[0,1],0,0,"\RHS_hind\scripts\flaresmoke.sqs","",_mi24] 
+drop["kouleSvetlo","","Billboard",0.05,6,[1,-2.5,0.1],[6+random 6,- random 2,0],0,1.8,1,0,[1],[[1,.5,0.3,1]],[0,1],0,0,"\RHS_hind\scripts\flaresmoke.sqs","",_mi24]
+
+_mi24 say "RHS_mi24_flare"
+
+_mi24 setObjectTexture [6,"\RHS_Hind\p\mi24_lm.paa"]
+~.2
+_mi24 setObjectTexture [6,""]
+~.2
+_mi24 setObjectTexture [6,"\RHS_Hind\p\mi24_lm.paa"]
+~.2
+_mi24 setObjectTexture [6,""]
+
+~0.2
+
+_counter = _counter + 1
+
+?(_counter < 2) : goto "LaunchLoop"
+
+#Exit
+exit

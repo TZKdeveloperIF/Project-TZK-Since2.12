@@ -1,0 +1,14 @@
+_veh = _this select 0
+
+? _this select 1 : goto "On"
+
+#Off
+_veh setobjecttexture [2,"\RHS_Hind\p\mi24_ln.paa"]
+exit
+
+#On
+~0.1
+?!(isengineon _veh): exit
+if(_veh animationphase "gearF" == 0)then{_veh setobjecttexture [2,"\RHS_Hind\p\mi24_lgr.paa"]}else{_veh setobjecttexture [2,"\RHS_Hind\p\mi24_lor.paa"]};
+
+exit

@@ -1,0 +1,22 @@
+; args: [vehicle, name]
+_vehicle = _this select 0
+_name = _this select 1
+
+_path = "\TZK_Texture_4_0_0\MNF_ZSU\"; _postfix = ""; _excludeList = []
+? _name == "D": _postfix = "desc", _excludeList1 = ["tex_col1.paa", "tex_det.paa", "tex_far.paa"], _excludeList2 = ["tex_track.paa"], _excludeList3 = ["tex_lr\1lr.paa", "tex_lr\2lr.paa", "tex_lr\3lr.paa", "tex_lr\4lr.paa", "tex_lr\5lr.paa", "tex_lr\6lr.paa"], _excludeList = _excludeList1 + _excludeList2 + _excludeList3
+? _name == "G": _postfix = "r", _excludeList1 = ["tex_11.paa", "tex_col1.paa", "tex_det.paa", "tex_far.paa", "tex_track.paa"], _excludeList = _excludeList1
+? _name == "W": _postfix = "w", _excludeList1 = ["tex_det.paa", "tex_far.paa"], _excludeList = _excludeList1
+
+[_vehicle, _path, _postfix, _excludeList] call loadFile "\TZK_Objects\Scripts\texture\stdSetObjTex.sqf"
+
+? _name == "C": exit
+_array = typeOf _vehicle GetVehicleParamArray "hiddenSelections"
+
+_postfix = ["", "des"] select (_name == "D")
+{_vehicle setObjectTexture [_array find _x, _path + substr [_x, 4, sizeofstr _x - 4] + _postfix + substr [_x, sizeofstr _x - 4, sizeofstr _x]]} forEach _excludeList1
+
+? _name != "D": exit
+_postfix = "d"
+{_vehicle setObjectTexture [_array find _x, _path + substr [_x, 4, sizeofstr _x - 4] + _postfix + substr [_x, sizeofstr _x - 4, sizeofstr _x]]} forEach _excludeList2
+_postfix = "rdes"
+{_vehicle setObjectTexture [_array find _x, _path + substr [_x, 4, sizeofstr _x - 4] + _postfix + substr [_x, sizeofstr _x - 4, sizeofstr _x]]} forEach _excludeList3

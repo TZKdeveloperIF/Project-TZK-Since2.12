@@ -1,0 +1,18 @@
+_vehicle= _this select 0
+
+_vehicle vehiclechat "Thrust Reverse Engaged"
+_brake = 140
+
+#break
+_vx = velocity _vehicle select 0
+_brakex =_vx/_brake
+_vz = velocity _vehicle select 1
+_brakez =_vz/_brake
+_vy = velocity _vehicle select 2
+
+_vehicle setvelocity [(_vx- _brakex),(_vz - _brakez),_vy]
+~0.1
+? ((_vehicle animationPhase "reverseprops" > 0) and (speed _vehicle > 1)):goto "break"
+_vehicle animate ["reverseprops",0]
+_vehicle vehiclechat "Thrust Reverse Disengaged"
+exit

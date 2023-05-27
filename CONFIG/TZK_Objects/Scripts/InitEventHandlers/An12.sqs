@@ -1,0 +1,15 @@
+; args: Init-EH Array
+_plane = _this select 0
+
+? !local _plane : exit
+
+[_plane] exec {\TZK_Objects\Scripts\an12\geardd.sqs}
+[_plane] exec {\TZK_Objects\Scripts\an12\damage.sqs}
+[_plane] exec {\TZK_Objects\Scripts\an12\gearcheck.sqs}
+
+
+; EH listed here used to be add using "addEventHandler" via Init-EH. Those annotated EH is proved stable and defined in Class EventHandlers.
+
+; _plane addEventHandler [{Gear}, {if (_this Select 1) then {[_this select 0] exec {\TZK_Objects\Scripts\an12\geardown.sqs}} else {[_this select 0] exec {\TZK_Objects\Scripts\an12\gearup.sqs}} }]
+
+; EOF

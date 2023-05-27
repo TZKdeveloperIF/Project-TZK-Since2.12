@@ -1,0 +1,7 @@
+_vehicle = _this select 0
+
+#unload
+_vehicle animate ["relase",0]
+~1
+? ((_vehicle animationPhase "cargoload") == 0):goto "unload"
+exit 

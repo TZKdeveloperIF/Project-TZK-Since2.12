@@ -1,0 +1,39 @@
+;#########################################
+;# Written by Voyager  voyager04@mail.ru #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+
+_arrayhelitypeMi8TV = ["OWP_Mi8TV_d","OWP_Mi8TV_g","OWP_Mi8TV_m","OWP_Mi8TV_w"]
+_arrayhelitypeMi8MTV = ["OWP_Mi8MTV_d","OWP_Mi8MTV_g","OWP_Mi8MTV_m","OWP_Mi8MTV_w"]
+
+_me = _this select 0
+_weaponname = _this select 1
+_enemy = _this select 2
+
+? !(alive _me) : exit
+? !(isengineon _me) : exit
+? ("owp_mi8_trigger_dammage_cms" in magazines _me) : exit
+_missile = nearestobject [_enemy, _weaponname]
+[_me,_weaponname,_missile] exec "\OWP_MI8\scripts\owp_forcedamm.sqs"
+;_me vehiclechat format["%1",_weaponname]
+_rnd = random (100)
+if (!(driver _me == player) and !(isNull driver _me) and (_rnd < 50)) then {if !("owp_mi8_trigger_drop_flares_active" in magazines _me) then {_me addmagazine "owp_mi8_trigger_drop_flares_active";_me exec "\OWP_MI8\scripts\owp_dropflarestime.sqs"}}
+_limit = 50 + random (200)
+@(_missile distance _me < _limit)
+if !("owp_flaremag" in magazines _me) then { exit; }
+if !("owp_mi8_trigger_drop_flares_active" in magazines _me) then { exit }
+rnd1 = 50
+? typeof _me == "OWP_Mi8T_un" : rnd1 = 65
+? ((typeof _me) in _arrayhelitypeMi8TV) : rnd1 = 40
+? ((typeof _me) in _arrayhelitypeMi8MTV) : rnd1 = 65
+_rnd = random 100
+? _rnd > rnd1 : exit
+_dirchange = (5 -random 10)/5
+#BendLoop
+_newdir = (getdir _missile) + _dirchange
+? (_newdir > 360) : _newdir = _newdir -360
+? (_newdir < 0) : _newdir = _newdir +360
+_missile setdir _newdir
+~0.03
+? !(isNull _missile) : goto "BendLoop"
+exit

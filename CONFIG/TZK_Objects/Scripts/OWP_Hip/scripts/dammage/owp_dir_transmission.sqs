@@ -1,0 +1,21 @@
+;#########################################
+;# Written by Voyager voyager04@mail.ru  #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+
+_me = _this
+
+#Loop
+if !("owp_mi8_trigger_dammage_transmission" in magazines _me) then { exit; };
+if ((GetDammage _me) == 0) then {exit; };
+if (!alive _me) then { exit; };
+if (!isengineon _me) then { Goto "waitengine"; };
+~0.0000001
+if (getpos _me select 2 > 1) then {_me setdir (getdir _me + 0.15)}
+Goto "Loop";
+
+#waitengine
+@(isengineon _me)
+~10
+if (!isengineon _me) then { Goto "waitengine"; };
+Goto "Loop"

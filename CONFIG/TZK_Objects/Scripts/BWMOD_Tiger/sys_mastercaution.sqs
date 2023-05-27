@@ -1,0 +1,25 @@
+_tiger = _this select 0
+_ancor = _this select 1
+
+Goto _ancor
+exit
+
+#Init
+?(BWMOD_Tiger_MasterCaution_Running): exit
+BWMOD_Tiger_MasterCaution_Running=true;
+
+?("BWMOD_Tiger_MC_CounterMeasures" in magazines _tiger): Goto "Alarm"
+?("BWMOD_Tiger_MC_Fuel" in magazines _tiger): Goto "Alarm"
+?("BWMOD_Tiger_MC_WpnSys" in magazines _tiger): Goto "Alarm"
+BWMOD_Tiger_MasterCaution_Running=false;
+exit;
+
+#Alarm
+?!(alive _tiger): exit
+_tiger vehicleRadio "BWMOD_Tiger_MasterCaution_xj400"
+?("BWMOD_Tiger_MC_CounterMeasures" in magazines _tiger): player SideChat "MASTER CAUTION: COUNTER MEASURES INOPERABLE."
+?("BWMOD_Tiger_MC_WpnSys" in magazines _tiger): player SideChat "MASTER CAUTION: WEAPON MALFUNCTION."
+?("BWMOD_Tiger_MC_Fuel" in magazines _tiger): player SideChat "MASTER CAUTION: LOSING FUEL."
+
+BWMOD_Tiger_MasterCaution_Running=false;
+exit;

@@ -1,0 +1,95 @@
+;#########################################
+;# Written by Voyager  voyager04@mail.ru #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+
+_me = _this select 0
+_rope = _this select 1
+_group_id_array = []
+_distance = {private ["_pos1", "_pos2"];_pos1 = _this select 0;_pos2 = _this select 1;sqrt(((_pos1 select 0) - (_pos2 select 0))^2+((_pos1 select 1) - (_pos2 select 1))^2)}
+_xoffset=-2.15
+_yoffset=4.85
+_zoffset=-12
+_radius = 40
+_limitheight = 14.5
+
+
+#check_group
+~0.1
+if (count _group_id_array > 0) then {goto "wazzza"}
+#label_1
+_yradius = _yoffset + _radius*(1-random(2))
+_xradius = _xoffset + _radius*(1-random(2))
+_z = _zoffset
+? (getpos _me select 2) + _z < 0 : _z = 0.5 - (getpos _me select 2)
+_nearcargo = nearestObject [(getpos _me select 0) + _yradius*sin(getdir _me) + _xradius*cos(getdir _me),(getpos _me select 1) + _yradius*cos(getdir _me) - _xradius*sin(getdir _me),(getpos _me select 2) + _z]
+? (isNull _rope) : exit
+? !(alive _me) : goto "ropeup"
+? !("owp_mi8_ropehook_active" in magazines _me) : goto "ropeup"
+? !("owp_mi8_load" in magazines _me) && (_rope animationPhase "OWP_Mi8_rope" > 0.5) && (_nearcargo != _me): goto "selection";
+goto "check_group"
+
+#selection
+? !(isEngineOn _me) : goto "check_group"
+?("Man" countType [_nearcargo] != 0) || ("Soldier" countType [_nearcargo] != 0): goto "find_group"
+goto "check_group"
+
+#find_group
+~0.1
+;player sidechat format["%1 %2",abs((getpos _me select 2) - (getpos _nearcargo select 2)),_nearcargo]
+? abs((getpos _me select 2) - (getpos _nearcargo select 2)) > _limitheight : goto "check_group"
+? [getpos (units (group _nearcargo) select 0),[(getpos _me select 0) + _yoffset*sin(getdir _me) + _xoffset*cos(getdir _me),(getpos _me select 1) + _yoffset*cos(getdir _me) - _xoffset*sin(getdir _me),0]] call _distance > _radius : goto "check_group"
+_i = 0
+_j = -1
+if (count _group_id_array > 0) then {"if ((group _nearcargo) in _x) then {_j=_i};_i=_i+1" foreach _group_id_array;if (_j!=-1) then {goto "check_group"}}
+? format["%1",group _nearcargo] == "<NULL-group>" : goto "check_group"
+_id = _me addAction [format[localize "STR_OWP_Mi8_comm_takegroup",group _nearcargo],"\OWP_Mi8\scripts\owp_load.sqs"]
+_group_id_array = _group_id_array + [[_id, group _nearcargo]]
+_i = 0
+_j = -1
+"if (_me in _x) then {_j=_i};_i=_i+1" foreach OWP_MI8_HELICOPTERS_ARRAY
+if (_j!=-1) then {(OWP_MI8_HELICOPTERS_ARRAY select _j) set [1,_group_id_array]} else {hint "critical error\nexit from script";exit}
+goto "check_group"
+
+#wazzza
+_l = 0
+#loop_1
+_count = count _group_id_array
+? _count==0 : goto "label_1"
+_group_id = _group_id_array select _l
+if ("owp_mi8_load" in magazines _me) then {_me removeaction (_group_id select 0);_new = [];_j=0;"if (_l!=_j) then {_new=_new+[_group_id_array select _j]};_j=_j+1" foreach _group_id_array;_group_id_array = _new;_l=_l-1;goto "fixfixfixit"}
+if (( abs((getpos _me select 2) - (getpos (units (_group_id select 1) select 0) select 2)) > _limitheight) or ([getpos (units (_group_id select 1) select 0),[(getpos _me select 0) + _yoffset*sin(getdir _me) + _xoffset*cos(getdir _me),(getpos _me select 1) + _yoffset*cos(getdir _me) - _xoffset*sin(getdir _me),0]] call _distance > _radius) ) then {_me removeaction (_group_id select 0);_new = [];_j=0;"if (_l!=_j) then {_new=_new+[_group_id_array select _j]};_j=_j+1" foreach _group_id_array;_group_id_array = _new;_l=_l-1;goto "fixfixfixit"}
+#label_2
+_l = _l + 1
+? _l<_count : goto "loop_1"
+goto "label_1"
+
+#fixfixfixit
+_i = 0
+_j = -1
+"if (_me in _x) then {_j=_i};_i=_i+1" foreach OWP_MI8_HELICOPTERS_ARRAY
+if (_j!=-1) then {(OWP_MI8_HELICOPTERS_ARRAY select _j) set [1,_group_id_array]} else {hint "critical error\nexit from script";exit}
+goto "label_2"
+exit
+
+#ropeup
+_count = count _group_id_array
+_l = 0
+#loop_2
+_group_id = _group_id_array select _l
+if (count _group_id_array > 0) then {_me removeaction (_group_id select 0)}
+_l = _l + 1
+? _l<_count : goto "loop_2"
+
+_i = 0
+_j = -1
+"if (_me in _x) then {_j=_i};_i=_i+1" foreach OWP_MI8_HELICOPTERS_ARRAY
+if (_j!=-1) then {(OWP_MI8_HELICOPTERS_ARRAY select _j) set [1,[]]} else {hint "critical error\nexit from script";exit}
+
+_rope animate ["OWP_Mi8_rope",0]
+@(_rope animationPhase "OWP_Mi8_rope" < 0.01)
+~0.5
+deletevehicle _rope
+? _me animationPhase "OWP_Mi8_DOOR" >= 0.99 : _me animate["OWP_Mi8_DOOR",0]
+? ("owp_mi8_ropehook_active_fix" in magazines _me): _me removemagazine "owp_mi8_ropehook_active_fix"
+exit

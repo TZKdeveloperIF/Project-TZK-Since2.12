@@ -1,0 +1,80 @@
+; ****************************************************
+;      McDONNELL DOUGLAS C-47 SKYTRAIN 
+; ****************************************************
+;                              25/03/04 
+;	          By Trenchfeet
+; ****************************************************
+; Adapted by Footmunch 12/Jun/05
+
+_vehicle = _this select 0
+
+; Get the array of units to drop
+_crew_array = crew _vehicle
+_para_array = []
+"if (_x != driver _vehicle && _x != gunner _vehicle) then {_para_array = _para_array + [_x]}" foreach _crew_array
+
+; Get out now if there's no paras aboard
+?(count _para_array == 0) : exit
+
+; Slow down
+(typeOf _vehicle GetVehicleParamArray {hiddenselections}) find {red_light}
+;Turn off the lights
+_vehicle setObjectTexture[(typeOf _vehicle GetVehicleParamArray {hiddenselections}) find {green_light}, ""]
+_vehicle animate ["PA_Green",0]
+_vehicle setObjectTexture[(typeOf _vehicle GetVehicleParamArray {hiddenselections}) find {red_light}, ""]
+_vehicle animate ["PA_Red",0]
+
+; Approach
+_vehicle setObjectTexture[(typeOf _vehicle GetVehicleParamArray {hiddenselections}) find {red_light}, "\TZK_Texture_4_0_0\rktcoaler\int\rlight.pac"]
+_vehicle setspeedmode "Limited"
+_vehicle SetBehaviour "SAFE"
+_vehicle Vehiclechat "Stand by. Approaching Drop Zone."
+~5
+_vehicle setObjectTexture[(typeOf _vehicle GetVehicleParamArray {hiddenselections}) find {red_light}, ""]
+~.5
+_vehicle setObjectTexture[(typeOf _vehicle GetVehicleParamArray {hiddenselections}) find {red_light}, "\TZK_Texture_4_0_0\rktcoaler\int\rlight.pac"]
+~.5
+_vehicle setObjectTexture[(typeOf _vehicle GetVehicleParamArray {hiddenselections}) find {red_light}, ""]
+~.5
+_vehicle setObjectTexture[(typeOf _vehicle GetVehicleParamArray {hiddenselections}) find {red_light}, "\TZK_Texture_4_0_0\rktcoaler\int\rlight.pac"]
+~.5
+_vehicle setObjectTexture[(typeOf _vehicle GetVehicleParamArray {hiddenselections}) find {red_light}, ""]
+~.5
+_vehicle setObjectTexture[(typeOf _vehicle GetVehicleParamArray {hiddenselections}) find {red_light}, "\TZK_Texture_4_0_0\rktcoaler\int\rlight.pac"]
+_vehicle Vehiclechat "10 Seconds." 
+~5
+_vehicle Vehiclechat "5 Seconds." 
+~1
+_vehicle Vehiclechat "4." 
+~1
+_vehicle Vehiclechat "3." 
+~1
+_vehicle Vehiclechat "2." 
+~1
+_vehicle Vehiclechat "1." 
+~1
+_vehicle Vehiclechat "Go, Go, Go."
+_vehicle setObjectTexture[(typeOf _vehicle GetVehicleParamArray {hiddenselections}) find {red_light}, ""]
+_vehicle setObjectTexture[(typeOf _vehicle GetVehicleParamArray {hiddenselections}) find {green_light},"\TZK_Texture_4_0_0\rktcoaler\int\glight.pac"]
+~1
+
+_count = 0
+_vel = [velocity _vehicle select 0, velocity _vehicle select 1, -5]
+
+#Eject_Loop
+_para = _para_array select _count
+_vehicle Vehiclechat format ["%1, GO", name _para]
+unassignvehicle _para
+_para action ["EJECT",_vehicle]
+~.1
+_para setvelocity _vel
+~0.4
+_count = _count + 1
+? _count != count _para_array : goto "Eject_Loop"
+
+#Finish
+_vehicle setObjectTexture[(typeOf _vehicle GetVehicleParamArray {hiddenselections}) find {red_light}, ""]
+_vehicle setObjectTexture[(typeOf _vehicle GetVehicleParamArray {hiddenselections}) find {green_light}, ""]
+~5
+_vehicle setspeedmode "normal"
+exit

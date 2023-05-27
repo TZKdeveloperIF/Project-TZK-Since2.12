@@ -1,0 +1,184 @@
+_plane1 = _this 
+_lifeTime = 150
+_soundloop = 0
+_delay = 0.23
+_lifeTicks = _lifeTime / _delay
+_lifeTick = _lifeTicks
+_ouch = 0
+_count = 0
+_pos = (getpos  _plane1 select 0)+((8+random 10) * cos _dire)
+_c=0
+_dire = random 360
+_pos1 = (getpos  _plane1 select 0)+((8+random 10) * cos _dire)
+_pos2 = (getpos _plane1 select 1) -((8+random 10) * sin _dire)
+_gumpf4 = "BAS_Debris4" createvehicle   [0,0,0]
+_gumpf4 setpos  [_pos1,_pos2,- random 0.07]
+_player = player
+_count = 0
+_downwash = 0
+_thrust = 0
+_left    = [0, 0, 0, 0.3]
+_left2   = [0, 0, 0, 0]
+_middle  = [0, 0, 0, 0.3]
+_middle2 = [0, 0, 0, 0]
+_right   = [0, 0, 0, 0.3]
+_right2  = [0, 0, 0, 0]
+_x = random 8
+_delay = 0.23 
+?(_player
+_amountDamage =0
+_WingL = "WingL"
+_WingR = "WingR"
+_x = random 2
+_d1 = 0
+_weapon1 = "BLLM197"
+_weapon2 = "BLLHydraLauncher"
+_weapon3 = "Ah1Hellfire"
+_rotation = 0
+_amountdamage=getdammage _plane1
+
+
+#Mainloop
+
+?(_amountdamage == 0): goto "exit"
+?(_amountdamage <= 0.25): goto "exit"
+?(_amountdamage>= 0.25 and _amountdamage<= 0.5): goto "minordamage"
+?(_amountdamage>= 0.5 and _amountdamage<= 0.75): goto "Majordamage"
+?(_amountdamage>= 0.75 and _amountdamage<= 1): goto "Dangerdamage"
+?(_amountdamage == 1): goto "exit"
+goto "MainLoop"
+
+
+
+
+#minordamage
+_num = random 10
+
+?(_num < 1) : _plane1 vehiclechat "ECM dammage"
+?(_num < 2) : _plane1 vehiclechat "Fuel dammage"
+?(_num < 3) : _plane1 vehiclechat "Missiles damage"
+?(_num < 4) : _plane1 vehiclechat "Gun damage"
+?(_num < 5) : _plane1 vehiclechat "Systems Failure"
+?(_num < 6) : _plane1 vehiclechat "Hydrolics Failure"
+?(_num < 7) : _plane1 vehiclechat "Right engine damage"
+?(_num < 8) : _plane1 vehiclechat "Left engine damage"
+?(_num < 9) : _plane1 vehiclechat "Rokets dammage"
+goto "exit"
+
+
+#Majordamage
+_num = random 10
+
+?(_num < 1) : _plane1 vehiclechat "ECM disable" and goto "exit"
+?(_num < 2) : _plane1 vehiclechat "Fuel dammage, loss fuel..." and goto "fuel"
+?(_num < 3) : _plane1 vehiclechat "Hellfire disable" and goto "missile"
+?(_num < 4) : _plane1 vehiclechat "Gun damage" and goto "gun"
+?(_num < 5) : _plane1 vehiclechat "Hydrolics Failure" and goto "Stop"
+?(_num < 6) : _plane1 vehiclechat "Rear rotor dammage" and goto "Stop"
+?(_num < 7) : _plane1 vehiclechat "Right engine damage" and goto "engR"
+?(_num < 8) : _plane1 vehiclechat "Left engine damage" and goto "engL"
+?(_num < 9) : _plane1 vehiclechat "Rokets disable" and goto "rokets"
+goto "exit"
+
+
+#stop
+_plane1 vehicleRadio "ah1HydrolicsFailure_xj400"
+?(fuel _plane1 == 0): goto "exit" 
+(_plane1 setfuel (fuel _plane1)/100.01)
+exit
+
+#Fuel
+_plane1 vehicleRadio "ah1BingoFuel_xj400"
+?(fuel _plane1 == 0): goto "exit" 
+(_plane1 setfuel (fuel _plane1)/1.01)
+goto "fuel"
+
+
+#Missile
+
+_plane1 removeweapon _weapon3
+
+exit
+
+#rokets
+
+_plane1 removeweapon _weapon2
+
+exit
+
+
+#gun
+
+_plane1 removeweapon _weapon1
+exit
+
+#engR
+_plane1 vehicleRadio "ah1RightEngineFire_xj400"
+drop ["cl_basic", "", "Billboard", 1, 10,[1,-1.5,0.5], [random 0.8,random 0.8,random 0.8], 1, 0.004, 0.004, 0.1, [random 3,15], [[random 0.1,random 0.1, random 0.1,0.7], [random 0.1,random 0.1,random 0.1,0.7], [random 0.1, random 0.1, random 0.1,random 0.7], [random 0.1, random 0.1, random 0.1,0]], [0,1,0,1], 8.5, 1, "", "", _plane1]
+~0.5
+goto "engR"
+
+
+
+#engL
+_plane1 vehicleRadio "ah1LeftEngineFire_xj400"
+drop ["cl_basic", "", "Billboard", 1, 10,[-1,-1.5,0.5], [random 0.8,random 0.8,random 0.8], 1, 0.004, 0.004, 0.1, [random 3,15], [[random 0.1,random 0.1, random 0.1,0.7], [random 0.1,random 0.1,random 0.1,0.7], [random 0.1, random 0.1, random 0.1,random 0.7], [random 0.1, random 0.1, random 0.1,0]], [0,1,0,1], 8.5, 1, "", "", _plane1]
+~0.5
+goto "engL"
+
+
+
+#Dangerdamage
+_plane1 vehiclechat "Gun damage"
+~0.1
+_plane1 vehiclechat "Hellfire disable"
+~0.1
+_plane1 vehiclechat "Fuel dammage, loss fuel..."
+~0.1
+_plane1 vehiclechat "Right on fire damage"
+_plane1 vehicleRadio "ah1RightEngineFire_xj400"
+~0.1
+_plane1 vehiclechat "Left on fire damage"
+_plane1 vehicleRadio "ah1LeftEngineFire_xj400"
+~0.1
+_plane1 removeweapon _weapon1
+_plane1 removeweapon _weapon3
+~0.1
+_plane1 vehicleRadio "ah1SystemsFailure_xj400"
+
+~0.3
+
+#dd
+_plane1 vehicleRadio "ah1BingoFuel_xj400"
+
+?(fuel _plane1 == 0): goto "exit" 
+(_plane1 setfuel (fuel _plane1)/1.01)
+
+drop ["cl_basic", "", "Billboard", 1, 10,[1,-1.5,0.5], [random 0.8,random 0.8,random 0.8], 1, 0.004, 0.004, 0.1, [random 3,15], [[random 0.1,random 0.1, random 0.1,0.7], [random 0.1,random 0.1,random 0.1,0.7], [random 0.1, random 0.1, random 0.1,random 0.7], [random 0.1, random 0.1, random 0.1,0]], [0,1,0,1], 8.5, 1, "", "", _plane1]
+~0.2
+drop ["cl_fire", "", "Billboard", 1, 10,[1,-1.5,0.5], [random 0.8,random 0.8,random 0.8], 1, 0.004, 0.004, 0.1, [random 3,15], [[random 0.1,random 0.1, random 0.1,0.7], [random 0.1,random 0.1,random 0.1,0.7], [random 0.1, random 0.1, random 0.1,random 0.7], [random 0.1, random 0.1, random 0.1,0]], [0,1,0,1], 8.5, 1, "", "", _plane1]
+~0.2
+drop ["cl_fire", "", "Billboard", 1, 1, [1,-1.5,0.5], [random 0.3, random 0.3, 3], 1, 0.004, 0.004, 0.1, [1,(1 + random 7),0], [[1,0.5,0.5,0], [1,1,0,0.7], [1,1,0,0.5], [1,1,0.1,0]], [0,1], 0.5, 0.05, "", "",_plane1 ]
+~0.2
+drop ["cl_fire", "", "Billboard", 1,  5, [1,-1.5,0.5], [ random 1, random 1, random 1], 1, 0.005, 0.0042, 0, [0.15], [[1,1,1,1],[0,0,0,0]], [0,1], 0.5, 1, "", "",_plane1]
+
+
+~0.1
+
+
+drop ["cl_basic", "", "Billboard", 1, 10,[-1,-1.5,0.5], [random 0.8,random 0.8,random 0.8], 1, 0.004, 0.004, 0.1, [random 3,15], [[random 0.1,random 0.1, random 0.1,0.7], [random 0.1,random 0.1,random 0.1,0.7], [random 0.1, random 0.1, random 0.1,random 0.7], [random 0.1, random 0.1, random 0.1,0]], [0,1,0,1], 8.5, 1, "", "", _plane1]
+~0.2
+drop ["cl_fire", "", "Billboard", 1, 10,[-1,-1.5,0.5], [random 0.8,random 0.8,random 0.8], 1, 0.004, 0.004, 0.1, [random 3,15], [[random 0.1,random 0.1, random 0.1,0.7], [random 0.1,random 0.1,random 0.1,0.7], [random 0.1, random 0.1, random 0.1,random 0.7], [random 0.1, random 0.1, random 0.1,0]], [0,1,0,1], 8.5, 1, "", "", _plane1]
+~0.2
+drop ["cl_fire", "", "Billboard", 1, 1, [-1,-1.5,0.5], [random 0.3, random 0.3, 3], 1, 0.004, 0.004, 0.1, [1,(1 + random 7),0], [[1,0.5,0.5,0], [1,1,0,0.7], [1,1,0,0.5], [1,1,0.1,0]], [0,1], 0.5, 0.05, "", "",_plane1 ]
+~0.2
+drop ["cl_fire", "", "Billboard", 1,  5, [-1,-1.5,0.5], [ random 1, random 1, random 1], 1, 0.005, 0.0042, 0, [0.15], [[1,1,1,1],[0,0,0,0]], [0,1], 0.5, 1, "", "",_plane1]
+
+
+~0.5
+
+goto "dd"
+
+
+#exit
+exit
