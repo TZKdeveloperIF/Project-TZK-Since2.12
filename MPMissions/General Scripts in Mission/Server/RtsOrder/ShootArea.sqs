@@ -12,6 +12,7 @@ _params = _this select 1
 _biggerAngle = _params select 0; _suggestedSpeed = _params select 1; _idx = _params select 2; _enum = _params select 3; _si = _params select 5
 _posParam = _params select 6
 _orderType = _params select 7
+_mlrsCnt = (if (count _params > 8) then {_params select 8} else {0})
 
 ; script type info: [is server, is vehicle, is structure]
 _scriptTypeInfo = [true, false, false]
@@ -28,7 +29,7 @@ _scriptTypeInfo = [true, false, false]
 
 _unit call preprocessFile "Server\AI\RtsOrderBegin.sqf"
 
-[[_unit, _si, _idx, _biggerAngle, _enum, _orderType], [_posParam, _suggestedSpeed], _scriptTypeInfo, [false, [_rtsStatus, _id]]] exec "Art\CoreOrder.sqs"
+[[_unit, _si, _idx, _biggerAngle, _enum, _orderType, _mlrsCnt], [_posParam, _suggestedSpeed], _scriptTypeInfo, [false, [_rtsStatus, _id]]] exec "Art\CoreOrder.sqs"
 exit
 
 # Sleep
