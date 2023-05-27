@@ -1,0 +1,14 @@
+_tiger = _this select 0
+
+?!("BWMOD_Tiger_MC" in magazines _tiger): _tiger addMagazine "BWMOD_Tiger_MC";
+?!("BWMOD_Tiger_MC_Fuel" in magazines _tiger): _tiger addMagazine "BWMOD_Tiger_MC_Fuel";
+
+[_tiger,"Init"] exec "\BWMOD_Tiger\scr\sys_mastercaution.sqs";
+
+#Loop
+?(getDammage _tiger < 0.1): exit
+?(fuel _tiger <= 0): exit
+
+_tiger SetFuel ((fuel tiger) - 0.005)
+~1
+Goto "Loop"

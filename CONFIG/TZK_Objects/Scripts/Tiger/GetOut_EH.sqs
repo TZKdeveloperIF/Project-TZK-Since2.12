@@ -1,0 +1,5 @@
+; args: Get_Out_Array
+_vehicle = _this select 0; _seat = _this select 1; _unit = _this select 2
+
+? _seat == "Driver": [_vehicle, ["Door1"], 1] exec {\TZK_Objects\Scripts\SwitchSelections.sqs}; exit
+? _seat == "Gunner": [_vehicle, ["Door2"], 1] exec {\TZK_Objects\Scripts\SwitchSelections.sqs}, [_vehicle, ["HID", "HIDinnen"], 0] exec {\TZK_Objects\Scripts\SwitchSelections.sqs}, exit

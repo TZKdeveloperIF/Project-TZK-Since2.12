@@ -1,0 +1,27 @@
+;#########################################
+;# Written by Voyager  voyager04@mail.ru #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+_me = _this select 0
+#loop
+~1
+@(count crew _me > 1 && alive _me)
+@( format[{%1},driver _me] != "<NULL-object>" && not alive driver _me)
+? !(alive _me):goto "loop"
+? typeof _me == "OWP_Mi8T_c" : goto "start"
+? typeof _me == "OWP_Mi8T_un" : goto "start"
+? count crew _me < 2 : goto "loop"
+? alive _me && count crew _me >=2 && format[{%1},gunner _me] == "<NULL-object>" && alive (crew _me select 1) && crew _me select 1 != player : _copilot = crew _me select 1;goto "run"
+? alive _me && count crew _me >2 && format[{%1},gunner _me] != "<NULL-object>" && alive (crew _me select 2) && crew _me select 2 != player : _copilot = crew _me select 2;goto "run"
+goto "loop"
+exit
+#start
+? alive _me && count crew _me >=2 && gunner _me != player : _copilot = gunner _me;goto "run"
+goto "loop"
+#run
+~(1 + random (2))
+? not alive (_copilot) : goto "loop"
+? !(alive _me):goto "loop"
+_copilot action ["MOVETODRIVER", _me]
+? format[{%1},gunner _me] != "<NULL-object>" && alive (gunner _me) : [_copilot] join (gunner _me)
+goto "loop"

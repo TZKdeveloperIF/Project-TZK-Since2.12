@@ -1,0 +1,25 @@
+;#########################################
+;# Written by DPS   DPS@istel.ru         #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+
+? count crew _this < 2 : _copilot = player;goto "run"
+? typeof _this == "OWP_Mi8T_c" : goto "start"
+? typeof _this == "OWP_Mi8T_un" : goto "start"
+? format[{%1},gunner _this] == "<NULL-object>" && format[{%1},driver _this] != "<NULL-object>" && alive (crew _this select 1) : _copilot = crew _this select 1
+? format[{%1},gunner _this] == "<NULL-object>" && format[{%1},driver _this] == "<NULL-object>" && alive (crew _this select 0) : _copilot = crew _this select 0
+? format[{%1},gunner _this] != "<NULL-object>" && format[{%1},driver _this] != "<NULL-object>" && alive (crew _this select 2) : _copilot = crew _this select 2
+? format[{%1},gunner _this] != "<NULL-object>" && format[{%1},driver _this] == "<NULL-object>" && alive (crew _this select 1) : _copilot = crew _this select 1
+goto "run"
+exit
+#start
+_copilot = gunner _this
+#run
+
+?(alive _copilot): (_copilot) switchmove "OWPMi8CoPilotOpenBlister"
+~0.4
+_this animate["OWP_Mi8_FRG",1]
+~2
+?(alive _copilot): (_copilot) switchmove "OWPMi8CoPilot"
+exit
+

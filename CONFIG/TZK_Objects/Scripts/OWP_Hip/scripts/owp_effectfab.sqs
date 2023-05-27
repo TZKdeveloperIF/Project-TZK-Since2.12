@@ -1,0 +1,30 @@
+;#########################################
+;# Written by DPS   DPS@istel.ru         #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+
+_me = _this select 0
+_initheight = getpos _me select 2
+_ammo = _this select 4
+_bomb = nearestObject [_me,_ammo]
+_bompos = getpos _bomb
+
+[_me,_bomb,_ammo] exec "\OWP_Mi8\Scripts\owp_effectfab2.sqs"
+
+_me flyinheight 250
+
+#check
+~0.00000001
+? (driver _me != player) : _me setvelocity [velocity _me select 0,velocity _me select 1, (velocity _me select 2) + 0.038]
+
+? (isNull _bomb):goto "boom"
+_bompos = getpos _bomb
+goto "check"
+
+#boom
+_me flyinheight _initheight
+drop["kouleSvetlo","","Billboard",0.01,1 ,_bompos,[0,0,0],1,1,1,0,[100,0],[[1,1,0.3,1]],[0,1],0.3,0.1,"","",""]
+exit
+
+
+

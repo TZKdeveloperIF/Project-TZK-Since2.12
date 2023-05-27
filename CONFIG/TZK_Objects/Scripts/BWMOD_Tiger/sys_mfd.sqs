@@ -1,0 +1,21 @@
+;;INIT WEAPON MFD ON ENGINE STARTUP
+_tiger = _this select 0
+
+_WeaponArray = crew _tiger - [driver _tiger] - [gunner _tiger];
+
+?((typeOf (_WeaponArray select 0)) == "BWMOD_Gunpod_Proxy"):	_weapon1 = "\BWMOD_Tiger\instr\gunpod.pac"
+?((typeOf (_WeaponArray select 0)) == "BWMOD_SNEB70_Proxy"):	_weapon1 = "\BWMOD_Tiger\instr\sneb70.pac"
+?((typeOf (_WeaponArray select 0)) == "BWMOD_PARS3_Proxy"):	_weapon1 = "\BWMOD_Tiger\instr\pars3.pac"
+?((typeOf (_WeaponArray select 0)) == "BWMOD_HOT3_Proxy"):	_weapon1 = "\BWMOD_Tiger\instr\hot3.pac"
+
+?((typeOf (_WeaponArray select 1)) == "BWMOD_Gunpod_Proxy"):	_weapon2 = "\BWMOD_Tiger\instr\gunpod.pac"
+?((typeOf (_WeaponArray select 1)) == "BWMOD_SNEB70_Proxy"):	_weapon2 = "\BWMOD_Tiger\instr\sneb70.pac"
+?((typeOf (_WeaponArray select 1)) == "BWMOD_PARS3_Proxy"):	_weapon2 = "\BWMOD_Tiger\instr\pars3.pac"
+?((typeOf (_WeaponArray select 1)) == "BWMOD_HOT3_Proxy"):	_weapon2 = "\BWMOD_Tiger\instr\hot3.pac"
+
+_tiger setObjectTexture [16,"\BWMOD_Tiger\instr\stinger.pac"]
+_tiger setObjectTexture [17,_weapon1]
+_tiger setObjectTexture [18,_weapon2]
+_tiger setObjectTexture [19,"\BWMOD_Tiger\instr\stinger.pac"]
+
+exit;

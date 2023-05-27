@@ -1,0 +1,10 @@
+; args: [vehicle, name]
+_vehicle = _this select 0
+_name = _this select 1
+
+_path = "\TZK_Texture_4_0_0\DKMM\Arty\"
+
+? _name == "D": _path = _path + "D\"
+? _name == "W": _path = _path + "D\"
+
+[_vehicle, _path] call loadFile "\TZK_Objects\Scripts\texture\stdSetObjTex.sqf"

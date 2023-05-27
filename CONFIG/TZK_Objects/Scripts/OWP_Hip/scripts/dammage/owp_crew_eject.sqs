@@ -1,0 +1,25 @@
+;#########################################
+;# Written by Kerd  Kerd@inbox.ru        #
+;# Modified by Voyager voyager04@mail.ru #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+_plane = _this select 0
+_wait = _this select 1
+
+_alt = getpos _plane select 2
+
+~_wait
+
+#Loop
+~0.3
+
+_units = crew _plane
+
+if (count(_units) == 0) then { exit; };
+if (!alive _plane) then { exit; };
+
+_sel = count(_units)-1;
+
+if ((_units select _sel) != player) then {unassignVehicle (_units select _sel);_units select _sel action ["EJECT",_plane];};
+
+Goto "Loop";

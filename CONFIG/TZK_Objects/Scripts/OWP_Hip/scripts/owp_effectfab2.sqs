@@ -1,0 +1,29 @@
+;#########################################
+;# Written by Voyager  voyager04@mail.ru #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+
+_me = _this select 0
+_bomb1 = _this select 1
+_ammo = _this select 2
+
+#loop
+~0.00000001
+_bomb2 = nearestObject [_me,_ammo]
+? _bomb2 != _bomb1:goto "finded"
+? (isNull _bomb1): exit
+goto "loop"
+
+#finded
+_bompos = getpos _bomb2
+
+#check
+~0.00000001
+? (isNull _bomb2):goto "boom"
+_bompos = getpos _bomb2
+goto "check"
+
+#boom
+_me flyinheight _initheight
+drop["kouleSvetlo","","Billboard",0.01,1 ,_bompos,[0,0,0],1,1,1,0,[100,0],[[1,1,0.3,1]],[0,1],0.3,0.1,"","",""]
+exit

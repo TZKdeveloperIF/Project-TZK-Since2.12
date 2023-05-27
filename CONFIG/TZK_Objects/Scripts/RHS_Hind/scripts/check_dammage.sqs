@@ -1,0 +1,9 @@
+_mi24 = _this select 0
+_mi24 exec "\RHS_Hind\scripts\exp_init.sqs"
+
+@(getdammage _mi24 > 0.99 or (!isengineon _mi24 and getPos _mi24 select 2 > 15) or (!alive driver _mi24 and getPos _mi24 select 2 > 15))
+
+?(!canmove _mi24 and (getdammage _mi24 < 0.99)): [_mi24] exec "\RHS_Hind\scripts\smoke_trail.sqs"
+?((!alive driver _mi24 && !isnull driver _mi24) and (getdammage _mi24 < 0.99)): [_mi24] exec "\RHS_Hind\scripts\smoke_trail.sqs"
+
+exit

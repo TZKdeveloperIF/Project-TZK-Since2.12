@@ -1,0 +1,14 @@
+ ;#########################################
+;# Written by DPS   DPS@istel.ru         #
+;# & by Voyager  voyager04@mail.ru       #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+_arrayhelitypeMi8T = ["OWP_Mi8T_d","OWP_Mi8T_w"]
+_arrayhelitypeMi8MT = ["OWP_Mi8MT_g","OWP_Mi8MT_m"]
+
+_me = _this select 0
+
+? !( ( (typeof _me) in _arrayhelitypeMi8T ) || ( (typeof _me) in _arrayhelitypeMi8MT ) ) : exit
+
+drop["\OWP_Mi8\weap\762.p3d","","SpaceObject",1,5 ,[-2.1,4.75,-1.7],[-2.5,-2.5,0],1,1,0.1,0.5,[1,1],[[1,1,1,1]],[0],0.3,0.1,"","",_me]
+exit

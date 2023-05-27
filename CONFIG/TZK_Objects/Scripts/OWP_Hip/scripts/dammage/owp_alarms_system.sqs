@@ -1,0 +1,31 @@
+;#########################################
+;# Written by Kerd  Kerd@inbox.ru        #
+;# Modified by Voyager voyager04@mail.ru #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+_ss_cms = 8
+_ss_engine1 = 9
+_ss_engine2 = 10
+_ss_fuel = 11
+_ss_gun = 12
+_ss_transm = 13
+_ss_weap = 14
+
+_me = _this select 0
+_what = _this select 1
+	
+if (!alive _me) then { exit; };
+@(!("owp_mi8_trigger_is_alarm" in magazines _me));
+_me addmagazine "owp_mi8_trigger_is_alarm";
+~0.5
+if (_what == "transmission") then { _me vehicleradio "mi8_alarm_transmission"; _me vehiclechat localize "STR_OWP_Mi8_Dam_trans";_me setobjecttexture [_ss_transm, "\OWP_Mi8\t\r_but.paa"]; goto "next";};
+if (_what == "fuel") then { _me vehicleradio "mi8_alarm_fueldammage"; _me vehiclechat localize "STR_OWP_Mi8_Dam_Fuel";_me setobjecttexture [_ss_fuel, "\OWP_Mi8\t\r_but.paa"]; goto "next";};
+if (_what == "cms") then { _me vehicleradio "mi8_alarm_cms"; _me vehiclechat localize "STR_OWP_Mi8_Dam_CMS";_me setobjecttexture [_ss_cms, "\OWP_Mi8\t\r_but.paa"]; goto "next";};
+if (_what == "1engine") then { _me vehicleradio "mi8_alarm_1engine"; _me vehiclechat localize "STR_OWP_Mi8_Dam_1eng";_me setobjecttexture [_ss_engine1, "\OWP_Mi8\t\r_but.paa"]; goto "next";};
+if (_what == "2engine") then { _me vehicleradio "mi8_alarm_2engine"; _me vehiclechat localize "STR_OWP_Mi8_Dam_2eng";_me setobjecttexture [_ss_engine2, "\OWP_Mi8\t\r_but.paa"]; goto "next";};
+if (_what == "pkt") then { _me vehicleradio "mi8_alarm_pkt"; _me vehiclechat localize "STR_OWP_Mi8_Dam_Gun";_me setobjecttexture [_ss_gun, "\OWP_Mi8\t\r_but.paa"]; goto "next";};
+if (_what == "weapons") then { _me vehicleradio "mi8_alarm_weapons"; _me vehiclechat localize "STR_OWP_Mi8_Dam_Weap";_me setobjecttexture [_ss_weap, "\OWP_Mi8\t\r_but.paa"]; goto "next";};
+#next
+~2
+_me removemagazine "owp_mi8_trigger_is_alarm";
+exit;

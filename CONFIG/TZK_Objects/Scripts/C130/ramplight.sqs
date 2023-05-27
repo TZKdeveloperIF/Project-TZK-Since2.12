@@ -1,0 +1,17 @@
+_vehicle = _this select 0
+
+#start
+@ (_vehicle animationphase "rampa" > 0.5 || !local _vehicle)
+? !local _vehicle: exit
+_vehicle animate ["ramplight",1]
+_vehicle vehiclechat "Cargo ramp opened"
+
+@ (_vehicle animationphase "rampa" < 0.4 || !local _vehicle)
+? !local _vehicle: exit
+_vehicle animate ["ramplight",0]
+_vehicle vehiclechat "Cargo ramp closed"
+goto "start"
+
+
+
+exit

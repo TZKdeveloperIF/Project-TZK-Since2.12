@@ -1,0 +1,15 @@
+;#########################################
+;# Written by Voyager  voyager04@mail.ru #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+
+_me = _this
+_num = []
+_i = 0
+_j = -1
+"if (_me in _x) then {_j=_i};_i=_i+1" foreach OWP_MI8_HELICOPTERS_ARRAY
+if (_j!=-1) then {_num = (OWP_MI8_HELICOPTERS_ARRAY select _j) select 2} else {hint "critical error\nexit from script";exit}
+if (count _num != 2) then {hint "critical error\nexit from script";exit}
+_me setObjectTexture [15, format ["\OWP_Mi8\sign\%1.paa",_num select 0]]
+_me setObjectTexture [16, format ["\OWP_Mi8\sign\%1.paa",_num select 1]]
+exit;

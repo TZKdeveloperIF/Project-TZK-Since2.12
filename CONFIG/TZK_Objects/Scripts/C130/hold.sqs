@@ -1,0 +1,53 @@
+_helo = vehicle (_this select 0)
+_bailer = _this select 1
+_dir = _this select 2 
+_posx = _this select 3
+_posy = _this select 4
+_posh = _this select 5
+_add = _this select 6
+
+#hold
+_bailer setpos [50/_add,50/_add,300]
+~1
+? !((damage _helo < 1) and (_helo animationPhase "relase" > 0) and ((_helo animationPhase "cargoload") <= _add)): goto "hold"
+
+? (((getpos _helo select 2) < 1) and (speed _helo < 5)):goto "unload"
+? (((getpos _helo select 2) > 1) and (isengineon _helo) and (speed _helo > 15)):goto "parachute"
+
+#unload
+_bailer setdir ((getdir _helo) - _dir)
+_bailer setvelocity (velocity _helo)
+_bailer setpos [((getpos  _helo select 0)+(0.1 * cos (getdir _bailer))),(getpos  _helo select 1)-(0.1 * sin (getdir _bailer)),(getpos  _helo select 2)-_posh+1]
+_player sidechat format ["cargo number %1-%2 relased ",_add,_bailer]
+_helo animate ["relase",0]
+~0.1
+_helo animate ["cargoload",_add-0.1]
+exit
+
+#parachute
+_helo sidechat format ["Prepare for relase cargo %1",_bailer]
+(group _helo) setspeedmode "limited"
+if !(_helo animationPhase "rampa" > 0.5) then{[_helo] exec "\TZK_Objects\Scripts\C130\openramp.sqs";goto "delay"} else{goto "start"}
+#delay
+~5
+#start
+_helo animate ["relase",0]
+~0.1
+_helo animate ["cargoload",_add-0.1]
+~1
+_bailer setdir (getdir _helo) - _dir
+_bailer setvelocity (velocity _helo)
+_bailer setpos [((getpos  _helo select 0)+(3 * cos (getdir _bailer))),(getpos  _helo select 1)-(3 * sin (getdir _bailer)),(getpos  _helo select 2)-_posh+2]
+_bailer setvelocity (velocity _helo)
+~0.5
+_chute = "ParachuteWest" createvehicle [getpos _bailer select 0,getpos _bailer select 1,getpos _bailer select 2]
+_chute setpos [getpos _bailer select 0,getpos _bailer select 1,getpos _bailer select 2]
+
+#flight
+_bailer setvelocity (velocity _chute)
+~0.05
+? (alive _chute):goto "flight";
+@ ((getpos _bailer select 2 ==0) or (damage _bailer == 1))
+_player sidechat format ["cargo %1 safetly landed",_bailer]
+[_helo] exec "\TZK_Objects\Scripts\C130\closeramp.sqs"
+exit

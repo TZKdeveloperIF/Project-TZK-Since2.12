@@ -1,0 +1,41 @@
+;#########################################
+;# Written by Voyager  voyager04@mail.ru #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+;[_me,_dammage,["fuel","1engine","2engine","transmission","cms","pkt","weapons"]] exec "\OWP_MI8\scripts\owp_movie_dammage.sqs"
+
+_me = _this select 0
+_damm = _this select 1
+_types = _this select 2
+	
+if (!alive _me) then { exit; };
+if ("owp_mi8_trigger_movie_dammage" in magazines _me) then { exit; };
+_me setdammage 0
+~0.1
+_me addmagazine "owp_mi8_trigger_movie_dammage";
+_weapons = weapons _me
+_pkt = _weapons select 0
+_weapons = _weapons - [_pkt]
+? "owp_mi8_trigger_dammage_engines" in magazines _me : _me removemagazine "owp_mi8_trigger_dammage_engines";
+? "owp_mi8_trigger_dammage_fuel" in magazines _me : _me removemagazine "owp_mi8_trigger_dammage_fuel";
+? "owp_mi8_trigger_dammage_1engine" in magazines _me : _me removemagazine "owp_mi8_trigger_dammage_1engine";
+? "owp_mi8_trigger_dammage_2engine" in magazines _me : _me removemagazine "owp_mi8_trigger_dammage_2engine";
+? "owp_mi8_trigger_dammage_transmission" in magazines _me : _me removemagazine "owp_mi8_trigger_dammage_transmission";
+? "owp_mi8_trigger_dammage_cms" in magazines _me : _me removemagazine "owp_mi8_trigger_dammage_cms";
+? "owp_mi8_trigger_dammage_pkt" in magazines _me : _me removemagazine "owp_mi8_trigger_dammage_pkt";_me addWeapon "OWP_PKT";_me selectWeapon "OWP_PKT";
+? "owp_mi8_trigger_dammage_weapons" in magazines _me : _me removemagazine "owp_mi8_trigger_dammage_weapons";"_me addWeapon _x" foreach _weapons;
+
+~0.03
+_me setdammage _damm
+"_me addmagazine format[""owp_mi8_trigger_dammage_%1"",_x]" foreach _types
+if ("owp_mi8_trigger_dammage_fuel" in magazines _me) then {[_me] exec "\OWP_MI8\scripts\dammage\owp_dam_fuel.sqs";[_me,"fuel"] exec "\OWP_MI8\scripts\dammage\owp_Alarms_system.sqs";}
+if ("owp_mi8_trigger_dammage_1engine" in magazines _me) then {[_me] exec "\OWP_MI8\scripts\dammage\owp_dam_1engine.sqs";[_me,"1engine"] exec "\OWP_MI8\scripts\dammage\owp_Alarms_system.sqs";}
+if ("owp_mi8_trigger_dammage_2engine" in magazines _me) then {[_me] exec "\OWP_MI8\scripts\dammage\owp_dam_2engine.sqs";[_me,"2engine"] exec "\OWP_MI8\scripts\dammage\owp_Alarms_system.sqs";}
+if ("owp_mi8_trigger_dammage_transmission" in magazines _me) then {[_me] exec "\OWP_MI8\scripts\dammage\owp_dam_transmission.sqs";[_me,"transmission"] exec "\OWP_MI8\scripts\dammage\owp_Alarms_system.sqs";}
+if ("owp_mi8_trigger_dammage_cms" in magazines _me) then {[_me] exec "\OWP_MI8\scripts\dammage\owp_dam_cms.sqs";[_me,"cms"] exec "\OWP_MI8\scripts\dammage\owp_Alarms_system.sqs";}
+if ("owp_mi8_trigger_dammage_pkt" in magazines _me) then {_me removeWeapon "OWP_PKT";[_me,"pkt"] exec "\OWP_MI8\scripts\dammage\owp_Alarms_system.sqs";}
+if ("owp_mi8_trigger_dammage_weapons" in magazines _me) then {"_me removeWeapon _x" foreach _weapons;[_me,"weapons"] exec "\OWP_MI8\scripts\dammage\owp_Alarms_system.sqs";}
+
+~3
+? ("owp_mi8_trigger_movie_dammage" in magazines _me) : _me removemagazine "owp_mi8_trigger_movie_dammage"
+exit

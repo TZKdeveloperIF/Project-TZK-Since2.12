@@ -1,0 +1,9 @@
+_vehicle = _this select 0
+
+? _vehicle animationphase "rampa" > 0.5: exit
+? (speed _vehicle> 15): _vehicle say "rampasndc130_xj400"; _vehicle animate ["rampa",0.7]; _vehicle animate ["rampa1",1]; exit
+
+_vehicle say "rampasndc130_xj400"; _vehicle animate ["rampa",1]; _vehicle animate ["rampa1",1]
+? !(isengineon _vehicle):_vehicle animate ["door1",1];_vehicle animate ["door2",1];_vehicle animate ["door3",1];
+	
+exit

@@ -1,0 +1,253 @@
+_vehicle = _this select 0
+_engine = _this select 1
+_detect = _this select 2
+
+?(_detect): Goto "detect"
+?(!_engine): Goto "engineoff"
+
+#engineOn
+?("BWMOD_Tiger_StartUp" in magazines _vehicle): Exit
+
+_vehicle addMagazine "BWMOD_Tiger_StartUp"
+
+?(fuel _vehicle == 0): exit
+
+?!(driver _vehicle == player): Goto "EngineOnAIr"
+?(getpos _vehicle select 2 > 5): Goto "EngineOnAIr"
+
+_fuelold = fuel _vehicle
+_vehicle setfuel 0
+
+?(alive driver _vehicle): (driver _vehicle) switchmove "BWMod_TigerPilotStartup"
+
+_vehicle say "TigerPowerup_xj400"
+_vehicle animate ["Engine_rpm", 1]
+_vehicle animate ["Engine_rpm_2", 1]
+
+~0.3
+
+_vehicle setfuel _fuelold
+_vehicle action ["Engine on", _vehicle]
+
+~2.0
+
+?(player in  _vehicle): _vehicle exec "\BWMOD_Tiger\scr\tank.sqs"
+_vehicle animate ["Rotor_rpm", 1]
+_vehicle animate ["OPress1", 1]
+_vehicle animate ["OPress2", 1]
+_vehicle animate ["HPress1", 1]
+_vehicle animate ["HPress2", 1]
+_vehicle animate ["Temp1", 1]
+_vehicle animate ["Temp2", 1]
+_vehicle animate ["Torque", 1]
+_vehicle animate ["Rotor_rpm_2", 1]
+_vehicle animate ["OPress1_2", 1]
+_vehicle animate ["OPress2_2", 1]
+_vehicle animate ["HPress1_2", 1]
+_vehicle animate ["HPress2_2", 1]
+_vehicle animate ["Temp1_2", 1]
+_vehicle animate ["Temp2_2", 1]
+_vehicle animate ["Torque_2", 1]
+_vehicle animate ["bat2", 1]
+_vehicle animate ["bat3", 1]
+
+~0.3
+
+_vehicle animate ["bat1", 1]
+_vehicle setObjectTexture [5,"\BWMOD_Tiger\instr\display.pac"]
+
+~4.5
+ 
+_vehicle animate ["RBremse", 1]
+
+_vehicle setObjectTexture [6,"\BWMOD_Tiger\instr\display.pac"]
+
+~0.5
+ 
+_vehicle setObjectTexture [7,"\BWMOD_Tiger\instr\MFD.pac"]
+
+~0.5
+ 
+_vehicle setObjectTexture [8,"\BWMOD_Tiger\instr\numbers.paa"]
+_vehicle setObjectTexture [9,"\BWMOD_Tiger\instr\hud.paa"]
+_vehicle setObjectTexture [10,"\BWMOD_Tiger\instr\horizont.paa"]
+_vehicle setObjectTexture [11,"\BWMOD_Tiger\instr\kompasH.paa"]
+
+~5.7
+
+?(alive driver _vehicle): (driver _vehicle) switchmove "BWMod_TigerPilot"
+
+[_vehicle,"Init"] exec "\BWMOD_Tiger\scr\sys_core.sqs"
+[_vehicle] exec "\BWMOD_Tiger\scr\HUD.sqs"
+[_vehicle] exec "\BWMOD_Tiger\scr\sys_mfd.sqs"
+
+_vehicle removeMagazine "BWMOD_Tiger_StartUp"
+
+Exit
+
+#EngineOnAIr
+?(alive driver _vehicle AND driver _vehicle != player AND getPos _vehicle select 2 < 5): (driver _vehicle) switchmove "BWMod_TigerPilotStartup"
+
+?(getPos _vehicle select 2 < 5): _vehicle say "TigerPowerup_xj400"
+
+?(player in  _vehicle): _vehicle exec "\BWMOD_Tiger\scr\tank.sqs"
+_vehicle animate ["Engine_rpm", 1]
+_vehicle animate ["Rotor_rpm", 1]
+_vehicle animate ["RBremse", 1]
+_vehicle animate ["bat1", 1]
+_vehicle animate ["bat2", 1]
+_vehicle animate ["bat3", 1]
+_vehicle animate ["OPress1", 1]
+_vehicle animate ["OPress2", 1]
+_vehicle animate ["HPress1", 1]
+_vehicle animate ["HPress2", 1]
+_vehicle animate ["Temp1", 1]
+_vehicle animate ["Temp2", 1]
+_vehicle animate ["Torque", 1]
+_vehicle animate ["Engine_rpm_2", 1]
+_vehicle animate ["Rotor_rpm_2", 1]
+_vehicle animate ["RBremse_2", 1]
+_vehicle animate ["OPress1_2", 1]
+_vehicle animate ["OPress2_2", 1]
+_vehicle animate ["HPress1_2", 1]
+_vehicle animate ["HPress2_2", 1]
+_vehicle animate ["Temp1_2", 1]
+_vehicle animate ["Temp2_2", 1]
+_vehicle animate ["Torque_2", 1]
+
+_vehicle setObjectTexture [5,"\BWMOD_Tiger\instr\display.pac"]
+_vehicle setObjectTexture [6,"\BWMOD_Tiger\instr\display.pac"]
+_vehicle setObjectTexture [7,"\BWMOD_Tiger\instr\MFD.pac"]
+_vehicle setObjectTexture [8,"\BWMOD_Tiger\instr\numbers.paa"]
+_vehicle setObjectTexture [9,"\BWMOD_Tiger\instr\hud.paa"]
+_vehicle setObjectTexture [10,"\BWMOD_Tiger\instr\horizont.paa"]
+_vehicle setObjectTexture [11,"\BWMOD_Tiger\instr\kompasH.paa"]
+
+~8
+
+?(alive driver _vehicle AND driver _vehicle != player AND getPos _vehicle select 2 < 5): (driver _vehicle) switchmove "BWMod_TigerPilot"
+
+[_vehicle,"Init"] exec "\BWMOD_Tiger\scr\sys_core.sqs"
+[_vehicle] exec "\BWMOD_Tiger\scr\HUD.sqs"
+[_vehicle] exec "\BWMOD_Tiger\scr\sys_mfd.sqs"
+
+_vehicle removeMagazine "BWMOD_Tiger_StartUp"
+
+Exit
+
+#EngineOff
+?(_vehicle animationPhase "Engine_rpm" != 1): exit
+
+[_vehicle,"Shutdown"] exec "\BWMOD_Tiger\scr\sys_core.sqs";
+
+?(getPos _vehicle select 2 > 5): Goto "EngineOffAIr"
+?!(driver _vehicle == player): Goto "EngineOffAIr"
+
+#EngineOnNorm
+?(alive driver _vehicle): (driver _vehicle) switchmove "BWMod_TigerPilotStartup"
+
+_vehicle say "TigerShutdown_xj400"
+_vehicle animate ["Engine_rpm", 0]
+_vehicle animate ["Engine_rpm_2", 0]
+
+~2.3
+
+_vehicle animate ["Rotor_rpm", 0]
+_vehicle animate ["OPress1", 0]
+_vehicle animate ["OPress2", 0]
+_vehicle animate ["HPress1", 0]
+_vehicle animate ["HPress2", 0]
+_vehicle animate ["Temp1", 0]
+_vehicle animate ["Temp2", 0]
+_vehicle animate ["Torque", 0]
+_vehicle animate ["Rotor_rpm_2", 0]
+_vehicle animate ["OPress1_2", 0]
+_vehicle animate ["OPress2_2", 0]
+_vehicle animate ["HPress1_2", 0]
+_vehicle animate ["HPress2_2", 0]
+_vehicle animate ["Temp1_2", 0]
+_vehicle animate ["Temp2_2", 0]
+_vehicle animate ["Torque_2", 0]
+_vehicle animate ["bat2", 0]
+_vehicle animate ["bat3", 0]
+
+~0.3
+
+_vehicle animate ["bat1", 0]
+_vehicle setObjectTexture [5,""]
+
+~4.5
+ 
+_vehicle animate ["RBremse", 0]
+
+_vehicle setObjectTexture [6,""]
+
+~0.5
+ 
+_vehicle setObjectTexture [7,""]
+
+~0.5
+ 
+_vehicle setObjectTexture [8,""]
+_vehicle setObjectTexture [9,""]
+_vehicle setObjectTexture [10,""]
+_vehicle setObjectTexture [11,""]
+
+_vehicle setObjectTexture [16,""]
+_vehicle setObjectTexture [17,""]
+_vehicle setObjectTexture [18,""]
+_vehicle setObjectTexture [19,""]
+
+~5.7
+
+?(alive driver _vehicle): (driver _vehicle) switchmove "BWMod_TigerPilot"
+
+Exit
+
+#EngineOffAIr
+?(alive driver _vehicle AND driver _vehicle != player AND getPos _vehicle select 2 < 5): (driver _vehicle) switchmove "BWMod_TigerPilotStartup"
+
+?(getPos _vehicle select 2 < 5): _vehicle say "TigerShutdown_xj400"
+
+_vehicle animate ["Engine_rpm", 0]
+_vehicle animate ["Rotor_rpm", 0]
+_vehicle animate ["RBremse", 0]
+_vehicle animate ["bat1", 0]
+_vehicle animate ["bat2", 0]
+_vehicle animate ["bat3", 0]
+_vehicle animate ["OPress1", 0]
+_vehicle animate ["OPress2", 0]
+_vehicle animate ["HPress1", 0]
+_vehicle animate ["HPress2", 0]
+_vehicle animate ["Temp1", 0]
+_vehicle animate ["Temp2", 0]
+_vehicle animate ["Torque", 0]
+_vehicle animate ["Engine_rpm_2", 0]
+_vehicle animate ["Rotor_rpm_2", 0]
+_vehicle animate ["RBremse_2", 0]
+_vehicle animate ["OPress1_2", 0]
+_vehicle animate ["OPress2_2", 0]
+_vehicle animate ["HPress1_2", 0]
+_vehicle animate ["HPress2_2", 0]
+_vehicle animate ["Temp1_2", 0]
+_vehicle animate ["Temp2_2", 0]
+_vehicle animate ["Torque_2", 0]
+
+_vehicle setObjectTexture [5,""]
+_vehicle setObjectTexture [6,""]
+_vehicle setObjectTexture [7,""]
+_vehicle setObjectTexture [8,""]
+_vehicle setObjectTexture [9,""]
+_vehicle setObjectTexture [10,""]
+_vehicle setObjectTexture [11,""]
+
+_vehicle setObjectTexture [16,""]
+_vehicle setObjectTexture [17,""]
+_vehicle setObjectTexture [18,""]
+_vehicle setObjectTexture [19,""]
+
+~8
+
+?(alive driver _vehicle AND driver _vehicle != player AND getPos _vehicle select 2 < 5): (driver _vehicle) switchmove "BWMod_TigerPilot"
+
+Exit

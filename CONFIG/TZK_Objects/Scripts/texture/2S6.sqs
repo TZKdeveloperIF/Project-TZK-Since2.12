@@ -1,0 +1,19 @@
+; args: [vehicle, name]
+_vehicle = _this select 0
+_name = _this select 1
+
+_path = "\TZK_Texture_4_0_0\DKMM\Tunguska\"
+
+? _name == "C": _path = _path + "c\"
+? _name == "D": _path = _path + "d\"
+? _name == "G": _path = _path + "g\"
+? _name == "W": _path = _path + "w\"
+
+[_vehicle, _path] call loadFile "\TZK_Objects\Scripts\texture\stdSetObjTex.sqf"
+
+; Texture Radar
+_i = (typeOf _vehicle GetVehicleParamArray "hiddenselections") find "radarleft"
+_path = "\TZK_Texture_4_0_0\DKMM\Tunguska\"
+? (_this select 1) == "W": _path = _path + "w\"
+_radarTex = _path + "tungrad.paa"
+? _i != -1 && _vehicle animationPhase "rot_radar" != 0: _vehicle setObjectTexture [_i, _radarTex]

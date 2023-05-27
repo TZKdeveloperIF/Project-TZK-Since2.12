@@ -1,0 +1,20 @@
+_unit = _this
+
+_player = Driver _unit
+
+?(not alive _unit): goto "exit"
+
+? (getpos _unit select 2) > 2 : goto "exit"
+? (getpos _unit select 2) < 5: _unit say "Vit_AH1WPowerup"
+
+[_unit,2,2] exec "\Vit_AH-1W\sqs\ah1rotorwash.sqs"
+
+
+
+
+
+
+
+
+#exit
+exit

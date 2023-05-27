@@ -1,0 +1,63 @@
+_tiger = _this select 0
+_ancor = _this select 1
+
+Goto _ancor
+exit
+
+#Init
+
+?!("BWMOD_Tiger_MC" in magazines _tiger): _tiger addMagazine "BWMOD_Tiger_MC";
+?!("BWMOD_Tiger_MC_WpnSys" in magazines _tiger): _tiger addMagazine "BWMOD_Tiger_MC_WpnSys";
+[_tiger,"Init"] exec "\BWMOD_Tiger\scr\sys_mastercaution.sqs"
+
+_WeaponArray = crew _tiger - [driver _tiger] - [gunner _tiger];
+
+?((typeOf (_WeaponArray select 0)) == "BWMOD_Gunpod_Proxy"):	_weapon1 = "BWMOD_GunpodLauncher"
+?((typeOf (_WeaponArray select 0)) == "BWMOD_SNEB70_Proxy"):	_weapon1 = "BWMOD_StingerLauncher"
+?((typeOf (_WeaponArray select 0)) == "BWMOD_PARS3_Proxy"):	_weapon1 = "BWMOD_PARS3Launcher"
+?((typeOf (_WeaponArray select 0)) == "BWMOD_HOT3_Proxy"):	_weapon1 = "BWMOD_HOT3Launcher"
+
+?((typeOf (_WeaponArray select 1)) == "BWMOD_Gunpod_Proxy"):	_weapon2 = "BWMOD_GunpodLauncher"
+?((typeOf (_WeaponArray select 1)) == "BWMOD_SNEB70_Proxy"):	_weapon2 = "BWMOD_StingerLauncher"
+?((typeOf (_WeaponArray select 1)) == "BWMOD_PARS3_Proxy"):	_weapon2 = "BWMOD_PARS3Launcher"
+?((typeOf (_WeaponArray select 1)) == "BWMOD_HOT3_Proxy"):	_weapon2 = "BWMOD_HOT3Launcher"
+
+_weapon3 = "BWMOD_StingerLauncher"
+
+_i = random 3;
+
+?(_i > 0 AND _i < 1): _weapon = _weapon1
+?(_i > 1 AND _i < 2): _weapon = _weapon2
+?(_i > 2 AND _i < 3): _weapon = _weapon3
+
+?(_tiger hasWeapon _weapon): _tiger removeWeapon _weapon; exit
+
+?(_weapon == _weapon1 AND _tiger hasWeapon _weapon2): _tiger removeWeapon _weapon2; exit
+?(_weapon == _weapon1 AND _tiger hasWeapon _weapon3): _tiger removeWeapon _weapon3; exit
+
+?(_weapon == _weapon2 AND _tiger hasWeapon _weapon1): _tiger removeWeapon _weapon1; exit
+?(_weapon == _weapon2 AND _tiger hasWeapon _weapon3): _tiger removeWeapon _weapon3; exit
+
+?(_weapon == _weapon3 AND _tiger hasWeapon _weapon1): _tiger removeWeapon _weapon1; exit
+?(_weapon == _weapon3 AND _tiger hasWeapon _weapon2): _tiger removeWeapon _weapon2; exit
+exit;
+
+#Repair
+_WeaponArray = crew _tiger - [driver _tiger] - [gunner _tiger];
+
+?((typeOf (_WeaponArray select 0)) == "BWMOD_Gunpod_Proxy"):	_weapon1 = "BWMOD_GunpodLauncher"
+?((typeOf (_WeaponArray select 0)) == "BWMOD_SNEB70_Proxy"):	_weapon1 = "BWMOD_StingerLauncher"
+?((typeOf (_WeaponArray select 0)) == "BWMOD_PARS3_Proxy"):	_weapon1 = "BWMOD_PARS3Launcher"
+?((typeOf (_WeaponArray select 0)) == "BWMOD_HOT3_Proxy"):	_weapon1 = "BWMOD_HOT3Launcher"
+
+?((typeOf (_WeaponArray select 1)) == "BWMOD_Gunpod_Proxy"):	_weapon2 = "BWMOD_GunpodLauncher"
+?((typeOf (_WeaponArray select 1)) == "BWMOD_SNEB70_Proxy"):	_weapon2 = "BWMOD_StingerLauncher"
+?((typeOf (_WeaponArray select 1)) == "BWMOD_PARS3_Proxy"):	_weapon2 = "BWMOD_PARS3Launcher"
+?((typeOf (_WeaponArray select 1)) == "BWMOD_HOT3_Proxy"):	_weapon2 = "BWMOD_HOT3Launcher"
+
+_weapon3 = "BWMOD_StingerLauncher"
+
+?!(_tiger hasWeapon _weapon1): _tiger addWeapon _weapon1
+?!(_tiger hasWeapon _weapon2): _tiger addWeapon _weapon2
+?!(_tiger hasWeapon _weapon3): _tiger addWeapon _weapon3
+exit;

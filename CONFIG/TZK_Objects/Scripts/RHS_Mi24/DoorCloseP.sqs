@@ -1,0 +1,7 @@
+_mi24 = _this select 0; _boolMP = false
+? count _this > 1: _boolMP = _this select 1
+
+? _boolMP: publicExec format ["UnitByID %1 say {RHS_mi24_PdoorClose}", NetworkID _mi24]
+_mi24 say "RHS_mi24_PdoorClose"
+
+? local _mi24: _mi24 animate ["pdoor",0]

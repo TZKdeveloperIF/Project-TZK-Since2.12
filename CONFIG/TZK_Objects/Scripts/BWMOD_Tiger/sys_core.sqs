@@ -1,0 +1,32 @@
+_tiger = _this select 0
+_anchor = _this select 1
+Goto _anchor
+
+#init
+?(player != gunner _tiger AND player != driver _tiger): exit
+?(!isengineon _tiger): exit;
+?(BWMOD_MPGame): exit;
+?(BWMOD_Tiger_Sys_Running): exit;
+
+BWMOD_Tiger_Sys_Machine=_tiger;
+BWMOD_Tiger_Sys_Running=true;
+
+[_tiger,"init"] exec "\BWMOD_Tiger\scr\sys_detectloop.sqs";
+BWMOD_Tiger_Sys_Detect_Running=true;
+
+[_tiger,"init"] exec "\BWMOD_Tiger\scr\sys_mastercaution.sqs";
+
+
+exit;
+
+#shutdown
+?(BWMOD_Tiger_Sys_Machine != _tiger): exit;
+
+BWMOD_Tiger_Sys_Machine=objNULL;
+BWMOD_Tiger_Sys_Running=false;
+
+BWMOD_Tiger_Sys_Detect_Running=false;
+
+BWMOD_Tiger_Sys_FuelLow=false
+BWMOD_Tiger_Sys_FuelAlert=false
+BWMOD_Tiger_Sys_Altitude=false

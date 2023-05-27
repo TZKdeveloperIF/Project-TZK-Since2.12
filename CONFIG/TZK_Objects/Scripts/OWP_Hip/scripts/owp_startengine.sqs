@@ -1,0 +1,372 @@
+;#########################################
+;# Written by Voyager  voyager04@mail.ru #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+
+_ss_cms = 8
+_ss_engine1 = 9
+_ss_engine2 = 10
+_ss_fuel = 11
+_ss_gun = 12
+_ss_transm = 13
+_ss_weap = 14
+
+_me = _this
+
+_pause = 1
+
+_me exec "\OWP_Mi8\Scripts\owp_effectengon.sqs"
+
+_arrayhelitypeMi8T = ["OWP_Mi8T_d","OWP_Mi8T_w"]
+_arrayhelitypeMi8TV = ["OWP_Mi8TV_d","OWP_Mi8TV_g","OWP_Mi8TV_m","OWP_Mi8TV_w"]
+_arrayhelitypeMi8MT = ["OWP_Mi8MT_g","OWP_Mi8MT_m"]
+_arrayhelitypeMi8MTV = ["OWP_Mi8MTV_d","OWP_Mi8MTV_g","OWP_Mi8MTV_m","OWP_Mi8MTV_w"]
+
+? (getpos _me select 2) > 40 : goto "silent"
+
+? typeof _me == "OWP_Mi8T_c" : goto "start1"
+? typeof _me == "OWP_Mi8T_un" : goto "start2"
+? ((typeof _me) in _arrayhelitypeMi8T) || ((typeof _me) in _arrayhelitypeMi8MT) : goto "start3"
+? ((typeof _me) in _arrayhelitypeMi8TV) || ((typeof _me) in _arrayhelitypeMi8MTV) : goto "start4"
+exit
+
+#start1
+? !(isEngineOn _me) : exit
+_me vehiclechat localize "STR_OWP_Mi8_Test_Fuel"
+_me setobjecttexture [_ss_fuel, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_fuel, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_fuel" in magazines _me) then {_me vehiclechat localize "STR_OWP_Mi8_Test_fail";_me setobjecttexture [_ss_fuel, "\OWP_Mi8\t\r_but.paa"]} else {_me vehiclechat localize "STR_OWP_Mi8_Test_ok";_me setobjecttexture [_ss_fuel, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me vehiclechat localize "STR_OWP_Mi8_Test_1eng"
+_me setobjecttexture [_ss_engine1, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_engine1, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_1engine" in magazines _me) then {_me vehiclechat localize "STR_OWP_Mi8_Test_fail";_me setobjecttexture [_ss_engine1, "\OWP_Mi8\t\r_but.paa"]} else {_me vehiclechat localize "STR_OWP_Mi8_Test_ok";_me setobjecttexture [_ss_engine1, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me vehiclechat localize "STR_OWP_Mi8_Test_2eng"
+_me setobjecttexture [_ss_engine2, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_engine2, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_2engine" in magazines _me) then {_me vehiclechat localize "STR_OWP_Mi8_Test_fail";_me setobjecttexture [_ss_engine2, "\OWP_Mi8\t\r_but.paa"]} else {_me vehiclechat localize "STR_OWP_Mi8_Test_ok";_me setobjecttexture [_ss_engine2, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me vehiclechat localize "STR_OWP_Mi8_Test_trans"
+_me setobjecttexture [_ss_transm, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_transm, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_transmission" in magazines _me) then {_me vehiclechat localize "STR_OWP_Mi8_Test_fail";_me setobjecttexture [_ss_transm, "\OWP_Mi8\t\r_but.paa"]} else {_me vehiclechat localize "STR_OWP_Mi8_Test_ok";_me setobjecttexture [_ss_transm, "\OWP_Mi8\t\y_but.paa"]}
+exit
+
+#start2
+? !(isEngineOn _me) : exit
+_me vehiclechat localize "STR_OWP_Mi8_Test_Fuel"
+_me setobjecttexture [_ss_fuel, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_fuel, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_fuel" in magazines _me) then {_me vehiclechat localize "STR_OWP_Mi8_Test_fail";_me setobjecttexture [_ss_fuel, "\OWP_Mi8\t\r_but.paa"]} else {_me vehiclechat localize "STR_OWP_Mi8_Test_ok";_me setobjecttexture [_ss_fuel, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me vehiclechat localize "STR_OWP_Mi8_Test_1eng"
+_me setobjecttexture [_ss_engine1, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_engine1, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_1engine" in magazines _me) then {_me vehiclechat localize "STR_OWP_Mi8_Test_fail";_me setobjecttexture [_ss_engine1, "\OWP_Mi8\t\r_but.paa"]} else {_me vehiclechat localize "STR_OWP_Mi8_Test_ok";_me setobjecttexture [_ss_engine1, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me vehiclechat localize "STR_OWP_Mi8_Test_2eng"
+_me setobjecttexture [_ss_engine2, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_engine2, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_2engine" in magazines _me) then {_me vehiclechat localize "STR_OWP_Mi8_Test_fail";_me setobjecttexture [_ss_engine2, "\OWP_Mi8\t\r_but.paa"]} else {_me vehiclechat localize "STR_OWP_Mi8_Test_ok";_me setobjecttexture [_ss_engine2, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me vehiclechat localize "STR_OWP_Mi8_Test_trans"
+_me setobjecttexture [_ss_transm, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_transm, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_transmission" in magazines _me) then {_me vehiclechat localize "STR_OWP_Mi8_Test_fail";_me setobjecttexture [_ss_transm, "\OWP_Mi8\t\r_but.paa"]} else {_me vehiclechat localize "STR_OWP_Mi8_Test_ok";_me setobjecttexture [_ss_transm, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me vehiclechat localize "STR_OWP_Mi8_Test_CMS"
+_me setobjecttexture [_ss_cms, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_cms, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_cms" in magazines _me) then {_me vehiclechat localize "STR_OWP_Mi8_Test_fail";_me setobjecttexture [_ss_cms, "\OWP_Mi8\t\r_but.paa"]} else {_me vehiclechat localize "STR_OWP_Mi8_Test_ok";_me setobjecttexture [_ss_cms, "\OWP_Mi8\t\y_but.paa"]}
+exit
+
+#start3
+? !(isEngineOn _me) : exit
+_me vehiclechat localize "STR_OWP_Mi8_Test_Fuel"
+_me setobjecttexture [_ss_fuel, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_fuel, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_fuel" in magazines _me) then {_me vehiclechat localize "STR_OWP_Mi8_Test_fail";_me setobjecttexture [_ss_fuel, "\OWP_Mi8\t\r_but.paa"]} else {_me vehiclechat localize "STR_OWP_Mi8_Test_ok";_me setobjecttexture [_ss_fuel, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me vehiclechat localize "STR_OWP_Mi8_Test_1eng"
+_me setobjecttexture [_ss_engine1, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_engine1, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_1engine" in magazines _me) then {_me vehiclechat localize "STR_OWP_Mi8_Test_fail";_me setobjecttexture [_ss_engine1, "\OWP_Mi8\t\r_but.paa"]} else {_me vehiclechat localize "STR_OWP_Mi8_Test_ok";_me setobjecttexture [_ss_engine1, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me vehiclechat localize "STR_OWP_Mi8_Test_2eng"
+_me setobjecttexture [_ss_engine2, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_engine2, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_2engine" in magazines _me) then {_me vehiclechat localize "STR_OWP_Mi8_Test_fail";_me setobjecttexture [_ss_engine2, "\OWP_Mi8\t\r_but.paa"]} else {_me vehiclechat localize "STR_OWP_Mi8_Test_ok";_me setobjecttexture [_ss_engine2, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me vehiclechat localize "STR_OWP_Mi8_Test_trans"
+_me setobjecttexture [_ss_transm, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_transm, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_transmission" in magazines _me) then {_me vehiclechat localize "STR_OWP_Mi8_Test_fail";_me setobjecttexture [_ss_transm, "\OWP_Mi8\t\r_but.paa"]} else {_me vehiclechat localize "STR_OWP_Mi8_Test_ok";_me setobjecttexture [_ss_transm, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me vehiclechat localize "STR_OWP_Mi8_Test_Gun"
+_me setobjecttexture [_ss_gun, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_gun, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_pkt" in magazines _me) then {_me vehiclechat localize "STR_OWP_Mi8_Test_fail";_me setobjecttexture [_ss_gun, "\OWP_Mi8\t\r_but.paa"]} else {_me vehiclechat localize "STR_OWP_Mi8_Test_ok";_me setobjecttexture [_ss_gun, "\OWP_Mi8\t\y_but.paa"]}
+exit
+
+#start4
+? !(isEngineOn _me) : exit
+_me vehiclechat localize "STR_OWP_Mi8_Test_Fuel"
+_me setobjecttexture [_ss_fuel, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_fuel, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_fuel" in magazines _me) then {_me vehiclechat localize "STR_OWP_Mi8_Test_fail";_me setobjecttexture [_ss_fuel, "\OWP_Mi8\t\r_but.paa"]} else {_me vehiclechat localize "STR_OWP_Mi8_Test_ok";_me setobjecttexture [_ss_fuel, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me vehiclechat localize "STR_OWP_Mi8_Test_1eng"
+_me setobjecttexture [_ss_engine1, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_engine1, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_1engine" in magazines _me) then {_me vehiclechat localize "STR_OWP_Mi8_Test_fail";_me setobjecttexture [_ss_engine1, "\OWP_Mi8\t\r_but.paa"]} else {_me vehiclechat localize "STR_OWP_Mi8_Test_ok";_me setobjecttexture [_ss_engine1, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me vehiclechat localize "STR_OWP_Mi8_Test_2eng"
+_me setobjecttexture [_ss_engine2, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_engine2, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_2engine" in magazines _me) then {_me vehiclechat localize "STR_OWP_Mi8_Test_fail";_me setobjecttexture [_ss_engine2, "\OWP_Mi8\t\r_but.paa"]} else {_me vehiclechat localize "STR_OWP_Mi8_Test_ok";_me setobjecttexture [_ss_engine2, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me vehiclechat localize "STR_OWP_Mi8_Test_trans"
+_me setobjecttexture [_ss_transm, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_transm, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_transmission" in magazines _me) then {_me vehiclechat localize "STR_OWP_Mi8_Test_fail";_me setobjecttexture [_ss_transm, "\OWP_Mi8\t\r_but.paa"]} else {_me vehiclechat localize "STR_OWP_Mi8_Test_ok";_me setobjecttexture [_ss_transm, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me vehiclechat localize "STR_OWP_Mi8_Test_CMS"
+_me setobjecttexture [_ss_cms, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_cms, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_cms" in magazines _me) then {_me vehiclechat localize "STR_OWP_Mi8_Test_fail";_me setobjecttexture [_ss_cms, "\OWP_Mi8\t\r_but.paa"]} else {_me vehiclechat localize "STR_OWP_Mi8_Test_ok";_me setobjecttexture [_ss_cms, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me vehiclechat localize "STR_OWP_Mi8_Test_Gun"
+_me setobjecttexture [_ss_gun, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_gun, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_pkt" in magazines _me) then {_me vehiclechat localize "STR_OWP_Mi8_Test_fail";_me setobjecttexture [_ss_gun, "\OWP_Mi8\t\r_but.paa"]} else {_me vehiclechat localize "STR_OWP_Mi8_Test_ok";_me setobjecttexture [_ss_gun, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me vehiclechat localize "STR_OWP_Mi8_Test_Weap"
+_me setobjecttexture [_ss_weap, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_weap, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_weapons" in magazines _me) then {_me vehiclechat localize "STR_OWP_Mi8_Test_fail";_me setobjecttexture [_ss_weap, "\OWP_Mi8\t\r_but.paa"]} else {_me vehiclechat localize "STR_OWP_Mi8_Test_ok";_me setobjecttexture [_ss_weap, "\OWP_Mi8\t\y_but.paa"]}
+exit
+
+;===================================silent====================================
+#silent
+
+
+? typeof _me == "OWP_Mi8T_c" : goto "sstart1"
+? typeof _me == "OWP_Mi8T_un" : goto "sstart2"
+? ((typeof _me) in _arrayhelitypeMi8T) || ((typeof _me) in _arrayhelitypeMi8MT) : goto "sstart3"
+? ((typeof _me) in _arrayhelitypeMi8TV) || ((typeof _me) in _arrayhelitypeMi8MTV) : goto "sstart4"
+exit
+
+#sstart1
+? !(isEngineOn _me) : exit
+_me setobjecttexture [_ss_fuel, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_fuel, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_fuel" in magazines _me) then {_me setobjecttexture [_ss_fuel, "\OWP_Mi8\t\r_but.paa"]} else {_me setobjecttexture [_ss_fuel, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me setobjecttexture [_ss_engine1, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_engine1, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_1engine" in magazines _me) then {_me setobjecttexture [_ss_engine1, "\OWP_Mi8\t\r_but.paa"]} else {_me setobjecttexture [_ss_engine1, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me setobjecttexture [_ss_engine2, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_engine2, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_2engine" in magazines _me) then {_me setobjecttexture [_ss_engine2, "\OWP_Mi8\t\r_but.paa"]} else {_me setobjecttexture [_ss_engine2, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me setobjecttexture [_ss_transm, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_transm, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_transmission" in magazines _me) then {_me setobjecttexture [_ss_transm, "\OWP_Mi8\t\r_but.paa"]} else {_me setobjecttexture [_ss_transm, "\OWP_Mi8\t\y_but.paa"]}
+exit
+
+#sstart2
+? !(isEngineOn _me) : exit
+_me setobjecttexture [_ss_fuel, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_fuel, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_fuel" in magazines _me) then {_me setobjecttexture [_ss_fuel, "\OWP_Mi8\t\r_but.paa"]} else {_me setobjecttexture [_ss_fuel, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me setobjecttexture [_ss_engine1, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_engine1, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_1engine" in magazines _me) then {_me setobjecttexture [_ss_engine1, "\OWP_Mi8\t\r_but.paa"]} else {_me setobjecttexture [_ss_engine1, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me setobjecttexture [_ss_engine2, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_engine2, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_2engine" in magazines _me) then {_me setobjecttexture [_ss_engine2, "\OWP_Mi8\t\r_but.paa"]} else {_me setobjecttexture [_ss_engine2, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me setobjecttexture [_ss_transm, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_transm, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_transmission" in magazines _me) then {_me setobjecttexture [_ss_transm, "\OWP_Mi8\t\r_but.paa"]} else {_me setobjecttexture [_ss_transm, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me setobjecttexture [_ss_cms, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_cms, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_cms" in magazines _me) then {_me setobjecttexture [_ss_cms, "\OWP_Mi8\t\r_but.paa"]} else {_me setobjecttexture [_ss_cms, "\OWP_Mi8\t\y_but.paa"]}
+exit
+
+#sstart3
+? !(isEngineOn _me) : exit
+_me setobjecttexture [_ss_fuel, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_fuel, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_fuel" in magazines _me) then {_me setobjecttexture [_ss_fuel, "\OWP_Mi8\t\r_but.paa"]} else {_me setobjecttexture [_ss_fuel, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me setobjecttexture [_ss_engine1, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_engine1, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_1engine" in magazines _me) then {_me setobjecttexture [_ss_engine1, "\OWP_Mi8\t\r_but.paa"]} else {_me setobjecttexture [_ss_engine1, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me setobjecttexture [_ss_engine2, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_engine2, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_2engine" in magazines _me) then {_me setobjecttexture [_ss_engine2, "\OWP_Mi8\t\r_but.paa"]} else {_me setobjecttexture [_ss_engine2, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me setobjecttexture [_ss_transm, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_transm, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_transmission" in magazines _me) then {_me setobjecttexture [_ss_transm, "\OWP_Mi8\t\r_but.paa"]} else {_me setobjecttexture [_ss_transm, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me setobjecttexture [_ss_gun, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_gun, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_pkt" in magazines _me) then {_me setobjecttexture [_ss_gun, "\OWP_Mi8\t\r_but.paa"]} else {_me setobjecttexture [_ss_gun, "\OWP_Mi8\t\y_but.paa"]}
+exit
+
+#sstart4
+? !(isEngineOn _me) : exit
+_me setobjecttexture [_ss_fuel, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_fuel, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_fuel" in magazines _me) then {_me setobjecttexture [_ss_fuel, "\OWP_Mi8\t\r_but.paa"]} else {_me setobjecttexture [_ss_fuel, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me setobjecttexture [_ss_engine1, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_engine1, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_1engine" in magazines _me) then {_me setobjecttexture [_ss_engine1, "\OWP_Mi8\t\r_but.paa"]} else {_me setobjecttexture [_ss_engine1, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me setobjecttexture [_ss_engine2, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_engine2, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_2engine" in magazines _me) then {_me setobjecttexture [_ss_engine2, "\OWP_Mi8\t\r_but.paa"]} else {_me setobjecttexture [_ss_engine2, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me setobjecttexture [_ss_transm, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_transm, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_transmission" in magazines _me) then {_me setobjecttexture [_ss_transm, "\OWP_Mi8\t\r_but.paa"]} else {_me setobjecttexture [_ss_transm, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me setobjecttexture [_ss_cms, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_cms, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_cms" in magazines _me) then {_me setobjecttexture [_ss_cms, "\OWP_Mi8\t\r_but.paa"]} else {_me setobjecttexture [_ss_cms, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me setobjecttexture [_ss_gun, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_gun, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_pkt" in magazines _me) then {_me setobjecttexture [_ss_gun, "\OWP_Mi8\t\r_but.paa"]} else {_me setobjecttexture [_ss_gun, "\OWP_Mi8\t\y_but.paa"]}
+
+? !(isEngineOn _me) : exit
+_me setobjecttexture [_ss_weap, "\OWP_Mi8\t\y_but.paa"]
+~_pause
+_me setobjecttexture [_ss_weap, ""]
+~_pause
+if ("owp_mi8_trigger_dammage_weapons" in magazines _me) then {_me setobjecttexture [_ss_weap, "\OWP_Mi8\t\r_but.paa"]} else {_me setobjecttexture [_ss_weap, "\OWP_Mi8\t\y_but.paa"]}
+exit

@@ -1,0 +1,23 @@
+
+_v = _this select 0
+_weapon = _this select 1
+_muzzle = _this select 2
+_mode = _this select 3
+_ammo = _this select 4
+
+_atmissiles = ["RHS_AT6a","RHS_AT6b","RHS_AT6c","RHS_AT6d","RHS_AT2"]
+
+? _ammo in _atmissiles  : goto "atmissile"
+
+exit
+
+#atmissile
+_aobj = nearestObject[_v, _ammo]
+_aobj exec "\RHS_hind\scripts\rocket3.sqs"
+_col = [[0.52,0.52,0.52,1],[0.62,0.62,0.62,0.8],[0.47,0.47,0.47,0.6], [0.72,0.72,0.72,0]]
+drop ["cl_basic", "", "Billboard", 1, 3, [0, -0.1, 0], [0,-1,-0.50], 1, 1, 0.80, 0, [0.8,6],  _col,[0],0.1,0.1,"","", _aobj]
+drop ["cl_basic", "", "Billboard", 1, 3, [0, -2.0, 0], [0,-1,-0.53], 1, 1, 0.80, 0, [2,6],    _col,[0],0.1,0.1,"","", _aobj]
+drop ["cl_basic", "", "Billboard", 1, 5, [0, -4.0, 0], [0,-1,-0.55], 1, 1, 0.80, 0, [2.5,10], _col,[0],0.1,0.1,"","", _aobj]
+drop ["cl_basic", "", "Billboard", 1, 5, [0, -6.0, 0], [0,-1,-0.55], 1, 1, 0.80, 0, [3,10],   _col,[0],0.1,0.1,"","", _aobj]
+drop ["cl_basic", "", "Billboard", 1, 5, [0, -8.0, 0], [0,-1,-0.55], 1, 1, 0.80, 0, [5,15],   _col,[0],0.1,0.1,"","", _aobj]
+exit

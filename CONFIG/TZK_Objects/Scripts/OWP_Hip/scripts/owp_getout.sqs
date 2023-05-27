@@ -1,0 +1,38 @@
+;#########################################
+;# Written by Voyager  voyager04@mail.ru #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+
+_me = _this select 0
+_rope = _this select 1
+_x=_this select 2
+_y=_this select 3
+
+_count = 4
+? (crew _me select 2) in (units group (crew _me select 3)) : _count = 3
+~1
+#loop
+? (!isEngineOn _me):goto "continue"
+? !(alive _me) : goto "continue"
+? abs(speed _me)>50 : goto "continue"
+~(3 + random 2)
+_units = crew _me
+
+if (count(_units) < _count) then {goto "continue"};
+
+_sel = count(_units)-1;
+
+unassignVehicle (_units select _sel)
+(_units select _sel) action ["EJECT",_me]
+(_units select _sel) switchmove "OWPfastrope"
+(_units select _sel) setpos (getpos _rope)
+
+[(_units select _sel),_me,_x,_y] exec "\OWP_MI8\scripts\owp_setpos.sqs"
+
+Goto "Loop";
+
+#continue
+_rope animate ["OWP_Mi8_rope",0]
+~5
+deletevehicle _rope
+exit
