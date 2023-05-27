@@ -15,6 +15,9 @@ _NetWorkID = _vehicle call funcGenNetIdStr
 ? _phase > 0: _vehicle addMagazine "DeploySwitch_xj400"; _vehicle engineOn false; goto "deploy"
 
 _vehicle removeWeapon _mainWeapon
+; Remove 155 gun as well. By now old deploy scripts are executed by user action and init eventhandler thus 155 gun will be added in those cases
+; Remove this modification on new addon releases
+_vehicle removeWeapon "Gun155_xj400"
 ? !isNull gunner _vehicle && !local gunner _vehicle: publicExec format [{if (local gunner UnitById %1) then {UnitById %1 removeWeapon _mainWeapon}}, _NetWorkID]
 
 # deploy
