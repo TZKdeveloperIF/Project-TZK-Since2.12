@@ -39,7 +39,7 @@ class CfgWeapons {
 	
 };
 
-// #include "TZK_Config_4_0_6\cfgUserActions.h"
+#include "TZK_Config_4_0_7\cfgUserActions.h"
 
 // class WeaponFireGun {};
 // class WeaponCloudsGun {};
