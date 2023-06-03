@@ -103,11 +103,10 @@ ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bo
 	
 	_index = 0
 	{ _params set [_index, lbCurSel (_idcParams select _index)]; _index = _index + 1 } foreach ((orderDefs select _selOrder) select 1)
-	
-	? _gi == -1 : [_si, giPlayer + GroupsNum, _selOrder, _params] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}; goto "Update"
-	
-	[_si, _gi, _selOrder, _params] exec localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}; goto "Update"
-	
+
+	? _gi == -1: [_si, giPlayer + GroupsNum, _selOrder, _params] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}
+	? _gi != -1: [_si, _gi, _selOrder, _params] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}
+	goto "Update"
 	
 # TemporaryOrder
 	closeDialog 0

@@ -114,11 +114,6 @@ pvInfo0 = -1; pvInfo1 = -1; pvInfo2 = -1; pvInfo3 = -1;
 pvInfoEx0 = -1; pvInfoEx1 = -1; pvInfoEx2 = -1; pvInfoEx3 = -1;
 
 mutexAIGroup = false;
-mutexSendAIGroup = false; countSendAIGroup = 5; indexSendAIGroupOrder = 0;
-// indexSendAIGroupSetting = 0;
-// _i = 0; while {_i < countSendAIGroup} do {
-// 	call format ["pvOrder%1=-1", _i]; call format ["pvSetting%1=-1", _i]; _i = _i + 1;
-// };
 
 pvMoneySideTotal = -1;
 pvMoneySideSpent = -1;
@@ -169,9 +164,6 @@ pvArt = -1;
 pvArtPos = -1;
 
 pvEnemy0 = objNull; pvEnemy1 = objNull;
-
-// pvOrder = -1;
-// pvSetting = -1;
 
 mutexEditvehicleAttached = false;
 mutexVehicleAttached = false;

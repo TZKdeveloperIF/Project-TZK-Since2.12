@@ -1,9 +1,10 @@
-// args: [si, gi, type, setting, send to all]
-private [{_si}, {_gi}, {_type}, {_setting}];
-_si = _this select 0; _type = _this select 2; _setting = _this select 3;
+// args: [si, gi, orderType, params, send to all]
+private [{_si}, {_gi}, {_type}, {_params}];
+_si = _this select 0; _type = _this select 2; _params = _this select 3;
 if (_this select 4) then {
-	private [{_giSender}];
+	private [{_giSender}, {_anyValidGi}];
 	_giSender = _this select 1;
+	_anyValidGi = _giSender;
 
 	_funcLeadBy = preprocessFile "Util\GrpLeadBy.sqf";
 	_groupNames = groupNameMatrix select _si;
@@ -11,49 +12,48 @@ if (_this select 4) then {
 	_gis = ([_si] call funcGetAIGroupsIndex); _i = 0; _c = count _gis; while {_i < _c} do {
 		_gi = _gis select _i;
 		_bContinue = false;
-		// skip if same setting
-		if (not _bContinue && aiSetting select _si select _gi select _type == _setting) then {_bContinue = true};
 		// skip if locked
 		if (not _bContinue && 
-			aiSetting select _si select _gi select aisLockSetting == 1 && _type != aisLockSetting) then {
+			aiSetting select _si select _gi select aisLockOrder == 1) then {
 			_bContinue = true
 		};
 		// skip if command sender is not superior
 		if not ([_si, _gi, _giSender] call _funcLeadBy) then {_bContinue = true};
 
-		// modify ai setting
+		// modify ai order
 		if not _bContinue then {
-			aiSetting select _si select _gi set [_type, _setting];
+			_order = orderMatrix select _si select _gi;
+			_id = _order select 0; _order set [0, _id + 1];
+			_order set [1, _type];
+			_order set [2, _params];
 			if (not isNull player) then {if (_si == siPlayer) then {
 				_validGroupNames set [_j, _groupNames select _gi];
 				_j = _j + 1;
 			}};
+			_anyValidGi = _gi;
 		};
-
-		// unit test
-		// removed
 
 		_i = _i + 1;
 	};
 	// radio channel message
 	if (count _validGroupNames > 0) then {
 		format [
-			"Alteration Acknowledged, %1 set %2 for groups: %3", 
-			aiSettingDefs select _type select 0, 
-			aiSettingDefs select _type select 1 select _setting
+			"Order Acknowledged, %1 for groups: %2", 
+			(orderMatrix select _si select _anyValidGi) call funcGetOrderDesc
 			, _validGroupNames
 		] call funcSideMsg;
 	};
 } else {
 	_gi = _this select 1;
-	aiSetting select _si select _gi set [_type, _setting];
+	_order = orderMatrix select _si select _gi;
+	_id = _order select 0; _order set [0, _id + 1];
+	_order set [1, _type];
+	_order set [2, _params];
+
 	if (not isNull player) then {if (_si == siPlayer) then {
 		leader (groupMatrix select _si select _gi) sidechat format [
-			"Alteration Acknowledged, %1 set %2", 
-			aiSettingDefs select _type select 0, 
-			aiSettingDefs select _type select 1 select _setting
+			"Order Acknowledged, %1", 
+			_order call funcGetOrderDesc
 		];
 	}};
 };
-// update player's "superior" state
-[_si, _type] call preprocessFile "Player\SQF\UpdateSuperior.sqf"
