@@ -88,19 +88,5 @@ _rand = random 1
 	? _dist > _distMin: goto "PlaceSides"
 	goto "Generate"
 
-#PlaceSides
-	; player globalchat format["%1 retries", _retries]
-	_vector = [_posSide1, _posSide0] call funcVectorSub; _dir = 0
-	? (_vector select 0) != 0 && (_vector select 1) != 0: _dir = (_vector select 0) atan2 (_vector select 1)
-	? fixedStartPos == 0: _dir = random 360
-	
-	? _dirSide0 == -1: _dirSide0 = random 360
-	_res0 = [utMHQ0, _posSide0, _dir, si0, -1, 0, 5] call fAddVehicle
-	
-	? _dirSide1 == -1: _dirSide1 = random 360
-	_res1 = [utMHQ1, _posSide1, _dir + 180, si1, -1, 0, 5] call fAddVehicle
-
-  [ [_posSide0, _dir], [_posSide1, _dir + 180] ] exec "\TZK_Scripts_4_0_4\Server\PlaceStartVehicles.sqs"
-  
-  [_res0, true] exec "\TZK_Scripts_4_0_4\Common\LockVehicle.sqs"
-  [_res1, true] exec "\TZK_Scripts_4_0_4\Common\LockVehicle.sqs"
+# PlaceSides
+	[_posSide0, _posSide1] exec "Server\DeployStartPosition.sqs"

@@ -1,6 +1,6 @@
 ; arg: 0
 
-@( !(isNull (mhq select si0)) && !(isNull (mhq select si1)) )
+@ pvMatchRuleDefined
 
 _mhqAlive = [true, true]
 _mcvAlive = [false, false]
@@ -12,12 +12,14 @@ _remind = [timeLimit - 60*60, timeLimit - 60*90, timeLimit - 60*150, 10*60, 5*60
 _timeNextRemind = timeLimit - (_remind select _ir)
 
 # Update
-~2
+	~ 2
+
+	_gameTime = time - pvMatchStartTime
 	? pvGameOver != -1 : [] exec localize {TZK_TRIGGER_GAME_END_COMMON}; exit
 
-	? time > TzkRtsWriteTime + 30 && TzkRtsId4Gc != TzkRtsSvrId: 0 exec "Server\Rts\Gc.sqs"
+	? _gameTime > TzkRtsWriteTime + 30 && TzkRtsId4Gc != TzkRtsSvrId: 0 exec "Server\Rts\Gc.sqs"
 
-	? (timeLimit != 0 && time > timeLimit): goto "TimeLimitReached"
+	? (timeLimit != 0 && _gameTime > timeLimit): goto "TimeLimitReached"
 
 	? _mhqAlive select si0 && !(alive (mhq select si0)) : _mhqAlive set [si0, false]; si0 exec "\TZK_Scripts_4_0_4\Server\CheckWinDestruction.sqs"
 	? _mhqAlive select si1 && !(alive (mhq select si1)) : _mhqAlive set [si1, false]; si1 exec "\TZK_Scripts_4_0_4\Server\CheckWinDestruction.sqs"
@@ -34,7 +36,7 @@ _timeNextRemind = timeLimit - (_remind select _ir)
 	? pvRepairMHQ != -1 : pvRepairMHQ exec localize {TZK_SERVER_FUNC_REPAIR_MHQ}; pvRepairMHQ = -1
 	? pvRepairMCV != -1 : [pvRepairMCV, pvRepairMCV_object] exec localize {TZK_SERVER_FUNC_REPAIR_MCV}; pvRepairMCV = -1; pvRepairMCV_object = objNull
 
-	? timeLimit != 0 && time > _timeNextRemind : goto "Remind"
+	? timeLimit != 0 && _gameTime > _timeNextRemind : goto "Remind"
   goto "Update"
 
 # Remind

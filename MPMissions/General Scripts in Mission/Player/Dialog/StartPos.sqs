@@ -1,0 +1,29 @@
+; args: pos
+@ not mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "SimpleConfirmDlg"
+mutexDlg = false
+
+btnValue00 = false
+btnValue01 = false
+
+# Update
+	? call dlgUpdated: exit
+	? !(alive player): closeDialog 0; exit
+
+	? btnValue00: closeDialog 0; goto "Confirm"
+	? btnValue01: btnValue01  = false; closeDialog 0; exit
+
+	~ 0.1
+	goto "Update"
+
+# Confirm
+	_px = _this select 0; _px = _px - _px % 1
+	_py = _this select 1; _py = _py - _py % 1
+	[siPlayer, _px, _py] exec "Server\Msg\hStartPos.sqs"
+	publicExec format [{%1 exec "Server\Msg\hStartPos.sqs"}, [siPlayer, _px, _py]]
+
+	onMapSingleClick ""
+	deleteMarker "StartPosAvailableArea"
+	closeDialog 0
+	exit

@@ -1,0 +1,21 @@
+; args: none
+? fixedStartPos != 4: exit
+
+# loop
+	~ 0.5
+	? pvStartPosRes == -1 && _time < 60: goto "loop"
+
+? _time >= 60: exit
+_startPos = getPosASL (call format ["FixStart_%1", (siPlayer + pvStartPosRes) % 2])
+_deltaTime = 60 - time; _deltaTime = _deltaTime - _deltaTime % 1
+? _deltaTime < 0: exit
+
+_marker = createMarker ["StartPosAvailableArea", [-10, -10]];
+_marker setMarkerPos _startPos;
+_marker setMarkerShape "Ellipse";
+_marker setMarkerSize [5000,5000];
+_marker setMarkerColor "ColorGreenAlpha";
+
+hint format ["Select a start position by simple clicking on map. You have %1 seconds left.", _deltaTime]
+
+onMapSingleClick format [{[_pos, _units, _alt, _shift, %1] call preprocessFile "Player\SelectStartPos.sqf"}, _startPos]

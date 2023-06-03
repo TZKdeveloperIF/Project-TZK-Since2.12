@@ -89,6 +89,13 @@ mapAnimAdd [0, 1.0, posCenter]
 mapAnimCommit
 @mapAnimDone
 
+? groupPlayer == groupCommander select siPlayer: 0 exec "Player\CmdDefineRules.sqs"
+
+@ pvCmdFinishedMakingRule
+	onMapSingleClick ""
+	deleteMarker "StartPosAvailableArea"
+	closeDialog 0
+
 ; TODO - disable for release
 ; player addAction ["TEST", "\TZK_Scripts_4_0_4\Player\Action\Test.sqs"]
 
@@ -101,7 +108,7 @@ onMapSingleClick {[_pos, _units, _alt, _shift] call funcMapClickPlayer}
 @ !mutexCmd
 
 player groupchat "Waiting for start data ..."
-@( !(isNull (mhq select si0)) && !(isNull (mhq select si1)) )
+@ not (isNull (mhq select siPlayer))
 player groupchat "Start data received."
 
 

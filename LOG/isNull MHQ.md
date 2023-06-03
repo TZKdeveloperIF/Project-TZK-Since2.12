@@ -1,0 +1,2 @@
+In current commit a new variable "pvMatchRuleDefined" is defined for taking place of condition "isNull (mhq select _si)". However even create server by game directly the just-created vehicle's position seems incorrect. Thus scripts relying on exactly mhqs' position still require this condition.
+But this condition is still not exactly, through. Players often found themselves spawn in the air on game start.
