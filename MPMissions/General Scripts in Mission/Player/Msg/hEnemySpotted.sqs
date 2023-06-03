@@ -5,7 +5,7 @@ _pos = [_this select 2, _this select 3, _this select 4]
 _textType = ""
 ? _enemy == (driver _enemy) && report == reportAll: _textType = "Infantry"
 ? _enemy != (driver _enemy) && report < reportStructs: _textType = (if ((_pos select 2) > 10) then {"Aircraft"} else {"Vehicle"})
-{ if (_enemy in _x && report < reportNone) then { _textType = "Structure" } } foreach (structMatrix select si1)
+{ if (_enemy in _x && report < reportNone) then { _textType = "Structure" } } foreach (structMatrix select (siEnemy select (_this select 1)))
 
 ? _textType == "Aircraft": if ("ParachuteBase" countType [_enemy] > 0) then {_textType = "Parachute"}
 
