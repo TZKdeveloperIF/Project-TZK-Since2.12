@@ -3,7 +3,6 @@
 ? !isServer: exit
 
 _distMin = 3000
-? dev: _distMin = 1
 
 _players = [ (count (groupMatrix select si0)) - (count (groupAiMatrix select si0)), (count (groupMatrix select si1)) - (count (groupAiMatrix select si1)) ]
 _playerCO = [ !((groupCommander select si0) in (groupAiMatrix select si0)), !((groupCommander select si1) in (groupAiMatrix select si1)) ]
@@ -85,7 +84,7 @@ _rand = random 1
 
 #Check
 	_dist = [_posSide0, _posSide1] call funcDistH
-	? _dist > _distMin: goto "PlaceSides"
+	? _dist > (if dev then {1} else {_distMin}): goto "PlaceSides"
 	goto "Generate"
 
 # PlaceSides
