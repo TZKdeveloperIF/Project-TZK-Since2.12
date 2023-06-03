@@ -28,7 +28,7 @@ TzkJoinBlackList = ["COOLMAN","CM"]
 (localize {TZK_MONEY_SERVER_SPEND}) exec "\TZK_Scripts_4_0_6\Server\Msg\mMoneySpent.sqs"
 "\TZK_Scripts_4_0_6\Server\Msg\hGiveMoney.sqs" exec "\TZK_Scripts_4_0_6\Server\Msg\mGiveMoney.sqs"
 "Server\Msg\hUpgrade.sqs" exec "Server\Msg\mUpgrade.sqs"
-0 exec "\TZK_Scripts_4_0_6\Server\Msg\mTransferCmd.sqs"
+0 exec "Server\Msg\mTransferCmd.sqs"
 0 exec "\TZK_Scripts_4_0_6\Server\Msg\mDestruction.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\MsgUnitDisembark.sqs"
 ["Server\Join\ViaOrder.sqs"] exec "\TZK_Scripts_4_0_5\Server\Msg\mJoin.sqs"
@@ -58,7 +58,7 @@ call loadFile "\TZK_Scripts_4_0_6\Server\Msg\sStartMoney.sqf"
 
 [si0] exec "\TZK_Scripts_4_0_4\Server\UpdateRespawnAI.sqs"; [si1] exec "\TZK_Scripts_4_0_4\Server\UpdateRespawnAI.sqs"
 
-[] exec "Server\Start\Income.sqs"
+0 exec "Server\Loop\Income.sqs"
 0 exec "Server\Loop\Server.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\SendPing.sqs"
 

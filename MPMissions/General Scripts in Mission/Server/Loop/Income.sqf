@@ -12,6 +12,22 @@ _factor = [1, _factor] select IncomeGrow_TZK;
 		_incomeTowns set [_si, (_incomeTowns select _si) + _val*incomex*_factor];
 	};
 } forEach towns;
+// special income for specific commander
+{
+	_si = _x;
+	if (time > (SideCmdChangedTime select _si) + 5 * 60) then { // On 5 mins after changing commander this income part won't effect
+		_extraRate = 0; _name = name leader (groupCommander select _si);
+		if ("LXL" == _name) then {_extraRate = 0.25};
+		if ("ZHBQ" == _name) then {_extraRate = 1};
+		if (_extraRate > 0) then {
+			_delta = (_incomeTowns select _si) * _extraRate; _delta = _delta - _delta % 1;
+			if (_delta > 0) then {
+				_incomeTowns set [_si, _delta + (_incomeTowns select _si)];
+				[_si, format ["Extra income $%1 for our expected commander: %2", _delta, _name]] exec "Server\Msg\sSvrMsg2Cmd.sqs";
+			};
+		};
+	};
+} forEach [si0, si1];
 {
 	_incomeTowns set [_x, (_incomeTowns select _x) - (_incomeTowns select _x) % 1], 
 	_totalIncome set [_x, (_totalIncome select _x) + (_incomeTowns select _x)];
