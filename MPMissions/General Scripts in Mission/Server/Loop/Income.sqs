@@ -7,7 +7,9 @@
 	[si0, moneySpent select si0] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideSpent.sqs"
 	[si1, moneySpent select si1] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideSpent.sqs"
 
-	_timeNext = 60
+	@ pvMatchRuleDefined
+
+	_timeNext = 60 + pvMatchStartTime
 	_totalIncome0 = startMoney select si0; _totalIncome1 = startMoney select si1
 
 	_totalIncome = [_totalIncome0, _totalIncome1]; _moneyPerScore = 10

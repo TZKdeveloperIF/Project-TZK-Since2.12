@@ -53,10 +53,15 @@ call preprocessFile "Server\InitServer_Group.sqf"
 call preprocessFile "Server\initStartedGrpMoney.sqf"
 call preprocessFile "Server\initStartedGrpUpg.sqf"
 
-0 exec "Server\GenerateStartPositions.sqs"
+_lock = [true]
+_lock exec "Server\PreProcessMatchRule.sqs"
+# ProcessingMatchRule
+	~ 0.5
+	? _lock select 0: goto "ProcessingMatchRule"
+
 call loadFile "\TZK_Scripts_4_0_6\Server\Msg\sStartMoney.sqf"
 
-[si0] exec "\TZK_Scripts_4_0_4\Server\UpdateRespawnAI.sqs"; [si1] exec "\TZK_Scripts_4_0_4\Server\UpdateRespawnAI.sqs"
+{_x exec "Server\UpdateRespawnAI.sqs"} forEach [si0, si1]
 
 0 exec "Server\Loop\Income.sqs"
 0 exec "Server\Loop\Server.sqs"

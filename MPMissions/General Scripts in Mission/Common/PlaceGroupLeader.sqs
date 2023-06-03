@@ -6,7 +6,11 @@ _gi = _this select 2
 
 ? !(local _unit): Exit
 
-@( !(isNull (mhq select si0)) && !(isNull (mhq select si1)) )
+@ not (isNull (mhq select _si))
+
+; extra delay for player
+_delay = (if isServer then {0} else {0.5})
+~ _delay
 
 _pos = getPos (mhq select _si)
 _dir = getDir (mhq select _si)

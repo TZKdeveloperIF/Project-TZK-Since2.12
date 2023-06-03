@@ -42,7 +42,7 @@ mapAnimCommit
 onMapSingleClick {[_pos, _units, _alt, _shift] call funcMapClickSpectator}
 
 player groupchat "Waiting for start data ..."
-@( !(isNull (mhq select si0)) && !(isNull (mhq select si1)) )
+@ pvMatchRuleDefined
 player groupchat "Start data received."
 
 [false] exec localize {TZK_MARKER_SPEC}; btnMarker = true; boolFriendly = true

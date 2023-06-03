@@ -5,8 +5,8 @@ onLoadMission = $STR_MISSION_NAME; onLoadMissionTime = 1;
 // game properties
 
 titleParam1 = "Spawn Pos";
-valuesParam1[] = {0,1,2,3};
-textsParam1[] = {"Fully Random", "Random N/S", "West at N", "West at S"};
+valuesParam1[] = {0,1,2,3,4};
+textsParam1[] = {"Fully Random", "Random N/S", "West at N", "West at S", "Custom"};
 defValueParam1 = 1;
 
 // titleParam2 = "GS,VD, Time";
@@ -44,6 +44,54 @@ defValueParam2 = 2;
 #include "TZK_Scripts_4_0_6\description_26_tzkOrderAi.h"
 #include "TZK_Scripts_4_0_6\description_27_customAirWep_dialog.h"
 #include "TZK_Scripts_4_0_6\description_28_tzkCustomInitAttr.h"
+
+class SimpleConfirmDlg: Menu
+{
+	idd = -1;
+	movingEnable = true;
+	controlsBackground[] = {ScdBg};
+	objects[] = { };
+	controls[] = {Scd_Title, Scd_BUTTON_OK, Scd_BUTTON_EXIT};
+
+	class ScdBg: BackgroundWindow {
+		x = 0.35;
+		y = 0.36;
+		w = 0.30;
+		h = 0.28;
+		text = ;
+		colorBackground[] = {0.247, 0.247, 0.247, 0.75};
+	};
+
+	class Scd_Title: Title {
+		style = ST_CENTER;
+		x = 0.37;
+		y = 0.40;
+		w = 0.26;
+		h = 0.03;
+		colorBackground[] = {0.247, 0.247, 0.247, 0.75};
+		text = "Confirm Start Position";
+	};
+
+	class Scd_BUTTON_OK: Button {
+		x = 0.3975;
+		y = 0.54;
+		w = 0.1;
+		h = 0.04;
+		text = "Confirm"
+		action = "btnValue00 = true"
+		default = false
+	};
+
+	class Scd_BUTTON_EXIT: Button {
+		x = 0.5025;
+		y = 0.54;
+		w = 0.1;
+		h = 0.04;
+		text = "Exit"
+		action = "btnValue01 = true"
+		default = false
+	};
+};
 
 class RscSliderH {
 	access = 3;

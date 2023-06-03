@@ -18,6 +18,9 @@ _nil = "scalar bool array string 0xfcffffef"
 ? UsedVersion >= 2010: bool_TZK_199_Mode = false
 
 call loadFile "\TZK_Scripts_4_0_6\init_constants.sqf"
+; 4.0.6.38
+pvCmdFinishedMakingRule = false; pvMatchRuleDefined = false; pvMatchStartTime = 0
+pvStartPosRes = -1
 ; 4.0.6.37
 call preprocessFile "Art\InitEquipments.sqf"
 ; 4.0.6.29
@@ -31,6 +34,7 @@ indexInfoMsg = 0; countInfoMsg = 4;
 call loadFile "\TZK_Scripts_4_0_6\init_group.sqf"
 call preprocessFile "Common\Init\Group.sqf"
 call loadFile "\TZK_Scripts_4_0_6\init_param.sqf"
+fixedStartPos = param1
 "" call loadFile "\TZK_Scripts_4_0_6\init_upgrade.sqf"
 upgDefs select upgSatCamZoom set [1, 0]; upgDefs select upgSatCamZoom set [2, 0];
 ? bool_TZK_Lester_Mode: [{[] exec "Extra\init_upgrade.sqs"}, 0.1] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
@@ -121,7 +125,7 @@ posCenter = [_posX/_c, _posY/_c]
 
 townGroups=[ [], [], [] ]; workerGroups = [ [], [] ]; patrolGroups = []
 functionalGroups = [ [], [] ]
-mutexDynamicInitializeGroups = false; [] exec "\TZK_Scripts_4_0_4\Common\Dynamic\GroupsClear.sqs"
+mutexDynamicInitializeGroups = false; 60 exec "Common\Dynamic\GroupsClear.sqs"
 timeReinforceTown = 3*60
 
 ? !bool_TZK_199_Mode && (bool_TZK_MF_Mode || bool_TZK_Yugo_Mode): call loadFile "Extra\DynamicTriggerRemove.sqf"
