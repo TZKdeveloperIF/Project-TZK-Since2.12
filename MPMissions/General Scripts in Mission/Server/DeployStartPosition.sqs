@@ -13,6 +13,11 @@ _res0 = [utMHQ0, _posSide0, _dir, si0, -1, 0, 5] call fAddVehicle
 ? _dirSide1 == -1: _dirSide1 = random 360
 _res1 = [utMHQ1, _posSide1, _dir + 180, si1, -1, 0, 5] call fAddVehicle
 
+pvMhq0x = _posSide0 select 0, pvMhq0y = _posSide0 select 1
+pvMhq1x = _posSide1 select 0, pvMhq1y = _posSide1 select 1
+publicVariable {pvMhq0x}, publicVariable {pvMhq0y}
+publicVariable {pvMhq1x}, publicVariable {pvMhq1y}
+
 pvMatchStartTime = time; pvMatchRuleDefined = true
 publicVariable {pvMatchStartTime}; publicVariable {pvMatchRuleDefined}
 
