@@ -4,15 +4,18 @@ _unit = _this select 0
 _si = _this select 1
 _gi = _this select 2
 
-? !(local _unit): Exit
+? !(local _unit): exit
 
-@ not (isNull (mhq select _si))
+@ pvMhq0x != -1
+@ pvMhq0y != -1
+@ pvMhq1x != -1
+@ pvMhq1y != -1
 
 ; extra delay for player
 _delay = (if isServer then {0} else {0.5})
 ~ _delay
 
-_pos = getPos (mhq select _si)
+_pos = [call format ["pvMhq%1x", _si], call format ["pvMhq%1y", _si]]
 _dir = getDir (mhq select _si)
 
 
@@ -22,16 +25,17 @@ _unit setPos [(_pos Select 0) + _dist*sin(_dir + 90), (_pos Select 1) + _dist*co
 _unit setDir _dir
 
 ; 2.01 setting. Make initialize simpler in mission.sqm
-~1
+~ 1
 ? !bool_TZK_199_Mode: _unit allowdammage true
 
-~10
-_try = 0
-#FixStartPosBug
-? _unit distance (mhq select _si) < 1000: exit
-_unit setPos [(_pos Select 0) + _dist*sin(_dir + 90), (_pos Select 1) + _dist*cos(_dir + 90), 0]; (vehicle player) switchCamera "internal"; _try = _try + 1
-~1
-? _try < 5: goto "FixStartPosBug"
-_unit setDammage 1; _unit globalChat "Suicide. If Game still abnormal after having respawned, ask Admin to restart the game please."
+~ 0.1
+? [_unit, _pos] call funcDistH < 1000: exit
+_unit setPos [(_pos Select 0) + _dist*sin(_dir + 90), (_pos Select 1) + _dist*cos(_dir + 90), 0]
+(vehicle player) switchCamera "internal"
+~ 0.1
+? [_unit, _pos] call funcDistH < 1000: exit
+
+_unit setDammage 1
+_unit globalChat "Suicide. If Game still abnormal after having respawned, ask Admin to restart the game please."
 
 ; EOF

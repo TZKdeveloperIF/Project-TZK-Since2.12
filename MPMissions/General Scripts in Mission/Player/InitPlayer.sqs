@@ -109,14 +109,17 @@ onMapSingleClick {[_pos, _units, _alt, _shift] call funcMapClickPlayer}
 @ !mutexCmd
 
 player groupchat "Waiting for start data ..."
-@ not (isNull (mhq select siPlayer))
+@ pvMhq0x != -1
+@ pvMhq0y != -1
+@ pvMhq1x != -1
+@ pvMhq1y != -1
 player groupchat "Start data received."
 
-
+_posMhq = [call format ["pvMhq%1x", _si], call format ["pvMhq%1y", _si]]
 [_unit, _si, _gi] exec "Player\InitPlayer_Scripts.sqs"
 
 mapAnimClear
-mapAnimAdd [1.0, 1.0, getPos (mhq select _si)]
+mapAnimAdd [1.0, 1.0, _posMhq]
 mapAnimCommit
 @mapAnimDone
 ; ~1
@@ -137,7 +140,7 @@ _size = getMarkerSize _marker
 _marker setMarkerSize [1,1]
 _i = 0
 #FlashStart
-_marker setMarkerPos ( [getPos (mhq select _si), hiddenMarkerPos] select ((_i % 2) == 0) )
+_marker setMarkerPos ( [_posMhq, hiddenMarkerPos] select ((_i % 2) == 0) )
  ~0.2
  _i = _i + 1
  ? _i < 10 : goto "FlashStart"
