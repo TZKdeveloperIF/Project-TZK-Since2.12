@@ -20,8 +20,8 @@ btnValue01 = false
 # Confirm
 	_px = _this select 0; _px = _px - _px % 1
 	_py = _this select 1; _py = _py - _py % 1
-	[siPlayer, _px, _py] exec "Server\Msg\hStartPos.sqs"
-	publicExec format [{%1 exec "Server\Msg\hStartPos.sqs"}, [siPlayer, _px, _py]]
+	[siPlayer, _px, _py] exec "Common\Msg\hStartPos.sqs"
+	publicExec format [{%1 exec "Common\Msg\hStartPos.sqs"}, [siPlayer, _px, _py]]
 
 	onMapSingleClick ""
 	deleteMarker "StartPosAvailableArea"

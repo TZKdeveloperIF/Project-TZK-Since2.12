@@ -90,6 +90,7 @@ mapAnimCommit
 @mapAnimDone
 
 ? groupPlayer == groupCommander select siPlayer: 0 exec "Player\CmdDefineRules.sqs"
+? groupPlayer != groupCommander select siPlayer && not pvCmdFinishedMakingRule: FixStart_0 globalChat "Waiting commanders selected start position..."
 
 @ pvCmdFinishedMakingRule
 	onMapSingleClick ""

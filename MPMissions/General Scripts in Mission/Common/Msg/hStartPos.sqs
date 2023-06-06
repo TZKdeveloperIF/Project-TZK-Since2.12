@@ -1,0 +1,12 @@
+; args: [siPlayer, px, py]
+_si = _this select 0
+
+? not isServer: goto "SkipServer"
+
+; Server
+	? si0 == _si: TzkCustomStartPos set [0, _this select 1], TzkCustomStartPos set [1, _this select 2]
+	? si1 == _si: TzkCustomStartPos set [2, _this select 1], TzkCustomStartPos set [3, _this select 2]
+
+# SkipServer
+	? isNull player: exit
+	FixStart_0 globalChat format ["%1 commander %2 has selected start position.", sideNames select _si, name leader (groupCommander select _si)]
