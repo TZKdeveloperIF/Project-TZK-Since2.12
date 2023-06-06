@@ -8,7 +8,10 @@
 ; {call format ["publicVariable {Radio00%1}", _x]} forEach [0,1,2,3,4,5,6,7,8,9]
 
 ; Town Flag Triggers
-@ (count towns > 0 && time > 10)
+@ pvMatchRuleDefined
+~ 10
+? 0 == count towns: "None towns in mission" call fDebugLog
+
 _count = count towns; _index = 0
 
 ; Name of triggers should better be "TrigDym..." but not "Trig...". The latter is used in old CTI missions, and those trigger name defined in mission.sqm can't be assigned in-game again even though sensor has been "deleted". Even in 2.01 there's no "undefine/rename Trigger" command available. So the best way is not to use those names.

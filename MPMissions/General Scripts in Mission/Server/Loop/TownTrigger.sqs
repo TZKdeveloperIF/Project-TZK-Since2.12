@@ -23,9 +23,12 @@ _lastSide = _lastSetSide
 ? bool_TZK_SEMod_Mode: [_trigger, _indexTown, _lastSetSide, _lastSide, siRes, siRes] exec {Extra\TownTrigger.sqs}, exit
 
 # Update
-	~3
-	_timeCheck = time + 19 - (time%20)
-	@ time > _timeCheck
+	~ 3
+	_relTime = time - pvMatchStartTime
+	_timeCheck = _relTime + 19 - (_relTime % 20)
+	_delay = _timeCheck - _relTime
+	; ? 0 == _indexTown: hint format ["town trigger time info:\ndelay: %1\ncur time: %2\ncheck time: %3", _delay, _relTime, _timeCheck]
+	~ _delay
 
 	_res = (list _trigger) call funcUpdateTownCheckUnits
 	_units = _res select 0
