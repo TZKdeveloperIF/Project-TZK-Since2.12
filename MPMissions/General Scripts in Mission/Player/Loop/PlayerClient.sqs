@@ -126,6 +126,7 @@ _rtsCrossOutdateDur = 10; _rtsAreaOutDateDur = 30;
 		? !(alive objectRespawn) || isNull objectRespawn: _posRespawn = positionRespawn
 	
 	#RespawnPosSet
+		? (_posRespawn select 2) < 3: _posRespawn set [2, 3]
 		_unit setVelocity [0,0,0]
 		_unit setPos _posRespawn
 
