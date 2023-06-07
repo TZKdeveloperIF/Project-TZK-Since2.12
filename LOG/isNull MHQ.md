@@ -1,3 +1,4 @@
 In current commit a new variable "pvMatchRuleDefined" is defined for taking place of condition "isNull (mhq select _si)". However even create server by game directly the just-created vehicle's position seems incorrect. Thus scripts relying on exactly mhqs' position still require this condition.
 But this condition is still not exactly, through. Using result of getPos mhq will return unexpected pos.
 Further more, even using explicitly public variable can't solve "spawn at air" problem. The problem probably isn't caused by mhq's position
+It seems that the forceMap order leads to "spawn in air" bug

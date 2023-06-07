@@ -5,7 +5,11 @@ _unit = _this select 0
 _si = _this select 1
 _gi = _this select 2
 
-forceMap true
+_pos = getPosASL _unit, _pos set [2, 400]
+_para = "pwr_paraG_xj400" camCreate _pos
+_para setPosASL _pos, _unit moveInDriver _para
+
+; forceMap true
 0 exec "\TZK_Scripts_4_0_6\Player\Init_Function_Player.sqs"
 ? "IF" == name player: TzkDebugLog = []
 
@@ -81,13 +85,10 @@ call preprocessFile "Player\Rts\Init.sqf"
 ; 4.0.6.33
 mutexBuildObstruct = false
 
-;game has begun after this pause
-~0.1
+; game has begun after this pause
+~ 0.1
 
-mapAnimClear
-mapAnimAdd [0, 1.0, posCenter]
-mapAnimCommit
-@mapAnimDone
+; remove map anim
 
 ? groupPlayer == groupCommander select siPlayer: 0 exec "Player\CmdDefineRules.sqs"
 ? groupPlayer != groupCommander select siPlayer && not pvCmdFinishedMakingRule: FixStart_0 globalChat "Waiting commanders selected start position..."
@@ -118,12 +119,7 @@ player groupchat "Start data received."
 _posMhq = [call format ["pvMhq%1x", _si], call format ["pvMhq%1y", _si]]
 [_unit, _si, _gi] exec "Player\InitPlayer_Scripts.sqs"
 
-mapAnimClear
-mapAnimAdd [1.0, 1.0, _posMhq]
-mapAnimCommit
-@mapAnimDone
-; ~1
-; forceMap false
+; remove map anim
 
 0 call loadFile "\TZK_Scripts_4_0_6\Player\Init\AIOrder.sqf"
 call preprocessFile "impl\Client_Player.sqf"
@@ -147,7 +143,7 @@ _marker setMarkerPos ( [_posMhq, hiddenMarkerPos] select ((_i % 2) == 0) )
 
 
  
-forceMap false
+; remove map anim
 ~0.1
 [player, player, false, 0] exec "\TZK_Scripts_4_0_4\Player\Dialog\Equipment.sqs"
 ~1
