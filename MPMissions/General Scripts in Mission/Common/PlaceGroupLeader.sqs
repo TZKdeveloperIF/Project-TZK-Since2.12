@@ -11,11 +11,24 @@ _gi = _this select 2
 @ pvMhq1x != -1
 @ pvMhq1y != -1
 
-; extra delay for player
-_delay = (if isServer then {0} else {0.5})
-~ _delay
-
 _pos = [call format ["pvMhq%1x", _si], call format ["pvMhq%1y", _si]]
+
+? isNull player: goto "skipMapAnim"
+? _unit != player: goto "skipMapAnim"
+
+forceMap true
+mapAnimClear
+mapAnimAdd [1, 1.0, _pos]
+mapAnimCommit
+@ mapAnimDone
+mapAnimClear
+~ 2
+forceMap false
+
+# skipMapAnim
+; extra delay
+~ 1
+
 _dir = getDir (mhq select _si)
 
 

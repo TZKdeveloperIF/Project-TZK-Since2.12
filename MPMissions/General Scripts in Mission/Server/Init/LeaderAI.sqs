@@ -6,8 +6,12 @@ _gi = _this select 2
 
 ? !isServer : exit
 
-;game has begun after this pause
-~2
+_pos = getPosASL _unit, _pos set [2, 400]
+_para = "pwr_paraG_xj400" camCreate _pos
+_para setPosASL _pos, _unit moveInDriver _para
+
+; game has begun after this pause
+~ 2
 
 ? !(local _unit) : exit
 
