@@ -10,7 +10,7 @@ _textType = ""
 ? _textType == "Aircraft": if ("ParachuteBase" countType [_enemy] > 0) then {_textType = "Parachute"}
 
 _debugInfo = ""
-? name player == "IF": _debugInfo = format ["%1 ", _enemy]
+; ? name player == "IF": _debugInfo = format ["%1 ", _enemy]
 
 _textPos = _pos call funcCalcTownDirDistFromPos
 ? _textType != "": format ["Enemy %3%1 spotted at %2", _textType, _textPos, _debugInfo] call funcSideMsg
