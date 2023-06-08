@@ -1,0 +1,17 @@
+? not isServer: exit
+
+; args: [NetworkID[], [state, si]]
+_netIds = _this select 0; _state = _this select 1 select 0, _si = _this select 1 select 1, _this = 0
+_c = count _netIds
+? 0 == _c: exit
+
+? upgMatrix select _si select upgSpoofMissile != 2: exit
+
+_i = 0
+# loop
+	_vehicle = vehicle UnitById(_netIds select _i)
+	? _state: _vehicle removeMagazines {SpoofSwitch_xj400}
+	? not _state: _vehicle addMagazine {SpoofSwitch_xj400}
+
+	_i = _i + 1
+	? _i < _c: goto "loop"

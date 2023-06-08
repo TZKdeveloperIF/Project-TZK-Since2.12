@@ -1,7 +1,9 @@
-; args: turn on/off : boolean
+; args: state: boolean
 _top = TzkSelUnitsStack select TzkSelStackIdx
 _c = count _top
 ? _c == 0: goto "Quit"
+
+? upgMatrix select siPlayer select upgPlaneAfterBurner != 2: exit
 
 _i = 0, _j = 0, _selectedUnits = []
 # loop
@@ -10,8 +12,7 @@ _i = 0, _j = 0, _selectedUnits = []
 	? _unit == _vehicle: goto "continue"
 	? _unit != driver _vehicle: goto "continue"
 
-	_type = _vehicle call funcGetUnitTypeFromObject
-	? -1 == (airTransport select siPlayer) find _type && -1 == (groundTransport select siPlayer) find _type: goto "continue"
+	? ("A10_Base_xj400" countType [_vehicle] == 0) && ("Su25_Base_xj400" countType [_vehicle] == 0): goto "continue"
 
 	_selectedUnits set [_j, _unit]
 	_j = _j + 1
@@ -21,8 +22,7 @@ _i = 0, _j = 0, _selectedUnits = []
 	? _i < _c: goto "loop"
 _selectedUnits resize _j
 
-[_selectedUnits, _this, "Server\Rts\hTransportTurn.sqs"] exec "Player\Rts\GenArrayCommand.sqs"
+[_selectedUnits, [_this, siPlayer], "Rts\Trigger\hAfterBurner.sqs"] exec "Player\Rts\GenArrayCommand.sqs"
 
 # Quit
 	exit
-	; do nothing. On ejecting units commander might wish to re-order them immediately
