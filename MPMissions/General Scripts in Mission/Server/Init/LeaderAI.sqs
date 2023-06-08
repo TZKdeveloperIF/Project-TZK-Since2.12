@@ -17,6 +17,12 @@ _para setPosASL _pos, _unit moveInDriver _para
 
 @ pvMatchRuleDefined
 
-[_unit, _si, _gi] exec "Common\PlaceGroupLeader.sqs"
+_initPlace = [_unit, _si, _gi, true] 
+_initPlace exec "Common\PlaceGroupLeader.sqs"
 [_unit, _si] exec localize {TZK_AI_LEADER_EQUIP}
+
+# loop
+	~ 1
+	? _initPlace select 3: goto "loop"
+
 [_unit, _si, _gi] exec "Server\Start\AI_Leader.sqs"

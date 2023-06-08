@@ -1,8 +1,8 @@
 ; args: [unit, si, gi]
 
 _unit = _this select 0; _si = _this select 1; _gi = _this select 2
-
-[_unit, _si, _gi] exec "Common\PlaceGroupLeader.sqs"
+_initPlace = [_unit, _si, _gi, true] 
+_initPlace exec "Common\PlaceGroupLeader.sqs"
 [] exec "\TZK_Scripts_4_0_5\Player\UpdateOptionsAction.sqs"
 [] exec "\TZK_Scripts_4_0_5\Player\UpdatePlayerRepairVehicleAction.sqs"
 [] exec "\TZK_Scripts_4_0_5\Player\UpdatePlayerRearmVehicleAction.sqs"
@@ -10,6 +10,10 @@ _unit = _this select 0; _si = _this select 1; _gi = _this select 2
 [] exec "\TZK_Scripts_4_0_5\Player\UpdatePlayerAirSupportRepairAction.sqs"
 [] exec "\TZK_Scripts_4_0_5\Player\UpdatePlayerAirSupportRearmAction.sqs"
 [] exec "\TZK_Scripts_4_0_4\Player\UpdatePlayerGetFlyingStatus.sqs"
+
+# loop
+	~ 1
+	? _initPlace select 3: goto "loop"
 
 0 exec "Player\Loop\PlayerClient.sqs"
 0 exec localize {TZK_PLAYER_LOOP_VEHICLE}

@@ -1,4 +1,4 @@
-; args: [unit, si, gi]
+; args: [unit, si, gi, lock variable: boolean]
 
 _unit = _this select 0
 _si = _this select 1
@@ -40,6 +40,9 @@ _unit setDir _dir
 ; 2.01 setting. Make initialize simpler in mission.sqm
 ~ 1
 ? !bool_TZK_199_Mode: _unit allowdammage true
+
+~ 0.1
+_this set [3, false]
 
 ~ 0.1
 ? [_unit, _pos] call funcDistH < 1000: exit
