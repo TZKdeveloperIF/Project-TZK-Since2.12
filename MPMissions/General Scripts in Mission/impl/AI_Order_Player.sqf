@@ -106,7 +106,7 @@ comment "Redefine shoot target order param.";
 
 comment "Add new orders";
 	aiOrders2 set [count aiOrders2 - 1, [
-		"Land Heli", [], false, "Player\Order\LandHeli.sqs",
+		"Land Heli", [], false, "Player\Order\Land.sqs",
 		"Ask helicopter drivers to land."
 	]];
 	comment "[Join] order should always be the last one";

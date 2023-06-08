@@ -1,14 +1,12 @@
-; args: [unit, pos, []]
+; args: [unit, exit condition?: string]
+; no parameters' check
 
-_unit = _this select 0; _this = 0
+_unit = _this select 0
+_cond = (if (count _this > 1) then {_this select 1} else {"false"})
 
-? not alive _unit: exit
 _vehicle = vehicle _unit
-? _unit != driver _vehicle: exit
-? 0 == "Helicopter" countType [_vehicle]: exit
 
 _unit groupChat "Roger, landing helicopter."
-
 _vehicle land {LAND}
 
 _timeAbort = _time + 60, _maxRetryTime = 4, _retry = 0
@@ -16,7 +14,7 @@ _timeAbort = _time + 60, _maxRetryTime = 4, _retry = 0
 	_vehicle land {LAND}
 
 	? not alive _unit: exit
-	? call orderCheck: exit
+	? call _cond: exit
 	? _vehicle != vehicle _unit: exit
 	? _time > _timeAbort: exit
 
