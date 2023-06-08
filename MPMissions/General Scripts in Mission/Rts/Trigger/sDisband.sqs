@@ -2,7 +2,7 @@
 _c = count _this
 ? _c == 0: goto "Quit"
 
-[_this, -1, "Server\Rts\hDisband.sqs"] exec "Player\Rts\GenArrayCommand.sqs"
+[_this, -1, "Rts\Trigger\hDisband.sqs"] exec "Player\Rts\GenArrayCommand.sqs"
 
 ; debug info
 ? "IF" == name player: showDebug [format ["NetworkID: %1 - %2", (_this select 0) call funcGenNetIdStr, NetworkID (_this select 0)], 5000]
