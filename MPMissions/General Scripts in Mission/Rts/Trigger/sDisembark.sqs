@@ -1,4 +1,6 @@
-; args: altitude
+; args: none
+; all units will disembark. Better use this order in safe area since it'll cost some times for moving vehicles to stop
+
 _top = TzkSelUnitsStack select TzkSelStackIdx
 _c = count _top
 ? _c == 0: goto "Quit"
@@ -8,9 +10,6 @@ _i = 0, _j = 0, _selectedUnits = []
 	_unit = _top select _i
 	_vehicle = vehicle _unit
 	? _unit == _vehicle: goto "continue"
-	? _unit != driver _vehicle: goto "continue"
-
-	? "Air" countType [_vehicle] == 0: goto "continue"
 
 	_selectedUnits set [_j, _unit]
 	_j = _j + 1
@@ -20,7 +19,8 @@ _i = 0, _j = 0, _selectedUnits = []
 	? _i < _c: goto "loop"
 _selectedUnits resize _j
 
-[_selectedUnits, _this, "Rts\Executor\hSetFlightAltitude.sqs"] exec "Player\Rts\GenArrayCommand.sqs"
+[_selectedUnits, -1, "Rts\Trigger\hDisembark.sqs"] exec "Player\Rts\GenArrayCommand.sqs"
 
 # Quit
 	exit
+	; do nothing. On ejecting units commander might wish to re-order them immediately
