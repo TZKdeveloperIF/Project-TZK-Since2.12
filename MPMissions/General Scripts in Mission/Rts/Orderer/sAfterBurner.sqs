@@ -1,0 +1,28 @@
+; args: state: boolean
+_top = TzkSelUnitsStack select TzkSelStackIdx
+_c = count _top
+? _c == 0: goto "Quit"
+
+? upgMatrix select siPlayer select upgPlaneAfterBurner != 2: exit
+
+_i = 0, _j = 0, _selectedUnits = []
+# loop
+	_unit = _top select _i
+	_vehicle = vehicle _unit
+	? _unit == _vehicle: goto "continue"
+	? _unit != driver _vehicle: goto "continue"
+
+	? ("A10_Base_xj400" countType [_vehicle] == 0) && ("Su25_Base_xj400" countType [_vehicle] == 0): goto "continue"
+
+	_selectedUnits set [_j, _unit]
+	_j = _j + 1
+
+	# continue
+	_i = _i + 1
+	? _i < _c: goto "loop"
+_selectedUnits resize _j
+
+[_selectedUnits, [_this, siPlayer], "Rts\Executor\hAfterBurner.sqs"] exec "Player\Rts\GenArrayCommand.sqs"
+
+# Quit
+	exit
