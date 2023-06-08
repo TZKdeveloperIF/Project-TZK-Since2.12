@@ -1,0 +1,13 @@
+? not isServer: exit
+
+; args: [NetworkID[]]
+_netIds = _this select 0; _this = 0
+_c = count _netIds
+? 0 == _c: exit
+
+_i = 0
+# loop
+	[vehicle UnitById(_netIds select _i)] exec "Util\LandHeliScript.sqs"
+
+	_i = _i + 1
+	? _i < _c: goto "loop"

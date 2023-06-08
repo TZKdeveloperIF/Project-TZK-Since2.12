@@ -72,12 +72,20 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 	? 2^0 == _btnVal: 0 exec "Player\Dialog\DisbandPreset.sqs"; closeDialog 0; goto "Quit"
 	? 2^1 == _btnVal: 0 exec "Player\Rts\sEject.sqs"; closeDialog 0; goto "Quit"
 	? 2^2 == _btnVal: 0 exec "Player\Rts\sDisembark.sqs"; closeDialog 0; goto "Quit"
+	? 2^5 == _btnVal: _downBoardStack set [0, 5]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
 	? 2^6 == _btnVal: _downBoardStack set [0, 6]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
 	? 2^7 == _btnVal: _downBoardStack set [0, 7]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
 	goto "Update"
 	# DownSubMenu
 		_return = false
-		; ASSERT(6 == _downBoardStack select 0 && 1 == count _downBoardStack)
+
+		? 2^0 == _btnVal && 5 == _downBoardStack select 0: 0 exec "Rts\Orderer\sLand.sqs"; closeDialog 0; goto "Quit"
+		? 2^1 == _btnVal && 5 == _downBoardStack select 0: true exec "Rts\Orderer\sSpoof.sqs"; _return = true
+		? 2^2 == _btnVal && 5 == _downBoardStack select 0: true exec "Rts\Orderer\sAfterBurner.sqs"; _return = true
+		? 2^3 == _btnVal && 5 == _downBoardStack select 0: 0 exec "Rts\SubMenu\FlightAltitudePreset.sqs"; closeDialog 0; goto "Quit"
+		? 2^4 == _btnVal && 5 == _downBoardStack select 0: false exec "Rts\Orderer\sSpoof.sqs"; _return = true
+		? 2^5 == _btnVal && 5 == _downBoardStack select 0: false exec "Rts\Orderer\sAfterBurner.sqs"; _return = true
+
 		? 2^0 == _btnVal && 6 == _downBoardStack select 0: true exec "Player\Rts\sTransportTurn.sqs"; _return = true
 		? 2^1 == _btnVal && 6 == _downBoardStack select 0: false exec "Player\Rts\sTransportTurn.sqs"; _return = true
 
