@@ -19,17 +19,32 @@ _timeAbort = _time + 60, _maxRetryTime = 4, _retry = 0
 	? _time > _timeAbort: exit
 
 	~ 5
-	? (getPos _vehicle) select 2 > 3: goto "simpleLoop"
+	? (getPos _vehicle) select 2 > 8: goto "simpleLoop"
+
+# advancedLoop
+	? not alive _unit: exit
+	? call _cond: exit
+	? _vehicle != vehicle _unit: exit
+	? _time > _timeAbort: exit
+
+	~ 0.5
+	? (getPos _vehicle) select 2 > 3: goto "advancedLoop"
 
 ? _unit != driver _vehicle: exit
 doStop _unit; _unit action ["ENGINEOFF", _vehicle]; _vehicle engineOn false
-~ 5
+
+_timeAbort = _time + 5
+# preventEscape
+	~ 0.5
+	? (velocity _vehicle) select 2 > 2: goto "retry"
+	? _time < _timeAbort: goto "preventEscape"
 ? (getPos _vehicle) select 2 < 5: goto "LandSucceeded"
 
-_retry = _retry + 1
-_timeAbort = _time + 60
-? _retry >= _maxRetryTime: _unit groupChat "Land order aborted.", exit
-goto "simpleLoop"
+# retry
+	_retry = _retry + 1
+	_timeAbort = _time + 60
+	? _retry >= _maxRetryTime: _unit groupChat "Land order aborted.", exit
+	if ((getPos _vehicle) select 2 > 8) then {goto "simpleLoop"} else {goto "advancedLoop"}
 
 # LandSucceeded
 	unassignVehicle _unit
