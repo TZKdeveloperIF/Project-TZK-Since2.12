@@ -20,16 +20,15 @@ if (not _processed && 0 == count _downBoardStack) then {
 // Area "set as..." sub board
 if (not _processed && 1 == count _downBoardStack) then {
 	if (not _processed && 5 == _downBoardStack select 0) then {
-		ctrlSetText [_idcDownBtn0 + 0, "Land"];
-		ctrlSetText [_idcDownBtn0 + 1, "Spoof ON"];
-		ctrlSetText [_idcDownBtn0 + 2, "AB ON"];
-		ctrlSetText [_idcDownBtn0 + 3, "FlyHeight"];
-		ctrlSetText [_idcDownBtn0 + 4, "Spoof OFF"];
-		ctrlSetText [_idcDownBtn0 + 5, "AB OFF"];
+		ctrlSetText [_idcDownBtn0 + 0, "Spoof ON"];
+		ctrlSetText [_idcDownBtn0 + 1, "Spoof OFF"];
+		ctrlSetText [_idcDownBtn0 + 2, "Height"];
+		ctrlSetText [_idcDownBtn0 + 3, "AB ON"];
+		ctrlSetText [_idcDownBtn0 + 4, "AB OFF"];
 
 		ctrlSetText [_idcDownBtn0 + 8, "Return"];
 
-		{ctrlShow [_idcDownBtn0 + _x, true]} forEach [0,1,2,3,4,5,8];
+		{ctrlShow [_idcDownBtn0 + _x, true]} forEach [0,1,2,3,4,8];
 		_processed = true;
 	};
 	if (not _processed && 6 == _downBoardStack select 0) then {
