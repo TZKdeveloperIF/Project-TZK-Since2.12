@@ -36,6 +36,8 @@ ctrlSetText [_idcLeftBtn0 + 2, "Shoot Area"]
 ctrlSetText [_idcLeftBtn0 + 3, "Move and Shoot"]
 ctrlSetText [_idcLeftBtn0 + 4, "Board"]
 ctrlSetText [_idcLeftBtn0 + 5, "Occupy"]
+; ctrlSetText [_idcLeftBtn0 + 6, "Land"]
+ctrlShow [_idcLeftBtn0 + 6, false]
 
 ; down board
 _downBoardStack = []
@@ -65,6 +67,7 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 	? 3 == _btnVal: [_pos, true, true] exec "Rts\SubMenu\AreaArtOrderPreset.sqs"; closeDialog 0; goto "Quit"
 	? 4 == _btnVal: _pos exec "Rts\SubMenu\BoardPreset.sqs"; closeDialog 0; goto "Quit"
 	? 5 == _btnVal: _pos exec "Rts\SubMenu\OccupyPreset.sqs"; closeDialog 0; goto "Quit"
+	; ? 6 == _btnVal: 0 exec "Rts\Order\sLand.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 # DownBtn
 	? count _downBoardStack > 0: goto "DownSubMenu"
@@ -79,12 +82,11 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 	# DownSubMenu
 		_return = false
 
-		? 2^0 == _btnVal && 5 == _downBoardStack select 0: 0 exec "Rts\Trigger\sLand.sqs"; closeDialog 0; goto "Quit"
-		? 2^1 == _btnVal && 5 == _downBoardStack select 0: true exec "Rts\Trigger\sSpoof.sqs"; _return = true
-		? 2^2 == _btnVal && 5 == _downBoardStack select 0: true exec "Rts\Trigger\sAfterBurner.sqs"; _return = true
-		? 2^3 == _btnVal && 5 == _downBoardStack select 0: 0 exec "Rts\SubMenu\FlightAltitudePreset.sqs"; closeDialog 0; goto "Quit"
-		? 2^4 == _btnVal && 5 == _downBoardStack select 0: false exec "Rts\Trigger\sSpoof.sqs"; _return = true
-		? 2^5 == _btnVal && 5 == _downBoardStack select 0: false exec "Rts\Trigger\sAfterBurner.sqs"; _return = true
+		? 2^0 == _btnVal && 5 == _downBoardStack select 0: true exec "Rts\Trigger\sSpoof.sqs"; _return = true
+		? 2^1 == _btnVal && 5 == _downBoardStack select 0: false exec "Rts\Trigger\sSpoof.sqs"; _return = true
+		? 2^2 == _btnVal && 5 == _downBoardStack select 0: 0 exec "Rts\SubMenu\FlightAltitudePreset.sqs"; closeDialog 0; goto "Quit"
+		? 2^3 == _btnVal && 5 == _downBoardStack select 0: true exec "Rts\Trigger\sAfterBurner.sqs"; _return = true
+		? 2^4 == _btnVal && 5 == _downBoardStack select 0: false exec "Rts\Trigger\sAfterBurner.sqs"; _return = true
 
 		? 2^0 == _btnVal && 6 == _downBoardStack select 0: true exec "Rts\Trigger\sTransportTurn.sqs"; _return = true
 		? 2^1 == _btnVal && 6 == _downBoardStack select 0: false exec "Rts\Trigger\sTransportTurn.sqs"; _return = true
