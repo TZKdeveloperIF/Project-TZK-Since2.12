@@ -1,9 +1,10 @@
 ; This script generates available string that can be safely applied in "publicExec" command
 ; OFP can't handle too long string
 
-; args: [script, extern param, left index, right index, selected units[] (should be a deep copy)]
-_scrpit = _this select 0; _param = _this select 1; _left = _this select 2; _right = _this select 3; _selectedUnits = _this select 4
+; args: [left index, right index, params]
+_left = _this select 0; _right = _this select 1; _params = _this select 2
 ; ASSERT that _left <= _right and both are valid index
+_selectedUnits = _params select 0
 
 ? isServer: _netIds = []; _netIds resize (_right - _left + 1)
 ? not isServer: _str = "["
@@ -18,5 +19,8 @@ _i = _left
 	? _i <= _right: goto "loop"
 ? not isServer: _str = _str + "]"
 
-? isServer: [_netIds, _param] exec _scrpit
-? not isServer: publicExec format [{[%1, %3] exec "%2"}, _str, _scrpit, _param]
+_copy = + _params
+? isServer: _copy set [0, _netIds], _copy exec "Rts\Framework\Distributor.sqs", exit
+; For client, we need the CONTENT of "_str"
+_copy set [0, 0]; _rest = format ["%1", _copy], _rest = substr [_rest, 3, sizeofstr _rest - 1]
+publicExec format [{[%1,%2] exec "Rts\Framework\Distributor.sqs"}, _str, _rest]

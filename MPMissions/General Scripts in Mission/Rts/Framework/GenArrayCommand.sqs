@@ -1,4 +1,4 @@
-; args: [units: array, param: any, script: string]
+; args: [units: array, param: any, script name: string, script folder: string]
 _c = count (_this select 0)
 ? 0 == _c: exit
 
@@ -7,6 +7,6 @@ _len = 16; _j = 0; _cj = _c / _len; _cj = _cj - (_cj % 1) + 1; _i = 0
 	_left = _len * _j
 	_right = _len * (_j + 1) - 1
 	? _j == _cj - 1: _right = _c - 1
-	[_this select 2, _this select 1, _left, _right, _this select 0] exec "Player\Rts\GenStrAndExec.sqs"
+	[_left, _right, _this] exec "Rts\Framework\GenStrAndExec.sqs"
 	_j = _j + 1
 	? _j < _cj: goto "loop"
