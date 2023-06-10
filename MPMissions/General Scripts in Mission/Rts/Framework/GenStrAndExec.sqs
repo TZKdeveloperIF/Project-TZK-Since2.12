@@ -3,7 +3,9 @@
 
 ; args: [left index, right index, params]
 _left = _this select 0; _right = _this select 1; _params = _this select 2
-; ASSERT that _left <= _right and both are valid index
+
+? _left > right: showDebug [format ["%1, %2 are invalid in GenStrAndExec.sqs", _left, _right], 5000], exit
+
 _selectedUnits = _params select 0
 
 ? isServer: _netIds = []; _netIds resize (_right - _left + 1)
@@ -19,7 +21,9 @@ _i = _left
 	? _i <= _right: goto "loop"
 ? not isServer: _str = _str + "]"
 
+; "_this" is reference of the input of "GenArrayCommand.sqs". create a deep copy for params
 _copy = + _params
+; For server, directly pass parameters to script
 ? isServer: _copy set [0, _netIds], _copy exec "Rts\Framework\Distributor.sqs", exit
 ; For client, we need the CONTENT of "_str"
 _copy set [0, 0]; _rest = format ["%1", _copy], _rest = substr [_rest, 3, sizeofstr _rest - 1]
