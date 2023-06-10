@@ -61,8 +61,8 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 # Quit
 	[false, _id + 2] exec "Player\Rts\SetRtsMouse.sqs"; exit
 # LeftBtn
-	? 0 == _btnVal: _pos exec "Player\Rts\sRtsMove.sqs"; closeDialog 0; goto "Quit"
-	? 1 == _btnVal: 0 exec "Player\Rts\sRtsClear.sqs"; closeDialog 0; goto "Quit"
+	? 0 == _btnVal: _pos exec "Rts\Order\sRtsMove.sqs"; closeDialog 0; goto "Quit"
+	? 1 == _btnVal: 0 exec "Rts\Order\sClear.sqs"; closeDialog 0; goto "Quit"
 	? 2 == _btnVal: [_pos, false, true] exec "Rts\SubMenu\AreaArtOrderPreset.sqs"; closeDialog 0; goto "Quit"
 	? 3 == _btnVal: [_pos, true, true] exec "Rts\SubMenu\AreaArtOrderPreset.sqs"; closeDialog 0; goto "Quit"
 	? 4 == _btnVal: _pos exec "Rts\SubMenu\BoardPreset.sqs"; closeDialog 0; goto "Quit"
