@@ -2,7 +2,10 @@
 _c = count (_this select 0)
 ? 0 == _c: exit
 
-_len = 16; _j = 0; _cj = _c / _len; _cj = _cj - (_cj % 1) + 1; _i = 0
+_len = 16; _j = 0; _i = 0
+_cj = (_c - 1) / _len; _cj = _cj - (_cj % 1) + 1
+? _cj * _len < _c: showDebug [format ["%1, %2 are invalid in GenArrayCommand.sqs", _cj, _c], 5000], exit
+
 # loop
 	_left = _len * _j
 	_right = _len * (_j + 1) - 1
