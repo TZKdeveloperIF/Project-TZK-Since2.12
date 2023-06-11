@@ -56,7 +56,7 @@ _params = 0, _this = 0
 	_markerInfo = call format [{%2%1 select _idx}, _suffix, if _isServer then {"TzkArtSvrArea"} else {"TzkArtPplArea"}];
 	_result = call format [{%2%1 select _idx}, _suffix, if _isServer then {"TzkArtSvrAreaAnal"} else {"TzkArtPplAreaAnal"}];
 ; Rts infomation
-	; _abort = {[[_unit], _si, false] exec "Server\Rts\hClear.sqs"}; _bClearRts = false
+	; _abort = {[[_unit], [_si, false]] exec "Rts\Framework\OrderDtor.sqs"}; _bClearRts = false
 ; Create local target object
 	_target = {Target_TZK_xj400} camCreate [0,0,0]; _target setPos [_markerInfo select 0, _markerInfo select 1, 0]; _target allowDammage false
 ; Get type info in area scripts

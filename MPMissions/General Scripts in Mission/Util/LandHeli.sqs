@@ -22,6 +22,8 @@ _timeAbort = _time + 60, _maxRetryTime = 4, _retry = 0
 	? (getPos _vehicle) select 2 > 8: goto "simpleLoop"
 
 # advancedLoop
+	_vehicle land {LAND}
+
 	? not alive _unit: exit
 	? call _cond: exit
 	? _vehicle != vehicle _unit: exit
