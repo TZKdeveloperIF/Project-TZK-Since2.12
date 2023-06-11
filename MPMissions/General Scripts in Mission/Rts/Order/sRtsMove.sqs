@@ -6,7 +6,7 @@ _c = count _top
 _pos = _top call preprocessFile "Player\Rts\CalcCentral.sqf"
 
 _selectedUnits = +_top
-[_selectedUnits, [_this, _pos], "Server\Rts\hMove.sqs"] exec "Player\Rts\GenArrayCommand.sqs"
+[_selectedUnits, [_this, _pos], "hMove.sqs", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs"
 
 ; debug info
 ? "IF" == name player: showDebug [format ["NetworkID: %1 - %2", (_selectedUnits select 0) call funcGenNetIdStr, NetworkID (_selectedUnits select 0)], 5000]

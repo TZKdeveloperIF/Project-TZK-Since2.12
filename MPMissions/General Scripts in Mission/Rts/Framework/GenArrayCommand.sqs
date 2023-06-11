@@ -1,0 +1,15 @@
+; args: [units: array, param: any, script name: string, script folder: string]
+_c = count (_this select 0)
+? 0 == _c: exit
+
+_len = 16; _j = 0; _i = 0
+_cj = (_c - 1) / _len; _cj = _cj - (_cj % 1) + 1
+? _cj * _len < _c: showDebug [format ["%1, %2 are invalid in GenArrayCommand.sqs", _cj, _c], 5000], exit
+
+# loop
+	_left = _len * _j
+	_right = _len * (_j + 1) - 1
+	? _j == _cj - 1: _right = _c - 1
+	[_left, _right, _this] exec "Rts\Framework\GenStrAndExec.sqs"
+	_j = _j + 1
+	? _j < _cj: goto "loop"

@@ -1,9 +1,9 @@
 ? not isServer: exit
 
-; args: [NetworkID[], si, isNet: bool (optional)]
-_array = _this select 0; _si = _this select 1;
-_isNet = (if (count _this > 2) then {_this select 2} else {true})
-_this = 0
+; args: [NetworkID[], [si, isNet: bool (optional)]]
+_array = _this select 0; _params = _this select 1
+_si = _params select 0; _isNet = (if (count _params > 1) then {_params select 1} else {true})
+_this = 0; _params = 0
 _c = count _array
 ? 0 == _c: exit
 
