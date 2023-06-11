@@ -41,7 +41,6 @@ countQueueMsg = 5;
 indexQueueAddMsg = 0;
 indexQueueRemMsg = 0;
 indexUnitAddMsg = 0;
-mutexBuildingQueue = false;
 mutexEditMoneyMatrix = false;
 mutexMovingToSupport = false;
 mutexSendMoneySide = false;

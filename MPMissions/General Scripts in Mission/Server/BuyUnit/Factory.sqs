@@ -46,10 +46,7 @@ mutexFacQueues = false
 	_qid = _entry select 6
 	_nCustomWeapon = _entry select 7
 
-	@ !mutexBuildingQueue
-	mutexBuildingQueue = true
 	[_queue, 0] call preprocessFile "Util\ArrayErase.sqf"
-	mutexBuildingQueue = false
 
 	[_factory, _si, (count _queue) + 1] exec "\TZK_Scripts_4_0_4\Server\SendQueueLength.sqs"
 
@@ -96,7 +93,7 @@ mutexFacQueues = false
 
 	[_qid, _si, 0] exec "\TZK_Scripts_4_0_4\Server\SendQueueRem.sqs"
 
-	[_si, _giJoin, _unitsToBuild] exec "\TZK_Scripts_4_0_4\Server\UnitsReady.sqs"; 
+	[_si, _giJoin, _unitsToBuild] exec "Server\BuyUnit\UnitsReady.sqs"; 
 	? !(alive _factory) || (isNull _factory): goto "BuildingDestroyed"
 
 	? !((groupMatrix select _si select _giJoin) in (groupAiMatrix select _si)): [_type, _driver, _gunner, _commander, _si, _giJoin, _giBuyer, _factory, _nCustomWeapon, 0] exec "Server\Msg\sAddUnit.sqs"; goto "RemoteAdd"
@@ -129,22 +126,23 @@ mutexFacQueues = false
 
 #UnitCanceled
 	goto "UnitNotBuilt"
-	@ !mutexBuildingQueue
-	mutexBuildingQueue = true
-	_res = (qidToCancel select _si) select _qid
-	_unitsCanceled = _res select 1
-	? _giJoin == _res select 0: _unitsBuilding = ((groupUnitsBuildingMatrix select _si) select _giJoin) + _unitsCanceled; (groupUnitsBuildingMatrix select _si) set [_giJoin, _unitsBuilding]
-	mutexBuildingQueue = false
+	; contents below is a trial many years ago. They're not used for long
+	; @ not (mutexBuildingQueue select _si select _qid)
+		; mutexBuildingQueue select _si set [_qid, true]
+		; _res = (qidToCancel select _si) select _qid
+		; _unitsCanceled = _res select 1
+		; ? _giJoin == _res select 0: _unitsBuilding = ((groupUnitsBuildingMatrix select _si) select _giJoin) + _unitsCanceled; (groupUnitsBuildingMatrix select _si) set [_giJoin, _unitsBuilding]
+		; mutexBuildingQueue select _si set [_qid, false]
 	goto "UnitNotBuilt"
 
 #UnitNotBuilt
 
 
-	@ !mutexBuildingQueue
-	mutexBuildingQueue = true
-	_unitsBuilding = ((groupUnitsBuildingMatrix select _si) select _giJoin) - _unitsToBuild
-	(groupUnitsBuildingMatrix select _si) set [_giJoin, _unitsBuilding]
-	mutexBuildingQueue = false
+	@ not (mutexBuildingQueue select _si select _giJoin)
+		mutexBuildingQueue select _si set [_giJoin, true]
+		_unitsBuilding = ((groupUnitsBuildingMatrix select _si) select _giJoin) - _unitsToBuild
+		(groupUnitsBuildingMatrix select _si) set [_giJoin, _unitsBuilding]
+		mutexBuildingQueue select _si set [_giJoin, false]
 
 	[_qid, _si] exec "\TZK_Scripts_4_0_4\Server\QIDCancelRemove.sqs"
 	
@@ -175,10 +173,7 @@ mutexFacQueues = false
 
 	_cost = _unitDesc select udCost
 
-	@ !mutexBuildingQueue
-	mutexBuildingQueue = true
 	[_queue, 0] call preprocessFile "Util\ArrayErase.sqf"
-	mutexBuildingQueue = false
 
 	_bVehicle = false
 	? (count ((unitDefs select _type) select udCrew) > 0): _bVehicle = true
@@ -186,11 +181,11 @@ mutexFacQueues = false
 	? !(_bVehicle): _unitsToBuild = 1
 	? (_bVehicle): _unitsToBuild = _driver; _unitsToBuild = _unitsToBuild + _gunner; _unitsToBuild = _unitsToBuild + _commander
 
-	@ !mutexBuildingQueue
-	mutexBuildingQueue = true
-	_unitsBuilding = ((groupUnitsBuildingMatrix select _si) select _giJoin) - _unitsToBuild
-	(groupUnitsBuildingMatrix select _si) set [_giJoin, _unitsBuilding]
-	mutexBuildingQueue = false
+	@ not (mutexBuildingQueue select _si select _giJoin)
+		mutexBuildingQueue select _si set [_giJoin, true]
+		_unitsBuilding = ((groupUnitsBuildingMatrix select _si) select _giJoin) - _unitsToBuild
+		(groupUnitsBuildingMatrix select _si) set [_giJoin, _unitsBuilding]
+		mutexBuildingQueue select _si set [_giJoin, false]
 
 
 	[_qid, _si] exec "\TZK_Scripts_4_0_4\Server\QIDCancelRemove.sqs"
