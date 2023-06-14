@@ -68,14 +68,6 @@ comment {pvTownSide format: townIndex + 100*newSide + 1000*oldSide};
 mutexTownSide = false;
 pvTownSide = -1;
 
-mutexAddUnit = false;
-countUnitAddMsg = 10;
-_i = 0; while {_i < countUnitAddMsg} do {
-	call format [{pvAddUnit%1 = -1}, _i];
-	call format [{pvAddUnit%1_Factory = objNull}, _i];
-	_i = _i + 1;
-};
-
 mutexUnitBuilt = false; indexUnitBuiltMsg = 0; countUnitBuiltMsg = 5; _i = 0;
 while {_i < countUnitBuiltMsg} do {
 	call format [{pvUnitBuilt%1 = -1}, _i];
@@ -198,7 +190,6 @@ pvDestruction_Object = objNull;
 pvInit_0 = -1; pvCustomPlayerMoney = -1; pvCustomAicoMoney = -1;
 pvConcurStatus1 = -1; pvConcurStatus2 = -1;
 _i = 0; while {_i < 5} do {call format ["pvBuyUnit_Custom%1 = -1", _i]; _i = _i + 1};
-_i = 0; while {_i < 10} do {call format ["pvAddUnit_Custom%1 = -1", _i]; _i = _i + 1};
 
 if bool_TZK_199_Mode then {
 	pvSpoofTarget = objNull, pvSwitchMagVeh = objNull, pvSwitchMagSpeed = -1, 

@@ -40,7 +40,6 @@ ratioAttackEnemy = ([0.70, 0.70] select dev);
 countQueueMsg = 5;
 indexQueueAddMsg = 0;
 indexQueueRemMsg = 0;
-indexUnitAddMsg = 0;
 mutexEditMoneyMatrix = false;
 mutexMovingToSupport = false;
 mutexSendMoneySide = false;
