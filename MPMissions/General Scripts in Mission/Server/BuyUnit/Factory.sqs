@@ -86,23 +86,24 @@ mutexFacQueues = false
 	
 	[_type, _si, _giBuyer, _giJoin] exec localize {TZK_INFO_SERVER_UNIT_BUILDING}
 
-	_timeBuilt = time + ([_buildTime, 5] select dev)
-	@ time > _timeBuilt || _qid in (qidCancel select _si)
+	_timeBuilt = time + ([_buildTime, 5] select dev); _isBuilding = true
+	# buildLoop
+		~ 1
+		? _qid in (qidCancel select _si): _isBuilding = false
+		? count units _grpJoin + _unitsToBuild > maxGroupSize: _isBuilding = false
+		? time > _timeBuilt: _isBuilding = false
+		? _isBuilding: goto "buildLoop"
 
-	? _qid in (qidCancel select _si): [_si, _giBuyer, -_cost, 0] exec localize {TZK_MONEY_SERVER_SPEND}; goto "UnitCanceled"
+	? _qid in (qidCancel select _si): [_si, _giBuyer, -_cost] exec localize {TZK_MONEY_SERVER_SPEND}; goto "UnitCanceled"
+	? count units _grpJoin + _unitsToBuild > maxGroupSize: [_si, _giBuyer, -_cost] exec localize {TZK_MONEY_SERVER_SPEND}; goto "GroupFull"
 
 	[_qid, _si, 0] exec "\TZK_Scripts_4_0_4\Server\SendQueueRem.sqs"
 
 	[_si, _giJoin, _unitsToBuild] exec "Server\BuyUnit\UnitsReady.sqs"; 
 	? !(alive _factory) || (isNull _factory): goto "BuildingDestroyed"
 
-	? !((groupMatrix select _si select _giJoin) in (groupAiMatrix select _si)): [_type, _driver, _gunner, _commander, _si, _giJoin, _giBuyer, _factory, _nCustomWeapon, 0] exec "Server\Msg\sAddUnit.sqs"; goto "RemoteAdd"
-		_res = [_factory, _typeStructure, _si] call funcCalcUnitPlacementPosDir
-		_posUnit = _res select 0
-		_dirUnit = _res select 1
-		[_type, _driver, _gunner, _commander, _posUnit, _dirUnit, _si, _giJoin, grpNull, _giBuyer, 1, _nCustomWeapon] exec "Common\AddUnit.sqs"
-		(groupMatrix select _si select _giJoin) reveal _factory
-	#RemoteAdd
+	; create object
+	call preprocessFile "Server\BuyUnit\Create.sqf"
 	
 	? (count _queue) > 1: goto "BuildNextUnit"
 	@ !mutexbuildingInUse

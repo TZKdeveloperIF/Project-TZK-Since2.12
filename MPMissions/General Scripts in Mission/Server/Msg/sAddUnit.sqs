@@ -1,4 +1,4 @@
-; args: [type, driver, gunner, commander, si, gi, giBuyer, factory, nCustomWeapon, sendRepeats]
+; args: [type, driver, gunner, commander, si, gi, giBuyer, factory, nCustomWeapon]
 
 _type = _this select 0
 _driver = _this select 1
@@ -9,24 +9,11 @@ _gi = _this select 5
 _giBuyer = _this select 6
 _factory = _this select 7
 _nCustomWeapon = _this select 8
-_repeats = _this select 9
 
-@ !mutexAddUnit
-mutexAddUnit = true
+; encode info into an interger
+_value = _type + TotalUnitTypes * _gi + TotalUnitTypes * GroupsNum * _giBuyer + TotalUnitTypes * GroupsNum * GroupsNum * _si
+_value = _value + TotalUnitTypes * GroupsNum * GroupsNum * 2 *_driver + TotalUnitTypes * GroupsNum * GroupsNum * 2 * 2 *_gunner
+_value = _value + TotalUnitTypes * GroupsNum * GroupsNum * 2 * 2 * 2 *_commander
 
-_value = _type +  TotalUnitTypes *_gi +  TotalUnitTypes *GroupsNum*_giBuyer +  TotalUnitTypes *GroupsNum*GroupsNum*_si +  TotalUnitTypes *GroupsNum*GroupsNum*2*_driver +  TotalUnitTypes *GroupsNum*GroupsNum*2*2*_gunner +  TotalUnitTypes *GroupsNum*GroupsNum*2*2*2*_commander
-
-
-call format [{pvAddUnit_Custom%1 = _nCustomWeapon, PublicVariable "pvAddUnit_Custom%1"}, indexUnitAddMsg]
-call format [{pvAddUnit%1_Factory = _factory, PublicVariable "pvAddUnit%1_Factory"}, indexUnitAddMsg]
-call format [{pvAddUnit%1 = _value, PublicVariable "pvAddUnit%1"}, indexUnitAddMsg]
-
-indexUnitAddMsg = indexUnitAddMsg + 1
-? indexUnitAddMsg >= countUnitAddMsg : indexUnitAddMsg = 0
-
-~ 5/countUnitAddMsg
-
-mutexAddUnit = false
-? _repeats <= 0: exit
-_this set [count _this - 1, _repeats - 1]
-_this exec "Server\Msg\sAddUnit.sqs"
+[_factory, _value, _nCustomWeapon] exec "Network\hAddUnit.sqs"
+publicExec format [{[UnitById %1, %2, %3] exec "Network\hAddUnit.sqs"}, NetworkID _factory, _value, _nCustomWeapon]
