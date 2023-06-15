@@ -8,6 +8,10 @@ _left = _this select 0; _right = _this select 1; _params = _this select 2
 
 _selectedUnits = _params select 0
 
+; The CONTENT of funcGenNetIdStr is desired "NetworkID" return value. However we're
+; trying to pass many NetworkIDs across the internet. To generate a precise string, 
+; we manually append a string as if it's formatted NetworkID array. Also, the CONTENT
+; of this string is what we desired.
 ? isServer: _netIds = []; _netIds resize (_right - _left + 1)
 ? not isServer: _str = "["
 _i = _left
