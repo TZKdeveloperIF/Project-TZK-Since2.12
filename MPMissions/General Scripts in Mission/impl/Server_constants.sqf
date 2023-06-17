@@ -13,3 +13,5 @@ mutexBuildingQueue = [[], []];
         _i = _i + 1;
     };
 } forEach [si0, si1];
+// define mutex for reclaim
+mutexReclaim = false;
