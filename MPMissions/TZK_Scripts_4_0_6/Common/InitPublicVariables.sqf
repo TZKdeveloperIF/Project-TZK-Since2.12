@@ -10,8 +10,6 @@ pvKilledAircraft = objNull; pvKilledBoat = objNull;
 comment {Ver 2.12 v02 mutex ReEquip};
 mutexReEquip = false;
 comment {Ver 2.00 Variables};
-pvJoinApply = -1; pvJoinReply = -1; pvJoinReceive = -1; pvJoinUnits = objNull;
-mutexJoinServer = false; mutexSendJoinApply = false;
 pvAfterBurnerON = objNull; pvAfterBurnerOFF = objNull;
 pvNuclearX = 0; pvNuclearY = 0; pvNuclearZ = 0;
 pvCheckAI = -1;
