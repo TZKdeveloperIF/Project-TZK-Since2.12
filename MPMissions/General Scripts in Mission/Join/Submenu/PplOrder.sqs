@@ -1,0 +1,74 @@
+; args: [units, place holder, place holder]
+_units = _this select 0, _this = 0
+? count _units <= 0: exit
+
+_giFrom = (groupMatrix select siPlayer) find (group (_units select 0))
+? -1 == _giFrom: hint "Invalid group info. Maybe due to dead units."; exit
+
+_bPplMembers = _giFrom == giPlayer
+_sameGroupHint = "You're trying to ask AI units to join their group."
+? _bPplMembers: _sameGroupHint = "You're trying to ask your members to join your group."
+
+; for units selected by unit cam, the whole vehicle members except cargos should be contained as well
+; by now in this script, if not player members, units must come from unit cam
+? _bPplMembers: goto "skipUc"
+_arr = + _units, _i = 0, _c = count _arr
+# ergodic
+	_unit = _arr select _i, _vehicle = vehicle _unit
+	? _unit == _vehicle: goto "continue_ergodic"
+	? _unit != driver _vehicle && _unit != gunner _vehicle && _unit != commander _vehicle: goto "continue_ergodic"
+	{if (not isNull _x && not (_x in _units)) then {_units set [count _units, _x]}} forEach [driver _vehicle, gunner _vehicle, commander _vehicle]
+
+	# continue_ergodic
+	_i = _i + 1
+	? _i < _c: goto "ergodic"
+
+# skipUc
+
+@ !mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "TzkRtsSubMenuOneListBox"
+mutexDlg = false
+
+_idcTitle = IDC + 0; _idcListLabel = IDC + 16 * 1 + 0; _idcListBox0 = IDC + 16 * 2 + 0
+
+ctrlSetText [_idcTitle, "Join"]
+ctrlSetText [_idcListLabel, "Groups"]
+
+_groups = groupMatrix select siPlayer
+_groupsAI = groupAiMatrix select siPlayer
+_groupsName = groupNameMatrix select siPlayer
+
+btnValue00 = false; btnValue01 = false
+
+# loop
+	lbClear _idcListBox0
+	_i = 0; _c = count _groups
+	# updateList
+		_g = _groups select _i
+		lbAdd [_idcListBox0, format ["%1 %2 %3", [name leader _g, "AI"] select (_g in _groupsAI), _groupsName select _i, count units _g]]
+		_i = _i + 1
+		? _i < _c: goto "updateList"
+	~ 0.2
+	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+	? call dlgUpdated: goto "Quit"
+	? not alive player: closeDialog 0; goto "Quit"
+
+	? btnValue00: btnValue00 = false; closeDialog 0; goto "Quit"
+	? btnValue01: btnValue01 = false; goto "OK"
+
+	goto "loop"
+# Quit
+	exit
+# OK
+	_giTo = lbCurSel _idcListBox0
+	? -1 == _giTo: hint "No selected group.", goto "loop"
+	? _giFrom == _giTo: hint _sameGroupHint, goto "loop"
+
+	; join black list check
+	_groupTo = _groups select _giTo
+	_bInBlackList = not (_groupTo in _groupsAI) && -1 != TzkJoinBlackList find (name leader _groupTo)
+	? _bInBlackList: hint format ["%1 is in Join black list", name leader _groupTo], goto "loop"
+
+	[_units, _giFrom, _giTo, giPlayer] exec "Join\TraditionalRequest.sqs"
+	closeDialog 0; goto "Quit"

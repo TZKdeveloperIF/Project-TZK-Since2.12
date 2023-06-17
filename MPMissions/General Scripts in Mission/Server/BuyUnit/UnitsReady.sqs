@@ -4,11 +4,11 @@ _si = _this select 0
 _giJoin = _this select 1
 _unitsToBuild = _this select 2
 
-~0.8
-@!(mutexBuildingQueue)
-mutexBuildingQueue = true
+~ 0.8
+@ not (mutexBuildingQueue select _si select _giJoin)
+mutexBuildingQueue select _si set [_giJoin, true]
 
 _unitsBuilding = ((groupUnitsBuildingMatrix select _si) select _giJoin) - _unitsToBuild
 (groupUnitsBuildingMatrix select _si) set [_giJoin, _unitsBuilding]
 
-mutexBuildingQueue = false
+mutexBuildingQueue select _si set [_giJoin, false]
