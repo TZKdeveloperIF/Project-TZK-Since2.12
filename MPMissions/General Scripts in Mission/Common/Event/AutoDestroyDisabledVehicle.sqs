@@ -8,7 +8,8 @@ _timeDestroy = time + ([10*60, 2*60] select dev)
 # Update
 	~30
 	? !(alive _v) : exit
-	? (damage _v) == 0 : exit
+	; only destroy can't fire vehicle but not can't move ones
+	? canFire _v: exit
 
 	_c = "alive _x" count (crew _v)
 	? _c > 0 : _timeDestroy = time + ([10*60, 2*60] select dev)
@@ -17,5 +18,5 @@ _timeDestroy = time + ([10*60, 2*60] select dev)
 
 ? !(isNull player) : if ( player in _v ) then { hint "Vehicle will explode shortly ..." } 
 { if (alive _x) then { unassignVehicle _x }, _x setPos getPos _v } forEach (crew _v)
-~ 5 + (random 5))
+~ 5 + (random 5)
 _v setDamage 1
