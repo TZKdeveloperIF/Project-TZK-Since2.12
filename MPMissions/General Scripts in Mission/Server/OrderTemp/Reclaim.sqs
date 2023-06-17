@@ -115,6 +115,7 @@ _groups = groupMatrix select _si
 	#Reached
 
 	_i = 0
+	_func = preprocessFile "Util\CanReclaim.sqf"
 	#TrySeat
 		unassignVehicle _unit
 		? ( count ([driver _reclaimVehicle, gunner _reclaimVehicle] - [objNull, _reclaimVehicle]) ) >= 2: goto "Fail"
@@ -123,7 +124,13 @@ _groups = groupMatrix select _si
 		~1
 		? !alive _unit || !(_unit call temporaryCheck): goto "EOF"
 		? !(alive _reclaimVehicle): goto "Fail"
-		call format ["_unit assignAs%1 _reclaimVehicle; _unit moveIn%1 _reclaimVehicle", _seat]
+		; verify
+		@ not mutexReclaim
+			mutexReclaim = true
+			; delay to wait move in order actually done
+			~ 0.05
+			? [_unit, _reclaimVehicle] call _func: call format ["_unit assignAs%1 _reclaimVehicle; _unit moveIn%1 _reclaimVehicle", _seat]
+			mutexReclaim = false
 		~2
 		? !alive _unit || !(_unit call temporaryCheck): goto "EOF"
 		? !(alive _reclaimVehicle): goto "Fail"

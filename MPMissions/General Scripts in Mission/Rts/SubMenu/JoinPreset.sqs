@@ -1,0 +1,63 @@
+; args: none
+; this script is familar with "Join\Submenu\PplOrder.sqs"
+_top = TzkSelUnitsStack select TzkSelStackIdx
+_c = count _top
+? _c == 0: exit
+
+@ !mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "TzkRtsSubMenuOneListBox"
+mutexDlg = false
+
+_idcTitle = IDC + 0; _idcListLabel = IDC + 16 * 1 + 0; _idcListBox0 = IDC + 16 * 2 + 0
+
+ctrlSetText [_idcTitle, "Join"]
+ctrlSetText [_idcListLabel, format ["selected: %1", _c]]
+
+_groups = groupMatrix select siPlayer
+_groupsAI = groupAiMatrix select siPlayer
+_groupsName = groupNameMatrix select siPlayer
+
+btnValue00 = false; btnValue01 = false
+
+# loop
+	lbClear _idcListBox0
+	_i = 0; _c = count _groups
+	# updateList
+		_g = _groups select _i
+		lbAdd [_idcListBox0, format ["%1 %2 %3", [name leader _g, "AI"] select (_g in _groupsAI), _groupsName select _i, count units _g]]
+		_i = _i + 1
+		? _i < _c: goto "updateList"
+	~ 0.2
+	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+	? call dlgUpdated: goto "Quit"
+	? not alive player: closeDialog 0; goto "Quit"
+
+	? btnValue00: btnValue00 = false; closeDialog 0; goto "Quit"
+	? btnValue01: btnValue01 = false; goto "OK"
+
+	goto "loop"
+# Quit
+	exit
+# OK
+	_giTo = lbCurSel _idcListBox0
+	? -1 == _giTo: hint "No selected group.", goto "loop"
+
+	; join black list check
+	_groupTo = _groups select _giTo
+	_bInBlackList = not (_groupTo in _groupsAI) && -1 != TzkJoinBlackList find (name leader _groupTo)
+	? _bInBlackList: hint format ["%1 is in Join black list", name leader _groupTo], goto "loop"
+
+	; group and unit analysis
+	_units = []; _giFromArr = []
+	call preprocessFile "Rts\Submenu\Join.sqf"
+
+	; debug info
+	; hint format ["%1", _giFromArr]
+	; player sideChat format ["units: %1, gis: %2", _units, _giFromArr]
+
+	? count _units <= 0 || count _giFromArr <= 0: hint "No available units to join.", goto "loop"
+	? count _units > 11: hint "Selected too many units (no more than 11).", goto "loop"
+
+	[_units, _giFromArr, _giTo, giPlayer] exec "Join\Request.sqs"
+	closeDialog 0; goto "Quit"

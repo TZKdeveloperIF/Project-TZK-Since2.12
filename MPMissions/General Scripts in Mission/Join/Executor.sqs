@@ -1,0 +1,64 @@
+; args: [_netIds, _value, _giFromArray]
+_value = _this select 1
+_join2Ai = _value % 2, _value = (_value - _join2Ai) / 2
+_join2Ai = (if (1 == _join2Ai) then {true} else {false})
+
+? _join2Ai && not isServer: exit
+? not _join2Ai && isNull player: exit
+
+_netIds = _this select 0
+? count _netIds <= 0: exit
+
+; decode
+_si = _value % 2
+_value = (_value - _si) / 2
+
+_foo = _value % GroupsNum
+_value = (_value - _foo) / GroupsNum
+
+_giTo = _value % GroupsNum
+_value = (_value - _giTo) / GroupsNum
+
+_giRequester = _value % GroupsNum
+_value = (_value - _giRequester) / GroupsNum
+
+; reassign _value
+_value = _this select 1
+
+? not _join2Ai: if (_si != siPlayer || _giTo != giPlayer) then {exit}
+
+_giFromArray = _this select 2
+_groupsFrom = []
+_groups = groupMatrix select _si
+{_groupsFrom set [count _groupsFrom, _groups select _x]} forEach _giFromArray
+
+; variable declaration
+_units = []
+
+? _join2Ai: goto "ToServer"
+; ToPlayer
+	@ not mutexGroupMemberChange
+		mutexGroupMemberChange = true
+
+		_succeeded = call preprocessFile "Join\Process.sqf"
+		? not _succeeded: goto "ToPlayerPostProc"
+
+		; wait for a short period and remove failed units
+		~ 1
+		{if (not local _x) then {deleteVehicle _x}} forEach _units
+	# ToPlayerPostProc
+		mutexGroupMemberChange = false
+		exit
+# ToServer
+	@ not (mutexBuildingQueue select _si select _giTo)
+		mutexBuildingQueue select _si set [_giTo, true]
+
+		_succeeded = call preprocessFile "Join\Process.sqf"
+		? not _succeeded: goto "ToServerPostProc"
+
+		; wait for a short period and remove failed units
+		~ 1
+		{if (not local _x) then {deleteVehicle _x}} forEach _units
+	# ToServerPostProc
+		mutexBuildingQueue select _si set [_giTo, false]
+		exit

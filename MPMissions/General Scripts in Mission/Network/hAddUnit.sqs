@@ -1,0 +1,86 @@
+; script for player client or server hoster
+
+? isServer && isNull player: exit
+
+; args [factory, value, customWeapon]
+_factory = _this select 0; _value = _this select 1; _nCustomWeapon = _this select 2
+
+_type = _value %  TotalUnitTypes
+_value = (_value - _type) / TotalUnitTypes
+
+_gi = _value %  GroupsNum
+_value = (_value - _gi) / GroupsNum
+
+_giBuyer = _value %  GroupsNum
+_value = (_value - _giBuyer) / GroupsNum
+
+_si = _value % 2
+_value = (_value - _si) / 2
+
+? _si != siPlayer || _gi != giPlayer : exit
+
+? isNull _factory : format ["ERROR: _factory is null in Network\hAddUnit for type %1/%2", _type, unitDefs select _type select udName] call fDebugLog; exit
+
+_driver = _value % 2
+_value = (_value - _driver) / 2
+
+_gunner = _value % 2
+_value = (_value - _gunner) / 2
+
+_commander = _value % 2
+
+_ts = _factory call funcGetStructTypeFromObject
+? _ts == -1: "ERROR: _ts is -1 in Network\hAddUnit" call fDebugLog; exit
+
+_res = [_factory, _ts, _si] call funcCalcUnitPlacementPosDir
+_pos = _res select 0
+_dir = _res select 1
+
+; execute with player mutex
+_group = grpNull, _sendRepeats = 1
+
+? _type >= maxUnitTypes: goto "BuySoldier"
+? _type < 0 || _type >= (count unitDefs) : format ["ERROR: _type is out of range (%1) in Network\hAddUnit", _type] call fDebugLog; exit
+
+_desc = unitDefs select _type
+? count (_desc select udCrew) == 0: goto "BuySoldier"
+
+; must be a vehicle if we got here
+_vehicle = [_type, _pos, _dir, _si, _gi, _giBuyer, _sendRepeats] call fAddVehicle
+? isNull _vehicle: format ["ERROR: _vehicle is NULL in Network\hAddUnit"] call fDebugLog; exit
+[_vehicle, _type, _nCustomWeapon, _si] exec "Cwv\Equip.sqs"
+
+_typeCrew = _desc select udCrew select 1
+_unitsToBuild = _driver + _gunner + _commander
+@ not mutexGroupMemberChange
+	mutexGroupMemberChange = true
+	_full = count units groupPlayer + _unitsToBuild > maxGroupSize
+	? _full: [_si, _giBuyer, _typeCrew, _unitsToBuild] exec "Network\sRefund.sqs", goto "unlock"
+	; create crews
+		? _driver == 0 : goto "SkipDriver"
+		~ 0.1
+		_crew = [_typeCrew, _pos, _dir, _si, _gi, _group, _giBuyer] call fAddSoldier
+		? alive _crew && alive _vehicle : _crew moveInDriver _vehicle
+	# SkipDriver
+		? _gunner == 0 : goto "SkipGunner"
+		~ 0.1
+		_crew = [_typeCrew, _pos, _dir, _si, _gi, _group, _giBuyer] call fAddSoldier
+		? alive _crew && alive _vehicle : _crew moveInGunner _vehicle
+	# SkipGunner
+		? _commander == 0 : goto "SkipCommander"
+		~ 0.1
+		_crew = [_typeCrew, _pos, _dir, _si, _gi, _group, _giBuyer] call fAddSoldier
+		? alive _crew && alive _vehicle : _crew moveInCommander _vehicle
+	# SkipCommander
+
+# unlock
+	mutexGroupMemberChange = false; exit
+
+# BuySoldier
+	@ not mutexGroupMemberChange
+		mutexGroupMemberChange = true
+		_full = count units groupPlayer + 1 > maxGroupSize
+		? _full: [_si, _giBuyer, _type, 1] exec "Network\sRefund.sqs"
+		? not _full: [_type, _pos, _dir, _si, _gi, _group, _giBuyer] call fAddSoldier
+		mutexGroupMemberChange = false
+	exit

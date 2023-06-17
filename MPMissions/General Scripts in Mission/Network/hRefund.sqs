@@ -1,0 +1,21 @@
+; args: value
+
+? not isServer: exit
+
+_si = _this % 2
+_this = (_this - _si) / 2
+
+_giBuyer = _this % GroupsNum
+_this = (_this - _giBuyer) / GroupsNum
+
+_type = _this % TotalUnitTypes
+_this = (_this - _type) / TotalUnitTypes
+
+_unitsToBuild = _this % 10
+_this = (_this - _unitsToBuild) / 10
+
+; custom soldier basic price is $150
+_price = 150
+? _type < maxUnitTypes: _price = unitDefs select _type select udCost
+
+[_si, _giBuyer, -_price * _unitsToBuild] exec localize {TZK_MONEY_SERVER_SPEND}

@@ -16,8 +16,8 @@ _unitsToBuild = 0
 ? !_bVehicle: _unitsToBuild = 1
 ? _bVehicle: _unitsToBuild = _driver; _unitsToBuild = _unitsToBuild + _gunner; _unitsToBuild = _unitsToBuild + _commander
 
-@ !mutexBuildingQueue
-mutexBuildingQueue = true
+@ not (mutexBuildingQueue select _si select _giJoin)
+mutexBuildingQueue select _si set [_giJoin, true]
 
 _unitsInProgress = groupUnitsBuildingMatrix select _si select _giJoin
 _size = count units (groupMatrix select _si select _giJoin) + _unitsInProgress
@@ -55,4 +55,4 @@ qidToCancel select _si set [ _qid, [_giJoin, _unitsToBuild] ]
 [_factory, _si, (count _queue) + 1] exec "\TZK_Scripts_4_0_4\Server\SendQueueLength.sqs"
 
 # Unlock
-mutexBuildingQueue = false; exit
+mutexBuildingQueue select _si set [_giJoin, false]; exit
