@@ -88,7 +88,8 @@ _type = 0, _c = count aiOrders2; _found = false; while {_type < _c && not _found
 _type = 0, _c = count aiOrders2; _found = false; while {_type < _c && not _found} do {
 	if (aiOrders2 select _type select 0 == "Join") then {
 		_found = true;
-		aiOrders2 select _type set [3, "Player\Join\OrderJoin.sqs"];
+		aiOrders2 select _type select 1 resize 0;
+		aiOrders2 select _type set [3, "Join\Submenu\PplOrder.sqs"];
 	};
 	_type = _type + 1;
 };
@@ -105,16 +106,13 @@ comment "Redefine shoot target order param.";
 	};
 
 comment "Add new orders";
-	aiOrders2 set [count aiOrders2 - 1, [
+	comment "[Join] order should always be the last one";
+	_typeJoin = count aiOrders2 - 1;
+	aiOrders2 set [_typeJoin + 1, aiOrders2 select _typeJoin];
+	comment "Add land heli order";
+	aiOrders2 set [_typeJoin, [
 		"Land Heli", [], false, "Player\Order\Land.sqs",
 		"Ask helicopter drivers to land."
-	]];
-	comment "[Join] order should always be the last one";
-	_param0 = ["Group", count callsigns, {format[{%1}, callsigns select _this]}, -1];
-	aiOrders2 set [count aiOrders2, [
-		"Join", [_param0], true, "\TZK_Scripts_4_0_4\Player\Order\Join.sqs",
-		"Force selected units to join other group. Custom soldiers may perform abnormal when they go rearm after having 
-		jointed other groups."
 	]];
 
 

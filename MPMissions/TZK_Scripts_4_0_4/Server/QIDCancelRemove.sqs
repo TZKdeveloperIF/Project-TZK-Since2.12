@@ -10,7 +10,9 @@ qidCancel set [ _si, (qidCancel select _si) - [_qid] ]
 mutexqidCancel = false
 
 exit
-@!(mutexBuildingQueue)
-mutexBuildingQueue = true
-((qidToCancel select _si) select _qid) set [0,-1]; ((qidToCancel select _si) select _qid) set [1,-1];
-mutexBuildingQueue = false
+
+; contents below is a trial many years ago. They're not used for long
+	; @ not (mutexBuildingQueue select _si select _qid)
+	; mutexBuildingQueue select _si set [_qid, true]
+	; ((qidToCancel select _si) select _qid) set [0,-1]; ((qidToCancel select _si) select _qid) set [1,-1];
+	; mutexBuildingQueue select _si set [_qid, false]
