@@ -1,29 +1,8 @@
-; args: [units, place holder, place holder]
-_units = _this select 0, _this = 0
-? count _units <= 0: exit
-
-_giFrom = (groupMatrix select siPlayer) find (group (_units select 0))
-? -1 == _giFrom: hint "Invalid group info. Maybe due to dead units."; exit
-
-_bPplMembers = _giFrom == giPlayer
-_sameGroupHint = "You're trying to ask AI units to join their group."
-? _bPplMembers: _sameGroupHint = "You're trying to ask your members to join your group."
-
-; for units selected by unit cam, the whole vehicle members except cargos should be contained as well
-; by now in this script, if not player members, units must come from unit cam
-? _bPplMembers: goto "skipUc"
-_arr = + _units, _i = 0, _c = count _arr
-# ergodic
-	_unit = _arr select _i, _vehicle = vehicle _unit
-	? _unit == _vehicle: goto "continue_ergodic"
-	? _unit != driver _vehicle && _unit != gunner _vehicle && _unit != commander _vehicle: goto "continue_ergodic"
-	{if (not isNull _x && not (_x in _units)) then {_units set [count _units, _x]}} forEach [driver _vehicle, gunner _vehicle, commander _vehicle]
-
-	# continue_ergodic
-	_i = _i + 1
-	? _i < _c: goto "ergodic"
-
-# skipUc
+; args: none
+; this script is familar with "Join\Submenu\PplOrder.sqs"
+_top = TzkSelUnitsStack select TzkSelStackIdx
+_c = count _top
+? _c == 0: exit
 
 @ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
@@ -33,7 +12,7 @@ mutexDlg = false
 _idcTitle = IDC + 0; _idcListLabel = IDC + 16 * 1 + 0; _idcListBox0 = IDC + 16 * 2 + 0
 
 ctrlSetText [_idcTitle, "Join"]
-ctrlSetText [_idcListLabel, "Groups"]
+ctrlSetText [_idcListLabel, format ["selected: %1", _c]]
 
 _groups = groupMatrix select siPlayer
 _groupsAI = groupAiMatrix select siPlayer
@@ -63,12 +42,22 @@ btnValue00 = false; btnValue01 = false
 # OK
 	_giTo = lbCurSel _idcListBox0
 	? -1 == _giTo: hint "No selected group.", goto "loop"
-	? _giFrom == _giTo: hint _sameGroupHint, goto "loop"
 
 	; join black list check
 	_groupTo = _groups select _giTo
 	_bInBlackList = not (_groupTo in _groupsAI) && -1 != TzkJoinBlackList find (name leader _groupTo)
 	? _bInBlackList: hint format ["%1 is in Join black list", name leader _groupTo], goto "loop"
 
-	[_units, [_giFrom], _giTo, giPlayer] exec "Join\Request.sqs"
+	; group and unit analysis
+	_units = []; _giFromArr = []
+	call preprocessFile "Rts\Submenu\Join.sqf"
+
+	; debug info
+	; hint format ["%1", _giFromArr]
+	; player sideChat format ["units: %1, gis: %2", _units, _giFromArr]
+
+	? count _units <= 0 || count _giFromArr <= 0: hint "No available units to join.", goto "loop"
+	? count _units > 11: hint "Selected too many units (no more than 11).", goto "loop"
+
+	[_units, _giFromArr, _giTo, giPlayer] exec "Join\Request.sqs"
 	closeDialog 0; goto "Quit"
