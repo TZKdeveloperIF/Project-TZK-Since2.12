@@ -75,6 +75,9 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 	? 2^0 == _btnVal: 0 exec "Rts\SubMenu\DisbandPreset.sqs"; closeDialog 0; goto "Quit"
 	? 2^1 == _btnVal: 0 exec "Rts\Trigger\sEject.sqs"; closeDialog 0; goto "Quit"
 	? 2^2 == _btnVal: 0 exec "Rts\Trigger\sDisembark.sqs"; closeDialog 0; goto "Quit"
+
+	? 2^3 == _btnVal: 0 exec "Rts\SubMenu\JoinPreset.sqs"; closeDialog 0; goto "Quit"
+
 	? 2^5 == _btnVal: _downBoardStack set [0, 5]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
 	? 2^6 == _btnVal: _downBoardStack set [0, 6]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
 	? 2^7 == _btnVal: _downBoardStack set [0, 7]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"

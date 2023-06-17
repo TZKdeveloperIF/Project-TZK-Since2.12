@@ -1,4 +1,4 @@
-; args: [netIds of actually joined units, value]
+; args: [netIds of actually joined units, value, _giFromArray]
 
 ; decode
 _value = _this select 1
@@ -8,8 +8,8 @@ _join2Ai = (if (1 == _join2Ai) then {true} else {false})
 _si = _value % 2
 _value = (_value - _si) / 2
 
-_giFrom = _value % GroupsNum
-_value = (_value - _giFrom) / GroupsNum
+_foo = _value % GroupsNum
+_value = (_value - _foo) / GroupsNum
 
 _giTo = _value % GroupsNum
 _value = (_value - _giTo) / GroupsNum
@@ -17,8 +17,10 @@ _value = (_value - _giTo) / GroupsNum
 _giRequester = _value % GroupsNum
 _value = (_value - _giRequester) / GroupsNum
 
-_groupFrom = groupMatrix select _si select _giFrom
-_fromAi = _groupFrom in (groupAiMatrix select _si)
+_giFromArray = _this select 2
+
+_fromAi = true, _giFrom = -1
+? 1 == count _giFromArray: _giFrom = _giFromArray select 0, _fromAi = (groupMatrix select _si select _giFrom) in (groupAiMatrix select _si)
 
 ? _fromAi && not isServer: exit
 ? not _fromAi && isNull player: exit
@@ -27,9 +29,11 @@ _fromAi = _groupFrom in (groupAiMatrix select _si)
 ? not _fromAi: goto "SourcePlayer"
 ; SourceServer
 	; update source group order idx (same effect as order clear)
-	_order = orderMatrix select _si select _giFrom; _order set [0, (_order select 0) + 1];
+	{_order = orderMatrix select _si select _x; _order set [0, (_order select 0) + 1]} forEach _giFromArray
 	; on server-to-player case, clear busy/temporary/rts flag
 	; maybe we need to do this BEFORE join. Keep on observing
+	; besides, rts order hasn't group concept, join among ai without clear rts is easy to understand
+	; but what about busy/temporary? this remains to be discussed
 	? not _join2Ai: {_u = UnitById _x, _u call busyClear; _u call temporaryClear} forEach (_this select 0)
 	? not _join2Ai: [_this select 0, [_si, true]] exec "Rts\Framework\OrderDtor.sqs"
 	exit

@@ -1,4 +1,4 @@
-; args: [_netIds, _value]
+; args: [_netIds, _value, _giFromArray]
 _value = _this select 1
 _join2Ai = _value % 2, _value = (_value - _join2Ai) / 2
 _join2Ai = (if (1 == _join2Ai) then {true} else {false})
@@ -13,8 +13,8 @@ _netIds = _this select 0
 _si = _value % 2
 _value = (_value - _si) / 2
 
-_giFrom = _value % GroupsNum
-_value = (_value - _giFrom) / GroupsNum
+_foo = _value % GroupsNum
+_value = (_value - _foo) / GroupsNum
 
 _giTo = _value % GroupsNum
 _value = (_value - _giTo) / GroupsNum
@@ -26,6 +26,11 @@ _value = (_value - _giRequester) / GroupsNum
 _value = _this select 1
 
 ? not _join2Ai: if (_si != siPlayer || _giTo != giPlayer) then {exit}
+
+_giFromArray = _this select 2
+_groupsFrom = []
+_groups = groupMatrix select _si
+{_groupsFrom set [count _groupsFrom, _groups select _x]} forEach _giFromArray
 
 ; variable declaration
 _units = []

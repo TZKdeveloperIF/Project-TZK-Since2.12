@@ -1,13 +1,17 @@
-; args: [units, giFrom, giTo, giRequester]
-; process group order join or unit cam join
+; args: [units, giFromArr[], giTo, giRequester]
+; if the join request comes from group order or unit cam, the giFromArr will contains only 1 element
+; rts join request will pass many source groups
 
 _units = _this select 0
-? count _units <= 0: exit
+? count _units <= 0: player globalChat "No units in Join Request", exit
+? count _units > 11: player globalChat "Selected too many units (no more than 11).", exit
 
 _si = siPlayer
-_giFrom = _this select 1
+_giFromArray = _this select 1
 _giTo = _this select 2
 _giRequester = _this select 3
+
+? count _giFromArray <= 0: player globalChat "Empty gi from array in Join Request", exit
 
 _groups = groupMatrix select siPlayer
 _groupsAI = groupAiMatrix select siPlayer
@@ -17,24 +21,27 @@ _join2Ai = (_groups select _giTo) in _groupsAI
 _value = 0, _factor = 1
 _value = _value + (if (_join2Ai) then {1} else {0}) * _factor, _factor = _factor * 2
 _value = _value + _si * _factor, _factor = _factor * 2
-_value = _value + _giFrom * _factor, _factor = _factor * GroupsNum
+_value = _value + 0 * _factor, _factor = _factor * GroupsNum
 _value = _value + _giTo * _factor, _factor = _factor * GroupsNum
 _value = _value + _giRequester * _factor, _factor = _factor * GroupsNum
 ; Same as in "GenStrAndExec", we need the CONTENT
-_groupFrom = _groups select _giFrom; _lambda = {not alive _this || group _this != _groupFrom}
+_groupsFrom = []
+{_groupsFrom set [count _groupsFrom, _groups select _x]} forEach _giFromArray
+_lambda = {not alive _this || not (group _this in _groupsFrom)}
+
 [_units, _lambda] call preprocessFile "Util\ArrayEraseIf.sqf"
 _str = _units call preprocessFile "Network\GenNetIdArrayStr.sqf"
 ? "" == _str: exit
 ; Unnecessary to separate the string since there're 11 units at most in player's join request.
 
-? giPlayer == _giFrom: goto "SourceIsPlayer"
+? 1 == count _giFromArray && giPlayer == _giFromArray select 0: goto "SourceIsPlayer"
 
 ; SourceIsAi
 	; If AI join AI no delay is required.
 	@ not mutexPplJoinRequest
 		mutexPplJoinRequest = true
-		call format [{[%1,%2] exec "Join\Executor.sqs"}, _str, _value]
-		publicExec format [{[%1,%2] exec "Join\Executor.sqs"}, _str, _value]
+		call format [{[%1,%2,%3] exec "Join\Executor.sqs"}, _str, _value, _giFromArray]
+		publicExec format [{[%1,%2,%3] exec "Join\Executor.sqs"}, _str, _value, _giFromArray]
 
 		_delay = (if _join2Ai then {0} else {1})
 		~ _delay
@@ -49,8 +56,8 @@ _str = _units call preprocessFile "Network\GenNetIdArrayStr.sqf"
 		_func = preprocessFile "Util\UnitIdInGroup.sqf";
 		_uids = []; {_uids set [count _uids, _x call _func]} forEach _units
 
-		call format [{[%1,%2] exec "Join\Executor.sqs"}, _str, _value]
-		publicExec format [{[%1,%2] exec "Join\Executor.sqs"}, _str, _value]
+		call format [{[%1,%2,%3] exec "Join\Executor.sqs"}, _str, _value, _giFromArray]
+		publicExec format [{[%1,%2,%3] exec "Join\Executor.sqs"}, _str, _value, _giFromArray]
 
 		~ 1
 		; new units' order script will be invalid if they use old unit's id. Since delay is short this is expected not creating a problem
