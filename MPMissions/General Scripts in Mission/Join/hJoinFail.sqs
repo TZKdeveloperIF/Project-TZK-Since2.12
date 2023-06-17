@@ -1,0 +1,26 @@
+; args: value
+? isNull player: exit
+
+_value = _this
+; decode
+_join2Ai = _value % 2
+_value = (_value - _join2Ai) / 2
+
+_si = _value % 2
+_value = (_value - _si) / 2
+
+_foo = _value % GroupsNum
+_value = (_value - _foo) / GroupsNum
+
+_giTo = _value % GroupsNum
+_value = (_value - _giTo) / GroupsNum
+
+_giRequester = _value % GroupsNum
+_value = (_value - _giRequester) / GroupsNum
+
+? _si != siPlayer || _giRequester != giPlayer: exit
+
+_groupTo = groupMatrix select _si select _giTo
+_name = (if (_groupTo in (groupAiMatrix select _si)) then {"AI"} else {name leader _groupTo})
+
+hint format ["Fail to join %1 %2. The group is full.", _name, groupNameMatrix select _si select _giTo]

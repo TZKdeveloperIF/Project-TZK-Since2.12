@@ -12,17 +12,18 @@ mutexqidCancel = false
 
 
 exit
-? !_inCheck : exit
-_res = (qidToCancel select _si) select _qid
-_giJoin = _res select 0
-_unitsToCancel = _res select 1
-? _unitsToCancel == -1 : exit
 
-@!(mutexBuildingQueue)
-mutexBuildingQueue = true
+; contents below is a trial many years ago. They're not used for long
+; ? !_inCheck : exit
+; _res = (qidToCancel select _si) select _qid
+; _giJoin = _res select 0
+; _unitsToCancel = _res select 1
+; ? _unitsToCancel == -1 : exit
 
-_unitsBuilding = ((groupUnitsBuildingMatrix select _si) select _giJoin) - _unitsToCancel
-(groupUnitsBuildingMatrix select _si) set [_giJoin, _unitsBuilding]
+; @ not (mutexBuildingQueue select _si select _giJoin)
+	; mutexBuildingQueue select _si set [_giJoin, true]
 
+	; _unitsBuilding = ((groupUnitsBuildingMatrix select _si) select _giJoin) - _unitsToCancel
+	; (groupUnitsBuildingMatrix select _si) set [_giJoin, _unitsBuilding]
 
-mutexBuildingQueue = false
+	; mutexBuildingQueue select _si set [_giJoin, false]
