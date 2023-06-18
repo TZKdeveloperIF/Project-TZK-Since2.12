@@ -1,6 +1,7 @@
-; args: [units, place holder, place holder]
-_units = _this select 0, _this = 0
+; args: [units, place holder, place holder, caller: enum (optional)]
+_units = _this select 0
 ? count _units <= 0: exit
+_caller = (if (count _this > 3) then {_this select 3} else {""})
 
 _giFrom = (groupMatrix select siPlayer) find (group (_units select 0))
 ? -1 == _giFrom: hint "Invalid group info. Maybe due to dead units."; exit
@@ -69,6 +70,14 @@ btnValue00 = false; btnValue01 = false
 	_groupTo = _groups select _giTo
 	_bInBlackList = not (_groupTo in _groupsAI) && -1 != TzkJoinBlackList find (name leader _groupTo)
 	? _bInBlackList: hint format ["%1 is in Join black list", name leader _groupTo], goto "loop"
+
+	; allow any players use unit cam to join single AI soldier to their group
+	? "UC" != _caller || isCommander: goto "ucCheckPassed"
+	? _giTo == giPlayer: goto "ucCheckPassed"
+	? [siPlayer, _giTo, giPlayer] call preprocessFile "Util\GrpLeadBy.sqf": goto "ucCheckPassed"
+		hint format ["You don't manage %1 group.", _groupsName select _giTo], goto "loop"
+	# ucCheckPassed
+
 
 	[_units, [_giFrom], _giTo, giPlayer] exec "Join\Request.sqs"
 	closeDialog 0; goto "Quit"

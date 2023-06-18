@@ -3,6 +3,8 @@
 _unitTracked = _this select 0
 ? isNull _unitTracked : _unitTracked = player
 
+_isAico = (groupCommander select siPlayer) in (groupAiMatrix select siPlayer)
+
 btnLeft = false
 btnRight = false
 btnRear = false
@@ -289,7 +291,7 @@ _return = "External_Update"; goto "UpdateDialog"
 	goto _return
   
 #DisbandAll
-	? giPlayer != (giCO select siPlayer) && !((groupCommander select siPlayer) in (groupAiMatrix select siPlayer)): player groupchat "Disband all units of a group is only allowed for human commander."; goto _return
+	? not isCommander && not _isAico: player groupchat "Disband all units of a group is only allowed for human commander."; goto _return
 	; ? !(alive _unitTracked) : player groupchat "Selected Unit is not alive."; goto _return
 	[[_unitTracked]] exec "\TZK_Scripts_4_0_4\Player\DisbandAllUnits.sqs"
 
@@ -304,17 +306,19 @@ _return = "External_Update"; goto "UpdateDialog"
   [[_unitTracked]] exec "\TZK_Scripts_4_0_4\Player\Msg\sUnitDisembark.sqs"
   goto "External_Update"
  
-#Join
-	? giPlayer != (giCO select siPlayer) && !((groupCommander select siPlayer) in (groupAiMatrix select siPlayer)): player groupchat "Join units via Unit Camera is only allowed for human commander."; goto _return
+# Join
+	; allow all player use UC to join AI soldier into their group
+	? not isCommander && not _isAico && _unitTracked != vehicle _unitTracked: player groupchat "Join vehicle via Unit Camera is only allowed for human commander."; goto _return
+
 	? !(group _unitTracked in ((groupAiMatrix select si0) + (groupAiMatrix select si1) + [groupJoin0, groupJoin1])) : player groupchat "Only allow to ask AI group units to join other groups."; goto _return
 
 	? _unitTracked == leader _unitTracked : player groupchat "AI Group Leader is not allowed to join other groups"; goto _return
-	[[_unitTracked]] exec "Join\Submenu\PplOrder.sqs"
+	[[_unitTracked],0,0,"UC"] exec "Join\Submenu\PplOrder.sqs"
 	? _iView > 0 : iView = 0; goto "ChangeView"
 	goto "Exit"
  
 #VehicleJoin
-	? giPlayer != (giCO select siPlayer) && !((groupCommander select siPlayer) in (groupAiMatrix select siPlayer)): player groupchat "Join units via Unit Camera is only allowed for human commander."; goto _return
+	? not isCommander && not _isAico: player groupchat "Join vehicle via Unit Camera is only allowed for human commander."; goto _return
 		
 	_unitsToJoin = [driver vehicle _unitTracked, gunner vehicle _unitTracked, commander vehicle _unitTracked] - [objNull]; _allowToJoin = true
 	? count _unitsToJoin == 0 : player groupchat "Cargo or Empty Vehicle isn't allowed to join."; goto _return
@@ -324,7 +328,7 @@ _return = "External_Update"; goto "UpdateDialog"
 	{if (_x == leader _x) then {_allowToJoin = false}} forEach _unitsToJoin
 	? !_allowToJoin : player groupchat "AI Group Leader is not allowed to join other groups"; goto _return
 
-	[_unitsToJoin] exec "Join\Submenu\PplOrder.sqs"
+	[_unitsToJoin,0,0,"UC"] exec "Join\Submenu\PplOrder.sqs"
 	? _iView > 0 : iView = 0; goto "ChangeView"
 	goto "Exit"
 
