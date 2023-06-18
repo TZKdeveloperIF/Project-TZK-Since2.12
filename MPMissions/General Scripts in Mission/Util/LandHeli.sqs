@@ -55,5 +55,5 @@ _timeAbort = _time + 5
 	~ 0.1
 	doStop _unit
 	~ 0.1
-	_unit assignAsDriver _vehicle; _unit action ["GETIN DRIVER", _vehicle]
+	[_unit, _vehicle, "DRIVER"] call preprocessFile "Util\Embark.sqf"
 	_unit groupChat "Landed"
