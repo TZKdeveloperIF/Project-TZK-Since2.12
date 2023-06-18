@@ -108,11 +108,9 @@ _i = 0, _c = _totalTranspTypes, _transpTypes = [], _transpTypes resize _c
 			? (_unit distance _target) > 10: goto "Move_Check"
 
 		# Reached
-			_unit playMove "CombatGetInTank"
-			~ 1
-			? not alive _unit: goto "Quit"
-			_unit assignAsCargo _target; _unit moveInCargo _target
-			~ 1
+			; On calling Embark, extra delay is required if wish to execute after having embarked
+			_delay = [_unit, _target, "Cargo"] call preprocessFile "Util\Embark.sqf"
+			~ _delay + 0.2
 			? _target != vehicle _unit: goto "SearchTarget"
 
 # Quit

@@ -6,8 +6,10 @@ _gi = _this select 2
 _posCheckBoardStart = [_this select 3, _this select 4]
 _timeCheckBoardStart = _this select 5
 _ais = _this select 6
+_this = 0
 
-~5
+# Update
+~ 5
 
 #CheckAir
 _typesTransport = airTransport select _si
@@ -51,8 +53,8 @@ _unit doMove ([_posCheckBoardStart, 50, 100] call funcGetRandomPos)
 ~5
 if (alive _unit) then {_gi = (groupMatrix select _si) find (group _unit)}; _setting = aiSetting select _si select _gi
 ? time > _timeCheckBoardStart + (aisPickupWaitTimeDefs select (_setting select _ais)): _unit call busyClear; exit
-[_unit, _si, _gi, _posCheckBoardStart select 0, _posCheckBoardStart select 1, _timeCheckBoardStart, _ais] exec "\TZK_Scripts_4_0_4\Server\Loop\AI_CheckBoard.sqs"; exit
 
+goto "Update"
 
 #GetIn
 _unit doWatch _transp; _offset = 0; _timeAbort = time + 2*60
@@ -69,11 +71,10 @@ _unit doWatch _transp; _offset = 0; _timeAbort = time + 2*60
 
 ~2
 ? !(alive _unit) || !(alive _transp): goto "NoneFound"
-_unit playMove "CombatGetInTank"
-~1
-? !(alive _unit) || !(alive _transp): goto "NoneFound"
-_unit assignAsCargo _transp; _unit moveInCargo _transp
-~1
+
+; On calling Embark, extra delay is required if wish to execute after having embarked
+_delay = [_unit, _transp, "Cargo"] call preprocessFile "Util\Embark.sqf"
+~ _delay + 0.2
 ? !(alive _unit) || _transp != vehicle _unit: unassignVehicle _unit; goto "NoneFound"
 
 _timeAbort = time + 10*60
