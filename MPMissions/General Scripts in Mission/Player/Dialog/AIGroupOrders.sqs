@@ -50,6 +50,8 @@ _funcLeadBy = preprocessFile "Util\GrpLeadBy.sqf";
 _bInitSelNewGroup = false
 _bInitSendSetting = false
 
+_needRefreshFlag = false, _needRefreshIdx = _selGroup
+
 # Update
 ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 	? call dlgUpdated: exit
@@ -62,6 +64,7 @@ ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bo
 	
 	~ 0.2
 
+	? _needRefreshFlag: _needRefreshFlag = false, if (_needRefreshIdx == lbCurSel _idcCurrent) then {call _update4OneGroup}
 	? _selGroup != lbCurSel _idcCurrent: goto "NewGroupSelected"
 	? _selOrder != lbCurSel _idcOrder : _selOrder = lbCurSel _idcOrder; goto "NewOrderSelected"
 
@@ -87,8 +90,9 @@ ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bo
 	goto "Update"
 
 # SendSetting
-	? not _bInitSendSetting: _bInitSendSetting = true; _sendSetting = preprocessFile "Player\Dialog\AiGrpOrder_SendSetting.sqf"
-	call _sendSetting
+	? not _bInitSendSetting: _bInitSendSetting = true; _sendSetting = preprocessFile "Player\Dialog\AIGrpOrder_SendSetting.sqf"
+	_needRefreshFlag = call _sendSetting
+	? _needRefreshFlag: _needRefreshIdx = _selGroup
 	goto "Update"
 
 # SendOrder

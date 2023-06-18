@@ -1,3 +1,8 @@
+// returns: need update the group
+// modify AI setting is asynchronized. Unable to do this in SQF file
+
+private [{_ret}]; _ret = false;
+
 _val = lbCurSel (_idcSettingCombo + _set);
 // update "last setting" cache
 _lastSetting set [_set, _val];
@@ -12,7 +17,8 @@ if (_gi == -1) then {
 		[_si, _gi, _set, _val, false] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING};
 
 		if (_set == aisSuperior) then {
-			call _update4OneGroup;
+			_ret = true; // call _update4OneGroup;
 		};
 	};
 };
+_ret
