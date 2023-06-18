@@ -24,10 +24,12 @@ if _full then {
 	if (count _units > 0) then {
 		// preprocess
 		// according to history practice (refer to scripts under "Server\Join\"), DelayAssign can be executed before join
+		// The cases we need delay assign is that ask units to embark remote vehicle.
+
 		// the third parameter of DelayAssign is used to judge whether source group is AI. In current design if _giFromArray
 		// contains more than 1 elements it must contains only ai group indexes. Thus the first element is always available
 		// todo: use a clearer variable
-		[_units, _si, _giFromArray select 0, _giTo] exec "\TZK_Scripts_4_0_5\Server\Join\DelayAssign.sqs";
+		[_units, _si, _giFromArray select 0, _giTo] exec "Join\DelayAssign.sqs";
 
 		_units join _groupTo;
 

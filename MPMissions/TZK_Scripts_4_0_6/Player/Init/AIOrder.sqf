@@ -21,7 +21,7 @@ aiOrders1 set [count aiOrders1, [
 ]];
 
 aiOrders1 set [count aiOrders1, [
-	"Board...", [], true, "\TZK_Scripts_4_0_5\Player\Order\BoardVehicle.sqs",
+	"Board...", [], true, "Player\Dialog\OrderBoard.sqs",
 	"Opens up a new dialog to show all vehicles belonging to us in 100m range near the position clicked. Units 
 	will board the chosen vehicle."
 ]];

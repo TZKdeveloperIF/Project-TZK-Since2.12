@@ -69,6 +69,6 @@ ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bo
   _vehicle = (_vs select (lbCurSel _idcList)) select 0
   ? !(alive _vehicle) : hint "Vehicle destroyed"; goto "Update"
   ? locked _vehicle : hint "Vehicle is locked"; goto "Update"
-  { [_x, _vehicle, _prio] exec "\TZK_Scripts_4_0_4\Player\Order\BoardVehicle.sqs" } foreach _units
+  { [_x, _vehicle, _prio] exec localize {TZK_ORDER_PLAYER_BOARD_VEH} } foreach _units
   closedialog 0
   exit
