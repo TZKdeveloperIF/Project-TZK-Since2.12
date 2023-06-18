@@ -37,6 +37,7 @@ _timeAbort = time + 5*60
 # Reached
 _i = 0; _func = { _this == "driver" || _this == "gunner" }
 # TrySeat
+	? call orderCheck: exit
 	_seat = _prio select _i
 	? _seat call _func: if (call format [{not isNull %1 _v}, _seat]) then {goto "continue"}
 
