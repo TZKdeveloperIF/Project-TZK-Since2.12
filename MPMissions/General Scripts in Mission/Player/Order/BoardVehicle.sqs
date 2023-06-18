@@ -5,6 +5,8 @@ _unit = _this select 0
 _v = _this select 1
 _prio = _this select 2
 
+? count _prio <= 0: exit
+
 ? !(alive _unit): exit
 ? _unit != vehicle _unit: exit
 
@@ -17,42 +19,46 @@ _unit groupchat "Roger, boarding vehicle."
 _unit doWatch _v
 ? (_unit distance _v) < 10: goto "Reached"
 
-#Move
-_offset = 0
+; move
 _timeAbort = time + 5*60
-#Move_Check
-  _offset = _offset + 10
-  _vect = [getPos _unit, getPos _v] call funcVectorSub
-  _dist = _unit distance _v
-  ? _dist < 0.1: _dist = _dist + 10
-  _posMove = [getPos _v, [_vect, _offset/_dist] call funcVectorScale] call funcVectorAdd
-  _posMove set [2,0]
-  _unit doMove _posMove
+# loop
+	_posMove = getPos _v; _posMove set [2,0]; _unit doMove _posMove
 
-   ~_dist*0.2
-  ? !(alive _unit) || !(alive _v): exit
-  ? call orderCheck: exit
-  ? time > _timeAbort || _offset >= 50: goto "Fail"
-  ? (_unit distance _v) > 50: goto "Move_Check"
+	_dist = _unit distance _v
+	~ _dist * 0.2
 
-#Reached
-~1
-? !(alive _unit) || !(alive _v): exit
+	? !(alive _unit) || !(alive _v): exit
+	? call orderCheck: exit
+	? time > _timeAbort || _offset >= 50: goto "Fail"
+	? (_unit distance _v) > 50: goto "loop"
+	; process aircraft case
+	? (getPos _v) select 2 > 10: goto "loop"
 
-_i = 0
-#TrySeat
-  unassignVehicle _unit
-  _seat = _prio select _i
-  _unit playMove "CombatGetInTank"
-  ~1
-  ? !(alive _unit) || !(alive _v): exit
-  call format ["_unit assignAs%1 _v; _unit moveIn%1 _v", _seat]
-  ~2
-  ? !(alive _unit) || !(alive _v): unassignVehicle _unit; exit
-  ? _v == (vehicle _unit): _unit groupChat "Board succeed. Command me 'Return to Formation' or 'Halt' if necessary."; exit
-  _i = _i + 1
-  ? _i < (count _prio): goto "TrySeat"
+# Reached
+_i = 0; _func = { _this == "driver" || _this == "gunner" }
+# TrySeat
+	unassignVehicle _unit
+	_seat = _prio select _i
+	? _seat call _func: if (call format [{not isNull %1 _v}, _seat]) then {goto "continue"}
+	; _unit playMove "CombatGetInTank"
+	; ~ 1
+	? !(alive _unit) || !(alive _v): exit
+	_unit action [format ["GETIN %1", _seat], _v]
+	~ 1
+	call format [{_unit assignAs%1 _v, _unit moveIn%1 _v}, _seat]
+	~ 0.2
+	? !(alive _unit) || !(alive _v): unassignVehicle _unit; exit
+	? _v == (vehicle _unit): _unit groupChat "Board succeed. Command me 'Return to Formation' or 'Halt' if necessary."; exit
 
-#Fail
-[_unit, ([getPos _unit, 50, 50] call funcGetRandomPos)] call funcMove
-_unit groupchat "Unable to board vehicle."
+	# continue
+	_i = _i + 1
+	? _i < (count _prio): goto "TrySeat"
+
+; post proc
+unassignVehicle _unit
+; ~ 2
+; ? _v == (vehicle _unit): _unit groupChat "Board succeed. Command me 'Return to Formation' or 'Halt' if necessary."; exit
+
+# Fail
+	[_unit, ([getPos _unit, 50, 50] call funcGetRandomPos)] call funcMove
+	_unit groupchat "Unable to board vehicle."
