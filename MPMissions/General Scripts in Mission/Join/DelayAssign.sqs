@@ -1,34 +1,53 @@
-; args: [_unitsToJoin, _si, _giFrom, _giTo]
-_si = _this select 1
-_giFrom = _this select 2
-_giTo = _this select 3
+; args: [_units, _si, _giTo]
 
-? !( (groupMatrix select _si select _giTo) in (groupAiMatrix select _si) ): exit
-? (groupMatrix select _si select _giFrom) in (groupAiMatrix select _si): exit
+; expected server execute this script
+? not isServer: exit
 
-_unitsToJoin = _this select 0; _records = []; _seats = ["Driver", "Gunner", "Commander", "Cargo"]; _groupJoin = [groupJoin0, groupJoin1] select _si
-_i = 0; _c = count _unitsToJoin
-? _c < 1: exit
-#RecordSeat
-	_unit = _unitsToJoin select _i
+_units = _this select 0; _si = _this select 1, _giTo = _this select 2
+? count _units <= 0: exit
+
+_seats = ["Driver", "Gunner", "Commander", "Cargo"]; _records = []
+_i = 0; _c = count _units
+# RecordSeat
+	_unit = _units select _i
 	_vehicle = vehicle _unit
-	_records set [_i, [_vehicle, 3]]
-	? _unit == Commander _vehicle: _records select _i set [1, 2]
-	? _unit == Gunner _vehicle: _records select _i set [1, 1]
-	? _unit == Driver _vehicle: _records select _i set [1, 0]
-	? _unit == _vehicle: _records select _i set [1, -1]
-	
+
+	_info = [_vehicle, 3]
+	? _unit == Commander _vehicle: _info set [1, 2]
+	? _unit == Gunner _vehicle: _info set [1, 1]
+	? _unit == Driver _vehicle: _info set [1, 0]
+	? _unit == _vehicle: _info set [1, -1]
+	_records set [_i, _info]
+
 	_i = _i + 1
 	? _i < _c: goto "RecordSeat"
-	
-_timeAbort = _time + 5
-@(_time > _timeAbort || count units _groupJoin > 1)
-_i = 0; while "_i < _c" do {if (_records select _i select 1 != -1) Then {_str = ("_unitsToJoin select _i assignAs" + (_seats select (_records select _i select 1)) + " (_records select _i select 0); _unitsToJoin select _i moveIn" + (_seats select (_records select _i select 1)) + " (_records select _i select 0)"), call _str } Else {unassignVehicle (_unitsToJoin select _i); _unitsToJoin select _i action ["EJECT", (_records select _i select 0)]}; _i = _i + 1}
 
-_timeAbort = _time + 5
-@(_time > _timeAbort || count units _groupJoin == 1)
-_i = 0; while "_i < _c" do {if (_records select _i select 1 != -1) Then {_str = ("_unitsToJoin select _i assignAs" + (_seats select (_records select _i select 1)) + " (_records select _i select 0); _unitsToJoin select _i moveIn" + (_seats select (_records select _i select 1)) + " (_records select _i select 0)"), call _str } Else {unassignVehicle (_unitsToJoin select _i); _unitsToJoin select _i action ["EJECT", (_records select _i select 0)]}; _i = _i + 1}
+; simple delay here. This design is rough, though
+; but since we have RTS design, we don't have to require this script to solve all problems
+~ 5
+_i = 0; _maxDelayValue = 0
+# processAssign
+	_unit = _units select _i
+	? not local _unit: goto "continue"
 
-_timeAbort = _time + 5
-@(_time > _timeAbort)
-_i = 0; while "_i < _c" do {if (_records select _i select 1 != -1) Then {_str = ("_unitsToJoin select _i assignAs" + (_seats select (_records select _i select 1)) + " (_records select _i select 0); _unitsToJoin select _i moveIn" + (_seats select (_records select _i select 1)) + " (_records select _i select 0)"), call _str } Else {unassignVehicle (_unitsToJoin select _i); _unitsToJoin select _i action ["EJECT", (_records select _i select 0)]}; _i = _i + 1}
+	_info = _records select _i, _vehicle = _info select 0, _seatIdx = _info select 1
+	? _seatIdx != -1: goto "inVehicle"
+	; onfoot
+		? vehicle _unit != _unit: unassignVehicle _unit; _unit action ["EJECT", _vehicle]
+		goto "continue"
+	# inVehicle
+		_seat = _seats select _seatIdx
+		_delay = [_unit, _vehicle, _seat] call preprocessFile "Util\Embark.sqf"
+		? _delay > _maxDelayValue: _maxDelayValue = _delay
+
+	# continue
+	_i = _i + 1
+	? _i < _c: goto "processAssign"
+; update group order index after delay assigned
+? 0 == _maxDelayValue: exit
+~ _maxDelayValue + 1
+_order = orderMatrix select _si select _giTo
+@ not mutexAIGroup
+	mutexAIGroup = true
+	_order set [0, (_order select 0) + 1]
+	mutexAIGroup = false

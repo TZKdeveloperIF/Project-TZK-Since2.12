@@ -1,0 +1,15 @@
+; args: [unit, vehicle, seat: string, delay: number]
+; the "GETIN" action can't be applied on AI group. It'll modify AI group behaviour.
+; other units in the group will try to "GETIN" vehicles
+
+_unit = _this select 0; _vehicle = _this select 1; _seat = _this select 2
+
+_isPlayerUnit = false
+? not isNull player: if (group _unit == groupPlayer) then {_isPlayerUnit = true}
+
+? _isPlayerUnit: _unit action [format ["GETIN %1", _seat], _vehicle]
+? not _isPlayerUnit: _unit playMove "CombatGetInTank"
+
+~ (_this select 3)
+? not alive _unit || not alive _vehicle: unassignVehicle _unit; exit
+call format [{_unit assignAs%1 _vehicle, _unit moveIn%1 _vehicle}, _seat]

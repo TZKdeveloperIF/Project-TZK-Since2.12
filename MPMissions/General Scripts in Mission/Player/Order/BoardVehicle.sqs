@@ -37,17 +37,12 @@ _timeAbort = time + 5*60
 # Reached
 _i = 0; _func = { _this == "driver" || _this == "gunner" }
 # TrySeat
-	unassignVehicle _unit
 	_seat = _prio select _i
 	? _seat call _func: if (call format [{not isNull %1 _v}, _seat]) then {goto "continue"}
-	; _unit playMove "CombatGetInTank"
-	; ~ 1
-	? !(alive _unit) || !(alive _v): exit
-	_unit action [format ["GETIN %1", _seat], _v]
-	~ 1
-	call format [{_unit assignAs%1 _v, _unit moveIn%1 _v}, _seat]
-	~ 0.2
-	? !(alive _unit) || !(alive _v): unassignVehicle _unit; exit
+
+	; On calling Embark, extra delay is required if wish to execute after having embarked
+	_delay = [_unit, _v, _seat] call preprocessFile "Util\Embark.sqf"
+	~ _delay + 0.2
 	? _v == (vehicle _unit): _unit groupChat "Board succeed. Command me 'Return to Formation' or 'Halt' if necessary."; exit
 
 	# continue
