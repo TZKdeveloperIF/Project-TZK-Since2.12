@@ -1,0 +1,12 @@
+; args: [target, si]
+
+_target = _this select 0
+_si = _this select 1
+
+@ not mutexEnemySpotted
+	mutexEnemySpotted = true
+
+	call format [{pvEnemy%1 = _target; PublicVariable {pvEnemy%1}}, _si]
+
+	~ sendDelay
+	mutexEnemySpotted = false
