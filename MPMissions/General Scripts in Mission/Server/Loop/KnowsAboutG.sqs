@@ -39,10 +39,7 @@ _commandCenters = structMatrix select _siEnemy select stComm
 
 	{ _x reveal _target } forEach _groups
 
-	_pos = getPos _target
-	_px = _pos select 0, _px = _px - _px % 1; _py = _pos select 1, _py = _py - _py % 1; _pz = _pos select 2, _pz = _pz - _pz % 1
-	? not isNull player: [_target, _siEnemy, _px, _py, _pz] exec "Player\Msg\mEnemySpotted.sqs"
-	publicExec format [{[UnitById %1, %2, %3, %4, %5] exec "Player\Msg\mEnemySpotted.sqs"}, NetworkID _target, _siEnemy, _px, _py, _pz]
+	[_target, _siEnemy] exec "Server\Msg\sEnemySpotted.sqs"
 
 	_timeLastSent = time
 	
