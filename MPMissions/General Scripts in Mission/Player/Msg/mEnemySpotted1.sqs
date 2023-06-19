@@ -1,0 +1,9 @@
+; args: none
+
+# loop
+@ not isNull pvEnemy1
+	_enemy = pvEnemy1
+	pvEnemy1 = objNull
+
+	_enemy exec "Player\Msg\mEnemySpotted.sqs"
+	goto "loop"

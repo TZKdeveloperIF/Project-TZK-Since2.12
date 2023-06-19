@@ -1,10 +1,8 @@
-; args: [enemy, si, posX, posY, posZ]
+; args: enemy
 
 ? pvGameover != -1: exit
 
-_si = _this select 1
-? _si != siPlayer: exit
-_enemy = _this select 0
+_enemy = _this
 
 @ not mutexSpottedEnemy
 	mutexSpottedEnemy = true
