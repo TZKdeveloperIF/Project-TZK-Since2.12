@@ -22,8 +22,8 @@
 #define CanSeeAll 31
 
 class CfgPatches {
-	class TZK_CONFIG_407 {
-		name = "TZK_CONFIG_407";
+	class TZK_CONFIG_406_Patch2 {
+		name = "TZK_CONFIG_406_Patch2";
 		author = "IF";
 		units[] = {};
 		requiredAddons[] = {"TZK_CONFIG_406_Patch"}; // IMPORTANT!
@@ -39,15 +39,15 @@ class CfgWeapons {
 	
 };
 
-#include "TZK_Config_4_0_7\cfgUserActions.h"
+#include "TZK_Patch2_4_0_6\cfgUserActions.h"
 
 // class WeaponFireGun {};
 // class WeaponCloudsGun {};
 
 class CfgVehicles {
-	#include "TZK_Config_4_0_7\cfgVehicles_0.h"
+	#include "TZK_Patch2_4_0_6\cfgVehicles_0.h"
 
-	#include "TZK_Config_4_0_7\cfgVehicles_art.h"
+	#include "TZK_Patch2_4_0_6\cfgVehicles_art.h"
 };
 
 class CfgMarkers {

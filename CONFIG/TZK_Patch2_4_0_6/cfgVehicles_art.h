@@ -21,7 +21,7 @@
 				statement = "[this,0] exec localize {TZK_BEHAVIOUR_DEPLOY_M109A6G}";
 			};
 		};
-		class EventHandlers {Init = "(_this select 0) exec {\TZK_Config_4_0_7\Script\InitM109a6g.sqs}";};
+		class EventHandlers {Init = "(_this select 0) exec {\TZK_Patch2_4_0_6\Script\InitM109a6g.sqs}";};
 	};
 	class PLZ05_VME_Base_xj400: T72_Base_xj400 { icon = "\TZK_Texture_4_0_0\icon\uiM109.paa"; };
 	class PLZ05_TZK_xj400: PLZ05_VME_Base_xj400 {
@@ -41,7 +41,7 @@
 				statement = "[this,0] exec localize {TZK_BEHAVIOUR_DEPLOY_PLZ05}";
 			};
 		};
-		class EventHandlers {Init = "(_this select 0) exec {\TZK_Config_4_0_7\Script\InitPlz05.sqs}";};
+		class EventHandlers {Init = "(_this select 0) exec {\TZK_Patch2_4_0_6\Script\InitPlz05.sqs}";};
 	};
 	class TOS1_TZK_xj400: T72_Base_xj400 {
 		hiddenSelections[] ={
@@ -51,7 +51,7 @@
 				, tzk_tex_99
 		};
 		class EventHandlers {
-			Init = "(_this select 0) exec {\TZK_Config_4_0_7\Script\InitTos1.sqs}";
+			Init = "(_this select 0) exec {\TZK_Patch2_4_0_6\Script\InitTos1.sqs}";
 		};
 		class UserActions {
 			class prepfire {
