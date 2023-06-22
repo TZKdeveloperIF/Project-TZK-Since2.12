@@ -20,6 +20,7 @@
 	};
 	class PLZ05_VME_Base_xj400: T72_Base_xj400 { icon = "\TZK_Texture_4_0_0\icon\uiM109.paa"; };
 	class PLZ05_TZK_xj400: PLZ05_VME_Base_xj400 {
+        model = "\TZK_Patch2_4_0_6\Model\PLZ05.p3d";
 		class UserActions {
 			class prepfire {
 				displayName = "Take Firing Position";
