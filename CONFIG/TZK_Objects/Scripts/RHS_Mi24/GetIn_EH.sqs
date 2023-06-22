@@ -1,0 +1,10 @@
+; args: Get_In_Array
+_vehicle = _this select 0; _seat = _this select 1; _unit = _this select 2
+
+? _seat == "Driver": {[_vehicle] exec "\TZK_Objects\Scripts\RHS_Mi24\DoorClose" + _x + ".sqs"} forEach ["P"]; exit
+? _seat == "Gunner": {[_vehicle] exec "\TZK_Objects\Scripts\RHS_Mi24\DoorClose" + _x + ".sqs"} forEach ["G"]; exit
+
+; Seat must be "Cargo" here.
+? _vehicle animationPhase "ltdoor" < 0.5 || _vehicle animationPhase "rtdoor" < 0.5: {[_vehicle] exec "\TZK_Objects\Scripts\RHS_Mi24\DoorOpen" + _x + ".sqs"} forEach ["L", "R"]; exit
+
+exit

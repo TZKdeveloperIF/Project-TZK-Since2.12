@@ -1,0 +1,12 @@
+; args: [vehicle, name]
+_vehicle = _this select 0
+_name = _this select 1
+
+_path = "\TZK_Texture_4_0_0\OWP_Mi8\t\"; _postfix = "wod"; _excludeList = ["tex_dop.pac"]
+? _name == "D": _postfix = "des"
+? _name == "G": _postfix = ""
+? _name == "W": _postfix = "un"
+
+[_vehicle, _path, _postfix, _excludeList] call loadFile "\TZK_Objects\Scripts\texture\stdSetObjTex.sqf"
+
+{_vehicle setObjectTexture [(typeOf _vehicle GetVehicleParamArray "hiddenselections") find _x, _path + "dop" + _postfix + ".pac"]} forEach ["cdln1", "cdrn1"]

@@ -1,0 +1,72 @@
+;#########################################
+;# Written by DPS   DPS@istel.ru         #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+
+_me = _this
+? count crew _this < 2 : _copilot = player;goto "run"
+? typeof _this == "OWP_Mi8T_c" : goto "start"
+? typeof _this == "OWP_Mi8T_un" : goto "start"
+? format[{%1},gunner _this] == "<NULL-object>" && format[{%1},driver _this] != "<NULL-object>" && alive (crew _this select 1) : _copilot = crew _this select 1
+? format[{%1},gunner _this] == "<NULL-object>" && format[{%1},driver _this] == "<NULL-object>" && alive (crew _this select 0) : _copilot = crew _this select 0
+? format[{%1},gunner _this] != "<NULL-object>" && format[{%1},driver _this] != "<NULL-object>" && alive (crew _this select 2) : _copilot = crew _this select 2
+? format[{%1},gunner _this] != "<NULL-object>" && format[{%1},driver _this] == "<NULL-object>" && alive (crew _this select 1) : _copilot = crew _this select 1
+goto "run"
+exit
+#start
+_copilot = gunner _this
+#run
+
+_hpilot = driver _me
+_hgunner = gunner _me
+
+
+
+?(alive _hpilot): (_hpilot) switchmove "OWPMi8PilotDisembark"
+?(alive _copilot): (_copilot) switchmove "OWPMi8CoPilotDisembark"
+_me animate["OWP_Mi8_FLG",1]
+_me animate["OWP_Mi8_FRG",1]
+_me animate["OWP_Mi8_DOOR",1]
+_me exec "\OWP_Mi8\Scripts\owp_COpen.sqs"
+_me flyinheight 150
+~0.5
+
+#loop
+
+~0.3
+
+_units = crew _me
+
+if (count(_units) < 4) then {goto "continue"};
+
+_sel = count(_units)-1;
+
+unassignVehicle (_units select _sel)
+(_units select _sel) action ["EJECT",_me];
+
+Goto "Loop";
+
+#continue
+
+;?(alive _hpilot): (_hpilot) switchmove ""
+;?(alive _copilot): (_copilot) switchmove ""
+~0.4
+
+(_copilot) action ["EJECT",_me]
+unassignvehicle (_copilot)
+
+~0.4
+
+(_hgunner) action ["EJECT",_me]
+unassignvehicle (_hgunner)
+
+~0.4
+
+(_hpilot) action ["EJECT",_me]
+unassignvehicle (_hpilot)
+
+
+
+
+
+exit

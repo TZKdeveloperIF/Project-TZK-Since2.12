@@ -1,0 +1,14 @@
+_plane = _this select 0
+
+#start
+@ (speed _plane <= 140)
+_hight = getpos driver _plane select 2
+~0.1
+_downspeed= _hight - (getpos driver _plane select 2)
+?(_downspeed < 0.5):goto "start"
+_plane vehiclechat "STALL"
+_plane vehicleRadio "stallwarnsndc130_xj400"
+~1.5
+goto "start"
+
+exit

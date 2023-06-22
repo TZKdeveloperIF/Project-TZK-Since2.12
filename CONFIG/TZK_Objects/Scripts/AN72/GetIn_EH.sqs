@@ -1,0 +1,10 @@
+; args: Get_In_Array
+_vehicle = _this select 0; _seat = _this select 1; _unit = _this select 2
+
+? _seat == "Driver": exit
+? _seat == "Gunner": exit
+
+; Seat must be "Cargo" here.
+? _vehicle animationPhase "RKTRamp1" < 0.5 || _vehicle animationPhase "RKTRamp2" < 0.5: [_vehicle, ["RKTRamp1", "RKTRamp2"], 1] exec {\TZK_Objects\Scripts\SwitchSelections.sqs}
+
+exit

@@ -1,0 +1,14 @@
+; args: [vehicle, script path]
+
+_vehicle = _this select 0; _path = _this select 1
+
+_nr = (((getpos _vehicle select 0) + (getpos _vehicle select 1)*3) % 1000) - 1; _nr = _nr - (_nr % 1)
+
+_i = _nr % 10
+_vehicle setobjecttexture [2, format [_path + "n%1.paa", _i]]
+_i = ((_nr - _i)/10) % 10
+_vehicle setobjecttexture [1, format [_path + "n%1.paa", _i]] 
+_i = (_nr - _nr % 100)/100
+_vehicle setobjecttexture [0, format [_path + "n%1.paa", _i]]
+
+; EOF

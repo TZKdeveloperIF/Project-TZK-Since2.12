@@ -1,0 +1,19 @@
+;#########################################
+;# Written by Voyager  voyager04@mail.ru #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+
+_unit = _this select 0
+_me = _this select 1
+_x=_this select 2
+_y=_this select 3
+_unit setpos [(getpos _me select 0) + _y*sin(getdir _me) + _x*cos(getdir _me),(getpos _me select 1) + _y*cos(getdir _me) - _x*sin(getdir _me),(getpos _me select 2) -0.9]
+_unit setvelocity [velocity _me select 0,velocity _me select 1,-2]
+#loop
+~0.6
+? !(alive _unit) : exit
+? abs(speed _me)>50 : exit
+_unit setvelocity [velocity _me select 0,velocity _me select 1,0]
+;player sidechat format ["%1",_time]
+? _time > 3 : _unit switchmove "";exit
+goto "loop"

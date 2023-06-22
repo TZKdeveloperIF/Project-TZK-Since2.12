@@ -1,0 +1,119 @@
+_object = _this select 0
+_fire = 0
+_fireAI = 20
+_pos1a = [0,0,-0.5]
+_pos1b = [0,0,-1]
+_pos2a = [0,0,-4.5]
+_pos2b = [0,0,-4]
+_posA = [0,0,-0.5]
+_posB = [0,0,-1]
+
+;burn time (in seconds)
+_lifeTime = 150
+
+;unit to set fire to
+
+_soundloop = 0
+_delay = 0.25
+_lifeTicks = _lifeTime / _delay
+_lifeTick = _lifeTicks
+_ouch = 0
+_ouchAI = 0
+_weight = 0.005  
+
+?! (local _object):goto "sound"
+
+_glow = "RHS_smoker" createvehicle [0,0,0]
+_glow setpos [getpos _object select 0, getpos _object select 1,1]
+_glow inflame true
+
+#sound
+_soundloop = 0
+_glow setpos [getpos _object select 0, getpos _object select 1,1]
+
+#Begin
+if (position _object select 2 < - 2) then {_posA = _pos2a; _posB = _pos2b; _weight = 0.0041} else {_posA = _pos1a; _posB = _pos1b; _weight = 0.005}
+
+
+;random explos
+? ! (local _object):goto "client"
+_x = random 49.5
+?_x <= 1 && _lifeTick > 550:_bang = "mortarshell" createvehicle getpos _object
+?_x >= 49 && _lifeTick >420:_bang = "BulletFullAutoG" createvehicle getpos _object
+
+#client
+
+;burn player
+;hint format ["%1", _nearestObj]
+? player != (vehicle player): goTo "fire"
+? player distance _glow < 10 && _ouch != 1: player setDammage (damage player + 0.02); goTo "scream"
+
+#here
+_unitsAI = [getPos _object, 10] call _AI
+? count _unitsAI > 0 && _ouchAI != 1: "_x setDammage (damage _x + 0.02)" forEach _unitsAI; goTo "screamAI"
+
+#fire
+;Drop [ShapeName, AnimationName, Type, TimerPeriod, LifeTime, Position, MoveVelocity, RotationVelocity, Weight, Volume, Rubbing, Size, Color, AnimationPhase, RandomDirectionPeriod, RandomDirectionIntensity, OnTimer, BeforeDestroy, Object]
+
+drop ["cl_fire", "", "Billboard", 1, 1 + random 2, _posA, [random 0.3, random 0.3, 3], 1, _weight, 0.004, 0.1, [2 + random 4, 4 + random 2, 4 + random 2], [[1,0.5,0.5,0], [0.2,0.2,0,0.7], [1,1,0,0.5], [1,1,0.1,0]], [0,1], 0.5, 0.05, "", "",_object ]
+
+drop ["cl_fire", "", "Billboard", 1, 1 + random 2, _posA, [random 0.3, random 0.3, 3], 1, _weight, 0.004, 0.1, [2 + random 4, 5, 3], [[1,0.5,0.5,0], [1,1,0.8,0.7], [1,1,0,0.4], [1,1,0,0]], [0,1], 0.5, 0.05, "", "",_object ]
+
+;sparks
+drop ["cl_fire", "", "Billboard", 1,  5, _posB, [ random 1, random 1, random 3], 1, _weight, 0.0042, 0, [0.15], [[1,1,1,1],[0,0,0,0]], [0,1], 0.5, 1, "", "",_object]
+
+_fire = _fire + 1
+_fireAI = _fireAI + 1
+
+~_delay
+
+_lifeTick = _lifeTick - 1
+_soundloop = _soundloop +1
+? _fire >= 40: _fire = 0; _ouch = 0
+? _fireAI >= 40: _fireAI = 0; _ouchAI = 0
+? _soundloop == 4: _glow say "fire"; goto "sound"
+
+?_lifeTick > 0 : goto "Begin"
+
+deletevehicle _glow
+
+drop ["cl_fire", "", "Billboard", 1, 5, [0,0,0.6], [random 0.3, random 0.3, 3], 1, 0.014, 0.004, 0, [1,3,0], [[1,0.5,0.5,0], [1,0.8,0.8,1], [1,0.8,0.8,0.6], [1,1,0.1,0]], [0,1], 0.5, 0.05, "", "", _object]
+exit
+
+#scream
+_ouch = _ouch +1
+player groupchat "MEDIC! I'm getting burnt here!"
+? side player == east || side player == resistance || side player == civilian: goTo "rus"
+goTo "eng"
+
+#screamAI
+_ouchAI = _ouchAI + 1
+(_unitsAI select 0) groupchat "MEDIC! I'm getting burnt here!"
+? side (_unitsAI select 0) != west: goTo "rusAI"
+goto "engAI"
+
+#rus
+_rnd = random 2
+? _rnd <= 1: player say "rus2"; goto "here"
+player say "rus13"; goto "here"
+
+#eng
+_rnd = random 5
+? _rnd <= 1: player say "eng32"; goto "here"
+? _rnd > 1 && _rnd <= 2: player say "eng33"; goto "here"
+? _rnd > 2 && _rnd <= 3: player say "eng34"; goto "here"
+? _rnd > 3 && _rnd <= 4: player say "eng22"; goto "here"
+player say "eng23"; goto "here"
+
+#rusAI
+_rnd = random 2
+? _rnd <= 1: (_unitsAI select 0) say "rus2"; goto "fire"
+(_unitsAI select 0) say "rus13"; goto "fire"
+
+#engAI
+_rnd = random 5
+? _rnd <= 1: (_unitsAI select 0) say "eng32"; goto "fire"
+? _rnd > 1 && _rnd <= 2: (_unitsAI select 0) say "eng33"; goto "fire"
+? _rnd > 2 && _rnd <= 3: (_unitsAI select 0) say "eng34"; goto "fire"
+? _rnd > 3 && _rnd <= 4: (_unitsAI select 0) say "eng22"; goto "fire"
+(_unitsAI select 0) say "eng23"; goto "fire"

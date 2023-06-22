@@ -1,0 +1,68 @@
+_helo = _this select 0
+_allcrew = crew _helo
+
+? (count crew _helo)<=2:exit
+(group _helo) setspeedmode "limited"
+
+_helo sideChat "TWO MINUTES!"   
+~2
+_helo sideChat "Open Oxygen"
+~2
+_helo sideChat "Switch to bailout bottles!"
+~2
+_helo SideChat "Standby your console!"
+~2
+TitleText ["Opening Ramp. Move into position","PLAIN"]
+[_helo] exec "\TZK_Objects\Scripts\C130\openramp.sqs"
+_helo animate["jumpprepare",1]
+_helo animate["r1",1]
+_helo animate["r2",1]
+_helo animate["r3",1]
+~3.1
+_helo sideChat "1 Minute"
+~30
+_helo sideChat "30 seconds! STANDBY!"
+~15
+_helo animate["r1",0]
+_helo animate["r2",0]
+_helo animate["r3",0]
+_helo animate["g1",1]
+_helo animate["g2",1]
+_helo animate["g3",1]
+TitleText ["Yellow Light: Standby", "PLAIN"]
+~15
+TitleText ["Green Light: GO!","PLAIN"]
+_helo sideChat "GO! GO! GO!"
+_helo say "eng20"
+_array = []
+"if (_x != driver _helo && _x != gunner _helo) then {_array = _array + [_x]}" foreach _allcrew
+_allcrew = _array
+
+? count _allcrew == 0 : goto "done"
+_c = 0
+
+#eject
+_helo sideChat format ["%1, GO",_allcrew select _c]
+unassignvehicle (_allcrew select _c)
+(_allcrew select _c) action ["EJECT",_helo]
+~0.1
+;Commented by apex_predator for HALO units
+;_chute = "ParachuteWest" createvehicle [0,0,10]
+;_chute setpos (getpos (_allcrew select _c))
+;(_allcrew select _c) setvelocity (velocity _chute)
+;(_allcrew select _c) setpos (getpos _chute)
+;(_allcrew select _c) moveindriver _chute
+~0.5
+
+_c = _c + 1
+
+? _c != count _allcrew : goto "eject"
+TitleText ["Your team has exited safely, there were no jump refusals", "PLAIN"]
+~10
+_helo animate["g1",0]
+_helo animate["g2",0]
+_helo animate["g3",0]
+_helo animate ["jump",0]
+_helo animate ["jumpprepare",0]
+[_helo] exec "\TZK_Objects\Scripts\C130\closeramp.sqs"
+exit

@@ -1,0 +1,23 @@
+_tiger = _this select 0
+_ancor = _this select 1
+
+?!(isengineon _tiger): exit;
+?!(alive _tiger): exit;
+
+Goto _ancor
+exit;
+
+#FuelLow
+player SideChat "WARNING: FUEL BELOW 25%";
+BWMOD_Tiger_Sys_FuelLow=true;
+exit;
+
+#FuelAlert
+player SideChat "WARNING: FUEL BELOW 5%";
+BWMOD_Tiger_Sys_FuelAlert=true;
+exit;
+
+#Altitude
+_tiger vehicleRadio "BWMOD_Tiger_Altitude_xj400"
+BWMOD_Tiger_Sys_Altitude=true;
+exit;

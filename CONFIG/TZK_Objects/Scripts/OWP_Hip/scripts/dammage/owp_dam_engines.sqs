@@ -1,0 +1,77 @@
+;#########################################
+;# Written by Kerd  Kerd@inbox.ru        #
+;# Modified by Voyager voyager04@mail.ru #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+_me = _this select 0
+
+_e1 = false;
+_e2 = false;
+_both = false;
+
+? "owp_mi8_trigger_dammage_engines" in magazines _me : exit
+_me addmagazine "owp_mi8_trigger_dammage_engines"
+
+_color = [[ 0, 0, 0, 0.15],[ 0.1, 0.1, 0.1, 0.15],[0.9,0.9,0.9,0]]
+_speed = [0,0,-30]
+_size = [1,10,12]
+_lifetame = 9
+
+#Loop
+if (!alive _me) then { exit; };
+~0.05
+
+if (!alive _me) then { exit; };
+if (isengineon _me) then { _speed = [0,0,-30]; } else { _speed = [0,0,0]; };
+
+if ((GetDammage _me) <= 0.1) then {exit; };
+if (!alive _me) then { exit; };
+
+if ( "owp_mi8_trigger_dammage_1engine" in magazines _me) then { _e1 = true; };
+if (!alive _me) then { exit; };
+
+if ( "owp_mi8_trigger_dammage_2engine" in magazines _me) then { _e2 = true; };
+if (!alive _me) then { exit; };
+
+if ( _e1 && _e2 ) then {_both = true}
+
+if (_both) then {Goto "both";};
+
+if (skill (crew _me select 0) < 0.5 ) then { _me land "Land"; };
+? (isengineon _me) && (getpos _me select 2 > 20): _vel = velocity _me; if (random(4)<1) then {_me setVelocity [ _vel select 0, _vel select 1, -8 ];};
+
+if (_e1) then {Goto "engine1"}
+if (_e2) then {Goto "engine2"}
+
+exit;
+
+
+#engine1
+if (!alive _me) then { exit; };
+drop ["cl_basic", "", "Billboard", 1, _lifetame, [0.5,2,0], _speed , 10, 5, 5, 0.4, _size, _color , [0,1,0], 1, 1, "", "", _me]
+Goto "Loop";
+
+
+#engine2
+if (!alive _me) then { exit; };
+drop ["cl_basic", "", "Billboard", 1, _lifetame, [-2,2,0], _speed , 10, 5, 5, 0.4, _size, _color , [0,1,0], 1, 1, "", "", _me]
+Goto "Loop";
+
+
+#both
+;_me setfuel 0
+_t1 = _time
+[_me,3] exec "\OWP_MI8\scripts\dammage\owp_crew_eject.sqs";
+_speed = [0,0,0];
+
+#bothloop
+~0.05
+if (!alive _me) then { exit; };
+? ! ("owp_mi8_trigger_dammage_engines" in magazines _me) : exit
+if ((GetDammage _me) <= 0.1) then {exit; };
+? _time - _t1 >= 7 : _me setfuel 0
+if (isengineon _me) then { _speed = [0,0,-30]; } else { _speed = [0,0,0]; };
+? (isengineon _me) && (getpos _me select 2 > 20): _vel = velocity _me; if (random(4)<1) then {_me setVelocity [ _vel select 0, _vel select 1, -16 ];};
+drop ["cl_basic", "", "Billboard", 1, _lifetame, [0.5,2,0], _speed , 10, 5, 5, 0.4, _size, _color , [0,1,0], 1, 1, "", "", _me]
+drop ["cl_basic", "", "Billboard", 1, _lifetame, [-2,2,0], _speed  , 10, 5, 5, 0.4, _size, _color , [0,1,0], 1, 1, "", "", _me]
+Goto "BothLoop"

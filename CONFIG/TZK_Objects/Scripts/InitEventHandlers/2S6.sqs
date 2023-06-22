@@ -1,0 +1,25 @@
+; args: [vehicle, name]
+_vehicle = _this select 0; _name = _this select 1
+_typeName = typeOf _vehicle
+
+; Texture Radar
+_i = (_typeName GetVehicleParamArray "hiddenselections") find "radarleft"
+_path = "\TZK_Texture_4_0_0\DKMM\Tunguska\"
+? (_this select 1) == "W": _path = _path + "w\"
+_radarTex = _path + "tungrad.paa"
+? _i != -1: _vehicle setObjectTexture [_i, _radarTex]
+
+; Deploy Radar
+; Not transplant/design here. In original definition the model use 2 parts and 3 selections to control displaying.
+; ? local _vehicle: _vehicle animate ["rot_radar", 1]
+
+; RSC Number
+[_vehicle, "\TZK_Texture_4_0_0\DKMM\"] exec "\TZK_Objects\Scripts\texture\RSC_Numbers.sqs"
+
+; Texture Map
+_path = "\TZK_Texture_4_0_0\DKMM\Tunguska\"
+_i = (_typeName GetVehicleParamArray "hiddenselections") find "nav5"
+? _i != -1: _vehicle setObjectTexture [_i, _path+"moni.paa"]
+
+
+; EOF

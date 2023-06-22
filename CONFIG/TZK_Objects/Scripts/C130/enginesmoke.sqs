@@ -1,0 +1,29 @@
+_object = _this select 0
+_engine = _this select 1
+
+? (_engine==1):_d=0.1
+? (_engine==2):_d=0.30
+? (_engine==3):_d=0.50
+? (_engine==4):_d=0.70
+
+_i=50
+
+_object vehiclechat format ["smoke from engine number %1",_engine]
+
+#flame
+? (_engine == 1 and (damage _object > 0.1)):drop ["cl_basic", "", "Billboard", 4, 4, [10,4,-1], [0,0,0], 0, 0.001, 0.001, 1, [1,8], [[0,0,0,0],[0,0,0,1],[0,0,0,0.5], [0,0,0,0]], [0,1], 1, 0.1, "", "",_object ];
+
+? (_engine == 2 and (damage _object > 0.30)):drop ["cl_basic", "", "Billboard", 4, 4, [5,4,-1], [0,0,0], 0, 0.001, 0.001, 1, [1,8], [[0,0,0,0],[0,0,0,1],[0,0,0,0.5], [0,0,0,0]], [0,1], 1, 0.1, "", "",_object ];
+
+? (_engine == 3 and (damage _object > 0.50)):drop ["cl_basic", "", "Billboard", 4, 4, [-5,4,-1], [0,0,0], 0, 0.001, 0.001, 1, [1,8], [[0,0,0,0],[0,0,0,1],[0,0,0,0.5], [0,0,0,0]], [0,1], 1, 0.1, "", "",_object ];
+
+? (_engine == 4 and (damage _object > 0.70)):drop ["cl_basic", "", "Billboard", 4, 4, [-10,4,-1], [0,0,0], 0, 0.001, 0.001, 1, [1,8], [[0,0,0,0],[0,0,0,1],[0,0,0,0.5], [0,0,0,0]], [0,1], 1, 0.1, "", "",_object ];
+
+~1
+? ((damage _object > _d) and (damage _object < 1)):goto "flame"
+_i=_i-1
+? (_i>0):goto "flame"
+
+_object vehiclechat format ["smoke from engine number %1 stopped",_engine]
+
+exit

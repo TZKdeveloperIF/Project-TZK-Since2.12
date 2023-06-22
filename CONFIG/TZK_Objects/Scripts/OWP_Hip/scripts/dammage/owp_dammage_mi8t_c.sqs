@@ -1,0 +1,67 @@
+;#########################################
+;# Written by Voyager voyager04@mail.ru  #
+;# Idea by Kerd  Kerd@inbox.ru           #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+
+_me = _this
+_types = ["fuel","1engine","2engine","transmission"]
+
+_prob_fuel = 15
+_prob_1engine = 40
+_prob_2engine = 40
+_prob_transmission = 40
+
+@(getDammage _me >= 0.35)
+_damage = 0
+
+
+#Control
+~0.03
+if (!alive _me) then {goto "Waiting"}
+if ("owp_mi8_trigger_movie_dammage" in magazines _me) then {_damage = getDammage _me}
+if ((getDammage _me - _damage) > 0.1) then {_damage = getDammage _me; goto "GetChance"}
+? getDammage _me < 0.1 : goto "Repair"
+goto "control"
+
+#Repair
+_damage = 0
+? "owp_mi8_trigger_dammage_engines" in magazines _me : _me removemagazine "owp_mi8_trigger_dammage_engines"
+? "owp_mi8_trigger_dammage_fuel" in magazines _me : _me removemagazine "owp_mi8_trigger_dammage_fuel"
+? "owp_mi8_trigger_dammage_1engine" in magazines _me : _me removemagazine "owp_mi8_trigger_dammage_1engine"
+? "owp_mi8_trigger_dammage_2engine" in magazines _me : _me removemagazine "owp_mi8_trigger_dammage_2engine"
+? "owp_mi8_trigger_dammage_transmission" in magazines _me : _me removemagazine "owp_mi8_trigger_dammage_transmission"
+goto "Control"
+
+#GetChance
+if (!alive _me) then {Goto "Waiting"}
+if (getDammage _me < 0.35) then {Goto "Control"}
+_rnd = random 100
+if (_rnd <= _prob_fuel) then {_type = _types select 0;if (format["owp_mi8_trigger_dammage_%1",_type] in magazines _me) then {goto "next1"} else {_me addmagazine format["owp_mi8_trigger_dammage_%1",_type];[_me] exec format["\OWP_MI8\scripts\dammage\owp_dam_%1.sqs",_type];[_me,_type] exec "\OWP_MI8\scripts\dammage\owp_Alarms_system.sqs";}}
+
+#next1
+if (!alive _me) then { Goto "Waiting"}
+if (getDammage _me < 0.5) then {Goto "Control"}
+_rnd = random 100
+if (_rnd <= _prob_1engine) then {_type = _types select 1;if (format["owp_mi8_trigger_dammage_%1",_type] in magazines _me) then {goto "next2"} else {_me addmagazine format["owp_mi8_trigger_dammage_%1",_type];[_me] exec format["\OWP_MI8\scripts\dammage\owp_dam_%1.sqs",_type];[_me,_type] exec "\OWP_MI8\scripts\dammage\owp_Alarms_system.sqs";}}
+
+#next2
+if (!alive _me) then { Goto "Waiting"}
+if (getDammage _me < 0.5) then {Goto "Control"}
+_rnd = random 100
+if (_rnd <= _prob_2engine) then {_type = _types select 2;if (format["owp_mi8_trigger_dammage_%1",_type] in magazines _me) then {goto "next3"} else {_me addmagazine format["owp_mi8_trigger_dammage_%1",_type];[_me] exec format["\OWP_MI8\scripts\dammage\owp_dam_%1.sqs",_type];[_me,_type] exec "\OWP_MI8\scripts\dammage\owp_Alarms_system.sqs";}}
+
+#next3
+if (!alive _me) then {Goto "Waiting"}
+if (getDammage _me < 0.7) then {Goto "Control"}
+_rnd = random 100
+if (_rnd <= _prob_transmission) then {_type = _types select 3;if (format["owp_mi8_trigger_dammage_%1",_type] in magazines _me) then {goto "next4"} else {_me addmagazine format["owp_mi8_trigger_dammage_%1",_type];[_me] exec format["\OWP_MI8\scripts\dammage\owp_dam_%1.sqs",_type];[_me,_type] exec "\OWP_MI8\scripts\dammage\owp_Alarms_system.sqs";}}
+
+#next4
+goto "Control"
+
+#Waiting
+@(alive _me)
+@(getDammage _me >= 0.35)
+_damage = getDammage _me
+goto "Control"

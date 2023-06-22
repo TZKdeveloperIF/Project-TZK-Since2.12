@@ -1,0 +1,39 @@
+;#########################################
+;# Written by Voyager  voyager04@mail.ru #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+
+_me = _this select 0
+_group = _this select 1
+
+_getdis = {private ["_pos1", "_pos2"];_pos1 = _this select 0;_pos2 = _this select 1;sqrt(((_pos1 select 0) - (_pos2 select 0))^2+((_pos1 select 1) - (_pos2 select 1))^2)}
+
+_x=-2.15
+_y=4.85
+_z=2.55
+
+_ddd = 12
+_angle = 180
+
+? !("owp_mi8_ropehook_active" in magazines _me): _me addmagazine "owp_mi8_ropehook_active"
+
+? _me animationPhase "OWP_Mi8_DOOR" < 0.01 : _me animate["OWP_Mi8_DOOR",1]
+~1
+_rope = "OWP_Mi8_ropehook" createvehicle [0,0,0]
+_rope setpos [(getpos _me select 0) + _y*sin(getdir _me) + _x*cos(getdir _me),(getpos _me select 1) + _y*cos(getdir _me) - _x*sin(getdir _me),(getpos _me select 2) + _z]
+_rope animate ["OWP_Mi8_rope",1]
+
+[_me,_rope,_group] exec "\OWP_MI8\scripts\owp_AIload.sqs"
+_pos = getpos _me
+#loop
+? !(alive _me):exit
+_me setpos _pos
+_me setvelocity [0,0,0]
+_me setdir getdir _me
+_rope setpos [(getpos _me select 0) + _y*sin(getdir _me) + _x*cos(getdir _me),(getpos _me select 1) + _y*cos(getdir _me) - _x*sin(getdir _me),(getpos _me select 2) + _z]
+_rope setdir (getdir _me +_angle)
+_h = getpos _me select 2
+? _h <= _ddd && !("owp_mi8_unit_attach" in magazines _me) && ("owp_mi8_ropehook_active" in magazines _me): _rope animate ["OWP_Mi8_rope",_h/_ddd]
+? (isNull _rope) : exit
+~0.001
+goto "loop"

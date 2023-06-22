@@ -1,0 +1,146 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;Code by Hardrock from Military Mod Project            ;;
+;;Email: bernhard@schussek.at                           ;;
+;;MMP: http://www.mm-proj.de                            ;;
+;;Website: http://ofp.info/hardrock                     ;;
+;;------------------------------------------------------;;
+;;Ver.        Changes                 Date         Ini. ;;
+;;------------------------------------------------------;;
+;;1.0.0    Initial Coding           28/09/05     BWMOD  ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;=========================================================
+;Arguments
+;=========================================================
+_plane1 = vehicle (_this select 0)
+
+?!(player in _plane1) : exit
+
+;=========================================================
+;Local variables
+;=========================================================
+_rnd    = loadFile "\BWMOD_Tiger\scr\fRound.sqf"
+_speeda = 0
+_speed  = 0
+_speed1 = 0
+_alt    = 0
+_alt1   = 0
+_tmp1   = 0
+_tmp2   = 0
+
+;=========================================================
+;Debug
+;=========================================================
+? (HDRdebug) : player globalChat "Debug: (HUD.sqs) started"
+
+;=========================================================
+;Activate HUD
+;=========================================================
+_plane1 setObjectTexture [15,"\BWMOD_Tiger\instr\numbers.paa"]
+
+;=========================================================
+;Mainloop
+;=========================================================
+#mainloop
+? (!(player in _plane1) or !(alive _plane1) or !(isengineon _plane1)) : goto "exit"
+
+;=========================================================
+;Speed Display
+;=========================================================
+; Vorzeichen bei negativer Geschwindigkeit ändern
+_speeda = speed _plane1
+?(_speeda<0): _speeda=_speeda*(-1)
+_speed = _speeda
+
+; runden
+_speed = _speed call _rnd
+_speed1 = _speed
+
+
+; 1000er
+_tmp1 = _speed%1000
+?(_speed1<1000): _plane1 animate ["mph1",0], goto "m100"
+_tmp2 = (_speed-_tmp1)/1000
+_plane1 animate ["mph1",(_tmp2+1)*0.1]
+
+
+; 100er
+#m100
+_speed = _tmp1
+_tmp1 = _speed%100
+?(_speed1<100): _plane1 animate ["mph2",0], goto "m10"
+_tmp2 = (_speed-_tmp1)/100
+_plane1 animate ["mph2",(_tmp2+1)*0.1]
+
+
+; Zehner
+#m10
+_speed = _tmp1
+_tmp1 = _speed%10
+?(_speed1<10): _plane1 animate ["mph3",0], goto "m1"
+_tmp2 = (_speed-_tmp1)/10
+_plane1 animate ["mph3",(_tmp2+1)*0.1]
+
+
+; Einer
+#m1
+_plane1 animate ["mph4",(_tmp1+1)*0.1]
+_tmp1=nil
+_tmp2=nil
+
+
+;=========================================================
+;Alt Display
+;=========================================================
+
+_alt = getpos _plane1 select 2
+
+; Runden
+_alt = _alt call _rnd
+_alt1 = _alt
+
+
+; 1000er
+_tmp1 = _alt%1000
+?(_alt1<1000) : _plane1 animate ["alt1",0], goto "a100"
+_tmp2 = (_alt-_tmp1)/1000
+_plane1 animate ["alt1",(_tmp2+1)*0.1]
+
+
+; 100er
+#a100
+_alt = _tmp1
+_tmp1 = _alt%100
+?(_alt1<100) : _plane1 animate ["alt2",0], goto "a10"
+_tmp2 = (_alt-_tmp1)/100
+_plane1 animate ["alt2",(_tmp2+1)*0.1]
+
+
+; Zehner
+#a10
+_alt = _tmp1
+_tmp1 = _alt%10
+?(_alt1<10) : _plane1 animate ["alt3",0], goto "a1"
+_tmp2 = (_alt-_tmp1)/10
+_plane1 animate ["alt3",(_tmp2+1)*0.1]
+
+
+; Einer
+#a1
+_plane1 animate ["alt4",(_tmp1+1)*0.1]
+
+
+~0.1
+goto "mainloop"
+
+
+
+
+#exit
+_plane1 setObjectTexture [15,""]
+
+
+? (HDRdebug) : player globalChat "Debug: (HUD.sqs) ended"
+exit
+
+

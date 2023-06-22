@@ -1,0 +1,29 @@
+_tanker = _this select 0
+_refuel = _this select 1
+_grtanker = _this select 2
+_grrefuel = _this select 3
+
+@ ((vehicle _tanker) distance (vehicle _refuel) < 20)
+_tanker sidechat format["%1, Ready to refuel",vehicle _refuel]
+? ((vehicle _tanker) animationPhase "gasolinerope0" < 0.5):[(vehicle _tanker)] exec "\TZK_Objects\Scripts\C130\opengas.sqs";
+
+#refuel
+_fuel = (fuel vehicle _refuel)
+(vehicle _refuel) dofollow (vehicle _tanker)
+(vehicle _refuel) flyinheight ((getpos (vehicle _tanker) select 2) -3)
+(group _refuel) setFormDir (direction _tanker)
+(vehicle _refuel) action ["refuel",vehicle _tanker];
+~1
+? (fuel vehicle _refuel > _fuel):_tanker sidechat format["%1, transferring fuel",vehicle _refuel]
+? (fuel vehicle _refuel < 0.98):goto "refuel"
+_tanker sidechat format["%1,Refuel Terminated",vehicle _refuel]
+_refuel sidechat format["%1,We do have enough gas thank you, charge it on my account. Have a good flight Sir.",vehicle _tanker]
+_tanker sidechat format["%1,Anytime Sir %1, just give us a call. Have a safe flight.%2 Out!”,vehicle _refuel,vehicle _tanker]
+[_tanker] exec "\TZK_Objects\Scripts\C130\closegas.sqs"
+[driver vehicle _refuel] join (group _refuel)
+[driver (vehicle _refuel)] join _grrefuel
+[driver (vehicle _tanker)] join _grtanker
+
+(group _tanker) lockWP false
+(group _refuel) lockWP false
+exit

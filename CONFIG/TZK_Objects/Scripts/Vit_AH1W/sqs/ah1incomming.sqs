@@ -1,0 +1,35 @@
+_helo = _this select 0
+_shilka = _this select 1
+_skill = skill _shilka
+_damG = (getdammage gunner _helo)
+_damD = (getdammage driver _helo)
+_damH = (getdammage _helo)
+_count = 0
+
+_helo vehiclechat "Incoming Tripple-A!"
+
+_helo say "IncomingWarning_xj400"
+
+
+
+_count = _count+1
+~0.07
+
+?_count<2:goto "loop"
+
+_shilka setcombatmode "green"
+_shilka setskill 0
+
+~0.5
+
+_helo setdammage _damH
+driver _helo setdammage _damD
+gunner_helo setdammage _damG
+
+~60
+_shilka setcombatmode "red"
+_shilka setskill _skill
+
+
+exit
+

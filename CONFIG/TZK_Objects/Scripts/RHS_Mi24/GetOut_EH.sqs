@@ -1,0 +1,21 @@
+; args: Get_Out_Array
+_vehicle = _this select 0; _seat = _this select 1; _unit = _this select 2
+
+? _seat == "Driver": {[_vehicle] exec "\TZK_Objects\Scripts\RHS_Mi24\DoorOpen" + _x + ".sqs"} forEach ["P"]; exit
+? _seat == "Gunner": {[_vehicle] exec "\TZK_Objects\Scripts\RHS_Mi24\DoorOpen" + _x + ".sqs"} forEach ["G"]; exit
+
+; Seat must be "Cargo" here.
+? _vehicle animationPhase "ltdoor" < 0.5 || _vehicle animationPhase "rtdoor" < 0.5: {[_vehicle] exec "\TZK_Objects\Scripts\RHS_Mi24\DoorOpen" + _x + ".sqs"} forEach ["L", "R"]
+
+? !local _vehicle: exit
+_crews = count crew _vehicle; _i = 0; _c = 10
+#Loop
+~1
+? !local _vehicle || !alive _vehicle || !isEngineOn _vehicle: exit
+? _crews > count crew _vehicle: exit
+_i = _i + 1
+? _i < _c: goto "Loop"
+
+? _vehicle animationPhase "ltdoor" > 0.5 || _vehicle animationPhase "rtdoor" > 0.5: {[_vehicle, true] exec "\TZK_Objects\Scripts\RHS_Mi24\DoorClose" + _x + ".sqs"} forEach ["L", "R"]
+
+exit

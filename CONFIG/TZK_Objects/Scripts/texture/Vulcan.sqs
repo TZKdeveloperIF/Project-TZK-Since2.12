@@ -1,0 +1,23 @@
+; args: [vehicle, name]
+_vehicle = _this select 0
+_name = _this select 1
+
+_path = ""; _postfix = ""; _excludeList = []
+? _name == "D": _path = "\TZK_Texture_4_0_0\CBT_M113a\d\"; _excludeList1 = ["tex_m113front.pac", "tex_m113greenbedna.pac", "tex_\vulcan\vulcan_kukr.paa", "tex_\vulcan\vulcan_ku4l.pac", "tex_\vulcan\vulcan_kul3.pac", "tex_\vulcan\vulcan_3.pac", "tex_\vulcan\vulcan_4.pac"], _excludeList3 = [],  _excludeList4 = ["tex_\vulcan\vulcan_newtop.pac"], _excludeList5 = ["tex_\vulcan\vulcan_side.pac"], _excludeList2 = ["tex_\vulcan\vulcan_1.pac", "tex_\vulcan\vulcan_2.pac", "tex_\vulcan\vulcan_kolas.pac", "tex_\vulcan\vulcan_kukr.pac", "tex_\vulcan\vulcan_kul2.pac", "tex_\vulcan\vulcan1.pac", "tex_\vulcan\vulcan2.pac", "tex_\vulcan\vulcan4.pac"], _excludeList4 = ["tex_\vulcan\vulcan_newtop.pac"], _excludeList = _excludeList1 + _excludeList3 + _excludeList4 + _excludeList5 + _excludeList2
+? _name == "G": _path = "\TZK_Texture_4_0_0\CBT_M113a\w\"; _excludeList1 = ["tex_m113front.pac", "tex_m113greenbedna.pac", "tex_\vulcan\vulcan_kukr.paa", "tex_\vulcan\vulcan_ku4l.pac", "tex_\vulcan\vulcan_kul3.pac", "tex_\vulcan\vulcan_3.pac", "tex_\vulcan\vulcan_4.pac"], _excludeList3 = [], _excludeList4 = ["tex_\vulcan\vulcan_newtop.pac"], _excludeList5 = ["tex_\vulcan\vulcan_side.pac"], _excludeList2 = ["tex_\vulcan\vulcan_1.pac", "tex_\vulcan\vulcan_2.pac", "tex_\vulcan\vulcan_kolas.pac", "tex_\vulcan\vulcan_kukr.pac", "tex_\vulcan\vulcan_kul2.pac", "tex_\vulcan\vulcan1.pac", "tex_\vulcan\vulcan2.pac", "tex_\vulcan\vulcan4.pac"], _excludeList4 = ["tex_\vulcan\vulcan_newtop.pac"], _excludeList = _excludeList1 + _excludeList3 + _excludeList4 + _excludeList5 + _excludeList2
+? _name == "W": _path = "\TZK_Texture_4_0_0\snow\"; _excludeList1 = ["tex_m133_lopata.paa"], _excludeList3 = ["tex_\vulcan\vulcan2.pac"], _excludeList2 = [], _excludeList = _excludeList1 + _excludeList3 + _excludeList2
+
+[_vehicle, _path, _postfix, _excludeList] call loadFile "\TZK_Objects\Scripts\texture\stdSetObjTex.sqf"
+
+? _name == "C": exit
+_array = typeOf _vehicle GetVehicleParamArray "hiddenSelections"
+{_tex = substr [_x, 4, sizeofstr _x]; _vehicle setObjectTexture [_array find _x, _tex]} forEach _excludeList1
+
+{_vehicle setObjectTexture [_array find _x, _path + "m133_newfront.pac"]} forEach _excludeList3 + _excludeList2
+? _name == "W": exit
+{_vehicle setObjectTexture [_array find _x, _path + "m133_newtop.pac"]} forEach _excludeList4
+{_vehicle setObjectTexture [_array find _x, _path + "m133_newside.pac"]} forEach _excludeList5
+
+exit
+
+; _excludeList2 = ["tex_\vulcan\vulcan_1.pac", "tex_\vulcan\vulcan_2.pac", "tex_\vulcan\vulcan_3.pac", "tex_\vulcan\vulcan_4.pac", "tex_\vulcan\vulcan_kolas.pac", "tex_\vulcan\vulcan_ku4l.pac", "tex_\vulcan\vulcan_kukr.paa", "tex_\vulcan\vulcan_kukr.pac", "tex_\vulcan\vulcan_kul2.pac", "tex_\vulcan\vulcan_kul3.pac", "tex_\vulcan\vulcan1.pac", "tex_\vulcan\vulcan2.pac", "tex_\vulcan\vulcan4.pac"], _excludeList4 = ["tex_\vulcan\vulcan_newtop.pac"], _excludeList5 = ["tex_\vulcan\vulcan_side.pac"]

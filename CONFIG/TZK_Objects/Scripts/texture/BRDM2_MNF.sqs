@@ -1,0 +1,17 @@
+; args: [vehicle, name]
+_vehicle = _this select 0
+_name = _this select 1
+
+; This vehicle didn't use "tex_..." selections for reTexturing.
+_tex1 = "\TZK_Texture_4_0_0\MNF_BRDM2\brdm-2.paa"
+_tex2 = "\TZK_Texture_4_0_0\MNF_BRDM2\brdm-2_1.paa"
+_tex3 = "\TZK_Texture_4_0_0\MNF_BRDM2\gr.paa"
+_tex4 = "\TZK_Texture_4_0_0\MNF_BRDM2\whl.paa"
+
+? _name == "D": _tex1 = "\TZK_Texture_4_0_0\MNF_BRDM2\brdm-2R.paa"; 
+? _name == "W": _tex1 = "\TZK_Texture_4_0_0\MNF_BRDM2\brdm-2W.paa";_tex2 = "\TZK_Texture_4_0_0\MNF_BRDM2\brdm-2_1W.paa";_tex3 = "\TZK_Texture_4_0_0\MNF_BRDM2\grw.paa";_tex4 = "\TZK_Texture_4_0_0\MNF_BRDM2\whlW.paa"
+
+_array = typeOf _vehicle GetVehicleParamArray "hiddenSelections"
+{_vehicle setObjectTexture [_array find (format ["t%1", _x]), call ("_tex" + format ["%1", _x])]} forEach [1,2,3,4]
+
+; EOF

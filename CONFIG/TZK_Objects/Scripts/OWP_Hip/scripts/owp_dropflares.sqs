@@ -1,0 +1,38 @@
+;#########################################
+;# Written by Voyager  voyager04@mail.ru #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+
+_me = _this select 0
+_lifetime = 6
+_count = 64
+_countflares = _count
+#Start
+@(alive _me)
+@!(isNull driver _me)
+@("owp_flaremag" in magazines _me)
+@!("owp_mi8_trigger_dammage_cms" in magazines _me)
+
+#ControlFlare
+@("owp_mi8_trigger_drop_flares_active" in magazines _me)
+if !(alive _me) then {if ("owp_mi8_trigger_drop_flares_active" in magazines _me) then {_me removemagazine "owp_mi8_trigger_drop_flares_active"};goto "Start"}
+if ("owp_mi8_trigger_dammage_cms" in magazines _me) then {if ("owp_mi8_trigger_drop_flares_active" in magazines _me) then {_me removemagazine "owp_mi8_trigger_drop_flares_active"};goto "Start"}
+if (isNull driver _me) then {if ("owp_mi8_trigger_drop_flares_active" in magazines _me) then {_me removemagazine "owp_mi8_trigger_drop_flares_active"};goto "Start"}
+~0.1
+;            1      2      3       4       5          6               7           8 9 1011  12         13        14   1516    17    
+drop["kouleSvetlo","","Billboard",0.05,_lifetime ,[-1,-6,-1],[-15,2 - random 4,2],1,2,1,0,[2.8,1],[[1,1,0.3,1]],[0,1],0.3,0.1,"\OWP_MI8\scripts\owp_flaresmoke.sqs","",_me]
+
+drop["kouleSvetlo","","Billboard",0.05,_lifetime ,[ 1,-6,-1],[ 15,2 - random 4,2],1,2,1,0,[2.8,1],[[1,1,0.3,1]],[0,1],0.3,0.1,"\OWP_MI8\scripts\owp_flaresmoke.sqs","",_me]
+
+_me say "mi8flare"
+
+_countflares = _countflares - 1
+;_me sidechat format ["Осталось выстрелов %1",_countflares]
+
+~3
+
+if (_countflares == 0) then {_me removemagazine "owp_flaremag";_countflares = _count}
+~0.1
+if !("owp_flaremag" in magazines _me) then {_me removemagazine "owp_mi8_trigger_drop_flares_active";_countflares = _count;goto "Start"}
+
+goto "ControlFlare"
