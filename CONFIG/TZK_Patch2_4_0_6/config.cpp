@@ -49,6 +49,7 @@ class CfgVehicles {
 
 	#include "TZK_Patch2_4_0_6\cfgVehicles_art.h"
 	#include "TZK_Patch2_4_0_6\cfgVehicles_tank.h"
+	#include "TZK_Patch2_4_0_6\cfgVehicles_apc.h"
 
 	class M2StaticMG_xj400: M2StaticMG {};
 	class M2StaticMG_W_xj400: M2StaticMG_xj400 {};
