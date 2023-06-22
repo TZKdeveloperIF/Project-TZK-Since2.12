@@ -48,6 +48,7 @@ class CfgVehicles {
 	#include "TZK_Patch2_4_0_6\cfgVehicles_0.h"
 
 	#include "TZK_Patch2_4_0_6\cfgVehicles_art.h"
+	#include "TZK_Patch2_4_0_6\cfgVehicles_tank.h"
 };
 
 class CfgMarkers {

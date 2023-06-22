@@ -1,8 +1,3 @@
-	class Tank_xj400: Tank {};
-	class M1Abrams_Base_xj400: Tank_xj400 {};
-	class RussianTank_xj400: Tank_xj400 {};
-	class T72_Base_xj400: RussianTank_xj400 {};
-
 	class M109A6G_Base_xj400: M1Abrams_Base_xj400 {};
 	class M109A6G_xj400: M109A6G_Base_xj400 {
 		class UserActions {

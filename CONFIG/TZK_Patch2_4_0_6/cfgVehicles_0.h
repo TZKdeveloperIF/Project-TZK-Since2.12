@@ -66,3 +66,8 @@
 	class M60: Tank {};
 
 	class M2StaticMG: M113 {};
+
+	class Tank_xj400: Tank {};
+	class M1Abrams_Base_xj400: Tank_xj400 {};
+	class RussianTank_xj400: Tank_xj400 {};
+	class T72_Base_xj400: RussianTank_xj400 {};
