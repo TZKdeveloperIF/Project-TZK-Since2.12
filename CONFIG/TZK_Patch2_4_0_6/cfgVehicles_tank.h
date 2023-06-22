@@ -1,5 +1,7 @@
 	class TZK_HeavyWestTank_Base_xj400: M1Abrams_Base_xj400 {};
-	class M1A1_xj400: TZK_HeavyWestTank_Base_xj400 {};
+	class M1A1_xj400: TZK_HeavyWestTank_Base_xj400 {
+		maxSpeed = 56;
+	};
 	class M1A1_C_xj400: M1A1_xj400 {
 		unitInfoType = 8;
 
@@ -12,7 +14,27 @@
 	class M1A1_G_xj400: M1A1_C_xj400 {
 		model = "\TZK_Patch2_4_0_6\Model\M1A1_TZK_G.p3d";
 	};
-	class Leo2A6_xj400: TZK_HeavyWestTank_Base_xj400 {};
+	class M1A2_INQ_xj400: TZK_HeavyWestTank_Base_xj400 {
+		maxSpeed = 56;
+	};
+	class Leo2A6_xj400: TZK_HeavyWestTank_Base_xj400 {
+		maxSpeed = 56;
+		class Turret {
+			gunAxis = "OsaHlavne";
+			turretAxis = "OsaVeze";
+
+			soundServo[] = {"\TZK_Sounds_4_0_0\Leo2A6\Turret.wss",0.0316228,1};
+
+			gunBeg = "usti hlavne";
+			gunEnd = "konec hlavne";
+
+			minElev = -7; maxElev = +20;
+			minTurn = -360; maxTurn = +360;
+
+			body = "OtocVez";
+			gun = "OtocHlaven";
+		};
+	};
 	class Leo2A6_C_xj400: Leo2A6_xj400 {
 		unitInfoType = 8;
 
@@ -27,7 +49,9 @@
 
 	class T80_Base_xj400: T72_Base_xj400 {};
 	class TZK_HeavyEastTank_Base_xj400: T80_Base_xj400 {};
-	class T80_xj400: TZK_HeavyEastTank_Base_xj400 {};
+	class T80_xj400: TZK_HeavyEastTank_Base_xj400 {
+		maxSpeed = 56;
+	};
 	class T80_C_xj400: T80_xj400 {
 		unitInfoType = 8;
 
@@ -44,7 +68,12 @@
 	class T80_G_xj400: T80_C_xj400 {
 		model = "\TZK_Patch2_4_0_6\Model\T80_TZK_G.p3d";
 	};
-	class ZTZ99_xj400: TZK_HeavyEastTank_Base_xj400 {};
+	class T90_xj400: TZK_HeavyEastTank_Base_xj400 {
+		maxSpeed = 56;
+	};
+	class ZTZ99_xj400: TZK_HeavyEastTank_Base_xj400 {
+		maxSpeed = 56;
+	};
 	class ZTZ99_C_xj400: ZTZ99_xj400 {
 		unitInfoType = 8;
 
@@ -56,7 +85,9 @@
 	};
 
 	class ResistanceTank_xj400: Tank_xj400 {};
-	class T80Res_Base_xj406: ResistanceTank_xj400 {};
+	class T80Res_Base_xj406: ResistanceTank_xj400 {
+		maxSpeed = 56;
+	};
 	class T80Res_TZK_xj406: T80Res_Base_xj406 {};
 	class T80Res_TZK_C_xj406: T80Res_TZK_xj406 {
 		unitInfoType = 8;
