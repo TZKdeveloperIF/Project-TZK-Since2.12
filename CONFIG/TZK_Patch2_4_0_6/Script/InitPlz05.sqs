@@ -4,6 +4,8 @@ _vehicle = _this
 ? local _vehicle: _vehicle animate ["suspension", 0.5]
 
 _extraInitScript = localize {TZK_EH_INIT_PLZ05}
-? "" != _extraInitScript: _vehicle exec _extraInitScript
+? "" != _extraInitScript: _vehicle exec _extraInitScript, exit
+
+_vehicle exec "\TZK_Patch2_4_0_6\Script\RedirectableInitPlz05.sqs"
 
 ; EOF
