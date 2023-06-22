@@ -889,6 +889,16 @@ class CfgModels {
 		};
 	};
 	class T80_TZK_G: T80_TZK_C {};
+	class Leo2A6_C: Tank {
+		sections[] = {
+			"zadni svetlo","Takt_Kp","Takt_Symbol","Takt_Btl_1","Takt_Btl_2","Takt_Btl_3","nr1","nr2","nr3",
+		};
+	};
+	class ZTZ99_C: Tank {
+		sections[] = {
+			"n1", "n2", "n3"
+		};
+	};	
 };
 
 // EOF
