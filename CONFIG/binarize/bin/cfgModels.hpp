@@ -883,6 +883,7 @@ class CfgModels {
 	class M1A1_TZK_C: Tank {};
 	class M1A1_TZK_G: Tank {};
 	class T80_TZK_C: Tank {
+		sectionsInherit = "Tank"; 
 		sections[] = {
 			"pruh", 
 			tex_tank_04_bednyuvalce_.pac, tex_tank_04_krabic_back.pac, tex_tank_04_krabic_sidet.pac, tex_tank_04_v_lec_norm.pac, tex_tank_04_v_lec_side.paa
@@ -890,11 +891,13 @@ class CfgModels {
 	};
 	class T80_TZK_G: T80_TZK_C {};
 	class Leo2A6_C: Tank {
+		sectionsInherit = "Tank"; 
 		sections[] = {
 			"zadni svetlo","Takt_Kp","Takt_Symbol","Takt_Btl_1","Takt_Btl_2","Takt_Btl_3","nr1","nr2","nr3",
 		};
 	};
 	class ZTZ99_C: Tank {
+		sectionsInherit = "Tank"; 
 		sections[] = {
 			"n1", "n2", "n3"
 		};
