@@ -899,6 +899,11 @@ class CfgModels {
 			"n1", "n2", "n3"
 		};
 	};	
+	class M113_Ambu_G: Tank {};
+	class M2A2_TZK_C: Tank {};
+	class M2A2_TZK_G: Tank {};
+	class BMP_Ambu_TZK_G: Tank {};
+	class BMP2_TZK_G: Tank {};
 };
 
 // EOF
