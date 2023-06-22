@@ -12,6 +12,18 @@
 	class M1A1_G_xj400: M1A1_C_xj400 {
 		model = "\TZK_Patch2_4_0_6\Model\M1A1_TZK_G.p3d";
 	};
+	class Leo2A6_xj400: TZK_HeavyWestTank_Base_xj400 {};
+	class Leo2A6_C_xj400: Leo2A6_xj400 {
+		unitInfoType = 8;
+
+		model = "\TZK_Patch2_4_0_6\Model\Leo2A6_C.p3d";
+		hiddenSelections[] = {
+			"zadni svetlo","Takt_Kp","Takt_Symbol","Takt_Btl_1","Takt_Btl_2","Takt_Btl_3","nr1","nr2","nr3"
+		};
+		class EventHandlers {
+			Init = _vehicle = _this select 0, _vehicle animate [{suspension}, 0.5], [_vehicle, {\TZK_Texture_4_0_0\BWMOD\leo2A6\num\}, {nr}, {0}] exec localize {TZK_EVENT_INIT_TEX_RSC_NUM};
+		};
+	};
 
 	class T80_Base_xj400: T72_Base_xj400 {};
 	class TZK_HeavyEastTank_Base_xj400: T80_Base_xj400 {};
@@ -31,6 +43,16 @@
 	};
 	class T80_G_xj400: T80_C_xj400 {
 		model = "\TZK_Patch2_4_0_6\Model\T80_TZK_G.p3d";
+	};
+	class ZTZ99_xj400: TZK_HeavyEastTank_Base_xj400 {};
+	class ZTZ99_C_xj400: ZTZ99_xj400 {
+		unitInfoType = 8;
+
+		model = "\TZK_Patch2_4_0_6\Model\ZTZ99_C.p3d";
+		hiddenSelections[] = {"n1", "n2", "n3"};
+		class EventHandlers {
+			Init = _vehicle = _this select 0, _vehicle animate [{suspension}, 0.5], [_vehicle, {\TZK_Texture_4_0_0\BWMOD\leo2A6\num\}, {n}, {0}] exec localize {TZK_EVENT_INIT_TEX_RSC_NUM};
+		};
 	};
 
 	class ResistanceTank_xj400: Tank_xj400 {};
