@@ -1,0 +1,18 @@
+;#########################################
+;# Written by Voyager  voyager04@mail.ru #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+_me = _this select 0
+_weaponname = _this select 1
+_missile = _this select 2
+;player sidechat format ["%1",_weaponname]
+;if !((_weaponname=="AA") or (_weaponname=="9K32")) then {exit}
+
+#loop
+_dammage = getdammage _me
+~0.0001
+? !(isNull _missile) : goto "loop"
+;player sidechat format ["%1",getdammage _me - _dammage]
+if ((getdammage _me - _dammage > 0.25) and (getdammage _me < 0.70)) then {_me setdammage 0.95;exit}
+if ((getdammage _me - _dammage > 0.25) and (getdammage _me > 0.70)) then {_me setdammage 1;exit}
+exit

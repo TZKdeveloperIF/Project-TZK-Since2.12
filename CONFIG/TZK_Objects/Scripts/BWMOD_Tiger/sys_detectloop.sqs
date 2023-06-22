@@ -1,0 +1,28 @@
+_tiger = _this select 0
+_ancor = _this select 1
+
+Goto _ancor
+
+#Init
+BWMOD_Tiger_Sys_Altitude=false;
+BWMOD_Tiger_Sys_FuelLow=false;
+BWMOD_Tiger_Sys_FuelAlert=false;
+
+_damage = getDammage _tiger
+
+#Loop
+
+?(!isengineon _tiger): exit
+?(!BWMOD_Sys_Running): exit
+
+?(getdammage _tiger < 0.1 AND ("BWMOD_Tiger_MC" in magazines _tiger)): [_tiger,"Init"] exec "\BWMOD_Tiger\scr\sys_repair.sqs";
+?(getDammage _tiger - _damage > 0.1): _damage = getDammage _tiger; [_tiger,"init"] exec "\BWMOD_Tiger\scr\sys_damage.sqs";
+
+?(getpos _tiger select 2 < 10 AND speed _tiger > 15 AND !BWMOD_Tiger_Sys_Altitude): [_tiger,"Altitude"] exec "\BWMOD_Tiger\scr\sys_alert.sqs"; 
+?(fuel _tiger < 0.25 AND !BWMOD_Tiger_Sys_FuelLow): [_tiger,"FuelLow"] exec "\BWMOD_Tiger\scr\sys_alert.sqs"; 
+?(fuel _tiger < 0.05 AND !BWMOD_Tiger_Sys_FuelAlert): [_tiger,"FuelAlert"] exec "\BWMOD_Tiger\scr\sys_alert.sqs"; 
+
+?(fuel _tiger > 0.4): BWMOD_Tiger_Sys_FuelLow=false; BWMOD_Tiger_Sys_FuelAlert=false
+?(getpos _tiger select 2 > 10): BWMOD_Tiger_Sys_Altitude=false;
+~0.5
+Goto "Loop"

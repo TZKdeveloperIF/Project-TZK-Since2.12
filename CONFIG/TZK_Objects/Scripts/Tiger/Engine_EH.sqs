@@ -1,0 +1,115 @@
+; args: Engine EH Array
+_vehicle = _this select 0; _localState = _this select 1
+_hiddenSelections = typeOf _vehicle GetVehicleParamArray "hiddenSelections"
+
+? isEngineOn _vehicle: Goto "Engine_ON"
+[_vehicle, ["Door1", "Door2"], 1] exec {\TZK_Objects\Scripts\SwitchSelections.sqs}
+[_vehicle, ["HID", "HIDinnen", "DamperL", "DamperR"], 0] exec {\TZK_Objects\Scripts\SwitchSelections.sqs}
+
+? getPos _vehicle select 2 > 5 || driver _vehicle != player: Goto "Engine_OFF_REMOTE"
+? alive driver _vehicle: driver _vehicle switchmove "BWMod_TigerPilotStartup"
+
+_vehicle animate ["Engine_rpm", 0]; _vehicle animate ["Engine_rpm_2", 0]
+
+@(!local _vehicle || !alive _vehicle || isEngineOn _vehicle || _time > 2.3)
+? !local _vehicle || !alive _vehicle || isEngineOn _vehicle: exit
+
+{_vehicle animate [_x, 0]} forEach ["Rotor_rpm", "bat2", "bat3", "OPress1", "OPress2", "HPress1", "HPress2", "Temp1", "Temp2", "Torque", "Rotor_rpm_2", "OPress1_2", "OPress2_2", "HPress1_2", "HPress2_2", "Temp1_2", "Temp2_2", "Torque_2"]
+~0.3
+_vehicle animate ["bat1", 0]; _vehicle setObjectTexture [_hiddenSelections find "display1", ""]
+
+@(!local _vehicle || !alive _vehicle || isEngineOn _vehicle || _time > 2.3+0.3+4.5)
+? !local _vehicle || !alive _vehicle || isEngineOn _vehicle: exit
+ 
+_vehicle animate ["RBremse", 0]; _vehicle setObjectTexture [_hiddenSelections find "display2", ""]
+~0.5
+_vehicle setObjectTexture [_hiddenSelections find "display3", ""]
+~0.5
+_vehicle setObjectTexture [_hiddenSelections find "display4", ""]
+_vehicle setObjectTexture [_hiddenSelections find "display5", ""]
+_vehicle setObjectTexture [_hiddenSelections find "display6", ""]
+_vehicle setObjectTexture [_hiddenSelections find "display7", ""]
+
+_vehicle setObjectTexture [_hiddenSelections find "waffen1",""]
+_vehicle setObjectTexture [_hiddenSelections find "waffen2",""]
+_vehicle setObjectTexture [_hiddenSelections find "waffen3",""]
+_vehicle setObjectTexture [_hiddenSelections find "waffen4",""]
+
+@(!local _vehicle || !alive _vehicle || isEngineOn _vehicle || _time > 2.3+0.3+4.5+0.5+0.5+5.7)
+? !local _vehicle || !alive _vehicle || isEngineOn _vehicle: exit
+? alive driver _vehicle: driver _vehicle switchmove "BWMod_TigerPilot"
+Exit
+
+#Engine_OFF_REMOTE
+? local _vehicle: {_vehicle animate [_x, 0]} forEach ["Engine_rpm", "Rotor_rpm", "RBremse", "bat1", "bat2", "bat3", "OPress1", "OPress2", "HPress1", "HPress2", "Temp1", "Temp2", "Torque", "Engine_rpm_2", "Rotor_rpm_2", "RBremse_2", "OPress1_2", "OPress2_2", "HPress1_2", "HPress2_2", "Temp1_2", "Temp2_2", "Torque_2"]
+_vehicle setObjectTexture [_hiddenSelections find "display1", ""]
+_vehicle setObjectTexture [_hiddenSelections find "display2", ""]
+_vehicle setObjectTexture [_hiddenSelections find "display3", ""]
+_vehicle setObjectTexture [_hiddenSelections find "display4", ""]
+_vehicle setObjectTexture [_hiddenSelections find "display5", ""]
+_vehicle setObjectTexture [_hiddenSelections find "display6", ""]
+_vehicle setObjectTexture [_hiddenSelections find "display7", ""]
+_vehicle setObjectTexture [_hiddenSelections find "waffen1",""]
+_vehicle setObjectTexture [_hiddenSelections find "waffen2",""]
+_vehicle setObjectTexture [_hiddenSelections find "waffen3",""]
+_vehicle setObjectTexture [_hiddenSelections find "waffen4",""]
+Exit
+
+
+? !isEngineOn _vehicle: Goto "Engine_OFF"
+#Engine_ON
+[_vehicle, ["Door1", "Door2"], 0] exec {\TZK_Objects\Scripts\SwitchSelections.sqs}
+[_vehicle, ["HID", "HIDinnen"], 1] exec {\TZK_Objects\Scripts\SwitchSelections.sqs}
+? driver _vehicle != player || getpos _vehicle select 2 > 5: Goto "Engine_ON_REMOTE"
+
+driver _vehicle switchMove "BWMod_TigerPilotStartup"
+
+_vehicle animate ["Engine_rpm", 1]; _vehicle animate ["Engine_rpm_2", 1]
+
+@(!local _vehicle || !alive _vehicle || !isEngineOn _vehicle || _time > 2.3)
+? !local _vehicle || !alive _vehicle || !isEngineOn _vehicle: exit
+
+{_vehicle animate [_x, 1]} forEach ["Rotor_rpm", "bat2", "bat3", "OPress1", "OPress2", "HPress1", "HPress2", "Temp1", "Temp2", "Torque", "Rotor_rpm_2", "OPress1_2", "OPress2_2", "HPress1_2", "HPress2_2", "Temp1_2", "Temp2_2", "Torque_2"]
+~0.3
+_vehicle animate ["bat1", 1]; _vehicle setObjectTexture [_hiddenSelections find "display1", "\TZK_Texture_4_0_0\BWMOD\Tiger\instr\display.pac"]
+
+@(!local _vehicle || !alive _vehicle || !isEngineOn _vehicle || _time > 2.3+0.3+4.5)
+? !local _vehicle || !alive _vehicle || !isEngineOn _vehicle: exit
+
+_vehicle animate ["RBremse", 1]; _vehicle setObjectTexture [_hiddenSelections find "display2", "\TZK_Texture_4_0_0\BWMOD\Tiger\instr\display.pac"]
+~0.5
+_vehicle setObjectTexture [_hiddenSelections find "display3", "\TZK_Texture_4_0_0\BWMOD\Tiger\instr\MFD.pac"]
+~0.5
+_vehicle setObjectTexture [_hiddenSelections find "display4", "\TZK_Texture_4_0_0\BWMOD\Tiger\instr\numbers.paa"]
+_vehicle setObjectTexture [_hiddenSelections find "display5", "\TZK_Texture_4_0_0\BWMOD\Tiger\instr\hud.paa"]
+_vehicle setObjectTexture [_hiddenSelections find "display6", "\TZK_Texture_4_0_0\BWMOD\Tiger\instr\horizont.paa"]
+_vehicle setObjectTexture [_hiddenSelections find "display7", "\TZK_Texture_4_0_0\BWMOD\Tiger\instr\kompasH.paa"]
+
+@(!local _vehicle || !alive _vehicle || !isEngineOn _vehicle || _time > 2.3+0.3+4.5+0.5+0.5+5.7)
+? !local _vehicle || !alive _vehicle || !isEngineOn _vehicle: exit
+? alive driver _vehicle: driver _vehicle switchmove "BWMod_TigerPilot"
+Goto "GearLoop"
+
+#Engine_ON_REMOTE
+? local _vehicle: {_vehicle animate [_x, 1]} forEach ["Engine_rpm", "Rotor_rpm", "RBremse", "bat1", "bat2", "bat3", "OPress1", "OPress2", "HPress1", "HPress2", "Temp1", "Temp2", "Torque", "Engine_rpm_2", "Rotor_rpm_2", "RBremse_2", "OPress1_2", "OPress2_2", "HPress1_2", "HPress2_2", "Temp1_2", "Temp2_2", "Torque_2"]
+_vehicle setObjectTexture [_hiddenSelections find "display1", "\TZK_Texture_4_0_0\BWMOD\Tiger\instr\display.pac"]
+_vehicle setObjectTexture [_hiddenSelections find "display2", "\TZK_Texture_4_0_0\BWMOD\Tiger\instr\display.pac"]
+_vehicle setObjectTexture [_hiddenSelections find "display3", "\TZK_Texture_4_0_0\BWMOD\Tiger\instr\MFD.pac"]
+_vehicle setObjectTexture [_hiddenSelections find "display4", "\TZK_Texture_4_0_0\BWMOD\Tiger\instr\numbers.paa"]
+_vehicle setObjectTexture [_hiddenSelections find "display5", "\TZK_Texture_4_0_0\BWMOD\Tiger\instr\hud.paa"]
+_vehicle setObjectTexture [_hiddenSelections find "display6", "\TZK_Texture_4_0_0\BWMOD\Tiger\instr\horizont.paa"]
+_vehicle setObjectTexture [_hiddenSelections find "display7", "\TZK_Texture_4_0_0\BWMOD\Tiger\instr\kompasH.paa"]
+Goto "GearLoop"
+
+
+#GearLoop
+@(!local _vehicle || !alive _vehicle || !isEngineOn _vehicle || (getPos _vehicle) select 2 > 10 || (abs speed _vehicle > 20))
+? !local _vehicle || !alive _vehicle || !isEngineOn _vehicle: exit
+[_vehicle, ["DamperL", "DamperR"], 1] exec {\TZK_Objects\Scripts\SwitchSelections.sqs}
+
+@(!local _vehicle || !alive _vehicle || !isEngineOn _vehicle || (getPos _vehicle) select 2 < 10-2 && (abs speed _vehicle < 20-2))
+? !local _vehicle || !alive _vehicle || !isEngineOn _vehicle: exit
+[_vehicle, ["DamperL", "DamperR"], 0] exec {\TZK_Objects\Scripts\SwitchSelections.sqs}
+
+; Engine_EH will keep on detecting the gear status unless helicopter is dead/engineOFF/remote.
+goto "GearLoop"

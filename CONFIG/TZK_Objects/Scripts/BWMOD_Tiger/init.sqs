@@ -1,0 +1,14 @@
+_tiger = _this select 0
+
+[_tiger,0,0] exec {\BWMOD_Scripts\helo\nr.sqs};
+[_tiger,1] exec {\BWMOD_Scripts\helo\wingbadge.sqs};
+[_tiger] exec {\BWMOD_Tiger\scr\hid.sqs};
+
+ _tiger exec {\BWMOD_Tiger\scr\dkmm_damper.sqs};
+
+?(BWMOD_Temp_Pilot == BWMOD_Temp_Pilot): goto "ende";
+hint "Error:\n====\n\nBWMOD_Temp_Pilot  missing!";
+exit;
+
+#ende
+exit;

@@ -1,0 +1,25 @@
+_heli = _this select 0
+_wait = 0.010
+_dist = -8
+_z = 1
+_size1 = 2
+_size2 = 4
+
+
+?("RHS_Mi24P_CAS"       counttype [_heli] == 1):_dist= -9
+?("RHS_Mi24P_AT"        counttype [_heli] == 1):_dist= -9
+?("RHS_Mi24V_CAS"       counttype [_heli] == 1):_dist= -9
+?("RHS_Mi24V_AT"        counttype [_heli] == 1):_dist= -9
+
+#loop
+_enginePos = [0, _dist-random 1 +random 1, _z-random 0.5+random 0.5]
+? getPos _heli select 2 >= 0:drop ["cl_basic", "", "Billboard", 1, random 4, _enginePos, [random 2,random 2,random 2], 0, 1.15, 1, 0.0, [_size1+random 2,_size2+random 1], [[0,0,0,0.15],[0,0,0,0.0],[0,0,0,0]], [0,1,0], 2.0, 0.050, "", "", _heli]
+_enginePos = [0, _dist-random 1 +random 1, _z-random 0.5+random 0.5]
+? getPos _heli select 2 >= 0:drop ["cl_basic", "", "Billboard", 1, random 4, _enginePos, [random 2,random 2,random 2], 0, 1.25, 1, 0.0, [_size1+random 2,_size2+random 1], [[0,0,0,0.15],[0,0,0,0.0],[0,0,0,0]], [0,1,0], 2.0, 0.100, "", "", _heli]
+_enginePos = [0, _dist-random 1 +random 1, _z-random 0.5+random 0.5]
+? getPos _heli select 2 >= 0:drop ["cl_basic", "", "Billboard", 1, random 2, _enginePos, [random 2,random 2,random 2], 0, 1.15, 1, 0.0, [_size1+random 2,_size2+random 1], [[0,0,0,0.15],[0,0,0,0.0],[0,0,0,0]], [0,1,0], 2.0, 0.150, "", "", _heli]
+~_wait
+? getPos _heli select 2 >= 1: goto "loop"
+
+
+exit

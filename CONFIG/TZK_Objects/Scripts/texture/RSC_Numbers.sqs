@@ -1,0 +1,25 @@
+; args: [vehicle, (texture path), (selection name), (texture name), (exclude numbers[]), (postfix)]
+
+_vehicle = _this select 0; _path = {\TZK_Texture_4_0_0\DKMM\}
+? count _this > 1: _path = _this select 1
+
+_array = typeOf _vehicle GetVehicleParamArray "hiddenselections";
+_nr = (((getpos _vehicle select 0) + (getpos _vehicle select 1)*3) % 1000) - 1; _nr = _nr - (_nr % 1)
+
+_selName = "n"; _texName = "n"; _excludeList = [], _postfix = "paa"
+? count _this > 2: _selName = _this select 2
+? count _this > 3: _texName = _this select 3
+? count _this > 4: _excludeList = _this select 4
+? count _this > 5: _postfix = _this select 5
+; Similar to default parameters of C++ functions :)
+
+_j = _nr % 10; _i = _array find (_selName + "3")
+? !(_j in _excludeList): _vehicle setObjectTexture [_i, format [_path + "%1%2.%3", _texName, _j, _postfix]] 
+
+_j = ((_nr - _j)/10) % 10; _i = _array find (_selName + "2")
+? !(_j in _excludeList): _vehicle setObjectTexture [_i, format [_path + "%1%2.%3", _texName, _j, _postfix]]  
+
+_j = (_nr - _nr % 100)/100; _i = _array find (_selName + "1")
+? !(_j in _excludeList): _vehicle setObjectTexture [_i, format [_path + "%1%2.%3", _texName, _j, _postfix]] 
+
+; EOF

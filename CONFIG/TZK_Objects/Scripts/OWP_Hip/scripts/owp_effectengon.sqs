@@ -1,0 +1,35 @@
+
+; Written by Voyager, DPS
+; Fixed by SoldierEPilot
+
+? count crew _this < 2 : goto "pilotOnly"
+
+? typeof _this == "OWP_Mi8T_c" : goto "start"
+? typeof _this == "OWP_Mi8T_un" : goto "start"
+
+_p = driver _this
+_g = gunner _this
+_crew = (crew _this)-[_p, _g]
+?0==count _crew: goto "pilot_and_co"
+
+_copilot = [_crew, _p] call localize {fn_nearest_from_obj}
+?_copilot distance _p>1.4: _copilot = gunner _this
+goto "pilot_and_co"
+
+
+#start
+	_copilot = gunner _this
+
+#pilot_and_co
+	?(alive driver _this) && (driver _this in _this): (driver _this) switchmove "OWPMi8Pilotengineon"
+	?(alive _copilot) && (_copilot in _this): (_copilot) switchmove "OWPMi8CoPilotengineon"
+	~4
+	?(alive driver _this) && (driver _this in _this): (driver _this) switchmove "OWPMi8Pilot"
+	?(alive _copilot) && (_copilot in _this): (_copilot) switchmove "OWPMi8CoPilot"
+exit
+
+#pilotOnly
+? (alive driver _this) && (driver _this in _this) : (driver _this) switchmove "OWPMi8Pilotengineon"
+~4
+?(alive driver _this) && (driver _this in _this) : (driver _this) switchmove "OWPMi8Pilot"
+exit

@@ -1,0 +1,32 @@
+_hind = _this select 0
+_pos = _this select 1
+
+?! (alive _hind): exit
+
+? (_pos == "driver") && (_hind animationphase "pdoor" != 1): [_hind] exec "\RHS_hind\scripts\pdoorop.sqs"; goto "pdoor"
+
+? (_pos == "gunner") && (_hind animationphase "gdoor" != 1): [_hind] exec "\RHS_hind\scripts\gdoorop.sqs"; goto "gdoor"
+
+_rphase = _hind animationphase "rtdoor"
+? (_pos == "cargo") && (_hind animationphase "rtdoor" != 1): _hind animate["rtdoor" ,1];_hind animate["rudoor" ,1]
+_lphase = _hind animationphase "ltdoor"
+? (_pos == "cargo") && (_hind animationphase "ltdoor" != 1): _hind animate["ltdoor" ,1];_hind animate["ludoor" ,1]
+
+~10
+
+? (_hind animationphase "rtdoor" != 0) && (_rphase != 1): _hind animate["rtdoor" ,0];_hind animate["rudoor" ,0]
+
+? (_hind animationphase "ltdoor" != 0) && (_lphase != 1): _hind animate["ltdoor" ,0];_hind animate["ludoor" ,0]
+
+exit
+
+#pdoor
+~1.5
+? (isengineon _hind) && (_hind animationphase "pdoor" != 0) : [_hind] exec "\RHS_hind\scripts\pdoorcl.sqs"
+exit
+
+#gdoor
+? (getpos _hind select 2) > 3 : exit
+~1.5
+? (isengineon _hind) && (_hind animationphase "gdoor" != 0) : [_hind] exec "\RHS_hind\scripts\gdoorcl.sqs"
+exit

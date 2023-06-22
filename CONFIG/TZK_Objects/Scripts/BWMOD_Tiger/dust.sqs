@@ -1,0 +1,128 @@
+_source = _this select 0
+_dFc = _this select 1
+
+If (fuel _source == 0) then {exit}
+?(BWMod_NoDust) : exit
+
+_position = GetPos _source;
+_altitude = _position select 2;
+?(_altitude >= 5): goto "passe"
+~10
+
+#passe
+
+_lif = 2.0
+
+_szFactor=2.0
+_sz1 = _szFactor*_dFc*0.01
+_sz2 = _szFactor*_dFc*0.03
+_sz3 = _szFactor*_dFc*0.15
+_sz4 = _szFactor*_dFc*0.3
+
+_sizx=[_dFc*0.001,_dFc*0.5,_dFc*0.8,_dFc*0.1]
+
+_asp = 10.0
+_drg = 0.008
+_mas = 1.0
+_asc = 0.77
+
+_col1=[0.5,0.5,0.5,0]
+_col4=[0.5,0.5,0.5,0]
+
+_sea = "EmptyDetector" camcreate [0,0,0]
+
+#Begin
+? !(alive _Source && isEngineOn _Source) : goto "End"
+~0.01
+
+_Posz=getpos _source select 2
+?(_Posz>15): goto Begin
+?(_Posz<0): _Posz=0
+
+_Posx = getpos _source select 0
+_Posy = getpos _source select 1
+
+_sea setpos [_Posx,_Posy,0]
+
+_Dep=_Posz/10
+?(_Dep<0):_Dep=0
+_Dep=_Dep*_Dep
+
+_Mov=(abs(speed _Source)/16)
+
+_Dash=_dFc/(1+(_Dep*_Mov))
+
+_asp=6-random 12.0
+
+_alf=(_Dash/_dFc)/(1+_Dep)
+
+?((getpos _sea select 2)>-2.2):goto "OverSea"
+
+_col2=[0.5,0.5,0.5,_alf*0.6]
+_col3=[0.5,0.5,0.5,_alf]
+_col=[_col1,_col2,_col3,_col4]
+
+_siz1=0.2+random 1.0*_sz1
+_siz2=0.3+random 1.0*_sz2
+_siz3=2.0+random 1.0*_sz3
+_siz4=6.0+random 1.0*_sz4
+_siz=[_siz1,_siz2,_siz3,_siz4]
+
+_Po=[_Posx,_Posy,1.8]
+
+_dur=_lif+random 1.0
+
+_nb=6
+
+#OverGroundLoop
+_Angl1=random 359.9
+_iSpd=[_Dash*cos _Angl1,_Dash*sin _Angl1,0.1]
+drop ["\BWMOD_Tiger\scr\DrKk_Dust.p3d","","Billboard",1,_dur,_Po,_iSpd,_asp,_mas,_asc,_drg,_siz,_col,[0,1],5.0,0.0,"","",""]
+
+_nb=_nb-1
+?(_nb>0):goto "OverGroundLoop"
+
+;_col2=[0.5,0.5,0.5,_alf]
+;_col3=[0.5,0.5,0.5,_alf*0.5]
+;_colx=[_col1,_col2,_col3,_col4]
+;drop ["\BWMOD_Tiger\scr\DrKk_GWavs.p3d","","SpaceObject",1,0.01,_Po,[0,0,0],_Angl1,0.003,0.003,_drg,_sizx,_colx,[0,1],0.0,0.0,"","",""]
+
+goto "Begin"
+
+#OverSea
+
+_col2=[0.8,0.8,0.8,_alf]
+_col3=[0.6,0.7,0.8,_alf*0.6]
+_col=[_col1,_col2,_col3,_col4]
+
+_siz1=0.2+random 0.5*_sz1
+_siz2=0.4+random 0.5*_sz2
+_siz3=0.6+random 0.5*_sz3
+_siz4=0.8+random 0.5*_sz4
+_siz=[_siz1,_siz2,_siz3,_siz4]
+
+_Dash=_Dash*0.7
+
+_Po=[_Posx,_Posy,0.2]
+
+_dur=_lif*0.7+random 0.3
+
+_nb=12
+#OverSeaLoop
+
+_Angl1=random 359.9
+_iSpd=[_Dash*cos _Angl1,_Dash*sin _Angl1,0.1]
+drop ["\BWMOD_Tiger\scr\DrKk_Embr.p3d","","Billboard",1,_dur,_Po,_iSpd,_asp,_mas,_asc,_drg,_siz,_col,[0,1],5.0,0.0,"","",""]
+
+_nb=_nb-1
+?(_nb>0):goto "OverSeaLoop"
+
+;_Po=[_Posx,_Posy,2.0]
+;_coltmr=[[1,1,1,0],[1,1,1,_alf],[1,1,1,_alf*0.8],[1,1,1,_alf*0.5],[1,1,1,0]]
+;drop ["\BWMOD_Tiger\scr\DrKk_Wavs.p3d","","SpaceObject",1,0.01,_Po,[1,0,0],_Angl1,0,0,0,[0,5,8,10,11],_coltmr,[0,1],5.0,0.0,"","",""]
+
+goto "Begin"
+
+#End
+camDestroy _sea
+Exit

@@ -1,0 +1,56 @@
+;#########################################
+;# Written by Voyager  voyager04@mail.ru #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+;small_rotor.ogg - 2.995
+;small_rotor_off.ogg - 4.809
+;small_rotor_on.ogg - 7.181
+_me = _this
+_yrotor = -10.5
+_xrotor = 0
+_zrotor = 4
+_pause = 0.00001
+
+_small_rotor = "EmptySource" createVehicle [(getpos _me select 0) + _yrotor*sin(getdir _me) + _xrotor*cos(getdir _me),(getpos _me select 1) + _yrotor*cos(getdir _me) - _xrotor*sin(getdir _me),(getpos _me select 2) + _zrotor]
+_small_rotor setpos [(getpos _me select 0) + _yrotor*sin(getdir _me) + _xrotor*cos(getdir _me),(getpos _me select 1) + _yrotor*cos(getdir _me) - _xrotor*sin(getdir _me),(getpos _me select 2) + _zrotor]
+if ("owp_mi8_trigger_dammage_transmission" in magazines _me) then {_small_rotor say "mi8smallrotoronw"} else {_small_rotor say "mi8smallrotoron"}
+_tm = _time
+#starting
+_small_rotor setpos [(getpos _me select 0) + _yrotor*sin(getdir _me) + _xrotor*cos(getdir _me),(getpos _me select 1) + _yrotor*cos(getdir _me) - _xrotor*sin(getdir _me),(getpos _me select 2) + _zrotor]
+~_pause
+? (_time - _tm >= 7.181):goto "endstarting"
+goto "starting"
+#endstarting
+deleteVehicle _small_rotor
+
+#safe
+_small_rotor = "OWP_Mi8_Sound_sm" createVehicle [(getpos _me select 0) + _yrotor*sin(getdir _me) + _xrotor*cos(getdir _me),(getpos _me select 1) + _yrotor*cos(getdir _me) - _xrotor*sin(getdir _me),(getpos _me select 2) + _zrotor]
+#main
+if ("owp_mi8_trigger_dammage_transmission" in magazines _me) then {deleteVehicle _small_rotor;goto "wreck"}
+_small_rotor setpos [(getpos _me select 0) + _yrotor*sin(getdir _me) + _xrotor*cos(getdir _me),(getpos _me select 1) + _yrotor*cos(getdir _me) - _xrotor*sin(getdir _me),(getpos _me select 2) + _zrotor]
+~_pause
+? !(isEngineOn _me):goto "endmain"
+goto "main"
+#endmain
+deleteVehicle _small_rotor
+
+_small_rotor = "EmptySource" createVehicle [(getpos _me select 0) + _yrotor*sin(getdir _me) + _xrotor*cos(getdir _me),(getpos _me select 1) + _yrotor*cos(getdir _me) - _xrotor*sin(getdir _me),(getpos _me select 2) + _zrotor]
+if ("owp_mi8_trigger_dammage_transmission" in magazines _me) then {_small_rotor say "mi8smallrotoroffw"} else {_small_rotor say "mi8smallrotoroff"}
+_tm = _time
+#ending
+_small_rotor setpos [(getpos _me select 0) + _yrotor*sin(getdir _me) + _xrotor*cos(getdir _me),(getpos _me select 1) + _yrotor*cos(getdir _me) - _xrotor*sin(getdir _me),(getpos _me select 2) + _zrotor]
+~_pause
+? (_time - _tm >= 4.809):goto "endending"
+goto "ending"
+#endending
+deleteVehicle _small_rotor
+exit
+
+#wreck
+_small_rotor = "OWP_Mi8_Sound_smw" createVehicle [(getpos _me select 0) + _yrotor*sin(getdir _me) + _xrotor*cos(getdir _me),(getpos _me select 1) + _yrotor*cos(getdir _me) - _xrotor*sin(getdir _me),(getpos _me select 2) + _zrotor]
+#mainwreck
+if !("owp_mi8_trigger_dammage_transmission" in magazines _me) then {deleteVehicle _small_rotor;goto "safe"}
+_small_rotor setpos [(getpos _me select 0) + _yrotor*sin(getdir _me) + _xrotor*cos(getdir _me),(getpos _me select 1) + _yrotor*cos(getdir _me) - _xrotor*sin(getdir _me),(getpos _me select 2) + _zrotor]
+~_pause
+? !(isEngineOn _me):goto "endmain"
+goto "mainwreck"

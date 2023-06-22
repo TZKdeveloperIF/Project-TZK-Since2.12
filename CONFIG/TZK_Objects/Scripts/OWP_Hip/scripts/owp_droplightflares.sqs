@@ -1,0 +1,141 @@
+;#########################################
+;# Written by Voyager  voyager04@mail.ru #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+
+_me = _this select 0
+_x = -10
+_y = -5
+_z = 0
+_dis = 50
+
+_me addMagazine "owp_flarelightmag"
+_count = 0
+#Start
+@ ("owp_flarelightmag" in magazines _me)
+goto format["count_%1",_count]
+
+;white
+#count_0
+@("owp_mi8_trigger_drop_light_flares_active" in magazines _me)
+? !("owp_flarelightmag" in magazines _me) : _count = 0; goto "start"
+? !(alive _me) : goto "start"
+_count = _count + 1
+_flare = "Flare" camcreate [(getpos _me select 0) + _y*sin(getdir _me) + _x*cos(getdir _me),(getpos _me select 1) + _y*cos(getdir _me) - _x*sin(getdir _me),(getpos _me select 2) + _z]
+
+#loop_0
+_flare setvelocity [-10*cos(getdir _me),10*sin(getdir _me),5]
+? _flare distance _me > _dis : goto "next_0"
+~0.1
+goto "loop_0"
+#next_0
+_me removemagazine "owp_mi8_trigger_drop_light_flares_active"
+
+;Yellow
+#count_1
+@("owp_mi8_trigger_drop_light_flares_active" in magazines _me)
+? !("owp_flarelightmag" in magazines _me) : _count = 0; goto "start"
+? !(alive _me) : goto "start"
+_count = _count + 1
+_flare = "FlareYellow" camcreate [(getpos _me select 0) + _y*sin(getdir _me) + _x*cos(getdir _me),(getpos _me select 1) + _y*cos(getdir _me) - _x*sin(getdir _me),(getpos _me select 2) + _z]
+#loop_1
+_flare setvelocity [-10*cos(getdir _me),10*sin(getdir _me),5]
+? _flare distance _me > _dis : goto "next_1"
+~0.1
+goto "loop_1"
+#next_1
+_me removemagazine "owp_mi8_trigger_drop_light_flares_active"
+
+;Green
+#count_2
+@("owp_mi8_trigger_drop_light_flares_active" in magazines _me)
+? !("owp_flarelightmag" in magazines _me) : _count = 0; goto "start"
+? !(alive _me) : goto "start"
+_count = _count + 1
+_flare = "FlareGreen" camcreate [(getpos _me select 0) + _y*sin(getdir _me) + _x*cos(getdir _me),(getpos _me select 1) + _y*cos(getdir _me) - _x*sin(getdir _me),(getpos _me select 2) + _z]
+#loop_2
+_flare setvelocity [-10*cos(getdir _me),10*sin(getdir _me),5]
+? _flare distance _me > _dis : goto "next_2"
+~0.1
+goto "loop_2"
+#next_2
+_me removemagazine "owp_mi8_trigger_drop_light_flares_active"
+
+;Red
+#count_3
+@("owp_mi8_trigger_drop_light_flares_active" in magazines _me)
+? !("owp_flarelightmag" in magazines _me) : _count = 0; goto "start"
+? !(alive _me) : goto "start"
+_count = _count + 1
+_flare = "FlareRed" camcreate [(getpos _me select 0) + _y*sin(getdir _me) + _x*cos(getdir _me),(getpos _me select 1) + _y*cos(getdir _me) - _x*sin(getdir _me),(getpos _me select 2) + _z]
+#loop_3
+_flare setvelocity [-10*cos(getdir _me),10*sin(getdir _me),5]
+? _flare distance _me > _dis : goto "next_3"
+~0.1
+goto "loop_3"
+#next_3
+_me removemagazine "owp_mi8_trigger_drop_light_flares_active"
+
+;white
+#count_4
+@("owp_mi8_trigger_drop_light_flares_active" in magazines _me)
+? !("owp_flarelightmag" in magazines _me) : _count = 0; goto "start"
+? !(alive _me) : goto "start"
+_count = _count + 1
+_flare = "Flare" camcreate [(getpos _me select 0) + _y*sin(getdir _me) + _x*cos(getdir _me),(getpos _me select 1) + _y*cos(getdir _me) - _x*sin(getdir _me),(getpos _me select 2) + _z]
+#loop_4
+_flare setvelocity [-10*cos(getdir _me),10*sin(getdir _me),5]
+? _flare distance _me > _dis : goto "next_4"
+~0.1
+goto "loop_4"
+#next_4
+_me removemagazine "owp_mi8_trigger_drop_light_flares_active"
+
+;Yellow
+#count_5
+@("owp_mi8_trigger_drop_light_flares_active" in magazines _me)
+? !("owp_flarelightmag" in magazines _me) : _count = 0; goto "start"
+? !(alive _me) : goto "start"
+_count = _count + 1
+_flare = "FlareYellow" camcreate [(getpos _me select 0) + _y*sin(getdir _me) + _x*cos(getdir _me),(getpos _me select 1) + _y*cos(getdir _me) - _x*sin(getdir _me),(getpos _me select 2) + _z]
+#loop_5
+_flare setvelocity [-10*cos(getdir _me),10*sin(getdir _me),5]
+? _flare distance _me > _dis : goto "next_5"
+~0.1
+goto "loop_5"
+#next_5
+_me removemagazine "owp_mi8_trigger_drop_light_flares_active"
+
+;Green
+#count_6
+@("owp_mi8_trigger_drop_light_flares_active" in magazines _me)
+? !("owp_flarelightmag" in magazines _me) : _count = 0; goto "start"
+? !(alive _me) : goto "start"
+_count = _count + 1
+_flare = "FlareGreen" camcreate [(getpos _me select 0) + _y*sin(getdir _me) + _x*cos(getdir _me),(getpos _me select 1) + _y*cos(getdir _me) - _x*sin(getdir _me),(getpos _me select 2) + _z]
+#loop_6
+_flare setvelocity [-10*cos(getdir _me),10*sin(getdir _me),5]
+? _flare distance _me > _dis : goto "next_6"
+~0.1
+goto "loop_6"
+#next_6
+_me removemagazine "owp_mi8_trigger_drop_light_flares_active"
+
+;Red
+#count_8
+@("owp_mi8_trigger_drop_light_flares_active" in magazines _me)
+? !("owp_flarelightmag" in magazines _me) : _count = 0; goto "start"
+? !(alive _me) : goto "start"
+_count = _count + 1
+_flare = "FlareRed" camcreate [(getpos _me select 0) + _y*sin(getdir _me) + _x*cos(getdir _me),(getpos _me select 1) + _y*cos(getdir _me) - _x*sin(getdir _me),(getpos _me select 2) + _z]
+#loop_8
+_flare setvelocity [-10*cos(getdir _me),10*sin(getdir _me),5]
+? _flare distance _me > _dis : goto "next_8"
+~0.1
+goto "loop_8"
+#next_8
+_me removemagazine "owp_mi8_trigger_drop_light_flares_active"
+
+_me removemagazine "owp_flarelightmag"
+_count = 0
+goto "Start"

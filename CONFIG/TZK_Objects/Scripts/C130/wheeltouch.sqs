@@ -1,0 +1,13 @@
+_vehicle = _this select 0
+
+#start
+@((getpos (driver vehicle _vehicle) select 2) > 10 || !local _vehicle)
+@ (_vehicle animationPhase "NoseGear" == 0 || !local _vehicle)
+@ ((getpos (driver vehicle _vehicle) select 2 < 3.5) && (speed _vehicle > 50) && (isengineon _vehicle) || !local _vehicle)
+? !local _vehicle: exit
+
+_vehicle say "wheelnsndc130_xj400"
+~0.52
+? ((_vehicle animationPhase "NoseGear" == 0) && (_vehicle animationPhase "reverseprops" == 0) && (speed _vehicle > 50)):_vehicle animate["reverseprops",1];[_vehicle] exec "\TZK_Objects\Scripts\C130\reverseprops.sqs" 
+? alive _vehicle && local _vehicle: goto "start"
+exit

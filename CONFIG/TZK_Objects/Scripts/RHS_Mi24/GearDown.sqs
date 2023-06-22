@@ -1,0 +1,18 @@
+_mi24 = _this select 0; _boolMP = false
+? count _this > 1: _boolMP = _this select 1
+
+? _boolMP: publicExec format ["UnitByID %1 say {RHS_Mi24_gear}", NetworkID _mi24]
+_mi24 say "RHS_Mi24_gear"
+
+_vehicle = _mi24
+_typeName = typeOf _vehicle; _hiddenSelections = _typeName GetVehicleParamArray "hiddenSelections"
+_vehicle setObjectTexture [_hiddenSelections find "gearlight", "\TZK_Texture_4_0_0\RHS_hind\p\mi24_lgr.paa"]
+
+
+_mi24 animate ["gcR",0]
+_mi24 animate ["gcL",0]
+~0.5
+_mi24 animate ["gearF",0]
+_mi24 animate ["gearR",0]
+_mi24 animate ["gearL",0]
+_mi24 animate ["gcF",0]

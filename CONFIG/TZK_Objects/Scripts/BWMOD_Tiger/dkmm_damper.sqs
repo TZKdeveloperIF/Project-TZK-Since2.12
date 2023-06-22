@@ -1,0 +1,20 @@
+#damper
+	? getpos _this select 2 > 3 : goto "break"
+	_height = (getpos _this select 2) + 0.273
+	? _height > 0.3 : _height = 0.3
+	_height = _height*3.33
+	_this animate ["DamperL", _height]
+	_this animate ["DamperR", _height]
+	#next
+	~0.02
+	goto "damper"
+	
+#break
+	_this animate ["DamperL", 1]
+	_this animate ["DamperR", 1]
+	_i = 2
+	? (getpos _this select 2) > 10 : _i = 5
+	? (getpos _this select 2) > 100 : _i = 15
+	~_i
+	goto "damper"
+	

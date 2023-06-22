@@ -1,0 +1,39 @@
+_veh = _this select 0
+
+#loop
+? isNull _veh || ! alive _veh : exit
+@ isEngineOn _veh || ! alive _veh
+? ! (alive _veh): exit 
+_veh say "RHS_Mi24_engineon"
+[_veh,2,2] exec "\RHS_Hind\scripts\rotor.sqs"
+[_veh,2,2] exec "\RHS_Hind\scripts\engineSmoke.sqs"
+_veh setObjectTexture [3, "\RHS_Hind\p\mi24_lgr.paa"]
+
+
+@ ! (isEngineOn _veh) || ! (alive _veh)
+? ! (alive _veh): exit
+_veh say "RHS_Mi24_engineoff"
+_veh setObjectTexture [3, "\RHS_Hind\p\mi24_ln.paa"]
+
+goTo "loop"
+
+
+goto "start"
+? ! (isengineon _veh) || ! (alive _veh): goto "stop"
+goTo "loop"
+
+#start
+? ! (alive _veh): exit 
+_veh say "RHS_Mi24_engineon"
+_veh setObjectTexture [3, "\RHS_Hind\p\mi24_lgr.paa"]
+[_veh,2,2] exec "\RHS_Hind\scripts\rotor.sqs"
+[_veh,2,2] exec "\RHS_Hind\scripts\engineSmoke.sqs"
+goto "loop"
+
+#stop
+? ! (alive _veh): exit
+_veh say "RHS_Mi24_engineoff"
+_veh setObjectTexture [3, "\RHS_Hind\p\mi24_ln.paa"]
+
+
+goto "loop"

@@ -1,0 +1,17 @@
+;#########################################
+;# Written by Voyager  voyager04@mail.ru #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+
+_me = _this select 0
+_num1 = _this select 1
+_num2 = _this select 2
+_d = 0
+? (count _this == 3) : _d = 0.5
+~_d
+_i = 0
+_j = -1
+"if (_me in _x) then {_j=_i};_i=_i+1" foreach OWP_MI8_HELICOPTERS_ARRAY
+if (_j!=-1) then {(OWP_MI8_HELICOPTERS_ARRAY select _j) set [2,[_num1,_num2]]} else {hint "critical error\nexit from script";exit}
+_me exec "\OWP_Mi8\scripts\owp_update.sqs"
+exit

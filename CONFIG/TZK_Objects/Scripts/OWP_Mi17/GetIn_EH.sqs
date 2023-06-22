@@ -1,0 +1,10 @@
+; args: Get_In_Array
+_vehicle = _this select 0; _seat = _this select 1; _unit = _this select 2
+
+? _seat == "Driver": [_vehicle, ["OWP_Mi8_FLG"], 0] exec {\TZK_Objects\Scripts\SwitchSelections.sqs}; exit
+? _seat == "Gunner": [_vehicle, ["OWP_Mi8_FRG"], 1] exec {\TZK_Objects\Scripts\SwitchSelections.sqs}; exit
+
+; Seat must be "Cargo" here.
+? _vehicle animationPhase "OWP_Mi8_CDL" < 0.5 || _vehicle animationPhase "OWP_Mi8_CDR" < 0.5: [_vehicle, ["OWP_Mi8_CDL", "OWP_Mi8_CDR"], 1] exec {\TZK_Objects\Scripts\SwitchSelections.sqs}
+
+exit

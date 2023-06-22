@@ -1,0 +1,81 @@
+_plane1 = _this select 0
+_weapon = _array select 1
+_ammoname = _array select 4
+
+_weapon1 = "BLLM197"
+_weapon2 = "ah1aim9"
+
+
+_misscount = _plane1 ammo "ah1aim9"
+
+
+_col = [0.5,0.5,0.5,0.8]
+_col2 = [0.7,0.7,0.7,0.5]
+_col3 = [0.75,0.75,0.75,0.7]
+? _current == "" : goto "chk_all"
+? _current == _weapon1: goto "weapon1fired"
+? _current == _weapon2: goto "weapon2check"
+
+shade = 0.4 +random 0.5
+exit
+
+
+
+
+
+
+#weapon1fired 
+	;20 mm
+        _x = sin(getdir _plane1)
+	_y = cos(getdir _plane1)
+	_z = (velocity _plane1 select 2) -5.5
+        
+	
+drop ["cl_basic", "", "Billboard", 1, 2, [0,4.5,-2], [0,0,_z], 1, 1, 0.50, 0.11, [1.1,1.1],[_col],[0],1.1,1.1,"","",_plane1]
+drop ["\Vit_AH-1W\store\casing.p3d", "", "Billboard", 1, 2, [0,4.5,-2], [0,0,_z], 1, 1, 0.50, 0.01, [0.1,0.1],[_col],[0],0.1,0.1,"","",_plane1]
+
+~0.02
+drop ["cl_basic", "", "Billboard", 1, 2, [0,4.5,-2], [0,0,_z], 1, 1, 0.50, 0.11, [1.1,1.1],[_col],[0],1.1,1.1,"","",_plane1]
+drop ["\Vit_AH-1W\store\casing.p3d", "", "Billboard", 1, 2, [0,4.5,-2], [0,0,_z], 1, 1, 0.50, 0.01, [0.1,0.1],[_col],[0],0.1,0.1,"","",_plane1]
+
+exit
+
+
+
+#weapon2check
+
+? (_misscount == 2) : goto "miss2"
+? (_misscount == 1) : goto "miss1"
+? (_misscount == 0) : goto "miss0"
+
+exit
+
+
+#miss2
+_plane1 setobjecttexture[11, "\Vit_AH-1W\store\sw_tex.paa"]
+_plane1 setobjecttexture[12, "\Vit_AH-1W\store\sw_tex.paa"]
+exit
+
+
+
+
+
+#miss1
+_plane1 setobjecttexture[11, ""]
+_plane1 setobjecttexture[12, "\Vit_AH-1W\store\sw_tex.paa"]
+
+_missmove = -1
+
+exit
+
+
+
+#miss0
+
+_plane1 setobjecttexture[11, ""]
+_plane1 setobjecttexture[12, ""]
+
+_missmove = 1
+
+exit
+

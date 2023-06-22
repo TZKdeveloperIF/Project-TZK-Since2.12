@@ -1,0 +1,67 @@
+;#########################################
+;# Written by Voyager  voyager04@mail.ru #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+
+_mi8 = _this
+? (fuel _mi8 < 0.1):exit
+_corr = 2
+~0.001
+_colorland = [[0.4,0.4,0.4,0],[0.6,0.6,0.6,0],[0.4,0.4,0.4,0.25],[0.65, 0.6, 0.5, 0]]
+_colorwater = [[0.8,0.8,0.9,0],[0.9,0.9,1,0.15],[0.8,0.8,0.9,0],[0.8,0.8,0.9,0]]
+_lifetime = 3
+_radiusz = 1
+_del = 7
+_velz = 15
+_level = "EmptyDetector" camcreate [0,0,0]
+
+#begin
+_angle = 0
+_radius = _radiusz
+@((getpos _mi8 select 2) < 20)
+? (!isEngineOn _mi8):goto "end"
+? (getpos _mi8 select 2) < 20 && abs(speed _mi8) < 100 : goto "checkland"
+~1
+goto "begin"
+#checkland
+? !(alive _mi8):deleteVehicle _level;exit
+? (!isEngineOn _mi8):goto "end"
+_level setpos [getpos _mi8 select 0,getpos _mi8 select 1,0]
+?(((_mi8 distance _level)-abs(getpos _level select 2)) > 20):goto "begin"
+_color = _colorland
+_shape = "cl_basic"
+? (abs(getpos _level select 2)<3):_color = _colorwater;_shape = "cl_water"
+_pos = [_radius*sin(_angle),_radius*cos(_angle),(-(getpos _mi8 select 2)-_corr)]
+_vel = [_velz*sin(_angle) + (velocity _mi8 select 0),_velz*cos(_angle) + (velocity _mi8 select 1),cos(random(180))]
+_size1 = 5 + random 2
+_size = [5,_size1]
+;        1     2       3       4      5        6     7   8   9     10    11     12      13   14  15  16   17  18    19
+drop [_shape, "", "Billboard", 1, _lifetime, _pos, _vel, 1, 0.1, 0.085, 0.05, _size, _color, [0], 1, 0.5, "", "", _mi8]
+_angle = _angle + _del
+_radius = _radius + 1
+?(_radius - _radiusz > 10):_radius = _radiusz
+~0.0001
+goto "checkland"
+#end
+_level setpos [getpos _mi8 select 0,getpos _mi8 select 1,0]
+?(((_mi8 distance _level)-abs(getpos _level select 2)) > 20):deleteVehicle _level;exit
+_color = _colorland
+_shape = "cl_basic"
+? (abs(getpos _level select 2)<3):_color = _colorwater;_shape = "cl_water"
+deleteVehicle _level
+_th = _time
+#ended
+? !(alive _mi8):exit
+? (_time - _th > 5):exit
+_pos = [_radius*sin(_angle),_radius*cos(_angle),(-(getpos _mi8 select 2)-_corr)]
+_vel = [_velz*sin(_angle) + (velocity _mi8 select 0),_velz*cos(_angle) + (velocity _mi8 select 1),cos(random(180))]
+_size1 = 5 + random 2
+_size = [5,_size1]
+;        1     2       3       4      5        6     7   8   9     10    11     12      13   14  15  16   17  18    19
+drop [_shape, "", "Billboard", 1, _lifetime, _pos, _vel, 1, 0.1, 0.085, 0.05, _size, _color, [0], 1, 0.5, "", "", _mi8]
+_angle = _angle + _del
+_radius = _radius + 1
+?(_radius - _radiusz > 8):_radius = _radiusz
+~0.0001
+goto "ended"
+exit

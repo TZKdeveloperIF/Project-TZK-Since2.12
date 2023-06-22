@@ -1,0 +1,24 @@
+; args: [vehicle, phase]
+
+_vehicle = _this select 0
+_phase = _this select 1
+
+_i = 0 
+_animations = ["ZhuChuan"]
+_delays= [3.5]
+
+_NetWorkID = NetworkID _vehicle
+? _phase > 0: _vehicle addMagazine "DeploySwitch_xj400"; _vehicle engineOn false; goto "deploy"
+
+_vehicle removeWeapon "Gun155_xj400"
+? !isNull gunner _vehicle && !local gunner _vehicle: publicExec format [{if (local gunner UnitById %1) then {UnitById %1 removeWeapon "Gun155_xj400"}}, _NetWorkID]
+
+#deploy
+	_vehicle animate [(_animations select _i), _phase]
+	~(_delays select _i)
+	? _i < (count _animations)-1: _i = _i + 1; goto "deploy"
+	
+	? _phase == 0: _vehicle removeMagazines "DeploySwitch_xj400"; exit
+	_vehicle addweapon "Gun155_xj400"
+	? !local _vehicle: publicExec format [{if (local UnitById %1) then {UnitById %1 addweapon "Gun155_xj400"}}, _NetWorkID]
+	exit

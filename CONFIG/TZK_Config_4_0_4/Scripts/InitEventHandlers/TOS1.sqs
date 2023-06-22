@@ -18,5 +18,6 @@ _i = (typeOf _vehicle GetVehicleParamArray "hiddenSelections") find "m01"; _c = 
 #textureCovers
 _vehicle setobjecttexture [_i, _path + "tost2.pac"]
 ? _i < _c: _i = _i + 1 , goto "textureCovers"
+; above condition creates bug. _i will equals to _c
 
 ; EOF
