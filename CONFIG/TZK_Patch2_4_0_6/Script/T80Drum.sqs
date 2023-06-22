@@ -1,0 +1,19 @@
+_redirect = localize {TZK_EVENT_INIT_T80_DRUM}
+? "" != _redirect: _this exec _redirect, exit
+
+; args: [t80, display: boolean]
+_t80 = _this select 0
+_show = _this select 1
+
+_path = ""
+; ? TheWorld == "D": _path = "\TZK_Texture_4_0_1\desert\"
+? TheWorld == "G": _path = "\TZK_Texture_4_0_4\green\"
+; ? TheWorld == "W": _path = "\TZK_Texture_4_0_0\snow\"
+
+_size = sizeofstr "tex_";
+_array = ["bednyuvalce_.pac", "krabic_back.pac", "krabic_sidet.pac", "v_lec_norm.pac", "v_lec_side.paa"]
+_i = 0; {_array set [_i, "tex_tank_04_" + _x]; _i = _i + 1} forEach _array
+_selections = typeOf _t80 GetVehicleParamArray "hiddenSelections"
+{_i = _selections find _x; _t80 setObjectTexture [_i, ["", _path + substr [_x, _size, sizeofstr _x]] select _show]} forEach _array
+
+; EOF

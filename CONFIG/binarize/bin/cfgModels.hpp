@@ -876,6 +876,19 @@ class CfgModels {
 			"boardL", "boardR", "boardH"
 		};
 	};
+
+	// 4.0.6 Patch2
+
+	// tanks without multi tex
+	class M1A1_TZK_C: Tank {};
+	class M1A1_TZK_G: Tank {};
+	class T80_TZK_C: Tank {
+		sections[] = {
+			"pruh", 
+			tex_tank_04_bednyuvalce_.pac, tex_tank_04_krabic_back.pac, tex_tank_04_krabic_sidet.pac, tex_tank_04_v_lec_norm.pac, tex_tank_04_v_lec_side.paa
+		};
+	};
+	class T80_TZK_G: T80_TZK_C {};
 };
 
 // EOF
