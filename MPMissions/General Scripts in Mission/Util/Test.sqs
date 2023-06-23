@@ -26,6 +26,11 @@ _i = [TzkArtSpeeds, 0, count TzkArtSpeeds, _speed, {(_this select 0) < (_this se
 _speed = 827
 _i = [TzkArtSpeeds, 0, count TzkArtSpeeds, _speed, {(_this select 0) < (_this select 1)}] call preprocessFile "Util\stdLowerBound.sqf";
 ? _i != 10: player globalChat "stdLowerBound or TzkArtSpeeds definition has bug"
+; Before current commit this test case will return an undefined idx
+; but keyword "?" and "if" will ignore undefined bool
 _speed = 1750
 _i = [TzkArtSpeeds, 0, count TzkArtSpeeds, _speed, {(_this select 0) < (_this select 1)}] call preprocessFile "Util\stdLowerBound.sqf";
-? _i != (count TzkArtSpeeds): player globalChat "stdLowerBound or TzkArtSpeeds definition has bug"
+_result = 2
+? _i == count TzkArtSpeeds: _result = 0
+? _i != count TzkArtSpeeds: _result = 1
+? _result != 0: player globalChat "stdLowerBound or TzkArtSpeeds definition has bug"
