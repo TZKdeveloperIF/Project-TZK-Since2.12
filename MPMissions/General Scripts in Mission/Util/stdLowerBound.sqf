@@ -26,5 +26,9 @@ if (_end <= _begin) then {
 			};
 		};
 	};
-	if ([_array select _begin, _elem] call _comp) then {_begin + 1} else {_begin}
+	if (_begin < count _array) then {
+		if ([_array select _begin, _elem] call _comp) then {_begin + 1} else {_begin}
+	} else {
+		_begin
+	}
 }
