@@ -1,0 +1,26 @@
+;BAS Tail Fin Animator - TJ/SelectThis - 2003
+;KISS
+
+_helo = _this select 0
+_rotation = 0
+
+@(isengineon _helo)
+
+#loop
+? isNull _MPIVHeli: exit
+~1
+? (getdammage _helo)>0.85:exit
+? ! (isengineon _helo):_helo say "MPIV_EngineOff";exit
+
+? abs(speed _helo) >=80: goto "max"
+_rotation = (80-abs(speed _helo))/80
+_helo animate ["tail1",_rotation]
+~0.1
+goto "loop"
+
+#max
+_helo animate ["tail1",0]
+
+@ abs(speed _helo) <80
+
+goto "loop"

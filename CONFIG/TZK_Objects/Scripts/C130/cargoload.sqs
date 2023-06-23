@@ -1,0 +1,43 @@
+_helo = vehicle (_this select 0)
+_player = _this select 1
+_bailer = vehicle _player
+
+? (_helo animationPhase "cargoload" == 1):_helo sidechat "No more cargo space";exit
+
+_add=(_helo animationPhase "cargoload")
+_helo animate ["cargoload",_add+0.1]
+
+_player sidechat format ["cargo %1 loading as number %2 ",_bailer,(_add+0.1)*10]
+
+_zaloga = crew _bailer
+_c = 0
+#eject
+(_zaloga select _c) action ["GETOUT", _bailer]
+(_zaloga select _c) moveincargo _helo
+~0.01
+_c = _c + 1
+? _c != count _zaloga : goto "eject"
+
+#stopcargo
+_dirh = (getdir _helo)
+_posxh = (getpos  _helo select 0)
+_posyh = (getpos _helo select 1)
+_poshh = (getpos _helo select 2)
+
+_dirc = (getdir _bailer)
+_posxc = (getpos  _bailer select 0)
+_posyc = (getpos _bailer select 1)
+_poshc = (getpos _bailer select 2)
+
+
+_dir = _dirh - _dirc
+_posx = _posxh - _posxc
+_posy = _posyh - _posyc
+_posh = _poshh - _poshc
+
+_add=(_helo animationPhase "cargoload")
+_helo animate ["relase",0]
+~0.2
+[_helo,_bailer,_dir,_posx,_posy,_posh,_add] exec "\TZK_Objects\Scripts\C130\hold.sqs"
+
+exit

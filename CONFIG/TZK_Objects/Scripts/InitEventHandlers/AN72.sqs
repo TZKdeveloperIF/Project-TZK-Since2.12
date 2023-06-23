@@ -1,0 +1,9 @@
+_vehicle = _this select 0
+
+_vehicle setObjectTexture [(typeOf _vehicle GetVehicleParamArray {hiddenselections}) find {roundel}, {\TZK_Texture_4_0_0\rktcoaler\r_ussr}];
+
+[_vehicle, {\TZK_Texture_4_0_0\rktcoaler\nums\}, {num}, {blu}] exec {\TZK_Objects\Scripts\texture\RSC_Numbers.sqs}
+
+? speed _vehicle > 200: [_vehicle] exec "\TZK_Objects\Scripts\AN72\gearup.sqs"
+
+exit

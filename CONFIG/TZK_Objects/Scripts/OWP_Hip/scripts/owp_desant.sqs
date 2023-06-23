@@ -1,0 +1,77 @@
+;#########################################
+;# Written by Kerd, fixed by DPS         #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+
+
+
+_me = _this select 0
+_height = _this select 1
+_interval = _this select 2
+? count crew _me < 2 : _copilot = player;goto "run"
+? typeof _me == "OWP_Mi8T_c" : goto "start"
+? typeof _me == "OWP_Mi8T_un" : goto "start"
+? format[{%1},gunner _me] == "<NULL-object>" && format[{%1},driver _me] != "<NULL-object>" && alive (crew _me select 1) : _copilot = crew _me select 1
+? format[{%1},gunner _me] == "<NULL-object>" && format[{%1},driver _me] == "<NULL-object>" && alive (crew _me select 0) : _copilot = crew _me select 0
+? format[{%1},gunner _me] != "<NULL-object>" && format[{%1},driver _me] != "<NULL-object>" && alive (crew _me select 2) : _copilot = crew _me select 2
+? format[{%1},gunner _me] != "<NULL-object>" && format[{%1},driver _me] == "<NULL-object>" && alive (crew _me select 1) : _copilot = crew _me select 1
+goto "run"
+exit
+#start
+_copilot = gunner _me
+#run
+_pause = _interval*8
+_initheight = getpos _me select 2
+
+_count = 4
+? (_copilot) in (units group (crew _me select 3)) : _count = 3
+
+
+_me setobjecttexture [17,"\OWP_Mi8\t\redlight.paa"]
+?(alive _copilot): _copilot switchmove "OWPdesant1"
+
+_me animate["OWP_Mi8_DOOR",1]
+_me exec "\OWP_Mi8\scripts\owp_COpen.sqs"
+
+~_pause
+_me flyinheight _height
+?(player in _me) then {(units group player select 0) groupChat (localize "STR_OWP_DesantYellow")}
+_me setobjecttexture [17,"\OWP_Mi8\t\yellight.paa"]
+?(alive _copilot): _copilot setmimic "Angry"
+
+~_pause
+?(player in _me) then {(units group player select 0) groupChat (localize "STR_OWP_DesantGreen")}
+_me setobjecttexture [17,"\OWP_Mi8\t\grnlight.paa"]
+?(alive _copilot): _copilot switchmove "OWPdesant2"
+?(alive _copilot): _copilot say "Rus18"
+
+;_dir = getdir _plane
+
+#Loop
+~_interval
+
+_units = crew _me
+
+;_plane setdir _dir
+
+
+; Не трогаем экипаж....
+if (count(_units) < _count) then {goto "end"};
+if (!alive _me) then { exit; };
+
+_sel = count(_units)-1;
+
+unassignVehicle (_units select _sel)
+(_units select _sel) action ["EJECT",_me];
+
+Goto "Loop";
+
+#end
+_me flyinheight _initheight
+_me animate["OWP_Mi8_DOOR",0]
+_me exec "\OWP_Mi8\scripts\owp_CClose.sqs"
+?(alive _copilot) && (_copilot in _me): _copilot switchmove "OWPMi8copilot"
+?(alive _copilot) && (_copilot in _me): _copilot setmimic "Default"
+_me setobjecttexture [17,""]
+
+exit;

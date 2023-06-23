@@ -1,0 +1,12 @@
+_plane = _this select 0
+
+#mainloop
+@ ((_plane animationPhase "NoseGear" > 0) and (isengineon _plane) and (alive _plane) and ((getpos (driver _plane) select 2) < 40))
+_plane animate ["hight",1]
+_plane vehiclechat "Altitude low"
+_plane vehicleRadio "warnhighsndc130_xj400"
+~1.3
+? ((_plane animationPhase "NoseGear" > 0) and (isengineon _plane) and (alive _plane) and ((getpos (driver _plane) select 2) < 40)):goto "MainLoop"
+_plane animate ["hight",0]
+goto "MainLoop"
+exit

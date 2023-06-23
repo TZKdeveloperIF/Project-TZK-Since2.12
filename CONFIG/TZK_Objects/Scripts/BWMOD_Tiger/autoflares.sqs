@@ -1,0 +1,34 @@
+_plane = _this select 0
+
+?(not alive (_plane select 0) ): goto "Exit"
+
+?(not isengineon (_plane select 0) ): goto "Exit"
+
+_enemy = _plane select 2
+
+_weaponname = _plane select 1
+
+_missile = nearestobject [_enemy, _weaponname]
+
+_text = format["%1", _missile]
+?(_text == "NOID zuni"): goto "Exit"
+
+@ _missile distance (_plane select 0) < 350
+
+_count =0
+
+#LaunchLoop
+drop["kouleSvetlo","","Billboard",0.05,6,[-.2,-1,1.1],[-14-random 6,- random 2,0],0,1.8,1,0,[1],[[1,1,0.3,1]],[0,1],0,0,"\BWMOD_Tiger\scr\smokes.sqs","",(_plane select 0)] 
+
+drop["kouleSvetlo","","Billboard",0.05,6,[.2,-1,1.1],[14+random 6,- random 2,0],0,1.8,1,0,[1],[[1,1,0.3,1]],[0,1],0,0,"\BWMOD_Tiger\scr\smokes.sqs","",(_plane select 0)]
+
+_count = _count+1
+
+(_plane select 0) say "TigerFlare_xj400"
+
+~.1
+
+?(_count<5):goto "LaunchLoop"
+
+#Exit
+exit

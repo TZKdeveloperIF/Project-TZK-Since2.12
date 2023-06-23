@@ -1,0 +1,160 @@
+_mi24 = _this select 0
+_ammo = _this select 1
+
+_round = nearestobject [_this select 0,_this select 4]
+
+_farbe = [[0.2,0.8,0.1,0.4]]
+
+#Ammo
+?(_ammo== "RHS_AGS17"): goto "Gunpod1"
+?(_ammo== "RHS_UPK23"): goto "Gunpod2"
+?(_ammo== "RHS_12_7mmGun"): goto "MG"
+?(_ammo== "RHS_12_7mmGun"): goto "tracer"
+?(_ammo== "RHS_30mmTwinGun"): goto "30mmgun"
+?(_ammo== "RHS_30mmTwinGun"): goto "tracer2"
+?(_ammo== "RHS_Rocket57x64") || (_ammo== "RHS_Rocket80x80") || (_ammo== "RHS_Rocket80x40") || (_ammo== "RHS_Rocket57x128"): goto "backfire"
+?(_ammo== "RHS_AT2") || (_ammo== "RHS_AT6a") || (_ammo== "RHS_AT6b") ||(_ammo== "RHS_AT6c") || (_ammo== "RHS_AT6d"): goto "Rocket"
+
+exit
+
+#Gunpod1
+
+drop["\RHS_hind\mi24_30mmgrenadecase.p3d","","SpaceObject",1,5,[2,-0.2,-2],[0,0,-15],0,3,1,0,[2],[[1,1,1,1]],[0],0.1,0.1,"","",_mi24]
+drop["\RHS_hind\mi24_30mmgrenadecase.p3d","","SpaceObject",1,5,[-2,-0.2,-2],[0,0,-15],0,3,1,0,[2],[[1,1,1,1]],[0],0.1,0.1,"","",_mi24]
+drop ["cl_basic", "", "Billboard", 1, 5, [2,2,-2], [0.5, -1, -0.45],0,1.3,1,1,[3.2,2.5+(random 1)],[[0.9,0.9,0.9,0.2+(random 0.2)],[0.5,0.5,0.5,0]],[0,1],0,0,"","",_mi24]
+drop ["cl_basic", "", "Billboard", 1, 5, [-2,2,-2], [0.5, -1, -0.45],0,1.3,1,1,[3.2,2.5+(random 1)],[[0.9,0.9,0.9,0.2+(random 0.2)],[0.5,0.5,0.5,0]],[0,1],0,0,"","",_mi24]
+
+_round setvelocity [(velocity _round select 0)+(random 3 - random 3),(velocity _round select 1)+(random 3 - random 3),(velocity _round select 2)+(random 3 - random 3)]
+
+goto "exit"
+
+#Gunpod2
+_y=-6
+_z=(random 1)
+? speed _mi24>35: _y=0
+? speed _mi24>50: _z=3+(random 1)
+
+_mi24 setObjectTexture[4, "\RHS_hind\z3_side.03.paa"]
+_mi24 setObjectTexture[5, "\RHS_hind\z3_front.02.paa"]
+~0.012
+_mi24 setObjectTexture[4, ""]
+_mi24 setObjectTexture[5, ""]
+~0.012
+_mi24 setObjectTexture[4, "\RHS_hind\z3_side.01.paa"]
+_mi24 setObjectTexture[5, "\RHS_hind\z3_front.03.paa"]
+~0.012
+_mi24 setObjectTexture[4, ""]
+_mi24 setObjectTexture[5, ""]
+~0.012
+_mi24 setObjectTexture[4, "\RHS_hind\z3_side.02.paa"]
+_mi24 setObjectTexture[5, "\RHS_hind\z3_front.01.paa"]
+~0.012
+_mi24 setObjectTexture[4, ""]
+_mi24 setObjectTexture[5, ""]
+
+drop["\RHS_hind\mi24_12mmcase2.p3d","","SpaceObject",1,5,[2,-0.2,-2],[0,0,-15],0,3,1,0,[2],[[1,1,1,1]],[0],0.1,0.1,"","",_mi24]
+drop["\RHS_hind\mi24_12mmcase2.p3d","","SpaceObject",1,5,[-2,-0.2,-2],[0,0,-15],0,3,1,0,[2],[[1,1,1,1]],[0],0.1,0.1,"","",_mi24]
+drop ["cl_basic", "", "Billboard", 1, 5, [2,2,-2], [0.5, -1, -0.45],0,1.3,1,1,[3.2,2.5+(random 1)],[[0.9,0.9,0.9,0.2+(random 0.2)],[0.5,0.5,0.5,0]],[0,1],0,0,"","",_mi24]
+drop ["cl_basic", "", "Billboard", 1, 5, [-2,2,-2], [0.5, -1, -0.45],0,1.3,1,1,[3.2,2.5+(random 1)],[[0.9,0.9,0.9,0.2+(random 0.2)],[0.5,0.5,0.5,0]],[0,1],0,0,"","",_mi24]
+
+_round setvelocity [(velocity _round select 0)+(random 3 - random 3),(velocity _round select 1)+(random 3 - random 3),(velocity _round select 2)+(random 3 - random 3)]
+
+goto "exit"
+
+#MG
+~0.01
+drop["\RHS_hind\mi24_12mmcase.p3d","","SpaceObject",1,5,[0,7.9,-2],[0,0,-15],0,3,1,0,[2],[[1,1,1,1]],[0],0.1,0.1,"","",_mi24]
+drop ["cl_basic", "", "Billboard", 1, 5, [0,8.9,-2.4], [0.5, -1, -0.45],0,1.3,1,1,[1.5,2+(random 1)],[[0.9,0.9,0.9,0.2+(random 0.2)],[0.5,0.5,0.5,0]],[0,1],0,0,"","",_mi24]
+
+#tracer
+TracerCnt = TracerCnt+1
+?TracerCnt >= 4: TracerCnt = 0; goto "tracerloop"
+exit
+
+#tracerloop
+_vel = velocity _round
+drop ["obrysove svetlo", "", "Billboard", 60, 0.21,getpos _round, _vel, 0, 2, 1, 0, [0.75],_farbe,[0],0,0,"","",""];
+~0.2
+?(isnull _round): exit
+goto "tracerloop"
+
+
+#30mmgun
+
+~0.01
+drop["\RHS_hind\mi24_30mmcase.p3d","","SpaceObject",1,5,[0.88,4.6,-2],[0,0,-15],0,3,1,0,[2],[[1,1,1,1]],[0],0.1,0.1,"","",_mi24]
+drop ["cl_basic", "", "Billboard", 1, 5, [0.90,8.5,-2], [0.5, -1, -0.45],0,1.3,1,1,[4,2.5],[[0.9,0.9,0.9,0.2+(random 0.2)],[0.5,0.5,0.5,0]],[0,1],0,0,"","",_mi24]
+drop ["cl_basic", "", "Billboard", 1, 5, [0.90,8.3,-2], [0.5, -1, -0.45],0,1.3,1,1,[3.3,2],[[0.9,0.9,0.9,0.2+(random 0.2)],[0.5,0.5,0.5,0]],[0,1],0,0,"","",_mi24]
+
+#tracer2
+TracerCnt = TracerCnt+1
+?TracerCnt >= 3: TracerCnt = 0; goto "tracerloop"
+exit
+
+
+
+
+#backfire
+_round exec "\RHS_hind\scripts\rocket.sqs"
+_round exec "\RHS_hind\scripts\rocket2.sqs"
+_y=-6
+_z=(random 1)
+? speed _mi24>35: _y=0
+? speed _mi24>50: _z=3+(random 1)
+
+_mi24 setObjectTexture[4, "\RHS_hind\skin_fire1.paa"]
+_mi24 setObjectTexture[5, "\RHS_hind\skin_fire0.paa"]
+~0.02
+_mi24 setObjectTexture[4, ""]
+_mi24 setObjectTexture[5, ""]
+~0.02
+_mi24 setObjectTexture[4, "\RHS_hind\skin_fire2.paa"]
+_mi24 setObjectTexture[5, "\RHS_hind\skin_fire0.paa"]
+~0.02
+_mi24 setObjectTexture[4, ""]
+_mi24 setObjectTexture[5, ""]
+~0.02
+_mi24 setObjectTexture[4, "\RHS_hind\skin_fire3.paa"]
+_mi24 setObjectTexture[5, "\RHS_hind\skin_fire0.paa"]
+~0.02
+_mi24 setObjectTexture[4, ""]
+_mi24 setObjectTexture[5, ""]
+~0.02
+_mi24 setObjectTexture[4, "\RHS_hind\skin_fire4.paa"]
+_mi24 setObjectTexture[5, "\RHS_hind\skin_fire0.paa"]
+~0.02
+_mi24 setObjectTexture[4, ""]
+_mi24 setObjectTexture[5, ""]
+
+drop["cl_basic","","Billboard",1,0.5+(random .3), "L_smoke",[0,_y,_z],0,1.3,1,1,[9.5,11],[[0.9,0.9,0.9,0.2+(random 0.2)],[0.5,0.5,0.5,0]],[0,1],0,0,"","",_mi24]
+drop["cl_basic","","Billboard",1,0.5+(random .3), "L_smoke",[0.2,_y,_z],0,1.3,1,1,[9.3,10.5],[[0.9,0.9,0.9,0.2+(random 0.2)],[0.5,0.5,0.5,0]],[0,1],0,0,"","",_mi24]
+drop["cl_basic","","Billboard",1,0.5+(random .3), "L_smoke",[0.4,_y,_z],0,1.3,1,1,[9.0,10],[[0.9,0.9,0.9,0.2+(random 0.2)],[0.5,0.5,0.5,0]],[0,1],0,0,"","",_mi24]
+drop["cl_basic","","Billboard",1,0.5+(random .3), "L_smoke",[0.6,_y,_z],0,1.3,1,1,[8.5,9.7],[[0.9,0.9,0.9,0.2+(random 0.2)],[0.5,0.5,0.5,0]],[0,1],0,0,"","",_mi24]
+drop["cl_basic","","Billboard",1,0.5+(random .3), "R_smoke",[0,_y,_z],0,1.3,1,1,[9.5,11],[[0.9,0.9,0.9,0.2+(random 0.2)],[0.5,0.5,0.5,0]],[0,1],0,0,"","",_mi24]
+drop["cl_basic","","Billboard",1,0.5+(random .3), "R_smoke",[0.2,_y,_z],0,1.3,1,1,[9.3,10.5],[[0.9,0.9,0.9,0.2+(random 0.2)],[0.5,0.5,0.5,0]],[0,1],0,0,"","",_mi24]
+drop["cl_basic","","Billboard",1,0.5+(random .3), "R_smoke",[0.4,_y,_z],0,1.3,1,1,[9.0,10],[[0.9,0.9,0.9,0.2+(random 0.2)],[0.5,0.5,0.5,0]],[0,1],0,0,"","",_mi24]
+drop["cl_basic","","Billboard",1,0.5+(random .3), "R_smoke",[0.6,_y,_z],0,1.3,1,1,[8.5,9.7],[[0.9,0.9,0.9,0.2+(random 0.2)],[0.5,0.5,0.5,0]],[0,1],0,0,"","",_mi24]
+
+goto "exit"
+
+#Rocket
+_round exec "\RHS_hind\scripts\rocket.sqs"
+_round exec "\RHS_hind\scripts\rocket2.sqs"
+
+#exit
+exit
+
+#move
+_dir = (getdir _mi24)
+_zpos = (getpos _mi24 select 2) + 1
+_xpos = (getpos _mi24 select 0) + (_move * cos(_dir))
+_ypos = (getpos _mi24 select 1) - (_move * sin(_dir))
+_empty = "EmptyDetector" createVehicle [0,0,0]
+_empty setpos [getpos _mi24 select 0, getpos _mi24 select 1]
+_height = getpos _empty select 2
+_zpos = _zpos - _height
+_zpos = _zpos + _h
+_round setpos [_xpos,_ypos,_zpos]
+~0.6
+deletevehicle _empty 
+exit

@@ -1,0 +1,26 @@
+_mi24   = _this select 0
+[_mi24] exec "\RHS_Hind\scripts\smoke_tail.sqs"
+_AddDir = 0.1
+_zv=-6
+_enginePos = [0, -8-random 1 +random 1, 1-random 0.5+random 0.5]
+drop ["cl_fire", "", "Billboard", 1, 0.5, _enginePos, [0,0,0], 0, 1, 1, 0.001, [1,3], [[1,1,0,1],[1,1,0,0]], [0], 0.1, 0.2, "", "", _mi24]
+~0.02
+drop ["cl_fire", "", "Billboard", 1, 0.5, _enginePos, [0,0,0], 0, 1, 1, 0.001, [1,2], [[1,1,0,1],[1,1,0,0]], [0], 0.1, 0.2, "", "", _mi24]
+~0.02
+drop ["cl_fire", "", "Billboard", 1, 0.5, _enginePos, [0,0,0], 0, 1, 1, 0.001, [1,1], [[1,1,0,1],[1,1,0,0]], [0], 0.1, 0.2, "", "", _mi24]
+
+
+#loop
+_dir = getDir _mi24
+?_AddDir < 5: _AddDir = _AddDir + 0.175
+_mi24 setDir (_dir + _AddDir)
+_v = Velocity _mi24
+? (_v select 0) > 20 or (_v select 1) > 20: _mi24 setVelocity  [((_v select 0) / 1.001), ((_v select 1) / 1.001), _zv]
+~ random 0.025
+?!alive _mi24: exit
+?getPos _mi24 select 2 < 12: _zv=-8;_mi24 setdammage 0.95
+?getPos _mi24 select 2 < 8: _zv=-10
+?getPos _mi24 select 2 > 4: goto "loop"
+
+
+exit

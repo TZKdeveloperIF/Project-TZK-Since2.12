@@ -1,0 +1,11 @@
+; args: [vehicle, name]
+_vehicle = _this select 0
+_name = _this select 1
+
+_path = "\TZK_Texture_4_0_0\mpiv_ah64\"; _postfix = ""
+? _name == "C": _path = _path + "gre\"
+? _name == "D": _path = _path + "des\"
+? _name == "G": _path = _path + "blk\"
+? _name == "W": _path = _path + "gre\"
+
+[_vehicle, _path, _postfix] call loadFile "\TZK_Objects\Scripts\texture\stdSetObjTex.sqf"

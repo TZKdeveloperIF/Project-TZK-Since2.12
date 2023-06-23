@@ -1,0 +1,45 @@
+_vehicle = _this select 0
+
+_vehicle vehicleradio "BWMOD_Tiger_Incoming_xj400"
+
+_weapon = _this select 1
+_shooter = _this select 2
+
+_missile = nearestobject [_shooter, _weapon]
+
+#start
+_x1 = getPos _vehicle select 0
+_y1 = getPos _vehicle select 1
+_z1 = getPos _vehicle select 2
+_x2 = getPos _missile select 0
+_y2 = getPos _missile select 1
+_z2 = getPos _missile select 2
+
+_x = (_x1 - _x2)
+_y = (_y1 - _y2)
+
+? (_x>0) and (_y>0): _d = atan (abs _x / abs _y) +180
+? (_x>0) and (_y<0): _d = atan (abs _y / abs _x) +270
+? (_x<0) and (_y<0): _d = atan (abs _x / abs _y)
+? (_x<0) and (_y>0): _d = atan (abs _y / abs _x) +90
+
+_d = (360 + (getDir _vehicle - _d)) Mod 360
+
+?(_d > 0 and _d < 15):		_uhr = 12
+?(_d > 15 and _d < 45):		_uhr = 11
+?(_d > 45 and _d < 75):		_uhr = 10
+?(_d > 75 and _d < 105):	_uhr = 9
+?(_d > 105 and _d < 135):	_uhr = 8
+?(_d > 135 and _d < 165):	_uhr = 7
+?(_d > 165 and _d < 195):	_uhr = 6
+?(_d > 195 and _d < 225):	_uhr = 5
+?(_d > 225 and _d < 255):	_uhr = 4
+?(_d > 255 and _d < 285):	_uhr = 3
+?(_d > 285 and _d < 315):	_uhr = 2
+?(_d > 315 and _d < 345):	_uhr = 1
+?(_d > 345 and _d < 360):	_uhr = 12
+
+?(_z2 - _z1 > 0): _hoehe = "high";
+?(_z2 - _z1 <= 0): _hoehe = "low";
+
+?(player in _vehicle): player sidechat format ["WARNING: Missile, %1 o'clock, %2",_uhr,_hoehe];

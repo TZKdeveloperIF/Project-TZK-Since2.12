@@ -1,0 +1,13 @@
+; args: vehicle
+_vehicle = _this
+
+[_vehicle, {C}] exec {\TZK_Config_4_0_6\Scripts\texture\PLZ05.sqs}
+; texture number depending on its initial position
+[_vehicle, {\TZK_Texture_4_0_0\BWMOD\leo2A6\num\}, {n}, {0}] exec {\TZK_Objects\Scripts\texture\RSC_Numbers.sqs}
+
+? not local _vehicle: exit
+
+_deployScript = localize {TZK_BEHAVIOUR_DEPLOY_PLZ05}
+? "" != _deployScript: [_vehicle, 1] exec _deployScript
+
+; EOF

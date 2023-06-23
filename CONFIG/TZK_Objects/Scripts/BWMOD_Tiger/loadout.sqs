@@ -1,0 +1,103 @@
+;;USAGE:
+;;[Unitname,"Weapon1","Weapon2"] exec "\BWMOD_Tiger\scripts\loadout.sqs";
+
+?(BWMOD_Temp_Pilot == BWMOD_Temp_Pilot): goto "init";
+exit
+
+#init
+
+;;DEFINE LOCAL VARIABLES
+_tiger = _this select 0
+_weapon1 = _this select 1
+_weapon2 = _this select 2
+
+;;ONLY EXECUTE ON CLIENT WHERE TIGER IS LOCAL
+?(!local _tiger): exit
+
+;;CHECK FOR VALID LOADOUTS
+?(_weapon1 != "PARS3" AND _weapon1 != "HOT3" AND _weapon1 != "SNEB70AT" AND _weapon1 != "SNEB70AP" AND _weapon1 != "Gunpod"): _weapon1 = "PARS3"
+?(_weapon2 != "PARS3" AND _weapon2 != "HOT3" AND _weapon2 != "SNEB70AT" AND _weapon2 != "SNEB70AP" AND _weapon2 != "Gunpod"): _weapon2 = "PARS3"
+
+;;DEFINE OUTSTANDING LOCAL VARIABLES
+_weapon1_mag = format ["BWMOD_%1",_weapon1]
+_weapon2_mag = format ["BWMOD_%1",_weapon2]
+_weapon1_wpn = format ["BWMOD_%1Launcher",_weapon1]
+_weapon2_wpn = format ["BWMOD_%1Launcher",_weapon2]
+
+;;REMOVE ALL MAGAZINES > ADD STINGERS
+removeAllWeapons _tiger
+
+?(typeOf _tiger != "BWMOD_Tiger_RMK30"): Goto "NoRMK"
+_tiger addMagazine "BWMOD_RMK30mm_AP_200"
+_tiger addMagazine "BWMOD_RMK30mm_HE_200"
+_tiger addWeapon "BWMOD_RMK30mm_AP"
+_tiger addWeapon "BWMOD_RMK30mm_HE"
+
+#NoRMK
+
+;;REMOVE ALL MAGAZINES (SINGLE)
+;;PROBLEMS IN BETA PHASE
+?(_tiger hasWeapon "BWMOD_PARS3Launcher"):	_tiger removeWeapon "BWMOD_PARS3Launcher"
+?(_tiger hasWeapon "BWMOD_HOT3Launcher"):	_tiger removeWeapon "BWMOD_HOT3Launcher"
+?(_tiger hasWeapon "BWMOD_SNEB70ATLauncher"):	_tiger removeWeapon "BWMOD_SNEB70ATLauncher"
+?(_tiger hasWeapon "BWMOD_SNEB70APLauncher"):	_tiger removeWeapon "BWMOD_SNEB70APLauncher"
+?(_tiger hasWeapon "BWMOD_GunpodLauncher"):	_tiger removeWeapon "BWMOD_GunpodLauncher"
+
+_tiger addMagazine "BWMOD_Stinger"
+_tiger addWeapon "BWMOD_StingerLauncher"
+
+
+
+;;DELETE POSSIBLE LOADOUTS
+#DeleteProxyLoop
+_WeaponArray = crew _tiger - [driver _tiger] - [gunner _tiger];
+(_WeaponArray select 0) action ["GETOUT",_tiger]
+deleteVehicle (_WeaponArray select 0)
+?(count _WeaponArray > 1): Goto "DeleteProxyLoop";
+
+;;ADD NEW PROXIES
+#Proxy1
+_weapon_proxy = format ["BWMOD_%1_Proxy",_weapon1]
+?(_weapon1 == "SNEB70AT" OR _weapon1 == "SNEB70AP"): _weapon_proxy = "BWMOD_SNEB70_Proxy";
+_return = "Proxy2"
+Goto "AddProxy"
+
+#Proxy2
+_weapon_proxy = format ["BWMOD_%1_Proxy",_weapon2]
+?(_weapon2 == "SNEB70AT" OR _weapon2 == "SNEB70AP"): _weapon_proxy = "BWMOD_SNEB70_Proxy";
+_return = "CheckLoadout"
+Goto "AddProxy"
+
+#CheckLoadout
+?(_weapon1 == _weapon2): Goto "AddDoubleLoadout"
+
+;;ADD LOADOUT 
+#AddLoadout
+_tiger addMagazine _weapon1_mag
+_tiger addMagazine _weapon2_mag
+_tiger addWeapon _weapon1_wpn
+_tiger addWeapon _weapon2_wpn
+exit;
+
+;;ADD DOUBLE LOADOUT
+#AddDoubleLoadout
+?(_weapon1 == "PARS3"):		_tiger addMagazine "BWMOD_PARS3_8";	_tiger addWeapon "BWMOD_PARS3Launcher"
+?(_weapon1 == "HOT3"):		_tiger addMagazine "BWMOD_HOT3_8";	_tiger addWeapon "BWMOD_HOT3Launcher"
+?(_weapon1 == "SNEB70AT"):	_tiger addMagazine "BWMOD_SNEB70AT_38";	_tiger addWeapon "BWMOD_SNEB70ATLauncher"
+?(_weapon1 == "SNEB70AP"):	_tiger addMagazine "BWMOD_SNEB70AP_38";	_tiger addWeapon "BWMOD_SNEB70APLauncher"
+?(_weapon1 == "Gunpod"):	_tiger addMagazine "BWMOD_Gunpod_800";	_tiger addWeapon "BWMOD_GunpodLauncher"
+exit;
+
+;;ADD PROXY LOOP
+#AddProxy
+_weapon_proxy createUnit [getPos _tiger,group BWMOD_Temp_Pilot,"tmp_proxy=this"]
+tmp_proxy moveInCargo _tiger
+tmp_proxy disableAI "MOVE"
+tmp_proxy disableAI "TARGET"
+tmp_proxy disableAI "AUTOTARGET"
+
+[tmp_proxy] join GrpNULL
+
+tmp_proxy = objNULL
+
+Goto _return

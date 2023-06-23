@@ -1,0 +1,25 @@
+; args: Init-EH Array
+_plane = _this select 0
+
+? !local _plane : exit
+
+; [_plane] exec {\TZK_Objects\Scripts\C130\damage.sqs}
+; Engine fire is realized by "drop" command, whose effect is local-only in network game.
+
+; [_plane] exec {\TZK_Objects\Scripts\C130\wheeltouch.sqs}
+; [_plane] exec {\TZK_Objects\Scripts\C130\ramplight.sqs}
+; [_plane] exec {\TZK_Objects\Scripts\C130\fuellight.sqs}
+
+
+if !(isengineon _plane) then {[_plane] exec {\TZK_Objects\Scripts\C130\openramp.sqs}} else{[_plane] exec {\TZK_Objects\Scripts\C130\gearup.sqs}}
+
+
+; EH listed here used to be add using "addEventHandler" via Init-EH. Those annotated EH is proved stable and defined in Class EventHandlers.
+
+; _plane addEventHandler [{Engine}, {if (_this Select 1) then {[_this select 0] exec {\TZK_Objects\Scripts\C130\CloseRamp.sqs};  [_this select 0] exec {\TZK_Objects\Scripts\C130\enginestart.sqs}} else {[_this select 0] exec {\TZK_Objects\Scripts\C130\openramp.sqs};  [_this select 0] exec {\TZK_Objects\Scripts\C130\enginestop.sqs} } }]
+; _plane addEventHandler [{Gear}, {if (_this Select 1) then {[_this select 0] exec {\TZK_Objects\Scripts\C130\geardown.sqs}; [_this select 0] exec {\TZK_Objects\Scripts\C130\closegas.sqs}} else {[_this select 0] exec {\TZK_Objects\Scripts\C130\gearup.sqs}} }]
+; _plane addEventHandler [{GetOut}, {[_this select 0] exec {\TZK_Objects\Scripts\C130\desantout.sqs} }]
+; _plane addEventHandler [{Getin}, {[_this select 0] exec {\TZK_Objects\Scripts\C130\desantin.sqs} }]
+; _plane addEventHandler [{Fired}, {if ((_this select 1) =={c130_Flare_xj400}) then {[_this Select 0] exec {\TZK_Objects\Scripts\C130\flare.sqs} } }]
+
+; EOF

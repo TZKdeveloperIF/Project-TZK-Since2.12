@@ -1,0 +1,17 @@
+_vehicle = _this select 0
+_t=0
+#start
+@ ((_vehicle animationphase "fuellight" > 0) or (damage _vehicle > 0.7) or (_vehicle animationphase "stall" > 0) or (_vehicle animationphase "hight" > 0))
+_t=_t+1
+_vehicle animate ["warninglightl",1]
+_vehicle animate ["warninglightr",1]
+? ((_t<10) and ((_vehicle animationphase "fuellight" > 0) or (damage _vehicle > 0.7))): _vehicle vehicleRadio "warnsndc130_xj400";
+~0.6
+_vehicle animate ["warninglightl",0]
+_vehicle animate ["warninglightr",0]
+~0.63
+? ((_vehicle animationphase "fuellight" > 0) or (damage _vehicle > 0.7) or (_vehicle animationphase "stall" > 0) or (_vehicle animationphase "hight" > 0) or ((getpos _vehicle select 2) < 15)): goto "start"
+_t=0;
+goto "start"
+
+exit
