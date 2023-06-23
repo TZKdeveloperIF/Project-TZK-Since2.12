@@ -1,0 +1,11 @@
+; args: [vehicle, name]
+_vehicle = _this select 0
+_name = _this select 1
+
+_path = "\humr\"; _postfix = ""; _excludeList = ["tex_mutt_kologi.pac", "tex_mutt_koloog.pac", "tex_mutt_svetlag.pac"]
+? _name == "D": _path = "\TZK_Texture_4_0_0\MCAR_humvee\", _excludeList = ["tex_hmmwv_windshield.paa", "tex_mutt_koloog.pac"]
+? _name == "W": _path = "\TZK_Texture_4_0_0\snow\", _excludeList = ["tex_hmmwv_in_sidlr.pac", "tex_hmmwv_sedacky.pac", "tex_mutt_svetlag.pac"]
+
+[_vehicle, _path, _postfix, _excludeList] call loadFile "\TZK_Objects\Scripts\texture\stdSetObjTex.sqf"
+
+? _name == "C" || _name == "G": {_vehicle setObjectTexture [(typeOf _vehicle GetVehicleParamArray "hiddenselections") find _x, substr[_x, 4, sizeOfStr _x]]} forEach _excludeList

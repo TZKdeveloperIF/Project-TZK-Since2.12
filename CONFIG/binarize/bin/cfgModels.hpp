@@ -876,6 +876,37 @@ class CfgModels {
 			"boardL", "boardR", "boardH"
 		};
 	};
+
+	// 4.0.6 Patch2
+
+	// tanks without multi tex
+	class M1A1_TZK_C: Tank {};
+	class M1A1_TZK_G: Tank {};
+	class T80_TZK_C: Tank {
+		sectionsInherit = "Tank"; 
+		sections[] = {
+			"pruh", 
+			tex_tank_04_bednyuvalce_.pac, tex_tank_04_krabic_back.pac, tex_tank_04_krabic_sidet.pac, tex_tank_04_v_lec_norm.pac, tex_tank_04_v_lec_side.paa
+		};
+	};
+	class T80_TZK_G: T80_TZK_C {};
+	class Leo2A6_C: Tank {
+		sectionsInherit = "Tank"; 
+		sections[] = {
+			"zadni svetlo","Takt_Kp","Takt_Symbol","Takt_Btl_1","Takt_Btl_2","Takt_Btl_3","nr1","nr2","nr3",
+		};
+	};
+	class ZTZ99_C: Tank {
+		sectionsInherit = "Tank"; 
+		sections[] = {
+			"n1", "n2", "n3"
+		};
+	};	
+	class M113_Ambu_G: Tank {};
+	class M2A2_TZK_C: Tank {};
+	class M2A2_TZK_G: Tank {};
+	class BMP_Ambu_TZK_G: Tank {};
+	class BMP2_TZK_G: Tank {};
 };
 
 // EOF

@@ -1,0 +1,7 @@
+_tiger = _this select 0
+
+?!("BWMOD_Tiger_MC" in magazines _tiger): _tiger addMagazine "BWMOD_Tiger_MC";
+?("BWMOD_Tiger_MC_CounterMeasures" in magazines _tiger): exit
+
+_tiger addMagazine "BWMOD_Tiger_MC_CounterMeasures";
+[_tiger,"Init"] exec "\BWMOD_Tiger\scr\sys_mastercaution.sqs";

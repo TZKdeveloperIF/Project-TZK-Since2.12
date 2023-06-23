@@ -1,0 +1,56 @@
+;#########################################
+;# Written by Voyager  voyager04@mail.ru #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+
+_me = _this
+
+_x=-2.15
+_y=4.85
+_z=2.55
+
+_xl=-1.5
+_yl=-0.5
+_zl=2.55
+
+_xr=-0.4
+_yr=-0.5
+_zr=2.55
+
+;?!(driver _me == player):exit
+? count crew _me < 4 : exit
+? !("owp_mi8_rope_active" in magazines _me): _me addmagazine "owp_mi8_rope_active"
+? _me animationPhase "OWP_Mi8_DOOR" < 0.01 : _me animate["OWP_Mi8_DOOR",1]
+? _me animationPhase "OWP_Mi8_CDL" < 0.01 : _me exec "\OWP_Mi8\scripts\owp_COpen.sqs"
+_ropedoor = "OWP_Mi8_rope" createvehicle [0,0,0]
+_ropedoor setpos [(getpos _me select 0) + _y*sin(getdir _me) + _x*cos(getdir _me),(getpos _me select 1) + _y*cos(getdir _me) - _x*sin(getdir _me),(getpos _me select 2) + _z]
+_ropedoor animate ["OWP_Mi8_rope",1]
+_ropeleft = "OWP_Mi8_rope" createvehicle [0,0,0]
+_ropeleft setpos [(getpos _me select 0) + _yl*sin(getdir _me) + _xl*cos(getdir _me),(getpos _me select 1) + _yl*cos(getdir _me) - _xl*sin(getdir _me),(getpos _me select 2) + _zl]
+_ropeleft animate ["OWP_Mi8_rope",1]
+_roperight = "OWP_Mi8_rope" createvehicle [0,0,0]
+_roperight setpos [(getpos _me select 0) + _yr*sin(getdir _me) + _xr*cos(getdir _me),(getpos _me select 1) + _yr*cos(getdir _me) - _xr*sin(getdir _me),(getpos _me select 2) + _zr]
+_roperight animate ["OWP_Mi8_rope",1]
+
+[_me,_ropedoor,_x,_y] exec "\OWP_MI8\scripts\owp_getout.sqs"
+[_me,_ropeleft,_xl,_yl] exec "\OWP_MI8\scripts\owp_getout.sqs"
+[_me,_roperight,_xr,_yr] exec "\OWP_MI8\scripts\owp_getout.sqs"
+
+#loop
+_ropedoor setpos [(getpos _me select 0) + _y*sin(getdir _me) + _x*cos(getdir _me),(getpos _me select 1) + _y*cos(getdir _me) - _x*sin(getdir _me),(getpos _me select 2) + _z]
+_ropedoor setdir (getdir _me +180)
+_ropeleft setpos [(getpos _me select 0) + _yl*sin(getdir _me) + _xl*cos(getdir _me),(getpos _me select 1) + _yl*cos(getdir _me) - _xl*sin(getdir _me),(getpos _me select 2) + _zl]
+_ropeleft setdir (getdir _me + 90)
+_roperight setpos [(getpos _me select 0) + _yr*sin(getdir _me) + _xr*cos(getdir _me),(getpos _me select 1) + _yr*cos(getdir _me) - _xr*sin(getdir _me),(getpos _me select 2) + _zr]
+_roperight setdir (getdir _me + 90)
+_h = getpos _me select 2
+;player sidechat format ["%1",_h]
+? (isNull _ropedoor) && (isNull _ropeleft) && (isNull _roperight) : goto "exit"
+~0.001
+goto "loop"
+#exit
+~1
+? ("owp_mi8_rope_active" in magazines _me): _me removemagazine "owp_mi8_rope_active"
+? _me animationPhase "OWP_Mi8_DOOR" >= 0.99 : _me animate["OWP_Mi8_DOOR",0]
+? _me animationPhase "OWP_Mi8_CDL" >= 0.99 : _me exec "\OWP_Mi8\scripts\owp_CClose.sqs"
+exit

@@ -1,0 +1,14 @@
+_mi24 = _this select 0
+
+#Mainloop1
+~.2
+?(isengineon _mi24) && (_mi24 animationphase "gearF" != 1) && ((abs speed _mi24 >20) || (getpos _mi24 select 2 > 10)): [_this select 0] exec "\RHS_Hind\scripts\gearup.sqs"
+?(isengineon _mi24) && (_mi24 animationphase "rudoor" != 0) && ((abs speed _mi24 >20) || (getpos _mi24 select 2 > 10)): [_mi24] exec "\RHS_Hind\scripts\rdoorcl.sqs"
+?(isengineon _mi24) && (_mi24 animationphase "ludoor" != 0) && ((abs speed _mi24 >20) || (getpos _mi24 select 2 > 10)): [_mi24] exec "\RHS_Hind\scripts\ldoorcl.sqs"
+goto "Mainloop2"
+~1
+#Mainloop2
+~.2
+?(abs speed _mi24 <20) && (getpos _mi24 select 2 < 8) && (_mi24 animationphase "gearF" != 0): [_this select 0] exec "\RHS_Hind\scripts\geardown.sqs"
+~1
+goto "Mainloop1"

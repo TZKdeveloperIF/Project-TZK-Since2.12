@@ -1,0 +1,16 @@
+; args: [vehicle, name]
+_vehicle = _this select 0
+_name = _this select 1
+
+_path = ""; _postfix = ""; _excludeList = []
+? _name == "D": _path = "\TZK_Texture_4_0_0\gdi\"
+
+? _name == "G": _path = "\TZK_Texture_4_0_1\DSL_a10\Dgn\", _excludeList1 = ["tex_a10_kridlo_konecek.pac", "tex_a10_kridlo_spod.pac", "tex_a10_kridlo_top2.pac",  "tex_a10_motor_spodek.pac", "tex_a10_motor_top2.pac", "tex_a10_motor2.pac", "tex_a10_nosic.pac", "tex_a10_nosic_spodek.pac", "tex_a10_side_a2.pac", "tex_a10_side_b2.pac", "tex_a10_sop2.pac", "tex_a10_trupa_spod.pac", "tex_a10_trupa_top2.pac", "tex_a10_trupb_spod.pac", "tex_a10_trupb_top2.pac", "tex_a10_vop_top2.pac"], _excludeList2 = ["tex_a10_motor_bck.pac", "tex_a10_motor_frnt1.paa", "tex_a10_motor_frt.pac"], _excludeList = _excludeList1 + _excludeList2
+? _name == "W": _path = "\TZK_Texture_4_0_1\DSL_a10\gy\", _excludeList1 = ["tex_a10_kridlo_konecek.pac", "tex_a10_kridlo_spod.pac", "tex_a10_kridlo_top2.pac",  "tex_a10_motor_spodek.pac", "tex_a10_motor_top2.pac", "tex_a10_motor2.pac", "tex_a10_nosic.pac", "tex_a10_nosic_spodek.pac", "tex_a10_side_a2.pac", "tex_a10_side_b2.pac", "tex_a10_sop2.pac", "tex_a10_trupa_spod.pac", "tex_a10_trupa_top2.pac", "tex_a10_trupb_spod.pac", "tex_a10_trupb_top2.pac", "tex_a10_vop_top2.pac"], _excludeList2 = ["tex_a10_motor_bck.pac", "tex_a10_motor_frnt1.paa", "tex_a10_motor_frt.pac"], _excludeList = _excludeList1 + _excludeList2
+
+[_vehicle, _path, _postfix, _excludeList] call loadFile "\TZK_Objects\Scripts\texture\stdSetObjTex.sqf"
+
+? count _excludeList == 0: exit
+_array = typeOf _vehicle GetVehicleParamArray "hiddenSelections"
+{_vehicle setObjectTexture [_array find _x, _path + "Bok.pac"]} forEach _excludeList1
+{_tex = substr[_x, 4, sizeofstr _x]; _vehicle setObjectTexture [_array find _x, _tex]} forEach _excludeList2

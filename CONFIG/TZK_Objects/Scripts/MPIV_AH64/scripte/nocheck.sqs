@@ -1,0 +1,30 @@
+if( !(local _MPIVHeli)) Then{exit};
+
+_MPIVHeli = _This select 0
+
+
+_MPIVHeli setObjectTexture [4,"\MPIV_AH64\inst\pil_komp.pac"]
+_MPIVHeli setObjectTexture [5,"\MPIV_AH64\inst\g_weap.pac"]
+_MPIVHeli setObjectTexture [6,"\MPIV_AH64\inst\g_info.pac"]
+_MPIVHeli setObjectTexture [9,"\MPIV_AH64\inst\g_info.pac"]
+_MPIVHeli setObjectTexture [7,"\MPIV_AH64\inst\g_weap.pac"]
+_MPIVHeli setObjectTexture [8,"\MPIV_AH64\inst\g_weap2.pac"]
+_MPIVHeli setObjectTexture [10,"\MPIV_AH64\inst\gun_mfd_mid.pac"]
+goto "loop"
+
+#loop
+? isNull _MPIVHeli: exit
+~1
+? !(isEngineOn _MPIVHeli):goto "Ende"
+? !(alive _MPIVHeli):goto "Ende"
+goto "loop"
+
+#Ende
+_MPIVHeli setObjectTexture [4,"\MPIV_AH64\c\mfd_blank.pac"]
+_MPIVHeli setObjectTexture [5,"\MPIV_AH64\c\mfd_blank.pac"]
+_MPIVHeli setObjectTexture [6,"\MPIV_AH64\c\mfd_blank.pac"]
+_MPIVHeli setObjectTexture [7,"\MPIV_AH64\c\mfd_blank.pac"]
+_MPIVHeli setObjectTexture [8,"\MPIV_AH64\c\mfd_blank.pac"]
+_MPIVHeli setObjectTexture [9,"\MPIV_AH64\c\mfd_blank.pac"]
+_MPIVHeli setObjectTexture [10,"\MPIV_AH64\c\mfd_blank.pac"]
+exit

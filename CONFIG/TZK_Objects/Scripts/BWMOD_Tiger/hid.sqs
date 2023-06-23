@@ -1,0 +1,14 @@
+_vehicle = _this select 0
+
+?(gunner _vehicle == player): _phase = 0;
+?(format ["%1", side gunner _vehicle] == "UNKNOWN"): _phase = 0;
+?(gunner _vehicle != player): _phase = 1;
+
+_vehicle animate ["HID", _phase];
+_vehicle animate ["HIDinnen", _phase]
+
+;;ADDED: EXIT SYSTEM IF PLAYER HAS LEFT VEHICLE
+?(player != driver _vehicle AND player != gunner _vehicle): [_vehicle,"Shutdown"] exec "\BWMOD_Tiger\scr\sys_core.sqs";
+
+;;ADDED: RUN SYSTEM IF PLAYER HAS ENTERED VEHICLE
+?(player == driver _vehicle AND isengineon _vehicle OR player == gunner _vehicle AND isengineon _vehicle): [_vehicle,"Init"] exec "\BWMOD_Tiger\scr\sys_core.sqs";

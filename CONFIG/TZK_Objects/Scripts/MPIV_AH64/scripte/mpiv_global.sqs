@@ -1,0 +1,17 @@
+;MPIV GLOBAL SCRIPT
+
+_MPIVHeli = _this select 0
+
+
+? format ["%1", MPIV_NoDust] == "scalar bool array string 0xfcffffef": MPIV_NoDust = false
+? format ["%1", MPIV_NoCheck] == "scalar bool array string 0xfcffffef": MPIV_NoCheck = false
+? format ["%1", MPIV_NoSmoke] == "scalar bool array string 0xfcffffef": MPIV_NoSmoke = false
+
+
+? !MPIV_NoDust : [_MPIVHeli] exec "\MPIV_AH64\scripte\heli_rotorwash.sqs"
+? !MPIV_NoCheck : [_MPIVHeli] exec "\MPIV_AH64\scripte\engine.sqs"
+? MPIV_NoCheck : [_MPIVHeli] exec "\MPIV_AH64\scripte\nocheck.sqs"
+? !MPIV_NoSmoke : [_MPIVHeli] exec "\MPIV_AH64\scripte\fx.sqs"
+
+[_MPIVHeli] exec "\MPIV_AH64\scripte\mpiv_tail.sqs"
+

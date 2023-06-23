@@ -1,0 +1,6 @@
+; args: [vehicle, name]
+_vehicle = _this select 0; _name = "_red"
+? count _this > 1: _name = _this select 1
+
+_array = typeOf _vehicle GetVehicleParamArray "hiddenSelections"
+_vehicle setObjectTexture [_array find "pruh", "\TZK_Texture_4_0_0\pruh_" + _name + ".paa"]

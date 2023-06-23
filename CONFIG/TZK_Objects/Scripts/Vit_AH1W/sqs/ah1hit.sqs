@@ -1,0 +1,21 @@
+_plane1 = _this select 0
+_amountdamage=getdammage _plane1
+
+#Mainloop
+
+?(_amountdamage == 0): goto "exit"
+?(_amountdamage >= 0 and _amountdamage<= 1): goto "damage"
+?(_amountdamage == 1): goto "exit"
+goto "exit"
+
+#damage
+_plane1 exec "\Vit_ah-1w\sqs\ah1damage.sqs"
+
+
+exit
+
+#exit
+exit
+
+
+

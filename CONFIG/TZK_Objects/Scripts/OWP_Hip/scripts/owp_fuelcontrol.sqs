@@ -1,0 +1,14 @@
+;#########################################
+;# Written by Voyager  voyager04@mail.ru #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+
+_me = _this select 0
+#loop
+@(alive _me)
+@(fuel _me < 0.05)
+? !(alive _me) : goto "loop"
+_me vehicleradio "mi8_alarm_lofuel"
+_me vehiclechat localize "STR_OWP_Mi8_LowFuel"
+@(fuel _me >= 0.05)
+goto "loop"

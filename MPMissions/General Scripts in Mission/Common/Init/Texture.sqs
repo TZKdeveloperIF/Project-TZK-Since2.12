@@ -26,14 +26,12 @@ _firstChar = substr [_typeName, 0, 1]; _found = false;
 
 # CheckM113
 	? "M113_xj400" countType [_vehicle] > 0: _scriptName = "M113", goto "END"
-	? "M113Ambul_xj400" countType [_vehicle] > 0: _scriptName = "M113Ambu", goto "END"
+	? "MHQW_xj400" countType [_vehicle] > 0: _scriptName = "M113Ambu", goto "END"
 	? "Vulcan_xj400" countType [_vehicle] > 0: _scriptName = "Vulcan", goto "END"
-	? "M2A2_xj400" countType [_vehicle] > 0: _scriptName = "M2A2", goto "END"
 	goto "END"
 # CheckBMP
 	? "BMP_xj400" countType [_vehicle] > 0: _scriptName = "BMP1", _scriptPath = "\TZK_Config_4_0_6", goto "END"
-	? "BMP2_xj400" countType [_vehicle] > 0: _scriptName = "BMP2", _scriptPath = "\TZK_Config_4_0_6", goto "END"
-	? "BMPAmbul_xj400" countType [_vehicle] > 0: _scriptName = "BMPAmbu", _scriptPath = "\TZK_Config_4_0_6", goto "END"
+	? "MHQE_xj400" countType [_vehicle] > 0: _scriptName = "BMPAmbu", _scriptPath = "\TZK_Config_4_0_6", goto "END"
 	goto "END"
 
 # END

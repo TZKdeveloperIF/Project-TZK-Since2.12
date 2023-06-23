@@ -1,0 +1,89 @@
+;#########################################
+;# Written by Voyager  voyager04@mail.ru #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+_arrayhelitype = ["OWP_Mi8T_un","OWP_Mi8MT_g","OWP_Mi8MT_m","OWP_Mi8MTV_d","OWP_Mi8MTV_g","OWP_Mi8MTV_m","OWP_Mi8MTV_w"]
+;функция расстояния по плоскости, функции можно и так задавать
+_getdis = {private ["_pos1", "_pos2"];_pos1 = _this select 0;_pos2 = _this select 1;sqrt(((_pos1 select 0) - (_pos2 select 0))^2+((_pos1 select 1) - (_pos2 select 1))^2)}
+_msg1 = "Incorrect argument\nexit"
+;функция получения угла
+_getdir = {private ["_unit", "_objpos", "_unitdir", "_unitposx", "_unitposy", "_objposx", "_objposy", "_dis", "_angle", "_azimuth"];_unit = _this select 0;_objpos = _this select 1;_unitdir = getdir _unit;_unitposx = getpos _unit select 0;_unitposy = getpos _unit select 1;_objposx = _objpos select 0;_objposy = _objpos select 1;_dis = sqrt((_unitposx - _objposx)^2 + (_unitposy - _objposy)^2);_angle = acos((_objposy - _unitposy)/_dis);if ((_unitdir >= 0) and (_unitdir < 180)) then {if (_objposx >= _unitposx) then {_azimuth = _angle - _unitdir};if ((_objposx < _unitposx) and (_angle <= 180 - _unitdir)) then {_azimuth = -_angle - _unitdir};if ((_objposx < _unitposx) and (_angle > 180 - _unitdir)) then {_azimuth = 360 - _angle - _unitdir};} else {if ((_objposx >= _unitposx) and (_angle >= _unitdir - 180)) then {_azimuth = _angle - _unitdir};if ((_objposx >= _unitposx) and (_angle < _unitdir - 180)) then {_azimuth = 360 + _angle - _unitdir};if (_objposx < _unitposx) then {_azimuth = 360 - _angle - _unitdir};};_azimuth}
+;если ошибка, выходим
+? count _this < 1 : hint _msg1; exit
+;0 - наш вертолет
+_heli = _this select 0
+? !(typeof _heli in _arrayhelitype):hint "Wrong heli";exit
+;1 - группа
+_group  = _this select 1
+;позиция лидера
+_pos  = getpos leader _group
+? ((_pos select 2) <= 5):_height = 13
+? ((_pos select 2) > 5):_height = (_pos select 2) + 13
+_pos set [2, _height]
+_beginlanddis = 330
+_endlanddis = 30
+;вейпоинт подождет
+_heli lockWP true
+;летим к точке
+_heli domove [_pos select 0,_pos select 1]
+;ждем пока не достигнем нужной дистанции для спуска
+@([getpos _heli,_pos] call _getdis <= _beginlanddis)
+;запоминаем режим полета
+_speedMode = speedMode _heli
+_behaviour = behaviour _heli
+_speed = speed _heli
+_heli setSpeedMode "LIMITED"
+_flyinheight = getpos _heli select 2
+_t = _time
+;сбрасываем скорость
+#speeddown
+~0.01
+? speed _heli < 55 : goto "pland"
+_speednow = _speed - (_time-_t)*27
+_heli setVelocity [_speednow*sin(getdir _heli)/3.6,_speednow*cos(getdir _heli)/3.6,0]
+;player sidechat format ["Speed1 %1 H %2 %3", speed _heli,getpos _heli select 2,_height]
+goto "speeddown"
+#pland
+_coef = ((getpos _heli select 2)-(_height))/([getpos _heli,_pos] call _getdis)
+_minh = getpos _heli select 2
+;сажаем
+#landing
+~0.1
+_vel = velocity _heli
+? ([getpos _heli,_pos] call _getdis < _beginlanddis) && (speed _heli > 20) : _heli setVelocity [0.98*(_vel select 0),0.98*(_vel select 1),(_vel select 2)]
+_distance = [getpos _heli,_pos] call _getdis
+_h = _height + _distance*_coef
+? _h >= _minh : _h = _minh
+? _h < _minh : _minh = _h
+_heli flyInHeight _h
+_heli domove [_pos select 0,_pos select 1]
+? (_distance <= _endlanddis) && (speed _heli < 20): goto "endlanding"
+;player sidechat format ["Speed2 %1 H %2 %3 %4", speed _heli,getpos _heli select 2,_height,_distance]
+goto "landing"
+#endlanding
+_distance = [getpos _heli,_pos] call _getdis
+_h = _height + _distance*_coef
+? _h >= _minh : _h = _minh
+? _h < _minh : _minh = _h
+_heli flyInHeight _h
+_az = [_heli,_pos] call _getdir
+_heli setdir (getdir _heli + _az*0.03)
+_heli setVelocity [4*sin(getdir _heli+_az),4*cos(getdir _heli+_az),velocity _heli select 2]
+~0.001
+? _distance > 5 : goto "endlanding"
+_heli setVelocity [0,0,0]
+_heli flyInHeight _height
+@(getpos _heli select 2 <=_height+0.5)
+~1
+doStop _heli
+#wait
+[_heli,_group] exec "\OWP_Mi8\scripts\owp_AIRopeDown.sqs"
+~5
+@!("owp_mi8_ropehook_active" in magazines _heli)
+~0.5
+_heli domove getpos _heli
+_heli flyInHeight _flyinheight
+_heli lockWP false
+_heli setSpeedMode _speedMode
+_heli setBehaviour _behaviour
+exit

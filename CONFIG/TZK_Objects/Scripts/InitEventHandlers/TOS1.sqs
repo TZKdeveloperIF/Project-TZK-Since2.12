@@ -1,0 +1,18 @@
+; args: [vehicle]
+_vehicle = _this select 0
+
+; texture number depending on its initial position
+[_vehicle, "\TZK_Texture_4_0_0\DKMM\"] exec "\TZK_Objects\Scripts\InitEventHandlers\RSC_Numbers.sqs"
+
+
+? local _vehicle: _vehicle removeweapon "FAE220Launcher_xj400"; [_vehicle , 1] exec "\TZK_Objects\Scripts\Deploy\TOS1.sqs"
+? local _vehicle: _vehicle animate ["suspension", 0.5]; 
+
+; lidcovers
+
+_i = (typeOf _vehicle GetVehicleParamArray "hiddenSelections") find "m01"; _c = _i + 30
+#textureCovers
+_vehicle setobjecttexture [_i, "\TZK_Texture_4_0_0\DKMM\Arty\tost2.pac"]
+? _i < _c: _i = _i + 1 , goto "textureCovers"
+
+; EOF

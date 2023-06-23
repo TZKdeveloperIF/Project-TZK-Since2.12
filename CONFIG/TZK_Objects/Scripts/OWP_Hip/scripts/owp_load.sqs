@@ -1,0 +1,96 @@
+;#########################################
+;# Written by Voyager  voyager04@mail.ru #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+
+_me = _this select 0
+_id = _this select 2
+
+_distance = {private ["_pos1", "_pos2"];_pos1 = _this select 0;_pos2 = _this select 1;sqrt(((_pos1 select 0) - (_pos2 select 0))^2+((_pos1 select 1) - (_pos2 select 1))^2)}
+
+_limitcrew = 15
+? typeof _me == "OWP_Mi8T_un" : _limitcrew = 14
+
+_x=-2.15
+_y=4.85
+_z=2.45
+_limitheight = 14.5
+
+_ddd = 12
+_angle = 180
+
+? !("owp_mi8_load" in magazines _me): _me addmagazine "owp_mi8_load"
+
+_group = GrpNull
+_i = 0
+_j = -1
+"if (_me in _x) then {_j=_i};_i=_i+1" foreach OWP_MI8_HELICOPTERS_ARRAY
+_i = 0
+_l = -1
+if (_j!=-1) then {"if (_id in _x) then {_l=_i};_i=_i+1" foreach ( ( OWP_MI8_HELICOPTERS_ARRAY select _j ) select 1)} else {_me removeaction _id;hint "critical error\nexit from script";exit}
+if (_l!=-1) then {_group=(((OWP_MI8_HELICOPTERS_ARRAY select _j)select 1) select _l) select 1} else {_me removeaction _id;hint "critical error\nexit from script";exit}
+
+_i = 0
+
+_rope = nearestObject [_me,"OWP_Mi8_ropehook"]
+_me removeaction _id
+;_count = count units _group
+_unitarr = []
+"_unitarr = _unitarr + [_x]" foreach (units _group)
+_count = count _unitarr
+#loop
+~0.1
+_rope setdir (getdir _me +_angle)
+? count (crew _me) >= _limitcrew : goto "end"
+_unit = _unitarr select _i
+? _unit in _me : _i = _i + 1;goto "loop"
+? !(alive _unit) && (_i == _count - 1) : goto "end"
+? (!isEngineOn _me):goto "end"
+? !(alive _me) : goto "end"
+? abs(speed _me) > 15 : goto "end"
+if (alive _unit) then {_unit assignAsCargo _me;_unit commandMove [(getpos _me select 0) + _y*sin(getdir _me) + _x*cos(getdir _me),(getpos _me select 1) + _y*cos(getdir _me) - _x*sin(getdir _me),getpos _unit select 2]}
+_h = getpos _me select 2
+_rope animate ["OWP_Mi8_rope",1]
+_delta=5
+? _h <= _ddd : _delta=5*_h/_ddd
+~_delta
+@((unitReady _unit)|| !(alive _unit) || abs((getpos _me select 2) - (getpos _unit select 2))>(_limitheight+10))
+? !(alive _unit):_i = _i + 1;goto "loop"
+? abs((getpos _me select 2) - (getpos _unit select 2))>_limitheight : goto "end"
+? [getpos _unit,[(getpos _me select 0) + _y*sin(getdir _me) + _x*cos(getdir _me),(getpos _me select 1) + _y*cos(getdir _me) - _x*sin(getdir _me),0]] call _distance > 50 : goto "end"
+_h = (getpos _me select 2) - (getpos _unit select 2)
+_rope animate ["OWP_Mi8_rope",0]
+_unit switchmove "OWPropehook"
+_phase = 1
+_rd = 0.5
+_p = _rope animationPhase "OWP_Mi8_rope"
+_dt = _p*5
+? _dt == 0 : _dt = 5
+_st = _time
+? !("owp_mi8_unit_attach" in magazines _me): _me addmagazine "owp_mi8_unit_attach"
+#upp
+? (!alive driver _me):_unit switchmove "";goto "end"
+? !(alive _me) :_unit switchmove ""; goto "end"
+? abs(speed _me) > 50 :_unit switchmove ""; goto "end"
+_rope setdir (getdir _me +_angle)
+_phase = _rope animationPhase "OWP_Mi8_rope"
+_unit setdir (getdir _me + 90)
+;_unit setvelocity [0,0,0]
+_hh = _h*(1-(_time-_st)/_dt)-(1-_phase)*1
+? (getpos _me select 2) - _hh < 0 : _hh = getpos _me select 2
+_unit setpos [(getpos _me select 0) + _y*sin(getdir _me) + (_x+_rd)*cos(getdir _me),(getpos _me select 1) + _y*cos(getdir _me) - (_x+_rd)*sin(getdir _me),(getpos _me select 2) - _hh]
+~0.001
+? _phase < 0.1 : goto "exit"
+goto "upp"
+#exit
+? ("owp_mi8_unit_attach" in magazines _me):_me removemagazine "owp_mi8_unit_attach"
+_unit switchmove ""
+_unit moveInCargo _me
+if (side _unit != side driver _me) then {_me say "Rus1";_me sidechat "What the fuck? Die bastard!";_unit setdammage 1;_unit action ["getout",_me]}
+_i = _i + 1
+? _i < _count : goto "loop"
+#end
+? ("owp_mi8_unit_attach" in magazines _me):_me removemagazine "owp_mi8_unit_attach"
+? ("owp_mi8_ropehook_active" in magazines _me):_me removemagazine "owp_mi8_ropehook_active"
+? ("owp_mi8_load" in magazines _me): _me removemagazine "owp_mi8_load"
+exit

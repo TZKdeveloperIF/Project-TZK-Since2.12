@@ -1,0 +1,18 @@
+; args: [vehicle, name]
+_vehicle = _this select 0
+_name = _this select 1
+
+_path = "\m2a2\m2a2_"; _postfix = ""; _excludeList1 = ["tex_m113_kolo.pac", "tex_m113_kolo2.pac", "tex_t55kolozub.paa", "tex_t55kolozub2.paa", "tex_t72_kolo3.paa", "tex_t72_kolo_kraj.pac"], _excludeList = _excludeList1
+? _name == "D": _path = "\TZK_Texture_4_0_0\CBT_Brad\d\"; _excludeList1 = [], _excludeList = _excludeList1
+? _name == "G": _path = "\TZK_Texture_4_0_0\CBT_Brad\w\"; _excludeList1 = ["tex_t72_kolo3.paa", "tex_t72_kolo_kraj.pac"], _excludeList = _excludeList1
+? _name == "W": _path = "\TZK_Texture_4_0_0\snow\m2a2\";  _excludeList1 = [], _excludeList2 = ["tex_t55kolozub.paa", "tex_t55kolozub2.paa", "tex_t72_kolo3.paa", "tex_t72_kolo_kraj.pac"], _excludeList3 = ["tex_opak.pac", "tex_opak2.pac", "tex_svetla.pac", "tex_vez_op.pac", "tex_vez_op2.pac"],_excludeList = _excludeList1 + _excludeList2 + _excludeList3
+
+[_vehicle, _path, _postfix, _excludeList] call loadFile "\TZK_Objects\Scripts\texture\stdSetObjTex.sqf"
+
+? count _excludeList1 == 0: exit
+_array = typeOf _vehicle GetVehicleParamArray "hiddenSelections"
+{_tex = substr [_x, 4, sizeofstr _x]; _vehicle setObjectTexture [_array find _x, _tex]} forEach _excludeList1
+
+? _name != "W": exit
+{_tex = substr [_x, 4, sizeofstr _x]; _vehicle setObjectTexture [_array find _x, substr [_path, 0, sizeofstr _path - 5] + _tex]} forEach _excludeList2
+{_tex = substr [_x, 4, sizeofstr _x]; _vehicle setObjectTexture [_array find _x, "\m2a2\m2a2_" + _tex]} forEach _excludeList3

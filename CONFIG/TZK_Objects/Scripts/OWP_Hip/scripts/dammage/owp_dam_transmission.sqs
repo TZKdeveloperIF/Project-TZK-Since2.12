@@ -1,0 +1,19 @@
+;#########################################
+;# Written by Voyager voyager04@mail.ru  #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+_me = _this select 0
+_color = [[ 0, 0, 0, 0.1],[ 0.1, 0.1, 0.1, 0.1],[0.9,0.9,0.9,0]]
+_speed = [5,0,-5]
+_size = [1,4,5]
+
+_me exec "\OWP_MI8\scripts\dammage\owp_dir_transmission.sqs"
+
+#Loop
+if !("owp_mi8_trigger_dammage_transmission" in magazines _me) then { exit; };
+if ((GetDammage _me) == 0) then {exit; };
+if (!alive _me) then { exit; };
+if (isengineon _me) then { _speed = [5,-1,-2]; } else { _speed = [0,0,0]; };
+~0.05
+drop ["cl_basic", "", "Billboard", 1, 6, [-1,-10.5,1.5], _speed , 10, 5, 5, 0.4, _size, _color , [0,1,0], 1, 1, "", "", _me]
+Goto "Loop"

@@ -1,0 +1,27 @@
+;#########################################
+;# Written by Voyager  voyager04@mail.ru #
+;# http:\\ofp.ussr-online.net\naseorujie #
+;#########################################
+
+_me = _this
+
+_zneg = -0.30
+_znul = 0.20
+#loop
+?!(alive _me): exit
+_z=getpos _me select 2
+?(getpos _me select 2 > _znul): _z=_znul
+?(getpos _me select 2 < _zneg): _z=_zneg
+_coef=(_z-_zneg)/(_znul-_zneg)
+_me animate ["Susp_R",_coef]
+_me animate ["Susp_L",_coef]
+_me animate ["Susp_RD",_coef]
+_me animate ["Susp_LD",_coef]
+?(getpos _me select 2 > 5) : goto "Await_InAir"
+?((getpos _me select 2 <= _zneg) && !(isEngineOn _me)): exit
+~0.001
+goto "loop"
+
+#Await_InAir
+@(getpos _me select 2 < 5)
+goto "loop"

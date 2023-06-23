@@ -1,0 +1,10 @@
+_vehicle = _this select 0; _animations = _this select 1; _phase = [0, 1] select (_this select 2)
+
+ _boolMP = false; _sounds = []
+? count _this > 3: _boolMP = _this select 3
+? count _this > 4: _sounds = _this select 4
+
+? count _sounds > 0 && _boolMP: publicExec format ["{UnitByID %1 say _x} forEach %2", NetworkID _vehicle, _sounds]
+? count _sounds > 0: {_vehicle say _x} forEach _sounds
+
+? local _vehicle: {_vehicle animate [_x, _phase]} forEach _animations

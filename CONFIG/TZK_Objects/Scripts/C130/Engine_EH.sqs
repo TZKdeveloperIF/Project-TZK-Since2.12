@@ -1,0 +1,20 @@
+_vehicle = _this select 0; _localState = _this select 1
+_typeName = typeOf _vehicle; _hiddenSelections = _typeName GetVehicleParamArray "hiddenSelections"
+
+? isEngineOn _vehicle: goto "Engine_ON"
+; _vehicle setObjectTexture [_hiddenSelections find "gearlight", "\TZK_Texture_4_0_0\RHS_hind\p\mi24_ln.paa"]
+[_vehicle] exec {\TZK_Objects\Scripts\C130\openramp.sqs}; [_vehicle] exec {\TZK_Objects\Scripts\C130\enginestop.sqs}
+; ? _vehicle animationphase "gearF" != 0: [_vehicle] exec "\TZK_Objects\Scripts\RHS_Mi24\GearDown.sqs"
+
+exit
+
+#Engine_ON
+~0.1
+? !isEngineOn _vehicle: exit
+; if (_vehicle animationphase "gearF" == 0) Then {_vehicle setObjectTexture [_hiddenSelections find "gearlight", "\TZK_Texture_4_0_0\RHS_hind\p\mi24_lgr.paa"]} Else {_vehicle setObjectTexture [_hiddenSelections find "gearlight","\TZK_Texture_4_0_0\RHS_hind\p\mi24_lor.paa"]};
+
+
+? !local _vehicle: exit
+@(!local _vehicle || !alive _vehicle || !isEngineOn _vehicle || (getPos _vehicle) select 2 > 5 || (abs speed _vehicle > 50))
+? !local _vehicle || !alive _vehicle || !isEngineOn _vehicle: exit
+[_vehicle] exec {\TZK_Objects\Scripts\C130\CloseRamp.sqs}; [_vehicle] exec {\TZK_Objects\Scripts\C130\enginestart.sqs};			exit

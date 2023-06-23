@@ -1,0 +1,77 @@
+_chopper = _this select 0
+_count = 0
+_downwash = 0
+_thrust = 0
+
+#downblast
+?_downwash >=20:goto "loop"
+_downwash =_downwash + 0.015
+_thrust = _thrust + 0.015
+#loop
+
+? !isEngineOn _chopper : exit
+
+? (getdammage _chopper >=0.6):goto "damageloop"
+
+drop["cl_water","","Billboard",1,1.2,[-1.05,-1.1,0.11],[0,-_thrust,-_downwash],0,0.80,1,0,[1,5],[[0.1,0.1,0.15,0.005],[0.1,0.1,0.15,random 0.01],[0.1,0.1,0.15,0]],[0,1],1,5,"","",_chopper] 
+
+drop["cl_water","","Billboard",1,1.2,[1.05,-1.1,0.11],[0,-_thrust,-_downwash],0,0.80,1,0,[1,5],[[0.1,0.1,0.15,0.005],[0.1,0.1,0.15,random 0.01],[0.1,0.1,0.15,0]],[0,1],1,5,"","",_chopper] 
+
+~0.01
+goto "downblast"
+
+#damageloop
+? isNull _chopper: exit
+~1
+;left engine
+drop["\newcloud\cl_basic","","Billboard",1,1,[-1.05,-1.9,0.11],[0,-_thrust,-_downwash],0,1.275,1,0.1,[0.7,3.5,5.5],[[0.1,0.1,0.1,random 0.35],[0.1,0.1,0.1,0]],[0,1],0.2,6,"","",_chopper]
+
+;right engine
+drop["\newcloud\cl_basic","","Billboard",1,1,[1.05,-1.9,0.11],[0,-_thrust,-_downwash],0,1.275,1,0.1,[0.7,3.5,4.5],[[0.1,0.1,0.1,random 0.4],[0.1,0.1,0.1,0]],[0,1],0.2,6,"","",_chopper]
+
+;sparks
+drop["\newcloud\cl_fire","","Billboard",1,0.1,[-1.05,-1.1,0.11],[0,- (random 10),-_downwash],0,1.275,1,0,[random 0.15],[[1,1,1,1]],[0],0,0,"","",_chopper]
+drop["\newcloud\cl_fire","","Billboard",1,0.1,[1.05,-1.1,0.11],[0,- (random 10),-_downwash],0,1.275,1,0,[random 0.15],[[1,1,1,1]],[0],0,0,"","",_chopper]
+
+~0.01
+
+? (getdammage _chopper >=0.90):goto "explo"
+
+goto "downblast"
+
+#explo
+;@ getpos driver _chopper select 2 <2
+@ abs speed _chopper < 0.8 && abs(velocity _chopper select 2) <0.8
+~7 + (random 10)
+_pos = getpos driver _chopper
+_bang = "shell125" createvehicle _pos
+~1
+_bang1 = "shell125" createvehicle _pos
+~1
+_bang1 = "shell125" createvehicle _pos
+~1
+_bang1 = "shell125" createvehicle _pos
+
+
+#debris
+_dir = random 360
+_velx = 15 * sin _dir
+_vely =15* cos _dir
+_gumpf = "FxExploArmor1" createvehicle _pos
+_gumpf setvelocity [_velx, _vely,10 + random 10]
+_bumpf = "FxExploArmor4" createvehicle  _pos
+_bumpf setvelocity [_velx, _vely, 10 + random 10]
+_fumpf = "FxExploGround1" createvehicle  _pos
+_fumpf setvelocity [_velx, _vely, 10 + random 10]
+_lumpf = "FxExploGround2" createvehicle  _pos
+_lumpf setvelocity [_velx, _vely, 10 + random 10]
+_dumpf = "FxExploArmor3" createvehicle _pos
+_dumpf setvelocity [_velx, _vely, 10 + random 10]
+_count =_count+ random 7
+? _count <40:goto"debris"
+
+
+
+exit
+
+

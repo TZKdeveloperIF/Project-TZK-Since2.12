@@ -1,0 +1,35 @@
+_plane1 = _this select 0
+
+
+
+_weapon2 = "ah1aim9"
+
+
+_misscount = _plane1 ammo "ah1aim9"
+
+? (_misscount == 2) : goto "miss2"
+? (_misscount == 1) : goto "miss1"
+? (_misscount == 0) : goto "miss0"
+
+
+#miss2
+_plane1 setobjecttexture[3, "\Vit_AH-1W\store\sw_tex.paa"]
+_plane1 setobjecttexture[2, "\Vit_AH-1W\store\sw_tex.paa"]
+exit
+
+
+
+#miss1
+_plane1 setobjecttexture[3, ""]
+_plane1 setobjecttexture[2, "\Vit_AH-1W\store\sw_tex.paa"]
+exit
+
+
+
+
+#miss0
+_plane1 setobjecttexture[3, ""]
+_plane1 setobjecttexture[2, ""]
+exit
+
+
