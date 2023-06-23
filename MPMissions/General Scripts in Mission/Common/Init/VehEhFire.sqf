@@ -34,7 +34,7 @@ if (_type in typesHowitzer && not bool_TZK_SEMod_Mode) then {
 	if not _found then {if (_typeName == "M109A6G_xj400") then {
 		_found = true;
 		_vehicle addEventHandler ["Fired", {
-			if ("Gun155_xj400" == (_this select 1)) then {
+			if ("Gun155_xj400" == (_this select 1) || "Shrapnel_W_xj400" == (_this select 1)) then {
 				[_this select 0, TheWorld, {m109a6g}] exec {\TZK_Config_4_0_6\Scripts\recoilByTex\shoot155.sqs}
 			};
 		}];
@@ -42,7 +42,7 @@ if (_type in typesHowitzer && not bool_TZK_SEMod_Mode) then {
 	if not _found then {if (_typeName == "PLZ05_TZK_xj400") then {
 		_found = true;
 		_vehicle addEventHandler ["Fired", {
-			if ("Gun155_xj400" == (_this select 1)) then {
+			if ("Gun155_xj400" == (_this select 1) || "Shrapnel_E_xj400" == (_this select 1)) then {
 				[_this select 0, TheWorld, {plz05}] exec {\TZK_Config_4_0_6\Scripts\recoilByTex\shoot155.sqs}
 			};
 		}];
