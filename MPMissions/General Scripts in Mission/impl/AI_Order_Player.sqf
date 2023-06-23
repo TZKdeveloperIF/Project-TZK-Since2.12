@@ -115,12 +115,7 @@ comment "Redefine shoot target order param.";
 comment "Add new orders";
 	comment "[Join] order should always be the last one";
 	_typeJoin = count aiOrders2 - 1;
-	aiOrders2 set [_typeJoin + 1, aiOrders2 select _typeJoin];
-	comment "Add land heli order";
-	aiOrders2 set [_typeJoin, [
-		"Land Heli", [], false, "Player\Order\Land.sqs",
-		"Ask helicopter drivers to land."
-	]];
+	comment "Add orders here";
 
 
 comment "Post execute. Fix CHN images' indexes.";
