@@ -1887,10 +1887,7 @@ RadioTypesGunships = typesGunshipOrigin + typesGunshipAT;
 if (boole_Infantry_Mode) then {call loadFile "\TZK_Scripts_4_0_4\Common\Init\InfantryMode.sqf", (upgDefs select upgTownGroupH) set [1, 999999]};
 comment { ? bool_ExtentArmor_Mode: _i = 0, _names = ["M1A1_TZK_Gun_ExtentArmor_xj400", "M1A2_TZK_Gun_ExtentArmor_xj400", "Leo2A6_Gun_ExtentArmor_xj400", "T80_TZK_Gun_ExtentArmor_xj400", "T90ms_Gun_ExtentArmor_xj400", "ZTZ99_Gun_ExtentArmor_xj400"], {_model = unitDefs select _x select udModel, _j = unitTypeArray find _model, unitTypeArray set [_j, _names select _i], unitDefs select _x set [udModel, _names select _i], _i = _i + 1} forEach typesHeavyTank; };
 
-
-comment { CLEANUP - mags, weapons and vehicles. (Added by TZK_4.0.0) Should be placed in the bottom of file.; };
-typesCleanup = ["WeaponHolder", "SecondaryWeaponHolder"];
-{ if ( count (_x select udCrew) > 0 ) then { typesCleanup set [count typesCleanup, _x select udModel] } } forEach unitDefs;
+comment {CLEANUP};
 
 maxUnitTypes = count unitDefs; TotalUnitTypes = maxUnitTypes + countInfCustom;
 
