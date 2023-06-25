@@ -23,6 +23,10 @@ _buildCD = 1
 ; 获取数学意义上的三角函数值 (角度制, DEG)
 _cos = cos(360 - _markerDir), _sin = sin(360 - _markerDir)
 
+; define the step length
+_step = 8.5
+; ? stTankTrap == _stType: _step = 8.5
+? stWireFence == _stType: _step = 8
 ; 遍历对角线, 建造建筑
 _lineX = - _w
 _nextBuildPos = [(_markerPos select 0) + _lineX * _cos, (_markerPos select 1) + _lineX * _sin]
