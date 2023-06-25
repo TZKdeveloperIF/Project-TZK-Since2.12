@@ -149,3 +149,7 @@ _c = count TzkSelfUpdateIdx; _k = 0; while {_k < _c} do {
 	};
 	_k = _k + 1;
 };
+// Same as unitTypeArray, the typesCleanup should be defined IN THE END OF THIS SCRIPT
+typesCleanup resize 2;
+// typesCleanup = ["WeaponHolder", "SecondaryWeaponHolder"];
+{if (count(_x select udCrew) > 0) then {typesCleanup set [count typesCleanup, _x select udModel]}} forEach unitDefs;
