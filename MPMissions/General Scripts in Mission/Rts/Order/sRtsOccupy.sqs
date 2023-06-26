@@ -1,14 +1,26 @@
-; args: [clicked position, transport type info]
+; args: [clicked position, defence type info]
 _top = TzkSelUnitsStack select TzkSelStackIdx
 _c = count _top
 ? _c == 0: goto "Quit"
 
+_i = 0, _j = 0, _selectedUnits = []
+# loop
+	_unit = _top select _i
+	? _unit != vehicle _unit: goto "continue"
+
+	_selectedUnits set [_j, _unit]
+	_j = _j + 1
+
+	# continue
+	_i = _i + 1
+	? _i < _c: goto "loop"
+_selectedUnits resize _j
+
 _pos = _top call preprocessFile "Player\Rts\CalcCentral.sqf"
 
-_transpTypeInfo = _this select 1
+_defenceTypeInfo = _this select 1
 
-_selectedUnits = +_top
-[_selectedUnits, [_this select 0, _pos, _transpTypeInfo], "hOccupy.sqs", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs"
+[_selectedUnits, [_this select 0, _pos, _defenceTypeInfo], "hOccupy.sqs", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs"
 
 # Quit
 false call preprocessFile "Player\Rts\Area.sqf"
