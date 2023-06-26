@@ -34,3 +34,53 @@ _result = 2
 ? _i == count TzkArtSpeeds: _result = 0
 ? _i != count TzkArtSpeeds: _result = 1
 ? _result != 0: player globalChat "stdLowerBound or TzkArtSpeeds definition has bug"
+
+; is_sorted
+_isSorted = preprocessFile "Util\stdIsSorted.sqf"
+_operatorLess = {(_this select 0) < (_this select 1)}
+_operatorLessEq = {(_this select 0) <= (_this select 1)}
+
+_arr = [1,2,3], _val = 2, _res = [_arr, 0, count _arr, _operatorLess] call _isSorted
+? not _res: _val = 0
+? _res: _val = 1
+? _val != 1: player globalChat format ["stdIsSorted definition has bug in case: %1", [_arr, _res]]
+
+_arr = [1,1,1,1,1,1], _val = 2, _res = [_arr, 0, count _arr, _operatorLess] call _isSorted
+? not _res: _val = 0
+? _res: _val = 1
+? _val != 1: player globalChat format ["stdIsSorted definition has bug in case: %1", [_arr, _res]]
+
+_arr = [1,1,1,1,1,0], _val = 2, _res = [_arr, 0, count _arr, _operatorLess] call _isSorted
+? not _res: _val = 0
+? _res: _val = 1
+? _val != 0: player globalChat format ["stdIsSorted definition has bug in case: %1", [_arr, _res]]
+
+_arr = [1,2,3], _val = 2, _res = [_arr, 0, count _arr, _operatorLessEq] call _isSorted
+? not _res: _val = 0
+? _res: _val = 1
+? _val != 1: player globalChat format ["stdIsSorted definition has bug in case: %1", [_arr, _res]]
+
+_arr = [1,1,1,1,1,1], _val = 2, _res = [_arr, 0, count _arr, _operatorLessEq] call _isSorted
+? not _res: _val = 0
+? _res: _val = 1
+? _val != 1: player globalChat format ["stdIsSorted definition has bug in case: %1", [_arr, _res]]
+
+_arr = [1,1,1,1,1,0], _val = 2, _res = [_arr, 0, count _arr, _operatorLessEq] call _isSorted
+? not _res: _val = 0
+? _res: _val = 1
+? _val != 0: player globalChat format ["stdIsSorted definition has bug in case: %1", [_arr, _res]]
+
+; insert sort
+_arr = [345,7635,1243,735,84,6896,524,54,578,23,34,7553,23,547,2456,7254,65143,743,235]
+[_arr, 0, count _arr, _operatorLess] call preprocessFile "Util\stdInsertSort.sqf"
+_val = 2, _res = [_arr, 0, count _arr, _operatorLess] call _isSorted
+? not _res: _val = 0
+? _res: _val = 1
+? _val != 1: player globalChat "stdInsertSort definition has bug"
+
+_arr = [3,3,3,3]
+[_arr, 0, count _arr, _operatorLess] call preprocessFile "Util\stdInsertSort.sqf"
+_val = 2, _res = [_arr, 0, count _arr, _operatorLess] call _isSorted
+? not _res: _val = 0
+? _res: _val = 1
+? _val != 1: player globalChat "stdInsertSort definition has bug"
