@@ -2,9 +2,13 @@
 // comparer is func(elem1, elem2) => bool
 // if need preprocess, comparer should be "preprocessFile"
 // return: idx
+
+// the comparer MUST be "less" or "greater" WITHOUT "equal" !
+
 // the range is [begin, end)
 // the array must has been sorted by comparer
 // No more parameter check
+
 private [{_array}, {_begin}, {_end}, {_elem}, {_comp}, {_bPreprocess}];
 _array = _this select 0; _begin = _this select 1; _end = _this select 2; _elem = _this select 3;
 _bPreprocess = if (count _this > 5) then {_this select 5} else {false};
@@ -21,8 +25,12 @@ if (_end <= _begin) then {
 			if ([_elem, _array select _mid] call _comp) then {
 				_end = _mid;
 			} else {
+				// _array select _mid == _elem
 				_end = _mid + 1;
-				if ([_array select (_mid - 1), _elem] call _comp) then {_begin = _mid};
+				if ([_array select (_mid - 1), _elem] call _comp) then {_begin = _mid} else {
+					// _array select (_mid - 1) == _elem
+					_end = _mid;
+				};
 			};
 		};
 	};
