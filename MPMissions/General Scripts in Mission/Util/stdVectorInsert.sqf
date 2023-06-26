@@ -9,7 +9,7 @@ _end = _this select 1;
 _itr = _this select 2;
 _elem = _this select 3;
 if (_itr < 0 || _itr > _end || _end > count _array) then {
-	"ERROR: invalid iterator in std::vector::insert" call fDebugLog;
+	format ["ERROR: invalid iterator in std::vector::insert. Params: %1", _this] call fDebugLog;
 } else {
 	_j = _end;
 	while {_j > _itr} do {
