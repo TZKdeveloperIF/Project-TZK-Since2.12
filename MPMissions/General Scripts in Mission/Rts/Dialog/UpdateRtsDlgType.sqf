@@ -10,6 +10,7 @@ if (_level > 0) then {ctrlShow [_idc + 8, true], ctrlSetText [_idc + 8, "Return"
 TzkSelStackIdx = _level;
 
 // Soldier: 0, Tank: 1, Art: 2, Support: 3, AA: 4, Transport: 5
+private [{_unitArr}]; _unitArr = [];
 private [{_isAaInf}, {_isArtInf}];
 _isAaInf = {
 	_this hasWeapon "AALauncher" || _this hasWeapon "9K32Launcher" ||
@@ -17,6 +18,23 @@ _isAaInf = {
 };
 _isArtInf = {
 	(_this call preprocessFile "Art\GetSoldierArtType.sqf") != -1
+};
+_isSniper = {
+	_unitArr set [0, _this];
+	"SoldierWSniper" countType _unitArr > 0 || "SoldierESniper" countType _unitArr > 0
+};
+_isMiner = {
+	_unitArr set [0, _this];
+	if (
+		"SoldierWMiner_xj400" countType _unitArr > 0 || "SoldierWSaboteurDay_xj400" countType _unitArr > 0 ||
+		"SoldierEMiner_xj400" countType _unitArr > 0 || "SoldierESaboteurBizon_xj400" countType _unitArr > 0
+	) then {
+		-1 != (magazines _this) find magMine
+	} else {false}
+};
+_isMg = {
+	_unitArr set [0, _this];
+	"SoldierWMG_xj400" countType _unitArr > 0 || "SoldierEMG_xj400" countType _unitArr > 0
 };
 
 if (not _processed && 0 == _level) then {
@@ -38,7 +56,6 @@ if (not _processed && 0 == _level) then {
 				if (_unit call _isArtInf) then {_bArt = true};
 				if (_unit call _isAaInf) then {_bAA = true};
 				if (_unit hasWeapon "SupportBox_xj400") then {_bSup = true};
-				// todo: AI leader
 			} else {
 				_vehicle = vehicle _unit;
 				_type = _vehicle call funcGetUnitTypeFromObject;
@@ -95,9 +112,10 @@ if (not _processed && 1 == _level) then {
 	if (not _processed && 2^0 == _btnVal) then {
 		_processed = true;
 		private [{_bAT}, {_bAA}, {_bSniper}, {_bArt}, {_type}];
+		private [{_bMiner}, {_bMg}];
 		_bAT = false; _bAA = false; _bSniper = false; _bArt = false;
+		_bMg = false; _bMiner = false;
 
-		private [{_unitArr}]; _unitArr = [];
 		_j = 0; _i = 0; _c = count _array; while {_i < _c} do {
 			_validElem = false;
 			_unit = _array select _i;
@@ -105,7 +123,7 @@ if (not _processed && 1 == _level) then {
 				_validElem = true;
 				_unitArr set [0, _unit];
 				if not _bSniper then {
-					if ("SoldierWSniper" countType _unitArr > 0 || "SoldierESniper" countType _unitArr > 0) then {_bSniper = true};
+					if (_unit call _isSniper) then {_bSniper = true};
 				};
 				if not _bAA then {
 					if (_unit call _isAaInf) then {_bAA = true};
@@ -121,19 +139,27 @@ if (not _processed && 1 == _level) then {
 						if (_unit == leader _unit && not (_unit call _isAaInf)) then {_bAT = true};
 					};
 				};
+				if not _bMiner then {
+					if (_unit call _isMiner) then {_bMiner = true};
+				};
+				if not _bMg then {
+					if (_unit call _isMg) then {_bMg = true};
+				};
 			};
 			if _validElem then {_top set [_j, _unit]; _j = _j + 1};
 			_i = _i + 1;
 		};
 		_top resize _j;
 
-		_cache1 resize 4; _cacheText1 resize 4;
+		_cache1 resize 6; _cacheText1 resize 6;
 		_cache1 set [0, _bAT]; _cacheText1 set [0, "RPG/AT"];
 		_cache1 set [1, _bAA]; _cacheText1 set [1, "AA"];
 		_cache1 set [2, _bSniper]; _cacheText1 set [2, "Sniper"];
 		_cache1 set [3, _bArt]; _cacheText1 set [3, "Art"];
-		{ctrlShow [_idc + _x, _cache1 select _x]} forEach [0,1,2,3];
-		{ctrlSetText [_idc + _x, _cacheText1 select _x]} forEach [0,1,2,3];
+		_cache1 set [4, _bMiner]; _cacheText1 set [4, "Miner"];
+		_cache1 set [5, _bMg]; _cacheText1 set [5, "MG"];
+		{ctrlShow [_idc + _x, _cache1 select _x]} forEach [0,1,2,3,4,5];
+		{ctrlSetText [_idc + _x, _cacheText1 select _x]} forEach [0,1,2,3,4,5];
 
 		_j = 0;
 		_i = 0; _c = count _array; while {_i < _c} do {
@@ -324,7 +350,7 @@ if (not _processed && 2 == _level) then {
 		if (not _processed && 2^2 == _btnVal) then {
 			_lambda = {
 				if (_this == vehicle _this) then {
-					"SoldierWSniper" countType [_this] > 0 || "SoldierESniper" countType [_this] > 0
+					_this call _isSniper
 				} else {false}
 			};
 			_processed = true;
@@ -333,6 +359,22 @@ if (not _processed && 2 == _level) then {
 			_lambda = {
 				if (_this == vehicle _this) then {
 					_this call _isArtInf
+				} else {false}
+			};
+			_processed = true;
+		};
+		if (not _processed && 2^4 == _btnVal) then {
+			_lambda = {
+				if (_this == vehicle _this) then {
+					_this call _isMiner
+				} else {false}
+			};
+			_processed = true;
+		};
+		if (not _processed && 2^5 == _btnVal) then {
+			_lambda = {
+				if (_this == vehicle _this) then {
+					_this call _isMg
 				} else {false}
 			};
 			_processed = true;
