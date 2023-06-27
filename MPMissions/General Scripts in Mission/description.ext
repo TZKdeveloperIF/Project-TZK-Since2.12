@@ -345,6 +345,7 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
 		LeftBtn0, LeftBtn1, LeftBtn2, LeftBtn3, LeftBtn4, 
 		LeftBtn5, 
 		LeftBtn6, 
+		LeftBtn7, 
 		DownBtn0, DownBtn1, DownBtn2, 
 		DownBtn3, DownBtn4, DownBtn5, 
 		DownBtn6, DownBtn7, DownBtn8, 
@@ -389,17 +390,18 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
 	class LeftBtn5: LeftBtn4 { // for RTS occupy
 		idc = IDC + 16 * 2 + 5;
 		y = 0.10 + 0.15 + 0.05 * 1;
-		w = 0.08;
-		text = "UNDEFINED";
 		action = "btnValue00 = 5";
 	};
 	class LeftBtn6: LeftBtn5 { // for RTS land
 		idc = IDC + 16 * 2 + 6;
-		y = 0.10 + 0.15 + 0.15;
-		w = 0.08;
-		text = "UNDEFINED";
+		y = 0.10 + 0.15 + 0.05 * 3;
 		action = "btnValue00 = 6";
-	}
+	};
+	class LeftBtn7: LeftBtn5 { // for RTS reclaim
+		idc = IDC + 16 * 2 + 7;
+		y = 0.10 + 0.15 + 0.05 * 2;
+		action = "btnValue00 = 7";
+	};
 	
 	// left down part. select specific type
 	class LeftDownBtn0: RightDownBtn0 {
@@ -1141,6 +1143,212 @@ class TzkRtsBoardSubMenu: Menu {
 };
 
 class TzkRtsOccupySubMenu: TzkRtsBoardSubMenu {};
+
+class TzkRtsReclaimSubMenu: TzkRtsBoardSubMenu {
+	class Bg: BackgroundWindow {
+		x = 0.20;
+		y = 0.10;
+		w = 0.60;
+		h = 0.60;
+	};
+
+	controls[] = {
+		BTN_BG_0_0, BTN_BG_0_1, BTN_BG_0_2, BTN_BG_0_3, 
+		BTN_BG_0_4, BTN_BG_0_5, BTN_BG_0_6, BTN_BG_0_7, 
+		BTN_BG_0_8, BTN_BG_0_9, BTN_BG_0_10, BTN_BG_0_11, 
+		BTN_BG_0_12, BTN_BG_0_13, BTN_BG_0_14, BTN_BG_0_15, 
+		BTN_0_0, BTN_0_1, BTN_0_2, BTN_0_3, 
+		BTN_0_4, BTN_0_5, BTN_0_6, BTN_0_7, 
+		BTN_0_8, BTN_0_9, BTN_0_10, BTN_0_11, 
+		BTN_0_12, BTN_0_13, BTN_0_14, BTN_0_15, 
+		TRSM_LIST_TITLE, 
+		BTN_0_TITLE, 
+		BTN_BATTLE, BTN_DRIVER, BTN_GUNNER,
+		BTN_EXIT, 
+	};
+
+	class BTN_EXIT: Button {
+		x = 0.75;
+		y = 0.10;
+		w = 0.05;
+		h = 0.04;
+		text = "Exit";
+		action = "btnValue00 = 0";
+	};
+	class BTN_BATTLE: Button {
+		x = 0.22;
+		y = 0.65;
+		w = 0.16;
+		h = 0.04;
+		text = "Battle";
+		action = "btnValue00 = 1";
+	};
+	class BTN_DRIVER: BTN_BATTLE {
+		x = 0.42;
+		text = "Driver Only";
+		action = "btnValue00 = 2";
+	};
+	class BTN_GUNNER: BTN_BATTLE {
+		x = 0.62;
+		text = "Gunner Only";
+		action = "btnValue00 = 3";
+	};
+
+	class BTN_BG_0_0: SelectedBG {
+		idc = IDC + 16 * 1 + 0;
+		x = 0.25;
+		y = 0.20 + 0.05 * 0;
+		w = 0.20;
+		h = 0.04;
+	};
+	class BTN_0_0: Button {
+		idc = IDC + 16 * 2 + 0;
+		x = 0.25;
+		y = 0.20 + 0.05 * 0;
+		w = 0.20;
+		h = 0.04;
+		action = "btnValue01 set [0, not(btnValue01 select 0)]";
+	};
+	class BTN_BG_0_1: BTN_BG_0_0 {
+		idc = IDC + 16 * 1 + 1;
+		y = 0.20 + 0.05 * 1;
+	};
+	class BTN_BG_0_2: BTN_BG_0_0 {
+		idc = IDC + 16 * 1 + 2;
+		y = 0.20 + 0.05 * 2;
+	};
+	class BTN_BG_0_3: BTN_BG_0_0 {
+		idc = IDC + 16 * 1 + 3;
+		y = 0.20 + 0.05 * 3;
+	};
+	class BTN_BG_0_4: BTN_BG_0_0 {
+		idc = IDC + 16 * 1 + 4;
+		y = 0.20 + 0.05 * 4;
+	};
+	class BTN_BG_0_5: BTN_BG_0_0 {
+		idc = IDC + 16 * 1 + 5;
+		y = 0.20 + 0.05 * 5;
+	};
+	class BTN_BG_0_6: BTN_BG_0_0 {
+		idc = IDC + 16 * 1 + 6;
+		y = 0.20 + 0.05 * 6;
+	};
+	class BTN_BG_0_7: BTN_BG_0_0 {
+		idc = IDC + 16 * 1 + 7;
+		y = 0.20 + 0.05 * 7;
+	};
+	
+	class BTN_BG_0_8: BTN_BG_0_0 {
+		idc = IDC + 16 * 1 + 8;
+		x = 0.55;
+		y = 0.20 + 0.05 * 0;
+	};
+	class BTN_BG_0_9: BTN_BG_0_8 {
+		idc = IDC + 16 * 1 + 1 + 8;
+		y = 0.20 + 0.05 * 1;
+	};
+	class BTN_BG_0_10: BTN_BG_0_8 {
+		idc = IDC + 16 * 1 + 2 + 8;
+		y = 0.20 + 0.05 * 2;
+	};
+	class BTN_BG_0_11: BTN_BG_0_8 {
+		idc = IDC + 16 * 1 + 3 + 8;
+		y = 0.20 + 0.05 * 3;
+	};
+	class BTN_BG_0_12: BTN_BG_0_8 {
+		idc = IDC + 16 * 1 + 4 + 8;
+		y = 0.20 + 0.05 * 4;
+	};
+	class BTN_BG_0_13: BTN_BG_0_8 {
+		idc = IDC + 16 * 1 + 5 + 8;
+		y = 0.20 + 0.05 * 5;
+	};
+	class BTN_BG_0_14: BTN_BG_0_8 {
+		idc = IDC + 16 * 1 + 6 + 8;
+		y = 0.20 + 0.05 * 6;
+	};
+	class BTN_BG_0_15: BTN_BG_0_8 {
+		idc = IDC + 16 * 1 + 7 + 8;
+		y = 0.20 + 0.05 * 7;
+	};
+
+	class BTN_0_1: BTN_0_0 {
+		idc = IDC + 16 * 2 + 1;
+		y = 0.20 + 0.05 * 1;
+		action = "btnValue01 set [1, not(btnValue01 select 1)]";
+	};
+	class BTN_0_2: BTN_0_0 {
+		idc = IDC + 16 * 2 + 2;
+		y = 0.20 + 0.05 * 2;
+		action = "btnValue01 set [2, not(btnValue01 select 2)]";
+	};
+	class BTN_0_3: BTN_0_0 {
+		idc = IDC + 16 * 2 + 3;
+		y = 0.20 + 0.05 * 3;
+		action = "btnValue01 set [3, not(btnValue01 select 3)]";
+	};
+	class BTN_0_4: BTN_0_0 {
+		idc = IDC + 16 * 2 + 4;
+		y = 0.20 + 0.05 * 4;
+		action = "btnValue01 set [4, not(btnValue01 select 4)]";
+	};
+	class BTN_0_5: BTN_0_0 {
+		idc = IDC + 16 * 2 + 5;
+		y = 0.20 + 0.05 * 5;
+		action = "btnValue01 set [5, not(btnValue01 select 5)]";
+	};
+	class BTN_0_6: BTN_0_0 {
+		idc = IDC + 16 * 2 + 6;
+		y = 0.20 + 0.05 * 6;
+		action = "btnValue01 set [6, not(btnValue01 select 6)]";
+	};
+	class BTN_0_7: BTN_0_0 {
+		idc = IDC + 16 * 2 + 7;
+		y = 0.20 + 0.05 * 7;
+		action = "btnValue01 set [7, not(btnValue01 select 7)]";
+	};
+	
+	class BTN_0_8: BTN_0_0 {
+		idc = IDC + 16 * 2 + 0 + 8;
+		x = 0.55;
+		action = "btnValue01 set [8 + 0, not(btnValue01 select 8 + 0)]";
+	};
+	class BTN_0_9: BTN_0_8 {
+		idc = IDC + 16 * 2 + 1 + 8;
+		y = 0.20 + 0.05 * 1;
+		action = "btnValue01 set [8 + 1, not(btnValue01 select 8 + 1)]";
+	};
+	class BTN_0_10: BTN_0_8 {
+		idc = IDC + 16 * 2 + 2 + 8;
+		y = 0.20 + 0.05 * 2;
+		action = "btnValue01 set [8 + 2, not(btnValue01 select 8 + 2)]";
+	};
+	class BTN_0_11: BTN_0_8 {
+		idc = IDC + 16 * 2 + 3 + 8;
+		y = 0.20 + 0.05 * 3;
+		action = "btnValue01 set [8 + 3, not(btnValue01 select 8 + 3)]";
+	};
+	class BTN_0_12: BTN_0_8 {
+		idc = IDC + 16 * 2 + 4 + 8;
+		y = 0.20 + 0.05 * 4;
+		action = "btnValue01 set [8 + 4, not(btnValue01 select 8 + 4)]";
+	};
+	class BTN_0_13: BTN_0_8 {
+		idc = IDC + 16 * 2 + 5 + 8;
+		y = 0.20 + 0.05 * 5;
+		action = "btnValue01 set [8 + 5, not(btnValue01 select 8 + 5)]";
+	};
+	class BTN_0_14: BTN_0_8 {
+		idc = IDC + 16 * 2 + 6 + 8;
+		y = 0.20 + 0.05 * 6;
+		action = "btnValue01 set [8 + 6, not(btnValue01 select 8 + 6)]";
+	};
+	class BTN_0_15: BTN_0_8 {
+		idc = IDC + 16 * 2 + 7 + 8;
+		y = 0.20 + 0.05 * 7;
+		action = "btnValue01 set [8 + 7, not(btnValue01 select 8 + 7)]";
+	};
+};
 
 // 
 class TZK_CustomAircraftWeaponDialog2: TZK_CustomAircraftWeaponDialog {

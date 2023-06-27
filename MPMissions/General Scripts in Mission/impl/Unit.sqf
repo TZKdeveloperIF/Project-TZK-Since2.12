@@ -66,6 +66,10 @@ if true then {
 
 // Extend typesATAPC definition since $1800 APC weapon more useful
 typesATAPC = [ _m2a2at, _bmp2at, _m2a2W, _bmp2E ];
+// definition for RTS reclaim
+typesBattlePlane = [ _a10gun, _su25gun, _a10, _su25 ];
+typesBattleCar = [ _hummerW2, _hummerM134W, _m151a1cW, _brdmE2, _brdmGsghE, _uazSpg9E ];
+typesRadarCar = [ _jeepRadarW, _uazRadarE ];
 
 // Ban mannual building orca since its ground radar not well-designed
 {
