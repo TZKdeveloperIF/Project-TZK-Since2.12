@@ -1,0 +1,57 @@
+; args: [clicked pos: [x, y]]
+
+@ !mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "TzkRtsReclaimSubMenu"
+mutexDlg = false
+
+_idcTitle = IDC + 0; _idcBtnLabel0 = IDC + 5
+ctrlSetText [_idcBtnLabel0, ""]
+_idcBtn_0_0 = IDC + 16 * 2; _idcBtnBg_0_0 = IDC + 16 * 1;
+ctrlSetText [_idcTitle, "Reclaim Vehicle"]
+
+; types definition should keep same as in Rts\Order\hReclaim.sqs. It would be better to write it down in 
+; an global variable or an array defined in sqf
+{ctrlSetText [_x, "Heavy Tank"]} forEach [_idcBtn_0_0]
+{ctrlSetText [_x, "Light Tank"]} forEach [_idcBtn_0_0 + 1]
+{ctrlSetText [_x, "Artillery"]} forEach [_idcBtn_0_0 + 2]
+{ctrlSetText [_x, "AT APC"]} forEach [_idcBtn_0_0 + 3]
+{ctrlSetText [_x, "AA Vehicle"]} forEach [_idcBtn_0_0 + 4]
+{ctrlSetText [_x, "Gunship"]} forEach [_idcBtn_0_0 + 5]
+{ctrlSetText [_x, "Plane"]} forEach [_idcBtn_0_0 + 6]
+{ctrlSetText [_x, "Support APC"]} forEach [_idcBtn_0_0 + 7]
+{_i = _x; {ctrlShow [_x + _i, false]} forEach [_idcBtnBg_0_0]} forEach [0,1,2,3,4,5,6,7]
+
+{ctrlSetText [_x, "Transport Car"]} forEach [_idcBtn_0_0 + 8]
+{ctrlSetText [_x, "Transport Ship"]} forEach [_idcBtn_0_0 + 8 + 1]
+{ctrlSetText [_x, "Transport APC"]} forEach [_idcBtn_0_0 + 8 + 2]
+{ctrlSetText [_x, "Transport Air"]} forEach [_idcBtn_0_0 + 8 + 3]
+{ctrlSetText [_x, "Battle Ship"]} forEach [_idcBtn_0_0 + 8 + 4]
+{ctrlSetText [_x, "Battle Car"]} forEach [_idcBtn_0_0 + 8 + 5]
+{ctrlSetText [_x, "Radar Car"]} forEach [_idcBtn_0_0 + 8 + 6]
+{ctrlSetText [_x, "Repair Truck"]} forEach [_idcBtn_0_0 + 8 + 7]
+{_i = _x; {ctrlShow [_x + _i + 8, false]} forEach [_idcBtnBg_0_0]} forEach [0,1,2,3,4,5,6,7]
+
+btnValue00 = -1
+btnValue01 = []; _i = 0; while {_i < 16} do {btnValue01 set [_i, false], _i = _i + 1}
+
+# loop
+	~ 0.2
+	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+	? call dlgUpdated: goto "Quit"
+	? not alive player: closeDialog 0; goto "Quit"
+
+	_i = 0; while {_i < 16} do {ctrlShow [_idcBtnBg_0_0 + _i, btnValue01 select _i]; _i = _i + 1};
+
+	? btnValue00 >= 0: _val0 = btnValue00, btnValue00 = -1, goto "Btn0"
+
+	goto "loop"
+# Quit
+	btnValue01 = -1
+	exit
+# Btn0
+	? 0 == _val0: closeDialog 0; goto "Quit"
+	_reclaimTypeInfo = 0, _i = 0
+	{if _x then {_reclaimTypeInfo = _reclaimTypeInfo + 2 ^ _i}, _i = _i + 1} forEach btnValue01
+	[_this, _reclaimTypeInfo, _val0] exec "Rts\Order\sRtsReclaim.sqs"
+	closeDialog 0; goto "Quit"

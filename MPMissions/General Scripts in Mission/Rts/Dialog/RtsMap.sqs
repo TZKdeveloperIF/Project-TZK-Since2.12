@@ -37,6 +37,7 @@ ctrlSetText [_idcLeftBtn0 + 3, "Move and Shoot"]
 ctrlSetText [_idcLeftBtn0 + 4, "Board"]
 ctrlSetText [_idcLeftBtn0 + 5, "Occupy"]
 ctrlSetText [_idcLeftBtn0 + 6, "Land"]
+ctrlSetText [_idcLeftBtn0 + 7, "Reclaim"]
 
 ; down board
 _downBoardStack = []
@@ -67,6 +68,7 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 	? 4 == _btnVal: _pos exec "Rts\SubMenu\BoardPreset.sqs"; closeDialog 0; goto "Quit"
 	? 5 == _btnVal: _pos exec "Rts\SubMenu\OccupyPreset.sqs"; closeDialog 0; goto "Quit"
 	? 6 == _btnVal: 0 exec "Rts\Order\sLand.sqs"; closeDialog 0; goto "Quit"
+	? 7 == _btnVal: _pos exec "Rts\SubMenu\ReclaimPreset.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 # DownBtn
 	? count _downBoardStack > 0: goto "DownSubMenu"

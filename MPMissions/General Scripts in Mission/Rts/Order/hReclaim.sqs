@@ -1,0 +1,170 @@
+; ---------------------------------------------------------------------------------------------------
+; |									RTS Reclaim Order SQS Script									|
+; |		  Units will try reclaim vehicles on ordered. If fail to reclaim any of them, units will 	|
+; |		stay there until another new rts order is activated or rts order is cleared (link in RA2).	|
+; ---------------------------------------------------------------------------------------------------
+
+; args: [unit, [clicked pos, central pos of all selected units, vehicle type info: number, reclaim strategy: enum], 
+; 	rts object status (array-reference), rts server id]
+_unit = _this select 0
+_clickedPos = _this select 1 select 0
+_rtsCentralPos = _this select 1 select 1
+_reclaimTypeInfo = _this select 1 select 2
+_reclaimStrategy = _this select 1 select 3
+_rtsStatus = _this select 2
+_id = _this select 3
+_this = 0
+
+; rts busy Check
+; not realized yet
+
+; rts order stack design
+; not realized yet
+
+_si = sides find (side _unit)
+? _si != si0 && _si != si1: exit
+
+? _unit != vehicle _unit: exit
+
+; under "RtsOrder" folder the "rts id" is restored by "id" variable but not "rtsId"
+_quitCond = {not alive _unit || not (_unit call rtsOrderCheck) || _id != _rtsStatus select 1}
+
+_unit call preprocessFile "Server\AI\RtsOrderBegin.sqf"
+; Initialize The Order Script
+_timeStart = _time; _timeUp = _timeStart; _cycle = 30
+_destPos = [_unit, _clickedPos, _rtsCentralPos, 50] call preprocessFile "Util\RtsDestPos.sqf"
+
+_seats = ["gunner", "driver"]
+? 2 == _reclaimStrategy: _seats resize 1, _seats set [0, "driver"]
+? 3 == _reclaimStrategy: _seats resize 1, _seats set [0, "gunner"]
+_availableSeats = []
+; vehicle types are listed by priority. Refer to Rts\SubMenu\ReclaimPreset.sqs for more info
+_typeCnt = 16
+_i = 0, _c = _typeCnt, _transpTypes = [], _transpTypes resize _c
+# buildTransType
+	_res = _reclaimTypeInfo % 2
+	_reclaimTypeInfo = (_reclaimTypeInfo - _res) / 2
+	_transpTypes set [_i, _res != 0]
+	_i = _i + 1
+	? _i < _c: goto "buildTransType"
+
+? [_unit, _destPos] call funcDistH < 50: goto "ExecCoreContent"
+# Update
+	; check move
+	_distToDest = [_unit, _destPos] call funcDistH
+	? _distToDest < 50: goto "ExecCoreContent"
+	[_unit, _destPos] call funcMoveStand
+	_cycle = [30, 0.1*_distToDest] select (_distToDest < 300)
+	goto "Sleep"
+
+# ExecCoreContent
+	[_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
+	_nearByTargets = [_destPos, 100, [], [], _si] call funcGetNearbyVehicles
+	? count _nearByTargets == 0: goto "Quit"
+
+	_notOurSide = {unitDefs select _this select udSide != _si}
+
+	_targets = [], _selectedTypes = [], _target = objNull, _suggestedIdx = -1
+	_typeIdx = 0; _totalTryCnt = 0
+
+	# SearchTarget
+		_totalTryCnt = _totalTryCnt + 1
+		? _totalTryCnt > 100: goto "Quit"
+
+		? _typeIdx >= _typeCnt: goto "Quit"
+		? not (_transpTypes select _typeIdx): _typeIdx = _typeIdx + 1, goto "SearchTarget"
+
+		_needEdit = true
+		? 0 == _typeIdx: _selectedTypes = typesHeavyTank
+		? 1 == _typeIdx: _selectedTypes = typesLightTank
+		? 2 == _typeIdx: _selectedTypes = typesHowitzer + typesRocketLauncher
+		? 3 == _typeIdx: _selectedTypes = typesATAPC
+		? 4 == _typeIdx: _selectedTypes = typesAAAPC
+		? 5 == _typeIdx: _selectedTypes = typesGunshipOrigin + typesGunshipAT + typesKa50
+		? 6 == _typeIdx: _selectedTypes = typesBattlePlane
+		? 7 == _typeIdx: _selectedTypes = typesSupportAPC
+
+		? 8 + 0 == _typeIdx: _selectedTypes = typesTransportCar
+		? 8 + 1 == _typeIdx: _selectedTypes = typesTransportShip
+		? 8 + 2 == _typeIdx: _selectedTypes = typesTransportAPC
+		? 8 + 3 == _typeIdx: _selectedTypes = typesTransportHeli + RadioTypesTransportPlane
+		? 8 + 4 == _typeIdx: _selectedTypes = typesBattleShip
+		? 8 + 5 == _typeIdx: _selectedTypes = typesBattleCar
+		? 8 + 6 == _typeIdx: _selectedTypes = typesRadarCar
+		? 8 + 7 == _typeIdx: _selectedTypes = call format ["TransportRepairTruck%1", if (_si == si0) then {"W"} else {"E"}], _needEdit = false
+
+		? _needEdit: [_selectedTypes, _notOurSide] call preprocessFile "Util\ArrayEraseIf.sqf"
+
+		call preprocessFile "Rts\Order\assistReclaim.sqf"
+
+		_typeIdx = _typeIdx + 1
+		? count _targets == 0: goto "SearchTarget"
+		? count _targets > 1: _typeIdx = _typeIdx - 1
+		_target = _targets select _suggestedIdx select 0
+
+		; TryGetIn
+		? not alive _target: goto "SearchTarget"
+
+		_availableSeats resize 0
+		{if (1 == [_target, _x] call funcVehParamHasSeat) then {_availableSeats set [count _availableSeats, _x]}} forEach _seats
+
+		_unit doWatch _target
+		? (_unit distance _target) < 10: goto "Reached"
+		_destPos4GetIn = ([getPos _target, 10, 10] call funcGetRandomPos), _destPos4GetIn set [2, 0]
+
+		_timeMoveAbort = time + 2 * 60
+		# Move_Check
+			_distToDest = [_unit, _destPos4GetIn] call funcDistH
+			? _distToDest < 10: goto "Reached"
+			_delay = [5, _distToDest / 5] select (_distToDest < 25)
+
+			? not alive _target: goto "SearchTarget"
+			_bHasSeat = false
+			{if (not _bHasSeat && call format [{isNull %1 _target}, _x]) then {_bHasSeat = true}} forEach _availableSeats
+			? not _bHasSeat: goto "SearchTarget"
+			[_unit, _destPos4GetIn] call funcMoveStand
+
+			~ _delay
+
+			? call _quitCond: goto "Quit"
+
+			? time > _timeMoveAbort || not alive _target: goto "SearchTarget"
+			? (_unit distance _target) > 10: goto "Move_Check"
+
+		# Reached
+		_i = 0; _func = preprocessFile "Util\CanReclaim.sqf"
+		_unit playMove "CombatGetInTank"
+		~ 2
+		# TrySeat
+			_seat = _seats select _i
+
+			@ not mutexReclaim
+				mutexReclaim = true
+
+				? call format [{not isNull %1 _target}, _seat]: goto "continue"
+
+				; delay to wait move in order actually done
+				~ 0.02
+				? [_unit, _target] call _func: call format ["_unit assignAs%1 _target; _unit moveIn%1 _target", _seat]
+				~ 0.02
+
+				# continue
+				mutexReclaim = false
+
+			_i = _i + 1
+			? _i < (count _seats) && _target != vehicle _unit: goto "TrySeat"
+
+		? _target != vehicle _unit: goto "SearchTarget"
+
+# Quit
+	exit
+
+# Sleep
+_loop = (_time-_timeStart) / _cycle; _loop = 1 + _loop - _loop % 1
+_timeUp = _loop * _cycle + _timeStart
+	# innerSleep
+	~ (if (_timeUp - _time > 5) then {_timeUp - _time + 1} else {5})
+	? call _quitCond: goto "Quit"
+	? _time < _timeUp: goto "innerSleep"
+	? _unit call busyCheck: goto "Sleep"
+	goto "Update"
