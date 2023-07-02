@@ -1,9 +1,10 @@
-// args: [list box idc, marker prefix]
+// args: [list box idc, marker prefix, marker count]
 
 lbClear (_this select 0);
+private [{_cnt}]; _cnt = _this select 2;
 _i = 0;
-while {_i < countTargetMarkers} do {
-	_pos = getMarkerPos (format ["%2%1", _i, _this select 1]);
+while {_i < _cnt} do {
+	_pos = getMarkerPos (format ["%1%2", _this select 1, _i]);
 	lbAdd [
 		(_this select 0), 
 		format ["%1%2", _i,
