@@ -98,6 +98,8 @@ _distributionRadius = (if _isInfantry then {20} else {50})
 	_unit doMove _startPos; _unit setUnitPos "UP"
 	_dist = ([getPos _unit, _startPos] call funcDistH); _dist = _dist - _dist % 1
 	? _dist < _distributionRadius: goto "CheckDistance"
+
+	? [_vehicle, "driver"] call preprocessFile "Util\HasEmptySeat.sqf": _msg = "Need move to predefined position but hasn't driver. Order aborted.", goto "EOF"
 	_unit groupChat format ["Moving to ordered position, distance %1m.", _dist]
 	# LoopPreMove
 		_unit doMove _startPos
@@ -125,6 +127,8 @@ _posCorrect = 0
 		? [_destPos, getPos _target] call funcDistH > _distLimit: _vec = [getPos _target, _destPos] call funcVectorSub; _len = _vec call funcVectorLength; _destPos = [_destPos, [_vec, 1 - 0.9*_distLimit/_len] call funcVectorScale] call funcVectorAdd
 		? [_destPos, getPos _target] call funcDistH > _distLimit: _msg = "Can't approach attacking position. Order aborted.", goto "EOF"
 		? ([getPos _unit, _destPos] call funcDistH) < 30: goto "PrePareToAttack"
+
+		? [_vehicle, "driver"] call preprocessFile "Util\HasEmptySeat.sqf": _msg = "Need move to target but hasn't driver. Order aborted.", goto "EOF"
 		; change deployment of howitzer/TOS
 		_vehicle exec "Art\Undeploy.sqs"
 		goto "ExecMove"
@@ -313,11 +317,14 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	# SupportFound
 		? not _isServer: _unit groupChat "Moving to support vehicle for more magazines."
 		_timeAbort = time + 60 * (if _isInfantry then {15} else {5})
-		? _isStruct: goto "CalcSwitchInfo"
+		? _isStruct: goto "SupportReached"
 		? _isVehicle: _vehicle exec "Art\Undeploy.sqs", {_x doFollow leader _x} forEach crew _vehicle
 		~ 0.1
 		_rearmDist = (if _isInfantry then {5} else {25})
 		_rearmRange = (if _isInfantry then {10} else {30})
+		? (_unit distance _sup) <= 50: goto "SupportReached"
+
+		? [_vehicle, "driver"] call preprocessFile "Util\HasEmptySeat.sqf": _msg = "Need move to support but hasn't driver. Order aborted.", goto "EOF"
 		# MoveToSupport
 			_posMove = [[0,_rearmDist], (getDir _sup)] call funcVectorRot2D
 			_posMove = [getPos _sup, _posMove] call funcVectorSub
@@ -327,8 +334,8 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 			? !(alive _sup): goto "CheckRearm"
 			? time > _timeAbort: _msg = "Cost too much time. Unable to reach support vehicle. Order aborted."; goto "EOF"
 			? (_unit distance _sup) > _rearmRange: goto "MoveToSupport"
+	# SupportReached
 
-	# CalcSwitchInfo
 	; calc switch mag speed for non-soldier
 	? _isInfantry: goto "ExecRearm"
 		_gi = (groupMatrix select _si) find ( (group _unit) )
