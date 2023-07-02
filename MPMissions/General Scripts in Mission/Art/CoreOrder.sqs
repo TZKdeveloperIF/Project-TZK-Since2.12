@@ -126,7 +126,7 @@ _posCorrect = 0
 		_destPos set [2, 0]
 		? [_destPos, getPos _target] call funcDistH > _distLimit: _vec = [getPos _target, _destPos] call funcVectorSub; _len = _vec call funcVectorLength; _destPos = [_destPos, [_vec, 1 - 0.9*_distLimit/_len] call funcVectorScale] call funcVectorAdd
 		? [_destPos, getPos _target] call funcDistH > _distLimit: _msg = "Can't approach attacking position. Order aborted.", goto "EOF"
-		? ([getPos _unit, _destPos] call funcDistH) < 30: goto "PrePareToAttack"
+		? ([getPos _unit, _destPos] call funcDistH) < 30 && [_destPos, getPos _target] call funcDistH < _distLimit: goto "PrePareToAttack"
 
 		? [_vehicle, "driver"] call preprocessFile "Util\HasEmptySeat.sqf": _msg = "Need move to target but hasn't driver. Order aborted.", goto "EOF"
 		; change deployment of howitzer/TOS
@@ -162,8 +162,9 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	? not _ret: goto "EOF"
 	_bShrapnel = ("Shrapnel_W_xj400" == _weapon || "Shrapnel_E_xj400" == _weapon)
 # PreCalculate
-	? _unit distance _target > (if _isInfantry then {_range} else {_distLimit}): goto "CheckDistance"
-	? _unit distance _target < _distLimit && _unit distance _target > viewDistance: _unit groupChat "Target is far. Probably missing."
+	_dist = [_unit, _target] call funcDistH
+	? _dist > (if _isInfantry then {_range} else {_distLimit}): goto "CheckDistance"
+	? _dist < _distLimit && _dist > viewDistance: _unit groupChat "Target is far. Probably missing."
 
 	_ammoArray = _vehicle ammoArray _weapon; _equippedMag = ""; _ammoOld = 0;
 	_ret = call preprocessFile "Art\AreaPreAnalysis.sqf"
