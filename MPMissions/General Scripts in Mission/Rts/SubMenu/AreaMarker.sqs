@@ -1,4 +1,6 @@
-; args: script type (enum. 0 for server, 1 for player)
+; args: [server market or not, marker type]
+_toServer = _this select 0
+_markerType = _this select 1
 
 @ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
@@ -9,20 +11,26 @@ _size = getMarkerSize "TzkRtsArea"
 
 _idcTitle = IDC + 0; _idcListLabel = IDC + 16 * 1 + 0; _idcListBox0 = IDC + 16 * 2 + 0
 
-_dispName = "Server"; if (1 == _this) then {_dispName = "Player"}
-_markerPrefix = "ArtSvrArea"; if (1 == _this) then {_markerPrefix = "ArtPplArea"}
-_msgScript = "Player\Rts\sSetSvrArtArea.sqs"; if (1 == _this) then {_msgScript = "Player\Rts\SetPlayerArtArea.sqs"}
-_cachedIdx = RtsSvrArtAreaIdx; if (1 == _this) then {_cachedIdx = RtsPplArtAreaIdx}
+_webType = "Server"; _webShort = "Svr"
+? not _toServer: _webType = "Player", _webShort = "Ppl"
+_msgScript = "Rts\Marker\GenArea.sqf"
+_cachedIdxName = format ["RtsArea%1%2Idx", _markerType, _webShort]
 
-ctrlSetText [_idcTitle, format ["Set %1 Art Area", _dispName]]
+_enum = _markerType call preprocessFile "Rts\Marker\EnumOfType.sqf"
+? _enum < 0: showDebug [format ["Invalid %1 marker type.", _markerType], 5000], exit
+_cnt = count (TzkPplRtsAreaInfo select _enum)
+_updateList = preprocessFile "Rts\SubMenu\UpdateAreaListbox.sqf"
+
+ctrlSetText [_idcTitle, format ["Edit %1 %2 Area", _webType, _markerType]]
 ctrlSetText [_idcListLabel, "Areas"]
 
-[_idcListBox0, _markerPrefix, countTargetMarkers] call preprocessFile "Rts\SubMenu\UpdateAreaListbox.sqf"
-? -1 != _cachedIdx: lbSetCurSel [_idcListBox0, _cachedIdx]
+[_idcListBox0, _markerType, _webShort, _cnt] call _updateList
+? -1 != (call _cachedIdxName): lbSetCurSel [_idcListBox0, (call _cachedIdxName)]
 
 btnValue00 = false; btnValue01 = false; btnValue02 = false
 
-? _size select 0 > 200 || _size select 1 > 200: hint "Marker too large. Can't be set as art area."
+_tooLargeHint = format ["Marker too large. Can't be set as %1 area.", _markerType]
+? _size select 0 > 200 || _size select 1 > 200: hint _tooLargeHint
 
 # loop
 	~ 0.2
@@ -30,7 +38,7 @@ btnValue00 = false; btnValue01 = false; btnValue02 = false
 	? call dlgUpdated: goto "Quit"
 	? not alive player: closeDialog 0; goto "Quit"
 
-	[_idcListBox0, _markerPrefix, countTargetMarkers] call preprocessFile "Rts\SubMenu\UpdateAreaListbox.sqf"
+	[_idcListBox0, _markerType, _webShort, _cnt] call _updateList
 
 	? btnValue00: btnValue00 = false; closeDialog 0; goto "Quit"
 	? btnValue01: btnValue01 = false; goto "Set"
@@ -41,8 +49,8 @@ btnValue00 = false; btnValue01 = false; btnValue02 = false
 	exit
 # Set
 	? -1 == lbCurSel _idcListBox0: hint "No area selected."; goto "loop"
-	? _size select 0 > 200 || _size select 1 > 200: hint "Marker too large. Can't be set as art area."; goto "loop"
-	(100 + lbCurSel _idcListBox0) exec _msgScript; closeDialog 0; goto "Quit"
+	? _size select 0 > 200 || _size select 1 > 200: hint _tooLargeHint; goto "loop"
+	[100 + lbCurSel _idcListBox0, _markerType, _toServer] call preprocessFile _msgScript; closeDialog 0; goto "Quit"
 # Clear
 	? -1 == lbCurSel _idcListBox0: hint "No area selected."; goto "loop"
-	(lbCurSel _idcListBox0) exec _msgScript; goto "loop"
+	[lbCurSel _idcListBox0, _markerType, _toServer] call preprocessFile _msgScript; goto "loop"

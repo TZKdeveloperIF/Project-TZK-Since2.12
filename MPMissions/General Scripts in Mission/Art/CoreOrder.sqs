@@ -51,10 +51,8 @@ _params = 0, _this = 0
 	? _suggestedSpeed > 0 && not _bConcurrent: [vehicle _unit, _suggestedSpeed, _enum] exec "Art\SwitchSuggestedSpeed.sqs"
 	; ? -2 == _suggestedSpeed: [vehicle _unit, _enum, _idx, _si] exec "Server\Art\SwitchAuto.sqs"
 ; Shoot Area infomation
-	_suffix = if (si0 == _si) then {"W"} else {"E"}
-	? not _isServer: _suffix = ""
-	_markerInfo = call format [{%2%1 select _idx}, _suffix, if _isServer then {"TzkArtSvrArea"} else {"TzkArtPplArea"}];
-	_result = call format [{%2%1 select _idx}, _suffix, if _isServer then {"TzkArtSvrAreaAnal"} else {"TzkArtPplAreaAnal"}];
+	_markerInfo = [_idx, _si, _isServer] call preprocessFile "Art\GetMarkerInfo.sqf";
+	_result = [_idx, _si, _isServer] call preprocessFile "Art\GetPreAnalRes.sqf";
 ; Rts infomation
 	; _abort = {[[_unit], [_si, false]] exec "Rts\Framework\OrderDtor.sqs"}; _bClearRts = false
 ; Create local target object

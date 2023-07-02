@@ -6,8 +6,14 @@ _dlg = createDialog "TzkRtsArtSubMenu"
 mutexDlg = false
 
 _bSvrRtsOrder = _this select 2
-_markerPrefix = "ArtSvrArea"; if not _bSvrRtsOrder then {_markerPrefix = "ArtPplArea"}
-_cachedIdx = RtsSvrArtAreaIdx; if not _bSvrRtsOrder then {_cachedIdx = RtsPplArtAreaIdx}
+_markerType = "Art"
+_webShort = (if _bSvrRtsOrder then {"Svr"} else {"Ppl"})
+_cachedIdxName = format ["RtsArea%1%2Idx", _markerType, _webShort]
+
+_enum = _markerType call preprocessFile "Rts\Marker\EnumOfType.sqf"
+? _enum < 0: showDebug [format ["Invalid %1 marker type.", _markerType], 5000], exit
+_cnt = count (TzkPplRtsAreaInfo select _enum)
+_updateList = preprocessFile "Rts\SubMenu\UpdateAreaListbox.sqf"
 
 _idcTitle = IDC + 0; _idcBtnLabel0 = IDC + 5; _idcBtnLabel1 = IDC + 6
 ctrlSetText [_idcBtnLabel0, "Type"]
@@ -27,8 +33,8 @@ _idcMlrsShootingCnt = IDC + 16 * 5
 _idcListLabel0 = IDC + 1; _idcListBox0 = IDC + 2; _idcListLabel1 = IDC + 3; _idcListBox1 = IDC + 4
 ctrlSetText [_idcListLabel0, "Speed"]
 ctrlSetText [_idcListLabel1, "Art Area"]
-[_idcListBox1, _markerPrefix, countTargetMarkers] call preprocessFile "Rts\SubMenu\UpdateAreaListbox.sqf"
-? -1 != _cachedIdx: lbSetCurSel [_idcListBox1, _cachedIdx]
+[_idcListBox1, _markerType, _webShort, _cnt] call _updateList
+? -1 != (call _cachedIdxName): lbSetCurSel [_idcListBox1, (call _cachedIdxName)]
 
 _i = lbAdd [_idcListBox0, "Do nothing"]; lbSetValue [_idcListBox0, _i, -1]
 _i = lbAdd [_idcListBox0, "80"]; lbSetValue [_idcListBox0, _i, 80]
@@ -63,7 +69,7 @@ btnValue02 = [true,true,true,true,true]; btnValue03 = [false,false,false,false]
 # Execution
 	? -1 == lbCurSel _idcListBox0: hint "No speed selected."; goto "loop"
 	? -1 == lbCurSel _idcListBox1: hint "No art area selected"; goto "loop"
-	? -10 == getMarkerPos (format ["%2%1", lbCurSel _idcListBox1, _markerPrefix]) select 0: hint "Area undefined."; goto "loop"
+	? -10 == getMarkerPos (format ["%1%2%3", _markerType, _webShort, lbCurSel _idcListBox1]) select 0: hint "Area undefined."; goto "loop"
 
 	_orderType = "General Area"
 	? 2 == _btnVal: _orderType = "Destroy Obstruction"

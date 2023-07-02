@@ -12,7 +12,7 @@ _typeIndex = (_params select 2)
 _targetIndex = (_params select 3)
 _dispersion = 10*(_params select 4)
 
-? -10 == getMarkerPos (format ["ArtSvrArea%1", _targetIndex]) select 0: hint "Area undefined."; exit
+? -10 == getMarkerPos (format ["RtsArea%1%2%3", "Art", "Svr", _targetIndex]) select 0: hint "Area undefined."; exit
 ; ? (getMarkerPos _marker) select 0 < 0: exit
 
 ; Check Whether Unit Fits The Parameters Of The Temporary Order
