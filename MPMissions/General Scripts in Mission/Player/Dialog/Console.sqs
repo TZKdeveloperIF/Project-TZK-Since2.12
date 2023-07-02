@@ -1,0 +1,43 @@
+; args: none
+
+; delay to wait dialog closed
+~ 0.1
+
+@ not mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "ConsoleDialog"
+mutexDlg = false
+
+_history = [], _cursor = 0, _maxCnt = 2 * 10
+_null = format ["%1", null]
+; ASSERT((_maxCnt - _cursor) % 2 == 0)
+btnValue00 = -1
+
+_idcList = IDC + 16 * 1 + 0, _idcText = IDC + 16 * 1 + 1
+_func = preprocessFile "Player\Dialog\Console.sqf"
+
+# Update
+	~ 0.2
+	? call dlgUpdated: exit
+	? not alive player: exit
+
+	call _func
+
+	? btnValue00 >= 0: _val = btnValue00, btnValue00 = -1; goto "OnClicked"
+
+	goto "Update"
+# OnClicked
+	? 0 == _val: closeDialog 0, exit
+	; ASSERT(1 == _val)
+	? 1 != _val: hint "Unexpected value.", goto "Update"
+	_text = ctrlText _idcText, ctrlSetText [_idcText, ""]
+	? "" == _text: goto "Update"
+	? "clear" == _text: _cursor = 0, _history resize 0, goto "update"
+	_res = call _text
+	? _null == format ["%1", _res]: _res = "null"
+
+	? _cursor >= _maxCnt: _cursor = _cursor - _maxCnt
+	_history set [_cursor, format ["input: %1", _text]]
+	_history set [_cursor + 1, format ["ouput: %1", _res]]
+	_cursor = _cursor + 2
+	goto "Update"
