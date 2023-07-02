@@ -50,7 +50,12 @@ _tooLargeHint = format ["Marker too large. Can't be set as %1 area.", _markerTyp
 # Set
 	? -1 == lbCurSel _idcListBox0: hint "No area selected."; goto "loop"
 	? _size select 0 > 200 || _size select 1 > 200: hint _tooLargeHint; goto "loop"
-	[100 + lbCurSel _idcListBox0, _markerType, _toServer] call preprocessFile _msgScript; closeDialog 0; goto "Quit"
+
+	[100 + lbCurSel _idcListBox0, _markerType, _toServer] call preprocessFile _msgScript
+	; Clear selected area on setting marker
+	false call preprocessFile "Player\Rts\Area.sqf"
+	false call preprocessFile "Player\Rts\Selection.sqf"
+	closeDialog 0; goto "Quit"
 # Clear
 	? -1 == lbCurSel _idcListBox0: hint "No area selected."; goto "loop"
 	[lbCurSel _idcListBox0, _markerType, _toServer] call preprocessFile _msgScript; goto "loop"
