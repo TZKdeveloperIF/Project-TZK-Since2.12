@@ -1417,4 +1417,99 @@ class TZK_CustomAircraftWeaponDialog2: TZK_CustomAircraftWeaponDialog {
 	};
 };
 
+class OptionsDialog2: OptionsDialog
+{
+	controls[] = {
+		OptionsTitle,
+		Money, Score, Leaderboard, Destruction, Towns, Income, CleanupGround,
+		NumberedAIBG, NumberedAI, ReportsLabel, Reports,
+		OptionsTimeLabel, OptionsGameTime,
+		MemberMarkersLabel, MemberMarkers,
+		TransferLabel, TransferTarget, TransferAmount,Transfer, TransferAIs, TransferAll, TransferTake, AICheck,
+		BuyUnits, CustomSoldiers, CommandAI, CommandTemporary, ShowStats, UnitCam, SatCam, SpySatBG, SpySat, RadioONBG, RadioONBtn,
+		IncomeRatioLabel, IncomeRatio, IncomeRatioPlayer, CommanderLabel, CommanderImage, Commander, CommanderTransfer,
+		WorkerBehaviourLabel, WorkerBehaviour, AIRespawnLabel, AIRespawn,
+		UpgradesLabel, Upgrades, Upgrade, Exit, HiddenDefault, UpgSwitch, 
+		VoteButton, TZK_Mission_Setting_1, TZK_Mission_Setting_2, 
+		Console, 
+	};
+	class Console: Button {
+		idc = IDC + 100;
+		x = 0.025;
+		y = 0.60;
+		w = 0.15;
+		colorText[] = {0.9,0.7,0.2,1.0};
+		text = "Console";
+		action = "closeDialog 0; 0 exec localize {TZK_DIALOG_CONSOLE}";
+		sizeEx = 0.023;
+	};
+};
+
+class ConsoleDialog: Menu {
+	controlsBackground[] = {Bg};
+	class Bg: BackgroundWindow {
+		colorBackground[] = {0, 0, 0, 1};
+		x = 0.20;
+		y = 0.10;
+		w = 0.60;
+		h = 0.60;
+	};
+
+	controls[] = {
+		TEXT_INPUT,
+		BTN_OK,
+		BTN_EXIT, 
+		LISTBOX_HISTORY,
+		TRSM_LIST_TITLE,
+	};
+	class TRSM_LIST_TITLE: Title {
+		idc = IDC + 0;
+		style = ST_CENTER;
+		x = 0.40;
+		y = 0.12;
+		w = 0.20;
+		h = 0.03;
+		colorBackground[] = {0, 0.9, 0.3, 0.75};
+		text = "Console";
+	};
+	class BTN_EXIT: Button {
+		x = 0.75;
+		y = 0.10;
+		w = 0.05;
+		h = 0.04;
+		colorText[] = {1,1,1,1};
+		colorBackground[] = {0,0,0,0};
+		text = "Exit";
+		action = "btnValue00 = 0";
+	};
+	class BTN_OK: Button {
+		x = 0.75;
+		y = 0.65;
+		w = 0.05;
+		h = 0.04;
+		colorText[] = {1,1,1,1};
+		colorBackground[] = {0,0,0,0};
+		text = "OK";
+		action = "btnValue00 = 1";
+	};
+	class LISTBOX_HISTORY: TZK_ListBox {
+		idc = IDC + 16 * 1 + 0;
+		x = 0.20 + 0.025;
+		y = 0.20;
+		w = 0.55;
+		h = 0.42;
+		colorText[] = {1,1,1,1};
+		colorSelect[] = {1,0.6,0,1};
+		colorSelectBackGround[] = {0.5,0.5,0.5,1};
+	};
+	class TEXT_INPUT: RscEdit {
+		idc = IDC + 16 * 1 + 1;
+		x = 0.20 + 0.025;
+		y = 0.65;
+		w = 0.50;
+		h = 0.04;
+		text = "";
+		colorText[] = {1, 1, 1, 1};
+	};
+};
 // EOF
