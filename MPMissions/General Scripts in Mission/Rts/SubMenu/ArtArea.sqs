@@ -17,7 +17,7 @@ _cachedIdx = RtsSvrArtAreaIdx; if (1 == _this) then {_cachedIdx = RtsPplArtAreaI
 ctrlSetText [_idcTitle, format ["Set %1 Art Area", _dispName]]
 ctrlSetText [_idcListLabel, "Areas"]
 
-[_idcListBox0, _markerPrefix] call preprocessFile "Rts\SubMenu\UpdateArtAreaDialogInfo.sqf"
+[_idcListBox0, _markerPrefix, countTargetMarkers] call preprocessFile "Rts\SubMenu\UpdateAreaListbox.sqf"
 ? -1 != _cachedIdx: lbSetCurSel [_idcListBox0, _cachedIdx]
 
 btnValue00 = false; btnValue01 = false; btnValue02 = false
@@ -30,7 +30,7 @@ btnValue00 = false; btnValue01 = false; btnValue02 = false
 	? call dlgUpdated: goto "Quit"
 	? not alive player: closeDialog 0; goto "Quit"
 
-	[_idcListBox0, _markerPrefix] call preprocessFile "Rts\SubMenu\UpdateArtAreaDialogInfo.sqf"
+	[_idcListBox0, _markerPrefix, countTargetMarkers] call preprocessFile "Rts\SubMenu\UpdateAreaListbox.sqf"
 
 	? btnValue00: btnValue00 = false; closeDialog 0; goto "Quit"
 	? btnValue01: btnValue01 = false; goto "Set"

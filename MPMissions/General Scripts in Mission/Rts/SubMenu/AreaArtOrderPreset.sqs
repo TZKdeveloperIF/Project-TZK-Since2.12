@@ -27,7 +27,7 @@ _idcMlrsShootingCnt = IDC + 16 * 5
 _idcListLabel0 = IDC + 1; _idcListBox0 = IDC + 2; _idcListLabel1 = IDC + 3; _idcListBox1 = IDC + 4
 ctrlSetText [_idcListLabel0, "Speed"]
 ctrlSetText [_idcListLabel1, "Art Area"]
-[_idcListBox1, _markerPrefix] call preprocessFile "Rts\SubMenu\UpdateArtAreaDialogInfo.sqf"
+[_idcListBox1, _markerPrefix, countTargetMarkers] call preprocessFile "Rts\SubMenu\UpdateAreaListbox.sqf"
 ? -1 != _cachedIdx: lbSetCurSel [_idcListBox1, _cachedIdx]
 
 _i = lbAdd [_idcListBox0, "Do nothing"]; lbSetValue [_idcListBox0, _i, -1]

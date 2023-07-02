@@ -32,3 +32,6 @@ _i = 0; _c = 10; while {_i < _c} do {
 
 	_i = _i + 1;
 };
+
+// define markers BEFORE "DynamicInitializationMarker.sqs", as mentioned above
+call preprocessFile "Rts\Marker\Init.sqf";

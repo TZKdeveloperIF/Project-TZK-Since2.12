@@ -18,4 +18,10 @@ if (not _processed && 0 == count _downBoardStack) then {
 	ctrlSetText [_idcDownBtn0 + 2, "Obstruct"];
 	{ctrlShow [_idcDownBtn0 + _x, true]} forEach [2];
 	_processed = true;
+
+	// mine area
+	if (isCommander || bIsAiSuperior) then {
+		ctrlSetText [_idcDownBtn0 + 3, "Svr Mine"];
+		ctrlShow [_idcDownBtn0 + 3, true];
+	};
 };
