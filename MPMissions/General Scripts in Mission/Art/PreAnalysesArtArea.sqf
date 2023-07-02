@@ -1,17 +1,16 @@
 // args: [area idx, time stamp, si, for server: boolean]
 // assert that caller is executed serially
-private [{_idx}, {_stamp}, {_si}, {_b4Server}, {_suffix},{_result},{_found}];
+private [{_idx}, {_stamp}, {_si}, {_b4Server}, {_result},{_found}];
 _idx = _this select 0; _stamp = _this select 1; _si = _this select 2; _b4Server = _this select 3;
 
-_suffix = if (si0 == _si) then {"W"} else {"E"}; if not _b4Server then {_suffix = ""};
-_result = call format [{%2%1 select _idx}, _suffix, if _b4Server then {"TzkArtSvrAreaAnal"} else {"TzkArtPplAreaAnal"}];
+_result = [_idx, _si, _b4Server] call preprocessFile "Art\GetPreAnalRes.sqf";
 _found = false;
 
 if (_stamp > _result select 0) then {
 	_result set [0, _stamp];
 
 	private [{_markerInfo}];
-	_markerInfo = call format [{%2%1 select _idx}, _suffix, if _b4Server then {"TzkArtSvrArea"} else {"TzkArtPplArea"}];
+	_markerInfo = [_idx, _si, _b4Server] call preprocessFile "Art\GetMarkerInfo.sqf";
 	
 	_siEnemy = siEnemy select _si;
 

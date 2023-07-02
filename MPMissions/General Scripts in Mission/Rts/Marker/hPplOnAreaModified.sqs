@@ -14,10 +14,4 @@ _idx = _this select 3
 _enum = _markerType call preprocessFile "Rts\Marker\EnumOfType.sqf"
 ? _enum < 0: showDebug [format ["Invalid %1 marker type.", _markerType], 5000], exit
 
-_marker = format ["RtsArea%1%2%3", _markerType, "Svr", _idx]
-_marker setMarkerPos [_geometryInfo select 0, _geometryInfo select 1]
-_marker setMarkerSize [_geometryInfo select 2, _geometryInfo select 3]
-_marker setMarkerDir (_geometryInfo select 4)
-
-_marker = format ["RtsText%1%2%3", _markerType, "Svr", _idx]
-_marker setMarkerPos [_geometryInfo select 0, _geometryInfo select 1]
+"Svr" call preprocessFile "Rts\Marker\EditAreaMarker.sqf";

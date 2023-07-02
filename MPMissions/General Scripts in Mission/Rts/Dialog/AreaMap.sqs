@@ -52,10 +52,11 @@ TzkMapRtsFlashingDisabled = true
 # DownBtn
 	? count _downBoardStack > 0: goto "DownSubMenu"
 
-	? 2^0 == _btnVal: 0 exec "Rts\SubMenu\ArtArea.sqs"; closeDialog 0; goto "Quit"
-	? 2^1 == _btnVal: 1 exec "Rts\SubMenu\ArtArea.sqs"; closeDialog 0; goto "Quit"
+	? 2^0 == _btnVal: [true, "Art"] exec "Rts\SubMenu\AreaMarker.sqs"; closeDialog 0; goto "Quit"
+	? 2^1 == _btnVal: [false, "Art"] exec "Rts\SubMenu\AreaMarker.sqs"; closeDialog 0; goto "Quit"
 	? 2^2 == _btnVal: 2 exec "Rts\SubMenu\ObstructPreset.sqs"; closeDialog 0; goto "Quit"
-	? 2^3 == _btnVal: 0 exec "Rts\SubMenu\AreaMine.sqs"; closeDialog 0; goto "Quit"
+	? 2^3 == _btnVal: [true, "Mine"] exec "Rts\SubMenu\AreaMarker.sqs"; closeDialog 0; goto "Quit"
+	? 2^4 == _btnVal: [false, "Mine"] exec "Rts\SubMenu\AreaMarker.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 	# DownSubMenu
 		? 2^8 == _btnVal: _downBoardStack resize 0; call preprocessFile "Rts\Dialog\UpdateAreaDownBoard.sqf"; goto "Update"
