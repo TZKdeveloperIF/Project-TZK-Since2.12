@@ -104,7 +104,7 @@ _highlight = "CO"; if (1 == _mode) then {_highlight = "WP"}
 	indexWayPointSelected set [_mode, _sel]
 	_coor = _pos
 
-	? "CO" == _highlight: [siPlayer, giPlayer, _coor, 0, _sel + _biasCo] exec "Common\Msg\sSetWPCO.sqs"
+	? "CO" == _highlight: [siPlayer, giPlayer, _coor, _sel + _biasCo] exec "Common\Msg\sSetWPCO.sqs"
 	? "WP" == _highlight: [_sel, _coor] exec "Player\SetWaypoint.sqs"
 
 	closeDialog 0
@@ -116,7 +116,7 @@ _highlight = "CO"; if (1 == _mode) then {_highlight = "WP"}
 	indexWayPointSelected set [_mode, _sel]
 	_coor = [-1, -1]
 
-	? "CO" == _highlight: [siPlayer, giPlayer, _coor, 0, _sel + _biasCo] exec "Common\Msg\sSetWPCO.sqs"
+	? "CO" == _highlight: [siPlayer, giPlayer, _coor, _sel + _biasCo] exec "Common\Msg\sSetWPCO.sqs"
 	? "WP" == _highlight: [_sel, _coor] exec "Player\SetWaypoint.sqs"
 
 	~ 0.2
@@ -129,7 +129,7 @@ _highlight = "CO"; if (1 == _mode) then {_highlight = "WP"}
 	goto "Update"
 
 # ClearAllCO
-	? "CO" == _highlight: [siPlayer, giPlayer, [-1, -1], 0, -1] exec "Common\Msg\sSetWPCO.sqs"
+	? "CO" == _highlight: [siPlayer, giPlayer, [-1, -1], -1] exec "Common\Msg\sSetWPCO.sqs"
 	~ 0.2
 	goto "Update"
 

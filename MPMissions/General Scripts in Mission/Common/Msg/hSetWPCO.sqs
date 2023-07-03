@@ -1,29 +1,27 @@
-; args: [si, gi, pos, type (co or server target), index]
+; args: [si, gi, pos, index, index(optional, repeatable), ...]
 ? not isNull player: bNewCoSet = true
 
-_si = _this select 0, _gi = _this select 1, _pos = _this select 2, _type = _this select 3, _index = _this select 4
-; validation check
-? 0 == _type && _index >= countWPCO: exit
-? 1 == _type && _index >= countTargetMarkers: exit
+_si = _this select 0, _gi = _this select 1, _pos = _this select 2, _index = _this select 3
+_indexes = []
+? -1 == _index: _i = 0, _c = countWPCO, while {_i < _c} do {_indexes set [_i, _i], _i = _i + 1}, goto "Process"
+_i = 3, _c = count _this
+while {_i < _c} do {_idx = _this select _i; if (_idx < countWPCO) then {_indexes set [count _indexes, _idx]}, _i = _i + 1}
 
-
-_left = _index, _right = _index
-? -1 == _index: _left = 0, if (0 == _type) then {_right = countWPCO}, if (1 == _type) then {_right = countTargetMarkers}
+# Process
+? count _indexes == 0: exit
+_i = 0, _c = count _indexes
 _bSet = (_pos select 0) >= 0 && (_pos select 1) >= 0, _leader = leader (groupMatrix select _si select _gi)
 # loop
-	? _type != 0: goto "skipCo"
-	_wp = wpCO select _si select _left
+	_idx = _indexes select _i
+	_wp = wpCO select _si select _idx
 	_wp set [0, _pos select 0]; _wp set [1, _pos select 1]
-	? not isNull player && siPlayer == _si: format["co_%1", _left] setMarkerPos (if _bSet then {_pos} else {hiddenMarkerPos})
-	? _bSet: _leader sidechat format["%4 %1 set. %2 %3", _left, _pos call funcCalcMapPos, _pos call funcCalcTownDirDistFromPos, "CO waypoint"]
+	? not isNull player && siPlayer == _si: format["co_%1", _idx] setMarkerPos (if _bSet then {_pos} else {hiddenMarkerPos})
 
-	# skipCo
-
-	_left = _left + 1
-	? _left <= _right: goto "loop"
+	_i = _i + 1
+	? _i < _c: goto "loop"
+? _bSet: _leader sidechat format["CO waypoint %1 set. %2 %3", if (1 == _c) then {_indexes select 0} else {_indexes}, _pos call funcCalcMapPos, _pos call funcCalcTownDirDistFromPos]
 
 ? !isServer: exit
-? _type != 0: exit
 
 _orders = (orderMatrix select _si)
 @!(mutexAIGroup)
