@@ -17,9 +17,18 @@ _idcDownBtn0 = IDC + 16 * 6 + 0
 ; 0: rts, 1: area, 2: wpco, 4: point
 1 call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
 
-btnValue00 = 0; btnValue01 = 0; btnValue03 = 0
+btnValue00 = -1
+btnValue01 = 0; btnValue03 = 0
 
-{ ctrlShow [_x, false] } forEach [_idcLeftBtn0]
+{ctrlShow [_idcLeftBtn0 + _x, isCommander]} forEach [0,1,3,5]
+
+? isCommander: ctrlSetText [_idcLeftBtn0 + 0, "Clear All"]
+? isCommander: ctrlSetText [_idcLeftBtn0 + 1, "CO"]
+ctrlSetText [_idcLeftBtn0 + 2, "WP"]
+? isCommander: ctrlSetText [_idcLeftBtn0 + 3, "Svr Art"]
+ctrlSetText [_idcLeftBtn0 + 4, "Ppl Art"]
+? isCommander: ctrlSetText [_idcLeftBtn0 + 5, "Svr Mine"]
+ctrlSetText [_idcLeftBtn0 + 6, "Ppl Mine"]
 
 ; down board
 _downBoardStack = []
@@ -37,7 +46,7 @@ TzkMapRtsFlashingDisabled = true
 	TzkMapAreaLastUsedTime = time
 	call preprocessFile "Player\Rts\HandleDialogAzimut.sqf"
 
-	? btnValue00 > 0: _btnVal = btnValue00; btnValue00 = 0; goto "LeftBtn"
+	? btnValue00 >= 0: _val0 = btnValue00; btnValue00 = -1; goto "LeftBtn"
 	? btnValue01 > 0: _btnVal = btnValue01; btnValue01 = 0; goto "DownBtn"
 	? btnValue03 > 0: _btnVal = btnValue03; btnValue03 = 0; goto "RightDownBtn"
 
@@ -48,6 +57,7 @@ TzkMapRtsFlashingDisabled = true
 	TzkMapRtsFlashingDisabled = false
 	[false, _id + 2] exec "Player\Rts\SetRtsMouse.sqs"; exit
 # LeftBtn
+	? _val0 >= 0 && _val0 <= 6: 2 ^ _val0 call preprocessFile "rts\Marker\AreaClearMarker.sqf"; closeDialog 0; goto "Quit"
 	goto "Update"
 # DownBtn
 	? count _downBoardStack > 0: goto "DownSubMenu"

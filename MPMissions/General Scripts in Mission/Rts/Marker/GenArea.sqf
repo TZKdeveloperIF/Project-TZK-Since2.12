@@ -1,7 +1,8 @@
-// args: [index + 100 * (if set marker then 1 else 0), marker type, to server: bool]
+// args: [index + 100 * (if set marker then 1 else 0), marker type, to server: bool, cached idx variable name: string]
 // read info from "TzkRtsArea" marker
-private [{_idxInfo}, {_markerType}, {_toServer}];
+private [{_idxInfo}, {_markerType}, {_toServer}, {_cachedIdxName}];
 _idxInfo = _this select 0; _markerType = _this select 1; _toServer = _this select 2;
+_cachedIdxName = _this select 3;
 
 private [{_param}, {_idx}];
 _idx = (if (_idxInfo >= 100) then {_idxInfo - 100} else {_idxInfo});

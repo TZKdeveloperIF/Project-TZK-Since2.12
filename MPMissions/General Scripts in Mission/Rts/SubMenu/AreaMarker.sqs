@@ -13,7 +13,6 @@ _idcTitle = IDC + 0; _idcListLabel = IDC + 16 * 1 + 0; _idcListBox0 = IDC + 16 *
 
 _webType = "Server"; _webShort = "Svr"
 ? not _toServer: _webType = "Player", _webShort = "Ppl"
-_msgScript = "Rts\Marker\GenArea.sqf"
 _cachedIdxName = format ["RtsArea%1%2Idx", _markerType, _webShort]
 
 _enum = _markerType call preprocessFile "Rts\Marker\EnumOfType.sqf"
@@ -51,11 +50,11 @@ _tooLargeHint = format ["Marker too large. Can't be set as %1 area.", _markerTyp
 	? -1 == lbCurSel _idcListBox0: hint "No area selected."; goto "loop"
 	? _size select 0 > 200 || _size select 1 > 200: hint _tooLargeHint; goto "loop"
 
-	[100 + lbCurSel _idcListBox0, _markerType, _toServer] call preprocessFile _msgScript
+	[100 + lbCurSel _idcListBox0, _markerType, _toServer, _cachedIdxName] call preprocessFile "Rts\Marker\GenArea.sqf"
 	; Clear selected area on setting marker
 	false call preprocessFile "Player\Rts\Area.sqf"
 	false call preprocessFile "Player\Rts\Selection.sqf"
 	closeDialog 0; goto "Quit"
 # Clear
 	? -1 == lbCurSel _idcListBox0: hint "No area selected."; goto "loop"
-	[lbCurSel _idcListBox0, _markerType, _toServer] call preprocessFile _msgScript; goto "loop"
+	[lbCurSel _idcListBox0, _markerType, _toServer, _cachedIdxName] call preprocessFile "Rts\Marker\GenArea.sqf"; goto "loop"
