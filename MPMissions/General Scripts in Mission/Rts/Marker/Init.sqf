@@ -1,5 +1,7 @@
 // initialization of rts markers. By now only area markers definitions here
 
+// since we didn't define variables to record server marker count on player client,
+// same type marker on player client and server should use same count
 private [{_artMarkerCnt}]; _artMarkerCnt = 10;
 private [{_mineMarkerCnt}]; _mineMarkerCnt = 5;
 
