@@ -1,4 +1,4 @@
-// Variables
+// Framework
 mutexTzkRtsW = false;
 TzkRtsSvrId = 0; TzkRtsId4Gc = 0;
 TzkRtsWriteTime = 0;
