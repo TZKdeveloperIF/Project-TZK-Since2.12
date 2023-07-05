@@ -36,7 +36,6 @@ funcVectorDot = loadFile "\TZK_Scripts_4_0_4\Common\SQF\VectorDot.sqf";
 funcVectorCross = loadFile "\TZK_Scripts_4_0_4\Common\SQF\VectorCross.sqf";
 funcVectorScale = loadFile "\TZK_Scripts_4_0_4\Common\SQF\VectorScale.sqf";
 funcVectorLength = loadFile "\TZK_Scripts_4_0_4\Common\SQF\VectorLength.sqf";
-funcVectorRot2D = loadFile "\TZK_Scripts_4_0_4\Common\SQF\VectorRot2D.sqf";
 funcVectorRot3D = loadFile "\TZK_Scripts_4_0_4\Common\SQF\VectorRot3D.sqf";
 funcRandomRotation3D = loadFile "\TZK_Scripts_4_0_4\Common\SQF\RandomRotation3D.sqf";
 
