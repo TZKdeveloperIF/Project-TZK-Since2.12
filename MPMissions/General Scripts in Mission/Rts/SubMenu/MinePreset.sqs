@@ -1,4 +1,4 @@
-; args: [server rts order: boolean, player group units: []]
+; args: [server rts order: bool, mine status: bool, player group units: []]
 
 @ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
@@ -7,7 +7,7 @@ mutexDlg = false
 
 _idcTitle = IDC + 0; _idcListLabel = IDC + 16 * 1 + 0; _idcListBox0 = IDC + 16 * 2 + 0
 
-_bSvrRtsOrder = _this select 0
+_bSvrRtsOrder = _this select 0, _mineState = _this select 1
 _markerType = "Mine"
 _webShort = (if _bSvrRtsOrder then {"Svr"} else {"Ppl"})
 _cachedIdxName = format ["RtsArea%1%2Idx", _markerType, _webShort]
@@ -44,6 +44,9 @@ btnValue00 = false; btnValue01 = false;
 	? -1 == _sel: hint "No area selected."; goto "loop"
 	? -10 == getMarkerPos (format ["RtsArea%1%2%3", _markerType, _webShort, _sel]) select 0: hint "Area undefined."; goto "loop"
 
-	? _bSvrRtsOrder: _sel exec "Rts\Order\sPlaceMine.sqs"
-	? not _bSvrRtsOrder: [_sel, _this select 1] exec "Player\Order\PreMineArea.sqs"
+	? _mineState && _bSvrRtsOrder: _sel exec "Rts\Order\sPlaceMine.sqs"
+	? _mineState && not _bSvrRtsOrder: [_sel, _this select 2] exec "Player\Order\PreMineArea.sqs"
+
+	? not _mineState && _bSvrRtsOrder: _sel exec "Rts\Order\sDisableMine.sqs"
+	? not _mineState && not _bSvrRtsOrder: [_sel, _this select 2] exec "Player\Order\PreDisableMine.sqs"
 	closeDialog 0; goto "Quit"
