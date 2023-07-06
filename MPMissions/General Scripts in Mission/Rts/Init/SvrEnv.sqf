@@ -42,3 +42,11 @@ TzkRtsAvailableIdx = [];
 		};
 		_sideInfo set [_enum, _info];
 	} forEach [si0, si1];
+	{
+		_sideInfo = TzkSvrRtsTravelArea select _x;
+		_info = []; _i = 0; while {_i < _mineMarkerCnt} do {
+			_info set [_i, 0];
+			_i = _i + 1;
+		};
+		_sideInfo set [_enum, _info];
+	} forEach [si0, si1];

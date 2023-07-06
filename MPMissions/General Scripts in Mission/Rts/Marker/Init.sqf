@@ -9,6 +9,8 @@ private [{_enum}, {_info}];
 if (not isNull player) then {
 	// Matrix for player area info
 	TzkPplRtsAreaInfo = [];
+	// Matrix for travelling server area
+	TzkPplRtsTravelArea = [];
 
 	// Art area markers
 	_enum = "Art" call preprocessFile "Rts\Marker\EnumOfType.sqf";
@@ -37,4 +39,11 @@ if (not isNull player) then {
 	[
 		"Mine", "Player", "Ppl", "ColorDarkPurple_xj400", _mineMarkerCnt
 	] call preprocessFile "Rts\Marker\CreateArea.sqf";
+	call {
+		_info = []; _i = 0; while {_i < _mineMarkerCnt} do {
+			_info set [_i, 0];
+			_i = _i + 1;
+		};
+		TzkPplRtsTravelArea set [_enum, _info];
+	};
 };

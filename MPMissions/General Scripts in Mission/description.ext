@@ -407,10 +407,9 @@ class TzkCmdMapDlgPoint: TzkCmdMapDlgBase {
 
 class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
 	controls[] = {
-		LeftBtn0, LeftBtn1, LeftBtn2, LeftBtn3, LeftBtn4, 
-		LeftBtn5, 
-		LeftBtn6, 
-		LeftBtn7, 
+		LeftBtn0, LeftBtn1, LeftBtn2, LeftBtn3, 
+		LeftBtn4, LeftBtn5, LeftBtn6, LeftBtn7, 
+		LeftBtn8, 
 		DownBtn0, DownBtn1, DownBtn2, 
 		DownBtn3, DownBtn4, DownBtn5, 
 		DownBtn6, DownBtn7, DownBtn8, 
@@ -466,6 +465,12 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
 		idc = IDC + 16 * 2 + 7;
 		y = 0.10 + 0.15 + 0.05 * 2;
 		action = "btnValue00 = 7";
+	};
+
+	class LeftBtn8: LeftBtn5 { // for RTS reclaim
+		idc = IDC + 16 * 2 + 8;
+		y = 0.10 + 0.15 + 0.05 * 5;
+		action = "btnValue00 = 8";
 	};
 	
 	// left down part. select specific type
@@ -1412,6 +1417,21 @@ class TzkRtsReclaimSubMenu: TzkRtsBoardSubMenu {
 		idc = IDC + 16 * 2 + 7 + 8;
 		y = 0.20 + 0.05 * 7;
 		action = "btnValue01 set [8 + 7, not(btnValue01 select 8 + 7)]";
+	};
+};
+
+class TzkRtsMineSubMenu: TzkRtsSubMenuOneListWide {
+	controls[] = {
+		TRSM_LIST_TITLE, BTN_EXIT, BTN_SET, 
+		LISTBOX0, LISTTEXT0
+	};
+	class BTN_SET: Button {
+		x = 0.45;
+		y = 0.65;
+		w = 0.10;
+		h = 0.04;
+		text = "Set";
+		action = "btnValue01 = true";
 	};
 };
 

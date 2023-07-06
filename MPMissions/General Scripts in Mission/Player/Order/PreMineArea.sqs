@@ -1,0 +1,31 @@
+; args: [mine area index, units]
+
+_units = _this select 1, _c = count _units
+? 0 == _c: exit
+
+_areaIdx = _this select 0
+
+_i = 0
+# loop
+	_unit = _units select _i
+
+	? !(alive _unit): goto "continue"
+	? _unit != vehicle _unit: goto "continue"
+
+	? group _unit != groupPlayer: goto "continue"
+
+	_magData = (_unit call preprocessFile "Common\SQF\RearmData.sqf") select 1
+	_magazines = _unit call funcGetNotEmptyMags
+	? ({_x in MagzinesMine} count _magData) == 0 && ({_x in MagzinesMine} count _magazines) == 0: goto "continue"
+
+	_uid = [_unit, siPlayer, giPlayer] call funcCalcUID
+	? _uid > 12: hint "Fail to get UID, order not set. Try again please."; goto "continue"
+	_id = (playerOrderID select _uid) + 1; [_uid, _id] exec "\TZK_Scripts_4_0_4\Player\Order\New.sqs"
+
+	_quitCond = {not alive _unit || _unit != vehicle _unit || call orderCheck}
+
+	[[_unit, siPlayer, _areaIdx], [false, _quitCond], [_uid, _id]] exec "ComplexOrder\AreaMine.sqs"
+
+	# continue
+	_i = _i + 1
+	? _i < _c: goto "loop"

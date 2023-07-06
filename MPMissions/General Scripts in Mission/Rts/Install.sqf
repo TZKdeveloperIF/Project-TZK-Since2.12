@@ -8,6 +8,8 @@
 private [{_artMarkerCnt}]; _artMarkerCnt = 10;
 private [{_mineMarkerCnt}]; _mineMarkerCnt = 5;
 
+call preprocessFile "Rts\Init\GlobalEnv.sqf";
+
 if isServer then {
 	call preprocessFile "Rts\Init\SvrEnv.sqf";
 };
