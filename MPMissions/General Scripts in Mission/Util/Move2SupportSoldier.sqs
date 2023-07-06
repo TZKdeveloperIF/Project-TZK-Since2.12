@@ -16,13 +16,15 @@ _rearmDist = 5; _rearmRange = 10
 _dist = _unit distance _sup
 ? _dist <= _rearmDist * 2: goto "EOF"
 
-_posMove = [[0, _rearmDist], (getDir _sup)] call funcVectorRot2D
-_posMove = [getPos _sup, _posMove] call funcVectorSub
-_unit doMove _posMove; _unit setUnitPos "UP"
+_destPos = [[0, _rearmDist], (getDir _sup)] call funcVectorRot2D
+_destPos = [getPos _sup, _destPos] call funcVectorSub
+_unit doMove _destPos; _unit setUnitPos "UP"
+_try = 0, _near = 0
 
 # MoveToSupport
 	; don't send "move" order if too close, otherwise AI will "stop"
-	? _dist > 15: _unit doMove _posMove; _unit setUnitPos "UP"
+	? _dist > 15: _unit doMove _destPos; _unit setUnitPos "UP"
+	? _distH <= 15: _near = _near + 1
 
 	_delay = (if (_dist < 300) then {_dist / 10} else {30})
 	? _delay < 2: _delay = 2
@@ -31,6 +33,9 @@ _unit doMove _posMove; _unit setUnitPos "UP"
 	? _time > _timeAbort && _timeAbort > 0: goto "EOF"
 
 	_dist = _unit distance _sup
+	? _dist < 5: _try = _try + 1
+	? _try > 3: goto "EOF"
+	? _near > 3: _unit doMove _destPos; _unit setUnitPos "UP", goto "EOF"
 	? _dist > _rearmRange: goto "MoveToSupport"
 # EOF
 	_this set [0, false]

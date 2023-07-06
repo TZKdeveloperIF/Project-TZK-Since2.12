@@ -1,0 +1,37 @@
+; args: [mine area index, units]
+
+_units = _this select 1, _c = count _units
+? 0 == _c: exit
+
+_areaIdx = _this select 0
+
+_saboteur = (if (si0 == siPlayer) then {"SoldierWSaboteurDay_xj400"} else {"SoldierESaboteurBizon_xj400"})
+_cache = []
+
+_i = 0
+# loop
+	_unit = _units select _i
+
+	? !(alive _unit): goto "continue"
+	? _unit != vehicle _unit: goto "continue"
+
+	? group _unit != groupPlayer: goto "continue"
+
+	_type = _unit call funcGetUnitTypeFromObject
+	_valid = _type in utMiner
+
+	? not _valid: _cache set [0, _unit], _valid = _saboteur countType _cache > 0
+
+	? not _valid: goto "continue"
+
+	_uid = [_unit, siPlayer, giPlayer] call funcCalcUID
+	? _uid > 12: hint "Fail to get UID, order not set. Try again please."; goto "continue"
+	_id = (playerOrderID select _uid) + 1; [_uid, _id] exec "\TZK_Scripts_4_0_4\Player\Order\New.sqs"
+
+	_quitCond = {not alive _unit || _unit != vehicle _unit || call orderCheck}
+
+	[[_unit, siPlayer, _areaIdx], [false, _quitCond], [_uid, _id]] exec "ComplexOrder\AreaDisableMine.sqs"
+
+	# continue
+	_i = _i + 1
+	? _i < _c: goto "loop"

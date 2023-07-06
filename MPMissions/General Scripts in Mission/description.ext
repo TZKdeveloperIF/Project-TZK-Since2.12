@@ -409,7 +409,7 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
 	controls[] = {
 		LeftBtn0, LeftBtn1, LeftBtn2, LeftBtn3, 
 		LeftBtn4, LeftBtn5, LeftBtn6, LeftBtn7, 
-		LeftBtn8, 
+		LeftBtn8, LeftBtn9, 
 		DownBtn0, DownBtn1, DownBtn2, 
 		DownBtn3, DownBtn4, DownBtn5, 
 		DownBtn6, DownBtn7, DownBtn8, 
@@ -467,10 +467,19 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
 		action = "btnValue00 = 7";
 	};
 
-	class LeftBtn8: LeftBtn5 { // for RTS reclaim
+	class LeftBtn8: LeftBtn5 { // for RTS mine area
 		idc = IDC + 16 * 2 + 8;
-		y = 0.10 + 0.15 + 0.05 * 5;
+		x = 0.025 + 0.09;
+		y = 0.10 + 0.15 + 0.05 * 2;
+		w = 0.16;
 		action = "btnValue00 = 8";
+	};
+	class LeftBtn9: LeftBtn8 { // for RTS disable mine 
+		idc = IDC + 16 * 2 + 9;
+		x = 0.025 + 0.09;
+		y = 0.10 + 0.15 + 0.05 * 1;
+		w = 0.16;
+		action = "btnValue00 = 9";
 	};
 	
 	// left down part. select specific type

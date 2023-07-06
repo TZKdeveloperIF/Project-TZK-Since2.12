@@ -13,13 +13,14 @@ _unit = _this select 2, _destPos = _this select 3, _timeAbort = _this select 4
 
 _threshold = 2
 _distH = [_unit, _destPos] call funcDistH
-_try = 0
+_try = 0, _near = 0
 
 _unit doMove _destPos; _unit setUnitPos "UP"
 
 # MoveToSupport
 	; don't send "move" order if too close, otherwise AI will "stop"
 	? _distH > 15: _unit doMove _destPos; _unit setUnitPos "UP"
+	? _distH <= 15: _near = _near + 1
 
 	_delay = (if (_distH < 300) then {_distH / 10} else {30})
 	? _delay < 2: _delay = 2
@@ -30,6 +31,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	_distH = [_unit, _destPos] call funcDistH
 	? _distH < 5: _try = _try + 1
 	? _try > 3: goto "EOF"
+	? _near > 3: _unit doMove _destPos; _unit setUnitPos "UP", goto "EOF"
 	? _distH > _threshold: goto "MoveToSupport"
 # EOF
 	_this set [0, false]

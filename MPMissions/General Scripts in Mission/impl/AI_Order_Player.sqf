@@ -116,9 +116,13 @@ comment "Add new orders";
 	comment "[Join] order should always be the last one";
 	_typeJoin = count aiOrders2 - 1;
 
-	aiOrders2 set [_typeJoin + 1, aiOrders2 select _typeJoin];
-	comment "Rts mine area order";
+	aiOrders2 set [_typeJoin + 2, aiOrders2 select _typeJoin];
+	comment "Rts mine orders";
 	aiOrders2 set [_typeJoin, [
+		"Disable Mine", [], true, "Player\Order\RtsPreDisable.sqs",
+		"Ask ai to mine in RTS area."
+	]];
+	aiOrders2 set [_typeJoin + 1, [
 		"Mine Area", [], true, "Player\Order\RtsPreMineArea.sqs",
 		"Ask ai to mine in RTS area."
 	]];
