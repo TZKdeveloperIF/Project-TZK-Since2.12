@@ -69,7 +69,7 @@ btnValue02 = [true,true,true,true,true]; btnValue03 = [false,false,false,false]
 # Execution
 	? -1 == lbCurSel _idcListBox0: hint "No speed selected."; goto "loop"
 	? -1 == lbCurSel _idcListBox1: hint "No art area selected"; goto "loop"
-	? -10 == getMarkerPos (format ["%1%2%3", _markerType, _webShort, lbCurSel _idcListBox1]) select 0: hint "Area undefined."; goto "loop"
+	? -10 == getMarkerPos (format ["RtsArea%1%2%3", _markerType, _webShort, lbCurSel _idcListBox1]) select 0: hint "Area undefined."; goto "loop"
 
 	_orderType = "General Area"
 	? 2 == _btnVal: _orderType = "Destroy Obstruction"
