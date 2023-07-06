@@ -1,0 +1,36 @@
+; args: [output status (write only), input status (read only), unit, sup, time abort]
+
+; this SQS script loops to make soldier moving to support
+; on script finished/aborted, the output status will be set to "false"
+; if input status is false, current order should be interrupted and halt
+; do in-script exit check ONLY for those conditions whose parameters are local
+; no other in-script exit check
+; it is possible but unnecessary to use only one status variable
+
+_unit = _this select 2, _sup = _this select 3, _timeAbort = _this select 4
+
+_unit groupChat "Moving to support vehicle for more magazines."
+~ 0.1
+
+_rearmDist = 5; _rearmRange = 10
+_dist = _unit distance _sup
+? _dist <= _rearmDist * 2: goto "EOF"
+
+_posMove = [[0, _rearmDist], (getDir _sup)] call funcVectorRot2D
+_posMove = [getPos _sup, _posMove] call funcVectorSub
+_unit doMove _posMove; _unit setUnitPos "UP"
+
+# MoveToSupport
+	; don't send "move" order if too close, otherwise AI will "stop"
+	? _dist > 15: _unit doMove _posMove; _unit setUnitPos "UP"
+
+	_delay = (if (_dist < 300) then {_dist / 10} else {30})
+	? _delay < 2: _delay = 2
+	~ _delay
+	? not (_this select 1): goto "EOF"
+	? _time > _timeAbort && _timeAbort > 0: goto "EOF"
+
+	_dist = _unit distance _sup
+	? _dist > _rearmRange: goto "MoveToSupport"
+# EOF
+	_this set [0, false]
