@@ -56,6 +56,8 @@ _moveParamCache exec "Util\Move2DestSoldier.sqs"
 	? _moveParamCache select 0: goto "Move2RectLoop"
 
 # ReachArea
+	? call _quitCond: goto "Quit"
+
 	? _forServer: [_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
 	? not _forServer: doStop _unit
 
