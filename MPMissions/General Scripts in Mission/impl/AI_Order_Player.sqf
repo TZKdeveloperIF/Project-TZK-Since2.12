@@ -115,7 +115,13 @@ comment "Redefine shoot target order param.";
 comment "Add new orders";
 	comment "[Join] order should always be the last one";
 	_typeJoin = count aiOrders2 - 1;
-	comment "Add orders here";
+
+	aiOrders2 set [_typeJoin + 1, aiOrders2 select _typeJoin];
+	comment "Rts mine area order";
+	aiOrders2 set [_typeJoin, [
+		"Mine Area", [], true, "Player\Order\RtsPreMineArea.sqs",
+		"Ask ai to mine in RTS area."
+	]];
 
 
 comment "Post execute. Fix CHN images' indexes.";

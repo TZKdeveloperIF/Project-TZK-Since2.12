@@ -1,0 +1,140 @@
+; ---------------------------------------------------------------------------------------------------
+; |									RTS Place Mine Order SQS Script									|
+; |		  Units will place mine at assigned area. Since area is assigned, it's possible to			|
+; |		distribute position to each of them. This script places anti-vehicle mine only. 			|
+; ---------------------------------------------------------------------------------------------------
+
+; args: [
+; 	[unit, si, mine area index],
+; 	[order mode (called by AI or player unit), quit condition],
+; 	extra parameters for order mode
+; ]
+
+_unit = _this select 0 select 0; _si = _this select 0 select 1; _areaIdx = _this select 0 select 2
+_forServer = _this select 1 select 0, _quitCond = _this select 1 select 1
+? _forServer: _rtsStatus = _this select 2 select 0, _id = _this select 2 select 1
+? not _forServer: _uid = _this select 2 select 0, _id = _this select 2 select 1
+
+_this = 0
+
+_msg = ""
+
+_enum = "Mine" call preprocessFile "Rts\Marker\EnumOfType.sqf";
+? -1 == _enum: _msg = "Invalid idx returned by EnumOfType. Order aborted.", goto "Quit"
+_areaInfo = (if _forServer then {TzkSvrRtsAreaInfo select _si} else {TzkPplRtsAreaInfo}) select _enum select _areaIdx
+
+_infoInvalid = {-10 == _areaInfo select 0}
+? call _infoInvalid: goto "Quit"
+
+_miningDist = 4
+_travelRect = preprocessFile "Util\TravelRect.sqf"
+_moveParamCache = [], _paramCache = [_areaInfo]
+
+; mag precheck
+_magazines = _unit call funcGetNotEmptyMags
+_hasMine = magMine in _magazines; _hasPistolMine = magPistolMine in _magazines
+? not (_hasMine || _hasPistolMine): goto "CheckRearm"
+
+# AnalysisDistance
+	? [getPos _unit, _areaInfo] call preprocessFile "Util\PosInRect.sqf": goto "ReachArea"
+
+; Get current mining pos and move there directly
+_entry = (if _forServer then {TzkSvrRtsTravelArea select _si} else {TzkPplRtsTravelArea}) select _enum
+_idx = _entry select _areaIdx
+_paramCache set [1, _idx], _paramCache set [2, _miningDist]
+_destPos = _paramCache call _travelRect
+
+_distToDest = [_unit, _destPos] call funcDistH
+? _distToDest < 20: goto "ReachArea"
+
+_moveParamCache set [0, true]; _moveParamCache set [1, true]; _moveParamCache set [2, _unit]
+_moveParamCache set [3, _destPos]; _moveParamCache set [4, -1]
+_moveParamCache exec "Util\Move2DestSoldier.sqs"
+# Move2RectLoop
+	~ 5
+	? call _quitCond: _moveParamCache set [1, false], goto "Quit"
+	? _moveParamCache select 0: goto "Move2RectLoop"
+
+# ReachArea
+	? _forServer: [_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
+	? not _forServer: doStop _unit
+
+	; check mags
+	_magazines = _unit call funcGetNotEmptyMags
+	_hasMine = magMine in _magazines; _hasPistolMine = magPistolMine in _magazines
+	? not (_hasMine || _hasPistolMine): goto "CheckRearm"
+	; obtain area position
+	@ not mutexTzkRtsMine
+		mutexTzkRtsMine = true
+		_entry = (if _forServer then {TzkSvrRtsTravelArea select _si} else {TzkPplRtsTravelArea}) select _enum
+		_idx = _entry select _areaIdx
+		_entry set [_areaIdx, _idx + 1]
+		mutexTzkRtsMine = false
+
+	? call _infoInvalid: goto "Quit"
+	_paramCache set [1, _idx], _paramCache set [2, _miningDist]
+	_minePos = _paramCache call _travelRect
+	_moveParamCache set [0, true]; _moveParamCache set [1, true]; _moveParamCache set [2, _unit]
+	_moveParamCache set [3, _minePos]; _moveParamCache set [4, -1]
+	_moveParamCache exec "Util\Move2DestSoldier.sqs"
+
+	# Move2DestLoop
+		_distToDest = [_unit, _minePos] call funcDistH
+		_delay = _distToDest / 10; if (_delay < 1) then {_delay = 1}; if (_delay > 30) then {_delay = 30}
+		~ _delay
+		? call _quitCond: _moveParamCache set [1, false], goto "Quit"
+		? _moveParamCache select 0: goto "Move2DestLoop"
+	_randomPos = [_minePos, 10, 10] call funcGetRandomPos
+	; avoid exist vehicle
+	_res = [ _minePos, siBoth, vMinerAvoid, [] ] call funcGetClosestVehicle
+	? (_res select 1) < 11: _unit groupChat "Vehicle exist. Changing position."; _unit doMove _randomPos; goto "ReachArea"
+
+	_mag = (if _hasPistolMine then {magPistolMine} else {magMine})
+	_unit fire [weaponPut, _mag, _mag]
+	? ([_unit, _minePos] call funcDistH) > 2: _unit setPos _minePos
+
+	; ask unit move anywhere randomly. If 2 mining pos get too close unit will reply "Ready" and don't move
+	_unit doMove _randomPos
+	~ 3
+	goto "ReachArea"
+
+# CheckRearm
+	_magData = (if _forServer then {(_unit call funcGetRearmData) select 1} else {(_unit call preprocessFile "Common\SQF\RearmData.sqf") select 1})
+	? not (magMine in _magData || magPistolMine in _magData): _msg = "Can't rearm mine. Order aborted", goto "Quit"
+
+	_sup = [_unit, _si, 512, true] call preprocessFile "Util\SoldierRearmSupport.sqf"
+	? isNull _sup: _msg = "No support vehicle within 512 meters. Magazines exhausted. Order aborted."; goto "Quit"
+	; SupportFound
+	? _forServer: [_unit, _sup] exec "\TZK_Scripts_4_0_4\Server\SendMovingToSupport.sqs"
+	_param = [true, true, _unit, _sup, 60 * 5]
+	_param exec "Util\Move2SupportSoldier.sqs"
+	# Move2SupportLoop
+		~ 5
+		? call _quitCond: _param set [1, false], goto "Quit"
+		? not alive _sup: _param set [1, false], goto "CheckRearm"
+		? _param select 0: goto "Move2SupportLoop"
+
+	? _forServer: [_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
+	? not _forServer: doStop _unit
+
+	? not _forServer: _rearmParam = [[_unit, _sup], false, false], _rearmParam exec "Player\Rearm.sqs", goto "WaitRearmComplete"
+	_gi = (groupMatrix select _si) find (group _unit)
+	_rearmParam = [[_unit, _si, _gi, _unit, _type, _sup], false, false], _rearmParam exec "Server\AI_Rearm.sqs"; 
+
+	# WaitRearmComplete
+		~ 5
+		? call _quitCond: goto "Quit"
+		; todo: hint if rearm failed due to insufficiend fund
+		? not (_rearmParam select 1): goto "WaitRearmComplete"
+
+	; rearm fail check
+	? not (_rearmParam select 2): _msg = "Rearm failed. Mine order aborted.", goto "Quit"
+
+	goto "AnalysisDistance"
+
+; End Of File
+# Quit
+
+	? _msg != "" && _forServer: [_si, format ["%1: %2", _unit, _msg]] exec "Server\Msg\sSvrMsg2Cmd.sqs"
+	? _msg != "" && not _forServer: _unit groupChat _msg
+	exit

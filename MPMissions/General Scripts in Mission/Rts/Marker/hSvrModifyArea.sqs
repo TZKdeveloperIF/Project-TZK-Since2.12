@@ -19,6 +19,9 @@ _info = TzkSvrRtsAreaInfo select _si select _enum select _idx
 
 {_info set [_x, _geometryInfo select _x]} forEach [0,1,2,3,4]
 
+; reset travel index
+? "Mine" == _markerType: TzkSvrRtsTravelArea select _si select _enum set [_idx, 0]
+
 _pplCallBack = "Rts\Marker\hPplOnAreaModified.sqs"
 _this exec _pplCallBack
 publicExec format [{%1 exec "%2"}, _this, _pplCallBack]

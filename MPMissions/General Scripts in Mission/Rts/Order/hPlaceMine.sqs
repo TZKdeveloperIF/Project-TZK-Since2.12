@@ -1,0 +1,31 @@
+; ---------------------------------------------------------------------------------------------------
+; |									RTS Place Mine Order SQS Script									|
+; |		  Units will place mine at assigned area. Since area is assigned, server can distribute		|
+; |		position to each of them. This script places anti-vehicle mine only. 						|
+; ---------------------------------------------------------------------------------------------------
+
+; args: [unit, mine area index, 
+; 	rts object status (array-reference), rts server id]
+_unit = _this select 0
+_areaIdx = _this select 1
+_rtsStatus = _this select 2
+_id = _this select 3
+
+; rts busy Check
+; not realized yet
+
+; rts order stack design
+; not realized yet
+
+_si = sides find (side _unit)
+? _si != si0 && _si != si1: exit
+
+? _unit != vehicle _unit: exit
+
+; under "RtsOrder" folder the "rts id" is restored by "id" variable but not "rtsId"
+_quitCond = {not alive _unit || not (_unit call rtsOrderCheck) || _id != _rtsStatus select 1}
+
+_unit call preprocessFile "Server\AI\RtsOrderBegin.sqf"
+
+[[_unit, _si, _areaIdx], [true, _quitCond], [_rtsStatus, _id]] exec "ComplexOrder\AreaMine.sqs"
+exit

@@ -50,4 +50,7 @@ if _toServer then {
 	// marker info
 	_info = TzkPplRtsAreaInfo select _enum select _idx;
 	{_info set [_x, _geometryInfo select _x]} forEach [0,1,2,3,4];
+
+	// reset travel index
+	if ("Mine" == _markerType) then {TzkPplRtsTravelArea select _enum set [_idx, 0]};
 };
