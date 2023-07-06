@@ -289,10 +289,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 # CheckRearm
 	? not _isInfantry: goto "SkipSoldierRearmDataCheck"
 		; verify soldier rearm data
-		_i = rearmDataObj find _unit
-		_bValid = false
-		? _i != -1: _bValid = [_validMags, rearmDataEquip select _i select 1] call funcArrayOverlap
-		? _i == -1: _bValid = [_validMags, (_unit call funcGetRearmData) select 1] call funcArrayOverlap
+		_bValid = [_validMags, (_unit call preprocessFile "Common\SQF\RearmData.sqf") select 1] call funcArrayOverlap
 		? not _bValid: _msg = "My magData isn't match current command. Won't go rearm and order aborted."; goto "EOF"
 
 	# SkipSoldierRearmDataCheck
@@ -317,13 +314,14 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 
 	# SupportFound
 		? not _isServer: _unit groupChat "Moving to support vehicle for more magazines."
+		? _isServer: [_unit, _sup] exec "\TZK_Scripts_4_0_4\Server\SendMovingToSupport.sqs"
 		_timeAbort = time + 60 * (if _isInfantry then {15} else {5})
 		? _isStruct: goto "SupportReached"
 		? _isVehicle: _vehicle exec "Art\Undeploy.sqs", {_x doFollow leader _x} forEach crew _vehicle
 		~ 0.1
 		_rearmDist = (if _isInfantry then {5} else {25})
 		_rearmRange = (if _isInfantry then {10} else {30})
-		? (_unit distance _sup) <= 50: goto "SupportReached"
+		? (_unit distance _sup) <= _rearmDist * 2: goto "SupportReached"
 
 		? _isVehicle: if ([_vehicle, "driver"] call preprocessFile "Util\HasEmptySeat.sqf") then {_msg = "Need move to support but hasn't driver. Order aborted.", goto "EOF"}
 		# MoveToSupport
@@ -339,14 +337,17 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 
 	; calc switch mag speed for non-soldier
 	? _isInfantry: goto "ExecRearm"
-		_gi = (groupMatrix select _si) find ( (group _unit) )
 		_speed = -1; _mag = "";
 		_magazines = magazines _vehicle; _validMags = [_weapon] call funcWeaponValidMags; {if (_x in _validMags) then {_mag = _x}} forEach _magazines
 		? _mag != "": _speed = substr [_mag, sizeofstr(_mag) - sizeofstr("xxxx_xj400"), sizeofstr(_mag) - sizeofstr("_xj400")]; if !(substr [_speed, 0, 1] in ["0","1","2","3"]) then {_speed = -1} else {_speed = call _speed};
 		_delay = [0,3] select (_speed > 0)
 	# ExecRearm
-		? _isServer: [_unit, _si, _gi, _vehicle, _type, _sup] exec "Server\AI_Rearm.sqs"; [_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
-		? not _isServer: [_unit, _sup] exec "Player\Rearm.sqs"; doStop _unit
+		_gi = (groupMatrix select _si) find (group _unit)
+		? _isServer: [_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
+		? not _isServer: doStop _unit
+
+		? _isServer: _rearmParam = [[_unit, _si, _gi, _vehicle, _type, _sup], false, false], _rearmParam exec "Server\AI_Rearm.sqs"
+		? not _isServer: _rearmParam = [[_unit, _sup], false, false]; _rearmParam exec "Player\Rearm.sqs"
 		? not _isServer && not _isInfantry: _unit groupChat "Rearming. If I'm far away from you, probably I can't receive supplemented magazines. In this case, please use Unit Camera and look at me."
 
 	; _try = 0
@@ -354,7 +355,11 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 		~ 5
 		? call _quitCond: _msg = ""; goto "EOF"
 		; todo: hint if rearm failed due to insufficiend fund
+		? _isServer: if not (_rearmParam select 1) then {goto "WaitRearmComplete"}
 		? !someAmmo _vehicle: goto "WaitRearmComplete"
+
+	; rearm fail check
+	? _isServer: if not (_rearmParam select 2) then {_msg = format ["%1 rearm failed. Art order aborted.", _unit], goto "EOF"}
 
 	? _isInfantry: goto "PreMove"
 	; post rearm for non-soldier
