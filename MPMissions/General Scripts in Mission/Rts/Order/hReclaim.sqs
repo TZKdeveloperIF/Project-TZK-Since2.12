@@ -63,6 +63,7 @@ _i = 0, _c = _typeCnt, _transpTypes = [], _transpTypes resize _c
 	? count _nearByTargets == 0: goto "Quit"
 
 	_notOurSide = {unitDefs select _this select udSide != _si}
+	_hasEmptySeat = preprocessFile "Util\HasEmptySeat.sqf"
 
 	_targets = [], _selectedTypes = [], _target = objNull, _suggestedIdx = -1
 	_typeIdx = 0; _totalTryCnt = 0

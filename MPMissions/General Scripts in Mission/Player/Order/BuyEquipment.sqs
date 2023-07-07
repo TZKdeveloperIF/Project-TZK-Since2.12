@@ -12,7 +12,8 @@ _v = vehicle _unit
 ? count (infCustom select _template) == 0: _unit groupChat "Equipment Template Not Defined"; exit
 
 #FindSupport
-_vs = [_pos, 500, (typesSupportPlus select siPlayer) + ([[utMHQ0, utMCVW, jeepaW], [utMHQ1, utMCVE, uazaE]] select siPlayer), [_v]] call funcGetNearbyVehicles
+_sup = [_unit, siPlayer, 512, true] call preprocessFile "Util\SoldierRearmSupport.sqf"
+_vs = [[_sup, -1, _sup distance _unit]]
 _vs = _vs + ([_pos, 500, [stAmmoCrate, stBarracks], [], siBoth] call funcGetNearbyStructure)
 ? (count _vs) == 0: _unit groupChat "No support vehicles in that area."; exit
 _vs = [2, true, _vs] call funcSort

@@ -1,0 +1,32 @@
+; args: mine area index
+_top = TzkSelUnitsStack select TzkSelStackIdx
+_c = count _top
+? _c == 0: goto "Quit"
+
+_saboteur = (if (si0 == siPlayer) then {"SoldierWSaboteurDay_xj400"} else {"SoldierESaboteurBizon_xj400"})
+_cache = []
+
+_i = 0, _j = 0, _selectedUnits = []
+# loop
+	_unit = _top select _i
+	_vehicle = vehicle _unit
+	? _unit != _vehicle: goto "continue"
+
+	_valid = _unit == leader group _unit
+	? not _valid: _type = _unit call funcGetUnitTypeFromObject; _valid = _type in utMiner
+	? not _valid: _cache set [0, _unit], _valid = _saboteur countType _cache > 0
+
+	? not _valid: goto "continue"
+
+	_selectedUnits set [_j, _unit]
+	_j = _j + 1
+
+	# continue
+	_i = _i + 1
+	? _i < _c: goto "loop"
+_selectedUnits resize _j
+
+[_selectedUnits, _this, "hDisableMine.sqs", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs"
+
+# Quit
+	exit

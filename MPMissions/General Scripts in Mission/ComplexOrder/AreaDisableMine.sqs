@@ -1,0 +1,123 @@
+; ---------------------------------------------------------------------------------------------------
+; |									RTS Disable Mine Order SQS Script								|
+; |		  Units will disable mine at assigned area. Since area is assigned, it's possible to		|
+; |		distribute position to each of them. This script disables anti-vehicle mine only. 			|
+; ---------------------------------------------------------------------------------------------------
+
+; args: [
+; 	[unit, si, mine area index],
+; 	[order mode (called by AI or player unit), quit condition],
+; 	extra parameters for order mode
+; ]
+
+_unit = _this select 0 select 0; _si = _this select 0 select 1; _areaIdx = _this select 0 select 2
+_forServer = _this select 1 select 0, _quitCond = _this select 1 select 1
+? _forServer: _rtsStatus = _this select 2 select 0, _id = _this select 2 select 1
+? not _forServer: _uid = _this select 2 select 0, _id = _this select 2 select 1
+
+_this = 0
+
+_msg = ""
+
+_enum = "Mine" call preprocessFile "Rts\Marker\EnumOfType.sqf";
+? -1 == _enum: _msg = "Invalid idx returned by EnumOfType. Order aborted.", goto "Quit"
+_areaInfo = (if _forServer then {TzkSvrRtsAreaInfo select _si} else {TzkPplRtsAreaInfo}) select _enum select _areaIdx
+
+_infoInvalid = {-10 == _areaInfo select 0}
+? call _infoInvalid: goto "Quit"
+
+_miningDist = 4
+_travelRect = preprocessFile "Util\TravelRect.sqf"
+_moveParamCache = [], _paramCache = [_areaInfo]
+
+_w = _areaInfo select 2, _h = _areaInfo select 3
+_cols = 2 * _w / _miningDist; _cols = _cols - _cols % 1 + 1;
+_rows = 2 * _h / _miningDist; _rows = _rows - _rows % 1 + 1;
+; search twice
+_haltIdx = _cols * _rows * 2
+
+; pre check if no mine
+_radius = sqrt(_w * _w + _h * _h)
+_mine = NearestObjectDistance [[_areaInfo select 0, _areaInfo select 1], "Mine", _radius]
+? isNull _mine: _msg = "None mine in current area. Order aborted.", goto "Quit"
+
+; reset search idx
+@ not mutexTzkRtsMine
+	mutexTzkRtsMine = true
+	_entry = (if _forServer then {TzkSvrRtsTravelArea select _si} else {TzkPplRtsTravelArea}) select _enum
+	_idx = _entry select _areaIdx
+	_entry set [_areaIdx, _idx % (_cols * _rows)]
+	mutexTzkRtsMine = false
+
+# AnalysisDistance
+	? [getPos _unit, _areaInfo] call preprocessFile "Util\PosInRect.sqf": goto "ReachArea"
+
+; Get current mining pos and move there directly
+_entry = (if _forServer then {TzkSvrRtsTravelArea select _si} else {TzkPplRtsTravelArea}) select _enum
+_idx = _entry select _areaIdx
+_paramCache set [1, _idx], _paramCache set [2, _miningDist]
+_destPos = _paramCache call _travelRect
+
+_distToDest = [_unit, _destPos] call funcDistH
+? _distToDest < 20: goto "ReachArea"
+
+_moveParamCache set [0, true]; _moveParamCache set [1, true]; _moveParamCache set [2, _unit]
+_moveParamCache set [3, _destPos]; _moveParamCache set [4, 60 * 10]
+_moveParamCache exec "Util\Move2DestSoldier.sqs"
+# Move2RectLoop
+	~ 5
+	? call _quitCond: _moveParamCache set [1, false], goto "Quit"
+	? _moveParamCache select 0: goto "Move2RectLoop"
+
+# ReachArea
+	? call _quitCond: goto "Quit"
+
+	? _forServer: [_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
+	? not _forServer: doStop _unit
+
+	; idx check
+	? _idx >= _haltIdx: _msg = "Area clear.", goto "Quit"
+
+	; obtain area position
+	@ not mutexTzkRtsMine
+		mutexTzkRtsMine = true
+		_entry = (if _forServer then {TzkSvrRtsTravelArea select _si} else {TzkPplRtsTravelArea}) select _enum
+		_idx = _entry select _areaIdx
+		_entry set [_areaIdx, _idx + 1]
+		mutexTzkRtsMine = false
+
+	? call _infoInvalid: goto "Quit"
+	_paramCache set [1, _idx], _paramCache set [2, _miningDist]
+	_minePos = _paramCache call _travelRect
+
+	_mine = NearestObjectDistance [_minePos, "Mine", _miningDist + 1]
+	? isNull _mine: goto "ReachArea"
+
+	_moveParamCache set [0, true]; _moveParamCache set [1, true]; _moveParamCache set [2, _unit]
+	_moveParamCache set [3, getPos _mine]; _moveParamCache set [4, 20]
+	_moveParamCache exec "Util\Move2DestSoldier.sqs"
+
+	# Move2DestLoop
+		_distToDest = [_unit, getPos _mine] call funcDistH
+		_delay = _distToDest / 10; if (_delay < 1) then {_delay = 1}; if (_delay > 30) then {_delay = 30}
+		~ _delay
+		? call _quitCond: _moveParamCache set [1, false], goto "Quit"
+		? _moveParamCache select 0: goto "Move2DestLoop"
+	
+	# DisableLoop
+		_mine = NearestObjectDistance [_minePos, "Mine", _miningDist + 1]
+		? isNull _mine: goto "ReachArea"
+
+		_unit playMove "putdown"
+		~ 1
+		deleteVehicle _mine
+
+		? call _quitCond: goto "Quit"
+		goto "DisableLoop"
+
+; End Of File
+# Quit
+
+	? _msg != "" && _forServer: [_si, format ["%1: %2", _unit, _msg]] exec "Server\Msg\sSvrMsg2Cmd.sqs"
+	? _msg != "" && not _forServer: _unit groupChat _msg
+	exit

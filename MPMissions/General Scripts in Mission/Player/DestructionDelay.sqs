@@ -9,23 +9,30 @@ _isMCV = false
 _timeWait = [5*60, 5] select dev
 _timeDelete = time + _timeWait
 
-? _name == "Worker" : hint "Worker killed."; deleteVehicle _object; exit
+? _name == "Worker": goto "KillWorker"
 ? _type in structsShelter : hint "Structure destroyed. It'll disappear soon."; _object setDamage 1; _salvage = 0.5*( (structDefs select _type) select sdCost ); [-_salvage] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"; exit
 
 hint format [{Structure will disappear in %1 seconds. 50%2 resource will be recycled. Click 'UNDO' button to cancel this before it finished.}, _timeWait, "%"]
 
 # Update
-  ~1
-  ? (call format ["Destruction_Undo%1", siPlayer]) : exit
-  ? ! _isMCV && !(alive _object) : call format ["hint ""%1 - %2 is destroyed, destruction failed.""", _name, _textPos]; exit
-  
-  ? _isMCV && _bAliveMCV && !(alive _object) : call format ["hint ""%1 - %2 is destroyed, destruction failed.""", _name, _textPos]; exit
-  ? _isMCV && ! _bAliveMCV && (isNull _object) : call format ["hint ""%1 - %2 is repaired, destruction failed.""", _name, _textPos]; exit
-  
-  ? time < _timeDelete : goto "Update"
-  
-  call format ["hint ""Destruction completed, let's say goodbye to %1 - %2""", _name, _textPos]
-  ? ! _isMCV : _salvage = 0.5*( (structDefs select _type) select sdCost )
-  
-  [-_salvage] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"
-  [_object, _isMCV, alive _object] exec "\TZK_Scripts_4_0_4\Player\SendDestruction.sqs"
+	~1
+	? (call format ["Destruction_Undo%1", siPlayer]) : exit
+	? ! _isMCV && !(alive _object) : call format ["hint ""%1 - %2 is destroyed, destruction failed.""", _name, _textPos]; exit
+	
+	? _isMCV && _bAliveMCV && !(alive _object) : call format ["hint ""%1 - %2 is destroyed, destruction failed.""", _name, _textPos]; exit
+	? _isMCV && ! _bAliveMCV && (isNull _object) : call format ["hint ""%1 - %2 is repaired, destruction failed.""", _name, _textPos]; exit
+	
+	? time < _timeDelete : goto "Update"
+	
+	call format ["hint ""Destruction completed, let's say goodbye to %1 - %2""", _name, _textPos]
+	? ! _isMCV : _salvage = 0.5*( (structDefs select _type) select sdCost )
+	
+	[-_salvage] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"
+	[_object, _isMCV, alive _object] exec "\TZK_Scripts_4_0_4\Player\SendDestruction.sqs"
+	exit
+# KillWorker
+	hint "Worker killed."
+	deleteVehicle _object
+	_salvage = 0.5 * costWorker
+	[-_salvage] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"
+	exit

@@ -39,6 +39,9 @@ ctrlSetText [_idcLeftBtn0 + 5, "Occupy"]
 ctrlSetText [_idcLeftBtn0 + 6, "Land"]
 ctrlSetText [_idcLeftBtn0 + 7, "Reclaim"]
 
+ctrlSetText [_idcLeftBtn0 + 8, "Mine Area"]
+ctrlSetText [_idcLeftBtn0 + 9, "Disable Mine"]
+
 ; down board
 _downBoardStack = []
 call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
@@ -69,6 +72,8 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 	? 5 == _btnVal: _pos exec "Rts\SubMenu\OccupyPreset.sqs"; closeDialog 0; goto "Quit"
 	? 6 == _btnVal: 0 exec "Rts\Order\sLand.sqs"; closeDialog 0; goto "Quit"
 	? 7 == _btnVal: _pos exec "Rts\SubMenu\ReclaimPreset.sqs"; closeDialog 0; goto "Quit"
+	? 8 == _btnVal: [true, true] exec "Rts\SubMenu\MinePreset.sqs"; closeDialog 0; goto "Quit"
+	? 9 == _btnVal: [true, false] exec "Rts\SubMenu\MinePreset.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 # DownBtn
 	? count _downBoardStack > 0: goto "DownSubMenu"
