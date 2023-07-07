@@ -1,0 +1,76 @@
+; args: none
+
+@ !mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "GenericDialog"
+mutexDlg = false
+
+_idcAction0Label = IDC+0
+_idcAction0 = IDC+1
+_idcAction1Label = IDC+2
+_idcAction1 = IDC+3
+_idcAction2Label = IDC+4
+_idcAction2 = IDC+5
+_idcAction3Label = IDC+6
+_idcAction3 = IDC+7
+_idcAction4Label = IDC+8
+_idcAction4 = IDC+9
+
+_idcListHeader = IDC+10
+_idcList = IDC+11
+
+btnAction0 = false
+btnAction1 = false
+btnAction2 = false
+btnAction3 = false
+btnAction4 = false
+
+{ ctrlShow [_x, false] } forEach [ _idcAction0Label, _idcAction1Label, _idcAction2Label, _idcAction3Label, _idcAction4Label ]
+{ ctrlShow [_x, false] } forEach [_idcAction3, _idcAction4]
+
+ctrlSetText [IDC_TITLE, "Destruction"]
+ctrlSetText [_idcAction0, "Delete Current"]
+ctrlSetText [_idcAction1, "Delete Same Type"]
+ctrlSetText [_idcAction2, "Delete All"]
+ctrlSetText [_idcListHeader, "recycle 50% if near CC, MHQ or engineer vehicle."]
+
+_list = [], _types = []
+? isCommander: [_types, structsDestroy] call preprocessFile "Util\ArrayAppend.sqf"
+[_types, structsDefence] call preprocessFile "Util\ArrayAppend.sqf"
+[_types, structsShelter] call preprocessFile "Util\ArrayAppend.sqf"
+
+_pos = getMarkerPos "TzkRtsArea";
+_size = getMarkerSize "TzkRtsArea";
+_area = [_pos select 0, _pos select 1, _size select 0, _size select 1, getMarkerDir "TzkRtsArea"];
+_posInRect = preprocessFile "Util\PosInRect.sqf"
+
+# Update
+	~ 0.2
+	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+	? call dlgUpdated: exit
+	? !(alive player) : closeDialog 0; exit
+
+	_idcList call preprocessFile "Rts\Submenu\UpdateDestruct.sqf"
+
+	~ 0.2
+
+	? (btnAction0): btnAction0=false; goto "DeleteSelected"
+	? (btnAction1): btnAction1=false; goto "DeleteSameType"
+	? (btnAction2): btnAction2=false; goto "DeleteAll"
+
+	goto "Update"
+
+# DeleteSelected
+	_idx = lbCurSel _idcList
+	? count _list == 0 || -1 == _idx: hint "No items available"; goto "Update"
+	? not alive (_list select _idx): goto "Update"
+	"Selected" call preprocessFile "Rts\Trigger\Destruct.sqf"; goto "Update"
+  
+# DeleteSameType
+	_idx = lbCurSel _idcList
+	? count _list == 0 || -1 == _idx: hint "No items available"; goto "Update"
+	"Same Type" call preprocessFile "Rts\Trigger\Destruct.sqf"; goto "Update"
+  
+# DeleteAll
+	? count _list == 0: hint "No items available"; goto "Update"
+	"All" call preprocessFile "Rts\Trigger\Destruct.sqf"; goto "Update"
