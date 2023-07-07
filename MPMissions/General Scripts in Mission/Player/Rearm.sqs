@@ -121,7 +121,7 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 	_this set [2, true]
 
 # Quit
-	? _unit != _vehicle: [vehiclesRearming, [_vehicle]] call preprocessFile "Util\ArrayErase.sqf"
+	? _unit != _vehicle: [vehiclesRearming, [_vehicle]] call preprocessFile "Util\ArraySubtract.sqf"
 # MsgAndQuit
 	? _msg != "": if (_unit == player) then {hint _msg} else {_unit groupChat _msg}
 	_this set [1, true]
