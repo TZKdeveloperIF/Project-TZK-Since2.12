@@ -24,10 +24,6 @@ comment { return: [aEntriesSorted] (e.g. [[5,"Ernst"],[3,"Cleanrock"]]); };
 funcSwapV = loadFile "\TZK_Scripts_4_0_4\Common\SQF\SwapVar.sqf";
 funcUpdateAttaching = loadFile "\TZK_Scripts_4_0_4\Common\SQF\UpdateAttaching.sqf";
 comment { The degree applied in vector scripts is anticlockwise unlike "direction" of OFP.; };
-fDebugLog = loadFile "\TZK_Scripts_4_0_4\Common\SQF\DebugLog.sqf";
-comment { args: string; };
-comment { return: none; };
-comment { Using 2.01 mission initialization unit "resistance_Center" to save status instead of "LocalServerObject"; };
 
 
 funcVectorAdd = loadFile "\TZK_Scripts_4_0_4\Common\SQF\VectorAdd.sqf";

@@ -11,11 +11,13 @@ _ir = 0
 _remind = [timeLimit - 60*60, timeLimit - 60*90, timeLimit - 60*150, 10*60, 5*60, 1*60, -10000]
 _timeNextRemind = timeLimit - (_remind select _ir)
 
+_onGameEnd = {0 exec localize {TZK_TRIGGER_GAME_END_COMMON}, 0 exec "Log\OnGameOver.sqs", publicExec {0 exec "Log\OnGameOver.sqs"}}
+
 # Update
 	~ 2
 
 	_gameTime = time - pvMatchStartTime
-	? pvGameOver != -1 : [] exec localize {TZK_TRIGGER_GAME_END_COMMON}; exit
+	? pvGameOver != -1 : call _onGameEnd; exit
 
 	? _gameTime > TzkRtsWriteTime + 30 && TzkRtsId4Gc != TzkRtsSvrId: 0 exec "Rts\Framework\Gc.sqs"
 
@@ -48,5 +50,5 @@ _timeNextRemind = timeLimit - (_remind select _ir)
 # TimeLimitReached
 	pvGameOver = (1) + 2*(0)
 	PublicVariable "pvGameOver"
-	[] exec localize {TZK_TRIGGER_GAME_END_COMMON}
+	call _onGameEnd
 	exit
