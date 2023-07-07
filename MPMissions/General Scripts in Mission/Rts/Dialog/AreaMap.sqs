@@ -30,6 +30,8 @@ ctrlSetText [_idcLeftBtn0 + 4, "Ppl Art"]
 ? isCommander: ctrlSetText [_idcLeftBtn0 + 5, "Svr Mine"]
 ctrlSetText [_idcLeftBtn0 + 6, "Ppl Mine"]
 
+ctrlSetText [_idcLeftBtn0 + 7, "Destruction"]
+
 ; down board
 _downBoardStack = []
 call preprocessFile "Rts\Dialog\UpdateAreaDownBoard.sqf"
@@ -58,6 +60,7 @@ TzkMapRtsFlashingDisabled = true
 	[false, _id + 2] exec "Player\Rts\SetRtsMouse.sqs"; exit
 # LeftBtn
 	? _val0 >= 0 && _val0 <= 6: 2 ^ _val0 call preprocessFile "rts\Marker\AreaClearMarker.sqf"; closeDialog 0; goto "Quit"
+	? 7 == _val0: 0 exec "Rts\Submenu\Destruction.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 # DownBtn
 	? count _downBoardStack > 0: goto "DownSubMenu"
