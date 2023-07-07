@@ -86,7 +86,7 @@ mutexFacQueues = false
 	
 	[_type, _si, _giBuyer, _giJoin] exec localize {TZK_INFO_SERVER_UNIT_BUILDING}
 
-	_timeBuilt = time + ([_buildTime, 5] select dev); _isBuilding = true
+	_timeBuilt = time + ([_buildTime, 2] select dev); _isBuilding = true
 	# buildLoop
 		~ 1
 		? _qid in (qidCancel select _si): _isBuilding = false
