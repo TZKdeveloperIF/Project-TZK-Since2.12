@@ -5,6 +5,8 @@
 ; args [factory, value, customWeapon]
 _factory = _this select 0; _value = _this select 1; _nCustomWeapon = _this select 2
 
+_originVal = _value
+
 _type = _value %  TotalUnitTypes
 _value = (_value - _type) / TotalUnitTypes
 
@@ -47,7 +49,7 @@ _desc = unitDefs select _type
 
 ; must be a vehicle if we got here
 _vehicle = [_type, _pos, _dir, _si, _gi, _giBuyer, _sendRepeats] call fAddVehicle
-? isNull _vehicle: format ["ERROR: _vehicle is NULL in Network\hAddUnit"] call fDebugLog; exit
+? isNull _vehicle: format ["ERROR: _vehicle is NULL in Network\hAddUnit. Origin value is: %1, type seems to be %2, buyer: %3", _originVal, _type, name player] call fDebugLog; exit
 ? -1 != _nCustomWeapon: [_vehicle, _type, _nCustomWeapon, _si] exec "Cwv\Equip.sqs"
 
 _typeCrew = _desc select udCrew select 1

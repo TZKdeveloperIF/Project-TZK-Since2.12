@@ -58,9 +58,6 @@ funcStartPos = loadFile "\TZK_Scripts_4_0_4\Common\SQF\StartPos.sqf";
 fAddSoldier = loadFile "Common\SQF\AddSoldier.sqf";
 comment { args: [type, pos, dir, si, gi, group, giBuyer]; };
 comment { return: unit; };
-fAddVehicle = loadFile "\TZK_Scripts_4_0_4\Common\SQF\AddVehicle.sqf";
-comment { args: [type, pos, dir, si, gi, giBuyer, sendRepeats]; };
-comment { return: vehicle; };
 
 funcCalcDistanceToObject = {[_this select 0, getPos (_this select 1)] call funcDistH};
 comment { arguments: [pos, object]; };
