@@ -6,3 +6,5 @@ funcCalcUnitPlacementPosDir = preprocessFile "Common\SQF\CalcUnitPlacementPosDir
 funcVectorRot2D = preprocessFile "Math\VectorRot2D.sqf";
 
 fAddVehicle = preprocessFile "Common\SQF\AddVehicle.sqf";
+
+fDebugLog = preprocessFile "Log\DebugLog.sqf";
