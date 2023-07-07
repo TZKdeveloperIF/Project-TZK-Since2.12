@@ -5,6 +5,8 @@ _unit = _this
 ? !(alive _unit): exit
 ? _unit == player: exit
 
+? group _unit != groupPlayer: exit
+
 _uid = [_unit, siPlayer, giPlayer] call funcCalcUID
 ? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
 _id = (playerOrderID select _uid) + 1; [_uid, _id] exec "\TZK_Scripts_4_0_4\Player\Order\New.sqs"

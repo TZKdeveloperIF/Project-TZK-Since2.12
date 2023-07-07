@@ -1,0 +1,52 @@
+; args: [server rts order: bool, mine status: bool, player group units: []]
+
+@ !mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "TzkRtsMineSubMenu"
+mutexDlg = false
+
+_idcTitle = IDC + 0; _idcListLabel = IDC + 16 * 1 + 0; _idcListBox0 = IDC + 16 * 2 + 0
+
+_bSvrRtsOrder = _this select 0, _mineState = _this select 1
+_markerType = "Mine"
+_webShort = (if _bSvrRtsOrder then {"Svr"} else {"Ppl"})
+_cachedIdxName = format ["RtsArea%1%2Idx", _markerType, _webShort]
+
+_enum = _markerType call preprocessFile "Rts\Marker\EnumOfType.sqf"
+? _enum < 0: showDebug [format ["Invalid %1 marker type.", _markerType], 5000], exit
+_cnt = count (TzkPplRtsAreaInfo select _enum)
+_updateList = preprocessFile "Rts\SubMenu\UpdateAreaListbox.sqf"
+
+ctrlSetText [_idcTitle, "Area Mine Order"]
+ctrlSetText [_idcListLabel, "Areas"]
+
+[_idcListBox0, _markerType, _webShort, _cnt] call _updateList
+? -1 != (call _cachedIdxName): lbSetCurSel [_idcListBox0, (call _cachedIdxName)]
+
+btnValue00 = false; btnValue01 = false;
+
+# loop
+	~ 0.2
+	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+	? call dlgUpdated: goto "Quit"
+	? not alive player: closeDialog 0; goto "Quit"
+
+	[_idcListBox0, _markerType, _webShort, _cnt] call _updateList
+
+	? btnValue00: btnValue00 = false; closeDialog 0; goto "Quit"
+	? btnValue01: btnValue01 = false; goto "OK"
+
+	goto "loop"
+# Quit
+	exit
+# OK
+	_sel = lbCurSel _idcListBox0
+	? -1 == _sel: hint "No area selected."; goto "loop"
+	? -10 == getMarkerPos (format ["RtsArea%1%2%3", _markerType, _webShort, _sel]) select 0: hint "Area undefined."; goto "loop"
+
+	? _mineState && _bSvrRtsOrder: _sel exec "Rts\Order\sPlaceMine.sqs"
+	? _mineState && not _bSvrRtsOrder: [_sel, _this select 2] exec "Player\Order\PreMineArea.sqs"
+
+	? not _mineState && _bSvrRtsOrder: _sel exec "Rts\Order\sDisableMine.sqs"
+	? not _mineState && not _bSvrRtsOrder: [_sel, _this select 2] exec "Player\Order\PreDisableMine.sqs"
+	closeDialog 0; goto "Quit"

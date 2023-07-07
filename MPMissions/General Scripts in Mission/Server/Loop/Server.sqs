@@ -17,7 +17,7 @@ _timeNextRemind = timeLimit - (_remind select _ir)
 	_gameTime = time - pvMatchStartTime
 	? pvGameOver != -1 : [] exec localize {TZK_TRIGGER_GAME_END_COMMON}; exit
 
-	? _gameTime > TzkRtsWriteTime + 30 && TzkRtsId4Gc != TzkRtsSvrId: 0 exec "Server\Rts\Gc.sqs"
+	? _gameTime > TzkRtsWriteTime + 30 && TzkRtsId4Gc != TzkRtsSvrId: 0 exec "Rts\Framework\Gc.sqs"
 
 	? (timeLimit != 0 && _gameTime > timeLimit): goto "TimeLimitReached"
 

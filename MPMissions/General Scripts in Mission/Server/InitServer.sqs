@@ -6,9 +6,6 @@ call loadFile "\TZK_Scripts_4_0_6\Server\InitServer_constant.sqf"
 call preprocessFile "Server\Init\Money.sqf"
 AICO_giTrans = [[],[]]; AICO_giInf = [[],[]]; AICO_giTanks = [[[], [], []], [[], [], []]]
 
-; 4.0.6.05
-call preprocessFile "Server\Art\Init.sqf"
-
 ; Target objects placed at town flag
 ; { _si = _x; _i = 0; _c = count towns; while {_i < _c} do {call format[{TargetTownS_%1%2 = _targetObject createVehicle [0,0,0]; TargetTownS_%1%2 exec "\TZK_Scripts_4_0_4\Common\Command\allowDamageFalse.sqs"; TargetTownS_%1%2 setPosASL getPosASL (towns select _i select tdFlag)}, _i, _si]; _i = _i + 1} } forEach [si0, si1]
 
@@ -31,8 +28,6 @@ call preprocessFile "Server\Art\Init.sqf"
 "Server\Msg\hCheckAI.sqs" exec "Server\Msg\mCheckAI.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\MsgClearBuy.sqs"
 ; ? bool_TZK_199_Mode: [] exec "\TZK_Scripts_4_0_4\Server\Msg\mRadioChannel.sqs"
-; 4.0.6.15
-call preprocessFile "Server\Rts\Init.sqf"
 
 ; ? !(isNull player): forceMap true
 ? !(isNull player): [] exec "Player\InitClient.sqs"

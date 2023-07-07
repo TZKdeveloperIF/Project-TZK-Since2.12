@@ -1,17 +1,21 @@
-; args: [unit, si, gi, vehicleRearm, type, support, <non-controlable AI group>, <use comm money>]
+; old args: [unit, si, gi, vehicleRearm, type, support, <non-controlable AI group>, <use comm money>]
+; new args: [[unit, si, gi, vehicleRearm, type, support, <non-controlable AI group>, <use comm money>], order finished, rearm succeeded]
 
-_unit = _this select 0
-_si = _this select 1
-_gi = _this select 2
-_vehicle = _this select 3
-_type = _this select 4
-_support = _this select 5
-_nonAIgroup = if (count _this > 6) Then {_this select 6} Else {false}
-_bUseCommMoney = if (count _this > 7) Then {_this select 7} Else {false}
-_this = nil
+; modified parameters. Compatible with old format
+_param = _this
+? not ((_param select 0) in [_param select 0]): _param = _this select 0
 
-? !alive _unit || !alive _vehicle: exit
-? _nonAIgroup: if !([_unit, _si, _gi] call funcCheckRearm) Then {exit}
+_unit = _param select 0
+_si = _param select 1
+_gi = _param select 2
+_vehicle = _param select 3
+_type = _param select 4
+_support = _param select 5
+_nonAIgroup = if (count _param > 6) Then {_param select 6} Else {false}
+_bUseCommMoney = if (count _param > 7) Then {_param select 7} Else {false}
+
+? !alive _unit || !alive _vehicle: goto "Quit"
+? _nonAIgroup: if !([_unit, _si, _gi] call funcCheckRearm) Then {goto "Quit"}
 ?!_nonAIgroup && _gi == -1: _gi = giCO select _si
 _timeRearm = 5
 ? _unit != _vehicle: _timeRearm = 30
@@ -26,50 +30,54 @@ _timeRearm = 5
 _rearmData = _vehicle call funcGetRearmData
 _weapons = _rearmData select 0
 _mags = _rearmData select 1
-? count _mags == 0: exit
+? count _mags == 0: goto "Quit"
 
 _moneyComm = groupMoneyMatrix select _si select (giCO select _si)
 ? _nonAIgroup: goto "SkipGetMoney"
 ; CALC COST
-? _type == -1 && _unit != _vehicle: format["ERROR: _type is -1 for _vehicle '%1' in AI_Rearm", _vehicle] call fDebugLog; exit
+? _type == -1 && _unit != _vehicle: format["ERROR: _type is -1 for _vehicle '%1' in AI_Rearm", _vehicle] call fDebugLog; goto "Quit"
 _money = groupMoneyMatrix select _si select _gi
 # SkipGetMoney
 _insufficientFond = {_this > _money && (!_bUseCommMoney || _this > _moneyComm)}
 ? _unit != _vehicle: goto "RearmVehicle"
 
 #RearmInfantry
-	? !_nonAIgroup: _cost = [_unit, _weapons, _mags] call funcCalcRearmCost, if(_cost call _insufficientFond) Then {exit}
+	? !_nonAIgroup: _cost = [_unit, _weapons, _mags] call funcCalcRearmCost, if(_cost call _insufficientFond) Then {goto "Quit"}
 	
-	? !(local _vehicle): exit
+	? !(local _vehicle): goto "Quit"
 	_vehicle setCombatMode "BLUE"
 	~_timeRearm
-	? !(alive _vehicle): _vehicle setCombatMode "YELLOW"; exit
+	? !(alive _vehicle): _vehicle setCombatMode "YELLOW"; goto "Quit"
 	_bValidSupport = true
 	? isNull _support: _bValidSupport = false
 	? not isNull _support && not alive _support: if ("Man" countType [_support] == 0) then {_bValidSupport = false}
-	? not _bValidSupport: _vehicle setCombatMode "YELLOW"; exit
+	? not _bValidSupport: _vehicle setCombatMode "YELLOW"; goto "Quit"
 	removeAllWeapons _vehicle
 	; add custom throw/put
 	{ _vehicle addWeapon _x } forEach weaponsCustom
-	? count (magazines _vehicle) > 0: format["ERROR: soldier '%1-%2' has mags in AI_Rearm.sqs", _vehicle, typeOf _vehicle] call fDebugLog; _vehicle setCombatMode "YELLOW"; exit
+	? count (magazines _vehicle) > 0: format["ERROR: soldier '%1-%2' has mags in AI_Rearm.sqs", _vehicle, typeOf _vehicle] call fDebugLog; _vehicle setCombatMode "YELLOW"; goto "Quit"
 	{ _vehicle addMagazine _x } foreach _mags
-	? count (weapons _vehicle) > 0: format["ERROR: soldier '%1-%2' has weapons in AI_Rearm.sqs", _vehicle, typeOf _vehicle] call fDebugLog; _vehicle setCombatMode "YELLOW"; exit
+	? count (weapons _vehicle) > 0: format["ERROR: soldier '%1-%2' has weapons in AI_Rearm.sqs", _vehicle, typeOf _vehicle] call fDebugLog; _vehicle setCombatMode "YELLOW"; goto "Quit"
 	{ _vehicle addWeapon _x } foreach _weapons
 	_vehicle setCombatMode "YELLOW"
 	; _vehicle selectWeapon (primaryWeapon _vehicle)
 	goto "RearmEnd"
 
 #RearmVehicle
-	? !_nonAIgroup: _cost = if (_type != -1) Then {(unitDefs select _type select udCost)/10} Else {50}, if (_cost < 50) Then {_cost = 50}, _cost = _cost - (_cost % 1), if (_cost call _insufficientFond) Then {exit}
+	? !_nonAIgroup: _cost = if (_type != -1) Then {(unitDefs select _type select udCost)/10} Else {50}, if (_cost < 50) Then {_cost = 50}, _cost = _cost - (_cost % 1), if (_cost call _insufficientFond) Then {goto "Quit"}
 
 	[_vehicle] exec localize {TZK_NETWORK_REMOVE_MAG}
 	; Force howitzer and tos deploy in 2.01 game
 	_vehicle call preprocessFile "Util\DeployInRearm.sqf"
 	~_timeRearm
-	? !(alive _vehicle) || !(alive _support): exit
+	? !(alive _vehicle) || !(alive _support): goto "Quit"
 	? _vehicle call preprocessFile "Util\NoUseableMag.sqf": [_vehicle] exec localize {TZK_NETWORK_SEND_REARM_VEH}
-	goto "RearmEnd"
+	; goto "RearmEnd"
 
-#RearmEnd
-	? _cost > 0 && _cost <= _money: [_si, _gi, _cost] exec localize {TZK_MONEY_SERVER_SPEND}, exit
-	? _cost > 0: [_si, giCO select _si, _cost] exec localize {TZK_MONEY_SERVER_SPEND}, exit
+# RearmEnd
+	_this set [2, true]
+	? _cost > 0 && _cost <= _money: [_si, _gi, _cost] exec localize {TZK_MONEY_SERVER_SPEND}, goto "Quit"
+	? _cost > 0: [_si, giCO select _si, _cost] exec localize {TZK_MONEY_SERVER_SPEND}, goto "Quit"
+
+# Quit
+	_this set [1, true]

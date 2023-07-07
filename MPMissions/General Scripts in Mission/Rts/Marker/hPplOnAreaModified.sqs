@@ -1,0 +1,17 @@
+? isNull player: exit
+
+; compatible with all [server->player][rectangle] setting area
+; marker type is enough
+
+; args: [type: string, [x, y, w, h, dir], si, index]
+_si = _this select 2
+? _si != siPlayer: exit
+
+_markerType = _this select 0
+_geometryInfo = _this select 1
+_idx = _this select 3
+
+_enum = _markerType call preprocessFile "Rts\Marker\EnumOfType.sqf"
+? _enum < 0: showDebug [format ["Invalid %1 marker type.", _markerType], 5000], exit
+
+"Svr" call preprocessFile "Rts\Marker\EditAreaMarker.sqf";

@@ -32,13 +32,15 @@ _idcUpgSwitch = IDC + 26
 _idcCmdLabel = IDC + 27
 _idcCmdImage = IDC + 28
 
+_idcConsole = IDC + 100
+
 ; _idc defined above must consist with definition in description.ext.
 
 
 _unit = player
 @!mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
-_dlg = createDialog "OptionsDialog"
+_dlg = createDialog "OptionsDialog2"
 mutexDlg = false
 
 ? !bool_TZK_CHN_inited && bool_TZK_CHN_Lang: call loadFile localize {TZK_PLAYER_DIALOG_CHNLANG}
@@ -54,6 +56,7 @@ _colors = [[1,1,1,0.5], [1,1,0,0.6],[0,1,0.2,0.8]]
 ? bool_TZK_CHN_Lang: ctrlSetText [_idcCmdImage, "\TZK_CHN_4_0_6_27\option_commander_co.paa"]
 ctrlShow [_idcCmdImage, bool_TZK_CHN_Lang], ctrlShow [_idcCmdLabel, !bool_TZK_CHN_Lang]
 
+ctrlShow [_idcConsole, dev]
 
 _report = report
 
