@@ -1,0 +1,103 @@
+; args: none
+; read position info from "TzkRtsAreadiagonal" marker
+
+_markerPos = markerPos "TzkRtsAreadiagonal"; _markerPos resize 2
+_markerDir = getMarkerDir "TzkRtsAreadiagonal"
+_markerSize = markerSize "TzkRtsAreadiagonal"
+
+_vec = [[_markerSize select 0, _markerSize select 1], _markerDir] call funcVectorRot2D
+; _pos1 should be line start pos, created firstly by player
+_pos1 = [_markerPos, _vec] call funcVectorSub
+_pos2 = [_markerPos, _vec] call funcVectorAdd
+
+_param = [_pos1, _pos2]
+_legal = _param call preprocessFile "Util\Bridge\LegalPos.sqf"
+
+? _legal: goto "CanBuildBridge"
+	_enum = _param select 2
+	? 0 == _enum: hint "Please choose points close enough to the sea."
+	? 1 == _enum: hint "Distance < 50 meters. Bridge won't be built."
+	? 2 == _enum: hint "There're lands between 2 points. Please build only over the sea."
+	exit
+# CanBuildBridge
+
+; todo: client-global cancel bridge building process
+
+; there're height diff between start and end pos
+; if start pos is lower, the last part heading sky at the end pos might cross the land surface
+; the last part should be horizontal and contact with the other part of the bridge. It's a fold line
+
+_h1 = _pos1 call funcHASL, _h2 = _pos2 call funcHASL; _deltaH = _h2 - _h1;
+_pos1 set [2, _h1], _pos2 set [2, _h2];
+
+_bridgeL = 50, _correct = 33.55 - 20.489;
+
+_distH = [_pos1, _pos2] call funcDistH;
+_distance = sqrt(_distH * _distH + _deltaH * _deltaH);
+_slopedCnt = ((_distance / _bridgeL) call preprocessFile "Math\Ceil.sqf") - 1;
+_slopeLen = _slopedCnt * _bridgeL;
+_restLen = _distH - sqrt(_slopeLen * _slopeLen - _deltaH * _deltaH);
+
+_unitH = [_pos2, _pos1] call funcVectorSub; _unitH set [2, 0];
+_unitH = [_unitH, 1 / _distH] call funcVectorScale;
+_dir = (_unitH select 0) atan2 (_unitH select 1); _dir = _dir - _dir % 0.1;
+
+_pos3 = [_pos2, [_unitH, _restLen] call funcVectorScale] call funcVectorSub;
+
+_unitSlope = [_pos3, _pos1] call funcVectorSub;
+_unitSlope = [_unitSlope, 1 / _slopeLen] call funcVectorScale;
+
+? _slopedCnt < 1: "Unexpected _slopedCnt occurs" call fDebuglog;
+_i = 0; _cost = structDefs select stBridge select sdCost
+_marker = createMarker ["TzkBridgeBuilding", hiddenMarkerPos]
+_marker setMarkerColor "ColorCyan_xj400";
+_marker setMarkerShape "ELLIPSE";
+_marker setMarkerSize [150, 150];
+
+_text = createMarker ["TzkBridgeHintText", hiddenMarkerPos];
+_text setMarkerSize [0,0];
+_text setMarkerColor "ColorDarkPurple_xj400";
+_text setMarkerType "Warning";
+_text setMarkerText "Send MHQ/Engineer veh to build bridge."
+_markers = [_marker, _text]
+
+# SlopeStage
+	_roadwayCenter = [_pos1, [_unitSlope, _bridgeL * (_i + 0.5)] call funcVectorScale] call funcVectorAdd;
+
+	_param = [_roadwayCenter, false]
+	_param exec "Rts\Diagonal\BridgeCheck.sqs"
+	_show = true
+	# CheckBridgeInSlope
+		~ 1
+		? not (_param select 1) && _show: _show = false; {_x setMarkerPos _roadwayCenter} forEach _markers
+		? not (_param select 1): goto "CheckBridgeInSlope"
+	{_x setMarkerPos hiddenMarkerPos} forEach _markers
+	[_cost] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"
+
+	_roadwayCenter set [2, (_roadwayCenter select 2) - _correct];
+	{_val = _roadwayCenter select _x; _val = _val - _val % 0.1; _roadwayCenter set [_x, _val]} forEach [0,1,2];
+	[siPlayer, giPlayer, _roadWayCenter, _unitSlope] exec "Util\Bridge\Build.sqs";
+	publicExec format [{%1 exec "Util\Bridge\Build.sqs"}, [siPlayer, giPlayer, _roadWayCenter, _unitSlope]];
+
+	_i = _i + 1;
+	? _i < _slopedCnt: goto "SlopeStage"
+
+; last part. Is it possible to remain more than 1 part?
+	_roadwayCenter = [_pos3, [_unitH, _bridgeL / 2] call funcVectorScale] call funcVectorAdd;
+
+	_param = [_roadwayCenter, false]
+	_param exec "Rts\Diagonal\BridgeCheck.sqs"
+	_show = true
+	# CheckBridgeInTheEnd
+		~ 1
+		? not (_param select 1) && _show: _show = false; {_x setMarkerPos _roadwayCenter} forEach _markers
+		? not (_param select 1): goto "CheckBridgeInTheEnd"
+	{_x setMarkerPos hiddenMarkerPos} forEach _markers
+	[_cost] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"
+
+	_roadwayCenter set [2, (_roadwayCenter select 2) - _correct];
+	{_val = _roadwayCenter select _x; _val = _val - _val % 0.1; _roadwayCenter set [_x, _val]} forEach [0,1,2];
+	[siPlayer, giPlayer, _roadWayCenter, _unitH] exec "Util\Bridge\Build.sqs";
+	publicExec format [{%1 exec "Util\Bridge\Build.sqs"}, [siPlayer, giPlayer, _roadWayCenter, _unitSlope]];
+
+{deleteMarker _x} forEach _markers

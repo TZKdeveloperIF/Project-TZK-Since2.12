@@ -1,0 +1,41 @@
+; args: [pos, state]
+; pass state outside via array reference
+
+_pos = _this select 0
+
+_entry = groupMoneyMatrix select siPlayer
+_cost = structDefs select stBridge select sdCost
+
+_cache = [_pos, 150, ([[utMHQ0], [utMHQ1]] select siPlayer) + [typesEngineeringVeh select siPlayer], []]
+_res = 0
+
+# loop
+	_valid = true
+	? _entry select giPlayer < _cost: _valid = false
+	? _valid: _res = _cache call funcGetNearbyVehicles; if (count _res <= 0) then {_valid = false}
+
+	? _valid: goto "ok"
+
+	~ 5
+	goto "loop"
+# ok
+	; _res won't be empty
+	_i = 0, _c = count _res
+	# ProcessEngineerVeh
+		_entry = _res select _i
+		_type = _entry select 1
+		
+		_idx = typesEngineeringVeh find _type
+		? -1 == _idx: goto "continue"
+
+		_phase = ["Crane", "Strela_V"] select _idx
+		_script = localize ([{TZK_ACTION_M88_CRANE}, {TZK_ACTION_BREM1_CRANE}] select _idx)
+		_veh = _entry select 0
+		? _veh animationPhase _phase == 0: [_veh, "Up"] exec _script
+
+		# continue
+		_i = _i + 1
+		? _i < _c: goto "ProcessEngineerVeh"
+
+	_this set [1, true]
+	exit
