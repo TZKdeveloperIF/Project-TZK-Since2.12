@@ -1,0 +1,25 @@
+; args: [[_si, x, y, dir], object]
+? isNull player: exit
+
+_si = _this select 0 select 0
+? siPlayer != _si: exit
+
+_structs = TzkMarkedBridges
+
+@ not mutexMarkerStructure
+	mutexMarkerStructure = true
+
+	_index = _structs find objNull
+	? _index == -1: hint "Built too many bridges. Current bridge won't have marker.", goto "Quit"
+	
+	_m = format ["Bridge_%1", _index];
+	_m setMarkerPos [_this select 0 select 1, _this select 0 select 2]
+	_m setMarkerDir (_this select 0 select 3)
+	; bridge size: 50m len, 13m width. Since dir in OFP is clockwise and value 0 heads North, 
+	; the marker should be initialized heading North as well
+	_m setMarkerSize [13 / 2, 50 / 2];
+	
+	_structs set [_index, _this select 1]
+
+# Quit
+	mutexMarkerStructure = false

@@ -12,4 +12,4 @@ _object = (_this select 2) select 0
 [_object, _si, kaStruct, 200] exec localize {TZK_SERVER_KNOWSABOUT_START}
 
 
-? !dev && !((count _this) > 3) : _object setDamage 1
+? !dev && !((count _this) > 3) && _type != stBridge: _object setDamage 1
