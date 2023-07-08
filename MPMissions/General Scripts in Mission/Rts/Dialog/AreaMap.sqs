@@ -32,7 +32,7 @@ ctrlSetText [_idcLeftBtn0 + 6, "Ppl Mine"]
 
 ctrlSetText [_idcLeftBtn0 + 7, "Destruction"]
 ctrlSetText [_idcLeftBtn0 + 8, "Build Bridge"]
-ctrlShow [_idcLeftBtn0 + 8, dev]
+; ctrlShow [_idcLeftBtn0 + 8, dev]
 
 ; down board
 _downBoardStack = []
@@ -63,7 +63,7 @@ TzkMapRtsFlashingDisabled = true
 # LeftBtn
 	? _val0 >= 0 && _val0 <= 6: 2 ^ _val0 call preprocessFile "rts\Marker\AreaClearMarker.sqf"; closeDialog 0; goto "Quit"
 	? 7 == _val0: 0 exec "Rts\Submenu\Destruction.sqs"; closeDialog 0; goto "Quit"
-	? 8 == _val0: 0 exec "Rts\Bridge.sqs"; closeDialog 0; goto "Quit"
+	? 8 == _val0: 0 exec "Rts\Diagonal\Bridge.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 # DownBtn
 	? count _downBoardStack > 0: goto "DownSubMenu"
