@@ -1,0 +1,18 @@
+; args: si
+
+; Wait until markers initialized
+~ 10
+
+_bridges = TzkMarkedBridges
+
+# Update
+	_i = 0, _c = count _bridges
+	# BridgesOwn
+		_bridge = _bridges select _i
+		? not alive _bridge: format ["Bridge_%1", _i] setMarkerPos hiddenMarkerPos
+
+		_i = _i + 1
+		? _i < _c: goto "BridgesOwn"
+
+	~ 10
+	goto "Update"

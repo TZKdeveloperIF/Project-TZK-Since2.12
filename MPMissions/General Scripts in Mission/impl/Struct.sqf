@@ -55,8 +55,26 @@ structMarker set [_type, "RadarCar_Marker_xj400"];
 stGapGenerator = _type;
 _type = _type + 1;
 
+_price = 500;
+_objects = [["Bridge", 0, []]];
+_image = [_texPath + "Image\Struct\WallH.jpg",_texPath + "Image\Struct\WallH.jpg"];
+structDefs set [_type, [
+	"Bridge",
+	_price,
+	-1,
+	_image,
+	false,
+	false,
+	100, 0, 0, _objects, _objects,
+	[localize {TZK_SERVER_INIT_STRUCT_PRIM}, "Server\Msg\sBridgeBuilt.sqs"],
+	[]]
+];
+stBridge = _type;
+_type = _type + 1;
+
 structsShelter set [count structsShelter, stWireFence];
 structsShelter set [count structsShelter, stGapGenerator];
+// [structsShelter, [stWireFence, stGapGenerator]] call preprocessFile "Util\ArrayAppend.sqf";
 
 _index = _oldCount; _count = count structDefs; while {_index < _count} do {
 	structMatrix select si0 set [_index, []];

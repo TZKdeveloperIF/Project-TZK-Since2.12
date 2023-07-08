@@ -1,0 +1,24 @@
+; args: none
+; read position info from "TzkRtsAreadiagonal" marker
+
+_markerPos = markerPos "TzkRtsAreadiagonal"; _markerPos resize 2
+_markerDir = getMarkerDir "TzkRtsAreadiagonal"
+_markerSize = markerSize "TzkRtsAreadiagonal"
+
+_vec = [[_markerSize select 0, _markerSize select 1], _markerDir] call funcVectorRot2D
+; _pos1 should be line start pos, created firstly by player
+_pos1 = [_markerPos, _vec] call funcVectorSub
+_pos2 = [_markerPos, _vec] call funcVectorAdd
+
+_param = [_pos1, _pos2]
+_legal = _param call preprocessFile "Util\Bridge\LegalPos.sqf"
+
+? _legal: goto "CanBuildBridge"
+	_enum = _param select 2
+	? 0 == _enum: hint "Please choose points close enough to the sea."
+	? 1 == _enum: hint "Distance < 50 meters. Bridge won't be built."
+	? 2 == _enum: hint "There're lands between 2 points. Please build only over the sea."
+	exit
+# CanBuildBridge
+
+call preprocessFile "Rts\Bridge.sqf"

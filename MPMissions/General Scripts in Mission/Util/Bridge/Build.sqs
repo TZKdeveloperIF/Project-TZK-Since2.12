@@ -1,0 +1,22 @@
+; args: [si, gi, roadWay center pos, vector 3D]
+? not isServer: exit
+
+_si = _this select 0
+_pos = _this select 2
+
+; no money check. This should be done on player client
+_type = stBridge
+_desc = structDefs select _type
+_typename = _desc select sdObjects0 select 0 select 0
+
+_bridge = _typename createVehicle _pos;
+_bridge setVectorDirAndUp [_this select 3, [0,0,1]];
+_bridge setPosASL _pos;
+
+_objects = [_bridge]
+
+[_si, _type, _bridge] exec "\TZK_Scripts_4_0_4\Server\AddToStructMatrix.sqs";
+[_objects, _type] exec "\TZK_Scripts_4_0_4\Server\StructuresServerAdd.sqs";
+[_bridge] exec "\TZK_Scripts_4_0_4\Server\primStructsPlacedAdd.sqs";
+{ [_type, _si, _objects] exec _x } foreach (_desc select sdScriptsServer);
+{ _group = _x; { _group reveal _x } foreach _objects } foreach (groupAiMatrix select _si);

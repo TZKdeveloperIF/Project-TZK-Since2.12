@@ -7,6 +7,9 @@ _si = _this select 2
 _model = typeOf _objectDestroyed;
 _pos = getPos _objectDestroyed;
 _dir = getDir _objectDestroyed;
+
+_posAsl = getPosASL _objectDestroyed; _vecDir = vectorDir _objectDestroyed
+
 _temp = _model camCreate _pos;
 _temp setDir _dir;
 _temp setPos _pos;
@@ -29,8 +32,8 @@ _objects = []
 
 _part = _parts select 0
 _object = (_part select 0) createVehicle _posStruct
-_object setDir _dir
-_object setPos _posStruct
+? _type != stBridge: _object setDir _dir, _object setPos _posStruct
+? _type == stBridge: _object setVectorDirAndUp [_vecDir, [0,0,1]]; _object setPosASL _posAsl;
 if (isNull gunner _object) then { [_object] exec localize {TZK_REARMDATA_ADD} };
 
 
