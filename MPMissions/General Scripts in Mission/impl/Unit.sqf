@@ -86,6 +86,8 @@ utSupportInf = [_supportCarrierW, _supportCarrierE];
 typesEngineeringVeh = [_m88W, _bremE]; {
 	unitDefs select _x set [udFactoryType, 2^stLight + 2^stHeavy];
 	unitDefs select _x select udCrew set [0, 2];
+	_entry = unitDefs select _x select udScripts;
+	_entry set [count _entry, "Common\InitEngineerVeh.sqs"];
 } forEach typesEngineeringVeh;
 
 // Add MLRS equipping with shrapnel
