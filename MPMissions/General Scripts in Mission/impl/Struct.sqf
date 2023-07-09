@@ -55,7 +55,7 @@ structMarker set [_type, "RadarCar_Marker_xj400"];
 stGapGenerator = _type;
 _type = _type + 1;
 
-_price = 500;
+_price = 200;
 _objects = [["Bridge", 0, []]];
 _image = [_texPath + "Image\Struct\WallH.jpg",_texPath + "Image\Struct\WallH.jpg"];
 structDefs set [_type, [
