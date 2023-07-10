@@ -2,6 +2,12 @@ if (_this) then {
 	TzkMapAreaCreated = true;
 	private [{_deltaX}, {_deltaY}, {_averageX}, {_averageY}];
 
+	private [{_x1}, {_y1}];
+	_x1 = TzkMap1x, _y1 = TzkMap1y;
+
+	if (TzkMap1x > TzkMap2x) then {_tmp = TzkMap1x, TzkMap1x = TzkMap2x, TzkMap2x = _tmp};
+	if (TzkMap1y > TzkMap2y) then {_tmp = TzkMap1y, TzkMap1y = TzkMap2y, TzkMap2y = _tmp};
+
 	_deltaX = (TzkMap2x - TzkMap1x) / 2;
 	_deltaY = (TzkMap2y - TzkMap1y) / 2;
 	_averageX = (TzkMap2x + TzkMap1x) / 2;
@@ -23,6 +29,8 @@ if (_this) then {
 	"TzkRtsAreadiagonal" setMarkerSize [_width - _tmp, _height];
 	"TzkRtsAreadiagonal" setMarkerPos [_averageX, _averageY];
 
+	"TzkRtsStartPos" setMarkerSize [_height + 2, _height + 2];
+	"TzkRtsStartPos" setMarkerPos [_x1, _y1];
 
 	if (0 == (TzkDiag2y - TzkDiag1y) && 0 == (TzkDiag2x - TzkDiag1x)) then {
 		TzkDiagDir = 0;
@@ -36,9 +44,13 @@ if (_this) then {
 
 	0 call preprocessFile "Player\Rts\AreaSetDir.sqf";
 
-	"TzkRtsArea" setMarkerSize [0,0];
-	"TzkRtsArea" setMarkerPos [0,0];
+	_zeroVec = [0, 0];
+	"TzkRtsArea" setMarkerSize _zeroVec;
+	"TzkRtsArea" setMarkerPos _zeroVec;
 
-	"TzkRtsAreadiagonal" setMarkerSize [0,0];
-	"TzkRtsAreadiagonal" setMarkerPos [0,0];
+	"TzkRtsAreadiagonal" setMarkerSize _zeroVec;
+	"TzkRtsAreadiagonal" setMarkerPos _zeroVec;
+
+	"TzkRtsStartPos" setMarkerSize _zeroVec;
+	"TzkRtsStartPos" setMarkerPos _zeroVec;
 };
