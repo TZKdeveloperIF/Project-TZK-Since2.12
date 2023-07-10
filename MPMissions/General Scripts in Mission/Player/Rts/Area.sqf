@@ -34,7 +34,7 @@ if (_this) then {
 } else {
 	TzkMapAreaCreated = false;
 
-	0 call loadFile "Player\Rts\AreaSetDir.sqf";
+	0 call preprocessFile "Player\Rts\AreaSetDir.sqf";
 
 	"TzkRtsArea" setMarkerSize [0,0];
 	"TzkRtsArea" setMarkerPos [0,0];
