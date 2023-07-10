@@ -37,5 +37,5 @@ if not _processed then {
 	};
 };
 if _processed then {
-	_input call loadFile "Player\Rts\AreaSetDir.sqf";
+	_input call preprocessFile "Player\Rts\AreaSetDir.sqf";
 };
