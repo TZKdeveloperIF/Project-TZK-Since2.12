@@ -19,6 +19,12 @@ _factor = [1, _factor] select IncomeGrow_TZK;
 		_extraRate = 0; _name = name leader (groupCommander select _si);
 		if ("LXL" == _name) then {_extraRate = 0.25};
 		if ("ZHBQ" == _name) then {_extraRate = 1};
+
+		// No extra income if some groups' "superior" is not commander
+		{
+			if (_x select aisSuperior != 0) then {_extraRate = 0}
+		} forEach (aisetting select _si);
+
 		if (_extraRate > 0) then {
 			_delta = (_incomeTowns select _si) * _extraRate; _delta = _delta - _delta % 1;
 			if (_delta > 0) then {
