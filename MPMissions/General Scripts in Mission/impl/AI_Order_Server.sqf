@@ -30,3 +30,9 @@ comment "Disable all west/east AI group engage ability by default. Practice prov
 		_gi = _gi + 1;
 	} foreach (groupMatrix select _x);
 } forEach [si0, si1];
+
+comment "Fix error definition in aiSetting";
+{
+	_list = aiSetting select _x; _list resize (count (groupMatrix select _x));
+}
+forEach [si0, si1];
