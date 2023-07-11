@@ -48,6 +48,12 @@ _marker setMarkerColor "ColorOrange_xj400";
 _marker setMarkerShape "RECTANGLE";
 _marker setMarkerSize [0, 0];
 
+_marker = "TzkRtsStartPos";
+createMarker [_marker, [0, 0]];
+_marker setMarkerColor "ColorDarkPurple_xj400";
+_marker setMarkerShape "ELLIPSE";
+_marker setMarkerSize [0, 0];
+
 // variables for dialog
 RtsAreaBuildStruct = [0, 0];
 
