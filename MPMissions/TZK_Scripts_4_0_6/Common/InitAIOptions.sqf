@@ -165,9 +165,6 @@ comment { current setting entry format: [orderID, orderType, [param 0, param 1, 
 aiSetting = [ [], [] ];
 _si = si0; _list = aiSetting select _si; { _list set [ count _list, +_default ] } foreach (groupMatrix select _si);
 _si = si1; _list = aiSetting select _si; { _list set [ count _list, +_default ] } foreach (groupMatrix select _si);
-aiBuying = [ [], [] ];
-_si = si0; _list = aiSetting select _si; { _list set [ count _list, [0,0,0,0] ] } foreach (groupMatrix select _si);
-_si = si1; _list = aiSetting select _si; { _list set [ count _list, [0,0,0,0] ] } foreach (groupMatrix select _si);
 
 comment { AI Auto-Buy Factory Selected by Setting. Format: [ [Factory1], [Factory2], [Factory3], [Factory4] ]; };
 comment { abandoned. maybe use it in next version; };
