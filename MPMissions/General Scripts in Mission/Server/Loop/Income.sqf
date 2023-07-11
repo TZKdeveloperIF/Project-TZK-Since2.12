@@ -17,8 +17,8 @@ _factor = [1, _factor] select IncomeGrow_TZK;
 	_si = _x;
 	if (time > (SideCmdChangedTime select _si) + 5 * 60) then { // On 5 mins after changing commander this income part won't effect
 		_extraRate = 0; _name = name leader (groupCommander select _si);
-		if ("LXL" == _name) then {_extraRate = 0.25};
-		if ("ZHBQ" == _name) then {_extraRate = 1};
+		// if ("LXL" == _name) then {_extraRate = 0.25};
+		// if ("ZHBQ" == _name) then {_extraRate = 1};
 
 		// No extra income if some groups' "superior" is not commander
 		{
