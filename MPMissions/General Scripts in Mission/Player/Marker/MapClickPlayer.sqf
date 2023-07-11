@@ -71,12 +71,12 @@ if (not _processed) then {
 	if (not _processed && _alt && _shift) then {
 		// selected area && selected units
 		if (not _processed && TzkMapAreaCreated && count TzkSelectedUnits > 0) then {
-			_pos exec "Rts\Dialog\RtsMap.sqs";
+			[_pos, _units] exec "Rts\Dialog\RtsMap.sqs";
 			_processed = true;
 		};
 		// selected area && selected nothing
 		if (not _processed && TzkMapAreaCreated && count TzkSelectedUnits == 0) then {
-			_pos exec "Rts\Dialog\AreaMap.sqs";
+			[_pos, _units] exec "Rts\Dialog\AreaMap.sqs";
 			_processed = true;
 		};
 		// set way points or acitvate point dialog
@@ -93,7 +93,7 @@ if (not _processed) then {
 			if (4 == RtsPriorityPointDialogEnum) then {
 				_script = "Rts\Dialog\PointMap.sqs";
 			};
-			_pos exec _script;
+			[_pos, _units] exec _script;
 			_processed = true;
 		};
 	};
