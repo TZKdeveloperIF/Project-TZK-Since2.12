@@ -7,18 +7,14 @@ _shift = _this select 3;
 _processed = false;
 
 if (!alive player) then {_processed = true};
-if (!_processed && (count _units) > 0) then {if (!_processed && !_alt && _shift) then {
+if (not _processed && count _units > 0) then {
 	// process selected units. Since Join is available in TZK, joined units should be excluded
-	private [{_otherTeamUnits}]; _otherTeamUnits = [];
-	{
-		if (group _x != groupPlayer) then {_otherTeamUnits set [count _otherTeamUnits, _x]};
-	} forEach _units;
-	[_units, _otherTeamUnits] call preprocessFile "Util\ArraySubtract.sqf";
-	if (count _units > 0) then {
-		[_pos, _units] exec localize {TZK_DIALOG_ORDER_PLAYER_AI}; _processed = true
-	};
-}};
-if (!_processed) then {
+	[_units, {group _this != groupPlayer}] call preprocessFile "Util\ArrayEraseIf.sqf";
+};
+if (not _processed && count _units > 0 && not _alt && _shift) then {
+	[_pos, _units] exec localize {TZK_DIALOG_ORDER_PLAYER_AI}; _processed = true;
+};
+if (not _processed) then {
 	// clear units current order. Same design as in old CRCTI missions
 	if ((count _units) > 0 && !_alt && !_shift) then {
 		private [{_allUnits}, {_unit}, {_vehicle}];
@@ -45,6 +41,9 @@ if (!_processed) then {
 			};
 		} forEach _units;
 		{_x exec "Player\Order\OnMapClickMove.sqs"} forEach _allUnits;
+		// TAKE CARE: if current script returns "true", origin OFP map click 
+		// including moving and watching won't work again
+		// _processed = true;
 	};
 
 	// unit cam
