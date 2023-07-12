@@ -4,7 +4,7 @@ _pos = _this select 0; _units = _this select 1;
 ? (count _units) == 0: exit
 @!mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
-_dlg = createDialog "TZK_OrderAIDialog"
+_dlg = createDialog "TZK_OrderAIDialog2"
 mutexDlg = false
 
 ? !bool_TZK_CHN_inited && bool_TZK_CHN_Lang: call loadFile localize {TZK_PLAYER_DIALOG_CHNLANG}
@@ -31,17 +31,26 @@ _selectedOrder1 = lastOrder1; _selectedOrder2 = lastOrder2
 
 ctrlSetText [_idcOrderDesc, "Since TZK_4.0.0.00, extend orders are listed on the left. 2 buttons are available for orders."]
 
-#Update
+; left down board
+_idcLeftDownBtn0 = IDC + 16 * 12 + 0, btnValue02 = -1
+ctrlSetText [_idcLeftDownBtn0 + 0, "CrossBridge"]
 
-? call dlgUpdated: exit
-? !(alive player): closeDialog 0; exit
-? (_selectedOrder1 != lbCurSel _idcOrders1): _i = 1, goto "NewOrderSelected"
-? (_selectedOrder2 != lbCurSel _idcOrders2): _i = 2, goto "NewOrderSelected"
-? btnSendOrder: btnSendOrder=false, _i = 1, goto "SendOrder"
-? btnSendOrder2: btnSendOrder2=false, _i = 2, goto "SendOrder"
+# Update
 
-~0.2
-goto "Update"
+	? call dlgUpdated: exit
+	? !(alive player): closeDialog 0; exit
+	? (_selectedOrder1 != lbCurSel _idcOrders1): _i = 1, goto "NewOrderSelected"
+	? (_selectedOrder2 != lbCurSel _idcOrders2): _i = 2, goto "NewOrderSelected"
+	? btnSendOrder: btnSendOrder=false, _i = 1, goto "SendOrder"
+	? btnSendOrder2: btnSendOrder2=false, _i = 2, goto "SendOrder"
+	? btnValue02 >= 0: _val2 = btnValue02; btnValue02 = -1; goto "LeftDownBtn"
+
+	~ 0.2
+	goto "Update"
+
+# LeftDownBtn
+	? 0 == _val2: _units call preprocessFile "Rts\Order\CrossTheBridge.sqf"; closeDialog 0; goto "Quit"
+	goto "Update"
 
 #SendOrder
 	? call format ["lastOrder%1 == -1", _i]: hint "No order selected. Maybe you clicked wrong button?", goto "Update"
