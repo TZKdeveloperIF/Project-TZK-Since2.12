@@ -1,0 +1,63 @@
+; args: [output status (write only), input status (read only), [vehice, pos, speed (km/h), delay, cross bridge: bool]]
+
+; this SQS script loops to move vehicle using "setVelocity" command
+; on script finished/aborted, the output status will be set to "false"
+; if input status is false, current order should be interrupted and halt
+; do in-script exit check ONLY for those conditions whose parameters are local
+; no other in-script exit check
+; it is possible but unnecessary to use only one status variable
+
+_param = _this select 2
+_vehicle = _param select 0
+_dest = _param select 1
+; "speed" uses km/h while "velocity" uses m/s
+_speed = (_param select 2) / 3.6
+_delay = _param select 3
+_crossBrdige = _param select 4
+
+_vehicle doWatch _dest
+~ _delay
+
+? not (_this select 1): goto "EOF"
+
+_delta = [_dest, getPosASL _vehicle] call funcVectorSub
+_delta = [_delta, 1 / (_delta call funcVectorLength)] call funcVectorScale
+_vehicle setVectorDir _delta
+
+_inHalfPlane = preprocessFile "Math\InHalfPlane.sqf"
+
+# loop
+	doStop _vehicle
+	_pos = getPosASL _vehicle
+	_diff = [_dest, _pos] call funcVectorSub
+	_diff = [_diff, _speed / (_diff call funcVectorLength)] call funcVectorScale
+	? not _crossBrdige: goto "ForceMove"
+		; correct vehicle vector dir
+		_bridge = NearestObjectDistance [_vehicle, "Bridge", 50]
+		? isNull _bridge: goto "EOF"
+
+		; correct x-bias
+		_vec = [getPosASL _bridge, _pos] call funcVectorSub
+		_vec = [_vec, [0,0,1], getDir _bridge] call funcVectorRot3D
+		_vec set [1,0], _vec set [2, 0]
+		_vec = [_vec, [0,0,1], - (getDir _bridge)] call funcVectorRot3D
+		_vehicle setPosASL ([_pos, _vec] call funcVectorAdd)
+
+		; _diff set [2, (_diff select 2) + 2]
+
+	# ForceMove
+		_vehicle setVectorDir _diff
+		_vehicle setVelocity _diff
+
+	~ 1
+	? not (_this select 1): goto "EOF"
+	? not alive _vehicle: goto "EOF"
+	? [getPosASL _vehicle, _dest, _delta] call _inHalfPlane: goto "Reached"
+	? [getPosASL _vehicle, _dest] call funcDistH < 5: goto "Reached"
+	goto "loop"
+
+# Reached
+	? _crossBrdige: _vehicle doMove ([[_delta, 30] call funcVectorScale, getPosASL _vehicle] call funcVectorAdd)
+
+# EOF
+	_this set [0, false]

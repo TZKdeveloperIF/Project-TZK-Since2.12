@@ -1,0 +1,64 @@
+; ---------------------------------------------------------------------------------------------------
+; |									RTS Cross Bridge SQS Script										|
+; |		  Units will try cross the assigned bridge. 												|
+; ---------------------------------------------------------------------------------------------------
+
+; args: [
+; 	[unit, Diagonal Pos Info (read only), bridge1, bridge2],
+; 	[order mode (called by AI or player unit), quit condition],
+; 	extra parameters for order mode
+; ]
+_param = _this select 0
+
+_unit = _param select 0
+_pos1 = _param select 1 select 0; _pos2 = _param select 1 select 1
+_bridge1 = _param select 2; _bridge2 = _param select 3
+
+_forServer = _this select 1 select 0, _quitCond = _this select 1 select 1
+? _forServer: _rtsStatus = _this select 2 select 0, _id = _this select 2 select 1
+? not _forServer: _uid = _this select 2 select 0, _id = _this select 2 select 1
+
+_msg = ""
+
+? _unit == vehicle _unit: exit
+? _unit != driver vehicle _unit: exit
+
+? [_unit, _bridge1] call funcDistH > 50 + 25: _unit groupChat "Too far away to the bridge. Order aborted.", exit
+
+_onBridge = preprocessFile "Util\Bridge\On.sqf"
+_vehicle = vehicle _unit
+? [getPosASL _vehicle, _bridge1] call _onBridge: goto "OnBridge1"
+
+	_endPoints = _bridge1 call preprocessFile "Util\Bridge\EndPoints.sqf"
+	_endPoint = _endPoints select 0
+	? [_vehicle, (_endPoints select 1)] call funcDistH < [_vehicle, _endPoint] call funcDistH: _endPoint = _endPoints select 1
+
+	_moveParamCache = [true, true, [_vehicle, _endPoint, 20, 0, false]]
+	_moveParamCache exec "Util\MoveVehUsingSetVel.sqs"
+	# loopMoveLand
+		~ 1
+		? call _quitCond: _moveParamCache set [1, false], goto "Quit"
+		? _moveParamCache select 0: goto "loopMoveLand"
+
+# OnBridge1
+	_vehicle groupChat "Prepare to cross the bridge."
+	_vehicle doWatch _pos2
+	_endPoints = _bridge2 call preprocessFile "Util\Bridge\EndPoints.sqf"
+	_endPoint = _endPoints select 0
+	? [_vehicle, (_endPoints select 1)] call funcDistH > [_vehicle, _endPoint] call funcDistH: _endPoint = _endPoints select 1
+
+	_moveParamCache = [true, true, [_vehicle, _endPoint, 60, 0, true]]
+	_moveParamCache exec "Util\MoveVehUsingSetVel.sqs"
+	# loopMoveBridge
+		~ 1
+		? call _quitCond: _moveParamCache set [1, false], goto "Quit"
+		? _moveParamCache select 0: goto "loopMoveBridge"
+	
+	_vehicle groupChat "Bridge crossed."
+
+; End Of File
+# Quit
+
+	? _msg != "" && _forServer: [_si, format ["%1: %2", _unit, _msg]] exec "Server\Msg\sSvrMsg2Cmd.sqs"
+	? _msg != "" && not _forServer: _unit groupChat _msg
+	exit
