@@ -356,7 +356,6 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 		? call _quitCond: _msg = ""; goto "EOF"
 		; todo: hint if rearm failed due to insufficiend fund
 		? _isServer: if not (_rearmParam select 1) then {goto "WaitRearmComplete"}
-		? !someAmmo _vehicle: goto "WaitRearmComplete"
 
 	; rearm fail check
 	? _isServer: if not (_rearmParam select 2) then {_msg = format ["%1 rearm failed. Art order aborted.", _unit], goto "EOF"}
