@@ -16,4 +16,4 @@ _value = _value + TotalUnitTypes * GroupsNum * GroupsNum * 2 *_driver + TotalUni
 _value = _value + TotalUnitTypes * GroupsNum * GroupsNum * 2 * 2 * 2 *_commander
 
 [_factory, _value, _nCustomWeapon] exec "Network\hAddUnit.sqs"
-publicExec format [{[UnitById %1, %2, %3] exec "Network\hAddUnit.sqs"}, NetworkID _factory, _value, _nCustomWeapon]
+publicExec format [{[UnitById %1, %2, %3] exec "Network\hAddUnit.sqs"}, _factory call funcGenNetIdStr, _value, _nCustomWeapon]

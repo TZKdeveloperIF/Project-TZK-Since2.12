@@ -9,7 +9,7 @@ _vehicle exec "\TZK_Objects\Scripts\Fired_EH\Tank_RSC_Shock.sqs"
  _posShell = getPosASL _shell; _dirShell = VectorDir _shell; _upVeh = VectorUp _vehicle;
 
 _ammunition = _vehicle ammo _weapon; _slots = 12
-? local _vehicle && _ammunition < _slots: [_vehicle, _ammunition] exec "Network\hMlrsShooting.sqs"; publicExec format [{[UnitById %1, %2] exec "Network\hMlrsShooting.sqs"}, NetworkID _vehicle, _ammunition]
+? local _vehicle && _ammunition < _slots: [_vehicle, _ammunition] exec "Network\hMlrsShooting.sqs"; publicExec format [{[UnitById %1, %2] exec "Network\hMlrsShooting.sqs"}, _vehicle call funcGenNetIdStr, _ammunition]
 ; ====================================================================================================================================================================
 _corX = 1.046 - (_ammunition % 3) * 0.317 - ([0,1] select (_ammunition >= 6)) * 1.458; _corY = -([0,1] select (_ammunition % 6 >= 3)) * 0.317;
 _vectorH = [_dirShell, _upVeh] call funcVectorCross

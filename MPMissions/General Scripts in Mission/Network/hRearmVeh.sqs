@@ -21,7 +21,7 @@ while "_i < _c && _matching" do { if !( (_weapons select _i)in(_wpns) ) then {_m
 if (_matching || _bDeploy) then { { _v addMagazine _x } foreach _mags } else { { _v removeWeapon _x} foreach _wpns; { _v addWeapon _x } foreach _weapons; { _v addMagazine _x } foreach _mags; _v selectWeapon (_weapons select 0) }
 ? _bDeploy: if (_bIsDeploying) Then {_v addMagazine "DeploySwitch_xj400"} Else {_v removeMagazines "DeploySwitch_xj400"}, _v engineOn false
 ; MLRS Rocket re-texture. For 199 ACWA the "_name" is undefined and the command below won't be executed.
-? _name == "M270" || _name == "TOS1": _v exec "Network\hMlrsReloaded.sqs"; publicExec format [{UnitById %1 exec "Network\hMlrsReloaded.sqs"}, NetworkID _v]
+? _name == "M270" || _name == "TOS1": _v exec "Network\hMlrsReloaded.sqs"; publicExec format [{UnitById %1 exec "Network\hMlrsReloaded.sqs"}, _v call funcGenNetIdStr]
 
 
 ? canFire _v : exit

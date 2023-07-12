@@ -76,8 +76,7 @@ false exec "Common\Init\Confuser.sqs"
 
 ? dev: 0 exec "Util\Test.sqs"
 ; 4.0.6.15
-? dev && "IF" == name player: player sideChat format ["NetworkID: %1", NetworkID player select 1]
-? NetworkID player select 1 > 8388608: player globalChat "NetworkID too large. Request server hoster to restart the server, or the RTS command design may invalid in game."
+? (call (player call funcGenNetIdStr)) select 1 > 8388608: player globalChat "Network ID too large. Request server hoster to restart the server, or the RTS command design may invalid in game."
 ; 4.0.6.33
 mutexBuildObstruct = false
 ; 4.0.6.40

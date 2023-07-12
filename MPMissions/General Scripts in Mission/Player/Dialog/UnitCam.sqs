@@ -345,16 +345,10 @@ _return = "External_Update"; goto "UpdateDialog"
 	; ? _value == 2^0: goto "LabelRepair"
 	? _value == 2^1: goto "LabelRearm"
 # LabelRepair
-	? !isNull player && leader _vehicle == player: [_unit, _sup] exec "Player\HealRepair.sqs", goto "External_Update"
-	; Server AI
-	_type = _vehicle call funcGetUnitTypeFromObject
-	[_unit, _si, _gi, _vehicle, _type, _sup, false, true] exec "Server\AI_Heal.sqs"
+	[_unit, _sup] exec "Player\HealRepair.sqs"
 	goto "External_Update"
 # LabelRearm
-	? !isNull player && leader _vehicle == player: [_unit, _sup] exec "Player\Rearm.sqs", goto "External_Update"
-	; Server AI
-	_type = _vehicle call funcGetUnitTypeFromObject
-	[_unit, _si, _gi, _vehicle, _type, _sup, false, true] exec "Server\AI_Rearm.sqs"
+	[_unit, _sup] exec "Player\Rearm.sqs"
 	goto "External_Update"
 
  
