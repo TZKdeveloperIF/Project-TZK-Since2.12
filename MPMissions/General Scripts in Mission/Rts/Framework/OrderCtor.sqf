@@ -1,4 +1,4 @@
-// args: [NetworkIDs: array, param: any, script name: string, script folder: string]
+// args: [Network IDs[], param: any, script name: string, script folder: string]
 
 private [{_netIds},{_param},{_scriptName}];
 _netIds = _this select 0; _param = _this select 1; _scriptName = _this select 2;

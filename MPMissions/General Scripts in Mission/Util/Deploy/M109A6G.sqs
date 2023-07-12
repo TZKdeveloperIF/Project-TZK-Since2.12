@@ -11,14 +11,14 @@ _i = 0
 _animations = ["backdoor","sidedoor","shovL","shovR","BoxL","BoxR","Clamp"]
 _delays= [0.5, 1, 0, 1, 0, 1, 0]
 
-_NetWorkID = _vehicle call funcGenNetIdStr
+_netIdStr = _vehicle call funcGenNetIdStr
 ? _phase > 0: _vehicle addMagazine "DeploySwitch_xj400"; _vehicle engineOn false; goto "deploy"
 
 _vehicle removeWeapon _mainWeapon
 ; Remove 155 gun as well. By now old deploy scripts are executed by user action and init eventhandler thus 155 gun will be added in those cases
 ; Remove this modification on new addon releases
 _vehicle removeWeapon "Gun155_xj400"
-? !isNull gunner _vehicle && !local gunner _vehicle: publicExec format [{if (local gunner UnitById %1) then {UnitById %1 removeWeapon _mainWeapon}}, _NetWorkID]
+? !isNull gunner _vehicle && !local gunner _vehicle: publicExec format [{if (local gunner UnitById %1) then {UnitById %1 removeWeapon _mainWeapon}}, _netIdStr]
 
 # deploy
 	_vehicle animate [(_animations select _i), _phase]
@@ -28,10 +28,10 @@ _vehicle removeWeapon "Gun155_xj400"
 ? _phase == 0: _vehicle removeMagazines "DeploySwitch_xj400"; exit
 
 _vehicle addweapon _mainWeapon
-? !local _vehicle: publicExec format [{if (local UnitById %1) then {UnitById %1 addweapon _mainWeapon}}, _NetWorkID]
+? !local _vehicle: publicExec format [{if (local UnitById %1) then {UnitById %1 addweapon _mainWeapon}}, _netIdStr]
 
 ; ammo array check. Sometimes bug may occur that weapon can't load magazine
 ~ 0.1
 ? count (_vehicle ammoArray _mainWeapon) > 0: exit
 _vehicle call preprocessFile "Util\MagazinesReset.sqf"
-? !local _vehicle: publicExec format [{if (local UnitById %1) then {UnitById %1 call preprocessFile "Util\MagazinesReset.sqf"}}, _NetWorkID]
+? !local _vehicle: publicExec format [{if (local UnitById %1) then {UnitById %1 call preprocessFile "Util\MagazinesReset.sqf"}}, _netIdStr]
