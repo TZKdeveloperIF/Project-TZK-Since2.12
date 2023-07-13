@@ -15,6 +15,8 @@ mutexDlg = false
 	mutexRtsMouse = false
 [true, _id + 1, _pos] exec "Player\Rts\SetRtsMouse.sqs";
 
+_pos call preprocessFile "Util\DebugPointInfo.sqf"
+
 ; init right-down corner buttons (switching to other rts dialogs)
 ; 0: rts, 1: area, 2: wpco, 4: point
 2 call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
