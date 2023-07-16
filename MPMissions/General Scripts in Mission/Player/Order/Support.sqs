@@ -82,7 +82,7 @@ _wpnPrim = primaryWeapon _unit
 _wpnSec = secondaryWeapon _unit
 ? _wpnPrim != "" : if ((_unit ammo _wpnPrim) == 0) then { _rearm = true }
 ? _wpnSec != "" : if ((_unit ammo _wpnSec) == 0) then { _rearm = true }
-_rearmData = _unit call funcGetRearmData
+_rearmData = _unit call preprocessFile "Common\SQF\RearmData.sqf"
 _weapons = _rearmData select 0
 _mags = _rearmData select 1
 ? (count _mags) > count (magazines _unit) : _rearm = true

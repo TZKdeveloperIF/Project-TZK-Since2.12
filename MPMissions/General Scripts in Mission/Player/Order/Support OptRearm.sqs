@@ -12,7 +12,7 @@ _need = false; _msg = "I'm fine."; _v = vehicle _unit
 	? _wpnPrim != "": if ((_unit ammo _wpnPrim) == 0) then { _need = true }
 	? _wpnSec != "" : if ((_unit ammo _wpnSec) == 0) then { _need = true }
 	? _need : goto "FindSupport"
-	_rearmData = _unit call funcGetRearmData; _weapons = _rearmData select 0; _mags = _rearmData select 1
+	_rearmData = _unit call preprocessFile "Common\SQF\RearmData.sqf"; _weapons = _rearmData select 0; _mags = _rearmData select 1
 	? (count _mags) > count (magazines _unit) : goto "FindSupport"
 	_unit groupchat _msg; exit
 #Vehicle
@@ -43,4 +43,4 @@ _vs = [2, true, _vs] call funcSort
 _support = _vs select 0 select 0
 
 # SupportFound
-[_unit, _support, false] exec "\TZK_Scripts_4_0_5\Player\Order\Support.sqs"
+[_unit, _support, false] exec "Player\Order\Support.sqs"
