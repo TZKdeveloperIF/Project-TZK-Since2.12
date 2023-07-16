@@ -1627,9 +1627,9 @@ class TZK_OrderAIDialog2: TZK_OrderAIDialog {
 	};
 	class LeftBg: BackgroundWindow {
 		x = 0.0;
-		y = 0.67;
-		w = 0.3;
-		h = 0.33;
+		y = 0.80;
+		w = 0.60;
+		h = 0.20;
 	};
 	controls[] = {
 		SendOrderBG1, SendOrderBG2, OrderDesc, 
@@ -1637,27 +1637,44 @@ class TZK_OrderAIDialog2: TZK_OrderAIDialog {
 		OrdersLabel2, SendOrder2, Orders2,
 		Param0Label, Param0, Param1Label, Param1, Param2Label, Param2, 
 		Exit, 
-		Frame2, 
+		Frame2, Frame3, 
 		LeftDownBtn0, 
+		DownBtn0, DownBtn1, 
 	};
 	class Frame2: TZK_Frame_1 {
 		colorText[] = {0.4, 0.0, 0.4, 0.9};
 		sizeEx = 0.021;
-		text = "Player Team Order";
+		text = "Move Order";
 		x = 0.01;
 		y = 0.80;
 		w = 0.28;
 		h = 0.20;
 	};
+	class Frame3: Frame2 {
+		text = "Mine Order";
+		x = 0.31;
+	};
 	// left down part. 
 	class LeftDownBtn0: Button {		// for player "Cross the bridge"
 		idc = IDC + 16 * 12 + 0;
-		x = 0.015 + 0.09 * 0;
+		x = 0.015 + 0.12 * 0;
 		y = 0.82 + 0.00;
 		w = 0.12;
 		sizeEx = 0.020;
 		text = "";
 		action = "btnValue02 = 0";
+	};
+	// down part
+	class DownBtn0: LeftDownBtn0 {
+		idc = IDC + 16 * 6 + 0;
+		x = 0.015 + 0.12 * 0 + 0.30 * 1;
+		text = "";
+		action = "btnValue01 = 0";
+	};
+	class DownBtn1: DownBtn0 {
+		idc = IDC + 16 * 6 + 1;
+		x = 0.015 + 0.12 * 1 + 0.30 * 1;
+		action = "btnValue01 = 1";
 	};
 };
 
