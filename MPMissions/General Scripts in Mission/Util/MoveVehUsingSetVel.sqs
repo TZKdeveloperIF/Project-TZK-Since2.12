@@ -30,7 +30,7 @@ _inHalfPlane = preprocessFile "Math\InHalfPlane.sqf"
 
 # loop
 	_moveSpd = (abs(speed _vehicle) + 10) / 3.6
-	? _speed < _moveSpd: _moveSpd = _speed
+	? _speed < _moveSpd || _crossBrdige: _moveSpd = _speed
 
 	doStop _vehicle
 	_pos = getPosASL _vehicle
