@@ -1,6 +1,6 @@
-; args: [units, pos, params: []]
+; args: units
 
-_unitsOnOrdering = _this select 0; _units = []; _i = 0
+_unitsOnOrdering = _this; _units = []; _i = 0
 {if (_x in units player) then {_units set [_i, _x], _i = _i + 1}} forEach _unitsOnOrdering
 
 ? 0 == count _units: exit

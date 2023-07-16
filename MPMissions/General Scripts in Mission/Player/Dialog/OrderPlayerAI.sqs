@@ -34,6 +34,10 @@ ctrlSetText [_idcOrderDesc, "Since TZK_4.0.0.00, extend orders are listed on the
 ; left down board
 _idcLeftDownBtn0 = IDC + 16 * 12 + 0, btnValue02 = -1
 ctrlSetText [_idcLeftDownBtn0 + 0, "CrossBridge"]
+; down board
+_idcDownBtn0 = IDC + 16 * 6 + 0, btnValue01 = -1
+ctrlSetText [_idcDownBtn0 + 0, "DisableMine"]
+ctrlSetText [_idcDownBtn0 + 1, "Mine Area"]
 
 # Update
 
@@ -43,13 +47,19 @@ ctrlSetText [_idcLeftDownBtn0 + 0, "CrossBridge"]
 	? (_selectedOrder2 != lbCurSel _idcOrders2): _i = 2, goto "NewOrderSelected"
 	? btnSendOrder: btnSendOrder=false, _i = 1, goto "SendOrder"
 	? btnSendOrder2: btnSendOrder2=false, _i = 2, goto "SendOrder"
+
 	? btnValue02 >= 0: _val2 = btnValue02; btnValue02 = -1; goto "LeftDownBtn"
+	? btnValue01 >= 0: _val1 = btnValue01; btnValue01 = -1; goto "DownBtn"
 
 	~ 0.2
 	goto "Update"
 
 # LeftDownBtn
 	? 0 == _val2: _units call preprocessFile "Rts\Order\CrossTheBridge.sqf"; closeDialog 0; goto "Quit"
+	goto "Update"
+# DownBtn
+	? 0 == _val1: _units exec "Player\Order\RtsPreDisable.sqs"; closeDialog 0; goto "Quit"
+	? 1 == _val1: _units exec "Player\Order\RtsPreMineArea.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 
 #SendOrder
