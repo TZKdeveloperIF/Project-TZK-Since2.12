@@ -7,6 +7,12 @@ mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
 _dlg = createDialog "TZK_OrderAIDialog2"
 mutexDlg = false
 
+@ not mutexRtsMouse
+	mutexRtsMouse = true
+	_id = rtsMouseId
+	mutexRtsMouse = false
+[true, _id + 1, _pos] exec "Player\Rts\SetRtsMouse.sqs";
+
 ? !bool_TZK_CHN_inited && bool_TZK_CHN_Lang: call loadFile localize {TZK_PLAYER_DIALOG_CHNLANG}
 
 ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
@@ -42,10 +48,12 @@ ctrlSetText [_idcDownBtn0 + 1, "Mine Area"]
 _idcDownBtn0 = IDC + 16 * 2 + 0, btnValue00 = -1
 ctrlSetText [_idcDownBtn0 + 0, "Join"]
 
+TzkMapRtsFlashingDisabled = true
+
 # Update
 
-	? call dlgUpdated: exit
-	? !(alive player): closeDialog 0; exit
+	? call dlgUpdated: goto "Quit"
+	? !(alive player): closeDialog 0; goto "Quit"
 	? (_selectedOrder1 != lbCurSel _idcOrders1): _i = 1, goto "NewOrderSelected"
 	? (_selectedOrder2 != lbCurSel _idcOrders2): _i = 2, goto "NewOrderSelected"
 	? btnSendOrder: btnSendOrder=false, _i = 1, goto "SendOrder"
@@ -57,6 +65,9 @@ ctrlSetText [_idcDownBtn0 + 0, "Join"]
 
 	~ 0.2
 	goto "Update"
+# Quit
+	TzkMapRtsFlashingDisabled = false
+	[false, _id + 2] exec "Player\Rts\SetRtsMouse.sqs"; exit
 
 # LeftDownBtn
 	? 0 == _val2: _units call preprocessFile "Rts\Order\CrossTheBridge.sqf"; closeDialog 0; goto "Quit"
@@ -79,9 +90,9 @@ ctrlSetText [_idcDownBtn0 + 0, "Join"]
 	~0.1
 	_order = (call format ["aiOrders%1", _i]) select (call format ["lastOrder%1", _i])
 	_script = format["%1", _order select 3]
-	? _order select 2: [_units, _pos, _params] exec _script; exit
+	? _order select 2: [_units, _pos, _params] exec _script; goto "Quit"
 	{ [_x, _pos, _params] exec _script } forEach _units
-	exit
+	goto "Quit"
 
 #NewOrderSelected
 	call format ["_selectedOrder%1 = lbCurSel _idcOrders%1; lastOrder%1 = lbCurSel _idcOrders%1; lastOrderList = %1", _i]
