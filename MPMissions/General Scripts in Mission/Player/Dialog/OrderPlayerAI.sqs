@@ -38,6 +38,9 @@ ctrlSetText [_idcLeftDownBtn0 + 0, "CrossBridge"]
 _idcDownBtn0 = IDC + 16 * 6 + 0, btnValue01 = -1
 ctrlSetText [_idcDownBtn0 + 0, "DisableMine"]
 ctrlSetText [_idcDownBtn0 + 1, "Mine Area"]
+; left board
+_idcDownBtn0 = IDC + 16 * 2 + 0, btnValue00 = -1
+ctrlSetText [_idcDownBtn0 + 0, "Join"]
 
 # Update
 
@@ -50,6 +53,7 @@ ctrlSetText [_idcDownBtn0 + 1, "Mine Area"]
 
 	? btnValue02 >= 0: _val2 = btnValue02; btnValue02 = -1; goto "LeftDownBtn"
 	? btnValue01 >= 0: _val1 = btnValue01; btnValue01 = -1; goto "DownBtn"
+	? btnValue00 >= 0: _val0 = btnValue00; btnValue00 = -1; goto "LeftBtn"
 
 	~ 0.2
 	goto "Update"
@@ -60,6 +64,9 @@ ctrlSetText [_idcDownBtn0 + 1, "Mine Area"]
 # DownBtn
 	? 0 == _val1: _units exec "Player\Order\RtsPreDisable.sqs"; closeDialog 0; goto "Quit"
 	? 1 == _val1: _units exec "Player\Order\RtsPreMineArea.sqs"; closeDialog 0; goto "Quit"
+	goto "Update"
+# LeftBtn
+	? 0 == _val0: [_units] exec "Join\Submenu\PplOrder.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 
 #SendOrder
