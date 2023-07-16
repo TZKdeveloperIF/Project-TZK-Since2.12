@@ -1,0 +1,15 @@
+; args: string
+; Using 2.01 mission initialization unit "resistance_Center" to save status instead of "LocalServerObject"
+; However the result of "saveStatus" is still nonintuitive. Use 2.01 VBS operators to write down info into config.
+
+_text = _this
+
+resistance_Center saveStatus _text
+FixStart_0 globalChat _text
+
+_record = isServer
+? not _record: if (not isNull player) then {if ("IF" == name player) then {_record = true}}
+
+? not _record: exit
+? count TzkLog >= 512: exit
+TzkLog set [count TzkLog, _text]
