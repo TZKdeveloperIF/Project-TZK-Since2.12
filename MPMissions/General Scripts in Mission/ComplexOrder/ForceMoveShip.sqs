@@ -1,0 +1,55 @@
+; ---------------------------------------------------------------------------------------------------
+; |								RTS Force Move Land Vehicle SQS Script								|
+; |		  Ships will be forced to move via script command. 											|
+; ---------------------------------------------------------------------------------------------------
+
+; args: [
+; 	[unit, Pos Info (read only)],
+; 	[order mode (called by AI or player unit), quit condition],
+; 	extra parameters for order mode
+; ]
+_param = _this select 0
+
+_unit = _param select 0
+_pos1 = _param select 1 select 0; _pos2 = _param select 1 select 1
+
+_forServer = _this select 1 select 0, _quitCond = _this select 1 select 1
+? _forServer: _rtsStatus = _this select 2 select 0, _id = _this select 2 select 1
+? not _forServer: _uid = _this select 2 select 0, _id = _this select 2 select 1
+
+_msg = ""
+
+? _unit == vehicle _unit: exit
+? _unit != driver vehicle _unit: exit
+? "Ship" countType [vehicle _unit] == 0: exit
+
+_vehicle = vehicle _unit
+? [_vehicle, _pos1] call funcDistH > 50: _msg = "I'm far from the start position. Order not executed.", goto "Quit"
+_vehicle doWatch _pos2
+
+? [getPosASL _vehicle, 5] call funcPosNearSea: goto "moveInSea"
+; move on land
+	_moveParamCache = [true, true, [_vehicle, _pos2, 15, 0, false]]
+	_moveParamCache exec "Util\MoveVehUsingSetVel.sqs"
+	# loopMoveLand
+		~ 1
+		? call _quitCond: _moveParamCache set [1, false], goto "Quit"
+		? [getPosASL _vehicle, 5] call funcPosNearSea: _moveParamCache set [1, false]
+		? _moveParamCache select 0: goto "loopMoveLand"
+
+# moveInSea
+	_moveParamCache = [true, true, [_vehicle, _pos2, 60, 0, false]]
+	_moveParamCache exec "Util\MoveVehUsingSetVel.sqs"
+	# loopMoveSea
+		~ 1
+		? call _quitCond: _moveParamCache set [1, false], goto "Quit"
+		? _moveParamCache select 0: goto "loopMoveSea"
+
+	_vehicle groupChat "Ship force move completed."
+
+; End Of File
+# Quit
+
+	? _msg != "" && _forServer: [_si, format ["%1: %2", _unit, _msg]] exec "Server\Msg\sSvrMsg2Cmd.sqs"
+	? _msg != "" && not _forServer: _unit groupChat _msg
+	exit

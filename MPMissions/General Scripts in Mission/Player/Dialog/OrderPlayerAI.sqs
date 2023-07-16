@@ -40,6 +40,8 @@ ctrlSetText [_idcOrderDesc, "Since TZK_4.0.0.00, extend orders are listed on the
 ; left down board
 _idcLeftDownBtn0 = IDC + 16 * 12 + 0, btnValue02 = -1
 ctrlSetText [_idcLeftDownBtn0 + 0, "CrossBridge"]
+ctrlSetText [_idcLeftDownBtn0 + 2, "Move Land"]
+ctrlSetText [_idcLeftDownBtn0 + 3, "Move Ship"]
 ; down board
 _idcDownBtn0 = IDC + 16 * 6 + 0, btnValue01 = -1
 ctrlSetText [_idcDownBtn0 + 0, "DisableMine"]
@@ -71,6 +73,8 @@ TzkMapRtsFlashingDisabled = true
 
 # LeftDownBtn
 	? 0 == _val2: _units call preprocessFile "Rts\Order\CrossTheBridge.sqf"; closeDialog 0; goto "Quit"
+	? 2 == _val2: _units call preprocessFile "Rts\Order\ForceMoveLandVehicle.sqf"; closeDialog 0; goto "Quit"
+	? 3 == _val2: _units call preprocessFile "Rts\Order\ForceMoveShip.sqf"; closeDialog 0; goto "Quit"
 	goto "Update"
 # DownBtn
 	? 0 == _val1: _units exec "Player\Order\RtsPreDisable.sqs"; closeDialog 0; goto "Quit"

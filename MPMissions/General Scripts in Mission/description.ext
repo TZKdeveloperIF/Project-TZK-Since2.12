@@ -1629,7 +1629,9 @@ class TZK_OrderAIDialog2: TZK_OrderAIDialog {
 		x = 0.0;
 		y = 0.80;
 		w = 0.60;
-		h = 0.20;
+		h = 0.10;
+		
+		colorBackground[] = {0.0, 0.6, 0.9, 0.8};
 	};
 	controls[] = {
 		SendOrderBG1, SendOrderBG2, OrderDesc, 
@@ -1638,7 +1640,7 @@ class TZK_OrderAIDialog2: TZK_OrderAIDialog {
 		Param0Label, Param0, Param1Label, Param1, Param2Label, Param2, 
 		Exit, 
 		Frame2, Frame3, Frame4, 
-		LeftDownBtn0, 
+		LeftDownBtn0, LeftDownBtn2, LeftDownBtn3, 
 		DownBtn0, DownBtn1, 
 		LeftBtn0, 
 	};
@@ -1652,7 +1654,7 @@ class TZK_OrderAIDialog2: TZK_OrderAIDialog {
 	class Frame2: TZK_Frame_1 {
 		colorText[] = {0.4, 0.0, 0.4, 0.9};
 		sizeEx = 0.021;
-		text = "Move Order";
+		text = "Force Move";
 		x = 0.01;
 		y = 0.80;
 		w = 0.28;
@@ -1687,8 +1689,23 @@ class TZK_OrderAIDialog2: TZK_OrderAIDialog {
 		y = 0.82 + 0.00;
 		w = 0.12;
 		sizeEx = 0.020;
+		colorText[] = {0.2, 0.1, 0.0, 1};
 		text = "";
 		action = "btnValue02 = 0";
+	};
+	class LeftDownBtn2: LeftDownBtn0 {	// for player "Move Land Vehicle"
+		idc = IDC + 16 * 12 + 2;
+		x = 0.015 + 0.135 * 0;
+		y = 0.82 + 0.04 * 1;
+		w = 0.13;
+		action = "btnValue02 = 2";
+	};
+	class LeftDownBtn3: LeftDownBtn0 {	// for player "Move Ship"
+		idc = IDC + 16 * 12 + 3;
+		x = 0.015 + 0.135 * 1;
+		y = 0.82 + 0.04 * 1;
+		w = 0.13;
+		action = "btnValue02 = 3";
 	};
 	// down part
 	class DownBtn0: LeftDownBtn0 {
