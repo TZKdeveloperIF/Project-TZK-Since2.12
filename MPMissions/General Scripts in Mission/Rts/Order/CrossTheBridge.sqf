@@ -19,6 +19,7 @@ if (count _this > 0) then {
 		} forEach _this;
 		[_units, _this] call preprocessFile "Util\ArrayAppend.sqf";
 		{
+			private [{_unit},{_uid},{_id}];
 			_unit = _x;
 			if (alive _unit && _unit != vehicle _unit) then {
 				_uid = [_unit, siPlayer, giPlayer] call funcCalcUID;
