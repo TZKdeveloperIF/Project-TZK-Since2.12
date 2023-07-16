@@ -72,6 +72,7 @@ TzkMapRtsFlashingDisabled = true
 	[false, _id + 2] exec "Player\Rts\SetRtsMouse.sqs"; exit
 
 # LeftDownBtn
+	? 0 == _val2 || 2 == _val2 || 3 == _val2: if ((markerPos "TzkRtsAreadiagonal") select 0 == 0) then {hint "Please draw line first.", goto "Update"}
 	? 0 == _val2: _units call preprocessFile "Rts\Order\CrossTheBridge.sqf"; closeDialog 0; goto "Quit"
 	? 2 == _val2: _units call preprocessFile "Rts\Order\ForceMoveLandVehicle.sqf"; closeDialog 0; goto "Quit"
 	? 3 == _val2: _units call preprocessFile "Rts\Order\ForceMoveShip.sqf"; closeDialog 0; goto "Quit"
