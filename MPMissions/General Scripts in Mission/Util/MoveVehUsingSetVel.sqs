@@ -15,6 +15,8 @@ _speed = (_param select 2) / 3.6
 _delay = _param select 3
 _crossBrdige = _param select 4
 
+? count _dest < 3: _dest set [2, _dest call funcHASL]
+
 _vehicle doWatch _dest
 ~ _delay
 
@@ -27,10 +29,13 @@ _vehicle setVectorDir _delta
 _inHalfPlane = preprocessFile "Math\InHalfPlane.sqf"
 
 # loop
+	_moveSpd = (abs(speed _vehicle) + 10) / 3.6
+	? _speed < _moveSpd: _moveSpd = _speed
+
 	doStop _vehicle
 	_pos = getPosASL _vehicle
 	_diff = [_dest, _pos] call funcVectorSub
-	_diff = [_diff, _speed / (_diff call funcVectorLength)] call funcVectorScale
+	_diff = [_diff, _moveSpd / (_diff call funcVectorLength)] call funcVectorScale
 	? not _crossBrdige: goto "ForceMove"
 		; correct vehicle vector dir
 		_bridge = NearestObjectDistance [_vehicle, "Bridge", 50]
@@ -46,10 +51,12 @@ _inHalfPlane = preprocessFile "Math\InHalfPlane.sqf"
 		; _diff set [2, (_diff select 2) + 2]
 
 	# ForceMove
-		_vehicle setVectorDir _diff
+		? _moveSpd * 3.6 > 18: _vehicle setVectorDir _diff
 		_vehicle setVelocity _diff
+	~ 0.2
+		_vehicle doWatch _dest
 
-	~ 1
+	~ 0.8
 	? not (_this select 1): goto "EOF"
 	? not alive _vehicle: goto "EOF"
 	? [getPosASL _vehicle, _dest, _delta] call _inHalfPlane: goto "Reached"
