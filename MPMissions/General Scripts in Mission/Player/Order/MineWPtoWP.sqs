@@ -8,7 +8,7 @@ _wp1 = (wpPlayer select (_this select 2 select 1))
 ? !(alive _unit): exit
 ? _unit != vehicle _unit: exit
 
-_rearmData = _unit call funcGetRearmData
+_rearmData = _unit call preprocessFile "Common\SQF\RearmData.sqf"
 _weapons = _rearmData select 0
 _mags = _rearmData select 1
 _hasMines = false; { if (_x in _mags) then {_hasMines = true} } forEach MagzinesMine
