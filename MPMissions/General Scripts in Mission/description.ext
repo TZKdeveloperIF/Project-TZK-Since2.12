@@ -1634,12 +1634,20 @@ class TZK_OrderAIDialog2: TZK_OrderAIDialog {
 	controls[] = {
 		SendOrderBG1, SendOrderBG2, OrderDesc, 
 		OrdersLabel, SendOrder1, Orders, 
-		OrdersLabel2, SendOrder2, Orders2,
+		OrdersLabel2, SendOrder2, Orders3,
 		Param0Label, Param0, Param1Label, Param1, Param2Label, Param2, 
 		Exit, 
-		Frame2, Frame3, 
+		Frame2, Frame3, Frame4, 
 		LeftDownBtn0, 
 		DownBtn0, DownBtn1, 
+		LeftBtn0, 
+	};
+	class Orders3: TZK_ListBox {
+		idc = IDC + 6;
+		x = 0.0;
+		y = 0.1;
+		w = 0.2;
+		h = 0.18;
 	};
 	class Frame2: TZK_Frame_1 {
 		colorText[] = {0.4, 0.0, 0.4, 0.9};
@@ -1653,6 +1661,24 @@ class TZK_OrderAIDialog2: TZK_OrderAIDialog {
 	class Frame3: Frame2 {
 		text = "Mine Order";
 		x = 0.31;
+	};
+	class Frame4: Frame2 {
+		text = "";
+		y = 0.10 + 0.03 * 6 + 0.01;
+		w = 0.18;
+		h = 0.01 + 0.05 * 1;
+		colorText[] = {1.0, 0.0, 0.0, 1.0};
+	};
+	// left part. Take place of old orders listed in listbox
+	class LeftBtn0: Button {
+		idc = IDC + 16 * 2 + 0;
+		x = 0.025;
+		y = 0.10 + 0.03 * 6 + 0.02 + 0.05 * 0;
+		w = 0.15;
+		text = "";
+		action = "btnValue00 = 0";
+
+		colorText[] = {0.0, 0.0, 0.0, 1};
 	};
 	// left down part. 
 	class LeftDownBtn0: Button {		// for player "Cross the bridge"

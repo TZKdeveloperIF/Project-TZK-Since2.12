@@ -95,8 +95,8 @@ _type = 0, _c = count aiOrders2; _found = false; while {_type < _c && not _found
 _type = 0, _c = count aiOrders2; _found = false; while {_type < _c && not _found} do {
 	if (aiOrders2 select _type select 0 == "Join") then {
 		_found = true;
+		aiOrders2 select _type set [0, "Invalid"];
 		aiOrders2 select _type select 1 resize 0;
-		aiOrders2 select _type set [3, "Join\Submenu\PplOrder.sqs"];
 	};
 	_type = _type + 1;
 };
@@ -112,11 +112,7 @@ comment "Redefine shoot target order param.";
 		_type = _type + 1;
 	};
 
-comment "Add new orders";
-	comment "[Join] order should always be the last one";
-	_typeJoin = count aiOrders2 - 1;
-	comment "Add orders here";
-
+comment "Don't add new orders here. Add player units order via button now.";
 
 comment "Post execute. Fix CHN images' indexes.";
 	aiOrdersChnIngore2 = [];
