@@ -1,5 +1,5 @@
-; args: [units]
-_units = _this select 0
+; args: units
+_units = _this
 ? count _units > 1 : _unitsToRemove = []; {if !(_x in units player) then { _unitsToRemove set [count _unitsToRemove, _x] } } forEach _units; _units = _units - _unitsToRemove
 
 _groups = [groupPlayer]
@@ -49,12 +49,14 @@ _i = 0; _c = count _units
 	? giPlayer == giCO select siPlayer: if  ((group _u) in _groups) Then {player groupchat "You are not allowed to disband this unit."; goto "CheckUnit"}
 	? giPlayer != giCO select siPlayer: if !((group _u) in _groups) Then {player groupchat "You are not allowed to disband this unit."; goto "CheckUnit"}
 
+	_delay = 1
+	? player == leader _u: _delay = 0.1
 	? _u == vehicle _u && _u != leader _u: player groupchat "Disbanding unit."; goto "SkipKill"
 	player groupchat "Disbanding unit."
 	_u setDamage 1
-	~1
-	#SkipKill
-	~1
+	~ _delay
+	# SkipKill
+	~_delay
 	? _u == leader _u && !((group _u) in (workerGroups select siPlayer)) : player groupchat "Leader has been killed but won't be deleted."; goto "CheckUnit"
 	deleteVehicle _u
 	goto "CheckUnit"

@@ -1634,8 +1634,12 @@ class TZK_OrderAIDialog2: TZK_OrderAIDialog {
 		colorBackground[] = {0.0, 0.6, 0.9, 0.8};
 	};
 	controls[] = {
+		MidPic0, MidPic1, MidPic2, MidPic3, 
+		MidPic4, MidPic5, 
+		MidBtn0, MidBtn1, MidBtn2, MidBtn3, 
+		MidBtn4, MidBtn5, 
 		SendOrderBG1, SendOrderBG2, OrderDesc, 
-		OrdersLabel, SendOrder1, Orders, 
+		OrdersLabel, SendOrder1, Orders4, 
 		OrdersLabel2, SendOrder2, Orders3,
 		Param0Label, Param0, Param1Label, Param1, Param2Label, Param2, 
 		Exit, 
@@ -1643,6 +1647,13 @@ class TZK_OrderAIDialog2: TZK_OrderAIDialog {
 		LeftDownBtn0, LeftDownBtn2, LeftDownBtn3, 
 		DownBtn0, DownBtn1, 
 		LeftBtn0, 
+	};
+	class Orders4: TZK_ListBox {
+		idc = IDC+0;
+		x = 0.40;
+		y = 0.1 + 0.03 * 4;
+		w = 0.2;
+		h = 0.57 - 0.03 * 4 - 0.03 * 2;
 	};
 	class Orders3: TZK_ListBox {
 		idc = IDC + 6;
@@ -1718,6 +1729,74 @@ class TZK_OrderAIDialog2: TZK_OrderAIDialog {
 		idc = IDC + 16 * 6 + 1;
 		x = 0.015 + 0.12 * 1 + 0.30 * 1;
 		action = "btnValue01 = 1";
+	};
+	// mid part
+	class MidBtn0: LeftDownBtn0 {
+		idc = IDC + 16 * 14 + 0;
+		x = 0.40;
+		y = 0.10 + 0.03 * 0;
+		w = 0.20; // fully cover list box
+		h = 0.03; // fully cover list box
+
+		colorText[] = {0, 0, 0, 1};
+		sizeEx = 0.022;
+		text = "";
+		action = "btnValue03 = 0";
+	};
+	class MidBtn1: MidBtn0 {
+		idc = IDC + 16 * 14 + 1;
+		y = 0.10 + 0.03 * 1;
+		action = "btnValue03 = 1";
+	};
+	class MidBtn2: MidBtn0 {
+		idc = IDC + 16 * 14 + 2;
+		y = 0.10 + 0.03 * 2;
+		action = "btnValue03 = 2";
+	};
+	class MidBtn3: MidBtn0 {
+		idc = IDC + 16 * 14 + 3;
+		y = 0.10 + 0.03 * 3;
+		action = "btnValue03 = 3";
+	};
+
+	class MidBtn4: MidBtn0 {
+		idc = IDC + 16 * 14 + 4;
+		y = 0.10 + 0.03 * 17;
+		action = "btnValue03 = 4";
+	};
+	class MidBtn5: MidBtn0 {
+		idc = IDC + 16 * 14 + 5;
+		y = 0.10 + 0.03 * 18;
+		action = "btnValue03 = 5";
+	};
+	class MidPic0: Label {
+		idc = IDC + 16 * 15 + 0;
+		style = ST_PICTURE;
+		text = "";
+		x = 0.40;
+		y = 0.10 + 0.03 * 0;
+		w = 0.20; // fully cover list box
+		h = 0.03; // fully cover list box
+	};
+	class MidPic1: MidPic0 {
+		idc = IDC + 16 * 15 + 1;
+		y = 0.10 + 0.03 * 1;
+	};
+	class MidPic2: MidPic0 {
+		idc = IDC + 16 * 15 + 2;
+		y = 0.10 + 0.03 * 2;
+	};
+	class MidPic3: MidPic0 {
+		idc = IDC + 16 * 15 + 3;
+		y = 0.10 + 0.03 * 3;
+	};
+	class MidPic4: MidPic0 {
+		idc = IDC + 16 * 15 + 4;
+		y = 0.10 + 0.03 * 17;
+	};
+	class MidPic5: MidPic0 {
+		idc = IDC + 16 * 15 + 5;
+		y = 0.10 + 0.03 * 18;
 	};
 };
 
