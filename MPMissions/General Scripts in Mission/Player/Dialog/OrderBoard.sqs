@@ -1,8 +1,7 @@
-; args: [units, pos, params]
+; args: [units, pos]
 
 _units = _this select 0; _unitsToRemove = []; {if !(_x in units player) then { _unitsToRemove set [count _unitsToRemove, _x] } } forEach _units; _units = _units - _unitsToRemove
 _pos = _this select 1
-_params = _this select 2
 
 ? count _units == 0 : exit
 

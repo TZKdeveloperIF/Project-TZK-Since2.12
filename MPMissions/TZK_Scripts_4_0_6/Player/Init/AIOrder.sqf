@@ -10,26 +10,21 @@ orderCheck = {_id < playerOrderID select _uid}; mutexUnitOrder = false;
 comment { Use 2 matrixes since TZK_4.0.0.0 };
 aiOrders1 = []; aiOrders2 = []; lastOrder1 = -1; lastOrder2 = -1; lastOrderList = -1;
 
-aiOrders1 set [count aiOrders1, [
-	"Heal & (Rearm)", [], false, localize {TZK_ORDER_PLAYER_SUPPORT_OPT_REARM},
-	"Units will move to nearest support vehicle belonging to us if heal, repair or rearm needed."
-]];
+// aiOrders1 set [count aiOrders1, [
+// 	"Heal & (Rearm)", ...
+// ]];
 
-aiOrders1 set [count aiOrders1, [
-	"Rearm & Heal", [], false, "\TZK_Scripts_4_0_5\Player\Order\Support ForceRearm.sqs",
-	"Units will move to nearest support vehicle belonging to us and rearm, they will heal and repaiar if needed."
-]];
+// aiOrders1 set [count aiOrders1, [
+// 	"Rearm & Heal", ...
+// ]];
 
-aiOrders1 set [count aiOrders1, [
-	"Board...", [], true, "Player\Dialog\OrderBoard.sqs",
-	"Opens up a new dialog to show all vehicles belonging to us in 100m range near the position clicked. Units 
-	will board the chosen vehicle."
-]];
+// aiOrders1 set [count aiOrders1, [
+// 	"Board...", ...
+// ]];
 
-aiOrders1 set [count aiOrders1, [
-	"Move", [], false, "\TZK_Scripts_4_0_4\Player\Order\MovePos.sqs",
-	"Units will move to the postion clicked."
-]];
+// aiOrders1 set [count aiOrders1, [
+// 	"Move", ...
+// ]];
 
 _param0 = ["Waypoint", countWPPlayer, {format[{wp%1}, _this]}, 0];
 aiOrders1 set [count aiOrders1, [
@@ -129,17 +124,13 @@ aiOrders1 set [count aiOrders1, [
 	"Units will patrol town and take town back if it is lost."
 ]];
 
-aiOrders1 set [count aiOrders1, [
-	"Clear Order", [], false, "\TZK_Scripts_4_0_4\Player\Order\Clear.sqs",
-	"Units will stop, and their current order will be broken off. It might cost tens of seconds 
-	for some complex orders to indeed end.\nBefore @TZK_1.10, clicking map while selecting units 
-	can clear their order, but this won't work since 1.10 version."
-]];
+// aiOrders1 set [count aiOrders1, [
+// 	"Clear Order", ...
+// ]];
 
-aiOrders1 set [count aiOrders1, [
-	"Disband", [], true, "\TZK_Scripts_4_0_5\Player\Order\DisbandUnits.sqs",
-	"Disband selected units."
-]];
+// aiOrders1 set [count aiOrders1, [
+// 	"Disband", ...
+// ]];
 
 
 BuyFactoryDefs = ["Barrack", "Light", "Ship", "Heavy", "Air"];

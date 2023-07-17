@@ -1,12 +1,14 @@
+comment "Invalidate repair, rearm, board, move, clear order, disband.";
+{
+	_entry = aiOrders1 select _x;
+	_entry set [0, ""];
+	_entry set [2, true];
+	_entry set [3, "empty.sqs"];
+	_entry set [4, ""];
+} forEach [0,1,2,3, 17,18];
+
 comment "Redirect order scripts.";
 
-_type = 0, _c = count aiOrders1; _found = false; while {_type < _c && not _found} do {
-	if (aiOrders1 select _type select 0 == "Board...") then {
-		_found = true;
-		aiOrders1 select _type set [3, "Player\Dialog\OrderBoard.sqs"];
-	};
-	_type = _type + 1;
-};
 _type = 0, _c = count aiOrders1; _found = false; while {_type < _c && not _found} do {
 	if (aiOrders1 select _type select 0 == "Mine Town Flag") then {
 		_found = true;
@@ -46,27 +48,6 @@ _type = 0, _c = count aiOrders1; _found = false; while {_type < _c && not _found
 	if (aiOrders1 select _type select 0 == "Satchel Wp") then {
 		_found = true;
 		aiOrders1 select _type set [3, "Player\Order\SatchelWP.sqs"];
-	};
-	_type = _type + 1;
-};
-_type = 0, _c = count aiOrders1; _found = false; while {_type < _c && not _found} do {
-	if (aiOrders1 select _type select 0 == "Rearm & Heal") then {
-		_found = true;
-		aiOrders1 select _type set [3, "Player\Order\Support ForceRearm.sqs"];
-	};
-	_type = _type + 1;
-};
-_type = 0, _c = count aiOrders1; _found = false; while {_type < _c && not _found} do {
-	if (aiOrders1 select _type select 0 == "Clear Order") then {
-		_found = true;
-		aiOrders1 select _type set [3, "Player\Order\Clear.sqs"];
-	};
-	_type = _type + 1;
-};
-_type = 0, _c = count aiOrders1; _found = false; while {_type < _c && not _found} do {
-	if (aiOrders1 select _type select 0 == "Disband") then {
-		_found = true;
-		aiOrders1 select _type set [3, "Player\Order\DisbandUnits.sqs"];
 	};
 	_type = _type + 1;
 };
