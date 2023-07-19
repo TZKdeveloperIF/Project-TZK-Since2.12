@@ -1,9 +1,10 @@
-; args: [unit, pos, [equipment index]]
+; args: [unit, [pos, equipment index, overwrite: bool]]
 
 _unit = _this select 0
-_pos = _this select 1
-_template = _this select 2 select 0
-_overWrite = _this select 2 select 1
+_pos = _this select 1 select 0
+_template = _this select 1 select 1
+_overWrite = _this select 1 select 2
+_this = 0
 
 ? !(alive _unit): exit
 _v = vehicle _unit
@@ -59,32 +60,35 @@ _weapons = +weaponsCustom; _mags = []
 { if (_x != -1) then {_weapons = _weapons + [weaponSearch select _x]} } forEach [_typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG]
 { _mags = _mags + [equipSearch select (_x select 0)] } foreach (_equipment select isGeneral)
 { _mags = _mags + [equipSearch select (_x select 0)] } foreach (_equipment select isHandgun)
-_cost = [_unit, _weapons, _mags, 0.5] call funcCalcRearmCost
+_equipFee = [_unit, _weapons, _mags, customInfEquipRate] call funcCalcRearmCost
 
-; hint format ["%1\n%2\n%3", _weapons, _mags, _cost]
+; hint format ["%1\n%2\n%3", _weapons, _mags, _equipFee]
 _money = groupMoneyMatrix select siPlayer select giPlayer
-? !(typeOf _unit in ["SoldierWSaboteurDay", "SoldierESaboteurBizon", "SoldierWSaboteurDay_xj400", "SoldierESaboteurBizon_xj400"]): _cost = _cost + 50
+_extraTypeFee = 0
+? !(typeOf _unit in ["SoldierWSaboteurDay", "SoldierESaboteurBizon", "SoldierWSaboteurDay_xj400", "SoldierESaboteurBizon_xj400"]) && _equipFee > 0: _extraTypeFee = 50
+_cost = _equipFee + _extraTypeFee
 ? _cost > _money && _cost > 0: _msg = format["Not enough money for rearm. ($%1 needed)", _cost]; goto "Abort"
 
-[_cost] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"; _unit groupChat format["Rearm Complete. $%1", _cost]; 
+[_cost] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"
+_unit groupChat format["Rearm Complete. Equipment cost: $%1%2", _equipFee, if (_extraTypeFee > 0) then {format [", extra cost: %1", _extraTypeFee]} else {""}]; 
 removeAllWeapons _unit; {_unit addMagazine _x} forEach _mags; {_unit addWeapon _x} forEach _weapons
 
 ; Write current equipments into rearm data LOCALLY if selected overwrite rearmData.
-? _overWrite == 0: goto "Return"
+? not _overWrite: goto "Quit"
 [_unit, _weapons, _mags, -1, 1, true] exec localize {TZK_EQUIPREARMDATA_EDIT}
 ~0.1
 _i = rearmDataObj find _unit
 ? _i == -1: [_unit] exec localize {TZK_REARMDATA_ADD} 
-goto "Return"
+goto "Quit"
 
   
 #Abort
   ? (alive _unit) && _msg != "": _unit groupChat _msg
-  ? (alive _unit): goto "Return"
+  ? (alive _unit): goto "Quit"
   exit
   
-#Return
-    ~6
+# Quit
+    ~ 6
     ? !(alive _unit): exit
 	_unit groupChat "Returning after support."; [_unit, _posReturn] call funcMove
   

@@ -1800,4 +1800,39 @@ class TZK_OrderAIDialog2: TZK_OrderAIDialog {
 	};
 };
 
+class EquipmentMenu2: EquipmentMenu {
+	controls[] = {
+		Equipment_MoneyStatus, Equipment_Money, Equipment_CostStatus, Equipment_Cost, PrimaryLabel, Primary, PrimaryAmmo, AddPrimaryAmmo, RemovePrimaryAmmo, HandgunLabel, Handgun, HandgunAmmo, AddHandgunAmmo, RemoveHandgunAmmo, SecondaryLabel, Secondary, SecondaryAmmo, AddSecondaryAmmo, RemoveSecondaryAmmo, EquipmentLabel, Equipment, AddEquipment, RemoveEquipment, TemplatesLabel, TemplateList, SaveTemplate, LoadTemplate, BuyTemplate, Clear, Buy, Exit,
+		PrimaryImage, SecondaryImage, PrimaryOnlyImage, OpticsFirstImage, OpticsSecondImage,
+		GeneralImage_0_1, GeneralImage_1_1, GeneralImage_2_1, GeneralImage_3_1, GeneralImage_4_1, GeneralImage_5_1, GeneralImage_6_1, GeneralImage_7_1, GeneralImage_8_1,  GeneralImage_9_1, GeneralImage_10_1,
+		GeneralImage_0_2, GeneralImage_1_2, GeneralImage_2_2, GeneralImage_3_2, GeneralImage_4_2, GeneralImage_5_2, GeneralImage_6_2, GeneralImage_7_2, GeneralImage_8_2,
+		GeneralImage_0_3, GeneralImage_1_3, GeneralImage_2_3, GeneralImage_4_3, GeneralImage_5_3, GeneralImage_6_3, GeneralImage_7_3,
+		GeneralImage_0_4, GeneralImage_1_4, GeneralImage_4_4, GeneralImage_5_4, GeneralImage_6_4,
+		GeneralImage_0_5, GeneralImage_5_5, GeneralImage_4_6, 
+		HandgunImage, HandgunImage_0_1, HandgunImage_0_2, HandgunImage_0_3, HandgunImage_0_4, HandgunImage_1_1, HandgunImage_1_2, HandgunImage_1_3, HandgunImage_2_1, HandgunImage_2_2, HandgunImage_3_1,
+		AddOptics, RemoveOptics, OpticsList
+
+		, ExtendBg, PresetBuyNoOverwrite, PresetBuyOverwrite, 
+	};
+	class PresetBuyNoOverwrite: Button {
+		idc = IDC + 16 * 2 + 0;
+		x = 0.29;
+		y = 0.64;
+		w = 0.20;
+		text = "Buy (no overwrite)";
+		action = "btnValue00 = 0";
+	};
+	class PresetBuyOverwrite: PresetBuyNoOverwrite {
+		idc = IDC + 16 * 2 + 1;
+		x = 0.51;
+		text = "Buy and overwrite";
+		action = "btnValue00 = 1";
+	};
+	class ExtendBg: Sub_BG {
+		idc = IDC + 16 * 2 + 2;
+		y = 0.65;
+		h = 0.05;
+	};
+};
+
 // EOF

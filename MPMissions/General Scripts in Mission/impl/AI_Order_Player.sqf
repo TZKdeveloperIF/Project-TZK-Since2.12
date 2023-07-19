@@ -99,6 +99,15 @@ _type = 0, _c = count aiOrders2; _found = false; while {_type < _c && not _found
 	};
 	_type = _type + 1;
 };
+_type = 0, _c = count aiOrders2; _found = false; while {_type < _c && not _found} do {
+	if (aiOrders2 select _type select 0 == "Buy Equipment") then {
+		_found = true;
+		aiOrders2 select _type select 1 resize 0;
+		aiOrders2 select _type set [2, true];
+		aiOrders2 select _type set [3, "Player\Order\PreBuyEquip.sqs"];
+	};
+	_type = _type + 1;
+};
 
 comment "Redefine shoot target order param.";
 	_type = 0, _c = count aiOrders2; _found = false; while {_type < _c && not _found} do {
