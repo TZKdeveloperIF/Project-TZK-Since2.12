@@ -1,10 +1,24 @@
-; args: unit
+; args: [to units: bool, units or unit]
 
-_unit = _this
+? not (_this select 0): goto "CommandSingleUnit"
+
+_units = _this select 1
+{[false, _x] exec "Player\Order\Clear.sqs"} forEach _units
+
+_ids = []
+{_ids set [count _ids, [_x, siPlayer, giPlayer] call funcCalcUID]} forEach _units
+
+? 1 == count _ids: (_units select 0) groupChat "Roger. Order cleared and stopped. Waiting for new one."
+? 1 < count _ids: player groupchat format ["Units %1 order cleared and stopped. Waiting for new one.", _ids]
+
+exit
+
+# CommandSingleUnit
+
+_unit = _this select 1
 
 ? !(alive _unit): exit
 
-_unit groupchat "Roger. Order cleared and stopped. Waiting for new one."
 _uid = [_unit, siPlayer, giPlayer] call funcCalcUID
 ? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
 _id = (playerOrderID select _uid) + 1; [_uid, _id] exec "\TZK_Scripts_4_0_4\Player\Order\New.sqs"
