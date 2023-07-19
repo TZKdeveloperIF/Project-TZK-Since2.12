@@ -7,6 +7,9 @@ comment "Invalidate repair, rearm, board, move, clear order, disband.";
 	_entry set [4, ""];
 } forEach [0,1,2,3, 17,18];
 
+comment "Invalidate global variable 'BuyFactoryDefs'";
+BuyFactoryDefs resize 0; BuyFactoryDefs = _nil;
+
 comment "Redirect order scripts.";
 
 _type = 0, _c = count aiOrders1; _found = false; while {_type < _c && not _found} do {
@@ -52,6 +55,14 @@ _type = 0, _c = count aiOrders1; _found = false; while {_type < _c && not _found
 	_type = _type + 1;
 };
 
+_type = 0, _c = count aiOrders2; _found = false; while {_type < _c && not _found} do {
+	if (aiOrders2 select _type select 0 == "Buy Units") then {
+		_found = true;
+		aiOrders2 select _type set [0, "Invalid"];
+		aiOrders2 select _type select 1 resize 0;
+	};
+	_type = _type + 1;
+};
 _type = 0, _c = count aiOrders2; _found = false; while {_type < _c && not _found} do {
 	if (aiOrders2 select _type select 0 == "Build Struct") then {
 		_found = true;
