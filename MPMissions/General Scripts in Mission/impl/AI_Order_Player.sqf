@@ -76,3 +76,8 @@ _type = 0, _c = count aiOrders1; _found = false; while {_type < _c && not _found
 	};
 	_type = _type + 1;
 };
+
+comment "Remove order descriptions.";
+{
+	_x set [4, -1];
+} forEach aiOrders1;
