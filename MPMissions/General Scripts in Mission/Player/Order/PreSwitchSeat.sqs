@@ -1,0 +1,36 @@
+; args: units
+_units = _this
+? count _units <= 0: exit
+
+@ !mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "TzkRtsSubMenuOneListBox"
+mutexDlg = false
+
+_idcTitle = IDC + 0; _idcListLabel = IDC + 16 * 1 + 0; _idcListBox0 = IDC + 16 * 2 + 0
+
+ctrlSetText [_idcTitle, "Switch Seat"]
+ctrlSetText [_idcListLabel, "Seats"]
+
+btnValue00 = false; btnValue01 = false
+
+{lbAdd [_idcListBox0, _x]} forEach ["Driver", "Gunner", "Cargo"]
+
+# loop
+	~ 0.2
+	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+	? call dlgUpdated: goto "Quit"
+	? not alive player: closeDialog 0; goto "Quit"
+
+	? btnValue00: btnValue00 = false; closeDialog 0; goto "Quit"
+	? btnValue01: btnValue01 = false; goto "OK"
+
+	goto "loop"
+# Quit
+	exit
+# OK
+	_idx = lbCurSel _idcListBox0
+	? -1 == _idx: hint "No selected seat.", goto "loop"
+
+	{[_x, 0, [_idx]] exec "\TZK_Scripts_4_0_4\Player\Order\SwitchSeat.sqs"} forEach _units
+	closeDialog 0; goto "Quit"

@@ -8,7 +8,8 @@ playerOrderID = []; _i = 0; while {_i < 13} do {playerOrderID set [_i, 0]; _i = 
 orderCheck = {_id < playerOrderID select _uid}; mutexUnitOrder = false;
 
 comment { Use 2 matrixes since TZK_4.0.0.0 };
-aiOrders1 = []; aiOrders2 = []; lastOrder1 = -1; lastOrder2 = -1; lastOrderList = -1;
+aiOrders1 = []; lastOrder1 = -1;
+// todo: remove definition of aiOrders2
 
 // aiOrders1 set [count aiOrders1, [
 // 	"Heal & (Rearm)", ...
@@ -133,95 +134,11 @@ aiOrders1 set [count aiOrders1, [
 // ]];
 
 
-// BuyFactoryDefs = ["Barrack", "Light", "Ship", "Heavy", "Air"];
-// aiOrders2 set [count aiOrders2, [
-// 	"Buy Units", ...
-// ]];
-
-_param0 = ["Structure Type", count structDefs, {format[{%1}, structDefs select _this select sdName]}, 0];
-_param1 = [
-	"Angle",
-	24,
-	{format [{%1%2}, 15*(_this), [
-		[" (N)", " (NE)", " (E)", " (SE)", " (S)", " (SW)", " (W)", " (NW)"] select ((_this - (_this mod 3))/3), 
-		""
-	] select (_this mod 3 != 0)]}, 
-	0
-];
-aiOrders2 set [count aiOrders2, [
-	"Build Struct", [_param0, _param1], false, "\TZK_Scripts_4_0_4\Player\Order\BuildStructure.sqs",
-	"Ask your group member get close to the destination and help build structure (the position must close enough to 
-	MHQ\MCV\Support Vehicle)."
-]];
-
-_param0 = ["Workers Num", 10, {format[{%1}, 1+_this]}, 0];
-aiOrders2 set [count aiOrders2, [
-	"Buy Workers", [_param0], false, "\TZK_Scripts_4_0_4\Player\Order\BuyWorkers.sqs",
-	"Ask your group member get close to MHQ (MCV not support yet) to buy workers. Each members will buy workers 
-	independently if you send order to multiple units."
-]];
-
-_param0 = ["Target", 20, {format[{Target%2_%1}, _this%10, [{P},{S}] select (_this > 9)]}, 0];
-_param1 = ["Set", 2, "[{Set},{Clear}] select _this", 0];
-aiOrders2 set [count aiOrders2, [
-	"Set Target", [_param0, _param1], true, "\TZK_Scripts_4_0_4\Player\Order\SetTarget.sqs",
-	"Set target at clicking position. To clear a target, select 'Clear' item in second parameter listbox.\n\n
-	Only Commander is allowed to adjust ""TargetS"" markers, which are for AI groups' order."
-]];
-
-_param0 = ["Target", 10, {format[{Target_%1}, _this]}, 0];
-_param1 = ["Dispersion", 20, {format [{%1m}, 10*_this]}, 0];
-_param2 = ["Big Angle", 2, {format [{%1}, [{false}, {true}] select _this]}, 0];
-aiOrders2 set [count aiOrders2, [
-	"Shoot Target", [_param0, _param1, _param2], false, "Player\Order\ShootTarget.sqs",
-	"Ask your group member to shoot at selected target. Order is valid to tank, howitzer vehicle, mortar structure and 
-	howitzer structure.\n\nThere exists ""minimum"" disperation radius for different kinds of shooting vehicle. 0 m for 
-	tanks, 10 m for M119 105mm Howitzer, 30 m for D30A 122mm Howitzer, 40m for 155mm M109/PLZ05 Howitzer and M270 MLRS, 
-	60 m for Mortar and T.O.S-1. If less disperation selected, the minimum value will replace it as actual value."
-]];
 PlayerShootingUnits = [];
-
-_param0 = ["Seat", 3, {["Driver", "Gunner", "Cargo"] select _this}, 0];
-aiOrders2 set [count aiOrders2, [
-	"Switch Seat", [_param0], false, "\TZK_Scripts_4_0_4\Player\Order\SwitchSeat.sqs",
-	"Ask your group member switch the driver/gunner/cargo seat. The vehicle and sitting crew must local to your client."
-]];
 mutexSwitchSeat = false;
 
-_param0 = ["InitSpeed", count ArtilleryMagazineSpeedList, {format [{%1 m/s}, ArtilleryMagazineSpeedList select _this]}, 0];
-_param1 = ["Curved", 2, {["False", "True"] select _this}, 1];
-_script = localize {TZK_ORDER_PLAYER_SWITCH_MAG};
-if bool_TZK_SEMod_Mode then {_script = "Extra\SwitchMag_Player.sqs"};
-aiOrders2 set [count aiOrders2, [
-	"Switch Magazine", [_param0, _param1], false, _script,
-	"Switch the magazine of artillery vehicle. For mortar structure, you should assign whether use curved magazine or not.\n
-	Using curved magazine can make AI shoot curved trajectory, but AI won't shoot it directly when enemy insight. AI will 
-	shoot non-curved magazine to spotted enemy, but the trajectory won't be so curved."
-]];
-
-_param0 = ["Vector", 3, {["Upright", "Sloped"] select _this}, 0];
-aiOrders2 set [count aiOrders2, [
-	"Adjust VectorUp", [_param0], false, "\TZK_Scripts_4_0_4\Player\Order\ResetUp.sqs",
-	"Change the VectorUp (normal vector, or say the down-up direction) of defending structure. Not available for 1.99 version."
-]];
-
-// aiOrders2 set [count aiOrders2, [
-// 	"Buy Equipment", ...
-// ]];
-
-if bool_TZK_SEMod_Mode then {
-	aiOrders2 set [count aiOrders2, [
-		"Entrench Tank", [], false, "\TZK_Scripts_4_0_4\Player\Order\EntrenchTank.sqs",
-		"Ask your member build tank trench on his position. Vehicle must stop for about 30 seconds to wait trench 
-		built. $1000 is charged."
-	]];
-};
-
-_param0 = ["Group", count callsigns, {format[{%1}, callsigns select _this]}, -1];
-aiOrders2 set [count aiOrders2, [
-	"Join", [_param0], true, "\TZK_Scripts_4_0_4\Player\Order\Join.sqs",
-	"Force selected units to join other group. Custom soldiers may perform abnormal when they go rearm after having 
-	jointed other groups."
-]];
+// "Entrench Tank", [], false, "\TZK_Scripts_4_0_4\Player\Order\EntrenchTank.sqs",
+// "Ask your member build tank trench on his position. Vehicle must stop for about 30 seconds to wait trench 
+// built. $1000 is charged."
 
 call loadFile "impl\AI_Order_Player.sqf";
