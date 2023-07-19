@@ -85,7 +85,7 @@ _selectedOrder = -1
 	? 2 == _val3: [_units, _pos] exec "Player\Dialog\OrderBoard.sqs"; closeDialog 0; goto "Quit"
 	? 3 == _val3: {[_x, _pos] exec "\TZK_Scripts_4_0_4\Player\Order\MovePos.sqs"} forEach _units; closeDialog 0; goto "Quit"
 
-	? 4 == _val3: {_x exec "Player\Order\Clear.sqs"} forEach _units; closeDialog 0; goto "Quit"
+	? 4 == _val3: [true, _units] exec "Player\Order\Clear.sqs"; closeDialog 0; goto "Quit"
 	? 5 == _val3: _units exec "Player\Disband.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 # LeftDownBtn
