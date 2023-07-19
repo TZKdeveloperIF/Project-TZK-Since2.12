@@ -205,13 +205,9 @@ aiOrders2 set [count aiOrders2, [
 	"Change the VectorUp (normal vector, or say the down-up direction) of defending structure. Not available for 1.99 version."
 ]];
 
-_param0 = ["Equipment", 10, {format [{cs%1}, _this]}, 0];
-_param1 = ["Overwrite RearmData", 2, {format [{%1}, [{false}, {true}] select _this]}, 0];
-aiOrders2 set [count aiOrders2, [
-	"Buy Equipment", [_param0, _param1], false, "Player\Order\BuyEquipment.sqs",
-	"Ask your member go to buy custom equipment.\n\nThe template will be loaded from your Custom Soldier records.\n\n
-	If the soldier is not a saboteur, extra $50 is charged."
-]];
+// aiOrders2 set [count aiOrders2, [
+// 	"Buy Equipment", ...
+// ]];
 
 if bool_TZK_SEMod_Mode then {
 	aiOrders2 set [count aiOrders2, [

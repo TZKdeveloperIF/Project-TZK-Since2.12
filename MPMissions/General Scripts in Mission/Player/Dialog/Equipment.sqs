@@ -1,11 +1,15 @@
-; args: [unit, object, define, costFactor]
+; args: [purchase source, custom, costFactor, is preset for player order?: bool, units?: array, pos?: array]
 
-_unit = _this select 0
-_object = _this select 1
-_define = _this select 2
-_costFactor = _this select 3
+_src = _this select 0
+_custom = _this select 1
+_costFactor = _this select 2
+_preset = (if (count _this > 3) then {_this select 3} else {false})
+_units = (if _preset then {_this select 4} else {0})
+_pos = (if _preset then {_this select 5} else {0})
 
-? !(alive _unit) || !(alive _object) : exit
+_unit = player
+
+? !(alive _unit) || !(alive _src) : exit
 _strMOD = "STR_CRCTI_MOD"; if bool_TZK_MF_Mode Then {_strMOD = "STR_CRCTI_Kaos_MOD"}; if bool_TZK_Yugo_Mode Then {_strMOD = "STR_CRCTI_Yugo_MOD"}; if bool_TZK_SEMod_Mode Then {_strMOD = "STR_CRCTI_SE_MOD"};
 
 _cost = 100
@@ -42,13 +46,17 @@ btnClear = false
 
 @!mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
-_dialog = createDialog "EquipmentMenu"
+_dialog = createDialog "EquipmentMenu2"
 mutexDlg = false
 ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 
-_custom = _define || _unit != player
 ctrlSetText [_idcTemplLabel, ["Player Loadouts", "Custom Soldiers"] select _custom ]
-? _define : { ctrlShow [_x, false] } foreach [_idcBuyTempl, _idcBuy]
+? _custom : { ctrlShow [_x, false] } foreach [_idcBuyTempl, _idcBuy]
+; "preset" buttons
+
+_idcBuyPreset = IDC + 16 * 2 + 0, btnValue00 = -1
+_idcExtendBg = _idcBuyPreset + 2
+? not (_custom && _preset): {ctrlShow [_idcBuyPreset + _x, false]} forEach [0,1,2]
 	
 _index = 0
 _count = count weaponDefs
@@ -133,8 +141,8 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 ; goto "UpdateImage"
 
 #Update
-	? call dlgUpdated: goto "CloseDialog"
-	? !(alive _unit) && !(alive _object) : goto "CloseDialog"
+	? call dlgUpdated: goto "Quit"
+	? !(alive _unit) && !(alive _src) : goto "Quit"
 
 	? _templLoaded : goto "UpdateImage"
 
@@ -203,14 +211,11 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 	_costnow = _costFactor*_costnow
 
 	_textplayermoney = format ["$%1", _moneynow]
-	_textplayercost = format ["$%1", _costnow]
 	_textplayermoneydefine = format ["custom"]
-	_textplayercostdefine = format ["none"]
 
-? _define : ctrlSetText [IDC_TEXT_PLAYER_MONEY_EQUIPMENT, _textplayermoneydefine]
-? _define :	ctrlSetText [IDC_TEXT_PLAYER_COST_EQUIPMENT, _textplayercostdefine]
-? !_define : ctrlSetText [IDC_TEXT_PLAYER_MONEY_EQUIPMENT, _textplayermoney]
-? !_define : ctrlSetText [IDC_TEXT_PLAYER_COST_EQUIPMENT, _textplayercost]
+? _custom : ctrlSetText [IDC_TEXT_PLAYER_MONEY_EQUIPMENT, _textplayermoneydefine]
+? !_custom : ctrlSetText [IDC_TEXT_PLAYER_MONEY_EQUIPMENT, _textplayermoney]
+	ctrlSetText [IDC_TEXT_PLAYER_COST_EQUIPMENT, format ["$%1", _costnow]]
 
 	? (btnAddPrim): btnAddPrim=false; _lb = IDC_LB_PRIM_AMMO; goto "AddOneItem"
 	? (btnRemPrim): btnRemPrim=false; _lb = IDC_LB_PRIM_AMMO; goto "RemOneItem"
@@ -228,8 +233,9 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 	? btnLoadTempl && _custom : btnLoadTempl=false; goto "LoadCustom"
 	? btnBuyTempl && !_custom : btnBuyTempl=false; goto "BuyTempl"
 	? btnBuyTempl && _custom : btnBuyTempl=false; goto "BuyCustom"
+	? btnValue00 >= 0 && _custom && _preset: _overWrite = btnValue00; btnValue00 = -1; goto "BuyPreset"
 	? btnClear : btnClear=false; goto "Clear"
-	? btnBuy && !_define : btnBuy=false; goto "Buy"
+	? btnBuy && !_custom : btnBuy=false; goto "Buy"
 
 	~_delay
 	goto "Update"
@@ -375,6 +381,7 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 	lbClear IDC_LB_TEMPLATES
 	_i = 0
 	{ _name = "empty"; if ((count _x) > 0) then { _name = _x select 0 }; lbAdd [IDC_LB_TEMPLATES, format["cs%1 %2", _i, _name] ]; _i=_i+1 } foreach infCustom
+	? lastCustom != -1 : lbSetCurSel [IDC_LB_TEMPLATES, lastCustom]
 	goto "Update"
 
 #SaveTempl
@@ -428,6 +435,7 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
   deleteVehicle unitSetting
 
 	; player globalchat format["infCustom = %1", infCustom select _id]
+	lastCustom = _id
 	goto "UpdateCustom"
 
 #LoadTempl
@@ -473,6 +481,7 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 	? (_typeSec != -1): _found = false; _index = 0; while "not _found" do { if (_typeSec == lbValue[IDC_LB_SEC, _index]) then { _found=true; lbSetCurSel [IDC_LB_SEC, _index]; _sec=_index }; _index=_index+1 }
 	? (_typeHandgun != -1): _found = false; _index = 0; while "not _found" do { if (_typeHandgun == lbValue[IDC_LB_HG, _index]) then { _found=true; lbSetCurSel [IDC_LB_HG, _index]; _handgun=_index }; _index=_index+1 }
 	_templLoaded = true
+	lastCustom = _id
 	goto "Update"
 
 #BuyTempl
@@ -488,6 +497,16 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 	? (count(infCustom select _id) == 0): hint "Soldier Not Defined"; _unit groupChat "Soldier Not Defined"; goto "Update"
 	btnBuy = true
 	goto "LoadCustom"
+
+# BuyPreset
+	_id = lbCurSel IDC_LB_TEMPLATES
+	? (_id == -1): hint "No Template Selected"; _unit groupChat "No Template Selected"; goto "Update"
+	? count(infCustom select _id) == 0: hint "Soldier Not Defined"; _unit groupChat "Soldier Not Defined"; goto "Update"
+
+	_cache = [_pos, _id, if (1 == _overWrite) then {true} else {false}]
+	{[_x, _cache] exec "Player\Order\BuyEquipment.sqs"} forEach _units
+	lastCustom = _id
+	goto "Quit"
 
 #Buy
 	_money = groupMoneyMatrix select siPlayer select giPlayer
@@ -510,9 +529,8 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 #EquipAndExit
 	[ _unit, ["", _typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG, _equipment] ] call funcEquipTempl
 	? _costFactor == 0 : [_typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG, _equipment] call loadFile "\TZK_Scripts_4_0_4\Player\SQF\EquipmentRecordPurchase.sqf"
-	goto "CloseDialog"
+	goto "Quit"
 
-#CloseDialog
-  ? dialog: closeDialog 0
-  exit
-
+# Quit
+	? dialog: closeDialog 0
+	exit
