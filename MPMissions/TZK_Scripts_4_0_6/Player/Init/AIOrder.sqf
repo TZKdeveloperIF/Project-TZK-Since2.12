@@ -133,12 +133,10 @@ aiOrders1 set [count aiOrders1, [
 // ]];
 
 
-BuyFactoryDefs = ["Barrack", "Light", "Ship", "Heavy", "Air"];
-_param0 = ["Factory Type", count BuyFactoryDefs, "BuyFactoryDefs select _this", 0];
-aiOrders2 set [count aiOrders2, [
-	"Buy Units", [_param0], false, "Player\Order\BuyUnits.sqs",
-	"Ask your group member get close to the factory out of CC range and help buy units."
-]];
+// BuyFactoryDefs = ["Barrack", "Light", "Ship", "Heavy", "Air"];
+// aiOrders2 set [count aiOrders2, [
+// 	"Buy Units", ...
+// ]];
 
 _param0 = ["Structure Type", count structDefs, {format[{%1}, structDefs select _this select sdName]}, 0];
 _param1 = [

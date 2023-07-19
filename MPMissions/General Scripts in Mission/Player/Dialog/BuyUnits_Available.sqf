@@ -12,7 +12,7 @@ if (0 == count _workingFactoryTypes) then {
 	_types = [stBarracks, stLight, stHeavy, stAir, stShip];
 	_index = 0; _count = count _types; while {_index < _count} do {
 		_type = _types select _index;
-		_structs = [siPlayer, _type] call funcGetWorkingStructuresWithinCCRange;
+		private [{_structs}]; _structs = _type call _funcAvailableStruct;
 		if (count _structs > 0) then {_workingFactoryTypes = _workingFactoryTypes + [_type]};
 		_index = _index + 1;
 	};

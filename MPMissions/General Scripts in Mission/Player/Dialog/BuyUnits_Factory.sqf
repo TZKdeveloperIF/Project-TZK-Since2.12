@@ -1,26 +1,28 @@
-private ["_idcFactory", "_idcFactoryLabel", "_typeFactory", "_factoryTypes", "_factories", "_aTypeOfFac", "_factoryTypeIndex", "_x", "_textPos", "_textQ", "_qLen",
-"_index", "_factoryIndex", "_selectedFactoryIndex", "_typeFactoryLast", "_lastSelectedFactory"];
+// args: none
+// read variables external
+// read-only var: _idcFactory, _typeFactory, _typeFactoryLast
+// write-only var: _factoryCache, _factories
 
-_idcFactory = _this select 0;
-_idcFactoryLabel = _this select 1;
-_typeFactory = _this select 2;
-_typeFactoryLast = _this select 3;
-
-_factoryTypes = _typeFactory call funcBinaryDigit; _factories = [];
-lbClear _idcFactory;
+_factories resize 0; lbClear _idcFactory;
 {
-	_aTypeOfFac = [siPlayer, _x] call funcGetWorkingStructuresWithinCCRange; _factories = _factories + _aTypeOfFac;
-	_factoryTypeIndex = _x;
+	private [{_type}]; _type = _x;
+	_structs = structMatrix select siPlayer select _type; _aTypeOfFac resize 0;
+
+	private [{_aTypeOfFac}]; _aTypeOfFac = _type call _funcAvailableStruct;
+	[_factories, _aTypeOfFac] call preprocessFile "Util\ArrayAppend.sqf";
+
+	private ["_textPos", "_textQ", "_qLen"];
 	{
 		_textPos = (getPos _x) call funcCalcTownDirDistFromPos;
-		_textQ="";
+		_textQ = "";
 		_qLen = _x call funcGetQueueLength;
-		if (_qLen > 0) then { _textQ = format["Q %1", _qLen] };
-		_lbFac = lbAdd [ _idcFactory, format["%1 %2", _textPos, _textQ] ];
-		lbSetPicture [_idcFactory, _lbFac, ((structDefs select _factoryTypeIndex) select sdImage) select siPlayer];
+		if (_qLen > 0) then {_textQ = format ["Q %1", _qLen]};
+		_lbFac = lbAdd [ _idcFactory, format ["%1 %2", _textPos, _textQ] ];
+		lbSetPicture [_idcFactory, _lbFac, (structDefs select _type select sdImage) select siPlayer];
 	} foreach _aTypeOfFac;
-} forEach _factoryTypes;
+} forEach (_typeFactory call funcBinaryDigit);
 
+private ["_index", "_factoryIndex", "_selectedFactoryIndex", "_lastSelectedFactory"];
 _index = ( lastSelectedFactory select 0 ) find ( _typeFactory ); _factoryIndex = -1;
 if (_index == -1) then {
 	lbSetCurSel [_idcFactory, 0]; _factoryIndex = 0; 
@@ -39,4 +41,5 @@ if (_index == -1) then {
 		if (_factoryIndex != -1) then {lbSetCurSel [_idcFactory, _factoryIndex]} else {lbSetCurSel [_idcFactory, 0]; _factoryIndex = 0};
 	};
 };
-[_factories, _factoryIndex]
+_factoryCache set [1, _factoryIndex];
+// [_factories, _factoryIndex]
