@@ -28,6 +28,13 @@ aiOrders2 = _nil;
 comment "Redirect order scripts.";
 
 _type = 0, _c = count aiOrders1; _found = false; while {_type < _c && not _found} do {
+	if (aiOrders1 select _type select 0 == "Patrol WPs") then {
+		_found = true;
+		aiOrders1 select _type set [3, "Player\Order\PatrolWPs.sqs"];
+	};
+	_type = _type + 1;
+};
+_type = 0, _c = count aiOrders1; _found = false; while {_type < _c && not _found} do {
 	if (aiOrders1 select _type select 0 == "Mine Town Flag") then {
 		_found = true;
 		aiOrders1 select _type set [3, "Player\Order\MineFlag.sqs"];

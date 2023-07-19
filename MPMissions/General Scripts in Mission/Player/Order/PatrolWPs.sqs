@@ -18,22 +18,33 @@ _uid = [_unit, siPlayer, giPlayer] call funcCalcUID
 _id = (playerOrderID select _uid) + 1; [_uid, _id] exec "\TZK_Scripts_4_0_4\Player\Order\New.sqs"
 
 _circ = false
+_start = 0, _end = count _wps - 1
 ? (count _wps) > 2: if ( ([_wps select _end, _wps select _start] call funcDistH) < ([_wps select _end, _wps select _end - 1] call funcDistH) ) then { _circ = true }
 
-_i = -1; _dir = +1; _delay = 0; if (_this select 2 select 0 > _this select 2 select 1) Then {_i = count _wps, _dir = -1}
-#MoveNextPos
-? _i == _start: _dir = +1
-? _i == _end && !_circ: _dir = -1
-? _i == _end && _circ: _i = -1
-_i = _i + _dir
-_pos = [_wps select _i, 10, 10] call funcGetRandomPos
-_timeAbort = time + 2*60*60; _timeMove = time - 1
-#CheckPosReached
+_i = _start - 1; _dir = 1; _delay = 0; if (_this select 2 select 0 > _this select 2 select 1) Then {_i = _end + 1, _dir = -1}
+_timeAbort = time + 2*60*60
+# MoveNextPos
+	? _i == _start: _dir = 1
+	? _i == _end && !_circ: _dir = -1
+	? _i == _end && _circ: _dir = -_end
+
+	_i = _i + _dir
+
+	? _i == _start: _dir = 1
+	? _i == _end && !_circ: _dir = -1
+	? _i == _end && _circ: _dir = -_end
+
+	_pos = [_wps select _i, 10, 10] call funcGetRandomPos
+	_timeMove = time - 1
+	? !(alive _unit): exit
+	? time > _timeAbort: _unit groupChat "Having patrolled for 2 hour. Order aborted."; exit
+	? call orderCheck: exit
+# CheckPosReached
 	~_delay
 	? _wps select _i select 0 < 0: _unit groupChat format ["Current wp%1 not defined. Patrol next one wp%2.", _i, _i + _dir], _delay = 1, goto "MoveNextPos"
 	_delay = 0
 	? time > _timeMove: [_unit, _pos] call funcMove, _timeMove = time + 30
-	~5
+	~ 5
 	? !(alive _unit): exit
 	? time > _timeAbort: _unit groupChat "Having patrolled for 2 hour. Order aborted."; exit
 	? call orderCheck: exit
