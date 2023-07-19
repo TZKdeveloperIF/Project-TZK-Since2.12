@@ -1,10 +1,12 @@
-; args: [pos, units, (aiOrder Matrix index, abandoned)]
+; args: [pos, units]
 _pos = _this select 0; _units = _this select 1;
 
 ? (count _units) == 0: exit
-@!mutexDlg
-mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
-_dlg = createDialog "TZK_OrderAIDialog2"
+
+@ !mutexDlg
+	mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+	_dlg = createDialog "TZK_OrderAIDialog2"
+
 mutexDlg = false
 
 @ not mutexRtsMouse
@@ -17,28 +19,18 @@ mutexDlg = false
 
 ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 
-_idcOrders1 = IDC+0; _idcOrders2 = IDC+6
-_idcButtonBG1 = IDC + 9; _idcButtonBG2 = IDC + 10
-_idcButton1 = IDC + 11; _idcButton2 = IDC + 12
+_idcOrders1 = IDC+0
 
 _idcPar0Label = IDC+1
 _idcPar0List = IDC+2
 _idcPar1Label = IDC+3
 _idcPar1List = IDC+4
-_idcOrderDesc = IDC+5
 
 _idcPar2Label = IDC+7
 _idcPar2List = IDC+8
 
 _bias1 = 4, _offsetOrder1End = -2
-_bias2 = 0
 call preprocessFile "Player\Dialog\OrderPlayerAi_Init.sqf"
-
-; "selected Order" means index of listbox. Since there's offset the (index + offset) should be the order id
-_selectedOrder1 = lastOrder1 - _bias1; _selectedOrder2 = lastOrder2
-? lastOrderList > 0: call format ["_selectedOrder%1 = -1", lastOrderList]
-
-ctrlSetText [_idcOrderDesc, "Since TZK_4.0.0.00, extend orders are listed on the left. 2 buttons are available for orders."]
 
 ; left down board
 _idcLeftDownBtn0 = IDC + 16 * 12 + 0, btnValue02 = -1
@@ -50,23 +42,31 @@ _idcDownBtn0 = IDC + 16 * 6 + 0, btnValue01 = -1
 ctrlSetText [_idcDownBtn0 + 0, "DisableMine"]
 ctrlSetText [_idcDownBtn0 + 1, "Mine Area"]
 ; left board
-_idcDownBtn0 = IDC + 16 * 2 + 0, btnValue00 = -1
-ctrlSetText [_idcDownBtn0 + 0, "Join"]
+_idcLeftBtn0 = IDC + 16 * 2 + 0, btnValue00 = -1
+ctrlSetText [_idcLeftBtn0 + 0, "Shoot Area"]
+ctrlSetText [_idcLeftBtn0 + 1, "Switch Magazine"]
+ctrlSetText [_idcLeftBtn0 + 2, "Buy Equipment"]
+ctrlSetText [_idcLeftBtn0 + 3, "Switch Seat"]
+ctrlSetText [_idcLeftBtn0 + 4, "Join"]
 ; mid buttons
 _idcMidBtn0 = IDC + 16 * 14 + 0, btnValue03 = -1
 call preprocessFile "Player\Dialog\OrderAiBtns.sqf"
 
 TzkMapRtsFlashingDisabled = true
 
+; "selected Order" means index of listbox. Since there's offset the (index + offset) should be the order id
+; _selectedOrder = lastOrder1 - _bias1
+; give "-1" value to refresh param list
+_selectedOrder = -1
+
 # Update
 
 	? call dlgUpdated: goto "Quit"
 	? !(alive player): closeDialog 0; goto "Quit"
 
-	? (_selectedOrder1 != lbCurSel _idcOrders1): _i = 1, goto "NewOrderSelected"
-	? (_selectedOrder2 != lbCurSel _idcOrders2): _i = 2, goto "NewOrderSelected"
-	? btnSendOrder: btnSendOrder=false, _i = 1, goto "SendOrder"
-	? btnSendOrder2: btnSendOrder2=false, _i = 2, goto "SendOrder"
+	? (_selectedOrder != lbCurSel _idcOrders1): goto "NewOrderSelected"
+	? btnSendOrder: btnSendOrder=false, goto "SendOrder"
+	? btnSendOrder2: btnSendOrder2=false, goto "SendOrder"
 
 	? btnValue03 >= 0: _val3 = btnValue03; btnValue03 = -1; goto "MidBtn"
 	? btnValue02 >= 0: _val2 = btnValue02; btnValue02 = -1; goto "LeftDownBtn"
@@ -99,11 +99,15 @@ TzkMapRtsFlashingDisabled = true
 	? 1 == _val1: _units exec "Player\Order\RtsPreMineArea.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 # LeftBtn
-	? 0 == _val0: [_units] exec "Join\Submenu\PplOrder.sqs"; closeDialog 0; goto "Quit"
+	? 0 == _val0: [_units, _pos] exec "Player\Order\PreShootArea.sqs"; closeDialog 0; goto "Quit"
+	? 1 == _val0: _units exec "Player\Order\PreSwitchMag.sqs"; closeDialog 0; goto "Quit"
+	? 2 == _val0: [_units, _pos] exec "Player\Order\PreBuyEquip.sqs"; closeDialog 0; goto "Quit"
+	? 3 == _val0: _units exec "Player\Order\PreSwitchSeat.sqs"; closeDialog 0; goto "Quit"
+	? 4 == _val0: [_units] exec "Join\Submenu\PplOrder.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 
-#SendOrder
-	? call format ["lastOrder%1 == -1", _i]: hint "No order selected. Maybe you clicked wrong button?", goto "Update"
+# SendOrder
+	? lastOrder1 == -1: hint "No order selected", goto "Update"
 
 	; ignore invalidated item
 	? lastOrder1 >= 0 && lastOrder1 <= 3 || lastOrder1 > 16: goto "Update"
@@ -114,19 +118,17 @@ TzkMapRtsFlashingDisabled = true
 	? (count (_order select 1)) >= 3: _params set [2, lbCurSel _idcPar2List]
 	closeDialog 0
 	~0.1
-	_order = (call format ["aiOrders%1", _i]) select (call format ["lastOrder%1", _i])
+	_order = aiOrders1 select lastOrder1
 	_script = format["%1", _order select 3]
 	? _order select 2: [_units, _pos, _params] exec _script; goto "Quit"
 	{ [_x, _pos, _params] exec _script } forEach _units
 	goto "Quit"
 
-#NewOrderSelected
-	call format ["_selectedOrder%1 = lbCurSel _idcOrders%1; lastOrder%1 = lbCurSel _idcOrders%1 + _bias%1; lastOrderList = %1", _i]
-	_order = (call format ["aiOrders%1", _i]) select (call format ["_selectedOrder%1 + _bias%1", _i])
-	{ ctrlShow [_x, false] } forEach [_idcButtonBG1, _idcButtonBG2]; { ctrlEnable [_x, false] } forEach [_idcButton1, _idcButton2]
-	call format ["ctrlShow [_idcButtonBG%1, true]; ctrlEnable [_idcButton%1, true]", _i]
+# NewOrderSelected
+	_selectedOrder = lbCurSel _idcOrders1; lastOrder1 = _selectedOrder + _bias1
+	_order = aiOrders1 select (_selectedOrder + _bias1)
 
-	ctrlSetText [_idcOrderDesc, (_order select 4) call funcLocStr]
+	; ctrlSetText [_idcOrderDesc, (_order select 4) call funcLocStr]
 
 	_params = _order select 1
 

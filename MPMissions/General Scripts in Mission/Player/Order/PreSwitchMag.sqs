@@ -1,0 +1,44 @@
+; args: units
+_units = _this
+? count _units <= 0: exit
+
+@ !mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "TzkRtsSubMenuTwoListBox"
+mutexDlg = false
+
+_idcTitle = IDC + 0; _idcListLabel = IDC + 16 * 1 + 0; _idcListBox0 = IDC + 16 * 2 + 0
+
+ctrlSetText [_idcTitle, "Switch Art Mags"]
+
+_param0 = ["InitSpeed", count ArtilleryMagazineSpeedList, {format [{%1 m/s}, ArtilleryMagazineSpeedList select _this]}, 0];
+_param1 = ["Curved", 2, {["False", "True"] select _this}, 1];
+
+ctrlSetText [_idcListLabel + 0, _param0 select 0]; lbClear (_idcListBox0 + 0); _i = 0
+while {_i < (_param0 select 1)} do {lbAdd [_idcListBox0 + 0, _i call (_param0 select 2)]; _i = _i + 1}
+; lbSetCurSel [_idcListBox0, _param0 select 3]
+ctrlSetText [_idcListLabel + 1, _param1 select 0]; lbClear (_idcListBox0 + 1); _i = 0
+while {_i < (_param1 select 1)} do {lbAdd [_idcListBox0 + 1, _i call (_param1 select 2)]; _i = _i + 1}
+lbSetCurSel [_idcListBox0 + 1, _param1 select 3]
+
+btnValue00 = false; btnValue01 = false; btnValue02 = false
+
+# loop
+	~ 0.2
+	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+	? call dlgUpdated: goto "Quit"
+	? not alive player: closeDialog 0; goto "Quit"
+
+	? btnValue00: btnValue00 = false; closeDialog 0; goto "Quit"
+	? btnValue01: btnValue01 = false; goto "OK"
+
+	goto "loop"
+# Quit
+	exit
+# OK
+	_idx0 = lbCurSel (_idcListBox0 + 0); _idx1 = lbCurSel (_idcListBox0 + 1)
+	? -1 == _idx0 || -1 == _idx1: hint "Params unselected.", goto "loop"
+
+	_script = localize {TZK_ORDER_PLAYER_SWITCH_MAG};
+	{[_x, 0, [_idx0, _idx1]] exec _script} forEach _units
+	closeDialog 0; goto "Quit"
