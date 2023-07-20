@@ -50,6 +50,10 @@ _dialog = createDialog "EquipmentMenu2"
 mutexDlg = false
 ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 
+; load from config
+_lastCustom = "LastCustom" call preprocessFile "Cfg\LoadPlayerValue.sqf", _oldValLc = _lastCustom
+_lastEquip = "LastEquipTemplate" call preprocessFile "Cfg\LoadPlayerValue.sqf", _oldValLe = _lastEquip
+
 ctrlSetText [_idcTemplLabel, ["Player Loadouts", "Custom Soldiers"] select _custom ]
 ? _custom : { ctrlShow [_x, false] } foreach [_idcBuyTempl, _idcBuy]
 ; "preset" buttons
@@ -374,14 +378,14 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 	lbClear IDC_LB_TEMPLATES
 	_i = 0
 	{ _name = "empty"; if ((count _x) > 0) then { _name = _x select 0 }; lbAdd [IDC_LB_TEMPLATES, format["%1", _name] ]; _i=_i+1 } foreach eqTemplates
-  ? lastTemplate != -1 : lbSetCurSel [IDC_LB_TEMPLATES, lastTemplate]
+	? _lastEquip != -1 : lbSetCurSel [IDC_LB_TEMPLATES, _lastEquip]
 	goto "Update"
 
-#UpdateCustom
+# UpdateCustom
 	lbClear IDC_LB_TEMPLATES
 	_i = 0
 	{ _name = "empty"; if ((count _x) > 0) then { _name = _x select 0 }; lbAdd [IDC_LB_TEMPLATES, format["cs%1 %2", _i, _name] ]; _i=_i+1 } foreach infCustom
-	? lastCustom != -1 : lbSetCurSel [IDC_LB_TEMPLATES, lastCustom]
+	? _lastCustom != -1 : lbSetCurSel [IDC_LB_TEMPLATES, _lastCustom]
 	goto "Update"
 
 #SaveTempl
@@ -407,7 +411,7 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
   if (count _templ > 0) then {unitSetting saveStatus _entry} else {deleteStatus _entry}
   deleteVehicle unitSetting
 
-  lastTemplate = _id
+	_lastEquip = _id
 	goto "UpdateTempl"
 
 #SaveCustom
@@ -435,7 +439,7 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
   deleteVehicle unitSetting
 
 	; player globalchat format["infCustom = %1", infCustom select _id]
-	lastCustom = _id
+	_lastCustom = _id
 	goto "UpdateCustom"
 
 #LoadTempl
@@ -458,7 +462,7 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 	? (_typeSec != -1): _found = false; _index = 0; while "not _found" do { if (_typeSec == lbValue[IDC_LB_SEC, _index]) then { _found=true; lbSetCurSel [IDC_LB_SEC, _index]; _sec=_index  }; _index=_index+1 }
 	? (_typeHandgun != -1): _found = false; _index = 0; while "not _found" do { if (_typeHandgun == lbValue[IDC_LB_HG, _index]) then { _found=true; lbSetCurSel [IDC_LB_HG, _index]; _handgun=_index  }; _index=_index+1 }
 	_templLoaded = true
-  lastTemplate = _id
+	_lastEquip = _id
 	goto "Update"
 
 #LoadCustom
@@ -481,7 +485,7 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 	? (_typeSec != -1): _found = false; _index = 0; while "not _found" do { if (_typeSec == lbValue[IDC_LB_SEC, _index]) then { _found=true; lbSetCurSel [IDC_LB_SEC, _index]; _sec=_index }; _index=_index+1 }
 	? (_typeHandgun != -1): _found = false; _index = 0; while "not _found" do { if (_typeHandgun == lbValue[IDC_LB_HG, _index]) then { _found=true; lbSetCurSel [IDC_LB_HG, _index]; _handgun=_index }; _index=_index+1 }
 	_templLoaded = true
-	lastCustom = _id
+	_lastCustom = _id
 	goto "Update"
 
 #BuyTempl
@@ -505,7 +509,7 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 
 	_cache = [_pos, _id, if (1 == _overWrite) then {true} else {false}]
 	{[_x, _cache] exec "Player\Order\BuyEquipment.sqs"} forEach _units
-	lastCustom = _id
+	_lastCustom = _id
 	goto "Quit"
 
 #Buy
@@ -532,5 +536,9 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 	goto "Quit"
 
 # Quit
+	; save to config
+	? _oldValLc != _lastCustom: ["LastCustom", _lastCustom] call preprocessFile "Cfg\SavePlayerValue.sqf"
+	? _oldValLe != _lastEquip: ["LastEquipTemplate", _lastEquip] call preprocessFile "Cfg\SavePlayerValue.sqf"
+
 	? dialog: closeDialog 0
 	exit

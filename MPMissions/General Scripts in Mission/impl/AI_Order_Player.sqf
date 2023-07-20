@@ -11,7 +11,7 @@ comment "Invalidate global variable 'BuyFactoryDefs'";
 BuyFactoryDefs resize 0; BuyFactoryDefs = _nil;
 
 comment "Invalidate globalVariable 'lastOrder2'";
-lastOrder2 = _nil;
+lastOrder2 = _nil; lastOrder1 = _nil;
 
 comment "Completely release 'aiOrders2'";
 {
