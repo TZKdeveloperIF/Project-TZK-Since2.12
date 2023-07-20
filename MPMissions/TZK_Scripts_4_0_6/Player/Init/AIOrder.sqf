@@ -8,8 +8,8 @@ playerOrderID = []; _i = 0; while {_i < 13} do {playerOrderID set [_i, 0]; _i = 
 orderCheck = {_id < playerOrderID select _uid}; mutexUnitOrder = false;
 
 comment { Use 2 matrixes since TZK_4.0.0.0 };
-aiOrders1 = []; lastOrder1 = -1;
-// todo: remove definition of aiOrders2
+aiOrders1 = [];
+// todo: move this file into new addon to remove global var definitions
 
 // aiOrders1 set [count aiOrders1, [
 // 	"Heal & (Rearm)", ...

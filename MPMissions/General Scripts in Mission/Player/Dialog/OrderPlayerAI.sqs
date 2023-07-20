@@ -30,6 +30,8 @@ _idcPar2Label = IDC+7
 _idcPar2List = IDC+8
 
 _bias1 = 4, _offsetOrder1End = -2
+; load from config
+_lastOrder = "LastOrder" call preprocessFile "Cfg\LoadPlayerValue.sqf", _oldValLo = _lastOrder
 call preprocessFile "Player\Dialog\OrderPlayerAi_Init.sqf"
 
 ; left down board
@@ -55,7 +57,7 @@ call preprocessFile "Player\Dialog\OrderAiBtns.sqf"
 TzkMapRtsFlashingDisabled = true
 
 ; "selected Order" means index of listbox. Since there's offset the (index + offset) should be the order id
-; _selectedOrder = lastOrder1 - _bias1
+; _selectedOrder = _lastOrder - _bias1
 ; give "-1" value to refresh param list
 _selectedOrder = -1
 
@@ -76,6 +78,9 @@ _selectedOrder = -1
 	~ 0.2
 	goto "Update"
 # Quit
+	; save to config
+	? _oldValLo != _lastOrder: ["LastOrder", _lastOrder] call preprocessFile "Cfg\SavePlayerValue.sqf"
+
 	TzkMapRtsFlashingDisabled = false
 	[false, _id + 2] exec "Player\Rts\SetRtsMouse.sqs"; exit
 
@@ -107,10 +112,10 @@ _selectedOrder = -1
 	goto "Update"
 
 # SendOrder
-	? lastOrder1 == -1: hint "No order selected", goto "Update"
+	? _lastOrder == -1: hint "No order selected", goto "Update"
 
 	; ignore invalidated item
-	? lastOrder1 >= 0 && lastOrder1 <= 3 || lastOrder1 > 16: goto "Update"
+	? _lastOrder >= 0 && _lastOrder <= 3 || _lastOrder > 16: goto "Update"
 
 	_params = []
 	? (count (_order select 1)) >= 1: _params set [0, lbCurSel _idcPar0List]
@@ -118,14 +123,14 @@ _selectedOrder = -1
 	? (count (_order select 1)) >= 3: _params set [2, lbCurSel _idcPar2List]
 	closeDialog 0
 	~0.1
-	_order = aiOrders1 select lastOrder1
+	_order = aiOrders1 select _lastOrder
 	_script = format["%1", _order select 3]
 	? _order select 2: [_units, _pos, _params] exec _script; goto "Quit"
 	{ [_x, _pos, _params] exec _script } forEach _units
 	goto "Quit"
 
 # NewOrderSelected
-	_selectedOrder = lbCurSel _idcOrders1; lastOrder1 = _selectedOrder + _bias1
+	_selectedOrder = lbCurSel _idcOrders1; _lastOrder = _selectedOrder + _bias1
 	_order = aiOrders1 select (_selectedOrder + _bias1)
 
 	; ctrlSetText [_idcOrderDesc, (_order select 4) call funcLocStr]

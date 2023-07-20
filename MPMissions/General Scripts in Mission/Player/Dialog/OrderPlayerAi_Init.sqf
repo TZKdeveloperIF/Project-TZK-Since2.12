@@ -19,4 +19,4 @@ _i = _bias1; _c = count aiOrders1 + _offsetOrder1End; while {_i < _c} do {
 	_i = _i + 1;
 };
 
-if (lastOrder1 != -1) then { lbSetCurSel [_idcOrders1, lastOrder1 - _bias1] };
+if (_lastOrder != -1) then { lbSetCurSel [_idcOrders1, _lastOrder - _bias1] };
