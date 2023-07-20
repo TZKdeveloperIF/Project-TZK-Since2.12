@@ -15,7 +15,7 @@ _range = if !_bAirSup then {2*rangeSupport} else {rangeSupportPlane}
 _msg = ""
 ? (_vehicle distance _support) > _range: _msg = "Support vehicle out of range"; goto "Quit"
 
-? _unit == player && _unit == _vehicle: [_unit, _support, false, 1] exec "\TZK_Scripts_4_0_4\Player\Dialog\Equipment.sqs"; goto "MsgAndQuit"
+? _unit == player && _unit == _vehicle: [_support, false, 1] exec localize {TZK_DIALOG_EQUIPMENT}; goto "MsgAndQuit"
 
 _timeRearm = 30;
 ? _unit == _vehicle: _timeRearm = 5
