@@ -7,8 +7,33 @@ comment "Invalidate repair, rearm, board, move, clear order, disband.";
 	_entry set [4, ""];
 } forEach [0,1,2,3, 17,18];
 
+comment "Invalidate global variable 'BuyFactoryDefs'";
+BuyFactoryDefs resize 0; BuyFactoryDefs = _nil;
+
+comment "Invalidate globalVariable 'lastOrder2'";
+lastOrder2 = _nil; lastOrder1 = _nil;
+
+comment "Completely release 'aiOrders2'";
+{
+	_entry = _x;
+	_x set [0, 0];
+	_x select 1 resize 0;
+	_x set [3, 0];
+	_x set [4, 0];
+} forEach aiOrders2;
+aiOrders2 resize 0;
+aiOrders2 = _nil;
+
+
 comment "Redirect order scripts.";
 
+_type = 0, _c = count aiOrders1; _found = false; while {_type < _c && not _found} do {
+	if (aiOrders1 select _type select 0 == "Patrol WPs") then {
+		_found = true;
+		aiOrders1 select _type set [3, "Player\Order\PatrolWPs.sqs"];
+	};
+	_type = _type + 1;
+};
 _type = 0, _c = count aiOrders1; _found = false; while {_type < _c && not _found} do {
 	if (aiOrders1 select _type select 0 == "Mine Town Flag") then {
 		_found = true;
@@ -52,62 +77,7 @@ _type = 0, _c = count aiOrders1; _found = false; while {_type < _c && not _found
 	_type = _type + 1;
 };
 
-_type = 0, _c = count aiOrders2; _found = false; while {_type < _c && not _found} do {
-	if (aiOrders2 select _type select 0 == "Build Struct") then {
-		_found = true;
-		aiOrders2 select _type set [0, "Invalid"];
-	};
-	_type = _type + 1;
-};
-_type = 0, _c = count aiOrders2; _found = false; while {_type < _c && not _found} do {
-	if (aiOrders2 select _type select 0 == "Set Target") then {
-		_found = true;
-		aiOrders2 select _type set [0, "Invalid"];
-	};
-	_type = _type + 1;
-};
-_type = 0, _c = count aiOrders2; _found = false; while {_type < _c && not _found} do {
-	if (aiOrders2 select _type select 0 == "Buy Workers") then {
-		_found = true;
-		aiOrders2 select _type set [0, "Invalid"];
-	};
-	_type = _type + 1;
-};
-_type = 0, _c = count aiOrders2; _found = false; while {_type < _c && not _found} do {
-	if (aiOrders2 select _type select 0 == "Join") then {
-		_found = true;
-		aiOrders2 select _type set [0, "Invalid"];
-		aiOrders2 select _type select 1 resize 0;
-	};
-	_type = _type + 1;
-};
-
-comment "Redefine shoot target order param.";
-	_type = 0, _c = count aiOrders2; _found = false; while {_type < _c && not _found} do {
-		if (aiOrders2 select _type select 0 == "Shoot Target") then {
-			_found = true;
-			aiOrders2 select _type select 1 resize 0;
-			aiOrders2 select _type set [2, true];
-			aiOrders2 select _type set [3, "Player\Order\PreShootArea.sqs"];
-		};
-		_type = _type + 1;
-	};
-
-comment "Don't add new orders here. Add player units order via button now.";
-
-comment "Post execute. Fix CHN images' indexes.";
-	aiOrdersChnIngore2 = [];
-	comment "Remove invalid item";
-	comment "Don't forget to modify CHN Language setting as well";
-	_type = 0, _c = count aiOrders2; _j = 0; while {_type < _c} do {
-		if (aiOrders2 select _type select 0 != "Invalid") then {
-			if (_j != _type) then {
-				aiOrders2 set [_j, aiOrders2 select _type];
-			};
-			_j = _j + 1;
-		} else {
-			aiOrdersChnIngore2 set [count aiOrdersChnIngore2, _type];
-		};
-		_type = _type + 1;
-	};
-	aiOrders2 resize _j;
+comment "Remove order descriptions.";
+{
+	_x set [4, -1];
+} forEach aiOrders1;

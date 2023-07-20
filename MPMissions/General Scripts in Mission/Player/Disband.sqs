@@ -13,7 +13,7 @@ _index = 0; _gis = []; _groupsAI = groupAiMatrix select siPlayer; _siGroups = gr
 #SkipSuperiorCheck
 
 _extraRecycler = []
-_i = 0; _c = count _units
+_i = 0; _c = count _units; _multiDisband = _c > 1
 # CheckUnit
 	? !(_i < _c) : goto "Quit" 
 	_u = _units select _i; _i = _i + 1
@@ -51,8 +51,8 @@ _i = 0; _c = count _units
 
 	_delay = 1
 	? player == leader _u: _delay = 0.1
-	? _u == vehicle _u && _u != leader _u: player groupchat "Disbanding unit."; goto "SkipKill"
-	player groupchat "Disbanding unit."
+	? not _multiDisband: player groupchat "Disbanding unit."
+	? _u == vehicle _u && _u != leader _u: goto "SkipKill"
 	_u setDamage 1
 	~ _delay
 	# SkipKill
@@ -62,4 +62,5 @@ _i = 0; _c = count _units
 	goto "CheckUnit"
 
 # Quit
+? _multiDisband: player groupchat format ["%1 units disbanded.", _c]
 ? count _extraRecycler > 0: {deleteVehicle _x} forEach _extraRecycler

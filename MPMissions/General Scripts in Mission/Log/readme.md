@@ -23,7 +23,7 @@
     + Parameters: classname: Config 
     + valuename: String 
     + valuecontent: String, Number or Array 
-    + *If value name (key) exists, this command won't effects.*
+    + *If value name (key) exists, its value will be updated.*
 + getValue
     + Syntax: class **getValue** name  
     + Parameters: class: Config 

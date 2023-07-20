@@ -4,14 +4,14 @@ _factory = _this select 0; _typeFactory = _this select 1; _this = 0
 _typeUnit = -1
 _typeFactoryLast = -1
 _timeUpdateFactoryList = 0
-_factories = []
 _si = siPlayer
 
-_controlCenters = [siPlayer, stComm] call funcGetWorkingStructures
 
 _remote = false
 ? isNull _factory: _remote = true
-? _remote && (count _controlCenters) == 0: Hint "No Working Comm Center"; Exit
+
+_factoryCache = [[], -1], _factories = _factoryCache select 0
+_funcAvailableStruct = preprocessFile "Player\Dialog\BuyUnitsAvailFactories.sqf"
 
 _unit = player
 _delay = 0.2
@@ -103,12 +103,11 @@ mutexDlg = false
 	[_idcUnits, _nShow, [_typeFactory], []] call loadFile localize {TZK_DIALOG_BUYUNITS_AVAILABLE_LIST}; _typeFactory = 2^_typeFactory
 
 		
-#Update
-	_controlCenters = [siPlayer, stComm] call funcGetWorkingStructures
-	? _remote && (count _controlCenters) == 0 : goto "CloseDialog"
-	? !(alive _unit): goto "CloseDialog"
-	? !_remote && !(alive _factory): goto "CloseDialog"
-	? call dlgUpdated: goto "CloseDialog"
+# Update
+	; ? _remote && (count _controlCenters) == 0 : goto "Quit"
+	? !(alive _unit): goto "Quit"
+	? !_remote && !(alive _factory): goto "Quit"
+	? call dlgUpdated: goto "Quit"
 	
 	? !_remote : _qLen = _factory call funcGetQueueLength; if (_qLen > 0) then { ctrlSetText[_idcInUse, format["Q %1", _qLen] ] } else { ctrlSetText[_idcInUse, ""] }
 	
@@ -192,7 +191,7 @@ mutexDlg = false
 
 	#InitFactoryList
 	? !_remote || _typeFactory == -1: goto "NoUnitSelected"
-	? _typeFactory != _typeFactoryLast || time > _timeUpdateFactoryList : _res = [_idcFactory, _idcFactoryLabel, _typeFactory, _typeFactoryLast] call loadFile "\TZK_Scripts_4_0_4\Player\Dialog\BuyUnits_Factory.sqf"; _factories = _res select 0; _factoryIndex = _res select 1; _timeUpdateFactoryList = time + 0.5
+	? _typeFactory != _typeFactoryLast || time > _timeUpdateFactoryList: call preprocessFile "Player\Dialog\BuyUnits_Factory.sqf"; _factoryIndex = _factoryCache select 1; _timeUpdateFactoryList = time + 0.5
 
 
 	#NoUnitSelected
@@ -259,7 +258,7 @@ mutexDlg = false
 	? count _qPlayer > 0 : [] exec "\TZK_Scripts_4_0_4\Player\SendClearBuy.sqs"
 	goto "Update"
 	
-#CloseDialog
+# Quit
 	bFactoryBuy = false; bFactoryBuy4 = false; bFactoryBuyFull = false; bFactoryBuy3 = false; bFactoryBuy5 = false
 	bFactoryBuyManned = false
 	? dialog: closeDialog 0
