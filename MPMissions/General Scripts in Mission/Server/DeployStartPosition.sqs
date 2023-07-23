@@ -7,10 +7,8 @@ _vector = [_posSide1, _posSide0] call funcVectorSub; _dir = 0
 ? (_vector select 0) != 0 && (_vector select 1) != 0: _dir = (_vector select 0) atan2 (_vector select 1)
 ? fixedStartPos == 0: _dir = random 360
 
-? _dirSide0 == -1: _dirSide0 = random 360
 _res0 = [utMHQ0, _posSide0, _dir, si0, -1, 0, 5] call fAddVehicle
 
-? _dirSide1 == -1: _dirSide1 = random 360
 _res1 = [utMHQ1, _posSide1, _dir + 180, si1, -1, 0, 5] call fAddVehicle
 
 pvMhq0x = _posSide0 select 0, pvMhq0y = _posSide0 select 1
@@ -20,8 +18,6 @@ publicVariable {pvMhq1x}, publicVariable {pvMhq1y}
 
 pvMatchStartTime = time; pvMatchRuleDefined = true
 publicVariable {pvMatchStartTime}; publicVariable {pvMatchRuleDefined}
-
-[ [_posSide0, _dir], [_posSide1, _dir + 180] ] exec "\TZK_Scripts_4_0_4\Server\PlaceStartVehicles.sqs"
 
 [_res0, true] exec "\TZK_Scripts_4_0_4\Common\LockVehicle.sqs"
 [_res1, true] exec "\TZK_Scripts_4_0_4\Common\LockVehicle.sqs"
