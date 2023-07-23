@@ -18,12 +18,12 @@ mutexDlg = false
 _pos call preprocessFile "Util\DebugPointInfo.sqf"
 
 ; init right-down corner buttons (switching to other rts dialogs)
-; 0: rts, 1: area, 2: wpco, 4: point
-2 call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
+; 0: rts, 1: area, 2: wpco, 3: player order, 4: point
+[2, _units] call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
 
 _idcLeftBtn = IDC + 16 * 2
 
-_idcList = IDC + 16 * 3 + 10
+_idcList = IDC + 16 * 17 + 10
 
 _idcBtn_0_0 = IDC + 16 * 6; _idcBtnBg_0_0 = IDC + 16 * 1;
 {ctrlSetText [_x, "co"]} forEach [_idcBtn_0_0]
