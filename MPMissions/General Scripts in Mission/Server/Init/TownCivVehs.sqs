@@ -1,0 +1,27 @@
+; args: none
+; create vehicles belongs to civilian side in each town (like bike/motorbike)
+; create them one by one with delay
+
+~ 10
+
+_townsCnt = count towns, _typesCnt = count civTown
+? 0 == _townsCnt: "None towns in mission" call fDebugLog, exit
+? 0 == _typesCnt: hint "No definitions in civTown.", exit
+
+_i = 0
+# loopTown
+	_town = towns select _i
+	_flag = _town select tdFlag
+
+	_j = 0
+	# loopType
+		_type = civTown select _j
+
+		[_type, [getPos _flag, 50, 150] call funcGetRandomPos, - 180 + random 360, siCiv, -1, 0, 1] call fAddVehicle
+		~ 1
+
+		_j = _j + 1
+		? _j < _typesCnt: goto "loopType"
+	
+	_i = _i + 1
+	? _i < _townsCnt: goto "loopTown"
