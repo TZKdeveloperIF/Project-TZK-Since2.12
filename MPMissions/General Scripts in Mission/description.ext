@@ -160,7 +160,7 @@ class TzkCmdMapDlgBase: Menu {
 	};
 	
 	class LeftBtn0: Button {
-		idc = IDC + 16 * 2 + 0;
+		idc = IDC + 16 * 2 + 0;			// Remain 32-95 idc for left buttons
 		x = 0.025;
 		y = 0.10;
 		text = "UNDEFINED";
@@ -600,7 +600,7 @@ class TzkCmdMapDlgWpCo: TzkCmdMapDlgBase {
 		h = 0.60;
 	};
 	class List: ListBox {
-		idc = IDC + 16 * 3 + 10
+		idc = IDC + 16 * 17 + 10
 		x = 0.5;
 		y = 0.04;
 		w = 0.5;
@@ -921,7 +921,7 @@ class TzkRtsArtSubMenu: Menu {
 		text = "MLRS fire\ncount";
 	};
 	class MLRS_CNT_TEXT: RscEdit {
-		idc = IDC + 16 * 5 + 0;
+		idc = IDC + 16 * 0 + 7;
 		x = 0.20 + 0.15 * 1 + 0.025;
 		y = 0.25 + 0.05 * 6;
 		w = 0.10;
@@ -930,7 +930,7 @@ class TzkRtsArtSubMenu: Menu {
 	};
 
 	class TRSM_LIST_TITLE: Title {
-		idc = IDC + 0;
+		idc = IDC + 16 * 0 + 0;
 		style = ST_CENTER;
 		x = 0.40;
 		y = 0.12;
@@ -1029,38 +1029,38 @@ class TzkRtsArtSubMenu: Menu {
 	};
 	
 	class BTN_BG_1_0: BTN_BG_0_0 {
-		idc = IDC + 16 * 3 + 0;
+		idc = IDC + 16 * 17 + 0;
 		x = 0.20 + 0.15 * 1 + 0.025;
 	};
 	class BTN_BG_1_1: BTN_BG_1_0 {
-		idc = IDC + 16 * 3 + 1;
+		idc = IDC + 16 * 17 + 1;
 		y = 0.25 + 0.05 * 1;
 	};
 	class BTN_BG_1_2: BTN_BG_1_0 {
-		idc = IDC + 16 * 3 + 2;
+		idc = IDC + 16 * 17 + 2;
 		y = 0.25 + 0.05 * 2;
 	};
 	class BTN_BG_1_3: BTN_BG_1_0 {
-		idc = IDC + 16 * 3 + 3;
+		idc = IDC + 16 * 17 + 3;
 		y = 0.25 + 0.05 * 3;
 	};
 	class BTN_1_0: BTN_0_0 {
-		idc = IDC + 16 * 4 + 0;
+		idc = IDC + 16 * 18 + 0;
 		x = 0.20 + 0.15 * 1 + 0.025;
 		action = "btnValue03 set [0, not(btnValue03 select 0)]";
 	};
 	class BTN_1_1: BTN_1_0 {
-		idc = IDC + 16 * 4 + 1;
+		idc = IDC + 16 * 18 + 1;
 		y = 0.25 + 0.05 * 1;
 		action = "btnValue03 set [1, not(btnValue03 select 1)]";
 	};
 	class BTN_1_2: BTN_1_0 {
-		idc = IDC + 16 * 4 + 2;
+		idc = IDC + 16 * 18 + 2;
 		y = 0.25 + 0.05 * 2;
 		action = "btnValue03 set [2, not(btnValue03 select 2)]";
 	};
 	class BTN_1_3: BTN_1_0 {
-		idc = IDC + 16 * 4 + 3;
+		idc = IDC + 16 * 18 + 3;
 		y = 0.25 + 0.05 * 3;
 		action = "btnValue03 set [3, not(btnValue03 select 3)]";
 	};
@@ -1618,77 +1618,147 @@ class ConsoleDialog: Menu {
 	};
 };
 
-class TZK_OrderAIDialog2: TZK_OrderAIDialog {
+class TzkCmdMapDlgPplOrder: TzkCmdMapDlgBase {
 	controlsBackground[] = {
-		TZK_OrderAIDialog_BackGround_0, TZK_OrderAIDialog_BackGround_1, 
-		Sub_BG_Light, 
-		TZK_OrderAIDialog_Frame_1_MiddleLeft, TZK_OrderAIDialog_Frame_0, 
-		LeftBg
+		LeftBg, DownBg, 
+		// MapBg, 		// Hide to compatible with old style
+		OldOrderBg0, OldOrderBg1, OldOrderBg2, 	// Compatible with old style
 	};
-	class LeftBg: BackgroundWindow {
-		x = 0.0;
-		y = 0.80;
-		w = 0.60;
-		h = 0.10;
-		
-		colorBackground[] = {0.0, 0.6, 0.9, 0.8};
+	class OldOrderBg0: TZK_BackGround_0 {
+		x = 0.40 - 0.01;
+		y = 0.03;
+		w = 0.60 + 0.01;
+		h = 0.671 - 0.03;
+	};
+	class OldOrderBg1: TZK_BackGround_1 {
+		colorBackground[] = COLOR_TZK_MENU_BG_3;
+		x = 0.40 - 0.01;
+		y = 0.03;
+		w = 0.60 + 0.01;
+		h = 0.671 - 0.03;
+	};
+	class OldOrderBg2: Light_BG_Window {
+		x = 0.40 - 0.01;
+		y = 0.03;
+		w = 0.60 + 0.01;
+		h = 0.671 - 0.03;
 	};
 	controls[] = {
-		MidPic0, MidPic1, MidPic2, MidPic3, 
+		MidPic0, MidPic1, MidPic2, 
 		MidPic4, MidPic5, 
-		MidBtn0, MidBtn1, MidBtn2, MidBtn3, 
+		MidBtn0, MidBtn1, MidBtn2, 
 		MidBtn4, MidBtn5, 
-		SendOrderBG1, 
-		OrdersLabel, SendOrder1, Orders4, 
+
+		// Compatible with old style
+		// Listbox should be placed UNDER middle buttons
+		SendOrderBG, SendOrderBtn,
+		OrdersLabel, OrdersList, 
 		Param0Label, Param0, Param1Label, Param1, Param2Label, Param2, 
-		Exit, 
-		Frame2, Frame3, 
-		LeftDownBtn0, LeftDownBtn2, LeftDownBtn3, 
-		DownBtn0, DownBtn1, 
-		LeftPic0, LeftPic1, LeftPic2, LeftPic3, LeftPic4, 
-		LeftBtn0, LeftBtn1, LeftBtn2, LeftBtn3, LeftBtn4, 
+
+		// LeftDownBtn0, LeftDownBtn2, LeftDownBtn3, 
+		DownBtn0, DownBtn3, 				// Disband/Join same pos as in RTS dialog
+		LeftPic2, LeftPic4, LeftPic5, LeftPic6, LeftPic7, 
+
+		// LeftBtn0 same as default. Use it as "move" order
+		LeftBtn0, LeftBtn1, LeftBtn2, 		// Move, Clear order and shoot
+		LeftBtn4, LeftBtn5, LeftBtn6, LeftBtn7, 
+
+		LeftBtn8, LeftBtn9, LeftBtn10, 
+		LeftBtn11, LeftBtn12, 
+
+		RightDownBg0, RightDownBg1, RightDownBg2, RightDownBg3, RightDownBg4, 
+		RightDownBg5, RightDownBg6, RightDownBg7, RightDownBg8, 
+		RightDownBtn0, RightDownBtn1, RightDownBtn2, RightDownBtn3, RightDownBtn4, 
+		RightDownBtn5, RightDownBtn6, RightDownBtn7, RightDownBtn8, 
+		Exit
 	};
-	class Orders4: TZK_ListBox {
-		idc = IDC+0;
+	class SendOrderBG: ButtonBG {
+		colorBackground[] = COLOR_SELECTED_TEXT;
+		x = 0.53;
+		y = 0.06;
+		w = 0.07;
+	};
+	class SendOrderBtn: Button {
+		x = 0.53;
+		y = 0.06;
+		w = 0.07;
+		text = "Issue";
+		action = "btnSendOrder = true";
+	};
+	class OrdersLabel: Label {
+		style = ST_LEFT;
+		x = 0.40;
+		y = 0.06;
+		w = 0.1;
+		text = "Order";
+	};
+	class OrdersList: TZK_ListBox {
+		idc = IDC + 16 * 0 + 0;
 		x = 0.40;
 		y = 0.1 + 0.03 * 4;
 		w = 0.2;
 		h = 0.57 - 0.03 * 4 - 0.03 * 2;
 	};
-	class Frame2: TZK_Frame_1 {
-		colorText[] = {0.4, 0.0, 0.4, 0.9};
-		sizeEx = 0.021;
-		text = "Force Move";
-		x = 0.01;
-		y = 0.80;
-		w = 0.28;
-		h = 0.20;
-	};
-	class Frame3: Frame2 {
-		text = "Mine Order";
-		x = 0.31;
-	};
-	// left part. Take place of old orders listed in listbox
-	class LeftBtn0: Button {
-		idc = IDC + 16 * 2 + 0;
-		x = 0.00;
-		y = 0.10 + 0.03 * 0;
-		w = 0.20; // fully cover list box
-		h = 0.03; // fully cover list box
-
-		colorText[] = {0, 0, 0, 1};
-		sizeEx = 0.022;
+	class Param0Label: Label {
+		idc = IDC + 16 * 0 + 1;
+		style = ST_CENTER;
+		x = 0.60;
+		y = 0.06;
+		w = 0.20;
 		text = "";
-		action = "btnValue00 = 0";
 	};
-	class LeftBtn1: LeftBtn0 {
+	class Param0: TZK_ListBox {
+		idc = IDC + 16 * 0 + 2;
+		x = 0.60;
+		y = 0.1;
+		w = 0.20;
+		h = 0.57;
+	};
+	class Param1Label: Label {
+		idc = IDC + 16 * 0 + 3;
+		style = ST_CENTER;
+		x = 0.80;
+		y = 0.06;
+		w = 0.20;
+		text = "";
+	};
+	class Param1: TZK_ListBox {
+		idc = IDC + 16 * 0 + 4;
+		x = 0.80;
+		y = 0.1;
+		w = 0.20;
+		h = 0.30;
+	};
+	class Param2Label: Label {
+		idc = IDC + 16 * 0 + 5;
+		style = ST_CENTER;
+		x = 0.80;
+		y = 0.42;
+		w = 0.20;
+		text = "";
+	};
+	class Param2: TZK_ListBox {
+		idc = IDC + 16 * 0 + 6;
+		x = 0.80;
+		y = 0.46;
+		w = 0.20;
+		h = 0.21;
+	};
+
+	// left part
+	class LeftBtn1: LeftBtn0 { 	// "order clear" button like RTS
 		idc = IDC + 16 * 2 + 1;
-		y = 0.10 + 0.03 * 1;
+		y = 0.025;
+		text = "";
 		action = "btnValue00 = 1";
+		colorText[] = {0.8, 0.2, 0.1, 1.0};
 	};
-	class LeftBtn2: LeftBtn0 {
+	class LeftBtn2: LeftBtn0 {	// Shoot Area
 		idc = IDC + 16 * 2 + 2;
-		y = 0.10 + 0.03 * 2;
+		x = 0.025 + 0.09;
+		y = 0.10 + 0.05;
+		w = 0.16;
+		text = "";
 		action = "btnValue00 = 2";
 	};
 	class LeftBtn3: LeftBtn0 {
@@ -1698,17 +1768,37 @@ class TZK_OrderAIDialog2: TZK_OrderAIDialog {
 	};
 	class LeftBtn4: LeftBtn0 {
 		idc = IDC + 16 * 2 + 4;
-		y = 0.10 + 0.03 * 4;
+		x = 0.025 + 0.09;
+		y = 0.10 + 0.15 + 0.05 * 0;
+		w = 0.16;
+		text = "";
 		action = "btnValue00 = 4";
 	};
-	class LeftPic0: Label {
+	class LeftBtn5: LeftBtn4 {
+		idc = IDC + 16 * 2 + 5;
+		y = 0.10 + 0.15 + 0.05 * 1;
+		action = "btnValue00 = 5";
+	};
+	class LeftBtn6: LeftBtn5 {
+		idc = IDC + 16 * 2 + 6;
+		y = 0.10 + 0.15 + 0.05 * 2;
+		action = "btnValue00 = 6";
+	};
+	class LeftBtn7: LeftBtn5 {	// Join. Big button
+		idc = IDC + 16 * 2 + 7;
+		x = 0.025;
+		y = 0.10 + 0.15 + 0.05 * 3;
+		w = 0.25;
+		action = "btnValue00 = 7";
+	};
+	class LeftPic0: Label {	// unused. Used ones should cover the button
 		idc = IDC + 16 * 16 + 0;
 		style = ST_PICTURE;
 		text = "";
 		x = 0.00;
 		y = 0.10 + 0.03 * 0;
-		w = 0.20; // fully cover list box
-		h = 0.03; // fully cover list box
+		w = 0.266; // texture will fully fill the control. They're designed for 0.2 x 0.03
+		h = 0.04; // button height
 	};
 	class LeftPic1: LeftPic0 {
 		idc = IDC + 16 * 16 + 1;
@@ -1716,7 +1806,8 @@ class TZK_OrderAIDialog2: TZK_OrderAIDialog {
 	};
 	class LeftPic2: LeftPic0 {
 		idc = IDC + 16 * 16 + 2;
-		y = 0.10 + 0.03 * 2;
+		x = 0.025 + 0.09;
+		y = 0.10 + 0.05;
 	};
 	class LeftPic3: LeftPic0 {
 		idc = IDC + 16 * 16 + 3;
@@ -1724,47 +1815,61 @@ class TZK_OrderAIDialog2: TZK_OrderAIDialog {
 	};
 	class LeftPic4: LeftPic0 {
 		idc = IDC + 16 * 16 + 4;
-		y = 0.10 + 0.03 * 4;
+		x = 0.025 + 0.09;
+		y = 0.10 + 0.15 + 0.05 * 0;
 	};
-	// left down part. 
-	class LeftDownBtn0: Button {		// for player "Cross the bridge"
-		idc = IDC + 16 * 12 + 0;
-		x = 0.015 + 0.12 * 0;
-		y = 0.82 + 0.00;
+	class LeftPic5: LeftPic4 {
+		idc = IDC + 16 * 16 + 5;
+		y = 0.10 + 0.15 + 0.05 * 1;
+	};
+	class LeftPic6: LeftPic4 {
+		idc = IDC + 16 * 16 + 6;
+		y = 0.10 + 0.15 + 0.05 * 2;
+	};
+	class LeftPic7: LeftPic4 {
+		idc = IDC + 16 * 16 + 7;
+		x = 0.025;
+		y = 0.10 + 0.15 + 0.05 * 3;
+	};
+
+	class LeftBtn8: LeftBtn4 {
+		idc = IDC + 16 * 2 + 8;
+		x = 0.025;
+		y = 0.10 + 0.15 + 0.05 * 4;
 		w = 0.12;
-		sizeEx = 0.020;
-		colorText[] = {0.2, 0.1, 0.0, 1};
-		text = "";
-		action = "btnValue02 = 0";
+		action = "btnValue00 = 8";
 	};
-	class LeftDownBtn2: LeftDownBtn0 {	// for player "Move Land Vehicle"
-		idc = IDC + 16 * 12 + 2;
-		x = 0.015 + 0.135 * 0;
-		y = 0.82 + 0.04 * 1;
-		w = 0.13;
-		action = "btnValue02 = 2";
+	class LeftBtn9: LeftBtn4 {
+		idc = IDC + 16 * 2 + 9;
+		x = 0.025;
+		y = 0.10 + 0.15 + 0.05 * 5;
+		w = 0.12;
+		action = "btnValue00 = 9";
 	};
-	class LeftDownBtn3: LeftDownBtn0 {	// for player "Move Ship"
-		idc = IDC + 16 * 12 + 3;
-		x = 0.015 + 0.135 * 1;
-		y = 0.82 + 0.04 * 1;
-		w = 0.13;
-		action = "btnValue02 = 3";
+	class LeftBtn10: LeftBtn4 {
+		idc = IDC + 16 * 2 + 10;
+		x = 0.025;
+		y = 0.10 + 0.15 + 0.05 * 6;
+		w = 0.12;
+		action = "btnValue00 = 10";
 	};
-	// down part
-	class DownBtn0: LeftDownBtn0 {
-		idc = IDC + 16 * 6 + 0;
-		x = 0.015 + 0.12 * 0 + 0.30 * 1;
-		text = "";
-		action = "btnValue01 = 0";
+	class LeftBtn11: LeftBtn4 {
+		idc = IDC + 16 * 2 + 11;
+		x = 0.025 + 0.13;
+		y = 0.10 + 0.15 + 0.05 * 4;
+		w = 0.12;
+		action = "btnValue00 = 11";
 	};
-	class DownBtn1: DownBtn0 {
-		idc = IDC + 16 * 6 + 1;
-		x = 0.015 + 0.12 * 1 + 0.30 * 1;
-		action = "btnValue01 = 1";
+	class LeftBtn12: LeftBtn4 {
+		idc = IDC + 16 * 2 + 12;
+		x = 0.025 + 0.13;
+		y = 0.10 + 0.15 + 0.05 * 5;
+		w = 0.12;
+		action = "btnValue00 = 12";
 	};
+
 	// mid part
-	class MidBtn0: LeftDownBtn0 {
+	class MidBtn0: Button {
 		idc = IDC + 16 * 14 + 0;
 		x = 0.40;
 		y = 0.10 + 0.03 * 0;
@@ -1774,33 +1879,33 @@ class TZK_OrderAIDialog2: TZK_OrderAIDialog {
 		colorText[] = {0, 0, 0, 1};
 		sizeEx = 0.022;
 		text = "";
-		action = "btnValue03 = 0";
+		action = "btnValue04 = 0";
 	};
 	class MidBtn1: MidBtn0 {
 		idc = IDC + 16 * 14 + 1;
 		y = 0.10 + 0.03 * 1;
-		action = "btnValue03 = 1";
+		action = "btnValue04 = 1";
 	};
 	class MidBtn2: MidBtn0 {
 		idc = IDC + 16 * 14 + 2;
 		y = 0.10 + 0.03 * 2;
-		action = "btnValue03 = 2";
+		action = "btnValue04 = 2";
 	};
 	class MidBtn3: MidBtn0 {
 		idc = IDC + 16 * 14 + 3;
 		y = 0.10 + 0.03 * 3;
-		action = "btnValue03 = 3";
+		action = "btnValue04 = 3";
 	};
 
 	class MidBtn4: MidBtn0 {
 		idc = IDC + 16 * 14 + 4;
 		y = 0.10 + 0.03 * 17;
-		action = "btnValue03 = 4";
+		action = "btnValue04 = 4";
 	};
 	class MidBtn5: MidBtn0 {
 		idc = IDC + 16 * 14 + 5;
 		y = 0.10 + 0.03 * 18;
-		action = "btnValue03 = 5";
+		action = "btnValue04 = 5";
 	};
 	class MidPic0: Label {
 		idc = IDC + 16 * 15 + 0;
