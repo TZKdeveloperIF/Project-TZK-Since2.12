@@ -14,6 +14,7 @@ _list = vehiclesStart select _si; _i = 0; _c = count _list
 	_i = _i + 1
 	
 	_veh = [_entry select 0, [0,0,0], 0, _si, -1, 0, 2] call fAddVehicle
+	_veh allowdammage false
 	_startVeh0 set [count _startVeh0, _veh]
 	~ 0.5
 	goto "AddVehicle0"
@@ -28,6 +29,7 @@ _list = vehiclesStart select _si; _i = 0; _c = count _list
 	_i = _i + 1
 	
 	_veh = [_entry select 0, [0,0,0], 0, _si, -1, 0, 2] call fAddVehicle
+	_veh allowdammage false
 	_startVeh1 set [count _startVeh1, _veh]
 	~ 0.5
 	goto "AddVehicle1"
@@ -35,8 +37,6 @@ _list = vehiclesStart select _si; _i = 0; _c = count _list
 
 
 @ pvMatchRuleDefined
-
-{_x allowdammage true} forEach _startVeh0; {_x allowdammage true} forEach _startVeh1
 
 _posSide0 = [pvMhq0x, pvMhq0y]; _posSide1 = [pvMhq1x, pvMhq1y]
 _vector = [_posSide1, _posSide0] call funcVectorSub; _dir = 0
@@ -73,3 +73,7 @@ _i = 0; _c = count _startVeh1; _si = si1; _list = vehiclesStart select _si
 	_i = _i + 1
 	goto "PlaceVehicle1"
 # Side1Placed
+
+~ 0.1
+
+{_x allowdammage true} forEach _startVeh0; {_x allowdammage true} forEach _startVeh1
