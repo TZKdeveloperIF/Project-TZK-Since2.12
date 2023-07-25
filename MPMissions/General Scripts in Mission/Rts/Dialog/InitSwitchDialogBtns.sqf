@@ -1,3 +1,7 @@
+// args: [current dialog enum, units]
+private [{_curDlgEnum}, {_units}];
+_curDlgEnum = _this select 0; _units = _this select 1;
+
 private [{_idcBtn}, {_idcBg}, {_enum}];
 _idcBtn = IDC + 16 * 10 + 0;
 _idcBg = IDC + 16 * 11 + 0;
@@ -8,7 +12,7 @@ _idcBg = IDC + 16 * 11 + 0;
 // rts
 _enum = 0;
 ctrlSetText [_idcBtn + _enum, "RTS"];
-if (_enum != _this) then {
+if (_enum != _curDlgEnum) then {
 	if (0 < count TzkSelectedUnits) then {
 		ctrlShow [_idcBtn + _enum, true];
 	};
@@ -19,7 +23,7 @@ if (_enum != _this) then {
 // area
 _enum = 1;
 ctrlSetText [_idcBtn + _enum, "AREA"];
-if (_enum != _this) then {
+if (_enum != _curDlgEnum) then {
 	// area
 	if (TzkMapAreaCreated) then {
 		ctrlShow [_idcBtn + _enum, true];
@@ -31,8 +35,20 @@ if (_enum != _this) then {
 // wpco
 _enum = 2;
 ctrlSetText [_idcBtn + _enum, "WP/CO"];
-if (_enum != _this) then {
+if (_enum != _curDlgEnum) then {
 	ctrlShow [_idcBtn + _enum, true];
+} else {
+	ctrlShow [_idcBg + _enum, true];
+	ctrlShow [_idcBtn + _enum, true]; ctrlEnable [_idcBtn + _enum, false];
+};
+
+// player group units
+_enum = 3;
+ctrlSetText [_idcBtn + _enum, "Order"];
+if (_enum != _curDlgEnum) then {
+	if (count _units > 0) then {
+		ctrlShow [_idcBtn + _enum, true];
+	};
 } else {
 	ctrlShow [_idcBg + _enum, true];
 	ctrlShow [_idcBtn + _enum, true]; ctrlEnable [_idcBtn + _enum, false];
@@ -41,7 +57,7 @@ if (_enum != _this) then {
 // point
 _enum = 4;
 ctrlSetText [_idcBtn + _enum, "POINT"];
-if (_enum != _this) then {
+if (_enum != _curDlgEnum) then {
 	// always available
 	ctrlShow [_idcBtn + _enum, true];
 } else {
