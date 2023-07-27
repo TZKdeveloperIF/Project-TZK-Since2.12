@@ -1,4 +1,5 @@
 FreeMhqWallTime = [-9999, -9999];
+mutexWallMhq = [false, false];
 FreeMgCnt = [3, 3];
 true exec "Common\Init\Confuser.sqs";
 SideCmdChangedTime = [-9999, -9999];

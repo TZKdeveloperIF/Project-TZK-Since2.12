@@ -2,5 +2,5 @@
 
 ? not isCommander: hint "Only commander is allowed to do this."; exit
 
-? not isServer: publicExec format ["%1 call preprocessFile {Server\Msg\hWallMhq.sqf}", siPlayer];
-? isServer: siPlayer call preprocessFile {Server\Msg\hWallMhq.sqf};
+? not isServer: publicExec format ["%1 exec {Rts\Building\hWallMhq.sqs}", siPlayer];
+? isServer: siPlayer exec {Rts\Building\hWallMhq.sqs};
