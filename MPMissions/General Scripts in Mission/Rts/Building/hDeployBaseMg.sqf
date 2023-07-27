@@ -11,11 +11,8 @@ if isServer then {
 		if (not _free && _cost > groupMoneyMatrix select _si select _gi) then {
 			[_si, _gi, "Insufficient fund. MG not deployed."] call preprocessFile "Util\MsgSender.sqf";
 		} else {
-			_res = _this call preprocessFile "Server\MapOp\DeployBaseMg.sqf";
+			_res = [_si, _gi, _this select 1, _free] call preprocessFile "Rts\Building\fDeployBaseMg.sqf";
 			if _res then {
-				if (_free) then {
-					[_si, _gi, -_cost] exec localize {TZK_MONEY_SERVER_SPEND};
-				};
 				[_si, _gi, "Base MG deployed."] call preprocessFile "Util\MsgSender.sqf";
 			};
 		};
