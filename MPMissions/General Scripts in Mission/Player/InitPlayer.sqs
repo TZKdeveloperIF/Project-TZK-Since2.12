@@ -74,7 +74,7 @@ Array_TZK_PlayerC4 = []
 ; Since 4.0.5.33. Confuser
 false exec "Common\Init\Confuser.sqs"
 
-? dev: 0 exec "Util\Test.sqs"
+? dev && "IF" == name player: 0 exec "Util\Test.sqs"
 ; 4.0.6.15
 ? (call (player call funcGenNetIdStr)) select 1 > 8388608: player globalChat "Network ID too large. Request server hoster to restart the server, or the RTS command design may invalid in game."
 ; 4.0.6.33
