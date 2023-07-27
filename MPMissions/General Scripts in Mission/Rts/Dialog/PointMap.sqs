@@ -56,7 +56,7 @@ TzkMapRtsFlashingDisabled = true
 	goto "Update"
 # DownBtn
 	? count _downBoardStack > 0: goto "DownSubMenu"
-	? 2^0 == _btnVal: _pos exec "Player\Msg\sDeployBaseMg.sqs"; goto "Update";
+	? 2^0 == _btnVal: _pos exec "Rts\Building\sDeployBaseMg.sqs"; goto "Update";
 	? 2^1 == _btnVal: _pos exec "Rts\SubMenu\BuildStruct.sqs"; closeDialog 0; goto "Quit"
 	? 2^2 == _btnVal: _pos exec "Rts\SubMenu\BuyWorker.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
