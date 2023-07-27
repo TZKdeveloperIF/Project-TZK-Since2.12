@@ -1,19 +1,32 @@
-if isServer then {
-	_si = _this; _gi = giCo select _si;
-	if (alive (mhq select _si)) then {
-		_cost = 4 * (structDefs select stWall select sdCost);
-		_free = false;
-		if (time > (FreeMhqWallTime select _si) + 1800) then {
-			_free = true; FreeMhqWallTime set [_si, time];
-		};
-		if (not _free && _cost > groupMoneyMatrix select _si select _gi) then {
-			[_si, _gi, "Insufficient fund. Wall not built."] call preprocessFile "Util\MsgSender.sqf";
-		} else {
-			_si call preprocessFile "Server\MapOp\WallMhq.sqf";
-			if (_free) then {
-				[_si, _gi, -_cost] exec localize {TZK_MONEY_SERVER_SPEND};
-			};
-			[_si, _gi, "MHQ wall built."] call preprocessFile "Util\MsgSender.sqf";
-		};
-	};
-};
+; args: si
+? not isServer: exit
+
+_si = _this; _mhq = mhq select _si
+? not alive _mhq: exit
+
+_gi = giCo select _si;
+_cost = 4 * (structDefs select stWall select sdCost);
+_free = false;
+? time > (FreeMhqWallTime select _si) + 1800: _free = true
+
+? not _free && _cost > groupMoneyMatrix select _si select _gi: [_si, _gi, "Insufficient fund. Wall not built."] call preprocessFile "Util\MsgSender.sqf"; exit
+
+? _free: FreeMhqWallTime set [_si, time]
+
+_dir = getDir _mhq
+_pos = getPosASL _mhq
+_dist = 5
+_i = 0, _c = 4
+# loop
+	_buildPos = [(_pos Select 0) + _dist*(sin (_dir + _i * 90)), (_pos Select 1) + _dist*(cos (_dir + _i * 90))];
+	@ not (mutexWallMhq select _si)
+		mutexWallMhq set [_si, true]
+
+		[stWall, _si, giCo select _si, _buildPos, _dir + _i * 90, _free] call fBuildStruct;
+
+		mutexWallMhq set [_si, false]
+	~ 2
+	_i = _i + 1
+	? _i < _c: goto "loop"
+
+[_si, _gi, "MHQ wall built."] call preprocessFile "Util\MsgSender.sqf";
