@@ -1,75 +1,88 @@
-; args: [unit, si, gi, Start Position X, Start Position Y, order of Setting]
+; args: [state, [unit, si, gi, start position, start time, order of Setting]]
+_params = _this select 1
 
-_unit = _this select 0
-_si = _this select 1
-_gi = _this select 2
-_posCheckBoardStart = [_this select 3, _this select 4]
-_timeCheckBoardStart = _this select 5
-_ais = _this select 6
-_this = 0
+_unit = _params select 0
+_si = _params select 1
+_gi = _params select 2
+_posCheckBoardStart = _params select 3
+_timeCheckBoardStart = _params select 4
+_ais = _params select 5
+
+_range = 200
+_invalidUnit = {_this call rtsOrderCheck || not (_this call busyCheck) || not alive _this}
 
 # Update
 ~ 5
+? _unit call _invalidUnit: goto "Quit"
 
-#CheckAir
+; CheckAir
 _typesTransport = airTransport select _si
-? (count _typesTransport) == 0 : goto "CheckGround"
+? (count _typesTransport) == 0: goto "CheckGround"
 
-_res = [getPos _unit, 500] call funcGetNearbyTransports
+_res = [getPos _unit, _range] call funcGetNearbyTransports
 _transports = []; _transp = objNull; _i = 0; _c = count _res
-#SetAir
-	? _i >= _c : goto "AirSet"
-	_transp = (_res select _i) select 0; _i = _i + 1
+# SetAir
+	? _i >= _c: goto "AirSet"
+	_transp = _res select _i select 0; _i = _i + 1
 	? isNull driver _transp: goto "SetAir"
 	? (damage _transp) > 0.5 || ((getPos _transp) select 2) > 5 || (speed _transp) > 5: goto "SetAir"
-	? _transp call funcGetCargoNum >= (_transp call funcGetTranspVol) : goto "SetAir"
+	? _transp call funcGetCargoNum >= (_transp call funcGetTranspVol): goto "SetAir"
 	_transports set [count _transports, _transp]; goto "SetAir"
 	
-	#AirSet
-	? (count _transports) == 0 : goto "CheckGround"
-	_transp = _transports select (random (count _transports) - 0.5)
-	goto "GetIn"
+	# AirSet
+		? (count _transports) == 0: goto "CheckGround"
+		_transp = _transports select (random (count _transports) - 0.5)
+		goto "GetIn"
 
-#CheckGround
-_typesTransport = groundTransport select _si
-? (count _typesTransport) == 0 : goto "NoneFound"
-_res = [getPos _unit, 500] call funcGetNearbyTransports
-_transports = []; _transp = objNull; _i = 0; _c = count _res
-#SetGround
-	? _i >= _c : goto "GroundSet"
+# CheckGround
+	_typesTransport = groundTransport select _si
+	? (count _typesTransport) == 0: goto "NoneFound"
+	_res = [getPos _unit, _range] call funcGetNearbyTransports
+	_transports = []; _transp = objNull; _i = 0; _c = count _res
+# SetGround
+	? _i >= _c: goto "GroundSet"
 	_transp = (_res select _i) select 0; _i = _i + 1
 	? isNull driver _transp: goto "SetGround"
 	? (damage _transp) > 0.5 || ((getPos _transp) select 2) > 5 || (speed _transp) > 5: goto "SetGround"
-	? _transp call funcGetCargoNum >= (_transp call funcGetTranspVol) : goto "SetGround"
+	? _transp call funcGetCargoNum >= (_transp call funcGetTranspVol): goto "SetGround"
 	_transports set [count _transports, _transp]; goto "SetGround"
 	
-	#GroundSet
-	? (count _transports) == 0 : goto "NoneFound"
-	_transp = _transports select (random (count _transports) - 0.5)
-	goto "GetIn"
+	# GroundSet
+		? (count _transports) == 0: goto "NoneFound"
+		_transp = _transports select (random (count _transports) - 0.5)
+		goto "GetIn"
 
-#NoneFound
-_unit doMove ([_posCheckBoardStart, 50, 100] call funcGetRandomPos)
-~5
-if (alive _unit) then {_gi = (groupMatrix select _si) find (group _unit)}; _setting = aiSetting select _si select _gi
-? time > _timeCheckBoardStart + (aisPickupWaitTimeDefs select (_setting select _ais)): _unit call busyClear; exit
+# NoneFound
+	_unit doMove ([_posCheckBoardStart, 50, 100] call funcGetRandomPos)
+	~ 5
+	? not alive _unit: goto "Quit"
+	_gi = (groupMatrix select _si) find (group _unit)
+	? -1 == _gi: goto "Quit"
+	_setting = aiSetting select _si select _gi
+	? time > _timeCheckBoardStart + (aisPickupWaitTimeDefs select (_setting select _ais)): goto "Quit"
+	goto "Update"
 
-goto "Update"
+# GetIn
+	? [_posCheckBoardStart, getPos _transp] call funcDistH > _range: goto "NoneFound"
 
-#GetIn
-_unit doWatch _transp; _offset = 0; _timeAbort = time + 2*60
-#GetIn_Check
-	_offset = _offset + 10
-	_vect = [getPos _unit, getPos _transp] call funcVectorSub
-	_dist = (_unit distance _transp)
-	? _dist < 0.1 : _dist = _dist + 10
-	_posMove = [getPos _transp, [_vect, _offset/_dist] call funcVectorScale] call funcVectorAdd; _posMove set [2,0]
-	_unit doMove _posMove
-~_dist*0.1
-? !(alive _unit) || !(alive _transp) || (speed _transp) > 5 || ((getPos _transp) select 2) > 5 || !(_transp in TransportActivatedVehicles) || time > _timeAbort || _offset >= 50 : goto "NoneFound"
-? (_unit distance _transp) > 50 : goto "GetIn_Check"
+	_unit doWatch _transp
+	_moveParamCache = []
 
-~2
+	_moveParamCache set [0, true]; _moveParamCache set [1, true]; _moveParamCache set [2, _unit]
+	_moveParamCache set [3, getPos _transp]; _moveParamCache set [4, 60 * 2]
+	_moveParamCache exec "Util\Move2DestSoldier.sqs"
+
+	# Move2Transport
+		~ 5
+		? _unit call _invalidUnit: _moveParamCache set [1, false], goto "Quit"
+		? not alive _transp || (speed _transp) > 5 || ((getPos _transp) select 2) > 5: _moveParamCache set [1, false], goto "NoneFound"
+		? not (_transp in TransportActivatedVehicles): _moveParamCache set [1, false], goto "NoneFound"
+		? _moveParamCache select 0: goto "Move2Transport"
+
+	? _unit distance _transp > 50: goto "GetIn"
+
+_unit doMove (getPos _transp)
+~ ([_unit, _transp] call funcDistH) / 5 - 2
 ? !(alive _unit) || !(alive _transp): goto "NoneFound"
 
 ; On calling Embark, extra delay is required if wish to execute after having embarked
@@ -77,5 +90,24 @@ _delay = [_unit, _transp, "Cargo"] call preprocessFile "Util\Embark.sqf"
 ~ _delay + 0.2
 ? !(alive _unit) || _transp != vehicle _unit: unassignVehicle _unit; goto "NoneFound"
 
-_timeAbort = time + 10*60
-[_unit, _si, _timeAbort] exec "\TZK_Scripts_4_0_4\Server\Loop\AI_CheckRide.sqs"
+; being transported
+_timeAbort = time + 20 * 60
+# WaitInCargo
+	~ 5
+	? !(alive _unit) || !(alive _transp): goto "Quit"
+	? time > _timeAbort && (speed _transp) < 2 && ((getPos _transp) select 2) < 2: goto "Disembark"
+	? _transp == (vehicle _unit): goto "WaitInCargo"
+	goto "Quit"
+
+# Disembark
+	unassignVehicle _unit
+	_unit action ["Eject", _transp]
+# WaitOut
+	~ 5
+	? !(alive _unit) || !(alive _transp): goto "Quit"
+	? _transp == vehicle _unit: goto "WaitOut"
+
+# Quit
+	unassignVehicle _unit
+	_unit call busyClear
+	_this set [0, true]
