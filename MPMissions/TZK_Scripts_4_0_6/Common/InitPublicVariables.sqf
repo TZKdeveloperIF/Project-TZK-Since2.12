@@ -184,8 +184,8 @@ mutexDestruction = false;
 pvDestruction = -1;
 pvDestruction_Object = objNull;
 
-
-pvInit_0 = -1; pvCustomPlayerMoney = -1; pvCustomAicoMoney = -1;
+// todo: redirect current file since definitions removed
+pvCustomPlayerMoney = -1; pvCustomAicoMoney = -1;
 pvConcurStatus1 = -1; pvConcurStatus2 = -1;
 _i = 0; while {_i < 5} do {call format ["pvBuyUnit_Custom%1 = -1", _i]; _i = _i + 1};
 
