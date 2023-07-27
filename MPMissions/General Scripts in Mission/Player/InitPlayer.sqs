@@ -103,12 +103,10 @@ call preprocessFile "Cfg\InitPlayerCfg.sqf"
 ; player addAction ["TEST", "\TZK_Scripts_4_0_4\Player\Action\Test.sqs"]
 
 onMapSingleClick {[_pos, _units, _alt, _shift] call funcMapClickPlayer}
-; 4.0.5.18 update
-@ !mutexCmd || pvInit_0 != -1
-? pvInit_0 != -1: _val = pvInit_0; _opSi = _val % count sides, _val = (_val - _opSi) / count sides; _opGi = _val
-? mutexCmd: player globalChat format ["Waiting for %1 finish initialization...", name leader (groupMatrix select _opSi select _opGi)]
-? mutexCmd: if (_si == _opSi && _gi == _opGi) then {"TZK_Custom_Init_Attribute" exec "Player\Dialog\CustomInitAttribute.sqs"}
-@ !mutexCmd
+
+@ pvCustomPveStatus != -1
+	pvCustomPveStatus exec "Player\CustomPve.sqs"
+@ pvCustomPveFinished
 
 player groupchat "Waiting for start data ..."
 @ pvMhq0x != -1

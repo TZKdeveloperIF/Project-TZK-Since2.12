@@ -36,22 +36,22 @@ AICO_giTrans = [[],[]]; AICO_giInf = [[],[]]; AICO_giTanks = [[[], [], []], [[],
 0 exec "Server\Init\StartVehs.sqs"
 
 ; game has begun after this pause
-; todo: generate an uniform game time. The "time" can't be assigned in-game.
-~0.001
-? pvInit_0 != -1: publicVariable {pvInit_0}
-? pvInit_0 == -1: mutexCmd = false; publicVariable {mutexCmd}
-
-~2
-@ !mutexCmd
+~ 2
 call preprocessFile "Server\InitServer_Group.sqf"
 call preprocessFile "Server\initStartedGrpMoney.sqf"
 call preprocessFile "Server\initStartedGrpUpg.sqf"
 
+; custom start position (and other match rule)
 _lock = [true]
 _lock exec "Server\PreProcessMatchRule.sqs"
 # ProcessingMatchRule
 	~ 0.5
 	? _lock select 0: goto "ProcessingMatchRule"
+
+; custom for PVE. TODO: it would be better to have just one custom step
+@ pvCustomPveFinished
+
+call preprocessFile "Server\InitCustomStartMoney.sqf";
 
 call loadFile "\TZK_Scripts_4_0_6\Server\Msg\sStartMoney.sqf"
 
