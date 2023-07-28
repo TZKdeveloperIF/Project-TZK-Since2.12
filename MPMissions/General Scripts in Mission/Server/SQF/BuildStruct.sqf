@@ -1,7 +1,7 @@
 private [
   "_type", "_si", "_gi", "_pos", "_dir", "_objects", "_desc", "_parts", "_i", "_c",
   "_part", "_posPartRel", "_posPartX", "_posPartY", "_posPart", "_dirPart", "_obj",
-  "_group", "_x", "_up"
+  "_group"
 ];
 
 _type = _this select 0;
@@ -9,6 +9,7 @@ _si = _this select 1;
 _gi = _this select 2;
 _pos = _this select 3;
 _dir = _this select 4;
+_free = (if (count _this <= 5) then {false} else {_this select 5});
 
 _objects = []; _desc = structDefs select _type; _pos set [2, 0]; _parts = _desc select ([sdObjects0, sdObjects1] select (_si == si1));
 
@@ -39,6 +40,6 @@ while "_i<_c" do {
 { [_type, _si, _objects] exec _x } foreach (_desc select sdScriptsServer);
 [groupMatrix select _si select _gi, _type, _objects] exec "\TZK_Scripts_4_0_4\Server\InsertIntoUndoList.sqs";
 { _group = _x; { _group reveal _x } foreach _objects } foreach (groupAiMatrix select _si);
-[_si, _gi, _desc select sdCost] exec localize {TZK_MONEY_SERVER_SPEND};
+if not _free then {[_si, _gi, _desc select sdCost] exec localize {TZK_MONEY_SERVER_SPEND}};
 if (_type in structsDestroy) then {(_objects select 0) exec "\TZK_Scripts_4_0_4\Server\StructDestoryAdd.sqs"};
 _objects

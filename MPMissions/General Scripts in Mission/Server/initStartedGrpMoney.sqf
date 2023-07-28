@@ -28,5 +28,3 @@
 		startMoneyPlayer set [_si, 14*(startMoneyPlayer select _si)];
 	}
 } forEach [si0, si1];
-
-call preprocessFile "Server\InitCustomStartMoney.sqf";

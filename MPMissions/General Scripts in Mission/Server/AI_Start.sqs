@@ -89,12 +89,13 @@ _timeCheckBoardStart = time
 _posCheckBoardStart = getPos _unit
 # Board1
 ? !(_unit call busyCheck): _unit call busySet
-[_unit, _si, _gi, _posCheckBoardStart select 0, _posCheckBoardStart select 1, _timeCheckBoardStart, aisPickupWait1] exec "Server\Loop\AI_CheckBoard.sqs"
+_param = [false, [_unit, _si, _gi, _posCheckBoardStart, _timeCheckBoardStart, aisPickupWait1]]
+_param exec "Server\Loop\AI_CheckBoard.sqs"
 # WaitBoardReady1
-	~5
+	~ 5
 	? !(alive _unit) : exit
 	? _unit call rtsOrderCheck: exit
-	? _unit call busyCheck : goto "WaitBoardReady1"
+	? not (_param select 0): goto "WaitBoardReady1"
 ? time > _timeCheckBoardStart + (aisPickupWaitTimeDefs select (aiSetting select _si select (( groupMatrix select _si) find (group _unit)) select aisPickupWait1)): goto "NoBoard1"
 ? ([getPos _unit, _posCheckBoardStart] call funcDistH) > 200: goto "NoBoard1"
 goto "Board1"
@@ -120,12 +121,13 @@ _timeCheckBoardStart = time
 _posCheckBoardStart = getPos _unit
 # Board2
 ? !(_unit call busyCheck): _unit call busySet
-[_unit, _si, _gi, _posCheckBoardStart select 0, _posCheckBoardStart select 1, _timeCheckBoardStart, aisPickupWait2] exec "Server\Loop\AI_CheckBoard.sqs"
+_param = [false, [_unit, _si, _gi, _posCheckBoardStart, _timeCheckBoardStart, aisPickupWait2]]
+_param exec "Server\Loop\AI_CheckBoard.sqs"
 # WaitBoardReady2
-	~5
+	~ 5
 	? !(alive _unit) : exit
 	? _unit call rtsOrderCheck: exit
-	? _unit call busyCheck : goto "WaitBoardReady2"
+	? not (_param select 0): goto "WaitBoardReady2"
 ? time > _timeCheckBoardStart + (aisPickupWaitTimeDefs select (aiSetting select _si select (( groupMatrix select _si) find (group _unit)) select aisPickupWait2)): goto "NoBoard2"
 ? ([getPos _unit, _posCheckBoardStart] call funcDistH) > 200: goto "NoBoard2"
 goto "Board2"

@@ -30,23 +30,27 @@ btnValue00 = 0
 	goto "Update"
 # Confirm
 	; There may be "undefined" value in editable box so we shall use "goto" to jump those undefined ones.
-	? ctrlText _idcPlayerMoney == "": goto "SkipPlayerMoney"
-	? call (ctrlText _idcPlayerMoney) >= 0: goto "SkipPlayerMoney"
-	hint "Invalid Player Money Value.", goto "Update"
+		_text = ctrlText _idcPlayerMoney
+		? _text == "": goto "SkipPlayerMoney"
+		_input = [_text, -1] call preprocessFile "Util\Str2Num.sqf";
+		? _input < 0: hint "Invalid Player Money Value.", goto "Update"
+
+		pvCustomPlayerMoney = _input
+		? pvCustomPlayerMoney > 999999: pvCustomPlayerMoney = 999999
+		publicVariable {pvCustomPlayerMoney}
 	# SkipPlayerMoney
-	? ctrlText _idcAicoMoney == "": goto "SkipAicoMoney"
-	? call (ctrlText _idcAicoMoney) >= 0: goto "SkipAicoMoney"
-	hint "Invalid AICO Money Value.", goto "Update"
+		_text = ctrlText _idcAicoMoney
+		? _text == "": goto "SkipAicoMoney"
+		_input = [_text, -1] call preprocessFile "Util\Str2Num.sqf";
+		? _input < 0: hint "Invalid AICO Money Value.", goto "Update"
+
+		pvCustomAicoMoney = _input
+		? pvCustomAicoMoney < 60000: pvCustomAicoMoney = 60000
+		? pvCustomAicoMoney > 999999: pvCustomAicoMoney = 999999
+		publicVariable {pvCustomAicoMoney}
 	# SkipAicoMoney
-	pvCustomPlayerMoney = call (ctrlText _idcPlayerMoney)
-	? pvCustomPlayerMoney > 999999: pvCustomPlayerMoney = 999999
-	? ctrlText _idcPlayerMoney == "": pvCustomPlayerMoney = -1
-	pvCustomAicoMoney = call (ctrlText _idcAicoMoney)
-	? pvCustomAicoMoney < 60000: pvCustomAicoMoney = 60000
-	? pvCustomAicoMoney > 999999: pvCustomAicoMoney = 999999
-	? ctrlText _idcAicoMoney == "": pvCustomAicoMoney = -1
-	publicVariable {pvCustomPlayerMoney}; publicVariable {pvCustomAicoMoney}; closeDialog 0; goto "Quit"
+		closeDialog 0; goto "Quit"
 
 # Quit
-	mutexCmd = false; publicVariable {mutexCmd}
+	pvCustomPveFinished = true; publicVariable {pvCustomPveFinished}
 	exit
