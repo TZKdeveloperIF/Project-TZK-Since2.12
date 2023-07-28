@@ -1,6 +1,12 @@
 // args: [si, gi, orderType, params, send to all]
 private [{_si}, {_gi}, {_type}, {_params}];
 _si = _this select 0; _type = _this select 2; _params = _this select 3;
+// Need to extend _params to 3 elements fill with 0
+private [{_i}];
+_i = 0; while {_i < 3} do {
+	if (count _params <= _i) then {_params set [_i, 0]};
+	_i = _i + 1;
+};
 if (_this select 4) then {
 	private [{_giSender}, {_anyValidGi}];
 	_giSender = _this select 1;
