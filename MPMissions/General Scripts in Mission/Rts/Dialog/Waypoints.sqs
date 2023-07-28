@@ -21,11 +21,11 @@ _pos call preprocessFile "Util\DebugPointInfo.sqf"
 ; 0: rts, 1: area, 2: wpco, 3: player order, 4: point
 [2, _units] call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
 
-_idcLeftBtn = IDC + 16 * 2
+_idcBigLeftBtn = IDC + 16 * 13
 
-_idcList = IDC + 16 * 17 + 10
+_idcList = IDC + 16 * 4 + 0
 
-_idcBtn_0_0 = IDC + 16 * 6; _idcBtnBg_0_0 = IDC + 16 * 1;
+_idcBtn_0_0 = IDC + 16 * 17; _idcBtnBg_0_0 = IDC + 16 * 18;
 {ctrlSetText [_x, "co"]} forEach [_idcBtn_0_0]
 {ctrlSetText [_x, "wp"]} forEach [_idcBtn_0_0 + 1]
 {_i = _x; {ctrlShow [_x + _i, false]} forEach [_idcBtnBg_0_0]} forEach [0,1]
@@ -37,17 +37,17 @@ _COcount = (countWPCO/2) - (countWPCO/2)%1
 { ctrlShow [_x, _co] } forEach [_idcAction3, _idcAction4]
 
 ctrlSetText [IDC_TITLE, "Waypoints"]
-ctrlSetText [_idcLeftBtn + 0, "Set"]
-ctrlSetText [_idcLeftBtn + 1, "Clear"]
-ctrlSetText [_idcLeftBtn + 2, "Clear All Player WPs"]
-ctrlSetText [_idcLeftBtn + 3, "Clear All CO WPs"]
-ctrlSetText [_idcLeftBtn + 4, "Order AI groups"]
+ctrlSetText [_idcBigLeftBtn + 0, "Set"]
+ctrlSetText [_idcBigLeftBtn + 1, "Clear"]
+ctrlSetText [_idcBigLeftBtn + 2, "Clear All Player WPs"]
+ctrlSetText [_idcBigLeftBtn + 3, "Clear All CO WPs"]
+ctrlSetText [_idcBigLeftBtn + 4, "Order AI groups"]
 
 _refreshList = preprocessFile "Rts\Dialog\Wp\UpdateList.sqf"
 
 bNewCoSet = false; call _refreshList
 
-btnValue00 = -1
+btnBigLeft = -1
 
 ; read wpco mode from player global variable
 _mode = RtsWpCoMode; _cacheMode = _mode; _invalidMode = {not _co && not _Superior && (0 == _mode)}
@@ -67,7 +67,7 @@ _highlight = "CO"; if (1 == _mode) then {_highlight = "WP"}
 	? call dlgUpdated: goto "Quit"
 	? !(alive player): closeDialog 0; goto "Quit"
 
-	? btnValue00 >= 0: _leftBtn = btnValue00, btnValue00 = -1, goto "LeftBtn"
+	? btnBigLeft >= 0: _leftBtn = btnBigLeft, btnBigLeft = -1, goto "BigLeftBtn"
 	? btnValue01 > 0: _mode = ln btnValue01 / ln 2, btnValue01 = 0, goto "OnHighlightChange"
 	? btnValue03 > 0: _btnVal = btnValue03; btnValue03 = 0; goto "RightDownBtn"
 
@@ -76,7 +76,7 @@ _highlight = "CO"; if (1 == _mode) then {_highlight = "WP"}
 	~ 0.2
 	goto "Update"
 
-# LeftBtn
+# BigLeftBtn
 	? 0 == _leftBtn: goto "SetBtn"
 	? 1 == _leftBtn: goto "Clear"
 	? 2 == _leftBtn: goto "ClearAllPlayer"

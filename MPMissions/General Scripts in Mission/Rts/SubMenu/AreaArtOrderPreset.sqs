@@ -15,11 +15,11 @@ _enum = _markerType call preprocessFile "Rts\Marker\EnumOfType.sqf"
 _cnt = count (TzkPplRtsAreaInfo select _enum)
 _updateList = preprocessFile "Rts\SubMenu\UpdateAreaListbox.sqf"
 
-_idcTitle = IDC + 0; _idcBtnLabel0 = IDC + 5; _idcBtnLabel1 = IDC + 6
+_idcTitle = IDC + 16 * 3 + 0; _idcBtnLabel0 = IDC + 16 * 3 + 5; _idcBtnLabel1 = IDC + 16 * 3 + 6
 ctrlSetText [_idcBtnLabel0, "Type"]
 ctrlSetText [_idcBtnLabel1, "Big Angle"]
-_idcBtn_0_0 = IDC + 16 * 2; _idcBtnBg_0_0 = IDC + 16 * 1;
-_idcBtn_1_0 = IDC + 16 * 18; _idcBtnBg_1_0 = IDC + 16 * 17;
+_idcBtn_0_0 = IDC + 16 * 5 + 0; _idcBtnBg_0_0 = IDC + 16 * 6 + 0;
+_idcBtn_1_0 = IDC + 16 * 5 + 8; _idcBtnBg_1_0 = IDC + 16 * 6 + 8;
 ctrlSetText [_idcTitle, "Shoot Area"]
 {ctrlSetText [_x, "Soldier"]} forEach [_idcBtn_0_0, _idcBtn_1_0]
 {ctrlSetText [_x, "Struct"]} forEach [_idcBtn_0_0 + 1, _idcBtn_1_0 + 1]
@@ -28,9 +28,10 @@ ctrlSetText [_idcTitle, "Shoot Area"]
 {ctrlSetText [_x, "Tank"]} forEach [_idcBtn_0_0 + 4]
 {_i = _x; {ctrlShow [_x + _i, false]} forEach [_idcBtnBg_0_0, _idcBtnBg_1_0]} forEach [0,1,2,3,4]
 
-_idcMlrsShootingCnt = IDC + 16 * 0 + 7
+_idcMlrsShootingCnt = IDC + 16 * 3 + 7
 
-_idcListLabel0 = IDC + 1; _idcListBox0 = IDC + 2; _idcListLabel1 = IDC + 3; _idcListBox1 = IDC + 4
+_idcListLabel0 = IDC + 16 * 3 + 1; _idcListBox0 = IDC + 16 * 3 + 2
+_idcListLabel1 = IDC + 16 * 3 + 3; _idcListBox1 = IDC + 16 * 3 + 4
 ctrlSetText [_idcListLabel0, "Speed"]
 ctrlSetText [_idcListLabel1, "Art Area"]
 [_idcListBox1, _markerType, _webShort, _cnt] call _updateList
