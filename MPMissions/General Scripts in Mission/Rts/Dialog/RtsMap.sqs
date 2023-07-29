@@ -27,6 +27,9 @@ if (1 == _level) then {_btnVal = TzkSelLv1Btn}; if (2 == _level) then {_btnVal =
 [_idcLeftDownBtn0, _level, _btnVal] call preprocessFile "Rts\Dialog\UpdateRtsDlgType.sqf"
 
 btnValue00 = -1; btnValue01 = 0; btnValue02 = 0; btnValue03 = 0
+btnFirstCtrl = false
+ctrlSetText [IDC + 16 * 32 + 2, "Area"]
+btnUnselect = false
 
 ; left board
 ; { ctrlShow [_x, false] } forEach []
@@ -57,12 +60,23 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 	? btnValue01 > 0: _btnVal = btnValue01; btnValue01 = 0; goto "DownBtn"
 	? btnValue02 > 0: _btnVal = btnValue02; btnValue02 = 0; goto "LeftDownBtn"
 	? btnValue03 > 0: _btnVal = btnValue03; btnValue03 = 0; goto "RightDownBtn"
+	? btnFirstCtrl: btnFirstCtrl = false; goto "FirstCtrl"
+	? btnUnselect: btnUnselect = false; goto "Unselect"
 
 	; Skip
 	~0.2
 	goto "Update"
 # Quit
 	[false, _id + 2] exec "Player\Rts\SetRtsMouse.sqs"; exit
+# FirstCtrl
+	; switch to area map rapidly
+	_btnVal = 2 ^ 1
+	call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
+# Unselect
+	; unselect units, and switch to area dialog
+	false call preprocessFile "Player\Rts\Selection.sqf";
+	_btnVal = 2 ^ 1
+	call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
 # LeftBtn
 	? 0 == _btnVal: _pos exec "Rts\Order\sRtsMove.sqs"; closeDialog 0; goto "Quit"
 	? 1 == _btnVal: 0 exec "Rts\Order\sClear.sqs"; closeDialog 0; goto "Quit"
