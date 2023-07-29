@@ -133,6 +133,16 @@ class RscSliderV {
 // IDC + 16 * 32: RTS dlg ctrls
 // ======================================= IDC rule =======================================
 
+class TzkRtsFirstCtrlBase: Button {
+	idc = IDC + 16 * 32 + 2;
+	x = 0.85;
+	y = 0.0;
+	w = 0.10;
+	h = 0.04;
+	text = "";
+	action = "btnFirstCtrl = true";
+};
+
 // Radio channel occupys y value 0.7-0.8.
 class TzkCmdMapDlgBase: Menu {
 	idd = -1;
@@ -595,6 +605,7 @@ class TzkCmdMapDlgPoint: TzkCmdMapDlgBase {
 		Bg4Group, 
 	};
 	controls[] = {
+		FirstCtrl, 
 		LeftBtn0, 
 		DownBtn0, DownBtn1, DownBtn2, DownBtn3, DownBtn8, 
 		RightDownBg0, RightDownBg1, RightDownBg2, RightDownBg3, RightDownBg4, 
@@ -603,6 +614,8 @@ class TzkCmdMapDlgPoint: TzkCmdMapDlgBase {
 		RightDownBtn5, RightDownBtn6, RightDownBtn7, RightDownBtn8, 
 		Exit
 	};
+
+	class FirstCtrl: TzkRtsFirstCtrlBase {};
 };
 
 class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
@@ -615,6 +628,7 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
 		Bg4Group, 
 	};
 	controls[] = {
+		FirstCtrl, 
 		LeftBtn0, LeftBtn1, LeftBtn2, LeftBtn3, 
 		LeftBtn4, LeftBtn5, LeftBtn6, LeftBtn7, 
 		LeftBtn8, LeftBtn9, 
@@ -689,6 +703,8 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
 		w = 0.16;
 		action = "btnValue00 = 9";
 	};
+
+	class FirstCtrl: TzkRtsFirstCtrlBase {};
 };
 
 class TzkCmdMapDlgWpCo: TzkCmdMapDlgBase {
@@ -701,6 +717,7 @@ class TzkCmdMapDlgWpCo: TzkCmdMapDlgBase {
 		Bg4Group, 
 	};
 	controls[] = {
+		FirstCtrl, 
 		BigLeftBtn0, BigLeftBtn1, BigLeftBtn2, BigLeftBtn3, BigLeftBtn4, 
 		DownBtnBg0, DownBtnBg1, 
 		DownBtn0, DownBtn1, 
@@ -725,6 +742,8 @@ class TzkCmdMapDlgWpCo: TzkCmdMapDlgBase {
 		w = 0.5;
 		h = 0.60;
 	};
+
+	class FirstCtrl: TzkRtsFirstCtrlBase {};
 };
 
 class TzkRtsSubMenuOneListBox: Menu {
