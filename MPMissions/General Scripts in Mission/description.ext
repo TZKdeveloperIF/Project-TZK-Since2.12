@@ -106,6 +106,13 @@ class RscSliderH {
 	h = 0.028;
 	color[] = {0.08,0.08,0.12,0.75};
 };
+class RscSliderV {
+	access = 3;
+	type = 3;
+	style = 0;
+	w = 0.021;
+	color[] = {0.08,0.08,0.12,0.75};
+};
 
 // ======================================= IDC rule =======================================
 // IDC + 16 * 0, ICD + 16 * 1: remained. Old style controls prpbably uses these values
@@ -122,13 +129,29 @@ class RscSliderH {
 // IDC + 16 * 16: RTS left pictures (for CHN lang)
 // IDC + 16 * 17: RTS down buttons
 // IDC + 16 * 18: RTS down highlights
+
+// IDC + 16 * 32: RTS dlg ctrls
 // ======================================= IDC rule =======================================
+
+class TzkRtsFirstCtrlBase: Button {
+	idc = IDC + 16 * 32 + 2;
+	x = 0.85;
+	y = 0.0;
+	w = 0.10;
+	h = 0.04;
+	text = "";
+	action = "btnFirstCtrl = true";
+};
 
 // Radio channel occupys y value 0.7-0.8.
 class TzkCmdMapDlgBase: Menu {
 	idd = -1;
 	movingEnable = true;
-	controlsBackground[] = {MapBg, LeftBg, DownBg};
+	// controlsBackground[] = {
+	// 	MapBg, LeftBg, 
+	// 	DownAreaHighlight, RightDownAreaHighlight, LeftDownAreaHighlight, 
+	// 	Bg4Group, 
+	// };
 	objects[] = {};
 	controls[] = {
 		LeftBtn0, 
@@ -140,48 +163,80 @@ class TzkCmdMapDlgBase: Menu {
 		TextAzimut, ValueAzimut, SliderAzimut, 
 		Exit
 	};
+
+	#define RtsMapBottom 0.80
+	#define BottomBtnInitY RtsMapBottom + 0.01
+	#define RtsDlgBottom 0.94
+	#define RtsMapLeftWidth 0.30
+	#define RtsMapMidWidth 0.40
+
 	class TextAzimut: RscText {
-		x = 0.31;
-		y = 0.80;
+		x = RtsMapLeftWidth + 0.01;
+		y = 0.70 - 0.05;
 		w = 0.04;
 		h = 0.04;
 		text = "Azimut";
 	};
 	class ValueAzimut: RscEdit {
-		idc = IDC + 512 + 1;
-		x = 0.30 + 0.06;
-		y = 0.80;
+		idc = IDC + 16 * 32 + 1;
+		x = RtsMapLeftWidth + 0.06;
+		y = 0.70 - 0.05;
 		w = 0.05;
 		h = 0.04;
 		text = "";
 	};
-	class SliderAzimut: RscSliderH {
-		idc = IDC + 512 + 0;
-		x = 0.30 + 0.12;
-		y = 0.80;
-		w = 0.40;
+	class SliderAzimut: RscSliderV {
+		color[] = {1.0, 1.0, 1.0, 1.0};
+		sizeEx = 0.04;
+
+		idc = IDC + 16 * 32 + 0;
+		x = RtsMapLeftWidth + 0.04;
+		y = 0.02;
+		w = 0.04;
+		h = 0.61;
 		text = "";
 	};
 
-	#define MapBottom 0.80
+	// colorBackground[] = {0.0, 0.6, 0.9, 0.90};
 	class MapBg: Light_BG_Window {
-		x = 0.3;
+		x = RtsMapLeftWidth;
 		y = 0.0;
-		w = 0.7;
-		h = MapBottom;
+		w = 1.0 - RtsMapLeftWidth;
+		h = RtsMapBottom;
 		colorBackground[] = {0.1, 0.1, 0.1, 1.0};
 	};
 	class LeftBg: BackgroundWindow {
 		x = 0.0;
 		y = 0.0;
-		w = 0.3;
-		h = 1.0;
+		w = RtsMapLeftWidth;
+		h = RtsMapBottom;
 	};
-	class DownBg: BackgroundWindow {
-		x = 0.3;
-		y = MapBottom;
-		w = 0.7;
-		h = 1 - MapBottom;
+	class DownAreaHighlight: BackgroundWindow {
+		x = RtsMapLeftWidth;
+		y = RtsMapBottom;
+		w = RtsMapMidWidth;
+		h = RtsDlgBottom - RtsMapBottom;
+		colorBackground[] = {0.6, 0.5, 0.4, 0.75};
+	};
+	class DownAreaBg: DownAreaHighlight { colorBackground[] = COLOR_MENU_BG; };
+	class RightDownAreaHighlight: DownAreaHighlight {
+		x = RtsMapLeftWidth + RtsMapMidWidth;
+		w = 1.0 - (RtsMapLeftWidth + RtsMapMidWidth);
+		colorBackground[] = {0.4, 0.5, 0.6, 0.75};
+	};
+	class RightDownAreaBg: RightDownAreaHighlight { colorBackground[] = COLOR_MENU_BG; };
+	class LeftDownAreaHighlight: DownAreaHighlight {
+		x = 0.0;
+		w = RtsMapLeftWidth;
+		colorBackground[] = {0.4, 0.6, 0.5, 0.75};
+	};
+	class LeftDownAreaBg: LeftDownAreaHighlight { colorBackground[] = COLOR_MENU_BG; };
+	class Bg4Group: DownAreaHighlight {
+		x = 0.0;
+		y = RtsDlgBottom;
+		w = 1.0;
+		h = 1.0 - RtsDlgBottom;
+		colorBackground[] = {0.0, 0.2, 0.9, 0.05};
 	};
 	
 	class LeftBtn0: Button {
@@ -231,7 +286,7 @@ class TzkCmdMapDlgBase: Menu {
 	class DownBtn0: Button {
 		idc = IDC + 16 * 17 + 0;
 		x = 0.41 + 0.09 * 0;
-		y = 0.88 + 0.0;
+		y = BottomBtnInitY + 0.00;
 		w = 0.09;
 		// sizeEx = 0.025;
 		text = "UNDEFINED";
@@ -249,7 +304,7 @@ class TzkCmdMapDlgBase: Menu {
 	};
 	class DownBtn3: DownBtn0 {
 		idc = IDC + 16 * 17 + 3;
-		y = 0.88 + 0.04;
+		y = BottomBtnInitY + 0.04;
 		action = "btnValue01 = 2^3";
 	};
 	class DownBtn4: DownBtn3 {
@@ -264,7 +319,7 @@ class TzkCmdMapDlgBase: Menu {
 	};
 	class DownBtn6: DownBtn0 {
 		idc = IDC + 16 * 17 + 6;
-		y = 0.88 + 0.08;
+		y = BottomBtnInitY + 0.08;
 		action = "btnValue01 = 2^6";
 	};
 	class DownBtn7: DownBtn6 {
@@ -281,7 +336,7 @@ class TzkCmdMapDlgBase: Menu {
 	class DownBtnBg0: SelectedBG {
 		idc = IDC + 16 * 18 + 0;
 		x = 0.41 + 0.09 * 0;
-		y = 0.88 + 0.0;
+		y = BottomBtnInitY + 0.0;
 		w = 0.09;
 	};
 	class DownBtnBg1: DownBtnBg0 {
@@ -302,50 +357,50 @@ class TzkCmdMapDlgBase: Menu {
 	// right down part. switch to another dialog
 	class RightDownBtn0: DownBtn0 {
 		idc = IDC + 16 * 10 + 0;
-		x = 0.7 + 0.0;
-		y = 0.88 + 0.0;
-		w = 0.1;
-		text = "UNDEFINED";
+		x = RtsMapLeftWidth + RtsMapMidWidth + 0.01 + 0.09 * 0;
+		y = BottomBtnInitY + 0.00;
+		w = 0.09;
+		text = "";
 		action = "btnValue03 = 2^0";
 	};
 	class RightDownBtn1: RightDownBtn0 {
 		idc = IDC + 16 * 10 + 1;
-		x = 0.7 + 0.1;
+		x = RtsMapLeftWidth + RtsMapMidWidth + 0.01 + 0.09 * 1;
 		action = "btnValue03 = 2^1";
 	};
 	class RightDownBtn2: RightDownBtn0 {
 		idc = IDC + 16 * 10 + 2;
-		x = 0.7 + 0.2;
+		x = RtsMapLeftWidth + RtsMapMidWidth + 0.01 + 0.09 * 2;
 		action = "btnValue03 = 2^2";
 	};
 	class RightDownBtn3: RightDownBtn0 {
 		idc = IDC + 16 * 10 + 3;
-		y = 0.88 + 0.04;
+		y = BottomBtnInitY + 0.04;
 		action = "btnValue03 = 2^3";
 	};
 	class RightDownBtn4: RightDownBtn3 {
 		idc = IDC + 16 * 10 + 4;
-		x = 0.7 + 0.1;
+		x = RtsMapLeftWidth + RtsMapMidWidth + 0.01 + 0.09 * 1;
 		action = "btnValue03 = 2^4";
 	};
 	class RightDownBtn5: RightDownBtn3 {
 		idc = IDC + 16 * 10 + 5;
-		x = 0.7 + 0.2;
+		x = RtsMapLeftWidth + RtsMapMidWidth + 0.01 + 0.09 * 2;
 		action = "btnValue03 = 2^5";
 	};
 	class RightDownBtn6: RightDownBtn0 {
 		idc = IDC + 16 * 10 + 6;
-		y = 0.88 + 0.08;
+		y = BottomBtnInitY + 0.08;
 		action = "btnValue03 = 2^6";
 	};
 	class RightDownBtn7: RightDownBtn6 {
 		idc = IDC + 16 * 10 + 7;
-		x = 0.7 + 0.1;
+		x = RtsMapLeftWidth + RtsMapMidWidth + 0.01 + 0.09 * 1;
 		action = "btnValue03 = 2^7";
 	};
 	class RightDownBtn8: RightDownBtn6 {
 		idc = IDC + 16 * 10 + 8;
-		x = 0.7 + 0.2;
+		x = RtsMapLeftWidth + RtsMapMidWidth + 0.01 + 0.09 * 2;
 		action = "btnValue03 = 2^8";
 	};
 
@@ -353,41 +408,41 @@ class TzkCmdMapDlgBase: Menu {
 	// highlight for right down btns
 	class RightDownBg0: SelectedBG {
 		idc = IDC + 16 * 11 + 0;
-		x = 0.7 + 0.0;
-		y = 0.88 + 0.0;
-		w = 0.1;
+		x = RtsMapLeftWidth + RtsMapMidWidth + 0.01 + 0.09 * 0;
+		y = BottomBtnInitY + 0.00;
+		w = 0.09;
 	};
 	class RightDownBg1: RightDownBg0 {
 		idc = IDC + 16 * 11 + 1;
-		x = 0.7 + 0.1;
+		x = RtsMapLeftWidth + RtsMapMidWidth + 0.01 + 0.09 * 1;
 	};
 	class RightDownBg2: RightDownBg0 {
 		idc = IDC + 16 * 11 + 2;
-		x = 0.7 + 0.2;
+		x = RtsMapLeftWidth + RtsMapMidWidth + 0.01 + 0.09 * 2;
 	};
 	class RightDownBg3: RightDownBg0 {
 		idc = IDC + 16 * 11 + 3;
-		y = 0.88 + 0.04;
+		y = BottomBtnInitY + 0.04;
 	};
 	class RightDownBg4: RightDownBg3 {
 		idc = IDC + 16 * 11 + 4;
-		x = 0.7 + 0.1;
+		x = RtsMapLeftWidth + RtsMapMidWidth + 0.01 + 0.09 * 1;
 	};
 	class RightDownBg5: RightDownBg3 {
 		idc = IDC + 16 * 11 + 5;
-		x = 0.7 + 0.2;
+		x = RtsMapLeftWidth + RtsMapMidWidth + 0.01 + 0.09 * 2;
 	};
 	class RightDownBg6: RightDownBg0 {
 		idc = IDC + 16 * 11 + 6;
-		y = 0.88 + 0.08;
+		y = BottomBtnInitY + 0.08;
 	};
 	class RightDownBg7: RightDownBg6 {
 		idc = IDC + 16 * 11 + 7;
-		x = 0.7 + 0.1;
+		x = RtsMapLeftWidth + RtsMapMidWidth + 0.01 + 0.09 * 1;
 	};
 	class RightDownBg8: RightDownBg6 {
 		idc = IDC + 16 * 11 + 8;
-		x = 0.7 + 0.2;
+		x = RtsMapLeftWidth + RtsMapMidWidth + 0.01 + 0.09 * 2;
 	};
 
 	// IDC: 16 * 12
@@ -395,7 +450,7 @@ class TzkCmdMapDlgBase: Menu {
 	class LeftDownBtn0: RightDownBtn0 {
 		idc = IDC + 16 * 12 + 0;
 		x = 0.015 + 0.09 * 0;
-		y = 0.88 + 0.0;
+		y = BottomBtnInitY + 0.00;
 		w = 0.09;
 		text = "UNDEFINED";
 		action = "btnValue02 = 2^0";
@@ -412,7 +467,7 @@ class TzkCmdMapDlgBase: Menu {
 	};
 	class LeftDownBtn3: LeftDownBtn0 {
 		idc = IDC + 16 * 12 + 3;
-		y = 0.88 + 0.04;
+		y = BottomBtnInitY + 0.04;
 		action = "btnValue02 = 2^3";
 	};
 	class LeftDownBtn4: LeftDownBtn3 {
@@ -427,7 +482,7 @@ class TzkCmdMapDlgBase: Menu {
 	};
 	class LeftDownBtn6: LeftDownBtn0 {
 		idc = IDC + 16 * 12 + 6;
-		y = 0.88 + 0.08;
+		y = BottomBtnInitY + 0.08;
 		action = "btnValue02 = 2^6";
 	};
 	class LeftDownBtn7: LeftDownBtn6 {
@@ -444,6 +499,14 @@ class TzkCmdMapDlgBase: Menu {
 };
 
 class TzkCmdMapDlgArea: TzkCmdMapDlgBase {
+	controlsBackground[] = {
+		MapBg, 
+		LeftBg, 
+		DownAreaHighlight, 
+		RightDownAreaHighlight, 
+		LeftDownAreaBg, 
+		Bg4Group, 
+	};
 	controls[] = {
 		TextAzimut, ValueAzimut, SliderAzimut, 
 		Frame1, 
@@ -533,7 +596,16 @@ class TzkCmdMapDlgArea: TzkCmdMapDlgBase {
 };
 
 class TzkCmdMapDlgPoint: TzkCmdMapDlgBase {
+	controlsBackground[] = {
+		MapBg, 
+		LeftBg, 
+		DownAreaHighlight, 
+		RightDownAreaHighlight, 
+		LeftDownAreaBg, 
+		Bg4Group, 
+	};
 	controls[] = {
+		FirstCtrl, 
 		LeftBtn0, 
 		DownBtn0, DownBtn1, DownBtn2, DownBtn3, DownBtn8, 
 		RightDownBg0, RightDownBg1, RightDownBg2, RightDownBg3, RightDownBg4, 
@@ -542,10 +614,22 @@ class TzkCmdMapDlgPoint: TzkCmdMapDlgBase {
 		RightDownBtn5, RightDownBtn6, RightDownBtn7, RightDownBtn8, 
 		Exit
 	};
+
+	class FirstCtrl: TzkRtsFirstCtrlBase {};
 };
 
 class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
+	controlsBackground[] = {
+		MapBg, 
+		LeftBg, 
+		DownAreaHighlight, 
+		RightDownAreaHighlight, 
+		LeftDownAreaHighlight, 
+		Bg4Group, 
+	};
 	controls[] = {
+		FirstCtrl, 
+		Unselect, 
 		LeftBtn0, LeftBtn1, LeftBtn2, LeftBtn3, 
 		LeftBtn4, LeftBtn5, LeftBtn6, LeftBtn7, 
 		LeftBtn8, LeftBtn9, 
@@ -620,10 +704,29 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
 		w = 0.16;
 		action = "btnValue00 = 9";
 	};
+
+	class FirstCtrl: TzkRtsFirstCtrlBase {};
+	class Unselect: Button {
+		x = RtsMapLeftWidth;
+		y = 0.0;
+		w = 0.10;
+		h = 0.04;
+		text = "Unselect";
+		action = "btnUnselect = true";
+	};
 };
 
 class TzkCmdMapDlgWpCo: TzkCmdMapDlgBase {
+	controlsBackground[] = {
+		MapBg, 
+		LeftBg, 
+		DownAreaHighlight, 
+		RightDownAreaHighlight, 
+		LeftDownAreaBg, 
+		Bg4Group, 
+	};
 	controls[] = {
+		FirstCtrl, 
 		BigLeftBtn0, BigLeftBtn1, BigLeftBtn2, BigLeftBtn3, BigLeftBtn4, 
 		DownBtnBg0, DownBtnBg1, 
 		DownBtn0, DownBtn1, 
@@ -648,6 +751,8 @@ class TzkCmdMapDlgWpCo: TzkCmdMapDlgBase {
 		w = 0.5;
 		h = 0.60;
 	};
+
+	class FirstCtrl: TzkRtsFirstCtrlBase {};
 };
 
 class TzkRtsSubMenuOneListBox: Menu {
@@ -1662,8 +1767,12 @@ class ConsoleDialog: Menu {
 
 class TzkCmdMapDlgPplOrder: TzkCmdMapDlgBase {
 	controlsBackground[] = {
-		LeftBg, DownBg, 
 		// MapBg, 		// Hide to compatible with old style
+		LeftBg, 
+		DownAreaHighlight, 
+		RightDownAreaHighlight, 
+		LeftDownAreaBg, 
+		Bg4Group, 
 		OldOrderBg0, OldOrderBg1, OldOrderBg2, 	// Compatible with old style
 	};
 	class OldOrderBg0: TZK_BackGround_0 {

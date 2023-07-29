@@ -24,6 +24,8 @@ _idcDownBtn0 = IDC + 16 * 17 + 0
 [4, _units] call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
 
 btnValue00 = -1; btnValue01 = 0; btnValue03 = 0
+btnFirstCtrl = false
+ctrlSetText [IDC + 16 * 32 + 2, "Waypoint"]
 
 { ctrlShow [_x, false] } forEach [_idcLeftBtn0]
 ? isCommander || bIsAiSuperior: ctrlSetText [_idcLeftBtn0, "Wall MHQ"]; ctrlShow [_idcLeftBtn0, true]
@@ -43,6 +45,7 @@ TzkMapRtsFlashingDisabled = true
 	? btnValue00 >= 0: _btnVal = btnValue00; btnValue00 = -1; goto "LeftBtn"
 	? btnValue01 > 0: _btnVal = btnValue01; btnValue01 = 0; goto "DownBtn"
 	? btnValue03 > 0: _btnVal = btnValue03; btnValue03 = 0; goto "RightDownBtn"
+	? btnFirstCtrl: btnFirstCtrl = false; goto "FirstCtrl"
 
 	; Skip
 	~0.2
@@ -51,6 +54,10 @@ TzkMapRtsFlashingDisabled = true
 	TzkMapRtsFlashingDisabled = false
 	RtsLatestPointDialogTime = time
 	[false, _id + 2] exec "Player\Rts\SetRtsMouse.sqs"; exit
+# FirstCtrl
+	; switch to waypoint dialog rapidly
+	_btnVal = 2 ^ 2
+	call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
 # LeftBtn
 	? 0 == _btnVal: 0 exec "Rts\Building\sWallMhq.sqs"; goto "Update"
 	goto "Update"
