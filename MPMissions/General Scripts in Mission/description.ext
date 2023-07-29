@@ -629,6 +629,7 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
 	};
 	controls[] = {
 		FirstCtrl, 
+		Unselect, 
 		LeftBtn0, LeftBtn1, LeftBtn2, LeftBtn3, 
 		LeftBtn4, LeftBtn5, LeftBtn6, LeftBtn7, 
 		LeftBtn8, LeftBtn9, 
@@ -705,6 +706,14 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
 	};
 
 	class FirstCtrl: TzkRtsFirstCtrlBase {};
+	class Unselect: Button {
+		x = RtsMapLeftWidth;
+		y = 0.0;
+		w = 0.10;
+		h = 0.04;
+		text = "Unselect";
+		action = "btnUnselect = true";
+	};
 };
 
 class TzkCmdMapDlgWpCo: TzkCmdMapDlgBase {
