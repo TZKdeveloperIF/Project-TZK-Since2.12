@@ -1,5 +1,5 @@
-_idcSliderAzimut = IDC + 512 + 0;
-_idcValueAzimut = IDC + 512 + 1;
+_idcSliderAzimut = IDC + 16 * 32 + 0;
+_idcValueAzimut = IDC + 16 * 32 + 1;
 
 if _this then { // show
 	_AzimutCache = format ["%1", TzkMapSelectDir];
