@@ -75,22 +75,26 @@ _rtsCrossOutdateDur = 10; _rtsAreaOutDateDur = 30;
 	goto "Update"
 
 
-#WaitUntilAlive
+# WaitUntilAlive
 	_timeRespawn = time + 30
 	
 	forceMap true
 
 	closeDialog 0
-	~1
+	~ 1
 	[_timeRespawn] exec "\TZK_Scripts_4_0_4\Player\Dialog\Respawn.sqs"
 	
 	_index = 0
-	#RemoveAction
+	# DisableActions
 		_unit removeAction _index
 		_index = _index + 1
-		? (_index < 10):goto "RemoveAction"
+		? _index < 10: goto "DisableActions"
 
-	@(alive player) || (pvGameOver != -1)
+	; cancel forceMap before respawn
+	@ alive player || pvGameOver != -1 || time > _timeRespawn - 3
+	forceMap false
+
+	@ alive player || pvGameOver != -1
 
 	? pvGameOver != -1: [] exec localize {TZK_PLAYER_GAMEOVER_SECQUENCE}; [] exec localize {TZK_TRIGGER_GAME_END_COMMON}; exit
 
