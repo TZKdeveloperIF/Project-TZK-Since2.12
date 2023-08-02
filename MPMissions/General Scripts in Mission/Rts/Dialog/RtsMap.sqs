@@ -89,12 +89,13 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 	? 8 == _btnVal: [true, true] exec "Rts\SubMenu\MinePreset.sqs"; closeDialog 0; goto "Quit"
 	? 9 == _btnVal: [true, false] exec "Rts\SubMenu\MinePreset.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
+; Share same structure and effect with player group order
 # DownBtn
 	? count _downBoardStack > 0: goto "DownSubMenu"
 
 	? 2^0 == _btnVal: 0 exec "Rts\SubMenu\DisbandPreset.sqs"; closeDialog 0; goto "Quit"
-	? 2^1 == _btnVal: 0 exec "Rts\Trigger\sEject.sqs"; closeDialog 0; goto "Quit"
-	? 2^2 == _btnVal: 0 exec "Rts\Trigger\sDisembark.sqs"; closeDialog 0; goto "Quit"
+	? 2^1 == _btnVal: 0 exec "Rts\Trigger\sEject.sqs"; TitleText ["Eject cargos.\nDriver, gunner and commander won't eject.", "Plain DOWN", 0.25]; closeDialog 0; goto "Quit"
+	? 2^2 == _btnVal: 0 exec "Rts\Trigger\sDisembark.sqs"; TitleText ["Ask all units to disembark. If there're player's units in vehicle, they might prevernt subsequent AI units' disembark.", "Plain DOWN", 0.25]; closeDialog 0; goto "Quit"
 
 	? 2^3 == _btnVal: 0 exec "Rts\SubMenu\JoinPreset.sqs"; closeDialog 0; goto "Quit"
 
@@ -107,7 +108,7 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 
 		? 2^0 == _btnVal && 5 == _downBoardStack select 0: true exec "Rts\Trigger\sSpoof.sqs"; _return = true
 		? 2^1 == _btnVal && 5 == _downBoardStack select 0: false exec "Rts\Trigger\sSpoof.sqs"; _return = true
-		? 2^2 == _btnVal && 5 == _downBoardStack select 0: 0 exec "Rts\SubMenu\FlightAltitudePreset.sqs"; closeDialog 0; goto "Quit"
+		? 2^2 == _btnVal && 5 == _downBoardStack select 0: [true] exec "Rts\SubMenu\FlightAltitudePreset.sqs"; closeDialog 0; goto "Quit"
 		? 2^3 == _btnVal && 5 == _downBoardStack select 0: true exec "Rts\Trigger\sAfterBurner.sqs"; _return = true
 		? 2^4 == _btnVal && 5 == _downBoardStack select 0: false exec "Rts\Trigger\sAfterBurner.sqs"; _return = true
 

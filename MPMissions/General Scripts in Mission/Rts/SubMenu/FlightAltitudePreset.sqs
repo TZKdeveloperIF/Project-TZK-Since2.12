@@ -1,4 +1,4 @@
-; args: none
+; args: [server rts order: bool, params]
 
 @ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
@@ -38,7 +38,9 @@ lbSetCurSel [_idc, lastSetFlightAlt]
 	_alt = lbValue [_idc, _sel]
 	? _alt > 800 && upgMatrix select siPlayer select upgAltFlight != 2: hint "Haven't upgraded yet"; goto "Update"
 
-	_alt exec "Rts\Trigger\sSetFlightAltitude.sqs"
+	_bSvrRtsOrder = _this select 0
+	? _bSvrRtsOrder: _alt exec "Rts\Trigger\sSetFlightAltitude.sqs"
+	? not _bSvrRtsOrder: _units = _this select 1 select 0, [_units, _alt] exec "Player\RtsFlightAlt.sqs"
 
 	lastSetFlightAlt = _sel
 	closeDialog 0

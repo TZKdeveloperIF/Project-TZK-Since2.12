@@ -1,0 +1,24 @@
+; args: units
+; eject cargo units
+
+_units = _this; _c = count _units
+? _c == 0: exit
+_i = 0, _stat = []
+# loop
+	_unit = _units select _i
+	_vehicle = vehicle _unit
+	? _unit == _vehicle: goto "continue"
+	? _unit == driver _vehicle: goto "continue"
+	? _unit == gunner _vehicle: goto "continue"
+	? _unit == commander _vehicle: goto "continue"
+
+	unassignVehicle _unit; _unit action ["EJECT", vehicle _unit]
+
+	_stat set [count _stat, _unit]
+
+	# continue
+	_i = _i + 1
+	? _i < _c: goto "loop"
+
+? 1 == count _stat: (_stat select 0) groupChat "Ejected."
+? 1 < count _stat: player groupChat format ["Units: %1 ejected.", _stat]

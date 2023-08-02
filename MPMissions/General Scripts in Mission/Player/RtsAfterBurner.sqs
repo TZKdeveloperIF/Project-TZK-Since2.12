@@ -1,0 +1,28 @@
+; args: [units, state]
+; switch spoof status
+
+? upgMatrix select siPlayer select upgPlaneAfterBurner != 2: exit
+
+_units = _this select 0, _state = _this select 1; _c = count _units
+? _c == 0: exit
+_i = 0, _cache = [], _stat = []
+# loop
+	_unit = _units select _i
+	_vehicle = vehicle _unit
+	? _unit == _vehicle: goto "continue"
+	? _unit != driver _vehicle: goto "continue"
+
+	_cache set [0, _vehicle]
+	? ("A10_Base_xj400" countType _cache == 0) && ("Su25_Base_xj400" countType _cache == 0): goto "continue"
+
+	? _state: _vehicle removeMagazines {AfterBurnerSwitch_xj400}; _vehicle exec localize {TZK_EFFECT_AFTER_BURNER}
+	? not _state: _vehicle addMagazine {AfterBurnerSwitch_xj400}
+
+	_stat set [count _stat, _unit]
+
+	# continue
+	_i = _i + 1
+	? _i < _c: goto "loop"
+
+? 1 == count _stat: (_stat select 0) groupChat format ["After burner %1.", if _state then {"ON"} else {"OFF"}]
+? 1 < count _stat: player groupChat format ["After burner %1 for units: %2.", if _state then {"ON"} else {"OFF"}, _stat]
