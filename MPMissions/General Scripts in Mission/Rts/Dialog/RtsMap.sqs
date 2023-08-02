@@ -35,6 +35,8 @@ btnUnselect = false
 ; { ctrlShow [_x, false] } forEach []
 ctrlSetText [_idcLeftBtn0, "Move"]
 ctrlSetText [_idcLeftBtn0 + 1, "Clear Rts Order"]
+ctrlSetText [_idcLeftBtn0 + 13, "Stop"]
+
 ctrlSetText [_idcLeftBtn0 + 2, "Shoot Area"]
 ctrlSetText [_idcLeftBtn0 + 3, "Move and Shoot"]
 ctrlSetText [_idcLeftBtn0 + 4, "Board"]
@@ -80,6 +82,8 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 # LeftBtn
 	? 0 == _btnVal: _pos exec "Rts\Order\sRtsMove.sqs"; closeDialog 0; goto "Quit"
 	? 1 == _btnVal: 0 exec "Rts\Order\sClear.sqs"; closeDialog 0; goto "Quit"
+	? 13 == _btnVal: 0 exec "Rts\Order\sStop.sqs"; closeDialog 0; goto "Quit"
+
 	? 2 == _btnVal: [_pos, false, true] exec "Rts\SubMenu\AreaArtOrderPreset.sqs"; closeDialog 0; goto "Quit"
 	? 3 == _btnVal: [_pos, true, true] exec "Rts\SubMenu\AreaArtOrderPreset.sqs"; closeDialog 0; goto "Quit"
 	? 4 == _btnVal: _pos exec "Rts\SubMenu\BoardPreset.sqs"; closeDialog 0; goto "Quit"
@@ -88,6 +92,7 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 	? 7 == _btnVal: _pos exec "Rts\SubMenu\ReclaimPreset.sqs"; closeDialog 0; goto "Quit"
 	? 8 == _btnVal: [true, true] exec "Rts\SubMenu\MinePreset.sqs"; closeDialog 0; goto "Quit"
 	? 9 == _btnVal: [true, false] exec "Rts\SubMenu\MinePreset.sqs"; closeDialog 0; goto "Quit"
+	; value 13 is occupied
 	goto "Update"
 ; Share same structure and effect with player group order
 # DownBtn

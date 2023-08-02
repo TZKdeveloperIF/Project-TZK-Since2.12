@@ -125,6 +125,7 @@ _selectedOrder = -1
 # LeftBtn
 	? 0 == _val0: {[_x, _pos] exec "\TZK_Scripts_4_0_4\Player\Order\MovePos.sqs"} forEach _units; closeDialog 0; goto "Quit"
 	? 1 == _val0: [true, _units] exec "Player\Order\Clear.sqs"; closeDialog 0; goto "Quit"
+	? 13 == _val0: {_x exec "Player\Order\Stop.sqs"} forEach _units; closeDialog 0; goto "Quit"
 
 	? 2 == _val0: [_units, _pos] exec "Player\Order\PreShootArea.sqs"; closeDialog 0; goto "Quit"
 	? 4 == _val0: _units exec "Player\Order\PreSwitchMag.sqs"; closeDialog 0; goto "Quit"
@@ -139,6 +140,7 @@ _selectedOrder = -1
 
 	? 11 == _val0: _units exec "Player\Order\RtsPreDisable.sqs"; closeDialog 0; goto "Quit"
 	? 12 == _val0: _units exec "Player\Order\RtsPreMineArea.sqs"; closeDialog 0; goto "Quit"
+	; value 13 is occupied
 
 	goto "Update"
 # RightDownBtn

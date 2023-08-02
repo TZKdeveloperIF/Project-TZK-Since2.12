@@ -3,6 +3,8 @@
 // Left buttons
 ctrlSetText [_idcLeftBtn0 + 0, "Move"];
 ctrlSetText [_idcLeftBtn0 + 1, "Clear Order"];
+ctrlSetText [_idcLeftBtn0 + 13, "Stop"];
+
 ctrlSetText [_idcLeftBtn0 + 2, "Shoot Area"];
 // 3
 ctrlSetText [_idcLeftBtn0 + 4, "Switch Magazine"];
@@ -14,6 +16,7 @@ ctrlSetText [_idcLeftBtn0 + 9, "Move Land"];
 ctrlSetText [_idcLeftBtn0 + 10, "Move Ship"];
 ctrlSetText [_idcLeftBtn0 + 11, "DisableMine"];
 ctrlSetText [_idcLeftBtn0 + 12, "Mine Area"];
+// 13
 
 // Middle buttons
 ctrlSetText [_idcMidBtn0 + 0, "Heal & (Rearm)"];

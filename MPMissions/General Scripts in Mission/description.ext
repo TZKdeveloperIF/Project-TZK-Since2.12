@@ -241,8 +241,9 @@ class TzkCmdMapDlgBase: Menu {
 	
 	class LeftBtn0: Button {
 		idc = IDC + 16 * 2 + 0;			// Remain 32-95 idc for left buttons
-		x = 0.025;
+		x = 0.025 + 0.13;
 		y = 0.10;
+		w = 0.12;
 		text = "UNDEFINED";
 		action = "btnValue00 = 0";
 	};
@@ -614,6 +615,14 @@ class TzkCmdMapDlgPoint: TzkCmdMapDlgBase {
 		RightDownBtn5, RightDownBtn6, RightDownBtn7, RightDownBtn8, 
 		Exit
 	};
+	
+	class LeftBtn0: Button {
+		idc = IDC + 16 * 2 + 0;			// Remain 32-95 idc for left buttons
+		x = 0.025;
+		y = 0.10;
+		text = "";
+		action = "btnValue00 = 0";
+	};
 
 	class FirstCtrl: TzkRtsFirstCtrlBase {};
 };
@@ -633,6 +642,7 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
 		LeftBtn0, LeftBtn1, LeftBtn2, LeftBtn3, 
 		LeftBtn4, LeftBtn5, LeftBtn6, LeftBtn7, 
 		LeftBtn8, LeftBtn9, 
+		LeftBtn13, // for RTS "stop"
 		DownBtn0, DownBtn1, DownBtn2, 
 		DownBtn3, DownBtn4, DownBtn5, 
 		DownBtn6, DownBtn7, DownBtn8, 
@@ -646,10 +656,12 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
 	};
 	class LeftBtn1: LeftBtn0 { // for "RTS order clear" button
 		idc = IDC + 16 * 2 + 1;
-		y = 0.025;
+		x = 0.025;
+		y = 0.04;
+		w = 0.25;
 		text = "UNDEFINED";
 		action = "btnValue00 = 1";
-		colorText[] = {0, 0.8, 0.8, 1.0};
+		colorText[] = {0, 0.7, 0.9, 1.0};
 	};
 	class LeftBtn2: LeftBtn0 { // for RTS shoot order
 		idc = IDC + 16 * 2 + 2;
@@ -669,6 +681,7 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
 	};
 	class LeftBtn4: LeftBtn0 { // for RTS board
 		idc = IDC + 16 * 2 + 4;
+		x = 0.025;
 		y = 0.10 + 0.15;
 		w = 0.08;
 		text = "UNDEFINED";
@@ -703,6 +716,15 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
 		y = 0.10 + 0.15 + 0.05 * 1;
 		w = 0.16;
 		action = "btnValue00 = 9";
+	};
+
+	class LeftBtn13: LeftBtn0 { // for "RTS order clear" button
+		idc = IDC + 16 * 2 + 13;
+		x = 0.025;
+		y = 0.10;
+		w = 0.12;
+		text = "UNDEFINED";
+		action = "btnValue00 = 13";
 	};
 
 	class FirstCtrl: TzkRtsFirstCtrlBase {};
@@ -1820,6 +1842,7 @@ class TzkCmdMapDlgPplOrder: TzkCmdMapDlgBase {
 
 		LeftBtn8, LeftBtn9, LeftBtn10, 
 		LeftBtn11, LeftBtn12, 
+		LeftBtn13, // for RTS "stop"
 
 		RightDownBg0, RightDownBg1, RightDownBg2, RightDownBg3, RightDownBg4, 
 		RightDownBg5, RightDownBg6, RightDownBg7, RightDownBg8, 
@@ -1903,10 +1926,12 @@ class TzkCmdMapDlgPplOrder: TzkCmdMapDlgBase {
 	// left part
 	class LeftBtn1: LeftBtn0 { 	// "order clear" button like RTS
 		idc = IDC + 16 * 2 + 1;
-		y = 0.025;
+		x = 0.025;
+		y = 0.04;
+		w = 0.25;
 		text = "";
 		action = "btnValue00 = 1";
-		colorText[] = {0.8, 0.2, 0.1, 1.0};
+		colorText[] = {0, 0.7, 0.9, 1.0};
 	};
 	class LeftBtn2: LeftBtn0 {	// Shoot Area
 		idc = IDC + 16 * 2 + 2;
@@ -1918,6 +1943,7 @@ class TzkCmdMapDlgPplOrder: TzkCmdMapDlgBase {
 	};
 	class LeftBtn3: LeftBtn0 {
 		idc = IDC + 16 * 2 + 3;
+		x = 0.025;
 		y = 0.10 + 0.03 * 3;
 		action = "btnValue00 = 3";
 	};
@@ -2022,6 +2048,15 @@ class TzkCmdMapDlgPplOrder: TzkCmdMapDlgBase {
 		y = 0.10 + 0.15 + 0.05 * 5;
 		w = 0.12;
 		action = "btnValue00 = 12";
+	};
+
+	class LeftBtn13: LeftBtn0 { // for "RTS order clear" button
+		idc = IDC + 16 * 2 + 13;
+		x = 0.025;
+		y = 0.10;
+		w = 0.12;
+		text = "UNDEFINED";
+		action = "btnValue00 = 13";
 	};
 
 	// IDC: 16 * 14

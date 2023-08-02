@@ -1,0 +1,68 @@
+; args: [unit, bind, 
+; 	rts object status (array-reference), rts server id]
+_unit = _this select 0
+_rtsStatus = _this select 2
+_id = _this select 3
+_this = 0
+
+; rts busy Check
+; not realized yet
+
+; rts order stack design
+; not realized yet
+
+_si = sides find (side _unit)
+? _si != si0 && _si != si1: exit
+
+; under "RtsOrder" folder the "rts id" is restored by "id" variable but not "rtsId"
+_quitCond = {not alive _unit || not (_unit call rtsOrderCheck) || _id != _rtsStatus select 1}
+
+_unit call preprocessFile "Server\AI\RtsOrderBegin.sqf"
+; Initialize The Order Script
+_timeStart = _time; _timeUp = _timeStart; _cycle = 30
+_timeCheckSupport = _time + 30 + random 60
+_bCheckDropBomb = true
+
+_destPos = getPos _unit
+
+# Update
+	_vehicle = vehicle _unit
+	? _unit != driver _vehicle: goto "Sleep"
+
+	_gi = (groupMatrix select _si) find group _unit
+	? -1 == _gi: exit
+
+	; check support
+	? _time > _timeCheckSupport: _timeCheckSupport = _time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _cycle = 20; goto "Sleep"
+
+	; check bomb	
+	_bCheckDropBomb = !_bCheckDropBomb 
+	? _bCheckDropBomb && _unit == _vehicle: if (magSatchel in (magazines _unit)) then {[_unit, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\AI_CheckDropBomb.sqs"; _cycle = 20; goto "Sleep"}
+	
+	? not _bMoveDeployed: _bMoveDeployed = true; _vehicle exec "Art\Undeploy.sqs"
+
+	_cycle = 30
+	; check move
+	_distToDest = [getPos _unit, _destPos] call funcDistH
+	? _distToDest > 10: goto "Move"
+		[_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
+		; [_unit, _si, _gi] call funcWatch
+		? _unit != _vehicle && !(isNull gunner _vehicle) && isNull (commander _vehicle): [_unit, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\AI_CheckFireGun.sqs"
+		_cycle = 30
+		goto "Sleep"
+	# Move
+		_distToDest = _distToDest - (_distToDest % 10)
+		[_unit, _destPos] call funcMoveAI
+		_cycle = [30, 0.1*_distToDest] select (_distToDest < 300)
+		goto "Sleep"
+# Sleep
+_loop = (_time-_timeStart) / _cycle; _loop = 1 + _loop - _loop % 1
+_timeUp = _loop * _cycle + _timeStart
+	# innerSleep
+	~ (if (_timeUp - _time > 5) then {_timeUp - _time + 1} else {5})
+	? call _quitCond: goto "Quit"
+	? _time < _timeUp: goto "innerSleep"
+	? _unit call busyCheck: goto "Sleep"
+	goto "Update"
+# Quit
+exit
