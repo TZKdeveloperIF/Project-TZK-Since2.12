@@ -23,10 +23,6 @@ ctrlSetText [_idcMidBtn0 + 2, "Board..."];
 ctrlSetText [_idcMidBtn0 + 4, "Clear Order"];
 ctrlSetText [_idcMidBtn0 + 5, "Disband"];
 
-// Down buttons
-ctrlSetText [_idcDownBtn0 + 0, "Disband"];
-ctrlSetText [_idcDownBtn0 + 3, "Join"];
-
 if (bool_TZK_CHN_inited && bool_TZK_CHN_Lang) then {
 	{ctrlSetText [_idcMidBtn0 + _x, ""]} forEach [0,1,2,4,5];
 
