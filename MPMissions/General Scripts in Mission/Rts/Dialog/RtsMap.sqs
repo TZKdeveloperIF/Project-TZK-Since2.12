@@ -47,6 +47,8 @@ ctrlSetText [_idcLeftBtn0 + 7, "Reclaim"]
 ctrlSetText [_idcLeftBtn0 + 8, "Mine Area"]
 ctrlSetText [_idcLeftBtn0 + 9, "Disable Mine"]
 
+ctrlSetText [_idcLeftBtn0 + 10, "Repair"]
+
 ; down board
 _downBoardStack = []
 call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
@@ -79,6 +81,7 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 	false call preprocessFile "Player\Rts\Selection.sqf";
 	_btnVal = 2 ^ 1
 	call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
+; todo: magic number should better
 # LeftBtn
 	? 0 == _btnVal: _pos exec "Rts\Order\sRtsMove.sqs"; closeDialog 0; goto "Quit"
 	? 1 == _btnVal: 0 exec "Rts\Order\sClear.sqs"; closeDialog 0; goto "Quit"
@@ -92,6 +95,9 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 	? 7 == _btnVal: _pos exec "Rts\SubMenu\ReclaimPreset.sqs"; closeDialog 0; goto "Quit"
 	? 8 == _btnVal: [true, true] exec "Rts\SubMenu\MinePreset.sqs"; closeDialog 0; goto "Quit"
 	? 9 == _btnVal: [true, false] exec "Rts\SubMenu\MinePreset.sqs"; closeDialog 0; goto "Quit"
+
+	? 10 == _btnVal: _pos exec "Rts\Submenu\RepairPreset.sqs"; closeDialog 0; goto "Quit"
+	? 11 == _btnVal: _pos exec "Rts\Submenu\RearmPreset.sqs"; closeDialog 0; goto "Quit"
 	; value 13 is occupied
 	goto "Update"
 ; Share same structure and effect with player group order
