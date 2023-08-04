@@ -16,6 +16,10 @@ if not _rearm then {if (_wpnPrim != "" && _wpnPrim != "SupportBox_xj400") then {
 	if ({_x in _validMags} count _mags == 0) then {_rearm = true};
 }};
 
+if not _rearm then {if (_wpnSec == "" && _wpnPrim == "") then {
+	_rearm = true;
+}};
+
 if not _rearm then {
 	if (count _mags < 1) then {_rearm = true};
 };
