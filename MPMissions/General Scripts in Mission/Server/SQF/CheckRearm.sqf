@@ -4,21 +4,7 @@ _rearm = false; _v = vehicle _unit;
 
 if (_unit == driver _v) then {
 	if (_unit == _v) then {
-		private ["_wpnPrim", "_wpnSec", "_magazines", "_validMags"];
-		_wpnPrim = primaryWeapon _unit;
-		_wpnSec = secondaryWeapon _unit;
-		_magazines = _unit call funcGetNotEmptyMags;
-		if (_wpnSec != "") then {
-			_validMags = [_wpnSec] call funcWeaponValidMags;
-			if ("_x in _validMags" count _magazines == 0) then {_rearm = true};
-		} else {
-			if (_wpnPrim != "") then {
-				_validMags = [_wpnPrim] call funcWeaponValidMags;
-				if ("_x in _validMags" count _magazines == 0) then {_rearm = true};
-			} else {
-				if (count _magazines < 1) then {_rearm = true};
-			};
-		};
+		_rearm = _unit call preprocessFile "Util\NeedRearmSoldier.sqf";
 	} else {
 		private ["_rearmData", "_rearmMags", "_weapons"];
 		_rearmData = _v call funcGetRearmData;
@@ -31,10 +17,10 @@ if (_unit == driver _v) then {
 				_vt = _v call funcGetUnitTypeFromObject;
 				if (_vt in (typesLightTank + typesHeavyTank) && _gi >= 0 && _gi < (GroupsNum - 2)) then {
 					_gun = (_rearmData select 0 select 0); 
-					_sabotMag = if !bool_TZK_199_Mode Then {(call format ["%1", _gun GetWeaponParamArray "magazines"]) select 0} Else {(_v call funcVehParamMagazines) select 0};
-					_magazines = if !bool_TZK_199_Mode Then {magazinesArray _v} Else {magazines _v};
+					_sabotMag = (call format ["%1", _gun GetWeaponParamArray "magazines"]) select 0;
+					_magazines = magazinesArray _v;
 					if !(_sabotMag in _magazines) then {_rearm = true} else {
-						if (  (if !bool_TZK_199_Mode Then {_magazines select (_magazines find _sabotMag) + 1} Else {_v ammo _gun})
+						if (_magazines select (_magazines find _sabotMag) + 1
 							< (aiSetting select _si select _gi select aisAutoRearmSabot)  ) then {_rearm = true}
 }	}	}	}	}	};
 _rearm
