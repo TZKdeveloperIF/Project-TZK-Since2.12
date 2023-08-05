@@ -122,13 +122,14 @@ _posCorrect = 0
 ? _isStruct: goto "PrePareToAttack"
 
 	? _isInfantry: goto "MoveInfantry"
+		_dist = [_vehicle, _target] call funcDistH
 		_destPos = getPosASL _vehicle;
 		_destPos set [2, 0]
 		? [_destPos, getPos _target] call funcDistH > _distLimit: _vec = [getPos _target, _destPos] call funcVectorSub; _len = _vec call funcVectorLength; _destPos = [_destPos, [_vec, 1 - 0.9*_distLimit/_len] call funcVectorScale] call funcVectorAdd
-		? [_destPos, getPos _target] call funcDistH > _distLimit: _msg = "Can't approach attacking position. Order aborted.", goto "EOF"
+		? [_destPos, getPos _target] call funcDistH > _distLimit: _msg = format ["Can't approach attacking position (dist: %1m, limit: %2m). Order aborted.", _dist, _distLimit], goto "EOF"
 		? ([getPos _unit, _destPos] call funcDistH) < 30 && [_destPos, getPos _target] call funcDistH < _distLimit: goto "PrePareToAttack"
 
-		? [_vehicle, "driver"] call preprocessFile "Util\HasEmptySeat.sqf": _msg = "Need move to target but hasn't driver. Order aborted.", goto "EOF"
+		? [_vehicle, "driver"] call preprocessFile "Util\HasEmptySeat.sqf": _msg = format ["Need move to target (dist: %1m, limit: %2m) but hasn't driver. Order aborted.", _dist, _distLimit], goto "EOF"
 		; change deployment of howitzer/TOS
 		_vehicle exec "Art\Undeploy.sqs"
 		goto "ExecMove"
@@ -384,5 +385,6 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 
 	? _msg != "" && _isServer: _msg = format ["[%1] ", _unit] + _msg, [_si, _msg] exec "Server\Msg\sSvrMsg2Cmd.sqs"
 	? _msg != "" && not _isServer: _unit groupChat _msg
+	? _msg != "" && not _isServer: TitleText [format ["%1: %2", _unit, _msg], "Plain", 0.25]; 
 	; ? _bClearRts: call _abort
 	exit
