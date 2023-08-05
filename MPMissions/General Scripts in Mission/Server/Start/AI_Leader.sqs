@@ -12,8 +12,8 @@ _group = (groupMatrix select _si) select _gi
 
 ? _group == (groupCommander select _si) : _this exec "Server\AI_UpdateCommander.sqs"; exit
 
-_idOrder = -1; _indexCombatMode = 0; _indexBehaviour = 0; _idTemporaryOrder = -1
-_unit call busyClear; _unit call temporaryClear
+_idOrder = -1; _indexCombatMode = 0; _indexBehaviour = 0
+_unit call busyClear
 
 
 ? !(alive _unit) : goto "SkipInitialize"
@@ -27,4 +27,4 @@ _unit call busyClear; _unit call temporaryClear
 ; This line is to initial leader himself and just disconnect player group units.
 {if (alive _x) then {[_x, _si, _gi] exec "Server\AI_Start.sqs"}} foreach units _group
 
-[_unit, _si, _gi, _idTemporaryOrder, _idOrder, _indexCombatMode, _indexBehaviour] exec "Server\Loop\AI_Leader.sqs"
+[_unit, _si, _gi, -1, _idOrder, _indexCombatMode, _indexBehaviour] exec "Server\Loop\AI_Leader.sqs"

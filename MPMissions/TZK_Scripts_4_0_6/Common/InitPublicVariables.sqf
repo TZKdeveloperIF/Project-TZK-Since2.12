@@ -14,7 +14,6 @@ pvAfterBurnerON = objNull; pvAfterBurnerOFF = objNull;
 pvNuclearX = 0; pvNuclearY = 0; pvNuclearZ = 0;
 pvCheckAI = -1;
 
-pvTempOrder1 = -1; pvTempOrder2 = -1; mutexSendAITemporary = false; mutexHandleAITemporary = false;
 // pvEjectAIUnits = objNull; 
 pvClearBuy = -1;
 
@@ -186,7 +185,6 @@ pvDestruction_Object = objNull;
 
 // todo: redirect current file since definitions removed
 pvCustomPlayerMoney = -1; pvCustomAicoMoney = -1;
-pvConcurStatus1 = -1; pvConcurStatus2 = -1;
 _i = 0; while {_i < 5} do {call format ["pvBuyUnit_Custom%1 = -1", _i]; _i = _i + 1};
 
 if bool_TZK_199_Mode then {

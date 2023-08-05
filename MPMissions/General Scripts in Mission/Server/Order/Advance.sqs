@@ -31,8 +31,6 @@ _timeNextStep = time
 ; ? _unit != vehicle _unit : _timeNextStep = _timeNextStep + 60
 
 #Update
-	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
-	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Sleep"}
 	
 	? !(alive _unit) : exit
 	? _idOrder != _order select 0 : exit
@@ -49,7 +47,7 @@ _timeNextStep = time
 	? _bCheckDropBomb && _unit == _vehicle: if (magSatchel in (magazines _unit)) then {[_unit, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\AI_CheckDropBomb.sqs"; _sleep = 20; goto "Sleep"}
 	
   _bCheckMines = !_bCheckMines
-	? _isMiner && _unit == _vehicle && _bCheckMines : [_unit, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\AI_CheckDisableMines.sqs"; _sleep = 5; goto "Sleep"
+	? _isMiner && _unit == _vehicle && _bCheckMines : [_unit, _si, _gi] exec "Server\AI_CheckDisableMines.sqs"; _sleep = 5; goto "Sleep"
 	
   #CheckStep
   ? time < _timeNextStep : goto "NoStep"
@@ -84,7 +82,5 @@ _timeNextStep = time
 	~_sleep
 	
 	? _unit call rtsOrderCheck: exit
-	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
-	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Sleep"}
   ? _unit call busyCheck : goto "Sleep"
 	goto "Update"

@@ -65,35 +65,6 @@ upgChnDefs set [upgVehicleAirRadar, "\TZK_CHN_4_0_6_27\upgrade_airRadar_co.paa"]
 upgChnDefs set [upgRedTopRange, "\TZK_CHN_4_0_6_27\upgrade_redtopRange_co.paa"];
 upgChnDefs set [upgRedTopMagazines, "\TZK_CHN_4_0_6_27\upgrade_redtopMag_co.paa"];
 
-orderConDefs = [];
-orderConDefs set [orderTempClearType, "\TZK_CHN_4_0_6_27\orderCon_clearType_co.paa"];
-orderConDefs set [orderTempClearUnit, "\TZK_CHN_4_0_6_27\orderCon_clearUnit_co.paa"];
-orderConDefs set [orderTempRepair, "\TZK_CHN_4_0_6_27\orderCon_repair_co.paa"];
-orderConDefs set [orderTempRearm, "\TZK_CHN_4_0_6_27\orderCon_rearm_co.paa"];
-orderConDefs set [orderTempReclaim, "\TZK_CHN_4_0_6_27\orderCon_reclaim_co.paa"];
-orderConDefs set [orderTempOccupy, "\TZK_CHN_4_0_6_27\orderCon_occupy_co.paa"];
-orderConDefs set [orderTempBoard, "\TZK_CHN_4_0_6_27\orderCon_board_co.paa"];
-orderConDefs set [orderTempLand, "\TZK_CHN_4_0_6_27\orderCon_land_co.paa"];
-orderConDefs set [orderTempSetFlightAltitude, "\TZK_CHN_4_0_6_27\orderCon_setFlightAlt_co.paa"];
-orderConDefs set [orderTempSpoofMissileON, "\TZK_CHN_4_0_6_27\orderCon_spoof_co.paa"];
-orderConDefs set [orderTempTransportDuty, "\TZK_CHN_4_0_6_27\orderCon_transportDuty_co.paa"];
-orderConDefs set [orderTempMoveType, "\TZK_CHN_4_0_6_27\orderCon_moveType_co.paa"];
-orderConDefs set [orderTempMoveUnit, "\TZK_CHN_4_0_6_27\orderCon_moveUnit_co.paa"];
-orderConDefs set [orderTempHaltType, "\TZK_CHN_4_0_6_27\orderCon_haltType_co.paa"];
-orderConDefs set [orderTempHaltUnit, "\TZK_CHN_4_0_6_27\orderCon_haltUnit_co.paa"];
-orderConDefs set [orderTanksEngineOFF, "\TZK_CHN_4_0_6_27\orderCon_tankEngineOff_co.paa"];
-orderConDefs set [orderTempDisengageType, "\TZK_CHN_4_0_6_27\orderCon_disengageType_co.paa"];
-orderConDefs set [orderTempDisengageUnit, "\TZK_CHN_4_0_6_27\orderCon_disengageUnit_co.paa"];
-orderConDefs set [orderTempHoldTown, "\TZK_CHN_4_0_6_27\orderCon_holdTown_co.paa"];
-orderConDefs set [orderTempPatrolLine, "\TZK_CHN_4_0_6_27\orderCon_patrolLine_co.paa"];
-orderConDefs set [orderTempMineLine, "\TZK_CHN_4_0_6_27\orderCon_mineLine_co.paa"];
-orderConDefs set [orderTempDisableMines, "\TZK_CHN_4_0_6_27\orderCon_disableMines_co.paa"];
-orderConDefs set [orderTempChangeAmmo, "\TZK_CHN_4_0_6_27\orderCon_changeAmmo_co.paa"];
-orderConDefs set [orderTempSwitchMagazine, "\TZK_CHN_4_0_6_27\orderCon_switchMagazine_co.paa"];
-orderConDefs set [orderTempDeployVehicle, "\TZK_CHN_4_0_6_27\orderCon_deploy_co.paa"];
-orderConDefs set [orderTempShootTarget, "\TZK_CHN_4_0_6_27\orderCon_shootTarget_co.paa"];
-orderConDefs set [orderTempShootBigAngle, "\TZK_CHN_4_0_6_27\orderCon_shootBigAngle_co.paa"];
-
 aiOrdersChn1 = [];
 aiOrdersChn1 set [0, "\TZK_CHN_4_0_6_27\aiOrder1_repair_co.paa"];
 aiOrdersChn1 set [1, "\TZK_CHN_4_0_6_27\aiOrder1_rearm_co.paa"];

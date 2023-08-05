@@ -48,7 +48,8 @@ mutexDlg = false
 ctrlShow [IDC_DEFAULT, false]
 ctrlShow [_idcNumberedAI, false]
 
-{call (_x + " = false")} forEach ["btnLeaderboard", "btnDestruction", "btnGrant", "btnAsk", "btnTake", "btnGive", "btnGiveAIs", "btnGiveAll", "btnUpgrade", "btnBuyUnits", "btnShowStats", "btnUnitCam", "btnSatCam", "btnCustomSoldiers", "btnCommandAI", "btnCommandPlayer", "btnTransfer", "btnNumberedAI", "btnAICheck", "btnCommandTemporary", "btnSpySat"]
+ctrlShow [_idcCommandTemporary, false]
+{call (_x + " = false")} forEach ["btnLeaderboard", "btnDestruction", "btnGrant", "btnAsk", "btnTake", "btnGive", "btnGiveAIs", "btnGiveAll", "btnUpgrade", "btnBuyUnits", "btnShowStats", "btnUnitCam", "btnSatCam", "btnCustomSoldiers", "btnCommandAI", "btnCommandPlayer", "btnTransfer", "btnNumberedAI", "btnAICheck", "btnSpySat"]
 {call (_x + " = false")} forEach ["btnVoteMenu"]
 _icons = ["\TZK_Objects\Image\Icon\square_empty.paa", "\TZK_Objects\Image\Icon\square_yellow.paa", "\TZK_Objects\Image\Icon\square_green.paa"]
 _colors = [[1,1,1,0.5], [1,1,0,0.6],[0,1,0.2,0.8]]
@@ -127,7 +128,6 @@ report = lbCurSel _idcReports
 ? btnNumberedAI : btnNumberedAI=false; goto "SaveNumberedAI"
 ? btnDestruction : btnDestruction=false; goto "DestructBuildings"
 ? btnAICheck : btnAICheck = false; goto "CheckAI"
-? btnCommandTemporary : btnCommandTemporary = false; goto "CommandTemporary"
 ? btnSpySat : btnSpySat = false; goto "SpySat"
 ? btnRadioON : btnRadioON = false; goto "RadioSwitch"
 ? btnVoteMenu: btnVoteMenu = false, goto "Vote_Menu"
@@ -340,13 +340,6 @@ goto "Update"
 	? _group in _groupsAI : hint "This group is AI."; goto "Update"
 	_index exec "\TZK_Scripts_4_0_4\Player\Msg\sCheckAI.sqs"; hint "Checking whether the group is AI. Please wait for the result."
 	goto "Update"
-
-# CommandTemporary
-	closeDialog 0
-	; ~0.1
-	[] exec localize {TZK_DIALOG_AI_CONCURRENT}
-	Exit
-
 
 #SpySat
 	_satrec = [siPlayer, stSatRec] call funcGetWorkingStructures

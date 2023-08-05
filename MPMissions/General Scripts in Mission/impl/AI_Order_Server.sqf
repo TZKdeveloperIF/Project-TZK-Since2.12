@@ -10,26 +10,13 @@ _oldPrefix = "\TZK_Scripts_4_0_5\Server\Order\"; _len = sizeofstr _oldPrefix;
 	};
 } forEach orderDefs;
 
-orderTempDefs select orderTempRearm set [2, "Server\OrderTemp\Rearm.sqs"];
-orderTempDefs select orderTempChangeAmmo set [2, "Server\OrderTemp\ChangeAmmo.sqs"];
-orderTempDefs select orderTempDeployVehicle set [2, "Server\OrderTemp\DeployVehicle.sqs"];
-comment {
-	orderTempDefs select orderTempMoveUnit set [2, "Server\OrderTemp\MoveUnit.sqs"];
-};
+comment "TODO: Remove definition of orderTempDefs.";
+{_x select 1 resize 0; _x resize 0} forEach orderTempDefs;
+orderTempDefs resize 0; orderTempDefs = nil;
 
-comment "Disable all west/east AI group engage ability by default. Practice proves this a better choice.";
-{
-	_si = _x; _gi = 0;
-	{
-		_params = initStatusMatrix select _si * GroupsNum + _gi select orderTempDisengageType;
-		_params set [0, 1];
-		_params set [1, _typeDefs1 find "Light Tank"];
-		_params set [2, _typeDefs1 find "Heavy Tank"];
-		_params set [3, _typeDefs1 find "Artillery"];
-
-		_gi = _gi + 1;
-	} foreach (groupMatrix select _x);
-} forEach [si0, si1];
+comment "TODO: Remove definition of initStatusMatrix.";
+{_x resize 0} forEach initStatusMatrix;
+initStatusMatrix resize 0; initStatusMatrix = nil;
 
 comment "Fix error definition in aiSetting";
 {

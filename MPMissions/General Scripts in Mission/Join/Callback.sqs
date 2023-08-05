@@ -30,11 +30,11 @@ _fromAi = true, _giFrom = -1
 ; SourceServer
 	; update source group order idx (same effect as order clear)
 	{_order = orderMatrix select _si select _x; _order set [0, (_order select 0) + 1]} forEach _giFromArray
-	; on server-to-player case, clear busy/temporary/rts flag
+	; on server-to-player case, clear busy/rts flag
 	; maybe we need to do this BEFORE join. Keep on observing
 	; besides, rts order hasn't group concept, join among ai without clear rts is easy to understand
-	; but what about busy/temporary? this remains to be discussed
-	? not _join2Ai: {_u = UnitById _x, _u call busyClear; _u call temporaryClear} forEach (_this select 0)
+	; but what about busy? this remains to be discussed
+	? not _join2Ai: {_u = UnitById _x, _u call busyClear} forEach (_this select 0)
 	? not _join2Ai: [_this select 0, [_si, true]] exec "Rts\Framework\OrderDtor.sqs"
 	exit
 
