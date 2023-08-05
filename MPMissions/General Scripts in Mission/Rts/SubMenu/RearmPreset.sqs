@@ -1,0 +1,43 @@
+; args: [clicked pos: [x, y]]
+
+@ !mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "TzkRtsSubMenuTwoListBox"
+mutexDlg = false
+
+_idcTitle = IDC + 0
+_idcListLabel0 = IDC + 16 * 3 + 1; _idcListLabel1 = IDC + 16 * 3 + 3
+_idcListBox0 = IDC + 16 * 3 + 0; _idcListBox1 = IDC + 16 * 3 + 2
+
+ctrlSetText [_idcTitle, "Rearm (& Repair)"]
+
+_param0 = ["Sabot", 20, {format ["%1", _this]}, 7];
+_param1 = ["Search Support Range", 20, {format ["%1 m", 50 * (_this + 1)]}, 9];
+
+ctrlSetText [_idcListLabel0, _param0 select 0]; lbClear _idcListBox0 ; _i = 0
+while {_i < (_param0 select 1)} do {lbAdd [_idcListBox0 , _i call (_param0 select 2)]; _i = _i + 1}
+lbSetCurSel [_idcListBox0, _param0 select 3]
+ctrlSetText [_idcListLabel1, _param1 select 0]; lbClear _idcListBox1; _i = 0
+while {_i < (_param1 select 1)} do {lbAdd [_idcListBox1, _i call (_param1 select 2)]; _i = _i + 1}
+lbSetCurSel [_idcListBox1, _param1 select 3]
+
+btnValue00 = false; btnValue01 = false; btnValue02 = false
+
+# loop
+	~ 0.2
+	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+	? call dlgUpdated: goto "Quit"
+	? not alive player: closeDialog 0; goto "Quit"
+
+	? btnValue00: btnValue00 = false; closeDialog 0; goto "Quit"
+	? btnValue01: btnValue01 = false; goto "OK"
+
+	goto "loop"
+# Quit
+	exit
+# OK
+	_idx0 = lbCurSel _idcListBox0 ; _idx1 = lbCurSel (_idcListBox1)
+	? -1 == _idx0 || -1 == _idx1: hint "Params unselected.", goto "loop"
+
+	[_this, _idx0, 50 * (_idx1 + 1)] exec "Rts\Order\sRearm.sqs"
+	closeDialog 0; goto "Quit"
