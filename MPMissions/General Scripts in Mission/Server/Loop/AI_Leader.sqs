@@ -1,4 +1,4 @@
-; args: [_unit, _si, _gi, _idTemporaryOrder, _idOrder, _indexCombatMode, _indexBehaviour]
+; args: [_unit, _si, _gi, bind, _idOrder, _indexCombatMode, _indexBehaviour]
 
 _unit = _this select 0
 _si = _this select 1
@@ -8,13 +8,12 @@ _group = (groupMatrix select _si) select _gi
 
 ? _group == (groupCommander select _si) : _this exec "Server\AI_UpdateCommander.sqs"; exit
 
-_idTemporaryOrder = _this select 3
 _idOrder = _this select 4
 _indexCombatMode = _this select 5
 _indexBehaviour = _this select 6
 _this = 0
 ; Refresh members' order script when each new loop started.
-_order = orderMatrix select _si select _gi; _orderTemp = orderTempMatrix select _si select _gi; _order set [0, (_order select 0) + 1]
+_order = orderMatrix select _si select _gi; _order set [0, (_order select 0) + 1]
 _buyFacSet = []; _setting = aiSetting select _si select _gi
 
 _unitsStarted = units _group
@@ -29,18 +28,6 @@ _factories = []; _buyFacTypes = [], _buyFactories = []
 	
 	; check if some unit has joined to other groups
 	_unitsStarted = _unitsStarted - (_unitsStarted - (units _group))
-	
-	; check for new Temporary order
-	? _idTemporaryOrder == _orderTemp select 0 : goto "NoNewTemporaryOrder"
-	_idTemporaryOrder = _orderTemp select 0
-	_script = (orderTempDefs select (_orderTemp select 1)) select 2
-	{ if (alive _x) then { [_x, _si, _gi, _orderTemp select 2] exec format["%1", _script] } } foreach _unitsStarted
-	; 对于shootTarget的concurrent命令，以队伍为单位调用PreAnalysesArtArea.sqf
-	_timeStamp = time; _timeStamp = _timeStamp - _timeStamp % 1
-	? orderTempShootTarget == _orderTemp select 1: [_orderTemp select 2 select 3, _timeStamp, _si, true] call preprocessFile "Art\PreAnalysesArtArea.sqf"
-	~1
-	
-	#NoNewTemporaryOrder
 	
 	; check for new order
 	? _idOrder == _order select 0 : goto "NoNewOrder"
@@ -94,7 +81,7 @@ _factories = []; _buyFacTypes = [], _buyFactories = []
 	? _money < costRespawn : goto "WaitMoney"
 
 #Respawn
-	_unit call busyClear; _unit call temporaryClear
+	_unit call busyClear
 	? costRespawn > 0 : [_si, _gi, costRespawn] exec localize {TZK_MONEY_SERVER_SPEND}
 	_objectRespawn = objNull
 	

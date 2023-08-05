@@ -113,7 +113,8 @@ ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bo
 	goto "Update"
 	
 # TemporaryOrder
-	closeDialog 0
-	; ~0.1
-	0 exec localize {TZK_DIALOG_AI_CONCURRENT}
-	Exit
+	_text = "Concurrent order design is obsoleted since 4.0.6.50"
+	hint _text
+	TitleText [_text, "Plain DOWN", 0.25]
+
+	goto "Update"

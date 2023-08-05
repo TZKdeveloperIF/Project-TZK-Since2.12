@@ -21,8 +21,7 @@ _sleep = 30
 
 
 #Update
-	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
-	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Sleep"}
+
 	
 	? !(alive _unit) : exit
 	? _idOrder != _order select 0 : exit
@@ -50,7 +49,6 @@ _sleep = 30
 	~_sleep
 	
 	? _unit call rtsOrderCheck: exit
-	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
-	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Sleep"}
+
   ? _unit call busyCheck : goto "Sleep"
 	goto "Update"

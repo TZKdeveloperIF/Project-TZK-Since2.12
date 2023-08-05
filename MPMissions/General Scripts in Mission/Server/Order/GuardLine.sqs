@@ -28,8 +28,7 @@ _sleep = 30
 _bMoveCorrect = true
 _setting = aiSetting select _si select _gi
 #Update
-	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
-	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Sleep"}
+
 	
 	? !(alive _unit) : exit
 	? _idOrder != _order select 0 : exit
@@ -74,7 +73,6 @@ _setting = aiSetting select _si select _gi
 	~_sleep
 	
 	? _unit call rtsOrderCheck: exit
-	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
-	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Sleep"}
+
   ? _unit call busyCheck : _sleep = 20; goto "Sleep"
 	goto "Update"

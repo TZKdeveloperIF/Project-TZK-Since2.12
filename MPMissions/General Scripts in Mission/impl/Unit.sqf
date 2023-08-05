@@ -70,6 +70,8 @@ typesATAPC = [ _m2a2at, _bmp2at, _m2a2W, _bmp2E ];
 typesBattlePlane = [ _a10gun, _su25gun, _a10, _su25 ];
 typesBattleCar = [ _hummerW2, _hummerM134W, _m151a1cW, _brdmE2, _brdmGsghE, _uazSpg9E ];
 typesRadarCar = [ _jeepRadarW, _uazRadarE ];
+// definition for crew/pilot
+typesCrew = [_crewW, _crewAAW, _pilotW, _crewE, _crewAAE, _pilotE];
 
 // Ban mannual building orca since its ground radar not well-designed
 {

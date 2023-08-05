@@ -16,7 +16,6 @@ _idOrder = _order select 0
 _unit call busySet
 
 #Search
-	? !(_unit call temporaryCheck): if (_idOrder != _order select 0) then {goto "Exit"}
 	? !(_unit call busyCheck): goto "Exit"
   _mine = if !bool_TZK_199_Mode Then {nearestObjectDistance [[getPos _unit, 0, 10] call funcGetRandomPos, ammoMine, viewDistance/10]} Else {nearestObject [getPos _unit, ammoMine]}
   ? isNull _mine: goto "Exit"
@@ -29,7 +28,6 @@ _unit call busySet
   #WaitUntilMineReached
   
 	~2
-	? !(_unit call temporaryCheck): if (_idOrder != _order select 0) then {goto "Exit"}
 	? !(_unit call busyCheck): goto "Exit"
     ? !(alive _unit) || time > _timeAbort: goto "Exit"
     ? isNull _mine: goto "Search"
