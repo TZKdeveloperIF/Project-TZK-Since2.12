@@ -129,6 +129,7 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 
 		? 2^0 == _btnVal && 7 == _downBoardStack select 0: true exec "Rts\Trigger\sTankSwitchMainGun.sqs"; _return = true
 		? 2^1 == _btnVal && 7 == _downBoardStack select 0: false exec "Rts\Trigger\sTankSwitchMainGun.sqs"; _return = true
+		? 2^2 == _btnVal && 7 == _downBoardStack select 0: 0 exec "Rts\Trigger\sTankDisengage.sqs"; _return = true
 
 		? 2^8 == _btnVal: _return = true
 
