@@ -24,6 +24,16 @@ _this = 0
 _si = sides find (side _unit)
 ? _si != si0 && _si != si1: exit
 
+; under "RtsOrder" folder the "rts id" is restored by "id" variable but not "rtsId"
+_quitCond = {not alive _unit || not (_unit call rtsOrderCheck) || _id != _rtsStatus select 1}
+
+_unit call preprocessFile "Server\AI\RtsOrderBegin.sqf"
+; Initialize The Order Script
+_timeStart = _time; _timeUp = _timeStart; _cycle = 30; _wakeUp = "Update"
+_destPos = [_unit, _clickedPos, _rtsCentralPos, 50] call preprocessFile "Util\RtsDestPos.sqf"
+_returnPos = getPosASL _unit
+_stopParam = [_unit, [true], true]
+
 _vehicle = vehicle _unit, _cantMove = false
 	? not canMove _vehicle: _cantMove = true, goto "ExecRepair"
 	? not canFire _vehicle && 1 == [_vehicle, "gunner"] call funcVehParamHasSeat: goto "Valid"
@@ -33,21 +43,12 @@ _vehicle = vehicle _unit, _cantMove = false
 	? 0 == [_vehicle, "driver"] call funcVehParamHasSeat: _cantMove = true, goto "ExecRepair"
 # Valid
 
-; under "RtsOrder" folder the "rts id" is restored by "id" variable but not "rtsId"
-_quitCond = {not alive _unit || not (_unit call rtsOrderCheck) || _id != _rtsStatus select 1}
-
-_unit call preprocessFile "Server\AI\RtsOrderBegin.sqf"
-; Initialize The Order Script
-_timeStart = _time; _timeUp = _timeStart; _cycle = 30; _wakeUp = "Update"
-_destPos = [_unit, _clickedPos, _rtsCentralPos, 50] call preprocessFile "Util\RtsDestPos.sqf"
-_returnPos = getPosASL _unit
-
 [_unit, _destPos] call funcMoveAI
 ? [_unit, _destPos] call funcDistH < _supportDist: goto "ExecRepair"
 # Update
 	_vehicle = vehicle _unit
 	? canMove _vehicle && damage _vehicle < 0.01 && damage _unit < 0.01: goto "Quit"
-	? _unit != driver _vehicle: goto "Sleep"
+	? _unit != driver _vehicle: _stopParam set [2, false], goto "Sleep"
 
 	? _unit != _vehicle: _vehicle exec "Art\Undeploy.sqs", {_x doFollow leader _x} forEach crew _vehicle
 
@@ -59,7 +60,10 @@ _returnPos = getPosASL _unit
 	goto "Sleep"
 
 # ExecRepair
-	[_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
+	_vehicle = vehicle _unit
+	? _unit != driver _vehicle: _stopParam set [2, false], goto "Sleep"
+
+	_stopParam set [2, true], _stopParam exec localize {TZK_AI_STOP}
 
 	; SeekSup4Vehicle
 		_vs = [_clickedPos, _supportDist, (typesSupport select si0) + (typesSupport select si1), [vehicle _unit]] call funcGetNearbyVehicles
@@ -80,7 +84,10 @@ _returnPos = getPosASL _unit
 	? _distToDest < rangeSupport: goto "SupportReached"
 
 	_wakeUp = "ExecRepair"
-	? _unit != driver _vehicle: goto "Sleep"
+	? _unit != driver _vehicle: _stopParam set [2, false], goto "Sleep"
+
+	_stopParam set [2, false]
+	? _unit != _vehicle: _vehicle exec "Art\Undeploy.sqs", {_x doFollow leader _x} forEach crew _vehicle
 
 	[_unit, _sup] exec "\TZK_Scripts_4_0_4\Server\SendMovingToSupport.sqs"
 	_bAir = _vt != -1 && "Air" countType [_vehicle] > 0
@@ -124,7 +131,10 @@ _returnPos = getPosASL _unit
 		? _bAir: [_unit, getPos _sup] call funcMoveAI, _vehicle flyInHeight (_bSupH + 50), _delay = 0.1
 		~ _delay
 
-		[_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
+		_vehicle = vehicle _unit
+		? _unit != driver _vehicle: if (not isNull driver _vehicle) then {_cycle = 30, goto "GoBack"}
+
+		_stopParam set [2, true], _stopParam exec localize {TZK_AI_STOP}
 		
 		_gi = (groupMatrix select _si) find (group _unit)
 		[_unit, _si, _gi, _vehicle, _vt, _sup] exec "Server\AI_Heal.sqs"
@@ -141,7 +151,7 @@ _returnPos = getPosASL _unit
 # GoBack
 	_wakeUp = "GoBack"
 	_vehicle = vehicle _unit
-	? _unit != driver _vehicle: goto "Sleep"
+	? _unit != driver _vehicle: _stopParam set [2, false], goto "Sleep"
 
 	? _bAir: _vehicle flyInHeight _bVehH
 
@@ -149,7 +159,9 @@ _returnPos = getPosASL _unit
 
 	; check move
 	_distToDest = [_unit, _returnPos] call funcDistH
-	? _distToDest < 10: [_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs", _cycle = 30, goto "Sleep"
+	? _distToDest < 10: _stopParam select 1 set [1, true]; _stopParam set [2, true], _stopParam exec localize {TZK_AI_STOP}, _cycle = 30, goto "Sleep"
+
+	_stopParam set [2, false]
 	[_unit, _returnPos] call funcMoveAI
 	_cycle = [30, 0.1*_distToDest] select (_distToDest < 300)
 	goto "Sleep"

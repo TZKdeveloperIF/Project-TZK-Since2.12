@@ -26,7 +26,7 @@ if _ret then {
 	} else {
 		doStop _unit;
 	};
-	if _isServer then {[_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"};
+	if _isServer then {[_unit, [true]] exec localize {TZK_AI_STOP}};
 
 	_vehicle reveal _target; _vehicle doTarget _target;
 
@@ -34,10 +34,8 @@ if _ret then {
 	// Delay for turning the turret. It'll be good to obtain proper value by the angle's difference, 
 	// however no vanilla way to compute this in OFP.
 	if _isVehicle then {
-		if (-1 != ["TOS1_TZK_xj400", "M109A6G_xj400", "PLZ05_TZK_xj400"] find _typeName) then {
-			_delay = [3, 8] select ("_x == {DeploySwitch_xj400}" count magazines _vehicle == 0);
-			[_vehicle, 1] exec "Util\Deploy\Change.sqs";
-		};
+		_delay = [3, 8] select ("_x == {DeploySwitch_xj400}" count magazines _vehicle == 0);
+		_vehicle exec "Art\Deploy.sqs"
 	};
 };
 

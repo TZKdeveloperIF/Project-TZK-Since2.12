@@ -58,7 +58,7 @@ _i = 0, _c = _typeCnt, _transpTypes = [], _transpTypes resize _c
 	goto "Sleep"
 
 # ExecCoreContent
-	[_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
+	[_unit, [true]] exec localize {TZK_AI_STOP}
 	_nearByTargets = [_destPos, 100, [], [], _si] call funcGetNearbyVehicles
 	? count _nearByTargets == 0: goto "Quit"
 

@@ -1,4 +1,7 @@
 ; args: [vehicle, (status)]
+
+; don't execute this script directly. Uses preprocessed scripts under Art folders.
+
 _vehicle = _this select 0
 
 ? !local _vehicle: hint "Remote Vehicle. Deploy won't change.", exit
@@ -7,8 +10,12 @@ _status = "_x == {DeploySwitch_xj400}" count magazines _vehicle == 0
 ? count _this > 1: _status = _this select 1
 _deploy = [0, 1] select _status
 
-? "M109A6G_xj400" countType [_vehicle] > 0: [_vehicle, _deploy] exec "Util\Deploy\M109A6G.sqs"; exit
-? "PLZ05_TZK_xj400" countType [_vehicle] > 0: [_vehicle, _deploy] exec "Util\Deploy\PLZ05.sqs"; exit
-? "TOS1_TZK_xj400" countType [_vehicle] > 0: [_vehicle, _deploy] exec "\TZK_Config_4_0_4\Scripts\Deploy\TOS1.sqs"; exit
+_script = "", _cache = [_vehicle]
+
+? "M109A6G_xj400" countType _cache > 0: _script = localize {TZK_BEHAVIOUR_DEPLOY_M109A6G}
+? "PLZ05_TZK_xj400" countType _cache > 0: _script = localize {TZK_BEHAVIOUR_DEPLOY_PLZ05}
+? "TOS1_TZK_xj400" countType _cache > 0: _script = localize {TZK_BEHAVIOUR_DEPLOY_TOS1}
+
+? _script != "": [_vehicle, _deploy] exec _script
 
 ; EOF

@@ -16,16 +16,18 @@ _vehicle addMagazine "DeploySwitch_xj400"; _vehicle engineOn false;  _vehicle gr
 	
 	_vehicle setObjectTexture [_index , ""]; _vehicle setObjectTexture [_index + 1 , ""]
 	; MP broadcast
-	_NetWorkID = NetworkID _vehicle; _code = format [{(UnitById %2) setObjectTexture [%1 , ""]; (UnitById %2) setObjectTexture [%1 + 1 , ""]}, _index, _NetWorkID]; publicExec _code
+	_netIdStr = _vehicle call funcGenNetIdStr
+	_code = format [{(UnitById %2) setObjectTexture [%1 , ""]; (UnitById %2) setObjectTexture [%1 + 1 , ""]}, _index, _netIdStr]; publicExec _code
 	~1
 	_vehicle addweapon "FAE220Launcher_xj400"; _vehicle removeWeapon "NoGun_xj400"; _vehicle groupChat "Ready to fire"
-	? !isNull gunner _vehicle && !local gunner _vehicle: publicExec format [{if (local gunner UnitById %1) then {UnitById %1 removeWeapon "NoGun_xj400"}}, _NetWorkID]
-	? !local _vehicle: publicExec format [{if (local UnitById %1) then {UnitById %1 addweapon "FAE220Launcher_xj400"}}, _NetWorkID]
+	? !isNull gunner _vehicle && !local gunner _vehicle: publicExec format [{if (local gunner UnitById %1) then {UnitById %1 removeWeapon "NoGun_xj400"}}, _netIdStr]
+	? !local _vehicle: publicExec format [{if (local UnitById %1) then {UnitById %1 addweapon "FAE220Launcher_xj400"}}, _netIdStr]
 exit
 
 #drive
 _vehicle addweapon "NoGun_xj400"; _vehicle removeWeapon "FAE220Launcher_xj400"
-	? !isNull gunner _vehicle && !local gunner _vehicle: publicExec format [{if (local gunner UnitById %1) then {UnitById %1 removeWeapon "FAE220Launcher_xj400"}}, _NetWorkID]
+	_netIdStr = _vehicle call funcGenNetIdStr
+	? !isNull gunner _vehicle && !local gunner _vehicle: publicExec format [{if (local gunner UnitById %1) then {UnitById %1 removeWeapon "FAE220Launcher_xj400"}}, _netIdStr]
 
 	~1
 	_path = "\TZK_Texture_4_0_0\DKMM\Arty\"; 
@@ -34,7 +36,8 @@ _vehicle addweapon "NoGun_xj400"; _vehicle removeWeapon "FAE220Launcher_xj400"
 	? TheWorld == "W": _path = "\TZK_Texture_4_0_4\white\DKMM\"
 	_vehicle setObjectTexture [_index , _path + "tost2.pac"]; _vehicle setObjectTexture [_index + 1 , _path + "tost2.pac"]
 	; MP broadcast
-	_NetWorkID = NetworkID _vehicle; _code = format [{(UnitById %2) setObjectTexture [%1,"%3"]; (UnitById %2) setObjectTexture [%1 + 1, "%3"]}, _index, _NetWorkID, _path + "tost2.pac"]; publicExec _code
+	_netIdStr = _vehicle call funcGenNetIdStr
+	_code = format [{(UnitById %2) setObjectTexture [%1,"%3"]; (UnitById %2) setObjectTexture [%1 + 1, "%3"]}, _index, _netIdStr, _path + "tost2.pac"]; publicExec _code
 	_vehicle groupChat "Launcher secured..."
 	~1
 #Pack

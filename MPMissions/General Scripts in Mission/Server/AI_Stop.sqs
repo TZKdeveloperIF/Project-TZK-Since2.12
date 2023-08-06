@@ -1,0 +1,39 @@
+; args: [unit, params: [down, deploy], state]
+
+_unit = _this select 0
+_params = _this select 1
+_down = _params select 0
+_deploy = (if (count _params > 1) then {_params select 1} else {false})
+
+; 2-idx element is "state". Caller can set it as "false" to expect current script not to "stop"
+? count _this <= 2: _this set [2, true]
+
+_v = vehicle _unit
+
+? _unit != _v: goto "Veh"
+
+	? not (_this select 2): exit
+		_unit doMove getPos _unit
+
+	~ 2
+
+	? not alive _unit: exit
+	? not (_this select 2): exit
+		doStop _unit
+		? _down: _unit setUnitPos "DOWN"
+	exit
+
+# Veh
+	_crew = [commander _v, gunner _v, driver _v]
+	_pos = getPos _v
+
+	? not (_this select 2): exit
+		{if (alive _x && local _x) then { _x doMove _pos }} foreach _crew
+
+	~ 5
+
+	? not (_this select 2): exit
+		{if (alive _x && local _x) then { doStop _x }} foreach _crew
+		? _deploy: _v exec "Art\Deploy.sqs"
+		driver _v action ["ENGINEOFF", _v]; _v engineOn false
+	exit
