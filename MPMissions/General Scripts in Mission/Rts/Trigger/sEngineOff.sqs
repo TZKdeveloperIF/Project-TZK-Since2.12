@@ -1,0 +1,28 @@
+; args: none
+; vehicles will turn off engine. Aircrafts on land will turn off as well
+
+_top = TzkSelUnitsStack select TzkSelStackIdx
+_c = count _top
+? _c == 0: goto "Quit"
+
+_i = 0, _j = 0, _selectedUnits = []
+# loop
+	_unit = _top select _i
+	_vehicle = vehicle _unit
+	? _unit == _vehicle: goto "continue"
+	? _unit != driver _vehicle: goto "continue"
+	? (getPos _vehicle) select 2 > 3: goto "continue"
+
+	_selectedUnits set [_j, _unit]
+	_j = _j + 1
+
+	# continue
+	_i = _i + 1
+	? _i < _c: goto "loop"
+_selectedUnits resize _j
+
+[_selectedUnits, -1, "hEngineOff.sqs", "Trigger"] exec "Rts\FrameWork\GenArrayCommand.sqs"
+
+# Quit
+	exit
+	; do nothing. On ejecting units commander might wish to re-order them immediately

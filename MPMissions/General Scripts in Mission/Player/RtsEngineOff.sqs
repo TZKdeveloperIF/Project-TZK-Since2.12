@@ -1,0 +1,32 @@
+; args: units
+; vehicles will turn off engine. Aircrafts on land will turn off as well
+; player is unselectable so player will be included as well
+; this command works for vehicle so script will process vehicles
+
+_units = _this; _units set [count _units, player]
+
+TitleText ["Ask selected units (including player) turn off the engine.", "Plain DOWN", 0.25]
+
+_vehs = []
+{_veh = vehicle _x; if (_veh != _x && local _veh && not (_veh in _vehs)) then {_vehs set [count _vehs, _veh]}} forEach _units
+_c = count _vehs
+? _c == 0: exit
+
+_i = 0, _stat = []
+# loop
+	_vehicle = _vehs select _i
+	_unit = driver _vehicle
+
+	? isNull _unit: goto "continue"
+	? (getPos _vehicle) select 2 > 3: goto "continue"
+
+	_unit action ["ENGINE OFF", _vehicle]; _vehicle engineOn false
+
+	_stat set [count _stat, _unit]
+
+	# continue
+	_i = _i + 1
+	? _i < _c: goto "loop"
+
+? 1 == count _stat: (_stat select 0) groupChat "Engine Off."
+? 1 < count _stat: player groupChat format ["Units: %1 engine off.", _stat]

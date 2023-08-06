@@ -3,7 +3,7 @@
 private [{_processed}];
 _processed = false;
 
-{ctrlShow [_idcDownBtn0 + _x, false]} forEach [0,1,2,3,4,5,6,7,8];
+{ctrlShow [_idcDownBtn0 + _x, false]} forEach [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14];
 // initial state
 if (not _processed && 0 == count _downBoardStack) then {
 	ctrlSetText [_idcDownBtn0 + 0, "Disband"];
@@ -13,10 +13,14 @@ if (not _processed && 0 == count _downBoardStack) then {
 	ctrlSetText [_idcDownBtn0 + 3, "Join"];
 
 	ctrlSetText [_idcDownBtn0 + 5, "Air"];
-	ctrlSetText [_idcDownBtn0 + 6, "Transport"];
+	ctrlSetText [_idcDownBtn0 + 6, "Transp"];
 	ctrlSetText [_idcDownBtn0 + 7, "Tank"];
 
-	{ctrlShow [_idcDownBtn0 + _x, true]} forEach [0,1,2, 3, 5,6,7];
+	ctrlSetText [_idcDownBtn0 + 9, "Watch"];
+	ctrlSetText [_idcDownBtn0 + 10, "Seat"];
+	ctrlSetText [_idcDownBtn0 + 11, "EngineOff"];
+
+	{ctrlShow [_idcDownBtn0 + _x, true]} forEach [0,1,2, 3, 5,6,7, 9,10,11];
 	_processed = true;
 };
 // sub board
