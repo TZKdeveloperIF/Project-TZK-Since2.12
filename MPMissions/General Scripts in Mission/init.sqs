@@ -69,7 +69,8 @@ call loadFile "\TZK_Scripts_4_0_6\Common\InitUnitTypes.sqf"
 ; init functions (stuff that return values)
 call loadFile "\TZK_Scripts_4_0_6\Common\InitFunctions.sqf"
 ; AI Group Settings/Orders
-call loadFile "\TZK_Scripts_4_0_6\Common\InitAIOptions.sqf"
+call loadFile "Common\InitAIOptions.sqf"
+ArtilleryMagazineSpeedList = [80, 120, 180, 300, 400, 500, 600, 700, 800, 900, 1000, 1200, 1500];
 
 ; MESSAGE HANDLERS (SERVER AND CLIENTS)
 ["\TZK_Scripts_4_0_4\Common\HandleScore.sqs"] exec "\TZK_Scripts_4_0_5\Common\Msg\mScore.sqs"
@@ -92,8 +93,6 @@ call loadFile "\TZK_Scripts_4_0_6\Common\InitAIOptions.sqf"
 [] exec "\TZK_Scripts_4_0_4\Common\MsgObjectRepaired.sqs"
 ["\TZK_Scripts_4_0_4\Common\HandleStructMatrixRemove.sqs"] exec "\TZK_Scripts_4_0_5\Common\Msg\mStructMatrixRemove.sqs"
 
-["\TZK_Scripts_4_0_5\Common\Msg\hAITemporaryOrder.sqs"] exec "\TZK_Scripts_4_0_5\Common\Msg\mAITemporaryOrder.sqs"
-["Common\Msg\hAIStatus.sqs"] exec "Common\Msg\mAIStatus.sqs"
 ? bool_TZK_199_Mode: 0 exec "Common\initMsgUnderACWA.sqs"
 
 ; Custom weapon module

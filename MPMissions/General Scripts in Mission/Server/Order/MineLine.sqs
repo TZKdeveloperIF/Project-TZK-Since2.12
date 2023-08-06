@@ -34,8 +34,7 @@ _mines = "_x == magMine" count _magazines
 ? _hasMines && _mines == 0 : [_unit, _si, _gi, true] exec "Server\AI_CheckSupport.sqs"; _sleep = 10; goto "Sleep"
 
 #Update
-	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
-	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Sleep"}
+
 	
 	? !(alive _unit) : exit
 	? _idOrder != _order select 0 : exit
@@ -99,7 +98,6 @@ _mines = "_x == magMine" count _magazines
 	~_sleep
 	
 	? _unit call rtsOrderCheck: exit
-	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
-	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Sleep"}
+
   ? _unit call busyCheck : goto "Sleep"
 	goto "Update"

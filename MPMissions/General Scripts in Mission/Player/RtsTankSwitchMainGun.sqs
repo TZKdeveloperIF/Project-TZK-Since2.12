@@ -1,0 +1,29 @@
+; args: [units, state]
+; switch spoof status
+
+_units = _this select 0, _state = _this select 1; _c = count _units
+? _c == 0: exit
+_i = 0, _stat = []
+# loop
+	_unit = _units select _i
+	_vehicle = vehicle _unit
+	? _unit == _vehicle: goto "continue"
+	_driver = driver _vehicle; _gunner = gunner _vehicle
+	? _unit != _driver && _unit != _gunner: goto "continue"
+
+	; skip driver unit if vehicle has both driver and gunner
+	? _unit == _driver && not isNull _gunner: goto "continue"
+
+	_type = _vehicle call funcGetUnitTypeFromObject
+	? -1 == typesLightTank find _type && -1 == typesHeavyTank find _type: goto "continue"
+
+	[_vehicle, _state, siPlayer] exec "Common\ReEquip\TankSwitchSabotHeat.sqs"
+
+	_stat set [count _stat, _unit]
+
+	# continue
+	_i = _i + 1
+	? _i < _c: goto "loop"
+
+? 1 == count _stat: (_stat select 0) groupChat format ["Reload %1.", if _state then {"Sabot"} else {"Heat"}]
+? 1 < count _stat: player groupChat format ["Reload %1 for units: %2.", if _state then {"Sabot"} else {"Heat"}, _stat]

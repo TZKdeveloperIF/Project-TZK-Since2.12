@@ -1,0 +1,167 @@
+; ---------------------------------------------------------------------------------------------------
+; |									RTS Repair Order SQS Script										|
+; |		  Units will get close to clicked position first, then search support in the area and go 	|
+; |		repair.																						|
+; ---------------------------------------------------------------------------------------------------
+
+; args: [unit, [clicked pos, health threshold, support range, central pos of all selected units], 
+; 	rts object status (array-reference), rts server id]
+_unit = _this select 0
+_clickedPos = _this select 1 select 0
+_healthThreshold = _this select 1 select 1
+_supportDist = _this select 1 select 2
+_rtsCentralPos = _this select 1 select 3
+_rtsStatus = _this select 2
+_id = _this select 3
+_this = 0
+
+; rts busy Check
+; not realized yet
+
+; rts order stack design
+; not realized yet
+
+_si = sides find (side _unit)
+? _si != si0 && _si != si1: exit
+
+_vehicle = vehicle _unit, _cantMove = false
+	? not canMove _vehicle: _cantMove = true, goto "ExecRepair"
+	? not canFire _vehicle && 1 == [_vehicle, "gunner"] call funcVehParamHasSeat: goto "Valid"
+	? damage _vehicle < 0.01 && damage _unit < 0.01: goto "Quit"
+	? _unit == _vehicle: goto "Valid"
+	? damage _vehicle < _healthThreshold: goto "Quit"
+	? 0 == [_vehicle, "driver"] call funcVehParamHasSeat: _cantMove = true, goto "ExecRepair"
+# Valid
+
+; under "RtsOrder" folder the "rts id" is restored by "id" variable but not "rtsId"
+_quitCond = {not alive _unit || not (_unit call rtsOrderCheck) || _id != _rtsStatus select 1}
+
+_unit call preprocessFile "Server\AI\RtsOrderBegin.sqf"
+; Initialize The Order Script
+_timeStart = _time; _timeUp = _timeStart; _cycle = 30; _wakeUp = "Update"
+_destPos = [_unit, _clickedPos, _rtsCentralPos, 50] call preprocessFile "Util\RtsDestPos.sqf"
+_returnPos = getPosASL _unit
+
+[_unit, _destPos] call funcMoveAI
+? [_unit, _destPos] call funcDistH < _supportDist: goto "ExecRepair"
+# Update
+	_vehicle = vehicle _unit
+	? canMove _vehicle && damage _vehicle < 0.01 && damage _unit < 0.01: goto "Quit"
+	? _unit != driver _vehicle: goto "Sleep"
+
+	? _unit != _vehicle: _vehicle exec "Art\Undeploy.sqs", {_x doFollow leader _x} forEach crew _vehicle
+
+	; check move
+	_distToDest = [_unit, _destPos] call funcDistH
+	? _distToDest < _supportDist: goto "ExecRepair"
+	[_unit, _destPos] call funcMoveAI
+	_cycle = [30, 0.1*_distToDest] select (_distToDest < 300)
+	goto "Sleep"
+
+# ExecRepair
+	[_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
+
+	; SeekSup4Vehicle
+		_vs = [_clickedPos, _supportDist, (typesSupport select si0) + (typesSupport select si1), [vehicle _unit]] call funcGetNearbyVehicles
+		? count _vs == 0: goto "Quit"
+		_distMin = _supportDist; _sup = objNull
+		{ _dist = _unit distance (_x select 0); if (_dist < _distMin) then { _sup = (_x select 0); _distMin = _dist } } foreach _vs
+		? isNull _sup: goto "Quit"
+		; goto "SupportFound"
+
+; SupportFound
+	? _cantMove: if ([_unit, _sup] call funcDistH > rangeSupport) then {goto "Quit"} else {goto "SupportReached"}
+	; type check
+	_vehicle = vehicle _unit, _vt = -1
+	? _unit != _vehicle: _vt = _vehicle call funcGetUnitTypeFromObject
+	? _unit != _vehicle && _vt == -1: goto "Quit"
+
+	_distToDest = [_unit, getPos _sup] call funcDistH
+	? _distToDest < rangeSupport: goto "SupportReached"
+
+	_wakeUp = "ExecRepair"
+	? _unit != driver _vehicle: goto "Sleep"
+
+	[_unit, _sup] exec "\TZK_Scripts_4_0_4\Server\SendMovingToSupport.sqs"
+	_bAir = _vt != -1 && "Air" countType [_vehicle] > 0
+	_bSupH = ((getPosASL _sup) select 2) - ((getPos _sup) call funcHASL)
+	_bVehH = ((getPosASL _vehicle) select 2) - ((getPos _vehicle) call funcHASL)
+	? _bSupH < 0: _bSupH = 0
+	? _vt == -1 || "Air" countType [_vehicle] <= 0: goto "MoveGround"
+	; AirCraft
+	# MoveAir
+		_vehicle flyInHeight 200
+		_wakeUp = "MoveAir"
+		? not alive _sup: goto "ExecRepair"
+		_distToDest = [_vehicle, getPos _sup] call funcDistH
+		? _distToDest < 3 * rangeSupport && (speed _vehicle < 30): goto "Hover"
+		[_unit, getPos _sup] call funcMoveAI
+		_cycle = [30, 0.05*_distToDest] select (_distToDest < 600)
+		goto "Sleep"
+	# Hover
+		_vehicle flyInHeight (_bSupH + 10)
+		[_unit, getPos _sup] call funcMoveAI
+		
+		_wakeUp = "Hover"
+		? not alive _sup: goto "ExecRepair"
+		_distToDest = [_vehicle, getPos _sup] call funcDistH
+		? _distToDest < 2 * rangeSupport: goto "SupportReached"
+		? _distToDest > 5 * rangeSupport: goto "MoveAir"
+		[_unit, getPos _sup] call funcMoveAI
+		_cycle = [30, 0.05*_distToDest] select (_distToDest < 600)
+		goto "Sleep"
+	# MoveGround
+		_wakeUp = "MoveGround"
+		? not alive _sup: goto "ExecRepair"
+		_distToDest = [_vehicle, getPos _sup] call funcDistH
+		? _distToDest < rangeSupport: goto "SupportReached"
+		[_unit, getPos _sup] call funcMoveAI
+		_cycle = [30, 0.1*_distToDest] select (_distToDest < 300)
+		goto "Sleep"
+
+	# SupportReached
+		_delay = 0
+		? _bAir: [_unit, getPos _sup] call funcMoveAI, _vehicle flyInHeight (_bSupH + 50), _delay = 0.1
+		~ _delay
+
+		[_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
+		
+		_gi = (groupMatrix select _si) find (group _unit)
+		[_unit, _si, _gi, _vehicle, _vt, _sup] exec "Server\AI_Heal.sqs"
+		_rearm = [_unit, _si, _gi] call funcCheckRearm
+		? _rearm: [_unit, _si, _gi, _vehicle, _vt, _sup] exec "Server\AI_Rearm.sqs"
+		~ 5
+		? _unit == vehicle _unit: goto "GoBack"
+		_i = 0
+		# RepairCheck
+			? damage _vehicle < 0.1: goto "GoBack"
+			_i = _i + 1
+			~ 5
+			? _i < 13: goto "RepairCheck"
+# GoBack
+	_wakeUp = "GoBack"
+	_vehicle = vehicle _unit
+	? _unit != driver _vehicle: goto "Sleep"
+
+	? _bAir: _vehicle flyInHeight _bVehH
+
+	? _unit != _vehicle: _vehicle exec "Art\Undeploy.sqs", {_x doFollow leader _x} forEach crew _vehicle
+
+	; check move
+	_distToDest = [_unit, _returnPos] call funcDistH
+	? _distToDest < 10: [_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs", _cycle = 30, goto "Sleep"
+	[_unit, _returnPos] call funcMoveAI
+	_cycle = [30, 0.1*_distToDest] select (_distToDest < 300)
+	goto "Sleep"
+# Quit
+	exit
+
+# Sleep
+_loop = (_time-_timeStart) / _cycle; _loop = 1 + _loop - _loop % 1
+_timeUp = _loop * _cycle + _timeStart
+	# innerSleep
+	~ (if (_timeUp - _time > 5) then {_timeUp - _time + 1} else {5})
+	? call _quitCond: goto "Quit"
+	? _time < _timeUp: goto "innerSleep"
+	? _unit call busyCheck: goto "Sleep"
+	goto _wakeUp
