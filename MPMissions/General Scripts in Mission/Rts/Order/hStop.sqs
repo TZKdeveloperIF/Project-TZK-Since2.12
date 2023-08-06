@@ -39,18 +39,17 @@ _destPos = getPos _unit
 	_bCheckDropBomb = !_bCheckDropBomb 
 	? _bCheckDropBomb && _unit == _vehicle: if (magSatchel in (magazines _unit)) then {[_unit, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\AI_CheckDropBomb.sqs"; _cycle = 20; goto "Sleep"}
 	
-	? not _bMoveDeployed: _bMoveDeployed = true; _vehicle exec "Art\Undeploy.sqs"
-
 	_cycle = 30
 	; check move
 	_distToDest = [getPos _unit, _destPos] call funcDistH
 	? _distToDest > 10: goto "Move"
 		[_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
-		; [_unit, _si, _gi] call funcWatch
+		? _unit != _vehicle: _vehicle exec "Art\Deploy.sqs"
 		? _unit != _vehicle && !(isNull gunner _vehicle) && isNull (commander _vehicle): [_unit, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\AI_CheckFireGun.sqs"
 		_cycle = 30
 		goto "Sleep"
 	# Move
+		? _unit != _vehicle: _vehicle exec "Art\Undeploy.sqs"
 		_distToDest = _distToDest - (_distToDest % 10)
 		[_unit, _destPos] call funcMoveAI
 		_cycle = [30, 0.1*_distToDest] select (_distToDest < 300)

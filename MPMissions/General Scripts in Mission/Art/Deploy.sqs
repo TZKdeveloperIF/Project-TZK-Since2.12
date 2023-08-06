@@ -1,0 +1,9 @@
+; args: vehicle
+; work for TZK Art units only (M109, PLZ05, TOS1)
+
+_typeName = typeOf _this
+? _typeName != "TOS1_TZK_xj400" && _typeName != "M109A6G_xj400" && _typeName != "PLZ05_TZK_xj400": exit
+? 0 < {_x == {DeploySwitch_xj400}} count magazines _this: exit
+
+? local _this: [_this, 1] exec "Util\Deploy\Change.sqs"
+? not local _this: publicExec format [{[UnitById %1, 1] exec "Util\Deploy\Change.sqs"}, _this call funcGenNetIdStr]
