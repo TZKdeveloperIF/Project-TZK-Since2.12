@@ -357,7 +357,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 		? _isServer: if not (_rearmParam select 1) then {goto "WaitRearmComplete"}
 
 	; rearm fail check
-	? _isServer: if not (_rearmParam select 2) then {_msg = format ["%1 rearm failed. Art order aborted.", _unit], goto "EOF"}
+	? _isServer: if not (_rearmParam select 2) then {_msg = format ["Rearm failed. Art order aborted.", _unit], goto "EOF"}
 
 	? _isInfantry: goto "PreMove"
 	; post rearm for non-soldier
