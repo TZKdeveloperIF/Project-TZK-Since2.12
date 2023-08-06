@@ -26,7 +26,7 @@ if _ret then {
 	} else {
 		doStop _unit;
 	};
-	if _isServer then {[_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"};
+	if _isServer then {[_unit, true] exec localize {TZK_AI_STOP}};
 
 	_vehicle reveal _target; _vehicle doTarget _target;
 

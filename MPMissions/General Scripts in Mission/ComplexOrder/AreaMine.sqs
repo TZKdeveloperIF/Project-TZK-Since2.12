@@ -58,7 +58,7 @@ _moveParamCache exec "Util\Move2DestSoldier.sqs"
 # ReachArea
 	? call _quitCond: goto "Quit"
 
-	? _forServer: [_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
+	? _forServer: [_unit, true] exec localize {TZK_AI_STOP}
 	? not _forServer: doStop _unit
 
 	; check mags
@@ -116,7 +116,7 @@ _moveParamCache exec "Util\Move2DestSoldier.sqs"
 		? not alive _sup: _param set [1, false], goto "CheckRearm"
 		? _param select 0: goto "Move2SupportLoop"
 
-	? _forServer: [_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
+	? _forServer: [_unit, true] exec localize {TZK_AI_STOP}
 	? not _forServer: doStop _unit
 
 	? not _forServer: _rearmParam = [[_unit, _sup], false, false], _rearmParam exec "Player\Rearm.sqs", goto "WaitRearmComplete"

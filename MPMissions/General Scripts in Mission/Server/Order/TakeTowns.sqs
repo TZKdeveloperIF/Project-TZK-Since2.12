@@ -35,7 +35,7 @@ _sleep = 30
 	_distToDest = [getPos _unit, _posMove] call funcDistH
 
 	? _distToDest > 10 : goto "Move"
-	[_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
+	[_unit, true] exec localize {TZK_AI_STOP}
 	[_unit, _si, _gi] call funcWatch
   _sleep = 30
   goto "Sleep"
