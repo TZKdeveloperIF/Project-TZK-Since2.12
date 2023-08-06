@@ -82,6 +82,8 @@ _returnPos = getPosASL _unit
 	_wakeUp = "ExecRepair"
 	? _unit != driver _vehicle: goto "Sleep"
 
+	? _unit != _vehicle: _vehicle exec "Art\Undeploy.sqs", {_x doFollow leader _x} forEach crew _vehicle
+
 	[_unit, _sup] exec "\TZK_Scripts_4_0_4\Server\SendMovingToSupport.sqs"
 	_bAir = _vt != -1 && "Air" countType [_vehicle] > 0
 	_bSupH = ((getPosASL _sup) select 2) - ((getPos _sup) call funcHASL)
@@ -149,7 +151,7 @@ _returnPos = getPosASL _unit
 
 	; check move
 	_distToDest = [_unit, _returnPos] call funcDistH
-	? _distToDest < 10: [_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs", _cycle = 30, goto "Sleep"
+	? _distToDest < 10: [_unit, true] exec "Server\AI_StopWithDeploy.sqs", _cycle = 30, goto "Sleep"
 	[_unit, _returnPos] call funcMoveAI
 	_cycle = [30, 0.1*_distToDest] select (_distToDest < 300)
 	goto "Sleep"
