@@ -51,7 +51,7 @@ _setting = aiSetting select _si select _gi
 	? (_setting select aisMoveMode) == 1 && _bMoveCorrect: if (_unit == vehicle _unit && _distToDest > 300) then {_vector = [_posDest, getPos _unit] call funcVectorSub; _vector = [_vector, 250/_distToDest] call funcVectorScale; _posMove = [getPos _unit, _vector] call funcVectorAdd; _distToDest = 250}
 	_bMoveCorrect = !_bMoveCorrect
 	? _distToDest > 10 : goto "Move"
-	[_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
+	[_unit, true] exec localize {TZK_AI_STOP}
 	[_unit, _si, _gi] call funcWatch
 	? _unit != _vehicle && !(isNull gunner _vehicle) && isNull (commander _vehicle) : [_unit, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\AI_CheckFireGun.sqs"
   _sleep = 30

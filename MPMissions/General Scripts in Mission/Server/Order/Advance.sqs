@@ -67,7 +67,7 @@ _timeNextStep = time
 	_distToDest = [getPos _unit, _posMove] call funcDistH
 
 	? _distToDest > 10 : goto "Move"
-	[_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
+	[_unit, true] exec localize {TZK_AI_STOP}
 	_gunner = gunner _vehicle
   _sleep = 30
 	? _unit != _vehicle && !(isNull _gunner) && isNull(commander _vehicle) : [_gunner, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\AI_CheckFireGun.sqs"; goto "Sleep"
