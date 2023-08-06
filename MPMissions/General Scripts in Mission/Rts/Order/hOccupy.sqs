@@ -53,7 +53,7 @@ _i = 0, _c = _totalTranspTypes, _transpTypes = [], _transpTypes resize _c
 	goto "Sleep"
 
 # ExecStep
-	[_unit, true] exec localize {TZK_AI_STOP}
+	[_unit, [true]] exec localize {TZK_AI_STOP}
 	_nearByTargets = [_clickedPos, 150, structsDefence, [], _si] call funcGetNearbyStructure
 	? count _nearByTargets == 0: goto "Quit"
 
