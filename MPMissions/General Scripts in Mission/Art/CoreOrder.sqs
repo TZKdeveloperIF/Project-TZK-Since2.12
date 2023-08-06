@@ -342,7 +342,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 		_delay = [0,3] select (_speed > 0)
 	# ExecRearm
 		_gi = (groupMatrix select _si) find (group _unit)
-		? _isServer: [_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
+		? _isServer: [_unit, [true]] exec localize {TZK_AI_STOP}
 		? not _isServer: doStop _unit
 
 		? _isServer: _rearmParam = [[_unit, _si, _gi, _vehicle, _type, _sup], false, false], _rearmParam exec "Server\AI_Rearm.sqs"
@@ -357,7 +357,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 		? _isServer: if not (_rearmParam select 1) then {goto "WaitRearmComplete"}
 
 	; rearm fail check
-	? _isServer: if not (_rearmParam select 2) then {_msg = format ["%1 rearm failed. Art order aborted.", _unit], goto "EOF"}
+	? _isServer: if not (_rearmParam select 2) then {_msg = format ["Rearm failed. Art order aborted.", _unit], goto "EOF"}
 
 	? _isInfantry: goto "PreMove"
 	; post rearm for non-soldier

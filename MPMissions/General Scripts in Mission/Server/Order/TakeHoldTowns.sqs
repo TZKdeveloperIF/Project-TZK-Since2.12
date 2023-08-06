@@ -50,7 +50,7 @@ _sleep = 30
 	_distToDest = (vehicle _unit) distance _flag
 	
 	? _distToDest > 10 : goto "TakeTown_Move"
-	[_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
+	[_unit, [true]] exec localize {TZK_AI_STOP}
 	[_unit, _si, _gi] call funcWatch
 	_sleep = 30
 	goto "TakeTown_Sleep"
@@ -83,7 +83,7 @@ _pos = [getPos _flag, 5, 100] call funcGetRandomPos
 	_distToDest = [getPos _unit, _pos] call funcDistH
 	
 	? _distToDest > 10 : goto "HoldTown_Move"
-	[_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
+	[_unit, [true]] exec localize {TZK_AI_STOP}
 	[_unit, _si, _gi] call funcWatch
 	_sleep = 30
 	goto "HoldTown_Sleep"
