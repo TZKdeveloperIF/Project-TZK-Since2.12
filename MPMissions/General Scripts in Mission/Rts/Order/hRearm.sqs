@@ -24,15 +24,6 @@ _this = 0
 _si = sides find (side _unit)
 ? _si != si0 && _si != si1: exit
 
-_vehicle = vehicle _unit, _cantMove = false
-	? not canMove _vehicle: _cantMove = true, goto "ExecRearm"
-	? not canFire _vehicle && 1 == [_vehicle, "gunner"] call funcVehParamHasSeat: goto "Valid"
-	? _unit == _vehicle: if (_unit call preprocessFile "Util\NeedntRearmGeneral.sqf") then {goto "Quit"} else {goto "Valid"}
-	; must be vehicle here
-	? [_vehicle, _sabotThreshold] call preprocessFile "Util\NeedntRearmVehicle.sqf": goto "Quit"
-	? 0 == [_vehicle, "driver"] call funcVehParamHasSeat: _cantMove = true, goto "ExecRearm"
-# Valid
-
 ; under "RtsOrder" folder the "rts id" is restored by "id" variable but not "rtsId"
 _quitCond = {not alive _unit || not (_unit call rtsOrderCheck) || _id != _rtsStatus select 1}
 
@@ -41,6 +32,15 @@ _unit call preprocessFile "Server\AI\RtsOrderBegin.sqf"
 _timeStart = _time; _timeUp = _timeStart; _cycle = 30; _wakeUp = "Update"
 _destPos = [_unit, _clickedPos, _rtsCentralPos, 50] call preprocessFile "Util\RtsDestPos.sqf"
 _returnPos = getPosASL _unit
+
+_vehicle = vehicle _unit, _cantMove = false
+	? not canMove _vehicle: _cantMove = true, goto "ExecRearm"
+	? not canFire _vehicle && 1 == [_vehicle, "gunner"] call funcVehParamHasSeat: goto "Valid"
+	? _unit == _vehicle: if (_unit call preprocessFile "Util\NeedntRearmGeneral.sqf") then {goto "Quit"} else {goto "Valid"}
+	; must be vehicle here
+	? [_vehicle, _sabotThreshold] call preprocessFile "Util\NeedntRearmVehicle.sqf": goto "Quit"
+	? 0 == [_vehicle, "driver"] call funcVehParamHasSeat: _cantMove = true, goto "ExecRearm"
+# Valid
 
 [_unit, _destPos] call funcMoveAI
 ? [_unit, _destPos] call funcDistH < _supportDist: goto "ExecRearm"
