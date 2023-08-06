@@ -1,6 +1,6 @@
-; args: units
-_units = _this
-? count _units <= 0: exit
+; args: [server rts order: bool, params]
+_bSvrRtsOrder = _this select 0
+? not _bSvrRtsOrder: _units = _this select 1, if (count _units <= 0) then {exit}
 
 @ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
@@ -11,10 +11,11 @@ _idcTitle = IDC + 0; _idcListLabel = IDC + 16 * 3 + 1; _idcListBox0 = IDC + 16 *
 
 ctrlSetText [_idcTitle, "Switch Seat"]
 ctrlSetText [_idcListLabel, "Seats"]
+? _bSvrRtsOrder: TitleText ["Available if vehicle has only 1 crew", "Plain DOWN", 0.25]
 
 btnValue00 = false; btnValue01 = false
 
-{lbAdd [_idcListBox0, _x]} forEach ["Driver", "Gunner", "Cargo"]
+{lbAdd [_idcListBox0, _x]} forEach ["Driver", "Gunner", "Cargo"], lbSetCurSel [_idcListBox0, 1]
 
 # loop
 	~ 0.2
@@ -32,5 +33,6 @@ btnValue00 = false; btnValue01 = false
 	_idx = lbCurSel _idcListBox0
 	? -1 == _idx: hint "No selected seat.", goto "loop"
 
-	{[_x, 0, [_idx]] exec "\TZK_Scripts_4_0_4\Player\Order\SwitchSeat.sqs"} forEach _units
+	? _bSvrRtsOrder: _idx exec "Rts\Trigger\sSeat.sqs"
+	? not _bSvrRtsOrder: {[_x, 0, [_idx]] exec "\TZK_Scripts_4_0_4\Player\Order\SwitchSeat.sqs"} forEach _units
 	closeDialog 0; goto "Quit"

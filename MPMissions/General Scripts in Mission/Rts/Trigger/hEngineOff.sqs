@@ -1,0 +1,15 @@
+? not isServer: exit
+
+; args: [Network IDs[], -1]
+_netIds = _this select 0
+_c = count _netIds
+? 0 == _c: exit
+
+_i = 0
+# loop
+	_unit = UnitById(_netIds select _i)
+	_vehicle = vehicle _unit
+	_unit action ["ENGINE OFF", _vehicle]; _vehicle engineOn false
+
+	_i = _i + 1
+	? _i < _c: goto "loop"

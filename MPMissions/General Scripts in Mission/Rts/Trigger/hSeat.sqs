@@ -1,0 +1,29 @@
+? not isServer: exit
+
+; args: [Network IDs[], seat idx]
+_netIds = _this select 0
+_c = count _netIds
+? 0 == _c: exit
+
+_seat = ["Driver", "Gunner", "Cargo"] select (_this select 1)
+_i = 0, _stat = []
+# loop
+	_unit = UnitById(_netIds select _i)
+	_vehicle = vehicle _unit
+
+	? not local _vehicle: goto "continue"
+	? "Cargo" == _seat: if (_unit != driver _vehicle && _unit != gunner _vehicle && _unit != commander _vehicle) then {goto "continue"}
+	? "Driver" == _seat || "Gunner" == _seat: if (call format [{_unit == %1 _vehicle}, _seat]) then {goto "continue"}
+	? "Cargo" == _seat: if (_vehicle call funcGetCargoNum >= _vehicle call funcGetTranspVol) then {goto "continue"}
+	? "Driver" == _seat || "Gunner" == _seat: if (1 != ([_vehicle, _seat] call funcVehParamHasSeat)) then {goto "continue"}
+
+	_stat set [count _stat, [_unit, _vehicle]]
+	unassignVehicle _unit; _unit action ["EJECT", _vehicle]
+
+	# continue
+	_i = _i + 1
+	? _i < _c: goto "loop"
+
+? count _stat <= 0: exit
+~ 0.1
+{call format [{(_x select 0) assignAs%1 (_x select 1); (_x select 0) moveIn%1 (_x select 1)}, _seat]} forEach _stat

@@ -114,6 +114,10 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 	? 2^5 == _btnVal: _downBoardStack set [0, 5]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
 	? 2^6 == _btnVal: _downBoardStack set [0, 6]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
 	? 2^7 == _btnVal: _downBoardStack set [0, 7]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
+
+	? 2^9 == _btnVal: _pos exec "Rts\Trigger\sWatch.sqs"; closeDialog 0; goto "Quit"
+	? 2^10 == _btnVal: [true] exec "Rts\SubMenu\SwitchSeat.sqs"; closeDialog 0; goto "Quit"
+	? 2^11 == _btnVal: 0 exec "Rts\Trigger\sEngineOff.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 	# DownSubMenu
 		_return = false

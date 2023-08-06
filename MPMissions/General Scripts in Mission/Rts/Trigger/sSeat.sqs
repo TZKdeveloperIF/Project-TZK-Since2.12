@@ -1,0 +1,28 @@
+; args: seat idx
+_top = TzkSelUnitsStack select TzkSelStackIdx
+_c = count _top
+? _c == 0: goto "Quit"
+
+_i = 0, _j = 0, _selectedUnits = []
+# loop
+	_unit = _top select _i
+	_vehicle = vehicle _unit
+	? _unit == _vehicle: goto "continue"
+
+	_crews = crew _vehicle
+	? count _crews != 1: goto "continue"
+	? (_crews select 0) != _unit: goto "continue"
+
+	_selectedUnits set [_j, _unit]
+	_j = _j + 1
+
+	# continue
+	_i = _i + 1
+	? _i < _c: goto "loop"
+_selectedUnits resize _j
+
+[_selectedUnits, _this, "hSeat.sqs", "Trigger"] exec "Rts\FrameWork\GenArrayCommand.sqs"
+
+# Quit
+	exit
+	; do nothing. On switch sabot/heat commander might wish to re-order them again

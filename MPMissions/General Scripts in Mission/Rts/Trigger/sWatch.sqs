@@ -1,0 +1,11 @@
+; args: pos
+
+_top = TzkSelUnitsStack select TzkSelStackIdx
+_c = count _top
+? _c == 0: goto "Quit"
+
+[+_top, _this, "hWatch.sqs", "Trigger"] exec "Rts\FrameWork\GenArrayCommand.sqs"
+
+# Quit
+	exit
+	; do nothing. On ordering watch commander might wish to re-order them immediately
