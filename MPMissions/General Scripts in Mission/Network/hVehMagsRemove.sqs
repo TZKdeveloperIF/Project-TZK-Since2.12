@@ -10,6 +10,8 @@ _bCar = _simulation == "car" || _simulation == "motorcycle"
 ; Except for car
 {_v removeMagazines _x} foreach magazines _v
 _v groupChat "Magazines removed. Waiting for Rearm..."
+; Force howitzer and tos deploy on rearm start
+_v exec "Art\Deploy.sqs"
 exit
 
 # Car

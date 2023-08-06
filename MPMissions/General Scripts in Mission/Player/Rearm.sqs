@@ -91,8 +91,6 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 	? _cost > _money: _msg = format["Not enough money for rearm. ($%1 needed)", _cost]; goto "Quit"
 
 	[_vehicle] exec localize {TZK_NETWORK_REMOVE_MAG}
-	; Force howitzer and tos deploy in 2.01 game
-	_vehicle exec "Art\Deploy.sqs"
 
 	vehiclesRearming set [count vehiclesRearming, _vehicle]
 	_msg = format["Rearm started, ready in %1s ...", _timeRearm]
