@@ -77,7 +77,7 @@ _mines = "_x == magMine" count _magazines
 	goto "Sleep"
 	
 	#Patrol
-	? _unit != _vehicle && ( ([getPos _unit, _wp0] call funcDistH) < 500 || ([getPos _unit, _wp1] call funcDistH) < 500 ) : [_unit, false] exec localize {TZK_AI_STOP}; [_unit, _si, _gi] call funcWatch; _sleep = 30; goto "Sleep"
+	? _unit != _vehicle && ( ([getPos _unit, _wp0] call funcDistH) < 500 || ([getPos _unit, _wp1] call funcDistH) < 500 ) : [_unit, [false]] exec localize {TZK_AI_STOP}; [_unit, _si, _gi] call funcWatch; _sleep = 30; goto "Sleep"
 	
 	? (count _posMove) == 0 : _posMove = [_wps select _patrol, 50, 100] call funcGetRandomPos
 	_distToDest = [getPos _unit, _posMove] call funcDistH
@@ -85,7 +85,7 @@ _mines = "_x == magMine" count _magazines
   ? _distToDest > 10 : goto "Move"
   _posMove = []
   _patrol = !_patrol
-  [_unit, false] exec localize {TZK_AI_STOP}
+  [_unit, [false]] exec localize {TZK_AI_STOP}
   [_unit, _si, _gi] call funcWatch
   _sleep = 30
   goto "Sleep"
