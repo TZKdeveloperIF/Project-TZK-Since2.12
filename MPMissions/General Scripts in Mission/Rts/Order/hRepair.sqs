@@ -24,15 +24,6 @@ _this = 0
 _si = sides find (side _unit)
 ? _si != si0 && _si != si1: exit
 
-_vehicle = vehicle _unit, _cantMove = false
-	? not canMove _vehicle: _cantMove = true, goto "ExecRepair"
-	? not canFire _vehicle && 1 == [_vehicle, "gunner"] call funcVehParamHasSeat: goto "Valid"
-	? damage _vehicle < 0.01 && damage _unit < 0.01: goto "Quit"
-	? _unit == _vehicle: goto "Valid"
-	? damage _vehicle < _healthThreshold: goto "Quit"
-	? 0 == [_vehicle, "driver"] call funcVehParamHasSeat: _cantMove = true, goto "ExecRepair"
-# Valid
-
 ; under "RtsOrder" folder the "rts id" is restored by "id" variable but not "rtsId"
 _quitCond = {not alive _unit || not (_unit call rtsOrderCheck) || _id != _rtsStatus select 1}
 
@@ -41,6 +32,15 @@ _unit call preprocessFile "Server\AI\RtsOrderBegin.sqf"
 _timeStart = _time; _timeUp = _timeStart; _cycle = 30; _wakeUp = "Update"
 _destPos = [_unit, _clickedPos, _rtsCentralPos, 50] call preprocessFile "Util\RtsDestPos.sqf"
 _returnPos = getPosASL _unit
+
+_vehicle = vehicle _unit, _cantMove = false
+	? not canMove _vehicle: _cantMove = true, goto "ExecRepair"
+	? not canFire _vehicle && 1 == [_vehicle, "gunner"] call funcVehParamHasSeat: goto "Valid"
+	? damage _vehicle < 0.01 && damage _unit < 0.01: goto "Quit"
+	? _unit == _vehicle: goto "Valid"
+	? damage _vehicle < _healthThreshold: goto "Quit"
+	? 0 == [_vehicle, "driver"] call funcVehParamHasSeat: _cantMove = true, goto "ExecRepair"
+# Valid
 
 [_unit, _destPos] call funcMoveAI
 ? [_unit, _destPos] call funcDistH < _supportDist: goto "ExecRepair"
