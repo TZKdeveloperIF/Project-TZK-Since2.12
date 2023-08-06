@@ -18,9 +18,8 @@ if (_coGrp0 in (groupAiMatrix select si0) || _coGrp1 in (groupAiMatrix select si
 		player globalChat format [
 			"%1, %2, %3, pvCustomPveStatus: %4", _si, _gi, ((groupMatrix select _si) - (groupAiMatrix select _si)), _pvVar],
 	};
-} else {
-	_pvVar = 0;
 };
+if (-1 == _pvVar) then {_pvVar = 0};
 
 pvCustomPveStatus = _pvVar; publicVariable {pvCustomPveStatus};
 if (0 == _pvVar) then {pvCustomPveFinished = true};
