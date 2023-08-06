@@ -75,7 +75,7 @@ _i = 0, _c = _typeCnt, _transpTypes = [], _transpTypes resize _c
 		? _typeIdx >= _typeCnt: goto "Quit"
 		? not (_transpTypes select _typeIdx): _typeIdx = _typeIdx + 1, goto "SearchTarget"
 
-		_needEdit = true
+		_needEdit = true, _bDisengage = (0 <= _typeIdx && _typeIdx <= 2)
 		? 0 == _typeIdx: _selectedTypes = typesHeavyTank
 		? 1 == _typeIdx: _selectedTypes = typesLightTank
 		? 2 == _typeIdx: _selectedTypes = typesHowitzer + typesRocketLauncher
@@ -156,7 +156,8 @@ _i = 0, _c = _typeCnt, _transpTypes = [], _transpTypes resize _c
 			? _i < (count _seats) && _target != vehicle _unit: goto "TrySeat"
 
 		? _target != vehicle _unit: goto "SearchTarget"
-
+	; Disengage if reclaimed tank/artillery
+	? _bDisengage: _unit disableAI "TARGET"
 # Quit
 	exit
 

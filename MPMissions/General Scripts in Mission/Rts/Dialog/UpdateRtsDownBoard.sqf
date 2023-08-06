@@ -19,7 +19,7 @@ if (not _processed && 0 == count _downBoardStack) then {
 	{ctrlShow [_idcDownBtn0 + _x, true]} forEach [0,1,2, 3, 5,6,7];
 	_processed = true;
 };
-// Area "set as..." sub board
+// sub board
 if (not _processed && 1 == count _downBoardStack) then {
 	if (not _processed && 5 == _downBoardStack select 0) then {
 		ctrlSetText [_idcDownBtn0 + 0, "Spoof ON"];
@@ -46,9 +46,11 @@ if (not _processed && 1 == count _downBoardStack) then {
 		ctrlSetText [_idcDownBtn0 + 0, "Sabot"];
 		ctrlSetText [_idcDownBtn0 + 1, "Heat"];
 
+		ctrlSetText [_idcDownBtn0 + 2, "Disengage"];
+
 		ctrlSetText [_idcDownBtn0 + 8, "Return"];
 
-		{ctrlShow [_idcDownBtn0 + _x, true]} forEach [0,1,8];
+		{ctrlShow [_idcDownBtn0 + _x, true]} forEach [0,1,2,8];
 		_processed = true;
 	};
 };

@@ -32,43 +32,19 @@ _vt = _vehicle call funcGetUnitTypeFromObject
 ? (groupCommander select _si) in (groupAiMatrix select _si) : if (_vt in (typesSupport select _si) && _unit == driver _vehicle) then {[_unit, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\AI_PlaceSupportVehicle.sqs"; exit}
 #SkipSupport
 
-; Status Level 0: Reclaim
-? initStatusMatrix select _si * GroupsNum + _gi select orderTempReclaim select 0 == 0: goto "NoReclaim"
-_entry = initStatusMatrix select _si * GroupsNum + _gi select orderTempReclaim
-_params = []; _i = 1; while "_i < count _entry" do "_params set [_i - 1, _entry select _i]; _i = _i + 1"
-[_unit, _si, _gi, _params] exec format["%1", orderTempDefs select orderTempReclaim select 2]
-_delay = 1
-#WaitReclaimed
-	~ _delay
-	_delay = 5
-	? !(alive _unit) : exit
-	? (_unit call temporaryCheck): goto "WaitReclaimed"
-#NoReclaim
-; Status Level 0: Occupy
-? initStatusMatrix select _si * GroupsNum + _gi select orderTempOccupy select 0 == 0: goto "NoOccupy"
-_entry = initStatusMatrix select _si * GroupsNum + _gi select orderTempOccupy
-_params = []; _i = 1; while "_i < count _entry" do "_params set [_i - 1, _entry select _i]; _i = _i + 1"
-[_unit, _si, _gi, _params] exec format["%1", orderTempDefs select orderTempOccupy select 2]
-_delay = 1
-#WaitOccupied
-	~ _delay
-	_delay = 5
-	? !(alive _unit) : exit
-	? (_unit call temporaryCheck): goto "WaitOccupied"
-#NoOccupy
+; type initial commands?
+; Set crew/AACrew/Pilot "RTS stop"
+? _vehicle != _unit: goto "SkipStopCrew"
+_vt = _vehicle call funcGetUnitTypeFromObject
+? not (_vt in typesCrew): goto "SkipStopCrew"
+	[[NetworkID _unit], 0, "hStop.sqs", "Order"] exec "Rts\Framework\Distributor.sqs"
+	exit
+# SkipStopCrew
 
-; Status Level 1: Disengage, Set Flight Altitude, Spoof Missile ON, Change Sabot/Heat, Switch Magazine.
-; Level 1 commands are instant-trigger-status change. They don't need any delay.
-_idx = 0; _types = [orderTempDisengageType, orderTempSetFlightAltitude, orderTempSpoofMissileON, orderTempChangeAmmo, orderTempSwitchMagazine]
-#Set_LV1_Status
-	_type = _types select _idx
-	? initStatusMatrix select _si * GroupsNum + _gi select _type select 0 == 0: goto "Next_LV1_Status"
-	_entry = initStatusMatrix select _si * GroupsNum + _gi select _type
-	_params = []; _i = 1; while "_i < count _entry" do "_params set [_i - 1, _entry select _i]; _i = _i + 1"
-	[_unit, _si, _gi, _params] exec format["%1", orderTempDefs select _type select 2]
-	#Next_LV1_Status
-	_idx = _idx + 1
-	? _idx < count _types: goto "Set_LV1_Status"
+; Disengage for light/heavy tank and artillery
+_vehicle = vehicle _unit
+_vt = _vehicle call funcGetUnitTypeFromObject
+? _vt in typesLightTank || _vt in typesHeavyTank || _vt in typesHowitzer || _vt in typesRocketLauncher: _unit disableAI "TARGET"
 
 ; RALLY 1
 ? groupMatrix select _si select _gi != group _unit: _gi = (groupMatrix select _si) find (group _unit)
@@ -133,74 +109,6 @@ _param exec "Server\Loop\AI_CheckBoard.sqs"
 goto "Board2"
 # NoBoard2
 
-; Status Level 3. They're available for particular unit. Delay loop isn't required.
-_delay = 0
-; Status Level 3: Move Unit
-~ _delay
-? initStatusMatrix select _si * GroupsNum + _gi select orderTempMoveUnit select 0 == 0: goto "Skip_LV3_Move"
-_entry = initStatusMatrix select _si * GroupsNum + _gi select orderTempMoveUnit
-_params = []; _i = 1; while "_i < count _entry" do "_params set [_i - 1, _entry select _i]; _i = _i + 1"
-[_unit, _si, _gi, _params] exec format["%1", orderTempDefs select orderTempMoveUnit select 2]
-; Don't "quit" but check other LV4 status.
-_delay = 0.2
-#Skip_LV3_Move
-
-; Status Level 4. They're available for particular type. Delay loop isn't required.
-_delay = 0.5
-; Delay for Lv3 order initial the temporary
-; Status Level 4: Transport Duty Type.
-~ _delay
-? initStatusMatrix select _si * GroupsNum + _gi select orderTempTransportDuty select 0 == 0: goto "Skip_LV4_Transport"
-_entry = initStatusMatrix select _si * GroupsNum + _gi select orderTempTransportDuty
-_params = []; _i = 1; while "_i < count _entry" do "_params set [_i - 1, _entry select _i]; _i = _i + 1"
-[_unit, _si, _gi, _params] exec format["%1", orderTempDefs select orderTempTransportDuty select 2]
-; Don't "quit" but check other LV4 status.
-_delay = 0.2
-#Skip_LV4_Transport
-
-; Status Level 4: Shoot Target Type.
-~ _delay
-? initStatusMatrix select _si * GroupsNum + _gi select orderTempShootTarget select 0 == 0: goto "Skip_LV4_ShootTarget"
-_entry = initStatusMatrix select _si * GroupsNum + _gi select orderTempShootTarget
-_params = []; _i = 1; while "_i < count _entry" do "_params set [_i - 1, _entry select _i]; _i = _i + 1"
-[_unit, _si, _gi, _params] exec format["%1", orderTempDefs select orderTempShootTarget select 2]
-; Don't "quit" but check other LV4 status.
-_delay = 0.2
-#Skip_LV4_ShootTarget
-
-; Status Level 4: Shoot Big Angle Type. 
-~ _delay
-? initStatusMatrix select _si * GroupsNum + _gi select orderTempShootBigAngle select 0 == 0: goto "Skip_LV4_ShootBigAngle"
-_entry = initStatusMatrix select _si * GroupsNum + _gi select orderTempShootBigAngle
-_params = []; _i = 1; while "_i < count _entry" do "_params set [_i - 1, _entry select _i]; _i = _i + 1"
-[_unit, _si, _gi, _params] exec format["%1", orderTempDefs select orderTempShootBigAngle select 2]
-; Don't "quit" but check other LV4 status.
-_delay = 0.2
-#Skip_LV4_ShootBigAngle
-
-; Status Level 4: Shoot Target Type.
-~ _delay
-? initStatusMatrix select _si * GroupsNum + _gi select orderTempHoldTown select 0 == 0: goto "Skip_LV4_HoldTown"
-_entry = initStatusMatrix select _si * GroupsNum + _gi select orderTempHoldTown
-_params = []; _i = 1; while "_i < count _entry" do "_params set [_i - 1, _entry select _i]; _i = _i + 1"
-[_unit, _si, _gi, _params] exec format["%1", orderTempDefs select orderTempHoldTown select 2]
-; Don't "quit" but check other LV4 status.
-_delay = 0.2
-#Skip_LV4_HoldTown
-
-; Status Level 4: Shoot Target Type.
-~ _delay
-? initStatusMatrix select _si * GroupsNum + _gi select orderTempMoveType select 0 == 0: goto "Skip_LV4_Move"
-_entry = initStatusMatrix select _si * GroupsNum + _gi select orderTempMoveType
-_params = []; _i = 1; while "_i < count _entry" do "_params set [_i - 1, _entry select _i]; _i = _i + 1"
-[_unit, _si, _gi, _params] exec format["%1", orderTempDefs select orderTempMoveType select 2]
-; Don't "quit" but check other LV4 status.
-_delay = 0.2
-#Skip_LV4_Move
-
-_delay = 0
-#Quit
-~ _delay
 ? groupMatrix select _si select _gi != group _unit: _gi = (groupMatrix select _si) find (group _unit)
 _order = (orderMatrix select _si) select _gi
 _script = (orderDefs select (_order select 1)) select 2

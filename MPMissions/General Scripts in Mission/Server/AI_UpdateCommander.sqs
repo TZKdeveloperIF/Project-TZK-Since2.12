@@ -238,8 +238,6 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 	[_si, _gi, aisKeepMax, 13, true] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
 	[_si, _gi, aisPickupWait1, count aisPickupWaitTimeDisp - 1, true] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
 	
-	; _ti = _townsSortedByDist select 0 select 0
-	; [_si, _gi + GroupsNum, orderTempHoldTown, [_ti, HoldTownTypeDefs find "Infantry", 0, 0, 0]] exec "\TZK_Scripts_4_0_4\Common\SendAITemporaryOrder.sqs"; 
 	goto "Update"
 
 #TakeFirstTown

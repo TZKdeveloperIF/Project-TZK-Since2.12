@@ -3,6 +3,8 @@
 // Left buttons
 ctrlSetText [_idcLeftBtn0 + 0, "Move"];
 ctrlSetText [_idcLeftBtn0 + 1, "Clear Order"];
+ctrlSetText [_idcLeftBtn0 + 13, "Stop"];
+
 ctrlSetText [_idcLeftBtn0 + 2, "Shoot Area"];
 // 3
 ctrlSetText [_idcLeftBtn0 + 4, "Switch Magazine"];
@@ -14,6 +16,7 @@ ctrlSetText [_idcLeftBtn0 + 9, "Move Land"];
 ctrlSetText [_idcLeftBtn0 + 10, "Move Ship"];
 ctrlSetText [_idcLeftBtn0 + 11, "DisableMine"];
 ctrlSetText [_idcLeftBtn0 + 12, "Mine Area"];
+// 13
 
 // Middle buttons
 ctrlSetText [_idcMidBtn0 + 0, "Heal & (Rearm)"];
@@ -22,10 +25,6 @@ ctrlSetText [_idcMidBtn0 + 2, "Board..."];
 // 3
 ctrlSetText [_idcMidBtn0 + 4, "Clear Order"];
 ctrlSetText [_idcMidBtn0 + 5, "Disband"];
-
-// Down buttons
-ctrlSetText [_idcDownBtn0 + 0, "Disband"];
-ctrlSetText [_idcDownBtn0 + 3, "Join"];
 
 if (bool_TZK_CHN_inited && bool_TZK_CHN_Lang) then {
 	{ctrlSetText [_idcMidBtn0 + _x, ""]} forEach [0,1,2,4,5];

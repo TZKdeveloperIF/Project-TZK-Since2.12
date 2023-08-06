@@ -1,0 +1,11 @@
+; args: clicked position
+_top = TzkSelUnitsStack select TzkSelStackIdx
+_c = count _top
+? _c == 0: goto "Quit"
+
+_selectedUnits = +_top
+[_selectedUnits, 0, "hStop.sqs", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs"
+
+# Quit
+false call preprocessFile "Player\Rts\Area.sqf"
+false call preprocessFile "Player\Rts\Selection.sqf"

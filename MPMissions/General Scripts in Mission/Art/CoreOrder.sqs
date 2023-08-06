@@ -19,10 +19,9 @@ _preMoveInfo = _params select 0, _suggestedSpeed = _params select 1
 ; script type info: [is server, is vehicle, is structure]
 _params = _this select 2
 _isServer = _params select 0, _isVehicle = _params select 1, _isStruct = _params select 2
-; script type info: [is outdated concurrent order, [rts status, rts id]]
+; script type info: [[rts status, rts id]]
 _params = _this select 3
-_bConcurrent = _params select 0
-? count _params > 1: _rtsStatus = _params select 1 select 0; _rtsId = _params select 1 select 1
+? count _params > 0: _rtsStatus = _params select 0; _rtsId = _params select 1
 
 _isInfantry = not _isVehicle && not _isStruct
 _params = 0, _this = 0
@@ -48,7 +47,7 @@ _params = 0, _this = 0
 # SoldierInited
 
 ; Switch magazine
-	? _suggestedSpeed > 0 && not _bConcurrent: [vehicle _unit, _suggestedSpeed, _enum] exec "Art\SwitchSuggestedSpeed.sqs"
+	? _suggestedSpeed > 0: [vehicle _unit, _suggestedSpeed, _enum] exec "Art\SwitchSuggestedSpeed.sqs"
 	; ? -2 == _suggestedSpeed: [vehicle _unit, _enum, _idx, _si] exec "Server\Art\SwitchAuto.sqs"
 ; Shoot Area infomation
 	_markerInfo = [_idx, _si, _isServer] call preprocessFile "Art\GetMarkerInfo.sqf";
@@ -69,8 +68,7 @@ _params = 0, _this = 0
 
 	_quitCond = {not alive _unit}
 	? _isInfantry: _quitCond = _quitCond + { or _vehicle != vehicle _unit}
-	? _isServer && _bConcurrent: _quitCond = _quitCond + { or not (_unit call temporaryCheck)}
-	? _isServer && not _bConcurrent: _quitCond = _quitCond + { or (not (_unit call rtsOrderCheck) || _rtsId != _rtsStatus select 1)}
+	? _isServer: _quitCond = _quitCond + { or (not (_unit call rtsOrderCheck) || _rtsId != _rtsStatus select 1)}
 	? not _isServer: _quitCond = _quitCond + { or call orderCheck}
 	_msg = ""
 
@@ -377,7 +375,6 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 
 ; End Of File
 # EOF
-	? _bConcurrent: _unit call busyClear; _unit call temporaryClear
 	? not _isServer: PlayerShootingUnits set [_uid, objNull]
 
 	deleteVehicle _target

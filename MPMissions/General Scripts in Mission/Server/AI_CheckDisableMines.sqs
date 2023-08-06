@@ -1,0 +1,56 @@
+; args: [unit, si, gi]
+
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+
+? _unit != driver vehicle _unit: exit
+
+_vehicleUnit = vehicle _unit 
+? _unit != _vehicleUnit: exit
+
+_order = orderMatrix select _si select _gi
+_idOrder = _order select 0
+
+_unit call busySet
+
+#Search
+	? !(_unit call busyCheck): goto "Exit"
+  _mine = if !bool_TZK_199_Mode Then {nearestObjectDistance [[getPos _unit, 0, 10] call funcGetRandomPos, ammoMine, viewDistance/10]} Else {nearestObject [getPos _unit, ammoMine]}
+  ? isNull _mine: goto "Exit"
+  _pos = getPos _mine
+  goto "MoveToMine"
+
+#MoveToMine
+  [_unit, _pos] call funcMoveAI
+  _timeAbort = time + 2*60
+  #WaitUntilMineReached
+  
+	~2
+	? !(_unit call busyCheck): goto "Exit"
+    ? !(alive _unit) || time > _timeAbort: goto "Exit"
+    ? isNull _mine: goto "Search"
+    ? ([getPos _unit, _pos] call funcDistH) > 10: goto "WaitUntilMineReached"
+
+  doStop _unit
+  _unit doWatch _mine
+  
+	~2
+	? !(_unit call busyCheck): goto "Exit"
+	
+  ? !(alive _unit): goto "Exit"
+  ? isNull _mine: goto "Search"
+  _unit playMove "CombatToPutDown"
+  
+	~2
+	? !(_unit call busyCheck): goto "Exit"
+	
+  ? !(alive _unit): goto "Exit"
+  ? isNull _mine: goto "Search"
+  deleteVehicle _mine
+  goto "Search"
+
+#Exit
+  _unit call busyClear
+  exit

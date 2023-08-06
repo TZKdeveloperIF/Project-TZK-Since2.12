@@ -9,7 +9,7 @@ funcFindNullForward = {private ["_c", "_i", "_found"];_c = count _this; _i = _c;
 funcCheckRepair = loadFile "\TZK_Scripts_4_0_4\Server\SQF\CheckRepair.sqf"
 ; // args: [unit, si, gi]
 ; // return: whether need repair/heal
-funcCheckRearm = loadFile "\TZK_Scripts_4_0_4\Server\SQF\CheckRearm.sqf"
+funcCheckRearm = preprocessFile "Server\SQF\CheckRearm.sqf"
 ; // args: [unit, si, gi]
 ; // return: whether need rearm
 	; // It's sase-inensitive when comparing strings, but it's cASe-seNsItiVE when applying "in" or "find" to strings.

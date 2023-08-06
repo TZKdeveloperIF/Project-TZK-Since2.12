@@ -1,0 +1,25 @@
+; args: [units, alt]
+; set aircraft flight altitude
+
+_units = _this select 0, _alt = _this select 1; _c = count _units
+? _c == 0: exit
+_i = 0, _cache = [], _stat = []
+# loop
+	_unit = _units select _i
+	_vehicle = vehicle _unit
+	? _unit == _vehicle: goto "continue"
+	? _unit != driver _vehicle: goto "continue"
+
+	_cache set [0, _vehicle]
+	? "Air" countType _cache == 0: goto "continue"
+
+	_vehicle flyInHeight _alt
+
+	_stat set [count _stat, _unit]
+
+	# continue
+	_i = _i + 1
+	? _i < _c: goto "loop"
+
+? 1 == count _stat: (_stat select 0) groupChat format ["Flight altitude set to %1 m.", _alt]
+? 1 < count _stat: player groupChat format ["Flight altitude set to %1 m for units: %2.", _alt, _stat]

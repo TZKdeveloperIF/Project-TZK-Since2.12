@@ -44,8 +44,6 @@ _timeRepeat = time + 60
 _unit doWatch _posPickup
 #MovePickup_Check
   ~10
-	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
-	? _unit call temporaryCheck: if (_idOrder != _order select 0) then {exit} else {goto "MovePickup_Check"}
   ? !(alive _unit): exit
   ? _idOrder != _order select 0: exit
 	? _unit call rtsOrderCheck: exit
@@ -57,7 +55,6 @@ _unit doWatch _posPickup
 [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"
 #WaitSupportDone
   ~5
-	? _unit call temporaryCheck: if (_idOrder != _order select 0) then {exit} else {goto "WaitSupportDone"}
   ? !(alive _unit): exit
   ? (damage _transp) < 0.1: _unit call busyClear
   ? _unit call busyCheck: goto "WaitSupportDone"
@@ -69,7 +66,6 @@ _unit doWatch _posPickup
 #MovePickup_WaitReady
   ; [_unit, getPos _transp] call funcMoveAI
   ~2
-	? _unit call temporaryCheck: if (_idOrder != _order select 0) then {exit} else {goto "MovePickup_WaitReady"}
 	? _unit call rtsOrderCheck: exit
   ? !(unitReady _unit): goto "MovePickup_WaitReady"
 doStop (vehicle _unit)
@@ -79,8 +75,6 @@ doStop (vehicle _unit)
   _unit doWatch _posPickup
   ~30
   
-	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
-	? _unit call temporaryCheck: if (_idOrder != _order select 0) then {exit} else {goto "WaitForCargo"}
   
   ? !(alive _unit): exit
   ? _idOrder != _order select 0: exit
@@ -99,8 +93,6 @@ _timeRepeat = time + 60
 #MoveEject_Check
   ~5
   
-	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
-	? _unit call temporaryCheck: if (_idOrder != _order select 0) then {exit} else {goto "MoveEject_Check"}
   
   ? !(alive _unit): exit
   ? _idOrder != _order select 0: exit
@@ -112,7 +104,6 @@ _timeRepeat = time + 60
 #MoveEject_WaitReady
   [_unit, getPos _transp] call funcMoveAI
   ~2
-	? _unit call temporaryCheck: if (_idOrder != _order select 0) then {exit} else {goto "MoveEject_WaitReady"}
 	? _unit call rtsOrderCheck: exit
   ? !(unitReady _unit): goto "MoveEject_WaitReady"
 doStop (vehicle _unit)
@@ -120,7 +111,6 @@ doStop (vehicle _unit)
 #WaitStopped
   ; [_unit, getPos _transp] call funcMoveAI
   ~2
-	? _unit call temporaryCheck: if (_idOrder != _order select 0) then {exit} else {goto "WaitStopped"}
 	? _unit call rtsOrderCheck: exit
   ? (speed _transp) > 5: goto "WaitStopped"
 

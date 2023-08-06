@@ -26,8 +26,6 @@ _sleep = 30
 _posMove = []
 
 #Update
-	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
-	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Sleep"}
 	
 	? !(alive _unit) : exit
 	? _idOrder != _order select 0 : exit
@@ -45,7 +43,7 @@ _posMove = []
 
 	? _distToDest > 10 : goto "Move"
     _posMove = []
-	  ? _isMiner && _unit == _vehicle : [_unit, false] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"; [_unit, _si, _gi] call funcWatch; [_unit, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\AI_CheckDisableMines.sqs"; _sleep = 10; goto "Sleep"
+	  ? _isMiner && _unit == _vehicle : [_unit, false] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"; [_unit, _si, _gi] call funcWatch; [_unit, _si, _gi] exec "Server\AI_CheckDisableMines.sqs"; _sleep = 10; goto "Sleep"
     ; not a miner
     [_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
 	  [_unit, _si, _gi] call funcWatch
@@ -61,7 +59,5 @@ _posMove = []
 	~_sleep
 	
 	? _unit call rtsOrderCheck: exit
-	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
-	? _unit call temporaryCheck : if (_idOrder != _order select 0) then {exit} else {goto "Sleep"}
   ? _unit call busyCheck : goto "Sleep"
 	goto "Update"

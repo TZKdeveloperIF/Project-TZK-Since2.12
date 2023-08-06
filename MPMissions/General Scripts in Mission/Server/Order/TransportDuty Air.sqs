@@ -51,8 +51,6 @@ _posMove = [_posPickup, 50, 50] call funcGetRandomPos
 _timeRepeat = time + 60
 #MovePickup_Check
   ~10
-	; Check Whether Unit in Temporary Order And Quit Script If Order Changed During Temporary Order
-	? _unit call temporaryCheck: if (_idOrder != _order select 0) then {exit} else {goto "MovePickup_Check"}
   ? !(alive _unit): exit
   ? _idOrder != _order select 0: exit
 	? _unit call rtsOrderCheck: exit
@@ -63,7 +61,6 @@ _timeRepeat = time + 60
 [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"
 #WaitSupportDone
   ~5
-	? _unit call temporaryCheck: if (_idOrder != _order select 0) then {exit} else {goto "WaitSupportDone"}
   ? !(alive _unit): exit
   ? (damage _transp) < 0.1: _unit call busyClear
   ? _unit call busyCheck: goto "WaitSupportDone"
@@ -76,7 +73,6 @@ _transp flyInHeight (400 + random 100)
 #PrepareLand_Check
   [_unit, _posMove] call funcMoveAI
   ~5
-	? _unit call temporaryCheck: if (_idOrder != _order select 0) then {exit} else {goto "PrepareLand_Check"}
   ? !(alive _unit): exit
   ? _idOrder != _order select 0: exit
 	? _unit call rtsOrderCheck: exit
@@ -89,7 +85,6 @@ _transp flyInHeight 50
 _timeRetry = time + 60
 #Land_Check
   ~5
-	? _unit call temporaryCheck: if (_idOrder != _order select 0) then {exit} else {goto "Land_Check"}
   ? !(alive _unit): exit
   ? _idOrder != _order select 0: exit
 	? _unit call rtsOrderCheck: exit
@@ -102,7 +97,6 @@ _transp land "LAND"
 _timeRetry = time + 60
 #Landed_Check
   ~5
-	? _unit call temporaryCheck: if (_idOrder != _order select 0) then {exit} else {goto "Landed_Check"}
   ? !(alive _unit): exit
   ? _idOrder != _order select 0: exit
 	? _unit call rtsOrderCheck: exit
@@ -114,7 +108,6 @@ _timeRetry = time + 60
   [_transp] exec "Util\HeliForceLand.sqs"
   [_transp] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNON}
   ~30
-	? _unit call temporaryCheck: if (_idOrder != _order select 0) then {exit} else {goto "WaitForCargo"}
 	
   _waitloop = _waitloop + 1; if ( _waitloop > 5 ) then { goto "MoveOut" }
   ? !(alive _unit): exit
@@ -146,7 +139,6 @@ _posMove = [_posEject, 50, 50] call funcGetRandomPos
 _timeRepeat = time + 60
 #MoveEject_Check
   ~5
-	? _unit call temporaryCheck: if (_idOrder != _order select 0) then {exit} else {goto "MoveEject_Check"}
   
   ? !(alive _unit): exit
   ? _idOrder != _order select 0: exit
