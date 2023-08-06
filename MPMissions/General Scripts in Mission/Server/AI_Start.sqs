@@ -37,7 +37,7 @@ _vt = _vehicle call funcGetUnitTypeFromObject
 ? _vehicle != _unit: goto "SkipStopCrew"
 _vt = _vehicle call funcGetUnitTypeFromObject
 ? not (_vt in typesCrew): goto "SkipStopCrew"
-	[[NetworkID _unit], 0, "hStop.sqs", "Order"] exec "Rts\Framework\Distributor.sqs"
+	[[call (_unit call funcGenNetIdStr)], 0, "hStop.sqs", "Order"] exec "Rts\Framework\Distributor.sqs"
 	exit
 # SkipStopCrew
 
