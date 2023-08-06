@@ -126,6 +126,9 @@ _returnPos = getPosASL _unit
 		? _bAir: [_unit, getPos _sup] call funcMoveAI, _vehicle flyInHeight (_bSupH + 50), _delay = 0.1
 		~ _delay
 
+		_vehicle = vehicle _unit
+		? _unit != driver _vehicle: if (not isNull driver _vehicle) then {_cycle = 30, goto "GoBack"}
+
 		[_unit, true] exec "\TZK_Scripts_4_0_4\Server\StopAI.sqs"
 		
 		_gi = (groupMatrix select _si) find (group _unit)
