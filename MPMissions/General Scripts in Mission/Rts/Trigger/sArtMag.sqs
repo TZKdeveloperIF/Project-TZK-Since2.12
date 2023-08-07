@@ -1,0 +1,33 @@
+; args: [init speed idx, curved idx]
+_top = TzkSelUnitsStack select TzkSelStackIdx
+_c = count _top
+? _c == 0: goto "Quit"
+
+_i = 0, _j = 0, _selectedUnits = []
+# loop
+	_unit = _top select _i
+	_vehicle = vehicle _unit
+	? _unit == _vehicle: goto "continue"
+	? _unit != gunner _vehicle && _unit != driver _vehicle: goto "continue"
+
+	_vt = _vehicle call funcGetUnitTypeFromObject
+	? _vt in typesHowitzer || _vt in typesRocketLauncher: goto "valid"
+	? -1 != _vt: goto "continue"
+	_vt = _vehicle call funcGetStructTypeFromObject
+	? -1 == _vt: goto "continue"
+	? not (_vt in structsOccupiableHowitzer || _vt in structsOccupiableArtilleryMortar): goto "continue"
+	
+	# valid
+	_selectedUnits set [_j, _unit]
+	_j = _j + 1
+
+	# continue
+	_i = _i + 1
+	? _i < _c: goto "loop"
+_selectedUnits resize _j
+
+[_selectedUnits, _this, "hArtMag.sqs", "Trigger"] exec "Rts\FrameWork\GenArrayCommand.sqs"
+
+# Quit
+	exit
+	; do nothing. On switch art mag speed commander might wish to re-order them again

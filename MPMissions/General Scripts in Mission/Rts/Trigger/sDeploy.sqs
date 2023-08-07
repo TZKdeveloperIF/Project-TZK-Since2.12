@@ -1,0 +1,32 @@
+; args: deploy: boolean
+_top = TzkSelUnitsStack select TzkSelStackIdx
+_c = count _top
+? _c == 0: goto "Quit"
+
+_i = 0, _j = 0, _selectedUnits = [], _names = ["TOS1_TZK_xj400", "M109A6G_xj400", "PLZ05_TZK_xj400"]
+# loop
+	_unit = _top select _i
+	_vehicle = vehicle _unit
+	? _unit == _vehicle: goto "continue"
+	_driver = driver _vehicle; _gunner = gunner _vehicle
+	? _unit != _driver && _unit != _gunner: goto "continue"
+
+	; skip driver unit if vehicle has both driver and gunner
+	? _unit == _driver && not isNull _gunner: goto "continue"
+
+	_typeName = typeOf _vehicle
+	? -1 == _names find _typeName: goto "continue"
+
+	_selectedUnits set [_j, _unit]
+	_j = _j + 1
+
+	# continue
+	_i = _i + 1
+	? _i < _c: goto "loop"
+_selectedUnits resize _j
+
+[_selectedUnits, _this, "hDeploy.sqs", "Trigger"] exec "Rts\FrameWork\GenArrayCommand.sqs"
+
+# Quit
+	exit
+	; do nothing. On switch sabot/heat commander might wish to re-order them again

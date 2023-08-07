@@ -1,0 +1,21 @@
+? not isServer: exit
+
+; args: [Network IDs[], deploy: boolean]
+_netIds = _this select 0; _state = _this select 1
+_c = count _netIds
+? 0 == _c: exit
+
+_vehs = [], _j = 0
+
+_i = 0
+# loop
+	_vehicle = vehicle UnitById(_netIds select _i)
+	? -1 == _vehs find _vehicle: _vehs set [_j, _vehicle], _j = _j + 1
+
+	_i = _i + 1
+	? _i < _c: goto "loop"
+
+? 0 == count _vehs: exit
+
+_script = format ["Art\%1.sqs", if _state then {"Deploy"} else {"Undeploy"}]
+{_x exec _script} forEach _vehs

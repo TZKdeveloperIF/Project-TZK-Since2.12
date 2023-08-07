@@ -114,6 +114,7 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 	? 2^5 == _btnVal: _downBoardStack set [0, 5]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
 	? 2^6 == _btnVal: _downBoardStack set [0, 6]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
 	? 2^7 == _btnVal: _downBoardStack set [0, 7]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
+	? 2^8 == _btnVal: _downBoardStack set [0, 8]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
 
 	? 2^9 == _btnVal: _pos exec "Rts\Trigger\sWatch.sqs"; closeDialog 0; goto "Quit"
 	? 2^10 == _btnVal: [true] exec "Rts\SubMenu\SwitchSeat.sqs"; closeDialog 0; goto "Quit"
@@ -134,6 +135,10 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 		? 2^0 == _btnVal && 7 == _downBoardStack select 0: true exec "Rts\Trigger\sTankSwitchMainGun.sqs"; _return = true
 		? 2^1 == _btnVal && 7 == _downBoardStack select 0: false exec "Rts\Trigger\sTankSwitchMainGun.sqs"; _return = true
 		? 2^2 == _btnVal && 7 == _downBoardStack select 0: 0 exec "Rts\Trigger\sTankDisengage.sqs"; _return = true
+
+		? 2^0 == _btnVal && 8 == _downBoardStack select 0: true exec "Rts\Trigger\sDeploy.sqs"; _return = true
+		? 2^1 == _btnVal && 8 == _downBoardStack select 0: false exec "Rts\Trigger\sDeploy.sqs"; _return = true
+		? 2^2 == _btnVal && 8 == _downBoardStack select 0: [true] exec "Rts\SubMenu\SwitchArtMag.sqs"; _return = true
 
 		? 2^8 == _btnVal: _return = true
 
