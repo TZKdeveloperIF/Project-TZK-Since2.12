@@ -8,7 +8,7 @@ _i = 0, _j = 0, _selectedUnits = []
 	_unit = _top select _i
 	_vehicle = vehicle _unit
 	? _unit == _vehicle: goto "continue"
-	? _unit != gunner _vehicle: goto "continue"
+	? _unit != gunner _vehicle && _unit != driver _vehicle: goto "continue"
 
 	_vt = _vehicle call funcGetUnitTypeFromObject
 	? _vt in typesHowitzer || _vt in typesRocketLauncher: goto "valid"

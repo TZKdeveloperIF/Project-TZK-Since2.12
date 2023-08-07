@@ -8,8 +8,18 @@ _curved = [false, true] select (_this select 2)
 ? _speed > 500: _speed = 500
 
 _vehicle = vehicle _unit
-? _unit == _vehicle || _unit != gunner _vehicle: exit
-; LOCAL gunner here. Don't halt the script for remote vehicle, for structures are always local to server.
+? _unit == _vehicle: exit
+_gunner = gunner _vehicle
+? _unit == _gunner: goto "Valid"
+? not isNull _gunner: exit
+_driver = driver _vehicle
+? _unit == _driver: goto "Valid"
+exit
+
+# Valid
+; must be vehicle gunner or driver with empty gunner seat
+; OFP can process local vehicle without remote gunner or remote vehicle with local gunner
+; structures are always local to server.
 
 _vt = _vehicle call funcGetUnitTypeFromObject; _legalType = false
 ? _vt == -1: goto "CheckStructure"
