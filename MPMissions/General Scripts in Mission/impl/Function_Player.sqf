@@ -4,3 +4,4 @@ funcMappingUnitsPlayer = preprocessFile "Player\Marker\MappingUnitsPlayer.sqf";
 // args: [unit, si, gi]
 // return: UID
 funcCalcUID = preprocessFile "Player\SQF\CalcUID.sqf";
+funcGetOrderTempDesc = nil;
