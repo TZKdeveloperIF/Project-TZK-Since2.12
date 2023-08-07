@@ -188,8 +188,8 @@ pvCustomPlayerMoney = -1; pvCustomAicoMoney = -1;
 _i = 0; while {_i < 5} do {call format ["pvBuyUnit_Custom%1 = -1", _i]; _i = _i + 1};
 
 if bool_TZK_199_Mode then {
-	pvSpoofTarget = objNull, pvSwitchMagVeh = objNull, pvSwitchMagSpeed = -1, 
-	mutexSpoofTarget = false, mutexSwitchMagVeh = false;
+	pvSpoofTarget = objNull, 
+	mutexSpoofTarget = false,
 };
 
 call preprocessFile "impl\PublicVariable.sqf"

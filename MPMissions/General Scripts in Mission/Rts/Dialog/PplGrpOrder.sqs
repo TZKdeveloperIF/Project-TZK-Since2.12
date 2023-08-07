@@ -101,6 +101,7 @@ _selectedOrder = -1
 	? 2^5 == _btnVal: _downBoardStack set [0, 5]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
 	? 2^6 == _btnVal: _downBoardStack set [0, 6]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
 	? 2^7 == _btnVal: _downBoardStack set [0, 7]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
+	? 2^8 == _btnVal: _downBoardStack set [0, 8]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
 
 	? 2^9 == _btnVal: TitleText ["Not implemented. Please use Alt + Click.", "Plain DOWN", 0.25], goto "Update"
 	? 2^10 == _btnVal: [false, _units] exec "Rts\SubMenu\SwitchSeat.sqs"; closeDialog 0; goto "Quit"
@@ -122,6 +123,10 @@ _selectedOrder = -1
 		? 2^1 == _btnVal && 7 == _downBoardStack select 0: [_units, false] exec "Player\RtsTankSwitchMainGun.sqs"; _return = true
 		? 2^2 == _btnVal && 7 == _downBoardStack select 0: TitleText ["Not implemented. Please use 3-6.", "Plain DOWN", 0.25]; _return = true
 
+		? 2^0 == _btnVal && 8 == _downBoardStack select 0: [_units, true] exec "Player\RtsDeploy.sqs"; _return = true
+		? 2^1 == _btnVal && 8 == _downBoardStack select 0: [_units, false] exec "Player\RtsDeploy.sqs"; _return = true
+		? 2^2 == _btnVal && 8 == _downBoardStack select 0: [false, _units] exec "Rts\SubMenu\SwitchArtMag.sqs"; closeDialog 0; goto "Quit"
+
 		? 2^8 == _btnVal: _return = true
 
 		? _return: _downBoardStack resize 0; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
@@ -133,7 +138,7 @@ _selectedOrder = -1
 	? 13 == _val0: {_x exec "Player\Order\Stop.sqs"} forEach _units; closeDialog 0; goto "Quit"
 
 	? 2 == _val0: [_units, _pos] exec "Player\Order\PreShootArea.sqs"; closeDialog 0; goto "Quit"
-	? 4 == _val0: _units exec "Player\Order\PreSwitchMag.sqs"; closeDialog 0; goto "Quit"
+	? 4 == _val0: [false, _units] exec "Rts\SubMenu\SwitchArtMag.sqs"; closeDialog 0; goto "Quit"
 	? 5 == _val0: [_units, _pos] exec "Player\Order\PreBuyEquip.sqs"; closeDialog 0; goto "Quit"
 	? 6 == _val0: [false, _units] exec "Rts\SubMenu\SwitchSeat.sqs"; closeDialog 0; goto "Quit"
 	? 7 == _val0: [_units] exec "Join\Submenu\PplOrder.sqs"; closeDialog 0; goto "Quit"
