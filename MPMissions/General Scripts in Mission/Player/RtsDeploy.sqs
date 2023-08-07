@@ -1,0 +1,31 @@
+; args: [units, state]
+; switch deploy status
+
+_units = _this select 0, _state = _this select 1; _c = count _units
+? _c == 0: exit
+_i = 0, _stat = [], _names = ["TOS1_TZK_xj400", "M109A6G_xj400", "PLZ05_TZK_xj400"]
+# loop
+	_unit = _units select _i
+	_vehicle = vehicle _unit
+	? _unit == _vehicle: goto "continue"
+	_driver = driver _vehicle; _gunner = gunner _vehicle
+	? _unit != _driver && _unit != _gunner: goto "continue"
+
+	; skip driver unit if vehicle has both driver and gunner
+	? _unit == _driver && not isNull _gunner: goto "continue"
+
+	_typeName = typeOf _vehicle
+	? -1 == _names find _typeName: goto "continue"
+
+	? -1 == _stat find _vehicle: _stat set [count _stat, _vehicle]
+
+	# continue
+	_i = _i + 1
+	? _i < _c: goto "loop"
+
+_action = (if _state then {"Deploy"} else {"Undeploy"})
+_script = format ["Art\%1.sqs", _action]
+{_x exec _script} forEach _stat
+
+? 1 == count _stat: (_stat select 0) groupChat format ["%1.", _action]
+? 1 < count _stat: player groupChat format ["%1 for units: %2.", _action, _stat]

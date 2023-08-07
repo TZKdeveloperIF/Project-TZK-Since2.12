@@ -1,0 +1,17 @@
+? not isServer: exit
+
+; args: [Network IDs[], [init speed idx, curved idx]]
+_netIds = _this select 0
+_c = count _netIds
+? 0 == _c: exit
+
+_params = _this select 1
+_idx0 = _params select 0, _idx1 = _params select 1
+
+_i = 0
+# loop
+	_unit = UnitById(_netIds select _i)
+	[_unit, _idx0, _idx1] exec "Art\SwitchMagGeneral.sqs"
+	
+	_i = _i + 1
+	? _i < _c: goto "loop"
