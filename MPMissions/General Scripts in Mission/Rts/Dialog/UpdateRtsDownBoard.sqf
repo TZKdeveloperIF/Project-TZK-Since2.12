@@ -15,12 +15,13 @@ if (not _processed && 0 == count _downBoardStack) then {
 	ctrlSetText [_idcDownBtn0 + 5, "Air"];
 	ctrlSetText [_idcDownBtn0 + 6, "Transp"];
 	ctrlSetText [_idcDownBtn0 + 7, "Tank"];
+	ctrlSetText [_idcDownBtn0 + 8, "Art"];
 
 	ctrlSetText [_idcDownBtn0 + 9, "Watch"];
 	ctrlSetText [_idcDownBtn0 + 10, "Seat"];
 	ctrlSetText [_idcDownBtn0 + 11, "EngineOff"];
 
-	{ctrlShow [_idcDownBtn0 + _x, true]} forEach [0,1,2, 3, 5,6,7, 9,10,11];
+	{ctrlShow [_idcDownBtn0 + _x, true]} forEach [0,1,2, 3, 5,6,7,8,9,10,11];
 	_processed = true;
 };
 // sub board
@@ -51,6 +52,17 @@ if (not _processed && 1 == count _downBoardStack) then {
 		ctrlSetText [_idcDownBtn0 + 1, "Heat"];
 
 		ctrlSetText [_idcDownBtn0 + 2, "Disengage"];
+
+		ctrlSetText [_idcDownBtn0 + 8, "Return"];
+
+		{ctrlShow [_idcDownBtn0 + _x, true]} forEach [0,1,2,8];
+		_processed = true;
+	};
+	if (not _processed && 8 == _downBoardStack select 0) then {
+		ctrlSetText [_idcDownBtn0 + 0, "Deploy"];
+		ctrlSetText [_idcDownBtn0 + 1, "Undeploy"];
+
+		ctrlSetText [_idcDownBtn0 + 2, "SwitchMag"];
 
 		ctrlSetText [_idcDownBtn0 + 8, "Return"];
 
