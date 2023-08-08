@@ -1,7 +1,13 @@
-private [{_si}, {_gi}, {_setting}];
-_si = _this select 0; _gi = _this select 1; _this = 0;
+private [{_si}, {_gi}, {_setting}, {_ret}];
+_si = _this select 0; _gi = _this select 1;
+
 _setting = aiSetting select _si select _gi select aisSuperior;
-if (0 == _setting) then {giCO select _si} else {
-	_superiorGrpName = callsigns select (_setting - 1);
-	groupNameMatrix select _si find _superiorGrpName;
-}
+
+_ret = giCO select _si;
+if (0 != _setting) then {
+	private [{_s}];
+	_s = groupNameMatrix select _si find (callsigns select (_setting - 1));
+	if (_s != -1) then {_ret = _s};
+};
+
+_ret
