@@ -11,7 +11,7 @@ TzkSelStackIdx = _level;
 
 // Soldier: 0, Tank: 1, Art: 2, Support: 3, AA: 4, Transport: 5
 private [{_unitArr}]; _unitArr = [];
-private [{_isAaInf}, {_isArtInf}];
+private [{_isAaInf}, {_isArtInf}, {_isSniper}, {_isMiner}, {_isMg}, {_isCrewPilot}];
 _isAaInf = {
 	_this hasWeapon "AALauncher" || _this hasWeapon "9K32Launcher" ||
 	_this hasWeapon "AA_TZK_xj400" || _this hasWeapon "9k32_TZK_xj400"
@@ -35,6 +35,11 @@ _isMiner = {
 _isMg = {
 	_unitArr set [0, _this];
 	"SoldierWMG_xj400" countType _unitArr > 0 || "SoldierEMG_xj400" countType _unitArr > 0
+};
+_isCrewPilot = {
+	_unitArr set [0, _this];
+	"SoldierWPilot" countType _unitArr > 0 || "SoldierEPilot" countType _unitArr > 0 || 
+	"SoldierWCrew" countType _unitArr > 0 || "SoldierECrew" countType _unitArr > 0
 };
 
 if (not _processed && 0 == _level) then {
@@ -112,9 +117,9 @@ if (not _processed && 1 == _level) then {
 	if (not _processed && 2^0 == _btnVal) then {
 		_processed = true;
 		private [{_bAT}, {_bAA}, {_bSniper}, {_bArt}, {_type}];
-		private [{_bMiner}, {_bMg}];
+		private [{_bMiner}, {_bMg}, {_bCrewPilot}];
 		_bAT = false; _bAA = false; _bSniper = false; _bArt = false;
-		_bMg = false; _bMiner = false;
+		_bMg = false; _bMiner = false; _bCrewPilot = false;
 
 		_j = 0; _i = 0; _c = count _array; while {_i < _c} do {
 			_validElem = false;
@@ -145,21 +150,25 @@ if (not _processed && 1 == _level) then {
 				if not _bMg then {
 					if (_unit call _isMg) then {_bMg = true};
 				};
+				if not _bCrewPilot then {
+					if (_unit call _isCrewPilot) then {_bCrewPilot = true};
+				};
 			};
 			if _validElem then {_top set [_j, _unit]; _j = _j + 1};
 			_i = _i + 1;
 		};
 		_top resize _j;
 
-		_cache1 resize 6; _cacheText1 resize 6;
+		_cache1 resize 7; _cacheText1 resize 7;
 		_cache1 set [0, _bAT]; _cacheText1 set [0, "RPG/AT"];
 		_cache1 set [1, _bAA]; _cacheText1 set [1, "AA"];
 		_cache1 set [2, _bSniper]; _cacheText1 set [2, "Sniper"];
 		_cache1 set [3, _bArt]; _cacheText1 set [3, "Art"];
 		_cache1 set [4, _bMiner]; _cacheText1 set [4, "Miner"];
 		_cache1 set [5, _bMg]; _cacheText1 set [5, "MG"];
-		{ctrlShow [_idc + _x, _cache1 select _x]} forEach [0,1,2,3,4,5];
-		{ctrlSetText [_idc + _x, _cacheText1 select _x]} forEach [0,1,2,3,4,5];
+		_cache1 set [6, _bCrewPilot]; _cacheText1 set [6, "Crew"];
+		{ctrlShow [_idc + _x, _cache1 select _x]} forEach [0,1,2,3,4,5,6];
+		{ctrlSetText [_idc + _x, _cacheText1 select _x]} forEach [0,1,2,3,4,5,6];
 
 		_j = 0;
 		_i = 0; _c = count _array; while {_i < _c} do {
@@ -375,6 +384,14 @@ if (not _processed && 2 == _level) then {
 			_lambda = {
 				if (_this == vehicle _this) then {
 					_this call _isMg
+				} else {false}
+			};
+			_processed = true;
+		};
+		if (not _processed && 2^6 == _btnVal) then {
+			_lambda = {
+				if (_this == vehicle _this) then {
+					_this call _isCrewPilot
 				} else {false}
 			};
 			_processed = true;
