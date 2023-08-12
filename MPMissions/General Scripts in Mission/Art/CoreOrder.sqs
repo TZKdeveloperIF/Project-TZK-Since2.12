@@ -355,10 +355,10 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 		~ 5
 		? call _quitCond: _msg = ""; goto "EOF"
 		; todo: hint if rearm failed due to insufficiend fund
-		? _isServer: if not (_rearmParam select 1) then {goto "WaitRearmComplete"}
+		? not (_rearmParam select 1): goto "WaitRearmComplete"
 
 	; rearm fail check
-	? _isServer: if not (_rearmParam select 2) then {_msg = format ["Rearm failed. Art order aborted.", _unit], goto "EOF"}
+	? not (_rearmParam select 2): _msg = format ["Rearm failed. Art order aborted.", _unit], goto "EOF"
 
 	? _isInfantry: goto "PreMove"
 	; post rearm for non-soldier
