@@ -80,6 +80,7 @@ _params = 0, _this = 0
 	_posT = [-1, -1]; _defenceObject = objNull
 	_tuggedCheckCnt = 0
 	_firedCnt = 0
+	_typesSup = (typesSupport select si0) + (typesSupport select si1) + [(typesMHQ select _si)]
 
 ; ======== Art order part ========
 ; Pre-move if ordered
@@ -299,12 +300,12 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 		? isNull _sup: _msg = "No support vehicle within 512 meters. Magazines exhausted. Order aborted."; goto "EOF"
 		goto "SupportFound"
 	# SeekSup4Structure
-		_vs = [getPos _unit, 50, (typesSupport select si0) + (typesSupport select si1), []] call funcGetNearbyVehicles
+		_vs = [getPos _unit, 50, _typesSup, []] call funcGetNearbyVehicles
 		? count _vs == 0: _msg = "No support vehicle within 50 meters. Magazines exhausted. Order aborted."; goto "EOF"
 		_sup = (_vs select 0) select 0
 		goto "SupportFound"
 	# SeekSup4Vehicle
-		_vs = [getPos _unit, 1500, (typesSupport select si0) + (typesSupport select si1), []] call funcGetNearbyVehicles
+		_vs = [getPos _unit, 1500, _typesSup, []] call funcGetNearbyVehicles
 		? count _vs == 0: _msg = "No support vehicle within 1500 meters. Magazines exhausted. Order aborted."; goto "EOF"
 		_distMin = 1500; _sup = objNull
 		{ _dist = _unit distance (_x select 0); if (_dist < _distMin) then { _sup = (_x select 0); _distMin = _dist } } foreach _vs
