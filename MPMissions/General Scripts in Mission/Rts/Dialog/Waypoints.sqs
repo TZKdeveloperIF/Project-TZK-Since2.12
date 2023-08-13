@@ -50,6 +50,7 @@ bNewCoSet = false; call _refreshList
 btnBigLeft = -1
 btnFirstCtrl = false
 ctrlSetText [IDC + 16 * 32 + 2, "Point"]
+btnFunction = 0
 
 ; read wpco mode from player global variable
 _mode = RtsWpCoMode; _cacheMode = _mode; _invalidMode = {not _co && not _Superior && (0 == _mode)}
@@ -73,6 +74,7 @@ _highlight = "CO"; if (1 == _mode) then {_highlight = "WP"}
 	? btnValue01 > 0: _mode = ln btnValue01 / ln 2, btnValue01 = 0, goto "OnHighlightChange"
 	? btnValue03 > 0: _btnVal = btnValue03; btnValue03 = 0; goto "RightDownBtn"
 	? btnFirstCtrl: btnFirstCtrl = false; goto "FirstCtrl"
+	? btnFunction > 0: _btnFnc = btnFunction, btnFunction = 0, goto "FunctionalBtns"
 
 	? bNewCoSet: bNewCoSet = false; call _refreshList
 
@@ -150,3 +152,6 @@ _highlight = "CO"; if (1 == _mode) then {_highlight = "WP"}
 	; switch to waypoint dialog rapidly
 	_btnVal = 2 ^ 4
 	call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
+# FunctionalBtns
+	? 1 == _btnFnc: 0 exec localize {TZK_DIALOG_SHOWNGROUPS}; closeDialog 0; goto "Quit"
+	goto "Update"

@@ -53,5 +53,5 @@ btnValue01 = []; _i = 0; while {_i < 16} do {btnValue01 set [_i, false], _i = _i
 	? 0 == _val0: closeDialog 0; goto "Quit"
 	_reclaimTypeInfo = 0, _i = 0
 	{if _x then {_reclaimTypeInfo = _reclaimTypeInfo + 2 ^ _i}, _i = _i + 1} forEach btnValue01
-	[_this, _reclaimTypeInfo, _val0] exec "Rts\Order\sRtsReclaim.sqs"
+	[_this, _reclaimTypeInfo, _val0] exec "Rts\Order\sReclaim.sqs"
 	closeDialog 0; goto "Quit"
