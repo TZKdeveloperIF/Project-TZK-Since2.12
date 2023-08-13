@@ -46,8 +46,6 @@ _texts = []; _index = 0;
 lbClear _idcTransferGroup; _index = 0;
 { _id = lbAdd [_idcTransferGroup, _x]; lbSetPicture [_idcTransferGroup, _id, ""]; _index = _index + 1} forEach _texts;
 
-if (lbCurSel _idcGroupMarkers >= 0) Then {giMarkersAI = lbCurSel _idcGroupMarkers};
-
 call format["pvWorkerBehaviour%1", siPlayer];
 if (call format["pvWorkerBehaviour%1 != lbCurSel _idcWorkerBehaviour", siPlayer]) then { call format["pvWorkerBehaviour%1 = lbCurSel _idcWorkerBehaviour; PublicVariable ""pvWorkerBehaviour%1""", siPlayer] };
 

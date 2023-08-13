@@ -1,1 +1,1 @@
-giMarkersAI == _this || giMarkersAI == count (groupMatrix select siPlayer)
+_this in shownAiGis
