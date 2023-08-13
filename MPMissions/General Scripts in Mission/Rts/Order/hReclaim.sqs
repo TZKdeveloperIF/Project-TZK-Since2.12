@@ -7,8 +7,8 @@
 ; args: [unit, [clicked pos, central pos of all selected units, vehicle type info: number, reclaim strategy: enum], 
 ; 	rts object status (array-reference), rts server id]
 _unit = _this select 0
-_clickedPos = _this select 1 select 0
-_rtsCentralPos = _this select 1 select 1
+_clickedPos = + (_this select 1 select 0)
+_rtsCentralPos = + (_this select 1 select 1)
 _reclaimTypeInfo = _this select 1 select 2
 _reclaimStrategy = _this select 1 select 3
 _rtsStatus = _this select 2
@@ -97,6 +97,8 @@ _i = 0, _c = _typeCnt, _transpTypes = [], _transpTypes resize _c
 		? _needEdit: [_selectedTypes, _notOurSide] call preprocessFile "Util\ArrayEraseIf.sqf"
 
 		call preprocessFile "Rts\Order\assistReclaim.sqf"
+
+		? 0 == _typeIdx && count _targets == 0: format ["hReclaim Error. Nearby targets: %1", _nearByTargets] exec "Log\AddSvrLog.sqs";
 
 		_typeIdx = _typeIdx + 1
 		? count _targets == 0: goto "SearchTarget"
