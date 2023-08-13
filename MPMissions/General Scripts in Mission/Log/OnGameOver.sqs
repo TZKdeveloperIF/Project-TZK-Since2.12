@@ -1,10 +1,14 @@
 ? not isNull player: if ("IF" != name player) then {exit}
 
-_cfg = loadConfig "DebugLog.cpp"
+? count TzkLog == 0: exit
+
+_file = format ["DebugLog%1.cpp", if isServer then {"_Svr"} else {""}]
+
+_cfg = loadConfig _file
 
 _key = "TimeStamp"
 {_key = _key + "_" + format ["%1", _x]} forEach missionStart
 
 _cfg addValue [_key, TzkLog]
 
-_cfg saveConfig "DebugLog.cpp"
+_cfg saveConfig _file

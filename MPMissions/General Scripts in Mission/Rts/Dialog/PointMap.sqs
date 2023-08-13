@@ -26,6 +26,7 @@ _idcDownBtn0 = IDC + 16 * 17 + 0
 btnValue00 = -1; btnValue01 = 0; btnValue03 = 0
 btnFirstCtrl = false
 ctrlSetText [IDC + 16 * 32 + 2, "Waypoint"]
+btnFunction = 0
 
 { ctrlShow [_x, false] } forEach [_idcLeftBtn0]
 ? isCommander || bIsAiSuperior: ctrlSetText [_idcLeftBtn0, "Wall MHQ"]; ctrlShow [_idcLeftBtn0, true]
@@ -46,6 +47,7 @@ TzkMapRtsFlashingDisabled = true
 	? btnValue01 > 0: _btnVal = btnValue01; btnValue01 = 0; goto "DownBtn"
 	? btnValue03 > 0: _btnVal = btnValue03; btnValue03 = 0; goto "RightDownBtn"
 	? btnFirstCtrl: btnFirstCtrl = false; goto "FirstCtrl"
+	? btnFunction > 0: _btnFnc = btnFunction, btnFunction = 0, goto "FunctionalBtns"
 
 	; Skip
 	~0.2
@@ -73,4 +75,7 @@ TzkMapRtsFlashingDisabled = true
 		goto "Update"
 # RightDownBtn
 	? _btnVal > 0: call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
+	goto "Update"
+# FunctionalBtns
+	? 1 == _btnFnc: 0 exec localize {TZK_DIALOG_SHOWNGROUPS}; closeDialog 0; goto "Quit"
 	goto "Update"

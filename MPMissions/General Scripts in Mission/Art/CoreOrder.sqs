@@ -80,6 +80,7 @@ _params = 0, _this = 0
 	_posT = [-1, -1]; _defenceObject = objNull
 	_tuggedCheckCnt = 0
 	_firedCnt = 0
+	_typesSup = (typesSupport select si0) + (typesSupport select si1) + [(typesMHQ select _si)]
 
 ; ======== Art order part ========
 ; Pre-move if ordered
@@ -299,12 +300,12 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 		? isNull _sup: _msg = "No support vehicle within 512 meters. Magazines exhausted. Order aborted."; goto "EOF"
 		goto "SupportFound"
 	# SeekSup4Structure
-		_vs = [getPos _unit, 50, (typesSupport select si0) + (typesSupport select si1), []] call funcGetNearbyVehicles
+		_vs = [getPos _unit, 50, _typesSup, []] call funcGetNearbyVehicles
 		? count _vs == 0: _msg = "No support vehicle within 50 meters. Magazines exhausted. Order aborted."; goto "EOF"
 		_sup = (_vs select 0) select 0
 		goto "SupportFound"
 	# SeekSup4Vehicle
-		_vs = [getPos _unit, 1500, (typesSupport select si0) + (typesSupport select si1), []] call funcGetNearbyVehicles
+		_vs = [getPos _unit, 1500, _typesSup, []] call funcGetNearbyVehicles
 		? count _vs == 0: _msg = "No support vehicle within 1500 meters. Magazines exhausted. Order aborted."; goto "EOF"
 		_distMin = 1500; _sup = objNull
 		{ _dist = _unit distance (_x select 0); if (_dist < _distMin) then { _sup = (_x select 0); _distMin = _dist } } foreach _vs
@@ -347,24 +348,24 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 
 		? _isServer: _rearmParam = [[_unit, _si, _gi, _vehicle, _type, _sup], false, false], _rearmParam exec "Server\AI_Rearm.sqs"
 		? not _isServer: _rearmParam = [[_unit, _sup], false, false]; _rearmParam exec "Player\Rearm.sqs"
-		? not _isServer && not _isInfantry: _unit groupChat "Rearming. If I'm far away from you, probably I can't receive supplemented magazines. In this case, please use Unit Camera and look at me."
+		? not _isServer && not _isInfantry && not local _vehicle: _unit groupChat "Rearming at remote object. If I'm far away from you, probably I can't receive supplemented magazines. In this case, please use Unit Camera and look at me."
 
 	; _try = 0
 	# WaitRearmComplete
 		~ 5
 		? call _quitCond: _msg = ""; goto "EOF"
 		; todo: hint if rearm failed due to insufficiend fund
-		? _isServer: if not (_rearmParam select 1) then {goto "WaitRearmComplete"}
+		? not (_rearmParam select 1): goto "WaitRearmComplete"
 
 	; rearm fail check
-	? _isServer: if not (_rearmParam select 2) then {_msg = format ["Rearm failed. Art order aborted.", _unit], goto "EOF"}
+	? not (_rearmParam select 2): _msg = format ["Rearm failed. Art order aborted.", _unit], goto "EOF"
 
 	? _isInfantry: goto "PreMove"
 	; post rearm for non-soldier
 	~ _delay + 1
 	? _speed <= 0: goto "PreMove"
 	_delay = 1; [_vehicle, _speed] exec localize {TZK_FUNC_SWITCH_MAG_PRESET}
-	? not _isServer && not _isInfantry: _unit groupChat "Switching magazine. Again, if I'm far away, use Unit Camera and look at me."
+	? not _isServer && not _isInfantry && not local _vehicle: _unit groupChat "Switching magazine at remote object. Again, if I'm far away, use Unit Camera and look at me."
 
 	# WaitSwitchComplete
 		~ _delay
