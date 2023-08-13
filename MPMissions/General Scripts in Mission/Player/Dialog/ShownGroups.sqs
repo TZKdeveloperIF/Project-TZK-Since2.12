@@ -1,0 +1,61 @@
+; args: none
+
+; delay to wait dialog closed
+~ 0.1
+
+@ not mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "TzkShownGroupMenu"
+mutexDlg = false
+
+_idcTitle = IDC + 0; ctrlSetText [_idcTitle, "Shown Groups"]
+_idcBtns = IDC + 16 * 5
+_idcBtnBg = IDC + 16 * 7
+
+_groups = groupMatrix select siPlayer
+_groupsAI = groupAiMatrix select siPlayer
+_groupsName = groupNameMatrix select siPlayer
+btnValue00 = -1, btnValue01 = false
+btnValue02 = []
+
+_i = 0; _c = count _groups; while {_i < _c} do {btnValue02 set [_i, false]; _i = _i + 1}
+_i = 0; _c = count shownAiGis; while {_i < _c} do {btnValue02 set [shownAiGis select _i, true], _i = _i + 1}
+
+_i = count _groups; _c = 20; while {_i < _c} do {ctrlShow [_idcBtns + _i, false]; _i = _i + 1}
+_i = 0; _c = 20; while {_i < _c} do {ctrlShow [_idcBtnBg + _i, false]; _i = _i + 1}
+{ctrlShow [_idcBtnBg + _x, true]} forEach shownAiGis
+
+_i = 0;
+{ctrlSetText [_idcBtns + _i, format ["%1 %2", [name leader _x, "AI"] select (_x in _groupsAI), _groupsName select _i]]; _i = _i + 1} forEach _groups
+
+# loop
+	~ 0.2
+	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+	? call dlgUpdated: goto "Quit"
+	? not alive player: closeDialog 0; goto "Quit"
+
+	? btnValue01: btnValue01 = false; goto "OnShownGroupsChanged"
+
+	? btnValue00 >= 0: _val = btnValue00, btnValue00 = -1; goto "OnClickedSelectAll"
+
+	goto "loop"
+# OnClickedSelectAll
+	? 1 == _val: goto "SelectAll"
+	? 2 == _val: goto "UnselectAll"
+	goto "loop"
+# SelectAll
+	_i = 0; {shownAiGis set [_i, _i], _i = _i + 1} forEach _groups
+	{ctrlShow [_idcBtnBg + _x, true]} forEach shownAiGis
+	_i = 0; _c = count btnValue02; while {_i < _c} do {btnValue02 set [_i, true]; _i = _i + 1}
+	goto "loop"
+# UnselectAll
+	shownAiGis resize 0
+	_i = 0; _c = count _groups; while {_i < _c} do {ctrlShow [_idcBtnBg + _i, false]; _i = _i + 1}
+	_i = 0; _c = count btnValue02; while {_i < _c} do {btnValue02 set [_i, false]; _i = _i + 1}
+	goto "loop"
+# OnShownGroupsChanged
+	_i = 0; _c = count btnValue02
+	while {_i < _c} do {ctrlShow [_idcBtnBg + _i, btnValue02 select _i]; _i = _i + 1}
+	_i = 0; shownAiGis resize 0
+	while {_i < _c} do {if (btnValue02 select _i) then {shownAiGis set [count shownAiGis, _i]}; _i = _i + 1};
+	goto "loop"
