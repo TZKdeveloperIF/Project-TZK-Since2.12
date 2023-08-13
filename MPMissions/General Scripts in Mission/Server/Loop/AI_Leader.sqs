@@ -19,6 +19,7 @@ _buyFacSet = []; _setting = aiSetting select _si select _gi
 _unitsStarted = units _group
 _funcGetSlots = preprocessFile "Server\SQF\AiGroupSlots.sqf"
 _factories = []; _buyFacTypes = [], _buyFactories = []
+_lambda = "false", _lambdaInited = false
 ~ 5
 # Update
 	? !(alive _unit): goto "WaitUntilAlive"
@@ -182,8 +183,10 @@ _factories = []; _buyFacTypes = [], _buyFactories = []
 			? _set > 4: _set = _set - 5; if (count _heavys > _set) then {_fac = _heavys select _set; if (alive _fac && !(_fac in _buyFactories)) then {	_buyFactories set [count _buyFactories, _fac]}}
 			_i = _i + 1
 			? _i < 4: goto "SetSelectedFactories"
-		? count _buyFactories > 0: _i = 0; {if (_x in buildingsInUse) then {_buyFactories set [_i, objNull]}; _i = _i + 1} forEach _buyFactories
-		[_buyFactories, {isNull _this}] call preprocessFile "Util\ArrayEraseIf.sqf"
+
+		? not _lambdaInited: _lambdaInited = true, _lambda = format [{not ([_this, %1] call {%2})}, _si, preprocessFile "Server\SQF\LegalIdleFactory.sqf"]
+		[_buyFactories, _lambda] call preprocessFile "Util\ArrayEraseIf.sqf"
+
 		? count _buyFactories == 0: goto "Bought"
 		? count _buyFactories > _slots : _buyFactories resize _slots
 		{ [_type, _driver, _gunner, 0, _si, _gi, _gi, _x] exec localize {TZK_AI_BUY_UNIT} } forEach _buyFactories
