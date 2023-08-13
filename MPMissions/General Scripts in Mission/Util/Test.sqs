@@ -71,7 +71,8 @@ _arr = [1,1,1,1,1,0], _val = 2, _res = [_arr, 0, count _arr, _operatorLessEq] ca
 ? _val != 0: player globalChat format ["stdIsSorted definition has bug in case: %1", [_arr, _res]]
 
 ; insert sort
-_arr = [345,7635,1243,735,84,6896,524,54,578,23,34,7553,23,547,2456,7254,65143,743,235]
+; _arr = [345,7635,1243,735,84,6896,524,54,578,23,34,7553,23,547,2456,7254,65143,743,235]
+_arr = [345,7635,1243,735,84,6896,524,54,7553,23,547,2456,7254,65143,743,235]
 [_arr, 0, count _arr, _operatorLess] call preprocessFile "Util\stdInsertSort.sqf"
 _val = 2, _res = [_arr, 0, count _arr, _operatorLess] call _isSorted
 ? not _res: _val = 0
