@@ -30,6 +30,11 @@ _i = 0; _c = count TzkUnitSkillVal; while {_i < _c} do {
 	};
 	_entry set [udScripts, [localize {TZK_EQUIP_UNIT_TRUCK}]];
 } forEach [_boatCustomW, _boatCustomE];
+// Add HE cannon for FFAR APC
+_scripts = unitDefs select _m2a2d select udScripts;
+_scripts set [0, "Common\Equip\M2A2farr.sqs"];
+_scripts = unitDefs select _bmp2d select udScripts;
+_scripts set [0, "Common\Equip\BMP2farr.sqs"];
 
 // Init howtizer with 120m/s magazine
 {
