@@ -179,8 +179,8 @@ _lambda = "false", _lambdaInited = false
 		_buyFactories resize 0; _i = 0; 
 		# SetSelectedFactories
 			_set = _buyFacSet select _i
-			? _set > 0 && _set <= 4: _set = _set - 1; if (count _barracks > _set) then {_fac = _barracks select _set; if (alive _fac && !(_fac in _buyFactories)) then {	_buyFactories set [count _buyFactories, _fac]}}
-			? _set > 4: _set = _set - 5; if (count _heavys > _set) then {_fac = _heavys select _set; if (alive _fac && !(_fac in _buyFactories)) then {	_buyFactories set [count _buyFactories, _fac]}}
+			? _set > 0 && _set <= 4 && stBarracks in _factoryType: _set = _set - 1; if (count _barracks > _set) then {_fac = _barracks select _set; if (alive _fac && !(_fac in _buyFactories)) then {	_buyFactories set [count _buyFactories, _fac]}}
+			? _set > 4 && stHeavy in _factoryType: _set = _set - 5; if (count _heavys > _set) then {_fac = _heavys select _set; if (alive _fac && !(_fac in _buyFactories)) then {	_buyFactories set [count _buyFactories, _fac]}}
 			_i = _i + 1
 			? _i < 4: goto "SetSelectedFactories"
 
