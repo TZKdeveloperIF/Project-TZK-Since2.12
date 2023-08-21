@@ -10,10 +10,7 @@ aiSetChnDefs set [aisPickupWait2, ""];
 aiSetChnDefs set [aisKeepMin, "\TZK_CHN_4_0_6_27\aiSet_keepMin_co.paa"];
 aiSetChnDefs set [aisKeepMax, ""];
 aiSetChnDefs set [aisBuy, "\TZK_CHN_4_0_6_27\aiSet_buy_co.paa"];
-aiSetChnDefs set [aisBuyFactory1, "\TZK_CHN_4_0_6_27\aiSet_buyFactory1_co.paa"];
-aiSetChnDefs set [aisBuyFactory2, ""];
-aiSetChnDefs set [aisBuyFactory3, "\TZK_CHN_4_0_6_27\aiSet_buyFactory3_co.paa"];
-aiSetChnDefs set [aisBuyFactory4, ""];
+
 aiSetChnDefs set [aisWatch, "\TZK_CHN_4_0_6_27\aiSet_watch_co.paa"];
 aiSetChnDefs set [aisRespawn, "\TZK_CHN_4_0_6_27\aiSet_respawn_co.paa"];
 aiSetChnDefs set [aisCombatMode, "\TZK_CHN_4_0_6_27\aiSet_combatMode_co.paa"];

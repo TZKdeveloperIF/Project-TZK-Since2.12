@@ -14,11 +14,13 @@ _indexBehaviour = _this select 6
 _this = 0
 ; Refresh members' order script when each new loop started.
 _order = orderMatrix select _si select _gi; _order set [0, (_order select 0) + 1]
-_buyFacSet = []; _setting = aiSetting select _si select _gi
+_setting = aiSetting select _si select _gi
 
 _unitsStarted = units _group
 _funcGetSlots = preprocessFile "Server\SQF\AiGroupSlots.sqf"
-_factories = []; _buyFacTypes = [], _buyFactories = []
+_factories = []; _assignedFacs = []
+_autoBuyFactories = AutoBuyStructMatrix select _si select _gi
+_autoBuyTypeEntry = AutoBuyTypeMatrix select _si
 _lambda = "false", _lambdaInited = false
 ~ 5
 # Update
@@ -55,7 +57,7 @@ _lambda = "false", _lambdaInited = false
 	_money = (groupMoneyMatrix select _si) select _gi
 	_KeepMax = aisKeepDefs select (_setting select aisKeepMax)
 	? _money > _KeepMax : _tax = _money - _KeepMax; [_si, _gi, [_si, _gi] call loadFile "Util\GetSuperiorIdx.sqf", _tax] exec localize {TZK_MONEY_SERVER_TRANSFER}; goto "Sleep"
-	? (_setting select aisBuy) > 0: goto "CheckBuyUnit"
+	? _autoBuyTypeEntry select _gi != -1: goto "CheckBuyUnit"
 
 	# Sleep
 	~5
@@ -140,8 +142,7 @@ _lambda = "false", _lambdaInited = false
 	? _groupSize == 1: goto "Sleep"
 	? _groupSize > 1 && _groupSize < maxGroupSize: _slots = [_si, _gi, _groupSize] call _funcGetSlots; if (_slots <= 0) then {goto "Sleep"}
 
-	_unitsBuy = unitsBuyAI select _si select (_setting select aisBuy)
-	_type = _unitsBuy call funcGetRandomUnitType
+	_type = _autoBuyTypeEntry select _gi
 	? _type == -1: goto "Sleep"
 
 	? not ([_si, _type] call loadFile "Util\UnitCanBuy.sqf"): goto "Sleep"
@@ -156,12 +157,11 @@ _lambda = "false", _lambdaInited = false
 	? (_driver + _gunner) > 0 : _slots = _slots / (_driver + _gunner); _slots = _slots - _slots % 1
 	? _money < _cost: goto "Sleep"
 	
-	_factoryType = _unitDesc select udFactoryType; _factoryType = _factoryType call funcBinaryDigit
-	{_buyFacSet set [ _x - 1, _setting select (call format ["aisBuyFactory%1", _x]) ] } foreach [1,2,3,4]
-	_buyFacTypes resize 0
-	? "_x in [1,2,3,4]" count _buyFacSet > 0: _buyFacTypes set [count _buyFacTypes, stBarracks]
-	? "_x in [5,6,7,8]" count _buyFacSet > 0: _buyFacTypes set [count _buyFacTypes, stHeavy]
-	? "_x in _factoryType" count _buyFacTypes > 0: goto "BuyAtSetFactory"
+	_factoryType = (_unitDesc select udFactoryType) call funcBinaryDigit
+
+	_assignedFacs resize 0
+	{if (alive _x && not (_x in _assignedFacs)) then {_assignedFacs set [count _assignedFacs, _x]}} forEach _autoBuyFactories
+	? count _assignedFacs > 0: goto "BuyAtSetFactory"
 	; todo: To improve concurrency, optimize the concept of "idle factory / buildingsInUse" would be a good choice
 
 	; BuyAtOldFashion
@@ -172,24 +172,23 @@ _lambda = "false", _lambdaInited = false
 		goto "Sleep"
 	
 	# BuyAtSetFactory
-		_barracks = + (structMatrix select _si select stBarracks); _heavys = + (structMatrix select _si select stHeavy)
-		[_barracks, {isNull _this}] call preprocessFile "Util\ArrayEraseIf.sqf"
-		[_heavys, {isNull _this}] call preprocessFile "Util\ArrayEraseIf.sqf"
-
-		_buyFactories resize 0; _i = 0; 
-		# SetSelectedFactories
-			_set = _buyFacSet select _i
-			? _set > 0 && _set <= 4 && stBarracks in _factoryType: _set = _set - 1; if (count _barracks > _set) then {_fac = _barracks select _set; if (alive _fac && !(_fac in _buyFactories)) then {	_buyFactories set [count _buyFactories, _fac]}}
-			? _set > 4 && stHeavy in _factoryType: _set = _set - 5; if (count _heavys > _set) then {_fac = _heavys select _set; if (alive _fac && !(_fac in _buyFactories)) then {	_buyFactories set [count _buyFactories, _fac]}}
-			_i = _i + 1
-			? _i < 4: goto "SetSelectedFactories"
-
 		? not _lambdaInited: _lambdaInited = true, _lambda = format [{not ([_this, %1] call {%2})}, _si, preprocessFile "Server\SQF\LegalIdleFactory.sqf"]
-		[_buyFactories, _lambda] call preprocessFile "Util\ArrayEraseIf.sqf"
+		_factories resize 0
+		_i = 0, _c = count _assignedFacs
+		# AnalysisFac
+			_factory = _assignedFacs select _i
+			_facType = _factory call funcGetStructTypeFromObject
+			? not (_facType in _factoryType): goto "continue_AF"
+			? _factory call _lambda: goto "continue_AF"
 
-		? count _buyFactories == 0: goto "Bought"
-		? count _buyFactories > _slots : _buyFactories resize _slots
-		{ [_type, _driver, _gunner, 0, _si, _gi, _gi, _x] exec localize {TZK_AI_BUY_UNIT} } forEach _buyFactories
+			_factories set [count _factories, _factory]
+
+			# continue_AF
+			_i = _i + 1
+			? _i < _c: goto "AnalysisFac"
+
+		? count _factories == 0: goto "Bought"
+		? count _factories > _slots : _factories resize _slots
+		{ [_type, _driver, _gunner, 0, _si, _gi, _gi, _x] exec localize {TZK_AI_BUY_UNIT} } forEach _factories
 	# Bought
-		_barracks = _nil; _heavys = _nil;
 		goto "Sleep"
