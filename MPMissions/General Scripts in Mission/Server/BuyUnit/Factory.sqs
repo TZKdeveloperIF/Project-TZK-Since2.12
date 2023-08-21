@@ -82,7 +82,11 @@ mutexFacQueues = false
 	_money = groupMoneyMatrix select _si select _giBuyer
 	? (_money < _cost): goto "NoMoney"
 	? _qid in (qidCancel select _si): goto "UnitCanceled"
-	[_si, _giBuyer, _cost] exec localize {TZK_MONEY_SERVER_SPEND}
+	_spendParam = [_si, _giBuyer, _cost, true, false]
+	_spendParam exec localize {TZK_MONEY_SERVER_SPEND}
+
+	@ _spendParam select 4
+	? not (_spendParam select 3): [_si, _giBuyer, -_cost] exec localize {TZK_MONEY_SERVER_SPEND}; goto "NoMoney"
 	
 	[_type, _si, _giBuyer, _giJoin] exec localize {TZK_INFO_SERVER_UNIT_BUILDING}
 
