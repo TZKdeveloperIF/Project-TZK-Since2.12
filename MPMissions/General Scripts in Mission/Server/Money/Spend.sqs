@@ -1,11 +1,18 @@
-; args: [si, gi, amount]
+; args: [si, gi, amount, legal?: boolean, finished?: boolean]
 _si = _this select 0; _gi = _this select 1; _amount = _this select 2
 
 @ !(mutexEditMoneyMatrix select _si select _gi)
 mutexEditMoneyMatrix select _si set [_gi, true]
 
-(groupMoneyMatrix select _si) set [_gi, -_amount + (groupMoneyMatrix select _si select _gi)]
+_result = -_amount + (groupMoneyMatrix select _si select _gi)
+groupMoneyMatrix select _si set [_gi, _result]
+; transfer status to caller
+_this set [3, _result >= 0]
+
 [_si, _gi, 0] exec "\TZK_Scripts_4_0_4\Server\Msg\sMoneyStatus.sqs"
 moneySpent set [_si, _amount + (moneySpent select _si)]
 
 mutexEditMoneyMatrix select _si set [_gi, false]
+
+; transfer status to caller
+_this set [4, true]

@@ -7,3 +7,15 @@ tzkAllGroups = [ [], [] ];
 		_i = _i + 1;
 	} forEach (groupMatrix select _si);
 } forEach [si0, si1];
+// define global variable for auto-buy info
+AutoBuyStructMatrix = [[],[]]; AutoBuyTypeMatrix = [[],[]];
+{
+    _si = _x; _i = 0;
+	_autoBuyStructEntry = AutoBuyStructMatrix select _si;
+	_autoBuyTypeEntry = AutoBuyTypeMatrix select _si;
+	{
+		_autoBuyStructEntry set [_i, [objNull, objNull, objNull, objNull, objNull]];
+		_autoBuyTypeEntry set [_i, -1];
+		_i = _i + 1;
+	} forEach (groupMatrix select _si);
+} forEach [si0, si1];

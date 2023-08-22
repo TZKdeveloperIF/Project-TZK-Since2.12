@@ -43,7 +43,7 @@ btnAction4 = false
 
 ctrlSetText [IDC_TITLE, "Board Vehicle"]
 ctrlSetText [_idcAction0, "Cargo"]
-ctrlSetText [_idcAction1, "Cargo-Gunner-Driver"]
+ctrlSetText [_idcAction1, "Gunner-Driver"]
 ctrlSetText [_idcAction2, "Driver-Gunner-Cargo"]
 ctrlSetText [_idcListHeader, "Type    Health  Ammo   Crew"]
 
@@ -56,7 +56,7 @@ ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bo
 	? !(alive player) : closeDialog 0; exit
 
 	? (btnAction0): btnAction0=false; _prio = ["Cargo"]; goto "Board"
-	? (btnAction1): btnAction1=false; _prio = ["Cargo", "Gunner", "Driver"]; goto "Board"
+	? (btnAction1): btnAction1=false; _prio = ["Gunner", "Driver"]; goto "Board"
 	? (btnAction2): btnAction2=false; _prio = ["Driver", "Gunner", "Cargo"]; goto "Board"
 	? _time > _timeUpdate: lbClear _idcList; call loadFile "\TZK_Scripts_4_0_4\Player\Dialog\BoardVehicle_list.sqf"; _timeUpdate = _time + 1
 

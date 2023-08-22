@@ -47,7 +47,7 @@ aisKeepDefs = [
 ]; aisKeepDisp = [];
 { if (_x < 1000) then {aisKeepDisp set [ count aisKeepDisp, call format[{"%1%2"}, "$", _x, {} ] ]} } foreach aisKeepDefs;
 aisKeepMin = _type;
-aiSettingDefs set [_type, ["Keep At Least", aisKeepDisp, 0, "Keep At Least/At Most"] ];
+aiSettingDefs set [_type, ["Keep At Least", aisKeepDisp, 0, "            Keep At Most"] ];
 _type = _type + 1;
 aisKeepDisp = []; {aisKeepDisp set [ count aisKeepDisp, call format[{"%1%2"}, "$", _x, {} ] ] } foreach aisKeepDefs;
 aisKeepMax = _type;
@@ -74,6 +74,7 @@ if bool_TZK_SEMod_Mode then {
 };
 _type = _type + 1;
 
+comment "todo: remove this part";
 BuyFactory = ["No Struct", "1# Barrack", "2# Barrack", "3# Barrack", "4# Barrack", "1# Heavy", "2# Heavy", "3# Heavy", "4# Heavy" ];
 aisBuyFactory1 = _type;
 aiSettingDefs set [_type, ["Buy Factory 1", BuyFactory, 0, "Buy Factory 1, 2"] ];
