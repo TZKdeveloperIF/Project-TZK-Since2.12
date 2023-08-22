@@ -1,7 +1,7 @@
 ; args: none
 @ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
-_dlg = createDialog "CommandAIDialog"
+_dlg = createDialog "CommandAIDialog2"
 mutexDlg = false
 
 ? !bool_TZK_CHN_inited && bool_TZK_CHN_Lang: call loadFile localize {TZK_PLAYER_DIALOG_CHNLANG}
@@ -52,15 +52,16 @@ _bInitSendSetting = false
 
 _needRefreshFlag = false, _needRefreshIdx = _selGroup
 
+_updateGrpOrder = preprocessFile "Player\Dialog\pUpdateGrpOrders.sqf"
+btnValue00 = -1
+
 # Update
-ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+	ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+
 	? call dlgUpdated: exit
 	? !(alive player): closeDialog 0; Exit
 
-	lbClear _idcCurrent
-	_gis = ([_si] call funcGetAIGroupsIndex)
-	{_order = (orderMatrix select _si) select _x; _text = _order call funcGetOrderDesc; _id = lbAdd [_idcCurrent, format["%1, %2", _groupNames select _x, _text]]; lbSetValue [_idcCurrent, _id, _x]} forEach _gis
-	? count _gis > 0 : _id = lbAdd [_idcCurrent, "ALL"]; lbSetValue [_idcCurrent, _id, -1]
+	_idcCurrent call _updateGrpOrder
 	
 	~ 0.2
 
@@ -73,7 +74,7 @@ ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bo
 	? _set != -1 : goto "SendSetting"
 
 	? btnSendOrder: btnSendOrder = false; goto "SendOrder"
-	? btnTemporaryOrder: btnTemporaryOrder = false; goto "TemporaryOrder"
+	? btnValue00 >= 0: _btnVal0 = btnValue00, btnValue00 = -1, goto "Btn0"
 
 	; ~0.2
 	goto "Update"
@@ -112,9 +113,8 @@ ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bo
 	? _gi != -1: [_si, _gi, _selOrder, _params] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}
 	goto "Update"
 	
-# TemporaryOrder
-	_text = "Concurrent order design is obsoleted since 4.0.6.50"
-	hint _text
-	TitleText [_text, "Plain DOWN", 0.25]
-
-	goto "Update"
+# Btn0
+	closeDialog 0
+	; ~0.1
+	0 exec "Player\Dialog\AutoBuy.sqs"
+	exit
