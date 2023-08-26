@@ -1,0 +1,15 @@
+resistance_Center allowDammage false
+
+~ 1
+_val = 0.5; resistance_Center setSkill _val
+~ 0.1
+
+? _val == skill resistance_Center: exit
+
+~ 15
+
+_msg = {"Super AI" is enabled on server diffucity setting. Please disable it and restart the server otherwise TZK AI won't behaviour normally.}
+# loop
+	{[_x, _msg] exec "Server\Msg\sSvrMsg2Cmd.sqs"} forEach [si0, si1, siCiv]
+	~ 20
+	goto "loop"
