@@ -49,7 +49,7 @@ ctrlShow [IDC_DEFAULT, false]
 ctrlShow [_idcNumberedAI, false]
 
 ctrlShow [_idcCommandTemporary, false]
-{call (_x + " = false")} forEach ["btnLeaderboard", "btnDestruction", "btnGrant", "btnAsk", "btnTake", "btnGive", "btnGiveAIs", "btnGiveAll", "btnUpgrade", "btnBuyUnits", "btnShowStats", "btnUnitCam", "btnSatCam", "btnCustomSoldiers", "btnCommandAI", "btnCommandPlayer", "btnTransfer", "btnNumberedAI", "btnAICheck", "btnSpySat"]
+{call (_x + " = false")} forEach ["btnLeaderboard", "btnGrant", "btnAsk", "btnTake", "btnGive", "btnGiveAIs", "btnGiveAll", "btnUpgrade", "btnBuyUnits", "btnShowStats", "btnUnitCam", "btnSatCam", "btnCustomSoldiers", "btnCommandAI", "btnCommandPlayer", "btnTransfer", "btnNumberedAI", "btnAICheck", "btnSpySat"]
 {call (_x + " = false")} forEach ["btnVoteMenu"]
 _icons = ["\TZK_Objects\Image\Icon\square_empty.paa", "\TZK_Objects\Image\Icon\square_yellow.paa", "\TZK_Objects\Image\Icon\square_green.paa"]
 _colors = [[1,1,1,0.5], [1,1,0,0.6],[0,1,0.2,0.8]]
@@ -126,7 +126,6 @@ report = lbCurSel _idcReports
 ? btnTransfer : btnTransfer=false; goto "TransferCommand"
 ? btnCustomSoldiers : btnCustomSoldiers=false; goto "CustomSoldiers"
 ? btnNumberedAI : btnNumberedAI=false; goto "SaveNumberedAI"
-? btnDestruction : btnDestruction=false; goto "DestructBuildings"
 ? btnAICheck : btnAICheck = false; goto "CheckAI"
 ? btnSpySat : btnSpySat = false; goto "SpySat"
 ? btnRadioON : btnRadioON = false; goto "RadioSwitch"
@@ -325,12 +324,6 @@ goto "Update"
   unitSetting saveStatus _entry
   deleteVehicle unitSetting
   goto "Update"
-
-#DestructBuildings
-	closeDialog 0
-	; ~0.1
-	0 exec "Player\Dialog\Destruction.sqs"
-	Exit
 
 #CheckAI
 	_index = lbCurSel _idcTransferGroup
