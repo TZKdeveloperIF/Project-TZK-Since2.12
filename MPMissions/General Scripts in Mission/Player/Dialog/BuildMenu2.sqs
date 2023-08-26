@@ -69,6 +69,7 @@ mutexDlg = false
 
 	_type = -1
 
+_getWorkersCnt = preprocessFile "Common\SQF\WorkerCount.sqf"
 #Update
 	_bNearby = [SupNearby, mhqNearby || MCVNearby] select _isMHQMCV
 	; _res = [getPos player, siPlayer, ([ typesSupportPlus, [[utMHQ0,utMCVW], [utMHQ1,utMCVE]] ] select _isMHQMCV) select siPlayer, []] call funcGetClosestVehicle
@@ -92,8 +93,7 @@ mutexDlg = false
 	_text = format ["$%1", _money]
 	ctrlSetText [IDC_TEXT_PLAYER_MONEY, _text]
 
-	? (_si == si0): _text = format ["Buy Worker $%1 (%2/%3)", costWorker, pvWorkers0, maxWorkers select _si]
-	? (_si == si1): _text = format ["Buy Worker $%1 (%2/%3)", costWorker, pvWorkers1, maxWorkers select _si]
+	_text = format ["Buy Worker $%1 (%2/%3)", costWorker, _si call _getWorkersCnt, maxWorkers select _si]
 	ctrlSetText[IDC_BTN_BUY, _text]
 
 	if (alignWalls) then { ctrlSetText [IDC_BTN_ALIGN, "Align Walls: ON"] } else { ctrlSetText [IDC_BTN_ALIGN, "Align Walls: OFF"] }
@@ -108,7 +108,7 @@ mutexDlg = false
 #BuyWorker
 	buttonPressedBuy = false
 	? (_money < costWorker): hint "Not enough Money"; goto "Update"
-	[_unit] exec "\TZK_Scripts_4_0_4\Player\SendAddWorker.sqs"
+	1 exec localize {TZK_NETWORK_BUY_WORKER}
 	goto "Update"
 
 #BuildStructure

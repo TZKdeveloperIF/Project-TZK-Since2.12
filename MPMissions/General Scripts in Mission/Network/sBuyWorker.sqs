@@ -1,0 +1,17 @@
+; args: amount
+
+? not alive (mhq select siPlayer): hint "None available MHQ nearby. No worker bought.", exit
+
+_orderedAmount = _this
+_money = groupMoneyMatrix select siPlayer select giPlayer
+_actualAmount = _orderedAmount
+? _actualAmount * costWorker <= _money: goto "Purchase"
+
+	_actualAmount = _money / costWorker
+	_actualAmount = _actualAmount - _actualAmount % 1
+	? _actualAmount <= 0: hint "Insufficient fund. No worker bought.", exit
+
+# Purchase
+
+[siPlayer, _actualAmount] exec localize {TZK_FUNC_SERVER_ADD_WORKER}
+publicExec format [{[%1, %2] exec localize {TZK_FUNC_SERVER_ADD_WORKER}}, siPlayer, _actualAmount]

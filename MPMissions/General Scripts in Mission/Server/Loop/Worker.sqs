@@ -121,9 +121,6 @@ removeAllWeapons _unit
 		~_sleep
 		goto "RepairBuilding"
 
-#DeadWorker
+# DeadWorker
 	_unit commandMove (position _unit)
-	? _si == si0 : pvWorkers0 = pvWorkers0 - 1; PublicVariable "pvWorkers0"
-	? _si == si1 : pvWorkers1 = pvWorkers1 - 1; PublicVariable "pvWorkers1"
-
-	Exit
+ 	exit
