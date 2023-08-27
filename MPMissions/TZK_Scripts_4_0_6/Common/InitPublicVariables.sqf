@@ -54,9 +54,6 @@ mutexTextMsg = false;
 
 comment {VARIABLES SENT BY SERVER};
 
-pvWorkers0 = 0;
-pvWorkers1 = 0;
-
 mutexStructBuilt = false;
 pvStructBuilt = -1;
 pvStructBuilt_Object = objNull;
@@ -125,8 +122,6 @@ pvDebugVar3 = -1000;
 comment "VARIABLES SENT BY PLAYERS";
 
 mutexGroupIsAI = false;
-mutexAddWorker = false;
-pvAddWorker = -1;
 
 pvBuildStruct_Type = -1;
 pvBuildStruct_PosX = 0;

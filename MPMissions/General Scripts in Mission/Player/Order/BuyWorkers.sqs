@@ -10,12 +10,7 @@ _mhq = mhq select _si
 ; Buy
 ? not alive _mhq || isNull _mhq: player groupChat "MHQ is unavailable. Abort buying workers."; exit
 
-_i = 1
-# Loop
-	[_unit] exec "\TZK_Scripts_4_0_4\Player\SendAddWorker.sqs"
-	_i = _i + 1
-	? _i > _amount: exit
-	~1
-	goto "Loop"
+_amount exec localize {TZK_NETWORK_BUY_WORKER}
+exit
 
 ; EOF

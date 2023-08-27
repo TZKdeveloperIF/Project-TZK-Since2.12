@@ -16,6 +16,7 @@ _mags = _rearmData select 1
 
 ; FindSupport
 ? _unit != vehicle _unit: goto "skipSoldierRearmOnly"
+? _unit call preprocessFile "Util\NeedntRearmGeneral.sqf": _unit groupChat "Unnecessary to rearm."; exit
 _si = siPlayer
 _support = [_unit, _si, 512] call preprocessFile "Util\SoldierRearmSupport.sqf"
 ? isNull _support: _unit groupChat "No support vehicles in that area."; exit
