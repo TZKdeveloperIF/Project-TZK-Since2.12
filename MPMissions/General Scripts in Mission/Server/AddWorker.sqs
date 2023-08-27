@@ -1,19 +1,35 @@
-; args: [si]
+; args: [si, num]
+? not isServer: exit
+
 _si = _this select 0
 ? _si != si0 && _si != si1: exit
 
-? not (call format [{pvWorkers%1 < maxWorkers select %1}, _si]): exit
+_curCnt = _si call preprocessFile "Common\SQF\WorkerCount.sqf"
+_limit = maxWorkers select _si
+_num = _this select 1
+
+? _curCnt + _num > _limit: _num = _limit - _curCnt
+? _num <= 0: exit
 
 ; TZK once support MCV design but it's abandoned
 _mhq = mhq select _si
 ? not alive _mhq: exit
 _groups = workerGroups select _si
 ? count _groups == 0 : exit
-call format [{pvWorkers%1 = pvWorkers%1 + 1; publicVariable "pvWorkers%1"}, _si]
+
 _gi = giCO select _si
 _ut = if (_si == si0) then {utWorkerW} else {utWorkerE}
 
-[_si, _gi, costWorker] exec localize {TZK_MONEY_SERVER_SPEND}
+_money = groupMoneyMatrix select _si select _gi
+? _money >= costWorker * _num: goto "SufficientFund"
+
+	_num = _money / costWorker
+	_num = _num - _num % 1
+	? _num <= 0: exit
+
+# SufficientFund
+
+[_si, _gi, _num * costWorker] exec localize {TZK_MONEY_SERVER_SPEND}
 _pos = getPos _mhq
 ? _pos select 0 > 0 && _pos select 1 > 0: goto "ObtainedPosition"
 ; try to locate mhq in-map
@@ -35,9 +51,20 @@ _i = 0; _c = count vehicleAttached
 
 # ObtainedPosition
 
-@ not mutexWorkerJoin
-	mutexWorkerJoin = true
-	_membersMin = 12; _i = 0; _j = 0
-	{if (count(units _x) < _membersMin) then {_membersMin = count(units _x); _i = _j}; _j = _j + 1} forEach _groups
-	[_ut, 0, 0, 0, _pos, 0, _si, giWorker, (_groups select _i), 0, 1] exec "\TZK_Scripts_4_0_4\Common\AddUnit.sqs"
-	mutexWorkerJoin = false
+; ASSERT(_num > 0)
+_a = 0
+# loop
+	@ not mutexWorkerJoin
+		mutexWorkerJoin = true
+		? _si call preprocessFile "Common\SQF\WorkerCount.sqf" >= maxWorkers select _si: goto "skipBuild"
+
+		_membersMin = 12; _i = 0; _j = 0
+		{if (count(units _x) < _membersMin) then {_membersMin = count(units _x); _i = _j}; _j = _j + 1} forEach _groups
+		[_ut, 0, 0, 0, _pos, 0, _si, giWorker, (_groups select _i), 0, 1] exec "\TZK_Scripts_4_0_4\Common\AddUnit.sqs"
+
+		# skipBuild
+		mutexWorkerJoin = false
+
+	~ 0.25
+	_a = _a + 1
+	? _a < _num: goto "loop"

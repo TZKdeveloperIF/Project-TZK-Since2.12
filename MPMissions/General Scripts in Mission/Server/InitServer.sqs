@@ -5,6 +5,8 @@ call loadFile "\TZK_Scripts_4_0_6\Server\InitServer_constant.sqf"
 ; 4.0.6.11
 call preprocessFile "Server\Init\Money.sqf"
 AICO_giTrans = [[],[]]; AICO_giInf = [[],[]]; AICO_giTanks = [[[], [], []], [[], [], []]]
+; 4.0.6.53
+0 exec "Server\Init\CfgCheck.sqs"
 
 ; Target objects placed at town flag
 ; { _si = _x; _i = 0; _c = count towns; while {_i < _c} do {call format[{TargetTownS_%1%2 = _targetObject createVehicle [0,0,0]; TargetTownS_%1%2 exec "\TZK_Scripts_4_0_4\Common\Command\allowDamageFalse.sqs"; TargetTownS_%1%2 setPosASL getPosASL (towns select _i select tdFlag)}, _i, _si]; _i = _i + 1} } forEach [si0, si1]
@@ -12,7 +14,6 @@ AICO_giTrans = [[],[]]; AICO_giInf = [[],[]]; AICO_giTanks = [[[], [], []], [[],
 ; MESSAGE HANDLERS (SERVER ONLY)
 [] exec "\TZK_Scripts_4_0_4\Server\MsgBuildStructure.sqs"
 (localize {TZK_FUNC_SERVER_UNDO_STRUCT}) exec "\TZK_Scripts_4_0_6\Server\Msg\mUndo.sqs"
-0 exec "\TZK_Scripts_4_0_6\Server\Msg\mAddWorker.sqs"
 
 { ["Server\Msg\hBuyUnit.sqs"] exec format ["Server\Msg\mBuyUnit%1.sqs", _x] } forEach [0,1,2,3,4]
 
