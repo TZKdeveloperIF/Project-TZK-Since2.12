@@ -60,7 +60,7 @@ _i = 0, _c = _typeCnt, _transpTypes = [], _transpTypes resize _c
 # ExecCoreContent
 	[_unit, [true]] exec localize {TZK_AI_STOP}
 	_nearByTargets = [_destPos, 100, [], [], _si] call funcGetNearbyVehicles
-	? count _nearByTargets == 0: goto "Quit"
+	? count _nearByTargets == 0: goto "Finished"
 
 	_notOurSide = {unitDefs select _this select udSide != _si}
 	_hasEmptySeat = preprocessFile "Util\HasEmptySeat.sqf"
@@ -70,9 +70,9 @@ _i = 0, _c = _typeCnt, _transpTypes = [], _transpTypes resize _c
 
 	# SearchTarget
 		_totalTryCnt = _totalTryCnt + 1
-		? _totalTryCnt > 100: goto "Quit"
+		? _totalTryCnt > 100: goto "Finished"
 
-		? _typeIdx >= _typeCnt: goto "Quit"
+		? _typeIdx >= _typeCnt: goto "Finished"
 		? not (_transpTypes select _typeIdx): _typeIdx = _typeIdx + 1, goto "SearchTarget"
 
 		_needEdit = true, _bDisengage = (0 <= _typeIdx && _typeIdx <= 2)
@@ -160,6 +160,9 @@ _i = 0, _c = _typeCnt, _transpTypes = [], _transpTypes resize _c
 		? _target != vehicle _unit: goto "SearchTarget"
 	; Disengage if reclaimed tank/artillery
 	? _bDisengage: _unit disableAI "TARGET"
+# Finished
+	[_unit, -1, _rtsStatus, _id] exec "Rts\Order\hStop.sqs"
+	exit
 # Quit
 	exit
 
