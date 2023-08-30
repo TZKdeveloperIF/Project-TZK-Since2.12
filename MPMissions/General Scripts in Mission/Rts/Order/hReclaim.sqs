@@ -76,23 +76,23 @@ _i = 0, _c = _typeCnt, _transpTypes = [], _transpTypes resize _c
 		? not (_transpTypes select _typeIdx): _typeIdx = _typeIdx + 1, goto "SearchTarget"
 
 		_needEdit = true, _bDisengage = (0 <= _typeIdx && _typeIdx <= 2)
-		? 0 == _typeIdx: _selectedTypes = typesHeavyTank
-		? 1 == _typeIdx: _selectedTypes = typesLightTank
-		? 2 == _typeIdx: _selectedTypes = typesHowitzer + typesRocketLauncher
-		? 3 == _typeIdx: _selectedTypes = typesATAPC
-		? 4 == _typeIdx: _selectedTypes = typesAAAPC
-		? 5 == _typeIdx: _selectedTypes = typesGunshipOrigin + typesGunshipAT + typesKa50
-		? 6 == _typeIdx: _selectedTypes = typesBattlePlane
-		? 7 == _typeIdx: _selectedTypes = typesSupportAPC
+		? 0 == _typeIdx: _selectedTypes = + typesHeavyTank
+		? 1 == _typeIdx: _selectedTypes = + typesLightTank
+		? 2 == _typeIdx: _selectedTypes = + typesHowitzer + typesRocketLauncher
+		? 3 == _typeIdx: _selectedTypes = + typesATAPC
+		? 4 == _typeIdx: _selectedTypes = + typesAAAPC
+		? 5 == _typeIdx: _selectedTypes = + typesGunshipOrigin + typesGunshipAT + typesKa50
+		? 6 == _typeIdx: _selectedTypes = + typesBattlePlane
+		? 7 == _typeIdx: _selectedTypes = + typesSupportAPC
 
-		? 8 + 0 == _typeIdx: _selectedTypes = typesTransportCar
-		? 8 + 1 == _typeIdx: _selectedTypes = typesTransportShip
-		? 8 + 2 == _typeIdx: _selectedTypes = typesTransportAPC
-		? 8 + 3 == _typeIdx: _selectedTypes = typesTransportHeli + RadioTypesTransportPlane
-		? 8 + 4 == _typeIdx: _selectedTypes = typesBattleShip
-		? 8 + 5 == _typeIdx: _selectedTypes = typesBattleCar
-		? 8 + 6 == _typeIdx: _selectedTypes = typesRadarCar
-		? 8 + 7 == _typeIdx: _selectedTypes = call format ["TransportRepairTruck%1", if (_si == si0) then {"W"} else {"E"}], _needEdit = false
+		? 8 + 0 == _typeIdx: _selectedTypes = + typesTransportCar
+		? 8 + 1 == _typeIdx: _selectedTypes = + typesTransportShip
+		? 8 + 2 == _typeIdx: _selectedTypes = + typesTransportAPC
+		? 8 + 3 == _typeIdx: _selectedTypes = + typesTransportHeli + RadioTypesTransportPlane
+		? 8 + 4 == _typeIdx: _selectedTypes = + typesBattleShip
+		? 8 + 5 == _typeIdx: _selectedTypes = + typesBattleCar
+		? 8 + 6 == _typeIdx: _selectedTypes = + typesRadarCar
+		? 8 + 7 == _typeIdx: _selectedTypes = + call format ["TransportRepairTruck%1", if (_si == si0) then {"W"} else {"E"}], _needEdit = false
 
 		? _needEdit: [_selectedTypes, _notOurSide] call preprocessFile "Util\ArrayEraseIf.sqf"
 
