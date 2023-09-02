@@ -16,12 +16,13 @@
 		};
 		_i = _i + 1;
 	};
-} forEach [0,1,2,3,4];
+} forEach _facBias;
 
 // initialize auto buy type combobox
+{
 	private [{_begin},{_end},{_id},{_i},{_unitDesc}];
-	_id = lbAdd [_idcBuyType, "None"];
-	lbSetValue [_idcBuyType, _id, -1];
+	_id = lbAdd [_idcBuyType + _x, "None"];
+	lbSetValue [_idcBuyType + _x, _id, -1];
 	// A rough range
 	if (_si == si0) then {_begin = utWorkerW, _end = utMHQ0} else {_begin = utWorkerE, _end = utMHQ1};
 	_i = _begin; while {_i < _end} do {
@@ -29,12 +30,9 @@
 		if (_unitDesc select udSide == _si && _unitDesc select udFactoryType != -1) then {
 			_name = _unitDesc select udName;
 
-			_id = lbAdd [_idcBuyType, _unitDesc select udName];
-			lbSetValue [_idcBuyType, _id, _i];
+			_id = lbAdd [_idcBuyType + _x, _unitDesc select udName];
+			lbSetValue [_idcBuyType + _x, _id, _i];
 		};
 		_i = _i + 1;
 	};
-
-// initialize ai setting comboboxes
-	{lbAdd [_idcKeepMin, _x]} foreach (aiSettingDefs select aisKeepMin select 1);
-	{lbAdd [_idcGroupSize, _x]} foreach (aiSettingDefs select aisGroupSize select 1);
+} forEach _typeBias;

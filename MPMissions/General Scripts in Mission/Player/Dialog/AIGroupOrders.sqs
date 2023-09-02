@@ -10,7 +10,7 @@ _bTzkChn = bool_TZK_CHN_Lang; _bSettingDispInited = false
 _si = siPlayer
 _gi = -1
 
-btnSendOrder = false; btnTemporaryOrder = false
+btnSendOrder = false
 
 _idcCurrent = IDC+0
 _idcSettingLabel = IDC + 100
@@ -53,7 +53,27 @@ _bInitSendSetting = false
 _needRefreshFlag = false, _needRefreshIdx = _selGroup
 
 _updateGrpOrder = preprocessFile "Player\Dialog\pUpdateGrpOrders.sqf"
-btnValue00 = -1
+
+; auto-buy part
+_idcAbLabel = IDC + 16 * 1 + 0
+_idcFactory = IDC + 16 * 4 + 0, _idcFacPic = IDC + 16 * 5 + 0
+_idcBuyType = IDC + 16 * 32 + 0, _idcTypePic = IDC + 16 * 33 + 0
+
+_facBias = [0,1,2,3], _facInitCache = [-1,-1,-1,-1]
+_facIdxCache = + _facInitCache
+_typeBias = [0,1,2,3], _buyInitCache = [-1,-1,-1,-1]
+_buyIdxCache = + _buyInitCache
+
+_factories = [], _facTypes = []
+_updateFactories = preprocessFile "Player\Dialog\AutoBuy_UpdateFactories.sqf"
+_updateAutobuyInfo = preprocessFile "Player\Dialog\pAbUpdateCombobox.sqf"
+_checkAbModified = preprocessFile "Player\Dialog\AutoBuy_CheckModifyCombobox.sqf"
+_updateFacPic = preprocessFile "Player\Dialog\pAbUpdateFactoryImage.sqf"
+_updateTypePic = preprocessFile "Player\Dialog\pAbUpdateTypeImage.sqf"
+	; initial of auto buy
+	{ctrlShow [_x, false]} foreach [_idcAbLabel, _idcAbLabel + 1]
+	{ctrlShow [_idcFactory + _x, false]; ctrlShow [_idcFacPic + _x, false]} forEach _facBias
+	{ctrlShow [_idcBuyType + _x, false]; ctrlShow [_idcTypePic + _x, false]} forEach _typeBias
 
 # Update
 	ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
@@ -62,6 +82,9 @@ btnValue00 = -1
 	? !(alive player): closeDialog 0; Exit
 
 	_idcCurrent call _updateGrpOrder
+	call _updateFactories
+
+	call _checkAbModified
 	
 	~ 0.2
 
@@ -74,14 +97,13 @@ btnValue00 = -1
 	? _set != -1 : goto "SendSetting"
 
 	? btnSendOrder: btnSendOrder = false; goto "SendOrder"
-	? btnValue00 >= 0: _btnVal0 = btnValue00, btnValue00 = -1, goto "Btn0"
 
 	; ~0.2
 	goto "Update"
 
 # NewGroupSelected
 	? not _bInitSelNewGroup: _bInitSelNewGroup = true; _onSelNewGrp = preprocessFile "Player\Dialog\AIGrpOrder_OnNewGroupSelected.sqf"
-	call _onSelNewGrp
+	_idcCurrent call _onSelNewGrp
 	goto "Update"
 
 # NewOrderSelected
@@ -112,9 +134,3 @@ btnValue00 = -1
 	? _gi == -1: [_si, giPlayer + GroupsNum, _selOrder, _params] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}
 	? _gi != -1: [_si, _gi, _selOrder, _params] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}
 	goto "Update"
-	
-# Btn0
-	closeDialog 0
-	; ~0.1
-	0 exec "Player\Dialog\AutoBuy.sqs"
-	exit

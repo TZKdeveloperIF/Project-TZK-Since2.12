@@ -11,6 +11,10 @@ _i = 0; while {_i < _cSettings} do {
 	_i = _i + 1; 
 };
 
+{ctrlEnable [_x, _this]} foreach [_idcAbLabel, _idcAbLabel + 1];
+{ctrlEnable [_idcFactory + _x, _this]; ctrlEnable [_idcFacPic + _x, _this]} forEach _facBias;
+{ctrlEnable [_idcBuyType + _x, _this]; ctrlEnable [_idcTypePic + _x, _this]} forEach _typeBias;
+
 if _this then {
 	false call _refreshOrder;
 };

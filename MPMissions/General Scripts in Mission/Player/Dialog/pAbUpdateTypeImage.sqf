@@ -1,10 +1,12 @@
-// args: idc of image
-private [{_idc},{_type}];
-_idc = _this;
+// args: index of autobuy type comboboxes
+private [{_idx},{_idcBox},{_idcPic},{_type}];
+_idx = _this;
+_idcBox = _idcBuyType + _idx;
+_idcPic = _idcTypePic + _idx;
 
-_type = -1; if (lbCurSel _idc != -1) then {_type = lbValue [_idc, lbCurSel _idc]};
+_type = -1; if (lbCurSel _idcBox != -1) then {_type = lbValue [_idcBox, lbCurSel _idcBox]};
 if (-1 != _type) then {
-	ctrlSetText [_idcTypePic, unitDefs select _type select udImage];
+	ctrlSetText [_idcPic, unitDefs select _type select udImage];
 } else {
-	ctrlSetText [_idcTypePic, ""];
+	ctrlSetText [_idcPic, ""];
 };

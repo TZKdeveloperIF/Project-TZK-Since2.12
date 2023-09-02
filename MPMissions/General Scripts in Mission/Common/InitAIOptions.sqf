@@ -47,7 +47,7 @@ aisKeepDefs = [
 ]; aisKeepDisp = [];
 { if (_x < 1000) then {aisKeepDisp set [ count aisKeepDisp, call format[{"%1%2"}, "$", _x, {} ] ]} } foreach aisKeepDefs;
 aisKeepMin = _type;
-aiSettingDefs set [_type, ["Keep At Least", aisKeepDisp, 0, "            Keep At Most"] ];
+aiSettingDefs set [_type, ["Keep At Least", aisKeepDisp, 0, "Keep At Least/At Most"] ];
 _type = _type + 1;
 aisKeepDisp = []; {aisKeepDisp set [ count aisKeepDisp, call format[{"%1%2"}, "$", _x, {} ] ] } foreach aisKeepDefs;
 aisKeepMax = _type;
@@ -193,33 +193,33 @@ _type = _type + 1;
 
 orderTakeHoldTowns = _type;
 _param0 = ["Hold Distance", "5", {format [{<%1m}, 500* (_this + 1)]}];
-_param1 = ["Hold Time", "10", {format [{%1min}, 5* (_this + 1)]}];
+_param1 = ["Hold \nTime", "10", {format [{%1min}, 5* (_this + 1)]}];
 orderDefs set [_type, ["Take Hold Towns", [_param0, _param1], "Server\Order\TakeHoldTowns.sqs"] ];
 _type = _type + 1;
 
 orderHoldTown = _type;
 _param0 = [ "Town", "count towns", "towns select _this select 1" ];
-_param1 = [ "Defend Distance", "10", [50, 1] call _distByOffset];
-_param2 = [ "Defend Direction", "9", _dirIndexToText ];
+_param1 = [ "Defend \nDistance", "10", [50, 1] call _distByOffset];
+_param2 = [ "Defend \nDirection", "9", _dirIndexToText ];
 orderDefs set [_type, ["Hold Town", [_param0, _param1, _param2], "Server\Order\HoldTown.sqs"] ];
 _type = _type + 1;
 
 orderGuardArea = _type;
 _param0 = [ "Waypoint", _coCnt, _coDispStr];
-_param1 = [ "Defend Distance", "10", [50, 1] call _distByOffset];
-_param2 = [ "Defend Direction", "9", _dirIndexToText ];
+_param1 = [ "Defend \nDistance", "10", [50, 1] call _distByOffset];
+_param2 = [ "Defend \nDirection", "9", _dirIndexToText ];
 orderDefs set [_type, ["Guard Area", [_param0, _param1, _param2], "Server\Order\GuardArea.sqs"] ];
 _type = _type + 1;
 
 orderGuardLine = _type;
 _param0 = [ "Waypoint", _coCnt, _coDispStr];
-_param1 = [ "Waypoint", _coCnt, _coDispStr];
+_param1 = [ "\nWaypoint", _coCnt, _coDispStr];
 orderDefs set [_type, ["Guard Line", [_param0, _param1], "Server\Order\GuardLine.sqs"] ];
 _type = _type + 1;
 
 orderPatrolArea = _type;
 _param0 = [ "Waypoint", _coCnt, _coDispStr];
-_param1 = [ "Patrol Radius", "10", [50, 1] call _distByOffset];
+_param1 = [ "Patrol \nRadius", "10", [50, 1] call _distByOffset];
 _script = "Server\Order\PatrolArea.sqs";
 if bool_TZK_DEV_FPS then {_script = ""};
 orderDefs set [_type, ["Patrol Area", [_param0, _param1], _script] ];
@@ -227,26 +227,26 @@ _type = _type + 1;
 
 orderPatrolLine = _type;
 _param0 = [ "Waypoint", _coCnt, _coDispStr];
-_param1 = [ "Waypoint", _coCnt, _coDispStr];
+_param1 = [ "\nWaypoint", _coCnt, _coDispStr];
 orderDefs set [_type, ["Patrol Line", [_param0, _param1], "Server\Order\PatrolLine.sqs"] ];
 _type = _type + 1;
 
 orderAdvance = _type;
 _param0 = [ "Waypoint", _coCnt, _coDispStr];
-_param1 = [ "Meters/minute", "10", [100, 1] call _distByOffset];
+_param1 = [ "Meters/\nminute", "10", [100, 1] call _distByOffset];
 orderDefs set [_type, ["Advance", [_param0, _param1], "Server\Order\Advance.sqs"] ];
 _type = _type + 1;
 
 orderTransportDuty = _type;
 _param0 = [ "Pickup Pos", _coCnt, _coDispStr];
-_param1 = [ "Eject Pos", _coCnt, _coDispStr];
-_param2 = [ "Eject Distance", "10", [100, 1] call _distByOffset];
+_param1 = [ "Eject \nPos", _coCnt, _coDispStr];
+_param2 = [ "Eject \nDistance", "10", [100, 1] call _distByOffset];
 orderDefs set [_type, ["Transport Duty", [_param0, _param1, _param2], "Server\Order\TransportDuty.sqs"] ];
 _type = _type + 1;
 
 orderMineLine = _type;
 _param0 = [ "Waypoint", _coCnt, _coDispStr];
-_param1 = [ "Waypoint", _coCnt, _coDispStr];
+_param1 = [ "\nWaypoint", _coCnt, _coDispStr];
 orderDefs set [_type, ["Mine Line", [_param0, _param1], "Server\Order\MineLine.sqs"] ];
 _type = _type + 1;
 
