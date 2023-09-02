@@ -20,8 +20,9 @@ _unitsStarted = units _group
 _funcGetSlots = preprocessFile "Server\SQF\AiGroupSlots.sqf"
 _factories = []; _assignedFacs = []
 _autoBuyFactories = AutoBuyStructMatrix select _si select _gi
-_autoBuyTypeEntry = AutoBuyTypeMatrix select _si
+_autoBuyTypeEntry = AutoBuyTypeMatrix select _si select _gi
 _lambda = "false", _lambdaInited = false
+_funcGetAutoBuyType = preprocessFile "Server\Loop\GetAbType.sqf"
 ~ 5
 # Update
 	? !(alive _unit): goto "WaitUntilAlive"
@@ -57,7 +58,9 @@ _lambda = "false", _lambdaInited = false
 	_money = (groupMoneyMatrix select _si) select _gi
 	_KeepMax = aisKeepDefs select (_setting select aisKeepMax)
 	? _money > _KeepMax : _tax = _money - _KeepMax; [_si, _gi, [_si, _gi] call loadFile "Util\GetSuperiorIdx.sqf", _tax] exec localize {TZK_MONEY_SERVER_TRANSFER}; goto "Sleep"
-	? _autoBuyTypeEntry select _gi != -1: goto "CheckBuyUnit"
+
+	_hasAutoBuyTypes = false; {if (_x != -1) then {_hasAutoBuyTypes = true}} forEach _autoBuyTypeEntry
+	? _hasAutoBuyTypes: goto "CheckBuyUnit"
 
 	# Sleep
 	~5
@@ -142,7 +145,7 @@ _lambda = "false", _lambdaInited = false
 	? _groupSize == 1: goto "Sleep"
 	? _groupSize > 1 && _groupSize < maxGroupSize: _slots = [_si, _gi, _groupSize] call _funcGetSlots; if (_slots <= 0) then {goto "Sleep"}
 
-	_type = _autoBuyTypeEntry select _gi
+	_type = _autoBuyTypeEntry call _funcGetAutoBuyType
 	? _type == -1: goto "Sleep"
 
 	? not ([_si, _type] call loadFile "Util\UnitCanBuy.sqf"): goto "Sleep"

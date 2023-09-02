@@ -15,7 +15,7 @@ AutoBuyStructMatrix = [[],[]]; AutoBuyTypeMatrix = [[],[]];
 	_autoBuyTypeEntry = AutoBuyTypeMatrix select _si;
 	{
 		_autoBuyStructEntry set [_i, [objNull, objNull, objNull, objNull, objNull]];
-		_autoBuyTypeEntry set [_i, -1];
+		_autoBuyTypeEntry set [_i, [-1,-1,-1,-1]];
 		_i = _i + 1;
 	} forEach (groupMatrix select _si);
 } forEach [si0, si1];

@@ -1,4 +1,4 @@
-// args: [si, gi, bind, new type, gi sender]
+// args: [si, gi, index, new type, gi sender]
 // should be a sqf file for local synchronization
 
 _this call preprocessFile "Network\hAutoBuyType.sqf";
