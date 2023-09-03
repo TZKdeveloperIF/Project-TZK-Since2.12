@@ -26,6 +26,7 @@ _si = sides find (side _unit)
 
 ; under "RtsOrder" folder the "rts id" is restored by "id" variable but not "rtsId"
 _quitCond = {not alive _unit || not (_unit call rtsOrderCheck) || _id != _rtsStatus select 1}
+_lastOrderIsRts = _unit call rtsOrderCheck
 
 _unit call preprocessFile "Server\AI\RtsOrderBegin.sqf"
 ; Initialize The Order Script
@@ -37,9 +38,9 @@ _stopParam = [_unit, [true], true]
 _vehicle = vehicle _unit, _cantMove = false
 	? not canMove _vehicle: _cantMove = true, goto "ExecRearm"
 	? not canFire _vehicle && 1 == [_vehicle, "gunner"] call funcVehParamHasSeat: goto "Valid"
-	? _unit == _vehicle: if (_unit call preprocessFile "Util\NeedntRearmGeneral.sqf") then {goto "Quit"} else {goto "Valid"}
+	? _unit == _vehicle: if (_unit call preprocessFile "Util\NeedntRearmGeneral.sqf") then {goto "InvalidOrder"} else {goto "Valid"}
 	; must be vehicle here
-	? [_vehicle, _sabotThreshold] call preprocessFile "Util\NeedntRearmVehicle.sqf": goto "Quit"
+	? [_vehicle, _sabotThreshold] call preprocessFile "Util\NeedntRearmVehicle.sqf": goto "InvalidOrder"
 	? 0 == [_vehicle, "driver"] call funcVehParamHasSeat: _cantMove = true, goto "ExecRearm"
 # Valid
 
@@ -77,7 +78,7 @@ _vehicle = vehicle _unit, _cantMove = false
 		; goto "SupportFound"
 
 # SupportFound
-	? _cantMove: if ([_unit, _sup] call funcDistH > rangeSupport) then {goto "Quit"} else {goto "SupportReached"}
+	? _cantMove: if ([_unit, _sup] call funcDistH > rangeSupport) then {goto "InvalidOrder"} else {goto "SupportReached"}
 	; type check
 	_vehicle = vehicle _unit, _vt = -1
 	? _unit != _vehicle: _vt = _vehicle call funcGetUnitTypeFromObject
@@ -172,6 +173,10 @@ _vehicle = vehicle _unit, _cantMove = false
 	_cycle = [30, 0.1*_distToDest] select (_distToDest < 300)
 	goto "Sleep"
 # Quit
+	exit
+# InvalidOrder
+	; unnecessary to execute current rts order
+	? not _lastOrderIsRts: [[_unit], [_si, false]] exec "Rts\Framework\OrderDtor.sqs"
 	exit
 
 # Sleep
