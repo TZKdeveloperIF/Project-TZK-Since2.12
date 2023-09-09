@@ -31,7 +31,6 @@ AICO_giTrans = [[],[]]; AICO_giInf = [[],[]]; AICO_giTanks = [[[], [], []], [[],
 ; ? !(isNull player): forceMap true
 ? !(isNull player): [] exec "Player\InitClient.sqs"
 
-0 exec "Server\Init\TownCivVehs.sqs"
 0 exec "Server\Init\StartVehs.sqs"
 
 ; game has begun after this pause
@@ -50,6 +49,7 @@ _lock exec "Server\PreProcessMatchRule.sqs"
 ; custom for PVE. TODO: it would be better to have just one custom step
 @ pvCustomPveFinished
 
+0 exec "Server\Init\TownCivVehs.sqs"
 call preprocessFile "Server\InitCustomStartMoney.sqf";
 
 call loadFile "\TZK_Scripts_4_0_6\Server\Msg\sStartMoney.sqf"
