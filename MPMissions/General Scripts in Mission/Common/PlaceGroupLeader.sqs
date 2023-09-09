@@ -37,12 +37,12 @@ _unit playMove "Combat"
 _unit setPos [(_pos Select 0) + _dist*sin(_dir + 90), (_pos Select 1) + _dist*cos(_dir + 90), 0]
 _unit setDir _dir
 
+~ 0.1
+_this set [3, false]
+
 ; 2.01 setting. Make initialize simpler in mission.sqm
 ~ 1
 ? !bool_TZK_199_Mode: _unit allowdammage true
-
-~ 0.1
-_this set [3, false]
 
 ~ 0.1
 ? [_unit, _pos] call funcDistH < 1000: exit
