@@ -1,0 +1,26 @@
+~ 20
+
+_ver = localize {STR_MISSION_NAME}
+
+? "crCTI_@TZK_4.0.6.57" != _ver: goto "Skip_4_0_6_57"
+	; force FALSE for boole_Rocket_Impact and boole_Rocket_Launch
+	boole_Rocket_Impact = false; boole_Rocket_Launch = false
+	_soldier = "SoldierWB" camCreate [10,10,10]
+	_i = 0
+	removeAllWeapons _soldier
+	_booleans = [booleSettingEffects, booleSettingFunctions, booleSettingActions] select _i
+	_j = 0; _Line = 12
+		# BoolesLine
+		? _j < (count _booleans) : if ( call (_booleans select _j) ) then { _soldier addMagazine (magazinesBooleRecording select _j) }
+		_j = _j + 1
+		? _j < _Line : goto "BoolesLine"
+
+	_tzkMod = call preprocessFile "Util\GetTzkMod.sqf"
+	_entry = format["TZK_Mission_Setting_1_%1_%2", _i, _tzkMod]
+	_soldier addMagazine (magazinesBooleRecording select count magazinesBooleRecording - 1); _soldier saveStatus _entry
+			
+	deleteVehicle _soldier
+
+# Skip_4_0_6_57
+
+exit
