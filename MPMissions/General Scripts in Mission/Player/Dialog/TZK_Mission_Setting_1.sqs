@@ -18,7 +18,7 @@ _i = 0; _c = count TzkDebugLog
 ? "IF" != name player: exit
 _arr = []; _i = 0
 {if (alive _x) then {_val = player knowsAbout _x; _val = _val - _val % 0.01; _arr set [_i, _val], _i = _i + 1}} forEach arraySpottedEnemy
-showDebug [format ["knowsAbout info: %1. typesHeavyTank: %2", _arr, typesHeavyTank], 5000]
+showDebug [format ["knowsAbout info: %1", _arr], 5000]
 
 ; ~ 0.6
 ; do simple test here
