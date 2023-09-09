@@ -12,6 +12,10 @@ _animDispTime = 2
 ? _deltaTime < _animDispTime: exit
 
 _radius = 4000
+; accumulate all towns' distance to the center pos
+_sum = 0
+{_sum = _sum + ([getPos (_x select tdFlag), posCenter] call funcDistH)} forEach towns
+? count towns > 0: _radius = _sum / count towns
 
 _marker = createMarker ["StartPosAvailableArea", [-10, -10]];
 _marker setMarkerPos _startPos;
