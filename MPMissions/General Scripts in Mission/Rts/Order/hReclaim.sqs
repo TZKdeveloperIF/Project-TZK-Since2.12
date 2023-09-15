@@ -60,7 +60,7 @@ _i = 0, _c = _typeCnt, _transpTypes = [], _transpTypes resize _c
 # ExecCoreContent
 	[_unit, [true]] exec localize {TZK_AI_STOP}
 	_nearByTargets = [_destPos, 100, [], [], _si] call funcGetNearbyVehicles
-	? count _nearByTargets == 0: goto "Finished"
+	? count _nearByTargets == 0: goto "StopAndWait"
 
 	_notOurSide = {unitDefs select _this select udSide != _si}
 	_hasEmptySeat = preprocessFile "Util\HasEmptySeat.sqf"
@@ -70,9 +70,9 @@ _i = 0, _c = _typeCnt, _transpTypes = [], _transpTypes resize _c
 
 	# SearchTarget
 		_totalTryCnt = _totalTryCnt + 1
-		? _totalTryCnt > 100: goto "Finished"
+		? _totalTryCnt > 100: goto "StopAndWait"
 
-		? _typeIdx >= _typeCnt: goto "Finished"
+		? _typeIdx >= _typeCnt: goto "StopAndWait"
 		? not (_transpTypes select _typeIdx): _typeIdx = _typeIdx + 1, goto "SearchTarget"
 
 		_needEdit = true, _bDisengage = (0 <= _typeIdx && _typeIdx <= 2)
@@ -160,7 +160,16 @@ _i = 0, _c = _typeCnt, _transpTypes = [], _transpTypes resize _c
 		? _target != vehicle _unit: goto "SearchTarget"
 	; Disengage if reclaimed tank/artillery
 	? _bDisengage: _unit disableAI "TARGET"
-# Finished
+; Finished. Clear rts status for land vehicles with "battle" reclaim strategy
+	_cache = [_target]
+	; _bIsTank = "Tank" countType _cache > 0 && "APC" countType _cache <= 0
+	_bLand = "LandVehicle" countType _cache > 0
+
+	_bClear = false;
+	? 1 == _reclaimStrategy && _bLand: _bClear = true
+	? _bClear: [[_unit], [_si, false]] exec "Rts\Framework\OrderDtor.sqs", exit
+	goto "StopAndWait"
+# StopAndWait
 	[_unit, -1, _rtsStatus, _id] exec "Rts\Order\hStop.sqs"
 	exit
 # Quit
