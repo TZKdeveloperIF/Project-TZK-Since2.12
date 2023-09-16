@@ -16,7 +16,10 @@ if (not _bSettingDispInited || ((_bTzkChn && not bool_TZK_CHN_Lang) || (bool_TZK
 
 	{ctrlShow [_x, true]} foreach [_idcAbLabel, _idcAbLabel + 1];
 	{ctrlShow [_idcFactory + _x, true]; ctrlShow [_idcFacPic + _x, true]} forEach _facBias;
-	{ctrlShow [_idcBuyType + _x, true]; ctrlShow [_idcTypePic + _x, true]} forEach _typeBias;
+	{
+		ctrlShow [_idcBuyType + _x, true]; ctrlShow [_idcTypePic + _x, true];
+		ctrlShow [_idcBuyNum + _x, true];
+	} forEach _typeBias;
 };
 
 // update gi
@@ -47,16 +50,19 @@ if (_gi == -1) then { // ordering all groups
 };
 
 // update auto buy info
-private [{_lastFacCache},{_lastBuyCache}];
+private [{_lastFacCache},{_lastBuyCache},{_lastBuyNumCache}];
 // cache last sel for selecting all
-_lastFacCache = + _facIdxCache; _lastBuyCache = + _buyIdxCache;
+_lastFacCache = + _facIdxCache; _lastBuyCache = + _buyIdxCache; _lastBuyNumCache = + _buyNumCache;
 
 // clear factory combobox
 _facIdxCache = + _facInitCache;
 {lbClear (_idcFactory + _x), lbSetCurSel [(_idcFactory + _x), -1], ctrlSetText [_idcFacPic + _x, ""]} forEach _facBias;
-// clear buy type combobox
-_buyIdxCache = + _buyInitCache;
-{lbClear (_idcBuyType + _x), lbSetCurSel [(_idcBuyType + _x), -1], ctrlSetText [_idcTypePic + _x, ""]} forEach _typeBias;
+// clear buy type/num combobox
+_buyIdxCache = + _buyInitCache; _buyNumCache = + _buyNumInitCache;
+{
+	lbClear (_idcBuyType + _x), lbSetCurSel [(_idcBuyType + _x), -1], ctrlSetText [_idcTypePic + _x, ""];
+	lbClear (_idcBuyNum + _x), lbSetCurSel [(_idcBuyNum + _x), -1];
+} forEach _typeBias;
 
 private [{_idx}];
 if (_gi == -1) then { // ordering all groups
@@ -74,12 +80,17 @@ if (_gi == -1) then { // ordering all groups
 				_x call _updateTypePic;
 			};
 		} forEach _typeBias;
+		{
+			_idx = _lastBuyNumCache select _x, if (_idx != -1) then {
+				lbSetCurSel [_idcBuyNum + _x, _idx]; _buyNumCache set [_x, _idx];
+			};
+		} forEach _typeBias;
 	};
 } else { // ordering specific group
 	call _updateAutobuyInfo;
 
 	private [{_autoBuyFactories}];
-	_autoBuyFactories = AutoBuyStructMatrix select _si select _gi;
+	_autoBuyFactories = AutoBuyInfo select _si select _gi select 0;
 	{
 		_idx = _factories find (_autoBuyFactories select _x);
 		if (-1 != _idx) then {
@@ -89,7 +100,7 @@ if (_gi == -1) then { // ordering all groups
 	} forEach _facBias;
 
 	private [{_i},{_c},{_match},{_autoBuyTypes}];
-	_autoBuyTypes = AutoBuyTypeMatrix select _si select _gi;
+	_autoBuyTypes = AutoBuyInfo select _si select _gi select 1;
 	{
 		_i = 0; _c = lbSize (_idcBuyType + _x); _match = false;
 		while {_i < _c && not _match} do {
@@ -102,5 +113,12 @@ if (_gi == -1) then { // ordering all groups
 		};
 		if _match then {_buyIdxCache set [_x, lbCurSel (_idcBuyType + _x)]};
 		_x call _updateTypePic;
+	} forEach _typeBias;
+
+	private [{_autoBuyNums}];
+	_autoBuyNums = AutoBuyInfo select _si select _gi select 2;
+	{
+		lbSetCurSel [_idcBuyNum + _x, _autoBuyNums select _x];
+		_buyNumCache set [_x, lbCurSel (_idcBuyNum + _x)];
 	} forEach _typeBias;
 };

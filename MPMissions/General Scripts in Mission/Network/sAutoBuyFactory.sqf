@@ -1,13 +1,11 @@
-// args: [si, gi, index, new factory, factory type, gi sender]
+// args: [[si, gi, giSender], [auto buy enum, index of auto buy items], [new params]]
 // should be a sqf file for local synchronization
 
-_this call preprocessFile "Network\hAutoBuyFactory.sqf";
+_this call preprocessFile "Network\hAutoBuy.sqf";
 publicExec format [
-	{[%1,%2,%3,UnitById %4,%5] call preprocessFile "Network\hAutoBuyFactory.sqf"}
+	{[%1,%2,[UnitById %3,%4]] call preprocessFile "Network\hAutoBuy.sqf"}
 	, _this select 0
 	, _this select 1
-	, _this select 2
-	, (_this select 3) call funcGenNetIdStr
-	, _this select 4
-	, _this select 5
+	, (_this select 2 select 0) call funcGenNetIdStr
+	, _this select 2 select 1
 ];

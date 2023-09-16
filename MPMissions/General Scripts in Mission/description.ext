@@ -2585,6 +2585,7 @@ class CommandAIDialog2: CommandAIDialog {
 		TypeLabel, 
 		TypeComboBox0, TypeComboBox1, TypeComboBox2, TypeComboBox3, 
 		TypePic0, TypePic1, TypePic2, TypePic3, 
+		NumComboBox0, NumComboBox1, NumComboBox2, NumComboBox3, 
 	};
 
 	// narrow the order parameters
@@ -2691,7 +2692,7 @@ class CommandAIDialog2: CommandAIDialog {
 		idc = IDC + 16 * 32 + 0;
 		x = 0.64;
 		y = 0.41 + 0.04 * 0;
-		w = 0.14;
+		w = 0.10;
 	};
 	class TypePic0: FactoryPic0 {
 		idc = IDC + 16 * 33 + 0;
@@ -2720,6 +2721,24 @@ class CommandAIDialog2: CommandAIDialog {
 	};
 	class TypePic3: TypePic0 {
 		idc = IDC + 16 * 33 + 3;
+		y = 0.41 + 0.04 * 3;
+	};
+	class NumComboBox0: AutoBuyComboBoxBase {
+		idc = IDC + 16 * 34 + 0;
+		x = 0.64 + 0.10;
+		y = 0.41 + 0.04 * 0;
+		w = 0.04;
+	};
+	class NumComboBox1: NumComboBox0 {
+		idc = IDC + 16 * 34 + 1;
+		y = 0.41 + 0.04 * 1;
+	};
+	class NumComboBox2: NumComboBox0 {
+		idc = IDC + 16 * 34 + 2;
+		y = 0.41 + 0.04 * 2;
+	};
+	class NumComboBox3: NumComboBox0 {
+		idc = IDC + 16 * 34 + 3;
 		y = 0.41 + 0.04 * 3;
 	};
 };
