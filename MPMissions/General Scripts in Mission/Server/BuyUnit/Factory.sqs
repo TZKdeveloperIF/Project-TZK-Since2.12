@@ -46,6 +46,7 @@ mutexFacQueues = false
 	_qid = _entry select 6
 	_nCustomWeapon = _entry select 7
 
+	_queue select 0 resize 1; _queue select 0 set [0, 2]
 	[_queue, 0] call preprocessFile "Util\ArrayErase.sqf"
 
 	[_factory, _si, (count _queue) + 1] exec "\TZK_Scripts_4_0_4\Server\SendQueueLength.sqs"
@@ -178,6 +179,7 @@ mutexFacQueues = false
 
 	_cost = _unitDesc select udCost
 
+	_queue select 0 resize 1; _queue select 0 set [0, 2]
 	[_queue, 0] call preprocessFile "Util\ArrayErase.sqf"
 
 	_bVehicle = false

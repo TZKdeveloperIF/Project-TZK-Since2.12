@@ -1,4 +1,8 @@
-; args: [typeUnit, driver, gunner, commander, si, giJoin, giBuyer, oFactory, nCustomWeapon]
+; args: [typeUnit, driver, gunner, commander, si, giJoin, giBuyer, oFactory
+;		, nCustomWeapon?: number, order reference?: array]
+
+; ============================ About order reference ======================
+; Pass the queue item using "reference of array" in OFP script to caller.
 
 _type = _this select 0
 _driver = _this select 1
@@ -43,7 +47,9 @@ qidNext set [_si, _qidNext]
 	buildingsInUse set [count buildingsInUse, _factory]
 	mutexbuildingInUse = false
 # AddQueue
-_queue set [count _queue, [_type, _driver, _gunner, _commander, _giJoin, _giBuyer, _qid, _nCustomWeapon]]
+_item = [_type, _driver, _gunner, _commander, _giJoin, _giBuyer, _qid, _nCustomWeapon]
+? count _this > 9: _this set [9, _item]
+_queue set [count _queue, _item]
 
 ? _type >= maxUnitTypes: _unitDesc = unitDefs select (utCustom select _si)
 ? _type < maxUnitTypes: _unitDesc = unitDefs select _type
@@ -55,4 +61,6 @@ qidToCancel select _si set [ _qid, [_giJoin, _unitsToBuild] ]
 [_factory, _si, (count _queue) + 1] exec "\TZK_Scripts_4_0_4\Server\SendQueueLength.sqs"
 
 # Unlock
+; invalidated the order
+? count _this > 9: if (count (_this select 9) == 0) then {_this set [9, [-1]]}
 mutexBuildingQueue select _si set [_giJoin, false]; exit

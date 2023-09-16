@@ -57,12 +57,12 @@ _updateGrpOrder = preprocessFile "Player\Dialog\pUpdateGrpOrders.sqf"
 ; auto-buy part
 _idcAbLabel = IDC + 16 * 1 + 0
 _idcFactory = IDC + 16 * 4 + 0, _idcFacPic = IDC + 16 * 5 + 0
-_idcBuyType = IDC + 16 * 32 + 0, _idcTypePic = IDC + 16 * 33 + 0
+_idcBuyType = IDC + 16 * 32 + 0, _idcTypePic = IDC + 16 * 33 + 0, _idcBuyNum = IDC + 16 * 34 + 0
 
 _facBias = [0,1,2,3], _facInitCache = [-1,-1,-1,-1]
 _facIdxCache = + _facInitCache
-_typeBias = [0,1,2,3], _buyInitCache = [-1,-1,-1,-1]
-_buyIdxCache = + _buyInitCache
+_typeBias = [0,1,2,3], _buyInitCache = [-1,-1,-1,-1], _buyNumInitCache = [-1,-1,-1,-1]
+_buyIdxCache = + _buyInitCache; _buyNumCache = + _buyNumInitCache
 
 _factories = [], _facTypes = []
 _updateFactories = preprocessFile "Player\Dialog\AutoBuy_UpdateFactories.sqf"
@@ -73,7 +73,7 @@ _updateTypePic = preprocessFile "Player\Dialog\pAbUpdateTypeImage.sqf"
 	; initial of auto buy
 	{ctrlShow [_x, false]} foreach [_idcAbLabel, _idcAbLabel + 1]
 	{ctrlShow [_idcFactory + _x, false]; ctrlShow [_idcFacPic + _x, false]} forEach _facBias
-	{ctrlShow [_idcBuyType + _x, false]; ctrlShow [_idcTypePic + _x, false]} forEach _typeBias
+	{_bias = _x, {ctrlShow [_x + _bias, false]} forEach [_idcBuyType, _idcTypePic, _idcBuyNum]} forEach _typeBias
 
 # Update
 	ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]

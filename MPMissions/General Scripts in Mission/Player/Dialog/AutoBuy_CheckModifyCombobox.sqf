@@ -42,3 +42,22 @@ private [{_idc},{_idx}];
 		};
 	};
 } forEach _typeBias;
+
+// auto buy num
+{
+	_idc = _idcBuyNum + _x; _idx = lbCurSel _idc;
+	if (_idx != _buyNumCache select _x) then {
+		_buyNumCache set [_x, _idx];
+
+		if (_idx != -1) then {
+			if (_gi == -1) then {
+				[_si, -1, _x, lbValue [_idc, _idx], giPlayer] call preprocessFile "Network\sAutoBuyNum.sqf";
+			} else {
+				// check whether player is ai group's superior
+				if (isCommander || [_si, _gi, giPlayer] call _funcLeadBy) then {
+					[_si, _gi, _x, lbValue [_idc, _idx], giPlayer] call preprocessFile "Network\sAutoBuyNum.sqf";
+				};
+			};
+		};
+	};
+} forEach _typeBias;
