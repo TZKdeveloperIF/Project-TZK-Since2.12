@@ -19,10 +19,14 @@ _setting = aiSetting select _si select _gi
 _unitsStarted = units _group
 _funcGetSlots = preprocessFile "Server\SQF\AiGroupSlots.sqf"
 _factories = []; _assignedFacs = []
-_autoBuyFactories = AutoBuyStructMatrix select _si select _gi
-_autoBuyTypeEntry = AutoBuyTypeMatrix select _si select _gi
+_autoBuyFactories = AutoBuyInfo select _si select _gi select 0
+_autoBuyTypeEntry = AutoBuyInfo select _si select _gi select 1
+_autoBuyNums = AutoBuyInfo select _si select _gi select 2
 _lambda = "false", _lambdaInited = false
-_funcGetAutoBuyType = preprocessFile "Server\Loop\GetAbType.sqf"
+; local variables pool
+_emptyArr = []
+_grpBuyOrders = []
+
 ~ 5
 # Update
 	? !(alive _unit): goto "WaitUntilAlive"
@@ -137,6 +141,8 @@ _funcGetAutoBuyType = preprocessFile "Server\Loop\GetAbType.sqf"
 	goto "Update"
 	
 # CheckBuyUnit
+	call preprocessFile "Server\Loop\AutoBuyRemInvOrder.sqf"
+
 	_KeepMin = aisKeepDefs select (_setting select aisKeepMin)
 	? _money <= _KeepMin: goto "Sleep"
 	_slots = maxGroupSize - (count units _group + (groupUnitsBuildingMatrix select _si select _gi))
@@ -145,53 +151,9 @@ _funcGetAutoBuyType = preprocessFile "Server\Loop\GetAbType.sqf"
 	? _groupSize == 1: goto "Sleep"
 	? _groupSize > 1 && _groupSize < maxGroupSize: _slots = [_si, _gi, _groupSize] call _funcGetSlots; if (_slots <= 0) then {goto "Sleep"}
 
-	_type = _autoBuyTypeEntry call _funcGetAutoBuyType
-	? _type == -1: goto "Sleep"
+	_typeInfos = [_autoBuyTypeEntry, _autoBuyNums, _slots] call preprocessFile "Server\Loop\GetAbType.sqf"
+	? count _typeInfos <= 0: goto "Sleep"
 
-	? not ([_si, _type] call loadFile "Util\UnitCanBuy.sqf"): goto "Sleep"
+	_typeInfos call preprocessFile "Server\Loop\AutoBuyExec.sqf"
 
-	_unitDesc = unitDefs select _type
-	_cost = _unitDesc select udCost
-	_crew = _unitDesc select udCrew
-	_driver = 0
-	_gunner = 0
-	? (count _crew) == 2 : _costCrew = (unitDefs select (_crew select 1)) select udCost; _driver = 1; _gunner = [0, 1] select ((_crew select 0) > 1); _cost = _cost + _driver*_costCrew + _gunner*_costCrew
-	? _slots < (_driver + _gunner): goto "Sleep"
-	? (_driver + _gunner) > 0 : _slots = _slots / (_driver + _gunner); _slots = _slots - _slots % 1
-	? _money < _cost: goto "Sleep"
-	
-	_factoryType = (_unitDesc select udFactoryType) call funcBinaryDigit
-
-	_assignedFacs resize 0
-	{if (alive _x && not (_x in _assignedFacs)) then {_assignedFacs set [count _assignedFacs, _x]}} forEach _autoBuyFactories
-	? count _assignedFacs > 0: goto "BuyAtSetFactory"
-	; todo: To improve concurrency, optimize the concept of "idle factory / buildingsInUse" would be a good choice
-
-	; BuyAtOldFashion
-		_factories resize 0
-		{[_factories, [_si, _x, true] call funcGetIdleFactories] call preprocessFile "Util\ArrayAppend.sqf"} forEach _factoryType
-		? count _factories > _slots: _factories resize _slots
-		{ [_type, _driver, _gunner, 0, _si, _gi, _gi, _x] exec localize {TZK_AI_BUY_UNIT} } forEach _factories
-		goto "Sleep"
-	
-	# BuyAtSetFactory
-		? not _lambdaInited: _lambdaInited = true, _lambda = format [{not ([_this, %1] call {%2})}, _si, preprocessFile "Server\SQF\LegalIdleFactory.sqf"]
-		_factories resize 0
-		_i = 0, _c = count _assignedFacs
-		# AnalysisFac
-			_factory = _assignedFacs select _i
-			_facType = _factory call funcGetStructTypeFromObject
-			? not (_facType in _factoryType): goto "continue_AF"
-			? _factory call _lambda: goto "continue_AF"
-
-			_factories set [count _factories, _factory]
-
-			# continue_AF
-			_i = _i + 1
-			? _i < _c: goto "AnalysisFac"
-
-		? count _factories == 0: goto "Bought"
-		? count _factories > _slots : _factories resize _slots
-		{ [_type, _driver, _gunner, 0, _si, _gi, _gi, _x] exec localize {TZK_AI_BUY_UNIT} } forEach _factories
-	# Bought
-		goto "Sleep"
+	goto "Sleep"

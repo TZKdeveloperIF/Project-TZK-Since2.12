@@ -18,7 +18,7 @@
 	};
 } forEach _facBias;
 
-// initialize auto buy type combobox
+// initialize auto buy type/num combobox
 {
 	private [{_begin},{_end},{_id},{_i},{_unitDesc}];
 	_id = lbAdd [_idcBuyType + _x, "None"];
@@ -35,4 +35,10 @@
 		};
 		_i = _i + 1;
 	};
+
+	_ctrlIdx = _x;
+	{
+		_id = lbAdd [_idcBuyNum + _ctrlIdx, (if (0 == _x) then {" "} else {format ["%1", _x]})];
+		lbSetValue [_idcBuyNum + _ctrlIdx, _id, _x];
+	} forEach [0,1,2,3,4];
 } forEach _typeBias;

@@ -14,7 +14,7 @@ if (-1 == _gi) then {
 	_validGroupNames = []; _j = 0;
 	_gis = ([_si] call funcGetAIGroupsIndex); _i = 0; _c = count _gis; while {_i < _c} do {
 		_gi = _gis select _i;
-		private [{_autoBuyFactories}]; _autoBuyFactories = AutoBuyStructMatrix select _si select _gi;
+		private [{_autoBuyFactories}]; _autoBuyFactories = AutoBuyInfo select _si select _gi select 0;
 		_bContinue = false;
 	
 		// same object check?
@@ -48,7 +48,7 @@ if (-1 == _gi) then {
 	};
 } else {
 	_gi = _this select 1;
-	private [{_autoBuyFactories}]; _autoBuyFactories = AutoBuyStructMatrix select _si select _gi;
+	private [{_autoBuyFactories}]; _autoBuyFactories = AutoBuyInfo select _si select _gi select 0;
 	_autoBuyFactories set [_index, _factory];
 	if (not isNull player) then {if (_si == siPlayer) then {
 		leader (groupMatrix select _si select _gi) sidechat format [
