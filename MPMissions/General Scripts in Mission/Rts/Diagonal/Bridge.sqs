@@ -10,13 +10,14 @@ _vec = [[_markerSize select 0, _markerSize select 1], _markerDir] call funcVecto
 _pos1 = [_markerPos, _vec] call funcVectorSub
 _pos2 = [_markerPos, _vec] call funcVectorAdd
 
+_lowerBound = 70
 _param = [_pos1, _pos2]
 _legal = _param call preprocessFile "Util\Bridge\LegalPos.sqf"
 
 ? _legal: goto "CanBuildBridge"
 	_enum = _param select 2
 	? 0 == _enum: hint "Please choose points close enough to the sea."
-	? 1 == _enum: hint "Distance < 50 meters. Bridge won't be built."
+	? 1 == _enum: hint format ["Distance < %1 meters. Bridge won't be built.", _lowerBound]
 	? 2 == _enum: hint "There're lands between 2 points. Please build only over the sea."
 	exit
 # CanBuildBridge
@@ -27,28 +28,35 @@ _legal = _param call preprocessFile "Util\Bridge\LegalPos.sqf"
 ; if start pos is lower, the last part heading sky at the end pos might cross the land surface
 ; the last part should be horizontal and contact with the other part of the bridge. It's a fold line
 
+_minH = 8
+; The bridges' height should keep higher than _minH meters to get avoid from tanks being soaked
+; and to allow ships acrossing
+
+; directly link 2 points using bridges. In most cases the distance isn't the integer number times of 
+; bridge length (50m). Just overlap the bridges. The "_lowerBound" ensures the distance that linking
+; 2 points is no less than 50m.
+
+_funcUnitVector = preprocessFile "Math\UnitVector.sqf"
+
 _h1 = _pos1 call funcHASL, _h2 = _pos2 call funcHASL; _deltaH = _h2 - _h1;
 _pos1 set [2, _h1], _pos2 set [2, _h2];
 
-_bridgeL = 50, _correct = 33.55 - 20.489;
-
-_distH = [_pos1, _pos2] call funcDistH;
-_distance = sqrt(_distH * _distH + _deltaH * _deltaH);
-_slopedCnt = ((_distance / _bridgeL) call preprocessFile "Math\Ceil.sqf") - 1;
-_slopeLen = _slopedCnt * _bridgeL;
-_restLen = _distH - sqrt(_slopeLen * _slopeLen - _deltaH * _deltaH);
-
 _unitH = [_pos2, _pos1] call funcVectorSub; _unitH set [2, 0];
-_unitH = [_unitH, 1 / _distH] call funcVectorScale;
+_unitH = _unitH call _funcUnitVector
 _dir = (_unitH select 0) atan2 (_unitH select 1); _dir = _dir - _dir % 0.1;
 
-_pos3 = [_pos2, [_unitH, _restLen] call funcVectorScale] call funcVectorSub;
+; 2 m extra extension
+_pos1 = [_pos1, [_unitH, -2] call funcVectorScale] call funcVectorAdd
+_pos2 = [_pos2, [_unitH, +2] call funcVectorScale] call funcVectorAdd
 
-_unitSlope = [_pos3, _pos1] call funcVectorSub;
-_unitSlope = [_unitSlope, 1 / _slopeLen] call funcVectorScale;
+_beginPos = + _pos1, _endPos = + _pos2
 
-? _slopedCnt < 1: "Unexpected _slopedCnt occurs" call fDebuglog;
-_i = 0; _cost = structDefs select stBridge select sdCost
+_bridgeL = 50, _correct = 33.55 - 20.489;
+_buildBeginDummy = _h1 < _minH; _buildEndDummy = _h2 < _minH
+? _buildBeginDummy: _beginPos = [_pos1, [_unitH, 10] call funcVectorScale] call funcVectorAdd, _beginPos set [2, _minH]
+? _buildEndDummy: _endPos = [_pos2, [_unitH, - 10] call funcVectorScale] call funcVectorAdd, _endPos set [2, _minH]
+
+_cost = structDefs select stBridge select sdCost
 _marker = createMarker ["TzkBridgeBuilding", hiddenMarkerPos]
 _marker setMarkerColor "ColorCyan_xj400";
 _marker setMarkerShape "ELLIPSE";
@@ -61,43 +69,55 @@ _text setMarkerType "Warning";
 _text setMarkerText "Send MHQ/Engineer veh to build bridge."
 _markers = [_marker, _text]
 
+? not _buildBeginDummy: goto "FinishBeginDummy"
+; Begin Dummy
+	_unitBeg = ([_beginPos, _pos1] call funcVectorSub) call _funcUnitVector
+	_roadwayCenter = [_beginPos, [_unitBeg, _bridgeL * - 0.5] call funcVectorScale] call funcVectorAdd;
+
+	_asyncParam = [[_unitBeg, _roadwayCenter, _correct, _cost, _markers], false]
+	_asyncParam exec "Rts\Diagonal\AsyncConstructBridge.sqs"
+	# CheckBridgeOnBeginning
+		~ 0.5
+		? not (_asyncParam select 1): goto "CheckBridgeOnBeginning"
+
+# FinishBeginDummy
+
+_distance = ([_endPos, _beginPos] call funcVectorSub) call funcVectorLength
+? _distance < 50: "Unexpected distance in building bridge." call fDebuglog;
+_midBridgeCnt = (_distance / _bridgeL) call preprocessFile "Math\Ceil.sqf"
+_step = _distance / _midBridgeCnt
+
+_unitSlope = ([_endPos, _beginPos] call funcVectorSub) call _funcUnitVector
+
+_i = 0
 # SlopeStage
-	_roadwayCenter = [_pos1, [_unitSlope, _bridgeL * (_i + 0.5)] call funcVectorScale] call funcVectorAdd;
+	_centerCorrection = _step * (_i + 0.5)
+	; no correction for first/last stage to ensure continuous if dummy required
+	? 0 == _i: _centerCorrection = _bridgeL * 0.5
+	? _midBridgeCnt - 1 == _i: _centerCorrection = _distance - _bridgeL * 0.5
 
-	_param = [_roadwayCenter, false]
-	_param exec "Rts\Diagonal\BridgeCheck.sqs"
-	_show = true
-	# CheckBridgeInSlope
-		~ 1
-		? not (_param select 1) && _show: _show = false; {_x setMarkerPos _roadwayCenter} forEach _markers
-		? not (_param select 1): goto "CheckBridgeInSlope"
-	{_x setMarkerPos hiddenMarkerPos} forEach _markers
-	[_cost] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"
+	_roadwayCenter = [_beginPos, [_unitSlope, _centerCorrection] call funcVectorScale] call funcVectorAdd;
 
-	_roadwayCenter set [2, (_roadwayCenter select 2) - _correct];
-	{_val = _roadwayCenter select _x; _val = _val - _val % 0.1; _roadwayCenter set [_x, _val]} forEach [0,1,2];
-	[siPlayer, giPlayer, _roadWayCenter, _unitSlope] exec "Util\Bridge\Build.sqs";
-	publicExec format [{%1 exec "Util\Bridge\Build.sqs"}, [siPlayer, giPlayer, _roadWayCenter, _unitSlope]];
+	_asyncParam = [[_unitSlope, _roadwayCenter, _correct, _cost, _markers], false]
+	_asyncParam exec "Rts\Diagonal\AsyncConstructBridge.sqs"
+	# CheckBridgeInMiddle
+		~ 0.5
+		? not (_asyncParam select 1): goto "CheckBridgeInMiddle"
 
 	_i = _i + 1;
-	? _i < _slopedCnt: goto "SlopeStage"
+	? _i < _midBridgeCnt: goto "SlopeStage"
 
-; last part. Is it possible to remain more than 1 part?
-	_roadwayCenter = [_pos3, [_unitH, _bridgeL / 2] call funcVectorScale] call funcVectorAdd;
+? not _buildEndDummy: goto "FinishEndDummy"
+	_unitEnd = ([_pos2, _endPos] call funcVectorSub) call _funcUnitVector
+	_roadwayCenter = [_endPos, [_unitEnd, _bridgeL * 0.5] call funcVectorScale] call funcVectorAdd;
 
-	_param = [_roadwayCenter, false]
-	_param exec "Rts\Diagonal\BridgeCheck.sqs"
-	_show = true
+	_asyncParam = [[_unitEnd, _roadwayCenter, _correct, _cost, _markers], false]
+	_asyncParam exec "Rts\Diagonal\AsyncConstructBridge.sqs"
 	# CheckBridgeInTheEnd
-		~ 1
-		? not (_param select 1) && _show: _show = false; {_x setMarkerPos _roadwayCenter} forEach _markers
-		? not (_param select 1): goto "CheckBridgeInTheEnd"
-	{_x setMarkerPos hiddenMarkerPos} forEach _markers
-	[_cost] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"
+		~ 0.5
+		? not (_asyncParam select 1): goto "CheckBridgeInTheEnd"
 
-	_roadwayCenter set [2, (_roadwayCenter select 2) - _correct];
-	{_val = _roadwayCenter select _x; _val = _val - _val % 0.1; _roadwayCenter set [_x, _val]} forEach [0,1,2];
-	[siPlayer, giPlayer, _roadWayCenter, _unitH] exec "Util\Bridge\Build.sqs";
-	publicExec format [{%1 exec "Util\Bridge\Build.sqs"}, [siPlayer, giPlayer, _roadWayCenter, _unitSlope]];
+# FinishEndDummy
 
+TitleText ["Bridge built", "Plain Down"]
 {deleteMarker _x} forEach _markers

@@ -1,5 +1,6 @@
 // args: [pos1, pos2, fail reason: enum]
 // return: bool
+// read _lowerBound externally
 // if returns failure, pass reason enum by parameters
 
 private [{_pos1}, {_pos2}];
@@ -12,8 +13,8 @@ private [{_legal}, {_enum}]; _legal = true; _enum = -1;
 if _legal then {if not ([_pos1, 50] call funcPosNearSea) then {_legal = false, _enum = 0}};
 if _legal then {if not ([_pos2, 50] call funcPosNearSea) then {_legal = false, _enum = 0}};
 
-// bridge length is 50. require distance between 2 position large than 50
-if _legal then {if (50 >= ([_pos1, _pos2] call funcDistH)) then {_legal = false, _enum = 1}};
+// bridge length is _lowerBound. require distance between 2 position large than _lowerBound
+if _legal then {if (_lowerBound >= ([_pos1, _pos2] call funcDistH)) then {_legal = false, _enum = 1}};
 
 // check points along the way
 if _legal then {
