@@ -8,6 +8,9 @@ _pos1 = _this select 0; _pos2 = _this select 1;
 
 private [{_legal}, {_enum}]; _legal = true; _enum = -1;
 // 0: too far to sea, 1: pos too close, 2: points along the way isn't in sea
+// 3: anyone point is in the sea
+if _legal then {if not ([_pos1, 0] call funcPosNearSea) then {_legal = false, _enum = 3}};
+if _legal then {if not ([_pos2, 0] call funcPosNearSea) then {_legal = false, _enum = 3}};
 
 // require 2 position near sea enough
 if _legal then {if not ([_pos1, 50] call funcPosNearSea) then {_legal = false, _enum = 0}};

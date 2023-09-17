@@ -19,6 +19,7 @@ _legal = _param call preprocessFile "Util\Bridge\LegalPos.sqf"
 	? 0 == _enum: hint "Please choose points close enough to the sea."
 	? 1 == _enum: hint format ["Distance < %1 meters. Bridge won't be built.", _lowerBound]
 	? 2 == _enum: hint "There're lands between 2 points. Please build only over the sea."
+	? 3 == _enum: hint "Please choose points not in the sea."
 	exit
 # CanBuildBridge
 
