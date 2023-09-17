@@ -8,7 +8,11 @@ if (_unit == driver _v) then {
 	} else {
 		_rearm = [
 			_v, 
-			aiSetting select _si select _gi select aisAutoRearmSabot
+			if (_gi >= 0 && _gi < count (aiSetting select _si)) then {
+				aiSetting select _si select _gi select aisAutoRearmSabot
+			} else {
+				7 // magic number for non-control AI groups
+			}
 		] call preprocessFile "Util\NeedRearmVehicle.sqf";
 	};
 };
