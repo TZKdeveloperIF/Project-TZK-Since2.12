@@ -108,6 +108,9 @@ _i = 0, _c = _typeCnt, _transpTypes = [], _transpTypes resize _c
 		; TryGetIn
 		? not alive _target: goto "SearchTarget"
 
+		; stop those vehicle that has driver and selected by this command
+		? not isNull driver _target: [[driver _target], 0, "hStop.sqs", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs"
+
 		_availableSeats resize 0
 		{if (1 == [_target, _x] call funcVehParamHasSeat) then {_availableSeats set [count _availableSeats, _x]}} forEach _seats
 
@@ -167,7 +170,7 @@ _i = 0, _c = _typeCnt, _transpTypes = [], _transpTypes resize _c
 
 	_bClear = false;
 	? 1 == _reclaimStrategy && _bLand: _bClear = true
-	? _bClear: [[_unit], [_si, false]] exec "Rts\Framework\OrderDtor.sqs", exit
+	? _bClear: [[driver _target, gunner _target] - [objNull], [_si, false]] exec "Rts\Framework\OrderDtor.sqs", exit
 	goto "StopAndWait"
 # StopAndWait
 	[_unit, -1, _rtsStatus, _id] exec "Rts\Order\hStop.sqs"
