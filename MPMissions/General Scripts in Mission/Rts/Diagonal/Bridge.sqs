@@ -25,10 +25,6 @@ _legal = _param call preprocessFile "Util\Bridge\LegalPos.sqf"
 
 ; todo: client-global cancel bridge building process
 
-; there're height diff between start and end pos
-; if start pos is lower, the last part heading sky at the end pos might cross the land surface
-; the last part should be horizontal and contact with the other part of the bridge. It's a fold line
-
 _minH = 8
 ; The bridges' height should keep higher than _minH meters to get avoid from tanks being soaked
 ; and to allow ships acrossing
@@ -54,8 +50,13 @@ _beginPos = + _pos1, _endPos = + _pos2
 
 _bridgeL = 50, _correct = 33.55 - 20.489;
 _buildBeginDummy = _h1 < _minH; _buildEndDummy = _h2 < _minH
-? _buildBeginDummy: _beginPos = [_pos1, [_unitH, 10] call funcVectorScale] call funcVectorAdd, _beginPos set [2, _minH]
-? _buildEndDummy: _endPos = [_pos2, [_unitH, - 10] call funcVectorScale] call funcVectorAdd, _endPos set [2, _minH]
+_dummyLen = (([_pos1, _pos2] call funcDistH) - 50) / 2
+; ASSERT(_dummyLen >= 10)
+? _dummyLen < 10: _dummyLen = 10
+; upper bound of dummy len should less than sqrt(_bridgeL^2 - _minH^2)
+? _dummyLen > 45: _dummyLen = 45
+? _buildBeginDummy: _beginPos = [_pos1, [_unitH, _dummyLen] call funcVectorScale] call funcVectorAdd, _beginPos set [2, _minH]
+? _buildEndDummy: _endPos = [_pos2, [_unitH, - _dummyLen] call funcVectorScale] call funcVectorAdd, _endPos set [2, _minH]
 
 _cost = structDefs select stBridge select sdCost
 _marker = createMarker ["TzkBridgeBuilding", hiddenMarkerPos]
