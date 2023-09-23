@@ -17,6 +17,27 @@ _crossBrdige = _param select 4
 
 ? count _dest < 3: _dest set [2, _dest call funcHASL]
 
+? not _crossBrdige: goto "ReadyCheckFinished"
+; Need to wait all units in vehicle "ready", otherwise vehicle won't keep their direction as expected
+; However no available script command to remove "move" status ordered by player directly
+; we can only wait in script
+_counter = 0
+_vehicle doMove getPos _vehicle
+# ReadyLoop
+	_counter = _counter + 1
+
+	_crews = crew _vehicle, _b = true, {if not (unitReady _x) then {_b = false}} forEach _crews
+	? not _b && 2 == _counter % 5: {_x doFollow leader _x} forEach _crews
+	? not _b && 19 == _counter % 20: _vehicle groupChat "Stuck in crossing bridge. Order 'fall back into formation' to free me."
+	~ 0.5
+
+	? count _crews <= 0: goto "EOF"
+	? not (_this select 1): goto "EOF"
+	? not alive _vehicle: goto "EOF"
+	? not _b: goto "ReadyLoop"
+
+# ReadyCheckFinished
+
 _vehicle doWatch _dest
 
 ? not (_this select 1): goto "EOF"
@@ -27,7 +48,9 @@ _vehicle setVectorDir _delta
 
 _inHalfPlane = preprocessFile "Math\InHalfPlane.sqf"
 
+_counter = 0
 # loop
+	_counter = _counter + 1
 	_moveSpd = (abs(speed _vehicle) + 10) / 3.6
 	? _speed < _moveSpd || _crossBrdige: _moveSpd = _speed
 	? _moveSpd < _speed && 1 == _forceSpdType: _moveSpd = _speed
@@ -46,12 +69,23 @@ _inHalfPlane = preprocessFile "Math\InHalfPlane.sqf"
 		_vec = [_vec, [0,0,1], getDir _bridge] call funcVectorRot3D
 		_vec set [1,0], _vec set [2, 0]
 		_vec = [_vec, [0,0,1], - (getDir _bridge)] call funcVectorRot3D
-		_vehicle setPosASL ([_pos, _vec] call funcVectorAdd)
 
-		; _diff set [2, (_diff select 2) + 2]
+		; add z-correction in position/velocity. OFP engine has bug that z-bias sometimes won't work
+		; Refer to solution of attach, move vehicle to the sea and move back after a delay
+		_correctedPos = [_pos, _vec] call funcVectorAdd
+		? _counter < 3: _correctedPos = [_correctedPos, [0, 0, 0.5]] call funcVectorAdd, _vehicle setPosASL positionAttach
+		~ 0.1
+		_vehicle setPosASL _correctedPos
+
+		; _diff set [2, (_diff select 2) + 1]
 
 	# ForceMove
-		? _moveSpd * 3.6 > 18: _vehicle setVectorDir _diff
+		? _moveSpd * 3.6 <= 18 || not _crossBrdige: goto "VectorAdjusted"
+			_up = vectorUp _bridge
+			_vehicle setVectorDir _diff
+			_vehicle setVectorUp _up
+			_vehicle setPosASL _correctedPos
+		# VectorAdjusted
 		_vehicle setVelocity _diff
 	~ 0.2
 		_vehicle doWatch _dest

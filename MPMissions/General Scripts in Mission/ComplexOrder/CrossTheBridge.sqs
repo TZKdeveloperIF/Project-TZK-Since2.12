@@ -27,6 +27,21 @@ _msg = ""
 
 _onBridge = preprocessFile "Util\Bridge\On.sqf"
 _vehicle = vehicle _unit
+
+; force vehicle "ready" before start the script
+_counter = 0
+_vehicle doMove getPos _vehicle
+# ForceReady
+	_counter = _counter + 1
+
+	_crews = crew _vehicle, _b = true, {if not (unitReady _x) then {_b = false}} forEach _crews
+	? not _b && 2 == _counter % 5: {_x doFollow leader _x} forEach _crews
+	? not _b && 19 == _counter % 20: _vehicle groupChat "Stuck in crossing bridge. Order 'fall back into formation' to free me."
+	~ 0.5
+
+	? call _quitCond: goto "Quit"
+	? not _b: goto "ForceReady"
+
 ? [getPosASL _vehicle, _bridge1] call _onBridge: goto "OnBridge1"
 
 	_endPoints = _bridge1 call preprocessFile "Util\Bridge\EndPoints.sqf"
