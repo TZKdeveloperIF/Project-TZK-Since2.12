@@ -33,7 +33,7 @@ _vehicle = vehicle _unit
 	_endPoint = _endPoints select 0
 	? [_vehicle, (_endPoints select 1)] call funcDistH < [_vehicle, _endPoint] call funcDistH: _endPoint = _endPoints select 1
 
-	_moveParamCache = [true, true, [_vehicle, _endPoint, 20, 0, false]]
+	_moveParamCache = [true, true, [_vehicle, _endPoint, 30, 1, false]]
 	_moveParamCache exec "Util\MoveVehUsingSetVel.sqs"
 	# loopMoveLand
 		~ 1
@@ -47,7 +47,7 @@ _vehicle = vehicle _unit
 	_endPoint = _endPoints select 0
 	? [_vehicle, (_endPoints select 1)] call funcDistH > [_vehicle, _endPoint] call funcDistH: _endPoint = _endPoints select 1
 
-	_moveParamCache = [true, true, [_vehicle, _endPoint, 60, 0, true]]
+	_moveParamCache = [true, true, [_vehicle, _endPoint, 65, 0, true]]
 	_moveParamCache exec "Util\MoveVehUsingSetVel.sqs"
 	# loopMoveBridge
 		~ 1
