@@ -108,12 +108,6 @@ _plz05ShrapnelE = _type;
 typesHowitzer set [count typesHowitzer, _m109ShrapnelW];
 typesHowitzer set [count typesHowitzer, _plz05ShrapnelE];
 
-// Recover old style MG for heavy tank
-_entry = unitDefs select _tankHeavyW01 select udScripts;
-_entry set [count _entry, "Common\Equip\M1A1.sqs"];
-_entry = unitDefs select _tankHeavyE01 select udScripts;
-_entry set [count _entry, "Common\Equip\T80.sqs"];
-
 // Redefine type class to those objects whose dynamic texture is disabled by 4.0.6 patch2
 _entry = unitDefs select _tankHeavyW01; _entry set [udModel, "M1A1_G_xj400"];
 _entry = unitDefs select _tankHeavyW03; _entry set [udModel, "Leo2A6_C_xj400"];
