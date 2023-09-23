@@ -62,6 +62,8 @@ _vehicle doMove getPos _vehicle
 	_endPoint = _endPoints select 0
 	? [_vehicle, (_endPoints select 1)] call funcDistH > [_vehicle, _endPoint] call funcDistH: _endPoint = _endPoints select 1
 
+	_delta = ([_endPoint, getPosASL _vehicle] call funcVectorSub) call preprocessFile "Math\UnitVector.sqf"
+
 	_moveParamCache = [true, true, [_vehicle, _endPoint, 65, 0, true]]
 	_moveParamCache exec "Util\MoveVehUsingSetVel.sqs"
 	# loopMoveBridge
@@ -70,6 +72,16 @@ _vehicle doMove getPos _vehicle
 		? _moveParamCache select 0: goto "loopMoveBridge"
 	
 	_vehicle groupChat "Bridge crossed."
+
+; LeaveTheBridge
+	_endPoint = [[_delta, 30] call funcVectorScale, getPosASL _vehicle] call funcVectorAdd
+
+	_moveParamCache = [true, true, [_vehicle, _endPoint, 50, 1, false]]
+	_moveParamCache exec "Util\MoveVehUsingSetVel.sqs"
+	# loopMoveLeave
+		~ 1
+		? call _quitCond: _moveParamCache set [1, false], goto "Quit"
+		? _moveParamCache select 0: goto "loopMoveLeave"
 
 ; End Of File
 # Quit
