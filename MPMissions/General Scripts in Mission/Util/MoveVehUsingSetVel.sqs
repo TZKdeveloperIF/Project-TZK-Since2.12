@@ -1,4 +1,4 @@
-; args: [output status (write only), input status (read only), [vehice, pos, speed (km/h), delay, cross bridge: bool]]
+; args: [output status (write only), input status (read only), [vehice, pos, speed (km/h), force speed type, cross bridge: bool]]
 
 ; this SQS script loops to move vehicle using "setVelocity" command
 ; on script finished/aborted, the output status will be set to "false"
@@ -12,13 +12,12 @@ _vehicle = _param select 0
 _dest = _param select 1
 ; "speed" uses km/h while "velocity" uses m/s
 _speed = (_param select 2) / 3.6
-_delay = _param select 3
+_forceSpdType = _param select 3
 _crossBrdige = _param select 4
 
 ? count _dest < 3: _dest set [2, _dest call funcHASL]
 
 _vehicle doWatch _dest
-~ _delay
 
 ? not (_this select 1): goto "EOF"
 
@@ -31,6 +30,7 @@ _inHalfPlane = preprocessFile "Math\InHalfPlane.sqf"
 # loop
 	_moveSpd = (abs(speed _vehicle) + 10) / 3.6
 	? _speed < _moveSpd || _crossBrdige: _moveSpd = _speed
+	? _moveSpd < _speed && 1 == _forceSpdType: _moveSpd = _speed
 
 	doStop _vehicle
 	_pos = getPosASL _vehicle
