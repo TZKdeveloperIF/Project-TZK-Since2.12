@@ -13,7 +13,7 @@ if ("hShootArea.sqs" == _scriptName) then {
 	[_param select 2, _param select 4, _param select 5, true] call preprocessFile "Art\PreAnalysesArtArea.sqf";
 };
 if ("hReclaim.sqs" == _scriptName) then {
-	format ["hReclaim params: %1, constant: %2", _param, typesHeavyTank] exec "Log\AddSvrLog.sqs";
+	format ["hReclaim params: %1", _param] exec "Log\AddSvrLog.sqs";
 };
 
 private [{_scriptPath}, {_i},{_j},{_k},{_c},{_unit},{_idx},{_found},{_bNewObj}];
