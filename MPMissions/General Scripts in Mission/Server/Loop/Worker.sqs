@@ -118,7 +118,7 @@ _supplyWorker = preprocessFile "Server\SQF\SupplyWorker.sqf"
 
 			[_si, giCO select _si, _cost] exec localize {TZK_MONEY_SERVER_SPEND}; _damage = _damage - _repair*_rateRep
 			(_repairInfoList select _index) set [0, _damage]
-			? _damage <= 0: [_object, _type, _si] exec "Server\RepairStruct.sqs"; _repairObjList set [_index, objNull]
+			? _damage <= 0: [_object, _type, _si] exec "Server\ReplacePrimStruct.sqs"; _repairObjList set [_index, objNull]
 		
 		mutexRepairStructure = false
 		~_sleep
