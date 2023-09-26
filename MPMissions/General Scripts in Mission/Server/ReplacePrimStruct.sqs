@@ -60,4 +60,10 @@ if (_type in structsDestroy) then {(_objects select 0) exec "\TZK_Scripts_4_0_4\
 _i = structServer find _objectDestroyed
 ? _i == -1: "ERROR: _object not found in ReplacePrimStruct when structure is to be deleted. It might remain some rubbish unable to clear during the whole game." call fDebugLog
 ? _i != -1: structServer set [_i, _object]; {_x setDamage 0} forEach (structsServer select _i select 0)
-_objectDestroyed setPos [-1000,0,0]; [_objectDestroyed, 60] exec localize {TZK_PATH_DELAY_DELETE_UNIT}
+
+_objectDestroyed setPos [-1000,0,0]
+? not (_type in structsFactory): goto "SkipReplaceFac"
+	[_objectDestroyed, _object, _si] call preprocessFile "Server\ReplaceAutoBuyFactory.sqf"
+	publicExec format [{[UnitById %1, UnitById %2, %3] call preprocessFile "Server\ReplaceAutoBuyFactory.sqf"}, _objectDestroyed call funcGenNetIdStr, _object call funcGenNetIdStr, _si]
+# SkipReplaceFac
+	[_objectDestroyed, 60] exec localize {TZK_PATH_DELAY_DELETE_UNIT}
