@@ -4,7 +4,7 @@ private [{_typeInfos}];
 _typeInfos = _this;
 
 _assignedFacs resize 0;
-{if (alive _x && not (_x in _assignedFacs)) then {_assignedFacs set [count _assignedFacs, _x]}} forEach _autoBuyFactories;
+{if (not (_x in _assignedFacs)) then {_assignedFacs set [count _assignedFacs, _x]}} forEach _autoBuyFactories;
 
 private [{_type},{_num},{_driver},{_gunner}, {_factoryType}];
 {
@@ -35,10 +35,12 @@ private [{_type},{_num},{_driver},{_gunner}, {_factoryType}];
 		_factories resize 0;
 		_i = 0, _c = count _assignedFacs; while {_i < _c} do {
 			_factory = _assignedFacs select _i;
-			_facType = _factory call funcGetStructTypeFromObject;
-			if (_facType in _factoryType) then {
-				if not (_factory call _lambda) then {
-					_factories set [count _factories, _factory];
+			if (alive _factory) then {
+				_facType = _factory call funcGetStructTypeFromObject;
+				if (_facType in _factoryType) then {
+					if not (_factory call _lambda) then {
+						_factories set [count _factories, _factory];
+					};
 				};
 			};
 
