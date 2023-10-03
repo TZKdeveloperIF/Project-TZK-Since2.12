@@ -10,6 +10,8 @@ _this = 0
 _vehicle = vehicle _unit
 _groupKiller = group _killer
 
+? not isNull player: if (_siUnit == siPlayer) then {_killer exec "SpotEnemy\Add2PplArray.sqs"}
+
 _siKiller = -1
 _giKiller = ( groupMatrix select si0 ) find ( _groupKiller )
 ? (_giKiller != -1): _siKiller = si0; goto "CheckSendScore"

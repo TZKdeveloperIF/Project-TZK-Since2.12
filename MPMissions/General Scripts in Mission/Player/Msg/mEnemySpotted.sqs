@@ -10,6 +10,9 @@ _enemy = _this
 	? indexSpottedEnemy >= 10: indexSpottedEnemy = 0
 	_found = _enemy in arraySpottedEnemy
 	? not _found: arraySpottedEnemy set [indexSpottedEnemy, _enemy], indexSpottedEnemy = indexSpottedEnemy + 1
+	; record enemy if meets condition
+	; the condition should keep same as defined in SpotEnemy\PplLoop.sqs
+	? not _found && groupPlayer knowsAbout _enemy >= 3: _enemy exec "SpotEnemy\Add2PplArray.sqs"
 
 	mutexSpottedEnemy = false
 
