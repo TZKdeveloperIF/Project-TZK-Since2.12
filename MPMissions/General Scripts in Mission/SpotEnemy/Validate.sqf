@@ -1,4 +1,4 @@
-private [{_curTime},{_i},{_c},{_valid},{_v}];
+private [{_curTime},{_i},{_c},{_valid},{_v},{_ka}];
 
 _curTime = time;
 _i = 0, _c = count _arr; while {_i < _c} do {
@@ -9,7 +9,8 @@ _i = 0, _c = count _arr; while {_i < _c} do {
 		{if (_x distance _v < 2 * viewDistance) then {_valid = true}} forEach _helis;
 		// knowsAbout check
 		if not _valid then {
-			if (group player knowsAbout _v >= 3) then {_valid = true};
+			_ka = group player knowsAbout _v;
+			if (_ka >= 3 && _ka <= 4) then {_valid = true};
 		};
 		// time check
 		if not _valid then {
