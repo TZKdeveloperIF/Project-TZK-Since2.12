@@ -8,7 +8,7 @@ _i = 0; _period = 0; while {_i < 10 && _ret} do {
 	_dest = [_posT, [_velocity, _period] call funcVectorScale] call funcVectorAdd;
 	_calc = [_posV, _dest, _speed, _biggerAngle] call funcTimeArt406;
 	if (_calc > 0) then {_period = _calc} else {
-		_calc = _calc - -1;
+		_calc = _calc - -100;
 		_bit = _calc % 2;
 		if (_ret && _bit > 0) then {
 			_msg = format ["Invalid initSpeed: %1. Switch another magazine please.", _speed];
@@ -36,7 +36,7 @@ _i = 0; _period = 0; while {_i < 10 && _ret} do {
 	_cache = _dest;
 };
 if _ret then {_elev = [_posV, _dest, _speed, _biggerAngle] call funcElevArt406};
-if (_i > 0 && not _ret) then {_msg = "Predicate fail."};
+// if (_i > 0 && not _ret) then {_msg = "Predicate fail."};
 
 if _ret then {
 	_angle = ((_dest select 1) - (_posV select 1)) atan2 ((_dest select 0) - (_posV select 0));
