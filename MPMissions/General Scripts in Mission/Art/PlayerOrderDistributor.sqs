@@ -9,13 +9,17 @@ _params = _this select 1
 _idx = _params select 2, _biggerAngle = _params select 0, _enum = _params select 3
 _preMoveInfo = _params select 6, _suggestedSpeed = _params select 1
 _orderType = _params select 7
+
+_bAutoDetect = _orderType == "Auto Detect"
+? _bAutoDetect && localize {TZK_ART_TIME_406} != "true": hint "TZK_Art_Time_4_0_6.pbo isn't detected. Auto detect inactivated.", exit
+
 _mlrsCnt = (if (count _params > 8) then {_params select 8} else {0})
 _isServer = false
 _isVehicle = "Howitzer" == _enum || "MLRS" == _enum || "Tank" == _enum
 _isStruct = "Struct" == _enum
 
 _timeStamp = _params select 4
-[_idx, _timeStamp, _si, false] call preprocessFile "Art\PreAnalysesArtArea.sqf"
+? not _bAutoDetect: [_idx, _timeStamp, _si, false] call preprocessFile "Art\PreAnalysesArtArea.sqf"
 
 _units = _this select 0; _i = 0; _c = count _units
 ? 0 == _c: exit

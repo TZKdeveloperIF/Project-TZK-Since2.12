@@ -1,5 +1,8 @@
 ; args: [to units: bool, units or unit]
 
+; script designer should guarantee the external entrance of current script pass UNITS as parameter
+? (_this select 0): [_this select 1, false] call preprocessFile "Art\SetAutoShootVehicles.sqf"
+
 ? not (_this select 0): goto "CommandSingleUnit"
 
 _units = _this select 1
