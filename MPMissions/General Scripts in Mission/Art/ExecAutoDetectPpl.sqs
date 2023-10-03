@@ -1,0 +1,27 @@
+; args: [units, true]
+_units = _this select 0
+
+@ not mutexAutoShoot
+	mutexAutoShoot = true
+
+	[_units, _this select 1] call preprocessFile "Art\SetAutoShootVehicles.sqf"
+
+	mutexAutoShoot = false
+
+? not (_this select 1): exit
+
+; allow howitzer and structure do this
+_artType = [false, true, true, false, false]
+; don't use big angle
+; todo: since it's auto-track, it might be possible to support big angle
+_bigAglType = [false, false, false, false]
+; no suggested speed
+_suggestedSpeed = -1
+; not area idx
+_areaIdx = -1
+; [clicked pos: [x, y], move before shooting: boolean, server rts order: boolean, player group units: []]
+_params = [[], false, false, _units]
+; no MLRS count
+_mlrsCnt = 0
+
+[_artType, _bigAglType, _suggestedSpeed, _areaIdx, _params, "Auto Detect", _mlrsCnt] exec "Rts\Order\sRtsShootArea.sqs"

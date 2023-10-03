@@ -29,6 +29,12 @@ if ("Destroy Obstruction" == _orderType) then {
 	if not _found then {_msg = "No obstruction in area. Order aborted."};
 };
 
+if ("Auto Detect" == _orderType) then {
+	_processed = true;
+	_ret = true;
+	_posT = getPosASL _adObj;
+};
+
 if not _processed then {
 	if ("General Area" != _orderType) then {"Unexpected _orderType in Art\CoreOrder.sqs." call fDebugLog};
 	

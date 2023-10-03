@@ -1,0 +1,29 @@
+; ---------------------------------------------------------------------------------------------------
+; |					Player client loop for detecting "spotted" enemy SQS Script						|
+; |		  By now this script records enemy that attacked player group units and being detected, or	|
+; |		new object that added to arraySpottedEnemy.													|
+; |		  Current design uses condition "knowsAbout >= 3" or helicopter nearby.						|
+; ---------------------------------------------------------------------------------------------------
+
+; args: none
+TzkPplSpotEnemyArr = [], TzkPplSpotEnemyTime = [], mutexPplSpotEnemy = false
+_helis = [], _tp = ["UH60_CSLA_Base_xj400", "Mi17_owp_Base_xj400"] select siPlayer
+_func = preprocessFile "SpotEnemy\Validate.sqf"
+_cycle = 10
+; alias
+_arr = TzkPplSpotEnemyArr, _timeArr = TzkPplSpotEnemyTime
+
+# loop
+	~ _cycle + 0.1
+	_i = 0, _units = units group player
+	{_v = vehicle _x; if (_tp countType [_v] > 0 && not (_v in _helis)) then {_helis set [_i, _v], _i = _i + 1}} forEach _units
+	_helis resize _i
+	; check time and knowsAbout. Remove units that isn't highly-detected and 
+	@ not mutexPplSpotEnemy
+		mutexPplSpotEnemy = true
+
+		call _func
+
+		mutexPplSpotEnemy = false
+	
+	goto "loop"

@@ -64,9 +64,12 @@ if (not _processed && 1 == count _downBoardStack) then {
 
 		ctrlSetText [_idcDownBtn0 + 2, "SwitchMag"];
 
+		ctrlSetText [_idcDownBtn0 + 6, "AutoShoot"];
+		ctrlSetText [_idcDownBtn0 + 7, "OFF"];
+
 		ctrlSetText [_idcDownBtn0 + 8, "Return"];
 
-		{ctrlShow [_idcDownBtn0 + _x, true]} forEach [0,1,2,8];
+		{ctrlShow [_idcDownBtn0 + _x, true]} forEach [0,1,2,6,7,8];
 		_processed = true;
 	};
 };

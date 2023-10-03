@@ -10,6 +10,8 @@ _params = _this select 0
 _unit = _params select 0, _si = _params select 1, _idx = _params select 2, _biggerAngle = _params select 3, _enum = _params select 4
 _orderType = "General Area"
 ? count _params > 5: _orderType = _params select 5
+_bAutoDetect = _orderType == "Auto Detect", _adSleepCnt = 0, _adSleepMod = 1
+
 _mlrsCnt = 0
 ? count _params > 6: _mlrsCnt = _params select 6
 
@@ -50,8 +52,10 @@ _params = 0, _this = 0
 	? _suggestedSpeed > 0: [vehicle _unit, _suggestedSpeed, _enum] exec "Art\SwitchSuggestedSpeed.sqs"
 	; ? -2 == _suggestedSpeed: [vehicle _unit, _enum, _idx, _si] exec "Server\Art\SwitchAuto.sqs"
 ; Shoot Area infomation
-	_markerInfo = [_idx, _si, _isServer] call preprocessFile "Art\GetMarkerInfo.sqf";
-	_result = [_idx, _si, _isServer] call preprocessFile "Art\GetPreAnalRes.sqf";
+	? _bAutoDetect: _markerInfo = [-10, -10, 0, 0, 0], _result = [0, [true]], goto "SkipAreaInfo"
+		_markerInfo = [_idx, _si, _isServer] call preprocessFile "Art\GetMarkerInfo.sqf";
+		_result = [_idx, _si, _isServer] call preprocessFile "Art\GetPreAnalRes.sqf";
+	# SkipAreaInfo
 ; Rts infomation
 	; _abort = {[[_unit], [_si, false]] exec "Rts\Framework\OrderDtor.sqs"}; _bClearRts = false
 ; Create local target object
@@ -70,6 +74,9 @@ _params = 0, _this = 0
 	? _isInfantry: _quitCond = _quitCond + { or _vehicle != vehicle _unit}
 	? _isServer: _quitCond = _quitCond + { or (not (_unit call rtsOrderCheck) || _rtsId != _rtsStatus select 1)}
 	? not _isServer: _quitCond = _quitCond + { or call orderCheck}
+
+	? _bAutoDetect: _quitCond = {not alive _unit or -1 == autoShootVehs find vehicle _unit}
+
 	_msg = ""
 
 	_vehicle = vehicle _unit; _typeName = typeOf _vehicle; _script = "Art\FiredEh406.sqs"
@@ -87,6 +94,8 @@ _params = 0, _this = 0
 ; 基于传入的 pre-move info, 产生预移动坐标. 散布半径为50. 散布半径即单位目的地与rts点击坐标之间所允许的最大距离
 _distributionRadius = (if _isInfantry then {20} else {50})
 # PreMove
+	? _bAutoDetect: goto "CheckDistance"
+
 	_startPos = getPos _unit
 	? _isStruct: goto "CheckDistance"
 	; 如果没有指定 pre-move info, 也即"就地炮击", 则设置一个小的散布半径, 如此一来, 第一次rearm完毕后有较大概率单位能回到原处 (除非补给单位贴着它, 这属于找死, 不予处理)
@@ -107,18 +116,26 @@ _distributionRadius = (if _isInfantry then {20} else {50})
 		? ([getPos _unit, _startPos] call funcDistH) > 30: goto "LoopPreMove"
 
 # CheckDistance
+	? _bAutoDetect: _adObj = _unit call preprocessFile "SpotEnemy\GetPplTarget.sqf"
+	? _bAutoDetect && isNull _adObj: _msg = "[Auto Detect] No available target. Waiting next loop"; _adSleepMod = 20; goto "AutoDetectSleep"
+	? _bAutoDetect: _target setPos getPos _adObj
+
 	_distLimit = viewDistance, _curDist = ([getPos _unit, _target] call funcDistH)
 	? upgMatrix select _si select upgLongWeaponRange == 2: _distLimit = _longRangeCoef * viewDistance;
 	; Reassign limit for infantry
 	? _isInfantry: _distLimit = _range + 350; _msg = "Target is too far for infantry " + _text + ". Order aborted."
-	? _isInfantry && _curDist > _distLimit: goto "EOF"
-	? _isStruct && _curDist > _distLimit: goto "EOF"
-	? _isStruct && _curDist < 50: goto "EOF"
+	_bValid = true
+	? _isInfantry && _curDist > _distLimit: _bValid = false
+	? _isStruct && _curDist > _distLimit: _bValid = false
+	? _isStruct && _curDist < 50: _bValid = false
 
+	? not _bAutoDetect && not _bValid: goto "EOF"
+	? _bAutoDetect && not _bValid: _msg = "[Auto Detect] No available target nearby. Waiting next loop"; _adSleepMod = 20, goto "AutoDetectSleep"
 
 _posCorrect = 0
 # TryApproachingTarget
 ? _isStruct: goto "PrePareToAttack"
+? _bAutoDetect: goto "PrePareToAttack"
 
 	? _isInfantry: goto "MoveInfantry"
 		_dist = [_vehicle, _target] call funcDistH
@@ -195,7 +212,13 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 
 	_posV = getPosASL _vehicle
 	_angle = 0; _elev = 0
-	_ret = call preprocessFile "Art\AreaCalculate.sqf"
+
+	? _bAutoDetect: if (not alive _adObj) then {goto "PreMove"}
+	? _bAutoDetect: if not (_adObj call preprocessFile "SpotEnemy\LegalPplTarget.sqf") then {goto "PreMove"}
+	? _bAutoDetect: _ret = _adObj call preprocessFile "Art\Predicate.sqf"
+	? _bAutoDetect && not _ret: _adSleepMod = 2; goto "AutoDetectSleep"
+
+	? not _bAutoDetect: _ret = call preprocessFile "Art\AreaCalculate.sqf"
 	; allow soldier move closer to attack
 	? _isInfantry && not _ret: _posCorrect = _posCorrect + 1; goto "TryApproachingTarget"
 	? not _ret: goto "EOF"
@@ -248,6 +271,9 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	; However this design is invalid for player team member
 	? _isServer: if ("BLUE" == combatMode _vehicle || "GREEN" == combatMode _vehicle) then {_delay = 5; goto "AttackCheck"}
 
+	; check whether target is valid
+	? _bAutoDetect: if (not alive _adObj) then {goto "PreMove"}
+
 	; for soldier
 	_numOfMagLast = "_x in _validMags" count _magazines
 	; what if magazine changed? sure the elevation will change too.
@@ -287,6 +313,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	if _biggerAngle then {_vehicle doWatch _posH} else {_vehicle doWatch _posT}
 	goto "AttackCheck"
 # CheckRearm
+	? _bAutoDetect: goto "AutoDetectWaitRearm"
 	? not _isInfantry: goto "SkipSoldierRearmDataCheck"
 		; verify soldier rearm data
 		_bValid = [_validMags, (_unit call preprocessFile "Common\SQF\RearmData.sqf") select 1] call funcArrayOverlap
@@ -372,6 +399,28 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 		? call _quitCond: _msg = ""; goto "EOF"
 		_delay = 5
 		? !someAmmo _vehicle: goto "WaitSwitchComplete"
+	goto "PreMove"
+
+; For auto detect mode
+# AutoDetectWaitRearm
+	; todo: prepare hint message if support server ai units using auto detect 
+	_unit groupChat "Auto detect pause. Wait until get rearmed."
+	~ 30
+	? call _quitCond: _msg = ""; goto "EOF"
+	; return to script beginning
+	goto "PreMove"
+; For auto detect sleep
+# AutoDetectSleep
+	_adSleepCnt = _adSleepCnt + 1, _bDisplay = false
+	? _adSleepCnt % _adSleepMod == 0: _bDisplay = true
+	; The product of _adSleepMod and current stage delay should be a constant
+	
+	? _bDisplay && _msg != "" && _isServer: _msg = format ["[%1] ", _unit] + _msg, [_si, _msg] exec "Server\Msg\sSvrMsg2Cmd.sqs"
+	? _bDisplay && _msg != "" && not _isServer: _unit groupChat _msg
+	? _bDisplay && _msg != "" && not _isServer: TitleText [format ["%1: %2", _unit, _msg], "Plain", 0.25]; 
+	~ 5
+	? call _quitCond: _msg = ""; goto "EOF"
+	; return to script beginning
 	goto "PreMove"
 
 ; End Of File

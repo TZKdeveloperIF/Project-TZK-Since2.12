@@ -12,6 +12,8 @@ _this = 0
 
 _groupSource = group _source
 
+? not isNull player: if (_siVehicle == siPlayer) then {_source exec "SpotEnemy\Add2PplArray.sqs"}
+
 ; ? !(_vehicle in ( mhq + (MCV select si0) + (MCV select si1) )) && (damage _vehicle) > 0.5 && (alive _vehicle): [_vehicle] exec localize {TZK_EVENT_HIT_AUTODESTROY_BADLYHURT}
 
 ; check and handle disabled vehicle
