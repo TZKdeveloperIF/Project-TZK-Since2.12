@@ -1,9 +1,9 @@
-// args: none
+// args: target object (the actual target object in auto-detect art mode)
 // this is a process but not a function. script read/write local variables directly
 _ret = true;
 
 private [{_i}, {_period}, {_dest}, {_cache}, {_velocity}];
-_velocity = velocity _target; _dest = _posT; _cache = [0,0,0];
+_velocity = velocity _this; _dest = _posT; _cache = [0,0,0];
 _i = 0; _period = 0; while {_i < 10 && _ret} do {
 	_dest = [_posT, [_velocity, _period] call funcVectorScale] call funcVectorAdd;
 	_calc = [_posV, _dest, _speed, _biggerAngle] call funcTimeArt406;
@@ -34,6 +34,7 @@ _i = 0; _period = 0; while {_i < 10 && _ret} do {
 	_i = _i + 1;
 	if ([_cache, _dest] call funcDistH < 1) then {_i = 10};
 	_cache = _dest;
+	// _unit sideChat format ["Period: %1, velocity: %2, dest: %3", _period, _velocity, _dest];
 };
 if _ret then {_elev = [_posV, _dest, _speed, _biggerAngle] call funcElevArt406};
 // if (_i > 0 && not _ret) then {_msg = "Predicate fail."};
