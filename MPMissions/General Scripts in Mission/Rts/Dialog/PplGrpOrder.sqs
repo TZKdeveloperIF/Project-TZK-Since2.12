@@ -127,6 +127,10 @@ _selectedOrder = -1
 		? 2^1 == _btnVal && 8 == _downBoardStack select 0: [_units, false] exec "Player\RtsDeploy.sqs"; _return = true
 		? 2^2 == _btnVal && 8 == _downBoardStack select 0: [false, _units] exec "Rts\SubMenu\SwitchArtMag.sqs"; closeDialog 0; goto "Quit"
 
+		; todo: add button to AI rts dialog
+		? 2^6 == _btnVal && 8 == _downBoardStack select 0: [_units, true] exec "Art\ExecAutoDetectPpl.sqs"; closeDialog 0; goto "Quit"
+		? 2^7 == _btnVal && 8 == _downBoardStack select 0: [_units, false] exec "Art\ExecAutoDetectPpl.sqs"; closeDialog 0; goto "Quit"
+
 		? 2^8 == _btnVal: _return = true
 
 		? _return: _downBoardStack resize 0; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"

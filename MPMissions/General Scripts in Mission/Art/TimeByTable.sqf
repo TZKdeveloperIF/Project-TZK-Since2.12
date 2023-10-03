@@ -5,8 +5,8 @@ _posT = _this select 1;
 _v = _this select 2;
 _bHigh = _this select 3;
 
-_valid = true; _ret = -1;
-// valid elev ∈ [-90, 90]. -1 means invalid.
+_valid = true; _ret = -100;
+// valid elev ∈ [-90, 90]. -100 means invalid.
 // Use bits to mark the invalid reason. 1 means v isn't in table, 2 means h/d isn't in table, 4 means no solution
 
 if (-1 == TzkArtSpeeds find _v) then {_valid = false, _ret = _ret + 1};

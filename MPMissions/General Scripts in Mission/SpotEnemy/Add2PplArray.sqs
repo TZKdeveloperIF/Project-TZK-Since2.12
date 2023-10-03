@@ -1,0 +1,18 @@
+; args: enemy
+_pplSide = sides select siPlayer
+? side _this == _pplSide: exit
+
+@ not mutexPplSpotEnemy
+	mutexPplSpotEnemy = true
+	_idx = TzkPplSpotEnemyArr find _this
+
+	; update time stamp if recorded
+	? _idx != -1: TzkPplSpotEnemyTime set [_idx, time], goto "Quit"
+
+	_j = TzkPplSpotEnemyArr find objNull
+	? -1 == _j: _j = count TzkPplSpotEnemyArr
+	TzkPplSpotEnemyArr set [_j, _this]
+	TzkPplSpotEnemyTime set [_j, time]
+
+# Quit
+	mutexPplSpotEnemy = false
