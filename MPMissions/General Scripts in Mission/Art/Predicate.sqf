@@ -4,8 +4,10 @@ _ret = true;
 
 private [{_i}, {_period}, {_dest}, {_cache}, {_velocity}];
 _velocity = velocity _this; _dest = _posT; _cache = [0,0,0];
+_velocity set [2, 0];
 _i = 0; _period = 0; while {_i < 10 && _ret} do {
 	_dest = [_posT, [_velocity, _period] call funcVectorScale] call funcVectorAdd;
+	_dest set [2, _dest call funcHASL];
 	_calc = [_posV, _dest, _speed, _biggerAngle] call funcTimeArt406;
 	if (_calc > 0) then {_period = _calc} else {
 		_calc = _calc - -100;
