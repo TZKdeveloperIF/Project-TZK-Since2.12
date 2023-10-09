@@ -12,9 +12,6 @@ if ("hShootArea.sqs" == _scriptName) then {
 	// 之所以要求派发命令前执行而非设置区域后执行, 是为了避免提前划定炮击区域, 绕过建筑检查
 	[_param select 2, _param select 4, _param select 5, true] call preprocessFile "Art\PreAnalysesArtArea.sqf";
 };
-if ("hReclaim.sqs" == _scriptName) then {
-	format ["hReclaim params: %1", _param] exec "Log\AddSvrLog.sqs";
-};
 
 private [{_scriptPath}, {_i},{_j},{_k},{_c},{_unit},{_idx},{_found},{_bNewObj}];
 _scriptPath = format ["%1\%2\%3", "Rts", "Order", _scriptName];
