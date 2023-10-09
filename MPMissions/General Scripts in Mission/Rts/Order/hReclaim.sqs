@@ -68,6 +68,8 @@ _i = 0, _c = _typeCnt, _transpTypes = [], _transpTypes resize _c
 	_targets = [], _selectedTypes = [], _target = objNull, _suggestedIdx = -1
 	_typeIdx = 0; _totalTryCnt = 0
 
+	_timeStamp = time; _timeStamp = _timeStamp - _timeStamp % 1
+
 	# SearchTarget
 		_totalTryCnt = _totalTryCnt + 1
 		? _totalTryCnt > 100: goto "StopAndWait"
@@ -98,7 +100,7 @@ _i = 0, _c = _typeCnt, _transpTypes = [], _transpTypes resize _c
 
 		call preprocessFile "Rts\Order\assistReclaim.sqf"
 
-		? 0 == _typeIdx && count _targets == 0: format ["hReclaim Error. Nearby targets: %1", _nearByTargets] exec "Log\AddSvrLog.sqs";
+		? 0 == _typeIdx && count _targets == 0: format ["Time: %2, hReclaim cur unit: %3, nearby targets: %1", _nearByTargets, _timeStamp, _unit] exec "Log\AddSvrLog.sqs";
 
 		_typeIdx = _typeIdx + 1
 		? count _targets == 0: goto "SearchTarget"
