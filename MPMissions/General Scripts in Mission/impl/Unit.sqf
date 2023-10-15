@@ -116,8 +116,8 @@ _entry = unitDefs select _tankHeavyE01; _entry set [udModel, "T80_G_xj400"];
 _entry = unitDefs select _tankHeavyE03; _entry set [udModel, "ZTZ99_C_xj400"];
 _entry = unitDefs select _t80townE; _entry set [udModel, "T80_G_xj400"];
 
-// {_entry = unitDefs select _x; _entry set [udModel, "M113Ambul_G_xj400"]} forEach [_supportAPCW, _supportAPCWminer];
-// {_entry = unitDefs select _x; _entry set [udModel, "BMPAmbul_G_xj400"]} forEach [_supportAPCE, _supportAPCEminer];
+{_entry = unitDefs select _x; _entry set [udModel, "M113Ambul_G_xj400"]} forEach [_supportAPCW, _supportAPCWminer];
+{_entry = unitDefs select _x; _entry set [udModel, "BMPAmbul_G_xj400"]} forEach [_supportAPCE, _supportAPCEminer];
 
 {_entry = unitDefs select _x; _entry set [udModel, "M2A2_G_AA_xj400"]} forEach [_m2a2W,_m3a2W,_m2a2d,_m2a2at,_m2a2aa];
 {_entry = unitDefs select _x; _entry set [udModel, "BMP2_G_AA_xj400"]} forEach [_bmp2E,_bmp2_EE,_bmp2d,_bmp2at,_bmp2Cannon,_bmp2aa];
