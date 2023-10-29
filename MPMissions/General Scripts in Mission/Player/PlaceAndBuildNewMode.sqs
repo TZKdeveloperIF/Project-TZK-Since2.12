@@ -116,7 +116,7 @@ _count = count _parts
 		_index = _index + 1
 		? (_index < _count): goto "SetPartPosDir"
 		
-	? (bBuildPlaced): [_unit, _type, _posStruct, _dirStruct] exec "\TZK_Scripts_4_0_4\Player\BuildStructure.sqs"; goto "Exit"
+	? (bBuildPlaced): [_unit, _type, _posStruct, _dirStruct] exec "Player\BuildStruct.sqs"; goto "Exit"
 	? (bCancelPlaced): player groupchat "Build canceled"; goto "Exit"
 
 	~0.05
