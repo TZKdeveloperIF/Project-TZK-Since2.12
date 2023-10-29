@@ -50,7 +50,7 @@ ctrlShow [_idcNumberedAI, false]
 
 ctrlShow [_idcCommandTemporary, false]
 {call (_x + " = false")} forEach ["btnLeaderboard", "btnGrant", "btnAsk", "btnTake", "btnGive", "btnGiveAIs", "btnGiveAll", "btnUpgrade", "btnBuyUnits", "btnShowStats", "btnUnitCam", "btnSatCam", "btnCustomSoldiers", "btnCommandAI", "btnCommandPlayer", "btnTransfer", "btnNumberedAI", "btnAICheck", "btnSpySat"]
-{call (_x + " = false")} forEach ["btnVoteMenu"]
+{call (_x + " = false")} forEach ["btnVoteMenu", "btnCmdRuleMenu"]
 _icons = ["\TZK_Objects\Image\Icon\square_empty.paa", "\TZK_Objects\Image\Icon\square_yellow.paa", "\TZK_Objects\Image\Icon\square_green.paa"]
 _colors = [[1,1,1,0.5], [1,1,0,0.6],[0,1,0.2,0.8]]
 
@@ -130,6 +130,7 @@ report = lbCurSel _idcReports
 ? btnSpySat : btnSpySat = false; goto "SpySat"
 ? btnRadioON : btnRadioON = false; goto "RadioSwitch"
 ? btnVoteMenu: btnVoteMenu = false, goto "Vote_Menu"
+? btnCmdRuleMenu: btnCmdRuleMenu = false, goto "Cmd_Rule_Menu"
 
 ~0.2
 goto "Update"
@@ -352,4 +353,10 @@ goto "Update"
 	; ~0.1
 	[] exec "Player\Dialog\VoteMenu.sqs"
 	Exit
+# Cmd_Rule_Menu
+	? not _isCommander && (siEnemy select siPlayer) call preprocessFile "Util\IsHumanCommander.sqf": hint "Only commander in PVP can modify the rule!", goto "Update"
+	closeDialog 0
+	; ~0.1
+	0 exec "RuleCmd\Dialog.sqs"
+	exit
 ; EOF
