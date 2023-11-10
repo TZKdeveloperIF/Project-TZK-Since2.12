@@ -88,3 +88,6 @@ _index = _oldCount; _count = count structDefs; while {_index < _count} do {
 
 // define global variable for server to adjust style. This is temporary codes
 TzkAdjustStyleStructIdx = [_wall, _walls, _roof, _roofHigh, _tanktr, _artPlain];
+
+// global variable for roof type
+stRoof = _roof;
