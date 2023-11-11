@@ -5,6 +5,8 @@ _type = _this select 1
 _dirStruct = 15 * (0 + (_this select 2))
 _this = 0
 
+? not ([_type, siPlayer] call preprocessFile "RuleCmd\CanBuildStruct.sqf"): exit
+
 _si = siPlayer; _desc = structDefs select _type
 ? _desc select sdSides != _si && _desc select sdSides != siBoth: player groupChat "This structure is not allowed to build for your side in this mission.", exit
 ? _desc select sdOnlyCO: if (groupPlayer != (groupCommander select siPlayer)) then {player groupChat "Only allow Commander to build this."; exit}

@@ -115,14 +115,14 @@ _getWorkersCnt = preprocessFile "Common\SQF\WorkerCount.sqf"
 	buttonPressedBuild = false
 	? (_type == -1): hint "No structure selected"; goto "Update"
 	? (_money < _cost): hint "Not enough Money"; goto "Update"
-	[_unit, _type, [], 0, alignWalls && ctrlVisible IDC_BTN_ALIGN] exec "\TZK_Scripts_4_0_4\Player\BuildStructure.sqs"
+	[_unit, _type, [], 0, alignWalls && ctrlVisible IDC_BTN_ALIGN] exec "Player\BuildStruct.sqs"
 	goto "CloseDialog"
 
 #PlaceBuildStructure
 	buttonPressedPlaceBuild = false
 	? (_type == -1): hint "No structure selected"; goto "Update"
 	? (_money < _cost): hint "Not enough Money"; goto "Update"
-	[_CVtype, _unit, _type, alignWalls && ctrlVisible IDC_BTN_ALIGN, _distMax] exec "\TZK_Scripts_4_0_4\Player\PlaceAndBuildNewMode.sqs"
+	[_CVtype, _unit, _type, alignWalls && ctrlVisible IDC_BTN_ALIGN, _distMax] exec "Player\PlaceAndBuildNewMode.sqs"
 	goto "CloseDialog"
 
 #CloseDialog

@@ -1,0 +1,27 @@
+; args: [si, item, lbCurSel]
+
+? not isServer: exit
+
+_si = _this select 0; _item = _this select 1; _curSel = _this select 2
+_newVal = [false, true] select _curSel
+
+; element format: [rule name, [west cmd opinion, east cmd opinion], result]
+_entry = TzkCmdRules select _item
+_opinions = _entry select 1
+_curVal = _entry select 2
+
+_opinions set [_si, _newVal]
+_siEnemy = siEnemy select _si
+_enemyIsAico = (groupCommander select _siEnemy) in (groupAiMatrix select _siEnemy) || count (groupMatrix select _siEnemy) == 0
+? _enemyIsAico: _opinions set [_siEnemy, _newVal]
+
+_agree = [_opinions select _si, _opinions select _siEnemy] call funcBoolEqual
+? _agree: _entry set [2, _newVal]
+
+; display change info to server
+; todo: It'll be better to process this in "ClientsReceiveResult.sqs"
+_changed = not ([_curVal, _newVal] call funcBoolEqual)
+? _changed: format [{CMD rule "%1" has changed to %2}, _entry select 0, _newVal] exec "Util\GlobalMsg.sqs"
+
+; broadcast result to clients
+publicExec format [{%1 exec "RuleCmd\ClientsReceiveResult.sqs"}, [_item, _entry]]

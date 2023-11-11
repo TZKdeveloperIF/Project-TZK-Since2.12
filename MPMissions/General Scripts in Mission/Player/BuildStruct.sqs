@@ -6,6 +6,8 @@ _posStruct = _this select 2
 _dirStruct = _this select 3
 _align = _this select 4
 
+? not ([_type, siPlayer] call preprocessFile "RuleCmd\CanBuildStruct.sqf"): exit
+
 _side = side _unit
 _desc = structDefs select _type
 
