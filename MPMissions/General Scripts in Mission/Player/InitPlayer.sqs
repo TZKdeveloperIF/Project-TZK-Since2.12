@@ -154,6 +154,13 @@ _marker setMarkerPos ( [_posMhq, hiddenMarkerPos] select ((_i % 2) == 0) )
 [] exec "\TZK_Scripts_4_0_6\Player\Init\CommanderUnit.sqs"
 ; [] exec "\TZK_Scripts_4_0_4\Player\Init\BuyList.sqs"
 
+? groupPlayer != groupCommander select siPlayer: goto "SkipInitialCmdRule"
+~ 1
+0 exec "RuleCmd\Dialog.sqs"
+~ 1
+@ !dialog
+# SkipInitialCmdRule
+
 ~15
 PlayMusic (Musics0 select music0); 0 FadeMusic 0.35
 ; Hide start pos marker after some time
