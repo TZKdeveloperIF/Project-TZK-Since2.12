@@ -97,6 +97,10 @@ typesEngineeringVeh = [_m88W, _bremE]; {
 	_entry set [count _entry, "Common\InitEngineerVeh.sqs"];
 } forEach typesEngineeringVeh;
 
+// Adjust AMX-10RC and 2S25 price
+unitDefs select _amx10RcW set [udCost, 2500];
+unitDefs select _2s25E set [udCost, 3000];
+
 // Add MLRS equipping with shrapnel
 _type = _m270W + 1;
 unitDefs set [_type, ["M109A6 Shrapnel", 7500, si0, 60, "M109A6G_xj400", "\TZK_Texture_4_0_0\icon\iM109A6G.paa", 2^stHeavy, [2, _crewW], _mHowitzer, ["Common\Equip\Shrapnel.sqs"]] ];
