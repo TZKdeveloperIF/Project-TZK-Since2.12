@@ -4,7 +4,7 @@ private [{_typeInfos}];
 _typeInfos = _this;
 
 _assignedFacs resize 0;
-{if (not (_x in _assignedFacs)) then {_assignedFacs set [count _assignedFacs, _x]}} forEach _autoBuyFactories;
+{if (not isNull _x && not (_x in _assignedFacs)) then {_assignedFacs set [count _assignedFacs, _x]}} forEach _autoBuyFactories;
 
 private [{_type},{_num},{_driver},{_gunner}, {_factoryType}];
 {
