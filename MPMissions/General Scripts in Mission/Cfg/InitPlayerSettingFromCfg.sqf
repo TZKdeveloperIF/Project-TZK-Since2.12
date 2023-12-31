@@ -4,7 +4,7 @@ private [{_val}];
 
 _val = "RtsMapMode" call preprocessFile "Cfg\LoadPlayerValue.sqf";
 if ("" == _val) then {
-	bool_TZK_Ext_Cmd_Mode = true;
+	bool_TZK_Rts_Map_Mode = false;
 } else {
-	bool_TZK_Ext_Cmd_Mode = call _val; // "true"/"false"
+	bool_TZK_Rts_Map_Mode = call _val; // "true"/"false"
 };
