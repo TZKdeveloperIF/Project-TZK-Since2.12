@@ -1,7 +1,7 @@
 _vehicle = _this select 0;
 _name = (if (typeOf _vehicle != "PP87_TZK_xj400") Then {"M"} Else {"P89"}); 
 
-Radio001 setTriggerText format ["Turn %1 Extra Map Click", if bool_TZK_Ext_Cmd_Mode then {"OFF"} else {"ON"}]; Radio001 setTriggerStatements ["this", {bool_TZK_Ext_Cmd_Mode = not bool_TZK_Ext_Cmd_Mode}, ""];
+call preprocessFile "Player\Radio\Channel001_RtsMapMode.sqf";
 
 Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", {[] exec localize {TZK_DIALOG_TZK_SETTING_1}}, ""];
 Radio003 setTriggerText "Switch 080m/s Magazine"; call format [{ Radio003 setTriggerStatements ["this", {[(vehicle player), 080, "%1"] exec localize {TZK_RADIO_FUNC_GRAD}}, ""] }, _name];
