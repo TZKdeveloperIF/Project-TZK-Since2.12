@@ -9,7 +9,7 @@ _SupNearby = SupNearby
 
 _rearmAT = "Rearm AT" + (if bool_TZK_SEMod_Mode Then {"/Javelin"} Else {""})
 
-Radio001 setTriggerText format ["Turn %1 Extra Map Click", if bool_TZK_Ext_Cmd_Mode then {"OFF"} else {"ON"}]; Radio001 setTriggerStatements ["this", {bool_TZK_Ext_Cmd_Mode = not bool_TZK_Ext_Cmd_Mode}, ""];
+call preprocessFile "Player\Radio\Channel001_RtsMapMode.sqf";
 
 Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", {[] exec localize {TZK_DIALOG_TZK_SETTING_1}}, ""];
 
@@ -38,7 +38,7 @@ _booleRefreshMHQNearby = (_mhqNearby && !mhqNearby) || (!_mhqNearby && mhqNearby
 _booleRefreshSupNearby = (_SupNearby && !SupNearby) || (!_SupNearby && SupNearby)
 ? _booleRefreshSupNearby : if (SupNearby) then {	Radio005 setTriggerText "Sup Build Menu"; Radio005 setTriggerStatements ["this", {if (SupNearby) then {[-1,50] exec "Player\Dialog\BuildMenu.sqs"} else {hint {Sup too far away.}}}, ""];	} else {	Radio005 setTriggerText " "; Radio005 setTriggerStatements ["this", "", ""];	}
 
-Radio001 setTriggerText format ["Turn %1 Extra Map Click", if bool_TZK_Ext_Cmd_Mode then {"OFF"} else {"ON"}]; Radio001 setTriggerStatements ["this", {bool_TZK_Ext_Cmd_Mode = not bool_TZK_Ext_Cmd_Mode}, ""];
+call preprocessFile "Player\Radio\Channel001_RtsMapMode.sqf";
 
 ? _booleRefreshMedic : _booleMedic = (call _booleStringMedic)
 ? _booleRefreshMHQNearby : _mhqNearby = mhqNearby
