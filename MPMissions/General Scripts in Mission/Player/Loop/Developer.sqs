@@ -3,12 +3,15 @@
 _cycle = 5, _arr = []
 
 _cntKa = 0
+_cntRating = 0
 
 ? _cycle <= 0.1: exit
 
 # Update
 	~ _cycle
 	_cntKa = _cntKa + 1
-	? _cntKa > 60 / _cycle: _cntKa = 0; _arr call preprocessFile "Player\Loop\DbgKa.sqf"
+	_cntRating = _cntRating + 1
+	; ? _cntKa > 60 / _cycle: _cntKa = 0; _arr call preprocessFile "Player\Loop\DbgKa.sqf"
+	? _cntRating > 60 / _cycle: _cntRating = 0; call preprocessFile "Player\Loop\DbgRating.sqf"
 
 	goto "Update"
