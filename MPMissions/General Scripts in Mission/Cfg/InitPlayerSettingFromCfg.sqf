@@ -8,3 +8,6 @@ if ("" == _val) then {
 } else {
 	bool_TZK_Rts_Map_Mode = call _val; // "true"/"false"
 };
+
+_val = "RtsCmdMode" call preprocessFile "Cfg\LoadPlayerValue.sqf";
+bool_TZK_Rts_Cmd_Mode = (if ("" == _val) then {false} else {call _val});
