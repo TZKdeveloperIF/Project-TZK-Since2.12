@@ -1,5 +1,5 @@
 // args: [index + 100 * (if set marker then 1 else 0), marker type, to server: bool, cached idx variable name: string]
-// read info from "TzkRtsArea" marker
+// extra arg: [pos, size, dir]
 private [{_idxInfo}, {_markerType}, {_toServer}, {_cachedIdxName}];
 _idxInfo = _this select 0; _markerType = _this select 1; _toServer = _this select 2;
 _cachedIdxName = _this select 3;
@@ -8,9 +8,17 @@ private [{_param}, {_idx}];
 _idx = (if (_idxInfo >= 100) then {_idxInfo - 100} else {_idxInfo});
 if (_idxInfo >= 100) then {
 	// Set
-	_pos = getMarkerPos "TzkRtsArea";
-	_size = getMarkerSize "TzkRtsArea";
-	_dir = getMarkerDir "TzkRtsArea";
+	private [{_pos}, {_size}, {_dir}];
+	// If assigned index 4 param then use it otherwise read info from "TzkRtsArea" marker
+	if (count _this > 4) then {
+		_pos = _this select 4 select 0;
+		_size = _this select 4 select 1;
+		_dir = _this select 4 select 2;
+	} else {
+		_pos = getMarkerPos "TzkRtsArea";
+		_size = getMarkerSize "TzkRtsArea";
+		_dir = getMarkerDir "TzkRtsArea";
+	};
 
 	private [{_func}]; _func = preprocessFile "Math\Round.sqf";
 	private [{_geometryInfo}]; _geometryInfo = [];
