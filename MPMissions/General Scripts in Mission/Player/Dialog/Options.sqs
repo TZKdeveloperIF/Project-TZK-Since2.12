@@ -23,7 +23,7 @@ _idcDestruction = IDC + 17
 _idcIncomeRatioPlayer = IDC+18
 _idcGiveMoneyToAI = IDC + 19
 _idcTakeMoney = IDC + 20
-_idcCommandTemporary = IDC + 21
+_idcConcurrentRts = IDC + 21
 _idcSpySat = IDC + 22
 _idcGiveMoneyToALL = IDC + 23
 _idcRadioONBG = IDC + 24
@@ -48,7 +48,9 @@ mutexDlg = false
 ctrlShow [IDC_DEFAULT, false]
 ctrlShow [_idcNumberedAI, false]
 
-ctrlShow [_idcCommandTemporary, false]
+ctrlShow [_idcConcurrentRts, not bool_TZK_Rts_Cmd_Mode]
+btnCommandTemporary = false
+
 {call (_x + " = false")} forEach ["btnLeaderboard", "btnGrant", "btnAsk", "btnTake", "btnGive", "btnGiveAIs", "btnGiveAll", "btnUpgrade", "btnBuyUnits", "btnShowStats", "btnUnitCam", "btnSatCam", "btnCustomSoldiers", "btnCommandAI", "btnCommandPlayer", "btnTransfer", "btnNumberedAI", "btnAICheck", "btnSpySat"]
 {call (_x + " = false")} forEach ["btnVoteMenu", "btnCmdRuleMenu"]
 _icons = ["\TZK_Objects\Image\Icon\square_empty.paa", "\TZK_Objects\Image\Icon\square_yellow.paa", "\TZK_Objects\Image\Icon\square_green.paa"]
@@ -127,6 +129,7 @@ report = lbCurSel _idcReports
 ? btnCustomSoldiers : btnCustomSoldiers=false; goto "CustomSoldiers"
 ? btnNumberedAI : btnNumberedAI=false; goto "SaveNumberedAI"
 ? btnAICheck : btnAICheck = false; goto "CheckAI"
+? btnCommandTemporary : btnCommandTemporary = false; goto "ConcurrentRts"
 ? btnSpySat : btnSpySat = false; goto "SpySat"
 ? btnRadioON : btnRadioON = false; goto "RadioSwitch"
 ? btnVoteMenu: btnVoteMenu = false, goto "Vote_Menu"
@@ -334,6 +337,12 @@ goto "Update"
 	? _group in _groupsAI : hint "This group is AI."; goto "Update"
 	_index exec "\TZK_Scripts_4_0_4\Player\Msg\sCheckAI.sqs"; hint "Checking whether the group is AI. Please wait for the result."
 	goto "Update"
+
+# ConcurrentRts
+	closeDialog 0
+	; ~0.1
+	0 exec "Player\Dialog\ConcurrentRts.sqs"
+	exit
 
 #SpySat
 	_satrec = [siPlayer, stSatRec] call funcGetWorkingStructures
