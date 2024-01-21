@@ -1785,6 +1785,7 @@ class OptionsDialog2: OptionsDialog
 		CmdRuleButton, 
 		Console, 
 		ShowsGroupsDialog, 
+		CommandTemporary, 
 	};
 	class CmdRuleButton: Button {
 		x = 0.025;
@@ -2619,6 +2620,7 @@ class CommandAIDialog2: CommandAIDialog {
 		TypeComboBox0, TypeComboBox1, TypeComboBox2, TypeComboBox3, 
 		TypePic0, TypePic1, TypePic2, TypePic3, 
 		NumComboBox0, NumComboBox1, NumComboBox2, NumComboBox3, 
+		TemporaryDialog, 
 	};
 
 	// narrow the order parameters
@@ -2773,6 +2775,103 @@ class CommandAIDialog2: CommandAIDialog {
 	class NumComboBox3: NumComboBox0 {
 		idc = IDC + 16 * 34 + 3;
 		y = 0.41 + 0.04 * 3;
+	};
+	class TemporaryDialog: Button {
+		idc = IDC + 13;
+		x = 0.65
+		y = 0.0
+		w = 0.3
+		h = 0.03
+		text = "Concurrent Order"
+		action = "btnTemporaryOrder = true"
+	};
+};
+
+// this dialog is removed on developing RTS interaction in 4.0.6. Recover it here
+class TemporaryAIOrderDialog: Menu {
+	idd = -1;
+	movingEnable = true;
+	controlsBackground[] = {Sub_BG_Light, Sub_BG};
+	objects[] = {};
+	controls[] = {
+		CommandAITitle, GroupOrdersLabel, GroupOrders, SendOrder, OrderLabel, TemporaryOrder, 
+		Exit, 
+		ReturnToAIOrder,  
+	};
+	
+	class Sub_BG: BackgroundWindow {
+		x = 0.0;
+		y = 0.0;
+		w = 1.0;
+		h = 0.71;
+	};
+	class Sub_BG_Light: Light_BG_Window {
+		x = 0.0;
+		y = 0.0;
+		w = 1.0;
+		h = 0.71;
+	};
+
+	class CommandAITitle: Title {
+		style = ST_CENTER;
+		x = 0.0;
+		y = 0.0;
+		w = 1.0;
+		text = "Concurrent AI Orders";
+	};
+	class GroupOrdersLabel: Label {
+		x = 0.0;
+		y = 0.02;
+		w = 0.4;
+		text = "Group, Last Concurrent Order";
+	};
+	class GroupOrders: ListBox {
+		idc = IDC+0;
+		x = 0.0;
+		y = 0.05;
+		w = 0.6;
+		h = 0.30
+	};
+	class OrderLabel: Label {
+		SizeEx = 0.021;
+		idc = IDC+1;
+		x = 0.0;
+		y = 0.38;
+		w = 0.1;
+		text = "Order";
+	};
+	class SendOrder: Button {
+		idc = IDC+2
+		x = 0.1
+		y = 0.38
+		w = 0.1
+		h = 0.03
+		text = "Send"
+		action = "btnSendOrder = true"
+	};
+	class TemporaryOrder: ListBox {
+		idc = IDC+3
+		x = 0.0;
+		y = 0.41;
+		w = 0.2;
+		h = 10*0.03;
+	};
+
+	class Exit: Button {
+		x = 0.95
+		y = 0.0
+		w = 0.05
+		h = 0.03
+		text = "Exit"
+		action = "closeDialog 0"
+	};
+	class ReturnToAIOrder: Button {
+		x = 0.65
+		y = 0.0
+		w = 0.3
+		h = 0.03
+		text = "Return To AI Groups Order"
+		action = "btnReturn = true"
 	};
 };
 
