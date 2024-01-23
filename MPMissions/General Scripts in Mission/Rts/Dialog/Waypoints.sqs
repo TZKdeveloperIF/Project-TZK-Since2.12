@@ -24,11 +24,17 @@ _pos call preprocessFile "Util\DebugPointInfo.sqf"
 _idcBigLeftBtn = IDC + 16 * 13
 
 _idcList = IDC + 16 * 4 + 0
+_idcDevidedList0 = IDC + 16 * 4 + 1
+_idcDevidedList1 = IDC + 16 * 4 + 2
+{ctrlShow [_x, false]} forEach [_idcDevidedList0, _idcDevidedList1]
 
 _idcBtn_0_0 = IDC + 16 * 17; _idcBtnBg_0_0 = IDC + 16 * 18;
+_downBtnBgIdxes = [0,1,3]
 {ctrlSetText [_x, "co"]} forEach [_idcBtn_0_0]
 {ctrlSetText [_x, "wp"]} forEach [_idcBtn_0_0 + 1]
-{_i = _x; {ctrlShow [_x + _i, false]} forEach [_idcBtnBg_0_0]} forEach [0,1]
+{ctrlSetText [_x, "Svr Art"]} forEach [_idcBtn_0_0 + 3]
+{_i = _x; {ctrlShow [_x + _i, false]} forEach [_idcBtnBg_0_0]} forEach _downBtnBgIdxes
+ctrlShow [_idcBtn_0_0 + 3, not bool_TZK_Rts_Cmd_Mode]
 
 _co = isCommander; _Superior = bIsAiSuperior
 
@@ -53,11 +59,17 @@ ctrlSetText [IDC + 16 * 32 + 2, "Point"]
 btnFunction = 0
 
 ; read wpco mode from player global variable
-_mode = RtsWpCoMode; _cacheMode = _mode; _invalidMode = {not _co && not _Superior && (0 == _mode)}
-? not _co && not _Superior && 0 == _mode: _mode = 1
+_mode = RtsWpCoMode; _cacheMode = _mode
+_invalidMode = {(not _co && not _Superior && (0 == _mode || 3 == _mode)) || (_mode != 0 && _mode != 1 && bool_TZK_Rts_Cmd_Mode)}
+? call _invalidMode: _mode = (if (_co || _Superior) then {0} else {1})
 
 btnValue01 = 2 ^ _mode
 _highlight = "CO"; if (1 == _mode) then {_highlight = "WP"}
+
+; special logic for traditional mode: wp/target
+_lastWpIdx = -1; _lastArtIdx = -1
+_procMixedWpArt = preprocessFile "Rts\Dialog\Wp\ProcMixedWpArtList.sqf"
+; todo: remember last choice
 
 # Update
 	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
@@ -69,6 +81,8 @@ _highlight = "CO"; if (1 == _mode) then {_highlight = "WP"}
 
 	? call dlgUpdated: goto "Quit"
 	? !(alive player): closeDialog 0; goto "Quit"
+
+	call _procMixedWpArt
 
 	? btnBigLeft >= 0: _leftBtn = btnBigLeft, btnBigLeft = -1, goto "BigLeftBtn"
 	? btnValue01 > 0: _mode = ln btnValue01 / ln 2, btnValue01 = 0, goto "OnHighlightChange"
@@ -98,7 +112,8 @@ _highlight = "CO"; if (1 == _mode) then {_highlight = "WP"}
 	_bValid = false
 	? 0 == _mode: if (_co || _Superior) then {_highlight = "CO", _bValid = true}
 	? 1 == _mode: _highlight = "WP", _bValid = true
-	? _bValid: call _refreshList, {ctrlShow [_idcBtnBg_0_0 + _x, false]} forEach [0,1], ctrlShow [_idcBtnBg_0_0 + _mode, true]
+	? 3 == _mode: _highlight = "SvrTarget", _bValid = true
+	? _bValid: call _refreshList, {ctrlShow [_idcBtnBg_0_0 + _x, false]} forEach _downBtnBgIdxes, ctrlShow [_idcBtnBg_0_0 + _mode, true]
 	goto "Update"
 
 # RightDownBtn
@@ -106,6 +121,11 @@ _highlight = "CO"; if (1 == _mode) then {_highlight = "WP"}
 	goto "Update"
 
 # SetBtn
+	_done = false
+	? "WP" == _highlight && not bool_TZK_Rts_Cmd_Mode: _done = true call preprocessFile "Rts\Dialog\Wp\SetMixedWpArtBtn.sqf"
+	? "WP" == _highlight && not bool_TZK_Rts_Cmd_Mode && not _done: hint "No item selected"; goto "Update"
+	? _done: closeDialog 0; goto "Quit"
+
 	_sel = lbCurSel _idcList
 	? _sel == -1: hint "No waypoint selected"; goto "Update"
 	indexWayPointSelected set [_mode, _sel]
@@ -113,11 +133,18 @@ _highlight = "CO"; if (1 == _mode) then {_highlight = "WP"}
 
 	? "CO" == _highlight: [siPlayer, giPlayer, _coor, _sel + _biasCo] exec "Common\Msg\sSetWPCO.sqs"
 	? "WP" == _highlight: [_sel, _coor] exec "Player\SetWaypoint.sqs"
+	; create a 50x50 art area
+	? "SvrTarget" == _highlight: [100 + _sel, "Art", true, "RtsAreaArtSvrIdx", [_coor, [25, 25], 0]] call preprocessFile "Rts\Marker\GenArea.sqf"
 
 	closeDialog 0
 	goto "Quit"
 	
 # Clear
+	_done = false
+	? "WP" == _highlight && not bool_TZK_Rts_Cmd_Mode: _done = false call preprocessFile "Rts\Dialog\Wp\SetMixedWpArtBtn.sqf"
+	? "WP" == _highlight && not bool_TZK_Rts_Cmd_Mode && not _done: hint "No item selected"; goto "Update"
+	? _done: closeDialog 0; goto "Quit"
+
 	_sel = lbCurSel _idcList
 	? _sel == -1: hint "No waypoint selected"; goto "Update"
 	indexWayPointSelected set [_mode, _sel]
@@ -125,6 +152,7 @@ _highlight = "CO"; if (1 == _mode) then {_highlight = "WP"}
 
 	? "CO" == _highlight: [siPlayer, giPlayer, _coor, _sel + _biasCo] exec "Common\Msg\sSetWPCO.sqs"
 	? "WP" == _highlight: [_sel, _coor] exec "Player\SetWaypoint.sqs"
+	? "SvrTarget" == _highlight: [_sel, "Art", true, "RtsAreaArtSvrIdx", [_coor, [], 0]] call preprocessFile "Rts\Marker\GenArea.sqf"
 
 	~ 0.2
 	goto "Update"

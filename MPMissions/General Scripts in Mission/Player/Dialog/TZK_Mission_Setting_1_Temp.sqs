@@ -13,6 +13,14 @@ _lastMissionSettings = [ [], [], [] ]; _booleMatrix = [booleSettingEffects, bool
 
 [_lastMissionSettings, _booleMatrix, "missionSettingMatrix_1"] call loadFile "\TZK_Scripts_4_0_4\Player\Dialog\TZK_Mission_Setting_Init.sqf"
 
+; Extra bool items
+_idxRtsCmd = 7;
+_idcRtsCmd = IDC + 100 + 100 * 1 + _idxRtsCmd;
+ctrlShow [_idcRtsCmd, true]
+lbAdd [_idcRtsCmd, "RTS Commanding Mode  [OFF]"]
+lbAdd [_idcRtsCmd, "RTS Commanding Mode   [ON]"]
+lbSetCurSel [_idcRtsCmd, [0, 1] select bool_TZK_Rts_Cmd_Mode]
+
 ; Show text in dev for debugging
 ? !dev : _i = 1; _c = 3; while "_i <= _c" do { ctrlShow [IDC + _i, false]; _i = _i + 1 }
 ? dev: (getPos player) exec "\TZK_Scripts_4_0_4\Server\CutDownTrees.sqs", hint format ["This message will appear only in developing mode (training missions), displaying some variables' value.\n\n%1, %2\n%3\n%4\n%5\n%6", GetWorld, TheWorld, dev], ctrlSetText [IDC + 2, format["%1", (vehicle player) call funcGetUnitTypeFromObject]], ctrlSetText [IDC + 3, format ["%1", structDefs select stHeavy select sdObjects0]],
@@ -27,13 +35,18 @@ ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bo
 	_idc = IDC + 100 + 100*_i; _last = _lastMissionSettings select _i; _booleans = _booleMatrix select _i
 	_j = 0; _Line = 12
 		#LoopLine
+		? _j >= count _booleans: goto "continue_line"
 		? lbCurSel (_idc + _j) != (_last select _j) && lbCurSel (_idc + _j) >= 0: call ((_booleans select _j) + format ["= %1", [false, true] select lbCurSel (_idc + _j)]); _last set [_j, lbCurSel (_idc + _j)], [1, _i, _j, [false, true] select lbCurSel (_idc + _j)] call preprocessFile "Player\OnMissionSettingModified.sqf"
+
+		# continue_line
 		_j = _j + 1
 		? _j < _Line : goto "LoopLine"
 	_i = _i + 1
 	? _i < _Column : goto "LoopColumn"
 	
 	? btnAction0: btnAction0 = false, [] exec localize {TZK_DIALOG_TZK_SETTING_2}, closeDialog 0, goto "Quit"
+
+	call preprocessFile "Player\Dialog\TzkSetting1Loop.sqf"
 
 	~0.2
 	goto "Update"
