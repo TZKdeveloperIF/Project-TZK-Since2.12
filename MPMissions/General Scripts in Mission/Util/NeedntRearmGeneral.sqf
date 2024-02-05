@@ -21,7 +21,7 @@ if (not _rearm && count (_rearmData select 0) > 0 && count (_rearmData select 1)
 		};
 	};
 	if not _rearm then {
-		if not ([magazines _this, _rearmData select 1] call _equal) then {
+		if not ([_this call funcGetNotEmptyMags, _rearmData select 1] call _equal) then {
 			_rearm = true;
 		};
 	};
