@@ -211,9 +211,8 @@ mutexDlg = false
 	? (_typeUnit == -1): Hint "No Unit Selected"; goto "Update"
 	
 	; type-rule check
-	? _typeUnit in typesRocketLauncher: if not ("MLRS" call preprocessFile "RuleCmd\Check.sqf") then {hint "MLRS is banned by CMD rule. Ask CMD(s) to decide the rule again (left colume in Options dialog)."; goto "Update"}
-	? _typeUnit in _assultAircraftCache: if not ("Assult Aircraft" call preprocessFile "RuleCmd\Check.sqf") then {hint "Assult Aircraft is banned by CMD rule. Ask CMD(s) to decide the rule again (left colume in Options dialog)."; goto "Update"}
-	? _typeUnit in _transportAirCache: if not ("Transport Aircraft" call preprocessFile "RuleCmd\Check.sqf") then {hint "Transport Aircraft is banned by CMD rule. Ask CMD(s) to decide the rule again (left colume in Options dialog)."; goto "Update"}
+	_allowed = _typeUnit call preprocessFile "Player\Dialog\BU_CmdRule.sqf"
+	? not _allowed: goto "Update"
 
 	? groupPlayer != (groupCommander select siPlayer) && _selectedGroup != giPlayer : if !((_groups select _selectedGroup) in _groupsAI) then {Hint "Only Commander can buy units for player"; goto "Update"}; if ((["Commander"] + callsigns) select ( ((aiSetting select _si) select _selectedGroup) select aisSuperior ) != _groupNames select giPlayer) then {Hint "You are not the superior of this AI group"; goto "Update"}
 	? _typeUnit >= maxUnitTypes && _selectedGroup != giPlayer : hint "Custom soldiers can only be bought for player group"; goto "Update"
@@ -236,6 +235,11 @@ mutexDlg = false
 
 #BuyManned
 	? (_typeUnit == -1): Hint "No Unit Selected"; goto "Update"
+	
+	; type-rule check
+	_allowed = _typeUnit call preprocessFile "Player\Dialog\BU_CmdRule.sqf"
+	? not _allowed: goto "Update"
+
 	? groupPlayer != (groupCommander select siPlayer) && _selectedGroup != giPlayer : if !((_groups select _selectedGroup) in _groupsAI) then {Hint "Only Commander can buy units for player"; goto "Update"}; if ((["Commander"] + callsigns) select ( ((aiSetting select _si) select _selectedGroup) select aisSuperior ) != _groupNames select giPlayer) then {Hint "You are not the superior of this AI group"; goto "Update"}
 	? (_money < _costManned): Hint format["Not Enough Money\nCost %1\nNeed %2", _costManned, _costManned - _money]; goto "Update"
 	_unitsToBuild = 0
