@@ -1,13 +1,19 @@
-; args: [si]
-_si = _this select 0
+; args: si
+_si = _this
 _siEnemy = siEnemy select _si
 
-; Wait until markers initialized.
-@(time > 10)
+; Wait until markers initialized
+~ 10
 ? dev: exit
-#Update
-	? _time > 30: [_si] exec "\TZK_Scripts_4_0_5\Player\Marker\PlayerStruct.sqs"; exit
-	~10
+
+; Structure marker design is developed in TZK2. At that time TZK2 was bothered by "server infinity loop"
+; caused by pistol C4 and network high desync caused by frequently reading pos/vel of remote bullets, and
+; I reduce the frequency of structure markers to help me locate the problem. It is time to make structure
+; markers display in real time
+# Update
+	_delay = if !bool_TZK_Marker_LowFrequency Then {0.5} Else {3}
+	~ _delay
+
 	_structs = StructureMarkerMapping select _si; _i = 0
 	
 	#StructOwn
