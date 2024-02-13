@@ -68,19 +68,23 @@ class SimpleConfirmDlg: Menu
 		colorBackground[] = {0.247, 0.247, 0.247, 0.75};
 	};
 
-	class Scd_Title: Title {
+	class Scd_Title_Base: Title {
+		idc = IDC + 16 * 0;
 		style = ST_CENTER;
 		x = 0.37;
-		y = 0.40;
+		y = 0.42;
 		w = 0.26;
 		h = 0.03;
 		colorBackground[] = {0.247, 0.247, 0.247, 0.75};
 		text = "Confirm Start Position";
 	};
 
+	class Scd_Title: Scd_Title_Base {};
+
 	class Scd_BUTTON_OK: Button {
+		idc = IDC + 16 * 1;
 		x = 0.3975;
-		y = 0.54;
+		y = 0.52;
 		w = 0.1;
 		h = 0.04;
 		text = "Confirm"
@@ -89,8 +93,9 @@ class SimpleConfirmDlg: Menu
 	};
 
 	class Scd_BUTTON_EXIT: Button {
+		idc = IDC + 16 * 2;
 		x = 0.5025;
-		y = 0.54;
+		y = 0.52;
 		w = 0.1;
 		h = 0.04;
 		text = "Exit"
