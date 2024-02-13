@@ -1,0 +1,33 @@
+; args: pos
+@ not mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "ImportantSimpleConfirmDlg"
+mutexDlg = false
+
+btnValue00 = false
+btnValue01 = false
+
+_idcTitle = IDC + 16 * 0, _idcOkBtn = IDC + 16 * 1, _idcExitBtn = IDC + 16 * 2
+ctrlSetText [_idcTitle, "Surrender Confirm"]
+ctrlSetText [_idcOkBtn, "Surrender"]
+ctrlSetText [_idcExitBtn, "Exit"]
+
+
+# Update
+	? call dlgUpdated: exit
+	? !(alive player): closeDialog 0; exit
+
+	? btnValue00: closeDialog 0; goto "Confirm"
+	? btnValue01: btnValue01 = false; closeDialog 0; exit
+
+	~ 0.1
+	goto "Update"
+
+# Confirm
+	_si = siPlayer
+
+	_mhq = mhq select _si
+	? alive _mhq: _mhq setDamage 1
+
+	{{_x setDamage 1} forEach (structMatrix select _si select _x)} forEach structsCritcal
+	closeDialog 0; exit

@@ -30,6 +30,7 @@ btnFunction = 0
 
 { ctrlShow [_x, false] } forEach [_idcLeftBtn0]
 ? isCommander || bIsAiSuperior: ctrlSetText [_idcLeftBtn0, "Wall MHQ"]; ctrlShow [_idcLeftBtn0, true]
+? isCommander: ctrlSetText [_idcLeftBtn0 + 1, "Surrender"]; ctrlShow [_idcLeftBtn0 + 1, true]
 
 ; down board
 _downBoardStack = []
@@ -62,6 +63,7 @@ TzkMapRtsFlashingDisabled = true
 	call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
 # LeftBtn
 	? 0 == _btnVal: 0 exec "Rts\Building\sWallMhq.sqs"; goto "Update"
+	? 1 == _btnVal: 0 exec "Rts\SubMenu\SurrenderConfirm.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 # DownBtn
 	? count _downBoardStack > 0: goto "DownSubMenu"
