@@ -42,6 +42,8 @@ _i = 0; while {_i < (count TzkCmdRules)} do {
 	_str = (TzkCmdRules select _i select 3) call preprocessFile "Cfg\LoadServerValue.sqf";
 	_val = (if ("" == _str) then {false} else {call _str}); // "true"/"false"
 	[_i, _val, true, false] call preprocessFile "RuleCmd\SetValue.sqf";
+	// modify opinions as well
+	{TzkCmdRules select _i select 1 set [_x, _val]} forEach [si0, si1];
 
 	_i = _i + 1;
 };
