@@ -45,6 +45,7 @@ call preprocessFile "Common\Init\Group.sqf"
 call loadFile "\TZK_Scripts_4_0_6\init_param.sqf"
 fixedStartPos = param1
 "" call loadFile "\TZK_Scripts_4_0_6\init_upgrade.sqf"
+upgDefs select upgSpoofMissile set [0, "Helicopter Spoof Missile"];
 upgDefs select upgSatCamZoom set [1, 0]; upgDefs select upgSatCamZoom set [2, 0];
 ? bool_TZK_Lester_Mode: [{[] exec "Extra\init_upgrade.sqs"}, 0.1] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
 call loadFile "\TZK_Scripts_4_0_6\init_theWorld.sqf"
@@ -185,9 +186,9 @@ Vote_ItemNames set [_i, "BOH WAP Vehicle"]; Vote_Matrix set [_i, [Vote_ItemNames
 ; 4.0.5.12
 TZK_Vote_Items = 9; TZK_Vote_Pages = 2; TZK_Vote_Page = 0;
 
-pvVoteStart0 = -1; pvVoteReceived0 = -1; pvVoteResult0 = -1; pvVoteAdmin = false
+pvVoteStart0 = -1; pvVoteResult0 = -1; pvVoteAdmin = false
 ? isServer: mutexVote = false
-? !isNull player: [] exec "\TZK_Scripts_4_0_4\Player\Msg\mVoteReceived.sqs", lvVoteReceived0 = -1, mutexVote = false, [] exec "Player\Msg\mVoteResult.sqs"
+? !isNull player: lvVoteReceived0 = -1, mutexVote = false, [] exec "Player\Msg\mVoteResult.sqs"
 
 ; Weather.
 pvWeather_Value = 0; pvWeather_Delay = 2*60; pvWeather_Cycle = 10*60

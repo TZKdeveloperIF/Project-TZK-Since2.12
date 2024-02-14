@@ -1,4 +1,4 @@
-; args: [value0]
+; args: [value0, mass voted, mass total, vote rage]
 
 _value0 = _this select 0
 lvVoteReceived0 = _value0
@@ -16,4 +16,7 @@ _value0 = (_value0 - _item_Index)/(count Vote_Matrix)
 _item_Value = _value0
 
 _string = format ["%1 votes %2: %3", name leader (groupMatrix select _si select _gi), Vote_Matrix select _item_Index select 0,  Vote_Matrix select _item_Index select 1 select _item_Value]
+
+_v = _this select 1; _t = _this select 2; _r = _v / _t * 100; _r = _r - _r % 1
+_string = _string + format [", current result: %1/%2 = %3%5, passing rate: %4%5", _v, _t, _r, 100 * (_this select 3), "%"]
 _logic = "Logic" camCreate [0,0,0]; _logic globalChat _string; deleteVehicle _logic

@@ -222,6 +222,9 @@ mutexDlg = false
 	? _remote && _factoryIndex == -1: Hint "No Factory Selected"; goto "Update"
 	? _remote: _factory = _factories select _factoryIndex
 
+	_allowed = [_typeUnit, _factory] call preprocessFile "Player\Dialog\BU_CmdRule2.sqf"
+	? not _allowed: goto "Update"
+
 	? -1 == _enum: [_typeUnit, 0, 0, 0, _selectedGroup, _factory] exec "Player\Msg\sBuyUnit.sqs"
 	; extra info: selected equipment index (in predefined array)
 	? -1 != _enum: [_typeUnit, 0, 0, 0, _selectedGroup, _factory, -1 != lbCurSel _idcEquipList, lbValue [_idcEquipList, lbCurSel _idcEquipList]] exec "Player\Msg\sBuyUnit.sqs"
@@ -255,6 +258,9 @@ mutexDlg = false
 
 	? _remote && _factoryIndex == -1: Hint "No Factory Selected"; goto "Update"
 	? _remote: _factory = _factories select _factoryIndex
+
+	_allowed = [_typeUnit, _factory] call preprocessFile "Player\Dialog\BU_CmdRule2.sqf"
+	? not _allowed: goto "Update"
 
 	? -1 == _enum: [_typeUnit, _driver, _gunner, _commander, _selectedGroup, _factory] exec "Player\Msg\sBuyUnit.sqs"
 	? -1 != _enum: [_typeUnit, _driver, _gunner, _commander, _selectedGroup, _factory, -1 != lbCurSel _idcEquipList, lbValue [_idcEquipList, lbCurSel _idcEquipList]] exec "Player\Msg\sBuyUnit.sqs"
