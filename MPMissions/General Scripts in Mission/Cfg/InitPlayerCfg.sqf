@@ -13,6 +13,8 @@ _initGameVars = {
 
 	_this addValue ["LastCustom", -1]; 				// Custom soldier template idx cache
 	_this addValue ["LastEquipTemplate", -1]; 		// Player equipment template idx cache
+
+	_this addValue ["DestructShowShelter", "true"]; // Show Shelter in destruction
 };
 
 _initPlayerSettings = {
