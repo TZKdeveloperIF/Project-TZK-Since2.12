@@ -19,3 +19,7 @@ TzkCmdRules set [count TzkCmdRules, _elem];
 
 _elem = ["At most 3 factories", [false, false], false, "CmdRule_AtMost3Factories"];
 TzkCmdRules set [count TzkCmdRules, _elem];
+
+_initVal = false;
+_elem = ["Buy Transport Heli from LF", [_initVal, _initVal], _initVal, "CmdRule_BuyTranspHeliFromLF"];
+TzkCmdRules set [count TzkCmdRules, _elem];
