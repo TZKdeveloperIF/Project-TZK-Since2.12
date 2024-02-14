@@ -1797,7 +1797,7 @@ class OptionsDialog2: OptionsDialog
 {
 	controls[] = {
 		OptionsTitle,
-		Money, Score, Leaderboard, Towns, Income, CleanupGround,
+		Money, Score, Leaderboard, Destruction, Towns, Income, CleanupGround,
 		NumberedAIBG, NumberedAI, ReportsLabel, Reports,
 		OptionsTimeLabel, OptionsGameTime,
 		TransferLabel, TransferTarget, TransferAmount,Transfer, TransferAIs, TransferAll, TransferTake, AICheck,
@@ -2896,6 +2896,32 @@ class TemporaryAIOrderDialog: Menu {
 		h = 0.03
 		text = "Return To AI Groups Order"
 		action = "btnReturn = true"
+	};
+};
+
+class DestructionDialog: GenericDialog {
+	controls[] = {
+		GenericTitle, ListHeader, List, Exit,
+		InfoAction0, Action0, InfoAction1, Action1, InfoAction2, Action2, InfoAction3, Action3, InfoAction4, Action4, 
+		// take care of the order of bg/btn
+		StateBg0, 
+		State0, 
+	};
+
+	class StateBg0: ButtonBG {
+		idc = IDC + 16 * 5 + 0;
+		colorBackground[] = COLOR_SELECTED_TEXT;
+		x = 0.225;
+		y = 0.50;
+		w = 0.10;
+	};
+	class State0: Button {
+		idc = IDC + 16 * 6 + 0;
+		x = 0.225;
+		y = 0.50;
+		w = 0.10;
+		text = "UNDEFINED";
+		action = "btnValue00 = 0";
 	};
 };
 

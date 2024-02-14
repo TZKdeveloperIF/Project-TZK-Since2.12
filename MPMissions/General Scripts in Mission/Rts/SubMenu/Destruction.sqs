@@ -1,8 +1,9 @@
-; args: none
+; args: 0 - RTS style, 1 - traditional style
+_bRts = 0 == _this
 
 @ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
-_dlg = createDialog "GenericDialog"
+_dlg = createDialog "DestructionDialog"
 mutexDlg = false
 
 _idcAction0Label = IDC+0
@@ -34,6 +35,12 @@ ctrlSetText [_idcAction1, "Delete Same Type"]
 ctrlSetText [_idcAction2, "Delete All"]
 ctrlSetText [_idcListHeader, "recycle 50% if near CC, MHQ or engineer vehicle."]
 
+btnValue00 = -1, _idcState = IDC + 16 * 6, _idcStateBg = IDC + 16 * 5;
+_val = "DestructShowShelter" call preprocessFile "Cfg\LoadPlayerValue.sqf";
+_showShelter = (if ("" == _val) then {false} else {call _val});
+ctrlShow [_idcStateBg + 0, _showShelter]
+ctrlSetText [_idcState + 0, "Shelter"]
+
 _list = [], _types = []
 ? isCommander: [_types, structsDestroy] call preprocessFile "Util\ArrayAppend.sqf"
 [_types, structsDefence] call preprocessFile "Util\ArrayAppend.sqf"
@@ -58,6 +65,7 @@ _posInRect = preprocessFile "Util\PosInRect.sqf"
 	? (btnAction0): btnAction0=false; goto "DeleteSelected"
 	? (btnAction1): btnAction1=false; goto "DeleteSameType"
 	? (btnAction2): btnAction2=false; goto "DeleteAll"
+	? btnValue00 >= 0: goto "BtnVal0"
 
 	goto "Update"
 
@@ -75,3 +83,13 @@ _posInRect = preprocessFile "Util\PosInRect.sqf"
 # DeleteAll
 	? count _list == 0: hint "No items available"; goto "Update"
 	"All" call preprocessFile "Rts\Trigger\Destruct.sqf"; goto "Update"
+
+# BtnVal0
+	_val0 = btnValue00; btnValue00 = -1;
+	? 0 == _val0: goto "SwitchShelterShown"
+	goto "Update"
+# SwitchShelterShown
+	_showShelter = not _showShelter
+	ctrlShow [_idcStateBg + 0, _showShelter]
+	["DestructShowShelter", format ["%1", _showShelter]] call preprocessFile "Cfg\SavePlayerValue.sqf"
+	goto "Update"
