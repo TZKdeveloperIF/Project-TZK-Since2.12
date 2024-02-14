@@ -51,6 +51,7 @@ ctrlShow [_idcNumberedAI, false]
 ctrlShow [_idcConcurrentRts, not bool_TZK_Rts_Cmd_Mode]
 btnCommandTemporary = false
 
+btnDestruction = false
 {call (_x + " = false")} forEach ["btnLeaderboard", "btnGrant", "btnAsk", "btnTake", "btnGive", "btnGiveAIs", "btnGiveAll", "btnUpgrade", "btnBuyUnits", "btnShowStats", "btnUnitCam", "btnSatCam", "btnCustomSoldiers", "btnCommandAI", "btnCommandPlayer", "btnTransfer", "btnNumberedAI", "btnAICheck", "btnSpySat"]
 {call (_x + " = false")} forEach ["btnVoteMenu", "btnCmdRuleMenu"]
 _icons = ["\TZK_Objects\Image\Icon\square_empty.paa", "\TZK_Objects\Image\Icon\square_yellow.paa", "\TZK_Objects\Image\Icon\square_green.paa"]
@@ -83,7 +84,8 @@ _groupCommander = (groupCommander select siPlayer)
 ; DISABLE stuff for NON-commanders
 _isCommander = groupPlayer == _groupCommander; _isAIcommander = _groupCommander in _groupsAI
 { ctrlEnable [_x, _isCommander] } forEach [ _idcAIRespawn, _idcIncomeRatio, _idcIncomeRatioPlayer, _idcTransferCommandGroup, _idcWorkerBehaviour ]
-{ ctrlShow [_x, _isCommander] } forEach [ _idcTransferCommand, _idcDestruction, _idcGiveMoneyToAI, _idcGiveMoneyToALL, _idcTakeMoney ]
+{ ctrlShow [_x, _isCommander] } forEach [ _idcTransferCommand, _idcGiveMoneyToAI, _idcGiveMoneyToALL, _idcTakeMoney ]
+ctrlShow [_idcDestruction, not bool_TZK_Rts_Cmd_Mode && _isCommander]
 { ctrlShow [_x, _isCommander || _isAIcommander] } forEach [_idcUpgradeStart]
 { ctrlShow [_x, false] } forEach [_idcUpgSwitch]
 
@@ -128,6 +130,7 @@ report = lbCurSel _idcReports
 ? btnTransfer : btnTransfer=false; goto "TransferCommand"
 ? btnCustomSoldiers : btnCustomSoldiers=false; goto "CustomSoldiers"
 ? btnNumberedAI : btnNumberedAI=false; goto "SaveNumberedAI"
+? btnDestruction : btnDestruction=false; goto "DestructBuildings"
 ? btnAICheck : btnAICheck = false; goto "CheckAI"
 ? btnCommandTemporary : btnCommandTemporary = false; goto "ConcurrentRts"
 ? btnSpySat : btnSpySat = false; goto "SpySat"
@@ -328,6 +331,12 @@ goto "Update"
   unitSetting saveStatus _entry
   deleteVehicle unitSetting
   goto "Update"
+
+# DestructBuildings
+	closeDialog 0
+	; ~0.1
+	1 exec "Rts\Submenu\Destruction.sqs"
+	exit
 
 #CheckAI
 	_index = lbCurSel _idcTransferGroup

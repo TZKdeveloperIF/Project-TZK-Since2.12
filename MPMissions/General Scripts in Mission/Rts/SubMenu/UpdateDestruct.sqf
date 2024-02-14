@@ -6,12 +6,18 @@ private [{_idcList}]; _idcList = _this;
 lbClear _idcList; _list resize 0;
 _i = 0; _c = count _types; while {_i < _c} do {
 	_type = _types select _i;
+	private [{_continue}]; _continue = false;
+	if (not _showShelter && not _continue) then {if (_type in structsShelter) then {_continue = true}};
+
+if not _continue then {
 	_structs = structMatrix select siPlayer select _type;
 	{
 		_struct = _x;
 		if (alive _struct) then {
 			_pos = getPos _struct;
-			if ([_pos, _area] call _posInRect) then {
+			private [{_valid}]; _valid = true;
+			if _bRts then {_valid = [_pos, _area] call _posInRect};
+			if (_valid) then {
 				_name = structDefs select _type select sdName;
 
 				_idx = lbAdd [_idcList, format ["%1 - %2", _name, _pos call funcCalcTownDirDistFromPos]];
@@ -25,6 +31,7 @@ _i = 0; _c = count _types; while {_i < _c} do {
 			};
 		};
 	} forEach _structs;
+};
 
 	_i = _i + 1;
 };
