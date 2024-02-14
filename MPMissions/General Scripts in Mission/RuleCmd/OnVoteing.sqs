@@ -8,7 +8,11 @@ _newVal = [false, true] select _curSel
 ; element format: [rule name, [west cmd opinion, east cmd opinion], result]
 _entry = TzkCmdRules select _item
 _opinions = _entry select 1
-_curVal = _entry select 2
+_curRes = _entry select 2
+_curVal = _opinions select _si
+
+_cmdVotes = "RuleCmd\ClientsKnowCmdVotes.sqs"
+? not ([_curVal, _newVal] call funcBoolEqual): _this exec _cmdVotes, publicExec format [{%1 exec {%2}}, _this, _cmdVotes]
 
 _opinions set [_si, _newVal]
 _siEnemy = siEnemy select _si
@@ -16,8 +20,6 @@ _enemyIsAico = (groupCommander select _siEnemy) in (groupAiMatrix select _siEnem
 ? _enemyIsAico: _opinions set [_siEnemy, _newVal]
 
 _agree = [_opinions select _si, _opinions select _siEnemy] call funcBoolEqual
-_value = (if _agree then {_newVal} else {_curVal})
+_newRes = (if _agree then {_newVal} else {_curRes})
 
-_entry set [2, _value]
-
-[_item, _value, not ([_curVal, _newVal] call funcBoolEqual), true] call preprocessFile "RuleCmd\SetValue.sqf"
+[_item, _newRes, not ([_curRes, _newRes] call funcBoolEqual), true] call preprocessFile "RuleCmd\SetValue.sqf"
