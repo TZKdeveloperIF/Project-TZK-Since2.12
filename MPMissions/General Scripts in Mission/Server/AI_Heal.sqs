@@ -10,6 +10,8 @@ _nonAIgroup = if (count _this > 6) Then {_this select 6} Else {false}
 _bUseCommMoney = if (count _this > 7) Then {_this select 7} Else {false}
 _this = nil
 
+[_si, _support] exec "Common\SubmitUseSupportVehicle.sqs"
+
 _timeHeal = 5
 _price = 0
 ? _unit == _vehicle: goto "UnitOnFoot"

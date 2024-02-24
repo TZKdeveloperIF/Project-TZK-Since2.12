@@ -16,3 +16,5 @@ mutexBuildingQueue = [[], []];
 } forEach [si0, si1];
 // define mutex for reclaim
 mutexReclaim = false;
+// 4.0.6.70. Support vehicle and its last user
+TzkSupVehObjs = []; TzkSubVehUsers = []; mutexTzkSup = false;
