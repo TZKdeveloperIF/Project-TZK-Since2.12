@@ -1,5 +1,7 @@
 ; args: none
 
+_allObjFailed = {call format [{"%1" objStatus "FAILED"}, _x]} forEach [1,2,3]
+
 forceMap false
 
 closeDialog 0
@@ -11,7 +13,7 @@ _value = pvGameOver
 ; 2-draw: 0:noDraw, 1:draw
 ; 4-reasonDraw: (ignored if draw=0) 0:timeLimit, 1:TBD, 2:TBD, 3:TBD
 ; 2-siWinner: (ignored if draw=1)
-; 4-reasonWin: (ignored if draw=1) 0:destruction, 1:towns, 2:TBD, 3:TBD
+; 4-reasonWin: (ignored if draw=1) 0:destruction, 1:towns, 2:surrender, 3:TBD
 
 _draw = (_value % (2))/(1)
 _value = _value - _draw*(1)
@@ -38,8 +40,7 @@ _siWinner = -1
 	_mhqWinner = mhq select _siWinner
 	_textLoser= sideNames select _siLoser
 	_textWinner= sideNames select _siWinner
-	"1" ObjStatus "FAILED"
-	"2" ObjStatus "FAILED"
+	call _allObjFailed
 	_gameEndType = 2
 	goto "Start"
 
@@ -53,10 +54,12 @@ _siWinner = -1
 
 	? (_winReason == 0): _textReason = "Destruction"
 	? (_winReason == 1): _textReason = "All Towns"
+	? (_winReason == 2): _textReason = "Surrender"
 	
 	? (siPlayer == _siWinner || siPlayer == siCiv) && _winReason == 0 : "1" objStatus "DONE"
 	? (siPlayer == _siWinner || siPlayer == siCiv) && _winReason == 1 : "2" objStatus "DONE"
-	? siPlayer == _siLoser : "1" objStatus "FAILED"; "2" objStatus "FAILED"
+	? (siPlayer == _siWinner || siPlayer == siCiv) && _winReason == 2 : "3" objStatus "DONE"
+	? siPlayer == _siLoser : call _allObjFailed
 
 	_gameEndType = _siWinner
 

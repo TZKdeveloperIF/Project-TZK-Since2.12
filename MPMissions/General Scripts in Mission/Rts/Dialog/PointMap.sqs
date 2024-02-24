@@ -30,7 +30,7 @@ btnFunction = 0
 
 { ctrlShow [_x, false] } forEach [_idcLeftBtn0]
 ? isCommander || bIsAiSuperior: ctrlSetText [_idcLeftBtn0, "Wall MHQ"]; ctrlShow [_idcLeftBtn0, true]
-? isCommander: ctrlSetText [_idcLeftBtn0 + 1, "Surrender"]; ctrlShow [_idcLeftBtn0 + 1, true]
+ctrlSetText [_idcLeftBtn0 + 1, "Surrender"]; ctrlShow [_idcLeftBtn0 + 1, isCommander]
 
 ; down board
 _downBoardStack = []

@@ -1,0 +1,15 @@
+; args: vehicle
+
+_type = _this call funcGetUnitTypeFromObject
+
+? _type in (typesSupport select siPlayer): goto "SubmitDeleteSup"
+	player groupchat "Disbanding vehicle."
+	deleteVehicle _this
+	exit
+
+# SubmitDeleteSup
+	_netIdStr = _this call funcGenNetIdStr
+	? isNull _this || not alive _this: exit
+
+	? isServer: [siPlayer, _this] exec "Server\ProcessDisbandEmptySup.sqs"; exit
+	publicExec format [{[%1, UnitById %2] exec "Server\ProcessDisbandEmptySup.sqs"}, siPlayer, _netIdStr]

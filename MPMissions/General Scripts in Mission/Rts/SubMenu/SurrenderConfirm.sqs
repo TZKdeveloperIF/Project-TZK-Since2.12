@@ -24,10 +24,9 @@ ctrlSetText [_idcExitBtn, "Exit"]
 	goto "Update"
 
 # Confirm
+	? not isCommander: hint "Only commander can surrender."; goto "Update"
 	_si = siPlayer
+	_si call preprocessFile "Server\CheckWinSurrender.sqf"
+	publicExec format [{%1 call preprocessFile "Server\CheckWinSurrender.sqf"}, _si]
 
-	_mhq = mhq select _si
-	? alive _mhq: _mhq setDamage 1
-
-	{{_x setDamage 1} forEach (structMatrix select _si select _x)} forEach structsCritcal
 	closeDialog 0; exit
