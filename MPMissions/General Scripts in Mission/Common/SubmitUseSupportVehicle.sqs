@@ -1,0 +1,10 @@
+; args: [si, support vehicle]
+
+_si = _this select 0
+_vehicle = _this select 1
+
+_netIdStr = _vehicle call funcGenNetIdStr
+? isNull _vehicle || not alive _vehicle: exit
+
+? isServer: [_si, _vehicle] exec "Server\ProcessUseSupportVehicle.sqs"; exit
+publicExec format [{[%1, UnitById %2] exec "Server\ProcessUseSupportVehicle.sqs"}, _si, _netIdStr]
