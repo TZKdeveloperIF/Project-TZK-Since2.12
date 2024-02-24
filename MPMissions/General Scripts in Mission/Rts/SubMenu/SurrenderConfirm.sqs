@@ -24,6 +24,7 @@ ctrlSetText [_idcExitBtn, "Exit"]
 	goto "Update"
 
 # Confirm
+	? not isCommander: hint "Only commander can surrender."; goto "Update"
 	_si = siPlayer
 
 	_mhq = mhq select _si
