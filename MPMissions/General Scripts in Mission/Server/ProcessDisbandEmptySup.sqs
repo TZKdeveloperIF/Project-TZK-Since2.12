@@ -1,0 +1,30 @@
+; args: [si, support vehicle]
+
+? not isServer: exit
+
+_si = _this select 0
+_vehicle = _this select 1
+? isNull _vehicle || not alive _vehicle: exit
+
+_allow = false
+
+@ not mutexTzkSup
+	mutexTzkSup = true
+
+	_idx = TzkSupVehObjs find _vehicle
+	_allow = (if (-1 == _idx) then {true} else {(TzkSubVehUsers select _idx) == _si})
+
+	mutexTzkSup = false
+
+? _allow: goto "DeleteSupportVehicle"
+; Can't delete support vehicle
+	_msg = "Support vehicle is captured by enemy. Unable to disband."
+	[_si, _msg] exec "Network\hDisbandEmptySup.sqs"
+	publicExec format [{[%1, "%2"] exec "Network\hDisbandEmptySup.sqs"}, _si, _msg]
+	exit
+
+# DeleteSupportVehicle
+	deleteVehicle _vehicle
+	_msg = "Disbanding vehicle."
+	[_si, _msg] exec "Network\hDisbandEmptySup.sqs"
+	publicExec format [{[%1, "%2"] exec "Network\hDisbandEmptySup.sqs"}, _si, _msg]

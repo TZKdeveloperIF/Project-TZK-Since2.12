@@ -10,6 +10,8 @@ _support = _param select 1
 _vehicle = if (count _param > 2) then {_param select 2} else {vehicle _unit}
 _bAirSup = if (count _param > 3) then {_param select 3} else {false}
 
+[siPlayer, _support] exec "Common\SubmitUseSupportVehicle.sqs"
+
 _range = if !_bAirSup then {2*rangeSupport} else {rangeSupportPlane}
 
 _msg = ""
