@@ -1,0 +1,294 @@
+version=11;
+#include "TZK_Scripts_4_0_6\mission.h"
+class Mission
+{
+	addOns[]=
+	{
+		TZK_BIS_AddOns
+		TZK_Basic_406_AddOns
+		TZK_CONFIG_406_AddOns
+		"TZK_CONFIG_406_Patch",
+		"TZK_CONFIG_406_Patch2",
+		"TZK_CONFIG_406_Patch3",
+		"polska"
+	};
+	addOnsAuto[]=
+	{
+		TZK_CONFIG_406_AddOns
+		"TZK_CONFIG_406_Patch",
+		"TZK_CONFIG_406_Patch2",
+		"TZK_CONFIG_406_Patch3",
+	};
+	randomSeed=42499;
+	class Intel
+	{
+		briefingName="@STR_MISSION_NAME";
+		briefingDescription="$STR_MISSION_BREF_DESC";
+		resistanceWest=0.000000;
+		startWeather=0.000000;
+		forecastWeather=0.000000;
+		month=9;
+		day=22;
+		hour=8;
+		minute=0;
+	};
+	class Groups
+	{
+		items=156;
+		class Item0
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={-1000.000000,0.000000,2000.000000};
+					id=0;
+					side="GUER";
+					vehicle="SoldierGB";
+					leader=1;
+					skill=0.200000;
+					text="resistance_Center";
+					init="gameEndType = -1; towns=[]; [] exec ""\TZK_Scripts_4_0_4\Server\InitRepairableObjects.sqs""; [] exec ""\TZK_Scripts_4_0_4\Server\InitDestroyIslandObject.sqs""";
+				};
+			};
+		};
+
+		TZK_Mission_Grp_Playable_201("CommanderW_Info_5HP_xj400", "CommanderE_Info_5HP_xj400", "LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		
+		TZK_Mission_Group_Playable(37,CIV, 0,0,3370, 37, "Civilian", "this allowdammage false; Spec0=this")
+		TZK_Mission_Group_Playable(38,CIV, 0,0,3380, 38, "Civilian", "this allowdammage false; Spec1=this")
+		TZK_Mission_Group_Playable(39,CIV, 0,0,3390, 39, "Civilian", "this allowdammage false; Spec2=this")
+		TZK_Mission_Group_Playable(40,CIV, 0,0,3400, 40, "Civilian", "this allowdammage false; Spec3=this")
+		TZK_Mission_Group_Playable(41,CIV, 0,0,3410, 41, "Civilian", "this allowdammage false; Spec4=this")
+		TZK_Mission_Group_Playable(42,CIV, 0,0,3420, 42, "Civilian", "this allowdammage false; Spec5=this")
+		TZK_Mission_Group_Playable(43,CIV, 0,0,3430, 43, "Civilian", "this allowdammage false; Spec6=this")
+		TZK_Mission_Group_Playable(44,CIV, 0,0,3440, 44, "Civilian", "this allowdammage false; Spec7=this")
+		TZK_Mission_Group_Playable(45,CIV, 0,0,3450, 45, "Civilian", "this allowdammage false; Spec8=this")
+		TZK_Mission_Group_Playable(46,CIV, 0,0,3460, 46, "Civilian", "this allowdammage false; Spec9=this")
+		
+		TZK_Mission_Grp_Functional_201("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_TownGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_PatrolGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_WorkerGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_FunctionalGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		class Item154
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={2168.757568,34.965000,8209.867188};
+					special="NONE";
+					id=144;
+					side="LOGIC";
+					vehicle="Logic";
+					leader=1;
+					skill=0.600000;
+					text="FixStart_0";
+				};
+			};
+		};
+		class Item155
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={10254.569336,56.789997,4590.470215};
+					special="NONE";
+					id=145;
+					side="LOGIC";
+					vehicle="Logic";
+					leader=1;
+					skill=0.600000;
+					text="FixStart_1";
+				};
+			};
+		};
+	};
+	class Vehicles
+	{
+		items=14;
+		class Item0
+		{
+			position[]={7146.166016,111.689995,2997.693359};
+			special="NONE";
+			id=200;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Zakopiec"",500,2]]";
+		};
+		class Item1
+		{
+			position[]={4228.433594,52.964996,7014.074219};
+			special="NONE";
+			id=201;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Spikes"",500,2]]";
+		};
+		class Item2
+		{
+			position[]={11029.170898,19.980000,8604.077148};
+			special="NONE";
+			id=202;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Rusowo"",500,2]]";
+		};
+		class Item3
+		{
+			position[]={7906.514160,24.974998,7671.398926};
+			special="NONE";
+			id=203;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Warszawa Praga"",500,2]]";
+		};
+		class Item4
+		{
+			position[]={1168.507568,11.969999,10323.829102};
+			special="NONE";
+			id=204;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Uznam City"",500,2]]";
+		};
+		class Item5
+		{
+			position[]={4935.733887,21.959999,12074.264648};
+			special="NONE";
+			id=205;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Gdynia Military Base"",500,2]]";
+		};
+		class Item6
+		{
+			position[]={10903.114258,59.804996,6002.679688};
+			special="NONE";
+			id=206;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Podlask"",500,2]]";
+		};
+		class Item7
+		{
+			position[]={9143.599609,101.609993,2904.077637};
+			special="NONE";
+			id=207;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Mala Wioska"",500,2]]";
+		};
+		class Item8
+		{
+			position[]={7580.991211,20.969999,10155.434570};
+			special="NONE";
+			id=208;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Elblag"",500,2]]";
+		};
+		class Item9
+		{
+			position[]={2456.460449,37.168663,5320.725098};
+			special="NONE";
+			id=209;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Stara Gorka"",500,2]]";
+		};
+		class Item10
+		{
+			position[]={3581.726074,71.954994,3413.825195};
+			special="NONE";
+			id=210;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Katowice"",500,2]]";
+		};
+		class Item11
+		{
+			position[]={3799.937500,27.989998,9107.335938};
+			special="NONE";
+			id=211;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Katno"",500,2]]";
+		};
+		class Item12
+		{
+			position[]={776.540283,19.035000,7464.230469};
+			special="NONE";
+			id=212;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Zachobor"",500,2]]";
+		};
+		class Item13
+		{
+			position[]={9269.664063,59.804996,5657.264648};
+			special="NONE";
+			id=213;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Aldi house"",500,2]]";
+		};
+	};
+	class Markers
+	{
+		items=1;
+		class Item0
+		{
+			position[]={2458.426514,36.517563,5252.145020};
+			name="MarkerTownName";
+			text="Stara Gorka";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+	};
+};
+class Intro
+{
+	randomSeed=8166403;
+	class Intel
+	{
+	};
+};
+class OutroWin
+{
+	randomSeed=5538307;
+	class Intel
+	{
+	};
+};
+class OutroLoose
+{
+	randomSeed=2739203;
+	class Intel
+	{
+	};
+};
