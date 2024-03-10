@@ -56,6 +56,7 @@ btnDestruction = false
 {call (_x + " = false")} forEach ["btnVoteMenu", "btnCmdRuleMenu"]
 _icons = ["\TZK_Objects\Image\Icon\square_empty.paa", "\TZK_Objects\Image\Icon\square_yellow.paa", "\TZK_Objects\Image\Icon\square_green.paa"]
 _colors = [[1,1,1,0.5], [1,1,0,0.6],[0,1,0.2,0.8]]
+btnValue00 = -1
 
 ? bool_TZK_CHN_Lang: ctrlSetText [_idcCmdImage, "\TZK_CHN_4_0_6_27\option_commander_co.paa"]
 ctrlShow [_idcCmdImage, bool_TZK_CHN_Lang], ctrlShow [_idcCmdLabel, !bool_TZK_CHN_Lang]
@@ -138,8 +139,16 @@ report = lbCurSel _idcReports
 ? btnVoteMenu: btnVoteMenu = false, goto "Vote_Menu"
 ? btnCmdRuleMenu: btnCmdRuleMenu = false, goto "Cmd_Rule_Menu"
 
+? btnValue00 >= 0: goto "OnBtnVal0Changed"
+
 ~0.2
 goto "Update"
+
+# OnBtnVal0Changed
+	_val = btnValue00; btnValue00 = -1
+	? 0 == _val: goto "CancelUpgrade"
+
+	goto "Update"
 
 ;#GrantMoney
 ;	_index = lbCurSel _idcTransferGroup
@@ -234,6 +243,18 @@ goto "Update"
 	? ((count _controlCenters) == 0): hint "No Working Comm Center"; goto "Update"
 
 	[_index, _index] exec localize {TZK_MSG_PLAYER_UPGRADE}
+	goto "Update"
+# CancelUpgrade
+	? not isCommander: hint "Only commander can cancel upgrading"; goto "Update"
+	_index = lbCurSel _idcUpgradeList
+	? _index == -1: hint "No Upgrade Selected"; goto "Update"
+
+	_controlCenters = [siPlayer, stComm] call funcGetWorkingStructures
+	? ((count _controlCenters) == 0): hint "No Working Comm Center"; goto "Update"
+
+	_param = [_index, siPlayer, giPlayer, false]
+	_param exec "Server\Upgrade\EndWrap.sqs"
+	publicExec format [{%1 exec "Server\Upgrade\EndWrap.sqs"}, _param]
 	goto "Update"
 
 #BuyUnits

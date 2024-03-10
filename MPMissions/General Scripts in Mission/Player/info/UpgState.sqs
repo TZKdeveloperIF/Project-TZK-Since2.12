@@ -8,7 +8,13 @@ _value = (_value - _upg)/(count upgDefs)
 _state = _value % 3
 _value = (_value - _state)/3
 
-_si = _value
+_si = _value % 2
+_value = (_value - _si)/2
+
+_cancelled = _value
+
+; number to bool
+_cancelled = _cancelled != 0
 
 ;player globalchat format["_type=%1, _si=%2, _groupBuyer=%3", _type, _si, _groupBuyer]
 ? !isServer && upgMatrix select _si select _upg == _state: exit
@@ -16,7 +22,8 @@ _si = _value
 ? siPlayer == siCiv && _state == 2: format["%1 upgraded %2.", sideNames select _si, (upgDefs select _upg select 0) call funcLocStr] exec "\TZK_Scripts_4_0_4\Player\LogSpectator.sqs"
 ? siPlayer != _si: goto "SkipInfoDisplay"
 
-? _state == 0 && upgMatrix select _si select _upg == 1: player sidechat format ["All Command Center destroyed. Upgrade Failed: %1", (upgDefs select _upg select 0) call funcLocStr]
+? _state == 0 && upgMatrix select _si select _upg == 1 && not _cancelled: player sidechat format ["All Command Center destroyed. Upgrade Failed: %1", (upgDefs select _upg select 0) call funcLocStr]
+? _state == 0 && upgMatrix select _si select _upg == 1 && _cancelled: player sidechat format ["Upgrade Cancelled: %1", (upgDefs select _upg select 0) call funcLocStr]
 ? _state == 0 && upgMatrix select _si select _upg == 2: player sidechat format ["Upgrade Downgraded: %1", (upgDefs select _upg select 0) call funcLocStr]
 ? _state == 1: player sidechat format ["Upgrade Started: %1", (upgDefs select _upg select 0) call funcLocStr]
 ? _state == 2: player sidechat format ["Upgrade Complete: %1", (upgDefs select _upg select 0) call funcLocStr]
