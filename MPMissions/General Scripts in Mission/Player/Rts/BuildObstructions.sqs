@@ -27,6 +27,8 @@ _cos = cos(360 - _markerDir), _sin = sin(360 - _markerDir)
 _step = 8.5
 ; ? stTankTrap == _stType: _step = 8.5
 ? stWireFence == _stType: _step = 8
+? stLowWall == _stType: _step = 10
+? stSandBag == _stType: _step = 3.5
 ; 遍历对角线, 建造建筑
 _lineX = - _w
 _nextBuildPos = [(_markerPos select 0) + _lineX * _cos, (_markerPos select 1) + _lineX * _sin]
