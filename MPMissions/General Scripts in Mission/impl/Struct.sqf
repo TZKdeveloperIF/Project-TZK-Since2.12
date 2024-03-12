@@ -1,4 +1,6 @@
 stWall = _wall;
+stLowWall = _walls;
+stSandBag = _sandbag;
 stBaseMg = _mg;
 
 structMarker set [stAmmoCrate, "AmmoStructure_Marker_xj400"];
