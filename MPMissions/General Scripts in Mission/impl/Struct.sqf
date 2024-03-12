@@ -76,6 +76,12 @@ structsShelter set [count structsShelter, stWireFence];
 structsShelter set [count structsShelter, stGapGenerator];
 // [structsShelter, [stWireFence, stGapGenerator]] call preprocessFile "Util\ArrayAppend.sqf";
 
+// for RTS build structure classify
+structsWalls = [_wall, _walls, _roof, _roofHigh, _tanktr, _artPlain, _sandbag];
+structBuilding = []; structBuilding resize count structDefs;
+_i = 0; while {_i < count structDefs} do {structBuilding set [_i, _i]; _i = _i + 1};
+structBuilding = structBuilding - structsCritcal - structsDefence - structsWalls - [stTankTrap, stWireFence];
+
 _index = _oldCount; _count = count structDefs; while {_index < _count} do {
 	structMatrix select si0 set [_index, []];
 	structMatrix select si1 set [_index, []];

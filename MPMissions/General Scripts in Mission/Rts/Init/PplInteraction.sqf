@@ -55,7 +55,6 @@ _marker setMarkerShape "ELLIPSE";
 _marker setMarkerSize [0, 0];
 
 // variables for dialog
-RtsAreaBuildStruct = [0, 0];
 
 RtsWpCoMode = 0;
 RtsPriorityPointDialogEnum = 2; // determine which dialog will be called when clicking on map
