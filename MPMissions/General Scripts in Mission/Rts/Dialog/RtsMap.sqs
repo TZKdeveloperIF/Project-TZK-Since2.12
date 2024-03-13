@@ -22,7 +22,7 @@ _idcLeftDownBtn0 = IDC + 16 * 12 + 0
 _cache0 = []; _cache1 = []; _cacheText1 = []; _btnVal = -1
 _level = TzkSelStackIdx
 ; Remove dead units in selected array
-_level call preprocessFile "Player\Rts\RemoveDeadSelectedUnit.sqf"
+((call preprocessFile "Rts\Ui\CurSelUnitStack.sqf") select _level) call preprocessFile "Player\Rts\RemoveDeadSelectedUnit.sqf"
 if (1 == _level) then {_btnVal = TzkSelLv1Btn}; if (2 == _level) then {_btnVal = TzkSelLv2Btn}
 [_idcLeftDownBtn0, _level, _btnVal] call preprocessFile "Rts\Dialog\UpdateRtsDlgType.sqf"
 
@@ -151,8 +151,11 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 		~ 0.1
 		goto "Update"
 # LeftDownBtn
+	; disable type switch when selecting non-AI group uints
+	? 0 != TzkRtsSelectEnum: goto "Update"
+
 	if (2^8 == _btnVal) then {_level = _level - 1} else {_level = _level + 1}
-	_level call preprocessFile "Player\Rts\RemoveDeadSelectedUnit.sqf"
+	((call preprocessFile "Rts\Ui\CurSelUnitStack.sqf") select _level) call preprocessFile "Player\Rts\RemoveDeadSelectedUnit.sqf"
 	[_idcLeftDownBtn0, _level, _btnVal] call preprocessFile "Rts\Dialog\UpdateRtsDlgType.sqf"
 	goto "Update"
 # RightDownBtn
