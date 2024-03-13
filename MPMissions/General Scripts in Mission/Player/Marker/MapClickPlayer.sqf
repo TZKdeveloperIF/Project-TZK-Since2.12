@@ -70,12 +70,12 @@ if (not _processed) then {
 	// alt + shift
 	if (not _processed && _alt && _shift) then {
 		// selected area && selected units
-		if (not _processed && TzkMapAreaCreated && count TzkSelectedUnits > 0) then {
+		if (not _processed && TzkMapAreaCreated && count (call preprocessFile "Rts\Ui\CurSelUnitArray.sqf") > 0) then {
 			[_pos, _units] exec "Rts\Dialog\RtsMap.sqs";
 			_processed = true;
 		};
 		// selected area && selected nothing
-		if (not _processed && TzkMapAreaCreated && count TzkSelectedUnits == 0) then {
+		if (not _processed && TzkMapAreaCreated && count (call preprocessFile "Rts\Ui\CurSelUnitArray.sqf") == 0) then {
 			[_pos, _units] exec "Rts\Dialog\AreaMap.sqs";
 			_processed = true;
 		};

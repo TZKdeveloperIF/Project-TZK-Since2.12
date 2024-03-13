@@ -5,7 +5,7 @@
 ; ]
 
 _bSvrRtsOrder = _this select 4 select 2
-_units = (if _bSvrRtsOrder then {TzkSelUnitsStack select TzkSelStackIdx} else {_this select 4 select 3})
+_units = (if _bSvrRtsOrder then {call preprocessFile "Rts\Ui\CurSelUnitArray.sqf"} else {_this select 4 select 3})
 _c = count _units
 ? _c == 0: goto "Quit"
 

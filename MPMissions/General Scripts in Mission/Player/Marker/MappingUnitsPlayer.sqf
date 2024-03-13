@@ -7,7 +7,8 @@ private [
 
 // RTS UI
 TzkMapSelectedHighlight = not TzkMapSelectedHighlight;
-_tzkSelUnitsTop = TzkSelUnitsStack select TzkSelStackIdx;
+_tzkSelUnitsTop = call preprocessFile "Rts\Ui\CurSelUnitArray.sqf";
+_rtsDisplay = preprocessFile "Player\Marker\RtsDisplay.sqf";
 // Leaders
 _i = 0; _c = count (groupMatrix select siPlayer); while {_i < _c} do {
 	_leader = leader (groupMatrix select siPlayer select _i);
@@ -16,17 +17,7 @@ _i = 0; _c = count (groupMatrix select siPlayer); while {_i < _c} do {
 	_m setMarkerPos getPos _leader;
 	_m setMarkerType (if (alive _leader) then {"Dot"} else {"Marker"});
 
-	_bHighlight = false;
-	if not TzkMapRtsFlashingDisabled then {
-		if (-1 != _tzkSelUnitsTop find _leader) then {if TzkMapSelectedHighlight then {
-			_bHighlight = true
-		}};
-	};
-	if _bHighlight then {
-		_m setMarkerColor "ColorRedAlpha";
-	} else {
-		_m setMarkerColor "ColorBlue";
-	};
+	[_m, _leader, _tzkSelUnitsTop, "ColorBlue"] call _rtsDisplay;
 
 	_i = _i + 1;
 };
@@ -60,17 +51,8 @@ while {_gi < _countGroups} do {
 			if (_i < _c && _showGroup) then {
 				_unit = _units select _i;
 				_m setMarkerPos getPos _unit;
-				_bHighlight = false;
-				if not TzkMapRtsFlashingDisabled then {
-					if (-1 != _tzkSelUnitsTop find _unit) then {if TzkMapSelectedHighlight then {
-						_bHighlight = true;
-					}};
-				};
-				if _bHighlight then {
-					_m setMarkerColor "ColorRedAlpha";
-				} else {
-					_m setMarkerColor "ColorYellow";
-				};
+
+				[_m, _unit, _tzkSelUnitsTop, "ColorYellow"] call _rtsDisplay;
 			} else {
 				_m setMarkerPos hiddenMarkerPos
 			};
@@ -104,10 +86,28 @@ while {_gi < _countGroups} do {
 		if (_i < _c) then {
 			_unit = _units select _i;
 			_m setMarkerPos getPos _unit;
+
+			[_m, _unit, _tzkSelUnitsTop, "ColorCyan_xj400"] call _rtsDisplay;
 		} else {_m setMarkerPos hiddenMarkerPos};
 		_i = _i + 1;
 	};
 	_gi = _gi + 1;
+};
+
+_group = baseGroup select siPlayer; if (not isNull _group) then {
+	_gi = 0;
+	_units = units _group;
+	_i = 0; _c = count _units;
+	while {_i < 12} do {
+		_m = format ["Base_%1_%2_%3", siPlayer, _gi, _i];
+		if (_i < _c) then {
+			_unit = _units select _i;
+			_m setMarkerPos getPos _unit;
+
+			[_m, _unit, _tzkSelUnitsTop, "ColorOrange_xj400"] call _rtsDisplay;
+		} else {_m setMarkerPos hiddenMarkerPos};
+		_i = _i + 1;
+	};
 };
 
 _i = 0; while {_i < maxVehicleMarkers} do {

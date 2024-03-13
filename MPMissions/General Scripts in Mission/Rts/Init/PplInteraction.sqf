@@ -14,7 +14,17 @@ TzkMapAreaLastUsedTime = 0;
 TzkMapSelectDir = 0;
 
 TzkMapSelectedHighlight = false; TzkMapRtsFlashingDisabled = false;
-TzkSelectedUnits = []; TzkSelUnitsStack = [TzkSelectedUnits, [], []]; TzkSelStackIdx = 0;
+// Define arrays for different kinds of RTS selected units. Define stack for each of them.
+// The array of these stacks is a "cube"
+TzkSelUnitsCube = [
+	[[], [], []]	// TzkSelUnitsStack = [TzkSelectedUnits, [], []]
+,	[[], [], []]	// Stack for selected workers
+,	[[], [], []]	// stack for selected base group units
+];
+// selected units enum. 0: AI group units, 1: worker group units, 2: base group units
+TzkRtsSelectEnum = 0;
+// By now unnecessary to define different index for each stack
+TzkSelStackIdx = 0;
 TzkSelLv1Btn = -1; TzkSelLv2Btn = -1;
 
 createMarker ["TzkCmdMarker", [-10, -10]];

@@ -29,7 +29,7 @@ _rtsCrossOutdateDur = 10; _rtsAreaOutDateDur = 30;
 # Update
 	~1
 	? TzkMapSelectClicked && time > TzkMapFirstGuideLineDrawnTime + _rtsCrossOutdateDur: call preprocessFile "Player\Rts\ResetGuideLines.sqf"
-	? not TzkMapSelectClicked && TzkMapAreaLastUsedTime > 0 && time > TzkMapAreaLastUsedTime + _rtsAreaOutDateDur && 0 == count TzkSelectedUnits: false call preprocessFile "Player\Rts\Area.sqf"; false call preprocessFile "Player\Rts\Selection.sqf";
+	? not TzkMapSelectClicked && TzkMapAreaLastUsedTime > 0 && time > TzkMapAreaLastUsedTime + _rtsAreaOutDateDur && 0 == count (call preprocessFile "Rts\Ui\CurSelUnitArray.sqf"): false call preprocessFile "Player\Rts\Area.sqf"; false call preprocessFile "Player\Rts\Selection.sqf";
 
 	_mhq = mhq select siPlayer
 	_mcvs = MCV select siPlayer
