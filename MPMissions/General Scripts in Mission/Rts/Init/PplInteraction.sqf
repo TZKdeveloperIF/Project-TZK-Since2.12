@@ -69,3 +69,6 @@ _marker setMarkerSize [0, 0];
 RtsWpCoMode = 0;
 RtsPriorityPointDialogEnum = 2; // determine which dialog will be called when clicking on map
 RtsLatestPointDialogTime = 0; // the time that player used rts point dialog 
+
+// mutex in creating objects
+mutexRtsBaseSoldier = false;

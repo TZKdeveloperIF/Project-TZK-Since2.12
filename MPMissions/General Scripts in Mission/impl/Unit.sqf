@@ -89,6 +89,8 @@ utSupportInf = [_supportCarrierW, _supportCarrierE];
 	_scripts set [count _scripts, "Common\Init\SoldierSupportCarrier.sqs"]
 } forEach utSupportInf;
 
+utMortar = [_mortarW, _mortarE];
+
 // M88/BREM unbanned
 typesEngineeringVeh = [_m88W, _bremE]; {
 	unitDefs select _x set [udFactoryType, 2^stLight + 2^stHeavy];

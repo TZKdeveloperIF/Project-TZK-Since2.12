@@ -60,7 +60,8 @@ _a = 0
 
 		_membersMin = 12; _i = 0; _j = 0
 		{if (count(units _x) < _membersMin) then {_membersMin = count(units _x); _i = _j}; _j = _j + 1} forEach _groups
-		[_ut, 0, 0, 0, _pos, 0, _si, giWorker, (_groups select _i), 0, 1] exec "\TZK_Scripts_4_0_4\Common\AddUnit.sqs"
+		_inf = [_ut, 0, 0, 0, _pos, 0, _si, giWorker, (_groups select _i), 0, 1] call funcAddServerUnit;
+		[_inf, _pos, _si] exec "Server\Loop\WorkerUnit.sqs"
 
 		# skipBuild
 		mutexWorkerJoin = false
