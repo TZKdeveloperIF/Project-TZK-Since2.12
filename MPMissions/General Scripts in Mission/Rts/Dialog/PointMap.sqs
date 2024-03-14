@@ -31,6 +31,7 @@ btnFunction = 0
 { ctrlShow [_x, false] } forEach [_idcLeftBtn0]
 ? isCommander || bIsAiSuperior: ctrlSetText [_idcLeftBtn0, "Wall MHQ"]; ctrlShow [_idcLeftBtn0, true]
 ctrlSetText [_idcLeftBtn0 + 1, "Surrender"]; ctrlShow [_idcLeftBtn0 + 1, isCommander]
+ctrlSetText [_idcLeftBtn0 + 2, "Base Mortar"]; ctrlShow [_idcLeftBtn0 + 2, isCommander]
 
 ; down board
 _downBoardStack = []
@@ -64,6 +65,7 @@ TzkMapRtsFlashingDisabled = true
 # LeftBtn
 	? 0 == _btnVal: 0 exec "Rts\Building\sWallMhq.sqs"; goto "Update"
 	? 1 == _btnVal: 0 exec "Rts\SubMenu\SurrenderConfirm.sqs"; closeDialog 0; goto "Quit"
+	? 2 == _btnVal: [_pos, utMortar select siPlayer] exec "Rts\Deploy\sBaseSoldier.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 # DownBtn
 	? count _downBoardStack > 0: goto "DownSubMenu"

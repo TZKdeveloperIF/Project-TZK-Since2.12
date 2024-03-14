@@ -696,6 +696,7 @@ class TzkCmdMapDlgPoint: TzkCmdMapDlgBase {
 		FirstCtrl, 
 		ShownGroup, 
 		LeftBtn0, LeftBtn1, 
+		LeftBtn2,
 		DownBtn0, DownBtn1, DownBtn2, DownBtn3, DownBtn8, 
 		RightDownBg0, RightDownBg1, RightDownBg2, RightDownBg3, RightDownBg4, 
 		RightDownBg5, RightDownBg6, RightDownBg7, RightDownBg8, 
@@ -714,11 +715,19 @@ class TzkCmdMapDlgPoint: TzkCmdMapDlgBase {
 	class LeftBtn1: LeftBtn0 { 			// for "Surrender" button
 		idc = IDC + 16 * 2 + 1;
 		x = 0.025;
-		y = 0.10 + 0.15 + 0.05 * 6;
+		y = 0.10 + 0.15 + 0.05 * 7;
 		w = 0.25;
 		text = "UNDEFINED";
 		action = "btnValue00 = 1";
 		colorText[] = {0.8, 0.2, 0.1, 0.9};
+	};
+	class LeftBtn2: LeftBtn0 {
+		idc = IDC + 16 * 2 + 2;			// Base mortar
+		x = 0.025 + 0.09;
+		y = 0.10 + 0.05 * 2;
+		w = 0.16;
+		text = "";
+		action = "btnValue00 = 2";
 	};
 
 	class FirstCtrl: TzkRtsFirstCtrlBase {};
