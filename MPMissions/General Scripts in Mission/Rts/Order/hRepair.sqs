@@ -138,9 +138,11 @@ _vehicle = vehicle _unit, _cantMove = false
 		_stopParam set [2, true], _stopParam exec localize {TZK_AI_STOP}
 		
 		_gi = (groupMatrix select _si) find (group _unit)
-		[_unit, _si, _gi, _vehicle, _vt, _sup] exec "Server\AI_Heal.sqs"
+		_nonAIgroup = false
+		? (group _unit) == (baseGroup select _si): _nonAIgroup = true
+		[_unit, _si, _gi, _vehicle, _vt, _sup, _nonAIgroup] exec "Server\AI_Heal.sqs"
 		_rearm = [_unit, _si, _gi] call funcCheckRearm
-		? _rearm: [_unit, _si, _gi, _vehicle, _vt, _sup] exec "Server\AI_Rearm.sqs"
+		? _rearm: [_unit, _si, _gi, _vehicle, _vt, _sup, _nonAIgroup] exec "Server\AI_Rearm.sqs"
 		~ 5
 		? _unit == vehicle _unit: goto "GoBack"
 		_i = 0
