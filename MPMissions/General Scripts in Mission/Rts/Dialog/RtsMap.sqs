@@ -56,6 +56,9 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 
 ; false call preprocessFile "Rts\Dialog\InitSilider.sqf"
 
+btnValue05 = -1;
+(IDC + 16 * 19) call preprocessFile "Rts\Dialog\InitSelClassificationBtns.sqf"
+
 # Update
 	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 	? call dlgUpdated: goto "Quit"
@@ -65,6 +68,7 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 	? btnValue01 > 0: _btnVal = btnValue01; btnValue01 = 0; goto "DownBtn"
 	? btnValue02 > 0: _btnVal = btnValue02; btnValue02 = 0; goto "LeftDownBtn"
 	? btnValue03 > 0: _btnVal = btnValue03; btnValue03 = 0; goto "RightDownBtn"
+	? btnValue05 >= 0: _btnVal = btnValue05; btnValue05 = -1; goto "SwitchClassification"
 	? btnFirstCtrl: btnFirstCtrl = false; goto "FirstCtrl"
 	? btnFunction > 0: _btnFnc = btnFunction, btnFunction = 0, goto "FunctionalBtns"
 
@@ -161,3 +165,8 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 # RightDownBtn
 	? _btnVal > 0: call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
 	goto "Update"
+# SwitchClassification
+	? _btnVal == TzkRtsSelectEnum: hint "Exception caught."; goto "Update"
+
+	TzkRtsSelectEnum = _btnVal
+	_this exec "Rts\Dialog\RtsMap.sqs"; closeDialog 0; goto "Quit"
