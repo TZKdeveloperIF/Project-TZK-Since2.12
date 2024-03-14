@@ -1,0 +1,10 @@
+; args: [upg, si, gi, reason (true means finish, false means cancel)]
+? not isServer: exit
+
+_upg = _this select 0; _si = _this select 1; _gi = _this select 2; _reason = _this select 3
+
+@ not mutexTzkSvrUpg
+	mutexTzkSvrUpg = true
+	_orderIdx = _this call preprocessFile "Server\Upgrade\ValidOrder.sqf"
+	? _orderIdx != -1: TzkSvrUpgOrderVec select _orderIdx resize 0; _this exec "Server\Upgrade\End.sqs"
+	mutexTzkSvrUpg = false
