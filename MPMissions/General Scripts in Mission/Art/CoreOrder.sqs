@@ -370,10 +370,12 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 		_delay = [0,3] select (_speed > 0)
 	# ExecRearm
 		_gi = (groupMatrix select _si) find (group _unit)
+		_nonAIgroup = false
+		? (group _unit) == (baseGroup select _si): _nonAIgroup = true
 		? _isServer: [_unit, [true]] exec localize {TZK_AI_STOP}
 		? not _isServer: doStop _unit
 
-		? _isServer: _rearmParam = [[_unit, _si, _gi, _vehicle, _type, _sup], false, false], _rearmParam exec "Server\AI_Rearm.sqs"
+		? _isServer: _rearmParam = [[_unit, _si, _gi, _vehicle, _type, _sup, _nonAIgroup], false, false], _rearmParam exec "Server\AI_Rearm.sqs"
 		? not _isServer: _rearmParam = [[_unit, _sup], false, false]; _rearmParam exec "Player\Rearm.sqs"
 		? not _isServer && not _isInfantry && not local _vehicle: _unit groupChat "Rearming at remote object. If I'm far away from you, probably I can't receive supplemented magazines. In this case, please use Unit Camera and look at me."
 
