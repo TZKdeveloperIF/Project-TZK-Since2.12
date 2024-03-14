@@ -1,0 +1,31 @@
+; args: [unit, initial command center, si]
+? !isServer : exit
+
+_unit = _this select 0; _cc = _this select 1; _si = _this select 2; _this = 0
+_initPos = getPosASL _cc; _initPos resize 2
+? isNull _cc: goto "Quit"
+
+# loop
+	~ 10
+	? [getPosASL _unit, _initPos] call loadFile "Util\PosDistSquare.sqf" > 500 * 500: goto "Quit"
+	? not alive _unit: goto "Quit"
+	? isNull _cc: goto "SearchCc"
+	goto "loop"
+
+# Quit
+	? _unit != vehicle _unit: unassignVehicle _unit; _unit setPosASL getPosASL _unit
+	~ 0.5
+	? alive _unit: _unit setDamage 1
+	exit
+
+# SearchCc
+	; Search another available CC basing on initial position. radius: 200 m
+
+	; delay for repair structure
+	~ 5
+	_res = [_initPos, _si, stComm] call funcGetClosestStructure
+	_cc = _res select 0
+	_initPos = getPosASL _cc; _initPos resize 2
+	? isNull _cc: goto "Quit"
+
+	goto "loop"

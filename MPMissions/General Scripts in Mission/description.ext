@@ -144,6 +144,7 @@ class RscSliderV {
 // IDC + 16 * 16: RTS left pictures (for CHN lang)
 // IDC + 16 * 17: RTS down buttons
 // IDC + 16 * 18: RTS down highlights
+// IDC + 16 * 19: RTS right extend select classification switch buttons
 
 // IDC + 16 * 32: RTS dlg ctrls
 // ======================================= IDC rule =======================================
@@ -555,6 +556,32 @@ class TzkCmdMapDlgBase: Menu {
 		text = "Shown Groups";
 		action = "btnFunction = 1";
 	};
+
+	// IDC: 16 * 19
+	// right part. switch to specific classification
+	class RtsSelectTypeBtn0: RightDownBtn0 {
+		idc = IDC + 16 * 19 + 0;
+		x = RtsMapLeftWidth + RtsMapMidWidth + 0.01 + 0.09 * 1;
+		y = RtsMapBottom - 0.20 + 0.05 * 0;
+		w = 0.19;
+		text = "UNDEFINED";
+		action = "btnValue05 = 0";
+	};
+	class RtsSelectTypeBtn1: RtsSelectTypeBtn0 {
+		idc = IDC + 16 * 19 + 1;
+		y = RtsMapBottom - 0.20 + 0.05 * 1;
+		action = "btnValue05 = 1";
+	};
+	class RtsSelectTypeBtn2: RtsSelectTypeBtn0 {
+		idc = IDC + 16 * 19 + 2;
+		y = RtsMapBottom - 0.20 + 0.05 * 2;
+		action = "btnValue05 = 2";
+	};
+	class RtsSelectTypeBtn3: RtsSelectTypeBtn0 {
+		idc = IDC + 16 * 19 + 3;
+		y = RtsMapBottom - 0.20 + 0.05 * 3;
+		action = "btnValue05 = 3";
+	};
 };
 
 class TzkCmdMapDlgArea: TzkCmdMapDlgBase {
@@ -579,6 +606,7 @@ class TzkCmdMapDlgArea: TzkCmdMapDlgBase {
 		RightDownBg5, RightDownBg6, RightDownBg7, RightDownBg8, 
 		RightDownBtn0, RightDownBtn1, RightDownBtn2, RightDownBtn3, RightDownBtn4, 
 		RightDownBtn5, RightDownBtn6, RightDownBtn7, RightDownBtn8, 
+		RtsSelectTypeBtn0, RtsSelectTypeBtn1, RtsSelectTypeBtn2, RtsSelectTypeBtn3, 
 		Exit
 	};
 	class Frame1: TZK_Frame_1 {
@@ -668,6 +696,7 @@ class TzkCmdMapDlgPoint: TzkCmdMapDlgBase {
 		FirstCtrl, 
 		ShownGroup, 
 		LeftBtn0, LeftBtn1, 
+		LeftBtn2,
 		DownBtn0, DownBtn1, DownBtn2, DownBtn3, DownBtn8, 
 		RightDownBg0, RightDownBg1, RightDownBg2, RightDownBg3, RightDownBg4, 
 		RightDownBg5, RightDownBg6, RightDownBg7, RightDownBg8, 
@@ -686,11 +715,19 @@ class TzkCmdMapDlgPoint: TzkCmdMapDlgBase {
 	class LeftBtn1: LeftBtn0 { 			// for "Surrender" button
 		idc = IDC + 16 * 2 + 1;
 		x = 0.025;
-		y = 0.10 + 0.15 + 0.05 * 6;
+		y = 0.10 + 0.15 + 0.05 * 7;
 		w = 0.25;
 		text = "UNDEFINED";
 		action = "btnValue00 = 1";
 		colorText[] = {0.8, 0.2, 0.1, 0.9};
+	};
+	class LeftBtn2: LeftBtn0 {
+		idc = IDC + 16 * 2 + 2;			// Base mortar
+		x = 0.025 + 0.09;
+		y = 0.10 + 0.05 * 2;
+		w = 0.16;
+		text = "";
+		action = "btnValue00 = 2";
 	};
 
 	class FirstCtrl: TzkRtsFirstCtrlBase {};
@@ -724,6 +761,7 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
 		RightDownBtn5, RightDownBtn6, RightDownBtn7, RightDownBtn8, 
 		LeftDownBtn0, LeftDownBtn1, LeftDownBtn2, LeftDownBtn3, LeftDownBtn4, 
 		LeftDownBtn5, LeftDownBtn6, LeftDownBtn7, LeftDownBtn8, 
+		RtsSelectTypeBtn0, RtsSelectTypeBtn1, RtsSelectTypeBtn2, RtsSelectTypeBtn3, 
 		Exit
 	};
 	class LeftBtn1: LeftBtn0 { // for "RTS order clear" button
@@ -1158,6 +1196,144 @@ class TzkRtsSubMenuTwoListBox: TzkRtsSubMenuOneListBox {
 	class LISTBOX1: LISTBOX0 {
 		idc = IDC + 16 * 3 + 2;
 		x = 0.52;
+	};
+};
+
+class TzkRtsBuildStructSubMenu: TzkRtsSubMenuTwoListBox {
+	controlsBackground[] = {TowListBg};
+	class TowListBg: OneListBg {
+		x = 0.15;
+		w = 0.7;
+		h = 0.6;
+	};
+	controls[] = {
+		TRSM_LIST_TITLE, BTN_OK, BTN_UNDO, BTN_EXIT, 
+		LISTBOX0, LISTTEXT0, LISTBOX1, LISTTEXT1, 
+		LISTBOX2, LISTTEXT2, 
+		
+		BTN_BG_0_0, BTN_BG_0_1, BTN_BG_0_2, BTN_BG_0_3, BTN_BG_0_4, BTN_BG_0_5, 
+		BTN_0_0, BTN_0_1, BTN_0_2, BTN_0_3, BTN_0_4, BTN_0_5, 
+	};
+	class BTN_BG_0_0: SelectedBG {
+		idc = IDC + 16 * 6 + 0;
+		x = 0.20 + 0.10 * 0 + 0.005;
+		y = 0.20;
+		w = 0.09;
+		h = 0.04;
+	};
+	class BTN_0_0: Button {
+		idc = IDC + 16 * 5 + 0;
+		x = 0.20 + 0.10 * 0 + 0.005;
+		y = 0.20;
+		w = 0.09;
+		h = 0.04;
+		action = "btnValue02 = 0";
+	};
+	class BTN_BG_0_1: BTN_BG_0_0 {
+		idc = IDC + 16 * 6 + 1;
+		x = 0.20 + 0.10 * 1 + 0.005;
+	};
+	class BTN_BG_0_2: BTN_BG_0_0 {
+		idc = IDC + 16 * 6 + 2;
+		x = 0.20 + 0.10 * 2 + 0.005;
+	};
+	class BTN_BG_0_3: BTN_BG_0_0 {
+		idc = IDC + 16 * 6 + 3;
+		x = 0.20 + 0.10 * 3 + 0.005;
+	};
+	class BTN_BG_0_4: BTN_BG_0_0 {
+		idc = IDC + 16 * 6 + 4;
+		x = 0.20 + 0.10 * 4 + 0.005;
+	};
+	class BTN_BG_0_5: BTN_BG_0_0 {
+		idc = IDC + 16 * 6 + 5;
+		x = 0.20 + 0.10 * 5 + 0.005;
+	};
+	class BTN_0_1: BTN_0_0 {
+		idc = IDC + 16 * 5 + 1;
+		x = 0.20 + 0.10 * 1 + 0.005;
+		action = "btnValue02 = 1";
+	};
+	class BTN_0_2: BTN_0_0 {
+		idc = IDC + 16 * 5 + 2;
+		x = 0.20 + 0.10 * 2 + 0.005;
+		action = "btnValue02 = 2";
+	};
+	class BTN_0_3: BTN_0_0 {
+		idc = IDC + 16 * 5 + 3;
+		x = 0.20 + 0.10 * 3 + 0.005;
+		action = "btnValue02 = 3";
+	};
+	class BTN_0_4: BTN_0_0 {
+		idc = IDC + 16 * 5 + 4;
+		x = 0.20 + 0.10 * 4 + 0.005;
+		action = "btnValue02 = 4";
+	};
+	class BTN_0_5: BTN_0_0 {
+		idc = IDC + 16 * 5 + 5;
+		x = 0.20 + 0.10 * 5 + 0.005;
+		action = "btnValue02 = 5";
+	};
+
+	class BTN_EXIT: Button {
+		x = 0.77;
+		y = 0.10;
+		w = 0.08;
+		h = 0.04;
+		text = "Exit";
+		action = "btnValue00 = 0";
+	};
+	class BTN_OK: Button {
+		x = 0.45;
+		y = 0.65;
+		w = 0.10;
+		h = 0.04;
+		text = "OK";
+		action = "btnValue00 = 1";
+	};
+	class BTN_UNDO: Button {
+		x = 0.77;
+		y = 0.65;
+		w = 0.08;
+		h = 0.04;
+		text = "UNDO";
+		action = "btnValue00 = 2";
+	};
+
+	class LISTTEXT0: Label {
+		idc = IDC + 16 * 3 + 1;
+		style = ST_CENTER;
+		x = 0.27;
+		y = 0.26;
+		w = 0.20;
+		text = "UNDEFINED";
+	};
+	class LISTBOX0: TZK_ListBox {
+		idc = IDC + 16 * 3 + 0;
+		x = 0.21;
+		y = 0.30;
+		w = 0.28;
+		h = 0.32;
+	};
+	class LISTTEXT1: LISTTEXT0 {
+		idc = IDC + 16 * 3 + 3;
+		x = 0.51;
+		w = 0.13;
+	};
+	class LISTBOX1: LISTBOX0 {
+		idc = IDC + 16 * 3 + 2;
+		x = 0.51;
+		w = 0.13;
+	};
+	class LISTTEXT2: LISTTEXT1 {
+		idc = IDC + 16 * 3 + 5;
+		x = 0.66;
+		w = 0.13;
+	};
+	class LISTBOX2: LISTBOX1 {
+		idc = IDC + 16 * 3 + 4;
+		x = 0.66;
+		w = 0.13;
 	};
 };
 

@@ -15,6 +15,8 @@ _initGameVars = {
 	_this addValue ["LastEquipTemplate", -1]; 		// Player equipment template idx cache
 
 	_this addValue ["DestructShowShelter", "true"]; // Show Shelter in destruction
+
+	_this addValue ["RtsBuildStructCache", [0, 0, 0, 2]]; // Param cache of RTS build structure
 };
 
 _initPlayerSettings = {

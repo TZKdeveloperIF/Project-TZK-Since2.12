@@ -32,6 +32,9 @@ lbAdd [_idcOrder, "Clear"];
 lbAdd [_idcOrder, "Shoot Area"];
 
 _grpSuperior = "([{Commander}] + callsigns) select (aiSetting select (_this select 0) select (_this select 1) select aisSuperior)"
+
+_simulatedRtsSelUnits = TzkSelUnitsCube select 0 select 0
+
 # Update
 	? call dlgUpdated: goto "Quit"
 	? !(alive player): closeDialog 0; goto "Quit"
@@ -52,15 +55,15 @@ _grpSuperior = "([{Commander}] + callsigns) select (aiSetting select (_this sele
 
 # SendOrder
 	_gi = lbValue [_idcCurrent, _selGroup]
-player globalChat format ["%1", [_selGroup, _selOrder, _gi]]
+
 	? _selGroup == -1 : hint "No group selected"; goto "Update"
 	? _selOrder == -1 : hint "No order selected"; goto "Update"
 
-	; ASSERT(count TzkSelectedUnits == 0)
-	TzkSelectedUnits resize 0
+	; ASSERT(count _simulatedRtsSelUnits == 0)
+	_simulatedRtsSelUnits resize 0
 
 	_groups = (if (_gi == -1) then {groupAiMatrix select siPlayer} else {[groupMatrix select siPlayer select _gi]})
-	{_g = _x; {TzkSelectedUnits set [count TzkSelectedUnits, _x]} forEach units _g} forEach _groups
+	{_g = _x; {_simulatedRtsSelUnits set [count _simulatedRtsSelUnits, _x]} forEach units _g} forEach _groups
 
 	? 0 == _selOrder: 0 exec "Rts\Order\sClear.sqs"; goto "Update"
 	? 1 == _selOrder: [-1, false, true] exec "Rts\SubMenu\AreaArtOrderPreset.sqs"; closeDialog 0; exit
@@ -73,4 +76,4 @@ player globalChat format ["%1", [_selGroup, _selOrder, _gi]]
 	0 exec localize {TZK_DIALOG_AI_GRP_ORDER}
 	goto "Quit"
 # Quit
-	? count TzkSelectedUnits > 0: TzkSelectedUnits resize 0
+	? count _simulatedRtsSelUnits > 0: _simulatedRtsSelUnits resize 0
