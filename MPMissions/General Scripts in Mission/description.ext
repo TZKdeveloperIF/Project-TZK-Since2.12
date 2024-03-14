@@ -144,6 +144,7 @@ class RscSliderV {
 // IDC + 16 * 16: RTS left pictures (for CHN lang)
 // IDC + 16 * 17: RTS down buttons
 // IDC + 16 * 18: RTS down highlights
+// IDC + 16 * 19: RTS right extend select classification switch buttons
 
 // IDC + 16 * 32: RTS dlg ctrls
 // ======================================= IDC rule =======================================
@@ -555,6 +556,32 @@ class TzkCmdMapDlgBase: Menu {
 		text = "Shown Groups";
 		action = "btnFunction = 1";
 	};
+
+	// IDC: 16 * 19
+	// right part. switch to specific classification
+	class RtsSelectTypeBtn0: RightDownBtn0 {
+		idc = IDC + 16 * 19 + 0;
+		x = RtsMapLeftWidth + RtsMapMidWidth + 0.01 + 0.09 * 1;
+		y = RtsMapBottom - 0.20 + 0.05 * 0;
+		w = 0.19;
+		text = "UNDEFINED";
+		action = "btnValue05 = 0";
+	};
+	class RtsSelectTypeBtn1: RtsSelectTypeBtn0 {
+		idc = IDC + 16 * 19 + 1;
+		y = RtsMapBottom - 0.20 + 0.05 * 1;
+		action = "btnValue05 = 1";
+	};
+	class RtsSelectTypeBtn2: RtsSelectTypeBtn0 {
+		idc = IDC + 16 * 19 + 2;
+		y = RtsMapBottom - 0.20 + 0.05 * 2;
+		action = "btnValue05 = 2";
+	};
+	class RtsSelectTypeBtn3: RtsSelectTypeBtn0 {
+		idc = IDC + 16 * 19 + 3;
+		y = RtsMapBottom - 0.20 + 0.05 * 3;
+		action = "btnValue05 = 3";
+	};
 };
 
 class TzkCmdMapDlgArea: TzkCmdMapDlgBase {
@@ -579,6 +606,7 @@ class TzkCmdMapDlgArea: TzkCmdMapDlgBase {
 		RightDownBg5, RightDownBg6, RightDownBg7, RightDownBg8, 
 		RightDownBtn0, RightDownBtn1, RightDownBtn2, RightDownBtn3, RightDownBtn4, 
 		RightDownBtn5, RightDownBtn6, RightDownBtn7, RightDownBtn8, 
+		RtsSelectTypeBtn0, RtsSelectTypeBtn1, RtsSelectTypeBtn2, RtsSelectTypeBtn3, 
 		Exit
 	};
 	class Frame1: TZK_Frame_1 {
@@ -724,6 +752,7 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
 		RightDownBtn5, RightDownBtn6, RightDownBtn7, RightDownBtn8, 
 		LeftDownBtn0, LeftDownBtn1, LeftDownBtn2, LeftDownBtn3, LeftDownBtn4, 
 		LeftDownBtn5, LeftDownBtn6, LeftDownBtn7, LeftDownBtn8, 
+		RtsSelectTypeBtn0, RtsSelectTypeBtn1, RtsSelectTypeBtn2, RtsSelectTypeBtn3, 
 		Exit
 	};
 	class LeftBtn1: LeftBtn0 { // for "RTS order clear" button

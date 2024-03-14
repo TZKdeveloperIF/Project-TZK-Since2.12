@@ -45,6 +45,9 @@ _idcSliderAzimut = 0; _idcValueAzimut = 0; _AzimutCache = 0
 true call preprocessFile "Rts\Dialog\InitSilider.sqf"
 TzkMapRtsFlashingDisabled = true
 
+btnValue05 = -1;
+(IDC + 16 * 19) call preprocessFile "Rts\Dialog\InitSelClassificationBtns.sqf"
+
 # Update
 	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 	? call dlgUpdated: goto "Quit"
@@ -56,6 +59,7 @@ TzkMapRtsFlashingDisabled = true
 	? btnValue00 >= 0: _val0 = btnValue00; btnValue00 = -1; goto "LeftBtn"
 	? btnValue01 > 0: _btnVal = btnValue01; btnValue01 = 0; goto "DownBtn"
 	? btnValue03 > 0: _btnVal = btnValue03; btnValue03 = 0; goto "RightDownBtn"
+	? btnValue05 >= 0: _btnVal = btnValue05; btnValue05 = -1; goto "SwitchClassification"
 	? btnFunction > 0: _btnFnc = btnFunction, btnFunction = 0, goto "FunctionalBtns"
 
 	; Skip
@@ -88,3 +92,8 @@ TzkMapRtsFlashingDisabled = true
 # FunctionalBtns
 	? 1 == _btnFnc: 0 exec localize {TZK_DIALOG_SHOWNGROUPS}; closeDialog 0; goto "Quit"
 	goto "Update"
+# SwitchClassification
+	? _btnVal == TzkRtsSelectEnum: hint "Exception caught."; goto "Update"
+
+	TzkRtsSelectEnum = _btnVal
+	_this exec "Rts\Dialog\RtsMap.sqs"; closeDialog 0; goto "Quit"
