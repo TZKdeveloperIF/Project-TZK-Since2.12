@@ -1,0 +1,644 @@
+version=11;
+#include "TZK_Scripts_4_0_6\mission.h"
+class Mission
+{
+	addOns[]=
+	{
+		TZK_BIS_AddOns
+		TZK_Basic_406_AddOns
+		TZK_CONFIG_406_AddOns
+		"TZK_CONFIG_406_Patch",
+		"TZK_CONFIG_406_Patch2",
+		"TZK_CONFIG_406_Patch3",
+		"fulda"
+	};
+	addOnsAuto[]=
+	{
+		TZK_CONFIG_406_AddOns
+		"TZK_CONFIG_406_Patch",
+		"TZK_CONFIG_406_Patch2",
+		"TZK_CONFIG_406_Patch3",
+	};
+	randomSeed=42499;
+	class Intel
+	{
+		briefingName="@STR_MISSION_NAME";
+		briefingDescription="$STR_MISSION_BREF_DESC";
+		resistanceWest=0.000000;
+		startWeather=0.000000;
+		forecastWeather=0.000000;
+		month=9;
+		day=22;
+		hour=8;
+		minute=0;
+	};
+	class Groups
+	{
+		items=156;
+		class Item0
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={-1000.000000,0.000000,2000.000000};
+					id=0;
+					side="GUER";
+					vehicle="SoldierGB";
+					leader=1;
+					skill=0.200000;
+					text="resistance_Center";
+					init="gameEndType = -1; towns=[]; [] exec ""\TZK_Scripts_4_0_4\Server\InitRepairableObjects.sqs""; [] exec ""\TZK_Scripts_4_0_4\Server\InitDestroyIslandObject.sqs""";
+				};
+			};
+		};
+
+		TZK_Mission_Grp_Playable_201("CommanderW_Info_5HP_xj400", "CommanderE_Info_5HP_xj400", "LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		
+		TZK_Mission_Group_Playable(37,CIV, 0,0,3370, 37, "Civilian", "this allowdammage false; Spec0=this")
+		TZK_Mission_Group_Playable(38,CIV, 0,0,3380, 38, "Civilian", "this allowdammage false; Spec1=this")
+		TZK_Mission_Group_Playable(39,CIV, 0,0,3390, 39, "Civilian", "this allowdammage false; Spec2=this")
+		TZK_Mission_Group_Playable(40,CIV, 0,0,3400, 40, "Civilian", "this allowdammage false; Spec3=this")
+		TZK_Mission_Group_Playable(41,CIV, 0,0,3410, 41, "Civilian", "this allowdammage false; Spec4=this")
+		TZK_Mission_Group_Playable(42,CIV, 0,0,3420, 42, "Civilian", "this allowdammage false; Spec5=this")
+		TZK_Mission_Group_Playable(43,CIV, 0,0,3430, 43, "Civilian", "this allowdammage false; Spec6=this")
+		TZK_Mission_Group_Playable(44,CIV, 0,0,3440, 44, "Civilian", "this allowdammage false; Spec7=this")
+		TZK_Mission_Group_Playable(45,CIV, 0,0,3450, 45, "Civilian", "this allowdammage false; Spec8=this")
+		TZK_Mission_Group_Playable(46,CIV, 0,0,3460, 46, "Civilian", "this allowdammage false; Spec9=this")
+		
+		TZK_Mission_Grp_Functional_201("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_TownGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_PatrolGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_WorkerGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_FunctionalGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		class Item154
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={278.941986,8.032543,288.151550};
+					special="NONE";
+					id=144;
+					side="LOGIC";
+					vehicle="Logic";
+					leader=1;
+					skill=0.600000;
+					text="FixStart_0";
+				};
+			};
+		};
+		class Item155
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={12177.570313,40.571163,484.892273};
+					special="NONE";
+					id=145;
+					side="LOGIC";
+					vehicle="Logic";
+					leader=1;
+					skill=0.600000;
+					text="FixStart_1";
+				};
+			};
+		};
+	};
+	class Vehicles
+	{
+		items=25;
+		class Item0
+		{
+			position[]={872.149292,8.176790,1576.987427};
+			special="NONE";
+			id=200;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""ShuJun"",500,2]]";
+		};
+		class Item1
+		{
+			position[]={11265.392578,29.640810,2075.479980};
+			special="NONE";
+			id=201;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""NanHai"",500,2]]";
+		};
+		class Item2
+		{
+			position[]={4930.503906,64.934998,8998.345703};
+			special="NONE";
+			id=202;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""ChangAn"",1000,2]]";
+		};
+		class Item3
+		{
+			position[]={8746.574219,38.145824,7870.718262};
+			special="NONE";
+			id=203;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""LuoYang"",1000,2]]";
+		};
+		class Item4
+		{
+			position[]={8961.835938,43.138668,3778.319580};
+			special="NONE";
+			id=204;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""JianYe"",500,2]]";
+		};
+		class Item5
+		{
+			position[]={10808.396484,42.817921,4007.789551};
+			special="NONE";
+			id=205;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""KuaiJi"",500,2]]";
+		};
+		class Item6
+		{
+			position[]={3083.272217,7.496296,2175.489014};
+			special="NONE";
+			id=206;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""BaJun"",500,2]]";
+		};
+		class Item7
+		{
+			position[]={5732.211914,22.378851,3068.010742};
+			special="NONE";
+			id=207;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""JiangLing"",500,2]]";
+		};
+		class Item8
+		{
+			position[]={7576.225586,30.780453,2285.781982};
+			special="NONE";
+			id=208;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""ChaiSang"",500,2]]";
+		};
+		class Item9
+		{
+			position[]={8530.115234,65.239708,725.260925};
+			special="NONE";
+			id=209;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""JiaoZhi"",500,2]]";
+		};
+		class Item10
+		{
+			position[]={5386.627441,18.775312,1692.490356};
+			special="NONE";
+			id=210;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""ChangSha"",500,2]]";
+		};
+		class Item11
+		{
+			position[]={4277.775391,22.777063,4491.975586};
+			special="NONE";
+			id=211;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""HanZhong"",500,2]]";
+		};
+		class Item12
+		{
+			position[]={6911.960449,126.316025,4891.671875};
+			special="NONE";
+			id=212;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""XiangYang"",-500,2]]";
+		};
+		class Item13
+		{
+			position[]={7299.347656,67.195328,6779.114746};
+			special="NONE";
+			id=213;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""WanCheng"",500,2]]";
+		};
+		class Item14
+		{
+			position[]={9144.536133,42.942265,6167.000000};
+			special="NONE";
+			id=214;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""XuChang"",500,2]]";
+		};
+		class Item15
+		{
+			position[]={11618.655273,39.869999,9275.551758};
+			special="NONE";
+			id=215;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""BeiHai"",500,2]]";
+		};
+		class Item16
+		{
+			position[]={4241.991211,49.897789,7140.080566};
+			special="NONE";
+			id=216;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""TianShui"",500,2]]";
+		};
+		class Item17
+		{
+			position[]={11664.503906,29.895987,11900.951172};
+			special="NONE";
+			id=217;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""LiaoDong"",500,2]]";
+		};
+		class Item18
+		{
+			position[]={9447.100586,23.350763,10506.955078};
+			special="NONE";
+			id=218;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""JiCheng"",500,2]]";
+		};
+		class Item19
+		{
+			position[]={11452.338867,78.724289,7253.428711};
+			special="NONE";
+			id=219;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""HuaiNan"",500,2]]";
+		};
+		class Item20
+		{
+			position[]={1372.470703,81.529594,11260.917969};
+			special="NONE";
+			id=220;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""LiangZhou"",500,2]]";
+		};
+		class Item21
+		{
+			position[]={2188.812256,24.691031,7938.471191};
+			special="NONE";
+			id=221;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""LongXi"",500,2]]";
+		};
+		class Item22
+		{
+			position[]={4694.479980,5.094886,11815.177734};
+			special="NONE";
+			id=222;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""BeiDi"",500,2]]";
+		};
+		class Item23
+		{
+			position[]={7311.332520,14.379715,10736.384766};
+			special="NONE";
+			id=223;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""JinYang"",500,2]]";
+		};
+		class Item24
+		{
+			position[]={8229.713867,22.943600,9594.729492};
+			special="NONE";
+			id=224;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""YeCheng"",500,2]]";
+		};
+	};
+	class Markers
+	{
+		items=25;
+		class Item0
+		{
+			position[]={953.869568,10.166066,1496.316528};
+			name="MarkerTownName";
+			text="ShuJun";
+			type="Flag";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item1
+		{
+			position[]={11399.247070,31.155457,2170.540527};
+			name="MarkerTownName";
+			text="NanHai";
+			type="Flag";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item2
+		{
+			position[]={4934.174316,75.810684,8850.798828};
+			name="MarkerTownName";
+			text="ChangAn 1000$";
+			type="Flag";
+			colorName="ColorGreen";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item3
+		{
+			position[]={8820.859375,40.419918,7747.533203};
+			name="MarkerTownName";
+			text="LuoYang 1000$";
+			type="Flag";
+			colorName="ColorGreen";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item4
+		{
+			position[]={9007.042969,44.110249,3711.657715};
+			name="MarkerTownName";
+			text="JianYe";
+			type="Flag";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item5
+		{
+			position[]={10860.619141,39.761070,4174.321289};
+			name="MarkerTownName";
+			text="KuaiJi";
+			type="Flag";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item6
+		{
+			position[]={3195.223877,6.883684,2160.025879};
+			name="MarkerTownName";
+			text="BaJun";
+			type="Flag";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item7
+		{
+			position[]={5756.981445,21.518307,2975.428711};
+			name="MarkerTownName";
+			text="JiangLing";
+			type="Flag";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item8
+		{
+			position[]={7585.620117,27.872293,2419.651855};
+			name="MarkerTownName";
+			text="ChaiSang";
+			type="Flag";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item9
+		{
+			position[]={8590.102539,61.473724,732.022034};
+			name="MarkerTownName";
+			text="JiaoZhi";
+			type="Flag";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item10
+		{
+			position[]={5392.304199,20.176897,1528.482788};
+			name="MarkerTownName";
+			text="ChangSha";
+			type="Flag";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item11
+		{
+			position[]={4277.775391,22.777063,4491.975586};
+			name="MarkerTownName";
+			text="HanZhong";
+			type="Flag";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item12
+		{
+			position[]={6962.817871,122.465347,4882.011230};
+			name="MarkerTownName";
+			text="XiangYang -500$";
+			type="Flag";
+			colorName="ColorRed";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item13
+		{
+			position[]={7281.112305,61.889957,6839.295410};
+			name="MarkerTownName";
+			text="WanCheng";
+			type="Flag";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item14
+		{
+			position[]={9162.098633,53.973309,6229.452148};
+			name="MarkerTownName";
+			text="XuChang";
+			type="Flag";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item15
+		{
+			position[]={11618.655273,39.869999,9275.551758};
+			name="MarkerTownName";
+			text="BeiHai";
+			type="Flag";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item16
+		{
+			position[]={4270.504883,49.832340,7091.670410};
+			name="MarkerTownName";
+			text="TianShui";
+			type="Flag";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item17
+		{
+			position[]={11519.507813,24.378853,12168.914063};
+			name="MarkerTownName";
+			text="LiaoDong";
+			type="Flag";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item18
+		{
+			position[]={9371.193359,23.211800,10451.380859};
+			name="MarkerTownName";
+			text="JiCheng";
+			type="Flag";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item19
+		{
+			position[]={11487.229492,74.381645,7338.591797};
+			name="MarkerTownName";
+			text="HuaiNan";
+			type="Flag";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item20
+		{
+			position[]={1304.600830,80.456039,11131.905273};
+			name="MarkerTownName";
+			text="LiangZhou";
+			type="Flag";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item21
+		{
+			position[]={2073.552002,29.884138,7720.934570};
+			name="MarkerTownName";
+			text="LongXi";
+			type="Flag";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item22
+		{
+			position[]={4706.816895,7.992759,11743.201172};
+			name="MarkerTownName";
+			text="BeiDi";
+			type="Flag";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item23
+		{
+			position[]={7124.014160,22.308743,10620.317383};
+			name="MarkerTownName";
+			text="JinYang";
+			type="Flag";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item24
+		{
+			position[]={8225.499023,24.463808,9532.276367};
+			name="MarkerTownName";
+			text="YeCheng";
+			type="Flag";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+	};
+};
+class Intro
+{
+	randomSeed=708099;
+	class Intel
+	{
+	};
+};
+class OutroWin
+{
+	randomSeed=14440451;
+	class Intel
+	{
+	};
+};
+class OutroLoose
+{
+	randomSeed=4212739;
+	class Intel
+	{
+	};
+};
