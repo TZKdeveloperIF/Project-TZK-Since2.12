@@ -1,11 +1,7 @@
-; args: value
+; args: [_qid, _si]
 
-_value = _this
-
-_qid = _value % maxQ
-_value = _value - _qid
-
-_si = _value/maxQ
+_qid = _this select 0
+_si = _this select 1
 
 ? _si != siPlayer : exit
 

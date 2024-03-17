@@ -4,11 +4,14 @@ _obj = _this select 0
 _si = _this select 1
 _len = _this select 2
 
+_this exec "Server\BuyUnit\sQueueLenInner.sqs"
+exit
+; contents below are old codes. to be abandoned
+
 @!(mutexQueueLength)
 mutexQueueLength = true
 
 pvQueueLength_Obj = _obj; publicVariable "pvQueueLength_Obj"
-pvQueueLength = _len + maxQ*_si; publicVariable "pvQueueLength"
 
 ~0.1
 mutexQueueLength = false

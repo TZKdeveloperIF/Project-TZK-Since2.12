@@ -1,16 +1,11 @@
-#Start
+; args: [id, type + TotalUnitTypes * gi + TotalUnitTypes * GroupsNum * si]
 
-@(pvCancelBuy != -1)
+? not isServer: exit
 
-_value = pvCancelBuy
-
-pvCancelBuy = -1
+_qid = _this select 0; _value = _this select 1
 
 _type = _value %  TotalUnitTypes 
 _value = (_value - _type) / TotalUnitTypes
-
-_qid = _value % maxQ
-_value = (_value - _qid) / maxQ  
 
 _gi = _value % GroupsNum
 _value = (_value - _gi) / GroupsNum
@@ -18,8 +13,6 @@ _value = (_value - _gi) / GroupsNum
 _si = _value
 
 ; player globalchat format["qidCancel = %1", qidCancel]
-[_qid, _si, 0] exec "\TZK_Scripts_4_0_4\Server\SendQueueRem.sqs"
+[_qid, _si, 0] exec "Server\BuyUnit\sQueueRem.sqs"
 ? !( _qid in (qidCancel select _si) ) : [_qid, _si] exec "\TZK_Scripts_4_0_4\Server\QIDCancelAdd.sqs"
 
-
-goto "Start"

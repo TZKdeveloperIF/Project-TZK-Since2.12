@@ -16,27 +16,33 @@ _c = count _queues
 _found = false
 while {_qi < _c && !_found} do {if (isNull (_queues select _qi select 0)) then {_found = true; _qi = _qi - 1}; _qi = _qi + 1}
 
-_queues set [_qi, [_factory, _typeStructure, []] ]
+; purchase order is managed by circular buffer but not simple linear array now
+_queues set [_qi, [_factory, _typeStructure, call preprocessFile "Algo\CirBuf\create.sqf"] ]
 mutexFacQueues = false
 
+_getSize = preprocessFile "Algo\CirBuf\size.sqf"
+
 # Wait
-	[_factory, _si, 0] exec "\TZK_Scripts_4_0_4\Server\SendQueueLength.sqs"
+	[_factory, _si, 0] exec "Server\BuyUnit\sQueueLen.sqs"
 	
 	@ !mutexbuildingInUse
 	mutexbuildingInUse = true
 	[buildingsInUse, [_factory, objNull]] call preprocessFile "Util\ArraySubtract.sqf"
 	mutexbuildingInUse = false
 
-	_queue = _queues select _qi select 2
+	_orders = _queues select _qi select 2
+
+	# innerLoop
+		~ 0.3
+		? (_orders call _getSize) <= 0 && not isNull _factory: goto "innerLoop"
 	
-	@ count _queue > 0 || isNull _factory
 	? !alive _factory || isNull _factory: goto "BuildingDestroyed"
-	? count _queue > 0: goto "BuildUnits"
+	? (_orders call _getSize) > 0: goto "BuildUnits"
 	goto "Wait"
 # BuildUnits
 # BuildNextUnit
 
-	_entry = _queue select 0
+	_entry = [_orders, 0] call preprocessFile "Algo\CirBuf\at.sqf"
 	_type = _entry select 0
 	_driver = _entry select 1
 	_gunner = _entry select 2
@@ -46,10 +52,10 @@ mutexFacQueues = false
 	_qid = _entry select 6
 	_nCustomWeapon = _entry select 7
 
-	_queue select 0 resize 1; _queue select 0 set [0, 2]
-	[_queue, 0] call preprocessFile "Util\ArrayErase.sqf"
+	_entry resize 1; _entry set [0, 2]
+	_orders call preprocessFile "Algo\CirBuf\pop_front.sqf"
 
-	[_factory, _si, (count _queue) + 1] exec "\TZK_Scripts_4_0_4\Server\SendQueueLength.sqs"
+	[_factory, _si, (_orders call _getSize) + 1] exec "Server\BuyUnit\sQueueLen.sqs"
 
 	? _type >= maxUnitTypes: _unitDesc = unitDefs select (utCustom select _si)
 	? _type < maxUnitTypes: _unitDesc = unitDefs select _type
@@ -102,7 +108,7 @@ mutexFacQueues = false
 	? _qid in (qidCancel select _si): [_si, _giBuyer, -_cost] exec localize {TZK_MONEY_SERVER_SPEND}; goto "UnitCanceled"
 	? count units _grpJoin + _unitsToBuild > maxGroupSize: [_si, _giBuyer, -_cost] exec localize {TZK_MONEY_SERVER_SPEND}; goto "GroupFull"
 
-	[_qid, _si, 0] exec "\TZK_Scripts_4_0_4\Server\SendQueueRem.sqs"
+	[_qid, _si, 0] exec "Server\BuyUnit\sQueueRem.sqs"
 
 	[_si, _giJoin, _unitsToBuild] exec "Server\BuyUnit\UnitsReady.sqs"; 
 	? !(alive _factory) || (isNull _factory): goto "BuildingDestroyed"
@@ -110,24 +116,24 @@ mutexFacQueues = false
 	; create object
 	call preprocessFile "Server\BuyUnit\Create.sqf"
 	
-	? (count _queue) > 1: goto "BuildNextUnit"
+	? (_orders call _getSize) > 1: goto "BuildNextUnit"
 	@ !mutexbuildingInUse
 	mutexbuildingInUse = true
 	[buildingsInUse, [_factory, objNull]] call preprocessFile "Util\ArraySubtract.sqf"
 	mutexbuildingInUse = false
 	
-	? (count _queue) > 0: goto "BuildNextUnit"
+	? (_orders call _getSize) > 0: goto "BuildNextUnit"
 
 	goto "Wait"
 
 #GroupFull
 	[_type, _si, _giBuyer, _giJoin] exec "\TZK_Scripts_4_0_6\Server\Info\GroupFull.sqs"
-	[_qid, _si, 0] exec "\TZK_Scripts_4_0_4\Server\SendQueueRem.sqs"
+	[_qid, _si, 0] exec "Server\BuyUnit\sQueueRem.sqs"
 	goto "UnitNotBuilt"
 
 #NoMoney
 	[_type, _si, _giBuyer, _giJoin] exec "\TZK_Scripts_4_0_6\Server\Info\NoMoneyUnit.sqs"
-	[_qid, _si, 0] exec "\TZK_Scripts_4_0_4\Server\SendQueueRem.sqs"
+	[_qid, _si, 0] exec "Server\BuyUnit\sQueueRem.sqs"
 	goto "UnitNotBuilt"
 
 #UnitCanceled
@@ -152,20 +158,20 @@ mutexFacQueues = false
 
 	[_qid, _si] exec "\TZK_Scripts_4_0_4\Server\QIDCancelRemove.sqs"
 	
-	? (count _queue) > 1: goto "BuildNextUnit"
+	? (_orders call _getSize) > 1: goto "BuildNextUnit"
 	@ !mutexbuildingInUse
 	mutexbuildingInUse = true
 	[buildingsInUse, [_factory, objNull]] call preprocessFile "Util\ArraySubtract.sqf"
 	mutexbuildingInUse = false
 	
-	? (count _queue) > 0: goto "BuildNextUnit"
+	? (_orders call _getSize) > 0: goto "BuildNextUnit"
 	goto "Wait"
 
 #BuildingDestroyed
-	? ((count _queue) == 0) && !(isNull _factory): goto "Wait"
-	? ((count _queue) == 0) && (isNull _factory): goto "BuildingDeleted"
+	? ((_orders call _getSize) == 0) && !(isNull _factory): goto "Wait"
+	? ((_orders call _getSize) == 0) && (isNull _factory): goto "BuildingDeleted"
 
-	_entry = _queue select 0
+	_entry = [_orders, 0] call preprocessFile "Algo\CirBuf\at.sqf"
 	_type = _entry select 0
 	_driver = _entry select 1
 	_gunner = _entry select 2
@@ -179,8 +185,8 @@ mutexFacQueues = false
 
 	_cost = _unitDesc select udCost
 
-	_queue select 0 resize 1; _queue select 0 set [0, 2]
-	[_queue, 0] call preprocessFile "Util\ArrayErase.sqf"
+	_entry resize 1; _entry set [0, 2]
+	_orders call preprocessFile "Algo\CirBuf\pop_front.sqf"
 
 	_bVehicle = false
 	? (count ((unitDefs select _type) select udCrew) > 0): _bVehicle = true
@@ -196,10 +202,13 @@ mutexFacQueues = false
 
 
 	[_qid, _si] exec "\TZK_Scripts_4_0_4\Server\QIDCancelRemove.sqs"
-	[_qid, _si, 0] exec "\TZK_Scripts_4_0_4\Server\SendQueueRem.sqs"
+	[_qid, _si, 0] exec "Server\BuyUnit\sQueueRem.sqs"
 
 	goto "BuildingDestroyed"
 
-#BuildingDeleted
-	(_queues select _qi) set [2, []]
-	Exit
+# BuildingDeleted
+	@ !mutexFacQueues
+		mutexFacQueues = true
+		_queues select _qi set [2, []]
+		mutexFacQueues = false
+	exit
