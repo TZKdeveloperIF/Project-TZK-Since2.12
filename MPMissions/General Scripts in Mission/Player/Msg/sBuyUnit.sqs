@@ -1,15 +1,20 @@
-; args: [nType, nDriver, nGunner, nCommander, giJoin, oFactory, bCustomWeapon, nCustomWeapon]
-
-_type = _this select 0
-_driver = _this select 1
-_gunner = _this select 2
-_commander = _this select 3
-_giJoin = _this select 4
-_factory = _this select 5
+; args: [[nType, nDriver, nGunner, nCommander, giJoin, oFactory], order number, [bCustomWeapon, nCustomWeapon]]
+_orderDetail = _this select 0
+_orderNum = if (count _this > 1) then {_this select 1} else {1}
 ; extra custom weapon selected idx (in available mags)
-_bCustomWeapon = if (count _this > 6) then {_this select 6} else {false}
-_nCustomWeapon = if (count _this > 7) then {_this select 7} else {-1}
+_bCustomWeapon = if (count _this > 2) then {_this select 2 select 0} else {false}
+_nCustomWeapon = if _bCustomWeapon then {_this select 2 select 1} else {-1}
+; param check
+? count _this > 3: "Unexpected input in sBuyUnit" call fDebugLog; exit
 
+_type = _orderDetail select 0
+_driver = _orderDetail select 1
+_gunner = _orderDetail select 2
+_commander = _orderDetail select 3
+_giJoin = _orderDetail select 4
+_factory = _orderDetail select 5
+
+; encode order details into one number
 _value = _type
 _value = _value +  TotalUnitTypes *_giJoin
 _value = _value + ( TotalUnitTypes *GroupsNum)*giPlayer
@@ -18,16 +23,8 @@ _value = _value + ( TotalUnitTypes *GroupsNum*GroupsNum*2)*_driver
 _value = _value + ( TotalUnitTypes *GroupsNum*GroupsNum*2*2)*_gunner
 _value = _value + ( TotalUnitTypes *GroupsNum*GroupsNum*2*2*2)*_commander
 
-@!(mutexBuyUnit)
-mutexBuyUnit = true
+_netIdStr = _factory call funcGenNetIdStr
+? isNull _factory || not alive _factory: exit
 
-? isNull _factory: mutexBuyUnit = false; exit
-? _bCustomWeapon: call format [{pvBuyUnit_Custom%1 = _nCustomWeapon, publicVariable {pvBuyUnit_Custom%1}}, indexSendBuyUnit]
-call format[{ pvBuyUnit_Factory%1 = _factory, publicVariable {pvBuyUnit_Factory%1} }, indexSendBuyUnit]
-call format[{ pvBuyUnit_Type%1 = _value, publicVariable {pvBuyUnit_Type%1} }, indexSendBuyUnit]
-
-indexSendBuyUnit = indexSendBuyUnit + 1
-? indexSendBuyUnit >= countSendBuyUnit: indexSendBuyUnit = 0
-
-~ sendDelay/countSendBuyUnit
-mutexBuyUnit = false
+[_value, _factory, _orderNum, _nCustomWeapon] exec "Server\BuyUnit\hBuyUnit.sqs"
+publicExec format [{[%1, UnitById %2, %3, %4] exec "Server\BuyUnit\hBuyUnit.sqs"}, _value call preprocessFile "Util\Num2Str.sqf", _netIdStr, _orderNum, _nCustomWeapon]

@@ -17,10 +17,10 @@ private [{_type},{_num},{_driver},{_gunner}, {_factoryType}];
 		{[_factories, [_si, _x, true] call funcGetIdleFactories] call preprocessFile "Util\ArrayAppend.sqf"} forEach _factoryType;
 		if (count _factories > _num) then {_factories resize _num};
 		{
-			private [{_order}]; _order = [_type, _driver, _gunner, 0, _si, _gi, _gi, _x, -1, _emptyArr];
+			private [{_order}]; _order = [[_type, _driver, _gunner, 0, _si, _gi, _gi, _x], 1, -1, _emptyArr];
 			private [{_j},{_cj},{_found}]; _j = 0; _cj = count _grpBuyOrders; _found = false;
 			while {_j < _cj && not _found} do {
-				if (count (_grpBuyOrders select _j select 9) == 1) then {_found = true; _j = _j - 1};
+				if (count (_grpBuyOrders select _j select _idxOfOrderRef) == 1) then {_found = true; _j = _j - 1};
 				_j = _j + 1;
 			};
 			_grpBuyOrders set [_j, _order];
@@ -49,10 +49,10 @@ private [{_type},{_num},{_driver},{_gunner}, {_factoryType}];
 		if (count _factories > 0) then {
 			if (count _factories > _num) then {_factories resize _num};
 			{
-				private [{_order}]; _order = [_type, _driver, _gunner, 0, _si, _gi, _gi, _x, -1, _emptyArr];
+				private [{_order}]; _order = [[_type, _driver, _gunner, 0, _si, _gi, _gi, _x], 1, -1, _emptyArr];
 				private [{_j},{_cj},{_found}]; _j = 0; _cj = count _grpBuyOrders; _found = false;
 				while {_j < _cj && not _found} do {
-					if (count (_grpBuyOrders select _j select 9) == 1) then {_found = true; _j = _j - 1};
+					if (count (_grpBuyOrders select _j select _idxOfOrderRef) == 1) then {_found = true; _j = _j - 1};
 					_j = _j + 1;
 				};
 				_grpBuyOrders set [_j, _order];

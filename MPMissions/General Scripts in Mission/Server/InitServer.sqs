@@ -17,9 +17,6 @@ call preprocessFile "Server\Upgrade\Init.sqf"
 [] exec "\TZK_Scripts_4_0_4\Server\MsgBuildStructure.sqs"
 (localize {TZK_FUNC_SERVER_UNDO_STRUCT}) exec "\TZK_Scripts_4_0_6\Server\Msg\mUndo.sqs"
 
-{ ["Server\Msg\hBuyUnit.sqs"] exec format ["Server\Msg\mBuyUnit%1.sqs", _x] } forEach [0,1,2,3,4]
-
-[] exec "\TZK_Scripts_4_0_4\Server\MsgCancelBuy.sqs"
 (localize {TZK_MONEY_SERVER_SPEND}) exec "\TZK_Scripts_4_0_6\Server\Msg\mMoneySpent.sqs"
 "\TZK_Scripts_4_0_6\Server\Msg\hGiveMoney.sqs" exec "\TZK_Scripts_4_0_6\Server\Msg\mGiveMoney.sqs"
 "Server\Msg\hUpgrade.sqs" exec "Server\Msg\mUpgrade.sqs"
@@ -27,7 +24,7 @@ call preprocessFile "Server\Upgrade\Init.sqf"
 0 exec "\TZK_Scripts_4_0_6\Server\Msg\mDestruction.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\MsgUnitDisembark.sqs"
 "Server\Msg\hCheckAI.sqs" exec "Server\Msg\mCheckAI.sqs"
-[] exec "\TZK_Scripts_4_0_4\Server\MsgClearBuy.sqs"
+0 exec "Server\Msg\mClearBuy.sqs"
 ; ? bool_TZK_199_Mode: [] exec "\TZK_Scripts_4_0_4\Server\Msg\mRadioChannel.sqs"
 
 ; ? !(isNull player): forceMap true

@@ -17,8 +17,6 @@ _value = (_value - _giJoin) / GroupsNum
 
 _si = _value
 
-; player globalchat format ["Msg\hQueueAdd.sqs: _id=%1 _type=%2 _si=%3 _giB=%4 _giJ=%5", _id, _type, _si, _giBuyer, _giJoin ]
-
 ? _si != siPlayer || (_giBuyer != giPlayer && _giJoin != giPlayer) : exit
 
 ? _type >= maxUnitTypes : _unitName = format["cs%1", _type - maxUnitTypes]

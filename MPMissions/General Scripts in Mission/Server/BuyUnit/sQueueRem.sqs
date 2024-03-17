@@ -4,7 +4,11 @@ _qid = _this select 0
 _si = _this select 1
 _repeats = _this select 2
 
-_value = _qid + maxQ*_si
+[_qid, _si] exec "Player\BuyUnit\hQueueRem.sqs"
+publicExec format [{%1 exec "Player\BuyUnit\hQueueRem.sqs"}, [_qid, _si]]
+
+exit
+; contents below are old codes. to be abandoned
 
 @!(mutexQueueRem)
 mutexQueueRem = true
@@ -20,4 +24,3 @@ _delay = 0
 
 mutexQueueRem = false
 
-? _repeats > 0 : [_qid, _si, _repeats - 1] exec "\TZK_Scripts_4_0_4\Server\SendQueueRem.sqs"

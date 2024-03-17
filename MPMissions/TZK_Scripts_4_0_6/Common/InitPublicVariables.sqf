@@ -69,19 +69,6 @@ while {_i < countUnitBuiltMsg} do {
 	_i = _i + 1;
 };
 
-mutexQueueAdd = false; mutexQueueRem = false; _i = 0; _c = 5; while {_i < _c} do {
-	call format [{pvQueueAdd%1 = -1}, _i];
-	call format [{pvQueueAddEx%1 = -1}, _i];
-	call format [{pvQueueRem%1 = -1}, _i];
-	_i = _i + 1;
-};
-
-mutexQueueLength = false;
-pvQueueLength = -1;
-pvQueueLength_Obj = objNull;
-
-pvCancelBuy = -1;
-
 comment {
 	pvRemoveMags = objNull; mutexVehicleMagRem = false; mutexRearmVehG = false; indexRearmVehG = 0;
 	_i = 0; while {_i < 5} do {call format ["pvRearmVehG%1 = objNull", _i]; _i = _i + 1};
@@ -130,12 +117,6 @@ pvBuildStruct_Dir = 0;
 
 pvUndo = grpNull;
 
-mutexBuyUnit = false;
-_i = 0; while {_i < 5} do {
-	call format ["pvBuyUnit_Type%1=-1", _i]; call format ["pvBuyUnit_Factory%1=objNull", _i];
-	_i = _i + 1;
-};
-
 pvMoneyGive = -1; pvMoneyGiveGroup = -1;
 mutexMoneyGive = false;
 pvMoneySpent = -1;
@@ -180,7 +161,6 @@ pvDestruction_Object = objNull;
 
 // todo: redirect current file since definitions removed
 pvCustomPlayerMoney = -1; pvCustomAicoMoney = -1;
-_i = 0; while {_i < 5} do {call format ["pvBuyUnit_Custom%1 = -1", _i]; _i = _i + 1};
 
 if bool_TZK_199_Mode then {
 	pvSpoofTarget = objNull, 

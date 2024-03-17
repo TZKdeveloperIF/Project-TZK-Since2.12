@@ -31,7 +31,7 @@ if (_bNeedCheckAbNum && _slots > 0) then {
 				if (_x == _type) then {_stat = _stat + 1};
 			} forEach _typesArr;
 			{
-				if (count (_x select 9) > 0) then {if (_x select 0 == _type) then {_stat = _stat + 1}};
+				if (count (_x select _idxOfOrderRef) > 0) then {if (_x select 0 select 0 == _type) then {_stat = _stat + 1}};
 			} forEach _grpBuyOrders;
 			if (_stat < _num) then {
 				_crewCnt = 1; _driver = 0; _gunner = 0;
