@@ -13,6 +13,11 @@
 //		and "order reference" variable) can detect the status of order and know the order is finished
 // Thus in current script we have to do something special for such order
 
+// Current script is the only entrance that create order for factories
+// order format: 0-type, 1-driver, 2-gunner, 3-commander, 4-giJoin, 5-giBuyer, 6-qid, 7-custom weapon (enum), 
+//				 8-order cancelled (bool)
+// It is recommend to add new attribute in the end so that existed scripts don't have to modify attribute indexes
+
 private [{_procSpecialOrder}, {_item}, {_i}];
 _procSpecialOrder = false;
 if (count _this > _idxOfOrderRef) then {
@@ -20,7 +25,7 @@ if (count _this > _idxOfOrderRef) then {
 		"WARNING: unexpected order number in NewOrder with order reference" call fDebugLog;
 	} else {
 		_procSpecialOrder = true;
-		_item = [_type, _driver, _gunner, _commander, _giJoin, _giBuyer, _qid + 0, _nCustomWeapon];
+		_item = [_type, _driver, _gunner, _commander, _giJoin, _giBuyer, _qid + 0, _nCustomWeapon, false];
 		_this set [_idxOfOrderRef, _item];
 		[_orders, _item] call preprocessFile "Algo\CirBuf\push_back.sqf";
 	};
@@ -29,7 +34,7 @@ _i = if _procSpecialOrder then {1} else {0};
 while {_i < _orderNum} do {
 	[
 		_orders, 
-		[_type, _driver, _gunner, _commander, _giJoin, _giBuyer, _qid + _i, _nCustomWeapon]
+		[_type, _driver, _gunner, _commander, _giJoin, _giBuyer, _qid + _i, _nCustomWeapon, false]
 	] call preprocessFile "Algo\CirBuf\push_back.sqf";
 	_i = _i + 1;
 };

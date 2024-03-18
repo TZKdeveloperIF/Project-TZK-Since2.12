@@ -6,21 +6,3 @@ _repeats = _this select 2
 
 [_qid, _si] exec "Player\BuyUnit\hQueueRem.sqs"
 publicExec format [{%1 exec "Player\BuyUnit\hQueueRem.sqs"}, [_qid, _si]]
-
-exit
-; contents below are old codes. to be abandoned
-
-@!(mutexQueueRem)
-mutexQueueRem = true
-
-[] call format["pvQueueRem%1 = _value", indexQueueRemMsg]
-[] call format["PublicVariable ""pvQueueRem%1""", indexQueueRemMsg]
-indexQueueRemMsg = indexQueueRemMsg + 1
-? indexQueueRemMsg >= countQueueMsg : indexQueueRemMsg = 0
-
-_delay = 0
-? indexQueueRemMsg == 0: _delay = sendDelay
-~_delay
-
-mutexQueueRem = false
-

@@ -276,8 +276,11 @@ mutexDlg = false
 	? _lastSelQID != -1 : [_lastSelQID, 0] exec "Player\BuyUnit\sCancelBuy.sqs"
 	goto "Update"
 	
-#Clear
-	? count _qPlayer > 0 : [] exec "\TZK_Scripts_4_0_4\Player\SendClearBuy.sqs"
+# Clear
+	? count _qPlayer <= 0: goto "Update"
+	_value = giPlayer + GroupsNum * siPlayer
+	_value call preprocessFile "Server\BuyUnit\hClearBuy.sqf"
+	publicExec format [{%1 call preprocessFile "Server\BuyUnit\hClearBuy.sqf"}, _value]
 	goto "Update"
 	
 # Quit

@@ -1,0 +1,6 @@
+; args: [si, qid info: number or array, is array: bool]
+; distributor
+
+_si = _this select 0
+; elements of (factoryCancelledQid select _si): [_factory, false, _cancelledQids]
+{[_x, _this] exec "Server\BuyUnit\FactoryProcessOrderCancel.sqs"} forEach (factoryCancelledQid select _si)

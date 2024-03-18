@@ -13,22 +13,3 @@ _value2 = _giBuyer + GroupsNum*_giJoin + GroupsNum*GroupsNum*_si
 
 [_value, _value2] exec "Player\BuyUnit\hQueueAdd.sqs"
 publicExec format [{%1 exec "Player\BuyUnit\hQueueAdd.sqs"}, [_value, _value2]]
-
-exit
-; contents below are old codes. to be abandoned
-
-@!(mutexQueueAdd)
-mutexQueueAdd = true
-
-[] call format["pvQueueAddEx%1 = _value2", indexQueueAddMsg]
-[] call format["PublicVariable ""pvQueueAddEx%1""", indexQueueAddMsg]
-[] call format["pvQueueAdd%1 = _value", indexQueueAddMsg]
-[] call format["PublicVariable ""pvQueueAdd%1""", indexQueueAddMsg]
-indexQueueAddMsg = indexQueueAddMsg + 1
-? indexQueueAddMsg >= countQueueMsg : indexQueueAddMsg = 0
-
-~(sendDelay/countQueueMsg)
-
-mutexQueueAdd = false
-
-? _repeats > 0 : [_type, _si, _giBuyer, _giJoin, _id, _repeats - 1] exec "\TZK_Scripts_4_0_4\Server\SendQueueAdd.sqs"

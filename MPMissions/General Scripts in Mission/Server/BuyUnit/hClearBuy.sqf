@@ -1,11 +1,25 @@
-// args: [si, gi], gi can be both giJoin and giBuyer
+// args: (gi + GroupsNum * si), gi can be both giJoin and giBuyer
 
-_si = _this select 0;
-_gi = _this select 1;
+if isServer then {
+	private [{_si}, {_gi}, {_orders}, {_i}, {_c}, {_entry}, {_qid}, {_cancelIds}, {_stat}];
 
-_this call preprocessFile "Server\BuyUnit\hClearBuyInner.sqf";
-comment {
-_queues = factoryQueues select _si
+	_gi = _this % GroupsNum;
+	_this = (_this - _gi) / GroupsNum;
+	_si = _this;
 
-{ _queue = (_x select 2); _queue = _queue - (_queue select 0); { if (_gi in [_x select 4, _x select 5]) then {_qid = _x select 6; [_qid, _si, 0] exec "\TZK_Scripts_4_0_4\Server\SendQueueRem.sqs"; [_qid, _si] exec "\TZK_Scripts_4_0_4\Server\QIDCancelAdd.sqs" } } forEach _queue } forEach _queues
+	// todo: this script will be called concurrently with factory building. Solve this problem.
+	_cancelIds = []; _stat = 0;
+	{
+		_orders = _x select 2;
+		_i = 0, _c = _orders call preprocessFile "Algo\CirBuf\size.sqf";; while {_i < _c} do {
+			_entry = [_orders, _i] call preprocessFile "Algo\CirBuf\at.sqf";
+			if (_gi == _entry select 4 || _gi == _entry select 5) then {
+				_qid = _entry select 6;
+				[_qid, _si, 0] exec "Server\BuyUnit\sQueueRem.sqs";
+				_cancelIds set [_stat, _qid]; _stat = _stat + 1;
+			};
+			_i = _i + 1;
+		};
+	} forEach (factoryQueues select _si);
+	[_si, _cancelIds, true] exec "Server\BuyUnit\SubmitOrderCancelled.sqs";
 };
