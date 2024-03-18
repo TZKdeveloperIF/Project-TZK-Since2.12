@@ -24,7 +24,6 @@ call preprocessFile "Server\Upgrade\Init.sqf"
 0 exec "\TZK_Scripts_4_0_6\Server\Msg\mDestruction.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\MsgUnitDisembark.sqs"
 "Server\Msg\hCheckAI.sqs" exec "Server\Msg\mCheckAI.sqs"
-0 exec "Server\Msg\mClearBuy.sqs"
 ; ? bool_TZK_199_Mode: [] exec "\TZK_Scripts_4_0_4\Server\Msg\mRadioChannel.sqs"
 
 ; ? !(isNull player): forceMap true
@@ -58,6 +57,7 @@ call loadFile "\TZK_Scripts_4_0_6\Server\Msg\sStartMoney.sqf"
 
 0 exec "Server\Loop\Income.sqs"
 0 exec "Server\Loop\Server.sqs"
+{_x exec "Server\Loop\ProcessFinishedOrder.sqs"} forEach [si0, si1]
 [] exec "\TZK_Scripts_4_0_4\Server\SendPing.sqs"
 
 [] exec "\TZK_Scripts_4_0_4\Server\DynamicInitializationMarker.sqs"

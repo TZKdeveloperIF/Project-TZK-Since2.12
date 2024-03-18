@@ -4,14 +4,7 @@ _obj = _this select 0
 _si = _this select 1
 _len = _this select 2
 
-_this exec "Server\BuyUnit\sQueueLenInner.sqs"
-exit
-; contents below are old codes. to be abandoned
-
-@!(mutexQueueLength)
-mutexQueueLength = true
-
-pvQueueLength_Obj = _obj; publicVariable "pvQueueLength_Obj"
-
-~0.1
-mutexQueueLength = false
+_netIdStr = _obj call funcGenNetIdStr
+? isNull _obj || not alive _obj: exit
+[_obj, _si + 10 * _len] exec "Player\BuyUnit\hQueueLen.sqs"
+publicExec format [{[UnitById %1, %2] exec "Player\BuyUnit\hQueueLen.sqs"}, _netIdStr, _si + 10 * _len]

@@ -1,0 +1,18 @@
+; args: [[_factory, false, _cancelledQids], [si, qid info: number or array, is array: bool]]
+_factoryCtrl = _this select 0
+? isNull (_factoryCtrl select 0): exit
+
+_cancelledQids = _factoryCtrl select 2
+
+_cancelInfo = _this select 1
+
+_qidInfo = _cancelInfo select 1
+_isArray = _cancelInfo select 2
+
+@ not (_factoryCtrl select 1)
+	_factoryCtrl set [1, true]
+
+	? _isArray: [_cancelledQids, _qidInfo] call preprocessFile "Util\ArrayAppend.sqf"
+	? not _isArray: _cancelledQids set [count _cancelledQids, _qidInfo]
+
+	_factoryCtrl set [1, false]

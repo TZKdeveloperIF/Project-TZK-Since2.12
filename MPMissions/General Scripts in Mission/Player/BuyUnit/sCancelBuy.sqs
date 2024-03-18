@@ -6,13 +6,3 @@ _type = _this select 1
 _value = _type + TotalUnitTypes * giPlayer + TotalUnitTypes * GroupsNum * siPlayer
 [_id, _value] exec "Server\BuyUnit\hCancelBuy.sqs"
 publicExec format [{%1 exec "Server\BuyUnit\hCancelBuy.sqs"}, [_id, _value]]
-exit
-; contents below are old codes. to be abandoned
-
-_value = _type
-_value = _value +  TotalUnitTypes *_id
-_value = _value + ( TotalUnitTypes *maxQ)*giPlayer
-_value = _value + ( TotalUnitTypes *maxQ*GroupsNum)*siPlayer
-
-; This script starts by "Cancel" BUTTON in Dialog BuyUnits.sqs, thus SHOULD NOT set mutex for it.
-pvCancelBuy = _value; PublicVariable "pvCancelBuy"

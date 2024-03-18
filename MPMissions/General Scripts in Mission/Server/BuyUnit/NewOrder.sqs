@@ -72,7 +72,6 @@ call preprocessFile "Server\BuyUnit\Add2FactoryQueue.sqf"
 
 _unitsBuilding = (groupUnitsBuildingMatrix select _si select _giJoin) + _eachOrderUnitCnt * _orderNum
 groupUnitsBuildingMatrix select _si set [_giJoin, _unitsBuilding]
-_i = 0; while {_i < _orderNum} do {qidToCancel select _si set [_qid + _i, [_giJoin, _eachOrderUnitCnt]]; _i = _i + 1}
 
 [_factory, _si, _size + _orderNum + 1] exec "Server\BuyUnit\sQueueLen.sqs"
 

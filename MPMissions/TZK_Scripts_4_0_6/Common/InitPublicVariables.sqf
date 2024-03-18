@@ -14,9 +14,6 @@ pvAfterBurnerON = objNull; pvAfterBurnerOFF = objNull;
 pvNuclearX = 0; pvNuclearY = 0; pvNuclearZ = 0;
 pvCheckAI = -1;
 
-// pvEjectAIUnits = objNull; 
-pvClearBuy = -1;
-
 mutexTownWorkerGroups = false;
 
 comment {Earlier Version Variables};

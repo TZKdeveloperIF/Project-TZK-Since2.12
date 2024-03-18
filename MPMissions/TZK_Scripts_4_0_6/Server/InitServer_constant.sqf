@@ -31,8 +31,6 @@ countMoneyMsg = 10;
 indexInfoMsg = 0;
 countInfoMsg = 4;
 qidNext = [0,0];
-qidCancel = [[],[]];
-qidToCancel = [[],[]];
 
 timeCheckSupport = 120;
 ratioAttackEnemy = ([0.70, 0.70] select dev);
@@ -41,7 +39,6 @@ mutexEditMoneyMatrix = false;
 mutexMovingToSupport = false;
 mutexSendMoneySide = false;
 mutexEnemySpotted = false;
-mutexqidCancel = false;
 mutexFuelVehicle = false;
 
 scoreMoney = [[],[]];

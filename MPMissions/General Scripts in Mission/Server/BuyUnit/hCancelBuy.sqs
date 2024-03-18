@@ -12,7 +12,5 @@ _value = (_value - _gi) / GroupsNum
 
 _si = _value
 
-; player globalchat format["qidCancel = %1", qidCancel]
 [_qid, _si, 0] exec "Server\BuyUnit\sQueueRem.sqs"
-? !( _qid in (qidCancel select _si) ) : [_qid, _si] exec "\TZK_Scripts_4_0_4\Server\QIDCancelAdd.sqs"
-
+[_si, _qid, false] exec "Server\BuyUnit\SubmitOrderCancelled.sqs"

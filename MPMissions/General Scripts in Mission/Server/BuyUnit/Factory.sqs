@@ -18,8 +18,14 @@ while {_qi < _c && !_found} do {if (isNull (_queues select _qi select 0)) then {
 
 ; purchase order is managed by circular buffer but not simple linear array now
 _queues set [_qi, [_factory, _typeStructure, call preprocessFile "Algo\CirBuf\create.sqf"] ]
+
+; cancelled qids. factoryCancelledQid elements: 0-factory, 1-mutex, 2-cancelled qid array
+_cancelledQids = []; factoryCancelledQid select _si set [_qi, [_factory, false, _cancelledQids]]
 mutexFacQueues = false
 
+; In general cases aborted order requires remove "building units count",
+; but cancelled order doesn't. This step should be done on calcelling
+_needClearBuildingCount = true
 _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 
 # Wait
@@ -51,9 +57,12 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 	_giBuyer = _entry select 5
 	_qid = _entry select 6
 	_nCustomWeapon = _entry select 7
+	_cancelled = _entry select 8
 
 	_entry resize 1; _entry set [0, 2]
 	_orders call preprocessFile "Algo\CirBuf\pop_front.sqf"
+
+	? _cancelled: goto "UnitCanceled"
 
 	[_factory, _si, (_orders call _getSize) + 1] exec "Server\BuyUnit\sQueueLen.sqs"
 
@@ -88,7 +97,6 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 	
 	_money = groupMoneyMatrix select _si select _giBuyer
 	? (_money < _cost): goto "NoMoney"
-	? _qid in (qidCancel select _si): goto "UnitCanceled"
 	_spendParam = [_si, _giBuyer, _cost, true, false]
 	_spendParam exec localize {TZK_MONEY_SERVER_SPEND}
 
@@ -100,18 +108,16 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 	_timeBuilt = time + ([_buildTime, 2] select dev); _isBuilding = true
 	# buildLoop
 		~ 1
-		? _qid in (qidCancel select _si): _isBuilding = false
 		? count units _grpJoin + _unitsToBuild > maxGroupSize: _isBuilding = false
 		? time > _timeBuilt: _isBuilding = false
+		? count _cancelledQids > 0: goto "OnCancelling"
 		? _isBuilding: goto "buildLoop"
 
-	? _qid in (qidCancel select _si): [_si, _giBuyer, -_cost] exec localize {TZK_MONEY_SERVER_SPEND}; goto "UnitCanceled"
 	? count units _grpJoin + _unitsToBuild > maxGroupSize: [_si, _giBuyer, -_cost] exec localize {TZK_MONEY_SERVER_SPEND}; goto "GroupFull"
 
 	[_qid, _si, 0] exec "Server\BuyUnit\sQueueRem.sqs"
 
-	[_si, _giJoin, _unitsToBuild] exec "Server\BuyUnit\UnitsReady.sqs"; 
-	? !(alive _factory) || (isNull _factory): goto "BuildingDestroyed"
+	? !(alive _factory) || (isNull _factory): [_si, _giJoin, _unitsToBuild] exec "Server\BuyUnit\AsyncFreeBuildingUnitsCount.sqs"; goto "BuildingDestroyed"
 
 	; create object
 	call preprocessFile "Server\BuyUnit\Create.sqf"
@@ -136,27 +142,15 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 	[_qid, _si, 0] exec "Server\BuyUnit\sQueueRem.sqs"
 	goto "UnitNotBuilt"
 
-#UnitCanceled
-	goto "UnitNotBuilt"
-	; contents below is a trial many years ago. They're not used for long
-	; @ not (mutexBuildingQueue select _si select _qid)
-		; mutexBuildingQueue select _si set [_qid, true]
-		; _res = (qidToCancel select _si) select _qid
-		; _unitsCanceled = _res select 1
-		; ? _giJoin == _res select 0: _unitsBuilding = ((groupUnitsBuildingMatrix select _si) select _giJoin) + _unitsCanceled; (groupUnitsBuildingMatrix select _si) set [_giJoin, _unitsBuilding]
-		; mutexBuildingQueue select _si set [_qid, false]
+# UnitCanceled
+	_needClearBuildingCount = false
 	goto "UnitNotBuilt"
 
-#UnitNotBuilt
-
-
-	@ not (mutexBuildingQueue select _si select _giJoin)
-		mutexBuildingQueue select _si set [_giJoin, true]
-		_unitsBuilding = ((groupUnitsBuildingMatrix select _si) select _giJoin) - _unitsToBuild
-		(groupUnitsBuildingMatrix select _si) set [_giJoin, _unitsBuilding]
-		mutexBuildingQueue select _si set [_giJoin, false]
-
-	[_qid, _si] exec "\TZK_Scripts_4_0_4\Server\QIDCancelRemove.sqs"
+# UnitNotBuilt
+	; judge need clear building count or not stage
+	? _needClearBuildingCount: [_si, _giJoin, _unitsToBuild] exec "Server\BuyUnit\AsyncFreeBuildingUnitsCount.sqs"
+	; recover status for later orders
+	_needClearBuildingCount = true
 	
 	? (_orders call _getSize) > 1: goto "BuildNextUnit"
 	@ !mutexbuildingInUse
@@ -177,31 +171,20 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 	_gunner = _entry select 2
 	_commander = _entry select 3
 	_giJoin = _entry select 4
-	_giBuyer = _entry select 5
 	_qid = _entry select 6
-
-	? _type >= maxUnitTypes: _unitDesc = unitDefs select (utCustom select _si)
-	? _type < maxUnitTypes: _unitDesc = unitDefs select _type
-
-	_cost = _unitDesc select udCost
 
 	_entry resize 1; _entry set [0, 2]
 	_orders call preprocessFile "Algo\CirBuf\pop_front.sqf"
 
-	_bVehicle = false
-	? (count ((unitDefs select _type) select udCrew) > 0): _bVehicle = true
+	? _type >= maxUnitTypes: _unitDesc = unitDefs select (utCustom select _si)
+	? _type < maxUnitTypes: _unitDesc = unitDefs select _type
 
-	? !(_bVehicle): _unitsToBuild = 1
-	? (_bVehicle): _unitsToBuild = _driver; _unitsToBuild = _unitsToBuild + _gunner; _unitsToBuild = _unitsToBuild + _commander
+	_bVehicle = count (_unitDesc select udCrew) > 0
+	? not _bVehicle: _unitsToBuild = 1
+	? _bVehicle: _unitsToBuild = _driver + _gunner + _commander
 
-	@ not (mutexBuildingQueue select _si select _giJoin)
-		mutexBuildingQueue select _si set [_giJoin, true]
-		_unitsBuilding = ((groupUnitsBuildingMatrix select _si) select _giJoin) - _unitsToBuild
-		(groupUnitsBuildingMatrix select _si) set [_giJoin, _unitsBuilding]
-		mutexBuildingQueue select _si set [_giJoin, false]
+	[_si, _giJoin, _unitsToBuild] exec "Server\BuyUnit\AsyncFreeBuildingUnitsCount.sqs"
 
-
-	[_qid, _si] exec "\TZK_Scripts_4_0_4\Server\QIDCancelRemove.sqs"
 	[_qid, _si, 0] exec "Server\BuyUnit\sQueueRem.sqs"
 
 	goto "BuildingDestroyed"
@@ -209,6 +192,23 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 # BuildingDeleted
 	@ !mutexFacQueues
 		mutexFacQueues = true
-		_queues select _qi set [2, []]
+		_orders call preprocessFile "Algo\CirBuf\clear.sqf"
+		@ not (factoryCancelledQid select _si select _qi select 1)
+			(factoryCancelledQid select _si select _qi select 2) resize 0
+			factoryCancelledQid select _si select _qi set [1, false]
 		mutexFacQueues = false
 	exit
+
+# OnCancelling
+	_currentOrderCancelled = false
+	@ not (factoryCancelledQid select _si select _qi select 1)
+		factoryCancelledQid select _si select _qi set [1, true]
+		call preprocessFile "Server\BuyUnit\procCancelIds.sqf"
+		_cancelledQids resize 0
+		factoryCancelledQid select _si select _qi set [1, false]
+	
+	? not _currentOrderCancelled: goto "buildLoop"
+
+	[_si, _giBuyer, -_cost] exec localize {TZK_MONEY_SERVER_SPEND}
+	[_si, _giJoin, _unitsToBuild] exec "Server\BuyUnit\AsyncFreeBuildingUnitsCount.sqs"
+	goto "UnitCanceled"
