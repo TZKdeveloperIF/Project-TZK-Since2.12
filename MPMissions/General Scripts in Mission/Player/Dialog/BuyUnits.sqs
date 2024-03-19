@@ -27,8 +27,6 @@ _nameFactory = "Buy Units"
 nShow = 2
 _nShow = nShow
 
-_qPlayer = []
-
 ? (!_remote): _nameFactory = (structDefs select _typeFactory) select sdName
 
 _groups = groupMatrix select siPlayer
@@ -123,7 +121,7 @@ mutexDlg = false
 
 	_lastSelQID = -1
 	? (lbCurSel _idcQueue) < (lbSize _idcQueue) : _lastSelQID = lbValue [_idcQueue, lbCurSel _idcQueue]
-	? (count _qPlayer) != (count qPlayer) : _qPlayer = [_idcQueue, _lastSelQID] call loadFile "\TZK_Scripts_4_0_4\Player\Dialog\BuyUnits_Queue.sqf"
+	? qPplModified: qPplModified = false; [_idcQueue, _lastSelQID] call preprocessFile "Player\Dialog\BuyUnits_Queue.sqf"
 
 	#InitGroupList
 	_gis = ([_si] call funcGetAIGroupsIndex)
@@ -277,7 +275,7 @@ mutexDlg = false
 	goto "Update"
 	
 # Clear
-	? count _qPlayer <= 0: goto "Update"
+	? (qPplIds select 1) <= 0: goto "Update"
 	_value = giPlayer + GroupsNum * siPlayer
 	_value call preprocessFile "Server\BuyUnit\hClearBuy.sqf"
 	publicExec format [{%1 call preprocessFile "Server\BuyUnit\hClearBuy.sqf"}, _value]

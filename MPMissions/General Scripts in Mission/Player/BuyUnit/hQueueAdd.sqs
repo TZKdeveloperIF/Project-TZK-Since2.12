@@ -22,12 +22,17 @@ _si = _value
 ? _type >= maxUnitTypes : _unitName = format["cs%1", _type - maxUnitTypes]
 ? _type < maxUnitTypes : _unitName = (unitDefs select _type) select udName
 
+@ not qPplMutex
+	qPplMutex = true
 
-@!(mutexqPlayer)
-mutexqPlayer = true
-_i = 0
-_c = count qPlayer
-_found = false
-while "_i<_c && !_found" do { if (_id == ((qPlayer select _i) select 0)) then { _found = true }; _i=_i+1 }
-? !_found : qPlayer set [count qPlayer, [_id, _type]]; player groupchat format["Queued %1", _unitName]
-mutexqPlayer = false
+	_i = (qPplIds select 0) find _id
+	? _i != -1: goto "unlock"
+	; add element
+		_pushBack = preprocessFile "Algo\Vector\push_back.sqf"
+		[qPplIds, _id] call _pushBack
+		[qPplTypes, _type] call _pushBack
+		player groupchat format["Queued %1", _unitName]
+		qPplModified = true
+		qPplOpStat = qPplOpStat + 1
+	# unlock
+		qPplMutex = false
