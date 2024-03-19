@@ -23,7 +23,10 @@ vehiclesRearming = []
 shownAiGis = []; _i = 0
 {shownAiGis set [_i, _i], _i = _i + 1} forEach (groupMatrix select _si)
 
-qPlayer = []
+qPplIds = call preprocessFile "Algo\Vector\create.sqf"; 
+qPplTypes = call preprocessFile "Algo\Vector\create.sqf"
+qPplOpStat = 0; qPplModified = false; qPplMutex = false
+
 qLen = []; mutexqLen = false
 lastSelectedFactory = [ [], [] ]
 

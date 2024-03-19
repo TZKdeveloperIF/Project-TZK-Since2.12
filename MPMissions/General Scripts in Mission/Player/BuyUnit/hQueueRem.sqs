@@ -5,14 +5,16 @@ _si = _this select 1
 
 ? _si != siPlayer : exit
 
-@!(mutexqPlayer)
-mutexqPlayer = true
-_found = false
-_i = 0
-_c = count qPlayer
-while "_i<_c && !_found" do { if ( _qid == ((qPlayer select _i) select 0) ) then { qPlayer set [_i, -1]; _found = true }; _i=_i+1 }
+@ not qPplMutex
+	qPplMutex = true
 
-qPlayer = qPlayer - [-1]
-
-; player globalchat format["qPlayer = %1", qPlayer]
-mutexqPlayer = false
+	_data = qPplIds select 0
+	_i = _data find _qid
+	? -1 == _i: goto "unlock"
+	; remove element
+		_data set [_i, -1]
+		qPplModified = true
+		qPplOpStat = qPplOpStat - 1
+		? 0 == qPplOpStat: call preprocessFile "Player\BuyUnit\clearPplQueue.sqf"
+	# unlock
+		qPplMutex = false
