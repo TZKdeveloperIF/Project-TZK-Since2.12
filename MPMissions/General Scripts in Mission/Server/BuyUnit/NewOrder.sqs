@@ -73,8 +73,6 @@ call preprocessFile "Server\BuyUnit\Add2FactoryQueue.sqf"
 _unitsBuilding = (groupUnitsBuildingMatrix select _si select _giJoin) + _eachOrderUnitCnt * _orderNum
 groupUnitsBuildingMatrix select _si set [_giJoin, _unitsBuilding]
 
-[_factory, _si, _size + _orderNum + 1] exec "Server\BuyUnit\sQueueLen.sqs"
-
 # Unlock
 ; invalidated the order
 ? count _this > _idxOfOrderRef: if (count (_this select _idxOfOrderRef) == 0) then {_this set [_idxOfOrderRef, [-1]]}

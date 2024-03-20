@@ -64,6 +64,7 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 
 	? _cancelled: goto "UnitCanceled"
 
+	; queue length: total count of current order and to be built orders
 	[_factory, _si, (_orders call _getSize) + 1] exec "Server\BuyUnit\sQueueLen.sqs"
 
 	? _type >= maxUnitTypes: _unitDesc = unitDefs select (utCustom select _si)

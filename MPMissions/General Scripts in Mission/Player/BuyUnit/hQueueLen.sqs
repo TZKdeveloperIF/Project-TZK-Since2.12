@@ -8,11 +8,15 @@ _len = (_value - _si) / 10
 
 ? _si != siPlayer : exit
 
-@!(mutexqLen)
-mutexqLen = true
-_found = false
-_i = 0
-_c = count qLen
-while "_i<_c && !_found" do { if ( _obj == ((qLen select _i) select 0) ) then { (qLen select _i) set [1, _len]; _found = true }; _i=_i+1 }
-? !_found : qLen set [count qLen, [_obj, _len]]
-mutexqLen = false
+@ not mutexqLen
+	mutexqLen = true
+
+	_i = (qLenFactories select 0) find _obj
+	? -1 == _i: _i = (qLenFactories select 0) find objNull
+
+	? -1 == _i: _push_back = preprocessFile "Algo\Vector\push_back.sqf"
+	? -1 == _i: [qLenFactories, _obj] call _push_back; [qLenValues, _len] call _push_back
+
+	? -1 != _i: qLenFactories select 0 set [_i, _obj]; qLenValues select 0 set [_i, _len]
+
+	mutexqLen = false

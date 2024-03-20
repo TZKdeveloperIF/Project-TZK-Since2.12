@@ -15,6 +15,8 @@ _funcAvailableStruct = preprocessFile "Player\Dialog\BuyUnitsAvailFactories.sqf"
 _assultAircraftCache = typesGunshipOrigin + typesGunshipAT + typesKa50 + (typesBattlePlane - typesGunPlane)
 _transportAirCache = (airTransport select si0) + (airTransport select si1)
 
+_funcGetQueueLen = preprocessFile "Player\Dialog\BU_GetQueueLen.sqf"
+
 _unit = player
 _delay = 0.2
 
@@ -109,7 +111,7 @@ mutexDlg = false
 	? !_remote && !(alive _factory): goto "Quit"
 	? call dlgUpdated: goto "Quit"
 	
-	? !_remote : _qLen = _factory call funcGetQueueLength; if (_qLen > 0) then { ctrlSetText[_idcInUse, format["Q %1", _qLen] ] } else { ctrlSetText[_idcInUse, ""] }
+	? !_remote : _qLen = _factory call _funcGetQueueLen; ctrlSetText[_idcInUse, if (_qLen > 0) then {format ["Q %1", _qLen]} else {""}]
 	
 	_money = _groupsMoney select giPlayer
 	_text = format ["$%1", _money]
