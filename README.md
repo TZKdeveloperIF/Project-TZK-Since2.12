@@ -5,10 +5,19 @@ So you can't package the addon pbo from git repository at anytime but only on th
 I'll upload mission file to my google drive as well, but you can directly obtain mission scripts directly. Sometimes maybe I'll push instable commits but you can easily checkout to former few commits.  
 It's strongly recommended to use batch processing to copy files and make PBOs. The *MakePBO* of **Mikero Tools** is powerful. I use MakePBO 2.04 version.  
 1. "xcopy" all files from "General Mission Scripts" to each folders in "mission.sqm(and Extra folder)".  
-+ For extend version basing on TZK (like MFCTI mod, TZK_SE mod, etc), using batch processing to "xcopy" files from their external folders as well.
-
+    + For extend version basing on TZK (like MFCTI mod, TZK_SE mod, etc), using batch processing to "xcopy" files from their external folders as well.
+    + example: xcopy "<repository path>\MPMissions\mission.sqm(and Extra folder)" "<batch process path>\MPMissions" /E /Y /EXCLUDE:xcopyIgnore
+        + xcopyIgnore is a file that list files wish to be ignored in xcopy like .bat, .txt, .md, etc
 2. Package each folders in "mission.sqm(and Extra folder)" to PBO files.  
 In old version MPMissions some pictures like .paa or .JPG are placed in missions' folder. They aren't uploaded to github, and hence files won't be included in source codes and pictures won't display in YOUR missions, but the game is able to play without them. Since 2.12S MPMissions read pictures from MOD (I moved them out of the mission), and MPMissions folder on github include scripts only.
+    + example:
+        + For /f "delims=" %%i in ('dir /b /aD') do (xcopy "<repository path>\MPMissions\General Scripts in Mission" %%i /E /Y /EXCLUDE:xcopyIgnore)
+        + For /f "delims=" %%i in ('dir /b /aD *KaoS@mf*') do (xcopy "<repository path>\MPMissions\MOD kaoS@MF" %%i /E /Y)
+        + For /f "delims=" %%i in ('dir /b /aD *_Yugo_*') do (xcopy "<repository path>\MPMissions\MOD totalYugoWar" %%i /E /Y)
+        + For /f "delims=" %%i in ('dir /b /aD *TZK@SE*') do (xcopy "<repository path>\MPMissions\MOD TZK@SE" %%i /E /Y)
+        + For /f "delims=" %%i in ('dir /b /aD *@lester*') do (xcopy "<repository path>\MPMissions\MOD_TZK@Lester" %%i /E /Y)
+        + cd C:\Program Files (x86)\Mikero\DePboTools\bin
+        + For /f "delims=" %%i in ('dir /b /aD') do (makepbo -A -Z=default -N -P "<batch process path>\MPMissions"\%%i %%i.pbo)
 
 # About Project TZK
 The master branch of TZK MPMissions (not MOD) version is 1.00 -> 1.01 -> 1.02 -> 1.10 -> 2.00 -> 2.11 -> 2.12 -> 4.0.0 -> 4.0.3 -> 4.0.4 -> 4.0.5 -> 4.0.6 (latest).

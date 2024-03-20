@@ -1,0 +1,8 @@
+; args: [id, type]
+
+_id = _this select 0
+_type = _this select 1
+
+_value = _type + TotalUnitTypes * giPlayer + TotalUnitTypes * GroupsNum * siPlayer
+[_id, _value] exec "Server\BuyUnit\hCancelBuy.sqs"
+publicExec format [{%1 exec "Server\BuyUnit\hCancelBuy.sqs"}, [_id, _value]]
