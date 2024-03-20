@@ -1,0 +1,19 @@
+; args: si
+_si = _this
+
+_keys = executedOrderTimer select _si select 0
+_values = executedOrderTimer select _si select 1
+
+# loop
+	~ 5
+	
+	@ not (mutexEot select _si)
+		mutexEot set [_si, true]
+
+		call preprocessFile "Server\Loop\procFinishedOrder.sqf"
+		
+		mutexEot set [_si, false]
+
+	; gameover check
+	? pvGameOver != -1: exit
+	goto "loop"

@@ -27,6 +27,9 @@ _vehicle = [_type, _pos, _dir, _si, _gi, _giBuyer, _sendRepeats] call fAddVehicl
 
 _typeCrew = _desc select udCrew select 1
 _unitsToBuild = _driver + _gunner + _commander
+; nothing to do
+? 0 == _unitsToBuild: exit
+; process crews
 @ not (mutexBuildingQueue select _si select _gi)
 	mutexBuildingQueue select _si set [_gi, true]
 	_full = count units (groupMatrix select _si select _gi) + _unitsToBuild > maxGroupSize

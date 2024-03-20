@@ -15,7 +15,7 @@ _factories resize 0; lbClear _idcFactory;
 	{
 		_textPos = (getPos _x) call funcCalcTownDirDistFromPos;
 		_textQ = "";
-		_qLen = _x call funcGetQueueLength;
+		_qLen = _x call _funcGetQueueLen;
 		if (_qLen > 0) then {_textQ = format ["Q %1", _qLen]};
 		_lbFac = lbAdd [ _idcFactory, format ["%1 %2", _textPos, _textQ] ];
 		lbSetPicture [_idcFactory, _lbFac, (structDefs select _type select sdImage) select siPlayer];
