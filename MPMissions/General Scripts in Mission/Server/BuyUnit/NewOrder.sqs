@@ -73,6 +73,11 @@ call preprocessFile "Server\BuyUnit\Add2FactoryQueue.sqf"
 _unitsBuilding = (groupUnitsBuildingMatrix select _si select _giJoin) + _eachOrderUnitCnt * _orderNum
 groupUnitsBuildingMatrix select _si set [_giJoin, _unitsBuilding]
 
+; if factory is building, the queue length is building one and to be built ones
+; if factory isn't building, the queue length is just to be built ones, however this case won't last long
+; if factory is idle, the initial size is 0. otherwise in most cases the factory is building units
+[_factory, _si, (if (0 == _size) then {0} else {1}) + (_size + _orderNum)] exec "Server\BuyUnit\sQueueLen.sqs"
+
 # Unlock
 ; invalidated the order
 ? count _this > _idxOfOrderRef: if (count (_this select _idxOfOrderRef) == 0) then {_this set [_idxOfOrderRef, [-1]]}
