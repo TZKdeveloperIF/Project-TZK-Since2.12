@@ -16,6 +16,7 @@ _assultAircraftCache = typesGunshipOrigin + typesGunshipAT + typesKa50 + (typesB
 _transportAirCache = (airTransport select si0) + (airTransport select si1)
 
 _funcGetQueueLen = preprocessFile "Player\Dialog\BU_GetQueueLen.sqf"
+_initPplQueue = true
 
 _unit = player
 _delay = 0.2
@@ -123,7 +124,7 @@ mutexDlg = false
 
 	_lastSelQID = -1
 	? (lbCurSel _idcQueue) < (lbSize _idcQueue) : _lastSelQID = lbValue [_idcQueue, lbCurSel _idcQueue]
-	? qPplModified: qPplModified = false; [_idcQueue, _lastSelQID] call preprocessFile "Player\Dialog\BuyUnits_Queue.sqf"
+	? qPplModified || _initPplQueue: qPplModified = false; _initPplQueue = false; [_idcQueue, _lastSelQID] call preprocessFile "Player\Dialog\BuyUnits_Queue.sqf"
 
 	#InitGroupList
 	_gis = ([_si] call funcGetAIGroupsIndex)
