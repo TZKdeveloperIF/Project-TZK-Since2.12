@@ -19,9 +19,6 @@ _si = _value
 
 ? _si != siPlayer || (_giBuyer != giPlayer && _giJoin != giPlayer) : exit
 
-? _type >= maxUnitTypes : _unitName = format["cs%1", _type - maxUnitTypes]
-? _type < maxUnitTypes : _unitName = (unitDefs select _type) select udName
-
 @ not qPplMutex
 	qPplMutex = true
 
@@ -31,7 +28,12 @@ _si = _value
 		_pushBack = preprocessFile "Algo\Vector\push_back.sqf"
 		[qPplIds, _id] call _pushBack
 		[qPplTypes, _type] call _pushBack
-		player groupchat format["Queued %1", _unitName]
+
+		; delta time threshold is hard coded: 0.1s
+		_t = time; _d = _t - qPplAddTime
+		? _d < 0.1: qPplTypePool set [count qPplTypePool, _type]
+		? _d >= 0.1: call preprocessFile "Player\BuyUnit\SetQueueAddTimer.sqf"
+
 		qPplModified = true
 		qPplOpStat = qPplOpStat + 1
 	# unlock
