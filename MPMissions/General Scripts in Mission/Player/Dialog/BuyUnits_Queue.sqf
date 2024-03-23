@@ -5,6 +5,9 @@ private [{_idcQueue}, {_lastSelQID}, {_qids}, {_types}, {_i}, {_size}, {_qid}, {
 _idcQueue = _this select 0;
 _lastSelQID = _this select 1;
 
+private [{_lastSelIdx}, {_lastSelFound}];
+_lastSelIdx = lbCurSel _idcQueue; _lastSelFound = false;
+
 lbClear _idcQueue;
 lbSetCurSel [_idcQueue, -1];
 
@@ -22,7 +25,9 @@ _i = 0; _size = qPplIds select 1; while {_i < _size} do {
 		_lbId = lbAdd [_idcQueue, _name];
 		if (_type < maxUnitTypes) then {lbSetPicture [_idcQueue, _lbId, unitDefs select _type select udImage]};
 		lbSetValue [_idcQueue, _lbId, _qid];
-		if (_lastSelQID == _qid) then {lbSetCurSel [_idcQueue, _lbId]};
+		if (_lastSelQID == _qid) then {lbSetCurSel [_idcQueue, _lbId]; _lastSelFound = true};
 	};
 	_i = _i + 1;
 };
+
+if (not _lastSelFound && _lastSelIdx != -1) then {lbSetCurSel [_idcQueue, _lastSelIdx]};
