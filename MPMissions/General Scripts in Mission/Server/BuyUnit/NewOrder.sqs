@@ -59,8 +59,9 @@ while {_i < _c && !_found} do {if (_queues select _i select 0 == _factory) then 
 
 _qid = qidNext select _si
 qidNext set [_si, _qid + _orderNum]
-; todo: is it possible to send many info in same message?
-_i = 0; while {_i < _orderNum} do {[_type, _si, _giBuyer, _giJoin, _qid + _i] exec "Server\BuyUnit\sQueueAdd.sqs"; _i = _i + 1}
+
+[_type, _si, _giBuyer, _giJoin, _qid, _orderNum] exec "Server\BuyUnit\sQueueAdd.sqs"
+
 _size = _orders call preprocessFile "Algo\CirBuf\size.sqf"
 ? _size != 1: goto "AddQueue"
 	@ !mutexbuildingInUse
