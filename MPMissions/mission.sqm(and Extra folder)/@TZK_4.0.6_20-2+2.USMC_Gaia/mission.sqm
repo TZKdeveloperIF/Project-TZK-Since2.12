@@ -1,0 +1,384 @@
+version=11;
+#include "TZK_Scripts_4_0_6\mission.h"
+class Mission
+{
+	addOns[]=
+	{
+		TZK_BIS_AddOns
+		TZK_Basic_406_AddOns
+		TZK_CONFIG_406_AddOns
+		"TZK_CONFIG_406_Patch",
+		"TZK_CONFIG_406_Patch2",
+		"TZK_CONFIG_406_Patch3",
+		"usmc_gaia"
+	};
+	addOnsAuto[]=
+	{
+		TZK_CONFIG_406_AddOns
+		"TZK_CONFIG_406_Patch",
+		"TZK_CONFIG_406_Patch2",
+		"TZK_CONFIG_406_Patch3",
+	};
+	randomSeed=42499;
+	class Intel
+	{
+		briefingName="@STR_MISSION_NAME";
+		briefingDescription="$STR_MISSION_BREF_DESC";
+		resistanceWest=0.000000;
+		startWeather=0.000000;
+		forecastWeather=0.000000;
+		month=9;
+		day=22;
+		hour=8;
+		minute=0;
+	};
+	class Groups
+	{
+		items=156;
+		class Item0
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={-1000.000000,0.000000,2000.000000};
+					id=0;
+					side="GUER";
+					vehicle="SoldierGB";
+					leader=1;
+					skill=0.200000;
+					text="resistance_Center";
+					init="gameEndType = -1; towns=[]; [167792,167793,167794,167795,167796,167797] exec ""\TZK_Scripts_4_0_4\Server\InitRepairableObjects.sqs""; [] exec ""\TZK_Scripts_4_0_4\Server\InitDestroyIslandObject.sqs""";
+				};
+			};
+		};
+
+		TZK_Mission_Grp_Playable_201("CommanderW_Info_5HP_xj400", "CommanderE_Info_5HP_xj400", "LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		
+		TZK_Mission_Group_Playable(37,CIV, 0,0,3370, 37, "Civilian", "this allowdammage false; Spec0=this")
+		TZK_Mission_Group_Playable(38,CIV, 0,0,3380, 38, "Civilian", "this allowdammage false; Spec1=this")
+		TZK_Mission_Group_Playable(39,CIV, 0,0,3390, 39, "Civilian", "this allowdammage false; Spec2=this")
+		TZK_Mission_Group_Playable(40,CIV, 0,0,3400, 40, "Civilian", "this allowdammage false; Spec3=this")
+		TZK_Mission_Group_Playable(41,CIV, 0,0,3410, 41, "Civilian", "this allowdammage false; Spec4=this")
+		TZK_Mission_Group_Playable(42,CIV, 0,0,3420, 42, "Civilian", "this allowdammage false; Spec5=this")
+		TZK_Mission_Group_Playable(43,CIV, 0,0,3430, 43, "Civilian", "this allowdammage false; Spec6=this")
+		TZK_Mission_Group_Playable(44,CIV, 0,0,3440, 44, "Civilian", "this allowdammage false; Spec7=this")
+		TZK_Mission_Group_Playable(45,CIV, 0,0,3450, 45, "Civilian", "this allowdammage false; Spec8=this")
+		TZK_Mission_Group_Playable(46,CIV, 0,0,3460, 46, "Civilian", "this allowdammage false; Spec9=this")
+		
+		TZK_Mission_Grp_Functional_201("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_TownGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_PatrolGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_WorkerGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_FunctionalGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		class Item154
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={599.140442,41.888847,4981.341797};
+					special="NONE";
+					id=144;
+					side="LOGIC";
+					vehicle="Logic";
+					leader=1;
+					skill=0.600000;
+					text="FixStart_0";
+				};
+			};
+		};
+		class Item155
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={11898.528320,14.054601,6920.491699};
+					special="NONE";
+					id=145;
+					side="LOGIC";
+					vehicle="Logic";
+					leader=1;
+					skill=0.600000;
+					text="FixStart_1";
+				};
+			};
+		};
+	};
+	class Vehicles
+	{
+		items=20;
+		class Item0
+		{
+			position[]={12275.538086,2.520000,3343.050049};
+			special="NONE";
+			id=200;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Los Mingus"",500,2]]";
+		};
+		class Item1
+		{
+			position[]={6026.039063,84.014999,3266.888184};
+			special="NONE";
+			id=201;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""D.B. Complex"",500,2]]";
+		};
+		class Item2
+		{
+			position[]={10523.320313,44.999996,11166.658203};
+			special="NONE";
+			id=202;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Camp Coles"",500,2]]";
+		};
+		class Item3
+		{
+			position[]={9365.520508,49.004997,8284.416992};
+			special="NONE";
+			id=203;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Andrus"",500,2]]";
+		};
+		class Item4
+		{
+			position[]={10668.291992,67.004997,5368.989746};
+			special="NONE";
+			id=204;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""John"",500,2]]";
+		};
+		class Item5
+		{
+			position[]={394.106567,33.179253,7628.216309};
+			special="NONE";
+			id=205;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Lakotaville"",500,2]]";
+		};
+		class Item6
+		{
+			position[]={3126.309570,67.066925,3029.760498};
+			special="NONE";
+			id=206;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Trujillo"",500,2]]";
+		};
+		class Item7
+		{
+			position[]={603.211670,49.994999,1934.050415};
+			special="NONE";
+			id=207;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""FRAP John"",500,2]]";
+		};
+		class Item8
+		{
+			position[]={10015.923828,56.788269,1028.233765};
+			special="NONE";
+			id=208;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Goss"",500,2]]";
+		};
+		class Item9
+		{
+			position[]={1086.315063,5.985000,12101.791992};
+			special="NONE";
+			id=209;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Belander"",500,2]]";
+		};
+		class Item10
+		{
+			position[]={3681.074951,77.984993,9540.116211};
+			special="NONE";
+			id=210
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""MCAS Remraf"",500,2]]";
+		};
+		class Item11
+		{
+			position[]={6545.335449,75.380920,6510.657227};
+			special="NONE";
+			id=211
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Northbrook"",-500,2]]";
+		};
+		class Item12
+		{
+			position[]={5247.286621,85.004997,7343.244629};
+			special="NONE";
+			id=212
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Kamai City"",1000,2]]";
+		};
+		class Item13
+		{
+			position[]={8435.917969,61.019997,2690.607910};
+			special="NONE";
+			id=213
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Heaf Estates"",500,2]]";
+		};
+		class Item14
+		{
+			position[]={2066.134521,67.994995,6869.656250};
+			special="NONE";
+			id=214
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Camp Exorcist"",500,2]]";
+		};
+		class Item15
+		{
+			position[]={6548.174805,76.994995,7803.911133};
+			special="NONE";
+			id=215
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Myers"",1000,2]]";
+		};
+		class Item16
+		{
+			position[]={5442.405762,72.953194,8859.251953};
+			special="NONE";
+			id=216
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Birkitt International"",-500,2]]";
+		};
+		class Item17
+		{
+			position[]={11746.910156,19.980000,8713.546875};
+			special="NONE";
+			id=217
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Zulu Flats"",500,2]]";
+		};
+		class Item18
+		{
+			position[]={5802.317871,59.984997,11634.223633};
+			special="NONE";
+			id=218
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Bennett"",500,2]]";
+		};
+		class Item19
+		{
+			position[]={2406.569580,53.009998,753.036987};
+			special="NONE";
+			id=219
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Camp Immune"",500,2]]";
+		};
+	};
+	class Markers
+	{
+		items=4;
+		class Item0
+		{
+			position[]={6546.098145,76.855171,7976.687500};
+			name="MarkerTownName";
+			text="$1000";
+			type="Flag";
+			colorName="ColorGreen";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item1
+		{
+			position[]={5216.645508,130.104996,7425.888184};
+			name="MarkerTownName";
+			text="kamai $1000";
+			type="Flag";
+			colorName="ColorGreen";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item2
+		{
+			position[]={6546.107422,75.714577,6562.334961};
+			name="MarkerTownName";
+			text="northbrook -$500";
+			type="Flag";
+			colorName="ColorRed";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item3
+		{
+			position[]={5446.058105,83.623398,8966.006836};
+			name="MarkerTownName";
+			text="birkitt -$500";
+			type="Flag";
+			colorName="ColorRed";
+			a=0.000000;
+			b=0.000000;
+		};
+	};
+};
+class Intro
+{
+	randomSeed=8166403;
+	class Intel
+	{
+	};
+};
+class OutroWin
+{
+	randomSeed=5538307;
+	class Intel
+	{
+	};
+};
+class OutroLoose
+{
+	randomSeed=2739203;
+	class Intel
+	{
+	};
+};
