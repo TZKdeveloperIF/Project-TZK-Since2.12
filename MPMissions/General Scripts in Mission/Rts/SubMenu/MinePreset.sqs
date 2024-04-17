@@ -17,8 +17,8 @@ _enum = _markerType call preprocessFile "Rts\Marker\EnumOfType.sqf"
 _cnt = count (TzkPplRtsAreaInfo select _enum)
 _updateList = preprocessFile "Rts\SubMenu\UpdateAreaListbox.sqf"
 
-ctrlSetText [_idcTitle, "Area Mine Order"]
-ctrlSetText [_idcListLabel, "Areas"]
+ctrlSetText [_idcTitle, format ["%1 %2 %3", localize {TZK_LANG_AREA}, localize {TZK_LANG_MINE}, localize {TZK_LANG_ORDER}]]
+ctrlSetText [_idcListLabel, localize {TZK_LANG_AREA}]
 
 [_idcListBox0, _markerType, _webShort, _cnt] call _updateList
 ? -1 != (call _cachedIdxName): lbSetCurSel [_idcListBox0, (call _cachedIdxName)]

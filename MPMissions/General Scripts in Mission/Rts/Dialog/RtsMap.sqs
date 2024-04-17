@@ -28,27 +28,27 @@ if (1 == _level) then {_btnVal = TzkSelLv1Btn}; if (2 == _level) then {_btnVal =
 
 btnValue00 = -1; btnValue01 = 0; btnValue02 = 0; btnValue03 = 0
 btnFirstCtrl = false
-ctrlSetText [IDC + 16 * 32 + 2, "Area"]
+ctrlSetText [IDC + 16 * 32 + 2, localize {TZK_LANG_AREA}]
 btnFunction = 0
 
 ; left board
 ; { ctrlShow [_x, false] } forEach []
-ctrlSetText [_idcLeftBtn0, "Move"]
-ctrlSetText [_idcLeftBtn0 + 1, "Clear Rts Order"]
-ctrlSetText [_idcLeftBtn0 + 13, "Stop"]
+ctrlSetText [_idcLeftBtn0, localize {TZK_LANG_MOVE}]
+ctrlSetText [_idcLeftBtn0 + 1, format ["%1 RTS %2", localize {TZK_LANG_CLEAR}, localize {TZK_LANG_ORDER}]]
+ctrlSetText [_idcLeftBtn0 + 13, localize {TZK_LANG_STOP}]
 
-ctrlSetText [_idcLeftBtn0 + 2, "Shoot Area"]
-ctrlSetText [_idcLeftBtn0 + 3, "Move and Shoot"]
-ctrlSetText [_idcLeftBtn0 + 4, "Board"]
-ctrlSetText [_idcLeftBtn0 + 5, "Occupy"]
-ctrlSetText [_idcLeftBtn0 + 6, "Land"]
-ctrlSetText [_idcLeftBtn0 + 7, "Reclaim"]
+ctrlSetText [_idcLeftBtn0 + 2, localize {TZK_LANG_SHOOT} + " " + localize {TZK_LANG_AREA}]
+ctrlSetText [_idcLeftBtn0 + 3, format ["%1 %2 %3", localize {TZK_LANG_MOVE}, localize {TZK_LANG_AND}, localize {TZK_LANG_SHOOT}]]
+ctrlSetText [_idcLeftBtn0 + 4, localize {TZK_LANG_BOARD}]
+ctrlSetText [_idcLeftBtn0 + 5, localize {TZK_LANG_OCCUPY}]
+ctrlSetText [_idcLeftBtn0 + 6, localize {TZK_LANG_LAND}]
+ctrlSetText [_idcLeftBtn0 + 7, localize {TZK_LANG_RECLAIM}]
 
-ctrlSetText [_idcLeftBtn0 + 8, "Mine Area"]
-ctrlSetText [_idcLeftBtn0 + 9, "Disable Mine"]
+ctrlSetText [_idcLeftBtn0 + 8, format ["%1 %2", localize {TZK_LANG_MINE}, localize {TZK_LANG_AREA}]]
+ctrlSetText [_idcLeftBtn0 + 9, format ["%1 %2", localize {TZK_LANG_DISABLE}, localize {TZK_LANG_MINE}]]
 
-ctrlSetText [_idcLeftBtn0 + 10, "Repair"]
-ctrlSetText [_idcLeftBtn0 + 11, "Rearm"]
+ctrlSetText [_idcLeftBtn0 + 10, localize {TZK_LANG_REPAIR}]
+ctrlSetText [_idcLeftBtn0 + 11, localize {TZK_LANG_REARM}]
 
 ; down board
 _downBoardStack = []
