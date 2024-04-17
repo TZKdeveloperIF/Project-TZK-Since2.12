@@ -22,7 +22,7 @@ if (_enum != _curDlgEnum) then {
 };
 // area
 _enum = 1;
-ctrlSetText [_idcBtn + _enum, "AREA"];
+ctrlSetText [_idcBtn + _enum, localize {TZK_LANG_AREA}];
 if (_enum != _curDlgEnum) then {
 	// area
 	if (TzkMapAreaCreated) then {
@@ -44,7 +44,7 @@ if (_enum != _curDlgEnum) then {
 
 // player group units
 _enum = 3;
-ctrlSetText [_idcBtn + _enum, "Order"];
+ctrlSetText [_idcBtn + _enum, localize {TZK_LANG_ORDER}];
 if (_enum != _curDlgEnum) then {
 	if (count _units > 0) then {
 		ctrlShow [_idcBtn + _enum, true];
@@ -56,7 +56,7 @@ if (_enum != _curDlgEnum) then {
 
 // point
 _enum = 4;
-ctrlSetText [_idcBtn + _enum, "POINT"];
+ctrlSetText [_idcBtn + _enum, localize {TZK_LANG_POINT}];
 if (_enum != _curDlgEnum) then {
 	// always available
 	ctrlShow [_idcBtn + _enum, true];
