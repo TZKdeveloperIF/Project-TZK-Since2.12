@@ -15,7 +15,7 @@ _gi = (groupMatrix select _si) find group _unit
 
 _et = etMine
 ? "MineAPE" == _mag: _et = etMineAPE
-? magSatchel == _mag: _et = etSatchel
+; ? magSatchel == _mag: _et = etSatchel
 _cost = equipDefs select _et select edcost
 _money = groupMoneyMatrix select _si select _gi
 ? _cost > _money: _shooter groupChat "Insufficient fonds."; exit
@@ -24,7 +24,6 @@ _pos = getPosASL _shooter
 _pos set [2, 0]
 _mine = createShell [_mag, _pos, [0,0,0], _unit, objNull]
 ? !bool_TZK_199_Mode: _mine setVectorUp VectorUp _shooter
-? magSatchel == _mag && !isNull player: Array_TZK_PlayerC4 set [count Array_TZK_PlayerC4, _mine]
 
 ? _cost <= 0: exit
 

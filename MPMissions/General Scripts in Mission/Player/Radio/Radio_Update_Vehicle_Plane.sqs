@@ -2,17 +2,14 @@
 _vehicle = _this select 0
 
 
-_booleStringSpoofON = "bSpoofMissile && ""_x=={SpoofSwitch_xj400}"" count magazines _vehicle > 0"; _booleSpoofON = call _booleStringSpoofON
-_booleStringSpoofOFF = """_x=={SpoofSwitch_xj400}"" count magazines _vehicle == 0 && count magazines _vehicle > 0"; _booleSpoofOFF = call _booleStringSpoofOFF
+; Remove spoof supporting to plane. This commit is in 4.0.6.74 version but ban spoof on plane is realized in 4.0.6 mod
+; There're no "SpoofCount_xj400" magazine equipped for plane. Those "spoof" user actions should be remove in future.
 
 call preprocessFile "Player\Radio\Channel001_RtsMapMode.sqf";
 
 Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", {[] exec localize {TZK_DIALOG_TZK_SETTING_1}}, ""];
 Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""];
 Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""];
-
-if (_booleSpoofON) then {Radio005 setTriggerText "SpoofMissile ON"; Radio005 setTriggerStatements ["this", {vehicle player removeMagazines {SpoofSwitch_xj400}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true}}, ""]};
-if (_booleSpoofOFF) then {Radio005 setTriggerText "SpoofMissile OFF"; Radio005 setTriggerStatements ["this", {vehicle player addMagazine {SpoofSwitch_xj400}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true}}, ""]};
 
 Radio006 setTriggerText "Get Plane Status"; Radio006 setTriggerStatements ["this", {[vehicle player, player] exec "\TZK_Scripts_4_0_4\Player\Action\PlaneFlyingStatus.sqs"}, ""];
 Radio007 setTriggerText " "; Radio007 setTriggerStatements ["this", "", ""];
@@ -30,9 +27,6 @@ if (_booleABOFF) then {Radio000 setTriggerText "AfterBurner OFF"; Radio000 setTr
 #Refresh
 ~0.05
 ; In OFP/Arma can't compare booleans directly. Use (A && !B) || (!A && B) here, and use !_boolean to refresh.
-
-? call _booleStringSpoofON : Radio005 setTriggerText "SpoofMissile ON"; Radio005 setTriggerStatements ["this", {vehicle player removeMagazines {SpoofSwitch_xj400}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true}}, ""]
-? call _booleStringSpoofOFF : Radio005 setTriggerText "SpoofMissile OFF"; Radio005 setTriggerStatements ["this", {vehicle player addMagazine {SpoofSwitch_xj400}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true}}, ""]
 
 ? call _booleStringAfterBurnerON : Radio000 setTriggerText "AfterBurner ON"; Radio000 setTriggerStatements ["this", {vehicle player removeMagazines {AfterBurnerSwitch_xj400}; vehicle player exec localize {TZK_EFFECT_AFTER_BURNER}; if !(boole_Refresh_Radio) then "boole_Refresh_Radio = true"}, ""]
 ? call _booleStringAfterBurnerOFF : Radio000 setTriggerText "AfterBurner OFF"; Radio000 setTriggerStatements ["this", {vehicle player addMagazine {AfterBurnerSwitch_xj400}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true} }, ""]
