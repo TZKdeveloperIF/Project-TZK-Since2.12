@@ -19,7 +19,7 @@ if (mhqNearby) then {	Radio004 setTriggerText "MHQ Build Menu"; Radio004 setTrig
 
 if (SupNearby) then {	Radio005 setTriggerText "Sup Build Menu"; Radio005 setTriggerStatements ["this", {if (SupNearby) then {[-1,50] exec "Player\Dialog\BuildMenu.sqs"} else {hint {Sup too far away.}}}, ""];	} else {	Radio005 setTriggerText " "; Radio005 setTriggerStatements ["this", "", ""];	};
 
-Radio006 setTriggerText "Manage C4"; Radio006 setTriggerStatements ["this", {player exec "Player\Radio\RadioList_Soldier_ManagePlayerC4.sqs"}, ""];
+Radio006 setTriggerText " "; Radio006 setTriggerStatements ["this", "", ""];
 Radio007 setTriggerText "Buy Better NVG"; Radio007 setTriggerStatements ["this", {[player] call loadFile "Player\Radio\RadioList_Soldier_RearmNVG.sqf"}, ""];
 Radio008 setTriggerText "Rearm AA"; Radio008 setTriggerStatements ["this", {[player] call loadFile "Player\Radio\RadioList_Soldier_RearmAA.sqf"}, ""];
 Radio009 setTriggerText _rearmAT; Radio009 setTriggerStatements ["this", {[player] call loadFile "Player\Radio\RadioList_Soldier_RearmAT.sqf"}, ""];
