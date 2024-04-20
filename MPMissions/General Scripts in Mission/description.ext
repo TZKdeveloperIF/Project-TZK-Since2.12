@@ -1986,6 +1986,7 @@ class OptionsDialog2: OptionsDialog
 		Console, 
 		ShowsGroupsDialog, 
 		CommandTemporary, 
+		Query,
 	};
 	class UpgCancel: Upgrade {
 		x = 0.79;
@@ -2019,6 +2020,14 @@ class OptionsDialog2: OptionsDialog
 		text = "Console";
 		action = "closeDialog 0; 0 exec localize {TZK_DIALOG_CONSOLE}";
 		sizeEx = 0.023;
+	};
+	class Query: Button {
+		idc = IDC + 101;
+		x = 0.025;
+		y = 0.05;
+		w = 0.15;
+		text = "Query";
+		action = "closeDialog 0; 0 exec localize {TZK_DIALOG_QUERY}";
 	};
 };
 
@@ -2989,6 +2998,90 @@ class CommandAIDialog2: CommandAIDialog {
 		h = 0.03
 		text = "Concurrent Order"
 		action = "btnTemporaryOrder = true"
+	};
+};
+
+class TzkQueryDialog {
+	idd = -1;
+	movingEnable = true;
+	controlsBackground[] = {
+		Sub_BG_Light, 
+		Frame_0_Base, 
+		Frame_Introduction, BackGround_Introduction,
+	};
+	class Sub_BG_Light: TZK_BackGround_0 {
+		idc = IDC_DialogBG_Light;
+		style = ST_HUD_BACKGROUND;
+		colorText[] = {0.75,0.75,0.75,1};
+		colorBackground[] = {0.4,0.4,0.4,1.0};
+		x = 0.1;
+		y = 0.1;
+		w = 0.85;
+		h = 0.75;
+	};
+	class Frame_0_Base: TZK_Frame_0 {
+		idc = IDC + 10;
+		colorText[] = {1, 1, 1, 0.7};
+		text = "  Query";
+		x = 0.1;
+		y = 0.082;	//0.018 less for sizeEx 0.030
+		w = 0.85;
+		h = 0.768;
+	};
+	class BackGround_Introduction: TZK_BackGround_1 {
+		colorBackground[] = COLOR_TZK_MENU_BG_2;
+		text = "";
+		x = 0.12;
+		y = 0.14;
+		w = 0.76;
+		h = 0.14;
+	};
+	class Frame_Introduction: TZK_Frame_1 {
+		idc = IDC + 11;
+		colorText[] = {0, 0, 0, 0.9};
+		text = "  Introduction";
+		x = 0.12;
+		y = 0.13;
+		w = 0.76;
+		h = 0.15;
+	};
+
+	objects[] = {};
+	controls[] = {
+		Exit, 
+		Introduction,
+		Btn_L_00,
+	};
+	class Exit: RscButton1 {
+		x = 0.90;
+		y = 0.1;
+		w = 0.05;
+		h = 0.03;
+		colorText[] = {0.9,0.7,0.5,1.0};
+		text = "Exit";
+		action = "closeDialog 0";
+	};
+	class Introduction: TextField {
+		idc = IDC + 1;
+		// style = ST_LEFT+ST_MULTI;
+		x = 0.14;
+		y = 0.16;
+		w = 0.72;
+		h = 0.12;
+		colorText[] = {1,1,1,1};
+		colorBackground[] = {0,0,0,0};
+		sizeEx = 0.022;
+	};
+
+	class Btn_L_00: RscButton1 {
+		idc = IDC + 100;
+		x = 0.14;
+		y = 0.35 + 0.05 * 0;
+		w = 0.2;
+		h = 0.04;
+		text = "";
+		action = "btnValue00 = 0";
+		sizeEx = 0.025;
 	};
 };
 
