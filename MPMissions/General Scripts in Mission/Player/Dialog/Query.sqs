@@ -1,0 +1,29 @@
+; args: none
+
+; delay to wait dialog closed
+~ 0.1
+
+@ not mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "TzkQueryDialog"
+mutexDlg = false
+
+_idcIntroduction = IDC + 1
+ctrlSetText [_idcIntroduction, "This dialog is for query data from server. Bug occurs sometime in CTI and this dialog provides few buttons to fetch correct data from server again or request for data correction."]
+
+_idcBtnLeft = IDC + 100
+ctrlSetText [_idcBtnLeft + 0, "Group Units Check"]
+
+btnValue00 = -1
+
+# Update
+	~ 0.2
+	? call dlgUpdated: exit
+	? not alive player: exit
+
+	? btnValue00 >= 0: _val = btnValue00, btnValue00 = -1; goto "OnClicked"
+
+	goto "Update"
+# OnClicked
+	? 0 == _val: call preprocessFile "Join\GenPplQueryRequest.sqf"; closeDialog 0, exit
+	goto "Update"
