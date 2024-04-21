@@ -25,13 +25,13 @@ _idcDownBtn0 = IDC + 16 * 17 + 0
 
 btnValue00 = -1; btnValue01 = 0; btnValue03 = 0
 btnFirstCtrl = false
-ctrlSetText [IDC + 16 * 32 + 2, "Waypoint"]
+ctrlSetText [IDC + 16 * 32 + 2, localize {TZK_LANG_WAYPOINT}]
 btnFunction = 0
 
 { ctrlShow [_x, false] } forEach [_idcLeftBtn0]
-? isCommander || bIsAiSuperior: ctrlSetText [_idcLeftBtn0, "Wall MHQ"]; ctrlShow [_idcLeftBtn0, true]
-ctrlSetText [_idcLeftBtn0 + 1, "Surrender"]; ctrlShow [_idcLeftBtn0 + 1, isCommander]
-ctrlSetText [_idcLeftBtn0 + 2, "Base Mortar"]; ctrlShow [_idcLeftBtn0 + 2, isCommander]
+? isCommander || bIsAiSuperior: ctrlSetText [_idcLeftBtn0, format ["%1 MHQ", localize {TZK_LANG_WALL}]]; ctrlShow [_idcLeftBtn0, true]
+ctrlSetText [_idcLeftBtn0 + 1, localize {TZK_LANG_SURRENDER}]; ctrlShow [_idcLeftBtn0 + 1, isCommander]
+ctrlSetText [_idcLeftBtn0 + 2, format ["%1 %2", localize {TZK_LANG_BASE}, localize {TZK_LANG_MORTAR}]]; ctrlShow [_idcLeftBtn0 + 2, isCommander]
 
 ; down board
 _downBoardStack = []

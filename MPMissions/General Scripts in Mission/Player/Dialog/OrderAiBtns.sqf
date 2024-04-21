@@ -1,30 +1,30 @@
 // args: none
 
 // Left buttons
-ctrlSetText [_idcLeftBtn0 + 0, "Move"];
-ctrlSetText [_idcLeftBtn0 + 1, "Clear Order"];
-ctrlSetText [_idcLeftBtn0 + 13, "Stop"];
+ctrlSetText [_idcLeftBtn0 + 0, localize {TZK_LANG_MOVE}];
+ctrlSetText [_idcLeftBtn0 + 1, format ["%1 %2", localize {TZK_LANG_CLEAR}, localize {TZK_LANG_ORDER}]];
+ctrlSetText [_idcLeftBtn0 + 13, localize {TZK_LANG_STOP}];
 
-ctrlSetText [_idcLeftBtn0 + 2, "Shoot Area"];
+ctrlSetText [_idcLeftBtn0 + 2, localize {TZK_LANG_SHOOT} + " " + localize {TZK_LANG_AREA}];
 // 3
-ctrlSetText [_idcLeftBtn0 + 4, "Switch Magazine"];
-ctrlSetText [_idcLeftBtn0 + 5, "Buy Equipment"];
-ctrlSetText [_idcLeftBtn0 + 6, "Switch Seat"];
-ctrlSetText [_idcLeftBtn0 + 7, "Join"];
-ctrlSetText [_idcLeftBtn0 + 8, "CrossBridge"];
-ctrlSetText [_idcLeftBtn0 + 9, "Move Land"];
-ctrlSetText [_idcLeftBtn0 + 10, "Move Ship"];
-ctrlSetText [_idcLeftBtn0 + 11, "DisableMine"];
-ctrlSetText [_idcLeftBtn0 + 12, "Mine Area"];
+ctrlSetText [_idcLeftBtn0 + 4, format ["%1 %2", localize {TZK_LANG_SWITCH}, localize {TZK_LANG_MAGAZINE}]];
+ctrlSetText [_idcLeftBtn0 + 5, format ["%1 %2", localize {TZK_LANG_BUY}, localize {TZK_LANG_EQUIPMENT}]];
+ctrlSetText [_idcLeftBtn0 + 6, format ["%1 %2", localize {TZK_LANG_SWITCH}, localize {TZK_LANG_SEAT}]];
+ctrlSetText [_idcLeftBtn0 + 7, localize {TZK_LANG_JOIN}];
+ctrlSetText [_idcLeftBtn0 + 8, format ["%1%2", localize {TZK_LANG_CROSS}, localize {TZK_LANG_BRIDGE}]];
+ctrlSetText [_idcLeftBtn0 + 9, format ["%1 %2", localize {TZK_LANG_MOVE}, localize {TZK_LANG_LAND}]];
+ctrlSetText [_idcLeftBtn0 + 10, format ["%1 %2", localize {TZK_LANG_MOVE}, localize {TZK_LANG_SHIP}]];
+ctrlSetText [_idcLeftBtn0 + 11, format ["%1%2", localize {TZK_LANG_DISABLE}, localize {TZK_LANG_MINE}]];
+ctrlSetText [_idcLeftBtn0 + 12, format ["%1 %2", localize {TZK_LANG_MINE}, localize {TZK_LANG_AREA}]];
 // 13
 
 // Middle buttons
-ctrlSetText [_idcMidBtn0 + 0, "Heal & (Rearm)"];
-ctrlSetText [_idcMidBtn0 + 1, "Rearm & Heal"];
-ctrlSetText [_idcMidBtn0 + 2, "Board..."];
+ctrlSetText [_idcMidBtn0 + 0, format ["%1 (& %2)", localize {TZK_LANG_HEAL}, localize {TZK_LANG_REARM}]];
+ctrlSetText [_idcMidBtn0 + 1, format ["%1 & %2", localize {TZK_LANG_REARM}, localize {TZK_LANG_HEAL}]];
+ctrlSetText [_idcMidBtn0 + 2, format ["%1...", localize {TZK_LANG_BOARD}]];
 // 3
-ctrlSetText [_idcMidBtn0 + 4, "Clear Order"];
-ctrlSetText [_idcMidBtn0 + 5, "Disband"];
+ctrlSetText [_idcMidBtn0 + 4, format ["%1 %2", localize {TZK_LANG_CLEAR}, localize {TZK_LANG_ORDER}]];
+ctrlSetText [_idcMidBtn0 + 5, localize {TZK_LANG_DISBAND}];
 
 if (bool_TZK_CHN_inited && bool_TZK_CHN_Lang) then {
 	{ctrlSetText [_idcMidBtn0 + _x, ""]} forEach [0,1,2,4,5];
