@@ -10,7 +10,7 @@ _target = _this select 0; _missile = _this select 1; _shooter = _this select 2
 ; ? !isengineon _target: goto "Quit"
 
 ; Can't spoof if out of SpoofMags
-? "_x=={SpoofCount_xj400}" count magazines _target == 0 : goto "Quit"
+? "_x=={SpoofCount_xj400}" count magazines _target == 0: hint "No spoof count left."; goto "Quit"
 
 ; Wait till the missile is close
 _timeAbort = time + 10
