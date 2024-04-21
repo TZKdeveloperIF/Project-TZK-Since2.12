@@ -87,6 +87,7 @@ _counter = 0
 			_vehicle setPosASL _correctedPos
 		# VectorAdjusted
 		_vehicle setVelocity _diff
+		; if "_vehicle" is soldier, setVelocity won't work. Use set pos directly instead
 	~ 0.2
 		_vehicle doWatch _dest
 
