@@ -40,7 +40,7 @@ if (not _processed && 1 == count _downBoardStack) then {
 	};
 	if (not _processed && 6 == _downBoardStack select 0) then {
 		ctrlSetText [_idcDownBtn0 + 0, localize {TZK_LANG_ON}];
-		ctrlSetText [_idcDownBtn0 + 1, localize {TZK_LANG_ON}];
+		ctrlSetText [_idcDownBtn0 + 1, localize {TZK_LANG_OFF}];
 
 		ctrlSetText [_idcDownBtn0 + 8, localize {TZK_LANG_RETURN}];
 
@@ -65,7 +65,7 @@ if (not _processed && 1 == count _downBoardStack) then {
 		ctrlSetText [_idcDownBtn0 + 2, localize {TZK_LANG_SWITCH} + localize {TZK_LANG_SHORT_MAGAZINE}];
 
 		ctrlSetText [_idcDownBtn0 + 6, localize {TZK_LANG_AUTO} + localize {TZK_LANG_SHORT_SHOOT}];
-		ctrlSetText [_idcDownBtn0 + 7, localize {TZK_LANG_ON}];
+		ctrlSetText [_idcDownBtn0 + 7, localize {TZK_LANG_OFF}];
 		ctrlSetText [_idcDownBtn0 + 11, localize {TZK_LANG_BIG} + localize {TZK_LANG_ANGLE}];
 
 		ctrlSetText [_idcDownBtn0 + 8, localize {TZK_LANG_RETURN}];
