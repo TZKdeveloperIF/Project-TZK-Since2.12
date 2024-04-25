@@ -26,7 +26,13 @@ if ("Destroy Obstruction" == _orderType) then {
 		_defTypeIdx = _defTypeIdx + 1;
 	};
 	_ret = _found;
-	if not _found then {_msg = "No obstruction in area. Order aborted."};
+	if not _found then {_msg = format ["%1 %2 %3 %4. %5"
+		, localize {TZK_LANG_NO}
+		, localize {TZK_LANG_OBSTRUCTION}
+		, localize {TZK_LANG_IN}
+		, localize {TZK_LANG_AREA}
+		, localize {TZK_LANG_ORDER_ABORTED}
+	]};
 };
 
 if ("Auto Detect" == _orderType) then {

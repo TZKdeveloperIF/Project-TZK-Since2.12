@@ -73,6 +73,8 @@ _checkAbModified = preprocessFile "Player\Dialog\AutoBuy_CheckModifyCombobox.sqf
 _updateFacPic = preprocessFile "Player\Dialog\pAbUpdateFactoryImage.sqf"
 _updateTypePic = preprocessFile "Player\Dialog\pAbUpdateTypeImage.sqf"
 	; initial of auto buy
+	ctrlSetText [_idcAbLabel + 0, format ["%1 %2 %3", localize {TZK_LANG_AUTO}, localize {TZK_LANG_BUY}, localize {TZK_LANG_FACTORIES}]]
+	ctrlSetText [_idcAbLabel + 1, format ["%1 %2 %3", localize {TZK_LANG_AUTO}, localize {TZK_LANG_BUY}, localize {TZK_LANG_TYPE}]]
 	{ctrlShow [_x, false]} foreach [_idcAbLabel, _idcAbLabel + 1]
 	{ctrlShow [_idcFactory + _x, false]; ctrlShow [_idcFacPic + _x, false]} forEach _facBias
 	{_bias = _x, {ctrlShow [_x + _bias, false]} forEach [_idcBuyType, _idcTypePic, _idcBuyNum]} forEach _typeBias

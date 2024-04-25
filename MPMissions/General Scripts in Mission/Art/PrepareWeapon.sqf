@@ -5,7 +5,7 @@ _ret = true;
 if (_isVehicle || _isStruct) then {
 	_weapon = _vehicle call preprocessFile "Art\GetAvailableArtWeapon.sqf";
 	if ("" == _weapon) then {
-		_msg = "No proper weapon. Order aborted. Rearm me or help me deploy, sir.";
+		_msg = localize {TZK_LANG_NO_PROPER_WEAPON} + ". " + localize {TZK_LANG_ORDER_ABORTED} + " " + localize {TZK_LANG_HELP_ME_REARM_DEPLOY};
 		_ret = false;
 	};
 

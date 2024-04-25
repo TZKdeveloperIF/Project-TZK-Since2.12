@@ -34,6 +34,8 @@ _idcCmdImage = IDC + 28
 
 _idcConsole = IDC + 100
 
+_idcCmdRule = IDC + 102
+
 ; _idc defined above must consist with definition in description.ext.
 
 
@@ -74,6 +76,8 @@ _groupCommander = (groupCommander select siPlayer)
 {ctrlShow [_x, bool_TZK_199_Mode]} forEach [_idcRadioONBtn]; {ctrlShow [_x, false]} forEach [_idcRadioONBG]
 _res = [_idcTransferAmount, _idcIncomeRatio, _idcIncomeRatioPlayer, -1, _idcReports, _idcTransferCommandGroup, _idcWorkerBehaviour, _idcAIRespawn] call loadFile "\TZK_Scripts_4_0_4\Player\Dialog\Options_Init.sqf"
 _currentAiRespawn = _res select 0; _respawnObjects = _res select 1
+
+ctrlSetText [_idcCmdRule, format ["CMD %1 %2", localize {TZK_LANG_RULE}, localize {TZK_LANG_MENU}]]
 
 # Update
 

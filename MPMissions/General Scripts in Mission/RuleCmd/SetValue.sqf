@@ -12,7 +12,9 @@ _entry set [2, _value];
 // ASSERT(isServer)
 
 if _broadcast then {
-	format [{CMD rule "%1" has changed to %2}, _entry select 0, _value] exec "Util\GlobalMsg.sqs";
+	format [{CMD %3 "%1" %4 %5 %2}, _entry select 0, _value
+		, localize {TZK_LANG_RULE}, localize {TZK_LANG_CHANGE}, localize {TZK_LANG_TO}
+	] exec "Util\GlobalMsg.sqs";
 
 	// need delay to wait game start. Actually to wait clients initialize TzkCmdRules variable
 	_exp = format [{%1 exec "RuleCmd\ClientsReceiveResult.sqs"}, [_item, _value, _display]];

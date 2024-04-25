@@ -23,7 +23,7 @@ _msg = ""
 ? _unit != driver vehicle _unit: exit
 
 _vehicle = vehicle _unit
-? [_vehicle, _pos1] call funcDistH > 50: _msg = "I'm far from the start position. Order not executed.", goto "Quit"
+? [_vehicle, _pos1] call funcDistH > 50: _msg = localize {TZK_LANG_FAR_FROM_START}, goto "Quit"
 _vehicle doWatch _pos2
 ~ 5 + random 5
 ? call _quitCond: goto "Quit"

@@ -1058,6 +1058,7 @@ class TzkRtsSubMenuOneListWide: TzkRtsSubMenuOneListBox {
 		action = "btnValue00 = true";
 	};
 	class BTN_SET: Button {
+		idc = IDC + 1;
 		x = 0.32;
 		y = 0.65;
 		w = 0.10;
@@ -1066,6 +1067,7 @@ class TzkRtsSubMenuOneListWide: TzkRtsSubMenuOneListBox {
 		action = "btnValue01 = true";
 	};
 	class BTN_CLEAR: Button {
+		idc = IDC + 2;
 		x = 0.58;
 		y = 0.65;
 		w = 0.10;
@@ -1074,6 +1076,7 @@ class TzkRtsSubMenuOneListWide: TzkRtsSubMenuOneListBox {
 		action = "btnValue02 = true";
 	};
 	class BTN_SET_DIAGONAL: Button {
+		idc = IDC + 3;
 		x = 0.45;
 		y = 0.65;
 		w = 0.10;
@@ -1128,6 +1131,7 @@ class TzkRtsSubMenuOneListLarge: TzkRtsSubMenuOneListBox {
 		action = "btnValue00 = true";
 	};
 	class BTN_SET: Button {
+		idc = IDC + 1;
 		x = 0.35;
 		y = 0.65;
 		w = 0.10;
@@ -1396,16 +1400,18 @@ class TzkRtsArtSubMenu: Menu {
 		action = "btnValue00 = true";
 	};
 	class BTN_SHOOT_AREA: Button {
+		idc = IDC + 16 * 3 + 8;
 		x = 0.25;
 		y = 0.65;
 		w = 0.20;
 		h = 0.04;
-		text = "Shoot Area";
+		text = "";
 		action = "btnValue01 = 1";
 	};
 	class BTN_DESTROY_OBSTRUCTION: BTN_SHOOT_AREA {
+		idc = IDC + 16 * 3 + 9;
 		x = 0.55;
-		text = "Destroy Obstruction";
+		text = "";
 		action = "btnValue01 = 2";
 	};
 
@@ -1994,6 +2000,7 @@ class OptionsDialog2: OptionsDialog
 		action = "btnValue00 = 0";
 	};
 	class CmdRuleButton: Button {
+		idc = IDC + 102;
 		x = 0.025;
 		y = 0.18;
 		w = 0.15;
@@ -3082,6 +3089,51 @@ class TzkQueryDialog {
 		text = "";
 		action = "btnValue00 = 0";
 		sizeEx = 0.025;
+	};
+};
+
+class CmdRuleMenu: VoteMenu {
+	class MenuTitle: GuiLargeText {
+		idc = IDC + 500 + 0;
+		style = ST_CENTER;
+		x = 0.3625;
+		y = 0.07;
+		w = 0.25;
+		h = 0.05;
+		text = "Vote Menu";
+	};
+	class ItemsLabel:ItemsBase {
+		idc = IDC + 500 + 1;
+		y = 0.12;
+		sizeEx = 0.025;
+		text = "Options";
+	};
+	class ResultLabel: ResultBase {
+		idc = IDC + 500 + 2;
+		y = 0.12;
+		x = 0.365;
+		h = 0.04;
+		w = 0.135;
+		sizeEx = 0.025;
+		text = "Result";
+	};
+	class SelectionsLabel: Text {
+		idc = IDC + 500 + 3;
+		x = 0.645;
+		y = 0.12;
+		h = 0.04;
+		w = 0.1;
+		text = "Your Vote";
+		colorText[] = {0.75,0.75,0.75,1};
+	};
+	class ConfirmLabel: Text {
+		idc = IDC + 500 + 4;
+		x = 0.785;
+		y = 0.12;
+		h = 0.04;
+		w = 0.1;
+		text = "Confirm";
+		colorText[] = {0.75,0.75,0.75,1};
 	};
 };
 
