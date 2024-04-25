@@ -11,7 +11,7 @@ if ("Soldier" != _enum) then {
 		if (_vehicle in (vehicleAttached select _i select tsTugged)) then {_found = true};
 		_i = _i + 1;
 	};
-	if _found then {_msg = "Attached vehicle is not allowed executing artillery order."};
+	if _found then {_msg = localize {TZK_LANG_ATTACHED_BAN_SHOOT}};
 };
 
 _found

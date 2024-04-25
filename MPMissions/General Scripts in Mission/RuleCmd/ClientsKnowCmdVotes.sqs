@@ -15,5 +15,5 @@ _nameCmd = name leader (groupCommander select _si)
 _ruleName = TzkCmdRules select _item select 0
 _boolText = ["false", "true"] select _curSel
 
-? not _localMsgOnly: format [{%1 votes CMD rule "%2": %3}, _nameCmd, _ruleName, _boolText] exec "Util\GlobalMsg.sqs"; exit
-format [{You're voting CMD rule "%2": %3}, 0, _ruleName, _boolText] call funcSideMsg
+? not _localMsgOnly: format [{%1 %4 CMD rule "%2": %3}, _nameCmd, _ruleName, _boolText, localize {TZK_LANG_VOTE}] exec "Util\GlobalMsg.sqs"; exit
+format [{%5 %4 CMD rule "%2": %3}, 0, _ruleName, _boolText, localize {TZK_LANG_VOTE}, localize {TZK_LANG_YOU}] call funcSideMsg

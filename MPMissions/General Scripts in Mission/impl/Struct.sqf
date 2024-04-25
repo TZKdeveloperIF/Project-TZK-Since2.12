@@ -43,7 +43,7 @@ _objects0 = [["GapGenerator_W_xj400", 0, []]];
 _objects1 = [["GapGenerator_E_xj400", 0, []]];
 _image = [_texPath + "Image\Struct\MGTower.jpg",_texPath + "Image\Struct\MGTower.jpg"];
 structDefs set [_type, [
-	"Gap Generator",
+	localize {TZK_LANG_GAP_GENERATOR},
 	_price,
 	siBoth,
 	_image,

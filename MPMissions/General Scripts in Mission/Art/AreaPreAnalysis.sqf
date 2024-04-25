@@ -4,7 +4,7 @@ _ret = true;
 
 if _ret then {
 	if (count _ammoArray == 0) then {
-		_msg = "No available magazine. Order aborted. Rearm me please, sir.";
+		_msg = localize {TZK_LANG_NO_AVAILABLE_MAG};
 		_ret = false;
 	};
 };
@@ -19,7 +19,7 @@ if _ret then {
 if _ret then {
 	if _needAvoidStruct then {
 		if not (_result select 1 select 0) then {
-			_msg = "No available shooting pos (the whole area is filed with enemy critical structure)";
+			_msg = localize {TZK_LANG_AREA_FILLED_ENEMY_STRUCT};
 			_ret = false;
 		};
 	};

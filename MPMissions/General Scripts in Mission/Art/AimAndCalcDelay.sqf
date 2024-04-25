@@ -6,7 +6,7 @@ _ret = true;
 // weapon check for soldier
 if (not _isVehicle && not _isStruct) then { // infantry
 	if not (_unit call _weaponCheck) then {
-		_msg = "No proper weapon for " + _text + ". Order Aborted.";
+		_msg = localize {TZK_LANG_NO_PROPER_WEAPON} + localize {TZK_LANG_FOR} + _text + ". " + localize {TZK_LANG_ORDER_ABORTED};
 		_ret = false;
 	};
 };
