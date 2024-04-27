@@ -284,6 +284,8 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 
 	; pre-process on fire
 	? "Destroy Obstruction" == _orderType: if (not alive _defenceObject) then {goto "AttackDone"}
+	; shoot pos check
+	? not (call preprocessFile "Art\CheckShootPos.sqf"): _msg = "Not allow shooting art near base within 50 meters.", goto "EOF"
 
 	_ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev]
 	_vehicle addEventHandler ["Fired", format [{[_this, %1, %2, %3, %4, %6] exec "%5"}, _speed, _angle, _elev, _ehRev, _script, [_si, _bShrapnel]] ]
