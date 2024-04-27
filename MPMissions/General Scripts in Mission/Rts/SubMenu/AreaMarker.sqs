@@ -22,6 +22,9 @@ _updateList = preprocessFile "Rts\SubMenu\UpdateAreaListbox.sqf"
 
 ctrlSetText [_idcTitle, format ["%4 %1 %2 %3", _webType, _markerType, localize {TZK_LANG_AREA}, localize {TZK_LANG_EDIT}]]
 ctrlSetText [_idcListLabel, localize {TZK_LANG_AREA}]
+ctrlSetText [IDC + 1, format ["%1 %2", localize {TZK_LANG_SET}, localize {TZK_LANG_AREA}]]
+ctrlSetText [IDC + 2, localize {TZK_LANG_CLEAR}]
+ctrlSetText [IDC + 3, format ["%1 %2", localize {TZK_LANG_SET}, localize {TZK_LANG_LINE}]]
 
 [_idcListBox0, _markerType, _webShort, _cnt] call _updateList
 ? -1 != (call _cachedIdxName): lbSetCurSel [_idcListBox0, (call _cachedIdxName)]

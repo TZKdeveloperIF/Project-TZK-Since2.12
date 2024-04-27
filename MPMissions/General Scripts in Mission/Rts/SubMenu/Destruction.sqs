@@ -29,17 +29,17 @@ btnAction4 = false
 { ctrlShow [_x, false] } forEach [ _idcAction0Label, _idcAction1Label, _idcAction2Label, _idcAction3Label, _idcAction4Label ]
 { ctrlShow [_x, false] } forEach [_idcAction3, _idcAction4]
 
-ctrlSetText [IDC_TITLE, "Destruction"]
-ctrlSetText [_idcAction0, "Delete Current"]
-ctrlSetText [_idcAction1, "Delete Same Type"]
-ctrlSetText [_idcAction2, "Delete All"]
-ctrlSetText [_idcListHeader, "recycle 50% if near CC, MHQ or engineer vehicle."]
+ctrlSetText [IDC_TITLE, localize {TZK_LANG_DESTRUCTION}]
+ctrlSetText [_idcAction0, format ["%1 %2", localize {TZK_LANG_DELETE}, localize {TZK_LANG_CURRENT}]]
+ctrlSetText [_idcAction1, format ["%1 %2 %3", localize {TZK_LANG_DELETE}, localize {TZK_LANG_SAME}, localize {TZK_LANG_TYPE}]]
+ctrlSetText [_idcAction2, format ["%1 %2", localize {TZK_LANG_DELETE}, localize {TZK_LANG_ALL}]]
+ctrlSetText [_idcListHeader, format ["%1 50%2 %3 %4 CC, MHQ %5 %6 %7.", localize {TZK_LANG_RECYCLE}, "%", localize {TZK_LANG_IF}, localize {TZK_LANG_NEAR}, localize {TZK_LANG_OR}, localize {TZK_LANG_ENGINEER}, localize {TZK_LANG_VEHICLE}]]
 
 btnValue00 = -1, _idcState = IDC + 16 * 6, _idcStateBg = IDC + 16 * 5;
 _val = "DestructShowShelter" call preprocessFile "Cfg\LoadPlayerValue.sqf";
 _showShelter = (if ("" == _val) then {false} else {call _val});
 ctrlShow [_idcStateBg + 0, _showShelter]
-ctrlSetText [_idcState + 0, "Shelter"]
+ctrlSetText [_idcState + 0, localize {TZK_LANG_SHELTER}]
 
 _list = [], _types = []
 ? isCommander: [_types, structsDestroy] call preprocessFile "Util\ArrayAppend.sqf"
