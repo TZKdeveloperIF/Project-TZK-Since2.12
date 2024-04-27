@@ -12,10 +12,10 @@ _si = siPlayer; _desc = structDefs select _type
 ? _desc select sdOnlyCO: if (groupPlayer != (groupCommander select siPlayer)) then {player groupChat "Only allow Commander to build this."; exit}
 
 _mhq = mhq select _si
-? _desc select sdOnlyMHQ: if (([getPos _mhq, _posStruct] call funcDistH) > 150) then {player groupChat "The destination is too far from MHQ to build this."; exit}
+? _desc select sdOnlyMHQ: if (([getPos _mhq, _posStruct] call funcDistH) > 150) then {player groupChat localize {TZK_LANG_TOO_FAR_FROM_MHQ}; exit}
 
 _ClosestSup = ([_posStruct, _si, typesSupportPlus select _si, []] call funcGetClosestVehicle)
-? ([getPos _mhq, _posStruct] call funcDistH) > 150 && (_ClosestSup select 1) > 50: player groupChat "The destination is too far from MHQ or Support Vehicles."; exit
+? ([getPos _mhq, _posStruct] call funcDistH) > 150 && (_ClosestSup select 1) > 50: player groupChat localize {TZK_LANG_TOO_FAR_FROM_MHQ_OR_SUP}; exit
 
 ; BuildStructure
 
@@ -48,4 +48,4 @@ _needed = _cost - _resources
 [_posStruct, _dirStruct, _type] exec "\TZK_Scripts_4_0_4\Player\SendBuildStructure.sqs"
 ~5
 mutexOrderBuildStructure = false
-player groupChat format ["%1 built. Position %2", _desc select sdName, _posStruct call funcCalcTownDirDistFromPos]
+player groupChat format ["%1 %3. %4 %2", _desc select sdName, _posStruct call funcCalcTownDirDistFromPos, localize {TZK_LANG_BUILT}, localize {TZK_LANG_POSITION}]

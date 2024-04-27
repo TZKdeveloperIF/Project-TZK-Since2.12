@@ -1,11 +1,7 @@
 // args: player selected units
 // returns: none
 
-hint "
-This button forces land vehicles to move to process situations that land vehicles 
-getting stuck. To avoid being applied in battle, the script will delay few seconds 
-and move with very low speed.
-";
+hint localize {TZK_LANG_BRIEF_MOVE_LAND};
 
 if (count _this > 0) then {
 	_res = call preprocessFile "Rts\Marker\DiagonalPosInfo.sqf";

@@ -1,10 +1,7 @@
 // args: player selected units
 // returns: none
 
-hint "
-This button forces ships to move to process situations that AI will drive ship in 15 km/h in shallow water.
-The script will force ships to move in 60 km/h.
-";
+hint localize {TZK_LANG_BRIEF_MOVE_SHIP};
 
 if (count _this > 0) then {
 	_res = call preprocessFile "Rts\Marker\DiagonalPosInfo.sqf";
@@ -12,11 +9,29 @@ if (count _this > 0) then {
 
 	if _legal then {if not ([_res select 0, 100] call funcPosNearSea) then {
 		_legal = false;
-		hint "Start position should in sea or near the sea within 100 m.";
+		hint format ["%1 %2 %3 %4 %5 %6 %7 %5 %8 100m."
+			, localize {TZK_LANG_START}
+			, localize {TZK_LANG_POSITION}
+			, localize {TZK_LANG_SHOULD}
+			, localize {TZK_LANG_IN}
+			, localize {TZK_LANG_SEA}
+			, localize {TZK_LANG_OR}
+			, localize {TZK_LANG_NEAR}
+			, localize {TZK_LANG_WITHIN}
+		];
 	}};
 	if _legal then {if not ([_res select 1, 20] call funcPosNearSea) then {
 		_legal = false;
-		hint "End position should in sea or near the sea within 20 m.";
+		hint format ["%1 %2 %3 %4 %5 %6 %7 %5 %8 20m."
+			, localize {TZK_LANG_END}
+			, localize {TZK_LANG_POSITION}
+			, localize {TZK_LANG_SHOULD}
+			, localize {TZK_LANG_IN}
+			, localize {TZK_LANG_SEA}
+			, localize {TZK_LANG_OR}
+			, localize {TZK_LANG_NEAR}
+			, localize {TZK_LANG_WITHIN}
+		];
 	}};
 	// check points along the way
 	if _legal then {
@@ -28,7 +43,12 @@ if (count _this > 0) then {
 			_point = [_res select 0, [_vec, _correct] call funcVectorScale] call funcVectorAdd;
 			if (not ([_point, 5] call funcPosNearSea)) then {
 				_legal = false;
-				hint "There're lands between 2 points.";
+				hint format ["%1 %2 %3 2 %4."
+					, localize {TZK_LANG_THERE_ARE}
+					, localize {TZK_LANG_LAND}
+					, localize {TZK_LANG_BETWEEN}
+					, localize {TZK_LANG_POINT}
+				];
 			};
 			_correct = _correct + _step;
 		};

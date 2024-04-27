@@ -107,7 +107,7 @@ _distributionRadius = (if _isInfantry then {20} else {50})
 	_dist = ([getPos _unit, _startPos] call funcDistH); _dist = _dist - _dist % 1
 	? _dist < _distributionRadius: goto "CheckDistance"
 
-	? _isVehicle: if ([_vehicle, "driver"] call preprocessFile "Util\HasEmptySeat.sqf") then {_msg = "Need move to predefined position but hasn't driver. Order aborted.", goto "EOF"}
+	? _isVehicle: if ([_vehicle, "driver"] call preprocessFile "Util\HasEmptySeat.sqf") then {_msg = format ["%1 %2 %3 %4 %5 %6. %7", localize {TZK_LANG_NEED_MOVE_TO}, localize {TZK_LANG_PREDEFINED}, localize {TZK_LANG_POSITION}, localize {TZK_LANG_BUT}, localize {TZK_LANG_HASNT}, localize {TZK_LANG_DRIVER}, localize {TZK_LANG_ORDER_ABORTED}], goto "EOF"}
 	_unit groupChat format ["Moving to ordered position, distance %1m.", _dist]
 	# LoopPreMove
 		_unit doMove _startPos
@@ -117,20 +117,20 @@ _distributionRadius = (if _isInfantry then {20} else {50})
 
 # CheckDistance
 	? _bAutoDetect: _adObj = _unit call preprocessFile "SpotEnemy\GetPplTarget.sqf"
-	? _bAutoDetect && isNull _adObj: _msg = "[Auto Detect] No available target. Waiting next loop"; _adSleepMod = 20; goto "AutoDetectSleep"
+	? _bAutoDetect && isNull _adObj: _msg = format ["[%1] %2. %3", localize {TZK_LANG_AUTO_DETECT}, localize {TZK_LANG_NO_AVAILABLE_TARGET}, localize {TZK_LANG_WAITING_NEXT_LOOP}]; _adSleepMod = 20; goto "AutoDetectSleep"
 	? _bAutoDetect: _target setPos getPos _adObj
 
 	_distLimit = viewDistance, _curDist = ([getPos _unit, _target] call funcDistH)
 	? upgMatrix select _si select upgLongWeaponRange == 2: _distLimit = _longRangeCoef * viewDistance;
 	; Reassign limit for infantry
-	? _isInfantry: _distLimit = _range + 350; _msg = "Target is too far for infantry " + _text + ". Order aborted."
+	? _isInfantry: _distLimit = _range + 350; _msg = format ["%1 %2 %3 %4. %5", localize {TZK_LANG_TARGET_TOO_FAR}, localize {TZK_LANG_FOR}, localize {TZK_LANG_SOLDIER}, _text, localize {TZK_LANG_ORDER_ABORTED}]
 	_bValid = true
 	? _isInfantry && _curDist > _distLimit: _bValid = false
 	? _isStruct && _curDist > _distLimit: _bValid = false
 	? _isStruct && _curDist < 50: _bValid = false
 
 	? not _bAutoDetect && not _bValid: goto "EOF"
-	? _bAutoDetect && not _bValid: _msg = "[Auto Detect] No available target nearby. Waiting next loop"; _adSleepMod = 20, goto "AutoDetectSleep"
+	? _bAutoDetect && not _bValid: _msg = format ["[%1] %2 %4. %3", localize {TZK_LANG_AUTO_DETECT}, localize {TZK_LANG_NO_AVAILABLE_TARGET}, localize {TZK_LANG_WAITING_NEXT_LOOP}, localize {TZK_LANG_NEARBY}]; _adSleepMod = 20, goto "AutoDetectSleep"
 
 _posCorrect = 0
 # TryApproachingTarget
@@ -142,16 +142,16 @@ _posCorrect = 0
 		_destPos = getPosASL _vehicle;
 		_destPos set [2, 0]
 		? [_destPos, getPos _target] call funcDistH > _distLimit: _vec = [getPos _target, _destPos] call funcVectorSub; _len = _vec call funcVectorLength; _destPos = [_destPos, [_vec, 1 - 0.9*_distLimit/_len] call funcVectorScale] call funcVectorAdd
-		? [_destPos, getPos _target] call funcDistH > _distLimit: _msg = format ["Can't approach attacking position (dist: %1m, limit: %2m). Order aborted.", _dist, _distLimit], goto "EOF"
+		? [_destPos, getPos _target] call funcDistH > _distLimit: _msg = format ["%3 (dist: %1m, limit: %2m). %4", _dist, _distLimit, localize {TZK_LANG_CANT_APPROACH}, localize {TZK_LANG_ORDER_ABORTED}], goto "EOF"
 		? ([getPos _unit, _destPos] call funcDistH) < 30 && [_destPos, getPos _target] call funcDistH < _distLimit: goto "PrePareToAttack"
 
-		? [_vehicle, "driver"] call preprocessFile "Util\HasEmptySeat.sqf": _msg = format ["Need move to target (dist: %1m, limit: %2m) but hasn't driver. Order aborted.", _dist, _distLimit], goto "EOF"
+		? [_vehicle, "driver"] call preprocessFile "Util\HasEmptySeat.sqf": _msg = format ["%3 %8 (dist: %1m, limit: %2m) %4 %5 %6. %7", _dist, _distLimit, localize {TZK_LANG_NEED_MOVE_TO}, localize {TZK_LANG_BUT}, localize {TZK_LANG_HASNT}, localize {TZK_LANG_DRIVER}, localize {TZK_LANG_ORDER_ABORTED}, localize {TZK_LANG_TARGET}], goto "EOF"
 		; change deployment of howitzer/TOS
 		_vehicle exec "Art\Undeploy.sqs"
 		goto "ExecMove"
 	# MoveInfantry
 		? _unit distance _target < _range * (10 - _posCorrect) / 10: goto "PrePareToAttack"
-		? _posCorrect >= 10: _msg = "Can't find attack pos. Order aborted.", goto "EOF"
+		? _posCorrect >= 10: _msg = localize {TZK_LANG_CANT_FIND_ATTACK_POS} + ". " + localize {TZK_LANG_ORDER_ABORTED}, goto "EOF"
 		_vector = [getPosASL _target, _startPos] call funcVectorSub; _dist = ([_startPos, getPosASL _target] call funcDistH) - _range*8/9
 		_vector = [_vector, _dist/(_dist+_range*8/9)] call funcVectorScale;
 		_auxiliaryPoint = [_startPos, _vector] call funcVectorAdd
@@ -235,12 +235,12 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 		; rearm check for vehicle/structure
 		~ 0.1
 		? call _quitCond: _msg = ""; goto "EOF"
-		? _vehicle knowsAbout _target < 0.01 && _vehicle distance _target > viewDistance: _msg = "Can't locate the target. Order Aborted. Help me spot it again please."; goto "EOF"
+		? _vehicle knowsAbout _target < 0.01 && _vehicle distance _target > viewDistance: _msg = localize {TZK_LANG_CANT_LOCATE}; goto "EOF"
 
 		? 0 == _ammoOld: _magazines = _vehicle call funcGetNotEmptyMags; _validMags = [_weapon] call funcWeaponValidMags; if ({_x in _validMags} count _magazines == 0) then {goto "CheckRearm"};
 
 		; _ammoArray is initialized before the loop and updated after having shot while before next loop delay
-		? count _ammoArray == 0: _msg = "Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."; goto "EOF"
+		? count _ammoArray == 0: _msg = localize {TZK_LANG_CANT_RELOAD}; goto "EOF"
 		_currentMag = _ammoArray select 0
 		? _currentMag != _equippedMag: goto "PreCalculate"
 
@@ -264,7 +264,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	# RearmCheckDone
 	; check ammoarray again since delayed
 	_ammoArray = _vehicle ammoArray _weapon
-	? count _ammoArray == 0: _msg = (if _isInfantry then {"No available magazine. Order aborted. Rearm me please, sir."} else {"Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."}); goto "EOF"
+	? count _ammoArray == 0: _msg = (if _isInfantry then {localize {TZK_LANG_NO_AVAILABLE_MAG}} else {localize {TZK_LANG_CANT_RELOAD}}); goto "EOF"
 	_currentMag = _ammoArray select 0
 	? _currentMag != _equippedMag: goto "PreCalculate"
 	; Disable art script if combatMode isn't yellow/red
@@ -291,7 +291,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	_vehicle addEventHandler ["Fired", format [{[_this, %1, %2, %3, %4, %6] exec "%5"}, _speed, _angle, _elev, _ehRev, _script, [_si, _bShrapnel]] ]
 	_vehicle fire _weapon
 	_firedCnt = _firedCnt + 1
-	? "MLRS" == _enum && _mlrsCnt > 0 && _mlrsCnt <= _firedCnt: _msg = format ["%1 rockets were shot. Order finished, sir.", _firedCnt], goto "EOF"
+	? "MLRS" == _enum && _mlrsCnt > 0 && _mlrsCnt <= _firedCnt: _msg = format ["%1 %2", _firedCnt, localize {TZK_LANG_ROCKETS_SHOT}], goto "EOF"
 
 	? _isInfantry: goto "AttackDone"
 
@@ -299,7 +299,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 			_counter = 0
 			~ (if (_delay > 1) then {1} else {_delay})
 			_ammoArray = _vehicle ammoArray _weapon
-			? 0 == count _ammoArray: _msg = "Order Aborted. Help me ""Reload"" the magazine (via 6-action list) before ask me shoot again."; goto "EOF"
+			? 0 == count _ammoArray: _msg = localize {TZK_LANG_CANT_RELOAD}; goto "EOF"
 			? call _quitCond: _msg = ""; goto "EOF"
 			_counter = _counter + 1
 			? _counter >= 30: [_si, format ["Verify whether %1 main weapon is loaded, sir. If weapon is ready then reorder me and report a bug to script designer.", _unit]] exec "Server\Msg\sSvrMsg2Cmd.sqs", _counter = 0
@@ -319,26 +319,26 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	? not _isInfantry: goto "SkipSoldierRearmDataCheck"
 		; verify soldier rearm data
 		_bValid = [_validMags, (_unit call preprocessFile "Common\SQF\RearmData.sqf") select 1] call funcArrayOverlap
-		? not _bValid: _msg = "My magData isn't match current command. Won't go rearm and order aborted."; goto "EOF"
+		? not _bValid: _msg = localize {TZK_LANG_MISMATCH_MAGDATA}; goto "EOF"
 
 	# SkipSoldierRearmDataCheck
 	; pre rearm
 	? _isStruct: goto "SeekSup4Structure"
 	? not _isInfantry: goto "SeekSup4Vehicle"
 		_sup = [_unit, _si, 512, true] call preprocessFile "Util\SoldierRearmSupport.sqf"
-		? isNull _sup: _msg = "No support vehicle within 512 meters. Magazines exhausted. Order aborted."; goto "EOF"
+		? isNull _sup: _msg = format ["%1 %2 %3 %4 512 %5. %6. %7", localize {TZK_LANG_NO}, localize {TZK_LANG_SUPPORT}, localize {TZK_LANG_VEHICLE}, localize {TZK_LANG_WITHIN}, localize {TZK_LANG_METER}, localize {TZK_LANG_MAG_EXHAUSTED}, localize {TZK_LANG_ORDER_ABORTED}]; goto "EOF"
 		goto "SupportFound"
 	# SeekSup4Structure
 		_vs = [getPos _unit, 50, _typesSup, []] call funcGetNearbyVehicles
-		? count _vs == 0: _msg = "No support vehicle within 50 meters. Magazines exhausted. Order aborted."; goto "EOF"
+		? count _vs == 0: _msg = format ["%1 %2 %3 %4 50 %5. %6. %7", localize {TZK_LANG_NO}, localize {TZK_LANG_SUPPORT}, localize {TZK_LANG_VEHICLE}, localize {TZK_LANG_WITHIN}, localize {TZK_LANG_METER}, localize {TZK_LANG_MAG_EXHAUSTED}, localize {TZK_LANG_ORDER_ABORTED}]; goto "EOF"
 		_sup = (_vs select 0) select 0
 		goto "SupportFound"
 	# SeekSup4Vehicle
 		_vs = [getPos _unit, 1500, _typesSup, []] call funcGetNearbyVehicles
-		? count _vs == 0: _msg = "No support vehicle within 1500 meters. Magazines exhausted. Order aborted."; goto "EOF"
+		? count _vs == 0: _msg = format ["%1 %2 %3 %4 1500 %5. %6. %7", localize {TZK_LANG_NO}, localize {TZK_LANG_SUPPORT}, localize {TZK_LANG_VEHICLE}, localize {TZK_LANG_WITHIN}, localize {TZK_LANG_METER}, localize {TZK_LANG_MAG_EXHAUSTED}, localize {TZK_LANG_ORDER_ABORTED}]; goto "EOF"
 		_distMin = 1500; _sup = objNull
 		{ _dist = _unit distance (_x select 0); if (_dist < _distMin) then { _sup = (_x select 0); _distMin = _dist } } foreach _vs
-		? isNull _sup: _msg = "No support vehicle within 1500 meters. Magazines exhausted. Order aborted."; goto "EOF"
+		? isNull _sup: _msg = format ["%1 %2 %3 %4 1500 %5. %6. %7", localize {TZK_LANG_NO}, localize {TZK_LANG_SUPPORT}, localize {TZK_LANG_VEHICLE}, localize {TZK_LANG_WITHIN}, localize {TZK_LANG_METER}, localize {TZK_LANG_MAG_EXHAUSTED}, localize {TZK_LANG_ORDER_ABORTED}]; goto "EOF"
 		goto "SupportFound"
 
 	# SupportFound
@@ -352,7 +352,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 		_rearmRange = (if _isInfantry then {10} else {30})
 		? (_unit distance _sup) <= _rearmDist * 2: goto "SupportReached"
 
-		? _isVehicle: if ([_vehicle, "driver"] call preprocessFile "Util\HasEmptySeat.sqf") then {_msg = "Need move to support but hasn't driver. Order aborted.", goto "EOF"}
+		? _isVehicle: if ([_vehicle, "driver"] call preprocessFile "Util\HasEmptySeat.sqf") then {_msg = format ["%1 %2 %3 %4 %5. %6", localize {TZK_LANG_NEED_MOVE_TO}, localize {TZK_LANG_SUPPORT}, localize {TZK_LANG_BUT}, localize {TZK_LANG_HASNT}, localize {TZK_LANG_DRIVER}, localize {TZK_LANG_ORDER_ABORTED}], goto "EOF"}
 		# MoveToSupport
 			_posMove = [[0,_rearmDist], (getDir _sup)] call funcVectorRot2D
 			_posMove = [getPos _sup, _posMove] call funcVectorSub
@@ -360,7 +360,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 			~ 5
 			? call _quitCond: _msg = ""; goto "EOF"
 			? !(alive _sup): goto "CheckRearm"
-			? time > _timeAbort: _msg = "Cost too much time. Unable to reach support vehicle. Order aborted."; goto "EOF"
+			? time > _timeAbort: _msg = format ["%1. %2. %3", localize {TZK_LANG_TOO_LONG}, localize {TZK_LANG_CANT_REACH_SUP}, localize {TZK_LANG_ORDER_ABORTED}]; goto "EOF"
 			? (_unit distance _sup) > _rearmRange: goto "MoveToSupport"
 	# SupportReached
 
@@ -389,7 +389,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 		? not (_rearmParam select 1): goto "WaitRearmComplete"
 
 	; rearm fail check
-	? not (_rearmParam select 2): _msg = format ["Rearm failed. Art order aborted.", _unit], goto "EOF"
+	? not (_rearmParam select 2): _msg = format ["%1 %2 %3. %4", _unit, localize {TZK_LANG_REARM}, localize {TZK_LANG_FAILED}, localize {TZK_LANG_ORDER_ABORTED}], goto "EOF"
 
 	? _isInfantry: goto "PreMove"
 	; post rearm for non-soldier

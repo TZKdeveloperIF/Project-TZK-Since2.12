@@ -11,33 +11,38 @@ aisPickupWaitTimeDisp = []; {
 		count aisPickupWaitTimeDisp, 
 		call format [{"%2%1"}, "min", _x/60]
 	]
-} foreach aisPickupWaitTimeDefs; aisPickupWaitTimeDisp set [0, "Don't use"];
+} foreach aisPickupWaitTimeDefs; aisPickupWaitTimeDisp set [0, localize {TZK_LANG_DONT_USE}];
 aisRallyPoint1 = _type;
 aiSettingDefs set [_type, [
-	"Rally Point 1#", 
-	["None", "co0", "co1", "co2", "co3", "co4", "co5", "co6", "co7", "co8", "co9", 
-	"co10", "co11", "co12", "co13", "co14", "co15", "co16", "co17", "co18", "co19"], 
-	0, 
-	"Rally Points and Pickup Wait Setting"
+	format ["%1 %2 1#", localize {TZK_LANG_RALLY}, localize {TZK_LANG_POINT}]
+	, [
+		"None", "co0", "co1", "co2", "co3", "co4", "co5", "co6", "co7", "co8", "co9"
+		, "co10", "co11", "co12", "co13", "co14", "co15", "co16", "co17", "co18", "co19"
+	], 0
+	, format ["%1 %2 and %3 %4 %5"
+		, localize {TZK_LANG_RALLY}, localize {TZK_LANG_POINT}
+		, localize {TZK_LANG_PICKUP}, localize {TZK_LANG_WAIT}
+		, localize {TZK_LANG_SETTING}
+	]
 ]];
 _type = _type + 1;
 
 aisPickupWait1 = _type;
-aiSettingDefs set [_type, ["Pickup Wait 1#", aisPickupWaitTimeDisp, 1, ""] ];
+aiSettingDefs set [_type, [format ["%1 %2 1#", localize {TZK_LANG_PICKUP}, localize {TZK_LANG_WAIT}], aisPickupWaitTimeDisp, 1, ""] ];
 _type = _type + 1;
 
 aisRallyPoint2 = _type;
 aiSettingDefs set [_type, [
-	"Rally Point 2#", 
-	["None", "co0", "co1", "co2", "co3", "co4", "co5", "co6", "co7", "co8", "co9", 
-	"co10", "co11", "co12", "co13", "co14", "co15", "co16", "co17", "co18", "co19"], 
-	0, 
-	""
+	format ["%1 %2 2#", localize {TZK_LANG_RALLY}, localize {TZK_LANG_POINT}]
+	, [
+		"None", "co0", "co1", "co2", "co3", "co4", "co5", "co6", "co7", "co8", "co9"
+		, "co10", "co11", "co12", "co13", "co14", "co15", "co16", "co17", "co18", "co19"
+	], 0, ""
 ]];
 _type = _type + 1;
 
 aisPickupWait2 = _type;
-aiSettingDefs set [_type, ["Pickup Wait 2#", aisPickupWaitTimeDisp, 0, ""] ];
+aiSettingDefs set [_type, [format ["%1 %2 2#", localize {TZK_LANG_PICKUP}, localize {TZK_LANG_WAIT}], aisPickupWaitTimeDisp, 0, ""] ];
 _type = _type + 1;
 
 
@@ -47,66 +52,63 @@ aisKeepDefs = [
 ]; aisKeepDisp = [];
 { if (_x < 1000) then {aisKeepDisp set [ count aisKeepDisp, call format[{"%1%2"}, "$", _x, {} ] ]} } foreach aisKeepDefs;
 aisKeepMin = _type;
-aiSettingDefs set [_type, ["Keep At Least", aisKeepDisp, 0, "Keep At Least/At Most"] ];
+aiSettingDefs set [_type, [
+	format ["%1 %2", localize {TZK_LANG_KEEP}, localize {TZK_LANG_AT_LEAST}], aisKeepDisp, 0, 
+	format ["%1 %2/%3", localize {TZK_LANG_KEEP}, localize {TZK_LANG_AT_LEAST}, localize {TZK_LANG_AT_MOST}]
+]];
 _type = _type + 1;
 aisKeepDisp = []; {aisKeepDisp set [ count aisKeepDisp, call format[{"%1%2"}, "$", _x, {} ] ] } foreach aisKeepDefs;
 aisKeepMax = _type;
-aiSettingDefs set [_type, ["Keep At Most", aisKeepDisp, 2, ""] ];
+aiSettingDefs set [_type, [format ["%1 %2", localize {TZK_LANG_KEEP}, localize {TZK_LANG_AT_MOST}], aisKeepDisp, 2, ""] ];
 _type = _type + 1;
 
 
 aisBuy = _type;
-aiSettingDefs set [_type, ["Auto-Buy", [
+aiSettingDefs set [_type, [format ["%1-%2", localize {TZK_LANG_AUTO}, localize {TZK_LANG_BUY}], [
 	"none", "Soldier", "Sniper", "LAW/RPG", "AA-Infantry", "AA/Snipers",
 	"AT I", "AT II", "AT III", "AT IV", "Soldier III", "Soldier IV",
 	"MG I", "MG II", "MG III", "MG IV", "Sniper Heavy",
 	"Armor-Heavy", "M2A2/BMP2-AT", "AA-Cannon", "Support Vehicles", "Planes",
 	"Miners", "Mortar"
-], 0, "Auto-Buy"] ];
+], 0, format ["%1-%2", localize {TZK_LANG_AUTO}, localize {TZK_LANG_BUY}]] ];
 if bool_TZK_SEMod_Mode then {
-	aiSettingDefs set [_type, ["Auto-Buy", [
+	aiSettingDefs set [_type, [format ["%1-%2", localize {TZK_LANG_AUTO}, localize {TZK_LANG_BUY}], [
 		"none", "Soldier", "MG/Snipers", "LAW/RPG-Infantry", "LAW/RPG+M21/SVD", "LAW/RPG-Mixed", "AT-Infantry", "Heavy AT-Infantry", 
 		"AT+M21/SVD", "AT-mixed", "AA-Infantry", "AA/Snipers", "AA/AT-Sniper", "Infantry-Mixed", "HMMWV/BRDM Mixed", "HMMWV/BRDM-AT", 
 		"Armor Mixed", "T72/M60", "Armor-Heavy", "Challenger2/T90MS", "Tank Destroyers", "Armor-Heavy and TD", "T72/M60 and TD", 
 		"M2A2/BMP2-AT", "Warrior80/BMP3", "AA-Heavy", "AA-Vehicles", "Saboteurs", "Miners", "Transp-Land", "Transp-Air", 
 		"Support Vehicles", "Planes", "AH1/Ka52", "AH64/Mi28"
-	], 0, "Auto-Buy"] ];
+	], 0, format ["%1-%2", localize {TZK_LANG_AUTO}, localize {TZK_LANG_BUY}]] ];
 };
 _type = _type + 1;
 
-comment "todo: remove this part";
-BuyFactory = ["No Struct", "1# Barrack", "2# Barrack", "3# Barrack", "4# Barrack", "1# Heavy", "2# Heavy", "3# Heavy", "4# Heavy" ];
-aisBuyFactory1 = _type;
-aiSettingDefs set [_type, ["Buy Factory 1", BuyFactory, 0, "Buy Factory 1, 2"] ];
-_type = _type + 1;
-aisBuyFactory2 = _type;
-aiSettingDefs set [_type, ["Buy Factory 2", BuyFactory, 0, ""] ];
-_type = _type + 1;
-aisBuyFactory3 = _type;
-aiSettingDefs set [_type, ["Buy Factory 3", BuyFactory, 0, "Buy Factory 3, 4"] ];
-_type = _type + 1;
-aisBuyFactory4 = _type;
-aiSettingDefs set [_type, ["Buy Factory 4", BuyFactory, 0, ""] ];
-_type = _type + 1;
-
+comment "4 history setting items";
+_type = _type + 4;
 
 aisWatch = _type;
-aiSettingDefs set [_type, ["Watch", ["Scan", "N", "NE", "E", "SE", "S", "SW", "W", "NW"], 0, "Watch"] ];
+aiSettingDefs set [_type, [localize {TZK_LANG_WATCH}, ["Scan", "N", "NE", "E", "SE", "S", "SW", "W", "NW"], 0, localize {TZK_LANG_WATCH}] ];
 _type = _type + 1;
 aisRespawn = _type;
-aiSettingDefs set [_type, ["Respawn", [
-	"Default", "1# Command", "2# Command", "3# Command", "4# Command", "1# Barrack", "2# Barrack", "3# Barrack", "4# Barrack", 
+aiSettingDefs set [_type, [localize {TZK_LANG_RESPAWN}, [
+	localize {TZK_LANG_DEFAULT}, "1# Command", "2# Command", "3# Command", "4# Command", "1# Barrack", "2# Barrack", "3# Barrack", "4# Barrack", 
 	"1# Light", "2# Light", "3# Light", "4# Light", "1# Heavy", "2# Heavy", "3# Heavy", "4# Heavy", "1# Air", "2# Air", 
 	"3# Air", "4# Air"
-], 0, "Respawn"] ];
+], 0, localize {TZK_LANG_RESPAWN}] ];
 _type = _type + 1;
 aisCombatMode = _type;
 aisCombatModeDefs = [ "YELLOW", "RED", "GREEN", "BLUE" ];
-aiSettingDefs set [_type, ["CombatMode", ["Disengage", "Engage@Will", "HoldFire", "NeverFire"], 0, "CombatMode"] ];
+aiSettingDefs set [_type, [
+	format ["%1%2", localize {TZK_LANG_COMBAT}, localize {TZK_LANG_MODE}], [
+		localize {TZK_LANG_DISENGAGE}
+		, format ["%1%2", localize {TZK_LANG_ENGAGE}, localize {TZK_LANG_AT_WILL}]
+		, format ["%1%2", localize {TZK_LANG_HOLD}, localize {TZK_LANG_FIRE}]
+		, format ["%1%2", localize {TZK_LANG_NEVER}, localize {TZK_LANG_FIRE}]
+	], 0, format ["%1%2", localize {TZK_LANG_COMBAT}, localize {TZK_LANG_MODE}]
+]];
 _type = _type + 1;
 aisBehaviour = _type;
-aisBehaviourDefs = [ "AWARE", "COMBAT", "STEALTH", "CARELESS" ];
-aiSettingDefs set [_type, ["Behaviour", aisBehaviourDefs, 0, "Behaviour"] ];
+aisBehaviourDefs = [ localize {TZK_LANG_AWARE}, localize {TZK_LANG_COMBAT}, localize {TZK_LANG_STEALTH}, localize {TZK_LANG_CARELESS} ];
+aiSettingDefs set [_type, [localize {TZK_LANG_BEHAVIOUR}, aisBehaviourDefs, 0, localize {TZK_LANG_BEHAVIOUR}] ];
 _type = _type + 1;
 
 
@@ -115,47 +117,72 @@ aisAutoSupportRangeDefs = [100, 150, 200, 300, 400, 500, 800, 1000, 1200, 1500];
 	aisAutoSupportRange set [count aisAutoSupportRange, call format [{"%2%1"}, "m", _x]]
 } foreach aisAutoSupportRangeDefs;
 aisAutoRepair = _type;
-aiSettingDefs set [_type, ["Repair Place", ["At Both Sup", "At Our Sup", "Don't Use"], 0, "RepairPlace"] ];
+aiSettingDefs set [_type, [format ["%1 %2", localize {TZK_LANG_REPAIR}, localize {TZK_LANG_PLACE}]
+	, [format ["%1 %2 %3", localize {TZK_LANG_AT}, localize {TZK_LANG_BOTH}, localize {TZK_LANG_SHORT_SUPPORT}]
+		, format ["%1 %2 %3", localize {TZK_LANG_AT}, localize {TZK_LANG_OUR}, localize {TZK_LANG_SHORT_SUPPORT}]
+		, localize {TZK_LANG_DONT_USE}
+	], 0, format ["%1%2", localize {TZK_LANG_REPAIR}, localize {TZK_LANG_PLACE}]
+]];
 _type = _type + 1;
 aisAutoRepairRange = _type;
-aiSettingDefs set [_type, ["Repair Range", aisAutoSupportRange, 9, "RepairRange"] ];
+aiSettingDefs set [_type, [format ["%1 %2", localize {TZK_LANG_REPAIR}, localize {TZK_LANG_RANGE}]
+	, aisAutoSupportRange, 9, format ["%1%2", localize {TZK_LANG_REPAIR}, localize {TZK_LANG_RANGE}]] ];
 _type = _type + 1;
 aisAutoRepairDamage = _type;
-aiSettingDefs set [_type, ["Repair Rate", [
+aiSettingDefs set [_type, [format ["%1 %2", localize {TZK_LANG_REPAIR}, localize {TZK_LANG_RATE}], [
 	"0%","5%","10%","15%","20%","25%","30%","35%","40%","45%",
 	"50%","55%","60%","65%","70%","75%","80%","85%","90%","95%"
-], 4, "Repair Rate"] ];
+], 4, format ["%1 %2", localize {TZK_LANG_REPAIR}, localize {TZK_LANG_RATE}]] ];
 _type = _type + 1;
 
 aisAutoRearm = _type;
-aiSettingDefs set [_type, ["Rearm Place", ["At Both Sup", "At Our Sup", "Don't Use"], 0, "Rearm Place"] ];
+aiSettingDefs set [_type, [format ["%1 %2", localize {TZK_LANG_REARM}, localize {TZK_LANG_PLACE}]
+	, [format ["%1 %2 %3", localize {TZK_LANG_AT}, localize {TZK_LANG_BOTH}, localize {TZK_LANG_SHORT_SUPPORT}]
+		, format ["%1 %2 %3", localize {TZK_LANG_AT}, localize {TZK_LANG_OUR}, localize {TZK_LANG_SHORT_SUPPORT}]
+		, localize {TZK_LANG_DONT_USE}
+	], 0, format ["%1 %2", localize {TZK_LANG_REARM}, localize {TZK_LANG_PLACE}]] ];
 _type = _type + 1;
 aisAutoRearmRange = _type;
-aiSettingDefs set [_type, ["Rearm Range", aisAutoSupportRange, 9, "RearmRange"] ];
+aiSettingDefs set [_type, [format ["%1 %2", localize {TZK_LANG_REARM}, localize {TZK_LANG_RANGE}]
+	, aisAutoSupportRange, 9, format ["%1%2", localize {TZK_LANG_REARM}, localize {TZK_LANG_RANGE}]] ];
 _type = _type + 1;
 aisAutoRearmSabot = _type;
-aiSettingDefs set [_type, ["Rearm Sabot", ["0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"], 7, "Rearm Sabot"] ];
+aiSettingDefs set [_type, [format ["%1 %2", localize {TZK_LANG_REARM}, localize {TZK_LANG_SABOT}]
+	, ["0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"], 7
+	, format ["%1 %2", localize {TZK_LANG_REARM}, localize {TZK_LANG_SABOT}]
+]];
 _type = _type + 1;
 
 
 aisSuperior = _type;
-aiSettingDefs set [_type, ["Superior", ["Commander"] + callsigns, 0, "Superior"] ];
+aiSettingDefs set [_type, [localize {TZK_LANG_SUPERIOR}, [localize {TZK_LANG_COMMANDER}] + callsigns, 0, localize {TZK_LANG_SUPERIOR}] ];
 _type = _type + 1;
 
 aisGroupSize = _type;
-aiSettingDefs set [_type, ["Group Size", ["Default","1","2","3","4","5","6","7","8","9","10","11","12"], 0, "Group Size"] ];
+aiSettingDefs set [_type, [format ["%1 %2", localize {TZK_LANG_GROUP}, localize {TZK_LANG_SIZE}]
+	, [localize {TZK_LANG_DEFAULT},"1","2","3","4","5","6","7","8","9","10","11","12"], 0
+	, format ["%1 %2", localize {TZK_LANG_GROUP}, localize {TZK_LANG_SIZE}]
+]];
 _type = _type + 1;
 
 
 aisLockOrder = _type;
-aiSettingDefs set [_type, ["Lock Order", ["Unlock", "Lock"], 0, "Lock Order\Setting"] ];
+aiSettingDefs set [_type, [format ["%1 %2", localize {TZK_LANG_LOCK}, localize {TZK_LANG_ORDER}]
+	, [localize {TZK_LANG_UNLOCK}, localize {TZK_LANG_LOCK}], 0
+	, format ["%1 %2\%3", localize {TZK_LANG_LOCK}, localize {TZK_LANG_ORDER}, localize {TZK_LANG_SETTING}]
+]];
 _type = _type + 1;
 aisLockSetting = _type;
-aiSettingDefs set [_type, ["Lock Setting", ["Unlock", "Lock"], 0, ""] ];
+aiSettingDefs set [_type, [format ["%1 %2", localize {TZK_LANG_LOCK}, localize {TZK_LANG_SETTING}]
+	, [localize {TZK_LANG_UNLOCK}, localize {TZK_LANG_LOCK}], 0, ""
+]];
 _type = _type + 1;
 
 aisMoveMode = _type;
-aiSettingDefs set [_type, ["Move Mode", ["Default", "StepByStep"], 0, "Move Mode"] ];
+aiSettingDefs set [_type, [format ["%1 %2", localize {TZK_LANG_MOVE}, localize {TZK_LANG_MODE}]
+	, [localize {TZK_LANG_DEFAULT}, localize {TZK_LANG_STEP_BY_STEP}], 0
+	, format ["%1 %2", localize {TZK_LANG_MOVE}, localize {TZK_LANG_MODE}]
+]];
 _type = _type + 1;
 
 
