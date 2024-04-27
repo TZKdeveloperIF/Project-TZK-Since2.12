@@ -45,4 +45,11 @@ if _ret then {
 	_angle = ((_dest select 1) - (_posV select 1)) atan2 ((_dest select 0) - (_posV select 0));
 };
 
+if (_ret && _needAvoidStruct) then {
+	if (([_dest, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1 < 50) then {
+		_ret = false;
+		_msg = "Not allow shooting at position that near enemy base.";
+	};
+};
+
 _ret
