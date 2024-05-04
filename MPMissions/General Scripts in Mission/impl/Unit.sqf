@@ -30,6 +30,21 @@ _i = 0; _c = count TzkUnitSkillVal; while {_i < _c} do {
 	};
 	_entry set [udScripts, [localize {TZK_EQUIP_UNIT_TRUCK}]];
 } forEach [_boatCustomW, _boatCustomE];
+// Recover traditional MG for boats
+{
+	_entry = unitDefs select _x;
+	_i = (_entry select udScripts) find "\TZK_Scripts_4_0_6\Common\Equip\BoatWmg.sqs";
+	if (_i != -1) then {
+		_entry select udScripts set [_i, "Common\Equip\BoatWmg.sqs"];
+	};
+} forEach [_zodiacHW, _boatW, _boatsupW];
+{
+	_entry = unitDefs select _x;
+	_i = (_entry select udScripts) find "\TZK_Scripts_4_0_6\Common\Equip\BoatEmg.sqs";
+	if (_i != -1) then {
+		_entry select udScripts set [_i, "Common\Equip\BoatEmg.sqs"];
+	};
+} forEach [_zodiacHE, _boatE, _boatsupE];
 // Add HE cannon for FFAR APC
 _scripts = unitDefs select _m2a2d select udScripts;
 _scripts set [0, "Common\Equip\M2A2farr.sqs"];
