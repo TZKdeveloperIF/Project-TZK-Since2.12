@@ -31,7 +31,7 @@ if (_res select 0) then {
 		if (-1 == _structsEntry find objNull) then {
 			_ret = false;
 			_msg = format ["Structure Limit Reached (%1)", _limit];
-			if (dev && _structsEntry > _limit) then {
+			if (dev && count _structsEntry > _limit) then {
 				player groupChat format ["size: %1, alive objects: %2", count _structsEntry, {alive _x} count _structsEntry];
 			};
 		};
