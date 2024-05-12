@@ -17,7 +17,6 @@ if (not _processed && 0 == count _downBoardStack) then {
 	// buiding obstruction
 	ctrlSetText [_idcDownBtn0 + 2, localize {TZK_LANG_OBSTRUCT}];
 	{ctrlShow [_idcDownBtn0 + _x, true]} forEach [2];
-	_processed = true;
 
 	// mine area
 	if (isCommander || bIsAiSuperior) then {
@@ -30,4 +29,6 @@ if (not _processed && 0 == count _downBoardStack) then {
 	// buiding roof by area
 	ctrlSetText [_idcDownBtn0 + 5, localize {TZK_LANG_ROOF}];
 	{ctrlShow [_idcDownBtn0 + _x, true]} forEach [5];
+
+	_processed = true;
 };
