@@ -1,0 +1,46 @@
+; args: none
+; read info from "TzkRtsArea" marker
+_size = getMarkerSize "TzkRtsArea"
+_tooLargeHint = format ["%1 %2 %3. %4 %5 %6.", localize {TZK_LANG_AREA}, localize {TZK_LANG_TOO}, localize {TZK_LANG_BIG}, localize {TZK_LANG_ROOF}, localize {TZK_LANG_WONT}, localize {TZK_LANG_BUILT}]
+? _size select 0 > 500 || _size select 1 > 500: hint _tooLargeHint
+
+@ !mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "TzkRtsSubMenuOneListTiny"
+mutexDlg = false
+
+_roofTypes = [st10mHeightRoof, st20mHeightRoof]
+
+_idcTitle = IDC + 0; _idcListLabel = IDC + 16 * 3 + 1; _idcListBox0 = IDC + 16 * 3 + 0
+
+ctrlSetText [_idcTitle, localize {TZK_LANG_ROOF}]
+
+ctrlSetText [_idcListLabel, format ["%1 %2", localize {TZK_LANG_ROOF}, localize {TZK_LANG_TYPE}]]; lbClear _idcListBox0
+_i = 0, _c = count _roofTypes
+# InitialList
+	_entry = structDefs select (_roofTypes select _i)
+	_idx = lbAdd [_idcListBox0, _entry select sdName]
+	lbSetValue [_idcListBox0, _idx, _roofTypes select _i]
+	lbSetPicture [_idcListBox0, _idx, _entry select sdImage select siPlayer];
+
+	_i = _i + 1
+	? _i < _c: goto "InitialList"
+
+btnValue00 = false; btnValue01 = false
+
+# loop
+	~ 0.2
+	? call dlgUpdated: goto "Quit"
+	? not alive player: closeDialog 0; goto "Quit"
+
+	? btnValue00: btnValue00 = false; closeDialog 0; goto "Quit"
+	? btnValue01: btnValue01 = false; goto "OK"
+
+	goto "loop"
+# Quit
+	exit
+# OK
+	_val = lbCurSel _idcListBox0
+	? -1 == _val: hint "Not selected yet.", goto "loop"
+	(lbValue [_idcListBox0, _val]) exec "Player\Rts\BuildAreaRoof.sqs"
+	closeDialog 0; goto "Quit"
