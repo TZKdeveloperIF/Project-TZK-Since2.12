@@ -74,6 +74,54 @@ structDefs set [_type, [
 stBridge = _type;
 _type = _type + 1;
 
+_price = 100;
+_objects = [["roof_xj400", 0, [0,0,10]]];
+_image = [_texPath + "Image\Struct\Roof.jpg",_texPath + "Image\Struct\Roof.jpg"];
+structDefs set [_type, [
+	format ["%1 10m %2", localize {TZK_LANG_ROOF}, localize {TZK_LANG_HEIGHT}],
+	_price,
+	-1,
+	_image,
+	false,
+	false,
+	75, 1, 20, _objects, _objects,
+	[localize {TZK_SERVER_INIT_STRUCT_SEC}],
+	[]]
+];
+st10mHeightRoof = _type;
+_type = _type + 1;
+
+_price = 100;
+_objects = [["roof_xj400", 0, [0,0,20]]];
+_image = [_texPath + "Image\Struct\Roof.jpg",_texPath + "Image\Struct\Roof.jpg"];
+structDefs set [_type, [
+	format ["%1 20m %2", localize {TZK_LANG_ROOF}, localize {TZK_LANG_HEIGHT}],
+	_price,
+	-1,
+	_image,
+	false,
+	false,
+	75, 1, 20, _objects, _objects,
+	[localize {TZK_SERVER_INIT_STRUCT_SEC}],
+	[]]
+];
+st20mHeightRoof = _type;
+_type = _type + 1;
+
+// add to structsShelter
+structsShelter set [count structsShelter, st10mHeightRoof];
+structsShelter set [count structsShelter, st20mHeightRoof];
+
+// Support roof with multiple language
+structDefs select _roof set [sdName, localize {TZK_LANG_ROOF}];
+structDefs select _roofHigh set [sdName, format ["%1 %2", localize {TZK_LANG_HIGH}, localize {TZK_LANG_ROOF}]];
+// // Add count limit of roof
+// structDefs select _roof set [sdLimit, 75];
+// structDefs select _roofHigh set [sdLimit, 75];
+// // Reduce roof price
+// structDefs select _roof set [sdCost, 100];
+// structDefs select _roofHigh set [sdCost, 100];
+
 structsShelter set [count structsShelter, stWireFence];
 structsShelter set [count structsShelter, stGapGenerator];
 // [structsShelter, [stWireFence, stGapGenerator]] call preprocessFile "Util\ArrayAppend.sqf";
