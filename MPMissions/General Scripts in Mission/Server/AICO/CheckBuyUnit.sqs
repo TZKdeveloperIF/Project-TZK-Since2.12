@@ -84,7 +84,7 @@ _unitsBuy = []; _giInf = AICO_giInf select _si
 		_giJoin = _giInf select random count _giInf - 0.5
 		_slots = maxGroupSize - count units (groupMatrix select _si select _giJoin) - (groupUnitsBuildingMatrix select _si select _giJoin)
 		? _slots <= 0: _decideNum = _decideNum - 1; _buyMode = _bmSoldier; goto "CheckBuyUnit"
-		_unitsBuy = (unitsBuyAI select _si select utbinfAtI) + (unitsBuyAI select _si select utbinfAAATSnip)
+		_unitsBuy = (unitsBuyAI select _si select utbinfAtI) + (unitsBuyAI select _si select utbinfRPGLAW)
 		? bool_TZK_SEMod_Mode: _unitsBuy = unitsBuyAI select _si select utbInfMixed2
 		_buyNum = 4
 		; ask infantry group buy AA vehicle.
