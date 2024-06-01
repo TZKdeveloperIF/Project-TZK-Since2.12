@@ -93,6 +93,18 @@ typesRadarCar = [ _jeepRadarW, _uazRadarE ];
 // definition for crew/pilot
 typesCrew = [_crewW, _crewAAW, _pilotW, _crewE, _crewAAE, _pilotE];
 
+// Add utb global variable for AICO buy unit
+_ubaW = unitsBuyAI select si0;
+_i = 0; _c = count _ubaW; while {_i < _c} do {
+	if (_ubaW select _i select 0 select 0 == _mgW4) then {
+		utbInfMglv4 = _i;
+	};
+	if (_ubaW select _i select 0 select 0 == _atW4) then {
+		utbInfAtlv4 = _i;
+	};
+	_i = _i + 1;
+};
+
 // Ban mannual building orca since its ground radar not well-designed
 {
 	unitDefs select _x set [udFactoryType, -1];
