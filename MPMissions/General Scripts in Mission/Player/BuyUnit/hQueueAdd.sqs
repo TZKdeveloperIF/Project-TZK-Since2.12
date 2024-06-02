@@ -1,0 +1,40 @@
+; args: [value, value2, order count]
+
+_value = _this select 0
+
+_type = _value %  TotalUnitTypes 
+_value = (_value - _type) / TotalUnitTypes
+
+_id = _value
+
+_value = _this select 1
+
+_giBuyer = _value % GroupsNum
+_value = (_value - _giBuyer) / GroupsNum
+
+_giJoin = _value % GroupsNum
+_value = (_value - _giJoin) / GroupsNum
+
+_si = _value
+
+? _si != siPlayer || (_giBuyer != giPlayer && _giJoin != giPlayer) : exit
+
+_orderNum = _this select 2
+_i = 0; _j = 0
+_pushBack = preprocessFile "Algo\Vector\push_back.sqf"
+_qIdsData = qPplIds select 0
+_lambda = {if not (_this in _qIdsData) then {[qPplIds, _this] call _pushBack; [qPplTypes, _type] call _pushBack; _j = _j + 1}}
+
+@ not qPplMutex
+	qPplMutex = true
+
+	while {_i < _orderNum} do {(_id + _i) call _lambda; _i = _i + 1}
+	? _j > 0: qPplModified = true; qPplOpStat = qPplOpStat + _j
+
+	# unlock
+		qPplMutex = false
+
+; post process
+? _j <= 0: exit
+_unitName = if (_type >= maxUnitTypes) then {format ["cs%1", _type - maxUnitTypes]} else {unitDefs select _type select udName}
+player groupchat format ["Queued %1%2", _unitName, if (_j > 1) then {format [": %1", _j]} else {""}]

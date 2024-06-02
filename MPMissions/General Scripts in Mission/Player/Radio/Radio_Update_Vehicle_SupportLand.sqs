@@ -4,7 +4,7 @@ _vehicle = _this select 0
 
 _booleStringTransport = "_vehicle in TransportActivatedVehicles"; _booleTransport = call _booleStringTransport
 
-Radio001 setTriggerText format ["Turn %1 Extra Map Click", if bool_TZK_Ext_Cmd_Mode then {"OFF"} else {"ON"}]; Radio001 setTriggerStatements ["this", {bool_TZK_Ext_Cmd_Mode = not bool_TZK_Ext_Cmd_Mode}, ""];
+call preprocessFile "Player\Radio\Channel001_RtsMapMode.sqf";
 
 Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", {[] exec localize {TZK_DIALOG_TZK_SETTING_1}}, ""];
 ? bool_TZK_SEMod_Mode && "APC" countType [_vehicle] > 0: Radio003 setTriggerText "Entrench Tank ($1000)"; Radio003 setTriggerStatements ["this", {[vehicle player, player, [] ] exec "Extra\ppl\EntrenchTank.sqs"}, ""];

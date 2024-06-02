@@ -1,0 +1,24 @@
+; args: [clicked pos, unit type parameter]
+_pos = _this select 0
+_type = _this select 1
+? not (_type in utMortar): exit
+
+_res = [_pos, siPlayer, stComm] call funcGetClosestStructure
+_cc = _res select 0; _dist = _res select 1
+_netId = _cc call funcGenNetIdStr
+? isNull _cc || _dist > 500: hint "No available command center (within 500m). Soldier not deployed.", exit
+
+? not isCommander: hint "Only commander is allowed to do this."; exit
+
+? mutexRtsBaseSoldier: hint "Not available yet. Please wait a few more seconds.", exit
+
+@ not mutexRtsBaseSoldier
+	mutexRtsBaseSoldier = true
+
+	? isServer: [_pos, _cc, siPlayer, _type] call preprocessFile "Rts\Deploy\hBaseSoldier.sqf"
+	? not isServer: publicExec format [{[%1, UnitById %2, %3, %4] call preprocessFile "Rts\Deploy\hBaseSoldier.sqf"}, _pos, _netId, siPlayer, _type]
+
+	; CD 10 seconds as in barrack
+	~ 10
+
+	mutexRtsBaseSoldier = false

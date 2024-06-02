@@ -1,0 +1,20 @@
+; args: [_qid, _si]
+
+_qid = _this select 0
+_si = _this select 1
+
+? _si != siPlayer : exit
+
+@ not qPplMutex
+	qPplMutex = true
+
+	_data = qPplIds select 0
+	_i = _data find _qid
+	? -1 == _i: goto "unlock"
+	; remove element
+		_data set [_i, -1]
+		qPplModified = true
+		qPplOpStat = qPplOpStat - 1
+		? 0 == qPplOpStat: call preprocessFile "Player\BuyUnit\clearPplQueue.sqf"
+	# unlock
+		qPplMutex = false

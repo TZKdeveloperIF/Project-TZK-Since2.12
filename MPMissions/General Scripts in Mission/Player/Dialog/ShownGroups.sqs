@@ -8,7 +8,7 @@ mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
 _dlg = createDialog "TzkShownGroupMenu"
 mutexDlg = false
 
-_idcTitle = IDC + 0; ctrlSetText [_idcTitle, "Shown Groups"]
+_idcTitle = IDC + 0; ctrlSetText [_idcTitle, format ["%1 %2", localize {TZK_LANG_SHOWN}, localize {TZK_LANG_GROUP}]]
 _idcBtns = IDC + 16 * 5
 _idcBtnBg = IDC + 16 * 7
 
@@ -24,6 +24,8 @@ _i = 0; _c = count shownAiGis; while {_i < _c} do {btnValue02 set [shownAiGis se
 _i = count _groups; _c = 20; while {_i < _c} do {ctrlShow [_idcBtns + _i, false]; _i = _i + 1}
 _i = 0; _c = 20; while {_i < _c} do {ctrlShow [_idcBtnBg + _i, false]; _i = _i + 1}
 {ctrlShow [_idcBtnBg + _x, true]} forEach shownAiGis
+
+_haventClicked = true, _selectedAll = count shownAiGis == count _groups
 
 _i = 0;
 {ctrlSetText [_idcBtns + _i, format ["%1 %2", [name leader _x, "AI"] select (_x in _groupsAI), _groupsName select _i]]; _i = _i + 1} forEach _groups
@@ -47,15 +49,24 @@ _i = 0;
 	_i = 0; {shownAiGis set [_i, _i], _i = _i + 1} forEach _groups
 	{ctrlShow [_idcBtnBg + _x, true]} forEach shownAiGis
 	_i = 0; _c = count btnValue02; while {_i < _c} do {btnValue02 set [_i, true]; _i = _i + 1}
+	_haventClicked = false
 	goto "loop"
 # UnselectAll
 	shownAiGis resize 0
 	_i = 0; _c = count _groups; while {_i < _c} do {ctrlShow [_idcBtnBg + _i, false]; _i = _i + 1}
 	_i = 0; _c = count btnValue02; while {_i < _c} do {btnValue02 set [_i, false]; _i = _i + 1}
+	_haventClicked = false
 	goto "loop"
 # OnShownGroupsChanged
-	_i = 0; _c = count btnValue02
+	_c = count btnValue02
+	; If current clicking is the first time clicking, and on clicking all groups are shown,
+	; clicked group will remain shown and other groups will be hided
+	? _haventClicked && _selectedAll: _i = 0; while {_i < _c} do {btnValue02 set [_i, not(btnValue02 select _i)]; _i = _i + 1}
+
+	_i = 0
 	while {_i < _c} do {ctrlShow [_idcBtnBg + _i, btnValue02 select _i]; _i = _i + 1}
 	_i = 0; shownAiGis resize 0
 	while {_i < _c} do {if (btnValue02 select _i) then {shownAiGis set [count shownAiGis, _i]}; _i = _i + 1};
+
+	_haventClicked = false
 	goto "loop"

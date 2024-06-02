@@ -13,3 +13,9 @@ _isPlayerUnit = false
 ~ (_this select 3)
 ? not alive _unit || not alive _vehicle: unassignVehicle _unit; exit
 call format [{_unit assignAs%1 _vehicle, _unit moveIn%1 _vehicle}, _seat]
+
+? not _isPlayerUnit: exit
+~ 0.1
+_unit doFollow player
+~ 0.1
+doStop _unit

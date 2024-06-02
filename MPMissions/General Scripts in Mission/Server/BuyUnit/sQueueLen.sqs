@@ -1,0 +1,10 @@
+; args: [object, si, length]
+
+_obj = _this select 0
+_si = _this select 1
+_len = _this select 2
+
+_netIdStr = _obj call funcGenNetIdStr
+? isNull _obj || not alive _obj: exit
+[_obj, _si + 10 * _len] exec "Player\BuyUnit\hQueueLen.sqs"
+publicExec format [{[UnitById %1, %2] exec "Player\BuyUnit\hQueueLen.sqs"}, _netIdStr, _si + 10 * _len]

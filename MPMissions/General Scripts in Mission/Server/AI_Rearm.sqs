@@ -14,8 +14,10 @@ _support = _param select 5
 _nonAIgroup = if (count _param > 6) Then {_param select 6} Else {false}
 _bUseCommMoney = if (count _param > 7) Then {_param select 7} Else {false}
 
+[_si, _support] exec "Common\SubmitUseSupportVehicle.sqs"
+
 ? !alive _unit || !alive _vehicle: goto "Quit"
-? _nonAIgroup: if !([_unit, _si, _gi] call funcCheckRearm) Then {goto "Quit"}
+? _nonAIgroup: if (!([_unit, _si, _gi] call funcCheckRearm) && group _unit != (baseGroup select _si)) Then {goto "Quit"}
 ?!_nonAIgroup && _gi == -1: _gi = giCO select _si
 _timeRearm = 5
 ? _unit != _vehicle: _timeRearm = 30

@@ -20,8 +20,11 @@ _enum = _markerType call preprocessFile "Rts\Marker\EnumOfType.sqf"
 _cnt = count (TzkPplRtsAreaInfo select _enum)
 _updateList = preprocessFile "Rts\SubMenu\UpdateAreaListbox.sqf"
 
-ctrlSetText [_idcTitle, format ["Edit %1 %2 Area", _webType, _markerType]]
-ctrlSetText [_idcListLabel, "Areas"]
+ctrlSetText [_idcTitle, format ["%4 %1 %2 %3", _webType, _markerType, localize {TZK_LANG_AREA}, localize {TZK_LANG_EDIT}]]
+ctrlSetText [_idcListLabel, localize {TZK_LANG_AREA}]
+ctrlSetText [IDC + 1, format ["%1 %2", localize {TZK_LANG_SET}, localize {TZK_LANG_AREA}]]
+ctrlSetText [IDC + 2, localize {TZK_LANG_CLEAR}]
+ctrlSetText [IDC + 3, format ["%1 %2", localize {TZK_LANG_SET}, localize {TZK_LANG_LINE}]]
 
 [_idcListBox0, _markerType, _webShort, _cnt] call _updateList
 ? -1 != (call _cachedIdxName): lbSetCurSel [_idcListBox0, (call _cachedIdxName)]
@@ -42,6 +45,7 @@ _tooLargeHint = format ["Marker too large. Can't be set as %1 area.", _markerTyp
 	? btnValue00: btnValue00 = false; closeDialog 0; goto "Quit"
 	? btnValue01: btnValue01 = false; goto "Set"
 	? btnValue02: btnValue02 = false; goto "Clear"
+	? btnValue03: btnValue03 = false; goto "SetByLine"
 
 	goto "loop"
 # Quit
@@ -58,3 +62,18 @@ _tooLargeHint = format ["Marker too large. Can't be set as %1 area.", _markerTyp
 # Clear
 	? -1 == lbCurSel _idcListBox0: hint "No area selected."; goto "loop"
 	[lbCurSel _idcListBox0, _markerType, _toServer, _cachedIdxName] call preprocessFile "Rts\Marker\GenArea.sqf"; goto "loop"
+# SetByLine
+	? -1 == lbCurSel _idcListBox0: hint "No area selected."; goto "loop"
+	? _size select 0 > 200 || _size select 1 > 200: hint _tooLargeHint; goto "loop"
+
+	; treat the "line" as desired "area"
+	_w = (getMarkerSize "TzkRtsArea") select 0; _h = (getMarkerSize "TzkRtsArea") select 1
+	_len = sqrt(_w * _w + _h * _h)
+	; the "line" area has 3 meters height
+	_extraArg = [getMarkerPos "TzkRtsArea", [_len, 3], TzkDiagDir]
+
+	[100 + lbCurSel _idcListBox0, _markerType, _toServer, _cachedIdxName, _extraArg] call preprocessFile "Rts\Marker\GenArea.sqf"
+	; Clear selected area on setting marker
+	false call preprocessFile "Player\Rts\Area.sqf"
+	false call preprocessFile "Player\Rts\Selection.sqf"
+	closeDialog 0; goto "Quit"

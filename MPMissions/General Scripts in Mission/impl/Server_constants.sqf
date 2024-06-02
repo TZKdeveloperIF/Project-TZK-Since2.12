@@ -16,3 +16,9 @@ mutexBuildingQueue = [[], []];
 } forEach [si0, si1];
 // define mutex for reclaim
 mutexReclaim = false;
+// 4.0.6.70. Support vehicle and its last user
+TzkSupVehObjs = []; TzkSubVehUsers = []; mutexTzkSup = false;
+// 4.0.6.72. Each factory manage its own cancelled QID
+    factoryCancelledQid = [[], []];
+    // format of (executedOrderTimer select si): array of qid (work as key), array of [gi, unitsToBuild, timeStamp]
+    executedOrderTimer = [[[], []], [[], []]]; mutexEot = [false, false];

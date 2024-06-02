@@ -1,4 +1,4 @@
-; args: [units, true]
+; args: [units, turn on/off: bool, use big angle?: bool]
 _units = _this select 0
 
 @ not mutexAutoShoot
@@ -12,9 +12,9 @@ _units = _this select 0
 
 ; allow howitzer and structure do this
 _artType = [false, true, true, false, false]
-; don't use big angle
-; todo: since it's auto-track, it might be possible to support big angle
-_bigAglType = [false, false, false, false]
+; big angle info
+_useBigAngle = (if (count _this > 2) then {_this select 2} else {false})
+_bigAglType = [_useBigAngle, _useBigAngle, _useBigAngle, _useBigAngle]
 ; no suggested speed
 _suggestedSpeed = -1
 ; not area idx

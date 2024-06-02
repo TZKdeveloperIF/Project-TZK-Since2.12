@@ -10,7 +10,9 @@ _bTzkChn = bool_TZK_CHN_Lang; _bSettingDispInited = false
 _si = siPlayer
 _gi = -1
 
-btnSendOrder = false
+btnSendOrder = false; btnTemporaryOrder = false
+_idcConcurrentRts = IDC + 13
+ctrlShow [_idcConcurrentRts, not bool_TZK_Rts_Cmd_Mode]
 
 _idcCurrent = IDC+0
 _idcSettingLabel = IDC + 100
@@ -71,6 +73,8 @@ _checkAbModified = preprocessFile "Player\Dialog\AutoBuy_CheckModifyCombobox.sqf
 _updateFacPic = preprocessFile "Player\Dialog\pAbUpdateFactoryImage.sqf"
 _updateTypePic = preprocessFile "Player\Dialog\pAbUpdateTypeImage.sqf"
 	; initial of auto buy
+	ctrlSetText [_idcAbLabel + 0, format ["%1 %2 %3", localize {TZK_LANG_AUTO}, localize {TZK_LANG_BUY}, localize {TZK_LANG_FACTORIES}]]
+	ctrlSetText [_idcAbLabel + 1, format ["%1 %2 %3", localize {TZK_LANG_AUTO}, localize {TZK_LANG_BUY}, localize {TZK_LANG_TYPE}]]
 	{ctrlShow [_x, false]} foreach [_idcAbLabel, _idcAbLabel + 1]
 	{ctrlShow [_idcFactory + _x, false]; ctrlShow [_idcFacPic + _x, false]} forEach _facBias
 	{_bias = _x, {ctrlShow [_x + _bias, false]} forEach [_idcBuyType, _idcTypePic, _idcBuyNum]} forEach _typeBias
@@ -97,6 +101,7 @@ _updateTypePic = preprocessFile "Player\Dialog\pAbUpdateTypeImage.sqf"
 	? _set != -1 : goto "SendSetting"
 
 	? btnSendOrder: btnSendOrder = false; goto "SendOrder"
+	? btnTemporaryOrder: btnTemporaryOrder = false; goto "ConcurrentRts"
 
 	; ~0.2
 	goto "Update"
@@ -134,3 +139,9 @@ _updateTypePic = preprocessFile "Player\Dialog\pAbUpdateTypeImage.sqf"
 	? _gi == -1: [_si, giPlayer + GroupsNum, _selOrder, _params] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}
 	? _gi != -1: [_si, _gi, _selOrder, _params] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}
 	goto "Update"
+	
+# ConcurrentRts
+	closeDialog 0
+	; ~0.1
+	0 exec "Player\Dialog\ConcurrentRts.sqs"
+	exit

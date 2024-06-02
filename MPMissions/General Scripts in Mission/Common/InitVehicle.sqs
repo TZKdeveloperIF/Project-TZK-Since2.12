@@ -36,8 +36,6 @@ call preprocessFile "Common\Init\VehEhFire.sqf"
 
 ; Texture
 ? TheWorld != "C": [_vehicle, _type] exec "Common\Init\Texture.sqs"
-	; fix tos1 bug before 4.0.7 releases
-	? "TOS1_TZK_xj400" == _typeName: _vehicle setObjectTexture [(_typeName GetVehicleParamArray "hiddenSelections") find "tzk_tex_00", ""]
 
 #SkipClient
 

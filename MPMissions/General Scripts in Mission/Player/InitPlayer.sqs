@@ -23,8 +23,14 @@ vehiclesRearming = []
 shownAiGis = []; _i = 0
 {shownAiGis set [_i, _i], _i = _i + 1} forEach (groupMatrix select _si)
 
-qPlayer = []
-qLen = []; mutexqLen = false
+qPplIds = call preprocessFile "Algo\Vector\create.sqf"; 
+qPplTypes = call preprocessFile "Algo\Vector\create.sqf"
+qPplOpStat = 0; qPplModified = false; qPplMutex = false
+
+qLenFactories = call preprocessFile "Algo\Vector\create.sqf"
+qLenValues = call preprocessFile "Algo\Vector\create.sqf"
+mutexqLen = false
+
 lastSelectedFactory = [ [], [] ]
 
 timeLastPing = 30
@@ -63,15 +69,13 @@ Destruction_Undo1 = false
 
 wpPlayer = []
 _i = 0; while "_i < countWPPlayer" do { wpPlayer set [_i, [-1,-1]]; _i = _i + 1 } 
-; CO, WP
-indexWayPointSelected = [-1, -1], timeLastWaypointSet = 0
+; CO, WP, bind, bind (only CO/WP is meaningful)
+indexWayPointSelected = [-1, -1, -1, -1], timeLastWaypointSet = 0
 
 [_si] exec "Player\InitPlayer_Msg.sqs"
 
 ; 4.0.5.27
 bool_TZK_CHN_inited = false
-; 4.0.5.28
-Array_TZK_PlayerC4 = []
 ; Since 4.0.5.33. Confuser
 false exec "Common\Init\Confuser.sqs"
 
@@ -83,9 +87,10 @@ mutexBuildObstruct = false
 ; 4.0.6.40
 mutexGroupMemberChange = false
 mutexPplJoinRequest = false
-; 4.0.6.47
+; player config
 customInfEquipRate = 0.5
 call preprocessFile "Cfg\InitPlayerCfg.sqf"
+call preprocessFile "Cfg\InitPlayerSettingFromCfg.sqf"
 ; 4.0.6.62
 autoShootVehs = [], mutexAutoShoot = false;
 
@@ -153,6 +158,13 @@ _marker setMarkerPos ( [_posMhq, hiddenMarkerPos] select ((_i % 2) == 0) )
 0 exec localize {TZK_FUNC_DISPLAY_GAMEINFO}
 [] exec "\TZK_Scripts_4_0_6\Player\Init\CommanderUnit.sqs"
 ; [] exec "\TZK_Scripts_4_0_4\Player\Init\BuyList.sqs"
+
+? groupPlayer != groupCommander select siPlayer: goto "SkipInitialCmdRule"
+~ 1
+0 exec "RuleCmd\Dialog.sqs"
+~ 1
+@ !dialog
+# SkipInitialCmdRule
 
 ~15
 PlayMusic (Musics0 select music0); 0 FadeMusic 0.35

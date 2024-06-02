@@ -1,0 +1,6 @@
+; args: [si, string]
+_si = _this select 0
+_msg = _this select 1
+
+_this exec "Network\hSideMsg.sqs"
+publicExec format [{[%1, {%2}] exec "Network\hSideMsg.sqs"}, _si, _msg]

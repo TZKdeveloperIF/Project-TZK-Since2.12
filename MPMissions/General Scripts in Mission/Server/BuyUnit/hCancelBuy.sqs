@@ -1,0 +1,16 @@
+; args: [id, type + TotalUnitTypes * gi + TotalUnitTypes * GroupsNum * si]
+
+? not isServer: exit
+
+_qid = _this select 0; _value = _this select 1
+
+_type = _value %  TotalUnitTypes 
+_value = (_value - _type) / TotalUnitTypes
+
+_gi = _value % GroupsNum
+_value = (_value - _gi) / GroupsNum
+
+_si = _value
+
+[_qid, _si, 0] exec "Server\BuyUnit\sQueueRem.sqs"
+[_si, _qid, false] exec "Server\BuyUnit\SubmitOrderCancelled.sqs"

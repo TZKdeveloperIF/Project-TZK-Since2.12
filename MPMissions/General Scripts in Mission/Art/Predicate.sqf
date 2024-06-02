@@ -13,23 +13,26 @@ _i = 0; _period = 0; while {_i < 10 && _ret} do {
 		_calc = _calc - -100;
 		_bit = _calc % 2;
 		if (_ret && _bit > 0) then {
-			_msg = format ["Invalid initSpeed: %1. Switch another magazine please.", _speed];
+			_msg = format ["%2: %1. %3", _speed
+			, localize {TZK_LANG_INVALID_INITSPEED}
+			, localize {TZK_LANG_SWITCH_ANOTHER_MAG}
+		];
 			_ret = false;
 		};
 		_calc = _calc - _bit;
 		_bit = _calc % 4;
 		if (_ret && _bit > 0) then {
-			_msg = "Invalid delta height or distance. Reassign the target please.";
+			_msg = localize {TZK_LANG_INVALID_RANGE};
 			_ret = false;
 		};
 		_calc = _calc - _bit;
 		_bit = _calc % 8;
 		if (_ret && _bit > 0) then {
-			_msg = "Current parameters can't hit the target. Adjust the target or switch another mag please.";
+			_msg = localize {TZK_LANG_CANT_HIT};
 			_ret = false;
 		};
 		if _ret then {
-			_msg = "unexpected case.";
+			_msg = localize {TZK_LANG_UNEXPECTED_CASE};
 			_ret = false;
 		};
 	};
@@ -43,6 +46,13 @@ if _ret then {_elev = [_posV, _dest, _speed, _biggerAngle] call funcElevArt406};
 
 if _ret then {
 	_angle = ((_dest select 1) - (_posV select 1)) atan2 ((_dest select 0) - (_posV select 0));
+};
+
+if (_ret && _needAvoidStruct) then {
+	if (([_dest, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1 < 50) then {
+		_ret = false;
+		_msg = "Not allow shooting at position that near enemy base.";
+	};
 };
 
 _ret

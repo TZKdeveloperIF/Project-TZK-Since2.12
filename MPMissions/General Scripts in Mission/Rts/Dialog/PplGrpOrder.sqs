@@ -126,10 +126,10 @@ _selectedOrder = -1
 		? 2^0 == _btnVal && 8 == _downBoardStack select 0: [_units, true] exec "Player\RtsDeploy.sqs"; _return = true
 		? 2^1 == _btnVal && 8 == _downBoardStack select 0: [_units, false] exec "Player\RtsDeploy.sqs"; _return = true
 		? 2^2 == _btnVal && 8 == _downBoardStack select 0: [false, _units] exec "Rts\SubMenu\SwitchArtMag.sqs"; closeDialog 0; goto "Quit"
-
-		; todo: add button to AI rts dialog
+		; Art auto shoot
 		? 2^6 == _btnVal && 8 == _downBoardStack select 0: [_units, true] exec "Art\ExecAutoDetectPpl.sqs"; closeDialog 0; goto "Quit"
 		? 2^7 == _btnVal && 8 == _downBoardStack select 0: [_units, false] exec "Art\ExecAutoDetectPpl.sqs"; closeDialog 0; goto "Quit"
+		? 2^11 == _btnVal && 8 == _downBoardStack select 0: [_units, true, true] exec "Art\ExecAutoDetectPpl.sqs"; closeDialog 0; goto "Quit"
 
 		? 2^8 == _btnVal: _return = true
 
@@ -147,7 +147,7 @@ _selectedOrder = -1
 	? 6 == _val0: [false, _units] exec "Rts\SubMenu\SwitchSeat.sqs"; closeDialog 0; goto "Quit"
 	? 7 == _val0: [_units] exec "Join\Submenu\PplOrder.sqs"; closeDialog 0; goto "Quit"
 	
-	? 8 == _val0 || 9 == _val0 || 10 == _val0: if ((markerPos "TzkRtsAreadiagonal") select 0 == 0) then {hint "Please draw line first.", goto "Update"}
+	? 8 == _val0 || 9 == _val0 || 10 == _val0: if ((markerPos "TzkRtsAreadiagonal") select 0 == 0) then {hint localize {TZK_LANG_DRAW_LINE_FIRST}, goto "Update"}
 	? 8 == _val0: _units call preprocessFile "Rts\Order\CrossTheBridge.sqf"; closeDialog 0; goto "Quit"
 	? 9 == _val0: _units call preprocessFile "Rts\Order\ForceMoveLandVehicle.sqf"; closeDialog 0; goto "Quit"
 	? 10 == _val0: _units call preprocessFile "Rts\Order\ForceMoveShip.sqf"; closeDialog 0; goto "Quit"

@@ -1,0 +1,17 @@
+; args: [unit, initial position, si]
+? !isServer : exit
+
+_unit = _this select 0; _initPos = _this select 1; _si = _this select 2; _this = 0
+_initPos resize 2
+
+# loop
+	~ 10
+	? [getPosASL _unit, _initPos] call loadFile "Util\PosDistSquare.sqf" > 500 * 500: goto "Quit"
+	? not alive _unit: goto "Quit"
+	goto "loop"
+
+# Quit
+	? _unit != vehicle _unit: unassignVehicle _unit; _unit setPosASL getPosASL _unit
+	~ 0.5
+	? alive _unit: _unit setDamage 1
+	exit

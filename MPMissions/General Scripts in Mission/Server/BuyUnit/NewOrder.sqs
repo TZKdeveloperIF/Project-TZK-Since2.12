@@ -1,66 +1,85 @@
-; args: [typeUnit, driver, gunner, commander, si, giJoin, giBuyer, oFactory
-;		, nCustomWeapon?: number, order reference?: array]
-
+; args: [
+;	[typeUnit, driver, gunner, commander, si, giJoin, giBuyer, oFactory]
+;	, orderNumber?: number
+;	, nCustomWeapon?: number
+;	, order reference?: array
+; ]
 ; ============================ About order reference ======================
 ; Pass the queue item using "reference of array" in OFP script to caller.
 
-_type = _this select 0
-_driver = _this select 1
-_gunner = _this select 2
-_commander = _this select 3
-_si = _this select 4
-_giJoin = _this select 5
-_giBuyer = _this select 6
-_factory = _this select 7
-_nCustomWeapon = if (count _this > 8) then {_this select 8} else {-1}
+_orderDetail = _this select 0
+_type = _orderDetail select 0
+_driver = _orderDetail select 1
+_gunner = _orderDetail select 2
+_commander = _orderDetail select 3
+_si = _orderDetail select 4
+_giJoin = _orderDetail select 5
+_giBuyer = _orderDetail select 6
+_factory = _orderDetail select 7
+_orderNum = if (count _this > 1) then {_this select 1} else {1}
+_nCustomWeapon = if (count _this > 2) then {_this select 2} else {-1}
+
+; this index value should keep same as defined in "AI_Leader.sqs" 
+_idxOfOrderRef = 3
 
 _bVehicle = false
 ? _type < maxUnitTypes: if (count (unitDefs select _type select udCrew) > 0) then {_bVehicle = true}
-_unitsToBuild = 0
-? !_bVehicle: _unitsToBuild = 1
-? _bVehicle: _unitsToBuild = _driver; _unitsToBuild = _unitsToBuild + _gunner; _unitsToBuild = _unitsToBuild + _commander
+
+_eachOrderUnitCnt = 0
+? !_bVehicle: _eachOrderUnitCnt = 1
+? _bVehicle: _eachOrderUnitCnt = _driver; _eachOrderUnitCnt = _eachOrderUnitCnt + _gunner; _eachOrderUnitCnt = _eachOrderUnitCnt + _commander
 
 @ not (mutexBuildingQueue select _si select _giJoin)
 mutexBuildingQueue select _si set [_giJoin, true]
 
 _unitsInProgress = groupUnitsBuildingMatrix select _si select _giJoin
 _size = count units (groupMatrix select _si select _giJoin) + _unitsInProgress
-? (_unitsToBuild + _size > maxGroupSize): [_type, _si, _giBuyer, _giJoin] exec "\TZK_Scripts_4_0_6\Server\Info\GroupFull.sqs"; goto "Unlock"
+
+; -1 means "fill group to full"
+? -1 == _orderNum && _eachOrderUnitCnt <= 0: _orderNum = 1
+? -1 == _orderNum: _orderNum = ((maxGroupSize - _size) / _eachOrderUnitCnt) call loadFile "Math\Floor.sqf"
+? _orderNum > 1: _v = ((maxGroupSize - _size) / _eachOrderUnitCnt) call loadFile "Math\Floor.sqf"; if (_orderNum > _v) then {_orderNum = _v}
+? _orderNum < 0: "ERROR: unexpected order num in NewOrder" call fDebugLog; goto "Unlock"
+
+; FullCheck
+? 0 == _orderNum || _eachOrderUnitCnt * _orderNum + _size <= maxGroupSize: goto "FullChecked"
+	? _orderNum != 1: "WARNING: unexpected full in NewOrder" call fDebugLog
+	[_type, _si, _giBuyer, _giJoin] exec "\TZK_Scripts_4_0_6\Server\Info\GroupFull.sqs"
+	goto "Unlock"
+# FullChecked
 
 ? isNull _factory || !alive _factory: player globalchat "TODO: send factory destroyed message"; goto "Unlock"
 
 _queues = factoryQueues select _si
-_queue = -1
+_orders = -1
 _i = 0; _c = count _queues; _found = false; 
-while {_i < _c && !_found} do {if (_queues select _i select 0 == _factory) then {_queue = _queues select _i select 2; _found = true}; _i = _i + 1}
+while {_i < _c && !_found} do {if (_queues select _i select 0 == _factory) then {_orders = _queues select _i select 2; _found = true}; _i = _i + 1}
 ? !_found: "ERROR: factory not found in NewOrder.sqs" call fDebugLog; goto "Unlock"
 ? isNull _factory|| !alive _factory: "ERROR: factory dont work" call fDebugLog; goto "Unlock"
 
 _qid = qidNext select _si
-_qidNext = _qid + 1
-? _qidNext >= maxQ: _qidNext = 0
-qidNext set [_si, _qidNext]
-[_type, _si, _giBuyer, _giJoin, _qid, 1] exec "\TZK_Scripts_4_0_4\Server\SendQueueAdd.sqs"
-? count _queue != 1: goto "AddQueue"
+qidNext set [_si, _qid + _orderNum]
+
+[_type, _si, _giBuyer, _giJoin, _qid, _orderNum] exec "Server\BuyUnit\sQueueAdd.sqs"
+
+_size = _orders call preprocessFile "Algo\CirBuf\size.sqf"
+? _size != 1: goto "AddQueue"
 	@ !mutexbuildingInUse
 	mutexbuildingInUse = true
 	buildingsInUse set [count buildingsInUse, _factory]
 	mutexbuildingInUse = false
 # AddQueue
-_item = [_type, _driver, _gunner, _commander, _giJoin, _giBuyer, _qid, _nCustomWeapon]
-? count _this > 9: _this set [9, _item]
-_queue set [count _queue, _item]
+call preprocessFile "Server\BuyUnit\Add2FactoryQueue.sqf"
 
-? _type >= maxUnitTypes: _unitDesc = unitDefs select (utCustom select _si)
-? _type < maxUnitTypes: _unitDesc = unitDefs select _type
-
-_unitsBuilding = (groupUnitsBuildingMatrix select _si select _giJoin) + _unitsToBuild
+_unitsBuilding = (groupUnitsBuildingMatrix select _si select _giJoin) + _eachOrderUnitCnt * _orderNum
 groupUnitsBuildingMatrix select _si set [_giJoin, _unitsBuilding]
-qidToCancel select _si set [ _qid, [_giJoin, _unitsToBuild] ]
 
-[_factory, _si, (count _queue) + 1] exec "\TZK_Scripts_4_0_4\Server\SendQueueLength.sqs"
+; if factory is building, the queue length is building one and to be built ones
+; if factory isn't building, the queue length is just to be built ones, however this case won't last long
+; if factory is idle, the initial size is 0. otherwise in most cases the factory is building units
+[_factory, _si, 1 + (_size + _orderNum)] exec "Server\BuyUnit\sQueueLen.sqs"
 
 # Unlock
 ; invalidated the order
-? count _this > 9: if (count (_this select 9) == 0) then {_this set [9, [-1]]}
+? count _this > _idxOfOrderRef: if (count (_this select _idxOfOrderRef) == 0) then {_this set [_idxOfOrderRef, [-1]]}
 mutexBuildingQueue select _si set [_giJoin, false]; exit

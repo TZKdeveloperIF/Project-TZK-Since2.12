@@ -23,7 +23,7 @@ _msg = ""
 ? _unit == vehicle _unit: exit
 ? _unit != driver vehicle _unit: exit
 
-? [_unit, _bridge1] call funcDistH > 50 + 25: _unit groupChat "Too far away to the bridge. Order aborted.", exit
+? [_unit, _bridge1] call funcDistH > 50 + 25: _unit groupChat format ["%1 %2 %3 %4. %5", localize {TZK_LANG_TOO}, localize {TZK_LANG_FAR}, localize {TZK_LANG_TO}, localize {TZK_LANG_BRIDGE}, localize {TZK_LANG_ORDER_ABORTED}], exit
 
 _onBridge = preprocessFile "Util\Bridge\On.sqf"
 _vehicle = vehicle _unit
@@ -36,7 +36,7 @@ _vehicle doMove getPos _vehicle
 
 	_crews = crew _vehicle, _b = true, {if not (unitReady _x) then {_b = false}} forEach _crews
 	? not _b && 2 == _counter % 5: {_x doFollow leader _x} forEach _crews
-	? not _b && 19 == _counter % 20: _vehicle groupChat "Stuck in crossing bridge. Order 'fall back into formation' to free me."
+	? not _b && 19 == _counter % 20: _vehicle groupChat format ["%1 %2 %3 %4. %5 '%6' %7 %8 %9", localize {TZK_LANG_STUCK}, localize {TZK_LANG_IN}, localize {TZK_LANG_CROSS}, localize {TZK_LANG_BRIDGE}, localize {TZK_LANG_ORDER}, localize {STR_SENT_RETURN_TO_FORMATION_2}, localize {TZK_LANG_TO}, localize {TZK_LANG_FREE}, localize {TZK_LANG_ME}]
 	~ 0.5
 
 	? call _quitCond: goto "Quit"
@@ -56,7 +56,7 @@ _vehicle doMove getPos _vehicle
 		? _moveParamCache select 0: goto "loopMoveLand"
 
 # OnBridge1
-	_vehicle groupChat "Prepare to cross the bridge."
+	_vehicle groupChat format ["%1 %2 %3 %4.", localize {TZK_LANG_PREPARE}, localize {TZK_LANG_TO}, localize {TZK_LANG_CROSS}, localize {TZK_LANG_BRIDGE}]
 	_vehicle doWatch _pos2
 	_endPoints = _bridge2 call preprocessFile "Util\Bridge\EndPoints.sqf"
 	_endPoint = _endPoints select 0
@@ -71,7 +71,7 @@ _vehicle doMove getPos _vehicle
 		? call _quitCond: _moveParamCache set [1, false], goto "Quit"
 		? _moveParamCache select 0: goto "loopMoveBridge"
 	
-	_vehicle groupChat "Bridge crossed."
+	_vehicle groupChat format ["%1 %2.", localize {TZK_LANG_BRIDGE}, localize {TZK_LANG_CROSS}]
 
 ; LeaveTheBridge
 	_endPoint = [[_delta, 30] call funcVectorScale, getPosASL _vehicle] call funcVectorAdd

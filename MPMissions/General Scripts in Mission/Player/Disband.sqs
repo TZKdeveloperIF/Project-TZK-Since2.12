@@ -3,7 +3,8 @@ _units = _this
 ? count _units > 1 : _unitsToRemove = []; {if !(_x in units player) then { _unitsToRemove set [count _unitsToRemove, _x] } } forEach _units; _units = _units - _unitsToRemove
 
 _groups = [groupPlayer]
-? (groupCommander select siPlayer) in (groupAiMatrix select siPlayer): _groups = _groups + (groupAiMatrix select siPlayer) + (workerGroups select siPlayer), goto "SkipSuperiorCheck"
+_workerAndBaseGroup = (workerGroups select siPlayer) + [baseGroup select siPlayer]
+? (groupCommander select siPlayer) in (groupAiMatrix select siPlayer): _groups = _groups + (groupAiMatrix select siPlayer) + _workerAndBaseGroup, goto "SkipSuperiorCheck"
 ? giPlayer == giCO select siPlayer: _groups = (townGroups select siPlayer) + (groupMatrix select siPlayer) - (groupAiMatrix select siPlayer) - [groupPlayer], goto "SkipSuperiorCheck"
 
 _index = 0; _gis = []; _groupsAI = groupAiMatrix select siPlayer; _siGroups = groupMatrix select siPlayer; _groupNames = groupNameMatrix select siPlayer
@@ -43,7 +44,7 @@ _i = 0; _c = count _units; _multiDisband = _c > 1
 
 	; empty vehicle
 	? count _crew == 0 && (_u in ( mhq + (MCV select si0) + (MCV select si1) )) : player groupchat "You can't disband MHQ/MCV."; goto "CheckUnit"
-	? count _crew == 0 : player groupchat "Disbanding vehicle."; goto "SkipKill"
+	? count _crew == 0 : _u exec "Player\DisbandEmptyVehicle.sqs"; goto "CheckUnit"
 
 	; check if unit is allowed to be disband. Since TZK_2.0 the "Join" is allowed but in MP it sometimes meets error, thus commander should be able to command more groups
 	? giPlayer == giCO select siPlayer: if  ((group _u) in _groups) Then {player groupchat "You are not allowed to disband this unit."; goto "CheckUnit"}
@@ -57,7 +58,7 @@ _i = 0; _c = count _units; _multiDisband = _c > 1
 	~ _delay
 	# SkipKill
 	~_delay
-	? _u == leader _u && !((group _u) in (workerGroups select siPlayer)) : player groupchat "Leader has been killed but won't be deleted."; goto "CheckUnit"
+	? _u == leader _u && !((group _u) in (_workerAndBaseGroup)) : player groupchat "Leader has been killed but won't be deleted."; goto "CheckUnit"
 	deleteVehicle _u
 	goto "CheckUnit"
 

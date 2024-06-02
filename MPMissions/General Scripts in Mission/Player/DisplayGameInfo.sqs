@@ -16,7 +16,8 @@ _timeleft = format["%1 min", _timeleft - _timel]
 ? (restanksx == 4) : _textIncome = "HEAVY RESISTANCE"
 ? (restanksx == 5) : _textIncome = "DOOM"
 
-~2
+_delay = (if (time < 2 * 60) then {2} else {0})
+~ _delay
 
 _siEnemy = siEnemy select siPlayer
 _group = (groupMatrix select _siEnemy) select 0
@@ -34,14 +35,11 @@ _info = format["Don`t cry just play or disconnect\n\nGame Style:\n\nTime Left: %
 ;titleText [_info, "PLAIN DOWN", 2]
 hint _info
 
-_info = "Radio System available since TZK_2.12. You're free to press 0-0 to call channels in different vehicles. Press 0-0-2 to open the Setting Interface."
-? bool_TZK_199_Mode: _info = "Radio System available. You're free to press 0-0 to call channels in different vehicles. Press 0-0-2 to open the Setting Interface. However radio channels relying on triggers/sensors, which in 1.96 OFP or 1.99 ACWA is server-local and GLOBAL-effect. You must click the button in right-upper corner of Options dialog to turn ON the radio channels, and turn it OFF when you think necessary."
 ; ? ZeroTime == 4: _info = _info + " Time boost will start when 00:01:00. Prepare for your equipment please."
 
 @ (time > 5)
-_logic = "Logic" camCreate [0,0,0]; _logic globalChat _info; deleteVehicle _logic
 ; _info call funcSideMsg
 
 ; _credits = "WEST/EAST Players can ""Vote"" using ""Vote"" Button in the left of ""Options"" dialog.\nIn the first 5 minutes only commanders' votes are available."
-_credits = "Alt-Click and Shift-Alt-Click for RTS style interaction. See notepad for more info."
-TitleText[_credits, "Plain"]
+_credits = "Alt-Click and Shift-Alt-Click for RTS style interaction. See notepad for more info.\n\nRadio System available. You're free to press 0-0 to call channels in different vehicles.\n0-0-2 is always for TZK Setting Interface."
+TitleText [_credits, "Plain"]

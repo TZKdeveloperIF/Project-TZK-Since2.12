@@ -16,28 +16,32 @@ _cnt = count (TzkPplRtsAreaInfo select _enum)
 _updateList = preprocessFile "Rts\SubMenu\UpdateAreaListbox.sqf"
 
 _idcTitle = IDC + 16 * 3 + 0; _idcBtnLabel0 = IDC + 16 * 3 + 5; _idcBtnLabel1 = IDC + 16 * 3 + 6
-ctrlSetText [_idcBtnLabel0, "Type"]
-ctrlSetText [_idcBtnLabel1, "Big Angle"]
+ctrlSetText [_idcBtnLabel0, localize {TZK_LANG_TYPE}]
+ctrlSetText [_idcBtnLabel1, format ["%1 %2", localize {TZK_LANG_BIG}, localize {TZK_LANG_ANGLE}]]
 _idcBtn_0_0 = IDC + 16 * 5 + 0; _idcBtnBg_0_0 = IDC + 16 * 6 + 0;
 _idcBtn_1_0 = IDC + 16 * 5 + 8; _idcBtnBg_1_0 = IDC + 16 * 6 + 8;
-ctrlSetText [_idcTitle, "Shoot Area"]
-{ctrlSetText [_x, "Soldier"]} forEach [_idcBtn_0_0, _idcBtn_1_0]
-{ctrlSetText [_x, "Struct"]} forEach [_idcBtn_0_0 + 1, _idcBtn_1_0 + 1]
-{ctrlSetText [_x, "Howitzer"]} forEach [_idcBtn_0_0 + 2, _idcBtn_1_0 + 2]
-{ctrlSetText [_x, "MLRS"]} forEach [_idcBtn_0_0 + 3, _idcBtn_1_0 + 3]
-{ctrlSetText [_x, "Tank"]} forEach [_idcBtn_0_0 + 4]
+ctrlSetText [_idcTitle, format ["%1 %2", localize {TZK_LANG_SHOOT}, localize {TZK_LANG_AREA}]]
+{ctrlSetText [_x, localize {TZK_LANG_SOLDIER}]} forEach [_idcBtn_0_0, _idcBtn_1_0]
+{ctrlSetText [_x, localize {TZK_LANG_SHORT_STRUCTURE}]} forEach [_idcBtn_0_0 + 1, _idcBtn_1_0 + 1]
+{ctrlSetText [_x, localize {TZK_LANG_HOWITZER}]} forEach [_idcBtn_0_0 + 2, _idcBtn_1_0 + 2]
+{ctrlSetText [_x, localize {TZK_LANG_MULTIPLE_LAUNCH_ROCKET_SYSTEM}]} forEach [_idcBtn_0_0 + 3, _idcBtn_1_0 + 3]
+{ctrlSetText [_x, localize {TZK_LANG_TANK}]} forEach [_idcBtn_0_0 + 4]
 {_i = _x; {ctrlShow [_x + _i, false]} forEach [_idcBtnBg_0_0, _idcBtnBg_1_0]} forEach [0,1,2,3,4]
+
+_idcShootBtn0 = IDC + 16 * 3 + 8; _idcShootBtn1 = IDC + 16 * 3 + 9
+ctrlSetText [_idcShootBtn0, format ["%1 %2", localize {TZK_LANG_SHOOT}, localize {TZK_LANG_AREA}]]
+ctrlSetText [_idcShootBtn1, format ["%1 %2", localize {TZK_LANG_DDESTROY}, localize {TZK_LANG_OBSTRUCTION}]]
 
 _idcMlrsShootingCnt = IDC + 16 * 3 + 7
 
 _idcListLabel0 = IDC + 16 * 3 + 1; _idcListBox0 = IDC + 16 * 3 + 2
 _idcListLabel1 = IDC + 16 * 3 + 3; _idcListBox1 = IDC + 16 * 3 + 4
-ctrlSetText [_idcListLabel0, "Speed"]
-ctrlSetText [_idcListLabel1, "Art Area"]
+ctrlSetText [_idcListLabel0, localize {TZK_LANG_SPEED}]
+ctrlSetText [_idcListLabel1, format ["%1 %2", localize {TZK_LANG_SHORT_ARTILLERY}, localize {TZK_LANG_AREA}]]
 [_idcListBox1, _markerType, _webShort, _cnt] call _updateList
 ? -1 != (call _cachedIdxName): lbSetCurSel [_idcListBox1, (call _cachedIdxName)]
 
-_i = lbAdd [_idcListBox0, "Do nothing"]; lbSetValue [_idcListBox0, _i, -1]
+_i = lbAdd [_idcListBox0, format ["%1 %2", localize {TZK_LANG_DO}, localize {TZK_LANG_NOTHING}]]; lbSetValue [_idcListBox0, _i, -1]
 _i = lbAdd [_idcListBox0, "80"]; lbSetValue [_idcListBox0, _i, 80]
 _i = lbAdd [_idcListBox0, "120"]; lbSetValue [_idcListBox0, _i, 120]
 _i = lbAdd [_idcListBox0, "180"]; lbSetValue [_idcListBox0, _i, 180]

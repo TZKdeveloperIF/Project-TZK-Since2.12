@@ -52,7 +52,7 @@ if (not _processed) then {
 		_res = [siPlayer, _pos] call funcGetClosestUnit; 
 		_marker = if !bool_TZK_199_Mode Then {(_res select 0) call loadFile localize {TZK_FUNC_GET_UNIT_MARKER}} else {""};
 		_emptyvehicles = [_pos, siPlayer, [], []] call funcGetClosestVehicleEmpty;
-		if ( ([getMarkerPos _marker, _pos] call funcDistH < 50 || (_res select 1) < 50) && (group (_res select 0)) in ((groupMatrix select siPlayer) + (townGroups select siPlayer) + (workerGroups select siPlayer)) ) then {
+		if ( ([getMarkerPos _marker, _pos] call funcDistH < 50 || (_res select 1) < 50) && (group (_res select 0)) in (siPlayer call loadFile "Util\AccessableGroups.sqf") ) then {
 			if ( (_emptyvehicles select 1) < 3 ) then {
 				[_emptyvehicles select 0] exec localize {TZK_DIALOG_UNIT_CAM}; _processed = true
 			} else {[_res select 0] exec localize {TZK_DIALOG_UNIT_CAM}; _processed = true};
@@ -63,19 +63,19 @@ if (not _processed) then {
 		};
 	};
 	// smart wp
-	if (not _processed && _alt && not _shift && bool_TZK_Ext_Cmd_Mode && (count _units) == 0) then {
+	if (not _processed && _alt && not _shift && not bool_TZK_Rts_Map_Mode && (count _units) == 0) then {
 		[_pos] exec localize {TZK_FUNC_PLAYER_WP_SET_SMART};
 		_processed = true;
 	};
 	// alt + shift
 	if (not _processed && _alt && _shift) then {
 		// selected area && selected units
-		if (not _processed && TzkMapAreaCreated && count TzkSelectedUnits > 0) then {
+		if (not _processed && TzkMapAreaCreated && count (call preprocessFile "Rts\Ui\CurSelUnitArray.sqf") > 0) then {
 			[_pos, _units] exec "Rts\Dialog\RtsMap.sqs";
 			_processed = true;
 		};
 		// selected area && selected nothing
-		if (not _processed && TzkMapAreaCreated && count TzkSelectedUnits == 0) then {
+		if (not _processed && TzkMapAreaCreated && count (call preprocessFile "Rts\Ui\CurSelUnitArray.sqf") == 0) then {
 			[_pos, _units] exec "Rts\Dialog\AreaMap.sqs";
 			_processed = true;
 		};
@@ -99,7 +99,7 @@ if (not _processed) then {
 	};
 	// commander rts selection
 	// alt
-	if (not _processed && _alt && not _shift && not bool_TZK_Ext_Cmd_Mode && (count _units) == 0) then {
+	if (not _processed && _alt && not _shift && bool_TZK_Rts_Map_Mode && (count _units) == 0) then {
 		_pos call preprocessFile "Player\Rts\RtsMapCtrl.sqf";
 		_processed = true;
 	};

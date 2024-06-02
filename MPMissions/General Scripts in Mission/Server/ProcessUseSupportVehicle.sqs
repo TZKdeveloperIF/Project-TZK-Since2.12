@@ -1,0 +1,21 @@
+; args: [si, support vehicle]
+
+? not isServer: exit
+
+_si = _this select 0
+_vehicle = _this select 1
+? isNull _vehicle || not alive _vehicle: exit
+
+@ not mutexTzkSup
+	mutexTzkSup = true
+
+	_nullObjectIdx = TzkSupVehObjs find objNull
+	? -1 == _nullObjectIdx: _nullObjectIdx = count TzkSupVehObjs
+
+	_idx = TzkSupVehObjs find _vehicle
+	? -1 == _idx: _idx = _nullObjectIdx
+
+	TzkSupVehObjs set [_idx, _vehicle]
+	TzkSubVehUsers set [_idx, _si]
+
+	mutexTzkSup = false

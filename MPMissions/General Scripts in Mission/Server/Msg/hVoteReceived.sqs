@@ -1,8 +1,7 @@
 ; args: [value0]
 _value0 = _this select 0
 
-; Broadcast to show "vote received"
-[_value0] exec "\TZK_Scripts_4_0_4\Server\Msg\sVoteReceived.sqs"
+_input = _value0
 
 _si = _value0 % 2
 _value0 = (_value0 - _si)/2
@@ -21,6 +20,12 @@ _entry = Vote_Result select _item_Index
 ; Calculate vote result
 _mass_Vote = 0; _mass_Total = 0;
 call loadFile "\TZK_Scripts_4_0_4\Server\Msg\fVoteCalculate.sqf"
+
+; Broadcast to show "vote received"
+_param = [_input, _mass_Vote, _mass_Total, voteRate]
+_param exec "Network\hOnPlayerVoted.sqs"
+publicExec format [{%1 exec "Network\hOnPlayerVoted.sqs"}, _param]
+
 ? _mass_Vote/_mass_Total > voteRate: [_item_Index, _item_Value] exec "Server\Vote\Vote_Effect.sqs"
 
 ; EOF

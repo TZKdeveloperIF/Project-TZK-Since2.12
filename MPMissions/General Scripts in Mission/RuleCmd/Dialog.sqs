@@ -1,0 +1,56 @@
+; args: none
+
+@!mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "CmdRuleMenu"
+mutexDlg = false
+
+_si = siPlayer
+_gi = giPlayer
+
+_idcAdmin = IDC + 0; _idcNextPage = IDC + 1
+_idcItems = IDC + 100
+_idcSelections = IDC + 200
+_idcResult = IDC + 300
+_idcConfirmBtn = IDC + 400
+btnValue00 = -1; btnValue01 = -1
+
+; Init
+ctrlSetText [IDC + 500 + 0, format ["%1 %2", localize {TZK_LANG_VOTE}, localize {TZK_LANG_MENU}]]
+ctrlSetText [IDC + 500 + 2, localize {TZK_LANG_RESULT}]
+ctrlSetText [IDC + 500 + 3, format ["%1 %2", localize {TZK_LANG_YOUR}, localize {TZK_LANG_VOTE}]]
+ctrlSetText [IDC + 500 + 4, localize {TZK_LANG_CONFIRM}]
+
+; no admin button
+ctrlShow [_idcAdmin, false]; 
+
+ctrlShow [_idcNextPage, false]
+
+call preprocessFile "RuleCmd\DlgInit.sqf"
+ctrlShow [IDC_DialogBG_Light, !bool_TZK_DarkSkin]
+
+ _page = 0; _itemCnt = count TzkCmdRules
+# Update
+	? call dlgUpdated: exit
+	? !(alive player): closeDialog 0; exit
+
+	; ctrlSetText [_idcAdmin, ["Admin OFF", "Admin ON"] select pvVoteAdmin]
+	? btnValue00 > 0: _j = btnValue00, btnValue00 = -1, goto "StartVote"
+	; ? btnValue01 > 0: btnValue01 = -1, _page = (_page + 1) % TZK_Vote_Pages, call preprocessFile "Player\Dialog\VoteMenu_Init.sqf"
+	_j = 0 + _page * _itemCnt; _k = 0; _lines = count Vote_Matrix
+	# LoopLine
+		ctrlSetText [_idcResult + _k, format ["%1", TzkCmdRules select _j select 2]];
+		_j = _j + 1; _k = _k + 1
+		? _j < _lines && _k < _itemCnt: goto "LoopLine"
+
+	~ 0.2
+	goto "Update"
+# StartVote
+	? not isCommander && (siEnemy select siPlayer) call preprocessFile "Util\IsHumanCommander.sqf": hint "Only commander in PVP can modify the rule!", goto "Update"
+
+	_digit = log _j / log 2; _integral = _digit - _digit % 1;
+	if (_j >= 2^(_integral + 1)) then {_digit = _integral + 1} else {_digit = _integral}; _j = _digit
+	? _j < 0: goto "Update"
+	_idc = _idcSelections
+	? lbCurSel (_idc + _j) >= 0: [_si, _j + _page * _itemCnt, lbCurSel (_idc + _j)] exec "Network\sOnRuleCmdVotes.sqs"
+	goto "Update"

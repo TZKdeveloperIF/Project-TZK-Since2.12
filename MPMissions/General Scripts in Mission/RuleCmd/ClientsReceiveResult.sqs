@@ -1,0 +1,16 @@
+; args: [item, value, show message]
+_item = _this select 0
+_newVal = _this select 1
+_display = _this select 2
+
+; element format: [rule name, [west cmd opinion, east cmd opinion], result]
+_entry = TzkCmdRules select _item
+
+_curVal = _entry select 2
+? _display: format [{CMD %3 "%1" %4 %5 %2}, _entry select 0, _newVal, localize {TZK_LANG_RULE}, localize {TZK_LANG_CHANGE}, localize {TZK_LANG_TO}] exec "Util\GlobalMsg.sqs"
+
+TzkCmdRules select _item set [2, _newVal]
+; In initialization phase, result means also opinions
+; After game begun, result change if and only if both sides' commander have same opinion
+; Thus in all cases receiving result should also update opinion, same as the result
+{TzkCmdRules select _item select 1 set [_x, _newVal]} forEach [0,1]

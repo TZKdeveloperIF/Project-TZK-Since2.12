@@ -9,7 +9,7 @@ _hasGunner = (typeOf _vehicle GetVehicleParam "hasGunner") in ["1", "true"]
 ? _hasGunner : _booleStringSwitchDriver = "abs(speed _vehicle) < 50 && player == gunner _vehicle && (isNull driver _vehicle || local driver _vehicle) && local _vehicle"; _booleSwitchDriver = call _booleStringSwitchDriver
 ? _hasGunner : _booleStringSwitchGunner = "abs(speed _vehicle) < 50 && player == driver _vehicle && (isNull gunner _vehicle || local gunner _vehicle) && local _vehicle"; _booleSwitchGunner = call _booleStringSwitchGunner
 
-Radio001 setTriggerText format ["Turn %1 Extra Map Click", if bool_TZK_Ext_Cmd_Mode then {"OFF"} else {"ON"}]; Radio001 setTriggerStatements ["this", {bool_TZK_Ext_Cmd_Mode = not bool_TZK_Ext_Cmd_Mode}, ""];
+call preprocessFile "Player\Radio\Channel001_RtsMapMode.sqf";
 
 Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", {[] exec localize {TZK_DIALOG_TZK_SETTING_1}}, ""];
 
