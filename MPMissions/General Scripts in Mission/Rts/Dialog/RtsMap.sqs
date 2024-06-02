@@ -22,39 +22,42 @@ _idcLeftDownBtn0 = IDC + 16 * 12 + 0
 _cache0 = []; _cache1 = []; _cacheText1 = []; _btnVal = -1
 _level = TzkSelStackIdx
 ; Remove dead units in selected array
-_level call preprocessFile "Player\Rts\RemoveDeadSelectedUnit.sqf"
+((call preprocessFile "Rts\Ui\CurSelUnitStack.sqf") select _level) call preprocessFile "Player\Rts\RemoveDeadSelectedUnit.sqf"
 if (1 == _level) then {_btnVal = TzkSelLv1Btn}; if (2 == _level) then {_btnVal = TzkSelLv2Btn}
 [_idcLeftDownBtn0, _level, _btnVal] call preprocessFile "Rts\Dialog\UpdateRtsDlgType.sqf"
 
 btnValue00 = -1; btnValue01 = 0; btnValue02 = 0; btnValue03 = 0
 btnFirstCtrl = false
-ctrlSetText [IDC + 16 * 32 + 2, "Area"]
+ctrlSetText [IDC + 16 * 32 + 2, localize {TZK_LANG_AREA}]
 btnFunction = 0
 
 ; left board
 ; { ctrlShow [_x, false] } forEach []
-ctrlSetText [_idcLeftBtn0, "Move"]
-ctrlSetText [_idcLeftBtn0 + 1, "Clear Rts Order"]
-ctrlSetText [_idcLeftBtn0 + 13, "Stop"]
+ctrlSetText [_idcLeftBtn0, localize {TZK_LANG_MOVE}]
+ctrlSetText [_idcLeftBtn0 + 1, format ["%1 RTS %2", localize {TZK_LANG_CLEAR}, localize {TZK_LANG_ORDER}]]
+ctrlSetText [_idcLeftBtn0 + 13, localize {TZK_LANG_STOP}]
 
-ctrlSetText [_idcLeftBtn0 + 2, "Shoot Area"]
-ctrlSetText [_idcLeftBtn0 + 3, "Move and Shoot"]
-ctrlSetText [_idcLeftBtn0 + 4, "Board"]
-ctrlSetText [_idcLeftBtn0 + 5, "Occupy"]
-ctrlSetText [_idcLeftBtn0 + 6, "Land"]
-ctrlSetText [_idcLeftBtn0 + 7, "Reclaim"]
+ctrlSetText [_idcLeftBtn0 + 2, localize {TZK_LANG_SHOOT} + " " + localize {TZK_LANG_AREA}]
+ctrlSetText [_idcLeftBtn0 + 3, format ["%1 %2 %3", localize {TZK_LANG_MOVE}, localize {TZK_LANG_AND}, localize {TZK_LANG_SHOOT}]]
+ctrlSetText [_idcLeftBtn0 + 4, localize {TZK_LANG_BOARD}]
+ctrlSetText [_idcLeftBtn0 + 5, localize {TZK_LANG_OCCUPY}]
+ctrlSetText [_idcLeftBtn0 + 6, localize {TZK_LANG_HELICOPTER_LAND}]
+ctrlSetText [_idcLeftBtn0 + 7, localize {TZK_LANG_RECLAIM}]
 
-ctrlSetText [_idcLeftBtn0 + 8, "Mine Area"]
-ctrlSetText [_idcLeftBtn0 + 9, "Disable Mine"]
+ctrlSetText [_idcLeftBtn0 + 8, format ["%1 %2", localize {TZK_LANG_MINE}, localize {TZK_LANG_AREA}]]
+ctrlSetText [_idcLeftBtn0 + 9, format ["%1 %2", localize {TZK_LANG_DISABLE}, localize {TZK_LANG_MINE}]]
 
-ctrlSetText [_idcLeftBtn0 + 10, "Repair"]
-ctrlSetText [_idcLeftBtn0 + 11, "Rearm"]
+ctrlSetText [_idcLeftBtn0 + 10, localize {TZK_LANG_REPAIR}]
+ctrlSetText [_idcLeftBtn0 + 11, localize {TZK_LANG_REARM}]
 
 ; down board
 _downBoardStack = []
 call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 
 ; false call preprocessFile "Rts\Dialog\InitSilider.sqf"
+
+btnValue05 = -1;
+(IDC + 16 * 19) call preprocessFile "Rts\Dialog\InitSelClassificationBtns.sqf"
 
 # Update
 	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
@@ -65,6 +68,7 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 	? btnValue01 > 0: _btnVal = btnValue01; btnValue01 = 0; goto "DownBtn"
 	? btnValue02 > 0: _btnVal = btnValue02; btnValue02 = 0; goto "LeftDownBtn"
 	? btnValue03 > 0: _btnVal = btnValue03; btnValue03 = 0; goto "RightDownBtn"
+	? btnValue05 >= 0: _btnVal = btnValue05; btnValue05 = -1; goto "SwitchClassification"
 	? btnFirstCtrl: btnFirstCtrl = false; goto "FirstCtrl"
 	? btnFunction > 0: _btnFnc = btnFunction, btnFunction = 0, goto "FunctionalBtns"
 
@@ -144,6 +148,10 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 		? 2^0 == _btnVal && 8 == _downBoardStack select 0: true exec "Rts\Trigger\sDeploy.sqs"; _return = true
 		? 2^1 == _btnVal && 8 == _downBoardStack select 0: false exec "Rts\Trigger\sDeploy.sqs"; _return = true
 		? 2^2 == _btnVal && 8 == _downBoardStack select 0: [true] exec "Rts\SubMenu\SwitchArtMag.sqs"; _return = true
+		; todo: realize it for AI groups
+		? 2^6 == _btnVal && 8 == _downBoardStack select 0: hint "Not realized yet."; goto "Update"
+		? 2^7 == _btnVal && 8 == _downBoardStack select 0: hint "Not realized yet."; goto "Update"
+		? 2^11 == _btnVal && 8 == _downBoardStack select 0: hint "Not realized yet."; goto "Update"
 
 		? 2^8 == _btnVal: _return = true
 
@@ -151,10 +159,18 @@ call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
 		~ 0.1
 		goto "Update"
 # LeftDownBtn
+	; disable type switch when selecting non-AI group uints
+	? 0 != TzkRtsSelectEnum: goto "Update"
+
 	if (2^8 == _btnVal) then {_level = _level - 1} else {_level = _level + 1}
-	_level call preprocessFile "Player\Rts\RemoveDeadSelectedUnit.sqf"
+	((call preprocessFile "Rts\Ui\CurSelUnitStack.sqf") select _level) call preprocessFile "Player\Rts\RemoveDeadSelectedUnit.sqf"
 	[_idcLeftDownBtn0, _level, _btnVal] call preprocessFile "Rts\Dialog\UpdateRtsDlgType.sqf"
 	goto "Update"
 # RightDownBtn
 	? _btnVal > 0: call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
 	goto "Update"
+# SwitchClassification
+	? _btnVal == TzkRtsSelectEnum: hint "Exception caught."; goto "Update"
+
+	TzkRtsSelectEnum = _btnVal
+	_this exec "Rts\Dialog\RtsMap.sqs"; closeDialog 0; goto "Quit"

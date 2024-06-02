@@ -1,0 +1,12 @@
+; args: [expression: string, si, gi]
+; expression should contains global variable only
+
+? not dev: exit
+
+? not isServer: exit
+
+_exp = _this select 0; _si = _this select 1; _gi = _this select 2
+
+? not isNull player: if (_si == siPlayer && _gi == giPlayer) then {format [{"%1": %2}, _exp, call _exp] exec "Util\GlobalMsg.sqs"; exit}
+
+publicExec format [{if (%2 == siPlayer && %3 == giPlayer) then {{%1} exec "Util\GlobalMsg.sqs"}}, format [{"%1": %2}, _exp, call _exp], _si, _gi]

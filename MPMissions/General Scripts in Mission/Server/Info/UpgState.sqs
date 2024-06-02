@@ -1,13 +1,15 @@
-; args: [si, upg, state]
+; args: [si, upg, state, cancelled?: bool]
 
 _si = _this select 0
 _upg = _this select 1
 _state = _this select 2
+_cancelled = (if (count _this > 3) then {_this select 3} else {false})
 
 _value = mtUpgState
 _value = _value + TotalInfoTypes*_upg
 _value = _value + TotalInfoTypes*(count upgDefs)*_state
 _value = _value + TotalInfoTypes*(count upgDefs)*3*_si
+_value = _value + TotalInfoTypes*(count upgDefs)*3 *2 * (if _cancelled then {1} else {0})
 
 [_value] exec localize {TZK_MSG_SERVER_SEND_INFO}
 

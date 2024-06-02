@@ -12,6 +12,11 @@ _remote = false
 
 _factoryCache = [[], -1], _factories = _factoryCache select 0
 _funcAvailableStruct = preprocessFile "Player\Dialog\BuyUnitsAvailFactories.sqf"
+_assultAircraftCache = typesGunshipOrigin + typesGunshipAT + typesKa50 + (typesBattlePlane - typesGunPlane)
+_transportAirCache = (airTransport select si0) + (airTransport select si1)
+
+_funcGetQueueLen = preprocessFile "Player\Dialog\BU_GetQueueLen.sqf"
+_initPplQueue = true
 
 _unit = player
 _delay = 0.2
@@ -24,8 +29,6 @@ _nameFactory = "Buy Units"
 
 nShow = 2
 _nShow = nShow
-
-_qPlayer = []
 
 ? (!_remote): _nameFactory = (structDefs select _typeFactory) select sdName
 
@@ -109,7 +112,7 @@ mutexDlg = false
 	? !_remote && !(alive _factory): goto "Quit"
 	? call dlgUpdated: goto "Quit"
 	
-	? !_remote : _qLen = _factory call funcGetQueueLength; if (_qLen > 0) then { ctrlSetText[_idcInUse, format["Q %1", _qLen] ] } else { ctrlSetText[_idcInUse, ""] }
+	? !_remote : _qLen = _factory call _funcGetQueueLen; ctrlSetText[_idcInUse, if (_qLen > 0) then {format ["Q %1", _qLen]} else {""}]
 	
 	_money = _groupsMoney select giPlayer
 	_text = format ["$%1", _money]
@@ -121,7 +124,7 @@ mutexDlg = false
 
 	_lastSelQID = -1
 	? (lbCurSel _idcQueue) < (lbSize _idcQueue) : _lastSelQID = lbValue [_idcQueue, lbCurSel _idcQueue]
-	? (count _qPlayer) != (count qPlayer) : _qPlayer = [_idcQueue, _lastSelQID] call loadFile "\TZK_Scripts_4_0_4\Player\Dialog\BuyUnits_Queue.sqf"
+	? qPplModified || _initPplQueue: qPplModified = false; _initPplQueue = false; [_idcQueue, _lastSelQID] call preprocessFile "Player\Dialog\BuyUnits_Queue.sqf"
 
 	#InitGroupList
 	_gis = ([_si] call funcGetAIGroupsIndex)
@@ -207,6 +210,11 @@ mutexDlg = false
 
 #Buy
 	? (_typeUnit == -1): Hint "No Unit Selected"; goto "Update"
+	
+	; type-rule check
+	_allowed = _typeUnit call preprocessFile "Player\Dialog\BU_CmdRule.sqf"
+	? not _allowed: goto "Update"
+
 	? groupPlayer != (groupCommander select siPlayer) && _selectedGroup != giPlayer : if !((_groups select _selectedGroup) in _groupsAI) then {Hint "Only Commander can buy units for player"; goto "Update"}; if ((["Commander"] + callsigns) select ( ((aiSetting select _si) select _selectedGroup) select aisSuperior ) != _groupNames select giPlayer) then {Hint "You are not the superior of this AI group"; goto "Update"}
 	? _typeUnit >= maxUnitTypes && _selectedGroup != giPlayer : hint "Custom soldiers can only be bought for player group"; goto "Update"
 	? (_money < _cost): Hint format["Not Enough Money\nCost %1\nNeed %2", _cost, _cost - _money]; goto "Update"
@@ -215,19 +223,31 @@ mutexDlg = false
 	? _remote && _factoryIndex == -1: Hint "No Factory Selected"; goto "Update"
 	? _remote: _factory = _factories select _factoryIndex
 
-	? -1 == _enum: [_typeUnit, 0, 0, 0, _selectedGroup, _factory] exec "Player\Msg\sBuyUnit.sqs"
-	; extra info: selected equipment index (in predefined array)
-	? -1 != _enum: [_typeUnit, 0, 0, 0, _selectedGroup, _factory, -1 != lbCurSel _idcEquipList, lbValue [_idcEquipList, lbCurSel _idcEquipList]] exec "Player\Msg\sBuyUnit.sqs"
+	_allowed = [_typeUnit, _factory] call preprocessFile "Player\Dialog\BU_CmdRule2.sqf"
+	? not _allowed: goto "Update"
 
-	? bFactoryBuy4 : {[_typeUnit, 0, 0, 0, _selectedGroup, _factory] exec "Player\Msg\sBuyUnit.sqs"} forEach [1,2,3]
-	? bFactoryBuy3 : {[_typeUnit, 0, 0, 0, _selectedGroup, _factory] exec "Player\Msg\sBuyUnit.sqs"} forEach [1,2]
-	? bFactoryBuy5 : {[_typeUnit, 0, 0, 0, _selectedGroup, _factory] exec "Player\Msg\sBuyUnit.sqs"} forEach [1,2,3,4]
-	? bFactoryBuyFull : _i = 1; while "_i<(maxGroupSize-_size)" do {_i = _i + 1; [_typeUnit, 0, 0, 0, _selectedGroup, _factory] exec "Player\Msg\sBuyUnit.sqs"}
+	_generalBuyCnt = 0
+	? -1 == _enum: _generalBuyCnt = 1
+	; extra info: selected equipment index (in predefined array)
+	? -1 != _enum: [[_typeUnit, 0, 0, 0, _selectedGroup, _factory], 1, [-1 != lbCurSel _idcEquipList, lbValue [_idcEquipList, lbCurSel _idcEquipList]]] exec "Player\Msg\sBuyUnit.sqs"
+
+	? bFactoryBuy4: _generalBuyCnt = 4
+	? bFactoryBuy3: _generalBuyCnt = 3
+	? bFactoryBuy5: _generalBuyCnt = 5
+	? bFactoryBuyFull: _generalBuyCnt = -1
+
+	? _generalBuyCnt != 0: [[_typeUnit, 0, 0, 0, _selectedGroup, _factory], _generalBuyCnt] exec "Player\Msg\sBuyUnit.sqs"
+
 	bFactoryBuy4 = false; bFactoryBuyFull = false; bFactoryBuy3 = false; bFactoryBuy5 = false
 	goto "Update"
 
 #BuyManned
 	? (_typeUnit == -1): Hint "No Unit Selected"; goto "Update"
+	
+	; type-rule check
+	_allowed = _typeUnit call preprocessFile "Player\Dialog\BU_CmdRule.sqf"
+	? not _allowed: goto "Update"
+
 	? groupPlayer != (groupCommander select siPlayer) && _selectedGroup != giPlayer : if !((_groups select _selectedGroup) in _groupsAI) then {Hint "Only Commander can buy units for player"; goto "Update"}; if ((["Commander"] + callsigns) select ( ((aiSetting select _si) select _selectedGroup) select aisSuperior ) != _groupNames select giPlayer) then {Hint "You are not the superior of this AI group"; goto "Update"}
 	? (_money < _costManned): Hint format["Not Enough Money\nCost %1\nNeed %2", _costManned, _costManned - _money]; goto "Update"
 	_unitsToBuild = 0
@@ -244,18 +264,24 @@ mutexDlg = false
 	? _remote && _factoryIndex == -1: Hint "No Factory Selected"; goto "Update"
 	? _remote: _factory = _factories select _factoryIndex
 
-	? -1 == _enum: [_typeUnit, _driver, _gunner, _commander, _selectedGroup, _factory] exec "Player\Msg\sBuyUnit.sqs"
-	? -1 != _enum: [_typeUnit, _driver, _gunner, _commander, _selectedGroup, _factory, -1 != lbCurSel _idcEquipList, lbValue [_idcEquipList, lbCurSel _idcEquipList]] exec "Player\Msg\sBuyUnit.sqs"
+	_allowed = [_typeUnit, _factory] call preprocessFile "Player\Dialog\BU_CmdRule2.sqf"
+	? not _allowed: goto "Update"
+
+	? -1 == _enum: [[_typeUnit, _driver, _gunner, _commander, _selectedGroup, _factory]] exec "Player\Msg\sBuyUnit.sqs"
+	? -1 != _enum: [[_typeUnit, _driver, _gunner, _commander, _selectedGroup, _factory], 1, [-1 != lbCurSel _idcEquipList, lbValue [_idcEquipList, lbCurSel _idcEquipList]]] exec "Player\Msg\sBuyUnit.sqs"
 	goto "Update"
 
 #Cancel
 	_lastSelQID = -1
 	? (lbCurSel _idcQueue) < (lbSize _idcQueue) : _lastSelQID = lbValue [_idcQueue, lbCurSel _idcQueue]
-	? _lastSelQID != -1 : [_lastSelQID, 0] exec "\TZK_Scripts_4_0_4\Player\SendCancelBuy.sqs"
+	? _lastSelQID != -1 : [_lastSelQID, 0] exec "Player\BuyUnit\sCancelBuy.sqs"
 	goto "Update"
 	
-#Clear
-	? count _qPlayer > 0 : [] exec "\TZK_Scripts_4_0_4\Player\SendClearBuy.sqs"
+# Clear
+	? (qPplIds select 1) <= 0: goto "Update"
+	_value = giPlayer + GroupsNum * siPlayer
+	_value call preprocessFile "Server\BuyUnit\hClearBuy.sqf"
+	publicExec format [{%1 call preprocessFile "Server\BuyUnit\hClearBuy.sqf"}, _value]
 	goto "Update"
 	
 # Quit

@@ -30,6 +30,21 @@ _i = 0; _c = count TzkUnitSkillVal; while {_i < _c} do {
 	};
 	_entry set [udScripts, [localize {TZK_EQUIP_UNIT_TRUCK}]];
 } forEach [_boatCustomW, _boatCustomE];
+// Recover traditional MG for boats
+{
+	_entry = unitDefs select _x;
+	_i = (_entry select udScripts) find "\TZK_Scripts_4_0_6\Common\Equip\BoatWmg.sqs";
+	if (_i != -1) then {
+		_entry select udScripts set [_i, "Common\Equip\BoatWmg.sqs"];
+	};
+} forEach [_zodiacHW, _boatW, _boatsupW];
+{
+	_entry = unitDefs select _x;
+	_i = (_entry select udScripts) find "\TZK_Scripts_4_0_6\Common\Equip\BoatEmg.sqs";
+	if (_i != -1) then {
+		_entry select udScripts set [_i, "Common\Equip\BoatEmg.sqs"];
+	};
+} forEach [_zodiacHE, _boatE, _boatsupE];
 // Add HE cannon for FFAR APC
 _scripts = unitDefs select _m2a2d select udScripts;
 _scripts set [0, "Common\Equip\M2A2farr.sqs"];
@@ -89,6 +104,8 @@ utSupportInf = [_supportCarrierW, _supportCarrierE];
 	_scripts set [count _scripts, "Common\Init\SoldierSupportCarrier.sqs"]
 } forEach utSupportInf;
 
+utMortar = [_mortarW, _mortarE];
+
 // M88/BREM unbanned
 typesEngineeringVeh = [_m88W, _bremE]; {
 	unitDefs select _x set [udFactoryType, 2^stLight + 2^stHeavy];
@@ -96,6 +113,15 @@ typesEngineeringVeh = [_m88W, _bremE]; {
 	_entry = unitDefs select _x select udScripts;
 	_entry set [count _entry, "Common\InitEngineerVeh.sqs"];
 } forEach typesEngineeringVeh;
+
+// Allow buy transport-only helicopter from LF (limited by CMD rule)
+{
+	unitDefs select _x set [udFactoryType, 2^stLight + 2^stAir];
+} forEach [_mh6W, _irNO_uh60, _mi2E, _irNO_mi17];
+
+// Adjust AMX-10RC and 2S25 price
+unitDefs select _amx10RcW set [udCost, 2500];
+unitDefs select _2s25E set [udCost, 3000];
 
 // Add MLRS equipping with shrapnel
 _type = _m270W + 1;
@@ -116,8 +142,11 @@ _entry = unitDefs select _tankHeavyE01; _entry set [udModel, "T80_G_xj400"];
 _entry = unitDefs select _tankHeavyE03; _entry set [udModel, "ZTZ99_C_xj400"];
 _entry = unitDefs select _t80townE; _entry set [udModel, "T80_G_xj400"];
 
-// {_entry = unitDefs select _x; _entry set [udModel, "M113Ambul_G_xj400"]} forEach [_supportAPCW, _supportAPCWminer];
-// {_entry = unitDefs select _x; _entry set [udModel, "BMPAmbul_G_xj400"]} forEach [_supportAPCE, _supportAPCEminer];
+{_entry = unitDefs select _x; _entry set [udModel, "M113Ambul_G_xj400"]} forEach [_supportAPCW, _supportAPCWminer];
+{_entry = unitDefs select _x; _entry set [udModel, "BMPAmbul_G_xj400"]} forEach [_supportAPCE, _supportAPCEminer];
+
+{_entry = unitDefs select _x; _entry set [udModel, "MHQW_G_xj400"]} forEach [utMHQ0];
+{_entry = unitDefs select _x; _entry set [udModel, "MHQE_G_xj400"]} forEach [utMHQ1];
 
 {_entry = unitDefs select _x; _entry set [udModel, "M2A2_G_AA_xj400"]} forEach [_m2a2W,_m3a2W,_m2a2d,_m2a2at,_m2a2aa];
 {_entry = unitDefs select _x; _entry set [udModel, "BMP2_G_AA_xj400"]} forEach [_bmp2E,_bmp2_EE,_bmp2d,_bmp2at,_bmp2Cannon,_bmp2aa];

@@ -1,0 +1,22 @@
+; args: [factory, si + 10 * len]
+
+_obj = _this select 0
+_value = _this select 1
+
+_si = _value % 10
+_len = (_value - _si) / 10
+
+? _si != siPlayer : exit
+
+@ not mutexqLen
+	mutexqLen = true
+
+	_i = (qLenFactories select 0) find _obj
+	? -1 == _i: _i = (qLenFactories select 0) find objNull
+
+	? -1 == _i: _push_back = preprocessFile "Algo\Vector\push_back.sqf"
+	? -1 == _i: [qLenFactories, _obj] call _push_back; [qLenValues, _len] call _push_back
+
+	? -1 != _i: qLenFactories select 0 set [_i, _obj]; qLenValues select 0 set [_i, _len]
+
+	mutexqLen = false

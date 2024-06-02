@@ -115,7 +115,6 @@ comment { args: [si, structType] (e.g. [si0, stBarracks]); };
 comment { return: [struct, struct, ...]; };
 funcGetNearestRespawnObject = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetNearestRespawnObject.sqf";
 
-funcGetClosestUnit = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetClosestUnit.sqf";
 comment { arguments: [si, pos]; };
 comment { returns: [unit, distance]; };
 funcGetNearbySoldiers = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetNearbySoldiers.sqf";

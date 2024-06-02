@@ -84,7 +84,7 @@ _unitsBuy = []; _giInf = AICO_giInf select _si
 		_giJoin = _giInf select random count _giInf - 0.5
 		_slots = maxGroupSize - count units (groupMatrix select _si select _giJoin) - (groupUnitsBuildingMatrix select _si select _giJoin)
 		? _slots <= 0: _decideNum = _decideNum - 1; _buyMode = _bmSoldier; goto "CheckBuyUnit"
-		_unitsBuy = (unitsBuyAI select _si select utbinfAtI) + (unitsBuyAI select _si select utbinfAAATSnip)
+		_unitsBuy = (unitsBuyAI select _si select utbinfAtI) + (unitsBuyAI select _si select utbinfRPGLAW)
 		? bool_TZK_SEMod_Mode: _unitsBuy = unitsBuyAI select _si select utbInfMixed2
 		_buyNum = 4
 		; ask infantry group buy AA vehicle.
@@ -130,8 +130,7 @@ _unitsBuy = []; _giInf = AICO_giInf select _si
 	_factoryType = _factoryType select random count _factoryType - 0.5
 	_factory = [_si, _factoryType, false] call funcGetIdleFactories; if (count _factory == 0) then {_factory = objNull} else {_factory = _factory select random count _factory - 0.5}
 	? isNull _factory: goto "NextBuy"
-	[_type, _driver, _gunner, 0, _si, _giJoin, _giBuyer, _factory] exec localize {TZK_AI_BUY_UNIT}
-	; player globalChat format ["%1", [_type, _driver, _gunner, 0, _si, _giJoin, _giBuyer, _factory]]
+	[[_type, _driver, _gunner, 0, _si, _giJoin, _giBuyer, _factory]] exec localize {TZK_AI_BUY_UNIT}
 
 	# NextBuy
 	_buyNum = _buyNum - 1; goto "TypesSelected"

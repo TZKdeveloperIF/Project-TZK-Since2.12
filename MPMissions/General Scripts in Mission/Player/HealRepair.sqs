@@ -5,6 +5,8 @@ _support = _this select 1
 _vehicle = if (count _this > 2) Then {_this select 2} Else {vehicle _unit}
 _bAirSup = if (count _this > 3) Then {_this select 3} Else {false}
 
+[siPlayer, _support] exec "Common\SubmitUseSupportVehicle.sqs"
+
 _timeHeal = 5; _bIsCrew = (_unit in _support)
 
 ? _unit == _vehicle: goto "UnitOnFoot"

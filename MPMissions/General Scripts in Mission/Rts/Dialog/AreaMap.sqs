@@ -25,16 +25,16 @@ btnFunction = 0
 
 {ctrlShow [_idcLeftBtn0 + _x, isCommander]} forEach [0,1,3,5]
 
-? isCommander: ctrlSetText [_idcLeftBtn0 + 0, "Clear All"]
+? isCommander: ctrlSetText [_idcLeftBtn0 + 0, format ["%1 %2", localize {TZK_LANG_CLEAR}, localize {TZK_LANG_ALL}]]
 ? isCommander: ctrlSetText [_idcLeftBtn0 + 1, "CO"]
 ctrlSetText [_idcLeftBtn0 + 2, "WP"]
-? isCommander: ctrlSetText [_idcLeftBtn0 + 3, "Svr Art"]
-ctrlSetText [_idcLeftBtn0 + 4, "Ppl Art"]
-? isCommander: ctrlSetText [_idcLeftBtn0 + 5, "Svr Mine"]
-ctrlSetText [_idcLeftBtn0 + 6, "Ppl Mine"]
+? isCommander: ctrlSetText [_idcLeftBtn0 + 3, format ["%1 %2", localize {TZK_LANG_SHORT_SERVER}, localize {TZK_LANG_SHORT_ARTILLERY}]]
+ctrlSetText [_idcLeftBtn0 + 4, format ["%1 %2", localize {TZK_LANG_SHORT_PLAYER}, localize {TZK_LANG_SHORT_ARTILLERY}]]
+? isCommander: ctrlSetText [_idcLeftBtn0 + 5, format ["%1 %2", localize {TZK_LANG_SHORT_SERVER}, localize {TZK_LANG_MINE}]]
+ctrlSetText [_idcLeftBtn0 + 6, format ["%1 %2", localize {TZK_LANG_SHORT_PLAYER}, localize {TZK_LANG_MINE}]]
 
-ctrlSetText [_idcLeftBtn0 + 7, "Destruction"]
-ctrlSetText [_idcLeftBtn0 + 8, "Build Bridge"]
+ctrlSetText [_idcLeftBtn0 + 7, localize {TZK_LANG_DESTRUCTION}]
+ctrlSetText [_idcLeftBtn0 + 8, format ["%1 %2", localize {TZK_LANG_BUILD}, localize {TZK_LANG_BRIDGE}]]
 ; ctrlShow [_idcLeftBtn0 + 8, dev]
 
 ; down board
@@ -44,6 +44,9 @@ call preprocessFile "Rts\Dialog\UpdateAreaDownBoard.sqf"
 _idcSliderAzimut = 0; _idcValueAzimut = 0; _AzimutCache = 0
 true call preprocessFile "Rts\Dialog\InitSilider.sqf"
 TzkMapRtsFlashingDisabled = true
+
+btnValue05 = -1;
+(IDC + 16 * 19) call preprocessFile "Rts\Dialog\InitSelClassificationBtns.sqf"
 
 # Update
 	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
@@ -56,6 +59,7 @@ TzkMapRtsFlashingDisabled = true
 	? btnValue00 >= 0: _val0 = btnValue00; btnValue00 = -1; goto "LeftBtn"
 	? btnValue01 > 0: _btnVal = btnValue01; btnValue01 = 0; goto "DownBtn"
 	? btnValue03 > 0: _btnVal = btnValue03; btnValue03 = 0; goto "RightDownBtn"
+	? btnValue05 >= 0: _btnVal = btnValue05; btnValue05 = -1; goto "SwitchClassification"
 	? btnFunction > 0: _btnFnc = btnFunction, btnFunction = 0, goto "FunctionalBtns"
 
 	; Skip
@@ -77,6 +81,7 @@ TzkMapRtsFlashingDisabled = true
 	? 2^2 == _btnVal: 2 exec "Rts\SubMenu\ObstructPreset.sqs"; closeDialog 0; goto "Quit"
 	? 2^3 == _btnVal: [true, "Mine"] exec "Rts\SubMenu\AreaMarker.sqs"; closeDialog 0; goto "Quit"
 	? 2^4 == _btnVal: [false, "Mine"] exec "Rts\SubMenu\AreaMarker.sqs"; closeDialog 0; goto "Quit"
+	? 2^5 == _btnVal: 0 exec "Rts\SubMenu\RoofPreset.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 	# DownSubMenu
 		? 2^8 == _btnVal: _downBoardStack resize 0; call preprocessFile "Rts\Dialog\UpdateAreaDownBoard.sqf"; goto "Update"
@@ -88,3 +93,8 @@ TzkMapRtsFlashingDisabled = true
 # FunctionalBtns
 	? 1 == _btnFnc: 0 exec localize {TZK_DIALOG_SHOWNGROUPS}; closeDialog 0; goto "Quit"
 	goto "Update"
+# SwitchClassification
+	? _btnVal == TzkRtsSelectEnum: hint "Exception caught."; goto "Update"
+
+	TzkRtsSelectEnum = _btnVal
+	_this exec "Rts\Dialog\RtsMap.sqs"; closeDialog 0; goto "Quit"

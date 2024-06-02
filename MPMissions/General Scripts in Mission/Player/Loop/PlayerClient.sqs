@@ -6,7 +6,6 @@ _unit = player
 ; The AnimChanged-EH is available since 1.99
 	?!bool_TZK_Vanilla_Mode: _unit addEventHandler ["AnimChanged", { _this exec "\TZK_Scripts_4_0_4\Player\Event_AnimChanged_WW4.sqs" }]
 	_unit addEventHandler ["Fired",{ _this exec "Player\Effect\LimitWeaponRangePlayer.sqs" }]
-	_unit addEventHandler ["Fired",{ _this exec "Player\RecordPlayerC4.sqs" }]
 
 _sensorOld = "EmptyDetector" camCreate getPos player; _sensorNow = "EmptyDetector" camCreate getPos player
 _timeOld = -3600; _timeNow = -3600
@@ -29,7 +28,7 @@ _rtsCrossOutdateDur = 10; _rtsAreaOutDateDur = 30;
 # Update
 	~1
 	? TzkMapSelectClicked && time > TzkMapFirstGuideLineDrawnTime + _rtsCrossOutdateDur: call preprocessFile "Player\Rts\ResetGuideLines.sqf"
-	? not TzkMapSelectClicked && TzkMapAreaLastUsedTime > 0 && time > TzkMapAreaLastUsedTime + _rtsAreaOutDateDur && 0 == count TzkSelectedUnits: false call preprocessFile "Player\Rts\Area.sqf"; false call preprocessFile "Player\Rts\Selection.sqf";
+	? not TzkMapSelectClicked && TzkMapAreaLastUsedTime > 0 && time > TzkMapAreaLastUsedTime + _rtsAreaOutDateDur && 0 == count (call preprocessFile "Rts\Ui\CurSelUnitArray.sqf"): false call preprocessFile "Player\Rts\Area.sqf"; false call preprocessFile "Player\Rts\Selection.sqf";
 
 	_mhq = mhq select siPlayer
 	_mcvs = MCV select siPlayer
@@ -145,7 +144,6 @@ _rtsCrossOutdateDur = 10; _rtsAreaOutDateDur = 30;
 	; The AnimChanged-EH is available since 1.99
 	?!bool_TZK_Vanilla_Mode: _unit addEventHandler ["AnimChanged", { _this exec "\TZK_Scripts_4_0_4\Player\Event_AnimChanged_WW4.sqs" }]
 	_unit addEventHandler ["Fired",{ _this exec "Player\Effect\LimitWeaponRangePlayer.sqs" }]
-	_unit addEventHandler ["Fired",{ _this exec "Player\RecordPlayerC4.sqs" }]
 
 	_posOld = _posRespawn
 	_posNow = _posRespawn

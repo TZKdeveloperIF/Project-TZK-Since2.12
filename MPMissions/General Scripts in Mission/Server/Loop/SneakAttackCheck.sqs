@@ -1,0 +1,15 @@
+; args: none
+
+; check player distance enemy mhq on the first 30 minutes
+
+_playerNames = []
+_cmdName = format ["%1 %2", localize {TZK_LANG_SNEAK_ATTACK}, localize {TZK_LANG_ON_START}]
+# loop
+	~ 30
+
+	? _time > 60 * 30: exit
+	? _cmdName call preprocessFile "RuleCmd\Check.sqf": goto "loop"
+
+	si0 call preprocessFile "Server\Loop\SneakAttackCheck.sqf"
+	si1 call preprocessFile "Server\Loop\SneakAttackCheck.sqf"
+	goto "loop"

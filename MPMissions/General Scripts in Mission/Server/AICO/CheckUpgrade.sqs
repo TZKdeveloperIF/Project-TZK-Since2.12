@@ -8,7 +8,7 @@ _c = count upgDefs
 
 #CheckNextUpgrade
 	? !(_i < _c): exit
-	? upgMatrix select _si select _i == 0: [_i, _si, _gi] exec "Server\UpgradeStart.sqs"; exit
+	? upgMatrix select _si select _i == 0: [_i, _si, _gi] exec "Server\Upgrade\Begin.sqs"; exit
 	_i = _i + 1
 	goto "CheckNextUpgrade"
 

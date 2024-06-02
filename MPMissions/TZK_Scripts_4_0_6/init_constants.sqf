@@ -41,7 +41,6 @@ callsigns = [
 	"November", "Yankee", "Zulu", "Two", "Three", "Buffalo", "Guardian", "Convoy", "Fox"
 ];
 GroupsNum = (count callsigns) + 2; giTown = GroupsNum - 2; giWorker = GroupsNum - 1;
-maxQ = 1000;
 TotalInfoTypes = 100;
 comment {these constants are used for calculating "value" in publicVariable operation};
 comment {"TotalInfoTypes" could be defined in init script of "InfoMsgTypes" as well};

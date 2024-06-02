@@ -1,0 +1,8 @@
+; args: [qid, si, repeats]
+
+_qid = _this select 0
+_si = _this select 1
+_repeats = _this select 2
+
+[_qid, _si] exec "Player\BuyUnit\hQueueRem.sqs"
+publicExec format [{%1 exec "Player\BuyUnit\hQueueRem.sqs"}, [_qid, _si]]

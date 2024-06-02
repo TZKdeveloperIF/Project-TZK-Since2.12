@@ -1,0 +1,7 @@
+; args: expression: string
+; expression should contains global variable only
+
+? not dev: exit
+
+? isServer: [_this, siPlayer, giPlayer] exec "Debug\OnQueryVar.sqs", exit
+publicExec format [{["%1", %2, %3] exec "Debug\OnQueryVar.sqs"}, _this, siPlayer, giPlayer]

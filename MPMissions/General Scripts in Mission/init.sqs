@@ -18,6 +18,8 @@ _nil = "scalar bool array string 0xfcffffef"
 ? UsedVersion >= 2010: bool_TZK_199_Mode = false
 
 call loadFile "\TZK_Scripts_4_0_6\init_constants.sqf"
+; 4.0.6.71
+TzkMarkerId = 0
 ; 4.0.6.45
 call preprocessFile "Rts\Install.sqf";
 call preprocessFile "Log\Install.sqf"
@@ -45,6 +47,7 @@ call preprocessFile "Common\Init\Group.sqf"
 call loadFile "\TZK_Scripts_4_0_6\init_param.sqf"
 fixedStartPos = param1
 "" call loadFile "\TZK_Scripts_4_0_6\init_upgrade.sqf"
+upgDefs select upgSpoofMissile set [0, "Helicopter Spoof Missile"];
 upgDefs select upgSatCamZoom set [1, 0]; upgDefs select upgSatCamZoom set [2, 0];
 ? bool_TZK_Lester_Mode: [{[] exec "Extra\init_upgrade.sqs"}, 0.1] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
 call loadFile "\TZK_Scripts_4_0_6\init_theWorld.sqf"
@@ -133,6 +136,7 @@ posCenter = [_posX/_c, _posY/_c]
 
 townGroups=[ [], [], [] ]; workerGroups = [ [], [] ]; patrolGroups = []
 functionalGroups = [ [], [] ]
+baseGroup = [grpNull, grpNull]
 mutexDynamicInitializeGroups = false; 60 exec "Common\Dynamic\GroupsClear.sqs"
 timeReinforceTown = 3*60
 
@@ -140,6 +144,8 @@ timeReinforceTown = 3*60
 
 ; initialization. Game will wait until commander make the decision since 4.0.5.18. For low frequently scripts
 mutexCmd = true
+
+call preprocessFile "Common\Init\CmdRule.sqf"
 
 ? isServer: [] exec "Server\InitServer.sqs"
 ?!isServer: [] exec "Player\InitClient.sqs"
@@ -183,9 +189,9 @@ Vote_ItemNames set [_i, "BOH WAP Vehicle"]; Vote_Matrix set [_i, [Vote_ItemNames
 ; 4.0.5.12
 TZK_Vote_Items = 9; TZK_Vote_Pages = 2; TZK_Vote_Page = 0;
 
-pvVoteStart0 = -1; pvVoteReceived0 = -1; pvVoteResult0 = -1; pvVoteAdmin = false
+pvVoteStart0 = -1; pvVoteResult0 = -1; pvVoteAdmin = false
 ? isServer: mutexVote = false
-? !isNull player: [] exec "\TZK_Scripts_4_0_4\Player\Msg\mVoteReceived.sqs", lvVoteReceived0 = -1, mutexVote = false, [] exec "Player\Msg\mVoteResult.sqs"
+? !isNull player: lvVoteReceived0 = -1, mutexVote = false, [] exec "Player\Msg\mVoteResult.sqs"
 
 ; Weather.
 pvWeather_Value = 0; pvWeather_Delay = 2*60; pvWeather_Cycle = 10*60
@@ -217,3 +223,7 @@ dlgID = 0; mutexDlg = false; dlgUpdated = "!dialog || _dlgID != dlgID"
 ; ==============================================TZK_4.0.5 Block==============================================
 Array_TZK_PlaneBuilt = [false, false]
 ; ==============================================TZK_4.0.5 Block==============================================
+
+; ==============================================TZK_4.0.6 Block==============================================
+
+; ==============================================TZK_4.0.6 Block==============================================

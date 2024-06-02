@@ -23,7 +23,7 @@ _idcDestruction = IDC + 17
 _idcIncomeRatioPlayer = IDC+18
 _idcGiveMoneyToAI = IDC + 19
 _idcTakeMoney = IDC + 20
-_idcCommandTemporary = IDC + 21
+_idcConcurrentRts = IDC + 21
 _idcSpySat = IDC + 22
 _idcGiveMoneyToALL = IDC + 23
 _idcRadioONBG = IDC + 24
@@ -33,6 +33,8 @@ _idcCmdLabel = IDC + 27
 _idcCmdImage = IDC + 28
 
 _idcConsole = IDC + 100
+
+_idcCmdRule = IDC + 102
 
 ; _idc defined above must consist with definition in description.ext.
 
@@ -48,11 +50,15 @@ mutexDlg = false
 ctrlShow [IDC_DEFAULT, false]
 ctrlShow [_idcNumberedAI, false]
 
-ctrlShow [_idcCommandTemporary, false]
+ctrlShow [_idcConcurrentRts, not bool_TZK_Rts_Cmd_Mode]
+btnCommandTemporary = false
+
+btnDestruction = false
 {call (_x + " = false")} forEach ["btnLeaderboard", "btnGrant", "btnAsk", "btnTake", "btnGive", "btnGiveAIs", "btnGiveAll", "btnUpgrade", "btnBuyUnits", "btnShowStats", "btnUnitCam", "btnSatCam", "btnCustomSoldiers", "btnCommandAI", "btnCommandPlayer", "btnTransfer", "btnNumberedAI", "btnAICheck", "btnSpySat"]
-{call (_x + " = false")} forEach ["btnVoteMenu"]
+{call (_x + " = false")} forEach ["btnVoteMenu", "btnCmdRuleMenu"]
 _icons = ["\TZK_Objects\Image\Icon\square_empty.paa", "\TZK_Objects\Image\Icon\square_yellow.paa", "\TZK_Objects\Image\Icon\square_green.paa"]
 _colors = [[1,1,1,0.5], [1,1,0,0.6],[0,1,0.2,0.8]]
+btnValue00 = -1
 
 ? bool_TZK_CHN_Lang: ctrlSetText [_idcCmdImage, "\TZK_CHN_4_0_6_27\option_commander_co.paa"]
 ctrlShow [_idcCmdImage, bool_TZK_CHN_Lang], ctrlShow [_idcCmdLabel, !bool_TZK_CHN_Lang]
@@ -71,6 +77,8 @@ _groupCommander = (groupCommander select siPlayer)
 _res = [_idcTransferAmount, _idcIncomeRatio, _idcIncomeRatioPlayer, -1, _idcReports, _idcTransferCommandGroup, _idcWorkerBehaviour, _idcAIRespawn] call loadFile "\TZK_Scripts_4_0_4\Player\Dialog\Options_Init.sqf"
 _currentAiRespawn = _res select 0; _respawnObjects = _res select 1
 
+ctrlSetText [_idcCmdRule, format ["CMD %1 %2", localize {TZK_LANG_RULE}, localize {TZK_LANG_MENU}]]
+
 # Update
 
 ? call dlgUpdated: exit
@@ -81,7 +89,8 @@ _groupCommander = (groupCommander select siPlayer)
 ; DISABLE stuff for NON-commanders
 _isCommander = groupPlayer == _groupCommander; _isAIcommander = _groupCommander in _groupsAI
 { ctrlEnable [_x, _isCommander] } forEach [ _idcAIRespawn, _idcIncomeRatio, _idcIncomeRatioPlayer, _idcTransferCommandGroup, _idcWorkerBehaviour ]
-{ ctrlShow [_x, _isCommander] } forEach [ _idcTransferCommand, _idcDestruction, _idcGiveMoneyToAI, _idcGiveMoneyToALL, _idcTakeMoney ]
+{ ctrlShow [_x, _isCommander] } forEach [ _idcTransferCommand, _idcGiveMoneyToAI, _idcGiveMoneyToALL, _idcTakeMoney ]
+ctrlShow [_idcDestruction, not bool_TZK_Rts_Cmd_Mode && _isCommander]
 { ctrlShow [_x, _isCommander || _isAIcommander] } forEach [_idcUpgradeStart]
 { ctrlShow [_x, false] } forEach [_idcUpgSwitch]
 
@@ -126,13 +135,24 @@ report = lbCurSel _idcReports
 ? btnTransfer : btnTransfer=false; goto "TransferCommand"
 ? btnCustomSoldiers : btnCustomSoldiers=false; goto "CustomSoldiers"
 ? btnNumberedAI : btnNumberedAI=false; goto "SaveNumberedAI"
+? btnDestruction : btnDestruction=false; goto "DestructBuildings"
 ? btnAICheck : btnAICheck = false; goto "CheckAI"
+? btnCommandTemporary : btnCommandTemporary = false; goto "ConcurrentRts"
 ? btnSpySat : btnSpySat = false; goto "SpySat"
 ? btnRadioON : btnRadioON = false; goto "RadioSwitch"
 ? btnVoteMenu: btnVoteMenu = false, goto "Vote_Menu"
+? btnCmdRuleMenu: btnCmdRuleMenu = false, goto "Cmd_Rule_Menu"
+
+? btnValue00 >= 0: goto "OnBtnVal0Changed"
 
 ~0.2
 goto "Update"
+
+# OnBtnVal0Changed
+	_val = btnValue00; btnValue00 = -1
+	? 0 == _val: goto "CancelUpgrade"
+
+	goto "Update"
 
 ;#GrantMoney
 ;	_index = lbCurSel _idcTransferGroup
@@ -227,6 +247,18 @@ goto "Update"
 	? ((count _controlCenters) == 0): hint "No Working Comm Center"; goto "Update"
 
 	[_index, _index] exec localize {TZK_MSG_PLAYER_UPGRADE}
+	goto "Update"
+# CancelUpgrade
+	? not isCommander: hint "Only commander can cancel upgrading"; goto "Update"
+	_index = lbCurSel _idcUpgradeList
+	? _index == -1: hint "No Upgrade Selected"; goto "Update"
+
+	_controlCenters = [siPlayer, stComm] call funcGetWorkingStructures
+	? ((count _controlCenters) == 0): hint "No Working Comm Center"; goto "Update"
+
+	_param = [_index, siPlayer, giPlayer, false]
+	_param exec "Server\Upgrade\EndWrap.sqs"
+	publicExec format [{%1 exec "Server\Upgrade\EndWrap.sqs"}, _param]
 	goto "Update"
 
 #BuyUnits
@@ -325,6 +357,12 @@ goto "Update"
   deleteVehicle unitSetting
   goto "Update"
 
+# DestructBuildings
+	closeDialog 0
+	; ~0.1
+	1 exec "Rts\Submenu\Destruction.sqs"
+	exit
+
 #CheckAI
 	_index = lbCurSel _idcTransferGroup
 	? (_index == -1): hint "No Group Selected"; goto "Update"
@@ -333,6 +371,12 @@ goto "Update"
 	? _group in _groupsAI : hint "This group is AI."; goto "Update"
 	_index exec "\TZK_Scripts_4_0_4\Player\Msg\sCheckAI.sqs"; hint "Checking whether the group is AI. Please wait for the result."
 	goto "Update"
+
+# ConcurrentRts
+	closeDialog 0
+	; ~0.1
+	0 exec "Player\Dialog\ConcurrentRts.sqs"
+	exit
 
 #SpySat
 	_satrec = [siPlayer, stSatRec] call funcGetWorkingStructures
@@ -352,4 +396,10 @@ goto "Update"
 	; ~0.1
 	[] exec "Player\Dialog\VoteMenu.sqs"
 	Exit
+# Cmd_Rule_Menu
+	? not _isCommander && (siEnemy select siPlayer) call preprocessFile "Util\IsHumanCommander.sqf": hint "Only commander in PVP can modify the rule!", goto "Update"
+	closeDialog 0
+	; ~0.1
+	0 exec "RuleCmd\Dialog.sqs"
+	exit
 ; EOF

@@ -1,5 +1,5 @@
 private [{_i},{_c}, {_arr},{_unit}, {_j}];
-_arr = TzkSelUnitsStack select _this; _i = 0; _c = count _arr; _j = true;
+_arr = _this; _i = 0; _c = count _arr; _j = true;
 while {_i < _c && _j} do {
 	_j = alive (_arr select _i);
 	_i = _i + 1;

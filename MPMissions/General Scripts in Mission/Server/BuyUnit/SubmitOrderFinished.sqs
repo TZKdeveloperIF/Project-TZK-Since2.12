@@ -1,0 +1,24 @@
+; args: [_si, _gi, _unitsToBuild, _qid]
+_si = _this select 0
+_gi = _this select 1
+_unitsToBuild = _this select 2
+_qid = _this select 3
+
+? _unitsToBuild <= 0: exit
+
+@ not (mutexEot select _si)
+	mutexEot set [_si, true]
+
+	_keys = executedOrderTimer select _si select 0
+	_values = executedOrderTimer select _si select 1
+
+	_insert = _keys find -1
+	? -1 == _insert: _insert = count _keys
+
+	; unexpected cae
+	_i = _keys find _qid
+	? _i != -1: "ERROR: Existed qid meets in submit order finished SQS script." call fDebugLog
+	; expected case
+	? _i == -1: _keys set [_insert, _qid], _values set [_insert, [_gi, _unitsToBuild, time]]
+
+	mutexEot set [_si, false]

@@ -1,0 +1,79 @@
+; args: none
+
+; create dialog
+@!mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "TemporaryAIOrderDialog"
+mutexDlg = false
+
+; show background
+; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+
+; initialize variables
+_si = siPlayer; _gi = -1
+_groupNames = groupNameMatrix select _si
+
+_selGroup = -1; _selOrder = -1
+btnSendOrder = false; btnTemporaryOrder = false; btnValue00 = -1
+
+_idcCurrent = IDC+0; _idcOrderLabel = IDC+1; _idcSendOrder = IDC+2; _idcOrder = IDC+3
+_idcParamLabels = []; _idcParams = []; "_idcParamLabels set [_x, IDC + 10 + _x], _idcParams set [_x, IDC + 20 + _x]" forEach [0,1,2,3,4]
+_idcStLabel = IDC + 900; _idcStParam = IDC + 1000; _idcStBtn = IDC + 820
+
+; initial available controls
+; hide orders for non-commander players
+? groupPlayer != groupCommander select _si: {ctrlShow [_x, false]} forEach [_idcOrderLabel, _idcSendOrder, _idcOrder, _idcStBtn, _idcStBtn + 1]
+;hide params on dialog open
+{ ctrlShow [_x, false] } forEach (_idcParamLabels + _idcParams);
+; hide levels on dialog open
+{{ ctrlShow [_x, false] } forEach [_idcStLabel + _x, _idcStParam + _x]} forEach [0,1,2,3,4,5];
+
+lbAdd [_idcOrder, "Clear"];
+lbAdd [_idcOrder, localize {TZK_LANG_SHOOT} + " " + localize {TZK_LANG_AREA}];
+
+_grpSuperior = "([{Commander}] + callsigns) select (aiSetting select (_this select 0) select (_this select 1) select aisSuperior)"
+
+_simulatedRtsSelUnits = TzkSelUnitsCube select 0 select 0
+
+# Update
+	? call dlgUpdated: goto "Quit"
+	? !(alive player): closeDialog 0; goto "Quit"
+
+	lbClear _idcCurrent
+	_gis = ([_si] call funcGetAIGroupsIndex)
+	{_id = lbAdd [_idcCurrent, format["%1", _groupNames select _x]]; lbSetValue [_idcCurrent, _id, _x]} forEach _gis
+	? count _gis > 0 : _id = lbAdd [_idcCurrent, "ALL"]; lbSetValue [_idcCurrent, _id, -1]
+	
+	? _selGroup != lbCurSel _idcCurrent : _selGroup = lbCurSel _idcCurrent
+	? _selOrder != lbCurSel _idcOrder : _selOrder = lbCurSel _idcOrder
+
+	? btnSendOrder: btnSendOrder = false; goto "SendOrder"
+	? btnReturn : btnReturn = false; goto "CommandAI"
+	
+	~0.2
+	goto "Update"
+
+# SendOrder
+	_gi = lbValue [_idcCurrent, _selGroup]
+
+	? _selGroup == -1 : hint "No group selected"; goto "Update"
+	? _selOrder == -1 : hint "No order selected"; goto "Update"
+
+	; ASSERT(count _simulatedRtsSelUnits == 0)
+	_simulatedRtsSelUnits resize 0
+
+	_groups = (if (_gi == -1) then {groupAiMatrix select siPlayer} else {[groupMatrix select siPlayer select _gi]})
+	{_g = _x; {_simulatedRtsSelUnits set [count _simulatedRtsSelUnits, _x]} forEach units _g} forEach _groups
+
+	? 0 == _selOrder: 0 exec "Rts\Order\sClear.sqs"; goto "Update"
+	? 1 == _selOrder: [-1, false, true] exec "Rts\SubMenu\AreaArtOrderPreset.sqs"; closeDialog 0; exit
+	
+	goto "Update"
+	
+# CommandAI
+	closeDialog 0
+	; ~0.1
+	0 exec localize {TZK_DIALOG_AI_GRP_ORDER}
+	goto "Quit"
+# Quit
+	? count _simulatedRtsSelUnits > 0: _simulatedRtsSelUnits resize 0

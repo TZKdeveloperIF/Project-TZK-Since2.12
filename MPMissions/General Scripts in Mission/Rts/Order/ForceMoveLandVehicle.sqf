@@ -1,22 +1,18 @@
 // args: player selected units
 // returns: none
 
-hint "
-This button forces land vehicles to move to process situations that land vehicles 
-getting stuck. To avoid being applied in battle, the script will delay few seconds 
-and move with very low speed.
-";
+hint localize {TZK_LANG_BRIEF_MOVE_LAND};
 
 if (count _this > 0) then {
 	_res = call preprocessFile "Rts\Marker\DiagonalPosInfo.sqf";
 
-	_vec = [_res select 1, _res select 0] call funcVectorSub;
-	_len = _vec call funcVectorLength;
-	if (_len > 100) then {
-		hint "Length of drawn line is too long. AI units will only move 100 m at most.";
-		_vec = [_res select 0, [_vec, 100 / _len] call funcVectorScale] call funcVectorAdd;
-		_res set [1, _vec];
-	};
+	// _vec = [_res select 1, _res select 0] call funcVectorSub;
+	// _len = _vec call funcVectorLength;
+	// if (_len > 100) then {
+	// 	hint "Length of drawn line is too long. AI units will only move 100 m at most.";
+	// 	_vec = [_res select 0, [_vec, 100 / _len] call funcVectorScale] call funcVectorAdd;
+	// 	_res set [1, _vec];
+	// };
 
 	private [{_units}]; _units = [];
 	{

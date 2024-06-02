@@ -7,12 +7,12 @@ _processed = false;
 // initial state
 if (not _processed && 0 == count _downBoardStack) then {
 	// ctrlSetText [_idcDownBtnInfo0, "Img\MG.paa"]
-	ctrlSetText [_idcDownBtn0 + 1, "Build"];
+	ctrlSetText [_idcDownBtn0 + 1, localize {TZK_LANG_BUILD}];
 	{ctrlShow [_idcDownBtn0 + _x, true]} forEach [1];
 
 	if (isCommander || bIsAiSuperior) then {
-		ctrlSetText [_idcDownBtn0, "Base MG"];
-		ctrlSetText [_idcDownBtn0 + 2, "Worker"];
+		ctrlSetText [_idcDownBtn0, format ["%1 %2", localize {TZK_LANG_BASE}, localize {TZK_LANG_SHORT_MACHINEGUN}]];
+		ctrlSetText [_idcDownBtn0 + 2, localize {TZK_LANG_WORKER}];
 		{ctrlShow [_idcDownBtn0 + _x, true]} forEach [0,2];
 	};
 	_processed = true;

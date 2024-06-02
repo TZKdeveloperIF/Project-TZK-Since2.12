@@ -1,4 +1,5 @@
-; args: [type, driver, gunner, commander, si, gi, giBuyer, factory, nCustomWeapon]
+; args: [type, driver, gunner, commander, si, gi, giBuyer, factory, nCustomWeapon
+;		, qid, unitsToBuild]
 
 _type = _this select 0
 _driver = _this select 1
@@ -10,10 +11,19 @@ _giBuyer = _this select 6
 _factory = _this select 7
 _nCustomWeapon = _this select 8
 
+_qid = _this select 9; _unitsToBuild = _this select 10
+
 ; encode info into an interger
 _value = _type + TotalUnitTypes * _gi + TotalUnitTypes * GroupsNum * _giBuyer + TotalUnitTypes * GroupsNum * GroupsNum * _si
 _value = _value + TotalUnitTypes * GroupsNum * GroupsNum * 2 *_driver + TotalUnitTypes * GroupsNum * GroupsNum * 2 * 2 *_gunner
 _value = _value + TotalUnitTypes * GroupsNum * GroupsNum * 2 * 2 * 2 *_commander
 
-[_factory, _value, _nCustomWeapon] exec "Network\hAddUnit.sqs"
-publicExec format [{[UnitById %1, %2, %3] exec "Network\hAddUnit.sqs"}, _factory call funcGenNetIdStr, _value call preprocessFile "Util\Num2Str.sqf", _nCustomWeapon]
+_netIdStr = _factory call funcGenNetIdStr
+
+? isNull _factory: [_si, _gi, _unitsToBuild] exec "Server\BuyUnit\AsyncFreeBuildingUnitsCount.sqs"; exit
+
+; submit to set up timer
+[_si, _gi, _unitsToBuild, _qid] exec "Server\BuyUnit\SubmitOrderFinished.sqs"
+
+[_factory, _value, _nCustomWeapon, _qid, _unitsToBuild] exec "Network\hAddUnit.sqs"
+publicExec format [{[UnitById %1, %2, %3, %4, %5] exec "Network\hAddUnit.sqs"}, _netIdStr, _value call preprocessFile "Util\Num2Str.sqf", _nCustomWeapon, _qid, _unitsToBuild]

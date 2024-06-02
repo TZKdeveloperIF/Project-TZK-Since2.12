@@ -18,8 +18,11 @@
 	};
 	if (!_bSkip && !bool_TZK_MF_Mode && !dev && count (groupMatrix select _si) == count (groupAiMatrix select _si)) then {
 		startMoney set [_si, 10*(startMoney select _si)];
-		if ((groupMatrix select (siEnemy select _si) select 0) in (groupAiMatrix select (siEnemy select _si))) then {
-			startMoney set [_si, 0.5*(startMoney select _si)]
+		private [{_siEnemy}]; _siEnemy = (siEnemy select _si);
+		if ((groupMatrix select _siEnemy select 0) in (groupAiMatrix select _siEnemy)) then {
+			if (count (groupMatrix select _siEnemy) > count (groupAiMatrix select _siEnemy)) then {
+				startMoney set [_si, 0.5*(startMoney select _si)]
+			};
 		};
 		_bSkip = true;
 	};

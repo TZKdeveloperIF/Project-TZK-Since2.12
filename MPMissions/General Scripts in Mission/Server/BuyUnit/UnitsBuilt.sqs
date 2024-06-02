@@ -1,0 +1,19 @@
+; args: [si, gi, unitsToBuild, qid]
+
+? not isServer: exit
+
+_si = _this select 0
+_gi = _this select 1
+_unitsToBuild = _this select 2
+_qid = _this select 3
+
+_keys = executedOrderTimer select _si select 0
+_values = executedOrderTimer select _si select 1
+
+@ not (mutexEot select _si)
+	mutexEot set [_si, true]
+
+	_i = _keys find _qid
+	? _i != -1: [_si, _gi, _unitsToBuild] exec "Server\BuyUnit\AsyncFreeBuildingUnitsCount.sqs"; _keys set [_i, -1]; (_values select _i) resize 0
+	
+	mutexEot set [_si, false]

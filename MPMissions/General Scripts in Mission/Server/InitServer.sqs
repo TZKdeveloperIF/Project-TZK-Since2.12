@@ -7,6 +7,8 @@ call preprocessFile "Server\Init\Money.sqf"
 AICO_giTrans = [[],[]]; AICO_giInf = [[],[]]; AICO_giTanks = [[[], [], []], [[], [], []]]
 ; 4.0.6.53
 0 exec "Server\Init\CfgCheck.sqs"
+; 4.0.6.71
+call preprocessFile "Server\Upgrade\Init.sqf"
 
 ; Target objects placed at town flag
 ; { _si = _x; _i = 0; _c = count towns; while {_i < _c} do {call format[{TargetTownS_%1%2 = _targetObject createVehicle [0,0,0]; TargetTownS_%1%2 exec "\TZK_Scripts_4_0_4\Common\Command\allowDamageFalse.sqs"; TargetTownS_%1%2 setPosASL getPosASL (towns select _i select tdFlag)}, _i, _si]; _i = _i + 1} } forEach [si0, si1]
@@ -15,9 +17,6 @@ AICO_giTrans = [[],[]]; AICO_giInf = [[],[]]; AICO_giTanks = [[[], [], []], [[],
 [] exec "\TZK_Scripts_4_0_4\Server\MsgBuildStructure.sqs"
 (localize {TZK_FUNC_SERVER_UNDO_STRUCT}) exec "\TZK_Scripts_4_0_6\Server\Msg\mUndo.sqs"
 
-{ ["Server\Msg\hBuyUnit.sqs"] exec format ["Server\Msg\mBuyUnit%1.sqs", _x] } forEach [0,1,2,3,4]
-
-[] exec "\TZK_Scripts_4_0_4\Server\MsgCancelBuy.sqs"
 (localize {TZK_MONEY_SERVER_SPEND}) exec "\TZK_Scripts_4_0_6\Server\Msg\mMoneySpent.sqs"
 "\TZK_Scripts_4_0_6\Server\Msg\hGiveMoney.sqs" exec "\TZK_Scripts_4_0_6\Server\Msg\mGiveMoney.sqs"
 "Server\Msg\hUpgrade.sqs" exec "Server\Msg\mUpgrade.sqs"
@@ -25,13 +24,13 @@ AICO_giTrans = [[],[]]; AICO_giInf = [[],[]]; AICO_giTanks = [[[], [], []], [[],
 0 exec "\TZK_Scripts_4_0_6\Server\Msg\mDestruction.sqs"
 [] exec "\TZK_Scripts_4_0_4\Server\MsgUnitDisembark.sqs"
 "Server\Msg\hCheckAI.sqs" exec "Server\Msg\mCheckAI.sqs"
-[] exec "\TZK_Scripts_4_0_4\Server\MsgClearBuy.sqs"
 ; ? bool_TZK_199_Mode: [] exec "\TZK_Scripts_4_0_4\Server\Msg\mRadioChannel.sqs"
 
 ; ? !(isNull player): forceMap true
 ? !(isNull player): [] exec "Player\InitClient.sqs"
 
 0 exec "Server\Init\StartVehs.sqs"
+call preprocessFile "Cfg\InitServerCfg.sqf"
 
 ; game has begun after this pause
 ~ 2
@@ -58,6 +57,7 @@ call loadFile "\TZK_Scripts_4_0_6\Server\Msg\sStartMoney.sqf"
 
 0 exec "Server\Loop\Income.sqs"
 0 exec "Server\Loop\Server.sqs"
+{_x exec "Server\Loop\ProcessFinishedOrder.sqs"} forEach [si0, si1]
 [] exec "\TZK_Scripts_4_0_4\Server\SendPing.sqs"
 
 [] exec "\TZK_Scripts_4_0_4\Server\DynamicInitializationMarker.sqs"
@@ -94,3 +94,5 @@ east exec "Server\Loop\PlaneBuilt.sqs"
 Array_TZK_Town_Triggered_By = []
 ; 4.0.6.05
 Array_TZK_Group_MaybeAi = []
+; 4.0.6.64
+0 exec "Server\Loop\SneakAttackCheck.sqs"

@@ -1,4 +1,6 @@
 stWall = _wall;
+stLowWall = _walls;
+stSandBag = _sandbag;
 stBaseMg = _mg;
 
 structMarker set [stAmmoCrate, "AmmoStructure_Marker_xj400"];
@@ -41,7 +43,7 @@ _objects0 = [["GapGenerator_W_xj400", 0, []]];
 _objects1 = [["GapGenerator_E_xj400", 0, []]];
 _image = [_texPath + "Image\Struct\MGTower.jpg",_texPath + "Image\Struct\MGTower.jpg"];
 structDefs set [_type, [
-	"Gap Generator",
+	localize {TZK_LANG_GAP_GENERATOR},
 	_price,
 	siBoth,
 	_image,
@@ -72,9 +74,63 @@ structDefs set [_type, [
 stBridge = _type;
 _type = _type + 1;
 
+_price = 100;
+_objects = [["roof_xj400", 0, [0,0,10]]];
+_image = [_texPath + "Image\Struct\Roof.jpg",_texPath + "Image\Struct\Roof.jpg"];
+structDefs set [_type, [
+	format ["%1 10m %2", localize {TZK_LANG_ROOF}, localize {TZK_LANG_HEIGHT}],
+	_price,
+	-1,
+	_image,
+	false,
+	false,
+	75, 1, 20, _objects, _objects,
+	[localize {TZK_SERVER_INIT_STRUCT_SEC}],
+	[]]
+];
+st10mHeightRoof = _type;
+_type = _type + 1;
+
+_price = 100;
+_objects = [["roof_xj400", 0, [0,0,20]]];
+_image = [_texPath + "Image\Struct\Roof.jpg",_texPath + "Image\Struct\Roof.jpg"];
+structDefs set [_type, [
+	format ["%1 20m %2", localize {TZK_LANG_ROOF}, localize {TZK_LANG_HEIGHT}],
+	_price,
+	-1,
+	_image,
+	false,
+	false,
+	75, 1, 20, _objects, _objects,
+	[localize {TZK_SERVER_INIT_STRUCT_SEC}],
+	[]]
+];
+st20mHeightRoof = _type;
+_type = _type + 1;
+
+// add to structsShelter
+structsShelter set [count structsShelter, st10mHeightRoof];
+structsShelter set [count structsShelter, st20mHeightRoof];
+
+// Support roof with multiple language
+structDefs select _roof set [sdName, localize {TZK_LANG_ROOF}];
+structDefs select _roofHigh set [sdName, format ["%1 %2", localize {TZK_LANG_HIGH}, localize {TZK_LANG_ROOF}]];
+// // Add count limit of roof
+// structDefs select _roof set [sdLimit, 75];
+// structDefs select _roofHigh set [sdLimit, 75];
+// // Reduce roof price
+// structDefs select _roof set [sdCost, 100];
+// structDefs select _roofHigh set [sdCost, 100];
+
 structsShelter set [count structsShelter, stWireFence];
 structsShelter set [count structsShelter, stGapGenerator];
 // [structsShelter, [stWireFence, stGapGenerator]] call preprocessFile "Util\ArrayAppend.sqf";
+
+// for RTS build structure classify
+structsWalls = [_wall, _walls, _roof, _roofHigh, _tanktr, _artPlain, _sandbag];
+structBuilding = []; structBuilding resize count structDefs;
+_i = 0; while {_i < count structDefs} do {structBuilding set [_i, _i]; _i = _i + 1};
+structBuilding = structBuilding - structsCritcal - structsDefence - structsWalls - [stTankTrap, stWireFence];
 
 _index = _oldCount; _count = count structDefs; while {_index < _count} do {
 	structMatrix select si0 set [_index, []];
