@@ -131,6 +131,9 @@ typesEngineeringVeh = [_m88W, _bremE]; {
 	unitDefs select _x set [udFactoryType, 2^stLight + 2^stAir];
 } forEach [_mh6W, _irNO_uh60, _mi2E, _irNO_mi17];
 
+// Define transport heli type for AICO. AI can't fly small heli well so only buy big heli
+TransportHeliForAico = [ [_irNO_uh60], [_irNO_mi17] ];
+
 // Adjust AMX-10RC and 2S25 price
 unitDefs select _amx10RcW set [udCost, 2500];
 unitDefs select _2s25E set [udCost, 3000];
