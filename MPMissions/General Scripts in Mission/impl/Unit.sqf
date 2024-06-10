@@ -93,6 +93,18 @@ typesRadarCar = [ _jeepRadarW, _uazRadarE ];
 // definition for crew/pilot
 typesCrew = [_crewW, _crewAAW, _pilotW, _crewE, _crewAAE, _pilotE];
 
+// Add utb global variable for AICO buy unit
+_ubaW = unitsBuyAI select si0;
+_i = 0; _c = count _ubaW; while {_i < _c} do {
+	if (_ubaW select _i select 0 select 0 == _mgW4) then {
+		utbInfMglv4 = _i;
+	};
+	if (_ubaW select _i select 0 select 0 == _atW4) then {
+		utbInfAtlv4 = _i;
+	};
+	_i = _i + 1;
+};
+
 // Ban mannual building orca since its ground radar not well-designed
 {
 	unitDefs select _x set [udFactoryType, -1];
@@ -119,6 +131,9 @@ typesEngineeringVeh = [_m88W, _bremE]; {
 	unitDefs select _x set [udFactoryType, 2^stLight + 2^stAir];
 } forEach [_mh6W, _irNO_uh60, _mi2E, _irNO_mi17];
 
+// Define transport heli type for AICO. AI can't fly small heli well so only buy big heli
+TransportHeliForAico = [ [_irNO_uh60], [_irNO_mi17] ];
+
 // Adjust AMX-10RC and 2S25 price
 unitDefs select _amx10RcW set [udCost, 2500];
 unitDefs select _2s25E set [udCost, 3000];
@@ -133,6 +148,17 @@ _plz05ShrapnelE = _type;
 
 typesHowitzer set [count typesHowitzer, _m109ShrapnelW];
 typesHowitzer set [count typesHowitzer, _plz05ShrapnelE];
+
+// replace _hummerWAA and _brdmEAA with motorcycle
+// todo: modify the definition in future file
+// todo: remove those types from TransportCar
+_type = _hummerWAA;
+_motorW = _type;
+unitDefs set [_type, ["Motorcycle", 200, si0, 20, "Jawa_xj400", "\o\vehl\ijawa", 2^stLight, [1, _crewW], _mBike, []] ];
+
+_type = _brdmEAA;
+_motorE = _type;
+unitDefs set [_type, ["Motorcycle", 200, si1, 20, "Jawa_xj400", "\o\vehl\ijawa", 2^stLight, [1, _crewE], _mBike, []] ];
 
 // Redefine type class to those objects whose dynamic texture is disabled by 4.0.6 patch2
 _entry = unitDefs select _tankHeavyW01; _entry set [udModel, "M1A1_G_xj400"];

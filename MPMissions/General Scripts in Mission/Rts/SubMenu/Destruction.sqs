@@ -52,15 +52,16 @@ _size = getMarkerSize "TzkRtsArea";
 _area = [_pos select 0, _pos select 1, _size select 0, _size select 1, getMarkerDir "TzkRtsArea"];
 _posInRect = preprocessFile "Util\PosInRect.sqf"
 
+_lastUpdateListTime = _time - 9999
 # Update
-	~ 0.2
+	~ 0.05
 	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 	? call dlgUpdated: exit
 	? !(alive player) : closeDialog 0; exit
 
-	_idcList call preprocessFile "Rts\Submenu\UpdateDestruct.sqf"
+	? _time - _lastUpdateListTime > 0.2: _idcList call preprocessFile "Rts\Submenu\UpdateDestruct.sqf"; _lastUpdateListTime = _time
 
-	~ 0.2
+	~ 0.05
 
 	? (btnAction0): btnAction0=false; goto "DeleteSelected"
 	? (btnAction1): btnAction1=false; goto "DeleteSameType"
