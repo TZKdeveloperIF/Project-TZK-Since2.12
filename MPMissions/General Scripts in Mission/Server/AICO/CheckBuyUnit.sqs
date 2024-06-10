@@ -60,7 +60,7 @@ _unitsBuy = []; _giInf = AICO_giInf select _si
 		? _slots <= 0: _decideNum = _decideNum - 1; _buyMode = _bmSoldier; goto "CheckBuyUnit"
 		; #TranspCheckBuyAir
 		; ? count _typesHeli == 0: goto "TranspCheckBuyGround"
-		_typesHeli = [TransportirNOHeliW, TransportirNOHeliE] select _si
+		_typesHeli = TransportHeliForAico select _si
 		_res = [getPos (mhq select _si), 500, _typesHeli, []] call funcGetNearbyVehicles
 		? {damage (_x select 0) == 0 && getPos (_x select 0) select 2 < 5} count _res <= 2: {_unitsBuy set [count _unitsBuy, [_x, 1]]} forEach _typesHeli; _buyNum = 2; goto "TypesSelected"
 		; #TranspCheckBuyGround
@@ -84,7 +84,9 @@ _unitsBuy = []; _giInf = AICO_giInf select _si
 		_giJoin = _giInf select random count _giInf - 0.5
 		_slots = maxGroupSize - count units (groupMatrix select _si select _giJoin) - (groupUnitsBuildingMatrix select _si select _giJoin)
 		? _slots <= 0: _decideNum = _decideNum - 1; _buyMode = _bmSoldier; goto "CheckBuyUnit"
-		_unitsBuy = (unitsBuyAI select _si select utbinfAtI) + (unitsBuyAI select _si select utbinfRPGLAW)
+		_utbAt = utbinfAtI; _utbRpg = utbinfRPGLAW;
+		? upgMatrix select _si select upgInfLevel4 == 2: _utbAt = utbInfAtlv4, _utbRpg = utbInfMglv4
+		_unitsBuy = (unitsBuyAI select _si select _utbAt) + (unitsBuyAI select _si select _utbRpg)
 		? bool_TZK_SEMod_Mode: _unitsBuy = unitsBuyAI select _si select utbInfMixed2
 		_buyNum = 4
 		; ask infantry group buy AA vehicle.
