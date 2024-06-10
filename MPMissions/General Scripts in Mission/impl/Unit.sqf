@@ -149,6 +149,17 @@ _plz05ShrapnelE = _type;
 typesHowitzer set [count typesHowitzer, _m109ShrapnelW];
 typesHowitzer set [count typesHowitzer, _plz05ShrapnelE];
 
+// replace _hummerWAA and _brdmEAA with motorcycle
+// todo: modify the definition in future file
+// todo: remove those types from TransportCar
+_type = _hummerWAA;
+_motorW = _type;
+unitDefs set [_type, ["Motorcycle", 200, si0, 20, "Jawa_xj400", "\o\vehl\ijawa", 2^stLight, [1, _crewW], _mBike, []] ];
+
+_type = _brdmEAA;
+_motorE = _type;
+unitDefs set [_type, ["Motorcycle", 200, si1, 20, "Jawa_xj400", "\o\vehl\ijawa", 2^stLight, [1, _crewE], _mBike, []] ];
+
 // Redefine type class to those objects whose dynamic texture is disabled by 4.0.6 patch2
 _entry = unitDefs select _tankHeavyW01; _entry set [udModel, "M1A1_G_xj400"];
 _entry = unitDefs select _tankHeavyW03; _entry set [udModel, "Leo2A6_C_xj400"];
