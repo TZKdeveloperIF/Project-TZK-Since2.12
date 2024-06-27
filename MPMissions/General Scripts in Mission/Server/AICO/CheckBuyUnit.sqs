@@ -27,6 +27,7 @@ _giTrans = AICO_giTrans select _si
 	goto "order_break"
 # order_TakeHoldTowns
 	? time > 60*30 && _money >= 30000: _buyMode = _bmPlaneAT, goto "order_break"
+	? time > 60*60 && _money >= 90000: _buyMode = _bmPlaneNuke, goto "order_break"
 	_buyMode = [_bmTanks, _bmSoldier] select (random 2 - 0.5)*0.7
 	? _money < 7000: _buyMode = _bmSoldier
 	goto "order_break"
