@@ -34,14 +34,14 @@ mutexRtsMouse = false; rtsMouseId = 0;
 	createMarker [_x, [-10, -10]];
 	_x setMarkerColor "ColorBlue";
 	_x setMarkerShape "RECTANGLE";
-	_x setMarkerSize [10, 10000]
+	_x setMarkerSize [10, 25600]
 } forEach ["TzkRtsMarkerBgX", "TzkRtsMarkerBgY"];
 "TzkRtsMarkerBgY" setMarkerDir 90;
 {
 	createMarker [_x, [-10, -10]];
 	_x setMarkerColor "ColorRed";
 	_x setMarkerShape "RECTANGLE";
-	_x setMarkerSize [2, 10000]
+	_x setMarkerSize [2, 25600]
 } forEach ["TzkRtsMarkerLineX", "TzkRtsMarkerLineY"];
 "TzkRtsMarkerLineY" setMarkerDir 90;
 
