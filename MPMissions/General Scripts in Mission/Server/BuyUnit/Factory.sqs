@@ -17,7 +17,7 @@ _found = false
 while {_qi < _c && !_found} do {if (isNull (_queues select _qi select 0)) then {_found = true; _qi = _qi - 1}; _qi = _qi + 1}
 
 ; purchase order is managed by circular buffer but not simple linear array now
-_queues set [_qi, [_factory, _typeStructure, call preprocessFile "Algo\CirBuf\create.sqf"] ]
+_queues set [_qi, [_factory, _typeStructure, call preprocessFile "Algo\CirBuf\create.sqf", -1] ]
 
 ; cancelled qids. factoryCancelledQid elements: 0-factory, 1-mutex, 2-cancelled qid array
 _cancelledQids = []; factoryCancelledQid select _si set [_qi, [_factory, false, _cancelledQids]]
@@ -29,6 +29,7 @@ _needClearBuildingCount = true
 _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 
 # Wait
+	_queues select _qi set [3, -1]
 	[_factory, _si, 0] exec "Server\BuyUnit\sQueueLen.sqs"
 	
 	@ !mutexbuildingInUse
@@ -62,6 +63,7 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 
 	_entry resize 1; _entry set [0, 2]
 	_orders call preprocessFile "Algo\CirBuf\pop_front.sqf"
+	_queues select _qi set [3, _qid]
 
 	? _cancelled: goto "UnitCanceled"
 
