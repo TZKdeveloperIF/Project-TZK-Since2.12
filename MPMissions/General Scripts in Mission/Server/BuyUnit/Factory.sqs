@@ -47,6 +47,7 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 	goto "Wait"
 # BuildUnits
 # BuildNextUnit
+	? !alive _factory || isNull _factory: goto "BuildingDestroyed"
 
 	_entry = [_orders, 0] call preprocessFile "Algo\CirBuf\at.sqf"
 	_type = _entry select 0
