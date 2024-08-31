@@ -17,7 +17,7 @@ call preprocessFile "Common\Init\VehEhFire.sqf"
 ? bool_TZK_Vanilla_Mode || not bool_TZK_SEMod_Mode: goto "SkipVanilla"
 # SkipVanilla
 
-? _type in (typesHowitzer + typesRocketLauncher): _vehicle addEventHandler ["Fired", format [{ [_this select 0, nearestObject[_this select 0, _this select 4], %1 , true] exec localize {TZK_EH_FIRED_ART_REVERSE_DETECT} }, _si]]
+? _type in (typesHowitzer + typesRocketLauncher): _vehicle addEventHandler ["Fired", format [{ [_this select 0, nearestObject[_this select 0, _this select 4], %1 , true] exec localize {TZK_EH_FIRED_TRACK_SHELL} }, _si]]
 
 ; Hit Event
 ? "Air" countType [_vehicle] > 0: [_vehicle, _type] exec "Common\EH\AddAirHit.sqs"
