@@ -40,7 +40,11 @@ _exec = { // lanbda. "_this" is idx
 		if (-1 == _value) then {
 			deleteVehicle _object;
 		} else {
-			_object setDamage 1;
+			// structsDestroy shouldn't be killed but manually destructed
+			// todo: Destruction should better be destructed manually. However there're too many killed-eh kinds
+			if not (_value in structsDestroy) then {
+				_object setDamage 1;
+			};
 			if not (_value in structsShelter) then {[_object, false, true] exec "\TZK_Scripts_4_0_4\Player\SendDestruction.sqs"};
 		};
 	};

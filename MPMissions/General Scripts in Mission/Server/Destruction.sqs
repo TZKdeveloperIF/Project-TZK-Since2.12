@@ -11,6 +11,8 @@ _this = 0
 ; DeleteStructure
 	_i = structServer find _object
 	? _i != -1: _type = structsServer select _i select 1; [_si, _type] exec localize {TZK_INFO_SERVER_DESTRUCT_COMPLETE}
+	? _i != -1: [_si, _type, _object] call preprocessFile "Server\OnDestructFactory.sqf"
+
 	[_object] exec "\TZK_Scripts_4_0_4\Server\StructuresServerClear.sqs"
 	@(isNull _object)
 	_si exec "\TZK_Scripts_4_0_4\Server\CheckWinDestruction.sqs"
