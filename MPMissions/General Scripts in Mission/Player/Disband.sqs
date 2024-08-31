@@ -2,16 +2,20 @@
 _units = _this
 ? count _units > 1 : _unitsToRemove = []; {if !(_x in units player) then { _unitsToRemove set [count _unitsToRemove, _x] } } forEach _units; _units = _units - _unitsToRemove
 
-_groups = [groupPlayer]
+; commander uses "black list". Town groups and other players' groups can't be disband while all others can
+; common players use "white list". Only groups he can manage can be disband
+_whileList = [groupPlayer]
+_blackList = (townGroups select siPlayer) + (groupMatrix select siPlayer) - (groupAiMatrix select siPlayer) - [groupPlayer]
+_playableGroups = (groupMatrix select si0) + (groupMatrix select si1)
 _workerAndBaseGroup = (workerGroups select siPlayer) + [baseGroup select siPlayer]
-? (groupCommander select siPlayer) in (groupAiMatrix select siPlayer): _groups = _groups + (groupAiMatrix select siPlayer) + _workerAndBaseGroup, goto "SkipSuperiorCheck"
-? giPlayer == giCO select siPlayer: _groups = (townGroups select siPlayer) + (groupMatrix select siPlayer) - (groupAiMatrix select siPlayer) - [groupPlayer], goto "SkipSuperiorCheck"
+? (groupCommander select siPlayer) in (groupAiMatrix select siPlayer): _whileList = _whileList + (groupAiMatrix select siPlayer) + _workerAndBaseGroup, goto "SkipSuperiorCheck"
+? giPlayer == giCO select siPlayer: goto "SkipSuperiorCheck"
 
 _index = 0; _gis = []; _groupsAI = groupAiMatrix select siPlayer; _siGroups = groupMatrix select siPlayer; _groupNames = groupNameMatrix select siPlayer
 { if (_x in _groupsAI) then { _gis set [count _gis, _index] }; _index = _index + 1} foreach _siGroups
-{ if ( (["Commander"] + callsigns) select (((aiSetting select siPlayer) select _x) select aisSuperior) == _groupNames select giPlayer ) then { _groups = _groups + [_siGroups select _x] } } forEach _gis
+{ if ( (["Commander"] + callsigns) select (((aiSetting select siPlayer) select _x) select aisSuperior) == _groupNames select giPlayer ) then { _whileList = _whileList + [_siGroups select _x] } } forEach _gis
 
-#SkipSuperiorCheck
+# SkipSuperiorCheck
 
 _extraRecycler = []
 _i = 0; _c = count _units; _multiDisband = _c > 1
@@ -32,7 +36,7 @@ _i = 0; _c = count _units; _multiDisband = _c > 1
 			_human = _crew select _i
 			? not alive _human: goto "vccContinue"
 			? sides find (side _human) != siPlayer: _bValid = false
-			? (group _human) in _groups: _bValid = false
+			? (group _human) in _playableGroups: _bValid = false
 
 			# vccContinue
 			_i = _i + 1
@@ -46,9 +50,12 @@ _i = 0; _c = count _units; _multiDisband = _c > 1
 	? count _crew == 0 && (_u in ( mhq + (MCV select si0) + (MCV select si1) )) : player groupchat "You can't disband MHQ/MCV."; goto "CheckUnit"
 	? count _crew == 0 : _u exec "Player\DisbandEmptyVehicle.sqs"; goto "CheckUnit"
 
+	; Don't allow disband enemy
+	_enemySide = sides select (siEnemy select siPlayer)
+	? giPlayer == giCO select siPlayer: if (side group _u == _enemySide) Then {player groupchat "You are not allowed to disband this unit."; goto "CheckUnit"}
 	; check if unit is allowed to be disband. Since TZK_2.0 the "Join" is allowed but in MP it sometimes meets error, thus commander should be able to command more groups
-	? giPlayer == giCO select siPlayer: if  ((group _u) in _groups) Then {player groupchat "You are not allowed to disband this unit."; goto "CheckUnit"}
-	? giPlayer != giCO select siPlayer: if !((group _u) in _groups) Then {player groupchat "You are not allowed to disband this unit."; goto "CheckUnit"}
+	? giPlayer == giCO select siPlayer: if ((group _u) in _blackList) Then {player groupchat "You are not allowed to disband this unit."; goto "CheckUnit"}
+	? giPlayer != giCO select siPlayer: if !((group _u) in _whileList) Then {player groupchat "You are not allowed to disband this unit."; goto "CheckUnit"}
 
 	_delay = 1
 	? player == leader _u: _delay = 0.1
