@@ -1,0 +1,29 @@
+; args: [vehicle, shell, side index]
+_vehicle = _this select 0; _shell = _this select 1; _si = _this select 2
+
+? !local _shell: exit
+? isNull _shell: exit
+? "shotShell" != format ["%1", typeOf _shell GetAmmoParam "simulation"]: exit
+
+_siEnemy = [si0, si1] select (_si == si0)
+_radars = [_siEnemy, stComm] call funcGetWorkingStructures
+? count _radars == 0: exit
+
+_shooterPos = getPosASL _vehicle, _moment = time
+? not alive _vehicle: exit
+
+_radarRange = 15 * (CCdistMax select _siEnemy)
+? upgMatrix select _siEnemy select upgCCdistance == 2: _radarRange = _radarRange / 10
+
+; wait shell explode or disappear
+_detected = false; if dev then {_detected = true}
+# Loop
+	? not _detected: {if (_x distance _shell < _radarRange) then {_detected = true}} foreach _radars
+
+	~ 0.3
+	? not isNull _shell && not _detected: goto "Loop"
+? not _detected: exit
+
+; execute locally is meaningful to test only, since you can't play your enemy side
+[_shooterPos select 0, _shooterPos select 1, _moment, _siEnemy] exec "Art\DisplayReverseDetectMarker.sqs"
+publicExec format [{[%1,%2,%3,%4] exec "Art\DisplayReverseDetectMarker.sqs"}, _shooterPos select 0, _shooterPos select 1, _moment, _siEnemy]
