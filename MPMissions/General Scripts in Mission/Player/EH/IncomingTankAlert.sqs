@@ -20,7 +20,8 @@ _StringAmmo = _StringAmmo call funcStringWithoutVersion
 ; _StringMissile = _StringMissile call funcStringWithoutVersion
 
 ; player groupchat format ["%1, %2, %3", _StringEnemy, _StringAmmo, _StringMissile]
-player groupchat format ["%1, %2", sideNames select (groupName find _StringEnemy), _StringAmmo]
+_idx = groupName find _StringEnemy
+player groupchat format ["%1, %2", if (-1 == _idx) then {"Unknown"} else sideNames select _idx, _StringAmmo]
 
 hint "missile !!!"
 
