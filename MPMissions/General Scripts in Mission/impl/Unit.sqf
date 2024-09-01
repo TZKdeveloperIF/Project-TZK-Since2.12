@@ -160,6 +160,12 @@ _type = _brdmEAA;
 _motorE = _type;
 unitDefs set [_type, ["Motorcycle", 200, si1, 20, "Jawa_xj400", "\o\vehl\ijawa", 2^stLight, [1, _crewE], _mBike, []] ];
 
+// Add initial ammo to quad, hmmwv/brdm
+{
+	_scripts = unitDefs select _x select udScripts;
+	_scripts set [count _scripts, localize {TZK_EQUIP_UNIT_CARGOCAR}];
+} forEach [_quadW, _quadE, _hummerW, _brdmE];
+
 // Redefine type class to those objects whose dynamic texture is disabled by 4.0.6 patch2
 _entry = unitDefs select _tankHeavyW01; _entry set [udModel, "M1A1_G_xj400"];
 _entry = unitDefs select _tankHeavyW03; _entry set [udModel, "Leo2A6_C_xj400"];
