@@ -12,8 +12,11 @@ if (not _processed && 0 == count _downBoardStack) then {
 
 	if (isCommander || bIsAiSuperior) then {
 		ctrlSetText [_idcDownBtn0, format ["%1 %2", localize {TZK_LANG_BASE}, localize {TZK_LANG_SHORT_MACHINEGUN}]];
+		ctrlSetText [_idcDownBtn0 + 3, format ["%1 %2", localize {TZK_LANG_SHORT_MACHINEGUN}, "Tower"]];
+		ctrlSetText [_idcDownBtn0 + 9, format ["%1 %2", localize {TZK_LANG_BASE}, "T55"]];
+
 		ctrlSetText [_idcDownBtn0 + 2, localize {TZK_LANG_WORKER}];
-		{ctrlShow [_idcDownBtn0 + _x, true]} forEach [0,2];
+		{ctrlShow [_idcDownBtn0 + _x, true]} forEach [0,2,3,9];
 	};
 	_processed = true;
 };

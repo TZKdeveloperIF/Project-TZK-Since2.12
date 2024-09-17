@@ -2,9 +2,15 @@ stWall = _wall;
 stLowWall = _walls;
 stSandBag = _sandbag;
 stBaseMg = _mg;
+stBaseTowerMg = _mgTowerWood;
+stBaseT55 = _gunf;
 
 structMarker set [stAmmoCrate, "AmmoStructure_Marker_xj400"];
 _scripts = structDefs select stAmmoCrate select sdScriptsPlayer;
+_scripts set [count _scripts, localize {TZK_MARKER_STRUCT}];
+
+structMarker set [stBaseT55, "TD_Marker_xj400"];
+_scripts = structDefs select stBaseT55 select sdScriptsPlayer;
 _scripts set [count _scripts, localize {TZK_MARKER_STRUCT}];
 
 structDefs select _tankt set [sdLimit, 500];

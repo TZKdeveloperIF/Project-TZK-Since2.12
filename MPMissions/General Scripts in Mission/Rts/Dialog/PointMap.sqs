@@ -71,9 +71,11 @@ TzkMapRtsFlashingDisabled = true
 	goto "Update"
 # DownBtn
 	? count _downBoardStack > 0: goto "DownSubMenu"
-	? 2^0 == _btnVal: _pos exec "Rts\Building\sDeployBaseMg.sqs"; goto "Update";
+	? 2^0 == _btnVal: [_pos, 0] exec "Rts\Building\sDeployBaseMg.sqs"; goto "Update";
 	? 2^1 == _btnVal: _pos exec "Rts\SubMenu\BuildStruct.sqs"; closeDialog 0; goto "Quit"
 	? 2^2 == _btnVal: _pos exec "Rts\SubMenu\BuyWorker.sqs"; closeDialog 0; goto "Quit"
+	? 2^3 == _btnVal: [_pos, 1] exec "Rts\Building\sDeployBaseMg.sqs"; goto "Update";
+	? 2^9 == _btnVal: [_pos, 2] exec "Rts\Building\sDeployBaseMg.sqs"; goto "Update";
 	goto "Update"
 	# DownSubMenu
 		; ASSERT(3 == _downBoardStack select 0 && 1 == count _downBoardStack)
