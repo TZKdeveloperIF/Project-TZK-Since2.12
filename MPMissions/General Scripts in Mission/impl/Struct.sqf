@@ -114,9 +114,28 @@ structDefs set [_type, [
 st20mHeightRoof = _type;
 _type = _type + 1;
 
+// define special wall ONLY for "wall MHQ"
+_price = [300, 600] select PricingMode;
+_objects = [["wall_xj400", 90, [0,0,0]]];
+_image = [_texPath + "Image\Struct\WallH.jpg",_texPath + "Image\Struct\WallH.jpg"];
+structDefs set [_type, [
+	"MHQ Wall",
+	_price,
+	-1,
+	_image,
+	false,
+	false,
+	75, 0.5, 15, _objects, _objects,
+	[localize {TZK_SERVER_INIT_STRUCT_SEC}], []]
+];
+structMarker set [_type, ""];
+stMhqWall = _type;
+_type = _type + 1; 
+
 // add to structsShelter
 structsShelter set [count structsShelter, st10mHeightRoof];
 structsShelter set [count structsShelter, st20mHeightRoof];
+structsShelter set [count structsShelter, stMhqWall];
 
 // Support roof with multiple language
 structDefs select _roof set [sdName, localize {TZK_LANG_ROOF}];
