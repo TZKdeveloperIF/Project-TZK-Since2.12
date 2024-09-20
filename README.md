@@ -1,6 +1,6 @@
 # How to obtain mod and mission
 In origin OFP the mod (AddOns, Bin and Dta) is invariant while the mission is variable. One can easily obtain updated mission files by downloading them automatically from game server but need manully update mod files. Here we don't consider Fwatch which can help you automatically update mod. Tzk put many scripts in addons aiming to reduce mission pbo file volume, but if they have to be modified they should be put into mission again. Mostly updating won't modify the file too much, and I wish to make file history on git clean and easy to track, so I move those files from addon to mission (when updating mission) and from mission to addon (when release a new version mod).  
-So you can't package the addon pbo from git repository at anytime but only on the commit I release them. You can directly visit my google drive bit.ly/OFP196TZK where I release the mod.
+So you can't package the addon pbo from git repository at anytime but only on the commit I release them. You can directly visit my google drive [bit.ly/OFP196TZK](http://bit.ly/OFP196TZK) where I release the mod.
 ## Gain MPMissions from Scripts on GitHub Directory
 I'll upload mission file to my google drive as well, but you can directly obtain mission scripts directly. Sometimes maybe I'll push instable commits but you can easily checkout to former few commits.  
 It's strongly recommended to use batch processing to copy files and make PBOs. The *MakePBO* of **Mikero Tools** is powerful. I use MakePBO 2.04 version.  
