@@ -40,6 +40,9 @@ call preprocessFile "Rts\Dialog\UpdateRtsPointDownBoard.sqf"
 
 TzkMapRtsFlashingDisabled = true
 
+; enable dynamic marker if any of player units and rts selected units is driver/gunner of artillery vehicle/structure
+0 exec "Rts\DynamicMarker\BuildRange.sqs"
+
 # Update
 	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 	? call dlgUpdated: goto "Quit"
@@ -58,6 +61,7 @@ TzkMapRtsFlashingDisabled = true
 # Quit
 	TzkMapRtsFlashingDisabled = false
 	RtsLatestPointDialogTime = time
+	0 exec "Rts\DynamicMarker\DelayTurnOffBuildDisplay.sqs"
 	[false, _id + 2] exec "Player\Rts\SetRtsMouse.sqs"; exit
 # FirstCtrl
 	; switch to waypoint dialog rapidly
