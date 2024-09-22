@@ -20,6 +20,7 @@ TzkSelUnitsCube = [
 	[[], [], []]	// TzkSelUnitsStack = [TzkSelectedUnits, [], []]
 ,	[[], [], []]	// Stack for selected workers
 ,	[[], [], []]	// stack for selected base group units
+,	[[], [], []]	// stack for selected player group units
 ];
 // selected units enum. 0: AI group units, 1: worker group units, 2: base group units
 TzkRtsSelectEnum = 0;
@@ -72,3 +73,8 @@ RtsLatestPointDialogTime = 0; // the time that player used rts point dialog
 
 // mutex in creating objects
 mutexRtsBaseSoldier = false;
+
+// Global variable for special-dynamic markers
+// Singleton. Player can have only one map-display interaction
+TzkMarkerArtAreaTurnOnTime = 0; TzkMarkerArtAreaState = false;
+TzkMarkerBuildAreaTurnOnTime = 0; TzkMarkerBuildAreaState = false;

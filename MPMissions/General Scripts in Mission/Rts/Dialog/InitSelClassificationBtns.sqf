@@ -9,5 +9,5 @@ ctrlShow [_this + 1, TzkRtsSelectEnum != 1 && count (TzkSelUnitsCube select 1 se
 ctrlSetText [_this + 2, "Select base units"];
 ctrlShow [_this + 2, TzkRtsSelectEnum != 2 && count (TzkSelUnitsCube select 2 select 0) > 0];
 
-// hide unused button
-ctrlShow [_this + 3, false];
+ctrlSetText [_this + 3, "Select player units"];
+ctrlShow [_this + 3, TzkRtsSelectEnum != 3 && count (TzkSelUnitsCube select 3 select 0) > 0];

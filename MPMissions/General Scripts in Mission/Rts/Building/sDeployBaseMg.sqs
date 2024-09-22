@@ -1,7 +1,17 @@
-? not alive (mhq select siPlayer): hint format ["MHQ %1. %2 %3 %4.", localize {TZK_LANG_DDESTROY}, localize {TZK_LANG_SHORT_MACHINEGUN}, localize {TZK_LANG_NOT}, localize {TZK_LANG_DEPLOY}], exit
-? [getPosASL(mhq select siPlayer), _this] call funcDistH > 200: hint format ["%1 (%2 %3m). %4 %5 %6.", localize {TZK_LANG_DESTINATION_TOO_FAR}, localize {TZK_LANG_MORE_THAN}, 200, localize {TZK_LANG_SHORT_MACHINEGUN}, localize {TZK_LANG_NOT}, localize {TZK_LANG_DEPLOY}], exit
+; args: [pos, enum]
+; enum: 0-basic mg, 1-mg tower, 2-t55 fort
+
+_pos = _this select 0
+_enum = _this select 1
+
+_structName = localize {TZK_LANG_SHORT_MACHINEGUN};
+? 1 == _enum: _structName = (localize {TZK_LANG_SHORT_MACHINEGUN}) + "Tower"
+? 2 == _enum: _structName = "T55 fort"
+
+? not alive (mhq select siPlayer): hint format ["MHQ %1. %2 %3 %4.", localize {TZK_LANG_DDESTROY}, _structName, localize {TZK_LANG_NOT}, localize {TZK_LANG_DEPLOY}], exit
+? [getPosASL(mhq select siPlayer), _pos] call funcDistH > 200: hint format ["%1 (%2 %3m). %4 %5 %6.", localize {TZK_LANG_DESTINATION_TOO_FAR}, localize {TZK_LANG_MORE_THAN}, 200, _structName, localize {TZK_LANG_NOT}, localize {TZK_LANG_DEPLOY}], exit
 
 ? not isCommander: hint "Only commander is allowed to do this."; exit
 
-? not isServer: publicExec format ["%1 call preprocessFile {Rts\Building\hDeployBaseMg.sqf}", [siPlayer, _this]]
-? isServer: [siPlayer, _this] call preprocessFile {Rts\Building\hDeployBaseMg.sqf}
+? not isServer: publicExec format ["%1 call preprocessFile {Rts\Building\hDeployBaseMg.sqf}", [siPlayer, _pos, _enum]]
+? isServer: [siPlayer, _pos, _enum] call preprocessFile {Rts\Building\hDeployBaseMg.sqf}

@@ -1,0 +1,48 @@
+; args: none
+
+; update time stamp
+TzkMarkerBuildAreaTurnOnTime = time
+; if turned on then exit
+? TzkMarkerBuildAreaState: exit
+; otherwise turn it on
+TzkMarkerBuildAreaState = true
+
+_vehicles = [], _ranges = []
+{{if (alive _x) then {_vehicles set [count _vehicles, _x]}} forEach (unitMatrix select siPlayer select _x)} forEach (typesSupportPlus select siPlayer)
+_vehicles set [count _vehicles, mhq select siPlayer]
+
+_ranges resize (count _vehicles)
+_i = 0; _c = count _ranges; while {_i < _c} do {_ranges set [_i, 50], _i = _i + 1}; _ranges set [_c - 1, 150]
+
+_backgroundColor = "ColorGreenAlpha"
+_bgs = []
+_i = 0; _c = count _vehicles
+# generateMarkerLoop
+	_marker = format ["TzkDynBuildBg_%1", _i]; createMarker [_marker, [-10, -10]];
+	_marker setMarkerColor _backgroundColor; _marker setMarkerShape "ELLIPSE"; _marker setMarkerSize [_ranges select _i, _ranges select _i]
+	_marker setMarkerBrush "bDiagonal"
+	_bgs set [_i, _marker]
+
+	_i = _i + 1
+	? _i < _c: goto "generateMarkerLoop"
+
+_counter = 0; _frameRate = 8; _period = 2
+# loop
+	? !TzkMarkerBuildAreaState: goto "Quit"
+
+	; _baseDeg = _counter * (360 * 1) / _frameRate
+	_i = 0; _c = count _vehicles
+	# updateVehicleMarker
+		_posVeh = getPosASL (_vehicles select _i)
+		(_bgs select _i) setMarkerPos (if (alive (_vehicles select _i)) then {_posVeh} else {[-1000, -1000]})
+		_i = _i + 1
+		? _i < _c: goto "updateVehicleMarker"
+
+	_counter = _counter + 1
+	? _counter > _frameRate: _counter = _counter - _frameRate
+	~ _period / _frameRate
+
+	goto "loop"
+
+# Quit
+	{deleteMarker _x} forEach _bgs

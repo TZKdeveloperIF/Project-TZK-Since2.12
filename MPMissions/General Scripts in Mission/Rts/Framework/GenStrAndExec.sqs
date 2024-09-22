@@ -13,22 +13,23 @@ _selectedUnits = _params select 0
 ; we manually append a string as if it's formatted NetworkID array. Also, the CONTENT
 ; of this string is what we desired.
 ? isServer: _netIds = []; _netIds resize (_right - _left + 1)
-? not isServer: _str = "["
+_str = "["
 _i = _left
 # loop
 	_obj = _selectedUnits select _i
-	? isServer: _netIds set [_i - _left, NetworkID _obj], goto "netIdGet"
+	? isServer: _netIds set [_i - _left, NetworkID _obj]
 	_str = _str + format [{%1%2}, _obj call funcGenNetIdStr, if (_i != _right) then {","} else {""}]
 
-	# netIdGet
+	; # netIdGet
 	_i = _i + 1
 	? _i <= _right: goto "loop"
-? not isServer: _str = _str + "]"
+_str = _str + "]"
 
-; "_this" is reference of the input of "GenArrayCommand.sqs". create a deep copy for params
-_copy = + _params
-; For server, directly pass parameters to script
-? isServer: _copy set [0, _netIds], _copy exec "Rts\Framework\Distributor.sqs", exit
-; For client, we need the CONTENT of "_str"
-_copy set [0, 0]; _rest = format ["%1", _copy], _rest = substr [_rest, 3, sizeofstr _rest - 1]
+; "_this" is reference of the input of "GenArrayCommand.sqs". create deep copy for params
+_localParam = + _params
+; server itself can directly pass parameters to script
+? isServer: _localParam set [0, _netIds], _localParam exec "Rts\Framework\Distributor.sqs"
+; For network broadcast, we need the CONTENT of "_str"
+_remoteParam = + _params
+_remoteParam set [0, 0]; _rest = format ["%1", _remoteParam], _rest = substr [_rest, 3, sizeofstr _rest - 1]
 publicExec format [{[%1,%2] exec "Rts\Framework\Distributor.sqs"}, _str, _rest]
