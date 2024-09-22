@@ -11,11 +11,13 @@ _si = siPlayer; _desc = structDefs select _type
 ? _desc select sdSides != _si && _desc select sdSides != siBoth: player groupChat "This structure is not allowed to build for your side in this mission.", exit
 ? _desc select sdOnlyCO: if (groupPlayer != (groupCommander select siPlayer)) then {player groupChat "Only allow Commander to build this."; exit}
 
-_mhq = mhq select _si
-? _desc select sdOnlyMHQ: if (([getPos _mhq, _posStruct] call funcDistH) > 150) then {player groupChat localize {TZK_LANG_TOO_FAR_FROM_MHQ}; exit}
+_posMhq = getPosASL (mhq select _si)
+? !alive (mhq select _si): _posMhq = [-1000, -1000]
+? _desc select sdOnlyMHQ: if (!alive (mhq select _si)) then {player groupChat "MHQ is destroyed. Can't build."; exit}
+? _desc select sdOnlyMHQ: if (([_posMhq, _posStruct] call funcDistH) > 150) then {player groupChat localize {TZK_LANG_TOO_FAR_FROM_MHQ}; exit}
 
 _ClosestSup = ([_posStruct, _si, typesSupportPlus select _si, []] call funcGetClosestVehicle)
-? ([getPos _mhq, _posStruct] call funcDistH) > 150 && (_ClosestSup select 1) > 50: player groupChat localize {TZK_LANG_TOO_FAR_FROM_MHQ_OR_SUP}; exit
+? ([_posMhq, _posStruct] call funcDistH) > 150 && (_ClosestSup select 1) > 50: player groupChat localize {TZK_LANG_TOO_FAR_FROM_MHQ_OR_SUP}; exit
 
 ; BuildStructure
 
