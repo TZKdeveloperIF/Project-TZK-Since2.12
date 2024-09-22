@@ -72,3 +72,7 @@ RtsLatestPointDialogTime = 0; // the time that player used rts point dialog
 
 // mutex in creating objects
 mutexRtsBaseSoldier = false;
+
+// Global variable for special-dynamic markers
+// Singleton. Player can have only one map-display interaction
+TzkMarkerArtAreaTurnOnTime = 0; TzkMarkerArtAreaState = false;

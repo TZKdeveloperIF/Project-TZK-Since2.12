@@ -39,6 +39,10 @@ if (_this) then {
 	// activate selected units' highlighting
 	TzkMapSelectedHighlight = false;
 	TzkMapAreaLastUsedTime = time;
+	// on selecting new units, turn off art dynamic marker immediately
+	if (count _aiUnits > 0) then {
+		TzkMarkerArtAreaState = false;
+	};
 } else {
 	_index = 0;
 	{
