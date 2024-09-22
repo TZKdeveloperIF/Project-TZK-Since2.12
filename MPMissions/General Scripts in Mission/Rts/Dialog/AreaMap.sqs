@@ -48,6 +48,9 @@ TzkMapRtsFlashingDisabled = true
 btnValue05 = -1;
 (IDC + 16 * 19) call preprocessFile "Rts\Dialog\InitSelClassificationBtns.sqf"
 
+; enable dynamic marker if any of player units and rts selected units is driver/gunner of artillery vehicle/structure
+0 exec "Rts\DynamicMarker\ArtRange.sqs"
+
 # Update
 	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 	? call dlgUpdated: goto "Quit"
@@ -67,6 +70,7 @@ btnValue05 = -1;
 	goto "Update"
 # Quit
 	TzkMapRtsFlashingDisabled = false
+	0 exec "Rts\DynamicMarker\DelayTurnOffArtDisplay.sqs"
 	[false, _id + 2] exec "Player\Rts\SetRtsMouse.sqs"; exit
 # LeftBtn
 	? _val0 >= 0 && _val0 <= 6: 2 ^ _val0 call preprocessFile "rts\Marker\AreaClearMarker.sqf"; closeDialog 0; goto "Quit"

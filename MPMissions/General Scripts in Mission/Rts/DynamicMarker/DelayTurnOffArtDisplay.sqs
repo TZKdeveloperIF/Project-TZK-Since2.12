@@ -1,0 +1,8 @@
+; args: none
+; delay few seconds then turn off the art display
+; if new turn on request generated after this script, current turn off won't be executed
+
+_currentTime = time
+~ 7
+? TzkMarkerArtAreaTurnOnTime > _currentTime: exit
+TzkMarkerArtAreaState = false
