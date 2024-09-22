@@ -76,3 +76,4 @@ mutexRtsBaseSoldier = false;
 // Global variable for special-dynamic markers
 // Singleton. Player can have only one map-display interaction
 TzkMarkerArtAreaTurnOnTime = 0; TzkMarkerArtAreaState = false;
+TzkMarkerBuildAreaTurnOnTime = 0; TzkMarkerBuildAreaState = false;

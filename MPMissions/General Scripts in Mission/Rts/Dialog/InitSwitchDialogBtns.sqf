@@ -60,6 +60,9 @@ ctrlSetText [_idcBtn + _enum, localize {TZK_LANG_POINT}];
 if (_enum != _curDlgEnum) then {
 	// always available
 	ctrlShow [_idcBtn + _enum, true];
+
+	// turn off build area displaying immediately on switching to non-point dialogs
+	TzkMarkerBuildAreaState = false;
 } else {
 	ctrlShow [_idcBg + _enum, true];
 	ctrlShow [_idcBtn + _enum, true]; ctrlEnable [_idcBtn + _enum, false];
