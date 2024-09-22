@@ -1,8 +1,9 @@
 if (_this) then {
-	private [{_aiUnits}, {_workers}, {_baseUnits}];
+	private [{_aiUnits}, {_workers}, {_baseUnits}, {_playerUnits}];
 	_aiUnits = 		TzkSelUnitsCube select 0 select 0;
 	_workers = 		TzkSelUnitsCube select 1 select 0;
 	_baseUnits = 	TzkSelUnitsCube select 2 select 0;
+	_playerUnits = 	TzkSelUnitsCube select 3 select 0;
 
 	if (isCommander || bIsAiSuperior) then {
 		private [{_funcLeadBy}, {_gi}];
@@ -35,6 +36,21 @@ if (_this) then {
 				_baseUnits set [count _baseUnits, _x];
 			}
 		} forEach (units _group);
+
+		_gi = 0; while {_gi < count (groupMatrix select siPlayer)} do {
+			_group = groupMatrix select siPlayer select _gi;
+			if (_gi != giPlayer && 
+				(groupAiMatrix select siPlayer) find _group == -1 && 
+				_gi call loadFile "Player\SQF\GroupUnitsShown.sqf"
+			) then {
+				{
+					if ((getPosASL _x) call preprocessFile "Util\InSelectedArea.sqf") then {
+						_playerUnits set [count _playerUnits, _x];
+					}
+				} forEach (units _group);
+			};
+			_gi = _gi + 1;
+		};
 	};
 	// activate selected units' highlighting
 	TzkMapSelectedHighlight = false;

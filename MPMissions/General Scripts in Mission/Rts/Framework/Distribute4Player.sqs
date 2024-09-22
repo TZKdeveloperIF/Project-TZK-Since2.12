@@ -1,0 +1,28 @@
+; this script is for player to process RTS Order
+; In the beginning RTS order will only be executed on server for AI groups. However if wish commander
+; to order other players units, it's necessary to make player client process RTS requests too
+; todo: this is a trial. Not the stable final resolution
+
+; args: [Network IDs[], param: any, script name: string, script folder: string]
+
+_netIds = _this select 0
+_isntMyGroupMember = {group UnitById _this != groupPlayer}
+[_netIds, _isntMyGroupMember] call preprocessFile "Util\ArrayEraseIf.sqf"
+_c = count _netIds
+? 0 == _c: exit
+
+; todo: maybe convert AI-RTS-order param to player-order param. Kinda "decorate"
+
+; only allow commander "disband" other player group units
+? (_this select 2) != "hDisband.sqs": exit
+_scriptFolder = _this select 3
+? "Trigger" == _scriptFolder: goto "Trigger"
+
+("Unexpected rts script folder for " + (_this select 2)) call fDebugLog
+exit
+
+# Trigger
+	_scriptName = _this select 2
+	_scriptPath = format ["%1\%2\%3", "Rts", "Trigger", _scriptName];
+	_this exec _scriptPath
+	exit
