@@ -1,6 +1,9 @@
 ; this script is for distributing rts order
 
-? not isServer: exit
+; client call another distributor script
+? not isServer: _this exec "Rts\Framework\Distribute4Player.sqs"; exit
+; non-dedicated server deep copy the parameter to call another distributor script
+? not isNull player: _copy = +_this; _copy set [0, +(_this select 0)]; _copy exec "Rts\Framework\Distribute4Player.sqs"
 
 ; args: [Network IDs[], param: any, script name: string, script folder: string]
 
