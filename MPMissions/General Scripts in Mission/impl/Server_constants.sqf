@@ -22,3 +22,5 @@ TzkSupVehObjs = []; TzkSubVehUsers = []; mutexTzkSup = false;
     factoryCancelledQid = [[], []];
     // format of (executedOrderTimer select si): array of qid (work as key), array of [gi, unitsToBuild, timeStamp]
     executedOrderTimer = [[[], []], [[], []]]; mutexEot = [false, false];
+// 4.0.6.81. MHQ wall
+    TzkMhqWallObjs = []; TzkMhqWallInfos = [];

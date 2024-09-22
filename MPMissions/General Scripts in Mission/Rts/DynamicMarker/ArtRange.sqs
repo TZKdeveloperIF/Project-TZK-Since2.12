@@ -1,0 +1,88 @@
+; args: none
+_pplUnits = units player
+_units = _pplUnits + (call preprocessFile "Rts\Ui\CurSelUnitArray.sqf")
+_rtsUnitsBeginIdx = count _pplUnits
+
+; update time stamp
+TzkMarkerArtAreaTurnOnTime = time
+; if turned on then exit
+? TzkMarkerArtAreaState: exit
+; otherwise turn it on
+TzkMarkerArtAreaState = true
+
+; todo: maybe need unify this here and in Art core order
+_radius = viewDistance
+? upgMatrix select siPlayer select upgLongWeaponRange == 2: _radius = 1.5 * viewDistance
+
+_vehicles = []; _unitIndexes = []; _unitGrpNames = []
+_i = 0; _j = 0; _c = count _units
+_rtsVehicleBeginIdx = _c
+? 0 == _c: exit
+_artVehicleTypes = typesHowitzer + typesRocketLauncher
+_artStructTypes = structsOccupiableMortar + structsOccupiableHowitzer
+_groupNames = groupNameMatrix select siPlayer
+# ergodic
+	_valid = false
+	_u = _units select _i; _v = vehicle _u
+	_gi = (groupMatrix select siPlayer) find (group _u)
+	_type = _v call funcGetUnitTypeFromObject
+	? _type in _artVehicleTypes: _valid = true
+	? -1 == _type: _valid = (_v call funcGetStructTypeFromObject) in _artStructTypes
+	? _valid: _valid = ((_u == gunner _v) || (_u == driver _v)) && _gi != -1 && -1 == _vehicles find _v && alive _u
+
+	? _valid && _i >= _rtsUnitsBeginIdx && _rtsVehicleBeginIdx == _c: _rtsVehicleBeginIdx = _j
+	? _valid: _vehicles set [_j, _v], _unitIndexes set [_j, _i]; _unitGrpNames set [_j, _groupNames select _gi];  _j = _j + 1
+
+	; continue
+	_i = _i + 1
+	? _i < _c: goto "ergodic"
+
+? count _vehicles == 0: exit
+_backgroundColor = "ColorGrey_xj400"
+_lineColor = "ColorGreenAlpha"
+_bgs = []; _lines = []; _texts = []; _i = 0; _c = count _vehicles
+# generateMarkerLoop
+	_marker = format ["TzkDynArtBg_%1", _i]; createMarker [_marker, [-10, -10]];
+	_marker setMarkerColor _backgroundColor; _marker setMarkerShape "ELLIPSE"; _marker setMarkerSize [_radius, _radius]
+	_marker setMarkerBrush "diagGrid"
+	_bgs set [_i, _marker]
+
+	? _i >= _rtsVehicleBeginIdx: _lineColor = "ColorRed"
+	_marker = format ["TzkDynArtLine_%1", _i]; createMarker [_marker, [-10, -10]];
+	_marker setMarkerColor _lineColor; _marker setMarkerShape "RECTANGLE"; _marker setMarkerSize [5, _radius / 2]
+	_lines set [_i, _marker]
+
+	_marker = format ["TzkDynArtText_%1", _i]; createMarker [_marker, [-10, -10]];
+	_marker setMarkerColor _lineColor; _marker setMarkerSize [0, 0]; _marker setMarkerType "Dot"
+	_marker setMarkerText format ["%1 %2 Art Range", _unitGrpNames select _i, _unitIndexes select _i]
+	_texts set [_i, _marker]
+
+	_i = _i + 1
+	? _i < _c: goto "generateMarkerLoop"
+
+_counter = 0; _frameRate = 40; _period = 1.5
+# loop
+	? !TzkMarkerArtAreaState: goto "Quit"
+
+	_baseDeg = _counter * (360 * 1) / _frameRate
+	_i = 0; _c = count _vehicles
+	# updateVehicleMarker
+		_posVeh = getPosASL (_vehicles select _i)
+		_curDeg = _baseDeg + 360 * _i / _c
+		(_lines select _i) setMarkerPos [(_posVeh select 0) + (_radius / 2) * cos (90 - _curDeg), (_posVeh select 1) + (_radius / 2) * sin (90 - _curDeg)]
+		(_lines select _i) setMarkerDir _curDeg
+		(_bgs select _i) setMarkerPos _posVeh
+		(_texts select _i) setMarkerPos [(_posVeh select 0) + (_radius / 4), (_posVeh select 1)]
+		_i = _i + 1
+		? _i < _c: goto "updateVehicleMarker"
+
+	_counter = _counter + 1
+	? _counter > _frameRate: _counter = _counter - _frameRate
+	~ _period / _frameRate
+
+	goto "loop"
+
+# Quit
+	{deleteMarker _x} forEach _bgs
+	{deleteMarker _x} forEach _lines
+	{deleteMarker _x} forEach _texts

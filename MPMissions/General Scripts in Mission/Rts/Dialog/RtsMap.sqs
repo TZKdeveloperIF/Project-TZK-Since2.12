@@ -93,6 +93,10 @@ btnValue05 = -1;
 		goto "Quit"
 ; todo: magic number should better
 # LeftBtn
+	; by now not allow RTS-orderwhen selecting other players' units
+	; todo: better control mode
+	? 3 == TzkRtsSelectEnum: hint "Only allow Disband on other players' units."; goto "Update"
+
 	? 0 == _btnVal: _pos exec "Rts\Order\sRtsMove.sqs"; closeDialog 0; goto "Quit"
 	? 1 == _btnVal: 0 exec "Rts\Order\sClear.sqs"; closeDialog 0; goto "Quit"
 	? 13 == _btnVal: 0 exec "Rts\Order\sStop.sqs"; closeDialog 0; goto "Quit"
@@ -112,6 +116,10 @@ btnValue05 = -1;
 	goto "Update"
 ; Share same structure and effect with player group order
 # DownBtn
+	; by now only allow "disband" RTS-trigger when selecting other players' units
+	; todo: better control mode
+	? 3 == TzkRtsSelectEnum && 2^0 != _btnVal: hint "Only allow Disband on other players' units."; goto "Update"
+
 	? count _downBoardStack > 0: goto "DownSubMenu"
 
 	? 2^0 == _btnVal: 0 exec "Rts\SubMenu\DisbandPreset.sqs"; closeDialog 0; goto "Quit"

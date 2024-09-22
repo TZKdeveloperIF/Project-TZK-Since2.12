@@ -33,6 +33,14 @@ while "_i<_c" do {
 
 	_i=_i+1;
 };
+if (_type == stMhqWall) then {
+	comment "update current MHQ wall info";
+	_i = TzkMhqWallObjs find objNull;
+	if (-1 == _i) then {_i = count TzkMhqWallObjs};
+	TzkMhqWallObjs set [_i, _objects select 0];
+	TzkMhqWallInfos set [_i * 2, _pos];
+	TzkMhqWallInfos set [_i * 2 + 1, _dir];
+};
 [_objects, _type] exec localize {TZK_SERVER_FUNC_RESET_UP};
 [_si, _type, _objects select 0] exec "\TZK_Scripts_4_0_4\Server\AddToStructMatrix.sqs";
 [_objects, _type] exec "\TZK_Scripts_4_0_4\Server\StructuresServerAdd.sqs";
