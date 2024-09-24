@@ -256,7 +256,7 @@ goto "Update"
 	_controlCenters = [siPlayer, stComm] call funcGetWorkingStructures
 	? ((count _controlCenters) == 0): hint "No Working Comm Center"; goto "Update"
 
-	_param = [_index, siPlayer, giPlayer, false]
+	_param = [_index, siPlayer, giPlayer, 0]
 	_param exec "Server\Upgrade\EndWrap.sqs"
 	publicExec format [{%1 exec "Server\Upgrade\EndWrap.sqs"}, _param]
 	goto "Update"
