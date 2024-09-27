@@ -1,0 +1,25 @@
+; args: [bridge, id, bridgeIdx]
+_bridge = _this select 0
+_id = _this select 1
+_bridgeIdx = _this select 2
+
+_funcGenerator = preprocessFile "Bridge\InfoFunc.sqf"
+	_funcGetHead = "GetHeadInfo" call _funcGenerator
+	_funcGetValid = "GetValidStatus" call _funcGenerator
+	_funcGetId = "GetId" call _funcGenerator
+
+_i = 0; _c = count TzkBrdigeProjects
+? _c <= 0: exit
+# searchProjectLoop
+	_project = TzkBrdigeProjects select _i
+	_head = _project call _funcGetHead
+	? (_head call _funcGetValid) && (_head call _funcGetId) == _id: goto "searchFinished"
+
+	_i = _i + 1
+	? _i < _c: goto "searchProjectLoop"
+
+# searchFinished
+	? _i >= _c: exit
+	_project = TzkBrdigeProjects select _i
+	_bridgesInfo = _project call ("GetBridgeInfo" call _funcGenerator)
+	[_bridgesInfo, _bridgeIdx, _bridge] call ("BridgeSetObj" call _funcGenerator)

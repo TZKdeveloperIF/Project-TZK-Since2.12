@@ -35,6 +35,8 @@ ctrlSetText [_idcLeftBtn0 + 6, format ["%1 %2", localize {TZK_LANG_SHORT_PLAYER}
 
 ctrlSetText [_idcLeftBtn0 + 7, localize {TZK_LANG_DESTRUCTION}]
 ctrlSetText [_idcLeftBtn0 + 8, format ["%1 %2", localize {TZK_LANG_BUILD}, localize {TZK_LANG_BRIDGE}]]
+
+ctrlSetText [_idcLeftBtn0 + 10, format ["%1 %2", "Remove", localize {TZK_LANG_BRIDGE}]]
 ; ctrlShow [_idcLeftBtn0 + 8, dev]
 
 ; down board
@@ -76,6 +78,7 @@ btnValue05 = -1;
 	? _val0 >= 0 && _val0 <= 6: 2 ^ _val0 call preprocessFile "rts\Marker\AreaClearMarker.sqf"; closeDialog 0; goto "Quit"
 	? 7 == _val0: 0 exec "Rts\Submenu\Destruction.sqs"; closeDialog 0; goto "Quit"
 	? 8 == _val0: 0 exec "Rts\Diagonal\Bridge.sqs"; closeDialog 0; goto "Quit"
+	? 10 == _val0: 0 exec "Rts\Submenu\RemoveBridge.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 # DownBtn
 	? count _downBoardStack > 0: goto "DownSubMenu"

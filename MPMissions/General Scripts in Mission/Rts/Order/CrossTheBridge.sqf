@@ -1,43 +1,40 @@
-// args: player selected units
+// args: [player selected units, 
+//	[unit, bridge project id, near begin pos (bool. decide which endpoint of bridge is the start pos)
+//		, move distance (distance to move after having acrossed the bridge)]]
 // returns: none
 
-if (count _this > 0) then {
-	_res = call preprocessFile "Rts\Marker\DiagonalPosInfo.sqf";
+// todo: rename script. This is actually a preprocess script doing some parameter decoration and unit filtrate
+private [{_playerGroupSelectedUnits}]; _playerGroupSelectedUnits = _this select 0;
+if (count _playerGroupSelectedUnits > 0) then {
+	private [{_units}]; _units = [];
+	{
+		if (_x != vehicle _x && _x != driver vehicle _x) then {
+			_driver = driver vehicle _x;
+			if not (_driver in _units) then {_units set [count _units, _driver]};
+		};
+	} forEach _playerGroupSelectedUnits;
+	[_units, _playerGroupSelectedUnits] call preprocessFile "Util\ArrayAppend.sqf";
+	{
+		private [{_unit},{_uid},{_id}];
+		_unit = _x;
+		if (alive _unit && _unit != vehicle _unit) then {
+			_uid = [_unit, siPlayer, giPlayer] call funcCalcUID;
+			if (_uid > 12) then {
+				hint "Fail to get UID, order not set. Try again please.";
+			} else {
+				_id = (playerOrderID select _uid) + 1;
+				[_uid, _id] exec "\TZK_Scripts_4_0_4\Player\Order\New.sqs";
 
-	_bridge1 = NearestObjectDistance [_res select 0, "Bridge", 50];
-	_bridge2 = NearestObjectDistance [_res select 1, "Bridge", 50];
+				_quitCond = {not alive _unit || _unit == vehicle _unit || 
+					_unit != driver vehicle _unit || _unit == vehicle _unit || call orderCheck};
 
-	if (isNull _bridge1 || isNull _bridge2) then {
-		hint "Please assign line close enough to the bridge please.";
-	} else {
-		private [{_units}]; _units = [];
-		{
-			if (_x != vehicle _x && _x != driver vehicle _x) then {
-				_driver = driver vehicle _x;
-				if not (_driver in _units) then {_units set [count _units, _driver]};
+				[
+					_unit,
+					_this select 1,
+					[false, _quitCond], 
+					[_uid, _id]
+				] exec "ComplexOrder\CrossTheBridge.sqs";
 			};
-		} forEach _this;
-		[_units, _this] call preprocessFile "Util\ArrayAppend.sqf";
-		{
-			private [{_unit},{_uid},{_id}];
-			_unit = _x;
-			if (alive _unit && _unit != vehicle _unit) then {
-				_uid = [_unit, siPlayer, giPlayer] call funcCalcUID;
-				if (_uid > 12) then {
-					hint "Fail to get UID, order not set. Try again please.";
-				} else {
-					_id = (playerOrderID select _uid) + 1;
-					[_uid, _id] exec "\TZK_Scripts_4_0_4\Player\Order\New.sqs";
-
-					_quitCond = {not alive _unit || _unit == vehicle _unit || call orderCheck};
-
-					[
-						[_unit, _res, _bridge1, _bridge2], 
-						[false, _quitCond], 
-						[_uid, _id]
-					] exec "ComplexOrder\CrossTheBridge.sqs";
-				};
-			};
-		} forEach _units;
-	};
+		};
+	} forEach _units;
 };

@@ -1,0 +1,97 @@
+; args: [clicked pos: [x, y], player group units: [], server rts order: bool]
+_pos = _this select 0
+_units = _this select 1
+_svrRtsOrder = _this select 2
+
+@ !mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "TzkRtsSubMenuTwoListBox"
+mutexDlg = false
+
+_radius = 200
+; marker to display range for searching nearby bridge
+_marker = "TzkRtsSelectCrossBridge"; createMarker [_marker, _pos];
+_marker setMarkerColor "ColorOrange_xj400"; _marker setMarkerShape "ELLIPSE"; _marker setMarkerSize [_radius, _radius]
+; _marker setMarkerBrush "bDiagonal"
+
+_idcTitle = IDC + 0
+_idcBtnUndo = IDC + 16 * 1 + 0
+_idcListLabel0 = IDC + 16 * 3 + 1; _idcListLabel1 = IDC + 16 * 3 + 3
+_idcListBox0 = IDC + 16 * 3 + 0; _idcListBox1 = IDC + 16 * 3 + 2
+
+; functions
+	_funcGetHead = "GetHeadInfo" call (preprocessFile "Bridge\InfoFunc.sqf")
+	_funcGetValid = "GetValidStatus" call (preprocessFile "Bridge\InfoFunc.sqf")
+	_funcGetId = "GetId" call (preprocessFile "Bridge\InfoFunc.sqf")
+	_funcGetSi = "GetSi" call (preprocessFile "Bridge\InfoFunc.sqf")
+	_funcGetBegin = "GetBeginPos" call (preprocessFile "Bridge\InfoFunc.sqf")
+	_funcGetEnd = "GetEndPos" call (preprocessFile "Bridge\InfoFunc.sqf")
+
+ctrlSetText [_idcTitle, format ["%1 %2", localize {TZK_LANG_CROSS}, localize {TZK_LANG_BRIDGE}]]
+ctrlSetText [_idcListLabel0, format ["%1 %2", localize {TZK_LANG_NEARBY}, localize {TZK_LANG_BRIDGE}]]
+ctrlSetText [_idcListLabel1, format ["%1 %2", localize {TZK_LANG_MOVE}, localize {TZK_LANG_DISTANCE}]]
+ctrlShow [_idcBtnUndo, false]
+
+btnValue00 = false; btnValue01 = false
+
+; initial lists once. Check whether bridge valid on clicking "OK" button
+? 0 == count TzkBrdigeProjects: goto "bridgeListUpdated"
+_i = 0; _c = count TzkBrdigeProjects
+# updateBrdigeList
+	_project = TzkBrdigeProjects select _i
+	_headInfo = _project call _funcGetHead
+	? not (_headInfo call _funcGetValid) || siPlayer != (_headInfo call _funcGetSi): goto "continue"
+	? [_pos, (_headInfo call _funcGetBegin)] call funcDistH > _radius && [_pos, (_headInfo call _funcGetEnd)] call funcDistH > _radius: goto "continue"
+
+	_bridgeId = _headInfo call _funcGetId
+	_lbId = lbAdd [_idcListBox0, format ["%1: %2", localize {TZK_LANG_BRIDGE}, _bridgeId]]
+	lbSetValue [_idcListBox0, _lbId, _bridgeId]
+
+	# continue
+	_i = _i + 1
+	? _i < _c: goto "updateBrdigeList"
+# bridgeListUpdated
+? _c > 0: lbSetCurSel [_idcListBox0, 0]
+
+_moveDistFactor = 20; _i = 0; _c = 10
+while {_i < _c} do {_d = _moveDistFactor * (_i + 1); _lbId = lbAdd [_idcListBox1, format ["%1 m", _d]]; lbSetValue [_idcListBox1, _lbId, _d]; _i = _i + 1}
+lbSetCurSel [_idcListBox1, 1]
+
+# loop
+
+	~ 0.2
+	? call dlgUpdated: goto "Quit"
+	? not alive player: closeDialog 0; goto "Quit"
+
+	? btnValue00: btnValue00 = false; closeDialog 0; goto "Quit"
+	? btnValue01: btnValue01 = false; goto "OK"
+
+	goto "loop"
+# Quit
+	deleteMarker _marker
+	exit
+# OK
+	_idx = lbCurSel _idcListBox0
+	? -1 == _idx: hint "No selected bridge.", goto "loop"
+	_bridgeId = lbValue [_idcListBox0, _idx]
+
+	_idx = lbCurSel _idcListBox1
+	? -1 == _idx: hint "No selected move distance.", goto "loop"
+	_moveDistance = lbValue [_idcListBox1, _idx]
+
+	; search project and judge
+	_project = _bridgeId call preprocessFile "Bridge\GetProjectById.sqf"
+	? count _project <= 0: hint "Bridge is removed."; closeDialog 0; goto "Quit"
+	_headInfo = _project call ("GetHeadInfo" call (preprocessFile "Bridge\InfoFunc.sqf"))
+	? not (_headInfo call ("GetValidStatus" call (preprocessFile "Bridge\InfoFunc.sqf"))): hint "Bridge is removed."; closeDialog 0; goto "Quit"
+	? _project call preprocessFile "Bridge\HasBrokenBridgeSegment.sqf": hint "Part of bridge is broken. Need repair first."; goto "loop"
+
+	_beginPos = _headInfo call ("GetBeginPos" call (preprocessFile "Bridge\InfoFunc.sqf"))
+	_endPos = _headInfo call ("GetEndPos" call (preprocessFile "Bridge\InfoFunc.sqf"))
+	_nearBeginPos = true
+	? ([_pos, _beginPos] call funcDistH) > ([_pos, _endPos] call funcDistH): _nearBeginPos = false
+
+	? _svrRtsOrder: [_bridgeId, _nearBeginPos, _moveDistance] exec "Rts\Order\sCrossBridge.sqs"
+	? not _svrRtsOrder: [_units, [_bridgeId, _nearBeginPos, _moveDistance]] call preprocessFile "Rts\Order\CrossTheBridge.sqf"
+
+	closeDialog 0; goto "Quit"
