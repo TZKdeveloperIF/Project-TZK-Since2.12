@@ -74,7 +74,7 @@ structDefs set [_type, [
 	false,
 	false,
 	100, 0, 0, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_PRIM}, "Server\Msg\sBridgeBuilt.sqs"],
+	[localize {TZK_SERVER_INIT_STRUCT_PRIM}, "Bridge\AddEh.sqs"],
 	[]]
 ];
 stBridge = _type;
