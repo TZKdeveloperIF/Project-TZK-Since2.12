@@ -17,6 +17,9 @@ _typename = _desc select sdObjects0 select 0 select 0
 _bridge = _typename createVehicle _pos;
 _bridge setVectorDirAndUp [_3dVec, [0,0,1]];
 _bridge setPosASL _pos;
+; set damage to make tanks easily to break it
+; according to practice and test, set 0.8 will cost M1A1 4 sabot to destroy it while 0.9 will cost 2 sabot
+_bridge setDamage 0.8
 
 _funcGenerator = preprocessFile "Bridge\InfoFunc.sqf"
 	_funcBridgeSetObj = "BridgeSetObj" call _funcGenerator
