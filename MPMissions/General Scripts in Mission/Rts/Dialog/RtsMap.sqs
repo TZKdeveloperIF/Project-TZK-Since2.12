@@ -50,6 +50,8 @@ ctrlSetText [_idcLeftBtn0 + 9, format ["%1 %2", localize {TZK_LANG_DISABLE}, loc
 ctrlSetText [_idcLeftBtn0 + 10, localize {TZK_LANG_REPAIR}]
 ctrlSetText [_idcLeftBtn0 + 11, localize {TZK_LANG_REARM}]
 
+ctrlSetText [_idcLeftBtn0 + 12, format ["%1%2", localize {TZK_LANG_CROSS}, localize {TZK_LANG_BRIDGE}]]
+
 ; down board
 _downBoardStack = []
 call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
@@ -112,6 +114,8 @@ btnValue05 = -1;
 
 	? 10 == _btnVal: _pos exec "Rts\Submenu\RepairPreset.sqs"; closeDialog 0; goto "Quit"
 	? 11 == _btnVal: _pos exec "Rts\Submenu\RearmPreset.sqs"; closeDialog 0; goto "Quit"
+
+	? 12 == _btnVal: [_pos, _units, true] exec "Rts\Submenu\CrossBridgePreset.sqs"; closeDialog 0; goto "Quit"
 	; value 13 is occupied
 	goto "Update"
 ; Share same structure and effect with player group order

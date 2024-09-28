@@ -36,11 +36,11 @@ _timeStart = time
 	~5
 	_controlCenters = [_si, stComm] call funcGetWorkingStructures
 
-	? (count _controlCenters) == 0: (upgMatrix select _si) set [_upg, 0]; [_si, _upg, 0] exec "Server\Info\UpgState.sqs"; exit
+	? (count _controlCenters) == 0: [_upg, _si, _gi, 2] exec "Server\Upgrade\EndWrap.sqs"; exit
 
 	; order is cancelled externally
 	? -1 == (_this call preprocessFile "Server\Upgrade\ValidOrder.sqf"): exit
 
 	? time < (_timeStart + 60*_minutes): goto "CheckControlCenters"
 
-[_upg, _si, _gi, true] exec "Server\Upgrade\EndWrap.sqs"
+[_upg, _si, _gi, 1] exec "Server\Upgrade\EndWrap.sqs"

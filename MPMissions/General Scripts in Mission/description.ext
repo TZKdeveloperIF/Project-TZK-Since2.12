@@ -599,6 +599,7 @@ class TzkCmdMapDlgArea: TzkCmdMapDlgBase {
 		Frame1, 
 		LeftBtn0, LeftBtn1, LeftBtn2, LeftBtn3, LeftBtn4, LeftBtn5, LeftBtn6, 
 		LeftBtn7, LeftBtn8, 
+		LeftBtn10,
 		DownBtn0, DownBtn1, DownBtn2, 
 		DownBtn3, DownBtn4, DownBtn5, 
 		DownBtn8, 
@@ -676,10 +677,16 @@ class TzkCmdMapDlgArea: TzkCmdMapDlgBase {
 		y = 0.05 * 6;
 		action = "btnValue00 = 7";
 	};
-	class LeftBtn8: LeftBtn7 {	// for AREA "Destruction" button
+	class LeftBtn8: LeftBtn7 {	// for AREA "Build Bridge" button
 		idc = IDC + 16 * 2 + 8;
 		x = 0.15 + 0.01;
 		action = "btnValue00 = 8";
+	};
+	class LeftBtn10: LeftBtn8 { // for AREA "Remove Bridge" button
+		idc = IDC + 16 * 2 + 10;
+		y = 0.05 * 7;
+		action = "btnValue00 = 10";
+		sizeEx = 0.022;
 	};
 };
 
@@ -758,6 +765,7 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
 		LeftBtn4, LeftBtn5, LeftBtn6, LeftBtn7, 
 		LeftBtn8, LeftBtn9, 
 		LeftBtn10, LeftBtn11, 
+		LeftBtn12, // RTS "cross bridge". For RTS but not player group
 		LeftBtn13, // for RTS "stop"
 		DownBtn0, DownBtn1, DownBtn2, 
 		DownBtn3, DownBtn4, DownBtn5, 
@@ -847,7 +855,13 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
 		y = 0.10 + 0.15 + 0.05 * 6;
 		action = "btnValue00 = 11";
 	};
-
+	class LeftBtn12: LeftBtn0 { // for RTS cross bridge
+		idc = IDC + 16 * 2 + 12;
+		x = 0.025;
+		y = 0.10 + 0.15 + 0.05 * 4;
+		w = 0.12;
+		action = "btnValue00 = 12";
+	};
 	class LeftBtn13: LeftBtn0 { // for RTS stop
 		idc = IDC + 16 * 2 + 13;
 		x = 0.025;
@@ -1179,6 +1193,7 @@ class TzkRtsSubMenuTwoListBox: TzkRtsSubMenuOneListBox {
 		action = "btnValue00 = true";
 	};
 	class BTN_UNDO: Button {
+		idc = IDC + 16 * 1 + 0;
 		x = 0.69;
 		y = 0.65;
 		w = 0.05;

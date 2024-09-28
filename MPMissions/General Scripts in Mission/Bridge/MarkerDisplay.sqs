@@ -1,0 +1,94 @@
+; args: si
+_si = _this
+
+; Wait until markers initialized
+~ 5
+
+; the script should be called after having defined bridge structure since we need its count info
+_stType = -1
+? stBridge >= 0: _stType = stBridge
+? -1 == _stType: player globalChat "Bridge hasn't defined. Marker script won't execute."; exit
+
+_markerLimits = structDefs select _stType select sdLimit
+? _markerLimits <= 0: player globalChat "No bridge is allowed to be build. Marker script won't execute."; exit
+
+_i = 0
+# generateMarkerLoop
+	_marker = format ["Bridge_%1", _i];
+	createMarker [_marker, hiddenMarkerPos];
+
+	_marker setMarkerShape "Rectangle";
+	_marker setMarkerColor "ColorGrey_xj400";
+	; bridge size: 50m len, 13m width. Since dir in OFP is clockwise and value 0 heads North, 
+	; the marker should be initialized heading North as well
+	_marker setMarkerSize [13 / 2, 50 / 2];
+
+	_i = _i + 1;
+	? _i < _markerLimits: goto "generateMarkerLoop"
+; bridge id marker info. Singleton. Since current script is singleton so they can be defined as local variables
+	_allocatedIdMarkerCnt = 0
+
+; functions
+	_funcGenerator = preprocessFile "Bridge\InfoFunc.sqf"
+
+	_funcGetHead = "GetHeadInfo" call _funcGenerator
+	_funcGetBridgeInfo = "GetBridgeInfo" call _funcGenerator
+	_funcGetValid = "GetValidStatus" call _funcGenerator
+	_funcGetId = "GetId" call _funcGenerator
+	_funcGetSi = "GetSi" call _funcGenerator
+	_funcGetSegmentCnt = "GetSegmentCnt" call _funcGenerator
+	_funcBridgeGetPos = "BridgeGetPosASL" call _funcGenerator
+	_funcBridgeGetVec = "BridgeGet3dVec" call _funcGenerator
+	_funcBridgeGetObj = "BridgeGetObj" call _funcGenerator
+
+	; undefine _funcGenerator
+	_funcGenerator = ""
+; processes
+	_procShowBridgesId = preprocessFile "Bridge\MarkerShowId.sqf"
+
+# displayMarkerLoop
+	_markerIdx = 0
+
+	_projectIdx = 0, _projectCnt = count TzkBrdigeProjects
+	? _projectCnt <= 0: goto "sleep"
+
+	; this process will load variables from this script directly
+	; Take care about the code position with variables' definition position
+	call _procShowBridgesId
+
+	# ergodicProject
+		_project = TzkBrdigeProjects select _projectIdx
+		_headInfo = _project call _funcGetHead; _bridgesInfo = _project call _funcGetBridgeInfo
+		? not (_headInfo call _funcGetValid) || _si != (_headInfo call _funcGetSi): goto "continue_project"
+
+		_bridgeIdx = 0; _bridgeCnt = _headInfo call _funcGetSegmentCnt
+		? _bridgeCnt <= 0: goto "continue_project"
+		# ergodicBridge
+			_marker = format ["Bridge_%1", _markerIdx]; _markerIdx = _markerIdx + 1
+
+			_marker setMarkerPos ([_bridgesInfo, _bridgeIdx] call _funcBridgeGetPos)
+			_alive = alive ([_bridgesInfo, _bridgeIdx] call _funcBridgeGetObj)
+			_3dVec = ([_bridgesInfo, _bridgeIdx] call _funcBridgeGetVec)
+			_marker setMarkerDir ((_3dVec select 0) atan2 (_3dVec select 1) + (if _alive then {0} else {90}))
+			? _alive: _marker setMarkerColor "ColorGrey_xj400"
+			? not _alive: _marker setMarkerColor "ColorRed"
+
+			; continue_bridge
+			_bridgeIdx = _bridgeIdx + 1
+			? _bridgeIdx < _bridgeCnt: goto "ergodicBridge"
+		
+		# continue_project
+		_projectIdx = _projectIdx + 1
+		? _projectIdx < _projectCnt: goto "ergodicProject"
+
+	? _markerIdx >= _markerLimits: goto "sleep"
+	# ergodicInexist
+		_marker = format ["Bridge_%1", _markerIdx]
+		_marker setMarkerPos hiddenMarkerPos
+
+		_markerIdx = _markerIdx + 1
+		? _markerIdx < _markerLimits: goto "ergodicInexist"
+
+	# sleep
+	~ 10
+	goto "displayMarkerLoop"

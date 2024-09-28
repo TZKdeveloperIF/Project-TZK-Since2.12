@@ -4,29 +4,52 @@
 ; ---------------------------------------------------------------------------------------------------
 
 ; args: [
-; 	[unit, Diagonal Pos Info (read only), bridge1, bridge2],
+; 	unit, 
+; 	[bridge project id, near begin pos (bool. decide which endpoint of bridge is the start pos), move distance (distance to move after having acrossed the bridge)],
 ; 	[order mode (called by AI or player unit), quit condition],
 ; 	extra parameters for order mode
 ; ]
-_param = _this select 0
+_unit = _this select 0
 
-_unit = _param select 0
-_pos1 = _param select 1 select 0; _pos2 = _param select 1 select 1
-_bridge1 = _param select 2; _bridge2 = _param select 3
+_param = _this select 1
+_bridgeId = _param select 0
+_nearBeginPos = _param select 1
+_moveDistance = _param select 2
 
-_forServer = _this select 1 select 0, _quitCond = _this select 1 select 1
-? _forServer: _rtsStatus = _this select 2 select 0, _id = _this select 2 select 1
-? not _forServer: _uid = _this select 2 select 0, _id = _this select 2 select 1
+_modeInfo = _this select 2
+_forServer = _modeInfo select 0, _quitCond = _modeInfo select 1
+
+_extraPar = _this select 3
+? _forServer: _rtsStatus = _extraPar select 0, _id = _extraPar select 1
+? not _forServer: _uid = _extraPar select 0, _id = _extraPar select 1
 
 _msg = ""
 
 ? _unit == vehicle _unit: exit
 ? _unit != driver vehicle _unit: exit
 
-? [_unit, _bridge1] call funcDistH > 50 + 25: _unit groupChat format ["%1 %2 %3 %4. %5", localize {TZK_LANG_TOO}, localize {TZK_LANG_FAR}, localize {TZK_LANG_TO}, localize {TZK_LANG_BRIDGE}, localize {TZK_LANG_ORDER_ABORTED}], exit
+_project = _bridgeId call preprocessFile "Bridge\GetProjectById.sqf";
+? count _project <= 0: _msg = "No available bridge."; goto "Quit"
 
-_onBridge = preprocessFile "Util\Bridge\On.sqf"
+_crossBridgeRadius = 200
+	_funcGetValid = "GetValidStatus" call (preprocessFile "Bridge\InfoFunc.sqf")
+
+_headInfo = _project call ("GetHeadInfo" call (preprocessFile "Bridge\InfoFunc.sqf"))
+_startPos = _headInfo call ("GetBeginPos" call (preprocessFile "Bridge\InfoFunc.sqf"))
+_endPos = _headInfo call ("GetEndPos" call (preprocessFile "Bridge\InfoFunc.sqf"))
+? not _nearBeginPos: _startPos = _endPos; _endPos = _headInfo call ("GetBeginPos" call (preprocessFile "Bridge\InfoFunc.sqf"))
+
+_suspendH = TzkBridgeSuspendHeight
+; _suspendH meters suspend
+_startPos set [2, (_startPos call funcHASL) + _suspendH]
+_endPos set [2, (_endPos call funcHASL) + _suspendH]
+
+; chech whether vehicle is on the bridge when order being executed
 _vehicle = vehicle _unit
+_onBridge = [_vehicle, _project] call preprocessFile "Bridge\OnWholeBridge.sqf"
+? not _onBridge && ([_unit, _startPos] call funcDistH > _crossBridgeRadius): _msg = format ["%1 %2 %3 %4. %5", localize {TZK_LANG_TOO}, localize {TZK_LANG_FAR}, localize {TZK_LANG_TO}, localize {TZK_LANG_BRIDGE}, localize {TZK_LANG_ORDER_ABORTED}], goto "Quit"
+
+? _onBridge: goto "finishCloseToStartPos"
 
 ; force vehicle "ready" before start the script
 _counter = 0
@@ -42,46 +65,58 @@ _vehicle doMove getPos _vehicle
 	? call _quitCond: goto "Quit"
 	? not _b: goto "ForceReady"
 
-? [getPosASL _vehicle, _bridge1] call _onBridge: goto "OnBridge1"
+; get close to start pos
+? [_vehicle, _startPos] call funcDistH < 50: goto "finishCloseToStartPos"
+# getCloseToStartPosLoop
+	_vehicle doMove _startPos
+	~ 5
+	? call _quitCond: goto "Quit"
+	? [_vehicle, _startPos] call funcDistH >= 50: goto "getCloseToStartPosLoop"
 
-	_endPoints = _bridge1 call preprocessFile "Util\Bridge\EndPoints.sqf"
-	_endPoint = _endPoints select 0
-	? [_vehicle, (_endPoints select 1)] call funcDistH < [_vehicle, _endPoint] call funcDistH: _endPoint = _endPoints select 1
+# finishCloseToStartPos
 
-	_moveParamCache = [true, true, [_vehicle, _endPoint, 30, 1, false]]
-	_moveParamCache exec "Util\MoveVehUsingSetVel.sqs"
-	# loopMoveLand
+; if vehicle isn't on the bridge, move vehicle to assigned start position, otherwize request vehicle watch end point
+? not _onBridge: goto "suspendMoveStartPos"
+	_vehicle doWatch _endPos
+	_vectorVehToEnd = [_endPos, getPosASL _vehicle] call funcVectorSub
+	_deltaDir = (direction _vehicle) - (_vectorVehToEnd select 0) atan2 (_vectorVehToEnd select 1)
+	_deltaDir = 180 - abs (abs(_deltaDir) % 360 - 180)
+	~ 3 * _deltaDir / 180
+	goto "readyToCrossBridge"
+# suspendMoveStartPos
+	_curVehPosAsl = getPosASL _vehicle; _curVehPosAsl set [2, _suspendH + (_curVehPosAsl select 2)]
+	_moveParamCache = [true, true, [_vehicle, _curVehPosAsl, _startPos, 45]]
+	_moveParamCache exec "Bridge\MoveSuspended.sqs"
+	# loopMoveExactlyStart
 		~ 1
 		? call _quitCond: _moveParamCache set [1, false], goto "Quit"
-		? _moveParamCache select 0: goto "loopMoveLand"
+		? _moveParamCache select 0: goto "loopMoveExactlyStart"
 
-# OnBridge1
+# readyToCrossBridge
+; calculate geometry info
+	_vehBeginPos = getPosASL _vehicle
+	_suspendMovementUnitVec = ([_endPos, _vehBeginPos] call funcVectorSub) call preprocessFile "Math\UnitVector.sqf"
+	_vehEndPos = [_endPos, [_suspendMovementUnitVec, _moveDistance] call funcVectorScale] call funcVectorAdd
+
+; suspend move across the bridge
 	_vehicle groupChat format ["%1 %2 %3 %4.", localize {TZK_LANG_PREPARE}, localize {TZK_LANG_TO}, localize {TZK_LANG_CROSS}, localize {TZK_LANG_BRIDGE}]
-	_vehicle doWatch _pos2
-	_endPoints = _bridge2 call preprocessFile "Util\Bridge\EndPoints.sqf"
-	_endPoint = _endPoints select 0
-	? [_vehicle, (_endPoints select 1)] call funcDistH > [_vehicle, _endPoint] call funcDistH: _endPoint = _endPoints select 1
 
-	_delta = ([_endPoint, getPosASL _vehicle] call funcVectorSub) call preprocessFile "Math\UnitVector.sqf"
-
-	_moveParamCache = [true, true, [_vehicle, _endPoint, 65, 0, true]]
-	_moveParamCache exec "Util\MoveVehUsingSetVel.sqs"
+	_moveParamCache = [true, true, [_vehicle, _vehBeginPos, _vehEndPos, 45]]
+	_moveParamCache exec "Bridge\MoveSuspended.sqs"
 	# loopMoveBridge
 		~ 1
 		? call _quitCond: _moveParamCache set [1, false], goto "Quit"
 		? _moveParamCache select 0: goto "loopMoveBridge"
 	
+	; todo: add bridge alive check in moving loop
+	; if bridges in front of vehicle is broken, the move should stop
+	
 	_vehicle groupChat format ["%1 %2.", localize {TZK_LANG_BRIDGE}, localize {TZK_LANG_CROSS}]
 
-; LeaveTheBridge
-	_endPoint = [[_delta, 30] call funcVectorScale, getPosASL _vehicle] call funcVectorAdd
-
-	_moveParamCache = [true, true, [_vehicle, _endPoint, 50, 1, false]]
-	_moveParamCache exec "Util\MoveVehUsingSetVel.sqs"
-	# loopMoveLeave
-		~ 1
-		? call _quitCond: _moveParamCache set [1, false], goto "Quit"
-		? _moveParamCache select 0: goto "loopMoveLeave"
+; move to the end point
+	? _forServer: [_unit, [_vehEndPos, getPosASL vehicle _unit], _rtsStatus, _id] exec "Rts\Order\hMove.sqs"
+	? not _forServer: [_unit, _vehEndPos] exec "\TZK_Scripts_4_0_4\Player\Order\MovePos.sqs"
+	goto "Quit"
 
 ; End Of File
 # Quit

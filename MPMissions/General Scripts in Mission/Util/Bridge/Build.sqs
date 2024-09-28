@@ -1,8 +1,13 @@
-; args: [si, gi, roadWay center pos, vector 3D]
+; args: [[si, gi], [roadWay center pos, vector 3D], [bridges info, project id, bridge idx]]
 ? not isServer: exit
 
-_si = _this select 0
-_pos = _this select 2
+_si = _this select 0 select 0
+_pos = _this select 1 select 0
+_3dVec = _this select 1 select 1
+
+_bridgesInfo = _this select 2 select 0
+_id = _this select 2 select 1
+_bridgeIdx = _this select 2 select 2
 
 ; no money check. This should be done on player client
 _type = stBridge
@@ -10,8 +15,17 @@ _desc = structDefs select _type
 _typename = _desc select sdObjects0 select 0 select 0
 
 _bridge = _typename createVehicle _pos;
-_bridge setVectorDirAndUp [_this select 3, [0,0,1]];
+_bridge setVectorDirAndUp [_3dVec, [0,0,1]];
 _bridge setPosASL _pos;
+; set damage to make tanks easily to break it
+; according to practice and test, set 0.8 will cost M1A1 4 sabot to destroy it while 0.9 will cost 2 sabot
+_bridge setDamage 0.8
+
+_funcGenerator = preprocessFile "Bridge\InfoFunc.sqf"
+	_funcBridgeSetObj = "BridgeSetObj" call _funcGenerator
+
+[_bridgesInfo, _bridgeIdx, _bridge] call _funcBridgeSetObj
+publicExec format [{[UnitById %1, %2, %3] exec "Bridge\BroadcastNewBuiltBridge.sqs"}, _bridge call funcGenNetIdStr, _id, _bridgeIdx]
 
 _objects = [_bridge]
 
