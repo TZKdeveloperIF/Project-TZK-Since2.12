@@ -1,0 +1,79 @@
+; args: [[start pos (3D), end pos (3D)], [si, _lowerBound]]
+? not isServer: exit
+
+_pos1 = _this select 0 select 0
+_pos2 = _this select 0 select 1
+_si = _this select 1 select 0
+_lowerBound = _this select 1 select 1
+
+; directly link 2 points using bridges. In most cases the distance isn't the integer number times of 
+; bridge length (50m). Just overlap the bridges. The "_lowerBound" ensures the distance that linking
+; 2 points won't be too little
+
+; bridge constants
+	_bridgeL = 50, _correct = 33.55 - 20.489
+; check distance
+	_funcUnitVector = preprocessFile "Math\UnitVector.sqf"
+	_unitH = [_pos2, _pos1] call funcVectorSub; _unitH set [2, 0]; _unitH = _unitH call _funcUnitVector
+	; 2 m extra extension
+	_pos1 = [_pos1, [_unitH, -2] call funcVectorScale] call funcVectorAdd
+	_pos2 = [_pos2, [_unitH, +2] call funcVectorScale] call funcVectorAdd
+
+	; _pos1 and _pos2 is whole bridge start/end position
+	; _horizontalPos1 and _horizontalPos2 is horizontal part start/end position
+	_horizontalPos1 = + _pos1, _horizontalPos2 = + _pos2
+	
+	; The bridges' height should keep higher than _minH meters to get avoid from tanks being soaked
+	; and to allow ships acrossing
+	_minH = 8
+	_h1 = _pos1 select 2, _h2 = _pos2 select 2
+	_buildBeginDummy = _h1 < _minH; _buildEndDummy = _h2 < _minH
+	_dummyLen = (([_pos1, _pos2] call funcDistH) - 50) / 2
+	; ASSERT(_dummyLen >= 10)
+	? _dummyLen < 10: _dummyLen = 10
+	; upper bound of dummy len should less than sqrt(_bridgeL^2 - _minH^2)
+	? _dummyLen > 45: _dummyLen = 45
+	? _buildBeginDummy: _horizontalPos1 = [_pos1, [_unitH, _dummyLen] call funcVectorScale] call funcVectorAdd, _horizontalPos1 set [2, _minH]
+	? _buildEndDummy: _horizontalPos2 = [_pos2, [_unitH, - _dummyLen] call funcVectorScale] call funcVectorAdd, _horizontalPos2 set [2, _minH]
+
+	_distance = ([_horizontalPos2, _horizontalPos1] call funcVectorSub) call funcVectorLength
+	? _distance < _lowerBound: "Unexpected distance in building bridge." call fDebuglog; exit
+
+; check bridge segment count
+	_midBridgeCnt = (_distance / _bridgeL) call preprocessFile "Math\Ceil.sqf"
+	_segmentCnt = _midBridgeCnt
+	? _buildBeginDummy: _segmentCnt = _segmentCnt + 1
+	? _buildEndDummy: _segmentCnt = _segmentCnt + 1
+	
+	_i = 0; _c = count TzkBrdigeProjects; _existBridgeCnt = 0
+	while {_i < _c} do {_head = TzkBrdigeProjects select _i select 0; if ((_head select 0) && _head select 2 == _si) then {_existBridgeCnt = _existBridgeCnt + (_head select 3)}; _i = _i + 1}
+	? _existBridgeCnt + _segmentCnt > structDefs select stBridge select sdLimit: [_si, "Your side has built too many bridges. Destruct some of them if wish to build more."] exec "Network\sSideMsg.sqs"; exit
+
+; check whether across with other bridge
+	? [_pos1, _pos2] call preprocessFile "Bridge\CheckIntersectedWithOtherOnes.sqf": [_si, "New bridge will intersected with an existed project. Bridge won't be built."] exec "Network\sSideMsg.sqs"; exit
+
+; generate project id and idx
+	@ not TzkBridgeMutex
+		TzkBridgeMutex = true
+		; search idx
+		_idx = -1; _i = 0; _c = count TzkBrdigeProjects
+		while {_i < _c && _idx == -1} do {if not (TzkBrdigeProjects select _i select 0 select 0) then {_idx = _i}; _i = _i + 1}
+		? -1 == _idx: _idx = _c
+		_id = TzkBridgeId; TzkBridgeId = TzkBridgeId + 1
+		; server should generate project info head immediately in mutex
+		_funcGenerator = preprocessFile "Bridge\InfoFunc.sqf"
+		_headInfo = []
+		[_headInfo, true] call ("SetValidStatus" call _funcGenerator)
+		[_headInfo, _id] call ("SetId" call _funcGenerator)
+		[_headInfo, _si] call ("SetSi" call _funcGenerator)
+		[_headInfo, _segmentCnt] call ("SetSegmentCnt" call _funcGenerator)
+		_bridgesInfo = []
+		TzkBrdigeProjects set [_idx, [_headInfo, _bridgesInfo]]
+
+		TzkBridgeMutex = false
+
+; broadcast project info
+; todo: support clients query project if didn't receive it
+
+[[_id, _idx], [_pos1, _pos2, _horizontalPos1, _horizontalPos2], [_si, _midBridgeCnt, _segmentCnt, _buildBeginDummy, _buildEndDummy]] exec "Bridge\OnProjectGenerated.sqs"
+publicExec format [{%1 exec "Bridge\OnProjectGenerated.sqs"}, [[_id, _idx], [_pos1, _pos2, _horizontalPos1, _horizontalPos2], [_si, _midBridgeCnt, _segmentCnt, _buildBeginDummy, _buildEndDummy]]]

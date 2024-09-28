@@ -23,103 +23,10 @@ _legal = _param call preprocessFile "Util\Bridge\LegalPos.sqf"
 	exit
 # CanBuildBridge
 
-; todo: client-global cancel bridge building process
+hint "Prepare to build the bridge."
 
-_minH = 8
-; The bridges' height should keep higher than _minH meters to get avoid from tanks being soaked
-; and to allow ships acrossing
-
-; directly link 2 points using bridges. In most cases the distance isn't the integer number times of 
-; bridge length (50m). Just overlap the bridges. The "_lowerBound" ensures the distance that linking
-; 2 points is no less than 50m.
-
-_funcUnitVector = preprocessFile "Math\UnitVector.sqf"
-
-_h1 = _pos1 call funcHASL, _h2 = _pos2 call funcHASL; _deltaH = _h2 - _h1;
-_pos1 set [2, _h1], _pos2 set [2, _h2];
-
-_unitH = [_pos2, _pos1] call funcVectorSub; _unitH set [2, 0];
-_unitH = _unitH call _funcUnitVector
-_dir = (_unitH select 0) atan2 (_unitH select 1); _dir = _dir - _dir % 0.1;
-
-; 2 m extra extension
-_pos1 = [_pos1, [_unitH, -2] call funcVectorScale] call funcVectorAdd
-_pos2 = [_pos2, [_unitH, +2] call funcVectorScale] call funcVectorAdd
-
-_beginPos = + _pos1, _endPos = + _pos2
-
-_bridgeL = 50, _correct = 33.55 - 20.489;
-_buildBeginDummy = _h1 < _minH; _buildEndDummy = _h2 < _minH
-_dummyLen = (([_pos1, _pos2] call funcDistH) - 50) / 2
-; ASSERT(_dummyLen >= 10)
-? _dummyLen < 10: _dummyLen = 10
-; upper bound of dummy len should less than sqrt(_bridgeL^2 - _minH^2)
-? _dummyLen > 45: _dummyLen = 45
-? _buildBeginDummy: _beginPos = [_pos1, [_unitH, _dummyLen] call funcVectorScale] call funcVectorAdd, _beginPos set [2, _minH]
-? _buildEndDummy: _endPos = [_pos2, [_unitH, - _dummyLen] call funcVectorScale] call funcVectorAdd, _endPos set [2, _minH]
-
-_cost = structDefs select stBridge select sdCost
-_marker = createMarker ["TzkBridgeBuilding", hiddenMarkerPos]
-_marker setMarkerColor "ColorCyan_xj400";
-_marker setMarkerShape "ELLIPSE";
-_marker setMarkerSize [150, 150];
-
-_text = createMarker ["TzkBridgeHintText", hiddenMarkerPos];
-_text setMarkerSize [0,0];
-_text setMarkerColor "ColorDarkPurple_xj400";
-_text setMarkerType "Warning";
-_text setMarkerText format ["%1 MHQ/%2 %3 %4 %5 %6.", localize {TZK_LANG_SEND}, localize {TZK_LANG_ENGINEER}, localize {TZK_LANG_VEHICLE}, localize {TZK_LANG_TO}, localize {TZK_LANG_BUILD}, localize {TZK_LANG_BRIDGE}]
-_markers = [_marker, _text]
-
-? not _buildBeginDummy: goto "FinishBeginDummy"
-; Begin Dummy
-	_unitBeg = ([_beginPos, _pos1] call funcVectorSub) call _funcUnitVector
-	_roadwayCenter = [_beginPos, [_unitBeg, _bridgeL * - 0.5] call funcVectorScale] call funcVectorAdd;
-
-	_asyncParam = [[_unitBeg, _roadwayCenter, _correct, _cost, _markers], false]
-	_asyncParam exec "Rts\Diagonal\AsyncConstructBridge.sqs"
-	# CheckBridgeOnBeginning
-		~ 0.5
-		? not (_asyncParam select 1): goto "CheckBridgeOnBeginning"
-
-# FinishBeginDummy
-
-_distance = ([_endPos, _beginPos] call funcVectorSub) call funcVectorLength
-? _distance < 50: "Unexpected distance in building bridge." call fDebuglog;
-_midBridgeCnt = (_distance / _bridgeL) call preprocessFile "Math\Ceil.sqf"
-_step = _distance / _midBridgeCnt
-
-_unitSlope = ([_endPos, _beginPos] call funcVectorSub) call _funcUnitVector
-
-_i = 0
-# SlopeStage
-	_centerCorrection = _step * (_i + 0.5)
-	; no correction for first/last stage to ensure continuous if dummy required
-	? 0 == _i: _centerCorrection = _bridgeL * 0.5
-	? _midBridgeCnt - 1 == _i: _centerCorrection = _distance - _bridgeL * 0.5
-
-	_roadwayCenter = [_beginPos, [_unitSlope, _centerCorrection] call funcVectorScale] call funcVectorAdd;
-
-	_asyncParam = [[_unitSlope, _roadwayCenter, _correct, _cost, _markers], false]
-	_asyncParam exec "Rts\Diagonal\AsyncConstructBridge.sqs"
-	# CheckBridgeInMiddle
-		~ 0.5
-		? not (_asyncParam select 1): goto "CheckBridgeInMiddle"
-
-	_i = _i + 1;
-	? _i < _midBridgeCnt: goto "SlopeStage"
-
-? not _buildEndDummy: goto "FinishEndDummy"
-	_unitEnd = ([_pos2, _endPos] call funcVectorSub) call _funcUnitVector
-	_roadwayCenter = [_endPos, [_unitEnd, _bridgeL * 0.5] call funcVectorScale] call funcVectorAdd;
-
-	_asyncParam = [[_unitEnd, _roadwayCenter, _correct, _cost, _markers], false]
-	_asyncParam exec "Rts\Diagonal\AsyncConstructBridge.sqs"
-	# CheckBridgeInTheEnd
-		~ 0.5
-		? not (_asyncParam select 1): goto "CheckBridgeInTheEnd"
-
-# FinishEndDummy
-
-TitleText ["Bridge built", "Plain Down"]
-{deleteMarker _x} forEach _markers
+; send info to server. Server will manage bridge building and follow-up maintenance until the bridge project is destructed
+_h1 = _pos1 call funcHASL, _h2 = _pos2 call funcHASL; _pos1 set [2, _h1], _pos2 set [2, _h2]
+[[_pos1, _pos2], [siPlayer, _lowerBound]] exec {Bridge\Register2Server.sqs}
+publicExec format ["%1 exec {Bridge\Register2Server.sqs}", [[_pos1, _pos2], [siPlayer, _lowerBound]]]
+exit

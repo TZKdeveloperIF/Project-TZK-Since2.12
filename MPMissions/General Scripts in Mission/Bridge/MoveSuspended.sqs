@@ -1,0 +1,99 @@
+; args: [output status (write only), input status (read only), [vehice, start pos, end pos, speed (km/h)]]
+
+; this SQS script loops to move vehicle using "setVelocity" command
+; on script finished/aborted, the output status will be set to "false"
+; if input status is false, current order should be interrupted and halt
+; do in-script exit check ONLY for those conditions whose parameters are local
+; no other in-script exit check
+; it is possible but unnecessary to use only one status variable
+
+_param = _this select 2
+_vehicle = _param select 0
+_startPos = _param select 1
+_endPos = _param select 2
+; "speed" uses km/h while "velocity" uses m/s
+_speed = (_param select 3) / 3.6
+
+_vehicle doWatch _endPos
+
+? not (_this select 1): goto "EOF"
+
+_unitVector = ([_endPos, _startPos] call funcVectorSub) call preprocessFile "Math\UnitVector.sqf"
+_vehicle setVectorDir _unitVector
+
+_moveVelocity = [_unitVector, _speed] call funcVectorScale
+
+_inHalfPlane = preprocessFile "Math\InHalfPlane.sqf"
+
+_up = [0, 0, 1]
+
+; move to sea and move back. due to OFP bug
+_currentPosAsl = getPosASL _vehicle; _currentVel = velocity _vehicle
+? (_currentVel select 2 < 3): _currentVel set [2, 3]
+
+_vehicle setPosASL positionAttach; _vehicle setVelocity _currentVel
+~ 0.01
+_vehicle setPosASL _currentPosAsl; _vehicle setVelocity _currentVel
+
+# loop
+	_interval = 0.1; _checkReachThreshold = 10; _resetPosThreshold = 50
+	; ASSERT(_checkReachThreshold <= _resetPosThreshold)
+	_counter = 0; _beginTime = _time
+	_movedVector = [getPosASL _vehicle, _startPos] call funcVectorSub
+	_beginExpectedPos = [[_unitVector, [_movedVector, _unitVector] call funcVectorDot] call funcVectorScale, _startPos] call funcVectorAdd
+
+	# frequentlyLoop
+		_counter = _counter + 1
+
+		_currentPosAsl = getPosASL _vehicle
+		_movedVector = [_currentPosAsl, _startPos] call funcVectorSub
+		_expectedPos = [[_unitVector, [_movedVector, _unitVector] call funcVectorDot] call funcVectorScale, _startPos] call funcVectorAdd
+		; correction require a bit bigger coef
+		_correction = [[_expectedPos, _currentPosAsl] call funcVectorSub, 2] call funcVectorScale
+		_correctedVel = [_moveVelocity, _correction] call funcVectorAdd
+
+		_vehicle setVectorDir _correctedVel
+		_vehicle setVectorUp _up
+		_vehicle setVelocity _correctedVel
+
+		? _counter % _checkReachThreshold != 0: goto "skipReachCheck"
+		; reach check
+			? not (_this select 1): goto "EOF"
+			? not alive _vehicle: goto "EOF"
+
+			? [getPosASL _vehicle, _endPos, _unitVector] call _inHalfPlane: goto "Reached"
+			? [getPosASL _vehicle, _endPos] call funcDistH < 5: goto "Reached"
+
+		# skipReachCheck
+
+		~ _interval
+		? _counter < _resetPosThreshold: goto "frequentlyLoop"
+
+	_endTime = _time - _beginTime
+
+	; move to sea and move back to face OFP tank setpos bug
+	; prepare z velocity
+	? (_correctedVel select 2 < 3): _correctedVel set [2, 3]
+	_currentPosAsl = getPosASL _vehicle
+	_expectedPos = [_beginExpectedPos, [_unitVector, _endTime * _speed] call funcVectorScale] call funcVectorAdd
+	? (_currentPosAsl select 2) < (_expectedPos select 2): _currentPosAsl set [2, _expectedPos select 2]
+
+	_vehicle setPosASL positionAttach
+	_vehicle setVelocity _correctedVel
+	~ 0.01
+	_vehicle setPosASL _currentPosAsl
+	_vehicle setVelocity _correctedVel
+	
+	_vehicle doWatch _endPos
+
+	? not (_this select 1): goto "EOF"
+	? not alive _vehicle: goto "EOF"
+
+	? [getPosASL _vehicle, _endPos, _unitVector] call _inHalfPlane: goto "Reached"
+	? [getPosASL _vehicle, _endPos] call funcDistH < 5: goto "Reached"
+	goto "loop"
+
+# Reached
+
+# EOF
+	_this set [0, false]
