@@ -1,0 +1,624 @@
+version=11;
+#include "TZK_Scripts_4_0_6\mission.h"
+class Mission
+{
+	addOns[]=
+	{
+		TZK_BIS_AddOns
+		TZK_Basic_406_AddOns
+		TZK_CONFIG_406_AddOns
+		"TZK_CONFIG_406_Patch",
+		"TZK_CONFIG_406_Patch2",
+		"TZK_CONFIG_406_Patch3",
+		"Arabia"
+	};
+	addOnsAuto[]=
+	{
+		TZK_CONFIG_406_AddOns
+		"TZK_CONFIG_406_Patch",
+		"TZK_CONFIG_406_Patch2",
+		"TZK_CONFIG_406_Patch3",
+	};
+	randomSeed=42499;
+	class Intel
+	{
+		briefingName="@STR_MISSION_NAME";
+		briefingDescription="$STR_MISSION_BREF_DESC";
+		resistanceWest=0.000000;
+		startWeather=0.000000;
+		forecastWeather=0.000000;
+		month=5;
+		day=29;
+		hour=11;
+		minute=0;
+	};
+	class Groups
+	{
+		items=156;
+		class Item0
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={-1000.000000,0.000000,2000.000000};
+					id=0;
+					side="GUER";
+					vehicle="SoldierGB";
+					leader=1;
+					skill=0.200000;
+					text="resistance_Center";
+					init="gameEndType = -1; towns=[]; [] exec ""\TZK_Scripts_4_0_4\Server\InitRepairableObjects.sqs""; [] exec ""\TZK_Scripts_4_0_4\Server\InitDestroyIslandObject.sqs""";
+				};
+			};
+		};
+
+		TZK_Mission_Grp_Playable_201("CommanderW_Info_5HP_xj400", "CommanderE_Info_5HP_xj400", "LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		
+		TZK_Mission_Group_Playable(37,CIV, 0,0,3370, 37, "Civilian", "this allowdammage false; Spec0=this")
+		TZK_Mission_Group_Playable(38,CIV, 0,0,3380, 38, "Civilian", "this allowdammage false; Spec1=this")
+		TZK_Mission_Group_Playable(39,CIV, 0,0,3390, 39, "Civilian", "this allowdammage false; Spec2=this")
+		TZK_Mission_Group_Playable(40,CIV, 0,0,3400, 40, "Civilian", "this allowdammage false; Spec3=this")
+		TZK_Mission_Group_Playable(41,CIV, 0,0,3410, 41, "Civilian", "this allowdammage false; Spec4=this")
+		TZK_Mission_Group_Playable(42,CIV, 0,0,3420, 42, "Civilian", "this allowdammage false; Spec5=this")
+		TZK_Mission_Group_Playable(43,CIV, 0,0,3430, 43, "Civilian", "this allowdammage false; Spec6=this")
+		TZK_Mission_Group_Playable(44,CIV, 0,0,3440, 44, "Civilian", "this allowdammage false; Spec7=this")
+		TZK_Mission_Group_Playable(45,CIV, 0,0,3450, 45, "Civilian", "this allowdammage false; Spec8=this")
+		TZK_Mission_Group_Playable(46,CIV, 0,0,3460, 46, "Civilian", "this allowdammage false; Spec9=this")
+		
+		TZK_Mission_Grp_Functional_201("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_TownGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_PatrolGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_WorkerGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_FunctionalGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		class Item154
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={3780.319336,20.250000,17934.615234};
+					special="NONE";
+					id=144;
+					side="LOGIC";
+					vehicle="Logic";
+					leader=1;
+					skill=0.600000;
+					text="FixStart_0";
+				};
+			};
+		};
+		class Item155
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={19244.748047,22.574854,17892.574219};
+					special="NONE";
+					id=145;
+					side="LOGIC";
+					vehicle="Logic";
+					leader=1;
+					skill=0.600000;
+					text="FixStart_1";
+				};
+			};
+		};
+	};
+	class Vehicles
+	{
+		items=24;
+		class Item0
+		{
+			position[]={1901.157593,13.094999,21477.689453};
+			special="NONE";
+			id=200;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""YingGuo"",500,2]]";
+		};
+		class Item1
+		{
+			position[]={807.702271,85.910728,17646.136719};
+			special="NONE";
+			id=201;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""FaGuo"",500,2]]";
+		};
+		class Item2
+		{
+			position[]={3355.190186,9.883945,15020.603516};
+			special="NONE";
+			id=202;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""YiDaLi"",500,2]]";
+		};
+		class Item3
+		{
+			position[]={640.935303,102.959999,9535.158203};
+			special="NONE";
+			id=203;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""AiJi"",500,2]]";
+		};
+		class Item4
+		{
+			position[]={5176.244141,26.234999,20844.050781};
+			special="NONE";
+			id=204;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""DeGuo"",500,2]]";
+		};
+		class Item5
+		{
+			position[]={8450.462891,24.018795,19692.595703};
+			special="NONE";
+			id=205;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""WuKeLan"",500,2]]";
+		};
+		class Item6
+		{
+			position[]={11220.645508,11.080942,21426.904297};
+			special="NONE";
+			id=206;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""BaiELuoSi"",500,2]]";
+		};
+		class Item7
+		{
+			position[]={11406.386719,17.369999,18639.978516};
+			special="NONE";
+			id=207;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""RUSSIA"",500,2]]";
+		};
+		class Item8
+		{
+			position[]={2056.095703,13.653948,1938.961792};
+			special="NONE";
+			id=208;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""NanFei"",500,2]]";
+		};
+		class Item9
+		{
+			position[]={4297.780762,26.234999,4172.160156};
+			special="NONE";
+			id=209;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""ShaTe"",500,2]]";
+		};
+		class Item10
+		{
+			position[]={20829.941406,20.295000,513.145447};
+			special="NONE";
+			id=210;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""BaXi"",500,2]]";
+		};
+		class Item11
+		{
+			position[]={15766.799805,23.309999,566.378784};
+			special="NONE";
+			id=211;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""AoDaLiYa"",500,2]]";
+		};
+		class Item12
+		{
+			position[]={19154.662109,23.219999,5450.552246};
+			special="NONE";
+			id=212;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""BaJiSiTan"",500,2]]";
+		};
+		class Item13
+		{
+			position[]={20760.617188,23.219999,8920.323242};
+			special="NONE";
+			id=213;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""YinDu"",500,2]]";
+		};
+		class Item14
+		{
+			position[]={22162.429688,23.219999,13223.907227};
+			special="NONE";
+			id=214;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""HanGuo"",500,2]]";
+		};
+		class Item15
+		{
+			position[]={20847.583984,6.480000,14962.893555};
+			special="NONE";
+			id=215;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""ChaoXian"",500,2]]";
+		};
+		class Item16
+		{
+			position[]={25073.472656,5.760000,13260.791016};
+			special="NONE";
+			id=216;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""RiBen"",500,2]]";
+		};
+		class Item17
+		{
+			position[]={23018.121094,18.528229,19866.355469};
+			special="NONE";
+			id=217;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""GuBa"",500,2]]";
+		};
+		class Item18
+		{
+			position[]={19915.953125,20.321789,21205.460938};
+			special="NONE";
+			id=218;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""USA"",500,2]]";
+		};
+		class Item19
+		{
+			position[]={16123.826172,23.219999,15488.031250};
+			special="NONE";
+			id=219;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""CHINA"",500,2]]";
+		};
+		class Item20
+		{
+			position[]={9145.102539,22.846127,13396.036133};
+			special="NONE";
+			id=220;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""TuErQi"",500,2]]";
+		};
+		class Item21
+		{
+			position[]={8021.232422,120.239998,9157.752930};
+			special="NONE";
+			id=221;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""YiSeLie"",500,2]]";
+		};
+		class Item22
+		{
+			position[]={12218.426758,216.337784,7025.260742};
+			special="NONE";
+			id=222;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""YiLang"",500,2]]";
+		};
+		class Item23
+		{
+			position[]={12167.243164,79.869751,10916.769531};
+			special="NONE";
+			id=223;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""YiLaKe"",500,2]]";
+		};
+	};
+	class Markers
+	{
+		items=24;
+		class Item0
+		{
+			position[]={1881.469360,13.094999,21498.259766};
+			name="MarkerTownName";
+			text="YingGuo";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item1
+		{
+			position[]={5155.802734,26.234999,20845.578125};
+			name="MarkerTownName";
+			text="DeGuo";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item2
+		{
+			position[]={809.229736,86.174995,17655.562500};
+			name="MarkerTownName";
+			text="FaGuo";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item3
+		{
+			position[]={3351.673828,10.236859,15012.689453};
+			name="MarkerTownName";
+			text="YiDaLi";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item4
+		{
+			position[]={19897.792969,20.184423,21205.806641};
+			name="MarkerTownName";
+			text="USA";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item5
+		{
+			position[]={23028.851563,18.107216,19863.822266};
+			name="MarkerTownName";
+			text="GuBa";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item6
+		{
+			position[]={11221.242188,11.560004,21410.775391};
+			name="MarkerTownName";
+			text="BaiELuoSi";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item7
+		{
+			position[]={11402.388672,17.369999,18661.609375};
+			name="MarkerTownName";
+			text="RUSSIA";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item8
+		{
+			position[]={8449.964844,24.205301,19744.009766};
+			name="MarkerTownName";
+			text="WuKeLan";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item9
+		{
+			position[]={20808.474609,6.480000,14965.313477};
+			name="MarkerTownName";
+			text="ChaoXian";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item10
+		{
+			position[]={22128.402344,23.219999,13223.700195};
+			name="MarkerTownName";
+			text="HanGuo";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item11
+		{
+			position[]={25069.660156,5.760000,13281.667969};
+			name="MarkerTownName";
+			text="RiBen";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item12
+		{
+			position[]={16067.203125,23.219999,15484.397461};
+			name="MarkerTownName";
+			text="CHINA";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item13
+		{
+			position[]={20816.689453,20.295000,510.055542};
+			name="MarkerTownName";
+			text="BaXi";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item14
+		{
+			position[]={15774.961914,23.309999,555.584717};
+			name="MarkerTownName";
+			text="AoDaLiYa";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item15
+		{
+			position[]={19113.187500,23.219999,5445.896973};
+			name="MarkerTownName";
+			text="BaJiSiTan";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item16
+		{
+			position[]={20752.513672,23.219999,8941.786133};
+			name="MarkerTownName";
+			text="YinDu";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item17
+		{
+			position[]={12254.493164,217.149933,6966.346680};
+			name="MarkerTownName";
+			text="YiLang";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item18
+		{
+			position[]={12179.537109,81.535240,10885.412109};
+			name="MarkerTownName";
+			text="YiLaKe";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item19
+		{
+			position[]={9154.420898,22.468348,13383.431641};
+			name="MarkerTownName";
+			text="TuErQi";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item20
+		{
+			position[]={8050.390625,120.239998,9158.044922};
+			name="MarkerTownName";
+			text="YiSeLie";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item21
+		{
+			position[]={4292.506836,26.234999,4167.907715};
+			name="MarkerTownName";
+			text="ShaTe";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item22
+		{
+			position[]={2031.562988,10.607445,1901.536621};
+			name="MarkerTownName";
+			text="NanFei";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item23
+		{
+			position[]={640.118713,102.959999,9523.621094};
+			name="MarkerTownName";
+			text="AiJi";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+	};
+};
+class Intro
+{
+	randomSeed=8166403;
+	class Intel
+	{
+	};
+};
+class OutroWin
+{
+	randomSeed=5538307;
+	class Intel
+	{
+	};
+};
+class OutroLoose
+{
+	randomSeed=2739203;
+	class Intel
+	{
+	};
+};
