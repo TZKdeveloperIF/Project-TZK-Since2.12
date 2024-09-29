@@ -13,23 +13,28 @@
 
 ~2
 
+; there're 25 * 3 town groups predefined in mission.sqm now. create more group by script 
+; command hasn't widely applied and tested yet. There were bugs appear when defined 24 towns with 2*1k town
+; maybe due to missing initial script of group
+
 _index = 0; _count = count towns; _westTG = grpNull; _eastTG = grpNull; _resTG = grpNull
-#TownGroups
+# TownGroups
 	_town = towns select _index; _flag = _town select 0; _income = _town select 2
 	
-	if (_index < count (townGroups select si0)) then {_westTG = (townGroups select si0) select _index} else {_westTG = createGroup west}
-	if (_index < count (townGroups select si1)) then {_eastTG = (townGroups select si1) select _index} else {_eastTG = createGroup east}
-	if (_index < count (townGroups select siRes)) then {_resTG = (townGroups select siRes) select _index} else {_resTG = createGroup resistance}
+	if (_index < count (townGroups select si0)) then {_westTG = (townGroups select si0) select _index} else {_westTG = grpNull}
+	if (_index < count (townGroups select si1)) then {_eastTG = (townGroups select si1) select _index} else {_eastTG = grpNull}
+	if (_index < count (townGroups select siRes)) then {_resTG = (townGroups select siRes) select _index} else {_resTG = grpNull}
 	
 	; An empty group created by "createGroup" return the "unknown" side. However editor can still use "format" and "substr" to gain the first 4 letters and hence gain the side.
 
 	_script = localize {TZK_TOWN_GROUP_START_1}
 	? _income < 0 : _script = localize {TZK_TOWN_GROUP_START_3}
-	[_westTG, _index, west] exec _script; [_eastTG, _index, east] exec _script
+	? not isNull _westTG: [_westTG, _index, west] exec _script
+	? not isNull _eastTG: [_eastTG, _index, east] exec _script
 
 	_script = "Server\Start\TownGroupRes1.sqs"
 	? bool_TZK_SEMod_Mode && _income >= 1000 : _script = "Server\Start\TownGroupRes2.sqs"
-	[_resTG, _index] exec _script
+	? not isNull _resTG: [_resTG, _index] exec _script
 
 	_index = _index + 1
 	? _index < _count : goto "TownGroups"
@@ -39,15 +44,16 @@ _index = 0; _count = count towns; _westTG = grpNull; _eastTG = grpNull; _resTG =
 ; It is possbile to ask TG execute special script depending on their income. NT mission can in this way considering design a parameter to switch NT mode ON/OFF.
 
 _indexExtra = 0
-#ExtraTownGroups
+# ExtraTownGroups
 	_town = towns select _indexExtra; _flag = _town select 0; _income = _town select 2
 	
 	? _income < 1000 : goto "SkipExtraTownGroups"
-	if (_index < count (townGroups select si0)) then {_westTG = (townGroups select si0) select _index} else {_westTG = createGroup west}
-	if (_index < count (townGroups select si1)) then {_eastTG = (townGroups select si1) select _index} else {_eastTG = createGroup east}
+	if (_index < count (townGroups select si0)) then {_westTG = (townGroups select si0) select _index} else {_westTG = grpNull}
+	if (_index < count (townGroups select si1)) then {_eastTG = (townGroups select si1) select _index} else {_eastTG = grpNull}
 	
 	_script = localize {TZK_TOWN_GROUP_START_4}
-	[_westTG, _indexExtra, west] exec _script; [_eastTG, _indexExtra, east] exec _script
+	? not isNull _westTG: [_westTG, _indexExtra, west] exec _script
+	? not isNull _eastTG: [_eastTG, _indexExtra, east] exec _script
 	_index = _index + 1
 
 	#SkipExtraTownGroups
@@ -61,9 +67,9 @@ _indexRemoveTG = _index
 _count = (count towns) / 2.5; _index = 0; _patrolGroup = grpNull
 ; Set number of patrol group at about 40% of town numbers.
 
-#ResPatrolGroups
-	if (_index < count patrolGroups) then {_patrolGroup = patrolGroups select _index} else {_patrolGroup = createGroup resistance}
-	[_patrolGroup] exec "Server\Start\ResPatrolGroup.sqs"
+# ResPatrolGroups
+	if (_index < count patrolGroups) then {_patrolGroup = patrolGroups select _index} else {_patrolGroup = grpNull}
+	? not isNull _patrolGroup: [_patrolGroup] exec "Server\Start\ResPatrolGroup.sqs"
 
 	_index = _index + 1
 	? _index < _count : goto "ResPatrolGroups"
