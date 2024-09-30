@@ -87,15 +87,18 @@ _vehicle doMove getPos _vehicle
 # finishCloseToStartPos
 
 ; if vehicle isn't on the bridge, move vehicle to assigned start position, otherwize request vehicle watch end point
+_curVehPosAsl = getPosASL _vehicle; _curVehPosAsl set [2, _suspendH + (_curVehPosAsl select 2)]
 ? not _onBridge: goto "suspendMoveStartPos"
 	_vehicle doWatch _endPos
-	_vectorVehToEnd = [_endPos, getPosASL _vehicle] call funcVectorSub
+	_vectorVehToEnd = [_endPos, _curVehPosAsl] call funcVectorSub
 	_deltaDir = (direction _vehicle) - (_vectorVehToEnd select 0) atan2 (_vectorVehToEnd select 1)
 	_deltaDir = 180 - abs (abs(_deltaDir) % 360 - 180)
-	~ 3 * _deltaDir / 180
+
+	; according to the practice, it seems AI tank require 6 seconds to turn 180 degree
+	~ 6 * _deltaDir / 180
+
 	goto "readyToCrossBridge"
 # suspendMoveStartPos
-	_curVehPosAsl = getPosASL _vehicle; _curVehPosAsl set [2, _suspendH + (_curVehPosAsl select 2)]
 	_moveParamCache = [true, true, [_vehicle, _curVehPosAsl, _startPos, 45]]
 	_moveParamCache exec "Bridge\MoveSuspended.sqs"
 	# loopMoveExactlyStart
@@ -105,7 +108,8 @@ _vehicle doMove getPos _vehicle
 
 # readyToCrossBridge
 ; calculate geometry info
-	_vehBeginPos = getPosASL _vehicle
+	_vehBeginPos = (if _onBridge then {_curVehPosAsl} else {_startPos})
+
 	_suspendMovementUnitVec = ([_endPos, _vehBeginPos] call funcVectorSub) call preprocessFile "Math\UnitVector.sqf"
 	_vehEndPos = [_endPos, [_suspendMovementUnitVec, _moveDistance] call funcVectorScale] call funcVectorAdd
 
