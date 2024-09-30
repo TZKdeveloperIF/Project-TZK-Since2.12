@@ -14,4 +14,5 @@ if isServer then {
 // bridges info format: [Pos ASL, 3D vector, object,   Pos ASL, 3D vector, object, ...]. Use 3 elements to encode 1 segment info
 TzkBridgeSegElemCnt = 3;
 // AI vehicle cross bridge height (work like attach)
-TzkBridgeSuspendHeight = 5;
+// the height of road lamp is about 8 meters
+TzkBridgeSuspendHeight = 15; 
