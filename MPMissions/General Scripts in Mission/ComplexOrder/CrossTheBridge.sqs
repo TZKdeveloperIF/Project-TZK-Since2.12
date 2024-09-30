@@ -120,7 +120,7 @@ _vehicle doMove getPos _vehicle
 
 ; End Of File
 # Quit
-
+	_si = sides find (side _unit)
 	? _msg != "" && _forServer: [_si, format ["%1: %2", _unit, _msg]] exec "Server\Msg\sSvrMsg2Cmd.sqs"
 	? _msg != "" && not _forServer: _unit groupChat _msg
 	exit
