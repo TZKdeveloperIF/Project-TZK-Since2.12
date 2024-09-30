@@ -10,7 +10,7 @@ if (count _playerGroupSelectedUnits > 0) then {
 	{
 		if (_x != vehicle _x && _x != driver vehicle _x) then {
 			_driver = driver vehicle _x;
-			if not (_driver in _units) then {_units set [count _units, _driver]};
+			if (_units find _driver == -1 && _playerGroupSelectedUnits find _driver == -1) then {_units set [count _units, _driver]};
 		};
 	} forEach _playerGroupSelectedUnits;
 	[_units, _playerGroupSelectedUnits] call preprocessFile "Util\ArrayAppend.sqf";
