@@ -5,7 +5,10 @@
 
 ; args: [
 ; 	unit, 
-; 	[bridge project id, near begin pos (bool. decide which endpoint of bridge is the start pos), move distance (distance to move after having acrossed the bridge)],
+; 	[
+;		bridge project id, near begin pos (bool. decide which endpoint of bridge is the start pos)
+;		, move distance (distance to move after having acrossed the bridge), has broken bridge segment
+;	],
 ; 	[order mode (called by AI or player unit), quit condition],
 ; 	extra parameters for order mode
 ; ]
@@ -15,6 +18,7 @@ _param = _this select 1
 _bridgeId = _param select 0
 _nearBeginPos = _param select 1
 _moveDistance = _param select 2
+_hasBrokenBridge = _param select 3
 
 _modeInfo = _this select 2
 _forServer = _modeInfo select 0, _quitCond = _modeInfo select 1
@@ -31,6 +35,14 @@ _msg = ""
 _project = _bridgeId call preprocessFile "Bridge\GetProjectById.sqf";
 ? count _project <= 0: _msg = "No available bridge."; goto "Quit"
 
+_vehicle = vehicle _unit
+? not _hasBrokenBridge: goto "FinishBridgeBrokenLogic"
+	_type = _vehicle call funcGetUnitTypeFromObject
+	? _type in typesEngineeringVeh || _type in typesMHQ: goto "FinishBridgeBrokenLogic"
+	_msg = "Part of bridge is broken. Only MHQ/engineer vehicle will execute the command."; goto "Quit"
+
+# FinishBridgeBrokenLogic
+
 _crossBridgeRadius = 200
 	_funcGetValid = "GetValidStatus" call (preprocessFile "Bridge\InfoFunc.sqf")
 
@@ -45,7 +57,6 @@ _startPos set [2, (_startPos call funcHASL) + _suspendH]
 _endPos set [2, (_endPos call funcHASL) + _suspendH]
 
 ; chech whether vehicle is on the bridge when order being executed
-_vehicle = vehicle _unit
 _onBridge = [_vehicle, _project] call preprocessFile "Bridge\OnWholeBridge.sqf"
 ? not _onBridge && ([_unit, _startPos] call funcDistH > _crossBridgeRadius): _msg = format ["%1 %2 %3 %4. %5", localize {TZK_LANG_TOO}, localize {TZK_LANG_FAR}, localize {TZK_LANG_TO}, localize {TZK_LANG_BRIDGE}, localize {TZK_LANG_ORDER_ABORTED}], goto "Quit"
 

@@ -84,14 +84,15 @@ lbSetCurSel [_idcListBox1, 1]
 	? count _project <= 0: hint "Bridge is removed."; closeDialog 0; goto "Quit"
 	_headInfo = _project call ("GetHeadInfo" call (preprocessFile "Bridge\InfoFunc.sqf"))
 	? not (_headInfo call ("GetValidStatus" call (preprocessFile "Bridge\InfoFunc.sqf"))): hint "Bridge is removed."; closeDialog 0; goto "Quit"
-	? _project call preprocessFile "Bridge\HasBrokenBridgeSegment.sqf": hint "Part of bridge is broken. Need repair first."; goto "loop"
+
+	_hasBrokenBridge = _project call preprocessFile "Bridge\HasBrokenBridgeSegment.sqf"
 
 	_beginPos = _headInfo call ("GetBeginPos" call (preprocessFile "Bridge\InfoFunc.sqf"))
 	_endPos = _headInfo call ("GetEndPos" call (preprocessFile "Bridge\InfoFunc.sqf"))
 	_nearBeginPos = true
 	? ([_pos, _beginPos] call funcDistH) > ([_pos, _endPos] call funcDistH): _nearBeginPos = false
 
-	? _svrRtsOrder: [_bridgeId, _nearBeginPos, _moveDistance] exec "Rts\Order\sCrossBridge.sqs"
-	? not _svrRtsOrder: [_units, [_bridgeId, _nearBeginPos, _moveDistance]] call preprocessFile "Rts\Order\CrossTheBridge.sqf"
+	? _svrRtsOrder: [_bridgeId, _nearBeginPos, _moveDistance, _hasBrokenBridge] exec "Rts\Order\sCrossBridge.sqs"
+	? not _svrRtsOrder: [_units, [_bridgeId, _nearBeginPos, _moveDistance, _hasBrokenBridge]] call preprocessFile "Rts\Order\CrossTheBridge.sqf"
 
 	closeDialog 0; goto "Quit"
