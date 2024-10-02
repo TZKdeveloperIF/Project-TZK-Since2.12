@@ -35,23 +35,29 @@ ctrlShow [_idcBtnUndo, false]
 btnValue00 = false; btnValue01 = false
 
 ; initial lists once. Check whether bridge valid on clicking "OK" button
+_nearestProjectIdx = -1; _dist = 9999
 ? 0 == count TzkBrdigeProjects: goto "bridgeListUpdated"
 _i = 0; _c = count TzkBrdigeProjects
 # updateBrdigeList
 	_project = TzkBrdigeProjects select _i
 	_headInfo = _project call _funcGetHead
 	? not (_headInfo call _funcGetValid) || siPlayer != (_headInfo call _funcGetSi): goto "continue"
-	? [_pos, (_headInfo call _funcGetBegin)] call funcDistH > _radius && [_pos, (_headInfo call _funcGetEnd)] call funcDistH > _radius: goto "continue"
+	_r1 = [_pos, (_headInfo call _funcGetBegin)] call funcDistH
+	_r2 = [_pos, (_headInfo call _funcGetEnd)] call funcDistH
+	? _r1 > _radius && _r2 > _radius: goto "continue"
 
 	_bridgeId = _headInfo call _funcGetId
 	_lbId = lbAdd [_idcListBox0, format ["%1: %2", localize {TZK_LANG_BRIDGE}, _bridgeId]]
 	lbSetValue [_idcListBox0, _lbId, _bridgeId]
 
+	? _r1 < _dist: _dist = _r1, _nearestProjectIdx = _lbId
+	? _r2 < _dist: _dist = _r2, _nearestProjectIdx = _lbId
+
 	# continue
 	_i = _i + 1
 	? _i < _c: goto "updateBrdigeList"
 # bridgeListUpdated
-? _c > 0: lbSetCurSel [_idcListBox0, 0]
+? _nearestProjectIdx != -1: lbSetCurSel [_idcListBox0, _nearestProjectIdx]
 
 _moveDistFactor = 20; _i = 0; _c = 10
 while {_i < _c} do {_d = _moveDistFactor * (_i + 1); _lbId = lbAdd [_idcListBox1, format ["%1 m", _d]]; lbSetValue [_idcListBox1, _lbId, _d]; _i = _i + 1}
