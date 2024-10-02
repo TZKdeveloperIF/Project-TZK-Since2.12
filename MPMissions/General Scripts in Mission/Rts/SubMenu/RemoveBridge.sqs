@@ -36,6 +36,8 @@ btnValue00 = false; btnValue01 = false
 		? _i < _c: goto "updateList"
 	# listUpdated
 
+	? -1 == lbCurSel _idcListBox0 && count _intersectedProjects > 0: lbSetCurSel [_idcListBox0, 0]
+
 	~ 0.2
 	? call dlgUpdated: goto "Quit"
 	? not alive player: closeDialog 0; goto "Quit"
