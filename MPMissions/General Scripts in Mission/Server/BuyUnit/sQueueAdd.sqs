@@ -7,10 +7,7 @@ _giJoin = _this select 3
 _id = _this select 4
 _orderNum = _this select 5
 
-_value = _type
-_value = _value +  TotalUnitTypes *_id
-
 _value2 = _giBuyer + GroupsNum*_giJoin + GroupsNum*GroupsNum*_si
 
-[_value, _value2, _orderNum] exec "Player\BuyUnit\hQueueAdd.sqs"
-publicExec format [{%1 exec "Player\BuyUnit\hQueueAdd.sqs"}, [_value, _value2, _orderNum]]
+[_type, _id, _value2, _orderNum] exec "Player\BuyUnit\hQueueAdd.sqs"
+publicExec format [{[%1, %2, %3, %4] exec "Player\BuyUnit\hQueueAdd.sqs"}, _type, _id call preprocessFile "Util\Num2Str.sqf", _value2, _orderNum]
