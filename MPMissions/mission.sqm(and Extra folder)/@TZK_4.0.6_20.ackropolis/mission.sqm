@@ -1,0 +1,444 @@
+version=11;
+#include "TZK_Scripts_4_0_6\mission.h"
+class Mission
+{
+	addOns[]=
+	{
+		TZK_BIS_AddOns
+		TZK_Basic_406_AddOns
+		TZK_CONFIG_406_AddOns
+		"TZK_CONFIG_406_Patch",
+		"TZK_CONFIG_406_Patch2",
+		"TZK_CONFIG_406_Patch3",
+		"ackropolis"
+	};
+	addOnsAuto[]=
+	{
+		TZK_CONFIG_406_AddOns
+		"TZK_CONFIG_406_Patch",
+		"TZK_CONFIG_406_Patch2",
+		"TZK_CONFIG_406_Patch3",
+	};
+	randomSeed=42499;
+	class Intel
+	{
+		briefingName="@STR_MISSION_NAME";
+		briefingDescription="$STR_MISSION_BREF_DESC";
+		resistanceWest=0.000000;
+		startWeather=0.000000;
+		forecastWeather=0.000000;
+		month=9;
+		day=22;
+		hour=8;
+		minute=0;
+	};
+	class Groups
+	{
+		items=156;
+		class Item0
+		{
+			side="GUER";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={-1000.000000,0.000000,2000.000000};
+					id=0;
+					side="GUER";
+					vehicle="SoldierGB";
+					leader=1;
+					skill=0.200000;
+					text="resistance_Center";
+					init="gameEndType = -1; towns=[]; [] exec ""\TZK_Scripts_4_0_4\Server\InitRepairableObjects.sqs""; [] exec ""\TZK_Scripts_4_0_4\Server\InitDestroyIslandObject.sqs""";
+				};
+			};
+		};
+
+		TZK_Mission_Grp_Playable_201("CommanderW_Info_5HP_xj400", "CommanderE_Info_5HP_xj400", "LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		
+		TZK_Mission_Group_Playable(37,CIV, 0,0,3370, 37, "Civilian", "this allowdammage false; Spec0=this")
+		TZK_Mission_Group_Playable(38,CIV, 0,0,3380, 38, "Civilian", "this allowdammage false; Spec1=this")
+		TZK_Mission_Group_Playable(39,CIV, 0,0,3390, 39, "Civilian", "this allowdammage false; Spec2=this")
+		TZK_Mission_Group_Playable(40,CIV, 0,0,3400, 40, "Civilian", "this allowdammage false; Spec3=this")
+		TZK_Mission_Group_Playable(41,CIV, 0,0,3410, 41, "Civilian", "this allowdammage false; Spec4=this")
+		TZK_Mission_Group_Playable(42,CIV, 0,0,3420, 42, "Civilian", "this allowdammage false; Spec5=this")
+		TZK_Mission_Group_Playable(43,CIV, 0,0,3430, 43, "Civilian", "this allowdammage false; Spec6=this")
+		TZK_Mission_Group_Playable(44,CIV, 0,0,3440, 44, "Civilian", "this allowdammage false; Spec7=this")
+		TZK_Mission_Group_Playable(45,CIV, 0,0,3450, 45, "Civilian", "this allowdammage false; Spec8=this")
+		TZK_Mission_Group_Playable(46,CIV, 0,0,3460, 46, "Civilian", "this allowdammage false; Spec9=this")
+		
+		TZK_Mission_Grp_Functional_201("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_TownGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_PatrolGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_WorkerGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		TZK_Mission_Grp_FunctionalGrp("LeaderW_Info_5HP_xj400", "LeaderE_Info_5HP_xj400")
+		class Item154
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={12435.003906,11.000000,1968.739746};
+					special="NONE";
+					id=144;
+					side="LOGIC";
+					vehicle="Logic";
+					leader=1;
+					skill=0.600000;
+					text="FixStart_0";
+				};
+			};
+		};
+		class Item155
+		{
+			side="LOGIC";
+			class Vehicles
+			{
+				items=1;
+				class Item0
+				{
+					position[]={7626.889648,11.000000,10153.659180};
+					special="NONE";
+					id=145;
+					side="LOGIC";
+					vehicle="Logic";
+					leader=1;
+					skill=0.600000;
+					text="FixStart_1";
+				};
+			};
+		};
+	};
+	class Vehicles
+	{
+		items=20;
+		class Item0
+		{
+			position[]={7783.391113,11.000000,11273.225586};
+			special="NONE";
+			id=200;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Providence"",500,2]]";
+		};
+		class Item1
+		{
+			position[]={6330.171875,11.000000,10297.727539};
+			special="NONE";
+			id=201;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Schadenfreude"",500,2]]";
+		};
+		class Item2
+		{
+			position[]={8248.563477,11.000000,8920.145508};
+			special="NONE";
+			id=202;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Vespasian"",500,2]]";
+		};
+		class Item3
+		{
+			position[]={12477.416992,30.000000,5371.967773};
+			special="NONE";
+			id=203;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Village"",500,2]]";
+		};
+		class Item4
+		{
+			position[]={5126.062500,30.000000,7048.975586};
+			special="NONE";
+			id=204;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Bilingsgate"",500,2]]";
+		};
+		class Item5
+		{
+			position[]={11756.670898,30.000000,7470.138184};
+			special="NONE";
+			id=205;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Gourmand"",500,2]]";
+		};
+		class Item6
+		{
+			position[]={293.527191,25.000000,11026.076172};
+			special="NONE";
+			id=206;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Midriga"",500,2]]";
+		};
+		class Item7
+		{
+			position[]={753.198242,25.000000,12524.997070};
+			special="NONE";
+			id=207;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Bellwether"",500,2]]";
+		};
+		class Item8
+		{
+			position[]={3585.635254,25.000000,12461.515625};
+			special="NONE";
+			id=208;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Jezebel"",500,2]]";
+		};
+		class Item9
+		{
+			position[]={11531.068359,11.000000,461.718750};
+			special="NONE";
+			id=209;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Soutch Airoport"",500,2]]";
+		};
+		class Item10
+		{
+			position[]={11470.906250,20.000000,4254.827637};
+			special="NONE";
+			id=210;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""East Airoport"",500,2]]";
+		};
+		class Item11
+		{
+			position[]={7263.424805,75.000000,5930.194336};
+			special="NONE";
+			id=211;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""West Airoport"",500,2]]";
+		};
+		class Item12
+		{
+			position[]={9732.183594,20.000000,3476.986572};
+			special="NONE";
+			id=212;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""AckRopolis"",500,2]]";
+		};
+		class Item13
+		{
+			position[]={7707.289551,75.621002,1245.934326};
+			special="NONE";
+			id=213;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Frag Haus City"",500,2]]";
+		};
+		class Item14
+		{
+			position[]={3911.944336,12.348419,3852.101807};
+			special="NONE";
+			id=214;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Egypt"",500,2]]";
+		};
+		class Item15
+		{
+			position[]={1320.922607,46.495777,3844.344971};
+			special="NONE";
+			id=215;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Castle Domento"",500,2]]";
+		};
+		class Item16
+		{
+			position[]={3623.864258,20.000000,1284.873779};
+			special="NONE";
+			id=216;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Ruins"",500,2]]";
+		};
+		class Item17
+		{
+			position[]={689.173828,10.000000,871.322449};
+			special="NONE";
+			id=217;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Soush Afrika"",500,2]]";
+		};
+		class Item18
+		{
+			position[]={11625.951172,150.000000,11880.057617};
+			special="NONE";
+			id=218;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Mount Kilimanjaro"",500,2]]";
+		};
+		class Item19
+		{
+			position[]={6649.743164,132.760345,3420.242188};
+			special="NONE";
+			id=219;
+			side="EMPTY";
+			vehicle="FlagCarrier";
+			skill=0.200000;
+			init="towns=towns+[[this,""Grand Canyone"",500,2]]";
+		};
+	};
+	class Markers
+	{
+		items=10;
+		class Item0
+		{
+			position[]={7263.424805,75.000000,5930.194336};
+			name="MarkerTownName";
+			text="West Airoport";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item1
+		{
+			position[]={6649.743164,132.760345,3420.242188};
+			name="MarkerTownName";
+			text="Grand Canyone";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item2
+		{
+			position[]={11625.951172,150.000000,11880.057617};
+			name="MarkerTownName";
+			text="Mount Kilimanjaro";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item3
+		{
+			position[]={689.173828,10.000000,871.322449};
+			name="MarkerTownName";
+			text="Soush Afrika";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item4
+		{
+			position[]={3623.864258,20.000000,1284.873779};
+			name="MarkerTownName";
+			text="Ruins";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item5
+		{
+			position[]={3911.944336,12.348419,3852.101807};
+			name="MarkerTownName";
+			text="Egypt";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item6
+		{
+			position[]={11470.906250,20.000000,4254.827637};
+			name="MarkerTownName";
+			text="East Airoport";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item7
+		{
+			position[]={12477.416992,30.000000,5371.967773};
+			name="MarkerTownName";
+			text="Village";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+		class Item8
+		{
+			position[]={11625.951172,150.000000,11880.057617};
+			name="MarkerTownName";
+			text="Mount Kilimanjaro";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+			};
+		class Item9
+		{
+			position[]={11531.068359,11.000000,461.718750};
+			name="MarkerTownName";
+			text="Soutch Airoport";
+			type="Dot";
+			colorName="ColorBlack";
+			a=0.000000;
+			b=0.000000;
+		};
+	};
+};
+class Intro
+{
+	randomSeed=8166403;
+	class Intel
+	{
+	};
+};
+class OutroWin
+{
+	randomSeed=5538307;
+	class Intel
+	{
+	};
+};
+class OutroLoose
+{
+	randomSeed=2739203;
+	class Intel
+	{
+	};
+};
