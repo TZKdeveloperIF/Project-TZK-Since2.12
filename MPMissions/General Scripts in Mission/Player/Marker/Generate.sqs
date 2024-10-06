@@ -138,7 +138,7 @@ _marker = "Respawn_vehicle_civilian"; createMarker [_marker, hiddenMarkerPos]; _
 #SkipCreation
 _si = sides find (side player)
 ? _si == -1 : _si = siCiv
-[_si] exec "\TZK_Scripts_4_0_4\Player\InitMarkers.sqs"
+_si exec "Player\Marker\Initialization.sqs"
 
 ?!bool_TZK_199_Mode && (bool_TZK_MF_Mode || bool_TZK_Yugo_Mode): Marker_TZK_199Rem = true
 
