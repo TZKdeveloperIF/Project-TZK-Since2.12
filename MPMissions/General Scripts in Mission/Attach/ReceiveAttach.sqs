@@ -1,0 +1,43 @@
+; args: [[tug, vehicle, value], [_tugIdx, _dragIdx, _id]]
+_attachParam = _this select 0
+_attachInfo = _this select 1
+
+_tug = _attachParam select 0
+_vehicle = _attachParam select 1
+_value = _attachParam select 2
+
+_tugIdx = _attachInfo select 0
+_dragIdx = _attachInfo select 1
+_id = _attachInfo select 2
+
+_slot = _value % 10
+_value = _value - _slot
+
+_type = (_value % (10*10))/10
+_value = _value - _type*10
+
+_gi = (_value % (10*10*GroupsNum))/(10*10)
+_value = _value - _gi*(10*10)
+
+_si = _value/(10*10*GroupsNum)
+
+? isServer: goto "SkipAssignInfo"
+; Server has processed assigning info (to generate available indices)
+@ not TzkAttachMutex
+	TzkAttachMutex = true
+
+	? _tugIdx >= count TzkTuggers: TzkTuggerSlots set [_tugIdx, [objNull,objNull,objNull]]
+	TzkTuggers set [_tugIdx, _tug]; TzkTuggerSlots select _tugIdx set [_slot, _vehicle]
+
+	TzkDraggedVehs set [_dragIdx, _vehicle]
+	TzkDraggedTugger set [_dragIdx, _tug]
+	TzkDraggedSlots set [_dragIdx, _slot]
+	TzkDraggedIds set [_dragIdx, _id]
+
+	TzkAttachMutex = false
+
+# SkipAssignInfo
+
+? not isNull player: if (siPlayer == _si && giPlayer == _gi) then {hint "Vehicle Attached"}
+
+[[_vehicle, _tug, _type, _slot, _gi, _si], _attachInfo] exec "Attach\Executor.sqs"

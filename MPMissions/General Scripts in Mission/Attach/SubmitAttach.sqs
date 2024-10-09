@@ -1,0 +1,63 @@
+; args: [tug, vehicle, value]
+
+? not isServer: exit
+
+_tug = _this select 0
+_vehicle = _this select 1
+_value = _this select 2
+
+_slot = _value % 10
+_value = _value - _slot
+
+_type = (_value % (10*10))/10
+_value = _value - _type*10
+
+_gi = (_value % (10*10*GroupsNum))/(10*10)
+_value = _value - _gi*(10*10)
+
+_si = _value/(10*10*GroupsNum)
+
+; reassign _value
+_value = _this select 2
+
+_valid = false
+? not alive _vehicle || not alive _tug: exit
+
+@ not TzkAttachMutex
+	; Lock
+	TzkAttachMutex = true
+
+	_tugIdx = TzkTuggers find _tug
+	? _tugIdx != -1: if (not isNull (TzkTuggerSlots select _tugIdx select _slot)) then {goto "Unlock"}
+	_dragIdx = TzkDraggedVehs find _vehicle
+	? _dragIdx != -1: goto "Unlock"
+
+	; valid attach request
+	_valid = true
+	_id = TzkAttachId; TzkAttachId = TzkAttachId + 1
+
+	? -1 == _tugIdx: _tugIdx = TzkTuggers find objNull
+	? -1 == _tugIdx: _tugIdx = count TzkTuggers; TzkTuggerSlots set [_tugIdx, [objNull,objNull,objNull]]
+	TzkTuggers set [_tugIdx, _tug]; TzkTuggerSlots select _tugIdx set [_slot, _vehicle]
+
+	? -1 == _dragIdx: _dragIdx = TzkDraggedVehs find objNull
+	? -1 == _dragIdx: _dragIdx = count TzkDraggedVehs
+	TzkDraggedVehs set [_dragIdx, _vehicle]
+	TzkDraggedTugger set [_dragIdx, _tug]
+	TzkDraggedSlots set [_dragIdx, _slot]
+	TzkDraggedIds set [_dragIdx, _id]
+
+	# Unlock
+	TzkAttachMutex = false
+
+? not _valid: exit
+; broadcast attach succeeded
+_netIdTug = _tug call funcGenNetIdStr
+_netIdVeh = _vehicle call funcGenNetIdStr
+_textOfVal = _value call preprocessFile "Util\Num2Str.sqf"
+; [_tugIdx, _dragIdx, _id] are expected to be not very large and thus don't need to convert to string
+
+? isNull _tug || isNull _vehicle: _id exec "Attach\SubmitDetach.sqs"; exit
+
+[[_tug, _vehicle, _value], [_tugIdx, _dragIdx, _id]] exec "Attach\ReceiveAttach.sqs"
+publicExec format [{[[UnitById %1, UnitById %2, %3], %4] exec "Attach\ReceiveAttach.sqs"}, _netIdTug, _netIdVeh, _textOfVal, [_tugIdx, _dragIdx, _id]]

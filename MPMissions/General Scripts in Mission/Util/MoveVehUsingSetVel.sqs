@@ -49,6 +49,7 @@ _vehicle setVectorDir _delta
 _inHalfPlane = preprocessFile "Math\InHalfPlane.sqf"
 
 _counter = 0
+_outSeaPos = [-500 - random(500), +500 + random(500), 100]
 # loop
 	_counter = _counter + 1
 	_moveSpd = (abs(speed _vehicle) + 10) / 3.6
@@ -73,7 +74,7 @@ _counter = 0
 		; add z-correction in position/velocity. OFP engine has bug that z-bias sometimes won't work
 		; Refer to solution of attach, move vehicle to the sea and move back after a delay
 		_correctedPos = [_pos, _vec] call funcVectorAdd
-		? _counter < 3: _correctedPos = [_correctedPos, [0, 0, 0.5]] call funcVectorAdd, _vehicle setPosASL positionAttach
+		? _counter < 3: _correctedPos = [_correctedPos, [0, 0, 0.5]] call funcVectorAdd, _vehicle setPosASL _outSeaPos
 		~ 0.1
 		_vehicle setPosASL _correctedPos
 

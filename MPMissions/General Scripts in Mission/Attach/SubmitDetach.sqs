@@ -1,0 +1,38 @@
+; args: id
+
+? not isServer: exit
+
+_id = _this
+
+_valid = false
+@ not TzkAttachMutex
+	; Lock
+	TzkAttachMutex = true
+
+	_dragIdx = TzkDraggedIds find _id
+	? -1 == _dragIdx: goto "Unlock"
+
+	_valid = true
+
+	_vehicle = TzkDraggedVehs select _dragIdx
+	_tug = TzkDraggedTugger select _dragIdx
+	_slot = TzkDraggedSlots select _dragIdx
+
+	_tugIdx = TzkTuggers find _tug
+	; ASSERT(_tugIdx != -1)
+	; ASSERT(TzkTuggerSlots select _tugIdx select _slot == _vehicle)
+	TzkTuggerSlots select _tugIdx set [_slot, objNull]
+	; Remain tugger in TzkTuggers
+	TzkDraggedVehs set [_dragIdx, objNull]
+	TzkDraggedTugger set [_dragIdx, objNull]
+	; Remain slot in TzkDraggedSlots
+	TzkDraggedIds set [_dragIdx, TzkAttachInvId]
+
+	# Unlock
+	TzkAttachMutex = false
+
+? not _valid: exit
+
+; broadcast detach to clients
+; [_tugIdx, _id] are expected to be not very large and thus don't need to convert to string
+publicExec format [{%1 exec "Attach\ReceiveDetach.sqs"}, [_tugIdx, _id]]

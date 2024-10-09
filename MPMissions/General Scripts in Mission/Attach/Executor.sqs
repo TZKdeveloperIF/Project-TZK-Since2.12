@@ -1,0 +1,208 @@
+; args: [[vehicle, tug, type, slot, gi, si], [_tugIdx, _dragIdx, _id]]
+
+; ========================================= Parameters =========================================
+_attachParam = _this select 0
+_attachInfo = _this select 1
+
+_vehicle = _attachParam select 0
+_tug = _attachParam select 1
+_type = _attachParam select 2
+_tugslot = _attachParam select 3
+_gi = _attachParam select 4
+_si = _attachParam select 5
+
+_tugIdx = _attachInfo select 0
+_dragIdx = _attachInfo select 1
+_id = _attachInfo select 2
+
+_tHeli = _type == ttHeli
+_tBoat = _type == ttBoat
+_tAPC = _type == ttTruck || _type == ttAPC
+
+_bStruct = 1 != ([_vehicle, "driver"] call funcVehParamHasSeat)
+
+_attachDir = -180; _attachDist = 15
+; diriction and distance
+? _tHeli: _attachDir = 0; _attachDist = 20
+? _tBoat: _attachDir = -180; _attachDist = 40
+? _tAPC: _attachDir = -180; _attachDist = 15
+; direction correction
+? _tugslot == tsRight: _attachDir = _attachDir - 30
+? _tugslot == tsLeft: _attachDir = _attachDir + 30
+
+_relationBroken = {TzkDraggedIds select _dragIdx != _id}
+_bDetached = false
+_bKilled = false
+
+_outSeaPos = [TzkAttachPosX, (_si * GroupsNum + _gi) * 250, 100]
+
+; ========================================= Local Check =========================================
+; Must finish initialization
+? not local _vehicle: goto "RemoteSleep"
+
+; ========================================= Preprocess =========================================
+? not _tHeli: goto "PreprocessDone"
+	# WaitForTakeOff
+		~ 0.3
+		_bDetached = call _relationBroken
+		_bKilled = not alive _tug || not alive _vehicle
+		? _bDetached || _bKilled: goto "Postprocess"
+		? not local _vehicle: goto "RemoteSleep"
+		? _attachDist > (getPos _tug) select 2: goto "WaitForTakeOff"
+	; TakeOff
+		_pos = getPosASL _vehicle; _vehicle setPosASL _outSeaPos; _vehicle setVelocity [0, 0, 3]
+		~ 0.2
+		_vehicle setPosASL [_pos select 0, _pos select 1, (_pos select 2) + 4]; _vehicle setVelocity [0, 0, 3]
+
+# PreprocessDone
+; ========================================= Main Loop =========================================
+# EnterMainPart
+_interval = 0.1; _resetPosThreshold = 50
+_counter = 0
+_TGV = _vehicle in TownGroupVehicles
+
+_coefScale = (if _tHeli then {0.9} else {0.8})
+_coefHeight = 2
+? _tBoat: _coefHeight = 10
+? _tHeli: _coefHeight = 0
+_calcVelParam = [_tug, _vehicle, _attachDist, _attachDir, _coefScale, _coefHeight, _tHeli]
+_funcCalcVel = preprocessFile "Attach\CalcVelocity.sqf"
+_funcDistSquare = preprocessFile "Util\PosDistSquare.sqf"
+
+_resetPosDistSquare = 50 * 50
+? _tBoat: _resetPosDistSquare = 100 * 100
+
+; IMPORTANT. In 2.02 (maybe 1.99 too) it's easier to trigger attach bug
+; probably due to too fast setpos
+; the script AsyncSetPos is to solve this problem
+
+; move to sea and move back. A z-upper velocity is required. Initial
+_pos = getPosASL _vehicle; _vel = velocity _vehicle
+? (_vel select 2) < 3: _vel set [2, 3]
+_vehicle setPosASL _outSeaPos; _vehicle setVelocity _vel
+
+_asyncParam = [true, true, [_vehicle, _outSeaPos]]
+_asyncParam exec "Util\AsyncSetPos.sqs"
+_try = 0
+# InitMoveOutLoop
+	~ 0.01
+	_try = _try + 1
+	? _try > 100: _asyncParam set [1, false], goto "FailedSettingPos"
+	? _asyncParam select 0: goto "InitMoveOutLoop"
+
+_vehicle setPosASL _pos; _vehicle setVelocity _vel
+
+_asyncParam = [true, true, [_vehicle, _pos]]
+_asyncParam exec "Util\AsyncSetPos.sqs"
+_try = 0
+# InitMoveInLoop
+	~ 0.01
+	_try = _try + 1
+	? _try > 100: _asyncParam set [1, false], goto "FailedSettingPos"
+	? _asyncParam select 0: goto "InitMoveInLoop"
+
+# MainLoop
+	; need update position variable. Delay enough to make sure read-pos command obtains correct result
+	~ 0.1
+
+	; variable updated in external loop
+	_up = (getPosASL _vehicle) call funcVectorUp; _vehicle setVectorUp _up
+
+	# frequentlyLoop
+		_counter = _counter + 1
+		; check quit
+		_bDetached = call _relationBroken
+		_bKilled = not alive _tug || not alive _vehicle
+		? _bDetached || _bKilled: goto "Postprocess"
+		? not local _vehicle: goto "RemoteSleep"
+		? _tHeli && ((getPos _tug) select 2) < _attachDist : goto "Postprocess"
+
+		; correct dir and up
+		_tugDir = getDir _tug; _vehDir = getDir _vehicle;
+		_dirDiff = _vehDir - _tugDir
+		? _dirDiff > +180: _dirDiff = _dirDiff - 360
+		? _dirDiff < -180: _dirDiff = _dirDiff + 360
+		_dir = vectorDir _vehicle
+		? _dirDiff > +5: _dir = [_dir, _up, +1] call funcVectorRot3D
+		? _dirDiff < -5: _dir = [_dir, _up, -1] call funcVectorRot3D
+		_vehicle setVectorDirAndUp [_dir, [0,0,1]]
+
+		; update velocity. For structure, add velocity * interval to its current position
+		_vel = _calcVelParam call _funcCalcVel
+		? not _bStruct: _vehicle setVelocity _vel; goto "VelPosUpdated"
+			_pos = getPosASL _vehicle
+			{_pos set [_x, (_pos select _x) + _interval * (_vel select _x)]} forEach [0,1]
+			_pos set [2, 0]
+			_vehicle setPos _pos
+		# VelPosUpdated
+		
+		_distSquare = [getPosASL _tug, getPosASL _vehicle] call _funcDistSquare
+
+		~ _interval
+		? _counter < _resetPosThreshold && _distSquare < _resetPosDistSquare: goto "frequentlyLoop"
+
+	_pos = getPosASL _vehicle; _vel = velocity _vehicle
+	? (_vel select 2) < 3: _vel set [2, 3]
+	_vehicle setPosASL _outSeaPos; _vehicle setVelocity _vel
+
+	_asyncParam = [true, true, [_vehicle, _outSeaPos]]
+	_asyncParam exec "Util\AsyncSetPos.sqs"
+	_try = 0
+	# LoopMoveOutLoop
+		~ 0.01
+		_try = _try + 1
+		? _try > 100: _asyncParam set [1, false], goto "FailedSettingPos"
+		? _asyncParam select 0: goto "LoopMoveOutLoop"
+
+	_vehicle setPosASL _pos; _vehicle setVelocity _vel
+
+	_asyncParam = [true, true, [_vehicle, _pos]]
+	_asyncParam exec "Util\AsyncSetPos.sqs"
+	_try = 0
+	# LoopMoveInLoop
+		~ 0.01
+		_try = _try + 1
+		? _try > 100: _asyncParam set [1, false], goto "FailedSettingPos"
+		? _asyncParam select 0: goto "LoopMoveInLoop"
+
+	_counter = 0
+	
+	? _TGV: _res = [getPosASL _vehicle, [_si], []] call funcGetClosestTown; if (_res select 1 > 250) then {goto "Postprocess"}
+	goto "MainLoop"
+
+; ========================================= Postprocess =========================================
+# Postprocess
+	; record unexpected situation to log
+	? isNull _vehicle: format ["Null attached vehicle appears. pos: %1, vel: %2, tug: %3, veh: %4", _pos, _vel, _tug, _vehicle] call fDebugLog
+
+	; server execute detach
+	? isServer: _id exec "Attach\SubmitDetach.sqs"
+	; since each client and server executes this script, it is unnecessary to broadcast "succeeded detach"
+	[_vehicle, _gi, _si] exec "Attach\AfterDetach.sqs"
+
+	? _bStruct: _pos = getPosASL _vehicle, _pos set [2,0], _vehicle setPos _pos, exit
+
+	? _tHeli: _vehicle exec "Attach\FallVehicle.sqs", exit
+
+	exit
+
+; ======================================== Remote Sleep ========================================
+; Each client and server script will sleep. If vehicle become local the script will be woke up
+# RemoteSleep
+	~ 1
+
+	_bDetached = call _relationBroken
+	_bKilled = not alive _tug || not alive _vehicle
+	? _bDetached || _bKilled: goto "Postprocess"
+
+	? local _vehicle: goto "EnterMainPart"
+	goto "RemoteSleep"
+
+; ======================================== Set Pos Fail ========================================
+; Sometimes script setpos will fail (or maybe due to too slow). In this case script should halt
+; and report unexpected failure
+# FailedSettingPos
+	; "_tug", "_vehicle" and "_pos" must be defined
+	_vehicle setPosASL _pos
+	format ["SetPos too slow in attach script. Tugger: %1, Vehicle: %2", _tug, _vehicle] call fDebugLog
+	goto "Postprocess"

@@ -8,15 +8,29 @@ _type = _this select 2
 
 
 ; check if attach possible
-{ _tugged = _x select tsTugged; if (_tug in _tugged) then { hint "Cannot attach a vehicle to a vehicle being towed."; exit } } foreach vehicleAttached
+? _tug in TzkDraggedVehs: hint "Cannot attach a vehicle to a vehicle being towed."; exit
 
 ; check if attach or detach should be performed
-_index = 0
-_count = count vehicleAttached
-_used = false
-_res = [_tug] call funcSearchvehicleAttached
-? (_res select 1) : _tugged = ((vehicleAttached select (_res select 0)) select tsTugged); if !isNull(_tugged select _slot) then { _used = true }
+@ not TzkAttachMutex
+	TzkAttachMutex = true
+	_tugIdx = TzkTuggers find _tug
+	? -1 == _tugIdx: TzkAttachMutex = false; goto "PerformAttach"
+	_tuggedVehicles = TzkTuggerSlots select _tugIdx
+	_vehicle = _tuggedVehicles select _slot
+	? isNull _vehicle: TzkAttachMutex = false; goto "PerformAttach"
 
-? (_used): [_tug, _slot] exec localize {TZK_MSG_COMMON_SEND_DETACH_VEHICLE}; exit
+; PerformDetach, or invalid (unexpected)
+; ! Pay attention! The TzkAttachMutex isn't unlocked yet!
+	_dragIdx = TzkDraggedVehs find _vehicle
+	? -1 == _dragIdx: format ["Unexpected status appears in attach action. Tugger: %1", _tug] call fDebugLog; TzkAttachMutex = false; exit
+	? TzkDraggedTugger select _dragIdx != _tug: format ["Unexpected status appears in attach action. Tugger: %1", _tug] call fDebugLog; TzkAttachMutex = false; exit
+	_id = TzkDraggedIds select _dragIdx
 
-[_tug, _slot, _type] exec localize {TZK_DIALOG_ATTACH_VEHICLE}; exit
+	; id is expected not too large and thus require no convert-to-string
+	_id exec "Attach\SubmitDetach.sqs"
+	publicExec format [{%1 exec "Attach\SubmitDetach.sqs"}, _id]
+	TzkAttachMutex = false
+	exit
+# PerformAttach
+	[_tug, _slot, _type] exec localize {TZK_DIALOG_ATTACH_VEHICLE}
+	exit

@@ -26,14 +26,14 @@ _moveVelocity = [_unitVector, _speed] call funcVectorScale
 _inHalfPlane = preprocessFile "Math\InHalfPlane.sqf"
 
 _up = [0, 0, 1]
-
+_outSeaPos = [-500 - random(500), +500 + random(500), 100]
 ; P.S. In high frequency script, read pos after set pos in short time may sometimes return old pos value.
-; (not verifyed yet. Sometimes attached MHQ get lost at positionAttach. The core reason might be this.)
+; (not verifyed yet. Sometimes attached MHQ get lost. The core reason might be this.)
 ; Thus better use script variable instead of read pos
 _currentPosAsl = getPosASL _vehicle; _currentVel = velocity _vehicle
 
 ; move to sea and move back. Initial
-_vehicle setPosASL positionAttach; _vehicle setVelocity _currentVel
+_vehicle setPosASL _outSeaPos; _vehicle setVelocity _currentVel
 ~ 0.01
 _vehicle setPosASL _currentPosAsl; _vehicle setVelocity _currentVel
 ~ 0.01
@@ -83,7 +83,7 @@ _vehicle setPosASL _currentPosAsl; _vehicle setVelocity _currentVel
 	_expectedPos = [_beginExpectedPos, [_unitVector, _endTime * _speed] call funcVectorScale] call funcVectorAdd
 	? (_currentPosAsl select 2) < (_expectedPos select 2): _currentPosAsl set [2, _expectedPos select 2]
 
-	_vehicle setPosASL positionAttach
+	_vehicle setPosASL _outSeaPos
 	_vehicle setVelocity _currentVel
 	~ 0.01
 	_vehicle setPosASL _currentPosAsl
