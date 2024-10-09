@@ -11,9 +11,7 @@ _valMhqMightOutsideMap = 0
 _money = groupMoneyMatrix select siPlayer select giPlayer
 ? !alive _mhq : if (_money < costRepairMHQ) then {hint "MHQ destroyed. Need $30000 to repair it."}; exit
 
-_attached = false; _index = 0; _count = count vehicleAttached;
-while "_index < _count && !_attached" do { _entry = vehicleAttached select _index; _tug2 = _entry select tsTug; _tugged = (_entry select tsTugged) - [objNull]; if (_mhq == _tug2 && (count _tugged) > 0) then {_attached = true}; if (_mhq in _tugged) then {_attached = true}; _index = _index + 1 }
-? _attached : hint "MHQ is attached. Detach first."; exit
+? (_mhq in TzkDraggedVehs) || (_mhq in TzkDraggedTugger): hint "MHQ is attached. Detach first."; exit
 
 
 ? _money < 5000 : hint "Need $5000 to call back MHQ."; exit

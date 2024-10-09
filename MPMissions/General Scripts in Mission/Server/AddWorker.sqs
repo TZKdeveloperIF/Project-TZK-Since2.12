@@ -41,13 +41,8 @@ _try = 0
 	_try = _try + 1
 	? _try < 10: goto "ReadMhqPos"
 ; Unable to locate mhq in-map. Do "MHQ attached check"
-_i = 0; _c = count vehicleAttached
-# CheckMHQTugged
-	? _i >= _c: goto "ObtainedPosition"
-	_entry = vehicleAttached select _i
-	? _mhq in (_entry select tsTugged): _pos = getPos (_entry select tsTug), goto "ObtainedPosition"
-	_i = _i + 1
-	goto "CheckMHQTugged"
+	_dragIdx = TzkDraggedVehs find _mhq
+	? _dragIdx != -1: _pos = getPosASL (TzkDraggedTugger select _dragIdx)
 
 # ObtainedPosition
 
