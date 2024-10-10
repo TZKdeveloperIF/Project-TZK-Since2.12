@@ -34,7 +34,8 @@ _relationBroken = {TzkDraggedIds select _dragIdx != _id}
 _bDetached = false
 _bKilled = false
 
-_outSeaPos = [TzkAttachPosX, (_si * GroupsNum + _gi) * 250, 100]
+; The y and z coordinate of out sea position is related with vehicle's current coordinate. This can help get avoid with collapse with other objects.
+_outSeaPos = [TzkAttachPosX, getPosASL(_vehicle) select 1, 100 + (getPosASL(_vehicle) select 2)]
 
 ; ========================================= Local Check =========================================
 ; Must finish initialization
@@ -69,12 +70,12 @@ _calcVelParam = [_tug, _vehicle, _attachDist, _attachDir, _coefScale, _coefHeigh
 _funcCalcVel = preprocessFile "Attach\CalcVelocity.sqf"
 _funcDistSquare = preprocessFile "Util\PosDistSquare.sqf"
 
-_resetPosDistSquare = 50 * 50
-? _tBoat: _resetPosDistSquare = 100 * 100
+; _resetPosDistSquare = 50 * 50
+; ? _tBoat: _resetPosDistSquare = 100 * 100
 
 ; IMPORTANT. In 2.02 (maybe 1.99 too) it's easier to trigger attach bug
 ; probably due to too fast setpos
-; the script AsyncSetPos is to solve this problem
+; the script AsyncSetPos is to locate this problem
 
 ; move to sea and move back. A z-upper velocity is required. Initial
 _pos = getPosASL _vehicle; _vel = velocity _vehicle
@@ -85,9 +86,9 @@ _asyncParam = [true, true, [_vehicle, _outSeaPos]]
 _asyncParam exec "Util\AsyncSetPos.sqs"
 _try = 0
 # InitMoveOutLoop
-	~ 0.01
+	~ 0.1
 	_try = _try + 1
-	? _try > 100: _asyncParam set [1, false], goto "FailedSettingPos"
+	? _try > 300: _asyncParam set [1, false], _stage = "initMoveOut"; goto "FailedSettingPos"
 	? _asyncParam select 0: goto "InitMoveOutLoop"
 
 _vehicle setPosASL _pos; _vehicle setVelocity _vel
@@ -96,14 +97,15 @@ _asyncParam = [true, true, [_vehicle, _pos]]
 _asyncParam exec "Util\AsyncSetPos.sqs"
 _try = 0
 # InitMoveInLoop
-	~ 0.01
+	~ 0.1
 	_try = _try + 1
-	? _try > 100: _asyncParam set [1, false], goto "FailedSettingPos"
+	? _try > 300: _asyncParam set [1, false], _stage = "initMoveIn"; goto "FailedSettingPos"
 	? _asyncParam select 0: goto "InitMoveInLoop"
 
 # MainLoop
 	; need update position variable. Delay enough to make sure read-pos command obtains correct result
-	~ 0.1
+	; however probably delay is useless. Something is broken in game logic.
+	; ~ 0.1
 
 	; variable updated in external loop
 	_up = (getPosASL _vehicle) call funcVectorUp; _vehicle setVectorUp _up
@@ -136,34 +138,12 @@ _try = 0
 			_vehicle setPos _pos
 		# VelPosUpdated
 		
-		_distSquare = [getPosASL _tug, getPosASL _vehicle] call _funcDistSquare
+		; _distSquare = [getPosASL _tug, getPosASL _vehicle] call _funcDistSquare
 
 		~ _interval
-		? _counter < _resetPosThreshold && _distSquare < _resetPosDistSquare: goto "frequentlyLoop"
+		? _counter < _resetPosThreshold: goto "frequentlyLoop"
 
-	_pos = getPosASL _vehicle; _vel = velocity _vehicle
-	? (_vel select 2) < 3: _vel set [2, 3]
-	_vehicle setPosASL _outSeaPos; _vehicle setVelocity _vel
-
-	_asyncParam = [true, true, [_vehicle, _outSeaPos]]
-	_asyncParam exec "Util\AsyncSetPos.sqs"
-	_try = 0
-	# LoopMoveOutLoop
-		~ 0.01
-		_try = _try + 1
-		? _try > 100: _asyncParam set [1, false], goto "FailedSettingPos"
-		? _asyncParam select 0: goto "LoopMoveOutLoop"
-
-	_vehicle setPosASL _pos; _vehicle setVelocity _vel
-
-	_asyncParam = [true, true, [_vehicle, _pos]]
-	_asyncParam exec "Util\AsyncSetPos.sqs"
-	_try = 0
-	# LoopMoveInLoop
-		~ 0.01
-		_try = _try + 1
-		? _try > 100: _asyncParam set [1, false], goto "FailedSettingPos"
-		? _asyncParam select 0: goto "LoopMoveInLoop"
+	; remove reset position design in-loop. Buggy better than laggy
 
 	_counter = 0
 	
@@ -202,7 +182,10 @@ _try = 0
 ; Sometimes script setpos will fail (or maybe due to too slow). In this case script should halt
 ; and report unexpected failure
 # FailedSettingPos
-	; "_tug", "_vehicle" and "_pos" must be defined
+	; variables below must be defined
+	; report position. I guess _curPos should contains [0, 0]
+	; and "_vehicle setPosASL _pos" is invalid. Or maybe _pos has been broken
+	_curPos = getPosASL _vehicle
 	_vehicle setPosASL _pos
-	format ["SetPos too slow in attach script. Tugger: %1, Vehicle: %2", _tug, _vehicle] call fDebugLog
+	format ["SetPos too slow in %5. Tugger: %1, Vehicle: %2, current pos: %3, desired pos: %4", _tug, _vehicle, _curPos, _pos, _stage] call fDebugLog
 	goto "Postprocess"
