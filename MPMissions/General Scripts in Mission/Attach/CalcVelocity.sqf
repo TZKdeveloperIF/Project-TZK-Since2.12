@@ -29,4 +29,14 @@ _alt = _vehPos select 2;
 _vVelAdd = [(_vDisp select 0) / 5, (_vDisp select 1) / 5, _coefHeight * (2 - _alt)];
 if _bHeli then {_vVelAdd = [_vVelAdd, 1/2] call funcVectorScale; _vVelAdd set [2, (_vDisp select 2)/10]};
 
-[[velocity _tug, _coefScale] call funcVectorScale, _vVelAdd] call funcVectorAdd
+private [{_res}, {_fixedVelocity}, {_a}, {_b}, {_c}, {_hs}];
+_res = [[velocity _tug, _coefScale] call funcVectorScale, _vVelAdd] call funcVectorAdd;
+// new solution. Frequently move vehicle to sea and move back might trigger "disappear bug"
+// since "static bug" appears to static object only, let's make dragged vehicle never stop
+_a = _res select 0; _b = _res select 1; _c = _res select 2;
+_hs = _a * _a + _b * _b;
+_fixedVelocity = 0.1;
+if (_hs + _c * _c < _fixedVelocity) then {
+	_res set [2, if (_c >= 0) then {sqrt(_fixedVelocity - _hs)} else {- sqrt(_fixedVelocity - _hs)}];
+};
+_res

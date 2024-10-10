@@ -15,7 +15,8 @@ _pos = _param select 1
 	_readPos = getPosASL _vehicle
 	? abs((_readPos select 0) - (_pos select 0)) < 100 && abs((_readPos select 1) - (_pos select 1)) < 100: goto "Reached"
 
-	~ 0.01
+	; reduce frequency
+	~ 0.2
 	? not (_this select 1): goto "EOF"
 	goto "loop"
 
