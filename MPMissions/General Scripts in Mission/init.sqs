@@ -18,6 +18,8 @@ _nil = "scalar bool array string 0xfcffffef"
 ? UsedVersion >= 2010: bool_TZK_199_Mode = false
 
 call loadFile "\TZK_Scripts_4_0_6\init_constants.sqf"
+; 4.0.6.83. Attach
+    call preprocessFile "Attach\Install.sqf"
 ; 4.0.6.82. Bridge restruction
     call preprocessFile "Bridge\Install.sqf";
 ; 4.0.6.71
@@ -79,10 +81,6 @@ ArtilleryMagazineSpeedList = [80, 120, 180, 300, 400, 500];
 
 ; MESSAGE HANDLERS (SERVER AND CLIENTS)
 ["\TZK_Scripts_4_0_4\Common\HandleScore.sqs"] exec "\TZK_Scripts_4_0_5\Common\Msg\mScore.sqs"
-
-["\TZK_Scripts_4_0_5\Common\Msg\hVehicleAttached.sqs"] exec "\TZK_Scripts_4_0_5\Common\Msg\mVehicleAttached.sqs"
-["\TZK_Scripts_4_0_4\Common\HandleDetachVehicle.sqs"] exec "\TZK_Scripts_4_0_5\Common\Msg\mDetachVehicle.sqs"
-["\TZK_Scripts_4_0_4\Common\HandleVehicleDetached.sqs"] exec "\TZK_Scripts_4_0_5\Common\Msg\mVehicleDetached.sqs"
 
 [] exec "\TZK_Scripts_4_0_4\Common\MsgLock.sqs"
 [] exec "\TZK_Scripts_4_0_4\Common\MsgUnlock.sqs"

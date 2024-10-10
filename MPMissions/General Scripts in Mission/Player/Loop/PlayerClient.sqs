@@ -56,7 +56,7 @@ _rtsCrossOutdateDur = 10; _rtsAreaOutDateDur = 30;
 	
 	_mhqPos = getPos _mhq
 	_mhqNearby = [false, true] select ( ([_posNow, _mhqPos] call funcDistH) < 150 ); if (!alive _mhq) then {_mhqNearby = false}
-	? !_mhqNearby: if ( ([positionAttach, getPos _mhq] call funcDistH) > 100 ) then {mhqNearby = false}
+	? !_mhqNearby: if (abs (((getPosASL _mhq) select 0) - TzkAttachPosX) > 100) then {mhqNearby = false}
 	? _mhqNearby: mhqNearby = true
 ; 	mhqNearby = [false, true] select ( ( ([_posNow, siPlayer, [[utMHQ0],[utMHQ1]] select siPlayer, []] call funcGetClosestVehicle) select 1 ) < 150 )
 	MCVNearby = [false, true] select ( ( ([_posNow, siPlayer, [[utMCVW],[utMCVE]] select siPlayer, []] call funcGetClosestVehicle) select 1 ) < 150 )

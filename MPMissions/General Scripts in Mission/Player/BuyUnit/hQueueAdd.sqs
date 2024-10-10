@@ -1,13 +1,9 @@
-; args: [value, value2, order count]
+; args: [type, qid, value2, order count]
 
-_value = _this select 0
+_type = _this select 0
+_id = _this select 1
 
-_type = _value %  TotalUnitTypes 
-_value = (_value - _type) / TotalUnitTypes
-
-_id = _value
-
-_value = _this select 1
+_value = _this select 2
 
 _giBuyer = _value % GroupsNum
 _value = (_value - _giBuyer) / GroupsNum
@@ -19,7 +15,7 @@ _si = _value
 
 ? _si != siPlayer || (_giBuyer != giPlayer && _giJoin != giPlayer) : exit
 
-_orderNum = _this select 2
+_orderNum = _this select 3
 _i = 0; _j = 0
 _pushBack = preprocessFile "Algo\Vector\push_back.sqf"
 _qIdsData = qPplIds select 0

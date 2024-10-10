@@ -20,19 +20,7 @@ _vs = ([getPos _tug, _distMax, [], [_tug]] call funcGetNearbyVehicles) + ([getPo
 	if (_mass < _massLimit) then {
 		if (alive _vehicle) then {
 			if !((_vehicle distance _tug) > _distMax) then {
-				_vehicleAttached = false;
-				
-				_index = 0; _count = count vehicleAttached;
-				while "_index < _count && !_vehicleAttached" do {
-					_entry = vehicleAttached select _index;
-					_tug2 = _entry select tsTug;
-					_tugged = (_entry select tsTugged) - [objNull];
-
-					if (_vehicle == _tug2 && (count _tugged) > 0) then {_vehicleAttached = true};
-					if (_vehicle in _tugged) then {_vehicleAttached = true};
-
-					_index = _index + 1;
-				};
+				_vehicleAttached = (_vehicle in TzkDraggedVehs) || (_vehicle in TzkDraggedTugger);
 				if !(_vehicleAttached) then {_vehicles set [count _vehicles, _x]};
 			};
 		};

@@ -70,13 +70,5 @@ comment {
 	{ _index = 0; while "_index < countWaypoints" do { (waypoint select _x) set [_index, []];  _index = _index + 1 } } foreach [si0, si1];
 };
 
-comment {vehicleAttached format: [ [tug, [vehicleCenter, vehicleRight, vehicleLeft]], ...]};
-tsTug = 0; tsTugged = 1;
-tsCenter = 0; tsRight = 1; tsLeft = 2;
-vehicleAttached = [];
-ttHeli = 0; ttBoat = 1; ttTruck = 2; ttAPC = 3;
-comment {vehicleTuggedServer is used to check vehicles' position and fix the attach/detach position bug};
-vehicleTuggedServer = []; vehicleTugServer = [];
-
 comment {art module};
 mutexTzkArtModule = false;

@@ -46,11 +46,12 @@ _msg = format["Repairs started, ready in %1s ...", _timeRepair]
 ? _unit == player: hint _msg
 _unit groupchat _msg
 _timeRepairsComplete = time + _timeRepair; _range = if !_bAirSup Then {4*rangeSupport} Else {2*rangeSupportPlane}
+_funcOutOfRange = preprocessFile "Attach\DistOutOfRange.sqf"
 #Repair
 	? !_bIsCrew: if !(alive _unit) then {exit}
 	? !(alive _vehicle): _msg = "Repairs aborted, vehicle destroyed."; goto "RepairsAborted"
 	? !(alive _support): _msg = "Repairs aborted, support vehicle destroyed."; goto "RepairsAborted"
-	? (_vehicle distance _support) > _range: if (([positionAttach, (getPos _vehicle)] call funcDistH) > 100 && ([positionAttach, (getPos _support)] call funcDistH) > 100) then {_msg = "Repairs aborted, support vehicle out of range"; goto "RepairsAborted"}
+	? [_vehicle, _support, _range] call _funcOutOfRange: _msg = "Repairs aborted, support vehicle out of range"; goto "RepairsAborted"
 	? (damage _vehicle) > _damage: _msg = "Repairs aborted, vehicle hit."; goto "RepairsAborted"
 	? time > _timeRepairsComplete: goto "RepairsComplete"
 

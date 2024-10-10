@@ -1,0 +1,20 @@
+; args: vehicle
+
+_vehicle = _this
+
+_speedDamageVert = 10
+
+_velVehicle = velocity _vehicle
+
+# CheckFallDamage
+	~ 1
+	_speedVert = _velVehicle select 2
+	_speedDiffVert = abs(_speedVert - ((velocity _vehicle) select 2))
+
+	? _speedDiffVert > _speedDamageVert: _damage = 0.25*_speedDiffVert/_speedDamageVert; _vehicle setDamage (_damage + damage _vehicle)
+	? not alive _vehicle: exit
+	_velVehicle = velocity _vehicle
+
+	? ((abs _speedVert) > 5 || ((getPos _vehicle) select 2) > 5): goto "CheckFallDamage"
+
+exit

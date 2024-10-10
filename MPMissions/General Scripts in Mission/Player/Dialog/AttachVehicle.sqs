@@ -75,26 +75,19 @@ ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bo
 	; ? (_vehicle == (mhq select si0) && (single == 1)): hint "Single base mode Active"; goto "Update"
 	; ? (_vehicle == (mhq select si1) && (single == 1)): hint "Single base mode Active"; goto "Update"
 
-	_vehicleAttached = false
-	
-	_index = 0
-	_count = count vehicleAttached
-	? (_count == 0): goto "NoneAttached"
-	#CheckAttached
-		_entry = vehicleAttached select _index
-		_tug2 = _entry select tsTug
-		_tugged = (_entry select tsTugged) - [objNull]
-
-		? (_vehicle == _tug2 && (count _tugged) > 0): _vehicleAttached = true
-		? (_vehicle in _tugged): _vehicleAttached = true
-
-		_index = _index + 1
-		? (_index < _count && !_vehicleAttached): goto "CheckAttached"
-	#NoneAttached
-
-	? (_vehicleAttached): hint "Vehicle currently attached"; goto "Update"
+	_vehicleAttached = (_vehicle in TzkDraggedVehs) || (_vehicle in TzkDraggedTugger)
+	? _vehicleAttached: hint "Vehicle currently attached"; goto "Update"
 
 	? ((_vehicle distance _tug) > _distMax): hint "Vehicle out of attach range"; goto "Update"
 	
-	[_vehicle, _tug, _tugslot, _tugType] exec "\TZK_Scripts_4_0_4\Player\SendVehicleAttached.sqs"
+	_netIdTug = _tug call funcGenNetIdStr
+	_netIdVeh = _vehicle call funcGenNetIdStr
+	_value = _tugslot + 10 * _tugType + 10 * 10 * giPlayer + 10 * 10 * GroupsNum * siPlayer
+	_textOfVal = _value call preprocessFile "Util\Num2Str.sqf"
+
+	? not alive _tug || not alive _vehicle: goto "SkipSubmit"
+		[_tug, _vehicle, _value] exec "Attach\SubmitAttach.sqs"
+		publicExec format [{[UnitById %1, UnitById %2, %3] exec "Attach\SubmitAttach.sqs"}, _netIdTug, _netIdVeh, _textOfVal]
+	# SkipSubmit
+
 	closeDialog 0

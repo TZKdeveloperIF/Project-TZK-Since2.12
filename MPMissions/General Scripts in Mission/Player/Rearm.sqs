@@ -102,12 +102,13 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 	_text = format ["Rearming. %1 seconds left.", (time - _timeComplete) - (time - _timeComplete)%0.1 + 0.1]
 	? player in _vehicle: hint _text
 	_range = if !_bAirSup then {4*rangeSupport} else {2*rangeSupportPlane}
+	_funcOutOfRange = preprocessFile "Attach\DistOutOfRange.sqf"
 	#Loop
 		_vehicle say "Rearming_xj400";
 		~5
 		? !(alive _vehicle): _msg = "Rearm failed. Vehicle destroyed."; goto "Quit"
 		? !(alive _support): _msg = "Rearm failed. Support vehicle destroyed."; goto "Quit"
-		? (_vehicle distance _support) > _range: if (([positionAttach, (getPos _vehicle)] call funcDistH) > 100 && ([positionAttach, (getPos _support)] call funcDistH) > 100) then {_msg = "Rearm failed. Support vehicle out of range."; goto "Quit"}
+		? [_vehicle, _support, _range] call _funcOutOfRange: _msg = "Rearm failed. Support vehicle out of range."; goto "Quit"
 		_text = format ["Rearming. %1 seconds left.", (time - _timeComplete) - (time - _timeComplete)%0.1 + 0.1]
 		? player in _vehicle: hint _text
 		? time < _timeComplete: goto "Loop"
