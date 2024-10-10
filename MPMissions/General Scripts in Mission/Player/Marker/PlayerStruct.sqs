@@ -3,37 +3,39 @@ _si = _this
 _siEnemy = siEnemy select _si
 
 ; Wait until markers initialized
-~ 10
-? dev: exit
+~ 5
 
-; Structure marker design is developed in TZK2. At that time TZK2 was bothered by "server infinity loop"
-; caused by pistol C4 and network high desync caused by frequently reading pos/vel of remote bullets, and
-; I reduce the frequency of structure markers to help me locate the problem. It is time to make structure
-; markers display in real time
+_ourStructs = StructureMarkerMapping select _si
+_enemyStructs = StructureMarkerMapping select _siEnemy
 # Update
 	_delay = if !bool_TZK_Marker_LowFrequency Then {0.5} Else {3}
 	~ _delay
 
-	_structs = StructureMarkerMapping select _si; _i = 0
+	_i = 0
+	# StructOwn
+		_struct = _ourStructs select _i
+		_null = isNull _struct
+		_alive = alive _struct
+
+		_m = format ["Structure_%1_%2", _si, _i]
+		? _null: _m setMarkerPos hiddenMarkerPos
+		? not _null && not _alive: _m setMarkerColor "ColorBlack"
+		? _alive: _m setMarkerColor "ColorCyan_xj400", _m setMarkerPos getPosASL _struct
 	
-	#StructOwn
-	_struct = _structs select _i
-	_m = format["Structure_%1_%2", _si, _i]
-	if (isNull _struct) then {_m setMarkerPos hiddenMarkerPos} else {if (! alive _struct) then {_m setMarkerColor "ColorBlack"} else {_m setMarkerColor "ColorCyan_xj400", _m setMarkerPos getPos _struct}}
+		_i = _i + 1
+		? _i < maxStructureMarkers: goto "StructOwn"
 	
-	_i = _i + 1
-	? _i < maxStructureMarkers: goto "StructOwn"
-	
-	? ! bSpySat: goto "Update"
+	? not bSpySat: goto "Update"
+
 	_SpySatPos = [SpySatPos0, SpySatPos1] select _si;
-	_structs = StructureMarkerMapping select _siEnemy; _i = 0
-	#StructEnemy
-	_struct = _structs select _i
-	_m = format["Structure_%1_%2", _siEnemy, _i]
-	if (isNull _struct) then {_m setMarkerPos hiddenMarkerPos} else {_inrange = ([getPos _struct, _SpySatPos] call funcDistH) < (2*viewDistance); if !(_inrange) then {_m setMarkerSize [0,0]} else {_m setMarkerSize [0.5,0.5], _m setMarkerPos getPos _struct}}
-	
-	_i = _i + 1
-	? _i < maxStructureMarkers: goto "StructEnemy"
+	_i = 0
+	# StructEnemy
+		_struct = _enemyStructs select _i
+		_m = format["Structure_%1_%2", _siEnemy, _i]
+		if (isNull _struct) then {_m setMarkerPos hiddenMarkerPos} else {_inrange = ([getPos _struct, _SpySatPos] call funcDistH) < (2*viewDistance); if !(_inrange) then {_m setMarkerSize [0,0]} else {_m setMarkerSize [0.5,0.5], _m setMarkerPos getPos _struct}}
+		
+		_i = _i + 1
+		? _i < maxStructureMarkers: goto "StructEnemy"
 	
 	goto "Update"
 

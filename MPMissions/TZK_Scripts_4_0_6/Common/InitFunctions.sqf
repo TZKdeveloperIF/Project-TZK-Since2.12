@@ -15,15 +15,10 @@ funcGetRandomUnitType = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetRandomUnitTyp
 comment { arguments: array; };
 comment { array entry : [typeUnit, probability]; };
 comment { return: type; };
-funcSearchvehicleAttached = loadFile "\TZK_Scripts_4_0_4\Common\SQF\SearchvehicleAttached.sqf";
-comment { args:[tug(tugged, slot)]; };
-comment { return: [index, found]; };
 funcSort = loadFile "\TZK_Scripts_4_0_4\Common\SQF\Sort.sqf";
 comment { args: [ nEntrySortIndex, bAsc, aEntries ] (e.g.  [0, false, [[3,"Cleanrock"],[5,"Ernst"]] ]); };
 comment { return: [aEntriesSorted] (e.g. [[5,"Ernst"],[3,"Cleanrock"]]); };
 funcSwapV = loadFile "\TZK_Scripts_4_0_4\Common\SQF\SwapVar.sqf";
-funcUpdateAttaching = loadFile "\TZK_Scripts_4_0_4\Common\SQF\UpdateAttaching.sqf";
-comment { The degree applied in vector scripts is anticlockwise unlike "direction" of OFP.; };
 
 
 funcVectorAdd = loadFile "\TZK_Scripts_4_0_4\Common\SQF\VectorAdd.sqf";

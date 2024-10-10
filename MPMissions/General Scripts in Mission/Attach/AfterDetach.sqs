@@ -1,0 +1,14 @@
+; args: [vehicle, gi, si]
+
+_vehicle = _this select 0
+_gi = _this select 1
+_si = _this select 2
+
+? not isNull player: if (siPlayer == _si && giPlayer == _gi) then {hint "Vehicle Detached"}
+
+? not local _vehicle: exit
+? (getpos _vehicle) select 2 <= 30: exit
+
+hint "Vehicle Being paradropped"
+~ 1
+[_vehicle] exec "\TZK_Scripts_4_0_4\Common\Paradrop.sqs"

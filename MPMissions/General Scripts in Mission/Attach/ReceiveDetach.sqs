@@ -1,0 +1,23 @@
+; args: [_tugIdx, _id]
+_tugIdx = _this select 0
+_id = _this select 1
+
+? isServer: exit
+; Server has processed assigning info
+@ not TzkAttachMutex
+	TzkAttachMutex = true
+
+	_dragIdx = TzkDraggedIds find _id
+	? -1 == _dragIdx: goto "Unlock"
+
+	_slot = TzkDraggedSlots select _dragIdx
+
+	TzkTuggerSlots select _tugIdx set [_slot, objNull]
+	; Remain tugger in TzkTuggers
+	TzkDraggedVehs set [_dragIdx, objNull]
+	TzkDraggedTugger set [_dragIdx, objNull]
+	; Remain slot in TzkDraggedSlots
+	TzkDraggedIds set [_dragIdx, TzkAttachInvId]
+
+	# Unlock
+	TzkAttachMutex = false

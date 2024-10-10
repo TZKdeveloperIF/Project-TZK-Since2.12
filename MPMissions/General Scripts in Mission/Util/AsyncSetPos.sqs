@@ -1,0 +1,26 @@
+; args: [output status (write only), input status (read only), [vehice, pos, (ASL: bool)]]
+
+; this SQS script loops to setPos and verify whether pos is set
+; on script finished/aborted, the output status will be set to "false"
+; if input status is false, current order should be interrupted and halt
+; do in-script exit check ONLY for those conditions whose parameters are local
+; no other in-script exit check
+; it is possible but unnecessary to use only one status variable
+
+_param = _this select 2
+_vehicle = _param select 0
+_pos = _param select 1
+
+# loop
+	_readPos = getPosASL _vehicle
+	? abs((_readPos select 0) - (_pos select 0)) < 100 && abs((_readPos select 1) - (_pos select 1)) < 100: goto "Reached"
+
+	; reduce frequency
+	~ 0.2
+	? not (_this select 1): goto "EOF"
+	goto "loop"
+
+# Reached
+
+# EOF
+	_this set [0, false]

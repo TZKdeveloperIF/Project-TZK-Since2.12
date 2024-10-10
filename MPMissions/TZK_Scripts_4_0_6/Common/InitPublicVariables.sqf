@@ -127,20 +127,6 @@ pvArtPos = -1;
 
 pvEnemy0 = objNull; pvEnemy1 = objNull;
 
-mutexEditvehicleAttached = false;
-mutexVehicleAttached = false;
-pvVehicleAttachedTug = objNull;
-pvVehicleAttachedTugged = objNull;
-pvVehicleAttached = -1;
-
-mutexDetachVehicle = false;
-pvDetachVehicle = -1;
-pvDetachVehicleTug = objNull;
-
-mutexVehicleDetached = false;
-pvVehicleDetachedTugged = objNull;
-pvVehicleDetached = -1;
-
 pvRepairMHQ = -1;
 mutexRepairMCV = false;
 pvRepairMCV = -1;
