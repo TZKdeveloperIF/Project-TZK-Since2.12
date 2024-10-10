@@ -98,6 +98,7 @@ _selectedOrder = -1
 
 	? 2^3 == _btnVal: [_units] exec "Join\Submenu\PplOrder.sqs"; closeDialog 0; goto "Quit"
 
+	? 2^4 == _btnVal: _downBoardStack set [0, 4]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
 	? 2^5 == _btnVal: _downBoardStack set [0, 5]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
 	? 2^6 == _btnVal: _downBoardStack set [0, 6]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
 	? 2^7 == _btnVal: _downBoardStack set [0, 7]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
@@ -109,6 +110,16 @@ _selectedOrder = -1
 	goto "Update"
 	# DownSubMenu
 		_return = false
+
+		? 2^0 == _btnVal && 4 == _downBoardStack select 0: [tsLeft, _units] exec "Rts\Trigger\AttachPreset.sqs"; closeDialog 0; goto "Quit"
+		? 2^1 == _btnVal && 4 == _downBoardStack select 0: [tsCenter, _units] exec "Rts\Trigger\AttachPreset.sqs"; closeDialog 0; goto "Quit"
+		? 2^2 == _btnVal && 4 == _downBoardStack select 0: [tsRight, _units] exec "Rts\Trigger\AttachPreset.sqs"; closeDialog 0; goto "Quit"
+		? 2^3 == _btnVal && 4 == _downBoardStack select 0: [tsLeft, _units] exec "Rts\Trigger\DetachPreset.sqs"; closeDialog 0; goto "Quit"
+		? 2^4 == _btnVal && 4 == _downBoardStack select 0: [tsCenter, _units] exec "Rts\Trigger\DetachPreset.sqs"; closeDialog 0; goto "Quit"
+		? 2^5 == _btnVal && 4 == _downBoardStack select 0: [tsRight, _units] exec "Rts\Trigger\DetachPreset.sqs"; closeDialog 0; goto "Quit"
+
+		? 2^9 == _btnVal && 4 == _downBoardStack select 0: TitleText ["This button displays message only. Click other buttons please.", "Plain DOWN", 0.25]; goto "Update"
+		? 2^10 == _btnVal && 4 == _downBoardStack select 0: TitleText ["This button displays message only. Click other buttons please.", "Plain DOWN", 0.25]; goto "Update"
 
 		? 2^0 == _btnVal && 5 == _downBoardStack select 0: [_units, true] exec "Player\RtsSpoof.sqs"; _return = true
 		? 2^1 == _btnVal && 5 == _downBoardStack select 0: [_units, false] exec "Player\RtsSpoof.sqs"; _return = true

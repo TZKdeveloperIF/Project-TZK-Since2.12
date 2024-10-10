@@ -132,6 +132,7 @@ btnValue05 = -1;
 
 	? 2^3 == _btnVal: 0 exec "Rts\SubMenu\JoinPreset.sqs"; closeDialog 0; goto "Quit"
 
+	? 2^4 == _btnVal: _downBoardStack set [0, 4]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
 	? 2^5 == _btnVal: _downBoardStack set [0, 5]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
 	? 2^6 == _btnVal: _downBoardStack set [0, 6]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
 	? 2^7 == _btnVal: _downBoardStack set [0, 7]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
@@ -143,6 +144,16 @@ btnValue05 = -1;
 	goto "Update"
 	# DownSubMenu
 		_return = false
+
+		? 2^0 == _btnVal && 4 == _downBoardStack select 0: [tsLeft] exec "Rts\Trigger\AttachPreset.sqs"; closeDialog 0; goto "Quit"
+		? 2^1 == _btnVal && 4 == _downBoardStack select 0: [tsCenter] exec "Rts\Trigger\AttachPreset.sqs"; closeDialog 0; goto "Quit"
+		? 2^2 == _btnVal && 4 == _downBoardStack select 0: [tsRight] exec "Rts\Trigger\AttachPreset.sqs"; closeDialog 0; goto "Quit"
+		? 2^3 == _btnVal && 4 == _downBoardStack select 0: [tsLeft] exec "Rts\Trigger\DetachPreset.sqs"; closeDialog 0; goto "Quit"
+		? 2^4 == _btnVal && 4 == _downBoardStack select 0: [tsCenter] exec "Rts\Trigger\DetachPreset.sqs"; closeDialog 0; goto "Quit"
+		? 2^5 == _btnVal && 4 == _downBoardStack select 0: [tsRight] exec "Rts\Trigger\DetachPreset.sqs"; closeDialog 0; goto "Quit"
+
+		? 2^9 == _btnVal && 4 == _downBoardStack select 0: TitleText ["This button displays message only. Click other buttons please.", "Plain DOWN", 0.25]; goto "Update"
+		? 2^10 == _btnVal && 4 == _downBoardStack select 0: TitleText ["This button displays message only. Click other buttons please.", "Plain DOWN", 0.25]; goto "Update"
 
 		? 2^0 == _btnVal && 5 == _downBoardStack select 0: true exec "Rts\Trigger\sSpoof.sqs"; _return = true
 		? 2^1 == _btnVal && 5 == _downBoardStack select 0: false exec "Rts\Trigger\sSpoof.sqs"; _return = true

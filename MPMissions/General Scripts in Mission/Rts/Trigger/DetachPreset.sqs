@@ -1,0 +1,9 @@
+; args: [tug slot enum, (player group selected units)]
+_slot = _this select 0
+_bRts = true
+? count _this > 1: _bRts = false
+
+_units = (if _bRts then {call preprocessFile "Rts\Ui\CurSelUnitArray.sqf"} else {_this select 1})
+_vehicles = _units call preprocessFile "Attach\LegalVehicles.sqf"
+
+{[_x, _slot] exec "Attach\ActDetach.sqs"} forEach _vehicles

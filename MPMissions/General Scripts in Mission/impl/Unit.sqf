@@ -90,6 +90,23 @@ typesATAPC = [ _m2a2at, _bmp2at, _m2a2W, _bmp2E ];
 typesBattlePlane = [ _a10gun, _su25gun, _a10, _su25 ];
 typesBattleCar = [ _hummerW2, _hummerM134W, _m151a1cW, _brdmE2, _brdmGsghE, _uazSpg9E ];
 typesRadarCar = [ _jeepRadarW, _uazRadarE ];
+// definition for RTS attach
+typesHeliTugger = [
+	  _uh60W, _uh60supW, _uh60W30, _uh60WL, _uh60WMG2
+	, _mi17E, _mi17supE, _mi17E30, _mi17EL, _mi17EMG2
+];
+typesBoatTugger = [
+	  _boatW, _boatW2, _boatW3, _boatsupW, _boatCustomW
+	, _boatE, _boatE2, _boatE3, _boatsupE, _boatCustomE
+];
+typesTruckTugger = [
+	  _supportTruckW, _supportTruckW2
+	, _supportTruckE, _supportTruckE2
+];
+typesApcTugger = [
+	  _supportAPCW, _supportAPCWminer, utMHQ0
+	, _supportAPCE, _supportAPCEminer, utMHQ1
+];
 // definition for crew/pilot
 typesCrew = [_crewW, _crewAAW, _pilotW, _crewE, _crewAAE, _pilotE];
 
