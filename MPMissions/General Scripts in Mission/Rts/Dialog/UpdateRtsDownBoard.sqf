@@ -11,7 +11,7 @@ if (not _processed && 0 == count _downBoardStack) then {
 	ctrlSetText [_idcDownBtn0 + 2, localize {TZK_LANG_GETOFF}];
 
 	ctrlSetText [_idcDownBtn0 + 3, localize {TZK_LANG_JOIN}];
-
+	ctrlSetText [_idcDownBtn0 + 4, "Attach"];
 	ctrlSetText [_idcDownBtn0 + 5, localize {TZK_LANG_AIR}];
 	ctrlSetText [_idcDownBtn0 + 6, localize {TZK_LANG_SHORT_TRANSPORT}];
 	ctrlSetText [_idcDownBtn0 + 7, localize {TZK_LANG_TANK}];
@@ -21,11 +21,28 @@ if (not _processed && 0 == count _downBoardStack) then {
 	ctrlSetText [_idcDownBtn0 + 10, localize {TZK_LANG_SEAT}];
 	ctrlSetText [_idcDownBtn0 + 11, localize {TZK_LANG_ENGINEOFF}];
 
-	{ctrlShow [_idcDownBtn0 + _x, true]} forEach [0,1,2, 3, 5,6,7,8,9,10,11];
+	{ctrlShow [_idcDownBtn0 + _x, true]} forEach [0,1,2, 3,4,5, 6,7,8,9,10,11];
 	_processed = true;
 };
 // sub board
 if (not _processed && 1 == count _downBoardStack) then {
+	if (not _processed && 4 == _downBoardStack select 0) then {
+		ctrlSetText [_idcDownBtn0 + 0, "Left"];
+		ctrlSetText [_idcDownBtn0 + 1, "Center"];
+		ctrlSetText [_idcDownBtn0 + 2, "Right"];
+	
+		ctrlSetText [_idcDownBtn0 + 3, "Left"];
+		ctrlSetText [_idcDownBtn0 + 4, "Center"];
+		ctrlSetText [_idcDownBtn0 + 5, "Right"];
+
+		ctrlSetText [_idcDownBtn0 + 9, "Attach:"];
+		ctrlSetText [_idcDownBtn0 + 10, "Detach:"];
+
+		ctrlSetText [_idcDownBtn0 + 8, localize {TZK_LANG_RETURN}];
+
+		{ctrlShow [_idcDownBtn0 + _x, true]} forEach [0,1,2, 3,4,5, 8, 9,10];
+		_processed = true;
+	};
 	if (not _processed && 5 == _downBoardStack select 0) then {
 		ctrlSetText [_idcDownBtn0 + 0, format ["%1 %2", localize {TZK_LANG_SPOOF}, localize {TZK_LANG_ON}]];
 		ctrlSetText [_idcDownBtn0 + 1, format ["%1 %2", localize {TZK_LANG_SPOOF}, localize {TZK_LANG_OFF}]];

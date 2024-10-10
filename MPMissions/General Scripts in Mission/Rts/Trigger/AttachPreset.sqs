@@ -1,0 +1,25 @@
+; args: [tug slot enum, (player group selected units)]
+_slot = _this select 0
+_bRts = true
+? count _this > 1: _bRts = false
+
+_units = (if _bRts then {call preprocessFile "Rts\Ui\CurSelUnitArray.sqf"} else {_this select 1})
+_vehicles = _units call preprocessFile "Attach\LegalVehicles.sqf"
+
+? count _vehicles == 0: TitleText ["No tugger selected. Order not executed.", "Plain DOWN", 0.25]; exit
+? count _vehicles > 1: TitleText ["More than 1 tuggers selected. Order not executed.", "Plain DOWN", 0.25]; exit
+
+_tug = _vehicles select 0
+_vehType = _tug call funcGetUnitTypeFromObject
+_tugType = -1
+? _vehType in typesHeliTugger: _tugType = ttHeli
+? _vehType in typesBoatTugger: _tugType = ttBoat
+? _vehType in typesTruckTugger: _tugType = ttTruck
+? _vehType in typesApcTugger: _tugType = ttAPC
+
+; tug type check
+? -1 == _tugType: TitleText ["Invalid tugger tugger selected. Order not executed.", "Plain DOWN", 0.25]; exit
+; slot check
+? _slot != tsCenter && _tugType != ttBoat: TitleText ["Only boat can attach left/right. Order not executed.", "Plain DOWN", 0.25]; exit
+
+[_tug, _slot, _tugType] exec localize {TZK_FUNC_ATTACHDETACH_VEHICLE}
