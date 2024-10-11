@@ -165,7 +165,7 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 	? (_orders call _getSize) > 0: goto "BuildNextUnit"
 	goto "Wait"
 
-#BuildingDestroyed
+# BuildingDestroyed
 	? ((_orders call _getSize) == 0) && !(isNull _factory): goto "Wait"
 	? ((_orders call _getSize) == 0) && (isNull _factory): goto "BuildingDeleted"
 
@@ -176,9 +176,12 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 	_commander = _entry select 3
 	_giJoin = _entry select 4
 	_qid = _entry select 6
+	_cancelled = _entry select 8
 
 	_entry resize 1; _entry set [0, 2]
 	_orders call preprocessFile "Algo\CirBuf\pop_front.sqf"
+
+	? _cancelled: goto "DestroyOrderProcessed"
 
 	? _type >= maxUnitTypes: _unitDesc = unitDefs select (utCustom select _si)
 	? _type < maxUnitTypes: _unitDesc = unitDefs select _type
@@ -190,6 +193,8 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 	[_si, _giJoin, _unitsToBuild] exec "Server\BuyUnit\AsyncFreeBuildingUnitsCount.sqs"
 
 	[_qid, _si, 0] exec "Server\BuyUnit\sQueueRem.sqs"
+
+	# DestroyOrderProcessed
 
 	goto "BuildingDestroyed"
 
