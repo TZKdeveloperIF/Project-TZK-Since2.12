@@ -158,10 +158,9 @@ _selectedOrder = -1
 	? 6 == _val0: [false, _units] exec "Rts\SubMenu\SwitchSeat.sqs"; closeDialog 0; goto "Quit"
 	? 7 == _val0: [_units] exec "Join\Submenu\PplOrder.sqs"; closeDialog 0; goto "Quit"
 	
-	? 9 == _val0 || 10 == _val0: if ((markerPos "TzkRtsAreadiagonal") select 0 == 0) then {hint localize {TZK_LANG_DRAW_LINE_FIRST}, goto "Update"}
 	? 8 == _val0: [_pos, _units, false] exec "Rts\Submenu\CrossBridgePreset.sqs"; closeDialog 0; goto "Quit"
-	? 9 == _val0: _units call preprocessFile "Rts\Order\ForceMoveLandVehicle.sqf"; closeDialog 0; goto "Quit"
-	? 10 == _val0: _units call preprocessFile "Rts\Order\ForceMoveShip.sqf"; closeDialog 0; goto "Quit"
+	? 9 == _val0: [_pos, _units] call preprocessFile "Rts\Preset\oForceMoveLand.sqf"; closeDialog 0; goto "Quit"
+	? 10 == _val0: [_pos, _units] call preprocessFile "Rts\Preset\oForceMoveShip.sqf"; closeDialog 0; goto "Quit"
 
 	? 11 == _val0: _units exec "Player\Order\RtsPreDisable.sqs"; closeDialog 0; goto "Quit"
 	? 12 == _val0: _units exec "Player\Order\RtsPreMineArea.sqs"; closeDialog 0; goto "Quit"

@@ -12,12 +12,12 @@ _selectedUnits = _params select 0
 ; trying to pass many NetworkIDs across the internet. To generate a precise string, 
 ; we manually append a string as if it's formatted NetworkID array. Also, the CONTENT
 ; of this string is what we desired.
-? isServer: _netIds = []; _netIds resize (_right - _left + 1)
+_localNetIds = []; _localNetIds resize (_right - _left + 1)
 _str = "["
 _i = _left
 # loop
 	_obj = _selectedUnits select _i
-	? isServer: _netIds set [_i - _left, NetworkID _obj]
+	_localNetIds set [_i - _left, NetworkID _obj]
 	_str = _str + format [{%1%2}, _obj call funcGenNetIdStr, if (_i != _right) then {","} else {""}]
 
 	; # netIdGet
@@ -27,8 +27,8 @@ _str = _str + "]"
 
 ; "_this" is reference of the input of "GenArrayCommand.sqs". create deep copy for params
 _localParam = + _params
-; server itself can directly pass parameters to script
-? isServer: _localParam set [0, _netIds], _localParam exec "Rts\Framework\Distributor.sqs"
+; RTS order sender itself can directly pass parameters to script
+_localParam set [0, _localNetIds], _localParam exec "Rts\Framework\Distributor.sqs"
 ; For network broadcast, we need the CONTENT of "_str"
 _remoteParam = + _params
 _remoteParam set [0, 0]; _rest = format ["%1", _remoteParam], _rest = substr [_rest, 3, sizeofstr _rest - 1]

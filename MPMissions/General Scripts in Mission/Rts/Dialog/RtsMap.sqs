@@ -52,6 +52,9 @@ ctrlSetText [_idcLeftBtn0 + 11, localize {TZK_LANG_REARM}]
 
 ctrlSetText [_idcLeftBtn0 + 12, format ["%1%2", localize {TZK_LANG_CROSS}, localize {TZK_LANG_BRIDGE}]]
 
+ctrlSetText [_idcLeftBtn0 + 14, format ["%1 %2", localize {TZK_LANG_MOVE}, localize {TZK_LANG_LAND}]];
+ctrlSetText [_idcLeftBtn0 + 15, format ["%1 %2", localize {TZK_LANG_MOVE}, localize {TZK_LANG_SHIP}]];
+
 ; down board
 _downBoardStack = []
 call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
@@ -116,6 +119,9 @@ btnValue05 = -1;
 	? 11 == _btnVal: _pos exec "Rts\Submenu\RearmPreset.sqs"; closeDialog 0; goto "Quit"
 
 	? 12 == _btnVal: [_pos, _units, true] exec "Rts\Submenu\CrossBridgePreset.sqs"; closeDialog 0; goto "Quit"
+
+	? 14 == _btnVal: [_pos] call preprocessFile "Rts\Preset\oForceMoveLand.sqf"; closeDialog 0; goto "Quit"
+	? 15 == _btnVal: [_pos] call preprocessFile "Rts\Preset\oForceMoveShip.sqf"; closeDialog 0; goto "Quit"
 	; value 13 is occupied
 	goto "Update"
 ; Share same structure and effect with player group order

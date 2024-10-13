@@ -590,7 +590,7 @@ class TzkCmdMapDlgArea: TzkCmdMapDlgBase {
 		LeftBg, 
 		DownAreaHighlight, 
 		RightDownAreaHighlight, 
-		LeftDownAreaBg, 
+		LeftDownAreaHighlight, 
 		Bg4Group, 
 	};
 	controls[] = {
@@ -696,7 +696,7 @@ class TzkCmdMapDlgPoint: TzkCmdMapDlgBase {
 		LeftBg, 
 		DownAreaHighlight, 
 		RightDownAreaHighlight, 
-		LeftDownAreaBg, 
+		LeftDownAreaHighlight, 
 		Bg4Group, 
 	};
 	controls[] = {
@@ -767,6 +767,8 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
 		LeftBtn10, LeftBtn11, 
 		LeftBtn12, // RTS "cross bridge". For RTS but not player group
 		LeftBtn13, // for RTS "stop"
+		LeftBtn14, LeftBtn15, 					// RTS move land/ship
+
 		DownBtn0, DownBtn1, DownBtn2, 
 		DownBtn3, DownBtn4, DownBtn5, 
 		DownBtn6, DownBtn7, DownBtn8, 
@@ -870,6 +872,20 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgBase {
 		text = "UNDEFINED";
 		action = "btnValue00 = 13";
 	};
+	class LeftBtn14: LeftBtn0 { // for RTS move land
+		idc = IDC + 16 * 2 + 14;
+		y = 0.10 + 0.15 + 0.05 * 7;
+		w = 0.12;
+		text = "UNDEFINED";
+		action = "btnValue00 = 14";
+	};
+	class LeftBtn15: LeftBtn0 { // for RTS move ship
+		idc = IDC + 16 * 2 + 15;
+		y = 0.10 + 0.15 + 0.05 * 8;
+		w = 0.12;
+		text = "UNDEFINED";
+		action = "btnValue00 = 15";
+	};
 
 	class FirstCtrl: TzkRtsFirstCtrlBase {};
 	class Unselect: Button {
@@ -888,7 +904,7 @@ class TzkCmdMapDlgWpCo: TzkCmdMapDlgBase {
 		LeftBg, 
 		DownAreaHighlight, 
 		RightDownAreaHighlight, 
-		LeftDownAreaBg, 
+		LeftDownAreaHighlight, 
 		Bg4Group, 
 	};
 	controls[] = {
@@ -2466,7 +2482,7 @@ class TzkCmdMapDlgPplOrder: TzkCmdMapDlgBase {
 		LeftBg, 
 		DownAreaHighlight, 
 		RightDownAreaHighlight, 
-		LeftDownAreaBg, 
+		LeftDownAreaHighlight, 
 		Bg4Group, 
 		OldOrderBg0, OldOrderBg1, OldOrderBg2, 	// Compatible with old style
 	};
@@ -2696,17 +2712,15 @@ class TzkCmdMapDlgPplOrder: TzkCmdMapDlgBase {
 		w = 0.12;
 		action = "btnValue00 = 8";
 	};
-	class LeftBtn9: LeftBtn4 {
+	class LeftBtn9: LeftBtn0 {
 		idc = IDC + 16 * 2 + 9;
-		x = 0.025;
-		y = 0.10 + 0.15 + 0.05 * 5;
+		y = 0.10 + 0.15 + 0.05 * 7;
 		w = 0.12;
 		action = "btnValue00 = 9";
 	};
-	class LeftBtn10: LeftBtn4 {
+	class LeftBtn10: LeftBtn0 {
 		idc = IDC + 16 * 2 + 10;
-		x = 0.025;
-		y = 0.10 + 0.15 + 0.05 * 6;
+		y = 0.10 + 0.15 + 0.05 * 8;
 		w = 0.12;
 		action = "btnValue00 = 10";
 	};

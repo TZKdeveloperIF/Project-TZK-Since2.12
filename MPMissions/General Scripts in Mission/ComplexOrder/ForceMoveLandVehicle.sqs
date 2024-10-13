@@ -4,16 +4,18 @@
 ; ---------------------------------------------------------------------------------------------------
 
 ; args: [
-; 	[unit, Pos Info (read only)],
+; 	[unit, Pos Info (read only), si],
 ; 	[order mode (called by AI or player unit), quit condition],
 ; 	extra parameters for order mode
 ; ]
 _param = _this select 0
 
 _unit = _param select 0
-_pos1 = _param select 1 select 0; _pos2 = _param select 1 select 1
+_destination = _param select 1
+_si = _param select 2
 
 _forServer = _this select 1 select 0, _quitCond = _this select 1 select 1
+_orderQuitCond = {_unit == vehicle _unit || _unit != driver vehicle _unit}
 ? _forServer: _rtsStatus = _this select 2 select 0, _id = _this select 2 select 1
 ? not _forServer: _uid = _this select 2 select 0, _id = _this select 2 select 1
 
@@ -23,17 +25,21 @@ _msg = ""
 ? _unit != driver vehicle _unit: exit
 
 _vehicle = vehicle _unit
-? [_vehicle, _pos1] call funcDistH > 50: _msg = localize {TZK_LANG_FAR_FROM_START}, goto "Quit"
-_vehicle doWatch _pos2
+_vehicle doWatch _destination
+doStop _vehicle
+
 ~ 5 + random 5
+
 ? call _quitCond: goto "Quit"
+? call _orderQuitCond: goto "Quit"
 
 ; execution
-	_moveParamCache = [true, true, [_vehicle, _pos2, 10, 0, false]]
+	_moveParamCache = [true, true, [_vehicle, _destination, 10, 0, false]]
 	_moveParamCache exec "Util\MoveVehUsingSetVel.sqs"
 	# loopMoveLand
 		~ 1
 		? call _quitCond: _moveParamCache set [1, false], goto "Quit"
+		? call _orderQuitCond: _moveParamCache set [1, false], goto "Quit"
 		? _moveParamCache select 0: goto "loopMoveLand"
 
 	_vehicle groupChat "Force move completed."
