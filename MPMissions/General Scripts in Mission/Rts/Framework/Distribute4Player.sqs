@@ -11,18 +11,27 @@ _isntMyGroupMember = {group UnitById _this != groupPlayer}
 _c = count _netIds
 ? 0 == _c: exit
 
-; todo: maybe convert AI-RTS-order param to player-order param. Kinda "decorate"
-
-; only allow commander "disband" other player group units
-? (_this select 2) != "hDisband.sqs": exit
+; todo: make sure unified all RTS commands parameters. AI-RTS-order param should equal to or can be converted to player-order param. Kinda "decorate"
+_scriptName = _this select 2
 _scriptFolder = _this select 3
+
+? "Order" == _scriptFolder: goto "Order"
 ? "Trigger" == _scriptFolder: goto "Trigger"
 
 ("Unexpected rts script folder for " + (_this select 2)) call fDebugLog
 exit
 
+# Order
+	; Orders in white list can be executed on ordering player group units
+	_whiteList = ["ForceMoveLand.sqs", "ForceMoveShip.sqs"];
+	? _whiteList find _scriptName == -1: exit
+
+		; todo: does player rts order require mutex?
+		_this call preprocessFile "Rts\Framework\PplOrderCtor.sqf"
+	exit
 # Trigger
-	_scriptName = _this select 2
+	; only allow "disband" in RTS trigger on ordering player group units
+	? _scriptName != "hDisband.sqs": exit
 	_scriptPath = format ["%1\%2\%3", "Rts", "Trigger", _scriptName];
 	_this exec _scriptPath
 	exit
