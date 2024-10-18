@@ -24,3 +24,5 @@ TzkSupVehObjs = []; TzkSubVehUsers = []; mutexTzkSup = false;
     executedOrderTimer = [[[], []], [[], []]]; mutexEot = [false, false];
 // 4.0.6.81. MHQ wall
     TzkMhqWallObjs = []; TzkMhqWallInfos = [];
+// 4.0.6.84. A bigger mutex for join-to-server. Join units to AI in short time crashes the server.
+    mutexTzkSvrJoin = false;

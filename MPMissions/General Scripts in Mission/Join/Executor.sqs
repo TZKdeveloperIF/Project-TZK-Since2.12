@@ -50,6 +50,9 @@ _units = []
 		mutexGroupMemberChange = false
 		exit
 # ToServer
+@ not mutexTzkSvrJoin
+	mutexTzkSvrJoin = true
+
 	@ not (mutexBuildingQueue select _si select _giTo)
 		mutexBuildingQueue select _si set [_giTo, true]
 
@@ -61,4 +64,7 @@ _units = []
 		; {if (not local _x) then {deleteVehicle _x}} forEach _units
 	# ToServerPostProc
 		mutexBuildingQueue select _si set [_giTo, false]
-		exit
+
+	~ (if _succeeded then {1} else {0})
+	mutexTzkSvrJoin = false
+	exit
