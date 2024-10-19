@@ -28,8 +28,9 @@ btnFirstCtrl = false
 ctrlSetText [IDC + 16 * 32 + 2, localize {TZK_LANG_WAYPOINT}]
 btnFunction = 0
 
-{ ctrlShow [_x, false] } forEach [_idcLeftBtn0]
-? isCommander || bIsAiSuperior: ctrlSetText [_idcLeftBtn0, format ["%1 MHQ", localize {TZK_LANG_WALL}]]; ctrlShow [_idcLeftBtn0, true]
+ctrlSetText [_idcLeftBtn0 + 0, format ["%1 MHQ", localize {TZK_LANG_WALL}]]; ctrlShow [_idcLeftBtn0 + 0, isCommander]
+ctrlSetText [_idcLeftBtn0 + 4, format ["Ext %1 MHQ", localize {TZK_LANG_WALL}]]; ctrlShow [_idcLeftBtn0 + 4, isCommander]
+
 ctrlSetText [_idcLeftBtn0 + 1, localize {TZK_LANG_SURRENDER}]; ctrlShow [_idcLeftBtn0 + 1, isCommander]
 ctrlSetText [_idcLeftBtn0 + 2, format ["%1 %2", localize {TZK_LANG_BASE}, localize {TZK_LANG_MORTAR}]]; ctrlShow [_idcLeftBtn0 + 2, isCommander]
 ctrlSetText [_idcLeftBtn0 + 3, format ["%1 MHQ", localize {TZK_LANG_REPAIR}]]; ctrlShow [_idcLeftBtn0 + 3, isCommander]
@@ -72,6 +73,7 @@ TzkMapRtsFlashingDisabled = true
 	? 1 == _btnVal: 0 exec "Rts\SubMenu\SurrenderConfirm.sqs"; closeDialog 0; goto "Quit"
 	? 2 == _btnVal: [_pos, utMortar select siPlayer] exec "Rts\Deploy\sBaseSoldier.sqs"; closeDialog 0; goto "Quit"
 	? 3 == _btnVal: call preprocessFile "Player\CheckRepairMhq.sqf"; closeDialog 0; goto "Quit"
+	? 4 == _btnVal: 0 exec "Rts\Building\sBaGuaZhen.sqs"; goto "Update"
 	goto "Update"
 # DownBtn
 	? count _downBoardStack > 0: goto "DownSubMenu"

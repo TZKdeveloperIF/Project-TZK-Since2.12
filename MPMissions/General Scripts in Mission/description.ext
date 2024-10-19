@@ -705,6 +705,7 @@ class TzkCmdMapDlgPoint: TzkCmdMapDlgBase {
 		LeftBtn0, LeftBtn1, 
 		LeftBtn2,
 		LeftBtn3,
+		LeftBtn4,
 		DownBtn0, DownBtn1, DownBtn2, DownBtn3, DownBtn8, DownBtn9, 
 		RightDownBg0, RightDownBg1, RightDownBg2, RightDownBg3, RightDownBg4, 
 		RightDownBg5, RightDownBg6, RightDownBg7, RightDownBg8, 
@@ -713,10 +714,11 @@ class TzkCmdMapDlgPoint: TzkCmdMapDlgBase {
 		Exit
 	};
 	
-	class LeftBtn0: Button {
+	class LeftBtn0: Button {			// Wall MHQ
 		idc = IDC + 16 * 2 + 0;			// Remain 32-95 idc for left buttons
-		x = 0.025;
+		x = 0.025 + 0.13;
 		y = 0.10;
+		w = 0.12;
 		text = "";
 		action = "btnValue00 = 0";
 	};
@@ -744,6 +746,13 @@ class TzkCmdMapDlgPoint: TzkCmdMapDlgBase {
 		w = 0.12;
 		text = "";
 		action = "btnValue00 = 3";
+	};
+	class LeftBtn4: LeftBtn0 { 			// ba gua zhen
+		idc = IDC + 16 * 2 + 4;
+		x = 0.025;
+		w = 0.12;
+		text = "";
+		action = "btnValue00 = 4";
 	};
 
 	class FirstCtrl: TzkRtsFirstCtrlBase {};

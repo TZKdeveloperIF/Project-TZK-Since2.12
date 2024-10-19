@@ -20,6 +20,7 @@ if (_this) then {
 	_height = 10;
 	_tmp = _deltaX; if (_deltaY < _tmp) then {_tmp = _deltaY};
 	if (_height > _tmp / 15) then {_height = _tmp / 15};
+	if (_height < 5) then {_height = 5};
 
 	_width = sqrt(_deltaX * _deltaX + _deltaY * _deltaY);
 	_tmp = 0; if (0 != _deltaX && 0 != _deltaY) then {

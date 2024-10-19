@@ -13,5 +13,11 @@ _structName = localize {TZK_LANG_SHORT_MACHINEGUN};
 
 ? not isCommander: hint "Only commander is allowed to do this."; exit
 
+_curTime = time; _deltaTime = TzkBaseBuildNextTime - _curTime; _deltaTime = _deltaTime - _deltaTime % 0.1 + 0.1
+? time < TzkBaseBuildNextTime: hint format ["Building in CD. Please wait %1 seconds.", _deltaTime]; exit
+
+TzkBaseBuildNextTime = _curTime + 5
+? 2 == _enum: TzkBaseBuildNextTime = _curTime + 15
+
 ? not isServer: publicExec format ["%1 call preprocessFile {Rts\Building\hDeployBaseMg.sqf}", [siPlayer, _pos, _enum]]
 ? isServer: [siPlayer, _pos, _enum] call preprocessFile {Rts\Building\hDeployBaseMg.sqf}
