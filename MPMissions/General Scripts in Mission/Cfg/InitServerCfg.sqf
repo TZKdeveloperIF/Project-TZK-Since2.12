@@ -40,7 +40,11 @@ private [{_str}, {_val}];
 // keep consistence with definition of TzkCmdRules
 _i = 0; while {_i < (count TzkCmdRules)} do {
 	_str = (TzkCmdRules select _i select 3) call preprocessFile "Cfg\LoadServerValue.sqf";
-	_val = (if ("" == _str) then {false} else {call _str}); // "true"/"false"
+	_val = (if ("" == _str) then {
+		TzkCmdRules select _i select 2 // default value defined in TzkCmdRules's initialization
+	} else {
+		call _str // "true"/"false"
+	});
 	[_i, _val, true, false] call preprocessFile "RuleCmd\SetValue.sqf";
 	// modify opinions as well
 	{TzkCmdRules select _i select 1 set [_x, _val]} forEach [si0, si1];
