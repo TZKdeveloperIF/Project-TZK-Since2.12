@@ -76,19 +76,7 @@ _vehicle setPosASL _currentPosAsl; _vehicle setVelocity _currentVel
 		~ _interval
 		? _counter < _resetPosThreshold: goto "frequentlyLoop"
 
-	_endTime = _time - _beginTime
-
-	; move to sea and move back. In loop
-	_currentPosAsl = getPosASL _vehicle; _currentVel = velocity _vehicle
-	_expectedPos = [_beginExpectedPos, [_unitVector, _endTime * _speed] call funcVectorScale] call funcVectorAdd
-	? (_currentPosAsl select 2) < (_expectedPos select 2): _currentPosAsl set [2, _expectedPos select 2]
-
-	_vehicle setPosASL _outSeaPos
-	_vehicle setVelocity _currentVel
-	~ 0.01
-	_vehicle setPosASL _currentPosAsl
-	_vehicle setVelocity _currentVel
-	~ 0.01
+	; remove reset position design in-loop. Buggy better than laggy
 	
 	_vehicle doWatch _endPos
 

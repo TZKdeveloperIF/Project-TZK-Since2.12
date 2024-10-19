@@ -23,5 +23,6 @@ if _broadcast then {
 		0.1
 	] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs";
 
-	[(TzkCmdRules select _item select 3), format ["%1", _value]] call preprocessFile "Cfg\SaveServerValue.sqf";
+	// No save value. Server hoster configures CMD rule default value
+	// [(TzkCmdRules select _item select 3), format ["%1", _value]] call preprocessFile "Cfg\SaveServerValue.sqf";
 };
