@@ -65,6 +65,11 @@ ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bo
 	goto "Update"
 
 #AttachVehicle
+	_text = "Attach is banned to check whether it lags 2.02 game or server."
+	hint _text
+	titleText [_text, "Plain Down", 1]
+	goto "Update"
+
 	? count _vs == 0 : hint "No vehicle available to attach"; goto "Update"
 	_sel = lbCurSel _idcList
 	? (_sel == -1): hint "No vehicle selected"; goto "Update"
