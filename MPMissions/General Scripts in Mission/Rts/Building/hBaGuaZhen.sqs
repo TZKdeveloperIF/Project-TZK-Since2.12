@@ -1,0 +1,53 @@
+; args: si
+? not isServer: exit
+
+_si = _this; _mhq = mhq select _si
+? not alive _mhq: exit
+
+_st = stMhqWall
+
+_gi = giCo select _si;
+_cost = 4 * (structDefs select _st select sdCost); _moneyInfo = groupMoneyMatrix select _si
+
+_pos = getPosASL _mhq
+_a = (_pos select 0) call preprocessFile "Math\Round.sqf"
+_b = (_pos select 1) call preprocessFile "Math\Round.sqf"
+
+_fCanBuild = preprocessFile "Rts\Building\fCanWallMhq.sqf"; _cnt = 0
+
+_radius = 20, _step = 3, _hole = 1
+_len = 10
+_j = 0
+# ShangXia
+	_i = 0
+	# ZuoYou
+		_delay = 0
+		_gua = 0
+		# BaGua
+			? _cost > _moneyInfo select _gi: [_si, _gi, "Insufficient fund. Building stop."] call preprocessFile "Util\MsgSender.sqf"; exit
+
+			@ not (mutexWallMhq select _si)
+				mutexWallMhq set [_si, true]
+					_dir = 45 * _gua
+					_duan = _gua >= 1 && _gua <= 4 && 0 == _j || _gua >= 3 && _gua <= 6 && 1 == _j || (_gua == 2 || _gua == 4 || _gua == 5 || _gua == 7) && 2 == _j
+					; _bias = (if _duan then {_hole * (-1) ^ (_i + 1)} else {0})
+					; _vec = [[-(_len / 2) + _len * _i + _bias, _radius + _step * _j], _dir] call funcVectorRot2D
+					_vec = [[0, _radius + _step * _j], _dir] call funcVectorRot2D
+					_buildPos = [_a + (_vec select 0), _b + (_vec select 1)]
+					_bCanBuild = [_si, _buildPos, _dir] call _fCanBuild
+					? _bCanBuild: [_st, _si, _gi, _buildPos, _dir] call fBuildStruct; _delay = _delay + 0.1; _cnt = _cnt + 1
+				mutexWallMhq set [_si, false]
+
+			~ (if _bCanBuild then {2} else {0})
+			_gua = _gua + 1
+			? _gua < 8: goto "BaGua"
+
+		~ _delay
+		_i = _i + 1
+		? _i < 0: goto "ZuoYou"
+
+	_j = _j + 1
+	? _j < 0: goto "ShangXia"
+
+? 8 == _cnt: [_si, _gi, "External MHQ wall built."] call preprocessFile "Util\MsgSender.sqf";
+? 8 != _cnt: [_si, _gi, format ["%1 overlap wall detected. Only build %2 wall.", 8 - _cnt, _cnt]] call preprocessFile "Util\MsgSender.sqf";
