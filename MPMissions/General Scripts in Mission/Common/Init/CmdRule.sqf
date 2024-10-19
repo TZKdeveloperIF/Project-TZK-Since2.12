@@ -5,31 +5,31 @@ TzkCmdRules = [];
 _elem = [format ["%1 %2"
 	, localize {TZK_LANG_SNEAK_ATTACK}
 	, localize {TZK_LANG_ON_START}
-], [true, true], true, "CmdRule_SneakAttackOnStart"];
+], [true, true], true, "CmdRule_ReadOnly_SneakAttackOnStart"];
 TzkCmdRules set [count TzkCmdRules, _elem];
 
 _elem = [format ["%1 %2"
 	, localize {TZK_LANG_ASSAULT}
 	, localize {TZK_LANG_AIRCRAFT}
-], [false, false], false, "CmdRule_AssultAircraft"];
+], [false, false], false, "CmdRule_ReadOnly_AssultAircraft"];
 TzkCmdRules set [count TzkCmdRules, _elem];
 
 _elem = [format ["%1 %2"
 	, localize {TZK_LANG_TRANSPORT}
 	, localize {TZK_LANG_AIRCRAFT}
-], [false, false], false, "CmdRule_TransportAircraft"];
+], [false, false], false, "CmdRule_ReadOnly_TransportAircraft"];
 TzkCmdRules set [count TzkCmdRules, _elem];
 
-_elem = [localize {TZK_LANG_MULTIPLE_LAUNCH_ROCKET_SYSTEM}, [false, false], false, "CmdRule_MLRS"];
+_elem = [localize {TZK_LANG_MULTIPLE_LAUNCH_ROCKET_SYSTEM}, [false, false], false, "CmdRule_ReadOnly_MLRS"];
 TzkCmdRules set [count TzkCmdRules, _elem];
 
-_elem = [localize {TZK_LANG_GAP_GENERATOR}, [true, true], true, "CmdRule_GapGenerator"];
+_elem = [localize {TZK_LANG_GAP_GENERATOR}, [true, true], true, "CmdRule_ReadOnly_GapGenerator"];
 TzkCmdRules set [count TzkCmdRules, _elem];
 
 _elem = [format ["%1 3 %2"
 	, localize {TZK_LANG_AT_MOST}
 	, localize {TZK_LANG_FACTORIES}
-], [false, false], false, "CmdRule_AtMost3Factories"];
+], [false, false], false, "CmdRule_ReadOnly_AtMost3Factories"];
 TzkCmdRules set [count TzkCmdRules, _elem];
 
 _initVal = false;
@@ -38,5 +38,5 @@ _elem = [format ["%1 %2 %3 %4 LF"
 	, localize {TZK_LANG_TRANSPORT}
 	, localize {TZK_LANG_SHORT_HELICOPTER}
 	, localize {TZK_LANG_FROM}
-], [_initVal, _initVal], _initVal, "CmdRule_BuyTranspHeliFromLF"];
+], [_initVal, _initVal], _initVal, "CmdRule_ReadOnly_BuyTranspHeliFromLF"];
 TzkCmdRules set [count TzkCmdRules, _elem];
