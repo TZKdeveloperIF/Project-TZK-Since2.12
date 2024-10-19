@@ -16,6 +16,8 @@ if isServer then {
 
 if (not isNull player) then {
 	call preprocessFile "Rts\Init\PplInteraction.sqf";
+
+	TzkBaseBuildNextTime = 0;
 };
 
 // These rts markers is defined BEFORE "DynamicInitializationMarker.sqs" is executed
