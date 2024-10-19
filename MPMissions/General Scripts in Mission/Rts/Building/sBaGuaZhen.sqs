@@ -1,0 +1,11 @@
+? not alive (mhq select siPlayer): hint "MHQ destroyed.", exit
+
+? not isCommander: hint "Only commander is allowed to do this."; exit
+
+_curTime = time; _deltaTime = TzkBaseBuildNextTime - _curTime; _deltaTime = _deltaTime - _deltaTime % 0.1 + 0.1
+? time < TzkBaseBuildNextTime: hint format ["Building in CD. Please wait %1 seconds.", _deltaTime]; exit
+
+TzkBaseBuildNextTime = _curTime + 2
+
+? not isServer: publicExec format ["%1 exec {Rts\Building\hBaGuaZhen.sqs}", siPlayer];
+? isServer: siPlayer exec {Rts\Building\hBaGuaZhen.sqs};
