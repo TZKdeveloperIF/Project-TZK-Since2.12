@@ -15,7 +15,16 @@ _isPlayerUnit = false
 call format [{_unit assignAs%1 _vehicle, _unit moveIn%1 _vehicle}, _seat]
 
 ? not _isPlayerUnit: exit
+
+; Below doFollow/doStop both improper in embarking cargo seat
+; If they effect in short time, those units will disembark. Even though they effect one by one, 
+; on driver's disembarking, those units will also disembark as well
+
+; The clue might be: when player ask cargo units follow/stop, it is the vehicle owner (driver or gunner) that receives the order
+; It is verified that commandFollow/commandStop won't have unexpected disembark problem, 
+; including immediately disembark or disembark when driver is asked to disembark
+
 ~ 0.1
-_unit doFollow player
+? _seat != "Cargo": _unit doFollow player
 ~ 0.1
-doStop _unit
+? _seat != "Cargo": doStop _unit
