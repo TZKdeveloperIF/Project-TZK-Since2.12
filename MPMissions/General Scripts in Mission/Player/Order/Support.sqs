@@ -8,7 +8,7 @@ _rearm = false
 
 _v = vehicle _unit
 ? !(alive _unit) : exit
-? !(alive driver vehicle _unit) : exit
+? !(alive driver vehicle _unit): if (_unit distance _support > rangeSupport) then {_unit groupchat "No driver and support far away. Support aborted."; exit} else {goto "CheckPrio"}
 ? (speed _support) > 100 : _unit groupchat "Support vehicle moving to fast. Fail to follow it."; exit
 
 _posReturn = getPos _unit
