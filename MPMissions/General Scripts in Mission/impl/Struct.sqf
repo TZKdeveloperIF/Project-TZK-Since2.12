@@ -169,3 +169,12 @@ _index = _oldCount; _count = count structDefs; while {_index < _count} do {
 
 // define global variable for server to adjust style. This is temporary codes
 TzkAdjustStyleStructIdx = [_wall, _walls, _roof, _roofHigh, _tanktr, _artPlain];
+
+// CWA_CE doesn't have "res.pbo" addon. Need redefine markers
+if (UsedVersion >= 2020) then {
+	_mCC = "UnknownStructure_Marker_xj400";
+	structMarker set [stComm, _mCC];
+
+	_mRadar = "Orca_Marker_xj400";
+	{structMarker set [_x, _mRadar]} forEach [stradarair, stradar, stSatRec];
+};
