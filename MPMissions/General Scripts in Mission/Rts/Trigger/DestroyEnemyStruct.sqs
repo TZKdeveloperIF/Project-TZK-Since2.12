@@ -1,0 +1,32 @@
+; args: [pos, si]
+
+_cd = TzkNextDestroyStructTime - time
+_cd = _cd - _cd % 0.5
+? _cd > 0: TitleText [format ["Please wait %1 seconds.", _cd], "Plain DOWN", 0.25]; exit
+
+TzkNextDestroyStructTime = time + 1
+
+_pos = _this select 0
+_si = _this select 1
+
+; search nearest ALIVE enemy structure within 100 meters
+_res = [_pos, _si] call funcGetClosestEnemyObject
+; [object, distance]
+? (_res select 1) > 100: goto "InvalidRequest"
+
+; search nearest friendly heavy tanks or howitzers
+_struct = _res select 0
+_vs = [getPosASL _struct, 30, typesHeavyTank + typesHowitzer, [], [_si]] call funcGetNearbyVehicles
+
+; [vehicle, type, distance][]
+_valid = false
+{_v = _x select 0; _valid = _valid || !isNull driver _v || !isNull gunner _v} forEach _vs
+? not _valid: goto "InvalidRequest"
+
+_struct setDamage 1
+TzkNextDestroyStructTime = time + 8
+exit
+
+# InvalidRequest
+	TitleText ["No enemy structure within 100 meters or no our tank/howitzers within 30 meters", "Plain Down", 0.25]
+	exit

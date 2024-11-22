@@ -78,3 +78,6 @@ mutexRtsBaseSoldier = false;
 // Singleton. Player can have only one map-display interaction
 TzkMarkerArtAreaTurnOnTime = 0; TzkMarkerArtAreaState = false;
 TzkMarkerBuildAreaTurnOnTime = 0; TzkMarkerBuildAreaState = false;
+
+// CD for map destroy enemy structure
+TzkNextDestroyStructTime = 0;
