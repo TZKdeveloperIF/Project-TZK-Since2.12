@@ -35,6 +35,8 @@ ctrlSetText [_idcLeftBtn0 + 1, localize {TZK_LANG_SURRENDER}]; ctrlShow [_idcLef
 ctrlSetText [_idcLeftBtn0 + 2, format ["%1 %2", localize {TZK_LANG_BASE}, localize {TZK_LANG_MORTAR}]]; ctrlShow [_idcLeftBtn0 + 2, isCommander]
 ctrlSetText [_idcLeftBtn0 + 3, format ["%1 MHQ", localize {TZK_LANG_REPAIR}]]; ctrlShow [_idcLeftBtn0 + 3, isCommander]
 
+ctrlSetText [_idcLeftBtn0 + 5, "Destroy Enemy Struct"]
+
 ; down board
 _downBoardStack = []
 call preprocessFile "Rts\Dialog\UpdateRtsPointDownBoard.sqf"
@@ -74,6 +76,7 @@ TzkMapRtsFlashingDisabled = true
 	? 2 == _btnVal: [_pos, utMortar select siPlayer] exec "Rts\Deploy\sBaseSoldier.sqs"; closeDialog 0; goto "Quit"
 	? 3 == _btnVal: call preprocessFile "Player\CheckRepairMhq.sqf"; closeDialog 0; goto "Quit"
 	? 4 == _btnVal: 0 exec "Rts\Building\sBaGuaZhen.sqs"; goto "Update"
+	? 5 == _btnVal: [_pos, siPlayer] exec "Rts\Trigger\DestroyEnemyStruct.sqs"; goto "Update"
 	goto "Update"
 # DownBtn
 	? count _downBoardStack > 0: goto "DownSubMenu"
