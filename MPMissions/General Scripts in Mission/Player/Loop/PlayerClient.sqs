@@ -38,10 +38,14 @@ _rtsCrossOutdateDur = 10; _rtsAreaOutDateDur = 30;
 	? time > (timeLastPing + blockTime) && !bBlockedByClient: bBlockedByClient = true; 0 exec "Player\BlockByClient.sqs"
 	
 	? !alive _unit: goto "WaitUntilAlive"
+
+	_veh = vehicle player
 	_posNow = getPos player; _sensorNow setPos _posNow; _timeNow = time
 	_distance = [_posOld, _posNow] call funcDistH
 	? ([_posOld, positionRespawn] call funcDistH) < 100 || ([positionRespawn, _posNow] call funcDistH) < 100: _distance = 0
-	? _timeNow - _timeOld > 0.5 && _distance/(_timeNow - _timeOld) > 600: vehicle _unit setdamage 1; hint "Big brother is watching you."; player globalChat "Big brother is watching you."
+	_bMoveCheat = _timeNow - _timeOld > 0.5 && _distance / (_timeNow - _timeOld) > 600
+	? _bMoveCheat: _bMoveCheat = !(_veh in TzkDraggedVehs)
+	? _bMoveCheat: _veh setdamage 1; hint "Big brother is watching you."; player globalChat "Big brother is watching you."
 	_posOld = _posNow; _sensorOld setPos _posOld; _timeOld = _timeNow
 
 	_unitsNew resize 0
@@ -63,7 +67,7 @@ _rtsCrossOutdateDur = 10; _rtsAreaOutDateDur = 30;
 	SupNearby = [false, true] select ( ( ([_posNow, siPlayer, typesSupportPlus select siPlayer, []] call funcGetClosestVehicle) select 1 ) < 50 )
 	? mhqNearby: MCVNearby = false; SupNearby = false
 
-	? -1 != (vehicle player) call funcGetUnitTypeFromObject && !local vehicle player: if (player == commander vehicle player && !dev) then {player action ["Eject", vehicle player]}
+	? -1 != (_veh) call funcGetUnitTypeFromObject && !local _veh: if (player == commander _veh && !dev) then {player action ["Eject", _veh]}
 	
 	setViewDistance viewDistance; showGPS boole_Show_GPS; showPad boole_Show_Pad; showRadio bool_Show_Radio
 	
