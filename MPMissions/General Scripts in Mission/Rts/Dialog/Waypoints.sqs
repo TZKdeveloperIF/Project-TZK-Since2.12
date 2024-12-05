@@ -32,7 +32,7 @@ _idcBtn_0_0 = IDC + 16 * 17; _idcBtnBg_0_0 = IDC + 16 * 18;
 _downBtnBgIdxes = [0,1,3]
 {ctrlSetText [_x, "co"]} forEach [_idcBtn_0_0]
 {ctrlSetText [_x, "wp"]} forEach [_idcBtn_0_0 + 1]
-{ctrlSetText [_x, format ["%1 %2", localize {TZK_LANG_SHORT_SERVER}, localize {TZK_LANG_SHORT_ARTILLERY}]]} forEach [_idcBtn_0_0 + 3]
+{ctrlSetText [_x, format ["%1 %2", localize {TZK_LANG_AI}, localize {TZK_LANG_SHORT_ARTILLERY}]]} forEach [_idcBtn_0_0 + 3]
 {_i = _x; {ctrlShow [_x + _i, false]} forEach [_idcBtnBg_0_0]} forEach _downBtnBgIdxes
 ctrlShow [_idcBtn_0_0 + 3, not bool_TZK_Rts_Cmd_Mode]
 
