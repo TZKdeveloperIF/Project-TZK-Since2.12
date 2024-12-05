@@ -15,7 +15,7 @@ ctrlSetText [_idcLeftBtn0 + 8, format ["%1%2", localize {TZK_LANG_CROSS}, locali
 ctrlSetText [_idcLeftBtn0 + 9, format ["%1 %2", localize {TZK_LANG_MOVE}, localize {TZK_LANG_LAND}]];
 ctrlSetText [_idcLeftBtn0 + 10, format ["%1 %2", localize {TZK_LANG_MOVE}, localize {TZK_LANG_SHIP}]];
 ctrlSetText [_idcLeftBtn0 + 11, format ["%1%2", localize {TZK_LANG_DISABLE}, localize {TZK_LANG_MINE}]];
-ctrlSetText [_idcLeftBtn0 + 12, format ["%1 %2", localize {TZK_LANG_MINE}, localize {TZK_LANG_AREA}]];
+ctrlSetText [_idcLeftBtn0 + 12, format ["%1 %2", localize {TZK_LANG_MINE_VERB}, localize {TZK_LANG_AREA}]];
 // 13
 
 // Middle buttons

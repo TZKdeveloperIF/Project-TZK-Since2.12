@@ -20,10 +20,10 @@ if (not _processed && 0 == count _downBoardStack) then {
 
 	// mine area
 	if (isCommander || bIsAiSuperior) then {
-		ctrlSetText [_idcDownBtn0 + 3, format ["%1 %2", localize {TZK_LANG_SHORT_SERVER}, localize {TZK_LANG_MINE}]];
+		ctrlSetText [_idcDownBtn0 + 3, format ["%1 %2", localize {TZK_LANG_SHORT_SERVER}, localize {TZK_LANG_MINE_VERB}]];
 		ctrlShow [_idcDownBtn0 + 3, true];
 	};
-	ctrlSetText [_idcDownBtn0 + 4, format ["%1 %2", localize {TZK_LANG_SHORT_PLAYER}, localize {TZK_LANG_MINE}]];
+	ctrlSetText [_idcDownBtn0 + 4, format ["%1 %2", localize {TZK_LANG_SHORT_PLAYER}, localize {TZK_LANG_MINE_VERB}]];
 	{ctrlShow [_idcDownBtn0 + _x, true]} forEach [4];
 	
 	// buiding roof by area
