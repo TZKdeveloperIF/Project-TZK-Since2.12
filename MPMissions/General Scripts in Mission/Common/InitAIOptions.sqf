@@ -19,16 +19,16 @@ aiSettingDefs set [_type, [
 		"None", "co0", "co1", "co2", "co3", "co4", "co5", "co6", "co7", "co8", "co9"
 		, "co10", "co11", "co12", "co13", "co14", "co15", "co16", "co17", "co18", "co19"
 	], 0
-	, format ["%1 %2 and %3 %4 %5"
+	, format ["%1 %2 and %3%4 %5"
 		, localize {TZK_LANG_RALLY}, localize {TZK_LANG_POINT}
-		, localize {TZK_LANG_PICKUP}, localize {TZK_LANG_WAIT}
+		, localize {TZK_LANG_PICKUP_WAIT}, ""
 		, localize {TZK_LANG_SETTING}
 	]
 ]];
 _type = _type + 1;
 
 aisPickupWait1 = _type;
-aiSettingDefs set [_type, [format ["%1 %2 1#", localize {TZK_LANG_PICKUP}, localize {TZK_LANG_WAIT}], aisPickupWaitTimeDisp, 1, ""] ];
+aiSettingDefs set [_type, [format ["%1%2 1#", localize {TZK_LANG_PICKUP_WAIT}, ""], aisPickupWaitTimeDisp, 1, ""] ];
 _type = _type + 1;
 
 aisRallyPoint2 = _type;
@@ -42,7 +42,7 @@ aiSettingDefs set [_type, [
 _type = _type + 1;
 
 aisPickupWait2 = _type;
-aiSettingDefs set [_type, [format ["%1 %2 2#", localize {TZK_LANG_PICKUP}, localize {TZK_LANG_WAIT}], aisPickupWaitTimeDisp, 0, ""] ];
+aiSettingDefs set [_type, [format ["%1%2 2#", localize {TZK_LANG_PICKUP_WAIT}, ""], aisPickupWaitTimeDisp, 0, ""] ];
 _type = _type + 1;
 
 
@@ -53,13 +53,13 @@ aisKeepDefs = [
 { if (_x < 1000) then {aisKeepDisp set [ count aisKeepDisp, call format[{"%1%2"}, "$", _x, {} ] ]} } foreach aisKeepDefs;
 aisKeepMin = _type;
 aiSettingDefs set [_type, [
-	format ["%1 %2", localize {TZK_LANG_KEEP}, localize {TZK_LANG_AT_LEAST}], aisKeepDisp, 0, 
-	format ["%1 %2/%3", localize {TZK_LANG_KEEP}, localize {TZK_LANG_AT_LEAST}, localize {TZK_LANG_AT_MOST}]
+	format ["%1 %2", localize {TZK_LANG_KEEP_MONEY}, localize {TZK_LANG_AT_LEAST}], aisKeepDisp, 0, 
+	format ["%1 %2/%3", localize {TZK_LANG_KEEP_MONEY}, localize {TZK_LANG_AT_LEAST}, localize {TZK_LANG_AT_MOST}]
 ]];
 _type = _type + 1;
 aisKeepDisp = []; {aisKeepDisp set [ count aisKeepDisp, call format[{"%1%2"}, "$", _x, {} ] ] } foreach aisKeepDefs;
 aisKeepMax = _type;
-aiSettingDefs set [_type, [format ["%1 %2", localize {TZK_LANG_KEEP}, localize {TZK_LANG_AT_MOST}], aisKeepDisp, 2, ""] ];
+aiSettingDefs set [_type, [format ["%1 %2", localize {TZK_LANG_KEEP_MONEY}, localize {TZK_LANG_AT_MOST}], aisKeepDisp, 2, ""] ];
 _type = _type + 1;
 
 
@@ -101,7 +101,7 @@ aiSettingDefs set [_type, [
 	format ["%1%2", localize {TZK_LANG_COMBAT}, localize {TZK_LANG_MODE}], [
 		localize {TZK_LANG_DISENGAGE}
 		, format ["%1%2", localize {TZK_LANG_ENGAGE}, localize {TZK_LANG_AT_WILL}]
-		, format ["%1%2", localize {TZK_LANG_HOLD}, localize {TZK_LANG_FIRE}]
+		, format ["%1", localize {TZK_LANG_HOLD_FIRE}]
 		, format ["%1%2", localize {TZK_LANG_NEVER}, localize {TZK_LANG_FIRE}]
 	], 0, format ["%1%2", localize {TZK_LANG_COMBAT}, localize {TZK_LANG_MODE}]
 ]];
@@ -117,11 +117,11 @@ aisAutoSupportRangeDefs = [100, 150, 200, 300, 400, 500, 800, 1000, 1200, 1500];
 	aisAutoSupportRange set [count aisAutoSupportRange, call format [{"%2%1"}, "m", _x]]
 } foreach aisAutoSupportRangeDefs;
 aisAutoRepair = _type;
-aiSettingDefs set [_type, [format ["%1 %2", localize {TZK_LANG_REPAIR}, localize {TZK_LANG_PLACE}]
+aiSettingDefs set [_type, [format ["%1 %2", localize {TZK_LANG_REPAIR}, localize {TZK_LANG_PLACE_NOUN}]
 	, [format ["%1 %2 %3", localize {TZK_LANG_AT}, localize {TZK_LANG_BOTH}, localize {TZK_LANG_SHORT_SUPPORT}]
 		, format ["%1 %2 %3", localize {TZK_LANG_AT}, localize {TZK_LANG_OUR}, localize {TZK_LANG_SHORT_SUPPORT}]
 		, localize {TZK_LANG_DONT_USE}
-	], 0, format ["%1%2", localize {TZK_LANG_REPAIR}, localize {TZK_LANG_PLACE}]
+	], 0, format ["%1%2", localize {TZK_LANG_REPAIR}, localize {TZK_LANG_PLACE_NOUN}]
 ]];
 _type = _type + 1;
 aisAutoRepairRange = _type;
@@ -136,11 +136,11 @@ aiSettingDefs set [_type, [format ["%1 %2", localize {TZK_LANG_REPAIR}, localize
 _type = _type + 1;
 
 aisAutoRearm = _type;
-aiSettingDefs set [_type, [format ["%1 %2", localize {TZK_LANG_REARM}, localize {TZK_LANG_PLACE}]
+aiSettingDefs set [_type, [format ["%1 %2", localize {TZK_LANG_REARM}, localize {TZK_LANG_PLACE_NOUN}]
 	, [format ["%1 %2 %3", localize {TZK_LANG_AT}, localize {TZK_LANG_BOTH}, localize {TZK_LANG_SHORT_SUPPORT}]
 		, format ["%1 %2 %3", localize {TZK_LANG_AT}, localize {TZK_LANG_OUR}, localize {TZK_LANG_SHORT_SUPPORT}]
 		, localize {TZK_LANG_DONT_USE}
-	], 0, format ["%1 %2", localize {TZK_LANG_REARM}, localize {TZK_LANG_PLACE}]] ];
+	], 0, format ["%1%2", localize {TZK_LANG_REARM}, localize {TZK_LANG_PLACE_NOUN}]] ];
 _type = _type + 1;
 aisAutoRearmRange = _type;
 aiSettingDefs set [_type, [format ["%1 %2", localize {TZK_LANG_REARM}, localize {TZK_LANG_RANGE}]
@@ -215,33 +215,33 @@ _distByOffset = "format [{format [{%3m}, (_this + %2) * %1]}, _this select 0, _t
 orderDefs = []; _type = 0;
 
 orderTakeTowns = _type;
-orderDefs set [_type, ["Take Towns", [], "Server\Order\TakeTowns.sqs"] ];
+orderDefs set [_type, [localize {TZK_LANG_TAKE_TOWNS}, [], "Server\Order\TakeTowns.sqs"] ];
 _type = _type + 1;
 
 orderTakeHoldTowns = _type;
 _param0 = ["Hold Distance", "5", {format [{<%1m}, 500* (_this + 1)]}];
 _param1 = ["Hold \nTime", "10", {format [{%1min}, 5* (_this + 1)]}];
-orderDefs set [_type, ["Take Hold Towns", [_param0, _param1], "Server\Order\TakeHoldTowns.sqs"] ];
+orderDefs set [_type, [localize {TZK_LANG_TAKE_HOLD_TOWNS}, [_param0, _param1], "Server\Order\TakeHoldTowns.sqs"] ];
 _type = _type + 1;
 
 orderHoldTown = _type;
 _param0 = [ "Town", "count towns", "towns select _this select 1" ];
 _param1 = [ "Defend \nDistance", "10", [50, 1] call _distByOffset];
 _param2 = [ "Defend \nDirection", "9", _dirIndexToText ];
-orderDefs set [_type, ["Hold Town", [_param0, _param1, _param2], "Server\Order\HoldTown.sqs"] ];
+orderDefs set [_type, [localize {TZK_LANG_HOLD_TOWNS}, [_param0, _param1, _param2], "Server\Order\HoldTown.sqs"] ];
 _type = _type + 1;
 
 orderGuardArea = _type;
 _param0 = [ "Waypoint", _coCnt, _coDispStr];
 _param1 = [ "Defend \nDistance", "10", [50, 1] call _distByOffset];
 _param2 = [ "Defend \nDirection", "9", _dirIndexToText ];
-orderDefs set [_type, ["Guard Area", [_param0, _param1, _param2], "Server\Order\GuardArea.sqs"] ];
+orderDefs set [_type, [localize {TZK_LANG_GUARD_AREA}, [_param0, _param1, _param2], "Server\Order\GuardArea.sqs"] ];
 _type = _type + 1;
 
 orderGuardLine = _type;
 _param0 = [ "Waypoint", _coCnt, _coDispStr];
 _param1 = [ "\nWaypoint", _coCnt, _coDispStr];
-orderDefs set [_type, ["Guard Line", [_param0, _param1], "Server\Order\GuardLine.sqs"] ];
+orderDefs set [_type, [localize {TZK_LANG_GUARD_LINE}, [_param0, _param1], "Server\Order\GuardLine.sqs"] ];
 _type = _type + 1;
 
 orderPatrolArea = _type;
@@ -249,41 +249,41 @@ _param0 = [ "Waypoint", _coCnt, _coDispStr];
 _param1 = [ "Patrol \nRadius", "10", [50, 1] call _distByOffset];
 _script = "Server\Order\PatrolArea.sqs";
 if bool_TZK_DEV_FPS then {_script = ""};
-orderDefs set [_type, ["Patrol Area", [_param0, _param1], _script] ];
+orderDefs set [_type, [localize {TZK_LANG_PATROL_AREA}, [_param0, _param1], _script] ];
 _type = _type + 1;
 
 orderPatrolLine = _type;
 _param0 = [ "Waypoint", _coCnt, _coDispStr];
 _param1 = [ "\nWaypoint", _coCnt, _coDispStr];
-orderDefs set [_type, ["Patrol Line", [_param0, _param1], "Server\Order\PatrolLine.sqs"] ];
+orderDefs set [_type, [localize {TZK_LANG_PATROL_LINE}, [_param0, _param1], "Server\Order\PatrolLine.sqs"] ];
 _type = _type + 1;
 
 orderAdvance = _type;
 _param0 = [ "Waypoint", _coCnt, _coDispStr];
 _param1 = [ "Meters/\nminute", "10", [100, 1] call _distByOffset];
-orderDefs set [_type, ["Advance", [_param0, _param1], "Server\Order\Advance.sqs"] ];
+orderDefs set [_type, [localize {TZK_LANG_ADVANCE}, [_param0, _param1], "Server\Order\Advance.sqs"] ];
 _type = _type + 1;
 
 orderTransportDuty = _type;
 _param0 = [ "Pickup Pos", _coCnt, _coDispStr];
 _param1 = [ "Eject \nPos", _coCnt, _coDispStr];
 _param2 = [ "Eject \nDistance", "10", [100, 1] call _distByOffset];
-orderDefs set [_type, ["Transport Duty", [_param0, _param1, _param2], "Server\Order\TransportDuty.sqs"] ];
+orderDefs set [_type, [localize {TZK_LANG_TRANSPORT_DUTY}, [_param0, _param1, _param2], "Server\Order\TransportDuty.sqs"] ];
 _type = _type + 1;
 
 orderMineLine = _type;
 _param0 = [ "Waypoint", _coCnt, _coDispStr];
 _param1 = [ "\nWaypoint", _coCnt, _coDispStr];
-orderDefs set [_type, ["Mine Line", [_param0, _param1], "Server\Order\MineLine.sqs"] ];
+orderDefs set [_type, [localize {TZK_LANG_MINE_LINE}, [_param0, _param1], "Server\Order\MineLine.sqs"] ];
 _type = _type + 1;
 
 orderDisableMines = _type;
 _param0 = [ "Waypoint", _coCnt, _coDispStr];
-orderDefs set [_type, ["Disable Mines", [_param0], "Server\Order\DisableMines.sqs"] ];
+orderDefs set [_type, [localize {TZK_LANG_DISABLE_MINES}, [_param0], "Server\Order\DisableMines.sqs"] ];
 _type = _type + 1;
 
 orderHalt = _type;
-orderDefs set [_type, ["Halt", [], "Server\Order\Halt.sqs"] ];
+orderDefs set [_type, [localize {TZK_LANG_HALT}, [], "Server\Order\Halt.sqs"] ];
 _type = _type + 1;
 
 comment { order entry format: [orderID, orderType, [param 0, param 1, ...]]; };
