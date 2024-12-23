@@ -171,11 +171,11 @@ typesHowitzer set [count typesHowitzer, _plz05ShrapnelE];
 // todo: remove those types from TransportCar
 _type = _hummerWAA;
 _motorW = _type;
-unitDefs set [_type, ["Motorcycle", 200, si0, 20, "Jawa_xj400", "\o\vehl\ijawa", 2^stLight, [1, _crewW], _mBike, []] ];
+unitDefs set [_type, ["Motorcycle", 200, si0, 20, "Jawa_xj406", "\o\vehl\ijawa", 2^stLight, [1, _crewW], _mBike, []] ];
 
 _type = _brdmEAA;
 _motorE = _type;
-unitDefs set [_type, ["Motorcycle", 200, si1, 20, "Jawa_xj400", "\o\vehl\ijawa", 2^stLight, [1, _crewE], _mBike, []] ];
+unitDefs set [_type, ["Motorcycle", 200, si1, 20, "Jawa_xj406", "\o\vehl\ijawa", 2^stLight, [1, _crewE], _mBike, []] ];
 
 // Add initial ammo to quad, hmmwv/brdm
 {

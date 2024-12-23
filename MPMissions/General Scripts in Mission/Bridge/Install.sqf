@@ -16,3 +16,7 @@ TzkBridgeSegElemCnt = 3;
 // AI vehicle cross bridge height (work like attach)
 // the height of road lamp is about 8 meters
 TzkBridgeSuspendHeight = 15; 
+
+// bridge model info
+TzkBridgeRoadwayH = 33.55; // for both origin bridge and Bridge2_xj400
+TzkBridgeCenterH = 17.612; // 20.489 for origin bridge; 17.612 for Bridge2_xj400

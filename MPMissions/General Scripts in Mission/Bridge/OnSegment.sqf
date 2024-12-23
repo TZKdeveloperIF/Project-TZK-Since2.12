@@ -1,7 +1,7 @@
 // args: [position ASL, bridge center pos, bridge 3D vector]
 // returns: bool
 
-// bridge len: 50, width: 13, height of roadway: 33.55, height of model center: 33.55 - 20.489
+// bridge len: 50, width: 13
 // extra -0.1 correction for z-axis
 
 private [{_posO}, {_posB}, {_vecB}, {_arrow}, {_dir}, {_theta}];
@@ -20,4 +20,4 @@ _theta = atan((_vecB select 2) / (_vecB select 1));
 _arrow = [_arrow, [-1,0,0], _theta] call funcVectorRot3D;
 
 // hint format ["%1", [abs(_arrow select 0) < 5 , abs(_arrow select 1) < 25 , (_arrow select 2)]];
-abs(_arrow select 0) < 5 && abs(_arrow select 1) < 25 && (_arrow select 2) > 33.55-20.489 - 0.1
+abs(_arrow select 0) < 5 && abs(_arrow select 1) < 25 && (_arrow select 2) > TzkBridgeRoadwayH - TzkBridgeCenterH - 0.1
