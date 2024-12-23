@@ -57,7 +57,7 @@ _startPos set [2, (_startPos call funcHASL) + _suspendH]
 _endPos set [2, (_endPos call funcHASL) + _suspendH]
 
 ; chech whether vehicle is on the bridge when order being executed
-_onBridge = [_vehicle, _project] call preprocessFile "Bridge\OnWholeBridge.sqf"
+_onBridge = [_vehicle, _project] call preprocessFile "\TZK_Patch4_4_0_6\s\Bridge\OnWholeBridge.sqf"
 ? not _onBridge && ([_unit, _startPos] call funcDistH > _crossBridgeRadius): _msg = format ["%1 %2 %3 %4. %5", localize {TZK_LANG_TOO}, localize {TZK_LANG_FAR}, localize {TZK_LANG_TO}, localize {TZK_LANG_BRIDGE}, localize {TZK_LANG_ORDER_ABORTED}], goto "Quit"
 
 ? _onBridge: goto "finishCloseToStartPos"
