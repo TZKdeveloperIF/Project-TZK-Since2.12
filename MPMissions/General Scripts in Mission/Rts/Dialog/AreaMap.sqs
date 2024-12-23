@@ -88,7 +88,8 @@ btnValue05 = -1;
 	? 2^2 == _btnVal: 2 exec "Rts\SubMenu\ObstructPreset.sqs"; closeDialog 0; goto "Quit"
 	? 2^3 == _btnVal: [true, "Mine"] exec "Rts\SubMenu\AreaMarker.sqs"; closeDialog 0; goto "Quit"
 	? 2^4 == _btnVal: [false, "Mine"] exec "Rts\SubMenu\AreaMarker.sqs"; closeDialog 0; goto "Quit"
-	? 2^5 == _btnVal: 0 exec "Rts\SubMenu\RoofPreset.sqs"; closeDialog 0; goto "Quit"
+	; ? 2^5 == _btnVal: 0 exec "Rts\SubMenu\RoofPreset.sqs"; closeDialog 0; goto "Quit"
+	? 2^5 == _btnVal: TitleText ["There're bug in area-build-roof now. Temporary disable this design.", "Plain DOWN", 0.25]; goto "Update"
 	goto "Update"
 	# DownSubMenu
 		? 2^8 == _btnVal: _downBoardStack resize 0; call preprocessFile "Rts\Dialog\UpdateAreaDownBoard.sqf"; goto "Update"
