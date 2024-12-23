@@ -25,7 +25,7 @@ _funcGenerator = preprocessFile "Bridge\InfoFunc.sqf"
 	_funcBridgeSetObj = "BridgeSetObj" call _funcGenerator
 
 [_bridgesInfo, _bridgeIdx, _bridge] call _funcBridgeSetObj
-publicExec format [{[UnitById %1, %2, %3] exec "Bridge\BroadcastNewBuiltBridge.sqs"}, _bridge call funcGenNetIdStr, _id, _bridgeIdx]
+publicExec format [{[UnitById %1, %2, %3] exec "\TZK_Patch4_4_0_6\s\Bridge\BroadcastNewBuiltBridge.sqs"}, _bridge call funcGenNetIdStr, _id, _bridgeIdx]
 
 _objects = [_bridge]
 

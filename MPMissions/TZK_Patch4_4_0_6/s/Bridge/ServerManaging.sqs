@@ -18,7 +18,7 @@ _si = _headInfo call _funcGetSi
 _interval = 5
 _nearbyVehiclesParamCache = [[], 150, ([[utMHQ0], [utMHQ1]] select _si) + [typesEngineeringVeh select _si], []]
 _cost = structDefs select stBridge select sdCost
-_funcEngineerVehiclesWork = preprocessFile "Bridge\NearbyEngineerVehicleWork.sqf"
+_funcEngineerVehiclesWork = preprocessFile "\TZK_Patch4_4_0_6\s\Bridge\NearbyEngineerVehicleWork.sqf"
 
 _c = _headInfo call ("GetSegmentCnt" call _funcGenerator)
 # loop
@@ -38,7 +38,7 @@ _c = _headInfo call ("GetSegmentCnt" call _funcGenerator)
 		_res call _funcEngineerVehiclesWork
 
 		[_si, giCO select _si, _cost] exec localize {TZK_MONEY_SERVER_SPEND}
-		[[_si, giCO select _si], [[_bridgesInfo, _i] call _funcBridgeGetPos, [_bridgesInfo, _i] call _funcBridgeGetVec], [_bridgesInfo, _id, _i]] exec "Util\Bridge\Build.sqs"
+		[[_si, giCO select _si], [[_bridgesInfo, _i] call _funcBridgeGetPos, [_bridgesInfo, _i] call _funcBridgeGetVec], [_bridgesInfo, _id, _i]] exec "Bridge\Build.sqs"
 
 		# continue
 		_i = _i + 1

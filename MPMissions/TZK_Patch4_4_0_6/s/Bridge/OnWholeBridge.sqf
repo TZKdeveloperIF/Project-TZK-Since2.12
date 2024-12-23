@@ -16,7 +16,7 @@ _bridgeIdx = 0; _bridgeCnt = (_headInfo call ("GetSegmentCnt" call _funcGenerato
 _funcBridgeGetPos = "BridgeGetPosASL" call _funcGenerator;
 _funcBridgeGetVec = "BridgeGet3dVec" call _funcGenerator;
 
-_funcOn = preprocessFile "Bridge\OnSegment.sqf";
+_funcOn = preprocessFile "\TZK_Patch4_4_0_6\s\Bridge\OnSegment.sqf";
 
 _onBridge = false;
 while {_bridgeIdx < _bridgeCnt && not _onBridge} do {
