@@ -9,7 +9,7 @@ _factories resize 0; lbClear _idcFactory;
 	_structs = structMatrix select siPlayer select _type; _aTypeOfFac resize 0;
 
 	private [{_aTypeOfFac}]; _aTypeOfFac = _type call _funcAvailableStruct;
-	[_factories, _aTypeOfFac] call preprocessFile "Util\ArrayAppend.sqf";
+	[_factories, _aTypeOfFac] call preprocessFile "Algo\arrayAppend.sqf";
 
 	private ["_textPos", "_textQ", "_qLen"];
 	{

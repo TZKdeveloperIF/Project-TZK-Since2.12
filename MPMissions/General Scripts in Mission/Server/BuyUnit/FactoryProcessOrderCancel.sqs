@@ -12,7 +12,7 @@ _isArray = _cancelInfo select 2
 @ not (_factoryCtrl select 1)
 	_factoryCtrl set [1, true]
 
-	? _isArray: [_cancelledQids, _qidInfo] call preprocessFile "Util\ArrayAppend.sqf"
+	? _isArray: [_cancelledQids, _qidInfo] call preprocessFile "Algo\arrayAppend.sqf"
 	? not _isArray: _cancelledQids set [count _cancelledQids, _qidInfo]
 
 	_factoryCtrl set [1, false]

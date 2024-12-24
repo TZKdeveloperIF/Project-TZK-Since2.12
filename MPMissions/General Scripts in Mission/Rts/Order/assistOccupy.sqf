@@ -19,7 +19,7 @@ _targets resize _j;
 _c = count _targets; if (_c > 0) then {
 	// sort by slots
 	_comp = {(_this select 0 select 1) < (_this select 1 select 1)};
-	[_targets, 0, count _targets, _comp] call preprocessFile "Util\stdMergeSort.sqf";
+	[_targets, 0, count _targets, _comp] call preprocessFile "Algo\mergeSort.sqf";
 	// calculate suggested index
 	private [{_r}, {_total}];
 	_total = 0; _i = 0, while {_i < _c} do {

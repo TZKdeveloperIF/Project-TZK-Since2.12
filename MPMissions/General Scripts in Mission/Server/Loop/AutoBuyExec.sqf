@@ -14,7 +14,7 @@ private [{_type},{_num},{_driver},{_gunner}, {_factoryType}];
 	if (count _assignedFacs <= 0) then { // Buy at old fashion
 		// todo: To improve concurrency, optimize the concept of "idle factory / buildingsInUse" would be a good choice
 		_factories resize 0;
-		{[_factories, [_si, _x, true] call funcGetIdleFactories] call preprocessFile "Util\ArrayAppend.sqf"} forEach _factoryType;
+		{[_factories, [_si, _x, true] call funcGetIdleFactories] call preprocessFile "Algo\arrayAppend.sqf"} forEach _factoryType;
 		if (count _factories > _num) then {_factories resize _num};
 		{
 			private [{_order}]; _order = [[_type, _driver, _gunner, 0, _si, _gi, _gi, _x], 1, -1, _emptyArr];

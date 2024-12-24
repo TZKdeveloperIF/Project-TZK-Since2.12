@@ -13,7 +13,7 @@ if (count _playerGroupSelectedUnits > 0) then {
 			if (_units find _driver == -1 && _playerGroupSelectedUnits find _driver == -1) then {_units set [count _units, _driver]};
 		};
 	} forEach _playerGroupSelectedUnits;
-	[_units, _playerGroupSelectedUnits] call preprocessFile "Util\ArrayAppend.sqf";
+	[_units, _playerGroupSelectedUnits] call preprocessFile "Algo\arrayAppend.sqf";
 	{
 		private [{_unit},{_uid},{_id}];
 		_unit = _x;

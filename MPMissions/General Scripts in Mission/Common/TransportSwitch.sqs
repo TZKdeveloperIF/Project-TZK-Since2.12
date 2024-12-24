@@ -7,7 +7,7 @@ _this = 0
 ; TurnOn
 	@ not mutexTranspVehArr
 		mutexTranspVehArr = true
-		[TransportActivatedVehicles, _array] call preprocessFile "Util\ArrayAppend.sqf"
+		[TransportActivatedVehicles, _array] call preprocessFile "Algo\arrayAppend.sqf"
 		mutexTranspVehArr = false
 	exit
 
@@ -15,5 +15,5 @@ _this = 0
 	_array set [count _array, objNull]
 	@ not mutexTranspVehArr
 		mutexTranspVehArr = true
-		[TransportActivatedVehicles, _array] call preprocessFile "Util\ArraySubtract.sqf"
+		[TransportActivatedVehicles, _array] call preprocessFile "Algo\arraySubtract.sqf"
 		mutexTranspVehArr = false

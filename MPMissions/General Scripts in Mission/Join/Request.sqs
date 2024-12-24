@@ -29,7 +29,7 @@ _groupsFrom = []
 {_groupsFrom set [count _groupsFrom, _groups select _x]} forEach _giFromArray
 _lambda = {not alive _this || not (group _this in _groupsFrom)}
 
-[_units, _lambda] call preprocessFile "Util\ArrayEraseIf.sqf"
+[_units, _lambda] call preprocessFile "Algo\arrayEraseIf.sqf"
 _str = _units call preprocessFile "Network\GenNetIdArrayStr.sqf"
 ? "" == _str: exit
 ; Unnecessary to separate the string since there're 11 units at most in player's join request.
@@ -52,7 +52,7 @@ _str = _units call preprocessFile "Network\GenNetIdArrayStr.sqf"
 	@ not mutexPplJoinRequest
 		mutexPplJoinRequest = true
 
-		[_units, _lambda] call preprocessFile "Util\ArrayEraseIf.sqf"
+		[_units, _lambda] call preprocessFile "Algo\arrayEraseIf.sqf"
 		_func = preprocessFile "Util\UnitIdInGroup.sqf";
 		_uids = []; {_uids set [count _uids, _x call _func]} forEach _units
 
