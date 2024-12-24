@@ -96,7 +96,7 @@ _i = 0, _c = _typeCnt, _transpTypes = [], _transpTypes resize _c
 		? 8 + 6 == _typeIdx: _selectedTypes = + typesRadarCar
 		? 8 + 7 == _typeIdx: _selectedTypes = + call format ["TransportRepairTruck%1", if (_si == si0) then {"W"} else {"E"}], _needEdit = false
 
-		? _needEdit: [_selectedTypes, _notOurSide] call preprocessFile "Util\ArrayEraseIf.sqf"
+		? _needEdit: [_selectedTypes, _notOurSide] call preprocessFile "Algo\arrayEraseIf.sqf"
 
 		call preprocessFile "Rts\Order\assistReclaim.sqf"
 

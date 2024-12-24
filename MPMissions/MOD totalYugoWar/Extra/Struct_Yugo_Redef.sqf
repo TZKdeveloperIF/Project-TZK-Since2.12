@@ -14,7 +14,7 @@ _type = stHosp; structDefs resize _type; structMarker resize _type;
 _price = [1500, 3000] select PricingMode;
 _objects = [["FuelStationNew2", 180, [0,0,0]]];
 _image = [_texPath + "Image\Struct\FuelStation.jpg", _texPath + "Image\Struct\FuelStation.jpg"];
-structDefs set [_type, ["Fuel Station", _price, siBoth, _image, false, false, 5, 10, 20, _objects, _objects, [localize {TZK_SERVER_INIT_STRUCT_SEC},  "\TZK_Scripts_4_0_4\Server\InitFuelStation.sqs"], [localize {TZK_MARKER_STRUCT}]]  ];
+structDefs set [_type, ["Fuel Station", _price, siBoth, _image, false, false, 5, 10, 20, _objects, _objects, [localize {TZK_SERVER_INIT_STRUCT_SEC},  "\TZK_Patch4_4_0_6\s\Server\InitFuelStation.sqs"], [localize {TZK_MARKER_STRUCT}]]  ];
 structMarker set [_type, "FuelStructure_Marker_xj400"];
 _fuelStation = _type;
 _type = _type + 1;

@@ -9,7 +9,7 @@ _processed = false;
 if (!alive player) then {_processed = true};
 if (not _processed && count _units > 0) then {
 	// process selected units. Since Join is available in TZK, joined units should be excluded
-	[_units, {group _this != groupPlayer}] call preprocessFile "Util\ArrayEraseIf.sqf";
+	[_units, {group _this != groupPlayer}] call preprocessFile "Algo\arrayEraseIf.sqf";
 };
 if (not _processed && count _units > 0 && not _alt && _shift) then {
 	[_pos, _units] exec localize {TZK_DIALOG_ORDER_PLAYER_AI}; _processed = true;

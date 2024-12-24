@@ -58,7 +58,7 @@ if (_co && isCommander) then {
 	if (count _coIdx > 0) then {
 		private [{_param}];
 		_param = [siPlayer, giPlayer, [-1, -1]];
-		[_param, _coIdx] call preprocessFile "Util\ArrayAppend.sqf";
+		[_param, _coIdx] call preprocessFile "Algo\arrayAppend.sqf";
 		_param exec "Common\Msg\sSetWPCO.sqs";
 		// process player co idx cache
 		_cacheIdx = indexWayPointSelected select 0;

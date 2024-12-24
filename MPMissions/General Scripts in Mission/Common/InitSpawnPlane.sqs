@@ -7,7 +7,7 @@ _this = _nil
 _posveh = getpos _plane;
 _driver = driver _plane;
 
-? _plane call loadFile "Util\IsTzkBattlePlane.sqf": [_plane, unitDefs select _type select udCost, false, enum_TZK_CustomVehicle_Plane] exec "Cwv\Net\sCwvInfo.sqs"
+? _plane call loadFile "Util\IsTzkBattlePlane.sqf": [_plane, unitDefs select _type select udCost, false, enum_TZK_CustomVehicle_Plane] exec "\TZK_Patch4_4_0_6\s\Cwv\Net\sCwvInfo.sqs"
 
 ? (isNull _driver) || _driver == player: exit
 

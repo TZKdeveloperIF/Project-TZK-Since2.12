@@ -18,7 +18,7 @@ if (-1 != _enum) then {
 		_bContinue = false;
 		if (_si != siPlayer && _si != siBoth) then {_bContinue = true};
 		if ((_enum == enum_TZK_CustomVehicle_Gunship || _enum == enum_TZK_CustomVehicle_Helicopter)
-			&& !(_availMags call loadFile "Util\CWV\ValidMag.sqf")) then {
+			&& !(_availMags call loadFile "\TZK_Patch4_4_0_6\s\Cwv\ValidMag.sqf")) then {
 			_bContinue = true
 		};
 		if (!_bContinue) then {

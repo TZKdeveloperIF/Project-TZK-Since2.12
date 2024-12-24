@@ -34,7 +34,7 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 	
 	@ !mutexbuildingInUse
 	mutexbuildingInUse = true
-	[buildingsInUse, [_factory, objNull]] call preprocessFile "Util\ArraySubtract.sqf"
+	[buildingsInUse, [_factory, objNull]] call preprocessFile "Algo\arraySubtract.sqf"
 	mutexbuildingInUse = false
 
 	_orders = _queues select _qi select 2
@@ -129,7 +129,7 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 	? (_orders call _getSize) > 1: goto "BuildNextUnit"
 	@ !mutexbuildingInUse
 	mutexbuildingInUse = true
-	[buildingsInUse, [_factory, objNull]] call preprocessFile "Util\ArraySubtract.sqf"
+	[buildingsInUse, [_factory, objNull]] call preprocessFile "Algo\arraySubtract.sqf"
 	mutexbuildingInUse = false
 	
 	? (_orders call _getSize) > 0: goto "BuildNextUnit"
@@ -159,7 +159,7 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 	? (_orders call _getSize) > 1: goto "BuildNextUnit"
 	@ !mutexbuildingInUse
 	mutexbuildingInUse = true
-	[buildingsInUse, [_factory, objNull]] call preprocessFile "Util\ArraySubtract.sqf"
+	[buildingsInUse, [_factory, objNull]] call preprocessFile "Algo\arraySubtract.sqf"
 	mutexbuildingInUse = false
 	
 	? (_orders call _getSize) > 0: goto "BuildNextUnit"

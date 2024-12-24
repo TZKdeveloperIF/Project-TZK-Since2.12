@@ -10,7 +10,7 @@ _para = "pwr_paraG_xj400" camCreate _pos
 _para setPosASL _pos, _unit moveInDriver _para
 
 ; forceMap true
-0 exec "\TZK_Scripts_4_0_6\Player\Init_Function_Player.sqs"
+0 exec "\TZK_Patch4_4_0_6\s\init_funcs_player.sqs"
 ? "IF" == name player: TzkDebugLog = []
 
 
@@ -128,7 +128,7 @@ _posMhq = [call format ["pvMhq%1x", _si], call format ["pvMhq%1y", _si]]
 
 ; remove map anim
 
-0 call loadFile "\TZK_Scripts_4_0_6\Player\Init\AIOrder.sqf"
+call preprocessFile "\TZK_Patch4_4_0_6\s\Player\Init\AIOrder.sqf"
 call preprocessFile "impl\Client_Player.sqf"
 
 

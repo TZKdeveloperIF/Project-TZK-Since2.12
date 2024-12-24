@@ -12,7 +12,7 @@ if (_isVehicle || _isStruct) then {
 	if _ret then {
 		private [{_weapons}];
 		_weapons = weapons _vehicle;
-		[_weapons, [_weapon]] call preprocessFile "Util\ArraySubtract.sqf";
+		[_weapons, [_weapon]] call preprocessFile "Algo\arraySubtract.sqf";
 		{_vehicle removeWeapon _x} forEach _weapons;
 		{_vehicle addWeapon _x} forEach _weapons;
 	};
