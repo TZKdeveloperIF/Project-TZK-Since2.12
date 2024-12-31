@@ -42,7 +42,7 @@ if (_type == stMhqWall) then {
 	TzkMhqWallInfos set [_i * 2 + 1, _dir];
 };
 [_objects, _type] exec localize {TZK_SERVER_FUNC_RESET_UP};
-[_si, _type, _objects select 0] exec "\TZK_Scripts_4_0_4\Server\AddToStructMatrix.sqs";
+[_si, _type, _objects select 0] exec "\TZK_Patch4_4_0_6\s\Server\AddToStructMatrix.sqs";
 [_objects, _type] exec "\TZK_Scripts_4_0_4\Server\StructuresServerAdd.sqs";
 [_objects select 0] exec "\TZK_Scripts_4_0_4\Server\primStructsPlacedAdd.sqs";
 { [_type, _si, _objects] exec _x } foreach (_desc select sdScriptsServer);

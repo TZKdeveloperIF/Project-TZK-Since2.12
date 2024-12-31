@@ -76,7 +76,7 @@ if (_res select 0) then {
 
 	// build
 	if (_ret && not _skip) then {
-		[_nextBuildPos, _markerDir, _stType] exec "\TZK_Scripts_4_0_4\Player\SendBuildStructure.sqs";
+		[_nextBuildPos, _markerDir, _stType] exec "Net\sBuildStruct.sqs";
 		// animate for engineer vehicle
 		if (count _cachedInfo > 0) then {
 			private [{_engiennerVehicle}]; _engiennerVehicle = _cachedInfo select 0;

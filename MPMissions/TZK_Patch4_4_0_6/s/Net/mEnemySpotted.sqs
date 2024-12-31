@@ -1,0 +1,22 @@
+; args: [enemy, si]
+
+? isNull player: exit
+
+? pvGameover != -1: exit
+
+_enemy = _this select 0; _si = _this select 1
+? _si != siPlayer: exit
+
+@ not mutexSpottedEnemy
+	mutexSpottedEnemy = true
+
+	? indexSpottedEnemy >= 10: indexSpottedEnemy = 0
+	_found = _enemy in arraySpottedEnemy
+	? not _found: arraySpottedEnemy set [indexSpottedEnemy, _enemy], indexSpottedEnemy = indexSpottedEnemy + 1
+	; record enemy if meets condition
+	; the condition should keep same as defined in SpotEnemy\PplLoop.sqs
+	? not _found && groupPlayer knowsAbout _enemy >= 3: _enemy exec "SpotEnemy\Add2PplArray.sqs"
+
+	mutexSpottedEnemy = false
+
+	? not _found: _this exec "Player\Msg\hEnemySpotted.sqs"

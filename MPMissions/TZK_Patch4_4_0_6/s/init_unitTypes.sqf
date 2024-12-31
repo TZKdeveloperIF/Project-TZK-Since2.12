@@ -580,7 +580,7 @@ _uh60W = _type;
 _type = _type + 1;
 
 unitDefs set [_type, ["Support UH60", 5000, _si, 60, "UH60_CSLA_xj400", "iuh60", 2^_st, [1, _pilotW], _mSupport,
-	["Common\InitSupportVehicle.sqs", "Common\InitHelicopter.sqs", "Common\Equip\UH60.sqs", "\TZK_Scripts_4_0_4\Common\InitAmmoDrop.sqs"]
+	["Common\InitSupportVehicle.sqs", "Common\InitHelicopter.sqs", "Common\Equip\UH60.sqs", "Common\InitAmmoDrop.sqs"]
 ]];
 _uh60supW = _type;
 _type = _type + 1;
@@ -1175,7 +1175,7 @@ _mi17E = _type;
 _type = _type + 1;
 
 unitDefs set [_type, ["Mi17 support", 5000, _si, 60, "Mi17_owp_xj400", "imi17", 2^_st, [1, _pilotE], _mSupport,
-	["Common\InitSupportVehicle.sqs", "Common\InitHelicopter.sqs", "Common\Equip\Mi17.sqs", "\TZK_Scripts_4_0_4\Common\InitAmmoDrop.sqs"]
+	["Common\InitSupportVehicle.sqs", "Common\InitHelicopter.sqs", "Common\Equip\Mi17.sqs", "Common\InitAmmoDrop.sqs"]
 ]];
 _mi17supE = _type;
 _type = _type + 1;

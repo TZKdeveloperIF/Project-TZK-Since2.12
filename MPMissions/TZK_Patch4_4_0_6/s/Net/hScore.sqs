@@ -1,0 +1,17 @@
+; args: [score, _class + 10 * _gi + 10 * GroupsNum * _si]
+_score = _this select 0
+
+_value = _this select 1
+
+_class = _value % 10
+_value = (_value - _class) / 10
+
+_gi = _value % GroupsNum
+_value = (_value - _gi) / GroupsNum
+
+_si = _value
+? _gi < 0 || _si < 0 : format ["_gi is %1 and _si is %2 in HandleScore.sqs", _gi, _si] call fDebugLog; exit
+
+(scoreMoney select _si) set [_gi, (scoreMoney select _si select _gi) + _score]
+_score = (groupScoreMatrix select _si select _gi select _class) + _score
+(groupScoreMatrix select _si select _gi) set [_class, _score]

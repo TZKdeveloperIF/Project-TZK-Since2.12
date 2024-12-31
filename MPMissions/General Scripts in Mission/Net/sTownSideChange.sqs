@@ -1,0 +1,18 @@
+; args: [indexTown, siNew, siLast]
+
+_index = _this select 0
+_siNew = _this select 1
+_siLast = _this select 2
+_this = 0
+
+_flag = towns select _index select tdFlag
+
+_value = _index + _siNew * 100 + _siLast * 1000
+_value exec "\TZK_Patch4_4_0_6\s\Net\hTownSideChange.sqs"
+publicExec format [{%1 exec "\TZK_Patch4_4_0_6\s\Net\hTownSideChange.sqs"}, _value call preprocessFile "Util\Num2Str.sqf"]
+
+_flag setFlagTexture (flags select _siNew)
+
+towns select _index set [tdSide, _siNew]
+
+? _siNew == si0 || _siNew == si1 : _siNew exec localize {TZK_FUNC_SERVER_CHECK_WIN_TOWNS}

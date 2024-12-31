@@ -1,0 +1,12 @@
+; args: [unit, support]
+
+_unit = _this select 0
+_support = _this select 1
+
+_unitStr = _unit call funcGenNetIdStr
+_supStr = _support call funcGenNetIdStr
+
+? isNull _unit || isNull _support: exit
+
+[_unit, _support] exec "\TZK_Patch4_4_0_6\s\Net\hMovingToSupport.sqs"
+publicExec format [{[UnitById %1,UnitById %2] exec "\TZK_Patch4_4_0_6\s\Net\hMovingToSupport.sqs"}, _unitStr, _supStr]

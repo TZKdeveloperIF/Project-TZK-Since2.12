@@ -108,27 +108,27 @@ _grpBuyOrders = []
 	
 	if !(count _workingStructures < _respawnNum) then { _objectRespawn = _workingStructures select (_respawnNum - 1); goto "RespawnStruct" }
 	
-	#RespawnOldFashion
-	call format["_objectRespawn = pvRespawnObjectAi%1", _si]
+	# RespawnOldFashion
+	_respawnObject = sideRespawnObjects select _si
 	? !(alive _objectRespawn) : _objectRespawn = [_objectRespawn, _si] call funcGetNearestRespawnObject
 
 	_ts = _objectRespawn call funcGetStructTypeFromObject
 	? _ts != -1 : goto "RespawnStruct"
 
-#RespawnMHQMCV
-	;_mhq = mhq select siPlayer; 	_dir = getDir _mhq; 	_pos = getPos _mhq
+; RespawnMHQMCV
+	_objectRespawn = mhq select _si
 	_dir = getDir _objectRespawn
 	_pos = getPos _objectRespawn
-	_posRespawn = [(_pos select 0)-(sin _dir)*10,(_pos select 1)-(cos _dir)*10,0]
+	_posRespawn = [(_pos select 0) - (sin _dir) * 10, (_pos select 1) - (cos _dir) * 10, 0]
 	? !(alive _objectRespawn) : _posRespawn = positionRespawn
 	goto "RespawnPosSet"
 
-#RespawnStruct
+# RespawnStruct
 	_res = [_objectRespawn, _ts, _si] call funcCalcUnitPlacementPosDir
 	_posRespawn = _res select 0
 	? !(alive _objectRespawn) : _posRespawn = positionRespawn
 
-#RespawnPosSet
+# RespawnPosSet
 	? (_posRespawn select 2) < 3: _posRespawn set [2, 3]
 	_unit setVelocity [0,0,0]
 	_unit setPos _posRespawn

@@ -1,0 +1,19 @@
+; args: [info, posX, posY, dir]
+? not isServer: exit
+
+
+_value = _this select 0
+
+_type = _value % 1000
+_value = _value - _type
+
+_gi = (_value % (1000*GroupsNum))/1000
+_value = _value - _gi*1000
+
+_si = _value/(1000*GroupsNum)
+
+_posX = _this select 1
+_posY = _this select 2
+_dir = _this select 3
+
+[_type, _si, _gi, [_posX, _posY, 0], _dir] call fBuildStruct

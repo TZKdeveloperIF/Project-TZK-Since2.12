@@ -520,7 +520,7 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 	_costBuy = _costFactor*_costnow
 
 	? _money < _costBuy && _costBuy > 0: hint "Not Enough Money"; _unit groupChat "Not Enough Money"; goto "Update"
-	[_costBuy] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"; _unit groupChat format["Equipment cost: $%1", _costBuy]
+	[_costBuy] exec "Net\sMoneySpent.sqs"; _unit groupChat format["Equipment cost: $%1", _costBuy]
 	goto "EquipAndExit"
 
 #Clear

@@ -15,7 +15,7 @@ _factor = [1, _factor] select IncomeGrow_TZK;
 // special income for specific commander
 {
 	_si = _x;
-	if (time > (SideCmdChangedTime select _si) + 5 * 60) then { // On 5 mins after changing commander this income part won't effect
+
 		_extraRate = 0; _name = name leader (groupCommander select _si);
 		// if ("LXL" == _name) then {_extraRate = 0.25};
 		// if ("ZHBQ" == _name) then {_extraRate = 1};
@@ -32,7 +32,7 @@ _factor = [1, _factor] select IncomeGrow_TZK;
 				[_si, format ["Extra income $%1 for our expected commander: %2", _delta, _name]] exec "Server\Msg\sSvrMsg2Cmd.sqs";
 			};
 		};
-	};
+
 } forEach [si0, si1];
 {
 	_incomeTowns set [_x, (_incomeTowns select _x) - (_incomeTowns select _x) % 1], 
@@ -41,8 +41,7 @@ _factor = [1, _factor] select IncomeGrow_TZK;
 
 {
 	_si = _x;
-	_IncomeRatio = 0; _IncomeRatioPlayer = 0;
-	call format ["_IncomeRatio = pvIncomeRatio%1; _IncomeRatioPlayer = pvIncomeRatioPlayer%1", _si];
+	_IncomeRatio = incomeRateCo select _si; _IncomeRatioPlayer = incomeRatePlayer select _si;
 	_groups = groupMatrix select _si; _groupCommander = groupCommander select _si; _groupAIs = groupAiMatrix select _si;
 	_playerIncome = 0; _aiIncome = 0; _playerGroups = _groups - [_groupCommander] - _groupAIs;
 	if (count _playerGroups > 0) then {

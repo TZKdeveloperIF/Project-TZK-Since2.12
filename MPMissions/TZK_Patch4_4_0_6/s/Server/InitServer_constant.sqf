@@ -25,10 +25,6 @@ if (bool_TZK_Lester_Mode) then {
 };
 moneySpent = [0, 0];
 moneyRequest = [[],[]];
-indexMoneyMsg = 0;
-countMoneyMsg = 10;
-indexInfoMsg = 0;
-countInfoMsg = 4;
 qidNext = [0,0];
 
 timeCheckSupport = 120;
@@ -36,8 +32,6 @@ ratioAttackEnemy = ([0.70, 0.70] select dev);
 
 mutexEditMoneyMatrix = false;
 mutexMovingToSupport = false;
-mutexSendMoneySide = false;
-mutexEnemySpotted = false;
 
 scoreMoney = [[],[]];
 groupsPatrol = []; groupPatrolJoinMatrix = []; mutexInitResGroups = false; mutexResPatrolScript = false;
@@ -49,7 +43,6 @@ FreeMhqWallTime = [-9999, -9999];
 mutexWallMhq = [false, false];
 FreeMgCnt = [3, 3];
 true exec "Common\Init\Confuser.sqs";
-SideCmdChangedTime = [-9999, -9999];
 // 4.0.6.40
 // redefine mutexBuildingQueue as a matrix
 mutexBuildingQueue = [[], []];

@@ -9,7 +9,7 @@ groupMoneyMatrix select _si set [_gi, _result]
 ; transfer status to caller
 _this set [3, _result >= 0]
 
-[_si, _gi, 0] exec "\TZK_Scripts_4_0_4\Server\Msg\sMoneyStatus.sqs"
+[_si, _gi, 0] exec "Net\sMoneyStatus.sqs"
 moneySpent set [_si, _amount + (moneySpent select _si)]
 
 mutexEditMoneyMatrix select _si set [_gi, false]

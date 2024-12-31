@@ -107,7 +107,7 @@ _moveParamCache exec "Util\Move2DestSoldier.sqs"
 	_sup = [_unit, _si, 512, true] call preprocessFile "Util\SoldierRearmSupport.sqf"
 	? isNull _sup: _msg = "No support vehicle within 512 meters. Magazines exhausted. Order aborted."; goto "Quit"
 	; SupportFound
-	? _forServer: [_unit, _sup] exec "\TZK_Scripts_4_0_4\Server\SendMovingToSupport.sqs"
+	? _forServer: [_unit, _sup] exec "Net\sMovingToSupport.sqs"
 	_param = [true, true, _unit, _sup, 60 * 5]
 	_param exec "Util\Move2SupportSoldier.sqs"
 	# Move2SupportLoop

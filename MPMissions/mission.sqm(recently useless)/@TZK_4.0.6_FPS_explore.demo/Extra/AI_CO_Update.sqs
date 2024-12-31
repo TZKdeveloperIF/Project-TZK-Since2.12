@@ -94,7 +94,7 @@ _giPatrol = _gi; _bTakeTown=false; _nDestroy=0
 	? _unit call busyCheck : goto "Update"
 
 	_mhq = mhq select _si
-	? time > _timeCheckPlayerIncome : [_si] exec "\TZK_Scripts_4_0_5\Server\AICO_CheckPlayerIncome.sqs"; _timeCheckPlayerIncome = time + ([5*60, 60] select dev)
+	? time > _timeCheckPlayerIncome : [_si] exec "\TZK_Patch4_4_0_6\s\Server\AICO\CheckPlayerIncome.sqs"; _timeCheckPlayerIncome = time + ([5*60, 60] select dev)
 	
 	? (alive _mhq) && (call format["pvWorkers%1 < 10", _si]) && _money >= costWorker : [_si] exec localize {TZK_FUNC_SERVER_ADD_WORKER}; _sleep = 0.5; goto "Update"
 
@@ -153,10 +153,10 @@ _giPatrol = _gi; _bTakeTown=false; _nDestroy=0
 	
 	goto "Update"
 
-#CheckBuildSec
+# CheckBuildSec
 ; SET AI RESPAWN OBJECT
 _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
-? call format["_objectRespawn != pvRespawnObjectAi%1", _si] : call format["pvRespawnObjectAi%1 = _objectRespawn; PublicVariable ""pvRespawnObjectAi%1""", _si]
+? _objectRespawn != sideRespawnObjects select _si: [_objectRespawn, _si] exec "Net\sSetRespawnObj.sqs"
 
 	_i = 0 
 	_c = count _secs
@@ -166,7 +166,7 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
     _i = _i + 1
     goto "CheckBuildSec_CheckObject"
 
-#BuildSec
+# BuildSec
 	_buildDesc = _secs select _i
 	_structType = _buildDesc select bdType
 	_structPosRel = [_buildDesc select bdPos, _dirBase] call funcVectorRot2D
@@ -355,8 +355,7 @@ _c = count _units
 
 	#Respawn
 	? costRespawn > 0 : [_si, _gi, costRespawn] exec localize {TZK_MONEY_SERVER_SPEND}
-	_objectRespawn = objNull
-	call format["_objectRespawn = pvRespawnObjectAi%1", _si]
+	_objectRespawn = sideRespawnObjects select _si
 	? !(alive _objectRespawn) : _objectRespawn = [_objectRespawn, _si] call funcGetNearestRespawnObject
 
 	_ts = _objectRespawn call funcGetStructTypeFromObject

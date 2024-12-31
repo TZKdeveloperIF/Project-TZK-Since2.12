@@ -1,0 +1,17 @@
+; args: none
+~ 10
+? !isServer: exit
+; todo: be called after game has begun
+
+_value = 0
+_delay = blockTime/6
+
+# Update
+	~_delay
+	? (pvGameover != -1): exit
+
+	_value exec "\TZK_Patch4_4_0_6\s\Net\hPingPpl.sqs"
+	publicExec format [{%1 exec "\TZK_Patch4_4_0_6\s\Net\hPingPpl.sqs"}, _value call preprocessFile "Util\Num2Str.sqf"]
+
+	_value = _value + 1
+	goto "Update"

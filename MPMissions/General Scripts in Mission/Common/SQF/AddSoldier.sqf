@@ -47,7 +47,7 @@ if !_err then {
 	if (_giBuyer < 0) then {_giBuyer = 0};
 	_value = _type + TotalUnitTypes * _gi + TotalUnitTypes * GroupsNum * _giBuyer
 		+ TotalUnitTypes * GroupsNum * GroupsNum * _si;
-	_init = format [{newSoldier = this; [%1, this] exec "Common\Msg\hUnitBuilt.sqs"}, _value];
+	_init = format [{newSoldier = this; [%1, this] exec "\TZK_Patch4_4_0_6\s\Net\hUnitBuilt.sqs"}, _value];
 
 	_model = _desc select udModel; _skill = 1;
 	if (_si == si0 || _si == si1) then {

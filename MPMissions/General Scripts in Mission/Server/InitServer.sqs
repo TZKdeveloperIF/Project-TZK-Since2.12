@@ -14,16 +14,7 @@ call preprocessFile "Server\Upgrade\Init.sqf"
 ; { _si = _x; _i = 0; _c = count towns; while {_i < _c} do {call format[{TargetTownS_%1%2 = _targetObject createVehicle [0,0,0]; TargetTownS_%1%2 exec "\TZK_Scripts_4_0_4\Common\Command\allowDamageFalse.sqs"; TargetTownS_%1%2 setPosASL getPosASL (towns select _i select tdFlag)}, _i, _si]; _i = _i + 1} } forEach [si0, si1]
 
 ; MESSAGE HANDLERS (SERVER ONLY)
-[] exec "\TZK_Scripts_4_0_4\Server\MsgBuildStructure.sqs"
-(localize {TZK_FUNC_SERVER_UNDO_STRUCT}) exec "\TZK_Scripts_4_0_6\Server\Msg\mUndo.sqs"
 
-(localize {TZK_MONEY_SERVER_SPEND}) exec "\TZK_Scripts_4_0_6\Server\Msg\mMoneySpent.sqs"
-"\TZK_Scripts_4_0_6\Server\Msg\hGiveMoney.sqs" exec "\TZK_Scripts_4_0_6\Server\Msg\mGiveMoney.sqs"
-"Server\Msg\hUpgrade.sqs" exec "Server\Msg\mUpgrade.sqs"
-0 exec "Server\Msg\mTransferCmd.sqs"
-0 exec "\TZK_Scripts_4_0_6\Server\Msg\mDestruction.sqs"
-[] exec "\TZK_Scripts_4_0_4\Server\MsgUnitDisembark.sqs"
-"Server\Msg\hCheckAI.sqs" exec "Server\Msg\mCheckAI.sqs"
 ; ? bool_TZK_199_Mode: [] exec "\TZK_Scripts_4_0_4\Server\Msg\mRadioChannel.sqs"
 
 ; ? !(isNull player): forceMap true
@@ -58,7 +49,7 @@ call loadFile "\TZK_Scripts_4_0_6\Server\Msg\sStartMoney.sqf"
 0 exec "Server\Loop\Income.sqs"
 0 exec "Server\Loop\Server.sqs"
 {_x exec "Server\Loop\ProcessFinishedOrder.sqs"} forEach [si0, si1]
-[] exec "\TZK_Scripts_4_0_4\Server\SendPing.sqs"
+0 exec "Server\PingClients.sqs"
 
 [] exec "\TZK_Scripts_4_0_4\Server\DynamicInitializationMarker.sqs"
 0 exec "Server\Dynamic\InitializationTrigger.sqs"

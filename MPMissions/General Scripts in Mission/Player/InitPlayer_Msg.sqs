@@ -3,19 +3,12 @@
 _si = _this select 0
 
 mutexBuildStructure = false; mutexOrderBuildStructure = false
-mutexMoneySpent = false
 
 ; MESSAGE HANDLERS (PLAYERS)
-mutexMoneyStatus = false; _i = 0; while "_i < 10" do {call format [{[] exec "\TZK_Scripts_4_0_4\Player\Msg\mMoneyStatus%1.sqs"}, _i]; _i = _i + 1}
-[] exec "\TZK_Scripts_4_0_4\Player\Msg\mMoneyTransferred.sqs"
-
-[] exec "\TZK_Scripts_4_0_4\Player\Msg\mMovingToSupport.sqs"
+mutexMoneyStatus = false
 
 mutexSpottedEnemy = false
 arraySpottedEnemy = []; arraySpottedEnemy resize 10; indexSpottedEnemy = 0
 while {indexSpottedEnemy < 10} do {arraySpottedEnemy set [indexSpottedEnemy, objNull], indexSpottedEnemy = indexSpottedEnemy + 1}
 indexEnemyMarker = 0
-0 exec format [{Player\Msg\mEnemySpotted%1.sqs}, _si]
-
-0 exec "Player\Msg\mPingServer.sqs"
 

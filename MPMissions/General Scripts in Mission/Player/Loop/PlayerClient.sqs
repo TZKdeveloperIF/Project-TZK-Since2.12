@@ -116,7 +116,7 @@ _rtsCrossOutdateDur = 10; _rtsAreaOutDateDur = 30;
 		? _money < costRespawn: goto "WaitMoney"
 	
 	#Respawn
-		? costRespawn > 0: [costRespawn] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"
+		? costRespawn > 0: [costRespawn] exec "Net\sMoneySpent.sqs"
 		? !(alive objectRespawn): objectRespawn = [objectRespawn, siPlayer] call funcGetNearestRespawnObject
 
 		_ts = objectRespawn call funcGetStructTypeFromObject

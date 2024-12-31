@@ -1,0 +1,9 @@
+; args: [object, si]
+
+_object = _this select 0
+_si = _this select 1
+_netIdStr = _object call funcGenNetIdStr
+? isNull _object: exit
+
+[_object, _si] exec "\TZK_Patch4_4_0_6\s\Net\hSetRespawnObj.sqs"
+publicExec format [{[UnitById %1,%2] exec "\TZK_Patch4_4_0_6\s\Net\hSetRespawnObj.sqs"}, _object call funcGenNetIdStr, _si]

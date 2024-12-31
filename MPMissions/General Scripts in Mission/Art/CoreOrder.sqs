@@ -343,7 +343,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 
 	# SupportFound
 		? not _isServer: _unit groupChat "Moving to support vehicle for more magazines."
-		? _isServer: [_unit, _sup] exec "\TZK_Scripts_4_0_4\Server\SendMovingToSupport.sqs"
+		? _isServer: [_unit, _sup] exec "Net\sMovingToSupport.sqs"
 		_timeAbort = time + 60 * (if _isInfantry then {15} else {5})
 		? _isStruct: goto "SupportReached"
 		? _isVehicle: _vehicle exec "Art\Undeploy.sqs", {_x doFollow leader _x} forEach crew _vehicle

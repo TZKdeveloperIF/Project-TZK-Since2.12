@@ -1,0 +1,24 @@
+; args: [posStruct, dirStruct, type]
+
+_posStruct = _this select 0
+_dirStruct = _this select 1
+_type = _this select 2
+
+_info = _type + 1000 * giPlayer + 1000 * GroupsNum * siPlayer
+_posX = _posStruct Select 0; _posX = _posX - _posX % 1
+_posY = _posStruct Select 1; _posY = _posY - _posY % 1
+_dirStruct = _dirStruct - _dirStruct % 0.25
+[_info, _posX, _posY, _dirStruct] exec "\TZK_Patch4_4_0_6\s\Net\hBuildStruct.sqs"
+publicExec format [{[%1,%2,%3,%4] exec "\TZK_Patch4_4_0_6\s\Net\hBuildStruct.sqs"}, _info call preprocessFile "Util\Num2Str.sqf", _posX call preprocessFile "Util\Num2Str.sqf", _posY call preprocessFile "Util\Num2Str.sqf", _dirStruct]
+exit
+
+@!(mutexBuildStructure)
+mutexBuildStructure = true
+
+pvBuildStruct_PosX = _posStruct Select 0; PublicVariable "pvBuildStruct_PosX"
+pvBuildStruct_PosY = _posStruct Select 1; PublicVariable "pvBuildStruct_PosY"
+pvBuildStruct_Dir = _dirStruct; PublicVariable "pvBuildStruct_Dir"
+pvBuildStruct_Type = _type + 1000*giPlayer + (1000*GroupsNum)*siPlayer; PublicVariable "pvBuildStruct_Type"
+
+~0.5*sendDelay
+mutexBuildStructure = false

@@ -1,0 +1,13 @@
+; args: _gi + GroupsNum * _si
+? not isServer: exit
+_value = _this
+
+_gi = _value % GroupsNum
+_si = (_value - _gi) / GroupsNum
+
+_group = groupMatrix select _si select _gi
+? _group in (groupAiMatrix select _si): exit
+
+groupCommander set [_si, _group]
+giCO set [_si, _gi]
+[_si, _gi] exec localize {TZK_INFO_SERVER_COMM_CHANGE}

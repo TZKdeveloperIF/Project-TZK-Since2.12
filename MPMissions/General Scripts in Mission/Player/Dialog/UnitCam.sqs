@@ -293,7 +293,7 @@ _return = "External_Update"; goto "UpdateDialog"
 #DisbandAll
 	? not isCommander && not _isAico: player groupchat "Disband all units of a group is only allowed for human commander."; goto _return
 	; ? !(alive _unitTracked) : player groupchat "Selected Unit is not alive."; goto _return
-	[[_unitTracked]] exec "\TZK_Scripts_4_0_4\Player\DisbandAllUnits.sqs"
+	[[_unitTracked]] exec "\TZK_Patch4_4_0_6\s\Player\DisbandAllUnits.sqs"
 
 	? _iView > 0 : iView = 0; goto "ChangeView"
 	goto "Exit"
@@ -302,8 +302,8 @@ _return = "External_Update"; goto "UpdateDialog"
   [[_unitTracked]] exec "\TZK_Scripts_4_0_4\Player\ClearDeadCrew.sqs"
   goto _return
   
-#Disembark
-  [[_unitTracked]] exec "\TZK_Scripts_4_0_4\Player\Msg\sUnitDisembark.sqs"
+# Disembark
+  [[_unitTracked]] exec "Net\sUcDisembark.sqs"
   goto "External_Update"
  
 # Join

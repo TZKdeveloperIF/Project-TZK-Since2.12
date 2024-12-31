@@ -42,7 +42,7 @@ _cost = _cost * customInfEquipRate; _cost = _cost - _cost % 1
 ? _typeHandgun != -1 : _weapon = ((weaponDefs select _typeHandgun) select wdObject); _unit addWeapon _weapon
 ? _typeBinocular != -1 : _weapon = ((weaponDefs select _typeBinocular) select wdObject); _unit addWeapon _weapon
 ? _typeNVG != -1 : _weapon = ((weaponDefs select _typeNVG) select wdObject); _unit addWeapon _weapon
-[_cost] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"; _unit groupChat format ["Equipping completed. Cost $%1", _cost]
+[_cost] exec "Net\sMoneySpent.sqs"; _unit groupChat format ["Equipping completed. Cost $%1", _cost]
 
 #SkipEquipping
 ~10
