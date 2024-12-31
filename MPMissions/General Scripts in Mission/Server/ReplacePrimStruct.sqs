@@ -54,7 +54,7 @@ _index = _list find _objectDestroyed
 mutexEditStructMatrix = true
 ? _index != -1: _list set [_index, _object]
 mutexEditStructMatrix = false
-[_object, _type, _si, 0, _index] exec "\TZK_Scripts_4_0_4\Server\SendStructBuilt.sqs"
+[_object, _type, _si, 0, _index] exec "Net\sStructBuilt.sqs"
 if (_type in structsDestroy) then {(_objects select 0) exec "\TZK_Scripts_4_0_4\Server\StructDestoryAdd.sqs"};
 
 _i = structServer find _objectDestroyed

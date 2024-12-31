@@ -1,0 +1,8 @@
+; args: none
+
+; Start
+
+? pvGameover != -1: exit
+? isNull player: exit
+timeLastPing = time
+? bBlockedByClient: hint format ["Server ping received. Current time: %1", timeLastPing]

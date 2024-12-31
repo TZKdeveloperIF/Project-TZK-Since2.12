@@ -35,7 +35,7 @@ _exec = { // lanbda. "_this" is idx
 		_value = lbValue [_idcList, _this];
 		if (_object call _nearby) then {
 			_salvage = (if (-1 == _value) then {costWorker} else {structDefs select _value select sdCost});
-			[- 0.5 * _salvage] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs";
+			[- 0.5 * _salvage] exec "Net\sMoneySpent.sqs";
 		};
 		if (-1 == _value) then {
 			deleteVehicle _object;
@@ -45,7 +45,7 @@ _exec = { // lanbda. "_this" is idx
 			if not (_value in structsDestroy) then {
 				_object setDamage 1;
 			};
-			if not (_value in structsShelter) then {[_object, false, true] exec "\TZK_Scripts_4_0_4\Player\SendDestruction.sqs"};
+			if not (_value in structsShelter) then {[_object, false, true] exec "Net\sDestruct.sqs"};
 		};
 	};
 };

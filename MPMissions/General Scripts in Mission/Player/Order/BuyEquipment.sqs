@@ -64,7 +64,7 @@ _extraTypeFee = 0
 _cost = _equipFee + _extraTypeFee
 ? _cost > _money && _cost > 0: _msg = format["Not enough money for rearm. ($%1 needed)", _cost]; goto "Abort"
 
-[_cost] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"
+[_cost] exec "Net\sMoneySpent.sqs"
 _unit groupChat format["Rearm Complete. Equipment cost: $%1%2", _equipFee, if (_extraTypeFee > 0) then {format [", extra cost: %1", _extraTypeFee]} else {""}]; 
 removeAllWeapons _unit; {_unit addMagazine _x} forEach _mags; {_unit addWeapon _x} forEach _weapons
 

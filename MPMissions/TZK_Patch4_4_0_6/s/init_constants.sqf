@@ -69,3 +69,18 @@ wpCO = [[], []];
 
 // art module
 mutexTzkArtModule = false;
+
+// Ver 2.12 v02 mutex ReEquip
+mutexReEquip = false;
+
+mutexEditRearmData = false;
+mutexAddToUnitMatrix = false;
+mutexEditStructMatrix = false;
+mutexInitTownGroupVehicles = false;
+mutexStructBuilt = false;
+
+mutexAIGroup = false;
+
+sideRespawnObjects = [objNull, objNull];
+workerBehaviour = [0, 0];
+incomeRateCo = [0.7, 0.7]; incomeRatePlayer = [0.9, 0.9];

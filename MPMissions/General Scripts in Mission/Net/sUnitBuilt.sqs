@@ -1,0 +1,35 @@
+; args: [type, si, giJoin, giBuyer, unit, sendRepeats]
+
+_type = _this select 0
+_si = _this select 1
+_giJoin = _this select 2
+_giBuyer = _this select 3
+_unit = _this select 4
+_repeats = _this select 5
+
+? _giJoin < 0 : _giJoin = 0
+? _giBuyer < 0 : _giBuyer = 0
+
+_try = 0
+#WaitVehicleBuilt
+? !isNull _unit || _try > 100: goto "VehicleCreated"
+_try = _try + 1
+~0.1
+goto "WaitVehicleBuilt"
+
+#VehicleCreated
+	_value = _type + TotalUnitTypes * _giJoin + TotalUnitTypes * GroupsNum * _giBuyer + TotalUnitTypes * GroupsNum * GroupsNum * _si
+	_netIdStr = _unit call funcGenNetIdStr
+	? isNull _unit: exit
+	[_value, _unit] exec "\TZK_Patch4_4_0_6\s\Net\hUnitBuilt.sqs"
+	publicExec format [{[%1,UnitById %2] exec "\TZK_Patch4_4_0_6\s\Net\hUnitBuilt.sqs"}, _value call preprocessFile "Util\Num2Str.sqf", _netIdStr]
+	exit
+
+_value = _type +  TotalUnitTypes *_giJoin +  TotalUnitTypes *GroupsNum*_giBuyer +  TotalUnitTypes *GroupsNum*GroupsNum*_si
+
+
+
+
+? _repeats <= 0: exit
+_delay = if (time < 60) Then {5} Else {0.2}
+~_delay

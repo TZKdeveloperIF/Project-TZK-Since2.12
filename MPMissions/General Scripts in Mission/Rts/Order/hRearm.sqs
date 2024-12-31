@@ -93,7 +93,7 @@ _vehicle = vehicle _unit, _cantMove = false
 	_stopParam set [2, false]
 	? _unit != _vehicle: _vehicle exec "Art\Undeploy.sqs", {_x doFollow leader _x} forEach crew _vehicle
 
-	[_unit, _sup] exec "\TZK_Scripts_4_0_4\Server\SendMovingToSupport.sqs"
+	[_unit, _sup] exec "Net\sMovingToSupport.sqs"
 	_bAir = _vt != -1 && "Air" countType [_vehicle] > 0
 	_bSupH = ((getPosASL _sup) select 2) - ((getPos _sup) call funcHASL)
 	_bVehH = ((getPosASL _vehicle) select 2) - ((getPos _vehicle) call funcHASL)

@@ -1,0 +1,17 @@
+; args: [_amount, _value]
+? not isServer: exit
+
+_amount = _this select 0; _value = _this select 1
+
+_giFrom = _value % GroupsNum
+_value = (_value - _giFrom) / GroupsNum
+
+_giTo = _value % GroupsNum
+_value = (_value - _giTo) / GroupsNum
+
+_si = _value
+
+; ? _giFrom == _giTo && _giFrom == giCO select _si: _giList = [_si] call funcGetAIGroupsIndex; {[_si, _giFrom, _x, _amount] exec localize {TZK_MONEY_SERVER_TRANSFER}} forEach _giList; exit
+? _giFrom == _giTo && _giFrom == giCO select _si: if (_amount < 0) Then {_amount = -_amount, _gi = 0, {if (_giFrom != _gi) Then {[_si, _giFrom, _gi, _amount] exec localize {TZK_MONEY_SERVER_TRANSFER}}, _gi = _gi + 1} forEach (groupMatrix select _si)} Else {_giList = [_si] call funcGetAIGroupsIndex; {[_si, _giFrom, _x, _amount] exec localize {TZK_MONEY_SERVER_TRANSFER}} forEach _giList}; exit
+
+[_si, _giFrom, _giTo, _amount] exec localize {TZK_MONEY_SERVER_TRANSFER}

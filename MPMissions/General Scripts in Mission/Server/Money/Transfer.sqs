@@ -12,9 +12,9 @@ _valid = true
 
 groupMoneyMatrix select _si set [_giFrom, -_amount + (groupMoneyMatrix select _si select _giFrom)]
 groupMoneyMatrix select _si set [_giTo,  _amount + (groupMoneyMatrix select _si select _giTo)]
-? _amount != 0: [_si, _giFrom, 0] exec "\TZK_Scripts_4_0_4\Server\Msg\sMoneyStatus.sqs"; [_si, _giTo, 0] exec "\TZK_Scripts_4_0_4\Server\Msg\sMoneyStatus.sqs"
+? _amount != 0: [_si, _giFrom, 0] exec "Net\sMoneyStatus.sqs"; [_si, _giTo, 0] exec "Net\sMoneyStatus.sqs"
 
-[_si, _giFrom, _giTo, _amount] exec "\TZK_Scripts_4_0_4\Server\SendMoneyTransferred.sqs"
+[_si, _giFrom, _giTo, _amount] exec "Net\sMoneyTransferred.sqs"
 
 {mutexEditMoneyMatrix select _si set [_x, false]} forEach [_giFrom, _giTo]
 

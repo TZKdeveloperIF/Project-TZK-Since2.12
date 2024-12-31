@@ -27,7 +27,7 @@ _trench setPos [_pos1 select 0, (_pos1 select 1) + 0.5, _pos1 select 2]
 
 _money = groupMoneyMatrix select siPlayer select giPlayer
 ? 1000 > _money : _vehicle groupChat "Not enough money for entrenchment. ($1000 needed)"; exit
-[1000] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"
+[1000] exec "Net\sMoneySpent.sqs"
 _vehicle groupChat "Entrenchment ready."
 ; publicVariable "_trench"
 

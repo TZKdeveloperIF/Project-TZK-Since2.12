@@ -1,0 +1,16 @@
+; arg: [si]
+
+_si = _this select 0
+
+_incomeRatio = 0.1*(count (groupAiMatrix select _si))
+
+_numberOfPlayer = (count (groupMatrix select _si)) - (count (groupAiMatrix select _si))
+? _numberOfPlayer > 9: _numberOfPlayer = 9
+_incomeRatio = 0.1 * (10 - _numberOfPlayer)
+
+
+? _incomeRatio < 0.1 && !bool_TZK_MF_Mode: _incomeRatio = 0.1
+? _incomeRatio > 0.1 && !bool_TZK_MF_Mode: _incomeRatio = 0.1
+
+? incomeRateCo select _si != _incomeRatio: [(_incomeRatio * 100) call preprocessFile "Math\Round.sqf", _si] call preprocessFile "Net\sIncomeRateCo.sqf";
+

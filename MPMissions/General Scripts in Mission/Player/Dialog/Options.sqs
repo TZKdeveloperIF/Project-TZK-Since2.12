@@ -74,7 +74,7 @@ _groupsAI = groupAiMatrix select siPlayer
 _groupCommander = (groupCommander select siPlayer)
 
 {ctrlShow [_x, bool_TZK_199_Mode]} forEach [_idcRadioONBtn]; {ctrlShow [_x, false]} forEach [_idcRadioONBG]
-_res = [_idcTransferAmount, _idcIncomeRatio, _idcIncomeRatioPlayer, -1, _idcReports, _idcTransferCommandGroup, _idcWorkerBehaviour, _idcAIRespawn] call loadFile "\TZK_Scripts_4_0_4\Player\Dialog\Options_Init.sqf"
+_res = [_idcTransferAmount, _idcIncomeRatio, _idcIncomeRatioPlayer, -1, _idcReports, _idcTransferCommandGroup, _idcWorkerBehaviour, _idcAIRespawn] call loadFile "\TZK_Patch4_4_0_6\s\Dialog\Options_Init.sqf"
 _currentAiRespawn = _res select 0; _respawnObjects = _res select 1
 
 ctrlSetText [_idcCmdRule, format ["CMD %1 %2", localize {TZK_LANG_RULE}, localize {TZK_LANG_MENU}]]
@@ -103,14 +103,10 @@ ctrlShow [_idcRadioONBG, bool_TZK_RadioReceive_199]
 ; ctrlSetText [_idcMusic, ["Music OFF", "Music ON"] select bool_TZK_Music]
 ; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 
-? _currentAiRespawn != (lbCurSel _idcAIRespawn): _currentAiRespawn = (lbCurSel _idcAIRespawn), if (_currentAiRespawn != -1) Then {call format ["pvRespawnObjectAi%1 = (_respawnObjects select _currentAiRespawn); PublicVariable {pvRespawnObjectAi%1}", siPlayer]}
+? _currentAiRespawn != (lbCurSel _idcAIRespawn): _currentAiRespawn = (lbCurSel _idcAIRespawn), if (_currentAiRespawn != -1) then {[_respawnObjects select _currentAiRespawn, siPlayer] exec "Net\sSetRespawnObj.sqs"}
 
 [_idcMoney, _idcScore, _idcIncomeRatio, _idcIncomeRatioPlayer, _idcTowns, _idcIncome, _idcTransferGroup, -1, _idcWorkerBehaviour, _idcUpgradeList ] call loadFile "\TZK_Scripts_4_0_5\Player\Dialog\Options_Update.sqf"
 call preprocessFile "Player\Dialog\Options_Update.sqf"
-
-; 4.0.4 Patch
-; _incomeRatio = [pvIncomeRatio0, pvIncomeRatio1] select (siPlayer == si1);
-; _incomeRatioPlayer = [pvIncomeRatioPlayer0, pvIncomeRatioPlayer1] select (siPlayer == si1);
 
 
 ; REPORTS
@@ -174,7 +170,7 @@ goto "Update"
 ;      _granted = false;
 ;      call format [{_granted = grant_%1_%2_%3},siPlayer,_index,giPlayer]; _grantedx = true;
 ;      ? ((_amount <= 500) and ((groupMoneyMatrix select siPlayer select giPlayer) < 500) and (((groupMatrix select siPlayer) select _index) == _groupCommander)): _granted = true;
-;	? (_granted): [siPlayer, _index, giPlayer, _amount] exec "\TZK_Scripts_4_0_4\Player\Msg\sGiveMoney.sqs"
+;	? (_granted): [siPlayer, _index, giPlayer, _amount] exec "Net\sGiveMoney.sqs"
 ;      ? (! _granted): hint "Permission Denied!"; _grantedx = false;
 ;	goto "Update"
 
@@ -187,14 +183,14 @@ goto "Update"
 	_amount = lbValue [_idcTransferAmount, lbCurSel _idcTransferAmount]
 	? _amount == 114514 : _amount = ( _money % 100 )
 	? _amount == 50000 : _amount = _money
-	[siPlayer, giPlayer, _index, _amount] exec "\TZK_Scripts_4_0_4\Player\Msg\sGiveMoney.sqs"
+	[siPlayer, giPlayer, _index, _amount] exec "Net\sGiveMoney.sqs"
 	goto "Update"
 	
 #GiveMoneyToAI
 	_amount = lbValue [_idcTransferAmount, lbCurSel _idcTransferAmount]
 	? _amount == 114514 : _amount = ( _money % 100 )
 	? _amount == 50000 : _amount = _money / count(_groupsAI), _amount = _amount - _amount%1
-	[siPlayer, giPlayer, giPlayer, _amount] exec "\TZK_Scripts_4_0_4\Player\Msg\sGiveMoney.sqs"
+	[siPlayer, giPlayer, giPlayer, _amount] exec "Net\sGiveMoney.sqs"
 	goto "Update"
 
 #GiveMoneyToAll
@@ -202,7 +198,7 @@ goto "Update"
 	? _amount == 114514 : _amount = ( _money % 100 )
 	? _amount == 50000 : _amount = _money / count(_groups - [_groupCommander]), _amount = _amount - _amount%1
 	_amount = - _amount
-	[siPlayer, giPlayer, giPlayer, _amount] exec "\TZK_Scripts_4_0_4\Player\Msg\sGiveMoney.sqs"
+	[siPlayer, giPlayer, giPlayer, _amount] exec "Net\sGiveMoney.sqs"
 	goto "Update"
 
 
@@ -215,7 +211,7 @@ goto "Update"
 	_amount = lbValue [_idcTransferAmount, lbCurSel _idcTransferAmount]
 	? _amount == 114514 : _amount = ( (_groupsMoney select _index) % 100 )
 	? _amount == 50000 : _amount = (_groupsMoney select _index)
-	[siPlayer, giPlayer, _index, -_amount] exec "\TZK_Scripts_4_0_4\Player\Msg\sGiveMoney.sqs"
+	[siPlayer, giPlayer, _index, -_amount] exec "Net\sGiveMoney.sqs"
 	goto "Update"
 	
 ;#DisbandUnit
@@ -331,7 +327,8 @@ goto "Update"
   _group = (groupMatrix select siPlayer) select _gi
 	? (_group == _groupCommander): goto "Update"
 	? (_group in (groupAiMatrix select siPlayer)): hint "You cant transfer command to an AI group leader"; goto "Update"
-	pvCO = _gi + GroupsNum*siPlayer; PublicVariable "pvCO"
+
+	(_gi + GroupsNum * siPlayer) exec "Net\sChangeCo.sqs"
 	goto "Update"
 
 #SaveReport
@@ -370,7 +367,7 @@ goto "Update"
 	_group = _groups select _index
 	? (groupPlayer == _group): hint "Well I think you're not an AI since you're so smart that you are tend to check whether you are an AI."; goto "Update"
 	? _group in _groupsAI : hint "This group is AI."; goto "Update"
-	_index exec "\TZK_Scripts_4_0_4\Player\Msg\sCheckAI.sqs"; hint "Checking whether the group is AI. Please wait for the result."
+	(_index + siPlayer * GroupsNum) exec "Net\sCheckAI.sqs"
 	goto "Update"
 
 # ConcurrentRts
