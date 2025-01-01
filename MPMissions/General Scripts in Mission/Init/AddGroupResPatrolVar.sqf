@@ -1,8 +1,8 @@
-// args: [group]
+// args: group
 
 private [{_group}];
 
-_group = _this select 0;
+_group = _this;
 
 patrolGroups set [count patrolGroups, _group];
 

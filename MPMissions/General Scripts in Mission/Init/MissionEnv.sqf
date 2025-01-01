@@ -8,6 +8,7 @@ towns = [];
 
 // side constants
 si0 = 0; si1 = 1; siRes = 2; siBoth = 3; siCiv = 4;
+sides = [west, east, resistance];
 
 // global groups variable declare
 townGroups=[ [], [], [] ]; workerGroups = [ [], [] ]; patrolGroups = [];
