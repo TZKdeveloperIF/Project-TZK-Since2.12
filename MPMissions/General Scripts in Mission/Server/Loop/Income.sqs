@@ -10,9 +10,7 @@ _sendSideMoneySpend = "Net\sMoneySideSpent.sqs"
 	[si0, moneySpent select si0] exec _sendSideMoneySpend
 	[si1, moneySpent select si1] exec _sendSideMoneySpend
 
-	@ pvMatchRuleDefined
-
-	_timeNext = 60 + pvMatchStartTime
+	_timeNext = 60 + tzkMatchStartTime
 	_totalIncome0 = startMoney select si0; _totalIncome1 = startMoney select si1
 
 	_totalIncome = [_totalIncome0, _totalIncome1]; _moneyPerScore = 10

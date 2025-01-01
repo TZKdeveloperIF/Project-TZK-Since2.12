@@ -18,20 +18,6 @@ BurningPlanes = [];
 0 exec "Player\Marker\Generate.sqs"
 0 exec "\TZK_Scripts_4_0_6\Player\DynamicInitializationTrigger.sqs"
 
-
-; game has begun after this pause
-~0.1
-[] exec "\TZK_Scripts_4_0_4\Player\LoadSettings.sqs"
-; 4.0.5.18 update
-; 0 exec "Player\GetDeltaTime.sqs"
-; 4.0.6.14
-; need delay to wait until bNumberedAI readed
-[{bNumberedAI call preprocessFile "Player\Marker\SwitchNumberAi.sqf"}, 1] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
-
-; Send bool_TZK_Hide_Score status
-; todo: this should better be called by "LoadSettings.sqs"
-[{bool_TZK_Hide_Score exec "Network\sModifyScoreConfuserState.sqs"}, 10 + giPlayer * 2] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
-
-0 exec "Version\CWA_CE_DelayOverwritePplSettings.sqs"
+0 exec "Player\LoadSetting.sqs"
 
 ; EOF

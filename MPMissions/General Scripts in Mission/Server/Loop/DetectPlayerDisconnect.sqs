@@ -7,6 +7,9 @@ _this = 0
 
 ? !isServer : exit
 
+; skip server hoster
+? not isNull player: if (player == leader _group) then {exit}
+
 # CheckDisconnect
 	~30
 	? !(local leader _group) : goto "CheckDisconnect"

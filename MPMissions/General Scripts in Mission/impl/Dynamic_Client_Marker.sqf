@@ -1,5 +1,3 @@
-"TZK_Info" setMarkerText "Mod Version: @TZK_4.0.6. Check ""Notes"" for more info.";
-
 comment "Create base group markers";
 _i = 0;
 _j = 0; while {_j < 12} do {

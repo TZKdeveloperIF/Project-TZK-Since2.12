@@ -1,4 +1,4 @@
-; args: lock: array reference
+; args: none
 
 ? !isServer: goto "Quit"
 
@@ -14,7 +14,11 @@
 
 	; Broadcast variables
 	TzkCustomStartPos = [-1, -1, -1, -1]
-	pvStartPosRes = (if (random 1 > 0.5) then {1} else {0}), publicVariable {pvStartPosRes}
+	TzkStartPosRes = (if (random 1 > 0.5) then {1} else {0}), publicVariable {TzkStartPosRes}
+
+	0 exec "\TZK_Patch4_4_0_6\s\Net\hStartMsg.sqs"
+	publicExec {0 exec "\TZK_Patch4_4_0_6\s\Net\hStartMsg.sqs"}
+
 	_timeAbort = 60
 	# loop
 		~ 1
@@ -22,16 +26,17 @@
 		? _time > _timeAbort: goto "Degrade"
 		goto "loop"
 	# PosDefined
-		[[TzkCustomStartPos select 0, TzkCustomStartPos select 1], [TzkCustomStartPos select 2, TzkCustomStartPos select 3]] exec "Server\DeployStartPosition.sqs"
+		[[TzkCustomStartPos select 0, TzkCustomStartPos select 1], [TzkCustomStartPos select 2, TzkCustomStartPos select 3]] exec "Init\SvrStartPosGet.sqs"
 		TzkCustomStartPos = _nil
-		pvCmdFinishedMakingRule = true; publicVariable {pvCmdFinishedMakingRule}
 	goto "Quit"
 
 # Degrade
 	fixedStartPos = 1, publicVariable {fixedStartPos}
 # SkipRuleDefine
-	pvCmdFinishedMakingRule = true; publicVariable {pvCmdFinishedMakingRule}
+	1 exec "\TZK_Patch4_4_0_6\s\Net\hStartMsg.sqs"
+	publicExec {1 exec "\TZK_Patch4_4_0_6\s\Net\hStartMsg.sqs"}
+
 	0 exec "Server\GenerateStartPositions.sqs"
 	goto "Quit"
 # Quit
-	_this set [0, false]
+	exit

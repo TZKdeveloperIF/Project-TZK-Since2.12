@@ -1,3 +1,5 @@
+// args: [custom info]
+
 {_try = 0; _si = _x; {
 	_gi = (groupMatrix select _si) find (_x);
 	while {_try < 10 && _gi == -1} do {
@@ -31,3 +33,16 @@
 		startMoneyPlayer set [_si, 14*(startMoneyPlayer select _si)];
 	}
 } forEach [si0, si1];
+
+// process custom info
+if (_this select 0) then {
+	private [{_playerSi}, {_aicoSi}, {_val}];
+	_playerSi = _this select 3; _aicoSi = siEnemy select _playerSi;
+
+	if (_this select 1 != -1) then {
+		startMoney set [_playerSi, _this select 1];
+	};
+	if (_this select 2 != -1) then {
+		startMoney set [_aicoSi, _this select 2];
+	};
+};

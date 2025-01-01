@@ -33,7 +33,6 @@ ratioAttackEnemy = ([0.70, 0.70] select dev);
 mutexEditMoneyMatrix = false;
 mutexMovingToSupport = false;
 
-scoreMoney = [[],[]];
 groupsPatrol = []; groupPatrolJoinMatrix = []; mutexInitResGroups = false; mutexResPatrolScript = false;
 
 mutexAddResPatrol = false;
@@ -43,6 +42,10 @@ FreeMhqWallTime = [-9999, -9999];
 mutexWallMhq = [false, false];
 FreeMgCnt = [3, 3];
 true exec "Common\Init\Confuser.sqs";
+
+Array_TZK_Town_Triggered_By = [];
+Array_TZK_Group_MaybeAi = [];
+
 // 4.0.6.40
 // redefine mutexBuildingQueue as a matrix
 mutexBuildingQueue = [[], []];

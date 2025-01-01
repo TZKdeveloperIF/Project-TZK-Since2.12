@@ -1,7 +1,6 @@
 // args: [scripts]
 
 // side info
-si0 = 0; si1 = 1; siRes = 2; siBoth = 3; siCiv = 4;
 siEnemy = [si1, si0];
 sideNames = ["West", "East", "Resistance", "Both", "Civilian"];
 groupName = ["WEST", "EAST", "GUER", "", "CIVL"];
@@ -51,7 +50,6 @@ Musics0 = [
 	"Track11", "Track12", "Track15", "Track16", "Frost",
 	"RTrack1a", "RTrack4", "RTrack5", "RTrack8", "RTrack9", "RTrack10"
 ];
-music0 = 0;
 Musics1h = ["Track14", "RTrack1b", "RTrack3", "RTrack6", "RTrack7"];
 music1h = 0;
 Musics10m = ["Track1", "Track2", "Track3", "Track4", "Track5", "Track6", "Track7", "Track8", "Track10", "RTrack2"];
@@ -84,3 +82,6 @@ mutexAIGroup = false;
 sideRespawnObjects = [objNull, objNull];
 workerBehaviour = [0, 0];
 incomeRateCo = [0.7, 0.7]; incomeRatePlayer = [0.9, 0.9];
+
+// Modularize initialization
+tzkMatchStartTime = 0;

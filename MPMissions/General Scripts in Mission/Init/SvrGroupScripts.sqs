@@ -11,7 +11,7 @@
 ; Groups are recorded in init.sqs thus have to wait unitl game started. 
 ; Number of town groups should rely on number of towns.
 
-~2
+; ~2
 
 ; there're 25 * 3 town groups predefined in mission.sqm now. create more group by script 
 ; command hasn't widely applied and tested yet. There were bugs appear when defined 24 towns with 2*1k town
@@ -77,24 +77,6 @@ _count = (count towns) / 2.5; _index = 0; _patrolGroup = grpNull
 ; ===============================Functional Groups===============================
 ; script here should start after a delay, if they applied "createGroup" command. This command should be executed after groups' ID are set, or game may crash.
 west exec "\TZK_Patch4_4_0_6\s\Server\AASystem.sqs"; east exec "\TZK_Patch4_4_0_6\s\Server\AASystem.sqs"
-
-
-exit
-
-; =============================Clean up Leaders and Groups============================
-~2
-{deleteVehicle (units _x select 0)} forEach (workerGroups select 0)
-{deleteVehicle (units _x select 0)} forEach (workerGroups select 1)
-
-_index = _indexRemoveTG
-while "_index < count (townGroups select si0)" do { {deleteVehicle _x} forEach units ((townGroups select si0) select _index); _index = _index + 1 }
-_index = _indexRemoveTG
-while "_index < count (townGroups select si1)" do { {deleteVehicle _x} forEach units ((townGroups select si1) select _index); _index = _index + 1 }
-~2
-_index = _indexRemoveTG
-while "_index < count (townGroups select si0)" do { deleteGroup ((townGroups select si0) select _index); _index = _index + 1 }
-_index = _indexRemoveTG
-while "_index < count (townGroups select si1)" do { deleteGroup ((townGroups select si1) select _index); _index = _index + 1 }
 
 
 ;EOF

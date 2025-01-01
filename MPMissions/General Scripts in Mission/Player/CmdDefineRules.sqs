@@ -3,10 +3,10 @@
 
 # loop
 	~ 0.5
-	? pvStartPosRes == -1 && _time < 60: goto "loop"
+	? TzkStartPosRes == -1 && _time < 60: goto "loop"
 
 ? _time >= 60: exit
-_startPos = getPosASL (call format ["FixStart_%1", (siPlayer + pvStartPosRes) % 2])
+_startPos = getPosASL (call format ["FixStart_%1", (siPlayer + TzkStartPosRes) % 2])
 _deltaTime = 60 - time; _deltaTime = _deltaTime - _deltaTime % 1
 _animDispTime = 2
 ? _deltaTime < _animDispTime: exit

@@ -3,13 +3,7 @@
 ; args: none
 ? bool_TZK_199_Mode: exit
 
-; Radio Triggers for players
-; {call format ["Radio00%1 = createTrigger [{EmptyDetector}, [0,0,0]]", _x]} forEach [0,1,2,3,4,5,6,7,8,9]
-; {call format ["publicVariable {Radio00%1}", _x]} forEach [0,1,2,3,4,5,6,7,8,9]
-
 ; Town Flag Triggers
-@ pvMatchRuleDefined
-~ 10
 ? 0 == count towns: "None towns in mission" call fDebugLog
 
 _count = count towns; _index = 0
@@ -25,6 +19,6 @@ call format [{ TrigDym%1 = createTrigger [{EmptyDetector}, getPos _flag]; TrigDy
 _index = _index + 1
 ? _index < _count : goto "SetTownTriggers"
 
-call loadFile "impl\Dynamic_Server_Trigger.sqf"
+; impl when necessary
 
 ; EOF

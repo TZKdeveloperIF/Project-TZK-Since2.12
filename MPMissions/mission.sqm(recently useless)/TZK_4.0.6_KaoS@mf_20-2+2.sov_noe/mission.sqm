@@ -1,5 +1,5 @@
 version=11;
-#include "TZK_Scripts_4_0_6\mission.h"
+#include "TZK_Patch4_4_0_6\s\mission.h"
 class Mission
 {
 	addOns[]=
@@ -51,7 +51,7 @@ class Mission
 					leader=1;
 					skill=0.200000;
 					text="resistance_Center";
-					init="bool_TZK_Vanilla_Mode = true; bool_TZK_199_Mode = true; bool_TZK_MF_Mode = true; gameEndType = -1; towns=[]; [47431,47432,47433,47434,47436] exec ""\TZK_Scripts_4_0_4\Server\InitRepairableObjects.sqs""; [] exec ""\TZK_Scripts_4_0_4\Server\InitDestroyIslandObject.sqs""";
+					init="bool_TZK_Vanilla_Mode = true; bool_TZK_199_Mode = true; bool_TZK_MF_Mode = true; call preprocessFile {Init\MissionEnv.sqf}; [47431,47432,47433,47434,47436] exec ""\TZK_Scripts_4_0_4\Server\InitRepairableObjects.sqs""; [] exec ""\TZK_Scripts_4_0_4\Server\InitDestroyIslandObject.sqs""";
 				};
 			};
 		};

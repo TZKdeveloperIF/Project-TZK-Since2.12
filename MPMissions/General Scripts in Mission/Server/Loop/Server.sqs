@@ -1,6 +1,4 @@
-; arg: 0
-
-@ pvMatchRuleDefined
+; arg: none
 
 _mhqAlive = [true, true]
 _mcvAlive = [false, false]
@@ -16,7 +14,7 @@ _onGameEnd = {0 exec localize {TZK_TRIGGER_GAME_END_COMMON}, 0 exec "Log\OnGameO
 # Update
 	~ 2
 
-	_gameTime = time - pvMatchStartTime
+	_gameTime = time - tzkMatchStartTime
 	? pvGameOver != -1 : call _onGameEnd; exit
 
 	? _gameTime > TzkRtsWriteTime + 30 && TzkRtsId4Gc != TzkRtsSvrId: 0 exec "Rts\Framework\Gc.sqs"

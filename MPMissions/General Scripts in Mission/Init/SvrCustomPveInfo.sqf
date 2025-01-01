@@ -16,10 +16,16 @@ if (_coGrp0 in (groupAiMatrix select si0) || _coGrp1 in (groupAiMatrix select si
 		_pvVar = _pvVar + _si * _coef; _coef = _coef * count sides;
 		_pvVar = _pvVar + _gi * _coef;
 		player globalChat format [
-			"%1, %2, %3, pvCustomPveStatus: %4", _si, _gi, ((groupMatrix select _si) - (groupAiMatrix select _si)), _pvVar],
+			"%1, %2, %3, custom pve status: %4", _si, _gi, ((groupMatrix select _si) - (groupAiMatrix select _si)), _pvVar],
 	};
 };
 if (-1 == _pvVar) then {_pvVar = 0};
 
-pvCustomPveStatus = _pvVar; publicVariable {pvCustomPveStatus};
-if (0 == _pvVar) then {pvCustomPveFinished = true};
+// inform player to finish custom PVE info
+_pvVar exec "Init\PplCallbackCustomPve.sqs";
+publicExec format [{%1 exec "Init\PplCallbackCustomPve.sqs"}, _pvVar];
+
+// If unnecessary, server will continue initialization and player don't have to callback
+if (0 == _pvVar) then {
+	[false] exec "Init\SvrCustomPveFinished.sqs";
+};

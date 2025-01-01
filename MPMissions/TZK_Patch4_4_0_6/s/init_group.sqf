@@ -57,8 +57,7 @@ comment {Planning to Initialize worker and town groups};
     };
 } forEach [si0, si1];
 
-// define another global variable for all groups. They're widely used thus prepare a singleton
-tzkAllGroups = [ [], [] ];
+// init tzkAllGroups
 {
     _si = _x; _i = 0; _groups = tzkAllGroups select _si;
 	{
@@ -66,6 +65,7 @@ tzkAllGroups = [ [], [] ];
 		_i = _i + 1;
 	} forEach (groupMatrix select _si);
 } forEach [si0, si1];
+
 // define global variable for auto-buy info
 // store infomations in a matrix
 AutoBuyInfo = [[],[]];

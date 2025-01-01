@@ -31,7 +31,7 @@ _idcPar1List = IDC + 16 * 3 + 4
 _idcPar2Label = IDC + 16 * 3 + 5
 _idcPar2List = IDC + 16 * 3 + 6
 
-_bias1 = 4, _offsetOrder1End = -2
+_bias1 = 0, _offsetOrder1End = 0
 ; load from config
 _lastOrder = "LastOrder" call preprocessFile "Cfg\LoadPlayerValue.sqf", _oldValLo = _lastOrder
 call preprocessFile "Player\Dialog\OrderPlayerAi_Init.sqf"
@@ -175,7 +175,7 @@ _selectedOrder = -1
 	? _lastOrder == -1: hint "No order selected", goto "Update"
 
 	; ignore invalidated item
-	? _lastOrder >= 0 && _lastOrder <= 3 || _lastOrder > 16: goto "Update"
+	? _lastOrder >= 0 && _lastOrder < _bias1 || _lastOrder >= count aiOrders1 - _offsetOrder1End: goto "Update"
 
 	_params = []
 	? (count (_order select 1)) >= 1: _params set [0, lbCurSel _idcPar0List]

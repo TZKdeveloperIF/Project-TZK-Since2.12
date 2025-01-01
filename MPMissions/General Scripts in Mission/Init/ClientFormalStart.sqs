@@ -1,0 +1,17 @@
+; eager init contents
+
+; args: [[match start time, music0], [west mhq pos, east mhq pos]]
+
+? isNull player: exit
+
+_otherInfo = _this select 0;
+tzkMatchStartTime = _otherInfo select 0;
+_music0 = _otherInfo select 1;
+
+_music0 exec "\TZK_Patch4_4_0_6\s\Player\MusicGameStart.sqs";
+
+_mhqPosInfo = _this select 1;
+
+? siPlayer == siCiv: call preprocessFile "Init\CivFormalStart.sqf"
+? siPlayer == si0: [_mhqPosInfo select 0, _mhqPosInfo select 1] call preprocessFile "Init\PplFormalStart.sqf";
+? siPlayer == si1: [_mhqPosInfo select 2, _mhqPosInfo select 3] call preprocessFile "Init\PplFormalStart.sqf";

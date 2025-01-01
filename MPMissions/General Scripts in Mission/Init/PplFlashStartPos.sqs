@@ -1,0 +1,19 @@
+; args: start pos
+_mhqPos = _this
+
+; flash start pos by marker
+_marker = "Art0"
+_size = getMarkerSize _marker
+_marker setMarkerSize [1, 1]
+
+_i = 0
+# FlashStart
+	_marker setMarkerPos ( [_mhqPos, hiddenMarkerPos] select ((_i % 2) == 0) )
+	~ 0.2
+	_i = _i + 1
+	? _i < 10: goto "FlashStart"
+
+; Hide start pos marker after some time
+~ 35
+_marker setMarkerPos hiddenMarkerPos
+_marker setMarkerSize _size
