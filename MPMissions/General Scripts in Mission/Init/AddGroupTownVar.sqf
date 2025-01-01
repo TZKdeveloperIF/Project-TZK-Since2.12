@@ -1,9 +1,9 @@
-// args: [group, si]
+// args: group
 
 private [{_group}, {_si}];
 
-_group = _this select 0;
-_si = _this select 1;
+_group = _this;
+_si = sides find (side _group);
 
 (townGroups select _si) set [count (townGroups select _si), _group];
 

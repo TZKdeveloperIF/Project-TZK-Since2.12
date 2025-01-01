@@ -4,7 +4,6 @@
 siEnemy = [si1, si0];
 sideNames = ["West", "East", "Resistance", "Both", "Civilian"];
 groupName = ["WEST", "EAST", "GUER", "", "CIVL"];
-sides = [west, east, resistance];
 flags = ["\flags\USA.jpg", "\flags\CHINA.jpg", "\flags\FIA.jpg"];
 if (bool_TZK_SEMod_Mode) then {
 	sides = [west, east, resistance, unknown, civilian];
