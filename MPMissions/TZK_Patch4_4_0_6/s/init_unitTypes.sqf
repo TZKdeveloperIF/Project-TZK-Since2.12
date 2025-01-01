@@ -294,15 +294,15 @@ unitDefs set [_type, ["QUAD", 250, _si, 20, "QUAD_xj400", "\GST_KawaP\KPpict", 2
 _quadW = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Jeep", 400, _si, 20, "Jeep_xj400", "ijeepMUTT", 2^_st, [1, _crewW], _mCar, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["Jeep", 400, _si, 20, "Jeep_C_xj400", "ijeepMUTT", 2^_st, [1, _crewW], _mCar, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
 _jeepW = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Jeep Ammo", 700, _si, 20, "Jeep_xj400", "ijeepMUTT", 2^_st, [1, _crewW], _mAmmo, ["\TZK_Scripts_4_0_5\Common\InitAmmojeep.sqs"]] ];
+unitDefs set [_type, ["Jeep Ammo", 700, _si, 20, "Jeep_C_xj400", "ijeepMUTT", 2^_st, [1, _crewW], _mAmmo, ["\TZK_Scripts_4_0_5\Common\InitAmmojeep.sqs"]] ];
 jeepaW = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Jeep Radar", 800, _si, 20, "Jeep_Radar_xj400", "ijeepMUTT", 2^_st, [1, _crewW], _mRadarCar, []] ];
+unitDefs set [_type, ["Jeep Radar", 800, _si, 20, "Jeep_Radar_C_xj400", "ijeepMUTT", 2^_st, [1, _crewW], _mRadarCar, []] ];
 _jeepRadarW = _type;
 _type = _type + 1;
 
@@ -313,11 +313,11 @@ unitDefs set [_type, [
 _m151a1cW = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Jeep MG", 500, _si, 30, "JeepMG_xj400", "ijeepmg", -1, [2, _crewW], _mCar, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["Jeep MG", 500, _si, 30, "JeepMG_C_xj400", "ijeepmg", -1, [2, _crewW], _mCar, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
 _jeepMGW = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["HMMWV", 400, _si, 30, "HMMWV_xj400", "\humr\ihmmwv", 2^_st, [1, _crewW], _mCar, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["HMMWV", 400, _si, 30, "HMMWV_C_xj400", "\humr\ihmmwv", 2^_st, [1, _crewW], _mCar, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
 _hummerW = _type;
 _type = _type + 1;
 
@@ -351,21 +351,21 @@ unitDefs set [_type, ["AMX-10RC", 1500, _si, 30, "OFrP_AMX10RC", "im60", -1, [3,
 _AMX10W = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["5t Truck", 500, _si, 30, "Truck5t_xj400", "itruck5t", 2^_st, [1, _crewW], _mTruck, [localize {TZK_EQUIP_UNIT_TRUCK}]] ];
+unitDefs set [_type, ["5t Truck", 500, _si, 30, "Truck5t_C_xj400", "itruck5t", 2^_st, [1, _crewW], _mTruck, [localize {TZK_EQUIP_UNIT_TRUCK}]] ];
 _truckW = _type;
 _type = _type + 1;
 
 _price = [_costRepTruck, 2*_costRepTruck] select PricingMode;
-unitDefs set [_type, ["Support 5t Truck", _price, _si, 30, "Truck5tRepair_xj400", "itruck5trepair", 2^stLight + 2^stAir, [1, _crewW], _mSupport, ["Common\InitSupportVehicle.sqs"]] ];
+unitDefs set [_type, ["Support 5t Truck", _price, _si, 30, "Truck5tRepair_C_xj400", "itruck5trepair", 2^stLight + 2^stAir, [1, _crewW], _mSupport, ["Common\InitSupportVehicle.sqs"]] ];
 _supportTruckW = _type;
 _type = _type + 1;
 
 _price = [_costRepTruck, 2*_costRepTruck] select PricingMode;
-unitDefs set [_type, ["Support 5t Truck - miner", _price, _si, 30, "Truck5tRepair_xj400", "itruck5trepair", 2^_st, [1, _minerW], _mSupport, ["Common\InitSupportVehicle.sqs"]] ];
+unitDefs set [_type, ["Support 5t Truck - miner", _price, _si, 30, "Truck5tRepair_C_xj400", "itruck5trepair", 2^_st, [1, _minerW], _mSupport, ["Common\InitSupportVehicle.sqs"]] ];
 _supportTruckW2 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Fuel 5t Truck", 500, _si, 30, "Truck5tRefuel_xj400", "iTruck5tfuel", 2^_st, [1, _crewW], _mTruck, ["\TZK_Patch4_4_0_6\s\Common\InitFuelTruck.sqs"]] ];
+unitDefs set [_type, ["Fuel 5t Truck", 500, _si, 30, "Truck5tRefuel_C_xj400", "iTruck5tfuel", 2^_st, [1, _crewW], _mTruck, ["\TZK_Patch4_4_0_6\s\Common\InitFuelTruck.sqs"]] ];
 _truckRefuelW = _type;
 _type = _type + 1;
 
@@ -482,11 +482,11 @@ unitDefs set [_type, ["4xAA", 8000, _si, 30, "Vulcan_TZK_xj400", "\VULCAN\ivulca
 _vulcanW2 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["M60", 1000, _si, 30, "M60_xj400", "im60", 2^_st, [3, _crewW], _mTank, []] ];
+unitDefs set [_type, ["M60", 1000, _si, 30, "M60_C_xj400", "im60", 2^_st, [3, _crewW], _mTank, []] ];
 _tankLightW01 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["M60-120S", 2000, _si, 30, "M60_120S_xj400", "im60", 2^_st, [3, _crewW], _mTank, []] ];
+unitDefs set [_type, ["M60-120S", 2000, _si, 30, "M60_120S_C_xj400", "im60", 2^_st, [3, _crewW], _mTank, []] ];
 _tankLightW02 = _type;
 _type = _type + 1;
 
@@ -888,15 +888,15 @@ unitDefs set [_type, ["QUAD", 250, _si, 20, "QUAD_xj400", "\GST_KawaP\KPpict", 2
 _quadE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["UAZ", 400, _si, 20, "UAZ_xj400", "iuaz", 2^_st, [1, _crewE], _mCar, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["UAZ", 400, _si, 20, "UAZ_C_xj400", "iuaz", 2^_st, [1, _crewE], _mCar, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
 _uazE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["UAZ Ammo", 700, _si, 20, "UAZ_xj400", "iuaz", 2^_st, [1, _crewE], _mAmmo, ["\TZK_Scripts_4_0_5\Common\InitAmmojeep.sqs"]] ];
+unitDefs set [_type, ["UAZ Ammo", 700, _si, 20, "UAZ_C_xj400", "iuaz", 2^_st, [1, _crewE], _mAmmo, ["\TZK_Scripts_4_0_5\Common\InitAmmojeep.sqs"]] ];
 uazaE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["UAZ Radar", 800, _si, 20, "UAZ_Radar_xj400", "iuaz", 2^_st, [1, _crewE], _mRadarCar, []] ];
+unitDefs set [_type, ["UAZ Radar", 800, _si, 20, "UAZ_Radar_C_xj400", "iuaz", 2^_st, [1, _crewE], _mRadarCar, []] ];
 _uazRadarE = _type;
 _type = _type + 1;
 
@@ -911,7 +911,7 @@ unitDefs set [_type, ["UAZ DShK", 650, _si, 20, "BAS_RUSUAZ_DShK", "iuaz", -1, [
 _uazMGE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["BRDM", 400, _si, 30, "BRDM_xj400", "\BRMD\ibrmd", 2^_st, [1, _crewE], _mCar, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["BRDM", 400, _si, 30, "BRDM_C_xj400", "\BRMD\ibrmd", 2^_st, [1, _crewE], _mCar, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
 _brdmE = _type;
 _type = _type + 1;
 
@@ -942,21 +942,21 @@ _motorE = _type;
 _type = _type + 1;
 
 
-unitDefs set [_type, ["Ural", 500, _si, 30, "Ural_xj400", "iural", 2^_st, [1, _crewE], _mTruck, [localize {TZK_EQUIP_UNIT_TRUCK}]] ];
+unitDefs set [_type, ["Ural", 500, _si, 30, "Ural_C_xj400", "iural", 2^_st, [1, _crewE], _mTruck, [localize {TZK_EQUIP_UNIT_TRUCK}]] ];
 _truckE = _type;
 _type = _type + 1;
 
 _price = [_costRepTruck, 2*_costRepTruck] select PricingMode;
-unitDefs set [_type, ["Support Ural", _price, _si, 30, "UralRepair_xj400", "iuralrepair", 2^stLight + 2^stAir, [1, _crewE], _mSupport, ["Common\InitSupportVehicle.sqs"]] ];
+unitDefs set [_type, ["Support Ural", _price, _si, 30, "UralRepair_C_xj400", "iuralrepair", 2^stLight + 2^stAir, [1, _crewE], _mSupport, ["Common\InitSupportVehicle.sqs"]] ];
 _supportTruckE = _type;
 _type = _type + 1;
 
 _price = [_costRepTruck, 2*_costRepTruck] select PricingMode;
-unitDefs set [_type, ["Support Ural-miner", _price, _si, 30, "UralRepair_xj400", "iuralrepair", 2^_st, [1, _minerE], _mSupport, ["Common\InitSupportVehicle.sqs"]] ];
+unitDefs set [_type, ["Support Ural-miner", _price, _si, 30, "UralRepair_C_xj400", "iuralrepair", 2^_st, [1, _minerE], _mSupport, ["Common\InitSupportVehicle.sqs"]] ];
 _supportTruckE2 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Fuel Ural", 500, _si, 30, "UralRefuel_xj400", "iuralfuel", 2^_st, [1, _crewE], _mTruck, ["\TZK_Patch4_4_0_6\s\Common\InitFuelTruck.sqs"]] ];
+unitDefs set [_type, ["Fuel Ural", 500, _si, 30, "UralRefuel_C_xj400", "iuralfuel", 2^_st, [1, _crewE], _mTruck, ["\TZK_Patch4_4_0_6\s\Common\InitFuelTruck.sqs"]] ];
 _truckRefuelE = _type;
 _type = _type + 1;
 
@@ -1073,15 +1073,15 @@ unitDefs set [_type, ["Tunguska", 8000, _si, 30, "2S6_DKM_xj400", "\TZK_Texture_
 _tunguskaE = _type; _shilkaE2 = _tunguskaE;
 _type = _type + 1;
 
-unitDefs set [_type, ["T55", 1000, _si, 30, "T55E_xj400", "it55", 2^_st, [3, _crewE], _mTank, []] ];
+unitDefs set [_type, ["T55", 1000, _si, 30, "T55E_C_xj400", "it55", 2^_st, [3, _crewE], _mTank, []] ];
 _tankLightE01 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["T72", 2000, _si, 30, "T72_xj400", "it72", 2^_st, [3, _crewE], _mTank, []] ];
+unitDefs set [_type, ["T72", 2000, _si, 30, "T72_C_xj400", "it72", 2^_st, [3, _crewE], _mTank, []] ];
 _tankLightE02 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["(Empty)", 2000, _si, 30, "T72_xj400", "it72", -1, [3, _crewE], _mTank, []] ];
+unitDefs set [_type, ["(Empty)", 2000, _si, 30, "T72_C_xj400", "it72", -1, [3, _crewE], _mTank, []] ];
 _tankLightE03 = _type;
 _type = _type + 1;
 

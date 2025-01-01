@@ -398,6 +398,146 @@ class CfgVehicles {
 		cost = 400000; // raise to QUAD_xj400 level
 		model = "\TZK_Patch4_4_0_6\Model\JAWA250.p3d"; // adjust zamerny to make it easier to be hit
 	};
+
+	// =============================================== Car/Truck ===============================================
+	// New definitions without hiddenSelections and dynamic texture
+	class Car: LandVehicle {};
+	class Jeep: Car {};
+	class Jeep_xj400: Jeep {};
+	class Jeep_C_xj400: Jeep_xj400 {
+		hiddenSelections[] = {tzk_tex_00, Box006};
+		class EventHandlers {
+			Init = "";
+		};
+	};
+	class JeepMG: Jeep {};
+	class JeepMG_xj400: JeepMG {};
+	class JeepMG_C_xj400: JeepMG_xj400 {
+		hiddenSelections[] = {tzk_tex_00};
+		class EventHandlers {
+			Init = "";
+		};
+	};
+	class Jeep_Radar_xj400: Jeep_xj400 {};
+	class Jeep_Radar_C_xj400: Jeep_Radar_xj400 {
+		hiddenSelections[] = {tzk_tex_00};
+		class EventHandlers {
+			Init = "";
+		};
+	};
+	class HMMWV_xj400: Jeep {};
+	class HMMWV_C_xj400: HMMWV_xj400 {
+		hiddenSelections[] = {tzk_tex_00};
+		class EventHandlers {
+			Init = "";
+		};
+	};
+	class UAZ: Car {};
+	class UAZ_xj400: UAZ {};
+	class UAZ_C_xj400: UAZ_xj400 {
+		hiddenSelections[] = {tzk_tex_00, Box006};
+		class EventHandlers {
+			Init = "";
+		};
+	};
+	class UAZ_Radar_xj400: UAZ_xj400 {};
+	class UAZ_Radar_C_xj400: UAZ_Radar_xj400 {
+		hiddenSelections[] = {tzk_tex_00};
+		class EventHandlers {
+			Init = "";
+		};
+	};
+	class BRDM_xj400: LandVehicle {};
+	class BRDM_C_xj400: BRDM_xj400 {
+		hiddenSelections[] = {tzk_tex_00};
+		class EventHandlers {
+			Init = "";
+		};
+	};
+	class Truck: Car {};
+	class Truck5t: Truck {};
+	class Truck5tRepair: Truck5t {};
+	class Truck5tReammo: Truck5t {};
+	class Truck5tRefuel: Truck5t {};
+	class Truck5t_xj400: Truck5t {};
+	class Truck5t_C_xj400: Truck5t_xj400 {
+		hiddenSelections[] = {tzk_tex_00};
+		class EventHandlers {
+			Init = "";
+		};
+	};
+	class Truck5tRepair_xj400: Truck5tRepair {};
+	class Truck5tRepair_C_xj400: Truck5tRepair_xj400 {
+		hiddenSelections[] = {tzk_tex_00};
+		class EventHandlers {
+			Init = "";
+		};
+	};
+	class Truck5tRefuel_xj400: Truck5tRefuel {};
+	class Truck5tRefuel_C_xj400: Truck5tRefuel_xj400 {
+		hiddenSelections[] = {tzk_tex_00};
+		class EventHandlers {
+			Init = "";
+		};
+	};
+	class Ural: Truck {};
+	class UralRepair: Ural {};
+	class UralReammo: Ural {};
+	class UralRefuel: Ural {};
+	class Ural_xj400: Ural {};
+	class Ural_C_xj400: Ural_xj400 {
+		hiddenSelections[] = {tzk_tex_00};
+		class EventHandlers {
+			Init = "";
+		};
+	};
+	class UralRepair_xj400: UralRepair {};
+	class UralRepair_C_xj400: UralRepair_xj400 {
+		hiddenSelections[] = {tzk_tex_00};
+		class EventHandlers {
+			Init = "";
+		};
+	};
+	class UralRefuel_xj400: UralRefuel {};
+	class UralRefuel_C_xj400: UralRefuel_xj400 {
+		hiddenSelections[] = {tzk_tex_00};
+		class EventHandlers {
+			Init = "";
+		};
+	};
+
+	// =============================================== Light Tank ===============================================
+	// New definitions without hiddenSelections
+	class M60_Base_xj400: Tank_xj400 {};
+	class M60_xj400: M60_Base_xj400 {};
+	class M60_C_xj400: M60_xj400 {
+		hiddenSelections[] = {tzk_tex_00};
+		class EventHandlers {
+			Init = "";
+		};
+	};
+	class M60_120S_xj400: M60_xj400 {};
+	class M60_120S_C_xj400: M60_120S_xj400 {
+		hiddenSelections[] = {tzk_tex_00};
+		class EventHandlers {
+			Init = "";
+		};
+	};
+	class T55_Base_xj400: Tank_xj400 {};
+	class T55E_xj400: T55_Base_xj400 {};
+	class T55E_C_xj400: T55E_xj400 {
+		hiddenSelections[] = {pruh_FIA, tzk_tex_00};
+		class EventHandlers {
+			Init = _vehicle = _this select 0, _vehicle setObjectTexture [(typeOf _vehicle GetVehicleParamArray {hiddenSelections}) find {pruh_FIA}, {east_01.paa}];
+		};
+	};
+	class T72_xj400: T72_Base_xj400 {};
+	class T72_C_xj400: T72_xj400 {
+		hiddenSelections[] = {"pruh", tzk_tex_00};
+		class EventHandlers {
+			Init = "";
+		};
+	};
 };
 
 class CfgMarkers {
