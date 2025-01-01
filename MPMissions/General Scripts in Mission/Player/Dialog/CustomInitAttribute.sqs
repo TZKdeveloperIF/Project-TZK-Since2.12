@@ -14,6 +14,8 @@ ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bo
 _si = siPlayer; _gi = giPlayer
 _idcPlayerMoney = IDC + 30; _idcAicoMoney = IDC + 31
 
+_customPlayerMoney = -1; _customAicoMoney = -1;
+
 ; main loop
 btnValue00 = 0
 # Update
@@ -35,22 +37,21 @@ btnValue00 = 0
 		_input = [_text, -1] call preprocessFile "Util\Str2Num.sqf";
 		? _input < 0: hint "Invalid Player Money Value.", goto "Update"
 
-		pvCustomPlayerMoney = _input
-		? pvCustomPlayerMoney > 999999: pvCustomPlayerMoney = 999999
-		publicVariable {pvCustomPlayerMoney}
+		_customPlayerMoney = _input
+		? _customPlayerMoney > 999999: _customPlayerMoney = 999999
 	# SkipPlayerMoney
 		_text = ctrlText _idcAicoMoney
 		? _text == "": goto "SkipAicoMoney"
 		_input = [_text, -1] call preprocessFile "Util\Str2Num.sqf";
 		? _input < 0: hint "Invalid AICO Money Value.", goto "Update"
 
-		pvCustomAicoMoney = _input
-		? pvCustomAicoMoney < 60000: pvCustomAicoMoney = 60000
-		? pvCustomAicoMoney > 999999: pvCustomAicoMoney = 999999
-		publicVariable {pvCustomAicoMoney}
+		_customAicoMoney = _input
+		? _customAicoMoney < 60000: _customAicoMoney = 60000
+		? _customAicoMoney > 999999: _customAicoMoney = 999999
 	# SkipAicoMoney
 		closeDialog 0; goto "Quit"
 
 # Quit
-	pvCustomPveFinished = true; publicVariable {pvCustomPveFinished}
+	[true, _customPlayerMoney, _customAicoMoney, siPlayer] exec "Init\SvrCustomPveFinished.sqs"
+	publicExec format [{[%1,%2,%3,%4] exec "Init\SvrCustomPveFinished.sqs"}, true, _customPlayerMoney call preprocessFile "Util\Num2Str.sqf", _customAicoMoney call preprocessFile "Util\Num2Str.sqf", siPlayer]
 	exit

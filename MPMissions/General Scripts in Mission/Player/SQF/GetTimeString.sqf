@@ -1,6 +1,6 @@
 private ["_sec", "_s", "_m", "_h", "_text"];
 
-_sec = if (count _this > 0) then {_this select 0} Else {time - pvMatchStartTime};
+_sec = if (count _this > 0) then {_this select 0} Else {time - tzkMatchStartTime};
 
 _sec = _sec - (_sec % 1);
 _s = _sec % 60;

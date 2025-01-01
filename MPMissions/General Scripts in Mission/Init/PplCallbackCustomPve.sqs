@@ -1,11 +1,11 @@
-; args: pvCustomPveStatus
+; args: encoded custom pve status
 _val = _this
 
 _bit = _val % 2
 _val = (_val - _bit) / 2
 
 _needCustom = (if (1 == _bit) then {true} else {false})
-? not _needCustom: pvCustomPveFinished = true, exit
+? not _needCustom: exit
 
 _si = _val % count sides
 _val = (_val - _si) / count sides

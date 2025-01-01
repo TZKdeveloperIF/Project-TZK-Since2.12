@@ -1,5 +1,7 @@
-; args: none
+; args: [west mhq pos, east mhq pos]
 ; create start vehicles belongs to both side on the beginning. After having defined start pos they'll be placed soon
+
+_posSide0 = _this select 0; _posSide1 = _this select 1
 
 ~ 1
 
@@ -36,9 +38,6 @@ _list = vehiclesStart select _si; _i = 0; _c = count _list
 # Side1Created
 
 
-@ pvMatchRuleDefined
-
-_posSide0 = [pvMhq0x, pvMhq0y]; _posSide1 = [pvMhq1x, pvMhq1y]
 _vector = [_posSide1, _posSide0] call funcVectorSub; _dir = 0
 
 ? (_vector select 0) != 0 && (_vector select 1) != 0: _dir = (_vector select 0) atan2 (_vector select 1)

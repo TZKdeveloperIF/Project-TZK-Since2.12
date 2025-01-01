@@ -1,4 +1,10 @@
-; args : none
+; args: none
+
+; ======================================== post process of initialization in mission.sqm ========================================
+
+; todo: use first group to init baseGroup
+baseGroup = [grpNull, grpNull];
+
 
 ; ======================================== environment variables ========================================
 
@@ -31,11 +37,8 @@ call preprocessFile "Log\Install.sqf"
 ; join black list should be defined on all clients and server
 TzkJoinBlackList = []
 
-pvCmdFinishedMakingRule = false; pvMatchRuleDefined = false; pvMatchStartTime = 0
-pvStartPosRes = -1
-pvMhq0x = -1, pvMhq0y = -1, pvMhq1x = -1, pvMhq1y = -1
+TzkStartPosRes = -1
 
-pvCustomPveStatus = -1, pvCustomPveFinished = false
 ; 4.0.6.37
 call preprocessFile "Art\InitEquipments.sqf"
 ; 4.0.6.29
@@ -50,8 +53,7 @@ call preprocessFile "Common\Init\Group.sqf"
 call loadFile "\TZK_Scripts_4_0_6\init_param.sqf"
 fixedStartPos = param1
 
-"" call preprocessFile "\TZK_Patch4_4_0_6\s\init_upgrade.sqf"
-call preprocessFile "Version\CWA_CE_UpgradeRename.sqf"
+"impl\Upgrade.sqf" call preprocessFile "\TZK_Patch4_4_0_6\s\init_upgrade.sqf"
 ? bool_TZK_Lester_Mode: [{[] exec "Extra\init_upgrade.sqs"}, 0.1] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
 
 call preprocessFile "\TZK_Patch4_4_0_6\s\init_theWorld.sqf"
@@ -66,8 +68,6 @@ call preprocessFile "\TZK_Patch4_4_0_6\s\init_unitTypes.sqf"
 0 exec "\TZK_Patch4_4_0_6\s\init_equipmentTypes.sqs"
 ; 4.0.5.15/16 updating
 0 exec "\TZK_Patch4_4_0_6\s\Cwv\Init.sqs"
-; delay call in case of initialization unfinished
-[{call loadFile "impl\Upgrade.sqf"}, 10] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
 ; 4.0.5.21 updating
 0 exec "Common\InitObserverMode.sqs"
 
@@ -118,10 +118,6 @@ _posY = 0
 { _posX = _posX + ((getPos (_x select tdFlag)) select 0); _posY = _posY + ((getPos (_x select tdFlag)) select 1) } foreach towns
 posCenter = [_posX/_c, _posY/_c]
 
-townGroups=[ [], [], [] ]; workerGroups = [ [], [] ]; patrolGroups = []
-functionalGroups = [ [], [] ]
-baseGroup = [grpNull, grpNull]
-mutexDynamicInitializeGroups = false; 60 exec "Common\Dynamic\GroupsClear.sqs"
 timeReinforceTown = 3*60
 
 ? !bool_TZK_199_Mode && (bool_TZK_MF_Mode || bool_TZK_Yugo_Mode): call loadFile "Extra\DynamicTriggerRemove.sqf"

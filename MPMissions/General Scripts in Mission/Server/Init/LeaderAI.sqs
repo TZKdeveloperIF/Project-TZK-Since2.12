@@ -1,8 +1,9 @@
-; args: [unit, si, gi]
+; args: [unit, si, gi, mhqPos]
 
 _unit = _this select 0
 _si = _this select 1
 _gi = _this select 2
+_mhqPos = _this select 3
 
 ? !isServer : exit
 
@@ -10,14 +11,11 @@ _pos = getPosASL _unit, _pos set [2, 400]
 ; _para = "pwr_paraG_xj400" camCreate _pos
 ; _para setPosASL _pos, _unit moveInDriver _para
 
-; game has begun after this pause
-~ 2
+; game must has begun
 
 ? !(local _unit) : exit
 
-@ pvMatchRuleDefined
-
-_initPlace = [_unit, _si, _gi, true] 
+_initPlace = [_unit, _si, _gi, true, _mhqPos] 
 _initPlace exec "Common\PlaceGroupLeader.sqs"
 [_unit, _si] exec localize {TZK_AI_LEADER_EQUIP}
 

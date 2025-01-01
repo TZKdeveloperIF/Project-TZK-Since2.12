@@ -11,13 +11,14 @@ maxVehicleMarkers = 150
 maxStructureMarkers = 50; mutexMarkerStructure = false
 ? bool_TZK_199_Mode: goto "SkipCreation"
 ?!bool_TZK_199_Mode && !(bool_TZK_MF_Mode || bool_TZK_Yugo_Mode): goto "Skip199MarkerRemove"
+
 ?!bool_TZK_199_Mode && (bool_TZK_MF_Mode || bool_TZK_Yugo_Mode): [] exec "Extra\DynamicMarkerRemove.sqs", Marker_TZK_199Rem = false
 @ Marker_TZK_199Rem
 Marker_TZK_199Rem = false
 
-#Skip199MarkerRemove
+# Skip199MarkerRemove
 _marker = "TZK_Info"; createMarker [_marker, [2560,1024] ]; _marker setMarkerSize [0,0]; _marker setMarkerColor _colorPurple;  _marker setMarkerType "Warning"; 
-_marker setMarkerText "Mod Version: @TZK_4.0.0;@TZK_4.0.3;@TZK_4.0.4;@TZK_4.0.5. Check ""Notes"" for more info."
+_marker setMarkerText "Mod Version: @TZK_4.0.6. Check ""Notes"" for more info.";
 ? bool_TZK_SEMod_Mode: _marker setMarkerText "Mod Version: @TZK_4.0.3SE;@TZK_4.0.4. Check ""Notes"" for more info."
 ? bool_TZK_MF_Mode && !bool_TZK_199_Mode: _marker setMarkerText "Mod Version: mfcti1.16.pbo, rmfcti1.16.pbo (by ScoRPioN), TZK critical PBOs."
 ? bool_TZK_Yugo_Mode && !bool_TZK_199_Mode: _marker setMarkerText "Mod Version: @totalyugowar, TZK_Objects.pbo in @TZK_4.0.3 and TZK_Config_4_0_4.pbo in @TZK_4.0.4. Check ""Notes"" for more info."
@@ -135,7 +136,7 @@ _marker = "Respawn_vehicle_east"; createMarker [_marker, hiddenMarkerPos]; _mark
 _marker = "Respawn_vehicle_guerrila"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerColor "ColorBlack";  _marker setMarkerType "Start";
 _marker = "Respawn_vehicle_civilian"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerColor "ColorWhite";  _marker setMarkerType "Start";
 	
-#SkipCreation
+# SkipCreation
 _si = sides find (side player)
 ? _si == -1 : _si = siCiv
 _si exec "Player\Marker\Initialization.sqs"
@@ -143,6 +144,6 @@ _si exec "Player\Marker\Initialization.sqs"
 ?!bool_TZK_199_Mode && (bool_TZK_MF_Mode || bool_TZK_Yugo_Mode): Marker_TZK_199Rem = true
 
 ? name player == "IF": player sideChat "Marker created."
-call loadFile "impl\Dynamic_Client_Marker.sqf"
+call preprocessFile "impl\Dynamic_Client_Marker.sqf"
 
 ; EOF
