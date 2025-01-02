@@ -18,7 +18,7 @@ _si = _headInfo call _funcGetSi
 _interval = 5
 _nearbyVehiclesParamCache = [[], 150, ([[utMHQ0], [utMHQ1]] select _si) + [typesEngineeringVeh select _si], []]
 _cost = structDefs select stBridge select sdCost
-_funcEngineerVehiclesWork = preprocessFile "\TZK_Patch4_4_0_6\s\Bridge\NearbyEngineerVehicleWork.sqf"
+_funcEngineerVehiclesWork = loadFile "\TZK_Patch4_4_0_6\s\Bridge\NearbyEngineerVehicleWork.sqf"
 
 _c = _headInfo call ("GetSegmentCnt" call _funcGenerator)
 # loop

@@ -1,4 +1,4 @@
-// args: none
+comment {args: none} ;
 private [
 	{_idxOfBridgeId}
 	, {_i}, {_c}, {_project}, {_headInfo}, {_beginPos}, {_endPos}, {_centerPos}, {_marker}

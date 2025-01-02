@@ -1,4 +1,4 @@
-// SCORE
+comment {SCORE} ;
 _type = 0;
 scoreDefs = [];
 scInfantry = _type; scoreDefs set [_type, ["Infantry", 1]]; _type = _type + 1;
@@ -57,7 +57,7 @@ comment {Planning to Initialize worker and town groups};
     };
 } forEach [si0, si1];
 
-// init tzkAllGroups
+comment {init tzkAllGroups} ;
 {
     _si = _x; _i = 0; _groups = tzkAllGroups select _si;
 	{
@@ -66,8 +66,8 @@ comment {Planning to Initialize worker and town groups};
 	} forEach (groupMatrix select _si);
 } forEach [si0, si1];
 
-// define global variable for auto-buy info
-// store infomations in a matrix
+comment {define global variable for auto-buy info} ;
+comment {store infomations in a matrix} ;
 AutoBuyInfo = [[],[]];
 _eStruct = 0; _eType = 1; _eNum = 2;
 {

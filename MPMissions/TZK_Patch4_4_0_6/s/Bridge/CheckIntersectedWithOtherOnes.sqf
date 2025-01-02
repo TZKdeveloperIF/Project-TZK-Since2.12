@@ -1,4 +1,4 @@
-// args: [_beginPos, _endPos]
+comment {args: [_beginPos, _endPos]} ;
 private [{_i}, {_c}
 	, {_funcGenerator}, {_funcGetHead}, {_funcGetValid}, {_funcGetBegin}, {_funcGetEnd}
 	, {_funcIntersected}

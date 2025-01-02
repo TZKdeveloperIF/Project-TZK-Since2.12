@@ -1,14 +1,14 @@
-// AI ORDERS;
-// aiOrders format: [name, [param 0, param 1, ...], subdlg or units exec only 1 but not each script, script, description];
-// aiOrders param# format: [nameParam, countParams, funcToText, default]
+comment {AI ORDERS;} ;
+comment {aiOrders format: [name, [param 0, param 1, ...], subdlg or units exec only 1 but not each script, script, description];} ;
+comment {aiOrders param# format: [nameParam, countParams, funcToText, default]} ;
 
 playerOrderID = []; _i = 0; while {_i < 13} do {playerOrderID set [_i, 0]; _i = _i + 1};
 orderCheck = {_id < playerOrderID select _uid}; mutexUnitOrder = false;
 
-// There used to be aiOrders2 but now removed
+comment {There used to be aiOrders2 but now removed} ;
 aiOrders1 = [];
 
-// todo: remove descriptions
+comment {todo: remove descriptions} ;
 _param0 = ["Waypoint", countWPPlayer, {format[{wp%1}, _this]}, 0];
 aiOrders1 set [count aiOrders1, [
 	localize {TZK_LANG_PPL_MOVE_WP}, [_param0], false, "\TZK_Scripts_4_0_4\Player\Order\MoveWP.sqs",

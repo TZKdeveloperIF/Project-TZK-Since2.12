@@ -1,7 +1,7 @@
-// args: none
+comment {args: none} ;
 
-// args: [type, si, gi, pos, dir]
-// return: objects
+comment {args: [type, si, gi, pos, dir]} ;
+comment {return: objects} ;
 fBuildStruct = preprocessFile localize {TZK_SERVER_FUNC_BUILD_STRUCT};
 
 funcFindNullForward = {
@@ -15,36 +15,36 @@ funcFindNullForward = {
 	_i
 };
 
-// args: [unit, si, gi]
-// return: whether need repair/heal
-funcCheckRepair = preprocessFile "\TZK_Scripts_4_0_4\Server\SQF\CheckRepair.sqf";
+comment {args: [unit, si, gi]} ;
+comment {return: whether need repair/heal} ;
+funcCheckRepair = loadFile "\TZK_Scripts_4_0_4\Server\SQF\CheckRepair.sqf";
 
-// args: [unit, si, gi]
-// return: whether need rearm
+comment {args: [unit, si, gi]} ;
+comment {return: whether need rearm} ;
 funcCheckRearm = preprocessFile "Server\SQF\CheckRearm.sqf";
 
-funcMoveAI = preprocessFile "\TZK_Scripts_4_0_4\Server\SQF\MoveAI.sqf";
-funcMoveStand = preprocessFile "\TZK_Scripts_4_0_4\Server\SQF\MoveStand.sqf";
-funcWatch = preprocessFile "\TZK_Scripts_4_0_4\Server\SQF\Watch.sqf";
-funcBiggestKA = preprocessFile "\TZK_Scripts_4_0_4\Server\SQF\BiggestKA.sqf";
+funcMoveAI = loadFile "\TZK_Scripts_4_0_4\Server\SQF\MoveAI.sqf";
+funcMoveStand = loadFile "\TZK_Scripts_4_0_4\Server\SQF\MoveStand.sqf";
+funcWatch = loadFile "\TZK_Scripts_4_0_4\Server\SQF\Watch.sqf";
+funcBiggestKA = loadFile "\TZK_Scripts_4_0_4\Server\SQF\BiggestKA.sqf";
 
-// args: [type, driver, gunner, commander, pos, dir, si, gi, groupJoin, giBuyer, sendRepeats]
-// return: vehicle
-// using this function to create units on Server and return Vehicle for Server scripts to check if Vehicle created (combine with "@" operator).
-funcAddServerUnit = preprocessFile "\TZK_Scripts_4_0_4\Server\SQF\AddServerUnit.sqf";
+comment {args: [type, driver, gunner, commander, pos, dir, si, gi, groupJoin, giBuyer, sendRepeats]} ;
+comment {return: vehicle} ;
+comment {using this function to create units on Server and return Vehicle for Server scripts to check if Vehicle created (combine with "@" operator).} ;
+funcAddServerUnit = loadFile "\TZK_Scripts_4_0_4\Server\SQF\AddServerUnit.sqf";
 
-// args: [si, structType, ccReq] (e.g. [si0, stBarracks, true])
-// return: factory
-funcGetIdleFactories = preprocessFile "\TZK_Scripts_4_0_4\Server\SQF\GetIdleFactories.sqf";
+comment {args: [si, structType, ccReq] (e.g. [si0, stBarracks, true])} ;
+comment {return: factory} ;
+funcGetIdleFactories = loadFile "\TZK_Scripts_4_0_4\Server\SQF\GetIdleFactories.sqf";
 
-// arguments: [pos, distance]
-// returns: [ [vehicle, dist], ...]
-funcGetNearbyTransports = preprocessFile "\TZK_Scripts_4_0_4\Server\SQF\GetNearbyTransports.sqf";
+comment {arguments: [pos, distance]} ;
+comment {returns: [ [vehicle, dist], ...]} ;
+funcGetNearbyTransports = loadFile "\TZK_Scripts_4_0_4\Server\SQF\GetNearbyTransports.sqf";
 
-// args: thislist
-// return: units
+comment {args: thislist} ;
+comment {return: units} ;
 funcUpdateTownCheckUnits = if !bool_TZK_SEMod_Mode then {
-	preprocessFile "\TZK_Scripts_4_0_4\Server\SQF\UpdateTownCheckUnits.sqf"
+	loadFile "\TZK_Scripts_4_0_4\Server\SQF\UpdateTownCheckUnits.sqf"
 } else {
 	preprocessFile "Extra\Function\UpdateTownCheckUnitsNT.sqf"
 };

@@ -1,4 +1,4 @@
-// structDefs defines all buildable structures
+comment {structDefs defines all buildable structures} ;
 alignDefs = []; alignTypes = [];
 
 structDefs = []; structMarker = [];
@@ -17,7 +17,7 @@ sdObjects1 = 10;
 sdScriptsServer = 11;
 sdScriptsPlayer = 12;
 
-// Structure Markers
+comment {Structure Markers} ;
 
 _mBarrack = "Soldier_Marker_xj400";
 _mLight = "Truck_Marker_xj400";
@@ -33,10 +33,10 @@ _mMortar = if !bool_TZK_199_Mode then {"Mortar_Marker_xj400"} else {"Bike_Marker
 _mMG = "MachineGun_Marker_xj400";
 _mRadar = "Tower_Marker_xj400";
 
-// knowsAbout level for enemy structure reports
+comment {knowsAbout level for enemy structure reports} ;
 kaStruct = 1;
 
-// object format: [oName, nRot, aPos]
+comment {object format: [oName, nRot, aPos]} ;
 _type = 0; _texPath = "\TZK_Texture_4_0_0\CTI_";
 if bool_TZK_Vanilla_Mode then {_texPath = "\TZK_Objects\"};
 
@@ -671,7 +671,7 @@ structDefs set [_type, [
 st20mHeightRoof = _type;
 _type = _type + 1;
 
-// define special wall ONLY for "wall MHQ"
+comment {define special wall ONLY for "wall MHQ"} ;
 _price = [300, 600] select PricingMode;
 _objects = [["wall_xj400", 90, [0,0,0]]];
 _image = [_texPath + "Image\Struct\WallH.jpg",_texPath + "Image\Struct\WallH.jpg"];
@@ -729,17 +729,17 @@ structsOccupiableMGGround = [_mg, _mgFort,  _staticMG, _staticGL, _staticAT];
 structsOccupiableMGTower = [_mgTowerWood, _mgTowerConcrete];
 structsOccupiableGunfort = [_gunf, _staticAaLauncher];
 structsOccupiableHowitzer = [_m119, _d30];
-// for RTS build structure classify
+comment {for RTS build structure classify} ;
 structsWalls = [_wall, _walls, _roof, _roofHigh, _tanktr, _artPlain, _sandbag];
 structBuilding = []; structBuilding resize count structDefs;
 _i = 0; while {_i < count structDefs} do {structBuilding set [_i, _i]; _i = _i + 1};
 structBuilding = structBuilding - structsCritcal - structsDefence - structsWalls - [stTankTrap, stWireFence];
 
 
-// do server stuff only
+comment {do server stuff only} ;
 if isServer then {
-	// format [type, timeBuild, posRelMhq, dirBuilder]
-	// dirBuilder is the direction the builder faces when building the structure
+	comment {format [type, timeBuild, posRelMhq, dirBuilder]} ;
+	comment {dirBuilder is the direction the builder faces when building the structure} ;
 	bdType = 0; bdTime = 1; bdPos = 2; bdDir = 3;
 	baseDefs = [];
 	if !bool_TZK_MF_Mode then {
@@ -814,7 +814,7 @@ if bool_TZK_Yugo_Mode then {
 	call loadFile "Extra\Struct_Yugo_Redef.sqf";
 } else {
 	if bool_TZK_Vanilla_Mode then {
-		// Remove baracken/dvd_v2 structures
+		comment {Remove baracken/dvd_v2 structures} ;
 		{structDefs select _x set [sdSides, -1]} forEach [_m119, _d30, _mgTowerConcrete, _gunf, _roof, _roofHigh, _tanktr, _artPlain];
 		structDefs select _mgTowerWood set [sdImage, ["\TZK_Objects\Image\Struct\MGTower.jpg","\TZK_Objects\Image\Struct\MGTower.jpg"]];
 
@@ -861,4 +861,4 @@ if bool_TZK_Yugo_Mode then {
 	};
 };
 
-// EOF
+comment {EOF} ;

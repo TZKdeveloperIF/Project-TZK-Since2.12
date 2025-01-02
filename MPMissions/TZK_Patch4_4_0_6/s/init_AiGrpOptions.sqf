@@ -1,5 +1,5 @@
-// ======================================== AI GROUP SETTINGS ========================================
-// setting definition entry format: [ name, [s0, s1, ...], default ]
+comment {======================================== AI GROUP SETTINGS ========================================} ;
+comment {setting definition entry format: [ name, [s0, s1, ...], default ]} ;
 aiSettingDefs = []; _type = 0;
 
 aisPickupWaitTimeDefs = [0, 120, 240, 360, 480, 600, 720, 840, 960, 1080, 1800, 3600, 5940];
@@ -79,7 +79,7 @@ if bool_TZK_SEMod_Mode then {
 };
 _type = _type + 1;
 
-// "4 history setting items"
+comment {"4 history setting items"} ;
 _type = _type + 4;
 
 aisWatch = _type;
@@ -186,12 +186,12 @@ _type = _type + 1;
 _default = [];
 { _default set [count _default, _x select 2] } foreach aiSettingDefs;
 
-// current setting entry format: [orderID, orderType, [param 0, param 1, ...]]
+comment {current setting entry format: [orderID, orderType, [param 0, param 1, ...]]} ;
 aiSetting = [ [], [] ];
 _si = si0; _list = aiSetting select _si; { _list set [ count _list, +_default ] } foreach (groupMatrix select _si);
 _si = si1; _list = aiSetting select _si; { _list set [ count _list, +_default ] } foreach (groupMatrix select _si);
-// Fix error definition in aiSetting"
-// todo: what error?
+comment {Fix error definition in aiSetting} ;
+comment {todo: what error?} ;
 {
 	_list = aiSetting select _x; _list resize (count (groupMatrix select _x));
 }
@@ -199,9 +199,9 @@ forEach [si0, si1];
 
 
 
-// ======================================== AI GROUP ORDERS ========================================
-// order def entry format: [name, params, script]
-// order def param format: [name, countFunc, toTextFunc]
+comment {======================================== AI GROUP ORDERS ========================================} ;
+comment {order def entry format: [name, params, script]} ;
+comment {order def param format: [name, countFunc, toTextFunc]} ;
 _dirIndexToText = {["All", "N", "NE", "E", "SE", "S", "SW", "W", "NW"] select _this};
 _coCnt = {count (wpCO select siPlayer)};
 _coDispStr = {
@@ -284,7 +284,7 @@ orderHalt = _type;
 orderDefs set [_type, [localize {TZK_LANG_HALT}, [], "Server\Order\Halt.sqs"] ];
 _type = _type + 1;
 
-// order entry format: [orderID, orderType, [param 0, param 1, ...]]
+comment {order entry format: [orderID, orderType, [param 0, param 1, ...]]} ;
 orderMatrix = [ [], [] ];
 _si = si0; _gi = 0; { (orderMatrix select _si) set [ _gi, [0, orderTakeHoldTowns, [3, 1]] ]; _gi = _gi + 1 } foreach (groupMatrix select _si);
 _si = si1; _gi = 0; { (orderMatrix select _si) set [ _gi, [0, orderTakeHoldTowns, [3, 1]] ]; _gi = _gi + 1 } foreach (groupMatrix select _si);

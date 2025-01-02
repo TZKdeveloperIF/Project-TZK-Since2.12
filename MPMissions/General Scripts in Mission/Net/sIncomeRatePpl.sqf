@@ -4,5 +4,5 @@
 private [{_value}];
 _value = (_this select 0) + 128 * (_this select 1);
 
-_value call preprocessFile "\TZK_Patch4_4_0_6\s\Net\hIncomeRatePpl.sqf";
-publicExec format [[{%1 call preprocessFile "\TZK_Patch4_4_0_6\s\Net\hIncomeRatePpl.sqf"}, _value]];
+_value call loadFile "\TZK_Patch4_4_0_6\s\Net\hIncomeRatePpl.sqf";
+publicExec format [[{%1 call loadFile "\TZK_Patch4_4_0_6\s\Net\hIncomeRatePpl.sqf"}, _value]];

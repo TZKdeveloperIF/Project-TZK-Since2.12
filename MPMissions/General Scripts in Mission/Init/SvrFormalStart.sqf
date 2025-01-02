@@ -50,7 +50,7 @@ music10m = (-0.5 + random count Musics10m); PublicVariable "music10m";
 
 
 // distribute money to groups
-call preprocessFile "\TZK_Scripts_4_0_6\Server\Msg\sStartMoney.sqf";
+call loadFile "\TZK_Scripts_4_0_6\Server\Msg\sStartMoney.sqf";
 
 // special process on AICO
 call preprocessFile "Init\SvrAicoUpg.sqf";
@@ -90,7 +90,7 @@ if bool_TZK_199_Mode then {
 // Vote System. Server Design. Requiring "AI group leader" judged results. No problem for after-start delay, but msg script should start after variables having defined.
 voteRate = 0.66; VoteMassComm = [2, 1] select bool_TZK_199_Mode; VoteMassAdmin = 1000; Vote_Result = [];
 {Vote_Result set [count Vote_Result, []]} forEach Vote_Matrix;
-call preprocessFile "\TZK_Scripts_4_0_4\Server\Init\Vote.sqf";
+call loadFile "\TZK_Scripts_4_0_4\Server\Init\Vote.sqf";
 // format of Vote_Result elements: [voted value, mass of voter, si, gi]
 // Vote_Options_Name = []; {Vote_Options_Name set [count Vote_Options_Name, _x select 0]} forEach Vote_Matrix
 

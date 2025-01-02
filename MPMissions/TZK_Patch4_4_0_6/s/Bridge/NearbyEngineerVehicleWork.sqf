@@ -1,4 +1,4 @@
-// args: 2D-array returned by funcGetNearbyVehicles (format: array of [_vehicle, _type, _distance])
+comment {args: 2D-array returned by funcGetNearbyVehicles (format: array of [_vehicle, _type, _distance])} ;
 private [
 	{_i}, {_c}
 	, {_entry}, {_type}, {_idx}, {_veh}

@@ -1,7 +1,7 @@
-// Scripts to select proper weapon/magazine for specific vehicle
+comment {Scripts to select proper weapon/magazine for specific vehicle} ;
 
-// args: display magazine name: string, side: number, enum of CWV: number, vehicle: object
-// outer pre-defined vars: _mag, _wep
+comment {args: display magazine name: string, side: number, enum of CWV: number, vehicle: object} ;
+comment {outer pre-defined vars: _mag, _wep} ;
 private [{_dispMagName}, {_si}, {_enum}, {_vehicle}];
 _dispMagName = _this select 0; _si = _this select 1; _enum = _this select 2; _vehicle = _this select 3; _this = 0;
 
@@ -23,5 +23,5 @@ if (_dispMagName == "Rocket") then {
 			_mag = "Rocket57x40Kamov_xj400", _wep = "Rocket57x40Kamov_xj400";
 		};
 	};
-	// if (_enum == enum_TZK_CustomVehicle_Helicopter) then {};
+	comment {if (_enum == enum_TZK_CustomVehicle_Helicopter) then {};} ;
 };

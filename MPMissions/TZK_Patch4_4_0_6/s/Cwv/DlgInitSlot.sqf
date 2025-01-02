@@ -1,6 +1,6 @@
-// args: none
-// pass local target parameters directly
-// this is a script called only once in a dialog so load it via "preprocessFile" to remain annotations
+comment {args: none} ;
+comment {pass local target parameters directly} ;
+comment {this is a script called only once in a dialog so load it via "preprocessFile" to remain annotations} ;
 
 private [{_vehArr}, {_bVerify}];
 

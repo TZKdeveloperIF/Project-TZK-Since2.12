@@ -23,7 +23,7 @@ _nil = "scalar bool array string 0xfcffffef"
 ; thousands of markers and town/radio sensors defined for 1.99 missions in mission.sqm.
 ? UsedVersion >= 2010: bool_TZK_199_Mode = false
 
-call preprocessFile "\TZK_Patch4_4_0_6\s\init_constants.sqf"
+call loadFile "\TZK_Patch4_4_0_6\s\init_constants.sqf"
 ; 4.0.6.83. Attach
     call preprocessFile "Attach\Install.sqf"
 ; 4.0.6.82. Bridge restruction
@@ -47,23 +47,23 @@ mutexTranspVehArr = false;
 TzkArtSpeeds = [22, 60, 70, 80, 120, 180, 300, 400, 500, 800, 900, 1200, 1400, 1500]
 ; todo: "sMHQKilled" and "sBLockedByClient" call {TZK_MSG_SERVER_SEND_INFO} in non-server script
 
-call preprocessFile "\TZK_Patch4_4_0_6\s\init_group.sqf"
+call loadFile "\TZK_Patch4_4_0_6\s\init_group.sqf"
 call preprocessFile "Common\Init\Group.sqf"
 
 call loadFile "\TZK_Scripts_4_0_6\init_param.sqf"
 fixedStartPos = param1
 
-"impl\Upgrade.sqf" call preprocessFile "\TZK_Patch4_4_0_6\s\init_upgrade.sqf"
+"impl\Upgrade.sqf" call loadFile "\TZK_Patch4_4_0_6\s\init_upgrade.sqf"
 ? bool_TZK_Lester_Mode: [{[] exec "Extra\init_upgrade.sqs"}, 0.1] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
 
-call preprocessFile "\TZK_Patch4_4_0_6\s\init_theWorld.sqf"
+call loadFile "\TZK_Patch4_4_0_6\s\init_theWorld.sqf"
 
-call preprocessFile "\TZK_Patch4_4_0_6\s\init_publicVariables.sqf"
+call loadFile "\TZK_Patch4_4_0_6\s\init_publicVariables.sqf"
 ; order required. structures should be initialized before units
-call preprocessFile "\TZK_Patch4_4_0_6\s\init_structureTypes.sqf"
+call loadFile "\TZK_Patch4_4_0_6\s\init_structureTypes.sqf"
 ; ? bool_TZK_MF_Mode: 
 ; ? bool_TZK_Yugo_Mode:
-call preprocessFile "\TZK_Patch4_4_0_6\s\init_unitTypes.sqf"
+call loadFile "\TZK_Patch4_4_0_6\s\init_unitTypes.sqf"
 0 exec "\TZK_Scripts_4_0_6\Common\InitInfoMsgTypes.sqs"
 0 exec "\TZK_Patch4_4_0_6\s\init_equipmentTypes.sqs"
 ; 4.0.5.15/16 updating
@@ -74,9 +74,9 @@ call preprocessFile "\TZK_Patch4_4_0_6\s\init_unitTypes.sqf"
 
 
 ; init functions (stuff that return values)
-call preprocessFile "\TZK_Patch4_4_0_6\s\init_funcs_common.sqf"
+call loadFile "\TZK_Patch4_4_0_6\s\init_funcs_common.sqf"
 ; AI Group Settings/Orders
-call preprocessFile "\TZK_Patch4_4_0_6\s\init_AiGrpOptions.sqf"
+call loadFile "\TZK_Patch4_4_0_6\s\init_AiGrpOptions.sqf"
 ArtilleryMagazineSpeedList = [80, 120, 180, 300, 400, 500];
 
 ; MESSAGE HANDLERS (SERVER AND CLIENTS)

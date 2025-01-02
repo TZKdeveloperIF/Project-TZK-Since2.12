@@ -1,26 +1,26 @@
 private [{_slotDiff}];
 
-// _shoppingCartMag: mag index, _shoppingCartCnt: mag number (count by unit)
+comment {_shoppingCartMag: mag index, _shoppingCartCnt: mag number (count by unit)} ;
 if (_this == "Clear") then {
 	_usedPrim = 0; _usedSec = 0;
 	_slotDiff = 0;
 	_shoppingCartMag resize 0; _shoppingCartCnt resize 0;
 } else {
-	// calculate delta slot
+	comment {calculate delta slot} ;
 	if (_this == "Add" || _this == "Full") then {
 		_slotDiff = _unitSlot;
 		if ("Full" == _this) then {
 			_slotDiff = if (0 == _slotType) then {_slotPrim - _usedPrim} else {_slotSec - _usedSec};
 		};
-	} else { // _this == "Remove" || _this == "None"
+	} else { comment {_this == "Remove" || _this == "None"} ;
 		_slotDiff = - _unitSlot;
 		if ("None" == _this) then {
 			_slotDiff = 0; if (_j != -1) then {_slotDiff = - (_shoppingCartCnt select _j) * _unitSlot};
 		};
 	};
-	// update used slot
+	comment {update used slot} ;
 	if (0 == _slotType) then {_usedPrim = _usedPrim + _slotDiff} else {_usedSec = _usedSec + _slotDiff};
-	// calculate delta unit and update shopping cart
+	comment {calculate delta unit and update shopping cart} ;
 	_unitDiff = _slotDiff / _unitSlot;
 	if (_unitDiff > 0) then {
 		if (_j == -1) then {
@@ -42,14 +42,14 @@ if (_this == "Clear") then {
 			};
 			_shoppingCartMag resize _c - 1; _shoppingCartCnt resize _c - 1;
 		};
-	} else { // _unitDiff == 0
-		; // doNothing
+	} else { comment {_unitDiff == 0} ;
+		; comment {doNothing} ;
 	}};
 };
-// update slot left info
+comment {update slot left info} ;
 ctrlSetText [_idcSlotText0, format ["%1", _slotPrim - _usedPrim]];
 ctrlSetText [_idcSlotText0 + 1, format ["%1", _slotSec - _usedSec]];
-// update money/time cost. Always calculating fully but not incrementally since vehicle might shoot even when dialog has been activated (e.g. gunner is ordered "fire")
+comment {update money/time cost. Always calculating fully but not incrementally since vehicle might shoot even when dialog has been activated (e.g. gunner is ordered "fire")} ;
 private [{_k}, {_c}, {_entry}, {_dispName}, {_spaces}, {_m}, {_mag}, {_existedAmmo}, {_incrementUnit}];
 lbClear _idcEquippedList;
 _magCost = 0; _timeCost = 0; _upgradeCost = 0;
@@ -64,9 +64,9 @@ _k = 0; _c = count _shoppingCartMag; while {_k < _c} do {
 	_upg = _entry select _piVehPrice;
 	if (_upg > _upgradeCost) then {_upgradeCost = _upg};
 
-	// calc money/time cost. Existed selected magazines' ammunition will be ignored.
+	comment {calc money/time cost. Existed selected magazines' ammunition will be ignored.} ;
 	_mag = _availMags select (_shoppingCartMag select _k); _existedAmmo = 0;
-	[_dispName, _si, _enum, _vehicle] call preprocessFile "\TZK_Patch4_4_0_6\s\Cwv\ProperMagWep.sqf";
+	[_dispName, _si, _enum, _vehicle] call loadFile "\TZK_Patch4_4_0_6\s\Cwv\ProperMagWep.sqf";
 	private [{_a}, {_ca}]; _a = 0; _ca = count _magArr; while {_a < _ca} do {
 		if ((_magArr select _a) == _mag) then {_existedAmmo = _existedAmmo + (_magArr select _a + 1)};
 		_a = _a + 2;

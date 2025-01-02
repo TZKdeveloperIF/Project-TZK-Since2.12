@@ -1,153 +1,153 @@
-// args: none
+comment {args: none} ;
 
-funcArrayOverlap = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\ArrayOverlap.sqf";
-funcBinaryDigit = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\BinaryDigit.sqf";
-funcBoolEqual = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\BoolEqual.sqf";
+funcArrayOverlap = loadFile "\TZK_Scripts_4_0_4\Common\SQF\ArrayOverlap.sqf";
+funcBinaryDigit = loadFile "\TZK_Scripts_4_0_4\Common\SQF\BinaryDigit.sqf";
+funcBoolEqual = loadFile "\TZK_Scripts_4_0_4\Common\SQF\BoolEqual.sqf";
 
-// args: [si]
-// return: AI groups index
-funcGetAIGroupsIndex = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\GetAIGroupsIndex.sqf";
+comment {args: [si]} ;
+comment {return: AI groups index} ;
+funcGetAIGroupsIndex = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetAIGroupsIndex.sqf";
 
-// arguments: [posOrigin[] or object, distMin, distMax]
-// return: pos
-funcGetRandomPos = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\GetRandomPos.sqf";
+comment {arguments: [posOrigin[] or object, distMin, distMax]} ;
+comment {return: pos} ;
+funcGetRandomPos = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetRandomPos.sqf";
 
-// arguments: array
-// array entry : [typeUnit, probability]
-// return: type
-funcGetRandomUnitType = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\GetRandomUnitType.sqf";
+comment {arguments: array} ;
+comment {array entry : [typeUnit, probability]} ;
+comment {return: type} ;
+funcGetRandomUnitType = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetRandomUnitType.sqf";
 
-// args: [ nEntrySortIndex, bAsc, aEntries ] (e.g.  [0, false, [[3,"Cleanrock"],[5,"Ernst"]] ])
-// return: [aEntriesSorted] (e.g. [[5,"Ernst"],[3,"Cleanrock"]])
-funcSort = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\Sort.sqf";
+comment {args: [ nEntrySortIndex, bAsc, aEntries ] (e.g.  [0, false, [[3,"Cleanrock"],[5,"Ernst"]] ])} ;
+comment {return: [aEntriesSorted] (e.g. [[5,"Ernst"],[3,"Cleanrock"]])} ;
+funcSort = loadFile "\TZK_Scripts_4_0_4\Common\SQF\Sort.sqf";
 
-funcSwapV = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\SwapVar.sqf";
+funcSwapV = loadFile "\TZK_Scripts_4_0_4\Common\SQF\SwapVar.sqf";
 
 
-funcVectorAdd = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\VectorAdd.sqf";
-funcVectorSub = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\VectorSub.sqf";
-funcVectorDot = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\VectorDot.sqf";
-funcVectorCross = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\VectorCross.sqf";
-funcVectorScale = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\VectorScale.sqf";
-funcVectorLength = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\VectorLength.sqf";
+funcVectorAdd = loadFile "\TZK_Scripts_4_0_4\Common\SQF\VectorAdd.sqf";
+funcVectorSub = loadFile "\TZK_Scripts_4_0_4\Common\SQF\VectorSub.sqf";
+funcVectorDot = loadFile "\TZK_Scripts_4_0_4\Common\SQF\VectorDot.sqf";
+funcVectorCross = loadFile "\TZK_Scripts_4_0_4\Common\SQF\VectorCross.sqf";
+funcVectorScale = loadFile "\TZK_Scripts_4_0_4\Common\SQF\VectorScale.sqf";
+funcVectorLength = loadFile "\TZK_Scripts_4_0_4\Common\SQF\VectorLength.sqf";
 funcVectorRot2D = preprocessFile "Math\VectorRot2D.sqf";
-funcVectorRot3D = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\VectorRot3D.sqf";
-funcRandomRotation3D = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\RandomRotation3D.sqf";
+funcVectorRot3D = loadFile "\TZK_Scripts_4_0_4\Common\SQF\VectorRot3D.sqf";
+funcRandomRotation3D = loadFile "\TZK_Scripts_4_0_4\Common\SQF\RandomRotation3D.sqf";
 
-funcVectorUp = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\VectorUp.sqf";
+funcVectorUp = loadFile "\TZK_Scripts_4_0_4\Common\SQF\VectorUp.sqf";
 
-// arguments: [pos[] or object, pos[] or object]
-// return: distance
-funcDistH = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\DistH.sqf";
+comment {arguments: [pos[] or object, pos[] or object]} ;
+comment {return: distance} ;
+funcDistH = loadFile "\TZK_Scripts_4_0_4\Common\SQF\DistH.sqf";
 
-funcHASL = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\HASL.sqf";
+funcHASL = loadFile "\TZK_Scripts_4_0_4\Common\SQF\HASL.sqf";
 
-// args: [pos, radius, max]
-// return: true/false
-funcAreaFlat = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\AreaFlat.sqf";
+comment {args: [pos, radius, max]} ;
+comment {return: true/false} ;
+funcAreaFlat = loadFile "\TZK_Scripts_4_0_4\Common\SQF\AreaFlat.sqf";
 
-funcInForest = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\InForest.sqf";
-funcPosNearSea = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\PosNearSea.sqf";
-funcBaseArea = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\BaseArea.sqf";
+funcInForest = loadFile "\TZK_Scripts_4_0_4\Common\SQF\InForest.sqf";
+funcPosNearSea = loadFile "\TZK_Scripts_4_0_4\Common\SQF\PosNearSea.sqf";
+funcBaseArea = loadFile "\TZK_Scripts_4_0_4\Common\SQF\BaseArea.sqf";
 
-funcStartPos = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\StartPos.sqf";
+funcStartPos = loadFile "\TZK_Scripts_4_0_4\Common\SQF\StartPos.sqf";
 
-// args: [type, pos, dir, si, gi, group, giBuyer]
-// return: unit
+comment {args: [type, pos, dir, si, gi, group, giBuyer]} ;
+comment {return: unit} ;
 fAddSoldier = preprocessFile "Common\SQF\AddSoldier.sqf";
 
-// arguments: [pos, object]
-// return: distance
+comment {arguments: [pos, object]} ;
+comment {return: distance} ;
 funcCalcDistanceToObject = {[_this select 0, getPos (_this select 1)] call funcDistH};
 
 
-funcCountUnits = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\CountUnits.sqf";
-// args: [objectStructure, typeStructure, si]
-// return: [posUnit, dirUnit]
+funcCountUnits = loadFile "\TZK_Scripts_4_0_4\Common\SQF\CountUnits.sqf";
+comment {args: [objectStructure, typeStructure, si]} ;
+comment {return: [posUnit, dirUnit]} ;
 
 funcGetCargoNum = "count (crew _this - [driver _this, gunner _this, commander _this])";
-// args: [si, [types]] (e.g. [si0, [type, ...]])
-// return: count (e.g. 3)
+comment {args: [si, [types]] (e.g. [si0, [type, ...]])} ;
+comment {return: count (e.g. 3)} ;
 
-funcGetTranspVol = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\GetTranspVol.sqf";
-funcVehParamHasSeat = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\VehParamHasSeat.sqf";
-funcVehParamWeapons = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\VehParamWeapons.sqf";
-funcVehParamMagazines = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\VehParamMagazines.sqf";
-funcVehParamweaponSlots = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\VehParamweaponSlots.sqf";
+funcGetTranspVol = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetTranspVol.sqf";
+funcVehParamHasSeat = loadFile "\TZK_Scripts_4_0_4\Common\SQF\VehParamHasSeat.sqf";
+funcVehParamWeapons = loadFile "\TZK_Scripts_4_0_4\Common\SQF\VehParamWeapons.sqf";
+funcVehParamMagazines = loadFile "\TZK_Scripts_4_0_4\Common\SQF\VehParamMagazines.sqf";
+funcVehParamweaponSlots = loadFile "\TZK_Scripts_4_0_4\Common\SQF\VehParamweaponSlots.sqf";
 
 
-// arguments: [ pos, siList, exceptList]
-// returns: [townDesc, distance, indexTown]
-funcGetClosestTown = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\GetClosestTown.sqf";
+comment {arguments: [ pos, siList, exceptList]} ;
+comment {returns: [townDesc, distance, indexTown]} ;
+funcGetClosestTown = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetClosestTown.sqf";
 
-// arguments: [pos, si, [ti, ...]]
-// returns: [ti, distance]
-funcGetClosestEnemyTown = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\GetClosestEnemyTown.sqf";
+comment {arguments: [pos, si, [ti, ...]]} ;
+comment {returns: [ti, distance]} ;
+funcGetClosestEnemyTown = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetClosestEnemyTown.sqf";
 
-// args: [si, structType] (e.g. [si0, stBarracks])
-// return: [struct, struct, ...]
-funcGetStructures = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\GetStructures.sqf";
+comment {args: [si, structType] (e.g. [si0, stBarracks])} ;
+comment {return: [struct, struct, ...]} ;
+funcGetStructures = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetStructures.sqf";
 
-// returns closest alive structure of specified type and side
-// args: [pos, si, structType]
-// return: [struct, distance]
-funcGetClosestStructure = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\GetClosestStructure.sqf";
+comment {returns closest alive structure of specified type and side} ;
+comment {args: [pos, si, structType]} ;
+comment {return: [struct, distance]} ;
+funcGetClosestStructure = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetClosestStructure.sqf";
 
-// args: [pos, si]
-// return: [object, distance]
-funcGetClosestEnemyObject = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\GetClosestEnemyObject.sqf";
+comment {args: [pos, si]} ;
+comment {return: [object, distance]} ;
+funcGetClosestEnemyObject = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetClosestEnemyObject.sqf";
 
-// returns nearest structure
-// args: [pos]
-// return: [struct, type, distance]
-funcGetNearestStructure = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\GetNearestStructure.sqf";
+comment {returns nearest structure} ;
+comment {args: [pos]} ;
+comment {return: [struct, type, distance]} ;
+funcGetNearestStructure = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetNearestStructure.sqf";
 
-// returns nearby structures in side
-// arguments: [pos, distance, types, except, side]
-// return: [ [struct, type, distance], ... ]
-funcGetNearbyStructure = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\GetNearbyStructure.sqf";
+comment {returns nearby structures in side} ;
+comment {arguments: [pos, distance, types, except, side]} ;
+comment {return: [ [struct, type, distance], ... ]} ;
+funcGetNearbyStructure = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetNearbyStructure.sqf";
 
-// arguments: [pos, distance, types, except]
-// returns: [ [vcl, type, dist], ...]
-funcGetNearbyVehicles = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\GetNearbyVehicles.sqf";
+comment {arguments: [pos, distance, types, except]} ;
+comment {returns: [ [vcl, type, dist], ...]} ;
+funcGetNearbyVehicles = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetNearbyVehicles.sqf";
 
-// arguments: [pos, si, types, except]
-// returns: [vehicleFound, distance]
-funcGetClosestVehicle = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\GetClosestVehicle.sqf";
+comment {arguments: [pos, si, types, except]} ;
+comment {returns: [vehicleFound, distance]} ;
+funcGetClosestVehicle = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetClosestVehicle.sqf";
 
-// arguments: [pos, si, types, except]
-// returns: [vehicleFound, distance]
-funcGetClosestVehicleEmpty = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\GetClosestVehicleEmpty.sqf";
+comment {arguments: [pos, si, types, except]} ;
+comment {returns: [vehicleFound, distance]} ;
+funcGetClosestVehicleEmpty = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetClosestVehicleEmpty.sqf";
 
 if bool_TZK_SEMod_Mode then {funcGetNearbyVehiclesEmpty = preprocessFile "Extra\Function\GetNearbyVehiclesEmpty.sqf"};
 
-// args: [si, structType] (e.g. [si0, stBarracks])
-// return: [struct, struct, ...]
-funcGetWorkingStructures = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\GetWorkingStructures.sqf";
+comment {args: [si, structType] (e.g. [si0, stBarracks])} ;
+comment {return: [struct, struct, ...]} ;
+funcGetWorkingStructures = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetWorkingStructures.sqf";
 
-// arguments: [si, pos]
-// returns: [unit, distance]
-funcGetNearestRespawnObject = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\GetNearestRespawnObject.sqf";
+comment {arguments: [si, pos]} ;
+comment {returns: [unit, distance]} ;
+funcGetNearestRespawnObject = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetNearestRespawnObject.sqf";
 
-// arguments: [pos, distance, types, except, side]
-// returns: [ [vcl, type, dist], ...]
-funcGetNearbySoldiers = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\GetNearbySoldiers.sqf";
+comment {arguments: [pos, distance, types, except, side]} ;
+comment {returns: [ [vcl, type, dist], ...]} ;
+funcGetNearbySoldiers = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetNearbySoldiers.sqf";
 
-// arguments: object
-// return: [ [wpn, ...], [mag, ...] ] ([[],[]] if not found)
-funcGetRearmData = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\GetRearmData.sqf";
+comment {arguments: object} ;
+comment {return: [ [wpn, ...], [mag, ...] ] ([[],[]] if not found)} ;
+funcGetRearmData = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetRearmData.sqf";
 
-// arguments: object
-// return: type (-1 if not found)
-funcGetStructTypeFromObject = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\GetStructTypeFromObject.sqf";
+comment {arguments: object} ;
+comment {return: type (-1 if not found)} ;
+funcGetStructTypeFromObject = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetStructTypeFromObject.sqf";
 
 
-// arguments: object
-// return: type (-1 if not found)
-funcGetUnitTypeFromObject = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\GetUnitTypeFromObject.sqf";
+comment {arguments: object} ;
+comment {return: type (-1 if not found)} ;
+funcGetUnitTypeFromObject = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetUnitTypeFromObject.sqf";
 
 funcCalcRearmCost = preprocessFile "Util\CalcRearmCost.sqf";
-funcGetNotEmptyMags = preprocessFile "\TZK_Scripts_4_0_4\Common\SQF\GetNotEmptyMags.sqf";
+funcGetNotEmptyMags = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetNotEmptyMags.sqf";
 funcWeaponValidMags = preprocessFile "Common\SQF\WeaponValidMags.sqf";
 
 funcGenNetIdStr = preprocessFile "Network\GenNetIdStr.sqf";

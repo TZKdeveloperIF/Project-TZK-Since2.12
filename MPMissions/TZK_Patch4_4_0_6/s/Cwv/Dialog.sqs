@@ -28,7 +28,7 @@ _magCost = 0; _upgradeCost = 0; _timeCost = 0
 ; AT as primary for plane/gunship; missiles as primary for transport heli
 ; cannon as secondary for plane; rocket as secondary for gunship; cannon as secondary for transport heli
 _slotPrim = 8, _slotSec = 38; _usedPrim = 0, _usedSec = 0
-call preprocessFile "\TZK_Patch4_4_0_6\s\Cwv\DlgInitSlot.sqf"
+call loadFile "\TZK_Patch4_4_0_6\s\Cwv\DlgInitSlot.sqf"
 
 ; initial available controls
 ? _enum == enum_TZK_CustomVehicle_Plane || _enum == enum_TZK_CustomVehicle_Helicopter: ctrlSetText [_idcSlotLabel0 + 1, "Cannon:"]
@@ -44,7 +44,7 @@ _piWeapon = 0, _piName = 1, _piSide = 2, _piVehPrice = 3, _piUnitCost = 4
 _piUnitSlot = 5, _piUnitTime = 6, _piUnitCount = 7, _piSlotType = 8
 _shoppingCartMag = []; _shoppingCartCnt = []
 ; initial magazines list
-call preprocessFile "\TZK_Patch4_4_0_6\s\Cwv\DlgInitMagList.sqf"
+call loadFile "\TZK_Patch4_4_0_6\s\Cwv\DlgInitMagList.sqf"
 _magArr = magazinesArray _vehicle; _timeGetMag = _time
 
 btnValue00 = 0
@@ -82,21 +82,21 @@ btnValue00 = 0
 	? 0 == _slotType && _usedPrim + _unitSlot > _slotPrim: hint "Insufficient Slots.", goto "Update"
 	? 1 == _slotType && _usedSec + _unitSlot > _slotSec: hint "Insufficient Slots.", goto "Update"
 
-	"Add" call preprocessFile "\TZK_Patch4_4_0_6\s\Cwv\DlgRefreshStat.sqf"
+	"Add" call loadFile "\TZK_Patch4_4_0_6\s\Cwv\DlgRefreshStat.sqf"
 	goto "Update"
 # MagRem
 	? _j == -1: goto "Update"
-	"Remove" call preprocessFile "\TZK_Patch4_4_0_6\s\Cwv\DlgRefreshStat.sqf"
+	"Remove" call loadFile "\TZK_Patch4_4_0_6\s\Cwv\DlgRefreshStat.sqf"
 	goto "Update"
 # MagFull
-	"Full" call preprocessFile "\TZK_Patch4_4_0_6\s\Cwv\DlgRefreshStat.sqf"
+	"Full" call loadFile "\TZK_Patch4_4_0_6\s\Cwv\DlgRefreshStat.sqf"
 	goto "Update"
 # MagNone
 	? _j == -1: goto "Update"
-	"None" call preprocessFile "\TZK_Patch4_4_0_6\s\Cwv\DlgRefreshStat.sqf"
+	"None" call loadFile "\TZK_Patch4_4_0_6\s\Cwv\DlgRefreshStat.sqf"
 	goto "Update"
 # MagClear
-	"Clear" call preprocessFile "\TZK_Patch4_4_0_6\s\Cwv\DlgRefreshStat.sqf"
+	"Clear" call loadFile "\TZK_Patch4_4_0_6\s\Cwv\DlgRefreshStat.sqf"
 	goto "Update"
 # Buy
 	? !local _vehicle: hint "Rearm failed. The vehicle isn't local.", goto "Update"
@@ -126,7 +126,7 @@ btnValue00 = 0
 		? player in _vehicle: hint _text
 		? _time < _timeComplete: goto "Loop"
 
-	? count magazines _vehicle == 0: call preprocessFile "\TZK_Patch4_4_0_6\s\Cwv\ExecPurchase.sqf"
+	? count magazines _vehicle == 0: call loadFile "\TZK_Patch4_4_0_6\s\Cwv\ExecPurchase.sqf"
 	? (_availMags find "Tomahawk_xj400") in _shoppingCartMag || (_availMags find "Raduga_xj400") in _shoppingCartMag: _vehicle say "NuclearMissileReady_xj400"
 
 	_cost = _magCost + _upgradeCost
