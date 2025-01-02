@@ -1,5 +1,5 @@
-// player globalChat format ["%1, %2", _i, _c]
-// skip improper side
+comment {player globalChat format ["%1, %2", _i, _c]} ;
+comment {skip improper side} ;
 
 private [{_i}, {_c}, {_magSide}, {_validCheck}, {_cost}, {_len}, {_prefix}, {_idx}, {_slot}];
 
@@ -13,7 +13,7 @@ _i = 0; _c = count _magInfo; while {_i < _c} do {
 			};
 		};
 		if _validCheck then {
-			// fill whitespace for price
+			comment {fill whitespace for price} ;
 			_cost = _magInfo select _i select _piUnitCost;
 			_len = log _cost + 1; _len = _len - (_len % 1);
 			_prefix = ""; while {_len < 4} do {

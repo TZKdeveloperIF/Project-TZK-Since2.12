@@ -1,4 +1,4 @@
-// args: [vehicle, bridge project]
+comment {args: [vehicle, bridge project]} ;
 private [
 	{_vehPosASL}, {_project}, {_headInfo}
 	, {_bridgesInfo}, {_bridgeIdx}, {_bridgeCnt}
@@ -16,7 +16,7 @@ _bridgeIdx = 0; _bridgeCnt = (_headInfo call ("GetSegmentCnt" call _funcGenerato
 _funcBridgeGetPos = "BridgeGetPosASL" call _funcGenerator;
 _funcBridgeGetVec = "BridgeGet3dVec" call _funcGenerator;
 
-_funcOn = preprocessFile "\TZK_Patch4_4_0_6\s\Bridge\OnSegment.sqf";
+_funcOn = loadFile "\TZK_Patch4_4_0_6\s\Bridge\OnSegment.sqf";
 
 _onBridge = false;
 while {_bridgeIdx < _bridgeCnt && not _onBridge} do {

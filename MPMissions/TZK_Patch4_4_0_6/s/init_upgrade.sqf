@@ -1,8 +1,8 @@
-// args: string (script interface)
+comment {args: string (script interface)} ;
 
-// UPGRADES
-// upgDefs entry format: [sName, nCost, nMinutes]
-// The constant used for passing upg is 100 thus quite enough up till now
+comment {UPGRADES} ;
+comment {upgDefs entry format: [sName, nCost, nMinutes]} ;
+comment {The constant used for passing upg is 100 thus quite enough up till now} ;
 _type = 0; upgDefs = [];
 
 upgTL = _type;
@@ -187,7 +187,7 @@ _type = _type + 1;
 
 if ("" != _this) then {call preprocessFile _this};
 
-// upgMatrix entry format: 0=not begun, 1=in progress, 2=upgraded}
+comment {upgMatrix entry format: 0=not begun, 1=in progress, 2=upgraded} ;
 upgMatrix = [ [], [] ];
 {
 	_si = _x;

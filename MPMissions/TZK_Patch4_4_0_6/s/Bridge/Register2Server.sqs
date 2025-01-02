@@ -50,7 +50,7 @@ _lowerBound = _this select 1 select 1
 	? _existBridgeCnt + _segmentCnt > structDefs select stBridge select sdLimit: [_si, "Your side has built too many bridges. Destruct some of them if wish to build more."] exec "Network\sSideMsg.sqs"; exit
 
 ; check whether across with other bridge
-	? [_pos1, _pos2] call preprocessFile "\TZK_Patch4_4_0_6\s\Bridge\CheckIntersectedWithOtherOnes.sqf": [_si, "New bridge will intersected with an existed project. Bridge won't be built."] exec "Network\sSideMsg.sqs"; exit
+	? [_pos1, _pos2] call loadFile "\TZK_Patch4_4_0_6\s\Bridge\CheckIntersectedWithOtherOnes.sqf": [_si, "New bridge will intersected with an existed project. Bridge won't be built."] exec "Network\sSideMsg.sqs"; exit
 
 ; generate project id and idx
 	@ not TzkBridgeMutex

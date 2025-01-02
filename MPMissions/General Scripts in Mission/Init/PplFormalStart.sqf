@@ -15,7 +15,7 @@ player groupchat "Start data received.";
 
 [player, siPlayer, giPlayer, _mhqPos] exec "Player\InitPlayer_Scripts.sqs";
 
-call preprocessFile "\TZK_Patch4_4_0_6\s\Player\Init\AIOrder.sqf";
+call loadFile "\TZK_Patch4_4_0_6\s\Player\Init\AIOrder.sqf";
 
 0 exec "Init\PplRespawnEquip.sqs";
 

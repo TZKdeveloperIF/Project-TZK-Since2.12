@@ -1,18 +1,18 @@
-// unitDefs defines all buildable units
-// IMPORTANT: all vehicles must have a non empty crew array
-// Must wait till stShip has been defined
+comment {unitDefs defines all buildable units} ;
+comment {IMPORTANT: all vehicles must have a non empty crew array} ;
+comment {Must wait till stShip has been defined} ;
 
 unitDefs = [];
-// ? bool_TZK_Yugo_Mode: [] exec "Extra\199\InitUnitTypes_Yugo_Redef.sqs", exit;
+comment {? bool_TZK_Yugo_Mode: [] exec "Extra\199\InitUnitTypes_Yugo_Redef.sqs", exit;} ;
 
 TzkUnitMarkerIdx = []; TzkUnitMarkerAzimuth = [];
-// The skill seems senseless in CTI thus set all values at 1
+comment {The skill seems senseless in CTI thus set all values at 1} ;
 TzkUnitSkillIdx = []; TzkUnitSkillVal = []; TzkSkillLevel = [1, 1, 1, 1, 1];
 TzkInfLevelIdx = []; TzkInfLevelVal = [];
-// format of TzkSelfUpdateVal is: [minLevel, maxLefel, modelArray[], equipScriptArr[]]
+comment {format of TzkSelfUpdateVal is: [minLevel, maxLefel, modelArray[], equipScriptArr[]]} ;
 TzkSelfUpdateIdx = []; TzkSelfUpdateVal = [];
 
-// script local "lambda"
+comment {script local "lambda"} ;
 _lv1Inf = {
 	TzkUnitSkillIdx set [count TzkUnitSkillIdx, _this];
 	TzkUnitSkillVal set [count TzkUnitSkillVal, TzkSkillLevel select 1];
@@ -47,10 +47,10 @@ udCrew = 7;
 udMarkerType = 8;
 udScripts = 9;
 
-// knowsAbout level for infantry and vehicle enemy reports
+comment {knowsAbout level for infantry and vehicle enemy reports} ;
 kaUnit = 1;
 
-// VEHICLE MARKERS
+comment {VEHICLE MARKERS} ;
 _mBike = "Bike_Marker_xj400";
 _mCar = "Car_Marker_xj400";
 _mRadarCar = "RadarCar_Marker_xj400";
@@ -90,10 +90,10 @@ countInfCustom = 10; costCustom = 150;
 
 _type = 0;
 
-// WEST
+comment {WEST} ;
 _si = si0;
 
-// INFANTRY WEST
+comment {INFANTRY WEST} ;
 _st = stBarracks;
 
 unitDefs set [_type, ["Worker", costWorker, _si, 10, "SoldierWAA_xj400", "isaa", -1, [], "", ["Server\Loop\Worker.sqs"]] ];
@@ -285,9 +285,9 @@ _customW = _type;
 _type = _type + 1;
 
 
-// Since TZK_4.0.6 units are listed first by type then by factory
+comment {Since TZK_4.0.6 units are listed first by type then by factory} ;
 
-// LIGHT WEST
+comment {LIGHT WEST} ;
 _st = stLight;
 
 unitDefs set [_type, ["QUAD", 250, _si, 20, "QUAD_xj400", "\GST_KawaP\KPpict", 2^_st, [1, _crewW], _mBike, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
@@ -418,7 +418,7 @@ _lstW = _type;
 _type = _type + 1;
 
 
-// HEAVY WEST
+comment {HEAVY WEST} ;
 _st = stHeavy;
 
 _price = [_costSupportAPC, 2*_costSupportAPC] select PricingMode;
@@ -550,7 +550,7 @@ _type = _type + 1;
 
 
 
-// AIR WEST
+comment {AIR WEST} ;
 _st = stAir;
 
 unitDefs set [_type, ["Orca95", 2000, _si, 20, "Orca95_W_xj400", "\tzk_texture_4_0_6\ui\iOrca95.paa", -1, [1, _pilotW], _mOrca, []] ];
@@ -684,10 +684,10 @@ _type = _type + 1;
 
 
 
-// EAST
+comment {EAST} ;
 _si = si1;
 
-// INFANTRY EAST
+comment {INFANTRY EAST} ;
 _st = stBarracks;
 
 
@@ -881,7 +881,7 @@ _type = _type + 1;
 
 
 
-// LIGHT EAST
+comment {LIGHT EAST} ;
 _st = stLight;
 
 unitDefs set [_type, ["QUAD", 250, _si, 20, "QUAD_xj400", "\GST_KawaP\KPpict", 2^_st, [1, _crewE], _mBike, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
@@ -1009,7 +1009,7 @@ _lstE = _type;
 _type = _type + 1;
 
 
-// HEAVY EAST
+comment {HEAVY EAST} ;
 _st = stHeavy;
 
 _price = [_costSupportAPC, 2*_costSupportAPC] select PricingMode;
@@ -1145,7 +1145,7 @@ _type = _type + 1;
 
 
 
-// AIR EAST
+comment {AIR EAST} ;
 _st = stAir;
 
 unitDefs set [_type, ["Orca95", 2000, _si, 20, "Orca95_E_xj400", "\tzk_texture_4_0_6\ui\iOrca95.paa", -1, [1, _pilotE], _mOrca, []] ];
@@ -1274,11 +1274,11 @@ _su25Raduga = _type;
 _type = _type + 1;
 
 
-// RESISTANCE
+comment {RESISTANCE} ;
 _si = siRes;
 _st = -1;
 
-// INFANTRY RES
+comment {INFANTRY RES} ;
 
 
 unitDefs set [_type, ["Soldier", 50, _si, 0, "SoldierGG_xj400", "ivojak", _st, [], "", ["\TZK_Scripts_4_0_4\Common\InitSpawnchute.sqs"]] ];
@@ -1314,7 +1314,7 @@ _officerR = _type;
 _type = _type + 1;
 
 
-// ARMOR RES
+comment {ARMOR RES} ;
 
 
 unitDefs set [_type, ["RES HUNTER", 5000, _si, 90, "RKTHunterGAG", "\Su25\isu25", _st, [1, _crewR], _mPlane, ["\TZK_Scripts_4_0_4\Common\InitSpawnPlaneRes.sqs","\TZK_Scripts_4_0_6\Common\Equip\ResPlanebombs.sqs"]] ];
@@ -1342,7 +1342,7 @@ _TDR = _type;
 _type = _type + 1;
 
 
-// VEHICLE CIV
+comment {VEHICLE CIV} ;
 _si = siCIV;
 _st = -1;
 
@@ -1362,15 +1362,15 @@ _type = _type + 1;
 
 
 
-// ? _type > maxUnitTypes : player globalchat format["Max unit types (%1) exceeded: %1", maxUnitTypes, _type]
+comment {? _type > maxUnitTypes : player globalchat format["Max unit types (%1) exceeded: %1", maxUnitTypes, _type]} ;
 
-// PLAYER CUSTOM INFANTRY
+comment {PLAYER CUSTOM INFANTRY} ;
 infCustom = [];
 _i = 0; while "_i < countInfCustom" do { infCustom set [_i, [] ]; _i=_i+1 };
 utCustom = [_customW, _customE];
 
 
-// TOWN UNITS
+comment {TOWN UNITS} ;
 
 _si = si0;
 
@@ -1495,7 +1495,7 @@ armorTown = [ [], [], [] ];
 if (bool_TZK_SEMod_Mode) then {armorTownTD = [ [], [], [] ]};
 armorTownH = [ [], [], [] ];
 armorTownHIsle = [ [], [], [] ];
-// planeTown = [ [], [], [] ]
+comment {planeTown = [ [], [], [] ]} ;
 airTown = [ [], [], [] ];
 
 _si = si0;
@@ -1531,24 +1531,24 @@ civTown = [_motorC, _motorC, _bikeC]; if bool_TZK_SEMod_Mode then "civTown set [
 if (bool_TZK_Yugo_Mode) then {call loadFile "Extra\Unit_Town_Yugo_Redef.sqf"};
 
 
-// AI UNITS - units bought by ai leaders, this must match aisBuy in aiSettingDefs in init.sqs
+comment {AI UNITS - units bought by ai leaders, this must match aisBuy in aiSettingDefs in init.sqs} ;
 _bSkipBuyDef = false;
 if (bool_TZK_SEMod_Mode) then {call loadFile "Extra\UnitTypes_SE_aisBuy.sqf", _bSkipBuyDef = true};
 if (bool_TZK_Yugo_Mode) then {call loadFile "Extra\Unit_Yugo_aisBuy.sqf", _bSkipBuyDef = true};
 
-// global variables here are for AICO auto-buy
+comment {global variables here are for AICO auto-buy} ;
 if !_bSkipBuyDef then {
 	unitsBuyAI = [ [], [] ];
 	_i = 0;
 
-	// utbNone = _i
+	comment {utbNone = _i} ;
 	_list = [];
 	unitsBuyAI select si0 set [_i, _list];
 	_list = [];
 	unitsBuyAI select si1 set [_i, _list];
 	_i = _i + 1;
 
-	// utbSoldier = _i
+	comment {utbSoldier = _i} ;
 	_list = [
 		[_rkgSoldierW, 0.5],
 		[_soldierW1, 0.5]
@@ -1561,7 +1561,7 @@ if !_bSkipBuyDef then {
 	unitsBuyAI select si1 set [_i, _list];
 	_i = _i + 1;
 
-	// utbinfMGSnip = _i
+	comment {utbinfMGSnip = _i} ;
 	_list = [ [_sniperW, 1] ];
 	unitsBuyAI select si0 set [_i, _list];
 	_list = [ [_sniperE, 1] ];
@@ -1655,7 +1655,7 @@ if !_bSkipBuyDef then {
 	_i = _i + 1;
 
 	utbTanksHeavy = _i;
-	// Remove supporting MF mode
+	comment {Remove supporting MF mode} ;
 	utbTanksMixed = utbTanksHeavy; 	utbTanksL = utbTanksHeavy;
 	_list = [ [_tankHeavyW01, 1] ];
 	unitsBuyAI select si0 set [_i, _list];
@@ -1708,9 +1708,9 @@ if !_bSkipBuyDef then {
 	_i = _i + 1;
 };
 
-// EXTRA START VEHICLES
-// will not be placed when no players exist on side
-// entry format: [type, posRelMhq]
+comment {EXTRA START VEHICLES} ;
+comment {will not be placed when no players exist on side} ;
+comment {entry format: [type, posRelMhq]} ;
 vehiclesStart = []; _startType = -1;
 if (bool_TZK_Yugo_Mode) then {
 	vehiclesStart set [si0, [ [ _supportAPCW, [0, -25]] ] ],
@@ -1745,11 +1745,11 @@ if (3 == _startType) then {
 	if (bool_TZK_SEMod_Mode) then {vehiclesStart set [si1, [ [ _truckE, [0, -25]],[[  _brdmE2,  _brdmE] select bool_TZK_Vanilla_Mode, [20, -40]], [ _supportAPCE, [-20, -25]], [ _supportAPCE, [20, -25]], [ _bmp2aa, [0, -50]], [ _supportTruckE, [40, -25]]  ] ]};
 };
 
-// CLASSIFY VEHICLES FOR MORE APPLICATION
-// TRANSPORT VEHICLES
-// AI groups will use (board) these if using PickupWait Settings
-// define which vehicles have the Eject function
-// AI CO will only buy first type of air types for transport missions.
+comment {CLASSIFY VEHICLES FOR MORE APPLICATION} ;
+comment {TRANSPORT VEHICLES} ;
+comment {AI groups will use (board) these if using PickupWait Settings} ;
+comment {define which vehicles have the Eject function} ;
+comment {AI CO will only buy first type of air types for transport missions.} ;
 airTransport = [[], []];
 groundTransport = [[], []];
 TransportCarW = [ _jeepW, jeepaW, _hummerW, _hummerW2, _hummerW3, _hummerWG ];	TransportCarE = [ _uazE, uazaE, _brdmE, _brdmE2, _brdmE3, _brdmEAT ];
@@ -1762,7 +1762,7 @@ Transport8APCW = [ _m113W, _vulcanTransp, _vulcanW2 ]; 					Transport8APCE = [ _
 TransportHeliW = [ _uh60W, _uh60supW, _uh60W30,_uh60WMG2,_uh60WL,  _ch47W ]; 	TransportHeliE = [ _mi17E, _mi17supE, _mi17E30, _mi17EL, _mi17EMG2,  _mi26E ];
 TransportirNOHeliW = [_mh6W,_mh6M60W,_mh6M134W, _irNO_uh60];
 TransportirNOHeliE = [_mi2E,_mi2PktE,_mi2GshgE, _irNO_mi17];
-// Define transport heli type for AICO. AI can't fly small heli well so only buy big heli
+comment {Define transport heli type for AICO. AI can't fly small heli well so only buy big heli} ;
 TransportHeliForAico = [ [_irNO_uh60], [_irNO_mi17] ];
 TransportHindE = [ _mi24E, _mi24E2, _mi24E3 ];
 TransportPlaneW = [ _c130W, _c130supportW ]; 				TransportPlaneE = [ _an72E, _an72supportE ];
@@ -1779,15 +1779,15 @@ _si = si1;
 airTransport set [ _si, TransportHeliE + TransportirNOHeliE + TransportHindE + TransportPlaneE ];
 groundTransport set [ _si, TransportCarE + TransportTruckE + TransportShipE + TransportZodiacE + Transport6APCE + Transport8APCE + TransportRepairTruckE + TransportSupAPCE ];
 
-// SUPPORT VEHICLES
-// AI units will get close to them for heal, repair and rearm. planeSupport defines support planes used in plane's support
+comment {SUPPORT VEHICLES} ;
+comment {AI units will get close to them for heal, repair and rearm. planeSupport defines support planes used in plane's support} ;
 typesSupport = [ [_supportTruckW,_supportTruckW2,_boatsupW,_supportAPCW,_supportAPCWminer,_uh60supW], [_supportTruckE,_supportTruckE2,_boatsupE,_supportAPCE, _supportAPCEminer,_mi17supE] ];
 typesSupportPlus = [ [], [] ]; typesSupportPlus set [0, (typesSupport select 0) + [_c130supportW] ]; typesSupportPlus set [1, (typesSupport select 1) + [_an72supportE] ];
 planeSupport = [ [_c130supportW], [_an72supportE] ];
 typesMHQ = [utMHQ0, utMHQ1]; typesHQ = [];
 
-// Units Type. These classifications are used for new orders and temporary orders as a category parameter.
-// typesPlane is also used in a script for planes belonging to same side to get each other's flying parameters.
+comment {Units Type. These classifications are used for new orders and temporary orders as a category parameter.} ;
+comment {typesPlane is also used in a script for planes belonging to same side to get each other's flying parameters.} ;
 typesTransportCar = TransportCarW + TransportCarE + TransportTruckW + TransportTruckE;
 typesTransportShip = TransportShipE + TransportShipW + TransportZodiacW + TransportZodiacE;
 typesTransportAPC = Transport6APCW + Transport6APCE + Transport8APCW + Transport8APCE;
@@ -1797,7 +1797,7 @@ typesBattleShip = (TransportShipE+TransportShipW) - ((typesSupport select 0)+(ty
 typesHowitzer = [ _m109W,_plz05E, _grkpbvW,_plz89E, _m109ShrapnelW,_plz05ShrapnelE ]; typesRocketLauncher = [_m270W, _tos1E];
 typesHeavyTank = [ _tankHeavyW01, _tankHeavyW02, _tankHeavyW03, _tankHyperW01,  _tankHeavyE01, _tankHeavyE02, _tankHeavyE03, _tankHyperE01 ];
 typesLightTank = [ _tankLightW01, _tankLightW02, _tankLightE01, _tankLightE02, _tankLightE03,  _AMX10W, _tdW, _tdE, _amx10RcW,_2s25E];
-// Extend typesATAPC definition since $1800 APC weapon more useful
+comment {Extend typesATAPC definition since $1800 APC weapon more useful} ;
 typesATAPC = [ _m2a2at, _bmp2at, _m2a2W, _bmp2E ];
 typesAAAPC = [ _vulcanW2, _m2a2aa, _vulcanTransp, _vulcanAutoW, _tunguskaE, _bmp2aa, _bmp2Cannon, _shilkaAutoE ];
 typesGunshipOrigin = [_ah1W, _ah64W, _v80E, _mi24E, _tigerW];
@@ -1816,19 +1816,19 @@ typesInfantryAll = [
 	_soldierE3,_soldierE4,_rkgSoldierE,_mgE1,_mgE2,_mgE3,_mgE4,_sniperE,_heavySniperE,_rpgSoldierE,_atE1,_atE2,_atE3,_atE4,_soldierAAE,_aaCommandoE,_laserE,_crewAAE,_vestE,_supportCarrierE
 ];
 typesInfantryAT = [_lawSoldierW,_atW1,_atW2,_atW3,_atW4,_soldierAAW,_aaCommandoW, _rpgSoldierE,_atE1,_atE2,_atE3,_atE4,_soldierAAE,_aaCommandoE];
-// Anti Plane Vehicle Type Constant
+comment {Anti Plane Vehicle Type Constant} ;
 typesAntiPlane3500 = [[_m2a2aa, _m2a2townaad], [_bmp2aa, _bmp2townaad]];
 typesAntiPlane8000 = [[_vulcanW2], [_tunguskaE]];
-// Define global variable for nuke planes
+comment {Define global variable for nuke planes} ;
 typesNuke = [_a10Tomahawk, _su25Raduga];
-// Define global variable for general planes
+comment {Define global variable for general planes} ;
 typesTzkGenearlPlane = [[_a10], [_su25]];
 
-// definition for RTS reclaim
+comment {definition for RTS reclaim} ;
 typesBattlePlane = [ _a10gun, _su25gun, _a10, _su25 ];
 typesBattleCar = [ _hummerW2, _hummerM134W, _m151a1cW, _brdmE2, _brdmGsghE, _uazSpg9E ];
 typesRadarCar = [ _jeepRadarW, _uazRadarE ];
-// definition for RTS attach
+comment {definition for RTS attach} ;
 typesHeliTugger = [
 	  _uh60W, _uh60supW, _uh60W30, _uh60WL, _uh60WMG2
 	, _mi17E, _mi17supE, _mi17E30, _mi17EL, _mi17EMG2
@@ -1845,36 +1845,36 @@ typesApcTugger = [
 	  _supportAPCW, _supportAPCWminer, utMHQ0
 	, _supportAPCE, _supportAPCEminer, utMHQ1
 ];
-// definition for crew/pilot
+comment {definition for crew/pilot} ;
 typesCrew = [_crewW, _crewAAW, _pilotW, _crewE, _crewAAE, _pilotE];
-// Engineer vehicles
+comment {Engineer vehicles} ;
 typesEngineeringVeh = [_m88W, _bremE];
 
-// AIRCRAFTS WITH WEAPONS
+comment {AIRCRAFTS WITH WEAPONS} ;
 AggressiveAircrafts = [ [], [] ];
 AggressiveAircrafts set [ si0, [_uh60W30,_uh60WMG2, _uh60WL, _ah1W, _ah64W, _tigerW, _ah1W2, _ah64W2, _tigerW2, _a10gun,  _a10LGB4,  _a10bombs,  _a10,  _a10LGB8,  _a10AA,  _a10FFAR,	 _a10BB, _a10Tomahawk, _B2] ];
 AggressiveAircrafts set [ si1, [_mi17E30, _mi17EL, _mi17EMG2, _v80E, _mi24E, _v80E2, _mi24E2, _mi24E3, _su25gun, _su25LGB4, _su25bombs, _su25, _su25LGB8, _su25AA, _su25Rocket, _su25BB, _su25Raduga, _su39] ];
-// AA System
+comment {AA System} ;
 AASystem = [ [_vulcanBaseW, _vulcanBaseW2], [_shilkaBaseE, _tunguskaBaseE] ];
 
-// VEHICLES WITH UNLIMITED/SPECIAL WEAPON RANGE
+comment {VEHICLES WITH UNLIMITED/SPECIAL WEAPON RANGE} ;
 vUnlimitedRange = [_vulcanW2, _vulcanBaseW2, _tunguskaE, _tunguskaBaseE];
 vDoubledRange = [_vulcanAutoW, _shilkaAutoE, _m2a2aa, _bmp2aa, _vulcanTransp, _bmp2Cannon, _boatW3, _boatE3, _vulcanBaseW, _shilkaBaseE, _uh60W, _uh60supW, _uh60WMG2, _mi17E, _mi17supE, _mi17EMG2];
 if (bool_TZK_SEMod_Mode) then {vDoubledRange = [_vulcanAutoW, _shilkaAutoE, _m2a2aa, _bmp2aa, _vulcanTransp, _bmp2Cannon, _boatW3, _boatE3, _vulcanBaseW, _shilkaBaseE, _patrolboatW, _patrolboatE]; vUnlimitedRange = [_vulcanW2, _vulcanBaseW2, _tunguskaE, _tunguskaBaseE, _patrolshipW, _patrolshipE]};
 
-// VEHICLES WITH LONGER REARM TIME
+comment {VEHICLES WITH LONGER REARM TIME} ;
 vDoubleRearmTime = [_ah1W, _ah1W2, _ah64W, _ah64W2, _tigerW, _tigerW2, _mi24E, _mi24E2, _mi24E3, _a10, _a10FFAR, _a10LGB8, _su25, _su25Rocket, _su25LGB8];
 vTripleRearmTime = [_v80E, _v80E2, _a10BB, _su25BB, _B2, _su39];
 vSixfoldRearmTime = [_a10Tomahawk, _su25Raduga];
 vTenfoldRearmTime = [_m270W, _tos1E];
 
-// VEHICLES CAN CAUSE MINE EXPLOSION
+comment {VEHICLES CAN CAUSE MINE EXPLOSION} ;
 vMinerAvoid = (typesSupportAPC + typesLightTank + typesHeavyTank + typesHowitzer + typesTransportAPC - typesAAAPC) + typesAAAPC + typesPlane + [_bmpR, _t72R, _t80R, _TDR,utMCVW, utMCVE, utMHQ0, utMHQ1];
 
-// VEHICLES USED FOR EXTEND AIR RADAR
+comment {VEHICLES USED FOR EXTEND AIR RADAR} ;
 vRadarAir = [ [_vulcanAutoW, _vulcanW2, _vulcanBaseW, _vulcanBaseW2], [_shilkaAutoE, _tunguskaE, _shilkaBaseE, _tunguskaBaseE] ];
 
-// VEHICLES Equipping RedTop
+comment {VEHICLES Equipping RedTop} ;
 vRedTop = [ [_vulcanW2, _vulcanBaseW2, _a10AA], [_tunguskaE, _tunguskaBaseE, _su25AA] ];
 
 
@@ -1887,8 +1887,8 @@ unitsBuilt = [ [], [], [], [], [] ];
 unitsFarAction = [];
 
 rDataMatrix = []; rdID = 0; rdWea = 1; rdMag = 2;
-// rearmData entry format: [object, [weapon1, weapon2, ... ], [mag1, mag2, ...] ]
-// this array will be filled automatically during game when units are built
+comment {rearmData entry format: [object, [weapon1, weapon2, ... ], [mag1, mag2, ...] ]} ;
+comment {this array will be filled automatically during game when units are built} ;
 rearmData = []; rearmDataObj = []; rearmDataEquip = [];
 
 _index = 0; _count = count unitDefs; while {_index < _count} do {
@@ -1909,10 +1909,10 @@ _index = 0; _count = count unitDefs; while {_index < _count} do {
 	_index = _index + 1;
 };
 
-// TOWN GROUP VEHICLES;
+comment {TOWN GROUP VEHICLES;} ;
 TownGroupVehicles = [];
 
-//  Radio List Classification(Relating to How Actions Defined)
+comment { Radio List Classification(Relating to How Actions Defined)} ;
 RadioTypesCustomCarShips = [_hummerW2, _brdmE2, _hummerW3, _brdmE3, _boatHeapW, _boatHeapE];
 RadioTypesShips = TransportShipW + TransportShipE;
 RadioTypesSupport = (typesSupportPlus select 0) + (typesSupportPlus select 1);
@@ -1924,11 +1924,11 @@ RadioTypesGunships = typesGunshipOrigin + typesGunshipAT;
 if (boole_Infantry_Mode) then {call loadFile "\TZK_Scripts_4_0_4\Common\Init\InfantryMode.sqf", (upgDefs select upgTownGroupH) set [1, 999999]};
 
 
-// implement in mission folder for appending and modifying
+comment {implement in mission folder for appending and modifying} ;
 call preprocessFile "impl\Unit.sqf";
 
 
-// Define final global varialbes AFTER HAVING CALLED "impl\Unit.sqf"
+comment {Define final global varialbes AFTER HAVING CALLED "impl\Unit.sqf"} ;
 maxUnitTypes = count unitDefs; TotalUnitTypes = maxUnitTypes + countInfCustom;
 unitTypeArray = []; unitTypeData = [];
 _type = 0; _j = 0;
@@ -1965,10 +1965,10 @@ _c = count TzkSelfUpdateIdx; _k = 0; while {_k < _c} do {
 	};
 	_k = _k + 1;
 };
-// ? bool_ExtentArmor_Mode: _i = 0, _names = ["M1A1_TZK_Gun_ExtentArmor_xj400", "M1A2_TZK_Gun_ExtentArmor_xj400", "Leo2A6_Gun_ExtentArmor_xj400", "T80_TZK_Gun_ExtentArmor_xj400", "T90ms_Gun_ExtentArmor_xj400", "ZTZ99_Gun_ExtentArmor_xj400"], {_model = unitDefs select _x select udModel, _j = unitTypeArray find _model, unitTypeArray set [_j, _names select _i], unitDefs select _x set [udModel, _names select _i], _i = _i + 1} forEach typesHeavyTank
+comment {? bool_ExtentArmor_Mode: _i = 0, _names = ["M1A1_TZK_Gun_ExtentArmor_xj400", "M1A2_TZK_Gun_ExtentArmor_xj400", "Leo2A6_Gun_ExtentArmor_xj400", "T80_TZK_Gun_ExtentArmor_xj400", "T90ms_Gun_ExtentArmor_xj400", "ZTZ99_Gun_ExtentArmor_xj400"], {_model = unitDefs select _x select udModel, _j = unitTypeArray find _model, unitTypeArray set [_j, _names select _i], unitDefs select _x set [udModel, _names select _i], _i = _i + 1} forEach typesHeavyTank} ;
 
-// CLEANUP
+comment {CLEANUP} ;
 typesCleanup = ["WeaponHolder", "SecondaryWeaponHolder"];
 {if (count(_x select udCrew) > 0) then {typesCleanup set [count typesCleanup, _x select udModel]}} forEach unitDefs;
 
-// EOF
+comment {EOF} ;

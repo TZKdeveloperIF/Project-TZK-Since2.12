@@ -1,4 +1,4 @@
-// should be a synchronous sqf
+comment {should be a synchronous sqf} ;
 
 private [{_rate}, {_si}];
 _rate = _this % 128;

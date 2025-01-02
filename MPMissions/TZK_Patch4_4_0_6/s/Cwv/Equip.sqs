@@ -20,7 +20,7 @@ mutexNewUnitEquipped = true
 	_idx = Array_TZK_NewUnitEquipped find _v
 	? -1 == _idx: goto "Unlock"
 
-	[_v, _type, _enum, _nCustomWeapon, _si] call preprocessFile "\TZK_Patch4_4_0_6\s\Cwv\Equip.sqf"
+	[_v, _type, _enum, _nCustomWeapon, _si] call loadFile "\TZK_Patch4_4_0_6\s\Cwv\Equip.sqf"
 	[Array_TZK_NewUnitEquipped, _idx] call preprocessFile "Algo\arrayErase.sqf"
 
 # Unlock

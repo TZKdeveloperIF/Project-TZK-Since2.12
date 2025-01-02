@@ -1,4 +1,4 @@
-// args: project id
+comment {args: project id} ;
 private [{_funcGenerator}, {_funcGetHead}, {_funcGetValid}, {_funcGetId}
 	, {_bridgeId}, {_i}, {_c}, {_project}, {_headInfo}
 ];
@@ -14,8 +14,8 @@ _i = 0; _c = count TzkBrdigeProjects; while {_i < _c} do {
 	_headInfo = _project call _funcGetHead;
 	if ((_headInfo call _funcGetValid) && _bridgeId == (_headInfo call _funcGetId)) then {
 		[_headInfo, false] call ("SetValidStatus" call _funcGenerator);
-		// server will remove all bridge objects
-		// todo: better keep consistent with destruction
+		comment {server will remove all bridge objects} ;
+		comment {todo: better keep consistent with destruction} ;
 		if isServer then {
 			private [{_bridgesInfo}, {_bridgeIdx}, {_bridgeCnt}
 				, {_dyingBridge}, {_funcBridgeGetObj}, {_delayDeleteScript}

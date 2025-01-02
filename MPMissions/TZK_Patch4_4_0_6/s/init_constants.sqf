@@ -1,6 +1,6 @@
-// args: [scripts]
+comment {args: [scripts]} ;
 
-// side info
+comment {side info} ;
 siEnemy = [si1, si0];
 sideNames = ["West", "East", "Resistance", "Both", "Civilian"];
 groupName = ["WEST", "EAST", "GUER", "", "CIVL"];
@@ -40,9 +40,9 @@ callsigns = [
 ];
 GroupsNum = (count callsigns) + 2; giTown = GroupsNum - 2; giWorker = GroupsNum - 1;
 TotalInfoTypes = 100;
-// these constants are used for calculating "value" in publicVariable operation
-// "TotalInfoTypes" could be defined in init script of "InfoMsgTypes" as well
-// cautious: number in OFP is "Single" so it's necessary to make sure the value of "value" less than 15,000,000
+comment {these constants are used for calculating "value" in publicVariable operation} ;
+comment {"TotalInfoTypes" could be defined in init script of "InfoMsgTypes" as well} ;
+comment {cautious: number in OFP is "Single" so it's necessary to make sure the value of "value" less than 15,000,000} ;
 
 Musics0 = [
 	"Track1", "Track2", "Track3", "Track4", "Track5", "Track6", "Track7", "Track8", "Track9",
@@ -54,7 +54,7 @@ music1h = 0;
 Musics10m = ["Track1", "Track2", "Track3", "Track4", "Track5", "Track6", "Track7", "Track8", "Track10", "RTrack2"];
 music10m = 0;
 
-// WAYPOINTS
+comment {WAYPOINTS} ;
 countWPPlayer = 10; countWPCO = 20; countTargetMarkers = 10;
 wpCO = [[], []];
 {
@@ -64,10 +64,10 @@ wpCO = [[], []];
 	};
 } forEach [si0, si1];
 
-// art module
+comment {art module} ;
 mutexTzkArtModule = false;
 
-// Ver 2.12 v02 mutex ReEquip
+comment {Ver 2.12 v02 mutex ReEquip} ;
 mutexReEquip = false;
 
 mutexEditRearmData = false;
@@ -82,5 +82,5 @@ sideRespawnObjects = [objNull, objNull];
 workerBehaviour = [0, 0];
 incomeRateCo = [0.7, 0.7]; incomeRatePlayer = [0.9, 0.9];
 
-// Modularize initialization
+comment {Modularize initialization} ;
 tzkMatchStartTime = 0;

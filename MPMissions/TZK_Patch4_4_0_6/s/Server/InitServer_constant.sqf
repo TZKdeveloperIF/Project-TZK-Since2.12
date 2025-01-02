@@ -1,5 +1,5 @@
 
-// DEFINE CONSTANT POINTER FOR FUNCTION
+comment {DEFINE CONSTANT POINTER FOR FUNCTION} ;
 
 {deleteVehicle (leader _x)} forEach (workerGroups select si0); {deleteVehicle (leader _x)} forEach (workerGroups select si1);
 
@@ -46,8 +46,8 @@ true exec "Common\Init\Confuser.sqs";
 Array_TZK_Town_Triggered_By = [];
 Array_TZK_Group_MaybeAi = [];
 
-// 4.0.6.40
-// redefine mutexBuildingQueue as a matrix
+comment {4.0.6.40} ;
+comment {redefine mutexBuildingQueue as a matrix} ;
 mutexBuildingQueue = [[], []];
 {
     _si = _x;
@@ -57,17 +57,17 @@ mutexBuildingQueue = [[], []];
         _i = _i + 1;
     };
 } forEach [si0, si1];
-// define mutex for reclaim
+comment {define mutex for reclaim} ;
 mutexReclaim = false;
-// 4.0.6.70. Support vehicle and its last user
+comment {4.0.6.70. Support vehicle and its last user} ;
 TzkSupVehObjs = []; TzkSubVehUsers = []; mutexTzkSup = false;
-// 4.0.6.72. Each factory manage its own cancelled QID
+comment {4.0.6.72. Each factory manage its own cancelled QID} ;
     factoryCancelledQid = [[], []];
-    // format of (executedOrderTimer select si): array of qid (work as key), array of [gi, unitsToBuild, timeStamp]
+    comment {format of (executedOrderTimer select si): array of qid (work as key), array of [gi, unitsToBuild, timeStamp]} ;
     executedOrderTimer = [[[], []], [[], []]]; mutexEot = [false, false];
-// 4.0.6.81. MHQ wall
+comment {4.0.6.81. MHQ wall} ;
     TzkMhqWallObjs = []; TzkMhqWallInfos = [];
-// 4.0.6.84. A bigger mutex for join-to-server. Join units to AI in short time crashes the server.
+comment {4.0.6.84. A bigger mutex for join-to-server. Join units to AI in short time crashes the server.} ;
     mutexTzkSvrJoin = false;
 
 call preprocessFile "impl\Server_constants.sqf";

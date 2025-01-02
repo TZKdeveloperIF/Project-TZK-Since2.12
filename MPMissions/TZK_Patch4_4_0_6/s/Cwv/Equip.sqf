@@ -1,4 +1,4 @@
-// Select proper equiments for custom vehicle 
+comment {Select proper equiments for custom vehicle } ;
 
 private [{_v}, {_t}, {_enum}, {_i}, {_si}, {_magInfo}, {_selMagName}, {_mag}, {_wep}, {_m}, {_w}, {_cost}, {_cwvCost}];
 _v = _this select 0;
@@ -15,12 +15,12 @@ _selMagName = _magInfo select _i select _piName;
 
 _mag = _availMags select _i;
 _wep = _magInfo select _i select _piWeapon;
-[_magInfo select _i select _piName, _si, _enum, _v] call preprocessFile "\TZK_Patch4_4_0_6\s\Cwv\ProperMagWep.sqf";
+[_magInfo select _i select _piName, _si, _enum, _v] call loadFile "\TZK_Patch4_4_0_6\s\Cwv\ProperMagWep.sqf";
 
 _m = [_mag];
 _w = [_wep];
 
-// Prepare cannon for custom-on-purchase planes
+comment {Prepare cannon for custom-on-purchase planes} ;
 if (enum_TZK_CustomVehicle_Plane == _enum) then {
 	if ("30mm cannon" != _selMagName && "4x 30mm cannons" != _selMagName) then {
 		private [{_j}];
@@ -30,10 +30,10 @@ if (enum_TZK_CustomVehicle_Plane == _enum) then {
 	};
 };
 
-_v call preprocessFile "\TZK_Patch4_4_0_6\s\Cwv\AppendGeneralEquips.sqf";
-// Overwrite rearm data
+_v call loadFile "\TZK_Patch4_4_0_6\s\Cwv\AppendGeneralEquips.sqf";
+comment {Overwrite rearm data} ;
 [_v, _t, _m, _w, 2] exec "Common\Equip\NewCwvSetData.sqs";
-// Update object price in CWV
+comment {Update object price in CWV} ;
 _cost = unitDefs select _t select udCost;
 _cwvCost = _magInfo select _i select _piVehPrice;
 if (_cwvCost > _cost) then {_cost = _cwvCost};
