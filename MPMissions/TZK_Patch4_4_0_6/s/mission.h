@@ -297,81 +297,81 @@
 		TZK_Mission_Group_NonPlay(50,EAST, posE1,posE2,posE3, 50, typeElead, "groupJoin1=group this; leaderJoin1 = this") \
 
 #define TZK_Mission_Grp_TownGrp(typeWlead, typeElead) \
-		TZK_Mission_Group_NonPlay(51,WEST, posW1,posW2,posW3, 51, typeWlead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(52,WEST, posW1,posW2,posW3, 52, typeWlead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(53,WEST, posW1,posW2,posW3, 53, typeWlead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(54,WEST, posW1,posW2,posW3, 54, typeWlead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(55,WEST, posW1,posW2,posW3, 55, typeWlead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(56,WEST, posW1,posW2,posW3, 56, typeWlead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(57,WEST, posW1,posW2,posW3, 57, typeWlead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(58,WEST, posW1,posW2,posW3, 58, typeWlead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(59,WEST, posW1,posW2,posW3, 59, typeWlead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(60,WEST, posW1,posW2,posW3, 60, typeWlead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(61,WEST, posW1,posW2,posW3, 61, typeWlead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(62,WEST, posW1,posW2,posW3, 62, typeWlead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(63,WEST, posW1,posW2,posW3, 63, typeWlead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(64,WEST, posW1,posW2,posW3, 64, typeWlead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(65,WEST, posW1,posW2,posW3, 65, typeWlead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(66,WEST, posW1,posW2,posW3, 66, typeWlead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(67,WEST, posW1,posW2,posW3, 67, typeWlead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(68,WEST, posW1,posW2,posW3, 68, typeWlead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(69,WEST, posW1,posW2,posW3, 69, typeWlead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(70,WEST, posW1,posW2,posW3, 70, typeWlead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(71,WEST, posW1,posW2,posW3, 71, typeWlead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(72,WEST, posW1,posW2,posW3, 72, typeWlead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(73,WEST, posW1,posW2,posW3, 73, typeWlead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(74,WEST, posW1,posW2,posW3, 74, typeWlead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(75,WEST, posW1,posW2,posW3, 75, typeWlead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(76,EAST, posE1,posE2,posE3, 76, typeElead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(77,EAST, posE1,posE2,posE3, 77, typeElead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(78,EAST, posE1,posE2,posE3, 78, typeElead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(79,EAST, posE1,posE2,posE3, 79, typeElead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(80,EAST, posE1,posE2,posE3, 80, typeElead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(81,EAST, posE1,posE2,posE3, 81, typeElead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(82,EAST, posE1,posE2,posE3, 82, typeElead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(83,EAST, posE1,posE2,posE3, 83, typeElead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(84,EAST, posE1,posE2,posE3, 84, typeElead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(85,EAST, posE1,posE2,posE3, 85, typeElead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(86,EAST, posE1,posE2,posE3, 86, typeElead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(87,EAST, posE1,posE2,posE3, 87, typeElead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(88,EAST, posE1,posE2,posE3, 88, typeElead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(89,EAST, posE1,posE2,posE3, 89, typeElead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(90,EAST, posE1,posE2,posE3, 90, typeElead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(91,EAST, posE1,posE2,posE3, 91, typeElead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(92,EAST, posE1,posE2,posE3, 92, typeElead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(93,EAST, posE1,posE2,posE3, 93, typeElead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(94,EAST, posE1,posE2,posE3, 94, typeElead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(95,EAST, posE1,posE2,posE3, 95, typeElead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(96,EAST, posE1,posE2,posE3, 96, typeElead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(97,EAST, posE1,posE2,posE3, 97, typeElead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(98,EAST, posE1,posE2,posE3, 98, typeElead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(99,EAST, posE1,posE2,posE3, 99, typeElead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(100,EAST, posE1,posE2,posE3, 100, typeElead, "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(101,GUER, posG1,posG2,posG3, 101, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(102,GUER, posG1,posG2,posG3, 102, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(103,GUER, posG1,posG2,posG3, 103, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(104,GUER, posG1,posG2,posG3, 104, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(105,GUER, posG1,posG2,posG3, 105, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(106,GUER, posG1,posG2,posG3, 106, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(107,GUER, posG1,posG2,posG3, 107, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(108,GUER, posG1,posG2,posG3, 108, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(109,GUER, posG1,posG2,posG3, 109, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(110,GUER, posG1,posG2,posG3, 110, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(111,GUER, posG1,posG2,posG3, 111, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(112,GUER, posG1,posG2,posG3, 112, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(113,GUER, posG1,posG2,posG3, 113, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(114,GUER, posG1,posG2,posG3, 114, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(115,GUER, posG1,posG2,posG3, 115, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(116,GUER, posG1,posG2,posG3, 116, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(117,GUER, posG1,posG2,posG3, 117, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(118,GUER, posG1,posG2,posG3, 118, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(119,GUER, posG1,posG2,posG3, 119, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(120,GUER, posG1,posG2,posG3, 120, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(121,GUER, posG1,posG2,posG3, 121, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(122,GUER, posG1,posG2,posG3, 122, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(123,GUER, posG1,posG2,posG3, 123, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(124,GUER, posG1,posG2,posG3, 124, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
-		TZK_Mission_Group_NonPlay(125,GUER, posG1,posG2,posG3, 125, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_TOWN}") \
+		TZK_Mission_Group_NonPlay(51,WEST, posW1,posW2,posW3, 51, typeWlead, "group this call preprocessFile {Init\AddGrpTownWest.sqf}") \
+		TZK_Mission_Group_NonPlay(52,WEST, posW1,posW2,posW3, 52, typeWlead, "group this call preprocessFile {Init\AddGrpTownWest.sqf}") \
+		TZK_Mission_Group_NonPlay(53,WEST, posW1,posW2,posW3, 53, typeWlead, "group this call preprocessFile {Init\AddGrpTownWest.sqf}") \
+		TZK_Mission_Group_NonPlay(54,WEST, posW1,posW2,posW3, 54, typeWlead, "group this call preprocessFile {Init\AddGrpTownWest.sqf}") \
+		TZK_Mission_Group_NonPlay(55,WEST, posW1,posW2,posW3, 55, typeWlead, "group this call preprocessFile {Init\AddGrpTownWest.sqf}") \
+		TZK_Mission_Group_NonPlay(56,WEST, posW1,posW2,posW3, 56, typeWlead, "group this call preprocessFile {Init\AddGrpTownWest.sqf}") \
+		TZK_Mission_Group_NonPlay(57,WEST, posW1,posW2,posW3, 57, typeWlead, "group this call preprocessFile {Init\AddGrpTownWest.sqf}") \
+		TZK_Mission_Group_NonPlay(58,WEST, posW1,posW2,posW3, 58, typeWlead, "group this call preprocessFile {Init\AddGrpTownWest.sqf}") \
+		TZK_Mission_Group_NonPlay(59,WEST, posW1,posW2,posW3, 59, typeWlead, "group this call preprocessFile {Init\AddGrpTownWest.sqf}") \
+		TZK_Mission_Group_NonPlay(60,WEST, posW1,posW2,posW3, 60, typeWlead, "group this call preprocessFile {Init\AddGrpTownWest.sqf}") \
+		TZK_Mission_Group_NonPlay(61,WEST, posW1,posW2,posW3, 61, typeWlead, "group this call preprocessFile {Init\AddGrpTownWest.sqf}") \
+		TZK_Mission_Group_NonPlay(62,WEST, posW1,posW2,posW3, 62, typeWlead, "group this call preprocessFile {Init\AddGrpTownWest.sqf}") \
+		TZK_Mission_Group_NonPlay(63,WEST, posW1,posW2,posW3, 63, typeWlead, "group this call preprocessFile {Init\AddGrpTownWest.sqf}") \
+		TZK_Mission_Group_NonPlay(64,WEST, posW1,posW2,posW3, 64, typeWlead, "group this call preprocessFile {Init\AddGrpTownWest.sqf}") \
+		TZK_Mission_Group_NonPlay(65,WEST, posW1,posW2,posW3, 65, typeWlead, "group this call preprocessFile {Init\AddGrpTownWest.sqf}") \
+		TZK_Mission_Group_NonPlay(66,WEST, posW1,posW2,posW3, 66, typeWlead, "group this call preprocessFile {Init\AddGrpTownWest.sqf}") \
+		TZK_Mission_Group_NonPlay(67,WEST, posW1,posW2,posW3, 67, typeWlead, "group this call preprocessFile {Init\AddGrpTownWest.sqf}") \
+		TZK_Mission_Group_NonPlay(68,WEST, posW1,posW2,posW3, 68, typeWlead, "group this call preprocessFile {Init\AddGrpTownWest.sqf}") \
+		TZK_Mission_Group_NonPlay(69,WEST, posW1,posW2,posW3, 69, typeWlead, "group this call preprocessFile {Init\AddGrpTownWest.sqf}") \
+		TZK_Mission_Group_NonPlay(70,WEST, posW1,posW2,posW3, 70, typeWlead, "group this call preprocessFile {Init\AddGrpTownWest.sqf}") \
+		TZK_Mission_Group_NonPlay(71,WEST, posW1,posW2,posW3, 71, typeWlead, "group this call preprocessFile {Init\AddGrpTownWest.sqf}") \
+		TZK_Mission_Group_NonPlay(72,WEST, posW1,posW2,posW3, 72, typeWlead, "group this call preprocessFile {Init\AddGrpTownWest.sqf}") \
+		TZK_Mission_Group_NonPlay(73,WEST, posW1,posW2,posW3, 73, typeWlead, "group this call preprocessFile {Init\AddGrpTownWest.sqf}") \
+		TZK_Mission_Group_NonPlay(74,WEST, posW1,posW2,posW3, 74, typeWlead, "group this call preprocessFile {Init\AddGrpTownWest.sqf}") \
+		TZK_Mission_Group_NonPlay(75,WEST, posW1,posW2,posW3, 75, typeWlead, "group this call preprocessFile {Init\AddGrpTownWest.sqf}") \
+		TZK_Mission_Group_NonPlay(76,EAST, posE1,posE2,posE3, 76, typeElead, "group this call preprocessFile {Init\AddGrpTownEast.sqf}") \
+		TZK_Mission_Group_NonPlay(77,EAST, posE1,posE2,posE3, 77, typeElead, "group this call preprocessFile {Init\AddGrpTownEast.sqf}") \
+		TZK_Mission_Group_NonPlay(78,EAST, posE1,posE2,posE3, 78, typeElead, "group this call preprocessFile {Init\AddGrpTownEast.sqf}") \
+		TZK_Mission_Group_NonPlay(79,EAST, posE1,posE2,posE3, 79, typeElead, "group this call preprocessFile {Init\AddGrpTownEast.sqf}") \
+		TZK_Mission_Group_NonPlay(80,EAST, posE1,posE2,posE3, 80, typeElead, "group this call preprocessFile {Init\AddGrpTownEast.sqf}") \
+		TZK_Mission_Group_NonPlay(81,EAST, posE1,posE2,posE3, 81, typeElead, "group this call preprocessFile {Init\AddGrpTownEast.sqf}") \
+		TZK_Mission_Group_NonPlay(82,EAST, posE1,posE2,posE3, 82, typeElead, "group this call preprocessFile {Init\AddGrpTownEast.sqf}") \
+		TZK_Mission_Group_NonPlay(83,EAST, posE1,posE2,posE3, 83, typeElead, "group this call preprocessFile {Init\AddGrpTownEast.sqf}") \
+		TZK_Mission_Group_NonPlay(84,EAST, posE1,posE2,posE3, 84, typeElead, "group this call preprocessFile {Init\AddGrpTownEast.sqf}") \
+		TZK_Mission_Group_NonPlay(85,EAST, posE1,posE2,posE3, 85, typeElead, "group this call preprocessFile {Init\AddGrpTownEast.sqf}") \
+		TZK_Mission_Group_NonPlay(86,EAST, posE1,posE2,posE3, 86, typeElead, "group this call preprocessFile {Init\AddGrpTownEast.sqf}") \
+		TZK_Mission_Group_NonPlay(87,EAST, posE1,posE2,posE3, 87, typeElead, "group this call preprocessFile {Init\AddGrpTownEast.sqf}") \
+		TZK_Mission_Group_NonPlay(88,EAST, posE1,posE2,posE3, 88, typeElead, "group this call preprocessFile {Init\AddGrpTownEast.sqf}") \
+		TZK_Mission_Group_NonPlay(89,EAST, posE1,posE2,posE3, 89, typeElead, "group this call preprocessFile {Init\AddGrpTownEast.sqf}") \
+		TZK_Mission_Group_NonPlay(90,EAST, posE1,posE2,posE3, 90, typeElead, "group this call preprocessFile {Init\AddGrpTownEast.sqf}") \
+		TZK_Mission_Group_NonPlay(91,EAST, posE1,posE2,posE3, 91, typeElead, "group this call preprocessFile {Init\AddGrpTownEast.sqf}") \
+		TZK_Mission_Group_NonPlay(92,EAST, posE1,posE2,posE3, 92, typeElead, "group this call preprocessFile {Init\AddGrpTownEast.sqf}") \
+		TZK_Mission_Group_NonPlay(93,EAST, posE1,posE2,posE3, 93, typeElead, "group this call preprocessFile {Init\AddGrpTownEast.sqf}") \
+		TZK_Mission_Group_NonPlay(94,EAST, posE1,posE2,posE3, 94, typeElead, "group this call preprocessFile {Init\AddGrpTownEast.sqf}") \
+		TZK_Mission_Group_NonPlay(95,EAST, posE1,posE2,posE3, 95, typeElead, "group this call preprocessFile {Init\AddGrpTownEast.sqf}") \
+		TZK_Mission_Group_NonPlay(96,EAST, posE1,posE2,posE3, 96, typeElead, "group this call preprocessFile {Init\AddGrpTownEast.sqf}") \
+		TZK_Mission_Group_NonPlay(97,EAST, posE1,posE2,posE3, 97, typeElead, "group this call preprocessFile {Init\AddGrpTownEast.sqf}") \
+		TZK_Mission_Group_NonPlay(98,EAST, posE1,posE2,posE3, 98, typeElead, "group this call preprocessFile {Init\AddGrpTownEast.sqf}") \
+		TZK_Mission_Group_NonPlay(99,EAST, posE1,posE2,posE3, 99, typeElead, "group this call preprocessFile {Init\AddGrpTownEast.sqf}") \
+		TZK_Mission_Group_NonPlay(100,EAST, posE1,posE2,posE3, 100, typeElead, "group this call preprocessFile {Init\AddGrpTownEast.sqf}") \
+		TZK_Mission_Group_NonPlay(101,GUER, posG1,posG2,posG3, 101, "SoldierGLAW", "group this call preprocessFile {Init\AddGrpTownGuer.sqf}") \
+		TZK_Mission_Group_NonPlay(102,GUER, posG1,posG2,posG3, 102, "SoldierGLAW", "group this call preprocessFile {Init\AddGrpTownGuer.sqf}") \
+		TZK_Mission_Group_NonPlay(103,GUER, posG1,posG2,posG3, 103, "SoldierGLAW", "group this call preprocessFile {Init\AddGrpTownGuer.sqf}") \
+		TZK_Mission_Group_NonPlay(104,GUER, posG1,posG2,posG3, 104, "SoldierGLAW", "group this call preprocessFile {Init\AddGrpTownGuer.sqf}") \
+		TZK_Mission_Group_NonPlay(105,GUER, posG1,posG2,posG3, 105, "SoldierGLAW", "group this call preprocessFile {Init\AddGrpTownGuer.sqf}") \
+		TZK_Mission_Group_NonPlay(106,GUER, posG1,posG2,posG3, 106, "SoldierGLAW", "group this call preprocessFile {Init\AddGrpTownGuer.sqf}") \
+		TZK_Mission_Group_NonPlay(107,GUER, posG1,posG2,posG3, 107, "SoldierGLAW", "group this call preprocessFile {Init\AddGrpTownGuer.sqf}") \
+		TZK_Mission_Group_NonPlay(108,GUER, posG1,posG2,posG3, 108, "SoldierGLAW", "group this call preprocessFile {Init\AddGrpTownGuer.sqf}") \
+		TZK_Mission_Group_NonPlay(109,GUER, posG1,posG2,posG3, 109, "SoldierGLAW", "group this call preprocessFile {Init\AddGrpTownGuer.sqf}") \
+		TZK_Mission_Group_NonPlay(110,GUER, posG1,posG2,posG3, 110, "SoldierGLAW", "group this call preprocessFile {Init\AddGrpTownGuer.sqf}") \
+		TZK_Mission_Group_NonPlay(111,GUER, posG1,posG2,posG3, 111, "SoldierGLAW", "group this call preprocessFile {Init\AddGrpTownGuer.sqf}") \
+		TZK_Mission_Group_NonPlay(112,GUER, posG1,posG2,posG3, 112, "SoldierGLAW", "group this call preprocessFile {Init\AddGrpTownGuer.sqf}") \
+		TZK_Mission_Group_NonPlay(113,GUER, posG1,posG2,posG3, 113, "SoldierGLAW", "group this call preprocessFile {Init\AddGrpTownGuer.sqf}") \
+		TZK_Mission_Group_NonPlay(114,GUER, posG1,posG2,posG3, 114, "SoldierGLAW", "group this call preprocessFile {Init\AddGrpTownGuer.sqf}") \
+		TZK_Mission_Group_NonPlay(115,GUER, posG1,posG2,posG3, 115, "SoldierGLAW", "group this call preprocessFile {Init\AddGrpTownGuer.sqf}") \
+		TZK_Mission_Group_NonPlay(116,GUER, posG1,posG2,posG3, 116, "SoldierGLAW", "group this call preprocessFile {Init\AddGrpTownGuer.sqf}") \
+		TZK_Mission_Group_NonPlay(117,GUER, posG1,posG2,posG3, 117, "SoldierGLAW", "group this call preprocessFile {Init\AddGrpTownGuer.sqf}") \
+		TZK_Mission_Group_NonPlay(118,GUER, posG1,posG2,posG3, 118, "SoldierGLAW", "group this call preprocessFile {Init\AddGrpTownGuer.sqf}") \
+		TZK_Mission_Group_NonPlay(119,GUER, posG1,posG2,posG3, 119, "SoldierGLAW", "group this call preprocessFile {Init\AddGrpTownGuer.sqf}") \
+		TZK_Mission_Group_NonPlay(120,GUER, posG1,posG2,posG3, 120, "SoldierGLAW", "group this call preprocessFile {Init\AddGrpTownGuer.sqf}") \
+		TZK_Mission_Group_NonPlay(121,GUER, posG1,posG2,posG3, 121, "SoldierGLAW", "group this call preprocessFile {Init\AddGrpTownGuer.sqf}") \
+		TZK_Mission_Group_NonPlay(122,GUER, posG1,posG2,posG3, 122, "SoldierGLAW", "group this call preprocessFile {Init\AddGrpTownGuer.sqf}") \
+		TZK_Mission_Group_NonPlay(123,GUER, posG1,posG2,posG3, 123, "SoldierGLAW", "group this call preprocessFile {Init\AddGrpTownGuer.sqf}") \
+		TZK_Mission_Group_NonPlay(124,GUER, posG1,posG2,posG3, 124, "SoldierGLAW", "group this call preprocessFile {Init\AddGrpTownGuer.sqf}") \
+		TZK_Mission_Group_NonPlay(125,GUER, posG1,posG2,posG3, 125, "SoldierGLAW", "group this call preprocessFile {Init\AddGrpTownGuer.sqf}") \
 
 #define TZK_Mission_Grp_PatrolGrp(typeWlead, typeElead) \
 		TZK_Mission_Group_NonPlay(126,GUER, posG1,posG2,posG3, 126, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_PATROL}") \
@@ -386,23 +386,23 @@
 		TZK_Mission_Group_NonPlay(135,GUER, posG1,posG2,posG3, 135, "SoldierGLAW", "group this call preprocessFile localize {TZK_GROUP_PATROL}") \
 
 #define TZK_Mission_Grp_WorkerGrp(typeWlead, typeElead) \
-		TZK_Mission_Group_NonPlay(136,WEST, posW1,posW2,posW3, 136, typeWlead, "group this call preprocessFile localize {TZK_GROUP_WORKER}") \
-		TZK_Mission_Group_NonPlay(137,WEST, posW1,posW2,posW3, 137, typeWlead, "group this call preprocessFile localize {TZK_GROUP_WORKER}") \
-		TZK_Mission_Group_NonPlay(138,WEST, posW1,posW2,posW3, 138, typeWlead, "group this call preprocessFile localize {TZK_GROUP_WORKER}") \
-		TZK_Mission_Group_NonPlay(139,WEST, posW1,posW2,posW3, 139, typeWlead, "group this call preprocessFile localize {TZK_GROUP_WORKER}") \
-		TZK_Mission_Group_NonPlay(140,EAST, posE1,posE2,posE3, 140, typeElead, "group this call preprocessFile localize {TZK_GROUP_WORKER}") \
-		TZK_Mission_Group_NonPlay(141,EAST, posE1,posE2,posE3, 141, typeElead, "group this call preprocessFile localize {TZK_GROUP_WORKER}") \
-		TZK_Mission_Group_NonPlay(142,EAST, posE1,posE2,posE3, 142, typeElead, "group this call preprocessFile localize {TZK_GROUP_WORKER}") \
-		TZK_Mission_Group_NonPlay(143,EAST, posE1,posE2,posE3, 143, typeElead, "group this call preprocessFile localize {TZK_GROUP_WORKER}") \
+		TZK_Mission_Group_NonPlay(136,WEST, posW1,posW2,posW3, 136, typeWlead, "group this call preprocessFile {Init\AddGrpWorkerWest.sqf}") \
+		TZK_Mission_Group_NonPlay(137,WEST, posW1,posW2,posW3, 137, typeWlead, "group this call preprocessFile {Init\AddGrpWorkerWest.sqf}") \
+		TZK_Mission_Group_NonPlay(138,WEST, posW1,posW2,posW3, 138, typeWlead, "group this call preprocessFile {Init\AddGrpWorkerWest.sqf}") \
+		TZK_Mission_Group_NonPlay(139,WEST, posW1,posW2,posW3, 139, typeWlead, "group this call preprocessFile {Init\AddGrpWorkerWest.sqf}") \
+		TZK_Mission_Group_NonPlay(140,EAST, posE1,posE2,posE3, 140, typeElead, "group this call preprocessFile {Init\AddGrpWorkerEast.sqf}") \
+		TZK_Mission_Group_NonPlay(141,EAST, posE1,posE2,posE3, 141, typeElead, "group this call preprocessFile {Init\AddGrpWorkerEast.sqf}") \
+		TZK_Mission_Group_NonPlay(142,EAST, posE1,posE2,posE3, 142, typeElead, "group this call preprocessFile {Init\AddGrpWorkerEast.sqf}") \
+		TZK_Mission_Group_NonPlay(143,EAST, posE1,posE2,posE3, 143, typeElead, "group this call preprocessFile {Init\AddGrpWorkerEast.sqf}") \
 
 #define TZK_Mission_Grp_FunctionalGrp(typeWlead, typeElead) \
-		TZK_Mission_Group_NonPlay(144,WEST, posW1,posW2,posW3, 144, typeWlead, "group this call preprocessFile localize {TZK_GROUP_FUNCTIONAL}") \
-		TZK_Mission_Group_NonPlay(145,WEST, posW1,posW2,posW3, 145, typeWlead, "group this call preprocessFile localize {TZK_GROUP_FUNCTIONAL}") \
-		TZK_Mission_Group_NonPlay(146,WEST, posW1,posW2,posW3, 146, typeWlead, "group this call preprocessFile localize {TZK_GROUP_FUNCTIONAL}") \
-		TZK_Mission_Group_NonPlay(147,WEST, posW1,posW2,posW3, 147, typeWlead, "group this call preprocessFile localize {TZK_GROUP_FUNCTIONAL}") \
-		TZK_Mission_Group_NonPlay(148,WEST, posW1,posW2,posW3, 148, typeWlead, "group this call preprocessFile localize {TZK_GROUP_FUNCTIONAL}") \
-		TZK_Mission_Group_NonPlay(149,EAST, posE1,posE2,posE3, 149, typeElead, "group this call preprocessFile localize {TZK_GROUP_FUNCTIONAL}") \
-		TZK_Mission_Group_NonPlay(150,EAST, posE1,posE2,posE3, 150, typeElead, "group this call preprocessFile localize {TZK_GROUP_FUNCTIONAL}") \
-		TZK_Mission_Group_NonPlay(151,EAST, posE1,posE2,posE3, 151, typeElead, "group this call preprocessFile localize {TZK_GROUP_FUNCTIONAL}") \
-		TZK_Mission_Group_NonPlay(152,EAST, posE1,posE2,posE3, 152, typeElead, "group this call preprocessFile localize {TZK_GROUP_FUNCTIONAL}") \
-		TZK_Mission_Group_NonPlay(153,EAST, posE1,posE2,posE3, 153, typeElead, "group this call preprocessFile localize {TZK_GROUP_FUNCTIONAL}") \
+		TZK_Mission_Group_NonPlay(144,WEST, posW1,posW2,posW3, 144, typeWlead, "group this call preprocessFile {Init\AddGrpFuncWest.sqf}") \
+		TZK_Mission_Group_NonPlay(145,WEST, posW1,posW2,posW3, 145, typeWlead, "group this call preprocessFile {Init\AddGrpFuncWest.sqf}") \
+		TZK_Mission_Group_NonPlay(146,WEST, posW1,posW2,posW3, 146, typeWlead, "group this call preprocessFile {Init\AddGrpFuncWest.sqf}") \
+		TZK_Mission_Group_NonPlay(147,WEST, posW1,posW2,posW3, 147, typeWlead, "group this call preprocessFile {Init\AddGrpFuncWest.sqf}") \
+		TZK_Mission_Group_NonPlay(148,WEST, posW1,posW2,posW3, 148, typeWlead, "group this call preprocessFile {Init\AddGrpFuncWest.sqf}") \
+		TZK_Mission_Group_NonPlay(149,EAST, posE1,posE2,posE3, 149, typeElead, "group this call preprocessFile {Init\AddGrpFuncEast.sqf}") \
+		TZK_Mission_Group_NonPlay(150,EAST, posE1,posE2,posE3, 150, typeElead, "group this call preprocessFile {Init\AddGrpFuncEast.sqf}") \
+		TZK_Mission_Group_NonPlay(151,EAST, posE1,posE2,posE3, 151, typeElead, "group this call preprocessFile {Init\AddGrpFuncEast.sqf}") \
+		TZK_Mission_Group_NonPlay(152,EAST, posE1,posE2,posE3, 152, typeElead, "group this call preprocessFile {Init\AddGrpFuncEast.sqf}") \
+		TZK_Mission_Group_NonPlay(153,EAST, posE1,posE2,posE3, 153, typeElead, "group this call preprocessFile {Init\AddGrpFuncEast.sqf}") \

@@ -1,9 +1,9 @@
-// args: group
+// args: [group, si]
 
 private [{_group}, {_si}];
 
-_group = _this;
-_si = sides find (side _group);
+_group = _this select 0;
+_si = _this select 1;
 
 (workerGroups select _si) set [count (workerGroups select _si), _group];
 
