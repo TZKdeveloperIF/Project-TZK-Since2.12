@@ -26,9 +26,7 @@ publicExec format [{[[%1, %2], [%3, %4, %5, %6]] exec "Init\ClientFormalStart.sq
 	, _mhqEastX call preprocessFile "Util\Num2Str.sqf", _mhqEastY call preprocessFile "Util\Num2Str.sqf"
 ];
 
-// todo: should be delay broadcast
-music1h = (-0.5 + random count Musics1h); PublicVariable "music1h";
-music10m = (-0.5 + random count Musics10m); PublicVariable "music10m"; 
+0 exec "Init\SvrDelayBroadcast.sqs";
 
 
 // playable groups. Init AI leaders and begin detecting disconnected players

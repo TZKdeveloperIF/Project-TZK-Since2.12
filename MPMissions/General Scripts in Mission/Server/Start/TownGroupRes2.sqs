@@ -109,9 +109,7 @@ _timeReinforce = time + (call _interval)
 
 #Patrol
   _group setCombatMode "YELLOW"; _group setBehaviour "STEALTH"; _group setSpeedMode "NORMAL"
-  ; TODO { _x disableAI "TARGET" } foreach (units _group)
 
-  ; player globalchat format["Patrol: %1", (towns select _ti) select tdName]
 	_timePatrol = time + 3*60
 	{ if ((random 1) < 0.5 && _x == driver vehicle _x) then { _x doMove ([getPos _flag, 150, 150] call funcGetRandomPos) } } foreach units _group
 	goto "Update"

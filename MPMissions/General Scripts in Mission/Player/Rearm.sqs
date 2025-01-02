@@ -71,10 +71,10 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 	? _cost > _money: _msg = format["Not enough money for rearm. ($%1 needed)", _cost]; goto "Quit"
 	
 	? !(local _vehicle): _msg = "Rearm failed. Soldier is not local."; goto "Quit"
-  ; TODO _vehicle setCombatMode "BLUE"
+
   ~_timeRearm
 	? !(alive _vehicle): _msg = ""; goto "Quit"
-	; TODO ? !(alive _support): _msg = "Rearm failed, support vehicle destroyed."; _vehicle setCombatMode "YELLOW"; goto "Quit"
+
 	? !(alive _support): _msg = "Rearm failed, support vehicle destroyed."; goto "Quit"
   removeAllWeapons _vehicle
   ; add custom throw/put
@@ -83,7 +83,7 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
   { _vehicle addMagazine _x } foreach _mags
   ? count (weapons _vehicle) > 0: format["ERROR: soldier '%1-%2' has weapons in Rearm.sqs", _vehicle, typeOf _vehicle] call fDebugLog; goto "MsgAndQuit"
   { _vehicle addWeapon _x } foreach _weapons
-  ; TODO _vehicle setCombatMode "YELLOW"
+
   goto "RearmEnd"
 
 #RearmVehicle
