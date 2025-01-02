@@ -35,18 +35,16 @@ _typeCrew = (_desc select udCrew) select 1
 ~0.1
 _crew = [_typeCrew, _pos, _dir, _si, _gi, _group, _giBuyer] call fAddSoldier
 ? alive _crew && alive _vehicle : _crew moveInDriver _vehicle
-#SkipDriver
+# SkipDriver
 
 ? _gunner == 0 : goto "SkipGunner"
 ~0.1
 _crew = [_typeCrew, _pos, _dir, _si, _gi, _group, _giBuyer] call fAddSoldier
 ? alive _crew && alive _vehicle : _crew moveInGunner _vehicle
-#SkipGunner
+# SkipGunner
 
 ? _commander == 0 : goto "SkipCommander"
 ~0.1
 _crew = [_typeCrew, _pos, _dir, _si, _gi, _group, _giBuyer] call fAddSoldier
 ? alive _crew && alive _vehicle : _crew moveInCommander _vehicle
-#SkipCommander
-
-; TODO	if (_driver == 0 && _gunner == 0 && _commander == 0) then { _vehicle setPos (getPos _vehicle) };
+# SkipCommander

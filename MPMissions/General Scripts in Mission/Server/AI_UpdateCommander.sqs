@@ -202,7 +202,7 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 	#BuildSec_BuildPosReached
 	_money = groupMoneyMatrix select _si select _gi
   ? _money < _structDesc select sdCost: goto "Update"
-	; TODO ? !(alive _mhq): goto "Update"
+
 	_res = [_structType, _si, _gi, _posStruct, _structDir] call fBuildStruct; _objSec set [_i, _res select 0]
 	goto "Update"
 

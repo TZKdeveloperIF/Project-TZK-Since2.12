@@ -3,7 +3,6 @@
 //		, move distance (distance to move after having acrossed the bridge)]]
 // returns: none
 
-// todo: rename script. This is actually a preprocess script doing some parameter decoration and unit filtrate
 private [{_playerGroupSelectedUnits}]; _playerGroupSelectedUnits = _this select 0;
 if (count _playerGroupSelectedUnits > 0) then {
 	private [{_units}]; _units = [];
