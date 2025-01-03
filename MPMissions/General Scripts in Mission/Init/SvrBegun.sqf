@@ -23,6 +23,9 @@ if (sizeofstr _remoteGrpLeaderNames > 0) then {
 	_remoteGrpLeaderNames = substr [_remoteGrpLeaderNames, 0, sizeofstr _remoteGrpLeaderNames - 2];
 };
 
+// broadcast AI groups info
+call preprocessFile "Init\SvrBroadcastAiGrps.sqf";
+
 // Remove non-player spectator
 {
 	call format [

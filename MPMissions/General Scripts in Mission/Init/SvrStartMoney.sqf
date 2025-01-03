@@ -1,13 +1,5 @@
 // args: [custom info]
 
-{_try = 0; _si = _x; {
-	_gi = (groupMatrix select _si) find (_x);
-	while {_try < 10 && _gi == -1} do {
-		_gi = (groupMatrix select _si) find (_x);
-		_try = _try + 1;
-	};
-	[_si, _gi] exec localize {TZK_INFO_SERVER_CHECK_AI};
-} forEach (groupAiMatrix select _si)} forEach [si0, si1];
 {
 	_si = _x;
 	if (bool_TZK_MF_Mode && !dev && (groupMatrix select _si select 0) in (groupAiMatrix select _si)) then {
