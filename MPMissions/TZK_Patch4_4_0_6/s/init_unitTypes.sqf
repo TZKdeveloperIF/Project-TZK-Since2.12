@@ -486,7 +486,7 @@ unitDefs set [_type, ["M60", 1000, _si, 30, "M60_C_xj400", "im60", 2^_st, [3, _c
 _tankLightW01 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["M60-120S", 2000, _si, 30, "M60_120S_C_xj400", "im60", 2^_st, [3, _crewW], _mTank, []] ];
+unitDefs set [_type, ["M60-120S", 2000, _si, 30, "M60_120S_xj400", "im60", 2^_st, [3, _crewW], _mTank, []] ];
 _tankLightW02 = _type;
 _type = _type + 1;
 

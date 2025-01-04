@@ -740,8 +740,7 @@ class CfgModels {
 			tex_m60_sidepas.pac
 		};
 	};
-	class M60_120S_TZK: Tank {
-		sectionsInherit = "Tank";
+	class M60_120S_TZK: Tank_MultiTex {
 		sections[] = {
 			tex_bmp_kuk2.pac, 
 			tex_m1a1_ammo_box.pac, 
