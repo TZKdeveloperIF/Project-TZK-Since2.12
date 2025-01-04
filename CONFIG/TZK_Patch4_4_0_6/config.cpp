@@ -516,12 +516,8 @@ class CfgVehicles {
 			Init = "";
 		};
 	};
-	class M60_120S_xj400: M60_xj400 {};
-	class M60_120S_C_xj400: M60_120S_xj400 {
-		hiddenSelections[] = {tzk_tex_00};
-		class EventHandlers {
-			Init = "";
-		};
+	class M60_120S_xj400: M60_xj400 {
+		model = "\TZK_Patch4_4_0_6\Model\M60_120S_TZK.p3d";
 	};
 	class T55_Base_xj400: Tank_xj400 {};
 	class T55E_xj400: T55_Base_xj400 {};
