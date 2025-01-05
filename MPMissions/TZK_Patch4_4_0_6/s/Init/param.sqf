@@ -1,5 +1,4 @@
-fixedStartPos = param1 % 4;
-// todo: rename fixedStartPos
+startPosMode = param1;
 Allow_BOH_WAP_TZK = false;
 Incomex = 1;
 restanksx = param2 + 1;

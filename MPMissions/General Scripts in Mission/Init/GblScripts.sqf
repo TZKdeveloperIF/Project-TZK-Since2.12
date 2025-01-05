@@ -283,6 +283,10 @@ _f = {
 "\TZK_Scripts_4_0_6\Server\Dynamic\TriggerGameEnd.sqs" call _f; // 230
 "Server\Loop\TownTrigger.sqs" call _f; // 231
 
+// script count check. Check index with last literal value
+if (_i != 231 + 1) then {
+	player globalChat "Script count mismatch!";
+};
 
 // free extra memory
 TzkScripts resize _i;
