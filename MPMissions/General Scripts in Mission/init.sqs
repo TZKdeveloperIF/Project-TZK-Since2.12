@@ -2,8 +2,9 @@
 
 ; ======================================== post process of initialization in mission.sqm ========================================
 
-; todo: use first group to init baseGroup
 baseGroup = [grpNull, grpNull];
+? count (functionalGroups select si0) > 0: baseGroup set [si0, functionalGroups select si0 select 0]
+? count (functionalGroups select si1) > 0: baseGroup set [si1, functionalGroups select si1 select 0]
 
 ; script path. They're used to be placed in stringtable.csv. However, that's not proper usage.
 ; stringtable item is stored in 
@@ -52,8 +53,7 @@ TzkArtSpeeds = [22, 60, 70, 80, 120, 180, 300, 400, 500, 800, 900, 1200, 1400, 1
 call loadFile "\TZK_Patch4_4_0_6\s\init_group.sqf"
 call preprocessFile "Common\Init\Group.sqf"
 
-call loadFile "\TZK_Scripts_4_0_6\init_param.sqf"
-fixedStartPos = param1
+call loadFile "\TZK_Patch4_4_0_6\s\Init\param.sqf"
 
 "impl\Upgrade.sqf" call loadFile "\TZK_Patch4_4_0_6\s\init_upgrade.sqf"
 ? bool_TZK_Lester_Mode: [{[] exec "Extra\init_upgrade.sqs"}, 0.1] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"

@@ -41,7 +41,7 @@ _list = vehiclesStart select _si; _i = 0; _c = count _list
 _vector = [_posSide1, _posSide0] call funcVectorSub; _dir = 0
 
 ? (_vector select 0) != 0 && (_vector select 1) != 0: _dir = (_vector select 0) atan2 (_vector select 1)
-? fixedStartPos == 0: _dir = random 360
+? startPosMode == 0: _dir = random 360
 
 _i = 0; _c = count _startVeh0; _si = si0; _list = vehiclesStart select _si
 # PlaceVehicle0

@@ -2,7 +2,7 @@
 
 ? !isServer: goto "Quit"
 
-? fixedStartPos == 4: goto "ForCmdDefineRules"
+? startPosMode == 4: goto "ForCmdDefineRules"
 	goto "SkipRuleDefine"
 
 # ForCmdDefineRules
@@ -31,7 +31,7 @@
 	goto "Quit"
 
 # Degrade
-	fixedStartPos = 1, publicVariable {fixedStartPos}
+	startPosMode = 1, publicVariable {startPosMode}
 # SkipRuleDefine
 	1 exec "\TZK_Patch4_4_0_6\s\Net\hStartMsg.sqs"
 	publicExec {1 exec "\TZK_Patch4_4_0_6\s\Net\hStartMsg.sqs"}
