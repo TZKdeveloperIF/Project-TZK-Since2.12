@@ -1,7 +1,7 @@
 // args: none
 player groupchat "Start data received.";
 
-[false] exec localize {TZK_MARKER_SPEC}; btnMarker = true; boolFriendly = true;
+[false] exec (TzkScripts select 161); btnMarker = true; boolFriendly = true;
 
 forceMap false;
 
@@ -10,4 +10,4 @@ player addWeapon "Ingram"; { player addMagazine "IngramMag" } forEach [1]; playe
 
 [player] exec "Player\Start\Spectator.sqs";
 
-if bool_TZK_199_Mode then {[player] exec localize {TZK_FUNC_KEEP_ALIVE}};
+if bool_TZK_199_Mode then {[player] exec (TzkScripts select 123)};

@@ -3,7 +3,7 @@ _v = _this select 0; _t = _this select 1; _m = _this select 2, _w = _this select
 _updateWeapons = (if (count _this > 4) then {_this select 4} else {false})
 
 ~ 1
-? !(local _v) || !(alive _v) : [_v, _w, _m, _t, 1] exec localize {TZK_EQUIPREARMDATA_EDIT}; exit
+? !(local _v) || !(alive _v) : [_v, _w, _m, _t, 1] exec (TzkScripts select 071); exit
 
 ? _updateWeapons: { _v removeWeapon _x} foreach (weapons _v); {_v addweapon _x} forEach _w
 
@@ -14,4 +14,4 @@ _mags = magazines _v
 
 ? "DeploySwitch_xj400" in _mags: _v addMagazine "DeploySwitch_xj400"
 
-[_v, _w, _m, _t, 1] exec localize {TZK_EQUIPREARMDATA_EDIT}; exit
+[_v, _w, _m, _t, 1] exec (TzkScripts select 071); exit

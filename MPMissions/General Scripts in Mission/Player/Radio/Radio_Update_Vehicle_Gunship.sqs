@@ -11,10 +11,10 @@ _hasGunner = (typeOf _vehicle GetVehicleParam "hasGunner") in ["1", "true"]
 
 call preprocessFile "Player\Radio\Channel001_RtsMapMode.sqf";
 
-Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", {[] exec localize {TZK_DIALOG_TZK_SETTING_1}}, ""];
+Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", {[] exec (TzkScripts select 025)}, ""];
 
-if (call _booleStringSwitchDriver) then {Radio003 setTriggerText "To driver's seat"; Radio003 setTriggerStatements ["this", {(vehicle player) exec localize {TZK_FUNC_SWITCH_2_DRIVER}}, ""]} else {Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""]};
-if (call _booleStringSwitchGunner) then {Radio004 setTriggerText "To gunner's seat"; Radio004 setTriggerStatements ["this", {(vehicle player) exec localize {TZK_FUNC_SWITCH_2_GUNNER}}, ""]} else {Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""]};
+if (call _booleStringSwitchDriver) then {Radio003 setTriggerText "To driver's seat"; Radio003 setTriggerStatements ["this", {(vehicle player) exec (TzkScripts select 130)}, ""]} else {Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""]};
+if (call _booleStringSwitchGunner) then {Radio004 setTriggerText "To gunner's seat"; Radio004 setTriggerStatements ["this", {(vehicle player) exec (TzkScripts select 131)}, ""]} else {Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""]};
 
 if (_booleSpoofON) then {Radio005 setTriggerText "SpoofMissile ON"; Radio005 setTriggerStatements ["this", "vehicle player removeMagazines {SpoofSwitch_xj400}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true}", ""]};
 if (_booleSpoofOFF) then {Radio005 setTriggerText "SpoofMissile OFF"; Radio005 setTriggerStatements ["this", "vehicle player addMagazine {SpoofSwitch_xj400}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true}", ""]};
@@ -28,10 +28,10 @@ Radio000 setTriggerText " "; Radio000 setTriggerStatements ["this", "", ""];
 _transportGunship = call (typeOf _vehicle GetVehicleParam "transportSoldier") > 0
 ? !_transportGunship : goto "SkipTransportInit"
 _booleStringTransport = "_vehicle in TransportActivatedVehicles"; _booleTransport = call _booleStringTransport
-Radio007 setTriggerText "Eject AI Units"; Radio007 setTriggerStatements ["this", {[vehicle player, siPlayer] exec localize {TZK_FUNC_EJECT_QUICKLY}}, ""];
-Radio008 setTriggerText "Eject All Cargo"; Radio008 setTriggerStatements ["this", {[vehicle player, siPlayer] exec localize {TZK_FUNC_EJECT_ALL_CARGO}}, ""];
-Radio009 setTriggerText "Eject One Cargo"; Radio009 setTriggerStatements ["this", {[vehicle player, siPlayer] exec localize {TZK_FUNC_EJECT_ONE_CARGO}}, ""];
-if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNOFF}}, ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNON}}, ""];	};
+Radio007 setTriggerText "Eject AI Units"; Radio007 setTriggerStatements ["this", {[vehicle player, siPlayer] exec (TzkScripts select 080)}, ""];
+Radio008 setTriggerText "Eject All Cargo"; Radio008 setTriggerStatements ["this", {[vehicle player, siPlayer] exec (TzkScripts select 078)}, ""];
+Radio009 setTriggerText "Eject One Cargo"; Radio009 setTriggerStatements ["this", {[vehicle player, siPlayer] exec (TzkScripts select 079)}, ""];
+if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", {[vehicle player] exec (TzkScripts select 176)}, ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", {[vehicle player] exec (TzkScripts select 175)}, ""];	};
 #SkipTransportInit
 
 ~1
@@ -41,8 +41,8 @@ if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn O
 
 _booleRefreshSwitchDriver = (_booleSwitchDriver && !(call _booleStringSwitchDriver)) || (!_booleSwitchDriver && (call _booleStringSwitchDriver))
 _booleRefreshSwitchGunner = (_booleSwitchGunner && !(call _booleStringSwitchGunner)) || (!_booleSwitchGunner && (call _booleStringSwitchGunner))
-? _booleRefreshSwitchDriver : if (call _booleStringSwitchDriver) then {Radio003 setTriggerText "To driver's seat"; Radio003 setTriggerStatements ["this", {(vehicle player) exec localize {TZK_FUNC_SWITCH_2_DRIVER}}, ""]} else {Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""]}
-? _booleRefreshSwitchGunner : if (call _booleStringSwitchGunner) then {Radio004 setTriggerText "To gunner's seat"; Radio004 setTriggerStatements ["this", {(vehicle player) exec localize {TZK_FUNC_SWITCH_2_GUNNER}}, ""]} else {Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""]}
+? _booleRefreshSwitchDriver : if (call _booleStringSwitchDriver) then {Radio003 setTriggerText "To driver's seat"; Radio003 setTriggerStatements ["this", {(vehicle player) exec (TzkScripts select 130)}, ""]} else {Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""]}
+? _booleRefreshSwitchGunner : if (call _booleStringSwitchGunner) then {Radio004 setTriggerText "To gunner's seat"; Radio004 setTriggerStatements ["this", {(vehicle player) exec (TzkScripts select 131)}, ""]} else {Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""]}
 
 ? _booleRefreshSwitchDriver : _booleSwitchDriver = call _booleStringSwitchDriver
 ? _booleRefreshSwitchGunner : _booleSwitchGunner = call _booleStringSwitchGunner
@@ -52,7 +52,7 @@ _booleRefreshSwitchGunner = (_booleSwitchGunner && !(call _booleStringSwitchGunn
 
 ? !_transportGunship : goto "SkipTransportRefresh"
 _booleRefreshTransport = (_booleTransport && !(call _booleStringTransport)) || (!_booleTransport && (call _booleStringTransport))
-? _booleRefreshTransport : if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNOFF}}, ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", {[vehicle player] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNON}}, ""];	}
+? _booleRefreshTransport : if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", {[vehicle player] exec (TzkScripts select 176)}, ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", {[vehicle player] exec (TzkScripts select 175)}, ""];	}
 ? _booleRefreshTransport : _booleTransport = call _booleStringTransport
 #SkipTransportRefresh
 
@@ -62,5 +62,5 @@ _timeRefresh = time + 1
 ? _vehicle == vehicle player : goto "Refresh"
 
 ~1
-? "ParachuteBase" countType [vehicle player] > 0 : [_vehicle] call loadFile localize {TZK_RADIO_ENTRANCE_PARA}; exit
+? "ParachuteBase" countType [vehicle player] > 0 : [_vehicle] call loadFile (TzkScripts select 198); exit
 ; EOF

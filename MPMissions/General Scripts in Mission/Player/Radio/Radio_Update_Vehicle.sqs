@@ -4,13 +4,13 @@ _vehicle = _this select 0
 ? _vehicle == player: [_vehicle] exec "Player\Radio\Radio_Update_Vehicle_OnFoot.sqs"; exit
 
 ; Clean up radio channels and make it unnecessary to be handle in other scripts.
-[_vehicle] call loadFile localize {TZK_RADIO_ENTRANCE_COMMON}
+[_vehicle] call loadFile (TzkScripts select 196)
 
 ; Classifications below are defined in InitUnitTypes
 # CheckVehicle
 _vt = _vehicle call funcGetUnitTypeFromObject
 ? _vt == -1: goto "CheckStructure"
-? _vt in RadioTypesCustomCarShips: if ("Ship" countType [_vehicle] > 0) then {[_vehicle] exec "\TZK_Scripts_4_0_6\Player\Radio\Radio_Update_Vehicle_CustomShip.sqs"} else {[_vehicle] exec "\TZK_Scripts_4_0_6\Player\Radio\Radio_Update_Vehicle_CustomCar.sqs"}; exit
+? _vt in RadioTypesCustomCarShips: if ("Ship" countType [_vehicle] > 0) then {[_vehicle] exec "\TZK_Patch4_4_0_6\s\Radio\Radio_Update_Vehicle_CustomShip.sqs"} else {[_vehicle] exec "\TZK_Patch4_4_0_6\s\Radio\Radio_Update_Vehicle_CustomCar.sqs"}; exit
 
 ? bool_TZK_SEMod_Mode && _vt in (typesHeavyTank + typesLightTank): [_vehicle] exec "\TZK_Scripts_4_0_4\Player\Radio\Radio_Update_Vehicle_Tank.sqs"; exit
 
@@ -18,7 +18,7 @@ _vt = _vehicle call funcGetUnitTypeFromObject
 ? _vt == jeepaW || _vt == uazaE: [_vehicle] exec "Player\Radio\Radio_Update_Vehicle_MinerCar.sqs"; exit
 
 ? _vt in typesHowitzer: [_vehicle] exec "Player\Radio\Radio_Update_Vehicle_Howitzer.sqs"; exit
-? _vt in typesRocketLauncher: [_vehicle] exec "\TZK_Scripts_4_0_6\Player\Radio\Radio_Update_Vehicle_TOS1.sqs"; exit
+? _vt in typesRocketLauncher: [_vehicle] exec "\TZK_Patch4_4_0_6\s\Radio\Radio_Update_Vehicle_TOS1.sqs"; exit
 
 ? _vt in RadioTypesShips: [_vehicle] exec "Player\Radio\Radio_Update_Vehicle_Ship.sqs"; exit
 
@@ -26,7 +26,7 @@ _vt = _vehicle call funcGetUnitTypeFromObject
 ? _vt in (RadioTypesSupport + [utMCVW, utMCVE, utMHQ0, utMHQ1]): if ("Land" countType [_vehicle] > 0) then {[_vehicle] exec "Player\Radio\Radio_Update_Vehicle_SupportLand.sqs"; exit}
 
 ; Transport Helis and Planes are similar. Support Heli is special in drop ammo crate.
-? _vt in RadioTypesTransportPlane + RadioTypesTransportHeli: [_vehicle] exec "\TZK_Scripts_4_0_6\Player\Radio\Radio_Update_Vehicle_TransportAir.sqs"; exit
+? _vt in RadioTypesTransportPlane + RadioTypesTransportHeli: [_vehicle] exec "\TZK_Patch4_4_0_6\s\Radio\Radio_Update_Vehicle_TransportAir.sqs"; exit
 
 ; Check vehicle's "transportSoldier" to decide whether is a transport Heli or not
 ? _vt in RadioTypesGunships: [_vehicle] exec "\TZK_Scripts_4_0_6\Player\Radio\Radio_Update_Vehicle_Gunship.sqs"; exit
@@ -38,7 +38,7 @@ _vt = _vehicle call funcGetUnitTypeFromObject
 ? _vt in (typesTransportCar + typesTransportAPC): [_vehicle, _vt] exec "Player\Radio\Radio_Update_Vehicle_TransportLand.sqs"; exit
 
 ; Vehicle doesn't have special Actions
-[_vehicle] call loadFile localize {TZK_RADIO_ENTRANCE_COMMON}; exit
+[_vehicle] call loadFile (TzkScripts select 196); exit
 
 
 # CheckStructure
@@ -54,8 +54,8 @@ _vt = _vehicle call funcGetStructTypeFromObject
 # Abnormal
 
 ; Parachute. In crCTI when player in Parachute the "Options" action invalid. No modifying there but add "Options" in radio.
-? "ParachuteBase" countType [_vehicle] > 0: [_vehicle] call loadFile localize {TZK_RADIO_ENTRANCE_PARA}; exit
+? "ParachuteBase" countType [_vehicle] > 0: [_vehicle] call loadFile (TzkScripts select 198); exit
 
-[_vehicle] call loadFile localize {TZK_RADIO_ENTRANCE_COMMON}; exit
+[_vehicle] call loadFile (TzkScripts select 196); exit
 
 ; EOF

@@ -1,11 +1,11 @@
 ; args: none
 
 ~ 0.1
-[player, false, 0] exec localize {TZK_DIALOG_EQUIPMENT}
+[player, false, 0] exec (TzkScripts select 019)
 
 ~ 1
 @ !dialog
-0 exec localize {TZK_FUNC_DISPLAY_GAMEINFO}
+0 exec (TzkScripts select 077)
 0 exec "\TZK_Scripts_4_0_6\Player\Init\CommanderUnit.sqs"
 
 ? groupPlayer != groupCommander select siPlayer: goto "SkipInitialCmdRule"

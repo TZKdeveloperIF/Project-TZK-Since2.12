@@ -133,7 +133,7 @@ _unitsBuy = []; _giInf = AICO_giInf select _si
 	_factoryType = _factoryType select random count _factoryType - 0.5
 	_factory = [_si, _factoryType, false] call funcGetIdleFactories; if (count _factory == 0) then {_factory = objNull} else {_factory = _factory select random count _factory - 0.5}
 	? isNull _factory: goto "NextBuy"
-	[[_type, _driver, _gunner, 0, _si, _giJoin, _giBuyer, _factory]] exec localize {TZK_AI_BUY_UNIT}
+	[[_type, _driver, _gunner, 0, _si, _giJoin, _giBuyer, _factory]] exec (TzkScripts select 003)
 
 	# NextBuy
 	_buyNum = _buyNum - 1; goto "TypesSelected"

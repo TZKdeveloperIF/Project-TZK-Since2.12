@@ -1,7 +1,5 @@
 ; args: [unit, si, gi]
 
-; args: [unit, si, gi]
-
 ? !isServer : exit
 
 _unit = _this select 0
@@ -18,10 +16,10 @@ _unit call busyClear
 
 ? !(alive _unit) : goto "SkipInitialize"
 
-[_unit, _si, 200] exec localize {TZK_EVENT_ADD_KILLED_INF}
+[_unit, _si, 200] exec (TzkScripts select 039)
 [_unit, _si, _gi] exec "Server\EventAdd_Infantry.sqs"
-[_unit, _si, kaUnit, -1] exec localize {TZK_SERVER_KNOWSABOUT_START}
-[_unit] exec localize {TZK_REARMDATA_ADD}
+[_unit, _si, kaUnit, -1] exec (TzkScripts select 218)
+[_unit] exec (TzkScripts select 072)
 
 #SkipInitialize
 ; This line is to initial leader himself and just disconnect player group units.

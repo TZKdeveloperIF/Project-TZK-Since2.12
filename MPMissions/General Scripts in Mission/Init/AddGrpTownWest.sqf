@@ -1,1 +1,1 @@
-[_this, si0] call preprocessFile localize {TZK_GROUP_TOWN};
+[_this, si0] call preprocessFile "Init\AddGroupTownVar.sqf";

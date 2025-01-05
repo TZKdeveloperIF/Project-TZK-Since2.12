@@ -83,13 +83,13 @@ if (_res select 0) then {
 			// M88
 			if (_cachedInfo select 1 == typesEngineeringVeh select si0) then {
 				if (_engiennerVehicle animationPhase "Crane" == 0) then {
-					[_engiennerVehicle, "Up"] exec localize {TZK_ACTION_M88_CRANE};
+					[_engiennerVehicle, "Up"] exec (TzkScripts select 002);
 				};
 			};
 			// BREM
 			if (_cachedInfo select 1 == typesEngineeringVeh select si1) then {
 				if (_engiennerVehicle animationPhase "Strela_V" == 0) then {
-					[_engiennerVehicle, "Up"] exec localize {TZK_ACTION_BREM1_CRANE};
+					[_engiennerVehicle, "Up"] exec (TzkScripts select 001);
 				};
 			};
 		};

@@ -103,7 +103,7 @@ mutexDlg = false
 	_lastSelQID = -1
 	? (_remote): _lastWorkingFactoryTypes = []; goto "Update"
 	
-	[_idcUnits, _nShow, [_typeFactory], []] call loadFile localize {TZK_DIALOG_BUYUNITS_AVAILABLE_LIST}; _typeFactory = 2^_typeFactory
+	[_idcUnits, _nShow, [_typeFactory], []] call loadFile (TzkScripts select 016); _typeFactory = 2^_typeFactory
 
 		
 # Update
@@ -119,7 +119,7 @@ mutexDlg = false
 	ctrlSetText [_idcMoney, _text]
 
 	? _remote : ctrlShow [_idcShowInfBG, _nShow == 0]; ctrlShow [_idcShowVehBG, _nShow == 1]; ctrlShow [_idcShowBothBG, _nShow == 2]
-	? _remote : _lastWorkingFactoryTypes = [_idcUnits, _nShow, [], _lastWorkingFactoryTypes] call loadFile localize {TZK_DIALOG_BUYUNITS_AVAILABLE_LIST}
+	? _remote : _lastWorkingFactoryTypes = [_idcUnits, _nShow, [], _lastWorkingFactoryTypes] call loadFile (TzkScripts select 016)
 	? _nShow != nShow : _nShow = nShow
 
 	_lastSelQID = -1

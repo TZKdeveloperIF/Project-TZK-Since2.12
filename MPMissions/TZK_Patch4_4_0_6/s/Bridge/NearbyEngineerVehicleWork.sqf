@@ -11,7 +11,7 @@ _i = 0; _c = count _this; while {_i < _c} do {
 	if (-1 != _idx) then {
 		_veh = _entry select 0;
 		if (_veh animationPhase (["Crane", "Strela_V"] select _idx) == 0) then {
-			[_veh, "Up"] exec (localize ([{TZK_ACTION_M88_CRANE}, {TZK_ACTION_BREM1_CRANE}] select _idx));
+			[_veh, "Up"] exec ([(TzkScripts select 002), (TzkScripts select 001)] select _idx);
 		};
 	};
 

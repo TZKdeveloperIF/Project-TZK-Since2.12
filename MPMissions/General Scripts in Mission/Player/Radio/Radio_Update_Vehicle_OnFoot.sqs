@@ -11,9 +11,9 @@ _rearmAT = "Rearm AT" + (if bool_TZK_SEMod_Mode Then {"/Javelin"} Else {""})
 
 call preprocessFile "Player\Radio\Channel001_RtsMapMode.sqf";
 
-Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", {[] exec localize {TZK_DIALOG_TZK_SETTING_1}}, ""];
+Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", {[] exec (TzkScripts select 025)}, ""];
 
-if (call _booleStringMedic) then {	Radio003 setTriggerText "Self-Medic"; Radio003 setTriggerStatements ["this", {if ({_x=={Medkit_xj400}} count magazines player > 0) then { player exec localize {TZK_ACTION_SELF_MEDIC} } else {hint {You aren't carrying any Medkit.}}}, ""];	} else {	Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""];	};
+if (call _booleStringMedic) then {	Radio003 setTriggerText "Self-Medic"; Radio003 setTriggerStatements ["this", {if ({_x=={Medkit_xj400}} count magazines player > 0) then { player exec (TzkScripts select 000) } else {hint {You aren't carrying any Medkit.}}}, ""];	} else {	Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""];	};
 
 if (mhqNearby) then {	Radio004 setTriggerText "MHQ Build Menu"; Radio004 setTriggerStatements ["this", {if (mhqNearby) then {[utMHQ0,150] exec "Player\Dialog\BuildMenu.sqs"} else {hint {MHQ too far away.}}}, ""];	} else {	Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""];	};
 
@@ -30,7 +30,7 @@ Radio000 setTriggerText "Rearm RPG"; Radio000 setTriggerStatements ["this", {[pl
 ~0.05
 ; In OFP/Arma can't compare booleans directly. Use (A && !B) || (!A && B) here, and use !_boolean to refresh.
 _booleRefreshMedic = (_booleMedic && !(call _booleStringMedic)) || (!_booleMedic && (call _booleStringMedic))
-? _booleRefreshMedic : if (call _booleStringMedic) then {	Radio003 setTriggerText "Self-Medic"; Radio003 setTriggerStatements ["this", {if ({_x=={Medkit_xj400}} count magazines player > 0) then { player exec localize {TZK_ACTION_SELF_MEDIC} } else {hint {You aren't carrying any Medkit.}}}, ""];	} else {	Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""];	}
+? _booleRefreshMedic : if (call _booleStringMedic) then {	Radio003 setTriggerText "Self-Medic"; Radio003 setTriggerStatements ["this", {if ({_x=={Medkit_xj400}} count magazines player > 0) then { player exec (TzkScripts select 000) } else {hint {You aren't carrying any Medkit.}}}, ""];	} else {	Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""];	}
 
 _booleRefreshMHQNearby = (_mhqNearby && !mhqNearby) || (!_mhqNearby && mhqNearby)
 ? _booleRefreshMHQNearby : if (mhqNearby) then {	Radio004 setTriggerText "MHQ Build Menu"; Radio004 setTriggerStatements ["this", {if (mhqNearby) then {[utMHQ0,150] exec "Player\Dialog\BuildMenu.sqs"} else {hint {MHQ too far away.}}}, ""];	} else {	Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""];	}

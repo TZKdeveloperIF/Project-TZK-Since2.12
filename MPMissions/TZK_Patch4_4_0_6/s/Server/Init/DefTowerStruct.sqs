@@ -1,0 +1,24 @@
+; args: [_type, _si, _objects, <repaired>]
+; This script should keep pace with Server\Init\PrimaryStruct.sqs when updating
+
+? !isServer : exit
+
+_type = _this select 0
+_si = _this select 1
+_object = (_this select 2) select 0; _objects = (_this select 2); _additionalObjects = _objects - [_object]
+? _si in [si0, si1]: _object addEventHandler ["killed", format [{[_this, %1] exec (TzkScripts select 062)}, _si]]
+{ _x addEventHandler ["killed", {_this exec (TzkScripts select 061)}] } forEach _additionalObjects
+{ [_x, _si, (structDefs select _type) select sdCost] exec (TzkScripts select 038) }  forEach _objects
+[_object, _si, kaStruct, 200] exec (TzkScripts select 218)
+
+; Artillery Detecting 
+? _type in (structsOccupiableHowitzer + structsOccupiableMortar): _object addEventHandler ["Fired", format [{ [_this select 0, nearestObject[_this select 0, _this select 4], %1, true ] exec (TzkScripts select 034) }, _si]]
+
+? !( !dev && !((count _this) > 3) ) : exit
+
+
+removeAllWeapons _object
+~0.5
+_object setDamage 1
+
+; EOF

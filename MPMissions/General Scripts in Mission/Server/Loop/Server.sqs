@@ -9,7 +9,7 @@ _ir = 0
 _remind = [timeLimit - 60*60, timeLimit - 60*90, timeLimit - 60*150, 10*60, 5*60, 1*60, -10000]
 _timeNextRemind = timeLimit - (_remind select _ir)
 
-_onGameEnd = {0 exec localize {TZK_TRIGGER_GAME_END_COMMON}, 0 exec "Log\OnGameOver.sqs", publicExec {0 exec "Log\OnGameOver.sqs"}}
+_onGameEnd = {0 exec (TzkScripts select 229), 0 exec "Log\OnGameOver.sqs", publicExec {0 exec "Log\OnGameOver.sqs"}}
 
 # Update
 	~ 2
@@ -37,7 +37,7 @@ _onGameEnd = {0 exec localize {TZK_TRIGGER_GAME_END_COMMON}, 0 exec "Log\OnGameO
   goto "Update"
 
 # Remind
-  [_remind select _ir] exec "\TZK_Scripts_4_0_6\Server\Info\TimeLimitRemind.sqs"
+  [_remind select _ir] exec (TzkScripts select 160)
   _ir = _ir + 1
   _timeNextRemind = timeLimit - (_remind select _ir)
   goto "Update"

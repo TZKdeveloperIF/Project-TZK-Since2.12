@@ -213,39 +213,39 @@ _distByOffset = "format [{format [{%3m}, (_this + %2) * %1]}, _this select 0, _t
 orderDefs = []; _type = 0;
 
 orderTakeTowns = _type;
-orderDefs set [_type, [localize {TZK_LANG_TAKE_TOWNS}, [], "Server\Order\TakeTowns.sqs"] ];
+orderDefs set [_type, [localize {TZK_LANG_TAKE_TOWNS}, [], (TzkScripts select 100)] ];
 _type = _type + 1;
 
 orderTakeHoldTowns = _type;
 _param0 = ["Hold Distance", "5", {format [{<%1m}, 500* (_this + 1)]}];
 _param1 = ["Hold \nTime", "10", {format [{%1min}, 5* (_this + 1)]}];
-orderDefs set [_type, [localize {TZK_LANG_TAKE_HOLD_TOWNS}, [_param0, _param1], "Server\Order\TakeHoldTowns.sqs"] ];
+orderDefs set [_type, [localize {TZK_LANG_TAKE_HOLD_TOWNS}, [_param0, _param1], (TzkScripts select 101)] ];
 _type = _type + 1;
 
 orderHoldTown = _type;
 _param0 = [ "Town", "count towns", "towns select _this select 1" ];
 _param1 = [ "Defend \nDistance", "10", [50, 1] call _distByOffset];
 _param2 = [ "Defend \nDirection", "9", _dirIndexToText ];
-orderDefs set [_type, [localize {TZK_LANG_HOLD_TOWNS}, [_param0, _param1, _param2], "Server\Order\HoldTown.sqs"] ];
+orderDefs set [_type, [localize {TZK_LANG_HOLD_TOWNS}, [_param0, _param1, _param2], (TzkScripts select 102)] ];
 _type = _type + 1;
 
 orderGuardArea = _type;
 _param0 = [ "Waypoint", _coCnt, _coDispStr];
 _param1 = [ "Defend \nDistance", "10", [50, 1] call _distByOffset];
 _param2 = [ "Defend \nDirection", "9", _dirIndexToText ];
-orderDefs set [_type, [localize {TZK_LANG_GUARD_AREA}, [_param0, _param1, _param2], "Server\Order\GuardArea.sqs"] ];
+orderDefs set [_type, [localize {TZK_LANG_GUARD_AREA}, [_param0, _param1, _param2], (TzkScripts select 103)] ];
 _type = _type + 1;
 
 orderGuardLine = _type;
 _param0 = [ "Waypoint", _coCnt, _coDispStr];
 _param1 = [ "\nWaypoint", _coCnt, _coDispStr];
-orderDefs set [_type, [localize {TZK_LANG_GUARD_LINE}, [_param0, _param1], "Server\Order\GuardLine.sqs"] ];
+orderDefs set [_type, [localize {TZK_LANG_GUARD_LINE}, [_param0, _param1], (TzkScripts select 104)] ];
 _type = _type + 1;
 
 orderPatrolArea = _type;
 _param0 = [ "Waypoint", _coCnt, _coDispStr];
 _param1 = [ "Patrol \nRadius", "10", [50, 1] call _distByOffset];
-_script = "Server\Order\PatrolArea.sqs";
+_script = (TzkScripts select 105);
 if bool_TZK_DEV_FPS then {_script = ""};
 orderDefs set [_type, [localize {TZK_LANG_PATROL_AREA}, [_param0, _param1], _script] ];
 _type = _type + 1;
@@ -253,35 +253,35 @@ _type = _type + 1;
 orderPatrolLine = _type;
 _param0 = [ "Waypoint", _coCnt, _coDispStr];
 _param1 = [ "\nWaypoint", _coCnt, _coDispStr];
-orderDefs set [_type, [localize {TZK_LANG_PATROL_LINE}, [_param0, _param1], "Server\Order\PatrolLine.sqs"] ];
+orderDefs set [_type, [localize {TZK_LANG_PATROL_LINE}, [_param0, _param1], (TzkScripts select 106)] ];
 _type = _type + 1;
 
 orderAdvance = _type;
 _param0 = [ "Waypoint", _coCnt, _coDispStr];
 _param1 = [ "Meters/\nminute", "10", [100, 1] call _distByOffset];
-orderDefs set [_type, [localize {TZK_LANG_ADVANCE}, [_param0, _param1], "Server\Order\Advance.sqs"] ];
+orderDefs set [_type, [localize {TZK_LANG_ADVANCE}, [_param0, _param1], (TzkScripts select 107)] ];
 _type = _type + 1;
 
 orderTransportDuty = _type;
 _param0 = [ "Pickup Pos", _coCnt, _coDispStr];
 _param1 = [ "Eject \nPos", _coCnt, _coDispStr];
 _param2 = [ "Eject \nDistance", "10", [100, 1] call _distByOffset];
-orderDefs set [_type, [localize {TZK_LANG_TRANSPORT_DUTY}, [_param0, _param1, _param2], "Server\Order\TransportDuty.sqs"] ];
+orderDefs set [_type, [localize {TZK_LANG_TRANSPORT_DUTY}, [_param0, _param1, _param2], (TzkScripts select 108)] ];
 _type = _type + 1;
 
 orderMineLine = _type;
 _param0 = [ "Waypoint", _coCnt, _coDispStr];
 _param1 = [ "\nWaypoint", _coCnt, _coDispStr];
-orderDefs set [_type, [localize {TZK_LANG_MINE_LINE}, [_param0, _param1], "Server\Order\MineLine.sqs"] ];
+orderDefs set [_type, [localize {TZK_LANG_MINE_LINE}, [_param0, _param1], (TzkScripts select 109)] ];
 _type = _type + 1;
 
 orderDisableMines = _type;
 _param0 = [ "Waypoint", _coCnt, _coDispStr];
-orderDefs set [_type, [localize {TZK_LANG_DISABLE_MINES}, [_param0], "Server\Order\DisableMines.sqs"] ];
+orderDefs set [_type, [localize {TZK_LANG_DISABLE_MINES}, [_param0], (TzkScripts select 110)] ];
 _type = _type + 1;
 
 orderHalt = _type;
-orderDefs set [_type, [localize {TZK_LANG_HALT}, [], "Server\Order\Halt.sqs"] ];
+orderDefs set [_type, [localize {TZK_LANG_HALT}, [], (TzkScripts select 111)] ];
 _type = _type + 1;
 
 comment {order entry format: [orderID, orderType, [param 0, param 1, ...]]} ;

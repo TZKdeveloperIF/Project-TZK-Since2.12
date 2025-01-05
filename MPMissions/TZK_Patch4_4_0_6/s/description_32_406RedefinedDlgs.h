@@ -117,7 +117,7 @@ class OptionsDialog2: OptionsDialog
 		y = 0.31;
 		w = 0.18;
 		text = "Shown Groups";
-		action = "closeDialog 0; 0 exec localize {TZK_DIALOG_SHOWNGROUPS}";
+		action = "closeDialog 0; 0 exec (TzkScripts select 023)";
 	};
 	class Console: Button {
 		idc = IDC + 100;
@@ -126,7 +126,7 @@ class OptionsDialog2: OptionsDialog
 		w = 0.15;
 		colorText[] = {0.9,0.7,0.2,1.0};
 		text = "Console";
-		action = "closeDialog 0; 0 exec localize {TZK_DIALOG_CONSOLE}";
+		action = "closeDialog 0; 0 exec (TzkScripts select 018)";
 		sizeEx = 0.023;
 	};
 	class Query: Button {
@@ -135,7 +135,7 @@ class OptionsDialog2: OptionsDialog
 		y = 0.05;
 		w = 0.15;
 		text = "Query";
-		action = "closeDialog 0; 0 exec localize {TZK_DIALOG_QUERY}";
+		action = "closeDialog 0; 0 exec (TzkScripts select 021)";
 	};
 };
 

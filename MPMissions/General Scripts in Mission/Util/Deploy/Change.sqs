@@ -12,9 +12,9 @@ _deploy = [0, 1] select _status
 
 _script = "", _cache = [_vehicle]
 
-? "M109A6G_xj400" countType _cache > 0: _script = localize {TZK_BEHAVIOUR_DEPLOY_M109A6G}
-? "PLZ05_TZK_xj400" countType _cache > 0: _script = localize {TZK_BEHAVIOUR_DEPLOY_PLZ05}
-? "TOS1_TZK_xj400" countType _cache > 0: _script = localize {TZK_BEHAVIOUR_DEPLOY_TOS1}
+? "M109A6G_xj400" countType _cache > 0: _script = (TzkScripts select 010)
+? "PLZ05_TZK_xj400" countType _cache > 0: _script = (TzkScripts select 011)
+? "TOS1_TZK_xj400" countType _cache > 0: _script = (TzkScripts select 012)
 
 ? _script != "": [_vehicle, _deploy] exec _script
 

@@ -14,7 +14,7 @@ _town = towns select _index; _flag = _town select 0
 ; format: [flag,"Name",value,side]
 _radius = 10
 ? bool_TZK_SEMod_Mode: _radius = 100
-call format [{ TrigDym%1 = createTrigger [{EmptyDetector}, getPos _flag]; TrigDym%1 setTriggerArea [_radius,_radius,0,false]; TrigDym%1 setTriggerActivation [{ANY}, {PRESENT}, false]; TrigDym%1 setTriggerStatements [{true}, {TrigDym%1 exec localize {TZK_TRIGGER_TOWN_SERVER}}, {}] }, _index]
+call format [{ TrigDym%1 = createTrigger [{EmptyDetector}, getPos _flag]; TrigDym%1 setTriggerArea [_radius,_radius,0,false]; TrigDym%1 setTriggerActivation [{ANY}, {PRESENT}, false]; TrigDym%1 setTriggerStatements [{true}, {TrigDym%1 exec (TzkScripts select 231)}, {}] }, _index]
 
 _index = _index + 1
 ? _index < _count : goto "SetTownTriggers"

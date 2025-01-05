@@ -37,7 +37,7 @@ _c = _headInfo call ("GetSegmentCnt" call _funcGenerator)
 		? count _res <= 0: goto "continue"
 		_res call _funcEngineerVehiclesWork
 
-		[_si, giCO select _si, _cost] exec localize {TZK_MONEY_SERVER_SPEND}
+		[_si, giCO select _si, _cost] exec (TzkScripts select 167)
 		[[_si, giCO select _si], [[_bridgesInfo, _i] call _funcBridgeGetPos, [_bridgesInfo, _i] call _funcBridgeGetVec], [_bridgesInfo, _id, _i]] exec "Bridge\Build.sqs"
 
 		# continue

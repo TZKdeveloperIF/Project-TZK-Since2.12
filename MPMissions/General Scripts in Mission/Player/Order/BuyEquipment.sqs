@@ -70,10 +70,10 @@ removeAllWeapons _unit; {_unit addMagazine _x} forEach _mags; {_unit addWeapon _
 
 ; Write current equipments into rearm data LOCALLY if selected overwrite rearmData.
 ? not _overWrite: goto "Quit"
-[_unit, _weapons, _mags, -1, 1, true] exec localize {TZK_EQUIPREARMDATA_EDIT}
+[_unit, _weapons, _mags, -1, 1, true] exec (TzkScripts select 071)
 ~0.1
 _i = rearmDataObj find _unit
-? _i == -1: [_unit] exec localize {TZK_REARMDATA_ADD} 
+? _i == -1: [_unit] exec (TzkScripts select 072)
 goto "Quit"
 
   

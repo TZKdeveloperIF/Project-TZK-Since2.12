@@ -374,7 +374,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 		_gi = (groupMatrix select _si) find (group _unit)
 		_nonAIgroup = false
 		? (group _unit) == (baseGroup select _si): _nonAIgroup = true
-		? _isServer: [_unit, [true]] exec localize {TZK_AI_STOP}
+		? _isServer: [_unit, [true]] exec (TzkScripts select 006)
 		? not _isServer: doStop _unit
 
 		? _isServer: _rearmParam = [[_unit, _si, _gi, _vehicle, _type, _sup, _nonAIgroup], false, false], _rearmParam exec "Server\AI_Rearm.sqs"
@@ -395,7 +395,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	; post rearm for non-soldier
 	~ _delay + 1
 	? _speed <= 0: goto "PreMove"
-	_delay = 1; [_vehicle, _speed] exec localize {TZK_FUNC_SWITCH_MAG_PRESET}
+	_delay = 1; [_vehicle, _speed] exec (TzkScripts select 132)
 	? not _isServer && not _isInfantry && not local _vehicle: _unit groupChat "Switching magazine at remote object. Again, if I'm far away, use Unit Camera and look at me."
 
 	# WaitSwitchComplete

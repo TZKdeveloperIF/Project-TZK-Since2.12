@@ -29,7 +29,7 @@ _res = 0
 		? -1 == _idx: goto "continue"
 
 		_phase = ["Crane", "Strela_V"] select _idx
-		_script = localize ([{TZK_ACTION_M88_CRANE}, {TZK_ACTION_BREM1_CRANE}] select _idx)
+		_script = ([(TzkScripts select 002), (TzkScripts select 001)] select _idx)
 		_veh = _entry select 0
 		? _veh animationPhase _phase == 0: [_veh, "Up"] exec _script
 

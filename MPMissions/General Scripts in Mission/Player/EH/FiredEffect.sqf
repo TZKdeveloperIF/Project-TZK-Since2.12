@@ -78,10 +78,10 @@ if (not isNull _effectShell) then {
 			"RMKHETiger_DVD_xj400","RMKAPTiger_DVD_xj400", "MachineGun30E","ZsuCannon","Cannon30_Kamov_xj400","CannonE_20HE_xj400","CannonE_20AP_xj400",
 			"MachineGun30A10","MachineGun30A10Burst","RKTHunter_Guns_xj400","Cannon_Heli_xj400","Cannon_30APHE_xj400",
 			"Tunguska_30mm_DKM_xj406", "VulcanCannon_xj406", "ZsuCannon_xj406"
-		] find _weapon) then {[_effectShell, _weapon] exec localize {TZK_EFFECT_FIRED_FFUR_CANNON}};
+		] find _weapon) then {[_effectShell, _weapon] exec (TzkScripts select 033)};
 	}};
 	if (_bShell) then {
-		if ((boole_Local_Shell_Tracer || _sizeOfShell > 125) && _local) then {[_local, _shell, _sizeOfShell] exec localize {TZK_EFFECT_FIRED_COC_TRACER}};
-		if ((boole_Global_Shell_Tracer || _sizeOfShell > 125) && not _local) then {[_local, _effectShell, _sizeOfShell, _position, _velocity, _dir, _vehicle, _shell] exec localize {TZK_EFFECT_FIRED_COC_TRACER}};
+		if ((boole_Local_Shell_Tracer || _sizeOfShell > 125) && _local) then {[_local, _shell, _sizeOfShell] exec (TzkScripts select 032)};
+		if ((boole_Global_Shell_Tracer || _sizeOfShell > 125) && not _local) then {[_local, _effectShell, _sizeOfShell, _position, _velocity, _dir, _vehicle, _shell] exec (TzkScripts select 032)};
 	};
 };

@@ -51,8 +51,8 @@ structDefs set [_type, [
 	false,
 	false,
 	10, 5, 15, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_PRIM}],
-	[localize {TZK_MARKER_STRUCT}]]
+	[(TzkScripts select 216)],
+	[(TzkScripts select 162)]]
 ];
 structMarker set [_type, _mRadar];
 stradarair = _type;
@@ -70,8 +70,8 @@ structDefs set [_type, [
 	false,
 	false,
 	4, 5, 15, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_PRIM}],
-	[localize {TZK_MARKER_STRUCT}]]
+	[(TzkScripts select 216)],
+	[(TzkScripts select 162)]]
 ];
 structMarker set [_type, _mRadar];
 stradar = _type;
@@ -88,8 +88,8 @@ structDefs set [_type, [
 	false,
 	false,
 	4, 5, 15, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_PRIM}],
-	[localize {TZK_MARKER_STRUCT}]]
+	[(TzkScripts select 216)],
+	[(TzkScripts select 162)]]
 ];
 structMarker set [_type, _mRadar];
 stSatRec = _type;
@@ -101,8 +101,8 @@ _objects = [["LF_xj400", 0, []]];
 _image = [_texPath + "Image\Struct\LightVehicleFactory.jpg", _texPath + "Image\Struct\LightVehicleFactory.jpg"];
 structDefs set [_type, [
 	"Light Vehicle Factory", _price, siBoth, _image, true, true, 2, 10, 20, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_PRIM}, localize {TZK_FUNC_BUY_UNITS}],
-	["Player\Init\LightVehicleFactory.sqs", localize {TZK_MARKER_STRUCT}]]
+	[(TzkScripts select 216), (TzkScripts select 075)],
+	["Player\Init\LightVehicleFactory.sqs", (TzkScripts select 162)]]
 ];
 structMarker set [_type, _mLight];
 stLight = _type;
@@ -114,8 +114,8 @@ _objects = [["CC_xj400", 0, []]];
 _image = [_texPath + "Image\Struct\CommCenter.jpg", _texPath + "Image\Struct\CommCenter.jpg"];
 structDefs set [_type, [
 	"Command Center", _price, siBoth, _image, true, true, 2, 5, 20, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_PRIM}],
-	[localize {TZK_MARKER_STRUCT}]]
+	[(TzkScripts select 216)],
+	[(TzkScripts select 162)]]
 ];
 structMarker set [_type, _mCC];
 stComm = _type;
@@ -126,8 +126,8 @@ _objects = [["Bar_xj400", 180, []]];
 _image = [_texPath + "Image\Struct\Barracks.jpg", _texPath + "Image\Struct\Barracks.jpg"];
 structDefs set [_type, [
 	"Barracks", _price, siBoth, _image, true, true, 2, 10, 20, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_PRIM}, localize {TZK_FUNC_BUY_UNITS}],
-	["Player\Init\Barracks.sqs", localize {TZK_MARKER_STRUCT}]]
+	[(TzkScripts select 216), (TzkScripts select 075)],
+	["Player\Init\Barracks.sqs", (TzkScripts select 162)]]
 ];
 structMarker set [_type, _mBarrack];
 stBarracks = _type;
@@ -138,8 +138,8 @@ _objects = [["HF_xj400", 0, [1,0,0]]];
 _image = [_texPath + "Image\Struct\HeavyVehicleFactory.jpg",_texPath + "Image\Struct\HeavyVehicleFactory.jpg"];
 structDefs set [_type, [
 	"Heavy Vehicle Factory", _price, siBoth, _image, true, true, 2, 10, 20, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_PRIM}, localize {TZK_FUNC_BUY_UNITS}],
-	["Player\Init\HeavyVehicleFactory.sqs", localize {TZK_MARKER_STRUCT}]]
+	[(TzkScripts select 216), (TzkScripts select 075)],
+	["Player\Init\HeavyVehicleFactory.sqs", (TzkScripts select 162)]]
 ];
 structMarker set [_type, _mHeavy];
 stHeavy = _type;
@@ -150,8 +150,8 @@ _objects = [["AirF_Green_xj400", 0, [0,0,0]]];
 _image = [_texPath + "Image\Struct\AircraftFactory.jpg",_texPath + "Image\Struct\AircraftFactory.jpg"];
 structDefs set [_type, [
 	"Aircraft Factory", _price, siBoth, _image, true, true, 2, 20, 35, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_PRIM}, localize {TZK_FUNC_BUY_UNITS}],
-	["Player\Init\AircraftFactory.sqs", localize {TZK_MARKER_STRUCT}]]
+	[(TzkScripts select 216), (TzkScripts select 075)],
+	["Player\Init\AircraftFactory.sqs", (TzkScripts select 162)]]
 ];
 structMarker set [_type, _mAir];
 stAir = _type;
@@ -169,8 +169,8 @@ structDefs set [_type, [
 	false,
 	false,
 	2, 10, 20, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_PRIM}, localize {TZK_FUNC_BUY_UNITS}],
-	["Player\Init\ShipyardFactory.sqs", localize {TZK_MARKER_STRUCT}]]
+	[(TzkScripts select 216), (TzkScripts select 075)],
+	["Player\Init\ShipyardFactory.sqs", (TzkScripts select 162)]]
 ];
 structMarker set [_type, _mShip];
 stShip = _type;
@@ -186,8 +186,8 @@ structDefs set [_type, [
 	_image, 
 	false, 
 	false, 10, 4, 15, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_PRIM}],
-	[localize {TZK_MARKER_STRUCT}]]
+	[(TzkScripts select 216)],
+	[(TzkScripts select 162)]]
 ];
 structMarker set [_type, "MedicVehicle_Marker_xj400"];
 stHosp = _type;
@@ -204,8 +204,8 @@ structDefs set [_type, [
 	false,
 	false,
 	5, 10, 20, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_SEC},  "\TZK_Patch4_4_0_6\s\Server\InitFuelStation.sqs"],
-	[localize {TZK_MARKER_STRUCT}]]
+	[(TzkScripts select 217),  "\TZK_Patch4_4_0_6\s\Server\InitFuelStation.sqs"],
+	[(TzkScripts select 162)]]
 ];
 structMarker set [_type, "FuelStructure_Marker_xj400"];
 _fuelStation = _type;
@@ -223,8 +223,8 @@ structDefs set [_type, [
 	false,
 	false,
 	6, 2, 10, _objects0, _objects1,
-	[localize {TZK_SERVER_INIT_STRUCT_DEF_TOWER}],
-	[localize {TZK_PLAYER_INIT_STRUCT_EH}, localize {TZK_MARKER_STRUCT}]]
+	[(TzkScripts select 215)],
+	[(TzkScripts select 193), (TzkScripts select 162)]]
 ];
 structMarker set [_type, _mMortar];
 _mortar1 = _type;
@@ -236,8 +236,8 @@ _objects1 = [];
 _image = ["\TZK_Texture_4_0_0\icon\iM119.paa","\TZK_Texture_4_0_0\icon\iM119.paa"];
 structDefs set [_type, [
 	"M119 105mm Howitzer", _price, si0, _image, false, false, 15, 2, 10, _objects0, _objects1,
-	[localize {TZK_SERVER_INIT_STRUCT_DEF_TOWER}, "Common\Equip\M119Svr.sqs"],
-	[localize {TZK_PLAYER_INIT_STRUCT_EH}, localize {TZK_MARKER_STRUCT}]]
+	[(TzkScripts select 215), "Common\Equip\M119Svr.sqs"],
+	[(TzkScripts select 193), (TzkScripts select 162)]]
 ];
 structMarker set [_type, _mHowitzer];
 _m119 = _type;
@@ -249,8 +249,8 @@ _objects1 = [["D30_xj400", 0, []]];
 _image = ["\TZK_Texture_4_0_0\icon\iD30A.paa","\TZK_Texture_4_0_0\icon\iD30A.paa"];
 structDefs set [_type, [
 	"D30-A Howitzer", _price, si1, _image, false, false, 15, 2, 10, _objects0, _objects1,
-	[localize {TZK_SERVER_INIT_STRUCT_DEF_TOWER}, "Common\Equip\D30ASvr.sqs"],
-	[localize {TZK_PLAYER_INIT_STRUCT_EH}, localize {TZK_MARKER_STRUCT}]]
+	[(TzkScripts select 215), "Common\Equip\D30ASvr.sqs"],
+	[(TzkScripts select 193), (TzkScripts select 162)]]
 ];
 structMarker set [_type, _mHowitzer];
 _d30 = _type;
@@ -268,8 +268,8 @@ structDefs set [_type, [
 	false,
 	false,
 	20, 2, 15, _objects0, _objects1,
-	[localize {TZK_SERVER_INIT_STRUCT_SEC}],
-	[localize {TZK_MARKER_STRUCT}]]
+	[(TzkScripts select 217)],
+	[(TzkScripts select 162)]]
 ];
 structMarker set [_type, _mMG];
 _mgFort = _type;
@@ -287,8 +287,8 @@ structDefs set [_type, [
 	false,
 	false,
 	20, 2, 10, _objects0, _objects1,
-	[localize {TZK_SERVER_INIT_STRUCT_SEC}],
-	[localize {TZK_MARKER_STRUCT}]]
+	[(TzkScripts select 217)],
+	[(TzkScripts select 162)]]
 ];
 structMarker set [_type, _mMG];
 _mgTowerWood = _type;
@@ -306,8 +306,8 @@ structDefs set [_type, [
 	false,
 	false,
 	20, 2, 10, _objects0, _objects1,
-	[localize {TZK_SERVER_INIT_STRUCT_SEC}],
-	[localize {TZK_MARKER_STRUCT}]]
+	[(TzkScripts select 217)],
+	[(TzkScripts select 162)]]
 ];
 structMarker set [_type, _mMG];
 _mgTowerConcrete = _type;
@@ -325,8 +325,8 @@ structDefs set [_type, [
 	false,
 	false,
 	25, 2, 5, _objects0, _objects1,
-	[localize {TZK_SERVER_INIT_STRUCT_SEC}],
-	[localize {TZK_MARKER_STRUCT}]]
+	[(TzkScripts select 217)],
+	[(TzkScripts select 162)]]
 ];
 structMarker set [_type, _mMG];
 _mg = _type;
@@ -344,8 +344,8 @@ structDefs set [_type, [
 	false,
 	false,
 	25, 2, 5, _objects0, _objects1,
-	[localize {TZK_SERVER_INIT_STRUCT_SEC}],
-	[localize {TZK_MARKER_STRUCT}]]
+	[(TzkScripts select 217)],
+	[(TzkScripts select 162)]]
 ];
 structMarker set [_type, _mMG];
 _staticAaLauncher = _type;
@@ -364,8 +364,8 @@ structDefs set [_type, [
 	false,
 	false,
 	25, 2, 5, _objects0, _objects1,
-	[localize {TZK_SERVER_INIT_STRUCT_SEC}],
-	[localize {TZK_MARKER_STRUCT}]] ];
+	[(TzkScripts select 217)],
+	[(TzkScripts select 162)]] ];
 structMarker set [_type, _mMG];
 _staticMG = _type;
 _type = _type + 1;
@@ -382,8 +382,8 @@ structDefs set [_type, [
 	false,
 	false,
 	25, 2, 5, _objects0, _objects1,
-	[localize {TZK_SERVER_INIT_STRUCT_SEC}],
-	[localize {TZK_MARKER_STRUCT}]] ];
+	[(TzkScripts select 217)],
+	[(TzkScripts select 162)]] ];
 structMarker set [_type, _mMG];
 _staticGL = _type;
 _type = _type + 1;
@@ -400,8 +400,8 @@ structDefs set [_type, [
 	false,
 	false,
 	25, 2, 5, _objects0, _objects1,
-	[localize {TZK_SERVER_INIT_STRUCT_SEC}],
-	[localize {TZK_MARKER_STRUCT}]] ];
+	[(TzkScripts select 217)],
+	[(TzkScripts select 162)]] ];
 structMarker set [_type, _mMG];
 _staticAT = _type;
 _type = _type + 1;
@@ -422,8 +422,8 @@ structDefs set [_type, [
 	false,
 	false,
 	15, 2, 25, _objects0, _objects1,
-	[localize {TZK_SERVER_INIT_STRUCT_SEC}],
-	[localize {TZK_MARKER_STRUCT}, localize {TZK_MARKER_STRUCT}]]
+	[(TzkScripts select 217)],
+	[(TzkScripts select 162), (TzkScripts select 162)]]
 ];
 structMarker set [_type, "TD_Marker_xj400"];
 _gunf = _type;
@@ -440,7 +440,7 @@ structDefs set [_type, [
 	false,
 	false,
 	75, 0.5, 15, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_SEC}], []]
+	[(TzkScripts select 217)], []]
 ];
 structMarker set [_type, ""];
 _wall = _type;
@@ -458,7 +458,7 @@ structDefs set [_type, [
 	false,
 	false,
 	75, 0.5, 15, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_SEC}], []]
+	[(TzkScripts select 217)], []]
 ];
 structMarker set [_type, ""];
 _walls = _type;
@@ -470,7 +470,7 @@ _objects = [ ["roof_xj400", 0, [0,0,4.5]] ];
 _image = [_texPath + "Image\Struct\Roof.jpg",_texPath + "Image\Struct\Roof.jpg"];
 structDefs set [_type, [
 	localize {TZK_LANG_ROOF}, _price, siBoth, _image, true, false, 30, 1, 20, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_SEC}], []]
+	[(TzkScripts select 217)], []]
 ];
 structMarker set [_type, ""];
 _roof = _type;
@@ -481,7 +481,7 @@ _objects = [ ["roof_xj400", 0, [0,0,9]] ];
 _image = [_texPath + "Image\Struct\Roof.jpg",_texPath + "Image\Struct\Roof.jpg"];
 structDefs set [_type, [
 	format ["%1 %2", localize {TZK_LANG_HIGH}, localize {TZK_LANG_ROOF}], _price, siBoth, _image, true, false, 30, 1, 20, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_SEC}], []]
+	[(TzkScripts select 217)], []]
 ];
 structMarker set [_type, ""];
 _roofHigh = _type;
@@ -492,7 +492,7 @@ _objects = [ ["trench_xj400", 0, [0,0,0]] ];
 _image = [_texPath + "Image\Struct\Trench.jpg",_texPath + "Image\Struct\Trench.jpg"];
 structDefs set [_type, [
 	"Tank Trench", _price, siBoth, _image, true, false, 50, 5, 20, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_SEC}], []]
+	[(TzkScripts select 217)], []]
 ];
 structMarker set [_type, ""];
 _tanktr = _type;
@@ -504,7 +504,7 @@ _objects = [ ["ArtPlain_xj400", 0, [0,0,0]] ];
 _image = [_texPath + "Image\Struct\Roof.jpg",_texPath + "Image\Struct\Roof.jpg"];
 structDefs set [_type, [
 	"Artillery Plain", _price, siBoth, _image, true, false, 12, 15, 15, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_SEC}], []]
+	[(TzkScripts select 217)], []]
 ];
 structMarker set [_type, ""];
 _artPlain = _type;
@@ -521,7 +521,7 @@ structDefs set [_type, [
 	false,
 	false,
 	100, 1, 10, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_SEC}], []]
+	[(TzkScripts select 217)], []]
 ];
 structMarker set [_type, ""];
 _sandbag = _type;
@@ -539,7 +539,7 @@ structDefs set [_type, [
 	false,
 	false,
 	500, 5, 10, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_SEC}], []]
+	[(TzkScripts select 217)], []]
 ];
 structMarker set [_type, ""];
 _tankt = _type;
@@ -558,8 +558,8 @@ structDefs set [_type, [
 	false,
 	false,
 	10, 5, 8, _objects0, _objects1,
-	[localize {TZK_SERVER_INIT_STRUCT_SEC}],
-	["\TZK_Scripts_4_0_5\Common\InitAmmocrate.sqs", localize {TZK_MARKER_STRUCT}]]
+	[(TzkScripts select 217)],
+	["\TZK_Scripts_4_0_5\Common\InitAmmocrate.sqs", (TzkScripts select 162)]]
 ];
 structMarker set [_type, "AmmoStructure_Marker_xj400"];
 stAmmoCrate = _type;
@@ -576,8 +576,8 @@ structDefs set [_type, [
 	false,
 	false,
 	20, 5, 15, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_SEC}],
-	[localize {TZK_MARKER_STRUCT}]]
+	[(TzkScripts select 217)],
+	[(TzkScripts select 162)]]
 ];
 structMarker set [_type, "HeliH_Marker_xj400"];
 _heliH = _type;
@@ -594,7 +594,7 @@ structDefs set [_type, [
 	false,
 	false,
 	500, 2, 10, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_SEC}], []]
+	[(TzkScripts select 217)], []]
 ];
 structMarker set [_type, ""];
 stWireFence = _type;
@@ -613,8 +613,8 @@ structDefs set [_type, [
 	false,
 	false,
 	2, 5, 15, _objects0, _objects1,
-	[localize {TZK_SERVER_INIT_STRUCT_SEC}],
-	[localize {TZK_MARKER_STRUCT}]]
+	[(TzkScripts select 217)],
+	[(TzkScripts select 162)]]
 ];
 structMarker set [_type, "RadarCar_Marker_xj400"];
 stGapGenerator = _type;
@@ -631,7 +631,7 @@ structDefs set [_type, [
 	false,
 	false,
 	100, 0, 0, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_PRIM}, "Bridge\AddEh.sqs"],
+	[(TzkScripts select 216), "Bridge\AddEh.sqs"],
 	[]]
 ];
 stBridge = _type;
@@ -648,7 +648,7 @@ structDefs set [_type, [
 	false,
 	false,
 	75, 1, 20, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_SEC}],
+	[(TzkScripts select 217)],
 	[]]
 ];
 st10mHeightRoof = _type;
@@ -665,7 +665,7 @@ structDefs set [_type, [
 	false,
 	false,
 	75, 1, 20, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_SEC}],
+	[(TzkScripts select 217)],
 	[]]
 ];
 st20mHeightRoof = _type;
@@ -683,7 +683,7 @@ structDefs set [_type, [
 	false,
 	false,
 	75, 0.5, 15, _objects, _objects,
-	[localize {TZK_SERVER_INIT_STRUCT_SEC}], []]
+	[(TzkScripts select 217)], []]
 ];
 structMarker set [_type, ""];
 stMhqWall = _type;

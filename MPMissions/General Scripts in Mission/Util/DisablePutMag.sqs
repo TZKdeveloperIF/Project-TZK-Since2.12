@@ -26,5 +26,5 @@ _cost = equipDefs select _et select edcost
 
 deleteVehicle _shell
 
-? isServer: [_si, _gi, -_cost] exec localize {TZK_MONEY_SERVER_SPEND}
+? isServer: [_si, _gi, -_cost] exec (TzkScripts select 167)
 ? !isServer && !isNull player: [-_cost] exec "Net\sMoneySpent.sqs"

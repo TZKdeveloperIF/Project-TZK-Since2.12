@@ -44,7 +44,7 @@ _size = count units (groupMatrix select _si select _giJoin) + _unitsInProgress
 ; FullCheck
 ? 0 == _orderNum || _eachOrderUnitCnt * _orderNum + _size <= maxGroupSize: goto "FullChecked"
 	? _orderNum != 1: "WARNING: unexpected full in NewOrder" call fDebugLog
-	[_type, _si, _giBuyer, _giJoin] exec "\TZK_Scripts_4_0_6\Server\Info\GroupFull.sqs"
+	[_type, _si, _giBuyer, _giJoin] exec (TzkScripts select 158)
 	goto "Unlock"
 # FullChecked
 

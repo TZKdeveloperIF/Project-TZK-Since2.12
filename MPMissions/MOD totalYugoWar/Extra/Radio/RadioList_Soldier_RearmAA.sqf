@@ -42,7 +42,7 @@ if ((_found select 1) > rangeSupport) then {hint "No Rearm Vehicle Nearby."} els
 			if (_reEquip) then {{_unit removeMagazines _x} forEach _exclude; _unit removeWeapon _wpnSec};
 			_unitContainer = "SecondaryWeaponHolder" camCreate getPos _unit; _unitContainer addMagazineCargo [_magazine, 1];
 			_unit action ["TAKE MAGAZINE", _unitContainer, 0, 0, _magazine];
-			if (_reEquip) then {_unit addWeapon _weapon}; [_unitContainer, 10] exec localize {TZK_PATH_DELAY_DELETE_UNIT};
+			if (_reEquip) then {_unit addWeapon _weapon}; [_unitContainer, 10] exec (TzkScripts select 188);
 			[_cost] exec "Net\sMoneySpent.sqs"; player groupChat format ["Rapid Rearm completed. Cost: $%1", _cost];
 			RespawnWeapon = RespawnW; RespawnMagazine = RespawnM; RespawnAmmunition = RespawnA; 
 		};

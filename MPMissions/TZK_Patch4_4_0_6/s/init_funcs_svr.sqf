@@ -2,7 +2,7 @@ comment {args: none} ;
 
 comment {args: [type, si, gi, pos, dir]} ;
 comment {return: objects} ;
-fBuildStruct = preprocessFile localize {TZK_SERVER_FUNC_BUILD_STRUCT};
+fBuildStruct = preprocessFile (TzkScripts select 210);
 
 funcFindNullForward = {
 	private ["_c", "_i", "_found"];

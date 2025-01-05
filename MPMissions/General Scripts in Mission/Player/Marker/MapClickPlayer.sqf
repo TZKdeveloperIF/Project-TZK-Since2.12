@@ -12,7 +12,7 @@ if (not _processed && count _units > 0) then {
 	[_units, {group _this != groupPlayer}] call preprocessFile "Algo\arrayEraseIf.sqf";
 };
 if (not _processed && count _units > 0 && not _alt && _shift) then {
-	[_pos, _units] exec localize {TZK_DIALOG_ORDER_PLAYER_AI}; _processed = true;
+	[_pos, _units] exec (TzkScripts select 020); _processed = true;
 };
 if (not _processed) then {
 	// clear units current order. Same design as in old CRCTI missions
@@ -50,21 +50,21 @@ if (not _processed) then {
 	// shift
 	if (!_processed && !_alt && _shift && count ([siPlayer, stSatRec] call funcGetWorkingStructures) > 0) then {
 		_res = [siPlayer, _pos] call funcGetClosestUnit; 
-		_marker = if !bool_TZK_199_Mode Then {(_res select 0) call loadFile localize {TZK_FUNC_GET_UNIT_MARKER}} else {""};
+		_marker = if !bool_TZK_199_Mode Then {(_res select 0) call loadFile (TzkScripts select 122)} else {""};
 		_emptyvehicles = [_pos, siPlayer, [], []] call funcGetClosestVehicleEmpty;
 		if ( ([getMarkerPos _marker, _pos] call funcDistH < 50 || (_res select 1) < 50) && (group (_res select 0)) in (siPlayer call loadFile "Util\AccessableGroups.sqf") ) then {
 			if ( (_emptyvehicles select 1) < 3 ) then {
-				[_emptyvehicles select 0] exec localize {TZK_DIALOG_UNIT_CAM}; _processed = true
-			} else {[_res select 0] exec localize {TZK_DIALOG_UNIT_CAM}; _processed = true};
+				[_emptyvehicles select 0] exec (TzkScripts select 027); _processed = true
+			} else {[_res select 0] exec (TzkScripts select 027); _processed = true};
 		};
 		if (!_processed) then {
 			_res = [_pos, siPlayer, [], []] call funcGetClosestVehicle;
-			if ( (_res select 1) < 50 ) then {[_res select 0] exec localize {TZK_DIALOG_UNIT_CAM}; _processed = true}
+			if ( (_res select 1) < 50 ) then {[_res select 0] exec (TzkScripts select 027); _processed = true}
 		};
 	};
 	// smart wp
 	if (not _processed && _alt && not _shift && not bool_TZK_Rts_Map_Mode && (count _units) == 0) then {
-		[_pos] exec localize {TZK_FUNC_PLAYER_WP_SET_SMART};
+		[_pos] exec (TzkScripts select 136);
 		_processed = true;
 	};
 	// alt + shift
@@ -89,7 +89,7 @@ if (not _processed) then {
 			};
 
 			private [{_script}];
-			_script = localize {TZK_DIALOG_WAYPOINT};
+			_script = (TzkScripts select 028);
 			if (4 == RtsPriorityPointDialogEnum) then {
 				_script = "Rts\Dialog\PointMap.sqs";
 			};
@@ -105,7 +105,7 @@ if (not _processed) then {
 	};
 
 	if (not _processed && (isCommander || bIsAiSuperior)) then {
-		if (!_processed && !_alt && _shift) then {[] exec localize {TZK_DIALOG_AI_GRP_ORDER}; _processed = true};
+		if (!_processed && !_alt && _shift) then {0 exec (TzkScripts select 014); _processed = true};
 	};
 };
 

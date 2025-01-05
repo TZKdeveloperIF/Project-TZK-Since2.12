@@ -23,7 +23,7 @@ if (not isNull _shell) then {
 		_subShell setVectorDir _velShell;
 		_subShell setVelocity _velShell; _subShell setPosASL _vec;
 
-		[_vehicle, _subShell] exec localize {TZK_EFFECT_FIRED_ART_IMPACT};
+		[_vehicle, _subShell] exec (TzkScripts select 031);
 
 		_i = _i + 1;
 	};

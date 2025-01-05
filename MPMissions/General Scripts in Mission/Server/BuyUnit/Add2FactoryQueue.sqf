@@ -1,15 +1,15 @@
 // args: none
 // this is a process but not a function. script read/write local variables directly
 
-// ATTENTION: the script "localize {TZK_AI_BUY_UNIT}" accept a parameter about order count. 
+// ATTENTION: the script "(TzkScripts select 003)" accept a parameter about order count. 
 // However it accepts another parameter whose type is an array (reference). This is not a good design and need time
 // to optimize it. 
 // The realization of this design is: 
-// 1. The input parameter of "localize {TZK_AI_BUY_UNIT}" is treated as not only input but also reference since it is an array.
-// 2. The "order reference" in this parameter is initialized by an empty array. In "localize {TZK_AI_BUY_UNIT}", if current order
+// 1. The input parameter of "(TzkScripts select 003)" is treated as not only input but also reference since it is an array.
+// 2. The "order reference" in this parameter is initialized by an empty array. In "(TzkScripts select 003)", if current order
 //		is valid, then the "order reference" is assigned by the actual order (which is an array too, and the order will be added 
 //		into factory order queue). After factory having finish the order, the factory will operate on the order array (resize it
-//		or modify its elements). Since there're references to the order, the initial caller (who passes input of "localize {TZK_AI_BUY_UNIT}"
+//		or modify its elements). Since there're references to the order, the initial caller (who passes input of "(TzkScripts select 003)"
 //		and "order reference" variable) can detect the status of order and know the order is finished
 // Thus in current script we have to do something special for such order
 

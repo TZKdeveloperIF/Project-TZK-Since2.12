@@ -23,7 +23,7 @@ _i = 0; _c = count TzkBrdigeProjects; while {_i < _c} do {
 			_bridgesInfo = _project call ("GetBridgeInfo" call _funcGenerator);
 			_bridgeIdx = 0; _bridgeCnt = (_headInfo call ("GetSegmentCnt" call _funcGenerator));
 			_funcBridgeGetObj = "BridgeGetObj" call _funcGenerator;
-			_delayDeleteScript = localize {TZK_PATH_DELAY_DELETE_UNIT};
+			_delayDeleteScript = (TzkScripts select 188);
 			while {_bridgeIdx < _bridgeCnt} do {
 				_dyingBridge = ([_bridgesInfo, _bridgeIdx] call _funcBridgeGetObj);
 				_dyingBridge setDamage 1;

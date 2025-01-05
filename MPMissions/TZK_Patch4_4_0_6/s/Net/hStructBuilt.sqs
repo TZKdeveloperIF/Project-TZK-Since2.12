@@ -17,10 +17,10 @@ _value = (_value - _si)/2
 _index = _value
 
 
-? isNull gunner _object : [_object] exec localize {TZK_REARMDATA_ADD}
+? isNull gunner _object : [_object] exec (TzkScripts select 072)
 
 ; only add for non local players since it is already done on server
-? !isServer: [_si, _type, _object, _index] exec localize {TZK_FUNC_MATRIX_STRUCT_ADD_PLAYER}
+? !isServer: [_si, _type, _object, _index] exec (TzkScripts select 129)
 
 
 _desc = structDefs select _type
