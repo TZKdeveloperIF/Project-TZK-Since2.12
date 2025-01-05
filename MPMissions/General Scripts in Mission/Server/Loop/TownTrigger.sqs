@@ -47,7 +47,7 @@ _lastSide = _lastSetSide
 # SetTownSide
 	? (pvGameOver != -1): Exit
 
-	[_indexTown, _si, _lastSetSide] exec localize {TZK_MSG_SERVER_SEND_TOWN_SIDE_CHANGE}
+	[_indexTown, _si, _lastSetSide] exec (TzkScripts select 180)
 
 	_lastSetSide = _si
 	_lastSide = _si
@@ -60,6 +60,6 @@ _lastSide = _lastSetSide
 		_score = _score - (_score % 1)
 		? _score < 1 : _score = 1
 
-		{ _gi = ( groupMatrix select _si ) find ( _x ); if (_gi != -1) then { [_score, scTown, _si, _gi] exec localize {TZK_MSG_COMMON_SEND_SCORE} } } foreach (_groups select _si)
+		{ _gi = ( groupMatrix select _si ) find ( _x ); if (_gi != -1) then { [_score, scTown, _si, _gi] exec (TzkScripts select 174) } } foreach (_groups select _si)
 	# SkipScore
 	goto "Update"

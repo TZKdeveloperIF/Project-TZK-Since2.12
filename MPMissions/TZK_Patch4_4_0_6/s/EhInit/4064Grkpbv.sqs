@@ -1,0 +1,11 @@
+; args: vehicle
+_vehicle = _this
+
+? local _vehicle: _vehicle animate ["suspension", 0.5]
+
+_nil = "scalar bool array string 0xfcffffef"
+_undefined = format ["%1", TzkScripts] == _nil
+? not _undefined: {[_vehicle, _x] exec (TzkScripts select 181)} forEach [{L},{R}]
+? _undefined: {[_vehicle, _x] exec "\TZK_Config_4_0_6\Scripts\recoilByTex\grkpbv.sqs"} forEach [{L},{R}]
+
+; EOF

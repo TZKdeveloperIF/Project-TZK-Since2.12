@@ -37,8 +37,8 @@ comment {2.01 string commands used for Chinese language "Pin Yin" supporting.} ;
 funcLocStr = if !bool_TZK_199_Mode Then {loadFile "\TZK_Scripts_4_0_4\Player\SQF\LocalizeString.sqf"} Else {"_this"};
 
 comment {2.01 commands used. String in game will display without "_xj400"} ;
-funcStringWithoutVersion = loadFile localize {TZK_FUNC_PLAYER_STR_DISP};
+funcStringWithoutVersion = loadFile (TzkScripts select 134);
 comment {2.01 commands used. Controlling Fire Effects} ;
-funcFiredEffect = preprocessFile localize {TZK_PLAYER_EFFECT_FIRED};
+funcFiredEffect = preprocessFile (TzkScripts select 189);
 
 call preprocessFile "impl\Function_Client.sqf";

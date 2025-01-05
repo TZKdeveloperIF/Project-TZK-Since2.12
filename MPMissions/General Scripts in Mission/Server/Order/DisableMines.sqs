@@ -43,15 +43,15 @@ _posMove = []
 
 	? _distToDest > 10 : goto "Move"
     _posMove = []
-	  ? _isMiner && _unit == _vehicle : [_unit, [false]] exec localize {TZK_AI_STOP}; [_unit, _si, _gi] call funcWatch; [_unit, _si, _gi] exec "Server\AI_CheckDisableMines.sqs"; _sleep = 10; goto "Sleep"
+	  ? _isMiner && _unit == _vehicle : [_unit, [false]] exec (TzkScripts select 006); [_unit, _si, _gi] call funcWatch; [_unit, _si, _gi] exec "Server\AI_CheckDisableMines.sqs"; _sleep = 10; goto "Sleep"
     ; not a miner
-    [_unit, [true]] exec localize {TZK_AI_STOP}
+    [_unit, [true]] exec (TzkScripts select 006)
 	  [_unit, _si, _gi] call funcWatch
     _sleep = 30
     goto "Sleep"
   
   #Move
-	? _unit != _vehicle && ( ([getPos _unit, _pos] call funcDistH) < 200 ) : _posMove = getPos _vehicle; [_unit, [false]] exec localize {TZK_AI_STOP}; _sleep = 30; goto "Sleep"
+	? _unit != _vehicle && ( ([getPos _unit, _pos] call funcDistH) < 200 ) : _posMove = getPos _vehicle; [_unit, [false]] exec (TzkScripts select 006); _sleep = 30; goto "Sleep"
   [_unit, _posMove] call funcMoveAI
 	_sleep = [30, 0.1*_distToDest] select (_distToDest < 300)
 	 

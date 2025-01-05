@@ -1,1 +1,1 @@
-[_this, si0] call preprocessFile localize {TZK_GROUP_FUNCTIONAL};
+[_this, si0] call preprocessFile "Init\AddGroupFunctionalVar.sqf";

@@ -37,7 +37,7 @@ publicExec format [{[[%1, %2], [%3, %4, %5, %6]] exec "Init\ClientFormalStart.sq
 		_group = _groups select _i;
 		if (_group in _groupsAI) then {
 			_leader = leader _group;
-			[_leader, _si, _i, _mhqPos] exec localize {TZK_AI_LEADER_INIT};
+			[_leader, _si, _i, _mhqPos] exec (TzkScripts select 004);
 		} else {
 			// player might disconnect after groupAiMatrix initialized and before match formal start
 			[_group, _si, _i] exec "Server\Loop\DetectPlayerDisconnect.sqs";
@@ -48,7 +48,7 @@ publicExec format [{[[%1, %2], [%3, %4, %5, %6]] exec "Init\ClientFormalStart.sq
 
 
 // distribute money to groups
-call loadFile "\TZK_Scripts_4_0_6\Server\Msg\sStartMoney.sqf";
+call loadFile "\TZK_Patch4_4_0_6\s\Net\sStartMoney.sqf";
 
 // special process on AICO
 call preprocessFile "Init\SvrAicoUpg.sqf";
@@ -80,7 +80,7 @@ east exec "Server\Loop\PlaneBuilt.sqs";
 // process temp/join group
 if bool_TZK_199_Mode then {
 	{
-		[_x] exec localize {TZK_FUNC_KEEP_ALIVE}
+		[_x] exec (TzkScripts select 123)
 	} forEach [leaderTemp0, leaderJoin0, leaderTemp1, leaderJoin1];
 };
 

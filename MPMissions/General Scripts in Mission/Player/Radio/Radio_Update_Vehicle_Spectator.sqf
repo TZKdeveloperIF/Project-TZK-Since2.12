@@ -1,1 +1,1 @@
-call loadFile "\TZK_Scripts_4_0_6\Player\Radio\Radio_Update_Vehicle_Spectator.sqf"
+call loadFile "\TZK_Patch4_4_0_6\s\Radio\Radio_Update_Vehicle_Spectator.sqf"

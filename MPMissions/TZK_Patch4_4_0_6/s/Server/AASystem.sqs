@@ -31,7 +31,7 @@ goto "Update"
 ~0.5
 ? bool_TZK_199_Mode: [_aaGroupUnit] join grpNull
 ~0.5
-? bool_TZK_199_Mode: _group = group _aaGroupUnit, [_aaGroupUnit] exec localize {TZK_FUNC_KEEP_ALIVE}
+? bool_TZK_199_Mode: _group = group _aaGroupUnit, [_aaGroupUnit] exec (TzkScripts select 123)
 
 ~1
 ? isNull _group : format["ERROR: _group is NULL at init for %1 temporary AA group", _side] call fDebugLog; exit
@@ -49,8 +49,8 @@ goto "Update"
 [(AASystem select _si) select 1, 1, 1, 0, [getPos (mhq select _si), 500, 500] call funcGetRandomPos, random 360, _si, -1, _group, 0, 0] exec "\TZK_Scripts_4_0_4\Common\AddUnit.sqs"
 
 ~5
-{ if (_x != vehicle _x) then { [vehicle _x, true] exec localize {TZK_FUNC_LOCK_VEH}; vehicle _x setFuel 0 } } foreach (units _group)
-[_si] exec localize {TZK_INFO_SERVER_TEMP_AA_CREATED}
+{ if (_x != vehicle _x) then { [vehicle _x, true] exec (TzkScripts select 124); vehicle _x setFuel 0 } } foreach (units _group)
+[_si] exec (TzkScripts select 150)
 
 ; Remain AA group for AI Comm.
 ? (groupCommander select _si) in (groupAiMatrix select _si) && !dev: exit
@@ -61,7 +61,7 @@ goto "Update"
 ~1
 {deleteVehicle _x} forEach (units _group - [_aaGroupUnit])
 ~1
-[_si] exec localize {TZK_INFO_SERVER_TEMP_AA_DELETED}
+[_si] exec (TzkScripts select 151)
 goto "Quit"
 
 # Quit

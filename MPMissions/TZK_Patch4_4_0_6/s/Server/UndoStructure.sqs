@@ -30,8 +30,8 @@ _c = count undoList
 	{deleteVehicle _x} foreach _objects
 	@(isNull (_objects select 0))
 
-	[_type, _si] exec localize {TZK_INFO_SERVER_STRUCT_UNDONE}
+	[_type, _si] exec (TzkScripts select 149)
 
-	[_si, _gi, -_cost] exec localize {TZK_MONEY_SERVER_SPEND}
+	[_si, _gi, -_cost] exec (TzkScripts select 167)
 
 	exit

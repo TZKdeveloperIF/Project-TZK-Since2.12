@@ -37,6 +37,125 @@ class CfgWeapons {
 class UA_SpoofMissileON {};
 class UA_SpoofMissileOFF {};
 
+class UA_SelfMedic {
+	statement = "this exec (TzkScripts select 000)";
+};
+
+class UA_EjectAICargo {
+	statement = "[this, siPlayer] exec (TzkScripts select 080)";
+};
+class UA_EjectAllCargo {
+	statement = "[this, siPlayer] exec (TzkScripts select 078)";
+};
+class UA_EjectOneCargo {
+	statement = "[this, siPlayer] exec (TzkScripts select 079)";
+};
+class UA_TransportTurnON {
+	statement = "[this] exec (TzkScripts select 175)";
+};
+class UA_TransportTurnOFF {
+	statement = "[this] exec (TzkScripts select 176)";
+};
+
+class UA_LAND_Heli {
+	statement = "[driver this] exec (TzkScripts select 009)";
+};
+class UA_SetFlightAltitude {
+	statement = "[this, driver this] exec (TzkScripts select 022)";
+};
+class UA_AfterBurnerON {
+	statement = "this removeMagazines {AfterBurnerSwitch_xj400}; this exec (TzkScripts select 029)";
+};
+
+class UA_AttachInVehicle {};
+class UA_AttachOnFoot {
+	statement = "[this, tsCenter, ttTruck] exec (TzkScripts select 074)";
+};
+class UA_AttachInVehicle_Truck: UA_AttachInVehicle {
+	statement = "[this, tsCenter, ttTruck] exec (TzkScripts select 074)";
+};
+class UA_AttachOnFoot_Truck: UA_AttachOnFoot {
+	statement = "[this, tsCenter, ttTruck] exec (TzkScripts select 074)";
+};
+
+class UA_AttachInVehicle_Center: UA_AttachInVehicle {
+	statement = "[this, tsCenter, ttBoat] exec (TzkScripts select 074)";
+};
+class UA_AttachInVehicle_Right: UA_AttachInVehicle {
+	statement = "[this, tsRight, ttBoat] exec (TzkScripts select 074)";
+};
+class UA_AttachInVehicle_Left: UA_AttachInVehicle_Right {
+	statement = "[this, tsLeft, ttBoat] exec (TzkScripts select 074)";
+};
+class UA_AttachOnFoot_Center: UA_AttachOnFoot {
+	statement = "[this, tsCenter, ttBoat] exec (TzkScripts select 074)";
+};
+class UA_AttachOnFoot_Right: UA_AttachOnFoot {
+	statement = "[this, tsRight, ttBoat] exec (TzkScripts select 074)";
+};
+class UA_AttachOnFoot_Left: UA_AttachOnFoot {
+	statement = "[this, tsLeft, ttBoat] exec (TzkScripts select 074)";
+};
+
+class UA_AttachInVehicle_APC: UA_AttachInVehicle {
+	statement = "[this, tsCenter, ttAPC] exec (TzkScripts select 074)";
+};
+class UA_AttachOnFoot_APC: UA_AttachOnFoot {
+	statement = "[this, tsCenter, ttAPC] exec (TzkScripts select 074)";
+};
+
+class UA_AttachInVehicle_Heli: UA_AttachInVehicle {
+	statement = "[this, tsCenter, ttHeli] exec (TzkScripts select 074)";
+};
+class UA_AttachOnFoot_Heli: UA_AttachOnFoot {
+	statement = "[this, tsCenter, ttHeli] exec (TzkScripts select 074)";
+};
+
+class UA_SwitchToDriverAir {
+	statement = "this exec (TzkScripts select 130)";
+};
+class UA_SwitchToGunnerAir {
+	statement = "this exec (TzkScripts select 131)";
+};
+
+class UA_EquipLAW {
+	statement = "[this, [{VirtualLAW_xj400}], 25] exec (TzkScripts select 190)";
+};
+class UA_EquipRPG {
+	statement = "[this, [{VirtualRPG_xj400}], 25] exec (TzkScripts select 190)";
+};
+class UA_EquipCarlGustav {
+	statement = "[this, [{VirtualCarlGustav_xj400}], 60] exec (TzkScripts select 190)";
+};
+class UA_EquipAT4 {
+	statement = "[this, [{VirtualAT4_xj400}], 60] exec (TzkScripts select 190)";
+};
+class UA_EquipGrenade {
+	statement = "[this, [{VirtualGrenade_xj400}], 10] exec (TzkScripts select 190)";
+};
+class UA_EquipMortar {
+	statement = "[this, [{VirtualMortar_xj400}], 20] exec (TzkScripts select 190)";
+};
+class UA_EquipMG {
+	statement = "[this, [{Mag_12mm7_100_xj400}], 20] exec (TzkScripts select 190)";
+};
+
+class UA_EquipM2 {
+	statement = "[this, [{M2cal50_DVDUS_xj400},{M2cal50_DVDUS_xj400},{M2cal50_DVDUS_xj400},{M2cal50_DVDUS_xj400},{M2cal50_DVDUS_xj400}], 50, [{M2cal50_DVDUS_xj400}]] exec (TzkScripts select 120)";
+};
+class UA_EquipPKT {
+	statement = "[this, [{PKTUAZ_DVD_xj400},{PKTUAZ_DVD_xj400},{PKTUAZ_DVD_xj400},{PKTUAZ_DVD_xj400}], 50, [{PKTUAZ_DVD_xj400}]] exec (TzkScripts select 120)";
+};
+class UA_Equip9K112 {
+	statement = "[this, [{9K112_xj400}], 1000] exec (TzkScripts select 121)";
+};
+class UA_Equip9K119 {
+	statement = "[this, [{9K119_xj400}], 1000] exec (TzkScripts select 121)";
+};
+class UA_EquipATGM125 {
+	statement = "[this, [{ATGM125_xj400}], 1000] exec (TzkScripts select 121)";
+};
+
 class CfgVehicles {
 	class All {
 		class ViewOpticsBase {}; // for gunner aiming
@@ -84,6 +203,7 @@ class CfgVehicles {
 			minFov = 0.07;
 			maxFov = 0.85;
 		};
+		class EventHandlers { Init = (_this select 0) exec {\TZK_Patch4_4_0_6\s\EhInit\4064Grkpbv.sqs}; };
 	};
 	class PLZ89_VME_Base_xj400: T72_Base_xj400 {
 		model = "\TZK_Patch4_4_0_6\Model\PLZ89.p3d";
@@ -106,6 +226,9 @@ class CfgVehicles {
 			maxElev = 65; // same as PLZ05
 		};
 	};
+	class PLZ89_TZK_xj400: PLZ89_VME_Base_xj400 {
+		class EventHandlers { Init = (_this select 0) exec "\TZK_Patch4_4_0_6\s\EhInit\4064Plz89Static.sqs"; };
+	};
 
 	class M109A6G_Base_xj400: M1Abrams_Base_xj400 {};
 	class M109A6G_xj400: M109A6G_Base_xj400 {
@@ -118,6 +241,16 @@ class CfgVehicles {
 			minFov = 0.07;
 			maxFov = 0.85;
 		};
+
+		class UserActions {
+			class prepfire {
+				statement = "[this,1] exec (TzkScripts select 010)";
+			};
+			class prepdrive {
+				statement = "[this,0] exec (TzkScripts select 010)";
+			};
+		};
+		class EventHandlers { Init = (_this select 0) exec {\TZK_Patch4_4_0_6\s\EhInit\4064M109a6g.sqs}; };
 	};
 
 	class PLZ05_VME_Base_xj400: T72_Base_xj400 {};
@@ -131,6 +264,16 @@ class CfgVehicles {
 			minFov = 0.07;
 			maxFov = 0.85;
 		};
+
+		class UserActions {
+			class prepfire {
+				statement = "[this,1] exec (TzkScripts select 011)";
+			};
+			class prepdrive {
+				statement = "[this,0] exec (TzkScripts select 011)";
+			};
+		};
+		class EventHandlers { Init = (_this select 0) exec {\TZK_Patch4_4_0_6\s\EhInit\4064Plz05.sqs}; };
 	};
 
 	class M270_M29064_xj400: M1Abrams_Base_xj400 {
@@ -148,6 +291,16 @@ class CfgVehicles {
 		model = "\TZK_Patch4_4_0_6\Model\TOS1_DKMM.p3d";
 
 		GunnerOpticsColor[] = {0, 0, 0, 1};
+
+		class UserActions {
+			class prepfire {
+				statement = "[this,1] exec (TzkScripts select 012)";
+			};
+			class prepdrive {
+				statement = "[this,0] exec (TzkScripts select 012)";
+			};
+		};
+		class EventHandlers { Init = (_this select 0) exec {\TZK_Patch4_4_0_6\s\EhInit\4064Tos1.sqs}; };
 	};
 
 	class m119_xj400: M2StaticMG {
@@ -532,6 +685,127 @@ class CfgVehicles {
 		hiddenSelections[] = {"pruh", tzk_tex_00};
 		class EventHandlers {
 			Init = "";
+		};
+	};
+
+	// =============================================== Vehicles with UA/EH redirect ===============================================
+	class M88arv_mfm_xj400: M1Abrams_Base_xj400 {
+		class UserActions
+		{
+			class Crane_up {
+				statement = [this, "Up"] exec (TzkScripts select 002);
+			};
+			class Crane_down {
+				statement = [this, "Down"] exec (TzkScripts select 002);
+			};
+		};
+		class EventHandlers { Init = (_this select 0) exec "\TZK_Patch4_4_0_6\s\EhInit\4064M88Dynamic.sqs"; };
+	};
+	class BREM_mfm_xj400: T72_Base_xj400 {
+		class UserActions {
+			class Crane_up {
+				statement = [this, "Up"] exec (TzkScripts select 001);
+			};
+			class Crane_down {
+				statement = [this, "Down"] exec (TzkScripts select 001);
+			};
+		};
+		class EventHandlers {
+			Init = (_this select 0) exec (TzkScripts select 050);
+		};
+	};
+	class M151A1C_htr_xj400: JeepMG_xj400 {
+		class EventHandlers {
+			init = _this exec (TzkScripts select 045);
+		};
+	};
+	class UAZ_SPG_FDF_xj400: JeepMG_xj400 {
+		class EventHandlers {
+			init = _this exec (TzkScripts select 045);
+		};
+	};
+	class AMX10RC_OFrP_xj400: M1Abrams_Base_xj400 {
+		class EventHandlers { Init = [_this select 0, {C}] exec (TzkScripts select 046); };
+	};
+	class TZK_HeavyWestTank_Base_xj400: M1Abrams_Base_xj400 {};
+	class M1A1_xj400: TZK_HeavyWestTank_Base_xj400 {
+		class EventHandlers { Init = (_this select 0) exec "\TZK_Patch4_4_0_6\s\EhInit\4064M1a1Dynamic.sqs"; };
+	};
+	class Leo2A6_xj400: TZK_HeavyWestTank_Base_xj400 {
+		class EventHandlers { Init = (_this select 0) exec "\TZK_Patch4_4_0_6\s\EhInit\4064Leo2a6Dynamic.sqs"; };
+	};
+	class Leo2A6_C_xj400: Leo2A6_xj400 {
+		class EventHandlers { Init = (_this select 0) exec "\TZK_Patch4_4_0_6\s\EhInit\4064Leo2a6Static.sqs"; };
+	};
+	class T80_Base_xj400: T72_Base_xj400 {};
+	class TZK_HeavyEastTank_Base_xj400: T80_Base_xj400 {};
+	class ZTZ99_xj400: TZK_HeavyEastTank_Base_xj400 {};
+	class ZTZ99_C_xj400: ZTZ99_xj400 {
+		class EventHandlers { Init = (_this select 0) exec "\TZK_Patch4_4_0_6\s\EhInit\4064Ztz99Static.sqs"; };
+	};
+	class BMP: APC {};
+	class BMP_xj400: BMP {
+		class EventHandlers {
+			Init = _vehicle = _this select 0, [_vehicle, {C}] exec (TzkScripts select 047);
+		};
+	};
+	class BMP2_Base_xj400: BMP {};
+	class BMP2_xj400: BMP2_Base_xj400 {
+		class EventHandlers {
+			Init = _vehicle = _this select 0, [_vehicle, {C}] exec (TzkScripts select 048);
+		};
+	};
+	class BMPAmbul: BMP {};
+	class BMPAmbul_xj400: BMPAmbul {
+		class EventHandlers {
+			Init = _vehicle = _this select 0, [_vehicle, {C}] exec (TzkScripts select 049);
+		};
+	};
+
+	class ResistanceTank_xj400: Tank_xj400 {};
+	class T80Res_Base_xj406: ResistanceTank_xj400 {};
+	class T80Res_TZK_xj406: T80Res_Base_xj406 {
+		class EventHandlers { Init = [_this select 0, {red}] exec "\TZK_Patch4_4_0_6\s\EhInit\4064ResT80Dynamic.sqs"; };
+	};
+	class T80Res_Orange_xj406: T80Res_TZK_xj406 {
+		class EventHandlers { Init = [_this select 0, {orange}] exec "\TZK_Patch4_4_0_6\s\EhInit\4064ResT80Dynamic.sqs"; };
+	};
+	class T80Res_Yellow_xj406: T80Res_Orange_xj406 {
+		class EventHandlers { Init = [_this select 0, {yellow}] exec "\TZK_Patch4_4_0_6\s\EhInit\4064ResT80Dynamic.sqs"; };
+	};
+	class T80Res_Purple_xj406: T80Res_Orange_xj406 {
+		class EventHandlers { Init = [_this select 0, {purple}] exec "\TZK_Patch4_4_0_6\s\EhInit\4064ResT80Dynamic.sqs"; };
+	};
+	class T80Res_TZK_C_xj406: T80Res_TZK_xj406 {
+		class EventHandlers { Init = [_this select 0, {red}, false] exec "\TZK_Patch4_4_0_6\s\EhInit\4064ResT80Static.sqs"; };
+	};
+	class T80Res_TZK_G_xj406: T80Res_TZK_C_xj406 {
+		class EventHandlers { Init = [_this select 0, {red}, true] exec "\TZK_Patch4_4_0_6\s\EhInit\4064ResT80Static.sqs"; };
+	};
+
+	class Helicopter: Air {};
+	class UH60_CSLA_Base_xj400: Helicopter {
+		class EventHandlers {
+			GetOut = "_this exec (TzkScripts select 040)";
+		};
+	};
+
+	class Ship: AllVehicles {};
+	class BigShip: Ship {};
+	class LST_Base_xj400: BigShip {
+		class UserActions {
+			class LST_Attach {
+				statement = "this exec (TzkScripts select 125)";
+			};
+			class LST_DetachL: LST_Attach {
+				statement = "[this, {L}] exec (TzkScripts select 126)";
+			};
+			class LST_DetachR: LST_DetachL {
+				statement = "[this, {R}] exec (TzkScripts select 126)";
+			};
+			class LST_Support {
+				statement = "this exec (TzkScripts select 127)";
+			};
 		};
 	};
 };

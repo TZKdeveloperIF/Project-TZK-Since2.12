@@ -1,0 +1,14 @@
+_vehicle = _this select 0
+? isNull player: exit
+_dist = _vehicle distance player
+? _dist > viewDistance / 2: exit
+
+_array = typeOf _vehicle GetVehicleParamArray "hiddenSelections"
+
+_vehicle setObjectTexture [_array find "tzkGun00", ""]
+_vehicle setObjectTexture [_array find "tzkGun01", ""]
+_vehicle setObjectTexture [_array find "tzkGun02", ""]
+_vehicle setObjectTexture [_array find "tzkGun03", ""]
+
+~ 0.3
+_vehicle exec (TzkScripts select 184)

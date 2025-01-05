@@ -34,13 +34,13 @@ _part = _parts select 0
 _object = (_part select 0) createVehicle _posStruct
 ? _type != stBridge: _object setDir _dir, _object setPos _posStruct
 ? _type == stBridge: _object setVectorDirAndUp [_vecDir, [0,0,1]]; _object setPosASL _posAsl;
-if (isNull gunner _object) then { [_object] exec localize {TZK_REARMDATA_ADD} };
+if (isNull gunner _object) then { [_object] exec (TzkScripts select 072) };
 
 
-[_si, _type] exec localize {TZK_INFO_SERVER_STRUCT_READY}; [_objectDestroyed] exec "\TZK_Scripts_4_0_4\Server\primStructsPlacedRemove.sqs"
+[_si, _type] exec (TzkScripts select 147); [_objectDestroyed] exec "\TZK_Scripts_4_0_4\Server\primStructsPlacedRemove.sqs"
 
 _objects = [_object]
-[_objects, _type] exec localize {TZK_SERVER_FUNC_RESET_UP};
+[_objects, _type] exec (TzkScripts select 214);
 
 #ReplaceStructure
 
@@ -66,4 +66,4 @@ _objectDestroyed setPos [-1000,0,0]
 	[_objectDestroyed, _object, _si] call preprocessFile "Server\ReplaceAutoBuyFactory.sqf"
 	publicExec format [{[UnitById %1, UnitById %2, %3] call preprocessFile "Server\ReplaceAutoBuyFactory.sqf"}, _objectDestroyed call funcGenNetIdStr, _object call funcGenNetIdStr, _si]
 # SkipReplaceFac
-	[_objectDestroyed, 60] exec localize {TZK_PATH_DELAY_DELETE_UNIT}
+	[_objectDestroyed, 60] exec (TzkScripts select 188)

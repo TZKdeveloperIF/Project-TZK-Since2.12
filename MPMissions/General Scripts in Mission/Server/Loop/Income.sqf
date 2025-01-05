@@ -64,8 +64,8 @@ _factor = [1, _factor] select IncomeGrow_TZK;
 		} else {
 			_income = [_playerIncome, _commanderIncome] select (_x == _groupCommander);
 		};
-		[_si, _gi, _income + _bonus, 0] exec localize {TZK_MONEY_SERVER_ADD};
-		[_bonus, _si, _gi] exec localize {TZK_INFO_SERVER_SCORE_MONEY};
+		[_si, _gi, _income + _bonus, 0] exec (TzkScripts select 166);
+		[_bonus, _si, _gi] exec (TzkScripts select 145);
 		scoreMoney select _si set [_gi, 0];
 		_gi = _gi + 1;
 	} forEach _groups;

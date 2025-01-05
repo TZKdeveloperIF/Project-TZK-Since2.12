@@ -108,7 +108,7 @@ _getWorkersCnt = preprocessFile "Common\SQF\WorkerCount.sqf"
 #BuyWorker
 	buttonPressedBuy = false
 	? (_money < costWorker): hint "Not enough Money"; goto "Update"
-	1 exec localize {TZK_NETWORK_BUY_WORKER}
+	1 exec (TzkScripts select 185)
 	goto "Update"
 
 #BuildStructure

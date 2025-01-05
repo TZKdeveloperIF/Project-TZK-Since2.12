@@ -1,0 +1,12 @@
+; args: vehicle
+_vehicle = _this
+
+? local _vehicle: _vehicle animate ["suspension", 0.5]
+
+_nil = "scalar bool array string 0xfcffffef"
+_undefined = format ["%1", TzkScripts] == _nil
+? not _undefined: _vehicle exec (TzkScripts select 035), exit
+
+_vehicle exec "\TZK_Patch4_4_0_6\s\EhInit\RedirectableM109a6g.sqs"
+
+; EOF

@@ -24,7 +24,7 @@ private [{_type},{_num},{_driver},{_gunner}, {_factoryType}];
 				_j = _j + 1;
 			};
 			_grpBuyOrders set [_j, _order];
-			_order exec localize {TZK_AI_BUY_UNIT};
+			_order exec (TzkScripts select 003);
 		} forEach _factories;
 	} else { // Buy at assigned factories
 		private [{_factory},{_facType}];
@@ -56,7 +56,7 @@ private [{_type},{_num},{_driver},{_gunner}, {_factoryType}];
 					_j = _j + 1;
 				};
 				_grpBuyOrders set [_j, _order];
-				_order exec localize {TZK_AI_BUY_UNIT};
+				_order exec (TzkScripts select 003);
 			} forEach _factories;
 		};
 	};

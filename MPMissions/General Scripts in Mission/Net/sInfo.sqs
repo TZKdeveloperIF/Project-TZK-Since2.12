@@ -6,18 +6,3 @@ _value2 = -1
 
 [_value, _value2] exec "\TZK_Patch4_4_0_6\s\Net\hInfo.sqs"
 publicExec format [{[%1,%2] exec "\TZK_Patch4_4_0_6\s\Net\hInfo.sqs"}, _value, _value2]
-exit
-
-@!(mutexInfo)
-mutexInfo = true
-
-? _value2 != -1 : [] call format["pvInfoEx%1 = _value2", indexInfoMsg]
-? _value2 != -1 : [] call format["PublicVariable ""pvInfoEx%1""", indexInfoMsg]
-[] call format["pvInfo%1 = _value", indexInfoMsg]
-[] call format["PublicVariable ""pvInfo%1""", indexInfoMsg]
-indexInfoMsg = indexInfoMsg + 1
-? (indexInfoMsg >= countInfoMsg): indexInfoMsg = 0
-
-~(sendDelay/countInfoMsg)
-
-mutexInfo = false

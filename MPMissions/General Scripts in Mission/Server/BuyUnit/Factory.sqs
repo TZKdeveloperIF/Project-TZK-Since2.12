@@ -102,12 +102,12 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 	_money = groupMoneyMatrix select _si select _giBuyer
 	? (_money < _cost): goto "NoMoney"
 	_spendParam = [_si, _giBuyer, _cost, true, false]
-	_spendParam exec localize {TZK_MONEY_SERVER_SPEND}
+	_spendParam exec (TzkScripts select 167)
 
 	@ _spendParam select 4
-	? not (_spendParam select 3): [_si, _giBuyer, -_cost] exec localize {TZK_MONEY_SERVER_SPEND}; goto "NoMoney"
+	? not (_spendParam select 3): [_si, _giBuyer, -_cost] exec (TzkScripts select 167); goto "NoMoney"
 	
-	[_type, _si, _giBuyer, _giJoin] exec localize {TZK_INFO_SERVER_UNIT_BUILDING}
+	[_type, _si, _giBuyer, _giJoin] exec (TzkScripts select 156)
 
 	_timeBuilt = time + ([_buildTime, 2] select dev); _isBuilding = true
 	# buildLoop
@@ -117,7 +117,7 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 		? count _cancelledQids > 0: goto "OnCancelling"
 		? _isBuilding: goto "buildLoop"
 
-	? count units _grpJoin + _unitsToBuild > maxGroupSize: [_si, _giBuyer, -_cost] exec localize {TZK_MONEY_SERVER_SPEND}; goto "GroupFull"
+	? count units _grpJoin + _unitsToBuild > maxGroupSize: [_si, _giBuyer, -_cost] exec (TzkScripts select 167); goto "GroupFull"
 
 	[_qid, _si, 0] exec "Server\BuyUnit\sQueueRem.sqs"
 
@@ -137,12 +137,12 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 	goto "Wait"
 
 #GroupFull
-	[_type, _si, _giBuyer, _giJoin] exec "\TZK_Scripts_4_0_6\Server\Info\GroupFull.sqs"
+	[_type, _si, _giBuyer, _giJoin] exec (TzkScripts select 158)
 	[_qid, _si, 0] exec "Server\BuyUnit\sQueueRem.sqs"
 	goto "UnitNotBuilt"
 
 #NoMoney
-	[_type, _si, _giBuyer, _giJoin] exec "\TZK_Scripts_4_0_6\Server\Info\NoMoneyUnit.sqs"
+	[_type, _si, _giBuyer, _giJoin] exec (TzkScripts select 159)
 	[_qid, _si, 0] exec "Server\BuyUnit\sQueueRem.sqs"
 	goto "UnitNotBuilt"
 
@@ -218,6 +218,6 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 	
 	? not _currentOrderCancelled: goto "buildLoop"
 
-	[_si, _giBuyer, -_cost] exec localize {TZK_MONEY_SERVER_SPEND}
+	[_si, _giBuyer, -_cost] exec (TzkScripts select 167)
 	[_si, _giJoin, _unitsToBuild] exec "Server\BuyUnit\AsyncFreeBuildingUnitsCount.sqs"
 	goto "UnitCanceled"

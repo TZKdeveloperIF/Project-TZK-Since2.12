@@ -18,7 +18,7 @@ goto "Update"
 	_vForward = [sin _dirOld, cos _dirOld]
 	_vRight = [_vForward, 90] call funcVectorRot2D
 
-	[] exec localize {TZK_DIALOG_SPEC}
+	[] exec (TzkScripts select 024)
 
 # Update
 	~0.02
@@ -35,7 +35,7 @@ goto "Update"
 	; player globalchat format["ammo = %1", _ammo]
 	? _ammo > 0 : keyReload = true; player removeMagazines "IngramMag"; player addMagazine "IngramMag"
 	
-	; ? keyReload : keyReload = false; _si = [si0, siRes] select (random 1 < 0.5); player globalchat format["_si=%1", _si]; { _x set [tdSide, _si] } foreach towns; si0 exec localize {TZK_FUNC_SERVER_CHECK_WIN_TOWNS}
+	; ? keyReload : keyReload = false; _si = [si0, siRes] select (random 1 < 0.5); player globalchat format["_si=%1", _si]; { _x set [tdSide, _si] } foreach towns; si0 exec (TzkScripts select 138)
 
 	_pos = getPos _unit
 	_dir = getDir _unit
@@ -121,5 +121,5 @@ goto "Update"
 	deleteVehicle hhSpec
 	deleteVehicle hhTracker
 
-	[] exec localize {TZK_PLAYER_GAMEOVER_SECQUENCE}; [] exec localize {TZK_TRIGGER_GAME_END_COMMON}
+	[] exec (TzkScripts select 191); [] exec (TzkScripts select 229)
 	exit

@@ -1,0 +1,9 @@
+; args: vehicle
+
+_vehicle = _this
+_vehicle exec "\TZK_Patch4_4_0_6\s\EhInit\RscnumAndSus.sqs"
+
+_nil = "scalar bool array string 0xfcffffef"
+_undefined = format ["%1", TzkScripts] == _nil
+? not _undefined: _vehicle exec (TzkScripts select 184)
+? _undefined: _vehicle exec "\TZK_Config_4_0_6\Scripts\recoilByTex\plz89.sqs"

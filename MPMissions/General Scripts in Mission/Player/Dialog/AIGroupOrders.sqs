@@ -4,7 +4,7 @@ mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
 _dlg = createDialog "CommandAIDialog2"
 mutexDlg = false
 
-? !bool_TZK_CHN_inited && bool_TZK_CHN_Lang: call preprocessFile localize {TZK_PLAYER_DIALOG_CHNLANG}
+? !bool_TZK_CHN_inited && bool_TZK_CHN_Lang: call preprocessFile (TzkScripts select 192)
 _bTzkChn = bool_TZK_CHN_Lang; _bSettingDispInited = false
 
 _si = siPlayer
@@ -41,7 +41,7 @@ _idcParamLabels = [_idcPar0Label, _idcPar1Label, _idcPar2Label]
 _idcParams = [_idcPar0, _idcPar1, _idcPar2]
 { ctrlShow [_x, false] } foreach _idcParamLabels, { ctrlShow [_x, false] } foreach _idcParams
 
-call loadFile localize {TZK_DIALOG_AI_GRP_ORDER_INIT}
+call loadFile (TzkScripts select 015)
 
 ; functions
 _update4OneGroup = preprocessFile "Player\Dialog\AiGrpOrder_Update4OneGroup.sqf"
@@ -136,8 +136,8 @@ _updateTypePic = preprocessFile "Player\Dialog\pAbUpdateTypeImage.sqf"
 	_index = 0
 	{ _params set [_index, lbCurSel (_idcParams select _index)]; _index = _index + 1 } foreach ((orderDefs select _selOrder) select 1)
 
-	? _gi == -1: [_si, giPlayer + GroupsNum, _selOrder, _params] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}
-	? _gi != -1: [_si, _gi, _selOrder, _params] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}
+	? _gi == -1: [_si, giPlayer + GroupsNum, _selOrder, _params] call preprocessFile (TzkScripts select 171)
+	? _gi != -1: [_si, _gi, _selOrder, _params] call preprocessFile (TzkScripts select 171)
 	goto "Update"
 	
 # ConcurrentRts

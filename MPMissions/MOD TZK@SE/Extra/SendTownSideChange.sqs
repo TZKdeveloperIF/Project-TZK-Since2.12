@@ -22,7 +22,7 @@ _flag setFlagTexture (flags select _siNew)
 
 (towns select _index) set [tdSide, _siNew]
 
-? _siNew == si0 || _siNew == si1 : _siNew exec localize {TZK_FUNC_SERVER_CHECK_WIN_TOWNS}
+? _siNew == si0 || _siNew == si1 : _siNew exec (TzkScripts select 138)
 
 ~sendDelay
 mutexTownSide = false

@@ -54,9 +54,9 @@ _order = orderMatrix select _si select _gi; _idOrder = _order select 0
 
 _unit setCombatMode "YELLOW"; _unit setBehaviour "AWARE"; _unit setSpeedMode "FULL"
 
-[_unit, _si, 200] exec localize {TZK_EVENT_ADD_KILLED_INF}
+[_unit, _si, 200] exec (TzkScripts select 039)
 [_unit, _si, _gi] exec "Server\EventAdd_Infantry.sqs"
-[_unit] exec localize {TZK_REARMDATA_ADD}
+[_unit] exec (TzkScripts select 072)
 
 _sleep = 5
 _giPatrol = _gi; _bTakeTown=false; _nDestroy=0
@@ -82,7 +82,7 @@ _giPatrol = _gi; _bTakeTown=false; _nDestroy=0
 	_money = groupMoneyMatrix select _si select _gi
 
 	#skip1
-	? _money > 500 : [_unit, _si, _gi] exec localize {TZK_AICO_CHECK_BUYUNIT}; [_si, _gi, _giPatrol, 500] exec localize {TZK_MONEY_SERVER_TRANSFER}
+	? _money > 500 : [_unit, _si, _gi] exec (TzkScripts select 007); [_si, _gi, _giPatrol, 500] exec (TzkScripts select 168)
 	
 	? !bool_TZK_DEV_FPS && time > _timeCheckNextUpgrade : [_si, _gi] exec "Server\AICO\CheckUpgrade.sqs"; _timeCheckNextUpgrade = time + ([5*60, 60] select dev)
 	? time > _timeCheckOrders : goto _currentOrder
@@ -94,7 +94,7 @@ _giPatrol = _gi; _bTakeTown=false; _nDestroy=0
 	_mhq = mhq select _si
 	? time > _timeCheckPlayerIncome : [_si] exec "\TZK_Patch4_4_0_6\s\Server\AICO\CheckPlayerIncome.sqs"; _timeCheckPlayerIncome = time + ([5*60, 60] select dev)
 	
-	? (alive _mhq) && (call format["pvWorkers%1 < 10", _si]) && _money >= costWorker : [_si] exec localize {TZK_FUNC_SERVER_ADD_WORKER}; _sleep = 0.5; goto "Update"
+	? (alive _mhq) && (call format["pvWorkers%1 < 10", _si]) && _money >= costWorker : [_si] exec (TzkScripts select 137); _sleep = 0.5; goto "Update"
 
 ;	? alive _mhq && time > _factorBuildTime*_timeNextPrim && _money > (_costNextPrim+1000): goto "BuildPrim"
 	? alive _mhq && time > _timeCheckBuildPrim: goto "CheckBuildPrim"
@@ -102,7 +102,7 @@ _giPatrol = _gi; _bTakeTown=false; _nDestroy=0
 
 	? (count _posIdle) > 0 : _dist = [_posIdle, getPos _unit] call funcDistH; if (_dist > 10) then { _posMove = _posIdle; _returnMove = "Update"; goto "MoveToPos" }
 
-	? time > _timeCheckSupport && !bool_TZK_MF_Mode: [_unit, _si, _gi] exec localize {TZK_AICO_CHECK_SUPPORT}; _timeCheckSupport = time + 60; goto "Update"
+	? time > _timeCheckSupport && !bool_TZK_MF_Mode: [_unit, _si, _gi] exec (TzkScripts select 008); _timeCheckSupport = time + 60; goto "Update"
 	? time > _timeCheckEjectDrivers : goto "CheckEjectDrivers"
 
 	? !(alive _mhq) && _money > costRepairMHQ : goto "RepairMHQ"
@@ -192,7 +192,7 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 		~5
 		? !(alive _unit): goto "WaitUntilAlive"
 		? time > _timeForce : (vehicle _unit) setPos _posMove; goto _returnMove
-	  ? _money > 500 : [_unit, _si, _gi] exec localize {TZK_AICO_CHECK_BUYUNIT}
+	  ? _money > 500 : [_unit, _si, _gi] exec (TzkScripts select 007)
 		_dist = [_posMove, getPos _unit] call funcDistH
 		? _dist > 5 : goto "CheckPosReached"
 	doStop _unit
@@ -206,7 +206,7 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 	_timeCheckOrders = time + 1*60
 	[_si, _gi, getPos _mhq, 0] exec "Common\Msg\sSetWPCO.sqs"
 	~0.4
-	[_si, _gi, orderPatrolArea, [0,2], true] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}; [_si, _gi + GroupsNum, aisKeepMax, 13] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
+	[_si, _gi, orderPatrolArea, [0,2], true] call preprocessFile (TzkScripts select 171); [_si, _gi + GroupsNum, aisKeepMax, 13] call preprocessFile (TzkScripts select 172)
 	? bool_TZK_DEV_FPS: showDebug ["Exit Comm script", 5000], exit
 	goto "Update"
 
@@ -216,7 +216,7 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 	~(random 10)
 	[_si, _gi, getPos _mhq, 0] exec "Common\Msg\sSetWPCO.sqs"
 	~0.4
-	[_si, _gi, orderPatrolArea, [0,2], true] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}; [_si, _gi + GroupsNum, aisKeepMax, 13] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
+	[_si, _gi, orderPatrolArea, [0,2], true] call preprocessFile (TzkScripts select 171); [_si, _gi + GroupsNum, aisKeepMax, 13] call preprocessFile (TzkScripts select 172)
 	
 	_res = [getPos _mhq, _si, []] call funcGetClosestEnemyTown  	  
 	_ti = _res select 0
@@ -230,8 +230,8 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 	_res = [getPos _mhq, _si, []] call funcGetClosestEnemyTown  	  
 	_ti = _res select 0
 	
-	[_si, _gi + GroupsNum, orderHoldTown, [_ti,1,0]] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}
-	[_si, _gi, aisPickupWait1, 0, true] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_SETTING}
+	[_si, _gi + GroupsNum, orderHoldTown, [_ti,1,0]] call preprocessFile (TzkScripts select 171)
+	[_si, _gi, aisPickupWait1, 0, true] call preprocessFile (TzkScripts select 172)
 	goto "Update"
 
 #CheckFirstTownTaken
@@ -239,7 +239,7 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 	? ("(_x select tdSide) == _si" count towns) == 0 : goto "Update"
 	[_si, _gi, getPos _mhq, 0] exec "Common\Msg\sSetWPCO.sqs"
 	~0.4
-	[_si, _gi, orderPatrolArea, [0,2]] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}
+	[_si, _gi, orderPatrolArea, [0,2]] call preprocessFile (TzkScripts select 171)
 	~0.4
 	_currentOrder = "InitOrders"
 	_timeCheckOrders = time + ([1*60, 60] select dev)
@@ -252,10 +252,10 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 	~0.4
 	; _giList = [_si] call funcGetAIGroupsIndex
 	; _giList = _giList - [_gi]
-	? !_bTakeTown : [_si, _gi + GroupsNum, orderTakeHoldTowns, [4,([1, 0] select dev)]] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}; _bTakeTown = true
-	[_si, _gi, orderPatrolArea, [0,2]] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}
-	; ? _i == 0 : [_si, _giSet, orderTakeHoldTowns, [0,1]] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}; _giFixOrder set [count _giFixOrder, _giSet]
-	; ? _i == 1 : [_si, _giSet, orderTakeHoldTowns, [0,1]] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}; _giFixOrder set [count _giFixOrder, _giSet]
+	? !_bTakeTown : [_si, _gi + GroupsNum, orderTakeHoldTowns, [4,([1, 0] select dev)]] call preprocessFile (TzkScripts select 171); _bTakeTown = true
+	[_si, _gi, orderPatrolArea, [0,2]] call preprocessFile (TzkScripts select 171)
+	; ? _i == 0 : [_si, _giSet, orderTakeHoldTowns, [0,1]] call preprocessFile (TzkScripts select 171); _giFixOrder set [count _giFixOrder, _giSet]
+	; ? _i == 1 : [_si, _giSet, orderTakeHoldTowns, [0,1]] call preprocessFile (TzkScripts select 171); _giFixOrder set [count _giFixOrder, _giSet]
 	
 
   goto "Update"
@@ -275,11 +275,11 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 	~0.4
 	; _giList = [_si] call funcGetAIGroupsIndex
 	; _giList = _giList - [_gi]
-	; ? !(_giSet in _giFixOrder) && (((orderMatrix select _si) select _giSet) select 1) != orderTakeHoldTowns : [_si, _giSet, orderTakeHoldTowns, [4,0]] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}
-	? !_bTakeTown : [_si, _gi + GroupsNum, orderTakeHoldTowns, [4,([1, 0] select dev)]] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}; _bTakeTown = true
-	[_si, _gi, orderPatrolArea, [0,2]] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}
+	; ? !(_giSet in _giFixOrder) && (((orderMatrix select _si) select _giSet) select 1) != orderTakeHoldTowns : [_si, _giSet, orderTakeHoldTowns, [4,0]] call preprocessFile (TzkScripts select 171)
+	? !_bTakeTown : [_si, _gi + GroupsNum, orderTakeHoldTowns, [4,([1, 0] select dev)]] call preprocessFile (TzkScripts select 171); _bTakeTown = true
+	[_si, _gi, orderPatrolArea, [0,2]] call preprocessFile (TzkScripts select 171)
 	; ? (((orderMatrix select _si) select _giSet) select 1) != orderguardarea : goto "TakeHoldTowns_SkipTransport"
-	; ? (((orderMatrix select _si) select _giSet) select 1) == orderPatrolLine : [_si, _giSet, orderPatrolLine, [0,1]] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}
+	; ? (((orderMatrix select _si) select _giSet) select 1) == orderPatrolLine : [_si, _giSet, orderPatrolLine, [0,1]] call preprocessFile (TzkScripts select 171)
 	goto "Update"
   
 #DestroyEnemy
@@ -297,10 +297,10 @@ _objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
 	~1
 	; _giList = [_si] call funcGetAIGroupsIndex
 	; _giList = _giList - [_gi]
-	; ? !(_giSet in _giFixOrder) && (((orderMatrix select _si) select _giSet) select 1) == orderTakeHoldTowns : [_si, _giSet, orderPatrolArea, [9,0]] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}
-	; ? (((orderMatrix select _si) select _giSet) select 1) == orderTransportDuty : [_si, _giSet, orderTransportDuty, [0,9,9]] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}
-	[_si, _gi + GroupsNum, orderPatrolArea, [9,0]] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}; _bTakeTown = false
-	[_si, _gi, orderPatrolArea, [0,2]] call preprocessFile localize {TZK_MSG_COMMON_SEND_AI_GRP_ORDER}
+	; ? !(_giSet in _giFixOrder) && (((orderMatrix select _si) select _giSet) select 1) == orderTakeHoldTowns : [_si, _giSet, orderPatrolArea, [9,0]] call preprocessFile (TzkScripts select 171)
+	; ? (((orderMatrix select _si) select _giSet) select 1) == orderTransportDuty : [_si, _giSet, orderTransportDuty, [0,9,9]] call preprocessFile (TzkScripts select 171)
+	[_si, _gi + GroupsNum, orderPatrolArea, [9,0]] call preprocessFile (TzkScripts select 171); _bTakeTown = false
+	[_si, _gi, orderPatrolArea, [0,2]] call preprocessFile (TzkScripts select 171)
 	goto "Update"
 
 #CheckEjectDrivers
@@ -329,7 +329,7 @@ _c = count _units
   _posWatch = getPos _mhq
   _returnMove = "MHQReached"; goto "MoveToPos"
   #MHQReached
-  (_gi + GroupsNum*_si) exec localize {TZK_SERVER_FUNC_REPAIR_MHQ}
+  (_gi + GroupsNum*_si) exec (TzkScripts select 212)
   goto "Update"
   
 #WaitUntilAlive
@@ -337,7 +337,7 @@ _c = count _units
 	_unit = leader _group
 	_unit call preprocessFile "Server\SQF\RtsOrderClear.sqf"
 
-	[_unit, _si, 200] exec localize {TZK_EVENT_ADD_KILLED_INF}
+	[_unit, _si, 200] exec (TzkScripts select 039)
 	[_unit, _si, _gi] exec "Server\EventAdd_Infantry.sqs"
 	
 	_money = groupMoneyMatrix select _si select _gi
@@ -352,7 +352,7 @@ _c = count _units
 	? _money < costRespawn : goto "WaitMoney"
 
 	#Respawn
-	? costRespawn > 0 : [_si, _gi, costRespawn] exec localize {TZK_MONEY_SERVER_SPEND}
+	? costRespawn > 0 : [_si, _gi, costRespawn] exec (TzkScripts select 167)
 	_objectRespawn = sideRespawnObjects select _si
 	? !(alive _objectRespawn) : _objectRespawn = [_objectRespawn, _si] call funcGetNearestRespawnObject
 
@@ -374,11 +374,11 @@ _c = count _units
 	_unit setVelocity [0,0,0]
 	_unit setPos _posRespawn
 
-  [_unit, _si] exec localize {TZK_AI_LEADER_EQUIP}
+  [_unit, _si] exec (TzkScripts select 005)
 
 	unassignVehicle _unit
   _posSpawn = getPos _unit
-  [_unit] exec localize {TZK_REARMDATA_ADD}
+  [_unit] exec (TzkScripts select 072)
   _unit setCombatMode "YELLOW"; _unit setBehaviour "AWARE"; _unit setSpeedMode "FULL"
 
 	goto "Update"

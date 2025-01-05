@@ -195,7 +195,7 @@ _cam cameraEffect ["internal", "back"]
 #Exit
 	forceMap false
 	? pvGameOver != -1 : exit
-  ? keyReload : keyReload = false; [_posCam] exec localize {TZK_DIALOG_SPEC}
+  ? keyReload : keyReload = false; [_posCam] exec (TzkScripts select 024)
   ~0.1
 	player switchCamera "internal"
   exit

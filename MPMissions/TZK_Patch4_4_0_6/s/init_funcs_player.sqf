@@ -11,7 +11,7 @@ funcGetOrderDesc = loadFile "\TZK_Scripts_4_0_4\Player\SQF\GetOrderDesc.sqf";
 
 comment {arguments: [_pos, _units, _alt, _shift]} ;
 comment {returns: true if command processed, false if not} ;
-funcMapClickPlayer = preprocessFile localize {TZK_FUNC_PLAYER_MAP_CLICK};
+funcMapClickPlayer = preprocessFile (TzkScripts select 133);
 
 comment {args: text} ;
 funcSideMsg = loadFile "\TZK_Scripts_4_0_4\Player\SQF\SideMsg.sqf";

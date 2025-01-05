@@ -27,8 +27,8 @@ _index = 0; _count = count towns; _westTG = grpNull; _eastTG = grpNull; _resTG =
 	
 	; An empty group created by "createGroup" return the "unknown" side. However editor can still use "format" and "substr" to gain the first 4 letters and hence gain the side.
 
-	_script = localize {TZK_TOWN_GROUP_START_1}
-	? _income < 0 : _script = localize {TZK_TOWN_GROUP_START_3}
+	_script = (TzkScripts select 221)
+	? _income < 0 : _script = (TzkScripts select 223)
 	? not isNull _westTG: [_westTG, _index, west] exec _script
 	? not isNull _eastTG: [_eastTG, _index, east] exec _script
 
@@ -51,7 +51,7 @@ _indexExtra = 0
 	if (_index < count (townGroups select si0)) then {_westTG = (townGroups select si0) select _index} else {_westTG = grpNull}
 	if (_index < count (townGroups select si1)) then {_eastTG = (townGroups select si1) select _index} else {_eastTG = grpNull}
 	
-	_script = localize {TZK_TOWN_GROUP_START_4}
+	_script = (TzkScripts select 224)
 	? not isNull _westTG: [_westTG, _indexExtra, west] exec _script
 	? not isNull _eastTG: [_eastTG, _indexExtra, east] exec _script
 	_index = _index + 1

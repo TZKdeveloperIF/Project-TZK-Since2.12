@@ -20,4 +20,4 @@ groupMoneyMatrix select _si set [_giTo,  _amount + (groupMoneyMatrix select _si 
 
 _gi = _giTo
 ? !((groupMatrix select _si select _gi) in (groupAiMatrix select _si)) || (groupMatrix select _si select _gi) == (groupCommander select _si): exit
-? (groupMoneyMatrix select _si select _gi) > aisKeepDefs select (aiSetting select _si select _gi select aisKeepMax): [_si, _gi, _giFrom, (groupMoneyMatrix select _si select _giTo) - (aisKeepDefs select (aiSetting select _si select _gi select aisKeepMax))] exec localize {TZK_MONEY_SERVER_TRANSFER};
+? (groupMoneyMatrix select _si select _gi) > aisKeepDefs select (aiSetting select _si select _gi select aisKeepMax): [_si, _gi, _giFrom, (groupMoneyMatrix select _si select _giTo) - (aisKeepDefs select (aiSetting select _si select _gi select aisKeepMax))] exec (TzkScripts select 168);

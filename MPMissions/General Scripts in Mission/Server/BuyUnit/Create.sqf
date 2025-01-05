@@ -35,7 +35,7 @@ _processed = false;
 // player disconnected
 if (not _processed && _playerDisconnected) then {
 	_processed = true;
-	[_si, _giBuyer, -_cost] exec localize {TZK_MONEY_SERVER_SPEND};
+	[_si, _giBuyer, -_cost] exec (TzkScripts select 167);
 
 	[_si, _giJoin, _unitsToBuild] exec "Server\BuyUnit\AsyncFreeBuildingUnitsCount.sqs";
 };

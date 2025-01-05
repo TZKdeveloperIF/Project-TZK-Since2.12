@@ -43,7 +43,7 @@ _destPos = getPos _unit
 	; check move
 	_distToDest = [getPos _unit, _destPos] call funcDistH
 	? _distToDest > 10: goto "Move"
-		[_unit, [true, true]] exec localize {TZK_AI_STOP}
+		[_unit, [true, true]] exec (TzkScripts select 006)
 		? _unit != _vehicle && !(isNull gunner _vehicle) && isNull (commander _vehicle): [_unit, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\AI_CheckFireGun.sqs"
 		_cycle = 30
 		goto "Sleep"

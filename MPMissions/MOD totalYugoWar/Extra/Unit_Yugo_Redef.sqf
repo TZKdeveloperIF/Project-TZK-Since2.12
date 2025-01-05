@@ -112,7 +112,7 @@ _type = _type + 1;
 unitDefs set [_type, ["Dutch marine medic", 100, _si, 10, "kmmmrnSoldierWMedic", "imedic", 2^_st, [], "", []] ];
 _type = _type + 1;
 
-unitDefs set [_type, ["Dutch marine Miner", 100, _si, 10, "kmmmrnSoldierWminer", "iminer", 2^_st, [], "", ["\TZK_Scripts_4_0_6\Common\Equip\Miner.sqs"]] ];
+unitDefs set [_type, ["Dutch marine Miner", 100, _si, 10, "kmmmrnSoldierWminer", "iminer", 2^_st, [], "", ["\TZK_Patch4_4_0_6\s\Common\Equip\Miner.sqs"]] ];
 _minerW = _type;
 _type = _type + 1;
 
@@ -132,27 +132,27 @@ _type = _type + 1;
 
 _st = stLight;
 
-unitDefs set [_type, ["HMMWV (open)", 200, _si, 30, "TYW8_CBT_M998_O_W", "\CBT_HMMWV\ui\m998ow.paa" , 2^_st, [1, _soldierW], _mCar, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["HMMWV (open)", 200, _si, 30, "TYW8_CBT_M998_O_W", "\CBT_HMMWV\ui\m998ow.paa" , 2^_st, [1, _soldierW], _mCar, [(TzkScripts select 067)]] ];
 _jeepW = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["HMMWV (cargo6)", 250, _si, 30, "TYW8_CBT_M1038_W", "\CBT_HMMWV\ui\m1038w.paa", 2^_st, [1, _soldierW], _mCar, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["HMMWV (cargo6)", 250, _si, 30, "TYW8_CBT_M1038_W", "\CBT_HMMWV\ui\m1038w.paa", 2^_st, [1, _soldierW], _mCar, [(TzkScripts select 067)]] ];
 _hummerW = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["HMMWV M240", 300, _si, 30, "TYW8_CBT_M1025_W_M240", "\CBT_HMMWV\ui\m1025w.paa", 2^_st, [2, _soldierW], _mCar, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["HMMWV M240", 300, _si, 30, "TYW8_CBT_M1025_W_M240", "\CBT_HMMWV\ui\m1025w.paa", 2^_st, [2, _soldierW], _mCar, [(TzkScripts select 067)]] ];
 _hummerM240W = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["HMMWV M2", 350, _si, 30, "TYW8_CBT_M1025_W_M2", "\CBT_HMMWV\ui\m1025w.paa", 2^_st, [2, _soldierW], _mCar, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["HMMWV M2", 350, _si, 30, "TYW8_CBT_M1025_W_M2", "\CBT_HMMWV\ui\m1025w.paa", 2^_st, [2, _soldierW], _mCar, [(TzkScripts select 067)]] ];
 _hummerM2W = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["HMMWV MK19", 500, _si, 30, "TYW8_CBT_M1025_W_MK19", "\CBT_HMMWV\ui\m1025w.paa", 2^_st, [2, _soldierW], _mCar, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["HMMWV MK19", 500, _si, 30, "TYW8_CBT_M1025_W_MK19", "\CBT_HMMWV\ui\m1025w.paa", 2^_st, [2, _soldierW], _mCar, [(TzkScripts select 067)]] ];
 _hummerMK19W = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["HMMWV TOW", 800, _si, 30, "TYW8_CBT_M1121_W", "\CBT_HMMWV\ui\m1121w.paa", 2^_st, [2, _soldierW], _mCar, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["HMMWV TOW", 800, _si, 30, "TYW8_CBT_M1121_W", "\CBT_HMMWV\ui\m1121w.paa", 2^_st, [2, _soldierW], _mCar, [(TzkScripts select 067)]] ];
 _hummerTOWW = _type;
 _type = _type + 1;
 
@@ -160,18 +160,18 @@ unitDefs set [_type, ["Support Truck", 500, _si, 30, "TYW8_M925NATOREPAIR", "itr
 _supportTruckW = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["5t Truck", 300, _si, 30, "TYW8_M925NATO", "itruck5t", 2^_st, [1, _soldierW], _mTruck, [localize {TZK_EQUIP_UNIT_TRUCK}]] ];
+unitDefs set [_type, ["5t Truck", 300, _si, 30, "TYW8_M925NATO", "itruck5t", 2^_st, [1, _soldierW], _mTruck, [(TzkScripts select 069)]] ];
 _truckW = _type;
 _type = _type + 1;
 
 unitDefs set [_type, ["Fuel 5t Truck", 500, _si, 30, "TYW8_M925NATOFUEL", "iTruck5tfuel", 2^_st, [1, _soldierW], _mFuel, []] ];
 _type = _type + 1;
 
-unitDefs set [_type, ["Mercedes 290GD", 200, _si, 30, "KMMMB290GDSTPAINF", "\KMMMB290GD\Icons\inIcon", 2^_st, [1, _soldierW], _mCar, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["Mercedes 290GD", 200, _si, 30, "KMMMB290GDSTPAINF", "\KMMMB290GD\Icons\inIcon", 2^_st, [1, _soldierW], _mCar, [(TzkScripts select 067)]] ];
 _mercedes = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Zodiac", 200, _si, 30, "CR08_ZodiacW", "\cwkzodiac\icon.paa" , 2^_st, [1, _soldierW], _mBoat, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["Zodiac", 200, _si, 30, "CR08_ZodiacW", "\cwkzodiac\icon.paa" , 2^_st, [1, _soldierW], _mBoat, [(TzkScripts select 067)]] ];
 _type = _type + 1;
 
 unitDefs set [_type, ["Patrol Boat (tug)", 1000, _si, 60, "BoatW", "ipbr", 2^_st, [2, _soldierW], _mBoat, ["Extra\ppl\InitTransportBoat.sqs"]] ];
@@ -183,7 +183,7 @@ _type = _type + 1;
 unitDefs set [_type, ["Patrol Ship (tug)", 6000, _si, 90, "TYW8_ADF_FCPB_W", "\TotalYugoWarFinal\Images\PatrolShip.jpg" , 2^_st, [2, _soldierW], _mBoat, ["Extra\ppl\InitTransportBoat.sqs"]] ];
 _type = _type + 1;
 
-unitDefs set [_type, ["Fast Attack Ship", 8000, _si, 90, "TYW8_FABoat_W", "\TotalYugoWarFinal\Images\AttackShip.jpg", 2^_st, [2, _soldierW], _mBoat, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ] ;
+unitDefs set [_type, ["Fast Attack Ship", 8000, _si, 90, "TYW8_FABoat_W", "\TotalYugoWarFinal\Images\AttackShip.jpg", 2^_st, [2, _soldierW], _mBoat, [(TzkScripts select 067)]] ] ;
 _type = _type + 1;
 
 
@@ -193,15 +193,15 @@ unitDefs set [_type, ["Support M113A2", _costSupportAPC, _si, 60, "TYW8_CBT_M113
 _supportAPCW = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["M113A3", 800, _si, 60, "TYW8_CBT_M113A3_W", "\CBT_M113a_Scripts\m113w.paa", 2^_st, [2, _soldierW], _mAPC, [localize {TZK_EQUIP_UNIT_TRUCK}]] ];
+unitDefs set [_type, ["M113A3", 800, _si, 60, "TYW8_CBT_M113A3_W", "\CBT_M113a_Scripts\m113w.paa", 2^_st, [2, _soldierW], _mAPC, [(TzkScripts select 069)]] ];
 _M113A3 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["YPR-765", 1000, _si, 60, "TYW8_llwyprpri_85_nfor", "\llwypr\ico_pri", 2^_st, [3, _crewW], _mAPC, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["YPR-765", 1000, _si, 60, "TYW8_llwyprpri_85_nfor", "\llwypr\ico_pri", 2^_st, [3, _crewW], _mAPC, [(TzkScripts select 067)]] ];
 _YPR = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["M3A2 Bradley(AT)", 1500, _si, 60, "TYW8_CBT_M3A2W", "\CBT_Brad\co\im2a2.paa", 2^_st, [3, _crewW], _mAPC, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["M3A2 Bradley(AT)", 1500, _si, 60, "TYW8_CBT_M3A2W", "\CBT_Brad\co\im2a2.paa", 2^_st, [3, _crewW], _mAPC, [(TzkScripts select 067)]] ];
 _m2a2W = _type;
 _type = _type + 1;
 
@@ -217,11 +217,11 @@ unitDefs set [_type, ["Chalenger 2GU", 4000, _si, 60, "TYW8_DKMM_CR2GU", "\DKMM_
 _Chalenger2 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Merkava 4", 4000, _si, 60, "TYW8_bizmk4", "\Bizmk_1\4\ICON.paa", 2^_st, [3, _crewW], _mTank, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["Merkava 4", 4000, _si, 60, "TYW8_bizmk4", "\Bizmk_1\4\ICON.paa", 2^_st, [3, _crewW], _mTank, [(TzkScripts select 067)]] ];
 _Merkava4 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["M6 Linebacker(AA)", 2000, _si, 60, "TYW8_CBT_M6_W", "\CBT_Brad\co\im2a2.paa", 2^_st, [3, _crewW], _mAA, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["M6 Linebacker(AA)", 2000, _si, 60, "TYW8_CBT_M6_W", "\CBT_Brad\co\im2a2.paa", 2^_st, [3, _crewW], _mAA, [(TzkScripts select 067)]] ];
 _m6 = _type;
 _type = _type + 1;
 
@@ -268,7 +268,7 @@ unitDefs set [_type, ["MH60G Minigun (Tug)", 4000, _si, 90, "TYW8_bas_MH60G", "i
 _uh60W = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["AH60L (4AT/38FFAR/Guns)", 12000, _si, 90, "TYW8_bas_ah60l", "iuh60", 2^_st, [2, _pilotW], _mHeli, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["AH60L (4AT/38FFAR/Guns)", 12000, _si, 90, "TYW8_bas_ah60l", "iuh60", 2^_st, [2, _pilotW], _mHeli, [(TzkScripts select 067)]] ];
 _uh60 = _type;
 _type = _type + 1;
 
@@ -324,7 +324,7 @@ unitDefs set [_type, ["F16 SEAD (4MK20/2AR/4AA)", 40000, _si, 90, "TYW8_RKTF16WW
 _F16SEAD = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["C-130 Hercules", 4000, _si, 90, "TYW8_hwk_C130g", "\HWK_c130\c130.paa", 2^_st, [1, _pilotW], _mPlane, ["\TZK_Scripts_4_0_4\Common\RemoveAllWeapons.sqs",localize {TZK_EQUIP_UNIT_TRUCK}]] ]     ;
+unitDefs set [_type, ["C-130 Hercules", 4000, _si, 90, "TYW8_hwk_C130g", "\HWK_c130\c130.paa", 2^_st, [1, _pilotW], _mPlane, ["\TZK_Scripts_4_0_4\Common\RemoveAllWeapons.sqs",(TzkScripts select 069)]] ]     ;
 _C130 = _type;
 _type = _type + 1;
 
@@ -473,35 +473,35 @@ _type = _type + 1;
 
 _st = stLight;
 
-unitDefs set [_type, ["UAZ", 200, _si, 30, "UAZ", "iuaz", 2^_st, [1, _soldierE], _mCar, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["UAZ", 200, _si, 30, "UAZ", "iuaz", 2^_st, [1, _soldierE], _mCar, [(TzkScripts select 067)]] ];
 _uazE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["BRDM", 300, _si, 30, "BRDM", "\BRMD\ibrmd", 2^_st, [1, _soldierE], _mCar, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["BRDM", 300, _si, 30, "BRDM", "\BRMD\ibrmd", 2^_st, [1, _soldierE], _mCar, [(TzkScripts select 067)]] ];
 _brdmE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["UAZ PK", 350, _si, 30, "TYW8_BAS_RUSUAZ_PK", "\TotalYugoWarFinal\Images\uazmg.jpg", 2^_st, [2, _soldierE], _mCar, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["UAZ PK", 350, _si, 30, "TYW8_BAS_RUSUAZ_PK", "\TotalYugoWarFinal\Images\uazmg.jpg", 2^_st, [2, _soldierE], _mCar, [(TzkScripts select 067)]] ];
 _uazPKE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["UAZ DshK", 400, _si, 30, "TYW8_BAS_RUSUAZ_DShK", "\TotalYugoWarFinal\Images\uazmg.jpg", 2^_st, [2, _soldierE], _mCar, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["UAZ DshK", 400, _si, 30, "TYW8_BAS_RUSUAZ_DShK", "\TotalYugoWarFinal\Images\uazmg.jpg", 2^_st, [2, _soldierE], _mCar, [(TzkScripts select 067)]] ];
 _uazDshK = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["BRDM PK", 400, _si, 30, "TYW8_BAS_RUSBRDM_PK", "\TotalYugoWarFinal\Images\bdrmpk.jpg", 2^_st, [2, _soldierE], _mCar, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["BRDM PK", 400, _si, 30, "TYW8_BAS_RUSBRDM_PK", "\TotalYugoWarFinal\Images\bdrmpk.jpg", 2^_st, [2, _soldierE], _mCar, [(TzkScripts select 067)]] ];
 _brdmPKE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["BRDM DshK", 450, _si, 30, "TYW8_BAS_RUSBRDM_DshK", "\TotalYugoWarFinal\Images\bdrmpk.jpg", 2^_st, [2, _soldierE], _mCar, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["BRDM DshK", 450, _si, 30, "TYW8_BAS_RUSBRDM_DshK", "\TotalYugoWarFinal\Images\bdrmpk.jpg", 2^_st, [2, _soldierE], _mCar, [(TzkScripts select 067)]] ];
 _brdmPKE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["BTR 80", 800, _si, 30, "TYW8_VIT_BTR80", "\VITAPC\BTR80\icon.paa", 2^_st, [2, _soldierE], _mCar, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["BTR 80", 800, _si, 30, "TYW8_VIT_BTR80", "\VITAPC\BTR80\icon.paa", 2^_st, [2, _soldierE], _mCar, [(TzkScripts select 067)]] ];
 _btr80 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Ural-375", 300, _si, 30, "TYW8_dlem_ural375_closed", "iural", 2^_st, [1, _soldierE], _mTruck, [localize {TZK_EQUIP_UNIT_TRUCK}]] ];
+unitDefs set [_type, ["Ural-375", 300, _si, 30, "TYW8_dlem_ural375_closed", "iural", 2^_st, [1, _soldierE], _mTruck, [(TzkScripts select 069)]] ];
 _truckE = _type;
 _type = _type + 1;
 
@@ -512,7 +512,7 @@ _type = _type + 1;
 unitDefs set [_type, ["Fuel Ural-375", 500, _si, 30, "TYW8_dlem_ural4320_GAS", "iuralfuel", 2^_st, [1, _soldierE], _mFuel, []] ];
 _type = _type + 1;
 
-unitDefs set [_type, ["Zodiac", 200, _si, 30, "CR08_ZodiacE", "\cwkzodiac\icon.paa", 2^_st, [1, _soldierE], _mBoat, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["Zodiac", 200, _si, 30, "CR08_ZodiacE", "\cwkzodiac\icon.paa", 2^_st, [1, _soldierE], _mBoat, [(TzkScripts select 067)]] ];
 _type = _type + 1;
 
 unitDefs set [_type, ["Patrol Boat (tug)", 1000, _si, 60, "BoatE", "ihrl", 2^_st, [2, _soldierE], _mBoat, ["Extra\ppl\InitTransportBoat.sqs"]] ];
@@ -524,7 +524,7 @@ _type = _type + 1;
 unitDefs set [_type, ["Patrol Ship (tug)", 6000, _si, 90, "TYW8_ADF_FCPB_E", "\TotalYugoWarFinal\Images\PatrolShip.jpg" , 2^_st, [2, _soldierE], _mBoat, ["Extra\ppl\InitTransportBoat.sqs"]] ];
 _type = _type + 1;
 
-unitDefs set [_type, ["Fast Attack Ship", 8000, _si, 90, "TYW8_FABoat_E", "\TotalYugoWarFinal\Images\AttackShip.jpg", 2^_st, [2, _soldierE], _mBoat, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["Fast Attack Ship", 8000, _si, 90, "TYW8_FABoat_E", "\TotalYugoWarFinal\Images\AttackShip.jpg", 2^_st, [2, _soldierE], _mBoat, [(TzkScripts select 067)]] ];
 _type = _type + 1;
 
 
@@ -534,19 +534,19 @@ unitDefs set [_type, ["Support BMP", _costSupportAPC, _si, 60, "TYW8_BMPSupport"
 _supportAPCE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["MTLB", 800, _si, 60, "TYW8_MAF_MTLB", "\apcrus\mtlb_pict", 2^_st, [2, _crewE], _mAPC, [localize {TZK_EQUIP_UNIT_TRUCK}]] ];
+unitDefs set [_type, ["MTLB", 800, _si, 60, "TYW8_MAF_MTLB", "\apcrus\mtlb_pict", 2^_st, [2, _crewE], _mAPC, [(TzkScripts select 069)]] ];
 _MTLB = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["BMP2E", 1200, _si, 60, "TYW8_BMP2", "ibmp", 2^_st, [3, _crewE], _mAPC, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["BMP2E", 1200, _si, 60, "TYW8_BMP2", "ibmp", 2^_st, [3, _crewE], _mAPC, [(TzkScripts select 067)]] ];
 _bmp2 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["BMD3", 1400, _si, 60, "TYW8_VIT_BMD3", "\VITAPC\BMD3T\icon", 2^_st, [3, _crewE], _mAPC, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["BMD3", 1400, _si, 60, "TYW8_VIT_BMD3", "\VITAPC\BMD3T\icon", 2^_st, [3, _crewE], _mAPC, [(TzkScripts select 067)]] ];
 _bmd3 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["BMP3", 1500, _si, 60, "TYW8_VIT_BMP3", "\VITAPC\BMP3\icon.paa", 2^_st, [3, _crewE], _mAPC, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["BMP3", 1500, _si, 60, "TYW8_VIT_BMP3", "\VITAPC\BMP3\icon.paa", 2^_st, [3, _crewE], _mAPC, [(TzkScripts select 067)]] ];
 _bmp3 = _type;
 _type = _type + 1;
 
@@ -601,11 +601,11 @@ unitDefs set [_type, ["Mi-2R (tug)", 4000, _si, 90, "TYW8_Mi2R","\Mi2NO\Mi2icon.
 _mi2 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mi2URP (4AT)", 6000, _si, 90, "TYW8_Mi2URP","\Mi2NO\Mi2icon.paa", 2^_st, [1, _pilotE], _mHeli, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["Mi2URP (4AT)", 6000, _si, 90, "TYW8_Mi2URP","\Mi2NO\Mi2icon.paa", 2^_st, [1, _pilotE], _mHeli, [(TzkScripts select 067)]] ];
 _mi2AT = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mi2URN (32RKT)", 7000, _si, 90, "TYW8_Mi2URN","\Mi2NO\Mi2icon.paa", 2^_st, [1, _pilotE], _mHeli, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["Mi2URN (32RKT)", 7000, _si, 90, "TYW8_Mi2URN","\Mi2NO\Mi2icon.paa", 2^_st, [1, _pilotE], _mHeli, [(TzkScripts select 067)]] ];
 _mi2R = _type;
 _type = _type + 1;
 
@@ -613,11 +613,11 @@ unitDefs set [_type, ["Mi17 (tug)", 4500, _si, 90, "TYW8_Mi17", "imi17", 2^_st, 
 _mi17E = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mi17 (tug/4KAB500)", 8000, _si, 90, "TYW8_Mi17B", "imi17", 2^_st, [1, _pilotE], _mHeli, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["Mi17 (tug/4KAB500)", 8000, _si, 90, "TYW8_Mi17B", "imi17", 2^_st, [1, _pilotE], _mHeli, [(TzkScripts select 067)]] ];
 _mi17LGB = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mi17 (tug/192Roc)", 20000, _si, 90, "TYW8_Mi17R", "imi17", 2^_st, [1, _pilotE], _mHeli, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["Mi17 (tug/192Roc)", 20000, _si, 90, "TYW8_Mi17R", "imi17", 2^_st, [1, _pilotE], _mHeli, [(TzkScripts select 067)]] ];
 _mi17R = _type;
 _type = _type + 1;
 
@@ -637,11 +637,11 @@ unitDefs set [_type, ["Ka-52 (12AT/40R/2AA/30mm)", 20000, _si, 90, "TYW8_Ka52", 
 _Ka52 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mi24 (8AT/64R/30mm)", 18000, _si, 90, "TYW8_mi24", "imi24", 2^_st, [2, _pilotE], _mHeli, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["Mi24 (8AT/64R/30mm)", 18000, _si, 90, "TYW8_mi24", "imi24", 2^_st, [2, _pilotE], _mHeli, [(TzkScripts select 067)]] ];
 _mi24E = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mi35 (4AT/40R/30mm)", 15000, _si, 90, "TYW8_mi24_Ru6", "imi24", 2^_st, [2, _pilotE], _mHeli, [localize {TZK_EQUIP_UNIT_CARGOCAR}]] ];
+unitDefs set [_type, ["Mi35 (4AT/40R/30mm)", 15000, _si, 90, "TYW8_mi24_Ru6", "imi24", 2^_st, [2, _pilotE], _mHeli, [(TzkScripts select 067)]] ];
 _mi35 = _type;
 _type = _type + 1;
 
@@ -681,7 +681,7 @@ unitDefs set [_type, ["Su25 (6AT/64R/2AA/30mm)", 15000, _si, 90, "TYW8_Su25", "\
 _su25 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["An-72 Coaler (Tug)", 4000, _si, 90, "TYW8_RKTCoaler3Col", "\TotalYugoWarFinal\Images\an72.jpg", 2^_st, [1, _pilotE], _mPlane, ["\TZK_Scripts_4_0_4\Common\RemoveAllWeapons.sqs",localize {TZK_EQUIP_UNIT_TRUCK}]] ];
+unitDefs set [_type, ["An-72 Coaler (Tug)", 4000, _si, 90, "TYW8_RKTCoaler3Col", "\TotalYugoWarFinal\Images\an72.jpg", 2^_st, [1, _pilotE], _mPlane, ["\TZK_Scripts_4_0_4\Common\RemoveAllWeapons.sqs",(TzkScripts select 069)]] ];
 _an72 = _type;
 _type = _type + 1;
 
@@ -779,31 +779,31 @@ unitDefs set [_type, ["Sniper Town", 100, _si, 10, "SoldierWSniper_xj400", "isni
 _sniperW1 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["LAW Town", 250, _si, 10, "SoldierWLAW", "islaw", 2^_st, [], "", ["\TZK_Scripts_4_0_4\Common\InitSpawnchuteW.sqs","\TZK_Scripts_4_0_6\Common\Equip\RPGai.sqs"]] ];
+unitDefs set [_type, ["LAW Town", 250, _si, 10, "SoldierWLAW", "islaw", 2^_st, [], "", ["\TZK_Scripts_4_0_4\Common\InitSpawnchuteW.sqs","\TZK_Patch4_4_0_6\s\Common\Equip\RPGai.sqs"]] ];
 _soldierLAWW1 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Carl Gustav Town", 400, _si, 10, "SoldierWAT_xj400", "isat", 2^_st, [], "", ["\TZK_Scripts_4_0_4\Common\InitSpawnchuteW.sqs","\TZK_Scripts_4_0_6\Common\Equip\ATai.sqs"]] ];
+unitDefs set [_type, ["Carl Gustav Town", 400, _si, 10, "SoldierWAT_xj400", "isat", 2^_st, [], "", ["\TZK_Scripts_4_0_4\Common\InitSpawnchuteW.sqs","\TZK_Patch4_4_0_6\s\Common\Equip\ATai.sqs"]] ];
 _soldierATW1 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Stinger Town", 400, _si, 10, "SoldierWAA_xj400", "isaa", 2^_st, [], "", ["\TZK_Scripts_4_0_4\Common\InitSpawnchuteW.sqs","\TZK_Scripts_4_0_6\Common\Equip\AAai.sqs"]] ];
+unitDefs set [_type, ["Stinger Town", 400, _si, 10, "SoldierWAA_xj400", "isaa", 2^_st, [], "", ["\TZK_Scripts_4_0_4\Common\InitSpawnchuteW.sqs","\TZK_Patch4_4_0_6\s\Common\Equip\AAai.sqs"]] ];
 _soldierAAW1 = _type;
 _type = _type + 1;
 
 
-unitDefs set [_type, ["M2A2 AT Town", 2000, _si, 30, "M2A2_AA_Town_xj400", "\M2A2\im2a2", 2^_st, [3, _crewW], _mAPC, ["\TZK_Scripts_4_0_6\Common\Equip\TownM2A2_AT.sqs", "\TZK_Scripts_4_0_4\Common\InitTownGroupVehicles.sqs"]] ];
+unitDefs set [_type, ["M2A2 AT Town", 2000, _si, 30, "M2A2_AA_Town_xj400", "\M2A2\im2a2", 2^_st, [3, _crewW], _mAPC, ["\TZK_Patch4_4_0_6\s\Common\Equip\TownM2A2_AT.sqs", "\TZK_Scripts_4_0_4\Common\InitTownGroupVehicles.sqs"]] ];
 _m2a2townat = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["M2A2 AA Town", 2000, _si, 30, "M2A2_AA_Town_xj400", "\M2A2\im2a2", 2^_st, [3, _crewW], _mAA, ["\TZK_Scripts_4_0_6\Common\Equip\TownM2A2_AA.sqs", "\TZK_Scripts_4_0_4\Common\InitTownGroupVehicles.sqs"]] ];
+unitDefs set [_type, ["M2A2 AA Town", 2000, _si, 30, "M2A2_AA_Town_xj400", "\M2A2\im2a2", 2^_st, [3, _crewW], _mAA, ["\TZK_Patch4_4_0_6\s\Common\Equip\TownM2A2_AA.sqs", "\TZK_Scripts_4_0_4\Common\InitTownGroupVehicles.sqs"]] ];
 _m2a2townaad = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["M1A1 Town", 5000, _si, 60, "M1A1_xj400", "iabrams", 2^_st, [3, _crewW], _mTank, [localize {TZK_EQUIP_UNIT_TOWNVEH}, "\TZK_Scripts_4_0_4\Common\InitTownGroupVehicles.sqs"]] ];
+unitDefs set [_type, ["M1A1 Town", 5000, _si, 60, "M1A1_xj400", "iabrams", 2^_st, [3, _crewW], _mTank, [(TzkScripts select 070), "\TZK_Scripts_4_0_4\Common\InitTownGroupVehicles.sqs"]] ];
 _m1a1townW = _type;
 _type = _type + 1;
-unitDefs set [_type, ["AH64 Town", 6000, _si, 90, "AH64_AT_xj400", "\APAC\iah64", 2^_st, [2, _pilotW], _mHeli, [localize {TZK_EQUIP_UNIT_TOWNVEH}, "\TZK_Scripts_4_0_4\Common\InitTownGroupVehicles.sqs"]] ];
+unitDefs set [_type, ["AH64 Town", 6000, _si, 90, "AH64_AT_xj400", "\APAC\iah64", 2^_st, [2, _pilotW], _mHeli, [(TzkScripts select 070), "\TZK_Scripts_4_0_4\Common\InitTownGroupVehicles.sqs"]] ];
 _ah64townW2 = _type;
 _type = _type + 1;
 
@@ -829,11 +829,11 @@ unitDefs set [_type, ["Sniper Town", 150, _si, 10, "SoldierESniper_xj400", "isni
 _sniperE1 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["RPG Town", 250, _si, 10, "SoldierELAW_xj400", "islaw", 2^_st, [], "", ["\TZK_Scripts_4_0_4\Common\InitSpawnchuteE.sqs","\TZK_Scripts_4_0_6\Common\Equip\RPGai.sqs"]] ];
+unitDefs set [_type, ["RPG Town", 250, _si, 10, "SoldierELAW_xj400", "islaw", 2^_st, [], "", ["\TZK_Scripts_4_0_4\Common\InitSpawnchuteE.sqs","\TZK_Patch4_4_0_6\s\Common\Equip\RPGai.sqs"]] ];
 _soldierLAWE1 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["AT4 Town", 400, _si, 10, "SoldierEAT_xj400", "isat", 2^_st, [], "", ["\TZK_Scripts_4_0_4\Common\InitSpawnchuteE.sqs","\TZK_Scripts_4_0_6\Common\Equip\ATai.sqs"]] ];
+unitDefs set [_type, ["AT4 Town", 400, _si, 10, "SoldierEAT_xj400", "isat", 2^_st, [], "", ["\TZK_Scripts_4_0_4\Common\InitSpawnchuteE.sqs","\TZK_Patch4_4_0_6\s\Common\Equip\ATai.sqs"]] ];
 _soldierATE1 = _type;
 _type = _type + 1;
 
@@ -842,18 +842,18 @@ _soldierAAE1 = _type;
 _type = _type + 1;
 
 
-unitDefs set [_type, ["BMP2 AT Town", 2000, _si, 30, "BMP2_AA_Town_xj400", "ibmp", 2^_st, [3, _crewE], _mAPC, ["\TZK_Scripts_4_0_6\Common\Equip\TownBMP2_AT.sqs", "\TZK_Scripts_4_0_4\Common\InitTownGroupVehicles.sqs"]] ];
+unitDefs set [_type, ["BMP2 AT Town", 2000, _si, 30, "BMP2_AA_Town_xj400", "ibmp", 2^_st, [3, _crewE], _mAPC, ["\TZK_Patch4_4_0_6\s\Common\Equip\TownBMP2_AT.sqs", "\TZK_Scripts_4_0_4\Common\InitTownGroupVehicles.sqs"]] ];
 _bmp2townat = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["BMP2 AA Town", 2000, _si, 30, "BMP2_AA_Town_xj400", "ibmp", 2^_st, [3, _crewE], _mAA, ["\TZK_Scripts_4_0_6\Common\Equip\TownBMP2_AA.sqs", "\TZK_Scripts_4_0_4\Common\InitTownGroupVehicles.sqs"]] ];
+unitDefs set [_type, ["BMP2 AA Town", 2000, _si, 30, "BMP2_AA_Town_xj400", "ibmp", 2^_st, [3, _crewE], _mAA, ["\TZK_Patch4_4_0_6\s\Common\Equip\TownBMP2_AA.sqs", "\TZK_Scripts_4_0_4\Common\InitTownGroupVehicles.sqs"]] ];
 _bmp2townaad = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["T80 Town", 5000, _si, 60, "T80_TZK_xj400", "it80", 2^_st, [3, _crewE], _mTank, [localize {TZK_EQUIP_UNIT_TOWNVEH}, "\TZK_Scripts_4_0_4\Common\InitTownGroupVehicles.sqs"]] ];
+unitDefs set [_type, ["T80 Town", 5000, _si, 60, "T80_TZK_xj400", "it80", 2^_st, [3, _crewE], _mTank, [(TzkScripts select 070), "\TZK_Scripts_4_0_4\Common\InitTownGroupVehicles.sqs"]] ];
 _t80townE = _type;
 _type = _type + 1;
-unitDefs set [_type, ["Mi24 Town", 8000, _si, 90, "Mi24_RHS_AT_xj400", "imi24", 2^_st, [2, _pilotE], _mHeli, [localize {TZK_EQUIP_UNIT_TOWNVEH}, "\TZK_Scripts_4_0_4\Common\InitTownGroupVehicles.sqs"]] ];
+unitDefs set [_type, ["Mi24 Town", 8000, _si, 90, "Mi24_RHS_AT_xj400", "imi24", 2^_st, [2, _pilotE], _mHeli, [(TzkScripts select 070), "\TZK_Scripts_4_0_4\Common\InitTownGroupVehicles.sqs"]] ];
 _mi24townE2 = _type;
 _type = _type + 1;
 

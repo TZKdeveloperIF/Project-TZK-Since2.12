@@ -72,7 +72,7 @@ _moveParamCache exec "Util\Move2DestSoldier.sqs"
 # ReachArea
 	? call _quitCond: goto "Quit"
 
-	? _forServer: [_unit, [true]] exec localize {TZK_AI_STOP}
+	? _forServer: [_unit, [true]] exec (TzkScripts select 006)
 	? not _forServer: doStop _unit
 
 	; idx check

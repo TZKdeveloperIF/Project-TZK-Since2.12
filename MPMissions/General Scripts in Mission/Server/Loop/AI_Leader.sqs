@@ -26,7 +26,7 @@ _lambda = "false", _lambdaInited = false
 ; local variables pool
 _emptyArr = []
 _grpBuyOrders = []
-	; this index value should keep same as defined in localize {TZK_AI_BUY_UNIT}
+	; this index value should keep same as defined in (TzkScripts select 003)
 	_idxOfOrderRef = 3
 
 ~ 5
@@ -63,7 +63,7 @@ _grpBuyOrders = []
 
 	_money = (groupMoneyMatrix select _si) select _gi
 	_KeepMax = aisKeepDefs select (_setting select aisKeepMax)
-	? _money > _KeepMax : _tax = _money - _KeepMax; [_si, _gi, [_si, _gi] call loadFile "Util\GetSuperiorIdx.sqf", _tax] exec localize {TZK_MONEY_SERVER_TRANSFER}; goto "Sleep"
+	? _money > _KeepMax : _tax = _money - _KeepMax; [_si, _gi, [_si, _gi] call loadFile "Util\GetSuperiorIdx.sqf", _tax] exec (TzkScripts select 168); goto "Sleep"
 
 	_hasAutoBuyTypes = false; {if (_x != -1) then {_hasAutoBuyTypes = true}} forEach _autoBuyTypeEntry
 	? _hasAutoBuyTypes: goto "CheckBuyUnit"
@@ -72,14 +72,14 @@ _grpBuyOrders = []
 	~5
 	goto "Update"
 
-#WaitUntilAlive
-	@(alive leader _group)
+# WaitUntilAlive
+	@ alive leader _group
 	_unit = leader _group
 	_unit call preprocessFile "Server\SQF\RtsOrderClear.sqf"
 
-	[_unit, _si, 200] exec localize {TZK_EVENT_ADD_KILLED_INF}
+	[_unit, _si, 200] exec (TzkScripts select 039)
 	[_unit, _si, _gi] exec "Server\EventAdd_Infantry.sqs"
-	[_unit, _si, kaUnit, -1] exec localize {TZK_SERVER_KNOWSABOUT_START}
+	[_unit, _si, kaUnit, -1] exec (TzkScripts select 218)
 	
 	_money = (groupMoneyMatrix select _si) select _gi
 
@@ -94,7 +94,7 @@ _grpBuyOrders = []
 
 #Respawn
 	_unit call busyClear
-	? costRespawn > 0 : [_si, _gi, costRespawn] exec localize {TZK_MONEY_SERVER_SPEND}
+	? costRespawn > 0 : [_si, _gi, costRespawn] exec (TzkScripts select 167)
 	_objectRespawn = objNull
 	
 	; read data from AI Setting
@@ -133,11 +133,11 @@ _grpBuyOrders = []
 	_unit setVelocity [0,0,0]
 	_unit setPos _posRespawn
 
-	[_unit, _si] exec localize {TZK_AI_LEADER_EQUIP}
+	[_unit, _si] exec (TzkScripts select 005)
 
 	unassignVehicle _unit
 	
-	[_unit] exec localize {TZK_REARMDATA_ADD}
+	[_unit] exec (TzkScripts select 072)
 	[_unit, _si, _gi] exec "Server\AI_Start.sqs"; 
 
 	goto "Update"

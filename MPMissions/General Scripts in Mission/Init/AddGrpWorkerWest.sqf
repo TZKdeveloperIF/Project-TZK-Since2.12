@@ -1,1 +1,1 @@
-[_this, si0] call preprocessFile localize {TZK_GROUP_WORKER};
+[_this, si0] call preprocessFile "Init\AddGroupWorkerVar.sqf";

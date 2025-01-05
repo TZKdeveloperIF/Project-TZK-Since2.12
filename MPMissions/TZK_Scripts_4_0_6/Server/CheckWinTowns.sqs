@@ -13,7 +13,7 @@ _interval = 15
 	? _c != _towns : exit
 	? _seconds <= 0 : goto "TownWin"
 	
-	? (_seconds % 60) == 0 : [_seconds / 60] exec localize {TZK_INFO_SERVER_TIME_UNTIL_TOWN_WIN}
+	? (_seconds % 60) == 0 : [_seconds / 60] exec (TzkScripts select 152)
 
 	~_interval
 	_seconds = _seconds - _interval

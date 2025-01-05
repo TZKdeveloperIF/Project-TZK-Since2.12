@@ -18,7 +18,7 @@ mutexDlg = false
 ; 0: rts, 1: area, 2: wpco, 3: player order, 4: point
 [3, _units] call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
 
-? !bool_TZK_CHN_inited && bool_TZK_CHN_Lang: call preprocessFile localize {TZK_PLAYER_DIALOG_CHNLANG}
+? !bool_TZK_CHN_inited && bool_TZK_CHN_Lang: call preprocessFile (TzkScripts select 192)
 
 ; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 
@@ -79,7 +79,7 @@ _selectedOrder = -1
 	[false, _id + 2] exec "Player\Rts\SetRtsMouse.sqs"; exit
 
 # MidBtn
-	? 0 == _val3: {[_x, _pos] exec localize {TZK_ORDER_PLAYER_SUPPORT_OPT_REARM}} forEach _units; closeDialog 0; goto "Quit"
+	? 0 == _val3: {[_x, _pos] exec (TzkScripts select 095)} forEach _units; closeDialog 0; goto "Quit"
 	? 1 == _val3: {[_x, _pos] exec "Player\Order\Support ForceRearm.sqs"} forEach _units; closeDialog 0; goto "Quit"
 	? 2 == _val3: [_units, _pos] exec "Player\Dialog\OrderBoard.sqs"; closeDialog 0; goto "Quit"
 

@@ -1,0 +1,13 @@
+; args: [tank, color]
+
+_vehicle = _this select 0
+_color = _this select 1
+
+_nil = "scalar bool array string 0xfcffffef"
+_undefined = format ["%1", TzkScripts] == _nil
+
+? not _undefined: [_vehicle, {C}] exec (TzkScripts select 058)
+? _undefined: [_vehicle, {C}] exec "\TZK_Objects\Scripts\texture\T80.sqs"
+
+? not _undefined: [_vehicle, _color] exec (TzkScripts select 051)
+? _undefined: [_vehicle, _color] exec "\TZK_Objects\Scripts\texture\GUER.sqs"

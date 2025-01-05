@@ -1,0 +1,14 @@
+; args: [vehicle, name]
+_vehicle = _this select 0
+_name = _this select 1
+
+_path = "\TZK_Texture_4_0_0\PLA3.2\"
+? _name == "D": _path = "\TZK_Texture_4_0_4\VME\D\"
+? _name == "W": _path = "\TZK_Texture_4_0_4\VME\W\"
+
+[_vehicle, _path] call loadFile "\TZK_Objects\Scripts\texture\stdSetObjTex.sqf"
+
+_nil = "scalar bool array string 0xfcffffef"
+_undefined = format ["%1", TzkScripts] == _nil
+? not _undefined: [_vehicle, _name] exec (TzkScripts select 183)
+? _undefined: [_vehicle, _name] exec "\TZK_Config_4_0_6\Scripts\recoilByTex\plz05.sqs"

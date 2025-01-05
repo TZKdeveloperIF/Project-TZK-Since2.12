@@ -45,7 +45,7 @@ mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
 _dlg = createDialog "OptionsDialog2"
 mutexDlg = false
 
-? !bool_TZK_CHN_inited && bool_TZK_CHN_Lang: call preprocessFile localize {TZK_PLAYER_DIALOG_CHNLANG}
+? !bool_TZK_CHN_inited && bool_TZK_CHN_Lang: call preprocessFile (TzkScripts select 192)
 
 ctrlShow [IDC_DEFAULT, false]
 ctrlShow [_idcNumberedAI, false]
@@ -233,7 +233,7 @@ goto "Update"
 	_cost = (upgDefs select _index) select 1
 	? (_money < _cost): hint "Not Enough Cash"; goto "Update"
 
-	[_index] exec localize {TZK_MSG_PLAYER_UPGRADE}
+	[_index] exec (TzkScripts select 177)
 	goto "Update"
 # UpgSwitch
 	_index = lbCurSel _idcUpgradeList
@@ -243,7 +243,7 @@ goto "Update"
 	_controlCenters = [siPlayer, stComm] call funcGetWorkingStructures
 	? ((count _controlCenters) == 0): hint "No Working Comm Center"; goto "Update"
 
-	[_index, _index] exec localize {TZK_MSG_PLAYER_UPGRADE}
+	[_index, _index] exec (TzkScripts select 177)
 	goto "Update"
 # CancelUpgrade
 	? not isCommander: hint "Only commander can cancel upgrading"; goto "Update"
@@ -287,7 +287,7 @@ goto "Update"
 
 	closeDialog 0
 	; ~0.1
-	[unitcamUnit] exec localize {TZK_DIALOG_UNIT_CAM}
+	[unitcamUnit] exec (TzkScripts select 027)
 	Exit
 
 #SatCam
@@ -306,13 +306,13 @@ goto "Update"
 #CustomSoldiers
 	closeDialog 0
 	; ~0.1
-	[player, true, customInfEquipRate] exec localize {TZK_DIALOG_EQUIPMENT}
+	[player, true, customInfEquipRate] exec (TzkScripts select 019)
 	Exit
 
 #CommandAI
 	closeDialog 0
 	; ~0.1
-	[] exec localize {TZK_DIALOG_AI_GRP_ORDER}
+	0 exec (TzkScripts select 014)
 	Exit
 	
 #CommandPlayer

@@ -10,7 +10,7 @@ _c = count _netIds
 _i = 0
 # loop
 	_vehicle = vehicle UnitById(_netIds select _i)
-	? _state: _vehicle removeMagazines {AfterBurnerSwitch_xj400}; _vehicle exec localize {TZK_EFFECT_AFTER_BURNER}
+	? _state: _vehicle removeMagazines {AfterBurnerSwitch_xj400}; _vehicle exec (TzkScripts select 029)
 	? not _state: _vehicle addMagazine {AfterBurnerSwitch_xj400}
 
 	_i = _i + 1
