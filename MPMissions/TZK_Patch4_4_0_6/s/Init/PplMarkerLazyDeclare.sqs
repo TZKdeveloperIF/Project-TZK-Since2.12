@@ -1,34 +1,10 @@
-; args: none
-; Markers must be stated in orders. Later created marker will cover those created earlier.
-hiddenMarkerPos = [-1000, -1000]
+; args: si
+_si = _this
 
-; Markers defined here, but initialized in InitMarkers. Definations like type, color, etc may lack or repeat thus please be cautious. Of course its possbile to combine 2 scripts but remain separated can remind editors of editing history.
 _colorPurple = "ColorDarkPurple_xj400"; _colorOrange = "ColorOrange_xj400"
-; ? bool_TZK_Vanilla_Mode: _colorPurple = "ColorBlack", _colorOrange = "ColorRedAlpha"
 
-
-maxVehicleMarkers = 150
-maxStructureMarkers = 50; mutexMarkerStructure = false
+; TZK_4.0.6 don't support 1.99 any longer. However some compatible designs are still remained as a hint message
 ? bool_TZK_199_Mode: goto "SkipCreation"
-?!bool_TZK_199_Mode && !(bool_TZK_MF_Mode || bool_TZK_Yugo_Mode): goto "Skip199MarkerRemove"
-
-?!bool_TZK_199_Mode && (bool_TZK_MF_Mode || bool_TZK_Yugo_Mode): [] exec "Extra\DynamicMarkerRemove.sqs", Marker_TZK_199Rem = false
-@ Marker_TZK_199Rem
-Marker_TZK_199Rem = false
-
-# Skip199MarkerRemove
-_marker = "TZK_Info"; createMarker [_marker, [2560,1024] ]; _marker setMarkerSize [0,0]; _marker setMarkerColor _colorPurple;  _marker setMarkerType "Warning"; 
-_marker setMarkerText "Mod Version: @TZK_4.0.6. Check ""Notes"" for more info.";
-? bool_TZK_SEMod_Mode: _marker setMarkerText "Mod Version: @TZK_4.0.3SE;@TZK_4.0.4. Check ""Notes"" for more info."
-? bool_TZK_MF_Mode && !bool_TZK_199_Mode: _marker setMarkerText "Mod Version: mfcti1.16.pbo, rmfcti1.16.pbo (by ScoRPioN), TZK critical PBOs."
-? bool_TZK_Yugo_Mode && !bool_TZK_199_Mode: _marker setMarkerText "Mod Version: @totalyugowar, TZK_Objects.pbo in @TZK_4.0.3 and TZK_Config_4_0_4.pbo in @TZK_4.0.4. Check ""Notes"" for more info."
-
-_i = 0; _count = count towns;
-#FlagMarker
-	_marker = format["TownHibernate%1", _i]; createMarker [_marker, hiddenMarkerPos]
-	_marker = format["Town_%1", _i]; createMarker [_marker, hiddenMarkerPos]
-	_i = _i + 1
-	? _i < _count : goto "FlagMarker"
 	
 _i = 0
 #TargetMarker
@@ -126,6 +102,24 @@ _i = 0; _count = count callsigns
 	_marker = format["%1%2", callsigns select _i, si1]; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerText format["%1", callsigns select _i]; _marker setMarkerType "Dot"
 	_i = _i + 1
 	? (_i < _count):goto "LeaderMarker"
+
+; only 1 base group by now
+_i = 0; _j = 0
+# BaseGrpMarker
+	_marker = format ["Base_0_%1_%2", _i, _j]; createMarker [_marker, hiddenMarkerPos]
+	_marker setMarkerType "Dot";
+	_marker setMarkerSize [0.70, 0.70];
+	_marker setMarkerPos hiddenMarkerPos;
+	_marker setMarkerColor "ColorOrange_xj400";
+
+	_marker = format ["Base_1_%1_%2", _i, _j]; createMarker [_marker, hiddenMarkerPos]
+	_marker setMarkerType "Dot";
+	_marker setMarkerSize [0.70,0.70];
+	_marker setMarkerPos hiddenMarkerPos;
+	_marker setMarkerColor "ColorOrange_xj400";
+
+	_j = _j + 1;
+	? _j < 12: goto "BaseGrpMarker"
 	
 _marker = "Respawn_west"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerColor "ColorBlue";  _marker setMarkerType "Start";
 _marker = "Respawn_east"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerColor "ColorRed";  _marker setMarkerType "Start";
@@ -135,15 +129,12 @@ _marker = "Respawn_vehicle_west"; createMarker [_marker, hiddenMarkerPos]; _mark
 _marker = "Respawn_vehicle_east"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerColor "ColorRed";  _marker setMarkerType "Start";
 _marker = "Respawn_vehicle_guerrila"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerColor "ColorBlack";  _marker setMarkerType "Start";
 _marker = "Respawn_vehicle_civilian"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerColor "ColorWhite";  _marker setMarkerType "Start";
-	
+
+; lazy init
 # SkipCreation
-_si = sides find (side player)
-? _si == -1 : _si = siCiv
-_si exec "Player\Marker\Initialization.sqs"
+	_si exec (TzkScripts select 318)
 
-?!bool_TZK_199_Mode && (bool_TZK_MF_Mode || bool_TZK_Yugo_Mode): Marker_TZK_199Rem = true
-
-? name player == "IF": player sideChat "Marker created."
-call preprocessFile "impl\Dynamic_Client_Marker.sqf"
+; impl
+call preprocessFile "impl\markerLazyCreate.sqf"
 
 ; EOF

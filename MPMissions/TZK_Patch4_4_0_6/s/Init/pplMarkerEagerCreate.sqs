@@ -1,0 +1,27 @@
+; args: si
+; Markers must be stated in orders. Later created marker will cover those created earlier.
+
+; eager-generated ones will be created before entering the game
+
+hiddenMarkerPos = [-1000, -1000]
+
+maxVehicleMarkers = 200
+maxStructureMarkers = 50
+
+; TZK_4.0.6 don't support 1.99 any longer. However some compatible designs are still remained as a hint message
+? bool_TZK_199_Mode: exit
+
+; create town markers
+_i = 0; _count = count towns;
+# FlagMarker
+	_marker = format ["TownHibernate%1", _i]; createMarker [_marker, hiddenMarkerPos]
+	; take care: setMarkerShape is not 1.99 command
+	_marker setMarkerShape "ELLIPSE"
+	_marker setMarkerColor "ColorGreenAlpha"; _marker setMarkerSize [150,150]
+
+	_marker = format ["Town_%1", _i]; createMarker [_marker, hiddenMarkerPos]
+	_marker setMarkerType "Flag1"; _marker setMarkerColor "ColorBlack";
+	_marker setMarkerSize [1.25,1.25]; _marker setMarkerPos getPos (towns select _i select 0)
+
+	_i = _i + 1
+	? _i < _count : goto "FlagMarker"
