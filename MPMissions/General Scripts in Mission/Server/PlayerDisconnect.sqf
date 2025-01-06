@@ -28,7 +28,7 @@ _money = groupMoneyMatrix select _si select _gi;
 // Initialize AI leader
 if (alive _leader && time < 5*60) then {_leader setPos getPos (mhq select _si)};
 [_leader, _si] exec (TzkScripts select 005);
-[_leader, _si, _gi] exec "Server\Start\AI_Leader.sqs";
+[_leader, _si, _gi] exec (TzkScripts select 300);
 // Eject commander units in group. Leader shall be alive when ordering its units
 _i = 0; _c = count units _group; _units = units _group;
 while {_i < _c} do {

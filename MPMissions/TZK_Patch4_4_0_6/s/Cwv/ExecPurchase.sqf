@@ -1,6 +1,6 @@
 {_vehicle removeWeapon _x} forEach (weapons _vehicle);
 
-// _shoppingCartMag: mag index, _shoppingCartCnt: mag number (count by unit)
+comment {_shoppingCartMag: mag index, _shoppingCartCnt: mag number (count by unit)};
 private [{_k}, {_c}, {_infoIdx}, {_mag}, {_wep}];
 _k = 0; _c = count _shoppingCartMag; while {_k < _c} do {
 	_infoIdx = _shoppingCartMag select _k;
@@ -18,7 +18,7 @@ _k = 0; _c = count _shoppingCartMag; while {_k < _c} do {
 	_k = _k + 1;
 };
 
-// General weapons (cannon for gunship, spoof for helicopter and after burner for plane)
+comment {General weapons (cannon for gunship, spoof for helicopter and after burner for plane)};
 _m = []; _w = [];
 _vehicle call loadFile "\TZK_Patch4_4_0_6\s\Cwv\AppendGeneralEquips.sqf";
 {_vehicle addMagazine _x} forEach _m; {_vehicle addWeapon _x} forEach _w;

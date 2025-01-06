@@ -51,7 +51,7 @@ _posFlag = getPos _flag
 	_type = -1
 	while "_type == -1" do { _type = (infTown select _si) call funcGetRandomUnitType }
 	_pos = [_posFlag, 150, 150] call funcGetRandomPos
-	[_type, 0, 0, 0, _pos, random 360, _si, -1, _group, 0, 0] exec "\TZK_Scripts_4_0_4\Common\AddUnit.sqs"
+	[_type, 0, 0, 0, _pos, random 360, _si, -1, _group, 0, 0] exec (TzkScripts select 309)
 	goto "Patrol"
   
 #AddTank
@@ -59,7 +59,7 @@ _posFlag = getPos _flag
 	_type = -1
 	while "_type == -1" do { _type = (_armorTown select _si) call funcGetRandomUnitType }
 	_pos = [_posFlag, 12, 13] call funcGetRandomPos
-	[_type, 1, 1, 0, _pos, random 360, _si, -1, _group, 0, 0] exec "\TZK_Scripts_4_0_4\Common\AddUnit.sqs"
+	[_type, 1, 1, 0, _pos, random 360, _si, -1, _group, 0, 0] exec (TzkScripts select 309)
 	goto "Patrol"
 
 	#Add_Nona_Crew

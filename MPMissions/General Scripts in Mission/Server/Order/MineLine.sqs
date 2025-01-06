@@ -31,7 +31,7 @@ _patrol = false
 
 _magazines = _unit call funcGetNotEmptyMags;
 _mines = "_x == magMine" count _magazines
-? _hasMines && _mines == 0 : [_unit, _si, _gi, true] exec "Server\AI_CheckSupport.sqs"; _sleep = 10; goto "Sleep"
+? _hasMines && _mines == 0 : [_unit, _si, _gi, true] exec (TzkScripts select 295); _sleep = 10; goto "Sleep"
 
 #Update
 
@@ -44,7 +44,7 @@ _mines = "_x == magMine" count _magazines
 	
 	? _unit != driver _vehicle : goto "Sleep"
 	
-	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 10; goto "Sleep"
+	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec (TzkScripts select 295); _sleep = 10; goto "Sleep"
 	
   ? !_hasMines : goto "Patrol"
   
@@ -72,7 +72,7 @@ _mines = "_x == magMine" count _magazines
 	_mines = "_x == magMine" count _magazines
 	
 	_posMove = []
-	? _mines == 0 : [_unit, _si, _gi, true] exec "Server\AI_CheckSupport.sqs"; _sleep = 10; goto "Sleep"
+	? _mines == 0 : [_unit, _si, _gi, true] exec (TzkScripts select 295); _sleep = 10; goto "Sleep"
 	_sleep = 2
 	goto "Sleep"
 	

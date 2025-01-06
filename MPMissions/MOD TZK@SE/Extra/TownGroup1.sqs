@@ -85,8 +85,8 @@ _group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "N
   _pos = [_posFlag, 149, 149] call funcGetRandomPos
   _pos1 = [_posFlag, 50, 50] call funcGetRandomPos 
   ? isNull _group : format["ERROR: _group is NULL at AddInf for %1 town group in '%1'", sideNames select _si, (towns select _ti) select tdName] call fDebugLog; exit
-  ? count (units _group) == 0: [_type, 0, 0, 0, _pos1, random 360, _si, giTown, _group, 0, 0] exec "\TZK_Scripts_4_0_4\Common\AddUnit.sqs"
-  ? count (units _group) > 0 : [_type, 0, 0, 0, _pos, random 360, _si, giTown, _group, 0, 0] exec "\TZK_Scripts_4_0_4\Common\AddUnit.sqs"
+  ? count (units _group) == 0: [_type, 0, 0, 0, _pos1, random 360, _si, giTown, _group, 0, 0] exec (TzkScripts select 309)
+  ? count (units _group) > 0 : [_type, 0, 0, 0, _pos, random 360, _si, giTown, _group, 0, 0] exec (TzkScripts select 309)
   ;player globalchat format["AddInf: %1 (%2)", (towns select _ti) select tdName, count (units _group)]
   goto "ReinforceReady"
 

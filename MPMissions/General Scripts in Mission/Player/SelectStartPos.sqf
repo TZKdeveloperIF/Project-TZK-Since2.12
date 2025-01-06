@@ -8,5 +8,5 @@ _radius = _this select 5;
 if ([_pos, _startPos] call funcDistH > _radius) then {
 	hint "Please select in range.";
 } else {
-	_pos exec "Player\Dialog\StartPos.sqs";
+	_pos exec (TzkScripts select 245);
 };

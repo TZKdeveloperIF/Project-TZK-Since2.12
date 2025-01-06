@@ -40,14 +40,14 @@ _timeNextStep = time
 	
 	? _unit != driver _vehicle : _sleep = 30; goto "Sleep"
 	
-	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 30; goto "Sleep"
+	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec (TzkScripts select 295); _sleep = 30; goto "Sleep"
 
   _bCheckDropBomb = !_bCheckDropBomb 
 	_magazines = []
 	? _bCheckDropBomb && _unit == _vehicle: if (magSatchel in (magazines _unit)) then {[_unit, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\AI_CheckDropBomb.sqs"; _sleep = 20; goto "Sleep"}
 	
   _bCheckMines = !_bCheckMines
-	? _isMiner && _unit == _vehicle && _bCheckMines : [_unit, _si, _gi] exec "Server\AI_CheckDisableMines.sqs"; _sleep = 5; goto "Sleep"
+	? _isMiner && _unit == _vehicle && _bCheckMines : [_unit, _si, _gi] exec (TzkScripts select 304); _sleep = 5; goto "Sleep"
 	
   #CheckStep
   ? time < _timeNextStep : goto "NoStep"

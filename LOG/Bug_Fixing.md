@@ -48,9 +48,6 @@ Bug due to definition in CONFIG needs to be completely solved by mod updating an
 # 4.0.5.02
 + Missing load parameter from _this in InitPlayer_Msg.sqs, which leads to "no enemy spot" message error.
 
-# 4.0.4.08
-+ Missing adjust script path in "Server\AI_UpdateCommander.sqs". This will cause error only when fighting with AICO.
-
 # 4.0.4.07
 + Unimportant income display bug due to lacking of definition of local variables in Player\Dialog\Options.sqs
 

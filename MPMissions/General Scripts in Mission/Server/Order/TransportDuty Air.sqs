@@ -58,7 +58,7 @@ _timeRepeat = time + 60
   ? time > _timeRepeat: [_unit, _posMove] call funcMoveAI; _timeRepeat = time + 60
   ? ([_posMove, getPos _transp] call funcDistH) > 200: goto "MovePickup_Check"
 
-[_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"
+[_unit, _si, _gi] exec (TzkScripts select 295)
 #WaitSupportDone
   ~5
   ? !(alive _unit): exit

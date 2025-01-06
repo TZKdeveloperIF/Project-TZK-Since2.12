@@ -44,7 +44,7 @@ _posMove = [_posEject, 50, 150] call funcGetRandomPos
 	_vehicle = vehicle _unit
 	? _unit != driver _vehicle: _sleep = 30; goto "Sleep"
 	
-	? time > _timeCheckSupport: _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 20; goto "Sleep"
+	? time > _timeCheckSupport: _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec (TzkScripts select 295); _sleep = 20; goto "Sleep"
 	
   _bCheckDropBomb = !_bCheckDropBomb 
 	_magazines = []

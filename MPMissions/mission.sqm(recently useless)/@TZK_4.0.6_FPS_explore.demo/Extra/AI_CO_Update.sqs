@@ -92,7 +92,7 @@ _giPatrol = _gi; _bTakeTown=false; _nDestroy=0
 	? _unit call busyCheck : goto "Update"
 
 	_mhq = mhq select _si
-	? time > _timeCheckPlayerIncome : [_si] exec "\TZK_Patch4_4_0_6\s\Server\AICO\CheckPlayerIncome.sqs"; _timeCheckPlayerIncome = time + ([5*60, 60] select dev)
+	? time > _timeCheckPlayerIncome : _si exec (TzkScripts select 297); _timeCheckPlayerIncome = time + ([5*60, 60] select dev)
 	
 	? (alive _mhq) && (call format["pvWorkers%1 < 10", _si]) && _money >= costWorker : [_si] exec (TzkScripts select 137); _sleep = 0.5; goto "Update"
 
