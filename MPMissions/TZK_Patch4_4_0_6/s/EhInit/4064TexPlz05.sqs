@@ -9,6 +9,6 @@ _path = "\TZK_Texture_4_0_0\PLA3.2\"
 [_vehicle, _path] call loadFile "\TZK_Objects\Scripts\texture\stdSetObjTex.sqf"
 
 _nil = "scalar bool array string 0xfcffffef"
-_undefined = format ["%1", TzkScripts] == _nil
+_undefined = format ["%1", count TzkScripts] == _nil
 ? not _undefined: [_vehicle, _name] exec (TzkScripts select 183)
 ? _undefined: [_vehicle, _name] exec "\TZK_Config_4_0_6\Scripts\recoilByTex\plz05.sqs"

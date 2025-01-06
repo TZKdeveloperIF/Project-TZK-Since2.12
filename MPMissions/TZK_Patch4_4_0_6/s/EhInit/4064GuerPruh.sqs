@@ -1,6 +1,6 @@
 ; redirect check
 _nil = "scalar bool array string 0xfcffffef"
-_undefined = format ["%1", TzkScripts] == _nil
+_undefined = format ["%1", count TzkScripts] == _nil
 ? not _undefined: _this exec (TzkScripts select 051), exit
 
 ; args: [vehicle, texture style]
