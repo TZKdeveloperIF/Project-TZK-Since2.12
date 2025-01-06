@@ -3,7 +3,7 @@ _vehicle = _this
 
 ; dynamic texture. Use fix path if global variable undefined.
 _nil = "scalar bool array string 0xfcffffef"
-_undefined = format ["%1", TzkScripts] == _nil
+_undefined = format ["%1", count TzkScripts] == _nil
 ? not _undefined: [_vehicle, {C}] exec (TzkScripts select 055)
 ? _undefined: [_vehicle, {C}] exec "\TZK_Patch4_4_0_6\s\EhInit\4064TexM109.sqs"
 
