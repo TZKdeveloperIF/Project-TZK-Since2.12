@@ -1,4 +1,4 @@
-// Initialize variables for those CHN players
+comment {Initialize variables for those CHN players};
 
 bool_TZK_CHN_inited = true;
 

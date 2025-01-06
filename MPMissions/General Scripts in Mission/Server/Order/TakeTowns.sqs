@@ -25,7 +25,7 @@ _sleep = 30
 
 	? _unit != driver vehicle _unit : _sleep = 30; goto "Sleep"
 	
-	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 10; goto "Sleep"
+	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec (TzkScripts select 295); _sleep = 10; goto "Sleep"
 	
 	_res = [getPos _unit, _si, []] call funcGetClosestEnemyTown
 	_ti = _res select 0

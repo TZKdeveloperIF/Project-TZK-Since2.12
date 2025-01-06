@@ -1,0 +1,28 @@
+; args: [unit, si, gi]
+
+? !isServer : exit
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+
+_group = (groupMatrix select _si) select _gi
+
+? _group == (groupCommander select _si) : _this exec (TzkScripts select 296); exit
+
+_idOrder = -1; _indexCombatMode = 0; _indexBehaviour = 0
+_unit call busyClear
+
+
+? !(alive _unit) : goto "SkipInitialize"
+
+[_unit, _si, 200] exec (TzkScripts select 039)
+[_unit, _si, _gi] exec "Server\EventAdd_Infantry.sqs"
+[_unit, _si, kaUnit, -1] exec (TzkScripts select 218)
+[_unit] exec (TzkScripts select 072)
+
+#SkipInitialize
+; This line is to initial leader himself and just disconnect player group units.
+{if (alive _x) then {[_x, _si, _gi] exec (TzkScripts select 299)}} foreach units _group
+
+[_unit, _si, _gi, -1, _idOrder, _indexCombatMode, _indexBehaviour] exec (TzkScripts select 298)

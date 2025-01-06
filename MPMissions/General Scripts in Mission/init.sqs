@@ -178,8 +178,8 @@ pvVoteStart0 = -1; pvVoteResult0 = -1; pvVoteAdmin = false
 ; Weather.
 pvWeather_Value = 0; pvWeather_Delay = 2*60; pvWeather_Cycle = 10*60
 Weather_TZK = "Sunny"
-? isServer: [] exec "Server\Loop\Weather.sqs"
-? !isNull player: [] exec "Player\Loop\Weather.sqs"
+? isServer: [] exec (TzkScripts select 315)
+? !isNull player: [] exec (TzkScripts select 294)
 
 ; TimeBoost
 ; Although BIKI said that skipTime should executed on server, it requires being executed on all clients. So do those weather commands. Probably they're local but not global effect.

@@ -188,7 +188,7 @@ _price = [500, 1000] select PricingMode;
 _objects0 = [["ReammoBoxWest", 0, []]];
 _objects1 = [["ReammoBoxEast", 0, []]];
 _image = [_texPath + "Image\Struct\ammoCr.jpg",_texPath + "Image\Struct\ammoCr.jpg"];
-structDefs set [_type, ["Ammo Crate", _price, siBoth, _image, false, false, 10, 5, 8, _objects0, _objects1, [(TzkScripts select 217)], ["\TZK_Scripts_4_0_5\Common\InitAmmocrate.sqs"]]  ];
+structDefs set [_type, ["Ammo Crate", _price, siBoth, _image, false, false, 10, 5, 8, _objects0, _objects1, [(TzkScripts select 217)], [(TzkScripts select 292)]]  ];
 structMarker set [_type, ""];
 stAmmoCrate = _type;
 _type = _type + 1;

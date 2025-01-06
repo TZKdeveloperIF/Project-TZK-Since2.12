@@ -21,16 +21,16 @@ _onGameEnd = {0 exec (TzkScripts select 229), 0 exec "Log\OnGameOver.sqs", publi
 
 	? (timeLimit != 0 && _gameTime > timeLimit): goto "TimeLimitReached"
 
-	? _mhqAlive select si0 && !(alive (mhq select si0)) : _mhqAlive set [si0, false]; si0 exec "\TZK_Scripts_4_0_4\Server\CheckWinDestruction.sqs"
-	? _mhqAlive select si1 && !(alive (mhq select si1)) : _mhqAlive set [si1, false]; si1 exec "\TZK_Scripts_4_0_4\Server\CheckWinDestruction.sqs"
+	? _mhqAlive select si0 && !(alive (mhq select si0)) : _mhqAlive set [si0, false]; si0 exec (TzkScripts select 312)
+	? _mhqAlive select si1 && !(alive (mhq select si1)) : _mhqAlive set [si1, false]; si1 exec (TzkScripts select 312)
 
 	? !(_mhqAlive select si0) && (alive (mhq select si0)) : _mhqAlive set [si0, true]
 	? !(_mhqAlive select si1) && (alive (mhq select si1)) : _mhqAlive set [si1, true]
 	
-	? (count (MCV select si0)) > 0 && (_mcvAlive select si0) : _mcvAlive set [si0, false]; { if (alive _x) then {_mcvAlive set [si0, true]} } forEach (MCV select si0); if !(_mcvAlive select si0) then { si0 exec "\TZK_Scripts_4_0_4\Server\CheckWinDestruction.sqs" }
+	? (count (MCV select si0)) > 0 && (_mcvAlive select si0) : _mcvAlive set [si0, false]; { if (alive _x) then {_mcvAlive set [si0, true]} } forEach (MCV select si0); if !(_mcvAlive select si0) then { si0 exec (TzkScripts select 312) }
 	? (count (MCV select si0)) > 0 && !(_mcvAlive select si0) : { if (alive _x) then {_mcvAlive set [si0, true]} } forEach (MCV select si0)
 	
-	? (count (MCV select si1)) > 0 && (_mcvAlive select si1) : _mcvAlive set [si1, false]; { if (alive _x) then {_mcvAlive set [si1, true]} } forEach (MCV select si1); if !(_mcvAlive select si1) then { si1 exec "\TZK_Scripts_4_0_4\Server\CheckWinDestruction.sqs" }
+	? (count (MCV select si1)) > 0 && (_mcvAlive select si1) : _mcvAlive set [si1, false]; { if (alive _x) then {_mcvAlive set [si1, true]} } forEach (MCV select si1); if !(_mcvAlive select si1) then { si1 exec (TzkScripts select 312) }
 	? (count (MCV select si1)) > 0 && !(_mcvAlive select si1) : { if (alive _x) then {_mcvAlive set [si1, true]} } forEach (MCV select si1)
 	
 	? timeLimit != 0 && _gameTime > _timeNextRemind : goto "Remind"

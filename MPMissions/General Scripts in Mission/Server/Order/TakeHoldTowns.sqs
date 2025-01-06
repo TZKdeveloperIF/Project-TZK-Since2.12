@@ -29,7 +29,7 @@ _sleep = 30
 
 	? _unit != driver vehicle _unit : _sleep = 30; goto "TakeTown_Sleep"
 	
-	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 10; goto "TakeTown_Sleep"
+	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec (TzkScripts select 295); _sleep = 10; goto "TakeTown_Sleep"
 	
 	? _ti == -1 : goto "CheckTown"
 	
@@ -75,7 +75,7 @@ _pos = [getPos _flag, 5, 100] call funcGetRandomPos
 	? _unit call rtsOrderCheck: exit
 	? _unit != driver vehicle _unit : _sleep = 30; goto "HoldTown_Sleep"
 	
-	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 30; goto "HoldTown_Sleep"
+	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec (TzkScripts select 295); _sleep = 30; goto "HoldTown_Sleep"
   
 	? ((towns select _ti) select tdSide) != _si : goto "TakeTown"
   ? time > _timeAbort : _ti = -1; goto "TakeTown"

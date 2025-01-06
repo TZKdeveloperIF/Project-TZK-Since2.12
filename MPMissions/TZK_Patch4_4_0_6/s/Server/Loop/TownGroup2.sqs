@@ -66,7 +66,7 @@ _group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "N
 	while "_type == -1" do { _type = (infTown select _si) call funcGetRandomUnitType }
 	_pos = [_posFlag, 149, 149] call funcGetRandomPos
 	? isNull _group: format["ERROR: _group is NULL at AddInf for %1 town group in '%1'", sideNames select _si, (towns select _ti) select tdName] call fDebugLog; exit
-	[_type, 0, 0, 0, _pos, random 360, _si, giTown, _group, 0, 0] exec "\TZK_Scripts_4_0_4\Common\AddUnit.sqs"
+	[_type, 0, 0, 0, _pos, random 360, _si, giTown, _group, 0, 0] exec (TzkScripts select 309)
 	goto "ReinforceReady"
 
 #AddTank

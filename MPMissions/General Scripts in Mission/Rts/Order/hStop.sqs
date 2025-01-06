@@ -33,7 +33,7 @@ _destPos = getPos _unit
 	? -1 == _gi: exit
 
 	; check support
-	? _time > _timeCheckSupport: _timeCheckSupport = _time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _cycle = 20; goto "Sleep"
+	? _time > _timeCheckSupport: _timeCheckSupport = _time + timeCheckSupport; [_unit, _si, _gi] exec (TzkScripts select 295); _cycle = 20; goto "Sleep"
 
 	; check bomb	
 	_bCheckDropBomb = !_bCheckDropBomb 

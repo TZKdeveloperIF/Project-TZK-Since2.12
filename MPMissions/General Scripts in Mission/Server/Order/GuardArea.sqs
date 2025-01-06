@@ -38,7 +38,7 @@ _setting = aiSetting select _si select _gi
 	
 	? _unit != driver _vehicle : goto "Sleep"
 	
-	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 20; goto "Sleep"
+	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec (TzkScripts select 295); _sleep = 20; goto "Sleep"
 
   _bCheckDropBomb = !_bCheckDropBomb 
 	_magazines = []

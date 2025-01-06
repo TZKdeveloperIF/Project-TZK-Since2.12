@@ -559,7 +559,7 @@ structDefs set [_type, [
 	false,
 	10, 5, 8, _objects0, _objects1,
 	[(TzkScripts select 217)],
-	["\TZK_Scripts_4_0_5\Common\InitAmmocrate.sqs", (TzkScripts select 162)]]
+	[(TzkScripts select 292), (TzkScripts select 162)]]
 ];
 structMarker set [_type, "AmmoStructure_Marker_xj400"];
 stAmmoCrate = _type;

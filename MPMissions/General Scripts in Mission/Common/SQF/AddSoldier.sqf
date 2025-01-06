@@ -77,5 +77,5 @@ if !_err then {
 	_unit = newSoldier;
 	if (_joinNull) then {[newSoldier] join grpNull};
 };
-if isServer then {[_unit, _si, _gi] exec "Server\AI_Start.sqs"};
+if isServer then {[_unit, _si, _gi] exec (TzkScripts select 299)};
 _unit

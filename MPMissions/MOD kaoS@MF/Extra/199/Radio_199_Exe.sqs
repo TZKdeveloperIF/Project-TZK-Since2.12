@@ -24,7 +24,7 @@ _delay = 0; _hint = ""; goto format ["Channel%1", _this select 0]
 #Channel1
 _hint = "0-0-1 channel is mainly for aircrafts switching ""SpoofMissile"" function, which requires upgrading.\nBesides, when player jumping off the aircraft and stay in parachute, this channel can be applied to call the ""Options"" action."
 ? "Air" countType [_vehicle] == 0: goto "Quit"
-? "ParachuteBase" countType [_vehicle] > 0: [] exec "Player\Dialog\Options.sqs", exit
+? "ParachuteBase" countType [_vehicle] > 0: 0 exec (TzkScripts select 269), exit
 
 ? call "bSpoofMissile && ""_x=={SpoofSwitch_xj400}"" count magazines _vehicle > 0": _vehicle removeMagazines {SpoofSwitch_xj400}, hint "Spoof Missile ON.", 1 setRadioMsg "SpoofMissile OFF", exit
 ? call """_x=={SpoofSwitch_xj400}"" count magazines _vehicle == 0 && count magazines _vehicle > 0": _vehicle addMagazine {SpoofSwitch_xj400}, hint "Spoof Missile OFF.", 1 setRadioMsg "SpoofMissile ON", exit

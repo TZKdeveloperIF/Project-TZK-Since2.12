@@ -15,9 +15,9 @@ _this = 0
 
 	[_object] exec "\TZK_Scripts_4_0_4\Server\StructuresServerClear.sqs"
 	@ isNull _object
-	_si exec "\TZK_Scripts_4_0_4\Server\CheckWinDestruction.sqs"
+	_si exec (TzkScripts select 312)
 	exit
 
 # DeleteMCV
-? _bAlive == 1 : _object setDamage 1; _si exec "\TZK_Scripts_4_0_4\Server\CheckWinDestruction.sqs"; exit
+? _bAlive == 1 : _object setDamage 1; _si exec (TzkScripts select 312); exit
 deleteVehicle _object

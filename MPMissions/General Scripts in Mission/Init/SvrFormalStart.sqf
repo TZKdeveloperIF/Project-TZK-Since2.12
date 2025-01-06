@@ -13,7 +13,7 @@ _mhqEastY = _mhqEastY - _mhqEastY % 1;
 
 
 // deploy start vehicles
-[[_mhqWestX, _mhqWestY], [_mhqEastX, _mhqEastY]] exec "Server\Init\StartVehs.sqs";
+[[_mhqWestX, _mhqWestY], [_mhqEastX, _mhqEastY]] exec (TzkScripts select 311);
 
 // inform clients
 tzkMatchStartTime = time; tzkMatchStartTime = tzkMatchStartTime - tzkMatchStartTime % 0.25;
