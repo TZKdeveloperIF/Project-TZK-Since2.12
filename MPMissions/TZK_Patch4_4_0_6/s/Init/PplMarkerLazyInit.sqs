@@ -4,24 +4,9 @@ _si = _this
 _colorPurple = "ColorDarkPurple_xj400"; _colorOrange = "ColorOrange_xj400"; _colorCyan = "ColorCyan_xj400"; _colorGrey = "ColorGrey_xj400"
 ; ? bool_TZK_Vanilla_Mode: _colorPurple = "ColorBlack", _colorOrange = "ColorRedAlpha", _colorCyan = "ColorGreenAlpha", _colorGrey = "ColorWhite"
 
-; TOWN SIDE/AREA MARKERS
-_index = 0
-_count = count towns
-#InitTownMarker
-	_town = (towns select _index) select 0
-	_marker = format["TownHibernate%1", _index]
-	if !bool_TZK_199_Mode Then {_marker setMarkerShape "ELLIPSE"}; _marker setMarkerColor "ColorGreenAlpha"; _marker setMarkerSize [150,150]
-
-	_marker = format["Town_%1", _index]
-	_marker setMarkerType "Flag1"; _marker setMarkerColor "ColorBlack"; _marker setMarkerSize [1.25,1.25]; _marker setMarkerPos getPos _town
-
-	_index = _index + 1
-	? (_index < _count): goto "InitTownMarker"
-
 ; VEHICLE MARKERS
 vehicleMarkerMapping = [ [], [], [], [], [] ]
 _i = 0
-maxVehicleMarkers = 150
 
 #HideVehicleMarker
 	
@@ -55,7 +40,6 @@ maxVehicleMarkers = 150
 ; StructureMarkerMapping need only 2 rows
 StructureMarkerMapping = [ [], [] ]
 _i = 0
-maxStructureMarkers = 50
 
 #HideStructureMarker
 	

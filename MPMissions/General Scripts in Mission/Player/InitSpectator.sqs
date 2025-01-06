@@ -30,9 +30,16 @@ bShowAll = true
 bLockDir = true
 logSpec = []
 
+; declare markers. Separately executed in both player and spectator init after siPlayer has been defined
+siPlayer exec (TzkScripts select 316)
 
-;game has begun after this pause
+
+; game has begun after this pause
 ~ 0.1
+
+; marker lazy init
+; init them on game just begin. Unnecessary to wait match formal start
+siPlayer exec (TzkScripts select 317);
 
 mapAnimClear
 mapAnimAdd [0, 1.0, posCenter]

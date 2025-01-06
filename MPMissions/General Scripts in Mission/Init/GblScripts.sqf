@@ -199,7 +199,7 @@ _f = {
 "\TZK_Patch4_4_0_6\s\InfoSvr\TimeLimitRemind.sqs" call _f; // 160
 
 "\TZK_Scripts_4_0_6\Player\Marker\SpectatorMarker.sqs" call _f; // 161
-"Player\Marker\InitStructureMarker.sqs" call _f; // 162
+"\TZK_Patch4_4_0_6\s\Marker\struct.sqs" call _f; // 162
 "" call _f; // 163
 "" call _f; // 164
 "" call _f; // 165
@@ -376,10 +376,15 @@ _f = {
 "\TZK_Patch4_4_0_6\s\Server\CheckWinSurrender.sqf" call _f; // 314
 "\TZK_Patch4_4_0_6\s\Server\Loop\Weather.sqs" call _f; // 315
 
+"\TZK_Patch4_4_0_6\s\Init\pplMarkerEagerCreate.sqs" call _f; // 316
+"\TZK_Patch4_4_0_6\s\Init\PplMarkerLazyDeclare.sqs" call _f; // 317
+"\TZK_Patch4_4_0_6\s\Init\PplMarkerLazyInit.sqs" call _f; // 318
+"\TZK_Patch4_4_0_6\s\Marker\struct.sqf" call _f; // 319
+
 
 
 // script count check. Check index with last literal value
-if (_i != 315 + 1) then {
+if (_i != 318 + 1) then {
 	player globalChat "Script count mismatch!";
 };
 
