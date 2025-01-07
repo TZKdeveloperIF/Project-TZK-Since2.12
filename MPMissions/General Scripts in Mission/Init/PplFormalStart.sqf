@@ -22,7 +22,6 @@ call loadFile "\TZK_Patch4_4_0_6\s\Player\Init\AIOrder.sqf";
 _mhqPos exec "Init\PplFlashStartPos.sqs";
 
 // lazy init
-0 exec "\TZK_Patch4_4_0_6\s\Player\Init\LazyContents.sqs";
 
 // enter game process
 0 exec "Init\PplEnterGame.sqs";

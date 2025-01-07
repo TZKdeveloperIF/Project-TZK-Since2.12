@@ -16,4 +16,7 @@ _mhqPosInfo = _this select 1;
 ? siPlayer == si0: [_mhqPosInfo select 0, _mhqPosInfo select 1] call preprocessFile "Init\PplFormalStart.sqf";
 ? siPlayer == si1: [_mhqPosInfo select 2, _mhqPosInfo select 3] call preprocessFile "Init\PplFormalStart.sqf";
 
+; client lazy init
+0 exec "\TZK_Patch4_4_0_6\s\Init\clientLazyInit.sqs";
+
 0 exec "\TZK_Patch4_4_0_6\s\Radio\GenerateTrigger.sqs"
