@@ -1,0 +1,55 @@
+; args: si
+
+; Pre-defined west/east town groups should be attached to flagCarriers. Redundant groups
+; should be deleted and insufficient groups should be created, and those created group remain NOT broadcasted.
+; For broadcasting, the 2.01 command public-Exec or "Init" parameter of "createUnit" is available.
+
+; By now towns more than 20 has problem in tg marker display and group working. Don't know why yet.
+
+_si = _this
+
+; ==================================Town Groups==================================
+; Number of town groups should rely on number of towns. There're 25 * 3 town groups
+; predefined in mission.sqm now. Need use script command if need create more.
+; However, there were bugs appear when defined 24 towns with 2*1k town. This may due
+; to 1k extra town group. And bugs appear in kodiak_v2 with 22 town too. No extra group
+; there.
+
+_i = 0; _c = count towns
+# TownGroups
+	_town = towns select _i; _flag = _town select 0; _income = _town select 2
+	
+	_group = if (_i < count (townGroups select _si)) then {townGroups select _si select _i} else {grpNull}
+	
+	; An empty group created by "createGroup" return the "unknown" side. However editor can still use
+	; "format" and "substr" to gain the first 4 letters and hence gain the side.
+
+	_script = (TzkScripts select 221)
+	? _income < 0 : _script = (TzkScripts select 223)
+	? not isNull _group: [_group, _i, _si] exec _script
+
+	_i = _i + 1
+	? _i < _c : goto "TownGroups"
+	
+; Towns is the list including flagCarrier, Name, income, etc
+; Ask each town use groups as their own TG. Index used as town index in scripts.
+; It is possbile to ask TG execute special script depending on their income. NT mission can in this way considering design a parameter to switch NT mode ON/OFF.
+
+_indexExtra = 0
+# ExtraTownGroups
+	_town = towns select _indexExtra; _flag = _town select 0; _income = _town select 2
+	
+	? _income < 1000 : goto "SkipExtraTownGroups"
+	_group = if (_i < count (townGroups select _si)) then {townGroups select _si select _i} else {grpNull}
+	
+	_script = (TzkScripts select 224)
+	? not isNull _group: [_group, _indexExtra, _si] exec _script
+	_i = _i + 1
+
+	# SkipExtraTownGroups
+	_indexExtra = _indexExtra + 1
+	? _indexExtra < _count : goto "ExtraTownGroups"
+	
+_indexRemoveTG = _i
+
+; EOF
