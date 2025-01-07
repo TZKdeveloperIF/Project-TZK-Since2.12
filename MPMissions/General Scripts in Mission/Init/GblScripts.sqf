@@ -385,8 +385,8 @@ _f = {
 "\TZK_Patch4_4_0_6\s\Radio\fArtMagPage1.sqf" call _f; // 321
 "\TZK_Patch4_4_0_6\s\Radio\fArtMagSlow.sqf" call _f; // 322
 "\TZK_Patch4_4_0_6\s\Radio\fArtMLRSPage2.sqf" call _f; // 323
-"" call _f; // 324
-"" call _f; // 325
+"\TZK_Patch4_4_0_6\s\Radio\fArtHowitzerPage2.sqf" call _f; // 324
+"\TZK_Patch4_4_0_6\s\Radio\page_art_next.sqf" call _f; // 325
 "" call _f; // 326
 "" call _f; // 327
 "" call _f; // 328
@@ -405,10 +405,15 @@ _f = {
 "\TZK_Patch4_4_0_6\s\Radio\update_veh_transpAir.sqs" call _f; // 340
 "\TZK_Patch4_4_0_6\s\Radio\update_veh_spec.sqf" call _f; // 341
 
+"\TZK_Patch4_4_0_6\s\Radio\list_inf_rearmNVG.sqf" call _f; // 342
+"\TZK_Patch4_4_0_6\s\Radio\list_inf_rearmAA.sqf" call _f; // 343
+"\TZK_Patch4_4_0_6\s\Radio\list_inf_rearmAT.sqf" call _f; // 344
+"\TZK_Patch4_4_0_6\s\Radio\list_inf_rearmRPG.sqf" call _f; // 345
+
 
 
 // script count check. Check index with last literal value
-if (_i != 341 + 1) then {
+if (_i != 345 + 1) then {
 	player globalChat "Script count mismatch!";
 };
 
