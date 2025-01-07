@@ -5,7 +5,7 @@ _vehicle = _this select 0
 ; Remove spoof supporting to plane. This commit is in 4.0.6.74 version but ban spoof on plane is realized in 4.0.6 mod
 ; There're no "SpoofCount_xj400" magazine equipped for plane. Those "spoof" user actions should be remove in future.
 
-call preprocessFile "Player\Radio\Channel001_RtsMapMode.sqf";
+call loadFile (TzkScripts select 320);
 
 Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", {[] exec (TzkScripts select 025)}, ""];
 Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""];

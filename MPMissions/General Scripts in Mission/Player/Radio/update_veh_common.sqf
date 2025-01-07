@@ -1,4 +1,4 @@
-call preprocessFile "Player\Radio\Channel001_RtsMapMode.sqf";
+call loadFile (TzkScripts select 320);
 
 Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", {[] exec (TzkScripts select 025)}, ""];
 

@@ -3,7 +3,7 @@ _vehicle = _this select 0; _vt = _this select 1
 
 _booleStringTransport = "_vehicle in TransportActivatedVehicles"; _booleTransport = call _booleStringTransport
 
-call preprocessFile "Player\Radio\Channel001_RtsMapMode.sqf";
+call loadFile (TzkScripts select 320);
 
 Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", {[] exec (TzkScripts select 025)}, ""];
 ? bool_TZK_SEMod_Mode && "APC" countType [_vehicle] > 0: Radio003 setTriggerText "Entrench Tank ($1000)"; Radio003 setTriggerStatements ["this", {[vehicle player, player, [] ] exec "Extra\ppl\EntrenchTank.sqs"}, ""];
