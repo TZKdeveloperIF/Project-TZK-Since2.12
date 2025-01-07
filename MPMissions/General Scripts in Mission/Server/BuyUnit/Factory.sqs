@@ -81,14 +81,14 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 	? -1 != _nCustomWeapon: _enum = (_unitDesc select udModel) call preprocessFile "Util\EnumOfCwv.sqf", _magInfo = call ([{PlaneMagInfo}, {GunshipMagInfo}, {HeliMagInfo}] select _enum); _cwvCost = _magInfo select _nCustomWeapon select 3, if (_cwvCost > _cost) then {_cost = _cwvCost}
 
 	_buildTime = _unitDesc select udBuildTime
-  
+
 	_crew = 0
 	? !(_isVehicle): goto "SkipVehicleStats"
-	_crewType = _mannedUnitTypes select 1
-	? (_driver == 1): _crew = _crew + 1; _cost = _cost + ((unitDefs select _crewType) select udCost); _buildTime = _buildTime + ((unitDefs select _crewType) select udBuildTime)
-	? (_gunner == 1): _crew = _crew + 1; _cost = _cost + ((unitDefs select _crewType) select udCost); _buildTime = _buildTime + ((unitDefs select _crewType) select udBuildTime)
-	? (_commander == 1): _crew = _crew + 1; _cost = _cost + ((unitDefs select _crewType) select udCost); _buildTime = _buildTime + ((unitDefs select _crewType) select udBuildTime)
-	#SkipVehicleStats
+		_crewType = _mannedUnitTypes select 1
+		_crew = _driver + _gunner + _commander
+		_cost = _cost + (unitDefs select _crewType select udCost) * _crew
+		_buildTime = _buildTime + (unitDefs select _crewType select udBuildTime) * _crew
+	# SkipVehicleStats
 
 	_unitsToBuild = 0
 	? !(_isVehicle): _unitsToBuild = 1
@@ -136,12 +136,12 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 
 	goto "Wait"
 
-#GroupFull
+# GroupFull
 	[_type, _si, _giBuyer, _giJoin] exec (TzkScripts select 158)
 	[_qid, _si, 0] exec "Server\BuyUnit\sQueueRem.sqs"
 	goto "UnitNotBuilt"
 
-#NoMoney
+# NoMoney
 	[_type, _si, _giBuyer, _giJoin] exec (TzkScripts select 159)
 	[_qid, _si, 0] exec "Server\BuyUnit\sQueueRem.sqs"
 	goto "UnitNotBuilt"
