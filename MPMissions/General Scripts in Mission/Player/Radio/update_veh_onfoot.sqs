@@ -9,7 +9,7 @@ _SupNearby = SupNearby
 
 _rearmAT = "Rearm AT" + (if bool_TZK_SEMod_Mode Then {"/Javelin"} Else {""})
 
-call preprocessFile "Player\Radio\Channel001_RtsMapMode.sqf";
+call loadFile (TzkScripts select 320);
 
 Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", {[] exec (TzkScripts select 025)}, ""];
 
@@ -38,7 +38,7 @@ _booleRefreshMHQNearby = (_mhqNearby && !mhqNearby) || (!_mhqNearby && mhqNearby
 _booleRefreshSupNearby = (_SupNearby && !SupNearby) || (!_SupNearby && SupNearby)
 ? _booleRefreshSupNearby : if (SupNearby) then {	Radio005 setTriggerText "Sup Build Menu"; Radio005 setTriggerStatements ["this", {if (SupNearby) then {[-1,50] exec "Player\Dialog\BuildMenu.sqs"} else {hint {Sup too far away.}}}, ""];	} else {	Radio005 setTriggerText " "; Radio005 setTriggerStatements ["this", "", ""];	}
 
-call preprocessFile "Player\Radio\Channel001_RtsMapMode.sqf";
+call loadFile (TzkScripts select 320);
 
 ? _booleRefreshMedic : _booleMedic = (call _booleStringMedic)
 ? _booleRefreshMHQNearby : _mhqNearby = mhqNearby

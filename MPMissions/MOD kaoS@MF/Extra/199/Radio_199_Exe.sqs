@@ -106,7 +106,7 @@ _hint = "0-0-0 channel can be applied for player to buy RPG launcher/ammo quickl
 ? (_vehicle call funcGetUnitTypeFromObject) in ((airTransport select siPlayer) + (groundTransport select siPlayer)): if (_vehicle in TransportActivatedVehicles) Then {[_vehicle] exec (TzkScripts select 176), hint "Transport Turn OFF", 10 setRadioMsg "Transport Turn ON"} Else {[_vehicle] exec (TzkScripts select 175), hint "Transport Turn ON", 10 setRadioMsg "Transport Turn OFF"}, exit
 ? siPlayer == siCiv: [] exec (TzkScripts select 200), exit
 
-? "A10_Base_xj400" countType [_vehicle] == 0 && "Su25_Base_xj400" countType [_vehicle] == 0: [_vehicle] exec "Player\Radio\Radio_Update_Vehicle.sqs", goto "Quit"
+? "A10_Base_xj400" countType [_vehicle] == 0 && "Su25_Base_xj400" countType [_vehicle] == 0: [_vehicle] exec (TzkScripts select 195), goto "Quit"
 ? call "bAfterBurner && ""_x=={AfterBurnerSwitch_xj400}"" count magazines _vehicle > 0": _vehicle removeMagazines {AfterBurnerSwitch_xj400}; _vehicle exec (TzkScripts select 029), hint "After Burner turn on. Make sure your engine on as well.", 10 setRadioMsg "AfterBurner OFF", exit
 ? call " ""_x=={AfterBurnerSwitch_xj400}"" count magazines _vehicle == 0 && count magazines _vehicle > 0": _vehicle addMagazine {AfterBurnerSwitch_xj400}, hint "After Burner turn off.", 10 setRadioMsg "AfterBurner ON", exit
 

@@ -240,19 +240,19 @@ _f = {
 
 "\TZK_Patch4_4_0_6\s\Player\Loop\VehState.sqs" call _f; // 194
 
-"Player\Radio\Radio_Update_Vehicle.sqs" call _f; // 195
-"Player\Radio\Radio_Update_Vehicle_Common.sqf" call _f; // 196
-"Player\Radio\Radio_Update_Vehicle_M270.sqs" call _f; // 197
-"Player\Radio\Radio_Update_Vehicle_Parachute.sqf" call _f; // 198
+"Player\Radio\entrance.sqs" call _f; // 195
+"Player\Radio\update_veh_common.sqf" call _f; // 196
+"" call _f; // 197
+"\TZK_Patch4_4_0_6\s\Radio\update_veh_parachute.sqf" call _f; // 198
 "Player\Radio\Graduation.sqs" call _f; // 199
-"\TZK_Patch4_4_0_6\s\Radio\RadioList_Spectator_Return.sqs" call _f; // 200
+"\TZK_Patch4_4_0_6\s\Radio\list_spec_return.sqs" call _f; // 200
 "Player\Rts\SwitchMapMode.sqs" call _f; // 201
 "\TZK_Scripts_4_0_4\Player\Radio\RadioList_Struct_ResetUp.sqs" call _f; // 202
-"" call _f; // 203
-"" call _f; // 204
-"" call _f; // 205
-"" call _f; // 206
-"" call _f; // 207
+"\TZK_Patch4_4_0_6\s\Radio\update_struct_mortar.sqf" call _f; // 203
+"\TZK_Patch4_4_0_6\s\Radio\update_veh_howitzer.sqs" call _f; // 204
+"\TZK_Patch4_4_0_6\s\Radio\update_veh_tos1.sqs" call _f; // 205
+"\TZK_Patch4_4_0_6\s\Radio\update_struct_howitzer.sqs" call _f; // 206
+"\TZK_Patch4_4_0_6\s\Radio\update_veh_m270.sqs" call _f; // 207
 "" call _f; // 208
 "" call _f; // 209
 
@@ -380,11 +380,35 @@ _f = {
 "\TZK_Patch4_4_0_6\s\Init\PplMarkerLazyDeclare.sqs" call _f; // 317
 "\TZK_Patch4_4_0_6\s\Init\PplMarkerLazyInit.sqs" call _f; // 318
 "\TZK_Patch4_4_0_6\s\Marker\struct.sqf" call _f; // 319
+"" call _f; // 320
+
+"\TZK_Patch4_4_0_6\s\Radio\fArtMagPage1.sqf" call _f; // 321
+"\TZK_Patch4_4_0_6\s\Radio\fArtMagSlow.sqf" call _f; // 322
+"\TZK_Patch4_4_0_6\s\Radio\fArtMLRSPage2.sqf" call _f; // 323
+"" call _f; // 324
+"" call _f; // 325
+"" call _f; // 326
+"" call _f; // 327
+"" call _f; // 328
+"" call _f; // 329
+
+"\TZK_Patch4_4_0_6\s\Radio\update_veh_ship.sqs" call _f; // 330
+"\TZK_Patch4_4_0_6\s\Radio\update_veh_gunship.sqs" call _f; // 331
+"\TZK_Patch4_4_0_6\s\Radio\update_veh_plane.sqs" call _f; // 332
+"\TZK_Patch4_4_0_6\s\Radio\update_veh_supLand.sqs" call _f; // 333
+"\TZK_Patch4_4_0_6\s\Radio\update_veh_transpLand.sqs" call _f; // 334
+"\TZK_Patch4_4_0_6\s\Radio\update_struct_common.sqf" call _f; // 335
+"Player\Radio\update_veh_onfoot.sqs" call _f; // 336
+"\TZK_Patch4_4_0_6\s\Radio\update_veh_mineCar.sqs" call _f; // 337
+"\TZK_Patch4_4_0_6\s\Radio\update_veh_customCar.sqs" call _f; // 338
+"\TZK_Patch4_4_0_6\s\Radio\update_veh_customShip.sqs" call _f; // 339
+"\TZK_Patch4_4_0_6\s\Radio\update_veh_transpAir.sqs" call _f; // 340
+"\TZK_Patch4_4_0_6\s\Radio\update_veh_spec.sqf" call _f; // 341
 
 
 
 // script count check. Check index with last literal value
-if (_i != 318 + 1) then {
+if (_i != 341 + 1) then {
 	player globalChat "Script count mismatch!";
 };
 
