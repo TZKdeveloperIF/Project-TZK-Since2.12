@@ -33,7 +33,7 @@ ratioAttackEnemy = ([0.70, 0.70] select dev);
 mutexEditMoneyMatrix = false;
 mutexMovingToSupport = false;
 
-groupsPatrol = []; groupPatrolJoinMatrix = []; mutexInitResGroups = false; mutexResPatrolScript = false;
+groupsPatrol = []; groupPatrolJoinMatrix = []; mutexResPatrolScript = false;
 
 mutexAddResPatrol = false;
 mutexWorkerJoin = false;

@@ -1,82 +1,55 @@
 ; args: none
-; Town and Worker Groups are displayed on map, thus they're defined in mission.sqm, not created in-game and broadcasted.
-; Temporary group and join group should be global, and are placed in mission.sqm as well.
-; Res town groups and patrol groups can be created by the server. So do AA groups.
-; Pre-defined west/east town groups should be attached to flagCarriers. Redundant groups should be deleted and insufficient groups should be created, and those created group remain NOT broadcasted.
-; For broadcasting, the 2.01 command public-Exec or "Init" parameter of "createUnit" is available.
 
+; initial res groups
+; Units in res town groups and patrol groups haven't marker and thus can be created by the server
+
+
+; ================================ Patrol Groups ================================
+; define patrol groups before res town groups. RES tg will join to patrol group
+
+; Set number of patrol group at about 40% of town numbers.
+_c = ((count towns) * 0.4) call loadFile "Math\Floor.sqf"; _i = 0; _group = grpNull
+_list = groupMatrix select siRes
+
+# ResPatrolGrps
+	_group = if (_i < count patrolGroups) then {patrolGroups select _i} else {grpNull}
+	? isNull _group: goto "continue_ResPatrol"
+
+	_list set [count _list, _group]
+	groupsPatrol set [count groupsPatrol, _group]
+	groupPatrolJoinMatrix set [count groupPatrolJoinMatrix, 0]
+
+	_group exec "Server\Start\ResPatrolGroup.sqs"
+
+	# continue_ResPatrol
+	_i = _i + 1
+	? _i < _c : goto "ResPatrolGrps"
+; variable "patrolGroups" is useless now. Undefine it
+patrolGroups = _nil
 
 
 ; ==================================Town Groups==================================
-; Groups are recorded in init.sqs thus have to wait unitl game started. 
-; Number of town groups should rely on number of towns.
+; Number of town groups should rely on number of towns. There're 25 * 3 town groups
+; predefined in mission.sqm now. Need use script command if need create more.
+; However, there were bugs appear when defined 24 towns with 2*1k town. This may due
+; to 1k extra town group. And bugs appear in kodiak_v2 with 22 town too. No extra group
+; there.
 
-; ~2
-
-; there're 25 * 3 town groups predefined in mission.sqm now. create more group by script 
-; command hasn't widely applied and tested yet. There were bugs appear when defined 24 towns with 2*1k town
-; maybe due to missing initial script of group
-
-_index = 0; _count = count towns; _westTG = grpNull; _eastTG = grpNull; _resTG = grpNull
+_i = 0; _c = count towns
+_list = groupMatrix select siRes
 # TownGroups
-	_town = towns select _index; _flag = _town select 0; _income = _town select 2
-	
-	if (_index < count (townGroups select si0)) then {_westTG = (townGroups select si0) select _index} else {_westTG = grpNull}
-	if (_index < count (townGroups select si1)) then {_eastTG = (townGroups select si1) select _index} else {_eastTG = grpNull}
-	if (_index < count (townGroups select siRes)) then {_resTG = (townGroups select siRes) select _index} else {_resTG = grpNull}
-	
-	; An empty group created by "createGroup" return the "unknown" side. However editor can still use "format" and "substr" to gain the first 4 letters and hence gain the side.
+	_town = towns select _i; _flag = _town select 0; _income = _town select 2
 
-	_script = (TzkScripts select 221)
-	? _income < 0 : _script = (TzkScripts select 223)
-	? not isNull _westTG: [_westTG, _index, west] exec _script
-	? not isNull _eastTG: [_eastTG, _index, east] exec _script
+	_resTG = if (_i < count (townGroups select siRes)) then {townGroups select siRes select _i} else {grpNull}
+	
+	; An empty group created by "createGroup" return the "unknown" side. However editor can still use
+	; "format" and "substr" to gain the first 4 letters and hence gain the side.
 
 	_script = "Server\Start\TownGroupRes1.sqs"
 	? bool_TZK_SEMod_Mode && _income >= 1000 : _script = "Server\Start\TownGroupRes2.sqs"
-	? not isNull _resTG: [_resTG, _index] exec _script
+	? not isNull _resTG: [_resTG, _i] exec _script, _list set [count _list, _resTG]
 
-	_index = _index + 1
-	? _index < _count : goto "TownGroups"
-	
-; Towns is the list including flagCarrier, Name, income, etc
-; Ask each town use groups as their own TG. Index used as town index in scripts.
-; It is possbile to ask TG execute special script depending on their income. NT mission can in this way considering design a parameter to switch NT mode ON/OFF.
+	_i = _i + 1
+	? _i < _c : goto "TownGroups"
 
-_indexExtra = 0
-# ExtraTownGroups
-	_town = towns select _indexExtra; _flag = _town select 0; _income = _town select 2
-	
-	? _income < 1000 : goto "SkipExtraTownGroups"
-	if (_index < count (townGroups select si0)) then {_westTG = (townGroups select si0) select _index} else {_westTG = grpNull}
-	if (_index < count (townGroups select si1)) then {_eastTG = (townGroups select si1) select _index} else {_eastTG = grpNull}
-	
-	_script = (TzkScripts select 224)
-	? not isNull _westTG: [_westTG, _indexExtra, west] exec _script
-	? not isNull _eastTG: [_eastTG, _indexExtra, east] exec _script
-	_index = _index + 1
-
-	#SkipExtraTownGroups
-	_indexExtra = _indexExtra + 1
-	? _indexExtra < _count : goto "ExtraTownGroups"
-	
-_indexRemoveTG = _index
-
-
-; =================================Patrol Groups=================================
-_count = (count towns) / 2.5; _index = 0; _patrolGroup = grpNull
-; Set number of patrol group at about 40% of town numbers.
-
-# ResPatrolGroups
-	if (_index < count patrolGroups) then {_patrolGroup = patrolGroups select _index} else {_patrolGroup = grpNull}
-	? not isNull _patrolGroup: [_patrolGroup] exec "Server\Start\ResPatrolGroup.sqs"
-
-	_index = _index + 1
-	? _index < _count : goto "ResPatrolGroups"
-
-; ===============================Functional Groups===============================
-; script here should start after a delay, if they applied "createGroup" command. This command should be executed after groups' ID are set, or game may crash.
-west exec "\TZK_Patch4_4_0_6\s\Server\AASystem.sqs"; east exec "\TZK_Patch4_4_0_6\s\Server\AASystem.sqs"
-
-
-;EOF
+; EOF

@@ -12,16 +12,9 @@ _distSpawn = viewDistance + 500
 
 _flag = towns select _ti select tdFlag
 _posFlag = getPos _flag
-? isNull _group : format["ERROR: _group is NULL at init for RES town group in '%1'", towns select _ti select tdName] call fDebugLog; exit
+? isNull _group : format ["ERROR: group is NULL when init res TG1 at '%1'", towns select _ti select tdName] call fDebugLog; exit
 
-@!(mutexInitResGroups)
-mutexInitResGroups = true
-_list = groupMatrix select _si
-_list set [count _list, _group]
-
-mutexInitResGroups = false
-
-~12
+~ 12
 ; wait patrol group initialized.
 ; Init Spawn Activate by Start Position
 ? (mhq select si0) distance _flag < _distSpawn || (mhq select si1) distance _flag < _distSpawn: goto "Spawn"
