@@ -231,7 +231,7 @@ _f = {
 "Network\sVehMagsRemove.sqs" call _f; // 187
 
 "Common\DeleteUnitAfterDelay.sqs" call _f; // 188
-"Player\EH\FiredEffect.sqf" call _f; // 189
+"Client\FiredEffect.sqf" call _f; // 189
 "\TZK_Patch4_4_0_6\s\Player\Effect\EquipVirtualWeapon.sqs" call _f; // 190
 
 "\TZK_Patch4_4_0_6\s\UI\PlayGameOverSequence.sqs" call _f; // 191
