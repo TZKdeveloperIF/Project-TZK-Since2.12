@@ -557,7 +557,7 @@ unitDefs set [_type, ["Orca95", 2000, _si, 20, "Orca95_W_xj400", "\tzk_texture_4
 _orcaW = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["MH-6", 2000, _si, 20, "MH6_irNo_TZK_xj400", "\TZK_Texture_4_0_0\icon\imh6.paa", 2^stHeavy + 2^stLight, [1, _pilotW], _mSmallHeli, []] ];
+unitDefs set [_type, ["MH-6", 2000, _si, 20, "MH6_irNo_TZK_xj400", "\TZK_Texture_4_0_0\icon\imh6.paa", 2^stLight + 2^stAir, [1, _pilotW], _mSmallHeli, []] ];
 _mh6W = _type;
 _type = _type + 1;
 
@@ -569,7 +569,7 @@ unitDefs set [_type, ["MH-6 M134", 5000, _si, 40, "MH6_irNo_M134_xj400", "\TZK_T
 _mh6M134W = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["UH60 (transp)", 4000, _si, 60, "UH60_irNo_TZK_xj400", "iuh60", 2^stHeavy + 2^stLight, [1, _pilotW], _mHeli, []] ];
+unitDefs set [_type, ["UH60 (transp)", 4000, _si, 60, "UH60_irNo_TZK_xj400", "iuh60", 2^stLight + 2^stAir, [1, _pilotW], _mHeli, []] ];
 _irNO_uh60 = _type;
 _type = _type + 1;
 
@@ -1152,7 +1152,7 @@ unitDefs set [_type, ["Orca95", 2000, _si, 20, "Orca95_E_xj400", "\tzk_texture_4
 _orcaE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mi-2", 2000, _si, 20, "Mi2NOE_irNo_TZK_xj400", "\TZK_Texture_4_0_0\icon\iMi2.paa", 2^stHeavy + 2^stLight, [1, _pilotE], _mSmallHeli, []] ];
+unitDefs set [_type, ["Mi-2", 2000, _si, 20, "Mi2NOE_irNo_TZK_xj400", "\TZK_Texture_4_0_0\icon\iMi2.paa", 2^stLight + 2^stAir, [1, _pilotE], _mSmallHeli, []] ];
 _mi2E = _type;
 _type = _type + 1;
 
@@ -1164,7 +1164,7 @@ unitDefs set [_type, ["Mi-2 GShG", 5000, _si, 40, "Mi2NOE_irNo_GShG_xj400", "\TZ
 _mi2GshgE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mi17 (transp)", 4000, _si, 60, "Mi17_irNo_TZK_xj400", "imi17", 2^stHeavy + 2^stLight, [1, _pilotE], _mHeli, []] ];
+unitDefs set [_type, ["Mi17 (transp)", 4000, _si, 60, "Mi17_irNo_TZK_xj400", "imi17", 2^stLight + 2^stAir, [1, _pilotE], _mHeli, []] ];
 _irNO_mi17 = _type;
 _type = _type + 1;
 
