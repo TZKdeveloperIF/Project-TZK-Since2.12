@@ -12,7 +12,7 @@ if ((_found select 1) > rangeSupport) then {hint "No Rearm Vehicle Nearby."} els
 		if (_index != -1) then {
 			{_unit removeWeapon _x} forEach _NVGs; _unit addWeapon _nvgOptics;
 			_costO = weaponDefs select _index select wdcost;
-			if (upgMatrix select siPlayer select upgTL == 2) then {_costO = 0}; if (_costO > 0) then {[_costO] exec };
+			if (upgMatrix select siPlayer select upgTL == 2) then {_costO = 0}; if (_costO > 0) then {[_costO] exec "Net\sMoneySpent.sqs"};
 			player groupChat format ["Rapid Rearm completed. Cost: $%1", _costO];
 		};
 	};
