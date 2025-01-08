@@ -90,6 +90,13 @@ _return = "External_Update"; goto "UpdateDialog"
 	? _bNewMember : _bNewMember = false; _unitTracked = _selMember
 
 	_target = vehicle _unitTracked
+
+	; when crossing the bridge, unit cam has abnormal pos
+	; this is due to a classic OFP "roadway" bug. the "getPos"
+	; returns an unexpected height
+	; However (getPosASL select 2) - funcHASL is not exactly
+	; expected height. There're little error related to models.
+
 	_posTarget = getPos _target
 
 	_offsetCamZ = [4, 2] select (_target == _unitTracked)
