@@ -16,7 +16,7 @@ Radio009 setTriggerStatements ["this", {call loadFile (TzkScripts select 325)}, 
 Radio000 setTriggerText "Reset Vector Up"; Radio000 setTriggerStatements ["this", {[vehicle player] exec (TzkScripts select 202)}, ""];
 
 	? Page_Radio_Artillery == 0 : goto "SkipInitPage2"
-	"M" call loadFile (TzkScripts select 324);
+	["M", _speed] call loadFile (TzkScripts select 324);
 
 # SkipInitPage2
 
@@ -34,7 +34,7 @@ _boole_PageNoChange = (Page_Radio_Artillery == _page); _page = Page_Radio_Artill
 ; If page changed, re-initialize
 ? !_boole_PageNoChange && _page == 0: "M" call loadFile (TzkScripts select 321);
 
-? !_boole_PageNoChange && _page == 1: "M" call loadFile (TzkScripts select 324);
+? !_boole_PageNoChange && _page == 1: ["M", _speed] call loadFile (TzkScripts select 324);
 
 _timeRefresh = time + 1
 @(time > _timeRefresh || boole_Refresh_Radio)
