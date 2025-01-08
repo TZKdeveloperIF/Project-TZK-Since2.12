@@ -59,7 +59,7 @@ _f = {
 "\TZK_Patch4_4_0_6\s\EhInit\RedirectableM109a6g.sqs" call _f; // 035
 "\TZK_Patch4_4_0_6\s\EhInit\RedirectablePlz05.sqs" call _f; // 036
 "\TZK_Patch4_4_0_6\s\EhInit\RedirectableTos1.sqs" call _f; // 037
-"\TZK_Scripts_4_0_6\Server\Event\Add_StructHit.sqs" call _f; // 038
+"\TZK_Patch4_4_0_6\s\Server\Event\Add_StructHit.sqs" call _f; // 038
 "Common\Event\Add_Killed_Infantry.sqs" call _f; // 039
 
 "\TZK_Config_4_0_6\Scripts\CSLA_UH60A\GetOut_EH.sqs" call _f; // 040
@@ -173,7 +173,7 @@ _f = {
 "Net\sUndoBuild.sqs" call _f; // 135
 "Player\SetWaypointSmart.sqs" call _f; // 136
 "Server\AddWorker.sqs" call _f; // 137
-"\TZK_Scripts_4_0_6\Server\CheckWinTowns.sqs" call _f; // 138
+"\TZK_Patch4_4_0_6\s\Server\CheckWinTowns.sqs" call _f; // 138
 "\TZK_Patch4_4_0_6\s\Server\UndoStructure.sqs" call _f; // 139
 
 "\TZK_Patch4_4_0_6\s\InfoSvr\GroupIsAI.sqs" call _f; // 140
