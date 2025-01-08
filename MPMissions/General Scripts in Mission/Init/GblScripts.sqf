@@ -387,7 +387,7 @@ _f = {
 "\TZK_Patch4_4_0_6\s\Radio\fArtMLRSPage2.sqf" call _f; // 323
 "\TZK_Patch4_4_0_6\s\Radio\fArtHowitzerPage2.sqf" call _f; // 324
 "\TZK_Patch4_4_0_6\s\Radio\page_art_next.sqf" call _f; // 325
-"" call _f; // 326
+"\TZK_Patch4_4_0_6\s\Radio\fArtRadioStatement.sqf" call _f; // 326
 "" call _f; // 327
 "" call _f; // 328
 "" call _f; // 329
