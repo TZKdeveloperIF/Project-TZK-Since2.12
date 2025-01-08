@@ -609,7 +609,7 @@ unitDefs set [_type, ["CH47 (Tug)", 4000, _si, 60, "BAS_MH47E", "\ch47\ich47.paa
 _ch47W = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["C-130 Hercules", 5000, _si, 60, "C130_xj400", "\TZK_Texture_4_0_0\icon\iC130.paa", 2^_st, [2, _pilotW], _mPlane, ["\TZK_Scripts_4_0_4\Common\InitSpawnPlane.sqs"]] ];
+unitDefs set [_type, ["C-130 Hercules", 5000, _si, 60, "C130_xj400", "\TZK_Texture_4_0_0\icon\iC130.paa", 2^_st, [2, _pilotW], _mPlane, [(TzkScripts select 346)]] ];
 _c130W = _type;
 _type = _type + 1;
 
@@ -637,11 +637,11 @@ unitDefs set [_type, ["Tiger PARS3", 23000, _si, 90, "Tiger_PARS3_xj400", "\TZK_
 _tigerW2 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["C130 Support", 5000, _si, 60, "C130_Support_xj400", "\TZK_Texture_4_0_0\icon\iC130.paa", 2^_st, [1, _pilotW], _mSupport, ["\TZK_Scripts_4_0_4\Common\InitSpawnPlane.sqs", "Common\InitSupportVehicle.sqs"]] ];
+unitDefs set [_type, ["C130 Support", 5000, _si, 60, "C130_Support_xj400", "\TZK_Texture_4_0_0\icon\iC130.paa", 2^_st, [1, _pilotW], _mSupport, [(TzkScripts select 346), "Common\InitSupportVehicle.sqs"]] ];
 _c130supportW = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["A10 (AA Only)", 5000, _si, 90, "A10_AAOnly_xj406", "ia10", 2^_st, [1, _pilotW], _mPlane, ["Common\Equip\PlaneGun.sqs", "\TZK_Scripts_4_0_4\Common\InitSpawnPlane.sqs"]] ];
+unitDefs set [_type, ["A10 (AA Only)", 5000, _si, 90, "A10_AAOnly_xj406", "ia10", 2^_st, [1, _pilotW], _mPlane, ["Common\Equip\PlaneGun.sqs", (TzkScripts select 346)]] ];
 _a10gun = _type;
 _type = _type + 1;
 
@@ -653,7 +653,7 @@ unitDefs set [_type, ["(empty)", 14000, _si, 90, "A10_xj406", "ia10", -1, [1, _p
 _a10bombs = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["A10", 15000, _si, 90, "A10_xj406", "ia10", 2^_st, [1, _pilotW], _mPlane, ["Common\Equip\PlaneCustom.sqs", "Common\InitSpawnPlane.sqs"]] ];
+unitDefs set [_type, ["A10", 15000, _si, 90, "A10_xj406", "ia10", 2^_st, [1, _pilotW], _mPlane, ["Common\Equip\PlaneCustom.sqs", (TzkScripts select 347)]] ];
 _a10 = _type;
 _type = _type + 1;
 if (!bool_TZK_199_Mode && !bool_TZK_Vanilla_Mode) then {unitDefs select _a10 set [udModel, "A10_xj400"]};
@@ -670,7 +670,7 @@ unitDefs set [_type, ["(empty)", 30000, _si, 90, "A10_FFAR_xj400", "ia10", -1, [
 _a10FFAR = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["B2 Bomber", 30000, _si, 90, "B2", "\rktf15c\modpic.paa", -1, [1, _pilotW], _mPlane, ["\TZK_Scripts_4_0_4\Common\InitSpawnPlane.sqs"]] ];
+unitDefs set [_type, ["B2 Bomber", 30000, _si, 90, "B2", "\rktf15c\modpic.paa", -1, [1, _pilotW], _mPlane, [(TzkScripts select 346)]] ];
 _B2 = _type;
 _type = _type + 1;
 
@@ -1204,7 +1204,7 @@ unitDefs set [_type, ["Mi26 (tug)", 4000, _si, 60, "OWP_MI26ps", "\OWP_Mi26\pics
 _mi26E = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["An-72 Coaler", 5000, _si, 60, "AN72_xj400", "\TZK_Texture_4_0_0\icon\iAN72.paa", 2^_st, [2, _pilotE], _mPlane, ["\TZK_Scripts_4_0_4\Common\InitSpawnPlane.sqs"]] ];
+unitDefs set [_type, ["An-72 Coaler", 5000, _si, 60, "AN72_xj400", "\TZK_Texture_4_0_0\icon\iAN72.paa", 2^_st, [2, _pilotE], _mPlane, [(TzkScripts select 346)]] ];
 _an72E = _type;
 _type = _type + 1;
 
@@ -1228,11 +1228,11 @@ unitDefs set [_type, ["Mi24 AT", 25000, _si, 90, "Mi24_RHS_AT_xj400", "\TZK_Text
 _mi24E2 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["An-72 Support", 5000, _si, 60, "AN72_Support_xj400", "\TZK_Texture_4_0_0\icon\iAN72.paa", 2^_st, [2, _pilotE], _mSupport, ["\TZK_Scripts_4_0_4\Common\InitSpawnPlane.sqs", "Common\InitSupportVehicle.sqs"]] ];
+unitDefs set [_type, ["An-72 Support", 5000, _si, 60, "AN72_Support_xj400", "\TZK_Texture_4_0_0\icon\iAN72.paa", 2^_st, [2, _pilotE], _mSupport, [(TzkScripts select 346), "Common\InitSupportVehicle.sqs"]] ];
 _an72supportE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Su25 (AA Only)", 8000, _si, 90, "Su25_AAOnly_xj406", "\Su25\isu25", 2^_st, [1, _pilotE], _mPlane, ["Common\Equip\PlaneGun.sqs", "\TZK_Scripts_4_0_4\Common\InitSpawnPlane.sqs"]] ];
+unitDefs set [_type, ["Su25 (AA Only)", 8000, _si, 90, "Su25_AAOnly_xj406", "\Su25\isu25", 2^_st, [1, _pilotE], _mPlane, ["Common\Equip\PlaneGun.sqs", (TzkScripts select 346)]] ];
 _su25gun = _type;
 _type = _type + 1;
 
@@ -1244,7 +1244,7 @@ unitDefs set [_type, ["(empty)", 14000, _si, 90, "Su25_xj406", "\Su25\isu25", -1
 _su25bombs = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Su25", 15000, _si, 90, "Su25_xj406", "\Su25\isu25", 2^_st, [1, _pilotE], _mPlane, ["Common\Equip\PlaneCustom.sqs", "Common\InitSpawnPlane.sqs"]] ];
+unitDefs set [_type, ["Su25", 15000, _si, 90, "Su25_xj406", "\Su25\isu25", 2^_st, [1, _pilotE], _mPlane, ["Common\Equip\PlaneCustom.sqs", (TzkScripts select 347)]] ];
 _su25 = _type;
 _type = _type + 1;
 if (!bool_TZK_199_Mode && !bool_TZK_Vanilla_Mode) then {unitDefs select _su25 set [udModel, "Su25_xj400"]};
@@ -1253,7 +1253,7 @@ unitDefs set [_type, ["(empty)", 20000, _si, 90, "Su25_LGB_xj400", "\Su25\isu25"
 _su25LGB8 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["(empty)", 25000, _si, 90, "Su25_xj406", "\Su25\isu25", -1, [1, _pilotE], _mPlane, ["TZK_Scripts_4_0_4\Common\InitSpawnPlane.sqs"]] ];
+unitDefs set [_type, ["(empty)", 25000, _si, 90, "Su25_xj406", "\Su25\isu25", -1, [1, _pilotE], _mPlane, [(TzkScripts select 346)]] ];
 _su25AA = _type;
 _type = _type + 1;
 
@@ -1261,7 +1261,7 @@ unitDefs set [_type, ["(empty)", 30000, _si, 90, "Su25_Rocket_xj400", "\Su25\isu
 _su25Rocket = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Su39 Bomber", 30000, _si, 90, "su39", "\rktf15c\modpic.paa", -1, [1, _pilotW], _mPlane, ["\TZK_Scripts_4_0_4\Common\InitSpawnPlane.sqs"]] ];
+unitDefs set [_type, ["Su39 Bomber", 30000, _si, 90, "su39", "\rktf15c\modpic.paa", -1, [1, _pilotW], _mPlane, [(TzkScripts select 346)]] ];
 _su39 = _type;
 _type = _type + 1;
 
@@ -1317,11 +1317,11 @@ _type = _type + 1;
 comment {ARMOR RES} ;
 
 
-unitDefs set [_type, ["RES HUNTER", 5000, _si, 90, "RKTHunterGAG", "\Su25\isu25", _st, [1, _crewR], _mPlane, ["\TZK_Scripts_4_0_4\Common\InitSpawnPlaneRes.sqs","\TZK_Patch4_4_0_6\s\Common\Equip\ResPlanebombs.sqs"]] ];
+unitDefs set [_type, ["RES HUNTER", 5000, _si, 90, "RKTHunterGAG", "\Su25\isu25", _st, [1, _crewR], _mPlane, [(TzkScripts select 348),"\TZK_Patch4_4_0_6\s\Common\Equip\ResPlanebombs.sqs"]] ];
 _planeatR = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["RES HUNTER", 5000, _si, 90, "RKTHunterBAG", "\Su25\isu25", _st, [1, _crewR], _mPlane, ["\TZK_Scripts_4_0_4\Common\InitSpawnPlaneRes.sqs","\TZK_Patch4_4_0_6\s\Common\Equip\ResPlanegun.sqs"]] ];
+unitDefs set [_type, ["RES HUNTER", 5000, _si, 90, "RKTHunterBAG", "\Su25\isu25", _st, [1, _crewR], _mPlane, [(TzkScripts select 348),"\TZK_Patch4_4_0_6\s\Common\Equip\ResPlanegun.sqs"]] ];
 _planeatR2 = _type;
 _type = _type + 1;
 
