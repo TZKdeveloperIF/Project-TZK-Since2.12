@@ -84,24 +84,25 @@ _siHigh = si0
 _siLow = si1
 ? (_scoreSide1 > _scoreSide0): _siHigh = si1, _siLow = si0
 _siArr = [_siHigh, _siLow]; _i = 0; _c = count _siArr
+_needClear = true
 # showTotal
 	_siX = _siArr select _i
 	? -1 == _show find _siX: goto "continue_showTOtal"
 
 	_idc = IDC_LB_SIDE
-	? 0 == _i: lbClear _idc
+	? _needClear: lbClear _idc
 	_id = lbAdd [_idc, sideNames select _siX]; lbSetColor [_idc, _id, _clr select _siX]
 
 	_idc = IDC_LB_INFANTRYSIDE
 	_sc = scInfantry
-	? 0 == _i: lbClear _idc
+	? _needClear: lbClear _idc
 	_total = 0
 	{ if ((_x select 2) == _siX) then { _total = _total + ((_x select 3) select _sc) } } foreach _scores
 	_id = lbAdd [_idc, format ["%1", ["", _total] select (_siX in _show) ]]; lbSetColor [_idc, _id, _clr select _siX]
 
 	_idc = IDC_LB_VEHICLESIDE
 	_sc = scVehicle
-	? 0 == _i: lbClear _idc
+	? _needClear: lbClear _idc
 	_total = 0
 	? pvGameOver == -1 && siPlayer != siCiv : { if ((_x select 2) == _siX) then { _total = _total + ((_x select 3) select _sc) + ((_x select 3) select scMHQ) } } foreach _scores
 	? pvGameOver != -1 || siPlayer == siCiv : { if ((_x select 2) == _siX) then { _total = _total + ((_x select 3) select _sc) } } foreach _scores
@@ -109,28 +110,30 @@ _siArr = [_siHigh, _siLow]; _i = 0; _c = count _siArr
 
 	_idc = IDC_LB_MHQSIDE
 	_sc = scMHQ
-	? 0 == _i: lbClear _idc
+	? _needClear: lbClear _idc
 	_total = 0
 	{ if ((_x select 2) == _siX) then { _total = _total + ((_x select 3) select _sc) } } foreach _scores
 	? pvGameOver != -1 || siPlayer == siCiv : _id = lbAdd [_idc, format ["%1", _total]]; lbSetColor [_idc, _id, _clr select _siX]
 
 	_idc = IDC_LB_STRUCTSIDE
 	_sc = scStruct
-	? 0 == _i: lbClear _idc
+	? _needClear: lbClear _idc
 	_total = 0
 	{ if ((_x select 2) == _siX) then { _total = _total + ((_x select 3) select _sc) } } foreach _scores
 	_id = lbAdd [_idc, format ["%1", ["", _total] select (_siX in _show)]]; lbSetColor [_idc, _id, _clr select _siX]
 
 	_idc = IDC_LB_TOWNSIDE
 	_sc = scTown
-	? 0 == _i: lbClear _idc
+	? _needClear: lbClear _idc
 	_total = 0
 	{ if ((_x select 2) == _siX) then { _total = _total + ((_x select 3) select _sc) } } foreach _scores
 	_id = lbAdd [_idc, format ["%1", ["", _total] select (_siX in _show)]]; lbSetColor [_idc, _id, _clr select _siX]
 
 	_idc = IDC_LB_TOTALSIDE
-	? 0 == _i: lbClear _idc
+	? _needClear: lbClear _idc
 	_id = lbAdd [_idc, format ["%1", _scoreSide select _siX]]; lbSetColor [_idc, _id, _clr select _siX]
+
+	_needClear = false
 
 	# continue_showTOtal
 	_i = _i + 1;
