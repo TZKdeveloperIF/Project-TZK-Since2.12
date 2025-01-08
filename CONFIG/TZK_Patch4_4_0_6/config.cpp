@@ -739,6 +739,11 @@ class CfgVehicles {
 	};
 	class T80_Base_xj400: T72_Base_xj400 {};
 	class TZK_HeavyEastTank_Base_xj400: T80_Base_xj400 {};
+	class T80_xj400: TZK_HeavyEastTank_Base_xj400 {};
+	class T80_C_xj400: T80_xj400 {};
+	class T80_G_xj400: T80_C_xj400 {
+		class EventHandlers { Init = [_this select 0, true] exec "\TZK_Patch4_4_0_6\s\EhInit\4064T80Static.sqs"; };
+	};
 	class ZTZ99_xj400: TZK_HeavyEastTank_Base_xj400 {};
 	class ZTZ99_C_xj400: ZTZ99_xj400 {
 		class EventHandlers { Init = (_this select 0) exec "\TZK_Patch4_4_0_6\s\EhInit\4064Ztz99Static.sqs"; };

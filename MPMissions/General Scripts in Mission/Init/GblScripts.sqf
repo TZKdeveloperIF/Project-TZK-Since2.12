@@ -82,7 +82,7 @@ _f = {
 "\TZK_Patch4_4_0_6\s\EhInit\4064TexPlz05.sqs" call _f; // 056
 "\TZK_Objects\Scripts\texture\RSC_Numbers.sqs" call _f; // 057
 "\TZK_Objects\Scripts\texture\T80.sqs" call _f; // 058
-"Player\Effect\T80Drum.sqs" call _f; // 059
+"059" call _f; // 059
 
 "\TZK_Patch4_4_0_6\s\Common\Event\MHQDestroyed.sqs" call _f; // 060
 "\TZK_Scripts_4_0_4\Server\Event_DefenceTowerDestroyed.sqs" call _f; // 061
