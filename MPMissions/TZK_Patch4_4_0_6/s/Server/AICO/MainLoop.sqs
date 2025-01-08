@@ -59,7 +59,7 @@ _transEjectParam = call (orderDefs select orderTransportDuty select 1 select 2 s
 ; 4.0.5.15 Update
 _planeType = unitsBuyAI select _si select utbPlane select 0 select 0
 _script = ["\TZK_Patch4_4_0_6\s\Common\Equip\A10AT.sqs", "\TZK_Patch4_4_0_6\s\Common\Equip\Su25AT.sqs"] select _si
-unitDefs select _planeType set [udScripts, [_script, "Common\InitSpawnPlane.sqs"]];
+unitDefs select _planeType set [udScripts, [_script, (TzkScripts select 347)]];
 
 
 _townsTotal = count towns

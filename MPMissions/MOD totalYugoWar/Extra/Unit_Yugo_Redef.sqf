@@ -292,35 +292,35 @@ unitDefs set [_type, ["AH64D (8AT/38FFAR/4AA/30mm)", 20000, _si, 90, "TYW8_LLW_A
 _ah64 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["A10 (6AT/14R/4B/2AA/GAU)", 20000, _si, 90, "TYW8_DSL_a10g", "ia10", 2^_st, [1, _pilotW], _mPlane, ["\TZK_Scripts_4_0_4\Common\InitSpawnPlane.sqs"]] ];
+unitDefs set [_type, ["A10 (6AT/14R/4B/2AA/GAU)", 20000, _si, 90, "TYW8_DSL_a10g", "ia10", 2^_st, [1, _pilotW], _mPlane, [(TzkScripts select 346)]] ];
 _A10AT = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["A10 (4GBU/2AT/2AA/GAU)", 18000, _si, 90, "TYW8_DSL_a10gbug", "ia10", 2^_st, [1, _pilotW], _mPlane, ["\TZK_Scripts_4_0_4\Common\InitSpawnPlane.sqs"]] ];
+unitDefs set [_type, ["A10 (4GBU/2AT/2AA/GAU)", 18000, _si, 90, "TYW8_DSL_a10gbug", "ia10", 2^_st, [1, _pilotW], _mPlane, [(TzkScripts select 346)]] ];
 _A10G = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["A10 (12B/2AA/GAU)", 18000, _si, 90, "TYW8_DSL_a10mkg", "ia10", 2^_st, [1, _pilotW], _mPlane, ["\TZK_Scripts_4_0_4\Common\InitSpawnPlane.sqs"]] ];
+unitDefs set [_type, ["A10 (12B/2AA/GAU)", 18000, _si, 90, "TYW8_DSL_a10mkg", "ia10", 2^_st, [1, _pilotW], _mPlane, [(TzkScripts select 346)]] ];
 _A10B = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["F15C (10AA/30mm)", 12000, _si, 90, "TYW8_RKTF15C_Grey", "\rktf15c\modpic.paa", 2^_st, [1, _pilotW], _mPlane, ["\TZK_Scripts_4_0_4\Common\InitSpawnPlane.sqs"]] ];
+unitDefs set [_type, ["F15C (10AA/30mm)", 12000, _si, 90, "TYW8_RKTF15C_Grey", "\rktf15c\modpic.paa", 2^_st, [1, _pilotW], _mPlane, [(TzkScripts select 346)]] ];
 _F15C = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["F16 MIGCAP (6AA)", 8000, _si, 90, "TYW8_RKTF16AA", "\rktf16\picture.paa", 2^_st, [1, _pilotW], _mPlane, ["\TZK_Scripts_4_0_4\Common\InitSpawnPlane.sqs"]] ];
+unitDefs set [_type, ["F16 MIGCAP (6AA)", 8000, _si, 90, "TYW8_RKTF16AA", "\rktf16\picture.paa", 2^_st, [1, _pilotW], _mPlane, [(TzkScripts select 346)]] ];
 _F16CAP = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["F16 CAS (4AT/2AA)", 15000, _si, 90, "TYW8_RKTF16AG", "\rktf16\picture.paa", 2^_st, [1, _pilotW], _mPlane, ["\TZK_Scripts_4_0_4\Common\InitSpawnPlane.sqs"]] ];
+unitDefs set [_type, ["F16 CAS (4AT/2AA)", 15000, _si, 90, "TYW8_RKTF16AG", "\rktf16\picture.paa", 2^_st, [1, _pilotW], _mPlane, [(TzkScripts select 346)]] ];
 _F16 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["F16 Strike (2GBU10/2AA)", 15000, _si, 90, "TYW8_RKTF16PS", "\rktf16\picture.paa", 2^_st, [1, _pilotW], _mPlane, ["\TZK_Scripts_4_0_4\Common\InitSpawnPlane.sqs"]] ];
+unitDefs set [_type, ["F16 Strike (2GBU10/2AA)", 15000, _si, 90, "TYW8_RKTF16PS", "\rktf16\picture.paa", 2^_st, [1, _pilotW], _mPlane, [(TzkScripts select 346)]] ];
 _F16S = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["F16 SEAD (4MK20/2AR/4AA)", 40000, _si, 90, "TYW8_RKTF16WW", "\rktf16\picture.paa", 2^_st, [1, _pilotW], _mPlane, ["\TZK_Scripts_4_0_4\Common\InitSpawnPlane.sqs"]] ];
+unitDefs set [_type, ["F16 SEAD (4MK20/2AR/4AA)", 40000, _si, 90, "TYW8_RKTF16WW", "\rktf16\picture.paa", 2^_st, [1, _pilotW], _mPlane, [(TzkScripts select 346)]] ];
 _F16SEAD = _type;
 _type = _type + 1;
 
@@ -328,7 +328,7 @@ unitDefs set [_type, ["C-130 Hercules", 4000, _si, 90, "TYW8_hwk_C130g", "\HWK_c
 _C130 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["B-52 (84xMK84)", 25000, _si, 90, "TYW8_GNTB52", "\GNT_B52\B52pic.paa", 2^_st, [1, _pilotW], _mPlane, ["\TZK_Scripts_4_0_4\Common\InitSpawnPlane.sqs"]] ];
+unitDefs set [_type, ["B-52 (84xMK84)", 25000, _si, 90, "TYW8_GNTB52", "\GNT_B52\B52pic.paa", 2^_st, [1, _pilotW], _mPlane, [(TzkScripts select 346)]] ];
 _B52 = _type;
 _type = _type + 1;
 
@@ -661,23 +661,23 @@ unitDefs set [_type, ["Mi28 (16AT/30mm)", 20000, _si, 90, "TYW8_HWK_MI28AT","\HW
 _mi28AT = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mig29 (6KabL/2AA/30mm)", 12000, _si, 90, "TYW8_vit_mig29rus12", "\TotalYugoWarFinal\Images\mig29b.jpg", 2^_st, [1, _pilotE], _mPlane, ["\TZK_Scripts_4_0_4\Common\InitSpawnPlane.sqs"]] ];
+unitDefs set [_type, ["Mig29 (6KabL/2AA/30mm)", 12000, _si, 90, "TYW8_vit_mig29rus12", "\TotalYugoWarFinal\Images\mig29b.jpg", 2^_st, [1, _pilotE], _mPlane, [(TzkScripts select 346)]] ];
 _mig29 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mig29 (6AT/30mm)", 15000, _si, 90, "TYW8_vit_mig29rus2", "\TotalYugoWarFinal\Images\mig29.jpg", 2^_st, [1, _pilotE], _mPlane, ["\TZK_Scripts_4_0_4\Common\InitSpawnPlane.sqs"]] ];
+unitDefs set [_type, ["Mig29 (6AT/30mm)", 15000, _si, 90, "TYW8_vit_mig29rus2", "\TotalYugoWarFinal\Images\mig29.jpg", 2^_st, [1, _pilotE], _mPlane, [(TzkScripts select 346)]] ];
 _mig29AT = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mig29 (8AA/30mm)", 8000, _si, 90, "TYW8_vit_mig29rus1", "\TotalYugoWarFinal\Images\mig29.jpg", 2^_st, [1, _pilotE], _mPlane, ["\TZK_Scripts_4_0_4\Common\InitSpawnPlane.sqs"]] ];
+unitDefs set [_type, ["Mig29 (8AA/30mm)", 8000, _si, 90, "TYW8_vit_mig29rus1", "\TotalYugoWarFinal\Images\mig29.jpg", 2^_st, [1, _pilotE], _mPlane, [(TzkScripts select 346)]] ];
 _mig29AA = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Su-27 (8AA/30mm)", 8000, _si, 90, "TYW8_RKTSu27", "\rktsu27\picture", 2^_st, [1, _pilotE], _mPlane, ["\TZK_Scripts_4_0_4\Common\InitSpawnPlane.sqs"]] ];
+unitDefs set [_type, ["Su-27 (8AA/30mm)", 8000, _si, 90, "TYW8_RKTSu27", "\rktsu27\picture", 2^_st, [1, _pilotE], _mPlane, [(TzkScripts select 346)]] ];
 _su27 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Su25 (6AT/64R/2AA/30mm)", 15000, _si, 90, "TYW8_Su25", "\SU25\isu25", 2^_st, [1, _pilotE], _mPlane, ["\TZK_Scripts_4_0_4\Common\InitSpawnPlane.sqs"]] ];
+unitDefs set [_type, ["Su25 (6AT/64R/2AA/30mm)", 15000, _si, 90, "TYW8_Su25", "\SU25\isu25", 2^_st, [1, _pilotE], _mPlane, [(TzkScripts select 346)]] ];
 _su25 = _type;
 _type = _type + 1;
 
@@ -685,7 +685,7 @@ unitDefs set [_type, ["An-72 Coaler (Tug)", 4000, _si, 90, "TYW8_RKTCoaler3Col",
 _an72 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Tu-22m3 (3AT)", 12000, _si, 90, "TYW8_RKT_Backfire", "\rktbackfire\bf_pic", 2^_st, [1, _pilotE], _mPlane, ["\TZK_Scripts_4_0_4\Common\InitSpawnPlane.sqs"]] ];
+unitDefs set [_type, ["Tu-22m3 (3AT)", 12000, _si, 90, "TYW8_RKT_Backfire", "\rktbackfire\bf_pic", 2^_st, [1, _pilotE], _mPlane, [(TzkScripts select 346)]] ];
 _Tu22 = _type;
 _type = _type + 1;
 
