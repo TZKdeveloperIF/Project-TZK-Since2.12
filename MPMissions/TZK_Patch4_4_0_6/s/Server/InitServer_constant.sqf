@@ -1,9 +1,6 @@
 
 comment {DEFINE CONSTANT POINTER FOR FUNCTION} ;
 
-{deleteVehicle (leader _x)} forEach (workerGroups select si0); {deleteVehicle (leader _x)} forEach (workerGroups select si1);
-
-
 ResDestroyStruct = []; mutexResDestStruct = false;
 
 CheckSupportUnits = []; mutexCheckSupport = false;

@@ -57,8 +57,9 @@ call preprocessFile "Init\SvrAicoUpg.sqf";
 0 exec "Init\SvrTownTrigger.sqs";
 
 // start AI groups initialization
-0 exec "Init\SvrGroupScripts.sqs";
+0 exec "Init\svrGroupsRes.sqs";
 0 exec "Init\SvrFunctionalGrps.sqs";
+0 exec "Init\svrGroupsWorker.sqs";
 
 // start server looping
 {_x exec "Server\UpdateRespawnAI.sqs"} forEach [si0, si1];

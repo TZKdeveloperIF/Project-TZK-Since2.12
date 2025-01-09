@@ -11,7 +11,11 @@ si0 = 0; si1 = 1; siRes = 2; siBoth = 3; siCiv = 4;
 sides = [west, east, resistance];
 
 // global groups variable declare
-townGroups=[ [], [], [] ]; workerGroups = [ [], [] ]; patrolGroups = [];
+townGroups=[ [], [], [] ];
+workerGroups = [ [], [] ];
+if isServer then {
+	patrolGroups = [];
+};
 functionalGroups = [ [], [] ];
 // define global variable for all groups. They're widely used thus prepare a singleton
 tzkAllGroups = [ [], [] ];
