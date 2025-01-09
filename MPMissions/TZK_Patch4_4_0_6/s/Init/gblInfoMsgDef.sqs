@@ -3,7 +3,6 @@
 infoDefs = []
 
 ; entry format ["script", "info string 1", "info string 2", ....])
-; script "\TZK_Scripts_4_0_4\Player\Info 
 
 _type = 0
 
@@ -83,15 +82,19 @@ mtScoreMoney = _type
 infoDefs set [_type, ["ScoreMoney.sqs", "\TZK_Scripts_4_0_4\Player\Info\"] ]
 _type = _type + 1
 
+
 mtTownGroupLoss = _type
-infoDefs set [_type, ["TownGroupLoss.sqs", "\TZK_Scripts_4_0_4\Player\Info\"] ]
+infoDefs set [_type, [(TzkScripts select 350), ""] ]
 _type = _type + 1
+
 mtTownGroupHibernate = _type
-infoDefs set [_type, ["TownGroupHibernate.sqs", "\TZK_Scripts_4_0_4\Player\Info\"] ]
+infoDefs set [_type, [(TzkScripts select 349), ""] ]
 _type = _type + 1
+
 mtTownGroupSpawn = _type
-infoDefs set [_type, ["TownGroupSpawn.sqs", "\TZK_Scripts_4_0_4\Player\Info\"] ]
+infoDefs set [_type, [(TzkScripts select 351), ""] ]
 _type = _type + 1
+
 
 mtScudReloaded = _type
 infoDefs set [_type, ["ScudReloaded.sqs", "\TZK_Scripts_4_0_4\Player\Info\"] ]
@@ -115,4 +118,6 @@ _type = _type + 1
 
 call preprocessFile "impl\InfoMsg.sqf"
 
-? (_type >= TotalInfoTypes): format["ERROR: Exceeded maximum number (%1 > %2) of Info message types", _type, TotalInfoTypes] call fDebugLog
+TotalInfoTypes = count infoDefs;
+
+? (TotalInfoTypes >= 100): format ["ERROR: Exceeded maximum number (%1 > %2) of Info message types", TotalInfoTypes, 100] call fDebugLog

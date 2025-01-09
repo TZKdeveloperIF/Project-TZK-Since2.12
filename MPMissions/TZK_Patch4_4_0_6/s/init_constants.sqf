@@ -39,10 +39,8 @@ callsigns = [
 	"November", "Yankee", "Zulu", "Two", "Three", "Buffalo", "Guardian", "Convoy", "Fox"
 ];
 GroupsNum = (count callsigns) + 2; giTown = GroupsNum - 2; giWorker = GroupsNum - 1;
-TotalInfoTypes = 100;
 comment {these constants are used for calculating "value" in publicVariable operation} ;
-comment {"TotalInfoTypes" could be defined in init script of "InfoMsgTypes" as well} ;
-comment {cautious: number in OFP is "Single" so it's necessary to make sure the value of "value" less than 15,000,000} ;
+comment {cautious: number in OFP is "Single" so it's necessary to make sure the value of "value" less than 16,777,216} ;
 
 Musics0 = [
 	"Track1", "Track2", "Track3", "Track4", "Track5", "Track6", "Track7", "Track8", "Track9",
