@@ -10,6 +10,3 @@ _si = _this select 1;
 if (_si == si0 || _si == si1) then {
 	(tzkAllGroups select _si) set [count (tzkAllGroups select _si), _group];
 };
-
-// remove all units. Remain group only
-{deleteVehicle _x} forEach units _group;
