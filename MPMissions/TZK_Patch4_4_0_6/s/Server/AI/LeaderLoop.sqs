@@ -109,7 +109,7 @@ _grpBuyOrders = []
 	if !(count _workingStructures < _respawnNum) then { _objectRespawn = _workingStructures select (_respawnNum - 1); goto "RespawnStruct" }
 	
 	# RespawnOldFashion
-	_respawnObject = sideRespawnObjects select _si
+	_objectRespawn = sideRespawnObjects select _si
 	? !(alive _objectRespawn) : _objectRespawn = [_objectRespawn, _si] call funcGetNearestRespawnObject
 
 	_ts = _objectRespawn call funcGetStructTypeFromObject
