@@ -36,7 +36,7 @@ ctrlShow [IDC_DialogBG_Light, !bool_TZK_DarkSkin]
 
 	; ctrlSetText [_idcAdmin, ["Admin OFF", "Admin ON"] select pvVoteAdmin]
 	? btnValue00 > 0: _j = btnValue00, btnValue00 = -1, goto "StartVote"
-	; ? btnValue01 > 0: btnValue01 = -1, _page = (_page + 1) % TZK_Vote_Pages, call preprocessFile "Player\Dialog\VoteMenu_Init.sqf"
+	; ? btnValue01 > 0: btnValue01 = -1, _page = (_page + 1) % TZK_Vote_Pages, call loadFile (TzkScripts select 241)
 	_j = 0 + _page * _itemCnt; _k = 0; _lines = count Vote_Matrix
 	# LoopLine
 		ctrlSetText [_idcResult + _k, format ["%1", TzkCmdRules select _j select 2]];

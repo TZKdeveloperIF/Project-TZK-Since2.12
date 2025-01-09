@@ -62,7 +62,4 @@ _needed = _cost - _resources
 ;If more resources are needed then available report an error to player.
 ? (_needed > 0):Hint Format["Not Enough Money\nNeed: %1\nCost: %2", _needed, _cost];Exit
 
-[_posStruct, _dirStruct, _type] exec "\TZK_Scripts_4_0_4\Player\SendBuildStructure.sqs"
-
-;player globalchat format ["BuildGenericStructure.sqs: pvBuildStruct_Type=%1", pvBuildStruct_Type]
-Exit
+[_posStruct, _dirStruct, _type] exec "Net\sBuildStruct.sqs"

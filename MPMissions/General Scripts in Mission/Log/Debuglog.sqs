@@ -1,10 +1,10 @@
 ; args: string
-; Using 2.01 mission initialization unit "resistance_Center" to save status instead of "LocalServerObject"
+; Using 2.01 mission initialization unit "mission_initializer" to save status instead of "LocalServerObject"
 ; However the result of "saveStatus" is still nonintuitive. Use 2.01 VBS operators to write down info into config.
 
 _text = _this
 
-resistance_Center saveStatus _text
+mission_initializer saveStatus _text
 FixStart_0 globalChat _text
 
 _record = isServer

@@ -1,5 +1,5 @@
 version=11;
-#include "TZK_Scripts_4_0_6\mission.h"
+#include "TZK_Patch4_4_0_6\s\mission.h"
 class Mission
 {
 	addOns[]=
@@ -10,6 +10,7 @@ class Mission
 		"TZK_CONFIG_406_Patch",
 		"TZK_CONFIG_406_Patch2",
 		"TZK_CONFIG_406_Patch3",
+		"TZK_CONFIG_406_Patch4",
 	};
 	addOnsAuto[]=
 	{
@@ -17,6 +18,7 @@ class Mission
 		"TZK_CONFIG_406_Patch",
 		"TZK_CONFIG_406_Patch2",
 		"TZK_CONFIG_406_Patch3",
+		"TZK_CONFIG_406_Patch4",
 	};
 	randomSeed=1305091;
 	class Intel
@@ -36,7 +38,7 @@ class Mission
 		items=156;
 		class Item0
 		{
-			side="GUER";
+			side="EAST"; // initializer should be east group
 			class Vehicles
 			{
 				items=1;
@@ -48,8 +50,8 @@ class Mission
 					vehicle="SoldierGB";
 					leader=1;
 					skill=0.200000;
-					text="resistance_Center";
-					init="boole_Infantry_Mode = true; gameEndType = -1; towns=[]; [167792,167793,167794,167795,167796,167797] exec ""\TZK_Scripts_4_0_4\Server\InitRepairableObjects.sqs""; [] exec ""\TZK_Scripts_4_0_4\Server\InitDestroyIslandObject.sqs""";
+					text="mission_initializer"; // used to be resistance_Center
+					init="boole_Infantry_Mode = true; call preprocessFile {Init\MissionEnv.sqf}; [167792,167793,167794,167795,167796,167797] exec ""\TZK_Scripts_4_0_4\Server\InitRepairableObjects.sqs""; [] exec ""\TZK_Scripts_4_0_4\Server\InitDestroyIslandObject.sqs""";
 				};
 			};
 		};

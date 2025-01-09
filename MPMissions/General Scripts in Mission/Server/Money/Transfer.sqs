@@ -12,12 +12,12 @@ _valid = true
 
 groupMoneyMatrix select _si set [_giFrom, -_amount + (groupMoneyMatrix select _si select _giFrom)]
 groupMoneyMatrix select _si set [_giTo,  _amount + (groupMoneyMatrix select _si select _giTo)]
-? _amount != 0: [_si, _giFrom, 0] exec "\TZK_Scripts_4_0_4\Server\Msg\sMoneyStatus.sqs"; [_si, _giTo, 0] exec "\TZK_Scripts_4_0_4\Server\Msg\sMoneyStatus.sqs"
+? _amount != 0: [_si, _giFrom, 0] exec "Net\sMoneyStatus.sqs"; [_si, _giTo, 0] exec "Net\sMoneyStatus.sqs"
 
-[_si, _giFrom, _giTo, _amount] exec "\TZK_Scripts_4_0_4\Server\SendMoneyTransferred.sqs"
+[_si, _giFrom, _giTo, _amount] exec "Net\sMoneyTransferred.sqs"
 
 {mutexEditMoneyMatrix select _si set [_x, false]} forEach [_giFrom, _giTo]
 
 _gi = _giTo
 ? !((groupMatrix select _si select _gi) in (groupAiMatrix select _si)) || (groupMatrix select _si select _gi) == (groupCommander select _si): exit
-? (groupMoneyMatrix select _si select _gi) > aisKeepDefs select (aiSetting select _si select _gi select aisKeepMax): [_si, _gi, _giFrom, (groupMoneyMatrix select _si select _giTo) - (aisKeepDefs select (aiSetting select _si select _gi select aisKeepMax))] exec localize {TZK_MONEY_SERVER_TRANSFER};
+? (groupMoneyMatrix select _si select _gi) > aisKeepDefs select (aiSetting select _si select _gi select aisKeepMax): [_si, _gi, _giFrom, (groupMoneyMatrix select _si select _giTo) - (aisKeepDefs select (aiSetting select _si select _gi select aisKeepMax))] exec (TzkScripts select 168);

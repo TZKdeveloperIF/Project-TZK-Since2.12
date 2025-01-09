@@ -1,4 +1,14 @@
-; args : none
+; args: none
+
+; ======================================== post process of initialization in mission.sqm ========================================
+
+baseGroup = [grpNull, grpNull];
+? count (functionalGroups select si0) > 0: baseGroup set [si0, functionalGroups select si0 select 0]
+? count (functionalGroups select si1) > 0: baseGroup set [si1, functionalGroups select si1 select 0]
+
+; script path. They're used to be placed in stringtable.csv. However, that's not proper usage.
+; stringtable item is stored in 
+call preprocessFile "Init\GblScripts.sqf"
 
 ; ======================================== environment variables ========================================
 
@@ -17,7 +27,7 @@ _nil = "scalar bool array string 0xfcffffef"
 ; thousands of markers and town/radio sensors defined for 1.99 missions in mission.sqm.
 ? UsedVersion >= 2010: bool_TZK_199_Mode = false
 
-call loadFile "\TZK_Scripts_4_0_6\init_constants.sqf"
+call loadFile "\TZK_Patch4_4_0_6\s\init_constants.sqf"
 ; 4.0.6.83. Attach
     call preprocessFile "Attach\Install.sqf"
 ; 4.0.6.82. Bridge restruction
@@ -31,72 +41,47 @@ call preprocessFile "Log\Install.sqf"
 ; join black list should be defined on all clients and server
 TzkJoinBlackList = []
 
-pvCmdFinishedMakingRule = false; pvMatchRuleDefined = false; pvMatchStartTime = 0
-pvStartPosRes = -1
-pvMhq0x = -1, pvMhq0y = -1, pvMhq1x = -1, pvMhq1y = -1
+TzkStartPosRes = -1
 
-pvCustomPveStatus = -1, pvCustomPveFinished = false
 ; 4.0.6.37
 call preprocessFile "Art\InitEquipments.sqf"
 ; 4.0.6.29
 mutexTranspVehArr = false;
 ; 4.0.6.17
 TzkArtSpeeds = [22, 60, 70, 80, 120, 180, 300, 400, 500, 800, 900, 1200, 1400, 1500]
-; there's a bug of 4.0.6 in \TZK_Scripts_4_0_6\Common\Msg\sMHQKilled.sqs”
-; that calling server script {TZK_MSG_SERVER_SEND_INFO} in common script
-; fill definitions in init.sqs and shall be fixed in future mod (if there'll be)
-indexInfoMsg = 0; countInfoMsg = 4;
-call loadFile "\TZK_Scripts_4_0_6\init_group.sqf"
-call preprocessFile "Common\Init\Group.sqf"
-call loadFile "\TZK_Scripts_4_0_6\init_param.sqf"
-fixedStartPos = param1
-"" call loadFile "\TZK_Scripts_4_0_6\init_upgrade.sqf"
-upgDefs select upgSpoofMissile set [0, "Helicopter Spoof Missile"];
-upgDefs select upgSatCamZoom set [1, 0]; upgDefs select upgSatCamZoom set [2, 0];
-call preprocessFile "Version\CWA_CE_UpgradeRename.sqf"
-? bool_TZK_Lester_Mode: [{[] exec "Extra\init_upgrade.sqs"}, 0.1] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
-call loadFile "\TZK_Scripts_4_0_6\init_theWorld.sqf"
 
-call loadFile "\TZK_Scripts_4_0_6\Common\InitPublicVariables.sqf"
+call loadFile "\TZK_Patch4_4_0_6\s\init_group.sqf"
+call preprocessFile "Common\Init\Group.sqf"
+
+call loadFile "\TZK_Patch4_4_0_6\s\Init\param.sqf"
+
+"impl\Upgrade.sqf" call loadFile "\TZK_Patch4_4_0_6\s\init_upgrade.sqf"
+? bool_TZK_Lester_Mode: [{[] exec "Extra\init_upgrade.sqs"}, 0.1] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
+
+call loadFile "\TZK_Patch4_4_0_6\s\init_theWorld.sqf"
+
+call loadFile "\TZK_Patch4_4_0_6\s\init_publicVariables.sqf"
 ; order required. structures should be initialized before units
-call loadFile "\TZK_Scripts_4_0_6\Common\InitStructureTypes.sqf"
+call loadFile "\TZK_Patch4_4_0_6\s\init_structureTypes.sqf"
 ; ? bool_TZK_MF_Mode: 
 ; ? bool_TZK_Yugo_Mode:
-call loadFile "\TZK_Scripts_4_0_6\Common\InitUnitTypes.sqf"
-0 exec "\TZK_Scripts_4_0_6\Common\InitInfoMsgTypes.sqs"
-0 exec "\TZK_Scripts_4_0_6\Common\InitEquipmentTypes.sqs"
+call loadFile "\TZK_Patch4_4_0_6\s\init_unitTypes.sqf"
+0 exec "\TZK_Patch4_4_0_6\s\Init\gblInfoMsgDef.sqs"
+0 exec "\TZK_Patch4_4_0_6\s\init_equipmentTypes.sqs"
 ; 4.0.5.15/16 updating
-0 exec "Cwv\Init.sqs"
-; delay call in case of initialization unfinished
-[{call loadFile "impl\Upgrade.sqf"}, 10] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
+0 exec "\TZK_Patch4_4_0_6\s\Cwv\Init.sqs"
 ; 4.0.5.21 updating
 0 exec "Common\InitObserverMode.sqs"
 
 
 
 ; init functions (stuff that return values)
-call loadFile "\TZK_Scripts_4_0_6\Common\InitFunctions.sqf"
+call loadFile "\TZK_Patch4_4_0_6\s\init_funcs_common.sqf"
 ; AI Group Settings/Orders
-call loadFile "Common\InitAIOptions.sqf"
+call loadFile "\TZK_Patch4_4_0_6\s\init_AiGrpOptions.sqf"
 ArtilleryMagazineSpeedList = [80, 120, 180, 300, 400, 500];
 
 ; MESSAGE HANDLERS (SERVER AND CLIENTS)
-["\TZK_Scripts_4_0_4\Common\HandleScore.sqs"] exec "\TZK_Scripts_4_0_5\Common\Msg\mScore.sqs"
-
-[] exec "\TZK_Scripts_4_0_4\Common\MsgLock.sqs"
-[] exec "\TZK_Scripts_4_0_4\Common\MsgUnlock.sqs"
-
-; [] exec "\TZK_Scripts_4_0_4\Common\MsgVehicleMagsRemove.sqs"
-; { ["Common\Msg\hRearmVeh.sqs"] exec format ["\TZK_Scripts_4_0_5\Common\Msg\mRearmVehGeneral%1.sqs", _x] } forEach [0,1,2,3,4]
-
-
-[] exec "\TZK_Scripts_4_0_4\Common\MsgFuelVehicle.sqs"
-
-{ ["Common\Msg\hUnitBuilt.sqs"] exec format ["\TZK_Scripts_4_0_5\Common\Msg\mUnitBuilt_%1.sqs", _x] } forEach [0,1,2,3,4]
-
-[] exec "\TZK_Scripts_4_0_4\Common\MsgObjectRepaired.sqs"
-["\TZK_Scripts_4_0_4\Common\HandleStructMatrixRemove.sqs"] exec "\TZK_Scripts_4_0_5\Common\Msg\mStructMatrixRemove.sqs"
-
 ? bool_TZK_199_Mode: 0 exec "Common\initMsgUnderACWA.sqs"
 
 ; Custom weapon module
@@ -135,10 +120,6 @@ _posY = 0
 { _posX = _posX + ((getPos (_x select tdFlag)) select 0); _posY = _posY + ((getPos (_x select tdFlag)) select 1) } foreach towns
 posCenter = [_posX/_c, _posY/_c]
 
-townGroups=[ [], [], [] ]; workerGroups = [ [], [] ]; patrolGroups = []
-functionalGroups = [ [], [] ]
-baseGroup = [grpNull, grpNull]
-mutexDynamicInitializeGroups = false; 60 exec "Common\Dynamic\GroupsClear.sqs"
 timeReinforceTown = 3*60
 
 ? !bool_TZK_199_Mode && (bool_TZK_MF_Mode || bool_TZK_Yugo_Mode): call loadFile "Extra\DynamicTriggerRemove.sqf"
@@ -197,8 +178,8 @@ pvVoteStart0 = -1; pvVoteResult0 = -1; pvVoteAdmin = false
 ; Weather.
 pvWeather_Value = 0; pvWeather_Delay = 2*60; pvWeather_Cycle = 10*60
 Weather_TZK = "Sunny"
-? isServer: [] exec "Server\Loop\Weather.sqs"
-? !isNull player: [] exec "Player\Loop\Weather.sqs"
+? isServer: [] exec (TzkScripts select 315)
+? !isNull player: [] exec (TzkScripts select 294)
 
 ; TimeBoost
 ; Although BIKI said that skipTime should executed on server, it requires being executed on all clients. So do those weather commands. Probably they're local but not global effect.

@@ -42,7 +42,7 @@ if (upgMatrix select _si select upgWorkers == 2) then {
 			if (_diff >= 1) then {
 				_container = "SecondaryWeaponHolder" camCreate getPos _unit; _container addMagazineCargo [_mag, 1];
 				_unit action ["TAKE MAGAZINE", _container, 0, 0, _mag];
-				[_container, 10] exec localize {TZK_PATH_DELAY_DELETE_UNIT};
+				[_container, 10] exec (TzkScripts select 188);
 			};
 			_i = _i + 2;
 		};

@@ -7,7 +7,7 @@ _vehicle = _this select 0; _speed = _this select 1
 ; ==================== MP weapon/magazine controlling. ====================
 
 ; process for undeployed vehicles
-_canSwitchMag = _vehicle call preprocessFile "Art\CanSwitchSpeedMag.sqf"
+_canSwitchMag = [_vehicle, _speed] call preprocessFile "Art\CanSwitchSpeedMag.sqf"
 ? "" != _canSwitchMag: _oldMag = _canSwitchMag, goto "MagFound"
 
 ; general method using weapon to get mags
@@ -25,11 +25,14 @@ _oldMag = _oldMags select 0
 	? _speed < 1000: _strSpeed = "0" + _strSpeed
 	_newMag = substr [_oldMag, 0, _size - 10] + _strSpeed + "_xj400"
 
+; check whether new mag is valid
+? not (_newMag in _validMags): hint "Invalid target mag. Switch mag fail.", exit
+
 ; ==================== MP weapon/magazine controlling. ====================
 ; If the caller of this script is the REMOTE Gunner of the vehicle, on his client all magazines should be removed in MP game.
-? !local _vehicle: _vehicle removeMagazines _oldMag; publicExec format [{[UnitById %1, "%2", "%3"] exec "\TZK_Scripts_4_0_4\Common\ReEquip\SwitchMagazine.sqs"}, _vehicle call funcGenNetIdStr, _oldMag, _newMag]; exit
+? !local _vehicle: _vehicle removeMagazines _oldMag; publicExec format [{[UnitById %1, "%2", "%3"] exec "\TZK_Patch4_4_0_6\s\Common\ReEquip\SwitchMagazine.sqs"}, _vehicle call funcGenNetIdStr, _oldMag, _newMag]; exit
 ; Both Gunner and Vehicle is LOCAL here.
-[_vehicle, _oldMag, _newMag] exec "\TZK_Scripts_4_0_4\Common\ReEquip\SwitchMagazine.sqs"; exit
+[_vehicle, _oldMag, _newMag] exec "\TZK_Patch4_4_0_6\s\Common\ReEquip\SwitchMagazine.sqs"; exit
 ; ==================== MP weapon/magazine controlling. ====================
 
 ; EOF

@@ -1,0 +1,19 @@
+; args: [si, giFrom, giTo, amount]
+
+_si = _this select 0
+_giFrom = _this select 1
+_giTo = _this select 2
+_amount = _this select 3
+
+_giList = [_si] call funcGetAIGroupsIndex
+? _giTo in _giList : exit
+
+
+_value = _giFrom
+_value = _value + GroupsNum*_giTo
+_value = _value + GroupsNum*GroupsNum*_si
+
+[_amount, _value] exec "\TZK_Patch4_4_0_6\s\Net\hMoneyTransferred.sqs"
+publicExec format [{[%1,%2] exec "\TZK_Patch4_4_0_6\s\Net\hMoneyTransferred.sqs"}, _amount call preprocessFile "Util\Num2Str.sqf", _value]
+
+~sendDelay

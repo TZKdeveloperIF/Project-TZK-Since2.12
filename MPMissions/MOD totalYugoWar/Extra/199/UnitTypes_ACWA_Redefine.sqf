@@ -1,6 +1,3 @@
-comment "Hide custom ship.";
-{ unitDefs select _x set [udFactoryType, -1] } forEach [_boatCustomW, _boatCustomE];
-
 comment "Clumsy redefine soldiers and vehicles.";
 {_str = "SoldierWAA", unitDefs select _x set [udModel, _str]} forEach [utWorkerW, _soldierAAW, _soldierAAW1];
 {_str = "SoldierWB", unitDefs select _x set [udModel, _str]} forEach [_soldierW, _MortarW];

@@ -77,7 +77,7 @@ lbSetCurSel [_idcListBox2, _habit select 3]
 	[_pos, lbValue [_idcListBox0, lbCurSel _idcListBox0], _idx1 * 45 + _idx2 * 15 - 30] exec "Player\Order\BuildStructure.sqs"
 	closeDialog 0; goto "Quit"
 # Undo
-	0 exec localize {TZK_FUNC_PLAYER_UNDO_BUILD}
+	0 exec (TzkScripts select 135)
 	goto "loop"
 # OnHightlightEnumChanged
 	_lastHighlightEnum = btnValue02

@@ -42,9 +42,9 @@ ctrlShow [_idcStateBg + 0, _showShelter]
 ctrlSetText [_idcState + 0, localize {TZK_LANG_SHELTER}]
 
 _list = [], _types = []
-? isCommander: [_types, structsDestroy] call preprocessFile "Util\ArrayAppend.sqf"
-[_types, structsDefence] call preprocessFile "Util\ArrayAppend.sqf"
-[_types, structsShelter] call preprocessFile "Util\ArrayAppend.sqf"
+? isCommander: [_types, structsDestroy] call preprocessFile "Algo\arrayAppend.sqf"
+[_types, structsDefence] call preprocessFile "Algo\arrayAppend.sqf"
+[_types, structsShelter] call preprocessFile "Algo\arrayAppend.sqf"
 _types set [count _types, stBridge]
 
 _pos = getMarkerPos "TzkRtsArea";

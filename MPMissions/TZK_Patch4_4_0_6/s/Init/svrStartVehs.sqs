@@ -1,0 +1,78 @@
+; args: [west mhq pos, east mhq pos]
+; create start vehicles belongs to both side on the beginning. After having defined start pos they'll be placed soon
+
+_posSide0 = _this select 0; _posSide1 = _this select 1
+
+~ 1
+
+_startVeh0 = []; _startVeh1 = []
+
+_si = si0
+? count (groupMatrix select _si) == count (groupAiMatrix select _si): goto "Side0Created"
+_list = vehiclesStart select _si; _i = 0; _c = count _list
+# AddVehicle0
+	? !(_i < _c): goto "Side0Created"
+	_entry = _list select _i
+	_i = _i + 1
+	
+	_veh = [_entry select 0, [0,0,0], 0, _si, -1, 0, 2] call fAddVehicle
+	_veh allowdammage false
+	_startVeh0 set [count _startVeh0, _veh]
+	~ 0.5
+	goto "AddVehicle0"
+# Side0Created
+
+_si = si1
+? count (groupMatrix select _si) == count (groupAiMatrix select _si): goto "Side1Created"
+_list = vehiclesStart select _si; _i = 0; _c = count _list
+# AddVehicle1
+	? !(_i < _c): goto "Side1Created"
+	_entry = _list select _i
+	_i = _i + 1
+	
+	_veh = [_entry select 0, [0,0,0], 0, _si, -1, 0, 2] call fAddVehicle
+	_veh allowdammage false
+	_startVeh1 set [count _startVeh1, _veh]
+	~ 0.5
+	goto "AddVehicle1"
+# Side1Created
+
+
+_vector = [_posSide1, _posSide0] call funcVectorSub; _dir = 0
+
+? (_vector select 0) != 0 && (_vector select 1) != 0: _dir = (_vector select 0) atan2 (_vector select 1)
+? startPosMode == 0: _dir = random 360
+
+_i = 0; _c = count _startVeh0; _si = si0; _list = vehiclesStart select _si
+# PlaceVehicle0
+	? !(_i < _c): goto "Side0Placed"
+	_entry = _list select _i
+	_pos = [_posSide0, ([_entry select 1, _dir + 000] call funcVectorRot2D)] call funcVectorAdd
+	_up = _pos call funcVectorUp
+
+	(_startVeh0 select _i) setDir (_dir + 000)
+	(_startVeh0 select _i) setVectorUp _up
+	(_startVeh0 select _i) setPos _pos
+	~ 0.5
+	_i = _i + 1
+	goto "PlaceVehicle0"
+# Side0Placed
+
+_i = 0; _c = count _startVeh1; _si = si1; _list = vehiclesStart select _si
+# PlaceVehicle1
+	? !(_i < _c): goto "Side1Placed"
+	_entry = _list select _i
+	_pos = [_posSide1, ([_entry select 1, _dir + 180] call funcVectorRot2D)] call funcVectorAdd
+	_up = _pos call funcVectorUp
+
+	(_startVeh1 select _i) setDir (_dir + 180)
+	(_startVeh1 select _i) setVectorUp _up
+	(_startVeh1 select _i) setPos _pos
+	~ 0.5
+	_i = _i + 1
+	goto "PlaceVehicle1"
+# Side1Placed
+
+~ 0.1
+
+{_x allowdammage true} forEach _startVeh0; {_x allowdammage true} forEach _startVeh1

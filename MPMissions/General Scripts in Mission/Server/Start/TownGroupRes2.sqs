@@ -12,17 +12,9 @@ _distSpawn = viewDistance + 5000
 
 _flag = (towns select _ti) select tdFlag
 _posFlag = getPos _flag
-? isNull _group : format["ERROR: _group is NULL at init for RES town group in '%1'", (towns select _ti) select tdName] call fDebugLog; exit
+? isNull _group : format ["ERROR: group is NULL when init res TG2 at '%1'", towns select _ti select tdName] call fDebugLog; exit
 
-@!(mutexInitResGroups)
-mutexInitResGroups = true
-_list = groupMatrix select _si
-_list set [count _list, _group]
-
-mutexInitResGroups = false
-
-@ pvMatchRuleDefined
-~12
+~ 12
 ; wait patrol group initialized.
 ; Init Spawn Activate by Start Position
 ? (mhq select si0) distance _flag < _distSpawn || (mhq select si1) distance _flag < _distSpawn: goto "Spawn"
@@ -48,7 +40,7 @@ _i = 0
   _type = -1
   while "_type == -1" do { _type = (infTown select _si) call funcGetRandomUnitType }
   _pos = [_posFlag, 25, 50] call funcGetRandomPos
-  [_type, 0, 0, 0, _pos, random 360, _si, -1, _group, 0, 0] exec "\TZK_Scripts_4_0_4\Common\AddUnit.sqs"
+  [_type, 0, 0, 0, _pos, random 360, _si, -1, _group, 0, 0] exec (TzkScripts select 309)
   ~1
   _i = _i + 1
   ? _i < _inf : goto "SpawnAddInf"
@@ -61,7 +53,7 @@ _i = 0
 		while "_type == -1" do { _type = (airTown select _si) call funcGetRandomUnitType }
 		_pos = [_posFlag, 25, 50] call funcGetRandomPos
 		
-		[_type, 1, 1, 0, _pos, random 360, _si, -1, _group, 0, 0] exec "\TZK_Scripts_4_0_4\Common\AddUnit.sqs"
+		[_type, 1, 1, 0, _pos, random 360, _si, -1, _group, 0, 0] exec (TzkScripts select 309)
 		~1
 		
 		
@@ -110,9 +102,7 @@ _timeReinforce = time + (call _interval)
 
 #Patrol
   _group setCombatMode "YELLOW"; _group setBehaviour "STEALTH"; _group setSpeedMode "NORMAL"
-  ; TODO { _x disableAI "TARGET" } foreach (units _group)
 
-  ; player globalchat format["Patrol: %1", (towns select _ti) select tdName]
 	_timePatrol = time + 3*60
 	{ if ((random 1) < 0.5 && _x == driver vehicle _x) then { _x doMove ([getPos _flag, 150, 150] call funcGetRandomPos) } } foreach units _group
 	goto "Update"
@@ -131,7 +121,7 @@ _timeReinforce = time + (call _interval)
   _type = -1
   while "_type == -1" do { _type = (infTown select _si) call funcGetRandomUnitType }
   _pos = [_posFlag, 25, 50] call funcGetRandomPos
-  [_type, 0, 0, 0, _pos, random 360, _si, -1, _group, 0, 0] exec "\TZK_Scripts_4_0_4\Common\AddUnit.sqs"
+  [_type, 0, 0, 0, _pos, random 360, _si, -1, _group, 0, 0] exec (TzkScripts select 309)
   ; player globalchat format["AddInf: %1", (towns select _ti) select tdName]
   goto "Patrol"
   
@@ -139,7 +129,7 @@ _timeReinforce = time + (call _interval)
   _type = -1
   while "_type == -1" do { _type = (airTown select _si) call funcGetRandomUnitType }
   _pos = [_posFlag, 12, 13] call funcGetRandomPos
-  [_type, 1, 1, 0, _pos, random 360, _si, -1, _group, 0, 0] exec "\TZK_Scripts_4_0_4\Common\AddUnit.sqs"
+  [_type, 1, 1, 0, _pos, random 360, _si, -1, _group, 0, 0] exec (TzkScripts select 309)
   ; player globalchat format["AddTank: %1", (towns select _ti) select tdName]
   goto "Patrol"
 

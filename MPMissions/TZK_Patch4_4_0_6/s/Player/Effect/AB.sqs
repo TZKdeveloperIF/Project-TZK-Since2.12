@@ -1,0 +1,55 @@
+; args: Plane
+
+_plane = _this
+
+_plane exec "Net\sPlaneAbOn.sqs"
+
+? "Su25_Base_xj400" countType [_plane] > 0: goto "SU25Loop"
+
+#A10Loop
+? !isengineon _plane : goto "Quit"
+
+; Acc. factor
+_factor = ((800 - (speed _plane)) / 70000) + 1;
+
+; Change the velocity
+_vel = velocity _plane
+_plane setvelocity[(_vel select 0) * _factor, (_vel select 1) *_factor, (_vel select 2) *_factor]
+
+; Decrease the fuel
+_newfuel = fuel _plane - 0.0002
+?(_newfuel < 0) : goto "Quit"
+_plane setfuel _newfuel
+
+~0.1
+; See if switch turned off
+? "_x=={AfterBurnerSwitch_xj400}" count magazines _plane == 0 : goto "A10Loop"
+goto "Quit"
+
+#SU25Loop
+?(!isengineon _plane) : goto "Quit"
+
+; Acc. factor
+_factor = ((900 - (speed _plane)) / 50000) + 1;
+
+; Change the velocity
+_vel = velocity _plane
+_plane setvelocity[(_vel select 0) * _factor, (_vel select 1) *_factor, (_vel select 2) *_factor]
+
+; Decrease the fuel
+_newfuel = fuel _plane - 0.0003
+?(_newfuel < 0) : goto "Quit"
+_plane setfuel _newfuel
+
+~0.1
+; See if switch turned off
+? "_x=={AfterBurnerSwitch_xj400}" count magazines _plane == 0 : goto "SU25Loop"
+goto "Quit"
+
+#Quit
+; Script possible be stopped for turning off engine. Need to add magazines to change the UA/radio condition.
+_plane addMagazine {AfterBurnerSwitch_xj400}; _plane exec "Net\sPlaneAbOff.sqs"
+
+exit
+
+; EOF

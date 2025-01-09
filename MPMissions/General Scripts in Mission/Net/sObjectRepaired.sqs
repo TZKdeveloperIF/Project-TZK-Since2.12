@@ -1,0 +1,14 @@
+; args: [object, damage, si, gi]
+
+_object = _this select 0
+_dmg = _this select 1
+_si = _this select 2
+_gi = _this select 3
+
+_percent = (1 - _dmg)*100
+_percent = _percent - (_percent % 1)
+
+_value = _percent + 200*_gi + 200*GroupsNum*_si
+
+[_object, _value] exec "\TZK_Patch4_4_0_6\s\Net\hObjectRepaired.sqs"
+publicExec format [{[UnitById %1,%2] exec "\TZK_Patch4_4_0_6\s\Net\hObjectRepaired.sqs"}, _object call funcGenNetIdStr, _value]

@@ -33,7 +33,7 @@ _destPos = getPos _unit
 	? -1 == _gi: exit
 
 	; check support
-	? _time > _timeCheckSupport: _timeCheckSupport = _time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _cycle = 20; goto "Sleep"
+	? _time > _timeCheckSupport: _timeCheckSupport = _time + timeCheckSupport; [_unit, _si, _gi] exec (TzkScripts select 295); _cycle = 20; goto "Sleep"
 
 	; check bomb	
 	_bCheckDropBomb = !_bCheckDropBomb 
@@ -43,7 +43,7 @@ _destPos = getPos _unit
 	; check move
 	_distToDest = [getPos _unit, _destPos] call funcDistH
 	? _distToDest > 10: goto "Move"
-		[_unit, [true, true]] exec localize {TZK_AI_STOP}
+		[_unit, [true, true]] exec (TzkScripts select 006)
 		? _unit != _vehicle && !(isNull gunner _vehicle) && isNull (commander _vehicle): [_unit, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\AI_CheckFireGun.sqs"
 		_cycle = 30
 		goto "Sleep"

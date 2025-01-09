@@ -6,6 +6,6 @@ _name = _this select 0, _state = _this select 1
 	mutexProcessConfuser = true
 
 	? _state: if not (_name in confuseWhiteList) then {confuseWhiteList set [count confuseWhiteList, _name]}
-	? not _state: if (_name in confuseWhiteList) then {[confuseWhiteList, [_name]] call preprocessFile "Util\ArraySubtract.sqf"}
+	? not _state: if (_name in confuseWhiteList) then {[confuseWhiteList, [_name]] call preprocessFile "Algo\arraySubtract.sqf"}
 
 	mutexProcessConfuser = false

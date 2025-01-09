@@ -17,14 +17,7 @@ _money = (groupMoneyMatrix select _si) select _gi
 ? (_si == si1) && (_money < costRepairMHQ): hint format["Not enough money.\nCost: $%1.\nYou need $%2 more.", costRepairMHQ, costRepairMHQ - _money]; Exit
 
 hint "Repairing. Please wait..."
-@!(mutexRepairMCV)
 
-mutexRepairMCV = true
-pvRepairMCV = _gi + GroupsNum*_si; PublicVariable "pvRepairMCV"
-pvRepairMCV_object = _MCV; PublicVariable "pvRepairMCV_object"
-
-~4*sendDelay
-mutexRepairMCV = false
 
 exit
 

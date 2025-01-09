@@ -10,7 +10,7 @@ _para = "pwr_paraG_xj400" camCreate _pos
 _para setPosASL _pos, _unit moveInDriver _para
 
 ; forceMap true
-0 exec "\TZK_Scripts_4_0_6\Player\Init_Function_Player.sqs"
+call loadFile "\TZK_Patch4_4_0_6\s\init_funcs_player.sqf"
 ? "IF" == name player: TzkDebugLog = []
 
 
@@ -33,7 +33,7 @@ mutexqLen = false
 
 lastSelectedFactory = [ [], [] ]
 
-timeLastPing = 30
+timeLastPing = -1
 bBlockedByClient = false
 
 bMannedDriver = true
@@ -64,9 +64,6 @@ reportStructs = 2
 reportNone = 3
 report = reportAll
 
-Destruction_Undo0 = false
-Destruction_Undo1 = false
-
 wpPlayer = []
 _i = 0; while "_i < countWPPlayer" do { wpPlayer set [_i, [-1,-1]]; _i = _i + 1 } 
 ; CO, WP, bind, bind (only CO/WP is meaningful)
@@ -94,90 +91,16 @@ call preprocessFile "Cfg\InitPlayerSettingFromCfg.sqf"
 ; 4.0.6.62
 autoShootVehs = [], mutexAutoShoot = false;
 
-; game has begun after this pause
-~ 0.1
+; declare markers. Separately executed in both player and spectator init after siPlayer has been defined
+_si exec (TzkScripts select 316)
 
-; remove map anim
+; game has begun after this pause
+~ 0.01
+
+; marker lazy init
+; init them on game just begin. Unnecessary to wait match formal start
+siPlayer exec (TzkScripts select 317);
 
 ? groupPlayer == groupCommander select siPlayer: 0 exec "Player\CmdDefineRules.sqs"
-? groupPlayer != groupCommander select siPlayer && not pvCmdFinishedMakingRule: FixStart_0 globalChat "Waiting commanders selected start position..."
 
-@ pvCmdFinishedMakingRule
-	onMapSingleClick ""
-	deleteMarker "StartPosAvailableArea"
-	closeDialog 0
-
-; TODO - disable for release
-; player addAction ["TEST", "\TZK_Scripts_4_0_4\Player\Action\Test.sqs"]
-
-onMapSingleClick {[_pos, _units, _alt, _shift] call funcMapClickPlayer}
-
-@ pvCustomPveStatus != -1
-	pvCustomPveStatus exec "Player\CustomPve.sqs"
-@ pvCustomPveFinished
-
-player groupchat "Waiting for start data ..."
-@ pvMhq0x != -1
-@ pvMhq0y != -1
-@ pvMhq1x != -1
-@ pvMhq1y != -1
-player groupchat "Start data received."
-
-_posMhq = [call format ["pvMhq%1x", _si], call format ["pvMhq%1y", _si]]
-[_unit, _si, _gi] exec "Player\InitPlayer_Scripts.sqs"
-
-; remove map anim
-
-0 call loadFile "\TZK_Scripts_4_0_6\Player\Init\AIOrder.sqf"
-call preprocessFile "impl\Client_Player.sqf"
-
-
-RespawnWeapon = []; RespawnMagazine = []; RespawnAmmunition = [];
-RespawnW = []; RespawnM = []; RespawnA = [];
-~0.1
-[player, siPlayer] exec "\TZK_Scripts_4_0_4\Player\EquipPlayerRespawn.sqs"
-
-; flash start pos
-_marker = "Art0"
-_size = getMarkerSize _marker
-_marker setMarkerSize [1,1]
-_i = 0
-#FlashStart
-_marker setMarkerPos ( [_posMhq, hiddenMarkerPos] select ((_i % 2) == 0) )
- ~0.2
- _i = _i + 1
- ? _i < 10 : goto "FlashStart"
-
-
- 
-; remove map anim
-~0.1
-[player, false, 0] exec localize {TZK_DIALOG_EQUIPMENT}
-~1
-@ !dialog
-0 exec localize {TZK_FUNC_DISPLAY_GAMEINFO}
-[] exec "\TZK_Scripts_4_0_6\Player\Init\CommanderUnit.sqs"
-; [] exec "\TZK_Scripts_4_0_4\Player\Init\BuyList.sqs"
-
-? groupPlayer != groupCommander select siPlayer: goto "SkipInitialCmdRule"
-~ 1
-0 exec "RuleCmd\Dialog.sqs"
-~ 1
-@ !dialog
-# SkipInitialCmdRule
-
-~15
-PlayMusic (Musics0 select music0); 0 FadeMusic 0.35
-; Hide start pos marker after some time
-~20
-20 FadeMusic 0.09
-_marker setMarkerPos hiddenMarkerPos
-_marker setMarkerSize _size
-
-_westName = []; _groups = groupMatrix select si0; _index = 0; _groupsAI = groupAiMatrix select si0
-{ _westName set [_index, format["%1", [name leader _x, "AI"] select (_x in _groupsAI)] ]; _index=_index+1 } forEach _groups;
-_eastName = []; _groups = groupMatrix select si1; _index = 0; _groupsAI = groupAiMatrix select si1
-{ _eastName set [_index, format["%1", [name leader _x, "AI"] select (_x in _groupsAI)] ]; _index=_index+1 } forEach _groups;
-LeaderNameMatrix = [_westName, _eastName]
-
-; EOF
+exit

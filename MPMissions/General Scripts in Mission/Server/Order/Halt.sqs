@@ -31,14 +31,14 @@ _sleep = 30
 	
 	? _unit != driver _vehicle : goto "Sleep"
 	
-	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"; _sleep = 20; goto "Sleep"
+	? time > _timeCheckSupport : _timeCheckSupport = time + timeCheckSupport; [_unit, _si, _gi] exec (TzkScripts select 295); _sleep = 20; goto "Sleep"
 
 	_bCheckDropBomb = !_bCheckDropBomb 
 	_magazines = []
 	? _bCheckDropBomb && _unit == _vehicle: if (magSatchel in (magazines _unit)) then {[_unit, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\AI_CheckDropBomb.sqs"; _sleep = 20; goto "Sleep"}
 	
 
-	[_unit, [true]] exec localize {TZK_AI_STOP}
+	[_unit, [true]] exec (TzkScripts select 006)
 	[_unit, _si, _gi] call funcWatch
 	? _unit != _vehicle && !(isNull gunner _vehicle) && isNull (commander _vehicle) : [_unit, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\AI_CheckFireGun.sqs"
   _sleep = 30

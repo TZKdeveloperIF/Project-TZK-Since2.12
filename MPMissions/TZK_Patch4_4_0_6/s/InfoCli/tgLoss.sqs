@@ -1,0 +1,13 @@
+; args: [params]
+
+_value = _this select 0
+
+_ti = (_value % (count towns))
+_value = _value - _ti
+
+_si = _value / (count towns)
+
+
+? _si != siPlayer : exit
+
+format["%1 is under enemy fire send reinforcements", (towns select _ti) select tdName] call funcSideMsg

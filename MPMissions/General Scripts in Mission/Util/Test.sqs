@@ -8,6 +8,10 @@
 ? -2 != (-2.1 call loadFile "Math\Round.sqf"): player globalChat "Math\Round.sqf has bug"
 ? -3 != (-2.6 call loadFile "Math\Round.sqf"): player globalChat "Math\Round.sqf has bug"
 
+? "9000007" != (9000007 call preprocessFile "Util\Num2Str.sqf"): player globalChat "Util\Num2Str has bug"
+? "9000077" != (9000077 call preprocessFile "Util\Num2Str.sqf"): player globalChat "Util\Num2Str has bug"
+? "-9000707" != (-9000707 call preprocessFile "Util\Num2Str.sqf"): player globalChat "Util\Num2Str has bug"
+
 _diff1 = abs(([[0,0,0], [0,204,-77], 80, false] call funcElevArt406) - -11.519407)
 _diff2 = abs(([[0,0,0], [0,204,5], 80, false] call funcElevArt406) - 11.236907)
 _diff3 = abs(([[0,0,0], [0,2999,790], 1500, false] call funcElevArt406) - 16.201012)
@@ -18,70 +22,70 @@ player globalChat format ["%1", [_diff1, _diff2, _diff3, _diff4]]
 ~1
 ; TzkArtSpeeds = [22, 60, 70, 80, 120, 180, 300, 400, 500, 800, 900, 1200, 1400, 1500]
 _speed = 200
-_i = [TzkArtSpeeds, 0, count TzkArtSpeeds, _speed, {(_this select 0) < (_this select 1)}] call preprocessFile "Util\stdLowerBound.sqf";
-? _i != 6: player globalChat "stdLowerBound or TzkArtSpeeds definition has bug"
+_i = [TzkArtSpeeds, 0, count TzkArtSpeeds, _speed, {(_this select 0) < (_this select 1)}] call preprocessFile "Algo\lowerBound.sqf";
+? _i != 6: player globalChat "lowerBound or TzkArtSpeeds definition has bug"
 _speed = 20
-_i = [TzkArtSpeeds, 0, count TzkArtSpeeds, _speed, {(_this select 0) < (_this select 1)}] call preprocessFile "Util\stdLowerBound.sqf";
-? _i != 0: player globalChat "stdLowerBound or TzkArtSpeeds definition has bug"
+_i = [TzkArtSpeeds, 0, count TzkArtSpeeds, _speed, {(_this select 0) < (_this select 1)}] call preprocessFile "Algo\lowerBound.sqf";
+? _i != 0: player globalChat "lowerBound or TzkArtSpeeds definition has bug"
 _speed = 827
-_i = [TzkArtSpeeds, 0, count TzkArtSpeeds, _speed, {(_this select 0) < (_this select 1)}] call preprocessFile "Util\stdLowerBound.sqf";
-? _i != 10: player globalChat "stdLowerBound or TzkArtSpeeds definition has bug"
+_i = [TzkArtSpeeds, 0, count TzkArtSpeeds, _speed, {(_this select 0) < (_this select 1)}] call preprocessFile "Algo\lowerBound.sqf";
+? _i != 10: player globalChat "lowerBound or TzkArtSpeeds definition has bug"
 ; Before current commit this test case will return an undefined idx
 ; but keyword "?" and "if" will ignore undefined bool
 _speed = 1750
-_i = [TzkArtSpeeds, 0, count TzkArtSpeeds, _speed, {(_this select 0) < (_this select 1)}] call preprocessFile "Util\stdLowerBound.sqf";
+_i = [TzkArtSpeeds, 0, count TzkArtSpeeds, _speed, {(_this select 0) < (_this select 1)}] call preprocessFile "Algo\lowerBound.sqf";
 _result = 2
 ? _i == count TzkArtSpeeds: _result = 0
 ? _i != count TzkArtSpeeds: _result = 1
-? _result != 0: player globalChat "stdLowerBound or TzkArtSpeeds definition has bug"
+? _result != 0: player globalChat "lowerBound or TzkArtSpeeds definition has bug"
 
 ; is_sorted
-_isSorted = preprocessFile "Util\stdIsSorted.sqf"
+_isSorted = preprocessFile "Algo\isSorted.sqf"
 _operatorLess = {(_this select 0) < (_this select 1)}
 _operatorLessEq = {(_this select 0) <= (_this select 1)}
 
 _arr = [1,2,3], _val = 2, _res = [_arr, 0, count _arr, _operatorLess] call _isSorted
 ? not _res: _val = 0
 ? _res: _val = 1
-? _val != 1: player globalChat format ["stdIsSorted definition has bug in case: %1", [_arr, _res]]
+? _val != 1: player globalChat format ["isSorted definition has bug in case: %1", [_arr, _res]]
 
 _arr = [1,1,1,1,1,1], _val = 2, _res = [_arr, 0, count _arr, _operatorLess] call _isSorted
 ? not _res: _val = 0
 ? _res: _val = 1
-? _val != 1: player globalChat format ["stdIsSorted definition has bug in case: %1", [_arr, _res]]
+? _val != 1: player globalChat format ["isSorted definition has bug in case: %1", [_arr, _res]]
 
 _arr = [1,1,1,1,1,0], _val = 2, _res = [_arr, 0, count _arr, _operatorLess] call _isSorted
 ? not _res: _val = 0
 ? _res: _val = 1
-? _val != 0: player globalChat format ["stdIsSorted definition has bug in case: %1", [_arr, _res]]
+? _val != 0: player globalChat format ["isSorted definition has bug in case: %1", [_arr, _res]]
 
 _arr = [1,2,3], _val = 2, _res = [_arr, 0, count _arr, _operatorLessEq] call _isSorted
 ? not _res: _val = 0
 ? _res: _val = 1
-? _val != 1: player globalChat format ["stdIsSorted definition has bug in case: %1", [_arr, _res]]
+? _val != 1: player globalChat format ["isSorted definition has bug in case: %1", [_arr, _res]]
 
 _arr = [1,1,1,1,1,1], _val = 2, _res = [_arr, 0, count _arr, _operatorLessEq] call _isSorted
 ? not _res: _val = 0
 ? _res: _val = 1
-? _val != 1: player globalChat format ["stdIsSorted definition has bug in case: %1", [_arr, _res]]
+? _val != 1: player globalChat format ["isSorted definition has bug in case: %1", [_arr, _res]]
 
 _arr = [1,1,1,1,1,0], _val = 2, _res = [_arr, 0, count _arr, _operatorLessEq] call _isSorted
 ? not _res: _val = 0
 ? _res: _val = 1
-? _val != 0: player globalChat format ["stdIsSorted definition has bug in case: %1", [_arr, _res]]
+? _val != 0: player globalChat format ["isSorted definition has bug in case: %1", [_arr, _res]]
 
 ; insert sort
 ; _arr = [345,7635,1243,735,84,6896,524,54,578,23,34,7553,23,547,2456,7254,65143,743,235]
 _arr = [345,7635,1243,735,84,6896,524,54,7553,23,547,2456,7254,65143,743,235]
-[_arr, 0, count _arr, _operatorLess] call preprocessFile "Util\stdInsertSort.sqf"
+[_arr, 0, count _arr, _operatorLess] call preprocessFile "Algo\insertSort.sqf"
 _val = 2, _res = [_arr, 0, count _arr, _operatorLess] call _isSorted
 ? not _res: _val = 0
 ? _res: _val = 1
-? _val != 1: player globalChat "stdInsertSort definition has bug"
+? _val != 1: player globalChat "insertSort definition has bug"
 
 _arr = [3,3,3,3]
-[_arr, 0, count _arr, _operatorLess] call preprocessFile "Util\stdInsertSort.sqf"
+[_arr, 0, count _arr, _operatorLess] call preprocessFile "Algo\insertSort.sqf"
 _val = 2, _res = [_arr, 0, count _arr, _operatorLess] call _isSorted
 ? not _res: _val = 0
 ? _res: _val = 1
-? _val != 1: player globalChat "stdInsertSort definition has bug"
+? _val != 1: player globalChat "insertSort definition has bug"

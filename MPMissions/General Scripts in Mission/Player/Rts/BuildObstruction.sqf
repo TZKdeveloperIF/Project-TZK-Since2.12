@@ -54,20 +54,20 @@ if (_res select 0) then {
 
 	// build
 	if (_ret && not _skip) then {
-		[_nextBuildPos, _markerDir, _stType] exec "\TZK_Scripts_4_0_4\Player\SendBuildStructure.sqs";
+		[_nextBuildPos, _markerDir, _stType] exec "Net\sBuildStruct.sqs";
 		// animate for engineer vehicle
 		if (count _cachedInfo > 0) then {
 			private [{_engiennerVehicle}]; _engiennerVehicle = _cachedInfo select 0;
 			// M88
 			if (_cachedInfo select 1 == typesEngineeringVeh select si0) then {
 				if (_engiennerVehicle animationPhase "Crane" == 0) then {
-					[_engiennerVehicle, "Up"] exec localize {TZK_ACTION_M88_CRANE};
+					[_engiennerVehicle, "Up"] exec (TzkScripts select 002);
 				};
 			};
 			// BREM
 			if (_cachedInfo select 1 == typesEngineeringVeh select si1) then {
 				if (_engiennerVehicle animationPhase "Strela_V" == 0) then {
-					[_engiennerVehicle, "Up"] exec localize {TZK_ACTION_BREM1_CRANE};
+					[_engiennerVehicle, "Up"] exec (TzkScripts select 001);
 				};
 			};
 		};

@@ -34,7 +34,7 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 	
 	@ !mutexbuildingInUse
 	mutexbuildingInUse = true
-	[buildingsInUse, [_factory, objNull]] call preprocessFile "Util\ArraySubtract.sqf"
+	[buildingsInUse, [_factory, objNull]] call preprocessFile "Algo\arraySubtract.sqf"
 	mutexbuildingInUse = false
 
 	_orders = _queues select _qi select 2
@@ -81,14 +81,14 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 	? -1 != _nCustomWeapon: _enum = (_unitDesc select udModel) call preprocessFile "Util\EnumOfCwv.sqf", _magInfo = call ([{PlaneMagInfo}, {GunshipMagInfo}, {HeliMagInfo}] select _enum); _cwvCost = _magInfo select _nCustomWeapon select 3, if (_cwvCost > _cost) then {_cost = _cwvCost}
 
 	_buildTime = _unitDesc select udBuildTime
-  
+
 	_crew = 0
 	? !(_isVehicle): goto "SkipVehicleStats"
-	_crewType = _mannedUnitTypes select 1
-	? (_driver == 1): _crew = _crew + 1; _cost = _cost + ((unitDefs select _crewType) select udCost); _buildTime = _buildTime + ((unitDefs select _crewType) select udBuildTime)
-	? (_gunner == 1): _crew = _crew + 1; _cost = _cost + ((unitDefs select _crewType) select udCost); _buildTime = _buildTime + ((unitDefs select _crewType) select udBuildTime)
-	? (_commander == 1): _crew = _crew + 1; _cost = _cost + ((unitDefs select _crewType) select udCost); _buildTime = _buildTime + ((unitDefs select _crewType) select udBuildTime)
-	#SkipVehicleStats
+		_crewType = _mannedUnitTypes select 1
+		_crew = _driver + _gunner + _commander
+		_cost = _cost + (unitDefs select _crewType select udCost) * _crew
+		_buildTime = _buildTime + (unitDefs select _crewType select udBuildTime) * _crew
+	# SkipVehicleStats
 
 	_unitsToBuild = 0
 	? !(_isVehicle): _unitsToBuild = 1
@@ -102,12 +102,12 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 	_money = groupMoneyMatrix select _si select _giBuyer
 	? (_money < _cost): goto "NoMoney"
 	_spendParam = [_si, _giBuyer, _cost, true, false]
-	_spendParam exec localize {TZK_MONEY_SERVER_SPEND}
+	_spendParam exec (TzkScripts select 167)
 
 	@ _spendParam select 4
-	? not (_spendParam select 3): [_si, _giBuyer, -_cost] exec localize {TZK_MONEY_SERVER_SPEND}; goto "NoMoney"
+	? not (_spendParam select 3): [_si, _giBuyer, -_cost] exec (TzkScripts select 167); goto "NoMoney"
 	
-	[_type, _si, _giBuyer, _giJoin] exec localize {TZK_INFO_SERVER_UNIT_BUILDING}
+	[_type, _si, _giBuyer, _giJoin] exec (TzkScripts select 156)
 
 	_timeBuilt = time + ([_buildTime, 2] select dev); _isBuilding = true
 	# buildLoop
@@ -117,7 +117,7 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 		? count _cancelledQids > 0: goto "OnCancelling"
 		? _isBuilding: goto "buildLoop"
 
-	? count units _grpJoin + _unitsToBuild > maxGroupSize: [_si, _giBuyer, -_cost] exec localize {TZK_MONEY_SERVER_SPEND}; goto "GroupFull"
+	? count units _grpJoin + _unitsToBuild > maxGroupSize: [_si, _giBuyer, -_cost] exec (TzkScripts select 167); goto "GroupFull"
 
 	[_qid, _si, 0] exec "Server\BuyUnit\sQueueRem.sqs"
 
@@ -129,20 +129,20 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 	? (_orders call _getSize) > 1: goto "BuildNextUnit"
 	@ !mutexbuildingInUse
 	mutexbuildingInUse = true
-	[buildingsInUse, [_factory, objNull]] call preprocessFile "Util\ArraySubtract.sqf"
+	[buildingsInUse, [_factory, objNull]] call preprocessFile "Algo\arraySubtract.sqf"
 	mutexbuildingInUse = false
 	
 	? (_orders call _getSize) > 0: goto "BuildNextUnit"
 
 	goto "Wait"
 
-#GroupFull
-	[_type, _si, _giBuyer, _giJoin] exec "\TZK_Scripts_4_0_6\Server\Info\GroupFull.sqs"
+# GroupFull
+	[_type, _si, _giBuyer, _giJoin] exec (TzkScripts select 158)
 	[_qid, _si, 0] exec "Server\BuyUnit\sQueueRem.sqs"
 	goto "UnitNotBuilt"
 
-#NoMoney
-	[_type, _si, _giBuyer, _giJoin] exec "\TZK_Scripts_4_0_6\Server\Info\NoMoneyUnit.sqs"
+# NoMoney
+	[_type, _si, _giBuyer, _giJoin] exec (TzkScripts select 159)
 	[_qid, _si, 0] exec "Server\BuyUnit\sQueueRem.sqs"
 	goto "UnitNotBuilt"
 
@@ -159,7 +159,7 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 	? (_orders call _getSize) > 1: goto "BuildNextUnit"
 	@ !mutexbuildingInUse
 	mutexbuildingInUse = true
-	[buildingsInUse, [_factory, objNull]] call preprocessFile "Util\ArraySubtract.sqf"
+	[buildingsInUse, [_factory, objNull]] call preprocessFile "Algo\arraySubtract.sqf"
 	mutexbuildingInUse = false
 	
 	? (_orders call _getSize) > 0: goto "BuildNextUnit"
@@ -218,6 +218,6 @@ _getSize = preprocessFile "Algo\CirBuf\size.sqf"
 	
 	? not _currentOrderCancelled: goto "buildLoop"
 
-	[_si, _giBuyer, -_cost] exec localize {TZK_MONEY_SERVER_SPEND}
+	[_si, _giBuyer, -_cost] exec (TzkScripts select 167)
 	[_si, _giJoin, _unitsToBuild] exec "Server\BuyUnit\AsyncFreeBuildingUnitsCount.sqs"
 	goto "UnitCanceled"

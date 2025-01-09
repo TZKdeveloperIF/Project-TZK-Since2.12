@@ -99,6 +99,6 @@ lbSetCurSel [_idcListBox1, 1]
 	? ([_pos, _beginPos] call funcDistH) > ([_pos, _endPos] call funcDistH): _nearBeginPos = false
 
 	? _svrRtsOrder: [_bridgeId, _nearBeginPos, _moveDistance, _hasBrokenBridge] exec "Rts\Order\sCrossBridge.sqs"
-	? not _svrRtsOrder: [_units, [_bridgeId, _nearBeginPos, _moveDistance, _hasBrokenBridge]] call preprocessFile "Rts\Order\CrossTheBridge.sqf"
+	? not _svrRtsOrder: [_units, [_bridgeId, _nearBeginPos, _moveDistance, _hasBrokenBridge]] call preprocessFile "Rts\Order\pplUnitPrepareCrossBridge.sqf"
 
 	closeDialog 0; goto "Quit"

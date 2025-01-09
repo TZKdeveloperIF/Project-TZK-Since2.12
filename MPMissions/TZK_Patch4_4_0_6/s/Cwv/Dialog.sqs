@@ -1,0 +1,140 @@
+; args: [dialog name, vehicle type(enum), vehicle, support]
+
+_script = _this select 0; _enum = _this select 1; _vehicle = _this select 2; _support = _this select 3; _this = 0
+_typeName = typeOf _vehicle
+; create dialog
+@!mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog _script
+mutexDlg = false
+
+; show background
+ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+
+; initialize variables
+_vi = call ([{PlaneUnits}, {GunshipUnits}, {HeliUnits}] select _enum) find _vehicle
+? _vi == -1: exit
+_info = call ([{PlanesInfo}, {GunshipInfo}, {HelisInfo}] select _enum) select _vi
+_availMags = call ([{PlaneMags}, {GunshipMags}, {HeliMags}] select _enum)
+_magInfo = call ([{PlaneMagInfo}, {GunshipMagInfo}, {HeliMagInfo}] select _enum)
+? enum_TZK_CustomVehicle_Gunship == _enum: _rocketSlotLimit = 1
+
+_si = siPlayer; _gi = giPlayer
+_idcYourMoneyText = IDC + 31; _idcMagPriceText = IDC + 32
+_idcSlotLabel0 = IDC + 40, _idcSlotText0 = IDC + 42
+_idcUpgradeText = IDC + 33; _idcTimeText = IDC + 34
+_idcMagList = IDC + 20; _idcEquippedList = IDC + 21; ctrlEnable [_idcEquippedList, false]
+_magCost = 0; _upgradeCost = 0; _timeCost = 0
+; AT as primary for plane/gunship; missiles as primary for transport heli
+; cannon as secondary for plane; rocket as secondary for gunship; cannon as secondary for transport heli
+_slotPrim = 8, _slotSec = 38; _usedPrim = 0, _usedSec = 0
+call loadFile "\TZK_Patch4_4_0_6\s\Cwv\DlgInitSlot.sqf"
+
+; initial available controls
+? _enum == enum_TZK_CustomVehicle_Plane || _enum == enum_TZK_CustomVehicle_Helicopter: ctrlSetText [_idcSlotLabel0 + 1, "Cannon:"]
+ctrlSetText [_idcSlotText0, format ["%1", _slotPrim - _usedPrim]]
+ctrlSetText [_idcSlotText0 + 1, format ["%1", _slotSec - _usedSec]]
+
+ctrlSetText [_idcYourMoneyText, format ["$%1", groupMoneyMatrix select _si select _gi]]
+ctrlSetText [_idcMagPriceText, format ["$%1",_magCost]]
+ctrlSetText [_idcUpgradeText, format ["$%1", 0]]
+ctrlSetText [_idcTimeText, format ["%1s", _timeCost]];
+
+_piWeapon = 0, _piName = 1, _piSide = 2, _piVehPrice = 3, _piUnitCost = 4
+_piUnitSlot = 5, _piUnitTime = 6, _piUnitCount = 7, _piSlotType = 8
+_shoppingCartMag = []; _shoppingCartCnt = []
+; initial magazines list
+call loadFile "\TZK_Patch4_4_0_6\s\Cwv\DlgInitMagList.sqf"
+_magArr = magazinesArray _vehicle; _timeGetMag = _time
+
+btnValue00 = 0
+# Update
+	? call dlgUpdated: exit
+	? !(alive player): closeDialog 0; Exit
+
+	? _time - _timeGetMag > 1: _magArr = magazinesArray _vehicle; _timeGetMag = _time
+
+	? btnValue00 > 0: goto "ParserBtn00"
+	~ 0.2
+	? !alive _vehicle: hint "Vehicle destroyed.", exit
+	? !alive _support: hint "Support destroyed.", exit
+	? _vehicle distance _support > 2 * rangeSupport: hint "Rearm failed. Support vehicle out of range.", exit
+	ctrlSetText [_idcYourMoneyText, format ["$%1", groupMoneyMatrix select _si select _gi]]
+	goto "Update"
+
+# ParserBtn00
+	_btn = btnValue00; btnValue00 = 0
+	? _btn == 2^0 || _btn == 2^1 || _btn == 2^4 || _btn == 2^5: goto "MagAddRem"
+	? _btn == 2^2: goto "MagClear"
+	? _btn == 2^3: goto "Buy"
+	goto "Update"
+# MagAddRem
+	_idx = lbCurSel _idcMagList
+	? _idx == -1: hint "No magazine selected."; goto "Update"
+	_i = lbValue [_idcMagList, _idx]; _j = _shoppingCartMag find _i
+	_unitSlot = _magInfo select _i select _piUnitSlot
+	_slotType = _magInfo select _i select _piSlotType
+	; ? _btn == 2^0: goto "MagAdd"
+	? _btn == 2^1: goto "MagRem"
+	? _btn == 2^4: goto "MagFull"
+	? _btn == 2^5: goto "MagNone"
+# MagAdd
+	? 0 == _slotType && _usedPrim + _unitSlot > _slotPrim: hint "Insufficient Slots.", goto "Update"
+	? 1 == _slotType && _usedSec + _unitSlot > _slotSec: hint "Insufficient Slots.", goto "Update"
+
+	"Add" call loadFile "\TZK_Patch4_4_0_6\s\Cwv\DlgRefreshStat.sqf"
+	goto "Update"
+# MagRem
+	? _j == -1: goto "Update"
+	"Remove" call loadFile "\TZK_Patch4_4_0_6\s\Cwv\DlgRefreshStat.sqf"
+	goto "Update"
+# MagFull
+	"Full" call loadFile "\TZK_Patch4_4_0_6\s\Cwv\DlgRefreshStat.sqf"
+	goto "Update"
+# MagNone
+	? _j == -1: goto "Update"
+	"None" call loadFile "\TZK_Patch4_4_0_6\s\Cwv\DlgRefreshStat.sqf"
+	goto "Update"
+# MagClear
+	"Clear" call loadFile "\TZK_Patch4_4_0_6\s\Cwv\DlgRefreshStat.sqf"
+	goto "Update"
+# Buy
+	? !local _vehicle: hint "Rearm failed. The vehicle isn't local.", goto "Update"
+	? _magCost + _upgradeCost > groupMoneyMatrix select siPlayer select giPlayer: hint "Insufficient fond.", goto "Update"
+	? count _shoppingCartMag == 0: hint "No bought magazines.", goto "Update"
+	closeDialog 0
+
+	_timeStart = _time; { _vehicle removeMagazines _x } foreach (magazines _vehicle)
+	vehiclesRearming set [count vehiclesRearming, _vehicle]
+	? dev: _timeCost = 5
+	_msg = format ["Rearm started, ready in %1s ...", _timeCost]
+	_unit = driver _vehicle
+	? _unit == player: hint _msg
+	_unit groupChat _msg
+	_timeComplete = _time + _timeCost
+	_text = format ["Rearming. %1 seconds left.", (_time - _timeComplete) - (_time - _timeComplete)%0.1 + 0.1]
+	? player in _vehicle: hint _text
+	_range = 4*rangeSupport
+	_funcOutOfRange = preprocessFile "Attach\DistOutOfRange.sqf"
+	#Loop
+		_vehicle say "Rearming_xj400";
+		~5
+		? !(alive _vehicle): _msg = "Rearm failed. Vehicle destroyed."; goto "Quit"
+		? !(alive _support): _msg = "Rearm failed. Support vehicle destroyed."; goto "Quit"
+		? [_vehicle, _support, _range] call _funcOutOfRange: _msg = "Rearm failed. Support vehicle out of range."; goto "Quit"
+		_text = format ["Rearming. %1 seconds left.", (_time - _timeComplete) - (_time - _timeComplete)%0.1 + 0.1]
+		? player in _vehicle: hint _text
+		? _time < _timeComplete: goto "Loop"
+
+	? count magazines _vehicle == 0: call loadFile "\TZK_Patch4_4_0_6\s\Cwv\ExecPurchase.sqf"
+	? (_availMags find "Tomahawk_xj400") in _shoppingCartMag || (_availMags find "Raduga_xj400") in _shoppingCartMag: _vehicle say "NuclearMissileReady_xj400"
+
+	_cost = _magCost + _upgradeCost
+	while {_cost > 0} do {_amount = _cost, if (_cost > 9999) then {_amount = 9999, _cost = _cost - _amount} else {_cost = 0}, [_amount] exec "Net\sMoneySpent.sqs"}
+	_msg = format["Rearm Complete. $%1", _magCost + _upgradeCost]
+
+# Quit
+	? _msg != "" && _unit == player: hint _msg
+	? _msg != "": _unit groupChat _msg
+	? _unit != _vehicle: vehiclesRearming = vehiclesRearming - [_vehicle]
+	exit

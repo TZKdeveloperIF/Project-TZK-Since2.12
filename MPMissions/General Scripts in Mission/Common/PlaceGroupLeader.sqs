@@ -1,17 +1,14 @@
-; args: [unit, si, gi, lock variable: boolean]
+; args: [unit, si, gi, lock variable: boolean, mhqPos]
 
 _unit = _this select 0
 _si = _this select 1
 _gi = _this select 2
 
+_mhqPos = _this select 4
+
 ? !(local _unit): exit
 
-@ pvMhq0x != -1
-@ pvMhq0y != -1
-@ pvMhq1x != -1
-@ pvMhq1y != -1
-
-_pos = [call format ["pvMhq%1x", _si], call format ["pvMhq%1y", _si]]
+_pos = + _mhqPos
 
 ? isNull player: goto "skipMapAnim"
 ? _unit != player: goto "skipMapAnim"

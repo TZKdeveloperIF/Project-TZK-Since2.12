@@ -1,0 +1,9 @@
+; args: [tank, color, show drum]
+
+_vehicle = _this select 0
+_color = _this select 1
+_show = _this select 2
+
+_vehicle animate [{suspension}, 0.5]
+[_vehicle, _color] exec "\TZK_Patch4_4_0_6\s\EhInit\4064GuerPruh.sqs"
+? _show: [_vehicle, true] exec "\TZK_Patch4_4_0_6\s\EhInit\4064T80Drum.sqs"

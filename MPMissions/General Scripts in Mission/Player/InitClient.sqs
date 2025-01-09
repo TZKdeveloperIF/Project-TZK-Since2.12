@@ -1,43 +1,22 @@
-_this = 0
+; args: none
+
+0 exec "Init\ClientUndefineVar.sqs"
 
 ["Player\InitPlayer.sqs", "Player\InitSpectator.sqs"] exec "\TZK_Scripts_4_0_5\Player\InitClient_Group.sqs"
-0 exec "\TZK_Scripts_4_0_6\Player\Init_Function_Client.sqs"
-0 exec "\TZK_Scripts_4_0_6\Player\InitClient_constants.sqs"
+call loadFile "\TZK_Patch4_4_0_6\s\init_funcs_client.sqf"
+0 exec "\TZK_Patch4_4_0_6\s\Init\client_constants.sqs"
 [] exec "\TZK_Scripts_4_0_6\Player\InitClient_TZK_Setting.sqs"
 
 
 [] exec "\TZK_Scripts_4_0_4\Player\InitGUIControlIDs.sqs"
 
 ; MESSAGE HANDLERS (Clients)
-_i = 0; while "_i < 4" do {call format [{["Player\Msg\hInfo.sqs"] exec "\TZK_Scripts_4_0_5\Player\Msg\mInfo%1.sqs"}, _i]; _i = _i + 1}
-
-[] exec "\TZK_Scripts_4_0_4\Player\Msg\mMoneySideTotal.sqs"
-[] exec "\TZK_Scripts_4_0_4\Player\Msg\mMoneySideSpent.sqs"
-if !bool_TZK_SEMod_Mode Then {[] exec "\TZK_Scripts_4_0_4\Player\Msg\mSetTownSide.sqs"} Else {[] exec "Extra\MsgSetTownSide.sqs"}
-"\TZK_Scripts_4_0_6\Player\Msg\hStructBuilt.sqs" exec "\TZK_Scripts_4_0_6\Player\Msg\mStructBuilt.sqs"
-[] exec "\TZK_Scripts_4_0_4\Player\Msg\mArtilleryShellDetected.sqs"
+? bool_TZK_SEMod_Mode: [] exec "Extra\MsgSetTownSide.sqs"
 
 [] exec "\TZK_Scripts_4_0_4\Player\Effect\Killed_Msg_Aircraft.sqs"; [] exec "\TZK_Scripts_4_0_4\Player\Effect\Killed_Msg_Boat.sqs";
 _i = 0; _count = 5; while "_i < _count" do {call format [{[] exec "\TZK_Scripts_4_0_4\Player\Effect\Killed_Msg_Tank%1.sqs"}, _i]; _i = _i + 1}
-[] exec "\TZK_Scripts_4_0_4\Player\Effect\PlaneAB_Msg_ON.sqs"; [] exec "\TZK_Scripts_4_0_4\Player\Effect\PlaneAB_Msg_OFF.sqs"; BurningPlanes = [];
+BurningPlanes = [];
 
-0 exec "Player\Marker\Generate.sqs"
-0 exec "\TZK_Scripts_4_0_6\Player\DynamicInitializationTrigger.sqs"
-
-
-; game has begun after this pause
-~0.1
-[] exec "\TZK_Scripts_4_0_4\Player\LoadSettings.sqs"
-; 4.0.5.18 update
-; 0 exec "Player\GetDeltaTime.sqs"
-; 4.0.6.14
-; need delay to wait until bNumberedAI readed
-[{bNumberedAI call preprocessFile "Player\Marker\SwitchNumberAi.sqf"}, 1] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
-
-; Send bool_TZK_Hide_Score status
-; todo: this should better be called by "LoadSettings.sqs"
-[{bool_TZK_Hide_Score exec "Network\sModifyScoreConfuserState.sqs"}, 10 + giPlayer * 2] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
-
-0 exec "Version\CWA_CE_DelayOverwritePplSettings.sqs"
+0 exec "Player\LoadSetting.sqs"
 
 ; EOF

@@ -26,7 +26,7 @@ _supplyWorker = preprocessFile "Server\SQF\SupplyWorker.sqf"
 	? not isNull _support: _supportWorker = _supportWorker + 1
 	? _supportWorker > 1: _supportWorker = 0; [_unit, _si] call _supplyWorker
 
-	? (behaviour _unit) == "COMBAT" && call format["pvWorkerBehaviour%1 != 0", _si] : _sleep = 30; goto "Update"
+	? (behaviour _unit) == "COMBAT" && (workerBehaviour select _si) != 0: _sleep = 30; goto "Update"
 	? ((groupMoneyMatrix select _si) select (giCO select _si)) <= 0 : _sleep = 30; goto "Update"
   
 	_index = 0
@@ -50,7 +50,7 @@ _supplyWorker = preprocessFile "Server\SQF\SupplyWorker.sqf"
 	#NoObjectFound
   _sleep = 30
 	? _wander : _return = "Update"; goto "Wander"
-	[_unit, [false]] exec localize {TZK_AI_STOP}
+	[_unit, [false]] exec (TzkScripts select 006)
 	goto "Update"
 
 
@@ -83,7 +83,7 @@ _supplyWorker = preprocessFile "Server\SQF\SupplyWorker.sqf"
 		_distToObject = [getPos _unit, _posObject] call funcDistH
 		? _distToObject < rangeSupport : goto "ObjectReached"
 
-		? time > _timeAbort : [_si] exec localize {TZK_INFO_SERVER_WORKER_STUCK}; doStop _unit; _stuckObject = _object; goto _return
+		? time > _timeAbort : [_si] exec (TzkScripts select 157); doStop _unit; _stuckObject = _object; goto _return
 		goto "RepeatMoveToBuilding"
 
 	#ObjectReached
@@ -114,9 +114,9 @@ _supplyWorker = preprocessFile "Server\SQF\SupplyWorker.sqf"
 		_rateRep = if (_type in structsDefence) Then {4} Else {1}; _rateCost = if (_type in structsDefence) Then {0.5} Else {0.1}
 		_cost = _rateCost*_cost*_rateRep*_repair; _cost = _cost - (_cost % 1)
 		? _object in primStructsPlaced: _cost = 0
-		? _cost >  groupMoneyMatrix select _si select (giCO select _si): [_si, _type] exec localize {TZK_INFO_SERVER_NO_MONEY_REPAIR_STRUCT}; _return = "Update"; _sleep = 30; mutexRepairStructure = false; goto "Wander"
+		? _cost >  groupMoneyMatrix select _si select (giCO select _si): [_si, _type] exec (TzkScripts select 144); _return = "Update"; _sleep = 30; mutexRepairStructure = false; goto "Wander"
 
-			[_si, giCO select _si, _cost] exec localize {TZK_MONEY_SERVER_SPEND}; _damage = _damage - _repair*_rateRep
+			[_si, giCO select _si, _cost] exec (TzkScripts select 167); _damage = _damage - _repair*_rateRep
 			(_repairInfoList select _index) set [0, _damage]
 			? _damage <= 0: [_object, _type, _si] exec "Server\ReplacePrimStruct.sqs"; _repairObjList set [_index, objNull]
 		

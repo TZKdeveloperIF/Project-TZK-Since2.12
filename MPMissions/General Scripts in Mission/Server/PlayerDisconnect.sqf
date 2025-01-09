@@ -5,7 +5,7 @@ _leader allowdammage false;
 _groups = groupMatrix select _si;
 _groupsAI = groupAiMatrix select _si;
 if !(_group in _groupsAI) then {_groupsAI set [count _groupsAI, _groups select _gi]};
-[_si, _gi] exec localize {TZK_INFO_SERVER_CHECK_AI};
+[_si, _gi] exec (TzkScripts select 140);
 // Change commander if necessary
 if (_group == (groupCommander select _si)) then {
 	_playerFound = false;
@@ -17,18 +17,18 @@ if (_group == (groupCommander select _si)) then {
 	_giCommander = (if (_playerFound) then {_i - 1} else {0});
 	groupCommander set [_si, _groups select _giCommander];
 	giCO set [_si, _giCommander];
-	[_si, _giCommander] exec localize {TZK_INFO_SERVER_COMM_CHANGE};
+	[_si, _giCommander] exec (TzkScripts select 141);
 	_vehicle = vehicle _leader;
 	if (alive _leader && _leader != _vehicle) then {unassignVehicle _leader; _leader action ["EJECT", _vehicle]};
 };
 // Transfer money to commander
 _money = groupMoneyMatrix select _si select _gi;
-[_si, _gi, -_money, 0] exec localize {TZK_MONEY_SERVER_ADD};
-[_si, giCO select _si, _money, 0] exec localize {TZK_MONEY_SERVER_ADD};
+[_si, _gi, -_money, 0] exec (TzkScripts select 166);
+[_si, giCO select _si, _money, 0] exec (TzkScripts select 166);
 // Initialize AI leader
 if (alive _leader && time < 5*60) then {_leader setPos getPos (mhq select _si)};
-[_leader, _si] exec localize {TZK_AI_LEADER_EQUIP};
-[_leader, _si, _gi] exec "Server\Start\AI_Leader.sqs";
+[_leader, _si] exec (TzkScripts select 005);
+[_leader, _si, _gi] exec (TzkScripts select 300);
 // Eject commander units in group. Leader shall be alive when ordering its units
 _i = 0; _c = count units _group; _units = units _group;
 while {_i < _c} do {

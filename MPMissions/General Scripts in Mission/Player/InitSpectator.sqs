@@ -9,7 +9,7 @@ _unit = _this
 forceMap true
 
 ;init spectator functions
-funcMapClickSpectator = loadFile "\TZK_Scripts_4_0_6\Player\SQF\MapClickSpectator.sqf"
+funcMapClickSpectator = loadFile "\TZK_Patch4_4_0_6\s\Player\MapClickSpectator.sqf"
 ; // arguments: [_pos, _units, _alt, _shift]
 ; // returns: true if command processed, false if not
 
@@ -30,9 +30,16 @@ bShowAll = true
 bLockDir = true
 logSpec = []
 
+; declare markers. Separately executed in both player and spectator init after siPlayer has been defined
+siPlayer exec (TzkScripts select 316)
 
-;game has begun after this pause
-~0.1
+
+; game has begun after this pause
+~ 0.1
+
+; marker lazy init
+; init them on game just begin. Unnecessary to wait match formal start
+siPlayer exec (TzkScripts select 317);
 
 mapAnimClear
 mapAnimAdd [0, 1.0, posCenter]
@@ -41,17 +48,5 @@ mapAnimCommit
 
 onMapSingleClick {[_pos, _units, _alt, _shift] call funcMapClickSpectator}
 
-player groupchat "Waiting for start data ..."
-@ pvMatchRuleDefined
-player groupchat "Start data received."
-
-[false] exec localize {TZK_MARKER_SPEC}; btnMarker = true; boolFriendly = true
-
-forceMap false
-
-; add weapon used for reload detection
-_unit addWeapon "Ingram"; { _unit addMagazine "IngramMag" } forEach [1]; _unit selectWeapon "Ingram"; player addWeapon "NVGoggles"
-
-[_unit] exec "Player\Start\Spectator.sqs"
-
-? bool_TZK_199_Mode: [_unit] exec localize {TZK_FUNC_KEEP_ALIVE}
+; other parts will be executed on receiving server information
+exit

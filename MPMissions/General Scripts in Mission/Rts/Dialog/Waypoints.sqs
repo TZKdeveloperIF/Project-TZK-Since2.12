@@ -171,8 +171,8 @@ _procMixedWpArt = preprocessFile "Rts\Dialog\Wp\ProcMixedWpArtList.sqf"
 
 # OrderAI
 	closeDialog 0
-	~0.1
-	[] exec localize {TZK_DIALOG_AI_GRP_ORDER}
+	~ 0.1
+	0 exec (TzkScripts select 014)
 	goto "Quit"
 
 # Quit
@@ -182,5 +182,5 @@ _procMixedWpArt = preprocessFile "Rts\Dialog\Wp\ProcMixedWpArtList.sqf"
 	_btnVal = 2 ^ 4
 	call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
 # FunctionalBtns
-	? 1 == _btnFnc: 0 exec localize {TZK_DIALOG_SHOWNGROUPS}; closeDialog 0; goto "Quit"
+	? 1 == _btnFnc: 0 exec (TzkScripts select 023); closeDialog 0; goto "Quit"
 	goto "Update"

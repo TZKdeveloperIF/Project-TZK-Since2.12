@@ -1,0 +1,21 @@
+; args: [object, isMHQ, isAlive]
+
+_object = _this select 0
+_isMCV = _this select 1
+_bAlive = _this select 2
+
+_value = ([0,1] select _isMCV) + 2*([0,1] select _bAlive) + 2*2*siPlayer
+_netIdStr = _object call funcGenNetIdStr
+? isNull _object: exit
+[_object, _value] exec "\TZK_Patch4_4_0_6\s\Net\hDestruct.sqs"
+publicExec format [{[UnitById %1,%2] exec "\TZK_Patch4_4_0_6\s\Net\hDestruct.sqs"}, _netIdStr, _value]
+exit
+
+@!(mutexDestruction)
+mutexDestruction = true
+
+pvDestruction = ([0,1] select _isMCV) + 2*([0,1] select _bAlive) + 2*2*siPlayer; PublicVariable "pvDestruction"
+pvDestruction_Object = _object; PublicVariable "pvDestruction_Object"
+
+~sendDelay
+mutexDestruction = false

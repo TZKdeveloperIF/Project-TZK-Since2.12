@@ -64,16 +64,16 @@ _extraTypeFee = 0
 _cost = _equipFee + _extraTypeFee
 ? _cost > _money && _cost > 0: _msg = format["Not enough money for rearm. ($%1 needed)", _cost]; goto "Abort"
 
-[_cost] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"
+[_cost] exec "Net\sMoneySpent.sqs"
 _unit groupChat format["Rearm Complete. Equipment cost: $%1%2", _equipFee, if (_extraTypeFee > 0) then {format [", extra cost: %1", _extraTypeFee]} else {""}]; 
 removeAllWeapons _unit; {_unit addMagazine _x} forEach _mags; {_unit addWeapon _x} forEach _weapons
 
 ; Write current equipments into rearm data LOCALLY if selected overwrite rearmData.
 ? not _overWrite: goto "Quit"
-[_unit, _weapons, _mags, -1, 1, true] exec localize {TZK_EQUIPREARMDATA_EDIT}
+[_unit, _weapons, _mags, -1, 1, true] exec (TzkScripts select 071)
 ~0.1
 _i = rearmDataObj find _unit
-? _i == -1: [_unit] exec localize {TZK_REARMDATA_ADD} 
+? _i == -1: [_unit] exec (TzkScripts select 072)
 goto "Quit"
 
   

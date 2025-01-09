@@ -1,0 +1,27 @@
+; args: [vehicle, type, nCustomWeapon, si]
+_v = _this select 0
+_type = _this select 1
+_nCustomWeapon = _this select 2
+_si = _this select 3
+_this = 0
+
+_typeName = unitDefs select _type select udModel;
+_enum = _typeName call preprocessFile "Util\EnumOfCwv.sqf";
+? _1 == _enum: exit
+
+_timeAbort = _time + 30
+# loop
+	~ 1
+	? _time < _timeAbort && -1 == Array_TZK_NewUnitEquipped find _v: goto "loop"
+? _time > _timeAbort: exit
+
+@ !mutexNewUnitEquipped
+mutexNewUnitEquipped = true
+	_idx = Array_TZK_NewUnitEquipped find _v
+	? -1 == _idx: goto "Unlock"
+
+	[_v, _type, _enum, _nCustomWeapon, _si] call loadFile "\TZK_Patch4_4_0_6\s\Cwv\Equip.sqf"
+	[Array_TZK_NewUnitEquipped, _idx] call preprocessFile "Algo\arrayErase.sqf"
+
+# Unlock
+mutexNewUnitEquipped = false

@@ -18,6 +18,7 @@ _giBuyer = _orderDetail select 6
 _factory = _orderDetail select 7
 _orderNum = if (count _this > 1) then {_this select 1} else {1}
 _nCustomWeapon = if (count _this > 2) then {_this select 2} else {-1}
+; ATTENTION: all parameters can be used in SQF files. Don't remove any of them if didn't found them in current SQS file
 
 ; this index value should keep same as defined in "AI_Leader.sqs" 
 _idxOfOrderRef = 3
@@ -44,7 +45,7 @@ _size = count units (groupMatrix select _si select _giJoin) + _unitsInProgress
 ; FullCheck
 ? 0 == _orderNum || _eachOrderUnitCnt * _orderNum + _size <= maxGroupSize: goto "FullChecked"
 	? _orderNum != 1: "WARNING: unexpected full in NewOrder" call fDebugLog
-	[_type, _si, _giBuyer, _giJoin] exec "\TZK_Scripts_4_0_6\Server\Info\GroupFull.sqs"
+	[_type, _si, _giBuyer, _giJoin] exec (TzkScripts select 158)
 	goto "Unlock"
 # FullChecked
 

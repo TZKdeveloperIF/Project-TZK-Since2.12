@@ -1,0 +1,7 @@
+; args: [si, amount]
+
+_si = _this select 0
+_amount = _this select 1
+
+[_amount, _si] exec "\TZK_Patch4_4_0_6\s\Net\hMoneySideSpent.sqs"
+publicExec format [{[%1,%2] exec "\TZK_Patch4_4_0_6\s\Net\hMoneySideSpent.sqs"}, _amount call preprocessFile "Util\Num2Str.sqf", _si]

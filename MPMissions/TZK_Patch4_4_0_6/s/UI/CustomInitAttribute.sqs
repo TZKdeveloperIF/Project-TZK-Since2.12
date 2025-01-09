@@ -1,0 +1,57 @@
+; args: dialog name
+
+_script = _this
+; create dialog
+@!mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog _script
+mutexDlg = false
+
+; show background
+ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+
+; initialize variables
+_si = siPlayer; _gi = giPlayer
+_idcPlayerMoney = IDC + 30; _idcAicoMoney = IDC + 31
+
+_customPlayerMoney = -1; _customAicoMoney = -1;
+
+; main loop
+btnValue00 = 0
+# Update
+	? call dlgUpdated: goto "Quit"
+	? !(alive player): closeDialog 0; exit
+
+	? btnValue00 > 0: goto "ParserBtn00"
+	~0.2
+	goto "Update"
+
+# ParserBtn00
+	_var1 = btnValue00; btnValue00 = 0
+	? _var1 == 2^0: goto "Confirm"
+	goto "Update"
+# Confirm
+	; There may be "undefined" value in editable box so we shall use "goto" to jump those undefined ones.
+		_text = ctrlText _idcPlayerMoney
+		? _text == "": goto "SkipPlayerMoney"
+		_input = [_text, -1] call preprocessFile "Util\Str2Num.sqf";
+		? _input < 0: hint "Invalid Player Money Value.", goto "Update"
+
+		_customPlayerMoney = _input
+		? _customPlayerMoney > 999999: _customPlayerMoney = 999999
+	# SkipPlayerMoney
+		_text = ctrlText _idcAicoMoney
+		? _text == "": goto "SkipAicoMoney"
+		_input = [_text, -1] call preprocessFile "Util\Str2Num.sqf";
+		? _input < 0: hint "Invalid AICO Money Value.", goto "Update"
+
+		_customAicoMoney = _input
+		? _customAicoMoney < 60000: _customAicoMoney = 60000
+		? _customAicoMoney > 999999: _customAicoMoney = 999999
+	# SkipAicoMoney
+		closeDialog 0; goto "Quit"
+
+# Quit
+	[true, _customPlayerMoney, _customAicoMoney, siPlayer] exec "Init\SvrCustomPveFinished.sqs"
+	publicExec format [{[%1,%2,%3,%4] exec "Init\SvrCustomPveFinished.sqs"}, true, _customPlayerMoney call preprocessFile "Util\Num2Str.sqf", _customAicoMoney call preprocessFile "Util\Num2Str.sqf", siPlayer]
+	exit

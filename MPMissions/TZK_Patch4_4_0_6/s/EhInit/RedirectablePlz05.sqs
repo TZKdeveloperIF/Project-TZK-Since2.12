@@ -1,0 +1,19 @@
+; args: vehicle
+_vehicle = _this
+
+
+; dynamic texture. Use fix path if global variable undefined.
+_nil = "scalar bool array string 0xfcffffef"
+_undefined = format ["%1", count TzkScripts] == _nil
+? not _undefined: [_vehicle, {C}] exec (TzkScripts select 056)
+? _undefined: [_vehicle, {C}] exec "\TZK_Patch4_4_0_6\s\EhInit\4064TexPlz05.sqs"
+
+_vehicle exec "\TZK_Patch4_4_0_6\s\EhInit\RscnumAndSus.sqs"
+
+? not local _vehicle: exit
+
+_nil = "scalar bool array string 0xfcffffef"
+_deployScript = (TzkScripts select 011)
+? _nil != format ["%1", _deployScript]: [_vehicle, 1] exec _deployScript
+
+; EOF

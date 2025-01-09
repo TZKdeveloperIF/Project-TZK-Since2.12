@@ -1,0 +1,182 @@
+; args: none
+
+mutexVehicleArray = false
+; initial variables via sqf script aiming to have better readability
+call loadFile (TzkScripts select 013)
+
+; format of PlanesInfo: [price index, need rearm time: bool]
+PlaneUnits = []; PlanesInfo = []
+
+PlanePrice = [12000, 14000, 15000, 20000, 25000, 30000, 45000, 90000]
+
+; format of PlaneMagInfo: [weapon name, display name, si, vehicle price, unit price, unit slot, unit rearm time, unit count, slot type]
+; slot type: 0 - primary, 1 - secondary
+
+PlaneMags = []; PlaneMagInfo = []
+_type = 0
+
+PlaneMags set [_type, "MachineGun30A10"]
+PlaneMagInfo set [_type, ["MachineGun30A10", "30mm cannon", siBoth, 0, 0, 200, 0, 200, 1] ]
+_type = _type + 1
+
+PlaneMags set [_type, "RKTHunter_Guns_xj400"]
+PlaneMagInfo set [_type, ["RKTHunter_Guns_xj400", "4x 30mm cannons", siBoth, 0, 0, 200, 01, 200, 1] ]
+_type = _type + 1
+
+PlaneMags set [_type, "Stinger_xj400"]
+PlaneMagInfo set [_type, ["Stinger_xj400", "Stinger", si0, 0, 250, 1, 5, 1, 0] ]
+_type = _type + 1
+
+PlaneMags set [_type, "Strela_xj400"]
+PlaneMagInfo set [_type, ["Strela_xj400", "Strela", si1, 0, 250, 1, 5, 1, 0] ]
+_type = _type + 1
+
+PlaneMags set [_type, "Mag_LGB_2_xj400"]
+PlaneMagInfo set [_type, ["LGBLauncher_xj400", "LGB (x2)", siBoth, 12000, 250, 1, 7.5, 1, 0] ]
+_type = _type + 1
+
+PlaneMags set [_type, "RKTHunter_BombRail_xj400"]
+PlaneMagInfo set [_type, ["RKTHunter_BombRail_xj400", "500lb bombs", siBoth, 14000, 100, 1, 2, 1, 0] ]
+_type = _type + 1
+
+PlaneMags set [_type, "Maverick_16_xj400"]
+PlaneMagInfo set [_type, ["MaverickLauncher_xj400", "Maverick", si0, 20000, 250, 1, 7.5, 1, 0] ]
+_type = _type + 1
+
+PlaneMags set [_type, "Ch29T_16_xj400"]
+PlaneMagInfo set [_type, ["Ch29TLauncher_xj400", "Ch-29T", si1, 20000, 250, 1, 7.5, 1, 0] ]
+_type = _type + 1
+
+PlaneMags set [_type, "RedTop_26_xj400"]
+PlaneMagInfo set [_type, ["RedTop_26_xj400", "Redtop", siBoth, 25000, 250, 1, 7.5, 1, 0] ]
+_type = _type + 1
+
+PlaneMags set [_type, "Zuni_MaverickLike_xj400"]
+PlaneMagInfo set [_type, ["Zuni_MaverickLike_xj400", "Zuni", si0, 30000, 360, 1, 15, 24, 0] ]
+_type = _type + 1
+
+PlaneMags set [_type, "Rocket57x192"]
+PlaneMagInfo set [_type, ["Rocket57x192", "Rocket", si1, 30000, 480, 1, 15, 32, 0] ]
+_type = _type + 1
+
+PlaneMags set [_type, "Mag_LGB_8_xj400"]
+PlaneMagInfo set [_type, ["LGBLauncher_xj400", "LGB (x8)", siBoth, 20000, 250, 1, 7.5, 1, 0] ]
+_type = _type + 1
+
+PlaneMags set [_type, "Mag_LGB_8_xj400"]
+PlaneMagInfo set [_type, ["LGBLauncher_xj400", "Buster LGB", siBoth, 45000, 550, 1, 7.5, 1, 0] ]
+_type = _type + 1
+
+PlaneMags set [_type, "Tomahawk_xj400"]
+PlaneMagInfo set [_type, ["Tomahawk_xj400", "Tomahawk", si0, 90000, 4500, 1, 180, 1, 0] ]
+_type = _type + 1
+
+PlaneMags set [_type, "Raduga_xj400"]
+PlaneMagInfo set [_type, ["Raduga_xj400", "Raduga", si1, 90000, 4500, 1, 180, 1, 0] ]
+_type = _type + 1
+
+
+GunshipUnits = []; GunshipInfo = []
+
+GunshipPrice = [15000, 17000, 20000, 23000, 25000, 28000, 30000]
+
+GunshipMags = []; GunshipMagInfo = []
+_type = 0
+
+GunshipMags set [_type, "ZuniLauncher38"]
+GunshipMagInfo set [_type, ["ZuniLauncher38", "Rocket", siBoth, 0, 15, 1, 1, 1, 1] ]
+_type = _type + 1
+
+GunshipMags set [_type, "Stinger_xj400"]
+GunshipMagInfo set [_type, ["Stinger_xj400", "Stinger", si0, 0, 250, 1, 5, 1, 0] ]
+_type = _type + 1
+
+GunshipMags set [_type, "Strela_xj400"]
+GunshipMagInfo set [_type, ["Strela_xj400", "Strela", si1, 0, 250, 1, 5, 1, 0] ]
+_type = _type + 1
+
+GunshipMags set [_type, "RedTop_26_xj400"]
+GunshipMagInfo set [_type, ["RedTop_26_xj400", "Redtop", siBoth, 20000, 250, 1, 7.5, 1, 0] ]
+_type = _type + 1
+
+GunshipMags set [_type, "HellfireLauncherCobra_xj400"]
+GunshipMagInfo set [_type, ["HellfireLauncherCobra_xj400", "AT", si0, 20000, 250, 1, 7.5, 1, 0] ]
+_type = _type + 1
+
+GunshipMags set [_type, "HellfireLauncherApach_xj400"]
+GunshipMagInfo set [_type, ["HellfireLauncherApach_xj400", "AT", si0, 22000, 250, 1, 7.5, 1, 0] ]
+_type = _type + 1
+
+GunshipMags set [_type, "HOT3Launcher_xj400"]
+GunshipMagInfo set [_type, ["HOT3Launcher_xj400", "AT", si0, 25000, 250, 1, 7.5, 1, 0] ]
+_type = _type + 1
+
+GunshipMags set [_type, "HellfireLauncherHind_xj400"]
+GunshipMagInfo set [_type, ["HellfireLauncherHind_xj400", "AT", si1, 23000, 250, 1, 7.5, 1, 0] ]
+_type = _type + 1
+
+GunshipMags set [_type, "AT6a_RHS_xj400"]
+GunshipMagInfo set [_type, ["AT6a_RHS_xj400", "AT", si1, 23000, 250, 1, 7.5, 1, 0] ]
+_type = _type + 1
+
+GunshipMags set [_type, "HellfireLauncherKamov_xj400"]
+GunshipMagInfo set [_type, ["HellfireLauncherKamov_xj400", "AT", si1, 25000, 250, 1, 7.5, 1, 0] ]
+_type = _type + 1
+
+GunshipMags set [_type, "GuidedAT_Heli_8_xj400"]
+GunshipMagInfo set [_type, ["ATLauncherAir_xj400", "AT", si0, 25000, 250, 1, 7.5, 1, 0] ]
+_type = _type + 1
+
+GunshipMags set [_type, "GuidedAT_Cobra_8_xj400"]
+GunshipMagInfo set [_type, ["ATLauncherAir_xj400", "AT", si0, 25000, 250, 1, 7.5, 1, 0] ]
+_type = _type + 1
+
+GunshipMags set [_type, "PARS3Launcher_xj400"]
+GunshipMagInfo set [_type, ["PARS3Launcher_xj400", "AT", si0, 28000, 250, 1, 7.5, 1, 0] ]
+_type = _type + 1
+
+GunshipMags set [_type, "GuidedAT_Heli_8_xj400"]
+GunshipMagInfo set [_type, ["ATLauncherAir_xj400", "AT", si1, 30000, 250, 1, 7.5, 1, 0] ]
+_type = _type + 1
+
+GunshipMags set [_type, "GuidedAT6_8_xj400"]
+GunshipMagInfo set [_type, ["ATLauncherAir_xj400", "AT", si1, 30000, 250, 1, 7.5, 1, 0] ]
+_type = _type + 1
+
+GunshipMags set [_type, "GuidedAT_Heli_12_xj400"]
+GunshipMagInfo set [_type, ["ATLauncherAir_xj400", "AT", si1, 28000, 250, 1, 7.5, 1, 0] ]
+_type = _type + 1
+
+
+HeliUnits = []; HelisInfo = []
+
+HeliPrice = [4000, 5000, 7000, 10000]
+
+HeliMags = []; HeliMagInfo = []
+_type = 0
+
+HeliMags set [_type, "Mag_Heli_2000_xj400"]
+HeliMagInfo set [_type, ["Cannon_Heli_xj400", "20mm Cannon", siBoth, 7000, 0, 1, 0, 2000, 1] ]
+_type = _type + 1
+
+HeliMags set [_type, "ZuniLauncher38"]
+HeliMagInfo set [_type, ["ZuniLauncher38", "Rocket", si0, 0, 285, 0.5, 19, 19, 0] ]
+_type = _type + 1
+
+HeliMags set [_type, "Rocket57x192"]
+HeliMagInfo set [_type, ["Rocket57x192", "Rocket", si1, 0, 180, 0.25, 12, 24, 0] ]
+_type = _type + 1
+
+HeliMags set [_type, "Stinger_xj400"]
+HeliMagInfo set [_type, ["Stinger_xj400", "Stinger", si0, 0, 250, 1, 5, 1, 0] ]
+_type = _type + 1
+
+HeliMags set [_type, "Strela_xj400"]
+HeliMagInfo set [_type, ["Strela_xj400", "Strela", si1, 0, 250, 1, 5, 1, 0] ]
+_type = _type + 1
+
+HeliMags set [_type, "Mag_LGB_2_xj400"]
+HeliMagInfo set [_type, ["LGBLauncher_xj400", "LGB (x2)", siBoth, 7000, 250, 1, 7.5, 1, 0] ]
+_type = _type + 1
+
+call preprocessFile "impl\Cwv.sqf"

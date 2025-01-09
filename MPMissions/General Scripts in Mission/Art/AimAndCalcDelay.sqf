@@ -26,7 +26,7 @@ if _ret then {
 	} else {
 		doStop _unit;
 	};
-	if _isServer then {[_unit, [true]] exec localize {TZK_AI_STOP}};
+	if _isServer then {[_unit, [true]] exec (TzkScripts select 006)};
 
 	_vehicle reveal _target; _vehicle doTarget _target;
 

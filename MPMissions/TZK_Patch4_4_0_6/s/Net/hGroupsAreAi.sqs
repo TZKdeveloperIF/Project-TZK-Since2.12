@@ -1,0 +1,21 @@
+; args: [si, gis[], ...]. si-gis pair can repeat
+? isNull player: exit
+
+? 0 == count _this: exit
+_pairIdx = 0, _pairCnt = (count _this) / 2
+
+_func = preprocessFile "Player\SQF\Add2AiGroup.sqf";
+
+@ not mutexGroupIsAI
+	mutexGroupIsAI = true
+
+	# procPairs
+		_si = _this select _pairIdx * 2
+		_gis = _this select _pairIdx * 2 + 1
+
+		{[_si, _x] call _func} forEach _gis
+
+		_pairIdx = _pairIdx + 1
+		? _pairIdx < _pairCnt: goto "procPairs"
+
+	mutexGroupIsAI = false

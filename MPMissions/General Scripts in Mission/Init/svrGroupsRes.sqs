@@ -1,0 +1,55 @@
+; args: none
+
+; initial res groups
+; Units in res town groups and patrol groups haven't marker and thus can be created by the server
+
+
+; ================================ Patrol Groups ================================
+; define patrol groups before res town groups. RES tg will join to patrol group
+
+; Set number of patrol group at about 40% of town numbers.
+_c = ((count towns) * 0.4) call loadFile "Math\Floor.sqf"; _i = 0; _group = grpNull
+_list = groupMatrix select siRes
+
+# ResPatrolGrps
+	_group = if (_i < count patrolGroups) then {patrolGroups select _i} else {grpNull}
+	? isNull _group: goto "continue_ResPatrol"
+
+	_list set [count _list, _group]
+	groupsPatrol set [count groupsPatrol, _group]
+	groupPatrolJoinMatrix set [count groupPatrolJoinMatrix, 0]
+
+	_group exec "Server\Start\ResPatrolGroup.sqs"
+
+	# continue_ResPatrol
+	_i = _i + 1
+	? _i < _c : goto "ResPatrolGrps"
+; variable "patrolGroups" is useless now. Undefine it
+patrolGroups = _nil
+
+
+; ==================================Town Groups==================================
+; Number of town groups should rely on number of towns. There're 25 * 3 town groups
+; predefined in mission.sqm now. Need use script command if need create more.
+; However, there were bugs appear when defined 24 towns with 2*1k town. This may due
+; to 1k extra town group. And bugs appear in kodiak_v2 with 22 town too. No extra group
+; there.
+
+_i = 0; _c = count towns
+_list = groupMatrix select siRes
+# TownGroups
+	_town = towns select _i; _flag = _town select 0; _income = _town select 2
+
+	_resTG = if (_i < count (townGroups select siRes)) then {townGroups select siRes select _i} else {grpNull}
+	
+	; An empty group created by "createGroup" return the "unknown" side. However editor can still use
+	; "format" and "substr" to gain the first 4 letters and hence gain the side.
+
+	_script = "Server\Start\TownGroupRes1.sqs"
+	? bool_TZK_SEMod_Mode && _income >= 1000 : _script = "Server\Start\TownGroupRes2.sqs"
+	? not isNull _resTG: [_resTG, _i] exec _script, _list set [count _list, _resTG]
+
+	_i = _i + 1
+	? _i < _c : goto "TownGroups"
+
+; EOF

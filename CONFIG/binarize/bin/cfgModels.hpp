@@ -195,6 +195,7 @@ class CfgModels {
 
 	class m2_mg: Vehicle {};
 
+	class JAWA250: Car {};
 
 	// planes / helis
 	class uh_60: Helicopter {};
@@ -739,8 +740,7 @@ class CfgModels {
 			tex_m60_sidepas.pac
 		};
 	};
-	class M60_120S_TZK: Tank {
-		sectionsInherit = "Tank";
+	class M60_120S_TZK: Tank_MultiTex {
 		sections[] = {
 			tex_bmp_kuk2.pac, 
 			tex_m1a1_ammo_box.pac, 
@@ -804,16 +804,16 @@ class CfgModels {
 		sectionsInherit = "Vehicle";
 		sections[] = {"no1", "no2", "no3","zadni svetlo","brzdove svetlo"};
 	};
-	class Grkpbv_Coc: Tank  {
-		sectionsInherit = "Tank";
+	class Grkpbv_Coc: Tank_Grad  {
+		sectionsInherit = "Tank_Grad";
 		sections[] = {
 			"flash1","flash2","flash3","flash4","flash5","flash6", 
 			"cislo","grupa","side","sektor","clan","podsvit pristroju","poskozeni","L svetlo","P svetlo","zasleh","zadni svetlo"
 			, "tzkGunL00", "tzkGunL01", "tzkGunL02", "tzkGunR00", "tzkGunR01", "tzkGunR02"
 		};
 	};
-	class PLZ89: Tank {
-		sectionsInherit = "Tank";
+	class PLZ89: Tank_Grad {
+		sectionsInherit = "Tank_Grad";
 		sections[] = {
 			"n1", "n2", "n3"
 			, "tzkGun00", "tzkGun01", "tzkGun02", "tzkGun03"

@@ -1,0 +1,12 @@
+; args: vehicle
+
+_vehicle = _this
+
+? local _vehicle: _vehicle animate [{suspension}, 0.5]
+
+; dynamic texture. Use fix path if global variable undefined.
+_nil = "scalar bool array string 0xfcffffef"
+_undefined = format ["%1", count TzkScripts] == _nil
+
+? not _undefined: [_vehicle, {\TZK_Texture_4_0_0\BWMOD\leo2A6\num\}, {nr}, {0}] exec (TzkScripts select 057)
+? _undefined: [_vehicle, {\TZK_Texture_4_0_0\BWMOD\leo2A6\num\}, {nr}, {0}] exec "\TZK_Objects\Scripts\texture\RSC_Numbers.sqs"

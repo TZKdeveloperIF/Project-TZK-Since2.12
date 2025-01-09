@@ -1,0 +1,61 @@
+; args: [vehicle player]
+_vehicle = _this select 0
+? bool_TZK_199_Mode: [_vehicle] exec "Extra\199\Radio_199_Update.sqs", exit
+? _vehicle == player: [_vehicle] exec (TzkScripts select 336); exit
+
+; Clean up radio channels and make it unnecessary to be handle in other scripts.
+[_vehicle] call loadFile (TzkScripts select 196)
+
+; Classifications below are defined in InitUnitTypes
+# CheckVehicle
+_vt = _vehicle call funcGetUnitTypeFromObject
+? _vt == -1: goto "CheckStructure"
+? _vt in RadioTypesCustomCarShips: if ("Ship" countType [_vehicle] > 0) then {[_vehicle] exec (TzkScripts select 339)} else {[_vehicle] exec (TzkScripts select 338)}; exit
+
+? bool_TZK_SEMod_Mode && _vt in (typesHeavyTank + typesLightTank): [_vehicle] exec "\TZK_Scripts_4_0_4\Player\Radio\Radio_Update_Vehicle_Tank.sqs"; exit
+
+; Miner car radio. Use ammo car instead before new mod. Ammo car can't transport via player by now.
+? _vt == jeepaW || _vt == uazaE: [_vehicle] exec (TzkScripts select 337); exit
+
+? _vt in typesHowitzer: [_vehicle] exec (TzkScripts select 204); exit
+? _vt in typesRocketLauncher: [_vehicle] exec (TzkScripts select 205); exit
+
+? _vt in RadioTypesShips: [_vehicle] exec (TzkScripts select 330); exit
+
+; Helis all can attach and support Heli is special in drop ammo crate. Support Plane is more a transport plane. Support Ship nothing to specialize.
+? _vt in (RadioTypesSupport + [utMCVW, utMCVE, utMHQ0, utMHQ1]): if ("Land" countType [_vehicle] > 0) then {[_vehicle] exec (TzkScripts select 333); exit}
+
+; Transport Helis and Planes are similar. Support Heli is special in drop ammo crate.
+? _vt in RadioTypesTransportPlane + RadioTypesTransportHeli: [_vehicle] exec (TzkScripts select 340); exit
+
+; Check vehicle's "transportSoldier" to decide whether is a transport Heli or not
+? _vt in RadioTypesGunships: [_vehicle] exec (TzkScripts select 331); exit
+
+; Plane with AfterBurner in TZK is only allowed to be A10/Su25
+? _vt in RadioTypesPlane: [_vehicle] exec (TzkScripts select 332); exit
+
+; Transport Land Vehicles. Ship will enter script above thus won't reach here.
+? _vt in (typesTransportCar + typesTransportAPC): [_vehicle, _vt] exec (TzkScripts select 334); exit
+
+; Vehicle doesn't have special Actions
+[_vehicle] call loadFile (TzkScripts select 196); exit
+
+
+# CheckStructure
+_vt = _vehicle call funcGetStructTypeFromObject
+? _vt == -1: goto "Abnormal"
+? _vt in (structsOccupiableHowitzer): [_vehicle, _vt] exec (TzkScripts select 206); exit
+? _vt in structsOccupiableMortar: [_vehicle] call loadFile (TzkScripts select 203); exit
+
+; General Structures are allowed to reset the Vector Up.
+[_vehicle] call loadFile (TzkScripts select 335); exit
+
+
+# Abnormal
+
+; Parachute. In crCTI when player in Parachute the "Options" action invalid. No modifying there but add "Options" in radio.
+? "ParachuteBase" countType [_vehicle] > 0: [_vehicle] call loadFile (TzkScripts select 198); exit
+
+[_vehicle] call loadFile (TzkScripts select 196); exit
+
+; EOF

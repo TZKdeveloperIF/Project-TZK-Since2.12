@@ -1,0 +1,7 @@
+; args: none
+
+; delete group units AFTER game has begun
+~ 0.01
+
+{_g = _x; {deleteVehicle _x} forEach units _g} forEach (workerGroups select si0)
+{_g = _x; {deleteVehicle _x} forEach units _g} forEach (workerGroups select si1)

@@ -4,7 +4,7 @@ disableUserInput true
 
 hint "You are BLOCKED.\nYou are NOT Receiving."
 
-[siPlayer, giPlayer, 1] exec "\TZK_Scripts_4_0_6\Player\Msg\sBlockedByClient.sqs"
+[siPlayer, giPlayer, 1] exec (TzkScripts select 178)
 
 # WaitForData
 	groupPlayer setCombatMode "BLUE"
@@ -25,6 +25,6 @@ groupPlayer setCombatMode "YELLOW"
 disableUserInput false
 hint "You are UNBLOCKED.\nYou are Receiving."
 
-[siPlayer, giPlayer, 0] exec "\TZK_Scripts_4_0_6\Player\Msg\sBlockedByClient.sqs"
+[siPlayer, giPlayer, 0] exec (TzkScripts select 178)
 
 bBlockedByClient = false

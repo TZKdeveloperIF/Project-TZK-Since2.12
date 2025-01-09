@@ -1,0 +1,140 @@
+; args: si
+_si = _this
+
+_colorPurple = "ColorDarkPurple_xj400"; _colorOrange = "ColorOrange_xj400"
+
+; TZK_4.0.6 don't support 1.99 any longer. However some compatible designs are still remained as a hint message
+? bool_TZK_199_Mode: goto "SkipCreation"
+	
+_i = 0
+#TargetMarker
+	_marker = Format["TargetP_%1", _i]; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Destroy"; _marker setMarkerColor "ColorYellow"; _marker setMarkerSize [0.6,0.6]; _marker setMarkerText format ["Target %1", _i]
+	_i = _i + 1
+	? _i < countTargetMarkers : goto "TargetMarker"
+
+_i = 0
+#StructureMarker
+	_marker = format["Structure_%1_%2", si0, _i]; 	createMarker [_marker, hiddenMarkerPos]
+	_marker = format["Structure_%1_%2", si1, _i]; 	createMarker [_marker, hiddenMarkerPos]
+	_i = _i + 1
+	? _i < maxStructureMarkers : goto "StructureMarker"
+	
+_i = 0
+#ArtMarker
+	_marker = format["Art%1", _i]; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Marker"; _marker setMarkerSize [0.5,0.5]; _marker setMarkerColor "ColorRed"
+	_i = _i + 1
+	? _i < 30 : goto "ArtMarker"
+
+_i = 0
+#SpotMarker
+	_marker = format["EnemySpotted_%1", _i]; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Warning"; _marker setMarkerSize [0.5,0.5]
+	_marker setMarkerColor "ColorRed"
+	_i = _i + 1
+	? _i < 30 : goto "SpotMarker"
+
+_i = 0
+#COMarker
+	_marker = format["co_%1", _i]; 	createMarker [_marker, hiddenMarkerPos]; _marker setMarkerText format["co%1", _i]; _marker setMarkerType "Marker"; _marker setMarkerSize [0.5,0.5]
+	_marker setMarkerColor "ColorRed"
+	_i = _i + 1
+	? _i < countWPCO : goto "COMarker"
+	
+_i = 0
+#WPMarker
+	_marker = format["wp_%1", _i]; 	createMarker [_marker, hiddenMarkerPos]; _marker setMarkerText format["wp%1", _i]; _marker setMarkerType "Marker"; _marker setMarkerSize [0.5,0.5]
+	_i = _i + 1
+	? _i < countWPPlayer : goto "WPMarker"
+
+_marker = "ImpactPoint_0"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Destroy"; _marker setMarkerColor "ColorRed"; _marker setMarkerSize [0.40,0.40]
+_marker = "ImpactPoint_1"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Destroy"; _marker setMarkerColor "ColorYellow"; _marker setMarkerSize [0.40,0.40]
+_marker = "ImpactPoint_2"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Destroy"; _marker setMarkerColor "ColorGreen"; _marker setMarkerSize [0.40,0.40]
+_marker = "ImpactPoint_3"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Destroy"; _marker setMarkerColor "ColorBlue"; _marker setMarkerSize [0.40,0.40]
+_marker = "ImpactPoint_4"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Destroy"; _marker setMarkerColor _colorPurple; _marker setMarkerSize [0.40,0.40]
+
+
+_i = 0
+#VehicleMarker
+	_marker = format["Vehicle_%1_%2", si0, _i]; 	createMarker [_marker, hiddenMarkerPos];
+	_marker = format["Vehicle_%1_%2", si1, _i]; 	createMarker [_marker, hiddenMarkerPos];
+	_marker = format["Vehicle_%1_%2", siRes, _i]; 	createMarker [_marker, hiddenMarkerPos];
+	_marker = format["Vehicle_%1_%2", siCiv, _i]; 	createMarker [_marker, hiddenMarkerPos];
+	_i = _i + 1
+	? _i < maxVehicleMarkers : goto "VehicleMarker"
+	
+_i = 0
+#WorkerMarkers
+	_j = 0
+	#WorkerMarker
+		_marker = Format["Worker_0_%1_%2", _i, _j]; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Dot"
+		_marker = Format["Worker_1_%1_%2", _i, _j]; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Dot"
+		_j = _j + 1
+		? (_j < 12): goto "WorkerMarker"
+	_i = _i + 1
+	? (_i < 3): goto "WorkerMarkers"
+	
+_i = 0; _count = count towns; { if ( (_x select 2)>=1000 ) then {_count = _count + 1} } forEach towns
+#TownUnitMarkers
+	_j = 0
+	#TownUnitMarker
+		_marker = Format["TownUnit_0_%1_%2", _i, _j]; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Dot"
+		_marker = Format["TownUnit_1_%1_%2", _i, _j]; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Dot"
+		_j = _j + 1
+		? (_j < 12): goto "TownUnitMarker"
+	_i = _i + 1
+	? (_i < _count): goto "TownUnitMarkers"
+
+_gi = 0
+#GroupMarker
+	_index = 0
+	#UnitMarker
+		_marker = Format["GroupUnit_0_%1_%2", _gi, _index]; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Dot"; _marker setMarkerColor "ColorYellow"
+		_marker = Format["GroupUnit_1_%1_%2", _gi, _index]; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerType "Dot"; _marker setMarkerColor "ColorYellow"
+		_index = _index + 1
+		? (_index < 11): goto "UnitMarker"
+	_gi = _gi + 1
+	? _gi < (count callsigns) : goto "GroupMarker"
+	
+{ _m = format["PlayerUnit_%1", _x]; createMarker [_m, hiddenMarkerPos]; _m setMarkerText format["%1", _x]; _m setMarkerType "Dot"; _m setMarkerColor "ColorRed" } forEach [2,3,4,5,6,7,8,9,10,11,12]
+
+_i = 0; _count = count callsigns
+#LeaderMarker
+	_marker = format["%1%2", callsigns select _i, si0]; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerText format["%1", callsigns select _i]; _marker setMarkerType "Dot"
+	_marker = format["%1%2", callsigns select _i, si1]; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerText format["%1", callsigns select _i]; _marker setMarkerType "Dot"
+	_i = _i + 1
+	? (_i < _count):goto "LeaderMarker"
+
+; only 1 base group by now
+_i = 0; _j = 0
+# BaseGrpMarker
+	_marker = format ["Base_0_%1_%2", _i, _j]; createMarker [_marker, hiddenMarkerPos]
+	_marker setMarkerType "Dot";
+	_marker setMarkerSize [0.70, 0.70];
+	_marker setMarkerPos hiddenMarkerPos;
+	_marker setMarkerColor "ColorOrange_xj400";
+
+	_marker = format ["Base_1_%1_%2", _i, _j]; createMarker [_marker, hiddenMarkerPos]
+	_marker setMarkerType "Dot";
+	_marker setMarkerSize [0.70,0.70];
+	_marker setMarkerPos hiddenMarkerPos;
+	_marker setMarkerColor "ColorOrange_xj400";
+
+	_j = _j + 1;
+	? _j < 12: goto "BaseGrpMarker"
+	
+_marker = "Respawn_west"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerColor "ColorBlue";  _marker setMarkerType "Start";
+_marker = "Respawn_east"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerColor "ColorRed";  _marker setMarkerType "Start";
+_marker = "Respawn_guerrila"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerColor "ColorBlack";  _marker setMarkerType "Start";
+_marker = "Respawn_civilian"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerColor "ColorWhite";  _marker setMarkerType "Start";
+_marker = "Respawn_vehicle_west"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerColor "ColorBlue";  _marker setMarkerType "Start";
+_marker = "Respawn_vehicle_east"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerColor "ColorRed";  _marker setMarkerType "Start";
+_marker = "Respawn_vehicle_guerrila"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerColor "ColorBlack";  _marker setMarkerType "Start";
+_marker = "Respawn_vehicle_civilian"; createMarker [_marker, hiddenMarkerPos]; _marker setMarkerColor "ColorWhite";  _marker setMarkerType "Start";
+
+; lazy init
+# SkipCreation
+	_si exec (TzkScripts select 318)
+
+; impl
+call preprocessFile "impl\markerLazyCreate.sqf"
+
+; EOF

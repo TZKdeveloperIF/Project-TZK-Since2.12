@@ -1,0 +1,8 @@
+; args: [value, value2]
+
+_value = _this select 0
+_value2 = -1
+? count (_this) == 2: _value2 = _this select 1
+
+[_value, _value2] exec "\TZK_Patch4_4_0_6\s\Net\hInfo.sqs"
+publicExec format [{[%1,%2] exec "\TZK_Patch4_4_0_6\s\Net\hInfo.sqs"}, _value, _value2]

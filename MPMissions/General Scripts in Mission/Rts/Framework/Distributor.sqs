@@ -9,7 +9,7 @@
 
 _netIds = _this select 0
 _isntAiUnit = preprocessFile "Util\IsNotAiGrpNetId.sqf"
-[_netIds, _isntAiUnit] call preprocessFile "Util\ArrayEraseIf.sqf"
+[_netIds, _isntAiUnit] call preprocessFile "Algo\arrayEraseIf.sqf"
 _c = count _netIds
 ? 0 == _c: exit
 

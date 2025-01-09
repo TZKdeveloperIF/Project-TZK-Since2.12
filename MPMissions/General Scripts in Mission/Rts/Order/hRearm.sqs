@@ -63,7 +63,7 @@ _vehicle = vehicle _unit, _cantMove = false
 	_vehicle = vehicle _unit
 	? _unit != driver _vehicle: _stopParam set [2, false], goto "Sleep"
 
-	_stopParam set [2, true], _stopParam exec localize {TZK_AI_STOP}
+	_stopParam set [2, true], _stopParam exec (TzkScripts select 006)
 
 	? not _isInfantry: goto "SeekSup4Vehicle"
 		_sup = [_unit, _si, _supportDist, true, _clickedPos] call preprocessFile "Util\SoldierRearmSupport.sqf"
@@ -93,7 +93,7 @@ _vehicle = vehicle _unit, _cantMove = false
 	_stopParam set [2, false]
 	? _unit != _vehicle: _vehicle exec "Art\Undeploy.sqs", {_x doFollow leader _x} forEach crew _vehicle
 
-	[_unit, _sup] exec "\TZK_Scripts_4_0_4\Server\SendMovingToSupport.sqs"
+	[_unit, _sup] exec "Net\sMovingToSupport.sqs"
 	_bAir = _vt != -1 && "Air" countType [_vehicle] > 0
 	_bSupH = ((getPosASL _sup) select 2) - ((getPos _sup) call funcHASL)
 	_bVehH = ((getPosASL _vehicle) select 2) - ((getPos _vehicle) call funcHASL)
@@ -138,7 +138,7 @@ _vehicle = vehicle _unit, _cantMove = false
 		_vehicle = vehicle _unit
 		? _unit != driver _vehicle: if (not isNull driver _vehicle) then {_cycle = 30, goto "GoBack"}
 
-		_stopParam set [2, true], _stopParam exec localize {TZK_AI_STOP}
+		_stopParam set [2, true], _stopParam exec (TzkScripts select 006)
 
 		_gi = (groupMatrix select _si) find (group _unit)
 		_nonAIgroup = false
@@ -168,7 +168,7 @@ _vehicle = vehicle _unit, _cantMove = false
 
 	; check move
 	_distToDest = [_unit, _returnPos] call funcDistH
-	? _distToDest < 10: _stopParam select 1 set [1, true]; _stopParam set [2, true], _stopParam exec localize {TZK_AI_STOP}, _cycle = 30, goto "Sleep"
+	? _distToDest < 10: _stopParam select 1 set [1, true]; _stopParam set [2, true], _stopParam exec (TzkScripts select 006), _cycle = 30, goto "Sleep"
 
 	_stopParam set [2, false]
 	[_unit, _returnPos] call funcMoveAI

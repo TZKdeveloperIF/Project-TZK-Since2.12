@@ -47,7 +47,7 @@ _needed = _cost - _resources
 ;If more resources are needed then available report an error to player.
 ? _needed > 0: player groupChat Format["Not Enough Money.   Need: %1   Cost: %2", _needed, _cost]; mutexOrderBuildStructure = false; exit
 
-[_posStruct, _dirStruct, _type] exec "\TZK_Scripts_4_0_4\Player\SendBuildStructure.sqs"
+[_posStruct, _dirStruct, _type] exec "Net\sBuildStruct.sqs"
 ~5
 mutexOrderBuildStructure = false
 player groupChat format ["%1 %3. %4 %2", _desc select sdName, _posStruct call funcCalcTownDirDistFromPos, localize {TZK_LANG_BUILT}, localize {TZK_LANG_POSITION}]

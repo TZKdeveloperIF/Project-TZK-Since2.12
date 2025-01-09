@@ -1,0 +1,25 @@
+; args: none
+
+~ 0.1
+[player, false, 0] exec (TzkScripts select 019)
+
+~ 1
+@ !dialog
+0 exec (TzkScripts select 077)
+0 exec (TzkScripts select 310)
+
+? groupPlayer != groupCommander select siPlayer: goto "SkipInitialCmdRule"
+~ 1
+0 exec "RuleCmd\Dialog.sqs"
+~ 1
+@ !dialog
+# SkipInitialCmdRule
+
+; delay to wait AI group info received
+~ 35
+
+_westName = []; _groups = groupMatrix select si0; _index = 0; _groupsAI = groupAiMatrix select si0
+{ _westName set [_index, format["%1", [name leader _x, "AI"] select (_x in _groupsAI)] ]; _index=_index+1 } forEach _groups;
+_eastName = []; _groups = groupMatrix select si1; _index = 0; _groupsAI = groupAiMatrix select si1
+{ _eastName set [_index, format["%1", [name leader _x, "AI"] select (_x in _groupsAI)] ]; _index=_index+1 } forEach _groups;
+LeaderNameMatrix = [_westName, _eastName]

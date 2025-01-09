@@ -1,22 +1,18 @@
 _unit = player
 ; Init
-[_unit, siPlayer, 200] exec localize {TZK_EVENT_ADD_KILLED_INF}
+[_unit, siPlayer, 200] exec (TzkScripts select 039)
 [_unit] exec "\TZK_Scripts_4_0_4\Player\AddPlayerActions.sqs"
+
+	; init timeLastPing to current time if haven't received ping from server
+	? timeLastPing < 0: timeLastPing = time
 
 ; The AnimChanged-EH is available since 1.99
 	?!bool_TZK_Vanilla_Mode: _unit addEventHandler ["AnimChanged", { _this exec "\TZK_Scripts_4_0_4\Player\Event_AnimChanged_WW4.sqs" }]
-	_unit addEventHandler ["Fired",{ _this exec "Player\Effect\LimitWeaponRangePlayer.sqs" }]
+	_unit addEventHandler ["Fired",{ _this exec (TzkScripts select 293) }]
 
 _sensorOld = "EmptyDetector" camCreate getPos player; _sensorNow = "EmptyDetector" camCreate getPos player
 _timeOld = -3600; _timeNow = -3600
 _nextMusic = 5*60; _bool_TZK_Music = bool_TZK_Music
-
-@ pvMhq0x != -1
-@ pvMhq0y != -1
-@ pvMhq1x != -1
-@ pvMhq1y != -1
-
-; to keep scripts' order, this script should be executed after "PlaceGroupLeader.sqs" has placed player
 
 _posOld = getPos _sensorOld; _posNow = getPos _sensorNow
 _unitsOld = units group player; _unitsNew = []
@@ -33,7 +29,7 @@ _rtsCrossOutdateDur = 10; _rtsAreaOutDateDur = 30;
 	_mhq = mhq select siPlayer
 	_mcvs = MCV select siPlayer
 
-	? pvGameOver != -1: [] exec localize {TZK_PLAYER_GAMEOVER_SECQUENCE}; [] exec localize {TZK_TRIGGER_GAME_END_COMMON}; Exit
+	? pvGameOver != -1: [] exec (TzkScripts select 191); [] exec (TzkScripts select 229); Exit
 
 	? time > (timeLastPing + blockTime) && !bBlockedByClient: bBlockedByClient = true; 0 exec "Player\BlockByClient.sqs"
 	
@@ -99,11 +95,11 @@ _rtsCrossOutdateDur = 10; _rtsAreaOutDateDur = 30;
 
 	@ alive player || pvGameOver != -1
 
-	? pvGameOver != -1: [] exec localize {TZK_PLAYER_GAMEOVER_SECQUENCE}; [] exec localize {TZK_TRIGGER_GAME_END_COMMON}; exit
+	? pvGameOver != -1: [] exec (TzkScripts select 191); [] exec (TzkScripts select 229); exit
 
 	_unit = player
 	removeAllWeapons _unit
-	[_unit, siPlayer, 200] exec localize {TZK_EVENT_ADD_KILLED_INF}
+	[_unit, siPlayer, 200] exec (TzkScripts select 039)
 
 	_money = groupMoneyMatrix select siPlayer select giPlayer
 
@@ -116,7 +112,7 @@ _rtsCrossOutdateDur = 10; _rtsAreaOutDateDur = 30;
 		? _money < costRespawn: goto "WaitMoney"
 	
 	#Respawn
-		? costRespawn > 0: [costRespawn] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"
+		? costRespawn > 0: [costRespawn] exec "Net\sMoneySpent.sqs"
 		? !(alive objectRespawn): objectRespawn = [objectRespawn, siPlayer] call funcGetNearestRespawnObject
 
 		_ts = objectRespawn call funcGetStructTypeFromObject
@@ -141,13 +137,13 @@ _rtsCrossOutdateDur = 10; _rtsAreaOutDateDur = 30;
 
 	forceMap false
 
-	[_unit, siPlayer] exec "\TZK_Scripts_4_0_4\Player\EquipPlayerRespawn.sqs"
+	[_unit, siPlayer] exec (TzkScripts select 280)
 
 	[_unit] exec "\TZK_Scripts_4_0_4\Player\AddPlayerActions.sqs"
 
 	; The AnimChanged-EH is available since 1.99
 	?!bool_TZK_Vanilla_Mode: _unit addEventHandler ["AnimChanged", { _this exec "\TZK_Scripts_4_0_4\Player\Event_AnimChanged_WW4.sqs" }]
-	_unit addEventHandler ["Fired",{ _this exec "Player\Effect\LimitWeaponRangePlayer.sqs" }]
+	_unit addEventHandler ["Fired",{ _this exec (TzkScripts select 293) }]
 
 	_posOld = _posRespawn
 	_posNow = _posRespawn

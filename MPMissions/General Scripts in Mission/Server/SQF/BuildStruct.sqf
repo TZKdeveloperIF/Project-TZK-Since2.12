@@ -28,7 +28,7 @@ while "_i<_c" do {
 	_obj setDir _dirPart;
 	_obj setPos _posPart;
 	
-	if (isNull gunner _obj) then { [_obj] exec localize {TZK_REARMDATA_ADD} };
+	if (isNull gunner _obj) then { [_obj] exec (TzkScripts select 072) };
 	_objects set [count _objects, _obj];
 
 	_i=_i+1;
@@ -41,13 +41,13 @@ if (_type == stMhqWall) then {
 	TzkMhqWallInfos set [_i * 2, _pos];
 	TzkMhqWallInfos set [_i * 2 + 1, _dir];
 };
-[_objects, _type] exec localize {TZK_SERVER_FUNC_RESET_UP};
-[_si, _type, _objects select 0] exec "\TZK_Scripts_4_0_4\Server\AddToStructMatrix.sqs";
+[_objects, _type] exec (TzkScripts select 214);
+[_si, _type, _objects select 0] exec "\TZK_Patch4_4_0_6\s\Server\AddToStructMatrix.sqs";
 [_objects, _type] exec "\TZK_Scripts_4_0_4\Server\StructuresServerAdd.sqs";
 [_objects select 0] exec "\TZK_Scripts_4_0_4\Server\primStructsPlacedAdd.sqs";
 { [_type, _si, _objects] exec _x } foreach (_desc select sdScriptsServer);
 [groupMatrix select _si select _gi, _type, _objects] exec "\TZK_Scripts_4_0_4\Server\InsertIntoUndoList.sqs";
 { _group = _x; { _group reveal _x } foreach _objects } foreach (groupAiMatrix select _si);
-if not _free then {[_si, _gi, _desc select sdCost] exec localize {TZK_MONEY_SERVER_SPEND}};
+if not _free then {[_si, _gi, _desc select sdCost] exec (TzkScripts select 167)};
 if (_type in structsDestroy) then {(_objects select 0) exec "\TZK_Scripts_4_0_4\Server\StructDestoryAdd.sqs"};
 _objects
