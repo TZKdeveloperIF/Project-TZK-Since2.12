@@ -2,16 +2,15 @@
 
 _si = _this
 
-@ pvMatchRuleDefined
-
 _mhq = mhq select _si
 
-_objectRespawn = objNull
+_objectRespawn = _mhq
+[_objectRespawn, _si] exec "Net\sSetRespawnObj.sqs"
 
-call format["pvRespawnObjectAi%1 = _mhq; PublicVariable ""pvRespawnObjectAi%1""; _objectRespawn = pvRespawnObjectAi%1", _si]
-
-#Update
-	~10
-	? call format["pvRespawnObjectAi%1 != _objectRespawn", _si] : call format["_objectRespawn = pvRespawnObjectAi%1", _si]
-	? !(alive _objectRespawn) : _objectRespawn = [_objectRespawn, _si] call funcGetNearestRespawnObject; call format["pvRespawnObjectAi%1 = _objectRespawn; PublicVariable ""pvRespawnObjectAi%1""", _si]
+# Update
+	~ 10
+	_objectRespawn = sideRespawnObjects select _si
+	? alive _objectRespawn: goto "Update"
+	_objectRespawn = [_objectRespawn, _si] call funcGetNearestRespawnObject
+	[_objectRespawn, _si] exec "Net\sSetRespawnObj.sqs"
 	goto "Update"

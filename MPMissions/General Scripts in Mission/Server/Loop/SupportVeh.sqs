@@ -46,9 +46,9 @@ _distMin = 100000
 		_rateRep = if (_type in structsDefence) Then {4} Else {1}; _rateCost = if (_type in structsDefence) Then {0.5} Else {0.1}
 		_cost = _rateCost*_cost*_rateRep*_repair; _cost = _cost - (_cost % 1)
 		? _object in primStructsPlaced: _cost = 0
-		? _cost >  groupMoneyMatrix select _si select (giCO select _si): [_si, _type] exec localize {TZK_INFO_SERVER_NO_MONEY_REPAIR_STRUCT}; mutexRepairStructure = false; goto "Update"
+		? _cost >  groupMoneyMatrix select _si select (giCO select _si): [_si, _type] exec (TzkScripts select 144); mutexRepairStructure = false; goto "Update"
 			
-			[_si, giCO select _si, _cost] exec localize {TZK_MONEY_SERVER_SPEND}; _damage = _damage - _repair*_rateRep
+			[_si, giCO select _si, _cost] exec (TzkScripts select 167); _damage = _damage - _repair*_rateRep
 			(_repairInfoList select _index) set [0, _damage]
 			? _damage <= 0: [_object, _type, _si] exec "Server\ReplacePrimStruct.sqs"; _repairObjList set [_index, objNull]
 		
@@ -56,26 +56,26 @@ _distMin = 100000
 
 ? _group in (groupAiMatrix select _si) : goto "Update"
 
-? _gi != -1 && _type != -1 : [_damage, _si, _gi, _type] exec localize {TZK_INFO_SERVER_STRUCT_REPAIRED}
+? _gi != -1 && _type != -1 : [_damage, _si, _gi, _type] exec (TzkScripts select 148)
 
 ; those negative _damage will be reset in Server\Info\StructRepaired.sqs
-; ? _damage == 0 && _type != -1 : [_si, _type] exec localize {TZK_INFO_SERVER_STRUCT_READY}; [_object] exec "\TZK_Scripts_4_0_4\Server\primStructsPlacedRemove.sqs"
+; ? _damage == 0 && _type != -1 : [_si, _type] exec (TzkScripts select 147); [_object] exec "\TZK_Scripts_4_0_4\Server\primStructsPlacedRemove.sqs"
 goto "Update"
 
-#CheckObjects
-_object = objNull; _distMin = 100000; _index = -1
-_i=0; { if !(alive _x) Then {_dist = ([getPos _support, getPos _x] call funcDistH); if (_dist < _distMin) Then {_object = _x; _index = _i; _distMin = _dist}}; _i = _i + 1 } forEach repairableObjects
-? isNull _object || _distMin > _range: goto "Update"
+# CheckObjects
+	_object = objNull; _distMin = 100000; _index = -1
+	_i=0; { if !(alive _x) Then {_dist = ([getPos _support, getPos _x] call funcDistH); if (_dist < _distMin) Then {_object = _x; _index = _i; _distMin = _dist}}; _i = _i + 1 } forEach repairableObjects
+	? isNull _object || _distMin > _range: goto "Update"
 
-		@!(mutexRepairStructure)
-		mutexRepairStructure = true
-			? alive _object: mutexRepairStructure = false; goto "Update"
-			_dmg = repairableObjectsDamage select _index
-			? _dmg == 0: _dmg = 1
-			_dmg = _dmg - _repair
-			? _dmg <= 0: _dmg = 0; _object setDamage 0
-			[_object, _dmg, _si, _gi] exec "\TZK_Scripts_4_0_4\Server\SendObjectRepaired.sqs"
-			repairableObjectsDamage set [_index, _dmg]
-		mutexRepairStructure = false
+	@!(mutexRepairStructure)
+	mutexRepairStructure = true
+		? alive _object: mutexRepairStructure = false; goto "Update"
+		_dmg = repairableObjectsDamage select _index
+		? _dmg == 0: _dmg = 1
+		_dmg = _dmg - _repair
+		? _dmg <= 0: _dmg = 0; _object setDamage 0
+		[_object, _dmg, _si, _gi] exec "Net\sObjectRepaired.sqs"
+		repairableObjectsDamage set [_index, _dmg]
+	mutexRepairStructure = false
 
 goto "Update"

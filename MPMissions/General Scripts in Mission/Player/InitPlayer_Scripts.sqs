@@ -1,7 +1,7 @@
-; args: [unit, si, gi]
+; args: [unit, si, gi, mhqPos]
 
-_unit = _this select 0; _si = _this select 1; _gi = _this select 2
-_initPlace = [_unit, _si, _gi, true] 
+_unit = _this select 0; _si = _this select 1; _gi = _this select 2, _mhqPos = _this select 3
+_initPlace = [_unit, _si, _gi, true, _mhqPos] 
 _initPlace exec "Common\PlaceGroupLeader.sqs"
 [] exec "\TZK_Scripts_4_0_5\Player\UpdateOptionsAction.sqs"
 [] exec "\TZK_Scripts_4_0_5\Player\UpdatePlayerRepairVehicleAction.sqs"
@@ -15,13 +15,14 @@ _initPlace exec "Common\PlaceGroupLeader.sqs"
 	~ 1
 	? _initPlace select 3: goto "loop"
 
+; PlayerClient MUST be called AFTER "PlaceGroupLeader.sqs" has placed player
 0 exec "Player\Loop\PlayerClient.sqs"
 0 exec "SpotEnemy\PplLoop.sqs"
 0 exec "Player\Loop\Developer.sqs"
-0 exec localize {TZK_PLAYER_LOOP_VEHICLE}
+0 exec (TzkScripts select 194)
 0 exec "Player\ArtilleryShell.sqs"
 0 exec "Player\ModifyTzkSetting.sqs"
 
 [_si, false] exec "\TZK_Scripts_4_0_4\Player\Marker\PlayerUnits.sqs"; [_si] exec "\TZK_Scripts_4_0_4\Player\Marker\PlayerVehicleEnemy.sqs"
 _si exec "Player\Marker\PlayerStruct.sqs"
-_si exec "Bridge\MarkerDisplay.sqs"
+_si exec "\TZK_Patch4_4_0_6\s\Bridge\MarkerDisplay.sqs"

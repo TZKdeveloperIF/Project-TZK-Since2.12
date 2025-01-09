@@ -17,7 +17,7 @@ _range = if !_bAirSup then {2*rangeSupport} else {rangeSupportPlane}
 _msg = ""
 ? (_vehicle distance _support) > _range: _msg = "Support vehicle out of range"; goto "Quit"
 
-? _unit == player && _unit == _vehicle: [_support, false, 1] exec localize {TZK_DIALOG_EQUIPMENT}; goto "MsgAndQuit"
+? _unit == player && _unit == _vehicle: [_support, false, 1] exec (TzkScripts select 019); goto "MsgAndQuit"
 
 _timeRearm = 30;
 ? _unit == _vehicle: _timeRearm = 5
@@ -26,7 +26,7 @@ _timeRearm = 30;
 _enum = -1
 ; get "_enum" if vehicle is "Custom Weapon Vehicle"
 ? _unit != _vehicle: _vehicle call loadFile "Common\SQF\GetCustomWeaponVehicle.sqf"
-? _enum != -1: if (dialog) then {closeDialog 0}, ["TZK_CustomAircraftWeaponDialog2", _enum, _vehicle, _support] exec "Cwv\Dialog.sqs", goto "MsgAndQuit"
+? _enum != -1: if (dialog) then {closeDialog 0}, ["TZK_CustomAircraftWeaponDialog2", _enum, _vehicle, _support] exec "\TZK_Patch4_4_0_6\s\Cwv\Dialog.sqs", goto "MsgAndQuit"
 
 ; player globalchat format["_type=%1  unit: %2", _type, (unitDefs select _type) select udName ]
 
@@ -71,10 +71,10 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 	? _cost > _money: _msg = format["Not enough money for rearm. ($%1 needed)", _cost]; goto "Quit"
 	
 	? !(local _vehicle): _msg = "Rearm failed. Soldier is not local."; goto "Quit"
-  ; TODO _vehicle setCombatMode "BLUE"
+
   ~_timeRearm
 	? !(alive _vehicle): _msg = ""; goto "Quit"
-	; TODO ? !(alive _support): _msg = "Rearm failed, support vehicle destroyed."; _vehicle setCombatMode "YELLOW"; goto "Quit"
+
 	? !(alive _support): _msg = "Rearm failed, support vehicle destroyed."; goto "Quit"
   removeAllWeapons _vehicle
   ; add custom throw/put
@@ -83,7 +83,7 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
   { _vehicle addMagazine _x } foreach _mags
   ? count (weapons _vehicle) > 0: format["ERROR: soldier '%1-%2' has weapons in Rearm.sqs", _vehicle, typeOf _vehicle] call fDebugLog; goto "MsgAndQuit"
   { _vehicle addWeapon _x } foreach _weapons
-  ; TODO _vehicle setCombatMode "YELLOW"
+
   goto "RearmEnd"
 
 #RearmVehicle
@@ -92,7 +92,7 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 	? _cost < 50: _cost = 50
 	? _cost > _money: _msg = format["Not enough money for rearm. ($%1 needed)", _cost]; goto "Quit"
 
-	[_vehicle] exec localize {TZK_NETWORK_REMOVE_MAG}
+	[_vehicle] exec (TzkScripts select 187)
 
 	vehiclesRearming set [count vehiclesRearming, _vehicle]
 	_msg = format["Rearm started, ready in %1s ...", _timeRearm]
@@ -113,16 +113,16 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 		? player in _vehicle: hint _text
 		? time < _timeComplete: goto "Loop"
 
-  ? _vehicle call preprocessFile "Util\NoUseableMag.sqf": [_vehicle] exec localize {TZK_NETWORK_SEND_REARM_VEH}
+  ? _vehicle call preprocessFile "Util\NoUseableMag.sqf": [_vehicle] exec (TzkScripts select 186)
   ? (_type in vSixfoldRearmTime): _vehicle say "NuclearMissileReady_xj400"
 
 # RearmEnd
-	? _cost > 0: [_cost] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"
+	? _cost > 0: [_cost] exec "Net\sMoneySpent.sqs"
 	_msg = format["Rearm Complete. $%1", _cost]
 	_this set [2, true]
 
 # Quit
-	? _unit != _vehicle: [vehiclesRearming, [_vehicle]] call preprocessFile "Util\ArraySubtract.sqf"
+	? _unit != _vehicle: [vehiclesRearming, [_vehicle]] call preprocessFile "Algo\arraySubtract.sqf"
 # MsgAndQuit
 	? _msg != "": if (_unit == player) then {hint _msg} else {_unit groupChat _msg}
 	_this set [1, true]

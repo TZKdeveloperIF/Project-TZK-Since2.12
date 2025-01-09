@@ -34,7 +34,7 @@ _cost = _cost - (_cost % 1)
 ? _cost < 100: _cost = 100
 _money = groupMoneyMatrix select siPlayer select giPlayer
 ? _cost > _money: goto "NotEnoughCash"
-? _cost > 0: [_cost] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"
+? _cost > 0: [_cost] exec "Net\sMoneySpent.sqs"
 
 _timeRepair = _damage*_price*factorRepairTime
 _timeRepair = _timeRepair - (_timeRepair % 1)

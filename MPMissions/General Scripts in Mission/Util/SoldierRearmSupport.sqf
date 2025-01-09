@@ -8,12 +8,12 @@ _comp = {_this select 0 select 2 < _this select 1 select 2};
 
 _arr = [_searchPos, _dist, [utSupportInf select _si], [], _si] call funcGetNearbySoldiers;
 if (count _arr > 0) then {
-	[_arr, 0, count _arr, _comp] call preprocessFile "Util\stdMergeSort.sqf";
+	[_arr, 0, count _arr, _comp] call preprocessFile "Algo\mergeSort.sqf";
 	_sups set [count _sups, _arr select 0];
 };
 _arr = [_searchPos, _dist, [stAmmoCrate, stBarracks], [], _si] call funcGetNearbyStructure;
 if (count _arr > 0) then {
-	[_arr, 0, count _arr, _comp] call preprocessFile "Util\stdMergeSort.sqf";
+	[_arr, 0, count _arr, _comp] call preprocessFile "Algo\mergeSort.sqf";
 	_sups set [count _sups, _arr select 0];
 };
 _veh = [
@@ -28,7 +28,7 @@ if (_bUseEnemy) then {
 	_siEnemy = siEnemy select _si;
 	_arr = [_searchPos, _dist, [stAmmoCrate], [], _siEnemy] call funcGetNearbyStructure;
 	if (count _arr > 0) then {
-		[_arr, 0, count _arr, _comp] call preprocessFile "Util\stdMergeSort.sqf";
+		[_arr, 0, count _arr, _comp] call preprocessFile "Algo\mergeSort.sqf";
 		_sups set [count _sups, _arr select 0];
 	};
 	_veh = [
@@ -41,7 +41,7 @@ if (_bUseEnemy) then {
 	};
 };
 if (count _sups > 0) then {
-	[_sups, 0, count _sups, _comp] call preprocessFile "Util\stdMergeSort.sqf";
+	[_sups, 0, count _sups, _comp] call preprocessFile "Algo\mergeSort.sqf";
 	_sups select 0 select 0
 } else {
 	objNull

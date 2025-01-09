@@ -54,7 +54,7 @@ btnValue00 = false; btnValue01 = false
 
 	_bridgeId = lbValue [_idcListBox0, _idx]
 
-	_bridgeId call preprocessFile "Bridge\UnregisterLocally.sqf"
-	publicExec format [{%1 call preprocessFile "Bridge\UnregisterLocally.sqf"}, _bridgeId]
+	_bridgeId call loadFile "\TZK_Patch4_4_0_6\s\Bridge\UnregisterLocally.sqf"
+	publicExec format [{%1 call loadFile "\TZK_Patch4_4_0_6\s\Bridge\UnregisterLocally.sqf"}, _bridgeId]
 
 	closeDialog 0; goto "Quit"

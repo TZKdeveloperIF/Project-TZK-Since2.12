@@ -1,0 +1,24 @@
+; args: [si, gi, sendRepeats]
+
+_si = _this select 0
+_gi = _this select 1
+_repeats = _this select 2
+
+; send by server
+
+_amount = groupMoneyMatrix select _si select _gi
+_value = _gi
+_value = _value + GroupsNum*_si
+
+[_amount, _value] exec "\TZK_Patch4_4_0_6\s\Net\hMoneyStatus.sqs"
+publicExec format [{[%1,%2] exec "\TZK_Patch4_4_0_6\s\Net\hMoneyStatus.sqs"}, _amount call preprocessFile "Util\Num2Str.sqf", _value]
+exit
+
+call format [{pvMoney%1 = _amount; PublicVariable "pvMoney%1"; pvMoneyGroup%1 = _value; PublicVariable "pvMoneyGroup%1"}, indexMoneyMsg]
+
+indexMoneyMsg = (indexMoneyMsg + 1) % countMoneyMsg
+
+~(sendDelay/countMoneyMsg)
+
+
+; test no repeat

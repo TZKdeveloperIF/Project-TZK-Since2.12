@@ -24,17 +24,9 @@ Init.sqs
 Add an array "groupName". The format of its element are all string. They're the first 4 letters(in UPPER case) of group's name, which indicating the side. The comparison of string in OFP is case-insensitive.
 This array can be used to judge a group's side. The "side" of a group might return "unknown", e.g. a new created group by "createGroup". With the help of "substr" editors can gain the actual side by the name of a group.
 
-"townGroups" is enlarged to 3 rows. "patrolGroups" is defined.
-
-
-Common\Dynamic\GroupsPatrol.sqs
-Add element into patrolGroups directly.
-
-Common\Dynamic\GroupsClear.sqs
-Set patrolGroups = nil and not to resize townGroups and workerGroups.
+"townGroups" is enlarged to 3 rows.
 
 Server\DynamicInitializationGroup.sqs
-Res Patrol Groups not be created but be picked up from patrolGroups, like TG do.
 Res Town Groups not created as well.
 
 Not to create AA groups(for trial. Not to use createGroup in 2.12J).

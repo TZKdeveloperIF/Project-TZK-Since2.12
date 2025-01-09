@@ -1,0 +1,12 @@
+; args: [vehicle, price, need rearm time: bool, vehicle type(enum)]
+_vehicle = _this select 0
+_price = _this select 1
+_needPay4Rearm = _this select 2
+_enum = _this select 3
+
+publicExec format [{[UnitById %1,%2,%3,%4] exec "\TZK_Patch4_4_0_6\s\Cwv\Net\hCwvInfo.sqs"}, _vehicle call funcGenNetIdStr, _price, _needPay4Rearm, _enum]
+_this exec "\TZK_Patch4_4_0_6\s\Cwv\Net\hCwvInfo.sqs"
+exit
+; To make diff clear below lines are not removed or commented
+publicExec format [{[UnitById %1,%2,%3,%4] exec "Cwv\Net\hCwvInfo.sqs"}, _vehicle call funcGenNetIdStr, _price, _needPay4Rearm, _enum]
+_this exec "Cwv\Net\hCwvInfo.sqs"

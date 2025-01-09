@@ -1,0 +1,15 @@
+; args: msg type
+
+? isNull player: exit
+
+? 0 == _this: goto "CaseCustomStart"
+? 1 == _this: goto "CaseFixOrRandomStart"
+exit
+
+# CaseCustomStart
+	; inform to non-commander and spectators
+	? siPlayer != siCiv: if (groupPlayer == groupCommander select siPlayer) then {exit}
+	FixStart_0 globalChat "Waiting commanders selected start position..."
+	exit
+# CaseFixOrRandomStart
+	player groupchat "Waiting for start data ..."

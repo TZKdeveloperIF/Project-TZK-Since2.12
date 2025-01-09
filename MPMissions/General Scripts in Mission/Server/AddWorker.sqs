@@ -29,7 +29,7 @@ _money = groupMoneyMatrix select _si select _gi
 
 # SufficientFund
 
-[_si, _gi, _num * costWorker] exec localize {TZK_MONEY_SERVER_SPEND}
+[_si, _gi, _num * costWorker] exec (TzkScripts select 167)
 _pos = getPos _mhq
 ? _pos select 0 > 0 && _pos select 1 > 0: goto "ObtainedPosition"
 ; try to locate mhq in-map

@@ -1,0 +1,384 @@
+; args: [unit, si, gi]
+
+? !isServer : exit
+
+_unit = _this select 0
+_si = _this select 1
+_gi = _this select 2
+
+_group = (groupMatrix select _si) select _gi
+
+_posIdle = []
+_posMove = [0,0]
+_returnMove = ""
+
+_base = baseDefs select ((random (count baseDefs)) - 0.5)
+
+_factorBuildTime = ([60, 15] select dev)
+
+_prims = _base select 0
+_indexNextPrim = 0
+_timeNextPrim = _prims select _indexNextPrim select bdTime
+_costNextPrim = structDefs select (_prims select _indexNextPrim select bdType) select sdCost
+
+_secs = _base select 1
+_timeCheckBuildPrim = 0*60
+_timeCheckBuildSec = 2*60
+_objPrim = []; { _objPrim set [count _objPrim, false] } foreach _prims
+_objSec = []; { _objSec set [count _objSec, objNull] } foreach _secs
+
+_timeCheckPlayerIncome = 0
+_timeCheckNextUpgrade = ([10*60, 60] select dev)
+_timeCheckEjectDrivers = ([30*60, 60] select dev)
+_timeCheckSupport = 2*60
+_timeCheckOrders = 20
+_currentOrder = "PrepareToTakeFirstTown"
+
+_mhq = mhq select _si
+
+_posStart = getPos _mhq
+_dirBase = getDir _mhq
+
+_giFixOrder = []
+
+_townsTotal = count towns
+_townsCentral = []
+{ _res = [posCenter, _si, _townsCentral] call funcGetClosestEnemyTown; _townsCentral set [count _townsCentral, _res select 0] } foreach [1,2,3]
+
+; special case when an ai group leader becomes co
+_unitsStarted = (units _group) - [_unit]
+
+_order = orderMatrix select _si select _gi; _idOrder = _order select 0
+
+? !(alive _unit): goto "WaitUntilAlive"
+
+_unit setCombatMode "YELLOW"; _unit setBehaviour "AWARE"; _unit setSpeedMode "FULL"
+
+[_unit, _si, 200] exec (TzkScripts select 039)
+[_unit, _si, _gi] exec "Server\EventAdd_Infantry.sqs"
+[_unit] exec (TzkScripts select 072)
+
+_sleep = 5
+_giPatrol = _gi; _bTakeTown=false; _nDestroy=0
+#Update
+	~_sleep
+	_sleep = 5
+	? !(alive _unit): goto "WaitUntilAlive"
+	? bool_TZK_DEV_FPS: goto "skip1"
+
+	; check for new order
+	? _idOrder == _order select 0: goto "NoNewOrder"
+	_idOrder = _order select 0
+	_order = (orderMatrix select _si) select _gi
+	_script = (orderDefs select (_order select 1)) select 2
+	{ [_x, _si, _gi, _order select 2] exec format["%1", _script] } foreach _unitsStarted
+	#NoNewOrder
+	
+	; start ai for new units
+	_unitsStarted = _unitsStarted - [objNull]
+	_unitsStart = (units _group) - _unitsStarted - [_unit]
+	{ _unitsStarted set [count _unitsStarted, _x] } foreach _unitsStart
+
+	_money = groupMoneyMatrix select _si select _gi
+
+	#skip1
+	? _money > 500 : [_unit, _si, _gi] exec (TzkScripts select 007); [_si, _gi, _giPatrol, 500] exec (TzkScripts select 168)
+	
+	? !bool_TZK_DEV_FPS && time > _timeCheckNextUpgrade : [_si, _gi] exec "Server\AICO\CheckUpgrade.sqs"; _timeCheckNextUpgrade = time + ([5*60, 60] select dev)
+	? time > _timeCheckOrders : goto _currentOrder
+
+	? bool_TZK_DEV_FPS: if(time > 600) goto "Update"
+	
+	? _unit call busyCheck : goto "Update"
+
+	_mhq = mhq select _si
+	? time > _timeCheckPlayerIncome : _si exec (TzkScripts select 297); _timeCheckPlayerIncome = time + ([5*60, 60] select dev)
+	
+	? (alive _mhq) && (call format["pvWorkers%1 < 10", _si]) && _money >= costWorker : [_si] exec (TzkScripts select 137); _sleep = 0.5; goto "Update"
+
+;	? alive _mhq && time > _factorBuildTime*_timeNextPrim && _money > (_costNextPrim+1000): goto "BuildPrim"
+	? alive _mhq && time > _timeCheckBuildPrim: goto "CheckBuildPrim"
+	? alive _mhq && time > _timeCheckBuildSec : goto "CheckBuildSec"
+
+	? (count _posIdle) > 0 : _dist = [_posIdle, getPos _unit] call funcDistH; if (_dist > 10) then { _posMove = _posIdle; _returnMove = "Update"; goto "MoveToPos" }
+
+	? time > _timeCheckSupport && !bool_TZK_MF_Mode: [_unit, _si, _gi] exec (TzkScripts select 008); _timeCheckSupport = time + 60; goto "Update"
+	? time > _timeCheckEjectDrivers : goto "CheckEjectDrivers"
+
+	? !(alive _mhq) && _money > costRepairMHQ : goto "RepairMHQ"
+	
+	goto "Update"
+	
+#CheckBuildPrim
+;	? (_indexNextPrim < (count _prims)): goto "SkipPrimCheck"
+		_i = 0 
+		_c = count _prims
+		#CheckBuildPrim_CheckObject
+			? !(_i<_c) : _timeCheckBuildPrim = _timeCheckBuildPrim + 2*60, goto "Update"
+			? time > _factorBuildTime*((_prims select _i) select bdTime) && !(_objPrim select _i) && _money > (structDefs select (_prims select _i select bdType) select sdCost): goto "BuildPrim"
+		_i = _i + 1
+		goto "CheckBuildPrim_CheckObject"
+	
+	#SkipPrimCheck
+
+#BuildPrim
+	_buildDesc = _prims select _i
+	_structType = _buildDesc select bdType
+;	_distStruct = sqrt(((_buildDesc select bdPos) select 0)^2 + ((_buildDesc select bdPos) select 1)^2)
+	_structPosRel = [_buildDesc select bdPos, _dirBase] call funcVectorRot2D
+	_structDir = (_buildDesc select bdDir) + _dirBase
+	
+	_posStruct = [(_posStart select 0) + (_structPosRel select 0), (_posStart select 1) + (_structPosRel select 1) ]
+
+	_structDesc = structDefs select _structType
+	_dist = _structDesc select sdDist
+	_posMove = [(_posStruct select 0) - _dist*(sin _structDir), (_posStruct select 1) - _dist*(cos _structDir)]
+	_posWatch = _posStruct
+	
+	_returnMove = "BuildPrim_BuildPosReached", goto "MoveToPos"
+	
+	#BuildPrim_BuildPosReached
+	_money = groupMoneyMatrix select _si select _gi
+  ? _money < _costNextPrim || !(alive _mhq) : goto "Update"
+	[_structType, _si, _gi, _posStruct, _structDir] call fBuildStruct; _objPrim set [_i, true]
+
+	? _structType == stComm : _posIdle = [(_posStruct Select 0) - 0.5*(_structDesc select sdDist)*(sin _structDir), (_posStruct Select 1) - 0.5*(_structDesc select sdDist)*(cos _structDir)]; _posWatch = _posStruct
+
+;	_indexNextPrim = _indexNextPrim + 1
+;	? !(_indexNextPrim < (count _prims)) : _timeNextPrim = (time/_factorBuildTime) + 5; goto "Update"
+;	_costNextPrim = (structDefs select ((_prims select _indexNextPrim) select bdType)) select sdCost
+;	_timeNextPrim = (_prims select _indexNextPrim) select bdTime
+	
+	goto "Update"
+
+# CheckBuildSec
+; SET AI RESPAWN OBJECT
+_objectRespawn = [_unit, _si] call funcGetNearestRespawnObject
+? _objectRespawn != sideRespawnObjects select _si: [_objectRespawn, _si] exec "Net\sSetRespawnObj.sqs"
+
+	_i = 0 
+	_c = count _secs
+	#CheckBuildSec_CheckObject
+	  ? !(_i<_c) : _timeCheckBuildSec = time + 2*60; goto "Update"
+    ? time > _factorBuildTime*((_secs select _i) select bdTime) && !(alive (_objSec select _i)) : goto "BuildSec"
+    _i = _i + 1
+    goto "CheckBuildSec_CheckObject"
+
+# BuildSec
+	_buildDesc = _secs select _i
+	_structType = _buildDesc select bdType
+	_structPosRel = [_buildDesc select bdPos, _dirBase] call funcVectorRot2D
+	_structDir = (_buildDesc select bdDir) + _dirBase
+	_posStruct = [(_posStart select 0) + (_structPosRel select 0), (_posStart select 1) + (_structPosRel select 1) ]
+	_structDesc = structDefs select _structType
+	_dist = _structDesc select sdDist
+	_posMove = [(_posStruct Select 0) - _dist*(sin _structDir), (_posStruct Select 1) - _dist*(cos _structDir)]
+	_posWatch = _posStruct
+	
+	_returnMove = "BuildSec_BuildPosReached"; goto "MoveToPos"
+	
+	#BuildSec_BuildPosReached
+	_money = groupMoneyMatrix select _si select _gi
+  ? _money < (_structDesc select sdCost) : goto "Update"
+
+	_res = [_structType, _si, _gi, _posStruct, _structDir] call fBuildStruct; _objSec set [_i, _res select 0]
+	goto "Update"
+
+#MoveToPos
+	_unit doWatch _posWatch
+	_unit doMove _posMove
+	_timeForce = time + 120
+	#CheckPosReached
+		~5
+		? !(alive _unit): goto "WaitUntilAlive"
+		? time > _timeForce : (vehicle _unit) setPos _posMove; goto _returnMove
+	  ? _money > 500 : [_unit, _si, _gi] exec (TzkScripts select 007)
+		_dist = [_posMove, getPos _unit] call funcDistH
+		? _dist > 5 : goto "CheckPosReached"
+	doStop _unit
+	; _unit doWatch _posWatch
+	~2
+	? !(alive _unit): goto "WaitUntilAlive"
+	goto _returnMove
+
+#PatrolBase
+	_currentOrder = "TakeFirstTown"
+	_timeCheckOrders = time + 1*60
+	[_si, _gi, getPos _mhq, 0] exec "Common\Msg\sSetWPCO.sqs"
+	~0.4
+	[_si, _gi, orderPatrolArea, [0,2], true] call preprocessFile (TzkScripts select 171); [_si, _gi + GroupsNum, aisKeepMax, 13] call preprocessFile (TzkScripts select 172)
+	? bool_TZK_DEV_FPS: showDebug ["Exit Comm script", 5000], exit
+	goto "Update"
+
+#PrepareToTakeFirstTown
+	_currentOrder = "TakeFirstTown"
+	_timeCheckOrders = if(!bool_TZK_DEV_FPS) Then "time + 5*60" Else "time + 5000*60"
+	~(random 10)
+	[_si, _gi, getPos _mhq, 0] exec "Common\Msg\sSetWPCO.sqs"
+	~0.4
+	[_si, _gi, orderPatrolArea, [0,2], true] call preprocessFile (TzkScripts select 171); [_si, _gi + GroupsNum, aisKeepMax, 13] call preprocessFile (TzkScripts select 172)
+	
+	_res = [getPos _mhq, _si, []] call funcGetClosestEnemyTown  	  
+	_ti = _res select 0
+
+	goto "Update"
+
+#TakeFirstTown
+	_currentOrder = "CheckFirstTownTaken"
+	_timeCheckOrders = time + 1*60
+
+	_res = [getPos _mhq, _si, []] call funcGetClosestEnemyTown  	  
+	_ti = _res select 0
+	
+	[_si, _gi + GroupsNum, orderHoldTown, [_ti,1,0]] call preprocessFile (TzkScripts select 171)
+	[_si, _gi, aisPickupWait1, 0, true] call preprocessFile (TzkScripts select 172)
+	goto "Update"
+
+#CheckFirstTownTaken
+	_timeCheckOrders = time + 1*60
+	? ("(_x select tdSide) == _si" count towns) == 0 : goto "Update"
+	[_si, _gi, getPos _mhq, 0] exec "Common\Msg\sSetWPCO.sqs"
+	~0.4
+	[_si, _gi, orderPatrolArea, [0,2]] call preprocessFile (TzkScripts select 171)
+	~0.4
+	_currentOrder = "InitOrders"
+	_timeCheckOrders = time + ([1*60, 60] select dev)
+  goto "Update"
+
+#InitOrders
+	_currentOrder = "TakeHoldTowns"
+	_timeCheckOrders = time + 1*60
+	[_si, _gi, posCenter, 1] exec "Common\Msg\sSetWPCO.sqs"
+	~0.4
+	; _giList = [_si] call funcGetAIGroupsIndex
+	; _giList = _giList - [_gi]
+	? !_bTakeTown : [_si, _gi + GroupsNum, orderTakeHoldTowns, [4,([1, 0] select dev)]] call preprocessFile (TzkScripts select 171); _bTakeTown = true
+	[_si, _gi, orderPatrolArea, [0,2]] call preprocessFile (TzkScripts select 171)
+	; ? _i == 0 : [_si, _giSet, orderTakeHoldTowns, [0,1]] call preprocessFile (TzkScripts select 171); _giFixOrder set [count _giFixOrder, _giSet]
+	; ? _i == 1 : [_si, _giSet, orderTakeHoldTowns, [0,1]] call preprocessFile (TzkScripts select 171); _giFixOrder set [count _giFixOrder, _giSet]
+	
+
+  goto "Update"
+
+#TakeHoldTowns
+	_currentOrder = "TakeHoldTowns"
+	_timeCheckOrders = time + 5*60
+
+	? (alive _mhq) && (("(_x select tdSide) == _si" count towns)/_townsTotal) > ratioAttackEnemy : goto "DestroyEnemy"
+	
+    _res = [getPos _mhq, _si, []] call funcGetClosestEnemyTown
+    ? (_res select 0) == -1 : goto "TakeHoldTowns_SkipPointSet"
+	_lastCO = (wpCO select _si) select 1
+	[_si, _gi, getPos ((towns select (_res select 0)) select tdFlag), 1] exec "Common\Msg\sSetWPCO.sqs"
+	? [_lastCO, getPos ((towns select (_res select 0)) select tdFlag)] call funcDistH < 100 : goto "Update"
+	#TakeHoldTowns_SkipPointSet
+	~0.4
+	; _giList = [_si] call funcGetAIGroupsIndex
+	; _giList = _giList - [_gi]
+	; ? !(_giSet in _giFixOrder) && (((orderMatrix select _si) select _giSet) select 1) != orderTakeHoldTowns : [_si, _giSet, orderTakeHoldTowns, [4,0]] call preprocessFile (TzkScripts select 171)
+	? !_bTakeTown : [_si, _gi + GroupsNum, orderTakeHoldTowns, [4,([1, 0] select dev)]] call preprocessFile (TzkScripts select 171); _bTakeTown = true
+	[_si, _gi, orderPatrolArea, [0,2]] call preprocessFile (TzkScripts select 171)
+	; ? (((orderMatrix select _si) select _giSet) select 1) != orderguardarea : goto "TakeHoldTowns_SkipTransport"
+	; ? (((orderMatrix select _si) select _giSet) select 1) == orderPatrolLine : [_si, _giSet, orderPatrolLine, [0,1]] call preprocessFile (TzkScripts select 171)
+	goto "Update"
+  
+#DestroyEnemy
+	_currentOrder = "DestroyEnemy"
+	_timeCheckOrders = time + 5*60
+	? !(alive _mhq) || (("(_x select tdSide) == _si" count towns)/_townsTotal) <= ratioAttackEnemy : goto "TakeHoldTowns"
+	_res = [getPos _mhq, _si]  call funcGetClosestEnemyObject
+	_object = _res select 0
+	? isNull _object : goto "Update"
+	; Sometimes AI may won't go to base directly. Ask AI go to town to fix this(trial)
+	_town0List = [ getPos _object, [_si], [] ] call funcGetClosestTown
+	? _nDestroy > 1: _object = (_town0List select 0) select 0
+	_nDestroy = (_nDestroy + 1) % 3
+	[_si, _gi, getPos _object, 9] exec "Common\Msg\sSetWPCO.sqs"
+	~1
+	; _giList = [_si] call funcGetAIGroupsIndex
+	; _giList = _giList - [_gi]
+	; ? !(_giSet in _giFixOrder) && (((orderMatrix select _si) select _giSet) select 1) == orderTakeHoldTowns : [_si, _giSet, orderPatrolArea, [9,0]] call preprocessFile (TzkScripts select 171)
+	; ? (((orderMatrix select _si) select _giSet) select 1) == orderTransportDuty : [_si, _giSet, orderTransportDuty, [0,9,9]] call preprocessFile (TzkScripts select 171)
+	[_si, _gi + GroupsNum, orderPatrolArea, [9,0]] call preprocessFile (TzkScripts select 171); _bTakeTown = false
+	[_si, _gi, orderPatrolArea, [0,2]] call preprocessFile (TzkScripts select 171)
+	goto "Update"
+
+#CheckEjectDrivers
+_timeCheckEjectDrivers = time + ([5*60, 60] select dev)
+_units = (units _group) - [_unit]
+_i = 0
+_c = count _units
+#CheckEjectDrivers_CheckUnit
+  ? _i >= _c : goto "Update"
+  _u = _units select _i
+  _v = vehicle _u
+  _i = _i + 1
+  
+  ? !(alive _u) || _u == _v || _u != driver _v || isNull (gunner _v) || ([getPos _v, getPos _mhq] call funcDistH) < 100 : goto "CheckEjectDrivers_CheckUnit"
+  
+  unassignVehicle _u
+  _u action ["EJECT", vehicle _u]
+  ~2
+  _u setDamage 1
+  ~2
+  deleteVehicle _u
+  goto "CheckEjectDrivers_CheckUnit"
+  
+#RepairMHQ
+  _posMove = [getPos _mhq, 2, 3] call funcGetRandomPos
+  _posWatch = getPos _mhq
+  _returnMove = "MHQReached"; goto "MoveToPos"
+  #MHQReached
+  (_gi + GroupsNum*_si) exec (TzkScripts select 212)
+  goto "Update"
+  
+#WaitUntilAlive
+	@(alive leader _group)
+	_unit = leader _group
+	_unit call preprocessFile "Server\SQF\RtsOrderClear.sqf"
+
+	[_unit, _si, 200] exec (TzkScripts select 039)
+	[_unit, _si, _gi] exec "Server\EventAdd_Infantry.sqs"
+	
+	_money = groupMoneyMatrix select _si select _gi
+
+	? _money >= costRespawn : goto "Respawn"
+	#WaitMoney
+	_unit setPos [-2000 + _si*100, -2000 + _gi*100, 1000]
+	; _unit setPos [(posCenter select 0) + _si*100, (posCenter select 1) + _gi*100, 1000]
+	_unit setVelocity [0,0,0]
+	~1
+	_money = groupMoneyMatrix select _si select _gi
+	? _money < costRespawn : goto "WaitMoney"
+
+	#Respawn
+	? costRespawn > 0 : [_si, _gi, costRespawn] exec (TzkScripts select 167)
+	_objectRespawn = sideRespawnObjects select _si
+	? !(alive _objectRespawn) : _objectRespawn = [_objectRespawn, _si] call funcGetNearestRespawnObject
+
+	_ts = _objectRespawn call funcGetStructTypeFromObject
+	? _ts != -1 : goto "RespawnStruct"
+
+	#RespawnMHQ
+	_mhq = mhq select _si
+	_dir = getDir _mhq
+	_pos = getPos _mhq
+	_posRespawn = [(_pos select 0)-(sin _dir)*10,(_pos select 1)-(cos _dir)*10,0]
+  goto "RespawnPosSet"
+  
+	#RespawnStruct
+	_res = [_objectRespawn, _ts, _si] call funcCalcUnitPlacementPosDir
+	_posRespawn = _res select 0
+	
+	#RespawnPosSet
+	_unit setVelocity [0,0,0]
+	_unit setPos _posRespawn
+
+  [_unit, _si] exec (TzkScripts select 005)
+
+	unassignVehicle _unit
+  _posSpawn = getPos _unit
+  [_unit] exec (TzkScripts select 072)
+  _unit setCombatMode "YELLOW"; _unit setBehaviour "AWARE"; _unit setSpeedMode "FULL"
+
+	goto "Update"

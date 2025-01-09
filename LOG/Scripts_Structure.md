@@ -14,9 +14,6 @@ Besides, the use of **Preprocessor** can help a lot to simplify the mission.sqm 
 	+ SQF functions of common/server folder.
 	+ Some dynamic initialization scripts.
 		+ Player Markers and Player/Server Triggers.
-	+ Radio important entrance.
-		+ "Radio_Update_Vehicle.sqs" and "Radio_Update_Vehicle_Spectator.sqf" are placed in mission. By now it's just an entrance to same name file in AddOn.
-		+ Few edited radio scripts (entrance are in mission and link to scripts in AddOn).
 + Make "init" series scripts better decoupled.
 	+ Init.sqs will exec scripts packed in addon to reduce its contents.
 		+ Constants can be adjusted later. But entrance of scripts should be remained in mission scripts.

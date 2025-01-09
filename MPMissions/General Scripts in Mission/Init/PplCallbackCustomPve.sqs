@@ -1,0 +1,20 @@
+; args: encoded custom pve status
+_val = _this
+
+_bit = _val % 2
+_val = (_val - _bit) / 2
+
+_needCustom = (if (1 == _bit) then {true} else {false})
+? not _needCustom: exit
+
+_si = _val % count sides
+_val = (_val - _si) / count sides
+
+_gi = _val
+
+? _si == siPlayer && _gi == giPlayer: {TZK_Custom_Init_Attribute} exec (TzkScripts select 267); exit
+
+; need enough delay to display channel msg
+~ 0.5
+player globalChat format ["Waiting for %1 finish PVE customization...", name leader (groupMatrix select _si select _gi)]
+exit

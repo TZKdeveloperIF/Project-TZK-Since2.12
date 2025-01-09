@@ -1,0 +1,37 @@
+; args: gi + GroupsNum * si
+
+? not isServer: exit
+
+_gi = _this % GroupsNum
+_si = (_this - _gi) / GroupsNum
+
+_group = groupMatrix select _si select _gi
+
+_i = 0
+_c = count undoList
+
+# FindUndoEntry
+	_undoEntry = undoList select _i
+	? (_undoEntry select 0) == _group && (count _undoEntry) == 3 : goto "PerformUndo"
+	_i = _i + 1
+	? _i < _c : goto "FindUndoEntry"
+	exit
+
+# PerformUndo
+	_type = _undoEntry select 1
+	_objects = _undoEntry select 2
+	_cost = (structDefs select _type) select sdCost
+
+	@!(mutexUndo)
+	mutexUndo = true
+	undoList set [_i, [_group]]
+	mutexUndo = false
+	
+	{deleteVehicle _x} foreach _objects
+	@(isNull (_objects select 0))
+
+	[_type, _si] exec (TzkScripts select 149)
+
+	[_si, _gi, -_cost] exec (TzkScripts select 167)
+
+	exit

@@ -1,0 +1,6 @@
+; args: gi + siPlayer * GroupsNum
+
+hint "Checking whether the group is AI. Please wait for the result."
+
+_this exec "\TZK_Patch4_4_0_6\s\Net\hCheckAI.sqs"
+publicExec format [{%1 exec "\TZK_Patch4_4_0_6\s\Net\hCheckAI.sqs"}, _this call preprocessFile "Util\Num2Str.sqf"]

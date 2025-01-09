@@ -12,7 +12,7 @@ _pos2 = [_markerPos, _vec] call funcVectorAdd
 
 _lowerBound = 70
 _param = [_pos1, _pos2]
-_legal = _param call preprocessFile "Util\Bridge\LegalPos.sqf"
+_legal = _param call preprocessFile "Bridge\LegalPos.sqf"
 
 ? _legal: goto "CanBuildBridge"
 	_enum = _param select 2
@@ -27,6 +27,6 @@ hint "Prepare to build the bridge."
 
 ; send info to server. Server will manage bridge building and follow-up maintenance until the bridge project is destructed
 _h1 = _pos1 call funcHASL, _h2 = _pos2 call funcHASL; _pos1 set [2, _h1], _pos2 set [2, _h2]
-[[_pos1, _pos2], [siPlayer, _lowerBound]] exec {Bridge\Register2Server.sqs}
-publicExec format ["%1 exec {Bridge\Register2Server.sqs}", [[_pos1, _pos2], [siPlayer, _lowerBound]]]
+[[_pos1, _pos2], [siPlayer, _lowerBound]] exec {\TZK_Patch4_4_0_6\s\Bridge\Register2Server.sqs}
+publicExec format ["%1 exec {\TZK_Patch4_4_0_6\s\Bridge\Register2Server.sqs}", [[_pos1, _pos2], [siPlayer, _lowerBound]]]
 exit

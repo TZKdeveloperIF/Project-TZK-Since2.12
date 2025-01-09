@@ -1,0 +1,22 @@
+
+; eq template entry : [ textDescr, wpnPrim, wpnHandgun, wpnSec, [ [gen0, ..., gen9], [handgun0, ..., hangun3], [optic0, optic1] ] ]
+eqTemplates = []
+_i = 0; while "_i < 5" do { eqTemplates set [_i, [] ]; _i=_i+1 }
+
+moneySideTotal = [0, 0]
+moneySideSpent = [0, 0]
+
+HDSIN = call {private["_i","_result"]; _result = []; _i = 0; while "_i < 50" do {_result = _result + [sin (7.2*_i)*15]; _i = _i+1}; _result}
+HDCOS = call {private["_i","_result"]; _result = []; _i = 0; while "_i < 50" do {_result = _result + [cos (7.2*_i)*15]; _i = _i+1}; _result}
+? bool_TZK_199_Mode: bool_TZK_RadioReceive_199 = false, hint_countdown_TZK_RadioReceive_199 = 3
+
+; ================================================================================Some Functions================================================================================
+; bDeployChute is the CRCTI_DeployChute in old crCTI.
+bDeployChute = false; bAfterBurner = false; bSpoofMissile = false
+ImpactPointIndex = 0
+mhqNearby = false; MCVNearby = false; SupNearby = false
+isCommander = false; booleShowVariable = false
+
+; ================================================================================Some Functions================================================================================
+
+call loadFile "impl\Client_constants.sqf"

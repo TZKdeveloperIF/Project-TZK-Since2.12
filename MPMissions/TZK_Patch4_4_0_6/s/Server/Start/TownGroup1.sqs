@@ -1,0 +1,26 @@
+; args: [group, townIndex, side]
+
+_group = _this select 0; _ti = _this select 1, _si = _this select 2
+
+_distSpawn = viewDistance + 1500
+_cLast = 0
+
+timeReinforceTown = 45
+
+# Init
+_flag = (towns select _ti) select tdFlag
+_posFlag = getPos _flag
+? _si == -1 : format["ERROR: _si == -1 set in Town Group scripts for %1", (towns select _ti) select tdName] call fDebugLog; exit
+_siLast = (towns select _ti) select tdSide
+? isNull _group : format["ERROR: _group is NULL at init for %1 town group in '%1'", sideNames select _si, (towns select _ti) select tdName] call fDebugLog; exit
+
+
+_timeReinforce = time + timeReinforceTown
+_bCheckSupport = true
+_support = objNull
+_hibernate = false
+
+{deleteVehicle _x} forEach units _group
+
+? bool_TZK_SEMod_Mode: [_group, _ti, _si, _cLast, _siLast, _timeReinforce, _bCheckSupport, _support, _hibernate] exec "Extra\TownGroup1.sqs", exit
+[_group, _ti, _si, _cLast, _siLast, _timeReinforce, _bCheckSupport, _support, _hibernate] exec (TzkScripts select 225)

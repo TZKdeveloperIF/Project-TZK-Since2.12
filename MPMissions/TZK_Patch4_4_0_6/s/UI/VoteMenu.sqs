@@ -1,0 +1,43 @@
+; args: none
+
+@!mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "VoteMenu"
+mutexDlg = false
+
+_si = siPlayer
+_gi = giPlayer
+
+_idcAdmin = IDC + 0; _idcNextPage = IDC + 1
+_idcItems = IDC + 100
+_idcSelections = IDC + 200
+_idcResult = IDC + 300
+_idcConfirmBtn = IDC + 400
+btnValue00 = -1; btnValue01 = -1
+
+; Init
+ctrlShow [_idcAdmin, name player == "IF"]; ctrlShow [_idcNextPage, true]
+call loadFile (TzkScripts select 241)
+ctrlShow [IDC_DialogBG_Light, !bool_TZK_DarkSkin]
+#Update
+	? call dlgUpdated: exit
+	? !(alive player): closeDialog 0; exit
+
+	ctrlSetText [_idcAdmin, ["Admin OFF", "Admin ON"] select pvVoteAdmin]
+	? btnValue00 > 0: _j = btnValue00, btnValue00 = -1, goto "StartVote"
+	? btnValue01 > 0: btnValue01 = -1, TZK_Vote_Page = (TZK_Vote_Page + 1) % TZK_Vote_Pages, call loadFile (TzkScripts select 241)
+	_j = 0 + TZK_Vote_Page * TZK_Vote_Items; _k = 0; _lines = count Vote_Matrix
+	#LoopLine
+	ctrlSetText [_idcResult + _k, (Vote_Matrix select _j select 1) select (Vote_Matrix select _j select 3)];
+	_j = _j + 1; _k = _k + 1
+	? _j < _lines && _k < TZK_Vote_Items: goto "LoopLine"
+
+	~0.2
+	goto "Update"
+#StartVote
+	_digit = log _j / log 2; _integral = _digit - _digit % 1;
+	if (_j >= 2^(_integral + 1)) then {_digit = _integral + 1} else {_digit = _integral}; _j = _digit
+	? _j < 0: goto "Update"
+	_idc = _idcSelections
+	? lbCurSel (_idc + _j) >= 0: [_si, _gi, _j + TZK_Vote_Page * TZK_Vote_Items, lbCurSel (_idc + _j)] exec "Player\Msg\sVoteStart.sqs"
+	goto "Update"

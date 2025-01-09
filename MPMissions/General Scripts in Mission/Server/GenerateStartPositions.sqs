@@ -6,8 +6,8 @@ _distMin = 3000
 
 _players = [ (count (groupMatrix select si0)) - (count (groupAiMatrix select si0)), (count (groupMatrix select si1)) - (count (groupAiMatrix select si1)) ]
 _playerCO = [ !((groupCommander select si0) in (groupAiMatrix select si0)), !((groupCommander select si1) in (groupAiMatrix select si1)) ]
-; ? !(_playerCO select 0) && !(_playerCO select 1) || bool_TZK_199_Mode && fixedStartPos == 1: fixedStartPos = 0
-? !(_playerCO select 0) && !(_playerCO select 1) && fixedStartPos == 1 && bool_TZK_MF_Mode: fixedStartPos = 0
+; ? !(_playerCO select 0) && !(_playerCO select 1) || bool_TZK_199_Mode && startPosMode == 1: startPosMode = 0
+? !(_playerCO select 0) && !(_playerCO select 1) && startPosMode == 1 && bool_TZK_MF_Mode: startPosMode = 0
 _retries = 0
 
 ; Standardize the start position, make sure the FixStart_0 at North.
@@ -15,77 +15,76 @@ _fixStart0 = FixStart_0; _fixStart1 = FixStart_1;
 _y0 = (getPos FixStart_0) select 1; _y1 = (getPos FixStart_1) select 1
 ? _y0 < _y1: _fixStart0 = FixStart_1; _fixStart1 = FixStart_0
 _y0 = nil; _y1 = nil
-? fixedStartPos == 0: _array = [_distMin, _fixStart0, _fixStart1] call loadFile "\TZK_Scripts_4_0_4\Server\SQF\StartPosition.sqf", _posSide0 = _array select 0, _posSide1 = _array select 1, goto "Check"
-#Generate
-~0.001
+? startPosMode == 0: _array = [_distMin, _fixStart0, _fixStart1] call loadFile "\TZK_Scripts_4_0_4\Server\SQF\StartPosition.sqf", _posSide0 = _array select 0, _posSide1 = _array select 1, goto "Check"
+# Generate
 
-_posSide0 = []
-_dirSide0 = -1
-_posSide1 = []
-_dirSide1 = -1
+	~ 0.001
+	_posSide0 = []
+	_dirSide0 = -1
+	_posSide1 = []
+	_dirSide1 = -1
 
 _rand = random 1
 ? (random 1) < 0.5: goto "GenerateSide1"
 
-#GenerateSide0
-  ~0.01
+# GenerateSide0
+	~ 0.01
 	_si = si0
-	? fixedStartPos == 0: _posSide0 = [posCenter, 2000, 4000] call funcGetRandomPos; goto "CheckPosSide0"
+	? startPosMode == 0: _posSide0 = [posCenter, 2000, 4000] call funcGetRandomPos; goto "CheckPosSide0"
 	? (_players select _si) == 0: goto "NoPlayersInSide0"
 	
-	#PlayersInSide0
-	? fixedStartPos == 1: _obj = [_fixStart0, _fixStart1] select (_rand < 0.5); _posSide0 = getPos _obj; _dirSide0 = getDir _obj; goto "PosSetSide0"
-	? fixedStartPos == 2: _posSide0 = getPos _fixStart0; _dirSide0 = getDir _fixStart0; goto "PosSetSide0"
-	? fixedStartPos == 3: _posSide0 = getPos _fixStart1; _dirSide0 = getDir _fixStart1; goto "PosSetSide0"
+	# PlayersInSide0
+		? startPosMode == 1: _obj = [_fixStart0, _fixStart1] select (_rand < 0.5); _posSide0 = getPos _obj; _dirSide0 = getDir _obj; goto "PosSetSide0"
+		? startPosMode == 2: _posSide0 = getPos _fixStart0; _dirSide0 = getDir _fixStart0; goto "PosSetSide0"
+		? startPosMode == 3: _posSide0 = getPos _fixStart1; _dirSide0 = getDir _fixStart1; goto "PosSetSide0"
 
-	#NoPlayersInSide0
-	? fixedStartPos == 1 && (_players select si1) == 0: _obj = [_fixStart0, _fixStart1] select (_rand < 0.5); _posSide0 = getPos _obj; _dirSide0 = getDir _obj; goto "PosSetSide0"
-	? fixedStartPos == 2 && (_players select si1) == 0: _posSide0 = getPos _fixStart0; _dirSide0 = getDir _fixStart0; goto "PosSetSide0"
-	? fixedStartPos == 3 && (_players select si1) == 0: _posSide0 = getPos _fixStart1; _dirSide0 = getDir _fixStart1; goto "PosSetSide0"
-	_obj = [_fixStart0, _fixStart1] select (_rand < 0.5); _posSide0 = getPos _obj; _dirSide0 = getDir _obj; goto "PosSetSide0"
+	# NoPlayersInSide0
+		? startPosMode == 1 && (_players select si1) == 0: _obj = [_fixStart0, _fixStart1] select (_rand < 0.5); _posSide0 = getPos _obj; _dirSide0 = getDir _obj; goto "PosSetSide0"
+		? startPosMode == 2 && (_players select si1) == 0: _posSide0 = getPos _fixStart0; _dirSide0 = getDir _fixStart0; goto "PosSetSide0"
+		? startPosMode == 3 && (_players select si1) == 0: _posSide0 = getPos _fixStart1; _dirSide0 = getDir _fixStart1; goto "PosSetSide0"
+		_obj = [_fixStart0, _fixStart1] select (_rand < 0.5); _posSide0 = getPos _obj; _dirSide0 = getDir _obj; goto "PosSetSide0"
 
-	#CheckPosSide0
-	? (_playerCO select _si) && ([_posSide0] call funcStartPos): goto "PosSetSide0"
-	? !(_playerCO select _si) && ([_posSide0] call funcBaseArea): goto "PosSetSide0"
-  _retries = _retries + 1
-  goto "GenerateSide0"
+	# CheckPosSide0
+		? (_playerCO select _si) && ([_posSide0] call funcStartPos): goto "PosSetSide0"
+		? !(_playerCO select _si) && ([_posSide0] call funcBaseArea): goto "PosSetSide0"
+		_retries = _retries + 1
+		goto "GenerateSide0"
   	
-	#PosSetSide0
-	? (count _posSide1) > 0: goto "Check"
-  goto "GenerateSide1"
-	
+	# PosSetSide0
+		? (count _posSide1) > 0: goto "Check"
+		goto "GenerateSide1"
 
-#GenerateSide1
-  ~0.01
+# GenerateSide1
+	~ 0.01
 	_si = si1
-	? fixedStartPos == 0: _posSide1 = [posCenter, 2000, 4000] call funcGetRandomPos; goto "CheckPosSide1"
+	? startPosMode == 0: _posSide1 = [posCenter, 2000, 4000] call funcGetRandomPos; goto "CheckPosSide1"
 	? (_players select _si) == 0: goto "NoPlayersInSide1"
 	
-	#PlayersInSide1
-	? fixedStartPos == 1: _obj = [_fixStart0, _fixStart1] select (_rand >= 0.5); _posSide1 = getPos _obj; _dirSide1 = getDir _obj; goto "PosSetSide1"
-	? fixedStartPos == 2: _posSide1 = getPos _fixStart1; _dirSide1 = getDir _fixStart1; goto "PosSetSide1"
-	? fixedStartPos == 3: _posSide1 = getPos _fixStart0; _dirSide1 = getDir _fixStart0; goto "PosSetSide1"
+	# PlayersInSide1
+		? startPosMode == 1: _obj = [_fixStart0, _fixStart1] select (_rand >= 0.5); _posSide1 = getPos _obj; _dirSide1 = getDir _obj; goto "PosSetSide1"
+		? startPosMode == 2: _posSide1 = getPos _fixStart1; _dirSide1 = getDir _fixStart1; goto "PosSetSide1"
+		? startPosMode == 3: _posSide1 = getPos _fixStart0; _dirSide1 = getDir _fixStart0; goto "PosSetSide1"
 
-	#NoPlayersInSide1
-	? fixedStartPos == 1 && (_players select si0) == 0: _obj = [_fixStart0, _fixStart1] select (_rand >= 0.5); _posSide1 = getPos _obj; _dirSide1 = getDir _obj; goto "PosSetSide1"
-	? fixedStartPos == 2 && (_players select si0) == 0: _posSide1 = getPos _fixStart1; _dirSide1 = getDir _fixStart1; goto "PosSetSide1"
-	? fixedStartPos == 3 && (_players select si0) == 0: _posSide1 = getPos _fixStart0; _dirSide1 = getDir _fixStart0; goto "PosSetSide1"
-	_obj = [_fixStart0, _fixStart1] select (_rand >= 0.5); _posSide1 = getPos _obj; _dirSide1 = getDir _obj; goto "PosSetSide1"
+	# NoPlayersInSide1
+		? startPosMode == 1 && (_players select si0) == 0: _obj = [_fixStart0, _fixStart1] select (_rand >= 0.5); _posSide1 = getPos _obj; _dirSide1 = getDir _obj; goto "PosSetSide1"
+		? startPosMode == 2 && (_players select si0) == 0: _posSide1 = getPos _fixStart1; _dirSide1 = getDir _fixStart1; goto "PosSetSide1"
+		? startPosMode == 3 && (_players select si0) == 0: _posSide1 = getPos _fixStart0; _dirSide1 = getDir _fixStart0; goto "PosSetSide1"
+		_obj = [_fixStart0, _fixStart1] select (_rand >= 0.5); _posSide1 = getPos _obj; _dirSide1 = getDir _obj; goto "PosSetSide1"
 
-	#CheckPosSide1
-	? (_playerCO select _si) && ([_posSide1] call funcStartPos): goto "PosSetSide1"
-	? !(_playerCO select _si) && ([_posSide1] call funcBaseArea): goto "PosSetSide1"
-  _retries = _retries + 1
-  goto "GenerateSide1"
+	# CheckPosSide1
+		? (_playerCO select _si) && ([_posSide1] call funcStartPos): goto "PosSetSide1"
+		? !(_playerCO select _si) && ([_posSide1] call funcBaseArea): goto "PosSetSide1"
+		_retries = _retries + 1
+		goto "GenerateSide1"
   	
-	#PosSetSide1
-	? (count _posSide0) > 0: goto "Check"
-  goto "GenerateSide0"
+	# PosSetSide1
+		? (count _posSide0) > 0: goto "Check"
+		goto "GenerateSide0"
 
-#Check
+# Check
 	_dist = [_posSide0, _posSide1] call funcDistH
 	? _dist > (if dev then {1} else {_distMin}): goto "PlaceSides"
 	goto "Generate"
 
 # PlaceSides
-	[_posSide0, _posSide1] exec "Server\DeployStartPosition.sqs"
+	[_posSide0, _posSide1] exec "Init\SvrStartPosGet.sqs"

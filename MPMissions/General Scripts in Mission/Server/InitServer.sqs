@@ -1,7 +1,7 @@
 _this = 0
 
-0 exec "Server\InitFunctions.sqs"
-call loadFile "\TZK_Scripts_4_0_6\Server\InitServer_constant.sqf"
+call loadFile "\TZK_Patch4_4_0_6\s\init_funcs_svr.sqf"
+call loadFile "\TZK_Patch4_4_0_6\s\Server\InitServer_constant.sqf"
 ; 4.0.6.11
 call preprocessFile "Server\Init\Money.sqf"
 AICO_giTrans = [[],[]]; AICO_giInf = [[],[]]; AICO_giTanks = [[[], [], []], [[], [], []]]
@@ -14,85 +14,20 @@ call preprocessFile "Server\Upgrade\Init.sqf"
 ; { _si = _x; _i = 0; _c = count towns; while {_i < _c} do {call format[{TargetTownS_%1%2 = _targetObject createVehicle [0,0,0]; TargetTownS_%1%2 exec "\TZK_Scripts_4_0_4\Common\Command\allowDamageFalse.sqs"; TargetTownS_%1%2 setPosASL getPosASL (towns select _i select tdFlag)}, _i, _si]; _i = _i + 1} } forEach [si0, si1]
 
 ; MESSAGE HANDLERS (SERVER ONLY)
-[] exec "\TZK_Scripts_4_0_4\Server\MsgBuildStructure.sqs"
-(localize {TZK_FUNC_SERVER_UNDO_STRUCT}) exec "\TZK_Scripts_4_0_6\Server\Msg\mUndo.sqs"
 
-(localize {TZK_MONEY_SERVER_SPEND}) exec "\TZK_Scripts_4_0_6\Server\Msg\mMoneySpent.sqs"
-"\TZK_Scripts_4_0_6\Server\Msg\hGiveMoney.sqs" exec "\TZK_Scripts_4_0_6\Server\Msg\mGiveMoney.sqs"
-"Server\Msg\hUpgrade.sqs" exec "Server\Msg\mUpgrade.sqs"
-0 exec "Server\Msg\mTransferCmd.sqs"
-0 exec "\TZK_Scripts_4_0_6\Server\Msg\mDestruction.sqs"
-[] exec "\TZK_Scripts_4_0_4\Server\MsgUnitDisembark.sqs"
-"Server\Msg\hCheckAI.sqs" exec "Server\Msg\mCheckAI.sqs"
 ; ? bool_TZK_199_Mode: [] exec "\TZK_Scripts_4_0_4\Server\Msg\mRadioChannel.sqs"
 
 ; ? !(isNull player): forceMap true
 ? !(isNull player): [] exec "Player\InitClient.sqs"
 
-0 exec "Server\Init\StartVehs.sqs"
 call preprocessFile "Cfg\InitServerCfg.sqf"
 
+; initialization on briefing
+call preprocessFile "Init\SvrBriefing.sqf"
+
+0 exec "\TZK_Scripts_4_0_4\Server\DynamicInitializationMarker.sqs"
 ; game has begun after this pause
-~ 2
-call preprocessFile "Server\InitServer_Group.sqf"
-call preprocessFile "Server\initStartedGrpMoney.sqf"
-call preprocessFile "Server\initStartedGrpUpg.sqf"
-
-; custom start position (and other match rule)
-_lock = [true]
-_lock exec "Server\PreProcessMatchRule.sqs"
-# ProcessingMatchRule
-	~ 0.5
-	? _lock select 0: goto "ProcessingMatchRule"
-
-; custom for PVE. TODO: it would be better to have just one custom step
-@ pvCustomPveFinished
-
-0 exec "Server\Init\TownCivVehs.sqs"
-call preprocessFile "Server\InitCustomStartMoney.sqf";
-
-call loadFile "\TZK_Scripts_4_0_6\Server\Msg\sStartMoney.sqf"
-
-{_x exec "Server\UpdateRespawnAI.sqs"} forEach [si0, si1]
-
-0 exec "Server\Loop\Income.sqs"
-0 exec "Server\Loop\Server.sqs"
-{_x exec "Server\Loop\ProcessFinishedOrder.sqs"} forEach [si0, si1]
-[] exec "\TZK_Scripts_4_0_4\Server\SendPing.sqs"
-
-[] exec "\TZK_Scripts_4_0_4\Server\DynamicInitializationMarker.sqs"
-0 exec "Server\Dynamic\InitializationTrigger.sqs"
-? !bool_TZK_DEV_FPS: if bool_TZK_SEMod_Mode then {[] exec "Extra\DynamicInitializationGroup.sqs"} else {0 exec "Server\DynamicInitializationGroup.sqs"}
-
-; after data initialized and before forcemap canceled
-~2
-music0 = (-0.5 + random count Musics0)
-music1h = (-0.5 + random count Musics1h)
-music10m = (-0.5 + random count Musics10m)
-PublicVariable "music0"; PublicVariable "music1h"; PublicVariable "music10m"; 
-
-; west setFriend [east,1]; west setFriend [resistance,1]; east setFriend [west,1]; east setFriend [resistance,1]; resistance setFriend [west,1]; resistance setFriend [east,1]
-? bool_TZK_199_Mode: {[_x] exec localize {TZK_FUNC_KEEP_ALIVE}} forEach [leaderTemp0, leaderJoin0, leaderTemp1, leaderJoin1]
-
-
-; ================================================================================TZK_4.0.0 Block================================================================================
-; Vote System. Server Design. Requiring "AI group leader" judged results. No problem for after-start delay, but msg script should start after variables having defined.
-voteRate = 0.66; VoteMassComm = [2, 1] select bool_TZK_199_Mode; VoteMassAdmin = 1000; Vote_Result = []; {Vote_Result set [ count Vote_Result, [] ]} forEach Vote_Matrix
-call loadFile "\TZK_Scripts_4_0_4\Server\Init\Vote.sqf"
-; format of Vote_Result elements: [voted value, mass of voter, si, gi]
-; Vote_Options_Name = []; {Vote_Options_Name set [count Vote_Options_Name, _x select 0]} forEach Vote_Matrix
-
-["Server\Msg\hVoteReceived.sqs"] exec "\TZK_Scripts_4_0_5\Server\Msg\mVoteReceived.sqs"
-[] exec "\TZK_Scripts_4_0_4\Server\Vote\Mass_Reset.sqs"
-
-estimatedTimeLeft 7200
-; ================================================================================TZK_4.0.0 Block================================================================================
-
-; 4.0.5.33
-west exec "Server\Loop\PlaneBuilt.sqs"
-east exec "Server\Loop\PlaneBuilt.sqs"
-Array_TZK_Town_Triggered_By = []
-; 4.0.6.05
-Array_TZK_Group_MaybeAi = []
-; 4.0.6.64
-0 exec "Server\Loop\SneakAttackCheck.sqs"
+~ 0.01
+call preprocessFile "Init\SvrBegun.sqf"
+; other initialization should be called after custom pve and match rule having decided
+exit

@@ -1,0 +1,23 @@
+; args: [object, type, si, new, index in structMatrix]
+
+_object = _this select 0
+_type = _this select 1
+_si = _this select 2
+_new = _this select 3
+_index = _this select 4
+
+? _index == -1: _index = count ((structMatrix select _si) select _type)
+
+_value = _type + 1000 * _new + 1000 * 2 *_si + 1000 * 2 * 2 *_index
+[_object, _value] exec "\TZK_Patch4_4_0_6\s\Net\hStructBuilt.sqs"
+publicExec format [{[UnitById %1,%2] exec "\TZK_Patch4_4_0_6\s\Net\hStructBuilt.sqs"}, _object call funcGenNetIdStr, _value]
+exit
+
+@!(mutexStructBuilt)
+mutexStructBuilt = true
+
+pvStructBuilt_Object = _object; PublicVariable "pvStructBuilt_Object"
+pvStructBuilt = _type + 1000*_new + (1000*2)*_si + (1000*2*2)*_index; PublicVariable "pvStructBuilt"
+
+~sendDelay
+mutexStructBuilt = false

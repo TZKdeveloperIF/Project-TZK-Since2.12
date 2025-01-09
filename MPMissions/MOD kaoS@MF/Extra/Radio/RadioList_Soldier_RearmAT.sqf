@@ -21,14 +21,14 @@ if ((_found select 1) > rangeSupport) then {hint "No Rearm Vehicle Nearby."} els
 		_salvage = 0; _cost = 0; 
 		if (_reEquip) then {
 			_index = weaponSearch find _wpnSec;
-			if (_index != -1) then {_salvage = _salvage + ([_index] call loadFile "\TZK_Scripts_4_0_4\Player\SQF\EquipmentRespawnWeapon.sqf")};
+			if (_index != -1) then {_salvage = _salvage + ([_index] call loadFile (TzkScripts select 285))};
 			_index = equipSearch find _wpnSec;
 			if (_index != -1 && !bool_TZK_199_Mode) then {
 				_magazinesArray = magazinesarray _unit; _magIndex = 0; _count = count _magazinesArray;
 				while "_magIndex < _count" do {
 					if ((_magazinesArray select _magIndex) == _wpnSec) then {
 						_ammunition = _magazinesArray select (_magIndex + 1); _volume = call format ["%1", (_magazinesArray select _magIndex) GetWeaponParam "count"];
-						_ammunition = [_index, _ammunition] call loadFile "\TZK_Scripts_4_0_4\Player\SQF\EquipmentRespawnAmmunition.sqf";
+						_ammunition = [_index, _ammunition] call loadFile (TzkScripts select 284);
 						if (_volume != 0) then {_ammunition = _ammunition / _volume};
 						_salvage = _salvage + _ammunition * ((equipDefs select _index) select edcost);
 					};
@@ -46,8 +46,8 @@ if ((_found select 1) > rangeSupport) then {hint "No Rearm Vehicle Nearby."} els
 			if (_reEquip) then {{_unit removeMagazines _x} forEach _exclude; _unit removeWeapon _wpnSec};
 			_unitContainer = "SecondaryWeaponHolder" camCreate getPos _unit; _unitContainer addMagazineCargo [_magazine, 1];
 			_unit action ["TAKE MAGAZINE", _unitContainer, 0, 0, _magazine];
-			if (_reEquip) then {_unit addWeapon _weapon}; [_unitContainer, 10] exec localize {TZK_PATH_DELAY_DELETE_UNIT};
-			[_cost] exec "\TZK_Scripts_4_0_4\Player\SendMoneySpent.sqs"; player groupChat format ["Rapid Rearm completed. Cost: $%1", _cost];
+			if (_reEquip) then {_unit addWeapon _weapon}; [_unitContainer, 10] exec (TzkScripts select 188);
+			[_cost] exec "Net\sMoneySpent.sqs"; player groupChat format ["Rapid Rearm completed. Cost: $%1", _cost];
 			RespawnWeapon = RespawnW; RespawnMagazine = RespawnM; RespawnAmmunition = RespawnA; 
 		};
 	};

@@ -28,7 +28,7 @@ if (!_err) then {
 	if (not isNull _vehicle) then {
 		_vehicle setDir _dir;
 		if (_gi < 0) then {_gi = 0};
-		[_type, _si, _gi, _giBuyer, _vehicle, _sendRepeats] exec "\TZK_Scripts_4_0_4\Common\SendUnitBuilt.sqs";
+		[_type, _si, _gi, _giBuyer, _vehicle, _sendRepeats] exec "Net\sUnitBuilt.sqs";
 		_vehicle setPos (getPos _vehicle);
 	};
 };

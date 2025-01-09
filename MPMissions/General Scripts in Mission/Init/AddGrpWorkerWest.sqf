@@ -1,0 +1,1 @@
+[_this, si0] call preprocessFile "Init\AddGroupWorkerVar.sqf";

@@ -8,7 +8,7 @@ clearMagazineCargo _vehicle; clearWeaponCargo _vehicle
 
 ; Killed and Hit Event
 _vehicle addEventHandler ["killed", format [{[_this select 0, _this select 1, %1] exec "Common\Event\Killed_Vehicle.sqs"}, _si]]
-[_vehicle, _si, _desc select udCost] exec "\TZK_Scripts_4_0_6\Common\Event\Add_VehicleHit.sqs"
+[_vehicle, _si, _desc select udCost] exec "\TZK_Patch4_4_0_6\s\Common\Event\Add_VehicleHit.sqs"
 ? "Tank" countType [_vehicle] > 0: [_vehicle, _type] exec "\TZK_Scripts_4_0_4\Common\EH\AddTankHit.sqs"
 
 ; Fired Event
@@ -25,7 +25,7 @@ _vehicle addEventHandler ["killed", format [{[_this select 0, _this select 1, %1
 ? isNull player: goto "SkipClient"
 ; PLAYER ONLY
 
-[_vehicle, _type, _si] exec "\TZK_Scripts_4_0_5\Player\InitVehicleMarker.sqs"
+[_vehicle, _type, _si] exec "Player\Marker\Vehicle.sqs"
 ? _typeName in [{A10_Tomahawk_xj400}, {Su25_Raduga_xj400}, {A10_Tomahawk_Vanilla_xj400}, {Su25_Raduga_Vanilla_xj400}]: _vehicle say {NuclearMissileReady_xj400}
 
 ; _vehicle addEventHandler ["Fired", {[_this, LimitWeaponRangeFactor] call <function>}]

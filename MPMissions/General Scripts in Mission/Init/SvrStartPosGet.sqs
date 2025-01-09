@@ -1,0 +1,17 @@
+; args: [pos0, pos1]
+
+_posSide0 = _this select 0
+_posSide1 = _this select 1
+
+_vector = [_posSide1, _posSide0] call funcVectorSub; _dir = 0
+? (_vector select 0) != 0 && (_vector select 1) != 0: _dir = (_vector select 0) atan2 (_vector select 1)
+? startPosMode == 0: _dir = random 360
+
+_res0 = [utMHQ0, _posSide0, _dir, si0, -1, 0, 5] call fAddVehicle
+
+_res1 = [utMHQ1, _posSide1, _dir + 180, si1, -1, 0, 5] call fAddVehicle
+
+[_res0, true] exec (TzkScripts select 124)
+[_res1, true] exec (TzkScripts select 124)
+
+[_posSide0, _posSide1] call preprocessFile "Init\SvrFormalStart.sqf"

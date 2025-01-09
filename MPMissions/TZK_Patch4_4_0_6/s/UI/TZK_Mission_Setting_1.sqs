@@ -1,0 +1,79 @@
+; args: none
+; delay to close radio channel
+~0.1
+
+@!mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "TZK_Setting_Dialog"
+mutexDlg = false
+_si = siPlayer
+btnAction0 = false
+
+_lastMissionSettings = [ [], [], [] ]; _booleMatrix = [booleSettingEffects, booleSettingFunctions, booleSettingActions]
+
+[_lastMissionSettings, _booleMatrix, "missionSettingMatrix_1"] call loadFile "\TZK_Scripts_4_0_4\Player\Dialog\TZK_Mission_Setting_Init.sqf"
+
+; Extra bool items
+_idxRtsCmd = 7;
+_idcRtsCmd = IDC + 100 + 100 * 1 + _idxRtsCmd;
+ctrlShow [_idcRtsCmd, true]
+lbAdd [_idcRtsCmd, "RTS Commanding Mode  [OFF]"]
+lbAdd [_idcRtsCmd, "RTS Commanding Mode   [ON]"]
+lbSetCurSel [_idcRtsCmd, [0, 1] select bool_TZK_Rts_Cmd_Mode]
+
+; Show text in dev for debugging
+? !dev : _i = 1; _c = 3; while "_i <= _c" do { ctrlShow [IDC + _i, false]; _i = _i + 1 }
+? dev: (getPos player) exec "\TZK_Scripts_4_0_4\Server\CutDownTrees.sqs", hint format ["This message will appear only in developing mode (training missions), displaying some variables' value.\n\n%1, %2\n%3\n%4\n%5\n%6", GetWorld, TheWorld, dev], ctrlSetText [IDC + 2, format["%1", (vehicle player) call funcGetUnitTypeFromObject]], ctrlSetText [IDC + 3, format ["%1", structDefs select stHeavy select sdObjects0]],
+
+#Update
+ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+	? call dlgUpdated: goto "Quit"
+	? !(alive player): closeDialog 0; goto "Quit"
+
+	_i = 0; _Column = 3
+	#LoopColumn
+	_idc = IDC + 100 + 100*_i; _last = _lastMissionSettings select _i; _booleans = _booleMatrix select _i
+	_j = 0; _Line = 12
+		#LoopLine
+		? _j >= count _booleans: goto "continue_line"
+		? lbCurSel (_idc + _j) != (_last select _j) && lbCurSel (_idc + _j) >= 0: call ((_booleans select _j) + format ["= %1", [false, true] select lbCurSel (_idc + _j)]); _last set [_j, lbCurSel (_idc + _j)], [1, _i, _j, [false, true] select lbCurSel (_idc + _j)] call preprocessFile "Player\OnMissionSettingModified.sqf"
+
+		# continue_line
+		_j = _j + 1
+		? _j < _Line : goto "LoopLine"
+	_i = _i + 1
+	? _i < _Column : goto "LoopColumn"
+	
+	? btnAction0: btnAction0 = false, [] exec (TzkScripts select 026), closeDialog 0, goto "Quit"
+
+	call preprocessFile "Player\Dialog\TzkSetting1Loop.sqf"
+
+	~0.2
+	goto "Update"
+
+#Quit
+; save booleans for player
+; use original OFP magazines/weapons to record
+_soldier = "SoldierWB" camCreate [10,10,10]
+
+	_i = 0; _Column = 3
+	#BoolesColumn
+	removeAllWeapons _soldier
+	_booleans = _booleMatrix select _i
+	_j = 0; _Line = 12
+		#BoolesLine
+		? _j < (count _booleans) : if ( call (_booleans select _j) ) then { _soldier addMagazine (magazinesBooleRecording select _j) }
+		_j = _j + 1
+		? _j < _Line : goto "BoolesLine"
+		
+_strMOD = "STR_CRCTI_MOD"; if bool_TZK_MF_Mode Then {_strMOD = "STR_CRCTI_Kaos_MOD"}; if bool_TZK_Yugo_Mode Then {_strMOD = "STR_CRCTI_Yugo_MOD"}; if bool_TZK_SEMod_Mode Then {_strMOD = "STR_CRCTI_SE_MOD"};
+	_entry = format["TZK_Mission_Setting_1_%1_%2", _i, localize _strMOD]
+	; if (count magazines _soldier > 0) Then {_soldier saveStatus _entry} Else {deleteStatus _entry}
+	_soldier addMagazine (magazinesBooleRecording select count magazinesBooleRecording - 1); _soldier saveStatus _entry
+		
+	_i = _i + 1
+	? _i < _Column : goto "BoolesColumn"
+
+	deleteVehicle _soldier
+
+; EOF

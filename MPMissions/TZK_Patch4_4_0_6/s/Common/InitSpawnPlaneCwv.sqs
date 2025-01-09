@@ -1,0 +1,17 @@
+; args: [vehicle, type, si]
+
+_plane = _this select 0
+_type = _this select 1
+_this = _nil
+
+_posveh = getpos _plane;
+_driver = driver _plane;
+
+? _plane call loadFile "Util\IsTzkBattlePlane.sqf": [_plane, unitDefs select _type select udCost, false, enum_TZK_CustomVehicle_Plane] exec "\TZK_Patch4_4_0_6\s\Cwv\Net\sCwvInfo.sqs"
+
+? (isNull _driver) || _driver == player: exit
+
+_newposveh = [(_posveh  select 0),(_posveh select 1),(_posveh select 2) + 900]; 
+_plane setPos _newposveh;
+
+exit

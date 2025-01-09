@@ -1,0 +1,1 @@
+[_this, si1] call preprocessFile "Init\AddGroupTownVar.sqf";

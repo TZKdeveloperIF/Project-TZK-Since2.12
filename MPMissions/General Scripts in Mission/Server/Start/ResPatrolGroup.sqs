@@ -1,6 +1,6 @@
-; args: [group]
+; args: group
 
-_group = _this select 0
+_group = _this
 
 _tanks = 1
 _timePatrol = 60*(Random 60)
@@ -8,36 +8,27 @@ _timeDestroy = 60*(Random 120)
 
 _si = siRes
 
-? isNull _group : format["ERROR: _group is NULL for RES patrol group"] call fDebugLog; exit
-
-@!(mutexInitResGroups)
-mutexInitResGroups = true
-_list = groupMatrix select _si
-_list set [count _list, _group]
-
-groupsPatrol set [count groupsPatrol, _group]
-groupPatrolJoinMatrix set [count groupPatrolJoinMatrix, 0]
-mutexInitResGroups = false
-
-@ pvMatchRuleDefined
+? isNull _group : format ["ERROR: group is NULL for RES patrol group"] call fDebugLog; exit
 
 _posStart = [] call loadFile "\TZK_Scripts_4_0_4\Server\SQF\ResStartPos.sqf"
    
-~10
+~ 10
 _posPatrol = _posStart
 _sensor = "EmptyDetector" camCreate _posPatrol
 
+; remove all units. Remain group only
+{deleteVehicle _x} forEach units _group;
+
 _i = 0
-#InitAddTank
+# InitAddTank
 	_i = _i + 1
 	? _i > _tanks : goto "TanksAdded"
 	_type = -1
 	while "_type == -1" do { _type = (armorTown select _si) call funcGetRandomUnitType }
 	_pos = [_posStart, 10, 20] call funcGetRandomPos
-	[_type, 1, 1, 0, _pos, random 360, _si, -1, _group, 0, 0] exec "\TZK_Scripts_4_0_4\Common\AddUnit.sqs"
+	[_type, 1, 1, 0, _pos, random 360, _si, -1, _group, 0, 0] exec (TzkScripts select 309)
 	~1
 	goto "InitAddTank"
-#TanksAdded
+# TanksAdded
 
-["mutexInitResGroups", 60] exec "\TZK_Scripts_4_0_4\Common\DeleteVariableAfterDelay.sqs"
 [_group, _timePatrol, _timeDestroy, _sensor] exec "\TZK_Scripts_4_0_5\Server\Loop\ResPatrolGroup.sqs"

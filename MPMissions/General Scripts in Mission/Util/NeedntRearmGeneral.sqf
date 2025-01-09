@@ -9,7 +9,7 @@ _rearmData = (
 		_this call funcGetRearmData
 	}
 );
-_equal = preprocessFile "Util\ArrayEqual.sqf";
+_equal = preprocessFile "Algo\arrayEqual.sqf";
 if (not _rearm && count (_rearmData select 0) > 0 && count (_rearmData select 1) > 0)then {
 	if not _rearm then {
 		private [{_weaponData}]; _weaponData = _rearmData select 0;

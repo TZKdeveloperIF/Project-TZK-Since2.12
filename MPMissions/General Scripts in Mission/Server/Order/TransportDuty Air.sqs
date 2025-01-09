@@ -45,7 +45,7 @@ _crew = _transp call funcGetCargoNum
 
 #MovePickup
 _transp flyInHeight (400 + random 100)
-[_transp] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNON}
+[_transp] exec (TzkScripts select 175)
 _posMove = [_posPickup, 50, 50] call funcGetRandomPos
 [_unit, _posMove] call funcMoveAI
 _timeRepeat = time + 60
@@ -58,7 +58,7 @@ _timeRepeat = time + 60
   ? time > _timeRepeat: [_unit, _posMove] call funcMoveAI; _timeRepeat = time + 60
   ? ([_posMove, getPos _transp] call funcDistH) > 200: goto "MovePickup_Check"
 
-[_unit, _si, _gi] exec "Server\AI_CheckSupport.sqs"
+[_unit, _si, _gi] exec (TzkScripts select 295)
 #WaitSupportDone
   ~5
   ? !(alive _unit): exit
@@ -106,7 +106,7 @@ _timeRetry = time + 60
 
 #WaitForCargo
   [_transp] exec "Util\HeliForceLand.sqs"
-  [_transp] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNON}
+  [_transp] exec (TzkScripts select 175)
   ~30
 	
   _waitloop = _waitloop + 1; if ( _waitloop > 5 ) then { goto "MoveOut" }
@@ -132,7 +132,7 @@ _posMove = [_posEject, 50, 50] call funcGetRandomPos
 ? !(alive _transp) || _transp != (vehicle _unit): goto "Patrol"
 
 #MoveEject
-[_transp] exec localize {TZK_MSG_COMMON_SEND_TRANSPORT_TURNOFF}
+[_transp] exec (TzkScripts select 176)
 _transp flyInHeight (400 + random 100)
 _posMove = [_posEject, 50, 50] call funcGetRandomPos
 [_unit, _posMove] call funcMoveAI
@@ -148,7 +148,7 @@ _timeRepeat = time + 60
   ? ([_posMove, getPos _transp] call funcDistH) > _distEject: goto "MoveEject_Check"
 
 #EjectCargo
-[_transp, _si] exec localize {TZK_FUNC_EJECT_ALL_CARGO}
+[_transp, _si] exec (TzkScripts select 078)
 ~10
 ? !(alive _unit): exit
 ? _idOrder != _order select 0: exit

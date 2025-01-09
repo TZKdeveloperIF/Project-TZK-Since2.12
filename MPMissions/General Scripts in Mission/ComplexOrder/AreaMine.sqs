@@ -58,7 +58,7 @@ _moveParamCache exec "Util\Move2DestSoldier.sqs"
 # ReachArea
 	? call _quitCond: goto "Quit"
 
-	? _forServer: [_unit, [true]] exec localize {TZK_AI_STOP}
+	? _forServer: [_unit, [true]] exec (TzkScripts select 006)
 	? not _forServer: doStop _unit
 
 	; check mags
@@ -107,7 +107,7 @@ _moveParamCache exec "Util\Move2DestSoldier.sqs"
 	_sup = [_unit, _si, 512, true] call preprocessFile "Util\SoldierRearmSupport.sqf"
 	? isNull _sup: _msg = "No support vehicle within 512 meters. Magazines exhausted. Order aborted."; goto "Quit"
 	; SupportFound
-	? _forServer: [_unit, _sup] exec "\TZK_Scripts_4_0_4\Server\SendMovingToSupport.sqs"
+	? _forServer: [_unit, _sup] exec "Net\sMovingToSupport.sqs"
 	_param = [true, true, _unit, _sup, 60 * 5]
 	_param exec "Util\Move2SupportSoldier.sqs"
 	# Move2SupportLoop
@@ -116,7 +116,7 @@ _moveParamCache exec "Util\Move2DestSoldier.sqs"
 		? not alive _sup: _param set [1, false], goto "CheckRearm"
 		? _param select 0: goto "Move2SupportLoop"
 
-	? _forServer: [_unit, [true]] exec localize {TZK_AI_STOP}
+	? _forServer: [_unit, [true]] exec (TzkScripts select 006)
 	? not _forServer: doStop _unit
 
 	? not _forServer: _rearmParam = [[_unit, _sup], false, false], _rearmParam exec "Player\Rearm.sqs", goto "WaitRearmComplete"

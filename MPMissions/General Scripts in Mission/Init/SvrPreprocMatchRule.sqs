@@ -1,0 +1,42 @@
+; args: none
+
+? !isServer: goto "Quit"
+
+? startPosMode == 4: goto "ForCmdDefineRules"
+	goto "SkipRuleDefine"
+
+# ForCmdDefineRules
+	; No group or AICO check
+	? 0 == count (groupMatrix select si0): goto "Degrade"
+	? (groupCommander select si0) in (groupAiMatrix select si0): goto "Degrade"
+	? 0 == count (groupMatrix select si1): goto "Degrade"
+	? (groupCommander select si1) in (groupAiMatrix select si1): goto "Degrade"
+
+	; Broadcast variables
+	TzkCustomStartPos = [-1, -1, -1, -1]
+	TzkStartPosRes = (if (random 1 > 0.5) then {1} else {0}), publicVariable {TzkStartPosRes}
+
+	0 exec "\TZK_Patch4_4_0_6\s\Net\hStartMsg.sqs"
+	publicExec {0 exec "\TZK_Patch4_4_0_6\s\Net\hStartMsg.sqs"}
+
+	_timeAbort = 60
+	# loop
+		~ 1
+		? -1 != TzkCustomStartPos select 0 && -1 != TzkCustomStartPos select 2: goto "PosDefined"
+		? _time > _timeAbort: goto "Degrade"
+		goto "loop"
+	# PosDefined
+		[[TzkCustomStartPos select 0, TzkCustomStartPos select 1], [TzkCustomStartPos select 2, TzkCustomStartPos select 3]] exec "Init\SvrStartPosGet.sqs"
+		TzkCustomStartPos = _nil
+	goto "Quit"
+
+# Degrade
+	startPosMode = 1, publicVariable {startPosMode}
+# SkipRuleDefine
+	1 exec "\TZK_Patch4_4_0_6\s\Net\hStartMsg.sqs"
+	publicExec {1 exec "\TZK_Patch4_4_0_6\s\Net\hStartMsg.sqs"}
+
+	0 exec "Server\GenerateStartPositions.sqs"
+	goto "Quit"
+# Quit
+	exit

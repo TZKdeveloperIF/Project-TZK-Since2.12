@@ -1,15 +1,16 @@
 ; args: none
 
+_sendSideMoneyTotal = "Net\sMoneySideTotal.sqs"
+_sendSideMoneySpend = "Net\sMoneySideSpent.sqs"
+
 ; Start
-	[si0, startMoney select si0] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideTotal.sqs"
-	[si1, startMoney select si1] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideTotal.sqs"
+	[si0, startMoney select si0] exec _sendSideMoneyTotal
+	[si1, startMoney select si1] exec _sendSideMoneyTotal
 
-	[si0, moneySpent select si0] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideSpent.sqs"
-	[si1, moneySpent select si1] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideSpent.sqs"
+	[si0, moneySpent select si0] exec _sendSideMoneySpend
+	[si1, moneySpent select si1] exec _sendSideMoneySpend
 
-	@ pvMatchRuleDefined
-
-	_timeNext = 60 + pvMatchStartTime
+	_timeNext = 60 + tzkMatchStartTime
 	_totalIncome0 = startMoney select si0; _totalIncome1 = startMoney select si1
 
 	_totalIncome = [_totalIncome0, _totalIncome1]; _moneyPerScore = 10
@@ -20,19 +21,19 @@
 	_timeNext = _timeNext + 60
 	? pvGameOver != -1: goto "SendAndExit"
 
-	call preprocessFile "Server\Loop\Income.sqf"
+	call loadFile (TzkScripts select 307)
 
 	~ 2
 	_totalIncome0 = _totalIncome select si0; _totalIncome1 = _totalIncome select si1
-	[si0, _totalIncome0] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideTotal.sqs"
-	[si1, _totalIncome1] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideTotal.sqs"
-	[si0, moneySpent select si0] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideSpent.sqs"
-	[si1, moneySpent select si1] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideSpent.sqs"
+	[si0, _totalIncome0] exec _sendSideMoneyTotal
+	[si1, _totalIncome1] exec _sendSideMoneyTotal
+	[si0, moneySpent select si0] exec _sendSideMoneySpend
+	[si1, moneySpent select si1] exec _sendSideMoneySpend
 	goto "Wait"
 
 # SendAndExit
-	[si0, _totalIncome select si0] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideTotal.sqs"
-	[si1, _totalIncome select si1] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideTotal.sqs"
+	[si0, _totalIncome select si0] exec _sendSideMoneyTotal
+	[si1, _totalIncome select si1] exec _sendSideMoneyTotal
 
-	[si0, moneySpent select si0] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideSpent.sqs"
-	[si1, moneySpent select si1] exec "\TZK_Scripts_4_0_4\Server\SendMoneySideSpent.sqs"
+	[si0, moneySpent select si0] exec _sendSideMoneySpend
+	[si1, moneySpent select si1] exec _sendSideMoneySpend

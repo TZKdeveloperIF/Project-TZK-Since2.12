@@ -1,0 +1,36 @@
+; args: [vehicle, shell, side index, (bool Artillery Vehicle)]
+_vehicle = _this select 0; _shell = _this select 1; _si = _this select 2; _boolArt = if (count _this > 3) Then {_this select 3} Else {false}
+? !local _shell: exit
+
+_siEnemy = [si0, si1] select (_si == si0)
+? upgMatrix select _siEnemy select upgRadarArtillery != 2: Exit
+
+_radars = [_siEnemy, stComm] call funcGetWorkingStructures
+? (count _radars == 0): Exit
+
+? (isNull _shell): Exit
+_detections = 0; _timeStart = _time; _radarRange = 15*(CCdistMax select _siEnemy); if (upgMatrix select _siEnemy select upgCCdistance == 2) Then {_radarRange = _radarRange / 10}
+#Update
+	; _posShell = getPos _shell
+	; ? (((getPos _shell) select 2) < 20): goto "Skip"
+	
+	{ if ((_x distance _shell) < _radarRange) then { _detections = _detections + 1 } } foreach _radars
+
+	; #Skip
+	~0.1
+	? !(isNull _shell): goto "Update"
+
+_lifetime = _time - _timeStart
+
+; avoid small arms. "ShotBullet" can live only 3 seconds.
+? _lifetime < 3.2: Exit
+? _detections == 0: Exit
+
+? _boolArt: _detections = _detections * 1.2; _detections = _detections - _detections%1
+_dist = 1000 - 5*_detections; if (_dist < 0) Then {_dist = 0}; if (_dist < 50 && !_boolArt) Then {_dist = 50}
+_dist = random _dist; _dir = random 360; _posRel = [_dist*sin(_dir), _dist*cos(_dir)]
+
+_posX = ((getPos _vehicle) select 0) + (_posRel select 0); _posY = ((getPos _vehicle) select 1) + (_posRel select 1)
+_posX = _posX - _posX % 1; _posY = _posY - _posY % 1
+
+[_detections, _siEnemy, _posX, _posY] exec "Net\sArtDetect.sqs"

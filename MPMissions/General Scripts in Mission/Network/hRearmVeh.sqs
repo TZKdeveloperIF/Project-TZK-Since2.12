@@ -28,5 +28,5 @@ if (_matching || _bDeploy) then { { _v addMagazine _x } foreach _mags } else { {
 _v groupChat "Rearm completed. But gun barrel still hurts. Repair it please."
 ~90
 ? canFire _v : exit
-? !bool_TZK_199_Mode: if (local _v && format ["%1", (typeOf _v) GetVehicleParam "simulation"] == "tank") then { { _v removeMagazines _x } foreach (magazines _v); _v groupChat "Gun barrel not repair. Unable to fire. NEED REPAIR AND REARM!" } else { [_v] exec localize {TZK_NETWORK_REMOVE_MAG} }
-? bool_TZK_199_Mode: if (local _v && !canFire _v) then { { _v removeMagazines _x } foreach (magazines _v); _v groupChat "Gun barrel not repair. Unable to fire. NEED REPAIR AND REARM!" } else { [_v] exec localize {TZK_NETWORK_REMOVE_MAG} }
+? !bool_TZK_199_Mode: if (local _v && format ["%1", (typeOf _v) GetVehicleParam "simulation"] == "tank") then { { _v removeMagazines _x } foreach (magazines _v); _v groupChat "Gun barrel not repair. Unable to fire. NEED REPAIR AND REARM!" } else { [_v] exec (TzkScripts select 187) }
+? bool_TZK_199_Mode: if (local _v && !canFire _v) then { { _v removeMagazines _x } foreach (magazines _v); _v groupChat "Gun barrel not repair. Unable to fire. NEED REPAIR AND REARM!" } else { [_v] exec (TzkScripts select 187) }

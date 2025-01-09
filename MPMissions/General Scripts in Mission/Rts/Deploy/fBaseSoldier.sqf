@@ -11,7 +11,7 @@ if (isNull _group) then {false} else {
 		[_si, _gi, "Base defend group is full. Soldier not deployed."] call preprocessFile "Util\MsgSender.sqf";
 		false
 	} else {
-		[_si, _gi, _cost] exec localize {TZK_MONEY_SERVER_SPEND};
+		[_si, _gi, _cost] exec (TzkScripts select 167);
 
 		_dir = random 360;
 		_inf = [_type, 0, 0, 0, _pos, random 360, _si, -1, _group, 0, 0] call funcAddServerUnit;

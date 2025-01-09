@@ -53,7 +53,7 @@ _desc = unitDefs select _type
 ; must be a vehicle if we got here
 _vehicle = [_type, _pos, _dir, _si, _gi, _giBuyer, _sendRepeats] call fAddVehicle
 ? isNull _vehicle: format ["ERROR: _vehicle is NULL in Network\hAddUnit. Origin value is: %1, type seems to be %2, buyer: %3", _originVal, _type, name player] call fDebugLog; goto "Quit"
-? -1 != _nCustomWeapon: [_vehicle, _type, _nCustomWeapon, _si] exec "Cwv\Equip.sqs"
+? -1 != _nCustomWeapon: [_vehicle, _type, _nCustomWeapon, _si] exec "\TZK_Patch4_4_0_6\s\Cwv\Equip.sqs"
 
 _typeCrew = _desc select udCrew select 1
 _unitsToBuild = _driver + _gunner + _commander

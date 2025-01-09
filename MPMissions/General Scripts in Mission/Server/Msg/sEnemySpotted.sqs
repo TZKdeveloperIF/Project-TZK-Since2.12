@@ -3,10 +3,8 @@
 _target = _this select 0
 _si = _this select 1
 
-@ not mutexEnemySpotted
-	mutexEnemySpotted = true
+_netIdStr = _target call funcGenNetIdStr
+? isNull _target: exit
 
-	call format [{pvEnemy%1 = _target; PublicVariable {pvEnemy%1}}, _si]
-
-	~ sendDelay
-	mutexEnemySpotted = false
+[_target, _si] exec "\TZK_Patch4_4_0_6\s\Net\mEnemySpotted.sqs"
+publicExec format [{[UnitById %1,%2] exec "\TZK_Patch4_4_0_6\s\Net\mEnemySpotted.sqs"}, _netIdStr, _si]

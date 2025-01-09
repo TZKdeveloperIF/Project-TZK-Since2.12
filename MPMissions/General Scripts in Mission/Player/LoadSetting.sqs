@@ -1,0 +1,29 @@
+; args: none
+
+; small delay to wait game begun, for "camCreate"
+~ 0.01
+
+_loadOldCfgState = [false]
+_loadOldCfgState exec "\TZK_Patch4_4_0_6\s\Player\LoadOldCfg.sqs"
+
+_loadTzkCfgState = [false]
+_loadTzkCfgState exec "\TZK_Patch4_4_0_6\s\Player\LoadTzkCfg.sqs"
+
+; must wait sqs finish to make sure all settings are loaded
+# waitOldCfgLoad
+	~ 1
+	? not (_loadOldCfgState select 0): goto "waitOldCfgLoad"
+
+# waitTzkCfgLoad
+	~ 1
+	? not (_loadTzkCfgState select 0): goto "waitTzkCfgLoad"
+
+; 4.0.5.18 update
+; 0 exec "Player\GetDeltaTime.sqs"
+; 4.0.6.14
+bNumberedAI call preprocessFile "Player\Marker\SwitchNumberAi.sqf"
+
+; Send bool_TZK_Hide_Score status
+[{bool_TZK_Hide_Score exec "Network\sModifyScoreConfuserState.sqs"}, 10 + giPlayer * 2 + siPlayer] exec "\TZK_Scripts_4_0_5\Common\~@\DelayCode.sqs"
+
+0 exec "Version\CWA_CE_DelayOverwritePplSettings.sqs"

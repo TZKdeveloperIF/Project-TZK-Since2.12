@@ -1,0 +1,14 @@
+; args: [params]
+
+_value = _this select 0
+
+_ti = (_value % (count towns))
+_value = _value - _ti
+
+_si = _value / (count towns)
+
+? _si != siPlayer && siPlayer != siCiv: exit
+
+? _si == siPlayer: format["Enemy approaching %1. Town Group Spawn.", (towns select _ti) select tdName] call funcSideMsg
+
+_marker = format["TownHibernate%1", _ti]; _marker setMarkerPos hiddenMarkerPos

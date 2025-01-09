@@ -15,8 +15,6 @@ _posPatrol = getPos _sensor
 	? (count (units _group)) == 0 : goto "Update"
 
   _group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "NORMAL"
-  
-  ; TODO { _x disableAI "TARGET" } foreach (units _group)
 
 	? time < _timePatrol : goto "Patrol"
 	? time > _timeDestroy : goto "Destroy"

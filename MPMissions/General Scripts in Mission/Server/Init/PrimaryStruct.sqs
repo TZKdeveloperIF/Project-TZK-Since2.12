@@ -6,10 +6,10 @@ _type = _this select 0
 _si = _this select 1
 _object = (_this select 2) select 0
 
-? _si in [si0, si1]: _object addEventHandler ["killed", format [{[_this, %1] exec localize {TZK_EVENT_KILLED_STRUCT_PRIM}}, _si]]
+? _si in [si0, si1]: _object addEventHandler ["killed", format [{[_this, %1] exec (TzkScripts select 062)}, _si]]
 
-[_object, _si, structDefs select _type select sdCost] exec localize {TZK_EVENT_ADD_HIT_STRUCT}
-[_object, _si, kaStruct, 200] exec localize {TZK_SERVER_KNOWSABOUT_START}
+[_object, _si, structDefs select _type select sdCost] exec (TzkScripts select 038)
+[_object, _si, kaStruct, 200] exec (TzkScripts select 218)
 
 
 ? !dev && !((count _this) > 3) && _type != stBridge: _object setDamage 1

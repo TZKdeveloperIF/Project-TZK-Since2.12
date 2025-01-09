@@ -1,0 +1,12 @@
+; Effects won't work on dedicated server.
+? isServer && isNull player : exit
+
+_plane = _this
+
+BurningPlanes set [count BurningPlanes, _plane]
+~0.1
+; The parameters of "setObjectTexture" rely on the defination of plane.
+? ("A10_Base_xj400" countType [_plane]) > 0: [_plane] exec "\TZK_Scripts_4_0_4\Player\Effect\AfterBurner\EffectA10.sqs"
+? ("Su25_Base_xj400" countType [_plane]) > 0: [_plane] exec "\TZK_Scripts_4_0_4\Player\Effect\AfterBurner\EffectSu25.sqs"
+
+

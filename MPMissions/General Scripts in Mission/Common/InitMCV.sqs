@@ -12,7 +12,7 @@ if (!_added) then { _mcvs set [count _mcvs, _MCV] }
 
 _MCV say "MCV_Deployed_xj400"
 
-_event = format["[_this, %1, 1] exec localize {TZK_EVENT_KILLED_MHQ}", _si]
+_event = format["[_this, %1, 1] exec (TzkScripts select 060)", _si]
 _MCV addEventHandler ["killed", _event]
 
 
@@ -29,5 +29,5 @@ _MCV setAmmoCargo 0
 ? siPlayer != si0 && siPlayer != si1 : exit
 
 ; PLAYER
-_MCV addAction ["Heal/Repair", "\TZK_Scripts_4_0_5\Player\Action\HealRepair.sqs"]
-_MCV addAction ["Rearm", "\TZK_Scripts_4_0_5\Player\Action\Rearm.sqs"]
+_MCV addAction ["Heal/Repair", (TzkScripts select 290)]
+_MCV addAction ["Rearm", (TzkScripts select 291)]

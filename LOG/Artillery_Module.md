@@ -1,5 +1,10 @@
 Basing on motion equation of "shotShell"-simulation CfgAmmo class member, artillery module is possible to be designed and introduced into CTI. Since this part is still in developing, its scripts should be placed in mission but not AddOns.
 
+# Model
+## graduations
++ This design should always be placed in View - Gunner LOD otherwise it won't work normally
++ The texture should be designed for every angle of osaHlaven/gunnerView. By now many of them have error
+
 ## 4.0.5.08
 + Add some definition of tank/mortar structure weapon/magazine in impl\Equip.sqf to make "ValidWeaponEquip.sqf" (ACWA mag of weapon check script) available for them.
   在impl\Equip.sqf里增加一些坦克, 迫击炮建筑的武器弹夹定义, 使得ACWA的"ValidWeaponEquip.sqf"脚本对它们有效.

@@ -1,0 +1,14 @@
+; args: [unit, si, _kaReport, dist]
+
+? !isServer : exit
+
+_unit = _this select 0
+_si = _this select 1
+_kaReport = _this select 2
+_dist = _this select 3
+
+? _si == siRes: goto "ResUnits"
+[_unit, _si, _kaReport, _dist, -60] exec (TzkScripts select 219); exit
+
+# ResUnits
+[_unit, _si, _kaReport, _dist, -60, -60] exec (TzkScripts select 220); exit

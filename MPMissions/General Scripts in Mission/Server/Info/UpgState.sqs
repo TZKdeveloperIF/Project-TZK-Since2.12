@@ -11,18 +11,21 @@ _value = _value + TotalInfoTypes*(count upgDefs)*_state
 _value = _value + TotalInfoTypes*(count upgDefs)*3*_si
 _value = _value + TotalInfoTypes*(count upgDefs)*3 *2 * (if _cancelled then {1} else {0})
 
-[_value] exec localize {TZK_MSG_SERVER_SEND_INFO}
+[_value] exec (TzkScripts select 179)
 
 ? upgCCdistance == _upg && _state == 2 : CCdistMax set [_si, distMaxCCUpgraded]
 
-? upgGunshipRocket == _upg && _state == 2 : [_si, _upg, "HeliRocket"] exec "\TZK_Scripts_4_0_4\Common\ReEquip\ReEquip.sqs"
+? upgGunshipRocket == _upg && _state == 2 : [_si, _upg, "HeliRocket"] exec "\TZK_Patch4_4_0_6\s\Common\ReEquip\Exec.sqs"
 
 ? upgWorkers == _upg && _state == 2: maxWorkers set [_si, 20]
 
-? upgRedTopRange == _upg && _state == 2: [_si, _upg, "4xAA"] exec "\TZK_Scripts_4_0_4\Common\ReEquip\ReEquip.sqs"
+? upgRedTopRange == _upg && _state == 2: [_si, _upg, "4xAA"] exec "\TZK_Patch4_4_0_6\s\Common\ReEquip\Exec.sqs"
 
-? upgRedTopMagazines == _upg && _state == 2: [_si, _upg, "4xAA"] exec "\TZK_Scripts_4_0_4\Common\ReEquip\ReEquip.sqs"
+? upgRedTopMagazines == _upg && _state == 2: [_si, _upg, "4xAA"] exec "\TZK_Patch4_4_0_6\s\Common\ReEquip\Exec.sqs"
 
 ? upgPlaneAfterBurner == _upg: if !(isNull player) then {if (_si == siPlayer) then {bAfterBurner = _state == 2}}
 
 ? upgSpoofMissile == _upg: if !(isNull player) then {if (_si == siPlayer) then {bSpoofMissile = _state == 2}}
+
+; generate TG on upgraded
+? upgTownGroup == _upg && _state == 2: _si exec "Init\SvrTownGroups.sqs"
