@@ -414,10 +414,13 @@ _f = {
 "\TZK_Patch4_4_0_6\s\Common\InitSpawnPlaneCwv.sqs" call _f; // 347
 "\TZK_Scripts_4_0_4\Common\InitSpawnPlaneRes.sqs" call _f; // 348
 
+"\TZK_Patch4_4_0_6\s\InfoCli\tgHibernate.sqs" call _f; // 349
+"\TZK_Patch4_4_0_6\s\InfoCli\tgLoss.sqs" call _f; // 350
+"\TZK_Patch4_4_0_6\s\InfoCli\tgSpawn.sqs" call _f; // 351
 
 
 // script count check. Check index with last literal value
-if (_i != 348 + 1) then {
+if (_i != 351 + 1) then {
 	player globalChat "Script count mismatch!";
 };
 
