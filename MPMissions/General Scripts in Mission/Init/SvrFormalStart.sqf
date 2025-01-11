@@ -71,6 +71,8 @@ call preprocessFile "Init\SvrAicoUpg.sqf";
 west exec "Server\Loop\PlaneBuilt.sqs";
 east exec "Server\Loop\PlaneBuilt.sqs";
 
+{_x exec "Server\Loop\MhqOutOfMapCheck.sqs"} forEach [si0, si1];
+
 // start generate town civ vehicles
 0 exec "Server\Init\TownCivVehs.sqs";
 

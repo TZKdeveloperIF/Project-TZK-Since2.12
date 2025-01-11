@@ -1,0 +1,51 @@
+; args: si
+
+; available only in CWA_CE with its new command "worldsize"
+; detect whether MHQ is far from map area. Warn to CMD then broadcast to all
+
+? UsedVersion < 2020: exit
+
+_si = _this
+_l = worldsize
+_threshold = 1000
+
+_interval = 60
+_shortWarnLimit = 3
+_totalWarnLimit = 10
+_shortWarnCnt = 0
+_totalWarnCnt = 0
+
+_warnText = "WARNING: MHQ is more than %1 m away from map area. Fast call him back."
+_broadcast = "%3  %1 MHQ away from map area at %2"
+
+# loop
+	~ _interval
+	? pvGameOver != -1: exit
+
+	_veh = mhq select _si
+	? not alive _veh: goto "loop"
+	_dragIdx = TzkDraggedVehs find _veh
+	? _dragIdx != -1: _veh = TzkDraggedTugger select _dragIdx
+
+	_pos = getPosASL _veh, _px = _pos select 0, _py = _pos select 1
+	_px = _px - _px % 1; _py = _py - _py % 1
+	_out = _px < - _threshold || _py < _threshold || _px > _l + _threshold || _py > _l + _threshold
+	? not _out: _shortWarnCnt = 0, goto "loop"
+
+	_shortWarnCnt = _shortWarnCnt + 1, _totalWarnCnt = _totalWarnCnt + 1
+	; broadcast
+	? _shortWarnCnt > _shortWarnLimit || _totalWarnCnt > _totalWarnLimit: goto "broadcast"
+	; warning
+	? _shortWarnCnt <= _shortWarnLimit: goto "warning"
+
+	goto "loop"
+
+# broadcast
+	_str = format [_broadcast, sideNames select _si, [_px, _py], [] call preprocessFile "Player\SQF\GetTimeString.sqf"]
+	publicExec format [{{%1} exec "Util\GlobalMsg.sqs"}, _str]
+	_str exec "Util\GlobalMsg.sqs"
+	goto "loop"
+
+# warning
+	[_si, format [_warnText, _threshold]] exec "Server\Msg\sSvrMsg2Cmd.sqs"
+	goto "loop"
