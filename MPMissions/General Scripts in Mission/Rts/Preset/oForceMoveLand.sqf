@@ -6,7 +6,7 @@ private [{_pos}, {_bRts}, {_units}
 
 _pos = _this select 0;
 _bRts = count _this == 1;
-_units = (if _bRts then {call preprocessFile "Rts\Ui\CurSelUnitArray.sqf"} else {_this select 1});
+_units = (if _bRts then {call preprocessFile (TzkScripts select 371)} else {_this select 1});
 
 _j = 0; _vehicles = []; _vehicles resize count(_units); {
 	_vehicle = vehicle _x;

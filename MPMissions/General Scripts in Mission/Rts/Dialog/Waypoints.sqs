@@ -13,7 +13,7 @@ mutexDlg = false
 	mutexRtsMouse = true
 	_id = rtsMouseId
 	mutexRtsMouse = false
-[true, _id + 1, _pos] exec "Player\Rts\SetRtsMouse.sqs";
+[true, _id + 1, _pos] exec (TzkScripts select 363);
 
 _pos call preprocessFile "Util\DebugPointInfo.sqf"
 
@@ -176,7 +176,7 @@ _procMixedWpArt = preprocessFile "Rts\Dialog\Wp\ProcMixedWpArtList.sqf"
 	goto "Quit"
 
 # Quit
-	[false, _id + 2] exec "Player\Rts\SetRtsMouse.sqs"; exit
+	[false, _id + 2] exec (TzkScripts select 363); exit
 # FirstCtrl
 	; switch to waypoint dialog rapidly
 	_btnVal = 2 ^ 4

@@ -37,5 +37,5 @@ if not _processed then {
 	};
 };
 if _processed then {
-	_input call preprocessFile "Player\Rts\AreaSetDir.sqf";
+	_input call preprocessFile (TzkScripts select 367);
 };

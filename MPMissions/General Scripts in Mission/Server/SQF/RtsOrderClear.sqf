@@ -1,7 +1,2 @@
-private [{_skill}];
-_skill = (skill _this) * 10000;
-_skill = _skill call loadFile "Math\Round.sqf";
-if (_skill call loadFile "Server\SQF\IsRtsOrder.sqf") then {
-	_skill = (_skill + 4) / 10000;
-	_this setSkill _skill;
-};
+_this call loadFile (TzkScripts select 390)
+// cfg_todo: redirect this file. Current pos is improper

@@ -44,7 +44,7 @@ _stat = 0, _titleText = "Building " + (_desc select sdName) + "..."
 # loop
 	@ not mutexBuildObstruct
 		mutexBuildObstruct = true
-		_ret = call preprocessFile "Player\Rts\BuildObstruction.sqf"
+		_ret = call preprocessFile (TzkScripts select 375)
 		mutexBuildObstruct = false
 
 	? not _ret: player groupchat _msg, goto "Quit"

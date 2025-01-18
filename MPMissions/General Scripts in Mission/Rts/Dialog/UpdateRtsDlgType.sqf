@@ -53,7 +53,7 @@ if (not _processed && 0 == _level) then {
 		private [{_bSoldier}, {_bTank}, {_bArt}, {_bSup}, {_bAA}, {_bTransp}, {_type}];
 		_bSoldier = false; _bTank = false; _bArt = false; _bSup = false; _bAA = false; _bTransp = false;
 
-		_array = (call preprocessFile "Rts\Ui\CurSelUnitStack.sqf") select _level;
+		_array = (call preprocessFile (TzkScripts select 370)) select _level;
 		_i = 0; _c = count _array; while {_i < _c} do {
 			_unit = _array select _i;
 			if (_unit == vehicle _unit) then {
@@ -98,7 +98,7 @@ if (not _processed && 0 == _level) then {
 
 if (not _processed && 1 == _level) then {
 	if (2^8 != _btnVal) then {TzkSelLv1Btn = _btnVal} else {_btnVal = TzkSelLv1Btn};
-	_array = (call preprocessFile "Rts\Ui\CurSelUnitStack.sqf") select _level - 1;
+	_array = (call preprocessFile (TzkScripts select 370)) select _level - 1;
 
 	if (not _processed && 2^8 == _btnVal) then {
 		if (0 != count _cache1) then { // load from cache
@@ -113,7 +113,7 @@ if (not _processed && 1 == _level) then {
 	};
 
 	private [{_validElem}, {_top}];
-	_top = (call preprocessFile "Rts\Ui\CurSelUnitStack.sqf") select _level;
+	_top = (call preprocessFile (TzkScripts select 370)) select _level;
 	if (not _processed && 2^0 == _btnVal) then {
 		_processed = true;
 		private [{_bAT}, {_bAA}, {_bSniper}, {_bArt}, {_type}];
@@ -334,10 +334,10 @@ if (not _processed && 1 == _level) then {
 if (not _processed && 2 == _level) then {
 	// ASSERT(2^8 != _btnVal)
 	if (2^8 != _btnVal) then {TzkSelLv2Btn = _btnVal}; // else {_btnVal = TzkSelLv2Btn};
-	_array = (call preprocessFile "Rts\Ui\CurSelUnitStack.sqf") select _level - 1;
+	_array = (call preprocessFile (TzkScripts select 370)) select _level - 1;
 
 	private [{_lambda}, {_top}];
-	_top = (call preprocessFile "Rts\Ui\CurSelUnitStack.sqf") select _level; _lambda = "";
+	_top = (call preprocessFile (TzkScripts select 370)) select _level; _lambda = "";
 	if (not _processed && 2^0 == TzkSelLv1Btn) then {
 		if (not _processed && 2^0 == _btnVal) then {
 			_lambda = {

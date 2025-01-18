@@ -29,7 +29,7 @@ if isServer then {
 				, localize {TZK_LANG_DEPLOY}
 			]] call preprocessFile "Util\MsgSender.sqf";
 		} else {
-			_res = [_si, _gi, _this select 1, _enum, _free] call preprocessFile "Rts\Building\fDeployBaseMg.sqf";
+			_res = [_si, _gi, _this select 1, _enum, _free] call preprocessFile (TzkScripts select 380);
 			if _res then {
 
 				[_si, _gi, format ["%1 %2 %3."

@@ -9,7 +9,7 @@ mutexDlg = false
 	mutexRtsMouse = true
 	_id = rtsMouseId
 	mutexRtsMouse = false
-[true, _id + 1, _pos] exec "Player\Rts\SetRtsMouse.sqs";
+[true, _id + 1, _pos] exec (TzkScripts select 363);
 
 call preprocessFile "Util\DebugLineInfo.sqf"
 
@@ -59,7 +59,7 @@ btnValue05 = -1;
 	? not alive player: closeDialog 0; goto "Quit"
 	; update TzkMapAreaLastUsedTime
 	TzkMapAreaLastUsedTime = time
-	call preprocessFile "Player\Rts\HandleDialogAzimut.sqf"
+	call preprocessFile (TzkScripts select 369)
 
 	? btnValue00 >= 0: _val0 = btnValue00; btnValue00 = -1; goto "LeftBtn"
 	? btnValue01 > 0: _btnVal = btnValue01; btnValue01 = 0; goto "DownBtn"
@@ -73,7 +73,7 @@ btnValue05 = -1;
 # Quit
 	TzkMapRtsFlashingDisabled = false
 	0 exec "Rts\DynamicMarker\DelayTurnOffArtDisplay.sqs"
-	[false, _id + 2] exec "Player\Rts\SetRtsMouse.sqs"; exit
+	[false, _id + 2] exec (TzkScripts select 363); exit
 # LeftBtn
 	? _val0 >= 0 && _val0 <= 6: 2 ^ _val0 call preprocessFile "rts\Marker\AreaClearMarker.sqf"; closeDialog 0; goto "Quit"
 	? 7 == _val0: 0 exec "Rts\Submenu\Destruction.sqs"; closeDialog 0; goto "Quit"

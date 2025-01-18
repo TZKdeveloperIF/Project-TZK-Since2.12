@@ -7,8 +7,8 @@ private [
 
 // RTS UI
 TzkMapSelectedHighlight = not TzkMapSelectedHighlight;
-_tzkSelUnitsTop = call preprocessFile "Rts\Ui\CurSelUnitArray.sqf";
-_rtsDisplay = preprocessFile "Player\Marker\RtsDisplay.sqf";
+_tzkSelUnitsTop = call preprocessFile (TzkScripts select 371);
+_rtsDisplay = preprocessFile (TzkScripts select 400);
 // Leaders
 _i = 0; _c = count (groupMatrix select siPlayer); while {_i < _c} do {
 	_leader = leader (groupMatrix select siPlayer select _i);
