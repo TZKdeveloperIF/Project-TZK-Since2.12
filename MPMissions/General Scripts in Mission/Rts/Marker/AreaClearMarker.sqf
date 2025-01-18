@@ -225,6 +225,6 @@ if _pplMine then {
 if ("" != _message) then {
 	player globalChat (_message + "cleared.");
 	// Clear selected area if succeeded in clearing some marker
-	false call preprocessFile "Player\Rts\Area.sqf";
-	false call preprocessFile "Player\Rts\Selection.sqf";
+	false call preprocessFile (TzkScripts select 361);
+	false call preprocessFile (TzkScripts select 362);
 };

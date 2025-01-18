@@ -56,8 +56,8 @@ _tooLargeHint = format ["Marker too large. Can't be set as %1 area.", _markerTyp
 
 	[100 + lbCurSel _idcListBox0, _markerType, _toServer, _cachedIdxName] call preprocessFile "Rts\Marker\GenArea.sqf"
 	; Clear selected area on setting marker
-	false call preprocessFile "Player\Rts\Area.sqf"
-	false call preprocessFile "Player\Rts\Selection.sqf"
+	false call preprocessFile (TzkScripts select 361)
+	false call preprocessFile (TzkScripts select 362)
 	closeDialog 0; goto "Quit"
 # Clear
 	? -1 == lbCurSel _idcListBox0: hint "No area selected."; goto "loop"
@@ -74,6 +74,6 @@ _tooLargeHint = format ["Marker too large. Can't be set as %1 area.", _markerTyp
 
 	[100 + lbCurSel _idcListBox0, _markerType, _toServer, _cachedIdxName, _extraArg] call preprocessFile "Rts\Marker\GenArea.sqf"
 	; Clear selected area on setting marker
-	false call preprocessFile "Player\Rts\Area.sqf"
-	false call preprocessFile "Player\Rts\Selection.sqf"
+	false call preprocessFile (TzkScripts select 361)
+	false call preprocessFile (TzkScripts select 362)
 	closeDialog 0; goto "Quit"

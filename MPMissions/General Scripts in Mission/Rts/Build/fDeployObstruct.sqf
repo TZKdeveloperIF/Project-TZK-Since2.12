@@ -9,7 +9,7 @@ _lineX = _lineX + _step;
 _nextBuildPos set [0, (_markerPos select 0) + _lineX * _cos]; _nextBuildPos set [1, (_markerPos select 1) + _lineX * _sin];
 
 private [{_res}, {_ret}];
-_res = [_nextBuildPos, _builderVehTypes, _cachedInfo] call preprocessFile "Player\Rts\CanBuildObstruction.sqf";
+_res = [_nextBuildPos, _builderVehTypes, _cachedInfo] call preprocessFile (TzkScripts select 373);
 _ret = true;
 
 if not (_res select 0) then {

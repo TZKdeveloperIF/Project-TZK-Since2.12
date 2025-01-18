@@ -19,5 +19,5 @@ _curTime = time; _deltaTime = TzkBaseBuildNextTime - _curTime; _deltaTime = _del
 TzkBaseBuildNextTime = _curTime + 5
 ? 2 == _enum: TzkBaseBuildNextTime = _curTime + 15
 
-? not isServer: publicExec format ["%1 call preprocessFile {Rts\Building\hDeployBaseMg.sqf}", [siPlayer, _pos, _enum]]
-? isServer: [siPlayer, _pos, _enum] call preprocessFile {Rts\Building\hDeployBaseMg.sqf}
+? not isServer: publicExec format ["%1 call preprocessFile (TzkScripts select 384)", [siPlayer, _pos, _enum]]
+? isServer: [siPlayer, _pos, _enum] call preprocessFile (TzkScripts select 384)

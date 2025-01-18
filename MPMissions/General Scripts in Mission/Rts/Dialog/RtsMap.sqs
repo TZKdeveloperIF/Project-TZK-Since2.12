@@ -9,7 +9,7 @@ mutexDlg = false
 	mutexRtsMouse = true
 	_id = rtsMouseId
 	mutexRtsMouse = false
-[true, _id + 1, _pos] exec "Player\Rts\SetRtsMouse.sqs";
+[true, _id + 1, _pos] exec (TzkScripts select 363);
 
 _idcLeftBtn0 = IDC + 16 * 2 + 0
 _idcDownBtn0 = IDC + 16 * 17 + 0
@@ -22,7 +22,7 @@ _idcLeftDownBtn0 = IDC + 16 * 12 + 0
 _cache0 = []; _cache1 = []; _cacheText1 = []; _btnVal = -1
 _level = TzkSelStackIdx
 ; Remove dead units in selected array
-((call preprocessFile "Rts\Ui\CurSelUnitStack.sqf") select _level) call preprocessFile "Player\Rts\RemoveDeadSelectedUnit.sqf"
+((call preprocessFile (TzkScripts select 370)) select _level) call preprocessFile (TzkScripts select 368)
 if (1 == _level) then {_btnVal = TzkSelLv1Btn}; if (2 == _level) then {_btnVal = TzkSelLv2Btn}
 [_idcLeftDownBtn0, _level, _btnVal] call preprocessFile "Rts\Dialog\UpdateRtsDlgType.sqf"
 
@@ -81,18 +81,18 @@ btnValue05 = -1;
 	~0.2
 	goto "Update"
 # Quit
-	[false, _id + 2] exec "Player\Rts\SetRtsMouse.sqs"; exit
+	[false, _id + 2] exec (TzkScripts select 363); exit
 # FirstCtrl
 	; switch to area map rapidly
 	_btnVal = 2 ^ 1
 	call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
 # FunctionalBtns
-	? 1 == _btnFnc: false call preprocessFile "Player\Rts\Selection.sqf"; 0 exec (TzkScripts select 023); closeDialog 0; goto "Quit"
+	? 1 == _btnFnc: false call preprocessFile (TzkScripts select 362); 0 exec (TzkScripts select 023); closeDialog 0; goto "Quit"
 	? 2 == _btnFnc: goto "Unselect"
 	goto "Update"
 	# Unselect
 		; unselect units, and switch to area dialog
-		false call preprocessFile "Player\Rts\Selection.sqf";
+		false call preprocessFile (TzkScripts select 362);
 		_btnVal = 2 ^ 1
 		call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"
 		goto "Quit"
@@ -192,7 +192,7 @@ btnValue05 = -1;
 	? 0 != TzkRtsSelectEnum: goto "Update"
 
 	if (2^8 == _btnVal) then {_level = _level - 1} else {_level = _level + 1}
-	((call preprocessFile "Rts\Ui\CurSelUnitStack.sqf") select _level) call preprocessFile "Player\Rts\RemoveDeadSelectedUnit.sqf"
+	((call preprocessFile (TzkScripts select 370)) select _level) call preprocessFile (TzkScripts select 368)
 	[_idcLeftDownBtn0, _level, _btnVal] call preprocessFile "Rts\Dialog\UpdateRtsDlgType.sqf"
 	goto "Update"
 # RightDownBtn

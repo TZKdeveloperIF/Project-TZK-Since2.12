@@ -5,12 +5,12 @@
 ; ]
 
 _bSvrRtsOrder = _this select 4 select 2
-_units = (if _bSvrRtsOrder then {call preprocessFile "Rts\Ui\CurSelUnitArray.sqf"} else {_this select 4 select 3})
+_units = (if _bSvrRtsOrder then {call preprocessFile (TzkScripts select 371)} else {_this select 4 select 3})
 _c = count _units
 ? _c == 0: goto "Quit"
 
 _executor = (if _bSvrRtsOrder then {"Rts\FrameWork\GenArrayCommand.sqs"} else {"Art\PlayerOrderDistributor.sqs"})
-_posParam = if (_this select 4 select 1) then {[_this select 4 select 0, _units call preprocessFile "Player\Rts\CalcCentral.sqf"]} else {[]}
+_posParam = if (_this select 4 select 1) then {[_this select 4 select 0, _units call preprocessFile (TzkScripts select 360)]} else {[]}
 _orderType = _this select 5
 _mlrsCnt = _this select 6
 

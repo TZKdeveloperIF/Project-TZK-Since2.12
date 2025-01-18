@@ -13,7 +13,7 @@ _idcBg = IDC + 16 * 11 + 0;
 _enum = 0;
 ctrlSetText [_idcBtn + _enum, "RTS"];
 if (_enum != _curDlgEnum) then {
-	if (0 < count (call preprocessFile "Rts\Ui\CurSelUnitArray.sqf")) then {
+	if (0 < count (call preprocessFile (TzkScripts select 371))) then {
 		ctrlShow [_idcBtn + _enum, true];
 	};
 } else {

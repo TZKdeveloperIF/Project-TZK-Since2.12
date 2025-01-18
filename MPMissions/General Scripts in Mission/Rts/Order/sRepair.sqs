@@ -1,13 +1,13 @@
 ; args: [clicked position, health threshold, support range]
-_top = call preprocessFile "Rts\Ui\CurSelUnitArray.sqf"
+_top = call preprocessFile (TzkScripts select 371)
 _c = count _top
 ? _c == 0: goto "Quit"
 
-_pos = _top call preprocessFile "Player\Rts\CalcCentral.sqf"
+_pos = _top call preprocessFile (TzkScripts select 360)
 _this set [count _this, _pos]
 
 [+_top, _this, "hRepair.sqs", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs"
 
 # Quit
-false call preprocessFile "Player\Rts\Area.sqf"
-false call preprocessFile "Player\Rts\Selection.sqf"
+false call preprocessFile (TzkScripts select 361)
+false call preprocessFile (TzkScripts select 362)

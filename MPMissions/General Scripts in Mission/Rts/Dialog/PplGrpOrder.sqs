@@ -12,7 +12,7 @@ mutexDlg = false
 	mutexRtsMouse = true
 	_id = rtsMouseId
 	mutexRtsMouse = false
-[true, _id + 1, _pos] exec "Player\Rts\SetRtsMouse.sqs";
+[true, _id + 1, _pos] exec (TzkScripts select 363);
 
 ; init right-down corner buttons (switching to other rts dialogs)
 ; 0: rts, 1: area, 2: wpco, 3: player order, 4: point
@@ -76,7 +76,7 @@ _selectedOrder = -1
 	? _oldValLo != _lastOrder: ["LastOrder", _lastOrder] call preprocessFile "Cfg\SavePlayerValue.sqf"
 
 	TzkMapRtsFlashingDisabled = false
-	[false, _id + 2] exec "Player\Rts\SetRtsMouse.sqs"; exit
+	[false, _id + 2] exec (TzkScripts select 363); exit
 
 # MidBtn
 	? 0 == _val3: {[_x, _pos] exec (TzkScripts select 095)} forEach _units; closeDialog 0; goto "Quit"

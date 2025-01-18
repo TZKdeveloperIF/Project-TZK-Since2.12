@@ -23,7 +23,7 @@ btnDisbandGroupGunner = false
 	goto "Update"
 
 # BeginDisbandGroup
-	_top = call preprocessFile "Rts\Ui\CurSelUnitArray.sqf"
+	_top = call preprocessFile (TzkScripts select 371)
 	? btnDisbandGroupOK: _selectedUnits = +_top, goto "Finish"
 	? btnDisbandGroupInf: _bDisband = {_this == vehicle _this}
 	? btnDisbandGroupGunner: _bDisband = {_this == vehicle _this || _this != gunner vehicle _this}

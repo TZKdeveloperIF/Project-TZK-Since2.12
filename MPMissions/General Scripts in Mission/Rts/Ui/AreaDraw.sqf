@@ -43,7 +43,7 @@ if (_this) then {
 } else {
 	TzkMapAreaCreated = false;
 
-	0 call preprocessFile "Player\Rts\AreaSetDir.sqf";
+	0 call preprocessFile (TzkScripts select 367);
 
 	_zeroVec = [0, 0];
 	"TzkRtsArea" setMarkerSize _zeroVec;

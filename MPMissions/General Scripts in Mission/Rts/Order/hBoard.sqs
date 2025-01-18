@@ -28,10 +28,10 @@ _si = sides find (side _unit)
 ; under "RtsOrder" folder the "rts id" is restored by "id" variable but not "rtsId"
 _quitCond = {not alive _unit || not (_unit call rtsOrderCheck) || _id != _rtsStatus select 1}
 
-_unit call preprocessFile "Server\AI\RtsOrderBegin.sqf"
+_unit call preprocessFile (TzkScripts select 387)
 ; Initialize The Order Script
 _timeStart = _time; _timeUp = _timeStart; _cycle = 30
-_destPos = [_unit, _clickedPos, _rtsCentralPos, 50] call preprocessFile "Util\RtsDestPos.sqf"
+_destPos = [_unit, _clickedPos, _rtsCentralPos, 50] call preprocessFile (TzkScripts select 386)
 
 ; vehicle types are listed by priority: heli, apc, truck, ship, plane, support apc, repair truck, jeep
 _totalTranspTypes = 8
