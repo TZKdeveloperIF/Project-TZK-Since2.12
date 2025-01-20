@@ -22,7 +22,7 @@ _timeStamp = time; _timeStamp = _timeStamp - _timeStamp % 1
 _selectedUnits = []; _biggerAngle = _this select 1 select 0
 _i = 0; _j = 0
 while {_i < _c} do {_u = _units select _i; if ([_u, "Soldier"] call _func) then {_selectedUnits set [_j, _u]; _j = _j + 1}; _i = _i + 1}
-[_selectedUnits, [_biggerAngle, _speed, _idx, "Soldier", _timeStamp, siPlayer, _posParam, _orderType], "hShootArea.sqs", "Order"] exec _executor
+[_selectedUnits, [_biggerAngle, _speed, _idx, "Soldier", _timeStamp, siPlayer, _posParam, _orderType], "hShootArea", "Order"] exec _executor
 
 # SkipSoldier
 ; Struct
@@ -30,7 +30,7 @@ while {_i < _c} do {_u = _units select _i; if ([_u, "Soldier"] call _func) then 
 _selectedUnits = []; _biggerAngle = _this select 1 select 1
 _i = 0; _j = 0
 while {_i < _c} do {_u = _units select _i; if ([_u, "Struct"] call _func) then {_selectedUnits set [_j, _u]; _j = _j + 1}; _i = _i + 1}
-[_selectedUnits, [_biggerAngle, _speed, _idx, "Struct", _timeStamp, siPlayer, _posParam, _orderType], "hShootArea.sqs", "Order"] exec _executor
+[_selectedUnits, [_biggerAngle, _speed, _idx, "Struct", _timeStamp, siPlayer, _posParam, _orderType], "hShootArea", "Order"] exec _executor
 
 # SkipStruct
 ; Howitzer
@@ -38,7 +38,7 @@ while {_i < _c} do {_u = _units select _i; if ([_u, "Struct"] call _func) then {
 _selectedUnits = []; _biggerAngle = _this select 1 select 2
 _i = 0; _j = 0
 while {_i < _c} do {_u = _units select _i; if ([_u, "Howitzer"] call _func) then {_selectedUnits set [_j, _u]; _j = _j + 1}; _i = _i + 1}
-[_selectedUnits, [_biggerAngle, _speed, _idx, "Howitzer", _timeStamp, siPlayer, _posParam, _orderType], "hShootArea.sqs", "Order"] exec _executor
+[_selectedUnits, [_biggerAngle, _speed, _idx, "Howitzer", _timeStamp, siPlayer, _posParam, _orderType], "hShootArea", "Order"] exec _executor
 
 # SkipHowitzer
 ; MLRS
@@ -46,7 +46,7 @@ while {_i < _c} do {_u = _units select _i; if ([_u, "Howitzer"] call _func) then
 _selectedUnits = []; _biggerAngle = _this select 1 select 3
 _i = 0; _j = 0
 while {_i < _c} do {_u = _units select _i; if ([_u, "MLRS"] call _func) then {_selectedUnits set [_j, _u]; _j = _j + 1}; _i = _i + 1}
-[_selectedUnits, [_biggerAngle, _speed, _idx, "MLRS", _timeStamp, siPlayer, _posParam, _orderType, _mlrsCnt], "hShootArea.sqs", "Order"] exec _executor
+[_selectedUnits, [_biggerAngle, _speed, _idx, "MLRS", _timeStamp, siPlayer, _posParam, _orderType, _mlrsCnt], "hShootArea", "Order"] exec _executor
 
 # SkipMLRS
 ; Tank
@@ -54,7 +54,7 @@ while {_i < _c} do {_u = _units select _i; if ([_u, "MLRS"] call _func) then {_s
 _selectedUnits = []; _biggerAngle = false
 _i = 0; _j = 0
 while {_i < _c} do {_u = _units select _i; if ([_u, "Tank"] call _func) then {_selectedUnits set [_j, _u]; _j = _j + 1}; _i = _i + 1}
-[_selectedUnits, [_biggerAngle, _speed, _idx, "Tank", _timeStamp, siPlayer, _posParam, _orderType], "hShootArea.sqs", "Order"] exec _executor
+[_selectedUnits, [_biggerAngle, _speed, _idx, "Tank", _timeStamp, siPlayer, _posParam, _orderType], "hShootArea", "Order"] exec _executor
 
 # SkipTank
 

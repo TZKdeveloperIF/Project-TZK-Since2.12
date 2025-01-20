@@ -1,10 +1,12 @@
 ; this script is for distributing rts order
 
 ; client call another distributor script
-? not isServer: _this exec "Rts\Framework\Distribute4Player.sqs"; exit
+? not isServer: _this exec "Rts\Framework\Distribute4Ppl.sqs"; exit
 ; non-dedicated server deep copy the parameter to call another distributor script
-? not isNull player: _copy = +_this; _copy set [0, +(_this select 0)]; _copy exec "Rts\Framework\Distribute4Player.sqs"
+? not isNull player: _copy = +_this; _copy set [0, +(_this select 0)]; _copy exec "Rts\Framework\Distribute4Ppl.sqs"
 
+
+; ====================================== distributor for Server AI ======================================
 ; args: [Network IDs[], param: any, script name: string, script folder: string]
 
 _netIds = _this select 0
@@ -25,17 +27,17 @@ exit
 	@ not mutexTzkRtsW
 		mutexTzkRtsW = true
 
-		_this call preprocessFile "Rts\Framework\OrderCtor.sqf"
+		_this call preprocessFile "Rts\Framework\OrderCtorAi.sqf"
 
 		mutexTzkRtsW = false
 	exit
 # Framework
 	_scriptName = _this select 2
-	_scriptPath = format ["%1\%2\%3", "Rts", "Framework", _scriptName];
+	_scriptPath = format ["%1\%2\%3.sqs", "Rts", "Framework", _scriptName];
 	_this exec _scriptPath
 	exit
 # Trigger
 	_scriptName = _this select 2
-	_scriptPath = format ["%1\%2\%3", "Rts", "Trigger", _scriptName];
+	_scriptPath = format ["%1\%2\%3.sqs", "Rts", "Trigger", _scriptName];
 	_this exec _scriptPath
 	exit

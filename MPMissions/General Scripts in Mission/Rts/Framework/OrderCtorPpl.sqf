@@ -11,7 +11,7 @@ _netIds = _this select 0; _param = _this select 1; _scriptName = _this select 2;
 	// [_param select 2, _param select 4, _param select 5, true] call preprocessFile "Art\PreAnalysesArtArea.sqf";
 // };
 
-_scriptPath = format ["%1\%2\%3", "Rts", "Order\Ppl", _scriptName];
+_scriptPath = format ["%1\%2\%3.sqs", "Rts", "Order\Ppl", _scriptName];
 
 {
 	private [{_unit},{_uid},{_id}];

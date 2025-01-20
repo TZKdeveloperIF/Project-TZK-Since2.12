@@ -102,7 +102,7 @@ btnValue05 = -1;
 	; todo: better control mode
 	? 3 == TzkRtsSelectEnum: hint "Only allow Disband on other players' units."; goto "Update"
 
-	? 0 == _btnVal: _pos exec "Rts\Order\sRtsMove.sqs"; closeDialog 0; goto "Quit"
+	? 0 == _btnVal: _pos exec "Rts\Order\sMove.sqs"; closeDialog 0; goto "Quit"
 	? 1 == _btnVal: 0 exec "Rts\Order\sClear.sqs"; closeDialog 0; goto "Quit"
 	? 13 == _btnVal: 0 exec "Rts\Order\sStop.sqs"; closeDialog 0; goto "Quit"
 

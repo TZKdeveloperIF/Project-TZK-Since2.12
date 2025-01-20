@@ -28,6 +28,6 @@ _drivers = []; _drivers resize _j; _j = 0; {
 } forEach _vehicles;
 _drivers resize _j;
 
-[_drivers, [_pos], "ForceMoveLand.sqs", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs";
+[_drivers, [_pos], "ForceMoveLand", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs";
 
 TitleText [localize {TZK_LANG_BRIEF_MOVE_LAND}, "Plain DOWN", 1];
