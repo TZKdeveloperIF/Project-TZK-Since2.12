@@ -1,0 +1,34 @@
+; args: [Network IDs[], info]
+_netIds = _this select 0; _param = _this select 1
+_c = count _netIds
+? 0 == _c: exit
+
+_units = []; _units resize _c
+_i = 0
+{_units set [_i, UnitById _x], _i = _i + 1} forEach _netIds
+
+; remove invalid units according to param
+; 0 - force kill player crews
+? 0 == _param: goto "ProcPplUnitsDone"
+	_inPplVehicle = { vehicle _this == vehicle player }
+	[_units, _inPplVehicle] call preprocessFile "Algo\arrayEraseIf.sqf"
+	_c = count _units
+# ProcPplUnitsDone
+
+_i = 0
+# kill
+	_unit = _units select _i
+	_unit setDamage 1
+
+	_i = _i + 1
+	? _i < _c: goto "kill"
+
+~ 2
+
+_i = 0
+# remove
+	_unit = _units select _i
+	? _unit != leader group _unit: deleteVehicle _unit
+
+	_i = _i + 1
+	? _i < _c: goto "remove"
