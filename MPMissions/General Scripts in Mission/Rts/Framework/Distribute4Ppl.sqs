@@ -32,6 +32,9 @@ exit
 # Trigger
 	; only allow "disband" in RTS trigger on ordering player group units
 	? _scriptName != "hDisband": exit
+	; scripts that need dispatch to another script different from Server AI
+	_needDispatch = ["hDisband"]
+	? _scriptName in _needDispatch: _scriptName = _scriptName + "Ppl"
 	_scriptPath = format ["%1\%2\%3.sqs", "Rts", "Trigger", _scriptName];
 	_this exec _scriptPath
 	exit
