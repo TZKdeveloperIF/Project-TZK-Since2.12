@@ -6,7 +6,7 @@ _c = count _top
 _pos = _top call preprocessFile (TzkScripts select 360)
 
 _selectedUnits = +_top
-[_selectedUnits, [_this, _pos], "hMove.sqs", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs"
+[_selectedUnits, [_this, _pos], "hMove", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs"
 
 ; debug info
 ? "IF" == name player: showDebug [format ["Network ID: %1", (_selectedUnits select 0) call funcGenNetIdStr], 5000]

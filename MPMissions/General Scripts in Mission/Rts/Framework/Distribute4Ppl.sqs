@@ -23,15 +23,15 @@ exit
 
 # Order
 	; Orders in white list can be executed on ordering player group units
-	_whiteList = ["ForceMoveLand.sqs", "ForceMoveShip.sqs"];
+	_whiteList = ["ForceMoveLand", "ForceMoveShip"];
 	? _whiteList find _scriptName == -1: exit
 
 		; todo: does player rts order require mutex?
-		_this call preprocessFile "Rts\Framework\PplOrderCtor.sqf"
+		_this call preprocessFile "Rts\Framework\OrderCtorPpl.sqf"
 	exit
 # Trigger
 	; only allow "disband" in RTS trigger on ordering player group units
-	? _scriptName != "hDisband.sqs": exit
-	_scriptPath = format ["%1\%2\%3", "Rts", "Trigger", _scriptName];
+	? _scriptName != "hDisband": exit
+	_scriptPath = format ["%1\%2\%3.sqs", "Rts", "Trigger", _scriptName];
 	_this exec _scriptPath
 	exit

@@ -1,4 +1,4 @@
-; args: [clicked position, transport type info]
+; args: [clicked position, defence type info]
 _top = call preprocessFile (TzkScripts select 371)
 _c = count _top
 ? _c == 0: goto "Quit"
@@ -18,9 +18,9 @@ _selectedUnits resize _j
 
 _pos = _top call preprocessFile (TzkScripts select 360)
 
-_transpTypeInfo = _this select 1
+_defenceTypeInfo = _this select 1
 
-[_selectedUnits, [_this select 0, _pos, _transpTypeInfo], "hBoard.sqs", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs"
+[_selectedUnits, [_this select 0, _pos, _defenceTypeInfo], "hOccupy", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs"
 
 # Quit
 false call preprocessFile (TzkScripts select 361)

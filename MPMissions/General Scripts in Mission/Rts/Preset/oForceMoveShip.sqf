@@ -44,7 +44,7 @@ if _legal then {
 	} forEach _vehicles;
 	_drivers resize _j;
 
-	[_drivers, [_pos], "ForceMoveShip.sqs", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs";
+	[_drivers, [_pos], "ForceMoveShip", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs";
 
 	TitleText [localize {TZK_LANG_BRIEF_MOVE_SHIP}, "Plain DOWN", 1];
 };

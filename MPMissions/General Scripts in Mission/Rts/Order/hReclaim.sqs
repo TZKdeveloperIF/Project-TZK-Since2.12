@@ -111,7 +111,7 @@ _i = 0, _c = _typeCnt, _transpTypes = [], _transpTypes resize _c
 		? not alive _target: goto "SearchTarget"
 
 		; stop those vehicle that has driver and selected by this command
-		? not isNull driver _target: [[driver _target], 0, "hStop.sqs", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs"
+		? not isNull driver _target: [[driver _target], 0, "hStop", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs"
 
 		_availableSeats resize 0
 		{if (1 == [_target, _x] call funcVehParamHasSeat) then {_availableSeats set [count _availableSeats, _x]}} forEach _seats
