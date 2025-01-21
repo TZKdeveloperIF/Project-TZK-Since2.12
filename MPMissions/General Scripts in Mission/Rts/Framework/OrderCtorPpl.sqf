@@ -14,7 +14,7 @@ _netIds = _this select 0; _param = _this select 1; _scriptName = _this select 2;
 	// [_param select 2, _param select 4, _param select 5, true] call preprocessFile "Art\PreAnalysesArtArea.sqf";
 // };
 
-_needDispatch = ["hForceMoveLand","hForceMoveShip","hMove"];
+_needDispatch = ["hForceMoveLand","hForceMoveShip","hMove","hStop","hLandHeli","hCrossBridge"];
 _scriptPath = format ["%1\%2\%3.sqs", "Rts", "Order", 
 	if (_scriptName in _needDispatch) then {_scriptName + "Ppl"} else {_scriptName}
 ];

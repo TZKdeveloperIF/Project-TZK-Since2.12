@@ -83,7 +83,7 @@ _selectedOrder = -1
 	? 1 == _val3: {[_x, _pos] exec "Player\Order\Support ForceRearm.sqs"} forEach _units; closeDialog 0; goto "Quit"
 	? 2 == _val3: [_units, _pos] exec (TzkScripts select 271); closeDialog 0; goto "Quit"
 
-	? 4 == _val3: [true, _units] exec "Player\Order\Clear.sqs"; closeDialog 0; goto "Quit"
+	? 4 == _val3: [true, _units] exec "Rts\Order\fakeClear.sqs"; closeDialog 0; goto "Quit"
 	? 5 == _val3: _units exec "Player\Disband.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 # LeftDownBtn
@@ -149,8 +149,8 @@ _selectedOrder = -1
 		goto "Update"
 # LeftBtn
 	? 0 == _val0: {[_x, _pos] exec "Rts\Order\fakeMove.sqs"} forEach _units; closeDialog 0; goto "Quit"
-	? 1 == _val0: [true, _units] exec "Player\Order\Clear.sqs"; closeDialog 0; goto "Quit"
-	? 13 == _val0: {_x exec "Player\Order\Stop.sqs"} forEach _units; closeDialog 0; goto "Quit"
+	? 1 == _val0: [true, _units] exec "Rts\Order\fakeClear.sqs"; closeDialog 0; goto "Quit"
+	? 13 == _val0: {_x exec "Rts\Order\fakeStop.sqs"} forEach _units; closeDialog 0; goto "Quit"
 
 	? 2 == _val0: [_units, _pos] exec "Player\Order\PreShootArea.sqs"; closeDialog 0; goto "Quit"
 	? 4 == _val0: [false, _units] exec "Rts\SubMenu\SwitchArtMag.sqs"; closeDialog 0; goto "Quit"
