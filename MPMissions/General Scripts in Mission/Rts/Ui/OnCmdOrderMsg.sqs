@@ -1,0 +1,21 @@
+; args: [_units, _param, _scriptName]
+_units = _this select 0
+_param = _this select 1
+_scriptName = _this select 2
+
+_msg = ""
+
+? "hForceMoveLand" == _scriptName: _msg = "Force Move Land", goto "display"
+? "hForceMoveShip" == _scriptName: _msg = "Force Move Ship", goto "display"
+? "hMove" == _scriptName: goto "OrderMove"
+exit
+
+# OrderMove
+	_clickedPos = _param select 0
+	_msg = format [{%1 %2 %3}, localize {TZK_LANG_MOVE}, localize {TZK_LANG_TO}, _clickedPos call funcCalcMapPos]
+	goto "display"
+
+exit
+
+# display
+	[_units, _msg] call funcGenPplRtsMsg

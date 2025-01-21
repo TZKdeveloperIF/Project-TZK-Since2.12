@@ -1,0 +1,25 @@
+; args: [unit, pos (can be reference), [uid, id]]
+
+_unit = _this select 0
+_pos = _this select 1
+_rtsOrderIdInfo = _this select 2
+_uid = _rtsOrderIdInfo select 0; _id = _rtsOrderIdInfo select 1
+
+_quitCond = {not alive _unit || call orderCheck}
+
+_unit groupchat "Roger, moving to position."
+
+_timeMove = - 1, _oldX = _pos select 0, _oldY = _pos select 1
+# loop
+	_newX = _pos select 0, _newY = _pos select 1
+	? _newX < 0 || _newY < 0: _unit groupChat "WP not defined, order abort.", goto "Quit"
+	? _newX != _oldX || _newY != _oldY: _timeMove = _time - 1
+
+	? _time > _timeMove: [_unit, _pos] exec "\TZK_Scripts_4_0_4\Player\MovePos.sqs", _timeMove = _time + 30
+	~ 5
+	? call _quitCond: exit
+	? _time > 7200: _unit groupChat "Having been running for 2 hours. Unable to reach the destination. Order Abort.", goto "Quit"
+	? ([getPos _unit, _pos] call funcDistH) > 20: goto "loop"
+# Quit
+	doStop _unit
+exit

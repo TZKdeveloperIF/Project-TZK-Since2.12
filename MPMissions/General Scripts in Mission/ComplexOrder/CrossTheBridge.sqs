@@ -130,7 +130,7 @@ _curVehPosAsl = getPosASL _vehicle; _curVehPosAsl set [2, _suspendH + (_curVehPo
 
 ; move to the end point
 	? _forServer: [_unit, [_vehEndPos, getPosASL vehicle _unit], _rtsStatus, _id] exec "Rts\Order\hMove.sqs"
-	? not _forServer: [_unit, _vehEndPos] exec "\TZK_Scripts_4_0_4\Player\Order\MovePos.sqs"
+	? not _forServer: [_unit, _vehEndPos, [_uid, id]] exec "OrderSimple\MovePosPpl.sqs"
 	goto "Quit"
 
 ; End Of File
