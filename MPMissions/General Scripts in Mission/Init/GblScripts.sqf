@@ -107,7 +107,7 @@ _f = {
 "Network\sEjectOneCargo.sqs" call _f; // 079
 "Network\sEjectAiCargo.sqs" call _f; // 080
 
-"\TZK_Scripts_4_0_4\Player\Order\MoveWP.sqs" call _f; // 081
+"Rts\Order\fakeMoveWP.sqs" call _f; // 081
 "\TZK_Scripts_4_0_4\Player\Order\PatrolPos.sqs" call _f; // 082
 "\TZK_Scripts_4_0_4\Player\Order\PatrolWP.sqs" call _f; // 083
 "Player\Order\PatrolWPs.sqs" call _f; // 084

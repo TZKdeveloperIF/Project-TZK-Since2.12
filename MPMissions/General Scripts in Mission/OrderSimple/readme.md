@@ -1,0 +1,2 @@
+# Introduction
+This folder contains scripts for simple AI order fits both AI group and player group. The script should accept parameters abstract enough. The best parameters should support script's working while hide all details unnecessary to the order.  

@@ -148,7 +148,7 @@ _selectedOrder = -1
 		~ 0.1
 		goto "Update"
 # LeftBtn
-	? 0 == _val0: {[_x, _pos] exec "\TZK_Scripts_4_0_4\Player\Order\MovePos.sqs"} forEach _units; closeDialog 0; goto "Quit"
+	? 0 == _val0: {[_x, _pos] exec "Rts\Order\fakeMove.sqs"} forEach _units; closeDialog 0; goto "Quit"
 	? 1 == _val0: [true, _units] exec "Player\Order\Clear.sqs"; closeDialog 0; goto "Quit"
 	? 13 == _val0: {_x exec "Player\Order\Stop.sqs"} forEach _units; closeDialog 0; goto "Quit"
 
