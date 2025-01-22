@@ -48,3 +48,8 @@ if _legal then {
 
 	TitleText [localize {TZK_LANG_BRIEF_MOVE_SHIP}, "Plain DOWN", 1];
 };
+
+if _bRts then {
+	false call preprocessFile (TzkScripts select 361);
+	false call preprocessFile (TzkScripts select 362);
+};

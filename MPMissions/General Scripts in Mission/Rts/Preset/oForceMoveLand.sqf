@@ -30,4 +30,9 @@ _drivers resize _j;
 
 [_drivers, [_pos], "hForceMoveLand", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs";
 
+if _bRts then {
+	false call preprocessFile (TzkScripts select 361);
+	false call preprocessFile (TzkScripts select 362);
+};
+
 TitleText [localize {TZK_LANG_BRIEF_MOVE_LAND}, "Plain DOWN", 1];
