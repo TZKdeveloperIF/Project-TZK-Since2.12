@@ -168,7 +168,7 @@ _selectedOrder = -1
 
 	goto "Update"
 # RightDownBtn
-	? _val4 > 0: call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
+	? _val4 > 0: [_val4, _this] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
 	goto "Update"
 
 # SendOrder
