@@ -1,0 +1,14 @@
+; args: none
+
+~ 0.1
+[player, false, 0] exec (TzkScripts select 019)
+
+~ 1
+@ !dialog
+
+? groupPlayer != groupCommander select siPlayer: goto "SkipInitialCmdRule"
+	~ 1
+	0 exec "RuleCmd\Dialog.sqs"
+	~ 1
+	@ !dialog
+# SkipInitialCmdRule
