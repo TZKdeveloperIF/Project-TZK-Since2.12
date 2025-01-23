@@ -1,5 +1,5 @@
 ; args: [clicked position, reclaim type info, reclaim strategy]
-_top = call preprocessFile "Rts\Ui\CurSelUnitArray.sqf"
+_top = call preprocessFile (TzkScripts select 371)
 _c = count _top
 ? _c == 0: goto "Quit"
 
@@ -16,10 +16,10 @@ _i = 0, _j = 0, _selectedUnits = []
 	? _i < _c: goto "loop"
 _selectedUnits resize _j
 
-_pos = _selectedUnits call preprocessFile "Player\Rts\CalcCentral.sqf"
+_pos = _selectedUnits call preprocessFile (TzkScripts select 360)
 
-[_selectedUnits, [_this select 0, _pos, _this select 1, _this select 2], "hReclaim.sqs", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs"
+[_selectedUnits, [_this select 0, _pos, _this select 1, _this select 2], "hReclaim", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs"
 
 # Quit
-false call preprocessFile "Player\Rts\Area.sqf"
-false call preprocessFile "Player\Rts\Selection.sqf"
+false call preprocessFile (TzkScripts select 361)
+false call preprocessFile (TzkScripts select 362)

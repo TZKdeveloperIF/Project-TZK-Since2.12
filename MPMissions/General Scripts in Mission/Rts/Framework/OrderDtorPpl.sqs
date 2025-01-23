@@ -1,0 +1,13 @@
+; args: [Network IDs[], [si, isNet: bool (optional)]]
+_netIds = _this select 0; _params = _this select 1
+_si = _params select 0; _isNet = (if (count _params > 1) then {_params select 1} else {true})
+_this = 0; _params = 0
+_c = count _netIds
+? 0 == _c: exit
+
+_units = []; _units resize _c
+_i = 0
+{_units set [_i, UnitById _x], _i = _i + 1} forEach _netIds
+[_units, localize {TZK_LANG_ORDER} + localize {TZK_LANG_CLEAR}] call funcGenPplRtsMsg
+
+[true, _units] exec "Rts\Order\fakeClear.sqs"

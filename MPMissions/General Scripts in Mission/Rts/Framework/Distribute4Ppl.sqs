@@ -1,0 +1,57 @@
+; this script is for player to process RTS Order
+; In the beginning RTS order will only be executed on server for AI groups. However if wish commander
+; to order other players units, it's necessary to make player client process RTS requests too
+; todo: this is a trial. Not the stable final resolution
+
+; args: [Network IDs[], param: any, script name: string, script folder: string]
+
+_netIds = _this select 0
+_isntMyGroupMember = {group UnitById _this != groupPlayer}
+[_netIds, _isntMyGroupMember] call preprocessFile "Algo\arrayEraseIf.sqf"
+_c = count _netIds
+? 0 == _c: exit
+
+; todo: make sure unified all RTS commands parameters. AI-RTS-order param should equal to or can be converted to player-order param. Kinda "decorate"
+_scriptName = _this select 2
+_scriptFolder = _this select 3
+
+? "Order" == _scriptFolder: goto "Order"
+? "Framework" == _scriptFolder: goto "Framework"
+? "Trigger" == _scriptFolder: goto "Trigger"
+
+("Unexpected rts script folder for " + (_this select 2)) call fDebugLog
+exit
+
+# Order
+	_whiteList = ["hForceMoveLand","hForceMoveShip","hMove","hStop","hLandHeli","hCrossBridge"];
+	? _whiteList find _scriptName == -1: exit
+
+		; todo: does player rts order require mutex?
+		_this call preprocessFile "Rts\Framework\OrderCtorPpl.sqf"
+	exit
+# Framework
+	; Orders in white list can be executed on ordering player group units
+	_whiteList = ["OrderDtor"];
+	? _whiteList find _scriptName == -1: exit
+	; scripts that need dispatch to another script different from Server AI
+	_needDispatch = ["OrderDtor"]
+	? _scriptName in _needDispatch: _scriptName = _scriptName + "Ppl"
+	_scriptPath = format ["%1\%2\%3.sqs", "Rts", "Framework", _scriptName];
+	_this exec _scriptPath
+	exit
+# Trigger
+	_whiteList = ["hDisband","hEject", "hSeat","hWatch", "hSpoof","hSetFlightAltitude","hAfterBurner","hTransportTurn","hTankSwitchMainGun","hDeploy","hArtMag"];
+	? _whiteList find _scriptName == -1: exit
+
+	_inPplVehicle = { vehicle UnitById _this == vehicle player };
+	; _netIds is a reference
+	_noSkipPlayer = ["hDisband","hTransportTurn"]
+	? not (_scriptName in _noSkipPlayer): [_netIds, _inPplVehicle] call preprocessFile "Algo\arrayEraseIf.sqf";
+
+	[_netIds, _this select 1, _scriptName] exec "Rts\Ui\OnCmdTriggerMsg.sqs"
+
+	; scripts that need dispatch to another script different from Server AI
+	_needDispatch = ["hDisband"]
+	_scriptPath = format ["%1\%2\%3.sqs", "Rts", "Trigger", if (_scriptName in _needDispatch) then {_scriptName + "Ppl"} else {_scriptName}];
+	_this exec _scriptPath
+	exit

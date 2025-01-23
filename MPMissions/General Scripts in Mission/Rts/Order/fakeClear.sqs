@@ -1,0 +1,29 @@
+; args: [to units: bool, units or unit]
+
+; script designer should guarantee the external entrance of current script pass UNITS as parameter
+? (_this select 0): [_this select 1, false] call preprocessFile "Art\SetAutoShootVehicles.sqf"
+
+? not (_this select 0): goto "CommandSingleUnit"
+
+_units = _this select 1
+{[false, _x] exec "Rts\Order\fakeClear.sqs"} forEach _units
+
+_ids = _units call funcGetUids
+
+? 1 == count _ids: (_units select 0) groupChat "Roger. Order cleared and stopped. Waiting for new one."
+? 1 < count _ids: player groupchat format ["Units %1 order cleared and stopped. Waiting for new one.", _ids]
+
+exit
+
+# CommandSingleUnit
+
+_unit = _this select 1
+
+? !(alive _unit): exit
+
+_uid = [_unit, siPlayer, giPlayer] call funcCalcUID
+? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
+_id = (playerOrderID select _uid) + 1; [_uid, _id] exec "\TZK_Scripts_4_0_4\Player\Order\New.sqs"
+doStop _unit
+
+? "Helicopter" countType [vehicle _unit] > 0: _unit exec "Player\LandHeliCancel.sqs"

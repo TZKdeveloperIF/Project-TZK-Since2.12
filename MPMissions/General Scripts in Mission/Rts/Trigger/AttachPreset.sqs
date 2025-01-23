@@ -3,7 +3,7 @@ _slot = _this select 0
 _bRts = true
 ? count _this > 1: _bRts = false
 
-_units = (if _bRts then {call preprocessFile "Rts\Ui\CurSelUnitArray.sqf"} else {_this select 1})
+_units = (if _bRts then {call preprocessFile (TzkScripts select 371)} else {_this select 1})
 _vehicles = _units call preprocessFile "Attach\LegalVehicles.sqf"
 
 ? count _vehicles == 0: TitleText ["No tugger selected. Order not executed.", "Plain DOWN", 0.25]; exit

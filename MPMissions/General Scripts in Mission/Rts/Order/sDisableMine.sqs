@@ -1,5 +1,5 @@
 ; args: mine area index
-_top = call preprocessFile "Rts\Ui\CurSelUnitArray.sqf"
+_top = call preprocessFile (TzkScripts select 371)
 _c = count _top
 ? _c == 0: goto "Quit"
 
@@ -26,7 +26,8 @@ _i = 0, _j = 0, _selectedUnits = []
 	? _i < _c: goto "loop"
 _selectedUnits resize _j
 
-[_selectedUnits, _this, "hDisableMine.sqs", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs"
+[_selectedUnits, _this, "hDisableMine", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs"
 
 # Quit
-	exit
+false call preprocessFile (TzkScripts select 361)
+false call preprocessFile (TzkScripts select 362)

@@ -6,7 +6,7 @@ private [{_pos}, {_bRts}, {_units}, {_legal}
 
 _pos = _this select 0;
 _bRts = count _this == 1;
-_units = (if _bRts then {call preprocessFile "Rts\Ui\CurSelUnitArray.sqf"} else {_this select 1});
+_units = (if _bRts then {call preprocessFile (TzkScripts select 371)} else {_this select 1});
 _legal = true;
 
 if _legal then {if not ([_pos, 20] call funcPosNearSea) then {
@@ -44,7 +44,12 @@ if _legal then {
 	} forEach _vehicles;
 	_drivers resize _j;
 
-	[_drivers, [_pos], "ForceMoveShip.sqs", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs";
+	[_drivers, [_pos], "hForceMoveShip", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs";
 
 	TitleText [localize {TZK_LANG_BRIEF_MOVE_SHIP}, "Plain DOWN", 1];
+};
+
+if _bRts then {
+	false call preprocessFile (TzkScripts select 361);
+	false call preprocessFile (TzkScripts select 362);
 };

@@ -1,16 +1,16 @@
-? not isServer: exit
-
 ; args: [Network IDs[], state]
 _netIds = _this select 0; _state = _this select 1; _this = 0
 _c = count _netIds
 ? 0 == _c: exit
 
-_array = []
-_i = 0
+_array = [], _array resize _c
+_i = 0, _j = 0
 # loop
-	_array set [_i, vehicle UnitById(_netIds select _i)]
+	_vehicle = vehicle UnitById(_netIds select _i)
+	? -1 == _array find _vehicle: _array set [_j, _vehicle], _j = _j + 1
 
 	_i = _i + 1
 	? _i < _c: goto "loop"
+_array resize _j
 
-[_array, _state] exec "Common\TransportSwitch.sqs"
+{[_x, _state] exec "Common\Msg\sTransportSwitch.sqs"} forEach _array
