@@ -1,0 +1,10 @@
+? not alive (mhq select siPlayer): hint "MHQ destroyed.", exit
+
+? not isCommander: hint "Only commander is allowed to do this."; exit
+
+? not isServer: publicExec format ["%1 exec (TzkScripts select 385)", siPlayer];
+? isServer: siPlayer exec (TzkScripts select 385);
+
+exit
+? not isServer: publicExec format ["%1 exec {Rts\Building\hWallMhq.sqs}", siPlayer];
+? isServer: siPlayer exec {Rts\Building\hWallMhq.sqs};

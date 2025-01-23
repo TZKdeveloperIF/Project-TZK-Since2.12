@@ -1,0 +1,65 @@
+; args: [_netIds, _param, _scriptName]
+_netIds = _this select 0
+_param = _this select 1
+_scriptName = _this select 2
+
+; _netIds should be read-only. DO NOT modify it
+_units = []; _units resize count _netIds; _i = 0
+{_units set [_i, UnitById _x], _i = _i + 1} forEach _netIds
+
+_msg = ""
+
+? "hEject" == _scriptName: _msg = localize {TZK_LANG_EJECT}, goto "display"
+? "hSeat" == _scriptName: goto "TriggerSwitchSeat"
+? "hWatch" == _scriptName: goto "TriggerWatch"
+? "hSpoof" == _scriptName: goto "TriggerSpoof"
+? "hSetFlightAltitude" == _scriptName: goto "TriggerFlightAlt"
+? "hAfterBurner" == _scriptName: goto "TriggerAfterBurner"
+? "hTransportTurn" == _scriptName: goto "TriggerTransportTurn"
+? "hTankSwitchMainGun" == _scriptName: goto "TriggerSwitchTankMainGun"
+? "hDeploy" == _scriptName: goto "TriggerDeploy"
+? "hArtMag" == _scriptName: goto "TriggerSwitchArtMag"
+
+exit
+
+# TriggerSwitchSeat
+	_seat = ["Driver", "Gunner", "Cargo"] select _param
+	_msg = format [{%1 %2 to "%3"}, localize {TZK_LANG_SWITCH}, localize {TZK_LANG_SEAT}, _seat]
+	goto "display"
+# TriggerWatch
+	_clickedPos = _param
+	_msg = format [{%1 %2}, localize {TZK_LANG_WATCH}, _clickedPos call funcCalcMapPos]
+	goto "display"
+# TriggerSpoof
+	_state = _param select 0
+	_msg = format [{%1 %2 "%3"}, localize {TZK_LANG_SHORT_HELICOPTER}, localize {TZK_LANG_SPOOF}, ["OFF","ON"] select _state]
+	goto "display"
+# TriggerFlightAlt
+	_alt = _param
+	_msg = format [{%1 %2 %3 m}, localize {TZK_LANG_AIRCRAFT}, localize {TZK_LANG_HEIGHT}, _alt]
+	goto "display"
+# TriggerAfterBurner
+	_state = _param select 0
+	_msg = format [{%1 "%2"}, localize {TZK_LANG_UPG_PLANE_AB}, ["OFF","ON"] select _state]
+	goto "display"
+# TriggerTransportTurn
+	_state = _param
+	_msg = format [{%1 %2 "%3"}, localize {TZK_LANG_SHORT_TRANSPORT}, localize {TZK_LANG_SWITCH}, ["OFF","ON"] select _state]
+	goto "display"
+# TriggerSwitchTankMainGun
+	_state = _param select 0
+	_msg = format [{%1 %2 to "%3"}, localize {TZK_LANG_TANK}, localize {TZK_LANG_SWITCH}, localize ([{TZK_LANG_HEAT}, {TZK_LANG_SABOT}] select _state)]
+	goto "display"
+# TriggerDeploy
+	_state = _param
+	_msg = format [{%1 %2 %3}, localize {TZK_LANG_SHORT_ARTILLERY}, localize {TZK_LANG_VEHICLE}, localize ([{TZK_LANG_UNDEPLOY}, {TZK_LANG_DEPLOY}] select _state)]
+	goto "display"
+# TriggerSwitchArtMag
+	_speedIdx = _param select 0, _speed = ArtilleryMagazineSpeedList select _speedIdx
+	_msg = format [{%1 %2 %3 m/s}, localize {TZK_LANG_SHORT_ARTILLERY}, localize {TZK_LANG_SWITCH}, _speed]
+	goto "display"
+
+exit
+
+# display
+	[_units, _msg] call funcGenPplRtsMsg

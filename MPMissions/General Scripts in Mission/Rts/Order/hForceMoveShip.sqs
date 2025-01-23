@@ -1,0 +1,24 @@
+; args: [unit, [destination], 
+; 	rts object status (array-reference), rts server id]
+_unit = _this select 0
+_destination = _this select 1 select 0
+_rtsStatus = _this select 2
+_id = _this select 3
+_this = 0
+
+; rts busy Check
+; not realized yet
+
+; rts order stack design
+; not realized yet
+
+_si = sides find (side _unit)
+? _si != si0 && _si != si1: exit
+
+; under "RtsOrder" folder the "rts id" is restored by "id" variable but not "rtsId"
+_quitCond = {not alive _unit || not (_unit call rtsOrderCheck) || _id != _rtsStatus select 1}
+
+_unit call preprocessFile (TzkScripts select 387)
+
+[[_unit, _destination, _si], [true, _quitCond], [_rtsStatus, _id]] exec "ComplexOrder\ForceMoveShip.sqs"
+exit

@@ -1,11 +1,11 @@
 ; args: clicked position
-_top = call preprocessFile "Rts\Ui\CurSelUnitArray.sqf"
+_top = call preprocessFile (TzkScripts select 371)
 _c = count _top
 ? _c == 0: goto "Quit"
 
 _selectedUnits = +_top
-[_selectedUnits, 0, "hStop.sqs", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs"
+[_selectedUnits, 0, "hStop", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs"
 
 # Quit
-false call preprocessFile "Player\Rts\Area.sqf"
-false call preprocessFile "Player\Rts\Selection.sqf"
+false call preprocessFile (TzkScripts select 361)
+false call preprocessFile (TzkScripts select 362)

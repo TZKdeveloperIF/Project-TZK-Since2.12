@@ -107,7 +107,7 @@ _f = {
 "Network\sEjectOneCargo.sqs" call _f; // 079
 "Network\sEjectAiCargo.sqs" call _f; // 080
 
-"\TZK_Scripts_4_0_4\Player\Order\MoveWP.sqs" call _f; // 081
+"Rts\Order\fakeMoveWP.sqs" call _f; // 081
 "\TZK_Scripts_4_0_4\Player\Order\PatrolPos.sqs" call _f; // 082
 "\TZK_Scripts_4_0_4\Player\Order\PatrolWP.sqs" call _f; // 083
 "Player\Order\PatrolWPs.sqs" call _f; // 084
@@ -246,7 +246,7 @@ _f = {
 "\TZK_Patch4_4_0_6\s\Radio\update_veh_parachute.sqf" call _f; // 198
 "Player\Radio\Graduation.sqs" call _f; // 199
 "\TZK_Patch4_4_0_6\s\Radio\list_spec_return.sqs" call _f; // 200
-"Player\Rts\SwitchMapMode.sqs" call _f; // 201
+"Rts\Ui\SwitchMapMode.sqs" call _f; // 201
 "\TZK_Scripts_4_0_4\Player\Radio\RadioList_Struct_ResetUp.sqs" call _f; // 202
 "\TZK_Patch4_4_0_6\s\Radio\update_struct_mortar.sqf" call _f; // 203
 "\TZK_Patch4_4_0_6\s\Radio\update_veh_howitzer.sqs" call _f; // 204
@@ -418,9 +418,60 @@ _f = {
 "\TZK_Patch4_4_0_6\s\InfoCli\tgLoss.sqs" call _f; // 350
 "\TZK_Patch4_4_0_6\s\InfoCli\tgSpawn.sqs" call _f; // 351
 
+"352" call _f; // 352
+"353" call _f; // 353
+"354" call _f; // 354
+"355" call _f; // 355
+"356" call _f; // 356
+"357" call _f; // 357
+"358" call _f; // 358
+"359" call _f; // 359
+
+"Rts\Util\CalcCentral.sqf" call _f; // 360
+"Rts\Ui\AreaDraw.sqf" call _f; // 361
+"Rts\Ui\Selection.sqf" call _f; // 362
+"Rts\Ui\SetRtsMouse.sqs" call _f; // 363
+"Rts\Ui\ResetGuideLines.sqf" call _f; // 364
+"Rts\Ui\SetGuideLines.sqf" call _f; // 365
+"Rts\Ui\MapCtrl.sqf" call _f; // 366
+"Rts\Ui\AreaSetDir.sqf" call _f; // 367
+"Rts\Ui\RemoveDeadSelectedUnit.sqf" call _f; // 368
+"Rts\Ui\HandleDialogAzimut.sqf" call _f; // 369
+"Rts\Ui\CurSelUnitStack.sqf" call _f; // 370
+"Rts\Ui\CurSelUnitArray.sqf" call _f; // 371
+"372" call _f; // 372
+"Rts\Build\fCanBuildObstruct.sqf" call _f; // 373
+"Rts\Build\procObstruct.sqs" call _f; // 374
+"Rts\Build\fDeployObstruct.sqf" call _f; // 375
+"Rts\Build\procAreaRoof.sqs" call _f; // 376
+"Rts\Build\fDeployAreaRoof.sqf" call _f; // 377
+"Rts\Build\fCanWallMhq.sqf" call _f; // 378
+"Rts\Build\sDeployBaseMg.sqs" call _f; // 379
+"Rts\Build\fDeployBaseMg.sqf" call _f; // 380
+"Rts\Build\sWallMhq.sqs" call _f; // 381
+"Rts\Build\sBaGuaZhen.sqs" call _f; // 382
+"Rts\Build\hBaGuaZhen.sqs" call _f; // 383
+"Rts\Build\hDeployBaseMg.sqf" call _f; // 384
+"Rts\Build\hWallMhq.sqs" call _f; // 385
+"Rts\Util\DestPos.sqf" call _f; // 386
+"Rts\AI\EnterOrder.sqf" call _f; // 387
+"Rts\AI\SetStatus.sqf" call _f; // 388
+"389" call _f; // 389
+"Rts\AI\ClearStatus.sqf" call _f; // 390
+"391" call _f; // 391
+"392" call _f; // 392
+"393" call _f; // 393
+"394" call _f; // 394
+"395" call _f; // 395
+"396" call _f; // 396
+"397" call _f; // 397
+"398" call _f; // 398
+"399" call _f; // 399
+
+"Rts\Marker\unitFlash.sqf" call _f; // 400
 
 // script count check. Check index with last literal value
-if (_i != 351 + 1) then {
+if (_i != 400 + 1) then {
 	player globalChat "Script count mismatch!";
 };
 

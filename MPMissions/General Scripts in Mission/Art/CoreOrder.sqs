@@ -100,7 +100,7 @@ _distributionRadius = (if _isInfantry then {20} else {50})
 	? _isStruct: goto "CheckDistance"
 	; 如果没有指定 pre-move info, 也即"就地炮击", 则设置一个小的散布半径, 如此一来, 第一次rearm完毕后有较大概率单位能回到原处 (除非补给单位贴着它, 这属于找死, 不予处理)
 	? 0 == count _preMoveInfo: _preMoveInfo = [getPos _vehicle, getPos _vehicle], _distributionRadius = (if _isInfantry then {4} else {10}), goto "CheckDistance"
-	_startPos = [_unit, _preMoveInfo select 0, _preMoveInfo select 1, _distributionRadius] call preprocessFile "Util\RtsDestPos.sqf"
+	_startPos = [_unit, _preMoveInfo select 0, _preMoveInfo select 1, _distributionRadius] call preprocessFile (TzkScripts select 386)
 
 	_vehicle exec "Art\Undeploy.sqs"
 	_unit doMove _startPos; _unit setUnitPos "UP"

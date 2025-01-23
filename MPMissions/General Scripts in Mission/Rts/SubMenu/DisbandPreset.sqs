@@ -10,30 +10,36 @@ btnDisbandGroupExit = false
 btnDisbandGroupInf = false
 btnDisbandGroupGunner = false
 
+_info = -1
+
 # Update
 	? call dlgUpdated: exit
-	? !(alive player) : closeDialog 0; exit
+	? !(alive player): closeDialog 0; exit
 
-	? btnDisbandGroupOK : closeDialog 0; goto "BeginDisbandGroup"
-	? btnDisbandGroupExit : btnDisbandGroupExit  = false; closeDialog 0; exit
-	? btnDisbandGroupInf : closeDialog 0; goto "BeginDisbandGroup"
-	? btnDisbandGroupGunner : closeDialog 0; goto "BeginDisbandGroup"
+	? btnDisbandGroupLeader: _info = 0, goto "BeginDisbandGroup"
+	? btnDisbandGroupOK || btnDisbandGroupInf || btnDisbandGroupGunner: goto "BeginDisbandGroup"
+	? btnDisbandGroupExit: closeDialog 0; goto "Quit"
 
 	~ 0.1
 	goto "Update"
 
 # BeginDisbandGroup
-	_top = call preprocessFile "Rts\Ui\CurSelUnitArray.sqf"
+	closeDialog 0
+
+	_top = call preprocessFile (TzkScripts select 371)
 	? btnDisbandGroupOK: _selectedUnits = +_top, goto "Finish"
+	? btnDisbandGroupLeader: _selectedUnits = +_top, goto "Finish"
 	? btnDisbandGroupInf: _bDisband = {_this == vehicle _this}
 	? btnDisbandGroupGunner: _bDisband = {_this == vehicle _this || _this != gunner vehicle _this}
 	_selectedUnits = []; _i = 0
 	{if (_x call _bDisband) then {_selectedUnits set [_i, _x], _i = _i + 1}} forEach _top
 
 # Finish
+	[_selectedUnits, _info] exec "Rts\Trigger\sDisband.sqs"
+	goto "Quit"
+# Quit
 	btnDisbandGroupLeader = false
 	btnDisbandGroupOK = false
 	btnDisbandGroupExit = false
 	btnDisbandGroupInf = false
 	btnDisbandGroupGunner = false
-	_selectedUnits exec "Rts\Trigger\sDisband.sqs"; closeDialog 0; goto "Quit"

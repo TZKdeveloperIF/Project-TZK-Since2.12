@@ -1,0 +1,36 @@
+; args: [_units, _param, _scriptName]
+_units = _this select 0
+_param = _this select 1
+_scriptName = _this select 2
+
+_msg = ""
+
+? "hForceMoveLand" == _scriptName: goto "OrderForceMoveLand"
+? "hForceMoveShip" == _scriptName: goto "OrderForceMoveShip"
+? "hMove" == _scriptName: goto "OrderMove"
+? "hStop" == _scriptName: _msg = localize {TZK_LANG_STOP}, goto "display"
+? "hLandHeli" == _scriptName: _msg = localize {TZK_LANG_SHORT_HELICOPTER} + localize {TZK_LANG_SHORT_LANDING}, goto "display"
+? "hCrossBridge" == _scriptName: goto "OrderCrossBridge"
+exit
+
+# OrderMove
+	_clickedPos = _param select 0
+	_msg = format [{%1 %2 %3}, localize {TZK_LANG_MOVE}, localize {TZK_LANG_TO}, _clickedPos call funcCalcMapPos]
+	goto "display"
+# OrderCrossBridge
+	_bridgeId = _param select 0
+	_msg = format [{%1 %2, ID: %3}, localize {TZK_LANG_CROSS}, localize {TZK_LANG_BRIDGE}, _bridgeId]
+	goto "display"
+# OrderForceMoveLand
+	_dest = _param select 0
+	_msg = format [{%1 %2 %3}, localize {TZK_LANG_LAND}, localize {TZK_LANG_MOVE}, _dest call funcCalcMapPos]
+	goto "display"
+# OrderForceMoveShip
+	_dest = _param select 0
+	_msg = format [{%1 %2 %3 %4}, localize {TZK_LANG_SEA}, localize {TZK_LANG_SHIP}, localize {TZK_LANG_MOVE}, _dest call funcCalcMapPos]
+	goto "display"
+
+exit
+
+# display
+	[_units, _msg] call funcGenPplRtsMsg

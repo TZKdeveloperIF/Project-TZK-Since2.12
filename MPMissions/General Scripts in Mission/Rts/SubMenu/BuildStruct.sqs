@@ -10,7 +10,7 @@ mutexDlg = false
 	mutexRtsMouse = true
 	_id = rtsMouseId
 	mutexRtsMouse = false
-[true, _id + 1, _pos] exec "Player\Rts\SetRtsMouse.sqs";
+[true, _id + 1, _pos] exec (TzkScripts select 363);
 
 _idcTitle = IDC + 0
 _idcListLabel0 = IDC + 16 * 3 + 1; _idcListLabel1 = IDC + 16 * 3 + 3
@@ -66,7 +66,7 @@ lbSetCurSel [_idcListBox2, _habit select 3]
 	? 2 == _val: goto "Undo"
 	goto "loop"
 # Quit
-	[false, _id + 2] exec "Player\Rts\SetRtsMouse.sqs"
+	[false, _id + 2] exec (TzkScripts select 363)
 	exit
 # OK
 	_idx0 = lbCurSel _idcListBox0; _idx1 = lbCurSel _idcListBox1; _idx2 = lbCurSel _idcListBox2

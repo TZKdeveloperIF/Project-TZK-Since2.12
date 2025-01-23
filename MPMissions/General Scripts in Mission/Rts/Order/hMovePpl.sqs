@@ -1,0 +1,14 @@
+; args: [unit, [clicked pos, central pos of all selected units], 
+; 	[uid, id]]
+_unit = _this select 0
+_param = _this select 1
+
+_clickedPos = _param select 0
+_rtsCentralPos = _param select 1
+
+_rtsOrderIdInfo = _this select 2
+_uid = _rtsOrderIdInfo select 0; _id = _rtsOrderIdInfo select 1
+
+_destPos = [_unit, _clickedPos, _rtsCentralPos, 50] call preprocessFile (TzkScripts select 386)
+
+[_unit, _destPos, [_uid, _id]] exec "OrderSimple\MovePosPpl.sqs"
