@@ -116,3 +116,23 @@ _i = 0; while {_i < maxVehicleMarkers} do {
 	if (not alive _v && _v != (mhq select siPlayer)) then {_m setMarkerPos hiddenMarkerPos} else {_m setMarkerPos getPos _v};
 	_i = _i + 1;
 };
+
+if TzkMarkerShowUnitChanged then {
+	_show = TzkMarkerShowUnitInfo;
+	_gi = 0; _countGroups = count (groupMatrix select siPlayer);
+	while {_gi < _countGroups} do {
+		if (_gi != giPlayer) then {
+			_group = groupMatrix select siPlayer select _gi; _units = units _group;
+			_grpName = groupNameMatrix select siPlayer select _gi;
+			if (sizeofstr _grpName > 0) then {
+				_grpName = substr [_grpName, 0, 1];
+			};
+			_i = 1; _c = count _units; while {_i < 12} do {
+				_m = format ["GroupUnit_%1_%2_%3", siPlayer, _gi, _i - 1];
+				_m setMarkertext (if _show then {_grpName} else {""});
+				_i = _i + 1;
+			};
+		};
+		_gi = _gi + 1;	
+	};
+};
