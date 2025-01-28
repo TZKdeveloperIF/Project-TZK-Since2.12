@@ -12,6 +12,14 @@ mutexDlg = false
 _si = siPlayer
 btnAction0 = false
 
+_bChn = localize {TZK_LANG_MOVE} == "移动"
+? not _bChn: goto "skipChnText"
+	ctrlSetText [IDC + 10, "  TZK任务设置1"]
+	ctrlSetText [IDC + 11, "  效果"]
+	ctrlSetText [IDC + 12, "  功能"]
+	ctrlSetText [IDC + 13, "  菜单"]
+# skipChnText
+
 _genMatrix = preprocessFile "UI\MissionSetting\matrix1.sqf"
 _varNameMatrix = 0 call _genMatrix
 _stateMatrix = [_varNameMatrix, 1 call _genMatrix] call preprocessFile "UI\MissionSetting\dlgInit.sqf"
