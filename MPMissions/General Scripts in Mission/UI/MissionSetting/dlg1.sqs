@@ -1,7 +1,8 @@
-; args: none
+; args: delay
+_delay = _this
 
-; The dialog is triggered by radio. Need delay to close right-upper radio board
-~ 0.4
+; If the dialog is triggered by radio, delay is required to wait right-upper radio board closed
+~ _delay
 
 @!mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID

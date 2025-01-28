@@ -1,7 +1,7 @@
 ; args: none
 
-; The dialog is triggered by radio. Need delay to close right-upper radio board
-~ 0.1
+; this dialog won't triggered by radio. So it doesn't require delay for radio. Delay for other dialog closed only
+~ 0.01
 
 @!mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
@@ -48,7 +48,7 @@ _switch = [false, true]
 	_i = _i + 1
 	? _i < 3 : goto "LoopColumn"
 	
-	? btnAction0: btnAction0 = false, [] exec (TzkScripts select 025), closeDialog 0, goto "Quit"
+	? btnAction0: btnAction0 = false, 0 exec (TzkScripts select 025), closeDialog 0, goto "Quit"
 
 	~0.2
 	goto "Update"
