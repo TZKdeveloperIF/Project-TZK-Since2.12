@@ -1,7 +1,7 @@
 ; args: none
 
 ; The dialog is triggered by radio. Need delay to close right-upper radio board
-~ 0.1
+~ 0.4
 
 @!mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
@@ -11,17 +11,14 @@ mutexDlg = false
 _si = siPlayer
 btnAction0 = false
 
-ctrlSetText [IDC + 10, "  TZK Mission Setting 2"]
-ctrlSetText [IDC + 11, "  GUI"]
-ctrlSetText [IDC + 12, "  Environments"]
-ctrlSetText [IDC + 13, "  Controls"]
-
-_genMatrix = preprocessFile "UI\MissionSetting\matrix2.sqf"
+_genMatrix = preprocessFile "UI\MissionSetting\matrix1.sqf"
 _varNameMatrix = 0 call _genMatrix
-_stateMatrix = [_varNameMatrix, 1 call _genMatrix] call loadFile "\TZK_Scripts_4_0_4\Player\Dialog\TZK_Mission_Setting_Init.sqf"
+_stateMatrix = [_varNameMatrix, 1 call _genMatrix] call preprocessFile "UI\MissionSetting\dlgInit.sqf"
 _cfgKeyMatrix = 2 call _genMatrix
 
-{ctrlShow [IDC + _x, false]} forEach [1,2,3]
+; Show text in dev for debugging
+? !dev : {ctrlShow [IDC + _x, false]} forEach [1,2,3]
+; ? dev: (getPos player) exec "\TZK_Scripts_4_0_4\Server\CutDownTrees.sqs", hint format ["This message will appear only in developing mode (training missions), displaying some variables' value.\n\n%1, %2\n%3\n%4\n%5\n%6", GetWorld, TheWorld, dev], ctrlSetText [IDC + 2, format["%1", (vehicle player) call funcGetUnitTypeFromObject]], ctrlSetText [IDC + 3, format ["%1", structDefs select stHeavy select sdObjects0]],
 
 _switch = [false, true]
 # Update
@@ -40,7 +37,7 @@ _switch = [false, true]
 		? _state == (_stateCol select _j) || _state == -1: goto "continue_line"
 
 		_stateCol set [_j, _state]
-		[2, _i, _j, _switch select _state, _varNameMatrix, _cfgKeyMatrix] call preprocessFile "Player\OnMissionSettingModified.sqf"
+		[1, _i, _j, _switch select _state, _varNameMatrix, _cfgKeyMatrix] call preprocessFile "Player\OnMissionSettingModified.sqf"
 
 		# continue_line
 		_j = _j + 1
@@ -48,9 +45,9 @@ _switch = [false, true]
 	_i = _i + 1
 	? _i < 3 : goto "LoopColumn"
 	
-	? btnAction0: btnAction0 = false, [] exec (TzkScripts select 025), closeDialog 0, goto "Quit"
+	? btnAction0: btnAction0 = false, [] exec (TzkScripts select 026), closeDialog 0, goto "Quit"
 
-	~0.2
+	~ 0.2
 	goto "Update"
 
 # Quit
