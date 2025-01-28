@@ -118,7 +118,8 @@ _i = 0; while {_i < maxVehicleMarkers} do {
 };
 
 if TzkMarkerShowUnitChanged then {
-	_show = TzkMarkerShowUnitInfo;
+	TzkMarkerShowUnitChanged = false;
+	_show = bool_TZK_Show_UnitGrp;
 	_gi = 0; _countGroups = count (groupMatrix select siPlayer);
 	while {_gi < _countGroups} do {
 		if (_gi != giPlayer) then {

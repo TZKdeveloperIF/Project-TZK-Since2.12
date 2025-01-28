@@ -46,7 +46,7 @@ _switch = [false, true]
 		? _state == (_stateCol select _j) || _state == -1: goto "continue_line"
 
 		_stateCol set [_j, _state]
-		[1, _i, _j, _switch select _state, _varNameMatrix, _cfgKeyMatrix] call preprocessFile "Player\OnMissionSettingModified.sqf"
+		[1, _i, _j, _switch select _state, _varNameMatrix, _cfgKeyMatrix] call preprocessFile "UI\MissionSetting\change.sqf"
 
 		# continue_line
 		_j = _j + 1

@@ -12,6 +12,9 @@ if (1 == _enum) then {
 		if (4 == _row) then {
 			_state exec "Network\sModifyScoreConfuserState.sqs";
 		};
+		if (6 == _row) then {
+			TzkMarkerShowUnitChanged = true;
+		};
 	};
 };
 

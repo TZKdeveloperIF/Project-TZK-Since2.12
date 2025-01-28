@@ -11,7 +11,7 @@ if (0 == _this) then {
 		, {bool_Show_Radio}
 		, {bool_TZK_Hide_Score}
 		, {bool_TZK_CHN_Lang}
-		, {} // bind
+		, {bool_TZK_Show_UnitGrp}
 		, {bool_TZK_Rts_Cmd_Mode}
 	];
 };
@@ -52,9 +52,11 @@ if (1 == _this) then {
 		} else {
 			["Chinese Language     [OFF]", "Chinese Language      [ON]"]
 		}
-
-		, [] // bind
-
+		, if _bChn then {
+			["单位图标显示队名       [OFF]", "单位图标显示队名        [ON]"]
+		} else {
+			["Show Unit Group      [OFF]", "Show Unit Group       [ON]"]
+		}
 		, if _bChn then {
 			["RTS 命令模式         [OFF]", "RTS 命令模式          [ON]"]
 		} else {
@@ -71,7 +73,7 @@ if (2 == _this) then {
 		, "Ms_ShowRadio"
 		, "Ms_HideScore"
 		, "Ms_ChnLang"
-		, ""			 // bind
+		, "Ms_ShowUnitGroup"
 		, "RtsCmdMode"
 	];
 };
@@ -84,7 +86,7 @@ if (3 == _this) then {
 		, false
 		, false
 		, false
-		, false // bind
+		, false
 		, false
 	];
 };
