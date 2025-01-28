@@ -20,8 +20,6 @@ _initGameVars = {
 };
 
 _initPlayerSettings = {
-	_this addValue ["RtsMapMode", "false"]; 		// RTS map click mode
-	_this addValue ["RtsCmdMode", "false"];			// RTS commanding mode
 };
 
 _cfg = loadConfig "TzkPlayer.cfg";
