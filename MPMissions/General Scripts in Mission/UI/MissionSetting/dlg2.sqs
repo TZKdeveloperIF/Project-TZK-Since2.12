@@ -1,0 +1,66 @@
+; args: none
+
+; this dialog won't triggered by radio. So it doesn't require delay for radio. Delay for other dialog closed only
+~ 0.01
+
+@!mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "TZK_Setting_Dialog"
+mutexDlg = false
+
+_si = siPlayer
+btnAction0 = false
+
+ctrlSetText [IDC + 10, "  TZK Mission Setting 2"]
+ctrlSetText [IDC + 11, "  GUI"]
+ctrlSetText [IDC + 12, "  Environments"]
+ctrlSetText [IDC + 13, "  Controls"]
+
+_bChn = localize {TZK_LANG_MOVE} == "移动"
+? not _bChn: goto "skipChnText"
+	ctrlSetText [IDC + 10, "  TZK任务设置2"]
+	ctrlSetText [IDC + 11, "  对话框"]
+	ctrlSetText [IDC + 12, "  环境"]
+	ctrlSetText [IDC + 13, "  控制"]
+# skipChnText
+
+_genMatrix = preprocessFile "UI\MissionSetting\matrix2.sqf"
+_varNameMatrix = 0 call _genMatrix
+_stateMatrix = [_varNameMatrix, 1 call _genMatrix] call preprocessFile "UI\MissionSetting\dlgInit.sqf"
+_cfgKeyMatrix = 2 call _genMatrix
+
+{ctrlShow [IDC + _x, false]} forEach [1,2,3]
+
+_switch = [false, true]
+# Update
+	ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+
+	? call dlgUpdated: goto "Quit"
+	? !(alive player): closeDialog 0; goto "Quit"
+
+	_i = 0
+	# LoopColumn
+	_idc = IDC + 100 + 100*_i; _stateCol = _stateMatrix select _i; _varNameCol = _varNameMatrix select _i
+	_j = 0; _Line = 12
+		# LoopLine
+		? _j >= count _varNameCol: goto "continue_line"
+		_state = lbCurSel (_idc + _j)
+		? _state == (_stateCol select _j) || _state == -1: goto "continue_line"
+
+		_stateCol set [_j, _state]
+		[2, _i, _j, _switch select _state, _varNameMatrix, _cfgKeyMatrix] call preprocessFile "UI\MissionSetting\change.sqf"
+
+		# continue_line
+		_j = _j + 1
+		? _j < _Line : goto "LoopLine"
+	_i = _i + 1
+	? _i < 3 : goto "LoopColumn"
+	
+	? btnAction0: btnAction0 = false, 0 exec (TzkScripts select 025), closeDialog 0, goto "Quit"
+
+	~0.2
+	goto "Update"
+
+# Quit
+	; todo: proc magazinesBooleRecording
+	exit

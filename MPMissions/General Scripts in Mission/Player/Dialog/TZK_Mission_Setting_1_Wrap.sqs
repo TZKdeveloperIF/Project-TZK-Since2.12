@@ -1,4 +1,10 @@
-0 exec "\TZK_Patch4_4_0_6\s\UI\TZK_Mission_Setting_1.sqs"
+; args: delay or "[]"
+
+; cfg_todo: [] is default input in many scripts. It should be treated as 0.4
+_delay = 0.4
+? _this in [_this]: _delay = _this
+
+_delay exec "UI\MissionSetting\dlg1.sqs"
 
 ; ~0.2
 ; test about tzk target knows about
