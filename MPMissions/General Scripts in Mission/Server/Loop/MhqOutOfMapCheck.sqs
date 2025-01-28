@@ -29,7 +29,7 @@ _broadcast = "%3  %1 MHQ away from map area at %2"
 
 	_pos = getPosASL _veh, _px = _pos select 0, _py = _pos select 1
 	_px = _px - _px % 1; _py = _py - _py % 1
-	_out = _px < - _threshold || _py < _threshold || _px > _l + _threshold || _py > _l + _threshold
+	_out = _px < 0 - _threshold || _py < 0 - _threshold || _px > _l + _threshold || _py > _l + _threshold
 	? not _out: _shortWarnCnt = 0, goto "loop"
 
 	_shortWarnCnt = _shortWarnCnt + 1, _totalWarnCnt = _totalWarnCnt + 1
