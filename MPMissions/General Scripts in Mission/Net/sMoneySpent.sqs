@@ -1,15 +1,10 @@
 ; args: [amount]
 
 _amount = _this select 0
+
+; cfg_todo: move DisbandAllUnits.sqs to new patch and remove this nil check
+_nil = "scalar bool array string 0xfcffffef"
+? _nil == format ["%1", _amount]: exit
+
 [siPlayer, giPlayer, _amount] exec "\TZK_Patch4_4_0_6\s\Net\hMoneySpent.sqs"
 publicExec format [{[%1,%2,%3] exec "\TZK_Patch4_4_0_6\s\Net\hMoneySpent.sqs"}, siPlayer, giPlayer, _amount]
-exit
-
-_value = _amount + 10000
-_value = _value + (20000)*giPlayer
-_value = _value + (20000*GroupsNum)*siPlayer
-
-@!(mutexMoneySpent)
-mutexMoneySpent = true
-~(0.5*sendDelay)
-mutexMoneySpent = false

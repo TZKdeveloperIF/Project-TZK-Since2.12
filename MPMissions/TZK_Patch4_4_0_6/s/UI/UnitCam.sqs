@@ -298,6 +298,8 @@ _return = "External_Update"; goto "UpdateDialog"
 # DisbandAll
 	? not isCommander && not _isAico: player groupchat "Disband all units of a group is only allowed for human commander."; goto _return
 	; ? !(alive _unitTracked) : player groupchat "Selected Unit is not alive."; goto _return
+
+	; cfg_todo: move DisbandAllUnits.sqs to new patch
 	[[_unitTracked]] exec "\TZK_Patch4_4_0_6\s\Player\DisbandAllUnits.sqs"
 
 	? _iView > 0 : iView = 0; goto "ChangeView"
