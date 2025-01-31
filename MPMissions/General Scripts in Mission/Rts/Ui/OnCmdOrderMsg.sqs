@@ -11,6 +11,8 @@ _msg = ""
 ? "hStop" == _scriptName: _msg = localize {TZK_LANG_STOP}, goto "display"
 ? "hLandHeli" == _scriptName: _msg = localize {TZK_LANG_SHORT_HELICOPTER} + localize {TZK_LANG_SHORT_LANDING}, goto "display"
 ? "hCrossBridge" == _scriptName: goto "OrderCrossBridge"
+? "hRepair" == _scriptName: goto "OrderHealRepair"
+? "hRearm" == _scriptName: goto "OrderRearm"
 exit
 
 # OrderMove
@@ -28,6 +30,16 @@ exit
 # OrderForceMoveShip
 	_dest = _param select 0
 	_msg = format [{%1 %2 %3 %4}, localize {TZK_LANG_SEA}, localize {TZK_LANG_SHIP}, localize {TZK_LANG_MOVE}, _dest call funcCalcMapPos]
+	goto "display"
+# OrderHealRepair
+	_dest = _param select 0
+	_threshold = _param select 1
+	_msg = format [{%1/%2: %3%5 at %4}, localize {TZK_LANG_HEAL}, localize {TZK_LANG_REPAIR}, _threshold * 100, _dest call funcCalcMapPos, "%"]
+	goto "display"
+# OrderRearm
+	_dest = _param select 0
+	_threshold = _param select 1
+	_msg = format [{%1 %2: %3 at %4}, localize {TZK_LANG_REARM}, localize {TZK_LANG_SABOT}, _threshold, _dest call funcCalcMapPos]
 	goto "display"
 
 exit
