@@ -368,7 +368,7 @@ _f = {
 "\TZK_Patch4_4_0_6\s\Server\Loop\TownGroupRes1.sqs" call _f; // 308
 
 "\TZK_Scripts_4_0_4\Common\AddUnit.sqs" call _f; // 309
-"\TZK_Patch4_4_0_6\s\Init\pplCmdUnit.sqs" call _f; // 310
+"Init\pplCmdUnit.sqs" call _f; // 310
 "\TZK_Patch4_4_0_6\s\Init\svrStartVehs.sqs" call _f; // 311
 
 "\TZK_Scripts_4_0_4\Server\CheckWinDestruction.sqs" call _f; // 312
