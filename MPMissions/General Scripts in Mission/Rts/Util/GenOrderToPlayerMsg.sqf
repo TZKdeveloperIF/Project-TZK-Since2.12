@@ -5,9 +5,9 @@ _units = _this select 0;
 _content = _this select 1;
 
 if (count _units > 0) then {
-	(_units select 0) sideChat format [TzkRtsCmdMsg
+	format [TzkRtsCmdMsg
 		, name leader (groupCommander select siPlayer)
 		, _units call funcGetUids
 		, _content
-	];
+	] call funcSideMsg;
 };
