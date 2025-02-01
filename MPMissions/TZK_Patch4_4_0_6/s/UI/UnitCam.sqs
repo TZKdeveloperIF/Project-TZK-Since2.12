@@ -318,6 +318,7 @@ _return = "External_Update"; goto "UpdateDialog"
 	? !(group _unitTracked in ((groupAiMatrix select si0) + (groupAiMatrix select si1) + [groupJoin0, groupJoin1])) : player groupchat "Only allow to ask AI group units to join other groups."; goto _return
 
 	? _unitTracked == leader _unitTracked : player groupchat "AI Group Leader is not allowed to join other groups"; goto _return
+	; cfg_todo: move "Join\Submenu\PplOrder.sqs" to better path (with RTS join submenu)
 	[[_unitTracked],0,0,"UC"] exec "Join\Submenu\PplOrder.sqs"
 	? _iView > 0 : iView = 0; goto "ChangeView"
 	goto "Quit"

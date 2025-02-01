@@ -3,7 +3,7 @@
 ; rts join request will pass many source groups
 
 _units = _this select 0
-? count _units <= 0: player globalChat "No units in Join Request", exit
+? count _units <= 0: exit
 ? count _units > 11: player globalChat "Selected too many units (no more than 11).", exit
 
 _si = siPlayer
