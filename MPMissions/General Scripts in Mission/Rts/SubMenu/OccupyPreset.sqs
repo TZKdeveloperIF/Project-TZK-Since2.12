@@ -8,14 +8,12 @@ mutexDlg = false
 _idcTitle = IDC + 0; _idcBtnLabel0 = IDC + 16 * 3 + 0
 ctrlSetText [_idcBtnLabel0, ""]
 _idcBtn_0_0 = IDC + 16 * 5; _idcBtnBg_0_0 = IDC + 16 * 6;
-ctrlSetText [_idcTitle, "Occupy Structure"]
-{ctrlSetText [_x, "Howitzer"]} forEach [_idcBtn_0_0]
-{ctrlSetText [_x, "Mortar"]} forEach [_idcBtn_0_0 + 1]
-{ctrlSetText [_x, "MG Ground"]} forEach [_idcBtn_0_0 + 2]
-{ctrlSetText [_x, "MG Tower"]} forEach [_idcBtn_0_0 + 3]
-{ctrlSetText [_x, "Gun Fort"]} forEach [_idcBtn_0_0 + 4]
-{_i = _x; {ctrlShow [_x + _i, false]} forEach [_idcBtnBg_0_0]} forEach [0,1,2,3,4,5,6,7]
-{_i = _x; {ctrlShow [_x + _i, false]} forEach [_idcBtn_0_0]} forEach [5,6,7]
+ctrlSetText [_idcTitle, localize {TZK_LANG_OCCUPY}]
+
+_items = 0 call preprocessFile "Rts\Literal\occupy.sqf", _i = 0, _c = count _items
+{ctrlSetText [_idcBtn_0_0 + _i, _x], ctrlShow [_idcBtnBg_0_0 + _i, false], _i = _i + 1} forEach _items
+
+{_i = _x; {ctrlShow [_x + _i, false]} forEach [_idcBtn_0_0, _idcBtnBg_0_0]} forEach [5,6,7]
 
 btnValue00 = false; btnValue01 = false
 btnValue02 = [false,false,false,false,false]

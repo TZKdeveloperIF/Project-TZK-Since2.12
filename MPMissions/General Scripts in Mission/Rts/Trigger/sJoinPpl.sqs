@@ -1,0 +1,14 @@
+; args: [other players' units, giTo, gi of RTS join trigger sender]
+
+_units = _this select 0
+_giTo = _this select 1
+_giSender = _this select 2
+
+? count _units <= 0: exit
+; no need to exec locally. Units must belongs to other players
+
+; Unnecessary to separate the string since there're 11 units at most in player's join request.
+_str = _units call preprocessFile "Network\GenNetIdArrayStr.sqf"
+? "" == _str: exit
+
+publicExec format [{[%1,%2,%3] exec "Rts\Trigger\hJoinPpl.sqs"}, _str, _giTo, _giSender]

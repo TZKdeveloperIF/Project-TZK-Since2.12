@@ -49,15 +49,12 @@ btnValue00 = false; btnValue01 = false
 	? _bInBlackList: hint format ["%1 is in Join black list", name leader _groupTo], goto "loop"
 
 	; group and unit analysis
-	_units = []; _giFromArr = []
-	call preprocessFile "Rts\Submenu\Join.sqf"
+	_res = call preprocessFile "Rts\Submenu\Join.sqf"
+	_aiUnits = _res select 0, _aiGis = _res select 1, _pplUnits = _res select 2
 
-	; debug info
-	; hint format ["%1", _giFromArr]
-	; player sideChat format ["units: %1, gis: %2", _units, _giFromArr]
+	? count _aiUnits + count _pplUnits <= 0: hint "No available units to join.", goto "loop"
+	? count _aiUnits + count _pplUnits > 11: hint "Selected too many units (no more than 11).", goto "loop"
 
-	? count _units <= 0 || count _giFromArr <= 0: hint "No available units to join.", goto "loop"
-	? count _units > 11: hint "Selected too many units (no more than 11).", goto "loop"
-
-	[_units, _giFromArr, _giTo, giPlayer] exec "Join\Request.sqs"
+	[_pplUnits, _giTo, giPlayer] exec "Rts\Trigger\sJoinPpl.sqs"
+	[_aiUnits, _aiGis, _giTo, giPlayer] exec "Join\Request.sqs"
 	closeDialog 0; goto "Quit"

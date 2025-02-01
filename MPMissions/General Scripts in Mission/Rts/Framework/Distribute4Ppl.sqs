@@ -23,7 +23,7 @@ _scriptFolder = _this select 3
 exit
 
 # Order
-	_whiteList = ["hForceMoveLand","hForceMoveShip","hMove","hStop","hLandHeli","hCrossBridge"];
+	_whiteList = ["hForceMoveLand","hForceMoveShip","hMove","hStop", "hBoard","hOccupy","hReclaim", "hLandHeli","hCrossBridge","hRepair","hRearm"];
 	? _whiteList find _scriptName == -1: exit
 
 		; todo: does player rts order require mutex?
@@ -40,7 +40,7 @@ exit
 	_this exec _scriptPath
 	exit
 # Trigger
-	_whiteList = ["hDisband","hEject", "hSeat","hWatch", "hSpoof","hSetFlightAltitude","hAfterBurner","hTransportTurn","hTankSwitchMainGun","hDeploy","hArtMag"];
+	_whiteList = ["hDisband","hEject","hDisembark", "hSeat","hWatch","hEngineOff", "hSpoof","hSetFlightAltitude","hAfterBurner","hTransportTurn","hTankSwitchMainGun","hDeploy","hArtMag"];
 	? _whiteList find _scriptName == -1: exit
 
 	_inPplVehicle = { vehicle UnitById _this == vehicle player };
@@ -51,7 +51,7 @@ exit
 	[_netIds, _this select 1, _scriptName] exec "Rts\Ui\OnCmdTriggerMsg.sqs"
 
 	; scripts that need dispatch to another script different from Server AI
-	_needDispatch = ["hDisband"]
+	_needDispatch = ["hDisband","hDisembark"]
 	_scriptPath = format ["%1\%2\%3.sqs", "Rts", "Trigger", if (_scriptName in _needDispatch) then {_scriptName + "Ppl"} else {_scriptName}];
 	_this exec _scriptPath
 	exit

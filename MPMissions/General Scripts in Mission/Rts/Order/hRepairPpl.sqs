@@ -1,0 +1,16 @@
+; args: [unit, [clicked pos, health threshold, support range, central pos of all selected units], 
+; 	[uid, id]]
+_unit = _this select 0
+_param = _this select 1
+
+_clickedPos = _param select 0
+_healthThreshold = _param select 1
+; _supportDist = _param select 2
+; _rtsCentralPos = _param select 3
+
+? damage vehicle _unit < _healthThreshold: exit
+
+_rtsOrderIdInfo = _this select 2
+_uid = _rtsOrderIdInfo select 0; _id = _rtsOrderIdInfo select 1
+
+[_unit, _clickedPos] exec (TzkScripts select 095)

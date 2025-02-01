@@ -59,6 +59,7 @@ _i = 0, _c = _totalTranspTypes, _transpTypes = [], _transpTypes resize _c
 
 	_targets = [], _selectedTypes = [], _target = objNull, _suggestedIdx = -1
 	_typeIdx = 0; _totalTryCnt = 0
+	_typesArr = 1 call preprocessFile "Rts\Literal\occupy.sqf"
 
 	# SearchTarget
 		_totalTryCnt = _totalTryCnt + 1
@@ -66,12 +67,8 @@ _i = 0, _c = _totalTranspTypes, _transpTypes = [], _transpTypes resize _c
 
 		? _typeIdx >= _totalTranspTypes: goto "Quit"
 		? not (_transpTypes select _typeIdx): _typeIdx = _typeIdx + 1, goto "SearchTarget"
-	
-		? 0 == _typeIdx: _selectedTypes = structsOccupiableHowitzer
-		? 1 == _typeIdx: _selectedTypes = structsOccupiableMortar
-		? 2 == _typeIdx: _selectedTypes = structsOccupiableMGGround
-		? 3 == _typeIdx: _selectedTypes = structsOccupiableMGTower
-		? 4 == _typeIdx: _selectedTypes = structsOccupiableGunfort
+
+		_selectedTypes = _typesArr select _typeIdx
 
 		call preprocessFile "Rts\Order\assistOccupy.sqf"
 

@@ -10,8 +10,10 @@ _units = []; _units resize count _netIds; _i = 0
 _msg = ""
 
 ? "hEject" == _scriptName: _msg = localize {TZK_LANG_EJECT}, goto "display"
+? "hDisembark" == _scriptName: _msg = localize {TZK_LANG_GETOFF}, goto "display"
 ? "hSeat" == _scriptName: goto "TriggerSwitchSeat"
 ? "hWatch" == _scriptName: goto "TriggerWatch"
+? "hEngineOff" == _scriptName: _msg = localize {TZK_LANG_ENGINEOFF}, goto "display"
 ? "hSpoof" == _scriptName: goto "TriggerSpoof"
 ? "hSetFlightAltitude" == _scriptName: goto "TriggerFlightAlt"
 ? "hAfterBurner" == _scriptName: goto "TriggerAfterBurner"
