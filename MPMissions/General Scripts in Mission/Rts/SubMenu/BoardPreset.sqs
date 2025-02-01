@@ -9,15 +9,9 @@ _idcTitle = IDC + 0; _idcBtnLabel0 = IDC + 16 * 3 + 0
 ctrlSetText [_idcBtnLabel0, ""]
 _idcBtn_0_0 = IDC + 16 * 5; _idcBtnBg_0_0 = IDC + 16 * 6;
 ctrlSetText [_idcTitle, "Board Vehicle"]
-{ctrlSetText [_x, "Helicopter"]} forEach [_idcBtn_0_0]
-{ctrlSetText [_x, "APC"]} forEach [_idcBtn_0_0 + 1]
-{ctrlSetText [_x, "Truck"]} forEach [_idcBtn_0_0 + 2]
-{ctrlSetText [_x, "Ship"]} forEach [_idcBtn_0_0 + 3]
-{ctrlSetText [_x, "Plane"]} forEach [_idcBtn_0_0 + 4]
-{ctrlSetText [_x, "Support APC"]} forEach [_idcBtn_0_0 + 5]
-{ctrlSetText [_x, "Repair Truck"]} forEach [_idcBtn_0_0 + 6]
-{ctrlSetText [_x, "Jeep"]} forEach [_idcBtn_0_0 + 7]
-{_i = _x; {ctrlShow [_x + _i, false]} forEach [_idcBtnBg_0_0]} forEach [0,1,2,3,4,5,6,7]
+
+_items = 0 call preprocessFile "Rts\Literal\board.sqf", _i = 0, _c = count _items
+{ctrlSetText [_idcBtn_0_0 + _i, _x], ctrlShow [_idcBtnBg_0_0 + _i, false], _i = _i + 1} forEach _items
 
 btnValue00 = false; btnValue01 = false
 btnValue02 = [false,false,false,false,false,false,false,false]
@@ -28,7 +22,7 @@ btnValue02 = [false,false,false,false,false,false,false,false]
 	? call dlgUpdated: goto "Quit"
 	? not alive player: closeDialog 0; goto "Quit"
 
-	_i = 0; while {_i < 8} do {ctrlShow [_idcBtnBg_0_0 + _i, btnValue02 select _i]; _i = _i + 1};
+	_i = 0; while {_i < _c} do {ctrlShow [_idcBtnBg_0_0 + _i, btnValue02 select _i]; _i = _i + 1};
 
 	? btnValue00: btnValue00 = false; closeDialog 0; goto "Quit"
 	? btnValue01: btnValue01 = false; goto "OK"
