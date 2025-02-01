@@ -1,0 +1,24 @@
+; args: unit
+_unit = _this
+
+; skip non-player group
+? not isNull player: if (groupPlayer != group _unit) then {exit}
+
+; skip soldier
+_vehicle = vehicle _unit
+? _unit == _vehicle: exit
+
+; skip flying aricraft
+? (getPos _vehicle) select 2 > 5: exit
+
+_try = 30
+# loop
+	_vehicle doMove getPosASL _vehicle
+	_try = _try - 1
+	~ 1
+	? speed _vehicle > 10 && _try > 0: goto "loop"
+
+? not (_unit in _vehicle): exit
+
+unassignVehicle _unit
+_unit action ["GETOUT", _vehicle]

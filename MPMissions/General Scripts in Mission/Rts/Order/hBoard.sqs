@@ -59,6 +59,7 @@ _i = 0, _c = _totalTranspTypes, _transpTypes = [], _transpTypes resize _c
 
 	_targets = [], _selectedTypes = [], _target = objNull, _suggestedIdx = -1
 	_typeIdx = 0; _totalTryCnt = 0
+	_typesArr = 1 call preprocessFile "Rts\Literal\board.sqf"
 
 	# SearchTarget
 		_totalTryCnt = _totalTryCnt + 1
@@ -66,15 +67,8 @@ _i = 0, _c = _totalTranspTypes, _transpTypes = [], _transpTypes resize _c
 
 		? _typeIdx >= _totalTranspTypes: goto "Quit"
 		? not (_transpTypes select _typeIdx): _typeIdx = _typeIdx + 1, goto "SearchTarget"
-	
-		? 0 == _typeIdx: _selectedTypes = [TransportHeliW + TransportirNOHeliW, TransportHeliE + TransportirNOHeliE + TransportHindE] select _si
-		? 1 == _typeIdx: _selectedTypes = [Transport6APCW + Transport8APCW, Transport6APCE + Transport8APCE] select _si
-		? 2 == _typeIdx: _selectedTypes = [TransportTruckW, TransportTruckE] select _si
-		? 3 == _typeIdx: _selectedTypes = [TransportShipW + TransportZodiacW, TransportShipE + TransportZodiacE] select _si
-		? 4 == _typeIdx: _selectedTypes = [TransportPlaneW, TransportPlaneE] select _si
-		? 5 == _typeIdx: _selectedTypes = [TransportSupAPCW, TransportSupAPCE] select _si
-		? 6 == _typeIdx: _selectedTypes = [TransportRepairTruckW, TransportRepairTruckE] select _si
-		? 7 == _typeIdx: _selectedTypes = [TransportCarW, TransportCarE] select _si
+
+		_selectedTypes = _typesArr select _typeIdx select _si
 
 		call preprocessFile "Rts\Order\assistBoard.sqf"
 

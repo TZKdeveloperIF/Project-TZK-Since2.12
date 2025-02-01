@@ -78,6 +78,7 @@ btnValue00 = false; btnValue01 = false
 		hint format ["You don't manage %1 group.", _groupsName select _giTo], goto "loop"
 	# ucCheckPassed
 
+	? count _units <= 0: hint "No available units to join.", goto "loop"
 
 	[_units, [_giFrom], _giTo, giPlayer] exec "Join\Request.sqs"
 	closeDialog 0; goto "Quit"

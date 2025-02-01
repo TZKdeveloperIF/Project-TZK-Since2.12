@@ -1,0 +1,43 @@
+; args: [unit, [clicked pos, central pos of all selected units, transport vehicle type info: number], 
+; 	[uid, id]]
+_unit = _this select 0
+_param = _this select 1
+
+_clickedPos = _param select 0
+_rtsCentralPos = _param select 1
+_transpTypeInfo = _param select 2
+
+_rtsOrderIdInfo = _this select 2
+_uid = _rtsOrderIdInfo select 0; _id = _rtsOrderIdInfo select 1
+
+_si = sides find (side _unit)
+? _si != si0 && _si != si1: exit
+
+_typesArr = 1 call preprocessFile "Rts\Literal\board.sqf"
+_totalTranspTypes = count _typesArr
+
+_i = 0, _c = _totalTranspTypes, _transpTypes = [], _transpTypes resize _c
+# buildTransType
+	_res = _transpTypeInfo % 2
+	_transpTypeInfo = (_transpTypeInfo - _res) / 2
+	_transpTypes set [_i, _res != 0]
+	_i = _i + 1
+	? _i < _c: goto "buildTransType"
+
+_typeIdx = -1
+# SearchTarget
+	_typeIdx = _typeIdx + 1
+
+	? _typeIdx >= _totalTranspTypes: goto "Quit"
+	? not (_transpTypes select _typeIdx): goto "SearchTarget"
+
+	_selectedTypes = _typesArr select _typeIdx select _si
+	_vs = ([_clickedPos, 100, _selectedTypes, [], _si] call funcGetNearbyVehicles)
+	? count _vs == 0: goto "SearchTarget"
+
+	_vs = [2, true, _vs] call funcSort
+	_target = _vs select 0 select 0
+	[_unit, _target, ["Cargo"]] exec (TzkScripts select 094)
+
+# Quit
+	exit
