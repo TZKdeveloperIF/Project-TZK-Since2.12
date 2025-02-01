@@ -127,7 +127,7 @@ btnValue05 = -1;
 	? count _downBoardStack > 0: goto "DownSubMenu"
 
 	; white list for ordering other players via RTS system
-	_whiteList = [2^0,2^1, 2^9,2^10,  2^4,2^5,2^6,2^7,2^8]
+	_whiteList = [2^0,2^1,2^2, 2^3, 2^9,2^10,2^11,  2^4,2^5,2^6,2^7,2^8]
 	? 3 == TzkRtsSelectEnum: if not (_btnVal in _whiteList) then {TitleText ["This trigger isn't allowed on other players' units.", "Plain DOWN", 0.25]; goto "Update"}
 
 	? 2^0 == _btnVal: 0 exec "Rts\SubMenu\DisbandPreset.sqs"; closeDialog 0; goto "Quit"

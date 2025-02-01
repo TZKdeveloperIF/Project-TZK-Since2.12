@@ -1,0 +1,16 @@
+; args: [NetworkID[], _giTo, _giSender]
+? isNull player: exit
+
+_netIds = _this select 0
+_giTo = _this select 1
+_giSender = _this select 2
+
+_units = []
+{_u = UnitById _x, if (group _u == groupPlayer) then {_units set [count _units, _u]}} forEach _netIds
+? count _units <= 0: exit
+
+_msg = format [{%1 %2}, localize {TZK_LANG_JOIN}, groupNameMatrix select siPlayer select _giTo]
+[_units, _msg] call funcGenPplRtsMsg
+
+
+[_units, [giPlayer], _giTo, giPlayer] exec "Join\Request.sqs"
