@@ -67,6 +67,7 @@ _i = 0, _c = _typeCnt, _transpTypes = [], _transpTypes resize _c
 
 	_targets = [], _selectedTypes = [], _target = objNull, _suggestedIdx = -1
 	_typeIdx = 0; _totalTryCnt = 0
+	_typesArr = 1 call preprocessFile "Rts\Literal\reclaim.sqf"
 
 	_timeStamp = time; _timeStamp = _timeStamp - _timeStamp % 1
 
@@ -77,26 +78,10 @@ _i = 0, _c = _typeCnt, _transpTypes = [], _transpTypes resize _c
 		? _typeIdx >= _typeCnt: goto "StopAndWait"
 		? not (_transpTypes select _typeIdx): _typeIdx = _typeIdx + 1, goto "SearchTarget"
 
-		_needEdit = true, _bDisengage = (0 <= _typeIdx && _typeIdx <= 2)
-		? 0 == _typeIdx: _selectedTypes = + typesHeavyTank
-		? 1 == _typeIdx: _selectedTypes = + typesLightTank
-		? 2 == _typeIdx: _selectedTypes = + typesHowitzer + typesRocketLauncher
-		? 3 == _typeIdx: _selectedTypes = + typesATAPC
-		? 4 == _typeIdx: _selectedTypes = + typesAAAPC
-		? 5 == _typeIdx: _selectedTypes = + typesGunshipOrigin + typesGunshipAT + typesKa50
-		? 6 == _typeIdx: _selectedTypes = + typesBattlePlane
-		? 7 == _typeIdx: _selectedTypes = + typesSupportAPC
+		_bDisengage = (0 <= _typeIdx && _typeIdx <= 2)
 
-		? 8 + 0 == _typeIdx: _selectedTypes = + typesTransportCar
-		? 8 + 1 == _typeIdx: _selectedTypes = + typesTransportShip
-		? 8 + 2 == _typeIdx: _selectedTypes = + typesTransportAPC
-		? 8 + 3 == _typeIdx: _selectedTypes = + typesTransportHeli + RadioTypesTransportPlane
-		? 8 + 4 == _typeIdx: _selectedTypes = + typesBattleShip
-		? 8 + 5 == _typeIdx: _selectedTypes = + typesBattleCar
-		? 8 + 6 == _typeIdx: _selectedTypes = + typesRadarCar
-		? 8 + 7 == _typeIdx: _selectedTypes = + call format ["TransportRepairTruck%1", if (_si == si0) then {"W"} else {"E"}], _needEdit = false
-
-		? _needEdit: [_selectedTypes, _notOurSide] call preprocessFile "Algo\arrayEraseIf.sqf"
+		_selectedTypes = _typesArr select _typeIdx
+		[_selectedTypes, _notOurSide] call preprocessFile "Algo\arrayEraseIf.sqf"
 
 		call preprocessFile "Rts\Order\assistReclaim.sqf"
 

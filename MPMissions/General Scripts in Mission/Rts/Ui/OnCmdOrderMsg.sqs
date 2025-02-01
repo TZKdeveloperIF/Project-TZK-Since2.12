@@ -9,6 +9,9 @@ _msg = ""
 ? "hForceMoveShip" == _scriptName: goto "OrderForceMoveShip"
 ? "hMove" == _scriptName: goto "OrderMove"
 ? "hStop" == _scriptName: _msg = localize {TZK_LANG_STOP}, goto "display"
+? "hBoard" == _scriptName: goto "OrderBoard"
+? "hOccupy" == _scriptName: goto "OrderOccupy"
+? "hReclaim" == _scriptName: goto "OrderReclaim"
 ? "hLandHeli" == _scriptName: _msg = localize {TZK_LANG_SHORT_HELICOPTER} + localize {TZK_LANG_SHORT_LANDING}, goto "display"
 ? "hCrossBridge" == _scriptName: goto "OrderCrossBridge"
 ? "hRepair" == _scriptName: goto "OrderHealRepair"
@@ -18,6 +21,39 @@ exit
 # OrderMove
 	_clickedPos = _param select 0
 	_msg = format [{%1 %2 %3}, localize {TZK_LANG_MOVE}, localize {TZK_LANG_TO}, _clickedPos call funcCalcMapPos]
+	goto "display"
+# OrderBoard
+	_clickedPos = _param select 0
+	_typeInfo = _param select 2
+	_types = _typeInfo call funcBinaryDigit
+	_items = 0 call preprocessFile "Rts\Literal\board.sqf"
+	_str = ""; {_str = _str + (_items select _x) + ","} forEach _types
+	? _str != "": _str = substr [_str, 0, sizeofstr _str - 1]
+	_msg = format [{%1 %2 at %3}, localize {TZK_LANG_BOARD}, _str, _clickedPos call funcCalcMapPos]
+	goto "display"
+# OrderOccupy
+	_clickedPos = _param select 0
+	_typeInfo = _param select 2
+	_types = _typeInfo call funcBinaryDigit
+	_items = 0 call preprocessFile "Rts\Literal\occupy.sqf"
+	_str = ""; {_str = _str + (_items select _x) + ","} forEach _types
+	? _str != "": _str = substr [_str, 0, sizeofstr _str - 1]
+	_msg = format [{%1 %2 at %3}, localize {TZK_LANG_OCCUPY}, _str, _clickedPos call funcCalcMapPos]
+	goto "display"
+# OrderReclaim
+	_clickedPos = _param select 0
+	_typeInfo = _param select 2
+	_types = _typeInfo call funcBinaryDigit
+	_items = 0 call preprocessFile "Rts\Literal\reclaim.sqf"
+	_str = ""; {_str = _str + (_items select _x) + ","} forEach _types
+	? _str != "": _str = substr [_str, 0, sizeofstr _str - 1]
+	
+	_strategy = _param select 3
+	_style = format ["%1 + %2", localize {TZK_LANG_GUNNER}, localize {TZK_LANG_DRIVER}]
+	? 2 == _strategy: _style = localize {TZK_LANG_DRIVER}
+	? 3 == _strategy: _style = localize {TZK_LANG_GUNNER}
+
+	_msg = format [{%1 %2 %3 at %4}, localize {TZK_LANG_RECLAIM}, _str, _style, _clickedPos call funcCalcMapPos]
 	goto "display"
 # OrderCrossBridge
 	_bridgeId = _param select 0
