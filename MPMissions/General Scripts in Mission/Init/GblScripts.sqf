@@ -55,7 +55,7 @@ _f = {
 "Player\Effect\Fired_Artillery_Impact.sqs" call _f; // 031
 "\TZK_Scripts_4_0_4\Player\Effect\Fired_COC_Tracer.sqs" call _f; // 032
 "\TZK_Patch4_4_0_6\s\Player\Effect\Fired_FFUR_Cannon.sqs" call _f; // 033
-"\TZK_Patch4_4_0_6\s\Common\EH\Fired_TrackShell.sqs" call _f; // 034
+"Common\EH\Fired_TrackShell.sqs" call _f; // 034
 "\TZK_Patch4_4_0_6\s\EhInit\RedirectableM109a6g.sqs" call _f; // 035
 "\TZK_Patch4_4_0_6\s\EhInit\RedirectablePlz05.sqs" call _f; // 036
 "\TZK_Patch4_4_0_6\s\EhInit\RedirectableTos1.sqs" call _f; // 037
@@ -368,7 +368,7 @@ _f = {
 "\TZK_Patch4_4_0_6\s\Server\Loop\TownGroupRes1.sqs" call _f; // 308
 
 "\TZK_Scripts_4_0_4\Common\AddUnit.sqs" call _f; // 309
-"\TZK_Patch4_4_0_6\s\Init\pplCmdUnit.sqs" call _f; // 310
+"Init\pplCmdUnit.sqs" call _f; // 310
 "\TZK_Patch4_4_0_6\s\Init\svrStartVehs.sqs" call _f; // 311
 
 "\TZK_Scripts_4_0_4\Server\CheckWinDestruction.sqs" call _f; // 312
