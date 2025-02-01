@@ -6,16 +6,7 @@ private [{_ret}];
 _ret = 0;
 
 if (0 == _this) then {
-	_ret = [
-		  "Helicopter"
-		, "APC"
-		, "Truck"
-		, "Ship"
-		, "Plane"
-		, "Support APC"
-		, "Repair Truck"
-		, "Jeep"
-	];
+	_ret = TzkInGameText select 001;
 };
 
 if (1 == _this) then {
