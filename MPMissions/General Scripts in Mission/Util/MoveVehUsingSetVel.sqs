@@ -1,4 +1,4 @@
-; args: [output status (write only), input status (read only), [vehice, pos, speed (km/h), force speed type, cross bridge: bool]]
+; args: [output status (write only), input status (read only), [vehice, pos, speed (km/h)]]
 
 ; this SQS script loops to move vehicle using "setVelocity" command
 ; on script finished/aborted, the output status will be set to "false"
@@ -11,32 +11,13 @@ _param = _this select 2
 _vehicle = _param select 0
 _dest = _param select 1
 ; "speed" uses km/h while "velocity" uses m/s
-_speed = (_param select 2) / 3.6
-_forceSpdType = _param select 3
-_crossBrdige = _param select 4
+_maxMps = (_param select 2) / 3.6
 
 ? count _dest < 3: _dest set [2, _dest call funcHASL]
 
-? not _crossBrdige: goto "ReadyCheckFinished"
 ; Need to wait all units in vehicle "ready", otherwise vehicle won't keep their direction as expected
 ; However no available script command to remove "move" status ordered by player directly
 ; we can only wait in script
-_counter = 0
-_vehicle doMove getPos _vehicle
-# ReadyLoop
-	_counter = _counter + 1
-
-	_crews = crew _vehicle, _b = true, {if not (unitReady _x) then {_b = false}} forEach _crews
-	? not _b && 2 == _counter % 5: {_x doFollow leader _x} forEach _crews
-	? not _b && 19 == _counter % 20: _vehicle groupChat "Stuck in crossing bridge. Order 'fall back into formation' to free me."
-	~ 0.5
-
-	? count _crews <= 0: goto "EOF"
-	? not (_this select 1): goto "EOF"
-	? not alive _vehicle: goto "EOF"
-	? not _b: goto "ReadyLoop"
-
-# ReadyCheckFinished
 
 _vehicle doWatch _dest
 
@@ -52,45 +33,20 @@ _counter = 0
 _outSeaPos = [-500 - random(500), +500 + random(500), 100]
 # loop
 	_counter = _counter + 1
-	_moveSpd = (abs(speed _vehicle) + 10) / 3.6
-	? _speed < _moveSpd || _crossBrdige: _moveSpd = _speed
-	? _moveSpd < _speed && 1 == _forceSpdType: _moveSpd = _speed
+	_meterPerSec = (abs(speed _vehicle) + 10) / 3.6
+	? _maxMps < _meterPerSec: _meterPerSec = _maxMps
 
-	doStop _vehicle
+	_vehicle doMove _dest
 	_pos = getPosASL _vehicle
 	_diff = [_dest, _pos] call funcVectorSub
-	_diff = [_diff, _moveSpd / (_diff call funcVectorLength)] call funcVectorScale
-	? not _crossBrdige: goto "ForceMove"
-		; correct vehicle vector dir
-		_bridge = NearestObjectDistance [_vehicle, "Bridge2_xj400", 50]
-		? isNull _bridge: goto "EOF"
+	_diff = [_diff, _meterPerSec / (_diff call funcVectorLength)] call funcVectorScale
 
-		; correct x-bias
-		_vec = [getPosASL _bridge, _pos] call funcVectorSub
-		_vec = [_vec, [0,0,1], getDir _bridge] call funcVectorRot3D
-		_vec set [1,0], _vec set [2, 0]
-		_vec = [_vec, [0,0,1], - (getDir _bridge)] call funcVectorRot3D
+	; ForceMove
+	_vehicle setVelocity _diff
+	; if "_vehicle" is soldier, setVelocity won't work. Use set pos directly instead
 
-		; add z-correction in position/velocity. OFP engine has bug that z-bias sometimes won't work
-		; Refer to solution of attach, move vehicle to the sea and move back after a delay
-		_correctedPos = [_pos, _vec] call funcVectorAdd
-		? _counter < 3: _correctedPos = [_correctedPos, [0, 0, 0.5]] call funcVectorAdd, _vehicle setPosASL _outSeaPos
-		~ 0.1
-		_vehicle setPosASL _correctedPos
-
-		; _diff set [2, (_diff select 2) + 1]
-
-	# ForceMove
-		? _moveSpd * 3.6 <= 18 || not _crossBrdige: goto "VectorAdjusted"
-			_up = vectorUp _bridge
-			_vehicle setVectorDir _diff
-			_vehicle setVectorUp _up
-			_vehicle setPosASL _correctedPos
-		# VectorAdjusted
-		_vehicle setVelocity _diff
-		; if "_vehicle" is soldier, setVelocity won't work. Use set pos directly instead
 	~ 0.2
-		_vehicle doWatch _dest
+	_vehicle doWatch _dest
 
 	~ 0.8
 	? not (_this select 1): goto "EOF"

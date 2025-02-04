@@ -28,7 +28,11 @@ _drivers = []; _drivers resize _j; _j = 0; {
 } forEach _vehicles;
 _drivers resize _j;
 
-[_drivers, [_pos], "hForceMoveLand", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs";
+if _bRts then {
+	[_drivers, [_pos], "hForceMoveLand", "Order"] exec "Rts\FrameWork\GenArrayCommand.sqs";
+} else {
+	{[_x, [_pos]] exec "Rts\Order\fakeForceMoveLand.sqs"} forEach _drivers;
+};
 
 if _bRts then {
 	false call preprocessFile (TzkScripts select 361);
