@@ -33,7 +33,7 @@ doStop _vehicle
 
 ? [getPosASL _vehicle, 5] call funcPosNearSea: goto "moveInSea"
 ; move on land
-	_moveParamCache = [true, true, [_vehicle, _destination, 15, 0, false]]
+	_moveParamCache = [true, true, [_vehicle, _destination, 15]]
 	_moveParamCache exec "Util\MoveVehUsingSetVel.sqs"
 	# loopMoveLand
 		~ 1
@@ -43,7 +43,7 @@ doStop _vehicle
 		? _moveParamCache select 0: goto "loopMoveLand"
 
 # moveInSea
-	_moveParamCache = [true, true, [_vehicle, _destination, 60, 0, false]]
+	_moveParamCache = [true, true, [_vehicle, _destination, 60]]
 	_moveParamCache exec "Util\MoveVehUsingSetVel.sqs"
 	# loopMoveSea
 		~ 1
