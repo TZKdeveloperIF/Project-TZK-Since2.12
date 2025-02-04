@@ -2,10 +2,11 @@
 _units = _this
 ? count _units > 1 : _unitsToRemove = []; {if !(_x in units player) then { _unitsToRemove set [count _unitsToRemove, _x] } } forEach _units; _units = _units - _unitsToRemove
 
-; commander uses "black list". Town groups and other players' groups can't be disband while all others can
+; commander uses "black list". Town groups can't be disband
+; Since RTS system allows CMD disband other players' members, the UC disband blacklist shouldn't limit this as well
 ; common players use "white list". Only groups he can manage can be disband
 _whileList = [groupPlayer]
-_blackList = (townGroups select siPlayer) + (groupMatrix select siPlayer) - (groupAiMatrix select siPlayer) - [groupPlayer]
+_blackList = (townGroups select siPlayer)
 _playableGroups = (groupMatrix select si0) + (groupMatrix select si1)
 _workerAndBaseGroup = (workerGroups select siPlayer) + [baseGroup select siPlayer]
 ? (groupCommander select siPlayer) in (groupAiMatrix select siPlayer): _whileList = _whileList + (groupAiMatrix select siPlayer) + _workerAndBaseGroup, goto "SkipSuperiorCheck"
