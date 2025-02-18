@@ -369,7 +369,7 @@ _f = {
 
 "\TZK_Scripts_4_0_4\Common\AddUnit.sqs" call _f; // 309
 "Init\pplCmdUnit.sqs" call _f; // 310
-"\TZK_Patch4_4_0_6\s\Init\svrStartVehs.sqs" call _f; // 311
+"Init\svrStartVehs.sqs" call _f; // 311
 
 "\TZK_Scripts_4_0_4\Server\CheckWinDestruction.sqs" call _f; // 312
 "\TZK_Patch4_4_0_6\s\Server\CheckSupportVehicle.sqs" call _f; // 313

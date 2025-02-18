@@ -1,7 +1,9 @@
-; args: [west mhq pos, east mhq pos]
-; create start vehicles belongs to both side on the beginning. After having defined start pos they'll be placed soon
+; args: none
+; It'll be better to pass an array reference to pass local but not global state, and mhq pos.
+; However by now hard to do this. Sometimes game won't automatically start but controlled by 
+; players. But we should always generate start vehicles in the beginning
 
-_posSide0 = _this select 0; _posSide1 = _this select 1
+; create start vehicles belongs to both side on the beginning. After having defined start pos they'll be placed soon
 
 ~ 1
 
@@ -37,6 +39,16 @@ _list = vehiclesStart select _si; _i = 0; _c = count _list
 	goto "AddVehicle1"
 # Side1Created
 
+# waitDeploy
+	? svrGblStates select 0: goto "deployVehs"
+	~ 2
+	goto "waitDeploy"
+# deployVehs
+
+~ 2
+
+; server always know where mhqs exactly are
+_posSide0 = getPosASL(mhq select si0); _posSide1 = getPosASL(mhq select si1)
 
 _vector = [_posSide1, _posSide0] call funcVectorSub; _dir = 0
 
