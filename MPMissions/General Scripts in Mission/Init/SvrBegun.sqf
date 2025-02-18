@@ -39,3 +39,6 @@ call preprocessFile "Init\SvrBroadcastAiGrps.sqf";
 // process "custom match (for PVE now)"
 call preprocessFile "Init\SvrCustomPveInfo.sqf";
 // End here. Server will continue initialization on "custom match" processed
+
+// generate start vehicles and wait to deploy
+0 exec (TzkScripts select 311);
