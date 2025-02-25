@@ -3,24 +3,35 @@ _group = _this select 0; _ti = _this select 1; _si = _this select 2
 _cLast = _this select 3; _siLast = _this select 4; _timeReinforce = _this select 5; _bCheckSupport = _this select 6
 _support = _this select 7; _hibernate = _this select 8; _tgaArmorType = _this select 9
 
-~ 5
+_mainLoopDelay = 30, _tgaDelay = 15, _tgahDelay = 25, _commonDelay = 5
+? dev: _mainLoopDelay = 2, _tgaDelay = 0.1, _tgahDelay = 0.1, _commonDelay = 0.1
+
+~ _commonDelay
 
 _unitsSupport = []; _unitsSupporting = []
+
+; _tgaTypes = []; _i = 0; {_tgaTypes set [_i, _x select 0], _i = _i + 1} forEach (_tgaArmorType select _si)
+_tgahTypes = []; _i = 0; {_tgahTypes set [_i, _x select 0], _i = _i + 1} forEach (armorTownH select _si)
+_lightVehicles = [], _heavyVehicles = [], _maxLight = 2 + 1, _maxHeavy = 4 + 1
 
 _distSpawn = viewDistance + 1500
 _flag = (towns select _ti) select tdFlag
 _posFlag = getPos _flag
 
+; =============== init completed ===============
+
 ? _hibernate: goto "CheckSpawn"
 # Update
-	~ 30
+	~ _mainLoopDelay
+
 	; check if town taken (won)
 	_siTown = (towns Select _ti) select tdSide
 	? _siTown == _si && _siLast != _si : _timeReinforce = time + timeReinforceTown
 	_siLast = _siTown
 	? _siTown == _si && time > _timeReinforce : goto "Reinforce"
 	? (count (units _group)) == 0 : goto "Update"
-	#ReinforceReady
+
+	# ReinforceReady
 	? _hibernate: goto "CheckSpawn"
 	{ if (alive _x) then { _x doWatch ([getPos _x, 200, 200] call funcGetRandomPos); if (unitReady _x) then { doStop _x } } } forEach units _group	
 	? _siTown != _si : goto "TakeFlag"
@@ -48,10 +59,10 @@ _group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "N
 	{ if ((random 1) < 0.5 && !(_x in (_unitsSupport + _unitsSupporting)) ) then { _x doMove ([_posFlag, 5, 5] call funcGetRandomPos) } } forEach units _group
 	goto "Update"
 
-#Reinforce
+# Reinforce
 	_timeReinforce = time + timeReinforceTown
 	_c = count (units _group); _i = _c; _units = units _group
-	#ClearDeadinRein
+	# ClearDeadinRein
 	_i = _i - 1
 	? _i >= 0 && _i < count _units : _u = _units select _i; if (!alive _u && _u == vehicle _u) then {deleteVehicle _u}
 	? _i > 0 : goto "ClearDeadinRein"
@@ -61,7 +72,7 @@ _group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "N
 	? count (units _group) == 10 : goto "AddTankH"
 	goto "ReinforceReady"
 
-#AddInf
+# AddInf
 	_type = -1
 	while "_type == -1" do { _type = (infTown select _si) call funcGetRandomUnitType }
 	_pos = [_posFlag, 149, 149] call funcGetRandomPos
@@ -69,10 +80,16 @@ _group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "N
 	[_type, 0, 0, 0, _pos, random 360, _si, giTown, _group, 0, 0] exec (TzkScripts select 309)
 	goto "ReinforceReady"
 
-#AddTank
+# AddTank
 	? ((upgMatrix select _si) select upgTownGroupH) == 2: goto "AddTankH"
 	? ((upgMatrix select _si) select upgTownGroupb) != 2: goto "ReinforceReady"
-	~15
+
+	[_lightVehicles, {!alive _this}] call preprocessFile "Algo\arrayEraseIf.sqf"
+	[_heavyVehicles, {!alive _this}] call preprocessFile "Algo\arrayEraseIf.sqf"
+	; should add tg, but full of vehicle. Add soliders
+	? count _lightVehicles >= _maxLight: goto "AddInf"
+
+	~ _tgaDelay
 		_type = -1
 		while "_type == -1" do { _type = (_tgaArmorType select _si) call funcGetRandomUnitType }
 		_pos = [_posFlag, 12, 13] call funcGetRandomPos
@@ -80,14 +97,21 @@ _group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "N
 		
 		_timeAbort = time + 5
 		@ (!isNull _vehicle || time > _timeAbort)
+		? _type in _tgahTypes: _heavyVehicles set [count _heavyVehicles, _vehicle]
+		? not (_type in _tgahTypes): _lightVehicles set [count _lightVehicles, _vehicle]
 	  
 	? count _unitsInfantry >= 8 : { deleteVehicle (_unitsInfantry select _x) } forEach [0,1]
-	~5
+	~ _commonDelay
 	goto "ReinforceReady"
 
-#AddTankH
+# AddTankH
 	? ((upgMatrix select _si) select upgTownGroupH) != 2: goto "ReinforceReady"
-	~25
+
+	[_heavyVehicles, {!alive _this}] call preprocessFile "Algo\arrayEraseIf.sqf"
+	; should add tg, but full of vehicle. Add soliders
+	? count _heavyVehicles >= _maxHeavy: goto "AddInf"
+
+	~ _tgahDelay
 		_type = -1
 		while "_type == -1" do { _type = (armorTownH select _si) call funcGetRandomUnitType }
 		_pos = [_posFlag, 149, 149] call funcGetRandomPos
@@ -95,9 +119,26 @@ _group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "N
 		
 		_timeAbort = time + 5
 		@ (!isNull _vehicle || time > _timeAbort)
-	  
-	? count _unitsInfantry >= ( [8,6] select ( ((upgMatrix select _si) select upgTownGroupb) == 2 ) ) : { deleteVehicle (_unitsInfantry select _x) } forEach [0,1]
-	~5
+		_heavyVehicles set [count _heavyVehicles, _vehicle]
+
+	_vehFull = count _unitsInfantry < ([8,6] select (upgMatrix select _si select upgTownGroupb == 2))
+	? not _vehFull: {deleteVehicle (_unitsInfantry select _x)} forEach [0,1], goto "TankHeavyAdded"
+	; check whether need replace TGA vehicles
+	? 0 == count _lightVehicles: goto "TankHeavyAdded"
+	_i = 0, _c = count _lightVehicles, _found = false
+	# CheckLightVehicles
+		_vehicle = _lightVehicles select _i
+		? alive _vehicle: _found = true, _lightVehicles set [_i, objNull]
+		_i = _i + 1
+		? _i < _c && not _found: goto "CheckLightVehicles"
+
+	? _found: _crew = crew _vehicle, _pos = getPosASL _vehicle; {_x setPosASL _pos} forEach _crew
+	~ 0.1
+	? _found: deleteVehicle _vehicle, {deleteVehicle _x} forEach _crew
+	[_lightVehicles, {!alive _this}] call preprocessFile "Algo\arrayEraseIf.sqf"
+
+	# TankHeavyAdded
+	~ _commonDelay
 	goto "ReinforceReady"
 
 
