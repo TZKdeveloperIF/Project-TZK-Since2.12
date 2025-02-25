@@ -1,8 +1,9 @@
-; args: [_group, _ti, _si, _cLast, _siLast, _timeReinforce, _bCheckSupport, _support, _hibernate]
-~5
+; args: [_group, _ti, _si, _cLast, _siLast, _timeReinforce, _bCheckSupport, _support, _hibernate, _tgaArmorType]
 _group = _this select 0; _ti = _this select 1; _si = _this select 2
 _cLast = _this select 3; _siLast = _this select 4; _timeReinforce = _this select 5; _bCheckSupport = _this select 6
-_support = _this select 7; _hibernate = _this select 8
+_support = _this select 7; _hibernate = _this select 8; _tgaArmorType = _this select 9
+
+~ 5
 
 _unitsSupport = []; _unitsSupporting = []
 
@@ -11,9 +12,8 @@ _flag = (towns select _ti) select tdFlag
 _posFlag = getPos _flag
 
 ? _hibernate: goto "CheckSpawn"
-#Update
-~30
-? _time > 3*60 && count _unitsSupport == 0: goto "NextLoop"
+# Update
+	~ 30
 	; check if town taken (won)
 	_siTown = (towns Select _ti) select tdSide
 	? _siTown == _si && _siLast != _si : _timeReinforce = time + timeReinforceTown
@@ -74,7 +74,7 @@ _group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "N
 	? ((upgMatrix select _si) select upgTownGroupb) != 2: goto "ReinforceReady"
 	~15
 		_type = -1
-		while "_type == -1" do { _type = (armorTown select _si) call funcGetRandomUnitType }
+		while "_type == -1" do { _type = (_tgaArmorType select _si) call funcGetRandomUnitType }
 		_pos = [_posFlag, 12, 13] call funcGetRandomPos
 		_vehicle = [_type, 1, 1, 0, _pos, random 360, _si, giTown, _group, 0, 0] call funcAddServerUnit
 		
@@ -89,7 +89,7 @@ _group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "N
 	? ((upgMatrix select _si) select upgTownGroupH) != 2: goto "ReinforceReady"
 	~25
 		_type = -1
-		while "_type == -1" do { _type = (armorTownHIsle select _si) call funcGetRandomUnitType }
+		while "_type == -1" do { _type = (armorTownH select _si) call funcGetRandomUnitType }
 		_pos = [_posFlag, 149, 149] call funcGetRandomPos
 		_vehicle = [_type, 1, 1, 0, _pos, random 360, _si, giTown, _group, 0, 0] call funcAddServerUnit
 		
@@ -102,11 +102,10 @@ _group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "N
 
 
 
-#Hibernate
-  [_ti, _si] exec (TzkScripts select 153)
-#CheckSpawn
-~10
-? _time > 3*60: goto "NextLoop"
+# Hibernate
+	[_ti, _si] exec (TzkScripts select 153)
+# CheckSpawn
+	~ 10
 	_hibernate = true
 	{ _g = _x; { if ((_x distance _flag) < _distSpawn) then { _hibernate = false } } forEach (units _g) } forEach (groupMatrix select (siEnemy select _si))
 	? !_hibernate : goto "Spawn"
@@ -167,6 +166,3 @@ _group setCombatMode "RED"; _group setBehaviour "COMBAT"; _group setSpeedMode "N
 	; TEST { if (alive _x) then { _posMove = [getPos _support, 5, 5] call funcGetRandomPos; _x doMove _posMove; player globalchat format["UTG: %1 moves to support in %2 ", _x, (towns select _ti) select tdName]; } } forEach _unitsSupport
 	{ if (alive _x) then { _posMove = [getPos _support, 5, 5] call funcGetRandomPos; _x doMove _posMove } } forEach _unitsSupport
 	goto "Patrol"
-  
-#NextLoop
-	[_group, _ti, _si, _cLast, _siLast, _timeReinforce, _bCheckSupport, _support, _hibernate] exec (TzkScripts select 226); exit

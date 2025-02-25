@@ -270,13 +270,13 @@ _f = {
 "Server\Loop\KnowsAboutG.sqs" call _f; // 219
 "Server\Loop\KnowsAboutR.sqs" call _f; // 220
 
-"\TZK_Patch4_4_0_6\s\Server\Start\TownGroup1.sqs" call _f; // 221
-"\TZK_Patch4_4_0_6\s\Server\Start\TownGroup2.sqs" call _f; // 222
-"\TZK_Patch4_4_0_6\s\Server\Start\TownGroup3.sqs" call _f; // 223
-"\TZK_Patch4_4_0_6\s\Server\Start\TownGroup4.sqs" call _f; // 224
-"\TZK_Patch4_4_0_6\s\Server\Loop\TownGroup1.sqs" call _f; // 225
-"\TZK_Patch4_4_0_6\s\Server\Loop\TownGroup2.sqs" call _f; // 226
-"\TZK_Patch4_4_0_6\s\Server\Loop\TownGroup3.sqs" call _f; // 227
+"Server\Start\TownGroup1.sqs" call _f; // 221
+"Server\Start\TownGroup2.sqs" call _f; // 222
+"Server\Start\TownGroup3.sqs" call _f; // 223
+"Server\Start\TownGroup4.sqs" call _f; // 224
+"Server\Loop\townGroupGeneral.sqs" call _f; // 225
+"" call _f; // 226
+"" call _f; // 227
 "\TZK_Patch4_4_0_6\s\Server\Loop\TownGroup4.sqs" call _f; // 228
 
 "\TZK_Patch4_4_0_6\s\Common\TriggerGameEnd.sqs" call _f; // 229
