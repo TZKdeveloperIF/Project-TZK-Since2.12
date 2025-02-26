@@ -5,7 +5,19 @@ _pos = getPos _enemy
 _textType = ""
 ? _enemy == (driver _enemy) && report == reportAll: _textType = "Infantry"
 ? _enemy != (driver _enemy) && report < reportStructs: _textType = (if ((_pos select 2) > 10) then {"Aircraft"} else {"Vehicle"})
-{ if (_enemy in _x && report < reportNone) then { _textType = "Structure" } } foreach (structMatrix select (siEnemy select siPlayer))
+
+# CheckStruct
+	? report > reportStructs: goto "StructChecked"
+	_type = _enemy call funcGetStructTypeFromObject
+	? _type == -1: goto "StructChecked"
+	? _type in structsOccupiableHowitzer: _textType = "Howitzer", goto "StructChecked"
+	? _type in structsOccupiableMortar: _textType = "Mortar", goto "StructChecked"
+	? _type in structsOccupiableMGGround: _textType = "MG", goto "StructChecked"
+	? _type in structsOccupiableMGTower: _textType = "MG", goto "StructChecked"
+	? _type in structsOccupiableGunfort: _textType = "Gunfort", goto "StructChecked"
+	? _type == stBridge: _textType = "Bridge", goto "StructChecked"
+	_textType = "Structure", goto "StructChecked"
+# StructChecked
 
 ? _textType == "Aircraft": if ("ParachuteBase" countType [_enemy] > 0) then {_textType = "Parachute"}
 
