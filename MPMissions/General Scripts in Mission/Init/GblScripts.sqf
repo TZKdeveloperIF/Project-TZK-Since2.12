@@ -38,7 +38,7 @@ _f = {
 "\TZK_Patch4_4_0_6\s\UI\BuyUnits_Available.sqf" call _f; // 016
 "\TZK_Patch4_4_0_6\s\UI\AttachVehicle.sqs" call _f; // 017
 "Debug\Console.sqs" call _f; // 018
-"\TZK_Patch4_4_0_6\s\UI\Equipment.sqs" call _f; // 019
+"UI\Equipment\dlg.sqs" call _f; // 019
 
 "Rts\Dialog\PplGrpOrder.sqs" call _f; // 020
 "Player\Dialog\Query.sqs" call _f; // 021

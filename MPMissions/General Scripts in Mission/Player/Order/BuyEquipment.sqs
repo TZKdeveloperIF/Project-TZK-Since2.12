@@ -1,16 +1,15 @@
-; args: [unit, [pos, equipment index, overwrite: bool]]
+; args: [unit, pos, equipment info, overwrite: bool]
+; equipment info should be READ-ONLY. It's an array reference
 
 _unit = _this select 0
-_pos = _this select 1 select 0
-_template = _this select 1 select 1
-_overWrite = _this select 1 select 2
+_pos = _this select 1
+_custom = _this select 2
+_overWrite = _this select 3
 _this = 0
 
 ? !(alive _unit): exit
 _v = vehicle _unit
 ? _v != _unit: exit
-
-? count (infCustom select _template) == 0: _unit groupChat "Equipment Template Not Defined"; exit
 
 #FindSupport
 _support = [_unit, siPlayer, 512, true] call preprocessFile "Util\SoldierRearmSupport.sqf"
@@ -43,7 +42,6 @@ _timeAbort = time + 15*60; _timeMove = time - 1
 
 ? _support call funcGetUnitTypeFromObject != -1: [_unit, _support] exec "Player\HealRepair.sqs"
 ; Load Equipment
-_custom = infCustom select _template
 _typePrim = _custom select 1
 _typeHandgun = _custom select 2
 _typeSec = _custom select 3
