@@ -6,11 +6,12 @@ _type = _this select 0
 _si = _this select 1
 _objects = _this select 2
 
-? (_si == si0): { _x addEventHandler ["killed", {[_this, si0] exec (TzkScripts select 063)}] } foreach _objects
-? (_si == si1): { _x addEventHandler ["killed", {[_this, si1] exec (TzkScripts select 063)}] } foreach _objects
+? _si == si0 || _si == si1: {_x addEventHandler ["killed", {[_this, _si] exec (TzkScripts select 063)}]} foreach _objects
 
 ; don't calculate score for bridge and obstruction
-	? _type in structsWalls || _type == stTankTrap || _type == stWireFence || _type == st10mHeightRoof || _type == st20mHeightRoof || _type == stBridge: goto "skipCalcScore"
+	? _type in structsWalls || _type == stBridge: goto "skipCalcScore"
+	? _type == stTankTrap || _type == stWireFence: goto "skipCalcScore"
+	? _type == st10mHeightRoof || _type == st20mHeightRoof: goto "skipCalcScore"
 
 	{ [_x, _si, structDefs select _type select sdCost] exec (TzkScripts select 038) }  forEach _objects
 # skipCalcScore
