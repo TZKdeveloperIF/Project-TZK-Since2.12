@@ -264,7 +264,7 @@ _f = {
 
 "\TZK_Patch4_4_0_6\s\Server\Init\DefTowerStruct.sqs" call _f; // 215
 "Server\Init\PrimaryStruct.sqs" call _f; // 216
-"\TZK_Patch4_4_0_6\s\Server\Init\SecondaryStruct.sqs" call _f; // 217
+"Server\Init\SecondaryStruct.sqs" call _f; // 217
 
 "\TZK_Patch4_4_0_6\s\Server\Start\KnowsAbout.sqs" call _f; // 218
 "Server\Loop\KnowsAboutG.sqs" call _f; // 219
