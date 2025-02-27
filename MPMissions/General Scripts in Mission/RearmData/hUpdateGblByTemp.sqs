@@ -1,0 +1,23 @@
+; args: [unit, template]
+
+_unit = _this select 0
+_template = _this select 1
+
+? not alive _unit: exit
+
+_res = _template call preprocessFile "Common\SQF\decodeEquipTemplate.sqf"
+_weapons = _res select 0, _mags = _res select 1
+
+; cfg_todo: current "update or insert" should be modularized
+@ not mutexEditRearmData
+	mutexEditRearmData = true
+
+	; update or insert
+	_index = rearmDataObj find _unit
+	? -1 == _index: _index = rearmDataObj find objNull
+	? -1 == _index: _index = count rearmDataObj
+
+	rearmDataObj set [_index, _unit]
+	rearmDataEquip set [_index, _res]
+
+	mutexEditRearmData = false

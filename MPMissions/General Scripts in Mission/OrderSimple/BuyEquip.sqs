@@ -59,17 +59,8 @@ _timeAbort = time + 15 * 60; _timeMove = time - 1
 	; ? _healInPassing && _isAiGroup: xxx exec "Server\AI_Heal.sqs"
 
 ; Load Equipment
-_typePrim = _custom select 1
-_typeHandgun = _custom select 2
-_typeSec = _custom select 3
-_typeBinocular = _custom select 4
-_typeNVG = _custom select 5
-_equipment = _custom select 6
-
-_weapons = +weaponsCustom; _mags = []
-{ if (_x != -1) then {_weapons = _weapons + [weaponSearch select _x]} } forEach [_typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG]
-{ _mags = _mags + [equipSearch select (_x select 0)] } foreach (_equipment select isGeneral)
-{ _mags = _mags + [equipSearch select (_x select 0)] } foreach (_equipment select isHandgun)
+_res = _custom call preprocessFile "Common\SQF\decodeEquipTemplate.sqf"
+_weapons = _res select 0, _mags = _res select 1
 _equipFee = [_unit, _weapons, _mags, _costFactor] call funcCalcRearmCost
 
 _money = groupMoneyMatrix select _si select _gi
@@ -86,13 +77,12 @@ removeAllWeapons _unit; {_unit addMagazine _x} forEach _mags; {_unit addWeapon _
 ; Write current equipments into rearm data LOCALLY if selected overwrite rearmData.
 ? not _overWrite: goto "Finish"
 
-	; todo: this should be done synchronously
-	; todo: broadcast the adding-rearm-data with indexes in fixed format
-	[_unit, _weapons, _mags, -1, 1, true] exec (TzkScripts select 071)
-	~ 0.1
-	_i = rearmDataObj find _unit
-	? _i == -1: [_unit] exec (TzkScripts select 072)
-	goto "Finish"
+; todo: need reconstruct the rearm-data design. Always send type info to record data. 
+; Soldiers should search by unit first. Search by type if inexist in unit list
+
+; Globally update rearm data
+[_unit, _custom] exec "RearmData\sUpdateGblByTemp.sqs"
+goto "Finish"
 
 # Finish
 	~ 1

@@ -1,0 +1,10 @@
+; args: [unit, template]
+
+_unit = _this select 0
+_template = _this select 1
+
+_netIdStr = _unit call funcGenNetIdStr
+? not alive _unit: exit
+
+[_unit, _template] exec "RearmData\hUpdateGblByTemp.sqs"
+publicExec format [{[UnitById %1, %2] exec "RearmData\hUpdateGblByTemp.sqs"}, _netIdStr, _template]
