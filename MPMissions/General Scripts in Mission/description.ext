@@ -95,4 +95,53 @@ class TzkRtsFirstCtrlBase: Button {
 #include "TZK_Patch4_4_0_6\s\description_31_rtsSubDialogs.h"
 #include "TZK_Patch4_4_0_6\s\description_32_406RedefinedDlgs.h"
 
+class TzkCmdMapDlgRts2: TzkCmdMapDlgRts {
+	controls[] = {
+		FirstCtrl, 
+		Unselect, ShownGroup, 
+		LeftBtn0, LeftBtn1, LeftBtn2, LeftBtn3, 
+		LeftBtn4, LeftBtn5, LeftBtn6, LeftBtn7, 
+		LeftBtn8, LeftBtn9, 
+		LeftBtn10, LeftBtn11, 
+		LeftBtn12, // RTS "cross bridge". For RTS but not player group
+		LeftBtn13, // for RTS "stop"
+		LeftBtn14, LeftBtn15, 					// RTS move land/ship
+		LeftBtn16, // RTS "buy equipment"
+
+		DownBtn0, DownBtn1, DownBtn2, 
+		DownBtn3, DownBtn4, DownBtn5, 
+		DownBtn6, DownBtn7, DownBtn8, 
+		DownBtn9, DownBtn10, DownBtn11, 
+		DownBtn12, DownBtn13, DownBtn14, 
+		RightDownBg0, RightDownBg1, RightDownBg2, RightDownBg3, RightDownBg4, 
+		RightDownBg5, RightDownBg6, RightDownBg7, RightDownBg8, 
+		RightDownBtn0, RightDownBtn1, RightDownBtn2, RightDownBtn3, RightDownBtn4, 
+		RightDownBtn5, RightDownBtn6, RightDownBtn7, RightDownBtn8, 
+		LeftDownBtn0, LeftDownBtn1, LeftDownBtn2, LeftDownBtn3, LeftDownBtn4, 
+		LeftDownBtn5, LeftDownBtn6, LeftDownBtn7, LeftDownBtn8, 
+		RtsSelectTypeBtn0, RtsSelectTypeBtn1, RtsSelectTypeBtn2, RtsSelectTypeBtn3, 
+		Exit
+	};
+	// cfg_todo: add LeftBtn16 to TzkCmdMapDlgRts
+	// cfg_todo: how to add controls simply? 
+	class LeftBtn16: LeftBtn0 { // RTS "buy equipment"
+		idc = IDC + 16 * 2 + 16;
+		x = 0.025 + 0.09;
+		y = 0.10 + 0.15 + 0.05 * 5;
+		w = 0.16;
+		text = "";
+		action = "btnValue00 = 16";
+	};
+};
+
+class TzkCmdMapDlgPplOrder2: TzkCmdMapDlgPplOrder {
+	class LeftBtn12: LeftBtn4 { // overwrite
+		idc = IDC + 16 * 2 + 12;
+		x = 0.025 + 0.09;
+		y = 0.10 + 0.15 + 0.05 * 5;
+		w = 0.16;
+		action = "btnValue00 = 12";
+	};
+};
+
 // EOF

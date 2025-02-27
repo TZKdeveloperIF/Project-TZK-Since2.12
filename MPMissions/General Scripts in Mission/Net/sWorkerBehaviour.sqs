@@ -1,5 +1,10 @@
 ; args: worker behaviour (enum)
 
+_valid = false
+; this check is valid for undefined as well
+? _this >= 0 && _this < 100: _valid = true
+? not _valid: exit
+
 _value = _si + _si * 10 * _this
 
 _value exec "\TZK_Patch4_4_0_6\s\Net\hWorkerBehaviour.sqs"

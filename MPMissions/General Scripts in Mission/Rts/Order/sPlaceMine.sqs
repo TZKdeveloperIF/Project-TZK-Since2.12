@@ -9,7 +9,7 @@ _i = 0, _j = 0, _selectedUnits = []
 	_vehicle = vehicle _unit
 	? _unit != _vehicle: goto "continue"
 
-	_magData = (_unit call funcGetRearmData) select 1
+	_magData = (_unit call funcGetSoldierRearmData) select 1
 	? not (magMine in _magData || magPistolMine in _magData): goto "continue"
 
 	_selectedUnits set [_j, _unit]

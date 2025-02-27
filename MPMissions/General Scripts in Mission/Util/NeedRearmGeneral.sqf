@@ -4,7 +4,7 @@ _rearm = false; _checked = false;
 
 // Unnecessary to check rearmdata for all objs. Only for those empty mag objs
 if (not _checked && 0 == count magazines _this) then {
-	if (count ((_this call funcGetRearmData) select 1) == 0) then {
+	if (count ((_this call funcAutoRearmData) select 1) == 0) then {
 		_checked = true; _rearm = false;
 	};
 };
