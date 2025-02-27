@@ -5,9 +5,6 @@ Recording the updating of commanding AI groups. Order, orderTemp and settings of
 + Adjust the eject distance of Transport Duty.
 + Add force engine off in AI transport duty script.
 + Add "Repair" and "Rearm" button in Unit Cam.
-## 4.0.5.10
-+ Add 1 parameter "Overwrite rearmData" for player group ***"Buy Equipment"*** order. Player can select whether overwrite unit's rearmData via that order.
-+ In player's rearm script, infantry will be searched in rearmDataObj first. The array *rearmDataObj* is for recording those units without meaningful type like AI group leader or custom soldiers. By now in new ***"Buy Equipment"*** order we allow player overwrite commom soldier's rearmData thus they may be recorded in *rearmDataObj* as well. It won't be a burden to make this check since there're few units in player's group.
 ## 4.0.5.09
 + Add 2 extra type parameters for "disengage type" concurrent order.
 + Add "Move Unit" in "AI Strat"
