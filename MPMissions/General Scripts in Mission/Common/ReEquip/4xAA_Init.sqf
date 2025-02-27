@@ -22,7 +22,7 @@ while {_i < _ci} do {
 	_vehicles = (UnitMatrix select _si) select (_types select _i); _j = 0; _cj = count _vehicles;
 	while {_j < _cj} do {
 		_unit = _vehicles select _j;
-		_rearmData = _unit call funcGetRearmData; _wep = _rearmData select 0; _mag = _rearmData select 1;
+		_rearmData = _unit call funcGetVehicleRearmData; _wep = _rearmData select 0; _mag = _rearmData select 1;
 		_hasRedTop = false;
 		{
 			if (_x in ["RedTop_26_xj400","RedTop_30_xj400","RedTop_40_xj400"

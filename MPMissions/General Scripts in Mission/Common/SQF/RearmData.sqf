@@ -1,7 +1,7 @@
 // args: unit
 // return: [weapons, magazines]
 
-// player units can equip custom weapons and overwrite equipment data in-game
+// soldiers now can equip custom weapons and overwrite equipment data in-game
 // according to practice in player units' art order, we should get infomations from rearmDataObj first
 
 private [{_i}, {_ret}];

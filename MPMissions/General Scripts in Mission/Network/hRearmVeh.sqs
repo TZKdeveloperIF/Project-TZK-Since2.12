@@ -8,7 +8,7 @@ _bDeploy = false, _bIsDeploying = "DeploySwitch_xj400" in magazines _v
 ? not bool_TZK_199_Mode: _name = substr [typeOf _v, 0, 4]
 ? "M109A6G_Base_xj400" countType [_vehicle] > 0 || "PLZ05_VME_Base_xj400" countType [_vehicle] > 0 || "TOS1_TZK_xj400" countType [_vehicle] > 0: _bDeploy = true
 
-_rearmData = _v call funcGetRearmData; _weapons = _rearmData select 0; _mags = _rearmData select 1
+_rearmData = _v call funcGetVehicleRearmData; _weapons = _rearmData select 0; _mags = _rearmData select 1
 ? count _mags == 0 : exit
 _wpns = weapons _v
 

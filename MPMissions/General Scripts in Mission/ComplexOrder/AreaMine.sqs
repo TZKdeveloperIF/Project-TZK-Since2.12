@@ -101,7 +101,7 @@ _moveParamCache exec "Util\Move2DestSoldier.sqs"
 	goto "ReachArea"
 
 # CheckRearm
-	_magData = (if _forServer then {(_unit call funcGetRearmData) select 1} else {(_unit call preprocessFile "Common\SQF\RearmData.sqf") select 1})
+	_magData = (_unit call funcAutoRearmData) select 1
 	? not (magMine in _magData || magPistolMine in _magData): _msg = "Can't rearm mine. Order aborted", goto "Quit"
 
 	_sup = [_unit, _si, 512, true] call preprocessFile "Util\SoldierRearmSupport.sqf"

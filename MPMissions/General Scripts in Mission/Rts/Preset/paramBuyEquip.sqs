@@ -3,4 +3,12 @@
 _units = _this select 0
 _pos = _this select 1
 
+_a = _pos select 0; _a = _a - _a % 1
+_b = _pos select 1; _b = _b - _b % 1
+; assign a new array to "_pos" var
+_pos = [_a, _b]
+
+_vs = [_pos, 500, (typesSupportPlus select siPlayer) + ([[utMHQ0, utMCVW], [utMHQ1, utMCVE]] select siPlayer), [_v]] call funcGetNearbyVehicles
+? count _vs == 0 : TitleText ["No support vehicles in that area.", "PLAIN DOWN", 0.25]; exit
+
 [player, true, customInfEquipRate, true, _units, _pos] exec (TzkScripts select 019)

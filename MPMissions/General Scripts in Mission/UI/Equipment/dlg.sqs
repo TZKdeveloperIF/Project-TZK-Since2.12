@@ -507,12 +507,12 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 		_templ = []
 		[_templ, _typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG, _equipment] call _funcGenerateTemplate
 		? count _templ == 0: TitleText ["No equipment selected.", "Plain", 0.25], goto "Update"
-		{[_x, _pos, _templ, 1 == _overWrite] exec "Player\Order\BuyEquipment.sqs"} forEach _units
+		[_units, groupPlayer, [_pos, _templ, 1 == _overWrite, _costFactor]] exec "Rts\Preset\beforeOrderBuyEquip.sqs"
 		goto "Quit"
 
 	# UseTemplate
 		? count(infCustom select _id) == 0: hint "Soldier Not Defined"; _unit groupChat "Soldier Not Defined"; goto "Update"
-		{[_x, _pos, infCustom select _id, 1 == _overWrite] exec "Player\Order\BuyEquipment.sqs"} forEach _units
+		[_units, groupPlayer, [_pos, infCustom select _id, 1 == _overWrite, _costFactor]] exec "Rts\Preset\beforeOrderBuyEquip.sqs"
 		_lastCustom = _id
 		goto "Quit"
 
