@@ -39,6 +39,12 @@ btnLoadTempl = false
 btnBuy = false
 btnClear = false
 
+_funcGenerateTemplate = preprocessFile "UI\Equipment\fGenTemplate.sqf"
+_funcRefreshCustom = preprocessFile "UI\Equipment\fRefreshCustom.sqf"
+
+; refresh custom cursel if explicitly edit the board
+_procRefreshCustom = {if (_custom && lbCurSel IDC_LB_TEMPLATES != -1) then {call _funcRefreshCustom}}
+
 #WaitNoDialog
 @!dialog
 ~0.2
@@ -154,6 +160,9 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 	_primLast = _prim
 	_prim = lbCurSel IDC_LB_PRIM
 	? (_prim == -1 || _prim == _primLast): goto "SkipInitPrim"
+
+		call _procRefreshCustom
+
 		? _primLast != -1 : _type = lbValue [IDC_LB_PRIM, _primLast]; _return = "DefaultAmmoRemovedPrim"; goto "RemoveDefaultAmmo"
 		#DefaultAmmoRemovedPrim
 		_typePrim = lbValue [IDC_LB_PRIM, _prim]
@@ -174,6 +183,9 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 	_handgunLast = _handgun
 	_handgun = lbCurSel IDC_LB_HG
 	? (_handgun == -1 || _handgun == _handgunLast): goto "SkipInitHandgun"
+
+		call _procRefreshCustom
+
 		? _handgunLast != -1 : _type = lbValue [IDC_LB_HG, _handgunLast]; _return = "DefaultAmmoRemovedHandgun"; goto "RemoveDefaultAmmo"
 		#DefaultAmmoRemovedHandgun
 		_typeHandgun = lbValue [IDC_LB_HG, _handgun]
@@ -196,6 +208,9 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 	_secLast = _sec
 	_sec = lbCurSel IDC_LB_SEC
 	? _sec == -1 || _sec == _secLast : goto "SkipInitSec"
+
+		call _procRefreshCustom
+
 		? _secLast != -1 : _type = lbValue [IDC_LB_SEC, _secLast]; _return = "DefaultAmmoRemovedSec"; goto "RemoveDefaultAmmo"
 		#DefaultAmmoRemovedSec
 		_typeSec = lbValue [IDC_LB_SEC, _sec]
@@ -348,6 +363,9 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 
 #AddOneItem
 	? (-1 == lbCurSel _lb): goto "Update"
+
+	call _procRefreshCustom
+
 	_typeAmmo = lbValue [_lb, lbCurSel _lb]
 	
 	? IDC_LB_Opt == _lb: _typeSlot = (weaponDefs select _typeAmmo) select wdType; if (_typeSlot == wtNVG) then {_typeNVG = _typeAmmo} else {_typeBinocular = _typeAmmo}; goto "UpdateImage"
@@ -361,6 +379,9 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 
 #RemOneItem
 	? (-1 == lbCurSel _lb): goto "Update"
+
+	call _procRefreshCustom
+
 	_typeAmmo = lbValue [_lb, lbCurSel _lb]
 	
 	? IDC_LB_Opt == _lb: _typeSlot = (weaponDefs select _typeAmmo) select wdType; if (_typeSlot == wtNVG) then {_typeNVG = -1} else {_typeBinocular = -1}; goto "UpdateImage"
@@ -382,63 +403,40 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 	goto "Update"
 
 # UpdateCustom
-	lbClear IDC_LB_TEMPLATES
-	_i = 0
-	{ _name = "empty"; if ((count _x) > 0) then { _name = _x select 0 }; lbAdd [IDC_LB_TEMPLATES, format["cs%1 %2", _i, _name] ]; _i=_i+1 } foreach infCustom
+	call _funcRefreshCustom
 	? _lastCustom != -1 : lbSetCurSel [IDC_LB_TEMPLATES, _lastCustom]
 	goto "Update"
 
-#SaveTempl
+# SaveTempl
 	_id = lbCurSel IDC_LB_TEMPLATES
 	? (_id == -1): hint "No Template Slot Selected"; player groupChat "No Template Slot Selected"; goto "Update"
 
-	_nameTempl = [_typePrim, _typeSec, _equipment select isGeneral] call funcGetEqName
 	_templ = eqTemplates select _id
-	_templ set[0, _nameTempl]
-	_templ set[1, _typePrim]
-	_templ set[2, _typeHandgun]
-	_templ set[3, _typeSec]
-	_templ set[4, _typeBinocular]
-	_templ set[5, _typeNVG]
-	_templ set[6, []]
-	_slot = isGeneral; (_templ select 6) set [_slot, []]; { ((_templ select 6) select _slot) set [count ((_templ select 6) select _slot), +_x] } foreach (_equipment select _slot)
-	_slot = isHandgun; (_templ select 6) set [_slot, []]; { ((_templ select 6) select _slot) set [count ((_templ select 6) select _slot), +_x] } foreach (_equipment select _slot)
-	? ((_templ select 1) == -1 && (_templ select 2) == -1 && (_templ select 3) == -1 && (_templ select 4) == -1 && (_templ select 5) == -1 && count ((_templ select 6) select isGeneral) + count ((_templ select 6) select isHandgun) == 0 ) : _templ resize 0
+	[_templ, _typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG, _equipment] call _funcGenerateTemplate
 	
 	_entry = format["%1_%2_LOADOUT_%3_%4", localize "STR_CRCTI_VER", localize _strMOD, _id, sideNames select siPlayer]
-  unitSetting = "SoldierWB" camCreate [10,10,10]
-	[ unitSetting, ["", _typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG, _equipment] ] call funcEquipTempl
-  if (count _templ > 0) then {unitSetting saveStatus _entry} else {deleteStatus _entry}
-  deleteVehicle unitSetting
+	_saveInfoUnit = "SoldierWB" camCreate [10,10,10]
+	[ _saveInfoUnit, ["", _typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG, _equipment] ] call funcEquipTempl
+	if (count _templ > 0) then {_saveInfoUnit saveStatus _entry} else {deleteStatus _entry}
+	deleteVehicle _saveInfoUnit
 
 	_lastEquip = _id
 	goto "UpdateTempl"
 
-#SaveCustom
+# SaveCustom
 	_id = lbCurSel IDC_LB_TEMPLATES
 	? (_id == -1): hint "No Custom Slot Selected"; player groupChat "No Custom Slot Selected"; goto "Update"
 
-	_nameCustom = [_typePrim, _typeSec, _equipment select isGeneral] call funcGetEqName
 	_templ = infCustom select _id
-	_templ set [0, _nameCustom]
-	_templ set [1, _typePrim]
-	_templ set [2, _typeHandgun]
-	_templ set [3, _typeSec]
-	_templ set[4, _typeBinocular]
-	_templ set[5, _typeNVG]
-	_templ set[6, []]
-	_slot = isGeneral; (_templ select 6) set [_slot, []]; { ((_templ select 6) select _slot) set [count ((_templ select 6) select _slot), +_x] } foreach (_equipment select _slot)
-	_slot = isHandgun; (_templ select 6) set [_slot, []]; { ((_templ select 6) select _slot) set [count ((_templ select 6) select _slot), +_x] } foreach (_equipment select _slot)
-	? ((_templ select 1) == -1 && (_templ select 2) == -1 && (_templ select 3) == -1 && (_templ select 4) == -1 && (_templ select 5) == -1 && count ((_templ select 6) select isGeneral) + count ((_templ select 6) select isHandgun) == 0 ) : _templ resize 0
+	[_templ, _typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG, _equipment] call _funcGenerateTemplate
 
 	_entry = format["%1_%2_SOLDIER_%3_%4", localize "STR_CRCTI_VER", localize _strMOD, _id, sideNames select siPlayer]
 
-  unitSetting = "SoldierWB" camCreate [10,10,10]
-	[ unitSetting, ["", _typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG, _equipment] ] call funcEquipTempl
-  if (count _templ > 0) then {unitSetting saveStatus _entry} else {deleteStatus _entry}
-  deleteVehicle unitSetting
+	_saveInfoUnit = "SoldierWB" camCreate [10,10,10]
+	[ _saveInfoUnit, ["", _typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG, _equipment] ] call funcEquipTempl
+	if (count _templ > 0) then {_saveInfoUnit saveStatus _entry} else {deleteStatus _entry}
+	deleteVehicle _saveInfoUnit
 
-	; player globalchat format["infCustom = %1", infCustom select _id]
 	_lastCustom = _id
 	goto "UpdateCustom"
 
@@ -504,13 +502,19 @@ _money = groupMoneyMatrix select siPlayer select giPlayer
 
 # BuyPreset
 	_id = lbCurSel IDC_LB_TEMPLATES
-	? (_id == -1): hint "No Template Selected"; _unit groupChat "No Template Selected"; goto "Update"
-	? count(infCustom select _id) == 0: hint "Soldier Not Defined"; _unit groupChat "Soldier Not Defined"; goto "Update"
+	? _id != -1: goto "UseTemplate"
+	; Use board info directly
+		_templ = []
+		[_templ, _typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG, _equipment] call _funcGenerateTemplate
+		? count _templ == 0: TitleText ["No equipment selected.", "Plain", 0.25], goto "Update"
+		[_units, groupPlayer, [_pos, _templ, 1 == _overWrite, _costFactor]] exec "Rts\Preset\beforeOrderBuyEquip.sqs"
+		goto "Quit"
 
-	_cache = [_pos, _id, if (1 == _overWrite) then {true} else {false}]
-	{[_x, _cache] exec "Player\Order\BuyEquipment.sqs"} forEach _units
-	_lastCustom = _id
-	goto "Quit"
+	# UseTemplate
+		? count(infCustom select _id) == 0: hint "Soldier Not Defined"; _unit groupChat "Soldier Not Defined"; goto "Update"
+		[_units, groupPlayer, [_pos, infCustom select _id, 1 == _overWrite, _costFactor]] exec "Rts\Preset\beforeOrderBuyEquip.sqs"
+		_lastCustom = _id
+		goto "Quit"
 
 #Buy
 	_money = groupMoneyMatrix select siPlayer select giPlayer

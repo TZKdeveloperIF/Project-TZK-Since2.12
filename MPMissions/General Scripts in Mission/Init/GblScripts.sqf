@@ -38,7 +38,7 @@ _f = {
 "\TZK_Patch4_4_0_6\s\UI\BuyUnits_Available.sqf" call _f; // 016
 "\TZK_Patch4_4_0_6\s\UI\AttachVehicle.sqs" call _f; // 017
 "Debug\Console.sqs" call _f; // 018
-"\TZK_Patch4_4_0_6\s\UI\Equipment.sqs" call _f; // 019
+"UI\Equipment\dlg.sqs" call _f; // 019
 
 "Rts\Dialog\PplGrpOrder.sqs" call _f; // 020
 "Player\Dialog\Query.sqs" call _f; // 021
@@ -264,19 +264,19 @@ _f = {
 
 "\TZK_Patch4_4_0_6\s\Server\Init\DefTowerStruct.sqs" call _f; // 215
 "Server\Init\PrimaryStruct.sqs" call _f; // 216
-"\TZK_Patch4_4_0_6\s\Server\Init\SecondaryStruct.sqs" call _f; // 217
+"Server\Init\SecondaryStruct.sqs" call _f; // 217
 
 "\TZK_Patch4_4_0_6\s\Server\Start\KnowsAbout.sqs" call _f; // 218
 "Server\Loop\KnowsAboutG.sqs" call _f; // 219
 "Server\Loop\KnowsAboutR.sqs" call _f; // 220
 
-"\TZK_Patch4_4_0_6\s\Server\Start\TownGroup1.sqs" call _f; // 221
-"\TZK_Patch4_4_0_6\s\Server\Start\TownGroup2.sqs" call _f; // 222
-"\TZK_Patch4_4_0_6\s\Server\Start\TownGroup3.sqs" call _f; // 223
-"\TZK_Patch4_4_0_6\s\Server\Start\TownGroup4.sqs" call _f; // 224
-"\TZK_Patch4_4_0_6\s\Server\Loop\TownGroup1.sqs" call _f; // 225
-"\TZK_Patch4_4_0_6\s\Server\Loop\TownGroup2.sqs" call _f; // 226
-"\TZK_Patch4_4_0_6\s\Server\Loop\TownGroup3.sqs" call _f; // 227
+"Server\Start\TownGroup1.sqs" call _f; // 221
+"Server\Start\TownGroup2.sqs" call _f; // 222
+"Server\Start\TownGroup3.sqs" call _f; // 223
+"Server\Start\TownGroup4.sqs" call _f; // 224
+"Server\Loop\townGroupGeneral.sqs" call _f; // 225
+"" call _f; // 226
+"" call _f; // 227
 "\TZK_Patch4_4_0_6\s\Server\Loop\TownGroup4.sqs" call _f; // 228
 
 "\TZK_Patch4_4_0_6\s\Common\TriggerGameEnd.sqs" call _f; // 229
@@ -369,7 +369,7 @@ _f = {
 
 "\TZK_Scripts_4_0_4\Common\AddUnit.sqs" call _f; // 309
 "Init\pplCmdUnit.sqs" call _f; // 310
-"\TZK_Patch4_4_0_6\s\Init\svrStartVehs.sqs" call _f; // 311
+"Init\svrStartVehs.sqs" call _f; // 311
 
 "\TZK_Scripts_4_0_4\Server\CheckWinDestruction.sqs" call _f; // 312
 "\TZK_Patch4_4_0_6\s\Server\CheckSupportVehicle.sqs" call _f; // 313

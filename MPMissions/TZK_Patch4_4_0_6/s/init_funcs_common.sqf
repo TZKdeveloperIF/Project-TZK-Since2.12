@@ -133,8 +133,10 @@ comment {arguments: [pos, distance, types, except, side]} ;
 comment {returns: [ [vcl, type, dist], ...]} ;
 funcGetNearbySoldiers = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetNearbySoldiers.sqf";
 
-comment {arguments: object} ;
+comment {arguments: vehicle} ;
 comment {return: [ [wpn, ...], [mag, ...] ] ([[],[]] if not found)} ;
+comment {IMPORTANT: this function is for vehicle but not soldier!};
+comment {cfg_todo: rename the function and make sure only vehicle uses it};
 funcGetRearmData = loadFile "\TZK_Scripts_4_0_4\Common\SQF\GetRearmData.sqf";
 
 comment {arguments: object} ;

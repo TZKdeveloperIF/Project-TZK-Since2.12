@@ -49,15 +49,11 @@ _type = _vehicle call funcGetStructTypeFromObject
 ? _type == -1: _msg = format ["ERROR: object type not found for %1/%2 in Rearm.sqs", _vehicle, typeOf _vehicle]; goto "MsgAndQuit"
 _cost = (structDefs select _type) select sdCost
 
-#CheckData
-; ver TZK_4.0.5.10, obtain rearmData directly for soldier member.
-_weapons = []; _mags = [];
-? _unit == _vehicle: _i = rearmDataObj find _unit; if (_i != -1) then {_weapons = rearmDataEquip select _i select 0; _mags = rearmDataEquip select _i select 1; goto "DataChecked"}
-
-_rearmData = _vehicle call funcGetRearmData
+# CheckData
+_rearmData = _vehicle call funcAutoRearmData
 _weapons = _rearmData select 0
 _mags = _rearmData select 1
-    #DataChecked
+; DataChecked
     ? (count _mags) == 0: _msg = "Unit is not armed."; goto "Quit"
     ? !(canFire _vehicle): _unit groupChat "Gun barrel badly hurt. Better repair as well."
 

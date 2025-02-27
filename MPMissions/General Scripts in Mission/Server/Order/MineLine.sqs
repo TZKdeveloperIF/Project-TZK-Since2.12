@@ -18,7 +18,7 @@ _order = orderMatrix select _si select _gi; _idOrder = _order select 0; _script 
 ? _idOrder != _order select 0: exit
 ? _unit call busyCheck : goto "WaitReady"
 
-_rearmData = _objRepair call funcGetRearmData
+_rearmData = _objRepair call funcGetSoldierRearmData
 _weapons = _rearmData select 0
 _mags = _rearmData select 1
 _hasMines = magMine in _mags

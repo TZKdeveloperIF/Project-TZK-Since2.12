@@ -1,0 +1,30 @@
+; args: [units, orderer group, [pos, template, overwrite, cost factor]]
+_units = _this select 0
+_ordererGroup = _this select 1
+_param = _this select 2
+
+_myUnits = [], _i = 0
+{if (group _x == _ordererGroup) then {_myUnits set [_i, _x], _i = _i + 1}} forEach _units
+_others = _units - _myUnits
+
+; send order to other groups' units
+[_others, _param] exec "Rts\Order\sBuyEquip.sqs"
+
+; distribute order to MY group units
+? count _myUnits == 0: exit
+
+_quitCond = {not alive _unit || _unit != driver vehicle _unit || call orderCheck}
+_i = 0, _c = count _myUnits
+# procMyUnits
+	_unit = _myUnits select _i
+	? not alive _unit: goto "continue"
+	_uid = [_unit, siPlayer, giPlayer] call funcCalcUID
+	? _uid > 12: goto "continue"
+	_id = (playerOrderID select _uid) + 1
+	[_uid, _id] exec "\TZK_Scripts_4_0_4\Player\Order\New.sqs"
+
+	[_unit, _param, [false, _quitCond], [_uid, _id]] exec "OrderSimple\BuyEquip.sqs"
+
+	# continue
+	_i = _i + 1
+	? _i < _c: goto "procMyUnits"
