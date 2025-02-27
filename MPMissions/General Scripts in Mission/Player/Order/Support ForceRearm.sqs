@@ -8,7 +8,7 @@ _v = vehicle _unit
 ? (_v == vehicle player) : exit
 
 ? _unit == _v : goto "SkipArmedCheck"
-_rearmData = _v call funcGetRearmData
+_rearmData = _v call funcGetVehicleRearmData
 _weapons = _rearmData select 0
 _mags = _rearmData select 1
 ? (count _mags) == 0 : _unit groupchat "My vehicle is not armed."; exit

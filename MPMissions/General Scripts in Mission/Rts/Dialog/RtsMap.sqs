@@ -2,7 +2,7 @@
 _pos = _this select 0, _units = _this select 1
 @ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
-_dlg = createDialog "TzkCmdMapDlgRts"
+_dlg = createDialog "TzkCmdMapDlgRts2"
 mutexDlg = false
 
 @ not mutexRtsMouse
@@ -54,6 +54,8 @@ ctrlSetText [_idcLeftBtn0 + 12, format ["%1%2", localize {TZK_LANG_CROSS}, local
 
 ctrlSetText [_idcLeftBtn0 + 14, format ["%1 %2", localize {TZK_LANG_MOVE}, localize {TZK_LANG_LAND}]];
 ctrlSetText [_idcLeftBtn0 + 15, format ["%1 %2", localize {TZK_LANG_MOVE}, localize {TZK_LANG_SHIP}]];
+
+ctrlSetText [_idcLeftBtn0 + 16, format ["%1 %2", localize {TZK_LANG_BUY}, localize {TZK_LANG_EQUIPMENT}]];
 
 ; down board
 _downBoardStack = []
@@ -121,6 +123,8 @@ btnValue05 = -1;
 	? 14 == _btnVal: [_pos] call preprocessFile "Rts\Preset\oForceMoveLand.sqf"; closeDialog 0; goto "Quit"
 	? 15 == _btnVal: [_pos] call preprocessFile "Rts\Preset\oForceMoveShip.sqf"; closeDialog 0; goto "Quit"
 	; value 13 is occupied
+
+	? 16 == _btnVal: [call preprocessFile (TzkScripts select 371), _pos] exec "Rts\Preset\paramBuyEquip.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 ; Share same structure and effect with player group order
 # DownBtn

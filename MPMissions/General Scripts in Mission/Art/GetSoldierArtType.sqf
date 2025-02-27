@@ -2,7 +2,7 @@
 
 private [{_mags}, {_weapons}, {_ret}];
 
-_mags = ((_this call funcGetRearmData) select 1) + magazines _this;
+_mags = ((_this call funcAutoRearmData) select 1) + magazines _this;
 _weapons = weapons _this;
 
 _ret = -1;

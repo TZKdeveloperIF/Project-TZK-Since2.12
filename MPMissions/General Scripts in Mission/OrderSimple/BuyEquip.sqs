@@ -1,46 +1,63 @@
-; args: [unit, pos, equipment info, overwrite: bool]
-; equipment info should be READ-ONLY. It's an array reference
+; ---------------------------------------------------------------------------------------------------
+; |									Buy Equipment SQS Script										|
+; |		  Units will move to buy equipment then come back and wait 									|
+; ---------------------------------------------------------------------------------------------------
+
+; args: [
+; 	unit, 
+;	param: [pos, equipment template, overwrite, cost factor], 
+; 	[order mode (called by AI or player unit), quit condition],
+; 	AI controlling parameters
+; ]
 
 _unit = _this select 0
-_pos = _this select 1
-_custom = _this select 2
-_overWrite = _this select 3
-_this = 0
 
-? !(alive _unit): exit
-_v = vehicle _unit
-? _v != _unit: exit
+_param = _this select 1
+_pos = _param select 0
+_custom = _param select 1
+_overWrite = _param select 2
+_costFactor = _param select 3
 
-#FindSupport
-_support = [_unit, siPlayer, 512, true] call preprocessFile "Util\SoldierRearmSupport.sqf"
-? isNull _support: _unit groupChat "No support vehicles in that area."; exit
-? (speed _support) > 100: _unit groupChat "Support vehicle moving to fast. Fail to follow it."; exit
+_modeInfo = _this select 2
+_isAiGroup = _modeInfo select 0, _quitCond = _modeInfo select 1
 
-_uid = [_unit, siPlayer, giPlayer] call funcCalcUID
-? _uid > 12: hint "Fail to get UID, order not set. Try again please."; exit
-_id = (playerOrderID select _uid) + 1; [_uid, _id] exec "\TZK_Scripts_4_0_4\Player\Order\New.sqs"
+_controlParam = _this select 3
+? _isAiGroup: _rtsStatus = _controlParam select 0, _id = _controlParam select 1
+? not _isAiGroup: _uid = _controlParam select 0, _id = _controlParam select 1
 
-_forceRearm = true
-_rearm = false
-_posReturn = getPos _unit
+? _unit != driver vehicle _unit: exit
 
+_si = sides find (side _unit)
+? _si != si0 && _si != si1: exit
+_gi = groupMatrix select _si find (group _unit)
+? _gi == -1: exit
+
+_support = [_unit, _si, 512, true, _pos] call preprocessFile "Util\SoldierRearmSupport.sqf"
+? isNull _support: _msg = "No support vehicles in that area.", goto "Quit"
+? (speed _support) > 100: _msg = "Support vehicle moving to fast. Fail to follow it.", goto "Quit"
+
+_posReturn = getPosASL _unit
 _msg = ""
 _unit groupChat "Roger, moving to support vehicle."
+_funcMove = (if _isAiGroup then {funcMoveAI} else {funcMove})
 
-_timeAbort = time + 15*60; _timeMove = time - 1
-
-#MoveGround
+_timeAbort = time + 15 * 60; _timeMove = time - 1
+# MoveGround
 	_posMove = [[0,5], (getDir _support)] call funcVectorRot2D
 	_posMove = [getPos _support, _posMove] call funcVectorSub
-	? time > _timeMove: [_unit, _posMove] call funcMove, _timeMove = time + 30
-	~5
-	? !(alive _unit): exit
-	? call orderCheck: exit
-	? !(alive _support): _msg = "Support aborted, support vehicle destroyed."; goto "Abort"
-	? time > _timeAbort: _msg = "Cost too much time. Support aborted."; goto "Abort"
+	? time > _timeMove: [_unit, _posMove] call _funcMove, _timeMove = time + 30
+	~ 5
+	? call _quitCond: goto "Quit"
+	? !(alive _support): _msg = "Support aborted, support vehicle destroyed."; goto "Quit"
+	? time > _timeAbort: _msg = "Cost too much time. Support aborted."; goto "Quit"
 	? (_unit distance _support) > rangeSupport: goto "MoveGround"
 
-? _support call funcGetUnitTypeFromObject != -1: [_unit, _support] exec "Player\HealRepair.sqs"
+; heal in passing
+	_supType = _support call funcGetUnitTypeFromObject
+	_healInPassing = _supType in (typesSupport select _si) || _supType in typesMHQ
+	? _healInPassing && not _isAiGroup: [_unit, _support] exec "Player\HealRepair.sqs"
+	; ? _healInPassing && _isAiGroup: xxx exec "Server\AI_Heal.sqs"
+
 ; Load Equipment
 _typePrim = _custom select 1
 _typeHandgun = _custom select 2
@@ -53,35 +70,37 @@ _weapons = +weaponsCustom; _mags = []
 { if (_x != -1) then {_weapons = _weapons + [weaponSearch select _x]} } forEach [_typePrim, _typeSec, _typeHandgun, _typeBinocular, _typeNVG]
 { _mags = _mags + [equipSearch select (_x select 0)] } foreach (_equipment select isGeneral)
 { _mags = _mags + [equipSearch select (_x select 0)] } foreach (_equipment select isHandgun)
-_equipFee = [_unit, _weapons, _mags, customInfEquipRate] call funcCalcRearmCost
+_equipFee = [_unit, _weapons, _mags, _costFactor] call funcCalcRearmCost
 
-; hint format ["%1\n%2\n%3", _weapons, _mags, _equipFee]
-_money = groupMoneyMatrix select siPlayer select giPlayer
+_money = groupMoneyMatrix select _si select _gi
 _extraTypeFee = 0
 ? !(typeOf _unit in ["SoldierWSaboteurDay", "SoldierESaboteurBizon", "SoldierWSaboteurDay_xj400", "SoldierESaboteurBizon_xj400"]) && _equipFee > 0: _extraTypeFee = 50
 _cost = _equipFee + _extraTypeFee
-? _cost > _money && _cost > 0: _msg = format["Not enough money for rearm. ($%1 needed)", _cost]; goto "Abort"
+? _cost > _money && _cost > 0: _msg = format ["Not enough money for rearm. ($%1 needed)", _cost]; goto "Quit"
 
-[_cost] exec "Net\sMoneySpent.sqs"
+? not _isAiGroup: [_cost] exec "Net\sMoneySpent.sqs"
+? _isAiGroup: [_si, _gi, _cost] exec (TzkScripts select 167)
 _unit groupChat format["Rearm Complete. Equipment cost: $%1%2", _equipFee, if (_extraTypeFee > 0) then {format [", extra cost: %1", _extraTypeFee]} else {""}]; 
 removeAllWeapons _unit; {_unit addMagazine _x} forEach _mags; {_unit addWeapon _x} forEach _weapons
 
 ; Write current equipments into rearm data LOCALLY if selected overwrite rearmData.
-? not _overWrite: goto "Quit"
-[_unit, _weapons, _mags, -1, 1, true] exec (TzkScripts select 071)
-~0.1
-_i = rearmDataObj find _unit
-? _i == -1: [_unit] exec (TzkScripts select 072)
-goto "Quit"
+? not _overWrite: goto "Finish"
 
-  
-#Abort
-  ? (alive _unit) && _msg != "": _unit groupChat _msg
-  ? (alive _unit): goto "Quit"
-  exit
-  
+	; todo: this should be done synchronously
+	; todo: broadcast the adding-rearm-data with indexes in fixed format
+	[_unit, _weapons, _mags, -1, 1, true] exec (TzkScripts select 071)
+	~ 0.1
+	_i = rearmDataObj find _unit
+	? _i == -1: [_unit] exec (TzkScripts select 072)
+	goto "Finish"
+
+# Finish
+	~ 1
+	_unit groupChat "Returning after support."
+	[_unit, _posReturn] call _funcMove
+	exit
+
 # Quit
-    ~ 6
-    ? !(alive _unit): exit
-	_unit groupChat "Returning after support."; [_unit, _posReturn] call funcMove
-  
+	? _msg != "" && _isAiGroup: [_si, format ["%1: %2", _unit, _msg]] exec "Server\Msg\sSvrMsg2Cmd.sqs"
+	? _msg != "" && not _isAiGroup: _unit groupChat _msg
+	exit

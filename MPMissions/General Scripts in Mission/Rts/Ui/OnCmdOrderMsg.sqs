@@ -16,6 +16,7 @@ _msg = ""
 ? "hCrossBridge" == _scriptName: goto "OrderCrossBridge"
 ? "hRepair" == _scriptName: goto "OrderHealRepair"
 ? "hRearm" == _scriptName: goto "OrderRearm"
+? "hBuyEquip" == _scriptName: goto "OrderBuyEquip"
 exit
 
 # OrderMove
@@ -76,6 +77,10 @@ exit
 	_dest = _param select 0
 	_threshold = _param select 1
 	_msg = format [{%1 %2: %3 at %4}, localize {TZK_LANG_REARM}, localize {TZK_LANG_SABOT}, _threshold, _dest call funcCalcMapPos]
+	goto "display"
+# OrderBuyEquip
+	_dest = _param select 0
+	_msg = format [{%1 %2: at %3}, localize {TZK_LANG_BUY}, localize {TZK_LANG_EQUIPMENT}, _dest call funcCalcMapPos]
 	goto "display"
 
 exit

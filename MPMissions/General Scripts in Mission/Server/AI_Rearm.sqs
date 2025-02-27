@@ -29,7 +29,7 @@ _timeRearm = 5
 ? dev: _timeRearm = 5
 ? bool_TZK_MF_Mode && _timeRearm > 30: _timeRearm = 30
 
-_rearmData = _vehicle call funcGetRearmData
+_rearmData = _vehicle call funcAutoRearmData
 _weapons = _rearmData select 0
 _mags = _rearmData select 1
 ? count _mags == 0: goto "Quit"

@@ -17,7 +17,7 @@ if (not _checked && (_vt in typesLightTank || _vt in typesHeavyTank)) then {
 	_checked = true;
 
 	private [{_rearmData}];
-	_rearmData = _veh call funcGetRearmData;
+	_rearmData = _veh call funcGetVehicleRearmData;
 	if (count (_rearmData select 1) > 0) then {
 		private [{_sabot}, {_gun}, {_sabotMag}, {_magArray}, {_idx}];
 		_sabot = _this select 1;

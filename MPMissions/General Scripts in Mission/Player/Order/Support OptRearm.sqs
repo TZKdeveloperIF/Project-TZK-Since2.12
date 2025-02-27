@@ -23,7 +23,7 @@ _need = false; _msg = "I'm fine."; _v = vehicle _unit
 	? (damage _v) > 0 : goto "FindSupport"
 	{ if ( (alive _x) && (damage _x) > 0 ) then { _need = true } } foreach (crew _v)
 	? _need : goto "FindSupport"
-	_rearmData = _v call funcGetRearmData; _weapons = _rearmData select 0; _mags = _rearmData select 1
+	_rearmData = _v call funcGetVehicleRearmData; _weapons = _rearmData select 0; _mags = _rearmData select 1
 	? (count _mags) == 0 : _unit groupchat _msg; exit
 	_weapons = weapons _v; { if ((_v ammo _x) == 0) then { _need = true }  } foreach _weapons
 	? _need : goto "FindSupport"
