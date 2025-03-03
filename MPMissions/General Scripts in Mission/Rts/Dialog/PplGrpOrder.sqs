@@ -31,6 +31,14 @@ _idcPar1List = IDC + 16 * 3 + 4
 _idcPar2Label = IDC + 16 * 3 + 5
 _idcPar2List = IDC + 16 * 3 + 6
 
+_idcPar0Bg0 = IDC + 16 * 4 + 0
+_idcPar0Bg1 = IDC + 16 * 4 + 1
+_idcPar0Bg2 = IDC + 16 * 4 + 2
+_idcPar1Bg0 = IDC + 16 * 4 + 3
+_idcPar1Bg1 = IDC + 16 * 4 + 4
+_idcPar1Bg2 = IDC + 16 * 4 + 5
+{ctrlShow [_x, false]} forEach [_idcPar0Bg0,_idcPar0Bg1,_idcPar0Bg2, _idcPar1Bg0,_idcPar1Bg1,_idcPar1Bg2]
+
 _bias1 = 0, _offsetOrder1End = 0
 ; load from config
 _lastOrder = "LastOrder" call preprocessFile "Cfg\LoadPlayerValue.sqf", _oldValLo = _lastOrder
@@ -196,8 +204,8 @@ _selectedOrder = -1
 
 	_params = _order select 1
 
-	{ ctrlShow [_x, count _params >= 1] } forEach [_idcPar0Label, _idcPar0List]
-	{ ctrlShow [_x, count _params >= 2] } forEach [_idcPar1Label, _idcPar1List]
+	{ ctrlShow [_x, count _params >= 1] } forEach [_idcPar0Label, _idcPar0List, _idcPar0Bg0,_idcPar0Bg1,_idcPar0Bg2]
+	{ ctrlShow [_x, count _params >= 2] } forEach [_idcPar1Label, _idcPar1List, _idcPar1Bg0,_idcPar1Bg1,_idcPar1Bg2]
 	{ ctrlShow [_x, count _params >= 3] } forEach [_idcPar2Label, _idcPar2List]
 
 	? count _params == 0: goto "Update"
