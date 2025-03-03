@@ -143,7 +143,7 @@ _items = ["OFF", "ON"]
 Vote_ItemNames set [_i, "Time Boost"]; Vote_Matrix set [_i, [Vote_ItemNames select _i, _items, 0, 0] ]; _i = _i + 1
 
 _items = ["Morning", "Noon", "AfterNoon", "Dusk", "Evening", "Dawn"]; Vote_Item_PeriotMoment = [8, 11, 14, 17, 20, 24+5]
-Vote_ItemNames set [_i, "Period"]; Vote_Matrix set [_i, [Vote_ItemNames select _i, _items, 0, 0] ]; _i = _i + 1
+Vote_ItemNames set [_i, "Period"]; Vote_Matrix set [_i, [Vote_ItemNames select _i, _items, 1, 1] ]; _i = _i + 1
 
 Vote_Item_View_Distance = ["1300", "1500", "1600"];
 Vote_ItemNames set [_i, "View Distance"]; Vote_Matrix set [_i, [Vote_ItemNames select _i, Vote_Item_View_Distance, 0, 0] ]; _i = _i + 1
@@ -187,6 +187,10 @@ pvDaytime = dayTime; pvTimeBoost = false
 
 ; TimePeriod (Morning, Dusk, Evening, etc). Using index but not string as indicator, aiming to compatible with "publicVariable"-able type in OFP.
 Period_TZK = 0
+    ; change period. 1 to Noon
+    skipTime ((Vote_Item_PeriotMoment select 1) - (Vote_Item_PeriotMoment select Period_TZK))
+    Period_TZK = 1
+	; cfg_todo: optimize definition and initialization of vote and global environment
 
 ; viewDistance
 ; Time Limit
