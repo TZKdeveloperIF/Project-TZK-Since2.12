@@ -1,0 +1,1 @@
+In OFP scripts the only way I know to simulate OO is using array. Array has "editable attribute", that is, its elements. And as in C++, we can use its first element as virtual functions table.
