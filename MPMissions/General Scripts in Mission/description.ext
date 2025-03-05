@@ -142,6 +142,182 @@ class TzkCmdMapDlgPplOrder2: TzkCmdMapDlgPplOrder {
 		w = 0.16;
 		action = "btnValue00 = 12";
 	};
+
+	controlsBackground[] = {
+		LeftBg, 
+		DownAreaHighlight, 
+		RightDownAreaHighlight, 
+		LeftDownAreaHighlight, 
+		Bg4Group, 
+
+		MidListBg1, MidListBg2,
+		Param0Bg1, Param0Bg2,
+		Param1Bg1, Param1Bg2,
+	};
+	class MidListBg0: TZK_BackGround_0 {
+		x = 0.40;
+		y = 0.04 + 0.001;
+		w = 0.20;
+		h = 0.68 - 0.04;
+	};
+	class MidListBg1: TZK_BackGround_1 {
+		style = ST_HUD_BACKGROUND;
+		colorBackground[] = COLOR_TZK_MENU_BG_3;
+		x = 0.40;
+		y = 0.04 + 0.001;
+		w = 0.20;
+		h = 0.68 - 0.04;
+	};
+	class MidListBg2: Light_BG_Window {
+		x = 0.40;
+		y = 0.04 + 0.001;
+		w = 0.20;
+		h = 0.68 - 0.04;
+	};
+	class Param0Bg0: MidListBg0 {
+		x = 0.40 + 0.20 * 1;
+		idc = IDC + 16 * 4 + 0;
+	};
+	class Param0Bg1: MidListBg1 {
+		x = 0.40 + 0.20 * 1;
+		idc = IDC + 16 * 4 + 1;
+	};
+	class Param0Bg2: MidListBg2 {
+		x = 0.40 + 0.20 * 1;
+		idc = IDC + 16 * 4 + 2;
+	};
+	class Param1Bg0: MidListBg0 {
+		x = 0.40 + 0.20 * 2;
+		idc = IDC + 16 * 4 + 3;
+	};
+	class Param1Bg1: MidListBg1 {
+		x = 0.40 + 0.20 * 2;
+		idc = IDC + 16 * 4 + 4;
+	};
+	class Param1Bg2: MidListBg2 {
+		x = 0.40 + 0.20 * 2;
+		idc = IDC + 16 * 4 + 5;
+	};
+
+	class SendOrderBG: ButtonBG {
+		colorBackground[] = COLOR_SELECTED_TEXT;
+		x = 0.53;
+		y = 0.06;
+		w = 0.06;
+	};
+	class SendOrderBtn: Button {
+		x = 0.53;
+		y = 0.06;
+		w = 0.06;
+		text = "Issue";
+		action = "btnSendOrder = true";
+	};
+	class OrdersLabel: Label {
+		style = ST_LEFT;
+		x = 0.40;
+		y = 0.06;
+		w = 0.1;
+		text = "Order";
+	};
+	class OrdersList: TZK_ListBox {
+		idc = IDC + 16 * 3 + 0;
+		x = 0.40 + 0.01;
+		y = 0.1 + 0.03 * 4;
+		w = 0.20 - 0.01 * 2; // 0.01 white space
+		h = 0.57 - 0.03 * 4 - 0.03 * 2;
+	};
+	// IDC: 16 * 14
+	// mid part
+	class MidBtn0: Button {
+		idc = IDC + 16 * 14 + 0;
+		x = 0.40 + 0.01;
+		y = 0.10 + 0.03 * 0;
+		w = 0.20 - 0.01 * 2; // 0.01 white space
+		h = 0.03; // fully cover list box
+
+		colorText[] = {0, 0, 0, 1};
+		sizeEx = 0.022;
+		text = "";
+		action = "btnValue04 = 0";
+	};
+	class MidBtn1: MidBtn0 {
+		idc = IDC + 16 * 14 + 1;
+		y = 0.10 + 0.03 * 1;
+		action = "btnValue04 = 1";
+	};
+	class MidBtn2: MidBtn0 {
+		idc = IDC + 16 * 14 + 2;
+		y = 0.10 + 0.03 * 2;
+		action = "btnValue04 = 2";
+	};
+	class MidBtn3: MidBtn0 {
+		idc = IDC + 16 * 14 + 3;
+		y = 0.10 + 0.03 * 3;
+		action = "btnValue04 = 3";
+	};
+
+	class MidBtn4: MidBtn0 {
+		idc = IDC + 16 * 14 + 4;
+		y = 0.10 + 0.03 * 17;
+		action = "btnValue04 = 4";
+	};
+	class MidBtn5: MidBtn0 {
+		idc = IDC + 16 * 14 + 5;
+		y = 0.10 + 0.03 * 18;
+		action = "btnValue04 = 5";
+	};
+	// IDC: 16 * 15
+	class MidPic0: Label {
+		idc = IDC + 16 * 15 + 0;
+		style = ST_PICTURE;
+		text = "";
+		x = 0.40 + 0.01;
+		y = 0.10 + 0.03 * 0;
+		w = 0.20 - 0.01 * 2; // 0.01 white space
+		h = 0.03; // fully cover list box
+	};
+	class MidPic1: MidPic0 {
+		idc = IDC + 16 * 15 + 1;
+		y = 0.10 + 0.03 * 1;
+	};
+	class MidPic2: MidPic0 {
+		idc = IDC + 16 * 15 + 2;
+		y = 0.10 + 0.03 * 2;
+	};
+	class MidPic3: MidPic0 {
+		idc = IDC + 16 * 15 + 3;
+		y = 0.10 + 0.03 * 3;
+	};
+	class MidPic4: MidPic0 {
+		idc = IDC + 16 * 15 + 4;
+		y = 0.10 + 0.03 * 17;
+	};
+	class MidPic5: MidPic0 {
+		idc = IDC + 16 * 15 + 5;
+		y = 0.10 + 0.03 * 18;
+	};
+
+	class Param0: TZK_ListBox {
+		idc = IDC + 16 * 3 + 2;
+		x = 0.60 + 0.01;
+		y = 0.1;
+		w = 0.20 - 0.01 * 2;
+		h = 0.57;
+	};
+	class Param1: TZK_ListBox {
+		idc = IDC + 16 * 3 + 4;
+		x = 0.80 + 0.01;
+		y = 0.1;
+		w = 0.20 - 0.01 * 2;
+		h = 0.30;
+	};
+	class Param2: TZK_ListBox {
+		idc = IDC + 16 * 3 + 6;
+		x = 0.80 + 0.01;
+		y = 0.46;
+		w = 0.20 - 0.01 * 2;
+		h = 0.21;
+	};
 };
 
 // EOF
