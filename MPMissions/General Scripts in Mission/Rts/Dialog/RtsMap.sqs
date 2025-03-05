@@ -99,7 +99,7 @@ btnValue05 = -1;
 ; todo: magic number should better
 # LeftBtn
 	; white list for ordering other players via RTS system
-	_whiteList = [0,1,13, 6, 4,5,7, 10,11, 12, 14,15]
+	_whiteList = [0,1,13, 6, 4,5,7, 10,11, 12, 14,15, 16]
 	? 3 == TzkRtsSelectEnum: if not (_btnVal in _whiteList) then {TitleText ["This order isn't allowed on other players' units.", "Plain DOWN", 0.25]; goto "Update"}
 
 	? 0 == _btnVal: [call preprocessFile (TzkScripts select 371), _pos] exec "Rts\Order\sMove.sqs"; closeDialog 0; goto "Quit"
