@@ -155,11 +155,10 @@ _try = 0
 	; record unexpected situation to log
 	? isNull _vehicle: format ["Null attached vehicle appears. pos: %1, vel: %2, tug: %3, veh: %4", _pos, _vel, _tug, _vehicle] call fDebugLog
 
-	; submit detach to server and broadcast after detach
-	_id exec "Attach\SubmitDetach.sqs"
-	publicExec format [{%1 exec "Attach\SubmitDetach.sqs"}, _id]
+	; server execute detach
+	? isServer: _id exec "Attach\SubmitDetach.sqs"
+	; since each client and server executes this script, it is unnecessary to broadcast "succeeded detach"
 	[_vehicle, _gi, _si] exec "Attach\AfterDetach.sqs"
-	publicExec format [{[UnitById %1, %2, %3] exec "Attach\AfterDetach.sqs"}, _vehicle call funcGenNetIdStr, _gi, _si]
 
 	? _bStruct: _pos = getPosASL _vehicle, _pos set [2,0], _vehicle setPos _pos, exit
 
@@ -170,10 +169,6 @@ _try = 0
 ; ======================================== Remote Sleep ========================================
 ; Each client and server script will sleep. If vehicle become local the script will be woke up
 # RemoteSleep
-
-	; too heavy burden to server?
-	exit
-
 	~ 1
 
 	_bDetached = call _relationBroken
