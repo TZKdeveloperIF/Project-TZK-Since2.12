@@ -5,7 +5,8 @@
 
 ; create start vehicles belongs to both side on the beginning. After having defined start pos they'll be placed soon
 
-~ 1
+; add delay
+~ 3
 
 _startVeh0 = []; _startVeh1 = []
 
@@ -20,7 +21,7 @@ _list = vehiclesStart select _si; _i = 0; _c = count _list
 	_veh = [_entry select 0, [0,0,0], 0, _si, -1, 0, 2] call fAddVehicle
 	_veh allowdammage false
 	_startVeh0 set [count _startVeh0, _veh]
-	~ 0.5
+	~ 1
 	goto "AddVehicle0"
 # Side0Created
 
@@ -35,7 +36,7 @@ _list = vehiclesStart select _si; _i = 0; _c = count _list
 	_veh = [_entry select 0, [0,0,0], 0, _si, -1, 0, 2] call fAddVehicle
 	_veh allowdammage false
 	_startVeh1 set [count _startVeh1, _veh]
-	~ 0.5
+	~ 1
 	goto "AddVehicle1"
 # Side1Created
 
