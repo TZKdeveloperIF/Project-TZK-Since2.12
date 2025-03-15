@@ -1,7 +1,7 @@
 ; args: none
 @ not mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
-_dlg = createDialog "DisbandGroupDialog"
+_dlg = createDialog "DisbandGroupDialog2"
 mutexDlg = false
 
 btnDisbandGroupLeader = false
@@ -11,6 +11,8 @@ btnDisbandGroupInf = false
 btnDisbandGroupGunner = false
 
 _info = -1
+_idcDisbandLeader = IDC + 16 * 0 + 0
+ctrlSetText [_idcDisbandLeader, TzkInGameText select 004]
 
 # Update
 	? call dlgUpdated: exit

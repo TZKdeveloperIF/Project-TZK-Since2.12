@@ -54,8 +54,10 @@
 		, "Repair Truck"
 	] call _f; // 003
 
+	"Disband Player Only" call _f; // 004
+
 	// script count check. Check index with last literal value
-	if (_i != 3 + 1) then {
+	if (_i != 4 + 1) then {
 		player globalChat "Script count mismatch!";
 	};
 

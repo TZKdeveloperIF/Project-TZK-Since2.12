@@ -34,7 +34,8 @@ if _bMatch then {
 		,"客机"
 		,"医疗车"
 		,"维修卡车"
-		,"吉普车"] call _f; // 001
+		,"吉普车"
+	] call _f; // 001
 	[
 		 "榴弹炮"
 		,"迫击炮"
@@ -61,8 +62,10 @@ if _bMatch then {
 		,"维修卡车"
 	] call _f; // 003
 
+	"仅杀死玩家" call _f; // 004
+
 	// script count check. Check index with last literal value
-	if (_i != 3 + 1) then {
+	if (_i != 4 + 1) then {
 		player globalChat "Script count mismatch!";
 	};
 
