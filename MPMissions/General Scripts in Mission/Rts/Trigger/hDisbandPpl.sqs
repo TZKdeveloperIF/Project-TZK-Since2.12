@@ -8,10 +8,10 @@ _i = 0
 {_units set [_i, UnitById _x], _i = _i + 1} forEach _netIds
 
 ; remove invalid units according to param
-; 0 - force kill player crews
+; 0 - force kill player and only player himself
 ? 0 == _param: goto "ProcPplUnitsDone"
-	_inPplVehicle = { vehicle _this == vehicle player }
-	[_units, _inPplVehicle] call preprocessFile "Algo\arrayEraseIf.sqf"
+	_isPlayer = { _this == player }
+	[_units, _isPlayer] call preprocessFile "Algo\arrayEraseIf.sqf"
 	_c = count _units
 # ProcPplUnitsDone
 
