@@ -12,8 +12,9 @@ _mhqEastX = _mhqEastX - _mhqEastX % 1;
 _mhqEastY = _mhqEastY - _mhqEastY % 1;
 
 
-// inform "start vehicles can deploy"
-svrGblStates set [0, true];
+// deploy start vehicles
+[[_mhqWestX, _mhqWestY], [_mhqEastX, _mhqEastY], si0] exec (TzkScripts select 311);
+[[_mhqEastX, _mhqEastY], [_mhqWestX, _mhqWestY], si1] exec (TzkScripts select 311);
 
 // inform clients
 tzkMatchStartTime = time; tzkMatchStartTime = tzkMatchStartTime - tzkMatchStartTime % 0.25;
