@@ -12,8 +12,8 @@ _firstChar = substr [_typeName, 0, 1]; _found = false;
 ? "M113" countType [_vehicle] > 0: goto "CheckM113"
 ? "BMP" countType [_vehicle] > 0: goto "CheckBMP"
 ? "Air" countType [_vehicle] > 0: call preprocessFile "Common\Init\TexAir.sqf", goto "END"
-; ? "J" == _firstChar || "U" == _firstChar: call preprocessFile "Common\Init\TexCar.sqf", goto "END"
-; ? "T" == _firstChar: call preprocessFile "Common\Init\TexTruck.sqf", goto "END"
+? "J" == _firstChar || "U" == _firstChar: call preprocessFile "Common\Init\TexCar.sqf", goto "END"
+? "T" == _firstChar: call preprocessFile "Common\Init\TexTruck.sqf", goto "END"
 
 	? "HMMWV_xj400" countType [_vehicle] > 0: _scriptName = "HMMWV", goto "END"
 	? "BRDM2_MNF_xj400" countType [_vehicle] > 0: _scriptName = "BRDM2_MNF", goto "END"
