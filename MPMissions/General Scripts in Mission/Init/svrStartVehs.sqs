@@ -1,91 +1,32 @@
-; args: none
-; It'll be better to pass an array reference to pass local but not global state, and mhq pos.
-; However by now hard to do this. Sometimes game won't automatically start but controlled by 
-; players. But we should always generate start vehicles in the beginning
+; args: [our mhq pos, enemy mhq pos, our side index]
 
 ; create start vehicles belongs to both side on the beginning. After having defined start pos they'll be placed soon
 
-; add delay
-~ 3
+_posUs = _this select 0; _posThem = _this select 1, _si = _this select 2
 
-_startVeh0 = []; _startVeh1 = []
+~ 1
 
-_si = si0
-? count (groupMatrix select _si) == count (groupAiMatrix select _si): goto "Side0Created"
-_list = vehiclesStart select _si; _i = 0; _c = count _list
-# AddVehicle0
-	? !(_i < _c): goto "Side0Created"
-	_entry = _list select _i
-	_i = _i + 1
-	
-	_veh = [_entry select 0, [0,0,0], 0, _si, -1, 0, 2] call fAddVehicle
-	_veh allowdammage false
-	_startVeh0 set [count _startVeh0, _veh]
-	~ 1
-	goto "AddVehicle0"
-# Side0Created
+? count (groupMatrix select _si) == count (groupAiMatrix select _si): goto "Created"
 
-_si = si1
-? count (groupMatrix select _si) == count (groupAiMatrix select _si): goto "Side1Created"
-_list = vehiclesStart select _si; _i = 0; _c = count _list
-# AddVehicle1
-	? !(_i < _c): goto "Side1Created"
-	_entry = _list select _i
-	_i = _i + 1
-	
-	_veh = [_entry select 0, [0,0,0], 0, _si, -1, 0, 2] call fAddVehicle
-	_veh allowdammage false
-	_startVeh1 set [count _startVeh1, _veh]
-	~ 1
-	goto "AddVehicle1"
-# Side1Created
-
-# waitDeploy
-	? svrGblStates select 0: goto "deployVehs"
-	~ 2
-	goto "waitDeploy"
-# deployVehs
-
-~ 2
-
-; server always know where mhqs exactly are
-_posSide0 = getPosASL(mhq select si0); _posSide1 = getPosASL(mhq select si1)
-
-_vector = [_posSide1, _posSide0] call funcVectorSub; _dir = 0
-
+_vector = [_posThem, _posUs] call funcVectorSub; _dir = 0
 ? (_vector select 0) != 0 && (_vector select 1) != 0: _dir = (_vector select 0) atan2 (_vector select 1)
 ? startPosMode == 0: _dir = random 360
 
-_i = 0; _c = count _startVeh0; _si = si0; _list = vehiclesStart select _si
-# PlaceVehicle0
-	? !(_i < _c): goto "Side0Placed"
+_list = vehiclesStart select _si; _i = 0; _c = count _list
+# AddVehicle
+	? _i >= _c: goto "Created"
 	_entry = _list select _i
-	_pos = [_posSide0, ([_entry select 1, _dir + 000] call funcVectorRot2D)] call funcVectorAdd
-	_up = _pos call funcVectorUp
-
-	(_startVeh0 select _i) setDir (_dir + 000)
-	(_startVeh0 select _i) setVectorUp _up
-	(_startVeh0 select _i) setPos _pos
-	~ 0.5
 	_i = _i + 1
-	goto "PlaceVehicle0"
-# Side0Placed
 
-_i = 0; _c = count _startVeh1; _si = si1; _list = vehiclesStart select _si
-# PlaceVehicle1
-	? !(_i < _c): goto "Side1Placed"
-	_entry = _list select _i
-	_pos = [_posSide1, ([_entry select 1, _dir + 180] call funcVectorRot2D)] call funcVectorAdd
+	_pos = [_posUs, ([_entry select 1, _dir] call funcVectorRot2D)] call funcVectorAdd
 	_up = _pos call funcVectorUp
+	
+	_veh = [_entry select 0, _pos, _dir, _si, -1, 0, 2] call fAddVehicle
 
-	(_startVeh1 select _i) setDir (_dir + 180)
-	(_startVeh1 select _i) setVectorUp _up
-	(_startVeh1 select _i) setPos _pos
+	_veh setDir _dir
+	_veh setVectorUp _up
+	_veh setPos _pos
+
 	~ 0.5
-	_i = _i + 1
-	goto "PlaceVehicle1"
-# Side1Placed
-
-~ 0.1
-
-{_x allowdammage true} forEach _startVeh0; {_x allowdammage true} forEach _startVeh1
+	goto "AddVehicle"
+# Created
