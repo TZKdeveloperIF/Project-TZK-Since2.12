@@ -1,4 +1,7 @@
-if not _found then {if ("J" == _firstChar) then {
+private [{_bUseStaticTexture}];
+_bUseStaticTexture = UsedVersion >= 2020;
+
+if (not _found && not _bUseStaticTexture) then {if ("J" == _firstChar) then {
 	if not _found then {if ("Jeep_xj400" countType [_vehicle] > 0) then {
 		_scriptName = "Car", _scriptPath = "\TZK_Config_4_0_4", _found = true;
 	}};

@@ -19,3 +19,32 @@ _entry = unitDefs select _t80townE; _entry set [udModel, "T80_G_xj400"];
 {_entry = unitDefs select _x; _entry set [udModel, "BMP2_G_AA_Town_xj400"]} forEach [_bmp2townat, _bmp2townaad];
 
 _entry = unitDefs select _t80R; _entry set [udModel, "T80Res_TZK_G_xj406"];
+
+// "C" vehicles should only be applied in CWA_CE. Keep same as old in ARES
+_bUseStaticTexture = UsedVersion >= 2020;
+// "C" vehicles has been added into unitDefs. Recover them for ARES
+// cfg_todo: should prepare basic definition for ARES, and overwrite it in CWA_CE
+if (not _bUseStaticTexture) then {
+	unitDefs select _jeepW set [udModel, "Jeep_xj400"];
+	unitDefs select jeepaW set [udModel, "Jeep_xj400"];
+	unitDefs select _jeepRadarW set [udModel, "Jeep_Radar_xj400"];
+	unitDefs select _jeepMGW set [udModel, "JeepMG_xj400"];
+	unitDefs select _hummerW set [udModel, "HMMWV_xj400"];
+	unitDefs select _truckW set [udModel, "Truck5t_xj400"];
+	unitDefs select _supportTruckW set [udModel, "Truck5tRepair_xj400"];
+	unitDefs select _supportTruckW2 set [udModel, "Truck5tRepair_xj400"];
+	unitDefs select _truckRefuelW set [udModel, "Truck5tRefuel_xj400"];
+	unitDefs select _tankLightW01 set [udModel, "M60_xj400"];
+
+	unitDefs select _uazE set [udModel, "UAZ_xj400"];
+	unitDefs select uazaE set [udModel, "UAZ_xj400"];
+	unitDefs select _uazRadarE set [udModel, "UAZ_Radar_xj400"];
+	unitDefs select _brdmE set [udModel, "BRDM_xj400"];
+	unitDefs select _truckE set [udModel, "Ural_xj400"];
+	unitDefs select _supportTruckE set [udModel, "UralRepair_xj400"];
+	unitDefs select _supportTruckE2 set [udModel, "UralRepair_xj400"];
+	unitDefs select _truckRefuelE set [udModel, "UralRefuel_xj400"];
+	unitDefs select _tankLightE01 set [udModel, "T55E_xj400"];
+	unitDefs select _tankLightE02 set [udModel, "T72_xj400"];
+	unitDefs select _tankLightE03 set [udModel, "T72_xj400"];
+};
