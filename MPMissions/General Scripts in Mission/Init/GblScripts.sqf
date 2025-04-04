@@ -380,7 +380,7 @@ _f = {
 "\TZK_Patch4_4_0_6\s\Init\PplMarkerLazyDeclare.sqs" call _f; // 317
 "\TZK_Patch4_4_0_6\s\Init\PplMarkerLazyInit.sqs" call _f; // 318
 "\TZK_Patch4_4_0_6\s\Marker\struct.sqf" call _f; // 319
-"\TZK_Patch4_4_0_6\s\Radio\001_RtsMapMode.sqf" call _f; // 320
+"Radio\001_RtsMapMode.sqf" call _f; // 320
 
 "\TZK_Patch4_4_0_6\s\Radio\fArtMagPage1.sqf" call _f; // 321
 "\TZK_Patch4_4_0_6\s\Radio\fArtMagSlow.sqf" call _f; // 322
