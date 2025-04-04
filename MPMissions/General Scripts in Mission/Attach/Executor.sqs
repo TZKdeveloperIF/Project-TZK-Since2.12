@@ -153,7 +153,8 @@ _try = 0
 ; ========================================= Postprocess =========================================
 # Postprocess
 	; record unexpected situation to log
-	? isNull _vehicle: format ["Null attached vehicle appears. pos: %1, vel: %2, tug: %3, veh: %4", _pos, _vel, _tug, _vehicle] call fDebugLog
+	; todo: however, the vehicle can be disbanded by UC and can thus be null
+	; ? isNull _vehicle: format ["Null attached vehicle appears. pos: %1, vel: %2, tug: %3, veh: %4", _pos, _vel, _tug, _vehicle] call fDebugLog
 
 	; server execute detach
 	? isServer: _id exec "Attach\SubmitDetach.sqs"
