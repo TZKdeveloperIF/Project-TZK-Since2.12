@@ -29,11 +29,15 @@ _nearby = { // lanbda. "_this" is object
 };
 
 _exec = { // lanbda. "_this" is idx
-	private [{_object}, {_value}, {_salvage}];
+	private [{_object}, {_value}, {_salvage}, {_cacheIdx}];
 	_object = _list select _this;
 	if (alive _object) then {
 		_value = lbValue [_idcList, _this];
-		if (_object call _nearby) then {
+		if (_object call _nearby && not (_object in _structCache)) then {
+			_cacheIdx = _structCache find objNull;
+			if (-1 == _cacheIdx) then {_cacheIdx = count _structCache};
+			_structCache set [count _structCache, _object];
+
 			_salvage = (if (-1 == _value) then {costWorker} else {structDefs select _value select sdCost});
 			[- 0.5 * _salvage] exec "Net\sMoneySpent.sqs";
 		};
