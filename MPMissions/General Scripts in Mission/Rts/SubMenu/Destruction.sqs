@@ -52,6 +52,9 @@ _size = getMarkerSize "TzkRtsArea";
 _area = [_pos select 0, _pos select 1, _size select 0, _size select 1, getMarkerDir "TzkRtsArea"];
 _posInRect = preprocessFile "Util\PosInRect.sqf"
 
+; RTS destruction cache. There will be delay in destructing remote structures
+_structCache = []
+
 _lastUpdateListTime = _time - 9999
 # Update
 	~ 0.05
