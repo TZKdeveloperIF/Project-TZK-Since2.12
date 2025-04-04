@@ -24,6 +24,7 @@ class TzkCmdMapDlgArea: TzkCmdMapDlgVariableBase {
 		RtsSelectTypeBtn0, RtsSelectTypeBtn1, RtsSelectTypeBtn2, RtsSelectTypeBtn3, 
 		Exit
 	};
+	// cfg_todo: allow edit text in-game
 	class Frame1: TZK_Frame_1 {
 		colorText[] = {0.4, 0, 0, 0.9};
 		sizeEx = 0.021;

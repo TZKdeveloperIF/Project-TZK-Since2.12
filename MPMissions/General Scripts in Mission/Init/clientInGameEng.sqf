@@ -56,8 +56,19 @@
 
 	"Disband Player Only" call _f; // 004
 
+	"Alt-Click and Shift-Alt-Click for RTS style interaction. See notepad for more info.
+	\n\n
+	Radio System available. You're free to press 0-0 to call channels in different vehicles.
+	\n
+	0-0-1 is always for switching RTS map click mode.
+	\n
+	0-0-2 is always for TZK Setting Interface." call _f; // 005
+
+	"Turn ON Rts Map Mode" call _f; // 006
+	"Turn OFF Rts Map Mode" call _f; // 007
+
 	// script count check. Check index with last literal value
-	if (_i != 4 + 1) then {
+	if (_i != 7 + 1) then {
 		player globalChat "Script count mismatch!";
 	};
 
