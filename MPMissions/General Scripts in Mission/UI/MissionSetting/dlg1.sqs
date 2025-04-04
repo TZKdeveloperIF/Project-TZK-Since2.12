@@ -19,6 +19,10 @@ _varNameMatrix = 0 call _genMatrix
 _stateMatrix = [_varNameMatrix, 1 call _genMatrix] call preprocessFile "UI\MissionSetting\dlgInit.sqf"
 _cfgKeyMatrix = 2 call _genMatrix
 
+; disable abandoned old style CHN language support in 2.02
+? UsedVersion >= 2020: ctrlShow [IDC + 100 + 100 * 1 + 5, false]
+; cfg_todo: disable this item in CWA_CE at all
+
 ; Show text in dev for debugging
 ? !dev : {ctrlShow [IDC + _x, false]} forEach [1,2,3]
 ; ? dev: (getPos player) exec "\TZK_Scripts_4_0_4\Server\CutDownTrees.sqs", hint format ["This message will appear only in developing mode (training missions), displaying some variables' value.\n\n%1, %2\n%3\n%4\n%5\n%6", GetWorld, TheWorld, dev], ctrlSetText [IDC + 2, format["%1", (vehicle player) call funcGetUnitTypeFromObject]], ctrlSetText [IDC + 3, format ["%1", structDefs select stHeavy select sdObjects0]],
