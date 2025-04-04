@@ -16,13 +16,7 @@ ctrlSetText [IDC + 11, "  GUI"]
 ctrlSetText [IDC + 12, "  Environments"]
 ctrlSetText [IDC + 13, "  Controls"]
 
-_bChn = localize {TZK_LANG_MOVE} == "移动"
-? not _bChn: goto "skipChnText"
-	ctrlSetText [IDC + 10, "  TZK任务设置2"]
-	ctrlSetText [IDC + 11, "  对话框"]
-	ctrlSetText [IDC + 12, "  环境"]
-	ctrlSetText [IDC + 13, "  控制"]
-# skipChnText
+2 call preprocessFile "UI\MissionSetting\title.sqf"
 
 _genMatrix = preprocessFile "UI\MissionSetting\matrix2.sqf"
 _varNameMatrix = 0 call _genMatrix

@@ -64,8 +64,19 @@ if _bMatch then {
 
 	"仅杀死玩家" call _f; // 004
 
+	"Alt 单击及 Shift-Alt 单击用于 RTS 风格的交互。更多细节可参看笔记本。
+	\n\n
+	可使用无线电系统。在不同的载具中按下 0-0 可呼出不同的无线电频道。
+	\n
+	0-0-1 总是用于切换 RTS 地图点击模式。
+	\n
+	0-0-2 总是用于 TZK 设置界面。" call _f; // 005
+
+	"开启 RTS 单击交互" call _f; // 006
+	"关闭 RTS 单击交互" call _f; // 007
+
 	// script count check. Check index with last literal value
-	if (_i != 4 + 1) then {
+	if (_i != 7 + 1) then {
 		player globalChat "Script count mismatch!";
 	};
 

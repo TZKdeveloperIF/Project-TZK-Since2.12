@@ -37,7 +37,7 @@ if (1 == _this) then {
 			["Show Attach L/R      [OFF]", "Show Attach L/R       [ON]"]
 		}
 		, if _bChn then {
-			["展示 切换座位         [OFF]", "展示 切换作为          [ON]"]
+			["展示 切换座位         [OFF]", "展示 切换座位          [ON]"]
 		} else {
 			["Show SwitchSeat      [OFF]", "Show SwitchSeat       [ON]"]
 		}
