@@ -1,6 +1,6 @@
 // args: dialog index
 
-if (localize {TZK_LANG_MOVE} == "移动") then {
+if (call preprocessFile "Util\LangIsChn.sqf") then {
 	if (1 == _this) then {
 		ctrlSetText [IDC + 10, "  TZK任务设置1"];
 		ctrlSetText [IDC + 11, "  效果"];

@@ -1,9 +1,8 @@
 // args: none
 // return: bool (use this languange)
 
-// cfg_todo: 需要有一个更好的标识来知道当前游戏的 LANGUAGE
 private [{_bMatch}];
-_bMatch = localize {TZK_LANG_MOVE} == "移动";
+_bMatch = call preprocessFile "Util\LangIsChn.sqf";
 
 if _bMatch then {
 	private [{_i}, {_capacity}];

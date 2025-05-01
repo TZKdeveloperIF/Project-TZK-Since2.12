@@ -11,9 +11,8 @@ if (0 == _this) then {
 if (1 == _this) then {
 	_proceeded = true;
 
-	// cfg_todo: 需要有一个更好的标识来知道当前游戏的 LANGUAGE
 	private [{_bChn}];
-	_bChn = localize {TZK_LANG_MOVE} == "移动";
+	_bChn = call preprocessFile "Util\LangIsChn.sqf";
 	_ret = [
 		  if _bChn then {
 			["播放音乐             [OFF]", "播放音乐              [ON]"]
