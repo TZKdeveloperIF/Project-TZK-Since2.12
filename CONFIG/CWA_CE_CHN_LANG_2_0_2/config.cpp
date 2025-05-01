@@ -4,7 +4,7 @@ class CfgPatches {
 		author = "IF";
 		units[] = {};
 		requiredAddons[] = {}; // IMPORTANT!
-		requiredVersion = 2.02;
+		requiredVersion = 2.03;
 	};
 };
 class CfgFonts {
