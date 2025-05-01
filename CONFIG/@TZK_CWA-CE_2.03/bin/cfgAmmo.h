@@ -51,6 +51,12 @@ class CfgAmmo {
 		initTime = 0;
 		thrustTime = 1.5;
 		thrust = 210;
+		activationMass = 10000;
+		activationDistance = 36;
+		activationTime = 0.3;
+		coefGravity = 1;
+		timeToLive = 20;
+		airFriction = -0.0005;
 	};
 	class LaserGuidedBomb: Default {
 		hit = 5000;

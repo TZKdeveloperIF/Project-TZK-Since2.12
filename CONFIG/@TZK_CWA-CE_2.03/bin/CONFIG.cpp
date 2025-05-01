@@ -3366,7 +3366,7 @@ class CfgPatches {
 		units[] = {};
 		weapons[] = {};
 	};
-	class TZK_BIN_CONFIG_CWA_CE_202 {
+	class TZK_BIN_CONFIG_CWA_CE_203 {
 		units[] = {};
 		weapons[] = {};
 	};
