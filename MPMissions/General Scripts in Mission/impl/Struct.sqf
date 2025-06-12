@@ -5,6 +5,10 @@ _scriptsPpl = structDefs select _artPlain select sdScriptsPlayer;
 _scriptsPpl set [count _scriptsPpl, (TzkScripts select 162)];
 structMarker set [_artPlain, "MineAPE_Marker_xj400"];
 
+// remove redundant marker script
+_scriptsPpl = structDefs select _gunf select sdScriptsPlayer;
+_scriptsPpl resize 1;
+
 // ============================ Added structure items ============================
 _oldCount = count structDefs;
 // Add items below
