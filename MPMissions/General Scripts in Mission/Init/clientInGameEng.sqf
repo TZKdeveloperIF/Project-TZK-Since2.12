@@ -69,8 +69,10 @@
 
 	"Please choose points near land enough." call _f; // 008
 
+	"Mine Param Check" call _f; // 009
+
 	// script count check. Check index with last literal value
-	if (_i != 8 + 1) then {
+	if (_i != 9 + 1) then {
 		player globalChat "Script count mismatch!";
 	};
 
