@@ -37,6 +37,9 @@ _bKilled = false
 ; The y and z coordinate of out sea position is related with vehicle's current coordinate. This can help get avoid with collapse with other objects.
 _outSeaPos = [TzkAttachPosX, getPosASL(_vehicle) select 1, 100 + (getPosASL(_vehicle) select 2)]
 
+; calculate vector included angle
+_funcVectorAngle = preprocessFile "Math\VectorAngle.sqf"
+
 ; ========================================= Local Check =========================================
 ; Must finish initialization
 ? not local _vehicle: goto "RemoteSleep"
@@ -60,6 +63,7 @@ _outSeaPos = [TzkAttachPosX, getPosASL(_vehicle) select 1, 100 + (getPosASL(_veh
 # EnterMainPart
 _interval = 0.1; _resetPosThreshold = 50
 _counter = 0
+_upCnt = 0
 _TGV = _vehicle in TownGroupVehicles
 
 _coefScale = (if _tHeli then {0.9} else {0.8})
@@ -108,10 +112,11 @@ _try = 0
 	; ~ 0.1
 
 	; variable updated in external loop
-	_up = (getPosASL _vehicle) call funcVectorUp; _vehicle setVectorUp _up
 
 	# frequentlyLoop
 		_counter = _counter + 1
+		_upCnt = _upCnt + 1
+		? _upCnt > 1000: _upCnt = 0
 		; check quit
 		_bDetached = call _relationBroken
 		_bKilled = not alive _tug || not alive _vehicle
@@ -120,14 +125,23 @@ _try = 0
 		? _tHeli && ((getPos _tug) select 2) < _attachDist : goto "Postprocess"
 
 		; correct dir and up
-		_tugDir = getDir _tug; _vehDir = getDir _vehicle;
-		_dirDiff = _vehDir - _tugDir
-		? _dirDiff > +180: _dirDiff = _dirDiff - 360
-		? _dirDiff < -180: _dirDiff = _dirDiff + 360
-		_dir = vectorDir _vehicle
-		? _dirDiff > +5: _dir = [_dir, _up, +1] call funcVectorRot3D
-		? _dirDiff < -5: _dir = [_dir, _up, -1] call funcVectorRot3D
-		_vehicle setVectorDirAndUp [_dir, [0,0,1]]
+
+		_bResetDirUp = false
+		_posUp = (getPosASL _vehicle) call funcVectorUp; _vehUp = vectorUp _vehicle
+		_angle = [_posUp, _vehUp] call _funcVectorAngle
+		? abs(_angle) > 2 && _upCnt % 10 == 0: _bResetDirUp = true
+
+		_tugDir = vectorDir _tug; _vehDir = vectorDir _vehicle
+		_angle = [_tugDir, _vehDir] call _funcVectorAngle
+		? abs(_angle) > 5: _bResetDirUp = true
+
+		? not _bResetDirUp: goto "SkipAdjustDirUp"
+
+			_axis = [_tugDir, _vehDir] call funcVectorCross
+			_vehicle setVectorDirAndUp [[_vehDir, _axis, - _angle / abs(_angle)] call funcVectorRot3D, [0,0,1]]
+			; setPos/setVelocity can't solve vehicle shaking on its shooting
+
+		# SkipAdjustDirUp
 
 		; update velocity. For structure, add velocity * interval to its current position
 		_vel = _calcVelParam call _funcCalcVel
