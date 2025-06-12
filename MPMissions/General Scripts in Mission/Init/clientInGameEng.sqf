@@ -67,8 +67,10 @@
 	"Turn ON Rts Map Mode" call _f; // 006
 	"Turn OFF Rts Map Mode" call _f; // 007
 
+	"Please choose points near land enough." call _f; // 008
+
 	// script count check. Check index with last literal value
-	if (_i != 7 + 1) then {
+	if (_i != 8 + 1) then {
 		player globalChat "Script count mismatch!";
 	};
 
