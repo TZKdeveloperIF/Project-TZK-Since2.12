@@ -76,8 +76,10 @@ if _bMatch then {
 
 	"请选择距离陆地足够近的点" call _f; // 008
 
+	"地雷参数检查" call _f; // 009
+
 	// script count check. Check index with last literal value
-	if (_i != 8 + 1) then {
+	if (_i != 9 + 1) then {
 		player globalChat "Script count mismatch!";
 	};
 
