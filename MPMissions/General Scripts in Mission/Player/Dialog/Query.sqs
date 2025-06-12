@@ -5,7 +5,7 @@
 
 @ not mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
-_dlg = createDialog "TzkQueryDialog"
+_dlg = createDialog "TzkQueryDialog2"
 mutexDlg = false
 
 _idcIntroduction = IDC + 1
@@ -13,6 +13,7 @@ ctrlSetText [_idcIntroduction, "This dialog is for query data from server. Bug o
 
 _idcBtnLeft = IDC + 100
 ctrlSetText [_idcBtnLeft + 0, "Group Units Check"]
+ctrlSetText [_idcBtnLeft + 1, TzkInGameText select 009]
 
 btnValue00 = -1
 
@@ -26,4 +27,5 @@ btnValue00 = -1
 	goto "Update"
 # OnClicked
 	? 0 == _val: call preprocessFile "Join\GenPplQueryRequest.sqf"; closeDialog 0, exit
+	? 1 == _val: call preprocessFile "Query\submitMineParam.sqf"; closeDialog 0, exit
 	goto "Update"
