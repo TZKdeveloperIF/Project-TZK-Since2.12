@@ -1,4 +1,9 @@
-
+// ============================ Adjust existed items ============================
+structDefs select _artPlain set [sdLimit, 30];
+structDefs select _artPlain set [sdMaxRadius, 10];
+_scriptsPpl = structDefs select _artPlain select sdScriptsPlayer;
+_scriptsPpl set [count _scriptsPpl, (TzkScripts select 162)];
+structMarker set [_artPlain, "MineAPE_Marker_xj400"];
 
 // ============================ Added structure items ============================
 _oldCount = count structDefs;
@@ -6,6 +11,9 @@ _oldCount = count structDefs;
 
 
 // add to global variables like structsRespawn
+
+// cfg_todo: should prepare another attribute to define vehicle distance limit
+structsNoVehCheck = [_artPlain];
 
 
 // Add items above
