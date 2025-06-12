@@ -40,7 +40,7 @@ _distance = ([_posStruct, [si0, si1, siRes], []] call funcGetClosestTown) select
 
 ; CHECK VEHICLE
 _res = [_posStruct, _radius, [], []] call funcGetNearbyVehicles
-? (count _res) > 0 : hint "Build pos blocked by vehicle."; exit
+? (count _res) > 0 && not (_type in structsNoVehCheck): hint "Build pos blocked by vehicle."; exit
 
 ; CHECK TREES
 ; ? [_posStruct] call funcInForest : hint "Build pos blocked by trees."; exit

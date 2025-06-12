@@ -9,12 +9,25 @@ _pos1 = _this select 0; _pos2 = _this select 1;
 private [{_legal}, {_enum}]; _legal = true; _enum = -1;
 // 0: too far to sea, 1: pos too close, 2: points along the way isn't in sea
 // 3: anyone point is in the sea
-if _legal then {if ([_pos1, 0] call funcPosNearSea) then {_legal = false, _enum = 3}};
-if _legal then {if ([_pos2, 0] call funcPosNearSea) then {_legal = false, _enum = 3}};
+// 4: anyone point is far from land
+
+// try allow build bridge from water. This is to solve beach case
+// if _legal then {if ([_pos1, 0] call funcPosNearSea) then {_legal = false, _enum = 3}};
+// if _legal then {if ([_pos2, 0] call funcPosNearSea) then {_legal = false, _enum = 3}};
+
+// but must require bridge point near land enough
+if _legal then {if (not ([_pos1, 100] call preprocessFile "Util\PosNearLand.sqf")
+	&& not ([_pos1, 50] call preprocessFile "Util\PosNearLand.sqf")
+	&& not ([_pos1, 25] call preprocessFile "Util\PosNearLand.sqf")
+) then {_legal = false, _enum = 4}};
+if _legal then {if (not ([_pos2, 100] call preprocessFile "Util\PosNearLand.sqf")
+	&& not ([_pos2, 50] call preprocessFile "Util\PosNearLand.sqf")
+	&& not ([_pos2, 25] call preprocessFile "Util\PosNearLand.sqf")
+) then {_legal = false, _enum = 4}};
 
 // require 2 position near sea enough
-if _legal then {if not ([_pos1, 50] call funcPosNearSea) then {_legal = false, _enum = 0}};
-if _legal then {if not ([_pos2, 50] call funcPosNearSea) then {_legal = false, _enum = 0}};
+if _legal then {if not ([_pos1, 100] call funcPosNearSea) then {_legal = false, _enum = 0}};
+if _legal then {if not ([_pos2, 100] call funcPosNearSea) then {_legal = false, _enum = 0}};
 
 // bridge length is _lowerBound. require distance between 2 position large than _lowerBound
 if _legal then {if (_lowerBound >= ([_pos1, _pos2] call funcDistH)) then {_legal = false, _enum = 1}};
