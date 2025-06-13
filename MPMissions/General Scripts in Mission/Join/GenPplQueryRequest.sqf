@@ -1,7 +1,7 @@
 // args: none
 
 TitleText [
-	{This request will try to remove abnormal "ghost" units in your group (probably created by "Join").}
+	TzkInGameText select 012
 	, "Plain DOWN", 0.66
 ];
 
