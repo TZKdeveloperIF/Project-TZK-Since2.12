@@ -76,10 +76,14 @@ if _bMatch then {
 
 	"请选择距离陆地足够近的点" call _f; // 008
 
-	"地雷参数检查" call _f; // 009
+	"这个对话框提供了一些按钮，用于对部分 bug 进行数据查询或修正。" call _f; // 009
+	"队伍单位检测" call _f; // 010
+	"地雷参数检查" call _f; // 011
+
+	{这个请求将试图移除队伍中的“幽灵”单位（往往由 join 导致）。} call _f; // 012
 
 	// script count check. Check index with last literal value
-	if (_i != 9 + 1) then {
+	if (_i != 12 + 1) then {
 		player globalChat "Script count mismatch!";
 	};
 

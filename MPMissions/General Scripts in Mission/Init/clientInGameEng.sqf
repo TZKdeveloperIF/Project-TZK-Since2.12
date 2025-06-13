@@ -69,10 +69,14 @@
 
 	"Please choose points near land enough." call _f; // 008
 
-	"Mine Param Check" call _f; // 009
+	"This dialog provides few buttons to query or correct data on some CTI bugs." call _f; // 009
+	"Group Units Check" call _f; // 010
+	"Mine Param Check" call _f; // 011
+
+	{This request will try to remove abnormal "ghost" units in your group (probably created by JOIN).} call _f; // 012
 
 	// script count check. Check index with last literal value
-	if (_i != 9 + 1) then {
+	if (_i != 12 + 1) then {
 		player globalChat "Script count mismatch!";
 	};
 
