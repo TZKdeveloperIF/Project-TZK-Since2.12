@@ -126,19 +126,23 @@ _try = 0
 
 		; correct dir and up
 
-		_bResetDirUp = false
+		_enumResetDirUp = 0
 		_posUp = (getPosASL _vehicle) call funcVectorUp; _vehUp = vectorUp _vehicle
-		_angle = [_posUp, _vehUp] call _funcVectorAngle
-		? abs(_angle) > 2 && _upCnt % 10 == 0: _bResetDirUp = true
+		_angle1 = [_posUp, _vehUp] call _funcVectorAngle
+		? abs(_angle1) > 2 && _upCnt % 10 == 0: _enumResetDirUp = 1
 
 		_tugDir = vectorDir _tug; _vehDir = vectorDir _vehicle
-		_angle = [_tugDir, _vehDir] call _funcVectorAngle
-		? abs(_angle) > 5: _bResetDirUp = true
+		_angle2 = [_tugDir, _vehDir] call _funcVectorAngle
+		? abs(_angle2) > 5: _enumResetDirUp = 2
 
-		? not _bResetDirUp: goto "SkipAdjustDirUp"
+		? 0 == _enumResetDirUp: goto "SkipAdjustDirUp"
+
+			? 1 == _enumResetDirUp: _angle = _angle1
+			? 2 == _enumResetDirUp: _angle = _angle2
+			_correction = - (if (_angle > 0) then {1} else {-1})
 
 			_axis = [_tugDir, _vehDir] call funcVectorCross
-			_vehicle setVectorDirAndUp [[_vehDir, _axis, - _angle / abs(_angle)] call funcVectorRot3D, [0,0,1]]
+			_vehicle setVectorDirAndUp [[_vehDir, _axis, _correction] call funcVectorRot3D, [0,0,1]]
 			; setPos/setVelocity can't solve vehicle shaking on its shooting
 
 		# SkipAdjustDirUp
