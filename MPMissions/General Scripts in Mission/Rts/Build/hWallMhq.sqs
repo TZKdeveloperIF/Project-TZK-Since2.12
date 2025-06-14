@@ -4,6 +4,11 @@
 _si = _this; _mhq = mhq select _si
 ? not alive _mhq: exit
 
+; stop mhq. If mhq is sliding (in sea, e.g.) without driver, it'll slide across the wall
+_cmd = format [{_mhq = mhq select %1; if (local _mhq) then {_mhq setVelocity [0,0,0]}}, _si]
+call _cmd
+publicExec format ["call {%1}", _cmd]
+
 _st = stMhqWall
 
 _gi = giCo select _si;
