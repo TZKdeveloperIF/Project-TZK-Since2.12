@@ -2,7 +2,7 @@
 
 ? not isServer: exit
 
-_str = format ["Server param: %1", "Mine" GetAmmoParam "activationMass"]
+_str = format ["Player param: %1, %2, %3", "Mine" GetAmmoParam "activationMass", "Mine" GetAmmoParam "activationDistance", "Mine" GetAmmoParam "activationTime"]
 
 [_this, _str] exec "Query\receiveMineParam.sqs"
 publicExec format [{[%1, {%2}] exec "Query\receiveMineParam.sqs"}, _this, _str]
