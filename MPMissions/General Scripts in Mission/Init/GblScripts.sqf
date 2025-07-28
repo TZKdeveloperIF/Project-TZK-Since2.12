@@ -298,7 +298,7 @@ _f = {
 "\TZK_Patch4_4_0_6\s\UI\Options_Init.sqf" call _f; // 244
 "\TZK_Patch4_4_0_6\s\UI\StartPos.sqs" call _f; // 245
 "\TZK_Patch4_4_0_6\s\UI\SatCamPreprocess.sqf" call _f; // 246
-"\TZK_Patch4_4_0_6\s\UI\SatCam.sqs" call _f; // 247
+"UI\SatCam.sqs" call _f; // 247
 "\TZK_Patch4_4_0_6\s\UI\SatCamExit.sqf" call _f; // 248
 "\TZK_Patch4_4_0_6\s\UI\RRV_PlaneCheck.sqf" call _f; // 249
 "\TZK_Patch4_4_0_6\s\UI\RepairRearmVehicle.sqs" call _f; // 250
