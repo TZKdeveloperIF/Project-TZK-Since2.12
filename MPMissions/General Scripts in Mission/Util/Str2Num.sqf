@@ -9,9 +9,11 @@ while {_i < _size && _valid} do {
 	if (not (_ch call loadFile "Util\IsDIgit.sqf")) then {
 		if ("." == _ch) then {
 			if _isDecimal then {_valid = false} else {_isDecimal = true};
+		} else {if ("-" == _ch) then {
+			_valid = true;
 		} else {
 			_valid = false;
-		};
+		}};
 	};
 	_i = _i + 1;
 };
