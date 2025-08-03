@@ -127,7 +127,7 @@ btnValue05 = -1;
 # FunctionalBtns
 	? 1 == _btnFnc: false call preprocessFile (TzkScripts select 362); 0 exec (TzkScripts select 023); closeDialog 0; goto "Quit"
 	? 2 == _btnFnc: goto "Unselect"
-	? 3 == _btnFnc: "dlg_rts" exec "UI\Shortkey\dlg.sqs"; closeDialog 0; goto "Quit"
+	? 3 == _btnFnc: ["dlg_rts", _this, "Rts\Dialog\RtsMap.sqs"] exec "UI\Shortkey\dlg.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 	# Unselect
 		; unselect units, and switch to area dialog

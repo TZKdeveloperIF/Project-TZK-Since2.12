@@ -125,7 +125,7 @@ _selectedOrder = -1
 	goto "Update"
 # FunctionalBtns
 	? 1 == _btnFnc: 0 exec (TzkScripts select 023); closeDialog 0; goto "Quit"
-	? 3 == _btnFnc: "dlg_ppl_grp_order" exec "UI\Shortkey\dlg.sqs"; closeDialog 0; goto "Quit"
+	? 3 == _btnFnc: ["dlg_ppl_grp_order", _this, "Rts\Dialog\PplGrpOrder.sqs"] exec "UI\Shortkey\dlg.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 
 # MidBtn

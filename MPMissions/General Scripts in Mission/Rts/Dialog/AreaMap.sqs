@@ -132,7 +132,7 @@ btnValue05 = -1;
 	goto "Update"
 # FunctionalBtns
 	? 1 == _btnFnc: 0 exec (TzkScripts select 023); closeDialog 0; goto "Quit"
-	? 3 == _btnFnc: "dlg_area" exec "UI\Shortkey\dlg.sqs"; closeDialog 0; goto "Quit"
+	? 3 == _btnFnc: ["dlg_area", _this, "Rts\Dialog\AreaMap.sqs"] exec "UI\Shortkey\dlg.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 # SwitchClassification
 	? _btnVal == TzkRtsSelectEnum: hint "Exception caught."; goto "Update"

@@ -113,5 +113,5 @@ TzkMapRtsFlashingDisabled = true
 	goto "Update"
 # FunctionalBtns
 	? 1 == _btnFnc: 0 exec (TzkScripts select 023); closeDialog 0; goto "Quit"
-	? 3 == _btnFnc: "dlg_point" exec "UI\Shortkey\dlg.sqs"; closeDialog 0; goto "Quit"
+	? 3 == _btnFnc: ["dlg_point", _this, "Rts\Dialog\PointMap.sqs"] exec "UI\Shortkey\dlg.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
