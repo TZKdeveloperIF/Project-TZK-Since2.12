@@ -15,7 +15,7 @@ _idcLeftBtn0 = IDC + 16 * 2 + 0
 _idcDownBtn0 = IDC + 16 * 17 + 0
 ; init right-down corner buttons (switching to other rts dialogs)
 ; 0: rts, 1: area, 2: wpco, 3: player order, 4: point
-[0, _units] call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
+_accept = [0, _units] call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
 
 ; init left-down corner buttons (select specific type of units)
 _idcLeftDownBtn0 = IDC + 16 * 12 + 0
@@ -89,7 +89,7 @@ _getPressingKey = preprocessFile "Util\PressingKey.sqf"
 	[false, _id + 2] exec (TzkScripts select 363); exit
 # FirstCtrl
 	; switch to area map rapidly
-	[2 ^ 1, _this] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
+	[2 ^ 1, _this, _accept] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
 # FunctionalBtns
 	? 1 == _btnFnc: false call preprocessFile (TzkScripts select 362); 0 exec (TzkScripts select 023); closeDialog 0; goto "Quit"
 	? 2 == _btnFnc: goto "Unselect"
@@ -97,7 +97,7 @@ _getPressingKey = preprocessFile "Util\PressingKey.sqf"
 	# Unselect
 		; unselect units, and switch to area dialog
 		false call preprocessFile (TzkScripts select 362);
-		[2 ^ 1, _this] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"
+		[2 ^ 1, _this, _accept] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"
 		goto "Quit"
 ; todo: magic number should better
 # LeftBtn
@@ -201,7 +201,7 @@ _getPressingKey = preprocessFile "Util\PressingKey.sqf"
 	[_idcLeftDownBtn0, _level, _btnVal] call preprocessFile "Rts\Dialog\UpdateRtsDlgType.sqf"
 	goto "Update"
 # RightDownBtn
-	? _btnVal > 0: [_btnVal, _this] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
+	? _btnVal > 0: if ([_btnVal, _this, _accept] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf") then {goto "Quit"}
 	goto "Update"
 # SwitchClassification
 	? _btnVal == TzkRtsSelectEnum: hint "Exception caught."; goto "Update"

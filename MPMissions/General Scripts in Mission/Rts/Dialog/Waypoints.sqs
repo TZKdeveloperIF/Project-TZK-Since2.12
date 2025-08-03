@@ -19,7 +19,7 @@ _pos call preprocessFile "Util\DebugPointInfo.sqf"
 
 ; init right-down corner buttons (switching to other rts dialogs)
 ; 0: rts, 1: area, 2: wpco, 3: player order, 4: point
-[2, _units] call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
+_accept = [2, _units] call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
 
 _idcBigLeftBtn = IDC + 16 * 13
 
@@ -118,7 +118,7 @@ _procMixedWpArt = preprocessFile "Rts\Dialog\Wp\ProcMixedWpArtList.sqf"
 	goto "Update"
 
 # RightDownBtn
-	? _btnVal > 0: [_btnVal, _this] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
+	? _btnVal > 0: if ([_btnVal, _this, _accept] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf") then {goto "Quit"}
 	goto "Update"
 
 # SetBtn
@@ -179,7 +179,7 @@ _procMixedWpArt = preprocessFile "Rts\Dialog\Wp\ProcMixedWpArtList.sqf"
 	[false, _id + 2] exec (TzkScripts select 363); exit
 # FirstCtrl
 	; switch to waypoint dialog rapidly
-	[2 ^ 4, _this] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
+	[2 ^ 4, _this, _accept] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
 # FunctionalBtns
 	? 1 == _btnFnc: 0 exec (TzkScripts select 023); closeDialog 0; goto "Quit"
 	goto "Update"
