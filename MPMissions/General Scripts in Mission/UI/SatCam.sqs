@@ -6,6 +6,7 @@
 _unitTracked = satcamUnit
 _posTarget = satcamPos
 _alt = satcamAlt
+_cachedAlt = _alt
 
 _tracker = "HeliHEmpty" camCreate [_posTarget select 0, _posTarget select 1, 0]
 
@@ -57,7 +58,7 @@ sliderSetPosition [IDC_SL_DISTANCE, _alt]
 goto "UpdateDialog"
 
 #UpdateCam
-  ~0.01
+	~ 0.01
 
 	? call dlgUpdated: forceMap false; bShowMap = false; goto "Quit"
 	? (pvGameOver != -1): forceMap false; goto "Quit"
@@ -77,6 +78,7 @@ goto "UpdateDialog"
 		_bNewTarget = true
 	#NoMemberChange
 
+	_cachedAlt = _alt
 	_alt = sliderPosition IDC_SL_DISTANCE
 	
 	? !(isNull _unitTracked) : _posTarget = getPos (vehicle _unitTracked)
@@ -171,4 +173,5 @@ goto "UpdateDialog"
 	exit
 
 # Quit
+	_alt = _cachedAlt
 	call loadFile (TzkScripts select 248)
