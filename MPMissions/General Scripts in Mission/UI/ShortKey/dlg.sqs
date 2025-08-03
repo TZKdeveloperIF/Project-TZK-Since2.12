@@ -1,5 +1,7 @@
-; args: shortkey design name: string
-_name = _this
+; args: [shortkey design name: string, origin dialog path: string, origin dialog param: any]
+_name = _this select 0
+_originDlgParam = _this select 1
+_originDlgPath = _this select 2
 
 @ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
@@ -53,6 +55,9 @@ _i = 0; while {_i < _c} do {ctrlSetText [_idcFuncs + _i, _displayTexts select (_
 	[_name + "_saved", "true"] call preprocessFile "Cfg\SavePlayerValue.sqf"
 	[_name + "_keys", _keys] call preprocessFile "Cfg\SavePlayerValue.sqf"
 	[_name + "_funcs", _funcs] call preprocessFile "Cfg\SavePlayerValue.sqf"
+	; reopen origin dialog
+	closeDialog 0
+	_originDlgParam exec _originDlgPath
 	exit
 # OnButtonClicked
 	ctrlSetText [_idcKeys + _settingKeyIdx, "..."]

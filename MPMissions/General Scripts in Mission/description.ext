@@ -95,6 +95,19 @@ class TzkRtsFirstCtrlBase: Button {
 #include "TZK_Patch4_4_0_6\s\description_31_rtsSubDialogs.h"
 #include "TZK_Patch4_4_0_6\s\description_32_406RedefinedDlgs.h"
 
+#define stringify(argument) #argument
+#define DefCustomKeyClass \
+	class CustomShortkey: Button { \
+		x = RtsMapLeftWidth + 0.10; \
+		y = 0.00; \
+		w = 0.20; \
+		h = 0.04; \
+		text = stringify(Custom Shortkey); \
+		action = stringify(btnFunction = 3); \
+		idc = IDC + 16 * 0 + 0; \
+		colorText[] = {0.8, 0.2, 0.1, 0.9}; \
+	};
+
 class TzkCmdMapDlgRts2: TzkCmdMapDlgRts {
 	controls[] = {
 		FirstCtrl, 
@@ -133,15 +146,7 @@ class TzkCmdMapDlgRts2: TzkCmdMapDlgRts {
 		text = "";
 		action = "btnValue00 = 16";
 	};
-	class CustomShortkey: Button {
-		x = RtsMapLeftWidth + 0.10;
-		y = 0.00;
-		w = 0.20;
-		h = 0.04;
-		text = "Custom Shortkey";
-		action = "btnFunction = 3";
-		idc = IDC + 16 * 0 + 0;
-	};
+	DefCustomKeyClass
 };
 
 class TzkCmdMapDlgPplOrder2: TzkCmdMapDlgPplOrder {
@@ -329,15 +334,7 @@ class TzkCmdMapDlgPplOrder2: TzkCmdMapDlgPplOrder {
 		h = 0.21;
 	};
 
-	class CustomShortkey: Button {
-		x = RtsMapLeftWidth + 0.10;
-		y = 0.00;
-		w = 0.20;
-		h = 0.04;
-		text = "Custom Shortkey";
-		action = "btnFunction = 3";
-		idc = IDC + 16 * 0 + 0;
-	};
+	DefCustomKeyClass
 	controls[] = {
 		MidPic0, MidPic1, MidPic2, 
 		MidPic4, MidPic5, 
@@ -396,15 +393,7 @@ class TzkCmdMapDlgArea2: TzkCmdMapDlgArea {
 		CustomShortkey, 
 		Exit
 	};
-	class CustomShortkey: Button {
-		x = RtsMapLeftWidth + 0.10;
-		y = 0.00;
-		w = 0.20;
-		h = 0.04;
-		text = "Custom Shortkey";
-		action = "btnFunction = 3";
-		idc = IDC + 16 * 0 + 0;
-	};
+	DefCustomKeyClass
 };
 
 class TzkCmdMapDlgPoint2: TzkCmdMapDlgPoint {
@@ -424,15 +413,7 @@ class TzkCmdMapDlgPoint2: TzkCmdMapDlgPoint {
 		CustomShortkey, 
 		Exit
 	};
-	class CustomShortkey: Button {
-		x = RtsMapLeftWidth + 0.10;
-		y = 0.00;
-		w = 0.20;
-		h = 0.04;
-		text = "Custom Shortkey";
-		action = "btnFunction = 3";
-		idc = IDC + 16 * 0 + 0;
-	};
+	DefCustomKeyClass
 };
 
 class TzkCmdMapDlgWpCo2: TzkCmdMapDlgWpCo {
@@ -451,16 +432,11 @@ class TzkCmdMapDlgWpCo2: TzkCmdMapDlgWpCo {
 		CustomShortkey, 
 		Exit
 	};
-	class CustomShortkey: Button {
-		x = RtsMapLeftWidth + 0.10;
-		y = 0.00;
-		w = 0.20;
-		h = 0.04;
-		text = "Custom Shortkey";
-		action = "btnFunction = 3";
-		idc = IDC + 16 * 0 + 0;
-	};
+	DefCustomKeyClass
 };
+
+#undef DefCustomKeyClass
+#undef stringify
 
 class DisbandGroupDialog2: DisbandGroupDialog {
 	class DisbandGroupDialog_BUTTON_Leader: Button {
