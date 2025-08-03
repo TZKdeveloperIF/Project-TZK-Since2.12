@@ -1,0 +1,72 @@
+; args: shortkey design name: string
+_name = _this
+
+@ !mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "TzkCustomShortkey"
+mutexDlg = false
+
+_idcDlgFrame = IDC + 16 * 0 + 0, _idcHintFrame = IDC + 16 * 0 + 1, _idcHint = IDC + 16 * 0 + 2
+_idcFuncs = IDC + 16 * (2 + 8 * 0), _idcKeys = IDC + 16 * (2 + 8 * 1)
+
+btnValue00 = -1
+_getPressingKey = preprocessFile "Util\PressingKey.sqf", _pressingKey = "", _pressedKey = ""
+_illegalKeys = ["Escape", "Space", "Enter", "Enter [NUM]"]
+_conflictIdx = -1
+
+; state enum
+_stateInit = 0, _stateSetting = 1, _stateSucceeded = 2, _stateConflict = 3, _stateReserved = 4
+_detectPressingKeyStates = [_stateSetting, _stateConflict, _stateReserved]
+
+_hintTexts = TzkInGameText select 013; _state = _stateInit; _settingKeyIdx = -1
+ctrlSetText [_idcDlgFrame, _name]
+ctrlSetText [_idcHint, _hintTexts select _state]
+
+_planIdx = TzkShortkeyNameArray find _name; _design = TzkShortkeyDesignArray select _planIdx
+_get = preprocessFile "UI\ShortKey\get.sqf";
+_keys = [_design, "key"] call _get; _funcs = [_design, "function"] call _get;
+_textIndices = [_design, "item text idx"] call _get;
+_displayTexts = TzkInGameText select ([_design, "display text idx"] call _get)
+
+_c = count _textIndices, _totalBtnCnt = 30
+_i = _c; while {_i < _totalBtnCnt} do {ctrlShow [_idcFuncs + _i, false], ctrlShow [_idcKeys + _i, false], _i = _i + 1}
+_i = 0; while {_i < _c} do {ctrlSetText [_idcFuncs + _i, _displayTexts select (_textIndices select _i)], ctrlSetText [_idcKeys + _i, _keys select _i], _i = _i + 1}
+
+# loop
+	? _state != _stateConflict && _state != _stateReserved: ctrlSetText [_idcHint, _hintTexts select _state]
+	? _state == _stateConflict: ctrlSetText [_idcHint, format [_hintTexts select _state, _pressedKey, _funcs select _conflictIdx]]
+	? _state == _stateReserved: ctrlSetText [_idcHint, format [_hintTexts select _state, _pressedKey]]
+
+	~ 0.02
+	? call dlgUpdated: goto "Quit"
+	? not alive player: closeDialog 0; goto "Quit"
+
+	? _state in _detectPressingKeyStates: _pressingKey = call _getPressingKey
+	? _pressingKey != "": goto "OnKeyPressed"
+
+	? btnValue00 != -1 && _settingKeyIdx != -1: ctrlSetText [_idcKeys + _settingKeyIdx, _keys select _settingKeyIdx]
+	? btnValue00 != -1: _settingKeyIdx = btnValue00, btnValue00 = -1, goto "OnButtonClicked"
+
+	goto "loop"
+# Quit
+	; save to config
+	[_name + "_saved", "true"] call preprocessFile "Cfg\SavePlayerValue.sqf"
+	[_name + "_keys", _keys] call preprocessFile "Cfg\SavePlayerValue.sqf"
+	[_name + "_funcs", _funcs] call preprocessFile "Cfg\SavePlayerValue.sqf"
+	exit
+# OnButtonClicked
+	ctrlSetText [_idcKeys + _settingKeyIdx, "..."]
+	_state = _stateSetting
+	goto "loop"
+# OnKeyPressed
+	_pressedKey = _pressingKey, _pressingKey = ""
+	? _pressedKey in _illegalKeys: _state = _stateReserved, goto "loop"
+	_copy = + _keys; _copy set [_settingKeyIdx, ""]
+	_conflictIdx = _copy find _pressedKey
+	? _conflictIdx != -1: _state = _stateConflict, goto "loop"
+
+	_keys set [_settingKeyIdx, _pressedKey]
+	_state = _stateSucceeded
+	ctrlSetText [_idcKeys + _settingKeyIdx, _pressedKey]
+	_settingKeyIdx = -1
+	goto "loop"

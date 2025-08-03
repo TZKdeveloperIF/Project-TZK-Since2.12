@@ -75,8 +75,120 @@
 
 	{This request will try to remove abnormal "ghost" units in your group (probably created by JOIN).} call _f; // 012
 
+	[
+		  "To modify the key of function, click the button after the function and read the hint."
+		, "Press desired key."
+		, "Succeeded. Click other buttons to continue your configuration."
+		, "The %1 is conflict with %2. Assignment failed. Please use another key instead."
+		, "The %1 is reserved. Please use another key instead."
+	] call _f; // 013
+	"Custom Shortkey" call _f; // 014
+	[
+		  "move"
+		, "clear"
+		, "stop"
+		, "board"
+		, "occupy"
+		, "reclaim"
+		, "shoot area"
+		, "equip soldiers"
+
+		, "group display"
+
+		, "join"
+		, "disband"
+		, "art mag"
+
+		, "attach center"
+		, "attach right"
+		, "attach left"
+		, "detach center"
+		, "detach right"
+		, "detach left"
+
+		, "Area"
+		, "WP/CO"
+		, "Order"
+		, "Point"
+	] call _f; // 015
+	[
+		  "destruction"
+		, "bridge"
+
+		, "group display"
+
+		, "Rts"
+		, "WP/CO"
+		, "Order"
+		, "Point"
+
+		, "AI art area"
+		, "player art"
+		, "AI mine area"
+		, "player mine"
+
+		, "obstruct"
+
+		, "clockwise 30"
+		, "anti-clock 30"
+		, "clockwise 10"
+		, "anti-clock 10"
+	] call _f; // 016
+	[
+		  "worker"
+		, "build"
+
+		, "group display"
+
+		, "Rts"
+		, "Area"
+		, "WP/CO"
+		, "Order"
+	] call _f; // 017
+	[
+		  "set"
+		, "clear"
+
+		, "group display"
+
+		, "co"
+		, "wp"
+
+		, "Rts"
+		, "Area"
+		, "Point"
+		, "Order"
+	] call _f; // 018
+	[
+		  "move"
+		, "clear"
+		, "stop"
+		, "shoot area"
+		, "equip soldiers"
+
+		, "heal/repair"
+		, "rearm"
+		, "board"
+
+		, "join"
+		, "disband"
+		, "art mag"
+
+		, "attach center"
+		, "attach right"
+		, "attach left"
+		, "detach center"
+		, "detach right"
+		, "detach left"
+
+		, "Rts"
+		, "Area"
+		, "Point"
+		, "Order"
+	] call _f; // 019
+
 	// script count check. Check index with last literal value
-	if (_i != 12 + 1) then {
+	if (_i != 19 + 1) then {
 		player globalChat "Script count mismatch!";
 	};
 

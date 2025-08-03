@@ -53,8 +53,10 @@ btnValue03 = 0
 call preprocessFile "Player\Dialog\OrderAiBtns.sqf"
 
 ; down board
-_downBoardStack = []
-call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
+	_downBoardStack = []; _fUdb = preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
+	call _fUdb
+	; update down-board stack, and update down-board dialog
+	_fd = {_downBoardStack set [_this select 0, _this select 1]; call _fUdb}
 
 TzkMapRtsFlashingDisabled = true
 
@@ -62,6 +64,11 @@ TzkMapRtsFlashingDisabled = true
 ; _selectedOrder = _lastOrder - _bias1
 ; give "-1" value to refresh param list
 _selectedOrder = -1
+
+; short key
+	_getShortKeyFunc = preprocessFile "UI\ShortKey\proc.sqf"
+	_idcShortKey = IDC + 16 * 0 + 0
+	ctrlSetText [_idcShortKey, TzkInGameText select 014]; ctrlShow [_idcShortKey, UsedVersion >= 2030]
 
 # Update
 
@@ -71,13 +78,17 @@ _selectedOrder = -1
 	? (_selectedOrder != lbCurSel _idcOrders1): goto "NewOrderSelected"
 	? btnSendOrder: btnSendOrder=false, goto "SendOrder"
 
+	_shortKeyFunc = "dlg_ppl_grp_order" call _getShortKeyFunc
+	? _shortKeyFunc != "": goto "ProcShortKey"
+
 	? btnValue04 >= 0: _val3 = btnValue04; btnValue04 = -1; goto "MidBtn"
 	? btnValue02 >= 0: _val2 = btnValue02; btnValue02 = -1; goto "LeftDownBtn"
 	? btnValue01 >= 0: _btnVal = btnValue01; btnValue01 = -1; goto "DownBtn"
 	? btnValue00 >= 0: _val0 = btnValue00; btnValue00 = -1; goto "LeftBtn"
 	? btnValue03 > 0: _val4 = btnValue03; btnValue03 = 0; goto "RightDownBtn"
+	? btnFunction > 0: _btnFnc = btnFunction, btnFunction = 0, goto "FunctionalBtns"
 
-	~ 0.2
+	~ 0.02
 	goto "Update"
 # Quit
 	; save to config
@@ -85,6 +96,37 @@ _selectedOrder = -1
 
 	TzkMapRtsFlashingDisabled = false
 	[false, _id + 2] exec (TzkScripts select 363); exit
+# ProcShortKey
+	? "move" == _shortKeyFunc: _val0 = 0, goto "LeftBtn"
+	? "clear" == _shortKeyFunc: _val0 = 1, goto "LeftBtn"
+	? "stop" == _shortKeyFunc: _val0 = 13, goto "LeftBtn"
+	? "shoot area" == _shortKeyFunc: _val0 = 2, goto "LeftBtn"
+	? "equip soldiers" == _shortKeyFunc: _val0 = 12, goto "LeftBtn"
+
+	? "heal/repair" == _shortKeyFunc: _val3 = 0, goto "MidBtn"
+	? "rearm" == _shortKeyFunc: _val3 = 1, goto "MidBtn"
+	? "board" == _shortKeyFunc: _val3 = 2, goto "MidBtn"
+
+	? "join" == _shortKeyFunc: _btnVal = 2^3, goto "DownBtn"
+	? "disband" == _shortKeyFunc: _btnVal = 2^0, goto "DownBtn"
+	? "art mag" == _shortKeyFunc: [0, 8] call _fd; btnValue01 = 2^2, goto "Update"
+	? "attach center" == _shortKeyFunc: [0, 4] call _fd; btnValue01 = 2^1, goto "Update"
+	? "attach right" == _shortKeyFunc: [0, 4] call _fd; btnValue01 = 2^2, goto "Update"
+	? "attach left" == _shortKeyFunc: [0, 4] call _fd; btnValue01 = 2^0, goto "Update"
+	? "detach center" == _shortKeyFunc: [0, 4] call _fd; btnValue01 = 2^4, goto "Update"
+	? "detach right" == _shortKeyFunc: [0, 4] call _fd; btnValue01 = 2^5, goto "Update"
+	? "detach left" == _shortKeyFunc: [0, 4] call _fd; btnValue01 = 2^3, goto "Update"
+
+	? "Rts" == _shortKeyFunc: _val4 = 2^0, goto "RightDownBtn"
+	? "Area" == _shortKeyFunc: _val4 = 2^1, goto "RightDownBtn"
+	? "WP/CO" == _shortKeyFunc: _val4 = 2^2, goto "RightDownBtn"
+	? "Point" == _shortKeyFunc: _val4 = 2^4, goto "RightDownBtn"
+
+	goto "Update"
+# FunctionalBtns
+	? 1 == _btnFnc: 0 exec (TzkScripts select 023); closeDialog 0; goto "Quit"
+	? 3 == _btnFnc: "dlg_ppl_grp_order" exec "UI\Shortkey\dlg.sqs"; closeDialog 0; goto "Quit"
+	goto "Update"
 
 # MidBtn
 	? 0 == _val3: {[_x, _pos] exec (TzkScripts select 095)} forEach _units; closeDialog 0; goto "Quit"
@@ -106,11 +148,11 @@ _selectedOrder = -1
 
 	? 2^3 == _btnVal: [_units] exec "Join\Submenu\PplOrder.sqs"; closeDialog 0; goto "Quit"
 
-	? 2^4 == _btnVal: _downBoardStack set [0, 4]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
-	? 2^5 == _btnVal: _downBoardStack set [0, 5]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
-	? 2^6 == _btnVal: _downBoardStack set [0, 6]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
-	? 2^7 == _btnVal: _downBoardStack set [0, 7]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
-	? 2^8 == _btnVal: _downBoardStack set [0, 8]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
+	? 2^4 == _btnVal: [0, 4] call _fd; goto "Update"
+	? 2^5 == _btnVal: [0, 5] call _fd; goto "Update"
+	? 2^6 == _btnVal: [0, 6] call _fd; goto "Update"
+	? 2^7 == _btnVal: [0, 7] call _fd; goto "Update"
+	? 2^8 == _btnVal: [0, 8] call _fd; goto "Update"
 
 	? 2^9 == _btnVal: TitleText ["Not implemented. Please use Alt + Click.", "Plain DOWN", 0.25], goto "Update"
 	? 2^10 == _btnVal: [false, _units] exec "Rts\SubMenu\SwitchSeat.sqs"; closeDialog 0; goto "Quit"
@@ -122,9 +164,9 @@ _selectedOrder = -1
 		? 2^0 == _btnVal && 4 == _downBoardStack select 0: [tsLeft, _units] exec "Rts\Trigger\AttachPreset.sqs"; closeDialog 0; goto "Quit"
 		? 2^1 == _btnVal && 4 == _downBoardStack select 0: [tsCenter, _units] exec "Rts\Trigger\AttachPreset.sqs"; closeDialog 0; goto "Quit"
 		? 2^2 == _btnVal && 4 == _downBoardStack select 0: [tsRight, _units] exec "Rts\Trigger\AttachPreset.sqs"; closeDialog 0; goto "Quit"
-		? 2^3 == _btnVal && 4 == _downBoardStack select 0: [tsLeft, _units] exec "Rts\Trigger\DetachPreset.sqs"; closeDialog 0; goto "Quit"
-		? 2^4 == _btnVal && 4 == _downBoardStack select 0: [tsCenter, _units] exec "Rts\Trigger\DetachPreset.sqs"; closeDialog 0; goto "Quit"
-		? 2^5 == _btnVal && 4 == _downBoardStack select 0: [tsRight, _units] exec "Rts\Trigger\DetachPreset.sqs"; closeDialog 0; goto "Quit"
+		? 2^3 == _btnVal && 4 == _downBoardStack select 0: [tsLeft, _units] exec "Rts\Trigger\DetachPreset.sqs"; goto "Quit"
+		? 2^4 == _btnVal && 4 == _downBoardStack select 0: [tsCenter, _units] exec "Rts\Trigger\DetachPreset.sqs"; goto "Quit"
+		? 2^5 == _btnVal && 4 == _downBoardStack select 0: [tsRight, _units] exec "Rts\Trigger\DetachPreset.sqs"; goto "Quit"
 
 		? 2^9 == _btnVal && 4 == _downBoardStack select 0: TitleText ["This button displays message only. Click other buttons please.", "Plain DOWN", 0.25]; goto "Update"
 		? 2^10 == _btnVal && 4 == _downBoardStack select 0: TitleText ["This button displays message only. Click other buttons please.", "Plain DOWN", 0.25]; goto "Update"
