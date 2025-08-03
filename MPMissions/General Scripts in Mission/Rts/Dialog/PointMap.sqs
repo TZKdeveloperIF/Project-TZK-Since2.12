@@ -21,7 +21,7 @@ _idcLeftBtn0 = IDC + 16 * 2 + 0
 _idcDownBtn0 = IDC + 16 * 17 + 0
 ; init right-down corner buttons (switching to other rts dialogs)
 ; 0: rts, 1: area, 2: wpco, 3: player order, 4: point
-[4, _units] call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
+_accept = [4, _units] call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
 
 btnValue00 = -1; btnValue01 = 0; btnValue03 = 0
 btnFirstCtrl = false
@@ -68,7 +68,7 @@ TzkMapRtsFlashingDisabled = true
 	[false, _id + 2] exec (TzkScripts select 363); exit
 # FirstCtrl
 	; switch to waypoint dialog rapidly
-	[2 ^ 2, _this] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
+	[2 ^ 2, _this, _accept] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
 # LeftBtn
 	? 0 == _btnVal: 0 exec (TzkScripts select 381); goto "Update"
 	? 1 == _btnVal: 0 exec "Rts\SubMenu\SurrenderConfirm.sqs"; closeDialog 0; goto "Quit"
@@ -90,7 +90,7 @@ TzkMapRtsFlashingDisabled = true
 		~ 0.1
 		goto "Update"
 # RightDownBtn
-	? _btnVal > 0: [_btnVal, _this] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
+	? _btnVal > 0: if ([_btnVal, _this, _accept] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf") then {goto "Quit"}
 	goto "Update"
 # FunctionalBtns
 	? 1 == _btnFnc: 0 exec (TzkScripts select 023); closeDialog 0; goto "Quit"

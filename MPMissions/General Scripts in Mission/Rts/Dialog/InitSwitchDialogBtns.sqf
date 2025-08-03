@@ -1,6 +1,7 @@
 // args: [current dialog enum, units]
-private [{_curDlgEnum}, {_units}];
-_curDlgEnum = _this select 0; _units = _this select 1;
+// return: [acceptable dialog enum]
+private [{_curDlgEnum}, {_units}, {_accept}];
+_curDlgEnum = _this select 0; _units = _this select 1; _accept = [];
 
 private [{_idcBtn}, {_idcBg}, {_enum}];
 _idcBtn = IDC + 16 * 10 + 0;
@@ -15,6 +16,7 @@ ctrlSetText [_idcBtn + _enum, "RTS"];
 if (_enum != _curDlgEnum) then {
 	if (0 < count (call preprocessFile (TzkScripts select 371))) then {
 		ctrlShow [_idcBtn + _enum, true];
+		_accept set [count _accept, _enum];
 	};
 } else {
 	ctrlShow [_idcBg + _enum, true];
@@ -27,6 +29,7 @@ if (_enum != _curDlgEnum) then {
 	// area
 	if (TzkMapAreaCreated) then {
 		ctrlShow [_idcBtn + _enum, true];
+		_accept set [count _accept, _enum];
 	};
 } else {
 	ctrlShow [_idcBg + _enum, true];
@@ -37,6 +40,7 @@ _enum = 2;
 ctrlSetText [_idcBtn + _enum, "WP/CO"];
 if (_enum != _curDlgEnum) then {
 	ctrlShow [_idcBtn + _enum, true];
+	_accept set [count _accept, _enum];
 } else {
 	ctrlShow [_idcBg + _enum, true];
 	ctrlShow [_idcBtn + _enum, true]; ctrlEnable [_idcBtn + _enum, false];
@@ -48,6 +52,7 @@ ctrlSetText [_idcBtn + _enum, localize {TZK_LANG_ORDER}];
 if (_enum != _curDlgEnum) then {
 	if (count _units > 0) then {
 		ctrlShow [_idcBtn + _enum, true];
+		_accept set [count _accept, _enum];
 	};
 } else {
 	ctrlShow [_idcBg + _enum, true];
@@ -60,6 +65,7 @@ ctrlSetText [_idcBtn + _enum, localize {TZK_LANG_POINT}];
 if (_enum != _curDlgEnum) then {
 	// always available
 	ctrlShow [_idcBtn + _enum, true];
+	_accept set [count _accept, _enum];
 
 	// turn off build area displaying immediately on switching to non-point dialogs
 	TzkMarkerBuildAreaState = false;
@@ -67,3 +73,4 @@ if (_enum != _curDlgEnum) then {
 	ctrlShow [_idcBg + _enum, true];
 	ctrlShow [_idcBtn + _enum, true]; ctrlEnable [_idcBtn + _enum, false];
 };
+_accept

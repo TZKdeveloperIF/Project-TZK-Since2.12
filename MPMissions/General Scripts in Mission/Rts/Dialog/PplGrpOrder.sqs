@@ -16,7 +16,7 @@ mutexDlg = false
 
 ; init right-down corner buttons (switching to other rts dialogs)
 ; 0: rts, 1: area, 2: wpco, 3: player order, 4: point
-[3, _units] call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
+_accept = [3, _units] call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
 
 ? !bool_TZK_CHN_inited && bool_TZK_CHN_Lang: call loadFile (TzkScripts select 192)
 
@@ -173,7 +173,7 @@ _selectedOrder = -1
 
 	goto "Update"
 # RightDownBtn
-	? _val4 > 0: [_val4, _this] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
+	? _val4 > 0: if ([_val4, _this, _accept] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf") then {goto "Quit"}
 	goto "Update"
 
 # SendOrder
