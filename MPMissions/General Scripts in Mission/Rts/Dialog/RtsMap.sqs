@@ -15,7 +15,7 @@ _idcLeftBtn0 = IDC + 16 * 2 + 0
 _idcDownBtn0 = IDC + 16 * 17 + 0
 ; init right-down corner buttons (switching to other rts dialogs)
 ; 0: rts, 1: area, 2: wpco, 3: player order, 4: point
-[0, _units] call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
+_accept = [0, _units] call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
 
 ; init left-down corner buttons (select specific type of units)
 _idcLeftDownBtn0 = IDC + 16 * 12 + 0
@@ -58,21 +58,28 @@ ctrlSetText [_idcLeftBtn0 + 15, format ["%1 %2", localize {TZK_LANG_MOVE}, local
 ctrlSetText [_idcLeftBtn0 + 16, format ["%1 %2", localize {TZK_LANG_BUY}, localize {TZK_LANG_EQUIPMENT}]];
 
 ; down board
-_downBoardStack = []
-call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
+	_downBoardStack = []; _fUdb = preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"
+	call _fUdb
+	; update down-board stack, and update down-board dialog
+	_fd = {_downBoardStack set [_this select 0, _this select 1]; call _fUdb}
 
 ; false call preprocessFile "Rts\Dialog\InitSilider.sqf"
 
 btnValue05 = -1;
 (IDC + 16 * 19) call preprocessFile "Rts\Dialog\InitSelClassificationBtns.sqf"
-_getPressingKey = preprocessFile "Util\PressingKey.sqf"
+
+; short key
+	_getShortKeyFunc = preprocessFile "UI\ShortKey\proc.sqf"
+	_idcShortKey = IDC + 16 * 0 + 0
+	ctrlSetText [_idcShortKey, TzkInGameText select 014]; ctrlShow [_idcShortKey, UsedVersion >= 2030]
 
 # Update
 	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 	? call dlgUpdated: goto "Quit"
 	? not alive player: closeDialog 0; goto "Quit"
 
-	? "M" == call _getPressingKey: btnValue00 = 0
+	_shortKeyFunc = "dlg_rts" call _getShortKeyFunc
+	? _shortKeyFunc != "": goto "ProcShortKey"
 
 	? btnValue00 >= 0: _btnVal = btnValue00; btnValue00 = -1; goto "LeftBtn"
 	? btnValue01 > 0: _btnVal = btnValue01; btnValue01 = 0; goto "DownBtn"
@@ -82,22 +89,50 @@ _getPressingKey = preprocessFile "Util\PressingKey.sqf"
 	? btnFirstCtrl: btnFirstCtrl = false; goto "FirstCtrl"
 	? btnFunction > 0: _btnFnc = btnFunction, btnFunction = 0, goto "FunctionalBtns"
 
-	; Skip
-	~0.2
+	~ 0.02
 	goto "Update"
 # Quit
 	[false, _id + 2] exec (TzkScripts select 363); exit
+# ProcShortKey
+	? "move" == _shortKeyFunc: _btnVal = 0, goto "LeftBtn"
+	? "clear" == _shortKeyFunc: _btnVal = 1, goto "LeftBtn"
+	? "stop" == _shortKeyFunc: _btnVal = 13, goto "LeftBtn"
+	? "board" == _shortKeyFunc: _btnVal = 4, goto "LeftBtn"
+	? "occupy" == _shortKeyFunc: _btnVal = 5, goto "LeftBtn"
+	? "reclaim" == _shortKeyFunc: _btnVal = 7, goto "LeftBtn"
+	? "shoot area" == _shortKeyFunc: _btnVal = 2, goto "LeftBtn"
+	? "equip soldiers" == _shortKeyFunc: _btnVal = 16, goto "LeftBtn"
+
+	? "group display" == _shortKeyFunc: _btnFnc = 1, goto "FunctionalBtns"
+
+	? "Area" == _shortKeyFunc: _btnVal = 2^1, goto "RightDownBtn"
+	? "WP/CO" == _shortKeyFunc: _btnVal = 2^2, goto "RightDownBtn"
+	? "Order" == _shortKeyFunc: _btnVal = 2^3, goto "RightDownBtn"
+	? "Point" == _shortKeyFunc: _btnVal = 2^4, goto "RightDownBtn"
+
+	? "join" == _shortKeyFunc: _btnVal = 2^3, goto "DownBtn"
+	? "disband" == _shortKeyFunc: _btnVal = 2^0, goto "DownBtn"
+	? "art mag" == _shortKeyFunc: [0, 8] call _fd; btnValue01 = 2^2, goto "Update"
+	? "attach center" == _shortKeyFunc: [0, 4] call _fd; btnValue01 = 2^1, goto "Update"
+	? "attach right" == _shortKeyFunc: [0, 4] call _fd; btnValue01 = 2^2, goto "Update"
+	? "attach left" == _shortKeyFunc: [0, 4] call _fd; btnValue01 = 2^0, goto "Update"
+	? "detach center" == _shortKeyFunc: [0, 4] call _fd; btnValue01 = 2^4, goto "Update"
+	? "detach right" == _shortKeyFunc: [0, 4] call _fd; btnValue01 = 2^5, goto "Update"
+	? "detach left" == _shortKeyFunc: [0, 4] call _fd; btnValue01 = 2^3, goto "Update"
+
+	goto "Update"
 # FirstCtrl
 	; switch to area map rapidly
-	[2 ^ 1, _this] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
+	[2 ^ 1, _this, _accept] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
 # FunctionalBtns
 	? 1 == _btnFnc: false call preprocessFile (TzkScripts select 362); 0 exec (TzkScripts select 023); closeDialog 0; goto "Quit"
 	? 2 == _btnFnc: goto "Unselect"
+	? 3 == _btnFnc: "dlg_rts" exec "UI\Shortkey\dlg.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 	# Unselect
 		; unselect units, and switch to area dialog
 		false call preprocessFile (TzkScripts select 362);
-		[2 ^ 1, _this] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"
+		[2 ^ 1, _this, _accept] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"
 		goto "Quit"
 ; todo: magic number should better
 # LeftBtn
@@ -143,11 +178,11 @@ _getPressingKey = preprocessFile "Util\PressingKey.sqf"
 
 	? 2^3 == _btnVal: 0 exec "Rts\SubMenu\JoinPreset.sqs"; closeDialog 0; goto "Quit"
 
-	? 2^4 == _btnVal: _downBoardStack set [0, 4]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
-	? 2^5 == _btnVal: _downBoardStack set [0, 5]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
-	? 2^6 == _btnVal: _downBoardStack set [0, 6]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
-	? 2^7 == _btnVal: _downBoardStack set [0, 7]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
-	? 2^8 == _btnVal: _downBoardStack set [0, 8]; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
+	? 2^4 == _btnVal: [0, 4] call _fd; goto "Update"
+	? 2^5 == _btnVal: [0, 5] call _fd; goto "Update"
+	? 2^6 == _btnVal: [0, 6] call _fd; goto "Update"
+	? 2^7 == _btnVal: [0, 7] call _fd; goto "Update"
+	? 2^8 == _btnVal: [0, 8] call _fd; goto "Update"
 
 	? 2^9 == _btnVal: _pos exec "Rts\Trigger\sWatch.sqs"; closeDialog 0; goto "Quit"
 	? 2^10 == _btnVal: [true] exec "Rts\SubMenu\SwitchSeat.sqs"; closeDialog 0; goto "Quit"
@@ -159,9 +194,9 @@ _getPressingKey = preprocessFile "Util\PressingKey.sqf"
 		? 2^0 == _btnVal && 4 == _downBoardStack select 0: [tsLeft] exec "Rts\Trigger\AttachPreset.sqs"; closeDialog 0; goto "Quit"
 		? 2^1 == _btnVal && 4 == _downBoardStack select 0: [tsCenter] exec "Rts\Trigger\AttachPreset.sqs"; closeDialog 0; goto "Quit"
 		? 2^2 == _btnVal && 4 == _downBoardStack select 0: [tsRight] exec "Rts\Trigger\AttachPreset.sqs"; closeDialog 0; goto "Quit"
-		? 2^3 == _btnVal && 4 == _downBoardStack select 0: [tsLeft] exec "Rts\Trigger\DetachPreset.sqs"; closeDialog 0; goto "Quit"
-		? 2^4 == _btnVal && 4 == _downBoardStack select 0: [tsCenter] exec "Rts\Trigger\DetachPreset.sqs"; closeDialog 0; goto "Quit"
-		? 2^5 == _btnVal && 4 == _downBoardStack select 0: [tsRight] exec "Rts\Trigger\DetachPreset.sqs"; closeDialog 0; goto "Quit"
+		? 2^3 == _btnVal && 4 == _downBoardStack select 0: [tsLeft] exec "Rts\Trigger\DetachPreset.sqs"; goto "Update"
+		? 2^4 == _btnVal && 4 == _downBoardStack select 0: [tsCenter] exec "Rts\Trigger\DetachPreset.sqs"; goto "Update"
+		? 2^5 == _btnVal && 4 == _downBoardStack select 0: [tsRight] exec "Rts\Trigger\DetachPreset.sqs"; goto "Update"
 
 		? 2^9 == _btnVal && 4 == _downBoardStack select 0: TitleText ["This button displays message only. Click other buttons please.", "Plain DOWN", 0.25]; goto "Update"
 		? 2^10 == _btnVal && 4 == _downBoardStack select 0: TitleText ["This button displays message only. Click other buttons please.", "Plain DOWN", 0.25]; goto "Update"
@@ -181,6 +216,7 @@ _getPressingKey = preprocessFile "Util\PressingKey.sqf"
 
 		? 2^0 == _btnVal && 8 == _downBoardStack select 0: true exec "Rts\Trigger\sDeploy.sqs"; _return = true
 		? 2^1 == _btnVal && 8 == _downBoardStack select 0: false exec "Rts\Trigger\sDeploy.sqs"; _return = true
+		; todo: switch to art dialog then come back will invalidate current dialog. Need fix it
 		? 2^2 == _btnVal && 8 == _downBoardStack select 0: [true] exec "Rts\SubMenu\SwitchArtMag.sqs"; _return = true
 		; todo: realize it for AI groups
 		? 2^6 == _btnVal && 8 == _downBoardStack select 0: hint "Not realized yet."; goto "Update"
@@ -189,7 +225,7 @@ _getPressingKey = preprocessFile "Util\PressingKey.sqf"
 
 		? 2^8 == _btnVal: _return = true
 
-		? _return: _downBoardStack resize 0; call preprocessFile "Rts\Dialog\UpdateRtsDownBoard.sqf"; goto "Update"
+		? _return: _downBoardStack resize 0; call _fUdb; goto "Update"
 		~ 0.1
 		goto "Update"
 # LeftDownBtn
@@ -201,7 +237,7 @@ _getPressingKey = preprocessFile "Util\PressingKey.sqf"
 	[_idcLeftDownBtn0, _level, _btnVal] call preprocessFile "Rts\Dialog\UpdateRtsDlgType.sqf"
 	goto "Update"
 # RightDownBtn
-	? _btnVal > 0: [_btnVal, _this] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
+	? _btnVal > 0: if ([_btnVal, _this, _accept] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf") then {goto "Quit"}
 	goto "Update"
 # SwitchClassification
 	? _btnVal == TzkRtsSelectEnum: hint "Exception caught."; goto "Update"
