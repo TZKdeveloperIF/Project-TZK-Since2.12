@@ -11,12 +11,17 @@ _support = _this select 1
 
 _vehicle = vehicle _unit
 _type = _vehicle call funcGetUnitTypeFromObject
+? _type == -1: if (_unit != (leader _unit)) then {exit}
 _typeSupport = _support call funcGetUnitTypeFromObject
-
+? _typeSupport != -1: _supplyName = unitDefs select _typeSupport select udName, goto "GenerateMessage"
+_typeSupport = _support call funcGetStructTypeFromObject
 ? _typeSupport == -1 : exit
-? _type == -1: goto "MsgLeader"
+_supplyName = structDefs select _typeSupport select sdName, goto "GenerateMessage"
 
-_msg = format["Moving to Support, %1 @ %2 -> %3 @ %4", (unitDefs select _type) select udName, (getPos _vehicle) call funcCalcMapPos, (unitDefs select _typeSupport) select udName, (getPos _support) call funcCalcMapPos ]
+# GenerateMessage
+_unitStr = (if (_type == -1) then {"Leader"} else {unitDefs select _type select udName})
+
+_msg = format ["Moving to Support, %1 @ %2 -> %3 @ %4", _unitStr, (getPos _vehicle) call funcCalcMapPos, _supplyName, (getPos _support) call funcCalcMapPos]
 _unit sidechat _msg
 exit
 
