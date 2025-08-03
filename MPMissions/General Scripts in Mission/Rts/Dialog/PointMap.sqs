@@ -2,7 +2,7 @@
 _pos = _this select 0, _units = _this select 1
 @ !mutexDlg
 	mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
-	_dlg = createDialog "TzkCmdMapDlgPoint"
+	_dlg = createDialog "TzkCmdMapDlgPoint2"
 
 	RtsPriorityPointDialogEnum = 4
 	RtsLatestPointDialogTime = time
@@ -21,7 +21,7 @@ _idcLeftBtn0 = IDC + 16 * 2 + 0
 _idcDownBtn0 = IDC + 16 * 17 + 0
 ; init right-down corner buttons (switching to other rts dialogs)
 ; 0: rts, 1: area, 2: wpco, 3: player order, 4: point
-[4, _units] call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
+_accept = [4, _units] call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
 
 btnValue00 = -1; btnValue01 = 0; btnValue03 = 0
 btnFirstCtrl = false
@@ -46,11 +46,19 @@ TzkMapRtsFlashingDisabled = true
 ; enable dynamic marker if any of player units and rts selected units is driver/gunner of artillery vehicle/structure
 0 exec "Rts\DynamicMarker\BuildRange.sqs"
 
+; short key
+	_getShortKeyFunc = preprocessFile "UI\ShortKey\proc.sqf"
+	_idcShortKey = IDC + 16 * 0 + 0
+	ctrlSetText [_idcShortKey, TzkInGameText select 014]; ctrlShow [_idcShortKey, UsedVersion >= 2030]
+
 # Update
 	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 	? call dlgUpdated: goto "Quit"
 	? not alive player: closeDialog 0; goto "Quit"
 	call preprocessFile (TzkScripts select 369)
+
+	_shortKeyFunc = "dlg_point" call _getShortKeyFunc
+	? _shortKeyFunc != "": goto "ProcShortKey"
 
 	? btnValue00 >= 0: _btnVal = btnValue00; btnValue00 = -1; goto "LeftBtn"
 	? btnValue01 > 0: _btnVal = btnValue01; btnValue01 = 0; goto "DownBtn"
@@ -58,17 +66,28 @@ TzkMapRtsFlashingDisabled = true
 	? btnFirstCtrl: btnFirstCtrl = false; goto "FirstCtrl"
 	? btnFunction > 0: _btnFnc = btnFunction, btnFunction = 0, goto "FunctionalBtns"
 
-	; Skip
-	~0.2
+	~ 0.02
 	goto "Update"
 # Quit
 	TzkMapRtsFlashingDisabled = false
 	RtsLatestPointDialogTime = time
 	0 exec "Rts\DynamicMarker\DelayTurnOffBuildDisplay.sqs"
 	[false, _id + 2] exec (TzkScripts select 363); exit
+# ProcShortKey
+	? "worker" == _shortKeyFunc: _btnVal = 2^2, goto "DownBtn"
+	? "build" == _shortKeyFunc: _btnVal = 2^1, goto "DownBtn"
+
+	? "group display" == _shortKeyFunc: _btnFnc = 1, goto "FunctionalBtns"
+
+	? "Rts" == _shortKeyFunc: _btnVal = 2^0, goto "RightDownBtn"
+	? "Area" == _shortKeyFunc: _btnVal = 2^1, goto "RightDownBtn"
+	? "WP/CO" == _shortKeyFunc: _btnVal = 2^2, goto "RightDownBtn"
+	? "Order" == _shortKeyFunc: _btnVal = 2^3, goto "RightDownBtn"
+
+	goto "Update"
 # FirstCtrl
 	; switch to waypoint dialog rapidly
-	[2 ^ 2, _this] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
+	[2 ^ 2, _this, _accept] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
 # LeftBtn
 	? 0 == _btnVal: 0 exec (TzkScripts select 381); goto "Update"
 	? 1 == _btnVal: 0 exec "Rts\SubMenu\SurrenderConfirm.sqs"; closeDialog 0; goto "Quit"
@@ -90,8 +109,9 @@ TzkMapRtsFlashingDisabled = true
 		~ 0.1
 		goto "Update"
 # RightDownBtn
-	? _btnVal > 0: [_btnVal, _this] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
+	? _btnVal > 0: if ([_btnVal, _this, _accept] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf") then {goto "Quit"}
 	goto "Update"
 # FunctionalBtns
 	? 1 == _btnFnc: 0 exec (TzkScripts select 023); closeDialog 0; goto "Quit"
+	? 3 == _btnFnc: "dlg_point" exec "UI\Shortkey\dlg.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"

@@ -29,9 +29,9 @@ _nil = "scalar bool array string 0xfcffffef"
 
 call loadFile "\TZK_Patch4_4_0_6\s\init_constants.sqf"
 ; 4.0.6.83. Attach
-    call preprocessFile "Attach\Install.sqf"
+	call preprocessFile "Attach\Install.sqf"
 ; 4.0.6.82. Bridge restruction
-    call preprocessFile "Bridge\Install.sqf";
+	call preprocessFile "Bridge\Install.sqf";
 ; 4.0.6.71
 TzkMarkerId = 0
 ; 4.0.6.45
@@ -100,19 +100,19 @@ tdSide = 3
 _c = count towns
 _i = 0
 #SortTownsNextI
-  _j = _i + 1
-  #SortTownsNextJ
+	_j = _i + 1
+	#SortTownsNextJ
 		_townI = towns select _i;
 		_townJ = towns select _j;
 		? ((getPos (_townI select tdFlag)) select 1) > ((getPos (_townJ select tdFlag)) select 1) : goto "SortTownsSkip"
 		towns set [_i, _townJ];
 		towns set [_j, _townI];
-    #SortTownsSkip
-    _j = _j + 1
-    ? _j < _c : goto "SortTownsNextJ"
+		#SortTownsSkip
+		_j = _j + 1
+		? _j < _c : goto "SortTownsNextJ"
 
-  _i = _i + 1
-  ? _i < (_c - 1) : goto "SortTownsNextI"
+	_i = _i + 1
+	? _i < (_c - 1) : goto "SortTownsNextI"
 
 ; calc map center by using town positions
 _posX = 0
@@ -187,9 +187,9 @@ pvDaytime = dayTime; pvTimeBoost = false
 
 ; TimePeriod (Morning, Dusk, Evening, etc). Using index but not string as indicator, aiming to compatible with "publicVariable"-able type in OFP.
 Period_TZK = 0
-    ; change period. 1 to Noon
-    skipTime ((Vote_Item_PeriotMoment select 1) - (Vote_Item_PeriotMoment select Period_TZK))
-    Period_TZK = 1
+	; change period. 1 to Noon
+	skipTime ((Vote_Item_PeriotMoment select 1) - (Vote_Item_PeriotMoment select Period_TZK))
+	Period_TZK = 1
 	; cfg_todo: optimize definition and initialization of vote and global environment
 
 ; viewDistance
