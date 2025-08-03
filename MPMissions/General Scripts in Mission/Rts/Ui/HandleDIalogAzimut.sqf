@@ -27,7 +27,7 @@ if not _processed then {
 			// text change won't always lead to value change (like inputting dot)
 			// current design won't response inputting dot
 			if (_input != TzkMapSelectDir) then {
-				hint format ["%1", _input];
+
 				sliderSetPosition [_idcSliderAzimut, _input];
 				_AzimutCache = format ["%1", _input];
 				ctrlSetText [_idcValueAzimut, _AzimutCache];

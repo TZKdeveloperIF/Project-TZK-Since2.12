@@ -3,7 +3,7 @@ _pos = _this select 0, _units = _this select 1
 
 @ !mutexDlg
 	mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
-	_dlg = createDialog "TzkCmdMapDlgWpCo"
+	_dlg = createDialog "TzkCmdMapDlgWpCo2"
 
 	RtsPriorityPointDialogEnum = 2
 
@@ -72,6 +72,11 @@ _lastWpIdx = -1; _lastArtIdx = -1
 _procMixedWpArt = preprocessFile "Rts\Dialog\Wp\ProcMixedWpArtList.sqf"
 ; todo: remember last choice
 
+; short key
+	_getShortKeyFunc = preprocessFile "UI\ShortKey\proc.sqf"
+	_idcShortKey = IDC + 16 * 0 + 0
+	ctrlSetText [_idcShortKey, TzkInGameText select 014]; ctrlShow [_idcShortKey, UsedVersion >= 2030]
+
 # Update
 	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 
@@ -85,6 +90,9 @@ _procMixedWpArt = preprocessFile "Rts\Dialog\Wp\ProcMixedWpArtList.sqf"
 
 	call _procMixedWpArt
 
+	_shortKeyFunc = "dlg_wpco" call _getShortKeyFunc
+	? _shortKeyFunc != "": goto "ProcShortKey"
+
 	? btnBigLeft >= 0: _leftBtn = btnBigLeft, btnBigLeft = -1, goto "BigLeftBtn"
 	? btnValue01 > 0: _mode = ln btnValue01 / ln 2, btnValue01 = 0, goto "OnHighlightChange"
 	? btnValue03 > 0: _btnVal = btnValue03; btnValue03 = 0; goto "RightDownBtn"
@@ -93,7 +101,7 @@ _procMixedWpArt = preprocessFile "Rts\Dialog\Wp\ProcMixedWpArtList.sqf"
 
 	? bNewCoSet: bNewCoSet = false; call _refreshList
 
-	~ 0.2
+	~ 0.02
 	goto "Update"
 
 # BigLeftBtn
@@ -177,9 +185,25 @@ _procMixedWpArt = preprocessFile "Rts\Dialog\Wp\ProcMixedWpArtList.sqf"
 
 # Quit
 	[false, _id + 2] exec (TzkScripts select 363); exit
+# ProcShortKey
+	? "set" == _shortKeyFunc: _leftBtn = 0, goto "BigLeftBtn"
+	? "clear" == _shortKeyFunc: _leftBtn = 1, goto "BigLeftBtn"
+
+	? "group display" == _shortKeyFunc: _btnFnc = 1, goto "FunctionalBtns"
+
+	? "co" == _shortKeyFunc: _mode = 0, goto "OnHighlightChange"
+	? "wp" == _shortKeyFunc: _mode = 1, goto "OnHighlightChange"
+
+	? "Rts" == _shortKeyFunc: _btnVal = 2^0, goto "RightDownBtn"
+	? "Area" == _shortKeyFunc: _btnVal = 2^1, goto "RightDownBtn"
+	? "Order" == _shortKeyFunc: _btnVal = 2^3, goto "RightDownBtn"
+	? "Point" == _shortKeyFunc: _btnVal = 2^4, goto "RightDownBtn"
+
+	goto "Update"
 # FirstCtrl
 	; switch to waypoint dialog rapidly
 	[2 ^ 4, _this, _accept] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf"; goto "Quit"
 # FunctionalBtns
 	? 1 == _btnFnc: 0 exec (TzkScripts select 023); closeDialog 0; goto "Quit"
+	? 3 == _btnFnc: "dlg_wpco" exec "UI\Shortkey\dlg.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"

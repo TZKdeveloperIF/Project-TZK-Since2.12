@@ -90,6 +90,8 @@ call preprocessFile "Cfg\InitPlayerCfg.sqf"
 call preprocessFile "Cfg\InitPlayerSettingFromCfg.sqf"
 ; 4.0.6.62
 autoShootVehs = [], mutexAutoShoot = false;
+; 4.0.6.101. Dialog shortkey. NEED LOAD PLAYER CFG FIRST!
+	call preprocessFile "UI\ShortKey\install.sqf"
 
 ; declare markers. Separately executed in both player and spectator init after siPlayer has been defined
 _si exec (TzkScripts select 316)
