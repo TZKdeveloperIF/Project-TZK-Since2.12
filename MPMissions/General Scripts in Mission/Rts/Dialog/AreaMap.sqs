@@ -23,6 +23,8 @@ btnValue00 = -1
 btnValue01 = 0; btnValue03 = 0
 btnFunction = 0
 
+ctrlSetText [IDC + 16 * 0 + 1, TzkInGameText select 020 select 4]
+
 {ctrlShow [_idcLeftBtn0 + _x, isCommander]} forEach [0,1,3,5]
 
 ? isCommander: ctrlSetText [_idcLeftBtn0 + 0, format ["%1 %2", localize {TZK_LANG_CLEAR}, localize {TZK_LANG_ALL}]]
@@ -36,7 +38,7 @@ ctrlSetText [_idcLeftBtn0 + 6, format ["%1 %2", localize {TZK_LANG_SHORT_PLAYER}
 ctrlSetText [_idcLeftBtn0 + 7, localize {TZK_LANG_DESTRUCTION}]
 ctrlSetText [_idcLeftBtn0 + 8, format ["%1 %2", localize {TZK_LANG_BUILD}, localize {TZK_LANG_BRIDGE}]]
 
-ctrlSetText [_idcLeftBtn0 + 10, format ["%1 %2", "Remove", localize {TZK_LANG_BRIDGE}]]
+ctrlSetText [_idcLeftBtn0 + 10, format ["%1 %2", TzkInGameText select 020 select 5, localize {TZK_LANG_BRIDGE}]]
 ; ctrlShow [_idcLeftBtn0 + 8, dev]
 
 ; down board
@@ -55,7 +57,7 @@ btnValue05 = -1;
 
 ; short key
 	_getShortKeyFunc = preprocessFile "UI\ShortKey\proc.sqf"
-	_idcShortKey = IDC + 16 * 0 + 0
+	_idcShortKey = IDC + 16 * 1 + 2
 	ctrlSetText [_idcShortKey, TzkInGameText select 014]; ctrlShow [_idcShortKey, UsedVersion >= 2030]
 	_keyCheckPoint = _time, _rotateAreaCd = 0.15
 
@@ -121,7 +123,7 @@ btnValue05 = -1;
 	? 2^3 == _btnVal: [true, "Mine"] exec "Rts\SubMenu\AreaMarker.sqs"; closeDialog 0; goto "Quit"
 	? 2^4 == _btnVal: [false, "Mine"] exec "Rts\SubMenu\AreaMarker.sqs"; closeDialog 0; goto "Quit"
 	; ? 2^5 == _btnVal: 0 exec "Rts\SubMenu\RoofPreset.sqs"; closeDialog 0; goto "Quit"
-	? 2^5 == _btnVal: TitleText ["There're bug in area-build-roof now. Temporary disable this design.", "Plain DOWN", 0.25]; goto "Update"
+	? 2^5 == _btnVal: TitleText [TzkInGameText select 020 select 16, "Plain DOWN", 0.25]; goto "Update"
 	goto "Update"
 	# DownSubMenu
 		? 2^8 == _btnVal: _downBoardStack resize 0; call preprocessFile "Rts\Dialog\UpdateAreaDownBoard.sqf"; goto "Update"
@@ -135,7 +137,7 @@ btnValue05 = -1;
 	? 3 == _btnFnc: ["dlg_area", _this, "Rts\Dialog\AreaMap.sqs"] exec "UI\Shortkey\dlg.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 # SwitchClassification
-	? _btnVal == TzkRtsSelectEnum: hint "Exception caught."; goto "Update"
+	? _btnVal == TzkRtsSelectEnum: hint (TzkInGameText select 020 select 15); goto "Update"
 
 	TzkRtsSelectEnum = _btnVal
 	_this exec "Rts\Dialog\RtsMap.sqs"; closeDialog 0; goto "Quit"

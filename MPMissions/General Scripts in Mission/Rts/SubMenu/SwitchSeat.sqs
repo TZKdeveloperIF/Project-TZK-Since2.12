@@ -4,34 +4,56 @@ _bSvrRtsOrder = _this select 0
 
 @ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
-_dlg = createDialog "TzkRtsSubMenuOneListBox"
+_dlg = createDialog "TzkRtsSubMenuOneListBox2"
 mutexDlg = false
+
+_localized = TzkInGameText select 020
 
 _idcTitle = IDC + 0; _idcListLabel = IDC + 16 * 3 + 1; _idcListBox0 = IDC + 16 * 3 + 0
 
-ctrlSetText [_idcTitle, "Switch Seat"]
-ctrlSetText [_idcListLabel, "Seats"]
-? _bSvrRtsOrder: TitleText ["Available if vehicle has only 1 crew", "Plain DOWN", 0.25]
+ctrlSetText [_idcTitle, _localized select 32]
+ctrlSetText [_idcListLabel, _localized select 33]
+? _bSvrRtsOrder: TitleText [_localized select 34, "Plain DOWN", 0.25]
 
 btnValue00 = false; btnValue01 = false
 
-{lbAdd [_idcListBox0, _x]} forEach ["Driver", "Gunner", "Cargo"], lbSetCurSel [_idcListBox0, 1]
+{lbAdd [_idcListBox0, _x]} forEach [_localized select 35, _localized select 36, _localized select 37], lbSetCurSel [_idcListBox0, 1]
+
+; short key
+	_getShortKeyFunc = preprocessFile "UI\ShortKey\proc.sqf"
+	_idcShortKey = IDC + 16 * 1 + 2
+	ctrlSetText [_idcShortKey, TzkInGameText select 014]; ctrlShow [_idcShortKey, UsedVersion >= 2030]
 
 # loop
-	~ 0.2
+	~ 0.02
 	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 	? call dlgUpdated: goto "Quit"
 	? not alive player: closeDialog 0; goto "Quit"
 
+	_shortKeyFunc = "dlg_switch_seat" call _getShortKeyFunc
+	? _shortKeyFunc != "": goto "ProcShortKey"
+
+	? btnFunction > 0: _btnFnc = btnFunction, btnFunction = 0, goto "FunctionalBtns"
 	? btnValue00: btnValue00 = false; closeDialog 0; goto "Quit"
 	? btnValue01: btnValue01 = false; goto "OK"
 
 	goto "loop"
 # Quit
 	exit
+# ProcShortKey
+	? "confirm" == _shortKeyFunc: goto "OK"
+
+	? "item 1" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 1 - 1]
+	? "item 2" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 2 - 1]
+	? "item 3" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 3 - 1]
+
+	goto "loop"
+# FunctionalBtns
+	? 3 == _btnFnc: ["dlg_switch_seat", _this, "Rts\SubMenu\SwitchSeat.sqs"] exec "UI\Shortkey\dlg.sqs"; closeDialog 0; goto "Quit"
+	goto "Update"
 # OK
 	_idx = lbCurSel _idcListBox0
-	? -1 == _idx: hint "No selected seat.", goto "loop"
+	? -1 == _idx: hint (_localized select 38), goto "loop"
 
 	? _bSvrRtsOrder: _idx exec "Rts\Trigger\sSeat.sqs"
 	? not _bSvrRtsOrder: {[_x, 0, [_idx]] exec "\TZK_Scripts_4_0_4\Player\Order\SwitchSeat.sqs"} forEach _units

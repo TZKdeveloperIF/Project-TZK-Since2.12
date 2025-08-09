@@ -18,7 +18,8 @@ _conflictIdx = -1
 
 ; state enum
 _stateInit = 0, _stateSetting = 1, _stateSucceeded = 2, _stateConflict = 3, _stateReserved = 4
-_detectPressingKeyStates = [_stateSetting, _stateConflict, _stateReserved]
+_stateTryModifySpace = 5
+_detectPressingKeyStates = [_stateSetting, _stateConflict, _stateReserved, _stateTryModifySpace]
 
 _hintTexts = TzkInGameText select 013; _state = _stateInit; _settingKeyIdx = -1
 ctrlSetText [_idcDlgFrame, _name]
@@ -35,9 +36,10 @@ _i = _c; while {_i < _totalBtnCnt} do {ctrlShow [_idcFuncs + _i, false], ctrlSho
 _i = 0; while {_i < _c} do {ctrlSetText [_idcFuncs + _i, _displayTexts select (_textIndices select _i)], ctrlSetText [_idcKeys + _i, _keys select _i], _i = _i + 1}
 
 # loop
-	? _state != _stateConflict && _state != _stateReserved: ctrlSetText [_idcHint, _hintTexts select _state]
+	? _state != _stateConflict && _state != _stateReserved && _state != _stateTryModifySpace: ctrlSetText [_idcHint, _hintTexts select _state]
 	? _state == _stateConflict: ctrlSetText [_idcHint, format [_hintTexts select _state, _pressedKey, _funcs select _conflictIdx]]
 	? _state == _stateReserved: ctrlSetText [_idcHint, format [_hintTexts select _state, _pressedKey]]
+	? _state == _stateTryModifySpace: ctrlSetText [_idcHint, _hintTexts select _state]
 
 	~ 0.02
 	? call dlgUpdated: goto "Quit"
@@ -60,6 +62,9 @@ _i = 0; while {_i < _c} do {ctrlSetText [_idcFuncs + _i, _displayTexts select (_
 	_originDlgParam exec _originDlgPath
 	exit
 # OnButtonClicked
+	; space-check
+	? "Space" == _keys select _settingKeyIdx: _state = _stateTryModifySpace, goto "loop"
+
 	ctrlSetText [_idcKeys + _settingKeyIdx, "..."]
 	_state = _stateSetting
 	goto "loop"

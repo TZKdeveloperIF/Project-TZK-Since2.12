@@ -5,7 +5,7 @@ _pos = _this select 0
 _enum = _this select 1
 
 _structName = localize {TZK_LANG_SHORT_MACHINEGUN};
-? 1 == _enum: _structName = (localize {TZK_LANG_SHORT_MACHINEGUN}) + "Tower"
+? 1 == _enum: _structName = (TzkInGameText select 020 select 1)
 ? 2 == _enum: _structName = "T55 fort"
 
 ? not alive (mhq select siPlayer): hint format ["MHQ %1. %2 %3 %4.", localize {TZK_LANG_DDESTROY}, _structName, localize {TZK_LANG_NOT}, localize {TZK_LANG_DEPLOY}], exit

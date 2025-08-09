@@ -3,7 +3,7 @@ _pos = _this
 
 @ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
-_dlg = createDialog "TzkRtsBuildStructSubMenu"
+_dlg = createDialog "TzkRtsBuildStructSubMenu2"
 mutexDlg = false
 
 @ not mutexRtsMouse
@@ -12,25 +12,27 @@ mutexDlg = false
 	mutexRtsMouse = false
 [true, _id + 1, _pos] exec (TzkScripts select 363);
 
+_localized = TzkInGameText select 020
+
 _idcTitle = IDC + 0
 _idcListLabel0 = IDC + 16 * 3 + 1; _idcListLabel1 = IDC + 16 * 3 + 3
 _idcListBox0 = IDC + 16 * 3 + 0; _idcListBox1 = IDC + 16 * 3 + 2
 _idcListLabel2 = IDC + 16 * 3 + 5; _idcListBox2 = IDC + 16 * 3 + 4
 
-ctrlSetText [_idcTitle, "Build Struct"]
-ctrlSetText [_idcListLabel0, "Structure Type"]
+ctrlSetText [_idcTitle, _localized select 21]
+ctrlSetText [_idcListLabel0, _localized select 22]
 ; direction
-ctrlSetText [_idcListLabel1, "Direction"]
+ctrlSetText [_idcListLabel1, _localized select 23]
 _texts = ["0 (N)", "45 (NE)", "90 (E)", "135 (SE)", "180 (S)", "225 (SW)", "270 (W)", "315 (NW)"]
 _i = 0; while {_i < count _texts} do {lbAdd [_idcListBox1, _texts select _i]; _i = _i + 1}
 ; correction
-ctrlSetText [_idcListLabel2, "Correction"]
+ctrlSetText [_idcListLabel2, _localized select 24]
 _texts = ["-30", "-15", "0", "+15", "+30"]
 _i = 0; while {_i < count _texts} do {lbAdd [_idcListBox2, _texts select _i]; _i = _i + 1}
 
 ; highlight buttons
 _idcBtn = IDC + 16 * 5; _idcBgBtn = IDC + 16 * 6
-_texts = ["Factory","Building","Defend","Art","Walls","Obstruct"]
+_texts = [_localized select 25, _localized select 26, _localized select 27, _localized select 28, _localized select 29, _localized select 30]
 _i = 0; while {_i < count _texts} do {ctrlSetText [_idcBtn + _i, _texts select _i], _i = _i + 1}
 _i = 0; while {_i < count _texts} do {ctrlShow [_idcBgBtn + _i, false], _i = _i + 1}
 
@@ -49,12 +51,21 @@ lbSetCurSel [_idcListBox0, _habit select 1]
 lbSetCurSel [_idcListBox1, _habit select 2]
 lbSetCurSel [_idcListBox2, _habit select 3]
 
+; short key
+	_getShortKeyFunc = preprocessFile "UI\ShortKey\proc.sqf"
+	_idcShortKey = IDC + 16 * 1 + 2
+	ctrlSetText [_idcShortKey, TzkInGameText select 014]; ctrlShow [_idcShortKey, UsedVersion >= 2030]
+
 # loop
-	~ 0.2
+	~ 0.02
 	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 	? call dlgUpdated: goto "Quit"
 	? not alive player: closeDialog 0; goto "Quit"
 
+	_shortKeyFunc = "dlg_build_struct" call _getShortKeyFunc
+	? _shortKeyFunc != "": goto "ProcShortKey"
+
+	? btnFunction > 0: _btnFnc = btnFunction, btnFunction = 0, goto "FunctionalBtns"
 	? btnValue00 >= 0: goto "BtnVal0"
 	? _lastHighlightEnum != btnValue02: goto "OnHightlightEnumChanged"
 
@@ -68,9 +79,34 @@ lbSetCurSel [_idcListBox2, _habit select 3]
 # Quit
 	[false, _id + 2] exec (TzkScripts select 363)
 	exit
+# ProcShortKey
+	? "confirm" == _shortKeyFunc: goto "OK"
+
+	? "class 1" == _shortKeyFunc: btnValue02 = 1 - 1
+	? "class 2" == _shortKeyFunc: btnValue02 = 2 - 1
+	? "class 3" == _shortKeyFunc: btnValue02 = 3 - 1
+	? "class 4" == _shortKeyFunc: btnValue02 = 4 - 1
+	? "class 5" == _shortKeyFunc: btnValue02 = 5 - 1
+	? "class 6" == _shortKeyFunc: btnValue02 = 6 - 1
+	? _lastHighlightEnum != btnValue02: goto "OnHightlightEnumChanged"
+
+	? "item 1" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 1 - 1]
+	? "item 2" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 2 - 1]
+	? "item 3" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 3 - 1]
+	? "item 4" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 4 - 1]
+	? "item 5" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 5 - 1]
+	? "item 6" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 6 - 1]
+	? "item 7" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 7 - 1]
+	? "item 8" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 8 - 1]
+	? "item 9" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 9 - 1]
+
+	goto "loop"
+# FunctionalBtns
+	? 3 == _btnFnc: ["dlg_build_struct", _this, "Rts\SubMenu\BuildStruct.sqs"] exec "UI\Shortkey\dlg.sqs"; closeDialog 0; goto "Quit"
+	goto "Update"
 # OK
 	_idx0 = lbCurSel _idcListBox0; _idx1 = lbCurSel _idcListBox1; _idx2 = lbCurSel _idcListBox2
-	? -1 == _idx0: hint "No structure selected."; goto "loop"
+	? -1 == _idx0: hint (_localized select 31); goto "loop"
 	; save to config
 	["RtsBuildStructCache", [_lastHighlightEnum, _idx0, _idx1, _idx2]] call preprocessFile "Cfg\SavePlayerValue.sqf"
 

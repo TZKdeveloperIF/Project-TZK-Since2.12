@@ -35,7 +35,7 @@ ctrlSetText [_idcLeftBtn0 + 1, localize {TZK_LANG_SURRENDER}]; ctrlShow [_idcLef
 ctrlSetText [_idcLeftBtn0 + 2, format ["%1 %2", localize {TZK_LANG_BASE}, localize {TZK_LANG_MORTAR}]]; ctrlShow [_idcLeftBtn0 + 2, isCommander]
 ctrlSetText [_idcLeftBtn0 + 3, format ["%1 MHQ", localize {TZK_LANG_REPAIR}]]; ctrlShow [_idcLeftBtn0 + 3, isCommander]
 
-ctrlSetText [_idcLeftBtn0 + 5, "Destroy Enemy Struct"]
+ctrlSetText [_idcLeftBtn0 + 5, TzkInGameText select 020 select 2]
 
 ; down board
 _downBoardStack = []
@@ -48,7 +48,7 @@ TzkMapRtsFlashingDisabled = true
 
 ; short key
 	_getShortKeyFunc = preprocessFile "UI\ShortKey\proc.sqf"
-	_idcShortKey = IDC + 16 * 0 + 0
+	_idcShortKey = IDC + 16 * 1 + 2
 	ctrlSetText [_idcShortKey, TzkInGameText select 014]; ctrlShow [_idcShortKey, UsedVersion >= 2030]
 
 # Update

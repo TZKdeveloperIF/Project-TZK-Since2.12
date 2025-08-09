@@ -55,7 +55,7 @@ bNewCoSet = false; call _refreshList
 
 btnBigLeft = -1
 btnFirstCtrl = false
-ctrlSetText [IDC + 16 * 32 + 2, localize {TZK_LANG_POINT}]
+ctrlSetText [IDC + 16 * 32 + 2, TzkInGameText select 020 select 0]
 btnFunction = 0
 
 ; read wpco mode from player global variable
@@ -74,7 +74,7 @@ _procMixedWpArt = preprocessFile "Rts\Dialog\Wp\ProcMixedWpArtList.sqf"
 
 ; short key
 	_getShortKeyFunc = preprocessFile "UI\ShortKey\proc.sqf"
-	_idcShortKey = IDC + 16 * 0 + 0
+	_idcShortKey = IDC + 16 * 1 + 2
 	ctrlSetText [_idcShortKey, TzkInGameText select 014]; ctrlShow [_idcShortKey, UsedVersion >= 2030]
 
 # Update
