@@ -6,7 +6,7 @@ if (1 == _enum) then {_st = stBaseTowerMg};
 if (2 == _enum) then {_st = stBaseT55};
 
 _structName = localize {TZK_LANG_SHORT_MACHINEGUN};
-if (1 == _enum) then {_structName = (localize {TZK_LANG_SHORT_MACHINEGUN}) + " Tower"};
+if (1 == _enum) then {_structName = (TzkInGameText select 020 select 1)};
 if (2 == _enum) then {_structName = "T55 fort"};
 
 _group = baseGroup select _si;

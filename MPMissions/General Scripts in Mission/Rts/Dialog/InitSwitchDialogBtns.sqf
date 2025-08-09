@@ -61,7 +61,7 @@ if (_enum != _curDlgEnum) then {
 
 // point
 _enum = 4;
-ctrlSetText [_idcBtn + _enum, localize {TZK_LANG_POINT}];
+ctrlSetText [_idcBtn + _enum, TzkInGameText select 020 select 0];
 if (_enum != _curDlgEnum) then {
 	// always available
 	ctrlShow [_idcBtn + _enum, true];

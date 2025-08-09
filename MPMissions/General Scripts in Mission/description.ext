@@ -104,7 +104,7 @@ class TzkRtsFirstCtrlBase: Button {
 		h = 0.04; \
 		text = stringify(Custom Shortkey); \
 		action = stringify(btnFunction = 3); \
-		idc = IDC + 16 * 0 + 0; \
+		idc = IDC + 16 * 1 + 2; \
 		colorText[] = {0.8, 0.2, 0.1, 0.9}; \
 	};
 
@@ -394,6 +394,16 @@ class TzkCmdMapDlgArea2: TzkCmdMapDlgArea {
 		Exit
 	};
 	DefCustomKeyClass
+	class Frame1: TZK_Frame_1 {
+		idc = IDC + 16 * 0 + 1;
+		colorText[] = {0.4, 0, 0, 0.9};
+		sizeEx = 0.021;
+		text = "Clear Markers";
+		x = 0.01;
+		y = 0.02;
+		w = 0.28;
+		h = 0.275;
+	};
 };
 
 class TzkCmdMapDlgPoint2: TzkCmdMapDlgPoint {
@@ -432,6 +442,29 @@ class TzkCmdMapDlgWpCo2: TzkCmdMapDlgWpCo {
 		CustomShortkey, 
 		Exit
 	};
+	DefCustomKeyClass
+};
+
+class TzkRtsBuildStructSubMenu2: TzkRtsBuildStructSubMenu {
+	controls[] = {
+		TRSM_LIST_TITLE, BTN_OK, BTN_UNDO, BTN_EXIT, 
+		LISTBOX0, LISTTEXT0, LISTBOX1, LISTTEXT1, 
+		LISTBOX2, LISTTEXT2, 
+		
+		BTN_BG_0_0, BTN_BG_0_1, BTN_BG_0_2, BTN_BG_0_3, BTN_BG_0_4, BTN_BG_0_5, 
+		BTN_0_0, BTN_0_1, BTN_0_2, BTN_0_3, BTN_0_4, BTN_0_5, 
+		CustomShortkey,
+	};
+	DefCustomKeyClass
+};
+
+class TzkRtsSubMenuOneListBox2: TzkRtsSubMenuOneListBox {
+	controls[] = {
+		TRSM_LIST_TITLE, BTN_OK, BTN_EXIT, 
+		LISTBOX0, LISTTEXT0,
+		CustomShortkey,
+	};
+
 	DefCustomKeyClass
 };
 

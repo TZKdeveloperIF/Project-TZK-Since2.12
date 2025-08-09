@@ -81,6 +81,7 @@
 		, "Succeeded. Click other buttons to continue your configuration."
 		, "The %1 is conflict with %2. Assignment failed. Please use another key instead."
 		, "The %1 is reserved. Please use another key instead."
+		, {The "Space" is reserved ONLY for CONFIRM. You can't modify it.}
 	] call _f; // 013
 	"Custom Shortkey" call _f; // 014
 	[
@@ -186,9 +187,120 @@
 		, "Point"
 		, "Order"
 	] call _f; // 019
+	// RTS dialog display text
+	[
+		  "Point"
+		, "MG Tower"
+		, "Destroy Enemy Struct"
+		, "At the clicked position, no enemy structure within 100 meters or no our tank/howitzers within 30 meters"
+		, "Clear Markers"				// 4
+		, "Remove"
+		, "intersected"
+		, "direction"
+		, "distance"
+		, "Not realized yet."			// 9
+		, "This order isn't allowed on other players' units."
+		, "This trigger isn't allowed on other players' units."
+		, "Eject cargos.\nDriver, gunner and commander won't eject."
+		, "Ask all units to disembark.\nIf there're player's units in vehicle, they might prevernt subsequent AI units' disembark."
+		, "This button displays message only. Click other buttons please." // 14
+		, "Exception caught."
+		, "There're bug in area-build-roof now. Temporary disable this design."
+		, "No order selected"
+		, "Not implemented. Please use 4-1."
+		, "Not implemented. Please use Alt + Click." // 19
+		, "Not implemented. Please use 3-6."
+		, "Build Struct"
+		, "Structure Type"
+		, "Direction"
+		, "Correction"					// 24
+		, "Factory"
+		, "Building"
+		, "Defend"
+		, "Art"
+		, "Walls"						// 29
+		, "Obstruct"
+		, "No structure selected"
+		, "Switch Seat"
+		, "Seats"
+		, "Available if vehicle has only 1 crew and vehicle is local" // 34
+		, "Driver"
+		, "Gunner"
+		, "Cargo"
+		, "No selected seat"
+	] call _f; // 020
+	// Structure name list
+	[
+		  "Air Radar - 4000m range"
+		, "Map Marker Tower"
+		, "Unit Camera Tower"
+		, "Light Vehicle Factory"
+		, "Command Center"
+		, "Barracks"
+		, "Heavy Vehicle Factory"
+		, "Aircraft Factory"
+		, "Shipyard"
+		, "Field Hospital"
+		, "Fuel Station"
+		, "Mortar 81 (82) mm"
+		, "M119 105mm Howitzer"
+		, "D30-A Howitzer"
+		, "MG Fort"
+		, "MG Tower"
+		, "MG Tower"
+		, "MG 12.7mm"
+		, "Static Launcher"
+		, "Static MG 12.7mm"
+		, "Static GL"
+		, "Static AT-Launcher"
+		, "Gunfort"
+		, "Wall"
+		, "Wall Low"
+		, localize {TZK_LANG_ROOF}
+		, format ["%1 %2", localize {TZK_LANG_HIGH}, localize {TZK_LANG_ROOF}]
+		, "Tank Trench"
+		, "Artillery Plain"
+		, "Sand Bags"
+		, "Tank Trap"
+		, "Ammo Crate"
+		, "Heli H"
+		, "Wire fence"
+		, localize {TZK_LANG_GAP_GENERATOR}
+		, "Bridge"
+		, format ["%1 10m %2", localize {TZK_LANG_ROOF}, localize {TZK_LANG_HEIGHT}]
+		, format ["%1 20m %2", localize {TZK_LANG_ROOF}, localize {TZK_LANG_HEIGHT}]
+		, "MHQ Wall"
+	] call _f; // 021
+	[
+		  "confirm"
+
+		, "class 1"
+		, "class 2"
+		, "class 3"
+		, "class 4"
+		, "class 5"
+		, "class 6"
+
+		, "item 1"
+		, "item 2"
+		, "item 3"
+		, "item 4"
+		, "item 5"
+		, "item 6"
+		, "item 7"
+		, "item 8"
+		, "item 9"
+	] call _f; // 022
+	[
+		  "confirm"
+
+		, "item 1"
+		, "item 2"
+		, "item 3"
+	] call _f; // 023
 
 	// script count check. Check index with last literal value
-	if (_i != 19 + 1) then {
+	if (_i != 23 + 1) then {
 		player globalChat "Script count mismatch!";
 	};
 

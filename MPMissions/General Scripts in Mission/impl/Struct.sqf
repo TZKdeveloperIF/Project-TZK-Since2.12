@@ -9,6 +9,12 @@ structMarker set [_artPlain, "MineAPE_Marker_xj400"];
 _scriptsPpl = structDefs select _gunf select sdScriptsPlayer;
 _scriptsPpl resize 1;
 
+// Support localized name
+_nameTextList = TzkInGameText select 021; _i = 0; _c = count structDefs; while {_i < _c} do {
+	structDefs select _i set [sdName, _nameTextList select _i];
+	_i = _i + 1;
+};
+
 // ============================ Added structure items ============================
 _oldCount = count structDefs;
 // Add items below

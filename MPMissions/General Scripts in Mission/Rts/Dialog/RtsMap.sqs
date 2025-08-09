@@ -70,7 +70,7 @@ btnValue05 = -1;
 
 ; short key
 	_getShortKeyFunc = preprocessFile "UI\ShortKey\proc.sqf"
-	_idcShortKey = IDC + 16 * 0 + 0
+	_idcShortKey = IDC + 16 * 1 + 2
 	ctrlSetText [_idcShortKey, TzkInGameText select 014]; ctrlShow [_idcShortKey, UsedVersion >= 2030]
 
 # Update
@@ -138,7 +138,7 @@ btnValue05 = -1;
 # LeftBtn
 	; white list for ordering other players via RTS system
 	_whiteList = [0,1,13, 6, 4,5,7, 10,11, 12, 14,15, 16]
-	? 3 == TzkRtsSelectEnum: if not (_btnVal in _whiteList) then {TitleText ["This order isn't allowed on other players' units.", "Plain DOWN", 0.25]; goto "Update"}
+	? 3 == TzkRtsSelectEnum: if not (_btnVal in _whiteList) then {TitleText [TzkInGameText select 020 select 10, "Plain DOWN", 0.25]; goto "Update"}
 
 	? 0 == _btnVal: [call preprocessFile (TzkScripts select 371), _pos] exec "Rts\Order\sMove.sqs"; closeDialog 0; goto "Quit"
 	? 1 == _btnVal: 0 exec "Rts\Order\sClear.sqs"; closeDialog 0; goto "Quit"
@@ -170,11 +170,11 @@ btnValue05 = -1;
 
 	; white list for ordering other players via RTS system
 	_whiteList = [2^0,2^1,2^2, 2^3, 2^9,2^10,2^11,  2^4,2^5,2^6,2^7,2^8]
-	? 3 == TzkRtsSelectEnum: if not (_btnVal in _whiteList) then {TitleText ["This trigger isn't allowed on other players' units.", "Plain DOWN", 0.25]; goto "Update"}
+	? 3 == TzkRtsSelectEnum: if not (_btnVal in _whiteList) then {TitleText [TzkInGameText select 020 select 11, "Plain DOWN", 0.25]; goto "Update"}
 
 	? 2^0 == _btnVal: 0 exec "Rts\SubMenu\DisbandPreset.sqs"; closeDialog 0; goto "Quit"
-	? 2^1 == _btnVal: 0 exec "Rts\Trigger\sEject.sqs"; TitleText ["Eject cargos.\nDriver, gunner and commander won't eject.", "Plain DOWN", 0.25]; closeDialog 0; goto "Quit"
-	? 2^2 == _btnVal: 0 exec "Rts\Trigger\sDisembark.sqs"; TitleText ["Ask all units to disembark. If there're player's units in vehicle, they might prevernt subsequent AI units' disembark.", "Plain DOWN", 0.25]; closeDialog 0; goto "Quit"
+	? 2^1 == _btnVal: 0 exec "Rts\Trigger\sEject.sqs"; TitleText [TzkInGameText select 020 select 12, "Plain DOWN", 0.25]; closeDialog 0; goto "Quit"
+	? 2^2 == _btnVal: 0 exec "Rts\Trigger\sDisembark.sqs"; TitleText [TzkInGameText select 020 select 13, "Plain DOWN", 0.25]; closeDialog 0; goto "Quit"
 
 	? 2^3 == _btnVal: 0 exec "Rts\SubMenu\JoinPreset.sqs"; closeDialog 0; goto "Quit"
 
@@ -198,8 +198,8 @@ btnValue05 = -1;
 		? 2^4 == _btnVal && 4 == _downBoardStack select 0: [tsCenter] exec "Rts\Trigger\DetachPreset.sqs"; goto "Update"
 		? 2^5 == _btnVal && 4 == _downBoardStack select 0: [tsRight] exec "Rts\Trigger\DetachPreset.sqs"; goto "Update"
 
-		? 2^9 == _btnVal && 4 == _downBoardStack select 0: TitleText ["This button displays message only. Click other buttons please.", "Plain DOWN", 0.25]; goto "Update"
-		? 2^10 == _btnVal && 4 == _downBoardStack select 0: TitleText ["This button displays message only. Click other buttons please.", "Plain DOWN", 0.25]; goto "Update"
+		? 2^9 == _btnVal && 4 == _downBoardStack select 0: TitleText [TzkInGameText select 020 select 14, "Plain DOWN", 0.25]; goto "Update"
+		? 2^10 == _btnVal && 4 == _downBoardStack select 0: TitleText [TzkInGameText select 020 select 14, "Plain DOWN", 0.25]; goto "Update"
 
 		? 2^0 == _btnVal && 5 == _downBoardStack select 0: true exec "Rts\Trigger\sSpoof.sqs"; _return = true
 		? 2^1 == _btnVal && 5 == _downBoardStack select 0: false exec "Rts\Trigger\sSpoof.sqs"; _return = true
@@ -219,9 +219,9 @@ btnValue05 = -1;
 		; todo: switch to art dialog then come back will invalidate current dialog. Need fix it
 		? 2^2 == _btnVal && 8 == _downBoardStack select 0: [true] exec "Rts\SubMenu\SwitchArtMag.sqs"; _return = true
 		; todo: realize it for AI groups
-		? 2^6 == _btnVal && 8 == _downBoardStack select 0: hint "Not realized yet."; goto "Update"
-		? 2^7 == _btnVal && 8 == _downBoardStack select 0: hint "Not realized yet."; goto "Update"
-		? 2^11 == _btnVal && 8 == _downBoardStack select 0: hint "Not realized yet."; goto "Update"
+		? 2^6 == _btnVal && 8 == _downBoardStack select 0: hint (TzkInGameText select 020 select 9); goto "Update"
+		? 2^7 == _btnVal && 8 == _downBoardStack select 0: hint (TzkInGameText select 020 select 9); goto "Update"
+		? 2^11 == _btnVal && 8 == _downBoardStack select 0: hint (TzkInGameText select 020 select 9); goto "Update"
 
 		? 2^8 == _btnVal: _return = true
 
@@ -240,7 +240,7 @@ btnValue05 = -1;
 	? _btnVal > 0: if ([_btnVal, _this, _accept] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf") then {goto "Quit"}
 	goto "Update"
 # SwitchClassification
-	? _btnVal == TzkRtsSelectEnum: hint "Exception caught."; goto "Update"
+	? _btnVal == TzkRtsSelectEnum: hint (TzkInGameText select 020 select 15); goto "Update"
 
 	TzkRtsSelectEnum = _btnVal
 	_this exec "Rts\Dialog\RtsMap.sqs"; closeDialog 0; goto "Quit"

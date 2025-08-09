@@ -10,6 +10,11 @@ baseGroup = [grpNull, grpNull];
 ; stringtable item is stored in 
 call preprocessFile "Init\GblScripts.sqf"
 
+; language localization. It works like stringtable.csv. The worst limit of stringtable.csv is it contains all languages
+; only in 1 file. Every text editor I know can't support encoding for all of them well
+; Initial mission-local script variable to contain text
+call preprocessFile "Init\clientInGameText.sqf"
+
 ; ======================================== environment variables ========================================
 
 ; for debug log

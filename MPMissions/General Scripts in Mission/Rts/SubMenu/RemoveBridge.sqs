@@ -14,8 +14,8 @@ _intersectedProjects = siPlayer call preprocessFile "Rts\Submenu\GetIntersectedB
 
 _idcTitle = IDC + 0; _idcListLabel = IDC + 16 * 3 + 1; _idcListBox0 = IDC + 16 * 3 + 0
 
-ctrlSetText [_idcTitle, format ["%1 %2", "Remove", localize {TZK_LANG_BRIDGE}]]
-ctrlSetText [_idcListLabel, format ["%1 intersected", count _intersectedProjects]]
+ctrlSetText [_idcTitle, format ["%1 %2", TzkInGameText select 020 select 5, localize {TZK_LANG_BRIDGE}]]
+ctrlSetText [_idcListLabel, format ["%1 %2", count _intersectedProjects, TzkInGameText select 020 select 6]]
 
 btnValue00 = false; btnValue01 = false
 
