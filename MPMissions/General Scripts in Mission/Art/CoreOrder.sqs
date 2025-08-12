@@ -448,7 +448,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	
 	? _bDisplay && _msg != "" && _isServer: _msg = format ["[%1] ", _unit] + _msg, [_si, _msg] exec "Server\Msg\sSvrMsg2Cmd.sqs"
 	? _bDisplay && _msg != "" && not _isServer: _unit groupChat _msg
-	? _bDisplay && _msg != "" && not _isServer: TitleText [format ["%1: %2", _unit, _msg], "Plain", 0.25]; 
+	? _bDisplay && _msg != "" && not _isServer: TitleText [format ["%1: %2", _unit, _msg], "PLAIN DOWN", 0.25]; 
 	~ 5
 	? call _quitCond: _msg = ""; goto "EOF"
 	; return to script beginning
@@ -463,6 +463,6 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 
 	? _msg != "" && _isServer: _msg = format ["[%1] ", _unit] + _msg, [_si, _msg] exec "Server\Msg\sSvrMsg2Cmd.sqs"
 	? _msg != "" && not _isServer: _unit groupChat _msg
-	? _msg != "" && not _isServer: TitleText [format ["%1: %2", _unit, _msg], "Plain", 0.25]; 
+	? _msg != "" && not _isServer: TitleText [format ["%1: %2", _unit, _msg], "PLAIN DOWN", 0.25]; 
 	; ? _bClearRts: call _abort
 	exit
