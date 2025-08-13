@@ -5,8 +5,11 @@ _vehicle = _this select 0; _shell = _this select 1; _si = _this select 2
 ? isNull player: exit
 ? not (player in _vehicle): exit
 
+_avoidBaseDist = 50
+
 ; check vehicle
 	_type = _vehicle call funcGetUnitTypeFromObject
+	? _type in typesHeavyHowitzer: _avoidBaseDist = 120
 	? _type in typesHowitzer || _type in typesRocketLauncher: goto "vehIsArt"
 	? _type != -1: exit
 ; check structure
@@ -16,7 +19,7 @@ _vehicle = _this select 0; _shell = _this select 1; _si = _this select 2
 
 # vehIsArt
 
-_bNearBase = ([getPosASL _vehicle, _si] call loadFile "Common\SQF\ClosestCriticalStruct.sqf") select 1 < 50
+_bNearBase = ([getPosASL _vehicle, _si] call loadFile "Common\SQF\ClosestCriticalStruct.sqf") select 1 < _avoidBaseDist
 ? not _bNearBase: exit
 
 ~ 3

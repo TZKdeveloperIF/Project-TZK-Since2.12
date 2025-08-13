@@ -1,0 +1,71 @@
+; args: [[area idx, avoid base distance, si, _markerInfo, unit], [finished, succeeded], reference_of_output]
+; 计算可能很花时间，因此用SQS执行，调用方自行等待
+
+_param = _this select 0; _state = _this select 1; _output = _this select 2
+_idx = _param select 0; _avoidBaseDist = _param select 1; _si = _param select 2; _markerInfo = _param select 3; _unit = _param select 4
+_found = false
+_output set [0, _found]
+
+_extendedRange = + _markerInfo
+_extendedRange set [2, (_extendedRange select 2) + _avoidBaseDist]
+_extendedRange set [3, (_extendedRange select 3) + _avoidBaseDist]
+
+_enemyStructInfo = _si call preprocessFile "Art\getEnemyStructInfo.sqf";
+_i = 0; _cache = []
+{_row = _x; {if ([_x, _extendedRange] call preprocessFile "Util\PosInRect.sqf") then {_cache set [_i, _x]; _i = _i + 1}} forEach _row} forEach _enemyStructInfo
+_cache resize _i
+
+? 0 == count _cache: _output set [0, true]; _output set [1, [_extendedRange select 0, _extendedRange select 1]]; goto "Quit"
+
+; find the nearest (to center) available target pos
+_step = 5;
+_dir = _markerInfo select 4;
+_cos = cos (-_dir), _sin = sin (-_dir);
+_d = 0, _limit = (_markerInfo select 2) + (_markerInfo select 3);
+_c = count _cache;
+_distSquare = preprocessFile "Util\PosDistSquare.sqf"
+_hinted = false
+
+# loop_d
+	? not (_d <= _limit && not _found): goto "d_looped"
+	? _time > 2 && not _hinted: _hinted = true; _unit groupChat "Preparing legal target position. Please wait..."
+
+	_w = _markerInfo select 2; if (_w > _d) then {_w = _d}; _a = -_w
+	# loop_a
+		? not (_a <= _w && not _found): goto "a_looped"
+		_h = _markerInfo select 3; if (_h > _d - abs(_a)) then {_h = _d - abs(_a)}; _b = -_h
+		# loop_b
+			? not (_b <= _h && not _found): goto "b_looped"
+
+			_rotVecX = _cos * _a - _sin * _b; _rotVecY = _sin * _a + _cos * _b;
+			_px = _rotVecX + (_markerInfo select 0); _py = _rotVecY + (_markerInfo select 1);
+			_i = 0; _invalid = false; _checked = false;
+			# loop_i
+				? not (_i < _c && not _invalid): goto "i_looped"
+
+				if (([_cache select _i, [_px, _py]] call _distSquare) < _avoidBaseDist * _avoidBaseDist) then {_invalid = true};
+				_checked = true;
+				_i = _i + 1;
+				goto "loop_i"
+			# i_looped
+
+			? (not _invalid && _checked): _found = true; _output set [0, true]; _output set [1, [_px, _py]]
+			_b = _b + _step;
+
+			goto "loop_b"
+		# b_looped
+
+		_a = _a + _step;
+		
+		goto "loop_a"
+	# a_looped
+
+	_d = _d + _step;
+
+	goto "loop_d"
+# d_looped
+
+# Quit
+	_state set [0, true]
+	_state set [1, true]
+	exit

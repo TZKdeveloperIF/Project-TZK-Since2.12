@@ -48,3 +48,5 @@ if (not _bUseStaticTexture) then {
 	unitDefs select _tankLightE02 set [udModel, "T72_xj400"];
 	unitDefs select _tankLightE03 set [udModel, "T72_xj400"];
 };
+
+typesHeavyHowitzer = [_m109W, _plz05E];
