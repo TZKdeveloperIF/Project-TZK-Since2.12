@@ -16,13 +16,4 @@ if _ret then {
 	if (_equippedMag == "") then {_ret = false};
 };
 
-if _ret then {
-	if _needAvoidStruct then {
-		if not (_result select 1 select 0) then {
-			_msg = localize {TZK_LANG_AREA_FILLED_ENEMY_STRUCT};
-			_ret = false;
-		};
-	};
-};
-
 _ret
