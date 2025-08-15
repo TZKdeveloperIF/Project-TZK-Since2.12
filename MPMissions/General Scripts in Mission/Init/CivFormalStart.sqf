@@ -1,5 +1,5 @@
 // args: none
-player groupchat "Start data received.";
+player groupchat (TzkInGameText select 026 select 7);
 
 [false] exec (TzkScripts select 161); btnMarker = true; boolFriendly = true;
 

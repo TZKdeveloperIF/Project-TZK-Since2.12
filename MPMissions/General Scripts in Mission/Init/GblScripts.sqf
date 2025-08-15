@@ -414,9 +414,9 @@ _f = {
 "\TZK_Patch4_4_0_6\s\Common\InitSpawnPlaneCwv.sqs" call _f; // 347
 "\TZK_Scripts_4_0_4\Common\InitSpawnPlaneRes.sqs" call _f; // 348
 
-"\TZK_Patch4_4_0_6\s\InfoCli\tgHibernate.sqs" call _f; // 349
-"\TZK_Patch4_4_0_6\s\InfoCli\tgLoss.sqs" call _f; // 350
-"\TZK_Patch4_4_0_6\s\InfoCli\tgSpawn.sqs" call _f; // 351
+"Net\Cli\tgHibernate.sqs" call _f; // 349
+"Net\Cli\tgLoss.sqs" call _f; // 350
+"Net\Cli\tgSpawn.sqs" call _f; // 351
 
 "352" call _f; // 352
 "353" call _f; // 353

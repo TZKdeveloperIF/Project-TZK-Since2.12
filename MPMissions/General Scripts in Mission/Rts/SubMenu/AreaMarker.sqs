@@ -4,7 +4,7 @@ _markerType = _this select 1
 
 @ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
-_dlg = createDialog "TzkRtsSubMenuOneListWide"
+_dlg = createDialog "TzkRtsSubMenuOneListWide2"
 mutexDlg = false
 
 _size = getMarkerSize "TzkRtsArea"
@@ -20,38 +20,54 @@ _enum = _markerType call preprocessFile "Rts\Marker\EnumOfType.sqf"
 _cnt = count (TzkPplRtsAreaInfo select _enum)
 _updateList = preprocessFile "Rts\SubMenu\UpdateAreaListbox.sqf"
 
-ctrlSetText [_idcTitle, format ["%4 %1 %2 %3", _webType, _markerType, localize {TZK_LANG_AREA}, localize {TZK_LANG_EDIT}]]
+_texts = TzkInGameText select 029
+_webText = _webType; _markerText = _markerType
+? _webText == "Player": _webText = _texts select 2
+? _webText == "Server": _webText = _texts select 3
+? _markerText == "Art": _markerText = _texts select 0
+? _markerText == "Mine": _markerText = _texts select 1
+
+ctrlSetText [_idcTitle, format ["%4 %1 %2 %3", _webText, _markerText, localize {TZK_LANG_AREA}, localize {TZK_LANG_EDIT}]]
 ctrlSetText [_idcListLabel, localize {TZK_LANG_AREA}]
 ctrlSetText [IDC + 1, format ["%1 %2", localize {TZK_LANG_SET}, localize {TZK_LANG_AREA}]]
 ctrlSetText [IDC + 2, localize {TZK_LANG_CLEAR}]
 ctrlSetText [IDC + 3, format ["%1 %2", localize {TZK_LANG_SET}, localize {TZK_LANG_LINE}]]
 
-[_idcListBox0, _markerType, _webShort, _cnt] call _updateList
+[_idcListBox0, _markerType, _webShort, _cnt, _markerText] call _updateList
 ? -1 != (call _cachedIdxName): lbSetCurSel [_idcListBox0, (call _cachedIdxName)]
 
 btnValue00 = false; btnValue01 = false; btnValue02 = false
 
-_tooLargeHint = format ["Marker too large. Can't be set as %1 area.", _markerType]
+_tooLargeHint = format [_texts select 5, _markerText]
 ? _size select 0 > 200 || _size select 1 > 200: hint _tooLargeHint
 
+; short key
+	_getShortKeyFunc = preprocessFile "UI\ShortKey\proc.sqf"
+	_idcShortKey = IDC + 16 * 1 + 2
+	ctrlSetText [_idcShortKey, TzkInGameText select 014]; ctrlShow [_idcShortKey, UsedVersion >= 2030]
+
 # loop
-	~ 0.2
+	~ 0.02
 	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 	? call dlgUpdated: goto "Quit"
 	? not alive player: closeDialog 0; goto "Quit"
 
-	[_idcListBox0, _markerType, _webShort, _cnt] call _updateList
+	[_idcListBox0, _markerType, _webShort, _cnt, _markerText] call _updateList
+
+	_shortKeyFunc = "dlg_area_marker" call _getShortKeyFunc
+	? _shortKeyFunc != "": goto "ProcShortKey"
 
 	? btnValue00: btnValue00 = false; closeDialog 0; goto "Quit"
-	? btnValue01: btnValue01 = false; goto "Set"
+	? btnValue01: btnValue01 = false; goto "SetArea"
 	? btnValue02: btnValue02 = false; goto "Clear"
 	? btnValue03: btnValue03 = false; goto "SetByLine"
+	? btnFunction > 0: _btnFnc = btnFunction, btnFunction = 0, goto "FunctionalBtns"
 
 	goto "loop"
 # Quit
 	exit
-# Set
-	? -1 == lbCurSel _idcListBox0: hint "No area selected."; goto "loop"
+# SetArea
+	? -1 == lbCurSel _idcListBox0: hint (_texts select 6); goto "loop"
 	? _size select 0 > 200 || _size select 1 > 200: hint _tooLargeHint; goto "loop"
 
 	[100 + lbCurSel _idcListBox0, _markerType, _toServer, _cachedIdxName] call preprocessFile "Rts\Marker\GenArea.sqf"
@@ -60,10 +76,10 @@ _tooLargeHint = format ["Marker too large. Can't be set as %1 area.", _markerTyp
 	false call preprocessFile (TzkScripts select 362)
 	closeDialog 0; goto "Quit"
 # Clear
-	? -1 == lbCurSel _idcListBox0: hint "No area selected."; goto "loop"
+	? -1 == lbCurSel _idcListBox0: hint (_texts select 6); goto "loop"
 	[lbCurSel _idcListBox0, _markerType, _toServer, _cachedIdxName] call preprocessFile "Rts\Marker\GenArea.sqf"; goto "loop"
 # SetByLine
-	? -1 == lbCurSel _idcListBox0: hint "No area selected."; goto "loop"
+	? -1 == lbCurSel _idcListBox0: hint (_texts select 6); goto "loop"
 	? _size select 0 > 200 || _size select 1 > 200: hint _tooLargeHint; goto "loop"
 
 	; treat the "line" as desired "area"
@@ -77,3 +93,25 @@ _tooLargeHint = format ["Marker too large. Can't be set as %1 area.", _markerTyp
 	false call preprocessFile (TzkScripts select 361)
 	false call preprocessFile (TzkScripts select 362)
 	closeDialog 0; goto "Quit"
+# ProcShortKey
+	? "confirm" == _shortKeyFunc: goto "SetArea"
+
+	? "button 1" == _shortKeyFunc: goto "SetArea"
+	? "button 2" == _shortKeyFunc: goto "SetByLine"
+	? "button 3" == _shortKeyFunc: goto "Clear"
+
+	? "item 1" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 1]
+	? "item 2" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 2]
+	? "item 3" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 3]
+	? "item 4" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 4]
+	? "item 5" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 5]
+	? "item 6" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 6]
+	? "item 7" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 7]
+	? "item 8" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 8]
+	? "item 9" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 9]
+	? "item 0" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 0]
+
+	goto "loop"
+# FunctionalBtns
+	? 3 == _btnFnc: ["dlg_area_marker", _this, "Rts\SubMenu\AreaMarker.sqs"] exec "UI\Shortkey\dlg.sqs"; closeDialog 0; goto "Quit"
+	goto "loop"

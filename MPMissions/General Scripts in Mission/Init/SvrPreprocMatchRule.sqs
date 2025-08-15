@@ -16,8 +16,8 @@
 	TzkCustomStartPos = [-1, -1, -1, -1]
 	TzkStartPosRes = (if (random 1 > 0.5) then {1} else {0}), publicVariable {TzkStartPosRes}
 
-	0 exec "\TZK_Patch4_4_0_6\s\Net\hStartMsg.sqs"
-	publicExec {0 exec "\TZK_Patch4_4_0_6\s\Net\hStartMsg.sqs"}
+	0 exec "Net\hStartMsg.sqs"
+	publicExec {0 exec "Net\hStartMsg.sqs"}
 
 	_timeAbort = 60
 	# loop
@@ -33,8 +33,8 @@
 # Degrade
 	startPosMode = 1, publicVariable {startPosMode}
 # SkipRuleDefine
-	1 exec "\TZK_Patch4_4_0_6\s\Net\hStartMsg.sqs"
-	publicExec {1 exec "\TZK_Patch4_4_0_6\s\Net\hStartMsg.sqs"}
+	1 exec "Net\hStartMsg.sqs"
+	publicExec {1 exec "Net\hStartMsg.sqs"}
 
 	0 exec "Server\GenerateStartPositions.sqs"
 	goto "Quit"

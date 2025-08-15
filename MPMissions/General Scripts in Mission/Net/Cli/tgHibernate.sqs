@@ -9,6 +9,6 @@ _si = _value / (count towns)
 
 ? _si != siPlayer && siPlayer != siCiv: exit
 
-? _si == siPlayer: format["No enemy near %1. Town Group hibernates.", towns select _ti select tdName] call funcSideMsg
+? _si == siPlayer: format [TzkInGameText select 026 select 11, towns select _ti select tdName] call funcSideMsg
 
 _marker = format ["TownHibernate%1", _ti]; _marker setMarkerPos getPos (towns select _ti select tdFlag)

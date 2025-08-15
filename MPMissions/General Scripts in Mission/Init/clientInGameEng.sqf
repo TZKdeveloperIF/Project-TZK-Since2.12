@@ -17,7 +17,19 @@
 	};
 
 	// All exist item's index and their order CAN'T BE CHANGED
-	"The shell you shot has flied for 3s. Since there're critical structures within 50 meters, enemy AI art can't attack you, so your shell will be deleted. Move your art vehicle if wish to shoot at far target." call _f; // 000
+	[
+		  "The shell you shot has flied for 3s. Since there're critical structures within %1 meters, enemy AI art can't attack you, so your shell will be deleted. Move your art vehicle if wish to shoot at far target."
+		, "Not allow shooting art near base within %1 meters."
+		, "Not allow shooting at position that near enemy base."
+		, "Failed in prepare legal position. Order aborted."
+		, "Preparing legal target position. Please wait..."
+		, "Moving to ordered position, distance %1m." // 5
+		, "Target is far. Probably missing."
+		, "Moving to support vehicle for more magazines."
+		, "Rearming at remote object. If I'm far away from you, probably I can't receive supplemented magazines. In this case, please use Unit Camera and look at me."
+		, "Switching magazine at remote object. Again, if I'm far away, use Unit Camera and look at me."
+		, "Auto detect pause. Wait until get rearmed." // 10
+	] call _f; // 000
 	[
 		  "Helicopter"
 		, "APC"
@@ -64,8 +76,8 @@
 	\n
 	0-0-2 is always for TZK Setting Interface." call _f; // 005
 
-	"Turn ON Rts Map Mode" call _f; // 006
-	"Turn OFF Rts Map Mode" call _f; // 007
+	"" call _f; // 006
+	"" call _f; // 007
 
 	"Please choose points near land enough." call _f; // 008
 
@@ -187,7 +199,7 @@
 		, "Point"
 		, "Order"
 	] call _f; // 019
-	// RTS dialog display text
+	// RTS dialog display text 1
 	[
 		  "Point"
 		, "MG Tower"
@@ -298,9 +310,98 @@
 		, "item 2"
 		, "item 3"
 	] call _f; // 023
+	// CMD rules
+	[
+		  "All aircrafts are banned by CMD rule. Ask CMD(s) to decide the rule again (left column in Options dialog)."
+		, "Gap Generator is banned by CMD rule. Ask CMD(s) to decide the rule again (left colume in Options dialog)."
+		, "CMD rule allow only build 3 factories at most. Ask CMD(s) to decide the rule again (left colume in Options dialog)."
+		, "CMD rule menu"
+	] call _f; // 024
+	// radio
+	[
+		  "Mission Setting"
+		, "Self-Medic"
+		, "MHQ Build Menu"
+		, "Sup Build Menu"
+		, "Buy Better NVG"
+		, "Rearm AA" // 5
+		, "Rearm AT"
+		, "Rearm RPG"
+		, "Refresh Radio List"
+		, "Turn ON Rts Map Mode"
+		, "Turn OFF Rts Map Mode" // 10
+	] call _f; // 025
+	// tg
+	[
+		  "Time limit reached in %1 minute(s)."
+		, "Artillery detected (%1 detections). Estimated pos: %2"
+		, "Don't disconnect! Server ping received. Current time: %1"
+		, "Waiting commanders selected start position..."
+		, "Waiting for start data ..."
+		, "Group %1 Full (including units building/queued), Aborting build of %2" // 5
+		, "Worker can't reach building. DAMN NOOB COM"
+		, "Start data received."
+		, "You are BLOCKED.\nYou are NOT Receiving.\nDon't leave. Wait for a while."
+		, "You are UNBLOCKED.\nYou are Receiving."
+		, "%1 is under enemy fire send reinforcements" // 10
+		, "No enemy near %1 (2x VD). Town Group hibernates."
+		, "Enemy approaching %1 (2x VD). Town Group Spawn."
+	] call _f; // 026
+	[
+		  "confirm"
+
+		, "button 1"
+		, "button 2"
+		, "button 3"
+
+		, "marker 1"
+		, "marker 2"
+		, "marker 3"
+		, "marker 4"
+		, "marker 5"
+		, "marker 6"
+		, "marker 7"
+		, "marker 8"
+		, "marker 9"
+		, "marker 0"
+	] call _f; // 027
+	[
+		  "confirm"
+
+		, "big angle 1"
+		, "big angle 2"
+		, "big angle 3"
+		, "big angle 4"
+
+		, "marker 1"
+		, "marker 2"
+		, "marker 3"
+		, "marker 4"
+		, "marker 5"
+		, "marker 6"
+		, "marker 7"
+		, "marker 8"
+		, "marker 9"
+		, "marker 0"
+	] call _f; // 028
+	// Area marker
+	[
+		  "Art"
+		, "Mine"
+		, "Player"
+		, "Side"
+		, "Area"
+		, "Marker too large. Can't be set as %1 area." // 5
+		, "No area selected."
+	] call _f; // 029
+	// RTS dialog display text 2
+	[
+		  "Do nothing"
+		, "Switch Art Mags"
+	] call _f; // 030
 
 	// script count check. Check index with last literal value
-	if (_i != 23 + 1) then {
+	if (_i != 30 + 1) then {
 		player globalChat "Script count mismatch!";
 	};
 

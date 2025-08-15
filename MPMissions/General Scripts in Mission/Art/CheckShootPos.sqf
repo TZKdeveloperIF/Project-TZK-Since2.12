@@ -6,7 +6,7 @@ private [{_avoidBaseDist}, {_ret}]; _ret = true; _avoidBaseDist = _this;
 if (_needAvoidStruct && 0 == _firedCnt % 5) then {
 	if (([getPosASL _vehicle, _si] call loadFile "Common\SQF\ClosestCriticalStruct.sqf") select 1 < _avoidBaseDist) then {
 		_ret = false;
-		_msg = format ["Not allow shooting art near base within %1 meters.", _avoidBaseDist];
+		_msg = format [(TzkInGameText select 000 select 1), _avoidBaseDist];
 	};
 };
 _ret

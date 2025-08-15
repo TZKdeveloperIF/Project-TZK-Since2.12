@@ -109,7 +109,7 @@ _distributionRadius = (if _isInfantry then {20} else {50})
 	? _dist < _distributionRadius: goto "CheckDistance"
 
 	? _isVehicle: if ([_vehicle, "driver"] call preprocessFile "Util\HasEmptySeat.sqf") then {_msg = format ["%1 %2 %3 %4 %5 %6. %7", localize {TZK_LANG_NEED_MOVE_TO}, localize {TZK_LANG_PREDEFINED}, localize {TZK_LANG_POSITION}, localize {TZK_LANG_BUT}, localize {TZK_LANG_HASNT}, localize {TZK_LANG_DRIVER}, localize {TZK_LANG_ORDER_ABORTED}], goto "EOF"}
-	_unit groupChat format ["Moving to ordered position, distance %1m.", _dist]
+	_unit groupChat format [(TzkInGameText select 000 select 5), _dist]
 	# LoopPreMove
 		_unit doMove _startPos
 		~ 5
@@ -190,7 +190,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 		; finished check
 		? not (_state select 0): goto "WaitLegalPosPrepared"
 	; failed check
-	? not (_state select 1): _msg = "Failed in prepare legal position. Order aborted."; goto "EOF"
+	? not (_state select 1): _msg = TzkInGameText select 000 select 3; goto "EOF"
 
 	# PrepareLegalPosDone
 	~ (_timeLimit - _time)
@@ -204,7 +204,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 # PreCalculate
 	_dist = [_unit, _target] call funcDistH
 	? _dist > (if _isInfantry then {_range} else {_distLimit}): goto "CheckDistance"
-	? _dist < _distLimit && _dist > viewDistance: _unit groupChat "Target is far. Probably missing."
+	? _dist < _distLimit && _dist > viewDistance: _unit groupChat (TzkInGameText select 000 select 6)
 
 	_ammoArray = _vehicle ammoArray _weapon; _equippedMag = ""; _ammoOld = 0;
 	_ret = call preprocessFile "Art\checkAmmoMag.sqf"
@@ -369,7 +369,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 		goto "SupportFound"
 
 	# SupportFound
-		? not _isServer: _unit groupChat "Moving to support vehicle for more magazines."
+		? not _isServer: _unit groupChat (TzkInGameText select 000 select 7)
 		? _isServer: [_unit, _sup] exec "Net\sMovingToSupport.sqs"
 		_timeAbort = time + 60 * (if _isInfantry then {15} else {5})
 		? _isStruct: goto "SupportReached"
@@ -406,7 +406,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 
 		? _isServer: _rearmParam = [[_unit, _si, _gi, _vehicle, _type, _sup, _nonAIgroup], false, false], _rearmParam exec "Server\AI_Rearm.sqs"
 		? not _isServer: _rearmParam = [[_unit, _sup], false, false]; _rearmParam exec "Player\Rearm.sqs"
-		? not _isServer && not _isInfantry && not local _vehicle: _unit groupChat "Rearming at remote object. If I'm far away from you, probably I can't receive supplemented magazines. In this case, please use Unit Camera and look at me."
+		? not _isServer && not _isInfantry && not local _vehicle: _unit groupChat (TzkInGameText select 000 select 8)
 
 	; _try = 0
 	# WaitRearmComplete
@@ -423,7 +423,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	~ _delay + 1
 	? _speed <= 0: goto "PreMove"
 	_delay = 1; [_vehicle, _speed] exec (TzkScripts select 132)
-	? not _isServer && not _isInfantry && not local _vehicle: _unit groupChat "Switching magazine at remote object. Again, if I'm far away, use Unit Camera and look at me."
+	? not _isServer && not _isInfantry && not local _vehicle: _unit groupChat (TzkInGameText select 000 select 9)
 
 	# WaitSwitchComplete
 		~ _delay
@@ -435,7 +435,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 ; For auto detect mode
 # AutoDetectWaitRearm
 	; todo: prepare hint message if support server ai units using auto detect 
-	_unit groupChat "Auto detect pause. Wait until get rearmed."
+	_unit groupChat (TzkInGameText select 000 select 10)
 	~ 30
 	? call _quitCond: _msg = ""; goto "EOF"
 	; return to script beginning

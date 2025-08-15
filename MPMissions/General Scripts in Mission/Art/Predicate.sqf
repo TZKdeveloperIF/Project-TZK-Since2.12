@@ -56,8 +56,7 @@ if (_ret && _needAvoidStruct) then {
 
 	if (_nearestInfo select 0 < _avoidBaseDist) then {
 		_ret = false;
-		// art_todo: language and distance info
-		_msg = "Not allow shooting at position that near enemy base.";
+		_msg = TzkInGameText select 000 select 2;
 	};
 };
 
