@@ -28,7 +28,7 @@ _hinted = false
 
 # loop_d
 	? not (_d <= _limit && not _found): goto "d_looped"
-	? _time > 2 && not _hinted: _hinted = true; _unit groupChat "Preparing legal target position. Please wait..."
+	? _time > 2 && not _hinted: _hinted = true; _unit groupChat (TzkInGameText select 000 select 4)
 
 	_w = _markerInfo select 2; if (_w > _d) then {_w = _d}; _a = -_w
 	# loop_a

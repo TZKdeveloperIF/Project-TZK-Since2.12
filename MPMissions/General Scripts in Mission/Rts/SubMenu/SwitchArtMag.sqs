@@ -4,14 +4,14 @@ _bSvrRtsOrder = _this select 0
 
 @ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
-_dlg = createDialog "TzkRtsSubMenuTwoListBox"
+_dlg = createDialog "TzkRtsSubMenuTwoListBox2"
 mutexDlg = false
 
 _idcTitle = IDC + 0
 _idcListLabel0 = IDC + 16 * 3 + 1; _idcListLabel1 = IDC + 16 * 3 + 3
 _idcListBox0 = IDC + 16 * 3 + 0; _idcListBox1 = IDC + 16 * 3 + 2
 
-ctrlSetText [_idcTitle, "Switch Art Mags"]
+ctrlSetText [_idcTitle, TzkInGameText select 030 select 1]
 
 _defSpdIdx = 2; if (upgMatrix select siPlayer select upgLongWeaponRange == 2) then {_defSpdIdx = 4}
 _param0 = ["InitSpeed", count ArtilleryMagazineSpeedList, {format [{%1 m/s}, ArtilleryMagazineSpeedList select _this]}, _defSpdIdx];
@@ -26,18 +26,44 @@ lbSetCurSel [_idcListBox1, _param1 select 3]
 
 btnValue00 = false; btnValue01 = false; btnValue02 = false
 
+; short key
+	_getShortKeyFunc = preprocessFile "UI\ShortKey\proc.sqf"
+	_idcShortKey = IDC + 16 * 1 + 2
+	ctrlSetText [_idcShortKey, TzkInGameText select 014]; ctrlShow [_idcShortKey, UsedVersion >= 2030]
+
 # loop
-	~ 0.2
+	~ 0.02
 	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 	? call dlgUpdated: goto "Quit"
 	? not alive player: closeDialog 0; goto "Quit"
 
+	_shortKeyFunc = "dlg_switch_art_mag" call _getShortKeyFunc
+	? _shortKeyFunc != "": goto "ProcShortKey"
+
 	? btnValue00: btnValue00 = false; closeDialog 0; goto "Quit"
 	? btnValue01: btnValue01 = false; goto "OK"
+	? btnFunction > 0: _btnFnc = btnFunction, btnFunction = 0, goto "FunctionalBtns"
 
 	goto "loop"
 # Quit
 	exit
+# ProcShortKey
+	? "confirm" == _shortKeyFunc: goto "OK"
+
+	? "item 1" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 1 - 1]
+	? "item 2" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 2 - 1]
+	? "item 3" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 3 - 1]
+	? "item 4" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 4 - 1]
+	? "item 5" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 5 - 1]
+	? "item 6" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 6 - 1]
+	? "item 7" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 7 - 1]
+	? "item 8" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 8 - 1]
+	? "item 9" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 9 - 1]
+
+	goto "loop"
+# FunctionalBtns
+	? 3 == _btnFnc: ["dlg_switch_art_mag", _this, "Rts\SubMenu\SwitchArtMag.sqs"] exec "UI\Shortkey\dlg.sqs"; closeDialog 0; goto "Quit"
+	goto "loop"
 # OK
 	_idx0 = lbCurSel _idcListBox0 ; _idx1 = lbCurSel (_idcListBox1)
 	? -1 == _idx0 || -1 == _idx1: hint "Params unselected.", goto "loop"

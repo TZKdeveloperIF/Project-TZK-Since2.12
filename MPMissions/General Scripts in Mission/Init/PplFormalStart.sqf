@@ -11,7 +11,7 @@ closeDialog 0;
 onMapSingleClick {[_pos, _units, _alt, _shift] call funcMapClickPlayer};
 
 // received message
-player groupchat "Start data received.";
+player groupchat (TzkInGameText select 026 select 7);
 
 [player, siPlayer, giPlayer, _mhqPos] exec "Player\InitPlayer_Scripts.sqs";
 

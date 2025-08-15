@@ -17,10 +17,15 @@ _enum = _markerType call preprocessFile "Rts\Marker\EnumOfType.sqf"
 _cnt = count (TzkPplRtsAreaInfo select _enum)
 _updateList = preprocessFile "Rts\SubMenu\UpdateAreaListbox.sqf"
 
+_texts = TzkInGameText select 029
+_markerText = _markerType
+? _markerText == "Art": _markerText = _texts select 0
+? _markerText == "Mine": _markerText = _texts select 1
+
 ctrlSetText [_idcTitle, format ["%1 %2 %3", localize {TZK_LANG_AREA}, localize {TZK_LANG_MINE_VERB}, localize {TZK_LANG_ORDER}]]
 ctrlSetText [_idcListLabel, localize {TZK_LANG_AREA}]
 
-[_idcListBox0, _markerType, _webShort, _cnt] call _updateList
+[_idcListBox0, _markerType, _webShort, _cnt, _markerText] call _updateList
 ? -1 != (call _cachedIdxName): lbSetCurSel [_idcListBox0, (call _cachedIdxName)]
 
 btnValue00 = false; btnValue01 = false;
@@ -31,7 +36,7 @@ btnValue00 = false; btnValue01 = false;
 	? call dlgUpdated: goto "Quit"
 	? not alive player: closeDialog 0; goto "Quit"
 
-	[_idcListBox0, _markerType, _webShort, _cnt] call _updateList
+	[_idcListBox0, _markerType, _webShort, _cnt, _markerText] call _updateList
 
 	? btnValue00: btnValue00 = false; closeDialog 0; goto "Quit"
 	? btnValue01: btnValue01 = false; goto "OK"

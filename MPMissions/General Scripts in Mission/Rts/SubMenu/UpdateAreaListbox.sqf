@@ -1,4 +1,4 @@
-// args: [list box idc, marker type, web short, marker count]
+// args: [list box idc, marker type, web short, marker count, marker text]
 
 lbClear (_this select 0);
 private [{_cnt}]; _cnt = _this select 3;
@@ -12,7 +12,7 @@ while {_i < _cnt} do {
 			if (-10 == _pos select 0) then {""} else {
 				format[": %1", _pos call funcCalcMapPos]
 			}
-			, _this select 1
+			, _this select 4
 		]
 	];
 	_i = _i + 1;

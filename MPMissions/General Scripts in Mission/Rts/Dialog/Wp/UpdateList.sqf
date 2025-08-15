@@ -52,7 +52,7 @@ if (not _bUpdated && "WP" == _highlight) then {
 		private [{_enum}];
 		_enum = "Art" call preprocessFile "Rts\Marker\EnumOfType.sqf";
 		_cnt = count (TzkPplRtsAreaInfo select _enum);
-		[_idcDevidedList1, "Art", "Ppl", _cnt] call preprocessFile "Rts\SubMenu\UpdateAreaListbox.sqf";
+		[_idcDevidedList1, "Art", "Ppl", _cnt, "Art"] call preprocessFile "Rts\SubMenu\UpdateAreaListbox.sqf";
 	};
 };
 if (not _bUpdated && "SvrTarget" == _highlight) then {
@@ -63,7 +63,7 @@ if (not _bUpdated && "SvrTarget" == _highlight) then {
 		private [{_enum}];
 		_enum = "Art" call preprocessFile "Rts\Marker\EnumOfType.sqf";
 		_cnt = count (TzkSvrRtsAreaInfo select siPlayer select _enum);
-		[_idcList, "Art", "Svr", _cnt] call preprocessFile "Rts\SubMenu\UpdateAreaListbox.sqf";
+		[_idcList, "Art", "Svr", _cnt, "Art"] call preprocessFile "Rts\SubMenu\UpdateAreaListbox.sqf";
 	};
 };
 // update current selected item index
