@@ -115,6 +115,8 @@ if _bMatch then {
 
 		, "管理队伍显示"
 
+		, "选择玩家队伍单位"
+
 		, "join"
 		, "消除单位"
 		, "切换火炮弹夹"
@@ -411,6 +413,10 @@ if _bMatch then {
 	[
 		  "什么都不做"
 		, "切换火炮弹夹"
+		, "选择 AI 队伍"
+		, "选择工人"
+		, "选择基地守备单位"
+		, "选择玩家队伍单位"
 	] call _f; // 030
 
 	// script count check. Check index with last literal value
