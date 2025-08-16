@@ -2,7 +2,7 @@
 
 @ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
-_dlg = createDialog "TzkRtsArtSubMenu"
+_dlg = createDialog "TzkRtsArtSubMenu2"
 mutexDlg = false
 
 _bSvrRtsOrder = _this select 2
@@ -14,6 +14,11 @@ _enum = _markerType call preprocessFile "Rts\Marker\EnumOfType.sqf"
 ? _enum < 0: showDebug [format ["Invalid %1 marker type.", _markerType], 5000], exit
 _cnt = count (TzkPplRtsAreaInfo select _enum)
 _updateList = preprocessFile "Rts\SubMenu\UpdateAreaListbox.sqf"
+
+_texts = TzkInGameText select 029
+_markerText = _markerType
+? _markerText == "Art": _markerText = _texts select 0
+? _markerText == "Mine": _markerText = _texts select 1
 
 _idcTitle = IDC + 16 * 3 + 0; _idcBtnLabel0 = IDC + 16 * 3 + 5; _idcBtnLabel1 = IDC + 16 * 3 + 6
 ctrlSetText [_idcBtnLabel0, localize {TZK_LANG_TYPE}]
@@ -38,10 +43,10 @@ _idcListLabel0 = IDC + 16 * 3 + 1; _idcListBox0 = IDC + 16 * 3 + 2
 _idcListLabel1 = IDC + 16 * 3 + 3; _idcListBox1 = IDC + 16 * 3 + 4
 ctrlSetText [_idcListLabel0, localize {TZK_LANG_SPEED}]
 ctrlSetText [_idcListLabel1, format ["%1 %2", localize {TZK_LANG_SHORT_ARTILLERY}, localize {TZK_LANG_AREA}]]
-[_idcListBox1, _markerType, _webShort, _cnt] call _updateList
+[_idcListBox1, _markerType, _webShort, _cnt, _markerText] call _updateList
 ? -1 != (call _cachedIdxName): lbSetCurSel [_idcListBox1, (call _cachedIdxName)]
 
-_i = lbAdd [_idcListBox0, format ["%1 %2", localize {TZK_LANG_DO}, localize {TZK_LANG_NOTHING}]]; lbSetValue [_idcListBox0, _i, -1]
+_i = lbAdd [_idcListBox0, TzkInGameText select 030 select 0]; lbSetValue [_idcListBox0, _i, -1]
 _i = lbAdd [_idcListBox0, "80"]; lbSetValue [_idcListBox0, _i, 80]
 _i = lbAdd [_idcListBox0, "120"]; lbSetValue [_idcListBox0, _i, 120]
 _i = lbAdd [_idcListBox0, "180"]; lbSetValue [_idcListBox0, _i, 180]
@@ -54,8 +59,15 @@ lbSetCurSel [_idcListBox0, 0]
 btnValue00 = false; btnValue01 = 0
 btnValue02 = [true,true,true,true,true]; btnValue03 = [false,false,false,false]
 
+; short key
+	_getShortKeyFunc = preprocessFile "UI\ShortKey\proc.sqf"
+	_idcShortKey = IDC + 16 * 1 + 2
+	ctrlSetText [_idcShortKey, TzkInGameText select 014]; ctrlShow [_idcShortKey, UsedVersion >= 2030]
+
+	_shortKeyCdBigAngle = 0
+
 # loop
-	~ 0.2
+	~ 0.02
 	; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 	? call dlgUpdated: goto "Quit"
 	? not alive player: closeDialog 0; goto "Quit"
@@ -64,13 +76,42 @@ btnValue02 = [true,true,true,true,true]; btnValue03 = [false,false,false,false]
 	_text = ctrlText _idcMlrsShootingCnt
 	? sizeofstr _text > 2: ctrlSetText [_idcMlrsShootingCnt, substr [_text, 0, 2]], hint "Don't input too large number."
 
+	_shortKeyFunc = "dlg_art_order_preset" call _getShortKeyFunc
+	? _shortKeyFunc != "": goto "ProcShortKey"
+
 	? btnValue00: btnValue00 = false; closeDialog 0; goto "Quit"
 	? btnValue01 > 0: _btnVal = btnValue01, btnValue01 = 0; goto "Execution"
+	? btnFunction > 0: _btnFnc = btnFunction, btnFunction = 0, goto "FunctionalBtns"
 
 	goto "loop"
 # Quit
 	btnValue02 = 0; btnValue03 = 0
 	exit
+# ProcShortKey
+	? "confirm" == _shortKeyFunc: _btnVal = 1; goto "Execution"
+
+	_btn03 = -1
+	? "big angle 1" == _shortKeyFunc: _btn03 = 1
+	? "big angle 2" == _shortKeyFunc: _btn03 = 2
+	? "big angle 3" == _shortKeyFunc: _btn03 = 3
+	? "big angle 4" == _shortKeyFunc: _btn03 = 4
+	? _time > _shortKeyCdBigAngle && _btn03 != -1: _shortKeyCdBigAngle = _time + 0.16; btnValue03 set [_btn03 - 1, not(btnValue03 select _btn03 - 1)], goto "loop"
+
+	? "item 1" == _shortKeyFunc: lbSetCurSel [_idcListBox1, 1]
+	? "item 2" == _shortKeyFunc: lbSetCurSel [_idcListBox1, 2]
+	? "item 3" == _shortKeyFunc: lbSetCurSel [_idcListBox1, 3]
+	? "item 4" == _shortKeyFunc: lbSetCurSel [_idcListBox1, 4]
+	? "item 5" == _shortKeyFunc: lbSetCurSel [_idcListBox1, 5]
+	? "item 6" == _shortKeyFunc: lbSetCurSel [_idcListBox1, 6]
+	? "item 7" == _shortKeyFunc: lbSetCurSel [_idcListBox1, 7]
+	? "item 8" == _shortKeyFunc: lbSetCurSel [_idcListBox1, 8]
+	? "item 9" == _shortKeyFunc: lbSetCurSel [_idcListBox1, 9]
+	? "item 0" == _shortKeyFunc: lbSetCurSel [_idcListBox1, 0]
+
+	goto "loop"
+# FunctionalBtns
+	? 3 == _btnFnc: ["dlg_art_order_preset", _this, "Rts\SubMenu\AreaArtOrderPreset.sqs"] exec "UI\Shortkey\dlg.sqs"; closeDialog 0; goto "Quit"
+	goto "loop"
 # Execution
 	? -1 == lbCurSel _idcListBox0: hint "No speed selected."; goto "loop"
 	? -1 == lbCurSel _idcListBox1: hint "No art area selected"; goto "loop"

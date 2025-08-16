@@ -2,13 +2,13 @@
 
 disableUserInput true
 
-hint "You are BLOCKED.\nYou are NOT Receiving."
+hint (TzkInGameText select 026 select 8)
 
 [siPlayer, giPlayer, 1] exec (TzkScripts select 178)
 
 # WaitForData
 	groupPlayer setCombatMode "BLUE"
-	~1
+	~ 1
 	? (time > (timeLastPing + blockTime)): goto "WaitForData"
 
 ~ blockTime / 3
@@ -20,11 +20,11 @@ hint "You are BLOCKED.\nYou are NOT Receiving."
 goto "WaitForData"
 
 # UnBlock
-groupPlayer setCombatMode "YELLOW"
+	groupPlayer setCombatMode "YELLOW"
 
-disableUserInput false
-hint "You are UNBLOCKED.\nYou are Receiving."
+	disableUserInput false
+	hint (TzkInGameText select 026 select 9)
 
-[siPlayer, giPlayer, 0] exec (TzkScripts select 178)
+	[siPlayer, giPlayer, 0] exec (TzkScripts select 178)
 
-bBlockedByClient = false
+	bBlockedByClient = false

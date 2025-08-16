@@ -20,6 +20,17 @@ _i = 0; while {_i < _cnt} do {
 	_marker setMarkerType "Warning";
 	_marker setMarkerText format ["%1 %2 Area %3", _webType, _markerType, _i];
 
+	if not (isNull player) then {
+		private [{_webText}, {_markerText}, {_texts}];
+		_webText = _webType; _markerText = _markerType;
+		_texts = TzkInGameText select 029;
+		if (_webText == "Player") then {_webText = _texts select 2};
+		if (_webText == "Server") then {_webText = _texts select 3};
+		if (_markerText == "Art") then {_markerText = _texts select 0};
+		if (_markerText == "Mine") then {_markerText = _texts select 1};
+		_marker setMarkerText format ["%1 %2 %4 %3", _webText, _markerText, _i, _texts select 4];
+	};
+
 	call format ["RtsArea%1%2Idx = -1", _markerType, _webShort];
 
 	_i = _i + 1;

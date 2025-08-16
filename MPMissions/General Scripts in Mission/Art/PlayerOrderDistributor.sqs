@@ -18,9 +18,6 @@ _isServer = false
 _isVehicle = "Howitzer" == _enum || "MLRS" == _enum || "Tank" == _enum
 _isStruct = "Struct" == _enum
 
-_timeStamp = _params select 4
-? not _bAutoDetect: [_idx, _timeStamp, _si, false] call preprocessFile "Art\PreAnalysesArtArea.sqf"
-
 _units = _this select 0; _i = 0; _c = count _units
 ? 0 == _c: exit
 # loop

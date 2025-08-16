@@ -7,13 +7,6 @@ private [{_netIds},{_param},{_scriptName},
 _netIds = _this select 0; _param = _this select 1; _scriptName = _this select 2;
 // todo: ID, time stamp, and necessary design, for player RTS order
 
-// preprocess
-// ASSERT("Order" == (_this select 3));
-
-// if ("hShootArea.sqs" == _scriptName) then {
-	// [_param select 2, _param select 4, _param select 5, true] call preprocessFile "Art\PreAnalysesArtArea.sqf";
-// };
-
 _needDispatch = ["hForceMoveLand","hForceMoveShip","hMove","hStop","hBoard","hOccupy","hReclaim", "hLandHeli","hCrossBridge","hRepair","hRearm"
 	, "hBuyEquip"];
 _scriptPath = format ["%1\%2\%3.sqs", "Rts", "Order", 

@@ -12,7 +12,7 @@ if ("WP" == _highlight && not bool_TZK_Rts_Cmd_Mode) then {
 		private [{_enum}, {_cnt}];
 		_enum = "Art" call preprocessFile "Rts\Marker\EnumOfType.sqf";
 		_cnt = count (TzkPplRtsAreaInfo select _enum);
-		[_idcDevidedList1, "Art", "Ppl", _cnt] call preprocessFile "Rts\SubMenu\UpdateAreaListbox.sqf";
+		[_idcDevidedList1, "Art", "Ppl", _cnt, "Art"] call preprocessFile "Rts\SubMenu\UpdateAreaListbox.sqf";
 		_lastArtIdx = -1;
 	};
 

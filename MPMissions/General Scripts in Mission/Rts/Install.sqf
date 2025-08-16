@@ -23,6 +23,3 @@ if (not isNull player) then {
 // These rts markers is defined BEFORE "DynamicInitializationMarker.sqs" is executed
 // they can thus be displayed BELOW other markers defined later
 call preprocessFile "Rts\Marker\Init.sqf";
-
-// Define Art Area pre-analysis results AFTER rts area info/markers defined
-call preprocessFile "Art\InitAreaAnalysis.sqf"

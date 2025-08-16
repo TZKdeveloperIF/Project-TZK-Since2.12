@@ -49,8 +49,8 @@ _idcSliderAzimut = 0; _idcValueAzimut = 0; _AzimutCache = 0
 true call preprocessFile "Rts\Dialog\InitSilider.sqf"
 TzkMapRtsFlashingDisabled = true
 
-btnValue05 = -1;
-(IDC + 16 * 19) call preprocessFile "Rts\Dialog\InitSelClassificationBtns.sqf"
+btnValue05 = -1; _validBtn05 = []
+[IDC + 16 * 19, _validBtn05] call preprocessFile "Rts\Dialog\InitSelClassificationBtns.sqf"
 
 ; enable dynamic marker if any of player units and rts selected units is driver/gunner of artillery vehicle/structure
 0 exec "Rts\DynamicMarker\ArtRange.sqs"
@@ -67,10 +67,11 @@ btnValue05 = -1;
 	? not alive player: closeDialog 0; goto "Quit"
 	; update TzkMapAreaLastUsedTime
 	TzkMapAreaLastUsedTime = time
-	call preprocessFile (TzkScripts select 369)
 
 	_shortKeyFunc = (if (_time > _keyCheckPoint) then {"dlg_area" call _getShortKeyFunc} else {""})
 	? _shortKeyFunc != "": goto "ProcShortKey"
+
+	call preprocessFile (TzkScripts select 369)
 
 	? btnValue00 >= 0: _val0 = btnValue00; btnValue00 = -1; goto "LeftBtn"
 	? btnValue01 > 0: _btnVal = btnValue01; btnValue01 = 0; goto "DownBtn"
@@ -138,6 +139,7 @@ btnValue05 = -1;
 	goto "Update"
 # SwitchClassification
 	? _btnVal == TzkRtsSelectEnum: hint (TzkInGameText select 020 select 15); goto "Update"
+	? _validBtn05 find _btnVal == -1: goto "Update"
 
 	TzkRtsSelectEnum = _btnVal
 	_this exec "Rts\Dialog\RtsMap.sqs"; closeDialog 0; goto "Quit"

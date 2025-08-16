@@ -1,10 +1,11 @@
-// args: target object (the actual target object in auto-detect art mode)
+// args: [target object (the actual target object in auto-detect art mode), _avoidBaseDist, _si]
 // this is a process but not a function. script read/write local variables directly
 _ret = true;
 
-private [{_i}, {_period}, {_dest}, {_cache}, {_velocity}];
-_velocity = velocity _this; _dest = _posT; _cache = [0,0,0];
+private [{_i}, {_period}, {_dest}, {_cache}, {_velocity}, {_avoidBaseDist}, {_si}];
+_velocity = velocity (_this select 0); _dest = _posT; _cache = [0,0,0];
 _velocity set [2, 0];
+_avoidBaseDist = _this select 1; _si = _this select 2;
 _i = 0; _period = 0; while {_i < 10 && _ret} do {
 	_dest = [_posT, [_velocity, _period] call funcVectorScale] call funcVectorAdd;
 	_dest set [2, _dest call funcHASL];
@@ -49,9 +50,13 @@ if _ret then {
 };
 
 if (_ret && _needAvoidStruct) then {
-	if (([_dest, _si] call loadFile "Common\SQF\ClosestEnemyCritcalStruct.sqf") select 1 < 50) then {
+	private [{_enemyStructInfo}, {_nearestInfo}];
+	_enemyStructInfo = _si call preprocessFile "Art\getEnemyStructInfo.sqf";
+	_nearestInfo = [_dest, _enemyStructInfo] call preprocessFile "Art\nearestEnemyStructPos.sqf";
+
+	if (_nearestInfo select 0 < _avoidBaseDist) then {
 		_ret = false;
-		_msg = "Not allow shooting at position that near enemy base.";
+		_msg = TzkInGameText select 000 select 2;
 	};
 };
 
