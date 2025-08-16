@@ -49,8 +49,8 @@ _idcSliderAzimut = 0; _idcValueAzimut = 0; _AzimutCache = 0
 true call preprocessFile "Rts\Dialog\InitSilider.sqf"
 TzkMapRtsFlashingDisabled = true
 
-btnValue05 = -1;
-(IDC + 16 * 19) call preprocessFile "Rts\Dialog\InitSelClassificationBtns.sqf"
+btnValue05 = -1; _validBtn05 = []
+[IDC + 16 * 19, _validBtn05] call preprocessFile "Rts\Dialog\InitSelClassificationBtns.sqf"
 
 ; enable dynamic marker if any of player units and rts selected units is driver/gunner of artillery vehicle/structure
 0 exec "Rts\DynamicMarker\ArtRange.sqs"
@@ -139,6 +139,7 @@ btnValue05 = -1;
 	goto "Update"
 # SwitchClassification
 	? _btnVal == TzkRtsSelectEnum: hint (TzkInGameText select 020 select 15); goto "Update"
+	? _validBtn05 find _btnVal == -1: goto "Update"
 
 	TzkRtsSelectEnum = _btnVal
 	_this exec "Rts\Dialog\RtsMap.sqs"; closeDialog 0; goto "Quit"

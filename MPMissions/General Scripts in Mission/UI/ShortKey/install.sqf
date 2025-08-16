@@ -79,6 +79,8 @@ TzkShortkeyDesignArray = []; TzkShortkeyNameArray = []; _planIdx = -1;
 
 	[_design, "G", "group display", _i] call _initItem; _i = _i + 1;
 
+	[_design, "P", "select player units", _i] call _initItem; _i = _i + 1;
+
 	[_design, "J", "join", _i] call _initItem; _i = _i + 1;
 	[_design, "D", "disband", _i] call _initItem; _i = _i + 1;
 	[_design, "A", "art mag", _i] call _initItem; _i = _i + 1;

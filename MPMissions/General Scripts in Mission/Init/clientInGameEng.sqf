@@ -108,6 +108,8 @@
 
 		, "group display"
 
+		, "select player units"
+
 		, "join"
 		, "disband"
 		, "art mag"
@@ -398,6 +400,10 @@
 	[
 		  "Do nothing"
 		, "Switch Art Mags"
+		, "Select AI groups"
+		, "Select workers"
+		, "Select base units"
+		, "Select player units"
 	] call _f; // 030
 
 	// script count check. Check index with last literal value
