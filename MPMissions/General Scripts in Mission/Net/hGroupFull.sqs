@@ -14,8 +14,6 @@ _value = (_value - _giJoin)/GroupsNum
 
 _si = _value
 
-;player globalchat format["\TZK_Scripts_4_0_4\Player\Info\GroupFull.sqs: _type=%1, _si=%2, _giBuyer=%3", _type, _si, _giBuyer]
-
 ? _si != siPlayer : exit
 ? _giBuyer != giPlayer && _giJoin != giPlayer : exit
 
@@ -23,4 +21,4 @@ _si = _value
 ? _type < maxUnitTypes : _unitName = (unitDefs select _type) select udName
 
 _nameGroup = (groupNameMatrix select _si) select _giJoin
-player groupchat format ["Group %1 Full (including units building/queued), Aborting build of %2", _nameGroup, _unitName ]
+player groupchat format [TzkInGameText select 026 select 5, _nameGroup, _unitName ]

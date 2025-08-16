@@ -7,8 +7,8 @@ _minutes = _value/60
 ? IncomeGrow_TZK && (60*_minutes == timeLimit-60*90): {90 minutes passed. Income rate raised to 120%.} call funcSideMsg, exit
 ? IncomeGrow_TZK && (60*_minutes == timeLimit-60*150): {150 minutes passed. Income rate raised to 150%.} call funcSideMsg, exit
 
-_textHint = format["Time limit reached in\n%1 %2.", _minutes, ["minutes", "minute"] select (_minutes == 1)]
-_text = format["Time limit reached in %1 %2.", _minutes, ["minutes", "minute"] select (_minutes == 1)]
+_textHint = format [TzkInGameText select 026 select 0, _minutes]
+_text = format [TzkInGameText select 026 select 0, _minutes]
 
 hint _textHint
 player groupchat _text

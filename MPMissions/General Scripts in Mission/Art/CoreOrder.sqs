@@ -51,11 +51,11 @@ _params = 0, _this = 0
 ; Switch magazine
 	? _suggestedSpeed > 0: [vehicle _unit, _suggestedSpeed, _enum] exec "Art\SwitchSuggestedSpeed.sqs"
 	; ? -2 == _suggestedSpeed: [vehicle _unit, _enum, _idx, _si] exec "Server\Art\SwitchAuto.sqs"
-; Shoot Area infomation
-	? _bAutoDetect: _markerInfo = [-10, -10, 0, 0, 0], _result = [0, [true]], goto "SkipAreaInfo"
-		_markerInfo = [_idx, _si, _isServer] call preprocessFile "Art\GetMarkerInfo.sqf";
-		_result = [_idx, _si, _isServer] call preprocessFile "Art\GetPreAnalRes.sqf";
-	# SkipAreaInfo
+; Get marker info
+	_markerInfo = [-10, -10, 0, 0, 0]
+	? not _bAutoDetect: _markerInfo = [_idx, _si, _isServer] call preprocessFile "Art\GetMarkerInfo.sqf"
+	_markerCache = + _markerInfo
+	_arrayEq = preprocessFile "Algo\arrayEqual.sqf"
 ; Rts infomation
 	; _abort = {[[_unit], [_si, false]] exec "Rts\Framework\OrderDtor.sqs"}; _bClearRts = false
 ; Create local target object
@@ -84,6 +84,7 @@ _params = 0, _this = 0
 
 	_bShrapnel = false
 	_needAvoidStruct = call preprocessFile "Art\NeedAvoidStruct.sqf"
+	_avoidBaseDist = 50; if (not _isStruct && _type in typesHeavyHowitzer) then {_avoidBaseDist = 120}
 	_posT = [-1, -1]; _defenceObject = objNull
 	_tuggedCheckCnt = 0
 	_firedCnt = 0
@@ -108,7 +109,7 @@ _distributionRadius = (if _isInfantry then {20} else {50})
 	? _dist < _distributionRadius: goto "CheckDistance"
 
 	? _isVehicle: if ([_vehicle, "driver"] call preprocessFile "Util\HasEmptySeat.sqf") then {_msg = format ["%1 %2 %3 %4 %5 %6. %7", localize {TZK_LANG_NEED_MOVE_TO}, localize {TZK_LANG_PREDEFINED}, localize {TZK_LANG_POSITION}, localize {TZK_LANG_BUT}, localize {TZK_LANG_HASNT}, localize {TZK_LANG_DRIVER}, localize {TZK_LANG_ORDER_ABORTED}], goto "EOF"}
-	_unit groupChat format ["Moving to ordered position, distance %1m.", _dist]
+	_unit groupChat format [(TzkInGameText select 000 select 5), _dist]
 	# LoopPreMove
 		_unit doMove _startPos
 		~ 5
@@ -170,7 +171,29 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	_delay = 0
 	_ret = call preprocessFile "Art\AimAndCalcDelay.sqf"
 	? not _ret: goto "EOF"
-	~ _delay
+	
+	; 等待期间，进行异步计算。获取“规避建筑的可用炮击坐标”可能很花时间，用SQS进行计算
+	_timeLimit = _time + _delay
+
+	; format of _absLegalTargetPos: [0-valid, 1-position]
+	_absLegalTargetPos = [true]
+	? _bAutoDetect: goto "PrepareLegalPosDone"
+
+	; _state: [finished, succeeded]
+	_state = [false, false]
+	[[_idx, _avoidBaseDist, _si, _markerInfo, _unit], _state, _absLegalTargetPos] exec "Art\prepareAbsLegalPos.sqs"
+	_delay = 0.1
+	# WaitLegalPosPrepared
+		~ _delay
+		_delay = _delay + 0.5
+
+		; finished check
+		? not (_state select 0): goto "WaitLegalPosPrepared"
+	; failed check
+	? not (_state select 1): _msg = TzkInGameText select 000 select 3; goto "EOF"
+
+	# PrepareLegalPosDone
+	~ (_timeLimit - _time)
 
 	? _isInfantry: goto "PreCalculate"
 	; analysis weapon for vehicle/structure
@@ -181,12 +204,14 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 # PreCalculate
 	_dist = [_unit, _target] call funcDistH
 	? _dist > (if _isInfantry then {_range} else {_distLimit}): goto "CheckDistance"
-	? _dist < _distLimit && _dist > viewDistance: _unit groupChat "Target is far. Probably missing."
+	? _dist < _distLimit && _dist > viewDistance: _unit groupChat (TzkInGameText select 000 select 6)
 
 	_ammoArray = _vehicle ammoArray _weapon; _equippedMag = ""; _ammoOld = 0;
-	_ret = call preprocessFile "Art\AreaPreAnalysis.sqf"
+	_ret = call preprocessFile "Art\checkAmmoMag.sqf"
 	? not _ret && count _ammoArray == 0: _magazines = _vehicle call funcGetNotEmptyMags; goto "RearmAnalysis"
 	? not _ret: goto "EOF"
+
+	? _needAvoidStruct && not (_absLegalTargetPos select 0): _msg = localize {TZK_LANG_AREA_FILLED_ENEMY_STRUCT}; goto "EOF"
 	? not _isInfantry: _speed = call preprocessFile "Art\GetInitSpeed.sqf"
 
 	; calculate turning turret delay. However in original OFP no script command can return turret's direction
@@ -203,7 +228,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	? _tuggedCheckCnt <= 0: _tuggedCheckCnt = 5; if (call preprocessFile "Art\CheckTugged.sqf") then {goto "EOF"}
 
 	; Generate target pos
-	_ret = call preprocessFile "Art\GenerateTargetPos.sqf"
+	_ret = [_avoidBaseDist, _absLegalTargetPos, _si] call preprocessFile "Art\GenerateTargetPos.sqf"
 	? not _ret: goto "EOF"
 	; assign target object to position
 	_posT set [2, _posT call funcHASL]; _target setPosASL _posT
@@ -215,7 +240,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 
 	? _bAutoDetect: if (not alive _adObj) then {goto "PreMove"}
 	? _bAutoDetect: if not (_adObj call preprocessFile "SpotEnemy\LegalPplTarget.sqf") then {goto "PreMove"}
-	? _bAutoDetect: _ret = _adObj call preprocessFile "Art\Predicate.sqf"
+	? _bAutoDetect: _ret = [_adObj, _avoidBaseDist, _si] call preprocessFile "Art\Predicate.sqf"
 	? _bAutoDetect && not _ret: _adSleepMod = 2; goto "AutoDetectSleep"
 
 	? not _bAutoDetect: _ret = call preprocessFile "Art\AreaCalculate.sqf"
@@ -285,7 +310,9 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	; pre-process on fire
 	? "Destroy Obstruction" == _orderType: if (not alive _defenceObject) then {goto "AttackDone"}
 	; shoot pos check
-	? not (call preprocessFile "Art\CheckShootPos.sqf"): _msg = "Not allow shooting art near base within 50 meters.", goto "EOF"
+	? not (_avoidBaseDist call preprocessFile "Art\CheckShootPos.sqf"): goto "EOF"
+	; marker check
+	? not ([_markerCache, _markerInfo] call _arrayEq): _markerCache = + _markerInfo; goto "PreMove"
 
 	_ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev]
 	_vehicle addEventHandler ["Fired", format [{[_this, %1, %2, %3, %4, %6] exec "%5"}, _speed, _angle, _elev, _ehRev, _script, [_si, _bShrapnel]] ]
@@ -342,7 +369,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 		goto "SupportFound"
 
 	# SupportFound
-		? not _isServer: _unit groupChat "Moving to support vehicle for more magazines."
+		? not _isServer: _unit groupChat (TzkInGameText select 000 select 7)
 		? _isServer: [_unit, _sup] exec "Net\sMovingToSupport.sqs"
 		_timeAbort = time + 60 * (if _isInfantry then {15} else {5})
 		? _isStruct: goto "SupportReached"
@@ -379,7 +406,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 
 		? _isServer: _rearmParam = [[_unit, _si, _gi, _vehicle, _type, _sup, _nonAIgroup], false, false], _rearmParam exec "Server\AI_Rearm.sqs"
 		? not _isServer: _rearmParam = [[_unit, _sup], false, false]; _rearmParam exec "Player\Rearm.sqs"
-		? not _isServer && not _isInfantry && not local _vehicle: _unit groupChat "Rearming at remote object. If I'm far away from you, probably I can't receive supplemented magazines. In this case, please use Unit Camera and look at me."
+		? not _isServer && not _isInfantry && not local _vehicle: _unit groupChat (TzkInGameText select 000 select 8)
 
 	; _try = 0
 	# WaitRearmComplete
@@ -396,7 +423,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	~ _delay + 1
 	? _speed <= 0: goto "PreMove"
 	_delay = 1; [_vehicle, _speed] exec (TzkScripts select 132)
-	? not _isServer && not _isInfantry && not local _vehicle: _unit groupChat "Switching magazine at remote object. Again, if I'm far away, use Unit Camera and look at me."
+	? not _isServer && not _isInfantry && not local _vehicle: _unit groupChat (TzkInGameText select 000 select 9)
 
 	# WaitSwitchComplete
 		~ _delay
@@ -408,7 +435,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 ; For auto detect mode
 # AutoDetectWaitRearm
 	; todo: prepare hint message if support server ai units using auto detect 
-	_unit groupChat "Auto detect pause. Wait until get rearmed."
+	_unit groupChat (TzkInGameText select 000 select 10)
 	~ 30
 	? call _quitCond: _msg = ""; goto "EOF"
 	; return to script beginning
@@ -421,7 +448,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	
 	? _bDisplay && _msg != "" && _isServer: _msg = format ["[%1] ", _unit] + _msg, [_si, _msg] exec "Server\Msg\sSvrMsg2Cmd.sqs"
 	? _bDisplay && _msg != "" && not _isServer: _unit groupChat _msg
-	? _bDisplay && _msg != "" && not _isServer: TitleText [format ["%1: %2", _unit, _msg], "Plain", 0.25]; 
+	? _bDisplay && _msg != "" && not _isServer: TitleText [format ["%1: %2", _unit, _msg], "PLAIN DOWN", 0.25]; 
 	~ 5
 	? call _quitCond: _msg = ""; goto "EOF"
 	; return to script beginning
@@ -436,6 +463,6 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 
 	? _msg != "" && _isServer: _msg = format ["[%1] ", _unit] + _msg, [_si, _msg] exec "Server\Msg\sSvrMsg2Cmd.sqs"
 	? _msg != "" && not _isServer: _unit groupChat _msg
-	? _msg != "" && not _isServer: TitleText [format ["%1: %2", _unit, _msg], "Plain", 0.25]; 
+	? _msg != "" && not _isServer: TitleText [format ["%1: %2", _unit, _msg], "PLAIN DOWN", 0.25]; 
 	; ? _bClearRts: call _abort
 	exit

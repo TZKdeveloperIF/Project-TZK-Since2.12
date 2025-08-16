@@ -44,6 +44,7 @@ _area = [_pos select 0, _pos select 1, _size select 0, _size select 1, _dir];
 
 private [{_message}]; _message = "";
 private [{_fmtArr}]; _fmtArr = {if (count _this == 1) then {_this select 0} else {_this}};
+private [{_texts}]; _texts = TzkInGameText select 029;
 
 private [{_i}];
 
@@ -116,7 +117,7 @@ if (_svrArt && isCommander) then {
 			] call preprocessFile "Rts\Marker\GenArea.sqf"
 		} forEach _svrArtIdx;
 		// message
-		_message = _message + format ["Server Art Area: %1  ", _svrArtIdx call _fmtArr];
+		_message = _message + format ["%2 %3 %4: %1  ", _svrArtIdx call _fmtArr, _texts select 3, _texts select 0, _texts select 4];
 	};
 };
 
@@ -150,7 +151,7 @@ if _pplArt then {
 			] call preprocessFile "Rts\Marker\GenArea.sqf"
 		} forEach _pplArtIdx;
 		// message
-		_message = _message + format ["Player Art Area: %1  ", _pplArtIdx call _fmtArr];
+		_message = _message + format ["%2 %3 %4: %1  ", _pplArtIdx call _fmtArr, _texts select 2, _texts select 0, _texts select 4];
 	};
 };
 
@@ -184,7 +185,7 @@ if (_svrMine && isCommander) then {
 			] call preprocessFile "Rts\Marker\GenArea.sqf"
 		} forEach _svrArtIdx;
 		// message
-		_message = _message + format ["Server Mine Area: %1  ", _svrArtIdx call _fmtArr];
+		_message = _message + format ["%2 %3 %4: %1  ", _svrArtIdx call _fmtArr, _texts select 3, _texts select 1, _texts select 4];
 	};
 };
 
@@ -218,7 +219,7 @@ if _pplMine then {
 			] call preprocessFile "Rts\Marker\GenArea.sqf"
 		} forEach _pplArtIdx;
 		// message
-		_message = _message + format ["Player Mine Area: %1  ", _pplArtIdx call _fmtArr];
+		_message = _message + format ["%2 %3 %4: %1  ", _pplArtIdx call _fmtArr, _texts select 2, _texts select 1, _texts select 4];
 	};
 };
 

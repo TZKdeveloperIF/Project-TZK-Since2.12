@@ -65,8 +65,8 @@ ctrlSetText [_idcLeftBtn0 + 16, format ["%1 %2", localize {TZK_LANG_BUY}, locali
 
 ; false call preprocessFile "Rts\Dialog\InitSilider.sqf"
 
-btnValue05 = -1;
-(IDC + 16 * 19) call preprocessFile "Rts\Dialog\InitSelClassificationBtns.sqf"
+btnValue05 = -1; _validBtn05 = []
+[IDC + 16 * 19, _validBtn05] call preprocessFile "Rts\Dialog\InitSelClassificationBtns.sqf"
 
 ; short key
 	_getShortKeyFunc = preprocessFile "UI\ShortKey\proc.sqf"
@@ -104,6 +104,8 @@ btnValue05 = -1;
 	? "equip soldiers" == _shortKeyFunc: _btnVal = 16, goto "LeftBtn"
 
 	? "group display" == _shortKeyFunc: _btnFnc = 1, goto "FunctionalBtns"
+	
+	? "select player units" == _shortKeyFunc: _btnVal = 3, goto "SwitchClassification"
 
 	? "Area" == _shortKeyFunc: _btnVal = 2^1, goto "RightDownBtn"
 	? "WP/CO" == _shortKeyFunc: _btnVal = 2^2, goto "RightDownBtn"
@@ -241,6 +243,7 @@ btnValue05 = -1;
 	goto "Update"
 # SwitchClassification
 	? _btnVal == TzkRtsSelectEnum: hint (TzkInGameText select 020 select 15); goto "Update"
+	? _validBtn05 find _btnVal == -1: goto "Update"
 
 	TzkRtsSelectEnum = _btnVal
 	_this exec "Rts\Dialog\RtsMap.sqs"; closeDialog 0; goto "Quit"

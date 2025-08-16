@@ -128,3 +128,12 @@ Basing on motion equation of "shotShell"-simulation CfgAmmo class member, artill
 	+ Ask script seek for another target position if target is close to enemy structure (40 meters).
 + Allow mortar/howitzer structure able to be attach.
 
+# 规避建筑
+最开始使用50米阈值作为规避建筑的范围。这个数值也应当变量化，不要使用魔数。重榴弹炮调整为120
+## 建筑检测方案
++ 此前使用过预处理的方式。但不同的单位有不同的预处理要求（譬如重榴弹炮可能需要更大的半径以避免攻击到建筑），而且这样写代码可读性不算高
++ 然而实时读取的带宽开销又太大了。以前对子弹增加视觉效果时所使用的实现方案会造成无法解决的网络传输负担
++ 因此最终决定采用**定期检测**的方案，并进行接口封装
+	+ 客户端对敌军全部建筑有检测频率的限制，初步决定使用10秒1次
+	+ 封装好脚本，在火炮逻辑脚本里，对敌方建筑的获取，看起来应当只是一次*普通的查询*
+	+ sqs脚本的并发粒度应当是语句级，不会一个语句执行到一半被切换上下文。sqf则是阻塞式的。颗粒度不需要非常细

@@ -1,13 +1,16 @@
-// args: button basic IDC
+// args: [button basic IDC, valid button value: array_ref]
 
-ctrlSetText [_this + 0, "Select AI groups"];
-ctrlShow [_this + 0, TzkRtsSelectEnum != 0 && count (TzkSelUnitsCube select 0 select 0) > 0];
+private [{_idc}, {_validBtn}
+	, {_texts}, {_textBias}
+	, {_valid}
+];
+_idc = _this select 0, _validBtn = _this select 1;
 
-ctrlSetText [_this + 1, "Select workers"];
-ctrlShow [_this + 1, TzkRtsSelectEnum != 1 && count (TzkSelUnitsCube select 1 select 0) > 0];
+_texts = TzkInGameText select 030; _textBias = 2;
 
-ctrlSetText [_this + 2, "Select base units"];
-ctrlShow [_this + 2, TzkRtsSelectEnum != 2 && count (TzkSelUnitsCube select 2 select 0) > 0];
-
-ctrlSetText [_this + 3, "Select player units"];
-ctrlShow [_this + 3, TzkRtsSelectEnum != 3 && count (TzkSelUnitsCube select 3 select 0) > 0];
+{
+	_valid = count (TzkSelUnitsCube select _x select 0) > 0;
+	ctrlSetText [_idc + _x, _texts select _x + _textBias];
+	ctrlShow [_idc + _x, TzkRtsSelectEnum != _x && _valid];
+	if _valid then {_validBtn set [count _validBtn, _x]};
+} forEach [0, 1, 2, 3];
