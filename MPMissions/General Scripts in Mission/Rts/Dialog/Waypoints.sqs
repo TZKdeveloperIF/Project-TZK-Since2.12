@@ -51,7 +51,7 @@ ctrlSetText [_idcBigLeftBtn + 4, format ["%1 %2 %3", localize {TZK_LANG_ORDER}, 
 
 _refreshList = preprocessFile "Rts\Dialog\Wp\UpdateList.sqf"
 
-bNewCoSet = false; call _refreshList
+bNewCoSet = false
 
 btnBigLeft = -1
 btnFirstCtrl = false
@@ -66,6 +66,9 @@ _invalidMode = {(not _co && not _Superior && (0 == _mode || 3 == _mode)) || (_mo
 btnValue01 = 2 ^ _mode
 _highlight = "CO"; if (1 == _mode) then {_highlight = "WP"}
 btnValue03 = 0
+
+; initial list after all variables are defined
+call _refreshList
 
 ; special logic for traditional mode: wp/target
 _lastWpIdx = -1; _lastArtIdx = -1
