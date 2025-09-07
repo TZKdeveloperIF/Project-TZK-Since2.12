@@ -113,6 +113,8 @@ TzkShortkeyDesignArray = []; TzkShortkeyNameArray = []; _planIdx = -1;
 
 	[_design, "G", "group display", _i] call _initItem; _i = _i + 1;
 
+	[_design, "P", "select player units", _i] call _initItem; _i = _i + 1;
+
 	[_design, "1", "AI art area", _i] call _initItem; _i = _i + 1;
 	[_design, "2", "player art", _i] call _initItem; _i = _i + 1;
 	[_design, "Q", "AI mine area", _i] call _initItem; _i = _i + 1;
