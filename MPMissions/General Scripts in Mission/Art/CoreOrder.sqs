@@ -315,7 +315,7 @@ _unit doMove _destPos; _unit setUnitPos "UP"
 	? not ([_markerCache, _markerInfo] call _arrayEq): _markerCache = + _markerInfo; goto "PreMove"
 
 	_ehRev = _vehicle addEventHandler ["Fired",""], _vehicle removeEventHandler ["Fired", _ehRev]
-	_vehicle addEventHandler ["Fired", format [{[_this, %1, %2, %3, %4, %6] exec "%5"}, _speed, _angle, _elev, _ehRev, _script, [_si, _bShrapnel]] ]
+	_vehicle addEventHandler ["Fired", format [{[_this, %1, %2, %3, %4, %6] exec "%5"}, _speed, _angle, _elev, _ehRev, _script, [_si, _bShrapnel, _posT, _needAvoidStruct]] ]
 	_vehicle fire _weapon
 	_firedCnt = _firedCnt + 1
 	? "MLRS" == _enum && _mlrsCnt > 0 && _mlrsCnt <= _firedCnt: _msg = format ["%1 %2", _firedCnt, localize {TZK_LANG_ROCKETS_SHOT}], goto "EOF"

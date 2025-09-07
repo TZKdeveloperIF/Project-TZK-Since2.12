@@ -1,0 +1,46 @@
+; args: [shell, shell init pos, target pos, need avoid struct]
+_needAvoidStruct = _this select 3
+; 只对【禁止打基地】有效。启动防擦弹检测，避免它们擦弹误伤建筑
+? not _needAvoidStruct: exit
+
+_shell = _this select 0
+; 对坐标深拷贝
+_initPos = + (_this select 1)
+_targetPos3D = + (_this select 2)
+; 忽略高度
+_initPos resize 2; _targetPosH = + _targetPos3D; _targetPosH resize 2
+_shooter2TargetH = [_targetPosH, _initPos] call funcVectorSub
+_shooter2TargetH = [_shooter2TargetH, 1 / (_shooter2TargetH call funcVectorLength)] call funcVectorScale
+
+~ 3
+
+; 如果炮弹距离目标还比较远，则不必高频检测
+# FarCheck
+	_posShell = getPosASL _shell
+	_shell2Target3D = [_targetPos3D, _posShell] call funcVectorSub
+	_dist = _shell2Target3D call funcVectorLength
+	_velShell = velocity _shell
+	? isNull _shell: exit
+	? _dist <= (_velShell call funcVectorLength): goto "loop"
+
+	~ 1
+	goto "FarCheck"
+
+# loop
+	_posShell = getPosASL _shell; _posShellH = + _posShell; _posShellH resize 2
+	? isNull _shell: exit
+	_shell2TargetH = [_targetPosH, _posShellH] call funcVectorSub
+	; 同向时必定是锐角。用内积判定
+	_dot = [_shooter2TargetH, _shell2TargetH] call funcVectorDot
+	? _dot <= 0: goto "NearMiss"
+
+	~ 0.1
+	goto "loop"
+
+# NearMiss
+	; 重置炮弹的速度矢量，令它朝向目标
+	_velShell = velocity _shell
+	? isNull _shell: exit
+	_shell2Target3D = [_targetPos3D, _posShell] call funcVectorSub
+	_newVelocity = [_shell2Target3D, (_velShell call funcVectorLength) / (_shell2Target3D call funcVectorLength)] call funcVectorScale
+	_shell setVelocity _newVelocity
