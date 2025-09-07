@@ -25,6 +25,8 @@ if (not isNull _shell) then {
 
 		[_vehicle, _subShell] exec (TzkScripts select 031);
 
+		[_subShell, _posShell, _posTarget, _needAvoidStruct] exec "Art\ForceNoNearMiss.sqs";
+
 		_i = _i + 1;
 	};
 };

@@ -12,11 +12,14 @@ _shell = nearestObject [_vehicle, _ammo]
 
 _posShell = getPosASL _shell
 _velShell = [_speed * cos(_elev) * cos(_angle), _speed * cos(_elev) * sin(_angle), _speed * sin(_elev)]
+_posTarget = _extraInfo select 2, _needAvoidStruct = _extraInfo select 3
 
 ? (_extraInfo select 1): goto "Shrapnel"
 ; General shell
 	_shell setVectorDir _velShell
 	_shell setVelocity _velShell; _shell setPosASL _posShell
+
+	[_shell, _posShell, _posTarget, _needAvoidStruct] exec "Art\ForceNoNearMiss.sqs"
 
 	? isNull player: exit
 	~ 0.1
@@ -32,6 +35,8 @@ _velShell = [_speed * cos(_elev) * cos(_angle), _speed * cos(_elev) * sin(_angle
 	_shell = createShell [_shellType, _posShell, _velShell, _vehicle, objNull]
 	_shell setVectorDir _velShell
 	_shell setVelocity _velShell; _shell setPosASL _posShell
+
+	[_shell, _posShell, _posTarget, _needAvoidStruct] exec "Art\ForceNoNearMiss.sqs"
 
 	~ 1
 	call preprocessFile "Art\GenerateShrapnelShells.sqf"
