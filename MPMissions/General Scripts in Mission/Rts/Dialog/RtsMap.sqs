@@ -242,7 +242,7 @@ btnValue05 = -1; _validBtn05 = []
 	? _btnVal > 0: if ([_btnVal, _this, _accept] call preprocessFile "Rts\Dialog\SwitchDialogBehavior.sqf") then {goto "Quit"}
 	goto "Update"
 # SwitchClassification
-	? _btnVal == TzkRtsSelectEnum: hint (TzkInGameText select 020 select 15); goto "Update"
+	? _btnVal == TzkRtsSelectEnum: goto "Update"
 	? _validBtn05 find _btnVal == -1: goto "Update"
 
 	TzkRtsSelectEnum = _btnVal
