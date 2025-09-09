@@ -22,7 +22,7 @@ TzkSelUnitsCube = [
 ,	[[], [], []]	// stack for selected base group units
 ,	[[], [], []]	// stack for selected player group units
 ];
-// selected units enum. 0: AI group units, 1: worker group units, 2: base group units
+// selected units enum. 0: AI group units, 1: worker group units, 2: base group units, 3: other player group units
 TzkRtsSelectEnum = 0;
 // By now unnecessary to define different index for each stack
 TzkSelStackIdx = 0;

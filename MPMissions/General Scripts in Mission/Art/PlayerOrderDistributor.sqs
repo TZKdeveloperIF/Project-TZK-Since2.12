@@ -4,16 +4,17 @@
 
 ? localize {TZK_ART_406} != "true": hint "TZK_Art_4_0_6.pbo isn't detected. Art module inactivated.", exit
 
-_si = siPlayer
 _params = _this select 1
-_idx = _params select 2, _biggerAngle = _params select 0, _enum = _params select 3
-_preMoveInfo = _params select 6, _suggestedSpeed = _params select 1
+_biggerAngle = _params select 0, _suggestedSpeed = _params select 1, _idx = _params select 2, _enum = _params select 3
+_si = siPlayer
+_posParam = _params select 6
 _orderType = _params select 7
+_mlrsCnt = _params select 8
+_useSideMarker = _params select 9
 
 _bAutoDetect = _orderType == "Auto Detect"
 ? _bAutoDetect && localize {TZK_ART_TIME_406} != "true": hint "TZK_Art_Time_4_0_6.pbo isn't detected. Auto detect inactivated.", exit
 
-_mlrsCnt = (if (count _params > 8) then {_params select 8} else {0})
 _isServer = false
 _isVehicle = "Howitzer" == _enum || "MLRS" == _enum || "Tank" == _enum
 _isStruct = "Struct" == _enum
@@ -23,7 +24,7 @@ _units = _this select 0; _i = 0; _c = count _units
 # loop
 	_unit = _units select _i
 	? _unit != gunner vehicle _unit: goto "continue"
-	[[_unit, _si, _idx, _biggerAngle, _enum, _orderType, _mlrsCnt], [_preMoveInfo, _suggestedSpeed], [_isServer, _isVehicle, _isStruct], []] exec "Art\CoreOrder.sqs"
+	[[_unit, _si, _idx, _biggerAngle, _enum, _orderType, _mlrsCnt], [_posParam, _suggestedSpeed], [_isServer, _isVehicle, _isStruct, _useSideMarker], []] exec "Art\CoreOrder.sqs"
 	# continue
 	_i = _i + 1
 	? _i < _c: goto "loop"

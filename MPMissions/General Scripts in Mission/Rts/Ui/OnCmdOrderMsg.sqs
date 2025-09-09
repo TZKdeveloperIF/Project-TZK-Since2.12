@@ -17,6 +17,7 @@ _msg = ""
 ? "hRepair" == _scriptName: goto "OrderHealRepair"
 ? "hRearm" == _scriptName: goto "OrderRearm"
 ? "hBuyEquip" == _scriptName: goto "OrderBuyEquip"
+? "hShootArea" == _scriptName: goto "OrderShoot"
 exit
 
 # OrderMove
@@ -81,6 +82,10 @@ exit
 # OrderBuyEquip
 	_dest = _param select 0
 	_msg = format [{%1 %2: at %3}, localize {TZK_LANG_BUY}, localize {TZK_LANG_EQUIPMENT}, _dest call funcCalcMapPos]
+	goto "display"
+# OrderShoot
+	_idx = _param select 2
+	_msg = format [TzkInGameText select 031 select 0, _idx]
 	goto "display"
 
 exit

@@ -405,9 +405,13 @@
 		, "Select base units"
 		, "Select player units"
 	] call _f; // 030
+	// RTS message on commander order
+	[
+		"artillery shooting area at side art area %1"
+	] call _f; // 031
 
 	// script count check. Check index with last literal value
-	if (_i != 30 + 1) then {
+	if (_i != 31 + 1) then {
 		player globalChat "Script count mismatch!";
 	};
 

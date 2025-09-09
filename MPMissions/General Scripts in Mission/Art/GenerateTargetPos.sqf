@@ -44,7 +44,7 @@ if ("Auto Detect" == _orderType) then {
 };
 
 if not _processed then {
-	if ("General Area" != _orderType) then {"Unexpected _orderType in Art\CoreOrder.sqs." call fDebugLog};
+	if ("General Area" != _orderType) then {"Unexpected _orderType in Artillery Core Order." call fDebugLog};
 	
 	_ret = true;
 	_posT = _markerInfo call preprocessFile "Art\AreaRandomPos.sqf";

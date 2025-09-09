@@ -18,9 +18,10 @@ _mlrsCnt = 0
 ; preprocess params: [pre move info, suggested shooting init speed]
 _params = _this select 1
 _preMoveInfo = _params select 0, _suggestedSpeed = _params select 1
-; script type info: [is server, is vehicle, is structure]
+; script type info: [is server, is vehicle, is structure, use side art marker]
 _params = _this select 2
 _isServer = _params select 0, _isVehicle = _params select 1, _isStruct = _params select 2
+_useSideMarker = _params select 3
 ; script type info: [[rts status, rts id]]
 _params = _this select 3
 ? count _params > 0: _rtsStatus = _params select 0; _rtsId = _params select 1
@@ -53,7 +54,7 @@ _params = 0, _this = 0
 	; ? -2 == _suggestedSpeed: [vehicle _unit, _enum, _idx, _si] exec "Server\Art\SwitchAuto.sqs"
 ; Get marker info
 	_markerInfo = [-10, -10, 0, 0, 0]
-	? not _bAutoDetect: _markerInfo = [_idx, _si, _isServer] call preprocessFile "Art\GetMarkerInfo.sqf"
+	? not _bAutoDetect: _markerInfo = [_idx, _si, _useSideMarker] call preprocessFile "Art\GetMarkerInfo.sqf"
 	_markerCache = + _markerInfo
 	_arrayEq = preprocessFile "Algo\arrayEqual.sqf"
 ; Rts infomation

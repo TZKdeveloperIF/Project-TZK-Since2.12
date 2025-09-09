@@ -8,7 +8,7 @@ _netIds = _this select 0; _param = _this select 1; _scriptName = _this select 2;
 // todo: ID, time stamp, and necessary design, for player RTS order
 
 _needDispatch = ["hForceMoveLand","hForceMoveShip","hMove","hStop","hBoard","hOccupy","hReclaim", "hLandHeli","hCrossBridge","hRepair","hRearm"
-	, "hBuyEquip"];
+	, "hBuyEquip","hShootArea"];
 _scriptPath = format ["%1\%2\%3.sqs", "Rts", "Order", 
 	if (_scriptName in _needDispatch) then {_scriptName + "Ppl"} else {_scriptName}
 ];
