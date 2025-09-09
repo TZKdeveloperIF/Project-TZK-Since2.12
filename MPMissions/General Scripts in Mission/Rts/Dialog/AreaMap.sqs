@@ -140,7 +140,7 @@ btnValue05 = -1; _validBtn05 = []
 	? 3 == _btnFnc: ["dlg_area", _this, "Rts\Dialog\AreaMap.sqs"] exec "UI\Shortkey\dlg.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 # SwitchClassification
-	? _btnVal == TzkRtsSelectEnum: hint (TzkInGameText select 020 select 15); goto "Update"
+	? _btnVal == TzkRtsSelectEnum: goto "Update"
 	? _validBtn05 find _btnVal == -1: goto "Update"
 
 	TzkRtsSelectEnum = _btnVal
