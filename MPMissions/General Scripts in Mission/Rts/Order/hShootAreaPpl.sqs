@@ -1,0 +1,8 @@
+; args: [unit, param, 
+; 	[uid, id]]
+
+_unit = _this select 0
+_param = _this select 1
+
+; 转调 PlayerOrderDistributor.sqs. 火炮核心命令脚本内部会再次生成 uid 和 id, 此处无需处理
+[[_unit], _param] exec "Art\PlayerOrderDistributor.sqs"

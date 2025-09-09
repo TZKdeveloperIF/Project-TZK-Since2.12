@@ -418,9 +418,13 @@ if _bMatch then {
 		, "选择基地守备单位"
 		, "选择玩家队伍单位"
 	] call _f; // 030
+	// RTS 指挥官命令消息提示
+	[
+		"向 阵营火炮区域%1 的炮击命令"
+	] call _f; // 031
 
 	// script count check. Check index with last literal value
-	if (_i != 30 + 1) then {
+	if (_i != 31 + 1) then {
 		player globalChat "脚本数目不匹配！";
 	};
 

@@ -9,17 +9,20 @@ _quitCond = {not (_unit call rtsOrderCheck) || _id != _rtsStatus select 1 || not
 
 ; distributor
 _params = _this select 1
-_biggerAngle = _params select 0; _suggestedSpeed = _params select 1; _idx = _params select 2; _enum = _params select 3; _si = _params select 5
+_biggerAngle = _params select 0; _suggestedSpeed = _params select 1; _idx = _params select 2; _enum = _params select 3
+_si = _params select 5
 _posParam = _params select 6
 _orderType = _params select 7
-_mlrsCnt = (if (count _params > 8) then {_params select 8} else {0})
+_mlrsCnt = _params select 8
+_useSideMarker = _params select 9
 
-; script type info: [is server, is vehicle, is structure]
-_scriptTypeInfo = [true, false, false]
+; script type info: [is server, is vehicle, is structure, use side art marker]
+_useSideMarker = true
+_scriptTypeInfo = [true, false, false, _useSideMarker]
 
-; ? "Soldier" == _enum: _scriptTypeInfo = [true, false, false]
-? "Struct" == _enum: _scriptTypeInfo = [true, false, true]
-? "Howitzer" == _enum || "MLRS" == _enum || "Tank" == _enum: _scriptTypeInfo = [true, true, false]
+; ? "Soldier" == _enum: _scriptTypeInfo = [true, false, false, _useSideMarker]
+? "Struct" == _enum: _scriptTypeInfo = [true, false, true, _useSideMarker]
+? "Howitzer" == _enum || "MLRS" == _enum || "Tank" == _enum: _scriptTypeInfo = [true, true, false, _useSideMarker]
 
 ; rts busy Check
 ; not realized yet
