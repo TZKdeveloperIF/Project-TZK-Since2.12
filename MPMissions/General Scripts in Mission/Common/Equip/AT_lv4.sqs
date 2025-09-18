@@ -1,0 +1,14 @@
+; args: [vehicle, type, si]
+
+_v = _this select 0; _t = _this select 1
+_si = _this select 2
+
+_magGun = ["SG551_Mag_xj400", "mVSS_Mag_xj400"] select _si
+_magAt = ["Carl_III_1_TZK_xj400", "AT4_III_1_TZK_xj400"] select _si
+_wepGun = ["SG551_xj400", "mVSS_xj400"] select _si
+_wepAt = ["Carl_TZK_xj400", "AT4_TZK_xj400"] select _si
+
+_m = [_magGun, _magGun, _magGun, _magGun, _magAt, _magAt]
+_w = [_wepGun, _wepAt]
+
+[_v, _t, _m, _w] exec (TzkScripts select 064)
