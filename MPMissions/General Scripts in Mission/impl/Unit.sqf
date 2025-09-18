@@ -56,3 +56,26 @@ typesHeavyHowitzer = [_m109W, _plz05E];
 	_scripts = unitDefs select _x select udScripts;
 	_scripts set [count _scripts, "Common\Equip\AT_lv4.sqs"];
 } forEach [_atW4, _atE4];
+
+// Hide useless soldiers
+// _rkgW/_rkgE are undefined. Use _soldierW4/_soldierE4 plus 1 instead
+{
+	unitDefs select _x set [udFactoryType, -1];
+} forEach [_soldierW4 + 1, _soldierE4 + 1, _pilotW, _pilotE, _laserW, _laserE, _vestW, _vestE];
+// Allow buy crew from Air Factroy
+{
+	unitDefs select _x set [udFactoryType, 2^stBarracks + 2^stLight + 2^stShip + 2^stHeavy + 2^stAir];
+} forEach [_crewW, _crewE];
+// Change all pilot to crew
+{
+	_entry = _x select udCrew;
+	if (count _entry > 0) then {
+		if (_entry select 1 == _pilotW) then {_entry set [1, _crewW]};
+		if (_entry select 1 == _pilotE) then {_entry set [1, _crewE]};
+	};
+} forEach unitDefs;
+
+// Hide useless vehicles
+{
+	unitDefs select _x set [udFactoryType, -1];
+} forEach [_m109ShrapnelW, _plz05ShrapnelE];
