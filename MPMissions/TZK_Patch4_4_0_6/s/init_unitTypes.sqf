@@ -132,6 +132,7 @@ TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [coun
 	["SoldierWB_RKG_xj400", "SoldierWB_RKG_xj400"],
 	["", ""]
 ]];
+_rkgW = _type;
 _type = _type + 1;
 
 unitDefs set [_type, ["MG I", 70, _si, 7, "SoldierWMG_I_xj400", "ismg", 2^_st, [], "", []] ];
@@ -553,132 +554,132 @@ _type = _type + 1;
 comment {AIR WEST} ;
 _st = stAir;
 
-unitDefs set [_type, ["Orca95", 2000, _si, 20, "Orca95_W_xj400", "\tzk_texture_4_0_6\ui\iOrca95.paa", -1, [1, _pilotW], _mOrca, []] ];
+unitDefs set [_type, ["Orca95", 2000, _si, 20, "Orca95_W_xj400", "\tzk_texture_4_0_6\ui\iOrca95.paa", -1, [1, _crewW], _mOrca, []] ];
 _orcaW = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["MH-6", 2000, _si, 20, "MH6_irNo_TZK_xj400", "\TZK_Texture_4_0_0\icon\imh6.paa", 2^stLight + 2^stAir, [1, _pilotW], _mSmallHeli, []] ];
+unitDefs set [_type, ["MH-6", 2000, _si, 20, "MH6_irNo_TZK_xj400", "\TZK_Texture_4_0_0\icon\imh6.paa", 2^stLight + 2^stAir, [1, _crewW], _mSmallHeli, []] ];
 _mh6W = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["MH-6 M60", 3000, _si, 30, "MH6_irNo_M60_xj400", "\TZK_Texture_4_0_0\icon\imh6.paa", 2^_st, [2, _pilotW], _mSmallHeli, []] ];
+unitDefs set [_type, ["MH-6 M60", 3000, _si, 30, "MH6_irNo_M60_xj400", "\TZK_Texture_4_0_0\icon\imh6.paa", 2^_st, [2, _crewW], _mSmallHeli, []] ];
 _mh6M60W = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["MH-6 M134", 5000, _si, 40, "MH6_irNo_M134_xj400", "\TZK_Texture_4_0_0\icon\imh6.paa", 2^_st, [2, _pilotW], _mSmallHeli, []] ];
+unitDefs set [_type, ["MH-6 M134", 5000, _si, 40, "MH6_irNo_M134_xj400", "\TZK_Texture_4_0_0\icon\imh6.paa", 2^_st, [2, _crewW], _mSmallHeli, []] ];
 _mh6M134W = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["UH60 (transp)", 4000, _si, 60, "UH60_irNo_TZK_xj400", "iuh60", 2^stLight + 2^stAir, [1, _pilotW], _mHeli, []] ];
+unitDefs set [_type, ["UH60 (transp)", 4000, _si, 60, "UH60_irNo_TZK_xj400", "iuh60", 2^stLight + 2^stAir, [1, _crewW], _mHeli, []] ];
 _irNO_uh60 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["UH60 (Tug)", 4000, _si, 60, "UH60_CSLA_xj400", "iuh60", 2^_st, [1, _pilotW], _mHeli,
+unitDefs set [_type, ["UH60 (Tug)", 4000, _si, 60, "UH60_CSLA_xj400", "iuh60", 2^_st, [1, _crewW], _mHeli,
 	["Common\Equip\UH60.sqs", "Common\InitHelicopter.sqs"]
 ]];
 _uh60W = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Support UH60", 5000, _si, 60, "UH60_CSLA_xj400", "iuh60", 2^_st, [1, _pilotW], _mSupport,
+unitDefs set [_type, ["Support UH60", 5000, _si, 60, "UH60_CSLA_xj400", "iuh60", 2^_st, [1, _crewW], _mSupport,
 	["Common\InitSupportVehicle.sqs", "Common\InitHelicopter.sqs", "Common\Equip\UH60.sqs", "Common\InitAmmoDrop.sqs"]
 ]];
 _uh60supW = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["(empty)", 7000, _si, 60, "UH60_CSLA_MG_xj400", "iuh60", -1, [2, _pilotW], _mHeli,
+unitDefs set [_type, ["(empty)", 7000, _si, 60, "UH60_CSLA_MG_xj400", "iuh60", -1, [2, _crewW], _mHeli,
 	["Common\Equip\UH60.sqs", "Common\InitHelicopter.sqs"]
 ]];
 _uh60W30 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["(empty)", 7000, _si, 60, "UH60_CSLA_LGB_xj400", "iuh60", -1, [1, _pilotW], _mHeli,
+unitDefs set [_type, ["(empty)", 7000, _si, 60, "UH60_CSLA_LGB_xj400", "iuh60", -1, [1, _crewW], _mHeli,
 	["Common\Equip\UH60.sqs", "Common\InitHelicopter.sqs"]
 ]];
 _uh60WL = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["UH60 30mm MG", 10000, _si, 60, "UH60MG_CSLA_xj400", "iuh60", 2^_st, [2, _pilotW], _mHeli,
+unitDefs set [_type, ["UH60 30mm MG", 10000, _si, 60, "UH60MG_CSLA_xj400", "iuh60", 2^_st, [2, _crewW], _mHeli,
 	["Common\Equip\UH60.sqs", "Common\InitHelicopter.sqs"]
 ]];
 _uh60WMG2 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["CH47 (Tug)", 4000, _si, 60, "BAS_MH47E", "\ch47\ich47.paa", -1, [1, _pilotW], _mHeli,
+unitDefs set [_type, ["CH47 (Tug)", 4000, _si, 60, "BAS_MH47E", "\ch47\ich47.paa", -1, [1, _crewW], _mHeli,
 	["Common\Equip\UH60.sqs", "Common\InitHelicopter.sqs"]
 ]];
 _ch47W = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["C-130 Hercules", 5000, _si, 60, "C130_xj400", "\TZK_Texture_4_0_0\icon\iC130.paa", 2^_st, [2, _pilotW], _mPlane, [(TzkScripts select 346)]] ];
+unitDefs set [_type, ["C-130 Hercules", 5000, _si, 60, "C130_xj400", "\TZK_Texture_4_0_0\icon\iC130.paa", 2^_st, [2, _crewW], _mPlane, [(TzkScripts select 346)]] ];
 _c130W = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["AH1W", 15000, _si, 90, "AH1W_Vit_xj400", "\TZK_Texture_4_0_0\icon\iAH1W_vit.paa", 2^_st, [2, _pilotW], _mHeli, ["Common\Equip\Gunship.sqs", "Common\InitGunship.sqs"]] ];
+unitDefs set [_type, ["AH1W", 15000, _si, 90, "AH1W_Vit_xj400", "\TZK_Texture_4_0_0\icon\iAH1W_vit.paa", 2^_st, [2, _crewW], _mHeli, ["Common\Equip\Gunship.sqs", "Common\InitGunship.sqs"]] ];
 _ah1W = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["AH64", 17000, _si, 90, "AH64_MPIV_xj400", "\APAC\iah64", 2^_st, [2, _pilotW], _mHeli, ["Common\Equip\Gunship.sqs", "Common\InitGunship.sqs"]] ];
+unitDefs set [_type, ["AH64", 17000, _si, 90, "AH64_MPIV_xj400", "\APAC\iah64", 2^_st, [2, _crewW], _mHeli, ["Common\Equip\Gunship.sqs", "Common\InitGunship.sqs"]] ];
 _ah64W = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Tiger HOT", 20000, _si, 90, "Tiger_HOT3_xj400", "\TZK_Texture_4_0_0\icon\iTigerRMK.paa", 2^_st, [2, _pilotW], _mHeli, ["Common\Equip\Gunship.sqs", "Common\InitGunship.sqs"]] ];
+unitDefs set [_type, ["Tiger HOT", 20000, _si, 90, "Tiger_HOT3_xj400", "\TZK_Texture_4_0_0\icon\iTigerRMK.paa", 2^_st, [2, _crewW], _mHeli, ["Common\Equip\Gunship.sqs", "Common\InitGunship.sqs"]] ];
 _tigerW = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["AH1W AT", 20000, _si, 90, "AH1W_Vit_AT_xj400", "\TZK_Texture_4_0_0\icon\iAH1W_vit.paa", 2^_st, [2, _pilotW], _mHeli, ["Common\Equip\Gunship.sqs", "Common\InitGunship.sqs"]] ];
+unitDefs set [_type, ["AH1W AT", 20000, _si, 90, "AH1W_Vit_AT_xj400", "\TZK_Texture_4_0_0\icon\iAH1W_vit.paa", 2^_st, [2, _crewW], _mHeli, ["Common\Equip\Gunship.sqs", "Common\InitGunship.sqs"]] ];
 _ah1W2 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["AH64 AT", 20000, _si, 90, "AH64_MPIV_AT_xj400", "\APAC\iah64", 2^_st, [2, _pilotW], _mHeli, ["Common\Equip\Gunship.sqs", "Common\InitGunship.sqs"]] ];
+unitDefs set [_type, ["AH64 AT", 20000, _si, 90, "AH64_MPIV_AT_xj400", "\APAC\iah64", 2^_st, [2, _crewW], _mHeli, ["Common\Equip\Gunship.sqs", "Common\InitGunship.sqs"]] ];
 _ah64W2 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Tiger PARS3", 23000, _si, 90, "Tiger_PARS3_xj400", "\TZK_Texture_4_0_0\icon\iTigerRMK.paa", 2^_st, [2, _pilotW], _mHeli, ["Common\Equip\Gunship.sqs", "Common\InitGunship.sqs"]] ];
+unitDefs set [_type, ["Tiger PARS3", 23000, _si, 90, "Tiger_PARS3_xj400", "\TZK_Texture_4_0_0\icon\iTigerRMK.paa", 2^_st, [2, _crewW], _mHeli, ["Common\Equip\Gunship.sqs", "Common\InitGunship.sqs"]] ];
 _tigerW2 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["C130 Support", 5000, _si, 60, "C130_Support_xj400", "\TZK_Texture_4_0_0\icon\iC130.paa", 2^_st, [1, _pilotW], _mSupport, [(TzkScripts select 346), "Common\InitSupportVehicle.sqs"]] ];
+unitDefs set [_type, ["C130 Support", 5000, _si, 60, "C130_Support_xj400", "\TZK_Texture_4_0_0\icon\iC130.paa", 2^_st, [1, _crewW], _mSupport, [(TzkScripts select 346), "Common\InitSupportVehicle.sqs"]] ];
 _c130supportW = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["A10 (AA Only)", 5000, _si, 90, "A10_AAOnly_xj406", "ia10", 2^_st, [1, _pilotW], _mPlane, ["Common\Equip\PlaneGun.sqs", (TzkScripts select 346)]] ];
+unitDefs set [_type, ["A10 (AA Only)", 5000, _si, 90, "A10_AAOnly_xj406", "ia10", 2^_st, [1, _crewW], _mPlane, ["Common\Equip\PlaneGun.sqs", (TzkScripts select 346)]] ];
 _a10gun = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["(empty)", 12000, _si, 90, "A10_LGB_xj400", "ia10", -1, [1, _pilotW], _mPlane, []] ];
+unitDefs set [_type, ["(empty)", 12000, _si, 90, "A10_LGB_xj400", "ia10", -1, [1, _crewW], _mPlane, []] ];
 _a10LGB4 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["(empty)", 14000, _si, 90, "A10_xj406", "ia10", -1, [1, _pilotW], _mPlane, []] ];
+unitDefs set [_type, ["(empty)", 14000, _si, 90, "A10_xj406", "ia10", -1, [1, _crewW], _mPlane, []] ];
 _a10bombs = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["A10", 15000, _si, 90, "A10_xj406", "ia10", 2^_st, [1, _pilotW], _mPlane, ["Common\Equip\PlaneCustom.sqs", (TzkScripts select 347)]] ];
+unitDefs set [_type, ["A10", 15000, _si, 90, "A10_xj406", "ia10", 2^_st, [1, _crewW], _mPlane, ["Common\Equip\PlaneCustom.sqs", (TzkScripts select 347)]] ];
 _a10 = _type;
 _type = _type + 1;
 if (!bool_TZK_199_Mode && !bool_TZK_Vanilla_Mode) then {unitDefs select _a10 set [udModel, "A10_xj400"]};
 
-unitDefs set [_type, ["(empty)", 20000, _si, 90, "A10_LGB_xj400", "ia10", -1, [1, _pilotW], _mPlane, []] ];
+unitDefs set [_type, ["(empty)", 20000, _si, 90, "A10_LGB_xj400", "ia10", -1, [1, _crewW], _mPlane, []] ];
 _a10LGB8 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["(empty)", 25000, _si, 90, "A10_xj406", "ia10", -1, [1, _pilotW], _mPlane, []] ];
+unitDefs set [_type, ["(empty)", 25000, _si, 90, "A10_xj406", "ia10", -1, [1, _crewW], _mPlane, []] ];
 _a10AA = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["(empty)", 30000, _si, 90, "A10_FFAR_xj400", "ia10", -1, [1, _pilotW], _mPlane, []] ];
+unitDefs set [_type, ["(empty)", 30000, _si, 90, "A10_FFAR_xj400", "ia10", -1, [1, _crewW], _mPlane, []] ];
 _a10FFAR = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["B2 Bomber", 30000, _si, 90, "B2", "\rktf15c\modpic.paa", -1, [1, _pilotW], _mPlane, [(TzkScripts select 346)]] ];
+unitDefs set [_type, ["B2 Bomber", 30000, _si, 90, "B2", "\rktf15c\modpic.paa", -1, [1, _crewW], _mPlane, [(TzkScripts select 346)]] ];
 _B2 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["(empty)", 45000, _si, 90, "A10_Buster_xj400", "ia10", -1, [1, _pilotW], _mPlane, []] ];
+unitDefs set [_type, ["(empty)", 45000, _si, 90, "A10_Buster_xj400", "ia10", -1, [1, _crewW], _mPlane, []] ];
 _a10BB = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["(empty)", 90000, _si, 90, "A10_Tomahawk_xj400", "ia10", -1, [1, _pilotW], _mPlane, []] ];
+unitDefs set [_type, ["(empty)", 90000, _si, 90, "A10_Tomahawk_xj400", "ia10", -1, [1, _crewW], _mPlane, []] ];
 _a10Tomahawk = _type;
 _type = _type + 1;
 
@@ -727,6 +728,7 @@ TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [coun
 	["SoldierEB_RKG_xj400", "SoldierEB_RKG_xj400"],
 	["", ""]
 ]];
+_rkgE = _type;
 _type = _type + 1;
 
 unitDefs set [_type, ["MG I", 70, _si, 7, "SoldierEMG_I_xj400", "ismg", 2^_st, [], "", []] ];
@@ -1148,128 +1150,128 @@ _type = _type + 1;
 comment {AIR EAST} ;
 _st = stAir;
 
-unitDefs set [_type, ["Orca95", 2000, _si, 20, "Orca95_E_xj400", "\tzk_texture_4_0_6\ui\iOrca95.paa", -1, [1, _pilotE], _mOrca, []] ];
+unitDefs set [_type, ["Orca95", 2000, _si, 20, "Orca95_E_xj400", "\tzk_texture_4_0_6\ui\iOrca95.paa", -1, [1, _crewE], _mOrca, []] ];
 _orcaE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mi-2", 2000, _si, 20, "Mi2NOE_irNo_TZK_xj400", "\TZK_Texture_4_0_0\icon\iMi2.paa", 2^stLight + 2^stAir, [1, _pilotE], _mSmallHeli, []] ];
+unitDefs set [_type, ["Mi-2", 2000, _si, 20, "Mi2NOE_irNo_TZK_xj400", "\TZK_Texture_4_0_0\icon\iMi2.paa", 2^stLight + 2^stAir, [1, _crewE], _mSmallHeli, []] ];
 _mi2E = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mi-2 PKT", 3000, _si, 30, "Mi2NOE_irNo_PKT_xj400", "\TZK_Texture_4_0_0\icon\iMi2.paa", 2^_st, [2, _pilotE], _mSmallHeli, []] ];
+unitDefs set [_type, ["Mi-2 PKT", 3000, _si, 30, "Mi2NOE_irNo_PKT_xj400", "\TZK_Texture_4_0_0\icon\iMi2.paa", 2^_st, [2, _crewE], _mSmallHeli, []] ];
 _mi2PktE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mi-2 GShG", 5000, _si, 40, "Mi2NOE_irNo_GShG_xj400", "\TZK_Texture_4_0_0\icon\iMi2.paa", 2^_st, [2, _pilotE], _mSmallHeli, []] ];
+unitDefs set [_type, ["Mi-2 GShG", 5000, _si, 40, "Mi2NOE_irNo_GShG_xj400", "\TZK_Texture_4_0_0\icon\iMi2.paa", 2^_st, [2, _crewE], _mSmallHeli, []] ];
 _mi2GshgE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mi17 (transp)", 4000, _si, 60, "Mi17_irNo_TZK_xj400", "imi17", 2^stLight + 2^stAir, [1, _pilotE], _mHeli, []] ];
+unitDefs set [_type, ["Mi17 (transp)", 4000, _si, 60, "Mi17_irNo_TZK_xj400", "imi17", 2^stLight + 2^stAir, [1, _crewE], _mHeli, []] ];
 _irNO_mi17 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mi17 (tug)", 4000, _si, 60, "Mi17_owp_xj400", "imi17", 2^_st, [1, _pilotE], _mHeli,
+unitDefs set [_type, ["Mi17 (tug)", 4000, _si, 60, "Mi17_owp_xj400", "imi17", 2^_st, [1, _crewE], _mHeli,
 	["Common\Equip\Mi17.sqs", "Common\InitHelicopter.sqs"]
 ]];
 _mi17E = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mi17 support", 5000, _si, 60, "Mi17_owp_xj400", "imi17", 2^_st, [1, _pilotE], _mSupport,
+unitDefs set [_type, ["Mi17 support", 5000, _si, 60, "Mi17_owp_xj400", "imi17", 2^_st, [1, _crewE], _mSupport,
 	["Common\InitSupportVehicle.sqs", "Common\InitHelicopter.sqs", "Common\Equip\Mi17.sqs", "Common\InitAmmoDrop.sqs"]
 ]];
 _mi17supE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["(empty)", 7000, _si, 60, "Mi17_owp_MG_xj400", "imi17",-1, [1, _pilotE], _mHeli,
+unitDefs set [_type, ["(empty)", 7000, _si, 60, "Mi17_owp_MG_xj400", "imi17",-1, [1, _crewE], _mHeli,
 	["Common\Equip\Mi17.sqs", "Common\InitHelicopter.sqs"]
 ]];
 _mi17E30 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["(empty)", 7000, _si, 60, "Mi17_owp_LGB_xj400", "imi17",-1, [1, _pilotE], _mHeli,
+unitDefs set [_type, ["(empty)", 7000, _si, 60, "Mi17_owp_LGB_xj400", "imi17",-1, [1, _crewE], _mHeli,
 	["Common\Equip\Mi17.sqs", "Common\InitHelicopter.sqs"]
 ]];
 _mi17EL = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mi17 30mm MG", 10000, _si, 60, "Mi17_owp_PKT_xj400", "imi17", 2^_st, [2, _pilotW], _mHeli,
+unitDefs set [_type, ["Mi17 30mm MG", 10000, _si, 60, "Mi17_owp_PKT_xj400", "imi17", 2^_st, [2, _crewW], _mHeli,
 	["Common\Equip\Mi17.sqs", "Common\InitHelicopter.sqs"]
 ]];
 _mi17EMG2 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mi26 (tug)", 4000, _si, 60, "OWP_MI26ps", "\OWP_Mi26\pics\OWP_Mi26.paa", -1, [1, _pilotE], _mHeli,
+unitDefs set [_type, ["Mi26 (tug)", 4000, _si, 60, "OWP_MI26ps", "\OWP_Mi26\pics\OWP_Mi26.paa", -1, [1, _crewE], _mHeli,
 	["Common\Equip\Mi17.sqs", "Common\InitHelicopter.sqs"]
 ]];
 _mi26E = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["An-72 Coaler", 5000, _si, 60, "AN72_xj400", "\TZK_Texture_4_0_0\icon\iAN72.paa", 2^_st, [2, _pilotE], _mPlane, [(TzkScripts select 346)]] ];
+unitDefs set [_type, ["An-72 Coaler", 5000, _si, 60, "AN72_xj400", "\TZK_Texture_4_0_0\icon\iAN72.paa", 2^_st, [2, _crewE], _mPlane, [(TzkScripts select 346)]] ];
 _an72E = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["V80", 20000, _si, 90, "Ka50_xj400", "\TZK_Objects\Texture\icon\iKa50.paa", 2^_st, [1, _pilotE], _mHeli, ["Common\Equip\Gunship.sqs", "Common\InitGunship.sqs", "\TZK_Scripts_4_0_4\Common\Init\V80.sqs"]] ];
+unitDefs set [_type, ["V80", 20000, _si, 90, "Ka50_xj400", "\TZK_Objects\Texture\icon\iKa50.paa", 2^_st, [1, _crewE], _mHeli, ["Common\Equip\Gunship.sqs", "Common\InitGunship.sqs", "\TZK_Scripts_4_0_4\Common\Init\V80.sqs"]] ];
 _v80E = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mi24", 23000, _si, 90, "Mi24_RHS_xj400", "\TZK_Texture_4_0_0\icon\iMi24_RHS", 2^_st, [2, _pilotE], _mHeli, ["Common\Equip\Gunship.sqs", "Common\InitGunship.sqs"]] ];
+unitDefs set [_type, ["Mi24", 23000, _si, 90, "Mi24_RHS_xj400", "\TZK_Texture_4_0_0\icon\iMi24_RHS", 2^_st, [2, _crewE], _mHeli, ["Common\Equip\Gunship.sqs", "Common\InitGunship.sqs"]] ];
 _mi24E = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["V80 AT", 23000, _si, 90, "Ka50_AT_xj400", "\TZK_Objects\Texture\icon\iKa50.paa", 2^_st, [1, _pilotE], _mHeli, ["Common\Equip\Gunship.sqs", "Common\InitGunship.sqs", "\TZK_Scripts_4_0_4\Common\Init\V80.sqs"]] ];
+unitDefs set [_type, ["V80 AT", 23000, _si, 90, "Ka50_AT_xj400", "\TZK_Objects\Texture\icon\iKa50.paa", 2^_st, [1, _crewE], _mHeli, ["Common\Equip\Gunship.sqs", "Common\InitGunship.sqs", "\TZK_Scripts_4_0_4\Common\Init\V80.sqs"]] ];
 _v80E2 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mi24 AT", 25000, _si, 90, "Mi24_RHS_AT_xj400", "\TZK_Texture_4_0_0\icon\iMi24_RHS", -1, [2, _pilotE], _mHeli, ["Common\Equip\Gunship.sqs", "Common\InitGunship.sqs"]] ];
+unitDefs set [_type, ["Mi24 AT", 25000, _si, 90, "Mi24_RHS_AT_xj400", "\TZK_Texture_4_0_0\icon\iMi24_RHS", -1, [2, _crewE], _mHeli, ["Common\Equip\Gunship.sqs", "Common\InitGunship.sqs"]] ];
 _mi24E3 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Mi24 AT", 25000, _si, 90, "Mi24_RHS_AT_xj400", "\TZK_Texture_4_0_0\icon\iMi24_RHS", 2^_st, [2, _pilotE], _mHeli, ["Common\Equip\Gunship.sqs", "Common\InitGunship.sqs"]] ];
+unitDefs set [_type, ["Mi24 AT", 25000, _si, 90, "Mi24_RHS_AT_xj400", "\TZK_Texture_4_0_0\icon\iMi24_RHS", 2^_st, [2, _crewE], _mHeli, ["Common\Equip\Gunship.sqs", "Common\InitGunship.sqs"]] ];
 _mi24E2 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["An-72 Support", 5000, _si, 60, "AN72_Support_xj400", "\TZK_Texture_4_0_0\icon\iAN72.paa", 2^_st, [2, _pilotE], _mSupport, [(TzkScripts select 346), "Common\InitSupportVehicle.sqs"]] ];
+unitDefs set [_type, ["An-72 Support", 5000, _si, 60, "AN72_Support_xj400", "\TZK_Texture_4_0_0\icon\iAN72.paa", 2^_st, [2, _crewE], _mSupport, [(TzkScripts select 346), "Common\InitSupportVehicle.sqs"]] ];
 _an72supportE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Su25 (AA Only)", 8000, _si, 90, "Su25_AAOnly_xj406", "\Su25\isu25", 2^_st, [1, _pilotE], _mPlane, ["Common\Equip\PlaneGun.sqs", (TzkScripts select 346)]] ];
+unitDefs set [_type, ["Su25 (AA Only)", 8000, _si, 90, "Su25_AAOnly_xj406", "\Su25\isu25", 2^_st, [1, _crewE], _mPlane, ["Common\Equip\PlaneGun.sqs", (TzkScripts select 346)]] ];
 _su25gun = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["(empty)", 12000, _si, 90, "Su25_LGB_xj400", "\Su25\isu25", -1, [1, _pilotE], _mPlane, []] ];
+unitDefs set [_type, ["(empty)", 12000, _si, 90, "Su25_LGB_xj400", "\Su25\isu25", -1, [1, _crewE], _mPlane, []] ];
 _su25LGB4 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["(empty)", 14000, _si, 90, "Su25_xj406", "\Su25\isu25", -1, [1, _pilotE], _mPlane, []] ];
+unitDefs set [_type, ["(empty)", 14000, _si, 90, "Su25_xj406", "\Su25\isu25", -1, [1, _crewE], _mPlane, []] ];
 _su25bombs = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Su25", 15000, _si, 90, "Su25_xj406", "\Su25\isu25", 2^_st, [1, _pilotE], _mPlane, ["Common\Equip\PlaneCustom.sqs", (TzkScripts select 347)]] ];
+unitDefs set [_type, ["Su25", 15000, _si, 90, "Su25_xj406", "\Su25\isu25", 2^_st, [1, _crewE], _mPlane, ["Common\Equip\PlaneCustom.sqs", (TzkScripts select 347)]] ];
 _su25 = _type;
 _type = _type + 1;
 if (!bool_TZK_199_Mode && !bool_TZK_Vanilla_Mode) then {unitDefs select _su25 set [udModel, "Su25_xj400"]};
 
-unitDefs set [_type, ["(empty)", 20000, _si, 90, "Su25_LGB_xj400", "\Su25\isu25", -1, [1, _pilotE], _mPlane, []] ];
+unitDefs set [_type, ["(empty)", 20000, _si, 90, "Su25_LGB_xj400", "\Su25\isu25", -1, [1, _crewE], _mPlane, []] ];
 _su25LGB8 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["(empty)", 25000, _si, 90, "Su25_xj406", "\Su25\isu25", -1, [1, _pilotE], _mPlane, [(TzkScripts select 346)]] ];
+unitDefs set [_type, ["(empty)", 25000, _si, 90, "Su25_xj406", "\Su25\isu25", -1, [1, _crewE], _mPlane, [(TzkScripts select 346)]] ];
 _su25AA = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["(empty)", 30000, _si, 90, "Su25_Rocket_xj400", "\Su25\isu25", -1, [1, _pilotE], _mPlane, []] ];
+unitDefs set [_type, ["(empty)", 30000, _si, 90, "Su25_Rocket_xj400", "\Su25\isu25", -1, [1, _crewE], _mPlane, []] ];
 _su25Rocket = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Su39 Bomber", 30000, _si, 90, "su39", "\rktf15c\modpic.paa", -1, [1, _pilotW], _mPlane, [(TzkScripts select 346)]] ];
+unitDefs set [_type, ["Su39 Bomber", 30000, _si, 90, "su39", "\rktf15c\modpic.paa", -1, [1, _crewW], _mPlane, [(TzkScripts select 346)]] ];
 _su39 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["(empty)", 45000, _si, 90, "Su25_Buster_xj400", "\Su25\isu25", -1, [1, _pilotE], _mPlane, []] ];
+unitDefs set [_type, ["(empty)", 45000, _si, 90, "Su25_Buster_xj400", "\Su25\isu25", -1, [1, _crewE], _mPlane, []] ];
 _su25BB = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["(empty)", 90000, _si, 90, "Su25_Raduga_xj400", "\Su25\isu25", -1, [1, _pilotE], _mPlane, []] ];
+unitDefs set [_type, ["(empty)", 90000, _si, 90, "Su25_Raduga_xj400", "\Su25\isu25", -1, [1, _crewE], _mPlane, []] ];
 _su25Raduga = _type;
 _type = _type + 1;
 
@@ -1410,7 +1412,7 @@ _type = _type + 1;
 unitDefs set [_type, ["M1A1 Town", 5000, _si, 60, "M1A1_xj400", "iabrams", _st, [3, _crewW], _mTank, [(TzkScripts select 070), "\TZK_Scripts_4_0_4\Common\InitTownGroupVehicles.sqs"]] ];
 _m1a1townW = _type;
 _type = _type + 1;
-unitDefs set [_type, ["AH64 Town", 6000, _si, 90, "AH64_AT_xj400", "\APAC\iah64", _st, [2, _pilotW], _mHeli, [(TzkScripts select 070), "\TZK_Scripts_4_0_4\Common\InitTownGroupVehicles.sqs"]] ];
+unitDefs set [_type, ["AH64 Town", 6000, _si, 90, "AH64_AT_xj400", "\APAC\iah64", _st, [2, _crewW], _mHeli, [(TzkScripts select 070), "\TZK_Scripts_4_0_4\Common\InitTownGroupVehicles.sqs"]] ];
 _ah64townW2 = _type;
 _type = _type + 1;
 
@@ -1466,7 +1468,7 @@ _type = _type + 1;
 unitDefs set [_type, ["T80 Town", 5000, _si, 60, "T80_xj400", "it80", _st, [3, _crewE], _mTank, [(TzkScripts select 070), "\TZK_Scripts_4_0_4\Common\InitTownGroupVehicles.sqs"]] ];
 _t80townE = _type;
 _type = _type + 1;
-unitDefs set [_type, ["Mi24 Town", 8000, _si, 90, "Mi24_RHS_AT_xj400", "imi24", _st, [2, _pilotE], _mHeli, [(TzkScripts select 070), "\TZK_Scripts_4_0_4\Common\InitTownGroupVehicles.sqs"]] ];
+unitDefs set [_type, ["Mi24 Town", 8000, _si, 90, "Mi24_RHS_AT_xj400", "imi24", _st, [2, _crewE], _mHeli, [(TzkScripts select 070), "\TZK_Scripts_4_0_4\Common\InitTownGroupVehicles.sqs"]] ];
 _mi24townE2 = _type;
 _type = _type + 1;
 
