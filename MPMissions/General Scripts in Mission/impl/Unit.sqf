@@ -50,3 +50,9 @@ if (not _bUseStaticTexture) then {
 };
 
 typesHeavyHowitzer = [_m109W, _plz05E];
+
+// Modify lv4 AT weapons
+{
+	_scripts = unitDefs select _x select udScripts;
+	_scripts set [count _scripts, "Common\Equip\AT_lv4.sqs"];
+} forEach [_atW4, _atE4];
