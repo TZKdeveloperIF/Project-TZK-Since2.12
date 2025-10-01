@@ -317,6 +317,16 @@ equipSearch set [_type, (equipDefs select _type) select edObject]
 _atSVU = _type
 _type = _type + 1
 
+equipDefs set [_type, ["G3/SG1", si1, isGeneral, 1, "JAM_W762_20_Mag_xj400", "\TZK_Patch5_4_0_6\res\JAM_762x51_20rdMag.paa",10 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atSG1 = _type
+_type = _type + 1
+
+equipDefs set [_type, ["QBZ95WS", si1, isGeneral, 1, "QBZ95WS_Mag_xj400", "\TZK_Patch5_4_0_6\res\m_QBZ95.paa",10 ]] 
+equipSearch set [_type, (equipDefs select _type) select edObject]
+_atQbz95ws = _type
+_type = _type + 1
+
 equipDefs set [_type, ["mVSS", si1, isGeneral, 1, "mVSS_Mag_xj400", "\TZK_Texture_4_0_0\Picture\vssmag.jpg",10 ]] 
 equipSearch set [_type, (equipDefs select _type) select edObject]
 _atVSS = _type
@@ -845,6 +855,16 @@ _type = _type + 1
 weaponDefs set [_type, ["SVU-A", si1, wtPrimary, w_TZK_SniperE, "\TZK_Texture_4_0_0\Picture\SVU.jpg", [[_atSVU,4]],50 ]] 
 weaponSearch set [_type, (weaponDefs select _type) select wdObject]
 _wtSVUA = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["G3/SG1", si1, wtPrimary, "G3SG1_BAS_xj400", "\TZK_Patch5_4_0_6\res\bas_HKG3SG1.paa", [[_atSG1,4]],50 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtSG1 = _type
+_type = _type + 1
+
+weaponDefs set [_type, ["QBZ95WS", si1, wtPrimary, "QBZ95WS_xj400", "\TZK_Patch5_4_0_6\res\QBZ95_Scope.paa", [[_atQbz95ws,4]],50 ]] 
+weaponSearch set [_type, (weaponDefs select _type) select wdObject]
+_wtQbz95ws = _type
 _type = _type + 1
 
 weaponDefs set [_type, ["VSS", si1, wtPrimary, "mVSS_xj400", "\TZK_Texture_4_0_0\Picture\vss.jpg", [[_atVSS,4]],50 ]] 
