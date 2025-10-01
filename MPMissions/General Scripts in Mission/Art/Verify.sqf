@@ -34,7 +34,8 @@ if (not _processed && "Tank" == _enum) then {
 	if (_unit != vehicle _unit) then {
 		_type = (vehicle _unit) call funcGetUnitTypeFromObject;
 		if (-1 != _type) then {
-			_ret = -1 != typesLightTank find _type || -1 != typesHeavyTank find _type;
+			_ret = -1 != typesLightTank find _type || -1 != typesHeavyTank find _type
+				|| -1 != typesMainGunLightShip find _type;
 		};
 	};
 };

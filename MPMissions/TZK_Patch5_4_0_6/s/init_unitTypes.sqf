@@ -124,7 +124,7 @@ _type call _lv4Inf;
 _soldierW4 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["RKG I", 50, _si, 5, "SoldierWB_RKG_xj400", "ivojak", 2^_st, [], "", []] ];
+unitDefs set [_type, ["RKG I", 50, _si, 5, "SoldierWB_RKG_xj400", "ivojak", -1, [], "", []] ];
 _rkgSoldierW = _type;
 _type call _lv1Inf;
 TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [count TzkSelfUpdateVal, [
@@ -242,7 +242,7 @@ TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [coun
 ]];
 _type = _type + 1;
 
-unitDefs set [_type, ["Crew", 50, _si, 10, "SoldierWCrew_xj400", "icrew", 2^stBarracks + 2^stLight + 2^stShip + 2^stHeavy, [], "", []] ];
+unitDefs set [_type, ["Crew", 50, _si, 10, "SoldierWCrew_xj400", "icrew", 2^stBarracks + 2^stLight + 2^stShip + 2^stHeavy + 2^stAir, [], "", []] ];
 _crewW = _type;
 _type = _type + 1;
 
@@ -254,11 +254,11 @@ TzkInfLevelIdx set [count TzkInfLevelIdx, _type];
 TzkInfLevelVal set [count TzkInfLevelVal, 3];
 _type = _type + 1;
 
-unitDefs set [_type, ["Pilot", 50, _si, 10, "SoldierWPilot_xj400", "ipilot", 2^stBarracks + 2^stAir, [], "", []] ];
+unitDefs set [_type, ["Pilot", 50, _si, 10, "SoldierWPilot_xj400", "ipilot", -1, [], "", []] ];
 _pilotW = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Grenade Vest", 130, _si, 10, "SoldierWSaboteurDay_xj400", "igrenadier", 2^_st, [], "", ["\TZK_Patch4_4_0_6\s\Common\Equip\Vest.sqs"]] ];
+unitDefs set [_type, ["Grenade Vest", 130, _si, 10, "SoldierWSaboteurDay_xj400", "igrenadier", -1, [], "", ["\TZK_Patch4_4_0_6\s\Common\Equip\Vest.sqs"]] ];
 _vestW = _type;
 _type call _lv4Inf;
 _type = _type + 1;
@@ -330,7 +330,7 @@ _hummerW2 = _type;
 _type = _type + 1;
 
 unitDefs set [_type, [
-	"HMMWV M134", 1200, _si, 30, "HMMWV_M134_xj400", "\TZK_Texture_4_0_0\icon\iHMMWV_M2wS.paa", 2^_st, [2, _crewW], _mCar,
+	"HMMWV M134", 1200, _si, 30, "HMMWV_M134_xj400", "\TZK_Texture_4_0_0\icon\iHMMWV_M2wS.paa", -1, [2, _crewW], _mCar,
 	["\TZK_Patch4_4_0_6\s\Common\Equip\ArmoredCarGatling.sqs"]
 ]];
 _hummerM134W = _type;
@@ -340,11 +340,11 @@ unitDefs set [_type, ["HMMWV M19", 1100, _si, 30, "wood_hmmwv_m19", "\TZK_Textur
 _hummerWG = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["HMMWV (TOW-2A)", 800, _si, 30, "HMMMV_TOW2A_xj400", "\TZK_Texture_4_0_0\icon\iHMMWV_TOW2A.paa", 2^_st, [2, _crewW], _mCar, []] ];
+unitDefs set [_type, ["HMMWV (TOW-2A)", 800, _si, 30, "HMMMV_TOW2A_xj400", "\TZK_Texture_4_0_0\icon\iHMMWV_TOW2A.paa", -1, [2, _crewW], _mCar, []] ];
 _hummerW3 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Motorcycle", 200, si0, 20, "Jawa_xj406", "\o\vehl\ijawa", 2^stLight, [1, _crewW], _mBike, []] ];
+unitDefs set [_type, ["Motorcycle", 200, si0, 20, "JawaT_C_xj406", "\o\vehl\ijawa", 2^stLight, [1, _crewW], _mBike, []] ];
 _motorW = _type;
 _type = _type + 1;
 
@@ -370,7 +370,7 @@ unitDefs set [_type, ["Fuel 5t Truck", 500, _si, 30, "Truck5tRefuel_C_xj400", "i
 _truckRefuelW = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Jet Ski", 300, _si, 30, "PCSFWjetski_xj400", "\TZK_Texture_4_0_0\icon\iJetSki.paa", 2^stLight + 2^stShip, [1, _crewW], _mBike, ["\TZK_Patch4_4_0_6\s\Common\Equip\jetski.sqs"]] ];
+unitDefs set [_type, ["Jet Ski", 300, _si, 30, "Jetski_T_W_xj400", "\TZK_Texture_4_0_0\icon\iJetSki.paa", 2^stLight + 2^stShip, [1, _crewW], _mBike, ["\TZK_Patch4_4_0_6\s\Common\Equip\jetski.sqs"]] ];
 _jetskiW = _type;
 _type = _type + 1;
 
@@ -404,6 +404,14 @@ _type = _type + 1;
 
 unitDefs set [_type, ["Boat HE/AP gun", 1500, _si, 30, "GunBoatW_xj400", "ipbr", 2^stLight + 2^stShip, [2, _crewW], _mBoat, [(TzkScripts select 069)]] ];
 _boatHeapW = _type;
+_type = _type + 1;
+
+unitDefs set [_type, ["Boat 105mm", 1000, _si, 30, "GunBoatW_105mm_xj400", "ipbr", 2^stLight + 2^stShip, [2, _crewW], _mBoat, [(TzkScripts select 069)]] ];
+_boat105W = _type;
+_type = _type + 1;
+
+unitDefs set [_type, ["Boat 120mm", 2000, _si, 30, "GunBoatW_120mm_xj400", "ipbr", 2^stLight + 2^stShip, [2, _crewW], _mBoat, [(TzkScripts select 069)]] ];
+_boat120W = _type;
 _type = _type + 1;
 
 unitDefs set [_type, ["Patrol Boat", 4000, _si, 30, "ADF_FCPB", "ipbr", -1, [2, _crewW], _mBoat, []] ];
@@ -491,7 +499,7 @@ unitDefs set [_type, ["M60-120S", 2000, _si, 30, "M60_120S_xj400", "im60", 2^_st
 _tankLightW02 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["AMX-10RC", 2500, _si, 40, "AMX10RC_OFrP_xj400", "\tzk_texture_4_0_6\ui\iAmx10rc.paa", 2^stHeavy + 2^stLight, [2, _crewW], _mTd, []] ];
+unitDefs set [_type, ["AMX-10RC", 2500, _si, 40, "AMX10RC_OFrP_xj406", "\tzk_texture_4_0_6\ui\iAmx10rc.paa", 2^stHeavy + 2^stLight, [2, _crewW], _mTd, []] ];
 _amx10RcW = _type;
 _type = _type + 1;
 
@@ -532,7 +540,7 @@ unitDefs set [_type, ["M270 MLRS", 25000, _si, 60, "M270_M29064_xj400", "\TZK_Te
 _m270W = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["M109A6 Shrapnel", 7500, si0, 60, "M109A6G_xj400", "\TZK_Texture_4_0_0\icon\iM109A6G.paa", 2^stHeavy, [2, _crewW], _mHowitzer, ["Common\Equip\Shrapnel.sqs"]] ];
+unitDefs set [_type, ["M109A6 Shrapnel", 7500, si0, 60, "M109A6G_xj400", "\TZK_Texture_4_0_0\icon\iM109A6G.paa", -1, [2, _crewW], _mHowitzer, ["Common\Equip\Shrapnel.sqs"]] ];
 _m109ShrapnelW = _type;
 _type = _type + 1;
 
@@ -720,7 +728,7 @@ _soldierE4 = _type;
 _type call _lv4Inf;
 _type = _type + 1;
 
-unitDefs set [_type, ["RKG I", 50, _si, 5, "SoldierEB_RKG_xj400", "ivojak", 2^_st, [], "", []] ];
+unitDefs set [_type, ["RKG I", 50, _si, 5, "SoldierEB_RKG_xj400", "ivojak", -1, [], "", []] ];
 _rkgSoldierE = _type;
 _type call _lv1Inf;
 TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [count TzkSelfUpdateVal, [
@@ -838,7 +846,7 @@ TzkSelfUpdateIdx set [count TzkSelfUpdateIdx, _type]; TzkSelfUpdateVal set [coun
 ]];
 _type = _type + 1;
 
-unitDefs set [_type, ["Crew", 50, _si, 10, "SoldierECrew_xj400", "icrew", 2^stBarracks + 2^stLight + 2^stShip + 2^stHeavy, [], "", []] ];
+unitDefs set [_type, ["Crew", 50, _si, 10, "SoldierECrew_xj400", "icrew", 2^stBarracks + 2^stLight + 2^stShip + 2^stHeavy + 2^stAir, [], "", []] ];
 _crewE = _type;
 _type = _type + 1;
 
@@ -850,11 +858,11 @@ TzkInfLevelIdx set [count TzkInfLevelIdx, _type];
 TzkInfLevelVal set [count TzkInfLevelVal, 3];
 _type = _type + 1;
 
-unitDefs set [_type, ["Pilot", 50, _si, 10, "SoldierEPilot_xj400", "ipilot", 2^stBarracks + 2^stAir, [], "", []] ];
+unitDefs set [_type, ["Pilot", 50, _si, 10, "SoldierEPilot_xj400", "ipilot", -1, [], "", []] ];
 _pilotE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Grenade Vest", 130, _si, 10, "SoldierESaboteurBizon_xj400", "igrenadier", 2^_st, [], "", ["\TZK_Patch4_4_0_6\s\Common\Equip\Vest.sqs"]] ];
+unitDefs set [_type, ["Grenade Vest", 130, _si, 10, "SoldierESaboteurBizon_xj400", "igrenadier", -1, [], "", ["\TZK_Patch4_4_0_6\s\Common\Equip\Vest.sqs"]] ];
 _vestE = _type;
 _type call _lv4Inf;
 _type = _type + 1;
@@ -925,13 +933,13 @@ _brdmE2 = _type;
 _type = _type + 1;
 
 unitDefs set [_type, [
-	"BRDM GShG", 1200, _si, 30, "BRDM_GShG_xj400", "\TZK_Texture_4_0_0\icon\iBRDMPK.paa", 2^_st, [2, _crewE], _mCar,
+	"BRDM GShG", 1200, _si, 30, "BRDM_GShG_xj400", "\TZK_Texture_4_0_0\icon\iBRDMPK.paa", -1, [2, _crewE], _mCar,
 	["\TZK_Patch4_4_0_6\s\Common\Equip\ArmoredCarGatling.sqs"]
 ]];
 _brdmGsghE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["BRDM Gaskin", 800, _si, 30, "BRDM2_MNF_xj400", "\TZK_Texture_4_0_0\icon\ibrdm2.paa", 2^_st, [2, _crewE], _mCar, []] ];
+unitDefs set [_type, ["BRDM Gaskin", 800, _si, 30, "BRDM2_MNF_xj400", "\TZK_Texture_4_0_0\icon\ibrdm2.paa", -1, [2, _crewE], _mCar, []] ];
 _brdmE3 = _type;
 _type = _type + 1;
 
@@ -939,7 +947,7 @@ unitDefs set [_type, ["BRDM2 AT", 1300, _si, 30, "MNF_BRDM2_AT4", "\BRMD\ibrmd",
 _brdmEAT = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Motorcycle", 200, si1, 20, "Jawa_xj406", "\o\vehl\ijawa", 2^stLight, [1, _crewE], _mBike, []] ];
+unitDefs set [_type, ["Motorcycle", 200, si1, 20, "JawaT_C_xj406", "\o\vehl\ijawa", 2^stLight, [1, _crewE], _mBike, []] ];
 _motorE = _type;
 _type = _type + 1;
 
@@ -962,7 +970,7 @@ unitDefs set [_type, ["Fuel Ural", 500, _si, 30, "UralRefuel_C_xj400", "iuralfue
 _truckRefuelE = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Jet Ski", 300, _si, 30, "PCSFEjetski_xj400", "\TZK_Texture_4_0_0\icon\iJetSki.paa", 2^stLight + 2^stShip, [1, _crewE], _mBike, ["\TZK_Patch4_4_0_6\s\Common\Equip\jetski.sqs"]] ];
+unitDefs set [_type, ["Jet Ski", 300, _si, 30, "Jetski_T_E_xj400", "\TZK_Texture_4_0_0\icon\iJetSki.paa", 2^stLight + 2^stShip, [1, _crewE], _mBike, ["\TZK_Patch4_4_0_6\s\Common\Equip\jetski.sqs"]] ];
 _jetskiE = _type;
 _type = _type + 1;
 
@@ -996,6 +1004,14 @@ _type = _type + 1;
 
 unitDefs set [_type, ["Boat HE/AP gun", 1500, _si, 30, "GunBoatE_xj400", "ipbr", 2^stLight + 2^stShip, [2, _crewE], _mBoat, [(TzkScripts select 069)]] ];
 _boatHeapE = _type;
+_type = _type + 1;
+
+unitDefs set [_type, ["Boat 105mm", 1000, _si, 30, "GunBoatE_105mm_xj400", "ipbr", 2^stLight + 2^stShip, [2, _crewE], _mBoat, [(TzkScripts select 069)]] ];
+_boat105E = _type;
+_type = _type + 1;
+
+unitDefs set [_type, ["Boat 120mm", 2000, _si, 30, "GunBoatE_120mm_xj400", "ipbr", 2^stLight + 2^stShip, [2, _crewE], _mBoat, [(TzkScripts select 069)]] ];
+_boat120E = _type;
 _type = _type + 1;
 
 unitDefs set [_type, ["Patrol Boat", 4000, _si, 30, "MX_Mirage", "ipbr", -1, [2, _crewE], _mBoat, []] ];
@@ -1087,7 +1103,7 @@ unitDefs set [_type, ["(Empty)", 2000, _si, 30, "T72_C_xj400", "it72", -1, [3, _
 _tankLightE03 = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["2S25 Sprut-SD", 3000, _si, 40, "2S25_mfm_xj400", "\tzk_texture_4_0_6\ui\i2s25.paa", 2^stHeavy + 2^stLight, [2, _crewE], _mTd, []] ];
+unitDefs set [_type, ["2S25 Sprut-SD", 2500, _si, 40, "2S25_mfm_xj406", "\tzk_texture_4_0_6\ui\i2s25.paa", 2^stHeavy + 2^stLight, [2, _crewE], _mTd, []] ];
 _2s25E = _type;
 _type = _type + 1;
 
@@ -1128,7 +1144,7 @@ unitDefs set [_type, ["TOS-1 Buratino", 25000, _si, 60, "TOS1_TZK_xj400", "\TZK_
 _tos1E = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["PLZ-05 Shrapnel", 7500, si1, 60, "PLZ05_TZK_xj400", "\TZK_Texture_4_0_0\icon\iPLZ05.paa", 2^stHeavy, [2, _crewW], _mHowitzer, ["Common\Equip\Shrapnel.sqs"]] ];
+unitDefs set [_type, ["PLZ-05 Shrapnel", 7500, si1, 60, "PLZ05_TZK_xj400", "\TZK_Texture_4_0_0\icon\iPLZ05.paa", -1, [2, _crewW], _mHowitzer, ["Common\Equip\Shrapnel.sqs"]] ];
 _plz05ShrapnelE = _type;
 _type = _type + 1;
 
@@ -1352,7 +1368,7 @@ unitDefs set [_type, ["Bike", 100, _si, 0, "Kolo_xj400", "\Kolo\ikolo", _st, [1,
 _bikeC = _type;
 _type = _type + 1;
 
-unitDefs set [_type, ["Motorcycle", 200, _si, 0, "Jawa_xj400", "\o\vehl\ijawa", _st, [1, _crewR], _mBike, []] ];
+unitDefs set [_type, ["Motorcycle", 200, _si, 0, "JawaT_C_xj406", "\o\vehl\ijawa", _st, [1, _crewR], _mBike, []] ];
 _motorC = _type;
 _type = _type + 1;
 
@@ -1726,23 +1742,23 @@ if (restanksx == 4) then {_startType = 2};
 if (restanksx == 5) then {_startType = 3};
 
 if (0 == _startType) then {
-	vehiclesStart set [si0, [ [ _truckW, [0, -25]],[[_hummerW3,_hummerW] select bool_TZK_Vanilla_Mode, [20, -40]], [ _jeepW, [0, -40]] ] ];
-	vehiclesStart set [si1, [ [ _truckE, [0, -25]],[[  _brdmE3,  _brdmE] select bool_TZK_Vanilla_Mode, [20, -40]],  [ _uazE, [0, -40]] ] ];
+	vehiclesStart set [si0, [ [ _truckW, [0, -25]],[[_hummerW2,_hummerW] select bool_TZK_Vanilla_Mode, [20, -40]], [ _jeepW, [0, -40]] ] ];
+	vehiclesStart set [si1, [ [ _truckE, [0, -25]],[[  _brdmE2,  _brdmE] select bool_TZK_Vanilla_Mode, [20, -40]],  [ _uazE, [0, -40]] ] ];
 };
 
 if (1 == _startType) then {
-	vehiclesStart set [si0, [ [ _truckW, [0, -25]],[[_hummerW3,_hummerW] select bool_TZK_Vanilla_Mode, [20, -40]], [ _supportTruckW, [0, -40]] ] ];
-	vehiclesStart set [si1, [ [ _truckE, [0, -25]],[[  _brdmE3,  _brdmE] select bool_TZK_Vanilla_Mode, [20, -40]], [ _supportTruckE, [0, -40]] ] ];
+	vehiclesStart set [si0, [ [ _truckW, [0, -25]],[[_hummerW2,_hummerW] select bool_TZK_Vanilla_Mode, [20, -40]], [ _supportTruckW, [0, -40]] ] ];
+	vehiclesStart set [si1, [ [ _truckE, [0, -25]],[[  _brdmE2,  _brdmE] select bool_TZK_Vanilla_Mode, [20, -40]], [ _supportTruckE, [0, -40]] ] ];
 };
 
 if (2 == _startType) then {
-	vehiclesStart set [si0, [ [ _truckW, [0, -25]],[[_hummerW3,_hummerW] select bool_TZK_Vanilla_Mode, [20, -40]], [ _supportAPCW, [-20, -25]],  [ _supportTruckW, [20, -25]]  ] ];
-	vehiclesStart set [si1, [ [ _truckE, [0, -25]],[[  _brdmE3,  _brdmE] select bool_TZK_Vanilla_Mode, [20, -40]], [ _supportAPCE, [-20, -25]],  [ _supportTruckE, [20, -25]]  ] ];
+	vehiclesStart set [si0, [ [ _truckW, [0, -25]],[[_hummerW2,_hummerW] select bool_TZK_Vanilla_Mode, [20, -40]], [ _supportAPCW, [-20, -25]],  [ _supportTruckW, [20, -25]]  ] ];
+	vehiclesStart set [si1, [ [ _truckE, [0, -25]],[[  _brdmE2,  _brdmE] select bool_TZK_Vanilla_Mode, [20, -40]], [ _supportAPCE, [-20, -25]],  [ _supportTruckE, [20, -25]]  ] ];
 };
 
 if (3 == _startType) then {
-	vehiclesStart set [si0, [ [ _truckW, [0, -25]],[[_hummerW3,_hummerW] select bool_TZK_Vanilla_Mode, [20, -40]], [ _supportAPCW, [-20, -25]], [ _supportAPCW, [20, -25]], [ _m2a2d, [0, -50]], [ _supportTruckW, [40, -25]]  ] ];
-	vehiclesStart set [si1, [ [ _truckE, [0, -25]],[[  _brdmE3,  _brdmE] select bool_TZK_Vanilla_Mode, [20, -40]], [ _supportAPCE, [-20, -25]], [ _supportAPCE, [20, -25]], [ _bmp2d, [0, -50]], [ _supportTruckE, [40, -25]]  ] ];
+	vehiclesStart set [si0, [ [ _truckW, [0, -25]],[[_hummerW2,_hummerW] select bool_TZK_Vanilla_Mode, [20, -40]], [ _supportAPCW, [-20, -25]], [ _supportAPCW, [20, -25]], [ _m2a2d, [0, -50]], [ _supportTruckW, [40, -25]]  ] ];
+	vehiclesStart set [si1, [ [ _truckE, [0, -25]],[[  _brdmE2,  _brdmE] select bool_TZK_Vanilla_Mode, [20, -40]], [ _supportAPCE, [-20, -25]], [ _supportAPCE, [20, -25]], [ _bmp2d, [0, -50]], [ _supportTruckE, [40, -25]]  ] ];
 	if (bool_TZK_SEMod_Mode) then {vehiclesStart set [si0, [ [ _truckW, [0, -25]],[[_hummerW2,_hummerW] select bool_TZK_Vanilla_Mode, [20, -40]], [ _supportAPCW, [-20, -25]], [ _supportAPCW, [20, -25]], [ _m2a2aa, [0, -50]], [ _supportTruckW, [40, -25]]  ] ]};
 	if (bool_TZK_SEMod_Mode) then {vehiclesStart set [si1, [ [ _truckE, [0, -25]],[[  _brdmE2,  _brdmE] select bool_TZK_Vanilla_Mode, [20, -40]], [ _supportAPCE, [-20, -25]], [ _supportAPCE, [20, -25]], [ _bmp2aa, [0, -50]], [ _supportTruckE, [40, -25]]  ] ]};
 };
@@ -1756,8 +1772,8 @@ airTransport = [[], []];
 groundTransport = [[], []];
 TransportCarW = [ _jeepW, jeepaW, _hummerW, _hummerW2, _hummerW3, _hummerWG ];	TransportCarE = [ _uazE, uazaE, _brdmE, _brdmE2, _brdmE3, _brdmEAT ];
 TransportTruckW = [ _truckW ];								TransportTruckE = [ _truckE ];
-TransportShipE = [_boatE,_boatsupE,_boatE2,_boatE3,_boatHeapE, _patrolboatE, _patrolshipE];
-TransportShipW = [_boatW,_boatsupW,_boatW2,_boatW3,_boatHeapW, _patrolboatW, _patrolshipW];
+TransportShipE = [_boatE,_boatsupE,_boatE2,_boatE3,_boatHeapE, _patrolboatE, _patrolshipE, _boat105E,_boat120E];
+TransportShipW = [_boatW,_boatsupW,_boatW2,_boatW3,_boatHeapW, _patrolboatW, _patrolshipW, _boat105W,_boat120W];
 TransportZodiacW = [ _zodiacW, _zodiacHW ];				TransportZodiacE = [ _zodiacE, _zodiacHE ];
 Transport6APCW = [ _m2a2W, _m3a2W, _m2a2aa, _m2a2at, _m2a2d,  _warrior80W ];		Transport6APCE = [ _bmp2E, _bmp2_EE, _bmp2aa, _bmp2at, _bmp2d, _bmp2Cannon,  _bmp3 ];
 Transport8APCW = [ _m113W, _vulcanTransp, _vulcanW2 ]; 					Transport8APCE = [ _bmpE ];
@@ -1797,8 +1813,10 @@ typesTransportHeli = TransportHeliW + TransportHeliE + TransportirNOHeliW + Tran
 typesSupportAPC = [ _supportAPCW, _supportAPCWminer, _supportAPCE, _supportAPCEminer ];
 typesBattleShip = (TransportShipE+TransportShipW) - ((typesSupport select 0)+(typesSupport select 1));
 typesHowitzer = [ _m109W,_plz05E, _grkpbvW,_plz89E, _m109ShrapnelW,_plz05ShrapnelE ]; typesRocketLauncher = [_m270W, _tos1E];
+typesHeavyHowitzer = [_m109W, _plz05E];
 typesHeavyTank = [ _tankHeavyW01, _tankHeavyW02, _tankHeavyW03, _tankHyperW01,  _tankHeavyE01, _tankHeavyE02, _tankHeavyE03, _tankHyperE01 ];
 typesLightTank = [ _tankLightW01, _tankLightW02, _tankLightE01, _tankLightE02, _tankLightE03,  _AMX10W, _tdW, _tdE, _amx10RcW,_2s25E];
+typesMainGunLightShip = [_boat105W,_boat105E,_boat120W,_boat120E];
 comment {Extend typesATAPC definition since $1800 APC weapon more useful} ;
 typesATAPC = [ _m2a2at, _bmp2at, _m2a2W, _bmp2E ];
 typesAAAPC = [ _vulcanW2, _m2a2aa, _vulcanTransp, _vulcanAutoW, _tunguskaE, _bmp2aa, _bmp2Cannon, _shilkaAutoE ];
@@ -1836,8 +1854,8 @@ typesHeliTugger = [
 	, _mi17E, _mi17supE, _mi17E30, _mi17EL, _mi17EMG2
 ];
 typesBoatTugger = [
-	  _boatW, _boatW2, _boatW3, _boatsupW, _boatHeapW
-	, _boatE, _boatE2, _boatE3, _boatsupE, _boatHeapE
+	  _boatW, _boatW2, _boatW3, _boatsupW, _boatHeapW, _boat105W, _boat120W
+	, _boatE, _boatE2, _boatE3, _boatsupE, _boatHeapE, _boat105E, _boat120E
 ];
 typesTruckTugger = [
 	  _supportTruckW, _supportTruckW2
@@ -1915,7 +1933,7 @@ comment {TOWN GROUP VEHICLES;} ;
 TownGroupVehicles = [];
 
 comment { Radio List Classification(Relating to How Actions Defined)} ;
-RadioTypesCustomCarShips = [_hummerW2, _brdmE2, _hummerW3, _brdmE3, _boatHeapW, _boatHeapE];
+RadioTypesCustomCarShips = [_hummerW2, _brdmE2, _hummerW3, _brdmE3];
 RadioTypesShips = TransportShipW + TransportShipE;
 RadioTypesSupport = (typesSupportPlus select 0) + (typesSupportPlus select 1);
 RadioTypesTransportPlane = [ _c130supportW, _an72supportE, _c130W, _an72E ];

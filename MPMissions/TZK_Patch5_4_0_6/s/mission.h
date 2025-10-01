@@ -55,6 +55,12 @@
 #define TZK_CONFIG_406_AddOns \
 	TZK_CONFIG_405_AddOns \
 	"TZK_CONFIG_406_Release_2", "TZK_Scripts_406_Release_2", 
+#define TZK_PATCH_406_v5 \
+	"TZK_CONFIG_406_Patch", \
+	"TZK_CONFIG_406_Patch2", \
+	"TZK_CONFIG_406_Patch3", \
+	"TZK_CONFIG_406_Patch4", \
+	"TZK_CONFIG_406_Patch5",
 
 
 		// TZK_Mission_Group_Initialize(0,GUER, posG1,posG2,posG3, 0, "SoldierGB", "dev = true; call preprocessFile {Init\MissionEnv.sqf}; [] exec ""\TZK_Scripts_4_0_4\Server\InitRepairableObjects.sqs""; [] exec ""\TZK_Scripts_4_0_4\Server\InitDestroyIslandObject.sqs""")
