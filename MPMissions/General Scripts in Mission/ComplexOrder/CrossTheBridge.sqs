@@ -99,7 +99,7 @@ _curVehPosAsl = getPosASL _vehicle; _curVehPosAsl set [2, _suspendH + (_curVehPo
 
 	goto "readyToCrossBridge"
 # suspendMoveStartPos
-	_moveParamCache = [true, true, [_vehicle, _curVehPosAsl, _startPos, 45]]
+	_moveParamCache = [true, true, [_vehicle, _curVehPosAsl, _startPos, 45, false]]
 	_moveParamCache exec "Bridge\MoveSuspended.sqs"
 	# loopMoveExactlyStart
 		~ 1
@@ -116,7 +116,7 @@ _curVehPosAsl = getPosASL _vehicle; _curVehPosAsl set [2, _suspendH + (_curVehPo
 ; suspend move across the bridge
 	_vehicle groupChat format ["%1 %2 %3 %4.", localize {TZK_LANG_PREPARE}, localize {TZK_LANG_TO}, localize {TZK_LANG_CROSS}, localize {TZK_LANG_BRIDGE}]
 
-	_moveParamCache = [true, true, [_vehicle, _vehBeginPos, _vehEndPos, 45]]
+	_moveParamCache = [true, true, [_vehicle, _vehBeginPos, _vehEndPos, 45, true]]
 	_moveParamCache exec "Bridge\MoveSuspended.sqs"
 	# loopMoveBridge
 		~ 1
