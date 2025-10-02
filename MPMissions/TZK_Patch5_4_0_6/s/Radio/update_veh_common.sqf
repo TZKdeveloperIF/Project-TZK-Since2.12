@@ -1,7 +1,7 @@
 call loadFile (TzkScripts select 320);
 _texts = TzkInGameText select 025;
 
-Radio002 setTriggerText (_texts select 0); Radio002 setTriggerStatements ["this", {[] exec (TzkScripts select 025)}, ""];
+call preprocessFile "Util\radio2.sqf";
 
 Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""];
 Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""];
