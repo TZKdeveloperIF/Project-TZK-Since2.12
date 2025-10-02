@@ -339,6 +339,23 @@
 		, "Refresh Radio List"
 		, "Turn ON Rts Map Mode"
 		, "Turn OFF Rts Map Mode" // 10
+		, "Reset Vector Up"
+		, "To driver's seat"
+		, "To gunner's seat"
+		, "Eject All Cargo"
+		, "Eject One Cargo" // 15
+		, "Transport Turn OFF"
+		, "Transport Turn ON"
+		, "Next Page..."
+		, "SpoofMissile ON"
+		, "SpoofMissile OFF" // 20
+		, "Get Plane Status"
+		, "Eject AI Units"
+		, "AfterBurner ON"
+		, "AfterBurner OFF"
+		, "Marker Displaying Switch" // 25
+		, "Return to Spectator Mode"
+		, "Switch %1m/s Magazine"
 	] call _f; // 025
 	// tg
 	[

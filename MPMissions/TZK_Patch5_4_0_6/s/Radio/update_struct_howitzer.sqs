@@ -6,14 +6,14 @@ _speed = [712, 690] select ("D30_xj400" == typeOf _vehicle)
 
 call loadFile (TzkScripts select 320);
 
-Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", {[] exec (TzkScripts select 025)}, ""];
+call preprocessFile "Util\radio2.sqf";
 
 "M" call loadFile (TzkScripts select 321);
 
-Radio009 setTriggerText "Next Page...";
+Radio009 setTriggerText (TzkInGameText select 025 select 18);
 Radio009 setTriggerStatements ["this", {call loadFile (TzkScripts select 325)}, ""];
 
-Radio000 setTriggerText "Reset Vector Up"; Radio000 setTriggerStatements ["this", {[vehicle player] exec (TzkScripts select 202)}, ""];
+call preprocessFile "Util\radio0_vecUp.sqf";
 
 	? Page_Radio_Artillery == 0 : goto "SkipInitPage2"
 	["M", _speed] call loadFile (TzkScripts select 324);

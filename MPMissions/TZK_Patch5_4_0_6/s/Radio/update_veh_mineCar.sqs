@@ -3,7 +3,7 @@ _vehicle = _this select 0
 
 call loadFile (TzkScripts select 320);
 
-Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", {[] exec (TzkScripts select 025)}, ""];
+call preprocessFile "Util\radio2.sqf";
 
 Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""];
 
@@ -19,4 +19,4 @@ Radio008 setTriggerText "Place Antipersonnel Mine";
 Radio008 setTriggerStatements ["this", {[vehicle player, "MineAPE", player] exec "Util\PlacePutMag.sqs"}, ""];
 
 Radio009 setTriggerText " "; Radio009 setTriggerStatements ["this", "", ""];
-Radio000 setTriggerText "Refresh Radio List"; Radio000 setTriggerStatements ["this", {[vehicle player] exec (TzkScripts select 195)}, ""];
+Radio000 setTriggerText (TzkInGameText select 025 select 8); Radio000 setTriggerStatements ["this", {[vehicle player] exec (TzkScripts select 195)}, ""];
