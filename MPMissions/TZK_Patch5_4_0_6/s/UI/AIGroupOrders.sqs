@@ -14,7 +14,7 @@ btnSendOrder = false; btnTemporaryOrder = false
 _idcConcurrentRts = IDC + 13
 ctrlShow [_idcConcurrentRts, not bool_TZK_Rts_Cmd_Mode]
 
-_idcCurrent = IDC+0
+_idcGroups = IDC + 0
 _idcSettingLabel = IDC + 100
 _idcSettingCombo = IDC + 200
 _idcSettingImage = IDC + 300
@@ -79,26 +79,39 @@ _updateTypePic = loadFile (TzkScripts select 252)
 	{ctrlShow [_idcFactory + _x, false]; ctrlShow [_idcFacPic + _x, false]} forEach _facBias
 	{_bias = _x, {ctrlShow [_x + _bias, false]} forEach [_idcBuyType, _idcTypePic, _idcBuyNum]} forEach _typeBias
 
+; init
+	_idAll = _idcGroups call _updateGrpOrder
+	? _idAll != -1: lbSetCurSel [_idcGroups, _idAll]
+
+; short key
+	_getShortKeyFunc = preprocessFile "UI\ShortKey\proc.sqf"
+	; _idcShortKey = IDC + 16 * 1 + 2
+	; ctrlSetText [_idcShortKey, TzkInGameText select 014]; ctrlShow [_idcShortKey, UsedVersion >= 2030]
+
+# loop
 # Update
 	ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 
 	? call dlgUpdated: exit
 	? !(alive player): closeDialog 0; Exit
 
-	_idcCurrent call _updateGrpOrder
+	_idcGroups call _updateGrpOrder
 	call _updateFactories
 
 	call _checkAbModified
 	
-	~ 0.2
+	~ 0.07
 
-	? _needRefreshFlag: _needRefreshFlag = false, if (_needRefreshIdx == lbCurSel _idcCurrent) then {call _update4OneGroup}
-	? _selGroup != lbCurSel _idcCurrent: goto "NewGroupSelected"
+	? _needRefreshFlag: _needRefreshFlag = false, if (_needRefreshIdx == lbCurSel _idcGroups) then {call _update4OneGroup}
+	? _selGroup != lbCurSel _idcGroups: goto "NewGroupSelected"
 	? _selOrder != lbCurSel _idcOrder : _selOrder = lbCurSel _idcOrder; goto "NewOrderSelected"
 
 	_set = -1; _i = 0; _c = count aiSettingDefs
 	while {_i<_c && _set == -1} do {if !(lbCurSel (_idcSettingCombo + _i) in [_lastSetting select _i, -1]) then {_set = _i}; _i = _i + 1}
 	? _set != -1 : goto "SendSetting"
+
+	_shortKeyFunc = "dlg_confirm_only" call _getShortKeyFunc
+	? _shortKeyFunc != "": goto "ProcShortKey"
 
 	? btnSendOrder: btnSendOrder = false; goto "SendOrder"
 	? btnTemporaryOrder: btnTemporaryOrder = false; goto "ConcurrentRts"
@@ -108,7 +121,7 @@ _updateTypePic = loadFile (TzkScripts select 252)
 
 # NewGroupSelected
 	? not _bInitSelNewGroup: _bInitSelNewGroup = true; _onSelNewGrp = loadFile (TzkScripts select 232)
-	_idcCurrent call _onSelNewGrp
+	_idcGroups call _onSelNewGrp
 	goto "Update"
 
 # NewOrderSelected
@@ -139,7 +152,14 @@ _updateTypePic = loadFile (TzkScripts select 252)
 	? _gi == -1: [_si, giPlayer + GroupsNum, _selOrder, _params] call preprocessFile (TzkScripts select 171)
 	? _gi != -1: [_si, _gi, _selOrder, _params] call preprocessFile (TzkScripts select 171)
 	goto "Update"
-	
+
+# ProcShortKey
+	? "confirm" == _shortKeyFunc: goto "OK"
+
+	goto "loop"
+# OK
+	goto "SendOrder"
+
 # ConcurrentRts
 	closeDialog 0
 	; ~0.1
