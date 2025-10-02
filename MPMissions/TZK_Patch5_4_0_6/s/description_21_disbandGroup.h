@@ -44,14 +44,16 @@ class DisbandGroupDialog: Menu {
   			default = false
 		};
 
- 		class DisbandGroupDialog_BUTTON_Leader: Button {
-  			x = 0.3975;
-  			y = 0.47;
-  			w = 0.205;
-  			h = 0.04;
-  			text = "Disband leader too"
-  			action = "btnDisbandGroupLeader = true"
-  			default = false
+		class DisbandGroupDialog_BUTTON_Leader: Button {
+			idc = IDC + 16 * 0 + 0;
+
+			x = 0.3975;
+			y = 0.47;
+			w = 0.205;
+			h = 0.04;
+			text = "Disband leader too"
+			action = "btnDisbandGroupLeader = true"
+			default = false
 		};
 
  		class DisbandGroupDialog_BUTTON_Infantry: Button {

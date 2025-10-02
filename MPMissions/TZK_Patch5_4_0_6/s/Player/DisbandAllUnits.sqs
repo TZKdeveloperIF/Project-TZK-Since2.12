@@ -1,7 +1,8 @@
 ; args: [[unit tracked]]
 _unitselect = _this select 0 select 0
 _groups = [groupPlayer]
-@!mutexDlg
+
+@ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
 _dlg = createDialog "DisbandGroupDialog"
 mutexDlg = false
@@ -12,18 +13,28 @@ mutexDlg = false
 	btnDisbandGroupInf = false
 	btnDisbandGroupGunner = false
 
-#Update
+; short key
+	_getShortKeyFunc = preprocessFile "UI\ShortKey\proc.sqf"
+	; _idcShortKey = IDC + 16 * 1 + 2
+	; ctrlSetText [_idcShortKey, TzkInGameText select 014]; ctrlShow [_idcShortKey, UsedVersion >= 2030]
+
+# loop
 	? call dlgUpdated: exit
 	? !(alive player) : closeDialog 0; exit
-		? btnDisbandGroupLeader : closeDialog 0; goto "BeginDisbandGroup"
-		? btnDisbandGroupOK : closeDialog 0; goto "BeginDisbandGroup"
-		? btnDisbandGroupExit : btnDisbandGroupExit  = false; closeDialog 0; exit
-		? btnDisbandGroupInf : closeDialog 0; goto "BeginDisbandGroup"
-		? btnDisbandGroupGunner : closeDialog 0; goto "BeginDisbandGroup"
-~0.1
-goto "Update"
 
-#BeginDisbandGroup
+	_shortKeyFunc = "dlg_confirm_only" call _getShortKeyFunc
+	? _shortKeyFunc != "": goto "ProcShortKey"
+
+		? btnDisbandGroupLeader: goto "BeginDisbandGroup"
+		? btnDisbandGroupOK: goto "BeginDisbandGroup"
+		? btnDisbandGroupExit : btnDisbandGroupExit  = false; closeDialog 0; exit
+		? btnDisbandGroupInf: goto "BeginDisbandGroup"
+		? btnDisbandGroupGunner: goto "BeginDisbandGroup"
+	~ 0.02
+goto "loop"
+
+# BeginDisbandGroup
+	closeDialog 0
 ? (group _unitselect) in (townGroups select siPlayer) : player groupchat "Not allowed to disband town groups"; exit
 player groupchat "Process started: disbanding group of selected unit....";
 
@@ -59,6 +70,11 @@ player groupchat "Process started: disbanding group of selected unit....";
 #EventDone
 
 player groupchat format ["GroupSize before process start: %1, number of disbanded untis: %2. Leader%3 alive.", count _members, _num, [" not", ""] select (alive leader group _unitselect)]
-
-#Exit
 exit
+# ProcShortKey
+	? "confirm" == _shortKeyFunc: goto "OK"
+
+	goto "loop"
+# OK
+	btnDisbandGroupOK = true
+	goto "BeginDisbandGroup"

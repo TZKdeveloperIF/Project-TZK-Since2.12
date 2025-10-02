@@ -47,7 +47,7 @@ _f = {
 "\TZK_Patch4_4_0_6\s\UI\Spectator.sqs" call _f; // 024
 "Player\Dialog\TZK_Mission_Setting_1_Wrap.sqs" call _f; // 025
 "Player\Dialog\TZK_Mission_Setting_2.sqs" call _f; // 026
-"\TZK_Patch4_4_0_6\s\UI\UnitCam.sqs" call _f; // 027
+"\TZK_Patch5_4_0_6\s\UI\UnitCam.sqs" call _f; // 027
 "Rts\Dialog\Waypoints.sqs" call _f; // 028
 "\TZK_Patch4_4_0_6\s\Player\Effect\AB.sqs" call _f; // 029
 
@@ -307,7 +307,7 @@ _f = {
 "\TZK_Patch4_4_0_6\s\UI\pAbUpdateFactoryImage.sqf" call _f; // 253
 "\TZK_Patch4_4_0_6\s\UI\pAbUpdateCombobox.sqf" call _f; // 254
 "\TZK_Patch4_4_0_6\s\UI\AutoBuy_UpdateFactories.sqf" call _f; // 255
-"\TZK_Patch4_4_0_6\s\UI\BuildMenu2.sqs" call _f; // 256
+"\TZK_Patch5_4_0_6\s\UI\buildingMenu.sqs" call _f; // 256
 "\TZK_Patch4_4_0_6\s\UI\BuyUnits.sqs" call _f; // 257
 "\TZK_Patch4_4_0_6\s\UI\BU_CmdRule.sqf" call _f; // 258
 "\TZK_Patch4_4_0_6\s\UI\BU_CmdRule2.sqf" call _f; // 259
@@ -470,8 +470,11 @@ _f = {
 
 "Rts\Marker\unitFlash.sqf" call _f; // 400
 
+"\TZK_Patch5_4_0_6\s\Player\DisbandAllUnits.sqs" call _f; // 401
+"\TZK_Scripts_4_0_4\Player\ClearDeadCrew.sqs" call _f; // 402
+
 // script count check. Check index with last literal value
-if (_i != 400 + 1) then {
+if (_i != 402 + 1) then {
 	player globalChat "Script count mismatch!";
 };
 
