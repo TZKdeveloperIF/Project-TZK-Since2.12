@@ -5,12 +5,12 @@ _pages = 2; _page = Page_Radio_Artillery; _boole_PageNoChange = true
 
 call loadFile (TzkScripts select 320);
 
-Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", {[] exec (TzkScripts select 025)}, ""];
+call preprocessFile "Util\radio2.sqf";
 
 "MLRS" call loadFile (TzkScripts select 321);
 
-Radio009 setTriggerText "Next Page..."; Radio009 setTriggerStatements ["this", {call loadFile (TzkScripts select 325)}, ""];
-Radio000 setTriggerText "Refresh Radio List"; Radio000 setTriggerStatements ["this", {[vehicle player] exec (TzkScripts select 195)}, ""];
+Radio009 setTriggerText (TzkInGameText select 025 select 18); Radio009 setTriggerStatements ["this", {call loadFile (TzkScripts select 325)}, ""];
+Radio000 setTriggerText (TzkInGameText select 025 select 8); Radio000 setTriggerStatements ["this", {[vehicle player] exec (TzkScripts select 195)}, ""];
 
 	? Page_Radio_Artillery == 0 : goto "SkipInitPage2"
 	"MLRS" call loadFile (TzkScripts select 323);

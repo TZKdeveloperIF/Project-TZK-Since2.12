@@ -1,0 +1,45 @@
+; args: [vehicle]
+_vehicle = _this select 0
+
+
+_booleStringTransport = "_vehicle in TransportActivatedVehicles"; _booleTransport = call _booleStringTransport
+_booleStringSwitchDriver = "player == gunner _vehicle && (isNull driver _vehicle || local driver _vehicle) && local _vehicle"; _booleSwitchDriver = call _booleStringSwitchDriver
+_booleStringSwitchGunner = "player == driver _vehicle && (isNull gunner _vehicle || local gunner _vehicle) && local _vehicle"; _booleSwitchGunner = call _booleStringSwitchGunner
+
+
+call loadFile (TzkScripts select 320);
+
+call preprocessFile "Util\radio2.sqf";
+if (call _booleStringSwitchDriver) then {Radio003 setTriggerText (TzkInGameText select 025 select 12); Radio003 setTriggerStatements ["this", {(vehicle player) exec (TzkScripts select 130)}, ""]} else {Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""]};
+if (call _booleStringSwitchGunner) then {Radio004 setTriggerText (TzkInGameText select 025 select 13); Radio004 setTriggerStatements ["this", {(vehicle player) exec (TzkScripts select 131)}, ""]} else {Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""]};
+Radio005 setTriggerText "Attach/Detach Center Vehicle"; Radio005 setTriggerStatements ["this", {[vehicle player, tsCenter, ttBoat] exec (TzkScripts select 074)}, ""];
+Radio006 setTriggerText "Attach/Detach Right Vehicle"; Radio006 setTriggerStatements ["this", {[vehicle player, tsRight, ttBoat] exec (TzkScripts select 074)}, ""];
+Radio007 setTriggerText "Attach/Detach Left Vehicle"; Radio007 setTriggerStatements ["this", {[vehicle player, tsLeft, ttBoat] exec (TzkScripts select 074)}, ""];
+Radio008 setTriggerText (TzkInGameText select 025 select 14); Radio008 setTriggerStatements ["this", {[vehicle player, siPlayer] exec (TzkScripts select 078)}, ""];
+Radio009 setTriggerText (TzkInGameText select 025 select 15); Radio009 setTriggerStatements ["this", {[vehicle player, siPlayer] exec (TzkScripts select 079)}, ""];
+if (call _booleStringTransport) then {	Radio000 setTriggerText (TzkInGameText select 025 select 16); Radio000 setTriggerStatements ["this", {[vehicle player] exec (TzkScripts select 176)}, ""];	} else {	Radio000 setTriggerText (TzkInGameText select 025 select 17); Radio000 setTriggerStatements ["this", {[vehicle player] exec (TzkScripts select 175)}, ""];	};
+
+
+~1
+#Refresh
+~0.05
+; In OFP/Arma can't compare booleans directly. Use (A && !B) || (!A && B) here, and use !_boolean to refresh.
+
+_booleRefreshTransport = (_booleTransport && !(call _booleStringTransport)) || (!_booleTransport && (call _booleStringTransport))
+? _booleRefreshTransport : if (call _booleStringTransport) then {	Radio000 setTriggerText (TzkInGameText select 025 select 16); Radio000 setTriggerStatements ["this", {[vehicle player] exec (TzkScripts select 176)}, ""];	} else {	Radio000 setTriggerText (TzkInGameText select 025 select 17); Radio000 setTriggerStatements ["this", {[vehicle player] exec (TzkScripts select 175)}, ""];	}
+
+_booleRefreshSwitchDriver = (_booleSwitchDriver && !(call _booleStringSwitchDriver)) || (!_booleSwitchDriver && (call _booleStringSwitchDriver))
+_booleRefreshSwitchGunner = (_booleSwitchGunner && !(call _booleStringSwitchGunner)) || (!_booleSwitchGunner && (call _booleStringSwitchGunner))
+? _booleRefreshSwitchDriver : if (call _booleStringSwitchDriver) then {Radio003 setTriggerText (TzkInGameText select 025 select 12); Radio003 setTriggerStatements ["this", {(vehicle player) exec (TzkScripts select 130)}, ""]} else {Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""]}
+? _booleRefreshSwitchGunner : if (call _booleStringSwitchGunner) then {Radio004 setTriggerText (TzkInGameText select 025 select 13); Radio004 setTriggerStatements ["this", {(vehicle player) exec (TzkScripts select 131)}, ""]} else {Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""]}
+
+? _booleRefreshTransport : _booleTransport = call _booleStringTransport
+? _booleRefreshSwitchDriver : _booleSwitchDriver = call _booleStringSwitchDriver
+? _booleRefreshSwitchGunner : _booleSwitchGunner = call _booleStringSwitchGunner
+
+_timeRefresh = time + 1
+@(time > _timeRefresh || boole_Refresh_Radio)
+? boole_Refresh_Radio : boole_Refresh_Radio = false
+? _vehicle == vehicle player : goto "Refresh"
+
+; EOF

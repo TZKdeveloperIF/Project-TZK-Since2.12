@@ -6,7 +6,7 @@ _booleStringTransport = "_vehicle in TransportActivatedVehicles"; _booleTranspor
 
 call loadFile (TzkScripts select 320);
 
-Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", {[] exec (TzkScripts select 025)}, ""];
+call preprocessFile "Util\radio2.sqf";
 ? bool_TZK_SEMod_Mode && "APC" countType [_vehicle] > 0: Radio003 setTriggerText "Entrench Tank ($1000)"; Radio003 setTriggerStatements ["this", {[vehicle player, player, [] ] exec "Extra\ppl\EntrenchTank.sqs"}, ""];
 Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""];
 ? "Truck" countType [_vehicle] > 0 : Radio005 setTriggerText "Attach/Detach Center Vehicle"; Radio005 setTriggerStatements ["this", {[vehicle player, tsCenter, ttTruck] exec (TzkScripts select 074)}, ""];
@@ -14,9 +14,9 @@ Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""];
 
 Radio006 setTriggerText " "; Radio006 setTriggerStatements ["this", "", ""];
 Radio007 setTriggerText " "; Radio007 setTriggerStatements ["this", "", ""];
-Radio008 setTriggerText "Eject All Cargo"; Radio008 setTriggerStatements ["this", {[vehicle player, siPlayer] exec (TzkScripts select 078)}, ""];
-Radio009 setTriggerText "Eject One Cargo"; Radio009 setTriggerStatements ["this", {[vehicle player, siPlayer] exec (TzkScripts select 079)}, ""];
-if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", {[vehicle player] exec (TzkScripts select 176)}, ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", {[vehicle player] exec (TzkScripts select 175)}, ""];	};
+Radio008 setTriggerText (TzkInGameText select 025 select 14); Radio008 setTriggerStatements ["this", {[vehicle player, siPlayer] exec (TzkScripts select 078)}, ""];
+Radio009 setTriggerText (TzkInGameText select 025 select 15); Radio009 setTriggerStatements ["this", {[vehicle player, siPlayer] exec (TzkScripts select 079)}, ""];
+if (call _booleStringTransport) then {	Radio000 setTriggerText (TzkInGameText select 025 select 16); Radio000 setTriggerStatements ["this", {[vehicle player] exec (TzkScripts select 176)}, ""];	} else {	Radio000 setTriggerText (TzkInGameText select 025 select 17); Radio000 setTriggerStatements ["this", {[vehicle player] exec (TzkScripts select 175)}, ""];	};
 
 
 ~1
@@ -25,7 +25,7 @@ if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn O
 ; In OFP/Arma can't compare booleans directly. Use (A && !B) || (!A && B) here, and use !_boolean to refresh.
 
 _booleRefreshTransport = (_booleTransport && !(call _booleStringTransport)) || (!_booleTransport && (call _booleStringTransport))
-? _booleRefreshTransport : if (call _booleStringTransport) then {	Radio000 setTriggerText "Transport Turn OFF"; Radio000 setTriggerStatements ["this", {[vehicle player] exec (TzkScripts select 176)}, ""];	} else {	Radio000 setTriggerText "Transport Turn ON"; Radio000 setTriggerStatements ["this", {[vehicle player] exec (TzkScripts select 175)}, ""];	}
+? _booleRefreshTransport : if (call _booleStringTransport) then {	Radio000 setTriggerText (TzkInGameText select 025 select 16); Radio000 setTriggerStatements ["this", {[vehicle player] exec (TzkScripts select 176)}, ""];	} else {	Radio000 setTriggerText (TzkInGameText select 025 select 17); Radio000 setTriggerStatements ["this", {[vehicle player] exec (TzkScripts select 175)}, ""];	}
 
 ? _booleRefreshTransport : _booleTransport = call _booleStringTransport
 

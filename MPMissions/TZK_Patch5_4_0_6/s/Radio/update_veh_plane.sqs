@@ -7,11 +7,11 @@ _vehicle = _this select 0
 
 call loadFile (TzkScripts select 320);
 
-Radio002 setTriggerText "Mission Setting"; Radio002 setTriggerStatements ["this", {[] exec (TzkScripts select 025)}, ""];
+call preprocessFile "Util\radio2.sqf";
 Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""];
 Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""];
 
-Radio006 setTriggerText "Get Plane Status"; Radio006 setTriggerStatements ["this", {[vehicle player, player] exec "\TZK_Scripts_4_0_4\Player\Action\PlaneFlyingStatus.sqs"}, ""];
+Radio006 setTriggerText (TzkInGameText select 025 select 21); Radio006 setTriggerStatements ["this", {[vehicle player, player] exec "\TZK_Scripts_4_0_4\Player\Action\PlaneFlyingStatus.sqs"}, ""];
 Radio007 setTriggerText " "; Radio007 setTriggerStatements ["this", "", ""];
 Radio008 setTriggerText " "; Radio008 setTriggerStatements ["this", "", ""];
 Radio009 setTriggerText " "; Radio009 setTriggerStatements ["this", "", ""];
@@ -19,8 +19,8 @@ Radio009 setTriggerText " "; Radio009 setTriggerStatements ["this", "", ""];
 _booleAfterBurner = ("A10_Base_xj400" countType [_vehicle] > 0) || ("Su25_Base_xj400" countType [_vehicle] > 0)
 ? _booleAfterBurner : _booleStringAfterBurnerON = "bAfterBurner && ""_x=={AfterBurnerSwitch_xj400}"" count magazines _vehicle > 0"; _booleABON = call _booleStringAfterBurnerON
 ? _booleAfterBurner : _booleStringAfterBurnerOFF = " ""_x=={AfterBurnerSwitch_xj400}"" count magazines _vehicle == 0 && count magazines _vehicle > 0"; _booleABOFF = call _booleStringAfterBurnerOFF
-if (_booleABON) then {Radio000 setTriggerText "AfterBurner ON"; Radio000 setTriggerStatements ["this", {vehicle player removeMagazines {AfterBurnerSwitch_xj400}; vehicle player exec (TzkScripts select 029); if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true} }, ""]};
-if (_booleABOFF) then {Radio000 setTriggerText "AfterBurner OFF"; Radio000 setTriggerStatements ["this", {vehicle player addMagazine {AfterBurnerSwitch_xj400}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true} }, ""]};
+if (_booleABON) then {Radio000 setTriggerText (TzkInGameText select 025 select 23); Radio000 setTriggerStatements ["this", {vehicle player removeMagazines {AfterBurnerSwitch_xj400}; vehicle player exec (TzkScripts select 029); if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true} }, ""]};
+if (_booleABOFF) then {Radio000 setTriggerText (TzkInGameText select 025 select 24); Radio000 setTriggerStatements ["this", {vehicle player addMagazine {AfterBurnerSwitch_xj400}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true} }, ""]};
 
 
 ~1
@@ -28,8 +28,8 @@ if (_booleABOFF) then {Radio000 setTriggerText "AfterBurner OFF"; Radio000 setTr
 ~0.05
 ; In OFP/Arma can't compare booleans directly. Use (A && !B) || (!A && B) here, and use !_boolean to refresh.
 
-? call _booleStringAfterBurnerON : Radio000 setTriggerText "AfterBurner ON"; Radio000 setTriggerStatements ["this", {vehicle player removeMagazines {AfterBurnerSwitch_xj400}; vehicle player exec (TzkScripts select 029); if !(boole_Refresh_Radio) then "boole_Refresh_Radio = true"}, ""]
-? call _booleStringAfterBurnerOFF : Radio000 setTriggerText "AfterBurner OFF"; Radio000 setTriggerStatements ["this", {vehicle player addMagazine {AfterBurnerSwitch_xj400}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true} }, ""]
+? call _booleStringAfterBurnerON : Radio000 setTriggerText (TzkInGameText select 025 select 23); Radio000 setTriggerStatements ["this", {vehicle player removeMagazines {AfterBurnerSwitch_xj400}; vehicle player exec (TzkScripts select 029); if !(boole_Refresh_Radio) then "boole_Refresh_Radio = true"}, ""]
+? call _booleStringAfterBurnerOFF : Radio000 setTriggerText (TzkInGameText select 025 select 24); Radio000 setTriggerStatements ["this", {vehicle player addMagazine {AfterBurnerSwitch_xj400}; if !(boole_Refresh_Radio) then {boole_Refresh_Radio = true} }, ""]
 
 _timeRefresh = time + 1
 @(time > _timeRefresh || boole_Refresh_Radio)
