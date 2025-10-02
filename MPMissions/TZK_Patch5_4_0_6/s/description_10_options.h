@@ -453,12 +453,12 @@ class OptionsDialog: Menu {
 		w = 0.15;
 		colorText[] = {0.9,0.7,0.2,1.0};
 		text = "TZK Setting 1";
-		action = "closeDialog 0; [] exec (TzkScripts select 025) ";
+		action = "closeDialog 0; 0.4 exec (TzkScripts select 025) ";
 		sizeEx = 0.023;
 	};
 	class TZK_Mission_Setting_2: TZK_Mission_Setting_1 {
 		y = 0.395;
 		text = "TZK Setting 2";
-		action = "closeDialog 0; [] exec (TzkScripts select 026) ";
+		action = "closeDialog 0; 0 exec (TzkScripts select 026) ";
 	};
 };

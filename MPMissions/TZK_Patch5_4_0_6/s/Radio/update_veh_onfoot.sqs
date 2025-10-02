@@ -11,7 +11,7 @@ call loadFile (TzkScripts select 320);
 
 _texts = TzkInGameText select 025
 
-Radio002 setTriggerText (_texts select 0); Radio002 setTriggerStatements ["this", {[] exec (TzkScripts select 025)}, ""];
+call preprocessFile "Util\radio2.sqf";
 
 _procUpdateSelfMedic = { if (call _fCanSelfMedic) then {Radio003 setTriggerText (_texts select 1); Radio003 setTriggerStatements ["this", {if ({_x=={Medkit_xj400}} count magazines player > 0) then { player exec (TzkScripts select 000) } else {hint {You aren't carrying any Medkit.}}}, ""]} else {Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""]} }
 call _procUpdateSelfMedic

@@ -241,7 +241,7 @@ _f = {
 "\TZK_Patch4_4_0_6\s\Player\Loop\VehState.sqs" call _f; // 194
 
 "Player\Radio\entrance.sqs" call _f; // 195
-"Player\Radio\update_veh_common.sqf" call _f; // 196
+"\TZK_Patch5_4_0_6\s\Radio\update_veh_common.sqf" call _f; // 196
 "197" call _f; // 197
 "\TZK_Patch5_4_0_6\s\Radio\update_veh_parachute.sqf" call _f; // 198
 "Player\Radio\Graduation.sqs" call _f; // 199
@@ -380,7 +380,7 @@ _f = {
 "\TZK_Patch4_4_0_6\s\Init\PplMarkerLazyDeclare.sqs" call _f; // 317
 "\TZK_Patch4_4_0_6\s\Init\PplMarkerLazyInit.sqs" call _f; // 318
 "\TZK_Patch4_4_0_6\s\Marker\struct.sqf" call _f; // 319
-"Radio\001_RtsMapMode.sqf" call _f; // 320
+"\TZK_Patch5_4_0_6\s\Radio\001_RtsMapMode.sqf" call _f; // 320
 
 "\TZK_Patch5_4_0_6\s\Radio\fArtMagPage1.sqf" call _f; // 321
 "\TZK_Patch5_4_0_6\s\Radio\fArtMagSlow.sqf" call _f; // 322
@@ -398,7 +398,7 @@ _f = {
 "\TZK_Patch5_4_0_6\s\Radio\update_veh_supLand.sqs" call _f; // 333
 "\TZK_Patch5_4_0_6\s\Radio\update_veh_transpLand.sqs" call _f; // 334
 "\TZK_Patch5_4_0_6\s\Radio\update_struct_common.sqf" call _f; // 335
-"Player\Radio\update_veh_onfoot.sqs" call _f; // 336
+"\TZK_Patch5_4_0_6\s\Radio\update_veh_onfoot.sqs" call _f; // 336
 "\TZK_Patch5_4_0_6\s\Radio\update_veh_mineCar.sqs" call _f; // 337
 "\TZK_Patch5_4_0_6\s\Radio\update_veh_customCar.sqs" call _f; // 338
 "\TZK_Patch5_4_0_6\s\Radio\update_veh_customShip.sqs" call _f; // 339
