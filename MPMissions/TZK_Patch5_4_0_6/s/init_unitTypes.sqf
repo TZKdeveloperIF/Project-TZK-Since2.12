@@ -5,33 +5,23 @@ comment {Must wait till stShip has been defined} ;
 unitDefs = [];
 comment {? bool_TZK_Yugo_Mode: [] exec "Extra\199\InitUnitTypes_Yugo_Redef.sqs", exit;} ;
 
-TzkUnitMarkerIdx = []; TzkUnitMarkerAzimuth = [];
-comment {The skill seems senseless in CTI thus set all values at 1} ;
-TzkUnitSkillIdx = []; TzkUnitSkillVal = []; TzkSkillLevel = [1, 1, 1, 1, 1];
+comment {key-value of TzkInfLevel};
 TzkInfLevelIdx = []; TzkInfLevelVal = [];
 comment {format of TzkSelfUpdateVal is: [minLevel, maxLefel, modelArray[], equipScriptArr[]]} ;
 TzkSelfUpdateIdx = []; TzkSelfUpdateVal = [];
 
 comment {script local "lambda"} ;
 _lv1Inf = {
-	TzkUnitSkillIdx set [count TzkUnitSkillIdx, _this];
-	TzkUnitSkillVal set [count TzkUnitSkillVal, TzkSkillLevel select 1];
 };
 _lv2Inf = {
-	TzkUnitSkillIdx set [count TzkUnitSkillIdx, _this];
-	TzkUnitSkillVal set [count TzkUnitSkillVal, TzkSkillLevel select 2];
 	TzkInfLevelIdx set [count TzkInfLevelIdx, _this];
 	TzkInfLevelVal set [count TzkInfLevelVal, 2];
 };
 _lv3Inf = {
-	TzkUnitSkillIdx set [count TzkUnitSkillIdx, _this];
-	TzkUnitSkillVal set [count TzkUnitSkillVal, TzkSkillLevel select 3];
 	TzkInfLevelIdx set [count TzkInfLevelIdx, _this];
 	TzkInfLevelVal set [count TzkInfLevelVal, 3];
 };
 _lv4Inf = {
-	TzkUnitSkillIdx set [count TzkUnitSkillIdx, _this];
-	TzkUnitSkillVal set [count TzkUnitSkillVal, TzkSkillLevel select 4];
 	TzkInfLevelIdx set [count TzkInfLevelIdx, _this];
 	TzkInfLevelVal set [count TzkInfLevelVal, 4];
 };
@@ -248,8 +238,6 @@ _type = _type + 1;
 
 unitDefs set [_type, ["AA Crew", 250, _si, 10, "SoldierWCrewAA_xj400", "icrew", 2^stBarracks + 2^stLight + 2^stShip + 2^stHeavy, [], "", []] ];
 _crewAAW = _type;
-TzkUnitSkillIdx set [count TzkUnitSkillIdx, _type];
-TzkUnitSkillVal set [count TzkUnitSkillVal, TzkSkillLevel select 4];
 TzkInfLevelIdx set [count TzkInfLevelIdx, _type];
 TzkInfLevelVal set [count TzkInfLevelVal, 3];
 _type = _type + 1;
@@ -852,8 +840,6 @@ _type = _type + 1;
 
 unitDefs set [_type, ["AA Crew", 250, _si, 10, "SoldierECrewAA_xj400", "icrew", 2^stBarracks + 2^stLight + 2^stShip + 2^stHeavy, [], "", []] ];
 _crewAAE = _type;
-TzkUnitSkillIdx set [count TzkUnitSkillIdx, _type];
-TzkUnitSkillVal set [count TzkUnitSkillVal, TzkSkillLevel select 4];
 TzkInfLevelIdx set [count TzkInfLevelIdx, _type];
 TzkInfLevelVal set [count TzkInfLevelVal, 3];
 _type = _type + 1;
