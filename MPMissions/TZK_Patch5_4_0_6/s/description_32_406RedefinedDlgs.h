@@ -813,6 +813,7 @@ class TzkQueryDialog {
 		Exit, 
 		Introduction,
 		Btn_L_00,
+		Btn_L_01,
 	};
 	class Exit: RscButton1 {
 		x = 0.90;
@@ -844,6 +845,11 @@ class TzkQueryDialog {
 		text = "";
 		action = "btnValue00 = 0";
 		sizeEx = 0.025;
+	};
+	class Btn_L_01: Btn_L_00 {
+		idc = IDC + 101;
+		y = 0.35 + 0.05 * 1;
+		action = "btnValue00 = 1";
 	};
 };
 
@@ -1003,14 +1009,5 @@ class DestructionDialog: GenericDialog {
 		w = 0.10;
 		text = "UNDEFINED";
 		action = "btnValue00 = 0";
-	};
-};
-
-// adjust controls' order to make first control NOT AutoAlignWalls button
-class BuildMenu2: BuildMenu {
-	controls[] = {
-		StructListBG, StructList,
-		FactoryName, MoneyLabel, Money, 
-		AutoAlignWalls, BuildBG, Build, PlaceBuildBG, PlaceBuild, UndoBG, Undo, BuyWorkerBG, BuyWorker, Exit, 
 	};
 };

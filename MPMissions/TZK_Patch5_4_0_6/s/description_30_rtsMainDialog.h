@@ -22,10 +22,12 @@ class TzkCmdMapDlgArea: TzkCmdMapDlgVariableBase {
 		RightDownBtn0, RightDownBtn1, RightDownBtn2, RightDownBtn3, RightDownBtn4, 
 		RightDownBtn5, RightDownBtn6, RightDownBtn7, RightDownBtn8, 
 		RtsSelectTypeBtn0, RtsSelectTypeBtn1, RtsSelectTypeBtn2, RtsSelectTypeBtn3, 
+		CustomShortkey, 
 		Exit
 	};
-	// cfg_todo: allow edit text in-game
+	DefCustomKeyClass
 	class Frame1: TZK_Frame_1 {
+		idc = IDC + 16 * 0 + 1;
 		colorText[] = {0.4, 0, 0, 0.9};
 		sizeEx = 0.021;
 		text = "Clear Markers";
@@ -127,8 +129,10 @@ class TzkCmdMapDlgPoint: TzkCmdMapDlgVariableBase {
 		RightDownBg5, RightDownBg6, RightDownBg7, RightDownBg8, 
 		RightDownBtn0, RightDownBtn1, RightDownBtn2, RightDownBtn3, RightDownBtn4, 
 		RightDownBtn5, RightDownBtn6, RightDownBtn7, RightDownBtn8, 
+		CustomShortkey, 
 		Exit
 	};
+	DefCustomKeyClass
 	
 	class LeftBtn0: Button {			// Wall MHQ
 		idc = IDC + 16 * 2 + 0;			// Remain 32-95 idc for left buttons
@@ -201,6 +205,7 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgVariableBase {
 		LeftBtn12, // RTS "cross bridge". For RTS but not player group
 		LeftBtn13, // for RTS "stop"
 		LeftBtn14, LeftBtn15, 					// RTS move land/ship
+		LeftBtn16, // RTS "buy equipment"
 
 		DownBtn0, DownBtn1, DownBtn2, 
 		DownBtn3, DownBtn4, DownBtn5, 
@@ -214,6 +219,7 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgVariableBase {
 		LeftDownBtn0, LeftDownBtn1, LeftDownBtn2, LeftDownBtn3, LeftDownBtn4, 
 		LeftDownBtn5, LeftDownBtn6, LeftDownBtn7, LeftDownBtn8, 
 		RtsSelectTypeBtn0, RtsSelectTypeBtn1, RtsSelectTypeBtn2, RtsSelectTypeBtn3, 
+		CustomShortkey, 
 		Exit
 	};
 	class LeftBtn1: LeftBtn0 { // for "RTS order clear" button
@@ -319,6 +325,15 @@ class TzkCmdMapDlgRts: TzkCmdMapDlgVariableBase {
 		text = "UNDEFINED";
 		action = "btnValue00 = 15";
 	};
+	class LeftBtn16: LeftBtn0 { // RTS "buy equipment"
+		idc = IDC + 16 * 2 + 16;
+		x = 0.025 + 0.09;
+		y = 0.10 + 0.15 + 0.05 * 5;
+		w = 0.16;
+		text = "";
+		action = "btnValue00 = 16";
+	};
+	DefCustomKeyClass
 
 	class FirstCtrl: TzkRtsFirstCtrlBase {};
 	class Unselect: Button {
@@ -352,8 +367,10 @@ class TzkCmdMapDlgWpCo: TzkCmdMapDlgVariableBase {
 		RightDownBtn5, RightDownBtn6, RightDownBtn7, RightDownBtn8, 
 		ListBg, List, 
 		DevidedList0, DevidedList1, 
+		CustomShortkey, 
 		Exit
 	};
+	DefCustomKeyClass
 
 	class ListBg: BackgroundWindow {
 		x = 0.5;
@@ -382,15 +399,62 @@ class TzkCmdMapDlgWpCo: TzkCmdMapDlgVariableBase {
 };
 
 class TzkCmdMapDlgPplOrder: TzkCmdMapDlgVariableBase {
+	class MidListBg0: TZK_BackGround_0 {
+		x = 0.40;
+		y = 0.04 + 0.001;
+		w = 0.20;
+		h = 0.68 - 0.04;
+	};
+	class MidListBg1: TZK_BackGround_1 {
+		style = ST_HUD_BACKGROUND;
+		colorBackground[] = COLOR_TZK_MENU_BG_3;
+		x = 0.40;
+		y = 0.04 + 0.001;
+		w = 0.20;
+		h = 0.68 - 0.04;
+	};
+	class MidListBg2: Light_BG_Window {
+		x = 0.40;
+		y = 0.04 + 0.001;
+		w = 0.20;
+		h = 0.68 - 0.04;
+	};
+	class Param0Bg0: MidListBg0 {
+		x = 0.40 + 0.20 * 1;
+		idc = IDC + 16 * 4 + 0;
+	};
+	class Param0Bg1: MidListBg1 {
+		x = 0.40 + 0.20 * 1;
+		idc = IDC + 16 * 4 + 1;
+	};
+	class Param0Bg2: MidListBg2 {
+		x = 0.40 + 0.20 * 1;
+		idc = IDC + 16 * 4 + 2;
+	};
+	class Param1Bg0: MidListBg0 {
+		x = 0.40 + 0.20 * 2;
+		idc = IDC + 16 * 4 + 3;
+	};
+	class Param1Bg1: MidListBg1 {
+		x = 0.40 + 0.20 * 2;
+		idc = IDC + 16 * 4 + 4;
+	};
+	class Param1Bg2: MidListBg2 {
+		x = 0.40 + 0.20 * 2;
+		idc = IDC + 16 * 4 + 5;
+	};
 	controlsBackground[] = {
-		// MapBg, 		// Hide to compatible with old style
 		LeftBg, 
 		DownAreaHighlight, 
 		RightDownAreaHighlight, 
 		LeftDownAreaHighlight, 
 		Bg4Group, 
-		OldOrderBg0, OldOrderBg1, OldOrderBg2, 	// Compatible with old style
+
+		MidListBg1, MidListBg2,
+		Param0Bg1, Param0Bg2,
+		Param1Bg1, Param1Bg2,
 	};
+	DefCustomKeyClass
 	class OldOrderBg0: TZK_BackGround_0 {
 		x = 0.40 - 0.01;
 		y = 0.03;
@@ -444,18 +508,19 @@ class TzkCmdMapDlgPplOrder: TzkCmdMapDlgVariableBase {
 		RightDownBg5, RightDownBg6, RightDownBg7, RightDownBg8, 
 		RightDownBtn0, RightDownBtn1, RightDownBtn2, RightDownBtn3, RightDownBtn4, 
 		RightDownBtn5, RightDownBtn6, RightDownBtn7, RightDownBtn8, 
+		CustomShortkey, 
 		Exit
 	};
 	class SendOrderBG: ButtonBG {
 		colorBackground[] = COLOR_SELECTED_TEXT;
 		x = 0.53;
 		y = 0.06;
-		w = 0.07;
+		w = 0.06;
 	};
 	class SendOrderBtn: Button {
 		x = 0.53;
 		y = 0.06;
-		w = 0.07;
+		w = 0.06;
 		text = "Issue";
 		action = "btnSendOrder = true";
 	};
@@ -468,9 +533,9 @@ class TzkCmdMapDlgPplOrder: TzkCmdMapDlgVariableBase {
 	};
 	class OrdersList: TZK_ListBox {
 		idc = IDC + 16 * 3 + 0;
-		x = 0.40;
+		x = 0.40 + 0.01;
 		y = 0.1 + 0.03 * 4;
-		w = 0.2;
+		w = 0.20 - 0.01 * 2; // 0.01 white space
 		h = 0.57 - 0.03 * 4 - 0.03 * 2;
 	};
 	class Param0Label: Label {
@@ -483,9 +548,9 @@ class TzkCmdMapDlgPplOrder: TzkCmdMapDlgVariableBase {
 	};
 	class Param0: TZK_ListBox {
 		idc = IDC + 16 * 3 + 2;
-		x = 0.60;
+		x = 0.60 + 0.01;
 		y = 0.1;
-		w = 0.20;
+		w = 0.20 - 0.01 * 2;
 		h = 0.57;
 	};
 	class Param1Label: Label {
@@ -498,9 +563,9 @@ class TzkCmdMapDlgPplOrder: TzkCmdMapDlgVariableBase {
 	};
 	class Param1: TZK_ListBox {
 		idc = IDC + 16 * 3 + 4;
-		x = 0.80;
+		x = 0.80 + 0.01;
 		y = 0.1;
-		w = 0.20;
+		w = 0.20 - 0.01 * 2;
 		h = 0.30;
 	};
 	class Param2Label: Label {
@@ -513,9 +578,9 @@ class TzkCmdMapDlgPplOrder: TzkCmdMapDlgVariableBase {
 	};
 	class Param2: TZK_ListBox {
 		idc = IDC + 16 * 3 + 6;
-		x = 0.80;
+		x = 0.80 + 0.01;
 		y = 0.46;
-		w = 0.20;
+		w = 0.20 - 0.01 * 2;
 		h = 0.21;
 	};
 
@@ -638,9 +703,9 @@ class TzkCmdMapDlgPplOrder: TzkCmdMapDlgVariableBase {
 	};
 	class LeftBtn12: LeftBtn4 {
 		idc = IDC + 16 * 2 + 12;
-		x = 0.025 + 0.13;
+		x = 0.025 + 0.09;
 		y = 0.10 + 0.15 + 0.05 * 5;
-		w = 0.12;
+		w = 0.16;
 		action = "btnValue00 = 12";
 	};
 
@@ -657,9 +722,9 @@ class TzkCmdMapDlgPplOrder: TzkCmdMapDlgVariableBase {
 	// mid part
 	class MidBtn0: Button {
 		idc = IDC + 16 * 14 + 0;
-		x = 0.40;
+		x = 0.40 + 0.01;
 		y = 0.10 + 0.03 * 0;
-		w = 0.20; // fully cover list box
+		w = 0.20 - 0.01 * 2; // 0.01 white space
 		h = 0.03; // fully cover list box
 
 		colorText[] = {0, 0, 0, 1};
@@ -698,9 +763,9 @@ class TzkCmdMapDlgPplOrder: TzkCmdMapDlgVariableBase {
 		idc = IDC + 16 * 15 + 0;
 		style = ST_PICTURE;
 		text = "";
-		x = 0.40;
+		x = 0.40 + 0.01;
 		y = 0.10 + 0.03 * 0;
-		w = 0.20; // fully cover list box
+		w = 0.20 - 0.01 * 2; // 0.01 white space
 		h = 0.03; // fully cover list box
 	};
 	class MidPic1: MidPic0 {

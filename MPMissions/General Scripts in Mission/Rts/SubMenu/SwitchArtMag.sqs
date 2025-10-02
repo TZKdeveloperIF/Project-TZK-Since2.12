@@ -4,7 +4,7 @@ _bSvrRtsOrder = _this select 0
 
 @ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
-_dlg = createDialog "TzkRtsSubMenuTwoListBox2"
+_dlg = createDialog "TzkRtsSubMenuTwoListBox"
 mutexDlg = false
 
 _idcTitle = IDC + 0
@@ -37,7 +37,7 @@ btnValue00 = false; btnValue01 = false; btnValue02 = false
 	? call dlgUpdated: goto "Quit"
 	? not alive player: closeDialog 0; goto "Quit"
 
-	_shortKeyFunc = "dlg_switch_art_mag" call _getShortKeyFunc
+	_shortKeyFunc = "dlg_one_list" call _getShortKeyFunc
 	? _shortKeyFunc != "": goto "ProcShortKey"
 
 	? btnValue00: btnValue00 = false; closeDialog 0; goto "Quit"
@@ -50,19 +50,11 @@ btnValue00 = false; btnValue01 = false; btnValue02 = false
 # ProcShortKey
 	? "confirm" == _shortKeyFunc: goto "OK"
 
-	? "item 1" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 1 - 1]
-	? "item 2" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 2 - 1]
-	? "item 3" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 3 - 1]
-	? "item 4" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 4 - 1]
-	? "item 5" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 5 - 1]
-	? "item 6" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 6 - 1]
-	? "item 7" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 7 - 1]
-	? "item 8" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 8 - 1]
-	? "item 9" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 9 - 1]
+	? [_shortKeyFunc, _idcListBox0, 1, 10] call preprocessFile "UI\ShortKey\key2selectOneList.sqf": goto "loop"
 
 	goto "loop"
 # FunctionalBtns
-	? 3 == _btnFnc: ["dlg_switch_art_mag", _this, "Rts\SubMenu\SwitchArtMag.sqs"] exec "UI\Shortkey\dlg.sqs"; closeDialog 0; goto "Quit"
+	? 3 == _btnFnc: ["dlg_one_list", _this, "Rts\SubMenu\SwitchArtMag.sqs"] exec "UI\Shortkey\dlg.sqs"; closeDialog 0; goto "Quit"
 	goto "loop"
 # OK
 	_idx0 = lbCurSel _idcListBox0 ; _idx1 = lbCurSel (_idcListBox1)

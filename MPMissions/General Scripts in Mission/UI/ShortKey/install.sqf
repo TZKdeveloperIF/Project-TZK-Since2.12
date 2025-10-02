@@ -247,10 +247,10 @@ TzkShortkeyDesignArray = []; TzkShortkeyNameArray = []; _planIdx = -1;
 	// load from config
 	[_design, _name] call _loadFromConfig;
 
-// Build structure dialog
+// One list dialog
 	_planIdx = _planIdx + 1;
 	TzkShortkeyDesignArray set [_planIdx, []];
-	TzkShortkeyNameArray set [_planIdx, "dlg_switch_seat"];
+	TzkShortkeyNameArray set [_planIdx, "dlg_one_list"];
 
 	_design = TzkShortkeyDesignArray select _planIdx;
 	[_design, 023] call _initDesign; _i = 0;
@@ -260,6 +260,13 @@ TzkShortkeyDesignArray = []; TzkShortkeyNameArray = []; _planIdx = -1;
 	[_design, "1", "item 1", _i] call _initItem; _i = _i + 1;
 	[_design, "2", "item 2", _i] call _initItem; _i = _i + 1;
 	[_design, "3", "item 3", _i] call _initItem; _i = _i + 1;
+	[_design, "4", "item 4", _i] call _initItem; _i = _i + 1;
+	[_design, "5", "item 5", _i] call _initItem; _i = _i + 1;
+	[_design, "6", "item 6", _i] call _initItem; _i = _i + 1;
+	[_design, "7", "item 7", _i] call _initItem; _i = _i + 1;
+	[_design, "8", "item 8", _i] call _initItem; _i = _i + 1;
+	[_design, "9", "item 9", _i] call _initItem; _i = _i + 1;
+	[_design, "0", "item 10", _i] call _initItem; _i = _i + 1;
 
 	// load from config
 	[_design, _name] call _loadFromConfig;
@@ -321,32 +328,15 @@ TzkShortkeyDesignArray = []; TzkShortkeyNameArray = []; _planIdx = -1;
 	// load from config
 	[_design, _name] call _loadFromConfig;
 
-// Switch art mag dialog
+// Confirm only
 	_planIdx = _planIdx + 1;
 	TzkShortkeyDesignArray set [_planIdx, []];
-	TzkShortkeyNameArray set [_planIdx, "dlg_switch_art_mag"];
+	TzkShortkeyNameArray set [_planIdx, "dlg_confirm_only"];
 
 	_design = TzkShortkeyDesignArray select _planIdx;
-	[_design, 022] call _initDesign; _i = 0;
+	[_design, 023] call _initDesign; _i = 0;
 
 	[_design, "Space", "confirm", _i] call _initItem; _i = _i + 1;
-
-	[_design, "F1", "class 1", _i] call _initItem; _i = _i + 1;
-	[_design, "F2", "class 2", _i] call _initItem; _i = _i + 1;
-	[_design, "F3", "class 3", _i] call _initItem; _i = _i + 1;
-	[_design, "F4", "class 4", _i] call _initItem; _i = _i + 1;
-	[_design, "F5", "class 5", _i] call _initItem; _i = _i + 1;
-	[_design, "F6", "class 6", _i] call _initItem; _i = _i + 1;
-
-	[_design, "1", "item 1", _i] call _initItem; _i = _i + 1;
-	[_design, "2", "item 2", _i] call _initItem; _i = _i + 1;
-	[_design, "3", "item 3", _i] call _initItem; _i = _i + 1;
-	[_design, "4", "item 4", _i] call _initItem; _i = _i + 1;
-	[_design, "5", "item 5", _i] call _initItem; _i = _i + 1;
-	[_design, "6", "item 6", _i] call _initItem; _i = _i + 1;
-	[_design, "7", "item 7", _i] call _initItem; _i = _i + 1;
-	[_design, "8", "item 8", _i] call _initItem; _i = _i + 1;
-	[_design, "9", "item 9", _i] call _initItem; _i = _i + 1;
 
 	// load from config
 	[_design, _name] call _loadFromConfig;

@@ -72,8 +72,11 @@ class TzkRtsSubMenuOneListBox: Menu {
 
 	controls[] = {
 		TRSM_LIST_TITLE, BTN_OK, BTN_EXIT, 
-		LISTBOX0, LISTTEXT0
+		LISTBOX0, LISTTEXT0,
+		CustomShortkey,
 	};
+
+	DefCustomKeyClass
 
 	class TRSM_LIST_TITLE: Title {
 		idc = IDC + 0;
@@ -310,7 +313,8 @@ class TzkRtsSubMenuTwoListBox: TzkRtsSubMenuOneListBox {
 
 	controls[] = {
 		TRSM_LIST_TITLE, BTN_OK, BTN_UNDO, BTN_EXIT, 
-		LISTBOX0, LISTTEXT0, LISTBOX1, LISTTEXT1
+		LISTBOX0, LISTTEXT0, LISTBOX1, LISTTEXT1,
+		CustomShortkey,
 	};
 
 	class BTN_EXIT: Button {
@@ -370,7 +374,9 @@ class TzkRtsBuildStructSubMenu: TzkRtsSubMenuTwoListBox {
 		
 		BTN_BG_0_0, BTN_BG_0_1, BTN_BG_0_2, BTN_BG_0_3, BTN_BG_0_4, BTN_BG_0_5, 
 		BTN_0_0, BTN_0_1, BTN_0_2, BTN_0_3, BTN_0_4, BTN_0_5, 
+		CustomShortkey,
 	};
+	DefCustomKeyClass
 	class BTN_BG_0_0: SelectedBG {
 		idc = IDC + 16 * 6 + 0;
 		x = 0.20 + 0.10 * 0 + 0.005;
@@ -514,8 +520,11 @@ class TzkRtsArtSubMenu: Menu {
 		// for MLRS shooting counts
 		MLRS_CNT_TITLE, MLRS_CNT_TEXT,
 		LISTBOX0, LISTTEXT0, 
-		LISTBOX1, LISTTEXT1
+		LISTBOX1, LISTTEXT1,
+		CustomShortkey,
 	};
+
+	DefCustomKeyClass
 	class MLRS_CNT_TITLE: RscMulti {
 		// style = ST_MULTI + ST_NO_RECT;
 		x = 0.20 + 0.15 * 1 + 0.025;
@@ -1048,8 +1057,9 @@ class TzkRtsReclaimSubMenu: TzkRtsBoardSubMenu {
 
 class TzkRtsMineSubMenu: TzkRtsSubMenuOneListWide {
 	controls[] = {
-		TRSM_LIST_TITLE, BTN_SET, BTN_EXIT, 
-		LISTBOX0, LISTTEXT0
+		TRSM_LIST_TITLE, BTN_SET, BTN_CLEAR, BTN_EXIT, BTN_SET_DIAGONAL, 
+		LISTBOX0, LISTTEXT0,
+		CustomShortkey,
 	};
 	class BTN_SET: Button {
 		x = 0.45;

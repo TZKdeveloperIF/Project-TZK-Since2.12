@@ -1,9 +1,14 @@
-class BuildMenu: Menu {
+class TzkBuildMenu: Menu {
 	idd = -1;
 	movingEnable = true;
 	controlsBackground[] = {BuildBackgroundWindow};
 	objects[] = { };
-	controls[] = {FactoryName, MoneyLabel, Money, AutoAlignWalls, BuildBG, Build, PlaceBuildBG, PlaceBuild, UndoBG, Undo, BuyWorkerBG, BuyWorker, Exit, StructListBG, StructList};
+	controls[] = {
+		// Don't put buttons at first controlable position
+		StructListBG, StructList,
+		FactoryName, MoneyLabel, Money, 
+		AutoAlignWalls, BuildBG, Build, PlaceBuildBG, PlaceBuild, UndoBG, Undo, BuyWorkerBG, BuyWorker, Exit, 
+	};
 
 	class BuildBackgroundWindow: BackgroundWindow {
 		x = 0.2;

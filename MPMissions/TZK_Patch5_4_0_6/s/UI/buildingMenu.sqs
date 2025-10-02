@@ -11,17 +11,11 @@ buttonPressedBuild = false
 buttonPressedPlaceBuild = false
 buttonPressedBuy = false
 
-_delay = 0.2
+_delay = 0.07
 
-#Init
-
-	openBuildMenu = false
-	_menuOpen = true
-
-	;Create the build menu.
 @!mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
-	_buildMenu = createDialog "BuildMenu2"
+_dlg = createDialog "TzkBuildMenu"
 mutexDlg = false
 
 	ctrlSetText [IDC_TEXT_MENU_NAME, "Build Structures"]
@@ -70,7 +64,14 @@ mutexDlg = false
 	_type = -1
 
 _getWorkersCnt = preprocessFile "Common\SQF\WorkerCount.sqf"
-#Update
+
+; short key
+	_getShortKeyFunc = preprocessFile "UI\ShortKey\proc.sqf"
+	; _idcShortKey = IDC + 16 * 1 + 2
+	; ctrlSetText [_idcShortKey, TzkInGameText select 014]; ctrlShow [_idcShortKey, UsedVersion >= 2030]
+
+# loop
+# Update
 	_bNearby = [SupNearby, mhqNearby || MCVNearby] select _isMHQMCV
 	; _res = [getPos player, siPlayer, ([ typesSupportPlus, [[utMHQ0,utMCVW], [utMHQ1,utMCVE]] ] select _isMHQMCV) select siPlayer, []] call funcGetClosestVehicle
 	; _distance = _res select 1
@@ -98,12 +99,22 @@ _getWorkersCnt = preprocessFile "Common\SQF\WorkerCount.sqf"
 
 	if (alignWalls) then { ctrlSetText [IDC_BTN_ALIGN, "Align Walls: ON"] } else { ctrlSetText [IDC_BTN_ALIGN, "Align Walls: OFF"] }
 
+	_shortKeyFunc = "dlg_confirm_only" call _getShortKeyFunc
+	? _shortKeyFunc != "": goto "ProcShortKey"
+
 	? (buttonPressedBuild):goto "BuildStructure"
 	? (buttonPressedPlaceBuild):goto "PlaceBuildStructure"
 	? (buttonPressedBuy):goto "BuyWorker"
 
-	~_delay
+	~ _delay
 	goto "Update"
+
+# ProcShortKey
+	? "confirm" == _shortKeyFunc: goto "OK"
+
+	goto "loop"
+# OK
+	goto "BuildStructure"
 
 #BuyWorker
 	buttonPressedBuy = false
