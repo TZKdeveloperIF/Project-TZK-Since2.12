@@ -33,7 +33,7 @@ _f = {
 "Util\Deploy\PLZ05.sqs" call _f; // 011
 "Util\Deploy\TOS1.sqs" call _f; // 012
 "\TZK_Scripts_4_0_6\Common\Init\CustomWeaponVehicleInfo.sqf" call _f; // 013
-"\TZK_Patch4_4_0_6\s\UI\AIGroupOrders.sqs" call _f; // 014
+"\TZK_Patch5_4_0_6\s\UI\AIGroupOrders.sqs" call _f; // 014
 "\TZK_Scripts_4_0_6\Player\Dialog\AiGrpOrder_Init.sqf" call _f; // 015
 "\TZK_Patch4_4_0_6\s\UI\BuyUnits_Available.sqf" call _f; // 016
 "\TZK_Patch4_4_0_6\s\UI\AttachVehicle.sqs" call _f; // 017
@@ -302,7 +302,7 @@ _f = {
 "\TZK_Patch4_4_0_6\s\UI\SatCamExit.sqf" call _f; // 248
 "\TZK_Patch4_4_0_6\s\UI\RRV_PlaneCheck.sqf" call _f; // 249
 "\TZK_Patch4_4_0_6\s\UI\RepairRearmVehicle.sqs" call _f; // 250
-"\TZK_Patch4_4_0_6\s\UI\pUpdateGrpOrders.sqf" call _f; // 251
+"\TZK_Patch5_4_0_6\s\UI\pUpdateGrpOrders.sqf" call _f; // 251
 "\TZK_Patch4_4_0_6\s\UI\pAbUpdateTypeImage.sqf" call _f; // 252
 "\TZK_Patch4_4_0_6\s\UI\pAbUpdateFactoryImage.sqf" call _f; // 253
 "\TZK_Patch4_4_0_6\s\UI\pAbUpdateCombobox.sqf" call _f; // 254
