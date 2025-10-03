@@ -433,9 +433,33 @@
 	[
 		"artillery shooting area at side art area %1"
 	] call _f; // 031
+	// Options dialog
+	[
+		  "AI Group Orders"
+		, "Query"
+		, "CMD Rule Menu"
+		, "Suicide"
+		, "Vote Menu"
+		, "Cleanup Ground"
+		, "Leaderboard"
+		, "Buy Units"
+		, "Custom Soldiers"
+		, "Statistics"
+		, "Unit Cam"
+		, "Sat Cam"
+		, "Spy Satellite"
+		, "Income CO/PLAYER"
+		, "Commander"
+		, "Worker behaviour"
+		, "AI Respawn Pos"
+		, "Transfer"
+		, "Upgrades"
+		, "Cancel"
+		, "Upgrade"
+	] call _f; // 032
 
 	// script count check. Check index with last literal value
-	if (_i != 31 + 1) then {
+	if (_i != 32 + 1) then {
 		player globalChat "Script count mismatch!";
 	};
 

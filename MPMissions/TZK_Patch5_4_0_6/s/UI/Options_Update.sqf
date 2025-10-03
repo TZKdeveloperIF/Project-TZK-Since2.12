@@ -57,15 +57,7 @@ if ((workerBehaviour select siPlayer) != lbCurSel _idcWorkerBehaviour) then {
 _index = 0; _upgState = upgMatrix select siPlayer;
 lbClear _idcUpgradeList;
 {
-	_showChn = bool_TZK_CHN_Lang;
-	if (_showChn) then {_showChn = "" != upgChnDefs select _index};
-	if !_showChn then {
-		_id = lbAdd [_idcUpgradeList, format["%1 $%2 %3min", (_x select 0) call funcLocStr, _x select 1, _x select 2] ];
-		lbSetPicture[_idcUpgradeList, _id, _icons select (_upgState select _index)];
-	} else {
-		_id = lbAdd [_idcUpgradeList, format[" $%2 %3min", "", _x select 1, _x select 2] ];
-		lbSetPicture[_idcUpgradeList, _id, upgChnDefs select _index];
-		lbSetColor [_idcUpgradeList, _id, _colors select (_upgState select _index)]
-	};
+	_id = lbAdd [_idcUpgradeList, format["%1 $%2 %3min", (_x select 0) call funcLocStr, _x select 1, _x select 2] ];
+	lbSetPicture[_idcUpgradeList, _id, _icons select (_upgState select _index)];
 	_index = _index + 1;
 } forEach upgDefs;
