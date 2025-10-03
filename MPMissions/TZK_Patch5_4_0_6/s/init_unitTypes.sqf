@@ -279,7 +279,7 @@ comment {Since TZK_4.0.6 units are listed first by type then by factory} ;
 comment {LIGHT WEST} ;
 _st = stLight;
 
-unitDefs set [_type, ["QUAD", 250, _si, 20, "QUAD_xj400", "\GST_KawaP\KPpict", 2^_st, [1, _crewW], _mBike, [(TzkScripts select 067)]] ];
+unitDefs set [_type, ["QUAD", 250, _si, 20, "QUAD_T_xj400", "\GST_KawaP\KPpict", 2^_st, [1, _crewW], _mBike, [(TzkScripts select 067)]] ];
 _quadW = _type;
 _type = _type + 1;
 
@@ -880,7 +880,7 @@ _type = _type + 1;
 comment {LIGHT EAST} ;
 _st = stLight;
 
-unitDefs set [_type, ["QUAD", 250, _si, 20, "QUAD_xj400", "\GST_KawaP\KPpict", 2^_st, [1, _crewE], _mBike, [(TzkScripts select 067)]] ];
+unitDefs set [_type, ["QUAD", 250, _si, 20, "QUAD_T_xj400", "\GST_KawaP\KPpict", 2^_st, [1, _crewE], _mBike, [(TzkScripts select 067)]] ];
 _quadE = _type;
 _type = _type + 1;
 
