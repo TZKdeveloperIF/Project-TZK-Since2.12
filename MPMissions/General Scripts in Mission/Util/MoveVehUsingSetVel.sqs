@@ -1,4 +1,4 @@
-; args: [output status (write only), input status (read only), [vehice, pos, speed (km/h)]]
+; args: [output status (write only), input status (read only), [vehice, pos, speed (km/h), order follow and stop (bool)]]
 
 ; this SQS script loops to move vehicle using "setVelocity" command
 ; on script finished/aborted, the output status will be set to "false"
@@ -12,6 +12,7 @@ _vehicle = _param select 0
 _dest = _param select 1
 ; "speed" uses km/h while "velocity" uses m/s
 _maxMps = (_param select 2) / 3.6
+_bFollowStop = _param select 3
 
 ? count _dest < 3: _dest set [2, _dest call funcHASL]
 
@@ -47,6 +48,7 @@ _outSeaPos = [-500 - random(500), +500 + random(500), 100]
 
 	~ 0.2
 	_vehicle doWatch _dest
+	? _bFollowStop: _vehicle doFollow leader group _vehicle; doStop _vehicle
 
 	~ 0.8
 	? not (_this select 1): goto "EOF"

@@ -1,4 +1,4 @@
-; args: [output status (write only), input status (read only), [vehice, start pos, end pos, speed (km/h)]]
+; args: [output status (write only), input status (read only), [vehice, start pos, end pos, speed (km/h), order follow and stop (bool)]]
 
 ; this SQS script loops to move vehicle using "setVelocity" command
 ; on script finished/aborted, the output status will be set to "false"
@@ -13,6 +13,7 @@ _startPos = _param select 1
 _endPos = _param select 2
 ; "speed" uses km/h while "velocity" uses m/s
 _speed = (_param select 3) / 3.6
+_bFollowStop = _param select 4
 
 _vehicle doWatch _endPos
 
@@ -48,6 +49,8 @@ _vehicle setPosASL _currentPosAsl; _vehicle setVelocity _currentVel
 
 	; need update position variable. Delay enough to make sure read-pos command obtains correct result
 	~ 0.1
+
+	? _bFollowStop: _vehicle doFollow leader group _vehicle; doStop _vehicle
 
 	# frequentlyLoop
 		_counter = _counter + 1

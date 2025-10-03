@@ -5,7 +5,10 @@
 ~ 3
 ; cfg_todo: use mhq pos, or exec script at other pos. In some cases first unit will spawn at sea
 player groupChat "Commander's group units arriving..."
-~1
-[utCrew select siPlayer, 0, 0, 0, getPos player, random 360, siPlayer, giPlayer, group player, 0, 0] exec (TzkScripts select 309)
-~1
-[utCrew select siPlayer, 0, 0, 0, getPos player, random 360, siPlayer, giPlayer, group player, 0, 0] exec (TzkScripts select 309)
+
+_i = 0, _c = 3
+# loop
+	~ 1
+	[utCrew select siPlayer, 0, 0, 0, getPos player, random 360, siPlayer, giPlayer, group player, 0, 0] exec (TzkScripts select 309)
+	_i = _i + 1
+	? _i < _c: goto "loop"

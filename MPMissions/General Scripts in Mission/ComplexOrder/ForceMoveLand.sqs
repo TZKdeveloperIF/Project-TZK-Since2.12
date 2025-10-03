@@ -34,7 +34,7 @@ doStop _vehicle
 ? call _orderQuitCond: goto "Quit"
 
 ; execution
-	_moveParamCache = [true, true, [_vehicle, _destination, 10]]
+	_moveParamCache = [true, true, [_vehicle, _destination, 10, false]]
 	_moveParamCache exec "Util\MoveVehUsingSetVel.sqs"
 	# loopMoveLand
 		~ 1
