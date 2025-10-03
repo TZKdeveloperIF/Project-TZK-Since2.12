@@ -6,9 +6,12 @@ _type = _this select 2
 
 _script = ""
 ? upgRedTopRange == _upg && "4xAA" == _type: _script = "\TZK_Patch4_4_0_6\s\Common\ReEquip\4xAA_Range.sqf"
+? upgRedTopRange == _upg && "4xAA" == _type: _script = (TzkScripts select 403)
 ? upgRedTopMagazines == _upg && "4xAA" == _type: _script = "\TZK_Patch4_4_0_6\s\Common\ReEquip\4xAA_Mag.sqf"
+? upgRedTopMagazines == _upg && "4xAA" == _type: _script = (TzkScripts select 404)
 
 ? upgGunshipRocket == _upg && "HeliRocket" == _type: _script = "\TZK_Patch4_4_0_6\s\Common\ReEquip\Heli_Rocket.sqf"
+? upgGunshipRocket == _upg && "HeliRocket" == _type: _script = (TzkScripts select 405)
 
 
 @!(mutexReEquip)

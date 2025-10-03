@@ -67,4 +67,6 @@ comment {4.0.6.81. MHQ wall} ;
 comment {4.0.6.84. A bigger mutex for join-to-server. Join units to AI in short time crashes the server.} ;
     mutexTzkSvrJoin = false;
 
+timeReinforceTown = 45; if dev then {timeReinforceTown = 2};
+
 call preprocessFile "impl\Server_constants.sqf";

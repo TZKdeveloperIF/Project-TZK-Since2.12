@@ -7,7 +7,7 @@ while "_i < _ci" do {
 	_vehicles = (UnitMatrix select _si) select (_types select _i); _j = 0; _cj = count _vehicles;
 	while "_j < _cj" do {
 		_unit = _vehicles select _j;
-		_rearmData = _unit call funcGetRearmData; _w = _rearmData select 0; _m = _rearmData select 1;
+		_rearmData = _unit call funcGetVehicleRearmData; _w = _rearmData select 0; _m = _rearmData select 1;
 		_k = 0; _ck = count _w; while "_k < _ck" do {
 			if ((_w select _k) in ["RedTop_26_xj400","RedTop_30_xj400"]) then {_w set [_k, "RedTop_40_xj400"]};
 			if ((_w select _k) in ["9M311_26_xj400","9M311_30_xj400"]) then {_w set [_k, "9M311_40_xj400"]};
