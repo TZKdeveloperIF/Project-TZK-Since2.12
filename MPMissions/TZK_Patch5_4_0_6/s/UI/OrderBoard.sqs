@@ -50,19 +50,42 @@ ctrlSetText [_idcListHeader, "Type    Health  Ammo   Crew"]
 lbClear _idcList; call loadFile (TzkScripts select 272); _timeUpdate = _time + 1
 lbSetCurSel [_idcList, 0]
 
+; short key
+	_getShortKeyFunc = preprocessFile "UI\ShortKey\proc.sqf"
+	; _idcShortKey = IDC + 16 * 1 + 2
+	; ctrlSetText [_idcShortKey, TzkInGameText select 014]; ctrlShow [_idcShortKey, UsedVersion >= 2030]
+
+# loop
 #Update
 ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 	? call dlgUpdated: exit
 	? !(alive player) : closeDialog 0; exit
+
+	_shortKeyFunc = "dlg_generic" call _getShortKeyFunc
+	? _shortKeyFunc != "": goto "ProcShortKey"
+
+	? btnFunction > 0: _btnFnc = btnFunction, btnFunction = 0, goto "FunctionalBtns"
 
 	? (btnAction0): btnAction0=false; _prio = ["Cargo"]; goto "Board"
 	? (btnAction1): btnAction1=false; _prio = ["Gunner", "Driver"]; goto "Board"
 	? (btnAction2): btnAction2=false; _prio = ["Driver", "Gunner", "Cargo"]; goto "Board"
 	? _time > _timeUpdate: lbClear _idcList; call loadFile (TzkScripts select 272); _timeUpdate = _time + 1
 
-	#Skip
-	~0.2
+	~ 0.04
 	goto "Update"
+
+# ProcShortKey
+	? "confirm" == _shortKeyFunc: goto "OK"
+
+	? "button 1" == _shortKeyFunc: goto "OK"
+	? "button 2" == _shortKeyFunc: btnAction1 = false; _prio = ["Gunner", "Driver"]; goto "Board"
+	? "button 3" == _shortKeyFunc: btnAction2 = false; _prio = ["Driver", "Gunner", "Cargo"]; goto "Board"
+
+	? [_shortKeyFunc, _idcList, 1, 10] call preprocessFile "UI\ShortKey\key2selectOneList.sqf": goto "loop"
+
+	goto "loop"
+# OK
+	btnAction0 = false; _prio = ["Cargo"]; goto "Board"
 
 #Board
   _vehicle = (_vs select (lbCurSel _idcList)) select 0

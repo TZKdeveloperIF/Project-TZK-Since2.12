@@ -102,19 +102,50 @@ _c = count _structs
 
 lbSetCurSel [_idcList, 0]
 
+; short key
+	_getShortKeyFunc = preprocessFile "UI\ShortKey\proc.sqf"
+	; _idcShortKey = IDC + 16 * 1 + 2
+	; ctrlSetText [_idcShortKey, TzkInGameText select 014]; ctrlShow [_idcShortKey, UsedVersion >= 2030]
+
+	_shortKeyCdSupport = 0
+
+# loop
 #Update
 ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 	? call dlgUpdated: exit
 	? !(alive _support ) || !(alive _unit) || !(alive player) : closeDialog 0; exit
 	call loadFile (TzkScripts select 249)
 
+	_shortKeyFunc = "dlg_generic" call _getShortKeyFunc
+	? _shortKeyFunc != "": goto "ProcShortKey"
+
+	? btnFunction > 0: _btnFnc = btnFunction, btnFunction = 0, goto "FunctionalBtns"
+
 	? btnAction0 : btnAction0=false; _perform = "RepairOptRearm"; goto "Perform"
 	? btnAction1 : btnAction1=false; _perform = "Repair"; goto "Perform"
 	? btnAction2 : btnAction2=false; _perform = "Rearm"; goto "Perform"
 	? btnAction3 : btnAction3=false; _perform = "Repair Gear"; goto "Perform"
 
-	~0.2
+	~ 0.04
 	goto "Update"
+
+# ProcShortKey
+	? "confirm" == _shortKeyFunc: goto "OK"
+
+	? "button" != substr [_shortKeyFunc, 0, 6]: goto "shortKeySkipButton"
+	? _time < _shortKeyCdSupport: goto "shortKeySkipButton"
+		_shortKeyCdSupport = _time + 0.16
+		? "button 1" == _shortKeyFunc: goto "OK"
+		? "button 2" == _shortKeyFunc: btnAction1 = false; _perform = "Repair"; goto "Perform"
+		? "button 3" == _shortKeyFunc: btnAction2 = false; _perform = "Rearm"; goto "Perform"
+		? "button 4" == _shortKeyFunc: btnAction3 = false; _perform = "Repair Gear"; goto "Perform"
+	# shortKeySkipButton
+
+	? [_shortKeyFunc, _idcList, 1, 10] call preprocessFile "UI\ShortKey\key2selectOneList.sqf": goto "loop"
+
+	goto "loop"
+# OK
+	btnAction0 = false; _perform = "RepairOptRearm"; goto "Perform"
 
 #Perform
 	_sel = lbCurSel _idcList
