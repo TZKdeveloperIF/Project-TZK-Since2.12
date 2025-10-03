@@ -1,0 +1,166 @@
+; args: none
+@ !mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "CommandAIDialog"
+mutexDlg = false
+
+_bSettingDispInited = false
+
+_si = siPlayer
+_gi = -1
+
+btnSendOrder = false; btnTemporaryOrder = false
+_idcConcurrentRts = IDC + 13
+ctrlShow [_idcConcurrentRts, not bool_TZK_Rts_Cmd_Mode]
+
+_idcGroups = IDC + 0
+_idcSettingLabel = IDC + 100
+_idcSettingCombo = IDC + 200
+_idcSettingImage = IDC + 300
+_idcOrderLabel = IDC+1
+_idcSendOrder = IDC+2
+_idcOrder = IDC+3
+_idcPar0Label = IDC+4
+_idcPar0 = IDC+5
+_idcPar1Label = IDC+6
+_idcPar1 = IDC+7
+_idcPar2Label = IDC+8
+_idcPar2 = IDC+9
+
+_cSettings = 26
+_lastSetting = []
+{ _lastSetting set [count _lastSetting, -1] } foreach aiSettingDefs
+
+_groupNames = groupNameMatrix select _si
+
+_selGroup = -1
+_selOrder = -1
+
+_idcParamLabels = [_idcPar0Label, _idcPar1Label, _idcPar2Label]
+_idcParams = [_idcPar0, _idcPar1, _idcPar2]
+{ ctrlShow [_x, false] } foreach _idcParamLabels, { ctrlShow [_x, false] } foreach _idcParams
+
+call loadFile (TzkScripts select 015)
+
+; functions
+_update4OneGroup = loadFile (TzkScripts select 235)
+_updateCtrls = loadFile (TzkScripts select 236)
+_refreshOrder = loadFile (TzkScripts select 233)
+_funcLeadBy = preprocessFile "Util\GrpLeadBy.sqf";
+; lazy defined process
+_bInitSelNewGroup = false
+_bInitSendSetting = false
+
+_needRefreshFlag = false, _needRefreshIdx = _selGroup
+
+_updateGrpOrder = loadFile (TzkScripts select 251)
+
+; auto-buy part
+_idcAbLabel = IDC + 16 * 1 + 0
+_idcFactory = IDC + 16 * 4 + 0, _idcFacPic = IDC + 16 * 5 + 0
+_idcBuyType = IDC + 16 * 32 + 0, _idcTypePic = IDC + 16 * 33 + 0, _idcBuyNum = IDC + 16 * 34 + 0
+
+_facBias = [0,1,2,3], _facInitCache = [-1,-1,-1,-1]
+_facIdxCache = + _facInitCache
+_typeBias = [0,1,2,3], _buyInitCache = [-1,-1,-1,-1], _buyNumInitCache = [-1,-1,-1,-1]
+_buyIdxCache = + _buyInitCache; _buyNumCache = + _buyNumInitCache
+
+_factories = [], _facTypes = []
+_updateFactories = loadFile (TzkScripts select 255)
+_updateAutobuyInfo = loadFile (TzkScripts select 254)
+_checkAbModified = loadFile (TzkScripts select 239)
+_updateFacPic = loadFile (TzkScripts select 253)
+_updateTypePic = loadFile (TzkScripts select 252)
+	; initial of auto buy
+	ctrlSetText [_idcAbLabel + 0, format ["%1 %2 %3", localize {TZK_LANG_AUTO}, localize {TZK_LANG_BUY}, localize {TZK_LANG_FACTORIES}]]
+	ctrlSetText [_idcAbLabel + 1, format ["%1 %2 %3", localize {TZK_LANG_AUTO}, localize {TZK_LANG_BUY}, localize {TZK_LANG_TYPE}]]
+	{ctrlShow [_x, false]} foreach [_idcAbLabel, _idcAbLabel + 1]
+	{ctrlShow [_idcFactory + _x, false]; ctrlShow [_idcFacPic + _x, false]} forEach _facBias
+	{_bias = _x, {ctrlShow [_x + _bias, false]} forEach [_idcBuyType, _idcTypePic, _idcBuyNum]} forEach _typeBias
+
+; init
+	_idAll = _idcGroups call _updateGrpOrder
+	? _idAll != -1: lbSetCurSel [_idcGroups, _idAll]
+
+; short key
+	_getShortKeyFunc = preprocessFile "UI\ShortKey\proc.sqf"
+	; _idcShortKey = IDC + 16 * 1 + 2
+	; ctrlSetText [_idcShortKey, TzkInGameText select 014]; ctrlShow [_idcShortKey, UsedVersion >= 2030]
+
+# loop
+# Update
+	ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
+
+	? call dlgUpdated: exit
+	? !(alive player): closeDialog 0; Exit
+
+	_idcGroups call _updateGrpOrder
+	call _updateFactories
+
+	call _checkAbModified
+	
+	~ 0.07
+
+	? _needRefreshFlag: _needRefreshFlag = false, if (_needRefreshIdx == lbCurSel _idcGroups) then {call _update4OneGroup}
+	? _selGroup != lbCurSel _idcGroups: goto "NewGroupSelected"
+	? _selOrder != lbCurSel _idcOrder : _selOrder = lbCurSel _idcOrder; goto "NewOrderSelected"
+
+	_set = -1; _i = 0; _c = count aiSettingDefs
+	while {_i<_c && _set == -1} do {if !(lbCurSel (_idcSettingCombo + _i) in [_lastSetting select _i, -1]) then {_set = _i}; _i = _i + 1}
+	? _set != -1 : goto "SendSetting"
+
+	_shortKeyFunc = "dlg_confirm_only" call _getShortKeyFunc
+	? _shortKeyFunc != "": goto "ProcShortKey"
+
+	? btnSendOrder: btnSendOrder = false; goto "SendOrder"
+	? btnTemporaryOrder: btnTemporaryOrder = false; goto "ConcurrentRts"
+
+	; ~0.2
+	goto "Update"
+
+# NewGroupSelected
+	? not _bInitSelNewGroup: _bInitSelNewGroup = true; _onSelNewGrp = loadFile (TzkScripts select 232)
+	_idcGroups call _onSelNewGrp
+	goto "Update"
+
+# NewOrderSelected
+	? _selOrder == -1 : goto "Update"
+	true call _refreshOrder
+
+	goto "Update"
+
+# SendSetting
+	? not _bInitSendSetting: _bInitSendSetting = true; _sendSetting = loadFile (TzkScripts select 234)
+	_needRefreshFlag = call _sendSetting
+	? _needRefreshFlag: _needRefreshIdx = _selGroup
+	goto "Update"
+
+# SendOrder
+  ? _selGroup == -1 : hint "No group selected"; goto "Update"
+  ? _selOrder == -1 : hint "No order selected"; goto "Update"
+
+	_params = [0,0,0]
+	_paramsSet = true
+	_index = 0
+	{ if ( -1 == lbCurSel (_idcParams select _index)) then { _paramsSet = false }; _index = _index + 1 } foreach ((orderDefs select _selOrder) select 1)
+	? !(_paramsSet): hint "Paramaters not set"; goto "Update"
+	
+	_index = 0
+	{ _params set [_index, lbCurSel (_idcParams select _index)]; _index = _index + 1 } foreach ((orderDefs select _selOrder) select 1)
+
+	? _gi == -1: [_si, giPlayer + GroupsNum, _selOrder, _params] call preprocessFile (TzkScripts select 171)
+	? _gi != -1: [_si, _gi, _selOrder, _params] call preprocessFile (TzkScripts select 171)
+	goto "Update"
+
+# ProcShortKey
+	? "confirm" == _shortKeyFunc: goto "OK"
+
+	goto "loop"
+# OK
+	goto "SendOrder"
+
+# ConcurrentRts
+	closeDialog 0
+	; ~0.1
+	0 exec (TzkScripts select 266)
+	exit

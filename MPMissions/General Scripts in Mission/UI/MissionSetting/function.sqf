@@ -10,7 +10,7 @@ if (0 == _this) then {
 		, {boole_Show_Pad}
 		, {bool_Show_Radio}
 		, {bool_TZK_Hide_Score}
-		, {bool_TZK_CHN_Lang}
+		, {bool_placeholder}			// useless var
 		, {bool_TZK_Show_UnitGrp}
 		, {bool_TZK_Rts_Cmd_Mode}
 	];

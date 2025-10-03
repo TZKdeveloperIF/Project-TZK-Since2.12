@@ -15,7 +15,7 @@ _i = 0, _stat = []
 	? _unit == _driver && not isNull _gunner: goto "continue"
 
 	_type = _vehicle call funcGetUnitTypeFromObject
-	? -1 == typesLightTank find _type && -1 == typesHeavyTank find _type: goto "continue"
+	? -1 == typesLightTank find _type && -1 == typesHeavyTank find _type && -1 == typesMainGunLightShip find _type: goto "continue"
 
 	[_vehicle, _state, siPlayer] exec "Common\ReEquip\TankSwitchSabotHeat.sqs"
 

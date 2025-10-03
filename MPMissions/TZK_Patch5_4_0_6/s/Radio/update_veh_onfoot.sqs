@@ -1,0 +1,55 @@
+; args: [vehicle]
+_vehicle = _this select 0
+_this = 0
+
+_fCanSelfMedic = {{_x=={Medkit_xj400}} count magazines player > 0 && damage player > 0.01}
+_bLastCanMedic = call _fCanSelfMedic
+_bLastMhqNear = mhqNearby
+_bLastSupNear = SupNearby
+
+call loadFile (TzkScripts select 320);
+
+_texts = TzkInGameText select 025
+
+call preprocessFile "Util\radio2.sqf";
+
+_procUpdateSelfMedic = { if (call _fCanSelfMedic) then {Radio003 setTriggerText (_texts select 1); Radio003 setTriggerStatements ["this", {if ({_x=={Medkit_xj400}} count magazines player > 0) then { player exec (TzkScripts select 000) } else {hint {You aren't carrying any Medkit.}}}, ""]} else {Radio003 setTriggerText " "; Radio003 setTriggerStatements ["this", "", ""]} }
+call _procUpdateSelfMedic
+
+_procUpdateMhqBuild = {if (mhqNearby) then {Radio004 setTriggerText (_texts select 2); Radio004 setTriggerStatements ["this", {if (mhqNearby) then {[utMHQ0,150] exec "Player\Dialog\BuildMenu.sqs"} else {hint {MHQ too far away.}}}, ""]} else {Radio004 setTriggerText " "; Radio004 setTriggerStatements ["this", "", ""]}}
+call _procUpdateMhqBuild
+
+_procUpdateSupBuild = {if (SupNearby) then {Radio005 setTriggerText (_texts select 3); Radio005 setTriggerStatements ["this", {if (SupNearby) then {[-1,50] exec "Player\Dialog\BuildMenu.sqs"} else {hint {Sup too far away.}}}, ""]} else {Radio005 setTriggerText " "; Radio005 setTriggerStatements ["this", "", ""]}}
+call _procUpdateSupBuild
+
+Radio006 setTriggerText " "; Radio006 setTriggerStatements ["this", "", ""];
+Radio007 setTriggerText (_texts select 4); Radio007 setTriggerStatements ["this", {[player] call loadFile (TzkScripts select 342)}, ""];
+Radio008 setTriggerText (_texts select 5); Radio008 setTriggerStatements ["this", {[player] call loadFile (TzkScripts select 343)}, ""];
+Radio009 setTriggerText (_texts select 6); Radio009 setTriggerStatements ["this", {[player] call loadFile (TzkScripts select 344)}, ""];
+Radio000 setTriggerText (_texts select 7); Radio000 setTriggerStatements ["this", {[player] call loadFile (TzkScripts select 345)}, ""];
+
+~ 1
+# Refresh
+	~ 0.05
+	; In OFP/Arma can't compare booleans directly. Use (A && !B) || (!A && B) here, and use !_boolean to refresh.
+	_bRefreshMedic = (_bLastCanMedic && !(call _fCanSelfMedic)) || (!_bLastCanMedic && (call _fCanSelfMedic))
+	? _bRefreshMedic: call _procUpdateSelfMedic
+
+	_bRefreshMHQNearby = (_bLastMhqNear && !mhqNearby) || (!_bLastMhqNear && mhqNearby)
+	? _bRefreshMHQNearby: call _procUpdateMhqBuild
+
+	_bRefreshSupNearby = (_bLastSupNear && !SupNearby) || (!_bLastSupNear && SupNearby)
+	? _bRefreshSupNearby: call _procUpdateSupBuild
+
+	call loadFile (TzkScripts select 320);
+
+	? _bRefreshMedic: _bLastCanMedic = (call _fCanSelfMedic)
+	? _bRefreshMHQNearby: _bLastMhqNear = mhqNearby
+	? _bRefreshSupNearby: _bLastSupNear = SupNearby
+
+	_timeRefresh = time + 1
+	@ time > _timeRefresh || boole_Refresh_Radio
+	? boole_Refresh_Radio: boole_Refresh_Radio = false
+	? _vehicle == vehicle player: goto "Refresh"
+
+; EOF

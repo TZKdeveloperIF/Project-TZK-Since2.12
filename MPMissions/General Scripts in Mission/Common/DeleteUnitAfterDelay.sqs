@@ -6,6 +6,9 @@ _delay = _this select 1
 _this = 0
 ? _delay < 0: exit
 
+_type = _unit call funcGetUnitTypeFromObject
+? _type in typesFastDisappear: _delay = 5
+
 ~_delay
 ; ? !(isNull _KilledTankGameLogic) : deleteVehicle _KilledTankGameLogic
 ? (isNull _unit): Exit

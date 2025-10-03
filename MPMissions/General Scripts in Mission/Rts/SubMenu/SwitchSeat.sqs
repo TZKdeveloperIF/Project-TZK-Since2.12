@@ -4,7 +4,7 @@ _bSvrRtsOrder = _this select 0
 
 @ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
-_dlg = createDialog "TzkRtsSubMenuOneListBox2"
+_dlg = createDialog "TzkRtsSubMenuOneListBox"
 mutexDlg = false
 
 _localized = TzkInGameText select 020
@@ -30,7 +30,7 @@ btnValue00 = false; btnValue01 = false
 	? call dlgUpdated: goto "Quit"
 	? not alive player: closeDialog 0; goto "Quit"
 
-	_shortKeyFunc = "dlg_switch_seat" call _getShortKeyFunc
+	_shortKeyFunc = "dlg_one_list" call _getShortKeyFunc
 	? _shortKeyFunc != "": goto "ProcShortKey"
 
 	? btnFunction > 0: _btnFnc = btnFunction, btnFunction = 0, goto "FunctionalBtns"
@@ -43,13 +43,11 @@ btnValue00 = false; btnValue01 = false
 # ProcShortKey
 	? "confirm" == _shortKeyFunc: goto "OK"
 
-	? "item 1" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 1 - 1]
-	? "item 2" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 2 - 1]
-	? "item 3" == _shortKeyFunc: lbSetCurSel [_idcListBox0, 3 - 1]
+	? [_shortKeyFunc, _idcListBox0, 1, 3] call preprocessFile "UI\ShortKey\key2selectOneList.sqf": goto "loop"
 
 	goto "loop"
 # FunctionalBtns
-	? 3 == _btnFnc: ["dlg_switch_seat", _this, "Rts\SubMenu\SwitchSeat.sqs"] exec "UI\Shortkey\dlg.sqs"; closeDialog 0; goto "Quit"
+	? 3 == _btnFnc: ["dlg_one_list", _this, "Rts\SubMenu\SwitchSeat.sqs"] exec "UI\Shortkey\dlg.sqs"; closeDialog 0; goto "Quit"
 	goto "Update"
 # OK
 	_idx = lbCurSel _idcListBox0

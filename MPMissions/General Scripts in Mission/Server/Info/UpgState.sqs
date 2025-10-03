@@ -15,13 +15,13 @@ _value = _value + TotalInfoTypes*(count upgDefs)*3 *2 * (if _cancelled then {1} 
 
 ? upgCCdistance == _upg && _state == 2 : CCdistMax set [_si, distMaxCCUpgraded]
 
-? upgGunshipRocket == _upg && _state == 2 : [_si, _upg, "HeliRocket"] exec "\TZK_Patch4_4_0_6\s\Common\ReEquip\Exec.sqs"
+? upgGunshipRocket == _upg && _state == 2 : [_si, _upg, "HeliRocket"] exec (TzkScripts select 406)
 
 ? upgWorkers == _upg && _state == 2: maxWorkers set [_si, 20]
 
-? upgRedTopRange == _upg && _state == 2: [_si, _upg, "4xAA"] exec "\TZK_Patch4_4_0_6\s\Common\ReEquip\Exec.sqs"
+? upgRedTopRange == _upg && _state == 2: [_si, _upg, "4xAA"] exec (TzkScripts select 406)
 
-? upgRedTopMagazines == _upg && _state == 2: [_si, _upg, "4xAA"] exec "\TZK_Patch4_4_0_6\s\Common\ReEquip\Exec.sqs"
+? upgRedTopMagazines == _upg && _state == 2: [_si, _upg, "4xAA"] exec (TzkScripts select 406)
 
 ? upgPlaneAfterBurner == _upg: if !(isNull player) then {if (_si == siPlayer) then {bAfterBurner = _state == 2}}
 
