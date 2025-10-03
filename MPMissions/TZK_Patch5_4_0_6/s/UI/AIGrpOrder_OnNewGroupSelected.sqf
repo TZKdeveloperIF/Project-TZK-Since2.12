@@ -3,13 +3,13 @@ comment {update current selecting item index};
 comment {update current group autobuy combo boxes};
 _selGroup = lbCurSel _this;
 
-comment {update if not inited or "_bTzkChn != bool_TZK_CHN_Lang"};
-if (not _bSettingDispInited || ((_bTzkChn && not bool_TZK_CHN_Lang) || (bool_TZK_CHN_Lang && not _bTzkChn))) then {
-	_bTzkChn = bool_TZK_CHN_Lang; _bSettingDispInited = true;
+comment {update if not inited};
+if (not _bSettingDispInited) then {
+	_bSettingDispInited = true;
 	
 	_i = 0; _c = count aiSettingDefs; while {_i < _c} do {
-		ctrlShow [_idcSettingLabel + _i, !bool_TZK_CHN_Lang];
-		ctrlShow [_idcSettingImage + _i, bool_TZK_CHN_Lang];
+		ctrlShow [_idcSettingLabel + _i, !false];
+		ctrlShow [_idcSettingImage + _i, false];
 		ctrlShow [_idcSettingCombo + _i, true];
 		_i = _i + 1; 
 	};

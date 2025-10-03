@@ -34,7 +34,7 @@ _f = {
 "Util\Deploy\TOS1.sqs" call _f; // 012
 "\TZK_Scripts_4_0_6\Common\Init\CustomWeaponVehicleInfo.sqf" call _f; // 013
 "\TZK_Patch5_4_0_6\s\UI\AIGroupOrders.sqs" call _f; // 014
-"\TZK_Scripts_4_0_6\Player\Dialog\AiGrpOrder_Init.sqf" call _f; // 015
+"\TZK_Patch5_4_0_6\s\UI\AiGrpOrder_Init.sqf" call _f; // 015
 "\TZK_Patch4_4_0_6\s\UI\BuyUnits_Available.sqf" call _f; // 016
 "\TZK_Patch4_4_0_6\s\UI\AttachVehicle.sqs" call _f; // 017
 "Debug\Console.sqs" call _f; // 018
@@ -235,7 +235,7 @@ _f = {
 "\TZK_Patch4_4_0_6\s\Player\Effect\EquipVirtualWeapon.sqs" call _f; // 190
 
 "\TZK_Patch4_4_0_6\s\UI\PlayGameOverSequence.sqs" call _f; // 191
-"\TZK_Patch4_4_0_6\s\Player\Init\DialogChnLanguage.sqf" call _f; // 192
+"192" call _f; // 192
 "\TZK_Patch4_4_0_6\s\Player\Init\StructureEventHandler.sqs" call _f; // 193
 
 "\TZK_Patch4_4_0_6\s\Player\Loop\VehState.sqs" call _f; // 194
@@ -283,7 +283,7 @@ _f = {
 "\TZK_Scripts_4_0_6\Server\Dynamic\TriggerGameEnd.sqs" call _f; // 230
 "Server\Loop\TownTrigger.sqs" call _f; // 231
 
-"\TZK_Patch4_4_0_6\s\UI\AIGrpOrder_OnNewGroupSelected.sqf" call _f; // 232
+"\TZK_Patch5_4_0_6\s\UI\AIGrpOrder_OnNewGroupSelected.sqf" call _f; // 232
 "\TZK_Patch4_4_0_6\s\UI\AiGrpOrder_RefreshOrder.sqf" call _f; // 233
 "\TZK_Patch4_4_0_6\s\UI\AIGrpOrder_SendSetting.sqf" call _f; // 234
 "\TZK_Patch4_4_0_6\s\UI\AiGrpOrder_Update4OneGroup.sqf" call _f; // 235
@@ -320,8 +320,8 @@ _f = {
 "\TZK_Patch4_4_0_6\s\UI\ConcurrentRts.sqs" call _f; // 266
 "\TZK_Patch4_4_0_6\s\UI\CustomInitAttribute.sqs" call _f; // 267
 "\TZK_Patch4_4_0_6\s\UI\Leaderboard.sqs" call _f; // 268
-"\TZK_Patch4_4_0_6\s\UI\Options.sqs" call _f; // 269
-"\TZK_Patch4_4_0_6\s\UI\Options_Update.sqf" call _f; // 270
+"\TZK_Patch5_4_0_6\s\UI\Options.sqs" call _f; // 269
+"\TZK_Patch5_4_0_6\s\UI\Options_Update.sqf" call _f; // 270
 "\TZK_Patch4_4_0_6\s\UI\OrderBoard.sqs" call _f; // 271
 "\TZK_Scripts_4_0_4\Player\Dialog\BoardVehicle_list.sqf" call _f; // 272
 "\TZK_Patch4_4_0_6\s\UI\SpecCam.sqs" call _f; // 273

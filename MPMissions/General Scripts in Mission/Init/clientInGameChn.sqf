@@ -446,9 +446,33 @@ if _bMatch then {
 	[
 		"向 阵营火炮区域%1 的炮击命令"
 	] call _f; // 031
+	// Options 界面文案
+	[
+		  "AI 队伍命令"
+		, "查询"
+		, "CMD 规则菜单"
+		, "自杀"
+		, "投票菜单"
+		, "清理周边残骸"
+		, "计分板"
+		, "购买单位"
+		, "定制士兵装备"
+		, "统计数据"
+		, "Unit Cam"
+		, "卫星"
+		, "间谍卫星"
+		, "收入比例 指挥官/玩家"
+		, "指挥官"
+		, "工人警戒程度"
+		, "AI 复活位置"
+		, "交接"
+		, "科技"
+		, "取消"
+		, "升级"
+	] call _f; // 032
 
 	// script count check. Check index with last literal value
-	if (_i != 31 + 1) then {
+	if (_i != 32 + 1) then {
 		player globalChat "脚本数目不匹配！";
 	};
 

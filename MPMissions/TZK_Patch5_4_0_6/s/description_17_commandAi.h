@@ -4,11 +4,29 @@ class CommandAIDialog: Menu {
 	controlsBackground[] = {Sub_BG_Light, Sub_BG};
 	objects[] = { };
 	controls[] = {
-	//	Param3Label, Param3, 
-		CommandAITitle, GroupOrdersLabel, GroupOrders
-		, Setting0Label, Setting0, Setting1Label, Setting1, Setting2Label, Setting2, Setting3Label, Setting3, Setting4Label, Setting4, Setting5Label, Setting5, Setting6Label, Setting6, Setting7Label, Setting7, Setting8Label, Setting8, Setting9Label, Setting9, Setting10Label, Setting10, Setting11Label, Setting11, Setting12Label, Setting12, Setting13Label, Setting13, Setting14Label, Setting14, Setting15Label, Setting15, Setting16Label, Setting16, Setting17Label, Setting17, Setting18Label, Setting18, SendOrder, OrderLabel, Order, Param0Label, Param0, Param1Label, Param1, Param2Label, Param2, Exit, Setting19Label, Setting19, Setting20Label, Setting20, Setting21Label, Setting21, Setting22Label, Setting22, Setting23Label, Setting23, Setting24Label, Setting24, Setting25Label, Setting25
-		, Setting0Pic, Setting1Pic, Setting2Pic, Setting3Pic, Setting4Pic, Setting5Pic, Setting6Pic, Setting7Pic, Setting8Pic, Setting9Pic, Setting10Pic, Setting11Pic, Setting12Pic, Setting13Pic, Setting14Pic, Setting15Pic, Setting16Pic, Setting17Pic, Setting18Pic, Setting19Pic, Setting20Pic, Setting21Pic, Setting22Pic, Setting23Pic, Setting24Pic, Setting25Pic
-		, TemporaryDialog
+		CommandAITitle, GroupOrdersLabel, GroupOrders, 
+		Setting0Label, Setting0, Setting1Label, Setting1, Setting2Label, Setting2, Setting3Label, Setting3, 
+		Setting4Label, Setting4, 
+		Setting5Label, Setting5, 
+		Setting11Label, Setting11, Setting12Label, Setting12, Setting13Label, Setting13, Setting14Label, Setting14, Setting15Label, Setting15, Setting16Label, Setting16, Setting17Label, Setting17, Setting18Label, Setting18, SendOrder, OrderLabel, Order, Exit, Setting19Label, Setting19, Setting20Label, Setting20, Setting21Label, Setting21, 
+		Setting22Label, Setting22, 
+		Setting23Label, Setting23, Setting24Label, Setting24, Setting25Label, Setting25, 
+		Setting0Pic, Setting1Pic, Setting2Pic, Setting3Pic, 
+		Setting5Pic, Setting6Pic, 
+		Setting11Pic, Setting12Pic, Setting13Pic, Setting14Pic, Setting15Pic, Setting16Pic, Setting17Pic, Setting18Pic, Setting19Pic, Setting20Pic, Setting21Pic, 
+		Setting22Pic, 
+		Setting23Pic, Setting24Pic, Setting25Pic,
+
+		Param0Label, Param0, Param1Label, Param1, Param2Label, Param2, 
+
+		FactoryLabel, 
+		FactoryComboBox0, FactoryComboBox1, FactoryComboBox2, FactoryComboBox3, 
+		FactoryPic0, FactoryPic1, FactoryPic2, FactoryPic3, 
+		TypeLabel, 
+		TypeComboBox0, TypeComboBox1, TypeComboBox2, TypeComboBox3, 
+		TypePic0, TypePic1, TypePic2, TypePic3, 
+		NumComboBox0, NumComboBox1, NumComboBox2, NumComboBox3, 
+		TemporaryDialog, 
 	};
 
 	class Sub_BG: BackgroundWindow {
@@ -533,6 +551,7 @@ class CommandAIDialog: Menu {
 		w = 0.1
 	};
 	class TemporaryDialog: Button {
+		idc = IDC + 13;
 		x = 0.65
 		y = 0.0
 		w = 0.3
@@ -584,51 +603,39 @@ class CommandAIDialog: Menu {
 		h = 10*0.03;
 	};
 
-	class Param1Label: Label {
+	// narrow the order parameters
+	// Expected that no more group order with long second/third parameters
+	class Param1Label: TextField {
 		idc = IDC+6
 		x = 0.4;
-		y = 0.38;
-		w = 0.2;
+		y = 0.36;
+		w = 0.1;
+		h = 0.05;
+		SizeEx = 0.023;
 		text = "Param1";
 	};
-
 	class Param1: ListBox {
 		idc = IDC+7
 		x = 0.4;
 		y = 0.41;
-		w = 0.2;
+		w = 0.1;
 		h = 10*0.03;
 	};
-
-	class Param2Label: Label {
+	class Param2Label: TextField {
 		idc = IDC+8
-		x = 0.6;
-		y = 0.38;
-		w = 0.2;
+		x = 0.5;
+		y = 0.36;
+		w = 0.1;
+		h = 0.05;
+		SizeEx = 0.023;
 		text = "Param2";
 	};
-
 	class Param2: ListBox {
 		idc = IDC+9
-		x = 0.6;
+		x = 0.5;
 		y = 0.41;
-		w = 0.2;
+		w = 0.1;
 		h = 10*0.03;
-	};
-
-	class Param3Label: Label {
-		idc = IDC+10;
-		x = 0.6;
-		y = 0.38 + 0.03*6;
-		w = 0.2;
-		text = "Param3";
-	};
-	class Param3: ListBox {
-		idc = IDC+11;
-		x = 0.6;
-		y = 0.41 + 0.03*6;
-		w = 0.2;
-		h = 4*0.03;
 	};
 
 	class Exit: Button {
@@ -638,5 +645,124 @@ class CommandAIDialog: Menu {
 		h = 0.03
 		text = "Exit"
 		action = "closeDialog 0"
+	};
+
+	class FactoryLabel: Label {
+		idc = IDC + 16 * 1 + 0;
+		x = 0.82;
+		y = 0.09;
+		w = 0.16;
+		text = "Auto Buy Factories";
+		SizeEx = 0.021;
+	};
+	class AutoBuyComboBoxBase: ComboBox {
+		colortext[] = {0.22,0.2,0.3,1};
+		SizeEx = 0.023;
+
+		// wholeHeight = 0.12;
+		// style = ST_UP; // useless
+		h = 0.03;
+	};
+	class FactoryComboBox0: AutoBuyComboBoxBase {
+		idc = IDC + 16 * 4 + 0;
+		x = 0.84;
+		y = 0.13 + 0.0433 * 0;
+		w = 0.16;
+	};
+	class FactoryComboBox1: FactoryComboBox0 {
+		idc = IDC + 16 * 4 + 1;
+		y = 0.13 + 0.0433 * 1;
+	};
+	class FactoryComboBox2: FactoryComboBox0 {
+		idc = IDC + 16 * 4 + 2;
+		y = 0.13 + 0.0433 * 2;
+	};
+	class FactoryComboBox3: FactoryComboBox0 {
+		idc = IDC + 16 * 4 + 3;
+		y = 0.13 + 0.0433 * 3;
+	};
+	class FactoryPic0: Label {
+		idc = IDC + 16 * 5 + 0;
+		style = ST_PICTURE;
+		colorText[] = {1,1,1,1}; // background color for texture
+		text = "";
+		x = 0.80;
+		y = 0.13 + 0.0433 * 0;
+		w = 0.04;
+		h = 0.03;
+	};
+	class FactoryPic1: FactoryPic0 {
+		idc = IDC + 16 * 5 + 1;
+		y = 0.13 + 0.0433 * 1;
+	};
+	class FactoryPic2: FactoryPic0 {
+		idc = IDC + 16 * 5 + 2;
+		y = 0.13 + 0.0433 * 2;
+	};
+	class FactoryPic3: FactoryPic0 {
+		idc = IDC + 16 * 5 + 3;
+		y = 0.13 + 0.0433 * 3;
+	};
+
+	class TypeLabel: Label {
+		idc = IDC + 16 * 1 + 1;
+		x = 0.62;
+		y = 0.37;
+		w = 0.20;
+		text = "Auto Buy Type";
+		SizeEx = 0.021;
+	};
+	class TypeComboBox0: AutoBuyComboBoxBase {
+		idc = IDC + 16 * 32 + 0;
+		x = 0.64;
+		y = 0.41 + 0.04 * 0;
+		w = 0.10;
+	};
+	class TypePic0: FactoryPic0 {
+		idc = IDC + 16 * 33 + 0;
+		x = 0.60;
+		y = 0.41 + 0.04 * 0;
+	};
+	class TypeComboBox1: TypeComboBox0 {
+		idc = IDC + 16 * 32 + 1;
+		y = 0.41 + 0.04 * 1;
+	};
+	class TypeComboBox2: TypeComboBox0 {
+		idc = IDC + 16 * 32 + 2;
+		y = 0.41 + 0.04 * 2;
+	};
+	class TypeComboBox3: TypeComboBox0 {
+		idc = IDC + 16 * 32 + 3;
+		y = 0.41 + 0.04 * 3;
+	};
+	class TypePic1: TypePic0 {
+		idc = IDC + 16 * 33 + 1;
+		y = 0.41 + 0.04 * 1;
+	};
+	class TypePic2: TypePic0 {
+		idc = IDC + 16 * 33 + 2;
+		y = 0.41 + 0.04 * 2;
+	};
+	class TypePic3: TypePic0 {
+		idc = IDC + 16 * 33 + 3;
+		y = 0.41 + 0.04 * 3;
+	};
+	class NumComboBox0: AutoBuyComboBoxBase {
+		idc = IDC + 16 * 34 + 0;
+		x = 0.64 + 0.10;
+		y = 0.41 + 0.04 * 0;
+		w = 0.04;
+	};
+	class NumComboBox1: NumComboBox0 {
+		idc = IDC + 16 * 34 + 1;
+		y = 0.41 + 0.04 * 1;
+	};
+	class NumComboBox2: NumComboBox0 {
+		idc = IDC + 16 * 34 + 2;
+		y = 0.41 + 0.04 * 2;
+	};
+	class NumComboBox3: NumComboBox0 {
+		idc = IDC + 16 * 34 + 3;
+		y = 0.41 + 0.04 * 3;
 	};
 };

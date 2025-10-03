@@ -8,13 +8,18 @@ class OptionsDialog: Menu {
 		Money, Score, Leaderboard, Destruction, Towns, Income, CleanupGround,
 		NumberedAIBG, NumberedAI, ReportsLabel, Reports,
 		OptionsTimeLabel, OptionsGameTime,
-		MemberMarkersLabel, MemberMarkers,
 		TransferLabel, TransferTarget, TransferAmount,Transfer, TransferAIs, TransferAll, TransferTake, AICheck,
-		BuyUnits, CustomSoldiers, CommandAI, CommandTemporary, ShowStats, UnitCam, SatCam, SpySatBG, SpySat, RadioONBG, RadioONBtn,
-		IncomeRatioLabel, IncomeRatio, IncomeRatioPlayer, CommanderLabel, CommanderImage, Commander, CommanderTransfer,
+		BuyUnits, CustomSoldiers, CommandAI, ShowStats, UnitCam, SatCam, SpySatBG, SpySat, RadioONBG, RadioONBtn,
+		IncomeRatioLabel, IncomeRatio, IncomeRatioPlayer, CommanderLabel, Commander, CommanderTransfer,
 		WorkerBehaviourLabel, WorkerBehaviour, AIRespawnLabel, AIRespawn,
-		UpgradesLabel, Upgrades, Upgrade, Exit, HiddenDefault, UpgSwitch, 
+		UpgradesLabel, Upgrades, Upgrade, Exit, HiddenDefault, UpgSwitch, UpgCancel, 
 		VoteButton, TZK_Mission_Setting_1, TZK_Mission_Setting_2, 
+		CmdRuleButton, 
+		SuicideButton,
+		Console, 
+		ShowsGroupsDialog, 
+		CommandTemporary, 
+		Query,
 	};
 	class OptionsBackgroundWindow: BackgroundWindow {
 		x = 0.2;
@@ -55,11 +60,12 @@ class OptionsDialog: Menu {
 		w = 0.24;
 	};
 	class Leaderboard: Button {
+		idc = IDC + 100 + 6;
 		x = 0.42;
 		y = 0.09;
 		w = 0.18;
 		text = "Leaderboard...";
-		action = "btnLeaderboard = true";
+		action = "btnValue01 = 6";
 	};
 	class Destruction: Button {
 		idc = IDC + 17
@@ -76,6 +82,7 @@ class OptionsDialog: Menu {
 		w = 0.19;
 	};
 	class CleanupGround: Button {
+		idc = IDC + 100 + 5;
 		x = 0.42;
 		y = 0.05;
 		w = 0.18;
@@ -207,21 +214,23 @@ class OptionsDialog: Menu {
 	};
 
 	class BuyUnits: Button {
+		idc = IDC + 100 + 7;
 		x = 0.61;
 		y = 0.05;
 		w = 0.18;
 		text = "Buy Units...";
-		action = "btnBuyUnits = true";
+		action = "btnValue01 = 7";
 	};
 	class CustomSoldiers: Button {
+		idc = IDC + 100 + 8;
 		x = 0.61;
 		y = 0.09;
 		w = 0.18;
 		text = "Custom Soldiers...";
-		action = "btnCustomSoldiers = true";
+		action = "btnValue01 = 8";
 	};
 	class CommandAI: Button {
-		idc = IDC+12;
+		idc = IDC + 12;
 		x = 0.61;
 		y = 0.13;
 		w = 0.18;
@@ -229,25 +238,28 @@ class OptionsDialog: Menu {
 		action = "btnCommandAI = true";
 	};
 	class ShowStats: Button {
+		idc = IDC + 100 + 9;
 		x = 0.81;
 		y = 0.05;
 		w = 0.18;
 		text = "Statistics...";
-		action = "btnShowStats = true";
+		action = "btnValue01 = 9";
 	};
 	class UnitCam: Button {
+		idc = IDC + 100 + 10;
 		x = 0.81;
 		y = 0.09;
 		w = 0.18;
 		text = "Unit Cam...";
-		action = "btnUnitCam = true";
+		action = "btnValue01 = 10";
 	};
 	class SatCam: Button {
+		idc = IDC + 100 + 11;
 		x = 0.81;
 		y = 0.13;
 		w = 0.18;
 		text = "Sat Cam...";
-		action = "btnSatCam = true";
+		action = "btnValue01 = 11";
 	};
 
 	class GameInfo: Button {
@@ -259,6 +271,7 @@ class OptionsDialog: Menu {
 	};
 
 	class IncomeRatioLabel: Label {
+		idc = IDC + 100 + 13;
 		x = 0.61;
 		y = 0.27;
 		w = 0.17;
@@ -278,6 +291,7 @@ class OptionsDialog: Menu {
 	};
 
 	class WorkerBehaviourLabel: Label {
+		idc = IDC + 100 + 15;
 		x = 0.61;
 		y = 0.34;
 		w = 0.17;
@@ -291,25 +305,20 @@ class OptionsDialog: Menu {
 	};
 
 	class CommanderLabel: Label {
-		idc = IDC + 27;
+		idc = IDC + 100 + 14;
 		x = 0.79;
 		y = 0.27;
 		w = 0.11;
 		text = "Commander";
 	};
-	class CommanderImage: CommanderLabel {
-		idc = IDC + 28;
-		style = ST_PICTURE;
-		text = "";
-	};
 	class CommanderTransfer: Button {
-		idc = IDC+10;
+		idc = IDC + 100 + 17;
 		x = 0.90;
 		y = 0.27;
 		w = 0.09;
 		h = 0.03;
 		text = "Transfer";
-		action = "btnTransfer = true";
+		action = "btnValue01 = 17";
 	};
 	class Commander: ComboBox {
 		idc = IDC+11;
@@ -319,6 +328,7 @@ class OptionsDialog: Menu {
 	};
 
 	class AIRespawnLabel: Label {
+		idc = IDC + 100 + 16;
 		x = 0.79;
 		y = 0.34;
 		w = 0.20;
@@ -332,19 +342,20 @@ class OptionsDialog: Menu {
 	};
 
 	class UpgradesLabel: Label {
+		idc = IDC + 100 + 18;
 		x = 0.61;
 		y = 0.44;
 		w = 0.2;
 		text = "Upgrades";
 	};
 	class Upgrade: Button {
-		idc = IDC+14;
+		idc = IDC + 100 + 20;
 		x = 0.89;
 		y = 0.44;
 		w = 0.1;
 		h = 0.03;
 		text = "Upgrade";
-		action = "btnUpgrade = true";
+		action = "btnValue01 = 20";
 	};
 	class Upgrades: ListBox {
 		idc = IDC+15;
@@ -399,11 +410,12 @@ class OptionsDialog: Menu {
 		w = 0.18;
 	};
 	class SpySat: Button {
+		idc = IDC + 100 + 12;
 		x = 0.81;
 		y = 0.17;
 		w = 0.18;
 		text = "Spy Satellite...";
-		action = "btnSpySat = true";
+		action = "btnValue01 = 12";
 	};
 
 	class RadioONBG: SelectedBG {
@@ -435,11 +447,12 @@ class OptionsDialog: Menu {
 
 
 	class VoteButton: Button {
+		idc = IDC + 100 + 4;
 		x = 0.025;
 		y = 0.26;
 		w = 0.15;
-		text = "Vote Menu";
-		action = "btnVoteMenu = true";
+		text = "";
+		action = "btnValue01 = 4";
 	};
 	class HelpButton: Button {
 		x = 0.025;
@@ -460,5 +473,59 @@ class OptionsDialog: Menu {
 		y = 0.395;
 		text = "TZK Setting 2";
 		action = "closeDialog 0; 0 exec (TzkScripts select 026) ";
+	};
+	class UpgCancel: Upgrade {
+		idc = IDC + 100 + 19;
+		x = 0.79;
+		text = "Cancel";
+		action = "btnValue00 = 0";
+	};
+	class SuicideButton: Button {
+		idc = IDC + 100 + 3;
+		x = 0;
+		y = 0;
+		w = 0.10;
+		text = "Suicide";
+		action = "btnValue01 = 3";
+
+		colorText[] = {0.9,0.1,0.1,1.0};
+		sizeEx = 0.023;
+	};
+	class CmdRuleButton: Button {
+		idc = IDC + 100 + 2;
+		x = 0.025;
+		y = 0.18;
+		w = 0.15;
+		text = "CMD Rules Menu";
+		action = "btnValue01 = 2";
+
+		colorText[] = {0.9,0.4,0.2,1.0};
+		sizeEx = 0.023;
+	};
+	class ShowsGroupsDialog: Button {
+		idc = IDC + 7;
+		x = 0.21;
+		y = 0.31;
+		w = 0.18;
+		text = "Shown Groups";
+		action = "closeDialog 0; 0 exec (TzkScripts select 023)";
+	};
+	class Console: Button {
+		idc = IDC + 100 + 0;
+		x = 0.025;
+		y = 0.60;
+		w = 0.15;
+		colorText[] = {0.9,0.7,0.2,1.0};
+		text = "Console";
+		action = "closeDialog 0; 0 exec (TzkScripts select 018)";
+		sizeEx = 0.023;
+	};
+	class Query: Button {
+		idc = IDC + 100 + 1;
+		x = 0.025;
+		y = 0.05;
+		w = 0.15;
+		text = "Query";
+		action = "closeDialog 0; 0 exec (TzkScripts select 021)";
 	};
 };
