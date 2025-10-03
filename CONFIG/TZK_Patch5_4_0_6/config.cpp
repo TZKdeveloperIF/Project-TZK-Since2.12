@@ -378,6 +378,18 @@ class CfgVehicles {
 		accuracy = 1000;
 	};
 
+	class Car: LandVehicle {};
+	class QUAD_xj400: Car {};
+	class QUAD_FakeArmor_xj400: Quad_xj400 {
+		armor = 50; // very good value to be attacked by both bullet and missile
+		irTarget = 1;
+		accuracy = 0.55;
+	};
+	class QUAD_T_xj400: QUAD_FakeArmor_xj400 {
+		armor = 20;
+		accuracy = 1000;
+	};
+
 	// =============================================== Motor ship ===============================================
 	class Ship: AllVehicles {};
 	class SmallShip: Ship {};
