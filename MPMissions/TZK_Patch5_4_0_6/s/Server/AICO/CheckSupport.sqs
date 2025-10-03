@@ -76,7 +76,7 @@ _heal = false
 _rearm = false
 ? (damage _objRepair) > 0 : _heal = true
 { if ((damage _x) > 0) then { _heal = true } } foreach (crew _objRepair)
-_rearmData = _objRepair call funcGetRearmData
+_rearmData = _objRepair call funcGetVehicleRearmData
 _weapons = _rearmData select 0
 _mags = _rearmData select 1
 ? (count _mags) == 0 : _rearm = false; goto "SkipRearm"

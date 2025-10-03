@@ -26,7 +26,7 @@ _f = {
 "\TZK_Scripts_4_0_4\Server\EquipGroupLeaderAI.sqs" call _f; // 005
 "Server\AI_Stop.sqs" call _f; // 006
 "\TZK_Patch4_4_0_6\s\Server\AICO\CheckBuyUnit.sqs" call _f; // 007
-"\TZK_Patch4_4_0_6\s\Server\AICO\CheckSupport.sqs" call _f; // 008
+"\TZK_Patch5_4_0_6\s\Server\AICO\CheckSupport.sqs" call _f; // 008
 "Util\LandHeli.sqs" call _f; // 009
 
 "Util\Deploy\M109A6G.sqs" call _f; // 010
@@ -301,7 +301,7 @@ _f = {
 "UI\SatCam.sqs" call _f; // 247
 "\TZK_Patch4_4_0_6\s\UI\SatCamExit.sqf" call _f; // 248
 "\TZK_Patch4_4_0_6\s\UI\RRV_PlaneCheck.sqf" call _f; // 249
-"\TZK_Patch4_4_0_6\s\UI\RepairRearmVehicle.sqs" call _f; // 250
+"\TZK_Patch5_4_0_6\s\UI\RepairRearmVehicle.sqs" call _f; // 250
 "\TZK_Patch5_4_0_6\s\UI\pUpdateGrpOrders.sqf" call _f; // 251
 "\TZK_Patch4_4_0_6\s\UI\pAbUpdateTypeImage.sqf" call _f; // 252
 "\TZK_Patch4_4_0_6\s\UI\pAbUpdateFactoryImage.sqf" call _f; // 253
@@ -473,8 +473,13 @@ _f = {
 "\TZK_Patch5_4_0_6\s\Player\DisbandAllUnits.sqs" call _f; // 401
 "\TZK_Scripts_4_0_4\Player\ClearDeadCrew.sqs" call _f; // 402
 
+"\TZK_Patch5_4_0_6\s\Common\ReEquip\4xAA_Range.sqf" call _f; // 403
+"\TZK_Patch5_4_0_6\s\Common\ReEquip\4xAA_Mag.sqf" call _f; // 404
+"\TZK_Patch5_4_0_6\s\Common\ReEquip\Heli_Rocket.sqf" call _f; // 405
+"\TZK_Patch5_4_0_6\s\Common\ReEquip\Exec.sqs" call _f; // 406
+
 // script count check. Check index with last literal value
-if (_i != 402 + 1) then {
+if (_i != 406 + 1) then {
 	player globalChat "Script count mismatch!";
 };
 
