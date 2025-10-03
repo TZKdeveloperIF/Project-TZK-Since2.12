@@ -36,7 +36,7 @@ _f = {
 "\TZK_Patch5_4_0_6\s\UI\AIGroupOrders.sqs" call _f; // 014
 "\TZK_Patch5_4_0_6\s\UI\AiGrpOrder_Init.sqf" call _f; // 015
 "\TZK_Patch4_4_0_6\s\UI\BuyUnits_Available.sqf" call _f; // 016
-"\TZK_Patch4_4_0_6\s\UI\AttachVehicle.sqs" call _f; // 017
+"\TZK_Patch5_4_0_6\s\UI\AttachVehicle.sqs" call _f; // 017
 "Debug\Console.sqs" call _f; // 018
 "UI\Equipment\dlg.sqs" call _f; // 019
 
@@ -322,7 +322,7 @@ _f = {
 "\TZK_Patch4_4_0_6\s\UI\Leaderboard.sqs" call _f; // 268
 "\TZK_Patch5_4_0_6\s\UI\Options.sqs" call _f; // 269
 "\TZK_Patch5_4_0_6\s\UI\Options_Update.sqf" call _f; // 270
-"\TZK_Patch4_4_0_6\s\UI\OrderBoard.sqs" call _f; // 271
+"\TZK_Patch5_4_0_6\s\UI\OrderBoard.sqs" call _f; // 271
 "\TZK_Scripts_4_0_4\Player\Dialog\BoardVehicle_list.sqf" call _f; // 272
 "\TZK_Patch4_4_0_6\s\UI\SpecCam.sqs" call _f; // 273
 "274" call _f; // 274
