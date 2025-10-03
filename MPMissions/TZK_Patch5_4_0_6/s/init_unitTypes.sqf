@@ -1792,6 +1792,7 @@ typesMHQ = [utMHQ0, utMHQ1]; typesHQ = [];
 
 comment {Units Type. These classifications are used for new orders and temporary orders as a category parameter.} ;
 comment {typesPlane is also used in a script for planes belonging to same side to get each other's flying parameters.} ;
+typesFastDisappear = [_quadW, _quadE, _motorW, _motorE, _motorC, _jetskiW, _jetskiE];
 typesTransportCar = TransportCarW + TransportCarE + TransportTruckW + TransportTruckE;
 typesTransportShip = TransportShipE + TransportShipW + TransportZodiacW + TransportZodiacE;
 typesTransportAPC = Transport6APCW + Transport6APCE + Transport8APCW + Transport8APCE;
