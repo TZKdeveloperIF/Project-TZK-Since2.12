@@ -1,7 +1,7 @@
 ; args: none
 @ not mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
-_dlg = createDialog "DisbandGroupDialog2"
+_dlg = createDialog "DisbandGroupDialog"
 mutexDlg = false
 
 btnDisbandGroupLeader = false
@@ -14,16 +14,24 @@ _info = -1
 _idcDisbandLeader = IDC + 16 * 0 + 0
 ctrlSetText [_idcDisbandLeader, TzkInGameText select 004]
 
-# Update
+; short key
+	_getShortKeyFunc = preprocessFile "UI\ShortKey\proc.sqf"
+	; _idcShortKey = IDC + 16 * 1 + 2
+	; ctrlSetText [_idcShortKey, TzkInGameText select 014]; ctrlShow [_idcShortKey, UsedVersion >= 2030]
+
+# loop
 	? call dlgUpdated: exit
 	? !(alive player): closeDialog 0; exit
+
+	_shortKeyFunc = "dlg_confirm_only" call _getShortKeyFunc
+	? _shortKeyFunc != "": goto "ProcShortKey"
 
 	? btnDisbandGroupLeader: _info = 0, goto "BeginDisbandGroup"
 	? btnDisbandGroupOK || btnDisbandGroupInf || btnDisbandGroupGunner: goto "BeginDisbandGroup"
 	? btnDisbandGroupExit: closeDialog 0; goto "Quit"
 
-	~ 0.1
-	goto "Update"
+	~ 0.02
+	goto "loop"
 
 # BeginDisbandGroup
 	closeDialog 0
@@ -39,6 +47,13 @@ ctrlSetText [_idcDisbandLeader, TzkInGameText select 004]
 # Finish
 	[_selectedUnits, _info] exec "Rts\Trigger\sDisband.sqs"
 	goto "Quit"
+# ProcShortKey
+	? "confirm" == _shortKeyFunc: goto "OK"
+
+	goto "loop"
+# OK
+	btnDisbandGroupOK = true
+	goto "BeginDisbandGroup"
 # Quit
 	btnDisbandGroupLeader = false
 	btnDisbandGroupOK = false

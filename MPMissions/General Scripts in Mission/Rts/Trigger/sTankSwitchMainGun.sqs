@@ -15,7 +15,7 @@ _i = 0, _j = 0, _selectedUnits = []
 	? _unit == _driver && not isNull _gunner: goto "continue"
 
 	_type = _vehicle call funcGetUnitTypeFromObject
-	? -1 == typesLightTank find _type && -1 == typesHeavyTank find _type: goto "continue"
+	? -1 == typesLightTank find _type && -1 == typesHeavyTank find _type && -1 == typesMainGunLightShip find _type: goto "continue"
 
 	_selectedUnits set [_j, _unit]
 	_j = _j + 1

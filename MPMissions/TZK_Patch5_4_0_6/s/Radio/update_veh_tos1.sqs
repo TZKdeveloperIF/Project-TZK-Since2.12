@@ -1,0 +1,16 @@
+; args: [vehicle]
+_vehicle = _this select 0
+? "M270_M29064_xj400" == typeOf _vehicle: [_vehicle] exec (TzkScripts select 207); exit
+
+
+call preprocessFile "Util\radio2.sqf";
+
+"T" call loadFile (TzkScripts select 321);
+Radio008 setTriggerText (500 call preprocessFile "Util\radioArt.sqf");
+Radio008 setTriggerStatements ["this", {[(vehicle player), 500, {T}] exec (TzkScripts select 199)}, ""];
+
+Radio000 setTriggerText (TzkInGameText select 025 select 8);
+Radio000 setTriggerStatements ["this", {[vehicle player] exec (TzkScripts select 195)}, ""];
+
+
+; EOF

@@ -19,9 +19,8 @@ _varNameMatrix = 0 call _genMatrix
 _stateMatrix = [_varNameMatrix, 1 call _genMatrix] call preprocessFile "UI\MissionSetting\dlgInit.sqf"
 _cfgKeyMatrix = 2 call _genMatrix
 
-; disable abandoned old style CHN language support in 2.02
-? UsedVersion >= 2020: ctrlShow [IDC + 100 + 100 * 1 + 5, false]
-; cfg_todo: disable this item in CWA_CE at all
+; disable abandoned old style CHN language support
+ctrlShow [IDC + 100 + 100 * 1 + 5, false]
 
 ; Show text in dev for debugging
 ? !dev : {ctrlShow [IDC + _x, false]} forEach [1,2,3]

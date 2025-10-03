@@ -26,17 +26,17 @@ _f = {
 "\TZK_Scripts_4_0_4\Server\EquipGroupLeaderAI.sqs" call _f; // 005
 "Server\AI_Stop.sqs" call _f; // 006
 "\TZK_Patch4_4_0_6\s\Server\AICO\CheckBuyUnit.sqs" call _f; // 007
-"\TZK_Patch4_4_0_6\s\Server\AICO\CheckSupport.sqs" call _f; // 008
+"\TZK_Patch5_4_0_6\s\Server\AICO\CheckSupport.sqs" call _f; // 008
 "Util\LandHeli.sqs" call _f; // 009
 
 "Util\Deploy\M109A6G.sqs" call _f; // 010
 "Util\Deploy\PLZ05.sqs" call _f; // 011
 "Util\Deploy\TOS1.sqs" call _f; // 012
 "\TZK_Scripts_4_0_6\Common\Init\CustomWeaponVehicleInfo.sqf" call _f; // 013
-"\TZK_Patch4_4_0_6\s\UI\AIGroupOrders.sqs" call _f; // 014
-"\TZK_Scripts_4_0_6\Player\Dialog\AiGrpOrder_Init.sqf" call _f; // 015
+"\TZK_Patch5_4_0_6\s\UI\AIGroupOrders.sqs" call _f; // 014
+"\TZK_Patch5_4_0_6\s\UI\AiGrpOrder_Init.sqf" call _f; // 015
 "\TZK_Patch4_4_0_6\s\UI\BuyUnits_Available.sqf" call _f; // 016
-"\TZK_Patch4_4_0_6\s\UI\AttachVehicle.sqs" call _f; // 017
+"\TZK_Patch5_4_0_6\s\UI\AttachVehicle.sqs" call _f; // 017
 "Debug\Console.sqs" call _f; // 018
 "UI\Equipment\dlg.sqs" call _f; // 019
 
@@ -47,7 +47,7 @@ _f = {
 "\TZK_Patch4_4_0_6\s\UI\Spectator.sqs" call _f; // 024
 "Player\Dialog\TZK_Mission_Setting_1_Wrap.sqs" call _f; // 025
 "Player\Dialog\TZK_Mission_Setting_2.sqs" call _f; // 026
-"\TZK_Patch4_4_0_6\s\UI\UnitCam.sqs" call _f; // 027
+"\TZK_Patch5_4_0_6\s\UI\UnitCam.sqs" call _f; // 027
 "Rts\Dialog\Waypoints.sqs" call _f; // 028
 "\TZK_Patch4_4_0_6\s\Player\Effect\AB.sqs" call _f; // 029
 
@@ -235,24 +235,24 @@ _f = {
 "\TZK_Patch4_4_0_6\s\Player\Effect\EquipVirtualWeapon.sqs" call _f; // 190
 
 "\TZK_Patch4_4_0_6\s\UI\PlayGameOverSequence.sqs" call _f; // 191
-"\TZK_Patch4_4_0_6\s\Player\Init\DialogChnLanguage.sqf" call _f; // 192
+"192" call _f; // 192
 "\TZK_Patch4_4_0_6\s\Player\Init\StructureEventHandler.sqs" call _f; // 193
 
 "\TZK_Patch4_4_0_6\s\Player\Loop\VehState.sqs" call _f; // 194
 
 "Player\Radio\entrance.sqs" call _f; // 195
-"Player\Radio\update_veh_common.sqf" call _f; // 196
+"\TZK_Patch5_4_0_6\s\Radio\update_veh_common.sqf" call _f; // 196
 "197" call _f; // 197
-"\TZK_Patch4_4_0_6\s\Radio\update_veh_parachute.sqf" call _f; // 198
+"\TZK_Patch5_4_0_6\s\Radio\update_veh_parachute.sqf" call _f; // 198
 "Player\Radio\Graduation.sqs" call _f; // 199
 "\TZK_Patch4_4_0_6\s\Radio\list_spec_return.sqs" call _f; // 200
 "Rts\Ui\SwitchMapMode.sqs" call _f; // 201
 "\TZK_Scripts_4_0_4\Player\Radio\RadioList_Struct_ResetUp.sqs" call _f; // 202
-"\TZK_Patch4_4_0_6\s\Radio\update_struct_mortar.sqf" call _f; // 203
-"\TZK_Patch4_4_0_6\s\Radio\update_veh_howitzer.sqs" call _f; // 204
-"\TZK_Patch4_4_0_6\s\Radio\update_veh_tos1.sqs" call _f; // 205
-"\TZK_Patch4_4_0_6\s\Radio\update_struct_howitzer.sqs" call _f; // 206
-"\TZK_Patch4_4_0_6\s\Radio\update_veh_m270.sqs" call _f; // 207
+"\TZK_Patch5_4_0_6\s\Radio\update_struct_mortar.sqf" call _f; // 203
+"\TZK_Patch5_4_0_6\s\Radio\update_veh_howitzer.sqs" call _f; // 204
+"\TZK_Patch5_4_0_6\s\Radio\update_veh_tos1.sqs" call _f; // 205
+"\TZK_Patch5_4_0_6\s\Radio\update_struct_howitzer.sqs" call _f; // 206
+"\TZK_Patch5_4_0_6\s\Radio\update_veh_m270.sqs" call _f; // 207
 "208" call _f; // 208
 "209" call _f; // 209
 
@@ -283,7 +283,7 @@ _f = {
 "\TZK_Scripts_4_0_6\Server\Dynamic\TriggerGameEnd.sqs" call _f; // 230
 "Server\Loop\TownTrigger.sqs" call _f; // 231
 
-"\TZK_Patch4_4_0_6\s\UI\AIGrpOrder_OnNewGroupSelected.sqf" call _f; // 232
+"\TZK_Patch5_4_0_6\s\UI\AIGrpOrder_OnNewGroupSelected.sqf" call _f; // 232
 "\TZK_Patch4_4_0_6\s\UI\AiGrpOrder_RefreshOrder.sqf" call _f; // 233
 "\TZK_Patch4_4_0_6\s\UI\AIGrpOrder_SendSetting.sqf" call _f; // 234
 "\TZK_Patch4_4_0_6\s\UI\AiGrpOrder_Update4OneGroup.sqf" call _f; // 235
@@ -301,13 +301,13 @@ _f = {
 "UI\SatCam.sqs" call _f; // 247
 "\TZK_Patch4_4_0_6\s\UI\SatCamExit.sqf" call _f; // 248
 "\TZK_Patch4_4_0_6\s\UI\RRV_PlaneCheck.sqf" call _f; // 249
-"\TZK_Patch4_4_0_6\s\UI\RepairRearmVehicle.sqs" call _f; // 250
-"\TZK_Patch4_4_0_6\s\UI\pUpdateGrpOrders.sqf" call _f; // 251
+"\TZK_Patch5_4_0_6\s\UI\RepairRearmVehicle.sqs" call _f; // 250
+"\TZK_Patch5_4_0_6\s\UI\pUpdateGrpOrders.sqf" call _f; // 251
 "\TZK_Patch4_4_0_6\s\UI\pAbUpdateTypeImage.sqf" call _f; // 252
 "\TZK_Patch4_4_0_6\s\UI\pAbUpdateFactoryImage.sqf" call _f; // 253
 "\TZK_Patch4_4_0_6\s\UI\pAbUpdateCombobox.sqf" call _f; // 254
 "\TZK_Patch4_4_0_6\s\UI\AutoBuy_UpdateFactories.sqf" call _f; // 255
-"\TZK_Patch4_4_0_6\s\UI\BuildMenu2.sqs" call _f; // 256
+"\TZK_Patch5_4_0_6\s\UI\buildingMenu.sqs" call _f; // 256
 "\TZK_Patch4_4_0_6\s\UI\BuyUnits.sqs" call _f; // 257
 "\TZK_Patch4_4_0_6\s\UI\BU_CmdRule.sqf" call _f; // 258
 "\TZK_Patch4_4_0_6\s\UI\BU_CmdRule2.sqf" call _f; // 259
@@ -320,9 +320,9 @@ _f = {
 "\TZK_Patch4_4_0_6\s\UI\ConcurrentRts.sqs" call _f; // 266
 "\TZK_Patch4_4_0_6\s\UI\CustomInitAttribute.sqs" call _f; // 267
 "\TZK_Patch4_4_0_6\s\UI\Leaderboard.sqs" call _f; // 268
-"\TZK_Patch4_4_0_6\s\UI\Options.sqs" call _f; // 269
-"\TZK_Patch4_4_0_6\s\UI\Options_Update.sqf" call _f; // 270
-"\TZK_Patch4_4_0_6\s\UI\OrderBoard.sqs" call _f; // 271
+"\TZK_Patch5_4_0_6\s\UI\Options.sqs" call _f; // 269
+"\TZK_Patch5_4_0_6\s\UI\Options_Update.sqf" call _f; // 270
+"\TZK_Patch5_4_0_6\s\UI\OrderBoard.sqs" call _f; // 271
 "\TZK_Scripts_4_0_4\Player\Dialog\BoardVehicle_list.sqf" call _f; // 272
 "\TZK_Patch4_4_0_6\s\UI\SpecCam.sqs" call _f; // 273
 "274" call _f; // 274
@@ -380,30 +380,30 @@ _f = {
 "\TZK_Patch4_4_0_6\s\Init\PplMarkerLazyDeclare.sqs" call _f; // 317
 "\TZK_Patch4_4_0_6\s\Init\PplMarkerLazyInit.sqs" call _f; // 318
 "\TZK_Patch4_4_0_6\s\Marker\struct.sqf" call _f; // 319
-"Radio\001_RtsMapMode.sqf" call _f; // 320
+"\TZK_Patch5_4_0_6\s\Radio\001_RtsMapMode.sqf" call _f; // 320
 
-"\TZK_Patch4_4_0_6\s\Radio\fArtMagPage1.sqf" call _f; // 321
-"\TZK_Patch4_4_0_6\s\Radio\fArtMagSlow.sqf" call _f; // 322
-"\TZK_Patch4_4_0_6\s\Radio\fArtMLRSPage2.sqf" call _f; // 323
-"\TZK_Patch4_4_0_6\s\Radio\fArtHowitzerPage2.sqf" call _f; // 324
+"\TZK_Patch5_4_0_6\s\Radio\fArtMagPage1.sqf" call _f; // 321
+"\TZK_Patch5_4_0_6\s\Radio\fArtMagSlow.sqf" call _f; // 322
+"\TZK_Patch5_4_0_6\s\Radio\fArtMLRSPage2.sqf" call _f; // 323
+"\TZK_Patch5_4_0_6\s\Radio\fArtHowitzerPage2.sqf" call _f; // 324
 "\TZK_Patch4_4_0_6\s\Radio\page_art_next.sqf" call _f; // 325
 "\TZK_Patch4_4_0_6\s\Radio\fArtRadioStatement.sqf" call _f; // 326
 "327" call _f; // 327
 "328" call _f; // 328
 "329" call _f; // 329
 
-"\TZK_Patch4_4_0_6\s\Radio\update_veh_ship.sqs" call _f; // 330
-"\TZK_Patch4_4_0_6\s\Radio\update_veh_gunship.sqs" call _f; // 331
-"\TZK_Patch4_4_0_6\s\Radio\update_veh_plane.sqs" call _f; // 332
-"\TZK_Patch4_4_0_6\s\Radio\update_veh_supLand.sqs" call _f; // 333
-"\TZK_Patch4_4_0_6\s\Radio\update_veh_transpLand.sqs" call _f; // 334
-"\TZK_Patch4_4_0_6\s\Radio\update_struct_common.sqf" call _f; // 335
-"Player\Radio\update_veh_onfoot.sqs" call _f; // 336
-"\TZK_Patch4_4_0_6\s\Radio\update_veh_mineCar.sqs" call _f; // 337
-"\TZK_Patch4_4_0_6\s\Radio\update_veh_customCar.sqs" call _f; // 338
-"\TZK_Patch4_4_0_6\s\Radio\update_veh_customShip.sqs" call _f; // 339
-"\TZK_Patch4_4_0_6\s\Radio\update_veh_transpAir.sqs" call _f; // 340
-"\TZK_Patch4_4_0_6\s\Radio\update_veh_spec.sqf" call _f; // 341
+"\TZK_Patch5_4_0_6\s\Radio\update_veh_ship.sqs" call _f; // 330
+"\TZK_Patch5_4_0_6\s\Radio\update_veh_gunship.sqs" call _f; // 331
+"\TZK_Patch5_4_0_6\s\Radio\update_veh_plane.sqs" call _f; // 332
+"\TZK_Patch5_4_0_6\s\Radio\update_veh_supLand.sqs" call _f; // 333
+"\TZK_Patch5_4_0_6\s\Radio\update_veh_transpLand.sqs" call _f; // 334
+"\TZK_Patch5_4_0_6\s\Radio\update_struct_common.sqf" call _f; // 335
+"\TZK_Patch5_4_0_6\s\Radio\update_veh_onfoot.sqs" call _f; // 336
+"\TZK_Patch5_4_0_6\s\Radio\update_veh_mineCar.sqs" call _f; // 337
+"\TZK_Patch5_4_0_6\s\Radio\update_veh_customCar.sqs" call _f; // 338
+"\TZK_Patch5_4_0_6\s\Radio\update_veh_customShip.sqs" call _f; // 339
+"\TZK_Patch5_4_0_6\s\Radio\update_veh_transpAir.sqs" call _f; // 340
+"\TZK_Patch5_4_0_6\s\Radio\update_veh_spec.sqf" call _f; // 341
 
 "\TZK_Patch4_4_0_6\s\Radio\list_inf_rearmNVG.sqf" call _f; // 342
 "\TZK_Patch4_4_0_6\s\Radio\list_inf_rearmAA.sqf" call _f; // 343
@@ -470,8 +470,16 @@ _f = {
 
 "Rts\Marker\unitFlash.sqf" call _f; // 400
 
+"\TZK_Patch5_4_0_6\s\Player\DisbandAllUnits.sqs" call _f; // 401
+"\TZK_Scripts_4_0_4\Player\ClearDeadCrew.sqs" call _f; // 402
+
+"\TZK_Patch5_4_0_6\s\Common\ReEquip\4xAA_Range.sqf" call _f; // 403
+"\TZK_Patch5_4_0_6\s\Common\ReEquip\4xAA_Mag.sqf" call _f; // 404
+"\TZK_Patch5_4_0_6\s\Common\ReEquip\Heli_Rocket.sqf" call _f; // 405
+"\TZK_Patch5_4_0_6\s\Common\ReEquip\Exec.sqs" call _f; // 406
+
 // script count check. Check index with last literal value
-if (_i != 400 + 1) then {
+if (_i != 406 + 1) then {
 	player globalChat "Script count mismatch!";
 };
 

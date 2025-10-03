@@ -61,15 +61,7 @@ if !_err then {
 			} else {
 				_levelDiff = _infLevel - (_selfUpdateVal select 0);
 				_model = _selfUpdateVal select 2 select _levelDiff;
-				_skill = TzkSkillLevel select _infLevel;
 			};
-		} else {
-			_idx = TzkUnitSkillIdx find _type;
-			if (-1 != _idx) then {_skill = TzkUnitSkillVal select _idx};
-		};
-		if (_type >= maxUnitTypes) then {
-			_infLevel = _si call loadFile "Util\InfLevel.sqf";
-			_skill = TzkSkillLevel select _infLevel;
 		};
 	};
 	_model createUnit [_pos, _groupCreate, _init, _skill, "PRIVATE"];

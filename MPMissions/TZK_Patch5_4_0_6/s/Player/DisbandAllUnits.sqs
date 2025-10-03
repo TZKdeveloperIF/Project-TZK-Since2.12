@@ -1,0 +1,80 @@
+; args: [[unit tracked]]
+_unitselect = _this select 0 select 0
+_groups = [groupPlayer]
+
+@ !mutexDlg
+mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
+_dlg = createDialog "DisbandGroupDialog"
+mutexDlg = false
+
+	btnDisbandGroupLeader = false
+	btnDisbandGroupOK = false
+	btnDisbandGroupExit = false
+	btnDisbandGroupInf = false
+	btnDisbandGroupGunner = false
+
+; short key
+	_getShortKeyFunc = preprocessFile "UI\ShortKey\proc.sqf"
+	; _idcShortKey = IDC + 16 * 1 + 2
+	; ctrlSetText [_idcShortKey, TzkInGameText select 014]; ctrlShow [_idcShortKey, UsedVersion >= 2030]
+
+# loop
+	? call dlgUpdated: exit
+	? !(alive player) : closeDialog 0; exit
+
+	_shortKeyFunc = "dlg_confirm_only" call _getShortKeyFunc
+	? _shortKeyFunc != "": goto "ProcShortKey"
+
+		? btnDisbandGroupLeader: goto "BeginDisbandGroup"
+		? btnDisbandGroupOK: goto "BeginDisbandGroup"
+		? btnDisbandGroupExit : btnDisbandGroupExit  = false; closeDialog 0; exit
+		? btnDisbandGroupInf: goto "BeginDisbandGroup"
+		? btnDisbandGroupGunner: goto "BeginDisbandGroup"
+	~ 0.02
+goto "loop"
+
+# BeginDisbandGroup
+	closeDialog 0
+? (group _unitselect) in (townGroups select siPlayer) : player groupchat "Not allowed to disband town groups"; exit
+player groupchat "Process started: disbanding group of selected unit....";
+
+	_members = units _unitselect; _units = []
+	
+	? btnDisbandGroupLeader : _units = _members; btnDisbandGroupLeader = false
+	? btnDisbandGroupOK : _units = _members - [leader _unitselect]; btnDisbandGroupOK = false
+	? btnDisbandGroupInf : { if (_x == vehicle _x) then {_units set [count _units, _x]} } forEach _members; btnDisbandGroupInf = false
+	? btnDisbandGroupGunner : { if (_x == vehicle _x || _x != gunner vehicle _x) then {_units set [count _units, _x]} } forEach _members; btnDisbandGroupGunner = false
+
+	~1
+	? giPlayer == giCO select siPlayer || (groupCommander select siPlayer) in (groupAiMatrix select siPlayer): _groups = _groups + (groupAiMatrix select siPlayer)
+
+	_num = 0; _i = 0; _c = count _units
+	#CheckUnit
+  	? !(_i < _c) : goto "EventDone" 
+  		_u = _units select _i
+  		_i = _i + 1
+
+		? !(alive _u) : player groupchat "Won't disband dead unit... You earn: 0$."; goto "CheckUnit"
+		? !((group _u) in _groups) : player groupchat "Disband failed on group-changed-unit."; goto "CheckUnit"
+		? _u == vehicle _u && _u != leader group _u: goto "SkipKill"
+
+		_u setDamage 1
+		~1
+
+		#SkipKill
+		~1
+		? _u != leader _u : deleteVehicle _u
+		_num = _num + 1
+	goto "CheckUnit"
+
+#EventDone
+
+player groupchat format ["GroupSize before process start: %1, number of disbanded untis: %2. Leader%3 alive.", count _members, _num, [" not", ""] select (alive leader group _unitselect)]
+exit
+# ProcShortKey
+	? "confirm" == _shortKeyFunc: goto "OK"
+
+	goto "loop"
+# OK
+	btnDisbandGroupOK = true
+	goto "BeginDisbandGroup"

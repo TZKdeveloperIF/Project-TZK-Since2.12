@@ -5,7 +5,7 @@ _pos = _this select 0; _units = _this select 1
 
 @ !mutexDlg
 mutexDlg = true; dlgID = dlgID + 1; _dlgID = dlgID
-_dlg = createDialog "TzkCmdMapDlgPplOrder2"
+_dlg = createDialog "TzkCmdMapDlgPplOrder"
 mutexDlg = false
 
 @ not mutexRtsMouse
@@ -17,8 +17,6 @@ mutexDlg = false
 ; init right-down corner buttons (switching to other rts dialogs)
 ; 0: rts, 1: area, 2: wpco, 3: player order, 4: point
 _accept = [3, _units] call preprocessFile "Rts\Dialog\InitSwitchDialogBtns.sqf"
-
-? !bool_TZK_CHN_inited && bool_TZK_CHN_Lang: call loadFile (TzkScripts select 192)
 
 ; ctrlShow [IDC_DialogBG_CR, !bool_TZK_DarkSkin]; ctrlShow [IDC_DialogBG_Light, bool_TZK_DarkSkin]
 
