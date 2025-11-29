@@ -1,8 +1,15 @@
 ; args: [posShell, velShell, name, vehicle]
 
+; add short delay and generate sound shell at different position
+; this is for 2.03. Generate shell at the position that exists another shell will invalidate current shell
+; In 2.01 old script works fine
+
+~ 0.1
+
 _posShell = _this select 0; _velShell = _this select 1; _name = _this select 2; _vehicle = _this select 3
 _bomb = ["FAE220_Sound_xj400", "M26_Sound_xj400"] select (_name == "M26_CoC_xj400")
-_dum = createShell [_bomb, _posShell, [0,0,-10], _vehicle, objNull]
+_dum = createShell [_bomb, [(_posShell select 0) + 5, (_posShell select 1) + 5, _posShell select 2], [0,0,-10], _vehicle, objNull]
+goto "skipNonsenseCalc"
 
 _dx = (_posShell select 0) 
 _dy = (_posShell select 1) 
@@ -17,5 +24,7 @@ _splash2 = [ _dx , _dy , _dz - _vz + 5  ]
 _splash3 = [ _dx + (_vx / 2) , _dy + (_vy / 2), 1 ]
 _vsplash = [_vx / 2 , _vy / 2 , _vz / 2]
 
+# skipNonsenseCalc
+~ 0.1
 _bomb = ["FAE220_SubBomb_Center_xj400", "M26_SubBomb_Center_xj400"] select (_name == "M26_CoC_xj400")
 _dum = createShell [_bomb, _posShell, [0,0,-10], _vehicle, objNull]

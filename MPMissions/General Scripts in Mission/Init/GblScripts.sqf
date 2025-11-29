@@ -478,8 +478,10 @@ _f = {
 "\TZK_Patch5_4_0_6\s\Common\ReEquip\Heli_Rocket.sqf" call _f; // 405
 "\TZK_Patch5_4_0_6\s\Common\ReEquip\Exec.sqs" call _f; // 406
 
+"Common\Effect\Rocket_FAE220_SubExplosion.sqs" call _f; // 407
+
 // script count check. Check index with last literal value
-if (_i != 406 + 1) then {
+if (_i != 407 + 1) then {
 	player globalChat "Script count mismatch!";
 };
 
