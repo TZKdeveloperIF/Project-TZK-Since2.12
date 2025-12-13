@@ -13,25 +13,40 @@ _this = 0;
 
 _shell = nearestObject [_vehicle, _ammo]; _effectShell = objNull; _local = local _shell;
 
-_res = (UsedVersion >= 2020) call loadFile "\TZK_Patch4_4_0_6\s\Player\Effect\FireShellCheck.sqf";
+_skipTankShell = UsedVersion >= 2020;
+_force = bForceShellEffect;
+
+_res = (_skipTankShell && not _force) call loadFile "\TZK_Patch4_4_0_6\s\Player\Effect\FireShellCheck.sqf";
 _bShell = _res select 0; _sizeOfShell = _res select 1;
 
 if ((_limitWeaponRangeFactor <= 0 && _sizeOfShell > 0) || _sizeOfShell > 125) then {
 	_Fired_EH_Array call loadFile "\TZK_Scripts_4_0_4\Player\Effect\stvol.sqf";
 };
 
-_skipMg = UsedVersion >= 2020;
+_skipMg = UsedVersion >= 2020 && not _force;
 
 if _local then {
 	if (typeOf _shell != ammoMine) then {
 		[_vehicle, _shell, _limitWeaponRangeFactor] exec "\TZK_Scripts_4_0_4\Player\Effect\LimitWeaponRangeNew.sqs";
 	};
 	_effectShell = _shell;
+	if _force then {
+		_position = getPos _shell;
+		_position = [_position select 0, _position select 1, (_position select 2) + 2000];
+		_effectShell = "EffectBullet0_xj400" camCreate _position;
+		_effectShell setVelocity _velocity;
+	};
 } else {
-	if (boole_Global_Bullet_Tracer || boole_Global_Cannon_Tracer || boole_Global_Shell_Tracer) then {
+	if (boole_Global_Bullet_Tracer || boole_Global_Cannon_Tracer || boole_Global_Shell_Tracer || _force) then {
 		if (not _skipMg || (_skipMg && _bShell)) then {
 			_position = getPos _shell; _velocity = velocity _shell;
-			if (_bShell) then {_x = _position select 0; _y = _position select 1; _z = _position select 2; _position = [_x, _y, _z + 1000]};
+			if (_bShell) then {
+				_x = _position select 0; _y = _position select 1; _z = _position select 2;
+				_position = [_x, _y, _z + 1000];
+			};
+			if _force then {
+				_position = [_position select 0, _position select 1, (_position select 2) + 1000];
+			};
 			_effectShell = "EffectBullet0_xj400" camCreate _position;
 			_effectShell setVelocity _velocity;
 		};
@@ -39,7 +54,7 @@ if _local then {
 };
 if (not isNull _effectShell) then {
 	_type = typeOf _shell; _found = false;
-	if not _found then {if (boole_Local_Bullet_Tracer && _local || boole_Global_Bullet_Tracer && not _local) then {
+	if not _found then {if (boole_Local_Bullet_Tracer && _local || boole_Global_Bullet_Tracer && not _local || _force) then {
 		_found = true;
 		if (-1 != TzkMgAmmo find _type) then {[_effectShell] exec "\TZK_Scripts_4_0_4\Player\Effect\Fired_SLX_MG.sqs"};
 	}};
@@ -48,7 +63,7 @@ if (not isNull _effectShell) then {
 		if (-1 != TzkCannonGun find _weapon) then {[_effectShell, _weapon] exec (TzkScripts select 033)};
 	}};
 	if (_bShell) then {
-		if ((boole_Local_Shell_Tracer || _sizeOfShell > 125) && _local) then {[_local, _shell, _sizeOfShell] exec (TzkScripts select 032)};
-		if ((boole_Global_Shell_Tracer || _sizeOfShell > 125) && not _local) then {[_local, _effectShell, _sizeOfShell, _position, _velocity, 0, _vehicle, _shell] exec (TzkScripts select 032)};
+		if ((boole_Local_Shell_Tracer || _sizeOfShell > 125 || _force) && _local) then {[_local, _effectShell, _sizeOfShell] exec (TzkScripts select 032)};
+		if ((boole_Global_Shell_Tracer || _sizeOfShell > 125 || _force) && not _local) then {[_local, _effectShell, _sizeOfShell, _position, _velocity, 0, _vehicle, _shell] exec (TzkScripts select 032)};
 	};
 };

@@ -51,3 +51,10 @@ _i = 0; while {_i < (count TzkCmdRules)} do {
 
 	_i = _i + 1;
 };
+
+// Read players that try to turn of shell effect to test 2.03 stuck
+_val = "Test203ForceEffect" call preprocessFile "Cfg\LoadServerValue.sqf";
+// expect the _val must be "" or an array
+if not (_val in [_val]) then {
+	_val exec "Server\Test203ForceShell.sqs";
+};
