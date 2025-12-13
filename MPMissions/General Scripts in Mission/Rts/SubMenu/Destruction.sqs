@@ -54,6 +54,9 @@ _posInRect = preprocessFile "Util\PosInRect.sqf"
 
 ; RTS destruction cache. There will be delay in destructing remote structures
 _structCache = []
+; However the critical result is on watching map, player is "out of the world"
+; and won't receive struct-info-update until he close the map, even though the
+; struct is just beside him
 
 _lastUpdateListTime = _time - 9999
 # Update

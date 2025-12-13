@@ -26,8 +26,7 @@ hint format [{Structure will disappear in %1 seconds. 50%2 resource will be recy
 	call format ["hint ""Destruction completed, let's say goodbye to %1 - %2""", _name, _textPos]
 	? ! _isMCV : _salvage = 0.5*( (structDefs select _type) select sdCost )
 	
-	[-_salvage] exec "Net\sMoneySpent.sqs"
-	[_object, _isMCV, alive _object] exec "Net\sDestruct.sqs"
+	[_object, _isMCV, alive _object, _salvage] exec "Net\sDestruct.sqs"
 	exit
 # KillWorker
 	hint "Worker killed."

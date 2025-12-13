@@ -1,11 +1,13 @@
-; args: [object, isMHQ, isAlive]
+; args: [object, isMHQ, isAlive, salvage]
 
 _object = _this select 0
 _isMCV = _this select 1
 _bAlive = _this select 2
+_salvage = _this select 3
 
 _value = ([0,1] select _isMCV) + 2*([0,1] select _bAlive) + 2*2*siPlayer
+_value = _value + 2 * 2 * count(sides) * giPlayer
 _netIdStr = _object call funcGenNetIdStr
 ? isNull _object: exit
-[_object, _value] exec "\TZK_Patch4_4_0_6\s\Net\hDestruct.sqs"
-publicExec format [{[UnitById %1,%2] exec "\TZK_Patch4_4_0_6\s\Net\hDestruct.sqs"}, _netIdStr, _value]
+[_object, _value, _salvage] exec "Net\hDestruct.sqs"
+publicExec format [{[UnitById %1,%2,%3] exec "Net\hDestruct.sqs"}, _netIdStr, _value, _salvage]

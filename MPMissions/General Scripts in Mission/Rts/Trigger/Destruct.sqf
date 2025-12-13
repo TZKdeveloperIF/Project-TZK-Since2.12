@@ -12,7 +12,7 @@ _engineerVehs = []; {
 } forEach (unitMatrix select siPlayer select (typesEngineeringVeh select siPlayer));
 if (alive (mhq select siPlayer)) then {_engineerVehs set [count _engineerVehs, getPos(mhq select siPlayer)]};
 
-_nearby = { // lanbda. "_this" is object
+_nearby = { // lambda. "_this" is object
 	private [{_found}, {_cache}]; _found = false; _cache = [_this, objNull];
 	private [{_i}, {_c}];
 	_i = 0, _c = count _comms; while {_i < _c && not _found} do {
@@ -28,18 +28,18 @@ _nearby = { // lanbda. "_this" is object
 	_found
 };
 
-_exec = { // lanbda. "_this" is idx
+_exec = { // lambda. "_this" is idx
 	private [{_object}, {_value}, {_salvage}, {_cacheIdx}];
 	_object = _list select _this;
 	if (alive _object) then {
 		_value = lbValue [_idcList, _this];
+		_salvage = 0;
 		if (_object call _nearby && not (_object in _structCache)) then {
 			_cacheIdx = _structCache find objNull;
 			if (-1 == _cacheIdx) then {_cacheIdx = count _structCache};
 			_structCache set [count _structCache, _object];
 
 			_salvage = (if (-1 == _value) then {costWorker} else {structDefs select _value select sdCost});
-			[- 0.5 * _salvage] exec "Net\sMoneySpent.sqs";
 		};
 		if (-1 == _value) then {
 			deleteVehicle _object;
@@ -49,7 +49,7 @@ _exec = { // lanbda. "_this" is idx
 			if not (_value in structsDestroy) then {
 				_object setDamage 1;
 			};
-			if not (_value in structsShelter) then {[_object, false, true] exec "Net\sDestruct.sqs"};
+			if not (_value in structsShelter) then {[_object, false, true, 0.5 * _salvage] exec "Net\sDestruct.sqs"};
 		};
 	};
 };

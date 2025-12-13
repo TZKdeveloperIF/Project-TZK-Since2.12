@@ -1,14 +1,19 @@
-; args: [object, isMHQ, isAlive, si]
+; args: [object, isMHQ, isAlive, si, salvage]
 
 _object = _this select 0
 _isMCV = _this select 1
 _bAlive = _this select 2
 _si = _this select 3
-_this = 0
+_gi = _this select 4
+_salvage = _this select 5
 
 ? _isMCV == 1 : goto "DeleteMCV"
 
 ; DeleteStructure
+@ not mutexSvrDestruct
+	mutexSvrDestruct = true
+	? isNull _object: goto "Quit_struct"
+
 	_i = structServer find _object
 	? _i != -1: _type = structsServer select _i select 1; [_si, _type] exec (TzkScripts select 142)
 	? _i != -1: [_si, _type, _object] call preprocessFile "Server\OnDestructFactory.sqf"
@@ -16,7 +21,10 @@ _this = 0
 	[_object] exec "\TZK_Scripts_4_0_4\Server\StructuresServerClear.sqs"
 	@ isNull _object
 	_si exec (TzkScripts select 312)
-	exit
+	? _salvage > 0: [_si, _gi, - _salvage] exec "\TZK_Patch4_4_0_6\s\Net\hMoneySpent.sqs"
+	# Quit_struct
+		mutexSvrDestruct = false
+		exit
 
 # DeleteMCV
 ? _bAlive == 1 : _object setDamage 1; _si exec (TzkScripts select 312); exit

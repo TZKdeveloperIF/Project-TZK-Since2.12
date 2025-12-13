@@ -1,9 +1,10 @@
-; args: [object, value]
+; args: [object, value, salvage]
 
 ? not isServer: exit
 
 _value = _this select 1
 _object = _this select 0
+_salvage = _this select 2
 
 
 _isMCV = _value % 2
@@ -11,6 +12,10 @@ _value = (_value - _isMCV) / 2
 
 _bAlive = _value % 2
 _value = (_value - _bAlive) / 2
+
+_si = _value % count(sides); _value = (_value - _si) / count(sides); _gi = _value
+[_object, _isMCV, _bAlive, _si, _gi, _salvage] exec (TzkScripts select 211)
+exit
 
 _si = _value
 
