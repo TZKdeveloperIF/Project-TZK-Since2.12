@@ -81,4 +81,29 @@ bool_TZK_Rts_Map_Mode = false;
 // Match start money distribution config (from OFP: SvrStartMoney.sqf)
 costWorker = 200;
 
+// Score-based bonus money: scoreMoney[si][gi] accumulates between income ticks
+scoreMoney = [[], []];
+
+// Score type constants (for fn_addScore)
+scTown = 0;
+
+// Match start time (set by SvrFormalStart, used everywhere)
+tzkMatchStartTime = 0;
+
+// Common helper functions (compiled once, usable everywhere)
+TZK_fnc_getClosestTown = compile preprocessFileLineNumbers "Common\fn_getClosestTown.sqf";
+TZK_fnc_updateTownCheckUnits = compile preprocessFileLineNumbers "Common\fn_updateTownCheckUnits.sqf";
+TZK_fnc_getWorkingStructures = compile preprocessFileLineNumbers "Common\fn_getWorkingStructures.sqf";
+
+// Server-side function stubs (compiled on all machines for remoteExec; server-only guard inside)
+TZK_fnc_moneyAdd = compile preprocessFileLineNumbers "Server\Money\fn_moneyAdd.sqf";
+TZK_fnc_moneySpend = compile preprocessFileLineNumbers "Server\Money\fn_moneySpend.sqf";
+TZK_fnc_syncMoneyStatus = compile preprocessFileLineNumbers "Net\fn_syncMoneyStatus.sqf";
+TZK_fnc_townSideChange = compile preprocessFileLineNumbers "Net\fn_townSideChange.sqf";
+TZK_fnc_addScore = compile preprocessFileLineNumbers "Net\fn_addScore.sqf";
+TZK_fnc_townTrigger = compile preprocessFileLineNumbers "Server\fn_townTrigger.sqf";
+TZK_fnc_checkWinTowns = compile preprocessFileLineNumbers "Server\fn_checkWinTowns.sqf";
+TZK_fnc_checkWinDestruction = compile preprocessFileLineNumbers "Server\fn_checkWinDestruction.sqf";
+TZK_fnc_triggerGameEnd = compile preprocessFileLineNumbers "Server\fn_triggerGameEnd.sqf";
+
 diag_log "TZK CTI: MissionEnv initialized";

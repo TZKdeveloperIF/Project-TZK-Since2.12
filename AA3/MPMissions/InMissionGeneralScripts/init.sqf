@@ -34,7 +34,7 @@ while {_i < _c - 1} do {
 	while {_j < _c} do {
 		_townI = towns select _i;
 		_townJ = towns select _j;
-		if ((getPosATL (_townI select tdFlag)) select 1 > (getPosATL (_townJ select tdFlag)) select 1) then {
+		if (((getPosATL (_townI select tdFlag)) select 1) > ((getPosATL (_townJ select tdFlag)) select 1)) then {
 			towns set [_i, _townJ];
 			towns set [_j, _townI];
 		};
@@ -47,8 +47,9 @@ while {_i < _c - 1} do {
 private ["_posX", "_posY"];
 _posX = 0; _posY = 0;
 {
-	_posX = _posX + (getPosATL (_x select tdFlag)) select 0;
-	_posY = _posY + (getPosATL (_x select tdFlag)) select 1;
+	private _p = getPosATL (_x select tdFlag);
+	_posX = _posX + (_p select 0);
+	_posY = _posY + (_p select 1);
 } forEach towns;
 posCenter = [_posX / _c, _posY / _c];
 
@@ -96,3 +97,6 @@ diag_log format [
 	count (groupMatrix select si1),
 	timeLimit
 ];
+
+// 通知 initServer.sqf：init.sqf 所有阶段已完成，全局变量可用
+TZK_initComplete = true;
