@@ -1,0 +1,55 @@
+// TZK CTI for Arma 3 - Mission Configuration
+
+class Header
+{
+	gameType = CTI;
+	minPlayers = 1;
+	maxPlayers = 20;
+};
+
+author = "TZK";
+onLoadName = "TZK CTI";
+onLoadMission = "Conquer the Island - TZK Edition";
+briefingName = "TZK CTI - Malden";
+
+respawn = "BASE";
+respawnDelay = 30;
+respawnOnStart = 1;
+
+// Debug Console: 0=仅已登录管理员 | 1=主机+已登录管理员 | 2=所有玩家（本地测试用）
+enableDebugConsole = 2;
+
+#include "defines.hpp"
+#include "functions.hpp"
+
+class Params
+{
+	class SpawnPos
+	{
+		title = "Spawn Position";
+		values[] = {0, 1, 2, 3, 4};
+		texts[] = {"Fully Random", "Random N/S", "West at N", "West at S", "Custom"};
+		default = 4;
+	};
+	class Resistance
+	{
+		title = "Resistance Strength";
+		values[] = {0, 1, 2, 3, 4};
+		texts[] = {"Very Low", "Low", "Middle", "High", "Doom"};
+		default = 2;
+	};
+	class TimeLimit
+	{
+		title = "Time Limit";
+		values[] = {0, 1, 2, 3};
+		texts[] = {"3 Hours", "4 Hours", "6 Hours", "Infinite"};
+		default = 1;
+	};
+};
+
+// Dialog UI definitions will be added in Phase E
+// #include "UI\options.hpp"
+// #include "UI\buildMenu.hpp"
+// #include "UI\buyUnits.hpp"
+// #include "UI\rtsDialogs.hpp"
+// #include "UI\voteMenu.hpp"
