@@ -52,4 +52,48 @@ if (hasInterface) then {
 	[] spawn compile preprocessFileLineNumbers "Player\fn_rtsMapClick.sqf";
 };
 
+// Phase E: Options addAction (mirrors OFP UpdateOptionsAction.sqs)
+if (hasInterface) then {
+	[] spawn {
+		waitUntil {!isNull player};
+		waitUntil {!isNil "TZK_initComplete"};
+
+		private _optActionId = -1;
+		private _optActionObj = objNull;
+
+		while {true} do {
+			waitUntil {alive player};
+
+			if (player == vehicle player) then {
+				if (_optActionObj != player) then {
+					if (_optActionId >= 0) then {
+						_optActionObj removeAction _optActionId;
+					};
+					_optActionId = player addAction [
+						"Options",
+						{ [] spawn compile preprocessFileLineNumbers "Player\fn_optionsDialog.sqf" },
+						nil, 1.5, false, true, "", "true"
+					];
+					_optActionObj = player;
+				};
+			} else {
+				private _veh = vehicle player;
+				if (_optActionObj != _veh) then {
+					if (_optActionId >= 0) then {
+						_optActionObj removeAction _optActionId;
+					};
+					_optActionId = _veh addAction [
+						"Options",
+						{ [] spawn compile preprocessFileLineNumbers "Player\fn_optionsDialog.sqf" },
+						nil, 1.5, false, true, "", "true"
+					];
+					_optActionObj = _veh;
+				};
+			};
+
+			sleep 2;
+		};
+	};
+};
+
 diag_log "TZK CTI: initPlayerLocal.sqf complete";
