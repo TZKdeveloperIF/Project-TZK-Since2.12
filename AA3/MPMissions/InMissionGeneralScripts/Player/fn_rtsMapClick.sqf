@@ -185,6 +185,9 @@ onMapSingleClick {
 			// Alt only：两角点框选
 			if (!TZK_rtsRectClick1) then {
 				// First corner — OFP：整图尺度十字（蓝底 + 红细线）
+				rtsSelectedGroups = [];
+				call TZK_fnc_rtsClearRect;
+
 				TZK_rtsRect1 = _pos;
 				TZK_rtsRectClick1 = true;
 				TZK_rtsRectTime = time;

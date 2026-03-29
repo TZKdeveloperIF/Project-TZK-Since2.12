@@ -109,9 +109,11 @@ addMissionEventHandler ["Draw3D", {
 
 diag_log "TZK CTI: Draw3D icon handler registered";
 
-// --- Map marker update loop (periodic, not per-frame) ---
+// --- Map marker update loop (0.4s for blink, matches OFP TZK selected-unit flashing) ---
 while {pvGameOver == -1} do {
-	sleep 2;
+	sleep 0.4;
+
+	private _blinkAlpha = 0.35 + 0.65 * abs (sin (diag_tickTime * 280));
 
 	{
 		private _gi = _forEachIndex;
@@ -150,6 +152,7 @@ while {pvGameOver == -1} do {
 			}
 		};
 		_mName setMarkerColorLocal _mCol;
+		_mName setMarkerAlphaLocal (if (_isSelected) then { _blinkAlpha } else { 1 });
 
 		private _ordName = if (_ordType >= 0 && {_ordType < count orderDefs}) then {
 			(orderDefs select _ordType) select 0
