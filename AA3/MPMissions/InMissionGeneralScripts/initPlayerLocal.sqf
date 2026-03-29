@@ -46,4 +46,10 @@ if (hasInterface) then {
 	};
 };
 
+// Phase D: RTS icons (3D + map markers) and map click handler
+if (hasInterface) then {
+	[] spawn compile preprocessFileLineNumbers "Player\fn_rtsIcons.sqf";
+	[] spawn compile preprocessFileLineNumbers "Player\fn_rtsMapClick.sqf";
+};
+
 diag_log "TZK CTI: initPlayerLocal.sqf complete";

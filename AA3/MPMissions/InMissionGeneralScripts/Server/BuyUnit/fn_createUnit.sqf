@@ -10,10 +10,11 @@ params ["_type", "_driver", "_gunner", "_commander", "_si", "_giJoin", "_giBuyer
 private _unitDesc = unitDefs select _type;
 private _isVehicle = count (_unitDesc select udCrew) > 0;
 
-// Calculate spawn position near factory
+// Spawn away from factory door to avoid "House not found" navmesh warnings
+// (dynamically created buildings aren't in the engine's building map)
 private _fPos = getPosATL _factory;
 private _fDir = getDir _factory;
-private _dist = 15;
+private _dist = 20;
 private _spawnPos = [(_fPos select 0) + _dist * sin _fDir, (_fPos select 1) + _dist * cos _fDir, 0];
 
 private _grpJoin = (groupMatrix select _si) select _giJoin;
@@ -21,7 +22,8 @@ private _grpJoin = (groupMatrix select _si) select _giJoin;
 if (!_isVehicle) then {
 	// Infantry
 	private _className = _unitDesc select udModel;
-	private _unit = _grpJoin createUnit [_className, _spawnPos, [], 5, "FORM"];
+	private _unit = _grpJoin createUnit [_className, _spawnPos, [], 0, "NONE"];
+	_unit setPosATL _spawnPos;
 	if (isNull _unit) then {
 		diag_log format ["TZK CTI: CreateUnit FAILED for infantry type=%1", _type];
 	} else {

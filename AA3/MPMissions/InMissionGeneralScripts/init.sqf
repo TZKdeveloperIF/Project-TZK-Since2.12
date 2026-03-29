@@ -18,6 +18,9 @@ call compile preprocessFileLineNumbers "Init\fn_gblScripts.sqf";
 call compile preprocessFileLineNumbers "Init\fn_initStructureTypes.sqf";
 call compile preprocessFileLineNumbers "Init\fn_initUnitTypes.sqf";
 
+// ======== Phase 5b: RTS system data (orderDefs, orderMatrix, selection state) ========
+call compile preprocessFileLineNumbers "Init\fn_initRts.sqf";
+
 // ======== Commander rules（必须在城镇同步等待之前）========
 // 多人客户端在 Phase 6 开头会 waitUntil towns；若 CmdRule 仍在等待之后，则永不到达 → isNil "TzkCmdRules"。
 call compile preprocessFileLineNumbers "Common\fn_cmdRule.sqf";

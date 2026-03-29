@@ -61,19 +61,8 @@ call compile preprocessFileLineNumbers "Server\fn_startMoney.sqf";
 // ---- Town triggers ----
 call compile preprocessFileLineNumbers "Init\fn_svrTownTrigger.sqf";
 
-// ---- AI group leaders initialization (placeholder for Phase D) ----
-{
-	private _si = _x;
-	private _groups = groupMatrix select _si;
-	private _aiGroups = groupAiMatrix select _si;
-	{
-		private _gi = _forEachIndex;
-		private _grp = _x;
-		if (_grp in _aiGroups) then {
-			// Phase D: spawn AI leader behavior
-		};
-	} forEach _groups;
-} forEach [si0, si1];
+// ---- AI group leaders initialization (Phase D) ----
+call TZK_fnc_leaderAI;
 
 // ---- Server loops ----
 [] spawn compile preprocessFileLineNumbers "Server\fn_incomeLoop.sqf";

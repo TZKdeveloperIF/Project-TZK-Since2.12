@@ -88,7 +88,8 @@ scoreMoney = [[], []];
 scTown = 0;
 
 // Match start time (set by SvrFormalStart, used everywhere)
-tzkMatchStartTime = 0;
+// -1 = not started; SvrFormalStart sets to time (>=0); all waitUntil checks use >= 0
+tzkMatchStartTime = -1;
 
 // Common helper functions (compiled once, usable everywhere)
 TZK_fnc_getClosestTown = compile preprocessFileLineNumbers "Common\fn_getClosestTown.sqf";
@@ -116,5 +117,14 @@ TZK_fnc_buildStruct = compile preprocessFileLineNumbers "Server\fn_buildStruct.s
 
 // Client-side: event-driven factory action attachment (called by server via remoteExec)
 TZK_fnc_addFactoryActions = compile preprocessFileLineNumbers "Player\fn_factoryActions.sqf";
+
+// Phase D: RTS / AI order system
+TZK_fnc_aiGrpOrder    = compile preprocessFileLineNumbers "Common\fn_aiGrpOrder.sqf";
+TZK_fnc_leaderAI      = compile preprocessFileLineNumbers "Server\fn_leaderAI.sqf";
+TZK_fnc_ordTakeTowns  = compile preprocessFileLineNumbers "Server\Order\fn_takeTowns.sqf";
+TZK_fnc_ordHoldTown   = compile preprocessFileLineNumbers "Server\Order\fn_holdTown.sqf";
+TZK_fnc_ordGuardArea  = compile preprocessFileLineNumbers "Server\Order\fn_guardArea.sqf";
+TZK_fnc_ordAdvance    = compile preprocessFileLineNumbers "Server\Order\fn_advance.sqf";
+TZK_fnc_ordHalt       = compile preprocessFileLineNumbers "Server\Order\fn_halt.sqf";
 
 diag_log "TZK CTI: MissionEnv initialized";

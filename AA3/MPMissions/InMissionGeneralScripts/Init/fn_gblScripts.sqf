@@ -11,8 +11,8 @@ for "_i" from 0 to 407 do { TzkScripts set [_i, ""] };
 
 // 003: NewOrder - unit purchase entry (Phase C)
 TzkScripts set [3, "Server/BuyUnit/fn_newOrder.sqf"];
-// 004: LeaderAI start (Phase B)
-TzkScripts set [4, ""];
+// 004: LeaderAI start (Phase D)
+TzkScripts set [4, "Server/fn_leaderAI.sqf"];
 // 006: AI_Stop
 TzkScripts set [6, ""];
 // 075: Factory loop (Phase C)
