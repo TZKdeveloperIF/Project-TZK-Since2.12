@@ -106,4 +106,15 @@ TZK_fnc_checkWinTowns = compile preprocessFileLineNumbers "Server\fn_checkWinTow
 TZK_fnc_checkWinDestruction = compile preprocessFileLineNumbers "Server\fn_checkWinDestruction.sqf";
 TZK_fnc_triggerGameEnd = compile preprocessFileLineNumbers "Server\fn_triggerGameEnd.sqf";
 
+// Phase C: Factory / production / building
+TZK_fnc_newOrder = compile preprocessFileLineNumbers "Server\BuyUnit\fn_newOrder.sqf";
+TZK_fnc_factory = compile preprocessFileLineNumbers "Server\BuyUnit\fn_factory.sqf";
+TZK_fnc_createUnit = compile preprocessFileLineNumbers "Server\BuyUnit\fn_createUnit.sqf";
+TZK_fnc_freeBuildingUnits = compile preprocessFileLineNumbers "Server\BuyUnit\fn_freeBuildingUnits.sqf";
+TZK_fnc_factoryDestroyed = compile preprocessFileLineNumbers "Server\BuyUnit\fn_factoryDestroyed.sqf";
+TZK_fnc_buildStruct = compile preprocessFileLineNumbers "Server\fn_buildStruct.sqf";
+
+// Client-side: event-driven factory action attachment (called by server via remoteExec)
+TZK_fnc_addFactoryActions = compile preprocessFileLineNumbers "Player\fn_factoryActions.sqf";
+
 diag_log "TZK CTI: MissionEnv initialized";

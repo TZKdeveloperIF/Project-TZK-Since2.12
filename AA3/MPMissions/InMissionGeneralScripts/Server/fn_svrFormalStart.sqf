@@ -39,6 +39,10 @@ mhq set [si1, _mhqE];
 
 publicVariable "mhq";
 
+// 将 MHQ 注册为 BASE 重生点（跟随载具移动）
+[west,  _mhqW] call BIS_fnc_addRespawnPosition;
+[east,  _mhqE] call BIS_fnc_addRespawnPosition;
+
 // ---- Match start time ----
 tzkMatchStartTime = time;
 tzkMatchStartTime = tzkMatchStartTime - (tzkMatchStartTime % 0.25);

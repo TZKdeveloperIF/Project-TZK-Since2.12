@@ -32,6 +32,9 @@ mutexFacQueues = false;
 mutexbuildingInUse = false;
 buildingsInUse = [];
 qidNext = [0, 0];
+factoryCancelledQid = [[], []];
+executedOrderTimer = [[[], []], [[], []]];
+mutexEot = [false, false];
 groupUnitsBuildingMatrix = [[], []];
 mutexBuildingQueue = [[], []];
 {
