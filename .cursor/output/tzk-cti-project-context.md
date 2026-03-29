@@ -3,7 +3,7 @@ project: Project-TZK-Since2.12
 game: Operation Flashpoint (OFP) / CWA / Arma Resistance 2.01
 mission_type: CTI / crCTI
 primary_language: SQF + SQS
-last_context_update: 2026-03-28
+last_context_update: 2026-03-29
 doc_roles: [agent_digest, human_narrative]
 related_skills: [session-notes-export]
 ---
@@ -11,6 +11,8 @@ related_skills: [session-notes-export]
 <!-- 新会话：优先只读下方 AGENT_DIGEST，再按需读「人类可读」。人类读者可直接跳至「人类可读」。 -->
 
 <!-- AGENT_DIGEST_START -->
+
+**A3 迁移接续**：阶段 A–D 已完成 → 见 **[`tzk-a3-cti-migration-handoff.md`](tzk-a3-cti-migration-handoff.md)**（含地图 RTS 快捷键、阶段 E 锚点）。本文件仍以 **OFP 原版** 架构为主。
 
 **类型**：OFP 联机 CTI；逻辑在 `MPMissions/General Scripts in Mission/`，插件脚本 `\TZK_*` 在 `MPMissions/TZK_*`。
 
