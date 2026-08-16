@@ -1,8 +1,8 @@
 ////////////////////////////////////////////////////////////////////
-//DeRap: D:\Arma Cold War Assault\BIN\resource.bin
+//DeRap: D:\Program Files (x86)\Steam\steamapps\common\ARMA Cold War Assault\Remastered\BIN\RESOURCE.BIN
 //Produced from mikero's Dos Tools Dll version 7.46
 //https://bytex.market/products/item/weodpphdknnzm70o0h8q/Mikero%27s%20Dos%20Tools
-//'now' is Sun Apr 17 15:00:33 2022 : 'file' last modified on Sun Feb 18 23:20:14 2018
+//'now' is Thu Jul 23 13:16:37 2026 : 'file' last modified on Fri Jul 17 01:05:58 2026
 ////////////////////////////////////////////////////////////////////
 
 #define _OFP_
@@ -3842,67 +3842,67 @@ class RscDisplayArcadeSensor {
 	controls[] = {"Background","Title","SubBackground1","TextA","ValueA","TextB","ValueB","TextAngle","ValueAngle","Rectangular","SubBackground2","TextActivation","ValueActivation","Presence","Repeating","Interruptable","TextTimeoutMin","ValueTimeoutMin","TextTimeoutMax","ValueTimeoutMax","TextTimeoutMid","ValueTimeoutMid","SubBackground3","TextType","ValueType","TextText","ValueText","TextName","ValueName","SubBackground4","TextExpCond","ValueExpCond","TextExpActiv","ValueExpActiv","TextExpDesactiv","ValueExpDesactiv","ButtonEffects","ButtonOK","ButtonCancel"};
 	class Background: RscBackground {
 		x = 0.2;
-		y = 0.1;
+		y = 0.055;
 		w = 0.56;
-		h = 0.86;
+		h = 0.925;
 	};
 	class Title: RscTitle {
 		idc = 101;
 		x = 0.2;
-		y = 0.118;
+		y = 0.075;
 		w = 0.56;
 		h = 0.06;
 		text = "$STR_DISP_ARCSENS_TITLE";
 	};
 	class SubBackground1: RscGroupBox2 {
 		x = 0.22;
-		y = 0.2;
+		y = 0.155;
 		w = 0.515;
 		h = 0.11;
 	};
 	class TextA: RscText {
 		x = 0.23;
-		y = 0.21;
+		y = 0.165;
 		w = 0.15;
 		text = "$STR_DISP_ARCSENS_A";
 	};
 	class ValueA: RscEdit {
 		idc = 102;
 		x = 0.32;
-		y = 0.21;
+		y = 0.165;
 		w = 0.15;
 		text = "$STR_DISP_ERROR";
 	};
 	class TextB: RscText {
 		x = 0.48;
-		y = 0.21;
+		y = 0.165;
 		w = 0.15;
 		text = "$STR_DISP_ARCSENS_B";
 	};
 	class ValueB: RscEdit {
 		idc = 103;
 		x = 0.57;
-		y = 0.21;
+		y = 0.165;
 		w = 0.15;
 		text = "$STR_DISP_ERROR";
 	};
 	class TextAngle: RscText {
 		x = 0.23;
-		y = 0.26;
+		y = 0.215;
 		w = 0.15;
 		text = "$STR_DISP_ARCSENS_ANGLE";
 	};
 	class ValueAngle: RscEdit {
 		idc = 104;
 		x = 0.32;
-		y = 0.26;
+		y = 0.215;
 		w = 0.15;
 		text = "$STR_DISP_ERROR";
 	};
 	class Rectangular: RscToolbox {
 		idc = 120;
 		x = 0.48;
-		y = 0.26;
+		y = 0.215;
 		w = 0.24;
 		h = 0.038;
 		strings[] = {"$STR_DISP_ARCSENS_ELLIPSE","$STR_DISP_ARCSENS_RECT"};
@@ -3911,26 +3911,26 @@ class RscDisplayArcadeSensor {
 	};
 	class SubBackground2: RscGroupBox2 {
 		x = 0.22;
-		y = 0.33;
+		y = 0.285;
 		w = 0.515;
-		h = 0.16;
+		h = 0.235;
 	};
 	class TextActivation: RscText {
 		x = 0.23;
-		y = 0.34;
+		y = 0.295;
 		w = 0.15;
 		text = "$STR_DISP_ARCSENS_ACTIV";
 	};
 	class ValueActivation: RscCombo {
 		idc = 105;
 		x = 0.32;
-		y = 0.34;
+		y = 0.295;
 		w = 0.15;
 	};
 	class Repeating: RscToolbox {
 		idc = 107;
 		x = 0.48;
-		y = 0.34;
+		y = 0.295;
 		w = 0.24;
 		h = 0.038;
 		strings[] = {"$STR_DISP_ARCSENS_ONCE","$STR_DISP_ARCSENS_REPEAT"};
@@ -3940,9 +3940,9 @@ class RscDisplayArcadeSensor {
 	class Presence: RscToolbox {
 		idc = 106;
 		x = 0.23;
-		y = 0.39;
+		y = 0.34;
 		w = 0.5;
-		h = 0.038;
+		h = 0.076;
 		strings[] = {"$STR_DISP_ARCSENS_PRESYES","$STR_DISP_ARCSENS_PRESNO","$STR_DISP_ARCSENS_DETWEST","$STR_DISP_ARCSENS_DETEAST","$STR_DISP_ARCSENS_DETGUERRILA","$STR_DISP_ARCSENS_DETCIVILIAN"};
 		rows = 2;
 		columns = 3;
@@ -3950,7 +3950,7 @@ class RscDisplayArcadeSensor {
 	class Interruptable: RscToolbox {
 		idc = 108;
 		x = 0.23;
-		y = 0.42;
+		y = 0.43;
 		w = 0.15;
 		h = 0.08;
 		strings[] = {"$STR_DISP_ARCSENS_COUNTDOWN","$STR_DISP_ARCSENS_TIMEOUT"};
@@ -3958,132 +3958,132 @@ class RscDisplayArcadeSensor {
 		columns = 1;
 	};
 	class TextTimeoutMin: RscText {
-		x = 0.35;
-		y = 0.44;
+		x = 0.39;
+		y = 0.43;
 		w = 0.05;
 		text = "$STR_DISP_ARCSENS_TIMEOUT_MIN";
 	};
 	class ValueTimeoutMin: RscEdit {
 		idc = 109;
-		x = 0.4;
-		y = 0.44;
+		x = 0.44;
+		y = 0.43;
 		w = 0.05;
 		text = "$STR_DISP_ERROR";
 	};
 	class TextTimeoutMax: RscText {
-		x = 0.45;
-		y = 0.44;
+		x = 0.49;
+		y = 0.43;
 		w = 0.05;
 		text = "$STR_DISP_ARCSENS_TIMEOUT_MAX";
 	};
 	class ValueTimeoutMax: RscEdit {
 		idc = 110;
-		x = 0.5;
-		y = 0.44;
+		x = 0.54;
+		y = 0.43;
 		w = 0.05;
 		text = "$STR_DISP_ERROR";
 	};
 	class TextTimeoutMid: RscText {
-		x = 0.55;
-		y = 0.44;
+		x = 0.59;
+		y = 0.43;
 		w = 0.05;
 		text = "$STR_DISP_ARCSENS_TIMEOUT_MID";
 	};
 	class ValueTimeoutMid: RscEdit {
 		idc = 111;
-		x = 0.6;
-		y = 0.44;
+		x = 0.64;
+		y = 0.43;
 		w = 0.05;
 		text = "$STR_DISP_ERROR";
 	};
 	class SubBackground3: RscGroupBox2 {
 		x = 0.22;
-		y = 0.51;
+		y = 0.54;
 		w = 0.515;
 		h = 0.16;
 	};
 	class TextType: RscText {
 		x = 0.23;
-		y = 0.52;
+		y = 0.55;
 		w = 0.15;
 		text = "$STR_DISP_ARCSENS_TYPE";
 	};
 	class ValueType: RscCombo {
 		idc = 112;
 		x = 0.32;
-		y = 0.52;
+		y = 0.55;
 		w = 0.15;
 	};
 	class TextText: RscText {
 		x = 0.23;
-		y = 0.57;
+		y = 0.6;
 		w = 0.15;
 		text = "$STR_DISP_ARCSENS_TEXT";
 	};
 	class ValueText: RscEdit {
 		idc = 114;
 		x = 0.32;
-		y = 0.57;
+		y = 0.6;
 		w = 0.15;
 		text = "$STR_DISP_ERROR";
 	};
 	class TextName: RscText {
 		x = 0.48;
-		y = 0.57;
+		y = 0.6;
 		w = 0.15;
 		text = "$STR_DISP_ARCSENS_NAME";
 	};
 	class ValueName: RscEdit {
 		idc = 121;
 		x = 0.57;
-		y = 0.57;
+		y = 0.6;
 		w = 0.15;
 		text = "$STR_DISP_ERROR";
 	};
 	class SubBackground4: RscGroupBox2 {
 		x = 0.22;
-		y = 0.69;
+		y = 0.72;
 		w = 0.515;
 		h = 0.16;
 	};
 	class TextExpCond: RscText {
 		x = 0.23;
-		y = 0.7;
+		y = 0.73;
 		w = 0.2;
 		text = "$STR_DISP_ARCSENS_EXPCOND";
 	};
 	class ValueExpCond: RscEdit {
 		idc = 117;
 		x = 0.37;
-		y = 0.7;
+		y = 0.73;
 		w = 0.35;
 		text = "$STR_DISP_ERROR";
 		autocomplete = "scripting";
 	};
 	class TextExpActiv: RscText {
 		x = 0.23;
-		y = 0.75;
+		y = 0.78;
 		w = 0.2;
 		text = "$STR_DISP_ARCSENS_EXPACTIV";
 	};
 	class ValueExpActiv: RscEdit {
 		idc = 118;
 		x = 0.37;
-		y = 0.75;
+		y = 0.78;
 		w = 0.35;
 		text = "$STR_DISP_ERROR";
 		autocomplete = "scripting";
 	};
 	class TextExpDesactiv: RscText {
 		x = 0.23;
-		y = 0.8;
+		y = 0.83;
 		w = 0.2;
 		text = "$STR_DISP_ARCSENS_EXPDESACTIV";
 	};
 	class ValueExpDesactiv: RscEdit {
 		idc = 119;
 		x = 0.37;
-		y = 0.8;
+		y = 0.83;
 		w = 0.35;
 		text = "$STR_DISP_ERROR";
 		autocomplete = "scripting";
@@ -4091,7 +4091,7 @@ class RscDisplayArcadeSensor {
 	class ButtonEffects: RscButtonSmall {
 		idc = 116;
 		x = 0.22;
-		y = 0.885;
+		y = 0.905;
 		w = 0.13;
 		h = 0.05;
 		text = "$STR_DISP_ARCSENS_EFFECTS";
@@ -4099,7 +4099,7 @@ class RscDisplayArcadeSensor {
 	class ButtonOK: RscButtonSmall {
 		idc = 1;
 		x = 0.46;
-		y = 0.885;
+		y = 0.905;
 		w = 0.13;
 		h = 0.05;
 		text = "$STR_DISP_OK";
@@ -4109,7 +4109,7 @@ class RscDisplayArcadeSensor {
 	class ButtonCancel: RscButtonSmall {
 		idc = 2;
 		x = 0.607;
-		y = 0.885;
+		y = 0.905;
 		w = 0.13;
 		h = 0.05;
 		text = "$STR_DISP_CANCEL";
@@ -4615,7 +4615,7 @@ class RscDisplayArcadeWaypoint {
 		x = 0.22;
 		y = 0.22;
 		w = 0.56;
-		h = 0.6;
+		h = 0.57;
 	};
 	class Title: RscTitle {
 		idc = 101;
@@ -6080,27 +6080,27 @@ class RscDisplayBackgroundStripesDark: RscDisplayBackgroundStripes {
 };
 class RscDisplayStripesLayeredBackground {
 	access = 3;
-	controlsBackground[] = {"Background3","Background4","Background5"};
 	class Background1: RscBackgroundStripeTopAlpha {};
 	class Background2: RscBackgroundStripeBottomAlpha {};
 	class Background3: RscBackgroundStripeDark {};
 	class Background4: RscBackgroundStripeTop {};
 	class Background5: RscBackgroundStripeBottom {};
+	controlsBackground[] = {"Background3","Background4","Background5"};
 };
 class RscDisplayStripesBrightLayeredBackground {
 	access = 3;
-	controlsBackground[] = {"Background4","Background5"};
 	class Background1: RscBackgroundStripeTopAlpha {};
 	class Background2: RscBackgroundStripeBottomAlpha {};
 	class Background4: RscBackgroundStripeTop {};
 	class Background5: RscBackgroundStripeBottom {};
+	controlsBackground[] = {"Background4","Background5"};
 };
 class RscDisplayMain: RscDisplayBackgroundStripesDark {
 	access = 3;
 	idd = 0;
 	movingEnable = 1;
 	controlsBackground[] = {"Background1","Background2","Background3"};
-	controls[] = {"RE1","RE2","RE3","Line1","Line2","Continue","Player","Game","SingleMission","Multiplayer","Custom","Options","Quit","Version","AllMissions","Copy"};
+	controls[] = {"CWA","Line1","Line2","Continue","Player","Game","SingleMission","Multiplayer","Custom","Options","Quit","Version","AllMissions","Copy"};
 	class copy: RscText {
 		style = "16 + 					2 + 				512";
 		lineSpacing = 1;
@@ -6132,27 +6132,6 @@ class RscDisplayMain: RscDisplayBackgroundStripesDark {
 	class FP3: RscPicture {
 		text = "OFPlogo3.paa";
 		colorText[] = {0.23,0.3,0.08,0.75};
-		x = 0.545;
-		y = 0.01;
-		w = 0.09;
-		h = 0.1;
-	};
-	class RE1: RscPicture {
-		text = "\res\misc\OFPRlogo01.jpg";
-		x = 0.365;
-		y = 0.01;
-		w = 0.09;
-		h = 0.1;
-	};
-	class RE2: RscPicture {
-		text = "\res\misc\OFPRlogo02.jpg";
-		x = 0.455;
-		y = 0.01;
-		w = 0.09;
-		h = 0.1;
-	};
-	class RE3: RscPicture {
-		text = "\res\misc\OFPRlogo03.jpg";
 		x = 0.545;
 		y = 0.01;
 		w = 0.09;
@@ -6481,7 +6460,6 @@ class RscDisplaySingleMission: RscDisplayStripesLayeredBackground {
 	idd = 2;
 	movingEnable = 1;
 	objects[] = {"Notepad"};
-	controls[] = {"Background1","Background2","Title","ButtonDifficulty","ButtonLoad","ButtonOK","ButtonCancel"};
 	class Notepad: RscObject {
 		model = "blok_selmis2.p3d";
 		idc = 103;
@@ -6529,6 +6507,7 @@ class RscDisplaySingleMission: RscDisplayStripesLayeredBackground {
 			filename = "";
 		};
 	};
+	controls[] = {"Background1","Background2","Title","ButtonDifficulty","ButtonLoad","ButtonOK","ButtonCancel"};
 	class Title: RscText {
 		idc = -1;
 		style = 2;
@@ -6584,7 +6563,6 @@ class RscDisplayOptions: RscDisplayStripesBrightLayeredBackground {
 	idd = 3;
 	movingEnable = 1;
 	objects[] = {"Notebook"};
-	controls[] = {"Background1","Background2","Title","ButtonCredits","ButtonClose"};
 	class Notebook: RscObject {
 		model = "notebook.p3d";
 		idc = 105;
@@ -6639,6 +6617,7 @@ class RscDisplayOptions: RscDisplayStripesBrightLayeredBackground {
 			text = "$STR_DISP_OPTIONS_DIFFICULTY";
 		};
 	};
+	controls[] = {"Background1","Background2","Title","ButtonCredits","ButtonClose"};
 	class Title: RscText {
 		idc = -1;
 		style = 2;
@@ -6699,7 +6678,6 @@ class RscDisplayOptionsVideo: RscDisplayStripesBrightLayeredBackground {
 	idd = 5;
 	movingEnable = 1;
 	objects[] = {"Notebook"};
-	controls[] = {"Background1","Background2","Title","ButtonCancel","ButtonOK"};
 	class Notebook: RscObject {
 		model = "notebook.p3d";
 		idc = -1;
@@ -6717,7 +6695,7 @@ class RscDisplayOptionsVideo: RscDisplayStripesBrightLayeredBackground {
 		enableZoom = 0;
 		zoomDuration = 1;
 		scale = 1;
-		controls[] = {"TextResolution","ValueResolution","TextRefresh","ValueRefresh","TextHWTL","ValueHWTL","TextMultitexturing","ValueMultitexturing","TextWBuffer","ValueWBuffer","TextObjectShadows","ValueObjectShadows","TextVehicleShadows","ValueVehicleShadows","TextCloudlets","ValueCloudlets","TextBlood","ValueBlood","TextBrightness","ValueBrightness","SliderBrightness","TextGamma","ValueGamma","SliderGamma","TextFrameRate","ValueFrameRate","SliderFrameRate","TextVisualQuality","ValueVisualQuality","SliderVisualQuality","TextVisibility","ValueVisibility","SliderVisibility","TextASP","ValueASP","TextTerrain","ValueTerrain"};
+		controls[] = {"TextResolution","ValueResolution","TextRefresh","ValueRefresh","TextHWTL","ValueHWTL","TextMultitexturing","ValueMultitexturing","TextWBuffer","ValueWBuffer","TextObjectShadows","ValueObjectShadows","TextVehicleShadows","ValueVehicleShadows","TextCloudlets","ValueCloudlets","TextBlood","ValueBlood","TextBrightness","ValueBrightness","SliderBrightness","TextGamma","ValueGamma","SliderGamma","TextFrameRate","ValueFrameRate","SliderFrameRate","TextVisualQuality","ValueVisualQuality","SliderVisualQuality","TextVisibility","ValueVisibility","SliderVisibility","TextTerrain","ValueTerrain"};
 		class TextResolution: RscObjNotebookText {
 			x = 0.025;
 			y = 0.033;
@@ -6843,124 +6821,110 @@ class RscDisplayOptionsVideo: RscDisplayStripesBrightLayeredBackground {
 		class TextBrightness: RscOptionText {
 			x = 0.525;
 			w = 0.3;
-			y = 0.01;
+			y = 0.033;
 			text = "$STR_DISP_OPT_BRIGHT";
 		};
 		class ValueBrightness: RscOptionValue {
 			idc = 111;
 			x = 0.825;
 			w = 0.1;
-			y = 0.01;
+			y = 0.033;
 		};
 		class SliderBrightness: RscOptionSlider {
 			idc = 112;
 			x = 0.525;
 			w = 0.45;
-			y = 0.06;
+			y = 0.083;
 		};
 		class TextGamma: RscOptionText {
 			x = 0.525;
 			w = 0.3;
-			y = 0.11;
+			y = 0.173;
 			text = "$STR_DISP_OPT_GAMMA";
 		};
 		class ValueGamma: RscOptionValue {
 			idc = 109;
 			x = 0.825;
 			w = 0.1;
-			y = 0.11;
+			y = 0.173;
 		};
 		class SliderGamma: RscOptionSlider {
 			idc = 110;
 			x = 0.525;
 			w = 0.45;
-			y = 0.16;
+			y = 0.223;
 		};
 		class TextFrameRate: RscOptionText {
 			x = 0.525;
 			w = 0.3;
-			y = 0.21;
+			y = 0.313;
 			text = "$STR_DISP_OPT_FRAMERATE";
 		};
 		class ValueFrameRate: RscOptionValue {
 			idc = 105;
 			x = 0.825;
 			w = 0.1;
-			y = 0.21;
+			y = 0.313;
 		};
 		class SliderFrameRate: RscOptionSlider {
 			idc = 106;
 			x = 0.525;
 			w = 0.45;
-			y = 0.26;
+			y = 0.363;
 		};
 		class TextVisualQuality: RscOptionText {
 			x = 0.525;
 			w = 0.3;
-			y = 0.31;
+			y = 0.453;
 			text = "$STR_DISP_OPT_QUALITY";
 		};
 		class ValueVisualQuality: RscOptionValue {
 			idc = 101;
 			x = 0.825;
 			w = 0.1;
-			y = 0.31;
+			y = 0.453;
 		};
 		class SliderVisualQuality: RscOptionSlider {
 			idc = 102;
 			x = 0.525;
 			w = 0.45;
-			y = 0.36;
+			y = 0.503;
 		};
 		class TextVisibility: RscOptionText {
 			x = 0.525;
 			w = 0.3;
-			y = 0.41;
+			y = 0.593;
 			text = "$STR_DISP_OPT_VISIBILITY";
 		};
 		class ValueVisibility: RscOptionValue {
 			idc = 103;
 			x = 0.825;
 			w = 0.1;
-			y = 0.41;
+			y = 0.593;
 		};
 		class SliderVisibility: RscOptionSlider {
 			idc = 104;
 			x = 0.525;
 			w = 0.45;
-			y = 0.46;
-		};
-		class TextASP: RscObjNotebookText {
-			x = 0.525;
-			y = 0.54;
-			w = 0.45;
-			text = "$STR_DISP_ASP_TITLE";
-		};
-		class ValueASP: RscObjNotebookListBox {
-			idc = 124;
-			x = 0.525;
-			y = 0.59;
-			w = 0.45;
-			h = 0.16;
-			rows = 4;
-			size = 0.9;
+			y = 0.643;
 		};
 		class TextTerrain: RscObjNotebookText {
 			x = 0.525;
-			y = 0.75;
+			y = 0.717;
 			w = 0.45;
 			text = "$STR_DISP_OPT_TERRAIN";
 		};
 		class ValueTerrain: RscObjNotebookListBox {
 			idc = 123;
 			x = 0.525;
-			y = 0.8;
+			y = 0.767;
 			w = 0.45;
-			h = 0.16;
+			h = 0.2;
 			rows = 4;
 			size = 0.9;
 		};
 	};
+	controls[] = {"Background1","Background2","Title","ButtonCancel","ButtonOK"};
 	class Title: RscText {
 		idc = -1;
 		style = 2;
@@ -6998,7 +6962,6 @@ class RscDisplayOptionsAudio: RscDisplayStripesBrightLayeredBackground {
 	idd = 6;
 	movingEnable = 1;
 	objects[] = {"Notebook"};
-	controls[] = {"Background1","Background2","Title","ButtonCancel","ButtonOK"};
 	class Notebook: RscObject {
 		model = "notebook.p3d";
 		idc = -1;
@@ -7093,6 +7056,7 @@ class RscDisplayOptionsAudio: RscDisplayStripesBrightLayeredBackground {
 			text = "$STR_DISP_ERROR";
 		};
 	};
+	controls[] = {"Background1","Background2","Title","ButtonCancel","ButtonOK"};
 	class Title: RscText {
 		idc = -1;
 		style = 2;
@@ -7130,7 +7094,6 @@ class RscDisplayDifficulty: RscDisplayStripesBrightLayeredBackground {
 	idd = 7;
 	movingEnable = 1;
 	objects[] = {"Notebook"};
-	controls[] = {"Background1","Background2","Title","ButtonDefault","ButtonCancel","ButtonOK"};
 	class Notebook: RscObject {
 		model = "notebook.p3d";
 		idc = -1;
@@ -7193,6 +7156,7 @@ class RscDisplayDifficulty: RscDisplayStripesBrightLayeredBackground {
 			text = "$STR_DISP_ERROR";
 		};
 	};
+	controls[] = {"Background1","Background2","Title","ButtonDefault","ButtonCancel","ButtonOK"};
 	class Title: RscText {
 		idc = -1;
 		style = 2;
@@ -7238,7 +7202,6 @@ class RscDisplayConfigure: RscDisplayStripesBrightLayeredBackground {
 	idd = 4;
 	movingEnable = 1;
 	objects[] = {"Notebook"};
-	controls[] = {"Background1","Background2","Title","ButtonDefault","ButtonCancel","ButtonOK"};
 	class Notebook: RscObject {
 		model = "notebook.p3d";
 		idc = -1;
@@ -7366,6 +7329,7 @@ class RscDisplayConfigure: RscDisplayStripesBrightLayeredBackground {
 			text = "$STR_DISP_ERROR";
 		};
 	};
+	controls[] = {"Background1","Background2","Title","ButtonDefault","ButtonCancel","ButtonOK"};
 	class Title: RscText {
 		idc = -1;
 		style = 2;
@@ -7411,7 +7375,6 @@ class RscDisplayMultiplayer: RscDisplayStripesLayeredBackground {
 	idd = 8;
 	movingEnable = 1;
 	objects[] = {"Notebook"};
-	controls[] = {"Background1","Background2","Title","Progress","ButtonCancel","ButtonJoin","ButtonNew"};
 	class Notebook: RscObject {
 		model = "notebook.p3d";
 		idc = 106;
@@ -7573,6 +7536,7 @@ class RscDisplayMultiplayer: RscDisplayStripesLayeredBackground {
 			w = 0.25;
 		};
 	};
+	controls[] = {"Background1","Background2","Title","GameSpy","Progress","ButtonCancel","ButtonJoin","ButtonNew"};
 	class Title: RscText {
 		idc = 101;
 		style = 2;
@@ -7642,7 +7606,6 @@ class RscDisplayPort: RscDisplayStripesLayeredBackground {
 	idd = 69;
 	movingEnable = 1;
 	objects[] = {"Notebook"};
-	controls[] = {"Background1","Background2","Title","ButtonOK","ButtonCancel"};
 	class Notebook: RscObject {
 		model = "notebook.p3d";
 		idc = -1;
@@ -7674,6 +7637,7 @@ class RscDisplayPort: RscDisplayStripesLayeredBackground {
 			w = 0.4;
 		};
 	};
+	controls[] = {"Background1","Background2","Title","ButtonOK","ButtonCancel"};
 	class Title: RscText {
 		style = 2;
 		x = 0.2;
@@ -7710,7 +7674,6 @@ class RscDisplayPassword: RscDisplayStripesLayeredBackground {
 	idd = 64;
 	movingEnable = 1;
 	objects[] = {"Notebook"};
-	controls[] = {"Background1","Background2","Title","ButtonOK","ButtonCancel"};
 	class Notebook: RscObject {
 		model = "notebook.p3d";
 		idc = -1;
@@ -7742,6 +7705,7 @@ class RscDisplayPassword: RscDisplayStripesLayeredBackground {
 			w = 0.4;
 		};
 	};
+	controls[] = {"Background1","Background2","Title","ButtonOK","ButtonCancel"};
 	class Title: RscText {
 		style = 2;
 		x = 0.2;
@@ -7778,7 +7742,6 @@ class RscDisplayIPAddress: RscDisplayStripesLayeredBackground {
 	idd = 19;
 	movingEnable = 1;
 	objects[] = {"Notebook"};
-	controls[] = {"Background1","Background2","Title","ButtonOK","ButtonCancel"};
 	class Notebook: RscObject {
 		model = "notebook.p3d";
 		idc = -1;
@@ -7822,6 +7785,7 @@ class RscDisplayIPAddress: RscDisplayStripesLayeredBackground {
 			w = 0.4;
 		};
 	};
+	controls[] = {"Background1","Background2","Title","ButtonOK","ButtonCancel"};
 	class Title: RscText {
 		style = 2;
 		x = 0.2;
@@ -7858,7 +7822,6 @@ class RscDisplayFilter: RscDisplayStripesLayeredBackground {
 	idd = 71;
 	movingEnable = 1;
 	objects[] = {"Notebook"};
-	controls[] = {"Background1","Background2","Title","ButtonDefault","ButtonOK","ButtonCancel"};
 	class Notebook: RscObject {
 		model = "notebook.p3d";
 		idc = -1;
@@ -7952,6 +7915,7 @@ class RscDisplayFilter: RscDisplayStripesLayeredBackground {
 			w = 0.5;
 		};
 	};
+	controls[] = {"Background1","Background2","Title","ButtonDefault","ButtonOK","ButtonCancel"};
 	class Title: RscText {
 		style = 2;
 		x = 0.2;
@@ -7996,7 +7960,6 @@ class RscDisplayServer: RscDisplayStripesLayeredBackground {
 	idd = 17;
 	movingEnable = 1;
 	objects[] = {"Notebook"};
-	controls[] = {"Background1","Background2","Title","ButtonDifficulty","ButtonEditor","ButtonCancel","ButtonOK"};
 	class Notebook: RscObject {
 		model = "notebook.p3d";
 		idc = -1;
@@ -8045,6 +8008,7 @@ class RscDisplayServer: RscDisplayStripesLayeredBackground {
 			rows = 10;
 		};
 	};
+	controls[] = {"Background1","Background2","Title","ButtonDifficulty","ButtonEditor","ButtonCancel","ButtonOK"};
 	class Title: RscText {
 		style = 2;
 		x = 0.2;
@@ -8150,10 +8114,9 @@ class RscDisplayWizardTemplate: RscDisplayStripesLayeredBackground {
 	idd = 67;
 	movingEnable = 1;
 	controlsBackground[] = {"Background3","Background4","Background5"};
-	objects[] = {"Notebook"};
-	controls[] = {"Background1","Background2","Title","ButtonCancel","ButtonOK"};
 	class Background4: RscBackgroundStripeTop {};
 	class Background5: RscBackgroundStripeBottom {};
+	objects[] = {"Notebook"};
 	class Notebook: RscObject {
 		model = "notebook.p3d";
 		idc = -1;
@@ -8223,6 +8186,7 @@ class RscDisplayWizardTemplate: RscDisplayStripesLayeredBackground {
 			text = "Mission1";
 		};
 	};
+	controls[] = {"Background1","Background2","Title","ButtonCancel","ButtonOK"};
 	class Title: RscText {
 		style = 2;
 		x = 0.2;
@@ -8259,7 +8223,6 @@ class RscDisplayWizardMap: RscDisplayStripesLayeredBackground {
 	idd = 68;
 	movingEnable = 0;
 	controlsBackground[] = {"Background","Map"};
-	controls[] = {"Background3","Background4","TitleTop","ButtonCancel","ButtonFinish"};
 	class Background: RscText {
 		x = 0;
 		y = 0;
@@ -8275,6 +8238,7 @@ class RscDisplayWizardMap: RscDisplayStripesLayeredBackground {
 		w = 1;
 		h = 0.75;
 	};
+	controls[] = {"Background3","Background4","TitleTop","ButtonCancel","ButtonFinish"};
 	class Background3: RscBackgroundStripeTopAlpha {};
 	class TitleTop: RscText {
 		x = 0;
@@ -8374,10 +8338,9 @@ class RscDisplayMultiplayerSetup: RscDisplayStripesLayeredBackground {
 	idd = 70;
 	movingEnable = 1;
 	controlsBackground[] = {"Background3","Background4","Background5"};
-	objects[] = {"Notebook"};
-	controls[] = {"Background1","Background2","Title","ButtonKick","ButtonCancel","ButtonOK"};
 	class Background4: RscBackgroundStripeTop {};
 	class Background5: RscBackgroundStripeBottom {};
+	objects[] = {"Notebook"};
 	class Notebook: RscObject {
 		model = "notebook.p3d";
 		idc = -1;
@@ -8579,6 +8542,7 @@ class RscDisplayMultiplayerSetup: RscDisplayStripesLayeredBackground {
 			text = "$STR_DISP_ERROR";
 		};
 	};
+	controls[] = {"Background1","Background2","Title","ButtonKick","ButtonCancel","ButtonOK"};
 	class Title: RscText {
 		style = 2;
 		x = 0.2;
@@ -8623,10 +8587,9 @@ class RscDisplayMPPlayers: RscDisplayStripesLayeredBackground {
 	idd = 65;
 	movingEnable = 1;
 	controlsBackground[] = {"Background3","Background4","Background5"};
-	objects[] = {"Notebook"};
-	controls[] = {"Background1","Background2","Title","ButtonKickOff","ButtonBan","ButtonCancel"};
 	class Background4: RscBackgroundStripeTop {};
 	class Background5: RscBackgroundStripeBottom {};
+	objects[] = {"Notebook"};
 	class Notebook: RscObject {
 		model = "notebook.p3d";
 		idc = -1;
@@ -8971,6 +8934,7 @@ class RscDisplayMPPlayers: RscDisplayStripesLayeredBackground {
 			text = "$STR_DISP_ERROR";
 		};
 	};
+	controls[] = {"Background1","Background2","Title","ButtonKickOff","ButtonBan","ButtonCancel"};
 	class Title: RscText {
 		style = 2;
 		x = 0.2;
@@ -9035,13 +8999,11 @@ class RscDisplayClientWait: RscDisplayMPPlayers {
 		soundClick[] = {"ui\ui_ok",0.2,1};
 	};
 };
-class RscDisplayMainMapWest {
+class RscDisplayMainMap {
 	access = 3;
 	idd = 12;
 	movingEnable = 0;
 	controlsBackground[] = {"Background","Map"};
-	objects[] = {"Watch","Compass","WalkieTalkie","Notepad","Warrant","GPS"};
-	controls[] = {};
 	class Background: RscText {
 		x = -10;
 		y = -10;
@@ -9066,6 +9028,7 @@ class RscDisplayMainMapWest {
 			size = 50;
 		};
 	};
+	objects[] = {"Watch","Compass","WalkieTalkie","Notepad","Warrant","GPS"};
 	class Watch: RscObject {
 		idc = 101;
 		type = 81;
@@ -9270,19 +9233,17 @@ class RscDisplayMainMapWest {
 			text = "";
 		};
 	};
+	controls[] = {};
 };
-class RscDisplayMainMapEast: RscDisplayMainMapWest {};
-class RscDisplayMainMapGuer: RscDisplayMainMapWest {};
-class RscDisplayMainMapCiv: RscDisplayMainMapWest {};
-class RscDisplayGetReadyWest: RscDisplayMainMapWest {
+class RscDisplayGetReady: RscDisplayMainMap {
 	access = 3;
 	idd = 37;
 	controlsBackground[] = {"Background","Map2"};
-	controls[] = {"Background3","Background4","TitleTop","ButtonContinue","ButtonCancel"};
 	class Map2: Map {
 		y = 0.125;
 		h = 0.75;
 	};
+	controls[] = {"Background3","Background4","TitleTop","ButtonContinue","ButtonCancel"};
 	class Background3: RscBackgroundStripeTopAlpha {};
 	class TitleTop: RscText {
 		x = 0;
@@ -9321,10 +9282,7 @@ class RscDisplayGetReadyWest: RscDisplayMainMapWest {
 		text = "$STR_DISP_CANCEL";
 	};
 };
-class RscDisplayGetReadyEast: RscDisplayGetReadyWest {};
-class RscDisplayGetReadyGuer: RscDisplayGetReadyWest {};
-class RscDisplayGetReadyCiv: RscDisplayGetReadyWest {};
-class RscDisplayServerGetReadyWest: RscDisplayGetReadyWest {
+class RscDisplayServerGetReady: RscDisplayGetReady {
 	access = 3;
 	idd = 52;
 	controls[] = {"Background3","Background4","TitleTop","PlayersTitleBackground","PlayersTitle","PlayersBackground","Players","ButtonContinue","ButtonCancel"};
@@ -9390,10 +9348,7 @@ class RscDisplayServerGetReadyWest: RscDisplayGetReadyWest {
 		text = "$STR_DISP_CANCEL";
 	};
 };
-class RscDisplayServerGetReadyEast: RscDisplayServerGetReadyWest {};
-class RscDisplayServerGetReadyGuer: RscDisplayServerGetReadyWest {};
-class RscDisplayServerGetReadyCiv: RscDisplayServerGetReadyWest {};
-class RscDisplayClientGetReadyWest: RscDisplayGetReadyWest {
+class RscDisplayClientGetReady: RscDisplayGetReady {
 	access = 3;
 	idd = 53;
 	controls[] = {"Background3","Background4","TitleTop","PlayersTitleBackground","PlayersTitle","PlayersBackground","Players","ButtonContinue","ButtonCancel"};
@@ -9459,16 +9414,11 @@ class RscDisplayClientGetReadyWest: RscDisplayGetReadyWest {
 		text = "$STR_DISP_DISCONNECT";
 	};
 };
-class RscDisplayClientGetReadyEast: RscDisplayClientGetReadyWest {};
-class RscDisplayClientGetReadyGuer: RscDisplayClientGetReadyWest {};
-class RscDisplayClientGetReadyCiv: RscDisplayClientGetReadyWest {};
 class RscDisplayDebriefing: RscDisplayBackgroundStripes {
 	access = 3;
 	idd = 50;
 	movingEnable = 0;
 	objects[] = {"Notepad","Statistics"};
-	controlsBackground[] = {"Background1","Background2"};
-	controls[] = {"Background3","Background4","TitleTop","PlayersTitleBackground","PlayersTitle","PlayersBackground","Players","ButtonRestart","ButtonContinue"};
 	class Notepad: RscObject {
 		model = "blok_selmis2.p3d";
 		idc = -1;
@@ -9543,6 +9493,8 @@ class RscDisplayDebriefing: RscDisplayBackgroundStripes {
 			colorLinkActive[] = {0.4,0.17,0.24,1};
 		};
 	};
+	controlsBackground[] = {"Background1","Background2"};
+	controls[] = {"Background3","Background4","TitleTop","PlayersTitleBackground","PlayersTitle","PlayersBackground","Players","ButtonRestart","ButtonContinue"};
 	class Background3: RscBackgroundStripeTopAlpha {};
 	class TitleTop: RscText {
 		x = 0;
@@ -9626,11 +9578,10 @@ class RscDisplaySelectIsland {
 	idd = 51;
 	movingEnable = 1;
 	controlsBackground[] = {"Background3","Background4","Background5"};
-	objects[] = {"Notebook"};
-	controls[] = {"Background1","Background2","Title","ButtonWizard","ButtonCancel","ButtonOK"};
 	class Background3: RscBackgroundStripeDark {};
 	class Background4: RscBackgroundStripeTop {};
 	class Background5: RscBackgroundStripeBottom {};
+	objects[] = {"Notebook"};
 	class Notebook: RscObject {
 		model = "notebook.p3d";
 		idc = 102;
@@ -9658,6 +9609,7 @@ class RscDisplaySelectIsland {
 			size = 0.7;
 		};
 	};
+	controls[] = {"Background1","Background2","Title","ButtonWizard","ButtonCancel","ButtonOK"};
 	class Background1: RscBackgroundStripeTopAlpha {};
 	class Background2: RscBackgroundStripeBottomAlpha {};
 	class Title: RscText {
@@ -9706,8 +9658,6 @@ class RscDisplayLogin {
 	idd = 31;
 	movingEnable = 1;
 	controlsBackground[] = {"Background3","Background4","Background5"};
-	objects[] = {"Notebook"};
-	controls[] = {"Background1","Background2","Title","ButtonOK","ButtonCancel"};
 	class Background3: RscText {
 		x = 0;
 		y = 0.125;
@@ -9732,6 +9682,7 @@ class RscDisplayLogin {
 		text = "";
 		colorBackground[] = {0,0,0,1};
 	};
+	objects[] = {"Notebook"};
 	class Notebook: RscObject {
 		model = "notebook.p3d";
 		idc = 105;
@@ -9788,6 +9739,7 @@ class RscDisplayLogin {
 			text = "$STR_DISP_DELETE";
 		};
 	};
+	controls[] = {"Background1","Background2","Title","ButtonOK","ButtonCancel"};
 	class Background1: RscText {
 		x = 0;
 		y = 0;
@@ -9842,8 +9794,6 @@ class RscDisplayNewUser {
 	idd = 42;
 	movingEnable = 1;
 	controlsBackground[] = {"Background3","Background4","Background5"};
-	objects[] = {"Head","Notebook"};
-	controls[] = {"Background1","Background2","Title","ButtonOK","ButtonCancel"};
 	class Background3: RscText {
 		x = 0;
 		y = 0.125;
@@ -9868,6 +9818,7 @@ class RscDisplayNewUser {
 		text = "";
 		colorBackground[] = {0,0,0,1};
 	};
+	objects[] = {"Head","Notebook"};
 	class Head: RscObject {
 		model = "hlavaw.p3d";
 		modelWoman = "\o\char\civilistka_head.p3d";
@@ -9999,6 +9950,7 @@ class RscDisplayNewUser {
 			h = 0.06;
 		};
 	};
+	controls[] = {"Background1","Background2","Title","ButtonOK","ButtonCancel"};
 	class Background1: RscText {
 		x = 0;
 		y = 0;
@@ -10054,8 +10006,6 @@ class RscDisplayCampaignLoad {
 	idd = 43;
 	movingEnable = 0;
 	controls[] = {"ButtonCancel","ButtonOK","ButtonReplay","ButtonDifficulty"};
-	controlsBackground[] = {"Background1","Background2","Background3"};
-	objects[] = {"Book"};
 	class ButtonDifficulty: RscActiveMenu {
 		idc = 110;
 		x = 0.05;
@@ -10102,6 +10052,7 @@ class RscDisplayCampaignLoad {
 		text = "$STR_DISP_CANCEL";
 		soundClick[] = {"ui\ui_cc",0.2,1};
 	};
+	controlsBackground[] = {"Background1","Background2","Background3"};
 	class Background1: RscText {
 		x = 0;
 		y = 0;
@@ -10126,6 +10077,7 @@ class RscDisplayCampaignLoad {
 		text = "";
 		colorBackground[] = {0,0,0,0.5};
 	};
+	objects[] = {"Book"};
 	class Book: RscObject {
 		model = "kniha6.p3d";
 		animation = "kniha2.rtm";
@@ -10447,8 +10399,6 @@ class RscDisplayRevert {
 	idd = 66;
 	movingEnable = 0;
 	controls[] = {"ButtonOK","ButtonCancel"};
-	controlsBackground[] = {"Background1","Background2","Background3"};
-	objects[] = {"Book"};
 	class ButtonOK: RscActiveMenu {
 		idc = 1;
 		x = 0.85;
@@ -10474,6 +10424,7 @@ class RscDisplayRevert {
 		text = "$STR_DISP_CANCEL";
 		soundClick[] = {"ui\ui_cc",0.2,1};
 	};
+	controlsBackground[] = {"Background1","Background2","Background3"};
 	class Background1: RscText {
 		x = 0;
 		y = 0;
@@ -10498,6 +10449,7 @@ class RscDisplayRevert {
 		text = "";
 		colorBackground[] = {0,0,0,0.5};
 	};
+	objects[] = {"Book"};
 	class Book: RscObject {
 		model = "kniha6.p3d";
 		animation = "kniha2.rtm";
@@ -10552,7 +10504,7 @@ class RscDisplayCampaign: RscDisplayEmpty {
 	access = 3;
 	idd = 33;
 };
-class RscDisplayMissionWest: RscDisplayEmpty {
+class RscDisplayMission: RscDisplayEmpty {
 	access = 3;
 	idd = 46;
 	objects[] = {"Compass","Watch"};
@@ -10579,9 +10531,6 @@ class RscDisplayMissionWest: RscDisplayEmpty {
 		zoomDuration = 0.5;
 	};
 };
-class RscDisplayMissionEast: RscDisplayMissionWest {};
-class RscDisplayMissionGuer: RscDisplayMissionWest {};
-class RscDisplayMissionCiv: RscDisplayMissionWest {};
 class RscDisplayIntro: RscDisplayEmpty {
 	access = 3;
 	idd = 47;
@@ -10976,7 +10925,7 @@ class RscInGameUI {
 		};
 		class Ammo: RscIGText {
 			idc = 119;
-			style = "1 + 256";
+			style = "1 + 					256";
 			x = 0.025;
 			y = 0.105;
 			w = 0.19;
@@ -11004,7 +10953,7 @@ class RscInGameUI {
 		};
 		class Hint: RscIGText {
 			idc = 102;
-			style = "16 + 256";
+			style = "16 + 					256";
 			lineSpacing = 1;
 			x = 0.025;
 			y = 0.033;
@@ -11129,29 +11078,6 @@ class RscTitles {
 			h = 0.4;
 		};
 	};
-	class CWA_RES {
-		idd = -1;
-		movingEnable = 0;
-		duration = 4;
-		name = "Resistance";
-		controls[] = {"Background","CWA_RES"};
-		class Background: RscText {
-			text = "";
-			colorBackground[] = {0,0,0,1};
-			x = 0;
-			y = 0;
-			w = 1;
-			h = 1;
-			colorText[] = {0,0,0,0};
-		};
-		class CWA_RES: RscPicture {
-			text = "\res\misc\startup_logo_CWA_res_ca.jpg";
-			x = 0.2;
-			y = 0.23;
-			w = 0.6;
-			h = 0.4;
-		};
-	};
 	class BIS {
 		idd = -1;
 		movingEnable = 0;
@@ -11189,7 +11115,7 @@ class RscTitles {
 			colorText[] = {0,0,0,0};
 		};
 		class WWW: RscText {
-			style = "16 + 2 + 512";
+			style = "16 + 					2 + 				512";
 			lineSpacing = 1;
 			text = "$STR_TIT_PRESENTS";
 			x = 0.05;
@@ -11208,9 +11134,9 @@ class RscTitles {
 		name = "Copyrights";
 		controls[] = {"Background","BI_NEW","CopText","InfoText"};
 		class CopText: RscText {
-			style = "16 + 2 + 512";
+			style = "16 + 					2 + 				512";
 			lineSpacing = 1.5;
-			text = "$STR_LEGAL_SCREEN_UP";
+			text = "锟?2011 Bohemia Interactive. \nAll rights reserved. \nDeveloped by Bohemia Interactive. Published by Bohemia Interactive. \nAll other copyrights or trademarks are the property of their respective owners.";
 			x = 0.05;
 			y = 0.3;
 			w = 0.9;
@@ -11220,9 +11146,9 @@ class RscTitles {
 			sizeEx = "0.8 * 0.03";
 		};
 		class InfoText: RscText {
-			style = "16 + 2 +	512";
+			style = "16 + 					2 + 				512";
 			lineSpacing = 1.5;
-			text = "$STR_LEGAL_SCREEN_DOWN";
+			text = "Counterfeit copying or trading in counterfeit copies is illegal.\nArma: Cold War Assault is protected from unauthorized copying by a unique system. In counterfeit copies, the gameplay will degrade after a period of time to a point where the game is no longer playable. This does not happen to genuine software. if you are any doubt about the authenticity of your Arma: Cold War Assault disc, make sure you have original packaging and a printed silver disc. \nCOUNTERFEIT SOFTWARE IS NOT WORTH PURCHASING.";
 			x = 0.05;
 			y = 0.6;
 			w = 0.9;
@@ -11280,12 +11206,12 @@ class RscTitles {
 		idd = -1;
 		movingEnable = 0;
 		duration = 6;
-		name = "Features Cold War Assault";
+		name = "Features";
 		controls[] = {"Background","Back","FP1","FP2","FP3","Text1","Text2"};
 		class Text1: RscText {
 			style = "16 + 					2 + 				512";
 			lineSpacing = 1;
-			text = "$STR_FEATURES1_TEXT1";
+			text = "锟?The best of cold war military equipment: battling on foot, in armor and in the sky\n\n锟?30+ playable vehicles, 20+ different infantry weapons: guns, missiles, explosives\n\n锟?Leadership of up to 12 units in the squad: simple point and click interface \n\n锟?Over 50 missions on 3 huge islands: featuring a campaign with exciting storyline\n\n锟?Intuitive mission editor: players can create own missions and campaigns \n\n锟?Multiplayer combat over LAN or Internet: including Voice Over Net";
 			x = 0;
 			y = 0.3;
 			w = 1;
@@ -11305,17 +11231,17 @@ class RscTitles {
 		class Text2: RscText {
 			style = "16 + 					2 + 				512";
 			lineSpacing = 1;
-			text = "$STR_FEATURES1_TEXT2";
+			text = "OUT NOW!";
 			x = 0.05;
 			y = 0.89;
 			w = 0.9;
 			h = 0.5;
-			colorText[] = {1,1,1,1};
+			colorText[] = {0.23,0.3,0.08,0.5};
 			font = "SteelfishB64";
 			sizeEx = 0.05;
 		};
 		class FP1: RscPicture {
-			colorText[] = {1,1,1,1};
+			colorText[] = {0.23,0.3,0.08,0.5};
 			text = "OFPlogo1.paa";
 			x = 0.32;
 			y = 0.07;
@@ -11323,7 +11249,7 @@ class RscTitles {
 			h = 0.133;
 		};
 		class FP2: RscPicture {
-			colorText[] = {1,1,1,1};
+			colorText[] = {0.23,0.3,0.08,0.5};
 			text = "OFPlogo2.paa";
 			x = 0.44;
 			y = 0.07;
@@ -11331,7 +11257,7 @@ class RscTitles {
 			h = 0.133;
 		};
 		class FP3: RscPicture {
-			colorText[] = {1,1,1,1};
+			colorText[] = {0.23,0.3,0.08,0.5};
 			text = "OFPlogo3.paa";
 			x = 0.56;
 			y = 0.07;
@@ -11348,35 +11274,6 @@ class RscTitles {
 			colorText[] = {0,0,0,0};
 		};
 	};
-	class 15thanniversary4RTECH {
-		idd = -1;
-		movingEnable = 0;
-		duration = 6;
-		name = "For 15th anniversary";
-		controls[] = {"Background","15thanniversary4RTECH"};
-		class Background: RscText {
-			text = "";
-			colorBackground[] = {0,0,0,1};
-			x = 0;
-			y = 0;
-			w = 1;
-			h = 1;
-			colorText[] = {0,0,0,0};
-		};
-		class 15thanniversary4RTECH: RscText {
-			idc = 130;
-			style = "16 + 					2 + 				512";
-			x = 0;
-			y = 0.4;
-			w = 1;
-			h = 0.4;
-			font = "SteelfishB128";
-			colorText[] = {1,0,0,1};
-			sizeEx = 0.078;
-			text = "$STR_15THANNIV";
-			lineSpacing = 1.0;
-		};
-	};
 	class Features {
 		idd = -1;
 		movingEnable = 0;
@@ -11385,7 +11282,7 @@ class RscTitles {
 		controls[] = {"CGW1","CGW2","CGW3","CGW4"};
 		class CGW1: RscPicture {
 			colorText[] = {1,1,1,1};
-			text = "";
+			text = "\img\CGW1.jpg";
 			x = 0;
 			y = 0;
 			w = 0.5;
@@ -11393,7 +11290,7 @@ class RscTitles {
 		};
 		class CGW2: RscPicture {
 			colorText[] = {1,1,1,1};
-			text = "";
+			text = "\img\CGW2.jpg";
 			x = 0.5;
 			y = 0;
 			w = 0.5;
@@ -11401,7 +11298,7 @@ class RscTitles {
 		};
 		class CGW3: RscPicture {
 			colorText[] = {1,1,1,1};
-			text = "";
+			text = "\img\CGW3.jpg";
 			x = 0;
 			y = 0.666;
 			w = 0.5;
@@ -11409,7 +11306,7 @@ class RscTitles {
 		};
 		class CGW4: RscPicture {
 			colorText[] = {1,1,1,1};
-			text = "";
+			text = "\img\CGW4.jpg";
 			x = 0.5;
 			y = 0.666;
 			w = 0.5;
@@ -11453,32 +11350,39 @@ class RscTitles {
 			colorText[] = {0,0,0,0};
 		};
 	};
-	class Resistance {
+	class resistance {
 		idd = -1;
 		movingEnable = 0;
 		duration = 4;
-		name = "ArmA Resistance";
-		controls[] = {"Background","RE1","RE2","RE3"};
+		name = "Resistance logo";
+		controls[] = {"Background","CWA_RES"};
 		class RE1: RscPicture {
-			text = "\res\misc\OFPRlogo01.jpg";
+			text = "\o\misc\OFPRlogo01.paa";
 			x = 0.05;
 			y = 0.32;
 			w = 0.3;
 			h = 0.33;
 		};
 		class RE2: RscPicture {
-			text = "\res\misc\OFPRlogo02.jpg";
+			text = "\o\misc\OFPRlogo02.paa";
 			x = 0.35;
 			y = 0.32;
 			w = 0.3;
 			h = 0.33;
 		};
 		class RE3: RscPicture {
-			text = "\res\misc\OFPRlogo03.jpg";
+			text = "\o\misc\OFPRlogo03.paa";
 			x = 0.65;
 			y = 0.32;
 			w = 0.3;
 			h = 0.33;
+		};
+		class CWA_RES: RscPicture {
+			text = "\o\misc\startup_logo_CWA_res_ca.paa";
+			x = 0.2;
+			y = 0.23;
+			w = 0.6;
+			h = 0.4;
 		};
 		class Background: RscText {
 			text = "";
@@ -11567,7 +11471,7 @@ class RscTitles {
 			w = 0.9;
 			h = 0.7;
 			colorText[] = {1,1,1,1};
-			font = "tahomaB36";
+			font = "\fonts\tahomaB36";
 			sizeEx = "0.7 * 0.03";
 		};
 		class dev: RscText {
@@ -11579,7 +11483,7 @@ class RscTitles {
 			w = 0.9;
 			h = 0.7;
 			colorText[] = {1,1,1,1};
-			font = "tahomaB36";
+			font = "\fonts\tahomaB36";
 			sizeEx = "0.6 * 0.03";
 		};
 	};
@@ -11595,7 +11499,7 @@ class RscTitles {
 			w = 1;
 			h = 0.73;
 			colorText[] = {0.75,0.75,1,1};
-			font = "SteelfishB64";
+			font = "SteelfishB64CE";
 			sizeEx = "0.7 * 0.05";
 		};
 		class name1: RscText {
@@ -11623,7 +11527,7 @@ class RscTitles {
 			w = 1;
 			h = 0.73;
 			colorText[] = {0.75,0.75,1,1};
-			font = "SteelfishB64";
+			font = "SteelfishB64CE";
 			sizeEx = "0.7 * 0.05";
 		};
 		class name1: RscText {
@@ -11651,7 +11555,7 @@ class RscTitles {
 			w = 1;
 			h = 0.73;
 			colorText[] = {0.75,0.75,1,1};
-			font = "SteelfishB64";
+			font = "SteelfishB64CE";
 			sizeEx = "0.7 * 0.05";
 		};
 		class name1: RscText {
@@ -11679,7 +11583,7 @@ class RscTitles {
 			w = 1;
 			h = 0.73;
 			colorText[] = {0.75,0.75,1,1};
-			font = "SteelfishB64";
+			font = "SteelfishB64CE";
 			sizeEx = "0.7 * 0.05";
 		};
 		class name1: RscText {
@@ -11707,7 +11611,7 @@ class RscTitles {
 			w = 1;
 			h = 0.73;
 			colorText[] = {0.75,0.75,1,1};
-			font = "SteelfishB64";
+			font = "SteelfishB64CE";
 			sizeEx = "0.7 * 0.05";
 		};
 		class name1: RscText {
@@ -11731,7 +11635,7 @@ class RscTitles {
 			w = 1;
 			h = 0.73;
 			colorText[] = {0.75,0.75,1,1};
-			font = "SteelfishB64";
+			font = "SteelfishB64CE";
 			sizeEx = "0.7 * 0.05";
 		};
 		class name2: RscText {
@@ -11755,7 +11659,7 @@ class RscTitles {
 			w = 1;
 			h = 0.73;
 			colorText[] = {0.75,0.75,1,1};
-			font = "SteelfishB64";
+			font = "SteelfishB64CE";
 			sizeEx = "0.7 * 0.05";
 		};
 		class name3: RscText {
@@ -11783,7 +11687,7 @@ class RscTitles {
 			w = 1;
 			h = 0.73;
 			colorText[] = {0.75,0.75,1,1};
-			font = "SteelfishB64";
+			font = "SteelfishB64CE";
 			sizeEx = "0.7 * 0.05";
 		};
 		class name1: RscText {
@@ -11795,7 +11699,7 @@ class RscTitles {
 			w = 1;
 			h = 0.53;
 			colorText[] = {1,1,1,1};
-			font = "SteelfishB64";
+			font = "SteelfishB64CE";
 			sizeEx = "0.9 * 0.05";
 		};
 		class name2: RscText {
@@ -11807,7 +11711,7 @@ class RscTitles {
 			w = 1;
 			h = 0.53;
 			colorText[] = {1,1,1,1};
-			font = "SteelfishB64";
+			font = "SteelfishB64CE";
 			sizeEx = "0.5 * 0.05";
 		};
 		class name3: RscText {
@@ -11819,7 +11723,7 @@ class RscTitles {
 			w = 1;
 			h = 0.53;
 			colorText[] = {1,1,1,1};
-			font = "SteelfishB64";
+			font = "SteelfishB64CE";
 			sizeEx = "0.5 * 0.05";
 		};
 		class name4: RscText {
@@ -11831,7 +11735,7 @@ class RscTitles {
 			w = 1;
 			h = 0.53;
 			colorText[] = {1,1,1,1};
-			font = "SteelfishB64";
+			font = "SteelfishB64CE";
 			sizeEx = "0.9 * 0.05";
 		};
 	};
@@ -11847,7 +11751,7 @@ class RscTitles {
 			w = 1;
 			h = 0.98;
 			colorText[] = {0.75,0.75,1,1};
-			font = "SteelfishB64";
+			font = "SteelfishB64CE";
 			sizeEx = "0.7 * 0.05";
 		};
 		class name1: RscText {
@@ -11871,7 +11775,7 @@ class RscTitles {
 			w = 1;
 			h = 0.98;
 			colorText[] = {0.75,0.75,1,1};
-			font = "SteelfishB64";
+			font = "SteelfishB64CE";
 			sizeEx = "0.7 * 0.05";
 		};
 		class name2: RscText {
@@ -11895,7 +11799,7 @@ class RscTitles {
 			w = 1;
 			h = 0.98;
 			colorText[] = {1,1,1,1};
-			font = "SteelfishB64";
+			font = "\fonts\SteelfishB64";
 			sizeEx = "0.6 * 0.05";
 		};
 	};
@@ -11911,7 +11815,7 @@ class RscTitles {
 			w = 1;
 			h = 0.73;
 			colorText[] = {0.75,0.75,1,1};
-			font = "SteelfishB64";
+			font = "SteelfishB64CE";
 			sizeEx = "0.7 * 0.05";
 		};
 		class name2: RscText {
@@ -11994,7 +11898,7 @@ class RscTitles {
 			w = 0.9;
 			h = 0.7;
 			colorText[] = {1,1,1,1};
-			font = "tahomaB36";
+			font = "\fonts\tahomaB36";
 			sizeEx = "0.6 * 0.03";
 		};
 		class web: RscText {
@@ -12006,7 +11910,7 @@ class RscTitles {
 			w = 0.9;
 			h = 0.7;
 			colorText[] = {1,1,1,1};
-			font = "tahomaB36";
+			font = "\fonts\tahomaB36";
 			sizeEx = "0.7 * 0.03";
 		};
 	};
@@ -12022,7 +11926,7 @@ class RscTitles {
 			w = 1;
 			h = 0.73;
 			colorText[] = {0.75,0.75,1,1};
-			font = "SteelfishB64";
+			font = "\fonts\SteelfishB64";
 			sizeEx = "0.6 * 0.05";
 		};
 		class name1: RscText {
@@ -12034,7 +11938,7 @@ class RscTitles {
 			w = 1;
 			h = 0.53;
 			colorText[] = {1,1,1,1};
-			font = "SteelfishB64";
+			font = "\fonts\SteelfishB64";
 			sizeEx = "0.9 * 0.05";
 		};
 	};
@@ -12050,7 +11954,7 @@ class RscTitles {
 			w = 1;
 			h = 0.73;
 			colorText[] = {0.75,0.75,1,1};
-			font = "SteelfishB64";
+			font = "\fonts\SteelfishB64";
 			sizeEx = "0.6 * 0.05";
 		};
 		class name1: RscText {
@@ -12062,7 +11966,7 @@ class RscTitles {
 			w = 1;
 			h = 0.53;
 			colorText[] = {1,1,1,1};
-			font = "SteelfishB64";
+			font = "\fonts\SteelfishB64";
 			sizeEx = "0.9 * 0.05";
 		};
 	};
@@ -12078,7 +11982,7 @@ class RscTitles {
 			w = 1;
 			h = 0.93;
 			colorText[] = {0.75,0.75,1,1};
-			font = "SteelfishB64";
+			font = "\fonts\SteelfishB64";
 			sizeEx = "0.6 * 0.05";
 		};
 		class name1: RscText {
@@ -12090,7 +11994,7 @@ class RscTitles {
 			w = 1;
 			h = 0.93;
 			colorText[] = {1,1,1,1};
-			font = "SteelfishB64";
+			font = "\fonts\SteelfishB64";
 			sizeEx = "0.9 * 0.05";
 		};
 	};
@@ -12106,7 +12010,7 @@ class RscTitles {
 			w = 1;
 			h = 0.93;
 			colorText[] = {0.75,0.75,1,1};
-			font = "SteelfishB64";
+			font = "\fonts\SteelfishB64";
 			sizeEx = "0.6 * 0.05";
 		};
 		class name1: RscText {
@@ -12118,7 +12022,7 @@ class RscTitles {
 			w = 1;
 			h = 0.93;
 			colorText[] = {1,1,1,1};
-			font = "SteelfishB64";
+			font = "\fonts\SteelfishB64";
 			sizeEx = "0.8 * 0.05";
 		};
 	};
@@ -12134,7 +12038,7 @@ class RscTitles {
 			w = 1;
 			h = 0.73;
 			colorText[] = {0.75,0.75,1,1};
-			font = "SteelfishB64";
+			font = "\fonts\SteelfishB64";
 			sizeEx = "0.6 * 0.05";
 		};
 		class name1: RscText {
@@ -12146,7 +12050,7 @@ class RscTitles {
 			w = 1;
 			h = 0.53;
 			colorText[] = {1,1,1,1};
-			font = "SteelfishB64";
+			font = "\fonts\SteelfishB64";
 			sizeEx = "0.9 * 0.05";
 		};
 		class work2: RscText {
@@ -12158,7 +12062,7 @@ class RscTitles {
 			w = 1;
 			h = 0.73;
 			colorText[] = {0.75,0.75,1,1};
-			font = "SteelfishB64";
+			font = "\fonts\SteelfishB64";
 			sizeEx = "0.6 * 0.05";
 		};
 		class name2: RscText {
@@ -12170,7 +12074,7 @@ class RscTitles {
 			w = 1;
 			h = 0.53;
 			colorText[] = {1,1,1,1};
-			font = "SteelfishB64";
+			font = "\fonts\SteelfishB64";
 			sizeEx = "0.9 * 0.05";
 		};
 	};
@@ -12186,7 +12090,7 @@ class RscTitles {
 			w = 1;
 			h = 0.73;
 			colorText[] = {0.75,0.75,1,1};
-			font = "SteelfishB64";
+			font = "\fonts\SteelfishB64";
 			sizeEx = "0.6 * 0.05";
 		};
 		class name1: RscText {
@@ -12198,7 +12102,7 @@ class RscTitles {
 			w = 1;
 			h = 0.53;
 			colorText[] = {1,1,1,1};
-			font = "SteelfishB64";
+			font = "\fonts\SteelfishB64";
 			sizeEx = "0.9 * 0.05";
 		};
 		class work2: RscText {
@@ -12210,7 +12114,7 @@ class RscTitles {
 			w = 1;
 			h = 0.73;
 			colorText[] = {0.75,0.75,1,1};
-			font = "SteelfishB64";
+			font = "\fonts\SteelfishB64";
 			sizeEx = "0.6 * 0.05";
 		};
 		class name2: RscText {
@@ -12222,7 +12126,7 @@ class RscTitles {
 			w = 1;
 			h = 0.53;
 			colorText[] = {1,1,1,1};
-			font = "SteelfishB64";
+			font = "\fonts\SteelfishB64";
 			sizeEx = "0.9 * 0.05";
 		};
 	};
@@ -12238,7 +12142,7 @@ class RscTitles {
 			w = 1;
 			h = 0.73;
 			colorText[] = {0.75,0.75,1,1};
-			font = "SteelfishB64";
+			font = "\fonts\SteelfishB64";
 			sizeEx = "0.6 * 0.05";
 		};
 		class name1: RscText {
@@ -12250,7 +12154,7 @@ class RscTitles {
 			w = 1;
 			h = 0.53;
 			colorText[] = {1,1,1,1};
-			font = "SteelfishB64";
+			font = "\fonts\SteelfishB64";
 			sizeEx = "0.9 * 0.05";
 		};
 		class work2: RscText {
@@ -12262,7 +12166,7 @@ class RscTitles {
 			w = 1;
 			h = 0.73;
 			colorText[] = {0.75,0.75,1,1};
-			font = "SteelfishB64";
+			font = "\fonts\SteelfishB64";
 			sizeEx = "0.6 * 0.05";
 		};
 		class name2: RscText {
@@ -12274,335 +12178,8 @@ class RscTitles {
 			w = 1;
 			h = 0.53;
 			colorText[] = {1,1,1,1};
-			font = "SteelfishB64";
+			font = "\fonts\SteelfishB64";
 			sizeEx = "0.9 * 0.05";
-		};
-	};
-	class creditsback4RTECH {
-		idd = -1;
-		movingEnable = 0;
-		duration = 10000;
-		name = "Creditsback4RTECH";
-		controls[] = {"Back","background","web","4rtech1","4rtech2"};
-		class Back: RscText {
-			x = 0.72;
-			y = 0.0;
-			w = 0.5;
-			h = 1.0;
-			text = "";
-			colorBackground[] = {0.0,0.0,0.0,1};
-		};
-		class Background: RscText {
-			text = "";
-			colorBackground[] = {0,0,0,0};
-			x = 0;
-			y = 0;
-			w = 1;
-			h = 1;
-			colorText[] = {0,0,0,0};
-		};
-		class 4rtech1: RscPicture {
-			text = "\Res\misc\4rtech_ofp_clan.jpg";
-			x = 0.77;
-			y = 0.06;
-			w = 0.18;
-			h = 0.12;
-		};
-		class web: RscText {
-			style = "16 + 					2 + 				512";
-			lineSpacing = 1.0;
-			text = "www.nervps.com";
-			x = 0.41;
-			y = 0.95;
-			w = 0.9;
-			h = 0.7;
-			colorText[] = {1,1,1,1};
-			font = "tahomaB36";
-			sizeEx = "0.7 * 0.03";
-		};
-		class 4rtech2: RscText {
-			style = "16 + 					2 + 				512";
-			lineSpacing = 1.0;
-			text = "$STR_CREDITS25";
-			x = 0.41;
-			y = 0.02;
-			w = 0.9;
-			h = 0.7;
-			colorText[] = {1,1,1,1};
-			font = "tahomaB36";
-			sizeEx = "0.6 * 0.03";
-		};
-	};
-	class 4rtech1: creditsback4RTECH {
-		name = "4rtech1";
-		controls[] = {"Back","background","web","4rtech1","4rtech2","work1","name1","work3","name3","work4","name4","work5","name5","work6","name6"};
-		class work1: RscText {
-			style = "16 + 					2 + 				512";
-			lineSpacing = 1.0;
-			text = "$STR_CREDITS26";
-			x = 0.36;
-			y = 0.2;
-			w = 1.0;
-			h = 0.73;
-			colorText[] = {0.75,0.75,1.0,1};
-			font = "SteelfishB64";
-			sizeEx = "0.6 * 0.05";
-		};
-		class name1: RscText {
-			style = "16 + 					2 + 				512";
-			lineSpacing = 1.0;
-			text = "$STR_CREDITSN26";
-			x = 0.36;
-			y = 0.23;
-			w = 1.0;
-			h = 0.53;
-			colorText[] = {1.0,1.0,1.0,1};
-			font = "SteelfishB64";
-			sizeEx = "0.8 * 0.05";
-		};
-		class work3: RscText {
-			style = "16 + 					2 + 				512";
-			lineSpacing = 1.0;
-			text = "$STR_CREDITS28";
-			x = 0.36;
-			y = 0.33;
-			w = 1.0;
-			h = 0.73;
-			colorText[] = {0.75,0.75,1.0,1};
-			font = "SteelfishB64";
-			sizeEx = "0.6 * 0.05";
-		};
-		class name3: RscText {
-			style = "16 + 					2 + 				512";
-			lineSpacing = 1.0;
-			text = "$STR_CREDITSN28";
-			x = 0.36;
-			y = 0.36;
-			w = 1.0;
-			h = 0.53;
-			colorText[] = {1.0,1.0,1.0,1};
-			font = "SteelfishB64";
-			sizeEx = "0.8 * 0.05";
-		};
-		class work4: RscText {
-			style = "16 + 					2 + 				512";
-			lineSpacing = 1.0;
-			text = "$STR_CREDITS29";
-			x = 0.36;
-			y = 0.43;
-			w = 1.0;
-			h = 0.73;
-			colorText[] = {0.75,0.75,1.0,1};
-			font = "SteelfishB64";
-			sizeEx = "0.6 * 0.05";
-		};
-		class name4: RscText {
-			style = "16 + 					2 + 				512";
-			lineSpacing = 1.0;
-			text = "$STR_CREDITSN29";
-			x = 0.36;
-			y = 0.46;
-			w = 1.0;
-			h = 0.53;
-			colorText[] = {1.0,1.0,1.0,1};
-			font = "SteelfishB64";
-			sizeEx = "0.8 * 0.05";
-		};
-		class work5: RscText {
-			style = "16 + 					2 + 				512";
-			lineSpacing = 1.0;
-			text = "$STR_CREDITS30";
-			x = 0.36;
-			y = 0.6;
-			w = 1.0;
-			h = 0.73;
-			colorText[] = {0.75,0.75,1.0,1};
-			font = "SteelfishB64";
-			sizeEx = "0.6 * 0.05";
-		};
-		class name5: RscText {
-			style = "16 + 					2 + 				512";
-			lineSpacing = 1.0;
-			text = "$STR_CREDITSN30";
-			x = 0.36;
-			y = 0.63;
-			w = 1.0;
-			h = 0.53;
-			colorText[] = {1.0,1.0,1.0,1};
-			font = "SteelfishB64";
-			sizeEx = "0.8 * 0.05";
-		};
-		class work6: RscText {
-			style = "16 + 					2 + 				512";
-			lineSpacing = 1.0;
-			text = "$STR_CREDITS31";
-			x = 0.36;
-			y = 0.7;
-			w = 1.0;
-			h = 0.73;
-			colorText[] = {0.75,0.75,1.0,1};
-			font = "SteelfishB64";
-			sizeEx = "0.6 * 0.05";
-		};
-		class name6: RscText {
-			style = "16 + 					2 + 				512";
-			lineSpacing = 1.0;
-			text = "$STR_CREDITSN31";
-			x = 0.36;
-			y = 0.73;
-			w = 1.0;
-			h = 0.53;
-			colorText[] = {1.0,1.0,1.0,1};
-			font = "SteelfishB64";
-			sizeEx = "0.8 * 0.05";
-		};
-	};
-	class 4rtech2: creditsback4RTECH {
-		name = "4rtech2";
-		controls[] = {"Back","background","web","4rtech1","4rtech2","work1","name1","work2","name2","work3","by1","content1","by2","content2","by3","content3","communityms"};
-		class work1: RscText {
-			style = "16 + 					2 + 				512";
-			lineSpacing = 1.0;
-			text = "$STR_CREDITS32";
-			x = 0.36;
-			y = 0.2;
-			w = 1.0;
-			h = 0.73;
-			colorText[] = {0.75,0.75,1.0,1};
-			font = "SteelfishB64";
-			sizeEx = "0.6 * 0.05";
-		};
-		class name1: RscText {
-			style = "16 + 					2 + 				512";
-			lineSpacing = 1.0;
-			text = "$STR_CREDITSN32";
-			x = 0.36;
-			y = 0.23;
-			w = 1.0;
-			h = 0.53;
-			colorText[] = {1.0,1.0,1.0,1};
-			font = "SteelfishB64";
-			sizeEx = "0.7 * 0.05";
-		};
-		class work2: RscText {
-			style = "16 + 					2 + 				512";
-			lineSpacing = 1.0;
-			text = "$STR_CREDITS27";
-			x = 0.36;
-			y = 0.36;
-			w = 1.0;
-			h = 0.73;
-			colorText[] = {0.75,0.75,1.0,1};
-			font = "SteelfishB64";
-			sizeEx = "0.6 * 0.05";
-		};
-		class name2: RscText {
-			style = "16 + 					2 + 				512";
-			lineSpacing = 1.0;
-			text = "$STR_CREDITSN27";
-			x = 0.36;
-			y = 0.39;
-			w = 1.0;
-			h = 0.53;
-			colorText[] = {1.0,1.0,1.0,1};
-			font = "SteelfishB64";
-			sizeEx = "0.8 * 0.05";
-		};
-		class work3: RscText {
-			style = "16 + 					2 + 				512";
-			lineSpacing = 1.0;
-			text = "$STR_CREDITS33";
-			x = 0.36;
-			y = 0.45;
-			w = 1.0;
-			h = 0.73;
-			colorText[] = {1,1,0.5,1};
-			font = "SteelfishB64";
-			sizeEx = "0.6 * 0.05";
-		};
-		class content1: RscText {
-			style = "16 + 					2 + 				512";
-			lineSpacing = 1.0;
-			text = "$STR_CREDITSC33a";
-			x = 0.36;
-			y = 0.48;
-			w = 1.0;
-			h = 0.53;
-			colorText[] = {1.0,1.0,1.0,1};
-			font = "SteelfishB64";
-			sizeEx = "0.7 * 0.05";
-		};
-		class by1: RscText {
-			style = "16 + 					2 + 				512";
-			lineSpacing = 1;
-			text = "$STR_CREDITSN33a";
-			x = 0.36;
-			y = 0.52;
-			w = 1;
-			h = 0.53;
-			colorText[] = {1,1,1,1};
-			font = "SteelfishB64";
-			sizeEx = "0.5 * 0.05";
-		};
-		class content2: RscText {
-			style = "16 + 					2 + 				512";
-			lineSpacing = 1.0;
-			text = "$STR_CREDITSC33b";
-			x = 0.36;
-			y = 0.57;
-			w = 1.0;
-			h = 0.53;
-			colorText[] = {1.0,1.0,1.0,1};
-			font = "SteelfishB64";
-			sizeEx = "0.7 * 0.05";
-		};
-		class by2: RscText {
-			style = "16 + 					2 + 				512";
-			lineSpacing = 1;
-			text = "$STR_CREDITSN33b";
-			x = 0.36;
-			y = 0.61;
-			w = 1;
-			h = 0.53;
-			colorText[] = {1,1,1,1};
-			font = "SteelfishB64";
-			sizeEx = "0.5 * 0.05";
-		};
-		class content3: RscText {
-			style = "16 + 					2 + 				512";
-			lineSpacing = 1.0;
-			text = "$STR_CREDITSC33c";
-			x = 0.36;
-			y = 0.66;
-			w = 1.0;
-			h = 0.53;
-			colorText[] = {1.0,1.0,1.0,1};
-			font = "SteelfishB64";
-			sizeEx = "0.7 * 0.05";
-		};
-		class by3: RscText {
-			style = "16 + 					2 + 				512";
-			lineSpacing = 1;
-			text = "$STR_CREDITSN33c";
-			x = 0.36;
-			y = 0.7;
-			w = 1;
-			h = 0.53;
-			colorText[] = {1,1,1,1};
-			font = "SteelfishB64";
-			sizeEx = "0.5 * 0.05";
-		};
-		class communityms: RscText {
-			style = "16 + 					2 + 				512";
-			lineSpacing = 1.0;
-			text = "$STR_CREDITSN34";
-			x = 0.36;
-			y = 0.76;
-			w = 1.0;
-			h = 0.53;
-			colorText[] = {1.0,1.0,1.0,1};
-			font = "SteelfishB64";
-			sizeEx = "0.7 * 0.05";
 		};
 	};
 	class Endof {
@@ -12637,7 +12214,7 @@ class RscTitles {
 			w = 0.9;
 			h = 0.7;
 			colorText[] = {1,1,1,1};
-			font = "tahomaB36";
+			font = "\fonts\tahomaB36";
 			sizeEx = "0.7 * 0.03";
 		};
 	};
@@ -12698,7 +12275,7 @@ class RscTitles {
 			w = 0.9;
 			h = 0.7;
 			colorText[] = {1,1,1,1};
-			font = "tahomaB36";
+			font = "\fonts\tahomaB36";
 			sizeEx = "0.7 * 0.03";
 		};
 	};
@@ -12762,7 +12339,7 @@ class RscTitles {
 			w = 0.9;
 			h = 0.5;
 			colorText[] = {1,1,1,1};
-			font = "SteelfishB128";
+			font = "\fonts\SteelfishB128";
 			sizeEx = 0.098;
 		};
 		class maintitles_02: RscText {
@@ -12774,7 +12351,7 @@ class RscTitles {
 			w = 0.9;
 			h = 0.5;
 			colorText[] = {1,1,1,1};
-			font = "SteelfishB128";
+			font = "\fonts\SteelfishB128";
 			sizeEx = "0.6 * 0.098";
 		};
 	};
@@ -12802,7 +12379,7 @@ class RscTitles {
 			w = 0.9;
 			h = 0.5;
 			colorText[] = {1,1,1,1};
-			font = "SteelfishB128";
+			font = "\fonts\SteelfishB128";
 			sizeEx = "0.6 * 0.098";
 		};
 		class maintitles_04: RscText {
@@ -12814,7 +12391,7 @@ class RscTitles {
 			w = 0.9;
 			h = 0.5;
 			colorText[] = {1,1,1,1};
-			font = "SteelfishB128";
+			font = "\fonts\SteelfishB128";
 			sizeEx = "1.0 * 0.098";
 		};
 		class maintitles_05: RscText {
@@ -12826,7 +12403,7 @@ class RscTitles {
 			w = 0.9;
 			h = 0.5;
 			colorText[] = {1,1,1,1};
-			font = "SteelfishB128";
+			font = "\fonts\SteelfishB128";
 			sizeEx = "0.6 * 0.098";
 		};
 	};
@@ -12854,7 +12431,7 @@ class RscTitles {
 			w = 0.9;
 			h = 0.5;
 			colorText[] = {1,1,1,1};
-			font = "SteelfishB128";
+			font = "\fonts\SteelfishB128";
 			sizeEx = "1.4 * 0.098";
 		};
 	};
@@ -13000,7 +12577,7 @@ class RscTitles {
 			sizeEx = 0.098;
 		};
 		class FP1: RscPicture {
-			colorText[] = {1,1,1,0.3};
+			colorText[] = {0.23,0.3,0.08,0.3};
 			text = "OFPlogo1.paa";
 			x = 0.05;
 			y = 0.2;
@@ -13008,7 +12585,7 @@ class RscTitles {
 			h = 0.33;
 		};
 		class FP2: RscPicture {
-			colorText[] = {1,1,1,0.3};
+			colorText[] = {0.23,0.3,0.08,0.3};
 			text = "OFPlogo2.paa";
 			x = 0.35;
 			y = 0.2;
@@ -13016,7 +12593,7 @@ class RscTitles {
 			h = 0.33;
 		};
 		class FP3: RscPicture {
-			colorText[] = {1,1,1,0.3};
+			colorText[] = {0.23,0.3,0.08,0.3};
 			text = "OFPlogo3.paa";
 			x = 0.65;
 			y = 0.2;
